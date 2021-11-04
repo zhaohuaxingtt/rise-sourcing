@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-02 21:04:22
- * @LastEditors:  
+ * @LastEditTime: 2021-11-04 19:33:00
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
  */
@@ -47,7 +47,7 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcBPrice`,label:'LC B Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}productionLocation`,label:'Prod. Location',i18n:'',width:'110',tooltip:false},
+    {type:'',props:`${index?index:''}productionLocation`,label:'Prod. Location',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:"LC A Price \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:"SKD A Price \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:"LC B Price \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
@@ -58,8 +58,8 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}developmentCost`,label:'Dev. Cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier \n SOP Date',i18n:'',width:'100',tooltip:true},
     {type:'',props:`${index?index:''}ltc`,label:'LTC',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Start Date',i18n:'',width:'110',tooltip:true},
-    {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype Price',i18n:'',width:'100',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>'},
+    {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC Start Date',i18n:'',width:'100',tooltip:true},
+    {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'100',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>'},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Development Cost',i18n:'',width:'100',tooltip:false, renderHeader: '<p>External</p><p>Dev. Cost</p>'},
     {type:'',props:`${index?index:''}releaseCost`,label:'Release Cost',i18n:'',width:'100',tooltip:false},
