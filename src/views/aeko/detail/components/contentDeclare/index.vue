@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-03 15:27:14
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-04 11:10:11
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -1129,9 +1129,11 @@ export default {
   border: 1px solid rgba(217, 222, 229, 0.5);
   background: #fff;
   ::v-deep.el-textarea {
+    height: 100%;
     .el-textarea__inner {
       resize: none;
       box-shadow: none;
+      height: 100%;
     }
   }
 }
