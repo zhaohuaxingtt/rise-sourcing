@@ -144,6 +144,9 @@ export default{
     this.layout = this.getLayoutDetaultNumber()
     console.log(this.layout)
   },
+  destroyed(){
+    console.log('---------------')
+  },
   mounted(){
     this.round = this.getbaseInfoData().currentRounds || 1
     this.init()

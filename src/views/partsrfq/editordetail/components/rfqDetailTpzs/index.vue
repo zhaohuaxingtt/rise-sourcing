@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 13:01:23
- * @LastEditors: Hao,Jiang
+ * @LastEditors: Please set LastEditors
  * @Description: 报价助手界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\index.vue
 -->
 <template>
   <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
-    <el-tab-pane lazy name="one" label="报价分析">
+    <el-tab-pane name="one" label="报价分析">
       <template>
          <!--------------------报价评分跟踪----------------------------------------->
          <iCard title="报价与评分跟踪" @handleCollapse='handleCollapse($event,"1")' collapse v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAYUPINGFENGENZONG|报价与评分跟踪">
@@ -52,7 +52,7 @@ export default {
   components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, gather, negotiateBasicInfor },
   data() {
     return {
-      cardShow: icardData,
+      cardShow: JSON.parse(JSON.stringify(icardData)),
       activityTabIndex: 'one'
     }
   },
