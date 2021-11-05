@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-05 11:22:45
+ * @LastEditTime: 2021-11-05 16:07:13
  * @LastEditors:  
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -85,12 +85,20 @@
                   align="center"
                   :resizable="false"
                 >
-                <template slot="header" slot-scope="scope">
-                  <el-tooltip :content='levelTowItem.label' effect='light'>
-                    <span class="overText">{{levelTowItem.label}}</span>
-                  </el-tooltip>
-                  <span style="color:red" :class="{price:true,priceb:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
-                </template>
+                  <template slot="header" slot-scope="scope">
+                    <el-tooltip :content='levelTowItem.label' effect='light'>
+                      <span class="overText">{{levelTowItem.label}}</span>
+                    </el-tooltip>
+                    <span :class="{price:true,priceb:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
+                  </template>
+                  <template slot-scope="scope">
+                    <template v-if='removeKeysNumber(levelTowItem.props) == "lcBPrice"'>
+                      <span :class="{buleColor:scope.row[getPorpsNumber(levelTowItem.props)+'suggestPartFlag'] == 1}">{{scope.row[levelTowItem.props]}}</span>
+                    </template>
+                    <template v-else>
+                      <span>{{scope.row[levelTowItem.props]}}</span>
+                    </template>
+                  </template>
                 </el-table-column>
             </template>
           </template>
@@ -134,10 +142,7 @@
               <span style="color:red;" :class="{lvse:lvseFn(scope.row,item.props,'partName')}">{{scope.row[item.props]}}</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span :class="isborder(scope.row,item.props)">{{scope.row[item.props]}}</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-                <span style="color:blue">{{scope.row[item.props]}}</span>
+              <span :class="{buleColor:scope.row[getPorpsNumber(item.props)+'suggestPartFlag'] == 1}">{{scope.row[item.props]}}</span>
             </template>
             <template v-else slot-scope="scope">
               <span>{{scope.row[item.props]}}</span>
@@ -490,6 +495,16 @@ export default{
         }
         .priceb{
             top:-95px;
+        }    
+        .buleColor::after{
+          margin: auto;
+          position: absolute;
+          content:"";
+          width: 80PX;
+          height:3px;
+          left: 0px;
+          bottom: 0px;
+          background: blue;
         }
     }
     ::v-deep.priceUnderLinePrice{
