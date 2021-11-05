@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-04 19:22:14
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-05 16:07:13
+ * @LastEditors:  
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -85,12 +85,20 @@
                   align="center"
                   :resizable="false"
                 >
-                <template slot="header" slot-scope="scope">
-                  <el-tooltip :content='levelTowItem.label' effect='light'>
-                    <span class="overText">{{levelTowItem.label}}</span>
-                  </el-tooltip>
-                  <span :class="{price:true,priceb:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
-                </template>
+                  <template slot="header" slot-scope="scope">
+                    <el-tooltip :content='levelTowItem.label' effect='light'>
+                      <span class="overText">{{levelTowItem.label}}</span>
+                    </el-tooltip>
+                    <span :class="{price:true,priceb:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
+                  </template>
+                  <template slot-scope="scope">
+                    <template v-if='removeKeysNumber(levelTowItem.props) == "lcBPrice"'>
+                      <span :class="{buleColor:scope.row[getPorpsNumber(levelTowItem.props)+'suggestPartFlag'] == 1}">{{scope.row[levelTowItem.props]}}</span>
+                    </template>
+                    <template v-else>
+                      <span>{{scope.row[levelTowItem.props]}}</span>
+                    </template>
+                  </template>
                 </el-table-column>
             </template>
           </template>
@@ -134,10 +142,7 @@
               <span style="color:red;" :class="{lvse:lvseFn(scope.row,item.props,'partName')}">{{scope.row[item.props]}}</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span>{{scope.row[item.props]}}</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-                <span>{{scope.row[item.props]}}</span>
+              <span :class="{buleColor:scope.row[getPorpsNumber(item.props)+'suggestPartFlag'] == 1}">{{scope.row[item.props]}}</span>
             </template>
             <template v-else slot-scope="scope">
               <span>{{scope.row[item.props]}}</span>
@@ -159,6 +164,7 @@
       :empty-text="$t('LK_ZANWUSHUJU')"
       ref='table'
     >
+    {{tableTitle}}
       <template v-for='(item,index) in tableTitle'>
         <!-----------------表格中内容模块------------------------>
         <el-table-column
@@ -363,18 +369,38 @@ export default{
         return false
       }
     },
-    cellClassName({row, column, rowIndex, columnIndex}) { 
-      if(row.partInfoList.suggestPartFlag === 1){
-        if(column.label =='LC A Price' ) {
-          return 'priceUnderLinePrice'
-        }      
-        if(column.level === 2 && column.property.indexOf('lcBPrice')>-1) {
-          return 'priceUnderLinePrice'
-        }      
-      }
-
-      
+    isborder(row,props) {
+      row.partInfoList.forEach((val,index,arr) => {
+        let  a = false 
+        Object.keys(val).forEach(value=>  {
+           value ==  props ? a= true: ''
+        })
+        let b  = val.suggestPartFlag == 1  && a == true ? true: false
+        console.log(b,props);
+        if(b==true)
+        return 'priceUnderLinePrice'
+        else
+        return ''        
+      })
     }
+    // cellClassName({row, column, rowIndex, columnIndex}) {
+      // console.log(column,'columncolumncolumn'); 
+      // console.log(row,'rowrowrowrowrow'); 
+      // row.partInfoList.forEach(val => {
+        // val.suggestPartFlag === 1 ? val.partName
+      // })
+
+      // if(row.partInfoList.suggestPartFlag === 1){
+      //   if(column.label =='LC A Price' ) {
+      //     return 'priceUnderLinePrice'
+      //   }      
+      //   if(column.level === 2 && column.property.indexOf('lcBPrice')>-1) {
+      //     return 'priceUnderLinePrice'
+      //   }      
+      // }
+
+      // 
+    // }
   }, 
   computed:{
     paddingTop:function(){
@@ -469,10 +495,21 @@ export default{
         }
         .priceb{
             top:-95px;
+        }    
+        .buleColor::after{
+          margin: auto;
+          position: absolute;
+          content:"";
+          width: 80PX;
+          height:3px;
+          left: 0px;
+          bottom: 0px;
+          background: blue;
         }
     }
     ::v-deep.priceUnderLinePrice{
       border-bottom:3px solid blue;
+      color:red;
     }
     ::v-deep .el-table__header-wrapper{
       overflow: visible;

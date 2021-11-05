@@ -32722,6 +32722,7 @@
 .el-table th.is-center,
 .el-table td.is-center {
     text-align: center;
+    position: relative;
 }
 
 .el-table th.is-right,
