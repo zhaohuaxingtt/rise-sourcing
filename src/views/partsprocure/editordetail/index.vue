@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-04 11:56:39
- * @LastEditors:  
+ * @LastEditTime: 2021-11-04 17:57:28
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -28,8 +28,8 @@
 			; -->
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{language("LK_LINGJIANCAIGOUXIANGMU",'零件采购项目')}}</span>
-			<span v-if="this.infoItem.code" class="font16 font-weight margin-left20">{{language("LK_LCAIGOUSHENQING",'采购申请')}}:</span>
-			<span class="openLinkText cursor" @click="openCode">{{this.infoItem.code}}</span>
+			<span v-if="infoItem.code" class="font16 font-weight margin-left20">{{language("LK_LCAIGOUSHENQING",'采购申请')}}:</span>
+			<span class="openLinkText cursor" @click="openCode">{{infoItem.code}}</span>
 			<div class="floatright">
 				<span v-if="!disabled">
 					<!-- 供应商创建定点申请单 -->
@@ -51,7 +51,7 @@
 						v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
 					<iButton :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
 					</iButton>
-					<iButton @click="back">{{ language("LK_FANHUI",'返回') }}</iButton>
+					<!-- <iButton @click="back">{{ language("LK_FANHUI",'返回') }}</iButton> -->
 				</span>
 				<logButton class="margin-left20" @click="log" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOG|log" />
 				<span>
@@ -349,7 +349,7 @@
 				</div>
 			</iFormGroup>
 		</iCard>
-		<iTabsList  class="margin-top20" type='card' v-if='infoItem'>
+		<iTabsList  class="margin-top20" type='card' v-if='infoItem.id'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
 			<el-tab-pane v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == '15'">
 				<designateInfo :params="infoItem" />
@@ -507,7 +507,7 @@
 				partProjTypes,
 				firstId:'',
 				checkFactoryString:'',
-				infoItem: null,
+				infoItem: {id:null},
 				detailData: detailData, //顶部详情数据
 				targetprice: {}, //申请目标价数据
 				fromGroup: [], //上方筛选列表
@@ -531,10 +531,6 @@
 			};
 		},
 		created() {
-			this.infoItem = JSON.parse(this.$route.query.item);
-			this.purchaseProjectId = this.infoItem.id;
-			this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
-			this.partProjectType = this.infoItem.partProjectType;
 			this.getDatailFn();
 			this.getDicts()
 		},
@@ -636,12 +632,16 @@
 			// 获取详情数据
 			getDatailFn() {
 				this.detailLoading = true
-				getProjectDetail(this.purchaseProjectId).then((res) => {
+				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data;
-					this.fsnrGsnrNum = res.data.fsnrGsnrNum
 					this.checkFactoryString = res.data.procureFactory
-
+					//-------------修改零件采购项目逻辑Starting
+					this.infoItem = res.data
+					this.purchaseProjectId = this.infoItem.id;
+					this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
+					this.partProjectType = this.infoItem.partProjectType;
+					//-------------修改零件采购项目逻辑endding
 					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {
 						this.disabled = getNominateDisabled({
 							applicationStatus: res.data.applicationStatus,
@@ -655,8 +655,12 @@
 					if (res.data.targetprice) {
 						this.targetprice = res.data.targetprice;
 					}
-					if(this.detailData.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
-						this.$refs.materialGroupInfo.getMaterialGroup()
+					if(this.detailData.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU && this.infoItem.id){
+						try {
+							this.$refs.materialGroupInfo.getMaterialGroup()
+						} catch (error) {
+							console.warn('at first times the components will be to go mounted...')
+						}
 					}
 					this.getProcureGroup()
 				});

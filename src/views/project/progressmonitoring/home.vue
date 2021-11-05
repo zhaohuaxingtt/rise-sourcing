@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-28 14:08:32
+ * @LastEditTime: 2021-11-05 10:23:14
  * @Description: 项目进度监控
  * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
 -->
@@ -192,6 +192,7 @@ export default {
       const params = {
         cartypeProId:this.carProject,
         autoSyn:this.showTips,
+        cartypeProject:this.carProjectName
       }
       updateAutoData(params).then(res => {
         if (res.code === '200') {

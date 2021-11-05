@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-03 19:45:02
+ * @LastEditTime: 2021-11-05 10:10:10
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -130,7 +130,7 @@ import developmentFee from "./developmentFee";
 import damages from "./damages";
 import sampleFee from "./sampleFee";
 import { SummaryTableTitle, totalRowClass, floatFixNum, list, typeObj } from "../data.js";
-import { alterationCbdSummary, cbdDataQuery } from "@/api/aeko/approve";
+import { alterationCbdSummary, cbdDataQuery, alterationCbdSummaryByLinie } from "@/api/aeko/approve";
 import { 
   getQuotationInfo,
  } from '@/api/aeko/quotationdetail'
@@ -217,11 +217,12 @@ export default {
     this.queryParams = this.$route.query;
     let str_json = window.atob(this.queryParams.transmitObj);
     let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
+    this.transmitObj = transmitObj
     this.workFlowId =
       transmitObj.aekoApprovalDetails.workFlowId ||
       transmitObj.aekoApprovalDetails.workFlowDTOS[0]?.workFlowId ||
       "";
-    this.workFlowId ? this.getTableData() : iMessage.warn("未进入审批流程,无法预览数据");
+    this.workFlowId ? this.getTableData() : this.alterationCbdSummaryByLinie();
   },
   methods: {
     totalRowClass,
@@ -297,7 +298,15 @@ export default {
       });
     },
     // 审批单预览查询
-    getQuotationInfo(){},
+    alterationCbdSummaryByLinie(){
+      let params = {
+        requirementAekoId:this.transmitObj.aekoApprovalDetails.requirementAekoId,
+        linieId:this.transmitObj.aekoApprovalDetails.linieId
+      }
+      alterationCbdSummaryByLinie(params).then(res=>{
+        console.log(res);
+      })
+    },
     // 获取A价变动其它数据
     getCbdDataQuery(partsId) {
       this.partsId = partsId;
@@ -307,20 +316,25 @@ export default {
         this.loading = false;
         return;
       }
-      cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
-        (res) => {
-          if (res?.code === "200") {
-            let data = res.data;
-            this.switchPartsTable = [data?.extSnapshotVO];
-            this.aPriceChangeData = data;
-            this.loading = false;
-            this.hasData = true;
-          } else {
-            this.loading = false;
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+      if(this.workFlowId){
+        cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
+          (res) => {
+            if (res?.code === "200") {
+              let data = res.data;
+              this.switchPartsTable = [data?.extSnapshotVO];
+              this.aPriceChangeData = data;
+              this.loading = false;
+              this.hasData = true;
+            } else {
+              this.loading = false;
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
           }
-        }
-      );
+        );
+      }else{
+        // 预览查询接口
+        iMessage.warn('接口调试中');
+      }
 
       this.tabChange();
     },

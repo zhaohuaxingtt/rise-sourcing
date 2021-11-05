@@ -20,7 +20,7 @@
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
         <template slot-scope="scope">
           <iInput v-if="items.type === 'input'" v-model="scope.row[items.props]" @input="val=>changeValue(val, scope.row, items)"></iInput>
-          <iSelect v-else-if="items.type === 'select'" filterable  v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)">
+          <iSelect v-else-if="items.type === 'select'" :popper-class="`autoClearSelect_${ items.props }_${ scope.$index }`" filterable  v-model="scope.row[items.props]" @change="val=>changeValue(val, scope.row, items)" @visible-change="handleVisibleChange($event, items.props, scope.$index)">
             <el-option
               :value="item.value"
               :label="item.label"
@@ -157,7 +157,23 @@ export default{
     },
     updateSlot(e,a){
       this.$emit('updateSlot',[e,a])
-    }
+    },
+    handleVisibleChange(status, key, index) {
+      if (!status) {
+        const domList = document.querySelectorAll(`.autoClearSelect_${ key }_${ index }`)
+        Array.prototype.forEach.call(domList, dom => {
+          dom.parentNode.removeChild(dom)
+        })
+      }
+    },
+    clearAllSelectPopDom() {
+      this.$nextTick(() => {
+        const domList = document.querySelectorAll('div[class*=autoClearSelect]')
+        Array.prototype.forEach.call(domList, dom => {
+          dom.parentNode.removeChild(dom)
+        })
+      })
+    },
   }
 }
 </script>

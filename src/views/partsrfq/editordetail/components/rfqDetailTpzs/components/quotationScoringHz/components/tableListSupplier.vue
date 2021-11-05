@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-04 21:16:11
+ * @LastEditTime: 2021-11-05 11:22:45
  * @LastEditors:  
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -33,7 +33,7 @@
             <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
             <div class="headerContent" v-if='scope.column.label == "Supplier"'>
               <div class="c" :style="{width:cWidth}">
-                <ul class="ca" :style="{width:250 + 'PX'}">
+                <ul class="ca" :style="{width:(100+50*tableTitle[1].list.length) + 'PX'}">
                   <li v-for='(items,index) in supplierLeftLit' :key='index'>
                     {{items.name}}
                   </li>
@@ -148,7 +148,7 @@
       </template>
     </el-table>
   </div>
-  <div class="leftFlex" :style="{width:250 + 'PX'}">
+  <div class="leftFlex" :style="{width:(100+50*tableTitle[1].list.length) + 'PX'}">
   <div class="selsTable" :style="{paddingTop:paddingTop}">
     <el-table
       tooltip-effect="light"
@@ -175,7 +175,7 @@
             <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
             <div class="headerContent" v-if='scope.column.label == "Supplier"'>
               <div class="c" :style="{width:cWidth}">
-                <ul class="ca" :style="{width: 250+ 'PX'}">
+                <ul class="ca" :style="{width: (100+50*tableTitle[1].list.length)+ 'PX'}">
                   <li v-for='(items,index) in supplierLeftLit' :key='index'>
                     {{items.name}}
                   </li>

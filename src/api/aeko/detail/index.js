@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-11-03 15:27:06
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-04 14:16:34
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
  */
@@ -171,8 +171,8 @@ export function getAekoOriginFactory(params) {
 // 发送供应商报价
 export function sendSupplier(data) {
   return requst({
-    url: '/aeko/aeko-content/supplier',
-    // url: '/aeko/aeko-content/sendSupplierQuotation',
+    // url: '/aeko/aeko-content/supplier',
+    url: '/aeko/aeko-content/sendSupplierQuotation',
     method: 'POST',
     data,
   }) 

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-04 13:45:58
+ * @LastEditTime: 2021-11-05 10:33:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -256,6 +256,10 @@
           <template #quotationId="scope">
             <span v-if="scope.row.quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
           </template>
+          <!-- 模具投资变动 -->
+          <template #mouldPriceChange="scope">
+            <span>{{scope.row.mouldPriceChange | thousandsFilter}}</span>
+          </template>
           <!-- 价格轴 -->
           <template #priceAxis="scope">
             <!-- -disabled -->
@@ -264,7 +268,7 @@
           <template #investCarTypePro="scope">
             <iSelect
               v-model="scope.row.investCarTypePro"
-              :disabled="disabled"
+              :disabled="disabledInvestCarTypePro(scope.row)"
               :placeholder="language('QINGXUANZE', '请选择')"
               @change="handleChangeCarInvestProjects($event, scope.row)"
             >
@@ -331,6 +335,8 @@ import {combine} from './mixins/combine'
 
 
 import Upload from '@/components/Upload'
+
+import filters from "@/utils/filters"
 
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
@@ -603,6 +609,7 @@ export default {
 
       const query = {
         partNum: row.partNum,
+        isDeclare: row.isDeclare, // 0: 预设原零件，1: 选择的原零件
         requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: row.objectAekoPartId,
         oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()
@@ -1026,7 +1033,16 @@ export default {
       }).catch((e)=>{
         this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       });
-    }
+    },
+    // 投资车型项目下拉是否禁用
+    disabledInvestCarTypePro(row){
+      console.log(row,this.disabled);
+      // 当模具投资变动有值时 禁用下拉
+      // 内容状态为 报价中 已报价 拒绝 不禁用
+      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
+
+      return row.mouldPriceChange || !statusDisabled || this.disabled
+    },
 
   },
 };
