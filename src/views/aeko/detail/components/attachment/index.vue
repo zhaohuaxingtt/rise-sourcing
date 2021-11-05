@@ -72,6 +72,7 @@ import tablelist from 'rise/web/components/iFile/tableList';
 import {downloadFile} from 'rise/web/components/iFile/lib'
 import {iCard, iButton, iPagination, iInput, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
+import { setLogModule } from "@/utils";
 import {
   getAuditFilePage,
   auditFileSave,
@@ -114,7 +115,7 @@ export default {
     };
   },
   created(){
-
+    setLogModule('AEKO表态-详情页-审批附件')
   },
   mounted() {
     this.getFetchData()

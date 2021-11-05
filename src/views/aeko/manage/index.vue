@@ -200,6 +200,7 @@ import {
 } from '@/api/aeko/manage'
 import { debounce } from "lodash";
 import { roleMixins } from "@/utils/roleMixins";
+import { setLogModule } from "@/utils";
 export default {
     name:'aekoManageList',
     mixins: [pageMixins,roleMixins],
@@ -279,10 +280,10 @@ export default {
         }),
     },
     created(){
-      this.getList();
+      this.sure();
       this.getSearchList();
-      this.getLogCount();
 
+      setLogModule('AEKO表态-列表')
       const roleList = this.roleList;
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
       this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
@@ -341,6 +342,7 @@ export default {
       },
 
       sure(){
+        this.getLogCount();
         this.page.currPage = 1;
         this.getList();
       },
@@ -495,6 +497,7 @@ export default {
       },
       // 查看日志
       checkLog(row){
+        this.bizId = row.requirementAekoId
         this.showDialog = true
       },
 

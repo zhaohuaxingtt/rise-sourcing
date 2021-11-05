@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-05 10:10:10
+ * @LastEditTime: 2021-11-05 22:24:22
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -210,7 +210,8 @@ export default {
   },
   computed: {
     apriceChangeVal() {
-      return this.aPriceChangeObj[this.partsId]?.total?.toFixed(4) || 0;
+      // return this.aPriceChangeObj[this.partsId]?.total?.toFixed(4) || 0;
+      return (+this.aPriceChangeData.extSnapshotVO?.apriceChange).toFixed(4) || 0;
     },
   },
   created() {

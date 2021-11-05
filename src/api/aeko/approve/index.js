@@ -2,13 +2,13 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-05 10:11:00
+ * @LastEditTime: 2021-11-05 16:21:11
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
 import download from '@/utils/axios.download'
 
-const requst_sourcing = axios(process.env.VUE_APP_NEGO)
+const requst_sourcing = axios(process.env.VUE_APP_RFQ)
 const requst = axios(process.env.VUE_APP_PARTS)
 const fileRequst = download(process.env.VUE_APP_PARTS)
 

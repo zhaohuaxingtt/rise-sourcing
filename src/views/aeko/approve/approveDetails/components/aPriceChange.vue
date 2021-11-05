@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-26 19:43:39
+ * @LastEditTime: 2021-11-05 22:31:41
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -329,8 +329,8 @@ export default {
     // 变动值-CBD
     tableData() {
       if (this.Data?.cbdLevelVO) {
-        this.Data.cbdLevelVO.apriceChange =
-          this.Data.extSnapshotVO.apriceChange || 0;
+        // this.Data.cbdLevelVO.apriceChange =
+        //   this.Data.extSnapshotVO.apriceChange || 0;
         return [this.Data.cbdLevelVO];
       }
       return [];
@@ -367,6 +367,23 @@ export default {
         this.Data.profitVO?.id ? [this.Data.profitVO] : []
       );
     },
+  },
+  watch:{
+    tableData: {
+      handler(list) {
+        const apriceChange = math.add(
+          math.bignumber(list[0].materialChange || 0),
+          math.bignumber(list[0].makeCostChange || 0),
+          math.bignumber(list[0].discardCostChange || 0),
+          math.bignumber(list[0].manageFeeChange || 0),
+          math.bignumber(list[0].otherFee || 0),
+          math.bignumber(list[0].profitChange || 0)
+        ).toFixed(2)
+        
+        this.$set(list[0], "apriceChange", apriceChange)
+      }, 
+      deep: true
+    }
   },
   methods: {
     floatFixNum,

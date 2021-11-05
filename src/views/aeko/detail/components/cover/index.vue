@@ -29,7 +29,7 @@ export default {
         }
     },
     created(){
-        setLogModule('AEKO封面表态')
+        setLogModule('AEKO表态-详情页-封面表态')
         const roleList = this.roleList;
         this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
         this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员

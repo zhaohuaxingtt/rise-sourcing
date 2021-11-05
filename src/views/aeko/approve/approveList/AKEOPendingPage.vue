@@ -212,13 +212,14 @@ import {tableCsfTitle as pendingHeader} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
 import {pendingApprovalList, aekoAudit, transferAEKO} from "@/api/aeko/approve";
-import {searchLinie} from "@/api/aeko/manage";
+import {searchLinie, getLogCount} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import AEKOTransferDialog from "./components/AEKOTransferDialog";
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
 import {lookDetails} from './lib'
 import {numberToCurrencyNo,numberToCurrencyNo2} from "@/utils/cutOutNum";
+import { setLogCount, setLogModule } from "@/utils";
 
 export default {
   name: "AKEOPendingPage",
@@ -296,11 +297,34 @@ export default {
     }
 
   },
+  computed: {
+    //eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+      permission: state => state.permission,
+      count: state => state.aekoApproveStore.count
+    }),
+  },
   created() {
+    setLogModule('AEKO审批-列表-待审批列表')
     this.loadPendingAKEOList()
     this.queryAllLin()
   },
   methods: {
+    // 查询待办数量
+    getLogCount(){
+      let params = {
+        pageCode:'SPR',  // LINIE: AEKO表态; ADMIN: AEKO管理; SPR: AEKO审批
+        id: this.userInfo.id
+      }
+      getLogCount(params).then(res=>{
+        if(res?.code==200){
+          setLogCount(res.data)
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
     //aeko/describe?requirementAekoId=10535&aekoCode=VA1EH8
     checkMinCost() {
       let value = this.queryAkeoForm.minCost
@@ -346,6 +370,7 @@ export default {
       this.tableLoading = true
       this.queryAkeoForm.current = this.page.currPage
       this.queryAkeoForm.size = this.page.pageSize
+      this.getLogCount()
       pendingApprovalList(this.queryAkeoForm).then(res => {
         this.tableLoading = false
         if (res.code == 200) {

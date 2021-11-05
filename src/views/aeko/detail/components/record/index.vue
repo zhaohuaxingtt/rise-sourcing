@@ -94,6 +94,7 @@ import iFileDialog from 'rise/web/components/iFile/dialog'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {iCard, iButton, iPagination, iInput} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
+import { setLogModule } from "@/utils";
 import {
   findHistoryByAeko,
   submitForApproval
@@ -168,6 +169,7 @@ export default {
     this.getFetchData()
   },
   created(){
+    setLogModule('AEKO表态-详情页-审批记录')
     // 如果是从AEKO查看过来的 tableTitle需要展示一个提交人字段
     const {query} = this.$route;
     const {from=''} = query;

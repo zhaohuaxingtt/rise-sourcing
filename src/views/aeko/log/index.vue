@@ -70,18 +70,33 @@
           align="center"
         ></el-table-column>
       </el-table>
+      
+      <div class="pagination-box" >
+        <iPagination
+          v-update
+          class="pagination"
+          @size-change="handleSizeChange($event, getList)"
+          @current-change="handleCurrentChange($event, getList)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount" />
+      </div>
     </iDialog>
   </div>
 </template>
 
 <script>
-import {iDialog, iSearch, iInput} from 'rise'
+import {iDialog, iSearch, iInput, iPagination, iMessage} from 'rise'
 import { getLogModule } from '@/utils'
 import { roleMixins } from '@/utils/roleMixins'
+import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { iDialog, iSearch, iInput },
-  mixins: [roleMixins],
+  components: { iDialog, iSearch, iInput, iPagination },
+  mixins: [roleMixins, pageMixins],
   props: {
     bizId: {
       type: Number,
@@ -170,11 +185,15 @@ export default {
       http.onreadystatechange = () => {
         if (http.readyState === 4) {
           this.tableData = JSON.parse(http.responseText)
+          this.page.totalCount = this.tableData.length
         }
       }
       this.query.bizId = this.bizId
+      if(!this.bizId) return 
 			let module = getLogModule()
       const sendData = {
+        current: this.page.currPage,
+        size: this.page.pageSize,
         extendFields: { ...this.query, module:module, create_by_ae: this.userInfo.id }
       }
       http.send(JSON.stringify(sendData))
@@ -182,7 +201,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .pagination-box {
   padding-bottom: 30px;
 }
@@ -191,17 +210,12 @@ export default {
   .card {
     box-shadow: none;
 
-    .cardBody {
+    ::v-deep .cardBody {
       padding: 0;
     }
   }
-
-  .log-table {
-    padding-bottom: 35px;
-  }
-
-  .el-table__body-wrapper {
-    height: 400px;
+  ::v-deep .el-table__body-wrapper {
+    height: 410px;
     overflow-y: auto;
     border-bottom: 1px solid #eee;
   }

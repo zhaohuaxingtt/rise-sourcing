@@ -235,6 +235,12 @@ module.exports = {
       },
       '/tpInfoApi': {
         target: 'http://10.122.17.38:8023',
+        // target: 'http://10.160.142.20:8023',
+        // target: 'http://10.160.141.45:8023',
+        // target: 'http://10.160.141.218:8023', // 真源
+        // target: 'http://10.152.2.129:18024',  // 余毅
+        // target: 'http://10.160.139.21:8023',  // 廖理
+        // target: 'http://10.152.2.120:3181', // 光弘
         changeOrigin: true,
         pathRewrite: {
           '^/tpInfoApi': '',
@@ -256,6 +262,14 @@ module.exports = {
       },
       '/rfqApi': {
         target: 'http://10.122.17.38:8025',
+        // target: 'http://10.160.143.190:8025',
+        // target: 'http://rise-front-web.apps.vmocp-dev.csvw.com', // SIT
+        // target: 'http://10.160.137.16:8029',  // 周德华
+        // target: 'http://192.168.50.89:8029', // 王洁松
+        // target: 'http://10.160.141.72:8029', // 李自豪
+        // target: 'http://192.168.50.152:8029', // 谭易平
+        // target: 'http://10.160.137.16:8029', // 马浩
+        // target: 'http://10.160.141.218:8018',
         changeOrigin: true,
         pathRewrite: {
           '^/rfqApi': '',
