@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-16 10:52:03
+ * @LastEditTime: 2021-11-05 15:55:31
  * @Description: 
  * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
 -->
@@ -115,7 +115,7 @@
               <div class="textBox">
                 <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node small-node1">
                   <span class="node-title">{{nodeItem.label}}</span>
-                  <span class="node-week">KW{{ nodeItem.week }}</span>
+                  <span class="node-week" :class="minFontSize < 10 ? '' : 'withScale'">KW{{ nodeItem.week }}</span>
                 </div>
               </div>
             </template>
@@ -127,7 +127,7 @@
               <!-- 未完成 -->
               <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
               <span class="node-title">{{nodeItem.label}}</span>
-              <span class="node-week">KW{{ nodeItem.week }}</span>
+              <span class="node-week" :class="minFontSize < 10 ? '' : 'withScale'">KW{{ nodeItem.week }}</span>
               <template v-if="nodeItem.withLine">
                 <!-- <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon> -->
                 <span v-if="nodeItem.line.lineStatus == 2" v-html="svgList['iconchanpinzupaicheng_jinhangzhong']" class="short-between-icon"></span>
@@ -203,10 +203,20 @@ export default {
         'iconchanpinzupaicheng_yiwancheng': '<svg t="1631758321224" class="icon" viewBox="0 0 25600 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="66516" width="100%" height="100"><path d="M25108.07552 1024H492.65152A502.272 502.272 0 0 1 0.10752 512a502.272 502.272 0 0 1 492.544-512h24615.424A502.272 502.272 0 0 1 25600.10752 512a502.272 502.272 0 0 1-492.032 512z" fill="#1660F1" p-id="66517"></path></svg>',
         'iconchanpinzupaicheng_jinhangzhong': '<svg t="1631758354535" class="icon" viewBox="0 0 8704 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="76121" width="100%" height="100"><path d="M7750.236034 988.508727A213.63016 213.63016 0 0 1 7678.400333 824.020329V682.737763h-682.524474a170.631119 170.631119 0 1 1 0-341.262237h682.524474v-141.282566a213.63016 213.63016 0 0 1 71.835701-164.488398 143.500771 143.500771 0 0 1 153.568007-23.035201l690.885399 311.913684a216.701521 216.701521 0 0 1 0 375.388461l-690.885399 311.401791a141.453197 141.453197 0 0 1-58.526474 12.797334 147.93718 147.93718 0 0 1-95.041533-35.661904zM5289.564674 682.737763a170.631119 170.631119 0 0 1 0-341.262237h853.155593a170.631119 170.631119 0 1 1 0 341.262237zM3583.253489 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 0 1 0 341.262237zM1876.942304 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 1 1 0 341.262237zM170.631119 682.737763a170.631119 170.631119 0 1 1 0-341.262237h853.155592a170.631119 170.631119 0 1 1 0 341.262237z" fill="#1660F1" p-id="76122"></path></svg>',
         'iconchanpinzupaicheng_xuxian': '<svg t="1631758384625" class="icon" viewBox="0 0 28918 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="85726" width="100%" height="100"><path d="M28406.784 1024H26112a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2294.784a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM23552 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM18432 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM13312 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM8192 1024h-2560a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512zM3072 1024H512a512 512 0 0 1-512-512 512 512 0 0 1 512-512h2560a512 512 0 0 1 512 512 512 512 0 0 1-512 512z" fill="#1660F1" p-id="85727"></path></svg>'
-      }
+      },
+      minFontSize: 12
     }
   },
+  mounted() {
+    this.getMinFontSize()
+  },
   methods: {
+    getMinFontSize () {
+      var style = document.body.currentStyle || document.defaultView.getComputedStyle(document.body, '')
+      console.log('fontSizeRecord',style.fontSize)
+      this.minFontSize = +((style.fontSize).split('px')[0])
+      return +(style.fontSize).split('px')[0]
+    },
     /**
      * @Description: 跳转排程 
      * hasPartSchedule 是否有零件排程 1-是 0-否，如果有零件排程则跳转到零件排程页面，反之跳到产品组排程页面
@@ -461,6 +471,7 @@ export default {
             }
             li {
               list-style-type: disc;
+              min-height: 14px;
               
             }
           }
@@ -502,6 +513,9 @@ export default {
               font-size: 10px;
               color: rgba(95, 104, 121, 1);
               margin-top: 8px;
+              &.withScale {
+                transform: scale(0.8);
+              }
             }
             .short-between-icon {
               position: absolute;
@@ -531,6 +545,9 @@ export default {
               }
               .node-week {
                 font-size: 10px;
+                &.withScale {
+                  transform: scale(0.8);
+                }
               }
               .short-between-icon {
                 visibility: hidden;
