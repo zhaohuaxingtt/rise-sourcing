@@ -135,14 +135,14 @@ import {
   iCard,
   iPagination,
   icon,
-  iMessage,
-  iLog
+  iMessage
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
 import { TAB,filterRole } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filesListDialog from '../manage/components/filesListDialog'
+import iLog from '../log'
 import {
   getLiniePage,
 } from '@/api/aeko/stance'
@@ -404,8 +404,6 @@ export default {
 
       // 查看日志
       checkLog(row){
-        this.bizId = row.requirementAekoId || iMessage.error('AEKO id 获取失败')
-        if(this.bizId)
         this.showDialog = true
       },
 

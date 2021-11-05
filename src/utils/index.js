@@ -1,9 +1,9 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-09-27 20:23:17
+ * @LastEditTime: 2021-11-04 20:34:17
  * @LastEditTime: 2021-07-21 17:57:58
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
  * @Description: 公共utils部分
  * @FilePath: \front-web\src\utils\index.js
  */
@@ -486,4 +486,14 @@ export function toThousand(num) {
     if (!(counter % 3) && i != 0) { result.unshift(','); }
   }
   return result.join('') + floatNum || '';
+}
+
+// 记录当前页面所在模块
+export function setLogModule (module) {
+  store.dispatch("setLogModuleVal", module)
+}
+
+// 获取当前页面所在模块
+export function getLogModule (){
+  return store.getters.getLogModule
 }

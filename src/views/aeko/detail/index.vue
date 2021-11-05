@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-11-03 17:39:10
+ * @LastEditTime: 2021-11-05 11:04:43
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -25,12 +25,12 @@
 import { 
   iPage, 
   iButton,
-  iLog,
   iMessage
  } from "rise"
 import logButton from "@/components/logButton"
 import pageContent from "./components"
 import { roleMixins } from "@/utils/roleMixins";
+import iLog from "../log";
 
 export default {
   mixins:[roleMixins],
@@ -98,8 +98,6 @@ export default {
     },
     // 打开日志
     openLog(){
-      this.bizId = this.aekoInfo.requirementAekoId || iMessage.error('AEKO id 获取失败')
-      if(this.bizId)
       this.showDialog = true
     }
   }
