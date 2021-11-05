@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-05 14:02:32
+ * @LastEditTime: 2021-11-05 14:33:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -345,7 +345,7 @@ import filters from "@/utils/filters"
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload },
-  mixins: [ pageMixins, combine ],
+  mixins: [ pageMixins, combine,filters ],
   props: {
     aekoInfo: {
       type: Object,
