@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-05 12:03:00
- * @LastEditTime: 2021-11-05 16:44:01
+ * @LastEditTime: 2021-11-05 20:22:59
  * @LastEditors:  
 -->
 <template>
@@ -11,16 +11,16 @@
             <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
             <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
         </div>
-        <bidding/>
+        <!-- <bidding/> -->
     </iPage>
 </template>
 <script>
 import { iPage, iNavMvp } from "rise";
-import bidding from "./bidding"
+// import bidding from "./bidding"
 // import projectlist from "../../../node_modules/front-bidding/src/views/manage/bidding/projectlist/components/projectList.vue"
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default {
-    components:{iPage, iNavMvp , bidding},
+    components:{iPage, iNavMvp },
       computed: {
     ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"])

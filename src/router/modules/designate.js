@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-11-04 14:15:23
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-05 20:16:24
+ * @LastEditors:  
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -80,6 +80,15 @@ export default [
         },
         component: () =>
             import ("@/views/designate/home/signSheet/details"),
+      },
+      {
+        path: "/sourcing/partsnomination/signSheet/mtzDetails",
+        name: "mtzDesignateNewSignSheet",
+        meta: {
+          title: "MTZ定点申请单",
+        },
+        component: () =>
+            import ("@/views/designate/home/signSheet/mtzDetails"),
       },
       {
         path: "/sourcing/designate/rfqdetail/addRfq",
