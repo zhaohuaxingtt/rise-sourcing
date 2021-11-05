@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-10-29 10:42:40
+ * @LastEditTime: 2021-11-04 20:16:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \rise\src\views\partsrfq\editordetail\index.vue
+ * @FilePath: \front-web\src\views\partsrfq\editordetail\index.vue
 -->
 <template>
   <iPage>
@@ -16,6 +16,9 @@
       </div>
       <div class="btnList">
         <span v-if="!disabled">
+          <iButton @click="handleApplyModuleTargetPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
+            {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
+          </iButton>
           <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND|新建RFQ轮次">
             {{
             language('LK_XINJIANRFQLUNCI','新建RFQ轮次')
@@ -61,7 +64,6 @@
                 {{ baseInfo.rfqName }}
               </iText>
             </iFormItem>
-
             <iFormItem :label="language('LK_EP','技术评分人')+':'" name="ep" v-permission.auto="PARTSRFQ_EDITORDETAIL_EP|技术评分人">
               <iText  forceTooltip :tooltipContent="baseInfo.ep">{{ nameProcessor(baseInfo.ep) }}</iText>
             </iFormItem>
@@ -87,9 +89,9 @@
             <iFormItem :label="language('LK_DANGQIANLUNCI','当前轮次')+':'" name="currentRounds" v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTROUND|当前轮次">
               <iText >{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
-            <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')+':'" name="roundsType" v-permission.auto="PARTSRFQ_EDITORDETAIL_ROUNDTYPE|轮次类型">
+            <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')+':'" name="roundsTypeName" v-permission.auto="PARTSRFQ_EDITORDETAIL_ROUNDTYPE|轮次类型">
               <iText >
-                {{ baseInfo.roundsType }}
+                {{ baseInfo.roundsTypeName }}
               </iText>
             </iFormItem>
           </div>
@@ -203,7 +205,8 @@ export default {
       endingloading:false,
       transferlaoding:false,
       disabled: true,
-      linieUserId:''
+      linieUserId:'',
+      childFnList:[]
     }
   },
   mounted(){
@@ -218,10 +221,18 @@ export default {
     return {
       getBaseInfo:this.getBaseInfo, //当前是一个请求
       getbaseInfoData:this.getbaseInfoData,  //直接reture当前请求完的数据
-      getDisabled: this.getDisabled
+      getDisabled: this.getDisabled,
+      registerFn:this.registerFn
     }
   },
   methods: {
+    handleApplyModuleTargetPrice() {
+      const item = {rfqId: this.baseInfo.id, applyType: '1'}
+      this.$router.push({path: '/modeltargetprice/detail', query: {item: JSON.stringify(item)}})
+    },
+    registerFn(fn){
+      this.childFnList.push(fn)
+    },
     getbaseInfoData(){
       return this.baseInfo
     },
@@ -235,7 +246,6 @@ export default {
         this.confirmTableLoading = true
         this.parmarsHasRfq['size'] = this.pageSize || 10
         this.parmarsHasRfq['current'] = this.currPage || 1
-        // this.parmarsHasRfq['rfqId'] = this.$route.query.id
         this.parmarsHasRfq['status'] = 'NOT_IN_RFQ'
         this.parmarsHasRfq['linieId'] = this.linieUserId
         this.parmarsHasRfq['buyerId'] = this.baseInfo.buyerId
@@ -272,15 +282,14 @@ export default {
           const resList = res.data
           if (resList.length > 0) {
             this.baseInfo = res.data[0]
+            // 定向刷新部分组件，当主数据更新后。
+            this.childFnList.forEach(i=>i())
             this.$store.state.rfq.partfunc
             if(typeof this.$store.state.rfq.partfunc === "function")
               this.getPartTableList()
           } else {
             this.baseInfo = ''
           }
-            //获取详细信息后 刷新tab栏里面的询价管理（只要存在轮次大于1则显示询价管理页签）
-          console.log(this.$refs.rfqPending)
-          this.$refs.rfqPending.updateTabs(this.baseInfo)
           this.baseInfoLoading = false
         } catch {
           this.baseInfoLoading = false

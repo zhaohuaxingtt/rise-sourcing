@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-28 18:57:26
+ * @LastEditTime: 2021-11-05 11:36:28
  * @Description: 
 -->
 <template>
@@ -21,7 +21,6 @@
         </iButton>
       </div>
       <tablelist
-          height="400"
           index
           :selection="true"
           :tableData="tableListData"
@@ -57,12 +56,13 @@
         </template>
         <template #chiefName="scope">
           <iSelect
+            class="el-select-multi"
             v-if="!scope.row.chiefName"
             v-model="scope.row.chiefNames"
-            @visible-change="getcheifUserList($event, scope.row)"
             :loading="optionLoading"
             :placeholder="language('LK_QINGXUANZE','请选择')"
             :multiple="scope.row.auditType!=3"
+            collapse-tags 
             filterable
             clearable
           >
@@ -133,7 +133,6 @@ export default {
   },
   mounted() {
     this.getFetchData()
-    this.getQQCGGZ()
   },
   methods: {
     /**
@@ -223,7 +222,7 @@ export default {
      * @param {*}
      * @return {*}
      */
-    getFetchData() {
+    async getFetchData() {
       console.log(this.$refs.search.form)
       const form = this.$refs.search.form || {}
       const parmas = Object.assign({
@@ -231,6 +230,9 @@ export default {
         size: this.page.pageSize
       }, form)
       parmas.departmentIdList = parmas.departmentIdList.filter(o => o)
+      if (!this.buyerNames.length) {
+        await this.getQQCGGZ()
+      }
       this.tableLoading = true
       getApproveDistributionPage(parmas).then(res => {
         if (res.code === '200') {
@@ -250,11 +252,13 @@ export default {
                 })
               })
               o.chiefsOptions = preSetChief
-              o.chiefNames = preSetChief.map(o => o.code)
+              // 下拉框值为查询到的所有前期采购股股长，用户可以下拉选择以及删除当前的预设值，审批类型为推荐表时，系统须限制用户只能下拉单选
+              o.chiefNames = o.auditType !== 3 ? preSetChief.map(o => o.code) : preSetChief.map(o => o.code)[0]
             } else {
               o.chiefsOptions = []
             }
-            o.selectOptions = window._.cloneDeep(o.chiefsOptions)
+            const options = [...o.chiefsOptions, ...this.buyerNames]
+            o.selectOptions = window._.cloneDeep(options)
             return o
           })
           this.tableListData = tableListData
@@ -277,22 +281,26 @@ export default {
      * @param {*}
      * @return {*}
      */
-    getQQCGGZ() {
+    async getQQCGGZ() {
       // 前期采购股长
-      getRoleUserList({roleCode: configUser.QQCGGZ}).then((res) => {
+      try {
+        const res = await getRoleUserList({roleCode: configUser.QQCGGZ})
         const {code, data} = res;
         if (code === '200') {
           this.buyerNames = data.map((item) => {
             return {
               value: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
-              code: item.id,
+              code: String(item.id),
+              postId: item.positionDTO && item.positionDTO.id || '',
               lowerCaseLabel: typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
             }
           });
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
-      })
+      } catch (e) {
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+      }
+      return this.buyerNames
+      
     },
     /**
      * @description: 获取前期采购股长列表
@@ -301,39 +309,18 @@ export default {
      * @param {*} type: 2 根据审批类型查找对应的前期采购股长
      * @return {*}
      */
-    getcheifUserList(state, row = {}) {
-      console.log(state, row)
-      if (!state) return
-      // 前期采购股长
-      const params = {
-        id: row.id,
-        auditType: row.auditType
-      }
-      this.optionLoading = true
-      getChiefUserList(params).then((res) => {
-        const {code, data} = res;
-        if (code === '200') {
-          const dataList = data.map((item) => {
-            return {
-              value: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
-              code: String(item.id),
-              postId: item.positionDTO && item.positionDTO.id || ''
-            }
-          })
-          const chiefsOptions = row.chiefsOptions || []
-          let selectOptions = [...chiefsOptions, ...dataList];
-          selectOptions = Array.from(new Set(selectOptions.flat(Infinity)))
-          selectOptions = selectOptions.filter(o => o.code && o.postId)
-          selectOptions = window._.uniqBy(selectOptions, o => o.code)
-          this.$set(row, 'selectOptions', selectOptions)
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-        }
-        this.optionLoading = false
-      }).finally(() => {
-        this.optionLoading = false
-      })
-    },
+    // getcheifUserList(state, row = {}) {
+    //   console.log(state, row)
+    //   if (!state) return
+    //   // 前期采购股长
+    //   const dataList = this.buyerNames
+    //   const chiefsOptions = row.chiefsOptions || []
+    //   let selectOptions = [...chiefsOptions, ...dataList];
+    //   selectOptions = Array.from(new Set(selectOptions.flat(Infinity)))
+    //   selectOptions = selectOptions.filter(o => o.code && o.postId)
+    //   selectOptions = window._.uniqBy(selectOptions, o => o.code)
+    //   this.$set(row, 'selectOptions', selectOptions)
+    // },
     /**
      * @description: 分派
      * @param {*}
@@ -351,7 +338,8 @@ export default {
       })
       if (!state) return iMessage.warn(this.language("QINGXUANZHECSFGUZHANG", "请选择CSF股长"))
       let parmas = selectedData.map(o => {
-        const choseChiefs = o.chiefNames || []
+        let choseChiefs = (o && o.chiefNames)
+        choseChiefs = typeof choseChiefs === 'string' ? [choseChiefs] : choseChiefs
         const chiefName = choseChiefs.map(chiefId => {
           const chiefs = (o.selectOptions || []).find(buyer => buyer.code === chiefId) || {}
           console.log('selectOptions', o.selectOptions || [])
@@ -395,9 +383,13 @@ export default {
   }
 }
 
+.el-select-multi {
+  width: 70%;
+}
+
 .icon {
   svg {
-    font-size: 28px;
+    font-size: 24px;
   }
 }
 </style>

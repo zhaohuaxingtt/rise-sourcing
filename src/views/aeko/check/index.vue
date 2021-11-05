@@ -5,9 +5,15 @@
 -->
 <template>
     <iPage class="aeko-check-list">
-        <iNavMvp :lev="1" :list="leftTab" :lang="true" routerPage left class="check-nav margin-bottom10" />
-        <iNavMvp :list="navList" lang  :lev="2" routerPage right class="margin-bottom10"/>
-
+        <div class="flex-between-center-center">
+          <iNavMvp :lev="1" :list="leftTab" :lang="true" routerPage left class="margin-bottom10" />
+          <div>
+            <iNavMvp :list="navList" lang  :lev="2" routerPage right class="margin-bottom10"/>
+          </div>
+          
+        </div>
+        
+        
         <!-- 搜索区域 -->
         <iSearch @sure="sure" @reset="reset">
           <el-form>
@@ -55,14 +61,12 @@
           </el-form>
         </iSearch>
         <iCard class="margin-top20">
-            <template v-slot:header-control>
-                <iButton v-permission.auto="AEKO_CHECKLIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
-            </template>
             <!-- 表单区域 -->
             <div v-permission.auto="AEKO_CHECKLIST_TABLE|AEKO查看TABLE" >
                 <tableList
                 class="table"
                 index
+                :selection="false"
                 :lang="true"
                 :tableData="tableListData"
                 :tableTitle="tableTitle"
@@ -116,7 +120,6 @@ import {
     iInput,
     iPagination,
     iCard,
-    iButton,
     iMessage,
     icon,
 } from 'rise';
@@ -141,6 +144,7 @@ import {
 import {user as configUser } from '@/config'
 import { debounce } from "lodash";
 import { lookDetails } from '../approve/approveList/lib'
+import logButton from "@/components/logButton"
 
 export default {
     name:'aekoCheck',
@@ -156,14 +160,24 @@ export default {
         tableList,
         iPagination,
         iCard,
-        iButton,
         icon,
         filesListDialog,
+        logButton,
+    },
+    computed: {
+        //eslint-disable-next-line no-undef
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+            permission: state => state.permission
+        }),
     },
     created(){
         this.getSearchList();
         this.getList();
         this.leftTab = getLeftTab(2);
+        // 表头是否展示内容表态 AEKO_CHECKLIST_TABLE_TITLE_NEIRONGZHUANGTAI
+        const isShow = !!this.permission.whiteBtnList["AEKO_CHECKLIST_TABLE_TITLE_NEIRONGZHUANGTAI"];
+        this.tableTitle = !isShow ? tableTitle.filter((item)=>item.props!=='contentStatusDesc') : tableTitle;
     },
     data(){
       return{
@@ -458,19 +472,12 @@ export default {
       changeVisible(type,visible){
           this[type] = visible;
       },
-      // 导出
-      exportAeko(){
-
-      },
     }
 }
 </script>
 
 <style lang="scss" scoped>
     .aeko-check-list{
-        .check-nav{
-            float: left;
-        }
         .table-item-aeko{
             position: relative;
             .link{

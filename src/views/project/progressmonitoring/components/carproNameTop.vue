@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:18:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-23 10:30:19
+ * @LastEditTime: 2021-11-03 18:05:44
  * @Description: 
  * @FilePath: \front-web\src\views\project\progressmonitoring\components\carproNameTop.vue
 -->
@@ -14,18 +14,25 @@
       <iButton @click="handleBack">{{language('FANHUI', '返回')}}</iButton>
       <logButton class="margin-left20" @click="toLogPage" />
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
+      <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
     </div>
   </div>
 </template>
 
 <script>
-import { iButton, icon } from 'rise'
+import { iButton, icon, iLog } from 'rise'
 import logButton from "@/components/logButton"
 export default {
-  components: { iButton, icon, logButton },
+  components: { iButton, icon, logButton, iLog },
   computed: {
     carProjectName() {
       return this.$route.query.carProjectName
+    }
+  },
+  data() {
+    return {
+      bizId: 'scheduleRecordId',
+      showDialog: false
     }
   },
   methods: {
@@ -33,9 +40,7 @@ export default {
       this.$router.go(-1)
     },
     toLogPage(){
-      const id = 'scheduleRecordId'
-      const router =  this.$router.resolve({path: `/log?recordId=${id}`})
-      window.open(router.href, '_blank')
+      this.showDialog = true
     },
     gotoDBhistory() {
       const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`})

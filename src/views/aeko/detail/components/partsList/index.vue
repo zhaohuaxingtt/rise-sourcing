@@ -60,7 +60,7 @@
     </iSearch>
       <iCard :title="language('LK_AEKO_PARTSLIST','零件清单')" class="margin-top20">
         <!-- 按钮区域 -->
-        <template v-slot:header-control v-if="!isLinie">
+        <template v-slot:header-control v-if="!isLinie && queryFrom != 'check'">
             <div>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
@@ -147,7 +147,7 @@ import {
     iPagination,
     iMessage,
 } from 'rise';
-import { SearchList, linieSearchList , tableTitle, linieQueryForm, linieTableTitle,commodityTableTitle } from './data';
+import { SearchList, linieSearchList , tableTitle, linieQueryForm, linieTableTitle,commodityTableTitle,checkSearchList } from './data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
@@ -160,6 +160,7 @@ import {
     getPartPage,
     deletePart,
     partListGetCartype,
+    searchContentStatus,
 } from '@/api/aeko/detail/partsList.js'
 import {
     searchBrand,
@@ -170,9 +171,10 @@ import {
 } from '@/api/aeko/manage'
 import { cloneDeep } from "lodash"
 import {user as configUser } from '@/config'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
     name:'partsList',
-    mixins: [pageMixins],
+    mixins: [pageMixins,roleMixins],
     components:{
         iSearch,
         iCard,
@@ -211,13 +213,15 @@ export default {
     },
    
     created() {
-        this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"]
-        this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"]
-        this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"]
+        const roleList = this.roleList;
+        this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
+        this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+        this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
         // 判断下多角色情况 若多角色时就判断url的跳转来源
         const {query} = this.$route;
         const {from=''} = query;
+        this.queryFrom = from;
         const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
         if(roleArr.length > 1){
             if(from == 'manage'){
@@ -250,6 +254,16 @@ export default {
             this.tableTitle = []
         }
 
+        // 当AEKO查看跳转过来的时候
+        if(from == 'check'){
+            this.tableTitle = linieTableTitle;
+            this.SearchList = checkSearchList;
+            this.isLinie = true;
+            this.isAekoManager = false;
+            this.isCommodityCoordinator = false;
+            this.searchParams = cloneDeep(linieQueryForm)
+        }
+
     },
     data(){
         return{
@@ -266,6 +280,7 @@ export default {
                 buyerName:[],
                 cartype:[],
                 linieDeptNumList:[],
+                contentStatusList:[],
                 sendStatus:[
                     {desc:'未分派',code:'1'},
                     {desc:'已分派',code:'2'},
@@ -276,6 +291,7 @@ export default {
                 buyerName:[],
                 cartype:[],
                 linieDeptNumList:[],
+                contentStatusList:[],
             },
             selectItems:[],
             loading:false,
@@ -292,6 +308,7 @@ export default {
             isCommodityCoordinator: false,
             isLinie: false,
             addPartskVisible:false,
+            queryFrom:null,
         }
     },
     methods:{
@@ -459,7 +476,25 @@ export default {
                 }
             })
 
-
+            // 只有AEKO查看跳转过来的时候需要展示这个搜索字段
+            const {from=''} = query;
+            if(from == 'check'){
+                // 内容状态下拉数据获取
+                searchContentStatus().then((res)=>{
+                    const {code,data=[]} = res;
+                    if(code ==200 ){
+                        data.map((item)=>{
+                            if(item.code == 'EMPTY'){
+                                item.desc = '(空)'
+                            }
+                        })
+                        this.selectOptions.contentStatusList = data;
+                        this.selectOptionsCopy.contentStatusList = data;
+                    }else{
+                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                    }
+                })
+            }
         },
         // 删除零件
         deleteParts(){
@@ -570,7 +605,7 @@ export default {
             this.loading = true
 
             const {searchParams,aekoInfo={} } = this;
-            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName,contentStatusList} = searchParams;
             let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
@@ -581,10 +616,12 @@ export default {
                 }
             }
 
+
             getAekoContentPart({
                 // ...this.searchParams,
                 carTypeCodeList:(carTypeCodeList.length == 1 && carTypeCodeList[0] === '') ? [] : carTypeCodeList,
                 linieDeptNumList:(linieDeptNumList.length == 1 && linieDeptNumList[0] === '') ? [] : linieDeptNumList,
+                contentStatusList:(contentStatusList.length == 1 && contentStatusList[0] === '') ? [] : contentStatusList,
                 requirementAekoId: this.aekoInfo.requirementAekoId,
                 partNum,
                 partNameZh,

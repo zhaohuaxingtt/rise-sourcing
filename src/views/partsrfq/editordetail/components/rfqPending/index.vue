@@ -8,7 +8,7 @@
   <iTabsList type="card" @tab-click="handleTabClick"  class="margin-top20">
     <template v-for="item of tabList">
       <el-tab-pane :label="language(item.key,item.label)" :key="item.label" v-if='showTab(item.index)' v-permisstion='item.permissionKey'>
-        <component :is="item.component" v-if="activityTabIndex === item.index" @jump='jump'/>
+        <component :ref='item.component' :key='hashCode' :is="item.component" v-if="activityTabIndex === item.index" @jump='jump'/>
       </el-tab-pane>
     </template>
   </iTabsList>
@@ -32,9 +32,10 @@ export default {
     technicalSeminar,
     inquiryManagement
   },
-  inject:['getbaseInfoData'],
+  inject:['getbaseInfoData','registerFn'],
   data() {
     return {
+      hashCode:'12099923883',
       activityTabIndex: '0',
       tabList: [
         {
@@ -97,6 +98,11 @@ export default {
       }
     } 
   },
+  created(){
+    setTimeout(() => {
+      this.registerFn(this.updateTabs)
+    }, 1000);
+  },
   methods: {
     jump(r){
       window.open(process.env.VUE_APP_ONLINEBIDDING + (r.roundType == "02"?`bidding/open/${r.id}`:`bidding/competition/base/${r.id}`),'_blank')
@@ -104,6 +110,9 @@ export default {
     handleTabClick(target) {
       this.activityTabIndex = target.index
     },
+    updateTabs(){
+      this.hashCode = Math.random() * 10000000000
+    } 
   }
 };
 </script>

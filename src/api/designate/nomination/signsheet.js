@@ -1,8 +1,8 @@
 /*
  * @Author: haojiang
  * @Date: 2021-06-30 10:09:30
- * @LastEditTime: 2021-07-22 16:14:48
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-02 21:39:31
+ * @LastEditors:  
  * @Description: 签字单
  * @FilePath: /front-web/src/api/designate/nomination/signsheet.js
  */

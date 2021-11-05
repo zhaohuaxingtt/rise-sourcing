@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-29 16:14:31
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-05 10:11:00
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -93,6 +93,14 @@ export function getAekoCheckAuditForm(requirementId) {
     method: 'GET',
   })
 }
+// Linie表态跳转过来获取审批详情
+export function getAekoCheckPreview(data) {
+  return requst({
+    url: `/aeko/auditForm/preview`,
+    method: 'POST',
+    data
+  })
+}
 
 // 查询CBD汇总表
 export function alterationCbdSummary({ workFlowId }) {
@@ -102,10 +110,26 @@ export function alterationCbdSummary({ workFlowId }) {
   })
 }
 
+// Linie预览 查询CBD汇总表
+export function alterationCbdSummaryByLinie({ requirementAekoId, linieId }) {
+  return requst_sourcing({
+    url: `/aeko/get/alterationCbdSummary/${requirementAekoId}/${linieId}`,
+    method: 'GET',
+  })
+}
+
 // 切换零件下拉框接口
 export function getSwitchParts({ workFlowId }) {
   return requst({
     url: `/aeko/purchasing/aekopart/getSwitchParts/${workFlowId}`,
+    method: 'GET',
+  })
+}
+
+// Linie预览获取切换零件下拉框接口
+export function getSwitchPartsByParams({ requirementAekoId, linieId }) {
+  return requst({
+    url: `/aeko/purchasing/aekopart/getSwitchPartsByParams/${requirementAekoId}/${linieId}`,
     method: 'GET',
   })
 }
@@ -175,3 +199,13 @@ export function getToolingsample(data){
     method:'GET',
   })
 }
+
+// 获取报表
+export function statement(data) {
+  return requst({
+    url: `/aeko/overdue/statement`,
+    method: "POST",
+    data
+  })
+}
+

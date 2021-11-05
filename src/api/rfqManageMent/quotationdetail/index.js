@@ -545,3 +545,20 @@ export function getNoticeDetail(data) {
     data
   })
 }
+
+export function getCategoryDetail(data) {
+  return requst({
+    url: `/part/getCategoryDetail`,
+    method: 'POST',
+    data
+  })
+}
+
+// 获取BNK附件
+export function getBnkFiles(data) {
+  return requst({
+    url: `/bnkFile-requirement`,
+    method: 'POST',
+    data
+  })
+}

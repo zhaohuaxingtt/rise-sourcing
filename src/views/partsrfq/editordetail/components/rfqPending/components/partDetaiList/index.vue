@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Hao,Jiang
+ * @LastEditors:  
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -43,7 +43,7 @@
     <partsTable v-if="!disabled" ref="partsTable" :rfqId="rfqId" :queryForm="queryForm" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
-    <!-- 发送KM -->
+    <!-- 发送KM ---------->
     <kmDialog :rfqId="rfqId" :parts="handleSelectArr" :visible.sync="kmDialogVisible" />
   </iCard>
 </template>
@@ -105,12 +105,7 @@ export default {
     if(businessKey == partProjTypes.AEKOLINGJIAN){
       this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
     }
-
     await this.getTableList()
-    this.queryForm.buyerId = this.$store.state.permission.userInfo.id
-    if(this.queryForm.buyerId != undefined){
-        this.$refs.partsTable && this.$refs.partsTable.getTableList() 
-    }
   },
   watch:{
     disabled(val){
@@ -164,10 +159,12 @@ export default {
     },
     // 跳转详情
     openPage(item) {
+      console.log(JSON.stringify(item),item.partProjectType,'-----------================');
       const resolve = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
+           projectId: item.id,
           businessKey:item.partProjectType //新增业务标识。
         },
       });
@@ -200,7 +197,6 @@ export default {
         if (res.data && res.data.rfqId) {
           this.resultMessage(res)
           await this.getTableList()
-          //this.$refs.applyPrice.getTableList()
           this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
           this.$refs.partsTable.page.currPage = 1
           this.$refs.partsTable && this.$refs.partsTable.getTableList()
@@ -291,7 +287,7 @@ export default {
     queryParts() {
       this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
       this.$refs.partsTable.page.currPage = 1
-      this.$refs.partsTable.getTableList()
+      this.$refs.partsTable.getTableList(this.queryForm)
     },
   },
 };

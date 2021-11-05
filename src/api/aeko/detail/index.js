@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-10-18 09:59:52
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-04 14:16:34
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
  */
@@ -171,7 +171,8 @@ export function getAekoOriginFactory(params) {
 // 发送供应商报价
 export function sendSupplier(data) {
   return requst({
-    url: '/aeko/aeko-content/supplier',
+    // url: '/aeko/aeko-content/supplier',
+    url: '/aeko/aeko-content/sendSupplierQuotation',
     method: 'POST',
     data,
   }) 
@@ -249,3 +250,46 @@ export function searchInvestCar(requirementAekoId) {
     method: 'GET',
   })
 }
+// 推荐表-已审批列表查询
+export function searchApproved(requirementAekoId) {
+  return requst({
+    url: `/aeko/view/approved/${requirementAekoId}`,
+    method: 'GET',
+  })
+}
+// 保存一对多，多对一组合
+export function saveCombination(params) {
+  return requst({
+    url: `/aeko/save/combination`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 修改组合名称
+export function updateGroupName(params) {
+  return requst({
+    url: `/aeko/update/groupName`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 取消组合名称
+export function cancelCombination(params) {
+  return requst({
+    url: `/aeko/cancel/combination`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// 内容表态导入
+export function importItemExcel(data) {
+  return requst({
+    url: '/aeko/importItemExcel',
+    method: 'POST',
+    data,
+  })
+}
+

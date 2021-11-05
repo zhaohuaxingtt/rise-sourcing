@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-10-29 14:27:34
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-04 17:47:46
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -51,6 +51,15 @@ export default [
             title: 'AEKO详情'
         },
         component: () => import("@/views/aeko/detail"),
+      },
+      // 
+      {
+        path: "aekodetailItem",
+        name: "aekodetailItem",
+        meta: {
+            title: 'AEKO详情'
+        },
+        component: () => import("@/views/aeko/detail/components"),
       },
       {
         path: "quondampart",
@@ -234,6 +243,73 @@ export default [
               title: "AEKO-mtz变更",
             },
             component: () => import("@/views/aeko/mtz/details"),
+          },
+        ]
+      },
+      // 待审批，已审批页面
+      {
+        path: "AKEOPageContent",
+        name: "AKEOPageContent",
+        meta: {
+          title: 'AEKO-审批'
+        },
+        component: () => import("@/views/aeko/approve/pageContent"),
+        redirect: "/aeko/AKEOPageContent/approvelistcsf",
+        children:[
+          
+          {
+            path: "approvelistcsf",
+            name: "aekoApprove-listcsf",
+            meta: {
+              title: "AEKO-审批列表",
+            },
+            component: () => import("@/views/aeko/approve/approveList/approveList"),
+            redirect: "/aeko/AKEOPageContent/approvelistcsf/AKEOPendingPage",
+            children:[
+              {
+                path: "AKEOPendingPage",
+                name: "AKEOPendingPage",
+                meta: {
+                  title: "AEKO-待审批列表",
+                },
+                component: () => import("@/views/aeko/approve/approveList/AKEOPendingPage"),
+              },
+              {
+                path: "AKEOApprovedPage",
+                name: "AKEOApprovedPage",
+                meta: {
+                  title: "AEKO-已审批列表",
+                },
+                component: () => import("@/views/aeko/approve/approveList/AKEOApprovedPage"),
+              }
+            ]
+          },
+        ]
+      },
+      // 逾期报表
+      {
+        path: "bipage",
+        name: "bipage",
+        meta: {
+          title: 'AEKO-逾期报表'
+        },
+        component: () => import("@/views/aeko/BIPage"),
+      },{
+        path: "report",
+        name: "report",
+        meta: {
+          title: 'AEKO报表'
+        },
+        component: () => import("@/views/aeko/BIPage/reportPage"),
+        redirect: "/aeko/report/item",
+        children:[
+          {
+            path: "item",
+            name: "reportitem",
+            meta: {
+              title: 'AEKO报表'
+            },
+            component: () => import("@/views/aeko/BIPage"),
           },
         ]
       }

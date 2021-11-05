@@ -37,6 +37,7 @@
           v-model="form.materialCodeList"
           v-permission.auto="AEKO_MTZ_MTZLIST_SEARCH_MATERIALIST|原材料"
           :placeholder="language('LK_QINGXUANZE','请选择')"
+          filter-method="filterMaterial"
           @change="handlemultipleChange"
           multiple
           filterable
@@ -49,7 +50,7 @@
           <el-option
             :value="items.code"
             :label="items.value"
-            v-for="(items, index) in (selectOptions && selectOptions.linieDeptNumList) || []"
+            v-for="(items, index) in (selectOptions && selectOptions.materialCodeList) || []"
             :key="index"
           ></el-option>
         </iSelect>
@@ -80,33 +81,26 @@ import {
   iDatePicker,
   iMessage
 } from "rise";
-import {
-  searchCommodity,
-  searchLinie,
-} from '@/api/aeko/manage'
 import {user as configUser } from '@/config'
 import {
-  getRoleUserList,
-} from '@/api/aeko/approve'
+  getMaterial,
+} from '@/api/aeko/mtz'
 
 export default {
   data() {
     return {
       form: {
-        departmentIdList: ['']
+        materialCodeList: ['']
       },
       selectOptions: {
-        linieDeptNumList: [],
+        materialCodeList: [],
       },
       options: {
         linieList: [],
       },
       filter: {
-        filterLinie: (key) => {
-          return this.filterOption(key, 'linieList', 'buyerId')
-        },
-        filterChief: (key) => {
-          return this.filterOption(key, 'chiefList', 'chiefId')
+        filterMaterial: (key) => {
+          return this.filterOption(key, 'materialCodeList', 'materialCodeList')
         },
       },
     }
@@ -128,15 +122,15 @@ export default {
     },
     reset() {
       this.form = {
-        departmentIdList: ['']
+        materialCodeList: ['']
       }
       this.$emit('search', {})
     },
     handlemultipleChange(value) {
       if (!value[value.length - 1]) {
-        this.form.departmentIdList=['']
+        this.form.materialCodeList=['']
       } else {
-        this.form.departmentIdList=this.form.departmentIdList.filter(item => item)
+        this.form.materialCodeList=this.form.materialCodeList.filter(item => item)
       }
       
     },
@@ -155,60 +149,20 @@ export default {
       const options = window._.cloneDeep(this.selectOptions[optionKey]) || []
       this.options[optionKey] = options
     },
-    // 前期采购股长
-    getQQCGGZ() {
-      getRoleUserList({roleCode: configUser.QQCGGZ}).then((res)=>{
-        const {code,data} = res;
-        if(code === '200' ) {
-          this.selectOptions.chiefList = data.map((item)=>{
-            const value = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-            return {
-              value,
-              name: value,
-              code: String(item.id),
-              cnChar: String(value).spell().toLocaleLowerCase(),
-              lowerCaseLabel: typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
-            }
-          });
-          this.options.chiefList = window._.cloneDeep(this.selectOptions.chiefList)
-        }else{
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-        }
-      })
-    },
     // 获取搜索框下拉数据
     getSearchList(){
-      // csf股长
-      this.getQQCGGZ()
       // 科室
-      searchCommodity().then((res)=>{
+      getMaterial().then((res)=>{
         const {code,data} = res;
         if(code === '200' ) {
-          this.selectOptions.linieDeptNumList = data.map((item)=>{
+          this.selectOptions.materialCodeList = data.map((item)=>{
             return {
-              value: item.deptNum,
-              code: item.id
+              value: item.material,
+              code: item.materialCode,
+              cnChar: String(item.material).spell()
             }
           });
           console.log('selectOptions', this.selectOptions)
-        }else{
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-        }
-      })
-      // 查询linie
-      searchLinie().then((res)=>{
-        const {code,data} = res;
-        if(code === '200' ) {
-          const linieList = data.map((item)=>{
-            return {
-              cnChar: item.namePinyin,
-              name: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
-              value: this.$i18n.locale === "zh" ? item.nameZh : item.nameEn,
-              code: String(item.id)
-            }
-          });
-          this.selectOptions.linieList = linieList
-          this.options.linieList = window._.cloneDeep(this.selectOptions.linieList)
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }

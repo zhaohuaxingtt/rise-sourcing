@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-10-29 09:48:31
- * @LastEditors:  
+ * @LastEditTime: 2021-11-04 17:09:00
+ * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->
@@ -348,9 +348,8 @@ export default {
       const openParts = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
-          item: JSON.stringify(item),
+          projectId: item.id,
           businessKey:item.partProjectType, //新增业务标识。
-          code:item.code //采购申请编号
         },
       });
       window.open(openParts.href,'_blank')

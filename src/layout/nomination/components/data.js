@@ -66,11 +66,11 @@ export const sortTableData = [
 
 // 上会选择弹窗
 export const mettingTableTitle = [
-    {props:'meetingName',name:'会议名称',key: 'HUIYIMINGCHENG',tooltip:false},
-    {props:'meetingType',name:'会议类型',key: 'HUIYILEIXING',tooltip:false},
+    {props:'name',name:'会议名称',key: 'HUIYIMINGCHENG',tooltip:false},
+    {props:'meetingTypeName',name:'会议类型',key: 'HUIYILEIXING',tooltip:false},
     {props:'startDate',name:'开始日期',key: 'LK_KAISHISHIJIAN',tooltip:false},
     {props:'startTime',name:'开始时间',key: 'NOMI_KAISHISHIJIAN',tooltip:false},
-    {props:'meetingSite',name:'会议地点',key: 'NOMI_METTINGADDRESS',tooltip:false},
+    {props:'meetingPlace',name:'会议地点',key: 'NOMI_METTINGADDRESS',tooltip:false},
   ]
 // 选择会议类型
 export const meetingTypes = [

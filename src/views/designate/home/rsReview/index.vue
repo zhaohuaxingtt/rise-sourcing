@@ -125,8 +125,8 @@
         <span>{{scope.row.freezeDate | dateFilter("YYYY-MM-DD")}}</span>
       </template>
 
-      <template #signId="scope">
-        <a href="javascript:;" class="selStatus-link" @click="$router.push({path: '/sourcing/partsnomination/signSheet/details', query: {id: scope.row.signId}})">{{scope.row.signId}}</a>
+      <template #signCode="scope">
+        <a href="javascript:;" class="selStatus-link" @click="$router.push({path: '/sourcing/partsnomination/signSheet/details', query: {id: scope.row.signId}})">{{scope.row.signCode}}</a>
       </template>
       <!-- SEL单据确认状态 -->
       <template #selStatus="scope">
@@ -264,15 +264,29 @@ export default {
     },
     // 查看详情
     viewRsSheetDetail(row) {
-      const routeData = this.$router.resolve({
-        path: '/sourcing/partsnomination/rsreview/details',
-        query: {
-          otherNominationId: row.id, 
-          otherNominationType: 'METTING',
-          otherPartProjectType: row.partProjType
-        }
+      // const routeData = this.$router.resolve({
+      //   path: '/sourcing/partsnomination/rsreview/details',
+      //   query: {
+      //     otherNominationId: row.id, 
+      //     otherNominationType: 'METTING',
+      //     otherPartProjectType: row.partProjType
+      //   }
+      // })
+      // window.open(routeData.href, '_blank')
+      this.$store.dispatch('setNominationTypeDisable', true)
+      this.$nextTick(() => {
+        const routeData = this.$router.resolve({
+          path: '/designate/rfqdetail',
+          query: {
+            desinateId: row.id, 
+            designateType: "MEETING",
+            applicationStatus: row.applicationStatus,
+            partProjType: row.partProjType,
+            mtzApplyId: row.mtzApplyId
+          }
+        })
+        window.open(routeData.href, '_blank')
       })
-      window.open(routeData.href, '_blank')
     },
     // 获取rs列表
     async getFetchData(params) {

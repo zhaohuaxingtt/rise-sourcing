@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-10-21 15:16:51
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-05 15:24:50
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\sourcing.js
  */
@@ -118,6 +118,17 @@ export default [
             meta: { title: "创建RFQ" },
             component: () => import("@/views/accessoryPart/createRfq/index"),
         },
+        //竞价开标
+        {
+            path:"biddingProjectList",  
+            name:'biddingProjectList',
+            meta: {
+                title:"竞价开标"
+            },
+            component: () => 
+                import ("@/views/biddingProjectList"),
+            
+        },
         {
           path: "partsign",
           name: "partsign",
@@ -181,6 +192,15 @@ export default [
             },
             component: () =>
                 import ("@/views/partsprocure/editordetail"),
+        },
+        {
+            path: "partsprocure/editordetail/priceRecord",
+            name: "partsprocure",
+            meta: {
+                title: "价格记录",
+            },
+            component: () =>
+                import ("@/views/partsprocure/editordetail/components/currentSupplier/priceRecord"),
         },
         {
             path: "partsprocure/batchmiantain",

@@ -13,8 +13,11 @@
 <script>
 import previewCover from './components/previewCover'
 import editCover from './components/editCover'
+import { roleMixins } from "@/utils/roleMixins";
+import { setLogModule } from "@/utils";
 export default {
     name:'aekoDetailCover',
+    mixins: [roleMixins],
     components:{
         previewCover,
         editCover,
@@ -25,17 +28,12 @@ export default {
             default:()=>{},
         }
     },
-    computed: {
-        //eslint-disable-next-line no-undef
-        ...Vuex.mapState({
-            userInfo: state => state.permission.userInfo,
-            permission: state => state.permission
-        }),
-    },
     created(){
-        this.isAekoManager = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI"] // aeko管理员
-        this.isCommodityCoordinator = !!this.permission.whiteBtnList["AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI"] // 科室协调员
-        this.isLinie = !!this.permission.whiteBtnList["AEKO_AEKODETAIL_PARTLIST_TABLE"] // linie
+        setLogModule('AEKO封面表态')
+        const roleList = this.roleList;
+        this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
+        this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+        this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
         // 判断下多角色情况 若多角色时就判断url的跳转来源
         const {query} = this.$route;

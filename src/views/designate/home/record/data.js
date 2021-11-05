@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-11-01 03:06:32
+ * @LastEditTime: 2021-11-04 11:51:33
  * @LastEditors:  
  */
 export const form = {
@@ -96,7 +96,7 @@ export const tableDetailTitle = [
   {
     props:'supplierId',
     name:'厂商',
-    key:'CHANGSHANGMING',
+    key:'CHANGSHANG',
     tooltip:true
   },
   {
@@ -124,31 +124,31 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'qualtity',
+    props:'status',
     name:'状态',
     key:'ZHUANGTAI',
     tooltip:true
   },
   {
-    props:'aPriceNoModel',
+    props:'apriceNoModel',
     name:'A价',
     key:'AJIA',
     tooltip:true
   },
   {
-    props:'bPriceNoMode',
+    props:'bpriceNoModel',
     name:'B价',
     key:'BJIA',
     tooltip:true
   },
   {
-    props:'aPriceMode',
-    name:'含模B价',
+    props:'apriceModel',
+    name:'含模A价',
     key:'HANMOAJIA',
     tooltip:true
   },
   {
-    props:'bPriceMode',
+    props:'bpriceModel',
     name:'含模B价',
     key:'HANMOBJIA',
     tooltip:true
@@ -168,7 +168,7 @@ export const tableDetailTitle = [
   {
     props:'operatePrice',
     name:'操作费',
-    key:'YUNSHUFEI',
+    key:'CAOZUOFEI',
     tooltip:true
   },
   {
@@ -191,13 +191,13 @@ export const tableDetailTitle = [
     width:140
   },
   {
-    props:'MOJUFENTAN',
+    props:'isModeApportion',
     name:'模具分摊',
     key:'MOJUFENTAN',
     tooltip:true
   },
   {
-    props:'fsNumber',
+    props:'moldApportionQuantity',
     name:'分摊数量',
     key:'FENTANSHULIANG',
     tooltip:true
@@ -222,6 +222,12 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
+    props:'developApportionQuantity',
+    name:'分摊数量',
+    key:'FENTANSHULIANG',
+    tooltip:true
+  },
+  {
     props:'tpGrade',
     name:'技术评分',
     key:'JISHUPINGFEN',
@@ -240,13 +246,14 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'ltcRate',
+    props:'ltc',
     name:'年降',
     key:'NIANJIANG',
-    tooltip:true
+    tooltip:true,
+    width:200
   },
   {
-    props:'ltcDate',
+    props:'beginYearReduce',
     name:'年降开始时间',
     key:'NIANJIANGKAISHISHIJIAN',
     tooltip:true,

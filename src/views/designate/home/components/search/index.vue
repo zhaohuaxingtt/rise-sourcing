@@ -28,6 +28,7 @@
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_NOMINATEID|申请单号"
           clearable
+          @input="form.nominateId = numberProcessor(form.nominateId, 0)"
         ></iInput>
       </el-form-item>
         <!-- RFQ编号 -->
@@ -36,6 +37,7 @@
           v-model="form.rfqId"
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_RFQID|RFQ编号"
+          @input="form.rfqId = numberProcessor(form.rfqId, 0)"
           clearable
         ></iInput>
       </el-form-item>
@@ -214,6 +216,7 @@ import {
   iInput,
   iSelect
 } from "rise";
+import { numberProcessor } from '@/utils' 
 
 export default {
   data() {
@@ -236,9 +239,14 @@ export default {
     this.form = { 
       showMe:true, // 默认显示自己
     }
-    const acceptKeys = ['nominateProcessType', 'currentUser', 'isDelay']
+    const acceptKeys = ['nominateProcessType', 'applicationStatus', 'currentUser', 'isDelay']
     Object.keys(this.$route.query).forEach(key => {
-        acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, this.$route.query[key]))
+      const keyValue = this.$route.query[key]
+      // 判断寻源概览过来的参数为查询流转中，只有流转中需要带参数
+      if (key === 'nominateProcessType') {
+        this.onNomiProcessTypeChange(keyValue)
+      }
+        acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, keyValue))
     })
     this.getOptions()
   },
@@ -248,6 +256,7 @@ export default {
     }
   },
   methods: {
+    numberProcessor,
     sure() {
       this.$emit('search', this.form)
     },

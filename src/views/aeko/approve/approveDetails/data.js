@@ -1,10 +1,50 @@
 /*
  * @Author: YoHo
  * @Date: 2021-10-11 17:18:47
- * @LastEditTime: 2021-10-26 19:27:14
+ * @LastEditTime: 2021-11-03 17:58:22
  * @LastEditors: YoHo
  * @Description: 
  */
+
+// 类别枚举值
+export const typeObj = {
+  material: {
+    seq: "2.1",
+    label: "原材料/散件",
+    labelKey: "YUANCAILIAOSANJIAN",
+    permissionKey:
+      "AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIAN|原材料/散件",
+  },
+  production: {
+    seq: "2.2",
+    label: "制造成本",
+    labelKey: "YUANCAILIAOSANJIAN",
+    permissionKey: "AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN|制造成本",
+  },
+  scrap: {
+    seq: "2.3",
+    label: "报废成本",
+    labelKey: "YUANCAILIAOSANJIAN",
+    permissionKey: "AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本",
+  },
+  manage: {
+    seq: "2.4",
+    label: "管理费",
+    labelKey: "YUANCAILIAOSANJIAN",
+    permissionKey: "AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费",
+  },
+  other: {
+    seq: "2.5",
+    label: "其他费用",
+    labelKey: "YUANCAILIAOSANJIAN",
+  },
+  profit: {
+    seq: "2.6",
+    label: "利润",
+    labelKey: "YUANCAILIAOSANJIAN",
+    permissionKey: "AEKO_QUOTATION_CBD_VIEW_LIRUN|利润",
+  },
+}
 // CBD-汇总表
 export const SummaryTableTitle = [
   { prop: 'index', label: '#', labelKey: '#', width: '70', children: [] },

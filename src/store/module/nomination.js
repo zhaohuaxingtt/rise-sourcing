@@ -36,7 +36,8 @@ const state = {
   isPartListNull: false,
   // 定点申请状态disabled
   nominationDisabled: false,
-  rsDisabled: false
+  rsDisabled: false,
+  applicationStatus: "", // 定点状态
 };
 
 const mutations = {
@@ -69,7 +70,10 @@ const mutations = {
   },
   SET_RS_DISABLED(state, disabled) {
     state.rsDisabled = disabled
-  }
+  },
+  SET_APPLICATION_STATUS(state, data) {
+    state.applicationStatus = data
+  },
 };
 
 const actions = {
@@ -93,6 +97,9 @@ const actions = {
   },
   setRsDisabled({commit}, disabled) {
     commit('SET_RS_DISABLED', disabled)
+  },
+  setApplicationStatus({commit}, data) {
+    commit('SET_APPLICATION_STATUS', data)
   },
   // 检查零件清单是否为空
   checkPartNull({commit, state}) {
@@ -167,6 +174,7 @@ const getters = {
   isPartListNull: (state) => state.isPartListNull,
   nominationDisabled: (state) => state.nominationDisabled,
   rsDisabled: (state) => state.rsDisabled,
+  applicationStatus: (state) => state.applicationStatus
 };
 
 export default {

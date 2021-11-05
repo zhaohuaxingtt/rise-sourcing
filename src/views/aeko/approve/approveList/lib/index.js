@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-26 10:54:02
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-29 15:53:48
+ * @LastEditTime: 2021-11-05 09:56:56
  * @Description: 
  */
 import {getAekoDetail} from "@/api/aeko/detail";
@@ -13,9 +13,11 @@ import {getAekoDetail} from "@/api/aeko/detail";
  * @param {*} row aeko行
  * @param {*} _blank 是否新窗口打开
  * @param {*} queue 队列
+ * @param {*} isfromCheck 如果从AEKO查看跳转过来
+ * @param {*} originLength 队列任务原始长度
  * @return {*}
  */
-export function lookDetails(vm, row, _blank=true, queue=null,isfromCheck=false) {
+export function lookDetails(vm, row, _blank=true, queue=null,isfromCheck=false, originLength = 1) {
   let reqP = {requirementAekoId: row.requirementAekoId}
   let workFlowDTOS = row.workFlowDTOS || [];
     getAekoDetail(reqP).then(res => {
@@ -25,13 +27,14 @@ export function lookDetails(vm, row, _blank=true, queue=null,isfromCheck=false) 
         let transmitObj = {
           option: isfromCheck ? 5:1, // 如果从AEKO查看跳转过来
           aekoApprovalDetails: {
-            aekoNum: row.aekoNum,
+            aekoNum: row.aekoNum || row.aekoCode,
             requirementAekoId: row.requirementAekoId,
             aekoAuditType: row.auditType,
             workFlowDTOS: workFlowDTOS,
             aekoManageId: res.data.aekoManageId
           },
           isBatchApprove: queue !== null,
+          originLength,
           queue
         }
         const routerParams = {

@@ -1,8 +1,12 @@
 <template>
   <div>
     <i-card>
-      <span class="card-title">封面表态 - {{ auditCoverStatus }}</span>
-      <i-form-group row='1'>
+      <span class="card-title">封面表态 - {{ auditCoverStatus }}
+        <span v-if="show">
+          <span class="info">(备注:请先保存表态单据，审批单数据方可预览)</span>
+        </span>
+      </span>
+      <i-form-group row='1' class="margin-top10">
         <!--第一行-->
         <el-row :gutter='20'>
           <el-col :span='6'>
@@ -45,7 +49,7 @@
           </el-col>
           <el-col :span='6'>
             <i-form-item label="封面状态:">
-              <i-text>{{ auditCover.coverStatusDesc }}</i-text>
+              <i-text>{{ coverStatusDesc }}</i-text>
             </i-form-item>
           </el-col>
         </el-row>
@@ -76,10 +80,12 @@
             label="增加材料成本(RMB/车)"
         >
           <template slot-scope="scope">
-            <span>{{ scope.row.materialIncrease|numFilter }}</span>
+            <span>{{ scope.row.materialIncrease|numberToCurrencyNo2 }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                        :content="queryRowMaterialIncreaseTipContent(scope.row)" placement="top">
-              <i class="el-icon-warning-outline bule margin-left5"></i>
+                        placement="top">
+              <div slot="content" v-html="queryRowMaterialIncreaseTipContent(scope.row)"></div>
+              <div class="oneLine">{{ queryRowMaterialIncreaseTipContent(scope.row) }}</div>
+              <i class="el-icon-warning-outline bule"></i>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -91,8 +97,10 @@
           <template slot-scope="scope">
             <span>{{ scope.row.investmentIncrease | numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                        :content="queryRowInvestmentIncreaseTipContent(scope.row)" placement="top">
-              <i class="el-icon-warning-outline bule margin-left5"></i>
+                        placement="top">
+              <div slot="content" v-html="queryRowInvestmentIncreaseTipContent(scope.row)"></div>
+              <div class="oneLine">{{ queryRowInvestmentIncreaseTipContent(scope.row) }}</div>
+              <i class="el-icon-warning-outline bule"></i>
             </el-tooltip>
           </template>
 
@@ -105,8 +113,10 @@
           <template slot-scope="scope">
             <span>{{ scope.row.otherCost | numFilter }}</span>
             <el-tooltip effect="light" popper-class="custom-card-tooltip"
-                        :content="queryRowotherCostTipContent(scope.row)" placement="top">
-              <i class="el-icon-warning-outline bule margin-left5"></i>
+                        placement="top">
+              <div slot="content" v-html="queryRowotherCostTipContent(scope.row)"></div>
+              <div class="oneLine">{{ queryRowotherCostTipContent(scope.row) }}</div>
+              <i class="el-icon-warning-outline bule"></i>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -123,7 +133,7 @@
 
 <script>
 import {iInput, iCard, iFormItem, iFormGroup, iText} from "rise"
-import {fixNumber, numberToCurrencyNo} from "../../../../../utils/cutOutNum";
+import {fixNumber, numberToCurrencyNo, numberToCurrencyNo2} from "../../../../../utils/cutOutNum";
 
 export default {
   name: "CoverStatementComponents",
@@ -136,10 +146,24 @@ export default {
   },
   filters: {
     numFilter(value) {
+      if (value == null || value == '') return ''
       return numberToCurrencyNo(value)
+    },
+    numberToCurrencyNo2(value) {
+      if (value == null || value == '') return ''
+      return numberToCurrencyNo2(value)
+
     }
   },
-
+  computed: {
+    coverStatusDesc: function () {
+      if ((this.auditCover.coverStatusDesc == null || this.auditCover.coverStatusDesc == undefined)
+          && this.auditCover.coverStatus == 'APPROVED') {
+        return '已审批'
+      }
+      return this.auditCover.coverStatusDesc
+    }
+  },
   props: {
     auditCoverStatus: {type: String, default: () => ''},
     auditCover: {type: Object, default: () => ({})}
@@ -147,11 +171,17 @@ export default {
   watch: {
     auditCover(val) {
       this.costsWithCarType = this.auditCover?.costsWithCarType
+      if(!Object.keys(val).length){
+        this.show = true
+      }else{
+        this.show = false
+      }
     }
   },
   data() {
     return {
       costsWithCarType: [],
+      show: false
     }
   },
 
@@ -164,7 +194,8 @@ export default {
         costsWithLinie.forEach(item => {
           strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.investmentIncrease)} \n`
         })
-        return strTip
+        return strTip.split("\n").join("<br/>")
+
       }
       return ''
     },
@@ -174,9 +205,9 @@ export default {
       if (costsWithLinie != null && costsWithLinie.length > 0) {
         let strTip = ''
         costsWithLinie.forEach(item => {
-          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.materialIncrease)} \n`
+          strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo2(item.materialIncrease)} \n`
         })
-        return strTip
+        return strTip.split("\n").join("<br/>")
       }
       return ''
     },
@@ -188,7 +219,7 @@ export default {
         costsWithLinie.forEach(item => {
           strTip += `${item.linieDeptNum}-${item.linieName}:${item.currencyUnit} ${numberToCurrencyNo(item.otherCost)} \n`
         })
-        return strTip
+        return strTip.split("\n").join("<br/>")
       }
       return ''
     },
@@ -202,7 +233,7 @@ export default {
       const {columns, data} = param;
       const sums = [];
       columns.forEach((column, index) => {
-        if(index==0){
+        if (index == 0) {
           sums[index] = '';
           return;
         }
@@ -211,11 +242,14 @@ export default {
           return;
         }
         const values = data.map(item => Number(item[column.property]));
-        let maxNum6 = Math.max(...values);
-        sums[index] = numberToCurrencyNo(maxNum6)
-        /*if (!values.every(value => isNaN(value))) {
+        if (column.property == 'materialIncrease') {
+          let maxNum6 = Math.max(...values);
+          sums[index] = numberToCurrencyNo2(maxNum6)
+          return;
+        }
+        if (!values.every(value => isNaN(value))) {
           let mValue = values.reduce((prev, curr) => {
-            let value = Number(curr);
+            const value = Number(curr);
             if (!isNaN(value)) {
               return prev + curr;
             } else {
@@ -223,9 +257,9 @@ export default {
             }
           }, 0);
           sums[index] = numberToCurrencyNo(mValue)
-        }*/
-      });
+        }
 
+      });
       return sums;
     }
   }
@@ -237,6 +271,13 @@ export default {
   font-size: 18px;
   font-family: Arial;
   font-weight: bold;
+  margin-bottom: 20px;
+  display: block;
+  .info{
+    font-size: 14px;
+    margin-left: 20px;
+    color: #E30D0D;
+  }
 }
 
 .lastCelStyle {

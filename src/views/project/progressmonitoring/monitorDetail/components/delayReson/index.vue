@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-28 10:39:42
+ * @LastEditTime: 2021-11-05 16:59:09
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -109,7 +109,7 @@ export default {
       if (year1 > year2) {  
         return true 
       } 
-      if (week1 >= week2) { 
+      if (year1 == year2 && week1 >= week2) { 
         return true 
       } 
       return false 
@@ -208,7 +208,7 @@ export default {
               selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
               fs, 
               fsId,
-              planDate: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : (this.partStatus == '6' || this.partStatus == '7') && this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.otsTimeKw : item.emTimeKw,
+              planDate: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : this.partStatus == '6' ? this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.otsTimeKw : item.emTimeKw : this.partStatus == '7' ? this.isLarger(item.planEmTimeKw, item.planOtsTimeKw) ? item.planOtsTimeKw : item.planEmTimeKw : '',
               partPeriod: item.partStatus,
               partPeriodDesc: item.partStatusDesc,
               delayWeek: item.delayWeeks,

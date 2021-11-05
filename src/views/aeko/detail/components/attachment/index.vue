@@ -43,7 +43,8 @@
         <iInput v-model="scope.row.fileDescribe" @blur="updateApproveAttach(scope.row)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
       </template>
 			<template #remark="scope">
-        <iInput v-model="scope.row.remark" @blur="updateApproveAttach(scope.row)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <iInput v-if="!scope.row.taskId" v-model="scope.row.remark" @blur="updateApproveAttach(scope.row)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <span v-else>{{language('JIESHIFUJIAN', '解释附件')}}</span>
       </template>
     </tablelist>
     <div class="pagination">
@@ -171,6 +172,7 @@ export default {
 				uploadId: fileData.id || '',
 				linieId: this.userInfo.id || '',
 				deptId: this.userInfo.deptDTO && this.userInfo.deptDTO.id || '',
+        deptName: this.userInfo.deptDTO && this.userInfo.deptDTO.nameEn || '',
 				taskId: Number(this.aekoInfo.taskId) || 0,
 
 			}

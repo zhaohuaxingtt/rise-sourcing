@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-10-28 16:28:40
+ * @LastEditTime: 2021-11-04 17:27:36
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -20,7 +20,7 @@
         <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_PARTNUM">
           <iInput
             v-model="form.partNum"
-            :disabled="disabled"
+
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
@@ -169,14 +169,20 @@ export default {
   },
   async created() {
     this.partNum = this.$route.query.partNum  // 零件号
+    this.isDeclare = this.$route.query.isDeclare  // 是否预设零件号，0是，1不是
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
     this.oldPartNumPreset = this.$route.query.oldPartNumPreset
     await this.getAekoOriginFactory()
     // 新零件号一定存在，所以不需要else
     // if (this.oldPartNumPreset || this.partNum) {
-      this.form.partNum = this.oldPartNumPreset || this.partNum
-      this.judgeRight()
+      if(this.isDeclare==0){ // 优先选择新零件
+        this.form.partNum = this.partNum || this.oldPartNumPreset
+        this.judgeRight('init')  // 初次进入查询新零件
+      }else{  // 优先选择原零件
+        this.form.partNum = this.oldPartNumPreset || this.partNum
+        this.judgeRight()  // 查询原零件
+      }
     // } else {
       // this.procureFactorySelectVo()
     //   // this.getAekoOriginPartInfo()
@@ -204,23 +210,22 @@ export default {
       })
       .catch(() => {})
     },
-    judgeRight() {
+    judgeRight(flag='') {
       judgeRight([
         {
-          partNum: this.oldPartNumPreset || this.partNum,
+          partNum: this.form.partNum,
           userId: this.userInfo.id
         }
       ])
       .then(res => {
         if (res.code == 200) {
           if (res.data[0].isView) {
-            this.getAekoOriginPartInfo()
+            this.procureFactorySelectVo()
+            this.getAekoOriginPartInfo(flag)
           } else {
             iMessage.error(res.data[0].describe)
             this.loading = false
-            this.factoryDisabled = false
           }
-          this.procureFactorySelectVo()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -247,7 +252,7 @@ export default {
       .catch(() => {})
     },
     // 查询台账库数据
-    getAekoOriginPartInfo() {
+    getAekoOriginPartInfo(flag='') {
       // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
       if(this.form.partNum && this.form.partNum.trim().length < 9){
         return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
@@ -268,12 +273,23 @@ export default {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.page.totalCount = res.total || 0
-          this.disabled = res.total&&true||false
+          if(flag=='init'){
+            this.disabled = res.total?true:false
+            if(!this.disabled&&this.oldPartNumPreset){
+              this.form.partNum = this.oldPartNumPreset
+              this.judgeRight()
+            }
+          }
         } else {
-          this.disabled = false
+          if(flag=='init'){
+            this.disabled = false
+            if(this.oldPartNumPreset){
+              this.form.partNum = this.oldPartNumPreset
+              this.judgeRight()
+            }
+          }
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        this.factoryDisabled = this.disabled
         this.loading = false
       })
       .catch(() => this.loading = false)

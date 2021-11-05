@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
- * @LastEditors: YoHo
- * @LastEditTime: 2021-10-25 15:02:24
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-03 13:50:37
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -23,6 +23,9 @@
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
+      <template #userName="scope">
+        <span>{{`${scope.row.deptName ? `${scope.row.deptName} - ` : ''}${scope.row.userName}`}}</span>
+      </template>
       <template #fileName="scope">
         <div style="text-align: left">
           <a class="link-underline" href="javascript:;" @click="download(scope.row)">
@@ -122,10 +125,12 @@ export default {
         this.$message.error(this.language('AEKOIDBUENNGWEIKONG','aekoid不能为空'))
         return
       }
-      if (!parmas.linieId) {
-        this.$message.error(this.language('LINIEIDBUENNGWEIKONG','linieid不能为空'))
-        return
-      }
+      // if (!parmas.linieId) {
+      //   this.$message.error(this.language('LINIEIDBUENNGWEIKONG','linieid不能为空'))
+      //   return
+      // }
+      // 如果请求来源于审批单，去掉linie id
+      if (this.$route.query.from === 'approve') delete parmas.linieId
       this.tableLoading = true
       getAuditFilePage(parmas).then(res => {
         if (res.code === '200') {

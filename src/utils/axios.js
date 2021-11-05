@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-07-29 15:40:11
+ * @LastEditTime: 2021-10-29 13:48:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\axios.js
@@ -29,7 +29,6 @@ import store from '@/store'
           ...config.params
         }
       }
-      console.log(config.url, config);
       // 定义请求得数据结构是json
       config.headers['json-wrapper'] = '1';
       

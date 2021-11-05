@@ -8,9 +8,10 @@
         <!-- 顶部信息栏 -->
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
+                <span class="icon-mtz margin-left10" v-if="mtzApplyId !=undefined "><icon symbol name="iconMTZ"></icon></span>
                 <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></span>
                 <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
-                <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled" v-permission.auto="NOMINATION_MENU_CHANGENOMINATETYPE|定点申请类型">
+                <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled || rsDisabled" v-permission.auto="NOMINATION_MENU_CHANGENOMINATETYPE|定点申请类型">
                     <el-option
                     :value="item.id"
                     :label="language(item.key,item.name)"
@@ -20,10 +21,10 @@
                 </iSelect>
             </div>
             <div class="btnList flex-align-center">
-                <iButton @click="gotoRsMainten" v-if="!nominationDisabled && designateType === 'MEETING'" v-permission.auto="NOMINATION_MENU_RSTYPEMANTAINCE|RS单维护">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
-                <iButton v-if="showExport" @click="doExport" v-permission.auto="NOMINATION_MENU_EXPORT|导出">{{language('LK_DAOCHU','导出')}}</iButton>
-                <iButton v-if="!nominationDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
-                <iButton v-if="!nominationDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
+                <iButton @click="gotoRsMainten" v-if="designateType === 'MEETING'" v-permission.auto="NOMINATION_MENU_RSTYPEMANTAINCE|RS单维护">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
+                <iButton v-if="showExport" @click="rsExport" v-permission.auto="NOMINATION_MENU_EXPORT|导出">{{language('LK_DAOCHU','导出')}}</iButton>
+                <iButton v-if="!nominationDisabled && !rsDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
+                <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
@@ -108,6 +109,7 @@ import {
 } from '@/api/designate'
 import { applyStep,svgList } from './data'
 import meetingConclusionDialog from "./meetingConclusionDialog"
+import {allitemsList} from '@/config'
 
 export default {
     name:'designateStep',
@@ -153,6 +155,7 @@ export default {
         // eslint-disable-next-line no-undef
         ...Vuex.mapState({
             nominationDisabled: state => state.nomination.nominationDisabled,
+            rsDisabled: state => state.nomination.rsDisabled,
         }),
         phaseType(){
             return this.$store.getters.phaseType;
@@ -165,7 +168,10 @@ export default {
         },
         // 是否显示下载按钮
         showExport() {
-            return this.supportExportPath.includes(this.$route.name)
+            // 判断标准，meta 配置了exportButton 或者扩产能
+            // 是否是RS扩产能
+            const isKuochanneng = this.$route.query.partProjType === allitemsList.KUOCHANNENG && this.$route.name === 'designateDecisionRS'
+            return this.$route.meta.exportButton || isKuochanneng
         }
     },
     data(){
@@ -176,12 +182,9 @@ export default {
             applyStep:applyStep,
             mettingDialogVisible: false,
             submitting: false,
-            // 需要展示导出按钮的页面name
-            supportExportPath: [
-                'designateDecisionRS'
-            ],
             meetingConclusionDialogVisible: false,
             svgList:svgList,
+            mtzApplyId:this.$route.query.mtzApplyId
         }
     },
     methods:{
@@ -610,18 +613,10 @@ export default {
             })
         },
         // rs单导出
-        rsAttachExport() {
+        rsExport() {
             const { query } = this.$route;
             const {desinateId} = query;
-            const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-            const fileURL = `${BASEURL}${process.env.VUE_APP_RFQ}/rs/downCapacityExpRs?nominateAppId=${desinateId}`
-            window.open(fileURL)
-        },
-        doExport() {
-            const pathName = this.$route.name
-            if (pathName === 'designateDecisionRS') {
-                this.rsAttachExport()
-            }
+            rsAttachExport({nominateAppId: desinateId})
         },
 
         // 获取定点管理详情 --- 取定点申请类型字段
@@ -642,6 +637,9 @@ export default {
 
 <style lang="scss" scoped>
 .designateStep{
+    .icon-mtz{
+        font-size: 40px;
+    }
     .pageTitle{
         .title-text{
             font-size: 20px;

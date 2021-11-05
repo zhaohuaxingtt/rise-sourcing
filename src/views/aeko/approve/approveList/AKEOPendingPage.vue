@@ -2,7 +2,7 @@
 <template>
   <div v-permission.auto="AEKO_PENDING_APPROVAL_PAGE|待审批页面">
     <!--搜索区--->
-    <i-search class="margin-bottom20" @sure="queryPendingAKEOForm" @reset="restQueryForm" :resetKey="QUEREN"
+    <i-search class="margin-bottom20" @sure="queryPendingAKEOForm" @reset="restQueryForm" :icon="true" :resetKey="QUEREN"
               :searchKey="REST" v-permission.auto="AEKO_PENDING_APPROVAL_PAGE_SEARCHAREA|待审批页面搜索区">
       <el-form :model="queryAkeoForm" ref="AKEOQueryFormRef">
         <!-- AEKO号 -->
@@ -100,7 +100,7 @@
       >
         <template #isTop="scope">
           <div>
-            <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon" name="iconAEKO_TOP"/></span>
+            <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon " name="iconAEKO_TOP"/></span>
           </div>
         </template>
         <!--aekoNum-->
@@ -138,7 +138,7 @@
 
         <!--增加材料成本-->
         <template #EP1="scope">
-          <span>{{ scope.row.materialIncrease|numberToCurrency}}</span>
+          <span>{{ scope.row.materialIncrease|numberToCurrencyNo2}}</span>
           <el-tooltip v-if="scope.row.auditType!=3" effect="light" popper-class="custom-card-tooltip"
                       placement="top">
             <div slot="content" v-html="queryRowMaterialIncreaseTipContent(scope.row)"></div>
@@ -218,7 +218,7 @@ import AEKOTransferDialog from "./components/AEKOTransferDialog";
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
 import {lookDetails} from './lib'
-import {numberToCurrencyNo} from "@/utils/cutOutNum";
+import {numberToCurrencyNo,numberToCurrencyNo2} from "@/utils/cutOutNum";
 
 export default {
   name: "AKEOPendingPage",
@@ -243,6 +243,10 @@ export default {
     numberToCurrency(value) {
       if (value == null || value == '') return ''
       return numberToCurrencyNo(value)
+    },
+    numberToCurrencyNo2(value){
+      if (value == null || value == '') return ''
+      return numberToCurrencyNo2(value)
     }
   },
   computed: {
@@ -571,7 +575,7 @@ export default {
       if (this.selectPendingList.length <= 0) {
         return this.$message.warning('请选择需要审批的数据')
       }
-      this.$confirm('当选勾选AEKO将会全部批准,请确认', '批准', {
+      this.$confirm('当前勾选AEKO将会全部批准,请确认', '批准', {
         confirmButtonText: '确认',
         cancelButtonText: '返回',
       }).then(() => {
@@ -619,7 +623,7 @@ export default {
       // 缓存任务列表
       localStorage.setItem('aekoSelectPendingList', JSON.stringify(aekoSelectPendingList))
       // 跳转第一个审批单
-			lookDetails(this, this.selectPendingList[0], true, queueList)
+			lookDetails(this, this.selectPendingList[0], true, queueList, false, this.selectPendingList.length)
       // this.$message.warning('期待下个版本吧')
     },
     //选中回调
@@ -650,6 +654,7 @@ export default {
               aekoManageId: res.data.aekoManageId,
               linieId: this.$store.state.permission.userInfo.id,
               taskId: taskId,
+              form: 'approve',
               transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj)))
               )
             },
@@ -689,7 +694,8 @@ export default {
 
 .icon {
   svg {
-    font-size: 28px;
+    font-size: 24px;
+
   }
 }
 

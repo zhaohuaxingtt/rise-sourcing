@@ -138,8 +138,9 @@ export default {
   },
   computed: {
     // 是否处于队列审批模式
+    // 判断标准： 队列数据大于等于1
     isBatchApproveMode() {
-      return this.transmitObj.isBatchApprove
+      return this.transmitObj.isBatchApprove && this.transmitObj.originLength > 1
     },
     // 审批队列,为null 表示任务已全部审批完毕
     approveQueue() {
@@ -201,7 +202,7 @@ export default {
       // 缓存任务列表
       localStorage.setItem('aekoSelectPendingList', JSON.stringify(aekoSelectPendingList))
       // 跳转第一个审批单
-			lookDetails(this, selectPendingList[0], false, queueList)
+			lookDetails(this, selectPendingList[0], false, queueList, false, this.transmitObj && this.transmitObj.originLength)
     },
     calculateSelected(row, state) {
       return row.approvalResult == state;

@@ -18,6 +18,7 @@
         height="400"
         index
         :selection="alowSubmit"
+        :selectable="selectable"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
@@ -32,8 +33,14 @@
           </a>
         </div>
       </template>
+      <template #endTime="scope">
+        <span>{{scope.row.endTime|formatDate}}</span>
+      </template>
       <template #akeoAuditType="scope">
         {{ getAdiType(scope.row.akeoAuditType) }}
+      </template>
+      <template #startUser="scope">
+        <span>{{scope.row.startUser ? scope.row.startUser.nameZh : '' }}</span>
       </template>
       <template #comment="scope">
         <span>{{ itemCommentContent(scope.row) }}</span>
@@ -102,6 +109,7 @@ import {
   auditFileSave,
   auditFileDelete
 } from '@/api/aeko/detail/approveAttach'
+import * as dateUtils from "@/utils/date";
 
 export default {
   name: "aekoDetailRecord",
@@ -114,6 +122,13 @@ export default {
     tablelist,
     iFileDialog
   },
+  filters:{
+    formatDate(value) {
+      if (value == null || value == '') return ''
+      let date = new Date(value);
+      return dateUtils.formatDate(date, 'yyyy-MM-dd hh:mm')
+    },
+  },
   computed: {
     ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
@@ -123,7 +138,15 @@ export default {
     },
     checkFirstRecord() {
       if (this.tableListData == null || this.tableListData.length <= 0) return false
-      let firstItem =this.tableListData[0]
+
+      let valid = false
+      const validItems = this.tableListData.filter(o => o.activityName === '【补充材料通知】补充材料')
+      validItems.forEach(item => {
+        !valid && (valid = !this.itemIsCanReply(item))
+      })
+      if (valid) return true
+
+      let firstItem = this.tableListData[0]
       if (null != firstItem) {
         return firstItem.operation == '补充材料'
       }
@@ -158,8 +181,18 @@ export default {
     // 查询审批数据
     this.getFetchData()
   },
+  created(){
+    // 如果是从AEKO查看过来的 tableTitle需要展示一个提交人字段
+    const {query} = this.$route;
+    const {from=''} = query;
+    if(from != 'check'){
+      this.tableTitle = tableTitle.filter((item)=>item.props !=='startUser');
+    }
+  },
   methods: {
-
+    selectable(row) {
+      return !this.itemIsCanReply(row)
+    },
     getAdiType(code) {
       return aekoApproveTypes.find(o => o.id === code)?.name || ''
     },
@@ -183,7 +216,6 @@ export default {
     async getFetchData() {
       this.tableLoading = true
       await this.getexplainList()
-      // this.getData()
     },
     /**
      * @description: 获取解释记录
@@ -201,29 +233,27 @@ export default {
       })
       findHistoryByAeko(parmas).then(res => {
         this.tableLoading = false
-        if (res.code == 200) {
-          let resDatas = res.data.records
-          this.tableListData = resDatas.map(item => {
-            item.disabled = item.activityName != '【补充材料通知】补充材料'
-            return item
-          })
-        }
+        let resDatas = res.data.records
+        this.tableListData = resDatas.map(item => {
+          item.disabled = item.activityName != '【补充材料通知】补充材料'
+          return item
+        })
       })
     },
     itemCommentContent(row) {
-      if (row.activityName == "【补充材料回复】补充材料") {
+      if (row.activityName == "【解释说明回复】") {
         return ''
       }
       return row.comment
     },
     itemExplain(row) {
-      if (row.activityName == "【补充材料回复】补充材料") {
+      if (row.activityName == "【解释说明回复】") {
         return row.comment
       }
       return ''
     },
     itemExplainShow(row) {
-      return row.activityName == "【补充材料回复】补充材料"
+      return row.activityName == "【解释说明回复】"
     },
     itemIsCanReply(row) {
       if (row.activityName == "【补充材料通知】补充材料") {
@@ -233,55 +263,7 @@ export default {
       //不用回复
       return row.disabled
     },
-    /**
-     * @description: 获取数据列表
-     * @param {*}
-     * @return {*}
-     */
-    getData() {
-      const parmas = Object.assign({
-        applyUserId: String(this.userInfo.id) || '',
-        currentUserId: String(this.userInfo.id) || '',
-        aekoNo: this.aekoInfo.aekoCode || '',
-        hasParentTaskId: false,
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize
-      })
-      this.tableLoading = true
-      findHistoryByAeko(parmas).then(res => {
-        // parId字段
-        const parId = 'parentTaskId'
-        if (res.code === '200') {
-          // 审批记录列表
-          let tableListData = (res.data && res.data.records || []).map(o => {
-            // 封面表态处于
-            o.disabled = o.activityName !== '【补充材料通知】补充材料'
-            const tar = this.tableExplainData.find(item => item[parId] === o.id)
-            if (tar) {
-              // 写入审批解释
-              o.explainReason = tar.comment
-              // 写入可编辑状态，只要有parId && 封面表态状态 均不可编辑 
-              o.disabled = true
-            }
-            return o
-          })
-          tableListData = tableListData.filter(o => !o[parId])
-          console.log('tableListData', res.data, tableListData)
-          this.tableListData = tableListData
-          this.page.totalCount = res.data.total
-        } else {
-          this.tableListData = []
-          // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-        }
-        this.tableLoading = false
 
-      }).catch(e => {
-        this.tableLoading = false
-        this.$message.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
-      }).finally(() => {
-        this.tableLoading = false
-      })
-    },
     /**
      * @description: 提交
      * @param {*}
@@ -290,11 +272,15 @@ export default {
     submit() {
       let state = true
       let info = ''
+      let sourceFirstItem = this.tableListData[0]
       if (!this.tableSelecteData.length) {
-        this.$message.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
-        return
+        this.tableSelecteData.push(sourceFirstItem)
       }
-      let parmas = this.tableSelecteData.map(o => {
+      if (this.tableSelecteData[0].id != sourceFirstItem.id) {
+        return this.$message.error(this.language('LK_QINGXUANZEBUCHONGCAILIAOJILUJINXINGTIJIAO', '请选择补充材料记录进行提交'))
+      }
+      let selResArray = this.tableSelecteData.filter(item => item.id == sourceFirstItem.id)
+      let parmas = selResArray.map(o => {
         if (state && !o.explainReason) {
           state = false
           info = this.language('SHENPIYIJIANANDJIESHIBUNENGWEIKONG', '审批意见/申请人解释不能为空')
@@ -305,7 +291,7 @@ export default {
           taskId: o.taskId,
           // workFlowId: '1075838',
           // taskId: '1075873',
-          parentTaskId:o.parentTaskId,
+          parentTaskId: o.parentTaskId,
           auditUserId: o.assignee,
           explainReason: o.explainReason || '',
           addMaterialUserId: this.userInfo.id,

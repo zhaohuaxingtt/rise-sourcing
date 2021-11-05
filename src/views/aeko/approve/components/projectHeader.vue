@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2021-10-29 12:31:18
+ * @LastEditTime: 2021-11-04 17:28:37
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -79,8 +79,10 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 27px;
   position: relative;
+  border-bottom: 1px solid #E3E3E3;
+  padding-bottom: 5px;
   &.withAfter::after {
     content: '';
     width: 100%;

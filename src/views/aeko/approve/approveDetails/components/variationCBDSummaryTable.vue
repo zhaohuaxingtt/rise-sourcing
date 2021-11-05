@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-10-27 16:05:56
+ * @LastEditTime: 2021-11-05 10:10:10
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -129,8 +129,11 @@ import mouldInvestmentChange from "./mouldInvestmentChange";
 import developmentFee from "./developmentFee";
 import damages from "./damages";
 import sampleFee from "./sampleFee";
-import { SummaryTableTitle, totalRowClass, floatFixNum, list } from "../data.js";
-import { alterationCbdSummary, cbdDataQuery } from "@/api/aeko/approve";
+import { SummaryTableTitle, totalRowClass, floatFixNum, list, typeObj } from "../data.js";
+import { alterationCbdSummary, cbdDataQuery, alterationCbdSummaryByLinie } from "@/api/aeko/approve";
+import { 
+  getQuotationInfo,
+ } from '@/api/aeko/quotationdetail'
 export default {
   components: {
     iCard,
@@ -152,44 +155,7 @@ export default {
       aPriceChangeData: {},
       aPriceChangeObj: {},
       partsId: "",
-      typeObj: {
-        material: {
-          seq: "2.1",
-          label: "原材料/散件",
-          labelKey: "YUANCAILIAOSANJIAN",
-          permissionKey:
-            "AEKO_QUOTATION_CBD_VIEW_YUANCAILIAOSANJIAN|原材料/散件",
-        },
-        production: {
-          seq: "2.2",
-          label: "制造成本",
-          labelKey: "YUANCAILIAOSANJIAN",
-          permissionKey: "AEKO_QUOTATION_CBD_VIEW_ZHIZAOCHENGBEN|制造成本",
-        },
-        scrap: {
-          seq: "2.3",
-          label: "报废成本",
-          labelKey: "YUANCAILIAOSANJIAN",
-          permissionKey: "AEKO_QUOTATION_CBD_VIEW_BAOFEICHENGBEN|报废成本",
-        },
-        manage: {
-          seq: "2.4",
-          label: "管理费",
-          labelKey: "YUANCAILIAOSANJIAN",
-          permissionKey: "AEKO_QUOTATION_CBD_VIEW_GUANLIFEI|管理费",
-        },
-        other: {
-          seq: "2.5",
-          label: "其他费用",
-          labelKey: "YUANCAILIAOSANJIAN",
-        },
-        profit: {
-          seq: "2.6",
-          label: "利润",
-          labelKey: "YUANCAILIAOSANJIAN",
-          permissionKey: "AEKO_QUOTATION_CBD_VIEW_LIRUN|利润",
-        },
-      },
+      typeObj: typeObj,
       tabs: [
         {
           label: "A价变动(含分摊)",
@@ -251,11 +217,12 @@ export default {
     this.queryParams = this.$route.query;
     let str_json = window.atob(this.queryParams.transmitObj);
     let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
+    this.transmitObj = transmitObj
     this.workFlowId =
       transmitObj.aekoApprovalDetails.workFlowId ||
-      transmitObj.aekoApprovalDetails.workFlowDTOS[0].workFlowId ||
+      transmitObj.aekoApprovalDetails.workFlowDTOS[0]?.workFlowId ||
       "";
-    this.workFlowId ? this.getTableData() : iMessage.warn("缺少流程ID");
+    this.workFlowId ? this.getTableData() : this.alterationCbdSummaryByLinie();
   },
   methods: {
     totalRowClass,
@@ -330,6 +297,16 @@ export default {
         }
       });
     },
+    // 审批单预览查询
+    alterationCbdSummaryByLinie(){
+      let params = {
+        requirementAekoId:this.transmitObj.aekoApprovalDetails.requirementAekoId,
+        linieId:this.transmitObj.aekoApprovalDetails.linieId
+      }
+      alterationCbdSummaryByLinie(params).then(res=>{
+        console.log(res);
+      })
+    },
     // 获取A价变动其它数据
     getCbdDataQuery(partsId) {
       this.partsId = partsId;
@@ -339,20 +316,25 @@ export default {
         this.loading = false;
         return;
       }
-      cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
-        (res) => {
-          if (res?.code === "200") {
-            let data = res.data;
-            this.switchPartsTable = [data?.extSnapshotVO];
-            this.aPriceChangeData = data;
-            this.loading = false;
-            this.hasData = true;
-          } else {
-            this.loading = false;
-            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+      if(this.workFlowId){
+        cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
+          (res) => {
+            if (res?.code === "200") {
+              let data = res.data;
+              this.switchPartsTable = [data?.extSnapshotVO];
+              this.aPriceChangeData = data;
+              this.loading = false;
+              this.hasData = true;
+            } else {
+              this.loading = false;
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
           }
-        }
-      );
+        );
+      }else{
+        // 预览查询接口
+        iMessage.warn('接口调试中');
+      }
 
       this.tabChange();
     },

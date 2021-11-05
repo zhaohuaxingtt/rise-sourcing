@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-10-22 13:52:15
+ * @LastEditTime: 2021-11-01 17:08:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -66,7 +66,6 @@
       </iFormGroup>
       <tablelist
           ref="multipleTable"
-          v-if="roundType === 'commonRound'"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -76,7 +75,7 @@
           :select-props="['cbdTemplateId']"
           :round-type="roundType"
       ></tablelist>
-      <tablelist
+      <!-- <tablelist
           ref="multipleTable"
           v-else
           :tableData="tableListData"
@@ -85,7 +84,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange"
           @handleRowClick="handleRowClick"
-      ></tablelist>
+      ></tablelist> -->
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
       <!------------------------------------------------------------------------>
@@ -111,7 +110,7 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, tableTitle2} from "./components/data";
 import {findBySearches, pageRfqRound, rfqRoundCreated, modification} from "@/api/partsrfq/home";
 import store from '@/store'
-import {partProjTypes} from '@/config'
+import {partProjTypes,roundsType} from '@/config'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 export default {
   components: {iButton, iDialog, iFormGroup, iFormItem, iSelect, tablelist, iPagination, iDatePicker},
@@ -229,6 +228,13 @@ export default {
             bdlInfos: this.selectTableData
         }
         const res = await rfqRoundCreated(req)
+        //保存的时候，如果保存成功！自动将窗口关闭，并且刷新详情数据，和询价管理
+        if(res.data){
+          this.clearDiolog()
+          if(this.roundType !== roundsType.putongxunjia){
+            this.$emit('refreshBaseInfo')
+          }
+        }
         this.resultMessage(res, () => {
           this.saveStaus = true
         })

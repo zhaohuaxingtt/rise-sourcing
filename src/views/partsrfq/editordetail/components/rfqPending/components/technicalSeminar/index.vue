@@ -158,6 +158,12 @@ export default {
         iMessage.warn(this.language('LK_QINGTIANJIAGONGYINGSHANG','请添加供应商!'))
         return
       }
+
+      if (!otherMeetingInformationData.meetingDate) return iMessage.warn(this.language("QINGXUANZEHUIYISHIJIAN", "请选择会议时间"))
+      if (!otherMeetingInformationData.meetingLocation) return iMessage.warn(this.language("QINGSHURUHUIYIDIDIAN", "请输入会议地点"))
+      if (!meetingStuffList.length) return iMessage.warn(this.language("QINGTIANXIEWANZHENGGONGYINGSHANGCAILIAO", "请填写完整供应商材料"))
+      if (!this.selectTableData.length) return iMessage.warn(this.language("QINGXUANZEZHISHAOLINGJIAN", "请选择至少一个零件"))
+
       const req = {
         rfqId: id,
         userId: store.state.permission.userInfo.id,
@@ -169,7 +175,14 @@ export default {
         supplierIds: supplierIdList,
         partNums: partNumsList,
         partsInfo: this.selectTableData,
-        supplierInfo: this.addSupplierList
+        supplierInfo: this.addSupplierList.map(item => ({
+          email: item.email,
+          isMbdl: item.isMbdl,
+          sapNum: item.sapNum || item.sapCode,
+          supplierContactNameZh: item.supplierContactNameZh,
+          supplierId: item.supplierId,
+          supplierName: item.supplierNameZh
+        }))
       }
       const res = await addTechnology(req)
       this.resultMessage(res)

@@ -9,6 +9,8 @@ const sourcing = axios(process.env.VUE_APP_PART_PROCURE)
 const sourcingDL = axios(process.env.VUE_APP_SOURCING_WDL)
 const quotation = axios(process.env.VUE_APP_QUOTATION)
 const requestOutputPart = axios(process.env.VUE_APP_RFQ)
+const requestPriceRecord = axios(process.env.VUE_APP_PRICE)
+const requestPurchase= axios(process.env.VUE_APP_PURCHASE)
 //自动定点-创建接口
 export function autonomi(params) {
 	return sourcing({
@@ -304,4 +306,31 @@ export function batchMaintainOutPutPlan(data) {
 		method:"post",
 		data
 	}) 
+}
+
+//供应商价格记录查询
+export function getSupplierPriceRecord(data) {
+	return requestPriceRecord({
+		url:'/effecting-supplier/getSupplierPriceRecord',
+		method:'POST',
+		data
+	})
+}
+
+//供应商同步价格记录
+
+export function syncPriceRecords(data) {
+	return requestPriceRecord({
+		url:'/effecting-supplier/getSupplierPriceRecord',
+		method:'POST',
+		data
+	})
+} 
+
+//采购申请详情查询接口
+export function getPurchaseDetail(data) {
+	return requestPurchase({
+		url:'/pr/normalPr/findById?riseCode='+data.riseCode+'&sapItem='+data.sapItem,
+		method:'GET'
+	})
 }

@@ -1,9 +1,14 @@
 <template>
   <div>
     <i-card>
-      <span class="card-title"
-        >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatus }}</span
-      >
+      <div class="margin-bottom15">
+        <span class="card-title"
+          >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatus }}</span>
+        <span class="floatright" v-if="show">
+          <iButton @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
+        </span>
+      </div>
+      
       <i-table-custom
         class="margin-top24"
         :columns="recommendationFormPendingApprovalTitle"
@@ -32,10 +37,11 @@
 </template>
 
 <script>
-import { iCard, iPagination, iMessage } from "rise";
+import { iCard, iPagination, iButton, iMessage } from "rise";
 import iTableCustom from "@/components/iTableCustom";
 import { pageMixins } from "@/utils/pageMixins";
 import filters from "@/utils/filters";
+import {searchApproved} from "@/api/aeko/detail";
 
 export default {
   name: "RecommendationTablePendingApprovalComponents",
@@ -44,6 +50,7 @@ export default {
     iCard,
     iTableCustom,
     iPagination,
+    iButton
   },
   props: {
     auditContents: { type: Object, require: true, default: () => [] },
@@ -71,6 +78,7 @@ export default {
           type: "index",
           align: "center",
           label: "#",
+          minWidth:50
         },
         {
           prop: "partNum",
@@ -79,6 +87,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:128
         },
         {
           prop: "partNameZh",
@@ -87,6 +96,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:100
         },
         {
           prop: "cartypeZh",
@@ -94,6 +104,8 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:140,
+          width:100,
         },
         {
           prop: "originPartNum",
@@ -102,6 +114,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:128
         },
         {
           prop: "linieDeptName",
@@ -110,6 +123,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:72
         },
         {
           prop: "linieName",
@@ -118,6 +132,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:85
         },
         {
           prop: "newAPrice",
@@ -126,6 +141,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:82
         },
         {
           prop: "apriceChange",
@@ -134,6 +150,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:96
         },
         {
           prop: "bnkChange",
@@ -142,6 +159,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:100
         },
         {
           prop: "newBPrice",
@@ -150,6 +168,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:82
         },
         {
           prop: "incInvestmentCost",
@@ -158,6 +177,8 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:162,
+          width:150,
         },
         {
           prop: "developmentCost",
@@ -166,6 +187,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:86
         },
         {
           prop: "procureFactory",
@@ -174,6 +196,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:100
         },
         {
           prop: "supplierSapCode",
@@ -182,6 +205,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          width:100,
         },
         {
           prop: "supplierNameZh",
@@ -190,25 +214,65 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
+          minWidth:114
         },
       ],
+      transmitObj: {},
+      show:true
     };
   },
   created() {
     this.queryParams = this.$route.query
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
-    let auditContents = sessionStorage.getItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`)
-    this.auditContents = JSON.parse(auditContents)
-    this.auditContentStatus = sessionStorage.getItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`)
+    if(this.queryParams?.goto){
+      this.searchApproved(this.queryParams.requirementAekoId)
+      this.auditContentStatus = '已审批'
+      this.show = false
+    }
   },
   methods: {
+    // 查看mtz变更
+    toMtzUrl() {
+      !this.transmitObj && (this.transmitObj = {})
+      const aekoNum = this.transmitObj.aekoApprovalDetails.aekoNum
+      const workflow = this.transmitObj.aekoApprovalDetails.workFlowDTOS || []
+      const workflowDecy = window.btoa(unescape(encodeURIComponent(JSON.stringify(workflow))))
+      const requirementAekoId = this.transmitObj.aekoApprovalDetails.requirementAekoId
+
+      const params = {
+        name: 'aekoMtzlist',
+        query: {
+          requirementAekoId,
+          aekoNum,
+          workflow: workflowDecy
+        }
+      }
+      const routeData = this.$router.resolve(params)
+      window.open(routeData.href, '_blank')
+      // console.log(params, this.transmitObj)
+    },
     loadRecommendData() {
       this.recommendationFormPendingApprovalList = this.auditContents.slice(
         (this.page.currPage - 1) * this.page.pageSize,
         this.page.currPage * this.page.pageSizes
       );
     },
+    // 查询数据
+    searchApproved(requirementAekoId){
+      searchApproved(requirementAekoId).then(res=>{
+        this.auditContents = res?.data||[];
+        if(res?.code=='200'){
+          this.page.totalCount = res.data?.length || 0;
+          this.recommendationFormPendingApprovalList = res.data.slice(
+            this.page.currPage - 1,
+            this.page.pageSize
+          );
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
+      })
+    }
   },
 };
 </script>
