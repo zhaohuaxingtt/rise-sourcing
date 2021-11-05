@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-03 15:43:42
+ * @LastEditTime: 2021-11-05 10:11:00
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -110,10 +110,26 @@ export function alterationCbdSummary({ workFlowId }) {
   })
 }
 
+// Linie预览 查询CBD汇总表
+export function alterationCbdSummaryByLinie({ requirementAekoId, linieId }) {
+  return requst_sourcing({
+    url: `/aeko/get/alterationCbdSummary/${requirementAekoId}/${linieId}`,
+    method: 'GET',
+  })
+}
+
 // 切换零件下拉框接口
 export function getSwitchParts({ workFlowId }) {
   return requst({
     url: `/aeko/purchasing/aekopart/getSwitchParts/${workFlowId}`,
+    method: 'GET',
+  })
+}
+
+// Linie预览获取切换零件下拉框接口
+export function getSwitchPartsByParams({ requirementAekoId, linieId }) {
+  return requst({
+    url: `/aeko/purchasing/aekopart/getSwitchPartsByParams/${requirementAekoId}/${linieId}`,
     method: 'GET',
   })
 }

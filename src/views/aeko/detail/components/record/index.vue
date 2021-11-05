@@ -36,6 +36,9 @@
       <template #akeoAuditType="scope">
         {{ getAdiType(scope.row.akeoAuditType) }}
       </template>
+      <template #startUser="scope">
+        <span>{{scope.row.startUser ? scope.row.startUser.nameZh : '' }}</span>
+      </template>
       <template #comment="scope">
         <span>{{ itemCommentContent(scope.row) }}</span>
       </template>
@@ -172,7 +175,7 @@ export default {
     const {query} = this.$route;
     const {from=''} = query;
     if(from != 'check'){
-      this.tableTitle = tableTitle.filter((item)=>item.key !=='AEKO_DETAIL_RECORD_TIJIAOREN');
+      this.tableTitle = tableTitle.filter((item)=>item.props !=='startUser');
     }
   },
   methods: {
