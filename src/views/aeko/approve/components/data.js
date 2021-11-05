@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-04 16:21:38
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-05 11:32:26
  * @Description: 
  */
 
@@ -162,7 +162,7 @@ export const tableTitle = [
   { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:110  },
   { props: "departmentName", name: "commodity科室", key: "COMMODITYKESHI", tooltip: true },
   { props: "buyerName", name: "专业采购员", key: "ZHUANYECAIGOUYUAN", tooltip: true },
-  { props: "chiefName", name: "CSF股长", key: "CSFGUZHANG", tooltip: true },
+  { props: "chiefName", name: "CSF股长", key: "CSFGUZHANG", tooltip: true, width:220  },
 ]
 
 // 表头
