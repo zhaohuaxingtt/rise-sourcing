@@ -14,6 +14,7 @@
 import previewCover from './components/previewCover'
 import editCover from './components/editCover'
 import { roleMixins } from "@/utils/roleMixins";
+import { setLogModule } from "@/utils";
 export default {
     name:'aekoDetailCover',
     mixins: [roleMixins],
@@ -28,6 +29,7 @@ export default {
         }
     },
     created(){
+        setLogModule('AEKO封面表态')
         const roleList = this.roleList;
         this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
         this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员

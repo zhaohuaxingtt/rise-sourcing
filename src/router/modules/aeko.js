@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-11-04 17:00:00
+ * @LastEditTime: 2021-11-04 17:47:46
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -51,6 +51,15 @@ export default [
             title: 'AEKO详情'
         },
         component: () => import("@/views/aeko/detail"),
+      },
+      // 
+      {
+        path: "aekodetailItem",
+        name: "aekodetailItem",
+        meta: {
+            title: 'AEKO详情'
+        },
+        component: () => import("@/views/aeko/detail/components"),
       },
       {
         path: "quondampart",

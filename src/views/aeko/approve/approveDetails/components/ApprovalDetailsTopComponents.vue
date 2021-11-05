@@ -14,8 +14,9 @@
 </template>
 
 <script>
-import {iNavMvp, icon, iButton, iLog, iMessage} from "rise"
+import {iNavMvp, icon, iButton, iMessage} from "rise"
 import LogButton from "./LogButton";
+import iLog from "../../../log";
 
 export default {
   name: "ApprovalDetailsComponents",
