@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-20 16:13:40
+ * @LastEditTime: 2021-11-05 15:40:06
  * @Description: 监控明细
  * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -125,8 +125,11 @@ export default {
         if (res?.result) {
           this.partList = res.data
         } else {
+          this.partList = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)  
         }
+      }).catch(e => {
+        this.partList = []
       }).finally(() => {
         this.loading = false
         this.$refs.monitorDetailPartList.resetSelectPart()
