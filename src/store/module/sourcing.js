@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-10-27 13:22:24
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-05 15:13:26
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
  */
@@ -84,6 +84,16 @@ const state = {
     },
     {
       value: 8,
+      name: "竞价开标",
+      message: 0,
+      url: "/sourceinquirypoint/sourcing/biddingProjectList",
+      activePath: "biddingProjectList",
+      key: "LK_JINGJIAKAIBIAO",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_BIDDINGPROJECTLIST',
+      permissionName: '寻源执行-竞价开标'
+    },
+    {
+      value: 9,
       name: "定点管理",
       message: 0,
       url: "/sourcing/partsnomination",
@@ -93,7 +103,7 @@ const state = {
       permissionName: '寻源执行-定点管理'
     },
     {
-      value: 9,
+      value: 10,
       name: "钢材创建",
       message: 0,
       url: "/sourceinquirypoint/sourcing/steeldemandcreation",
@@ -103,7 +113,7 @@ const state = {
       permissionName: '寻源执行-钢材创建'
     },
     {
-      value: 10,
+      value: 11,
       name: "定点信/LOI",
       message: 0,
       url: "/sourceinquirypoint/sourcing/partsletter",
