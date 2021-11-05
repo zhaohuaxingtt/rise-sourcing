@@ -196,3 +196,12 @@ export function submitFlow(data) {
     data
   })
 }
+
+// 获取会议列表
+export function findMeetingPage(data) {
+  return requst({
+    url: "/nominate-apps/findMeetingPage",
+    method: "POST",
+    data
+  })
+}
