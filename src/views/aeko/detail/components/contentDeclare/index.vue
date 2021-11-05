@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-05 10:33:26
+ * @LastEditTime: 2021-11-05 11:23:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -146,8 +146,8 @@
               :label="language('ALL', '全部') | capitalizeFilter"
             ></el-option>
             <el-option
-              :value="item"
-              :label="item"
+              :value="item.carTypeProjectCode"
+              :label="item.carTypeProjectZh"
               v-for="(item,index) in investCarTypeProOptions"
               :key="item+index"
             ></el-option>

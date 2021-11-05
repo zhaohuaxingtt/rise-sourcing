@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-03 16:39:04
+ * @LastEditTime: 2021-11-05 11:36:28
  * @Description: 
 -->
 <template>
@@ -381,6 +381,10 @@ export default {
       padding: 10px;
     }
   }
+}
+
+.el-select-multi {
+  width: 70%;
 }
 
 .icon {
