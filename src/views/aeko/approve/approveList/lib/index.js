@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-10-26 10:54:02
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-03 15:58:46
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-05 09:56:56
  * @Description: 
  */
 import {getAekoDetail} from "@/api/aeko/detail";
@@ -27,7 +27,7 @@ export function lookDetails(vm, row, _blank=true, queue=null,isfromCheck=false, 
         let transmitObj = {
           option: isfromCheck ? 5:1, // 如果从AEKO查看跳转过来
           aekoApprovalDetails: {
-            aekoNum: row.aekoNum,
+            aekoNum: row.aekoNum || row.aekoCode,
             requirementAekoId: row.requirementAekoId,
             aekoAuditType: row.auditType,
             workFlowDTOS: workFlowDTOS,
