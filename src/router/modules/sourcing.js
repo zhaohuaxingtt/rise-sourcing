@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-11-02 15:36:45
+ * @LastEditTime: 2021-11-05 15:24:50
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\sourcing.js
@@ -117,6 +117,17 @@ export default [
             name: "创建RFQ",
             meta: { title: "创建RFQ" },
             component: () => import("@/views/accessoryPart/createRfq/index"),
+        },
+        //竞价开标
+        {
+            path:"biddingProjectList",  
+            name:'biddingProjectList',
+            meta: {
+                title:"竞价开标"
+            },
+            component: () => 
+                import ("@/views/biddingProjectList"),
+            
         },
         {
           path: "partsign",

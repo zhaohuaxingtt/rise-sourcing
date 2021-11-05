@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-05 11:23:13
+ * @LastEditTime: 2021-11-05 14:33:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -60,6 +60,7 @@
             multiple
             collapse-tags
             filterable
+            clearable
             reserve-keyword
             size="mini"
             class="multipleSelect"
@@ -273,8 +274,8 @@
               @change="handleChangeCarInvestProjects($event, scope.row)"
             >
               <el-option
-                :value="item"
-                :label="item"
+                :value="item.carTypeProjectCode"
+                :label="item.carTypeProjectZh"
                 v-for="item in (scope.row.carInvestProjects || [])"
                 :key="item"
               ></el-option>
@@ -344,7 +345,7 @@ import filters from "@/utils/filters"
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload },
-  mixins: [ pageMixins, combine ],
+  mixins: [ pageMixins, combine,filters ],
   props: {
     aekoInfo: {
       type: Object,
@@ -1036,12 +1037,13 @@ export default {
     },
     // 投资车型项目下拉是否禁用
     disabledInvestCarTypePro(row){
-      console.log(row,this.disabled);
+      
       // 当模具投资变动有值时 禁用下拉
       // 内容状态为 报价中 已报价 拒绝 不禁用
-      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
+      // const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
+      // return row.mouldPriceChange || !statusDisabled || this.disabled
 
-      return row.mouldPriceChange || !statusDisabled || this.disabled
+      return this.disabled;
     },
 
   },
