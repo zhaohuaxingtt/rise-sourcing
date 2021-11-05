@@ -21,7 +21,7 @@ import bidding from "./bidding"
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default {
     components:{iPage, iNavMvp , bidding},
-    computed: {
+      computed: {
     ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"])
   }

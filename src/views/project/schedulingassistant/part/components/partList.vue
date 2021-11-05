@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-04 16:51:14
+ * @LastEditTime: 2021-11-05 16:56:24
  * @Description: 零件排程列表
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -823,7 +823,7 @@ export default {
       if (year1 > year2) {  
         return true 
       } 
-      if (week1 >= week2) { 
+      if (year1 == year2 && week1 >= week2) { 
         return true 
       } 
       return false 
