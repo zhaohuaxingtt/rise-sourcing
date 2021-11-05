@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-11-04 14:59:34
+ * @LastEditTime: 2021-11-05 11:16:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -85,7 +85,7 @@ export const approveAttachTableTitle = [
 // 审批记录表头
 export const approveReCordTableTitle = [
   { props: "akeoAuditType", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:120 },
-  { props: "a", name: "提交人", key: "AEKO_DETAIL_RECORD_TIJIAOREN", tooltip: true,width:120 },
+  { props: "startUser", name: "提交人", key: "AEKO_DETAIL_RECORD_TIJIAOREN", tooltip: true,width:120 },
   { props: "assignedDeptFullCode", name: "科室", key: "LK_AEKOKESHI", tooltip: true,width:60 },
   { props: "operation", name: "操作", key: "CAOZUO", tooltip: true,width:80 },
   { props: "assigneeName", name: "操作人", key: "CAOZUOREN", tooltip: true,width:100 },

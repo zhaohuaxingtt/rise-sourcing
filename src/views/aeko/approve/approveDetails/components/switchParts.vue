@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-10-26 16:15:46
+ * @LastEditTime: 2021-11-05 10:03:30
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -70,7 +70,7 @@
 import { switchPartsTableTitle, floatFixNum } from "../data.js";
 import { iCard, iSelect, iMessage } from "rise";
 import tableList from "rise/web/quotationdetail/components/tableList";
-import { getSwitchParts } from "@/api/aeko/approve";
+import { getSwitchParts, getSwitchPartsByParams } from "@/api/aeko/approve";
 export default {
   components: {
     iCard,
@@ -98,7 +98,13 @@ export default {
     };
   },
   created(){
-    this.workFlowId&&this.getPartsList()
+    this.queryParams = this.$route.query;
+    let str_json = window.atob(this.queryParams.transmitObj);
+    let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
+    this.transmitObj = transmitObj
+    console.log(this.queryParams);
+    console.log(transmitObj);
+    this.workFlowId?this.getPartsList():this.getSwitchPartsByParams()
   },
   methods:{
     floatFixNum,
@@ -110,6 +116,26 @@ export default {
           this.partsList = res.data;
           this.partsId = this.partsList&&this.partsList[0].key
           this.getCbdDataQuery()
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+        this.loading = false
+      }).catch(()=>{
+        this.loading = false
+      })
+    },
+    // Linie预览
+    getSwitchPartsByParams(){
+      this.loading = true
+      let params = {
+        requirementAekoId:this.transmitObj.aekoApprovalDetails.requirementAekoId,
+        linieId:this.transmitObj.aekoApprovalDetails.linieId
+      }
+      getSwitchPartsByParams(params).then(res=>{
+        if(res?.code==='200'){
+          this.partsList = res.data;
+          this.partsId = this.partsList&&this.partsList[0].key
+          // this.getCbdDataQuery()
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

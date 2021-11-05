@@ -167,8 +167,7 @@ import {
   iCard,
   iButton,
   iPagination,
-  icon,
-  iLog
+  icon
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -180,6 +179,7 @@ import Upload from '@/components/Upload'
 import {user as configUser } from '@/config'
 import aekoSelect from '../components/aekoSelect'
 import tcmList from './components/tcmList'
+import iLog from '../log'
 import {
   getManageList,
   searchAekoStatus,
@@ -495,8 +495,6 @@ export default {
       },
       // 查看日志
       checkLog(row){
-        this.bizId = row.requirementAekoId || this.$message.error('AEKO id 获取失败')
-        if(this.bizId)
         this.showDialog = true
       },
 
