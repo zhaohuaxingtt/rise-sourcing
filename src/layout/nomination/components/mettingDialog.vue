@@ -18,7 +18,7 @@
     <div class="dialog-form">
       <el-form>
       <el-form-item :label="`${language('XUANZEHUIYILEIBIE','选择会议类别')}:`">
-          <el-radio-group v-model="meetingType">
+          <el-radio-group v-model="meetingType" @change="handleChangeByMeetingType">
 					<el-radio
             v-for="(item, index) in meetingTypes"
             :key="index"
@@ -39,7 +39,7 @@
       </el-form-item>
       </el-form>
       <div class="dialog-form-sbtn">
-        <iButton :loading="loading" @click="checkNomiMeetingSubmit">{{language('QINGXUANZE', '选择')}}</iButton>
+        <iButton :loading="loading" @click="checkNomiMeetingSubmit">{{language('XUANZE', '选择')}}</iButton>
       </div>
     </div>
     <div class="body" v-loading="tableLoading">
@@ -52,8 +52,8 @@
         :tableTitle="tableTitle" 
         @handleSelectionChange="handleSelectionChange"
         :lang="true">
-        <template #uploadDate="scope">
-          {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
+        <template #startTime="scope">
+          {{ formatTime(scope.row.startTime) }}
         </template>
       </tableList>
     </div>
@@ -67,7 +67,6 @@
         :page-size="page.pageSize"
         :layout="page.layout"
         :total="page.totalCount" />
-      
     </div>
   </iDialog>
 </template>
@@ -78,9 +77,9 @@ import { mettingTableTitle as tableTitle, meetingTypes, meetingResult as meeting
 import tableList from '@/views/designate/supplier/components/tableList'
 import filters from '@/utils/filters'
 import { pageMixins } from '@/utils/pageMixins'
-
 import {
-    getMeetingPage
+    getMeetingPage,
+    findMeetingPage
 } from '@/api/designate'
 
 export default {
@@ -122,7 +121,7 @@ export default {
       nomiAppId: this.$route.query.desinateId,
       tableTitle,
       meetingTypes,
-      meetingType: '',
+      meetingType: 'CSC',
       meetingResultArray,
       meetingResult: '',
       controlHeight: 0,
@@ -140,34 +139,54 @@ export default {
     handleSelectionChange(data) {
       this.selectedData = data
     },
+    handleChangeByMeetingType() {
+      this.page.currPage = 1
+
+      this.getFetchData()
+    },
     // 获取会议列表
     getFetchData() {
-      if (!this.nomiAppId) return iMessage.error(this.language('nominationLanguage_DingDianIDNotNull','定点申请单id不能为空'))
+      // if (!this.nomiAppId) return iMessage.error(this.language('nominationLanguage_DingDianIDNotNull','定点申请单id不能为空'))
       this.tableLoading = true
-      const params = Object.assign({
-        nomiAppId: this.nomiAppId,
+      // const params = Object.assign({
+      //   nomiAppId: this.nomiAppId,
+      //   current: this.page.currPage,
+      //   size: this.page.pageSize
+      // })
+
+      findMeetingPage({
         current: this.page.currPage,
-        size: this.page.pageSize
+        size: this.page.pageSize,
+        meetingType: this.meetingType
       })
-      getMeetingPage(params).then(res => {
-        this.tableLoading = false
-        if (res.code === '200') {
-          this.tableListData = res.data.records || []
-          this.page.totalCount = res.data.total
+      .then(res => {
+        if (res.code == 200) {
+          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        console.log(res)
-      }).catch(e => {
-        this.tableLoading = false
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       })
+      .finally(() => this.tableLoading = false)
+      // getMeetingPage(params).then(res => {
+      //   this.tableLoading = false
+      //   if (res.code === '200') {
+      //     this.tableListData = res.data.records || []
+      //     this.page.totalCount = res.data.total
+      //   } else {
+      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+      //   }
+      //   console.log(res)
+      // }).catch(e => {
+      //   this.tableLoading = false
+      //   iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      // })
     },
     async checkNomiMeetingSubmit() {
       console.log(this.selectedData)
       const { query } = this.$route;
       const {desinateId} = query;
-      const meetingIds = this.selectedData.map(o => o.meetingId) || []
+      const meetingIds = this.selectedData.map(o => o.id) || []
       const data = {
           nominateIdArr:[Number(desinateId)],
           // nominationType: this.$store.getters.nominationType || '',
@@ -217,8 +236,10 @@ export default {
       //   this.loading = false
       //   iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       // }
+    },
+    formatTime(date) {
+      return moment({ hour: date.hour || 0, minute: date.minute || 0 }).format("HH:mm")
     }
-    
   }
 }
 </script>
