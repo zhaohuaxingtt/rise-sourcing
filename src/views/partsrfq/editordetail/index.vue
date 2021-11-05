@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-03 15:05:44
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-04 20:16:41
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\index.vue
 -->
@@ -246,7 +246,6 @@ export default {
         this.confirmTableLoading = true
         this.parmarsHasRfq['size'] = this.pageSize || 10
         this.parmarsHasRfq['current'] = this.currPage || 1
-        // this.parmarsHasRfq['rfqId'] = this.$route.query.id
         this.parmarsHasRfq['status'] = 'NOT_IN_RFQ'
         this.parmarsHasRfq['linieId'] = this.linieUserId
         this.parmarsHasRfq['buyerId'] = this.baseInfo.buyerId
