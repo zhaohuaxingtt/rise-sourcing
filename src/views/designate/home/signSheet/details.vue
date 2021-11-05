@@ -1,18 +1,18 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-10-29 11:22:43
+ * @LastEditTime: 2021-11-05 20:07:44
  * @LastEditors:  
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
 <template>
   <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
-    
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">
           {{ mode === 'add' ? language("XINJIANQIANZIDAN",'新建签字单') : language("LK_QIANZIDAN",'签字单') }}</span
         >
+
         <div class="floatright">
           <span v-if="mode === 'add'">
             <iButton @click="handleSave" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
@@ -35,6 +35,7 @@
           </span>
           
         </div>
+        <headerNav />
       </div>
       <iCard>
         
@@ -163,6 +164,7 @@ import filters from "@/utils/filters"
 import tablelist from "@/views/designate/supplier/components/tableList";
 import designateSign from "@/views/designate/home/designateSign/index";
 import addSignsheet from "./components/addSignsheet";
+import headerNav from "./components/headerNav";
 import {
   getNomiSelectedPage,
   getNomiNotSelectedPage,
@@ -207,6 +209,7 @@ export default {
     iPagination,
     tablelist,
     addSignsheet,
+    headerNav
     // designateSign
   },
   created() {

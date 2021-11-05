@@ -33,8 +33,14 @@
           </a>
         </div>
       </template>
+      <template #endTime="scope">
+        <span>{{scope.row.endTime|formatDate}}</span>
+      </template>
       <template #akeoAuditType="scope">
         {{ getAdiType(scope.row.akeoAuditType) }}
+      </template>
+      <template #startUser="scope">
+        <span>{{scope.row.startUser ? scope.row.startUser.nameZh : '' }}</span>
       </template>
       <template #comment="scope">
         <span>{{ itemCommentContent(scope.row) }}</span>
@@ -104,6 +110,7 @@ import {
   auditFileSave,
   auditFileDelete
 } from '@/api/aeko/detail/approveAttach'
+import * as dateUtils from "@/utils/date";
 
 export default {
   name: "aekoDetailRecord",
@@ -115,6 +122,13 @@ export default {
     iPagination,
     tablelist,
     iFileDialog
+  },
+  filters:{
+    formatDate(value) {
+      if (value == null || value == '') return ''
+      let date = new Date(value);
+      return dateUtils.formatDate(date, 'yyyy-MM-dd hh:mm')
+    },
   },
   computed: {
     ...Vuex.mapState({
@@ -174,7 +188,7 @@ export default {
     const {query} = this.$route;
     const {from=''} = query;
     if(from != 'check'){
-      this.tableTitle = tableTitle.filter((item)=>item.key !=='AEKO_DETAIL_RECORD_TIJIAOREN');
+      this.tableTitle = tableTitle.filter((item)=>item.props !=='startUser');
     }
   },
   methods: {

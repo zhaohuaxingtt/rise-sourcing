@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-09-23 16:48:15
+ * @LastEditTime: 2021-11-05 15:37:43
  * @LastEditors: Hao,Jiang
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
@@ -77,11 +77,11 @@ export default{
       }
       .itemsb{
         border-radius: 3px;
-        width: 136px;
+        width: 120px;
         height: 13px;
         background: #CDD4E2;
         &.long {
-          width: 225px;
+          width: 195px;
         }
         &.active {
           background: #6192F0;

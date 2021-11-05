@@ -1,5 +1,5 @@
 <template>
-  <div class="header-nav margin-bottom25">
+  <div class="margin-bottom25 header-nav" >
     <span class="akeoTitle">{{language('LK_AEKOHAO_APPROVEDETAILS','AEKO号')}}:{{ transmitObj.aekoApprovalDetails.aekoNum }}</span>
     <div style="display: flex;justify-content: space-between;align-items: center">
       <iNavMvp v-if="show" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>

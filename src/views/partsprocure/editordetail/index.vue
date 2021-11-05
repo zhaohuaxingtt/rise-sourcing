@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-04 17:57:28
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-05 15:53:53
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
 -->
@@ -634,7 +634,8 @@
 				this.detailLoading = true
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
-					this.detailData = res.data;
+					console.log(res.data,'-------------------');
+					this.detailData = res.data ||[];
 					this.checkFactoryString = res.data.procureFactory
 					//-------------修改零件采购项目逻辑Starting
 					this.infoItem = res.data
