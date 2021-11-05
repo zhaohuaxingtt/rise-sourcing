@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 19:56:57
- * @LastEditTime: 2021-11-04 14:35:24
+ * @LastEditTime: 2021-11-05 10:27:30
  * @LastEditors:  
 -->
 <template>
@@ -127,7 +127,8 @@ export default {
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
         const list = row.filter((item)=> item.priceReduceRate!='0');
-        return list.length ? list[0].yearMonth : '-'
+        console.log(list,'---------------------------');
+        return list.length ? list[0].yearMonths : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
        let strList = [];

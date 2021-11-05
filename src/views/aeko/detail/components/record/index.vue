@@ -33,6 +33,9 @@
           </a>
         </div>
       </template>
+      <template #endTime="scope">
+        <span>{{scope.row.endTime|formatDate}}</span>
+      </template>
       <template #akeoAuditType="scope">
         {{ getAdiType(scope.row.akeoAuditType) }}
       </template>
@@ -106,6 +109,7 @@ import {
   auditFileSave,
   auditFileDelete
 } from '@/api/aeko/detail/approveAttach'
+import * as dateUtils from "@/utils/date";
 
 export default {
   name: "aekoDetailRecord",
@@ -117,6 +121,13 @@ export default {
     iPagination,
     tablelist,
     iFileDialog
+  },
+  filters:{
+    formatDate(value) {
+      if (value == null || value == '') return ''
+      let date = new Date(value);
+      return dateUtils.formatDate(date, 'yyyy-MM-dd hh:mm')
+    },
   },
   computed: {
     ...Vuex.mapState({
