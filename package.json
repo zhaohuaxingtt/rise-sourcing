@@ -16,7 +16,7 @@
     "build:win:dev:publish": "vue-cli-service build --mode dev && node ./loadersPlugins/publishDevCode.js",
     "conect": "node ./loadersPlugins/publishDevCode.js",
     "fix-memory-limit": "cross-env LIMIT=3500 increase-memory-limit",
-    "bidding":"npm install git+http://gitlab.devops.csvw.com/RISE/front-bidding.git#dev"
+    "bidding": "npm install git+http://gitlab.devops.csvw.com/RISE/front-bidding.git#dev"
   },
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
