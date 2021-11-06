@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-05 10:10:10
+ * @LastEditTime: 2021-11-06 12:58:50
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -114,6 +114,8 @@
             :key="$componentIndex"
             :workFlowId="workFlowId"
             :quotationId="partsId"
+            :partInfo="partInfo"
+            :basicInfo="basicInfo"
           />
         </template>
       </el-tab-pane>
@@ -131,9 +133,7 @@ import damages from "./damages";
 import sampleFee from "./sampleFee";
 import { SummaryTableTitle, totalRowClass, floatFixNum, list, typeObj } from "../data.js";
 import { alterationCbdSummary, cbdDataQuery, alterationCbdSummaryByLinie } from "@/api/aeko/approve";
-import { 
-  getQuotationInfo,
- } from '@/api/aeko/quotationdetail'
+import { getQuotationInfo, getAekoQuotationSummary } from "@/api/aeko/quotationdetail"
 export default {
   components: {
     iCard,
@@ -206,11 +206,13 @@ export default {
       tableData: [],
       workFlowId: "",
       quotationId: "",
+      partInfo:{},
+      basicInfo:{}
     };
   },
   computed: {
     apriceChangeVal() {
-      return this.aPriceChangeObj[this.partsId]?.total?.toFixed(4) || 0;
+      return (+this.switchPartsTable[0]?.apriceChange).toFixed(4) || 0;
     },
   },
   created() {
@@ -226,6 +228,44 @@ export default {
   },
   methods: {
     totalRowClass,
+    // 获取基础信息
+    async getBasicInfo(quotationId) {
+      await getQuotationInfo(quotationId).then(async (res) => {
+        console.log(res);
+        
+        const {code, data = {}} = res;
+        if (code == 200) {
+          const {
+            aekoPartInfo = {},
+            quotationPriceSummaryInfo = {},
+            rfqId = '',
+            fsnrGsnrNum = '',
+            source = '',
+            round,
+            objectAekoId
+          } = data;
+          this.partInfo = {
+            ...aekoPartInfo,
+            quotationId,
+            rfqId,
+            fsNum: fsnrGsnrNum,
+            round,
+            objectAekoId
+          };
+          this.basicInfo = data;
+          let item = {
+            ...quotationPriceSummaryInfo,
+            originAPrice:quotationPriceSummaryInfo.originalAPrice,
+            tooling:quotationPriceSummaryInfo.toolingCost,
+            source:source
+          }
+          this.switchPartsTable = [item];
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).catch((err) => {
+      }).finally(() => this.loading = false);
+    },
     spanMethod({ row, columnIndex }) {
       if (row.total) {
         if (!columnIndex) {
@@ -304,7 +344,51 @@ export default {
         linieId:this.transmitObj.aekoApprovalDetails.linieId
       }
       alterationCbdSummaryByLinie(params).then(res=>{
-        console.log(res);
+        if (res?.code === "200") {
+          let data = res?.data || [];
+          let aPriceChangeObj = {};
+          data.length &&
+            data.forEach((item, index) => {
+              item.index = 1 + index;
+              if (aPriceChangeObj[item.quotationId]) {
+                aPriceChangeObj[item.quotationId] = {
+                  total: math.add(
+                    aPriceChangeObj[item.quotationId].total,
+                    math.bignumber(item.alteration || 0)
+                  ),
+                  partNum: item.partNum,
+                };
+              } else {
+                aPriceChangeObj[item.quotationId] = {
+                  total: math.bignumber(item.alteration || 0),
+                  partNum: item.partNum,
+                };
+              }
+            });
+          Object.keys(aPriceChangeObj).forEach((key) => {
+            let item = {
+              index: "",
+              partNum: aPriceChangeObj[key].partNum,
+              total: +aPriceChangeObj[key].total,
+            };
+            data.push(item);
+          });
+          let arr_group = {};
+          data.forEach((i) => {
+            if (!arr_group[i.partNum]) {
+              arr_group[i.partNum] = [i];
+            } else {
+              arr_group[i.partNum] = [...arr_group[i.partNum], i];
+            }
+          });
+          this.aPriceChangeObj = aPriceChangeObj;
+          let arr = Object.values(arr_group).reduce((arr, i) => {
+            return [...arr, ...i];
+          }, []);
+          this.tableData = arr;
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+        }
       })
     },
     // 获取A价变动其它数据
@@ -332,11 +416,78 @@ export default {
           }
         );
       }else{
-        // 预览查询接口
-        iMessage.warn('接口调试中');
+        this.getAekoQuotationSummary(partsId)
       }
 
       this.tabChange();
+    },
+    getAekoQuotationSummary(quotationId) {
+      this.loading = true
+      this.getBasicInfo(quotationId)
+      getAekoQuotationSummary({ quotationId })
+      .then(res => {
+        console.log(res);
+        if (res.code == 200) {
+          let data = res.data;
+          let aPriceChangeData = {
+              // CBD-变动值
+              cbdLevelVO: {},
+              // 原材料/散件成本
+              rawMaterialList: [],
+              // // 制造成本
+              makeCostList: [],
+              // // 管理费
+              manageFeeList: [],
+              // // 其它费用
+              otherFeeList: [],
+              // // 利润
+              profitVO: {},
+              // // 报废成本
+              scrapVO: {},
+          }
+          this.loading = false;
+          this.hasData = true;
+          let cbdLevelVO = {
+            materialChange:res.data.materialChange||0,
+            makeCostChange:res.data.makeCostChange||0,
+            discardCostChange:res.data.discardCostChange||0,
+            manageFeeChange:res.data.manageFeeChange||0,
+            otherFee:res.data.otherFee||0,
+            profitChange:res.data.profitChange||0,
+          }
+          aPriceChangeData.cbdLevelVO = cbdLevelVO
+          aPriceChangeData.profitVO = res.data.profitVO||{}
+          aPriceChangeData.scrapVO = res.data.scrapVO||{}
+          aPriceChangeData.otherFeeList = res.data.otherFeeList||[]
+          aPriceChangeData.manageFeeList = res.data.manageFeeList||[]
+          aPriceChangeData.makeCostList = res.data.makeCostList||[]
+          aPriceChangeData.rawMaterialList = res.data.rawMaterialList||[]
+          this.aPriceChangeData = aPriceChangeData
+
+          // this.responseData = {}
+          // this.responseData.cbdSummarySelected = res.data.cbdSummarySelected
+
+          // this.apriceChange = res.data.apriceChange || "0"
+          // this.apriceChangeDisabled = !+this.apriceChange
+          // this.sourceApriceChange = this.apriceChange
+          // this.setCbdSummarySelected(res.data.cbdSummarySelected)
+          // this.rawMaterialsTableData = Array.isArray(res.data.rawMaterialList) ? res.data.rawMaterialList : []
+          // this.manufacturingCostTableData = Array.isArray(res.data.makeCostList) ? res.data.makeCostList : []
+          // this.scrapCostTableData = this.setScrapCostTableData(res.data.scrapVO ? [res.data.scrapVO] : [])
+          // this.manageTableData = this.setManageTableData(Array.isArray(res.data.manageFeeList) ? res.data.manageFeeList : [])
+          // this.otherCostTableData = this.setOtherCostTableData(Array.isArray(res.data.otherFeeList) ? res.data.otherFeeList : [])
+          // this.profitTableData = this.setProfitTableData(res.data.profitVO ? [res.data.profitVO] : [])
+          // this.rawMaterialsSumData.materialChange = res.data.materialChange
+          // this.manufacturingCostSumData.makeCostChange = res.data.makeCostChange
+          // this.discardCostChange = res.data.discardCostChange
+          // this.manageFeeChange = res.data.manageFeeChange
+          // this.otherFee = res.data.otherFee
+          // this.profitChange = res.data.profitChange
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => this.loading = false)
     },
   },
   filters:{

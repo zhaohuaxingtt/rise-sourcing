@@ -1,15 +1,15 @@
 /*
  * @Author: your name
  * @Date: 2021-08-16 20:45:35
- * @LastEditTime: 2021-09-07 15:50:20
- * @LastEditors: your name
+ * @LastEditTime: 2021-11-06 13:35:31
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\svw\index.js
  */
 
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_SUPPLIER_SVW)
+const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/aon')
 
 // 总览
 export function marketOverview(data) {

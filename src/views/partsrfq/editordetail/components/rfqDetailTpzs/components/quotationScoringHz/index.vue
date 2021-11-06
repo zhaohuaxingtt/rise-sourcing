@@ -440,7 +440,7 @@ export default{
         fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
           this.supplierTableLoading = false
           if(res.code == 200 && res.data && res.data.bdlInfoList){
-            const data = translateDataListSupplier(res.data.bdlInfoList)
+            const data = translateDataListSupplier(res.data.bdlInfoList) // 数据模型转化。
             this.supplierData = data.dataList
             this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
             this.supplierLeftLit = getleftTittleList(this.backChoose)

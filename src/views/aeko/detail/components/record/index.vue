@@ -33,6 +33,9 @@
           </a>
         </div>
       </template>
+      <template #endTime="scope">
+        <span>{{scope.row.endTime|formatDate}}</span>
+      </template>
       <template #akeoAuditType="scope">
         {{ getAdiType(scope.row.akeoAuditType) }}
       </template>
@@ -97,6 +100,7 @@ import iFileDialog from 'rise/web/components/iFile/dialog'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {iCard, iButton, iPagination, iInput} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
+import { setLogModule } from "@/utils";
 import {
   findHistoryByAeko,
   submitForApproval
@@ -106,6 +110,7 @@ import {
   auditFileSave,
   auditFileDelete
 } from '@/api/aeko/detail/approveAttach'
+import * as dateUtils from "@/utils/date";
 
 export default {
   name: "aekoDetailRecord",
@@ -117,6 +122,13 @@ export default {
     iPagination,
     tablelist,
     iFileDialog
+  },
+  filters:{
+    formatDate(value) {
+      if (value == null || value == '') return ''
+      let date = new Date(value);
+      return dateUtils.formatDate(date, 'yyyy-MM-dd hh:mm')
+    },
   },
   computed: {
     ...Vuex.mapState({
@@ -171,6 +183,7 @@ export default {
     this.getFetchData()
   },
   created(){
+    setLogModule('AEKO表态-详情页-审批记录')
     // 如果是从AEKO查看过来的 tableTitle需要展示一个提交人字段
     const {query} = this.$route;
     const {from=''} = query;

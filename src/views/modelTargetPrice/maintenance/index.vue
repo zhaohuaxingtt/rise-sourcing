@@ -122,7 +122,7 @@ export default {
       attachmentDialogVisible: false,
       updateDialogVisible: false,
       approvalDialogVisible: false,
-      uploadUrl: process.env.VUE_APP_SOURCING_ZDH,
+      uploadUrl: process.env.VUE_APP_SOURCING,
       recordId: '',
       applyId: '',
       rfqId: '',

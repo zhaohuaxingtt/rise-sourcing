@@ -1,9 +1,9 @@
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
-const VUE_APP_BMCHANGE = axios(process.env.VUE_APP_BMCHANGE)
-const VUE_APP_BMMOLD = axios(process.env.VUE_APP_BMMOLD)
-const BMMOLDFile = axiosFile(process.env.VUE_APP_BMMOLD)
+const VUE_APP_BMCHANGE = axios(process.env.VUE_APP_TOOLING + '/bmChange')
+const VUE_APP_BMMOLD = axios(process.env.VUE_APP_TOOLING + '/bmMold')
+const BMMOLDFile = axiosFile(process.env.VUE_APP_TOOLING + '/bmMold')
 const common = axios(process.env.VUE_APP_BASE_UPLOAD_API);
 
 //变更单详情-基础信息【专业采购员】

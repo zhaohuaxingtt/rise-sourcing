@@ -11,7 +11,7 @@ import store from '@/store'
 
 const requst = axios(process.env.VUE_APP_COMMON)
 const fileRequst = axios(process.env.VUE_APP_NEW_COMMON)
-const requstUploads = axios(process.env.VUE_APP_AON)
+const requstUploads = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
 
 export function uploadFile(parmars) {
   return requst({

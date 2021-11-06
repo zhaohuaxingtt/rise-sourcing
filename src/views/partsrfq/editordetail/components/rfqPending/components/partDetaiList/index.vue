@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Please set LastEditors
+ * @LastEditors:  
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -159,10 +159,12 @@ export default {
     },
     // 跳转详情
     openPage(item) {
+      console.log(JSON.stringify(item),item.partProjectType,'-----------================');
       const resolve = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(item),
+           projectId: item.id,
           businessKey:item.partProjectType //新增业务标识。
         },
       });

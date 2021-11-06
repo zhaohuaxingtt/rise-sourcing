@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-27 16:06:44
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 13:58:50
+ * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
@@ -50,6 +50,7 @@ import {
 import tableList from 'rise/web/quotationdetail/components/tableList';
 import { developmentCostTableTitle as tableTitle,developmentCostInfos,statesFilter } from "rise/web/quotationdetail/components/mouldAndDevelopmentCost/components/data.js"
 import { getCbdkent } from "@/api/aeko/approve";
+import { getDevFeeByLinie } from "@/api/rfqManageMent/quotationdetail"
 import { cloneDeep } from "lodash"
 export default {
   name:'developmentCost',
@@ -61,6 +62,10 @@ export default {
     iText,
   },
   props:{
+    basicInfo:{
+      type:Object,
+      default:()=>{},
+    },
     workFlowId:{
       type:String,
       default:''
@@ -84,7 +89,7 @@ export default {
   },
   methods:{
     init(){
-      this.getCbdkent();
+      this.workFlowId?this.getCbdkent():this.getCbdkentByLinie();
     },
     // 获取开发费列表数据
     async getCbdkent(){
@@ -109,6 +114,29 @@ export default {
 
       }).catch(()=>this.loading = false)
     },
+    getCbdkentByLinie(){
+      this.loading = true
+      getDevFeeByLinie({
+        rfqId: this.basicInfo.rfqId,
+        quotationId: this.basicInfo.quotationId,
+        cbdLevel: this.basicInfo.currentCbdLevel || this.basicInfo.cbdLevel
+      }, this.basicInfo.supplierId)
+      .then(res => {
+        if (res.code == 200) {
+          this.tableListData = Array.isArray(res.data.devFeeInfoList) ? res.data.devFeeInfoList : []
+          this.$set(this.dataGroup, "devFee", res.data.devFee)
+          this.$set(this.dataGroup, "rfqDevFeeTotal", res.data.rfqDevFeeTotal)
+          this.$set(this.dataGroup, "shareDevFee", res.data.shareDevFee)
+          this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity)
+          this.$set(this.dataGroup, "unitPrice", res.data.unitPrice)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
+    }
   },
 }
 </script>

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-11-04 14:31:13
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-06 12:09:53
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
  */
@@ -10,8 +10,8 @@ import axios from "@/utils/axios"
 import { serialize } from "@/utils"
 import download from '@/utils/axios.download'
 
-const requst = axios(process.env.VUE_APP_RFQ)
-const fileRequst = download(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const fileRequst = download(process.env.VUE_APP_SOURCING)
 
 // 获取模具预算管理列表
 export function getMouldBudget(params) {
@@ -192,6 +192,15 @@ export function updateNominate(data) {
 export function submitFlow(data) {
   return requst({
     url: "/nominate-apps/submitFlow",
+    method: "POST",
+    data
+  })
+}
+
+// 获取会议列表
+export function findMeetingPage(data) {
+  return requst({
+    url: "/nominate-apps/findMeetingPage",
     method: "POST",
     data
   })

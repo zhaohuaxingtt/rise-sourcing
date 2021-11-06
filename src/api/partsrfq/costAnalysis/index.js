@@ -8,7 +8,7 @@
  */
 import axios from '@/utils/axios'
 
-const request = axios(process.env.VUE_APP_AON)
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
 
 //获取默认Cost Structure分析信息
 export function getDefaultCostStructure(params) {

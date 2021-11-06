@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-09-23 16:41:55
+ * @LastEditTime: 2021-11-05 15:37:12
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
@@ -95,17 +95,20 @@ export const timeList = [
 
 
 export const iconList_car = { //汽车图标
-  'a2':{
-    icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
-  },
+  // 'a2':{
+  //   icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
+  // },
   'a6':{
     icon:'icondingdianguanlijiedian-jinhangzhong' //蓝色
   },
   'a3':{
     icon:'iconbaojiafenxi-zhengchejindu-hong' //红色
   },
-  'a1':{
+  'a2':{
     icon:'iconbaojiafenxi-zhengchejindu-cheng' //橙色
+  },
+  'a1':{
+    icon:'iconjindu_jinhangzhong_lv' //绿色
   },
   'a4':{
     icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
@@ -137,7 +140,7 @@ export const iconList_all_times = { //整体任务进度以及每格进度
     icon: 'iconzhuanxiangfenxigongju-landian' //蓝色
   },
   'a7': {
-    icon: 'iconzhuanxiangfenxigongju-hong' //红色
+    icon: 'iconbaojiapingfengenzong-jiedian-hong' //红色
   }
 }
 

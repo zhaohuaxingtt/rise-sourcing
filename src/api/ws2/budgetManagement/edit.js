@@ -1,9 +1,9 @@
 import axios from '@/utils/axios'
 
-const INVESTMENT = axios(process.env.VUE_APP_INVESTMENT)
-const CARTYPE = axios(process.env.VUE_APP_CARTYPE)
-const REFCARTYPEPRO = axios(process.env.VUE_APP_REFCARTYPEPRO)
-const BUILDINVESTMENT = axios(process.env.VUE_APP_BUILDINVESTMENT)
+const INVESTMENT = axios(process.env.VUE_APP_TOOLING  + '/investment')
+const CARTYPE = axios(process.env.VUE_APP_TOOLING  + '/cartype')
+const REFCARTYPEPRO = axios(process.env.VUE_APP_TOOLING  + '/refcartypepro')
+const BUILDINVESTMENT = axios(process.env.VUE_APP_TOOLING  + '/buildInvestment')
 
 //获取车型下拉列表-SOP时间小于当前时间列表
 export function getCartypePulldown(parmars) {
