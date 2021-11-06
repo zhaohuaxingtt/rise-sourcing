@@ -9,7 +9,7 @@
 
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_SUPPLIER_TYP)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 获取预设规则列表数据
 export function getNominateRulesList(params) {

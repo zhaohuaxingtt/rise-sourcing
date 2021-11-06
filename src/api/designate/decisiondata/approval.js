@@ -1,18 +1,18 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-28 13:41:56
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 13:01:45
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 12:19:04
  * @Description: 审批流相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\approval.js
  */
 
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_SOURCING_ZDH)
-const requstUserCenter = axios(process.env.VUE_APP_USER_CENTER_M)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const requstUserCenter = axios(process.env.VUE_APP_USER_CENTER_API)
 const requstApproval = axios(process.env.VUE_APP_APPROVAL)
-const requstRfq = axios(process.env.VUE_APP_RFQ )
+const requstRfq = axios(process.env.VUE_APP_SOURCING )
 
 // 获取审批节点列表
 export function getApprovalNode(nomiAppId) {

@@ -7,7 +7,7 @@
  * @FilePath: \rise\src\api\partsprocure\home\index.js
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_PART_PROCURE)
+const requst = axios(process.env.VUE_APP_SOURCING)
 //获取零件采购列表。
 export function getTabelData(parmars){
   return requst({

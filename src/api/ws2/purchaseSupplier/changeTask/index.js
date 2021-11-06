@@ -1,9 +1,9 @@
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
-const VUE_APP_BMNEWCHANGE = axios(process.env.VUE_APP_BMNEWCHANGE)
-const VUE_APP_BMCHANGESUPPLIER = axios(process.env.VUE_APP_BMCHANGESUPPLIER)
-const INVESTMENTFile = axiosFile(process.env.VUE_APP_INVESTMENT)
+const VUE_APP_BMNEWCHANGE = axios(process.env.VUE_APP_TOOLING + '/bmNewChange')
+const VUE_APP_BMCHANGESUPPLIER = axios(process.env.VUE_APP_TOOLING + '/bmChangeSupplier')
+const INVESTMENTFile = axiosFile(process.env.VUE_APP_TOOLING  + '/investment')
 //BM新增单变更车型下拉列表
 export function bmNewChangeCarTypePullDown(parmars) {
     return VUE_APP_BMNEWCHANGE({

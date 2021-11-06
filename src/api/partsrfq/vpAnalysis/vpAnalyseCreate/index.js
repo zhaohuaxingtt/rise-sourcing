@@ -8,7 +8,7 @@
 import axios from '@/utils/axios'
 const requstParts = axios(process.env.VUE_APP_PARTSPROCURE)
 
-const request = axios(process.env.VUE_APP_AON)
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
 
 //车型计划产量与现实累计产量分析（截止2021-02）
 export function getCarModelProjectList(params) {

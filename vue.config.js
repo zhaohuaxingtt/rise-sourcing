@@ -117,140 +117,11 @@ module.exports = {
     https: false,
     hot: true,
     proxy: {
-      '/supplierApiDL': {
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiDL': '',
-        },
-      },
-      '/supplierApiWJS': {
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiWJS': '',
-        },
-      },
-      "/supplierservice": {
-        target: "http://10.122.17.38:8010",
-        changeOrigin: true,
-      },
-      // ------------------ 共用地址 end ------------------------------
-      // ------------------ 共用地址 start ----------------------------
-      "/supplier": {
-        target: "http://10.122.17.38:8017",
-        changeOrigin: true
-      },
-      '/projectApi': {
-        target: 'http://10.122.17.38:8005',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/projectApi': '',
-        },
-      },
-      '/approvalApi': {
-        target: 'http://10.122.17.38:8012',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/approvalApi': '',
-        },
-      },
-      '/quotationApiDL': {
-        // target: 'http://10.160.138.38:8788',
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/quotationApiDL': '',
-        },
-      },
-
-      '/supplierApiWdl': {
-        //   供应商
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiWdl': '',
-        },
-      },
-      '/supplierApiXW': {
-        //   供应商
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiXW': '',
-        },
-      },
-      '/sourcingApiBob': {
-        //   供应商
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/sourcingApiBob': '',
-        },
-      },
-      '/supplierApiMH': {
-        target: 'http://10.122.17.38:8025',
-        // target: 'http://192.168.50.50:8029/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiMH': '',
-        },
-      },
-      '/supplierApiWDL': {
-        target: 'http://10.122.17.38:8025',
-        // target: 'http://10.160.137.16:8029/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiWDL': '',
-        },
-      },
-      '/supplierApiTYP': {
-        target: 'http://10.122.17.38:8025',
-        // target: 'http://192.168.50.152:8029/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiTYP': '',
-        },
-      },
-      '/procurementrequirementZZB': {
-        target: 'http://10.122.17.38:8023',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/procurementrequirementZZB': '',
-        },
-      },
-      '/mock': {
-        target: 'https://www.fastmock.site/mock',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/mock': '/mock',
-        },
-      },
-      '/nego': {
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/nego': '/nego',
-        },
-      },
       '/tpInfoApi': {
         target: 'http://10.122.17.38:8023',
-        // target: 'http://10.160.142.20:8023',
-        // target: 'http://10.160.141.45:8023',
-        // target: 'http://10.160.141.218:8023', // 真源
-        // target: 'http://10.152.2.129:18024',  // 余毅
-        // target: 'http://10.160.139.21:8023',  // 廖理
-        // target: 'http://10.152.2.120:3181', // 光弘
         changeOrigin: true,
         pathRewrite: {
           '^/tpInfoApi': '',
-        },
-      },
-      '/partProcureApi': {
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/partProcureApi': '',
         },
       },
       '/commonApi': {
@@ -260,152 +131,33 @@ module.exports = {
           '^/commonApi': '',
         },
       },
-      '/rfqApi': {
+      '/sourcingApi': {
+        //   供应商
         target: 'http://10.122.17.38:8025',
-        // target: 'http://10.160.143.190:8025',
-        // target: 'http://rise-front-web.apps.vmocp-dev.csvw.com', // SIT
-        // target: 'http://10.160.137.16:8029',  // 周德华
-        // target: 'http://192.168.50.89:8029', // 王洁松
-        // target: 'http://10.160.141.72:8029', // 李自豪
-        // target: 'http://192.168.50.152:8029', // 谭易平
-        // target: 'http://10.160.137.16:8029', // 马浩
-        // target: 'http://10.160.141.218:8018',
         changeOrigin: true,
         pathRewrite: {
-          '^/rfqApi': '',
-          // "^/rfqApi": "/api"
-        },
-      },
-      '/wsApi': {
-        target: 'ws://10.122.17.38:8014',
-        changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          '^/wsApi': '',
-        },
-      },
-      '/dictionaryApi': {
-        // 数据字典api地址
-        target: 'http://10.122.17.38:8011',
-        // target: 'http://10.122.17.38:8011',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/dictionaryApi': '',
+          '^/sourcingApi': '',
         },
       },
       '/usercenterApi': {
-        // usercenter.../唐开雄
-        // target: 'http://10.122.18.166:8015',
         target: 'http://10.122.17.38:8015',
-        // target:'http://10.160.137.165:8015',
         changeOrigin: true,
         pathRewrite: {
           '^/usercenterApi': '',
         },
       },
-      '/partsProcureApi': {
-        // partsProcure.../许睿
-        target: 'http://10.122.17.38:8018',
+      '/dictionaryApi': {
+        target: 'http://10.122.17.38:8011',
         changeOrigin: true,
         pathRewrite: {
-          '^/partsProcureApi': '',
+          '^/dictionaryApi': '',
         },
       },
-      '/ws2Api': {
-        target: 'http://10.122.17.38:8022',	//	vmsit
+      '/projectApi': {
+        target: 'http://10.122.17.38:8005',
         changeOrigin: true,
         pathRewrite: {
-          '^/ws2Api': '',
-        },
-      },
-      '/supplierApiRfqlist': {
-        target: 'http://10.122.17.38:8025',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApiRfqlist': '',
-        },
-      },
-      '/supplierApi': {
-        target: 'http://10.122.17.38:8010',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierApi': '',
-        },
-      },
-      '/quotationApi': {
-        target: 'http://10.122.17.38:8025/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/quotationApi': '',
-        },
-      },
-      '/partApi': {
-        target: 'http://10.122.17.38:8788',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/partApi': '',
-        },
-      },
-      '/aonApi': {
-        target: 'http://10.122.17.38:8036',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/aonApi': '',
-        },
-      },
-      '/risemessage': {
-        target: 'http://10.122.17.38:8044/risemessage',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/risemessage': '',
-        },
-      },
-      '/newCommonApi': {
-        target: 'http://10.122.17.38:8034',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/newCommonApi': '',
-        },
-      },
-      '/biddingApi': {
-        target: 'http://10.122.17.38:8056',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/biddingApi': '',
-        },
-      },
-      '/bidding': {
-        target: 'http://10.122.17.38:8056',
-        changeOrigin: true,
-      },
-      //cf组件代理
-      '/baseInfo': {
-        target: 'http://10.122.17.38:8011/baseinfo',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/baseInfo': '',
-        },
-      },
-      '/bizlog': {
-        //cf
-        target: 'http://10.122.17.38:8013/bizlog',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/bizlog': '',
-        },
-      },
-      '/supplierSpiApi': {
-        target: 'http://10.122.17.38:8010',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/supplierSpiApi': '',
-        },
-      },
-      '/lier': {
-        target: 'http://10.122.17.38:8036',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/lier': '',
+          '^/projectApi': '',
         },
       },
       '/priceledgerApi': {
@@ -415,6 +167,69 @@ module.exports = {
           '^/priceledgerApi': '',
         },
       },
+      '/supplierApi': {
+        target: 'http://10.122.17.38:8010',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/supplierApi': '',
+        },
+      },
+      '/aonApi': {
+        target: 'http://10.122.17.38:8036',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/aonApi': '',
+        },
+      },
+      '/partsProcureApi': {
+        target: 'http://10.122.17.38:8018',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/partsProcureApi': '',
+        },
+      },
+      '/toolingApi': {
+        target: 'http://10.122.17.38:8022',	//	vmsit
+        changeOrigin: true,
+        pathRewrite: {
+          '^/toolingApi': '',
+        },
+      },
+      '/newCommonApi': {
+        target: 'http://10.122.17.38:8034',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/newCommonApi': '',
+        },
+      },
+      '/partApi': {
+        target: 'http://10.122.17.38:8788',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/partApi': '',
+        },
+      },
+      '/approvalApi': {
+        target: 'http://10.122.17.38:8012',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/approvalApi': '',
+        },
+      },
+      '/purchaseApply': {
+        target: 'http://10.122.17.38:8026',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/purchaseApply':''
+        }
+      },
+      '/risemessage': {
+        target: 'http://10.122.17.38:8044/risemessage',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/risemessage': '',
+        },
+      },
       '/fileud': {
         target: 'http://10.122.17.38:8034/fileud',
         changeOrigin: true,
@@ -422,47 +237,27 @@ module.exports = {
           '^/fileud': '',
         },
       },
-      '/changepriceApi': {
-        // 采购订单
-        //target: 'http://http://10.122.17.38:8026/',
-        target: 'http://10.122.17.38:8026',
+      '/biddingApi': {
+        target: 'http://10.122.17.38:8056',
         changeOrigin: true,
-        logLevel: 'debug',
         pathRewrite: {
-          '^/changepriceApi': '',
+          '^/biddingApi': '',
         },
       },
-      '/supplierApplication': {
-        // 蒋林明供应商接口
-        target: 'http://10.122.17.38:8010',
+      '/baseInfo': {
+        target: 'http://10.122.17.38:8011/baseinfo',
         changeOrigin: true,
-        logLevel: 'debug',
         pathRewrite: {
-          '^/supplierApplication': '',
+          '^/baseInfo': '',
         },
       },
-      '/nominateRecord':{
-        target: 'http://10.122.17.38:8888',
-        changeOrigin:true,
-        pathRewrite: {
-          '^/nominateRecord':'',
-        }
+      "/supplierservice": {
+        target: "http://10.122.17.38:8010",
+        changeOrigin: true,
       },
-
-      '/priceRecord':{
-        target: 'http://10.122.17.38:8026',
-        changeOrigin:true,
-        pathRewrite: {
-          '^/priceRecord':'',
-        }
-      },
-    //二组采购申请详情查询接口
-      '/purchaseApply': {
-        target: 'http://10.122.17.38:8026',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/purchaseApply':''
-        }
+      "/supplier": {
+        target: "http://10.122.17.38:8017",
+        changeOrigin: true
       }
     },
   },

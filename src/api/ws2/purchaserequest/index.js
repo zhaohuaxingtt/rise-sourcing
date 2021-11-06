@@ -1,8 +1,8 @@
 import axios from '@/utils/axios'
 import download from '@/utils/axios.download'
-const requestStockSheet = axios(process.env.VUE_APP_BASE_WS2_CHANGEPRICE_API)
+const requestStockSheet = axios(process.env.VUE_APP_PURCHASE)
 const requstDic = axios(process.env.VUE_APP_DIC)
-const downLoad = download(process.env.VUE_APP_SUPPLIER_RFQLIST)
+const downLoad = download(process.env.VUE_APP_SOURCING)
 // 采购申请列表分页查询接口
 export function findNormalPrByPage(data) {
     return requestStockSheet({

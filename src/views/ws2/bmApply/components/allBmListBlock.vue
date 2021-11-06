@@ -113,7 +113,7 @@ export default {
 
     //  预览RSpdf
     openViewPdf(scope){
-      const url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsFull/' + scope.rsNum;
+      const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
       window.open(url);
     },
 

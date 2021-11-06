@@ -14,7 +14,7 @@ import router from '../../../router/index'
 const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
 
 const requst = axios(process.env.VUE_APP_PARTS)
-const souringRequst = axios(process.env.VUE_APP_RFQ)
+const souringRequst = axios(process.env.VUE_APP_SOURCING)
 const partRequst = axios(process.env.VUE_APP_PARTSPROCURE)
 const priceRequst = axios(process.env.VUE_APP_PRICE_LEDGER)
 const fileRequst = download(process.env.VUE_APP_PARTS)

@@ -8,8 +8,8 @@
  */
 import axios from '@/utils/axios'
 
-const request = axios(process.env.VUE_APP_SUPPLIER_SPI)
-// const supplierRequest = axios(process.env.VUE_APP_SUPPLIER_SPI)
+const request = axios(process.env.VUE_APP_SUPPLIER)
+// const supplierRequest = axios(process.env.VUE_APP_SUPPLIER)
 
 export function getFocusSupplierList(params) {
   return request({

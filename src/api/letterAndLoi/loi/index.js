@@ -6,8 +6,8 @@
 import axios from "@/utils/axios"
 import axiosDownload from '@/utils/axios.download'
 
-const requst = axios(process.env.VUE_APP_RFQ)
-const requestDownload = axiosDownload(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const requestDownload = axiosDownload(process.env.VUE_APP_SOURCING)
 
 
 // 获取LOI列表数据

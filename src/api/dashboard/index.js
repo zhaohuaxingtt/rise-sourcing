@@ -9,7 +9,7 @@
 
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 获取寻源概览数据
 export function sourcingOverview() {

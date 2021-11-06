@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-24 15:55:46
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-15 10:01:28
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 12:19:05
  * @Description: 财务目标价相关Api
  * @FilePath: \front-web\src\api\financialTargetPrice\index.js
  */
@@ -10,8 +10,8 @@
 import axios from "@/utils/axios"
 import axiosDownload from '@/utils/axios.download'
 
-const requst = axios(process.env.VUE_APP_SOURCING_ZDH)
-const requstDownload = axiosDownload(process.env.VUE_APP_SOURCING_ZDH)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const requstDownload = axiosDownload(process.env.VUE_APP_SOURCING)
 
 // 获取财务目标价列表
 export function getTargetPriceList(params) {

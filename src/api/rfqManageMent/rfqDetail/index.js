@@ -7,8 +7,8 @@
  * @FilePath: \front-supplier\src\api\rfqManageMent\mouldOffer\index.js
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_SUPPLIER_RFQLIST)
-const requstBjd = axios(process.env.VUE_APP_SUPPLIER_CBHUIZ)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const requstBjd = axios(process.env.VUE_APP_SOURCING)
 import router from '../../../router/index'
 const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
 // 查询RFQ信息
