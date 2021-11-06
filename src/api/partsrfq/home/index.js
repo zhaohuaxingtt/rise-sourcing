@@ -8,7 +8,7 @@
 import axios from '@/utils/axios'
 import store from "@/store";
 
-const requst = axios(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_SOURCING)
 const partsRequst = axios(process.env.VUE_APP_PARTSPROCURE)
 
 //物流要求，分页查询

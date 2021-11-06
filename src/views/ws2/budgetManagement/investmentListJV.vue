@@ -1284,7 +1284,7 @@ export default {
       }).catch(() => {
         this.tableLoading = false
       });
-      // let url = process.env.VUE_APP_INVESTMENT + '/exportInvestmentList?listVerisonId=' + this.form['search.version']
+      // let url = process.env.VUE_APP_TOOLING  + '/investment' + '/exportInvestmentList?listVerisonId=' + this.form['search.version']
       // window.open(url)
     },
 

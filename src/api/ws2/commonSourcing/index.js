@@ -1,8 +1,8 @@
 import axios from '@/utils/axios'
 import axiosFile from "@/utils/axios.download";
 
-const VUE_APP_CSBUDGET = axios(process.env.VUE_APP_CSBUDGET)
-const MODELCARFile = axiosFile(process.env.VUE_APP_CSBUDGET)
+const VUE_APP_CSBUDGET = axios(process.env.VUE_APP_TOOLING + '/CSBudget')
+const MODELCARFile = axiosFile(process.env.VUE_APP_TOOLING + '/CSBudget')
 
 //分页条件审批列表
 // export function pageApproval(parmars) {

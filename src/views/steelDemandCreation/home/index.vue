@@ -98,7 +98,7 @@ export default{
         uploadLoadingAll:false,
         printLoadingAll:false,
         printLoadingOne:false,
-        baseUrl:process.env.VUE_APP_SUPPLIER_RFQLIST,
+        baseUrl:process.env.VUE_APP_SOURCING,
         searchForm:[],
         form:JSON.parse(JSON.stringify(form)),
         tableTitle:tableTitle,

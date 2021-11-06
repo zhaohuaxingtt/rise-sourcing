@@ -1,15 +1,15 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-31 20:18:41
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-01 14:40:57
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 12:17:31
  * @Description: 
  * @FilePath: \front-web\src\api\designate\designatedetail\addRfq\index.js
  */
 
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_SUPPLIER_WJS)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 获取part list列表数据
 export function getRfqList(params) {

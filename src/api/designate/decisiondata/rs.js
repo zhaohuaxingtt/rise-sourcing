@@ -1,16 +1,16 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-04 14:41:32
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-03 13:53:30
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 12:18:22
  * @Description: rs单相关接口
  * @FilePath: \front-web\src\api\designate\decisiondata\rs.js
  */
 import axios from "@/utils/axios"
 import axiosDownload from '@/utils/axios.download'
 
-const requst = axios(process.env.VUE_APP_SUPPLIER_WJS)
-const requestDownload = axiosDownload(process.env.VUE_APP_SOURCING_MH)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const requestDownload = axiosDownload(process.env.VUE_APP_SOURCING)
 
 // 读取报价单
 export function readQuotation(params) {

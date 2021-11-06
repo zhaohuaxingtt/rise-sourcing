@@ -5,7 +5,7 @@
 
 import axios from '@/utils/axios'
 
-const request = axios(process.env.VUE_APP_AON)
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
 
 //Volume Pricing零件分析
 export function getAnalysisProcessing(params) {

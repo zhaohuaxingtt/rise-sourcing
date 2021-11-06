@@ -9,8 +9,8 @@ import axios from '@/utils/axios'
 import axiosDownLoad from '@/utils/axios.download'
 import store from '@/store'
 
-const requst = axios(process.env.VUE_APP_AON)
-const request = axiosDownLoad(process.env.VUE_APP_AON)
+const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
+const request = axiosDownLoad(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
 
 export function getBobLevelOne(parmars) {
   return requst({

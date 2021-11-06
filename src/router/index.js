@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-01 16:31:37
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-06 15:05:44
+ * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-web\src\router\index.js
  *
@@ -26,6 +26,7 @@ import ws2 from './modules/ws2'
 import reportmanage from './modules/reportmanage'
 import sourceInquirypoint from './modules/sourceInquirypoint'
 import modeltargetpriceRoutes from './modules/modeltargetprice'
+import biddingRouter from './modules/biddingManage'
 Vue.use(VueRouter);
 const originalPush = VueRouter.prototype.push
 
@@ -350,6 +351,8 @@ export default new VueRouter({
     // 询源于定点
     ...sourceInquirypoint,
     // 模具目标价
-    ...modeltargetpriceRoutes
+    ...modeltargetpriceRoutes,
+    // bidding 相关
+    ...biddingRouter
   ],
 })

@@ -239,7 +239,7 @@ export default {
   },
   computed: {
     actionUrl() {
-      return process.env.VUE_APP_CSBUDGET + '/upload/' + this.packageVersion
+      return process.env.VUE_APP_TOOLING + '/CSBudget' + '/upload/' + this.packageVersion
     }
   },
   mounted() {

@@ -8,7 +8,7 @@
 import axios from '@/utils/axios'
 import download from '@/utils/axios.download'
 
-const requst_sourcing = axios(process.env.VUE_APP_RFQ)
+const requst_sourcing = axios(process.env.VUE_APP_SOURCING)
 const requst = axios(process.env.VUE_APP_PARTS)
 const fileRequst = download(process.env.VUE_APP_PARTS)
 

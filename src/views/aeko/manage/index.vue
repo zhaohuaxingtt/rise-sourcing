@@ -257,7 +257,7 @@ export default {
         loading:false,
         revokeVisible:false,
         filesVisible:false,
-        uploadUrl: process.env.VUE_APP_SOURCING_MH,
+        uploadUrl: process.env.VUE_APP_SOURCING,
         btnLoading:{
           uploadFiles:false,
           importAeko:false,

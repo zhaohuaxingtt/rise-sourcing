@@ -5,7 +5,7 @@
  */
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 export function findLayoutTitleInfo(params) {
     return requst({

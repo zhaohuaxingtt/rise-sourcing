@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-18 20:15:17
- * @LastEditTime: 2021-10-27 23:58:11
+ * @LastEditTime: 2021-11-06 14:15:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\usercenter\index.js
@@ -9,7 +9,7 @@
 import axios from '@/utils/axios'
 
 const requst = axios(process.env.VUE_APP_USER_CENTER)
-const requst1 = axios(process.env.VUE_APP_USER_CENTER_M)
+const requst1 = axios(process.env.VUE_APP_USER_CENTER_API)
 
 
 export function purchaseUsers(parmars) {

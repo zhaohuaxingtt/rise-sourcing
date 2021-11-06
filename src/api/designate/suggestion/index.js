@@ -7,7 +7,7 @@
  */
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_NEGO)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 获取业务分配模拟列表
 export function getSimulateRecord(params) {
