@@ -9,7 +9,7 @@
 
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_SUPPLIER_WJS)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 获取rfq list列表数据
 export function getRfqList(nominateId) {

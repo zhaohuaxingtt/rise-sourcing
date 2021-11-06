@@ -7,7 +7,7 @@
  * @FilePath: \front-supplier\src\api\rfqManageMent\mouldOffer\index.js
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_SUPPLIER_DL)
+const requst = axios(process.env.VUE_APP_SOURCING)
 // 查询报价状态
 export function findPartQuotations(parmars) {
   return requst({

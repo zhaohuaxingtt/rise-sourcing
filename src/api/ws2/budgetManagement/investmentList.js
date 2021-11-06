@@ -1,13 +1,13 @@
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
-const INVESTMENT = axios(process.env.VUE_APP_INVESTMENT)
-const INVESTMENTFile = axiosFile(process.env.VUE_APP_INVESTMENT)
-const INVESTMENTVERSION = axios(process.env.VUE_APP_INVESTMENTVERSION)
-const BUILDINVESTMENT = axios(process.env.VUE_APP_BUILDINVESTMENT)
-const INVESTMENTORDER = axios(process.env.VUE_APP_INVESTMENTORDER)
-const VUE_APP_REFCARTYPEPRO = axios(process.env.VUE_APP_REFCARTYPEPRO)
- const VUE_APP_CSBUDGET = axios(process.env.VUE_APP_CSBUDGET)
+const INVESTMENT = axios(process.env.VUE_APP_TOOLING  + '/investment')
+const INVESTMENTFile = axiosFile(process.env.VUE_APP_TOOLING  + '/investment')
+const INVESTMENTVERSION = axios(process.env.VUE_APP_TOOLING  + '/investmentVerision')
+const BUILDINVESTMENT = axios(process.env.VUE_APP_TOOLING  + '/buildInvestment')
+const INVESTMENTORDER = axios(process.env.VUE_APP_TOOLING  + '/InvestmentOrder')
+const VUE_APP_REFCARTYPEPRO = axios(process.env.VUE_APP_TOOLING  + '/refcartypepro')
+ const VUE_APP_CSBUDGET = axios(process.env.VUE_APP_TOOLING + '/CSBudget')
 //获取专业科室下拉列表
 export function getDepartmentsList(parmars) {
     return INVESTMENT({
@@ -146,7 +146,7 @@ export function searchRelationCarTypeList(parmars) {
 }
 //投资清单-参考车型项目零件列表
 export function relationCarTypePartsList(parmars) {
-    return VUE_APP_REFCARTYPEPRO({
+    return VVUE_APP_REFCARTYPEPRO({
         url: '/relationCarTypePartsList',
         method: 'POST',
         params: parmars

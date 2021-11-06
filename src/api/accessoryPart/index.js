@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-01 17:43:02
+ * @LastEditTime: 2021-11-06 12:18:00
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -10,9 +10,9 @@
 import axios from "@/utils/axios"
 import axiosDownload from '@/utils/axios.download'
 
-const requst = axios(process.env.VUE_APP_PROCUREMENTREQUIREMENT_ZZB)
-const requestDownload = axiosDownload(process.env.VUE_APP_PROCUREMENTREQUIREMENT_ZZB)
-const requstSourcing = axios(process.env.VUE_APP_SOURCING_WDL)
+const requst = axios(process.env.VUE_APP_PARTS)
+const requestDownload = axiosDownload(process.env.VUE_APP_PARTS)
+const requstSourcing = axios(process.env.VUE_APP_SOURCING)
 
 // 获取配件列表数据
 export function getAccessoryOneInfoList(params) {

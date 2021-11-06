@@ -1,12 +1,12 @@
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 //--------------------采购订单----------------------------------//
-const pushOrder = axios(process.env.VUE_APP_BASE_WS2_CHANGEPRICE_API);
-const pushOrderRequestExcel = axiosFile(process.env.VUE_APP_BASE_WS2_CHANGEPRICE_API)
-const requestSupplierService = axios(process.env.VUE_APP_BASE_WS2_SUPPLIERINFO_API)
+const pushOrder = axios(process.env.VUE_APP_PURCHASE);
+const pushOrderRequestExcel = axiosFile(process.env.VUE_APP_PURCHASE)
+const requestSupplierService = axios(process.env.VUE_APP_SUPPLIER)
 const requstPartResource = axios(process.env.VUE_APP_DIC)
 
-const bmReq = axios(process.env.VUE_APP_BMAPPROVE)
+const bmReq = axios(process.env.VUE_APP_TOOLING + '/bm')
 
 /**
  * 查询采购订单数据

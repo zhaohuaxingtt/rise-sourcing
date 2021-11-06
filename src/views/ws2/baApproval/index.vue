@@ -346,7 +346,7 @@ export default {
 
     //  rs单号
     openViewPdf(scope){
-      let url = process.env.VUE_APP_BACOMMODITYAPPLY + '/exportRsForAudit/' + scope.row.rsNum;
+      let url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsForAudit/' + scope.row.rsNum;
       console.log('url', url);
       window.open(url)
     },

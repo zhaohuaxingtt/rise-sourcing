@@ -9,7 +9,7 @@
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_KPI)
 const chrequst = axios(process.env.VUE_APP_POWEBI_KPI)
-const rr = axios(process.env.VUE_APP_AON)
+const rr = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
 
 export function kpiDetail(params) {
   return requst({

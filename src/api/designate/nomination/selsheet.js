@@ -1,14 +1,14 @@
 /*
  * @Author: Hao Jiang
  * @Date: 2021-06-22 17:30:52
- * @LastEditTime: 2021-07-23 13:00:11
+ * @LastEditTime: 2021-11-06 12:10:00
  * @LastEditors: Please set LastEditors
  * @Description: sel 上会复核列表部分
  */
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_RFQ)
-const longRequst = axios(process.env.VUE_APP_RFQ, 25000)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const longRequst = axios(process.env.VUE_APP_SOURCING, 25000)
 
 // 获取sel 复核列表
 export function getSelList(params) {

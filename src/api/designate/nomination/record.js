@@ -2,14 +2,14 @@
  * @Description: 定点记录
  * @Author: lt
  * @Date: 2021-10-22 10:51:43
- * @LastEditTime: 2021-10-29 09:55:22
- * @LastEditors:  
+ * @LastEditTime: 2021-11-06 12:09:26
+ * @LastEditors: Please set LastEditors
  */
 import axios from "@/utils/axios"
 import axiosFile from '@/utils/axios.download'
 
-const request = axios(process.env.VUE_APP_RFQ)
-const fileRequest = axiosFile(process.env.VUE_APP_RFQ)
+const request = axios(process.env.VUE_APP_SOURCING)
+const fileRequest = axiosFile(process.env.VUE_APP_SOURCINGRCING)
 //定点管理-定点记录分页查询
 export function getNomiApplicationPageList(data) {
     return request({
