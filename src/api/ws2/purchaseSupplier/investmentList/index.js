@@ -1,8 +1,8 @@
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
-const VUE_APP_BMSUPPLIER = axios(process.env.VUE_APP_BMSUPPLIER)
-const INVESTMENTFile = axiosFile(process.env.VUE_APP_INVESTMENT)
+const VUE_APP_BMSUPPLIER = axios(process.env.VUE_APP_TOOLING + '/bmSupplier')
+const INVESTMENTFile = axiosFile(process.env.VUE_APP_TOOLING  + '/investment')
 //bm单流水号查看详情
 export function moldHeaderByBmSerial(parmars) {
     return VUE_APP_BMSUPPLIER({

@@ -203,11 +203,12 @@ import {tableAKEOApprovedTitle as approvedHeader} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
 import {queryApproved} from "@/api/aeko/approve";
-import {searchLinie} from "@/api/aeko/manage";
+import {searchLinie, getLogCount} from "@/api/aeko/manage";
 import {user as configUser} from '@/config'
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
 import {numberToCurrencyNo, numberToCurrencyNo2} from '../../../../utils/cutOutNum'
+import { setLogCount, setLogModule } from "@/utils";
 
 export default {
   name: "AKEOApprovedPage",
@@ -265,11 +266,34 @@ export default {
       loading: false,
     }
   },
+  computed: {
+    //eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+      permission: state => state.permission,
+      count: state => state.aekoApproveStore.count
+    }),
+  },
   created() {
+    setLogModule('AEKO审批-列表-已审批列表')
     this.loadApprovedList()
     this.queryAllLin()
   },
   methods: {
+    // 查询待办数量
+    getLogCount(){
+      let params = {
+        pageCode:'SPR',  // LINIE: AEKO表态; ADMIN: AEKO管理; SPR: AEKO审批
+        id: this.userInfo.id
+      }
+      getLogCount(params).then(res=>{
+        if(res?.code==200){
+          setLogCount(res.data)
+        }else{
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
     //转换审批描述
     getAuditTypeDesc(auditType) {
       if (auditType == 1) {
@@ -324,6 +348,7 @@ export default {
       this.tableLoading = true
       this.queryAkeoForm.current = this.page.currPage
       this.queryAkeoForm.size = this.page.pageSize
+      this.getLogCount()
       queryApproved(this.queryAkeoForm).then(res => {
         this.tableLoading = false
         if (res.code == 200) {

@@ -7,8 +7,8 @@
  * @FilePath: \front-web\src\api\costanalysismanage\home\index.js
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_RFQ)
-const userCenterRequst = axios(process.env.VUE_APP_USER_CENTER_M)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const userCenterRequst = axios(process.env.VUE_APP_USER_CENTER_API)
 
 // 获取下拉框数据
 // type: 01-车型项目 02-零件项目类型  03-RFQ状态  04-轮次类型

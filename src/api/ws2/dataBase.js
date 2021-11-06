@@ -1,7 +1,7 @@
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
-const INVESTMENTHISTORYPARTS = axios(process.env.VUE_APP_INVESTMENTHISTORYPARTS)
+const INVESTMENTHISTORYPARTS = axios(process.env.VUE_APP_TOOLING  + '/investmentHistoryParts')
 const VUE_APP_MODELCAR = axios(process.env.VUE_APP_MODELCAR)
 const MODELCARFile = axiosFile(process.env.VUE_APP_MODELCAR)
 

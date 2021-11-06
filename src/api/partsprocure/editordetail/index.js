@@ -5,11 +5,11 @@ const requstPartResource = axios(process.env.VUE_APP_DIC)
 // VUE_APP_PARTS
 
 const requstPartsProcure = axios(process.env.VUE_APP_PARTSPROCURE)
-const sourcing = axios(process.env.VUE_APP_PART_PROCURE)
-const sourcingDL = axios(process.env.VUE_APP_SOURCING_WDL)
-const quotation = axios(process.env.VUE_APP_QUOTATION)
-const requestOutputPart = axios(process.env.VUE_APP_RFQ)
-const requestPriceRecord = axios(process.env.VUE_APP_PRICE)
+const sourcing = axios(process.env.VUE_APP_SOURCING)
+const sourcingDL = axios(process.env.VUE_APP_SOURCING)
+const quotation = axios(process.env.VUE_APP_SOURCING)
+const requestOutputPart = axios(process.env.VUE_APP_SOURCING)
+const requestPriceRecord = axios(process.env.VUE_APP_SOURCING)
 const requestPurchase= axios(process.env.VUE_APP_PURCHASE)
 //自动定点-创建接口
 export function autonomi(params) {
@@ -112,7 +112,7 @@ export function deleteFile(params) {
 	})
 }
 
-const requstPartProcure = axios(process.env.VUE_APP_PART_PROCURE)
+const requstPartProcure = axios(process.env.VUE_APP_SOURCING)
 // 获取产量计划
 export function getOutputPlan(params) {
 	return requstPartProcure({

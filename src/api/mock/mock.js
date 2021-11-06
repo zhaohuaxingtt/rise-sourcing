@@ -1,11 +1,11 @@
 import axios from "@/utils/axios";
 import store from "@/store";
 const requst = axios();
-const requstBase = axios(process.env.VUE_APP_BASEINFO);
-const requstParts = axios(process.env.VUE_APP_PARTS_BIDDING);
-const requstRfq = axios(process.env.VUE_APP_RFQ);
-const requstSupplier = axios(process.env.VUE_APP_SUPPLIERINFO);
-const requstFile = axios(process.env.VUE_APP_FILE_SERVER);
+const requstBase = axios(process.env.VUE_APP_DIC_API);
+const requstParts = axios(process.env.VUE_APP_PARTSPROCURE_API);
+const requstRfq = axios(process.env.VUE_APP_SOURCING);
+const requstSupplier = axios(process.env.VUE_APP_SUPPLIER);
+const requstFile = axios(process.env.VUE_APP_BASE_UPLOAD_API);
 
 // 获取rfqCode
 export function getRfqCodesList(data) {
@@ -21,7 +21,7 @@ export function getRfqCodesList(data) {
 export function getSupplierInfo(data) {
   return requstSupplier({
     // url: `/api/getSupplierInfo`,
-    url: `/web/supplier360View/page/querySupplierInfo`,
+    url: `/supplier360View/page/querySupplierInfo`,
     method: "POST",
     data,
   });
@@ -40,7 +40,7 @@ export function getSuppliers(data) {
 export function getSupplierInfoById(data) {
   return requstSupplier({
     // url: `/api/getSupplierInfoList?supplierIds=${supplierIds}`,
-    url: `/web/user/list`,
+    url: `/user/list`,
     method: "POST",
     data
   });

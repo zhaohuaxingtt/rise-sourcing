@@ -7,7 +7,7 @@
  * @FilePath: \front-supplier\src\api\rfqManageMent\workedRfq\index.js
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_SUPPLIER_RFQLIST)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 /**
  * @description: 查询已结束RFQ信息

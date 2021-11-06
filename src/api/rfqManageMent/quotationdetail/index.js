@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-27 19:49:54
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-06 14:00:03
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -10,12 +10,12 @@ import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 import router from '../../../router/index'
 const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
-const requst = axios(process.env.VUE_APP_QUOTATION)
-const requstxw = axios(process.env.VUE_APP_SUPPLIER_WDL)
-const requstFile = axiosFile(process.env.VUE_APP_QUOTATION)
-const requstPart = axios(process.env.VUE_APP_SUPPLIER_RFQLIST)
-const requstdl = axios(process.env.VUE_APP_QUOTATION_DL)
-const requstRfq = axios(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const requstxw = axios(process.env.VUE_APP_SOURCING)
+const requstFile = axiosFile(process.env.VUE_APP_SOURCING)
+const requstPart = axios(process.env.VUE_APP_SOURCING)
+const requstdl = axios(process.env.VUE_APP_SOURCING)
+const requstRfq = axios(process.env.VUE_APP_SOURCING)
 // eslint-disable-next-line no-undef
 // 获取零件基础信息
 export function getPartsQuotations(params) {
@@ -137,6 +137,15 @@ export function getMouldFee(params) {
 export function getDevFee(params) {
   return requst({
     url: `/part/getDevFee?supplierId=${supplierId()}`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// Linie获取开发费用
+export function getDevFeeByLinie(params,supplierId) {
+  return requst({
+    url: `/part/getDevFee?supplierId=${supplierId}`,
     method: 'POST',
     data: params
   })

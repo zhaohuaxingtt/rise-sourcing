@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\api\configscoredept\index.js
  */
 import axios from "@/utils/axios"
-const requst = axios(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 获取评分部门列表
 export function getRfqRateDeparts(params) {

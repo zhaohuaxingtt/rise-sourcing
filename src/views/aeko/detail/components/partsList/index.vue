@@ -172,6 +172,7 @@ import {
 import { cloneDeep } from "lodash"
 import {user as configUser } from '@/config'
 import { roleMixins } from "@/utils/roleMixins";
+import { setLogModule } from "@/utils";
 export default {
     name:'partsList',
     mixins: [pageMixins,roleMixins],
@@ -213,6 +214,7 @@ export default {
     },
    
     created() {
+        setLogModule('AEKO表态-详情页-零件清单')
         const roleList = this.roleList;
         this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
         this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员

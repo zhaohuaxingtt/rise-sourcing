@@ -8,7 +8,7 @@
  */
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_QUOTATION)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 报价页面获取扩产能列表
 export function getQuotCapacityExtPlan(params) {

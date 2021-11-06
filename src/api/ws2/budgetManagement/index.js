@@ -1,6 +1,6 @@
 import axios from '@/utils/axios'
 
-const CARTYPE = axios(process.env.VUE_APP_CARTYPE)
+const CARTYPE = axios(process.env.VUE_APP_TOOLING  + '/cartype')
 
 /*零件清单*/
 

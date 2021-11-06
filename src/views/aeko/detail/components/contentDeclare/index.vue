@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-05 18:44:44
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 14:39:07
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -339,6 +339,8 @@ import Upload from '@/components/Upload'
 
 import filters from "@/utils/filters"
 
+import { setLogModule } from "@/utils";
+
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
@@ -404,6 +406,7 @@ export default {
     };
   },
   created() {
+    setLogModule('AEKO表态-详情页-内容表态')
     this.searchCartypeProject()
     this.getDictByCode()
     this.procureFactorySelectVo()
@@ -588,6 +591,7 @@ export default {
         path: '/aeko/quotationdetail',
         query: {
           quotationId: quotationFrom || quotationId,
+          requirementAekoId: this.aekoInfo.requirementAekoId,
           editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status) || (quotationFrom?true:false)
         }
       })
