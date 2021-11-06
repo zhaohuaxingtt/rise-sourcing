@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-06-30 16:51:56
- * @LastEditTime: 2021-08-18 17:56:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 16:09:48
+ * @LastEditors:  
  * @Description: 提交定点申请，如果是上会类型，上会弹窗
  * @FilePath: /front-web/src/views/designate/home/components/mettingDialog/index.vue
 -->
@@ -161,8 +161,8 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.page.totalCount = res.total || 0
+          this.tableListData = Array.isArray(res.data.data) ? res.data.data : []
+          this.page.totalCount = res.data.total || []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
