@@ -59,7 +59,7 @@ export default {
   },
   methods:{
     init(){
-      this.getTerminationPrice();
+      this.workFlowId?this.getTerminationPrice():this.getTerminationPriceByLinie();
     },
     // 获取终止费
     async getTerminationPrice(){
@@ -74,6 +74,12 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
+    },
+    getTerminationPriceByLinie(){
+      const {basicInfo={}} = this; 
+      const {quotationPriceSummaryInfo={}} = basicInfo;
+      const terminationPrice = quotationPriceSummaryInfo.terminationPrice;
+      this.value = terminationPrice;
     }
   }
 }

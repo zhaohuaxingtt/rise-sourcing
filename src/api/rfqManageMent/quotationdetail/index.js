@@ -1,8 +1,8 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-10-27 19:49:54
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-06 14:00:03
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -137,6 +137,15 @@ export function getMouldFee(params) {
 export function getDevFee(params) {
   return requst({
     url: `/part/getDevFee?supplierId=${supplierId()}`,
+    method: 'POST',
+    data: params
+  })
+}
+
+// Linie获取开发费用
+export function getDevFeeByLinie(params,supplierId) {
+  return requst({
+    url: `/part/getDevFee?supplierId=${supplierId}`,
     method: 'POST',
     data: params
   })

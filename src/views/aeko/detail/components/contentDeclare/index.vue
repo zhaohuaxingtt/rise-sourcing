@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-05 23:05:24
+ * @LastEditTime: 2021-11-06 14:39:07
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -591,6 +591,7 @@ export default {
         path: '/aeko/quotationdetail',
         query: {
           quotationId: quotationFrom || quotationId,
+          requirementAekoId: this.aekoInfo.requirementAekoId,
           editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status) || (quotationFrom?true:false)
         }
       })

@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-11-05 10:03:30
+ * @LastEditTime: 2021-11-06 10:44:23
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -102,8 +102,6 @@ export default {
     let str_json = window.atob(this.queryParams.transmitObj);
     let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
     this.transmitObj = transmitObj
-    console.log(this.queryParams);
-    console.log(transmitObj);
     this.workFlowId?this.getPartsList():this.getSwitchPartsByParams()
   },
   methods:{
@@ -135,7 +133,7 @@ export default {
         if(res?.code==='200'){
           this.partsList = res.data;
           this.partsId = this.partsList&&this.partsList[0].key
-          // this.getCbdDataQuery()
+          this.getCbdDataQuery()
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
