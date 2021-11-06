@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\api\partsrfq\editordetail\abprice.js
  */
 import axios from '@/utils/axios'
-const nego = axios(process.env.VUE_APP_NEGO)
+const nego = axios(process.env.VUE_APP_SOURCING)
 //ab价-fs横轴
 export function fsPartsAsRow(mimoId){
   return nego({

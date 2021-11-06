@@ -1,8 +1,8 @@
 import axios from '@/utils/axios';
 import axiosFile from '@/utils/axios.download'
-const requstFile = axiosFile(process.env.VUE_APP_BACOMMODITYAPPLY)
+const requstFile = axiosFile(process.env.VUE_APP_TOOLING  + '/baCommodityApply')
 
-const VUE_APP_BACOMMODITYAPPLY = axios(process.env.VUE_APP_BACOMMODITYAPPLY);
+const VUE_APP_BACOMMODITYAPPLY = axios(process.env.VUE_APP_TOOLING  + '/baCommodityApply');
 
 //  明细列表
 export function getDetail(parmars) {

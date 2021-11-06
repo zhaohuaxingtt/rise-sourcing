@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-10-27 14:07:35
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 12:50:24
+ * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
@@ -35,6 +35,7 @@ import {
 import tableList from 'rise/web/quotationdetail/components/tableList';
 import { sampleTableTitle } from 'rise/web/quotationdetail/components/sample/data.js'
 import { getToolingsample } from "@/api/aeko/approve";
+import { getToolingSample as getToolingSampleByLinie } from "@/api/rfqManageMent/quotationdetail"
 export default {
   name:'sampleFee',
   components:{
@@ -63,7 +64,7 @@ export default {
   },
   methods:{
     init(){
-      this.getToolingsample();
+      this.workFlowId?this.getToolingsample():this.getToolingSampleByLinie()
     },
     async getToolingsample(){
       const {workFlowId,quotationId} = this;
@@ -79,6 +80,21 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       }).catch(()=>this.loading = false)
+    },
+    getToolingSampleByLinie(){
+      const {quotationId} = this;
+      this.loading = true
+
+      getToolingSampleByLinie(quotationId)
+      .then(res => {
+        if (res.code == 200) {
+          this.tableListData = Array.isArray(res.data.toolingSampleDTOList) ? res.data.toolingSampleDTOList : []
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+        this.loading = false
+      })
+      .catch(() => this.loading = false)
     }
   }
 }

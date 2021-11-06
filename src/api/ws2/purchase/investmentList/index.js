@@ -1,10 +1,10 @@
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
-const VUE_APP_BMCONFIRMTASK = axios(process.env.VUE_APP_BMCONFIRMTASK)
-const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_BMAPPROVE)
-const VUE_APP_BMCHANGE = axios(process.env.VUE_APP_BMCHANGE)
-const INVESTMENTFile = axiosFile(process.env.VUE_APP_INVESTMENT)
+const VUE_APP_BMCONFIRMTASK = axios(process.env.VUE_APP_TOOLING + '/bmConfirmTask')
+const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_TOOLING + '/bm')
+const VUE_APP_BMCHANGE = axios(process.env.VUE_APP_TOOLING + '/bmChange')
+const INVESTMENTFile = axiosFile(process.env.VUE_APP_TOOLING  + '/investment')
 //获取科室下拉信息
 export function getDepartmentsCombo(parmars) {
     return VUE_APP_BMCONFIRMTASK({

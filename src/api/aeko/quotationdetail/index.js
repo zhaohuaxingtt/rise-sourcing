@@ -12,9 +12,9 @@ const supplierId = () => router.currentRoute.query.supplierId ? router.currentRo
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
-const requst = axios(process.env.VUE_APP_RFQ)
-const requstFile = axiosFile(process.env.VUE_APP_RFQ)
-const requstTooling = axios(process.env.VUE_APP_BMMOLD)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const requstFile = axiosFile(process.env.VUE_APP_SOURCING)
+const requstTooling = axios(process.env.VUE_APP_TOOLING + '/bmMold')
 
 export function bnkSupplierToken(params) {
     return requst({

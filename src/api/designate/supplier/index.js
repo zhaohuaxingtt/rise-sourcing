@@ -8,7 +8,7 @@
  */
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 供应商列表分页
 export function getSupplierList(params) {

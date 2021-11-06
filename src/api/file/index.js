@@ -11,7 +11,7 @@ import { serialize } from '@/utils'
 import httpAxios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_COMMON)
 const fileRequst = axios(process.env.VUE_APP_NEW_COMMON)
-const sourcing = httpAxios(process.env.VUE_APP_RFQ)
+const sourcing = httpAxios(process.env.VUE_APP_SOURCING)
 export function downloadFile(parmars) {
     return requst({
         url: `/download?applicationName=${parmars.applicationName}&fileList=${parmars.fileList}`,

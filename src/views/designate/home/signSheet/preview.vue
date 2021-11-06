@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-07-21 16:16:48
+ * @LastEditTime: 2021-11-06 12:07:07
  * @LastEditors: Please set LastEditors
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
@@ -108,7 +108,7 @@ export default {
         return
       }
       const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-      const fileURL = `${BASEURL}${process.env.VUE_APP_RFQ}/nominate/sign/export?signId=${signId}`
+      const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export?signId=${signId}`
       console.log(fileURL)
       window.open(fileURL)
     },

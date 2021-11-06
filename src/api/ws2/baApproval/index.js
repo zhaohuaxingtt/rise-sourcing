@@ -1,6 +1,6 @@
 import axios from '@/utils/axios'
 
-const VUE_APP_BAAPPROVE = axios(process.env.VUE_APP_BAAPPROVE)
+const VUE_APP_BAAPPROVE = axios(VUE_APP_TOOLING  + '/baApprove')
 
 
 //获取tab数量

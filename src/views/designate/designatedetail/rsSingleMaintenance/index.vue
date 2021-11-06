@@ -111,7 +111,7 @@ export default {
       tableListDataTemp: [],
       selectedTableData: [],
       readQuotationLoading: false,
-      uploadUrl: process.env.VUE_APP_SOURCING_MH,
+      uploadUrl: process.env.VUE_APP_SOURCING,
       otherNominationType: '',
       otherNominationId: '',
       otherPartProjectType: '',
