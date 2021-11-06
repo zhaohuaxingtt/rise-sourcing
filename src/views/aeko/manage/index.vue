@@ -283,7 +283,7 @@ export default {
       this.sure();
       this.getSearchList();
 
-      setLogModule('AEKO表态-列表')
+      setLogModule('AEKO管理-列表')
       const roleList = this.roleList;
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
       this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员

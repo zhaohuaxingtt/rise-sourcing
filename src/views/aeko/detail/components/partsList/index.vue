@@ -214,7 +214,6 @@ export default {
     },
    
     created() {
-        setLogModule('AEKO表态-详情页-零件清单')
         const roleList = this.roleList;
         this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
         this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
@@ -224,6 +223,7 @@ export default {
         const {query} = this.$route;
         const {from=''} = query;
         this.queryFrom = from;
+        from=='manage'?setLogModule('AEKO管理-详情页-零件清单'):setLogModule('AEKO表态-详情页-零件清单')
         const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
         if(roleArr.length > 1){
             if(from == 'manage'){

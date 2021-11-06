@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-05 11:36:28
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-06 17:58:31
  * @Description: 
 -->
 <template>
@@ -98,6 +98,7 @@ import tablelist from 'rise/web/components/iFile/tableList';
 import {iCard, iSelect, iButton, iPagination, icon, iMessage} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
 import {user as configUser} from '@/config'
+import { setLogModule } from "@/utils";
 import {
   getApproveDistributionPage,
   approveDistributionSave,
@@ -130,6 +131,9 @@ export default {
       // 加载中
       optionLoading: false
     }
+  },
+  created() {
+    setLogModule('AEKO管理-AEKO分配')
   },
   mounted() {
     this.getFetchData()
