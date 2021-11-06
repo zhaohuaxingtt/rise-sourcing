@@ -179,22 +179,23 @@ export default {
     getList() {
       console.log('bizId', this.bizId)
       const http = new XMLHttpRequest()
-      const url = `/bizlog/operationLog/listOperationLogs`
+      const url = `/bizlog/operationLog/findOperationLogs`
       http.open('POST', url, true)
       http.setRequestHeader('content-type', 'application/json')
       http.onreadystatechange = () => {
         if (http.readyState === 4) {
-          this.tableData = JSON.parse(http.responseText)
-          this.page.totalCount = this.tableData.length
+          let res = JSON.parse(http.responseText)
+          this.tableData = res.content
+          this.page.totalCount = res.total
         }
       }
       this.query.bizId = this.bizId
       if(!this.bizId) return 
 			let module = getLogModule()
       const sendData = {
-        current: this.page.currPage,
+        current: this.page.currPage - 1,  // 前后端页面定义有一页偏差
         size: this.page.pageSize,
-        extendFields: { ...this.query, module:module, create_by_ae: this.userInfo.id }
+        extendFields: { ...this.query, module:module, createBy: this.userInfo.id }
       }
       http.send(JSON.stringify(sendData))
     }

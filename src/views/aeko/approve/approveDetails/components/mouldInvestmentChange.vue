@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:40:38
- * @LastEditTime: 2021-10-27 13:52:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 12:33:42
+ * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
@@ -39,25 +39,26 @@
 </template>
 
 <script>
-import { iCard, iText,iMessage } from "rise";
+import { iCard, iText, iMessage } from "rise";
 import tableList from "rise/web/quotationdetail/components/tableList";
 import { moduleTableTitle as tableTitle, mouldCostInfos } from "../data";
 import { getMoulds } from "@/api/aeko/approve";
+import { getMoulds as getMouldsByLinie } from "@/api/aeko/quotationdetail";
 export default {
   components: {
     iCard,
     iText,
     tableList,
   },
-  props:{
-    workFlowId:{
-      type:String,
-      default:''
+  props: {
+    workFlowId: {
+      type: String,
+      default: "",
     },
-    quotationId:{
-      type:String,
-      default:'',
-    }
+    quotationId: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -69,35 +70,73 @@ export default {
   },
   methods: {
     // 初始化数据
-    init(){
-      console.log('获取初始化数据');
-      this.getMoulds();
+    init() {
+      console.log("获取初始化数据");
+      this.workFlowId ? this.getMoulds() : this.getMouldsByLinie();
     },
     // 获取数据
-    async getMoulds(){
-      const {workFlowId,quotationId} = this;
+    async getMoulds() {
       this.loading = true;
       await getMoulds({
         workFlowId,
         quotationId,
-      }).then(res => {
-        this.loading = false
-        if (res.code == 200) {
-           const mouldCbdList = Array.isArray(res.data.mouldCbdList) ? res.data.mouldCbdList : [];
-          // FS单号取最外层数据
-          mouldCbdList.map((item)=>{
-            item.assembledPartPrjCode = res.data.fs || '';
-          })
-          this.tableData = mouldCbdList;
-          this.$set(this.dataGroup, "totalPrice", res.data.totalPrice)
-          this.$set(this.dataGroup, "shareTotal", res.data.shareTotal)
-          this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity)
-          this.$set(this.dataGroup, "shareAmount", res.data.shareAmount)
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      }).catch(() => this.loading = false)
-    }
+      })
+        .then((res) => {
+          this.loading = false;
+          if (res.code == 200) {
+            const mouldCbdList = Array.isArray(res.data.mouldCbdList)
+              ? res.data.mouldCbdList
+              : [];
+            // FS单号取最外层数据
+            mouldCbdList.map((item) => {
+              item.assembledPartPrjCode = res.data.fs || "";
+            });
+            this.tableData = mouldCbdList;
+            this.$set(this.dataGroup, "totalPrice", res.data.totalPrice);
+            this.$set(this.dataGroup, "shareTotal", res.data.shareTotal);
+            this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity);
+            this.$set(this.dataGroup, "shareAmount", res.data.shareAmount);
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+        })
+        .catch(() => (this.loading = false));
+    },
+
+    getMouldsByLinie() {
+      this.loading = true;
+      const { quotationId } = this;
+      getMouldsByLinie({
+        quotationId,
+      })
+        .then((res) => {
+          if (res.code == 200) {
+            this.tableData = Array.isArray(res.data.mouldCbdEntityList)
+              ? res.data.mouldCbdEntityList
+              : [];
+            this.$set(
+              this.dataGroup,
+              "totalPrice",
+              res.data.totalInvestmentCost
+            );
+            this.$set(
+              this.dataGroup,
+              "shareTotal",
+              res.data.shareInvestmentFee
+            );
+            this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity);
+            this.$set(
+              this.dataGroup,
+              "shareAmount",
+              res.data.unitInvestmentCost
+            );
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+          }
+          this.loading = false;
+        })
+        .finally(() => (this.loading = false));
+    },
   },
   filters: {
     statesFilter(val) {
