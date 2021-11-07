@@ -12,7 +12,7 @@
     <iCard>
       <div class="signPreview">
         <div class="signPreview-header">
-          <div class="font18 font-weight">{{'Summary list for production purchasing'}}</div>
+          <div class="font18 font-weight">{{'Summary List For Production Purchasing'}}</div>
           <div class="control">
             <iButton @click="exportSignSheet">
               {{ language('LK_DAOCHU', '导出') }}

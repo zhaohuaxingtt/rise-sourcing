@@ -11,7 +11,8 @@
 export const form = {
   applicationStatus: 'CHECK_PASS',
   isPriceConsistent: 1,
-  selStatus: 'CONFIRMED'
+  // selStatus: 'CONFIRMED'
+  selStatus: ''
 }
 
 // 表单表头
