@@ -9,6 +9,7 @@
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 import router from '../../../router/index'
+import { serialize } from "@/utils"
 const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
 const requst = axios(process.env.VUE_APP_SOURCING)
 const requstxw = axios(process.env.VUE_APP_SOURCING)
