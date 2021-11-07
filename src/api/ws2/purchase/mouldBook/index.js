@@ -1,11 +1,11 @@
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 
-const VUE_APP_BMVIEW = axios(process.env.VUE_APP_BMVIEW)
-const VUE_APP_BMVIEW_FILE = axiosFile(process.env.VUE_APP_BMVIEW)
+const VUE_APP_BMVIEW = axios(process.env.VUE_APP_TOOLING + '/bmView')
+const VUE_APP_BMVIEW_FILE = axiosFile(process.env.VUE_APP_TOOLING + '/bmView')
 
-const VUE_APP_BMMOLD = axios(process.env.VUE_APP_BMMOLD)
-const VUE_APP_BMMOLD_FILE = axiosFile(process.env.VUE_APP_BMMOLD)
+const VUE_APP_BMMOLD = axios(process.env.VUE_APP_TOOLING + '/bmMold')
+const VUE_APP_BMMOLD_FILE = axiosFile(process.env.VUE_APP_TOOLING + '/bmMold')
 
 const VUE_APP_MOLDVIEW = axios(process.env.VUE_APP_MOLDVIEW)
 const VUE_APP_MOLDVIEW_FILE = axiosFile(process.env.VUE_APP_MOLDVIEW)

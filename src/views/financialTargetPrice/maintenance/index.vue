@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-16 16:44:31
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 12:19:07
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -141,7 +141,7 @@ export default {
       attachmentDialogVisible: false,
       updateDialogVisible: false,
       approvalDialogVisible: false,
-      uploadUrl: process.env.VUE_APP_SOURCING_ZDH,
+      uploadUrl: process.env.VUE_APP_SOURCING,
       recordId: '',
       applyId: '',
       rfqId: '',

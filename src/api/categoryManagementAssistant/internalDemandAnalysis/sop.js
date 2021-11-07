@@ -8,7 +8,7 @@
  */
 import axios from '@/utils/axios';
 
-const request = axios(process.env.VUE_APP_AON);
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon');
 
 //查询SOP进度轴
 export function sopList(params) {

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-11-05 11:04:43
+ * @LastEditTime: 2021-11-05 15:20:54
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -98,6 +98,7 @@ export default {
     },
     // 打开日志
     openLog(){
+      this.bizId = this.aekoInfo.requirementAekoId
       this.showDialog = true
     }
   }

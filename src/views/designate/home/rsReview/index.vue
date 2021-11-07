@@ -412,7 +412,7 @@ export default {
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-      const fileURL = `${BASEURL}${process.env.VUE_APP_RFQ}/nominate/check/export?nomiAppIds=${idList.join(',')}`
+      const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/check/export?nomiAppIds=${idList.join(',')}`
       console.log(fileURL)
       window.open(fileURL)
       // try {

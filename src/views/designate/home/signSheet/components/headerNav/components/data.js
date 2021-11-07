@@ -1,0 +1,20 @@
+/*
+ * @Author: HaoJiang
+ * @Date: 2021-05-20 14:29:09
+ * @LastEditTime: 2021-11-05 20:19:19
+ * @LastEditors:  
+ * @Description: 定点申请头部
+ *
+ */
+export const heaederSubMenu = [
+  {
+    key:'partDesignateOrders',
+    name:'零件定点申请单',
+    path:'/sourcing/partsnomination/signSheet/details',
+  },
+  {
+    key:'MTZDesignateOrders',
+    name:'MTZ定点申请单',
+    path:'/sourcing/partsnomination/signSheet/mtzDetails',
+  }
+]

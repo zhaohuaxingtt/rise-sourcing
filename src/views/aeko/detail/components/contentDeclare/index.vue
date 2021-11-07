@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-05 11:23:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 14:39:07
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -60,6 +60,7 @@
             multiple
             collapse-tags
             filterable
+            clearable
             reserve-keyword
             size="mini"
             class="multipleSelect"
@@ -273,8 +274,8 @@
               @change="handleChangeCarInvestProjects($event, scope.row)"
             >
               <el-option
-                :value="item"
-                :label="item"
+                :value="item.carTypeProjectCode"
+                :label="item.carTypeProjectZh"
                 v-for="item in (scope.row.carInvestProjects || [])"
                 :key="item"
               ></el-option>
@@ -338,13 +339,15 @@ import Upload from '@/components/Upload'
 
 import filters from "@/utils/filters"
 
+import { setLogModule } from "@/utils";
+
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload },
-  mixins: [ pageMixins, combine ],
+  mixins: [ pageMixins, combine,filters ],
   props: {
     aekoInfo: {
       type: Object,
@@ -403,6 +406,7 @@ export default {
     };
   },
   created() {
+    setLogModule('AEKO表态-详情页-内容表态')
     this.searchCartypeProject()
     this.getDictByCode()
     this.procureFactorySelectVo()
@@ -587,6 +591,7 @@ export default {
         path: '/aeko/quotationdetail',
         query: {
           quotationId: quotationFrom || quotationId,
+          requirementAekoId: this.aekoInfo.requirementAekoId,
           editDisabled: !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(row.status) || (quotationFrom?true:false)
         }
       })
@@ -1036,12 +1041,12 @@ export default {
     },
     // 投资车型项目下拉是否禁用
     disabledInvestCarTypePro(row){
-      console.log(row,this.disabled);
+      
       // 当模具投资变动有值时 禁用下拉
-      // 内容状态为 报价中 已报价 拒绝 不禁用
-      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
-
+      // 内容状态为 报价中 已报价 拒绝 已提交 不禁用
+      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT' || row.status == 'SUBMITED';
       return row.mouldPriceChange || !statusDisabled || this.disabled
+
     },
 
   },

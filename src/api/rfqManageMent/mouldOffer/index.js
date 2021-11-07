@@ -8,8 +8,8 @@
  */
 import axios from '@/utils/axios'
 import downLoadAxons from '@/utils/axios.download'
-const requst = axios(process.env.VUE_APP_SUPPLIER_ECHARTS)
-const downLoad = downLoadAxons(process.env.VUE_APP_SUPPLIER_ECHARTS)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const downLoad = downLoadAxons(process.env.VUE_APP_SOURCING)
 /**
  * @description: 待办rfq供应商列表
  * @param {*} parmars

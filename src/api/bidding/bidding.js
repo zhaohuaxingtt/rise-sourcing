@@ -1,5 +1,5 @@
 import axios from "@/utils/axios";
-const requst = axios();
+const requst = axios(process.env.VUE_APP_BIDDING);
 
 // 创建RFQ轮次
 export function saveBiddingInfo(data) {

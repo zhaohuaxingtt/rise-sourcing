@@ -1,8 +1,8 @@
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_RFQ)
-const nego = axios(process.env.VUE_APP_NEGO)
-const quotation = axios(process.env.VUE_APP_RFQ)
+const requst = axios(process.env.VUE_APP_SOURCING)
+const nego = axios(process.env.VUE_APP_SOURCING)
+const quotation = axios(process.env.VUE_APP_SOURCING)
 
 import { serialize } from "@/utils"
 /*零件清单*/

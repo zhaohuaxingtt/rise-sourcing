@@ -4,10 +4,9 @@
       <div class="font18 font-weight">{{language('FENTANFUJIANLIEBIAO', 'SEL分摊单附件列表')}}</div>
       <div class="control">
         <span v-if="!readOnly">
-          <iButton v-permission.auto="SEL_DIALOG_BUTTON_XIAZAI|下载" @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
-          <iButton v-permission.auto="SEL_DIALOG_BUTTON_SHANCHU|删除" @click="deleteFile([], getFetchData)">{{ language('LK_SHANCHU','删除') }}</iButton>
+          <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
+          <iButton @click="deleteFile([], getFetchData)">{{ language('LK_SHANCHU','删除') }}</iButton>
           <upload
-            v-permission.auto="SEL_DIALOG_BUTTON_SHANGCHUANWENJIAN|上传文件"
             class="upload-trigger"
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.pdf,.tif'"
@@ -16,8 +15,8 @@
           />
         </span>
         <span v-if="selStatus">
-          <iButton v-permission.auto="SEL_DIALOG_BUTTON_QUEREN|确认" v-if="selStatus === 'UNCONFIRMED'" @click="selConfirm">{{ language('LK_QUEREN','确认') }}</iButton>
-          <iButton v-permission.auto="SEL_DIALOG_BUTTON_XIAZAI|下载" @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
+          <iButton v-if="selStatus === 'UNCONFIRMED'" @click="selConfirm">{{ language('LK_QUEREN','确认') }}</iButton>
+          <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
         </span>
         <!-- <iButton>{{ language('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>

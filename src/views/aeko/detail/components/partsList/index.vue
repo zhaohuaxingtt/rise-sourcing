@@ -172,6 +172,7 @@ import {
 import { cloneDeep } from "lodash"
 import {user as configUser } from '@/config'
 import { roleMixins } from "@/utils/roleMixins";
+import { setLogModule } from "@/utils";
 export default {
     name:'partsList',
     mixins: [pageMixins,roleMixins],
@@ -213,6 +214,7 @@ export default {
     },
    
     created() {
+        setLogModule('AEKO表态-详情页-零件清单')
         const roleList = this.roleList;
         this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
         this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
@@ -261,6 +263,7 @@ export default {
             this.isLinie = true;
             this.isAekoManager = false;
             this.isCommodityCoordinator = false;
+            this.searchParams = cloneDeep(linieQueryForm)
         }
 
     },
@@ -273,7 +276,6 @@ export default {
                 cartype:[''],
                 linieDeptNumList:[''],
                 sendStatus:'',
-                contentStatusList:['']
             },
             selectOptions:{
                 cartypeCode:[],
@@ -481,8 +483,13 @@ export default {
             if(from == 'check'){
                 // 内容状态下拉数据获取
                 searchContentStatus().then((res)=>{
-                    const {code,data} = res;
+                    const {code,data=[]} = res;
                     if(code ==200 ){
+                        data.map((item)=>{
+                            if(item.code == 'EMPTY'){
+                                item.desc = '(空)'
+                            }
+                        })
                         this.selectOptions.contentStatusList = data;
                         this.selectOptionsCopy.contentStatusList = data;
                     }else{
@@ -600,7 +607,7 @@ export default {
             this.loading = true
 
             const {searchParams,aekoInfo={} } = this;
-            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName,contentStatusList} = searchParams;
             let carTypeCodeList=[];
             // 车型和车型项目同一个code参数 单独处理下
             if(aekoInfo && aekoInfo.aekoType ){
@@ -616,6 +623,7 @@ export default {
                 // ...this.searchParams,
                 carTypeCodeList:(carTypeCodeList.length == 1 && carTypeCodeList[0] === '') ? [] : carTypeCodeList,
                 linieDeptNumList:(linieDeptNumList.length == 1 && linieDeptNumList[0] === '') ? [] : linieDeptNumList,
+                contentStatusList:(contentStatusList.length == 1 && contentStatusList[0] === '') ? [] : contentStatusList,
                 requirementAekoId: this.aekoInfo.requirementAekoId,
                 partNum,
                 partNameZh,

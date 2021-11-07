@@ -1,6 +1,6 @@
 import axios from '@/utils/axios'
 
-const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_BMAPPROVE);
+const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_TOOLING + '/bm');
 
 // 确认申请
 export function bmConfirm(parmars) {

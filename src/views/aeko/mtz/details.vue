@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-04 17:21:06
+ * @LastEditTime: 2021-11-05 17:03:50
  * @Description: 
 -->
 <template>
@@ -43,12 +43,17 @@
         @handleSelectionChange="handleSelectionChange"
       >
       <template #dosageChange="scope">
-        <iInput
-          v-model="scope.row.dosageChange"
-          @change="formatDosChangeNum(scope.row)"
-          :placeholder="language('LK_QINGSHURU','请输入')"
-        ></iInput>
+        <span :class="{validateDosageChangeError: scope.row.validateDosageChangeError}">
+          <iInput
+            v-model="scope.row.dosageChange"
+            @change="formatDosChangeNum(scope.row)"
+            :placeholder="language('LK_QINGSHURU','请输入')"
+          ></iInput>
+        </span>
         <!-- <span>{{scope.row.dosageChange}}</span> -->
+      </template>
+      <template #newDosage="scope">
+        {{calcNewDosage(scope.row)}}
       </template>
       <template #newStartDate="scope">
         <span :class="{validateStartError: scope.row.validateStartError}">
@@ -133,6 +138,9 @@ export default {
     this.getFetchData()
   },
   methods: {
+    calcNewDosage(row) {
+      return parseFloat(window._.sum([parseFloat(row.dosageChange || 0), parseFloat(row.originDosage || 0)]) || 0).toFixed(2)
+    },
     formatDosChangeNum(row) {
       const dosageChange = row.dosageChange
       const decimal = String(dosageChange).split('.')[1] || ''
@@ -145,6 +153,7 @@ export default {
       this.tableListData.map(o => {
         delete o.validateEndError
         delete o.validateStartError
+        delete o.validateDosageChangeError
         return o
       })
     },
@@ -154,7 +163,12 @@ export default {
 
       // 清除错误信息
       this.clearValidateError()
-
+      // 用量必填校验
+      if (state && !row.dosageChange) {
+        state = false
+        errorInfo = this.language('YONGLIANGBIANHUABUNENGWEIKONG', '用量变化不能为空')
+         this.$set(row, 'validateDosageChangeError', true)
+      }
       if (state && !row.newStartDate) {
         state = false
         errorInfo = this.language('XINYOUXIAOQIKAISHISHIJIANBITIAN', '新有效期开始时间不能为空')

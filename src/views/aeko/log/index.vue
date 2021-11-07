@@ -70,18 +70,33 @@
           align="center"
         ></el-table-column>
       </el-table>
+      
+      <div class="pagination-box" >
+        <iPagination
+          v-update
+          class="pagination"
+          @size-change="handleSizeChange($event, getList)"
+          @current-change="handleCurrentChange($event, getList)"
+          background
+          :current-page="page.currPage"
+          :page-sizes="page.pageSizes"
+          :page-size="page.pageSize"
+          :layout="page.layout"
+          :total="page.totalCount" />
+      </div>
     </iDialog>
   </div>
 </template>
 
 <script>
-import {iDialog, iSearch, iInput} from 'rise'
+import {iDialog, iSearch, iInput, iPagination, iMessage} from 'rise'
 import { getLogModule } from '@/utils'
 import { roleMixins } from '@/utils/roleMixins'
+import { pageMixins } from '@/utils/pageMixins'
 
 export default {
-  components: { iDialog, iSearch, iInput },
-  mixins: [roleMixins],
+  components: { iDialog, iSearch, iInput, iPagination },
+  mixins: [roleMixins, pageMixins],
   props: {
     bizId: {
       type: Number,
@@ -164,25 +179,30 @@ export default {
     getList() {
       console.log('bizId', this.bizId)
       const http = new XMLHttpRequest()
-      const url = `/bizlog/operationLog/listOperationLogs`
+      const url = `/bizlog/operationLog/findOperationLogs`
       http.open('POST', url, true)
       http.setRequestHeader('content-type', 'application/json')
       http.onreadystatechange = () => {
         if (http.readyState === 4) {
-          this.tableData = JSON.parse(http.responseText)
+          let res = JSON.parse(http.responseText)
+          this.tableData = res.content
+          this.page.totalCount = res.total
         }
       }
       this.query.bizId = this.bizId
+      if(!this.bizId) return 
 			let module = getLogModule()
       const sendData = {
-        extendFields: { ...this.query, module:module, create_by_ae: this.userInfo.id }
+        current: this.page.currPage - 1,  // 前后端页面定义有一页偏差
+        size: this.page.pageSize,
+        extendFields: { ...this.query, module:module, createBy: this.userInfo.id }
       }
       http.send(JSON.stringify(sendData))
     }
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .pagination-box {
   padding-bottom: 30px;
 }
@@ -191,17 +211,12 @@ export default {
   .card {
     box-shadow: none;
 
-    .cardBody {
+    ::v-deep .cardBody {
       padding: 0;
     }
   }
-
-  .log-table {
-    padding-bottom: 35px;
-  }
-
-  .el-table__body-wrapper {
-    height: 400px;
+  ::v-deep .el-table__body-wrapper {
+    height: 410px;
     overflow-y: auto;
     border-bottom: 1px solid #eee;
   }

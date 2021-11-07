@@ -1,14 +1,14 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-08 15:56:59
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-22 15:13:41
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-06 12:18:04
  * @Description: 
  * @FilePath: \front-web\src\api\designate\decisiondata\bdl.js
  */
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_SOURCING_WDL)
+const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 获取定点下rfq列表
 export function readQuotation(nominateId) {

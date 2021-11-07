@@ -1,6 +1,14 @@
+/*
+ * @Author: your name
+ * @Date: 2021-07-12 20:18:28
+ * @LastEditTime: 2021-11-06 12:52:18
+ * @LastEditors: your name
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \front-web\src\api\ws2\budgetApproval\index.js
+ */
 import axios from '@/utils/axios'
 
-const VUE_APP_BUDGET = axios(process.env.VUE_APP_BUDGET)
+const VUE_APP_BUDGET = axios(process.env.VUE_APP_TOOLING  + '/budget')
 //分页条件审批列表
 export function pageApproval(parmars) {
     return VUE_APP_BUDGET({
