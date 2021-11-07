@@ -571,3 +571,11 @@ export function getBnkFiles(data) {
     data
   })
 }
+
+// 下载BNK附件
+export function downloadBnkFile(ids) {
+  return requstFile({
+    url: `/bnkFile-download?${ serialize(ids, Array) }`,
+    method: 'GET'
+  })
+}
