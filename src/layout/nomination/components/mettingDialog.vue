@@ -161,7 +161,7 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableListData = Array.isArray(res.data.data) ? res.data.data : []
           this.page.totalCount = res.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -183,7 +183,6 @@ export default {
       // })
     },
     async checkNomiMeetingSubmit() {
-      console.log(this.selectedData)
       const { query } = this.$route;
       const {desinateId} = query;
       const meetingIds = this.selectedData.map(o => o.id) || []
