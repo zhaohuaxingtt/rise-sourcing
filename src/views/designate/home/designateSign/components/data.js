@@ -22,12 +22,12 @@ export const tableTitle = [{
   name: '申请单号',
   key: 'nominationLanguage_ShenQingDanHao',
   tooltip: false,
-  minWidth:80
+  minWidth: 80
 },
 {
   props: 'nominateName',
   name: '申请单名',
-  minWidth: 500,
+  minWidth: 260,
   key: 'nominationLanguage_ShenQingDanMing',
   tooltip: true
 },
@@ -64,7 +64,7 @@ export const tableTitle = [{
 {
   props: 'nominateUserName',
   name: '询价采购员',
-  minWidth: 160,
+  minWidth: 110,
   key: 'nominationLanguage_XunJiaCaiGouYuan',
   tooltip: true
 },
@@ -83,7 +83,7 @@ export const tableTitle = [{
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
-  minWidth: 160,
+  minWidth: 90,
   key: 'nominationLanguage_RSDongJieRiQi',
   tooltip: true
 },

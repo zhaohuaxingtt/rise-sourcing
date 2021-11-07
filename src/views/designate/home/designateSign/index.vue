@@ -9,6 +9,7 @@
     <div style="clear: both"></div>
     <!-- 搜索区 -->
     <search @search="getFetchData" ref="search" />
+    <p class="cutLine"></p>
     <!-- 表格 -->
     <iCard class="designateTable"  >
       <div class="margin-bottom20 clearFloat">
@@ -53,7 +54,8 @@
       <!-- RS状态 -->
       <template #rsStatus="scope">
         <div>
-          <span>{{scope.row.rsStatus && scope.row.rsStatus.desc || scope.row.rsStatus}}</span>
+          <!-- <span>{{scope.row.rsStatus && scope.row.rsStatus.desc || scope.row.rsStatus}}</span> -->
+          <span>{{ scope.row.rsStatusDesc }}</span>
         </div>
       </template>
       <!-- re冻结日期 -->
@@ -78,8 +80,8 @@
       </tablelist>
       <iPagination
         v-update
-        @size-change="handleSizeChange($event, getFetchData)"
-        @current-change="handleCurrentChange($event, getFetchData)"
+        @size-change="handleSizeChange($event, getFetchData.bind(this, $refs.search.form))"
+        @current-change="handleCurrentChange($event, getFetchData.bind(this, $refs.search.form))"
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -199,25 +201,42 @@ export default {
 
 <style lang="scss" scoped>
 .designateSearch {
-  margin-top: 20px;
+  margin-top: 0!important;
   box-shadow: none;
-  ::v-deep.iSearch-content {
+  ::v-deep .iSearch-content {
     position: relative;
-    overflow: visible;
-    &:after {
-      content: '';
-      width: 100%;
-      height: 0px;
-      display: block;
-      border-bottom: 1px dashed #e1e1e1;
-      position: absolute;
-      left: 0px;
-      bottom: -30px
-    }
+    overflow: hidden;
+    // overflow: visible;
+    // &:after {
+    //   content: '';
+    //   width: 100%;
+    //   height: 0px;
+    //   display: block;
+    //   border-bottom: 1px dashed #e1e1e1;
+    //   position: absolute;
+    //   left: 0px;
+    //   bottom: -30px
+    // }
   }
   
+  ::v-deep .cardBody {
+    padding-top: 0;
+  }
 }
 .designateTable {
   box-shadow: none;
+}
+
+.designateSearch,
+.designateTable {
+  ::v-deep .cardBody {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.cutLine {
+  height: 1px;
+  border-bottom: 1px dashed #e1e1e1;
 }
 </style>
