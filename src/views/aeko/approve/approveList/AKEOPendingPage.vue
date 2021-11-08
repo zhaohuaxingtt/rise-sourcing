@@ -610,6 +610,7 @@ export default {
             reqArrays.push({
               aekoCode: item.aekoNum,
               aekoAuditType: item.auditType,
+              isBatchApproval:true,
               approvalResult: 1,
               comment: '',
               workFlowDTO: workItem
