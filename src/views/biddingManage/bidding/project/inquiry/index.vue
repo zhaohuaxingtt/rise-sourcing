@@ -354,7 +354,7 @@
           v-model="ruleForm"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
-        />
+        />@/components/biddingComponents
       </template>
     </iCard>
   </div>
