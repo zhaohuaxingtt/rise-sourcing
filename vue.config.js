@@ -258,6 +258,10 @@ module.exports = {
       "/supplier": {
         target: "http://10.122.17.38:8017",
         changeOrigin: true
+      },
+      '/bizlog': {
+        target: `http://10.122.17.38:8013`,
+        changeOrigin: true,
       }
     },
   },

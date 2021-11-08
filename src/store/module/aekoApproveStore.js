@@ -1,7 +1,7 @@
 /*
  * @Author: YoHo
  * @Date: 2021-10-15 11:38:10
- * @LastEditTime: 2021-11-05 16:49:30
+ * @LastEditTime: 2021-11-08 12:14:03
  * @LastEditors: YoHo
  * @Description: 
  */
@@ -9,7 +9,7 @@ const state = {
     itemAekoApproveDetails:null,
     optionAEKOApprove:1,
     count: 0,   // 待办数量
-    module: null,   // 当前所处模块，用于查询相应日志
+    menu: null,   // 当前所处模块，用于查询相应日志
 
 }
 const getters = {
@@ -22,8 +22,8 @@ const getters = {
     getLogCount(state){
         return state.count
     },
-    getLogModule(state){
-        return state.module
+    getLogMenu(state){
+        return state.menu
     }
 };
 
@@ -39,8 +39,8 @@ const mutations = {
     setLogCount(state, count){
         state.count = count
     },
-    setLogModule(state, module){
-        state.module = module
+    setLogMenu(state, menu){
+        state.menu = menu
     }
 }
 
@@ -62,8 +62,8 @@ const actions ={
     setLogCountVal({commit, state}, count) {
         commit("setLogCount", count)
     },
-    setLogModuleVal({commit, state}, module) {
-        commit("setLogModule", module)
+    setLogMenuVal({commit, state}, menu) {
+        commit("setLogMenu", menu)
     }
 }
 
