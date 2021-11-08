@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-06 14:39:07
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-08 17:59:57
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -406,7 +406,6 @@ export default {
     };
   },
   created() {
-    setLogModule('AEKO表态-详情页-内容表态')
     this.searchCartypeProject()
     this.getDictByCode()
     this.procureFactorySelectVo()
@@ -426,6 +425,7 @@ export default {
 
     const {query} = this.$route;
     const {from=''} = query;
+    from=='manage'?setLogModule('AEKO管理-详情页-内容表态'):setLogModule('AEKO表态-详情页-内容表态')
     // AEKO查看跳转过来的数据table的新承运方式和原承运方式合并成一列
     if(from == 'check'){
       this.tableTitle = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc')
@@ -1043,8 +1043,8 @@ export default {
     disabledInvestCarTypePro(row){
       
       // 当模具投资变动有值时 禁用下拉
-      // 内容状态为 报价中 已报价 拒绝 已提交 不禁用
-      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT' || row.status == 'SUBMITED';
+      // 内容状态为 报价中 已报价 拒绝 不禁用
+      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
       return row.mouldPriceChange || !statusDisabled || this.disabled
 
     },

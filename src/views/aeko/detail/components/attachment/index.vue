@@ -115,7 +115,9 @@ export default {
     };
   },
   created(){
-    setLogModule('AEKO表态-详情页-审批附件')
+    const {query} = this.$route;
+    const {from=''} = query;
+    from=='manage'?setLogModule('AEKO管理-详情页-审批附件'):setLogModule('AEKO表态-详情页-审批附件')
   },
   mounted() {
     this.getFetchData()

@@ -5,7 +5,7 @@
       <iNavMvp v-if="show" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" :query="queryParams"/>
       <i-button v-if="$route.name !== 'explainattach'&& !disabled && show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_VIEW_APPROVED|查看已审批" @click="goViewApproved"  class="margin-left25">{{language('LK_CHAKANYISHENPI','查看已审批')}}</i-button>
       <i-button v-if="$route.name !== 'explainattach' && show" @click="lookAEKODetails"  v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_AEKO_DETAILS|AEKO详情"   class="margin-left25">{{language('LK_AEKO详情','AEKO详情')}}</i-button>
-      <log-button v-if="$route.name !== 'explainattach'" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
+      <log-button v-if="$route.name !== 'explainattach' && showLog " v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
             class="log-icon margin-left20 cursor myLogIcon"></icon>
       <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
@@ -41,6 +41,9 @@ export default {
     if(this.queryParams?.goto || false){  // 查看已审批隐藏部分按钮
       this.show = false
     }
+    if (this.transmitObj.option == 4) {  // Linie 预览没有审批日志
+      this.showLog = false
+    }
   },
   data() {
     return {
@@ -74,6 +77,7 @@ export default {
       ],
       disabled:false,
       showDialog: false,
+      showLog: true,
       show: true,
       bizId: ''
     }
