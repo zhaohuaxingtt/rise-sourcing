@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2285260 */
-  src: url('iconfont.woff2?t=1635929031075') format('woff2'),
-       url('iconfont.woff?t=1635929031075') format('woff'),
-       url('iconfont.ttf?t=1635929031075') format('truetype');
+  src: url('iconfont.woff2?t=1636364591328') format('woff2'),
+       url('iconfont.woff?t=1636364591328') format('woff'),
+       url('iconfont.ttf?t=1636364591328') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,58 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconxinjieshi:before {
+  content: "\e765";
+}
+
+.iconicon-shalou:before {
+  content: "\e75b";
+}
+
+.iconicon-cengji:before {
+  content: "\e75c";
+}
+
+.iconicon-baofeichuzhi:before {
+  content: "\e75d";
+}
+
+.iconicon-shangjia:before {
+  content: "\e75e";
+}
+
+.iconicon-daibaojia:before {
+  content: "\e75f";
+}
+
+.iconicon-fenduandingdian:before {
+  content: "\e760";
+}
+
+.iconicon-xiajia:before {
+  content: "\e761";
+}
+
+.iconicon-LIVE:before {
+  content: "\e762";
+}
+
+.iconicon-CParts:before {
+  content: "\e763";
+}
+
+.iconicon-tianxiezhuangtai:before {
+  content: "\e764";
+}
+
+.iconshengchangongyingshang:before {
+  content: "\e75a";
+}
+
+.icontop:before {
+  content: "\e759";
 }
 
 .iconMTZ:before {
@@ -355,10 +407,6 @@
 
 .iconjindu_jinhangzhong_lv:before {
   content: "\e71a";
-}
-
-.icon24px:before {
-  content: "\e712";
 }
 
 .iconN-tierlandian:before {

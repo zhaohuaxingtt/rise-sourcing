@@ -64,8 +64,8 @@ export default {
     iButton
   },
   created() {
-    // const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
-    // this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : 'nomination'
+    const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
+    this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : 'nomination'
     this.updateNavList
   },
   methods: {
@@ -75,8 +75,6 @@ export default {
     handleTabClick(){
       const { query } =  this.$route;
       const path = this.heaederSubMenu.find(o => o.key === this.tab).path
-      console.log('query', query);
-      console.log('path', path);
       this.$router.push({
           path,
           query,

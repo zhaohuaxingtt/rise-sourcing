@@ -6,6 +6,97 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "25536675",
+      "name": "新解释",
+      "font_class": "xinjieshi",
+      "unicode": "e765",
+      "unicode_decimal": 59237
+    },
+    {
+      "icon_id": "25454982",
+      "name": "icon-沙漏",
+      "font_class": "icon-shalou",
+      "unicode": "e75b",
+      "unicode_decimal": 59227
+    },
+    {
+      "icon_id": "25454983",
+      "name": "icon-层级",
+      "font_class": "icon-cengji",
+      "unicode": "e75c",
+      "unicode_decimal": 59228
+    },
+    {
+      "icon_id": "25454984",
+      "name": "icon-报废处置",
+      "font_class": "icon-baofeichuzhi",
+      "unicode": "e75d",
+      "unicode_decimal": 59229
+    },
+    {
+      "icon_id": "25454985",
+      "name": "icon-上架",
+      "font_class": "icon-shangjia",
+      "unicode": "e75e",
+      "unicode_decimal": 59230
+    },
+    {
+      "icon_id": "25454986",
+      "name": "icon-代报价",
+      "font_class": "icon-daibaojia",
+      "unicode": "e75f",
+      "unicode_decimal": 59231
+    },
+    {
+      "icon_id": "25454987",
+      "name": "icon-分段定点",
+      "font_class": "icon-fenduandingdian",
+      "unicode": "e760",
+      "unicode_decimal": 59232
+    },
+    {
+      "icon_id": "25454988",
+      "name": "icon-下架",
+      "font_class": "icon-xiajia",
+      "unicode": "e761",
+      "unicode_decimal": 59233
+    },
+    {
+      "icon_id": "25454989",
+      "name": "icon-LIVE",
+      "font_class": "icon-LIVE",
+      "unicode": "e762",
+      "unicode_decimal": 59234
+    },
+    {
+      "icon_id": "25454990",
+      "name": "icon-CParts",
+      "font_class": "icon-CParts",
+      "unicode": "e763",
+      "unicode_decimal": 59235
+    },
+    {
+      "icon_id": "25454991",
+      "name": "icon-填写状态",
+      "font_class": "icon-tianxiezhuangtai",
+      "unicode": "e764",
+      "unicode_decimal": 59236
+    },
+    {
+      "icon_id": "25443422",
+      "name": "生产供应商",
+      "font_class": "shengchangongyingshang",
+      "unicode": "e75a",
+      "unicode_decimal": 59226
+    },
+    {
+      "icon_id": "25441619",
+      "name": "top",
+      "font_class": "top",
+      "unicode": "e759",
+      "unicode_decimal": 59225
+    },
+    {
       "icon_id": "25360727",
       "name": "MTZ",
       "font_class": "MTZ",
@@ -606,13 +697,6 @@
       "font_class": "jindu_jinhangzhong_lv",
       "unicode": "e71a",
       "unicode_decimal": 59162
-    },
-    {
-      "icon_id": "15053893",
-      "name": "层级",
-      "font_class": "24px",
-      "unicode": "e712",
-      "unicode_decimal": 59154
     },
     {
       "icon_id": "24229364",
