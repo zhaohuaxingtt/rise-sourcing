@@ -92,8 +92,8 @@ export default {
     ...Vuex.mapState({
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
-      applicationStatus: state => state.applicationStatus,
-      nominationType: state => state.nominationType
+      applicationStatus: state => state.nomination.applicationStatus,
+      nominationType: state => state.nomination.nominationType
     }),
     tableTitle() {
       return tableTitle.map(item => {
