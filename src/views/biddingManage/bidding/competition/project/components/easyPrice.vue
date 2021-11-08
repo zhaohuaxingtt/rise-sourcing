@@ -3,14 +3,14 @@
     <iCard class="card">
       <div class="card--header">
         <div class="card--header--item">
-          {{ $t("项目信息") }}
+          {{ language('BIDDING_XIANGMUXINXI', '项目信息')}}
         </div>
         <div class="card--header--item card--header--item--btn">
           <template v-if="ruleForm.biddingStatus !== '01'"> </template>
           <template v-else>
-            <iButton @click="handlePre">{{ $t("上一步") }}</iButton>
-            <iButton @click="handleSearchReset">{{ $t("重置") }}</iButton>
-            <iButton @click="handleNext">{{ $t("下一步") }}</iButton>
+            <iButton @click="handlePre">{{ language('BIDDING_SHANGYIBU', '上一步') }}</iButton>
+            <iButton @click="handleSearchReset">{{ language('BIDDING_CHONGZHI','重置') }}</iButton>
+            <iButton @click="handleNext">{{ language('BIDDING_XIAYIBU','下一步')}}</iButton>
           </template>
         </div>
       </div>
@@ -27,30 +27,30 @@
             <div class="input-box">
               <div class="form-row">
                 <iFormItem
-                  label="起始年月"
+                  :label="language('BIDDING_QISHINIANYUE', '起始年月')"
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
                   <iLabel
-                    :label="$t('起始年月')"
+                    :label="language('BIDDING_QISHINIANYUE', '起始年月')"
                     slot="label"
                     required
                   ></iLabel>
                   <iDatePicker
                     style="width: 50%"
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                     value-format="yyyy-MM"
                     type="month"
                     v-model="ruleForm.beginMonth"
                   />
                 </iFormItem>
-                <iFormItem label="车型" prop="models">
-                  <iLabel :label="$t('车型')" slot="label" required></iLabel>
+                <iFormItem :label="language('BIDDING_CHEXING', '车型')" prop="models">
+                  <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label" required></iLabel>
                   <iSelect
                     v-model="ruleForm.models"
                     multiple
                     filterable
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                   >
                     <el-option
                       v-for="item in modelsOption"
@@ -63,9 +63,9 @@
                 </iFormItem>
               </div>
               <div class="form-row">
-                <iFormItem label="车型项目" prop="modelProjects">
+                <iFormItem :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" prop="modelProjects">
                   <iLabel
-                    :label="$t('车型项目')"
+                    :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')"
                     slot="label"
                     required
                   ></iLabel>
@@ -73,7 +73,7 @@
                     v-model="ruleForm.modelProjects"
                     multiple
                     filterable
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                   >
                     <el-option
                       v-for="item in modelProjectsOption"
@@ -86,10 +86,10 @@
                 </iFormItem>
                 <!-- 单价 -->
                 <iFormItem
-                  label="起始总价"
+                  :label="language('BIDDING_QISHIZONGJIA', '起始总价')"
                   v-if="ruleForm.biddingMode === '01'"
                 >
-                  <iLabel :label="$t('起始总价')" slot="label"></iLabel>
+                  <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -100,9 +100,9 @@
                   </div>
                 </iFormItem>
                 <!-- 总价 -->
-                <iFormItem label="起始总价" prop="totalPrices" v-else>
+                <iFormItem :label="language('BIDDING_QISHIZONGJIA', '起始总价')" prop="totalPrices" v-else>
                   <iLabel
-                    :label="$t('起始总价')"
+                    :label="language('BIDDING_QISHIZONGJIA', '起始总价')"
                     slot="label"
                     required
                   ></iLabel>
@@ -126,8 +126,8 @@
               </div>
               <div class="form-row">
                 <iFormItem />
-                <iFormItem label="大写">
-                  <iLabel :label="$t('大写')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_DAXIE', '大写')">
+                  <iLabel :label="language('BIDDING_DAXIE', '大写')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       v-if="ruleForm.biddingMode === '01'"
@@ -153,18 +153,18 @@
 
     <iCard class="card">
       <div class="card--header">
-        <div class="card--header--item">{{ $t("产品信息") }}</div>
+        <div class="card--header--item">{{ language('BIDDING_CHANPINXINXI', '产品信息') }}</div>
         <div class="card--header--item card--header--item--btn">
           <template v-if="ruleForm.biddingStatus !== '01'"></template>
           <template v-else>
-            <iButton @click="handleAddProduct">{{ $t("添加产品") }}</iButton>
+            <iButton @click="handleAddProduct">{{ language('BIDDING_TIANJIACHANPIN', '添加产品') }}</iButton>
             <iButton
               @click="handleDeleteTable"
               :disabled="
                 selectedTableData.length === 0 ||
                 ruleForm.biddingProducts.length === 0
               "
-              >{{ $t("删除") }}</iButton
+              >{{ language('BIDDING_SHANCHU', '删除') }}</iButton
             >
           </template>
         </div>
@@ -323,7 +323,7 @@ import {
   iSelect,
   iDatePicker,
 } from "rise";
-import commonTable from "@/components/biddingComponents/commonTable";
+import commonTable from "@/components/commonTable";
 import {
   unitTableTitle,
   totalTableTitle,
@@ -386,15 +386,15 @@ export default {
       selectedTableData: [],
       isApprovalOption: [
         {
-          model: this.$t("demoData1"),
+          model: this.language('demoData1', 'demoData1'),
           id: 1,
         },
         {
-          model: this.$t("demoData2"),
+          model: this.language('demoData2', 'demoData2'),
           id: 2,
         },
         {
-          model: this.$t("demoData3"),
+          model: this.language('demoData3', 'demoData3'),
           id: 3,
         },
       ],
@@ -446,7 +446,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || this.language('BIDDING_YUAN',"元");
     },
     orgTotalPrices() {
       let biddingProducts = this.ruleForm.biddingProducts;
@@ -569,7 +569,7 @@ export default {
     },
     handlePre() {
       if (this.ruleForm.biddingProducts.length == 0) {
-        return this.$message.error("产品信息不能为空");
+        return this.$message.error(this.language('BIDDING_CPXXBNWK',"产品信息不能为空"));
       }
       // this.$confirm("是否保存该项目信息？", "提示", {
       //   confirmButtonText: "是",
@@ -590,7 +590,7 @@ export default {
     },
     handleNext() {
       if (this.ruleForm.biddingProducts.length == 0) {
-        return this.$message.error("产品信息不能为空");
+        return this.$message.error(this.language('BIDDING_CPXXBNWK',"产品信息不能为空"));
       }
       // this.$confirm("是否保存该项目信息？", "提示", {
       //   confirmButtonText: "是",
@@ -656,7 +656,7 @@ export default {
             formData.totalPrices = this.orgTotalPrices;
             let reg = /^[\d]{0,15}(\.[\d]{0,6})?$/;
             if (!reg.test(formData.totalPrices)) {
-              return this.$message.error("起始总价不能大于17位(含两位小数）");
+              return this.$message.error(this.language('BIDDING_QSZJBNDY17W',"起始总价不能大于17位(含两位小数）"));
             }
           }
           formData.totalPrices = this.numberTotal(formData.totalPrices)
@@ -676,12 +676,12 @@ export default {
           })
           if (fsnrGsnr.length == productCodeTrim.length) {
             if (new Set(productCode).size !== this.ruleForm.biddingProducts.length) {
-              return this.$message.error("产品编号不能重复！");
+              return this.$message.error(this.language('BIDDING_CPBHBNCF',"产品编号不能重复！"));
             }
           }
           if(fsnrGsnr.length == fsnrGsnrTrim.length){
             if (new Set(fsnrGsnr).size !== this.ruleForm.biddingProducts.length) {
-              return this.$message.error("FSNR/GSNR 不能重复！");
+              return this.$message.error(this.language('BIDDING_FSNRGSNRBUNENGCHONGFU',"FSNR/GSNR 不能重复！"));
             }
           }
           // if (new Set(fsnrGsnr).size !== this.ruleForm.biddingProducts.length) {
@@ -690,7 +690,7 @@ export default {
           //保存
           saveUnitPrice(formData)
             .then((res) => {
-              this.$message.success("保存成功");
+              this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
               callback && callback();
             })
             .catch((err) => {
@@ -746,6 +746,12 @@ export default {
       } else {
         this.page.total = this.ruleForm.biddingProducts.length;
       }
+      this.ruleForm.biddingProducts = this.ruleForm.biddingProducts.map(item => {
+        return {
+          ...item,
+          purchaseQty:Number(item.purchaseQty)
+        }
+      })
       // if (this.ruleForm.biddingMode === "02") {
       //   //总价
       //   this.ruleForm.totalPrices = Big(this.ruleForm.totalPrices || 0)

@@ -1,7 +1,7 @@
 /* eslint-disable vue/no-side-effects-in-computed-properties */
 <template>
   <div>
-    <iCard class="card" :title="$t('项目信息')" collapse>
+    <iCard class="card" :title="language('BIDDING_XIANGMUXINXI', '项目信息')" collapse>
       <div>
         <el-form
           :model="ruleForm"
@@ -19,18 +19,18 @@
             <div class="input-box">
               <div class="form-row">
                 <iFormItem
-                  label="起始年月"
+                  :label="language('BIDDING_QISHINIANYUE', '起始年月')"
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
                   <iLabel
-                    :label="$t('起始年月')"
+                    :label="language('BIDDING_QISHINIANYUE', '起始年月')"
                     slot="label"
                     required
                   ></iLabel>
                   <iDatePicker
                     style="width: 50%"
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                     value-format="yyyy-MM"
                     type="month"
                     v-model="ruleForm.beginMonth"
@@ -38,17 +38,17 @@
                   />
                 </iFormItem>
                 <iFormItem
-                  label="车型"
+                  :label="language('BIDDING_CHEXING', '车型')"
                   :prop="ruleForm.roundType !== '03' ? 'models' : ''"
                   class="mutiple-form"
                 >
-                  <iLabel :label="$t('车型')" slot="label" required></iLabel>
+                  <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label" required></iLabel>
                   <iSelect
                     v-model="ruleForm.models"
                     multiple
                     filterable
                     :placeholder="
-                      ruleForm.roundType !== '03' ? $t('LK_QINGXUANZE') : ''
+                      ruleForm.roundType !== '03' ? language('BIDDING_QINGXUANZE', '请选择') : ''
                     "
                     disabled
                   >
@@ -64,12 +64,12 @@
               </div>
               <div class="form-row">
                 <iFormItem
-                  label="车型项目"
+                  :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')"
                   :prop="ruleForm.roundType !== '03' ? 'modelProjects' : ''"
                   class="mutiple-form"
                 >
                   <iLabel
-                    :label="$t('车型项目')"
+                    :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')"
                     slot="label"
                     required
                   ></iLabel>
@@ -78,7 +78,7 @@
                     multiple
                     filterable
                     :placeholder="
-                      ruleForm.roundType !== '03' ? $t('LK_QINGXUANZE') : ''
+                      ruleForm.roundType !== '03' ? language('BIDDING_QINGXUANZE', '请选择') : ''
                     "
                     disabled
                   >
@@ -91,8 +91,8 @@
                     </el-option>
                   </iSelect>
                 </iFormItem>
-                <iFormItem label="起始总价">
-                  <iLabel :label="$t('起始总价')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_QISHIZONGJIA', '起始总价')">
+                  <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -107,12 +107,12 @@
                 </iFormItem>
               </div>
               <div class="form-row">
-                <iFormItem label="大写">
-                  <iLabel :label="$t('大写')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_DAXIE', '大写')">
+                  <iLabel :label="language('BIDDING_DAXIE', '大写')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
-                      :value="totalPriceFlag ? '零元整' : numberUppercase"
+                      :value="totalPriceFlag ? language('BIDDING_LINGYUANZHENG','零元整') : numberUppercase"
                       disabled
                     ></iInput>
                     <div class="form--item--number--lable">{{ unit }}</div>
@@ -127,7 +127,7 @@
     </iCard>
 
     <!-- 产品信息 -->
-    <!-- <iCard class="card" :title="$t('产品信息')">
+    <!-- <iCard class="card" :title="language('产品信息', '产品信息')">
       <div class="card--body">
         <commonTable
           ref="tableDataForm"
@@ -675,9 +675,9 @@ export default {
     },
     //上一步
     handlePre() {
-      this.$confirm("是否保存该项目信息？", "提示", {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
+      this.$confirm(this.language('BIDDING_SFBCGXMXX',"是否保存该项目信息？"), this.language('BIDDING_TISHI',"提示"), {
+        confirmButtonText: this.language('BIDDING_SHI',"是"),
+        cancelButtonText: this.language('BIDDING_FOU',"否"),
         type: "warning",
       }).then(() => {
         this.submitForm(
@@ -695,9 +695,9 @@ export default {
     },
     //下一步
     handleNext() {
-      this.$confirm("是否保存该项目信息？", "提示", {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
+      this.$confirm(this.language('BIDDING_SFBCGXMXX',"是否保存该项目信息？"), this.language('BIDDING_TISHI',"提示"), {
+        confirmButtonText: this.language('BIDDING_SHI',"是"),
+        cancelButtonText: this.language('BIDDING_FOU',"否"),
         type: "warning",
       }).then(() => {
         this.submitForm(
@@ -735,7 +735,7 @@ export default {
             callback
           );
         } else {
-          this.$message.error("项目信息数据有误！");
+          this.$message.error(this.language('BIDDING_XMXXSJYW',"项目信息数据有误！"));
           return;
         }
       });
@@ -754,7 +754,7 @@ export default {
             callback
           );
         } else {
-          this.$message.error("产品信息数据有误！");
+          this.$message.error(this.language('BIDDING_CPXISJYW',"产品信息数据有误！"));
           return;
         }
       });
@@ -778,7 +778,7 @@ export default {
         if (valid) {
           this.handleSaveData(callback);
         } else {
-          this.$message.error("采购计划数据有误！");
+          this.$message.error(this.language('BIDDING_CGJHSJYW',"采购计划数据有误！"));
           return;
         }
       });
@@ -848,7 +848,7 @@ export default {
       //保存
       saveMultiPrice(formData)
         .then((res) => {
-          this.$message.success("保存成功");
+          this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
           callback && callback();
         })
         .catch((err) => {
@@ -1041,7 +1041,7 @@ export default {
       }
 
       this.handleAddYearPlan();
-      let obj = { title: "降价计划" };
+      let obj = { title: this.language('BIDDING_JIANGJIAJIHUA',"降价计划") };
       if (this.ruleForm.yearsPlans?.length) {
         this.ruleForm.yearsPlans.forEach((item) => {
           obj[`stage${item.stage}`] = item.cutPricePlan;
@@ -1073,7 +1073,7 @@ export default {
         this.ruleForm.roundType === "03" &&
         this.selectedTableData.length >= this.ruleForm.biddingProducts.length
       ) {
-        this.$message.error("不能 清空产品 信息 列表，至少保留一行！");
+        this.$message.error(this.language('BIDDING_BNQKCPXXLBZSBLYH',"不能清空产品信息列表，至少保留一行！"));
         return;
       }
       //删除产品

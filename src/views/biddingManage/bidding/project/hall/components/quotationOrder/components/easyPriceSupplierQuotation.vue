@@ -1,13 +1,13 @@
 <template>
   <div>
-    <iCard :title="$t('项目信息')" class="card">
+    <iCard :title="language('BIDDING_XIANGMUXINXI', '项目信息')" class="card">
       <template slot="header-control">
         <div>
           <iButton
             :disabled="biddingStatus"
             :class="{ yingbiao: biddingStatus, unyingbiao: !biddingStatus }"
             @click="handleNext"
-            >{{ $t("出价") }}</iButton
+            >{{ language('BIDDING_CHUJIA', '出价') }}</iButton
           >
         </div>
         <i
@@ -30,9 +30,9 @@
               <div class="form-row">
                 <iFormItem
                   v-if="ruleForm.biddingMode === '01'"
-                  label="起始总价"
+                  :label="language('BIDDING_QISHIZONGJIA', '起始总价')"
                 >
-                  <iLabel :label="$t('起始总价')" slot="label"></iLabel>
+                  <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input__totalprice"
@@ -43,9 +43,9 @@
                   </div>
                 </iFormItem>
                 <!-- 总价 -->
-                <iFormItem label="起始总价" prop="totalPrices" v-else>
+                <iFormItem :label="language('BIDDING_QISHIZONGJIA', '起始总价')" prop="totalPrices" v-else>
                   <iLabel
-                    :label="$t('起始总价')"
+                    :label="language('BIDDING_QISHIZONGJIA', '起始总价')"
                     slot="label"
                     required
                   ></iLabel>
@@ -69,8 +69,8 @@
                     <div class="form--item--number--lable">{{ unit }}</div>
                   </div>
                 </iFormItem>
-                <iFormItem label="大写">
-                  <iLabel :label="$t('大写')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_DAXIE', '大写')">
+                  <iLabel :label="language('BIDDING_DAXIE', '大写')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       v-if="ruleForm.biddingMode === '01'"
@@ -90,11 +90,11 @@
               </div>
               <div class="form-row" :class="{ hiden: hidens }">
                 <iFormItem
-                  label="起始年月"
+                  :label="language('BIDDING_QISHINIANYUE', '起始年月')"
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
-                  <iLabel :label="$t('起始年月')" slot="label"></iLabel>
+                  <iLabel :label="language('BIDDING_QISHINIANYUE', '起始年月')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -103,8 +103,8 @@
                     ></iInput>
                   </div>
                 </iFormItem>
-                <iFormItem label="车型">
-                  <iLabel :label="$t('车型')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_CHEXING', '车型')">
+                  <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
                       {{ tag.name }}
@@ -113,8 +113,8 @@
                 </iFormItem>
               </div>
               <div class="form-row" :class="{ hiden: hidens }">
-                <iFormItem label="车型项目">
-                  <iLabel :label="$t('车型项目')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')">
+                  <iLabel :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
                       {{ tag.name }}
@@ -132,7 +132,7 @@
     <iCard class="card">
       <div class="card--header">
         <div class="card--header--item card--header--item__top">
-          <div>{{ $t("产品信息") }}</div>
+          <div>{{language('BIDDING_CHANPINXINXI', '产品信息')}}</div>
         </div>
       </div>
       <div class="card--body">
@@ -349,9 +349,9 @@ export default {
           this.numberTotal(this.ruleForm.totalPrices) <
           this.biddingQuoteRule.actualValue
         ) {
-          this.$confirm("本次报价小于规则设定的警戒值，是否继续？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
+          this.$confirm(this.language('BIDDING_BCBJXYGZSDDJJZSFJX',"本次报价小于规则设定的警戒值，是否继续？"), this.language('BIDDING_TISHI',"提示"), {
+            confirmButtonText: this.language('BIDDING_QUEDING',"确定"),
+            cancelButtonText: this.language('BIDDING_QUXIAO',"取消"),
             type: "warning",
           })
             .then(() => {
@@ -372,9 +372,9 @@ export default {
           this.numberTotal(this.ruleForm.totalPrices) >
           this.biddingQuoteRule.actualValue
         ) {
-          this.$confirm("本次报价大于规则设定的警戒值，是否继续？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
+          this.$confirm(this.language('BIDDING_BCBJDYGZSDDJJZSFJX',"本次报价大于规则设定的警戒值，是否继续？"), this.language('BIDDING_TISHI',"提示"), {
+            confirmButtonText: this.language('BIDDING_QUEDING',"确定"),
+        cancelButtonText: this.language('BIDDING_QUXIAO',"取消"),
             type: "warning",
           })
             .then(() => {
@@ -400,7 +400,7 @@ export default {
         if (valid) {
           this.submitTableForm(tableDataForm, callback);
         } else {
-          this.$message.error("项目信息数据有误！");
+          this.$message.error(this.language('BIDDING_XMXXSJYW',"项目信息数据有误！"));
           return;
         }
       });
@@ -410,7 +410,7 @@ export default {
         if (valid) {
           this.handleSaveData(callback);
         } else {
-          this.$message.error("产品信息数据有误！");
+          this.$message.error(this.language('BIDDING_CPXISJYW',"产品信息数据有误！"));
           return;
         }
       });
@@ -434,7 +434,7 @@ export default {
         formData.supplierOffer = this.supplierOffer;
         let reg = /^[\d]{0,15}(\.[\d]{0,6})?$/;
         if (!reg.test(formData.totalPrices)) {
-          return this.$message.error("起始总价不能大于17位(含两位小数）");
+          return this.$message.error(this.language('BIDDING_QSZJBNDY17W',"起始总价不能大于17位(含两位小数）"));
         }
       } else {
         formData.totalPrices = this.numberTotal(this.ruleForm.totalPrices).toString();
@@ -444,7 +444,7 @@ export default {
       //保存
       saveBiddingQuotation(formData)
         .then((res) => {
-          this.$message.success("出价成功");
+          this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
           // this.updateRuleForm(res);
           callback && callback();
         })

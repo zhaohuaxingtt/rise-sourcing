@@ -13,27 +13,27 @@
       <iCard style="margin-top: 1rem">
         <div class="form-top">
           <div>
-            <h2>项目查询</h2>
+            <h2>{{language('BIDDING_XIANGMUCHAXUE','项目查询')}}</h2>
           </div>
           <div>
-            <iButton @click="getTableList">查询</iButton>
-            <iButton @click="handleSearchReset('ruleForm')">重置 </iButton>
+            <iButton @click="getTableList">{{language('BIDDING_CHAXUN','查询')}}</iButton>
+            <iButton @click="handleSearchReset('ruleForm')">{{language('BIDDING_CHONGZHI','重置')}}</iButton>
           </div>
         </div>
 
         <div class="item">
-          <iFormItem label="$t('RFQ/项目编号')" prop="rfqCode">
-            <iLabel :label="$t('RFQ/项目编号')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_RFQ/XIANGMUBIANHAO', 'RFQ/项目编号')" prop="rfqCode">
+            <iLabel :label="language('BIDDING_RFQ/XIANGMUBIANHAO', 'RFQ/项目编号')" slot="label"></iLabel>
             <iInput v-model="ruleForm.rfqCode"></iInput>
           </iFormItem>
 
-          <iFormItem label="$t('RFQ/项目名称')" prop="rfqName">
-            <iLabel :label="$t('RFQ/项目名称')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_RFQ/XIANGMUMINGCHENG', 'RFQ/项目名称')" prop="rfqName">
+            <iLabel :label="language('BIDDING_RFQ/XIANGMUMINGCHENG', 'RFQ/项目名称')" slot="label"></iLabel>
             <iInput v-model="ruleForm.rfqName"></iInput>
           </iFormItem>
 
-          <iFormItem label="$t('项目类型')" prop="projectType">
-            <iLabel :label="$t('项目类型')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType">
+            <iLabel :label="language('BIDDING_XIANGMULEIXING', '项目类型')" slot="label"></iLabel>
             <iSelect v-model="ruleForm.projectType" clearable>
               <el-option
                 v-for="(item, index) in projectType"
@@ -45,8 +45,8 @@
             </iSelect>
           </iFormItem>
 
-          <iFormItem label="$t('报价类型')" prop="quoteType">
-            <iLabel :label="$t('报价类型')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_BAOJIALEIXING', '报价类型')" prop="quoteType">
+            <iLabel :label="language('BIDDING_BAOJIALEIXING', '报价类型')" slot="label"></iLabel>
             <iSelect v-model="ruleForm.quoteType" clearable>
               <el-option
                 v-for="(item, index) in quoteType"
@@ -58,8 +58,8 @@
             </iSelect>
           </iFormItem>
 
-          <iFormItem label="$t('竞价类型')" prop="biddingType">
-            <iLabel :label="$t('竞价类型')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_JINGJIALEIXING', '竞价类型')" prop="biddingType">
+            <iLabel :label="language('BIDDING_JINGJIALEIXING', '竞价类型')" slot="label"></iLabel>
             <iSelect v-model="ruleForm.biddingType" clearable>
               <el-option
                 v-for="(item, index) in biddingType"
@@ -71,39 +71,39 @@
             </iSelect>
           </iFormItem>
 
-          <iFormItem label="$t('本轮RFQ关闭时间')" prop="rfqEndTime">
-            <iLabel :label="$t('本轮RFQ关闭时间')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_BENLUNRFQGUANBISHIJIAN', '本轮RFQ关闭时间')" prop="rfqEndTime">
+            <iLabel :label="language('BIDDING_BENLUNRFQGUANBISHIJIAN', '本轮RFQ关闭时间')" slot="label"></iLabel>
             <iDatePicker
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.rfqEndTime"
             />
           </iFormItem>
 
-          <iFormItem label="$t('开始时间')" prop="openTenderTime">
-            <iLabel :label="$t('开始时间')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_KAISHISHIJIAN', '开始时间')" prop="openTenderTime">
+            <iLabel :label="language('BIDDING_KAISHISHIJIAN', '开始时间')" slot="label"></iLabel>
             <iDatePicker
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.openTenderTime"
             />
           </iFormItem>
 
-          <iFormItem label="$t('结束时间')" prop="biddingBeginTime">
-            <iLabel :label="$t('结束时间')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_JIESHUSHIJIAN', '结束时间')" prop="biddingBeginTime">
+            <iLabel :label="language('BIDDING_JIESHUSHIJIAN', '结束时间')" slot="label"></iLabel>
             <iDatePicker
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.biddingBeginTime"
               :picker-options="biddingBeginTimeOptions"
             />
           </iFormItem>
 
-          <iFormItem label="$t('状态')" prop="biddingStatus">
-            <iLabel :label="$t('状态')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_ZHUANGTAI', '状态')" prop="biddingStatus">
+            <iLabel :label="language('BIDDING_ZHUANGTAI', '状态')" slot="label"></iLabel>
             <iSelect v-model="ruleForm.biddingStatus" clearable>
               <el-option
                 v-for="(item, index) in biddingStatus"
@@ -115,13 +115,13 @@
             </iSelect>
           </iFormItem>
 
-          <iFormItem label="$t('创建人')" prop="createName">
-            <iLabel :label="$t('创建人')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_CHUANGJIANREN', '创建人')" prop="createName">
+            <iLabel :label="language('BIDDING_CHUANGJIANREN', '创建人')" slot="label"></iLabel>
             <iInput v-model="ruleForm.createName"></iInput>
           </iFormItem>
 
-          <iFormItem label="$t('零件号')" prop="partNumber">
-            <iLabel :label="$t('零件号')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_LINGJIANHAO', '零件号')" prop="partNumber">
+            <iLabel :label="language('BIDDING_LINGJIANHAO', '零件号')" slot="label"></iLabel>
             <iInput v-model="ruleForm.partNumber"></iInput>
           </iFormItem>
         </div>
@@ -131,14 +131,14 @@
       <iCard style="margin-top: 1rem">
         <div class="form-top">
           <div>
-            <h2>{{language('LK_XIANGMULIEBIAO', '项目列表')}}</h2>
+            <h2>{{language('BIDDING_XIANGMULIEBIAO', '项目列表')}}</h2>
           </div>
           <div>
-            <iButton @click="showAddManual = true">新建项目</iButton>
+            <iButton @click="showAddManual = true">{{language('BIDDING_XINJIANXIANGMU', '新建项目')}}</iButton>
             <iButton
               @click="handleDelete"
               :disabled="selectedTableData.length === 0"
-              >删除</iButton
+              >{{language('BIDDING_SHANCHU', '删除')}}</iButton
             >
           </div>
         </div>
@@ -190,7 +190,7 @@ import {
 } from "./data";
 import addManual from "./addManual.vue";
 import { queryProjectByPage, deleteProject } from "@/api/bidding/bidding";
-import iTableCustom from "@/components/biddingComponents/iTableCustom";
+import iTableCustom from "@/components/iTableCustom";
 import { pageMixins } from "@/utils/pageMixins";
 
 export default {
@@ -278,22 +278,22 @@ export default {
       });
       console.log(ids);
       if (flag) {
-        return this.$message.error("只可选择手工创建且状态为【草稿】的项目");
+        return this.$message.error(this.language('BIDDING_ZKXZSGCJQZTW【CG】DXM','只可选择手工创建且状态为【草稿】的项目'));
       }
-      this.$confirm("是否删除选中的项目？", "提示", {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
+      this.$confirm(this.language('BIDDING_SFSCXZDXM','是否删除选中的项目？'), this.language('BIDDING_TISHI','提示'), {
+        confirmButtonText: this.language('BIDDING_SHI','是'),
+        cancelButtonText: this.language('BIDDING_FOU','否'),
         type: "warning",
       })
         .then(() => {
           const param = { ids };
           deleteProject(param)
             .then((res) => {
-              this.$message.success("删除成功");
+              this.$message.success(this.language('BIDDING_SHANCHUCHENGGONG','删除成功'));
               this.getTableList();
             })
             .catch(() => {
-              this.$message.error("删除失败");
+              this.$message.error(this.language('BIDDING_SHANCHUSHIBAI','删除失败'));
             });
         })
         .catch((err) => {

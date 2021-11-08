@@ -2,14 +2,14 @@
   <iCard class="card">
     <div class="card--header">
       <div class="card--header--item">
-        {{ $t("报价规则") }}
+        {{ language('BIDDING_BAOJIAGUIZE', '报价规则') }}
       </div>
       <div class="card--header--item card--header--item--btn">
         <template v-if="ruleForm.biddingStatus !== '01'"></template>
         <template v-else>
-          <iButton @click="handlePre">{{ $t("上一步") }}</iButton>
-          <iButton @click="handleSearchReset">{{ $t("重置") }}</iButton>
-          <iButton @click="handleNext">{{ $t("完成设置") }}</iButton>
+          <iButton @click="handlePre">{{ language('BIDDING_SHANGYIBU', '上一步') }}</iButton>
+          <iButton @click="handleSearchReset">{{ language('BIDDING_CHONGZHI','重置')}}</iButton>
+          <iButton @click="handleNext">{{ language('BIDDING_WANCHENGSHEZHI', '完成设置') }}</iButton>
         </template>
       </div>
     </div>
@@ -83,16 +83,17 @@ export default {
       });
     },
     handleNext() {
-      this.$confirm("是否保存该报价信息？", "提示", {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
+      this.$confirm(this.language('BIDDING_SFBCGBJXX',"是否保存该报价信息？"), this.language('BIDDING_TISHI',"提示"), {
+        confirmButtonText: this.language('BIDDING_SHI',"是"),
+        cancelButtonText: this.language('BIDDING_FOU',"否"),
         type: "warning",
       })
         .then(() => {
           this.submitForm(() => {
-            this.$router.push({
-              name: "biddingProjectInquiry",
-            });
+            window.close()
+            // this.$router.push({
+            //   name: "biddingProjectInquiry",
+            // });
           });
         })
         .catch((err) => {
@@ -110,10 +111,10 @@ export default {
           saveBiddingQuoteRule(formData)
             .then((res) => {
               if (res) {
-                this.$message.success("保存成功");
+                this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
                 callback && callback();
               } else {
-                this.$message.error("保存失败");
+                this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
               }
             })
             .catch((err) => {

@@ -4,7 +4,7 @@
       <div class="form-item-left">{{ title }}</div>
       <!-- <iButton>开标告知书</iButton> -->
       <!-- <iButton @click="handleShowNotice('02', '开标告知书')">{{
-        $t("开标告知书")
+        language('开标告知书', '开标告知书')
       }}</iButton> -->
     </div>
     <information @change-title="handleChangeTitle" />
@@ -24,7 +24,7 @@
 <script>
 import { iPage, iButton } from "rise";
 import information from "./components/information.vue";
-import bidNoticeDoc from "@/views/biddingManage/bidding/project/filing/components/bidNoticeDoc.vue";
+import bidNoticeDoc from "@/views/manage/bidding/project/filing/components/bidNoticeDoc.vue";
 export default {
   components: {
     iPage,
@@ -44,7 +44,7 @@ export default {
   computed: {
     title() {
       const { rfqCode, projectCode } = this.ruleForm || {};
-      return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
     },
   },
   methods: {

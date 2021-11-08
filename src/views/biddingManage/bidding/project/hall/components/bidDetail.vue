@@ -23,7 +23,7 @@
         </div>
       </template>
       <template slot="caozuo" slot-scope="scope">
-        <div class="form-view" @click="handleCheck(scope)">查看</div>
+        <div class="form-view" @click="handleCheck(scope)">{{ language('BIDDING_CHAKAN','查看') }}</div>
       </template>
     </commonTable>
     <iPagination
@@ -43,7 +43,7 @@
 
 <script>
 import { iCard, iPagination } from "rise";
-import commonTable from "@/components/biddingComponents/commonTable";
+import commonTable from "@/components/commonTable";
 import { bidDetail, bidDetails, bidDetailHe, bidDetailsHe, currencyMultipleLib } from "./data";
 import { getBiddingDetails } from "@/api/bidding/bidding";
 import { pageMixins } from "@/utils/pageMixins";
