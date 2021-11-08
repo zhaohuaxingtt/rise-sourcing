@@ -457,8 +457,9 @@ export default {
       }else {
         let nom = this.selectData[0].nominateId
         let item =[]
+        let MTZappId= this.$route.query.mtzApplyId
         item = this.selectData.map(val => val.partNum).join(',')
-        window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?id=`+nom+`&item=`+item,'_blank')
+        window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?pointId=`+nom+`&item=`+item+`&id=`+MTZappId,'_blank')
       }
     }
   }

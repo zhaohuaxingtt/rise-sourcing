@@ -139,7 +139,7 @@ export default {
           query = {
             id: res.data.id
           }
-          this.$router.push({path: '/sourcing/partsnomination/signSheet/addSignOverView?mode=add', query})
+          this.$router.push({path: '/sourcing/partsnomination/signSheet/addSignOverView/details?mode=add', query})
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -152,7 +152,7 @@ export default {
       // 签字单状态
       const statusCode = row.status && row.status.code || row.status
       this.$router.push({
-          path: '/sourcing/partsnomination/signSheet/addSignOverView',
+          path: '/sourcing/partsnomination/signSheet/addSignOverView/',
           query: {
             signCode: row.signCode,
             id: row.id,
