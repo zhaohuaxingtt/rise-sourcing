@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-11-05 20:16:24
- * @LastEditors:  
+ * @LastEditTime: 2021-11-08 15:31:42
+ * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -69,26 +69,37 @@ export default [
         meta: {
           title: "签字单列表",
         },
-        component: () =>
-            import ("@/views/designate/home/signSheet"),
+        component: () => import ("@/views/designate/home/signSheet"),
       },
       {
-        path: "/sourcing/partsnomination/signSheet/details",
-        name: "designateNewSignSheet",
+        path: "/sourcing/partsnomination/signSheet/addSignOverView",
+        name: "addSignOverView",
         meta: {
-          title: "新建签字单",
+          title: "签字单导航",
         },
         component: () =>
-            import ("@/views/designate/home/signSheet/details"),
-      },
-      {
-        path: "/sourcing/partsnomination/signSheet/mtzDetails",
-        name: "mtzDesignateNewSignSheet",
-        meta: {
-          title: "MTZ定点申请单",
-        },
-        component: () =>
-            import ("@/views/designate/home/signSheet/mtzDetails"),
+            import ("@/views/designate/home/signSheet/components/headerNav/index"),
+        redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details',
+        children: [
+          {
+            path: "details",
+            name: "designateNewSignSheet",
+            meta: {
+              title: "新建签字单",
+            },
+            component: () =>
+                import ("@/views/designate/home/signSheet/details"),
+          },
+          {
+            path: "mtzDetails",
+            name: "mtzDesignateNewSignSheet",
+            meta: {
+              title: "MTZ定点申请单",
+            },
+            component: () =>
+                import ("@/views/designate/home/signSheet/mtzDetails"),
+          }
+        ]
       },
       {
         path: "/sourcing/designate/rfqdetail/addRfq",
