@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-11-08 17:47:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 18:25:02
+ * @LastEditors:  
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
  *
@@ -72,9 +72,8 @@ export default [
         meta: {
           title: '签字单导航',
         },
-        component: () =>
-          import('@/views/designate/home/signSheet/components/headerNav/index'),
-        redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details',
+        component: () =>import('@/views/designate/home/signSheet/components/headerNav/index'),
+        // redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details',
         children: [
           {
             path: 'details',
