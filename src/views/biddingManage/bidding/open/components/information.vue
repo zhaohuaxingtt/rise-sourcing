@@ -467,7 +467,7 @@ import {
 } from "./data";
 import { uploadFile, getCurrencyUnit } from "@/api/mock/mock";
 import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
-import iLabelML from "@/components/iLabelML";
+import iLabelML from "@/components/biddingComponents/iLabelML";
 import { pageMixins } from "@/utils/pageMixins";
 
 export default {

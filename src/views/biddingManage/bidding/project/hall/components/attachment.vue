@@ -47,7 +47,7 @@
 
 <script>
 import { iPagination,iCard } from "rise";
-import commonTable from "@/components/commonTable";
+import commonTable from "@/components/biddingComponents/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { attachTableTitle } from "./data";
 import { getFileId } from "@/api/mock/mock";
