@@ -11,7 +11,7 @@ export const SearchList = [
     {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',permissionKey:'AEKO_CHECKLIST_SELECT_LINIEDEPtNUM|科室',selectOption:'linieDeptNumList',filterable:true,clearable:true,multiple:true,},
     {props:'cartypeCode',label:'车型',type:'select',isNewSelect:true,labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_CHECKLIST_SELECT_CARTYPE|车型',selectOption:'cartypeCode',multiple:true,filterable:true,clearable:true,noShowAll:true,},
     {props:'carTypeCodeList',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',isNewSelect:true,permissionKey:'AEKO_CHECKLIST_SELECT_CARTYPECODE|⻋型项⽬',selectOption:'carTypeCodeList',filterable:true,noShowAll:true,clearable:true,multiple:true,},
-    {props:'buyerName',label:'专业采购员',type:'select',labelKey:'LK_AEKO_PARTS_ZHUANYECAIGOUYUAN',selectOption:'buyerName',permissionKey:'AEKO_CHECKLIST_SELECT_ZHUANYECAIGOUYUAN|专业采购员',noShowAll:false,filterable:true,clearable:true,isNewSelect: true,},
+    {props:'buyerName',label:'专业采购员',type:'select',labelKey:'LK_AEKO_PARTS_ZHUANYECAIGOUYUAN',selectOption:'buyerName',permissionKey:'AEKO_CHECKLIST_SELECT_ZHUANYECAIGOUYUAN|专业采购员',noShowAll:true,filterable:true,clearable:true},
     {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',permissionKey:'AEKO_CHECKLIST_SELECT_AEKOSTATUS|AEKO状态',multiple:true,clearable:true},
     {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',permissionKey:'AEKO_CHECKLIST_SELECT_COVERSTATUS|封面状态',multiple:true,clearable:true},
     {props:'frozenDate',label:'冻结⽇期',type:'datePicker',labelKey:'LK_AEKODONGJIERIQI',permissionKey:'AEKO_CHECKLIST_DATEPICKER_FROZENDATE|冻结⽇期',}, 
