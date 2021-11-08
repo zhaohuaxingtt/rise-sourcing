@@ -140,7 +140,7 @@ module.exports = {
         },
       },
       '/usercenterApi': {
-        target: 'http://10.122.17.38:8015',
+        target: 'http://10.122.17.38:8015/usercenter',
         changeOrigin: true,
         pathRewrite: {
           '^/usercenterApi': '',
