@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 17:50:24
- * @LastEditTime: 2021-11-08 14:36:33
+ * @LastEditTime: 2021-11-08 18:24:00
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-web\src\views\designate\home\signSheet\components\mtzDetails\index.vue
@@ -51,7 +51,18 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange">
         </tableList>
+        <iPagination
+        v-update
+        @size-change="handleSizeChange($event, getTableData)"
+        @current-change="handleCurrentChange($event, getTableData)"
+        background
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"/>
       </iCard>
+      <detail v-model="detailParams.visible" :key="detailParams.key"/>
     </div>
   </iPage>
 </template>
@@ -61,7 +72,10 @@ import { iCard, iButton, iInput, iPage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import detail from './components/detail'
+import { getMTZSignPage } from '@/api/designate/nomination/signsheet'
+import { pageMixins } from "@/utils/pageMixins";
 export default {
+  mixins: [pageMixins],
   components: {
     iCard,
     iButton,
@@ -84,9 +98,16 @@ export default {
     }
   },
   created() {
-
+    this.getTableData()
   },
   methods: {
+    // 获取table数据
+    getTableData() {
+      
+      getMTZSignPage().then(res => {
+
+      })
+    },
     // 点击选择
     handleClickChoose() {
       this.detailParams = {
@@ -98,7 +119,8 @@ export default {
     // 点击移除
     handleClickMove() {
       
-    }
+    },
+
   }
 }
 </script>

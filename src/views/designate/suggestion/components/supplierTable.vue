@@ -447,7 +447,6 @@ export default {
           val.mtzApplyId != null ? isNullmtzApplyId = false : isNullmtzApplyId = true
           val.isBeforeFrozen === true ? isFrozen = true : isFrozen = false
         })
-        console.log(isNullmtzApplyId,isFrozen);
       if(!this.selectData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return

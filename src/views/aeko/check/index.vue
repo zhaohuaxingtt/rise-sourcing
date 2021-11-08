@@ -35,13 +35,13 @@
                   <iSelect
                     v-else
                     class="multipleSelect" 
-                    collapse-tags 
+                    collapse-tags
+                    reserve-keyword
                     :multiple="item.multiple" 
                     :filterable="item.filterable" 
                     :clearable="item.clearable" 
                     v-model="searchParams[item.props]" 
                     :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
-                    reserve-keyword
                     @change="handleMultipleChange($event, item.props,item.multiple)"
                     :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
                     >
@@ -162,7 +162,6 @@ export default {
         iCard,
         icon,
         filesListDialog,
-        logButton,
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -217,6 +216,7 @@ export default {
         selectItems:[],
         filesVisible:false,
         itemFileData:{},
+        debouncer: null,
       }
     },
     methods:{

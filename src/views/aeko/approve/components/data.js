@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-05 11:32:26
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 14:57:21
  * @Description: 
  */
 
@@ -95,9 +95,9 @@ export const SUBMENU = [
     value: 2,
     name: 'AEKO查看',
     message: 0,
-    url: '/aeko/approve',
-    activePath: 'projectoverview',
-    key: 'LK_AEKOCHAKAN'
+    url: '/aeko/checklist',
+    activePath: '/checklist',
+    key: 'AEKO_CHECK'
   },
 ]
 // 主菜单

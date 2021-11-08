@@ -11,13 +11,13 @@
     >
     <div class="floatright">
       <span v-if="mode === 'add'">
-        <iButton @click="handleSave" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
+        <iButton @click="save" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
           {{ language("BAOCUN",'保存') }}
         </iButton>
-        <iButton @click="handleSubmit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
+        <iButton @click="submit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
           {{ language("LK_TIJIAO",'提交') }}
         </iButton>
-        <iButton @click="handleRemove" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
+        <iButton @click="remove" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
           {{ language("YICHU",'移除') }}
         </iButton>
         <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
@@ -38,7 +38,7 @@
       <el-tab-pane lazy v-for="(item,index) in heaederSubMenu" :key="index" :label="item.name" :name="item.key" v-permission.dynamic.auto="item.permissionKey"></el-tab-pane>
     </iTabsList>
   </div>
-  <router-link/>
+  <router-view ref="signSheetCom"></router-view>
 </div>
 </template>
 <script>
@@ -64,8 +64,8 @@ export default {
     iButton
   },
   created() {
-    // const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
-    // this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : 'nomination'
+    const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
+    this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : 'nomination'
     this.updateNavList
   },
   methods: {
@@ -75,12 +75,19 @@ export default {
     handleTabClick(){
       const { query } =  this.$route;
       const path = this.heaederSubMenu.find(o => o.key === this.tab).path
-      console.log('query', query);
-      console.log('path', path);
       this.$router.push({
           path,
           query,
       });
+    },
+    save() {
+      this.$refs.signSheetCom.handleSave()
+    },
+    submit() {
+      this.$refs.signSheetCom.handleSubmit()
+    },
+    remove() {
+      this.$refs.signSheetCom.handleRemove()
     },
     // 通过待办数跳转
     clickMessage,
