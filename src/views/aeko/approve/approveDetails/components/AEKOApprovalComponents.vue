@@ -77,6 +77,9 @@
             label="申请人解释"
             align="center"
             prop="applicantExplain">
+          <template slot-scope="scope">
+            <span class="icon">{{scope.row.applicantExplain}}<icon v-if="scope.row.applicantExplain" symbol class="icon" name="iconxinjieshi"/></span>
+          </template>
         </el-table-column>
         <el-table-column
             label="解释附件"
@@ -106,7 +109,7 @@ import {iInput, iCard, icon, iButton} from "rise"
 import {aekoAudit, transferAEKO} from "@/api/aeko/approve";
 import AEKOExplainAttachmentDialog from "./AEKOExplainAttachmentDialog";
 import {lookDetails} from '../../approveList/lib'
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 
 export default {
   name: "AEKOApprovalComponents",
@@ -168,7 +171,7 @@ export default {
     }
   },
 created(){
-  setLogModule('AEKO审批-待审批列表-审批单')
+  setLogMenu('AEKO审批-待审批列表-审批单')
 },
   methods: {
     closePage() {
@@ -339,5 +342,10 @@ created(){
   content: '*';
   color: red;
 }
-
+.icon {
+  svg {
+    font-size: 24px;
+    margin-left: 8px;
+  }
+}
 </style>

@@ -16,16 +16,16 @@
       >
         <el-row class="form-row">
           <iFormItem label="" prop="roundType">
-            <iLabel :label="$t('供应商code')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_GYSCODE', '供应商code')" slot="label" required></iLabel>
             <iInput
               v-model="form.supplierCode"
-              placeholder="请输入供应商code"
+              :placeholder="language('BIDDING_QSRGYSCODE', '请输入供应商code')"
             />
           </iFormItem>
         </el-row>
         <div class="button-list">
           <el-form-item>
-            <iButton @click="handleOK" plain>{{ $t("LK_BAOCUN") }}</iButton>
+            <iButton @click="handleOK" plain>{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
           </el-form-item>
         </div>
       </el-form>
@@ -60,7 +60,7 @@ export default {
         "BIDDING_SUPPLIER_CODE",
         this.form.supplierCode
       );
-      iMessage.success("保存成功");
+      iMessage.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
     },
   },
 };

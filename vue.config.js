@@ -140,7 +140,7 @@ module.exports = {
         },
       },
       '/usercenterApi': {
-        target: 'http://10.122.17.38:8015',
+        target: 'http://10.122.17.38:8015/usercenter',
         changeOrigin: true,
         pathRewrite: {
           '^/usercenterApi': '',
@@ -154,7 +154,7 @@ module.exports = {
         },
       },
       '/projectApi': {
-        target: 'http://10.122.17.38:8005',
+        target: 'http://10.122.17.38:8005/projectmgt',
         changeOrigin: true,
         pathRewrite: {
           '^/projectApi': '',
@@ -238,7 +238,7 @@ module.exports = {
         },
       },
       '/biddingApi': {
-        target: 'http://10.122.17.38:8056',
+        target: 'http://10.122.17.38:8056/bidding',
         changeOrigin: true,
         pathRewrite: {
           '^/biddingApi': '',
@@ -258,6 +258,10 @@ module.exports = {
       "/supplier": {
         target: "http://10.122.17.38:8017",
         changeOrigin: true
+      },
+      '/bizlog': {
+        target: `http://10.122.17.38:8013`,
+        changeOrigin: true,
       }
     },
   },

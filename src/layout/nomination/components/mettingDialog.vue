@@ -192,6 +192,7 @@ export default {
           // meetingResult: this.meetingResult,
           meetingType: this.meetingType,
           meetingId: meetingIds && Number(meetingIds[0]) || '',
+          info: this.selectedData[0]
       }
       if (!this.meetingType) {
         iMessage.error(this.language('QINGXUANZEHUIYILEIBIE','请选择会议类别'))

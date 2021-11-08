@@ -12,11 +12,11 @@
         <div class="form-row">
           <!-- 采购类型 -->
           <iFormItem label="采购类型" :hideRequiredAsterisk="true">
-            <iLabel :label="$t('采购类型')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_CAIGOULEIXING', '采购类型')" slot="label"></iLabel>
             <!-- <iInput v-model="ruleForm.procureType" disabled></iInput> -->
             <iSelect
               v-model="ruleForm.procureType"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               disabled
             >
               <el-option
@@ -30,11 +30,11 @@
           </iFormItem>
           <!-- 轮次类型 -->
           <iFormItem label="轮次类型" :hideRequiredAsterisk="true">
-            <iLabel :label="$t('轮次类型')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_LUNCILEIXING', '轮次类型')" slot="label"></iLabel>
             <!-- <iInput v-model="ruleForm.roundType" disabled></iInput> -->
             <iSelect
               v-model="ruleForm.roundType"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               disabled
             >
               <el-option
@@ -52,11 +52,12 @@
             prop="manualBiddingType"
             :hideRequiredAsterisk="true"
           >
-            <iLabel :label="$t('手工竞价类型')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_SGJJLX', '手工竞价类型')" slot="label" required></iLabel>
             <iSelect
               v-model="ruleForm.manualBiddingType"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               :disabled="ruleForm.biddingStatus !== '01'"
+              @change="handleChangeType"
             >
               <el-option
                 v-for="item in manualBiddingTypeList"
@@ -71,16 +72,16 @@
         <div class="form-row">
           <!-- 竞价开始时间 -->
           <iFormItem
-            label="竞价开始时间"
+            :label="language('BIDDING_JJKSSJ', '竞价开始时间')"
             prop="biddingBeginTime"
             :hideRequiredAsterisk="true"
           >
-            <iLabel :label="$t('竞价开始时间')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_JJKSSJ', '竞价开始时间')" slot="label" required></iLabel>
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.biddingBeginTime"
               :picker-options="pricingBeginTimeOptions"
               :disabled="ruleForm.biddingStatus !== '01'"
@@ -90,7 +91,7 @@
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.biddingBeginTime"
               :picker-options="pricingBeginTimeOptions"
               v-else
@@ -99,15 +100,15 @@
           <!-- 竞价结束时间 -->
           <iFormItem
             v-if="ruleForm.manualBiddingType !== '02'"
-            label="竞价结束时间"
+            :label="language('BIDDING_JJJSSJ', '竞价结束时间')"
             prop="biddingEndTime"
           >
-            <iLabel :label="$t('竞价结束时间')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_JJJSSJ', '竞价结束时间')" slot="label" required></iLabel>
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.biddingEndTime"
               :picker-options="pricingEndTimeOptions"
               :disabled="ruleForm.biddingStatus !== '01'"
@@ -117,7 +118,7 @@
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.biddingEndTime"
               :picker-options="pricingEndTimeOptions"
               v-else
@@ -125,12 +126,12 @@
           </iFormItem>
           <!-- 报价截止日期 -->
           <iFormItem label="报价截止日期" prop="pricingDeadline">
-            <iLabel :label="$t('报价截止日期')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_BJJZRQ', '报价截止日期')" slot="label" required></iLabel>
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.pricingDeadline"
               :picker-options="pricingDeadlineOptions"
               :disabled="ruleForm.biddingStatus !== '01'"
@@ -140,7 +141,7 @@
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.pricingDeadline"
               :picker-options="pricingDeadlineOptions"
               v-else
@@ -152,7 +153,7 @@
             label="引用RFQ"
             :hideRequiredAsterisk="true"
           >
-            <iLabel :label="$t('引用RFQ')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_YYRFQ', '引用RFQ')" slot="label"></iLabel>
             <iInput v-model="ruleForm.rfqCode" disabled></iInput>
           </iFormItem>
         </div>
@@ -163,12 +164,12 @@
             label="引用RFQ"
             :hideRequiredAsterisk="true"
           >
-            <iLabel :label="$t('引用RFQ')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_YYRFQ', '引用RFQ')" slot="label"></iLabel>
             <iInput v-model="ruleForm.rfqCode" disabled></iInput>
           </iFormItem>
           <!-- 关联RFQ -->
           <iFormItem label="关联RFQ" :hideRequiredAsterisk="true">
-            <iLabel :label="$t('关联RFQ')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_GLRFQ', '关联RFQ')" slot="label"></iLabel>
             <iSelect
               v-model="ruleForm.rfqs"
               value-key="rfqCode"
@@ -197,7 +198,7 @@
         <div class="form-row" v-if="ruleForm.biddingStatus === '08'">
           <!-- 作废原因 -->
           <iFormItem label="作废原因" prop="invalidReason">
-            <iLabel :label="$t('作废原因')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_ZUOFEIYUANYIN', '作废原因')" slot="label"></iLabel>
             <div
               :value="ruleForm.invalidReason"
               class="form-item-clo1-row1"
@@ -224,7 +225,7 @@ import {
   procureTypeList,
   roundTypeList,
 } from "./data.js";
-import { getRfqCodesList } from "@/api/mock/mock";
+import { getRfqIdList } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
 
 // 当format设置成"yyyy-MM-dd HH:mm"时，同时设置selectableRange会导致此刻按钮判断失败，点击无效
@@ -360,8 +361,9 @@ export default {
       };
     },
   },
-  async created() {
-    const res = await getRfqCodesList({});
+  async mounted() {
+    console.log(365,this.ruleForm)
+    const res = await getRfqIdList({manualBiddingType:this.ruleForm.manualBiddingType});
     this.rfqNameList = (res.data || []).map((code) => {
       return {
         biddingId: this.biddingId,
@@ -369,6 +371,18 @@ export default {
       };
     });
   },
+   methods: {
+    async handleChangeType(){
+      this.ruleForm.rfqCode='';
+      const res = await getRfqIdList({manualBiddingType:this.ruleForm.manualBiddingType});
+      this.rfqNameList = (res.data || []).map((code) => {
+      return {
+        biddingId: this.biddingId,
+        rfqCode: code,
+      };
+    });
+    },
+  }
 };
 </script>
 

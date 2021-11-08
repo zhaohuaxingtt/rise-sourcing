@@ -208,7 +208,7 @@ import {user as configUser} from '@/config'
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
 import {numberToCurrencyNo, numberToCurrencyNo2} from '../../../../utils/cutOutNum'
-import { setLogCount, setLogModule } from "@/utils";
+import { setLogCount, setLogMenu } from "@/utils";
 
 export default {
   name: "AKEOApprovedPage",
@@ -275,7 +275,7 @@ export default {
     }),
   },
   created() {
-    setLogModule('AEKO审批-列表-已审批列表')
+    setLogMenu('AEKO审批-列表-已审批列表')
     this.loadApprovedList()
     this.queryAllLin()
   },

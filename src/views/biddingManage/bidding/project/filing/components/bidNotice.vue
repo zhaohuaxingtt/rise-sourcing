@@ -2,16 +2,16 @@
   <iCard class="card">
     <div class="card--header">
       <div class="card--header--item">
-        {{ $t("竞价告知书") }}
+        {{ language('BIDDING_JINGJIAGAOZHISHU', '竞价告知书') }}
       </div>
       <div class="card--header--item card--header--item--btn">
         <el-checkbox
           :value="readed"
           @change="handleReaded"
         />
-        <span class="card--header--item--read">我已阅读并接受以下条款</span>
-        <iButton @click="handleOK" plain>{{ $t("拒绝") }}</iButton>
-        <iButton @click="handleOK('ok')" plain>{{ $t("同意") }}</iButton>
+        <span class="card--header--item--read">{{ language('BIDDING_WYYDBJSYXTK','我已阅读并接受以下条款') }}</span>
+        <iButton @click="handleOK" plain>{{ language('BIDDING_JUJUE', '拒绝') }}</iButton>
+        <iButton @click="handleOK('ok')" plain>{{ language('BIDDING_TONGYI', '同意') }}</iButton>
       </div>
     </div>
   </iCard>
@@ -43,7 +43,8 @@ export default {
       if (this.readed) {
         this.handleCancel();
       } else if (status === "ok") {
-        this.$message.error("请先完成条款阅读并勾选“我已阅读以上条款”");
+        // this.$message.error("请先完成条款阅读并勾选“我已阅读以上条款”");
+        this.$message.error(this.language('BIDDING_QXWCTKYDBGXWYYDYSTK','请先完成条款阅读并勾选“我已阅读以上条款”'));
       } else {
         this.handleCancel();
       }
