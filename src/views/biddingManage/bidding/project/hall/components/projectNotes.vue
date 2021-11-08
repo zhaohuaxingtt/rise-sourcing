@@ -24,7 +24,7 @@
 
 <script>
 import { iCard, iPagination } from "rise";
-import iTableCustom from "@/components/biddingComponents/iTableCustom";
+import iTableCustom from "@/components/iTableCustom";
 import { projectNotes} from "./data";
 import { getProjectRemarks } from "@/api/bidding/bidding";
 import { pageMixins } from "@/utils/pageMixins";

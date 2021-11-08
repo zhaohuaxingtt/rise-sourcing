@@ -19,8 +19,8 @@
       >
         <div class="button-list">
           <el-form-item>
-            <iButton @click="handleOK" plain>{{ $t("拒绝") }}</iButton>
-            <iButton @click="handleOK('ok')" plain>{{ $t("同意") }}</iButton>
+            <iButton @click="handleOK" plain>{{ language('BIDDING_JUJUE', '拒绝') }}</iButton>
+            <iButton @click="handleOK('ok')" plain>{{ language('BIDDING_TONGYI', '同意') }}</iButton>
           </el-form-item>
         </div>
       </el-form>
@@ -30,7 +30,6 @@
 
 <script>
 import { iButton, iDialog } from "rise";
-import { getRfqCodesList } from "@/api/mock/mock";
 
 export default {
   components: {
@@ -49,9 +48,6 @@ export default {
     },
   },
   async created() {
-    // const res = await getRfqCodesList();
-    // this.rfqCodeList = res.map((item) => ({ label: item, value: item }));
-    // this.form.rfqCode = this.rfqCodeList[0]?.value;
   },
   data() {
     return {
@@ -84,7 +80,7 @@ export default {
       if (this.readed) {
         this.handleCancel();
       } else if (status === "ok") {
-        this.$message.error("请先完成条款阅读并勾选“我已阅读以上条款”");
+        this.$message.error(this.language('BIDDING_QXWCTKYDBGXWYYDYSTK','请先完成条款阅读并勾选“我已阅读以上条款”'));
       } else {
         this.handleCancel();
       }

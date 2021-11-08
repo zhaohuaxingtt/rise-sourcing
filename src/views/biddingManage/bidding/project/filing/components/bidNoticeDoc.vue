@@ -30,7 +30,7 @@
         "
       >
         <span
-          >我已阅读以上条款，{{ supplierName }},{{ updateDateNewType }}</span
+          >{{language('BIDDING_WYYDYSTK','我已阅读以上条款')}}，{{ supplierName }},{{ updateDateNewType }}</span
         >
       </div>
       <div class="operate" v-else>
@@ -42,17 +42,17 @@
             v-model="checked"
             @change="handleChecked"
             :disabled="!getValue"
-            >我已阅读并接受以下条款</el-checkbox>
+            >{{language('BIDDING_WYYDBJSYXTK','我已阅读并接受以下条款')}}</el-checkbox>
           <iButton
             class="reject"
             @click="hanldeAgreeOrReject(false)"
             :disabled="!getValue"
-            >拒绝</iButton>
+            >{{language('BIDDING_JUJUE','拒绝')}}</iButton>
           <iButton
             class="agree"
             :disabled="!checked"
             @click="hanldeAgreeOrReject(true)"
-            >同意</iButton>
+            >{{language('BIDDING_TONGYI','同意')}}</iButton>
         </div>
       </div>
       <!-- <div class="operate">
@@ -63,7 +63,7 @@
 </template>
 <script>
 import { iDialog, iButton, iMessage } from "rise";
-import iEditForm from "@/components/biddingComponents/iEditForm";
+import iEditForm from "@/components/iEditForm";
 import { filePreview } from "@/utils/filePreview";
 import {
   saveSupplierNotification,

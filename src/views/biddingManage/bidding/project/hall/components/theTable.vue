@@ -39,7 +39,7 @@
 
 <script>
 import { iCard, iPagination } from "rise";
-import commonTable from "@/components/biddingComponents/commonTable";
+import commonTable from "@/components/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { getCurrencyUnit } from "@/api/mock/mock";
 export default {

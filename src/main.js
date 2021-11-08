@@ -20,7 +20,7 @@ import './utils/mydirect'
 
 require('./auto').init()
 Vue.config.productionTip = false
-Vue.prototype.$t = (key, value) => i18n.t(key, value);
+Vue.prototype.$t = Vue.prototype.language = (key, value) => i18n.t(key, value);
 Promise.all([
   import('rise/web/lang/zh.js'),
   import('rise/web/lang/en.js'),

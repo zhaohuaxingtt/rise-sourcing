@@ -9,16 +9,16 @@
     <div class="form-group">
       <iLabelML showTip>
         <div class="hover-text">
-          <span>以</span>
-          <span class="hover-stick">产品总价</span
-          ><span
-            >为基数，供应商每次更新
-            报价价差的最低值都有绝对值（基数）或者百分比的限制</span
-          >
+          <span>{{language('BIDDING_YI','以')}}</span>
+          <span class="hover-stick">{{language('BIDDING_CHANPINZONGJIA','产品总价')}}</span
+          ><span>
+            {{language('BIDDING_WJSGYSMCGXBJJCDZDZDYJDZJSHZBFBDXZ',
+            '为基数，供应商每次更新报价价差的最低值都有绝对值（基数）或者百分比的限制')}}
+          </span>
           <span>。</span>
         </div>
         <template v-solt="label">
-          <iLabel label="差价限制" slot="label" class="label" required></iLabel>
+          <iLabel :label="language('BIDDING_CHAJIAXIANZHI','差价限制')" slot="label" class="label" required></iLabel>
         </template>
       </iLabelML>
       <div class="box-line">
@@ -27,11 +27,10 @@
           :hideRequiredAsterisk="true"
         >
           <iSelect
-            :placeholder="$t('LK_QINGXUANZE')"
+            :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
             class="input-select"
             v-model="ruleForm.biddingQuoteRule.priceDiffLimit"
             @change="handleChangeSelect"
-            disabled
           >
             <el-option
               v-for="(item, index) of priceDiffLimitSelectList"
@@ -49,8 +48,7 @@
           <iInput
             class="input-wrap"
             v-model="ruleForm.biddingQuoteRule.limitValue"
-            maxlength="8"
-            disabled
+            maxlength="15"
           ></iInput>
         </iFormItem>
       </div>
@@ -59,12 +57,12 @@
     <div class="form-group">
       <iLabelML showTip>
         <div class="hover-text">
-          <span>用于</span>
-          <span class="hover-stick">第一次报价</span>
+          <span>{{language('BIDDING_YONGYU','用于')}}</span>
+          <span class="hover-stick">{{language('BIDDING_DYCBJ','第一次报价')}}</span>
           <span>。</span>
         </div>
         <template v-solt="label">
-          <iLabel label="报价范围" slot="label" class="label" required></iLabel>
+          <iLabel :label="language('BIDDING_BAOJIAFEIWEI','报价范围')" slot="label" class="label" required></iLabel>
         </template>
       </iLabelML>
       <div class="box-align">
@@ -76,16 +74,14 @@
             <el-radio
               v-model="ruleForm.biddingQuoteRule.quotationScope"
               label="01"
-              disabled
-              >严格报价<span class="text-span">（≦起初价格）</span></el-radio
+              >{{language('BIDDING_TANGEBAOJIA','严格报价')}}<span class="text-span">{{language('BIDDING_（≦QICHUJIAGE）','（≦起初价格）')}}</span></el-radio
             >
           </div>
           <div class="section-second">
             <el-radio
               v-model="ruleForm.biddingQuoteRule.quotationScope"
               label="02"
-              disabled
-              >大致报价（≦
+              >{{language('BIDDING_DAZHIBAOJIA','大致报价（≦')}}
               <iFormItem
                 v-if="ruleForm.biddingQuoteRule.quotationScope === '02'"
                 prop="biddingQuoteRule.quotedValue"
@@ -94,12 +90,11 @@
                 ><iInput
                   class="input-number70"
                   v-model="ruleForm.biddingQuoteRule.quotedValue"
-                  maxlength="8"
-                  disabled
+                  oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 ></iInput>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
-              x起初报价）</el-radio
+              {{language('BIDDING_xQICHUBAOJIA','x起初报价）')}}</el-radio
             >
           </div>
         </iFormItem>
@@ -109,7 +104,7 @@
     <div class="form-group">
       <iLabelML>
         <template v-solt="label">
-          <iLabel label="报价对象" slot="label" class="label"></iLabel>
+          <iLabel :label="language('BIDDING_BAOJIADUIXIANG','报价对象')" slot="label" class="label"></iLabel>
         </template>
       </iLabelML>
       <div class="box-line">
@@ -118,9 +113,8 @@
           :hideRequiredAsterisk="true"
         >
           <iSelect
-            :placeholder="$t('LK_QINGXUANZE')"
+            :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
             class="input-wrap"
-            disabled
             v-model="ruleForm.biddingQuoteRule.priceDiffObject"
           >
             <el-option
@@ -138,28 +132,27 @@
     <div class="form-group">
       <iLabelML showTip>
         <div class="hover-text">
-          <span>供应商输入的</span>
+          <span>{{language('BIDDING_GSYSRD', '供应商输入的')}}</span>
           <span class="hover-stick"
-            >报价（总价）大于警戒 值设定的调整幅度上限</span
+            >{{language('BIDDING_BJZJDYJJZSDDTZFDSX', '报价（总价）大于警戒 值设定的调整幅度上限')}}</span
           >
-          <span>时，系统会提 醒供应商是否确认该报价。</span>
+          <span>{{language('BIDDING_SXTHTXGYSSFQRGBJ', '时，系统会提 醒供应商是否确认该报价。')}}</span>
         </div>
         <template v-solt="label">
-          <iLabel label="警戒值" slot="label" class="label"></iLabel>
+          <iLabel :label="language('BIDDING_JINGJIEZHI', '警戒值')" slot="label" class="label"></iLabel>
         </template>
       </iLabelML>
       <div class="box-line">
         <div class="box-line-handle">
-          调整幅度<iFormItem
+          {{language('BIDDING_TIAOZHENGFUDU', '调整幅度')}}<iFormItem
             prop="biddingQuoteRule.alertPercentage"
             :hideRequiredAsterisk="true"
             class="inline-block"
             ><iInput
               class="input-number70"
               v-model="ruleForm.biddingQuoteRule.alertPercentage"
-              disabled
             ></iInput></iFormItem
-          >%，实际值<iFormItem
+          >{{language('BIDDING_%SHIJIZHI', '%，实际值')}}<iFormItem
             prop="biddingQuoteRule.actualValue"
             :hideRequiredAsterisk="true"
             class="inline-block"
@@ -168,7 +161,7 @@
               :value="ruleForm.biddingQuoteRule.actualValue"
               disabled
             ></iInput></iFormItem
-          >人民币
+          >{{language('BIDDING_RENMINGBI', '人民币')}}
         </div>
       </div>
     </div>
@@ -176,12 +169,12 @@
     <div class="form-group">
       <iLabelML>
         <template v-solt="label">
-          <iLabel label="第一次报价限制" slot="label" class="label"></iLabel>
+          <iLabel :label="language('BIDDING_DYCBJXZ', '第一次报价限制')" slot="label" class="label"></iLabel>
         </template>
       </iLabelML>
       <div class="box-line">
         <div class="box-line-handle">
-          在竞价开始后<iFormItem
+          {{language('BIDDING_ZJJKSH', '在竞价开始后')}}<iFormItem
             prop="biddingQuoteRule.firstOfferLimit"
             :hideRequiredAsterisk="true"
             class="inline-block"
@@ -189,10 +182,9 @@
               class="input-number70"
               v-model="ruleForm.biddingQuoteRule.firstOfferLimit"
               maxlength="10"
-              disabled
               :required="ruleForm.roundType === '03' ? true : false"
             ></iInput></iFormItem
-          >(<span class="text-warn">整数</span>)分钟必须报价，否则作弃权处理。
+          >(<span class="text-warn">{{language('BIDDING_ZHENGSHU', '整数')}}</span>){{language('BIDDING_FZBXBJ，FZZQQCL。', '分钟必须报价，否则作弃权处理。')}}
         </div>
       </div>
     </div>
@@ -203,12 +195,12 @@
           <span class="hover-stick">的具体定义不可见</span>
         </div> -->
         <template v-solt="label">
-          <iLabel label="连续排名限制" slot="label" class="label"></iLabel>
+          <iLabel :label="language('BIDDING_LXMPXZ', '连续排名限制')" slot="label" class="label"></iLabel>
         </template>
       </iLabelML>
       <div class="box-line">
         <div class="box-line-handle">
-          供应商报价<iFormItem
+          {{language('BIDDING_GYSBJ', '供应商报价')}}<iFormItem
             prop="biddingQuoteRule.conRankLimit"
             :hideRequiredAsterisk="true"
             class="inline-block"
@@ -216,17 +208,16 @@
               class="input-number70"
               v-model="ruleForm.biddingQuoteRule.conRankLimit"
               maxlength="10"
-              disabled
             ></iInput></iFormItem
-          >(<span class="text-warn">整数</span
-          >)次，排名均为最后一名，则自动作为弃权处理。
+          >(<span class="text-warn">{{language('BIDDING_ZHENGSHU', '整数')}}</span
+          >){{language('BIDDING_C，PMJWZHYM，ZZDZWQQCL。', '次，排名均为最后一名，则自动作为弃权处理。')}}
         </div>
       </div>
     </div>
     <div class="form-group">
       <iLabelML>
         <template v-solt="label">
-          <iLabel label="排名规则" slot="label" class="label"></iLabel>
+          <iLabel :label="language('BIDDING_PAIMINGGUIZE', '排名规则')" slot="label" class="label"></iLabel>
         </template>
       </iLabelML>
       <div class="box-align">
@@ -235,38 +226,32 @@
           :hideRequiredAsterisk="true"
         >
           <div class="section-first">
-            <el-radio
-              disabled
-              v-model="ruleForm.biddingQuoteRule.rankRule"
-              label="01"
-              >低价位次<span class="text-grey"
-                >（不考虑报价时间，价格相同即排名相同；如果两个供应商报价最低，则显示第二名）</span
+            <el-radio v-model="ruleForm.biddingQuoteRule.rankRule" label="01"
+              >{{language('BIDDING_DIJIACIWEI', '低价位次')}}<span class="text-grey"
+                >{{language('BIDDING_BKLBJSJJGXTJPMXGRGLGGYSBJZDZXSDEM', 
+                '（不考虑报价时间，价格相同即排名相同；如果两个供应商报价最低，则显示第二名）')}}</span
               ></el-radio
             >
           </div>
           <div class="section-second">
-            <el-radio
-              disabled
-              v-model="ruleForm.biddingQuoteRule.rankRule"
-              label="02"
-              >时间优先<span class="text-grey"
-                >（价格相同，则按报价时间排序）</span
+            <el-radio v-model="ruleForm.biddingQuoteRule.rankRule" label="02"
+              >{{language('BIDDING_SHIJIANYOUXIAN', '时间优先')}}<span class="text-grey"
+                >{{language('BIDDING_JGXTZABJSJPX', '（价格相同，则按报价时间排序）')}}</span
               ></el-radio
             >
           </div>
         </iFormItem>
       </div>
     </div>
-    <!--  v-if="rankDisplayRuleSelectList.length > 0" -->
     <div class="form-group" v-if="rankDisplayRuleSelectList.length > 0">
       <iLabelML showTip>
         <div class="hover-text">
-          <span>供应商对红绿灯名次区间/偏离比例的</span>
-          <span class="hover-stick">具体定义不可见</span>
+          <span>{{language('BIDDING_GYSDHLDMCQJ/PLBLD', '供应商对红绿灯名次区间/偏离比例的')}}</span>
+          <span class="hover-stick">{{language('BIDDING_JTDYBKJ', '具体定义不可见')}}</span>
           <span>。</span>
         </div>
         <template v-solt="label">
-          <iLabel label="排名显示规则" slot="label" class="label"></iLabel>
+          <iLabel :label="language('BIDDING_PMXSGZ', '排名显示规则')" slot="label" class="label"></iLabel>
         </template>
       </iLabelML>
       <div class="box-line">
@@ -277,10 +262,9 @@
               :hideRequiredAsterisk="true"
             >
               <iSelect
-                :placeholder="$t('LK_QINGXUANZE')"
+                :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                 class="input-wrap"
                 v-model="ruleForm.biddingQuoteRule.rankDisplayRule"
-                disabled
               >
                 <el-option
                   v-for="(item, index) of rankDisplayRuleSelectList"
@@ -296,7 +280,7 @@
             v-if="ruleForm.biddingQuoteRule.rankDisplayRule === '02'"
             class="section-second"
           >
-            排名区间，绿灯区间(<span class="text-warn">整数</span>)<iFormItem
+            {{language('BIDDING_PMQJDLQJ', '排名区间，绿灯区间')}}(<span class="text-warn">{{language('BIDDING_ZHENGSHU', '整数')}}</span>)<iFormItem
               prop="biddingQuoteRule.greenLightFrom"
               :hideRequiredAsterisk="true"
               class="inline-block"
@@ -305,7 +289,6 @@
                 @change="handleChangeLightArea"
                 class="input-number60"
                 maxlength="3"
-                disabled
               ></iInput></iFormItem
             ><span class="margin-double">-</span
             ><iFormItem
@@ -317,9 +300,8 @@
                 v-model="ruleForm.biddingQuoteRule.greenLightTo"
                 @change="handleChangeLightArea"
                 maxlength="3"
-                disabled
               ></iInput></iFormItem
-            ><span class="marginLeft50">黄灯区间</span
+            ><span class="marginLeft50">{{language('BIDDING_HUANGDENGQUJIAN', '黄灯区间')}}</span
             ><iFormItem
               prop="biddingQuoteRule.yellowLightFrom"
               :hideRequiredAsterisk="true"
@@ -329,7 +311,6 @@
                 v-model="ruleForm.biddingQuoteRule.yellowLightFrom"
                 @change="handleChangeLightArea"
                 maxlength="3"
-                disabled
               ></iInput></iFormItem
             ><span class="margin-double">-</span
             ><iFormItem
@@ -341,10 +322,9 @@
                 v-model="ruleForm.biddingQuoteRule.yellowLightTo"
                 @change="handleChangeLightArea"
                 maxlength="3"
-                disabled
               ></iInput
             ></iFormItem>
-            <span class="marginLeft50">红灯区间</span
+            <span class="marginLeft50">{{language('BIDDING_HONGDENGQUJIAN', '红灯区间')}}</span
             ><iFormItem
               prop="biddingQuoteRule.redLightFrom"
               :hideRequiredAsterisk="true"
@@ -354,7 +334,6 @@
                 v-model="ruleForm.biddingQuoteRule.redLightFrom"
                 @change="handleChangeLightArea"
                 maxlength="3"
-                disabled
               ></iInput></iFormItem
             ><span class="margin-double">-</span
             ><iFormItem
@@ -366,7 +345,6 @@
                 v-model="ruleForm.biddingQuoteRule.redLightTo"
                 @change="handleChangeLightArea"
                 maxlength="3"
-                disabled
               ></iInput
             ></iFormItem>
           </div>
@@ -374,7 +352,7 @@
             v-else-if="ruleForm.biddingQuoteRule.rankDisplayRule === '03'"
             class="section-second"
           >
-            目标价
+            {{language('BIDDING_MUBIAOJIA', '目标价')}}
             <iFormItem
               prop="biddingQuoteRule.targetPrice"
               :hideRequiredAsterisk="true"
@@ -384,10 +362,9 @@
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 v-model="ruleForm.biddingQuoteRule.targetPrice"
                 type="number"
-                disabled
               ></iInput
             ></iFormItem>
-            偏离目标价
+            {{language('BIDDING_PIANLIMUBIAOJIA', '偏离目标价')}}
             <iFormItem
               prop="biddingQuoteRule.greenDeviationValue"
               :hideRequiredAsterisk="true"
@@ -396,9 +373,8 @@
                 class="input-number60"
                 v-model="ruleForm.biddingQuoteRule.greenDeviationValue"
                 @change="handleChangeLightDeviation"
-                disabled
               ></iInput></iFormItem
-            >%以内，显示绿灯<span class="marginLeft50">偏离目标价</span
+            >%{{language('BIDDING_YJXSLD', '以内，显示绿灯')}}<span class="marginLeft50">{{language('BIDDING_PIANLIMUBIAOJIA', '偏离目标价')}}</span
             ><iFormItem
               prop="biddingQuoteRule.yellowDeviationValue"
               :hideRequiredAsterisk="true"
@@ -407,9 +383,8 @@
                 class="input-number60"
                 v-model="ruleForm.biddingQuoteRule.yellowDeviationValue"
                 @change="handleChangeLightDeviation"
-                disabled
               ></iInput></iFormItem
-            >%以内，显示黄灯<span class="marginLeft50">否则显示红灯</span>
+            >%{{language('BIDDING_YJXSHD', '以内，显示黄灯')}}<span class="marginLeft50">{{language('BIDDING_FZXSHD', '否则显示红灯')}}</span>
           </div>
         </div>
       </div>
@@ -418,13 +393,13 @@
     <div class="form-group">
       <iLabelML showTip>
         <div class="hover-text">
-          <span>供应商</span>
+          <span>{{language('BIDDING_GONGYINGSHANG', '供应商')}}</span>
 
-          <span class="hover-stick">不可见</span>
+          <span class="hover-stick">{{language('BIDDING_BUKEJIAN', '不可见')}}</span>
           <span>。</span>
         </div>
         <template v-solt="label">
-          <iLabel label="排名显示限制" slot="label" class="label"></iLabel>
+          <iLabel :label="language('BIDDING_PMXSXZ', '排名显示限制')" slot="label" class="label"></iLabel>
         </template>
       </iLabelML>
       <div class="box-align">
@@ -437,8 +412,7 @@
             <el-radio
               v-model="ruleForm.biddingQuoteRule.rankDisplayLimit"
               label="01"
-              disabled
-              >价格达到
+              >{{language('BIDDING_JIAGEDADAO', '价格达到')}}
               <iFormItem
                 v-if="ruleForm.biddingQuoteRule.rankDisplayLimit === '01'"
                 prop="biddingQuoteRule.priceLimit"
@@ -447,20 +421,18 @@
                 ><iInput
                   class="input-number70"
                   v-model="ruleForm.biddingQuoteRule.priceLimit"
-                  maxlength="9"
-                  disabled
+                  maxlength="15"
                 ></iInput>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
-              后，才能显示竞价排名</el-radio
+              {{language('BIDDING_HCNXSJJPM', '后，才能显示竞价排名')}}</el-radio
             >
           </div>
           <div class="section-second section-second_bot">
             <el-radio
               v-model="ruleForm.biddingQuoteRule.rankDisplayLimit"
               label="02"
-              disabled
-              >排名在
+              >{{language('BIDDING_HPAIMINGZAI', '排名在')}}
               <iFormItem
                 v-if="ruleForm.biddingQuoteRule.rankDisplayLimit === '02'"
                 prop="biddingQuoteRule.rankLimit"
@@ -470,12 +442,11 @@
                   class="input-number70"
                   v-model="ruleForm.biddingQuoteRule.rankLimit"
                   maxlength="9"
-                  disabled
                 ></iInput
               ></iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
-              (<span class="text-warn">整数</span
-              >)名以前，才能显示竞价排名</el-radio
+              (<span class="text-warn">{{language('BIDDING_ZHENGSHU', '整数')}}</span
+              >){{language('BIDDING_MYQCNXSJJPM', '名以前，才能显示竞价排名')}}</el-radio
             >
           </div>
         </iFormItem>
@@ -486,7 +457,7 @@
 
 <script>
 import { iInput, iFormItem, iLabel, iSelect } from "rise";
-import iLabelML from "@/components/biddingComponents/iLabelML";
+import iLabelML from "@/components/iLabelML";
 import Big from "big.js";
 import {
   priceDiffLimitSelectList,

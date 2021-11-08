@@ -40,16 +40,16 @@
                 >
               </div>
               <template v-else>
-                <iButton :class="{ active: actived === 1 }">基本信息</iButton>
-                <iButton :class="{ active: actived === 2 }">项目信息</iButton>
-                <iButton :class="{ active: actived === 3 }">报价规则</iButton>
+                <iButton :class="{ active: actived === 1 }">{{language('BIDDING_JIBENXINXI', '基本信息')}}</iButton>
+                <iButton :class="{ active: actived === 2 }">{{language('BIDDING_XIANGMUXINXI', '项目信息')}}</iButton>
+                <iButton :class="{ active: actived === 3 }">{{language('BIDDING_BAOJIAGUIZE', '报价规则')}}</iButton>
               </template>
             </div>
           </div>
           <!-- <template v-if="ruleForm.biddingStatus !== '01'"> -->
           <template>
             <div class="hander-item-right">
-              <iButton @click="handleBack">返回</iButton>
+              <!-- <iButton @click="handleBack">{{language('BIDDING_FANHUI', '返回')}}</iButton> -->
             </div>
           </template>
         </div>
@@ -78,19 +78,19 @@ export default {
       tabList: [
         {
           value: "base",
-          label: "基础信息",
+          label: this.language('BIDDING_JICHUXINXI',"基础信息"),
           path: "biddingCompetitionBase",
           activation: 1,
         },
         {
           value: "project",
-          label: "项目信息",
+          label: this.language('BIDDING_XIANGMUXINXI', '项目信息'),
           path: "biddingCompetitionProject",
           activation: 2,
         },
         {
           value: "quotation",
-          label: "报价规则",
+          label: this.language('BIDDING_BAOJIAGUIZE', '报价规则'),
           path: "biddingCompetitionQuotation",
           activation: 3,
         },
@@ -100,7 +100,7 @@ export default {
   computed: {
     title() {
       const { rfqCode, projectCode } = this.ruleForm || {};
-      return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
     },
     role() {
       return this.$route.meta.role;
