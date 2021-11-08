@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 17:50:24
- * @LastEditTime: 2021-11-08 18:18:33
+ * @LastEditTime: 2021-11-08 18:24:00
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-web\src\views\designate\home\signSheet\components\mtzDetails\index.vue
@@ -62,6 +62,7 @@
         :current-page="page.currPage"
         :total="page.totalCount"/>
       </iCard>
+      <detail v-model="detailParams.visible" :key="detailParams.key"/>
     </div>
   </iPage>
 </template>
