@@ -84,7 +84,7 @@
 
 <script>
 import { iDialog, iInput, iButton, iPagination,iSelect } from "rise";
-import iTableCustom from "@/components/iTableCustom";
+import iTableCustom from "@/components/biddingComponents/iTableCustom";
 import { pageMixins } from "@/utils/pageMixins";
 import { getSupplierInfo } from "@/api/mock/mock";
 import { supplierTableListColumns } from "./data";

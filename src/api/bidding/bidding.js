@@ -1,5 +1,13 @@
 import axios from "@/utils/axios";
+import store from '@/store'
+
 const requst = axios(process.env.VUE_APP_BIDDING);
+requst.interceptors.request.use(function (config) {
+  config.params = {
+    userId: store.state.permission.userInfo.id,
+  }
+  return config;
+});
 
 // 创建RFQ轮次
 export function saveBiddingInfo(data) {

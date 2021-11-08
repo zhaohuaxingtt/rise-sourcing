@@ -24,7 +24,7 @@
 <script>
 import { iPage, iButton } from "rise";
 import information from "./components/information.vue";
-import bidNoticeDoc from "@/views/manage/bidding/project/filing/components/bidNoticeDoc.vue";
+import bidNoticeDoc from "@/views/biddingManage/bidding/project/filing/components/bidNoticeDoc.vue";
 export default {
   components: {
     iPage,

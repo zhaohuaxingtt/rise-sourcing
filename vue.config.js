@@ -238,7 +238,7 @@ module.exports = {
         },
       },
       '/biddingApi': {
-        target: 'http://10.122.17.38:8056',
+        target: 'http://10.122.17.38:8056/bidding',
         changeOrigin: true,
         pathRewrite: {
           '^/biddingApi': '',
