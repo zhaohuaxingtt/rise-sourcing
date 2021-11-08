@@ -15,11 +15,31 @@
             <iInput v-model="searchForm['1']" :placeholder="language('QINGSHURU','请输入')"></iInput>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('SHENQINGLEIXING', '申请类型')">
-            
+            <iSelect v-model="searchForm['10']">
+              <el-option :value="item.code"
+                        :label="item.message"
+                        v-for="item in SqTypeList"
+                        :key="item.code">
+              </el-option>
+            </iSelect>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('LIUCHENGLEIXING', '流程类型')">
+            <iSelect v-model="searchForm['11']">
+              <el-option :value="item.code"
+                        :label="item.message"
+                        v-for="item in LcTypeList"
+                        :key="item.code">
+              </el-option>
+            </iSelect>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('SHENQINGZHUANGTAI', '申请状态')">
+            <iSelect v-model="searchForm['12']">
+              <el-option :value="item.code"
+                        :label="item.message"
+                        v-for="item in SqztTypeList"
+                        :key="item.code">
+              </el-option>
+            </iSelect>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('YUANCAILIAOPAIHAO', '原材料牌号')">
             <iInput v-model="searchForm['5']" :placeholder="language('QINGSHURU','请输入')"></iInput>
@@ -34,12 +54,18 @@
             <iInput v-model="searchForm['8']" :placeholder="language('QINGSHURU','请输入')"></iInput>
           </el-form-item>
           <el-form-item style="marginRight:68px" :label="language('RSDONGJIERIQI', 'RS冻结日期')">
-          </el-form-item>
-          <el-form-item class="searchButton">
-            <iButton @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
-            <iButton @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
+            <!-- format="yyyy-MM-dd" -->
+            <!-- value-format="yyyy-MM-dd" -->
+            <iDatePicker v-model="searchForm['9']"
+                        type="datetime"
+                        >
+            </iDatePicker>
           </el-form-item>
         </el-form>
+        <div class="searchButton">
+          <iButton @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
+          <iButton @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
+        </div>
       </div>
       <el-divider style="marginTop: 20px;"></el-divider>
       <div class="contentBox" >
@@ -76,6 +102,9 @@ import {iDialog, iSelect, iInput, iPagination, iButton, iDatePicker, iMessage} f
 import tableList from '@/components/ws3/commonTable';
 import {detailTableTitle} from './data'
 import { pageMixins } from "@/utils/pageMixins";
+
+import { getFlowTypeList,getLocationApplyStatus } from "@/api/designate/nomination/mtz"
+
 export default {
   mixins: [pageMixins],
   props: {
@@ -102,10 +131,22 @@ export default {
       searchForm: {},
       tableTitle: detailTableTitle,
       tableListData: [],
-      loading: false
+      loading: false,
+
+      SqTypeList:[],
+      LcTypeList:[],
+      SqztTypeList:[],
+
     }
   },
   created() {
+    getFlowTypeList({}).then(res=>{
+      this.LcTypeList = res.data;
+    })
+    getLocationApplyStatus({}).then(res=>{
+      this.SqztTypeList = res.data;
+    })
+
     this.getTableData()
   },
   methods: {
@@ -134,13 +175,17 @@ export default {
 
 <style lang='scss' scoped>
 .optionBox {
+  position: relative;
   ::v-deep .demo-form-inline {
     display: flex;
+    flex-flow:wrap;
+    margin-right:200px;
   }
   .searchButton {
-    width: 250px;
-    text-align: right;
-    margin-top: 50px;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    z-index: 100;
   }
 }
 .contentBox {
