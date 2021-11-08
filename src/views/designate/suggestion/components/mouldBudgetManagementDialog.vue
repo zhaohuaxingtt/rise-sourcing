@@ -156,7 +156,7 @@ export default {
     jump(row) {},
     // 投资预算
     handleInputByBudget(val, row) {
-      this.$set(row, "budget", numberProcessor(val, 4))
+      this.$set(row, "budget", numberProcessor(val, 2))
     },
     // 提交
     handleSubmit() {
