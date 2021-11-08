@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-08 17:59:57
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 20:28:18
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -605,15 +605,25 @@ export default {
         aekoNum: this.aekoInfo.aekoCode
       }})
     },
+    isAea(str) {
+      for (var i in str) {
+        var asc = str.charCodeAt(i);
+        if (asc >= 48 && asc <= 57) {
+            return true;
+        }
+      }
+      return false;
+    },
     oldPartNumPresetSelect(row) {
       // if (!row.oldPartNumPreset) return
       // 如果是从AEKO查看跳转过来的 不允许跳转
       const routeQuery = this.$route.query;
       const {from=''} = routeQuery;
       if(from == 'check') return;
-
+      let type = this.aekoInfo.aekoCode.slice(0,2)
       const query = {
         partNum: row.partNum,
+        isAea: this.isAea(type),
         isDeclare: row.isDeclare, // 0: 预设原零件，1: 选择的原零件
         requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: row.objectAekoPartId,
@@ -622,6 +632,7 @@ export default {
 
       if (!query.oldPartNumPreset) delete query.oldPartNumPreset
 
+      console.log(this);
       this.$router.push({
         path: "/aeko/quondampart",
         query
