@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 17:50:24
- * @LastEditTime: 2021-11-08 18:18:33
+ * @LastEditTime: 2021-11-08 19:27:05
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-web\src\views\designate\home\signSheet\components\mtzDetails\index.vue
@@ -62,16 +62,17 @@
         :current-page="page.currPage"
         :total="page.totalCount"/>
       </iCard>
+      <detail v-model="detailParams.visible" :key="detailParams.key"/>
     </div>
   </iPage>
 </template>
 
 <script>
-import { iCard, iButton, iInput, iPage } from 'rise'
+import { iCard, iButton, iInput, iPage, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import detail from './components/detail'
-import { getMTZSignPage } from '@/api/designate/nomination/signsheet'
+import { getMTZSignPage, getsignSheetDetails, removeSignsheetItems } from '@/api/designate/nomination/signsheet'
 import { pageMixins } from "@/utils/pageMixins";
 export default {
   mixins: [pageMixins],
@@ -93,18 +94,38 @@ export default {
         key: 0,
         visible: false,
         data: []
-      }
+      },
+      selection: []
     }
   },
   created() {
     this.getTableData()
+    this.getsignSheetDetails()
   },
   methods: {
     // 获取table数据
     getTableData() {
-      
-      getMTZSignPage().then(res => {
-
+      this.loading = true
+      getMTZSignPage({
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize,
+        signId: this.$route.query.id
+      }).then(res => {
+        this.loading = false
+        if (res && res.code == 200) {
+          this.page.totalCount = res.total
+          this.tableListData = res.data
+        } else iMessage.error(res.desZh)
+      })
+    },
+    // 获取MTZ签字单详情 
+    getsignSheetDetails() {
+      getsignSheetDetails({
+        signId: this.$route.query.id
+      }).then(res => {
+        if (res && res.code == 200) {
+          this.infoForm = res.data
+        } else iMessage.error(res.desZh)
       })
     },
     // 点击选择
@@ -117,8 +138,19 @@ export default {
     },
     // 点击移除
     handleClickMove() {
-      
+      if(this.selection && this.selection.length == 0) {
+        return iMessage.warn(this.language('QZSXZYTSJ', '请至少选中一条数据'))
+      }
+      removeSignsheetItems({
+        signId: this.$route.query.id
+      }).then(res => {
+
+      })
     },
+    // 选中数据
+    handleSelectionChange(val) {
+      this.selection = val
+    }
 
   }
 }

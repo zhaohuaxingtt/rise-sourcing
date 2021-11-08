@@ -4,49 +4,52 @@
  * @Description: 
 -->
 <template>
-<div class="headerNav-wraper margin-bottom10 margin-top20 margin-left20 margin-right20">
-  <div class="margin-bottom20 clearFloat">
-    <span class="font18 font-weight">
-      {{ mode === 'add' ? language("XINJIANQIANZIDAN",'新建签字单') : language("LK_QIANZIDAN",'签字单') }}</span
-    >
-    <div class="floatright">
-      <span v-if="mode === 'add'">
-        <iButton @click="handleSave" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
-          {{ language("BAOCUN",'保存') }}
-        </iButton>
-        <iButton @click="handleSubmit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
-          {{ language("LK_TIJIAO",'提交') }}
-        </iButton>
-        <iButton @click="handleRemove" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
-          {{ language("YICHU",'移除') }}
-        </iButton>
-        <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
-          {{ language("FANHUI",'返回') }}
-        </iButton>
-      </span>
-      <span v-else>
-        <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
-          {{ language("LK_FANHUI",'返回') }}
-        </iButton>
-      </span>
-      
-    </div>
-    <headerNav />
-  </div>
-  <div class="headerNav-sub margin-top30">
-    <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
-      <el-tab-pane lazy v-for="(item,index) in heaederSubMenu" :key="index" :label="item.name" :name="item.key" v-permission.dynamic.auto="item.permissionKey"></el-tab-pane>
-    </iTabsList>
-  </div>
-  <router-view/>
-</div>
+  <iPage class="designateHome">
+    <!-- <div class="headerNav-wraper margin-bottom10 margin-top20 margin-left20 margin-right20"> -->
+      <div class="margin-bottom20 clearFloat">
+        <span class="font18 font-weight">
+          {{ mode === 'add' ? language("XINJIANQIANZIDAN",'新建签字单') : language("LK_QIANZIDAN",'签字单') }}</span
+        >
+        <div class="floatright">
+          <span v-if="mode === 'add'">
+            <iButton @click="save" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
+              {{ language("BAOCUN",'保存') }}
+            </iButton>
+            <iButton @click="submit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
+              {{ language("LK_TIJIAO",'提交') }}
+            </iButton>
+            <iButton @click="remove" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
+              {{ language("YICHU",'移除') }}
+            </iButton>
+            <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
+              {{ language("FANHUI",'返回') }}
+            </iButton>
+          </span>
+          <span v-else>
+            <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
+              {{ language("LK_FANHUI",'返回') }}
+            </iButton>
+          </span>
+          
+        </div>
+        <headerNav />
+      </div>
+      <div class="headerNav-sub margin-top30 margin-bottom30">
+        <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
+          <el-tab-pane lazy v-for="(item,index) in heaederSubMenu" :key="index" :label="item.name" :name="item.key" v-permission.dynamic.auto="item.permissionKey"></el-tab-pane>
+        </iTabsList>
+      </div>
+      <router-view ref="signSheetCom"></router-view>
+    <!-- </div> -->
+  </iPage>
 </template>
 <script>
 import {MENU, heaederSubMenu} from './components/data'
 import {
   // icon,
   iTabsList,
-  iButton
+  iButton,
+  iPage
 } from "rise";
 import { clickMessage } from "@/views/partsign/home/components/data"
 // eslint-disable-next-line no-undef
@@ -61,7 +64,8 @@ export default {
   components: {
     // icon,
     iTabsList,
-    iButton
+    iButton,
+    iPage
   },
   created() {
     const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
@@ -79,6 +83,15 @@ export default {
           path,
           query,
       });
+    },
+    save() {
+      this.$refs.signSheetCom.handleSave()
+    },
+    submit() {
+      this.$refs.signSheetCom.handleSubmit()
+    },
+    remove() {
+      this.$refs.signSheetCom.handleRemove()
     },
     // 通过待办数跳转
     clickMessage,

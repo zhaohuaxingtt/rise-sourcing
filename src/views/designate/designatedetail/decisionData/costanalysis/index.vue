@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-08 15:12:33
+ * @LastEditTime: 2021-11-08 18:59:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -44,7 +44,7 @@
           <span v-else>当前暂无PDF/或者图片可以查看</span>
         </template>
         <template v-else>
-          
+          <span>这是一个echarts</span>
         </template>
       </div>
   </iDialog>

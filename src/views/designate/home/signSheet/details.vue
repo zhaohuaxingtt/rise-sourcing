@@ -1,15 +1,15 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-11-08 18:15:54
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 17:57:15
+ * @LastEditors:  
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
 <template>
-  <iPage class="designateHome"
+  <div
          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
-    <div class="margin-bottom20 clearFloat">
+    <!-- <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
         {{ mode === 'add' ? language("XINJIANQIANZIDAN",'新建签字单') : language("LK_QIANZIDAN",'签字单') }}</span>
 
@@ -38,8 +38,8 @@
         </span>
 
       </div>
-      <headerNav />
-    </div>
+      <headerNav /> -->
+    <!-- </div> -->
     <iCard>
 
       <el-form class="signsheet-filter"
@@ -155,7 +155,7 @@
           v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAIL_UNCHOSENTABLE|签字单详情未选择表格"
           :refresh.sync="designateSignRefresh" /> -->
     </div>
-  </iPage>
+  </div>
 </template>
 <script>
 import { detailsTableTitle as tableTitle, } from './components/data'
@@ -224,7 +224,6 @@ export default {
   },
   methods: {
     handleChoose (data) {
-      console.log(data, '------------------------------------')
       this.tableListData = data
     },
     // 多选
