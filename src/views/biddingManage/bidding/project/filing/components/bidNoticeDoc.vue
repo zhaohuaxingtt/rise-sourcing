@@ -63,7 +63,7 @@
 </template>
 <script>
 import { iDialog, iButton, iMessage } from "rise";
-import iEditForm from "@/components/iEditForm";
+import iEditForm from "@/components/biddingComponents/iEditForm";
 import { filePreview } from "@/utils/filePreview";
 import {
   saveSupplierNotification,

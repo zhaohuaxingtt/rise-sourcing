@@ -69,7 +69,7 @@
 
 <script>
 import { iCard, iPagination } from "rise";
-import commonTable from "@/components/commonTable";
+import commonTable from "@/components/biddingComponents/commonTable";
 import { supplierTableTitle, supplierRankTableTitle, currencyMultipleLib } from "./data";
 import {
   findHallSupplier,

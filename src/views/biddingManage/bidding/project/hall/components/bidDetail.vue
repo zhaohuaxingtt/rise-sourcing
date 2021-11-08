@@ -43,7 +43,7 @@
 
 <script>
 import { iCard, iPagination } from "rise";
-import commonTable from "@/components/commonTable";
+import commonTable from "@/components/biddingComponents/commonTable";
 import { bidDetail, bidDetails, bidDetailHe, bidDetailsHe, currencyMultipleLib } from "./data";
 import { getBiddingDetails } from "@/api/bidding/bidding";
 import { pageMixins } from "@/utils/pageMixins";

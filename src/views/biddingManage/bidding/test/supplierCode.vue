@@ -35,7 +35,7 @@
 
 <script>
 import { iButton, iDialog, iFormItem, iInput, iLabel, iMessage } from "rise";
-import iEditForm from "@/components/iEditForm";
+import iEditForm from "@/components/biddingComponents/iEditForm";
 
 export default {
   components: {
