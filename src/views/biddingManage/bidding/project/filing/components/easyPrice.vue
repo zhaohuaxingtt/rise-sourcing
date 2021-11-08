@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iCard class="card" :title="$t('项目信息')" collapse>
+    <iCard class="card" :title="language('BIDDING_XIANGMUXINXI', '项目信息')" collapse>
       <div>
         <el-form
           :model="ruleForm"
@@ -18,31 +18,31 @@
             <div class="input-box">
               <div class="form-row">
                 <iFormItem
-                  label="起始年月"
+                  :label="language('BIDDING_QISHINIANYUE', '起始年月')"
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
                   <iLabel
-                    :label="$t('起始年月')"
+                    :label="language('BIDDING_QISHINIANYUE', '起始年月')"
                     slot="label"
                     required
                   ></iLabel>
                   <iDatePicker
                     style="width: 50%"
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                     value-format="yyyy-MM"
                     type="month"
                     v-model="ruleForm.beginMonth"
                     disabled
                   />
                 </iFormItem>
-                <iFormItem label="车型" prop="models" class="mutiple-form">
-                  <iLabel :label="$t('车型')" slot="label" required></iLabel>
+                <iFormItem :label="language('BIDDING_CHEXING', '车型')" prop="models" class="mutiple-form">
+                  <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label" required></iLabel>
                   <iSelect
                     v-model="ruleForm.models"
                     multiple
                     filterable
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                     disabled
                   >
                     <el-option
@@ -56,9 +56,9 @@
                 </iFormItem>
               </div>
               <div class="form-row">
-                <iFormItem label="车型项目" prop="modelProjects" class="mutiple-form">
+                <iFormItem :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" prop="modelProjects" class="mutiple-form">
                   <iLabel
-                    :label="$t('车型项目')"
+                    :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')"
                     slot="label"
                     required
                   ></iLabel>
@@ -66,7 +66,7 @@
                     v-model="ruleForm.modelProjects"
                     multiple
                     filterable
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                     disabled
                   >
                     <el-option
@@ -80,10 +80,10 @@
                 </iFormItem>
                 <!-- 单价 -->
                 <iFormItem
-                  label="起始总价"
+                  :label="language('BIDDING_QISHIZONGJIA', '起始总价')"
                   v-if="ruleForm.biddingMode === '01'"
                 >
-                  <iLabel :label="$t('起始总价')" slot="label"></iLabel>
+                  <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -94,9 +94,9 @@
                   </div>
                 </iFormItem>
                 <!-- 总价 -->
-                <iFormItem label="起始总价" prop="totalPrices" v-else>
+                <iFormItem :label="language('BIDDING_QISHIZONGJIA', '起始总价')" prop="totalPrices" v-else>
                   <iLabel
-                    :label="$t('起始总价')"
+                    :label="language('BIDDING_QISHIZONGJIA', '起始总价')"
                     slot="label"
                     required
                   ></iLabel>
@@ -121,8 +121,8 @@
                 </iFormItem>
               </div>
               <div class="form-row">
-                <iFormItem label="大写">
-                  <iLabel :label="$t('大写')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_DAXIE', '大写')">
+                  <iLabel :label="language('BIDDING_DAXIE', '大写')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       v-if="ruleForm.biddingMode === '01'"
@@ -148,7 +148,7 @@
     </iCard>
 
     <!-- 产品信息 -->
-    <!-- <iCard class="card" :title="$t('产品信息')">
+    <!-- <iCard class="card" :title="language('产品信息', '产品信息')">
       <div class="card--body">
         <commonTable
           ref="tableDataForm"
@@ -173,7 +173,7 @@ import {
   iSelect,
   iDatePicker,
 } from "rise";
-import commonTable from "@/components/biddingComponents/commonTable";
+import commonTable from "@/components/commonTable";
 import {
   unitTableTitle,
   totalTableTitle,
@@ -233,15 +233,15 @@ export default {
       selectedTableData: [],
       isApprovalOption: [
         {
-          model: this.$t("demoData1"),
+          model: this.language('demoData1', 'demoData1'),
           id: 1,
         },
         {
-          model: this.$t("demoData2"),
+          model: this.language('demoData2', 'demoData2'),
           id: 2,
         },
         {
-          model: this.$t("demoData3"),
+          model: this.language('demoData3', 'demoData3'),
           id: 3,
         },
       ],
@@ -411,7 +411,7 @@ export default {
     },
     handlePre() {
       if (this.ruleForm.biddingProducts.length == 0) {
-        return this.$message.error("产品信息不能为空");
+        return this.$message.error(this.language('BIDDING_CPXXBNWK',"产品信息不能为空"));
       }
       // this.$confirm("是否保存该项目信息？", "提示", {
       //   confirmButtonText: "是",
@@ -432,7 +432,7 @@ export default {
     },
     handleNext() {
       if (this.ruleForm.biddingProducts.length == 0) {
-        return this.$message.error("产品信息不能为空");
+        return this.$message.error(this.language('BIDDING_CPXXBNWK',"产品信息不能为空"));
       }
       // this.$confirm("是否保存该项目信息？", "提示", {
       //   confirmButtonText: "是",
@@ -498,7 +498,7 @@ export default {
             formData.totalPrices = this.orgTotalPrices;
             let reg = /^[\d]{0,15}(\.[\d]{0,6})?$/;
             if (!reg.test(formData.totalPrices)) {
-              return this.$message.error("起始总价不能大于17位(含两位小数）");
+              return this.$message.error(this.language('BIDDING_QSZJBNDY17W',"起始总价不能大于17位(含两位小数）"));
             }
           }
           formData.models = modelList;
@@ -506,7 +506,7 @@ export default {
           //保存
           saveUnitPrice(formData)
             .then((res) => {
-              this.$message.success("保存成功");
+              this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
               callback && callback();
             })
             .catch((err) => {

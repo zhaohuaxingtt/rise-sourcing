@@ -1,6 +1,6 @@
 <template>
   <iDialog
-    title="作废原因"
+    :title="language('BIDDING_ZUOFEIYUANYING','作废原因')"
     :visible="show"
     @update:visible="$emit('update:show', $event)"
     width="50.25rem"
@@ -31,8 +31,8 @@
       </el-row>
       <div class="button-list">
         <el-form-item>
-          <iButton @click="handleCancel" plain>{{ $t("取消") }}</iButton>
-          <iButton @click="handleOK" plain>{{ $t("确认") }}</iButton>
+          <iButton @click="handleCancel" plain>{{ language('BIDDING_QUXIAO', '取消') }}</iButton>
+          <iButton @click="handleOK" plain>{{ language('BIDDING_QUEREN', '确认') }}</iButton>
         </el-form-item>
       </div>
     </el-form>
@@ -72,7 +72,7 @@ export default {
         invalidReason: ''
       },
       rules: {
-        invalidReason: [{ required: true, message: "请填写作废原因", trigger: "blur" }],
+        invalidReason: [{ required: true, message: this.language('BIDDING_QTXZFYY',"请填写作废原因"), trigger: "blur" }],
       },
 
       readed: false,
@@ -100,12 +100,12 @@ export default {
           invalidBidding(param)
             .then((res) => {
               if (res) {
-                this.$message.success("作废成功");
+                this.$message.success(this.language('BIDDING_ZUOFEICHENGGONG','作废成功'));
                 this.form.invalidReason = "";
                 this.$emit("update:show", false);
                 this.$emit("reset");
               } else {
-                this.$message.error("作废失败");
+                this.$message.error(this.language('BIDDING_ZUOFEISHIBAI','作废失败'));
               }
             })
             .catch((err) => {

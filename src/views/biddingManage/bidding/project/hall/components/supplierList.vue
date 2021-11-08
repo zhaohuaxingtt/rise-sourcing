@@ -20,8 +20,8 @@
             scope.row["biddingNtfFlag"] == true &&
             scope.row["isEnter"] == true &&
             scope.row["systemUseFlag"] == true
-              ? "是"
-              : "否"
+              ? `${language('BIDDING_SHI','是')}`
+              : `${language('BIDDING_FOU','否')}`
           }}
         </div>
       </template>
@@ -44,7 +44,7 @@
 
 <script>
 import { iCard, iPagination } from "rise";
-import commonTable from "@/components/biddingComponents/commonTable";
+import commonTable from "@/components/commonTable";
 import { supplierTableTitle, supplierTableTitles } from "./data";
 import { findHallSupplier, getProjectResults } from "@/api/bidding/bidding";
 import { pageMixins } from "@/utils/pageMixins";

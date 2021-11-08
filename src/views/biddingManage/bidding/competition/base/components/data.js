@@ -1,3 +1,4 @@
+import language from "@/utils/language";
 
 // 荷氏竞标
 export const infoForm = {
@@ -25,37 +26,37 @@ export const infoForm = {
 
 export const infoRules = {
   biddingType: [
-    { required: true, message: "必选", trigger: "change" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   projectName: [
-    { required: true, message: "必填", trigger: "blur" },
+    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
   ],
   projectType: [
-    { required: true, message: "必选", trigger: "change" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   currencyUnit: [
-    { required: true, message: "必选", trigger: "change" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   currencyMultiple: [
-    { required: true, message: "必选", trigger: "change" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   isTax: [
-    { required: true, message: "必选", trigger: "change" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   resultOpenForm: [
-    { required: true, message: "必选", trigger: 'change' },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: 'change' },
   ],
   moldFee: [
-    { required: true, message: "必选", trigger: "change" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   openTenderNature: [
-    { required: true, message: "必选", trigger: "change" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   isResultOpen: [
-    { required: true, message: "必选", trigger: "change" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   biddingMode: [
-    { required: true, message: "必选", trigger: "change" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ]
 };
 
@@ -63,11 +64,11 @@ export const infoRules = {
 export const biddingType = [
   {
     value: '01',
-    label: '拍买（价低者得）'
+    label: language('BIDDING_PM（JDZD）','拍买（价低者得）')
   },
   {
     value: '02',
-    label: '拍卖（价高者得）'
+    label: language('BIDDING_PM（JGZD）','拍卖（价高者得）')
   },
 ]
 
@@ -75,11 +76,11 @@ export const biddingType = [
 export const moldFee = [
   {
     value: '01',
-    label: '锁定'
+    label: language('BIDDING_SUODING','锁定')
   },
   {
     value: '02',
-    label: '非锁定'
+    label: language('BIDDING_FEISUODING','非锁定')
   }
 ]
 
@@ -87,15 +88,15 @@ export const moldFee = [
 export const biddingMode = [
   {
     value: '01',
-    label: '单价'
+    label: language('BIDDING_DANJIA','单价')
   },
   {
     value: '02',
-    label: '总价'
+    label: language('BIDDING_ZONGJIA','总价')
   },
   {
     value: '03',
-    label: '多价格'
+    label: language('BIDDING_DUOJIAGE','多价格')
   },
 ]
 
@@ -103,11 +104,11 @@ export const biddingMode = [
 export const isTax = [
   {
     value: '01',
-    label: '不含可抵扣税'
+    label: language('BIDDING_BHKDKS','不含可抵扣税')
   },
   {
     value: '02',
-    label: '含税'
+    label: language('BIDDING_HANSHUI','含税')
   }
 ]
 
@@ -115,11 +116,11 @@ export const isTax = [
 export const projectType = [
   {
     value: '01',
-    label: '正式项目'
+    label: language('BIDDING_ZHENGSHIXIANGMU','正式项目')
   },
   {
     value: '02',
-    label: '测试项目'
+    label: language('BIDDING_CESHIXIANGMU','测试项目')
   }
 ]
 
@@ -127,11 +128,11 @@ export const projectType = [
 export const biddingResultForm = [
   {
     value: '01',
-    label: '总价'
+    label: language('BIDDING_ZONGJIA','总价')
   },
   {
     value: '02',
-    label: '单价&总价'
+    label: language('BIDDING_DANJIA&ZONGJIA','单价&总价')
   },
 ]
 
@@ -139,15 +140,15 @@ export const biddingResultForm = [
 export const resultOpenForm = [
   {
     value: '01',
-    label: '排名'
+    label: language('BIDDING_PAIMING','排名')
   },
   {
     value: '02',
-    label: '红绿灯'
+    label: language('BIDDING_HONGLVDENG','红绿灯')
   },
   {
     value: '03',
-    label: '所有排名'
+    label: language('BIDDING_SUOYOUPAIMING','所有排名')
   },
 ]
 
@@ -155,11 +156,11 @@ export const resultOpenForm = [
 export const isResultOpen = [
   {
     value: '01',
-    label: '公开'
+    label: language('BIDDING_GONGKAI','公开')
   },
   {
     value: '02',
-    label: '不公开'
+    label: language('BIDDING_BUGONGKAI','不公开')
   },
 ]
 
@@ -175,19 +176,19 @@ export const currencyUnit = [
 export const currencyMultiple = [
   {
     value: '01',
-    label: '元'
+    label: language('BIDDING_YUAN','元')
   },
   {
     value: '02',
-    label: '千'
+    label: language('BIDDING_QIAN','千')
   },
   {
     value: '03',
-    label: '万'
+    label: language('BIDDING_WAN','万')
   },
   {
     value: '04',
-    label: '百万'
+    label: language('BIDDING_BAIWAN','百万')
   },
 ]
 
@@ -200,23 +201,23 @@ export const attachments = [
   {
     type: "index",
     width: 80,
-    label: "序号",
+    label: language('BIDDING_XUHAO',"序号"),
   },
   {
     prop: "attachmentName",
-    label: "文件名",
+    label: language('BIDDING_WENJIANMING',"文件名"),
   },
   {
     prop: "attachmentSize",
-    label: "文件大小",
+    label: language('BIDDING_WENJIANDAXIAO',"文件大小"),
   },
   {
     prop: "uploadName",
-    label: "上传人",
+    label: language('BIDDING_SHANGCHUANREN',"上传人"),
   },
   {
     prop: "uploadDate",
-    label: "上传日期",
+    label: language('BIDDING_SHANGCHUANRIQI',"上传日期"),
   },
 ]
 

@@ -4,13 +4,15 @@
  * @Date: 2021-05-21 20:08:08
  * @Description: 初步评级
  */
+import language from "@/utils/language";
+
 export const baseRules = {
-  beginMonth: [{ required: true, message: "必填", trigger: "blur" }],
+  beginMonth: [{ required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" }],
   modelProjects: [
     {
       type: "array",
       required: true,
-      message: i18n.t("必选"),
+      message: language('BIDDING_BIXUAN','必选'),
       trigger: "change",
     },
   ],
@@ -18,74 +20,74 @@ export const baseRules = {
     {
       type: "array",
       required: true,
-      message: i18n.t("必选"),
+      message: language('BIDDING_BIXUAN','必选'),
       trigger: "change",
     },
   ],
-  totalPrices: [{ required: true, message: "必填", trigger: "blur" }],
+  totalPrices: [{ required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" }],
 
   "manualBiddingType": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ],
   "biddingBeginTime": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ],
   "biddingEndTime": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ],
   "pricingDeadline": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ],
   "roundType": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ],
   "openTenderTime": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ],
   "isAttend": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ],
   "cbdLevel": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ]
 };
 
 export const suppliersRules = {
   "contactName": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ],
   "telephone": [
-    { required: true, message: "必选", trigger: "blur" },
+    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
   ],
   "email": [
-    { required: true, message: "必填", trigger: "blur" },
+    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
   ],
 }
 export const tableTitle = [
   {
     props: "sort",
-    name: "序号",
+    name: language('BIDDING_XUHAO','序号'),
     width: '80',
   },
   {
     props: "isAttend",
     required: true,
     rule: [
-      { required: true, message: "必选", trigger: "blur" },
+      { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
     ],
-    name: "是否参与本轮RFQ",
+    name: language('BIDDING_SFCYBLRFQ','是否参与本轮RFQ'),
   },
   {
     props: "supplierCode",
-    name: "供应商编号",
+    name: language('BIDDING_GYSBH','供应商编号'),
   },
   {
     props: "supplierName",
     // required: true,
     // rule: [
-    //   { type: "number", required: true, message: "必填", trigger: "blur" },
+    //   { type: "number", required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
     // ],
-    name: "供应商名称",
+    name: language('BIDDING_GYSMC','供应商名称'),
     width: '360',
   },
   {
@@ -94,29 +96,29 @@ export const tableTitle = [
     rule: [
       { required: true, message: "必选", trigger: "blur" },
     ],
-    name: "联系人",
+    name: language('BIDDING_LIANXIREN','联系人'),
   },
   {
     props: "telephone",
     // required: true,
     // rule: [
-    //   { required: true, message: "必填", trigger: "blur" },
+    //   { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
     //   {
     //     pattern: /^\d+$|^\d*\.\d*$/g,
     //     required: true,
     //     trigger: 'blur'
     //   }
     // ],
-    name: "电话",
+    name: language('BIDDING_DIANHUA','电话'),
   },
   {
     props: "email",
     required: true,
     rule: [
-      { required: true, message: "必填", trigger: "blur" },
-      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
+      { type: 'email', message: language('BIDDING_QSRZQDYXDZ','请输入正确的邮箱地址'), trigger: ['blur', 'change'] }
     ],
-    name: "邮箱",
+    name: language('BIDDING_youxiang','邮箱'),
   },
   {
     props: "mbdl",
@@ -126,35 +128,35 @@ export const tableTitle = [
     //     trigger: 'blur'
     //   }
     // ],
-    name: "MBDL",
+    name: language('BIDDING_MBDL','MBDL'),
   },
   {
     props: "cbdLevel",
-    name: "CBD选择",
+    name: language('BIDDING_CBDXZ','CBD选择'),
   },
 ];
 
 export const manualTableTitle = [
   {
     props: "sort",
-    name: "序号",
+    name: language('BIDDING_XUHAO','序号'),
     width: '80',
   },
   {
     props: "isAttend",
     required: true,
     rule: [
-      { required: true, message: "必选", trigger: "blur" },
+      { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
     ],
-    name: "是否参与本轮RFQ",
+    name: language('BIDDING_SFCYBLRFQ','是否参与本轮RFQ'),
   },
   {
     props: "supplierCode",
-    name: "供应商编号",
+    name: language('BIDDING_GYSBH','供应商编号'),
   },
   {
     props: "supplierName",
-    name: "供应商名称",
+    name: language('BIDDING_GYSMC','供应商名称'),
     width: '360',
   },
   {
@@ -163,24 +165,24 @@ export const manualTableTitle = [
     rule: [
       { required: true, message: "必选", trigger: "blur" },
     ],
-    name: "联系人",
+    name: language('BIDDING_LIANXIREN','联系人'),
   },
   {
     props: "telephone",
-    name: "电话",
+    name: language('BIDDING_DIANHUA','电话'),
   },
   {
     required: true,
     rule: [
-      { required: true, message: "必填", trigger: "blur" },
-      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
+      { type: 'email', message: language('BIDDING_QSRZQDYXDZ','请输入正确的邮箱地址'), trigger: ['blur', 'change'] }
     ],
     props: "email",
-    name: "邮箱",
+    name: language('BIDDING_youxiang','邮箱'),
   },
   {
     props: "mbdl",
-    name: "MBDL",
+    name: language('BIDDING_MBDL','MBDL'),
   },
 ];
 
@@ -206,29 +208,30 @@ export const supplierTableListColumns = [
   },
   {
     type: "index",
-    width: 80,
-    label: "序号",
+    width: 50,
+    label: language('BIDDING_XUHAO',"序号"),
   },
   {
     prop: "nameZh",
-    label: "供应商中文名",
+    label: language('BIDDING_GYSZWM',"供应商中文名"),
   },
   {
     prop: "nameEn",
-    label: "供应商英文名",
+    label: language('BIDDING_GYSYWM',"供应商英文名"),
   },
   {
     prop: "code",
-    label: "临时号",
+    label: language('BIDDING_LINSHIHAO',"临时号"),
   },
+
   {
     prop: "sapCode",
-    label: "SAP号",
+    label: language('BIDDING_SAPHAO',"SAP号"),
   },
 
   {
     prop: "svwCode",
-    label: "SVW正式号",
+    label: language('BIDDING_SVWZSH',"SVW正式号"),
   },
 ];
 
@@ -260,44 +263,44 @@ export const currencyMultipleLib = {
 
 export const RFQTurnList = [
   // { value: "01", label: "普通询价" },
-  { value: "02", label: "在线开标" },
-  { value: "03", label: "在线竞价-英式" },
+  { value: "02", label: language('BIDDING_ZAIXIANKAIBIAO','在线开标') },
+  { value: "03", label: language('BIDDING_ZAIXIANJINGJIA_YINGSHI','在线竞价-英式') },
 ];
 
 export const procureTypeList = [
-  { value: "01", label: "生产采购" },
-  { value: "02", label: "一般采购" },
+  { value: "01", label: language('BIDDING_SHENGCHANCAIGOU','生产采购') },
+  { value: "02", label: language('BIDDING_YIBANCAIGOU','一般采购') },
 ];
 
 export const manualBiddingTypeList = [
   {
-    name: "在线竞价-英式",
+    name: language('BIDDING_ZAIXIANJINGJIA_YINGSHI','在线竞价-英式'),
     manualBiddingType: "01",
   },
   {
-    name: "在线竞价-荷式",
+    name: language('BIDDING_ZAIXIANJINGJIA_HESHI','在线竞价-荷式'),
     manualBiddingType: "02",
   },
 ];
 
 export const isAttendList = [
   {
-    name: "是",
+    name: language('BIDDING_SHI','是'),
     isAttend: true,
   },
   {
-    name: "否",
+    name: language('BIDDING_FOU','否'),
     isAttend: false,
   },
 ];
 
 export const openTenderStatusList = [
   {
-    name: "未开标",
+    name: language('BIDDING_WEIKAIBIAO','未开标'),
     openTenderStatus: "01",
   },
   {
-    name: "已开标",
+    name: language('BIDDING_YIKAIBIAO','已开标'),
     openTenderStatus: "02",
   },
 ];
@@ -305,23 +308,23 @@ export const openTenderStatusList = [
 export const roundTypeList = [
   {
     roundType: "01",
-    name: "普通询价",
+    name: language('BIDDING_PUTONGXUNJIA','普通询价'),
   },
   {
     roundType: "02",
-    name: "在线开标",
+    name: language('BIDDING_ZAIXIANKAIBIAO','在线开标'),
   },
   {
     roundType: "03",
-    name: "在线竞价-英式",
+    name: language('BIDDING_ZAIXIANJINGJIA_YINGSHI','在线竞价-英式'),
   },
   {
     roundType: "04",
-    name: "在线竞价-荷式",
+    name: language('BIDDING_ZAIXIANJINGJIA_HESHI','在线竞价-荷式'),
   },
   {
     roundType: "05",
-    name: "手工竞价",
+    name: language('BIDDING_SHOUGONGJINGJIA','手工竞价'),
   },
 ];
 
@@ -329,19 +332,19 @@ export const roundTypeList = [
 export const roundTypeLists = [
   {
     roundType: "01",
-    name: "普通询价",
+    name: language('BIDDING_PUTONGXUNJIA','普通询价'),
   },
   {
     roundType: "02",
-    name: "在线开标",
+    name: language('BIDDING_ZAIXIANKAIBIAO','在线开标'),
   },
   {
     roundType: "03",
-    name: "在线竞价-英式",
+    name: language('BIDDING_ZAIXIANJINGJIA_YINGSHI','在线竞价-英式'),
   },
   {
     roundType: "06",
-    name: "手工竞价-报价单回填",
+    name: language('BIDDING_SGJJ_BJDHT','手工竞价-报价单回填'),
   },
 ];
 
@@ -355,63 +358,62 @@ export const cbdLevelLib = {
 export const biddingStatus = [
   {
     value: '01',
-    label: '草稿'
+    label: language('BIDDING_CAOGAO','草稿')
   },
   {
     value: '02',
-    label: '待竞价'
+    label: language('BIDDING_DAIJINGJIA','待竞价')
   },
   {
     value: '03',
-    label: '未开标'
+    label: language('BIDDING_WEIKAIBIAO','未开标')
   },
   {
     value: '04',
-    label: '竞价中'
+    label: language('BIDDING_JINGJIAZHONG','竞价中')
   },
   {
     value: '05',
-    label: '已开标'
+    label: language('BIDDING_YIKAIBIAO','已开标')
   },
   {
     value: '06',
-    label: '已结束'
+    label: language('BIDDING_YIJIESHU','已结束')
   },
   {
     value: '07',
-    label: '已流标'
+    label: language('BIDDING_YILIUBIAO','已流标')
   },
   {
     value: '08',
-    label: '已作废'
+    label: language('BIDDING_YIZUOFEI','已作废')
   },
   {
     value: '09',
-    label: '已取消'
-  }
-
+    label: language('BIDDING_YIQUXIAO','已取消')
+  },
 ]
 
 export const attachTableTitle = [
   {
     props: "index",
-    name: "序号",
+    name: language('BIDDING_XUHAO','序号'),
     width: 80,
   },
   {
     props: "attachmentName",
-    name: "文件名",
+    name: language('BIDDING_WENJIANMING','文件名'),
   },
   {
     props: "attachmentSize",
-    name: "文件大小",
+    name: language('BIDDING_WENJIANDAXIAO','文件大小'),
   },
   {
     props: "uploadName",
-    name: "上传人",
+    name: language('BIDDING_SHANGCHUANREN','上传人'),
   },
   {
     props: "updateDate",
-    name: "上传日期",
+    name: language('BIDDING_SHANGCHUANRIQI','上传日期'),
   },
 ];

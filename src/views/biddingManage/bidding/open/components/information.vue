@@ -18,24 +18,24 @@
           <div>
             <template v-if="ruleForm.biddingStatus !== '01'">
               <el-form>
-                <iButton :disabled="false" @click="handleBack">返回 </iButton>
+                <!-- <iButton :disabled="false" @click="handleBack">{{language('BIDDING_FANHUI', '返回')}} </iButton> -->
               </el-form>
             </template>
             <template v-else>
-              <iButton @click="handleBack">返回 </iButton>
-              <iButton @click="handleSearchReset">重置</iButton>
-              <iButton @click="handleSubmit">完成设置 </iButton>
+              <!-- <iButton @click="handleBack">{{language('BIDDING_FANHUI', '返回')}} </iButton> -->
+              <iButton @click="handleSearchReset">{{language('BIDDING_CHONGZHI','重置')}}</iButton>
+              <iButton @click="handleSubmit">{{language('BIDDING_WANCHENGSHEZHI', '完成设置')}} </iButton>
             </template>
           </div>
         </div>
 
         <div class="item">
           <iFormItem
-            label="$t('项目类型')"
+            :label="language('BIDDING_XIANGMULEIXING', '项目类型')"
             prop="projectType"
             v-if="onProjectType"
           >
-            <iLabel :label="$t('项目类型')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_XIANGMULEIXING', '项目类型')" slot="label" required></iLabel>
             <iSelect v-model="ruleForm.projectType">
               <el-option
                 v-for="(item, index) in projectType"
@@ -47,18 +47,18 @@
             </iSelect>
           </iFormItem>
 
-          <iFormItem label="$t('项目类型')" prop="projectType" v-else>
-            <iLabel :label="$t('项目类型')" slot="label" required></iLabel>
+          <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType" v-else>
+            <iLabel :label="language('BIDDING_XIANGMULEIXING', '项目类型')" slot="label" required></iLabel>
             <iInput v-model="ruleForm.projectType" disabled></iInput>
           </iFormItem>
 
-          <iFormItem label="$t('RFQ名称')" prop="rfqName">
-            <iLabel :label="$t('RFQ名称')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_RFQMINGCHENG', 'RFQ名称')" prop="rfqName">
+            <iLabel :label="language('BIDDING_RFQMINGCHENG', 'RFQ名称')" slot="label"></iLabel>
             <iInput v-model="ruleForm.rfqName" disabled></iInput>
           </iFormItem>
 
-          <iFormItem label="$t('比价单位')" prop="currencyUnit">
-            <iLabel :label="$t('比价单位')" slot="label" required></iLabel>
+          <iFormItem :label="language('BIDDING_BIJIADANWEI', '比价单位')" prop="currencyUnit">
+            <iLabel :label="language('BIDDING_BIJIADANWEI', '比价单位')" slot="label" required></iLabel>
             <iSelect v-model="ruleForm.currencyUnit">
               <el-option
                 v-for="(item, index) in currencyUnit"
@@ -70,18 +70,18 @@
             </iSelect>
           </iFormItem>
 
-          <iFormItem label="$t('采购员')" prop="linieName">
-            <iLabel :label="$t('采购员')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_CAIGOUYUAN', '采购员')" prop="linieName">
+            <iLabel :label="language('BIDDING_CAIGOUYUAN', '采购员')" slot="label"></iLabel>
             <iInput v-model="ruleForm.linieName" disabled></iInput>
           </iFormItem>
 
-          <iFormItem label="$t('采购员电话')" prop="liniePhone">
-            <iLabel :label="$t('采购员电话')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_CAIGOUYUANDIANHUA', '采购员电话')" prop="liniePhone">
+            <iLabel :label="language('BIDDING_CAIGOUYUANDIANHUA', '采购员电话')" slot="label"></iLabel>
             <iInput v-model="ruleForm.liniePhone" disabled></iInput>
           </iFormItem>
 
-          <iFormItem label="$t('报价是否含税')" prop="isTax">
-            <iLabel :label="$t('报价是否含税')" slot="label" required></iLabel>
+          <iFormItem :label="language('BIDDING_BJSFHS', '报价是否含税')" prop="isTax">
+            <iLabel :label="language('BIDDING_BJSFHS', '报价是否含税')" slot="label" required></iLabel>
             <iSelect v-model="ruleForm.isTax">
               <el-option
                 v-for="(item, index) in isTax"
@@ -93,8 +93,8 @@
             </iSelect>
           </iFormItem>
 
-          <iFormItem label="$t('报价截止时间')" prop="pricingDeadline">
-            <iLabel :label="$t('报价截止时间')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_BJJZSJ', '报价截止时间')" prop="pricingDeadline">
+            <iLabel :label="language('BIDDING_BJJZSJ', '报价截止时间')" slot="label"></iLabel>
             <iInput
               :value="
                 ruleForm.pricingDeadline
@@ -105,8 +105,8 @@
             ></iInput>
           </iFormItem>
 
-          <iFormItem label="$t('开标时间')" prop="openTenderTime">
-            <iLabel :label="$t('开标时间')" slot="label"></iLabel>
+          <iFormItem label="language('BIDDING_KAIBIAOSHIJIAN', '开标时间')" prop="openTenderTime">
+            <iLabel :label="language('BIDDING_KAIBIAOSHIJIAN', '开标时间')" slot="label"></iLabel>
             <iInput
               :value="
                 ruleForm.openTenderTime
@@ -117,22 +117,22 @@
             ></iInput>
           </iFormItem>
 
-          <iFormItem label="$t('开标结果公开形式')" prop="resultOpenForm">
+          <iFormItem :label="language('BIDDING_KBJGGKXS', '开标结果公开形式')" prop="resultOpenForm">
             <iLabelML showTip class="form-item-resultOpenForm-icon">
               <div class="hover-text">
                 <span
-                  >排名：指供应商知道自身的具体排名（供应商不知道具体一共有多少供应商参与了报价）</span
+                  >{{language('BIDDING_PMZGYSZDZSDJTPMGYSBZDJTYGYDSGYSCYLBJ','排名：指供应商知道自身的具体排名（供应商不知道具体一共有多少供应商参与了报价）')}}</span
                 ><br />
                 <span class="hover-item"
-                  >红绿灯：指供应商只能通过红黄绿灯判断供应商报价的竞争力，而无法知道具体的名次，也无法判断自己是否中标</span
+                  >{{language('BIDDING_HLDZGYSZNTGHHLDPDGYSBJDJZL','红绿灯：指供应商只能通过红黄绿灯判断供应商报价的竞争力，而无法知道具体的名次，也无法判断自己是否中标')}}</span
                 ><br />
                 <span
-                  >所有排名：指供应商不仅能看到自己的排名，还可以看到其他参加报价的供应商的排名</span
+                  >{{language('BIDDING_SYPMZGYSBJNKDZJDPMHKYKDQTCJBJDGYSDPM','所有排名：指供应商不仅能看到自己的排名，还可以看到其他参加报价的供应商的排名')}}</span
                 >
               </div>
             </iLabelML>
             <iLabel
-              :label="$t('开标结果公开形式')"
+              :label="language('BIDDING_KBJGGKXS', '开标结果公开形式')"
               slot="label"
               required
             ></iLabel>
@@ -147,13 +147,13 @@
             </iSelect>
           </iFormItem>
 
-          <iFormItem label="$t('目标价')" prop="targetPrice">
+          <iFormItem :label="language('BIDDING_MUBIAOJIA', '目标价')" prop="targetPrice">
             <iLabelML showTip class="form-item-targetPrice-icon">
               <div class="hover-text">
-                <span>填写后，供应商可以看到对应目标价</span>
+                <span>{{language('BIDDING_TXHGYSKYKDDYDMBJ','填写后，供应商可以看到对应目标价')}}</span>
               </div>
             </iLabelML>
-            <iLabel :label="$t('目标价')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_MUBIAOJIA', '目标价')" slot="label"></iLabel>
             <iInput
               type="number"
               oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
@@ -167,7 +167,7 @@
           <div class="link-gray"></div>
 
           <div>
-            <div><h2>开标性质</h2></div>
+            <div><h2>{{ language('BIDDING_KAIBIAOXINZHI','开标性质') }}</h2></div>
             <div class="form-item-row1-clo2">
               <div style="margin-left: -12rem">
                 <iFormItem prop="openTenderNature">
@@ -176,11 +176,11 @@
                     class="form-radio"
                   >
                     <el-radio label="01" class="form-radio-left"
-                      >中间过程</el-radio
+                      >{{language('BIDDING_ZHONGJIANGUOCHENG','中间过程')}}</el-radio
                     >
                     <div class="form-radio-div" v-html="bidOpeningLeft"></div>
                     <el-radio label="02" class="form-radio-right"
-                      >最终结果</el-radio
+                      >{{language('BIDDING_ZUIZHONGJIEGUO','最终结果')}}</el-radio
                     >
                     <div class="form-radio-div" v-html="bidOpeningRight"></div>
                   </el-radio-group>
@@ -189,14 +189,14 @@
               <!-- <iRadio v-model="radio" label="1">中间过程</iRadio> -->
             </div>
             <div>
-              <div><span>其他项目公告信息</span></div>
+              <div><span>{{language('BIDDING_QTXMGGXX','其他项目公告信息')}}</span></div>
               <div class="form-item-row1-clo1">
                 <iInput
                   type="textarea"
                   :rows="4"
                   resize="none"
                   :maxlength="1000"
-                  placeholder="字数限制为1000字"
+                  :placeholder="language('BIDDING_ZSXZW1000Z','字数限制为1000字')"
                   show-word-limit
                   v-model="ruleForm.otherProjectNotice"
                 ></iInput>
@@ -213,13 +213,13 @@
       >
         <div class="form-top-rules">
           <div>
-            <h2>报价规则</h2>
+            <h2>{{language('BIDDING_BAOJIAGUIZE', '报价规则')}}</h2>
           </div>
         </div>
         <div class="form-rules">
           <div class="item">
-            <iFormItem :label="$t('排名显示规则')" prop="rankShowRule">
-              <iLabel :label="$t('排名显示规则')" slot="label"></iLabel>
+            <iFormItem :label="language('BIDDING_PMXSGZ', '排名显示规则')" prop="rankShowRule">
+              <iLabel :label="language('BIDDING_PMXSGZ', '排名显示规则')" slot="label"></iLabel>
               <div>
                 <iLabelML showTip class="form-item-rankShowRule-icon">
                   <div class="hover-text">
@@ -229,7 +229,7 @@
                   </div>
                 </iLabelML>
               </div>
-              <!-- <iLabel :label="$t('排名显示规则')" slot="label"></iLabel> -->
+              <!-- <iLabel :label="language('排名显示规则', '排名显示规则')" slot="label"></iLabel> -->
               <iSelect v-model="ruleForm.rankShowRule" style="width: 20rem">
                 <el-option
                   v-for="(item, index) in rankShowRule"
@@ -251,8 +251,8 @@
           >
             <div class="from-item-rankShowRule">
               <div class="from-item-clo1">
-                <span>排名区间，绿灯区间</span
-                ><span class="form-item1">&nbsp;&nbsp;（整数）</span>
+                <span>{{ language('BIDDING_PMQJLDQJ','排名区间，绿灯区间') }}</span
+                ><span class="form-item1">&nbsp;&nbsp;（{{language('BIDDING_ZHENGSHU','整数')}}）</span>
               </div>
               <iFormItem prop="quoteRule.greenLightFrom">
                 <iInput
@@ -274,7 +274,7 @@
             </div>
             <div class="from-item-rankShowRule">
               <div class="from-item-clo1">
-                <span class="form-item2">黄灯区间</span>
+                <span class="form-item2">{{language('BIDDING_HUANGDENGQUJIAN','黄灯区间')}}</span>
               </div>
               <iFormItem prop="quoteRule.yellowLightFrom">
                 <iInput
@@ -296,7 +296,7 @@
             </div>
             <div class="from-item-rankShowRule">
               <div class="from-item-clo1">
-                <span class="form-item3">红灯区间</span>
+                <span class="form-item3">{{language('BIDDING_HONGDENGQUJIAN','红灯区间')}}</span>
               </div>
               <iFormItem prop="quoteRule.redLightFrom">
                 <iInput
@@ -327,7 +327,7 @@
           >
             <div class="from-item-rankShowRule">
               <div class="from-item-clo1">
-                <span class="form-item1">目标价</span>
+                <span class="form-item1">{{language('BIDDING_MUBIAOJIA', '目标价')}}</span>
               </div>
               <iFormItem prop="quoteRule.targetPrice">
                 <iInput
@@ -345,7 +345,7 @@
 
             <div class="from-item-rankShowRule">
               <div class="from-item-clo1">
-                <span class="form-item1">偏离目标价</span>
+                <span class="form-item1">{{language('BIDDING_PIANLIMUBIAOJIA','偏离目标价')}}</span>
               </div>
               <iFormItem prop="quoteRule.greenDeviationValue">
                 <iInput
@@ -355,12 +355,12 @@
                 />
               </iFormItem>
               <div class="from-item-clo1">
-                <span class="form-line">%以内，显示绿灯</span>
+                <span class="form-line">%{{language('BIDDING_YINEIXIANSHILVDENG','以内，显示绿灯')}}</span>
               </div>
             </div>
             <div class="from-item-rankShowRule">
               <div class="from-item-clo1">
-                <span class="form-item2">偏离目标价</span>
+                <span class="form-item2">{{language('BIDDING_PIANLIMUBIAOJIA','偏离目标价')}}</span>
               </div>
               <iFormItem prop="quoteRule.yellowDeviationValue">
                 <iInput
@@ -370,12 +370,12 @@
                 />
               </iFormItem>
               <div class="from-item-clo1">
-                <span class="form-line">%以内，显示黄灯</span>
+                <span class="form-line">%{{language('BIDDING_YINEIXIANSHIHUANGDENG','以内，显示黄灯')}}</span>
               </div>
             </div>
             <div class="from-item-rankShowRule">
               <div class="from-item-clo1">
-                <span class="form-item3">否则显示红灯</span>
+                <span class="form-item3">{{language('BIDDING_FZXSHD','否则显示红灯')}}</span>
               </div>
             </div>
           </div>
@@ -467,7 +467,7 @@ import {
 } from "./data";
 import { uploadFile, getCurrencyUnit } from "@/api/mock/mock";
 import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
-import iLabelML from "@/components/biddingComponents/iLabelML";
+import iLabelML from "@/components/iLabelML";
 import { pageMixins } from "@/utils/pageMixins";
 
 export default {
@@ -665,7 +665,6 @@ export default {
       formData.append("file", content.file);
       await uploadFile(formData)
         .then((res) => {
-          console.log(res);
           this.ruleForm.attachments.push({
             attachmentId: res.id,
             attachmentName: res.name,
@@ -676,10 +675,10 @@ export default {
             uploadName: "xxx",
             source: "02",
           });
-          iMessage.success(this.$t("上传成功"));
+          iMessage.success(this.language('BIDDINGH_SHANGCHUANCHENGGONG', '上传成功'));
         })
         .catch((err) => {
-          iMessage.error(this.$t("上传失败"));
+          iMessage.error(this.language('BIDDING_SHANGCHUANSHIBAI', '上传失败'));
         });
     },
     beforeAvatarUpload(file) {
@@ -702,7 +701,7 @@ export default {
       }
       const isSize = file.size / 1024 / 1024 < 15;
       if (!isSize) {
-        this.$message.error(this.$t("文件大小最大限制"));
+        this.$message.error(this.language('BIDDING_WJDXZDXZ15M', '文件大小最大限制15M'));
       }
       return isSize;
     },
@@ -723,9 +722,9 @@ export default {
       return i;
     },
     delAttachments() {
-      this.$confirm("是否删除选中询价附件？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$confirm(this.language('BIDDING_SFSCXZXJFJ',"是否删除选中询价附件？"), this.language('BIDDING_TISHI',"提示"), {
+        confirmButtonText: this.language('BIDDING_QUEDING',"确定"),
+        cancelButtonText: this.language('BIDDING_QUXIAO',"取消"),
         type: "warning",
       })
         .then(() => {
@@ -761,9 +760,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$confirm("是否保存该报价信息？", "提示", {
-            confirmButtonText: "是",
-            cancelButtonText: "否",
+          this.$confirm(this.language('BIDDING_SFBCGBJXX',"是否保存该报价信息？"), this.language('BIDDING_TISHI',"提示"), {
+            confirmButtonText: this.language('BIDDING_SHI',"是"),
+        cancelButtonText: this.language('BIDDING_FOU',"否"),
             type: "warning",
           })
             .then(() => {
@@ -775,19 +774,22 @@ export default {
               this.ruleForm.quoteRule = {...this.ruleForm.quoteRule,rankDisplayRule:this.ruleForm.rankShowRule}
               const formData = {...this.ruleForm,quoteRule:this.ruleForm.quoteRule};
               return biddingInfo(formData);
+              
             })
             .then((res) => {
               if (res) {
-                this.$message.success("保存成功");
+                this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
+                console.log(window.open("","_self").close()  )
                 if (this.ruleForm.projectType === "01") {
                   this.ruleForm.projectType = "正式项目";
                 }
-                this.$router.push({
-                  path: `/bidding/project/inquiry/${this.id}`,
-                });
+                 window.close() 
+                // this.$router.push({
+                //   path: `/bidding/project/inquiry/${this.id}`,
+                // });
                 formName;
               } else {
-                this.$message.error("保存失败");
+                this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
               }
             })
             .catch((err) => {

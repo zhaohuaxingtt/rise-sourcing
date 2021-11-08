@@ -47,7 +47,7 @@
 
 <script>
 import { iPagination,iCard } from "rise";
-import commonTable from "@/components/biddingComponents/commonTable";
+import commonTable from "@/components/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { attachTableTitle } from "./data";
 import { getFileId } from "@/api/mock/mock";
@@ -111,7 +111,7 @@ export default {
       getFileId(fileId)
         .then((res) => {
           console.log(res)
-          this.$message.success("下载成功");
+          this.$message.success(this.language('BIDDING_XIAZAICHENGGONG', "下载成功"));
           let a = document.createElement("a");
           a.href = res.config.url;
           a.download = name;
@@ -121,7 +121,7 @@ export default {
           a.remove();
         })
         .catch((err) => {
-          this.$message.error("下载失败");
+          this.$message.error(this.language('BIDDING_XIAZAISHIBAI', "下载失败"));
         });
     },
     handleCurrentChange(e) {

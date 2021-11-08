@@ -13,10 +13,10 @@
       <iCard style="margin-top: 1rem">
         <div class="form-top">
           <div>
-            <h2>项目结果</h2>
+            <h2>{{language('BIDDING_XIANGMUJIEGUO','项目结果')}}</h2>
           </div>
           <div>
-            <iButton @click="handleExport">导出</iButton>
+            <iButton @click="handleExport">{{language('BIDDING_DAOCHU','导出')}}</iButton>
           </div>
         </div>
         <commonTable
@@ -51,7 +51,7 @@
             </div>
           </template>
           <template slot="operation" slot-scope="scope">
-            <div class="toView" @click="handleGoDetail(scope)">查看</div>
+            <div class="toView" @click="handleGoDetail(scope)">{{language('BIDDING_CHAKAN','查看')}}</div>
           </template>
         </commonTable>
         <iPagination
@@ -73,7 +73,7 @@
 </template>
 <script>
 import { iCard, iButton, iPagination } from "rise";
-import commonTable from "@/components/biddingComponents/commonTable";
+import commonTable from "@/components/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { downloadAll } from "@/utils/downloadAll";
 import {
@@ -126,7 +126,14 @@ export default {
     isSupplier: Boolean,
   },
   created() {
-    this.id = this.$route.params.id;
+    console.log('fwafwafwa',this.$store)
+    const falg = this.$route.path === '/bidding/project/result'
+    if(falg){
+      this.id = this.$route.params.id;
+    }else {
+      this.id = this.$route.params.id;
+      this.params = this.$route.query
+    }
   },
   mounted() {
     this.getTableList();
@@ -223,9 +230,9 @@ export default {
         data: this.role === "supplier" ? this.dataList : prama,
         callback: (e) => {
           if (e) {
-            this.$message.success("导出成功");
+            this.$message.success(this.language('BIDDING_DAOCHUCHENGGONG','导出成功'));
           } else {
-            this.$message.error("导出失败");
+            this.$message.error(this.language('BIDDING_DAOCHUSHIBAI','导出失败'));
           }
         },
       });

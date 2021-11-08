@@ -8,7 +8,7 @@
     <div class="form-group">
       <iLabelML slot="label">
         <template v-solt="label">
-          <iLabel label="最高报价" slot="label" class="label" required></iLabel>
+          <iLabel :label="language('BIDDING_ZUIGAOBAOJIA','最高报价')" slot="label" class="label" required></iLabel>
         </template>
       </iLabelML>
       <div class="box-line">
@@ -17,10 +17,9 @@
           :hideRequiredAsterisk="true"
         >
           <iInput
-            oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,8)"
+            oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
             v-model="ruleForm.biddingQuoteRule.highestOffer"
             class="input-wrap"
-            disabled
           ></iInput>
         </iFormItem>
       </div>
@@ -28,7 +27,7 @@
     <div class="form-group">
       <iLabelML slot="label">
         <template v-solt="label">
-          <iLabel label="幅度值" slot="label" class="label" required></iLabel>
+          <iLabel :label="language('BIDDING_FUDUZHI','幅度值')" slot="label" class="label" required></iLabel>
         </template>
       </iLabelML>
       <div class="box-line">
@@ -39,8 +38,7 @@
           <iInput
             v-model="ruleForm.biddingQuoteRule.amplitudeValue"
             class="input-wrap"
-            maxlength="10"
-            disabled
+            maxlength="15"
           ></iInput>
         </iFormItem>
       </div>
@@ -49,7 +47,7 @@
       <iLabelML slot="label">
         <template v-solt="label">
           <iLabel
-            label="应标间隔数(秒)"
+            :label="language('BIDDING_YBJGSM','应标间隔数(秒)')"
             slot="label"
             class="label"
             required
@@ -65,7 +63,6 @@
             type="number"
             v-model="ruleForm.biddingQuoteRule.biddingInterval"
             class="input-wrap"
-            disabled
           ></iInput>
         </iFormItem>
       </div>
@@ -74,7 +71,7 @@
       <iLabelML slot="label">
         <template v-solt="label">
           <iLabel
-            label="自动标价设置"
+            :label="language('BIDDING_ZDBJSZ','自动标价设置')"
             slot="label"
             class="label"
             required
@@ -87,13 +84,12 @@
           :hideRequiredAsterisk="true"
         >
           <div>
-            自动标价开始,折中<iInput
+            {{language('BIDDING_ZDBJKSZZ','自动标价开始,折中')}}<iInput
               v-model="ruleForm.biddingQuoteRule.autoPriceLimit"
               class="input-number80"
               maxlength="10"
-              disabled
             ></iInput
-            >次后,无供应商应标,项目自动结束。
+            >{{language('BIDDING_ZCHWGYSYBXMZDJS','次后,无供应商应标,项目自动结束。')}}
           </div>
         </iFormItem>
       </div>
@@ -103,7 +99,7 @@
 
 <script>
 import { iInput, iLabel, iFormItem } from "rise";
-import iLabelML from "@/components/biddingComponents/iLabelML";
+import iLabelML from "@/components/iLabelML";
 import { baseHeRules } from "./data.js";
 
 export default {
