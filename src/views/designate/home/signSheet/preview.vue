@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-01 14:30:59
- * @LastEditTime: 2021-11-06 12:07:07
+ * @LastEditTime: 2021-11-08 10:28:47
  * @LastEditors: Please set LastEditors
  * @Description: M签字单预览导出 jira-1571
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
@@ -12,7 +12,7 @@
     <iCard>
       <div class="signPreview">
         <div class="signPreview-header">
-          <div class="font18 font-weight">{{'Summary list for production purchasing'}}</div>
+          <div class="font18 font-weight">{{'Summary List For Production Purchasing'}}</div>
           <div class="control">
             <iButton @click="exportSignSheet">
               {{ language('LK_DAOCHU', '导出') }}

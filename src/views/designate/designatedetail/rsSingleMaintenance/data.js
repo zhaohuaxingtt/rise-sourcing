@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-24 15:31:35
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-22 17:32:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 10:26:25
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\data.js
  */
@@ -11,8 +11,8 @@ export const rsTableTitle = [
   {props:'fsnrGsnrNum',name:'零件采购项目编号', key: "LINGJIANCAIGOUXIANGMUBIANHAO", tooltip: true, width: 220},
   {props:'partNo',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 100},
   {props:'partName',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true, width: 120},
-  {props:'supplierName',name:'厂商名', key: "CHANGSHANGMING", tooltip: true, width: 120},
-  {props:'supplier',name:'供应商', key: "GONGYINGSHANG", tooltip: true, width: 120},
+  {props:'supplierName',name:'供应商名', key: "GONGYINGSHANGMING", tooltip: true, width: 120},
+  {props:'supplier',name:'SAP号', key: "SAPHAO", tooltip: true, width: 120},
   {props:'source',name:'来源', key: "LAIYUAN", tooltip: true, width: 120},
   {props:'aprice',name:'A价', key: "AJIA", tooltip: false, width: 100, editable: true, required: true, type: 'input', isChange: 'apriceIsChange'},
   {props:'bprice',name:'B价', key: "BJIA", tooltip: false, width: 100, editable: true, required: true, type: 'input', isChange: 'bpriceIsChange'},

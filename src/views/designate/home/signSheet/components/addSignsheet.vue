@@ -10,7 +10,7 @@
   title="零件定点申请单"
   :visible.sync="dialogVisible"
   @close="clearDialog"
-  width='80%'
+  width='86%'
   >
     <designateSign :mode="'sign'"
       @choose="handleChoose"

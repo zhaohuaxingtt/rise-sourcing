@@ -97,3 +97,13 @@ export function searchContentStatus(params) {
     params,
   })
 }
+
+
+// 从AEKO查看跳转至零件清单的列表查询
+export function getPartViewList(data) {
+  return requst({
+    url: '/aeko/aeko-content/part/view',
+    method: 'POST',
+    data,
+  })
+}

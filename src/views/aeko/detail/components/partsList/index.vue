@@ -161,6 +161,7 @@ import {
     deletePart,
     partListGetCartype,
     searchContentStatus,
+    getPartViewList,
 } from '@/api/aeko/detail/partsList.js'
 import {
     searchBrand,
@@ -599,11 +600,15 @@ export default {
             }
         },
         init() {
-            if (this.isLinie) this.getAekoContentPart()
+            const {query} = this.$route;
+            const {from=''} = query;
+            if(from == 'check'){
+                this.fromCheckGetPartList();
+            }else if (this.isLinie) this.getAekoContentPart()
             else this.getList()
         },
-        // linie 获取列表
-        getAekoContentPart() {
+        // AEKO查看跳转过来的查询列表
+        fromCheckGetPartList(){
             this.loading = true
 
             const {searchParams,aekoInfo={} } = this;
@@ -619,11 +624,55 @@ export default {
             }
 
 
+            getPartViewList({
+                carTypeCodeList:(carTypeCodeList.length == 1 && carTypeCodeList[0] === '') ? [] : carTypeCodeList,
+                linieDeptNumList:(linieDeptNumList.length == 1 && linieDeptNumList[0] === '') ? [] : linieDeptNumList,
+                contentStatusList:(contentStatusList.length == 1 && contentStatusList[0] === '') ? [] : contentStatusList,
+                requirementAekoId: this.aekoInfo.requirementAekoId,
+                partNum,
+                partNameZh,
+                buyerName,
+                brand,
+                current: this.page.currPage,
+                size: this.page.pageSize
+            })
+            .then(res => {
+                if (res.code == 200) {
+                    const records =  Array.isArray(res.data) ? res.data : [];
+                    records.map((item,index)=>{
+                        item.lineIndex = index+1;
+                    })
+                    this.tableListData = records;
+                    this.page.totalCount = res.total || 0
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+
+                this.loading = false
+            })
+            .catch(() => this.loading = false)
+        },
+        // linie 获取列表
+        getAekoContentPart() {
+            this.loading = true
+
+            const {searchParams,aekoInfo={} } = this;
+            const {linieDeptNumList=[],brand,partNum,partNameZh,buyerName} = searchParams;
+            let carTypeCodeList=[];
+            // 车型和车型项目同一个code参数 单独处理下
+            if(aekoInfo && aekoInfo.aekoType ){
+                if(aekoInfo.aekoType == 'AeA'){  // 车型
+                    carTypeCodeList = searchParams.cartype;
+                }else if(['Aeko','MP'].includes(aekoInfo.aekoType)){ // 车型项目
+                    carTypeCodeList = searchParams.cartypeCode;
+                }
+            }
+
+
             getAekoContentPart({
                 // ...this.searchParams,
                 carTypeCodeList:(carTypeCodeList.length == 1 && carTypeCodeList[0] === '') ? [] : carTypeCodeList,
                 linieDeptNumList:(linieDeptNumList.length == 1 && linieDeptNumList[0] === '') ? [] : linieDeptNumList,
-                contentStatusList:(contentStatusList.length == 1 && contentStatusList[0] === '') ? [] : contentStatusList,
                 requirementAekoId: this.aekoInfo.requirementAekoId,
                 partNum,
                 partNameZh,
