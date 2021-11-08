@@ -1,8 +1,8 @@
 /*
  * @Author: haojiang
  * @Date: 2021-06-30 10:09:30
- * @LastEditTime: 2021-11-02 21:39:31
- * @LastEditors:  
+ * @LastEditTime: 2021-11-08 18:16:18
+ * @LastEditors: Please set LastEditors
  * @Description: 签字单
  * @FilePath: /front-web/src/api/designate/nomination/signsheet.js
  */
@@ -113,6 +113,15 @@ export function getsignSheetDetails(params) {
   return requst({
       url: `/nominate/sign/detail`,
       method: "get",
+      params
+  })
+}
+
+// 签字单-MTZ定点申请-分页查询已选择的MTZ申请
+export function getMTZSignPage(params) {
+  return requst({
+      url: `/nominate/sign/nomi/selected-m-page`,
+      method: "post",
       params
   })
 }
