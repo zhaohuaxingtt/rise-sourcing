@@ -100,7 +100,7 @@ import iFileDialog from 'rise/web/components/iFile/dialog'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {iCard, iButton, iPagination, iInput} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 import {
   findHistoryByAeko,
   submitForApproval
@@ -186,7 +186,7 @@ export default {
     // 如果是从AEKO查看过来的 tableTitle需要展示一个提交人字段
     const {query} = this.$route;
     const {from=''} = query;
-    from=='manage'?setLogModule('AEKO管理-详情页-审批记录'):setLogModule('AEKO表态-详情页-审批记录')
+    from=='manage'?setLogMenu('AEKO管理-详情页-审批记录'):setLogMenu('AEKO表态-详情页-审批记录')
     if(from != 'check'){
       this.tableTitle = tableTitle.filter((item)=>item.props !=='startUser');
     }

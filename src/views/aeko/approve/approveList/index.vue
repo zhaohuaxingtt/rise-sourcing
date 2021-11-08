@@ -98,7 +98,7 @@ import tablelist from 'rise/web/components/iFile/tableList';
 import {iCard, iSelect, iButton, iPagination, icon, iMessage} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
 import {user as configUser} from '@/config'
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 import {
   getApproveDistributionPage,
   approveDistributionSave,
@@ -133,7 +133,7 @@ export default {
     }
   },
   created() {
-    setLogModule('AEKO管理-AEKO分配')
+    setLogMenu('AEKO管理-AEKO分配')
   },
   mounted() {
     this.getFetchData()

@@ -6,8 +6,15 @@
 
 <template>
   <iPage class="aeko-stance-list">
-    <h2 class="floatleft">{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2>
-    <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
+    <div class="header-nav">
+      <h2>{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2>
+      <div class="right-nav">
+        <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
+        <log-button v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
+        <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
+              class="log-icon margin-left20 cursor myLogIcon"></icon>
+      </div>
+    </div>
 
     <div class="margin-top20">
     <!-- 搜索区域 -->
@@ -120,7 +127,7 @@
       <!-- 附件列表查看 -->
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     </div>
-    <iLog :show.sync="showDialog" :bizId="bizId" />
+    <iLog :show.sync="showDialog" :bizId="bizId" :module="module" />
   </iPage>
 </template>
 
@@ -142,6 +149,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import { TAB,filterRole } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filesListDialog from '../manage/components/filesListDialog'
+import logButton from "../../../components/logButton";
 import iLog from '../log'
 import {
   getLiniePage,
@@ -155,7 +163,7 @@ import {
 } from '@/api/aeko/manage'
 import aekoSelect from '../components/aekoSelect'
 import { roleMixins } from "@/utils/roleMixins";
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 export default {
     name:'aekoStanceList',
     mixins: [pageMixins,roleMixins],
@@ -172,7 +180,8 @@ export default {
       icon,
       filesListDialog,
       aekoSelect,
-      iLog
+      iLog,
+      logButton
     },
     data(){
       return{
@@ -205,7 +214,8 @@ export default {
         },
         itemFileData:{},
         showDialog: false,
-        bizId: ''
+        bizId: '',
+        module: 'AEKO表态',
       }
     },
     computed: {
@@ -218,8 +228,6 @@ export default {
     created(){
       this.sure();
       this.getSearchList();
-      
-      setLogModule('AEKO表态-列表-日志')
       const roleList = this.roleList;
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
       this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
@@ -404,8 +412,16 @@ export default {
         window.open(routeData.href, '_blank')
       },
 
-      // 查看日志
+      // 顶部日志查询
+      openLog(){
+        setLogMenu('')
+        this.bizId = ''
+        this.showDialog = true
+      },
+      gotoDBhistory() {},
+      // 行内查看日志
       checkLog(row){
+        setLogMenu('')
         this.bizId = row.requirementAekoId
         this.showDialog = true
       },
@@ -469,6 +485,20 @@ export default {
 
 <style lang="scss" scoped>
   .aeko-stance-list{
+    .header-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .right-nav{
+        display: inline-flex;
+        align-items: center;
+        
+        ::v-deep .myLogIcon {
+          width: 21px;
+          height: 21px;
+        }
+      }
+    }
     ::v-deep .el-date-editor .el-range__close-icon{
         display: block;
         width: 10px;

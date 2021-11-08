@@ -107,7 +107,7 @@ export default {
     },
     // 打开跳转
     openLog(){
-      this.bizId = this.transmitObj.aekoApprovalDetails.requirementAekoId || iMessage.error('AEKO id 获取失败')
+      this.bizId = this.transmitObj.aekoApprovalDetails.requirementAekoId
       this.bizId = Number(this.bizId)
       if(this.bizId)
       this.showDialog = true

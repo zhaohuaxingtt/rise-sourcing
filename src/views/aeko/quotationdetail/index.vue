@@ -8,7 +8,7 @@
 <script>
 import quotationDetail from "rise/web/aeko/quotationdetail"
 import iLog from "../log";
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 
 export default {
   extends: quotationDetail,
@@ -16,7 +16,7 @@ export default {
     iLog
   },
   created(){
-    setLogModule('AEKO表态-详情页-内容表态-报价单')
+    setLogMenu('AEKO表态-详情页-内容表态-报价单')
   }
 }
 </script>

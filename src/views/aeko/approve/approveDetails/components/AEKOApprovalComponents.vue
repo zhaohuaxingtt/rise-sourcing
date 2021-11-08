@@ -106,7 +106,7 @@ import {iInput, iCard, icon, iButton} from "rise"
 import {aekoAudit, transferAEKO} from "@/api/aeko/approve";
 import AEKOExplainAttachmentDialog from "./AEKOExplainAttachmentDialog";
 import {lookDetails} from '../../approveList/lib'
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 
 export default {
   name: "AEKOApprovalComponents",
@@ -168,7 +168,7 @@ export default {
     }
   },
 created(){
-  setLogModule('AEKO审批-待审批列表-审批单')
+  setLogMenu('AEKO审批-待审批列表-审批单')
 },
   methods: {
     closePage() {

@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-05 16:21:11
+ * @LastEditTime: 2021-11-08 14:24:57
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -10,6 +10,7 @@ import download from '@/utils/axios.download'
 
 const requst_sourcing = axios(process.env.VUE_APP_SOURCING)
 const requst = axios(process.env.VUE_APP_PARTS)
+const requst_log = axios(process.env.VUE_APP_LOG)
 const fileRequst = download(process.env.VUE_APP_PARTS)
 
 // 列表查询
@@ -209,3 +210,12 @@ export function statement(data) {
   })
 }
 
+// 获取日志
+export function getLogList(data) {
+  console.log(data);
+  return requst_log({
+    url: `/operationLog/findOperationLogs`,
+    method: "POST",
+    data
+  })
+}
