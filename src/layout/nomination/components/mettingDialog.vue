@@ -108,6 +108,7 @@ export default {
             this.getFetchData()
           } else{
             // 刷新父列表
+            this.meetingType = '20'
             this.$emit('refresh', {})
           }
         })
@@ -121,7 +122,7 @@ export default {
       nomiAppId: this.$route.query.desinateId,
       tableTitle,
       meetingTypes,
-      meetingType: 'CSC',
+      meetingType: '20', // PRECSC
       meetingResultArray,
       meetingResult: '',
       controlHeight: 0,
