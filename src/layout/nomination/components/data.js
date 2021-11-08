@@ -79,12 +79,12 @@ export const meetingTypes = [
 ]
 // 会议类型
 export const meetingResult = [
-    {id:'CLOSE',name:'关闭',key:'LK_GUANBI'},
-    {id:'WAIT',name:'等待',key:'LK_DENGDAI'},
-    {id:'NEXT',name:'下次Pre CSC',key:'XIACIPRECSC'},
-    {id:'TO_TER',name:'转TER/TO-TER',key:'TERORTOTER'},
-    {id:'LOI',name:'发LOI',key:'SENDLOI'},
-    {id:'PASS',name:'会议通过',key:'HUIYITONGGUO'},
+    {id:'07',name:'关闭',key:'LK_GUANBI'},
+    {id:'01',name:'等待',key:'LK_DENGDAI'},
+    {id:'05',name:'下次Pre CSC',key:'XIACIPRECSC'},
+    {id:'04',name:'转TER/TO-TER',key:'TERORTOTER'},
+    {id:'03',name:'发LOI',key:'SENDLOI'},
+    {id:'02',name:'会议通过',key:'HUIYITONGGUO'},
 ]
 
 // SVG数据
