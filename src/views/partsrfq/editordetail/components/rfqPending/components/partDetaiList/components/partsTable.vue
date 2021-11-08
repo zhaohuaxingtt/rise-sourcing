@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-11-08 20:35:46
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 22:02:09
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
 -->
@@ -104,7 +104,7 @@ export default {
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
           let data = res.data
-          data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = '否'})
+          data.forEach(val => {val.mtz == true ? val.mtz = '是' : val.mtz = '否'})
           this.tableListData = data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) || []
         }).catch(() => this.tableLoading = false)
     },
