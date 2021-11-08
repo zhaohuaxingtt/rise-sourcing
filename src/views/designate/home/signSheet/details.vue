@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-11-05 20:07:44
+ * @LastEditTime: 2021-11-08 15:44:03
  * @LastEditors:  
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -145,7 +145,9 @@
       <addSignsheet 
       :dialogVisible='dialogVisible' 
       @changeVisible='dialogVisible = false'
+      @getChooseData='getChooseData'
       @choose="handleChoose"
+      :form='form'
       ></addSignsheet>
       <div class="margin-top20">
         <!-- 引入定点申请综合管理页面 -->
