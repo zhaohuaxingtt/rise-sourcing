@@ -102,10 +102,9 @@
       <!-- 签字单号 -->
       <el-form-item :label="language('QIANZIDANHAO','签字单号')">
         <iInput
-          v-model="form.signId"
+          v-model="form.signCode"
           :placeholder="language('LK_QINGSHURU','请输入')"
           v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SIGNID|签字单号"
-          @input="form.signId = numberProcessor(form.signId, 0)"
         ></iInput>
       </el-form-item>
       <!-- rs冻结日期 -->
