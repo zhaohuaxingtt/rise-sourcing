@@ -7,7 +7,7 @@
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
 <template>
-  <iPage class="designateHome"
+  <div
          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
     <!-- <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">
@@ -155,7 +155,7 @@
           v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAIL_UNCHOSENTABLE|签字单详情未选择表格"
           :refresh.sync="designateSignRefresh" /> -->
     </div>
-  </iPage>
+  </div>
 </template>
 <script>
 import { detailsTableTitle as tableTitle, } from './components/data'
