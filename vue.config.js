@@ -154,7 +154,7 @@ module.exports = {
         },
       },
       '/projectApi': {
-        target: 'http://10.122.17.38:8005',
+        target: 'http://10.122.17.38:8005/projectmgt',
         changeOrigin: true,
         pathRewrite: {
           '^/projectApi': '',
