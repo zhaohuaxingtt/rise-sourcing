@@ -82,7 +82,7 @@ import {
   iText,
   iMessage,
 } from "rise";
-import iEditForm from "@/components/iEditForm";
+import iEditForm from "@/components/biddingComponents/iEditForm";
 import { RFQTurnList, procureTypeList, manualBiddingTypeList } from "./data";
 import { saveBiddingInfo } from "@/api/bidding/bidding";
 

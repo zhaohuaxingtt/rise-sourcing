@@ -99,7 +99,7 @@
 
 <script>
 import { iInput, iLabel, iFormItem } from "rise";
-import iLabelML from "@/components/iLabelML";
+import iLabelML from "@/components/biddingComponents/iLabelML";
 import { baseHeRules } from "./data.js";
 
 export default {
