@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-11-03 20:44:31
- * @LastEditTime: 2021-11-05 16:06:39
+ * @LastEditTime: 2021-11-08 14:58:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\decisiondata\costanalysis.js
  */
 import axios from "@/utils/axios"
-const requst = axios(process.env.VUE_APP_SOURCING_ZDH)
+const requst = axios(process.env.VUE_APP_SOURCING)
 // 获取定点下rfq列表
 export function costanalysisList(nominateId,types) {
   return requst({
