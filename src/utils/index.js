@@ -133,10 +133,12 @@ export function serialize(data, type = Object) {
     case Array:
       if (Array.isArray(data)) {
         str = data
-          .map((item) => {
+          .map(item => {
             return serialize(item)
           })
           .join('&')
+      } else {
+        return data
       }
 
       return str

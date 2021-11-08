@@ -1,14 +1,15 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: YoHo
- * @LastEditTime: 2021-11-06 14:00:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 10:21:23
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
  */
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
 import router from '../../../router/index'
+import { serialize } from "@/utils"
 const supplierId = ()=> router.currentRoute.query.supplierId?router.currentRoute.query.supplierId:''
 const requst = axios(process.env.VUE_APP_SOURCING)
 const requstxw = axios(process.env.VUE_APP_SOURCING)
@@ -569,5 +570,13 @@ export function getBnkFiles(data) {
     url: `/bnkFile-requirement`,
     method: 'POST',
     data
+  })
+}
+
+// 下载BNK附件
+export function downloadBnkFile(ids) {
+  return requstFile({
+    url: `/bnkFile-download?${ serialize(ids, Array) }`,
+    method: 'GET'
   })
 }

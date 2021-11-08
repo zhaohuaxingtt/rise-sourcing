@@ -132,6 +132,7 @@
           v-model="form.selStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"
         >
+          <el-option value="" :label="language('ALL','全部')"></el-option>
           <el-option
             :value="items.id"
             :label="language(items.key, items.name)"
