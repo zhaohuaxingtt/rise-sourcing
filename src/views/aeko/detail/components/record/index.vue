@@ -236,6 +236,7 @@ export default {
       findHistoryByAeko(parmas).then(res => {
         this.tableLoading = false
         let resDatas = res.data.records
+        resDatas= resDatas.filter(item=>item.comment!='AutoCompleted')
         this.tableListData = resDatas.map(item => {
           item.disabled = item.activityName != '【补充材料通知】补充材料'
           return item

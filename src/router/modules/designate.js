@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-11-08 17:47:24
+ * @LastEditTime: 2021-11-08 19:08:02
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理
  * @metaParams: hideTabLV3 隐藏三级导航
@@ -72,9 +72,8 @@ export default [
         meta: {
           title: '签字单导航',
         },
-        component: () =>
-          import('@/views/designate/home/signSheet/components/headerNav/index'),
-        redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details',
+        component: () =>import('@/views/designate/home/signSheet/components/headerNav/index'),
+        // redirect: '/sourcing/partsnomination/signSheet/addSignOverView/details',
         children: [
           {
             path: 'details',
@@ -91,7 +90,7 @@ export default [
               title: 'MTZ定点申请单',
             },
             component: () =>
-              import('@/views/designate/home/signSheet/mtzDetails'),
+              import('@/views/designate/home/signSheet/mtzDetails/index.vue'),
           },
         ],
       },

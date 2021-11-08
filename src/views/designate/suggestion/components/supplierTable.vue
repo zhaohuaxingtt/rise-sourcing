@@ -447,7 +447,6 @@ export default {
           val.mtzApplyId != null ? isNullmtzApplyId = false : isNullmtzApplyId = true
           val.isBeforeFrozen === true ? isFrozen = true : isFrozen = false
         })
-        console.log(isNullmtzApplyId,isFrozen);
       if(!this.selectData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
@@ -458,8 +457,9 @@ export default {
       }else {
         let nom = this.selectData[0].nominateId
         let item =[]
+        let MTZappId= this.$route.query.mtzApplyId
         item = this.selectData.map(val => val.partNum).join(',')
-        window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?id=`+nom+`&item=`+item,'_blank')
+        window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?pointId=`+nom+`&item=`+item+`&id=`+MTZappId,'_blank')
       }
     }
   }
