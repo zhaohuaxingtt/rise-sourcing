@@ -171,7 +171,7 @@ export default {
     }
   },
 created(){
-  setLogMenu('AEKO审批-待审批列表-审批单')
+  setLogMenu('AEKO审批-详情页-待审批列表-审批单')
 },
   methods: {
     closePage() {
