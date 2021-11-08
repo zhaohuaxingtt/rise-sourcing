@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-05 16:50:28
+ * @LastEditTime: 2021-11-08 12:12:50
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: YoHo
  * @Description: 公共utils部分
@@ -501,11 +501,11 @@ export function getLogCount (){
 }
 
 // 记录当前页面所在模块
-export function setLogModule (module) {
-  store.dispatch("setLogModuleVal", module)
+export function setLogMenu (menu) {
+  store.dispatch("setLogMenuVal", menu)
 }
 
 // 获取当前页面所在模块
-export function getLogModule (){
-  return store.getters.getLogModule
+export function getLogMenu (){
+  return store.getters.getLogMenu
 }
