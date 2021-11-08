@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-11-04 13:41:58
+ * @LastEditTime: 2021-11-08 13:49:21
  * @LastEditors: Please set LastEditors
  * @Description: 
 -->
@@ -128,6 +128,12 @@ export default {
     }
     // 通过permissionKey(权限)字段过滤tabs
     this.tabs = permissionArray("permissionKey", this.tabs)
+
+    // 从AEKO跳转查看跳转过来的 tab不需要展示审批附件
+    if(from =='check'){
+      let newTabs = cloneDeep(this.tabs);
+      this.tabs = newTabs.filter((item)=>item.name!=='attachment');
+    }
 
     
   },

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-05 17:59:24
+ * @LastEditTime: 2021-11-08 18:59:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -14,8 +14,13 @@
         <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
       </iSelect>
     </iFormItem>
+    <iFormItem v-if='isPreview'  label='Analysis：'>
+      <iSelect v-model="typeSelect" @change="costanalysisList">
+        <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
+      </iSelect>
+    </iFormItem>
   </iFormGroup>
-  <tabel :tableLoading='loading' :tableTitle='tableTitle' :tableData='tableData' selection>
+  <tabel v-if='!isPreview' :tableLoading='loading' :tableTitle='tableTitle' :tableData='tableData' selection>
     <template #operate='scope'>
       <span class="underline" @click="openPage(scope.row)">查看</span>
     </template>
@@ -32,14 +37,14 @@
       </span>
     </template>
   </tabel>
-  <iDialog :visible.sync="messageBox" width='80%' height='60vh'>
+  <iDialog v-if='!isPreview' :visible.sync="messageBox" width='80%' height='60vh'>
       <div style="height:70vh">
         <template v-if="['PCA','TIA'].includes(typeSelect)">
           <iframe v-if='pdfUrl' :src="pdfUrl" frameborder="0" height="97%" width="100%"></iframe>
           <span v-else>当前暂无PDF/或者图片可以查看</span>
         </template>
         <template v-else>
-          
+          <span>这是一个echarts</span>
         </template>
       </div>
   </iDialog>
@@ -60,11 +65,14 @@ export default{
       tableData:[],
       typeSelect:'BOB',
       loading:false,
-      messageBox:false
+      messageBox:false,
+      isPreview:false
     }
   },
   created(){
     this.costanalysisList()
+    //当前状态是否是预览状态
+    this.isPreview = this.$route.query.isPreview == 1
   },
   methods:{
         /**

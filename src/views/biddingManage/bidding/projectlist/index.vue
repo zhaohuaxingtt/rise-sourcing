@@ -1,7 +1,7 @@
 <template>
   <iPage>
     <div class="form-itme">
-      <div class="form-item-left">项目列表</div>
+      <div class="form-item-left">{{language('BIDDING_XIANGMULIEBIAO','项目列表')}}</div>
     </div>
     <projectList />
   </iPage>

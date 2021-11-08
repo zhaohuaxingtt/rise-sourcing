@@ -1,24 +1,26 @@
+import language from "@/utils/language";
+
 // 不含可抵扣税
 export const projectResultTableTitle = [
   {
     props: "currentSort",
-    name: "排名",
+    name: language('BIDDING_PAIMING', '排名'),
   },
   {
     props: "isTax",
-    name: "不含可抵扣税",
+    name: language('BIDDING_BHKDKS', '不含可抵扣税'),
   },
   {
     props: "supplierName",
-    name: "供应商名称",
+    name: language('BIDDING_GYSMC', "供应商名称"),
   },
   {
     props: "serverTime",
-    name: "报价时间",
+    name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
   },
   {
     props: "operation",
-    name: "操作",
+    name: language('BIDDING_CAOZUO',"操作"),
   },
 ]
 
@@ -26,19 +28,19 @@ export const projectResultTableTitle = [
 export const projectResultTableTitleHe = [
   {
     props: "currentSort",
-    name: "排名",
+    name: language('BIDDING_PAIMING', "排名"),
   },
   {
     props: "isTax",
-    name: "不含可抵扣税",
+    name: language('BIDDING_BHKDKS', '不含可抵扣税'),
   },
   {
     props: "supplierName",
-    name: "供应商名称",
+    name: language('BIDDING_GYSMC', "供应商名称"),
   },
   {
     props: "serverTime",
-    name: "报价时间",
+    name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
   },
 ]
 
@@ -46,19 +48,19 @@ export const projectResultTableTitleHe = [
 export const projectResultTitleHe = [
   {
     props: "currentSort",
-    name: "排名",
+    name: language('BIDDING_PAIMING', "排名"),
   },
   {
     props: "isTax",
-    name: "含税",
+    name: language('BIDDING_HANSHUI','含税'),
   },
   {
     props: "supplierName",
-    name: "供应商名称",
+    name: language('BIDDING_GYSMC', "供应商名称"),
   },
   {
     props: "serverTime",
-    name: "报价时间",
+    name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
   },
 ]
 
@@ -66,23 +68,23 @@ export const projectResultTitleHe = [
 export const projectResultTitle = [
   {
     props: "currentSort",
-    name: "排名",
+    name: language('BIDDING_PAIMING', "排名"),
   },
   {
     props: "isTax",
-    name: "含税",
+    name: language('BIDDING_HANSHUI','含税'),
   },
   {
     props: "supplierName",
-    name: "供应商名称",
+    name: language('BIDDING_GYSMC', "供应商名称"),
   },
   {
     props: "serverTime",
-    name: "报价时间",
+    name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
   },
   {
     props: "operation",
-    name: "操作",
+    name: language('BIDDING_CAOZUO',"操作"),
   },
 ]
 

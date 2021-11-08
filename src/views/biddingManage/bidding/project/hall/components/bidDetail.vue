@@ -23,7 +23,7 @@
         </div>
       </template>
       <template slot="caozuo" slot-scope="scope">
-        <div class="form-view" @click="handleCheck(scope)">查看</div>
+        <div class="form-view" @click="handleCheck(scope)">{{ language('BIDDING_CHAKAN','查看') }}</div>
       </template>
     </commonTable>
     <iPagination

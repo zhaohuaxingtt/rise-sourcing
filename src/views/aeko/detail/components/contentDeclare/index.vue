@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-08 20:03:29
+ * @LastEditTime: 2021-11-08 20:28:18
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -1053,10 +1053,10 @@ export default {
     // 投资车型项目下拉是否禁用
     disabledInvestCarTypePro(row){
       
-      // 当模具投资变动有值时可下拉
-      // 内容状态为 报价中 已报价 拒绝 已提交 不禁用
-      let statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT' || row.status == 'SUBMITED';
-      return !row.mouldPriceChange || !statusDisabled || this.disabled
+      // 当模具投资变动有值时 禁用下拉
+      // 内容状态为 报价中 已报价 拒绝 不禁用
+      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
+      return row.mouldPriceChange || !statusDisabled || this.disabled
 
     },
 

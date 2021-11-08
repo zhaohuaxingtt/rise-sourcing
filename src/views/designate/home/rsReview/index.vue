@@ -235,7 +235,7 @@ export default {
     },
     toPath(path) {
       // 新增签字单
-      if (path === '/sourcing/partsnomination/signSheet/details?mode=add') {
+      if (path === '/sourcing/partsnomination/signSheet/addSignOverView/details?mode=add') {
         this.createSignSheet(path)
       } else {
         const newSignSheet = this.$router.resolve({path})

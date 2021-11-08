@@ -77,6 +77,9 @@
             label="申请人解释"
             align="center"
             prop="applicantExplain">
+          <template slot-scope="scope">
+            <span class="icon">{{scope.row.applicantExplain}}<icon v-if="scope.row.applicantExplain" symbol class="icon" name="iconxinjieshi"/></span>
+          </template>
         </el-table-column>
         <el-table-column
             label="解释附件"
@@ -339,5 +342,10 @@ created(){
   content: '*';
   color: red;
 }
-
+.icon {
+  svg {
+    font-size: 24px;
+    margin-left: 8px;
+  }
+}
 </style>

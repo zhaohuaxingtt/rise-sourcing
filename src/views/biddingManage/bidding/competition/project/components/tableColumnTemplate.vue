@@ -9,7 +9,7 @@
       :height="height"
       tooltip-effect="light"
       :data="tableData"
-      :empty-text="$t('LK_ZANWUSHUJU')"
+      :empty-text="language('LK_ZANWUSHUJU', '暂无数据')"
       v-loading="tableLoading"
       @selection-change="handleSelectionChange"
       :row-class-name="handleTableRow"
@@ -318,7 +318,7 @@ export default {
             ? callback(new Error(rule.message))
             : callback();
         },
-        message: "排名区间配置错误",
+        message: this.language('BIDDINGH_PMQJPZCW', "排名区间配置错误"),
         trigger: "blur",
       };
     },

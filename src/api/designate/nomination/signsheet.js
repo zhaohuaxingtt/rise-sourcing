@@ -1,18 +1,18 @@
 /*
  * @Author: haojiang
  * @Date: 2021-06-30 10:09:30
- * @LastEditTime: 2021-11-02 21:39:31
- * @LastEditors:  
+ * @LastEditTime: 2021-11-08 18:49:51
+ * @LastEditors: Please set LastEditors
  * @Description: 签字单
  * @FilePath: /front-web/src/api/designate/nomination/signsheet.js
  */
 import axios from "@/utils/axios"
 
-const requst = axios(process.env.VUE_APP_SOURCING)
+const request = axios(process.env.VUE_APP_SOURCING)
 
 // 获取签字单列表
 export function getSignList(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/page`,
       method: "post",
       data: params
@@ -21,7 +21,7 @@ export function getSignList(params) {
 
 // 批量提交
 export function batchSubmit(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/submit`,
       method: "post",
       data: params
@@ -30,7 +30,7 @@ export function batchSubmit(params) {
 
 // 批量删除
 export function batchDelete(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/delete`,
       method: "post",
       data: params
@@ -38,7 +38,7 @@ export function batchDelete(params) {
 }
 // 签字单-查询已选择的定点申请
 export function getNomiSelectedPage(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/nomi/selected-page`,
       method: "post",
       data: params
@@ -47,7 +47,7 @@ export function getNomiSelectedPage(params) {
 
 // 签字单-查询未选择的定点申请
 export function getNomiNotSelectedPage(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/nomi/non-selected-page`,
       method: "post",
       data: params,
@@ -57,7 +57,7 @@ export function getNomiNotSelectedPage(params) {
 
 // 保存签字单
 export function saveSignSheet(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/save`,
       method: "post",
       data: params
@@ -65,7 +65,7 @@ export function saveSignSheet(params) {
 }
 // 提交签字单
 export function submitSignSheet(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/submit`,
       method: "post",
       data: params
@@ -74,7 +74,7 @@ export function submitSignSheet(params) {
 
 // 移除签字单定点申请
 export function removeSignsheetItems(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/remove`,
       method: "post",
       data: params
@@ -83,7 +83,7 @@ export function removeSignsheetItems(params) {
 
 // 创建签字单
 export function createSignSheet(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/create`,
       method: "post",
       data: params
@@ -92,7 +92,7 @@ export function createSignSheet(params) {
 
 // 审批详情
 export function signSheetApproveDetail(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/approve-detail`,
       method: "GET",
       params
@@ -101,7 +101,7 @@ export function signSheetApproveDetail(params) {
 
 // 导出签字单
 export function exportSignSheet(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/export`,
       method: "GET",
       params
@@ -110,9 +110,18 @@ export function exportSignSheet(params) {
 
 // 签字单详情查询
 export function getsignSheetDetails(params) {
-  return requst({
+  return request({
       url: `/nominate/sign/detail`,
       method: "get",
       params
+  })
+}
+
+// 签字单-MTZ定点申请-分页查询已选择的MTZ申请
+export function getMTZSignPage(params) {
+  return request({
+      url: `/nominate/sign/nomi/selected-m-page`,
+      method: "post",
+      data: params
   })
 }

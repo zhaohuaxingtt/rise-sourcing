@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors:  
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -96,8 +96,7 @@ export default {
     icon
   },
   async mounted() {
-    const {query} = this.$route;
-    const {id,businessKey} = query;
+    const {id,businessKey} = this.$route.query;
     // this.rfqId = this.$route.query.id
     this.rfqId = id || '';
 

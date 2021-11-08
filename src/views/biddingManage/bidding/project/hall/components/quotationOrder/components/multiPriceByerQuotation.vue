@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iCard :title="$t('项目信息')" class="card">
+    <iCard :title="language('BIDDING_XIANGMUXINXI', '项目信息')" class="card">
       <template slot="header-control">
         <i
           @click="toggle"
@@ -20,9 +20,9 @@
           <div class="form">
             <div class="input-box">
               <div class="form-row">
-                <iFormItem label="起始总价">
+                <iFormItem :label="language('BIDDING_QISHIZONGJIA', '起始总价')">
                   <iLabel
-                    :label="$t('起始总价')"
+                    :label="language('BIDDING_QISHIZONGJIA', '起始总价')"
                     slot="label"
                     required
                   ></iLabel>
@@ -39,12 +39,12 @@
                     <div class="form--item--number--lable">{{ unit }}</div>
                   </div>
                 </iFormItem>
-                <iFormItem label="大写">
-                  <iLabel :label="$t('大写')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_DAXIE', '大写')">
+                  <iLabel :label="language('BIDDING_DAXIE', '大写')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
-                      :value="totalPriceFlag ? '零元整' : numberUppercase"
+                      :value="totalPriceFlag ? language('BIDDING_LINGYUANZHENG','零元整') : numberUppercase"
                       disabled
                     ></iInput>
                     <div class="form--item--number--lable">{{ unit }}</div>
@@ -53,11 +53,11 @@
               </div>
               <div class="form-row" :class="{ hiden: hidens }">
                 <iFormItem
-                  label="起始年月"
+                  :label="language('BIDDING_QISHINIANYUE', '起始年月')"
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
-                  <iLabel :label="$t('起始年月')" slot="label"></iLabel>
+                  <iLabel :label="language('BIDDING_QISHINIANYUE', '起始年月')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -66,8 +66,8 @@
                     ></iInput>
                   </div>
                 </iFormItem>
-                <iFormItem label="车型">
-                  <iLabel :label="$t('车型')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_CHEXING', '车型')">
+                  <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
                       {{ tag.name }}
@@ -76,8 +76,8 @@
                 </iFormItem>
               </div>
               <div class="form-row" :class="{ hiden: hidens }">
-                <iFormItem label="车型项目">
-                  <iLabel :label="$t('车型项目')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')">
+                  <iLabel :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
                       {{ tag.name }}
@@ -95,8 +95,8 @@
     <iCard class="card">
       <div class="card--header">
         <div class="card--header--item card--header--item__top">
-          <div>{{ $t("产品信息") }}</div>
-          <div class="margin-left40">批量更新出厂价</div>
+          <div>{{ language('BIDDING_CHANPINXINXI', '产品信息')}}</div>
+          <div class="margin-left40">{{language('BIDDING_PLGXCCJ','批量更新出厂价')}}</div>
           <div class="margin-left10">
             <iInput
               style="width: 7.2rem"
@@ -138,7 +138,7 @@
     <iCard class="card">
       <div class="card--header">
         <div class="card--header--item card--header--item__top">
-          <div>{{ $t("年降计划 & 折现率") }}</div>
+          <div>{{ language('BIDDING_NIANJINGJIHUAANDZHEXIANLV', '年降计划 & 折现率') }}</div>
         </div>
       </div>
       <div class="card--body">
@@ -157,7 +157,7 @@
     <iCard class="card">
       <div class="card--header">
         <div class="card--header--item card--header--item__top">
-          <div>{{ $t("年降计划明细") }}</div>
+          <div>{{ language('BIDDING_NJJJMX', '年降计划明细') }}</div>
         </div>
       </div>
       <div id="purchasePlanTableForm" class="card--body">
@@ -319,7 +319,7 @@ export default {
 
     handleAddYearPlan() {
       let obj = {
-        title: "折现率",
+        title: this.language('BIDDING_ZHEXIANLV',"折现率"),
         stage1: 1,
         stage2: 0.9,
         stage3: 0.81,
@@ -401,7 +401,7 @@ export default {
         this.purchasePlanTable.push({ ...o[items.id].procureNum, title: "" });
       });
       this.handleAddYearPlan();
-      let obj = { title: "降价计划" };
+      let obj = { title: this.language('BIDDING_JIANGJIAJIHUA',"降价计划") };
       if (this.ruleForm.yearsPlans?.length) {
         this.ruleForm.yearsPlans.forEach((item) => {
           obj[`stage${item.stage}`] = item.cutPricePlan ;

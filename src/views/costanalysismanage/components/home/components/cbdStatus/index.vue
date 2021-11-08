@@ -49,13 +49,13 @@ import {
     iDialog,
     iButton,
     iPagination,
+    iMessage
 } from 'rise'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { CbdTitle } from '../data'
 import { getKmCbdList } from "@/api/costanalysismanage/rfqdetail"
 import { partCbdKmFile } from "@/api/costanalysismanage/costanalysis"
-import { iMessage } from '../../../../../../components'
 export default {
     name:'cbdStatus',
     mixins: [pageMixins],
@@ -126,9 +126,7 @@ export default {
 
         async handleDownload() {
             if (!this.currentRow) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDESHUJU", "请选择需要下载的数据"))
-
             this.downloadLoading = true
-
             try {
                 await partCbdKmFile({
                     quotationId: this.currentRow.quotationId
