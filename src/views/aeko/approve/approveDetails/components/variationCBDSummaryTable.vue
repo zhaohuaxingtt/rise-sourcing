@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-06 12:58:50
+ * @LastEditTime: 2021-11-08 16:36:06
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -411,7 +411,7 @@ export default {
               this.hasData = true;
             } else {
               this.loading = false;
-              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+              iMessage.warn(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
           }
         );
@@ -428,7 +428,6 @@ export default {
       .then(res => {
         console.log(res);
         if (res.code == 200) {
-          let data = res.data;
           let aPriceChangeData = {
               // CBD-变动值
               cbdLevelVO: {},

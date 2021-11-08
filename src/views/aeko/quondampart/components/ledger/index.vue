@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-04 17:27:36
+ * @LastEditTime: 2021-11-08 20:20:03
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -169,6 +169,7 @@ export default {
   },
   async created() {
     this.partNum = this.$route.query.partNum  // 零件号
+    this.isAea = this.$route.query.isAea=='true'?true:false  // 是否是AEA类型
     this.isDeclare = this.$route.query.isDeclare  // 是否预设零件号，0是，1不是
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
@@ -196,9 +197,11 @@ export default {
       .then(res => {
         if (res.code == 200) {
           if (res.data.factoryCode) {
-            this.factoryDisabled = true
             this.form.factoryCode = res.data.factoryCode
             this.factoryName = res.data.factoryName
+            if(!this.isAea){
+              this.factoryDisabled = true
+            }
           } else {
             this.factoryDisabled = false
             this.form.factoryCode = ""
@@ -220,12 +223,12 @@ export default {
       .then(res => {
         if (res.code == 200) {
           if (res.data[0].isView) {
-            this.procureFactorySelectVo()
             this.getAekoOriginPartInfo(flag)
           } else {
             iMessage.error(res.data[0].describe)
             this.loading = false
           }
+          this.procureFactorySelectVo()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
