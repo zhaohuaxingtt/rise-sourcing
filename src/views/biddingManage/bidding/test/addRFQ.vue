@@ -15,9 +15,9 @@
         class="form-box"
       >
         <el-row class="form-row">
-          <iFormItem label="轮次类型" prop="roundType">
-            <iLabel :label="$t('轮次类型')" slot="label" required></iLabel>
-            <iSelect v-model="form.roundType" placeholder="请选择轮次类型">
+          <iFormItem :label="language('BIDDING_LUNCILEIXING', '轮次类型')" prop="roundType">
+            <iLabel :label="language('BIDDING_LUNCILEIXING', '轮次类型')" slot="label" required></iLabel>
+            <iSelect v-model="form.roundType" :placeholder="language('BIDDING_QXZLCLX', '请选择轮次类型')">
               <el-option
                 v-for="(item, index) in roundTypeLists"
                 :key="index"
@@ -29,13 +29,13 @@
           </iFormItem>
         </el-row>
         <!-- <iFormGroup :row="3" inline icon>
-          <iFormItem :label="$t('LK_LINGJIANHAO')+':'" name="test">
+          <iFormItem :label="language('LK_LINGJIANHAO', 'LK_LINGJIANHAO')+':'" name="test">
             <iInput></iInput>
           </iFormItem>
-          <iFormItem :label="$t('LK_XUNJIACAIGOUYUAN')+':'" name="test">
+          <iFormItem :label="language('LK_XUNJIACAIGOUYUAN', 'LK_XUNJIACAIGOUYUAN')+':'" name="test">
             <iInput></iInput>
           </iFormItem>
-          <iFormItem :label="$t('LK_LINGJIANHAO')+':'" name="test">
+          <iFormItem :label="language('LK_LINGJIANHAO', 'LK_LINGJIANHAO')+':'" name="test">
             <iText>test8</iText>
           </iFormItem>
           <iFormItem label="FSNR/GSNR/SPNR：" name="test">
@@ -46,7 +46,7 @@
         <!-- footer 保存 -->
         <div class="button-list">
           <el-form-item>
-            <iButton @click="handleOK" plain>{{ $t("LK_BAOCUN") }}</iButton>
+            <iButton @click="handleOK" plain>{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
           </el-form-item>
         </div>
       </el-form>
@@ -81,7 +81,7 @@ export default {
         roundType: "",
       },
       rules: {
-        roundType: [{ required: true, message: "请选择", trigger: "change" }],
+        roundType: [{ required: true, message: this.language('BIDDING_QINGXUANZE','请选择'), trigger: "change" }],
       },
       roundTypeLists,
     };
@@ -91,9 +91,9 @@ export default {
     handleOK() {
       this.$refs["ruleForm"].validate((valid) => {
         if (valid) {
-          this.$confirm("是否确定新建 该RFQ轮次 ？", "提示", {
-            confirmButtonText: "是",
-            cancelButtonText: "否",
+          this.$confirm(this.language('BIDDING_SFQDXJGRFQLC',"是否确定新建 该RFQ轮次 ？"), this.language('BIDDING_TISHI',"提示"), {
+            confirmButtonText: this.language('BIDDING_SHI',"是"),
+        cancelButtonText: this.language('BIDDING_FOU',"否"),
             type: "warning",
           })
             .then(() => {
@@ -108,10 +108,10 @@ export default {
                   this.$router.push({
                     path: `/bidding/project/inquiry/${data.id}`,
                   });
-                  iMessage.success("保存成功");
+                  iMessage.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
                 })
                 .catch(() => {
-                  iMessage.error("保存失败");
+                  iMessage.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
                 });
             })
             .catch(() => {

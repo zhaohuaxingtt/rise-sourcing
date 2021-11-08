@@ -1,10 +1,18 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-08 11:48:01
+ * @LastEditTime: 2021-11-08 16:47:10
+ * @LastEditors: your name
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \front-sourcing\src\views\biddingManage\bidding\open\index.vue
+-->
 <template>
   <iPage>
     <div class="form-itme">
       <div class="form-item-left">{{ title }}</div>
       <!-- <iButton>开标告知书</iButton> -->
       <!-- <iButton @click="handleShowNotice('02', '开标告知书')">{{
-        $t("开标告知书")
+        language('开标告知书', '开标告知书')
       }}</iButton> -->
     </div>
     <information @change-title="handleChangeTitle" />
@@ -44,7 +52,7 @@ export default {
   computed: {
     title() {
       const { rfqCode, projectCode } = this.ruleForm || {};
-      return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
     },
   },
   methods: {

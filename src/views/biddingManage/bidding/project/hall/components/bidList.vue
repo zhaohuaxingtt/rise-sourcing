@@ -26,7 +26,7 @@
       </template>
       <template slot="operation" slot-scope="scope">
         <div style="color: blue; cursor: pointer" @click="check(scope)">
-          查看
+          {{language('BIDDING_CHAKAN','查看')}}
         </div>
       </template>
     </commonTable>
@@ -159,7 +159,7 @@ export default {
     },
     title() {
       const { rfqCode, projectCode } = this.ruleForm || {};
-      return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
     },
     beishu() {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;

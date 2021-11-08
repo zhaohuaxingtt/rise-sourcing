@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-06 17:51:51
+ * @LastEditTime: 2021-11-08 20:28:18
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -339,7 +339,7 @@ import Upload from '@/components/Upload'
 
 import filters from "@/utils/filters"
 
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
@@ -425,7 +425,7 @@ export default {
 
     const {query} = this.$route;
     const {from=''} = query;
-    from=='manage'?setLogModule('AEKO管理-详情页-内容表态'):setLogModule('AEKO表态-详情页-内容表态')
+    from=='manage'?setLogMenu('AEKO管理-详情页-内容表态'):setLogMenu('AEKO表态-详情页-内容表态')
     // AEKO查看跳转过来的数据table的新承运方式和原承运方式合并成一列
     if(from == 'check'){
       this.tableTitle = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc')
@@ -605,15 +605,25 @@ export default {
         aekoNum: this.aekoInfo.aekoCode
       }})
     },
+    isAea(str) {
+      for (var i in str) {
+        var asc = str.charCodeAt(i);
+        if (asc >= 48 && asc <= 57) {
+            return true;
+        }
+      }
+      return false;
+    },
     oldPartNumPresetSelect(row) {
       // if (!row.oldPartNumPreset) return
       // 如果是从AEKO查看跳转过来的 不允许跳转
       const routeQuery = this.$route.query;
       const {from=''} = routeQuery;
       if(from == 'check') return;
-
+      let type = this.aekoInfo.aekoCode.slice(0,2)
       const query = {
         partNum: row.partNum,
+        isAea: this.isAea(type),
         isDeclare: row.isDeclare, // 0: 预设原零件，1: 选择的原零件
         requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: row.objectAekoPartId,
@@ -622,6 +632,7 @@ export default {
 
       if (!query.oldPartNumPreset) delete query.oldPartNumPreset
 
+      console.log(this);
       this.$router.push({
         path: "/aeko/quondampart",
         query
@@ -1043,8 +1054,8 @@ export default {
     disabledInvestCarTypePro(row){
       
       // 当模具投资变动有值时 禁用下拉
-      // 内容状态为 报价中 已报价 拒绝 已提交 不禁用
-      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT' || row.status == 'SUBMITED';
+      // 内容状态为 报价中 已报价 拒绝 不禁用
+      const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
       return row.mouldPriceChange || !statusDisabled || this.disabled
 
     },

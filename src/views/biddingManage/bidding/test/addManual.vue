@@ -16,8 +16,8 @@
       >
         <el-row class="form-row">
           <iFormItem prop="procureType">
-            <iLabel :label="$t('采购类型')" slot="label" required></iLabel>
-            <iSelect v-model="form.procureType" placeholder="请选择采购类型">
+            <iLabel :label="language('BIDDING_CAIGOULEIXING', '采购类型')" slot="label" required></iLabel>
+            <iSelect v-model="form.procureType" :placeholder="language('BIDDING_QXZCGLX', '请选择采购类型')">
               <el-option
                 v-for="(item, index) in procureTypeList"
                 :key="index"
@@ -29,17 +29,17 @@
           </iFormItem>
         </el-row>
         <el-row class="form-row">
-          <iFormItem :label="$t('轮次类型')" name="test">
-            <iLabel :label="$t('轮次类型')" slot="label" required></iLabel>
-            <iText>手工竞价</iText>
+          <iFormItem :label="language('BIDDING_LUNCILEIXING', '轮次类型')" name="test">
+            <iLabel :label="language('BIDDING_LUNCILEIXING', '轮次类型')" slot="label" required></iLabel>
+            <iText>{{language('BIDDING_SHOUGONGJINGJIA', '手工竞价')}}</iText>
           </iFormItem>
         </el-row>
         <el-row class="form-row">
-          <iFormItem label="手工竞价类型" prop="manualBiddingType">
-            <iLabel :label="$t('手工竞价类型')" slot="label" required></iLabel>
+          <iFormItem :label="language('BIDDING_SGJJLX','手工竞价类型')" prop="manualBiddingType">
+            <iLabel :label="language('BIDDING_SGJJLX', '手工竞价类型')" slot="label" required></iLabel>
             <iSelect
               v-model="form.manualBiddingType"
-              placeholder="请选择手工竞价类型"
+              :placeholder="language('BIDDING_QXZSGJJLX', '请选择手工竞价类型')"
             >
               <el-option
                 v-for="(item, index) in manualBiddingTypeList"
@@ -52,18 +52,18 @@
           </iFormItem>
         </el-row>
         <el-row class="form-row">
-          <iFormItem label="引用RFQ">
-            <iLabel :label="$t('引用RFQ')" slot="label"></iLabel>
+          <iFormItem :label="language('BIDDING_YYRFQ', '引用RFQ')">
+            <iLabel :label="language('BIDDING_YYRFQ', '引用RFQ')" slot="label"></iLabel>
             <iInput
               v-model="form.rfqCode"
-              placeholder="请选择引用RFQ"
+              :placeholder="language('BIDDING_QXZYYRFQ', '请选择引用RFQ')"
               disabled
             />
           </iFormItem>
         </el-row>
         <div class="button-list">
           <el-form-item>
-            <iButton @click="handleOK" plain>{{ $t("LK_BAOCUN") }}</iButton>
+            <iButton @click="handleOK" plain>{{ language('LK_BAOCUN', '保存') }}</iButton>
           </el-form-item>
         </div>
       </el-form>
@@ -116,9 +116,9 @@ export default {
       },
       rules: {
         manualBiddingType: [
-          { required: true, message: "请选择", trigger: "change" },
+          { required: true, message: this.language('BIDDING_QINGXUANZE','请选择'), trigger: "change" },
         ],
-        procureType: [{ required: true, message: "请选择", trigger: "change" }],
+        procureType: [{ required: true, message: this.language('BIDDING_QINGXUANZE','请选择'), trigger: "change" }],
       },
 
       RFQTurnList,
@@ -131,9 +131,9 @@ export default {
     handleOK() {
       this.$refs["ruleForm"].validate((valid) => {
         if (valid) {
-          this.$confirm("是否确定新建该项目？", "提示", {
-            confirmButtonText: "是",
-            cancelButtonText: "否",
+          this.$confirm(this.language('BIDDING_SFQDXJGXM','是否确定新建该项目？'), this.language('BIDDING_TISHI',"提示"), {
+            confirmButtonText: this.language('BIDDING_SHI',"是"),
+            cancelButtonText: this.language('BIDDING_FOU',"否"),
             type: "warning",
           })
             .then(() => {
@@ -146,10 +146,10 @@ export default {
                   this.$router.push({
                     path: `/bidding/project/inquiry/${data.id}`,
                   });
-                  iMessage.success("保存成功");
+                  iMessage.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
                 })
                 .catch(() => {
-                  iMessage.error("保存失败");
+                  iMessage.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
                 });
             })
             .catch(() => {

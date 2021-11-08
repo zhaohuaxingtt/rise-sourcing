@@ -53,8 +53,8 @@ export default {
         modelProjects: r.modelProjects.map((item) => item.projectCode),
       };
 
-      const cutPricePlan = { title: "降价计划" };
-      const discountRate = { title: "折现率" };
+      const cutPricePlan = { title: this.language('BIDDING_JIANGJIAJIHUA',"降价计划") };
+      const discountRate = { title: this.language('BIDDING_ZHEXIANLV',"折现率") };
       // 年降计划&折现率
       if (r.yearsPlans.length) {
         r.yearsPlans?.forEach((item) => {

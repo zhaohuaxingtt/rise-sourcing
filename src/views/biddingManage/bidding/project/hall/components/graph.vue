@@ -8,7 +8,7 @@
             <span>{{ amplitude }}</span
             >%
           </div>
-          <div class="graph-amplitude__bottom">幅度</div>
+          <div class="graph-amplitude__bottom">{{language('BIDDING_FUDU','幅度')}}</div>
         </div>
       </div>
     </iCard>
@@ -17,17 +17,17 @@
       <div class="tool-tip-title">{{ "供应商名称" }}</div>
       <div class="form">
         <div class="el-form-item">
-          <div class="el-form-label">{{ $t("时间") }}</div>
+          <div class="el-form-label">{{ language('时间', '时间') }}</div>
           <div class="el-form-content"></div>
         </div>
         <div class="el-form-item">
-          <div class="el-form-label">{{ $t("出价") }}</div>
+          <div class="el-form-label">{{ language('BIDDING_CHUJIA', '出价') }}</div>
           <div class="el-form-content"></div>
         </div>
       </div>
     </div> -->
 
-    <iCard :title="$t('供应商')">
+    <iCard :title="language('BIDDING_GONGYINGSHAN', '供应商')">
       <commonTable
         ref="tableDataForm"
         :tableData="suppliers"
@@ -518,7 +518,7 @@ export default {
             let series = params[0];
               htmlStr = `<div style="width: 35rem;background: #fff;padding: 1.875rem 2.5rem;border-radius: 0.375rem;">
                     <div class="tool-tip-title" style="padding-bottom: 1.875rem;font-size: 1.125rem;color: #131523;font-weight: bold;">${
-                      series.componentSubType == "scatter" ? series.seriesName : '采购员'
+                      series.componentSubType == "scatter" ? series.seriesName : this.language('BIDDING_CAIGOUYUAN', '采购员')
                     }</div>
                     <div class="form">
                         <!-- 时间 -->

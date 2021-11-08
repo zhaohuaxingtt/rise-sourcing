@@ -219,7 +219,7 @@ import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
 import {lookDetails} from './lib'
 import {numberToCurrencyNo,numberToCurrencyNo2} from "@/utils/cutOutNum";
-import { setLogCount, setLogModule } from "@/utils";
+import { setLogCount, setLogMenu } from "@/utils";
 
 export default {
   name: "AKEOPendingPage",
@@ -306,7 +306,7 @@ export default {
     }),
   },
   created() {
-    setLogModule('AEKO审批-列表-待审批列表')
+    setLogMenu('AEKO审批-列表-待审批列表')
     this.loadPendingAKEOList()
     this.queryAllLin()
   },
@@ -610,6 +610,7 @@ export default {
             reqArrays.push({
               aekoCode: item.aekoNum,
               aekoAuditType: item.auditType,
+              isBatchApproval:true,
               approvalResult: 1,
               comment: '',
               workFlowDTO: workItem
