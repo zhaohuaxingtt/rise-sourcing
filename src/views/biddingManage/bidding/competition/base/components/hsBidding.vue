@@ -429,6 +429,7 @@ import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
 import iLabelML from "@/components/iLabelML";
 import { pageMixins } from "@/utils/pageMixins";
 
+
 export default {
   mixins: [pageMixins],
   components: {
