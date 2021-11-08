@@ -4,19 +4,49 @@
  * @Description: 
 -->
 <template>
-<div class="headerNav-wraper margin-bottom10">
+<div class="headerNav-wraper margin-bottom10 margin-top20 margin-left20 margin-right20">
+  <div class="margin-bottom20 clearFloat">
+    <span class="font18 font-weight">
+      {{ mode === 'add' ? language("XINJIANQIANZIDAN",'新建签字单') : language("LK_QIANZIDAN",'签字单') }}</span
+    >
+    <div class="floatright">
+      <span v-if="mode === 'add'">
+        <iButton @click="handleSave" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
+          {{ language("BAOCUN",'保存') }}
+        </iButton>
+        <iButton @click="handleSubmit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
+          {{ language("LK_TIJIAO",'提交') }}
+        </iButton>
+        <iButton @click="handleRemove" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
+          {{ language("YICHU",'移除') }}
+        </iButton>
+        <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
+          {{ language("FANHUI",'返回') }}
+        </iButton>
+      </span>
+      <span v-else>
+        <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
+          {{ language("LK_FANHUI",'返回') }}
+        </iButton>
+      </span>
+      
+    </div>
+    <headerNav />
+  </div>
   <div class="headerNav-sub margin-top30">
     <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
       <el-tab-pane lazy v-for="(item,index) in heaederSubMenu" :key="index" :label="item.name" :name="item.key" v-permission.dynamic.auto="item.permissionKey"></el-tab-pane>
     </iTabsList>
   </div>
+  <router-link/>
 </div>
 </template>
 <script>
 import {MENU, heaederSubMenu} from './components/data'
 import {
   // icon,
-  iTabsList
+  iTabsList,
+  iButton
 } from "rise";
 import { clickMessage } from "@/views/partsign/home/components/data"
 // eslint-disable-next-line no-undef
@@ -24,16 +54,18 @@ export default {
   data() {
     return {
       heaederSubMenu,
-      tab: ''
+      tab: 'partDesignateOrders',
+      mode: this.$route.query.mode || '',
     }
   },
   components: {
     // icon,
-    iTabsList
+    iTabsList,
+    iButton
   },
   created() {
-    const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
-    this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : 'nomination'
+    // const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
+    // this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : 'nomination'
     this.updateNavList
   },
   methods: {
@@ -43,6 +75,8 @@ export default {
     handleTabClick(){
       const { query } =  this.$route;
       const path = this.heaederSubMenu.find(o => o.key === this.tab).path
+      console.log('query', query);
+      console.log('path', path);
       this.$router.push({
           path,
           query,
