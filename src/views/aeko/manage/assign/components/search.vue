@@ -16,7 +16,7 @@
       <el-form-item :label="language('LK_AEKOHAO', 'AEKO号')">
         <iInput
           v-model.trim="form.aekoNum"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_AEKONUM|AEKO号"
+          v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_SEARCH_AEKONUM|AEKO号"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -25,7 +25,7 @@
       <el-form-item :label="language('LINGJIAHAO', '零件号')">
         <iInput
           v-model.trim="form.partNum"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_PARTNUM|零件号"
+          v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_SEARCH_PARTNUM|零件号"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -35,7 +35,7 @@
         <iSelect
           class="el-select-multi"
           v-model="form.departmentIdList"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_DEPARTMENTIDLIST|科室"
+          v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_SEARCH_DEPARTMENTIDLIST|科室"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           @change="handlemultipleDeptChange"
           collapse-tags 
@@ -59,7 +59,7 @@
       <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')">
         <el-select
           v-model="form.buyerId"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_BUYERNAME|专业采购员"
+          v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_SEARCH_BUYERNAME|专业采购员"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterLinie"
           @visible-change="resetOption(...arguments, 'linieList')"
@@ -79,7 +79,7 @@
       <el-form-item :label="language('CSFGUZHANG','CSF股长')">
         <el-select
           v-model="form.chiefId"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_CHIEFNAME|CSF股长"
+          v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_SEARCH_CHIEFNAME|CSF股长"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           :filter-method="filter.filterChief"
           @visible-change="resetOption(...arguments, 'chiefList')"
@@ -95,7 +95,7 @@
         </el-select>
         <!-- <iInput
           v-model.trim="form.chiefId"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_SEARCH_CHIEFNAME|CSF股长"
+          v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_SEARCH_CHIEFNAME|CSF股长"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput> -->

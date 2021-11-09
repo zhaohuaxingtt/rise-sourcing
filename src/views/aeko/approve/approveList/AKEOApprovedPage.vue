@@ -105,16 +105,12 @@
           </div>
         </template>
         <template #aekoNum="scope">
-          <div style="text-align:left">
             <a class="link-underline" @click="lookDetails(scope.row)">
               {{ scope.row.aekoCode }}
             </a>
-          </div>
         </template>
         <template #auditTypeName="scope">
-          <div style="text-align:left">
             <span>{{ scope.row.auditTypeDesc }}</span>
-          </div>
         </template>
         <template #describe="scope">
           <a class="link-underline" @click="lookAEKODesc(scope.row)">
