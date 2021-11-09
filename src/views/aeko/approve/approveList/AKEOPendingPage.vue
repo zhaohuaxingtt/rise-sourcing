@@ -100,22 +100,18 @@
       >
         <template #isTop="scope">
           <div>
-            <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon " name="iconAEKO_TOP"/></span>
+            <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon " name="icontop"/></span>
           </div>
         </template>
         <!--aekoNum-->
         <template #aekoNum="scope">
-          <div style="text-align:left">
             <a class="link-underline" @click="lookDetails(scope.row)">
               {{ scope.row.aekoNum }}
             </a>
-          </div>
         </template>
         <!--审批类型-->
         <template #auditTypeName="scope">
-          <div style="text-align:left">
             <span>{{ scope.row.auditTypeName }}</span>
-          </div>
         </template>
         <!--描述-->
         <template #describe="scope">
@@ -620,9 +616,9 @@ export default {
         aekoAudit(reqArrays).then(res => {
           if (res.code == 200) {
             if (res.data.failCount > 0) {
-              this.$message.error(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态，请重试`)
+              this.$message.error(`您已成功审批${res.data.successCount}个AEKO的表态，失败${res.data.failCount}个AEKO的表态，请重试`)
             } else {
-              this.$message.success(`您已成功审批${res.data.successCount}个采购员的表态，失败${res.data.failCount}个采购员的表态!`)
+              this.$message.success(`您已成功审批${res.data.successCount}个AEKO的表态，失败${res.data.failCount}个AEKO的表态!`)
             }
             this.loadPendingAKEOList()
           } else {
