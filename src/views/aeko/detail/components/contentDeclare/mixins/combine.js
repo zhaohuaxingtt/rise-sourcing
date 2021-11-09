@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-11-02 11:12:44
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-03 15:05:38
+ * @LastEditTime: 2021-11-09 14:44:08
  * @Description: 内容表态组合相关功能
  */
 
@@ -40,8 +40,8 @@ export const combine = {
         return
       }
       const requirementAekoId = this.$route.query.requirementAekoId
-      const oldPartNumPreset = dataList.map(o => o.oldPartNumPreset)
-      const partNum = dataList.map(o => o.partNum)
+      const oldPartNumPreset = window._.uniq(dataList.map(o => o.oldPartNumPreset))
+      const partNum = window._.uniq(dataList.map(o => o.partNum))
       const ids = dataList.map(o => o.objectAekoPartId)
       const params = {
         requirementAekoId,
@@ -67,7 +67,7 @@ export const combine = {
     },
     // 删除合并
     async cancelCombination() {
-      const dataList = this.multipleSelection
+      let dataList = this.multipleSelection
       const filtedDataList = window._.uniqBy(dataList, o => o.groupCode)
       const groupCode = filtedDataList[0].groupCode
       if (filtedDataList.length > 1) {
@@ -78,8 +78,9 @@ export const combine = {
         this.$message.error(this.language('XITONGZIDONGZUHEQUXAIOSHIBAI','当前组合项目为系统自动组合，【取消组合】失败'))
         return
       }
-      const oldPartNumPreset = dataList.map(o => o.oldPartNumPreset)
-      const partNum = dataList.map(o => o.partNum)
+      dataList = this.tableListData.filter(o => o.groupCode === groupCode)
+      const oldPartNumPreset = window._.uniq(dataList.map(o => o.oldPartNumPreset)).filter(o => o)
+      const partNum = window._.uniq(dataList.map(o => o.partNum)).filter(o => o)
       const ids = dataList.map(o => o.objectAekoPartId)
       const requirementAekoId = this.$route.query.requirementAekoId
       const params = {
@@ -108,16 +109,18 @@ export const combine = {
     updateGroupName(row) {
       const groupName = row.groupName
       const groupCode = row.groupCode
+      const groupType = row.groupType
       const requirementAekoId = this.$route.query.requirementAekoId
       if (groupName && groupCode && groupName !== row.groupNameBak) {
         const dataList = this.tableListData.filter(o => o.groupCode === groupCode)
-        const oldPartNumPreset = dataList.map(o => o.oldPartNumPreset)
-        const partNum = dataList.map(o => o.partNum)
+        const oldPartNumPreset = window._.uniq(dataList.map(o => o.oldPartNumPreset)).filter(o => o)
+        const partNum = window._.uniq(dataList.map(o => o.partNum)).filter(o => o)
         const ids = dataList.map(o => o.objectAekoPartId)
         const params = {
           requirementAekoId,
           groupName,
           groupCode,
+          groupType,
           ids,
           oldPartNumPreset,
           partNum

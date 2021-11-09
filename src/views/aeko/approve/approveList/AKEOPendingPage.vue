@@ -84,7 +84,8 @@
             <i class="el-icon-warning-outline bule iconSuffix"></i>
           </el-tooltip>
 				</i-button>
-        <i-button @click="transfer" v-if="transferButtonDisplay" v-permission.auto="AEKO_PENDING_APPROVAL_TRANSFER|待审批页面按钮_转派"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
+        <!---v-if="transferButtonDisplay"-->
+        <i-button @click="transfer"  v-permission.auto="AEKO_PENDING_APPROVAL_TRANSFER|待审批页面按钮_转派"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
 
       </div>
       <!--表格展示区-->
@@ -246,24 +247,7 @@ export default {
       return numberToCurrencyNo2(value)
     }
   },
-  computed: {
-    transferButtonDisplay: function () {
-      let user = this.$store.state.permission.userInfo
-      let roles = user.roleList
-      if (null != roles && roles.length > 0) {
-        let btnShow = false
-        for (let i = 0; i < roles.length; i++) {
-          let item = roles[i]
-          if (item.code == 'QQCGGZ') {
-            btnShow = true
-            break
-          }
-        }
-        return btnShow
-      }
-      return false
-    }
-  },
+
   data() {
     return {
       //查询表单
@@ -294,7 +278,23 @@ export default {
 
   },
   computed: {
-    //eslint-disable-next-line no-undef
+    transferButtonDisplay: function () {
+      let user = this.$store.state.permission.userInfo
+      let roles = user.roleList
+      if (null != roles && roles.length > 0) {
+        let btnShow = false
+        for (let i = 0; i < roles.length; i++) {
+          let item = roles[i]
+          if (item.code == 'QQCGGZ') {
+            btnShow = true
+            break
+          }
+        }
+        return btnShow
+      }
+      return false
+    },
+    // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
       permission: state => state.permission,
@@ -317,7 +317,7 @@ export default {
         if(res?.code==200){
           setLogCount(res.data)
         }else{
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
     },
@@ -452,16 +452,20 @@ export default {
       }
       this.transferDialogVal = true
     },
-    confirmTransfer(selBuyerId) {
+    confirmTransfer(selBuyer) {
       let selectPendingItem = this.selectPendingList[0]
       if (null != selectPendingItem) {
         let transfers = []
         selectPendingItem.workFlowDTOS.forEach(item => {
           transfers.push({
-            targetUserId: selBuyerId,
+            targetUserId: selBuyer.code,
+            targetUserName:selBuyer.value,
             aekoCode: selectPendingItem.aekoNum,
             taskId: item.taskId,
-            userId: this.$store.state.permission.userInfo.id
+            workFlowId:item.workFlowId,
+            aekoAuditType:selectPendingItem.auditType,
+            userId: this.$store.state.permission.userInfo.id,
+            userName: this.$store.state.permission.userInfo.nameZh
           })
         })
         this.tableLoading = true
