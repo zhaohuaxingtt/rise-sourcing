@@ -64,17 +64,10 @@ export default {
         },
         {
           prop: 'fileSize',
-          label: '文件大小',
+          label: '文件大小(MB)',
           i18n: 'WENJIANDAXIAO',
           headerAlign: 'center',
           align: 'center',
-          customRender: (h, scope, column) => {
-            let showStr=scope.row['fileSize']
-            if(showStr){
-              return <span>{showStr}(MB)</span>
-            }
-            return <span></span>
-          },
         },
         {
           prop: 'userName',

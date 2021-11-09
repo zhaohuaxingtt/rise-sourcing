@@ -1120,7 +1120,7 @@
         'LK_CHEXINGXIANGMUXIANGQ': '车型项目详情',
 
         'DAXIAO': '大小', // 大小
-        'WENJIANDAXIAO': '文件大小', // 文件大小
+        'WENJIANDAXIAO': '文件大小(MB)', // 文件大小
 
         'LK_MUJUTOUZIJINE': '模具投资金额', //  模具投资金额
         'LK_MUJUTOUZIQINGDANZHUANGTAI': '模具投资清单状态', //  模具投资清单状态
