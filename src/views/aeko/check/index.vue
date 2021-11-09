@@ -87,7 +87,7 @@
                   </template>
                   <!-- 审批单 -->
                   <template #assignsheet="scope">
-                    <span class="link" @click="checkAssignsheet(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+                    <span v-if="scope.row.flag" class="link" @click="checkAssignsheet(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
                   </template>
                 </tableList>
                 <!-- 分页 -->
