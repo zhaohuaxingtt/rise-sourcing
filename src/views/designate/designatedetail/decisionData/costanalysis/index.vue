@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-08 18:59:59
+ * @LastEditTime: 2021-11-09 18:20:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -15,8 +15,8 @@
       </iSelect>
     </iFormItem>
     <iFormItem v-if='isPreview'  label='Analysis：'>
-      <iSelect v-model="typeSelect" @change="costanalysisList">
-        <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
+      <iSelect v-model="previewItems">
+        <el-option v-for='(items,index) in tableData' :label='items.bizId + "-" + items.stuffName + "" + items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
       </iSelect>
     </iFormItem>
   </iFormGroup>
@@ -48,6 +48,16 @@
         </template>
       </div>
   </iDialog>
+  <div v-if='isPreview'>
+    <bob v-if='typeSelect == "BOB"'></bob>
+    <vp v-else-if='typeSelect == "VP"'></vp>
+    <pi v-else-if='typeSelect == "PI"'></pi>
+    <div v-else-if='["PCA","TIA"].includes(typeSelect)'>
+      <iframe height='70vh' width="100%" v-if='JSON.parse(previewItems).fileList && JSON.parse(previewItems).fileList[0].filePath' :src="pdfUrl" frameborder="0"></iframe>
+      <div v-else>抱歉当前类型暂无预览文件</div>
+    </div>
+    <mek v-else></mek>
+  </div>
 </iCard>
 </template>
 <script>
@@ -55,8 +65,12 @@ import {iCard,iFormGroup,iFormItem,iSelect,iDialog} from 'rise'
 import tabel from '@/views/partsign/home/components/tableList'
 import {arrayOfselect,tableTitle} from './data'
 import {costanalysisList,costanalysisShow,costanalysisSort} from '@/api/designate/decisiondata/costanalysis'
+import bob from '@/views/partsrfq/bob/newReport'
+import vp from '@/views/partsrfq/vpAnalyse/vpAnalyseDetail'
+import pi from '@/views/partsrfq/piAnalyse/piDetail'
+import mek from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekDetails'
 export default{
-  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog},
+  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog,bob,vp,pi,mek},
   data(){
     return {
       typesOfData:'',
@@ -66,7 +80,8 @@ export default{
       typeSelect:'BOB',
       loading:false,
       messageBox:false,
-      isPreview:false
+      isPreview:false,
+      previewItems:{}
     }
   },
   created(){
@@ -119,6 +134,7 @@ export default{
       window.open(process.env.VUE_APP_SOURCING_URL + urlMaps[this.typeSelect],'_blank')
     },
     costanalysisList(){
+      this.previewItems = JSON.stringify({})
       this.loading = true
       const id = this.$route.query.desinateId
       costanalysisList(id,this.typeSelect).then(r=>{
