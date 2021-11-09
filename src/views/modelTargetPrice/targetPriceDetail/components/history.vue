@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-23 14:08:28
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 10:54:26
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-09 21:15:58
  * @Description: 修改历史card
  * @FilePath: \front-web\src\views\modelTargetPrice\targetPriceDetail\components\history.vue
 -->
@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { projectId:row.purchasingProjectId,businessKey:row.partProjectType}})
       window.open(router.href,'_blank')
     },
     /**

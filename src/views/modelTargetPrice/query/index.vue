@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 14:47:27
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-09 21:13:40
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\modelTargetPrice\query\index.vue
 -->
@@ -175,7 +175,7 @@ export default {
       this.attachmentDialogVisible = visible
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { projectId:row.purchasingProjectId,businessKey:row.partProjectType}})
       window.open(router.href,'_blank')
     },
     /**
