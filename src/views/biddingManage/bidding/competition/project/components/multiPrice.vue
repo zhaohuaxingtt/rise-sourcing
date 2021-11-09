@@ -43,6 +43,7 @@
                     value-format="yyyy-MM"
                     type="month"
                     v-model="ruleForm.beginMonth"
+                    @change="handleChangeBeginMonth"
                   />
                 </iFormItem>
                 <iFormItem
@@ -178,6 +179,7 @@
           :inputProps="ruleForm.biddingStatus !== '01' ? [] : inputProps"
           :priceProps="priceProps"
           @handleSelectionChange="handleSelectionChange"
+          @handlerInputBlur="handlerInputBlur"
         >
           <!-- FSNR/GSNR -->
 
@@ -205,7 +207,7 @@
               <div>{{ scope.row["productName"] }}</div>
             </template>
             <template v-else>
-              <i-input v-if="!disabledAll" v-model="scope.row['productName']" />
+              <i-input v-if="!disabledAll" v-model="scope.row['productName']" @blur="handlerInputBlur($event, scope)"/>
               <div v-else>{{ scope.row["productName"] }}</div>
             </template>
           </template>
@@ -220,6 +222,7 @@
                 v-if="!disabledAll"
                 v-model="scope.row['productCode']"
                 @input="partNumberChange(scope.row)"
+                @blur="handlerInputBlur($event, scope)"
                 :disabled="scope.row['fsnrGsnr'].length !== 0"
               />
               <div v-else>
@@ -235,7 +238,7 @@
               <div>{{ scope.row["quantityUnit"] }}</div>
             </template>
             <template v-else>
-              <i-select v-model="scope.row['quantityUnit']" filterable>
+              <i-select v-model="scope.row['quantityUnit']" filterable @change="handlerInputBlur($event, scope)">
                 <el-option
                   v-for="items in quantityUnit"
                   :key="items.nameZh"
@@ -261,51 +264,53 @@
         </tableColumnTemplate>
       </div>
     </iCard>
-    <iCard class="card">
-      <div class="card--header">
-        <div class="card--header--item card--header--item__top">
-          <div>{{ language('BIDDING_NIANJINGJIHUAANDZHEXIANLV', '年降计划 & 折现率') }}</div>
-        </div>
-      </div>
-      <div class="card--body">
-        <tableColumnTemplate
-          ref="yearsPlanTableForm"
-          :tableData="yearsPlanTable"
-          :tableTitle="yearsPlanTableColumn"
-          :selection="false"
-          :inputProps="
-            ruleForm.biddingStatus !== '01' ? [] : yearsPlanTableInputProps
-          "
-          :type="'1'"
-          :tableLoading="tableLoading"
-        >
-        </tableColumnTemplate>
-      </div>
+    <iCard class="card" title="批量更新年降" v-show=" ruleForm.biddingStatus === '01' ">
+      <tableColumnTemplate
+        :tableData="batchUpdateYearsPlan"
+        :tableTitle="stageColumn"
+        :selection="false"
+        :type="'3'"
+        :tableLoading="false"
+        :inputProps="
+          ruleForm.biddingStatus !== '01' ? [] : outPutProps
+        "
+        @handleInputOnBlur="handleInputOnBlur"
+      >
+      </tableColumnTemplate>
     </iCard>
-
-    <iCard class="card">
-      <div class="card--header">
-        <div class="card--header--item card--header--item__top">
-          <div>{{ language('BIDDING_NJJJMX', '年降计划明细') }}</div>
-        </div>
-      </div>
-      <div id="purchasePlanTableForm" class="card--body">
-        <tableColumnTemplate
-          ref="purchasePlanTableForm"
-          :tableData="purchasePlanTable"
-          :tableTitle="procurementPlanTableColumn"
+    <iCard class="card yearsPlan" title="年降计划">
+      <tableColumnTemplate
+          ref="yearsPlan"
+          :tableData="yearsPlan"
+          :tableTitle="stageColumn"
           :selection="false"
-          :type="'2'"
-          :tableLoading="tableLoading"
+          :type="'4'"
+          :tableLoading="false"
           :inputProps="
-            ruleForm.biddingStatus !== '01' ? [] : yearsPlanTableInputProps
+            ruleForm.biddingStatus !== '01' ? [] : outPutProps
           "
-          @handleInputNum="handleInputNum"
-          @handleInputDate="handleInputDate"
-          @blurProcureNum="blurProcureNum"
+          :annualOutputObj="annualOutputObj"
+          :beginMonth="ruleForm.beginMonth"
+          @handlerInputBlur="handlerInputBlur"
         >
         </tableColumnTemplate>
-      </div>
+    </iCard>
+    <iCard class="card" title="年产量">
+      <tableColumnTemplate
+          ref="annualOutput"
+          :tableData="annualOutput"
+          :tableTitle="outPutColumn"
+          :selection="false"
+          :type="'5'"
+          :tableLoading="false"
+          :inputProps="
+            ruleForm.biddingStatus !== '01' ? [] : outPutProps
+          "
+          :beginMonth="ruleForm.beginMonth"
+          @handleOutPutInputDate="handleOutPutInputDate"
+          @handlerInputBlur="handlerInputBlur"
+        >
+      </tableColumnTemplate>
     </iCard>
   </div>
 </template>
@@ -325,10 +330,11 @@ import {
   multiPleTableTitle,
   baseRules,
   currencyMultipleLib,
-  yearsPlanTableColumn,
-  procurementPlanTableColumn,
   planBaseData,
-  rfqinfoProduct
+  planBaseYear,
+  rfqinfoProduct,
+  stageColumn,
+  outPutColumn
 } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import { digitUppercase } from "@/utils/digitUppercase";
@@ -337,6 +343,7 @@ import {
   getProjects,
   getCurrencyUnit,
   getUnits,
+  getDiscount,
 } from "@/api/mock/mock";
 import {
   getRfqInfo,
@@ -381,12 +388,9 @@ export default {
       biddingStatus: "",
       factoryPricePercent: "",
       multiPleTableTitle,
-      yearsPlanTableColumn,
-      procurementPlanTableColumn,
       priceProps: [
         "factoryPrice",
         "packingFee",
-        "packingFee2",
         "transportFee",
         "operationFee",
         "moldFee",
@@ -396,7 +400,6 @@ export default {
       inputProps: [
         "factoryPrice",
         "packingFee",
-        "packingFee2",
         "transportFee",
         "operationFee",
         "moldFee",
@@ -406,7 +409,34 @@ export default {
         "aveAnnualOutput",
         "maxAnnualOutput",
       ],
-      yearsPlanTableInputProps: [
+      quantityUnit: [],
+      selectedTableData: [],
+      modelsOption: [],
+      modelProjectsOption: [],
+      currencyUnit: {},
+      rfqinfoProduct,
+      yearsPlanTable: [],
+      purchasePlanTable: [],
+      prefactoryPrice: 0,
+      planyearChange: false,
+      stageColumn,
+      outPutColumn,
+      batchUpdateYearsPlan: [{
+        "title":'',
+        "stage1":'',
+        "stage2":'',
+        "stage3":'',
+        "stage4":'',
+        "stage5":'',
+        "stage6":'',
+        "stage7":'',
+        "stage8":'',
+        "stage9":'',
+        },
+      ],
+      yearsPlan: [],
+      annualOutput: [],
+      outPutProps:[
         "stage1",
         "stage2",
         "stage3",
@@ -422,26 +452,18 @@ export default {
         "stage13",
         "stage14",
         "stage15",
-      ],
-      quantityUnit: [],
-      selectedTableData: [],
-      modelsOption: [],
-      modelProjectsOption: [],
-      currencyUnit: {},
-      rfqinfoProduct,
-      yearsPlanTable: [],
-      purchasePlanTable: [],
-      prefactoryPrice: 0,
-      planyearChange: false,
+        ],
+      orgTotalPrices:0,
     };
   },
   mounted() {
     this.handleSearchReset();
+    
     getModels().then((res) => {
-      this.modelsOption = res?.data.filter((item) => item.name?.length > 0);
+      this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
     });
     getProjects().then((res) => {
-      this.modelProjectsOption = res?.data.filter(
+      this.modelProjectsOption = res?.data?.filter(
         (item) => item.name?.length > 0
       );
     });
@@ -453,9 +475,8 @@ export default {
     getUnits({}).then((res) => {
       this.quantityUnit = res.data;
     });
-    // getRfqInfo({ rfqCode: this.ruleForm.rfqCode }).then((res) => {
-    //   this.rfqinfoProduct = res.products;
-    // });
+    
+
   },
   computed: {
     disabledAll() {
@@ -470,23 +491,8 @@ export default {
     currencyMultiple() {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || this.language('BIDDING_YUAN',"元");
     },
-    orgTotalPrices() {
-      let biddingProducts = this.ruleForm.biddingProducts;
-      return biddingProducts.reduce((sum, item, index) => {
-        return isNaN(Number(item.factoryPrice)) ||
-          isNaN(Number(item.packingFee)) ||
-          isNaN(Number(item.packingFee2)) ||
-          isNaN(Number(item.transportFee)) ||
-          isNaN(Number(item.operationFee)) ||
-          isNaN(Number(item.moldFee)) ||
-          isNaN(Number(item.developFee))
-          ? sum
-          : Big(this.calculationDetails(item, index)).add(sum).toNumber();
-      }, 0);
-    },
-
     totalPrices() {
-      return Big(this.orgTotalPrices).toFixed(2);
+      return this.orgTotalPrices;
     },
     numberUppercase() {
       return digitUppercase(Number(this.orgTotalPrices));
@@ -497,40 +503,14 @@ export default {
     biddingProducts() {
       return this.ruleForm.biddingProducts;
     },
+    annualOutputObj(){
+      return  this.annualOutput.reduce((obj,item)=>{
+       return {...obj,[item.title]:item.stage1}
+      },{})
+    },
   },
   watch: {
-    //监听年度降价计划 更新采购计划的降级计划
-    yearsPlanTable: {
-      handler(val, oldVal) {
-        if (this.planyearChange) {
-          let yearsPlan = val[0];
-          if (this.purchasePlanTable?.length > 0) {
-            this.purchasePlanTable.forEach((e, index) => {
-              if (index % 3 === 1) {
-                let purchase = this.purchasePlanTable[index];
-                purchase.stage1 = yearsPlan.stage1;
-                purchase.stage2 = yearsPlan.stage2;
-                purchase.stage3 = yearsPlan.stage3;
-                purchase.stage4 = yearsPlan.stage4;
-                purchase.stage5 = yearsPlan.stage5;
-                purchase.stage6 = yearsPlan.stage6;
-                purchase.stage7 = yearsPlan.stage7;
-                purchase.stage8 = yearsPlan.stage8;
-                purchase.stage9 = yearsPlan.stage9;
-                purchase.stage10 = yearsPlan.stage10;
-                purchase.stage11 = yearsPlan.stage11;
-                purchase.stage12 = yearsPlan.stage12;
-                purchase.stage13 = yearsPlan.stage13;
-                purchase.stage14 = yearsPlan.stage14;
-                purchase.stage15 = yearsPlan.stage15;
-              }
-            });
-          }
-        }
-      },
-      deep: true,
-    },
-    // 手工英式，RFQ为空，起始总价有值自动带采购计划的日期
+    // 手工英式，RFQ为空，起始总价有值自动带年产量的日期
     "ruleForm.beginMonth"(val) {
       const { roundType, manualBiddingType, rfqCode } = this.ruleForm;
       let date = new Date(val);
@@ -559,9 +539,9 @@ export default {
       ) {
         if (val) {
           this.ruleForm.biddingProducts.forEach((item) => {
-            for (let i = 0; i < this.purchasePlanTable.length; i++) {
-              if (i % 3 === 0) {
-                this.purchasePlanTable.splice(i, 1, {
+            for (let i = 0; i < this.annualOutput.length; i++) {
+              if (i % 2 === 1) {
+                this.annualOutput.splice(i, 1, {
                   ...planBaseDataOfDate,
                 });
               }
@@ -578,13 +558,11 @@ export default {
             item.bprice =
               isNaN(Number(item.factoryPrice)) ||
               isNaN(Number(item.packingFee)) ||
-              isNaN(Number(item.packingFee2)) ||
               isNaN(Number(item.transportFee)) ||
               isNaN(Number(item.operationFee))
                 ? item.bprice
                 : Big(item.factoryPrice || 0)
                     .add(item.packingFee || 0)
-                    .add(item.packingFee2 || 0)
                     .add(item.transportFee || 0)
                     .add(item.operationFee || 0)
                     .toFixed(2);
@@ -594,57 +572,77 @@ export default {
     },
   },
   methods: {
-    blurProcureNum(val, scope) {
-      for (let i = 1; i < 16; i++) {
-        if (scope.row[`stage${i}`] === "" || scope.row[`stage${i}`] === null) {
-          scope.row[`stage${i}`] = 0;
-        }
-      }
-    },
-    //采购数量input事件
-    handleInputNum(val, scope) {
-      let stage = scope.column.property;
-      const purchasePlanDateItem = this.purchasePlanTable[scope.$index - 2];
-      let dateYear = new Date(purchasePlanDateItem[stage]).getFullYear();
-      if (dateYear === 1970) {
-        return;
-      }
-      for (let i = 1; i < 16; i++) {
-        if (purchasePlanDateItem[`stage${i}`].includes(dateYear)) {
-          scope.row[`stage${i}`] = val;
-        }
-      }
-    },
-    //采购计划日期 input事件
-    handleInputDate(val, scope) {
-      let stage = scope.column.property;
+    //年产量日期选择  后续补全
+    handleOutPutInputDate(val, scope) {
       let dateYear = new Date(val).getFullYear();
-      const purchaseQtyItem = this.purchasePlanTable[scope.$index + 2];
-      for (let i = 1; i < 16; i++) {
-        if (scope.row[`stage${i}`]?.includes(dateYear)) {
-          purchaseQtyItem[stage] = purchaseQtyItem[`stage${i}`];
-        }
+      if(this.ruleForm.beginMonth && dateYear === new Date(this.ruleForm.beginMonth).getFullYear()){
+        this.$set(this.annualOutput[scope.$index], 'stage1', dayjs(this.ruleForm.beginMonth).format('YYYY-MM'));
       }
+      for (let i = 2; i < 16; i++) {
+        dateYear=dateYear+1;
+          this.annualOutput[scope.$index][`stage${i}`] = dateYear+'-01';
+      }
+    },
+    //更改起始年月联动年产量年月
+    handleChangeBeginMonth(val){
+      let dateYear = new Date(val).getFullYear();
+      this.annualOutput.filter((item,index)=>{
+        if(index % 2 ===1 && dayjs(val).isAfter(dayjs(item.stage1))){
+          for (let i = 1; i < 16; i++) {
+            if(i===1){
+              item[`stage${i}`]=val;
+            }else{
+              dateYear=dateYear+1;
+              item[`stage${i}`] = dateYear+'-01';
+            }
+          }
+        }
+      })
+    },
+    //批量更新年降 鼠标移出更新年将列表
+    handleInputOnBlur(row, props){
+      if (this.yearsPlan?.length > 0 && row[props]) {
+        this.yearsPlan.forEach((e, index) => {
+          if ((index+1) % 2 === 0) {
+            let purchase = this.yearsPlan[index];
+            purchase[props] = row[props];
+          }
+        });
+      }
+      row[props]='';
+      this.handlerInputBlur();
+    },
+    //输入完成出发计算总价方法
+    handlerInputBlur(){
+      let biddingProducts = this.ruleForm.biddingProducts;
+      let sum= biddingProducts.reduce((sum, item, index) => {
+        return isNaN(Number(item.factoryPrice)) ||
+          isNaN(Number(item.moldFee)) ||
+          isNaN(Number(item.developFee))
+          ? sum
+          : Big(this.calculationDetails(item, index)).add(sum).toNumber();
+      }, 0);
+      this.orgTotalPrices=Big(sum).toFixed(2);
     },
     //产品操作事件
     handleClickOne(scope) {
       this.$nextTick(() => {
         var tr = document.querySelectorAll(
-          "#purchasePlanTableForm .el-table__body-wrapper tr"
-        )[scope.row.index * 3];
+          ".yearsPlan .el-table__body-wrapper tr"
+        )[scope.row.index * 2+1];
         document.querySelector(".routerpage").scrollTop =
           tr.getBoundingClientRect().top +
           document.querySelector(".routerpage").scrollTop -
           document.querySelector(".routerpage").getBoundingClientRect().top;
       });
     },
-    calculationDetails(item, index) {
+    calculationDetails(product, productIndex) {
       this.$nextTick(() => {
         this.$refs["tableDataForm"].$children[0].validate((valid) => {
           if (valid) {
-            this.$refs["yearsPlanTableForm"].$children[0].validate((valid) => {
+            this.$refs["yearsPlan"].$children[0].validate((valid) => {
               if (valid) {
-                this.$refs["purchasePlanTableForm"].$children[0].validate(
+                this.$refs["annualOutput"].$children[0].validate(
                   (valid) => {
                     if (valid) {
                       this.totalPriceFlag = false;
@@ -662,207 +660,168 @@ export default {
           }
         });
       });
-      if (!this.yearsPlanTable?.length || !this.purchasePlanTable?.length) {
-        return 0;
-      }
-      const yearPlan = this.yearsPlanTable[1];
-      const purchasePlanDateItem = this.purchasePlanTable[index * 3];
-      const purchaseDownPlanItem = this.purchasePlanTable[index * 3 + 1];
-      const purchaseQtyItem = this.purchasePlanTable[index * 3 + 2];
-      this.prefactoryPrice = item.factoryPrice;
-      let totalPrice = 0;
+
+      this.prefactoryPrice = Number(product?.factoryPrice);
+      //折现率
+      const discounts = this.annualOutput[0];
+      //该零件产量日期{15年}
+      const dateList = this.annualOutput[productIndex*2+1];
+      //该零件产量{15年}
+      const outputList = this.annualOutput[productIndex*2+2];
+      //该零件降价计划日期
+      const yearsPlanDate = this.yearsPlan[productIndex*2];
+      //该零件降价百分比
+      const yearsPlanPercent = this.yearsPlan[productIndex*2+1];
+      //该零件年度总和
+      let yearSum = 0;
       for (let i = 1; i < 16; i++) {
-        if (i === 1) {
-          totalPrice = Big(totalPrice)
-            .add(
-              this.formula({
-                beforeAndAfterMonth: [0, 0],
-                factoryPrice: item.factoryPrice,
-                beforeCalcuationNum: 0,
-                calcuationNum: purchaseQtyItem[`stage${i}`],
-                yearPlan: purchaseDownPlanItem[`stage${i}`],
-                discount: yearPlan[`stage${i}`],
-                packingFee: item.packingFee,
-                packingFee2: item.packingFee2,
-                transportFee: item.transportFee,
-                operationFee: item.operationFee,
-                lastYearPlan: 0,
-                lastDiscount: 1,
-              })
-            )
-            .toNumber();
-        } else {
-          let beforeAndAfterMonth = this.monthBetwen(
-            i,
-            purchasePlanDateItem[`stage${i - 1}`],
-            purchasePlanDateItem[`stage${i}`]
-          );
-          if (!beforeAndAfterMonth?.length) {
-            return 0;
+        //该零件该年度产量为0  不计算本次
+        if(Number(outputList[`stage${i}`])===0){
+          continue;
+        }
+        //本年产量日期
+        let annualYesr = dayjs(dateList[`stage${i}`]).year();
+        let dateArray= Object.values(yearsPlanDate);
+        //产量年度在该零件年降计划出现次数数组count
+        let count =dateArray.filter(item=>{
+          if(item && item?.toString().includes(annualYesr)){
+            return item;
           }
-          let countI =
-            dayjs(purchasePlanDateItem[`stage${i - 1}`]).year() -
-            dayjs(purchasePlanDateItem[`stage1`]).year() +
-            1;
-          let countJ =
-            dayjs(purchasePlanDateItem[`stage${i}`]).year() -
-            dayjs(purchasePlanDateItem[`stage1`]).year() +
-            1;
-          totalPrice = Big(totalPrice)
-            .add(
-              this.formula({
-                beforeAndAfterMonth: beforeAndAfterMonth,
-                factoryPrice: this.prefactoryPrice,
-                beforeCalcuationNum: purchaseQtyItem[`stage${i - 1}`],
-                calcuationNum: purchaseQtyItem[`stage${i}`],
-                yearPlan: purchaseDownPlanItem[`stage${i}`],
-                discount: yearPlan[`stage${countJ}`],
-                packingFee: item.packingFee,
-                packingFee2: item.packingFee2,
-                transportFee: item.transportFee,
-                operationFee: item.operationFee,
-                lastYearPlan: purchaseDownPlanItem[`stage${i - 1}`],
-                lastDiscount: yearPlan[`stage${countI}`],
-              })
-            )
-            .toNumber();
+        })
+        if(!dateList[`stage${i}`]){
+          return 0;
         }
-        this.factoryPrice(
-          this.prefactoryPrice,
-          purchaseDownPlanItem[`stage${i}`],
-          purchaseQtyItem[`stage${1}`]
-        );
-      }
-      return Big(totalPrice)
-        .add(item.moldFee || 0)
-        .add(item.developFee || 0)
-        .toNumber();
-    },
-    //计算本年出厂价
-    factoryPrice(price, yearPlan, purchaseQty) {
-      this.prefactoryPrice =
-        isNaN(Number(price)) ||
-        isNaN(Number(yearPlan)) ||
-        isNaN(Number(purchaseQty)) ||
-        purchaseQty === ""
-          ? 0
-          : Big(price || 0)
-              .times(
-                Big(1)
-                  .minus(yearPlan / 100)
-                  .toNumber()
-              )
-              .toNumber();
-    },
-    //计算阶段的beforeMonth  和  afterMonth
-    monthBetwen(i, purchasePlanDateBefore, purchasePlanDateNow) {
-      if (
-        purchasePlanDateBefore === null ||
-        purchasePlanDateBefore === "" ||
-        purchasePlanDateNow === null ||
-        purchasePlanDateNow === ""
-      ) {
-        return [0, 0];
-      }
-      purchasePlanDateBefore = new Date(purchasePlanDateBefore);
-      let beforeYear = purchasePlanDateBefore.getFullYear();
-      let beforeMonth = purchasePlanDateBefore.getMonth() + 1;
-      purchasePlanDateNow = new Date(purchasePlanDateNow);
-      let nowYear = purchasePlanDateNow.getFullYear();
-      let nowMonth = purchasePlanDateNow.getMonth() + 1;
-      //年份一致
-      if (beforeYear === nowYear) {
-        if (i === 15) {
-          return [nowMonth - beforeMonth, 13 - nowMonth];
-        }
-        return [nowMonth - beforeMonth, 0];
-      } else {
-        if (i === 15) {
-          return [13 - beforeMonth, 12];
-        }
-        return [13 - beforeMonth, nowMonth - 1];
-      }
-    },
-    //总价计算公式
-    //月份，出厂价，采购量，降价计划,折现率，前段包装费，后段包装费
-    formula({
-      beforeAndAfterMonth,
-      factoryPrice,
-      beforeCalcuationNum,
-      calcuationNum,
-      yearPlan,
-      discount,
-      packingFee,
-      packingFee2,
-      //运输费,操作费，上年降价计划，上年折现率
-      transportFee,
-      operationFee,
-      lastYearPlan,
-      lastDiscount,
-    }) {
-      if (
-        isNaN(Number(calcuationNum)) ||
-        isNaN(Number(yearPlan)) ||
-        isNaN(Number(lastYearPlan))
-      ) {
-        return 0;
-      }
-      //1-本段降价计划
-      const nowPlanYear = Big(1)
-        .minus(Number(yearPlan) / 100)
-        .toNumber();
-      //1-上一段降价计划
-      const lastPlanYear = Big(1)
-        .minus(Number(lastYearPlan) / 100)
-        .toNumber();
-      //年采购量/12 * beforeMonth
-      const beforeMonth = Big(Number(beforeCalcuationNum) || 0)
-        .div(12)
-        .times(beforeAndAfterMonth[0])
-        .toNumber();
-      //年采购量/12 * afterMonth
-      const afterMonth = Big(Number(calcuationNum) || 0)
-        .div(12)
-        .times(beforeAndAfterMonth[1])
-        .toNumber();
-      const brforeFactoryPrice =
-        lastPlanYear === 1
-          ? factoryPrice
-          : Big(factoryPrice)
-              .div(
-                Big(1)
-                  .minus(Number(lastYearPlan) / 100)
-                  .toNumber()
-              )
-              .toNumber();
-      return Big(
-        Big(brforeFactoryPrice || 0)
-          .times(lastPlanYear)
-          .add(packingFee || 0)
-          .add(packingFee2 || 0)
-          .add(transportFee || 0)
-          .add(operationFee || 0)
-          .toNumber()
-      )
-        .times(beforeMonth || 0)
-        .times(lastDiscount || 0)
-        .add(
-          Big(
-            Big(factoryPrice || 0)
-              .times(nowPlanYear)
-              .add(packingFee || 0)
-              .add(packingFee2 || 0)
-              .add(transportFee || 0)
-              .add(operationFee || 0)
+        //产量月份
+        const month1 = dayjs(dateList[`stage${i}`]).month()+1;
+        //当前月产量
+        let monthCount=Big(outputList[`stage${i}`]).div(12-month1+1).toNumber();
+        if(count.length && count.length===1){
+          //2)产量年度在该零件年降计划中存在1个
+          //年降月份
+            const month = dayjs(count[0]).month()+1;
+          // 年降前
+          let downBefore = this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:monthCount,
+            monthCount:month-month1,
+            discount:discounts[`stage${i}`]
+          });
+          //年降后
+          this.prefactoryPrice=
+          !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+          .times(
+            Big(1)
+              .minus(Number(yearsPlanPercent[`stage${i}`]) / 100)
               .toNumber()
           )
-            .times(afterMonth || 0)
-            .times(discount || 0)
-            .toNumber()
-        )
-        .toNumber();
+          .toNumber();
+          let downAfter = this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:monthCount,
+            monthCount:13-month,
+            discount:discounts[`stage${i}`]
+          });
+          yearSum=Big(yearSum).add(downBefore).add(downAfter).toNumber();
+        }else if(count.length && count.length > 1){
+          //3)产量年度在该零件年降计划中存在N（>1）个
+          
+          //第一次年降月份count[0]
+            const month = dayjs(count[0]).month()+1;
+          //第一次年降前
+          let firstDownBefore = this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:monthCount,
+            monthCount:month-month1,
+            discount:discounts[`stage${i}`]
+          });
+          //从第1次年降后到第N-1次年降后
+          let betweenDown = count.reduce((sum, item, index) => {
+            if(index>0){
+              const betweenMonth = (dayjs(item).month()+1)-(dayjs(count[index-1]).month()+1);
+              let num = Number(this.findKey(yearsPlanDate,item).slice(5));
+              //计算本年出厂价
+              this.prefactoryPrice=
+              !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+              .times(
+                Big(1)
+                  .minus(Number(yearsPlanPercent[`stage${num-1}`]) / 100)
+                  .toNumber()
+              )
+              .toNumber();
+              return Big(this.nlms({
+                factoryPrice:this.prefactoryPrice,
+                packingPrice:product.packingFee,
+                transportPrice: product.transportFee,
+                operatingPrice: product.operationFee,
+                output:monthCount,
+                monthCount:betweenMonth,
+                discount:discounts[`stage${i}`]
+              })).add(sum).toNumber();
+            }
+            return sum;
+          }, 0);
+          
+          //第N次年降月份
+          const nMonth = dayjs(count[count.length-1]).month()+1;
+          let nAfter = this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:monthCount,
+            monthCount:13-nMonth,
+            discount:discounts[`stage${i}`]
+          });
+          yearSum=Big(yearSum).add(firstDownBefore).add(betweenDown).add(nAfter).toNumber();   
+        }else{
+          //1)产量年度在该零件年降计划中不存在
+          yearSum=Big(yearSum).add(this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:outputList[`stage${i}`],
+            monthCount:1,
+            discount:discounts[`stage${i}`]
+          })).toNumber();
+        }
+      }
+      return yearSum;
     },
-
+    //总价基本计算公式
+    nlms({
+      factoryPrice,//出厂价
+      packingPrice,//包装费
+      transportPrice,//运输费
+      operatingPrice,//操作费
+      output,//产量
+      monthCount,//月份数
+      discount,//折现率
+    }){
+      if (
+        isNaN(Number(factoryPrice)) ||
+        isNaN(Number(packingPrice)) ||
+        isNaN(Number(transportPrice)) ||
+        isNaN(Number(operatingPrice))
+      ) {
+        return 0;
+      }
+      let productBaseSum= Big(factoryPrice || 0).add(packingPrice || 0).add(transportPrice || 0).add(operatingPrice || 0).toNumber();
+      return Big(productBaseSum).times(output || 0).times(monthCount || 0).times(discount || 0).toNumber();
+    },
+    //根据value找到对象key
+    findKey (obj,value, compare = (a, b) => a === b) {undefined
+      return Object.keys(obj).find(k => compare(obj[k], value))
+    },
     //FSNR/GSNR更改联动零件号 和 采购计划FSNR/GSNR、零件号
     rfqinfoChange(e) {
       let obj = this.rfqinfoProduct.filter((item) => {
@@ -871,19 +830,24 @@ export default {
       if (obj.length < 1) {
         e.productName = "";
         e.productCode = "";
-        this.purchasePlanTable[e.index * 3].title = "";
-        this.purchasePlanTable[e.index * 3 + 1].title = "";
+      this.yearsPlan[e.index*2].title='';
+      this.yearsPlan[e.index*2+1].title='';
+      this.annualOutput[e.index*2+1].title='';
+      this.annualOutput[e.index*2+2].title='';
         return;
       }
       e.productName = obj[0]?.productName;
       e.productCode = obj[0]?.productCode;
-      //3n
-      this.purchasePlanTable[e.index * 3].title = obj[0]?.fsnrGsnr;
-      this.purchasePlanTable[e.index * 3 + 1].title = obj[0]?.productCode;
+      this.yearsPlan[e.index*2].title=obj[0]?.fsnrGsnr;
+      this.yearsPlan[e.index*2+1].title=obj[0]?.productCode;
+      this.annualOutput[e.index*2+1].title=obj[0]?.fsnrGsnr;
+      this.annualOutput[e.index*2+2].title=obj[0]?.productCode;
+      this.handlerInputBlur();
     },
     //零件号更改联动采购计划零件号
     partNumberChange(e) {
-      this.purchasePlanTable[e.index * 3 + 1].title = e.productCode;
+      this.yearsPlan[e.index*2+1].title=e.productCode;
+      this.annualOutput[e.index*2+2].title=e.productCode;
     },
     //限制批量更新出厂价（%）：输入框，1~10000
     handleFactoryPricePercentInput(val) {
@@ -917,8 +881,8 @@ export default {
         this.submitForm(
           "ruleForm",
           "tableDataForm",
-          "yearsPlanTableForm",
-          "purchasePlanTableForm",
+          "yearsPlan",
+          "annualOutput",
           () => {
             this.$router.push({
               name: "biddingCompetitionBase",
@@ -937,8 +901,8 @@ export default {
         this.submitForm(
           "ruleForm",
           "tableDataForm",
-          "yearsPlanTableForm",
-          "purchasePlanTableForm",
+          "yearsPlan",
+          "annualOutput",
           () => {
             this.$router.push({
               name: "biddingCompetitionQuotation",
@@ -948,24 +912,24 @@ export default {
       });
     },
     handleSearchReset() {
-      this.purchasePlanTable = [];
-      this.yearsPlanTable = [];
+      this.yearsPlan = [];
+      this.annualOutput = [];
       let param = { id: this.id };
       this.query(param);
     },
     submitForm(
       formName,
       tableDataForm,
-      yearsPlanTableForm,
-      purchasePlanTableForm,
+      yearsPlan,
+      annualOutput,
       callback
     ) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.submitTableForm(
             tableDataForm,
-            yearsPlanTableForm,
-            purchasePlanTableForm,
+            yearsPlan,
+            annualOutput,
             callback
           );
         } else {
@@ -976,15 +940,15 @@ export default {
     },
     submitTableForm(
       tableDataForm,
-      yearsPlanTableForm,
-      purchasePlanTableForm,
+      yearsPlan,
+      annualOutput,
       callback
     ) {
       this.$refs[tableDataForm].$children[0].validate((valid) => {
         if (valid) {
           this.submitYearsPlanTableForm(
-            yearsPlanTableForm,
-            purchasePlanTableForm,
+            yearsPlan,
+            annualOutput,
             callback
           );
         } else {
@@ -994,27 +958,27 @@ export default {
       });
     },
     submitYearsPlanTableForm(
-      yearsPlanTableForm,
-      purchasePlanTableForm,
+      yearsPlan,
+      annualOutput,
       callback
     ) {
-      this.$refs[yearsPlanTableForm].$children[0].validate((valid) => {
-        // if (valid || this.ruleForm.biddingProducts.length == 0) {
-        //   this.submitPurchasePlanTableForm(purchasePlanTableForm, callback);
-        // }
-        // else {
-        //   this.$message.error("年降计划数据有误！");
-        //   return;
-        // }
-        this.submitPurchasePlanTableForm(purchasePlanTableForm, callback);
+      this.$refs[yearsPlan].$children[0].validate((valid) => {
+        if (valid || this.ruleForm.biddingProducts.length == 0) {
+          this.submitannualOutput(annualOutput, callback);
+        }
+        else {
+          this.$message.error("年降计划数据有误！");
+          return;
+        }
+        
       });
     },
-    submitPurchasePlanTableForm(purchasePlanTableForm, callback) {
-      this.$refs[purchasePlanTableForm].$children[0].validate((valid) => {
+    submitannualOutput(annualOutput, callback) {
+      this.$refs[annualOutput].$children[0].validate((valid) => {
         if (valid) {
           this.handleSaveData(callback);
         } else {
-          this.$message.error(this.language('BIDDING_CGJHSJYW',"采购计划数据有误！"));
+          this.$message.error("年产量数据有误！");
           return;
         }
       });
@@ -1051,33 +1015,31 @@ export default {
           }
         });
       });
-      //年降计划
-      let yearsPlans = [];
-      for (let i = 1; i < 16; i++) {
-        let obj = {
-          biddingId: this.id,
-          stage: i,
-          cutPricePlan: this.yearsPlanTable[0][`stage${i}`],
-          discountRate: this.yearsPlanTable[1][`stage${i}`],
-          id: this.yearsPlanTable[0][`id${i}`],
-        };
-        yearsPlans.push(obj);
-      }
 
-      //采购计划
       let procurePlans = [];
+      let productions=[];
       this.ruleForm.biddingProducts.forEach((item, index) => {
         for (let i = 1; i < 16; i++) {
-          let obj = {
+          if(i<10){
+            let obj = {
+              stage: i,
+              productId: item.id,
+              productCode: this.yearsPlan[index*2 + 1].title,
+              procureYearMonth: this.yearsPlan[index*2][`stage${i}`],
+              cutPricePlan: this.yearsPlan[index*2 + 1][`stage${i}`],
+              id: this.yearsPlan[index*2 + 1][`id${i}`],
+            };
+            procurePlans.push(obj);
+          }
+          let obj1 = {
             stage: i,
             productId: item.id,
-            productCode: this.purchasePlanTable[index * 3 + 1].title,
-            procureYearMonth: this.purchasePlanTable[index * 3][`stage${i}`],
-            cutPricePlan: this.purchasePlanTable[index * 3 + 1][`stage${i}`],
-            procureNum: this.purchasePlanTable[index * 3 + 2][`stage${i}`],
-            id: this.purchasePlanTable[index * 3 + 2][`id${i}`],
+            productCode: this.annualOutput[index*2 + 2].title,
+            procureYearMonth: this.annualOutput[index*2+1][`stage${i}`],
+            procureNum: this.annualOutput[index*2 + 2][`stage${i}`],
+            id: this.annualOutput[index*2 + 2][`id${i}`],
           };
-          procurePlans.push(obj);
+          productions.push(obj1);
         }
       });
       let formData = { ...this.ruleForm };
@@ -1085,8 +1047,8 @@ export default {
       formData.totalPrices = this.totalPrices;
       formData.models = modelList;
       formData.modelProjects = modelProjectList;
-      formData.yearsPlans = yearsPlans;
       formData.procurePlans = procurePlans;
+      formData.productions = productions;
 
       //保存
       saveMultiPrice(formData)
@@ -1108,7 +1070,6 @@ export default {
         factoryPrice: "",
         packingFee: "",
         upsetPrice: "",
-        packingFee2: "",
         transportFee: "",
         operationFee: "",
         bprice: "",
@@ -1128,50 +1089,36 @@ export default {
       let nowYear = this.ruleForm.beginMonth;
       var date = "";
       if (nowYear) {
-        date = new Date(nowYear);
+        date = dayjs(nowYear).year();
       }
-      let plan = this.yearsPlanTable[0];
-      this.purchasePlanTable.push(
+      this.yearsPlan.push({
+        ...planBaseYear,
+        title: typeof e === "undefined" ? "" : e.fsnrGsnr,
+      },{
+        ...planBaseYear
+      })
+      this.annualOutput.push(
         {
           title: typeof e === "undefined" ? "" : e.fsnrGsnr,
-          stage1: nowYear || date ? date.getFullYear() + "-01" : "",
-          stage2: date ? date.getFullYear() + 1 + "-01" : "",
-          stage3: date ? date.getFullYear() + 2 + "-01" : "",
-          stage4: date ? date.getFullYear() + 3 + "-01" : "",
-          stage5: date ? date.getFullYear() + 4 + "-01" : "",
-          stage6: date ? date.getFullYear() + 5 + "-01" : "",
-          stage7: date ? date.getFullYear() + 6 + "-01" : "",
-          stage8: date ? date.getFullYear() + 7 + "-01" : "",
-          stage9: date ? date.getFullYear() + 8 + "-01" : "",
-          stage10: date ? date.getFullYear() + 9 + "-01" : "",
-          stage11: date ? date.getFullYear() + 10 + "-01" : "",
-          stage12: date ? date.getFullYear() + 11 + "-01" : "",
-          stage13: date ? date.getFullYear() + 12 + "-01" : "",
-          stage14: date ? date.getFullYear() + 13 + "-01" : "",
-          stage15: date ? date.getFullYear() + 14 + "-01" : "",
-        },
-        {
-          title: typeof e === "undefined" ? "" : e.productCode,
-          stage1: plan?.stage1 || "",
-          stage2: plan?.stage2 || "",
-          stage3: plan?.stage3 || "",
-          stage4: plan?.stage4 || "",
-          stage5: plan?.stage5 || "",
-          stage6: plan?.stage6 || "",
-          stage7: plan?.stage7 || "",
-          stage8: plan?.stage8 || "",
-          stage9: plan?.stage9 || "",
-          stage10: plan?.stage10 || "",
-          stage11: plan?.stage11 || "",
-          stage12: plan?.stage12 || "",
-          stage13: plan?.stage13 || "",
-          stage14: plan?.stage14 || "",
-          stage15: plan?.stage15 || "",
-        },
-        {
-          ...planBaseData,
+          stage1: nowYear? nowYear : "",
+          stage2: date ? date  + 1 + "-01" : "",
+          stage3: date ? date  + 2 + "-01" : "",
+          stage4: date ? date  + 3 + "-01" : "",
+          stage5: date ? date  + 4 + "-01" : "",
+          stage6: date ? date  + 5 + "-01" : "",
+          stage7: date ? date  + 6 + "-01" : "",
+          stage8: date ? date  + 7 + "-01" : "",
+          stage9: date ? date  + 8 + "-01" : "",
+          stage10: date ? date  + 9 + "-01" : "",
+          stage11: date ? date  + 10 + "-01" : "",
+          stage12: date ? date  + 11 + "-01" : "",
+          stage13: date ? date  + 12 + "-01" : "",
+          stage14: date ? date  + 13 + "-01" : "",
+          stage15: date ? date  + 14 + "-01" : "",
+        },{
+          ...planBaseData
         }
-      );
+      )
     },
     handleAddYearPlan() {
       let obj = {
@@ -1194,17 +1141,32 @@ export default {
       };
       this.yearsPlanTable.splice(1, 0, obj);
     },
-    query(e) {
+     query(e) {
       // 根据ID查询条款信息
       this.tableLoading = true;
-      findMultiPrice(e)
-        .then((res) => {
-          this.updateRuleForm(res);
-          this.tableLoading = false;
-        })
-        .catch((err) => {
-          this.tableLoading = false;
+      
+      let p = new Promise(resolve=>{
+        let o = {...planBaseData,title:'折现率'};
+        getDiscount({}).then((res) => {
+          if(res?.data != null){
+            res?.data?.md_discount_rate.map(item=>{
+              let x = Number(item.code.replace('Y','0'));
+              o[`stage${x}`]=item.describe;
+            })
+          }
         });
+        resolve(o);
+      }).then(res=>{
+        this.annualOutput[0]={...res};
+        findMultiPrice(e)
+          .then((res) => {
+            this.updateRuleForm(res);
+            this.tableLoading = false;
+          })
+          .catch((err) => {
+            this.tableLoading = false;
+          });
+      })
     },
     updateRuleForm(data) {
       this.ruleForm = {
@@ -1213,7 +1175,7 @@ export default {
         modelProjects: data.modelProjects?.map((item) => item.projectCode),
         biddingStatus: data.biddingStatus,
       };
-
+      //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {
         o = this.ruleForm.procurePlans.reduce((obj, item) => {
@@ -1221,7 +1183,6 @@ export default {
             obj[item.productId] = {
               yearMonth: { title: "" },
               cutPricePlan: { title: "" },
-              procureNum: { title: "" },
             };
           }
           obj[item.productId].yearMonth[`stage${item.stage}`] =
@@ -1230,35 +1191,29 @@ export default {
           obj[item.productId].cutPricePlan[`stage${item.stage}`] =
             item.cutPricePlan;
           obj[item.productId].cutPricePlan[`id${item.stage}`] = item.id;
+          return obj;
+        }, {});
+      }
+      //this.ruleForm.productions 年产量
+      let output = {};
+      if (this.ruleForm.productions?.length) {
+        output = this.ruleForm.productions.reduce((obj, item) => {
+          if (!obj[item.productId]) {
+            obj[item.productId] = {
+              procureYearMonth: { title: "" },
+              procureNum: { title: "" },
+            };
+          }
+          obj[item.productId].procureYearMonth[`stage${item.stage}`] =
+            item.procureYearMonth;
+          obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
           obj[item.productId].procureNum[`stage${item.stage}`] =
             item.procureNum;
           obj[item.productId].procureNum[`id${item.stage}`] = item.id;
           return obj;
         }, {});
       }
-      let nowYear = this.ruleForm.beginMonth;
-      var date = "";
-      if (nowYear) {
-        date = new Date(nowYear);
-      }
-      let planBaseDataOfDate = {
-        title: "",
-        stage1: nowYear,
-        stage2: date ? date.getFullYear() + 1 + "-01" : "",
-        stage3: date ? date.getFullYear() + 2 + "-01" : "",
-        stage4: date ? date.getFullYear() + 3 + "-01" : "",
-        stage5: date ? date.getFullYear() + 4 + "-01" : "",
-        stage6: date ? date.getFullYear() + 5 + "-01" : "",
-        stage7: date ? date.getFullYear() + 6 + "-01" : "",
-        stage8: date ? date.getFullYear() + 7 + "-01" : "",
-        stage9: date ? date.getFullYear() + 8 + "-01" : "",
-        stage10: date ? date.getFullYear() + 9 + "-01" : "",
-        stage11: date ? date.getFullYear() + 10 + "-01" : "",
-        stage12: date ? date.getFullYear() + 11 + "-01" : "",
-        stage13: date ? date.getFullYear() + 12 + "-01" : "",
-        stage14: date ? date.getFullYear() + 13 + "-01" : "",
-        stage15: date ? date.getFullYear() + 14 + "-01" : "",
-      };
+
       if (
         !this.ruleForm.biddingProducts?.length &&
         this.ruleForm.roundType !== "03"
@@ -1266,46 +1221,30 @@ export default {
         this.handleAddProduct();
       } else {
         this.ruleForm.biddingProducts.forEach((item) => {
-          this.purchasePlanTable.push({
-            ...planBaseDataOfDate,
+          this.yearsPlan.push({
+            ...planBaseYear,
             ...o[item.id]?.yearMonth,
             title: item.fsnrGsnr,
           });
-          this.purchasePlanTable.push({
-            ...planBaseData,
+          this.yearsPlan.push({
+            ...planBaseYear,
             ...o[item.id]?.cutPricePlan,
             title: item.productCode,
           });
-          this.purchasePlanTable.push({
+          this.annualOutput.push({
+             ...planBaseData,
+            ...output[item.id]?.procureYearMonth,
+            title: item.fsnrGsnr,
+          })
+          this.annualOutput.push({
             ...planBaseData,
-            ...o[item.id]?.procureNum,
-            title: "",
-          });
+            ...output[item.id]?.procureNum,
+            title: item.productCode,
+          })
         });
       }
-
-      this.handleAddYearPlan();
-      let obj = { title: this.language('BIDDING_JIANGJIAJIHUA',"降价计划") };
-      if (this.ruleForm.yearsPlans?.length) {
-        this.ruleForm.yearsPlans.forEach((item) => {
-          obj[`stage${item.stage}`] = item.cutPricePlan;
-          obj[`id${item.stage}`] = item.id;
-        });
-      } else {
-        obj = {
-          // ...planBaseData,
-          ...obj,
-        };
-        if (this.ruleForm.roundType === "03") {
-          obj.stage2 = 3;
-          obj.stage3 = 3;
-          obj.stage4 = 3;
-        }
-      }
-
-      this.yearsPlanTable.splice(0, 0, obj);
       this.$nextTick(() => {
-        this.planyearChange = true;
+        this.handlerInputBlur();
       });
     },
     // 表格选中值集
@@ -1328,14 +1267,19 @@ export default {
         (item, index) => !indexs.includes(index)
       );
       let planIndexs = [];
+      let annualIndexs = [];
       indexs.forEach((i) => {
-        planIndexs.push(i * 3);
-        planIndexs.push(i * 3 + 1);
-        planIndexs.push(i * 3 + 2);
+        planIndexs.push(i * 2);
+        planIndexs.push(i * 2 + 1);
+        annualIndexs.push(i * 2 + 1);
+        annualIndexs.push(i * 2 + 2);
       });
-      //删除产品对应的采购计划数据
-      this.purchasePlanTable = this.purchasePlanTable.filter(
+      //删除产品对应的降价计划数据
+      this.yearsPlan = this.yearsPlan.filter(
         (item, index) => !planIndexs.includes(index)
+      );
+      this.annualOutput = this.annualOutput.filter(
+        (item, index) => !annualIndexs.includes(index)
       );
     },
   },
@@ -1434,7 +1378,9 @@ export default {
         }
       }
     }
-    ::v-deep .el-table {
+    
+  }
+  ::v-deep .el-table {
       .cell {
         padding-left: 3px;
         padding-right: 3px;
@@ -1450,6 +1396,5 @@ export default {
         background-color: #eff5fd;
       }
     }
-  }
 }
 </style>
