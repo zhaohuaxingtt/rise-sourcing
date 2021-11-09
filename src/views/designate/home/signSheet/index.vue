@@ -152,7 +152,7 @@ export default {
       // 签字单状态
       const statusCode = row.status && row.status.code || row.status
       this.$router.push({
-          path: '/sourcing/partsnomination/signSheet/addSignOverView/',
+          path: '/sourcing/partsnomination/signSheet/addSignOverView/details',
           query: {
             signCode: row.signCode,
             id: row.id,
