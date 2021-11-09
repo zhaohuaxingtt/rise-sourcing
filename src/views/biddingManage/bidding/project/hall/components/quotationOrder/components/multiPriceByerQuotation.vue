@@ -273,21 +273,18 @@ export default {
     };
   },
   mounted() {
-    let p = new Promise(resolve=>{
-      let o = {...planBaseData,title:'折现率'};
-      getDiscount({}).then((res) => {
-        if(res?.data != null){
-          res?.data?.md_discount_rate.map(item=>{
-            let x = Number(item.code.replace('Y','0'));
-            o[`stage${x}`]=item.describe;
-          })
-        }
-      });
-      resolve(o);
-    }).then(res=>{
-      this.annualOutput[0] = { ...res };
+    let o = {...planBaseData,title:'折现率'};
+    getDiscount({}).then((res) => {
+      if(res?.data != null){
+        res?.data?.md_discount_rate.map(item=>{
+          let x = Number(item.code.replace('Y','0'));
+          this.$set(o,`stage${x}`,item.describe)
+        })
+      }
+      this.annualOutput[0] = { ...o };
       this.updateRuleForm(this.initData);
-    })
+    });
+    
     // getModels().then((res) => {
     //   this.modelsOption = res?.data;
     // });

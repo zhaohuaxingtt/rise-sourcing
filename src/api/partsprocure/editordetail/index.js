@@ -175,8 +175,8 @@ export function dictkey(params) {
 export function checkFactory(params) {
 	return sourcing({
 		url: '/purchasing-project-parts/is-exist-cartype-project-factory',
-		method: 'POST',
-		data: params
+		method: 'GET',
+		params
 	})
 }
 
