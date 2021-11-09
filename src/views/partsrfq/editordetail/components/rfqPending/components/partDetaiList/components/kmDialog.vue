@@ -22,9 +22,9 @@
       </div>
     </template>
     <div class="body">
+      <!-- height="100%" -->
       <tableList
         index
-        height="100%"
         v-show="visible"
         class="table"
         :lang="true"
@@ -241,7 +241,7 @@ export default {
     overflow-x: hidden;
 
     .body {
-      height: 580px;
+      // height: 580px;
     }
 
     .el-dialog__header {

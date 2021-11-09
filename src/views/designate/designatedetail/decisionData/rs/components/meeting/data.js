@@ -210,9 +210,9 @@ export const dbTableTitle = [
 ]
 
 export const meetingRemark = [
-  {label: '询价采购员上会备注', value: 'ww', type: 'CSF_MEET_MEMO', remarkType:'csfMeetMemo', key: 'XUNJIACAIGOUYUANSHANGHUIBEIZHU'},
-  {label: 'LINIE上会备注', value: 'xxx', type: 'LINIE_MEET_MEMO', remarkType:'linieMeetMemo',key: 'LINIESHANGHUIBEIZHU'},
-  {label: 'CS*1上会备注', value: 'ttt', type: 'CS1_MEET_MEMO',remarkType:'cs1MeetMemo', key: 'CS1SHANGHUIBEIZHU'}
+  {label: '询价采购员上会备注', value: 'ww', type: 'CSF_MEET_MEMO', remarkType:'csfMeetMemo', key: 'XUNJIACAIGOUYUANSHANGHUIBEIZHU', permissionKey: "DESIGNATE_DECISIONDATA_RS_INPUT_BUYER_MEETING_REMARKS|询价采购员上会备注"},
+  {label: 'LINIE上会备注', value: 'xxx', type: 'LINIE_MEET_MEMO', remarkType:'linieMeetMemo',key: 'LINIESHANGHUIBEIZHU', permissionKey: "DESIGNATE_DECISIONDATA_RS_INPUT_LINIE_MEETING_REMARKS|LINIE上会备注"},
+  {label: 'CS*1上会备注', value: 'ttt', type: 'CS1_MEET_MEMO',remarkType:'cs1MeetMemo', key: 'CS1SHANGHUIBEIZHU', permissionKey: "DESIGNATE_DECISIONDATA_RS_INPUT_CS1_MEETING_REMARKS|CS*1上会备注"}
 ]
 
 export const checkList = [

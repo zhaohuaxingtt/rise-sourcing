@@ -104,18 +104,9 @@ export const multiPleTableTitle = [
         trigger: 'blur'
       }
     ],
-    name: language('BIDDING_QIANDUANBAOZHUANGFEI',"前段包装费"),
+    name: "包装费",
   },
-  {
-    props: "packingFee2",
-    rule: [
-      {
-        pattern: /^\d+$|^\d*\.\d*$/g,
-        trigger: 'blur'
-      }
-    ],
-    name: language('BIDDING_HOUDUANBAOZHUANGFEI',"后段包装费"),
-  },
+  
   {
     props: "transportFee",
     rule: [
@@ -325,4 +316,358 @@ export const yearsPlanTableColumn = [
 
 ];
 
+export const planBaseData = {
+  title: '',
+  stage1: '',
+  stage2: '',
+  stage3: '',
+  stage4: '',
+  stage5: '',
+  stage6: '',
+  stage7: '',
+  stage8: '',
+  stage9: '',
+  stage10: '',
+  stage11: '',
+  stage12: '',
+  stage13: '',
+  stage14: '',
+  stage15: '',
+};
+export const planBaseYear = {
+  title: '',
+  stage1: '',
+  stage2: '',
+  stage3: '',
+  stage4: '',
+  stage5: '',
+  stage6: '',
+  stage7: '',
+  stage8: '',
+  stage9: '',
+};
+export const stageColumn = [
+  {
+    props: "title",
+    name: "",
+  },
+  {
+    props: "stage1",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+            value && !reg.test(value)
+              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第一段",
+  },
+  {
+    props: "stage2",
+    required: false,
+    rule: [
+    ],
+    name: "第二段",
+  },
+  {
+    props: "stage3",
+    required: false,
+    rule: [
+    ],
+    name: "第三段",
+  },
+  {
+    props: "stage4",
+    required: false,
+    rule: [
+    ],
+    name: "第四段",
+  },
+  {
+    props: "stage5",
+    required: false,
+    rule: [
+    ],
+    name: "第五段",
+  },
+  {
+    props: "stage6",
+    required: false,
+    rule: [
+    ],
+    name: "第六段",
+  },
+  {
+    props: "stage7",
+    required: false,
+    rule: [
+    ],
+    name: "第七段",
+  },
+  {
+    props: "stage8",
+    required: false,
+    rule: [
+    ],
+    name: "第八段",
+  },
+  {
+    props: "stage9",
+    required: false,
+    rule: [
+    ],
+    name: "第九段",
+  },
+]
 
+export const outPutColumn = [
+  {
+    props: "title",
+    name: "",
+  },
+  {
+    props: "stage1",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第一年",
+  },
+  {
+    props: "stage2",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第二年",
+  },
+  {
+    props: "stage3",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第三年",
+  },
+  {
+    props: "stage4",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第四年",
+  },
+  {
+    props: "stage5",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第五年",
+  },
+  {
+    props: "stage6",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第六年",
+  },
+  {
+    props: "stage7",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第七年",
+  },
+  {
+    props: "stage8",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第八年",
+  },
+  {
+    props: "stage9",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第九年",
+  },
+  {
+    props: "stage10",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第十年",
+  },
+  {
+    props: "stage11",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第十一年",
+  },
+  {
+    props: "stage12",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第十二年",
+  },
+  {
+    props: "stage13",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第十三年",
+  },
+  {
+    props: "stage14",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第十四年",
+  },
+  {
+    props: "stage15",
+    required: false,
+    rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
+            value && !reg.test(value)
+              ? callback(new Error("保留两位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
+    ],
+    name: "第十五年",
+  },
+]
