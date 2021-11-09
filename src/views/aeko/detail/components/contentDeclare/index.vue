@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-08 20:28:18
+ * @LastEditTime: 2021-11-09 10:26:49
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -606,11 +606,10 @@ export default {
       }})
     },
     isAea(str) {
-      for (var i in str) {
-        var asc = str.charCodeAt(i);
-        if (asc >= 48 && asc <= 57) {
-            return true;
-        }
+      var asc1 = str.charCodeAt(0);
+      var asc2 = str.charCodeAt(1);
+      if (asc1 > 57 && asc2 >= 48 && asc2 <= 57) {
+          return true;
       }
       return false;
     },
