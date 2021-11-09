@@ -81,7 +81,7 @@
       </el-form>
     </iSearch> 
     <el-table :data='dataListBottom' v-loading='loadingBottom' @selection-change="handleSelectionChangeBottom">
-      <el-table-column type="selection" align="center" width="40"></el-table-column>
+      <el-table-column type="selection" align="center" width="55"></el-table-column>
       <template v-for='(items,index) in titleListBottom'>
         <el-table-column align="center" :key='index' :label='language(items.key,items.name)' :prop='items.props'></el-table-column>
       </template>

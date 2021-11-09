@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 15:30:10
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 10:45:22
+ * @LastEditTime: 2021-11-08 17:25:58
  * @Description: 车型项目下拉
- * @FilePath: \front-web\src\views\project\components\commonSelect\carProjectSelect.vue
+ * @FilePath: \front-sourcing\src\views\project\components\commonSelect\carProjectSelect.vue
 -->
 
 <template>
@@ -27,7 +27,8 @@ export default {
     value: {type:String},
     filterable: {type:Boolean,default:false},
     optionType: {type:String,default:'1'},
-    disabled: {type:Boolean,default:false}
+    disabled: {type:Boolean,default:false},
+    valueType: {type:String,default:'1'}
   },
   data() {
     return {
@@ -64,7 +65,7 @@ export default {
           this.options = res.data.map(item => {
             return {
               ...item,
-              value: item.id,
+              value: this.valueType === '1' ? item.id : item.cartypeProCode,
               label: item.cartypeProName
             }
           })
@@ -79,7 +80,7 @@ export default {
           this.options = res.data.map(item => {
             return {
               ...item,
-              value: String(item.id),
+              value: this.valueType === '1' ? item.id : item.cartypeProCode,
               label: item.cartypeProjectZh
             }
           })
