@@ -1,13 +1,13 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-06 12:16:46
+ * @LastEditTime: 2021-11-09 14:11:10
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
   <div class="aPriceChange">
-    <iCard class="mb-20">
+    <!-- <iCard class="mb-20">
       <p class="title mb-20">{{ language("BIANDONGZHI", "变动值") }}</p>
       <div class="input">
         <span class="label"
@@ -15,8 +15,8 @@
         >
         <iText>{{ floatFixNum(apriceChange) }}</iText>
       </div>
-    </iCard>
-    <iCard class="mb-20">
+    </iCard> -->
+    <iCard class="mb-20" v-if="cbdCanEdit">
       <p class="title mb-20">
         <span>{{ `${language("BIANDONGZHI", "变动值")} - CBD` }}</span>
         <span class="tip ml-12">{{ language("DANWEI", "单位") }}：RMB/Pc.</span>
@@ -309,6 +309,10 @@ export default {
         };
       },
     },
+    cbdCanEdit:{
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {

@@ -5,9 +5,9 @@
             top="40vh">
     <div class="d-content">
       <p class="d-content-title">请选择转派审批人</p>
-      <i-select v-model="selBuyerId" class="margin-top10" :placeholder="language('LK_AEKO_DAIXUANZE','待选择')">
+      <i-select v-model="selBuyer" class="margin-top10" :placeholder="language('LK_AEKO_DAIXUANZE','待选择')">
         <el-option
-            :value="items.code"
+            :value="items"
             :label="items.value"
             v-for="(items, index) in buyerNames || []"
             :key="index"
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       buyerNames: [],
-      selBuyerId: ''
+      selBuyer: {}
     }
   },
   created() {
@@ -68,8 +68,8 @@ export default {
     },
     confirmTransfer() {
       this.value=false
-      if (this.selBuyerId != null || this.selBuyerId != '') {
-        this.$emit("confirmTransfer", this.selBuyerId);
+      if (this.selBuyer != null || this.selBuyer != '') {
+       this.$emit("confirmTransfer", this.selBuyer);
       }
     }
   },
