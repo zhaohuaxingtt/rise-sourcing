@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:40:38
- * @LastEditTime: 2021-11-06 12:33:42
+ * @LastEditTime: 2021-11-09 19:04:16
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -72,14 +72,15 @@ export default {
     // 初始化数据
     init() {
       console.log("获取初始化数据");
+      console.log(this.workFlowId);
       this.workFlowId ? this.getMoulds() : this.getMouldsByLinie();
     },
     // 获取数据
     async getMoulds() {
       this.loading = true;
       await getMoulds({
-        workFlowId,
-        quotationId,
+        workFlowId : this.workFlowId,
+        quotationId: this.quotationId,
       })
         .then((res) => {
           this.loading = false;

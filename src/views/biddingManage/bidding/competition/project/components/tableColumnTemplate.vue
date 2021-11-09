@@ -66,12 +66,14 @@
                 v-if="priceProps.includes(items.props)"
                 v-model="scope.row[items.props]"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
+                @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"
               >
               </iInput>
               <iInput
                 v-else
                 v-model="scope.row[items.props]"
+                @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"
               >
               </iInput>
@@ -80,7 +82,7 @@
         </el-table-column>
 
         <!--输入框-->
-        <el-table-column
+        <!-- <el-table-column
           :width="items.width"
           :show-overflow-tooltip="items.tooltip"
           :key="index"
@@ -123,9 +125,178 @@
               <div v-else>{{ scope.row[items.props] }}</div>
             </el-form-item>
           </template>
-        </el-table-column>
-        <!--复杂输入框-->
+        </el-table-column> -->
+
+        <!--批量更新年降 输入框-->
         <el-table-column
+          :width="items.width"
+          :show-overflow-tooltip="items.tooltip"
+          :key="index"
+          align="center"
+          v-if="type === '3' && inputProps.includes(items.props)"
+          :prop="items.props"
+          :label="items.key ? $t(items.key) : items.name"
+        >
+          <template #header>
+            {{ items.key ? $t(items.key) : items.name }}
+            <span class="required" v-if="items.required">*</span>
+            <el-popover
+              trigger="hover"
+              :content="
+                items.iconTextKey ? $t(items.iconTextKey) : items.iconText
+              "
+              placement="top-start"
+            >
+              <icon
+                slot="reference"
+                symbol
+                v-if="items.icon"
+                :name="items.icon"
+                class="font-size16 marin-left5"
+              />
+            </el-popover>
+          </template>
+          <template slot-scope="scope">
+            <el-form-item
+              :prop="'tableData.' + scope.$index + '.' + items.props"
+              :rules="items.rule ? items.rule : ''"
+            >
+              <iInput
+                v-model="scope.row[items.props]"
+                oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 5):value.slice(0,15)"
+                @blur="handleInputOnBlur(scope.row, items.props)"
+                :disabled="items.disabled ? items.disabled : false"
+              >
+                <template slot="suffix">%</template>
+              </iInput>
+            </el-form-item>
+          </template>
+        </el-table-column>
+
+        <!--年降计划 输入框-->
+        <el-table-column
+          :width="items.width"
+          :show-overflow-tooltip="items.tooltip"
+          :key="index"
+          align="center"
+          v-if="type === '4' && inputProps.includes(items.props)"
+          :prop="items.props"
+          :label="items.key ? $t(items.key) : items.name"
+        >
+          <template #header>
+            {{ items.key ? $t(items.key) : items.name }}
+            <span class="required" v-if="items.required">*</span>
+            <el-popover
+              trigger="hover"
+              :content="
+                items.iconTextKey ? $t(items.iconTextKey) : items.iconText
+              "
+              placement="top-start"
+            >
+              <icon
+                slot="reference"
+                symbol
+                v-if="items.icon"
+                :name="items.icon"
+                class="font-size16 marin-left5"
+              />
+            </el-popover>
+          </template>
+          <template slot-scope="scope">
+            <el-form-item
+              :prop="'tableData.' + scope.$index + '.' + items.props"
+              :rules="scope.row['index'] %2 === 0?[dateValidator(scope.row, items.props)]:items.rule ? items.rule : ''"
+            >
+              <iDatePicker
+                v-if="scope.row['index']%2 === 0"
+                class="data--picker"
+                value-format="yyyy-MM"
+                type="month"
+                v-model="scope.row[items.props]"
+                :clearable="false"
+                :editable="false"
+                @blur="handlerInputBlur($event, scope)"
+                :picker-options="pickerOptions(scope.row, items.props)"
+              />
+              <iInput
+                v-else-if="scope.row['index'] %2 === 1"
+                v-model="scope.row[items.props]"
+                oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 5):value.slice(0,15)"
+                @blur="handlerInputBlur($event, scope)"
+                :disabled="items.disabled ? items.disabled : false"
+              >
+                <template slot="suffix">%</template>
+              </iInput>
+              
+            </el-form-item>
+          </template>
+        </el-table-column>
+
+        <!--年产量 输入框-->
+        <el-table-column
+          :width="items.width"
+          :show-overflow-tooltip="items.tooltip"
+          :key="index"
+          align="center"
+          v-if="type === '5' && inputProps.includes(items.props)"
+          :prop="items.props"
+          :label="items.key ? $t(items.key) : items.name"
+        >
+          <template #header>
+            {{ items.key ? $t(items.key) : items.name }}
+            <span class="required" v-if="items.required">*</span>
+            <el-popover
+              trigger="hover"
+              :content="
+                items.iconTextKey ? $t(items.iconTextKey) : items.iconText
+              "
+              placement="top-start"
+            >
+              <icon
+                slot="reference"
+                symbol
+                v-if="items.icon"
+                :name="items.icon"
+                class="font-size16 marin-left5"
+              />
+            </el-popover>
+          </template>
+          <template slot-scope="scope">
+            <el-form-item
+              :prop="'tableData.' + scope.$index + '.' + items.props"
+              :rules="scope.row['index']%2 === 0? items.rule : ''"
+            >
+              <div v-if="scope.row['index'] === 0">{{scope.row[items.props]}}</div>
+
+              <iInput
+                v-else-if="scope.row['index']%2 === 0"
+                v-model="scope.row[items.props]"
+                placeholder="0.00"
+                oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
+                @blur="handlerInputBlur($event, scope)"
+                :disabled="items.disabled ? items.disabled : false"
+              >
+              </iInput>
+              <iDatePicker
+                v-else-if="scope.row['index']%2 === 1"
+                class="data--picker"
+                format='yyyy'
+                value-format="yyyy-MM"
+                type="year"
+                v-model="scope.row[items.props]"
+                :clearable="false"
+                :editable="false"
+                 @input="handleOutPutInputDate($event, scope)"
+                 @blur="handlerInputBlur($event, scope)"
+                :picker-options="handleOutPutPickerOptions(scope.row, items.props)"
+                :disabled="items.props !== 'stage1'"
+              />
+            </el-form-item>
+          </template>
+        </el-table-column>
+
+        <!--复杂输入框-->
+        <!-- <el-table-column
           :width="items.width"
           :show-overflow-tooltip="items.tooltip"
           :key="index"
@@ -175,7 +346,6 @@
                 :clearable="false"
                 :editable="false"
                 @input="handleInputDate($event, scope)"
-                :picker-options="pickerOptions(scope.row, items.props)"
               />
               <i-input
                 v-else-if="(scope.row['index'] + 2) % 3 === 0"
@@ -192,7 +362,7 @@
               />
             </el-form-item>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <!--纯展示-->
         <el-table-column
           :min-width="items.width"
@@ -281,6 +451,13 @@ export default {
     openPageGetRowData: { type: Boolean, default: false },
     inputType: { type: String, default: "" },
     fileSizeProps: { type: String, default: "fileSize" },
+    beginMonth: { type: String, default: "" },
+    annualOutputObj:{
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
   },
   components: {
     iInput,
@@ -297,31 +474,53 @@ export default {
       return {
         disabledDate: (time) => {
           if (num === 1) {
+            if(this.annualOutputObj[row.title]){
+              return (
+                dayjs(time).isBefore(dayjs(this.annualOutputObj[row.title]).add(1,"month")) 
+              );
+            }
             return;
           }
           let curDate = dayjs(row[`stage${num - 1}`]).add(1, "month");
-          let afterDate = dayjs(row[`stage${num - 1}`]).add(1, "year");
           return (
-            dayjs(time).isBefore(curDate) || dayjs(time).isAfter(afterDate)
+            dayjs(time).isBefore(curDate)
           );
         },
       };
     },
+    // dateValidator(row, props) {
+    //   let num = Number(props.slice(5));
+    //   let afterDate = dayjs(row[`stage${num - 1}`]).add(1, "year");
+    //   return {
+    //     validator(rule, value, callback) {
+    //       num === 1
+    //         ? callback()
+    //         : dayjs(value).isAfter(afterDate)
+    //         ? callback(new Error(rule.message))
+    //         : callback();
+    //     },
+    //     message: "排名区间配置错误",
+    //     trigger: "blur",
+    //   };
+    // },
     dateValidator(row, props) {
       let num = Number(props.slice(5));
-      let afterDate = dayjs(row[`stage${num - 1}`]).add(1, "year");
+      let afterDate = dayjs(row[`stage${num - 1}`]);
+      let firstDate = dayjs(this.annualOutputObj[row.title]).add(1, "month");
       return {
         validator(rule, value, callback) {
           num === 1
-            ? callback()
-            : dayjs(value).isAfter(afterDate)
+            ? dayjs(value).isBefore(firstDate)
+            ? callback(new Error(rule.message)):callback()
+            : dayjs(value).isBefore(afterDate)
             ? callback(new Error(rule.message))
             : callback();
         },
-        message: this.language('BIDDINGH_PMQJPZCW', "排名区间配置错误"),
-        trigger: "blur",
+        message: "日期错误",
+        trigger: ["blur","change"],
       };
     },
+
     handleSelectionChange(val) {
       this.$emit("handleSelectionChange", val);
     },
@@ -339,20 +538,41 @@ export default {
     handleTableRow(row) {
       row.row.index = row.rowIndex;
     },
-    handleInputNum(val, scope) {
-      let reg = /^\d+$/;
-      if (val && !reg.test(val)) {
-        return;
-      }
-      this.$emit("handleInputNum", val, scope);
+    // handleInputNum(val, scope) {
+    //   let reg = /^\d+$/;
+    //   if (val && !reg.test(val)) {
+    //     return;
+    //   }
+    //   this.$emit("handleInputNum", val, scope);
+    // },
+    // blurProcureNum(val, scope) {
+    //   this.$emit("blurProcureNum", val, scope);
+    // },
+    // handleInputDate(val, scope) {
+    //   this.$emit("handleInputDate", val, scope);
+    // },
+    handleOutPutInputDate(val, scope) {
+      this.$emit("handleOutPutInputDate", val, scope);
     },
-    blurProcureNum(val, scope) {
-      this.$emit("blurProcureNum", val, scope);
+
+    handleOutPutPickerOptions(row,prop){
+      return {
+        disabledDate: (time) => {
+          let curDate = dayjs(this.beginMonth);
+          return (
+            dayjs(time).isBefore(curDate)
+          );
+        },
+      };
     },
-    handleInputDate(val, scope) {
-      this.$emit("handleInputDate", val, scope);
+    handleInputOnBlur(row,prop){
+      this.$emit('handleInputOnBlur', row,prop);
     },
+    handlerInputBlur($event, scope){
+      this.$emit('handlerInputBlur');
+    }
   },
+  
 };
 </script>
 <style lang='scss' scoped>

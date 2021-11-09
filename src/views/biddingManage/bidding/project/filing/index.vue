@@ -56,13 +56,13 @@ export default {
       const cutPricePlan = { title: this.language('BIDDING_JIANGJIAJIHUA',"降价计划") };
       const discountRate = { title: this.language('BIDDING_ZHEXIANLV',"折现率") };
       // 年降计划&折现率
-      if (r.yearsPlans.length) {
-        r.yearsPlans?.forEach((item) => {
-          cutPricePlan[`stage${item.stage}`] = item.cutPricePlan;
-          discountRate[`stage${item.stage}`] = item.discountRate;
-        });
-        this.yearsPlans = [cutPricePlan, discountRate];
-      }
+      // if (r.yearsPlans.length) {
+      //   r.yearsPlans?.forEach((item) => {
+      //     cutPricePlan[`stage${item.stage}`] = item.cutPricePlan;
+      //     discountRate[`stage${item.stage}`] = item.discountRate;
+      //   });
+      //   this.yearsPlans = [cutPricePlan, discountRate];
+      // }
 
       // 采购计划
       if (r.procurePlans.length) {
@@ -77,7 +77,7 @@ export default {
             item.procureYearMonth.substring(0, 4) +
             item.procureYearMonth.substring(4, 7);
           obj[item.productId].cutPricePlan[`stage${item.stage}`] =
-            item.cutPricePlan;
+            item.cutPricePlan?item.cutPricePlan+'%':item.cutPricePlan;
           return obj;
         }, {});
         this.ruleForm.products?.forEach((item) => {
