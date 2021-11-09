@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-08 20:28:18
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-09 14:00:21
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -22,10 +22,10 @@
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGBIANHAO', '供应商编号')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERSAPCODE|供应商编号">
+        <el-form-item :label="language('LK_GONGYINGSHANGSAPHAO', '供应商SAP号')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERSAPCODE|供应商编号">
           <iInput
             v-model="form.supplierSapCode"
-            :placeholder="language('QINGSHURUGONGYINGSHANGBIANHAO', '请输入供应商编号')"
+            :placeholder="language('QINGSHURUGONGYINGSHANGSAP号', '请输入供应商SAP号')"
           />
         </el-form-item>
         <el-form-item :label="showCarTypeLabel" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE|车型项目">
@@ -426,11 +426,18 @@ export default {
     const {query} = this.$route;
     const {from=''} = query;
     from=='manage'?setLogMenu('AEKO管理-详情页-内容表态'):setLogMenu('AEKO表态-详情页-内容表态')
-    // AEKO查看跳转过来的数据table的新承运方式和原承运方式合并成一列
+    // AEKO查看跳转过来的数据table的新承运方式和原承运方式合并成一列 显示采购员 并且只固定AEKO组别、零件号、零件名称【蓝湖上面看到的】
     if(from == 'check'){
-      this.tableTitle = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc')
+      const filterTable = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc');
+      filterTable.map((item)=>{
+        if(item.props=='groupName' || item.props =='partNum' || item.props=='partNameZh'){
+          item.fixed = true;
+        }else{
+          item.fixed = false;
+        }
+      })
     }else{
-      this.tableTitle = tableTitle.filter((item)=>item.props!='tranWayDesc')
+      this.tableTitle = tableTitle.filter((item)=>item.props!='tranWayDesc'&&item.props!='buyerName')
     }
     
   },
