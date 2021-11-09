@@ -173,7 +173,7 @@ import {
 import { cloneDeep } from "lodash"
 import {user as configUser } from '@/config'
 import { roleMixins } from "@/utils/roleMixins";
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 export default {
     name:'partsList',
     mixins: [pageMixins,roleMixins],
@@ -224,7 +224,7 @@ export default {
         const {query} = this.$route;
         const {from=''} = query;
         this.queryFrom = from;
-        from=='manage'?setLogModule('AEKO管理-详情页-零件清单'):setLogModule('AEKO表态-详情页-零件清单')
+        from=='manage'?setLogMenu('AEKO管理-详情页-零件清单'):setLogMenu('AEKO表态-详情页-零件清单')
         const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
         if(roleArr.length > 1){
             if(from == 'manage'){

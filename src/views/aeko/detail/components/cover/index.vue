@@ -14,7 +14,7 @@
 import previewCover from './components/previewCover'
 import editCover from './components/editCover'
 import { roleMixins } from "@/utils/roleMixins";
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 export default {
     name:'aekoDetailCover',
     mixins: [roleMixins],
@@ -37,7 +37,7 @@ export default {
         // 判断下多角色情况 若多角色时就判断url的跳转来源
         const {query} = this.$route;
         const {from=''} = query;
-        from=='manage'?setLogModule('AEKO管理-详情页-封面表态'):setLogModule('AEKO表态-详情页-封面表态')
+        from=='manage'?setLogMenu('AEKO管理-详情页-封面表态'):setLogMenu('AEKO表态-详情页-封面表态')
         const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
         if(roleArr.length > 1){
             if(from == 'manage'){

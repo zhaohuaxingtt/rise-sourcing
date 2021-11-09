@@ -458,7 +458,7 @@
 
 <script>
 import { iInput, iFormItem, iLabel, iSelect } from "rise";
-import iLabelML from "@/components/iLabelML";
+import iLabelML from "@/components/biddingComponents/iLabelML";
 import Big from "big.js";
 import {
   priceDiffLimitSelectList,

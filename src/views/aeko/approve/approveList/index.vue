@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: YoHo
- * @LastEditTime: 2021-11-06 17:58:31
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-08 15:16:30
  * @Description: 
 -->
 <template>
@@ -28,6 +28,16 @@
           :tableLoading="tableLoading"
           :lang="true"
           :selectable="(row, index) => {return row.unresigned}"
+          :selectConfig="{
+            width: 40,
+            align: 'right',
+            headerAlign: 'right'
+          }"
+          :indexConfig="{
+            width: 40,
+            align: 'left',
+            headerAlign: 'left'
+          }"
           v-loading="tableLoading"
           v-permission.auto="AEKO_APPROVE_APPROVELIST_TABLE|表格"
           @handleSelectionChange="handleSelectionChange"
@@ -98,7 +108,7 @@ import tablelist from 'rise/web/components/iFile/tableList';
 import {iCard, iSelect, iButton, iPagination, icon, iMessage} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
 import {user as configUser} from '@/config'
-import { setLogModule } from "@/utils";
+import { setLogMenu } from "@/utils";
 import {
   getApproveDistributionPage,
   approveDistributionSave,
@@ -133,7 +143,7 @@ export default {
     }
   },
   created() {
-    setLogModule('AEKO管理-AEKO分配')
+    setLogMenu('AEKO管理-AEKO分配')
   },
   mounted() {
     this.getFetchData()

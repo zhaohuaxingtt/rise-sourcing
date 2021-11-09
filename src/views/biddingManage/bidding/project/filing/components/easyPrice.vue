@@ -173,7 +173,7 @@ import {
   iSelect,
   iDatePicker,
 } from "rise";
-import commonTable from "@/components/commonTable";
+import commonTable from "@/components/biddingComponents/commonTable";
 import {
   unitTableTitle,
   totalTableTitle,

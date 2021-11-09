@@ -110,6 +110,7 @@ import {
 import { applyStep,svgList } from './data'
 import meetingConclusionDialog from "./meetingConclusionDialog"
 import {allitemsList} from '@/config'
+import { cloneDeep } from "lodash"
 
 export default {
     name:'designateStep',
@@ -466,10 +467,13 @@ export default {
             const { query } = this.$route;
             const {desinateId} = query;
             const nominationType = this.$store.getters.nominationType || ''
+            const _params = cloneDeep(params)
+            delete _params.info
+
             const data = Object.assign({
                 nominateIdArr:[Number(desinateId)],
-            }, params)
-            console.log('params', data, nominationType)
+            }, _params)
+
             this.submitting = true
             try {
                 if (check) {
@@ -572,6 +576,13 @@ export default {
                         this.submitting = false
                         return
                     }
+                    
+                    data.nominateAppId = this.$store.getters.nomiAppId
+                    data.meetingInfoVo = this.designateType == "MEETING" ? {
+                        duration: params.info.duration,
+                        meetingId: params.info.id
+                    } : undefined
+
                     nominateAppSsubmit(data).then((res)=>{
                         if (res.code === '200') {
                             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));

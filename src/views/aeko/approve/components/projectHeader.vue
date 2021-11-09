@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-05 22:54:07
+ * @LastEditTime: 2021-11-08 13:07:30
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -14,7 +14,7 @@
       <iNavMvp v-if="subMenu" :lev="2" :list="subMenu" :lang="true" routerPage class="nav-sub" />
       <log-button v-if="$route.name !== 'explainattach'" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
-      <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
+      <iLog :show.sync="showDialog" :bizId="bizId" :module="module"></iLog>
     </div>
   </div>
 </template>
@@ -38,7 +38,8 @@ export default {
   data() {
     return {
       showDialog: false,
-      bizId: ''
+      bizId: '',
+      module: 'AEKO审批'
     }
   },
   computed: {
@@ -67,9 +68,7 @@ export default {
   methods: {
     // 打开跳转
     openLog(){
-      // this.bizId = this.transmitObj.aekoApprovalDetails.requirementAekoId || iMessage.error('AEKO id 获取失败')
-      this.bizId = Number(this.bizId) || 1
-      if(this.bizId)
+      this.bizId = ''
       this.showDialog = true
     },
     gotoDBhistory() {

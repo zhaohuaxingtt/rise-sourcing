@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-04 20:16:41
+ * @LastEditTime: 2021-11-08 20:33:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\index.vue
@@ -284,7 +284,6 @@ export default {
             this.baseInfo = res.data[0]
             // 定向刷新部分组件，当主数据更新后。
             this.childFnList.forEach(i=>i())
-            this.$store.state.rfq.partfunc
             if(typeof this.$store.state.rfq.partfunc === "function")
               this.getPartTableList()
           } else {

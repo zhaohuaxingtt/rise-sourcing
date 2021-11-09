@@ -56,7 +56,7 @@
 
 <script>
 import { iButton, iDialog, iFormItem, iSelect, iLabel, iMessage } from "rise";
-import iEditForm from "@/components/iEditForm";
+import iEditForm from "@/components/biddingComponents/iEditForm";
 import { roundTypeLists } from "../project/inquiry/components/data";
 import { saveBiddingInfo } from "@/api/bidding/bidding";
 

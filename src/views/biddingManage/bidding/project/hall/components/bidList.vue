@@ -48,7 +48,7 @@
 
 <script>
 import { iCard, iButton, iInput, iSelect, iPagination, iPage } from "rise";
-import commonTable from "@/components/commonTable";
+import commonTable from "@/components/biddingComponents/commonTable";
 import {
   bidTableTitle,
   bidTableTitles,

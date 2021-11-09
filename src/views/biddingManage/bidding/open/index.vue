@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-08 11:48:01
+ * @LastEditTime: 2021-11-08 16:47:10
+ * @LastEditors: your name
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \front-sourcing\src\views\biddingManage\bidding\open\index.vue
+-->
 <template>
   <iPage>
     <div class="form-itme">
@@ -24,7 +32,7 @@
 <script>
 import { iPage, iButton } from "rise";
 import information from "./components/information.vue";
-import bidNoticeDoc from "@/views/manage/bidding/project/filing/components/bidNoticeDoc.vue";
+import bidNoticeDoc from "@/views/biddingManage/bidding/project/filing/components/bidNoticeDoc.vue";
 export default {
   components: {
     iPage,

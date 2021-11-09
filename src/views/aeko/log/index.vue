@@ -90,9 +90,10 @@
 
 <script>
 import {iDialog, iSearch, iInput, iPagination, iMessage} from 'rise'
-import { getLogModule } from '@/utils'
+import { getLogMenu } from '@/utils'
 import { roleMixins } from '@/utils/roleMixins'
 import { pageMixins } from '@/utils/pageMixins'
+import { getLogList } from "@/api/aeko/approve"
 
 export default {
   components: { iDialog, iSearch, iInput, iPagination },
@@ -105,6 +106,7 @@ export default {
       }
     },
     show: [Boolean],
+    module:[String],  // 流程模块
   },
   data() {
     return {
@@ -177,27 +179,21 @@ export default {
       http.send()
     },
     getList() {
-      console.log('bizId', this.bizId)
-      const http = new XMLHttpRequest()
-      const url = `/bizlog/operationLog/findOperationLogs`
-      http.open('POST', url, true)
-      http.setRequestHeader('content-type', 'application/json')
-      http.onreadystatechange = () => {
-        if (http.readyState === 4) {
-          let res = JSON.parse(http.responseText)
-          this.tableData = res.content
-          this.page.totalCount = res.total
-        }
-      }
-      this.query.bizId = this.bizId
-      if(!this.bizId) return 
-			let module = getLogModule()
-      const sendData = {
+      this.query.bizId_obj_ae = this.bizId
+      let menu = getLogMenu()
+      // createBy_obj_ae:11193   当前用户id
+      // bizId_obj_ae:11111      AEKO id
+      // menuName_obj_ae:菜单    当前所在页面
+      // module_obj_ae:模块      当前所在流程模块
+      const params = {
         current: this.page.currPage - 1,  // 前后端页面定义有一页偏差
         size: this.page.pageSize,
-        extendFields: { ...this.query, module:module, createBy: this.userInfo.id }
+        extendFields: { ...this.query, module_obj_ae:this.module, createBy_obj_ae: this.userInfo.id, menuName_obj_ae: menu }
       }
-      http.send(JSON.stringify(sendData))
+      getLogList(params).then(res=>{
+          this.tableData = res?.content || []
+          this.page.totalCount = res?.total || 0
+      })
     }
   }
 }

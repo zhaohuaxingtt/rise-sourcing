@@ -108,6 +108,7 @@ export default {
             this.getFetchData()
           } else{
             // 刷新父列表
+            this.meetingType = '20'
             this.$emit('refresh', {})
           }
         })
@@ -121,7 +122,7 @@ export default {
       nomiAppId: this.$route.query.desinateId,
       tableTitle,
       meetingTypes,
-      meetingType: 'CSC',
+      meetingType: '20', // PRECSC
       meetingResultArray,
       meetingResult: '',
       controlHeight: 0,
@@ -192,6 +193,7 @@ export default {
           // meetingResult: this.meetingResult,
           meetingType: this.meetingType,
           meetingId: meetingIds && Number(meetingIds[0]) || '',
+          info: this.selectedData[0]
       }
       if (!this.meetingType) {
         iMessage.error(this.language('QINGXUANZEHUIYILEIBIE','请选择会议类别'))

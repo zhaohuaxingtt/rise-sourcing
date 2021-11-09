@@ -190,7 +190,7 @@ import {
 } from "./data";
 import addManual from "./addManual.vue";
 import { queryProjectByPage, deleteProject } from "@/api/bidding/bidding";
-import iTableCustom from "@/components/iTableCustom";
+import iTableCustom from "@/components/biddingComponents/iTableCustom";
 import { pageMixins } from "@/utils/pageMixins";
 
 export default {
