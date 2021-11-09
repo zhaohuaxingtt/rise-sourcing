@@ -1053,10 +1053,10 @@ export default {
     // 投资车型项目下拉是否禁用
     disabledInvestCarTypePro(row){
       
-      // 当模具投资变动有值时 禁用下拉
+      // 当模具投资变动没有值时 禁用下拉
       // 内容状态为 报价中 已报价 拒绝 不禁用
       const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
-      return row.mouldPriceChange || !statusDisabled || this.disabled
+      return !row.mouldPriceChange || !statusDisabled || this.disabled
 
     },
 
