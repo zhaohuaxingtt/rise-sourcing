@@ -520,8 +520,8 @@ export default {
     },
     handleHref(row){
       console.log('gegadgegee',row)
-      const a = process.env.VUE_APP_HREFSUPPLIER
-      window.open(`${a}/#/supplier/supplierList/details?supplierType=PP&id=${row.id}&subSupplierId=${row.supplierCode}`, "_blank");
+      const a = process.env.VUE_APP_PORTAL_URL
+      window.open(`${a}supplier/supplierList/details?supplierType=PP&id=${row.id}&subSupplierId=${row.supplierCode}`, "_blank");
     },
     beforeAvatarUpload(file) {
       console.log(file);
