@@ -20,7 +20,9 @@
           <div class="form">
             <div class="input-box">
               <div class="form-row">
-                <iFormItem :label="language('BIDDING_QISHIZONGJIA', '起始总价')">
+                <iFormItem
+                  :label="language('BIDDING_QISHIZONGJIA', '起始总价')"
+                >
                   <iLabel
                     :label="language('BIDDING_QISHIZONGJIA', '起始总价')"
                     slot="label"
@@ -40,11 +42,18 @@
                   </div>
                 </iFormItem>
                 <iFormItem :label="language('BIDDING_DAXIE', '大写')">
-                  <iLabel :label="language('BIDDING_DAXIE', '大写')" slot="label"></iLabel>
+                  <iLabel
+                    :label="language('BIDDING_DAXIE', '大写')"
+                    slot="label"
+                  ></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
-                      :value="totalPriceFlag ? language('BIDDING_LINGYUANZHENG','零元整') : numberUppercase"
+                      :value="
+                        totalPriceFlag
+                          ? language('BIDDING_LINGYUANZHENG', '零元整')
+                          : numberUppercase
+                      "
                       disabled
                     ></iInput>
                     <div class="form--item--number--lable">{{ unit }}</div>
@@ -57,7 +66,10 @@
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
-                  <iLabel :label="language('BIDDING_QISHINIANYUE', '起始年月')" slot="label"></iLabel>
+                  <iLabel
+                    :label="language('BIDDING_QISHINIANYUE', '起始年月')"
+                    slot="label"
+                  ></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -67,7 +79,10 @@
                   </div>
                 </iFormItem>
                 <iFormItem :label="language('BIDDING_CHEXING', '车型')">
-                  <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label"></iLabel>
+                  <iLabel
+                    :label="language('BIDDING_CHEXING', '车型')"
+                    slot="label"
+                  ></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
                       {{ tag.name }}
@@ -76,8 +91,13 @@
                 </iFormItem>
               </div>
               <div class="form-row" :class="{ hiden: hidens }">
-                <iFormItem :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')">
-                  <iLabel :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" slot="label"></iLabel>
+                <iFormItem
+                  :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')"
+                >
+                  <iLabel
+                    :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')"
+                    slot="label"
+                  ></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
                       {{ tag.name }}
@@ -95,8 +115,10 @@
     <iCard class="card">
       <div class="card--header">
         <div class="card--header--item card--header--item__top">
-          <div>{{ language('BIDDING_CHANPINXINXI', '产品信息')}}</div>
-          <div class="margin-left40">{{language('BIDDING_PLGXCCJ','批量更新出厂价')}}</div>
+          <div>{{ language("BIDDING_CHANPINXINXI", "产品信息") }}</div>
+          <div class="margin-left40">
+            {{ language("BIDDING_PLGXCCJ", "批量更新出厂价") }}
+          </div>
           <div class="margin-left10">
             <iInput
               style="width: 7.2rem"
@@ -135,44 +157,27 @@
         </tableColumnTemplate>
       </div>
     </iCard>
-    <iCard class="card">
-      <div class="card--header">
-        <div class="card--header--item card--header--item__top">
-          <div>{{ language('BIDDING_NIANJINGJIHUAANDZHEXIANLV', '年降计划 & 折现率') }}</div>
-        </div>
-      </div>
-      <div class="card--body">
-        <tableColumnTemplate
-          ref="yearsPlanTableForm"
-          :tableData="yearsPlanTable"
-          :tableTitle="yearsPlanTableColumn"
-          :selection="false"
-          :type="'1'"
-          :tableLoading="tableLoading"
-        >
-        </tableColumnTemplate>
-      </div>
+    <iCard class="card yearsPlan" title="年降计划">
+      <tableColumnTemplate
+        ref="yearsPlan"
+        :tableData="yearsPlan"
+        :tableTitle="stageColumn"
+        :selection="false"
+        :type="'4'"
+        :tableLoading="false"
+      >
+      </tableColumnTemplate>
     </iCard>
-
-    <iCard class="card">
-      <div class="card--header">
-        <div class="card--header--item card--header--item__top">
-          <div>{{ language('BIDDING_NJJJMX', '年降计划明细') }}</div>
-        </div>
-      </div>
-      <div id="purchasePlanTableForm" class="card--body">
-        <tableColumnTemplate
-          ref="purchasePlanTableForm"
-          :tableData="purchasePlanTable"
-          :tableTitle="yearsPlanTableColumn"
-          :selection="false"
-          :isSupplier="isSupplier"
-          :tableLoading="tableLoading"
-          @handleInputNum="handleInputNum"
-          @handleInputDate="handleInputDate"
-        >
-        </tableColumnTemplate>
-      </div>
+    <iCard class="card" title="年产量">
+      <tableColumnTemplate
+        ref="annualOutput"
+        :tableData="annualOutput"
+        :tableTitle="outPutColumn"
+        :selection="false"
+        :type="'5'"
+        :tableLoading="false"
+      >
+      </tableColumnTemplate>
     </iCard>
   </div>
 </template>
@@ -185,6 +190,10 @@ import {
   baseRules,
   currencyMultipleLib,
   yearsPlanTableColumn,
+  planBaseData,
+  planBaseYear,
+  stageColumn,
+  outPutColumn,
 } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import { digitUppercase } from "@/utils/digitUppercase";
@@ -193,6 +202,7 @@ import {
   getProjects,
   getCurrencyUnit,
   getUnits,
+  getDiscount,
 } from "@/api/mock/mock";
 import { findHallQuotation } from "@/api/bidding/bidding";
 import Big from "big.js";
@@ -237,10 +247,47 @@ export default {
       currencyUnit: {},
       yearsPlanTable: [],
       purchasePlanTable: [],
+      stageColumn,
+      outPutColumn,
+      yearsPlan: [],
+      annualOutput: [
+        {
+          title: "折现率",
+          stage1: 1,
+          stage2: 0.9,
+          stage3: 0.81,
+          stage4: 0.73,
+          stage5: 0.66,
+          stage6: 0.59,
+          stage7: 0.53,
+          stage8: 0.48,
+          stage9: 0.43,
+          stage10: 0.39,
+          stage11: 0.35,
+          stage12: 0.31,
+          stage13: 0.28,
+          stage14: 0.25,
+          stage15: 0.23,
+        },
+      ],
     };
   },
   mounted() {
-    this.updateRuleForm(this.initData);
+    let p = new Promise(resolve=>{
+      let o = {...planBaseData,title:'折现率'};
+      getDiscount({}).then((res) => {
+        if(res?.data != null){
+          res?.data?.md_discount_rate.map(item=>{
+            let x = Number(item.code.replace('Y','0'));
+            o[`stage${x}`]=item.describe;
+          })
+        }
+      });
+      resolve(o);
+    }).then(res=>{
+      this.annualOutput[0] = { ...res };
+      this.updateRuleForm(this.initData);
+    })
     // getModels().then((res) => {
     //   this.modelsOption = res?.data;
     // });
@@ -316,28 +363,6 @@ export default {
           document.querySelector(".routerpage").getBoundingClientRect().top;
       });
     },
-
-    handleAddYearPlan() {
-      let obj = {
-        title: this.language('BIDDING_ZHEXIANLV',"折现率"),
-        stage1: 1,
-        stage2: 0.9,
-        stage3: 0.81,
-        stage4: 0.73,
-        stage5: 0.66,
-        stage6: 0.59,
-        stage7: 0.53,
-        stage8: 0.48,
-        stage9: 0.43,
-        stage10: 0.39,
-        stage11: 0.35,
-        stage12: 0.31,
-        stage13: 0.28,
-        stage14: 0.25,
-        stage15: 0.23,
-      };
-      this.yearsPlanTable.splice(1, 0, obj);
-    },
     updateRuleForm(data) {
       this.ruleForm = {
         ...data,
@@ -374,40 +399,65 @@ export default {
         });
       });
       this.ruleForm.biddingProducts.forEach((items) => {
-        let o = items.procurePlans.reduce((obj, item) => {
-          if (!obj[item.productId]) {
-            obj[item.productId] = {
-              yearMonth: { title: "" },
-              cutPricePlan: { title: "" },
-              procureNum: { title: "" },
-            };
-          }
-          obj[item.productId].yearMonth[`stage${item.stage}`] =
-            item.procureYearMonth;
-          obj[item.productId].cutPricePlan[`stage${item.stage}`] =
-            item.cutPricePlan ;
-          obj[item.productId].procureNum[`stage${item.stage}`] =
-            item.procureNum;
-          return obj;
-        }, {});
-        this.purchasePlanTable.push({
-          ...o[items.id].yearMonth,
+        //this.ruleForm.procurePlans 年降计划
+        let o = {};
+        if (items.procurePlans?.length) {
+          o = items.procurePlans.reduce((obj, item) => {
+            if (!obj[item.productId]) {
+              obj[item.productId] = {
+                yearMonth: { title: "" },
+                cutPricePlan: { title: "" },
+              };
+            }
+            obj[item.productId].yearMonth[`stage${item.stage}`] =
+              item.procureYearMonth;
+            obj[item.productId].yearMonth[`id${item.stage}`] = item.id;
+            obj[item.productId].cutPricePlan[`stage${item.stage}`] =
+              item.cutPricePlan ? item.cutPricePlan + "%" : item.cutPricePlan;
+            obj[item.productId].cutPricePlan[`id${item.stage}`] = item.id;
+            return obj;
+          }, {});
+        }
+        this.yearsPlan.push({
+          ...planBaseYear,
+          ...o[items.id]?.yearMonth,
           title: items.fsnrGsnr,
         });
-        this.purchasePlanTable.push({
-          ...o[items.id].cutPricePlan,
+        this.yearsPlan.push({
+          ...planBaseYear,
+          ...o[items.id]?.cutPricePlan,
           title: items.productCode,
         });
-        this.purchasePlanTable.push({ ...o[items.id].procureNum, title: "" });
-      });
-      this.handleAddYearPlan();
-      let obj = { title: this.language('BIDDING_JIANGJIAJIHUA',"降价计划") };
-      if (this.ruleForm.yearsPlans?.length) {
-        this.ruleForm.yearsPlans.forEach((item) => {
-          obj[`stage${item.stage}`] = item.cutPricePlan ;
+        //this.ruleForm.productions 年产量
+        let output = {};
+        if (items.productions?.length) {
+          output = items.productions.reduce((obj, item) => {
+            if (!obj[item.productId]) {
+              obj[item.productId] = {
+                procureYearMonth: { title: "" },
+                procureNum: { title: "" },
+              };
+            }
+            obj[item.productId].procureYearMonth[`stage${item.stage}`] =
+              item.procureYearMonth;
+            obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
+            obj[item.productId].procureNum[`stage${item.stage}`] =
+              item.procureNum;
+            obj[item.productId].procureNum[`id${item.stage}`] = item.id;
+            return obj;
+          }, {});
+        }
+        this.annualOutput.push({
+          ...planBaseData,
+          ...output[items.id]?.procureYearMonth,
+          title: items.fsnrGsnr,
         });
-      }
-      this.yearsPlanTable.splice(0, 0, obj);
+        this.annualOutput.push({
+          ...planBaseData,
+          ...output[items.id]?.procureNum,
+          title: items.productCode,
+        });
+      });
     },
   },
 };

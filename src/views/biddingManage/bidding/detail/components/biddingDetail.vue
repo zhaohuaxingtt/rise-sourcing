@@ -114,44 +114,42 @@
         </commonTable>
       </div>
     </iCard>
-    <iCard class="card" v-if="ruleForm.biddingMode === '03'">
-      <div class="card--header">
-        <div class="card--header--item card--header--item__top">
-          <div>{{ language('BIDDING_NIANJINGJIHUAANDZHEXIANLV', '年降计划 & 折现率') }}</div>
-        </div>
-      </div>
-      <div class="card--body">
-        <commonTable
-          ref="yearsPlanTableForm"
-          :tableData="yearsPlanTable"
-          :tableTitle="yearsPlanTableColumn"
+    <iCard class="card yearsPlan" title="年降计划" v-if="ruleForm.biddingMode === '03'">
+      <tableColumnTemplate
+          ref="yearsPlan"
+          :tableData="yearsPlan"
+          :tableTitle="stageColumn"
           :selection="false"
-          :type="'1'"
-          :tableLoading="tableLoading"
+          :type="'4'"
+          :tableLoading="false"
+          :inputProps="biddingStatus ? [] : outPutProps"
+          :annualOutputObj="annualOutputObj"
+          :beginMonth="ruleForm.beginMonth"
+          @handlerInputBlur="handlerInputBlur"
         >
-        </commonTable>
-      </div>
+        </tableColumnTemplate>
     </iCard>
-
-    <iCard class="card" v-if="ruleForm.biddingMode === '03'">
-      <div class="card--header">
-        <div class="card--header--item card--header--item__top">
-          <div>{{language('BIDDING_NJJJMX', '年降计划明细')}}</div>
-        </div>
-      </div>
-      <div id="purchasePlanTableForm" class="card--body">
-        <commonTable
-          ref="purchasePlanTableForm"
-          :tableData="purchasePlanTable"
-          :tableTitle="yearsPlanTableColumn"
+    <iCard class="card" title="折现率" v-if="ruleForm.biddingMode === '03' && role === 'supplier'">
+      <tableColumnTemplate
+          ref="annualOutput"
+          :tableData="annualOutput1"
+          :tableTitle="outPutColumn"
           :selection="false"
-          :type="'2'"
-          :isSupplier="isSupplier"
-          :tableLoading="tableLoading"
-          :class="role === 'supplier' ? 'form-item-none' : ''"
+          :type="'5'"
+          :tableLoading="false"
         >
-        </commonTable>
-      </div>
+      </tableColumnTemplate>
+    </iCard> 
+    <iCard class="card" title="年产量" v-if="ruleForm.biddingMode === '03' && role === 'buyer'">
+      <tableColumnTemplate
+          ref="annualOutput"
+          :tableData="annualOutput"
+          :tableTitle="outPutColumn"
+          :selection="false"
+          :type="'5'"
+          :tableLoading="false"
+        >
+      </tableColumnTemplate>
     </iCard>
   </div>
 </template>
@@ -164,6 +162,10 @@ import {
   unitTableTitle,
   currencyMultipleLib,
   yearsPlanTableColumn,
+  planBaseData,
+  planBaseYear,
+  stageColumn,
+  outPutColumn,
 } from "./data";
 import { digitUppercase } from "@/utils/digitUppercase";
 import {
@@ -171,9 +173,11 @@ import {
   getProjects,
   getCurrencyUnit,
   getUnits,
+  getDiscount,
 } from "@/api/mock/mock";
 import Big from "big.js";
 import { findSupplierOffer } from "@/api/bidding/bidding";
+import tableColumnTemplate from "./tableColumnTemplate.vue";
 
 export default {
   components: {
@@ -182,6 +186,7 @@ export default {
     iFormItem,
     iLabel,
     commonTable,
+    tableColumnTemplate,
   },
   props: {
     id: String,
@@ -221,6 +226,47 @@ export default {
       currencyUnit: {},
       yearsPlanTable: [],
       purchasePlanTable: [],
+      stageColumn,
+      outPutColumn,
+      yearsPlan: [],
+      annualOutput: [{
+        title: "折现率",
+        stage1: 1,
+        stage2: 0.9,
+        stage3: 0.81,
+        stage4: 0.73,
+        stage5: 0.66,
+        stage6: 0.59,
+        stage7: 0.53,
+        stage8: 0.48,
+        stage9: 0.43,
+        stage10: 0.39,
+        stage11: 0.35,
+        stage12: 0.31,
+        stage13: 0.28,
+        stage14: 0.25,
+        stage15: 0.23,
+        }
+      ],
+      annualOutput1: [{
+        title: "折现率",
+        stage1: 1,
+        stage2: 0.9,
+        stage3: 0.81,
+        stage4: 0.73,
+        stage5: 0.66,
+        stage6: 0.59,
+        stage7: 0.53,
+        stage8: 0.48,
+        stage9: 0.43,
+        stage10: 0.39,
+        stage11: 0.35,
+        stage12: 0.31,
+        stage13: 0.28,
+        stage14: 0.25,
+        stage15: 0.23,
+        }
+      ],
     };
   },
   mounted() {
@@ -233,6 +279,7 @@ export default {
       this.quantityUnit = res.data;
     });
     this.handleSearchReset();
+    
   },
   created() {
     this.id = this.$route.params.id;
@@ -266,11 +313,29 @@ export default {
     dividedBeiShu(val){
      return Big(val).div(this.beishu).toNumber()
     },
-    async query(e) {
-      // 根据 ID 获取竞价大厅报价单列表数据
-      const res = await findSupplierOffer(e);
-      this.$emit("change-title", res);
-      this.updateRuleForm(res);
+     query(e) {
+       let p = new Promise(resolve=>{
+        let o = {...planBaseData,title:'折现率'};
+        getDiscount({}).then((res) => {
+          res?.data?.md_discount_rate.map(item=>{
+            let x = Number(item.code.replace('Y','0'));
+            o[`stage${x}`]=item.describe;
+          })
+         
+        });
+        resolve(o);
+      }).then(res=>{
+        this.annualOutput[0]={...res};
+        this.annualOutput1[0]={...res};
+        // 根据 ID 获取竞价大厅报价单列表数据
+        findSupplierOffer(e).then((res) => {
+          this.$emit("change-title", res);
+          this.updateRuleForm(res);
+        });
+      })
+      
+
+      
     },
 
     toggle() {
@@ -349,31 +414,49 @@ export default {
           obj[item.supplierProdId].yearMonth[`stage${item.stage}`] =
             item.procureYearMonth;
           obj[item.supplierProdId].cutPricePlan[`stage${item.stage}`] =
-            item.cutPricePlan ;
-          obj[item.supplierProdId].procureNum[`stage${item.stage}`] =
-            item.procureNum || 0;
+            item.cutPricePlan? item.cutPricePlan+'%':item.cutPricePlan;
           return obj;
         }, {});
         if (o[items.id] !== undefined) {
-          this.purchasePlanTable.push({
+          this.yearsPlan.push({
             ...o[items.id].yearMonth,
             title: items.fsnrGsnr,
           });
-          this.purchasePlanTable.push({
+          this.yearsPlan.push({
             ...o[items.id].cutPricePlan,
             title: items.productCode,
           });
-          this.purchasePlanTable.push({ ...o[items.id].procureNum, title: "" });
         }
       });
-      this.handleAddYearPlan();
-      let obj = { title: this.language('BIDDING_JIANGJIAJIHUA',"降价计划")};
-      if (this.ruleForm.yearsPlans?.length) {
-        this.ruleForm.yearsPlans.forEach((item) => {
-          obj[`stage${item.stage}`] = item.cutPricePlan;
-        });
-      }
-      this.yearsPlanTable.splice(0, 0, obj);
+       //this.ruleForm.productions 采购员年产量
+      this.ruleForm.biddingProducts?.forEach((items,index) => {
+        let output = {};
+        output = items.productions.reduce((obj, item) => {
+          if (!obj[item.productId]) {
+            obj[item.productId] = {
+              procureYearMonth: { title: "" },
+              procureNum: { title: "" },
+            };
+          }
+          obj[item.productId].procureYearMonth[`stage${item.stage}`] =
+            item.procureYearMonth;
+          obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
+          obj[item.productId].procureNum[`stage${item.stage}`] =
+            item.procureNum;
+          obj[item.productId].procureNum[`id${item.stage}`] = item.id;
+          return obj;
+        }, {});
+        this.annualOutput.push({
+             ...planBaseData,
+            ...output[items.id]?.procureYearMonth,
+            title: items.fsnrGsnr,
+          })
+          this.annualOutput.push({
+            ...planBaseData,
+            ...output[items.id]?.procureNum,
+            title: items.productCode,
+          })
+      })
     },
   },
 };
@@ -477,7 +560,10 @@ export default {
         }
       }
     }
-    ::v-deep .el-table {
+    
+  }
+}
+::v-deep .el-table {
       .cell {
         padding-left: 3px;
         padding-right: 3px;
@@ -493,8 +579,6 @@ export default {
         background-color: #eff5fd;
       }
     }
-  }
-}
 .rotate {
   transform: rotate(180deg);
   color: #d3d3db;

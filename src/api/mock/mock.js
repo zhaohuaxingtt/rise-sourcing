@@ -117,3 +117,11 @@ export function getProjects(data) {
     data,
   });
 }
+
+// 第三方折现率
+export function getDiscount({discount}) {
+  return requstBase({
+    url: `/web/selectDictByKeys?keys=md_discount_rate`,
+    method: "GET",
+  });
+}

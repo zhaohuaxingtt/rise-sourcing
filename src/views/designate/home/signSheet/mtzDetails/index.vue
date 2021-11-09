@@ -1,13 +1,12 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 17:50:24
- * @LastEditTime: 2021-11-08 19:27:05
+ * @LastEditTime: 2021-11-09 16:56:04
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-web\src\views\designate\home\signSheet\components\mtzDetails\index.vue
 -->
 <template>
-  <iPage>
     <div>
       <iCard class="margin-top20">
         <el-form :inline="true" :model="infoForm" label-position="left">
@@ -40,7 +39,6 @@
           <p class="headTitle">{{language('XIANGQINGLIEBIAO', '详情列表')}}</p>
           <span class="buttonBox">
             <iButton @click="handleClickChoose">{{language('XUANZE', '选择')}}</iButton>
-            <iButton @click="handleClickMove">{{language('YICHU', '移除')}}</iButton>
           </span>
         </div>
         <tableList
@@ -51,7 +49,7 @@
           :index="true"
           @handleSelectionChange="handleSelectionChange">
         </tableList>
-        <iPagination
+        <!-- <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableData)"
         @current-change="handleCurrentChange($event, getTableData)"
@@ -60,11 +58,10 @@
         :page-size="page.pageSize"
         :layout="page.layout"
         :current-page="page.currPage"
-        :total="page.totalCount"/>
+        :total="page.totalCount"/> -->
       </iCard>
-      <detail v-model="detailParams.visible" :key="detailParams.key"/>
+      <detail v-model="detailParams.visible" :key="detailParams.key" :params="detailParams.data" @handleCloseModal="handleCloseModal" @handleSubmitAdd="handleSubmitAdd"/>
     </div>
-  </iPage>
 </template>
 
 <script>
@@ -72,7 +69,7 @@ import { iCard, iButton, iInput, iPage, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { tableTitle } from './components/data'
 import detail from './components/detail'
-import { getMTZSignPage, getsignSheetDetails, removeSignsheetItems } from '@/api/designate/nomination/signsheet'
+import { getMTZSignPage, getsignSheetDetails, removeSignsheetItems, submitSignSheet, saveSignSheet } from '@/api/designate/nomination/signsheet'
 import { pageMixins } from "@/utils/pageMixins";
 export default {
   mixins: [pageMixins],
@@ -107,13 +104,12 @@ export default {
     getTableData() {
       this.loading = true
       getMTZSignPage({
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize,
-        signId: this.$route.query.id
+        size: -1,
+        signId: Number(this.$route.query.id)
+        // signId: 69
       }).then(res => {
         this.loading = false
         if (res && res.code == 200) {
-          this.page.totalCount = res.total
           this.tableListData = res.data
         } else iMessage.error(res.desZh)
       })
@@ -133,23 +129,77 @@ export default {
       this.detailParams = {
         ...this.detailParams,
         key: Math.random(),
-        visible: true
+        visible: true,
+        data: this.tableListData.map(item => item.id)
+      }
+      
+    },
+    // 关闭弹窗
+    handleCloseModal() {
+      this.detailParams = {
+        ...this.detailParams,
+        visible: false
       }
     },
-    // 点击移除
-    handleClickMove() {
-      if(this.selection && this.selection.length == 0) {
-        return iMessage.warn(this.language('QZSXZYTSJ', '请至少选中一条数据'))
-      }
-      removeSignsheetItems({
-        signId: this.$route.query.id
-      }).then(res => {
-
-      })
+    // 提交选择数据
+    handleSubmitAdd(val) {
+      this.detailParams.visible = false
+      this.$set(this, 'tableListData', this.tableListData.concat(val))
     },
     // 选中数据
     handleSelectionChange(val) {
       this.selection = val
+    },
+    // 保存
+    async handleSave () {
+      if (!this.tableListData.length) {
+        iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
+        return
+      }
+      const confirmInfo = await this.$confirm(this.language('LK_SAVESURE', '您确定要执行保存操作吗？'))
+      console.log('confirmInfo', confirmInfo);
+      if (confirmInfo !== 'confirm') return
+      const params = {
+        signId: Number(this.$route.query.id),
+        description: this.infoForm.description,
+        mtzApplyIdAttr: this.tableListData.map(o => Number(o.id))
+      }
+      const res = await saveSignSheet(params)
+      if (res.code === '200') {
+        iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+        this.getTableData()
+      } else {
+        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+      }
+    },
+    // 提交
+    async handleSubmit() {
+      const confirmInfo = await this.$confirm(this.language('submitSure', '您确定要执行提交操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      submitSignSheet({
+        signId: Number(this.$route.query.id)
+      }).then(res => {
+        if (res.code === '200') {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.getTableData()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+    // 移除
+    async handleRemove() {
+      if(this.selection && this.selection.length == 0) {
+        return iMessage.warn(this.language('QZSXZYTSJ', '请至少选中一条数据'))
+      }
+      const confirmInfo = await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
+      if (confirmInfo !== 'confirm') return
+      const arr = window._.cloneDeep(this.tableListData)
+      window._.remove(arr, (item) => {
+        return this.selection.find(selectItem => selectItem.id == item.id) 
+      })
+      this.selection = []
+      this.$set(this, 'tableListData', arr)
     }
 
   }
