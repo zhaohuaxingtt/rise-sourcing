@@ -246,6 +246,7 @@ import { iNavMvp,iMessageBox } from "rise";
 import { cloneDeep } from "lodash"
 import {selectDictByKeyss} from '@/api/dictionary'
 import store from '@/store'
+import { TP_INFO_STATUS } from "./components/data"
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -472,7 +473,7 @@ export default {
           cancelButtonText: this.language("LK_QUXIAO",'取 消'),
         }
       ).then((res) => {
-        this.patchRecords('ACCEPTED', this.selectTableData);
+        this.patchRecords(TP_INFO_STATUS.ACCEPTED, this.selectTableData); // 签收
       });
     },
     //退回
@@ -501,7 +502,7 @@ export default {
     //退回
     sureBackmark(val) {
       this.backmark = val;
-      this.patchRecords('REFUSED', this.selectTableData);
+      this.patchRecords(TP_INFO_STATUS.REFUSED, this.selectTableData); // 退回
       this.diologBack = false;
     },
     //转派
