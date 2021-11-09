@@ -18,7 +18,7 @@
                     ruleForm.biddingMode === '01'
                   "
                 >
-                  <iLabel :label="$t('总价')" slot="label"></iLabel>
+                  <iLabel :label="language('总价', '总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -30,7 +30,7 @@
                 </iFormItem>
                 <iFormItem label="起始总价" prop="totalPrices" v-else>
                   <iLabel
-                    :label="$t('起始总价')"
+                    :label="language('起始总价', '起始总价')"
                     slot="label"
                     required
                   ></iLabel>
@@ -46,7 +46,7 @@
                   </div>
                 </iFormItem>
                 <iFormItem label="大写">
-                  <iLabel :label="$t('大写')" slot="label"></iLabel>
+                  <iLabel :label="language('大写', '大写')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       v-if="
@@ -72,10 +72,10 @@
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
-                  <iLabel :label="$t('起始年月')" slot="label"></iLabel>
+                  <iLabel :label="language('起始年月', '起始年月')" slot="label"></iLabel>
                   <iDatePicker
                     style="width: 100%"
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                     value-format="yyyy-MM-dd"
                     type="month"
                     v-model="ruleForm.beginMonth"
@@ -83,12 +83,12 @@
                   />
                 </iFormItem>
                 <iFormItem label="车型" class="mutiple-form">
-                  <iLabel :label="$t('车型')" slot="label"></iLabel>
+                  <iLabel :label="language('车型', '车型')" slot="label"></iLabel>
                   <iSelect
                     v-model="ruleForm.models"
                     multiple
                     filterable
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                     disabled
                   >
                     <el-option
@@ -104,7 +104,7 @@
               <div class="form-row">
                 <iFormItem label="车型项目" class="mutiple-form">
                   <iLabel
-                    :label="$t('车型项目')"
+                    :label="language('车型项目', '车型项目')"
                     slot="label"
                     required
                   ></iLabel>
@@ -112,7 +112,7 @@
                     v-model="ruleForm.modelProjects"
                     multiple
                     filterable
-                    :placeholder="$t('LK_QINGXUANZE')"
+                    :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
                     disabled
                   >
                     <el-option
@@ -134,7 +134,7 @@
     </div>
 
     <!-- 产品信息 -->
-    <iCard class="card" :title="$t('产品信息')">
+    <iCard class="card" :title="language('BIDDING_CHANPINXINXI', '产品信息')">
       <div class="card--body">
         <commonTable
           ref="tableDataForm"
@@ -174,7 +174,7 @@
     <!-- 年降计划&折现率 -->
     <iCard
       class="card"
-      :title="$t('年降计划&折现率')"
+      :title="language('BIDDING_NJJHZXL', '年降计划&折现率')"
       v-if="ruleForm.biddingMode === '03'"
     >
       <div class="card--body">
@@ -192,7 +192,7 @@
     <!-- 采购计划 -->
     <iCard
       class="card"
-      :title="$t('年降计划明细')"
+      :title="language('BIDDING_NJJJMX', '年降计划明细')"
       v-if="ruleForm.biddingMode === '03'"
     >
       <div class="card--body">
@@ -294,15 +294,15 @@ export default {
       multiPleTableTitle,
       isApprovalOption: [
         {
-          model: this.$t("demoData1"),
+          model: this.language('demoData1', 'demoData1'),
           id: 1,
         },
         {
-          model: this.$t("demoData2"),
+          model: this.language('demoData2', 'demoData2'),
           id: 2,
         },
         {
-          model: this.$t("demoData3"),
+          model: this.language('demoData3', 'demoData3'),
           id: 3,
         },
       ],
@@ -459,8 +459,8 @@ export default {
     async query(e) {
       const res = await findMultiPrice(e);
       this.$emit("change-title", res);
-      const cutPricePlan = { title: "降价计划" };
-      const discountRate = { title: "折现率" };
+      const cutPricePlan = { title: this.language('BIDDING_JIANGJIAJIHUA',"降价计划") };
+      const discountRate = { title: this.language('BIDDING_ZHEXIANLV',"折现率") };
       // 年降计划&折现率
       res.yearsPlans?.forEach((item) => {
         cutPricePlan[`stage${item.stage}`] = item.cutPricePlan + "%";
@@ -499,7 +499,7 @@ export default {
         if (valid) {
           this.submitTableForm(tableDataForm, callback);
         } else {
-          this.$message.success("保存失败");
+          this.$message.success(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
           return;
         }
       });
@@ -550,14 +550,14 @@ export default {
           //保存
           saveUnitPrice(formData)
             .then((res) => {
-              this.$message.success("保存成功");
+              this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
               callback && callback();
             })
             .catch((err) => {
               console.log(err);
             });
         } else {
-          this.$message.success("保存失败");
+          this.$message.success(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
           return;
         }
       });

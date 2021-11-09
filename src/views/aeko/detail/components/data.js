@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-11-05 11:16:03
+ * @LastEditTime: 2021-11-09 13:47:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -21,6 +21,7 @@ export const contentDeclareTableTitle = [
   { props: "groupName", name: "AEKO组别", key: "AEKOZUBIE", fixed: true, width: "100"},
   { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, fixed: true, width: "100",isExport:true },
   { props: "partNameZh", name: "零件名称", key: "LINGJIANMINGCHENG", tooltip: true, fixed: true, width: "100",isExport:true },
+  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true, fixed: true,isExport:true },
   { props: "statusDesc", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true, fixed:true },
   { props: "isReferenceDesc", name: "相关表态", key: "XIANGGUANBIAOTAI", tooltip: true },
   { props: "changeType", name: "变更类型", key: "BIANGENGLEIXING", tooltip: true },
@@ -84,14 +85,14 @@ export const approveAttachTableTitle = [
 
 // 审批记录表头
 export const approveReCordTableTitle = [
-  { props: "akeoAuditType", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:120 },
+  { props: "akeoAuditType", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:150 },
   { props: "startUser", name: "提交人", key: "AEKO_DETAIL_RECORD_TIJIAOREN", tooltip: true,width:150 },
   { props: "assignedDeptFullCode", name: "科室", key: "LK_AEKOKESHI", tooltip: true,width:80 },
   { props: "operation", name: "操作", key: "CAOZUO", tooltip: true,width:100 },
   { props: "assigneeName", name: "操作人", key: "CAOZUOREN", tooltip: true,width:120 },
   { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true,width:140 },
-  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true,  align: 'left', width: 300},
-  { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true, width: 300, _headerRequiredRight: true },
+  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true,  align: 'left', width: 295},
+  { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true, width: 295, _headerRequiredRight: true },
   { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true,},
 ]
 

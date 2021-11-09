@@ -1,10 +1,18 @@
 import axios from "@/utils/axios";
+import store from '@/store'
+
 const requst = axios(process.env.VUE_APP_BIDDING);
+requst.interceptors.request.use(function (config) {
+  config.params = {
+    userId: store.state.permission.userInfo.id,
+  }
+  return config;
+});
 
 // 创建RFQ轮次
 export function saveBiddingInfo(data) {
   return requst({
-    url: `/bidding/biddingService/saveBiddingInfo`,
+    url: `/biddingService/saveBiddingInfo`,
     method: "POST",
     data,
   });
@@ -13,7 +21,7 @@ export function saveBiddingInfo(data) {
 //根据 ID 获取竞价项目(多价格)信息
 export function findMultiPrice(data) {
   return requst({
-    url: `/bidding/biddingQueryService/findMultiPrice`,
+    url: `/biddingQueryService/findMultiPrice`,
     method: "POST",
     data,
   });
@@ -21,7 +29,7 @@ export function findMultiPrice(data) {
 //保存(多价格)信息
 export function saveMultiPrice(data) {
   return requst({
-    url: `/bidding/biddingService/saveMultiPrice`,
+    url: `/biddingService/saveMultiPrice`,
     method: "POST",
     data,
   });
@@ -30,7 +38,7 @@ export function saveMultiPrice(data) {
 //获取货币单位
 export function getCurrencyUnit(data) {
   return requst({
-    url: `/bidding/biddingService/saveMultiPrice`,
+    url: `/biddingService/saveMultiPrice`,
     method: "POST",
     data,
   });
@@ -55,7 +63,7 @@ export function getRfqInfo(data) {
 // 根据 ID 获取报价规则
 export function findQuoteRule(data) {
   return requst({
-    url: `/bidding/biddingQueryService/findQuoteRule`,
+    url: `/biddingQueryService/findQuoteRule`,
     method: "POST",
     data,
   });
@@ -64,7 +72,7 @@ export function findQuoteRule(data) {
 // 根据 ID 获取询价管理数据
 export function findInquiry(data) {
   return requst({
-    url: `/bidding/biddingQueryService/findInquiry`,
+    url: `/biddingQueryService/findInquiry`,
     method: "POST",
     data,
   });
@@ -73,7 +81,7 @@ export function findInquiry(data) {
 //保存竞价项目(价格)信息
 export function saveUnitPrice(data) {
   return requst({
-    url: `/bidding/biddingService/saveUnitPrice`,
+    url: `/biddingService/saveUnitPrice`,
     method: "POST",
     data,
   });
@@ -82,7 +90,7 @@ export function saveUnitPrice(data) {
 // 保存报价规则
 export function saveBiddingQuoteRule(data) {
   return requst({
-    url: `/bidding/biddingService/saveBiddingQuoteRule`,
+    url: `/biddingService/saveBiddingQuoteRule`,
     method: "POST",
     data,
   });
@@ -91,7 +99,7 @@ export function saveBiddingQuoteRule(data) {
 // 保存询价管理信息
 export function saveInquiryBidding(data) {
   return requst({
-    url: `/bidding/biddingService/saveInquiryBidding`,
+    url: `/biddingService/saveInquiryBidding`,
     method: "POST",
     data,
   });
@@ -100,7 +108,7 @@ export function saveInquiryBidding(data) {
 // 根据 ID 获取竞价信息
 export function getBiddingId(data) {
   return requst({
-    url: `/bidding/biddingQueryService/findById`,
+    url: `/biddingQueryService/findById`,
     method: "POST",
     data,
   });
@@ -108,7 +116,7 @@ export function getBiddingId(data) {
 // 根据rfqCode 和 rfqRound 获取projectCode
 export function getProjectCode(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getProjectCode`,
+    url: `/biddingQueryService/getProjectCode`,
     method: "POST",
     data,
   });
@@ -117,7 +125,7 @@ export function getProjectCode(data) {
 // 填充竞价基本信息
 export function biddingInfo(data) {
   return requst({
-    url: `/bidding/biddingService/updateBiddingInfo`,
+    url: `/biddingService/updateBiddingInfo`,
     method: "POST",
     data,
   });
@@ -126,7 +134,7 @@ export function biddingInfo(data) {
 // 根据 ID 获取竞价大厅报价单列表数据
 export function findHallQuotation(data) {
   return requst({
-    url: `/bidding/biddingQueryService/findHallQuotation`,
+    url: `/biddingQueryService/findHallQuotation`,
     method: "POST",
     data,
   });
@@ -135,7 +143,7 @@ export function findHallQuotation(data) {
 // 提交报价信息
 export function saveBiddingQuotation(data) {
   return requst({
-    url: `/bidding/biddingService/saveBiddingQuotation`,
+    url: `/biddingService/saveBiddingQuotation`,
     method: "POST",
     data,
   });
@@ -144,7 +152,7 @@ export function saveBiddingQuotation(data) {
 // 分页查询获取项目列表
 export function queryProjectByPage(data) {
   return requst({
-    url: `/bidding/biddingQueryService/queryProjectByPage`,
+    url: `/biddingQueryService/queryProjectByPage`,
     method: "POST",
     data,
   });
@@ -153,7 +161,7 @@ export function queryProjectByPage(data) {
 // 删除项目信息
 export function deleteProject(data) {
   return requst({
-    url: `/bidding/biddingService/deleteBatchProject`,
+    url: `/biddingService/deleteBatchProject`,
     method: "POST",
     data,
   });
@@ -162,7 +170,7 @@ export function deleteProject(data) {
 // 删除汇率
 export function deleteExchangeRate(data) {
   return requst({
-    url: `/bidding/biddingService/deleteExchangeRate`,
+    url: `/biddingService/deleteExchangeRate`,
     method: "POST",
     data,
   });
@@ -171,7 +179,7 @@ export function deleteExchangeRate(data) {
 // 根据 ID 获取竞价大厅供应商列表数据
 export function findHallSupplier(data) {
   return requst({
-    url: `/bidding/biddingQueryService/findHallSupplier`,
+    url: `/biddingQueryService/findHallSupplier`,
     method: "POST",
     data,
   });
@@ -180,7 +188,7 @@ export function findHallSupplier(data) {
 // 查询当前供应商排名
 export function getSupplierRank(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getSupplierRank`,
+    url: `/biddingQueryService/getSupplierRank`,
     method: "POST",
     data,
   });
@@ -189,7 +197,7 @@ export function getSupplierRank(data) {
 // 竞标延期
 export function delayBidding(data) {
   return requst({
-    url: `/bidding/biddingService/delayBidding`,
+    url: `/biddingService/delayBidding`,
     method: "POST",
     data,
   });
@@ -198,7 +206,7 @@ export function delayBidding(data) {
 // 开标延期
 export function delayOpenTender(data) {
   return requst({
-    url: `/bidding/biddingService/delayOpenTender`,
+    url: `/biddingService/delayOpenTender`,
     method: "POST",
     data,
   });
@@ -207,7 +215,7 @@ export function delayOpenTender(data) {
 // 竞标取消
 export function cancelBidding(data) {
   return requst({
-    url: `/bidding/biddingService/cancelBidding`,
+    url: `/biddingService/cancelBidding`,
     method: "POST",
     data,
   });
@@ -216,7 +224,7 @@ export function cancelBidding(data) {
 // 开标取消
 export function cancelOpenTender(data) {
   return requst({
-    url: `/bidding/biddingService/cancelOpenTender`,
+    url: `/biddingService/cancelOpenTender`,
     method: "POST",
     data,
   });
@@ -225,7 +233,7 @@ export function cancelOpenTender(data) {
 // 发出本轮RFQ
 export function sendEmail(data) {
   return requst({
-    url: `/bidding/biddingService/sendInquiry`,
+    url: `/biddingService/sendInquiry`,
     method: "POST",
     data,
   });
@@ -234,7 +242,7 @@ export function sendEmail(data) {
 // 竞价作废请求
 export function invalidBidding(data) {
   return requst({
-    url: `/bidding/biddingService/invalidBidding`,
+    url: `/biddingService/invalidBidding`,
     method: "POST",
     data,
   });
@@ -243,7 +251,7 @@ export function invalidBidding(data) {
 // 项目结果
 export function getProjectResults(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getProjectResults`,
+    url: `/biddingQueryService/getProjectResults`,
     method: "POST",
     data,
   });
@@ -252,7 +260,7 @@ export function getProjectResults(data) {
 // 查询竞价大厅 曲线图
 export function getCurve(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getCurve`,
+    url: `/biddingQueryService/getCurve`,
     method: "POST",
     data,
   });
@@ -261,7 +269,7 @@ export function getCurve(data) {
 // 获取当前轮次荷氏报价
 export function getCurrentDutchOffer(data) {
   return requst({
-    url: `/bidding/biddingService/getCurrentDutchOffer`,
+    url: `/biddingService/getCurrentDutchOffer`,
     method: "POST",
     data,
   });
@@ -270,7 +278,7 @@ export function getCurrentDutchOffer(data) {
 // 保存当前轮次荷氏报价
 export function saveDutchQuotation(data) {
   return requst({
-    url: `/bidding/biddingService/saveDutchQuotation`,
+    url: `/biddingService/saveDutchQuotation`,
     method: "POST",
     data,
   });
@@ -279,7 +287,7 @@ export function saveDutchQuotation(data) {
 // 保存当前轮次荷氏报价
 export function saveNextDutchOffer(data) {
   return requst({
-    url: `/bidding/biddingService/saveNextDutchOffer`,
+    url: `/biddingService/saveNextDutchOffer`,
     method: "POST",
     data,
   });
@@ -288,7 +296,7 @@ export function saveNextDutchOffer(data) {
 // 查询竞价大厅 分项排名
 export function getItemRanking(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getItemRanking`,
+    url: `/biddingQueryService/getItemRanking`,
     method: "POST",
     data,
   });
@@ -296,7 +304,7 @@ export function getItemRanking(data) {
 // 查询竞价大厅 竞价明细
 export function getBiddingDetails(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getBiddingDetails`,
+    url: `/biddingQueryService/getBiddingDetails`,
     method: "POST",
     data,
   });
@@ -304,7 +312,7 @@ export function getBiddingDetails(data) {
 // 查询竞价大厅 项目备注
 export function getProjectRemarks(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getProjectRemarks`,
+    url: `/biddingQueryService/getProjectRemarks`,
     method: "POST",
     data,
   });
@@ -312,7 +320,7 @@ export function getProjectRemarks(data) {
 //条款/告知书发送同意/拒绝请求
 export function saveSupplierNotification(data) {
   return requst({
-    url: `/bidding/biddingService/saveSupplierNotification`,
+    url: `/biddingService/saveSupplierNotification`,
     method: "POST",
     data,
   });
@@ -320,7 +328,7 @@ export function saveSupplierNotification(data) {
 //条款/告知书发送同意/拒绝请求
 export function getSupplierNotification(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getSupplierNotification`,
+    url: `/biddingQueryService/getSupplierNotification`,
     method: "POST",
     data,
   });
@@ -328,7 +336,7 @@ export function getSupplierNotification(data) {
 // 供应商出价列表接口
 export function getSupplierBid(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getSupplierBid`,
+    url: `/biddingQueryService/getSupplierBid`,
     method: "POST",
     data,
   });
@@ -336,7 +344,7 @@ export function getSupplierBid(data) {
 // 获取当前竞价明细
 export function findSupplierOffer(data) {
   return requst({
-    url: `/bidding/biddingQueryService/findSupplierOffer`,
+    url: `/biddingQueryService/findSupplierOffer`,
     method: "POST",
     data,
   });
@@ -344,7 +352,7 @@ export function findSupplierOffer(data) {
 // 获取当前用户项目编号
 export function getQuotation(data) {
   return requst({
-    url: `/bidding/biddingQueryService/getQuotation`,
+    url: `/biddingQueryService/getQuotation`,
     method: "POST",
     data,
   });
@@ -353,7 +361,7 @@ export function getQuotation(data) {
 // 根据 RfqCode 获取询价管理数据
 export function findRfqInquiry(data) {
   return requst({
-    url: `/bidding/biddingQueryService/findRfqInquiry`,
+    url: `/biddingQueryService/findRfqInquiry`,
     method: "POST",
     data,
   });
@@ -362,7 +370,7 @@ export function findRfqInquiry(data) {
 // 根据 RfqCode 获取询价管理数据
 export function getRfqIdList(data) {
   return requst({
-    url: `/bidding/proxyService/getRfqIdList`,
+    url: `/proxyService/getRfqIdList`,
     method: "POST",
     data,
   });
@@ -372,7 +380,7 @@ export function getRfqIdList(data) {
 // 根据supplierCode获取供应商层级
 export function cbdLevel(data) {
   return requst({
-    url: `/bidding/proxyService/queryBdlCbdLevel?supplierCode=${data}`,
+    url: `/proxyService/queryBdlCbdLevel?supplierCode=${data}`,
     method: "POST",
   });
 }

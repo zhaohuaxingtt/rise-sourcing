@@ -5,7 +5,7 @@
         <div>{{ title }}</div>
         <div class="form-item-back">
           <iButton v-if="projectBack === 'back'" @click="handleBack"
-            >返回</iButton
+            >{{language('BIDDING_FANHUI', '返回')}}</iButton
           >
         </div>
         <div
@@ -23,9 +23,10 @@
               <iButton
                 v-if="ruleForm.biddingStatus === '01'"
                 @click="handelSend"
-                >{{ $t("发出本轮RFQ") }}</iButton
+                >{{ language('BIDDING_FCBLRFQ', '发出本轮RFQ') }}</iButton
               >
               <!-- 竞价 -->
+
               <iButton
                 v-if="
                   (ruleForm.roundType === '03' ||
@@ -34,7 +35,7 @@
                     ruleForm.biddingStatus === '02')
                 "
                 @click="onBiddingCancel"
-                >{{ $t("结束本轮RFQ") }}</iButton
+                >{{ language('BIDDING-JSBLRFQ', '结束本轮RFQ') }}</iButton
               >
               <!-- 开标 -->
               <iButton
@@ -44,14 +45,14 @@
                     ruleForm.biddingStatus === '03')
                 "
                 @click="onOpenCancel"
-                >{{ $t("结束本轮RFQ") }}</iButton
+                >{{ language('BIDDING_JSBLRFQ', '结束本轮RFQ') }}</iButton
               >
             </div>
             <div v-if="ruleForm.roundType === '05'">
               <iButton
                 v-if="ruleForm.biddingStatus === '01'"
                 @click="handelSend"
-                >{{ $t("发出竞价") }}</iButton
+                >{{ language('BIDDING_FACHUJINGJIA', '发出竞价') }}</iButton
               >
               <iButton
                 v-if="
@@ -61,7 +62,7 @@
                     ruleForm.biddingStatus === '02')
                 "
                 @click="onBiddingCancel"
-                >{{ $t("结束项目") }}</iButton
+                >{{ language('BIDDING_JIESHUXIANGMU', '结束项目') }}</iButton
               >
             </div>
           </template>
@@ -81,13 +82,13 @@
         <div class="project__header-btns">
           <template v-if="actived === 'filing'">
             <iButton v-if="ruleForm.biddingStatus == '06'">{{
-              $t("填写报价明细")
+              language('BIDDING_TXBJMX', '填写报价明细')
             }}</iButton>
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
-              $t("系统使用条款")
+              language('系统使用条款', '系统使用条款')
             }}</iButton> -->
             <iButton @click="handleShowNotice('02', '竞价告知书')">{{
-              $t("竞价告知书")
+              language('BIDDING_JINJIAGAOZHISHU', '竞价告知书')
             }}</iButton>
           </template>
         </div>
@@ -167,13 +168,13 @@ export default {
           return [
             {
               value: "inquiry",
-              label: "询价管理",
+              label: this.language('BIDDING_XUNJIAGUANLI','询价管理'),
               path: "biddingProjectInquiry",
             },
-            { value: "hall", label: "竞价大厅", path: "biddingProjectHall" },
+            { value: "hall", label: this.language('BIDDING_JINGJIADATING','竞价大厅'), path: "biddingProjectHall" },
             {
               value: "result",
-              label: "项目结果",
+              label: this.language('BIDDING_XIANGMUJIEGUO','项目结果'),
               path: "biddingProjectResult",
             },
           ];
@@ -181,13 +182,13 @@ export default {
           return [
             {
               value: "filing",
-              label: "建档信息",
+              label: this.language('BIDDING_JINGDANGXINXI','建档信息'),
               path: "biddingSupplierFiling",
             },
-            { value: "hall", label: "竞价大厅", path: "biddingSupplierHall" },
+            { value: "hall", label: this.language('BIDDING_JINGJIADATING','竞价大厅'), path: "biddingProjectHall" },
             {
               value: "result",
-              label: "项目结果",
+              label: this.language('BIDDING_XIANGMUJIEGUO','项目结果'),
               path: "biddingSupplierResult",
             },
           ];
@@ -197,7 +198,8 @@ export default {
     },
     title() {
       const { rfqCode, projectCode } = this.ruleForm || {};
-      return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
+      // return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
     },
   },
   watch: {
@@ -250,11 +252,11 @@ export default {
       const fromdata = { projectCode };
       cancelOpenTender(fromdata)
         .then((res) => {
-          this.$message.success("操作成功");
+          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
           location.reload();
         })
         .catch(() => {
-          this.$message.error("操作失败");
+          this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
         });
     },
     // 竞价结束本轮RFQ
@@ -263,39 +265,39 @@ export default {
       const fromdata = { projectCode };
       cancelBidding(fromdata)
         .then((res) => {
-          this.$message.success("操作成功");
+          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
           if (this.ruleForm.isRfqCompleted === null) {
             localStorage.setItem("finish", true);
           } else {
             localStorage.removeItem("finish");
-            console.log("已被删除");
+            console.log(this.language('BIDDING_YIBEISHANGCHU','已被删除'));
           }
           location.reload();
         })
         .catch(() => {
-          this.$message.error("操作失败");
+          this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
         });
     },
 
     // 发出本轮RFQ
     handelSend() {
       if (this.ruleForm.suppliers.length === 0) {
-        return this.$message.error("必须要有一个供应商");
+        return this.$message.error(this.language('BIDDING_BXYYYGGYS','必须要有一个供应商'));
       }
       if (this.ruleForm.biddingBeginTime) {
         const biddingBeginTime = new Date(this.ruleForm.biddingBeginTime);
         const date = new Date();
         if (date > biddingBeginTime) {
-          return this.$message.error("竞价开始时间已过期");
+          return this.$message.error(this.language('BIDDING_JJKSSJYGQ','竞价开始时间已过期'));
         }
       }
 
       if (this.ruleForm?.suppliers.every((item) => !item.isAttend)) {
-        return this.$message.error("供应商必须有一个参与本轮RFQ，才能发起竞价");
+        return this.$message.error(this.language('BIDDING_GYSBXYYGCYBLRFQCNFQJJ','供应商必须有一个参与本轮RFQ，才能发起竞价'));
       }
 
       if (this.ruleForm.isRfqCompleted === null) {
-        return this.$message.error("未完成询价管理设置, 无法发起竞价");
+        return this.$message.error(this.language('BIDDING_WWCXJGLSZWFFQJJ','未完成询价管理设置, 无法发起竞价'));
       }
 
       this.$refs.child.submitForm(() => {
@@ -330,7 +332,7 @@ export default {
       this.biddingFinish = localStorage.getItem("finish");
       if (val == "hall") {
         if (this.biddingFinish) {
-          console.log("未满足，不能进行查看");
+          console.log(this.language('BIDDING_WMZBNJXCK','未满足，不能进行查看'));
           return false;
         } else {
           if (biddingStatus == "01") {
@@ -359,11 +361,11 @@ export default {
           supplerCode: this.supplierCode,
         });
         if (!res.biddingNtfFlag && !res.systemUseFlag) {
-          return this.$message.error("请同意竞价告知书和系统使用条款");
+          return this.$message.error(this.language('BIDDING_QTYJJGZSHXTSYTK','请同意竞价告知书和系统使用条款'));
         } else if (!res.biddingNtfFlag && res.systemUseFlag) {
-          return this.$message.error("请同意竞价告知书");
+          return this.$message.error(this.language('BIDDING_QTYJJGZS','请同意竞价告知书'));
         } else if (res.biddingNtfFlag && !res.systemUseFlag) {
-          return this.$message.error("请同意系统使用条款");
+          return this.$message.error(this.language('BIDDING_QTYXTSYTK','请同意系统使用条款'));
         } else {
           this.$router.push({ name: item.path });
         }

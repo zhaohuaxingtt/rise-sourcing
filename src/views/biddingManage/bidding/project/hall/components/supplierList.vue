@@ -20,8 +20,8 @@
             scope.row["biddingNtfFlag"] == true &&
             scope.row["isEnter"] == true &&
             scope.row["systemUseFlag"] == true
-              ? "是"
-              : "否"
+              ? `${language('BIDDING_SHI','是')}`
+              : `${language('BIDDING_FOU','否')}`
           }}
         </div>
       </template>

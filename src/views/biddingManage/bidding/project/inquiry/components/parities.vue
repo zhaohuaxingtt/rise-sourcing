@@ -21,7 +21,7 @@
           :prop="'exchangeRates.' + index + '.currency'"
           :rules="{
             required: true,
-            message: '不能为空',
+            message: `${language('BIDDING_BUNENGWEIKONG', '不能为空')}`,
             trigger: 'change',
           }"
         >
@@ -45,7 +45,7 @@
           <iInput v-model="item.exchangeRate" disabled></iInput>
         </iFormItem>
       </div>
-      <div class="item-content3">人民币</div>
+      <div class="item-content3">{{language('BIDDING_RENMINGBI', '人民币')}}</div>
     </div>
   </el-form>
 </template>

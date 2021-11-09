@@ -105,16 +105,12 @@
           </div>
         </template>
         <template #aekoNum="scope">
-          <div style="text-align:left">
             <a class="link-underline" @click="lookDetails(scope.row)">
               {{ scope.row.aekoCode }}
             </a>
-          </div>
         </template>
         <template #auditTypeName="scope">
-          <div style="text-align:left">
             <span>{{ scope.row.auditTypeDesc }}</span>
-          </div>
         </template>
         <template #describe="scope">
           <a class="link-underline" @click="lookAEKODesc(scope.row)">
@@ -208,7 +204,7 @@ import {user as configUser} from '@/config'
 import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
 import {numberToCurrencyNo, numberToCurrencyNo2} from '../../../../utils/cutOutNum'
-import { setLogCount, setLogModule } from "@/utils";
+import { setLogCount, setLogMenu } from "@/utils";
 
 export default {
   name: "AKEOApprovedPage",
@@ -275,7 +271,7 @@ export default {
     }),
   },
   created() {
-    setLogModule('AEKO审批-列表-已审批列表')
+    setLogMenu('AEKO审批-列表-已审批列表')
     this.loadApprovedList()
     this.queryAllLin()
   },

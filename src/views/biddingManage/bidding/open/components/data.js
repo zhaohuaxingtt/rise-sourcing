@@ -1,3 +1,5 @@
+import language from "@/utils/language";
+
 // 开标信息
 export const infoForm = {
   projectType: "01", //项目类型
@@ -35,7 +37,7 @@ export const infoRules = (form) => ({
   isTax: [{ required: true, message: "请选择", trigger: "change" }],
   resultOpenForm: [{ required: true, message: "请选择", trigger: "change" }],
   "quoteRule.greenLightFrom": [
-    { pattern: /^\d+$/, message: "必须为正整数", trigger: "blur" },
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const {
@@ -99,33 +101,33 @@ export const infoRules = (form) => ({
         }
         callback();
       },
-      message: "排名区间配置错误",
+      message: language('BIDDING_PMQJPZCW',"排名区间配置错误"),
       trigger: "blur",
     },
   ],
   "quoteRule.greenLightTo": [
-    { pattern: /^\d+$/, message: "必须为正整数", trigger: "blur" },
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.yellowLightFrom": [
-    { pattern: /^\d+$/, message: "必须为正整数", trigger: "blur" },
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.yellowLightTo": [
-    { pattern: /^\d+$/, message: "必须为正整数", trigger: "blur" },
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.redLightFrom": [
-    { pattern: /^\d+$/, message: "必须为正整数", trigger: "blur" },
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.redLightTo": [
-    { pattern: /^\d+$/, message: "必须为正整数", trigger: "blur" },
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.greenDeviationValue": [
-    { pattern: /^\d+$/, message: "必须为正整数", trigger: "blur" },
-    { pattern: /^(\d|[1-9]\d|100)$/, message: "不能大于100", trigger: "blur" },
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { greenDeviationValue, yellowDeviationValue, targetPrice } = form.quoteRule;
         if (targetPrice === null || targetPrice === undefined || targetPrice === '') {
-          callback()
+          callback(new Error(rule.message))
         } else {
           greenDeviationValue ||
             0 === greenDeviationValue ||
@@ -135,13 +137,14 @@ export const infoRules = (form) => ({
             : callback(new Error(rule.message));
         }
       },
-      message: "请填写偏离目标价",
+      message: language('BIDDING_QTXPLMBJ',"请填写偏离目标价"),
       trigger: "blur",
     },
   ],
+  "quoteRule.targetPrice":[{ required: true, message: "请输入", trigger: "blur" }],
   "quoteRule.yellowDeviationValue": [
-    { pattern: /^\d+$/, message: "必须为正整数", trigger: "blur" },
-    { pattern: /^(\d|[1-9]\d|100)$/, message: "不能大于100", trigger: "blur" },
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { greenDeviationValue, yellowDeviationValue } = form.quoteRule;
@@ -153,7 +156,7 @@ export const infoRules = (form) => ({
           ? callback(new Error(rule.message))
           : callback();
       },
-      message: "不能小于等于绿灯",
+      message: language('BIDDING_BNXYDYLD',"不能小于等于绿灯"),
       trigger: "blur",
     },
   ],
@@ -162,40 +165,40 @@ export const infoRules = (form) => ({
 // 报价是否含税
 export const isTax = [
   {
-    value: "01",
-    label: "不含可抵扣税",
+    value: '01',
+    label: language('BIDDING_BHKDKS','不含可抵扣税')
   },
   {
-    value: "02",
-    label: "含税",
-  },
+    value: '02',
+    label: language('BIDDING_HANSHUI','含税')
+  }
 ];
 
 // 项目类型
 export const projectType = [
   {
-    value: "01",
-    label: "正式项目",
+    value: '01',
+    label: language('BIDDING_ZHENGSHIXIANGMU','正式项目')
   },
   {
-    value: "02",
-    label: "测试项目",
-  },
+    value: '02',
+    label: language('BIDDING_CESHIXIANGMU','测试项目')
+  }
 ];
 
 // 结果公开形式
 export const resultOpenForm = [
   {
-    value: "01",
-    label: "排名",
+    value: '01',
+    label: language('BIDDING_PAIMING','排名')
   },
   {
-    value: "02",
-    label: "红绿灯",
+    value: '02',
+    label: language('BIDDING_HONGLVDENG','红绿灯')
   },
   {
-    value: "03",
-    label: "所有排名",
+    value: '03',
+    label: language('BIDDING_SUOYOUPAIMING','所有排名')
   },
 ];
 
@@ -214,20 +217,20 @@ export const currencyUnit = [
 // 货币单位倍数
 export const currencyUnitMultiples = [
   {
-    value: "01",
-    label: "元",
+    value: '01',
+    label: language('BIDDING_YUAN','元')
   },
   {
-    value: "02",
-    label: "千",
+    value: '02',
+    label: language('BIDDING_QIAN','千')
   },
   {
-    value: "03",
-    label: "万",
+    value: '03',
+    label: language('BIDDING_WAN','万')
   },
   {
-    value: "04",
-    label: "百万",
+    value: '04',
+    label: language('BIDDING_BAIWAN','百万')
   },
 ];
 
@@ -240,23 +243,23 @@ export const attachments = [
   {
     type: "index",
     width: 80,
-    label: "序号",
+    label: language('BIDDING_XUHAO',"序号"),
   },
   {
     prop: "attachmentName",
-    label: "文件名",
+    label: language('BIDDING_WENJIANMING',"文件名"),
   },
   {
     prop: "attachmentSize",
-    label: "文件大小",
+    label: language('BIDDING_WENJIANDAXIAO',"文件大小"),
   },
   {
     prop: "uploadName",
-    label: "上传人",
+    label: language('BIDDING_SHANGCHUANREN',"上传人"),
   },
   {
     prop: "uploadDate",
-    label: "上传日期",
+    label: language('BIDDING_SHANGCHUANRIQI',"上传日期"),
   },
 ];
 
@@ -269,14 +272,14 @@ export const rulesForm = {
 export const rankShowRule = [
   {
     value: "01",
-    label: "显示本方排名",
+    label: language('BIDDING_XSBFPM',"显示本方排名"),
   },
   {
     value: "02",
-    label: "显示红绿灯（按名次区间定义）",
+    label: language('BIDDING_XSHLD(AMC QJDY)',"显示红绿灯(按名次 区间定义)"),
   },
   {
     value: "03",
-    label: "显示红绿灯（按目标价偏离比例定义）",
+    label: language('BIDDING_XSHLD(AMBJ PL BL DY)',"显示红绿灯(按目标价 偏离 比例 定义)"),
   },
 ];

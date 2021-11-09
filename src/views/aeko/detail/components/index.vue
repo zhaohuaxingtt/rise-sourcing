@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-11-04 13:41:58
+ * @LastEditTime: 2021-11-09 11:41:22
  * @LastEditors: Please set LastEditors
  * @Description: 
 -->
@@ -129,6 +129,17 @@ export default {
     // 通过permissionKey(权限)字段过滤tabs
     this.tabs = permissionArray("permissionKey", this.tabs)
 
+    // 从AEKO跳转查看跳转过来的 tab不需要展示审批附件
+    if(from =='check'){
+      let newTabs = cloneDeep(this.tabs);
+      newTabs = newTabs.filter((item)=>item.name!=='attachment');
+      // 按查看顺序排下序
+      newTabs.sort((a,b)=>{
+        return (a.checkIndex - b.checkIndex)
+      })
+      this.tabs = newTabs;
+    }
+
     
   },
   mounted() {
@@ -152,11 +163,11 @@ export default {
         {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine',permissionKey: "AEKO_AEKODETAIL_TEXT_DUE_DATE"},
       ],
       tabs: [
-        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", permissionKey: "AEKO_AEKODETAIL_TAB_PART_LIST", components: ["partsList"],index:3 },
-        { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_CONTENT_DECLARE", components: [ "contentDeclare" ],index:1  },
-        { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_COVER_DECLARE", components: ['cover'],index:2 },
+        { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", permissionKey: "AEKO_AEKODETAIL_TAB_PART_LIST", components: ["partsList"],index:3,checkIndex:3, },
+        { label: "内容表态", name: "contentDeclare", key: "NEIRONGBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_CONTENT_DECLARE", components: [ "contentDeclare" ],index:1,checkIndex:1,  },
+        { label: "封⾯表态", name: "cover", key: "FENGMIANBIAOTAI", permissionKey: "AEKO_AEKODETAIL_TAB_COVER_DECLARE", components: ['cover'],index:2 ,checkIndex:2},
         { label: "审批附件", name: "attachment", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_ATTACHMENT", components: ['attachment'],index:4 },
-        { label: "审批记录", name: "record", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_RECORD", components: ['record'],index:5  }
+        { label: "审批记录", name: "record", key: "SHENPIFUJIAN", permissionKey: "AEKO_AEKODETAIL_TAB_APPROVE_RECORD", components: ['record'],index:5,checkIndex:4  }
       ],
       isAekoManager: false,
       isCommodityCoordinator: false,

@@ -21,7 +21,7 @@ import BDL from "./components/BDL";
 import supplierScore from "./components/supplierScore";
 import moldBudgetApplication from "./components/moldBudgetApplication";
 import technicalSeminar from "./components/technicalSeminar";
-import inquiryManagement from 'front-bidding/src/views/manage/bidding/project/inquiry';
+import inquiryManagement from '@/views/biddingManage/bidding/project/inquiry';
 export default {
   components: {
     iTabsList,

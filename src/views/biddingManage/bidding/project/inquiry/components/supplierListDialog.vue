@@ -1,7 +1,7 @@
 <template>
   <!--转派-->
   <iDialog
-    :title="$t('邀请供应商')"
+    :title="language('BIDDING_YAOQINGGONGYINGSHANG', '邀请供应商')"
     :visible="show"
     @update:visible="$emit('update:show', $event)"
     append-to-body="true"
@@ -15,7 +15,7 @@
       <div class="card__body">
         <el-form :model="form" ref="ruleForm">
           <el-row>
-            <el-form-item prop="supplierType" class="el-p" :label="$t('采购类型')">
+            <el-form-item prop="supplierType" class="el-p" :label="language('BIDDING_CAIGOULEIXING', '采购类型')">
               <!-- <iInput
                 :placeholder="$t('LK_QINGSHURU')"
                 :value="form.type"
@@ -31,21 +31,21 @@
                 </el-option>
               </iSelect>
             </el-form-item>
-            <el-form-item prop="supplierName" :label="$t('公司名称')">
+            <el-form-item prop="supplierName" :label="language('BIDDING_GONGSIMINGCHENG', '公司名称')">
               <iInput
-                :placeholder="$t('LK_QINGSHURU')"
+                :placeholder="language('BIDDING_QINGSHURU', '请输入')"
                 v-model="form.supplierName"
               ></iInput>
             </el-form-item>
-            <el-form-item prop="sapCode" :label="$t('供应商编号')">
+            <el-form-item prop="sapCode" :label="language('BIDDING_GYSBH', '供应商编号')">
               <iInput
-                :placeholder="$t('LK_QINGSHURU')"
+                :placeholder="language('BIDDING_QINGSHURU', '请输入')"
                 v-model="form.sapCode"
               ></iInput>
             </el-form-item>
             <el-form-item class="el-btn">
-              <iButton @click="handleSearch">{{ $t("确认") }}</iButton>
-              <iButton @click="handleReset">{{ $t("重置") }}</iButton>
+              <iButton @click="handleSearch">{{ language('BIDDING_QUEREN', '确认') }}</iButton>
+              <iButton @click="handleReset">{{ language('BIDDING_CHONGZHI','重置') }}</iButton>
             </el-form-item>
           </el-row>
         </el-form>
@@ -54,7 +54,7 @@
           <iButton
             @click="handleChecked"
             :disabled="selectedTableData.length <= 0"
-            >{{ $t("添加") }}</iButton
+            >{{ language('BIDDING_TIANJIA', '添加') }}</iButton
           >
         </div>
         <iTableCustom
@@ -223,7 +223,7 @@ export default {
         this.selectedTableData = val;
       }
       if (isHad) {
-        this.$message.error("已存在供应商");
+        this.$message.error(this.language('BIDDING_YCZGYS', "已存在供应商"));
       }
       // this.selectedTableData = val;
     },

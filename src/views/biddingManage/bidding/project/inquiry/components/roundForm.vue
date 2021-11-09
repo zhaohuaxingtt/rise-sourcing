@@ -16,10 +16,10 @@
             prop="roundType"
             :hideRequiredAsterisk="true"
           >
-            <iLabel :label="$t('轮次类型')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_LUNCILEIXING', '轮次类型')" slot="label" required></iLabel>
             <iSelect
               v-model="ruleForm.roundType"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               @change="handleRoundType"
               :disabled="ruleForm.biddingStatus !== '01'"
             >
@@ -34,12 +34,12 @@
           </iFormItem>
           <!-- 报价截止日期 -->
           <iFormItem label="报价截止日期" prop="pricingDeadline">
-            <iLabel :label="$t('报价截止日期')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_BJJZRQ', '报价截止日期')" slot="label" required></iLabel>
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.pricingDeadline"
               :picker-options="openDeadlineTimeOptions"
               :disabled="ruleForm.biddingStatus !== '01'"
@@ -49,7 +49,7 @@
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.pricingDeadline"
               :picker-options="openDeadlineTimeOptions"
               v-else
@@ -57,7 +57,7 @@
           </iFormItem>
           <!-- 状态 -->
           <iFormItem label="状态" prop="biddingStatus">
-            <iLabel :label="$t('状态')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_ZHUANGTAI', '状态')" slot="label"></iLabel>
             <iSelect v-model="ruleForm.biddingStatus" disabled>
               <el-option
                 v-for="item in biddingStatus"
@@ -72,12 +72,12 @@
         <div class="form-row">
           <!-- 开标时间 -->
           <iFormItem label="开标时间" prop="openTenderTime">
-            <iLabel :label="$t('开标时间')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_KAIBIAOSHIJIAN', '开标时间')" slot="label" required></iLabel>
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.openTenderTime"
               :picker-options="openTenderTimeOptions"
               :disabled="ruleForm.biddingStatus !== '01'"
@@ -87,7 +87,7 @@
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.openTenderTime"
               :picker-options="openTenderTimeOptions"
               v-else
@@ -102,7 +102,7 @@
         <div class="form-row" v-if="ruleForm.biddingStatus === '08'">
           <!-- 作废原因 -->
           <iFormItem label="作废原因" prop="invalidReason">
-            <iLabel :label="$t('作废原因')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_ZUOFEIYUANYIN', '作废原因')" slot="label"></iLabel>
             <div
               :value="ruleForm.invalidReason"
               class="form-item-clo1-row1"

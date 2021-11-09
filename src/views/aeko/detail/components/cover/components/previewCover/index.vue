@@ -160,9 +160,12 @@ export default {
         const {from=''} = query;
         if(from == 'check') {
             this.isFromCheck = true;
-            this.tableTitle.push(
-                { props: "frozenTime", name: "冻结时间", key: "LK_AEKO_DONGJIESHIJIAN", tooltip: true },
-            )
+            const filterFrozen = this.tableTitle.filter((item)=>item.props === 'frozenTime');
+            if(!filterFrozen.length){
+                this.tableTitle.push(
+                    { props: "frozenTime", name: "冻结时间", key: "LK_AEKO_DONGJIESHIJIAN", tooltip: true },
+                )
+            }
         }
     },
     methods:{
@@ -179,7 +182,10 @@ export default {
                     const roleList = this.roleList;
                     this.disabled = !(roleList.includes('AEKOGLY') && data.coverStatus=='MEETING_PASS'); // AKEO管理员,AEKO状态为会议通过:可以取消通过
                     this.tableTDataCost = data.coverCostsWithCarType || []; // 费用汇总 车型维度
-                    if(type == 'refresh') this.$emit('getBbasicInfo');
+                    if(type == 'refresh'){
+                      this.$emit('getBbasicInfo');
+                      this.getLinie()
+                    }
                 }else{
                     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }

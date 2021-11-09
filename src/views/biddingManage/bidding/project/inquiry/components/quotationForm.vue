@@ -12,11 +12,11 @@
         <div class="form-row">
           <!-- 轮次类型 -->
           <iFormItem label="轮次类型" :hideRequiredAsterisk="true">
-            <iLabel :label="$t('轮次类型')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_LUNCILEIXING', '轮次类型')" slot="label"></iLabel>
             <!-- <iInput v-model="ruleForm.roundType" disabled></iInput> -->
             <iSelect
               v-model="ruleForm.roundType"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               @change="handleRoundType"
               :disabled="ruleForm.biddingStatus !== '01'"
             >
@@ -31,12 +31,12 @@
           </iFormItem>
           <!-- 报价截止日期 -->
           <iFormItem label="报价截止日期" prop="pricingDeadline">
-            <iLabel :label="$t('报价截止日期')" slot="label" required></iLabel>
+            <iLabel :label="language('BIDDING_BJJZRQ', '报价截止日期')" slot="label" required></iLabel>
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.pricingDeadline"
               :picker-options="pricingDeadlineOptions"
               :disabled="ruleForm.biddingStatus !== '01'"
@@ -46,7 +46,7 @@
               format="yyyy-MM-dd HH:mm"
               value-format="yyyy-MM-dd HH:mm:00"
               type="datetime"
-              :placeholder="$t('LK_QINGXUANZE')"
+              :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.pricingDeadline"
               :picker-options="pricingDeadlineOptions"
               v-else
@@ -54,7 +54,7 @@
           </iFormItem>
           <!-- 手工竞价项目编号 -->
           <iFormItem label="手工竞价项目编号" :hideRequiredAsterisk="true">
-            <iLabel :label="$t('手工竞价项目编号')" slot="label"></iLabel>
+            <iLabel :label="language('BIDDING_SGJJXMBH', '手工竞价项目编号')" slot="label"></iLabel>
             <iSelect
               v-model="ruleForm.associatedQuotation"
               value-key="rfqCode"

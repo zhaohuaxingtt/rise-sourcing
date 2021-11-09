@@ -1,13 +1,13 @@
 <template>
   <div id="card">
-    <iCard :title="$t('项目信息')" class="card" v-loading="reLoad">
+    <iCard :title="language('BIDDING_XIANGMUXINXI', '项目信息')" class="card" v-loading="reLoad">
       <template slot="header-control">
         <div v-if="!biddingStatus">
           <iButton
             :disabled="yingbiao"
             :class="{ yingbiao: yingbiao, unyingbiao: !yingbiao }"
             @click="handleNext"
-            >{{ $t("应标") }}</iButton
+            >{{ language('应标', '应标') }}</iButton
           >
         </div>
         <i
@@ -28,8 +28,8 @@
           <div class="form">
             <div class="input-box">
               <div class="form-row">
-                <iFormItem label="起始总价">
-                  <iLabel :label="$t('起始总价')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_QISHIZONGJIA', '起始总价')">
+                  <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input__totalprice"
@@ -43,8 +43,8 @@
                     <div class="form--item--number--lable">{{ unit }}</div>
                   </div>
                 </iFormItem>
-                <iFormItem label="大写">
-                  <iLabel :label="$t('大写')" slot="label"></iLabel>
+                <iFormItem :label="language('BIDDING_DAXIE', '大写')">
+                  <iLabel :label="language('BIDDING_DAXIE', '大写')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -61,7 +61,7 @@
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
-                  <iLabel :label="$t('开始时间')" slot="label"></iLabel>
+                  <iLabel :label="language('BIDDING_KAISHISHIJIAN', '开始时间')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -75,7 +75,7 @@
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
-                  <iLabel :label="$t('结束时间')" slot="label"></iLabel>
+                  <iLabel :label="language('BIDDING_JIESHUSHIJIAN', '结束时间')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -91,11 +91,11 @@
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
-                  <iLabel :label="$t('出价类型')" slot="label"></iLabel>
+                  <iLabel :label="language('BIDDING_CHUJIALEIXING', '出价类型')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
-                      :value="'自动应标'"
+                      :value="language('BIDDING_ZIDONGYINGBIAO', '自动应标')"
                       disabled
                     ></iInput>
                   </div>
@@ -105,7 +105,7 @@
                   prop="beginMonth"
                   :hideRequiredAsterisk="true"
                 >
-                  <iLabel :label="$t('货币单位')" slot="label"></iLabel>
+                  <iLabel :label="language('BIDDING_HUOBIDANWEI', '货币单位')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
@@ -302,7 +302,7 @@ export default {
       saveDutchQuotation(param).then((res) => {
         this.yingbiao = true;
         this.isClick = true;
-        this.$message.success("应标成功");
+        this.$message.success(this.language('BIDDING_YINGBIAOCHENGGONG', "应标成功"));
         this.handleSearchReset();
       });
     },

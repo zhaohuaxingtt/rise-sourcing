@@ -1,7 +1,7 @@
 <template>
   <div>
     <iCard
-      :title="$t('报价')"
+      :title="language('BIDDING_BAOJIA', '报价')"
       :class="{
         'can-pointer': ruleForm.biddingStatus !== '01' || !headerCollapseVal,
       }"
@@ -11,7 +11,7 @@
       <template slot="header-control">
         <i class="el-icon-success icon-success" v-show="headerCollapseVal"></i>
         <div v-show="headerCollapseVal">
-          <iButton @click="handleCheck('header')">{{ $t("查看") }}</iButton>
+          <iButton @click="handleCheck('header')">{{ language('BIDDING_CHAKAN', '查看') }}</iButton>
         </div>
 
         <div v-show="!headerCollapseVal" style="display: flex">
@@ -24,7 +24,15 @@
               isBiddingDelay
             "
             @click="onBiddingDelay"
-            >竞价延期</iButton
+            >{{ language('BIDDING_JINGJIAYANQI', '竞价延期') }}</iButton
+          >
+          <!-- 竞价大厅 -->
+          <iButton
+            v-if="
+              ruleForm.biddingStatus !== '01' 
+            "
+            @click="handleHrefHall"
+            >{{ language('BIDDING_JIANGJIADATING', '竞价大厅') }}</iButton
           >
           <!-- 开标 -->
           <iButton
@@ -34,7 +42,7 @@
               isOpenDelay
             "
             @click="onOpenDelay"
-            >开标延期</iButton
+            >{{ language('BIDDING_KAIBIAOYANQI', '开标延期') }}</iButton
           >
           <template
             v-if="
@@ -44,7 +52,7 @@
             "
           >
             <iButton v-show="isDelay" @click="handleSetting()">{{
-              ruleForm.roundType == "02" ? $t("开标设置") : $t("竞价设置")
+              ruleForm.roundType == "02" ? language('BIDDING_KAIBIAOSHEZHI', '开标设置') : language('BIDDING_JINJIASHEZHI', '竞价设置')
             }}</iButton>
           </template>
 
@@ -53,12 +61,12 @@
             <iButton
               v-if="ruleForm.biddingStatus === '01' && isOpenDelay"
               @click="handleSave('header')"
-              >{{ $t("保存") }}</iButton
+              >{{ language('BIDDING_BAOCUN', '保存') }}</iButton
             >
             <iButton
               v-if="ruleForm.biddingStatus === '01' && isOpenDelay"
               @click="handleFinish('header', 'save')"
-              >{{ $t("完成") }}</iButton
+              >{{ language('BIDDING_WANCHENG', '完成') }}</iButton
             >
           </div>
           <!-- 竞价 -->
@@ -71,7 +79,7 @@
                 isBiddingDelay
               "
               @click="handleSave('header')"
-              >{{ $t("保存") }}</iButton
+              >{{ language('BIDDING_BAOCUN', '保存') }}</iButton
             >
             <iButton
               v-if="
@@ -81,7 +89,7 @@
                 isBiddingDelay
               "
               @click="handleFinish('header', 'save')"
-              >{{ $t("完成") }}</iButton
+              >{{ language('BIDDING_WANCHENG', '完成') }}</iButton
             >
           </div>
           <!-- 竞价 -->
@@ -89,12 +97,12 @@
           <iButton
             v-if="ruleForm.roundType !== '02' && !isBiddingDelay"
             @click="onBiddingSend"
-            >发送</iButton
+            >{{ language('BIDDING_FASONG', '发送') }}</iButton
           >
           <iButton
             v-if="ruleForm.roundType !== '02' && !isBiddingDelay"
             @click="onBiddingCancel"
-            >取消</iButton
+            >{{ language('BIDDING_QUXIAO', '取消') }}</iButton
           >
 
           <!-- 开标 -->
@@ -102,12 +110,12 @@
           <iButton
             v-if="ruleForm.roundType === '02' && !isOpenDelay"
             @click="onOpenSend"
-            >发送</iButton
+            >{{ language('BIDDING_FASONG', '发送') }}</iButton
           >
           <iButton
             v-if="ruleForm.roundType === '02' && !isOpenDelay"
             @click="onOpenCancel"
-            >取消</iButton
+            >{{ language('BIDDING_QUXIAO', '取消') }}</iButton
           >
         </div>
       </template>
@@ -123,7 +131,7 @@
     </iCard>
 
     <iCard
-      :title="$t('供应商')"
+      :title="language('BIDDING_GONGYINGSHANG', '供应商')"
       :class="{
         'can-pointer': ruleForm.biddingStatus !== '01' || !contentCollapseVal,
       }"
@@ -136,17 +144,17 @@
       >
         <i class="el-icon-success icon-success" v-show="contentCollapseVal"></i>
         <div v-show="contentCollapseVal">
-          <iButton @click="handleCheck('content')">{{ $t("查看") }}</iButton>
+          <iButton @click="handleCheck('content')">{{ language('BIDDING_CHAKAN', '查看') }}</iButton>
         </div>
         <div v-show="!contentCollapseVal">
           <iButton
             v-if="ruleForm.roundType === '05'"
             @click="showSupplierDialog = true"
-            >{{ $t("邀请供应商") }}</iButton
+            >{{ language('BIDDING_YYGYS', '邀请供应商') }}</iButton
           >
-          <iButton @click="handleSave('content')">{{ $t("保存") }}</iButton>
+          <iButton @click="handleSave('content')">{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
           <iButton @click="handleFinish('content', 'save')">{{
-            $t("完成")
+            language('BIDDING_WANCHENG', '完成')
           }}</iButton>
         </div>
       </template>
@@ -187,17 +195,17 @@
         <!-- 供应商名称 -->
         <template slot="supplierName" slot-scope="scope">
           <a
-            style="color: blue"
-            href="http://10.122.17.38/portal/supplier/supplierList/details?supplierType=PP&id=150001128&subSupplierId=2150001128"
-            >{{ scope.row.supplierName }}</a
-          >
+            style="color: blue;cursor: pointer;"
+            @click="handleHref(scope.row)"
+            >{{ scope.row.supplierName }}
+          </a>
         </template>
         <!-- 联系人 -->
         <template slot="contactName" slot-scope="scope">
           <div v-if="ruleForm.biddingStatus !== '01'">
             {{ scope.row["contactName"] }}
           </div>
-          <iFormItem v-else label="联系人" >
+          <iFormItem v-else :label="language('BIDDING_LIANGXIREN', '联系人')" >
             <iSelect
               :value="scope.row['contactName']"
               value-key="nameZh"
@@ -269,7 +277,7 @@
 
     <!-- 汇率 -->
     <iCard
-      :title="$t('汇率')"
+      :title="language('BIDDING_HUILV', '汇率')"
       :class="{
         'can-pointer': ruleForm.biddingStatus !== '01' || !reatCollapseVal,
       }"
@@ -282,14 +290,14 @@
       >
         <i class="el-icon-success icon-success" v-show="reatCollapseVal"></i>
         <div v-show="reatCollapseVal">
-          <iButton @click="handleCheck('reat')">{{ $t("查看") }}</iButton>
+          <iButton @click="handleCheck('reat')">{{ language('BIDDING_CHAKAN', '查看') }}</iButton>
         </div>
         <div v-show="!reatCollapseVal">
-          <iButton @click="handleAdd">{{ $t("新增") }}</iButton>
-          <iButton @click="handleDelete">{{ $t("删除") }}</iButton>
-          <iButton @click="handleSave('reat')">{{ $t("保存") }}</iButton>
+          <iButton @click="handleAdd">{{ language('BIDDING_XINZHENG', '新增') }}</iButton>
+          <iButton @click="handleDelete">{{ language('BIDDING_SHANCHU', '删除')}}</iButton>
+          <iButton @click="handleSave('reat')">{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
           <iButton @click="handleFinish('reat', 'save')">{{
-            $t("完成")
+            language('BIDDING_WANCHENG', '完成')
           }}</iButton>
         </div>
       </template>
@@ -306,7 +314,7 @@
 
     <!-- 附件 -->
     <iCard
-      :title="$t('询价附件')"
+      :title="language('BIDDING_XUNJIAFUJIAN', '询价附件')"
       :class="{
         'can-pointer': ruleForm.biddingStatus !== '01' || !attachCollapseVal,
       }"
@@ -320,7 +328,7 @@
       >
         <i class="el-icon-success icon-success" v-show="attachCollapseVal"></i>
         <div v-show="attachCollapseVal">
-          <iButton @click="handleCheck('attach')">{{ $t("查看") }}</iButton>
+          <iButton @click="handleCheck('attach')">{{ language('BIDDING-CHAKAN', '查看') }}</iButton>
         </div>
         <div v-show="!attachCollapseVal" class="form-attchment">
           <el-upload
@@ -333,10 +341,10 @@
           >
             <iButton>新增</iButton>
           </el-upload>
-          <iButton @click="delAttachments">{{ $t("删除") }}</iButton>
-          <iButton @click="handleSave('attach')">{{ $t("保存") }}</iButton>
+          <iButton @click="delAttachments">{{language('BIDDING_SHANCHU', '删除') }}</iButton>
+          <iButton @click="handleSave('attach')">{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
           <iButton @click="handleFinish('attach', 'save')">{{
-            $t("完成")
+            language('BIDDING-WANCHENG', '完成')
           }}</iButton>
         </div>
       </template>
@@ -486,6 +494,7 @@ export default {
     },
   },
   async created() {
+    console.log('process.env.VUE_APP_HREFSUPPLIER',process.env)
     this.id = this.$route.params.id;
     const flag = this.$route.path.includes('/bidding/project/inquiry')
     if(!flag){
@@ -497,6 +506,23 @@ export default {
     this.queryCurrency();
   },
   methods: {
+    handleHrefHall(){
+      const {biddingStatus} = this.ruleForm
+      if(biddingStatus ==='02' || biddingStatus === '04'){
+        this.$router.push({
+          name:'biddingProjectHall'
+        })
+      }else if (biddingStatus === '06' || biddingStatus === '07' || biddingStatus === '08') {
+        this.$router.push({
+          name:'biddingProjectResult'
+        })
+      }
+    },
+    handleHref(row){
+      console.log('gegadgegee',row)
+      const a = process.env.VUE_APP_PORTAL_URL
+      window.open(`${a}supplier/supplierList/details?supplierType=PP&id=${row.id}&subSupplierId=${row.supplierCode}`, "_blank");
+    },
     beforeAvatarUpload(file) {
       console.log(file);
       this.size = file.size;
@@ -518,17 +544,17 @@ export default {
       }
       const isSize = file.size / 1024 / 1024 < 15;
       if (!isSize) {
-        this.$message.error(this.$t("文件大小最大限制不能超过15M"));
+        this.$message.error(this.language('BIDDING_WJDXZDXZ15M', '文件大小最大限制15M'));
       }
       return isSize;
     },
     delAttachments() {
       if (this.selectedTableData.length === 0) {
-        return this.$message.error("请选择询价附件");
+        return this.$message.error(this.language('BIDDING_QXZXJFJ','请选择询价附件'));
       }
-      this.$confirm("是否删除选中询价附件？", "提示", {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
+      this.$confirm(this.language('BIDDING_SFSCXZXJFJ',"是否删除选中询价附件？"), this.language('BIDDING_TISHI',"提示"), {
+        confirmButtonText: this.language('BIDDING_SHI',"是"),
+        cancelButtonText: this.language('BIDDING_FOU',"否"),
         type: "warning",
       })
         .then(() => {
@@ -563,15 +589,15 @@ export default {
       const fromdata = { openTenderTime, pricingDeadline, projectCode };
       let dataTime = this.orgRuleForm.pricingDeadline;
       if (dataTime >= pricingDeadline) {
-        return this.$message.error("不能小于等于当前时间");
+        return this.$message.error(this.language('BIDDING_BNXYDYDQSJ', '不能小于等于当前时间'));
       }
       delayOpenTender(fromdata)
         .then((res) => {
-          this.$message.success("操作成功");
+          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
           console.log(res);
         })
         .catch(() => {
-          this.$message.error("操作失败");
+          this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
         });
     },
     // 竞价发送
@@ -587,15 +613,15 @@ export default {
       };
       let pricingTime = this.orgRuleForm.pricingDeadline;
       if (pricingTime >= pricingDeadline) {
-        return this.$message.error("不能小于等于之前的时间");
+        return this.$message.error(this.language('BIDDING_BNXYDYZQDSJ','不能小于等于之前的时间'));
       }
       delayBidding(fromdata)
         .then((res) => {
-          this.$message.success("操作成功");
+          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
           location.reload();
         })
         .catch(() => {
-          this.$message.error("操作失败");
+          this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
         });
     },
     // 开标取消
@@ -645,11 +671,11 @@ export default {
     // 删除汇率信息
     handleDelete() {
       if (this.exchangeRateIds.length === 0) {
-        return this.$message.error("请选择汇率");
+        return this.$message.error(this.language('BIDDING_QINGXUANZEHUILV','请选择汇率'));
       }
-      this.$confirm("是否删除汇率信息？", "提示", {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
+      this.$confirm(this.language('BIDDING_SFSCHLXX',"是否删除汇率信息？"), this.language('BIDDING_TISHI',"提示"), {
+        confirmButtonText: this.language('BIDDING_SHI',"是"),
+        cancelButtonText: this.language('BIDDING_FOU',"否"),
         type: "warning",
       })
         .then(() => {
@@ -660,7 +686,7 @@ export default {
           deleteExchangeRate(param)
             .then((res) => {
               this.checkdefault = false;
-              this.$message.success("删除成功");
+              this.$message.success(this.language('BIDDING_SHANCHUCHENGGONG','删除成功'));
               this.exchangeRateIds = this.exchangeRateIds.map((item) => {
                 return item;
               });
@@ -676,7 +702,7 @@ export default {
               };
             })
             .catch(() => {
-              this.$message.error("删除失败");
+              this.$message.error(this.language('BIDDING_SHANCHUSHIBAI','删除失败'));
             });
         })
         .catch(() => {});
@@ -915,7 +941,7 @@ export default {
 
       if (roundType === "02") {
         if (deadline > openTime) {
-          return this.$message.error("开标时间必须要晚于报价截止日期");
+          return this.$message.error(this.language('BIDDING_KBSJBXYWYBJJZRQ','开标时间必须要晚于报价截止日期'));
         }
       }
       if (
@@ -923,10 +949,10 @@ export default {
         (roundType === "05" && manualBiddingType === "01")
       ) {
         if (beginTime >= end) {
-          return this.$message.error("结束时间必须要晚于开始日期");
+          return this.$message.error(this.language('BIDDING_JSSJBXYWYKSRQ','结束时间必须要晚于开始日期'));
         } else if (endTime > deadline) {
           console.log(endTime, pricingDeadline);
-          return this.$message.error("报价截止日期不晚于结束时间后3个工作日");
+          return this.$message.error(this.language('BIDDING_BJJZRQBWYJSSJH3GGZR','报价截止日期不晚于结束时间后3个工作日'));
         }
       }
       const formData = this.ruleForm;
@@ -939,7 +965,7 @@ export default {
       })
         .then((res) => {
           if (res) {
-            this.$message.success("保存成功");
+            this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
             // this.handleSearchReset();
             this.initList = {
               ...res,
@@ -947,7 +973,7 @@ export default {
             };
             callback && callback();
           } else {
-            this.$message.error("保存失败");
+            this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
           }
         })
         .catch((err) => {
@@ -974,9 +1000,10 @@ export default {
       })
         .then((res) => {
           if (res) {
-            this.$message.success("保存成功");
+            this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
             this.initSuppliers = res.suppliers?.map((supplier) => {
               this.querySuppliers(supplier.supplierCode);
+              
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -996,7 +1023,7 @@ export default {
             };
             callback && callback();
           } else {
-            this.$message.error("保存失败");
+            this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
           }
         })
         .catch((err) => {
@@ -1009,7 +1036,7 @@ export default {
         return item.currency;
       });
       if ([...new Set(currencys)].length < currencys.length) {
-        return this.$message.error("汇率不能重复");
+        return this.$message.error(this.language('BIDDING_HLBNCF','汇率不能重复'));
       }
       // this.$confirm("是否保存该轮次汇率信息？", "提示", {
       //   confirmButtonText: "是",
@@ -1025,7 +1052,7 @@ export default {
         exchangeIsCompleted: this.clickType == "save" ? 1 : 0,
       })
         .then((res) => {
-          this.$message.success("保存成功");
+          this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
           this.initRate = [...res.exchangeRates];
           this.orgRuleForm = {
             ...this.orgRuleForm,
@@ -1034,7 +1061,7 @@ export default {
           callback && callback();
         })
         .catch(() => {
-          this.$message.error("保存失败");
+          this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
         });
     },
     // 保存附件
@@ -1053,7 +1080,7 @@ export default {
         attachmentIsCompleted: this.clickType == "save" ? 1 : 0,
       })
         .then((res) => {
-          this.$message.success("保存成功");
+          this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
           this.initAttachments = [...res.attachments];
           this.orgRuleForm = {
             ...this.orgRuleForm,
@@ -1063,7 +1090,7 @@ export default {
           callback && callback();
         })
         .catch(() => {
-          this.$message.error("保存失败");
+          this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
         });
     },
     // 附件
@@ -1071,7 +1098,7 @@ export default {
       let formData = new FormData();
       formData.append("file", content.file);
       const res = await uploadFile(formData).catch((err) => {
-        this.$message.error(this.$t("上传失败"));
+        this.$message.error(this.language('BIDDING_SHANGCHUANSHIBAI', '上传失败'));
       });
       // this.attachmentId = res.id;
       this.ruleForm.attachments.push({
@@ -1081,7 +1108,7 @@ export default {
         biddingId: this.ruleForm.id,
         updateDate: "",
       });
-      this.$message.success(this.$t("上传成功"));
+      this.$message.success(this.language('BIDDINGH_SHANGCHUANCHENGGONG', '上传成功'));
       console.log(this.ruleForm.attachments);
     },
     saveForms(callback) {
@@ -1113,11 +1140,11 @@ export default {
         }[this.place],
       }).then((res) => {
         if (res) {
-          this.$message.success("保存成功");
+          this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
           // this.handleSearchReset();
           callback && callback();
         } else {
-          this.$message.error("保存失败");
+          this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
         }
       });
     },
@@ -1258,6 +1285,7 @@ export default {
             suppliers: res.suppliers?.map((supplier) => {
               console.log('obsfsaject',supplier)
               this.querySuppliers(supplier.supplierCode);
+              supplier.cbdLevel = "L1"
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1294,6 +1322,7 @@ export default {
             console.log('obsfsaject',supplier)
             this.querySuppliers(supplier.supplierCode);
             // if (!supplier.isAttend)
+            supplier.cbdLevel = "L1"
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
                 ...supplier,

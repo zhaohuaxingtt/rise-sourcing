@@ -2,11 +2,11 @@
   <iCard class="supplierTable singleSupplier">
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
-          <span v-if="!nominationDisabled && !rsDisabled">
-            <!-- 创建MTZ申请 -->
-            <iButton @click="handlecreatemtz">
-              {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
-            </iButton>
+          <!-- 创建MTZ申请 -->
+          <iButton @click="handlecreatemtz" :disabled="isMtzDisabled">
+            {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
+           </iButton>
+          <span v-if="!nominationDisabled && !rsDisabled" class="margin-left10">
             <!-- 批量编辑 -->
             <iButton @click="handleBatchEdit">
               {{ language("LK_BATCHEDIT",'批量编辑') }}
@@ -188,7 +188,8 @@ export default {
       // 全量rfqId，用于模具预算管理列表查询
       rfqIds: [],
       fsIds: [],
-      supplierIds: []
+      supplierIds: [],
+      isMtzDisabled:this.$route.query.mtzApplyId
     }
   },
   mounted() {
@@ -402,7 +403,7 @@ export default {
           // this.data = this.data.slice(0, 4)
           this.data.map(o => {
             !o.sid && (o.sid = this.randomid())
-            o.mtz == 'true' ? o.mtz = '是' : o.mtz = '否'
+            o.mtz == true ? o.mtz = '是' : o.mtz = '否'
             return
           })
           this.page.totalCount = res.total || this.data.length
@@ -447,7 +448,6 @@ export default {
           val.mtzApplyId != null ? isNullmtzApplyId = false : isNullmtzApplyId = true
           val.isBeforeFrozen === true ? isFrozen = true : isFrozen = false
         })
-        console.log(isNullmtzApplyId,isFrozen);
       if(!this.selectData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
@@ -456,9 +456,10 @@ export default {
       } else if(isFrozen == false ) {
         iMessage.error(this.language('nominationSuggestion_XUANZEDEDANGQIANDEDINGDIANSHENQINGZHUANGTAIBIXUZAISHENQINGDONGJIEZHUANGTAIZHIQIAN','选择的当前的定点申请状态必须在申请冻结状态之前'))
       }else {
-        let nom = this.selectData[0].nominateId
+        let nom = this.selectData[0].nominateId || ''
         let item =[]
-        item = this.selectData.map(val => val.partNum).join(',')
+        // let MTZappId= this.$route.query.desinateId || ''
+        item = this.selectData.map(val => val.partNum).join(',') || ''
         window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?id=`+nom+`&item=`+item,'_blank')
       }
     }

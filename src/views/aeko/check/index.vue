@@ -35,13 +35,13 @@
                   <iSelect
                     v-else
                     class="multipleSelect" 
-                    collapse-tags 
+                    collapse-tags
+                    reserve-keyword
                     :multiple="item.multiple" 
                     :filterable="item.filterable" 
                     :clearable="item.clearable" 
                     v-model="searchParams[item.props]" 
                     :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"
-                    reserve-keyword
                     @change="handleMultipleChange($event, item.props,item.multiple)"
                     :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
                     >
@@ -87,7 +87,7 @@
                   </template>
                   <!-- 审批单 -->
                   <template #assignsheet="scope">
-                    <span class="link" @click="checkAssignsheet(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+                    <span v-if="scope.row.flag" class="link" @click="checkAssignsheet(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
                   </template>
                 </tableList>
                 <!-- 分页 -->
@@ -162,7 +162,6 @@ export default {
         iCard,
         icon,
         filesListDialog,
-        logButton,
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -185,7 +184,7 @@ export default {
         leftTab:[],
         SearchList:SearchList || [],
         searchParams:{
-          brand:'',
+          brand:[''],
           buyerName:'',
           linieDeptNumList:[''],
           carTypeCodeList:[''],
@@ -217,6 +216,7 @@ export default {
         selectItems:[],
         filesVisible:false,
         itemFileData:{},
+        debouncer: null,
       }
     },
     methods:{
@@ -226,7 +226,7 @@ export default {
         },
         reset(){
           this.searchParams = {
-            brand:'',
+            brand:[''],
             buyerName:'',
             linieDeptNumList:[''],
             carTypeCodeList:[''],
@@ -251,8 +251,8 @@ export default {
               aekoCode,
               partNum,
               buyerName,
-              brand,
               linieDeptNumList:linieDeptNumList.length && linieDeptNumList[0]=='' ? undefined : linieDeptNumList,
+              brand:brand.length && brand[0]=='' ? undefined : brand,
               aekoStatusList:aekoStatusList.length && aekoStatusList[0]=='' ? undefined : aekoStatusList,
               coverStatusList:coverStatusList.length && coverStatusList[0]=='' ? undefined : coverStatusList,
               carTypeCodeList:cartypeArr,

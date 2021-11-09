@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-09-13 18:25:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 21:54:48
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
 -->
@@ -231,10 +231,8 @@ export default {
             this.$router.push({
               path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
               query: {
-                item: JSON.stringify({ 
-                  ...res.data[0]
-                }),
-                businessKey:res.data[0].partProjectType
+                businessKey:res.data[0].partProjectType,
+                projectId: res.data[0].id,
               }
             })
           } else {
