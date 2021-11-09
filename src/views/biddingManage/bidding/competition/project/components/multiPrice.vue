@@ -1141,32 +1141,26 @@ export default {
       };
       this.yearsPlanTable.splice(1, 0, obj);
     },
-     query(e) {
+    async query(e) {
       // 根据ID查询条款信息
       this.tableLoading = true;
-      
-      let p = new Promise(resolve=>{
-        let o = {...planBaseData,title:'折现率'};
-        getDiscount({}).then((res) => {
-          if(res?.data != null){
-            res?.data?.md_discount_rate.map(item=>{
-              let x = Number(item.code.replace('Y','0'));
-              o[`stage${x}`]=item.describe;
-            })
-          }
+      let o = {...planBaseData,title:'折现率'};
+      const res = await  getDiscount({});
+      if(res?.data != null){
+        res?.data?.md_discount_rate.map(item=>{
+          let x = Number(item.code.replace('Y','0'));
+          this.$set(o,`stage${x}`,item.describe)
+        })
+      }
+      this.annualOutput[0]={...o};
+      findMultiPrice(e)
+        .then((res) => {
+          this.updateRuleForm(res);
+          this.tableLoading = false;
+        })
+        .catch((err) => {
+          this.tableLoading = false;
         });
-        resolve(o);
-      }).then(res=>{
-        this.annualOutput[0]={...res};
-        findMultiPrice(e)
-          .then((res) => {
-            this.updateRuleForm(res);
-            this.tableLoading = false;
-          })
-          .catch((err) => {
-            this.tableLoading = false;
-          });
-      })
     },
     updateRuleForm(data) {
       this.ruleForm = {
