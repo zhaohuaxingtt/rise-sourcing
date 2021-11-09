@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-09 17:01:08
+ * @LastEditTime: 2021-11-09 17:02:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -618,11 +618,10 @@ export default {
       }})
     },
     isAea(str) {
-      for (var i in str) {
-        var asc = str.charCodeAt(i);
-        if (asc >= 48 && asc <= 57) {
-            return true;
-        }
+      var asc1 = str.charCodeAt(0);
+      var asc2 = str.charCodeAt(1);
+      if (asc1 > 57 && asc2 >= 48 && asc2 <= 57) {
+          return true;
       }
       return false;
     },
