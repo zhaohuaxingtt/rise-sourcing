@@ -1,13 +1,8 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
-<<<<<<< HEAD
- * @LastEditTime: 2021-11-09 21:51:50
+ * @LastEditTime: 2021-11-10 01:50:13
  * @LastEditors:  
-=======
- * @LastEditTime: 2021-11-09 11:03:46
- * @LastEditors: Please set LastEditors
->>>>>>> ec04077b7549bdc973705c590551bc1db0aa6b82
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
@@ -76,14 +71,19 @@
           </el-col>
         </el-row>
       </el-form>
-      <div class="btn-right">
+    </iCard>
+    <iCard class="margin-top20">
+      <div class="margin-bottom20 clearFloat">
+       <span class="font18 font-weight">{{language('XIANGQINGLIEBIAO', '详情列表')}}</span>
+      <div class="floatright" v-if="mode === 'add'">
         <iButton @click="chooseSignsheet()">
           {{ language("XUANZE", '选择') }}
         </iButton>
-          <iButton @click="handleRemove"
-                   v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
-            {{ language("YICHU",'移除') }}
-          </iButton>
+        <iButton @click="handleRemove"
+                  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
+          {{ language("YICHU",'移除') }}
+        </iButton>
+      </div>     
       </div>
       <!-- 表格 -->
       <tablelist class="margin-top20"
