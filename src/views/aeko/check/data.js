@@ -15,7 +15,7 @@ export const SearchList = [
     {props:'aekoStatusList',label:'AEKO状态',type:'select',labelKey:'LK_AEKOZHUANGTAI',selectOption:'aekoStatusList',permissionKey:'AEKO_CHECKLIST_SELECT_AEKOSTATUS|AEKO状态',multiple:true,clearable:true},
     {props:'coverStatusList',label:'封面状态',type:'select',labelKey:'LK_AEKOFENGMIANZHUANGTAI',selectOption:'coverStatusList',permissionKey:'AEKO_CHECKLIST_SELECT_COVERSTATUS|封面状态',multiple:true,clearable:true},
     {props:'frozenDate',label:'冻结⽇期',type:'datePicker',labelKey:'LK_AEKODONGJIERIQI',permissionKey:'AEKO_CHECKLIST_DATEPICKER_FROZENDATE|冻结⽇期',}, 
-    {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey:'AEKO_CHECKLIST_SELECT_BRAND|品牌'},
+    {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey:'AEKO_CHECKLIST_SELECT_BRAND|品牌',multiple:true,clearable:true},
 ]
 
 // 表头
