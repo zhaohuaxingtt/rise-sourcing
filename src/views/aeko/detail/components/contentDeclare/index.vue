@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-09 14:42:44
+ * @LastEditTime: 2021-11-09 17:01:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -428,7 +428,7 @@ export default {
     from=='manage'?setLogMenu('AEKO管理-详情页-内容表态'):setLogMenu('AEKO表态-详情页-内容表态')
     // AEKO查看跳转过来的数据table的新承运方式和原承运方式合并成一列 显示采购员 并且只固定AEKO组别、零件号、零件名称【蓝湖上面看到的】
     if(from == 'check'){
-      const filterTable = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc');
+      let filterTable = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc');
       filterTable.map((item)=>{
         if(item.props=='groupName' || item.props =='partNum' || item.props=='partNameZh'){
           item.fixed = true;
@@ -436,6 +436,7 @@ export default {
           item.fixed = false;
         }
       })
+      this.tableTitle = filterTable;
     }else{
       this.tableTitle = tableTitle.filter((item)=>item.props!='tranWayDesc'&&item.props!='buyerName')
     }
