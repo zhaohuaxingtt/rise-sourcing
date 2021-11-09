@@ -445,7 +445,7 @@ export function saveSkdCostSummary(data) {
 // 获取SKD模具费用
 export function getMouldFeeSKD(data) {
   return requst({
-    url: '/part/getMouldFeeSKD',
+    url: `/part/getMouldFeeSKD?supplierId=${ supplierId() }`,
     method: 'POST',
     data
   })
@@ -454,7 +454,7 @@ export function getMouldFeeSKD(data) {
 // 获取SKD开发费用
 export function getDevFeeSKD(data) {
   return requst({
-    url: '/part/getDevFeeSKD',
+    url: `/part/getDevFeeSKD?supplierId=${ supplierId() }`,
     method: 'POST',
     data
   })

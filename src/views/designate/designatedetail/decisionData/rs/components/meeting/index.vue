@@ -63,9 +63,10 @@
         </template>
 
       </tableList>
+      <!-- v-if="isPreview" -->
       <div class="beizhu">
         备注 Remarks:
-        <div class="beizhu-value" v-if="isPreview">
+        <div class="beizhu-value">
           <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
         </div>
       </div>
@@ -79,7 +80,7 @@
     <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
       <div class="meetingRemark">
-        <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+        <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
           <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
           <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
         </div>
@@ -303,7 +304,7 @@ export default {
      */    
     init() {
       this.getTopList()
-      // this.getRemark()
+      this.getRemark()
       this.getDepartApproval()
       this.getPrototypeList()
       this.getIsSingle()
@@ -365,7 +366,7 @@ export default {
           res.data.forEach(element => {
             this.remarks[element.remarkType] = element.remark || ''
             this.remarkItem = meetingRemark.map(item => {
-              return {...item, value: this.remarks[item.type]}
+              return {...item, value: this.remarks[item.remarkType]}
             })
           })
         } else {
