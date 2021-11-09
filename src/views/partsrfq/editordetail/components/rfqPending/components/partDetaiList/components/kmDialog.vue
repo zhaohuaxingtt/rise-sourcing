@@ -1,7 +1,7 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-08-14 14:08:37
+ * @LastEditTime: 2021-11-09 20:40:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
@@ -201,8 +201,11 @@ export default {
       .catch(() => this.recallLoading = false)
     },
     cellClass(row) {
-      if (row.row.cbdLevelCode != "3" || !row.row.isQuotationCbd || row.row.isQuotationCbd === "否") {
-        return "hideCheckbox"
+      if(!row.row.isQuotationCbd || row.row.isQuotationCbd === "否"){
+        // l1 l2 层级只有当heavyItem 中包含 buc才会限制
+        if(row.row.cbdLevelCode != "3" && row.row.heavyItem && row.row.heavyItem.indexOf('BUC')> -1){
+          return "hideCheckbox"
+        }
       }
     }
   }

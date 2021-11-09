@@ -11,7 +11,7 @@
       <div :style="'background:'+color[index]" class="circle margin-right4"></div>
       <div class="margin-left10">{{item.name}}</div>
     </div>
-    <div class="flex-align-center" v-if="mapListData.purchaseDataList.length">
+    <div class="flex-align-center" v-if="mapListData.purchaseDataList && mapListData.purchaseDataList.length">
       <icon name="iconshangqidazhong" symbol></icon>
       <div class="margin-left10">{{language("SHANGQIDAZONGGONGCHANGMINGCHEN",'上汽大众工厂')}}</div>
     </div>

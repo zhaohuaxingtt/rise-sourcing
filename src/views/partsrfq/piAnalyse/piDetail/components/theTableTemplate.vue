@@ -21,7 +21,7 @@
   >
     <el-table-column v-if="selection"
                      type='selection'
-                     width="50"
+                     width="55"
                      align='center'></el-table-column>
     <el-table-column v-if='index'
                      type='index'

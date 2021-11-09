@@ -8,7 +8,7 @@
 -->
 <template>
 	<el-table class="table" :data="tableData" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" v-loading="tableLoading" @selection-change="handleSelectionChange">
-		<el-table-column type="selection" align="center" width="40"></el-table-column>
+		<el-table-column type="selection" align="center" width="55"></el-table-column>
 		<el-table-column type="index" align="center" label="#"></el-table-column>
 		<template v-for="(item, index) in tableTitle">
 			<el-table-column :key="index" align='center' :label="item.key ? language(item.key,item.name) : item.name" :prop="item.props">

@@ -1,13 +1,13 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-06 12:16:46
+ * @LastEditTime: 2021-11-09 17:11:42
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
   <div class="aPriceChange">
-    <iCard class="mb-20">
+    <!-- <iCard class="mb-20">
       <p class="title mb-20">{{ language("BIANDONGZHI", "变动值") }}</p>
       <div class="input">
         <span class="label"
@@ -15,7 +15,7 @@
         >
         <iText>{{ floatFixNum(apriceChange) }}</iText>
       </div>
-    </iCard>
+    </iCard> -->
     <iCard class="mb-20">
       <p class="title mb-20">
         <span>{{ `${language("BIANDONGZHI", "变动值")} - CBD` }}</span>
@@ -54,7 +54,7 @@
       </div>
       <div
         v-if="
-          Array.isArray(partsCostTableData) && partsCostTableData.length > 0
+          Array.isArray(partsCostTableData) && partsCostTableData.length > 0 && cbdCanEdit
         "
       >
         <i class="topCutLine"></i>
@@ -125,7 +125,7 @@
       <div
         v-if="
           Array.isArray(manufacturingCostTableData) &&
-          manufacturingCostTableData.length > 0
+          manufacturingCostTableData.length > 0&&cbdCanEdit
         "
       >
         <i class="topCutLine"></i>
@@ -188,7 +188,7 @@
         </el-table>
       </div>
       <div class="flexBox">
-        <div v-if="Array.isArray(scrapCostTable) && scrapCostTable.length > 0">
+        <div v-if="Array.isArray(scrapCostTable) && scrapCostTable.length > 0 && cbdCanEdit">
           <i class="topCutLine"></i>
           <p class="title mb-20">
             2.3 {{ language("BAOFEICHENGBEN", "报废成本") }}
@@ -207,7 +207,7 @@
         </div>
         <div
           v-if="
-            Array.isArray(managementFeeTable) && managementFeeTable.length > 0
+            Array.isArray(managementFeeTable) && managementFeeTable.length > 0 &&cbdCanEdit
           "
         >
           <i class="topCutLine"></i>
@@ -224,7 +224,7 @@
             </tableList>
           </div>
         </div>
-        <div v-if="Array.isArray(otherFeesTable) && otherFeesTable.length > 0">
+        <div v-if="Array.isArray(otherFeesTable) && otherFeesTable.length > 0 && cbdCanEdit">
           <i class="topCutLine"></i>
           <p class="title mb-20">
             2.5 {{ language("QITAFEIYONG", "其他费用") }}
@@ -241,7 +241,7 @@
             </tableList>
           </div>
         </div>
-        <div v-if="Array.isArray(profitTable) && profitTable.length > 0">
+        <div v-if="Array.isArray(profitTable) && profitTable.length > 0 && cbdCanEdit">
           <i class="topCutLine"></i>
           <p class="title mb-20">2.6 {{ language("LIRUN", "利润") }}</p>
           <div class="main">
@@ -309,6 +309,10 @@ export default {
         };
       },
     },
+    cbdCanEdit:{
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {
@@ -324,7 +328,7 @@ export default {
   computed: {
     // 变动值-CBD
     tableData() {
-      if (this.Data?.cbdLevelVO) {
+      if (this.Data?.cbdLevelVO&&this.cbdCanEdit) {
         return [this.Data.cbdLevelVO];
       }
       return [];

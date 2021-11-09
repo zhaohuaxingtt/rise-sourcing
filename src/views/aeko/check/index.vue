@@ -87,7 +87,7 @@
                   </template>
                   <!-- 审批单 -->
                   <template #assignsheet="scope">
-                    <span class="link" @click="checkAssignsheet(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+                    <span v-if="scope.row.flag" class="link" @click="checkAssignsheet(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
                   </template>
                 </tableList>
                 <!-- 分页 -->
@@ -184,7 +184,7 @@ export default {
         leftTab:[],
         SearchList:SearchList || [],
         searchParams:{
-          brand:'',
+          brand:[''],
           buyerName:'',
           linieDeptNumList:[''],
           carTypeCodeList:[''],
@@ -226,7 +226,7 @@ export default {
         },
         reset(){
           this.searchParams = {
-            brand:'',
+            brand:[''],
             buyerName:'',
             linieDeptNumList:[''],
             carTypeCodeList:[''],
@@ -251,8 +251,8 @@ export default {
               aekoCode,
               partNum,
               buyerName,
-              brand,
               linieDeptNumList:linieDeptNumList.length && linieDeptNumList[0]=='' ? undefined : linieDeptNumList,
+              brand:brand.length && brand[0]=='' ? undefined : brand,
               aekoStatusList:aekoStatusList.length && aekoStatusList[0]=='' ? undefined : aekoStatusList,
               coverStatusList:coverStatusList.length && coverStatusList[0]=='' ? undefined : coverStatusList,
               carTypeCodeList:cartypeArr,

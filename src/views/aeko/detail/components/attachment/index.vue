@@ -117,7 +117,7 @@ export default {
   created(){
     const {query} = this.$route;
     const {from=''} = query;
-    from=='manage'?setLogMenu('AEKO管理-详情页-审批附件'):setLogMenu('AEKO表态-详情页-审批附件')
+    from=='manage'?setLogMenu('AEKO管理-详情页'):setLogMenu('AEKO表态-详情页-审批附件')
   },
   mounted() {
     this.getFetchData()

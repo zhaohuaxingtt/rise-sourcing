@@ -23,7 +23,7 @@
         <!----------------------------存在二级表头的情况------------------------------->
         <template v-if='items.list && items.list.length > 0'>
            <template v-for="(itemss,indexs) in items.list">
-              <el-table-column v-if="selection && itemss.props == 'selection'" :key="indexs" type='selection' width="50" align='center'></el-table-column>
+              <el-table-column v-if="selection && itemss.props == 'selection'" :key="indexs" type='selection' width="55" align='center'></el-table-column>
               <el-table-column v-else-if='indexKey && itemss.props == "index"' :key="indexs" type='index' width='50' align='center' label='#'>
                 <template slot-scope="scope">{{tableIndexString+(scope.$index+1)}}</template>
               </el-table-column>

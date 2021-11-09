@@ -1,5 +1,5 @@
 <template>
-  <i-dialog :title="language('LK_AEKO_JIESHIFUJIANCHAKAN','解释附件查看')" :visible.sync="value"
+  <i-dialog title="解释附件查看" :visible.sync="value"
             @close="clearDiolog"
             top="40vh">
     <i-table-custom class="margin-bottom20 padding-bottom30" :columns='explainAttachment'
@@ -64,7 +64,7 @@ export default {
         },
         {
           prop: 'fileSize',
-          label: '文件大小',
+          label: '文件大小(MB)',
           i18n: 'WENJIANDAXIAO',
           headerAlign: 'center',
           align: 'center',

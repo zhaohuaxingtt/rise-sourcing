@@ -1,12 +1,13 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-08 15:16:30
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-09 21:23:25
  * @Description: 
 -->
 <template>
-  <div class="aeko-assign" v-permission.auto="AEKO_APPROVE_APPROVELIST_PAGE|Aeko审批分配列表">
+  <iPage class="aeko-assign" v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_PAGE|Aeko分配列表">
+    <projectHeader :subNavList="SUBMENU" />
     <!-- 搜索 -->
     <search @search="getFetchData" ref="search"/>
     <!-- 表格 -->
@@ -14,7 +15,8 @@
       <div class="editControl">
         <iButton
             class="floatright margin-bottom20"
-            v-permission.auto="AEKO_APPROVE_APPROVELIST_PAGE_ASSIGN|分配"
+            :loading="assigning"
+            v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_PAGE_ASSIGN|分配"
             @click="assign"
         >
           {{ language('LK_FENPAI', '分派') }}
@@ -39,7 +41,7 @@
             headerAlign: 'left'
           }"
           v-loading="tableLoading"
-          v-permission.auto="AEKO_APPROVE_APPROVELIST_TABLE|表格"
+          v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_TABLE|表格"
           @handleSelectionChange="handleSelectionChange"
       >
         <template #isTop="scope">
@@ -99,13 +101,14 @@
           :total="page.totalCount"/>
       </div>
     </iCard>
-  </div>
+  </iPage>
 </template>
 <script>
-import search from '../components/search'
-import {tableTitle} from '../components/data'
+import search from './components/search'
+import {tableTitle, SUBMENU} from './components/data'
+import projectHeader from '@/views/aeko/approve/components/projectHeader'
 import tablelist from 'rise/web/components/iFile/tableList';
-import {iCard, iSelect, iButton, iPagination, icon, iMessage} from 'rise'
+import {iPage, iCard, iSelect, iButton, iPagination, icon, iMessage} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
 import {user as configUser} from '@/config'
 import { setLogMenu } from "@/utils";
@@ -120,16 +123,19 @@ import {
 export default {
   mixins: [pageMixins],
   components: {
+    iPage,
     iCard,
     iSelect,
     iButton,
     iPagination,
     icon,
     search,
-    tablelist
+    tablelist,
+    projectHeader
   },
   data() {
     return {
+      SUBMENU,
       tableTitle,
       tableListData: [],
       tableSelecteData: [],
@@ -139,11 +145,13 @@ export default {
       // 对应股长
       buyerSelectOPtions: [],
       // 加载中
-      optionLoading: false
+      optionLoading: false,
+      // 分配中
+      assigning: false
     }
   },
   created() {
-    setLogMenu('AEKO管理-AEKO分配')
+    setLogMenu('AEKO审批-详情页-待审批列表-审批单')
   },
   mounted() {
     this.getFetchData()
@@ -372,6 +380,7 @@ export default {
       console.log('parmas', selectedData, parmas)
       this.$confirm(this.language('NINQUEDINGYAOZHIXINGFENPAI', '您确定要执行分派吗')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
+          this.assigning = true
           approveDistributionSave(parmas).then(res => {
             if (res.code === '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
@@ -379,8 +388,12 @@ export default {
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
+            this.assigning = false
           }).catch(e => {
             iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn);
+            this.assigning = false
+          }).finally(() => {
+            this.assigning = false
           })
         }
       })
