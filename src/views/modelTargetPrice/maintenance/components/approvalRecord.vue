@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 16:30:06
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-02 14:05:00
+ * @LastEditTime: 2021-11-08 17:45:37
  * @Description: 审批记录弹窗
- * @FilePath: \front-web\src\views\modelTargetPrice\maintenance\components\approvalRecord.vue
+ * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\components\approvalRecord.vue
 -->
 <template>
   <iDialog 
@@ -33,7 +33,7 @@ import { iDialog, iPagination, iMessage } from 'rise'
 import tableList from '../../components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { approvalTableTitle } from '../data'
-import { getApprovalHistoryList } from "@/api/financialTargetPrice/index"
+import { getApprovalPage } from "@/api/modelTargetPrice/index"
 export default {
   mixins: [pageMixins],
   components: { iDialog, tableList, iPagination },
@@ -80,11 +80,10 @@ export default {
       }
       this.tableLoading = true
       const params = {
-        id: this.id,
-        pageNo: this.page.currPage,
-        pageSize: this.page.pageSize
+        current: this.page.currPage,
+        size: this.page.pageSize
       }
-      getApprovalHistoryList(params).then(res => {
+      getApprovalPage(this.id, params).then(res => {
         if(res.result) {
           this.page = {
             ...this.page,
