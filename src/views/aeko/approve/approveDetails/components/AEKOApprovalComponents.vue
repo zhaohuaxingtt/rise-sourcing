@@ -273,7 +273,7 @@ created(){
         if (item.approvalResult != 1) {
           if (item.auditOpinion == null || item.auditOpinion == '') {
 
-            return this.$message.error(this.language('LK_AEKO_QINGTIANXIESHENPIYIJIAN', '请填写审批意见'))
+            return this.$message.error('请填写审批意见')
           }
         }
       }
