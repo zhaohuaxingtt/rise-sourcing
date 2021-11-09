@@ -17,7 +17,7 @@
       </div>
       <div class="tip" v-if="showTip" slot="reference">
         <div class="image-box">
-          <img src="src/assets/images/tool-tip.svg" />
+          <img src="~@/assets/images/tool-tip.svg" />
         </div>
       </div>
     </el-popover>
