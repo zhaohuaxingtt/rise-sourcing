@@ -71,8 +71,6 @@ export default {
   methods: {
     // 初始化数据
     init() {
-      console.log("获取初始化数据");
-      console.log(this.workFlowId);
       this.workFlowId ? this.getMoulds() : this.getMouldsByLinie();
     },
     // 获取数据
