@@ -226,6 +226,7 @@ export default {
       transmitObj.aekoApprovalDetails.workFlowId ||
       transmitObj.aekoApprovalDetails.workFlowDTOS[0]?.workFlowId ||
       "";
+    console.log('----',this.workFlowId)
     this.workFlowId ? this.getTableData() : this.alterationCbdSummaryByLinie();
   },
   methods: {
