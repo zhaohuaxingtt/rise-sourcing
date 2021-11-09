@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-11-05 11:16:03
+ * @LastEditTime: 2021-11-09 13:47:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -21,6 +21,7 @@ export const contentDeclareTableTitle = [
   { props: "groupName", name: "AEKO组别", key: "AEKOZUBIE", fixed: true, width: "100"},
   { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, fixed: true, width: "100",isExport:true },
   { props: "partNameZh", name: "零件名称", key: "LINGJIANMINGCHENG", tooltip: true, fixed: true, width: "100",isExport:true },
+  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true, fixed: true,isExport:true },
   { props: "statusDesc", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true, fixed:true },
   { props: "isReferenceDesc", name: "相关表态", key: "XIANGGUANBIAOTAI", tooltip: true },
   { props: "changeType", name: "变更类型", key: "BIANGENGLEIXING", tooltip: true },

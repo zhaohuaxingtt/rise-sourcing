@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors:  
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -40,7 +40,7 @@
         {{ language('LK_TIANJIA','添加') }}
       </iButton>
     </div>
-    <partsTable v-if="!disabled" ref="partsTable" :rfqId="rfqId" :queryForm="queryForm" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
+    <partsTable v-if="!disabled && rfqId" ref="partsTable" :rfqId="rfqId" :queryForm="queryForm" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM ---------->
@@ -96,8 +96,7 @@ export default {
     icon
   },
   async mounted() {
-    const {query} = this.$route;
-    const {id,businessKey} = query;
+    const {id,businessKey} = this.$route.query;
     // this.rfqId = this.$route.query.id
     this.rfqId = id || '';
 
@@ -217,7 +216,7 @@ export default {
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
-          res.data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = '否'})
+          res.data.forEach(val => {val.mtz == true ? val.mtz = '是' : val.mtz = '否'})
           this.tableListData = Array.isArray(res.data) ? res.data : []
           if (this.tableListData.length) {
             this.queryForm = {

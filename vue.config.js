@@ -117,6 +117,13 @@ module.exports = {
     https: false,
     hot: true,
     proxy: {
+      '/mtzApi':{
+        target: 'http://10.122.17.38:8046',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/mtzApi': '',
+        },
+      },
       '/tpInfoApi': {
         target: 'http://10.122.17.38:8023',
         changeOrigin: true,
@@ -244,11 +251,11 @@ module.exports = {
           '^/biddingApi': '',
         },
       },
-      '/baseInfo': {
+      '/baseinfo': {
         target: 'http://10.122.17.38:8011/baseinfo',
         changeOrigin: true,
         pathRewrite: {
-          '^/baseInfo': '',
+          '^/baseinfo': '',
         },
       },
       "/supplierservice": {

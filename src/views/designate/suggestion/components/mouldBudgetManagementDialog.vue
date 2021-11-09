@@ -39,8 +39,8 @@
           <span>{{ scope.row.applyTime | dateFilter("YYYY-MM-DD") }}</span>
         </template>
         <template #budget="scope">
-          <iInput class="input-center" v-model="scope.row.budget" v-if="!nominationDisabled && !rsDisabled" @input="handleInputByBudget($event, scope.row)" />
-          <span>{{ scope.row.budget }}</span>
+          <iInput class="input-center" v-model="scope.row.budget" v-if="!nominationDisabled && !rsDisabled" @input="handleInputByBudget($event, scope.row)" @blur="handleBlurByBudget(scope.row.budget, scope.row)" />
+          <span v-else>{{ scope.row.budget }}</span>
         </template>
       </tableList>
     </div>
@@ -139,7 +139,7 @@ export default {
       getMouldBudget(form)
       .then(res => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
+          this.tableListData = Array.isArray(res.data.records) ? res.data.records.map(item => ({ ...item, budget: math.bignumber(item.budget || 0).toFixed(2) })) : []
           this.page.totalCount = res.data.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -156,7 +156,10 @@ export default {
     jump(row) {},
     // 投资预算
     handleInputByBudget(val, row) {
-      this.$set(row, "budget", numberProcessor(val, 4))
+      this.$set(row, "budget", numberProcessor(val, 2))
+    },
+    handleBlurByBudget(val, row) {
+      this.$set(row, "budget", math.bignumber(val || 0).toFixed(2))
     },
     // 提交
     handleSubmit() {

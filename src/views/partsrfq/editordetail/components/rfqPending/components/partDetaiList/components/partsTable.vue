@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-11-04 14:29:00
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 22:02:09
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
 -->
@@ -81,6 +81,7 @@ export default {
       this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
     }
     this.$store.commit('SET_PART_PROJECT', this.getTableList)
+    this.getTableList()
   },
   methods: {
     //获取表格数据
@@ -90,11 +91,11 @@ export default {
         this.parmarsNotHasRfq['size'] = this.page.pageSize
         this.parmarsNotHasRfq['current'] = this.page.currPage
         this.parmarsNotHasRfq['status'] = 'NOT_IN_RFQ'
-        this.parmarsNotHasRfq['buyerId'] = queryForm.buyerId
+        this.parmarsNotHasRfq['buyerId'] = ''
         // 这个地方直接取当前rfq的linineId
-        this.parmarsNotHasRfq['linieId'] = queryForm.linieId
-        this.parmarsNotHasRfq['partProjectType'] = queryForm.partProjectType
-        this.parmarsNotHasRfq['partNumList'] = queryForm.partNumList
+        this.parmarsNotHasRfq['linieId'] = ''
+        this.parmarsNotHasRfq['partProjectType'] = ''
+        this.parmarsNotHasRfq['partNumList'] = ''
         this.parmarsNotHasRfq['isNotInRfqList'] = true
         this.parmarsNotHasRfq['rfqId'] = this.$route.query.id
         getTabelData(this.parmarsNotHasRfq).then(res => {
@@ -103,7 +104,7 @@ export default {
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
           let data = res.data
-          data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = '否'})
+          data.forEach(val => {val.mtz == true ? val.mtz = '是' : val.mtz = '否'})
           this.tableListData = data.map(r=>{return {...r,...{purchaseProjectId:r.id}}}) || []
         }).catch(() => this.tableLoading = false)
     },

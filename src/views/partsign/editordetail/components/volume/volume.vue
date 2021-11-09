@@ -80,24 +80,22 @@ export default {
       this.loading = true
 
       try {
-        if (!this.version || !this.carTypeConfigId) {
-          const versionRes = await getPerCarDosageVersion({
-            "currPage": 1,
-            "pageSize": 10,
-            "status": 1,
-            "tpId": this.data.tpPartID
-          })
-          this.version = 'V1'
+        const versionRes = await getPerCarDosageVersion({
+          "currPage": 1,
+          "pageSize": 10,
+          "status": 1,
+          "tpId": this.data.tpPartID
+        })
 
-          if (versionRes.code != 200) {
-            return iMessage.error(`${ this.$i18n.locale === 'zh' ? versionRes.desZh : versionRes.desEn }`)
-          }
-
-          if (versionRes.data && Array.isArray(versionRes.data.tpRecordList) && versionRes.data.tpRecordList[0]) {
-            this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId
-            this.version = versionRes.data.tpRecordList[0].version || 'V1'
-          }
+        if (versionRes.code != 200) {
+          return iMessage.error(`${ this.$i18n.locale === 'zh' ? versionRes.desZh : versionRes.desEn }`)
         }
+
+        if (versionRes.data && Array.isArray(versionRes.data.tpRecordList) && versionRes.data.tpRecordList[0]) {
+          this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId
+          this.version = versionRes.data.tpRecordList[0].version || 'V1'
+        }
+
         //如果没有已确认的版本，不调用查询没车用量
         if(!this.carTypeConfigId) return;
           const infoRes = await getPerCarDosageInfo({

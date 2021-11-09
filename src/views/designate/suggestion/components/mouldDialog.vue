@@ -20,6 +20,8 @@
             <iInput
               :placeholder="language('LK_QINGSHURU','请输入')"
               v-model="scope.row.budget"
+              @input="handleInputByBudget($event, scope.row)"
+              @blur="handleBlurByBudget(scope.row.budget, scope.row)"
             ></iInput>
           </div>
         </template>
@@ -46,6 +48,7 @@ import tableList from './tableList'
 import { mouldTitle as tableTitle, mokeMouldData } from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from '@/utils/filters'
+import { numberProcessor } from "@/utils"
 
 export default {
   components: { tableList, iPagination, iDialog, iButton, iInput },
@@ -90,7 +93,13 @@ export default {
     },
     handleSelectionChange(list) {
       this.selectedData = list
-    }
+    },
+    handleInputByBudget(val, row) {
+      this.$set(row, "budget", numberProcessor(val, 2))
+    },
+    handleBlurByBudget(val, row) {
+      this.$set(row, "budget", math.bignumber(val || 0).toFixed(2))
+    },
   }
 }
 </script>
