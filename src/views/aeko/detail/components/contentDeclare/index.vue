@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-09 14:00:21
+ * @LastEditTime: 2021-11-09 14:42:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -540,6 +540,9 @@ export default {
       // 零件号需要单独处理下  根据逗号和空格拆成List
       const {partNum=''} = form;
       let newPartNum = partNum=='' ? [] : partNum.split(/[ ,，]+/);
+
+      const {query} = this.$route;
+      const {from=''} = query;
       
       getAekoLiniePartInfo({
         ...form,
@@ -549,7 +552,8 @@ export default {
         investCarTypePros: Array.isArray(this.form.investCarTypePros) ? (this.form.investCarTypePros.length === 1 && this.form.investCarTypePros[0] === "" ? null : this.form.investCarTypePros) : null,
         status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
         current: this.page.currPage,
-        size: this.page.pageSize
+        size: this.page.pageSize,
+        isView:from=='check' ? 1 : undefined,
       })
       .then(res => {
         if (res.code == 200) {
