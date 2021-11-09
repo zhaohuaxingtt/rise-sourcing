@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-11-09 11:41:22
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-09 21:19:11
+ * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
@@ -80,6 +80,7 @@ export default {
     // 判断下多角色情况 若多角色时就判断url的跳转来源
     const {query} = this.$route;
     const {from=''} = query;
+    const {auditType=''} = query;
     const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
     if(roleArr.length > 1){
         if(from == 'manage'){
@@ -128,7 +129,12 @@ export default {
     }
     // 通过permissionKey(权限)字段过滤tabs
     this.tabs = permissionArray("permissionKey", this.tabs)
-
+    
+    if(auditType&&auditType==1||auditType==2){ //封面表态
+      this.currentTab ='cover';
+    }else if(auditType&&auditType==3){  // 内容表态
+      this.currentTab ='contentDeclare';
+    }
     // 从AEKO跳转查看跳转过来的 tab不需要展示审批附件
     if(from =='check'){
       let newTabs = cloneDeep(this.tabs);

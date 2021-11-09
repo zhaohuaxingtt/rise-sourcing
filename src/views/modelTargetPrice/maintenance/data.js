@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 14:51:00
+ * @LastEditTime: 2021-11-08 17:41:49
  * @Description: 
- * @FilePath: \front-web\src\views\modelTargetPrice\maintenance\data.js
+ * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\data.js
  */
 
 
@@ -13,15 +13,15 @@ export const tableTitle = [
   {props:'rfqName',name:'RFQ名称', key: "RFQMINGCHENG", tooltip: true},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
   {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
-  {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 100},
+  {props:'cfName',name:'CF', key: "CF", tooltip: true, width: 100},
   {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true},
-  {props:'approveStatusDesc',name:'任务状态', key: "RENWUZHUANGTAI", tooltip: true},
-  {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true},
-  {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 100},
-  {props:'applyDateEnd',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
-  {props:'applyDateEnd',name:'返回日期', key: "FANHUIRIQI", tooltip: true, width: 120},
+  {props:'taskStateDesc',name:'任务状态', key: "RENWUZHUANGTAI", tooltip: true},
+  {props:'approvalStateDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true},
+  {props:'applicationDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 100},
+  {props:'endDate',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
+  {props:'returnDate',name:'返回日期', key: "FANHUIRIQI", tooltip: true, width: 120},
   {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true},
-  {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120}
+  {props:'remarks',name:'备注', key: "BEIZHU", tooltip: true, width: 120}
 ]
 
 export const tableMockData = [
@@ -32,17 +32,17 @@ export const searchList = [
   {value: 'rfqId', label: 'RFQ编号', type: 'input', i18n_label: 'RFQBIANHAO', permission: 'MODELTARGETPRICE_MAINTENANCE_RFQNUM|模具目标价管理-目标价维护-RFQ编号'},
   {value: 'fsNum', label: 'FS/GS/SP No.', type: 'input', i18n_label: 'FSGSSP', permission: 'MODELTARGETPRICE_MAINTENANCE_FSNUM|模具目标价管理-目标价维护-FSGSSPNO'},
   {value: 'partNum', label: '零件号', type: 'input', i18n_label: 'LINGJIANHAO', permission: 'MODELTARGETPRICE_MAINTENANCE_PARTNUM|模具目标价管理-目标价维护-零件号'},
-  {value: 'partName', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG', permission: 'MODELTARGETPRICE_MAINTENANCE_PARTNAME|模具目标价管理-目标价维护-零件名称'},
+  {value: 'partNameZh', label: '零件名称', type: 'input', i18n_label: 'LINGJIANMINGCHENG', permission: 'MODELTARGETPRICE_MAINTENANCE_PARTNAME|模具目标价管理-目标价维护-零件名称'},
   {value: 'partProjectType', label: '零件项目类型', type: 'selectDict', i18n_label: 'LINGJIANXIANGMULEIXING',selectOption:'PPT', permission: 'MODELTARGETPRICE_MAINTENANCE_PARTPROJECTTYPE|模具目标价管理-目标价维护-零件项目类型'},
-  {value: 'carTypeName', label: '车型项目', type: 'carProjectSelect', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO', permission: 'MODELTARGETPRICE_MAINTENANCE_CARPROJECT|模具目标价管理-目标价维护-车型项目'},
-  {value: 'procureFactoryId', label: '采购工厂', type: 'procureFactorySelect', i18n_label: 'LKCAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY', permission: 'MODELTARGETPRICE_MAINTENANCE_PROFACTORY|模具目标价管理-目标价维护-采购工厂'},
+  {value: 'cartypeProjectNum', label: '车型项目', type: 'carProjectSelect', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO', permission: 'MODELTARGETPRICE_MAINTENANCE_CARPROJECT|模具目标价管理-目标价维护-车型项目'},
+  {value: 'procureFactory', label: '采购工厂', type: 'procureFactorySelect', i18n_label: 'LKCAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY', permission: 'MODELTARGETPRICE_MAINTENANCE_PROFACTORY|模具目标价管理-目标价维护-采购工厂'},
   {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',selectOption: '', permission: 'MODELTARGETPRICE_MAINTENANCE_BUYER|模具目标价管理-目标价维护-询价采购员'},
   {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE', permission: 'MODELTARGETPRICE_MAINTENANCE_LINIE|模具目标价管理-目标价维护-LINIE'},
-  {value: 'cfId', label: '模具控制员', type: 'input', i18n_label: 'MOJUKONGZHIYUAN',selectOption:'CF_USER', permission: 'MODELTARGETPRICE_MAINTENANCE_CF|模具目标价管理-目标价维护-CF'},
-  {value: 'cfPriceType', label: '申请类型', type: 'selectDict', i18n_label: 'SHENQINGLEIXING',selectOption: '',permission: 'MODELTARGETPRICE_QUERY_APPLYTYPE|模具目标价管理-目标价查询-申请类型'},
+  {value: 'cfName', label: '模具控制员', type: 'input', i18n_label: 'MOJUKONGZHIYUAN',selectOption:'CF_USER', permission: 'MODELTARGETPRICE_MAINTENANCE_CF|模具目标价管理-目标价维护-CF'},
+  {value: 'applyType', label: '申请类型', type: 'selectDict', i18n_label: 'SHENQINGLEIXING',selectOption: 'sign_page_apply_type',permission: 'MODELTARGETPRICE_QUERY_APPLYTYPE|模具目标价管理-目标价查询-申请类型'},
   {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI', permission: 'MODELTARGETPRICE_MAINTENANCE_APPLYDATE|模具目标价管理-目标价维护-申请日期起止'},
   {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI', permission: 'MODELTARGETPRICE_MAINTENANCE_RESPONSEDATE|模具目标价管理-目标价维护-返回日期起止'},
-  {value: 'applyStats', label: '任务状态', type: 'selectDict', i18n_label: 'RENWUZHUANGTAI',selectOption:'', permission: 'MODELTARGETPRICE_MAINTENANCE_STATUS|模具目标价管理-目标价维护-任务状态'}
+  {value: 'taskStateDesc', label: '任务状态', type: 'selectDict', i18n_label: 'RENWUZHUANGTAI',selectOption:'target_price_page_task_state', permission: 'MODELTARGETPRICE_MAINTENANCE_STATUS|模具目标价管理-目标价维护-任务状态'}
 ]
 
 export const modifyTableTitle = [
@@ -68,10 +68,10 @@ export const modifyTableTitle = [
 ]
 
 export const approvalTableTitle = [
-  {props:'approveDate',name:'审批开始日期', key: "SHENPIKAISHIRIQI", tooltip: true},
-  {props:'approveDate',name:'审批日期', key: "SHENPIRIQI", tooltip: true},
-  {props:'approveTypeDesc',name:'审批类型', key: "SHENPILEIXING", tooltip: true},
-  {props:'approveName',name:'审批人', key: "SHENPIREN", tooltip: true},
-  {props:'approveName',name:'审批结果', key: "SHENPIJIEGUO", tooltip: true},
-  {props:'memo',name:'备注', key: "BEIZHU", tooltip: true},
+  {props:'approvalStartDate',name:'审批开始日期', key: "SHENPIKAISHIRIQI", tooltip: true},
+  {props:'approvalDate',name:'审批日期', key: "SHENPIRIQI", tooltip: true},
+  {props:'approvalTypeDesc',name:'审批类型', key: "SHENPILEIXING", tooltip: true},
+  {props:'approvalUserName',name:'审批人', key: "SHENPIREN", tooltip: true},
+  {props:'approvalResultDesc',name:'审批结果', key: "SHENPIJIEGUO", tooltip: true},
+  {props:'remarks',name:'备注', key: "BEIZHU", tooltip: true},
 ]

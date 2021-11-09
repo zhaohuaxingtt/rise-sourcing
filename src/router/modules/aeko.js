@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-11-09 11:26:59
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-09 17:30:57
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -308,7 +308,7 @@ export default [
             meta: {
               title: 'AEKO报表'
             },
-            component: () => import("@/views/aeko/BIPage"),
+            component: () => import("@/views/aeko/BIPage/components"),
           },
         ]
       }
