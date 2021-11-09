@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-09 14:11:10
+ * @LastEditTime: 2021-11-09 17:11:42
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -16,7 +16,7 @@
         <iText>{{ floatFixNum(apriceChange) }}</iText>
       </div>
     </iCard> -->
-    <iCard class="mb-20" v-if="cbdCanEdit">
+    <iCard class="mb-20">
       <p class="title mb-20">
         <span>{{ `${language("BIANDONGZHI", "变动值")} - CBD` }}</span>
         <span class="tip ml-12">{{ language("DANWEI", "单位") }}：RMB/Pc.</span>
@@ -328,7 +328,7 @@ export default {
   computed: {
     // 变动值-CBD
     tableData() {
-      if (this.Data?.cbdLevelVO) {
+      if (this.Data?.cbdLevelVO&&this.cbdCanEdit) {
         return [this.Data.cbdLevelVO];
       }
       return [];

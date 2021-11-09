@@ -200,7 +200,7 @@ export default {
         },
         {
           prop: "supplierSapCode",
-          label: "供应商SAP号",
+          label: "供应商编号",
           i18n: "",
           headerAlign: "center",
           align: "center",
