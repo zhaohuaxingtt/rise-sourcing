@@ -157,6 +157,7 @@ import {
   baseRules,
   currencyMultipleLib,
   planBaseData,
+  planBaseYear,
 } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import { digitUppercase } from "@/utils/digitUppercase";
@@ -165,6 +166,7 @@ import {
   getProjects,
   getCurrencyUnit,
   getUnits,
+  getDiscount,
 } from "@/api/mock/mock";
 import {
   getRfqInfo,
@@ -255,16 +257,36 @@ export default {
       yearsPlanTable: [],
       purchasePlanTable: [],
       prefactoryPrice: 0,
+      yearsPlan: [],
+      annualOutput: [{
+        title: "折现率",
+        stage1: 1,
+        stage2: 0.9,
+        stage3: 0.81,
+        stage4: 0.73,
+        stage5: 0.66,
+        stage6: 0.59,
+        stage7: 0.53,
+        stage8: 0.48,
+        stage9: 0.43,
+        stage10: 0.39,
+        stage11: 0.35,
+        stage12: 0.31,
+        stage13: 0.28,
+        stage14: 0.25,
+        stage15: 0.23,
+        }
+      ],
     };
   },
   mounted() {
     this.handleSearchReset();
-
+    
     getModels().then((res) => {
-      this.modelsOption = res?.data.filter((item) => item.name?.length > 0);
+      this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
     });
     getProjects().then((res) => {
-      this.modelProjectsOption = res?.data.filter(
+      this.modelProjectsOption = res?.data?.filter(
         (item) => item.name?.length > 0
       );
     });
@@ -297,10 +319,6 @@ export default {
       let biddingProducts = this.ruleForm.biddingProducts;
       return biddingProducts.reduce((sum, item, index) => {
         return isNaN(Number(item.factoryPrice)) ||
-          isNaN(Number(item.packingFee)) ||
-          isNaN(Number(item.packingFee2)) ||
-          isNaN(Number(item.transportFee)) ||
-          isNaN(Number(item.operationFee)) ||
           isNaN(Number(item.moldFee)) ||
           isNaN(Number(item.developFee))
           ? sum
@@ -312,7 +330,7 @@ export default {
       return Big(this.orgTotalPrices).toFixed(2);
     },
     numberUppercase() {
-      return digitUppercase(Number(this.orgTotalPrices));
+      return digitUppercase(Big(this.orgTotalPrices).toFixed(2));
     },
     startingPrice() {
       return this.totalPrices + this.currencyMultiple;
@@ -431,206 +449,167 @@ export default {
           document.querySelector(".routerpage").getBoundingClientRect().top;
       });
     },
-    calculationDetails(item, index) {
-      if (!this.yearsPlanTable?.length || !this.purchasePlanTable?.length) {
-        return 0;
-      }
-      const yearPlan = this.yearsPlanTable[1];
-      const purchasePlanDateItem = this.purchasePlanTable[index * 3];
-      const purchaseDownPlanItem = this.purchasePlanTable[index * 3 + 1];
-      const purchaseQtyItem = this.purchasePlanTable[index * 3 + 2];
-      this.prefactoryPrice = item.factoryPrice;
-      let totalPrice = 0;
+    calculationDetails(product, productIndex) {
+      this.prefactoryPrice = Number(product?.factoryPrice);
+      //折现率
+      const discounts = this.annualOutput[0];
+      //该零件产量日期{15年}
+      const dateList = this.annualOutput[productIndex*2+1];
+      //该零件产量{15年}
+      const outputList = this.annualOutput[productIndex*2+2];
+      //该零件降价计划日期
+      const yearsPlanDate = this.yearsPlan[productIndex*2];
+      //该零件降价百分比
+      const yearsPlanPercent = this.yearsPlan[productIndex*2+1];
+      //该零件年度总和
+      let yearSum = 0;
       for (let i = 1; i < 16; i++) {
-        if (i === 1) {
-          totalPrice = Big(totalPrice)
-            .add(
-              this.formula({
-                beforeAndAfterMonth: [0, 0],
-                factoryPrice: item.factoryPrice,
-                beforeCalcuationNum: 0,
-                calcuationNum: purchaseQtyItem[`stage${i}`],
-                yearPlan: purchaseDownPlanItem[`stage${i}`],
-                discount: yearPlan[`stage${i}`],
-                packingFee: item.packingFee,
-                packingFee2: item.packingFee2,
-                transportFee: item.transportFee,
-                operationFee: item.operationFee,
-                lastYearPlan: 0,
-                lastDiscount: 1,
-              })
-            )
-            .toNumber();
-        } else {
-          let beforeAndAfterMonth = this.monthBetwen(
-            i,
-            purchasePlanDateItem[`stage${i - 1}`],
-            purchasePlanDateItem[`stage${i}`]
-          );
-          if (!beforeAndAfterMonth?.length) {
-            return 0;
+        //该零件该年度产量为0  不计算本次
+        if(Number(outputList[`stage${i}`])===0){
+          continue;
+        }
+        //本年产量日期
+        let annualYesr = dayjs(dateList[`stage${i}`]).year();
+        let dateArray= Object.values(yearsPlanDate);
+        //产量年度在该零件年降计划出现次数数组count
+        let count =dateArray.filter(item=>{
+          if(item && item?.toString().includes(annualYesr)){
+            return item;
           }
-          let countI =
-            dayjs(purchasePlanDateItem[`stage${i - 1}`]).year() -
-            dayjs(purchasePlanDateItem[`stage1`]).year() +
-            1;
-          let countJ =
-            dayjs(purchasePlanDateItem[`stage${i}`]).year() -
-            dayjs(purchasePlanDateItem[`stage1`]).year() +
-            1;
-          totalPrice = Big(totalPrice)
-            .add(
-              this.formula({
-                beforeAndAfterMonth: beforeAndAfterMonth,
-                factoryPrice: this.prefactoryPrice,
-                beforeCalcuationNum: purchaseQtyItem[`stage${i - 1}`],
-                calcuationNum: purchaseQtyItem[`stage${i}`],
-                yearPlan: purchaseDownPlanItem[`stage${i}`],
-                discount: yearPlan[`stage${countJ}`],
-                packingFee: item.packingFee,
-                packingFee2: item.packingFee2,
-                transportFee: item.transportFee,
-                operationFee: item.operationFee,
-                lastYearPlan: purchaseDownPlanItem[`stage${i - 1}`],
-                lastDiscount: yearPlan[`stage${countI}`],
-              })
-            )
-            .toNumber();
+        })
+        if(!dateList[`stage${i}`]){
+          return 0;
         }
-        this.factoryPrice(
-          this.prefactoryPrice,
-          purchaseDownPlanItem[`stage${i}`],
-          purchaseQtyItem[`stage${1}`]
-        );
-      }
-      return Big(totalPrice)
-        .add(item.moldFee || 0)
-        .add(item.developFee || 0)
-        .toNumber();
-    },
-    //计算本年出厂价
-    factoryPrice(price, yearPlan, purchaseQty) {
-      this.prefactoryPrice =
-        isNaN(Number(price)) ||
-        isNaN(Number(yearPlan)) ||
-        isNaN(Number(purchaseQty)) ||
-        purchaseQty === ""
-          ? 0
-          : Big(price || 0)
-              .times(
-                Big(1)
-                  .minus(yearPlan / 100)
-                  .toNumber()
-              )
-              .toNumber();
-    },
-    //计算阶段的beforeMonth  和  afterMonth
-    monthBetwen(i, purchasePlanDateBefore, purchasePlanDateNow) {
-      if (
-        purchasePlanDateBefore === null ||
-        purchasePlanDateBefore === "" ||
-        purchasePlanDateNow === null ||
-        purchasePlanDateNow === ""
-      ) {
-        return [0, 0];
-      }
-      purchasePlanDateBefore = new Date(purchasePlanDateBefore);
-      let beforeYear = purchasePlanDateBefore.getFullYear();
-      let beforeMonth = purchasePlanDateBefore.getMonth() + 1;
-      purchasePlanDateNow = new Date(purchasePlanDateNow);
-      let nowYear = purchasePlanDateNow.getFullYear();
-      let nowMonth = purchasePlanDateNow.getMonth() + 1;
-      //年份一致
-      if (beforeYear === nowYear) {
-        if (i === 15) {
-          return [nowMonth - beforeMonth, 13 - nowMonth];
-        }
-        return [nowMonth - beforeMonth, 0];
-      } else {
-        if (i === 15) {
-          return [13 - beforeMonth, 12];
-        }
-        return [13 - beforeMonth, nowMonth - 1];
-      }
-    },
-    //总价计算公式
-    //月份，出厂价，采购量，降价计划,折现率，前段包装费，后段包装费
-    formula({
-      beforeAndAfterMonth,
-      factoryPrice,
-      beforeCalcuationNum,
-      calcuationNum,
-      yearPlan,
-      discount,
-      packingFee,
-      packingFee2,
-      //运输费,操作费，上年降价计划，上年折现率
-      transportFee,
-      operationFee,
-      lastYearPlan,
-      lastDiscount,
-    }) {
-      if (
-        isNaN(Number(calcuationNum)) ||
-        isNaN(Number(yearPlan)) ||
-        isNaN(Number(lastYearPlan))
-      ) {
-        return 0;
-      }
-      //1-本段降价计划
-      const nowPlanYear = Big(1)
-        .minus(Number(yearPlan) / 100)
-        .toNumber();
-      //1-上一段降价计划
-      const lastPlanYear = Big(1)
-        .minus(Number(lastYearPlan) / 100)
-        .toNumber();
-      //年采购量/12 * beforeMonth
-      const beforeMonth = Big(Number(beforeCalcuationNum) || 0)
-        .div(12)
-        .times(beforeAndAfterMonth[0])
-        .toNumber();
-      //年采购量/12 * afterMonth
-      const afterMonth = Big(Number(calcuationNum) || 0)
-        .div(12)
-        .times(beforeAndAfterMonth[1])
-        .toNumber();
-      const brforeFactoryPrice =
-        lastPlanYear === 1
-          ? factoryPrice
-          : Big(factoryPrice)
-              .div(
-                Big(1)
-                  .minus(Number(lastYearPlan) / 100)
-                  .toNumber()
-              )
-              .toNumber();
-      return Big(
-        Big(brforeFactoryPrice || 0)
-          .times(lastPlanYear)
-          .add(packingFee || 0)
-          .add(packingFee2 || 0)
-          .add(transportFee || 0)
-          .add(operationFee || 0)
-          .toNumber()
-      )
-        .times(beforeMonth || 0)
-        .times(lastDiscount || 0)
-        .add(
-          Big(
-            Big(factoryPrice || 0)
-              .times(nowPlanYear)
-              .add(packingFee || 0)
-              .add(packingFee2 || 0)
-              .add(transportFee || 0)
-              .add(operationFee || 0)
+        //产量月份
+        const month1 = dayjs(dateList[`stage${i}`]).month()+1;
+        //当前月产量
+        let monthCount=Big(outputList[`stage${i}`]).div(12-month1+1).toNumber();
+        if(count.length && count.length===1){
+          //2)产量年度在该零件年降计划中存在1个
+          //年降月份
+            const month = dayjs(count[0]).month()+1;
+          // 年降前
+          let downBefore = this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:monthCount,
+            monthCount:month-month1,
+            discount:discounts[`stage${i}`]
+          });
+          //年降后
+          this.prefactoryPrice=
+          !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+          .times(
+            Big(1)
+              .minus(Number(yearsPlanPercent[`stage${i}`]) / 100)
               .toNumber()
           )
-            .times(afterMonth || 0)
-            .times(discount || 0)
-            .toNumber()
-        )
-        .toNumber();
+          .toNumber();
+          let downAfter = this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:monthCount,
+            monthCount:13-month,
+            discount:discounts[`stage${i}`]
+          });
+          yearSum=Big(yearSum).add(downBefore).add(downAfter).toNumber();
+        }else if(count.length && count.length > 1){
+          //3)产量年度在该零件年降计划中存在N（>1）个
+          
+          //第一次年降月份count[0]
+            const month = dayjs(count[0]).month()+1;
+          //第一次年降前
+          let firstDownBefore = this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:monthCount,
+            monthCount:month-month1,
+            discount:discounts[`stage${i}`]
+          });
+          //从第1次年降后到第N-1次年降后
+          let betweenDown = count.reduce((sum, item, index) => {
+            if(index>0){
+              const betweenMonth = (dayjs(item).month()+1)-(dayjs(count[index-1]).month()+1);
+              let num = Number(this.findKey(yearsPlanDate,item).slice(5));
+              //计算本年出厂价
+              this.prefactoryPrice=
+              !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+              .times(
+                Big(1)
+                  .minus(Number(yearsPlanPercent[`stage${num-1}`]) / 100)
+                  .toNumber()
+              )
+              .toNumber();
+              return Big(this.nlms({
+                factoryPrice:this.prefactoryPrice,
+                packingPrice:product.packingFee,
+                transportPrice: product.transportFee,
+                operatingPrice: product.operationFee,
+                output:monthCount,
+                monthCount:betweenMonth,
+                discount:discounts[`stage${i}`]
+              })).add(sum).toNumber();
+            }
+            return sum;
+          }, 0);
+          
+          //第N次年降月份
+          const nMonth = dayjs(count[count.length-1]).month()+1;
+          let nAfter = this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:monthCount,
+            monthCount:13-nMonth,
+            discount:discounts[`stage${i}`]
+          });
+          yearSum=Big(yearSum).add(firstDownBefore).add(betweenDown).add(nAfter).toNumber();   
+        }else{
+          //1)产量年度在该零件年降计划中不存在
+          yearSum=Big(yearSum).add(this.nlms({
+            factoryPrice:this.prefactoryPrice,
+            packingPrice:product.packingFee,
+            transportPrice: product.transportFee,
+            operatingPrice: product.operationFee,
+            output:outputList[`stage${i}`],
+            monthCount:1,
+            discount:discounts[`stage${i}`]
+          })).toNumber();
+        }
+      }
+      return yearSum;
+    },
+    //总价基本计算公式
+    nlms({
+      factoryPrice,//出厂价
+      packingPrice,//包装费
+      transportPrice,//运输费
+      operatingPrice,//操作费
+      output,//产量
+      monthCount,//月份数
+      discount,//折现率
+    }){
+      if (
+        isNaN(Number(factoryPrice)) ||
+        isNaN(Number(packingPrice)) ||
+        isNaN(Number(transportPrice)) ||
+        isNaN(Number(operatingPrice))
+      ) {
+        return 0;
+      }
+      let productBaseSum= Big(factoryPrice || 0).add(packingPrice || 0).add(transportPrice || 0).add(operatingPrice || 0).toNumber();
+      return Big(productBaseSum).times(output || 0).times(monthCount || 0).times(discount || 0).toNumber();
+    },
+    //根据value找到对象key
+    findKey (obj,value, compare = (a, b) => a === b) {undefined
+      return Object.keys(obj).find(k => compare(obj[k], value))
     },
 
     //FSNR/GSNR更改联动零件号 和 采购计划FSNR/GSNR、零件号
@@ -954,7 +933,19 @@ export default {
     query(e) {
       // 根据ID查询条款信息
       this.tableLoading = true;
-      findMultiPrice(e)
+      let p = new Promise(resolve=>{
+        let o = {...planBaseData,title:'折现率'};
+        getDiscount({}).then((res) => {
+          let o = {title:'折现率'};
+          res?.data?.md_discount_rate.map(item=>{
+            let x = Number(item.code.replace('Y','0'));
+            o[`stage${x}`]=item.describe;
+          })
+        });
+        resolve(o);
+      }).then(res=>{
+         this.annualOutput[0]={...res};
+        findMultiPrice(e)
         .then((res) => {
           this.updateRuleForm(res);
           this.tableLoading = false;
@@ -962,6 +953,7 @@ export default {
         .catch((err) => {
           this.tableLoading = false;
         });
+      })
     },
     updateRuleForm(data) {
       this.ruleForm = {
@@ -969,7 +961,8 @@ export default {
         models: data.models?.map((item) => item.modelCode),
         modelProjects: data.modelProjects?.map((item) => item.projectCode),
       };
-
+      
+      //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {
         o = this.ruleForm.procurePlans.reduce((obj, item) => {
@@ -977,7 +970,6 @@ export default {
             obj[item.productId] = {
               yearMonth: { title: "" },
               cutPricePlan: { title: "" },
-              procureNum: { title: "" },
             };
           }
           obj[item.productId].yearMonth[`stage${item.stage}`] =
@@ -986,80 +978,51 @@ export default {
           obj[item.productId].cutPricePlan[`stage${item.stage}`] =
             item.cutPricePlan;
           obj[item.productId].cutPricePlan[`id${item.stage}`] = item.id;
+          return obj;
+        }, {});
+      }
+      //this.ruleForm.productions 年产量
+      let output = {};
+      if (this.ruleForm.productions?.length) {
+        output = this.ruleForm.productions.reduce((obj, item) => {
+          if (!obj[item.productId]) {
+            obj[item.productId] = {
+              procureYearMonth: { title: "" },
+              procureNum: { title: "" },
+            };
+          }
+          obj[item.productId].procureYearMonth[`stage${item.stage}`] =
+            item.procureYearMonth;
+          obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
           obj[item.productId].procureNum[`stage${item.stage}`] =
             item.procureNum;
           obj[item.productId].procureNum[`id${item.stage}`] = item.id;
           return obj;
         }, {});
       }
-      let nowYear = this.ruleForm.beginMonth;
-      var date = "";
-      if (nowYear) {
-        date = new Date(nowYear);
-      }
-      let planBaseDataOfDate = {
-        title: "",
-        stage1: nowYear,
-        stage2: date ? date.getFullYear() + 1 + "-01" : "",
-        stage3: date ? date.getFullYear() + 2 + "-01" : "",
-        stage4: date ? date.getFullYear() + 3 + "-01" : "",
-        stage5: date ? date.getFullYear() + 4 + "-01" : "",
-        stage6: date ? date.getFullYear() + 5 + "-01" : "",
-        stage7: date ? date.getFullYear() + 6 + "-01" : "",
-        stage8: date ? date.getFullYear() + 7 + "-01" : "",
-        stage9: date ? date.getFullYear() + 8 + "-01" : "",
-        stage10: date ? date.getFullYear() + 9 + "-01" : "",
-        stage11: date ? date.getFullYear() + 10 + "-01" : "",
-        stage12: date ? date.getFullYear() + 11 + "-01" : "",
-        stage13: date ? date.getFullYear() + 12 + "-01" : "",
-        stage14: date ? date.getFullYear() + 13 + "-01" : "",
-        stage15: date ? date.getFullYear() + 14 + "-01" : "",
-      };
-      if (
-        !this.ruleForm.biddingProducts?.length &&
-        this.ruleForm.roundType !== "03"
-      ) {
-        this.handleAddProduct();
-      } else {
-        this.ruleForm.biddingProducts.forEach((item) => {
-          this.purchasePlanTable.push({
-            ...planBaseDataOfDate,
+      this.ruleForm.biddingProducts?.forEach((item) => {
+          this.yearsPlan.push({
+            ...planBaseYear,
             ...o[item.id]?.yearMonth,
             title: item.fsnrGsnr,
           });
-          this.purchasePlanTable.push({
-            ...planBaseData,
+          this.yearsPlan.push({
+            ...planBaseYear,
             ...o[item.id]?.cutPricePlan,
             title: item.productCode,
           });
-          this.purchasePlanTable.push({
+          this.annualOutput.push({
+             ...planBaseData,
+            ...output[item.id]?.procureYearMonth,
+            title: item.fsnrGsnr,
+          })
+          this.annualOutput.push({
             ...planBaseData,
-            ...o[item.id]?.procureNum,
-            title: "",
-          });
+            ...output[item.id]?.procureNum,
+            title: item.productCode,
+          })
         });
-      }
-
-      this.handleAddYearPlan();
-      let obj = { title: this.language('BIDDING_JIANGJIAJIHUA',"降价计划") };
-      if (this.ruleForm.yearsPlans?.length) {
-        this.ruleForm.yearsPlans.forEach((item) => {
-          obj[`stage${item.stage}`] = item.cutPricePlan;
-          obj[`id${item.stage}`] = item.id;
-        });
-      } else {
-        obj = {
-          ...planBaseData,
-          ...obj,
-        };
-        if (this.ruleForm.roundType === "03") {
-          obj.stage2 = 3;
-          obj.stage3 = 3;
-          obj.stage4 = 3;
-        }
-      }
-
-      this.yearsPlanTable.splice(0, 0, obj);
+      
     },
     // 表格选中值集
     handleSelectionChange(val) {
