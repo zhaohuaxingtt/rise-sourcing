@@ -78,13 +78,13 @@ export default {
           preserveDrawingBuffer: true //解除缓冲
         },
         resizeEnable: true, //是否监控地图容器尺寸变化
-        zoom: 4, //初始地图级别
-        center: [121, 31], //初始地图中心点
+        zoom: 4.7, //初始地图级别
+        center: [110, 39], //初始地图中心点
         showIndoorMap: true, //关闭室内地图
         roam: true,
         zoomEnable: true,
         dragEnable: true,
-        mapStyle: 'amap://styles/macaron'
+        // mapStyle: 'amap://styles/macaron'
       });
       // 圆点
       this.tableData && this.tableData.map((item, index) => {

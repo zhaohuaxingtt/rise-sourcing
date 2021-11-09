@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-11-05 15:20:54
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-09 11:45:32
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
 -->
@@ -11,7 +11,7 @@
     <div class="header flex-between-center margin-bottom20">
       <h2>AEKO号：{{ aekoInfo.aekoCode }}</h2>
       <div>
-        <iButton v-permission.auto="AEKO_DETAIL_BUTTON_SHENPIDANYULAN|审批单预览" @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
+        <iButton v-if="isLinie && !fromCheck" v-permission.auto="AEKO_DETAIL_BUTTON_SHENPIDANYULAN|审批单预览" @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
         <iButton v-permission.auto="AEKO_DETAIL_BUTTON_AEKOXIANGQING|AEKO详情" @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
         <logButton @click="openLog" class="margin-left20" />
         <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
@@ -42,15 +42,22 @@ export default {
     iLog
   },
   created() {
+    const roleList = this.roleList;
+    this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
     this.aekoInfo = {
       requirementAekoId: this.$route.query.requirementAekoId
     }
+    const {query} = this.$route;
+    const {from=''} = query;
+    if(from == 'check') this.fromCheck = true;
   },
   data() {
     return {
       aekoInfo: {},
       showDialog: false,
       bizId: '',
+      isLinie: false,
+      fromCheck:false,
     }
   },
   methods: {

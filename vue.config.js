@@ -253,11 +253,11 @@ module.exports = {
           '^/biddingApi': '',
         },
       },
-      '/baseInfo': {
+      '/baseinfo': {
         target: 'http://10.122.17.38:8011/baseinfo',
         changeOrigin: true,
         pathRewrite: {
-          '^/baseInfo': '',
+          '^/baseinfo': '',
         },
       },
       "/supplierservice": {

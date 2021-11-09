@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-05 16:07:13
+ * @LastEditTime: 2021-11-08 22:00:36
  * @LastEditors:  
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -41,7 +41,7 @@
                 <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
                   <template v-for="(itemss,index) in supplierLeftLit">
                      <template v-if='itemss.name != "F-Target"'>
-                        <li :key='index' v-if='itemss.props == "partNo"'>{{items[itemss.props] + '-' + items['partName']||''+'-'+items['partNameDe']||''}}</li>
+                        <li :key='index' v-if="itemss.props == 'partNo'">{{items[itemss.props] + '-' + items['partName']+(items['partNameDe']!=null ? ('-'+items['partNameDe']):'')}}</li>
                         <li :key='index' v-else>{{items[itemss.props]}}</li>
                      </template>
                       <li :key="index" v-else class="ftaget">

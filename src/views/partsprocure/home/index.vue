@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-11-04 17:09:00
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-08 20:04:36
+ * @LastEditors:  
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->
@@ -281,6 +281,7 @@ import filters from "@/utils/filters";
 import { clickMessage } from "@/views/partsign/home/components/data"
 import {selectDictByKeyss,procureFactorySelectVo} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
+import { log } from 'util';
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -439,7 +440,7 @@ export default {
         .then((res) => {
           this.tableLoading = false;
           this.page.totalCount = res.total || 0
-          res.data.forEach(val => {val.mtz == 'true' ? val.mtz = '是' : val.mtz = '否'})
+          res.data.forEach(val => {val.mtz == true ? val.mtz = '是' : val.mtz = '否'})
           this.tableListData = res.data;
         })
         .catch(() => (this.tableLoading = false));

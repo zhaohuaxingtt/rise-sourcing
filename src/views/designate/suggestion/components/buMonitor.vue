@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-10-14 17:06:59
+ * @LastEditTime: 2021-11-09 17:12:21
  * @Description: 业务分配模拟
 -->
 
@@ -67,8 +67,9 @@
                 :selection="tableSelection"
                 :tableData="tableListData"
                 :supplier="supplierList"
+                :supplierEN="supplierListEN"
                 :batchEdit="multiEditControl"
-                :height="450"
+                :height="530"
                 v-loading="tableLoading"
                 v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TABLE|表格"
                 ref="monitorTable" />
@@ -198,6 +199,7 @@ export default {
       tableListData: [],
       chartData: [],
       supplierList: [], // 供应商列表
+      supplierListEN: [], // 供应商列表
       tableLoading: false,
       chartLoading: false,
       combineVisible: false,
@@ -364,12 +366,15 @@ export default {
               const recommendSupplier = (o.recommendBdlInfoList && o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName)) || {}
               o.TTo.push(supplier.tto || 0)
               o.percentCalc[index] = Number(recommendSupplier.share).toFixed(2) || 0
+              // 提取供应商英文
+              const supplierObj = suppDataList.find(o => o.supplierName === suppName) || {}
+              !this.supplierListEN[index] && (this.supplierListEN[index] = supplierObj.supplierNameEn || '')
             })
             // 绑定推荐供应商
             const recommendBdlInfoList = o.recommendBdlInfoList || []
             // o.supplierChosen = []
             // o.percent = []
-    
+
             o.supplierChosen = recommendBdlInfoList.map(o => o.recommendSupplier)
             o.percent = recommendBdlInfoList.map(o => Number(o.share).toFixed(2))
             // this.supplierList.forEach((sup, supIndex) => {

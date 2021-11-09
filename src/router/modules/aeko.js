@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-11-04 17:47:46
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-09 11:26:59
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -24,6 +24,15 @@ export default [
               title: 'AEKO管理'
           },
           component: () => import ("@/views/aeko/manage")
+      },
+      // aeko 分配
+      {
+        path: "assign",
+        name: "aeko-manage-assign",
+        meta: {
+          title: "AEKO-分配列表",
+        },
+        component: () => import("@/views/aeko/manage/assign"),
       },
       // AEKO表态
       {
@@ -51,15 +60,6 @@ export default [
             title: 'AEKO详情'
         },
         component: () => import("@/views/aeko/detail"),
-      },
-      // 
-      {
-        path: "aekodetailItem",
-        name: "aekodetailItem",
-        meta: {
-            title: 'AEKO详情'
-        },
-        component: () => import("@/views/aeko/detail/components"),
       },
       {
         path: "quondampart",
@@ -123,16 +123,16 @@ export default [
         meta: {
           title: 'AEKO-审批'
         },
-        redirect: "/aeko/approve/approvelist",
+        redirect: "/aeko/approve/approvelistcsf/AKEOPendingPage",
         component: () => import("@/views/aeko/approve"),
         children: [
           {
             path: "approvelist",
-            name: "aekoApprove-list",
+            name: "aeko-manage-assign",
             meta: {
-              title: "AEKO-审批列表",
+              title: "AEKO-分配列表",
             },
-            component: () => import("@/views/aeko/approve/approveList"),
+            redirect: "/aeko/assign",
           },
           {
             path: "approvelistcsf",
@@ -256,7 +256,6 @@ export default [
         component: () => import("@/views/aeko/approve/pageContent"),
         redirect: "/aeko/AKEOPageContent/approvelistcsf",
         children:[
-          
           {
             path: "approvelistcsf",
             name: "aekoApprove-listcsf",
@@ -314,5 +313,14 @@ export default [
         ]
       }
     ]
+  },
+  // 申请详情页内嵌
+  {
+    path: "/aekodetailPage",
+    name: "aekodetailPage",
+    meta: {
+        title: 'AEKO详情'
+    },
+    component: () => import("@/views/aeko/detail/aekodetailPage"),
   }
 ]
