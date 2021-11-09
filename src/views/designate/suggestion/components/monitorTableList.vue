@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-10-28 16:45:49
+ * @LastEditTime: 2021-11-09 18:01:41
  * @LastEditors: Hao,Jiang
 -->
 
@@ -54,18 +54,22 @@
       <el-table-column
         align='center'
         prop="partNo"
-        label="Teil Nr."
-        width="90">
+        label="Part"
+        width="95">
+      <template slot-scope="scope">
+        <p class="partName">{{scope.row.partNo || ''}}</p>
+        <p class="partDeName" :title="scope.row.partNameDe || ''">{{scope.row.partNameDe || ''}}</p>
+      </template>
       </el-table-column>
       <el-table-column
         align='center'
         prop="partPrjCode"
-        label="FSNr."
-        width="110">
+        label="FS/GS/SP No."
+        width="90">
       </el-table-column>
       <el-table-column
         align='center'
-        prop="factory"
+        prop="factoryEn"
         label="Factory">
       </el-table-column>
 
@@ -79,13 +83,13 @@
         >
         <template slot="header">
           <div class="auoHeader">
-            <p style="padding: 0 10px">{{head}}</p>
-            <p>TTO</p>
+            <p class="titleCN">{{head}}</p>
+            <p class="titleEN" :title="supplierEN[hindex] || ''">{{supplierEN[hindex] || ''}}</p>
           </div>
         </template>
         <template slot-scope="scope">
           <div class="supplier-tto" @click="handleCellClick(scope.row, hindex)">
-            <span v-if="scope.row.TTo && scope.row.TTo[hindex]">{{ scope.row.TTo[hindex] | thousandsFilter}}</span>
+            <span v-if="scope.row.TTo && scope.row.TTo[hindex]">{{ thousandsFilter(scope.row.TTo[hindex])}}</span>
           </div>
         </template>
       </el-table-column>
@@ -152,7 +156,9 @@ export default {
     height:{type:Number||String, default:'380'},
     batchEdit: {type:Boolean, default:false},
     // 供应商数组
-    supplier: {type:Array, default: () => ([])}
+    supplier: {type:Array, default: () => ([])},
+    // 供应商英文
+    supplierEN: {type:Array, default: () => ([])}
   },
   components: {iInput},
   data() {
@@ -171,6 +177,9 @@ export default {
     }
   },
   methods: {
+    thousandsFilter(value) {
+      return filters.filters.thousandsFilter(value, 0)
+    },
     // 清空选中的项目
     clearSelected() {
       this.data.map(o => {
@@ -637,6 +646,9 @@ export default {
       /* text-align: center; */
       justify-content: center;
     }
+    .el-table__header {
+      border-bottom: 1px solid #fff;
+    }
   }
   ::v-deep .el-table--border {
     th,td {
@@ -666,6 +678,16 @@ export default {
     &.lineheight1 {
       line-height: 1;
     }
+    .titleCN {
+      padding: 0 10px
+    }
+    .titleEN {
+      height: 24PX;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding: 0 5px;
+      box-sizing: border-box;
+    }
     
     p {
       height: 50%;
@@ -676,6 +698,11 @@ export default {
         border-bottom: 0px;
       }
     }
+  }
+  .partDeName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

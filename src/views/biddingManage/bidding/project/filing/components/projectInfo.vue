@@ -174,14 +174,14 @@
     <!-- 年降计划&折现率 -->
     <iCard
       class="card"
-      :title="language('BIDDING_NJJHZXL', '年降计划&折现率')"
+      :title="$t('年降计划')"
       v-if="ruleForm.biddingMode === '03'"
     >
       <div class="card--body">
         <commonTable
           ref="tableDataForm"
-          :tableData="yearsPlans"
-          :tableTitle="yearsTableTitle"
+          :tableData="procurePlans"
+          :tableTitle="stageColumn"
           :tableLoading="tableLoading"
           :selection="false"
         >
@@ -192,14 +192,14 @@
     <!-- 采购计划 -->
     <iCard
       class="card"
-      :title="language('BIDDING_NJJJMX', '年降计划明细')"
+      :title="$t('折现率')"
       v-if="ruleForm.biddingMode === '03'"
     >
       <div class="card--body">
         <commonTable
           ref="tableDataForm"
-          :tableData="procurePlans"
-          :tableTitle="yearsTableTitle"
+          :tableData="annualOutput"
+          :tableTitle="outPutColumn"
           :tableLoading="tableLoading"
           :selection="false"
         >
@@ -223,10 +223,12 @@ import {
   yearsTableTitle,
   baseRules,
   currencyMultipleLib,
+  stageColumn,
+  outPutColumn,
 } from "./data";
 import { pageMixins } from "@/utils/pageMixins";
 import { digitUppercase } from "@/utils/digitUppercase";
-import { getModels, getProjects, getCurrencyUnit } from "@/api/mock/mock";
+import { getModels, getProjects, getCurrencyUnit,getDiscount } from "@/api/mock/mock";
 import {
   // getCurrencyUnit,
   getRfqInfo,
@@ -254,13 +256,6 @@ export default {
 
     quotation,
   },
-  //   props: {
-  //     id: String,
-  //     initData: {
-  //       type: Object,
-  //       default: () => ({}),
-  //     },
-  //   },
   props: {
     value: {
       type: Object,
@@ -288,7 +283,8 @@ export default {
       },
       unitTableTitle,
       yearsTableTitle,
-
+      stageColumn,
+      outPutColumn,
       selectedTableData: [],
       totalTableTitle,
       multiPleTableTitle,
@@ -313,9 +309,8 @@ export default {
       rfqinfoProduct: [],
       rfqinfoProductCopy: [],
       timeout: "",
-
-      // yearsPlans: [],
-      // procurePlans: [],
+      annualOutput: [],
+      
     };
   },
   created() {
@@ -325,7 +320,6 @@ export default {
     value: {
       immediate: true,
       handler(val) {
-        console.log("ruleForm---------->projectInfo", val);
         this.ruleForm = val;
       },
     },
@@ -335,12 +329,20 @@ export default {
   },
   mounted() {
     this.updateRuleForm(this.ruleForm);
+    getDiscount({}).then((res) => {
+        let o = {title:'折现率'};
+        res?.data?.md_discount_rate.map(item=>{
+          let x = Number(item.code.replace('Y','0'));
+          o[`stage${x}`]=item.describe;
+        })
+        this.annualOutput[0]={...o};
+      });
     // this.handleSearchReset();
     getModels().then((res) => {
-      this.modelsOption = res?.data.filter((item) => item.name?.length > 0);
+      this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
     });
     getProjects().then((res) => {
-      this.modelProjectsOption = res?.data.filter(
+      this.modelProjectsOption = res?.data?.filter(
         (item) => item.name?.length > 0
       );
     });
