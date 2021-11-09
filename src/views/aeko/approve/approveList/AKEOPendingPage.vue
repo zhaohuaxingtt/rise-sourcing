@@ -84,8 +84,7 @@
             <i class="el-icon-warning-outline bule iconSuffix"></i>
           </el-tooltip>
 				</i-button>
-        <!---v-if="transferButtonDisplay"-->
-        <i-button @click="transfer"  v-permission.auto="AEKO_PENDING_APPROVAL_TRANSFER|待审批页面按钮_转派"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
+        <i-button @click="transfer" v-if="transferButtonDisplay  v-permission.auto="AEKO_PENDING_APPROVAL_TRANSFER|待审批页面按钮_转派"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
 
       </div>
       <!--表格展示区-->
