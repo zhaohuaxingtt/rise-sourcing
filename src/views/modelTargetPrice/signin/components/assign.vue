@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 09:41:33
+ * @LastEditTime: 2021-11-09 18:09:23
  * @Description: 分配询价采购员弹窗
- * @FilePath: \front-web\src\views\modelTargetPrice\signin\components\assign.vue
+ * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\components\assign.vue
 -->
 
 <template>
@@ -34,7 +34,7 @@
 
 <script>
 import { iDialog, iButton, iSelect, iMessage } from 'rise'
-import { getCFList } from '@/api/financialTargetPrice/index'
+import { getAppointUser } from '@/api/modelTargetPrice/index'
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     getCF() {
-      getCFList().then(res => {
+      getAppointUser().then(res => {
         if (res?.result) {
           this.assignOption = res.data.map(item => {
             return {

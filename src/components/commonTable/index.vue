@@ -14,7 +14,7 @@
               v-loading='tableLoading'
               @selection-change="handleSelectionChange"
               :row-class-name="handleTableRow">
-      <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+      <el-table-column v-if="selection" type='selection' width="55" align='center'></el-table-column>
       <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
       <template v-for="(items,index) in tableTitle">
         <!-- 点击事件-->
