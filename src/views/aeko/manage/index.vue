@@ -7,7 +7,8 @@
 <template>
   <iPage class="aeko-manage-list">
     <div class="header-nav">
-      <h2>{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2>
+      <iNavMvp :lev="1" :list="leftTab" :lang="true" routerPage left class="margin-bottom10" />
+      <!-- <h2>{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2> -->
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <log-button @click="openLog" class="margin-left25"/>
@@ -16,7 +17,7 @@
       </div>
     </div>
 
-    <div class="margin-top20">
+    <div class="margin-top10">
 
     <!-- 搜索区域 -->
       <iSearch @sure="sure" @reset="reset">
@@ -178,7 +179,7 @@ import {
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
-import { TAB,filterRole } from '../data';
+import { TAB,filterRole,getLeftTab } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
@@ -235,6 +236,7 @@ export default {
     data(){
       return{
         navList:TAB,
+        leftTab:[],
         SearchList:searchList,
         selectItems:[],
         searchParams:{
@@ -317,6 +319,8 @@ export default {
           path:filterList[0].url,
         })
       }
+
+      this.leftTab = getLeftTab(0);
     },
     methods:{
       // 查询待办数量
