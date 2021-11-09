@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 14:42:25
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-09 21:14:42
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\modelTargetPrice\signin\index.vue
 -->
@@ -228,7 +228,7 @@ export default {
       });
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { projectId:row.purchasingProjectId,businessKey:row.partProjectType}})
       window.open(router.href,'_blank')
     },
     /**

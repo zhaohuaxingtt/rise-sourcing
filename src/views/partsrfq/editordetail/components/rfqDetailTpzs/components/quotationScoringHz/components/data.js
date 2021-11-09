@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-04 19:33:00
+ * @LastEditTime: 2021-11-09 20:45:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -19,6 +19,7 @@ export const fstitle = [
   {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
 ]
 export const gstitle = [
@@ -31,6 +32,7 @@ export const gstitle = [
   {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentSupplier',label:'Cur. Supplier',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentShare',label:'Share',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentAPrice',label:'Cur. \n A Price',i18n:'',width:'100',tooltip:false,fixed:true},
@@ -582,6 +584,7 @@ export const leftSideData = [ // fitller
   {props:'plannedInvest',name:'Planned Invest'},
   {props:'ckdLanded',name:'CKD Landed'},
   {props:'tia',name:'KM'},
+  {props:'mouldPrice',name:'T-TargetPrice'},
   {props:'fTarget',name:'F-Target'},
 ]
 
