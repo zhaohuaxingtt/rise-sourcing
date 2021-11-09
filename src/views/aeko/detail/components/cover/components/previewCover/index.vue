@@ -160,9 +160,12 @@ export default {
         const {from=''} = query;
         if(from == 'check') {
             this.isFromCheck = true;
-            this.tableTitle.push(
-                { props: "frozenTime", name: "冻结时间", key: "LK_AEKO_DONGJIESHIJIAN", tooltip: true },
-            )
+            const filterFrozen = this.tableTitle.filter((item)=>item.props === 'frozenTime');
+            if(!filterFrozen.length){
+                this.tableTitle.push(
+                    { props: "frozenTime", name: "冻结时间", key: "LK_AEKO_DONGJIESHIJIAN", tooltip: true },
+                )
+            }
         }
     },
     methods:{
