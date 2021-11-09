@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-03 20:44:31
- * @LastEditTime: 2021-11-08 14:58:59
+ * @LastEditTime: 2021-11-09 18:54:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\decisiondata\costanalysis.js
@@ -25,6 +25,24 @@ export function costanalysisShow(data) {
 export function costanalysisSort(data) {
   return requst({
     url: `/cost_analysis/sort`,
+    method: "PATCH",
+    data:data
+  })
+}
+
+
+// 获取举措清单
+export function costAnalysisGet(data) {
+  return requst({
+    url: `/cost_analysis/${data}`,
+    method: "get"
+  })
+}
+
+// 设置举措清单
+export function costAnalysisStrage(data) {
+  return requst({
+    url: `/cost_analysis/strategy`,
     method: "PATCH",
     data:data
   })
