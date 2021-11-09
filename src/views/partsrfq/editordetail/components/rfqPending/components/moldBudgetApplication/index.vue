@@ -15,7 +15,7 @@
         @handleSelectionChange="handleSelectionChange"
       >
         <template #budget="scope">
-          <iInput v-model="scope.row.budget" v-if="!disabled" @input="handleInput($event, scope.row)"/>
+          <iInput v-model="scope.row.budget" v-if="!disabled" @input="handleInput($event, scope.row)" @blur="handleBlurByBudget(scope.row.budget, scope.row)" />
           <span v-else>{{ scope.row.budget }}</span>
         </template>
       </tableList>
@@ -90,7 +90,7 @@ export default {
           },
           [{ rfqIds: id }]
           )
-          this.tableListData = res.data.records;
+          this.tableListData = Array.isArray(res.data.records) ? res.data.records.map(item => ({ ...item, budget: math.bignumber(item.budget || 0).toFixed(2) })) : []
           // this.page.currPage = res.current
           // this.page.pageSize = res.size
           this.page.totalCount = res.data.total
@@ -148,7 +148,10 @@ export default {
     },
     handleInput(value, row) {
       this.$set(row, "budget", numberProcessor(value, 2))
-    }
+    },
+    handleBlurByBudget(val, row) {
+      this.$set(row, "budget", math.bignumber(val || 0).toFixed(2))
+    },
   }
 }
 </script>
