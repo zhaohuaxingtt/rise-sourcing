@@ -473,7 +473,7 @@ export default {
             const data = Object.assign({
                 nominateIdArr:[Number(desinateId)],
             }, _params)
-            console.log('params', data, nominationType)
+
             this.submitting = true
             try {
                 if (check) {
@@ -578,10 +578,10 @@ export default {
                     }
                     
                     data.nominateAppId = this.$store.getters.nomiAppId
-                    data.meetingInfoVo = {
+                    data.meetingInfoVo = this.designateType == "MEETING" ? {
                         duration: params.info.duration,
                         meetingId: params.info.id
-                    }
+                    } : undefined
 
                     nominateAppSsubmit(data).then((res)=>{
                         if (res.code === '200') {
