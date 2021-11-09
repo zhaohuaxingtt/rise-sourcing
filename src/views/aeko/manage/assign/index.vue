@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-09 11:18:57
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-09 21:23:25
  * @Description: 
 -->
 <template>
@@ -151,7 +151,7 @@ export default {
     }
   },
   created() {
-    setLogMenu('AEKO管理-AEKO分配')
+    setLogMenu('AEKO审批-详情页-待审批列表-审批单')
   },
   mounted() {
     this.getFetchData()

@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-08 16:36:06
+ * @LastEditTime: 2021-11-09 15:29:37
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -113,6 +113,7 @@
             :apriceChange="apriceChangeVal"
             :key="$componentIndex"
             :workFlowId="workFlowId"
+            :cbdCanEdit="cbdCanEdit"
             :quotationId="partsId"
             :partInfo="partInfo"
             :basicInfo="basicInfo"
@@ -207,7 +208,8 @@ export default {
       workFlowId: "",
       quotationId: "",
       partInfo:{},
-      basicInfo:{}
+      basicInfo:{},
+      cbdCanEdit:true
     };
   },
   computed: {
@@ -224,6 +226,7 @@ export default {
       transmitObj.aekoApprovalDetails.workFlowId ||
       transmitObj.aekoApprovalDetails.workFlowDTOS[0]?.workFlowId ||
       "";
+    console.log('----',this.workFlowId)
     this.workFlowId ? this.getTableData() : this.alterationCbdSummaryByLinie();
   },
   methods: {
@@ -405,6 +408,8 @@ export default {
           (res) => {
             if (res?.code === "200") {
               let data = res.data;
+              this.cbdCanEdit = data.cbdCanEdit
+              if(data.cbdCanEdit == null) this.cbdCanEdit = true
               this.switchPartsTable = [data?.extSnapshotVO];
               this.aPriceChangeData = data;
               this.loading = false;
@@ -426,7 +431,6 @@ export default {
       this.getBasicInfo(quotationId)
       getAekoQuotationSummary({ quotationId })
       .then(res => {
-        console.log(res);
         if (res.code == 200) {
           let aPriceChangeData = {
               // CBD-变动值
@@ -462,26 +466,6 @@ export default {
           aPriceChangeData.makeCostList = res.data.makeCostList||[]
           aPriceChangeData.rawMaterialList = res.data.rawMaterialList||[]
           this.aPriceChangeData = aPriceChangeData
-
-          // this.responseData = {}
-          // this.responseData.cbdSummarySelected = res.data.cbdSummarySelected
-
-          // this.apriceChange = res.data.apriceChange || "0"
-          // this.apriceChangeDisabled = !+this.apriceChange
-          // this.sourceApriceChange = this.apriceChange
-          // this.setCbdSummarySelected(res.data.cbdSummarySelected)
-          // this.rawMaterialsTableData = Array.isArray(res.data.rawMaterialList) ? res.data.rawMaterialList : []
-          // this.manufacturingCostTableData = Array.isArray(res.data.makeCostList) ? res.data.makeCostList : []
-          // this.scrapCostTableData = this.setScrapCostTableData(res.data.scrapVO ? [res.data.scrapVO] : [])
-          // this.manageTableData = this.setManageTableData(Array.isArray(res.data.manageFeeList) ? res.data.manageFeeList : [])
-          // this.otherCostTableData = this.setOtherCostTableData(Array.isArray(res.data.otherFeeList) ? res.data.otherFeeList : [])
-          // this.profitTableData = this.setProfitTableData(res.data.profitVO ? [res.data.profitVO] : [])
-          // this.rawMaterialsSumData.materialChange = res.data.materialChange
-          // this.manufacturingCostSumData.makeCostChange = res.data.makeCostChange
-          // this.discardCostChange = res.data.discardCostChange
-          // this.manageFeeChange = res.data.manageFeeChange
-          // this.otherFee = res.data.otherFee
-          // this.profitChange = res.data.profitChange
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

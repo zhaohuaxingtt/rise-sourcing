@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 14:08:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-09 21:30:17
+ * @LastEditTime: 2021-11-09 21:41:08
  * @Description: 修改历史card
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\history.vue
 -->

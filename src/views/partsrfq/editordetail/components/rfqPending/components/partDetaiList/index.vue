@@ -20,7 +20,7 @@
       </iButton>
     </div>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
-               @handleSelectionChange="handleSelectionChange" @openPage="openPage">
+               @handleSelectionChange="handleSelectionChange" @poenPage="openPage">
       <template #fsnrGsnrNum="scope">
         <span v-if="scope.row.partProjectType === partProjTypes.PEIJIAN" class="openLinkText cursor " @click="gotoAccessoryDetail(scope.row)"> {{ scope.row.fsnrGsnrNum }}</span>
         <span v-else  class="openLinkText cursor "  @click="openPage(scope.row)">{{ scope.row.fsnrGsnrNum }}</span>
@@ -162,8 +162,7 @@ export default {
       const resolve = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
-          item: JSON.stringify(item),
-           projectId: item.id,
+          projectId: item.id,
           businessKey:item.partProjectType //新增业务标识。
         },
       });
