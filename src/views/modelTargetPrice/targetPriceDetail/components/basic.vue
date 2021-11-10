@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-09 21:40:18
+ * @LastEditTime: 2021-11-10 11:40:25
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -164,10 +164,10 @@ export default {
      * @return {*}
      */    
     handleSubmit() {
-      // if (this.selectList.length < 1) {
-      //   iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU', '至少选择一条记录'))
-      //   return
-      // }
+      if (this.applyType === '1' && this.tableData.some(item => item.businessType == '1' && (!item.expectedTargetPrice || item.expectedTargetPrice === ''))) {
+        iMessage.warn(this.language('XINSHENGQINGMUBIAOJIADELINGJIANQIWANGMUBIAOJIABUNENGWEIKONG', '新申请目标价的零件期望目标价不能为空'))
+        return
+      }
       this.$emit('changeSubmitLoading', true)
       if (this.applyType === '1') {
         const params = {
