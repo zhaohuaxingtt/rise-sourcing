@@ -140,7 +140,7 @@ export default {
     }
   },
   watch: {
-    view (val) {
+    isEdit (val) {
       this.editStatus = val
     }
   },
