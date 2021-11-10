@@ -364,7 +364,7 @@ export default {
   async mounted() {
     console.log(365,this.ruleForm)
     const res = await getRfqIdList({manualBiddingType:this.ruleForm.manualBiddingType});
-    this.rfqNameList = (res.data || []).map((code) => {
+    this.rfqNameList = (res?.data || []).map((code) => {
       return {
         biddingId: this.biddingId,
         rfqCode: code,
