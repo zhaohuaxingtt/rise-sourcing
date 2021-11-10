@@ -268,8 +268,8 @@ module.exports = {
         target: "http://10.122.17.38:8017",
         changeOrigin: true
       },
-      '/bizlogApi': {
-        target: `http://10.122.17.38:8013/bizlog`,
+      '/bizlog': {
+        target: `http://10.122.17.38:8013`,
         changeOrigin: true,
       }
     },
