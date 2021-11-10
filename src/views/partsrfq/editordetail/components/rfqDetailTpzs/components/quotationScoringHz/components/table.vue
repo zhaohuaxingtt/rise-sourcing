@@ -106,7 +106,7 @@
               <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
                   <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
               </template>
-              <template v-else-if='removeKeysNumber(item.props) == "ebr"'>
+              <template v-else-if='removeKeysNumber(item.props) == "ebrCalculatedValue"'>
                 <span>{{ebrShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
@@ -218,8 +218,8 @@ export default{
       }
     },
     ebrShow(data) {
-      console.log('data=',data,'--------------------------------------');
-      console.log('data*100=',data*100,'--------------------------------------');
+      console.log(data)
+
       if(data == undefined || data == 'Budget' || data == 'KM'  )
        return data 
       else{
