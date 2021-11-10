@@ -228,7 +228,7 @@ export default {
   methods: {
     handleBack() {
       this.$router.push({
-        name: "biddingProjectList",
+        path: "/bidding/projectlist",
       });
       sessionStorage.clear();
     },
