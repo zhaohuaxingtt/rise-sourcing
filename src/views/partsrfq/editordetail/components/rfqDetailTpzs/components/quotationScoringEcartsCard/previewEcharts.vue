@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-11-10 15:44:06
+ * @LastEditTime: 2021-11-10 17:23:22
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -82,6 +82,7 @@ export default{
     }
   },
   created(){
+    console.log('======rfqId=======',this.rfqId)
     this.form.rfqId = this.$route.query.id || this.rfqId
   },
   mounted(){

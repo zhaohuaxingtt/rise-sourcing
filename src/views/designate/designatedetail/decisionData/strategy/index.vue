@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:35:20
- * @LastEditTime: 2021-11-09 19:27:42
+ * @LastEditTime: 2021-11-10 19:18:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\strategy\index.vue
 -->
 <template>
 <div>
-  <div>data组数据湖提供</div>
+  <iCard></iCard>
   <higthligthts class='margin-top20 margin-bottom20'></higthligthts>
   <div>三组提供</div>
 </div>
@@ -18,16 +18,8 @@ import {iCard} from 'rise'
 import higthligthts from './components/highligths'
 export default{
   components:{iCard,higthligthts},
-  data(){},
-  created(){
-    this.costAnalysisGet()
-  },
-  methods:{
-    costAnalysisGet(){
-      costAnalysisGet(this.$route.query.desinateId).then(r=>{
-        console.log(r)
-      }).catch(err=>{console.warn(err)})
-    }
+  data(){
+    return {}
   }
 }
 </script>

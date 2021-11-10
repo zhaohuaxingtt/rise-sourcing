@@ -225,6 +225,9 @@ export default {
     this.queryParams = this.$route.query
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
+    if(this.transmitObj.option == 4){ // linie 预览不显示"查看MTZ变更"按钮
+      this.show = false
+    }
     if(this.queryParams?.goto){
       this.searchApproved(this.queryParams.requirementAekoId)
       this.auditContentStatus = '已审批'

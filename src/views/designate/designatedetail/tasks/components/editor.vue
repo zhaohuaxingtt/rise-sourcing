@@ -27,9 +27,14 @@
           </iButton>
         </span>
         <span v-else>
-          <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
-            {{ language("LK_BIANJI",'编辑') }}
-          </iButton>
+          <template v-if='higth'>
+            <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
+              {{ language("LK_BIANJI",'编辑') }}
+            </iButton>
+          </template>
+            <iButton v-else @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
+              {{ language("LK_BIANJI",'编辑') }}
+            </iButton>
         </span>
       </div>
       <div class="clearfix"></div>
