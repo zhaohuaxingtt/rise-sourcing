@@ -8,7 +8,7 @@
  */
 import axios from '@/utils/axios';
 
-const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon');
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon');
 
 // 定点历史记录保存
 export function nomiSave(params) {

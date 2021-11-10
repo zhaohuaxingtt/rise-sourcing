@@ -13,7 +13,7 @@
 
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
+const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 const requstDIC = axios(process.env.VUE_APP_DIC)
 
 // 查询-供应链地图
