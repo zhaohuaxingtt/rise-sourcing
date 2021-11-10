@@ -35,7 +35,7 @@ export const decisionType = [
     {key:'BNKReference',name:'BNK Reference',path:'/designate/decisiondata/bnkreference'},
     {key:'AwardingScenario',name:'Awarding Scenario',path:'/designate/decisiondata/awardingscenario'},
     {key:'RS',name:'RS',path:'/designate/decisiondata/rs'},
-    {key:'MTZ',name:'MTZ',path:'/designate/decisiondata/mtz'},
+    {key:'MTZ',name:'MTZ',path:'/designate/decisiondata/mtz',isMtz:true},
     {key:'Attachment',name:'Attachment',path:'/designate/decisiondata/attachment'},
 ]
 

@@ -8,7 +8,7 @@
         <!-- 顶部信息栏 -->
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
-                <span class="icon-mtz margin-left10" v-if="mtzApplyId !=undefined "><icon symbol name="iconMTZ"></icon></span>
+                <span class="icon-mtz margin-left10" v-if="mtzShow"><icon symbol name="iconMTZ"></icon></span>
                 <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></span>
                 <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
                 <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled || rsDisabled" v-permission.auto="NOMINATION_MENU_CHANGENOMINATETYPE|定点申请类型">
@@ -157,6 +157,7 @@ export default {
         ...Vuex.mapState({
             nominationDisabled: state => state.nomination.nominationDisabled,
             rsDisabled: state => state.nomination.rsDisabled,
+            mtzShow: state => state.nomination.mtzApplyId,
         }),
         phaseType(){
             return this.$store.getters.phaseType;
@@ -184,8 +185,7 @@ export default {
             mettingDialogVisible: false,
             submitting: false,
             meetingConclusionDialogVisible: false,
-            svgList:svgList,
-            mtzApplyId:this.$route.query.mtzApplyId
+            svgList:svgList
         }
     },
     methods:{
@@ -228,7 +228,7 @@ export default {
             this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId, route: 'temp'})})
         },
         // 跳转到任何已完成的定点步骤
-        toAnyNomiStep(item) {
+        async toAnyNomiStep(item) {
             const id = item.id
             const path = item.path
             // 决策资料允许，特例跳转，不更新当前步骤
