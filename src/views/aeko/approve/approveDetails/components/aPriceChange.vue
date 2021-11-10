@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-10 17:01:41
+ * @LastEditTime: 2021-11-10 19:26:42
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -19,7 +19,7 @@
     <iCard class="mb-20">
       <p class="title mb-20">
         <span>{{ `${language("BIANDONGZHI", "变动值")} - CBD` }}</span>
-        <span class="tip ml-12">{{ language("DANWEI", "单位") }}：RMB/Pc.</span>
+        <span class="tip ml-12">{{ language("DANWEI", "单位") }}: Pc.</span>
       </p>
       <div>
         <tableList
@@ -312,6 +312,10 @@ export default {
     cbdCanEdit:{
       type: Boolean,
       default: true
+    },
+    currency:{
+      type: String,
+      default: 'RMB'
     }
   },
   data() {
@@ -369,16 +373,19 @@ export default {
   watch:{
     tableData: {
       handler(list) {
-        const apriceChange = math.add(
-          math.bignumber(list[0].materialChange || 0),
-          math.bignumber(list[0].makeCostChange || 0),
-          math.bignumber(list[0].discardCostChange || 0),
-          math.bignumber(list[0].manageFeeChange || 0),
-          math.bignumber(list[0].otherFee || 0),
-          math.bignumber(list[0].profitChange || 0)
-        ).toFixed(2)
+        if(Array.isArray(list)&&list.length>0){
+          const apriceChange = math.add(
+            math.bignumber(list[0].materialChange || 0),
+            math.bignumber(list[0].makeCostChange || 0),
+            math.bignumber(list[0].discardCostChange || 0),
+            math.bignumber(list[0].manageFeeChange || 0),
+            math.bignumber(list[0].otherFee || 0),
+            math.bignumber(list[0].profitChange || 0)
+          ).toFixed(2)
+
+          this.$set(list[0], "apriceChange", apriceChange)
+        }
         
-        this.$set(list[0], "apriceChange", apriceChange)
       }, 
       deep: true
     }
