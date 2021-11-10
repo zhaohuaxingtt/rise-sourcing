@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-10 10:03:03
+ * @LastEditTime: 2021-11-10 10:26:41
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -589,14 +589,16 @@ export default {
           size: this.page.pageSize,
         }
         getWorkflowId(params).then(res=>{
+          console.log(res);
           if (res.code == 200) {
-            this.tableListData = Array.isArray(res.data) ? res.data : []
+            let { data } = res
+            this.tableListData = Array.isArray(data.records) ? data.records : []
             this.tableListData.map(o => {
               // 分组管理需要备份原始分组名称
               o.groupNameBak = o.groupName
               return
             })
-            this.page.totalCount = res.total || 0
+            this.page.totalCount = data.total || 0
             this.rowspan(this.tableListData)
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
