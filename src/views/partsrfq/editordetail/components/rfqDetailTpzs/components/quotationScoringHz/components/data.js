@@ -586,7 +586,7 @@ export const leftSideData = [ // fitller
   {props:'plannedInvest',name:'Planned Invest'},
   {props:'ckdLanded',name:'CKD Landed'},
   {props:'tia',name:'KM'},
-  {props:'mouldPrice',name:'T-TargetPrice'},
+  {props:'mouldPrice',name:'Tooling Target Price'},
   {props:'fTarget',name:'F-Target'},
 ]
 

@@ -1,8 +1,8 @@
 /*
  * @Author: Haojiang
  * @Date: 2021-06-28 09:26:28
- * @LastEditTime: 2021-11-08 10:29:12
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-10 18:15:27
+ * @LastEditors:  
  * @Description: 签字单
  * @FilePath: /front-web/src/views/designate/home/signSheet/components/data.js
  */
@@ -122,7 +122,7 @@ export const detailsTableTitle = [
     tooltip: false
   },
   {
-    props: 'meetingPresentId',
+    props: 'meetingName',
     name: '会议',
     key: 'nominationLanguage_HuiYi',
     tooltip: true
