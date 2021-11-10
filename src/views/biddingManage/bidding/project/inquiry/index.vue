@@ -742,12 +742,13 @@ export default {
       if (this.ruleForm.biddingStatus !== "01") {
         const flag = this.$route.path.includes('/bidding/project/inquiry')
         if(flag){
-          this.$router.push({
+          const router = this.$router.resolve({
             name:
               this.ruleForm.roundType == "02"
                 ? "biddingOpen"
                 : "biddingCompetitionBase",
           });
+          window.open(router.href,'_blank')
         } else {
           this.$emit('jump',params) 
         }
@@ -757,12 +758,13 @@ export default {
       this.submitForm(() => {
         const flag = this.$route.path.includes('/bidding/project/inquiry')
         if(flag){
-          this.$router.push({
+          const router = this.$router.resolve({
             name:
               this.ruleForm.roundType == "02"
                 ? "biddingOpen"
                 : "biddingCompetitionBase",
           });
+          window.open(router.href,'_blank')
         } else {
           this.$emit('jump',params) 
         }
