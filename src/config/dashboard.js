@@ -1,18 +1,28 @@
 /*
  * @Author: your name
  * @Date: 2021-08-16 14:41:48
- * @LastEditTime: 2021-09-03 16:42:19
+ * @LastEditTime: 2021-11-10 15:50:13
  * @LastEditors: Hao,Jiang
- * @Description: 已经废弃
+ * @Description: 寻源概览允许各版块接收的参数
  * @FilePath: /front-web/src/config/dashboard.js
  */
 
-// 前期采购员
-export const qianqicaigou = [
-  'CGY','QQCGY','QQCGKZ','QQCGGZ','CGYA','WS1QQCGY','WS1QQCGGZ','WS1QQCGKZ','WS2QQCGY','WS2QQCGGZ','WS2QQCGKZ'
+// 允许接收的参数
+const acceptKeyArray = [
+  // 零件签收
+  ['currentUser', 'showSelf'],
+  // 采购项目建立
+  ['status','buyerName','linieName','currentUser','isDelay', 'showSelf'],
+  // RFQ管理 未转谈判、待上会流转
+  ['type','currentUser','isDelay'],
+  // RFQ管理 时间轴
+  ['type','currentUser','isDelay'],
+  // 定点管理
+  ['nominateProcessType', 'applicationStatus', 'currentUser', 'isDelay'],
+  // 定点信
+  ['status','linieName','csfCssName', 'currentUser', 'isDelay'],
+  // LOI
+  ['loiStatus','cardType','linieName','csfName','currentUser', 'isDelay']
 ]
 
-// 专业采购员
-export const zhuanyecaigou = [
-  'ZYCGY','ZYCGKZ','ZYCGGZ','WS1ZYCGY','WS1ZYCGKZ','WS1ZYCGGZ','WS2ZYCGY','WS2ZYCGKZ','WS2ZYCGGZ'
-]
+export const acceptKeys = Array.from(new Set(acceptKeyArray.flat(Infinity)))

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-09 21:19:12
+ * @LastEditTime: 2021-11-10 15:23:01
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\approval\index.vue
 -->
@@ -143,6 +143,7 @@ export default {
       approve(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.changeApprovalDialogVisible(false)
           this.getTableList()
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -268,9 +269,9 @@ export default {
     },
     changeApprovalDialogVisible(visible) {
       this.approvalDialogVisible = visible
-      if (!visible) {
-        this.getTableList()
-      }
+      // if (!visible) {
+      //   this.getTableList()
+      // }
     },
     /**
      * @Description: 更改编辑状态

@@ -18,9 +18,6 @@
             <iButton @click="submit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
               {{ language("LK_TIJIAO",'提交') }}
             </iButton>
-            <iButton @click="remove" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
-              {{ language("YICHU",'移除') }}
-            </iButton>
             <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
               {{ language("FANHUI",'返回') }}
             </iButton>

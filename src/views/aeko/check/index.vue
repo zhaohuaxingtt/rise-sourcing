@@ -15,7 +15,7 @@
         
         
         <!-- 搜索区域 -->
-        <iSearch @sure="sure" @reset="reset">
+        <iSearch @sure="sure" @reset="reset" class="margin-top10">
           <el-form>
               <el-form-item 
               v-for="(item,index) in SearchList" 

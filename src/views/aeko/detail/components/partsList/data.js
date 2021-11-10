@@ -57,7 +57,7 @@ export const checkSearchList=[
   // 内容状态
   {props:'contentStatusList',label:'内容状态',type:'select',clearable:true,labelKey:'LK_AEKO_NEIRONGZHUANGTAI',selectOption:'contentStatusList',disabled:false,filterable:true,multiple:true,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_NEIRONGZHUANGTAI|内容状态-搜索栏"},
   {props:'linieDeptNumList',label:'科室',selectOption:'linieDeptNumList',type:'select',labelKey:'LK_AEKOKESHI', disabled:false,filterable:true,multiple:true,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIEDEPTNUM|科室-LINIE"},
-  {props:'buyerName',label:'Linie',selectOption:'buyerName',type:'select',noShowAll:true,clearable:true,labelKey:'LK_AEKOLINIE',disabled:false,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIE|Linie-LINIE"},
+  {props:'buyerName',label:'Linie',selectOption:'buyerName',type:'select',noShowAll:true,clearable:true,labelKey:'LK_AEKOLINIE',filterable:true,disabled:false,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIE|Linie-LINIE"},
   {props:'cartype',label:'车型',isNewSelect:true,type:'select',labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_CARTYPE|车型',selectOption:'cartype',multiple:true,showCode:['AeA'],filterable:true},
   {props:'cartypeCode',label:'⻋型项⽬',isNewSelect:true,type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_CARTYPECODE|⻋型项⽬',selectOption:'cartypeCode',showCode:['Aeko','MP'],multiple:true,filterable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_BRAND|品牌-LINIE"},

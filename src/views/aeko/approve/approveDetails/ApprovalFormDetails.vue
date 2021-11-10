@@ -3,7 +3,7 @@
   <div v-permission.auto="AEKO_APPROVAL_FORM_DETAILS_PAGE|AEKO审批单详情">
     <AEKOApprovalComponents v-if="[1,2].includes(transmitObj.option)" :audit-items="auditItems" :transmit-obj="transmitObj" @refreshForm="refreshForm($event)"/>
     <CoverStatementComponents class="margin-top20" :audit-cover-status="auditCoverStatus" :audit-cover="auditCover"/>
-    <RecommendationTablePendingApprovalComponents v-show="Array.isArray(auditContents)&&auditContents.length>0" :audit-contents="auditContents" :audit-content-status="auditContentStatus" class="margin-top20"/>
+    <RecommendationTablePendingApprovalComponents v-show="isShow&&Array.isArray(auditContents)&&auditContents.length>0" :audit-contents="auditContents" :audit-content-status="auditContentStatus" class="margin-top20"/>
   </div>
 </template>
 
@@ -27,6 +27,7 @@ export default {
       transmitObj: {},
       aekoApprovalDetails: {},
       queryParams: {},
+      isShow:true
     }
   },
 
@@ -41,6 +42,7 @@ export default {
       this.getPreviewData()
     } else if(this.transmitObj.option == 5){
       this.lookAKEOApprovalDetailFromCheck();
+      this.isShow = false //CSF分配人 预览不显示推荐表
     } else {
       this.lookAKEOApprovalForm()
     }

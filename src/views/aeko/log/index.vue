@@ -168,7 +168,7 @@ export default {
     },
     getOptions() {
       const http = new XMLHttpRequest()
-      const url = `/baseInfo/web/selectDictByKeys?keys=LOG_TYPE`
+      const url = `/baseinfo/web/selectDictByKeys?keys=LOG_TYPE`
       http.open('GET', url, true)
       http.setRequestHeader('content-type', 'application/json')
       http.onreadystatechange = () => {
@@ -186,7 +186,7 @@ export default {
       // menuName_obj_ae:菜单    当前所在页面
       // module_obj_ae:模块      当前所在流程模块
       const params = {
-        current: this.page.currPage - 1,  // 前后端页面定义有一页偏差
+        current:this.page.currPage - 1,  // 前后端页面定义有一页偏差
         size: this.page.pageSize,
         extendFields: { ...this.query, module_obj_ae:this.module, createBy_obj_ae: this.userInfo.id, menuName_obj_ae: menu }
       }
