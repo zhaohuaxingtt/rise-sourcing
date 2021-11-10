@@ -8,7 +8,7 @@
  */
 import axios from '@/utils/axios';
 
-const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon');
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon');
 //获取品类管理-车型价格对比pbi的信息
 export function getCmCarTypePricePbi() {
   return request({

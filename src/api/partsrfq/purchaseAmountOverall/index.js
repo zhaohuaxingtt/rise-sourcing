@@ -7,7 +7,7 @@
  */
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
+const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 
 // pbi-采购金额总览
 export function getPurchaseAmountPbi(parmars) {

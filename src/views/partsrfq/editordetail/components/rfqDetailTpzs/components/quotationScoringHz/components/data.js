@@ -19,7 +19,8 @@ export const fstitle = [
   {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
+  // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'mouldPrice',label:'Tooling Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
 ]
 export const gstitle = [
@@ -32,7 +33,8 @@ export const gstitle = [
   {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
+  // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'mouldPrice',label:'Tooling Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentSupplier',label:'Cur. Supplier',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentShare',label:'Share',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentAPrice',label:'Cur. \n A Price',i18n:'',width:'100',tooltip:false,fixed:true},

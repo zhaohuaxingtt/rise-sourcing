@@ -1,7 +1,7 @@
 /*
  * @Author: YoHo
  * @Date: 2021-10-11 17:18:47
- * @LastEditTime: 2021-11-03 17:58:22
+ * @LastEditTime: 2021-11-10 16:48:41
  * @LastEditors: YoHo
  * @Description: 
  */
@@ -154,37 +154,36 @@ export const manufacturingCostTableTitle = [
 ]
 // 报废成本
 export const scrapCostTableTitle = [
-  { props: "index", name: "#", width: "80" },
-  // { props: "amount", key: "BAOFEICHENGBEN", name: "报废成本", width: "210" },
-  { props: "typeNameByLang", key: "BAOFEICHENGBEN", name: "报废成本", width: "210" },
-  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBAOFEILV', '原报废率')}(%)` } }) }, width: "140" },
-  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBAOFEILV', '现报废率')}(%)` } }) }, width: "140" },
-  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, width: "auto" },
+  { props: "index", name: "#", width: "60" },
+  { props: "typeNameByLang", key: "BAOFEICHENGBEN", name: "报废成本", width: "100", tooltip: true },
+  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBAOFEILV', '原报废率')}(%)` } }) }, width: "120", tooltip: true },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBAOFEILV', '现报废率')}(%)` } }) }, width: "120", tooltip: true },
+  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, tooltip: true },
 ]
 // 管理费
 export const manageCostTableTitle = [
-  { props: "index", name: "#", width: "80" },
-  { props: "typeNameByLang", key: "GUANLIFEI", name: "管理费", width: "300" },
-  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBILI', '原比例')}(%)` } }) }, width: "110" },
-  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBILI', '现比例')}(%)` } }) }, width: "100" },
-  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, width: "auto" },
+  { props: "index", name: "#", width: "60" },
+  { props: "typeNameByLang", key: "GUANLIFEI", name: "管理费", width: "auto", tooltip: true },
+  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBILI', '原比例')}(%)` } }) }, width: "100", tooltip: true },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBILI', '现比例')}(%)` } }) }, width: "100", tooltip: true },
+  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, width: "auto", tooltip: true },
 ]
 
 // 其它费用
 export const otherCostTableTitle = [
-  { props: "index", name: "#", width: "80" },
-  { props: "itemTypeNameByLang", key: "QITAFEIYONG", name: "其他费用", width: "100" },
-  { props: "shareTotal", key: "JINE", name: "金额", width: "140" },
-  { props: "shareQuantity", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANSHULIANG', '分摊数量')}(1..n)` } }) }, width: "140" },
-  { props: "shareAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANJINE', '分摊金额')}(RMB/Pc.)` } }) },  },
+  { props: "index", name: "#", width: "60" },
+  { props: "itemTypeNameByLang", key: "QITAFEIYONG", name: "其他费用", width: "100", tooltip: true },
+  { props: "shareTotal", key: "JINE", name: "金额", width: "120", tooltip: true },
+  { props: "shareQuantity", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANSHULIANG', '分摊数量')}(1..n)` } }) }, width: "120", tooltip: true },
+  { props: "shareAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANJINE', '分摊金额')}(RMB/Pc.)` } }) }, tooltip: true  },
 ]
 // 利润
 export const profitTableTitle = [
-  { props: "index", name: "#", width: "80" },
-  { props: "typeNameByLang", key: "LIRUN", name: "利润", width: "310" },
-  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBILI', '原比例')}(%)` } }) }, width: "110" },
-  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBILI', '现比例')}(%)` } }) }, width: "100" },
-  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, width: "auto" },
+  { props: "index", name: "#", width: "60" },
+  { props: "typeNameByLang", key: "LIRUN", name: "利润", width: "auto", tooltip: true },
+  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBILI', '原比例')}(%)` } }) }, width: "100", tooltip: true },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBILI', '现比例')}(%)` } }) }, width: "100", tooltip: true },
+  { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, width: "auto", tooltip: true },
 ]
 // 是否为“新”数据
 export const originRowClass = function ({ row }) {

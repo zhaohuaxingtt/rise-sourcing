@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-11-02 11:12:44
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-09 14:44:08
+ * @LastEditTime: 2021-11-10 18:02:29
  * @Description: 内容表态组合相关功能
  */
 
@@ -30,6 +30,10 @@ export const combine = {
     // 组合
     async combine() {
       const dataList = this.multipleSelection
+      if (dataList.length === 0) {
+        this.$message.warning(this.language('GOUXUANXUZUHEDEHANGXIANGMU','请勾选需要组合的行项目'))
+        return
+      }
       if (dataList.length <= 1) {
         this.$message.error(this.language('GOUXUANDUOLINGJIANZUHE','请勾选多个零件行项目组合'))
         return
