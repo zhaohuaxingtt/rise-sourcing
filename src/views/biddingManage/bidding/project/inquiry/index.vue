@@ -247,7 +247,7 @@
                 v-for="item in cbdLevelList[scope.row.supplierCode]"
                 :key="item"
                 :label="item"
-                :value="item"
+                :value="item == 'L1' ? '01' : item == 'L2' ? '02' : item == 'L3' ? '03' : ''"
               >
               </el-option>
             </iSelect>
@@ -1192,6 +1192,7 @@ export default {
             suppliers: res.suppliers?.map((supplier) => {
               console.log('obsfsaject',supplier)
               this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+              supplier.cbdLevel = "01"
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1227,6 +1228,7 @@ export default {
           this.initSuppliers = res.suppliers?.map((supplier) => {
             console.log('obsfsaject',supplier)
             this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+            supplier.cbdLevel = "01"
             // if (!supplier.isAttend)
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
@@ -1286,7 +1288,7 @@ export default {
             suppliers: res.suppliers?.map((supplier) => {
               console.log('obsfsaject',supplier)
               this.querySuppliers(supplier.supplierCode,supplier.supplierId);
-              supplier.cbdLevel = "L1"
+              supplier.cbdLevel = "01"
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1323,7 +1325,7 @@ export default {
             console.log('obsfsaject',supplier)
             this.querySuppliers(supplier.supplierCode,supplier.supplierId);
             // if (!supplier.isAttend)
-            supplier.cbdLevel = "L1"
+            supplier.cbdLevel = "01"
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
                 ...supplier,
