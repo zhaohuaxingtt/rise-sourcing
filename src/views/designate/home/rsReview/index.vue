@@ -371,7 +371,7 @@ export default {
       try {
         const res = await batchRevokeToPass({nominateIdArr: idList})
         if (res.code === 200) {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
