@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-08 14:24:57
+ * @LastEditTime: 2021-11-09 20:58:38
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -217,5 +217,13 @@ export function getLogList(data) {
     url: `/operationLog/findOperationLogs`,
     method: "POST",
     data
+  })
+}
+
+// 申请详情内嵌页面获取流程id:WorkflowId
+export function getWorkflowId({id,auditType,current,size}) {
+  return requst({
+    url: `/aeko/approve/distribution/get/workflowId/${id}/${auditType}/${current}/${size}`,
+    method: "GET",
   })
 }

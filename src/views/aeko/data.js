@@ -82,13 +82,12 @@ export const getLeftTab = function(index=0){
             key: 'LK_AEKOCAOZUO'
         },
         {
-            value: 2,
-            name: 'AEKO报表',
-            message: 0,
-            url: '/projectmgt/projectoverview',
-            activePath: 'projectoverview',
-            key: 'LK_AEKOBAOBIAO',
-            permissionKey:'LK_AEKOBAOBIAO',
+          value: 2,
+          name: 'AEKO报表',
+          message: 0,
+          url: '/aeko/report',
+          activePath: '/report',
+          key: 'LK_AEKOBAOBIAO'
         },
     ];
     const item = TAB[index];

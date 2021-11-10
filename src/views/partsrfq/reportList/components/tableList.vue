@@ -6,7 +6,7 @@
 <template>
 	<el-table class="table" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading"
 		@selection-change="handleSelectionChange" :empty-text="$t('LK_ZANWUSHUJU')">
-		<el-table-column v-if="selection" type="selection" align="center" width="40"></el-table-column>
+		<el-table-column v-if="selection" type="selection" align="center" width="55"></el-table-column>
 		<el-table-column v-if="index" type="index" align="center" :label="indexLabel"></el-table-column>
 		<template v-for="(item, $index) in tableTitle">
 			<el-table-column :key="$index" align="center" :label="item.key?$t(item.key):item.name" :prop="item.props"

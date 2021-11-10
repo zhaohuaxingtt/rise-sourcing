@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 14:08:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 10:54:26
+ * @LastEditTime: 2021-11-09 21:41:08
  * @Description: 修改历史card
- * @FilePath: \front-web\src\views\modelTargetPrice\targetPriceDetail\components\history.vue
+ * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\history.vue
 -->
 
 <template>
@@ -36,8 +36,7 @@ import {iCard,iPagination, iMessage} from 'rise'
 import tableList from '../../components/tableList'
 import { historyTableTitle } from '../data'
 import { pageMixins } from "@/utils/pageMixins"
-import { getUpdateHistoryList } from "@/api/financialTargetPrice/index"
-import { excelExport } from "@/utils/filedowLoad"
+import { getRecordList } from "@/api/modelTargetPrice/index"
 export default {
   mixins: [pageMixins],
   components: {iCard,iPagination,tableList},
@@ -63,7 +62,7 @@ export default {
   },
   methods: {
     openPage(row) {
-      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { item: JSON.stringify(row) }})
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail', query: { projectId: row.purchasingProjectPartId, businessKey: row.partProjectType }})
       window.open(router.href,'_blank')
     },
     /**
@@ -76,28 +75,30 @@ export default {
       if (!this.id) {
         return
       }
-      // this.tableLoading = true
-      // const params = {
-      //   id: this.id,
-      //   pageNo: this.page.currPage,
-      //   pageSize: this.page.pageSize
-      // }
-      // getUpdateHistoryList(params).then(res => {
-      //   if(res?.result) {
-      //     this.page = {
-      //       ...this.page,
-      //       totalCount: Number(res.total),
-      //       currPage: Number(res.pageNum),
-      //       pageSize: Number(res.pageSize)
-      //     }
-      //     this.tableData = res.data
-      //   } else {
-      //     this.tableData = []
-      //     iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-      //   }
-      // }).finally(() => {
-      //   this.tableLoading = false
-      // })
+      this.tableLoading = true
+      const params = {
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+      getRecordList(this.id, params).then(res => {
+        if(res?.result) {
+          this.page = {
+            ...this.page,
+            totalCount: res.total,
+            currPage: res.pageNum,
+            pageSize: res.pageSize
+          }
+          this.tableData = res.data
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).catch(e => {
+        this.tableData = []
+        iMessage.error(this.$i18n.locale === 'zh' ? e.desZh : e.desEn)
+      }).finally(() => {
+        this.tableLoading = false
+      })
     }
   }
 }

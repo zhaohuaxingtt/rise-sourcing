@@ -8,7 +8,7 @@
 <template>
   <iDialog
     title="明细"
-    :visible.sync="visibleDiolog"
+    :visible="visibleDiolog"
     width="90%"
     @close="clearDiolog"
   >
@@ -20,7 +20,7 @@
   </iDialog>
 </template>
 <script>
-import {iDialog, iFormGroup, iFormItem, iText} from 'rise' 
+import {iDialog, iFormGroup, iFormItem, iText, iMessage} from 'rise' 
 import {detailTitle} from './data'
 import {getPurchaseDetail} from '@/api/partsprocure/editordetail'
 export default {
@@ -47,26 +47,28 @@ export default {
     }
   },
   watch:{
-    'visibleDiolog':function(res) {
-       if (res == true) this.init()
+    visibleDiolog(res) {
+      if (res) this.init()
     }
   },
   methods: {
     clearDiolog() {
-      this.$emit('changeVisible',false)
+      this.$emit("update:visibleDiolog", false)
     },
     init() {
       let data = {
-        riseCode:this.item.riseCode,
-        sapItem:this.item.sapItem,
+        riseCode: this.item.riseCode,
+        sapItem: this.item.sapItem,
       }
-      console.log(data);
       getPurchaseDetail(data).then(res => {
-        this.detailList = res.data[0]
+        if (res.code == 200) {
+          this.detailList = Array.isArray(res.data) ? (res.data[0] || {}) : {}
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
       })
     }
   }
-  
 }
 </script>
 <style>

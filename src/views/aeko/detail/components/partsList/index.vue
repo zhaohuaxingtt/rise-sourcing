@@ -224,7 +224,7 @@ export default {
         const {query} = this.$route;
         const {from=''} = query;
         this.queryFrom = from;
-        from=='manage'?setLogMenu('AEKO管理-详情页-零件清单'):setLogMenu('AEKO表态-详情页-零件清单')
+        from=='manage'?setLogMenu('AEKO管理-详情页'):setLogMenu('AEKO表态-详情页-零件清单')
         const roleArr = [this.isAekoManager,this.isCommodityCoordinator,this.isLinie].filter((item)=>item == true);
         if(roleArr.length > 1){
             if(from == 'manage'){
