@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-09 21:13:58
+ * @LastEditTime: 2021-11-10 10:26:41
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -585,14 +585,24 @@ export default {
         let params = {
           id: this.$route.query.id,
           auditType: this.$route.query.auditType,
-        current: this.page.currPage,
-        size: this.page.pageSize,
+          current: this.page.currPage,
+          size: this.page.pageSize,
         }
-        console.log(this.$route.query);
-        console.log(params);
         getWorkflowId(params).then(res=>{
           console.log(res);
-          this.workflowId = res?.data
+          if (res.code == 200) {
+            let { data } = res
+            this.tableListData = Array.isArray(data.records) ? data.records : []
+            this.tableListData.map(o => {
+              // 分组管理需要备份原始分组名称
+              o.groupNameBak = o.groupName
+              return
+            })
+            this.page.totalCount = data.total || 0
+            this.rowspan(this.tableListData)
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
           this.loading = false
         }).catch(() => this.loading = false)
       },
