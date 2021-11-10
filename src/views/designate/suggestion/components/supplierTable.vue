@@ -3,7 +3,7 @@
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
           <!-- 创建MTZ申请 -->
-          <iButton @click="handlecreatemtz" :disabled=" isMtzDisabled || getSelectedMtzFlag ">
+          <iButton @click="handlecreatemtz" :disabled="isMtzDisabled || getSelectedMtzFlag">
             {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
            </iButton>
           <span v-if="!nominationDisabled && !rsDisabled" class="margin-left10">
@@ -192,7 +192,8 @@ export default {
       fsIds: [],
       supplierIds: [],
       isMtzDisabled: false,
-      selectedDataMtz: false
+      selectedDataMtz: false,
+      isFrozen:false
     }
   },
   mounted() {
@@ -229,8 +230,7 @@ export default {
         })
         .then(res => {
           this.nomiData =res.data;
-           this.nomiData.mtzApplyId ='1'
-          this.isMtzDisabled = this.nomiData.mtzApplyId != null || this.nomiData.isFreeze ===1
+          this.isMtzDisabled = this.nomiData.mtzApplyId || this.nomiData.isFreeze ===1
         })
       } 
     },
@@ -426,6 +426,7 @@ export default {
           this.data.map(o => {
             !o.sid && (o.sid = this.randomid())
             o.mtz == true ? o.mtz = '是' : o.mtz = '否'
+            o.isBeforeFrozen == true ? this.isFrozen = false : this.isFrozen = true
             return
           })
           this.page.totalCount = res.total || this.data.length
@@ -462,28 +463,16 @@ export default {
     },
     // 创建MTZ申请
     handlecreatemtz() {
-        let isNullmtzApplyId = true
-        let isFrozen = true
-        this.selectData.forEach(val=>{
-          val.mtzApplyId != null ? isNullmtzApplyId = false : isNullmtzApplyId = true
-          val.isBeforeFrozen === true ? isFrozen = true : isFrozen = false
-        })
       if(!this.selectData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
-      } else if(isNullmtzApplyId == false){
-        iMessage.error(this.language('nominationSuggestion_DANGQIANDEDINGDIANSHENQINGDANYIJINGGUANLIANGUOMTZSHENQINGDAN','当前的定点申请单已经关联过MTZ申请单'))
-      } else if(isFrozen == false ) {
-        iMessage.error(this.language('nominationSuggestion_XUANZEDEDANGQIANDEDINGDIANSHENQINGZHUANGTAIBIXUZAISHENQINGDONGJIEZHUANGTAIZHIQIAN','选择的当前的定点申请状态必须在申请冻结状态之前'))
       }else {
         let nom = this.selectData[0].nominateId || ''
         let item =[]
         let supplierId = []
-        // let processType = this.$route.query.designateType
-        // let MTZappId= this.$route.query.desinateId || ''
         item = this.selectData.map(val => val.partNum).join(',') || ''
         supplierId = this.selectData.map(val => val.supplierId).join(',') || ''
-        window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=`+nom+`&item=`+item+`&supplierId=`+supplierId)
+        window.location.href=`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=`+nom+`&item=`+item+`&supplierId=`+supplierId
       }
     },
   
