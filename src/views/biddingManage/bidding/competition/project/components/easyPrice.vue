@@ -681,7 +681,7 @@ export default {
           }
           if(fsnrGsnr.length == fsnrGsnrTrim.length){
             if (new Set(fsnrGsnr).size !== this.ruleForm.biddingProducts.length) {
-              return this.$message.error(this.language('BIDDING_FSNRGSNRBUNENGCHONGFU',"FSNR/GSNR 不能重复！"));
+              return this.$message.error(this.language('BIDDING_FSNRGSNRBUNENGCHONGFU',"FS/GS/SP No. 不能重复！"));
             }
           }
           // if (new Set(fsnrGsnr).size !== this.ruleForm.biddingProducts.length) {

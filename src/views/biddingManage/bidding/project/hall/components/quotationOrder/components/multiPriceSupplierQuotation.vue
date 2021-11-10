@@ -506,14 +506,14 @@ export default {
     handlerInputBlur(){
       let supplierProducts = this.ruleForm.supplierProducts;
       let sum= supplierProducts.reduce((sum, item, index) => {
-        item.upsetPrice = Big(this.calculationDetails(item, index)).toFixed(2);
-        return isNaN(Number(item.factoryPrice)) ||
+        if(isNaN(Number(item.factoryPrice)) ||
           isNaN(Number(item.moldFee)) ||
-          isNaN(Number(item.developFee))
-          ? sum
-          : Big(this.calculationDetails(item, index)).add(sum).toNumber();
+          isNaN(Number(item.developFee))){
+            return sum;
+          }
+        item.upsetPrice = Big(this.calculationDetails(item, index)).add(Number(item.moldFee)).add(Number(item.developFee)).toFixed(2);
+        return Big(this.calculationDetails(item, index)).add(sum).add(Number(item.moldFee)).add(Number(item.developFee)).toNumber();
       }, 0);
-     
       this.orgTotalPrices=Big(sum).toFixed(2);
     },
     toggle() {
