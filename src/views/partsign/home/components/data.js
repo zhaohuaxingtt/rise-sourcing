@@ -63,6 +63,6 @@ export const clickMessage = function(data) {
 }
 
 export const TP_INFO_STATUS = {
-  "ACCEPTED": "2", // 已签收
-  "REFUSED": "3", // 已退回
+  "ACCEPTED": "ACCEPTED", // 已签收
+  "REFUSED": "REFUSED", // 已退回
 }

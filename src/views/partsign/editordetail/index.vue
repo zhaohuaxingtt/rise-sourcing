@@ -158,7 +158,7 @@ export default {
       }}).then(res=>{
         if(res.code == 200){
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.partDetails.status = type == 2 ? this.language('LK_YIQIANSHOU','已签收') : this.language('LK_YITUIHUI','已退回')
+          this.partDetails.status = type == TP_INFO_STATUS.ACCEPTED ? this.language('LK_YIQIANSHOU','已签收') : this.language('LK_YITUIHUI','已退回')
           local.set(
             "tpPartInfoVO",
             JSON.stringify(this.partDetails)
