@@ -518,7 +518,7 @@ export default {
       gotoDBhistory() {},
       // 查看日志
       checkLog(row){
-        setLogMenu('')
+        setLogMenu('AEKO管理-列表')
         this.bizId = row.requirementAekoId
         this.showDialog = true
       },
