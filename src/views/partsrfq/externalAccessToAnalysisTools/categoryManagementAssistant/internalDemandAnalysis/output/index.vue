@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-30 13:23:59
- * @LastEditors: zbin
+ * @LastEditTime: 2021-11-10 20:33:42
+ * @LastEditors: Please set LastEditors
  * @Description: 产量总览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
 -->
@@ -240,8 +240,6 @@ export default {
       init(){
          this.config.embedUrl=this.url.embedUrl
          this.config.accessToken=this.url.accessToken
-         // this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
-         // this.selectFilterYear= String(new Date().getFullYear()) 
          this.reportContainer = document.getElementById('powerBi');
          this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
       },

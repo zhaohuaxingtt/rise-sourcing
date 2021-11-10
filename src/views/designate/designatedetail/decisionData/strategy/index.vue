@@ -1,14 +1,16 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:35:20
- * @LastEditTime: 2021-11-10 19:18:13
+ * @LastEditTime: 2021-11-10 20:19:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\strategy\index.vue
 -->
 <template>
 <div>
-  <iCard></iCard>
+  <iCard>
+    <powerBi :query='powerBiQuery'></powerBi>
+  </iCard>
   <higthligthts class='margin-top20 margin-bottom20'></higthligthts>
   <div>三组提供</div>
 </div>
@@ -16,8 +18,9 @@
 <script>
 import {iCard} from 'rise'
 import higthligthts from './components/highligths'
+import powerBi from './components/powBi'
 export default{
-  components:{iCard,higthligthts},
+  components:{iCard,higthligthts,powerBi},
   data(){
     return {}
   }
