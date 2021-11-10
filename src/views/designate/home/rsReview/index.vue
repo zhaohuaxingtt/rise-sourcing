@@ -328,7 +328,7 @@ export default {
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
         const res = await selSheetSubmit({nominateIdArr: idList})
-        if (res.code === '200') {
+        if (res.code == 200) {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
@@ -349,7 +349,7 @@ export default {
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
         const res = await batchRevoke({nominateIdArr: idList})
-        if (res.code === '200') {
+        if (res.code == 200) {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
@@ -370,7 +370,7 @@ export default {
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
         const res = await batchRevokeToPass({nominateIdArr: idList})
-        if (res.code === 200) {
+        if (res.code == 200) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           this.getFetchData()
         } else {
@@ -391,7 +391,7 @@ export default {
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
         const res = await batchConfirmSelSheet({nominateIdArr: idList})
-        if (res.code === '200') {
+        if (res.code == 200) {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
