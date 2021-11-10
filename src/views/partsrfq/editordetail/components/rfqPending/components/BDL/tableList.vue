@@ -6,7 +6,7 @@
  -->
 <template>
 	<el-table :stripe="false" class="table" ref='multipleTable' :data="tableData" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" @select-all="handleSelectAll" :row-style="rowStyle">
-		<el-table-column type="selection" align="center" :selectable="selectable" width="40">
+		<el-table-column type="selection" align="center" :selectable="selectable" width="55">
 		</el-table-column>
 <!--		<el-table-column type="index" align="center" label="#"></el-table-column>-->
 		<template v-for="(item, index) in tableTitle">

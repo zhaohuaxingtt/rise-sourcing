@@ -212,7 +212,7 @@
               @change="handleUserChange(scope.row, $event)"
             >
               <el-option
-                v-for="item in userListCache[scope.row.supplierCode]"
+                v-for="item in userListCache[scope.row.supplierId]"
                 :key="item.nameZh"
                 :label="item.nameZh"
                 :value="item"
@@ -247,7 +247,7 @@
                 v-for="item in cbdLevelList[scope.row.supplierCode]"
                 :key="item"
                 :label="item"
-                :value="item"
+                :value="item == 'L1' ? '01' : item == 'L2' ? '02' : item == 'L3' ? '03' : ''"
               >
               </el-option>
             </iSelect>
@@ -784,7 +784,8 @@ export default {
           contactName: row.purchaserNameZh,   //联系人
           email: row.purchaserEmail,          //邮箱
           telephone: row.phoneM,
-          supplierCode: row.subSupplierId,
+          supplierCode: row.sapCode || row.svwCode || row.svwTempCode || '',
+          supplierId: row.subSupplierId,
           supplierName: row.nameZh,
           mbdl: "",
           isAttend: true,
@@ -801,7 +802,7 @@ export default {
       });
       this.ruleForm.suppliers.push(...suppliers);
       this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
-        this.querySuppliers(supplier.supplierCode);
+        this.querySuppliers(supplier.supplierCode,supplier.supplierId);
           return {
             ...supplier,
           };
@@ -1002,7 +1003,7 @@ export default {
           if (res) {
             this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
             this.initSuppliers = res.suppliers?.map((supplier) => {
-              this.querySuppliers(supplier.supplierCode);
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId);
               
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
@@ -1190,7 +1191,8 @@ export default {
             })),
             suppliers: res.suppliers?.map((supplier) => {
               console.log('obsfsaject',supplier)
-              this.querySuppliers(supplier.supplierCode);
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+              supplier.cbdLevel = "01"
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1225,7 +1227,8 @@ export default {
           this.initAttachments = [...res.attachments];
           this.initSuppliers = res.suppliers?.map((supplier) => {
             console.log('obsfsaject',supplier)
-            this.querySuppliers(supplier.supplierCode);
+            this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+            supplier.cbdLevel = "01"
             // if (!supplier.isAttend)
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
@@ -1284,8 +1287,8 @@ export default {
             })),
             suppliers: res.suppliers?.map((supplier) => {
               console.log('obsfsaject',supplier)
-              this.querySuppliers(supplier.supplierCode);
-              supplier.cbdLevel = "L1"
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+              supplier.cbdLevel = "01"
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1320,9 +1323,9 @@ export default {
           this.initAttachments = [...res.attachments];
           this.initSuppliers = res.suppliers?.map((supplier) => {
             console.log('obsfsaject',supplier)
-            this.querySuppliers(supplier.supplierCode);
+            this.querySuppliers(supplier.supplierCode,supplier.supplierId);
             // if (!supplier.isAttend)
-            supplier.cbdLevel = "L1"
+            supplier.cbdLevel = "01"
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
                 ...supplier,
@@ -1349,17 +1352,18 @@ export default {
       console.log("handleSizeChange", this.page);
       this.page.pageSize = val;
     },
-    async querySuppliers(supplierId) {
-      console.log('fsafsafsafs',supplierId)
+    async querySuppliers(supplierCode,supplierId) {
+      // 联系人
       if (!this.userListCache[supplierId]) {
         this.$set(this.userListCache, supplierId, []);
-        const data = await getSupplierInfoById({supplierId});
-        console.log('fsafsafsafsafwfww',data)
+        const params = {supplierId, isOnlyValid: true}
+        const data = await getSupplierInfoById(params);
         this.$set(this.userListCache, supplierId, data.data || []);
       }
-      if (!this.cbdLevelList[supplierId]) {
-        const res = await cbdLevel(supplierId);
-        this.$set(this.cbdLevelList, supplierId, res || []);
+      // CBD
+      if (!this.cbdLevelList[supplierCode]) {
+        const res = await cbdLevel(supplierCode);
+        this.$set(this.cbdLevelList, supplierCode, res || []);
       }
     },
     // 表格选中值集

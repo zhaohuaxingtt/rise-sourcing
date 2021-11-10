@@ -20,7 +20,7 @@
     <el-table-column
       v-if="selection"
       type="selection"
-      width="40"
+      width="55"
       align="center"
     ></el-table-column>
     <template v-for="(items, index) in tableTitle">

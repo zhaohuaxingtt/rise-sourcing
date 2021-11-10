@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 14:58:23
+ * @LastEditTime: 2021-11-09 21:19:12
  * @Description: 财务目标价-目标价审批
- * @FilePath: \front-web\src\views\modelTargetPrice\approval\index.vue
+ * @FilePath: \front-sourcing\src\views\modelTargetPrice\approval\index.vue
 -->
 
 <template>
@@ -25,7 +25,7 @@
               :value="item.selectOption === 'LINIE' ? item.name : item.code">
             </el-option>
           </iSelect> 
-          <carProjectSelect v-else-if="item.type === 'carProjectSelect'" optionType="1" v-model="searchParams[item.value]" /> 
+          <carProjectSelect v-else-if="item.type === 'carProjectSelect'" optionType="1" v-model="searchParams[item.value]" valueType="2" /> 
           <procureFactorySelect v-else-if="item.type === 'procureFactorySelect'" v-model="searchParams[item.value]" />
           <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="true" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
           <iDatePicker v-else-if="item.type === 'dateRange'" type="daterange" value-format="" v-model="searchParams[item.value]" :default-time="['00:00:00', '23:59:59']"></iDatePicker>
@@ -43,7 +43,7 @@
           <!--------------------批准按钮----------------------------------->
           <iButton @click="openApprovalDetailDialog" v-permission.auto='MODELTARGETPRICE_APPROVAL_APPROVALBTN|模具目标价管理-目标价审批-批准按钮'>{{language('PIZHUN','批准')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleExport" v-permission.auto='MODELTARGETPRICE_APPROVAL_EXPORTBTN|模具目标价管理-目标价审批-导出按钮'>{{language('DAOCHU','导出')}}</iButton>
+          <iButton @click="handleExport" :loading="exportLoading" v-permission.auto='MODELTARGETPRICE_APPROVAL_EXPORTBTN|模具目标价管理-目标价审批-导出按钮'>{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
       <tableList 
@@ -76,11 +76,11 @@
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <approvalRecordDialog :dialogVisible="approvalRecordDialogVisible" @changeVisible="changeApprovalRecordDialogVisible" :id="applyId" />
+    <approvalRecordDialog :dialogVisible="approvalRecordDialogVisible" @changeVisible="changeApprovalRecordDialogVisible" :id="taskId" />
     <!------------------------------------------------------------------------>
     <!--                  批准弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <approvalDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" />
+    <approvalDialog ref="modelApproval" :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" @handleConfirm="handleConfirm" />
   </iPage>
 </template>
 
@@ -90,29 +90,27 @@ import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
-import { dictkey } from "@/api/partsprocure/editordetail"
-import { getApprovalTargetPriceList, targetPriceApprove, getCFList } from '@/api/financialTargetPrice/index'  
-import { excelExport } from "@/utils/filedowLoad"
-import { getDictByCode } from '@/api/dictionary'
 import approvalRecordDialog from '../maintenance/components/approvalRecord'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import approvalDialog from './components/approval'
 import iDicoptions from 'rise/web/components/iDicoptions'
 import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect' 
 import procureFactorySelect from '@/views/modelTargetPrice/components/procureFactorySelect'
+import { getTargetPriceApprovalPage, approve, exportApproval } from '@/api/modelTargetPrice/index'
 export default {
   mixins: [pageMixins],
   components: {iDicoptions,carProjectSelect,procureFactorySelect,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,attachmentDialog,approvalRecordDialog, approvalDialog},
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{rfqId: '1232132'}, {rfqId: '23423234324'}],
+      tableData: [],
       searchList: searchList,
       searchParams: {
-        cfId: '',
-        linieName: '',
-        buyerId: '',
-        cfPriceType: ''
+        partProjectType: '',
+        cartypeProjectNum: '',
+        procureFactory: '',
+        applyType: '',
+        toolingPriceIsZeno: ''
       },
       isEdit: false,
       tableLoading: false,
@@ -123,12 +121,36 @@ export default {
       fsNum: '',
       attachmentDialogVisible: false,
       approvalRecordDialogVisible: false,
+      taskId: '',
+      exportLoading: false
     }
   },
   created() {
     this.getTableList()
   },
   methods: {
+    /**
+     * @Description: 批准
+     * @Author: Luoshuang
+     * @param {*} reason
+     * @return {*}
+     */    
+    handleConfirm(reason) {
+      const params = {
+        remarks: reason,
+        taskIds: this.selectedItems.map(item => item.taskId)
+      }
+      approve(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.$refs.modelApproval.changeSaveLoading(false)
+      })
+    },
     /**
      * @Description: 附件查看
      * @Author: Luoshuang
@@ -165,7 +187,7 @@ export default {
      * @return {*}
      */    
     openApprovalDialog(row){
-      this.applyId = row.applyId || ''
+      this.taskId = row.taskId || ''
       this.changeApprovalRecordDialogVisible(true)
     },
     /**
@@ -188,40 +210,13 @@ export default {
     },
     reset() {
       this.searchParams = {
-        cfId: '',
-        linieName: '',
-        buyerId: '',
-        cfPriceType: ''
+        partProjectType: '',
+        cartypeProjectNum: '',
+        procureFactory: '',
+        applyType: '',
+        toolingPriceIsZeno: ''
       }
-    },
-    getDict(type) {
-      getDictByCode(type).then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            [type]: res.data[0]?.subDictResultVo || []
-          }
-        }
-      })
-    },
-    getDicts() {
-      // 申请类型
-      this.getDict('CF_PRICE_TYPE')
-    },
-    getCF() {
-      getCFList().then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            CF_USER: res.data.map(item => {
-              return {
-                code: item.id,
-                name: item.nameZh
-              }
-            })
-          }
-        }
-      })
+      this.sure()
     },
     sure() {
       this.page = {
@@ -233,65 +228,35 @@ export default {
     handleSelectionChange(val) {
       this.selectedItems = val
     },
-    handleApprove() {
-      if (this.selectedItems.length < 1) {
-        iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU','至少选择一条记录'))
-        return
-      }
+    getTableList() {
       this.tableLoading = true
-      targetPriceApprove({idList:this.selectedItems.map(item => item.applyId)}).then(res => {
+      const params = {
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      }
+      getTargetPriceApprovalPage(params).then(res => {
         if (res?.result) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.getTableList()
+          this.page = {
+            ...this.page,
+            totalCount: res.total,
+            currPage: res.pageNum,
+            pageSize: res.pageSize
+          }
+          this.tableData = res.data
         } else {
+          this.tableData = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).catch(e => {
+        this.tableData = []
+        iMessage.error(this.$i18n.locale === 'zh' ? e?.desZh : e?.desEn)
       }).finally(() => {
         this.tableLoading = false
       })
     },
-    getTableList() {
-      // this.tableLoading = true
-      // const params = {
-      //   ...this.searchParams,
-      //   current: this.page.currPage,
-      //   size: this.page.pageSize
-      // }
-      // getApprovalTargetPriceList(params).then(res => {
-      //   if (res?.result) {
-      //     this.page = {
-      //       ...this.page,
-      //       totalCount: Number(res.total),
-      //       currPage: Number(res.pageNum),
-      //       pageSize: Number(res.pageSize)
-      //     }
-      //     this.tableData = res.data
-      //   } else {
-      //     this.tableData = []
-      //     iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-      //   }
-      // }).finally(() => {
-      //   this.tableLoading = false
-      // })
-    },
-    /**
-     * @Description: 获取下拉框
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getProcureGroup() {
-      dictkey().then((res) => {
-        if (res.data) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            ...res.data
-          }
-        }
-      });
-    },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/modeltargetprice/detail', query: { item: JSON.stringify({...row,applyType: '3'}) }})
+      const router =  this.$router.resolve({path: '/modeltargetprice/detail', query: {...row,applyType: '3'}})
       window.open(router.href,'_blank')
     },
     openApprovalDetailDialog(row){
@@ -316,8 +281,14 @@ export default {
     changeEdit(isEdit) {
       this.isEdit = isEdit
     },
-    handleExport() {
-      // excelExport(this.tableData, this.tableTitle)
+    async handleExport() {
+      if (this.selectedItems.length < 1) {
+        iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU','至少选择一条记录'))
+        return
+      }
+      this.exportLoading = true
+      await exportApproval(this.selectedItems.map(item => item.taskId))
+      this.exportLoading = false
     },
     handleUpload() {},
     /**

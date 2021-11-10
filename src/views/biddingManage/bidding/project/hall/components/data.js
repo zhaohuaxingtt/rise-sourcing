@@ -255,11 +255,7 @@ export const unitTableTitle = [
   },
   {
     props: "packingFee",
-    name: language('BIDDING_QIANDUANBAOZHUANGFEI',"前段包装费"),
-  },
-  {
-    props: "packingFee2",
-    name: language('BIDDING_HOUDUANBAOZHUANGFEI',"后段包装费"),
+    name: "包装费",
   },
   {
     props: "transportFee",

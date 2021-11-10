@@ -2,12 +2,16 @@
 <template>
   <iCard class="editor">
     <div class="clearFloat">
-      <span class="font18 font-weight">
+      <span class="font18 font-weight" v-if='higth'>
         {{ language("Background & Objective","Background & Objective") }}</span
+      >
+      <span class="font18 font-weight" v-else>
+        {{ language("Highlights","Highlights") }}</span
       >
       <div class="floatright">
         <span v-if="multiEditControl">
           <upload
+            v-if='hight'
             class="upload-trigger margin-right10"
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.gif'"
@@ -65,7 +69,8 @@ export default {
       Edditor: {},
       pictures: [],
       submiting: false,
-      multiEditControl: false
+      multiEditControl: false,
+      higth:true
     }
   },
   computed: {

@@ -2,13 +2,13 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-28 16:53:38
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-30 20:50:08
+ * @LastEditTime: 2021-11-10 10:56:02
  * @Description: mtz
  */
 
 export const tableTitle = [
   { props: "partNum", name: "新零件号", key: "XINLINGJIANHAO", tooltip: true},
-  { props: "oldPartNumPreset", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true },
+  { props: "originPartNum", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true },
   { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true },
   { props: "supplierSapCode", name: "供应商编码", key: "GONGYINGSHANGBIANMA", tooltip: true },
   { props: "materialCode", name: "原材料牌号", key: "YUANCAILIAOPAIHAO", tooltip: true },

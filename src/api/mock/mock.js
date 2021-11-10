@@ -93,10 +93,12 @@ export function getUnits(data) {
 }
 
 // 第三方接口汇率
-export function getParities(currency) {
+export function getParities(data) {
   return requstBase({
-    url: `/api/exchangeRate?currencyCodes=${currency}`,
-    method: "GET",
+    // url: `/api/exchangeRate?currencyCodes=${currency}`,
+    url: `/api/exchangeRate`,
+    method: "POST",
+    data
   });
 }
 
@@ -115,5 +117,13 @@ export function getProjects(data) {
     url: `/api/cartypeProDict`,
     method: "GET",
     data,
+  });
+}
+
+// 第三方折现率
+export function getDiscount({discount}) {
+  return requstBase({
+    url: `/web/selectDictByKeys?keys=md_discount_rate`,
+    method: "GET",
   });
 }

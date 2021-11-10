@@ -61,3 +61,8 @@ export const clickMessage = function(data) {
     })
   }
 }
+
+export const TP_INFO_STATUS = {
+  "ACCEPTED": "ACCEPTED", // 已签收
+  "REFUSED": "REFUSED", // 已退回
+}

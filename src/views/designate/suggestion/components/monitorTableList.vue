@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-11-09 17:14:41
+ * @LastEditTime: 2021-11-09 18:01:41
  * @LastEditors: Hao,Jiang
 -->
 
@@ -55,7 +55,7 @@
         align='center'
         prop="partNo"
         label="Part"
-        width="100">
+        width="95">
       <template slot-scope="scope">
         <p class="partName">{{scope.row.partNo || ''}}</p>
         <p class="partDeName" :title="scope.row.partNameDe || ''">{{scope.row.partNameDe || ''}}</p>
@@ -65,7 +65,7 @@
         align='center'
         prop="partPrjCode"
         label="FS/GS/SP No."
-        width="110">
+        width="90">
       </el-table-column>
       <el-table-column
         align='center'
@@ -645,6 +645,9 @@ export default {
       align-items: center;
       /* text-align: center; */
       justify-content: center;
+    }
+    .el-table__header {
+      border-bottom: 1px solid #fff;
     }
   }
   ::v-deep .el-table--border {

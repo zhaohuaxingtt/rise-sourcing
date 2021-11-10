@@ -9,7 +9,7 @@
       :height="height"
       tooltip-effect="light"
       :data="tableData"
-      :empty-text="language('LK_ZANWUSHUJU', '暂无数据')"
+      :empty-text="$t('LK_ZANWUSHUJU')"
       v-loading="tableLoading"
       @selection-change="handleSelectionChange"
       :row-class-name="handleTableRow"

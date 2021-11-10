@@ -1,8 +1,8 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-11-09 11:03:46
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-10 01:50:13
+ * @LastEditors:  
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
@@ -71,10 +71,19 @@
           </el-col>
         </el-row>
       </el-form>
-      <div class="btn-right">
+    </iCard>
+    <iCard class="margin-top20">
+      <div class="margin-bottom20 clearFloat">
+       <span class="font18 font-weight">{{language('XIANGQINGLIEBIAO', '详情列表')}}</span>
+      <div class="floatright" v-if="mode === 'add'">
         <iButton @click="chooseSignsheet()">
           {{ language("XUANZE", '选择') }}
         </iButton>
+        <iButton @click="handleRemove"
+                  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
+          {{ language("YICHU",'移除') }}
+        </iButton>
+      </div>     
       </div>
       <!-- 表格 -->
       <tablelist class="margin-top20"
@@ -85,10 +94,12 @@
                  @handleSelectionChange="handleSelectionChange">
         <!-- 定点单号 -->
         <template #nominateName="scope">
-          <a href="javascript:;"
-             @click="viewNominationDetail(scope.row)">
-            {{scope.row.nominateName}}
-          </a>
+          <span class="nominateId">
+            <a href="javascript:;"
+              @click="viewNominationDetail(scope.row)">
+              {{scope.row.nominateName}}
+            </a>
+          </span>
         </template>
         <!-- 定点类型 -->
         <template #nominateProcessType="scope">
@@ -146,7 +157,9 @@
                   @changeVisible='dialogVisible = false'
                   @getChooseData='getChooseData'
                   @choose="handleChoose"
-                  :form='form'></addSignsheet>
+                  :form='form'
+                  v-if="dialogVisible"
+                  ></addSignsheet>
     <div class="margin-top20">
       <!-- 引入定点申请综合管理页面 -->
       <!-- <designateSign
@@ -198,7 +211,9 @@ export default {
       selectTableData: [],
       tableLoading: false,
       designateSignRefresh: false,
-      dialogVisible: false
+      dialogVisible: false,
+      templateTable:[],
+      chooseSienSheet:[]
     }
   },
   components: {
@@ -224,7 +239,18 @@ export default {
   },
   methods: {
     handleChoose (data) {
-      this.tableListData = data
+      if(this.tableListData.length == '0') {
+        this.tableListData = data
+      } else {
+        let temTable = this.tableListData
+        let addData = data
+        let ids = temTable.map(item => item.id)
+        let newTamDAta = addData.filter(value => {
+          let res = !(ids.indexOf(value.id) > -1) 
+            return res
+        })
+        this.tableListData = this.tableListData.concat(newTamDAta)
+      }
     },
     // 多选
     handleSelectionChange (data) {
@@ -281,7 +307,6 @@ export default {
       const confirmInfo = await this.$confirm(this.language('LK_SAVESURE', '您确定要执行保存操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.tableListData.map(o => Number(o.id))
-
       try {
         const params = {
           signId: Number(this.form.signId) || '',
@@ -305,13 +330,12 @@ export default {
         iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
         return
       }
-      console.log('this.tableListData', this.tableListData)
       const confirmInfo = await this.$confirm(this.language('submitSure', '您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.tableListData.map(o => Number(o.id))
       try {
         const res = await submitSignSheet({
-          signIdArr: [Number(this.form.signId)]
+          signId:Number(this.form.signId)
         })
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
@@ -329,17 +353,12 @@ export default {
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        const res = await removeSignsheetItems({
-          signId: this.form.signId,
-          description: this.form.description,
-          nominateIdArr: idList
+        let temListDAta =  this.tableListData
+        let newListData = temListDAta.filter(val => {
+          let res = !(idList.indexOf(val.id)>-1)
+          return res 
         })
-        if (res.code === '200') {
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
-          this.getChooseData()
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
+        this.tableListData = newListData
       } catch (e) {
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
@@ -365,7 +384,7 @@ export default {
     },
     chooseSignsheet () {
       this.dialogVisible = true
-      console.log(this.dialogVisible, '11111111111111');
+      this.chooseSienSheet=[]
     }
   }
 
