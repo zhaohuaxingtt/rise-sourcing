@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-05 17:03:50
+ * @LastEditTime: 2021-11-10 11:11:14
  * @Description: 
 -->
 <template>
@@ -294,7 +294,13 @@ export default {
     },
     copyAekoMtz() {
       if (!this.selectTableData.length) {
-        iMessage.warn(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+        iMessage.warn(this.language('QINGGOUXUANXUYAOFUZHIDEHANGXIANGMU', '请勾选需要复制的行项目'))
+        return
+      }
+      // 检查新零件与原零件一致(同号零件)，不允许删除/复制
+      const dumplicatedParts = this.selectTableData.filter(o => o.partNum === o.originPartNum)
+      if (dumplicatedParts.length) {
+        iMessage.error(this.language('DUMPLIDATEDPARDWARNING', '新零件号和原零件号一致，不可删除/新增，请在现有的项目上进行编辑'))
         return
       }
       const copyData = window._.cloneDeep(this.selectTableData).map(o => {
@@ -331,11 +337,15 @@ export default {
      */    
     async removeAekoMtz() {
       if (!this.selectTableData.length) {
-        iMessage.warn(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+        iMessage.warn(this.language('QINGGOUXUANXUYAOSHANCHCUDEHANGXIANGMU', '请勾选需要删除的行项目'))
         return
       }
-      const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
-      if (confirmInfo !== 'confirm') return
+      // 检查新零件与原零件一致(同号零件)，不允许删除/复制
+      const dumplicatedParts = this.selectTableData.filter(o => o.partNum === o.originPartNum)
+      if (dumplicatedParts.length) {
+        iMessage.error(this.language('DUMPLIDATEDPARDWARNING', '新零件号和原零件号一致，不可删除/新增，请在现有的项目上进行编辑'))
+        return
+      }
       // 删除新增的项目
       const copyDataIds = this.selectTableData.filter(o => o.isNew).map(o => o.objectAekoPartId)
       if (copyDataIds.length) {
@@ -347,6 +357,9 @@ export default {
       }
       // 删除选中的老数据
       const idList = this.selectTableData.filter(o => !o.isNew).map(o => Number(o.id))
+      console.log('idList', idList)
+      const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
+      if (confirmInfo !== 'confirm') return
       try {
         const res = await removeAekoMtz(idList)
         if (res.code === '200') {
