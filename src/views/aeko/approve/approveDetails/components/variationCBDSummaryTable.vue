@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-09 15:29:37
+ * @LastEditTime: 2021-11-10 18:46:45
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -58,7 +58,7 @@
             </template>
             <template v-else-if="item.prop == 'partNum'">
               <div v-if="row.total != undefined" class="end-align">
-                <span>RMB {{ row.total | floatNum('total') }}</span>
+                <span>{{row.currency}} {{ row.total | floatNum('total') }}</span>
               </div>
               <div v-else>
                 {{ row[item.prop] }}
@@ -117,6 +117,7 @@
             :quotationId="partsId"
             :partInfo="partInfo"
             :basicInfo="basicInfo"
+            :currency="currency"
           />
         </template>
       </el-tab-pane>
@@ -209,7 +210,8 @@ export default {
       quotationId: "",
       partInfo:{},
       basicInfo:{},
-      cbdCanEdit:true
+      cbdCanEdit:true,
+      currency: 'RMB'
     };
   },
   computed: {
@@ -255,6 +257,7 @@ export default {
             objectAekoId
           };
           this.basicInfo = data;
+          this.currency = quotationPriceSummaryInfo.currency || "RMB"
           let item = {
             ...quotationPriceSummaryInfo,
             originAPrice:quotationPriceSummaryInfo.originalAPrice,
@@ -298,18 +301,20 @@ export default {
           data.length &&
             data.forEach((item, index) => {
               item.index = 1 + index;
-              if (aPriceChangeObj[item.quotationId]) {
-                aPriceChangeObj[item.quotationId] = {
+              if (aPriceChangeObj[item.partNum]) {
+                aPriceChangeObj[item.partNum] = {
                   total: math.add(
-                    aPriceChangeObj[item.quotationId].total,
+                    aPriceChangeObj[item.partNum].total,
                     math.bignumber(item.alteration || 0)
                   ),
                   partNum: item.partNum,
+                  currency: item.currency || 'RMB'
                 };
               } else {
-                aPriceChangeObj[item.quotationId] = {
+                aPriceChangeObj[item.partNum] = {
                   total: math.bignumber(item.alteration || 0),
                   partNum: item.partNum,
+                  currency: item.currency || 'RMB'
                 };
               }
             });
@@ -318,6 +323,7 @@ export default {
               index: "",
               partNum: aPriceChangeObj[key].partNum,
               total: +aPriceChangeObj[key].total,
+              currency: aPriceChangeObj[key].currency
             };
             data.push(item);
           });
@@ -352,18 +358,20 @@ export default {
           data.length &&
             data.forEach((item, index) => {
               item.index = 1 + index;
-              if (aPriceChangeObj[item.quotationId]) {
-                aPriceChangeObj[item.quotationId] = {
+              if (aPriceChangeObj[item.partNum]) {
+                aPriceChangeObj[item.partNum] = {
                   total: math.add(
-                    aPriceChangeObj[item.quotationId].total,
+                    aPriceChangeObj[item.partNum].total,
                     math.bignumber(item.alteration || 0)
                   ),
                   partNum: item.partNum,
+                  currency: item.currency || 'RMB'
                 };
               } else {
-                aPriceChangeObj[item.quotationId] = {
+                aPriceChangeObj[item.partNum] = {
                   total: math.bignumber(item.alteration || 0),
                   partNum: item.partNum,
+                  currency: item.currency || 'RMB'
                 };
               }
             });
@@ -372,6 +380,7 @@ export default {
               index: "",
               partNum: aPriceChangeObj[key].partNum,
               total: +aPriceChangeObj[key].total,
+              currency: aPriceChangeObj[key].currency
             };
             data.push(item);
           });
@@ -413,6 +422,7 @@ export default {
               this.aPriceChangeData = data;
               this.loading = false;
               this.hasData = true;
+              this.currency = data?.extSnapshotVO.currency || 'RMB'
             } else {
               this.loading = false;
               iMessage.warn(this.$i18n.locale === "zh" ? res.desZh : res.desEn);

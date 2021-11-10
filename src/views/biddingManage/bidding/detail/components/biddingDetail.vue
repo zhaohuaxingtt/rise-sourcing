@@ -313,29 +313,22 @@ export default {
     dividedBeiShu(val){
      return Big(val).div(this.beishu).toNumber()
     },
-     query(e) {
-       let p = new Promise(resolve=>{
-        let o = {...planBaseData,title:'折现率'};
-        getDiscount({}).then((res) => {
-          res?.data?.md_discount_rate.map(item=>{
-            let x = Number(item.code.replace('Y','0'));
-            o[`stage${x}`]=item.describe;
-          })
-         
-        });
-        resolve(o);
-      }).then(res=>{
-        this.annualOutput[0]={...res};
-        this.annualOutput1[0]={...res};
+    async query(e) {
+      let o = {...planBaseData,title:'折现率'};
+      const res = await  getDiscount({});
+      if(res?.data != null){
+        res?.data?.md_discount_rate.map(item=>{
+          let x = Number(item.code.replace('Y','0'));
+          this.$set(o,`stage${x}`,item.describe)
+        })
+      }
+        this.annualOutput[0]={...o};
+        this.annualOutput1[0]={...o};
         // 根据 ID 获取竞价大厅报价单列表数据
         findSupplierOffer(e).then((res) => {
           this.$emit("change-title", res);
           this.updateRuleForm(res);
         });
-      })
-      
-
-      
     },
 
     toggle() {

@@ -409,11 +409,12 @@ export default {
   },
   mounted() {
     getDiscount({}).then((res) => {
-      let o = {title:'折现率'};
+      let o = {...planBaseData,title:'折现率'};
       res?.data?.md_discount_rate.map(item=>{
         let x = Number(item.code.replace('Y','0'));
         o[`stage${x}`]=item.describe;
       })
+      this.annualOutput[0]={...o};
       this.annualOutput1[0]={...o};
     });
     getCurrencyUnit().then((res) => {
@@ -505,12 +506,13 @@ export default {
     handlerInputBlur(){
       let supplierProducts = this.ruleForm.supplierProducts;
       let sum= supplierProducts.reduce((sum, item, index) => {
-        item.upsetPrice = Big(this.calculationDetails(item, index)).toFixed(2);
-        return isNaN(Number(item.factoryPrice)) ||
+        if(isNaN(Number(item.factoryPrice)) ||
           isNaN(Number(item.moldFee)) ||
-          isNaN(Number(item.developFee))
-          ? sum
-          : Big(this.calculationDetails(item, index)).add(sum).toNumber();
+          isNaN(Number(item.developFee))){
+            return sum;
+          }
+        item.upsetPrice = Big(this.calculationDetails(item, index)).add(Number(item.moldFee)).add(Number(item.developFee)).toFixed(2);
+        return Big(this.calculationDetails(item, index)).add(sum).add(Number(item.moldFee)).add(Number(item.developFee)).toNumber();
       }, 0);
       this.orgTotalPrices=Big(sum).toFixed(2);
     },
@@ -546,7 +548,7 @@ export default {
           }
         });
       });
-
+      
       this.prefactoryPrice = Number(product?.factoryPrice);
       //折现率
       const discounts = this.annualOutput[0];
@@ -863,6 +865,7 @@ export default {
       //起始总价
       formData.totalPrices = this.totalPrices;
       formData.supplierOffer = supplierOffer;
+      console.log(869,formData)
       //保存
       saveBiddingQuotation(formData)
         .then((res) => {
@@ -924,12 +927,40 @@ export default {
           []);
         });
       });
-      
-      
+       //this.ruleForm.productions 采购员年产量
+      this.ruleForm.biddingProducts?.forEach((items,index) => {
+        let output = {};
+        output = items.productions.reduce((obj, item) => {
+          if (!obj[item.productId]) {
+            obj[item.productId] = {
+              procureYearMonth: { title: "" },
+              procureNum: { title: "" },
+            };
+          }
+          obj[item.productId].procureYearMonth[`stage${item.stage}`] =
+            item.procureYearMonth;
+          obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
+          obj[item.productId].procureNum[`stage${item.stage}`] =
+            item.procureNum;
+          obj[item.productId].procureNum[`id${item.stage}`] = item.id;
+          return obj;
+        }, {});
+        this.annualOutput.push({
+            ...planBaseData,
+          ...output[items.id]?.procureYearMonth,
+          title: items.fsnrGsnr,
+        })
+        this.annualOutput.push({
+          ...planBaseData,
+          ...output[items.id]?.procureNum,
+          title: items.productCode,
+        })
+      })
       if (!this.ruleForm.supplierProducts?.length) {
         this.ruleForm.supplierProducts = data.biddingProducts;
       }
       this.ruleForm.supplierProducts?.forEach((items,index) => {
+        items.productions=[];
         if (items.procurePlans !== undefined) {
           items.supplierPlans = items.procurePlans;
         }
@@ -970,35 +1001,7 @@ export default {
           items.id = "";
         }
       });
-       //this.ruleForm.productions 采购员年产量
-      this.ruleForm.biddingProducts?.forEach((items,index) => {
-        let output = {};
-        output = items.productions.reduce((obj, item) => {
-          if (!obj[item.productId]) {
-            obj[item.productId] = {
-              procureYearMonth: { title: "" },
-              procureNum: { title: "" },
-            };
-          }
-          obj[item.productId].procureYearMonth[`stage${item.stage}`] =
-            item.procureYearMonth;
-          obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
-          obj[item.productId].procureNum[`stage${item.stage}`] =
-            item.procureNum;
-          obj[item.productId].procureNum[`id${item.stage}`] = item.id;
-          return obj;
-        }, {});
-        this.annualOutput.push({
-             ...planBaseData,
-            ...output[items.id]?.procureYearMonth,
-            title: items.fsnrGsnr,
-          })
-          this.annualOutput.push({
-            ...planBaseData,
-            ...output[items.id]?.procureNum,
-            title: items.productCode,
-          })
-      })
+      
       this.$nextTick(() => {
         this.handlerInputBlur();
       });

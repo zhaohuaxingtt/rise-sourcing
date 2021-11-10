@@ -9,10 +9,20 @@
         <p v-if="isPreview=='1'" class="preview-title margin-top20 margin-bottom20">CSC Nomination Recommendation</p>
         <div  class="tab-list">
             <iTabsList v-if="isPreview=='1'"  v-model=defaultTab @tab-click="handleClick">
-                <el-tab-pane lazy v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+                <template  v-for="(item,index) in decisionType">
+                    <template v-if="item.key =='MTZ'">
+                        <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+                    </template>
+                    <el-tab-pane  v-else :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+                </template>
             </iTabsList>
              <iTabsList v-else type="card"  v-model=defaultTab @tab-click="handleClick">
-                <el-tab-pane lazy v-for="(item,index) in decisionType" :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+                 <template v-for="(item,index) in decisionType">
+                    <template v-if="item.key =='MTZ'">
+                        <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+                    </template>
+                    <el-tab-pane  v-else :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
+                 </template>
             </iTabsList>
         </div>
 
@@ -39,7 +49,7 @@ import {
 } from '@/api/designate'
 import { decisionType } from './data'
 import sortDialog from './sortDialog'
-import {mapGetters} from 'vuex'
+import {mapGetters,mapState} from 'vuex'
 
 export default {
     name:'decisionDataHeader',
@@ -78,6 +88,9 @@ export default {
         
     },
     computed: {
+        ...mapState({
+            mtzShow: state => state.nomination.mtzApplyId,
+        }),
         ...mapGetters({
             'nominationStep': 'nominationStep'
         }),

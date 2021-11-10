@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 14:51:45
- * @Description: 财务目标价-目标价维护
- * @FilePath: \front-web\src\views\modelTargetPrice\maintenance\index.vue
+ * @LastEditTime: 2021-11-09 17:56:20
+ * @Description: 模具目标价-目标价维护
+ * @FilePath: \front-sourcing\src\views\modelTargetPrice\maintenance\index.vue
 -->
 
 <template>
@@ -25,7 +25,7 @@
               :value="item.selectOption === 'LINIE' ? item.name : item.code">
             </el-option>
           </iSelect> 
-          <carProjectSelect v-else-if="item.type === 'carProjectSelect'" optionType="1" v-model="searchParams[item.value]" /> 
+          <carProjectSelect v-else-if="item.type === 'carProjectSelect'" optionType="1" v-model="searchParams[item.value]" valueType="2" /> 
           <procureFactorySelect v-else-if="item.type === 'procureFactorySelect'" v-model="searchParams[item.value]" />
           <iDicoptions v-else-if="item.type === 'selectDict'" :optionAll="true" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
           <iDatePicker v-else-if="item.type === 'dateRange'" type="daterange" value-format="" v-model="searchParams[item.value]" :default-time="['00:00:00', '23:59:59']"></iDatePicker>
@@ -41,7 +41,7 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton v-if="!isEdit" @click="openAssignDialog" v-permission.auto='MODELTARGETPRICE_MAINTENANCE_ASSIGN|模具目标价管理-目标价维护-指派'>{{language('ZHIPAI','指派')}}</iButton>
+          <iButton @click="openAssignDialog" v-permission.auto='MODELTARGETPRICE_MAINTENANCE_ASSIGN|模具目标价管理-目标价维护-指派'>{{language('ZHIPAI','指派')}}</iButton>
         </div>
       </div>
       <tableList 
@@ -75,7 +75,7 @@
     <!------------------------------------------------------------------------>
     <!--                  审批记录弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :id="applyId" />
+    <approvalRecordDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :id="taskId" />
     <!------------------------------------------------------------------------>
     <!--                  指派弹窗                                      --->
     <!------------------------------------------------------------------------>
@@ -91,38 +91,32 @@ import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import approvalRecordDialog from './components/approvalRecord'
-import { dictkey } from "@/api/partsprocure/editordetail"
-import { getDictByCode } from '@/api/dictionary'
 import assignDialog from '../signin/components/assign'
 import iDicoptions from 'rise/web/components/iDicoptions'
 import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect' 
 import procureFactorySelect from '@/views/modelTargetPrice/components/procureFactorySelect'
+import { getTargetPriceMaintainPage, appoint } from '@/api/modelTargetPrice/index'
+import moment from 'moment'
+
 export default {
   mixins: [pageMixins],
   components: {carProjectSelect,iDicoptions,procureFactorySelect,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,attachmentDialog,approvalRecordDialog, assignDialog},
   data() {
     return {
       tableTitle: tableTitle,
-      tableData: [{rfqId: '1232132'}, {rfqId: '23423234324'}],
+      tableData: [],
       searchList: searchList,
       searchParams: {
-        cfId: '',
-        applyStats: '',
         partProjectType: '',
-        buyerId: '',
-        linieName: '',
-        partStatus: '',
-        carTypeName: '',
-        procureFactoryId: '',
-        cfPriceType: ''
+        cartypeProjectNum: '',
+        procureFactory: '',
+        applyType: '',
+        state: ''
       },
-      isEdit: false,
       tableLoading: false,
       selectOptions: {},
       attachmentDialogVisible: false,
-      updateDialogVisible: false,
       approvalDialogVisible: false,
-      uploadUrl: process.env.VUE_APP_SOURCING,
       recordId: '',
       applyId: '',
       rfqId: '',
@@ -130,13 +124,37 @@ export default {
       selectItems: [],
       uploadLoading: false,
       exportLoading: false,
-      assignDialogVisible: false
+      assignDialogVisible: false,
+      taskId: ''
     }
   },
   created() {
     this.getTableList()
   },
   methods: {
+    /**
+     * @Description: 指派操作
+     * @Author: Luoshuang
+     * @param {*} cfId 控制员id
+     * @return {*}
+     */    
+    targetAppoint(cfId) {
+      const params = {
+        taskIds: this.selectItems.map(item => item.taskId),
+        userId: cfId
+      }
+      appoint(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.changeAssignDialogVisible(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.$refs.assignDialog.changeAssigLoading(false)
+      })
+    },
     /**
      * @Description: 指派
      * @Author: Luoshuang
@@ -172,54 +190,19 @@ export default {
     },
     reset() {
       this.searchParams = {
-        cfId: '',
-        applyStats: '',
         partProjectType: '',
-        buyerId: '',
-        linieName: '',
-        partStatus: '',
-        carTypeName: '',
-        procureFactoryId: '',
-        cfPriceType: ''
+        cartypeProjectNum: '',
+        procureFactory: '',
+        applyType: '',
+        state: ''
       }
-    },
-    getDict(type) {
-      getDictByCode(type).then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            [type]: res.data[0]?.subDictResultVo || []
-          }
-        }
-      })
-    },
-    getDicts() {
-      // 财务目标价分类
-      this.getDict('CF_PRICE_TYPE')
-      //申请状态CF_APPLY_STATUS
-      this.getDict('CF_APPLY_STATUS')
+      this.sure()
     },
     handleSelectionChange(val) {
         this.selectItems = val
     },
-    /**
-     * @Description: 获取下拉框
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getProcureGroup() {
-      dictkey().then((res) => {
-        if (res.data) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            ...res.data
-          }
-        }
-      });
-    },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/modeltargetprice/detail', query: { item: JSON.stringify({...row,applyType: '2'}) }})
+      const router =  this.$router.resolve({path: '/modeltargetprice/detail', query: { ...row,applyType: '2' }})
       window.open(router.href,'_blank')
     },
     /**
@@ -229,7 +212,7 @@ export default {
      * @return {*}
      */    
     openApprovalDialog(row){
-      this.applyId = row.applyId || ''
+      this.taskId = row.taskId || ''
       this.changeApprovalDialogVisible(true)
     },
     /**
@@ -267,34 +250,37 @@ export default {
      * @return {*}
      */    
     getTableList() {
-      // this.tableLoading = true
-      // this.isEdit = false
-      // const params = omit({
-      //   ...this.searchParams,
-      //   searchType: '0',
-      //   applyDateStart: this.searchParams.applyDate ? moment(this.searchParams.applyDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
-      //   applyDateEnd: this.searchParams.applyDate ? moment(this.searchParams.applyDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
-      //   responseDateStart: this.searchParams.responseDate ? moment(this.searchParams.responseDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
-      //   responseDateEnd: this.searchParams.responseDate ? moment(this.searchParams.responseDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
-      //   current: this.page.currPage,
-      //   size: this.page.pageSize
-      // },['applyDate','responseDate'])
-      // getTargetPriceList(params).then(res => {
-      //   if (res?.result) {
-      //     this.page = {
-      //       ...this.page,
-      //       totalCount: Number(res.total),
-      //       currPage: Number(res.pageNum),
-      //       pageSize: Number(res.pageSize)
-      //     }
-      //     this.tableData = res.data
-      //   } else {
-      //     this.tableData = []
-      //     iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-      //   }
-      // }).finally(() => {
-      //   this.tableLoading = false
-      // })
+      this.tableLoading = true
+      // eslint-disable-next-line no-undef
+      const params = _.omit({
+        ...this.searchParams,
+        searchType: '0',
+        applyStartDate: this.searchParams.applyDate ? moment(this.searchParams.applyDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+        applyEndDate: this.searchParams.applyDate ? moment(this.searchParams.applyDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
+        returnStartDate: this.searchParams.responseDate ? moment(this.searchParams.responseDate[0]).format('YYYY-MM-DD HH:mm:ss') : null,
+        returnEndDate: this.searchParams.responseDate ? moment(this.searchParams.responseDate[1]).format('YYYY-MM-DD HH:mm:ss') : null,
+        current: this.page.currPage,
+        size: this.page.pageSize
+      },['applyDate','responseDate'])
+      getTargetPriceMaintainPage(params).then(res => {
+        if (res?.result) {
+          this.page = {
+            ...this.page,
+            totalCount: res.total,
+            currPage: res.pageNum,
+            pageSize: res.pageSize
+          }
+          this.tableData = res.data
+        } else {
+          this.tableData = []
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).catch(e => {
+        this.tableData = []
+        iMessage.error(this.$i18n.locale === 'zh' ? e?.desZh : e?.desEn)
+      }).finally(() => {
+        this.tableLoading = false
+      })
     },
   }
 }

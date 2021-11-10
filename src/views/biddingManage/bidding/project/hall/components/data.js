@@ -237,7 +237,7 @@ export const attachments = [
 export const unitTableTitle = [
   {
     props: "fsnrGsnr",
-    name: language('BIDDING_FSNR/GSNR',"FSNR/GSNR"),
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
     width: 180
   },
   {
@@ -255,7 +255,7 @@ export const unitTableTitle = [
   },
   {
     props: "packingFee",
-    name: "包装费",
+    name: language('BIDDING_BAOZHUANGFEI',"包装费"),
   },
   {
     props: "transportFee",

@@ -53,6 +53,7 @@
 <script>
 import { iInput, iFormItem, iSelect } from "rise";
 import { getParities } from "@/api/mock/mock";
+import dayjs from 'dayjs';
 export default {
   components: {
     iInput,
@@ -95,9 +96,11 @@ export default {
           if (val === "RMB") {
             this.$set(item, "exchangeRate", 100);
           }
-          getParities(val).then((res) => {
-            sessionStorage.setItem("currency", [res.data[0]?.currency]);
-            this.currency = sessionStorage.getItem("currency");
+          const params = {currencyCodes: [val], type: 1, queryDate: dayjs().format("YYYY-MM-DD HH:mm:ss")}
+          getParities(params).then((res) => {
+            // sessionStorage.setItem("currency", [res.data[0]?.exchangeRate] || '');
+            // this.currency = sessionStorage.getItem("currency");
+            this.currency = res.data ? res.data[0].exchangeRate : '';
             this.$set(
               item,
               "exchangeRate",

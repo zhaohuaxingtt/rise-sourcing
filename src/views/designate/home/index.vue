@@ -451,8 +451,18 @@ export default {
         consistenceCheck(data).then((res)=>{
           const { code } = res;
           if(code == 200){
-            iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'));
-            this.getFetchData()
+            if (res.data.consistence) {
+              iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'));
+              this.getFetchData()
+            } else {
+              this.$message({
+                dangerouslyUseHTMLString: true,
+                type: "error",
+                message: Array.isArray(res.data.messageList) ? res.data.messageList.reduce((acc, cur, index) => {
+                  return acc + `<p>${ this.$i18n.locale === "zh" ? cur.zhMsg : cur.engMsg }</p>${ index != res.data.messageList.length - 1 ? '<br/>' : '' }`
+                }, "") : "Error"
+              })
+            }
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }

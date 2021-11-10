@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-08 20:33:54
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-09 13:43:22
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\editordetail\index.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
 -->
 <template>
   <iPage>
@@ -228,7 +228,7 @@ export default {
   methods: {
     handleApplyModuleTargetPrice() {
       const item = {rfqId: this.baseInfo.id, applyType: '1'}
-      this.$router.push({path: '/modeltargetprice/detail', query: {item: JSON.stringify(item)}})
+      this.$router.push({path: '/modeltargetprice/detail', query: item})
     },
     registerFn(fn){
       this.childFnList.push(fn)

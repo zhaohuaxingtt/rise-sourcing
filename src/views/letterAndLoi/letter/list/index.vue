@@ -179,8 +179,8 @@ export default {
         }
     },
     created(){
-        // 添加默认筛选参数
-        const acceptKeys = ['status','linieName','csfCssName', 'currentUser', 'isDelay']
+        // 获取寻源概览过来的预置参数
+        const acceptKeys = require('@/config/dashboard').acceptKeys || []
         Object.keys(this.$route.query).forEach(key => {
             acceptKeys.includes(key) && (this.$set(this.searchParams, `${ key }`, this.$route.query[key]))
         })

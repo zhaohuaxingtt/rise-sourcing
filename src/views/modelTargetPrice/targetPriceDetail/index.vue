@@ -2,15 +2,15 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 13:20:37
+ * @LastEditTime: 2021-11-09 21:13:41
  * @Description: 目标价详情
- * @FilePath: \front-web\src\views\modelTargetPrice\targetPriceDetail\index.vue
+ * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\index.vue
 -->
 
 <template>
   <iPage class="targetPriceDetail">
     <div class="targetPriceDetail-top">
-      <div class="font20 font-weight">RFQ：{{detailData.rfqId}}</div>
+      <div class="font20 font-weight">RFQ：{{rfqId}}</div>
       <div>
         <!--------------------导出批量维护按钮----------------------------------->
         <iButton v-if="applyType === '2'" @click="handleExport" :loading="exportLoading" >{{language('DAOCHUPILIANGWEIHU','导出批量维护')}}</iButton>
@@ -28,11 +28,11 @@
           <iButton :loading='uploadLoading'>{{language('DAORUPILIANGWEIHU','导入批量维护')}}</iButton>
         </el-upload>
         <!--------------------保存按钮----------------------------------->
-        <iButton v-if="applyType === '2'" @click="handleSave" :loading="exportLoading" >{{language('BAOCUN','保存')}}</iButton>
+        <iButton v-if="applyType === '2'" @click="handleSave" :loading="saveLoading" >{{language('BAOCUN','保存')}}</iButton>
         <!--------------------取消按钮----------------------------------->
         <iButton v-if="applyType === '1'" @click="handleCancel" :loading="exportLoading" >{{language('QUXIAO','取消')}}</iButton>
         <!--------------------提交按钮----------------------------------->
-        <iButton v-if="applyType !== '3'" @click="handleSubmit" :loading="exportLoading" >{{language('TIJIAO','提交')}}</iButton>
+        <iButton v-if="applyType === '1' || applyType === '2'" @click="handleSubmit" :loading="submitLoading" >{{language('TIJIAO','提交')}}</iButton>
         <!--------------------批准按钮----------------------------------->
         <iButton v-if="applyType === '3'" @click="openApprovalDetailDialog('1')" :loading="exportLoading" >{{language('PIZHUN','批准')}}</iButton>
         <!--------------------拒绝按钮----------------------------------->
@@ -42,36 +42,45 @@
     <!------------------------------------------------------------------------>
     <!--                 基础信息                                          --->
     <!------------------------------------------------------------------------>
-    <basic :id="applyId" @basicSaving="basicSaving" :applyType="applyType" />
+    <basic
+      ref="modelBasic" 
+      :rfqId="rfqId" 
+      :taskId="taskId" 
+      :applyType="applyType" 
+      @changeSubmitLoading="changeSubmitLoading" 
+      @handleSubmitSuccess="handleSubmitSuccess" 
+      @changeSaveLoading="changeSaveLoading" 
+      @changeExportLoading="changeExportLoading" 
+      @changeUploadLoaing="changeUploadLoaing" 
+    />
     <!------------------------------------------------------------------------>
     <!--                 修改历史                                          --->
     <!------------------------------------------------------------------------>
-    <history v-if="applyType !== '3'" ref="history" :id="applyId" />
+    <history v-if="applyType !== '3'" ref="modelHistory" :id="rfqId" />
     <!------------------------------------------------------------------------>
     <!--                  批准弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <approvalDialog :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :type="type" />
+    <approvalDialog ref="approvalDialog" :dialogVisible="approvalDialogVisible" @changeVisible="changeApprovalDialogVisible" :type="type" @handleConfirm="handleConfirm" />
   </iPage>
 </template>
 
 <script>
-import { iPage, iButton } from 'rise'
+import { iPage, iButton, iMessage } from 'rise'
 import history from './components/history'
 import basic from './components/basic'
 import approvalDialog from '../approval/components/approval'
+import { approve, reject } from '@/api/modelTargetPrice/index'
 export default {
   components: {iPage,history,basic, iButton, approvalDialog},
   data() {
     return {
       detailData: {},
       type: '1',
-      approvalDialogVisible: false
-    }
-  },
-  created() {
-    const params = JSON.parse(this.$route.query.item)
-    if(params) {
-      this.detailData = params
+      approvalDialogVisible: false,
+      submitLoading: false,
+      saveLoading: false,
+      exportLoading: false,
+      uploadLoading: false
     }
   },
   computed: {
@@ -82,13 +91,82 @@ export default {
      * @return {*}
      */    
     applyType() {
-      return this.detailData.applyType || '1'
+      return this.$route.query.applyType || '1'
     },
     rfqId() {
-      return this.detailData.rfqId || ''
+      return this.$route.query.rfqId || ''
+    },
+    taskId() {
+      return this.$route.query.taskId || ''
     }
   },
   methods: {
+    upload(content) {
+      this.$refs.modelBasic.upload(content)
+    },
+    changeUploadLoaing(loading) {
+      this.uploadLoading = loading
+    },
+    beforeUpload() {
+      this.uploadLoading = true
+    },
+    handleExport() {
+      this.changeExportLoading(true)
+      this.$refs.modelBasic.handleExport()
+    },
+    changeExportLoading(loading) {
+      this.exportLoading = loading
+    },
+    gotoQuery() {
+      this.$router.push('/modeltargetprice/query')
+    },
+    handleConfirm(reason) {
+      const params = {
+        remarks: reason,
+        taskIds: [this.taskId]
+      }
+      if (this.type === '1') {
+        approve(params).then(res => {
+          if (res?.result) {
+            iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.changeApprovalDialogVisible(false)
+            this.gotoQuery()
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+        }).finally(() => {
+          this.$refs.approvalDialog.changeSaveLoading(false)
+        })
+      } else {
+        reject(params).then(res => {
+          if (res?.result) {
+            iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.changeApprovalDialogVisible(false)
+            this.gotoQuery()
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+        }).finally(() => {
+          this.$refs.approvalDialog.changeSaveLoading(false)
+        })
+      }
+    },
+    handleSave() {
+      this.$refs.modelBasic.handleSave()
+    },
+    changeSaveLoading(loading) {
+      this.saveLoading = loading
+    },
+    handleSubmitSuccess() {
+      this.$refs.modelBasic.getDetail()
+      this.$refs.modelHistory.getTableList()
+    },
+    handleSubmit() {
+      this.$refs.modelBasic.handleSubmit()
+    },
+    changeSubmitLoading(loading) {
+      this.submitLoading = loading
+    },
     /**
      * @Description: 
      * @Author: Luoshuang
@@ -108,9 +186,6 @@ export default {
       // if (!visible) {
       //   this.getTableList()
       // }
-    },
-    basicSaving() {
-      this.$refs.history.getTableList()
     },
     handleCancel() {
       this.$router.go(-1)

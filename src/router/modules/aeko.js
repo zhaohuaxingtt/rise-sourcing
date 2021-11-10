@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-11-09 11:26:59
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-10 09:57:29
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -11,19 +11,29 @@ export default [
     path: "/aeko",
     name: "aeko",
     meta: {
-        title: 'AEKO'
+      title: 'AEKO'
     },
     component: () => import("@/layout/default"),
     redirect: "/aeko/managelist",
     children: [
+      {
+        // 旧的申请详情内嵌iframe URL
+        path: "aekodetailItem",
+        name: "aekoManageList",
+        meta: {
+          title: 'AEKO申请详情'
+        },
+        component: () => import("@/layout/default"),
+        redirect: { name: "aekodetailPage" }, // 之前路由携带参数重定向到新路由
+      },
       // aeko管理列表页
       {
-          path: "managelist",
-          name: "aekoManageList",
-          meta: {
-              title: 'AEKO管理'
-          },
-          component: () => import ("@/views/aeko/manage")
+        path: "managelist",
+        name: "aekoManageList",
+        meta: {
+          title: 'AEKO管理'
+        },
+        component: () => import("@/views/aeko/manage")
       },
       // aeko 分配
       {
@@ -39,33 +49,33 @@ export default [
         path: "stancelist",
         name: "aekoStanceList",
         meta: {
-            title: 'AEKO表态'
+          title: 'AEKO表态'
         },
-        component: () => import ("@/views/aeko/stance")
-    },
-    {
-      // AEKO查看
-      path: "checklist",
-      name: "aekoCheckList",
-      meta: {
-          title: 'AEKO查看'
+        component: () => import("@/views/aeko/stance")
       },
-      component: () => import ("@/views/aeko/check")
-    },
+      {
+        // AEKO查看
+        path: "checklist",
+        name: "aekoCheckList",
+        meta: {
+          title: 'AEKO查看'
+        },
+        component: () => import("@/views/aeko/check")
+      },
       // 
       {
         path: "aekodetail",
         name: "aekodetail",
         meta: {
-            title: 'AEKO详情'
+          title: 'AEKO详情'
         },
         component: () => import("@/views/aeko/detail"),
       },
       {
         path: "quondampart",
-        name: "quondampart", 
+        name: "quondampart",
         meta: {
-            title: 'AEKO-指定原零件'
+          title: 'AEKO-指定原零件'
         },
         component: () => import("@/views/aeko/quondampart"),
         // redirect: "quondampart/ledger",
@@ -86,28 +96,28 @@ export default [
         path: "describe",
         name: "aekoDescribe",
         meta: {
-            title: 'AEKO描述'
+          title: 'AEKO描述'
         },
         component: () => import("@/views/aeko/describe"),
       },
-      
+
       // AEKO零件清单
       {
         path: "partslist",
-          name: "aekoPartslist",
-          meta: {
-              title: 'AEKO零件清单'
-          },
-          component: () => import ("@/views/aeko/partslist/home")
+        name: "aekoPartslist",
+        meta: {
+          title: 'AEKO零件清单'
+        },
+        component: () => import("@/views/aeko/partslist/home")
       },
       // aeko CSF AEKO审批分配人 零件清单页面
       {
         path: "partslist1",
-          name: "aekoPartslist1",
-          meta: {
-              title: 'AEKO零件清单'
-          },
-          component: () => import ("@/views/aeko/partslist/partList")
+        name: "aekoPartslist1",
+        meta: {
+          title: 'AEKO零件清单'
+        },
+        component: () => import("@/views/aeko/partslist/partList")
       },
       {
         path: "quotationdetail",
@@ -142,7 +152,7 @@ export default [
             },
             component: () => import("@/views/aeko/approve/approveList/approveList"),
             redirect: "/aeko/approve/approvelistcsf/AKEOPendingPage",
-            children:[
+            children: [
               {
                 path: "AKEOPendingPage",
                 name: "AKEOPendingPage",
@@ -163,7 +173,7 @@ export default [
           },
         ]
       },
-        //Aeko审批详情
+      //Aeko审批详情
       {
         path: "AEKOApprovalDetails",
         name: "AEKOApprovalDetails",
@@ -176,7 +186,7 @@ export default [
           {
             path: 'Approvalform',
             name: "Approvalform",
-            prop:true,
+            prop: true,
             meta: {
               title: "AEKO-审批单",
             },
@@ -229,7 +239,7 @@ export default [
           {
             path: 'list',
             name: "aekoMtzlist",
-            prop:true,
+            prop: true,
             meta: {
               title: "AEKO-mtz查看",
             },
@@ -238,7 +248,7 @@ export default [
           {
             path: 'details',
             name: "aekoMtzDetails",
-            prop:true,
+            prop: true,
             meta: {
               title: "AEKO-mtz变更",
             },
@@ -255,7 +265,7 @@ export default [
         },
         component: () => import("@/views/aeko/approve/pageContent"),
         redirect: "/aeko/AKEOPageContent/approvelistcsf",
-        children:[
+        children: [
           {
             path: "approvelistcsf",
             name: "aekoApprove-listcsf",
@@ -264,7 +274,7 @@ export default [
             },
             component: () => import("@/views/aeko/approve/approveList/approveList"),
             redirect: "/aeko/AKEOPageContent/approvelistcsf/AKEOPendingPage",
-            children:[
+            children: [
               {
                 path: "AKEOPendingPage",
                 name: "AKEOPendingPage",
@@ -293,7 +303,7 @@ export default [
           title: 'AEKO-逾期报表'
         },
         component: () => import("@/views/aeko/BIPage"),
-      },{
+      }, {
         path: "report",
         name: "report",
         meta: {
@@ -301,14 +311,14 @@ export default [
         },
         component: () => import("@/views/aeko/BIPage/reportPage"),
         redirect: "/aeko/report/item",
-        children:[
+        children: [
           {
             path: "item",
             name: "reportitem",
             meta: {
               title: 'AEKO报表'
             },
-            component: () => import("@/views/aeko/BIPage"),
+            component: () => import("@/views/aeko/BIPage/components"),
           },
         ]
       }
@@ -319,7 +329,7 @@ export default [
     path: "/aekodetailPage",
     name: "aekodetailPage",
     meta: {
-        title: 'AEKO详情'
+      title: 'AEKO详情'
     },
     component: () => import("@/views/aeko/detail/aekodetailPage"),
   }

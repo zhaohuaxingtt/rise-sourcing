@@ -15,7 +15,13 @@
       >
         <el-form row="1" :model="query" ref="queryForm">
           <el-form-item :label="'操作类型'">
-            <el-select
+            <iDicoptions
+              :optionKey="optionKey"
+              v-model="query.type"
+              filterable
+              >
+            </iDicoptions>
+            <!-- <el-select
               v-model="query.type"
               filterable
               placeholder="请选择（支持搜索）"
@@ -26,14 +32,14 @@
                 :label="item.name"
                 :value="item.name"
               ></el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
           <el-form-item :label="'操作人'">
             <i-input :placeholder="'请输入'" v-model="query.creator" />
           </el-form-item>
         </el-form>
       </i-search>
-      <el-table :data="tableData" style="width: 100%" class="log-table">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%" class="log-table">
         <el-table-column type="expand">
           <template slot-scope="props">
             {{ props.row.content }}
@@ -94,9 +100,10 @@ import { getLogMenu } from '@/utils'
 import { roleMixins } from '@/utils/roleMixins'
 import { pageMixins } from '@/utils/pageMixins'
 import { getLogList } from "@/api/aeko/approve"
+import iDicoptions from 'rise/web/components/iDicoptions' 
 
 export default {
-  components: { iDialog, iSearch, iInput, iPagination },
+  components: { iDialog, iSearch, iInput, iPagination, iDicoptions },
   mixins: [roleMixins, pageMixins],
   props: {
     bizId: {
@@ -106,7 +113,11 @@ export default {
       }
     },
     show: [Boolean],
-    module:[String],  // 流程模块
+    module:[String],  // 流程模块,
+    optionKey: {
+      type: String,
+      default: "LOG_TYPE"
+    }
   },
   data() {
     return {
@@ -128,7 +139,8 @@ export default {
           label: '删除',
           value: '30'
         }
-      ]
+      ],
+      loading: false,
     }
   },
   computed: {
@@ -163,21 +175,21 @@ export default {
       }
     },
     handleOpen() {
-      this.getOptions()
+      // this.getOptions()
       this.getList()
     },
-    getOptions() {
-      const http = new XMLHttpRequest()
-      const url = `/baseInfo/web/selectDictByKeys?keys=LOG_TYPE`
-      http.open('GET', url, true)
-      http.setRequestHeader('content-type', 'application/json')
-      http.onreadystatechange = () => {
-        if (http.readyState === 4) {
-          this.options = JSON.parse(http.responseText).data?.LOG_TYPE || []
-        }
-      }
-      http.send()
-    },
+    // getOptions() {
+    //   const http = new XMLHttpRequest()
+    //   const url = `/baseinfo/web/selectDictByKeys?keys=LOG_TYPE`
+    //   http.open('GET', url, true)
+    //   http.setRequestHeader('content-type', 'application/json')
+    //   http.onreadystatechange = () => {
+    //     if (http.readyState === 4) {
+    //       this.options = JSON.parse(http.responseText).data?.LOG_TYPE || []
+    //     }
+    //   }
+    //   http.send()
+    // },
     getList() {
       this.query.bizId_obj_ae = this.bizId
       let menu = getLogMenu()
@@ -186,13 +198,17 @@ export default {
       // menuName_obj_ae:菜单    当前所在页面
       // module_obj_ae:模块      当前所在流程模块
       const params = {
-        current: this.page.currPage - 1,  // 前后端页面定义有一页偏差
+        current:this.page.currPage - 1,  // 前后端页面定义有一页偏差
         size: this.page.pageSize,
         extendFields: { ...this.query, module_obj_ae:this.module, createBy_obj_ae: this.userInfo.id, menuName_obj_ae: menu }
       }
+      this.loading = true
       getLogList(params).then(res=>{
+          this.loading = false
           this.tableData = res?.content || []
           this.page.totalCount = res?.total || 0
+      }).catch(()=>{
+        this.loading = false
       })
     }
   }

@@ -2,14 +2,14 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-05 17:03:50
+ * @LastEditTime: 2021-11-10 17:30:04
  * @Description: 
 -->
 <template>
   <div class="aeko-mtz" >
     <!-- 表格 -->
     <iCard class="aeko-mtz-table">
-      <div class="floatright margin-bottom15">
+      <div class="floatright margin-bottom15" v-if="!disable">
         <iButton
           @click="resetAekoMtz"
         >
@@ -43,20 +43,20 @@
         @handleSelectionChange="handleSelectionChange"
       >
       <template #dosageChange="scope">
-        <span :class="{validateDosageChangeError: scope.row.validateDosageChangeError}">
+        <span :class="{validateDosageChangeError: scope.row.validateDosageChangeError}" v-if="!disable">
           <iInput
             v-model="scope.row.dosageChange"
             @change="formatDosChangeNum(scope.row)"
             :placeholder="language('LK_QINGSHURU','请输入')"
           ></iInput>
         </span>
-        <!-- <span>{{scope.row.dosageChange}}</span> -->
+        <span v-else>{{scope.row.dosageChange}}</span>
       </template>
       <template #newDosage="scope">
         {{calcNewDosage(scope.row)}}
       </template>
       <template #newStartDate="scope">
-        <span :class="{validateStartError: scope.row.validateStartError}">
+        <span :class="{validateStartError: scope.row.validateStartError}" v-if="!disable">
           <iDatePicker 
               v-model="scope.row.newStartDate" 
               format="yyyy-MM-dd" 
@@ -66,11 +66,11 @@
               @change="validateDueDateInput(scope.row)"
               :picker-options="pickerOptions"
           />
-          <!-- <span>{{scope.row.newStartDate}}</span> -->
         </span>
+        <span v-else>{{scope.row.newStartDate}}</span>
       </template>
       <template #newEndDate="scope">
-        <span :class="{validateEndError: scope.row.validateEndError}">
+        <span :class="{validateEndError: scope.row.validateEndError}" v-if="!disable">
           <iDatePicker 
               v-model="scope.row.newEndDate" 
               format="yyyy-MM-dd" 
@@ -80,8 +80,8 @@
               @change="validateDueDateInput(scope.row)"
               :picker-options="pickerOptions"
           />
-          <!-- <span>{{scope.row.newEndDate}}</span> -->
         </span>
+        <span v-else>{{scope.row.newEndDate}}</span>
       </template>
       </tablelist>
       <div class="pagination">
@@ -132,6 +132,7 @@ export default {
       minStartDate: '',
       maxEndDate: '',
       pickerOption: null,
+      disable: this.$route.query.status === 'SUBMITED'
     }
   },
   mounted() {
@@ -266,7 +267,11 @@ export default {
       this.tableLoading = true
       pageAekoMtz(parmas).then(res => {
         if (res.code === '200') {
-          this.tableListData = (res.data && res.data.records || [])
+          this.tableListData = (res.data && res.data.records || []).map(o => {
+            o.newStartDate = window.moment(o.newStartDate).format('YYYY-MM-DD')
+            o.newEndDate = window.moment(o.newEndDate).format('YYYY-MM-DD')
+            return o
+          })
           this.page.totalCount = res.data.total
           // 抽取截止时间范围
           const dataLine0 = this.tableListData[0]
@@ -294,11 +299,18 @@ export default {
     },
     copyAekoMtz() {
       if (!this.selectTableData.length) {
-        iMessage.warn(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+        iMessage.warn(this.language('QINGGOUXUANXUYAOFUZHIDEHANGXIANGMU', '请勾选需要复制的行项目'))
+        return
+      }
+      // 检查新零件与原零件一致(同号零件)，不允许删除/复制
+      const dumplicatedParts = this.selectTableData.filter(o => o.partNum === o.originPartNum)
+      if (dumplicatedParts.length) {
+        iMessage.error(this.language('DUMPLIDATEDPARDWARNING', '新零件号和原零件号一致，不可删除/新增，请在现有的项目上进行编辑'))
         return
       }
       const copyData = window._.cloneDeep(this.selectTableData).map(o => {
         o.id = Math.floor(Math.random() * 10000000)
+        o.mtzPriceId = ''
         o.isNew = true
         return o
       })
@@ -331,11 +343,15 @@ export default {
      */    
     async removeAekoMtz() {
       if (!this.selectTableData.length) {
-        iMessage.warn(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
+        iMessage.warn(this.language('QINGGOUXUANXUYAOSHANCHCUDEHANGXIANGMU', '请勾选需要删除的行项目'))
         return
       }
-      const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
-      if (confirmInfo !== 'confirm') return
+      // 检查新零件与原零件一致(同号零件)，不允许删除/复制
+      const dumplicatedParts = this.selectTableData.filter(o => o.partNum === o.originPartNum)
+      if (dumplicatedParts.length) {
+        iMessage.error(this.language('DUMPLIDATEDPARDWARNING', '新零件号和原零件号一致，不可删除/新增，请在现有的项目上进行编辑'))
+        return
+      }
       // 删除新增的项目
       const copyDataIds = this.selectTableData.filter(o => o.isNew).map(o => o.objectAekoPartId)
       if (copyDataIds.length) {
@@ -347,6 +363,9 @@ export default {
       }
       // 删除选中的老数据
       const idList = this.selectTableData.filter(o => !o.isNew).map(o => Number(o.id))
+      console.log('idList', idList)
+      const confirmInfo = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
+      if (confirmInfo !== 'confirm') return
       try {
         const res = await removeAekoMtz(idList)
         if (res.code === '200') {

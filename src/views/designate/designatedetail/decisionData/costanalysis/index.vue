@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-08 18:59:59
+ * @LastEditTime: 2021-11-10 17:44:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -9,20 +9,20 @@
 <template>
 <iCard>
   <iFormGroup row='4' label-width='100px' class="Iform">
-    <iFormItem  label='分析类型：'>
+    <iFormItem  :label='language("FENXILEIX","分析类型")'>
       <iSelect v-model="typeSelect" @change="costanalysisList">
         <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
       </iSelect>
     </iFormItem>
-    <iFormItem v-if='isPreview'  label='Analysis：'>
-      <iSelect v-model="typeSelect" @change="costanalysisList">
-        <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
+    <iFormItem  v-if='isPreview'  label='Analysis：'>
+      <iSelect v-model="previewItems" v-loading='loadingRight'>
+        <el-option v-for='(items,index) in (tableData.filter(r=>r.flag))' :label='items.bizId + "-" + items.stuffName + "" + items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
       </iSelect>
     </iFormItem>
   </iFormGroup>
   <tabel v-if='!isPreview' :tableLoading='loading' :tableTitle='tableTitle' :tableData='tableData' selection>
     <template #operate='scope'>
-      <span class="underline" @click="openPage(scope.row)">查看</span>
+      <span class="underline" @click="openPage(scope.row)">{{language('CHAKAN','查看')}}</span>
     </template>
     <template #flag='scope'>
       <span class="bule font10 cursor" @click="costanalysisShow(scope.row)">
@@ -37,17 +37,32 @@
       </span>
     </template>
   </tabel>
-  <iDialog v-if='!isPreview' :visible.sync="messageBox" width='80%' height='60vh'>
-      <div style="height:70vh">
+  <iDialog v-if='!isPreview' :visible.sync="messageBox" width='80%'>
+      <div style="min-height:70vh" class="flex-center-center">
         <template v-if="['PCA','TIA'].includes(typeSelect)">
           <iframe v-if='pdfUrl' :src="pdfUrl" frameborder="0" height="97%" width="100%"></iframe>
-          <span v-else>当前暂无PDF/或者图片可以查看</span>
+          <span v-else>{{language('DANGQIANZANWUCHAKAN','当前分析类型暂无PDF/图片可以查看')}}</span>
         </template>
         <template v-else>
-          <span>这是一个echarts</span>
+          <echartsComponents v-if='messageBox' :rfqId='rfqId'></echartsComponents>
         </template>
       </div>
   </iDialog>
+  <div v-if='isPreview'>
+    <bob v-if='typeSelect == "BOB" && previewItems'></bob>
+    <vp v-else-if='typeSelect == "VP" && previewItems'></vp>
+    <pi v-else-if='typeSelect == "PI" && previewItems'></pi>
+    <div v-else-if='["PCA","TIA"].includes(typeSelect)' style="min-height:70vh" class="flex-center-center">
+      <iframe height='70vh' width="100%" v-if='previewItems && JSON.parse(previewItems).fileList && JSON.parse(previewItems).fileList[0].filePath' :src="JSON.parse(previewItems).fileList[0].filePath" frameborder="0"></iframe>
+      <div v-else>抱歉当前类型暂无预览文件</div>
+    </div>
+    <template v-else-if='typeSelect == "QT"'>
+          <echartsComponents v-if='previewItems' :rfqId='JSON.parse(previewItems).rfqId'></echartsComponents>
+    </template>
+    <template v-else>
+      <mek v-if='previewItems'></mek>
+    </template>
+  </div>
 </iCard>
 </template>
 <script>
@@ -55,8 +70,13 @@ import {iCard,iFormGroup,iFormItem,iSelect,iDialog} from 'rise'
 import tabel from '@/views/partsign/home/components/tableList'
 import {arrayOfselect,tableTitle} from './data'
 import {costanalysisList,costanalysisShow,costanalysisSort} from '@/api/designate/decisiondata/costanalysis'
+import bob from '@/views/partsrfq/bob/newReport'
+import vp from '@/views/partsrfq/vpAnalyse/vpAnalyseDetail'
+import pi from '@/views/partsrfq/piAnalyse/piDetail'
+import mek from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekDetails'
+import echartsComponents from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringEcartsCard/previewEcharts'
 export default{
-  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog},
+  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog,bob,vp,pi,mek,echartsComponents},
   data(){
     return {
       typesOfData:'',
@@ -66,7 +86,8 @@ export default{
       typeSelect:'BOB',
       loading:false,
       messageBox:false,
-      isPreview:false
+      isPreview:false,
+      previewItems:null
     }
   },
   created(){
@@ -106,7 +127,13 @@ export default{
      */
     openPage(row){
       if(['PCA','TIA','QT'].includes(this.typeSelect)){
-        this.pdfUrl = row.fileList.length?row.fileList[0].filePath:null
+       try {
+          this.pdfUrl = row.fileList.length?row.fileList[0].filePath:null
+       } catch (error) {
+          this.pdfUrl = ''
+          this.rfqId = ''
+       }
+        this.rfqId = row.rfqId
         this.messageBox = true
         return 
       }
@@ -119,11 +146,14 @@ export default{
       window.open(process.env.VUE_APP_SOURCING_URL + urlMaps[this.typeSelect],'_blank')
     },
     costanalysisList(){
+      this.previewItems = null
       this.loading = true
       const id = this.$route.query.desinateId
+      this.loadingRight = true
       costanalysisList(id,this.typeSelect).then(r=>{
         this.loading = false
         this.tableData = r.data
+        this.loadingRight = false
       }).catch(()=>{
         this.loading = false
       })

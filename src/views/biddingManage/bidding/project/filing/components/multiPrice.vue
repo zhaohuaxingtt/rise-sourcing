@@ -322,7 +322,7 @@ export default {
           isNaN(Number(item.moldFee)) ||
           isNaN(Number(item.developFee))
           ? sum
-          : Big(this.calculationDetails(item, index)).add(sum).toNumber();
+          : Big(this.calculationDetails(item, index)).add(sum).add(Number(item.moldFee)).add(Number(item.developFee)).toNumber();
       }, 0);
     },
 
@@ -930,30 +930,26 @@ export default {
       };
       this.yearsPlanTable.splice(1, 0, obj);
     },
-    query(e) {
+    async query(e) {
       // 根据ID查询条款信息
       this.tableLoading = true;
-      let p = new Promise(resolve=>{
-        let o = {...planBaseData,title:'折现率'};
-        getDiscount({}).then((res) => {
-          let o = {title:'折现率'};
-          res?.data?.md_discount_rate.map(item=>{
-            let x = Number(item.code.replace('Y','0'));
-            o[`stage${x}`]=item.describe;
-          })
-        });
-        resolve(o);
-      }).then(res=>{
-         this.annualOutput[0]={...res};
-        findMultiPrice(e)
-        .then((res) => {
-          this.updateRuleForm(res);
-          this.tableLoading = false;
+      let o = {...planBaseData,title:'折现率'};
+      const res = await  getDiscount({});
+      if(res?.data != null){
+        res?.data?.md_discount_rate.map(item=>{
+          let x = Number(item.code.replace('Y','0'));
+          this.$set(o,`stage${x}`,item.describe)
         })
-        .catch((err) => {
-          this.tableLoading = false;
-        });
+      }
+      this.annualOutput[0]={...o};
+      findMultiPrice(e)
+      .then((res) => {
+        this.updateRuleForm(res);
+        this.tableLoading = false;
       })
+      .catch((err) => {
+        this.tableLoading = false;
+      });
     },
     updateRuleForm(data) {
       this.ruleForm = {

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-09 17:02:30
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-10 17:10:47
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -330,6 +330,7 @@ import { cloneDeep, chunk, debounce } from "lodash"
 
 import investCarTypeProDialog from './components/investCarTypeProDialog' 
 import priceAxisDialog from './components/priceAxisDialog' 
+import { getWorkflowId } from '@/api/aeko/approve'
 
 // 组合相关功能
 import {combine} from './mixins/combine'
@@ -425,7 +426,7 @@ export default {
 
     const {query} = this.$route;
     const {from=''} = query;
-    from=='manage'?setLogMenu('AEKO管理-详情页-内容表态'):setLogMenu('AEKO表态-详情页-内容表态')
+    from=='manage'?setLogMenu('AEKO管理-详情页'):setLogMenu('AEKO表态-详情页-内容表态')
     // AEKO查看跳转过来的数据table的新承运方式和原承运方式合并成一列 显示采购员 并且只固定AEKO组别、零件号、零件名称【蓝湖上面看到的】
     if(from == 'check'){
       let filterTable = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc');
@@ -544,36 +545,67 @@ export default {
 
       const {query} = this.$route;
       const {from=''} = query;
-      
-      getAekoLiniePartInfo({
-        ...form,
-        partNum:newPartNum,
-        requirementAekoId: this.aekoInfo.requirementAekoId,
-        cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
-        investCarTypePros: Array.isArray(this.form.investCarTypePros) ? (this.form.investCarTypePros.length === 1 && this.form.investCarTypePros[0] === "" ? null : this.form.investCarTypePros) : null,
-        status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
-        current: this.page.currPage,
-        size: this.page.pageSize,
-        isView:from=='check' ? 1 : undefined,
-      })
-      .then(res => {
-        if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.tableListData.map(o => {
-            // 分组管理需要备份原始分组名称
-            o.groupNameBak = o.groupName
-            return
-          })
-          this.page.totalCount = res.total || 0
-          this.rowspan(this.tableListData)
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-
-        this.loading = false
-      })
-      .catch(() => this.loading = false)
+      const {auditType=''} = query;
+      if(!auditType){
+        getAekoLiniePartInfo({
+          ...form,
+          partNum:newPartNum,
+          requirementAekoId: this.aekoInfo.requirementAekoId,
+          cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
+          investCarTypePros: Array.isArray(this.form.investCarTypePros) ? (this.form.investCarTypePros.length === 1 && this.form.investCarTypePros[0] === "" ? null : this.form.investCarTypePros) : null,
+          status: Array.isArray(this.form.status) ? (this.form.status.length === 1 && this.form.status[0] === "" ? null : this.form.status) : null,
+          current: this.page.currPage,
+          size: this.page.pageSize,
+          isView:from=='check' ? 1 : undefined,
+        })
+        .then(res => {
+          if (res.code == 200) {
+            this.tableListData = Array.isArray(res.data) ? res.data : []
+            this.tableListData.map(o => {
+              // 分组管理需要备份原始分组名称
+              o.groupNameBak = o.groupName
+              return
+            })
+            this.page.totalCount = res.total || 0
+            this.rowspan(this.tableListData)
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+  
+          this.loading = false
+        })
+        .catch(() => this.loading = false)
+      }else{
+        this.getWorkflowId()
+      }
     },
+    
+      // 申请详情内嵌页面获取流程id:WorkflowId
+      getWorkflowId(){
+        let params = {
+          id: this.$route.query.id,
+          auditType: this.$route.query.auditType,
+          current: this.page.currPage,
+          size: this.page.pageSize,
+        }
+        getWorkflowId(params).then(res=>{
+          console.log(res);
+          if (res.code == 200) {
+            let { data } = res
+            this.tableListData = Array.isArray(data.records) ? data.records : []
+            this.tableListData.map(o => {
+              // 分组管理需要备份原始分组名称
+              o.groupNameBak = o.groupName
+              return
+            })
+            this.page.totalCount = data.total || 0
+            this.rowspan(this.tableListData)
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+          this.loading = false
+        }).catch(() => this.loading = false)
+      },
     sure() {
       // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
       if(this.form.partNum && this.form.partNum.trim().length < 9){
@@ -614,7 +646,8 @@ export default {
     view(row) {
       this.$router.push({name: 'aekoMtzDetails', query: {
         objectAekoPartId: row.objectAekoPartId,
-        aekoNum: this.aekoInfo.aekoCode
+        aekoNum: this.aekoInfo.aekoCode,
+        status: row.status
       }})
     },
     isAea(str) {

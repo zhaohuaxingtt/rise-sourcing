@@ -213,6 +213,9 @@ export default {
       if (['审批中'].includes(user.taskStatus)) {
         return ''
       }
+      if (['补充材料'].includes(user.taskStatus)) {
+        return '有异议'
+      }
       return user.taskStatus
     },
     getSingleApprovalDate(item) {

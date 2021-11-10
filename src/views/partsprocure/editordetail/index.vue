@@ -29,7 +29,7 @@
 		<div class="margin-bottom20 clearFloat">
 			<span class="font18 font-weight">{{language("LK_LINGJIANCAIGOUXIANGMU",'零件采购项目')}}</span>
 			<span v-if="infoItem.code" class="font16 font-weight margin-left20">{{language("LK_LCAIGOUSHENQING",'采购申请')}}:</span>
-			<span class="openLinkText cursor" @click="openCode">{{infoItem.code}}</span>
+			<span v-if="infoItem.code" class="openLinkText cursor" @click="openCode">{{infoItem.code}}</span>
 			<div class="floatright">
 				<span v-if="!disabled">
 					<!-- 供应商创建定点申请单 -->
@@ -374,7 +374,7 @@
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE|申请目标价">
-				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="detailData.partProjectType || partProjectType"></targePrice>
+				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="detailData.partProjectType || partProjectType" :params="infoItem"></targePrice>
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_BEIZHUXINXI','备注信息')" v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKSINFORMATION|备注信息">
 				<remarks></remarks>
@@ -392,7 +392,7 @@
 		<!-----------------------选择原fs号--------------------------------->
 		<selectOldpartsNumber :diolog='selectOldParts' v-model="selectOldParts.selectData"></selectOldpartsNumber>
     	<!---------------------- 采购申请弹框 -------------------------------->
-        <purchaseApply :visibleDiolog="dialogVisibleCode" @changeVisible='dialogVisibleCode = false' :item="itemPurchase"></purchaseApply>	
+        <purchaseApply :visibleDiolog.sync="dialogVisibleCode" :item="itemPurchase"></purchaseApply>	
 	</iPage>
 </template>
 <script>
@@ -857,9 +857,9 @@
 			},
 			openCode() {
 				this.dialogVisibleCode = true
-				let data = JSON.parse(this.$route.query.item)
-				this.itemPurchase.riseCode = data.code
-				this.itemPurchase.sapItem = data.item
+				// let data = JSON.parse(this.$route.query.item)
+				this.itemPurchase.riseCode = this.infoItem.code
+				this.itemPurchase.sapItem = this.infoItem.item
 			}
 		}
 }

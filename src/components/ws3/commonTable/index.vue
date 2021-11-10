@@ -8,7 +8,7 @@
 <template>
   <el-form :model="{tableData}" status-icon :rules="rules" ref="commonTableForm" :class="{ 'formStyle' :ruleLength === 0}">
     <el-table :highlight-current-row="highlightCurrentRow" :height="height" :max-height="maxHeight" :span-method="handleMerge" tooltip-effect='light' :data='tableData' :empty-text="$t('LK_ZANWUSHUJU')" v-loading='tableLoading' @current-change="handleCurrentChange" @selection-change="handleSelectionChange" @row-click="handleClickRow" :row-class-name="handleTableRow"> 
-      <el-table-column v-if="selection" type='selection' width="50" align='center' :fixed="fixed"></el-table-column>
+      <el-table-column v-if="selection" type='selection' width="55" align='center' :fixed="fixed"></el-table-column>
       <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
       <template v-for="(items,index) in tableTitle">
         <!-- 点击事件-->

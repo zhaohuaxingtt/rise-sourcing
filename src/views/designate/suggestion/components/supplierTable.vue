@@ -3,7 +3,7 @@
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
           <!-- 创建MTZ申请 -->
-          <iButton @click="handlecreatemtz" :disabled="isMtzDisabled">
+          <iButton @click="handlecreatemtz" :disabled="isMtzDisabled || getSelectedMtzFlag">
             {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
            </iButton>
           <span v-if="!nominationDisabled && !rsDisabled" class="margin-left10">
@@ -127,6 +127,7 @@ import {
   getPartSupplierList,
   deleteSuggestion
 } from '@/api/designate/suggestion/part'
+import { nominateAppSDetail } from '@/api/designate'
 import _ from 'lodash'
 
 import {
@@ -178,6 +179,7 @@ export default {
       lastSelecteDataIndex: 0,
       // 供应商列表
       supplierList: [],
+      nomiData: {},
       submiting: false,
       page: {
         currPage: 1,
@@ -189,7 +191,9 @@ export default {
       rfqIds: [],
       fsIds: [],
       supplierIds: [],
-      isMtzDisabled:this.$route.query.mtzApplyId
+      isMtzDisabled: false,
+      selectedDataMtz: false,
+      isFrozen:false
     }
   },
   mounted() {
@@ -203,13 +207,33 @@ export default {
     }),
     // 检查选中的条目是否可以被删除
     checkCanbeDelete() {
-      let state = false
+      let state = false;
       if (this.selectData.length === 0) return state = true
       state = this.selectData.filter(o => o.isAdd || !o.sysDefault).length !== this.selectData.length
       return state
+    },
+    getSelectedMtzFlag(){
+      let flg = false;
+      this.selectData.forEach((e)=>{
+        if(!flg && (e.mtz=='否' || !e.supplierId)){
+          flg = true;
+        } 
+      });
+      return flg;
     }
   },
   methods: {
+     nominateAppSDetail() {
+      if(this.$route.query.desinateId){
+        nominateAppSDetail({
+          nominateAppId: this.$route.query.desinateId
+        })
+        .then(res => {
+          this.nomiData =res.data;
+          this.isMtzDisabled = this.nomiData.mtzApplyId || this.nomiData.isFreeze ===1
+        })
+      } 
+    },
     // 生成随机id
     randomid() {
       return Math.floor(Math.random() * 10000000)
@@ -296,7 +320,6 @@ export default {
       this.batchEditVisibal = true
     },
     onBatchEdit(data) {
-      console.log(data)
       // 批量更新选中数据
       this.selectData.forEach(o => {
         const tar = this.data.find(s => s.sid === o.sid) || {}
@@ -360,7 +383,6 @@ export default {
       } else {
         this.supplierList = []
       }
-      
     },
     // 复制条目
     async copyLines(){
@@ -404,14 +426,13 @@ export default {
           this.data.map(o => {
             !o.sid && (o.sid = this.randomid())
             o.mtz == true ? o.mtz = '是' : o.mtz = '否'
+            o.isBeforeFrozen == true ? this.isFrozen = false : this.isFrozen = true
             return
           })
           this.page.totalCount = res.total || this.data.length
-          console.log(this.selectTableData)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        console.log(res)
       }).catch(e => {
         this.tableLoading = false
       })
@@ -442,27 +463,22 @@ export default {
     },
     // 创建MTZ申请
     handlecreatemtz() {
-        let isNullmtzApplyId = true
-        let isFrozen = true
-        this.selectData.forEach(val=>{
-          val.mtzApplyId != null ? isNullmtzApplyId = false : isNullmtzApplyId = true
-          val.isBeforeFrozen === true ? isFrozen = true : isFrozen = false
-        })
       if(!this.selectData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
-      } else if(isNullmtzApplyId == false){
-        iMessage.error(this.language('nominationSuggestion_DANGQIANDEDINGDIANSHENQINGDANYIJINGGUANLIANGUOMTZSHENQINGDAN','当前的定点申请单已经关联过MTZ申请单'))
-      } else if(isFrozen == false ) {
-        iMessage.error(this.language('nominationSuggestion_XUANZEDEDANGQIANDEDINGDIANSHENQINGZHUANGTAIBIXUZAISHENQINGDONGJIEZHUANGTAIZHIQIAN','选择的当前的定点申请状态必须在申请冻结状态之前'))
       }else {
         let nom = this.selectData[0].nominateId || ''
         let item =[]
-        // let MTZappId= this.$route.query.desinateId || ''
+        let supplierId = []
         item = this.selectData.map(val => val.partNum).join(',') || ''
-        window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?id=`+nom+`&item=`+item,'_blank')
+        supplierId = this.selectData.map(val => val.supplierId).join(',') || ''
+        window.location.href=`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=`+nom+`&item=`+item+`&supplierId=`+supplierId
       }
-    }
+    },
+  
+  },
+  created(){
+    this.nominateAppSDetail()
   }
 }
 </script>

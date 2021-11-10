@@ -1,0 +1,124 @@
+<template>
+	<iPage class="page-content" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PBI|报表管理-状态跟踪报表">
+		<iCard id='powerBiReport'>
+			
+		</iCard>
+	</iPage>
+</template>
+
+<script>
+	import {iPage,iCard} from 'rise';
+	import {statement} from '@/api/aeko/approve'
+	import * as pbi from 'powerbi-client';
+import { roleMixins } from "@/utils/roleMixins";
+	export default {
+		mixins:[roleMixins],
+		components: {
+			iPage,
+			iCard,
+		},
+		data() {
+			return {
+				visible: false,
+				industry: false,
+				url: {
+					accessToken: "", //验证token
+					embedUrl: "", //报告信息内嵌地址
+					tokenExpiry: "", //token过期时间
+				},
+				report:null,
+				filter : {
+						$schema: "http://powerbi.com/product/schema#basic",
+						target: {
+							table: "app_supplier_fin_analysis_sum_nt_daily",
+							column: "subject_name"
+						},
+						operator: "In",
+						values: [],//[this.name],// values
+						requireSingleSelection: true,
+						filterType: pbi.models.FilterType.BasicFilter
+					},
+				values:[]
+			}
+		},
+		created() {
+			this.powerBiUrl()
+		},
+		methods: {
+			// 获取财报iframeurl
+			powerBiUrl() {
+				let params = {
+					workspaceId: '876776a9-f959-442e-a011-b4bade0dd862', 
+					reportId: '25724165-8d58-4452-a6e3-363facc62d2b',
+          datasets:['734b852b-4b5e-4392-b715-3a698a5a7209'],
+          username: 1 || this.userInfo.id,	// 目前报表那边还没有和用户中心关联user_id,只提供1,3,6,19只给userId
+          roles:['role']||this.roleList,
+				}
+				statement(params).then(res => {
+					console.log(res);
+					if (res.data) {
+						this.url = res.data
+						this.renderBi()
+					}
+				})
+			},
+			renderBi() {
+				try {
+					var permissions = pbi.models.Permissions.All
+					var config = {
+						type: 'report',
+						tokenType: pbi.models.TokenType.Embed,
+						accessToken: this.url.accessToken,
+						embedUrl: this.url.embedUrl,
+            // pageName: 'ReportSectionae991d05cd104ed2c639',
+						// id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
+						/*pageName: 'ReportSectioneb8c865100f8508cc533',
+						visualName: '47eb6c0240defd498d4b',
+						permissions: permissions,*/
+						settings: {
+							panes: {
+								filters: {
+									visible: false
+								},
+								pageNavigation: {
+									visible: false
+								}
+							}
+						}
+					};
+					let powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
+					var reportContainer = document.getElementById('powerBiReport');
+					var report = powerbi.embed(reportContainer, config);
+					// Report.off removes a given event handler if it exists.
+					report.off("loaded");
+					
+					this.report=report
+				} catch (e) {
+					console.log(e)
+				}
+			},
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	.title {
+		font-weight: bold;
+		font-size: 20px;
+		color: $color-black;
+		margin-bottom: 20px;
+	}
+
+	#powerBiReport {
+		width: 100%;
+		height: calc(100vh - 120px);
+		iframe {
+			border: 0px !important;
+		}
+	}
+</style>
+<style>
+iframe {
+	border: 0px !important;
+}
+</style>

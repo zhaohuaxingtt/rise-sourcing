@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:40:38
- * @LastEditTime: 2021-11-09 19:04:16
+ * @LastEditTime: 2021-11-10 19:17:19
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -10,7 +10,7 @@
     <iCard class="mb-16">
       <p class="title mb-20">
         <span>{{ `${language("MUJUCBD", "模具CBD")}` }}</span>
-        <span class="tip ml-12">{{ language("DANWEI", "单位") }}：RMB/Pc.</span>
+        <span class="tip ml-12">{{ language("DANWEI", "单位") }}：{{currency}}/Pc.</span>
       </p>
       <tableList
         lang
@@ -59,6 +59,10 @@ export default {
       type: String,
       default: "",
     },
+    currency:{
+      type: String,
+      default: 'RMB'
+    }
   },
   data() {
     return {
@@ -71,8 +75,6 @@ export default {
   methods: {
     // 初始化数据
     init() {
-      console.log("获取初始化数据");
-      console.log(this.workFlowId);
       this.workFlowId ? this.getMoulds() : this.getMouldsByLinie();
     },
     // 获取数据
