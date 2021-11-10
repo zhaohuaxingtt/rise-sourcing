@@ -8,7 +8,7 @@ export const tableTitle = [
     {props:'fsnrGsnrNum',name:'FS号',key: 'LK_FSHAO'},
     {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
     {props:'partNameZh',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG'},
-    {props:'mouldPrice',name:'T-TargetPrice',key:'T-TargetPrice'},
+    {props:'targetPrice',name:'T-TargetPrice',key:'T-TargetPrice'},
     {props:'applyType',name:'申请类别',key: 'LK_SHENQINGLEIBIE'},
     {props:'expTargetpri',name:'期望目标价',key: 'LK_QIWANGMUBIAOJIA'},
     {props:'lcAPrice',name:'LC_A',key: 'LC_A'},
