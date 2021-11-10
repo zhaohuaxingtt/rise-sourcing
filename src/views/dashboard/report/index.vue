@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-06 15:21:13
- * @LastEditTime: 2021-10-28 11:02:39
+ * @LastEditTime: 2021-11-10 15:44:46
  * @LastEditors: Hao,Jiang
  * @Description: 状态跟踪详情
  * @FilePath: /front-web/src/views/dashboard/report/index.vue
@@ -107,7 +107,8 @@ export default {
       this.loading = initState
       this.dataLoading = true
       console.log('新请求', this.$refs)
-      const acceptKeys = ['type','currentUser','isDelay']
+      // 获取寻源概览过来的预置参数
+      const acceptKeys = require('@/config/dashboard').acceptKeys || []
       const searchParams = this.$refs.search.form || {}
       const params = Object.assign(searchParams, {
         current: this.current,

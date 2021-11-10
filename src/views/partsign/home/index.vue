@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-11-01 16:29:33
+ * @LastEditTime: 2021-11-10 16:00:08
  * @LastEditors: Hao,Jiang
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
@@ -432,7 +432,12 @@ export default {
         ...this.page,
       }
       // 用户寻源概览的参数
-      this.$route.query.currentUser && (params.currentUser = true)
+      // 获取寻源概览过来的预置参数
+      const acceptKeys = require('@/config/dashboard').acceptKeys || []
+      Object.keys(this.$route.query).forEach(key => {
+        const keyValue = this.$route.query[key]
+        acceptKeys.includes(key) && (this.$set(params, key, keyValue))
+      })
       getTabelData(params)
         .then((res) => {
           this.tableLoading = false;

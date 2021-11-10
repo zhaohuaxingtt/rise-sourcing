@@ -3,7 +3,7 @@
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
           <!-- 创建MTZ申请 -->
-          <iButton @click="handlecreatemtz" :disabled="getSelectedMtzFlag">
+          <iButton @click="handlecreatemtz" :disabled=" isMtzDisabled || getSelectedMtzFlag ">
             {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
            </iButton>
           <span v-if="!nominationDisabled && !rsDisabled" class="margin-left10">
@@ -229,7 +229,8 @@ export default {
         })
         .then(res => {
           this.nomiData =res.data;
-          this.isMtzDisabled = this.nomiData.mtzApplyId || this.nomiData.isFreeze ===1
+           this.nomiData.mtzApplyId ='1'
+          this.isMtzDisabled = this.nomiData.mtzApplyId != null || this.nomiData.isFreeze ===1
         })
       } 
     },
@@ -477,10 +478,12 @@ export default {
       }else {
         let nom = this.selectData[0].nominateId || ''
         let item =[]
+        let supplierId = []
         // let processType = this.$route.query.designateType
         // let MTZappId= this.$route.query.desinateId || ''
         item = this.selectData.map(val => val.partNum).join(',') || ''
-        window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=`+nom+`&item=`+item,'_blank')
+        supplierId = this.selectData.map(val => val.supplierId).join(',') || ''
+        window.open(` http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=`+nom+`&item=`+item+`&supplierId=`+supplierId)
       }
     },
   

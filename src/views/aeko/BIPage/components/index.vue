@@ -51,7 +51,7 @@ import { roleMixins } from "@/utils/roleMixins";
 					workspaceId: '876776a9-f959-442e-a011-b4bade0dd862', 
 					reportId: '25724165-8d58-4452-a6e3-363facc62d2b',
           datasets:['734b852b-4b5e-4392-b715-3a698a5a7209'],
-          username: 1 || this.userInfo.id,
+          username: 1 || this.userInfo.id,	// 目前报表那边还没有和用户中心关联user_id,只提供1,3,6,19只给userId
           roles:['role']||this.roleList,
 				}
 				statement(params).then(res => {
