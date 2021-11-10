@@ -322,7 +322,7 @@ export default {
           isNaN(Number(item.moldFee)) ||
           isNaN(Number(item.developFee))
           ? sum
-          : Big(this.calculationDetails(item, index)).add(sum).toNumber();
+          : Big(this.calculationDetails(item, index)).add(sum).add(Number(item.moldFee)).add(Number(item.developFee)).toNumber();
       }, 0);
     },
 

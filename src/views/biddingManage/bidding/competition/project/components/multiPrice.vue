@@ -510,46 +510,46 @@ export default {
     },
   },
   watch: {
-    // 手工英式，RFQ为空，起始总价有值自动带年产量的日期
-    "ruleForm.beginMonth"(val) {
-      const { roundType, manualBiddingType, rfqCode } = this.ruleForm;
-      let date = new Date(val);
-      let planBaseDataOfDate = {
-        title: "",
-        stage1: val,
-        stage2: date ? date.getFullYear() + 1 + "-01" : "",
-        stage3: date ? date.getFullYear() + 2 + "-01" : "",
-        stage4: date ? date.getFullYear() + 3 + "-01" : "",
-        stage5: date ? date.getFullYear() + 4 + "-01" : "",
-        stage6: date ? date.getFullYear() + 5 + "-01" : "",
-        stage7: date ? date.getFullYear() + 6 + "-01" : "",
-        stage8: date ? date.getFullYear() + 7 + "-01" : "",
-        stage9: date ? date.getFullYear() + 8 + "-01" : "",
-        stage10: date ? date.getFullYear() + 9 + "-01" : "",
-        stage11: date ? date.getFullYear() + 10 + "-01" : "",
-        stage12: date ? date.getFullYear() + 11 + "-01" : "",
-        stage13: date ? date.getFullYear() + 12 + "-01" : "",
-        stage14: date ? date.getFullYear() + 13 + "-01" : "",
-        stage15: date ? date.getFullYear() + 14 + "-01" : "",
-      };
-      if (
-        roundType === "05" &&
-        manualBiddingType === "01" &&
-        rfqCode === null
-      ) {
-        if (val) {
-          this.ruleForm.biddingProducts.forEach((item) => {
-            for (let i = 0; i < this.annualOutput.length; i++) {
-              if (i % 2 === 1) {
-                this.annualOutput.splice(i, 1, {
-                  ...planBaseDataOfDate,
-                });
-              }
-            }
-          });
-        }
-      }
-    },
+    // // 手工英式，RFQ为空，起始总价有值自动带年产量的日期
+    // "ruleForm.beginMonth"(val) {
+    //   const { roundType, manualBiddingType, rfqCode } = this.ruleForm;
+    //   let date = new Date(val);
+    //   if (
+    //     roundType === "05" &&
+    //     manualBiddingType === "01" &&
+    //     rfqCode === null
+    //   ) {
+    //     if (val) {
+    //       this.ruleForm.biddingProducts.forEach((item) => {
+    //         let planBaseDataOfDate = {
+    //         title: item.fsnrGsnr || '',
+    //         stage1: val,
+    //         stage2: date ? date.getFullYear() + 1 + "-01" : "",
+    //         stage3: date ? date.getFullYear() + 2 + "-01" : "",
+    //         stage4: date ? date.getFullYear() + 3 + "-01" : "",
+    //         stage5: date ? date.getFullYear() + 4 + "-01" : "",
+    //         stage6: date ? date.getFullYear() + 5 + "-01" : "",
+    //         stage7: date ? date.getFullYear() + 6 + "-01" : "",
+    //         stage8: date ? date.getFullYear() + 7 + "-01" : "",
+    //         stage9: date ? date.getFullYear() + 8 + "-01" : "",
+    //         stage10: date ? date.getFullYear() + 9 + "-01" : "",
+    //         stage11: date ? date.getFullYear() + 10 + "-01" : "",
+    //         stage12: date ? date.getFullYear() + 11 + "-01" : "",
+    //         stage13: date ? date.getFullYear() + 12 + "-01" : "",
+    //         stage14: date ? date.getFullYear() + 13 + "-01" : "",
+    //         stage15: date ? date.getFullYear() + 14 + "-01" : "",
+    //       };
+    //         for (let i = 0; i < this.annualOutput.length; i++) {
+    //           if (i % 2 === 1) {
+    //             this.annualOutput.splice(i, 1, {
+    //               ...planBaseDataOfDate,
+    //             });
+    //           }
+    //         }
+    //       });
+    //     }
+    //   }
+    // },
     //监听产品  计算B价 ==出厂价+包装费+运输费+操作费
     biddingProducts: {
       handler(val, oldVal) {
@@ -586,8 +586,8 @@ export default {
     //更改起始年月联动年产量年月
     handleChangeBeginMonth(val){
       let dateYear = new Date(val).getFullYear();
-      this.annualOutput.filter((item,index)=>{
-        if(index % 2 ===1 && dayjs(val).isAfter(dayjs(item.stage1))){
+      this.annualOutput.forEach((item,index)=>{
+        if((index % 2 ===1 && dayjs(val).isAfter(dayjs(item.stage1))) || (index % 2 ===1 && !item.stage1)){
           for (let i = 1; i < 16; i++) {
             if(i===1){
               item[`stage${i}`]=val;
@@ -620,7 +620,7 @@ export default {
           isNaN(Number(item.moldFee)) ||
           isNaN(Number(item.developFee))
           ? sum
-          : Big(this.calculationDetails(item, index)).add(sum).toNumber();
+          : Big(this.calculationDetails(item, index)).add(sum).add(Number(item.moldFee)).add(Number(item.developFee)).toNumber();
       }, 0);
       this.orgTotalPrices=Big(sum).toFixed(2);
     },
@@ -1119,27 +1119,6 @@ export default {
           ...planBaseData
         }
       )
-    },
-    handleAddYearPlan() {
-      let obj = {
-        title: this.language('BIDDING_ZHEXIANLV',"折现率"),
-        stage1: 1,
-        stage2: 0.9,
-        stage3: 0.81,
-        stage4: 0.73,
-        stage5: 0.66,
-        stage6: 0.59,
-        stage7: 0.53,
-        stage8: 0.48,
-        stage9: 0.43,
-        stage10: 0.39,
-        stage11: 0.35,
-        stage12: 0.31,
-        stage13: 0.28,
-        stage14: 0.25,
-        stage15: 0.23,
-      };
-      this.yearsPlanTable.splice(1, 0, obj);
     },
     async query(e) {
       // 根据ID查询条款信息

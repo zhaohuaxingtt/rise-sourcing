@@ -9,7 +9,7 @@ import language from "@/utils/language";
 export const unitTableTitle = [
   {
     props: "FSNR",
-    name: language('BIDDING_FSNR/GSNR',"FSNR/GSNR"),
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
   },
   {
     props: "productName",
@@ -86,7 +86,7 @@ export const unitTableTitle = [
 export const totalTableTitle = [
   {
     props: "FSNR",
-    name: language('BIDDING_FSNR/GSNR',"FSNR/GSNR"),
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
   },
   {
     props: "productName",
@@ -188,7 +188,7 @@ export const currencyMultipleLib = {
 export const multiPleTableTitle = [
   {
     props: "fsnrGsnr",
-    name: language('BIDDING_FSNR/GSNR',"FSNR/GSNR"),
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
   },
   {
     props: "productName",
@@ -223,7 +223,9 @@ export const multiPleTableTitle = [
   },
   {
     props: "packingFee",
+    required: true,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         pattern: /^\d+$|^\d*\.\d*$/g,
         trigger: 'blur'
@@ -233,7 +235,9 @@ export const multiPleTableTitle = [
   },
   {
     props: "transportFee",
+    required: true,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         pattern: /^\d+$|^\d*\.\d*$/g,
         trigger: 'blur'
@@ -243,7 +247,9 @@ export const multiPleTableTitle = [
   },
   {
     props: "operationFee",
+    required: true,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         pattern: /^\d+$|^\d*\.\d*$/g,
         trigger: 'blur'
@@ -267,12 +273,10 @@ export const multiPleTableTitle = [
   },
   {
     props: "developFee",
-    required: true,
     rule: [
-      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         pattern: /^\d+$|^\d*\.\d*$/g,
-        required: true,
+        // required: true,
         trigger: 'blur'
       }
     ],
@@ -281,7 +285,6 @@ export const multiPleTableTitle = [
   {
     props: "targetPrice",
     rule: [
-      // { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         pattern: /^\d+$|^\d*\.\d*$/g,
         // required: true,
@@ -292,9 +295,7 @@ export const multiPleTableTitle = [
   },
   {
     props: "quantityUnit",
-    required: true,
     rule: [
-      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "change" },
     ],
     name: language('BIDDING_SHULIANGDANWEI',"数量单位"),
   },
