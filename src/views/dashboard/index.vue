@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-11-01 17:28:45
+ * @LastEditTime: 2021-11-10 15:17:53
  * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -20,7 +20,7 @@
               <span>{{language('LK_LINGJIANQIANSHOU','零件签收')}}</span>
             </div>
             <div class="dashboard-card-content">
-              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong class="cursor" @click="toLink('/sourceinquirypoint/sourcing/partsign?currentUser=true')">{{basicData.partSigningNum || 0}}</strong></dd></dl>
+              <dl><dt>{{language('LK_DAIQIANSHOU','待签收')}}</dt><dd><strong class="cursor" @click="toLink('/sourceinquirypoint/sourcing/partsign?currentUser=true&showSelf=true')">{{basicData.partSigningNum || 0}}</strong></dd></dl>
             </div>
           </iCard>
         </el-col>
@@ -202,13 +202,13 @@ export default {
     unCrePartsprocureURL(isDelay=false) {
       const data = (this.options['RFQ_PART_STATUS_CODE_TYPE'] || []).find(o => o.name === '无采购项目编号')
       const code = data && data.code || 'NO_NR'
-      return `/sourceinquirypoint/sourcing/partsprocure?status=${code}&currentUser=true&isDelay=${isDelay}`
+      return `/sourceinquirypoint/sourcing/partsprocure?showSelf=true&status=${code}&currentUser=true&isDelay=${isDelay}`
     },
     // 未加入RFQ
     unJoinRFQURL(isDelay=false) {
       const data = (this.options['RFQ_PART_STATUS_CODE_TYPE'] || []).find(o => o.name === '未加入RFQ')
       const code = data && data.code || 'NOT_IN_RFQ'
-      return `/sourceinquirypoint/sourcing/partsprocure?status=${code}&currentUser=true&isDelay=${isDelay}`
+      return `/sourceinquirypoint/sourcing/partsprocure?showSelf=true&status=${code}&currentUser=true&isDelay=${isDelay}`
     },
     // rfq链接
     /**
@@ -222,7 +222,7 @@ export default {
       const data = (this.options['RFQ_OVERVIEW_TYPE'] || []).find(o => o.name === name)
       const code = data && data.code || ''
       const URL = isRfq ? '/sourceinquirypoint/sourcing/partsrfq':'/sourceinquirypoint/sourcing/reportmgmt/details'
-      return `${URL}?type=${code}&currentUser=true&isDelay=${isDelay}`
+      return `${URL}?showSelf=true&type=${code}&currentUser=true&isDelay=${isDelay}`
     },
     // 前期采购员待确认定点信链接
     // type:1 定点信 2：LOI
@@ -246,8 +246,8 @@ export default {
       //   2 : `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&loiStatus=${status}&currentUser=true&isDelay=false`
       // }
       const types = {
-        1 : `/sourceinquirypoint/sourcing/partsletter?currentUser=true&isDelay=false`,
-        2 : `/sourceinquirypoint/sourcing/partsletter?cardType=LOI&currentUser=true&isDelay=false`
+        1 : `/sourceinquirypoint/sourcing/partsletter?showSelf=true&currentUser=true&isDelay=false`,
+        2 : `/sourceinquirypoint/sourcing/partsletter?showSelf=true&cardType=LOI&currentUser=true&isDelay=false`
       }
       return types[type]
     },
@@ -257,7 +257,7 @@ export default {
       const applicationStatus = nomiApplicationStatus.find(o => o.name === '流转中')
       const applicationStatusCode = applicationStatus && applicationStatus.id || ''
       const nominateParams = type === '流转' ? `nominateProcessType=${code}&applicationStatus=${applicationStatusCode}&` : ''
-      return `/sourcing/partsnomination?${nominateParams}currentUser=true&isDelay=true`
+      return `/sourcing/partsnomination?showSelf=true&${nominateParams}currentUser=true&isDelay=true`
     },
     // 获取下拉值
     getSearchOptions() {
