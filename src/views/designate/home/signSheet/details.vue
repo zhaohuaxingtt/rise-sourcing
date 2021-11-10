@@ -1,45 +1,13 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-11-10 01:50:13
+ * @LastEditTime: 2021-11-10 19:49:18
  * @LastEditors:  
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
 <template>
-  <div
-         v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
-    <!-- <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">
-        {{ mode === 'add' ? language("XINJIANQIANZIDAN",'新建签字单') : language("LK_QIANZIDAN",'签字单') }}</span>
-
-      <div class="floatright">
-        <span v-if="mode === 'add'">
-          <iButton @click="handleSave"
-                   v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
-            {{ language("BAOCUN",'保存') }}
-          </iButton>
-          <iButton @click="handleSubmit"
-                   v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
-            {{ language("LK_TIJIAO",'提交') }}
-          </iButton>
-          <iButton @click="handleRemove"
-                   v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
-            {{ language("YICHU",'移除') }}
-          </iButton>
-          <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
-            {{ language("FANHUI",'返回') }}
-          </iButton>
-        </span>
-        <span v-else>
-          <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
-            {{ language("LK_FANHUI",'返回') }}
-          </iButton>
-        </span>
-
-      </div>
-      <headerNav /> -->
-    <!-- </div> -->
+  <div  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
     <iCard>
 
       <el-form class="signsheet-filter"
@@ -330,7 +298,7 @@ export default {
         iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
         return
       }
-      const confirmInfo = await this.$confirm(this.language('submitSure', '您确定要执行提交操作吗？'))
+      const confirmInfo = await this.$confirm(this.language('QINGQUEDINGTIJIAOZHIQIANYIJINGBAOCUNSHUJU', '请确定提交之前已经保存数据？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.tableListData.map(o => Number(o.id))
       try {
@@ -349,6 +317,10 @@ export default {
     },
     // 移除项目
     async handleRemove () {
+      if (!this.selectTableData.length) {
+        iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
+        return
+      }
       const confirmInfo = await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))

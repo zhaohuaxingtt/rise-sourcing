@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-08 14:11:06
- * @LastEditTime: 2021-11-10 11:06:18
+ * @LastEditTime: 2021-11-10 18:38:14
  * @LastEditors:  
 -->
 <template>
@@ -36,9 +36,7 @@ export default {
         .then(res => {
           this.nomiData =res.data
           let mtzAppId = this.nomiData.mtzApplyId||''
-          console.log(  mtzAppId,'---------');
-          this.mtzDetail = `http://10.122.17.38/portal/#/mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/decisionMaterial?currentStep=3&mtzAppId=${mtzAppId}`
-          console.log(this.mtzDetail,'this.mtzDetail');
+          this.mtzDetail = `${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/signPreview?mtzAppId=${mtzAppId}`
         })
       } 
     },
