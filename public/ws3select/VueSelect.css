@@ -1,0 +1,909 @@
+.vue-select {
+  position: relative;
+}
+.vue-select * {
+  box-sizing: border-box;
+}
+
+.vue-select:hover .vue-input__inner {
+  /* border: 0.0625rem solid #E0E6ED; */
+}
+.vue-select .vue-input__inner {
+  cursor: pointer;
+  border: transparent;
+  box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
+}
+.vue-select .vue-input__inner:focus {
+  border-color: #409eff;
+}
+.vue-select .vue-input .vue-input__icon.is-show-check,
+.vue-select .vue-input .vue-input__icon.is-show-close {
+  cursor: pointer;
+}
+.vue-select .vue-input .vue-input__icon.is-show-check {
+  transform: rotate3d(0, 0, 0, 0);
+}
+.vue-select .vue-input .vue-input__icon.is-reverse,
+.vue-select__tags {
+  transform: rotate3d(0, 0, 0, 0);
+}
+.vue-select .vue-input .vue-input__icon.is-show-close:hover {
+  color: #97a8be;
+}
+.vue-select .vue-input.is-disabled .vue-input__inner {
+  cursor: not-allowed;
+}
+.vue-select .vue-input.is-disabled .vue-input__inner:hover {
+  border-color: #d1dbe5;
+}
+.vue-select > .vue-input {
+  display: block;
+}
+.vue-select__input {
+  border: none;
+  outline: 0;
+  padding: 0;
+  margin-left: 10px;
+  color: #666;
+  font-size: inherit;
+  vertical-align: baseline;
+  height: 22px;
+  background-color: transparent;
+}
+.vue-select__input.is-mini {
+  height: 14px;
+}
+.vue-select__close {
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  z-index: 1000;
+  right: 25px;
+  color: #bfcbd9;
+  line-height: 18px;
+  font-size: inherit;
+}
+.vue-select__close:hover {
+  color: #97a8be;
+}
+.vue-select__tags {
+  position: absolute;
+  height: 100%;
+  line-height: 36px;
+  white-space: normal;
+  z-index: 1000;
+}
+.vue-select__tags span {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+}
+.vue-select__tags.no-reset-height {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.vue-select__tag {
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  font-size: inherit;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #409eff;
+}
+.vue-select__tag .vue-icon-close {
+  font-size: inherit;
+}
+.vue-select-dropdown {
+  position: absolute;
+  z-index: 1001;
+  border: 1px solid #d1dbe5;
+  border-radius: 2px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+  margin: 1px 0;
+}
+.vue-select-dropdown .vue-scrollbar.is-empty .vue-select-dropdown__list {
+  padding: 0;
+}
+.vue-select-dropdown.is-multiple .vue-select-dropdown__item.selected {
+  color: #409eff;
+  background-color: #fff;
+}
+.vue-select-dropdown.is-multiple .vue-select-dropdown__item.selected.hover,
+.vue-select-dropdown.is-multiple .vue-select-dropdown__item.selected:hover,
+.vue-select-dropdown__item.hover,
+.vue-select-dropdown__item:hover {
+  background-color: #e4e8f1;
+}
+.vue-select-dropdown.is-multiple .vue-select-dropdown__item.selected::after {
+  position: absolute;
+  right: 10px;
+  font-family: element-icons;
+  content: '\e6da';
+  font-size: inherit;
+}
+.vue-select-dropdown__empty {
+  padding: 10px 0;
+  margin: 0;
+  text-align: center;
+  color: #999;
+  font-size: inherit;
+}
+.vue-select-dropdown__list {
+  max-height: 198px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+}
+.vue-select-dropdown__item {
+  font-size: inherit;
+  padding: 8px 10px;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #48576a;
+  height: 36px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.vue-select-dropdown__item.selected {
+  color: #fff;
+  background-color: #409eff;
+}
+.vue-select-dropdown__item.selected.hover,
+.vue-select-dropdown__item.selected:hover {
+  background-color: #1c8de0;
+}
+.vue-select-dropdown__item span {
+  line-height: 1.5 !important;
+}
+.vue-select-dropdown__item.is-disabled {
+  color: #bfcbd9;
+  cursor: not-allowed;
+}
+.vue-select-dropdown__item.is-disabled:hover {
+  background-color: #fff;
+}
+
+.vue-select-tooltip-content .vue-tag {
+  margin: 6px 6px 6px 0px;
+}
+
+.vue-select-tooltip-content .vue-tag:last-child {
+  margin-right: 0px;
+}
+
+.vue-select .vue-tag {
+  margin-left: 6px;
+  align-items: center;
+}
+
+.vue-select-tooltip-content .vue-tag {
+  margin: 6px 6px 6px 0px;
+}
+
+.vue-select-tooltip-content .vue-tag:last-child {
+  margin-right: 0px;
+}
+.vue-tag {
+  background-color: #e4e8f1;
+  padding: 0 5px;
+  height: 22px;
+  line-height: 20px;
+  font-size: inherit;
+  color: #48576a;
+  border-radius: 4px;
+  border: 1px solid #e4e8f1;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-flex;
+}
+.vue-tag span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.vue-tag .vue-icon-close {
+  border-radius: 50%;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  font-size: inherit;
+  transform: translate3d(0, -50%, 0) scale3d(0.75, 0.75, 0.75);
+  height: 18px;
+  width: 18px;
+  line-height: 18px;
+  top: 50%;
+  right: -2px;
+}
+.vue-tag .vue-icon-close:hover {
+  background-color: #48576a;
+  color: #fff;
+}
+.vue-tag.is-hit {
+  border-color: #48576a;
+}
+.vue-tag--info {
+  background-color: #d1f0f4;
+  border-color: #d1f0f4;
+  color: #6fb3e0;
+}
+.vue-tag--info .vue-tag__close:hover {
+  background-color: #6fb3e0;
+  color: #fff;
+}
+.vue-tag--info.is-hit {
+  border-color: #6fb3e0;
+}
+.vue-tag--success {
+  background-color: #e1f3d8;
+  border-color: #e1f3d8;
+  color: #67c23a;
+}
+.vue-tag--success .vue-tag__close:hover {
+  background-color: #67c23a;
+  color: #fff;
+}
+.vue-tag--success.is-hit {
+  border-color: #67c23a;
+}
+.vue-tag--warning {
+  background-color: #fbeccd;
+  border-color: #fbeccd;
+  color: #eb9e05;
+}
+.vue-tag--warning .vue-tag__close:hover {
+  background-color: #eb9e05;
+  color: #fff;
+}
+.vue-tag--warning.is-hit {
+  border-color: #eb9e05;
+}
+.vue-tag--danger {
+  background-color: #fbdddd;
+  border-color: #fbdddd;
+  color: #fb5555;
+}
+.vue-tag--danger .vue-tag__close:hover {
+  background-color: #fb5555;
+  color: #fff;
+}
+.vue-tag--danger.is-hit {
+  border-color: #fb5555;
+}
+
+.vue-input__inner,
+.vue-textarea__inner {
+  background-image: none;
+}
+.vue-input {
+  position: relative;
+  font-size: inherit;
+  width: 100%;
+  display: inline-block;
+}
+.vue-input-group__append .vue-button,
+.vue-input-group__append .vue-input,
+.vue-input-group__prepend .vue-button,
+.vue-input-group__prepend .vue-input,
+.vue-input__inner {
+  font-size: inherit;
+}
+.vue-input.is-disabled .vue-input__inner {
+  background-color: #eef1f6;
+  border-color: #d1dbe5;
+  color: #bbb;
+  cursor: not-allowed;
+}
+.vue-input.is-disabled .vue-input__inner::placeholder {
+  /* color: #bfcbd9; */
+  color: #aaaaaa;
+}
+.vue-input.is-disabled .vue-input__inner:-ms-input-placeholder {
+  /* color: #bfcbd9; */
+  color: #aaaaaa;
+}
+.vue-input.is-active .vue-input__inner {
+  outline: 0;
+  border-color: #409eff;
+}
+.vue-input__inner {
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #bfcbd9;
+  color: #1f2d3d;
+  display: inline-block;
+  height: 35px;
+  line-height: 1;
+  outline: 0;
+  padding: 3px 10px;
+  width: 100%;
+}
+.vue-input__inner::placeholder {
+  /* color: #97a8be; */
+  color: #aaaaaa;
+}
+.vue-input__inner:-ms-input-placeholder {
+  /* color: #97a8be; */
+  color: #aaaaaa;
+}
+.vue-input__inner:hover {
+  border-color: #8391a5;
+}
+.vue-input__inner:focus {
+  outline: 0;
+  border-color: #409eff;
+}
+.vue-input__icon {
+  position: absolute;
+  width: 36px;
+  height: 100%;
+  right: 0;
+  top: 0;
+  text-align: center;
+  color: #bfcbd9;
+  line-height: 35px !important;
+  font-size: inherit;
+}
+.vue-input--large .vue-input__icon {
+  line-height: 42px;
+}
+.vue-input--small .vue-input__icon {
+  line-height: 30px;
+}
+.vue-input--mini .vue-input__icon {
+  line-height: 22px;
+}
+.vue-input__icon + .vue-input__inner {
+  padding-right: 35px;
+}
+.vue-input__icon.is-clickable:hover {
+  cursor: pointer;
+  color: #8391a5;
+}
+.vue-input__icon.is-clickable:hover + .vue-input__inner {
+  border-color: #8391a5;
+}
+.vue-input--large {
+  font-size: inherit;
+}
+.vue-input--large .vue-input__inner {
+  height: 42px;
+}
+.vue-input--small {
+  font-size: inherit;
+}
+.vue-input--small .vue-input__inner {
+  height: 30px;
+}
+.vue-input--mini {
+  font-size: inherit;
+}
+.vue-input--mini .vue-input__inner {
+  height: 22px;
+}
+.vue-input-group {
+  line-height: normal;
+  display: inline-table;
+  width: 100%;
+  border-collapse: separate;
+}
+.vue-input-group > .vue-input__inner {
+  vertical-align: middle;
+  display: table-cell;
+}
+.vue-input-group__append,
+.vue-input-group__prepend {
+  background-color: #fbfdff;
+  color: #97a8be;
+  vertical-align: middle;
+  display: table-cell;
+  position: relative;
+  border: 1px solid #bfcbd9;
+  border-radius: 4px;
+  padding: 0 10px;
+  width: 1%;
+  white-space: nowrap;
+}
+.vue-input-group--prepend .vue-input__inner,
+.vue-input-group__append {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.vue-input-group--append .vue-input__inner,
+.vue-input-group__prepend {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.vue-input-group__append .vue-button,
+.vue-input-group__append .vue-select,
+.vue-input-group__prepend .vue-button,
+.vue-input-group__prepend .vue-select {
+  display: block;
+  margin: -10px;
+}
+.vue-input-group__append .vue-button,
+.vue-input-group__append .vue-select .vue-input__inner,
+.vue-input-group__append .vue-select:hover .vue-input__inner,
+.vue-input-group__prepend .vue-button,
+.vue-input-group__prepend .vue-select .vue-input__inner,
+.vue-input-group__prepend .vue-select:hover .vue-input__inner {
+  border-color: transparent;
+  background-color: transparent;
+  color: inherit;
+  border-top: 0;
+  border-bottom: 0;
+}
+.vue-input-group__prepend {
+  border-right: 0;
+}
+.vue-input-group__append {
+  border-left: 0;
+}
+.vue-textarea {
+  display: block;
+  width: 100%;
+  vertical-align: bottom;
+}
+.vue-textarea.is-disabled .vue-textarea__inner {
+  background-color: #eef1f6;
+  border-color: #d1dbe5;
+  color: #bbb;
+  cursor: not-allowed;
+}
+.vue-textarea.is-disabled .vue-textarea__inner::placeholder {
+  color: #bfcbd9;
+}
+.vue-textarea.is-disabled .vue-textarea__inner:-ms-input-placeholder {
+  color: #bfcbd9;
+}
+.vue-textarea__inner {
+  width: 100%;
+  font-size: inherit;
+  display: block;
+  resize: vertical;
+  padding: 5px 7px;
+  line-height: 1.5;
+  color: #1f2d3d;
+  background-color: #fff;
+  border: 1px solid #bfcbd9;
+  border-radius: 4px;
+}
+.vue-textarea__inner::placeholder {
+  color: #97a8be;
+}
+.vue-textarea__inner:-ms-input-placeholder {
+  color: #97a8be;
+}
+.vue-textarea__inner:hover {
+  border-color: #8391a5;
+}
+.vue-textarea__inner:focus {
+  outline: 0;
+  border-color: #409eff;
+}
+
+.vue-input__prefix {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.vue-input__prefix .vue-input__icon {
+  right: auto;
+}
+
+.vue-input--prefix .vue-input__inner {
+  padding-left: 36px;
+}
+
+.vue-input--prefix--mini .vue-input__inner {
+  padding-left: 30px;
+}
+
+.vue-input--prefix--small .vue-input__inner {
+  padding-left: 32px;
+}
+
+.vue-input--prefix--large .vue-input__inner {
+  padding-left: 45px;
+}
+
+.vue-popover {
+  position: absolute;
+  background: #fff;
+  min-width: 150px;
+  border-radius: 2px;
+  border: 1px solid #d1dbe5;
+  padding: 10px;
+  z-index: 2000;
+  font-size: inherit;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.12), 0 0 6px 0 rgba(0, 0, 0, 0.04);
+}
+.vue-popover .popper__arrow,
+.vue-popover .popper__arrow::after {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+.vue-popover .popper__arrow {
+  border-width: 6px;
+}
+.vue-popover .popper__arrow::after {
+  content: '';
+  border-width: 6px;
+}
+.vue-popover[x-placement^='top'] {
+  margin-bottom: 12px;
+}
+.vue-popover[x-placement^='top'].no-arrow {
+  margin-bottom: 5px;
+}
+.vue-popover[x-placement^='top'] .popper__arrow {
+  bottom: -6px;
+  left: 50%;
+  margin-right: 3px;
+  border-top-color: #d1dbe5;
+  border-bottom-width: 0;
+}
+.vue-popover[x-placement^='top'] .popper__arrow::after {
+  bottom: 1px;
+  margin-left: -6px;
+  border-top-color: #fff;
+  border-bottom-width: 0;
+}
+.vue-popover[x-placement^='bottom'] {
+  margin-top: 12px;
+}
+.vue-popover[x-placement^='bottom'].no-arrow {
+  margin-top: 2px;
+}
+.vue-popover[x-placement^='bottom'] .popper__arrow {
+  top: -6px;
+  left: 50%;
+  margin-right: 3px;
+  border-top-width: 0;
+  border-bottom-color: #d1dbe5;
+}
+.vue-popover[x-placement^='bottom'] .popper__arrow::after {
+  top: 1px;
+  margin-left: -6px;
+  border-top-width: 0;
+  border-bottom-color: #fff;
+}
+.vue-popover[x-placement^='right'] {
+  margin-left: 12px;
+}
+.vue-popover[x-placement^='right'].no-arrow {
+  margin-left: 5px;
+}
+.vue-popover[x-placement^='right'] .popper__arrow {
+  top: 50%;
+  left: -6px;
+  margin-bottom: 3px;
+  border-right-color: #d1dbe5;
+  border-left-width: 0;
+}
+.vue-popover[x-placement^='right'] .popper__arrow::after {
+  bottom: -6px;
+  left: 1px;
+  border-right-color: #fff;
+  border-left-width: 0;
+}
+.vue-popover[x-placement^='left'] {
+  margin-right: 12px;
+}
+.vue-popover[x-placement^='left'].no-arrow {
+  margin-right: 5px;
+}
+.vue-popover[x-placement^='left'] .popper__arrow {
+  top: 50%;
+  right: -6px;
+  margin-bottom: 3px;
+  border-right-width: 0;
+  border-left-color: #d1dbe5;
+}
+.vue-popover[x-placement^='left'] .popper__arrow::after {
+  right: 1px;
+  bottom: -6px;
+  margin-left: -6px;
+  border-right-width: 0;
+  border-left-color: #fff;
+}
+.vue-popover__title {
+  color: #1f2d3d;
+  font-size: 13px;
+  line-height: 1;
+  margin-bottom: 9px;
+}
+
+.vue-divider {
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  display: block;
+  border: 0;
+  background-color: #dfe6ec !important;
+}
+.vue-divider__content {
+  position: relative;
+  top: -10px;
+  left: 50%;
+  background: #fff;
+  padding: 0 10px;
+  transform: translate3d(-50%, 0, 0);
+}
+.vue-button {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #bfcbd9;
+  color: #1f2d3d;
+  text-align: center;
+  outline: 0;
+  margin: 0;
+  padding: 10px 15px;
+  font-size: inherit;
+  border-radius: 4px;
+}
+
+.vue-button:focus,
+.vue-button:hover {
+  color: #409eff;
+  border-color: #409eff;
+}
+.vue-button:active {
+  color: #1876ff;
+  border-color: #1876ff;
+  outline: 0;
+}
+.vue-tooltip__popper {
+  position: absolute;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 2000;
+  font-size: inherit;
+  line-height: 1.2;
+}
+.vue-tooltip__popper .popper__arrow,
+.vue-tooltip__popper .popper__arrow::after {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+.vue-tooltip__popper .popper__arrow {
+  border-width: 6px;
+}
+.vue-tooltip__popper .popper__arrow::after {
+  content: '';
+  border-width: 5px;
+}
+.vue-tooltip__popper[x-placement^='top'] {
+  margin-bottom: 12px;
+}
+.vue-tooltip__popper[x-placement^='top'] .popper__arrow {
+  bottom: -6px;
+  border-top-color: #1f2d3d;
+  border-bottom-width: 0;
+}
+.vue-tooltip__popper[x-placement^='top'] .popper__arrow::after {
+  bottom: 1px;
+  margin-left: -5px;
+  border-top-color: #1f2d3d;
+  border-bottom-width: 0;
+}
+.vue-tooltip__popper[x-placement^='bottom'] {
+  margin-top: 12px;
+}
+.vue-tooltip__popper[x-placement^='bottom'] .popper__arrow {
+  top: -6px;
+  border-top-width: 0;
+  border-bottom-color: #1f2d3d;
+}
+.vue-tooltip__popper[x-placement^='bottom'] .popper__arrow::after {
+  top: 1px;
+  margin-left: -5px;
+  border-top-width: 0;
+  border-bottom-color: #1f2d3d;
+}
+.vue-tooltip__popper[x-placement^='right'] {
+  margin-left: 12px;
+}
+.vue-tooltip__popper[x-placement^='right'] .popper__arrow {
+  left: -6px;
+  border-right-color: #1f2d3d;
+  border-left-width: 0;
+}
+.vue-tooltip__popper[x-placement^='right'] .popper__arrow::after {
+  bottom: -5px;
+  left: 1px;
+  border-right-color: #1f2d3d;
+  border-left-width: 0;
+}
+.vue-tooltip__popper[x-placement^='left'] {
+  margin-right: 12px;
+}
+.vue-tooltip__popper[x-placement^='left'] .popper__arrow {
+  right: -6px;
+  border-right-width: 0;
+  border-left-color: #1f2d3d;
+}
+.vue-tooltip__popper[x-placement^='left'] .popper__arrow::after {
+  right: 1px;
+  bottom: -5px;
+  margin-left: -5px;
+  border-right-width: 0;
+  border-left-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light {
+  background: #fff;
+  border: 1px solid #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='top'] .popper__arrow {
+  border-top-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='top'] .popper__arrow::after {
+  border-top-color: #fff;
+}
+.vue-tooltip__popper.is-light[x-placement^='bottom'] .popper__arrow {
+  border-bottom-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='bottom'] .popper__arrow::after {
+  border-bottom-color: #fff;
+}
+.vue-tooltip__popper.is-light[x-placement^='left'] .popper__arrow {
+  border-left-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='left'] .popper__arrow::after {
+  border-left-color: #fff;
+}
+.vue-tooltip__popper.is-light[x-placement^='right'] .popper__arrow {
+  border-right-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='right'] .popper__arrow::after {
+  border-right-color: #fff;
+}
+.vue-tooltip__popper.is-dark {
+  background: #1f2d3d;
+  color: #fff;
+}
+
+.vue-tooltip__popper {
+  position: absolute;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 2000;
+  font-size: inherit;
+  line-height: 1.2;
+}
+.vue-tooltip__popper .popper__arrow,
+.vue-tooltip__popper .popper__arrow::after {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+}
+.vue-tooltip__popper .popper__arrow {
+  border-width: 6px;
+}
+.vue-tooltip__popper .popper__arrow::after {
+  content: '';
+  border-width: 5px;
+}
+.vue-tooltip__popper[x-placement^='top'] {
+  margin-bottom: 12px;
+}
+.vue-tooltip__popper[x-placement^='top'] .popper__arrow {
+  bottom: -6px;
+  border-top-color: #1f2d3d;
+  border-bottom-width: 0;
+}
+.vue-tooltip__popper[x-placement^='top'] .popper__arrow::after {
+  bottom: 1px;
+  margin-left: -5px;
+  border-top-color: #1f2d3d;
+  border-bottom-width: 0;
+}
+.vue-tooltip__popper[x-placement^='bottom'] {
+  margin-top: 12px;
+}
+.vue-tooltip__popper[x-placement^='bottom'] .popper__arrow {
+  top: -6px;
+  border-top-width: 0;
+  border-bottom-color: #1f2d3d;
+}
+.vue-tooltip__popper[x-placement^='bottom'] .popper__arrow::after {
+  top: 1px;
+  margin-left: -5px;
+  border-top-width: 0;
+  border-bottom-color: #1f2d3d;
+}
+.vue-tooltip__popper[x-placement^='right'] {
+  margin-left: 12px;
+}
+.vue-tooltip__popper[x-placement^='right'] .popper__arrow {
+  left: -6px;
+  border-right-color: #1f2d3d;
+  border-left-width: 0;
+}
+.vue-tooltip__popper[x-placement^='right'] .popper__arrow::after {
+  bottom: -5px;
+  left: 1px;
+  border-right-color: #1f2d3d;
+  border-left-width: 0;
+}
+.vue-tooltip__popper[x-placement^='left'] {
+  margin-right: 12px;
+}
+.vue-tooltip__popper[x-placement^='left'] .popper__arrow {
+  right: -6px;
+  border-right-width: 0;
+  border-left-color: #1f2d3d;
+}
+.vue-tooltip__popper[x-placement^='left'] .popper__arrow::after {
+  right: 1px;
+  bottom: -5px;
+  margin-left: -5px;
+  border-right-width: 0;
+  border-left-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light {
+  background: #fff;
+  border: 1px solid #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='top'] .popper__arrow {
+  border-top-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='top'] .popper__arrow::after {
+  border-top-color: #fff;
+}
+.vue-tooltip__popper.is-light[x-placement^='bottom'] .popper__arrow {
+  border-bottom-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='bottom'] .popper__arrow::after {
+  border-bottom-color: #fff;
+}
+.vue-tooltip__popper.is-light[x-placement^='left'] .popper__arrow {
+  border-left-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='left'] .popper__arrow::after {
+  border-left-color: #fff;
+}
+.vue-tooltip__popper.is-light[x-placement^='right'] .popper__arrow {
+  border-right-color: #1f2d3d;
+}
+.vue-tooltip__popper.is-light[x-placement^='right'] .popper__arrow::after {
+  border-right-color: #fff;
+}
+.vue-tooltip__popper.is-dark {
+  background: #1f2d3d;
+  color: #fff;
+}
+/* .vue-select-dropdown__item:hover {
+  background-color: #e4e8f1;
+  overflow: none;
+  position: absolute;
+  z-index: 9999;
+} */
+/* @keyframes siderbar {
+  0% {
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-45px);
+    -webkit-transform: translateX(-45px);
+  }
+} */

@@ -43,6 +43,7 @@
                         :placeholder="item.filterable ? language('LK_QINGSHURU','请输入') : language('partsprocure.CHOOSE','请选择')"  
                         @change="handleMultipleChange($event, item.props,item.multiple)"
                         :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
+                        @visible-change="selectVisibleChange($event, item.props)"
                     >
                         <el-option  v-if="!item.noShowAll" value="" :label="language('all','全部')"></el-option>
                         <el-option
@@ -761,6 +762,9 @@ export default {
         // 去除前后空格
         const trimVal = val.trim();
         const { selectOptionsCopy={}} = this;
+        if(props == 'buyerName'){
+          this.searchParams.buyerName = val;
+        }
         if(trimVal){
             // 人名要特殊处理 --- 可搜索英文去除大小写
           if(props == 'buyerName'){
@@ -787,6 +791,12 @@ export default {
       addParts(){
         this.addPartskVisible = true;
       },
+
+      selectVisibleChange(visible, key){
+          if(!visible){
+              this.selectOptions[key] = this.selectOptionsCopy[key];
+          }
+      }
     }
 }
 </script>
