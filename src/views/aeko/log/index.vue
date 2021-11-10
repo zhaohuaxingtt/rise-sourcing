@@ -168,7 +168,7 @@ export default {
     },
     getOptions() {
       const http = new XMLHttpRequest()
-      const url = `/baseInfo/web/selectDictByKeys?keys=LOG_TYPE`
+      const url = `/baseinfo/web/selectDictByKeys?keys=LOG_TYPE`
       http.open('GET', url, true)
       http.setRequestHeader('content-type', 'application/json')
       http.onreadystatechange = () => {

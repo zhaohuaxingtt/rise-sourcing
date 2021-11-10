@@ -128,6 +128,8 @@
 		</iFormGroup>
 		<tablelist :tableData='targeRwData' :tableTitle='rwTitle' :loading='tableLoading'
 			@handleSelectionChange='handleSelectionChange'></tablelist> -->
+		<div class="line"></div>
+		<toolingTargetPrice :params="params" />
 	</iCard>
 </template>
 
@@ -143,14 +145,16 @@
 		iPagination
 	} from 'rise';
 	import tablelist from "./components/tablelist";
+	
 	import {
 		rwTitle,
 		targeTitle,
-		targetPriceDetail
+		targetPriceDetail,
+		moduleTargePriceTableTitle
 	} from './components/data';
 	import {
 		getTabelData,
-		changeProcure,
+		changeProcure,		
 		getTargetPrice
 	} from '@/api/partsprocure/home'
 import { iMessageBox } from '../../../../../components';
@@ -158,6 +162,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import { applyCFTarget, getCfTargetApplyHistory, getTargetPriceDd, savePriceDetail } from '@/api/financialTargetPrice/index'
 import {partProjTypes} from '@/config'
 import { cloneDeep } from 'lodash'
+import toolingTargetPrice from "./components/toolingTargetPrice"
 	export default {
 		components: {
 			iCard,
@@ -167,7 +172,8 @@ import { cloneDeep } from 'lodash'
 			iButton,
 			iInput,
 			tablelist,
-			iPagination
+			iPagination,
+			toolingTargetPrice
 		},
 		mixins: [ pageMixins ],
 		inject: ['getDisabled'],
@@ -176,7 +182,11 @@ import { cloneDeep } from 'lodash'
 				type: String
 			},
 			fsnrGsnrNum: {type: String},
-			partProjectType: {type:String}
+			partProjectType: {type:String},
+			params: {
+				type: Object,
+				default: () => ({})
+			}
 		},
 		watch: {
 			partProjectType: {
@@ -213,7 +223,7 @@ import { cloneDeep } from 'lodash'
 				targetprice:targetPriceDetail,
 				cfTableData:[],//cf表格数据
 				rwTableData:[],//RW表格数据
-				applyLoading: false
+				applyLoading: false,
 			}
 		},
 		created() {
@@ -344,7 +354,7 @@ import { cloneDeep } from 'lodash'
 				}).finally(() => {
 					this.applyLoading = false
 				})
-			}
+			},
 		}
 	}
 </script>

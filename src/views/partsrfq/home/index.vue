@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-11-01 17:09:02
+ * @LastEditTime: 2021-11-10 15:41:49
  * @LastEditors: Hao,Jiang
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
@@ -384,8 +384,8 @@ export default {
     //获取表格数据
     async getTableList() {
       this.tableLoading = true;
-      // 获取预置的参数
-      const acceptKeys = ['type','currentUser','isDelay']
+      // 获取寻源概览过来的预置参数
+      const acceptKeys = require('@/config/dashboard').acceptKeys || []
       Object.keys(this.$route.query).forEach(key => {
           const keyValue = this.$route.query[key]
           acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, key === 'type' ? Number(keyValue) : keyValue))

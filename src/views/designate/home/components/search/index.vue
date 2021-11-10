@@ -239,7 +239,8 @@ export default {
     this.form = { 
       showMe:true, // 默认显示自己
     }
-    const acceptKeys = ['nominateProcessType', 'applicationStatus', 'currentUser', 'isDelay']
+    // 获取寻源概览过来的预置参数
+    const acceptKeys = require('@/config/dashboard').acceptKeys || []
     Object.keys(this.$route.query).forEach(key => {
       const keyValue = this.$route.query[key]
       // 判断寻源概览过来的参数为查询流转中，只有流转中需要带参数
