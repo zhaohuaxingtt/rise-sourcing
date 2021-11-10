@@ -65,6 +65,8 @@ import { partDetailTitle, partTitle } from "./components/data";
 import {patchRecords} from "@/api/partsign/home";
 import logButton from '@/components/logButton'
 import local from "@/utils/localstorage";
+import { TP_INFO_STATUS } from "@/views/partsign/home/components/data"
+
 export default {
   components: {
     iPage,
@@ -121,7 +123,7 @@ export default {
         this.language('LK_WENXINTISHI','温馨提示'), 
         { confirmButtonText: this.language('LK_QUEDING','确定'), cancelButtonText: this.language('LK_QUXIAO','取 消') }
       ).then(res=>{
-        this.patchRecords("ACCEPTED")
+        this.patchRecords(TP_INFO_STATUS.ACCEPTED) // 签收
       })
     },
     //退回
@@ -136,7 +138,7 @@ export default {
     sureBackmark(val) {
       this.backMark = val
       this.diologBack = false;
-      this.patchRecords("REFUSED")
+      this.patchRecords(TP_INFO_STATUS.REFUSED) // 退回
     },
     // 确定转派
     sureChangeItems(val) {
