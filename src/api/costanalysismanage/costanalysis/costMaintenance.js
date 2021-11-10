@@ -10,7 +10,7 @@
 
 import axios from '@/utils/axios';
 
-const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon');
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon');
 
 // 数据维护列表查询
 export function dataMaintain(params) {

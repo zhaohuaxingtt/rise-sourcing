@@ -5,7 +5,7 @@
 
 import axios from '@/utils/axios';
 
-const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon');
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon');
 
 //获取原材料下拉 类别 牌号 区域
 export function getSelectMateria(params) {

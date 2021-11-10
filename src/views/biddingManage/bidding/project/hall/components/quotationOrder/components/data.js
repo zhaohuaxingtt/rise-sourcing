@@ -29,7 +29,7 @@ export const currencyMultipleLib = {
 export const unitTableTitle = [
   {
     props: "fsnrGsnr",
-    name: language('BIDDING_FSNR/GSNR',"FSNR/GSNR"),
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
   },
   {
     props: "productName",
@@ -73,7 +73,7 @@ export const multiPleTableTitle = [
   {
     props: "fsnrGsnr",
     width: 100,
-    name: language('BIDDING_FSNR/GSNR',"FSNR/GSNR"),
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
   },
   {
     props: "productName",
@@ -104,7 +104,7 @@ export const multiPleTableTitle = [
         trigger: 'blur'
       }
     ],
-    name: "包装费",
+    name: language('BIDDING_BAOZHUANGFEI',"包装费"),
   },
   
   {
