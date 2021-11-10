@@ -7,9 +7,9 @@
  * @FilePath: \front-sourcing\src\api\kpiChart\index.js
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_KPI + '/aon/web/aon')
-const chrequst = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
-const rr = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
+const requst = axios(process.env.VUE_APP_KPI + '/web/aon')
+const chrequst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
+const rr = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 
 export function kpiDetail(params) {
   return requst({

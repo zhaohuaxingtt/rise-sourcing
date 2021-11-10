@@ -98,3 +98,12 @@ export const targetPriceDetail = {
 		unitName: "", //单位名
 	}
 }
+
+export const moduleTargePriceTableTitle = [
+	{ props: "applicationDate", name: "申请日期", key: "SHENQINGRIQI" },
+	{ props: "applicationType", name: "申请类型", key: "SHENQINGLEIXING" },
+	{ props: "cfName", name: "CF负责人", key: "CFFUZEREN" },
+	{ props: "expectedTargetPrice", name: "期望目标价", key: "QIWANGMUBIAOJIA" },
+	{ props: "approvalStatus", name: "申请状态", key: "SHENQINGZHUANGTAI" },
+	{ props: "remarks", name: "备注", key: "BEIZHU" },
+]

@@ -8,7 +8,7 @@
  */
 import axios from '@/utils/axios'
 
-const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 
 //市场数据原材料下拉列表
 export function getMekTable(params) {

@@ -49,6 +49,7 @@ export default {
     this.nominateAppSDetail()
     // 缓存当前步骤
     this.getStepStatus();
+    
   },
   methods: {
     // 获取步骤状态
@@ -90,6 +91,8 @@ export default {
             this.$store.dispatch('setRsDisabled', res.data.rsStatus === "FROZEN")
             this.$store.dispatch('setApplicationStatus', res.data.applicationStatus)
             this.$store.dispatch('setNominationType', res.data.nominateProcessType)
+            this.$store.dispatch('setMtzAppid',res.data.mtzApplyId)
+            
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }

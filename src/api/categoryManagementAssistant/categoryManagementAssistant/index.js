@@ -8,8 +8,8 @@
 import axios from '@/utils/axios';
 import axiosDownload from '@/utils/axios.download'
 
-const request = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon');
-const requestDownload = axiosDownload(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
+const request = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon');
+const requestDownload = axiosDownload(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 
 
 //报告清单---导出
