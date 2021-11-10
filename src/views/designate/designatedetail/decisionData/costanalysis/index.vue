@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-09 18:20:00
+ * @LastEditTime: 2021-11-10 16:50:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -9,7 +9,7 @@
 <template>
 <iCard>
   <iFormGroup row='4' label-width='100px' class="Iform">
-    <iFormItem  label='分析类型：'>
+    <iFormItem  :label='language("FENXILEIX","分析类型")'>
       <iSelect v-model="typeSelect" @change="costanalysisList">
         <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
       </iSelect>
@@ -22,7 +22,7 @@
   </iFormGroup>
   <tabel v-if='!isPreview' :tableLoading='loading' :tableTitle='tableTitle' :tableData='tableData' selection>
     <template #operate='scope'>
-      <span class="underline" @click="openPage(scope.row)">查看</span>
+      <span class="underline" @click="openPage(scope.row)">{{language('CHAKAN','查看')}}</span>
     </template>
     <template #flag='scope'>
       <span class="bule font10 cursor" @click="costanalysisShow(scope.row)">
@@ -38,13 +38,13 @@
     </template>
   </tabel>
   <iDialog v-if='!isPreview' :visible.sync="messageBox" width='80%' height='60vh'>
-      <div style="height:70vh">
+      <div style="height:70vh" class="flex-center-center">
         <template v-if="['PCA','TIA'].includes(typeSelect)">
           <iframe v-if='pdfUrl' :src="pdfUrl" frameborder="0" height="97%" width="100%"></iframe>
-          <span v-else>当前暂无PDF/或者图片可以查看</span>
+          <span v-else>{{language('DANGQIANZANWUCHAKAN','当前分析类型暂无PDF/图片可以查看')}}</span>
         </template>
         <template v-else>
-          <span>这是一个echarts</span>
+          <echartsComponents v-if='rfqId && messageBox' :rfqId='rfqId'></echartsComponents>
         </template>
       </div>
   </iDialog>
@@ -69,8 +69,9 @@ import bob from '@/views/partsrfq/bob/newReport'
 import vp from '@/views/partsrfq/vpAnalyse/vpAnalyseDetail'
 import pi from '@/views/partsrfq/piAnalyse/piDetail'
 import mek from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekDetails'
+import echartsComponents from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringEcartsCard/previewEcharts'
 export default{
-  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog,bob,vp,pi,mek},
+  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog,bob,vp,pi,mek,echartsComponents},
   data(){
     return {
       typesOfData:'',
@@ -121,7 +122,13 @@ export default{
      */
     openPage(row){
       if(['PCA','TIA','QT'].includes(this.typeSelect)){
-        this.pdfUrl = row.fileList.length?row.fileList[0].filePath:null
+       try {
+          this.pdfUrl = row.fileList.length?row.fileList[0].filePath:null
+          this.rfqId = row.rfqId
+       } catch (error) {
+          this.pdfUrl = ''
+          this.rfqId = ''
+       }
         this.messageBox = true
         return 
       }

@@ -140,8 +140,8 @@ module.exports = {
       },
       '/sourcingApi': {
         //   供应商
-        // target: 'http://10.122.17.38:8025',
-        target: 'http://10.122.18.166:8025',
+        target: 'http://10.122.17.38:8025',
+        //target: 'http://10.122.18.166:8025',
         // target: 'http://10.160.143.3:8888',
         changeOrigin: true,
         pathRewrite: {
