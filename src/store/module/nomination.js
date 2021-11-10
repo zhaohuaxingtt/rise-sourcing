@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-27 14:29:09
- * @LastEditTime: 2021-07-15 11:38:20
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-10 16:17:19
+ * @LastEditors:  
  * @Description: 定点管理状态管理，缓存定点管理 - 决策资料 - 预览状态，
  * 其他页面统一通过isPreview这个状态，禁用自己页面编辑
  *
@@ -38,6 +38,7 @@ const state = {
   nominationDisabled: false,
   rsDisabled: false,
   applicationStatus: "", // 定点状态
+  mtzApplyId: ''
 };
 
 const mutations = {
@@ -74,6 +75,9 @@ const mutations = {
   SET_APPLICATION_STATUS(state, data) {
     state.applicationStatus = data
   },
+  SET_MTZAPPID_STATUS(state, data) {
+    state.mtzApplyId = data
+  },
 };
 
 const actions = {
@@ -100,6 +104,9 @@ const actions = {
   },
   setApplicationStatus({commit}, data) {
     commit('SET_APPLICATION_STATUS', data)
+  },
+  setMtzAppid({commit}, data) {
+    commit('SET_MTZAPPID_STATUS', data)
   },
   // 检查零件清单是否为空
   checkPartNull({commit, state}) {

@@ -7,7 +7,7 @@
  */
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon',600000)
+const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon',600000)
 
 export function totalBobOverview(parmars) {
   return requst({

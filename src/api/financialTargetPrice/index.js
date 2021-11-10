@@ -192,3 +192,12 @@ export function batchSetPrice(params) {
     data: params
   })
 }
+
+// 财务目标价批量维护
+export function searchToolingTargetPriceInfo(data) {
+  return requst({
+    url: '/tooling-target-price-task/search-tooling-target-price-info',
+    method: 'POST',
+    data
+  })
+}

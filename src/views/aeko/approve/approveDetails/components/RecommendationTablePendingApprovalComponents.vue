@@ -117,7 +117,7 @@ export default {
           minWidth:128
         },
         {
-          prop: "linieDeptName",
+          prop: "linieDeptNum",
           label: "科室",
           i18n: "LK_KESHI",
           headerAlign: "center",

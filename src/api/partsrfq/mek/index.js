@@ -7,7 +7,7 @@
  */
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/aon/web/aon')
+const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 
 //mek--列表
 export function getList(parmars) {
