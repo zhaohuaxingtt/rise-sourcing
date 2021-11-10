@@ -297,7 +297,7 @@ export const attachments = [
 export const unitTableTitle = [
   {
     props: "fsnrGsnr",
-    name: language('BIDDING_FSNR/GSNR',"FSNR/GSNR"),
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
   },
   {
     props: "productName",
@@ -332,7 +332,7 @@ export const unitTableTitle = [
 export const totalTableTitle = [
   {
     props: "fsnrGsnr",
-    name: language('BIDDING_FSNR/GSNR',"FSNR/GSNR"),
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
   },
   {
     props: "productName",
@@ -368,7 +368,7 @@ export const totalTableTitle = [
 export const multiPleTableTitle = [
   {
     props: "fsnrGsnr",
-    name: language('BIDDING_FSNR/GSNR',"FSNR/GSNR"),
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
     width: 150,
   },
   {
@@ -387,7 +387,7 @@ export const multiPleTableTitle = [
   },
   {
     props: "packingFee",
-    name: "包装费",
+    name: language('BIDDING_BAOZHUANGFEI',"包装费"),
   },
   {
     props: "transportFee",
