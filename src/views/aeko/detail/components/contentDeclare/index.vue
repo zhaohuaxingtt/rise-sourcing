@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-10 17:10:47
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-11 11:29:38
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -316,7 +316,8 @@
 
 <script> 
 import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "rise/web/quotationdetail/components/tableList"
 import dosageDialog from "../dosageDialog"
 import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle,hidenTableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
