@@ -181,7 +181,7 @@ export default {
              this.loading = true;
             const {searchParams,page} = this;
             // 若有定点起止时间将其拆分成两个字段
-            const {nominateDate=[]} = searchParams;
+            const {nominateDate=[],show=''} = searchParams;
             const data = {
                 current:page.currPage,
                 size:page.pageSize
@@ -190,7 +190,11 @@ export default {
                 data['startDate'] = nominateDate[0];
                 data['endDate'] = nominateDate[1];
             }
-            await getloiList({...searchParams,...data}).then((res)=>{
+            await getloiList({
+                ...searchParams,
+                ...data,
+                show:show == 'true',
+                }).then((res)=>{
                  this.loading = false;
                 const {code,data=[],total} = res;
                 if(code==200){
