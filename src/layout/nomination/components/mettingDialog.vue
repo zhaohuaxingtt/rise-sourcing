@@ -9,14 +9,14 @@
 <template>
   <iDialog class="dialog" v-bind="$props" :visible.sync="visible" v-on="$listeners">
     <div class="dialog-Header" slot="title">
-      <div class="font18 font-weight">{{language('XUANZEHUIYI', '选择会议')}}</div>
+      <div class="font18 font-weight">{{language('XUANPRECSCZEHUIYI', '选择Pre CSC会议')}}</div>
       <div class="control">
-       
+        <iButton :loading="loading" @click="checkNomiMeetingSubmit">{{language('XUANZE', '选择')}}</iButton>
         <!-- <iButton>{{ language('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>
     </div>
     <div class="dialog-form">
-      <el-form>
+      <!-- <el-form>
       <el-form-item :label="`${language('XUANZEHUIYILEIBIE','选择会议类别')}:`">
           <el-radio-group v-model="meetingType" @change="handleChangeByMeetingType">
 					<el-radio
@@ -25,7 +25,7 @@
             :label="item.id"
             size="small"
             >{{language(item.key, item.name)}}</el-radio>
-				</el-radio-group>
+				</el-radio-group> -->
         <!-- <el-form-item :label="`${language('XUANZEHUIYIJIEGUO','选择会议结果')}:`">
           <el-radio-group v-model="meetingResult">
             <el-radio
@@ -36,26 +36,22 @@
               >{{language(item.key, item.name)}}</el-radio>
           </el-radio-group>
         </el-form-item> -->
-      </el-form-item>
-      </el-form>
-      <div class="dialog-form-sbtn">
+      <!-- </el-form-item>
+      </el-form> -->
+      <!-- <div class="dialog-form-sbtn">
         <iButton :loading="loading" @click="checkNomiMeetingSubmit">{{language('XUANZE', '选择')}}</iButton>
-      </div>
+      </div> -->
     </div>
     <div class="body" v-loading="tableLoading">
       <tableList
         index
+        lang
         :radio="true"
         :height="controlHeight ? '91%' : '100%'"
         v-show="visible" class="table margin-top20" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
-        @handleSelectionChange="handleSelectionChange"
-        :lang="true">
-        <template #startTime="scope">
-          {{ formatTime(scope.row.startTime) }}
-        </template>
-      </tableList>
+        @handleSelectionChange="handleSelectionChange" />
     </div>
     <div slot="footer" class="footer">
       <iPagination v-update
@@ -163,7 +159,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data.data) ? res.data.data : []
-          this.page.totalCount = res.total || 0
+          this.page.totalCount = res.data.total || 0
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -268,9 +264,6 @@ export default {
   }
   .dialog-form-sbtn {
     min-height: 50px;
-    margin-top: 15px;
-    padding-top:15px;
-    border-top: 1px solid #f8f8f8;
     display: flex;
     justify-content: flex-end;
   }

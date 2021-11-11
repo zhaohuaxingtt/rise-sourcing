@@ -95,18 +95,18 @@
         </template>
 
         <!-- AEKO状态 -->
-        <template #aekoStatus="scoped">
-          <span>{{scoped.row.aekoStatus && scoped.row.aekoStatus.desc}}</span>
+        <template #aekoStatus="scope">
+          <span>{{scope.row.aekoStatus && scope.row.aekoStatus.desc}}</span>
         </template>
 
         <!-- 封面状态 -->
-        <template #coverStatus="scoped">
-          <span>{{scoped.row.coverStatus && scoped.row.coverStatus.desc}}</span>
+        <template #coverStatus="scope">
+          <span>{{scope.row.coverStatus && scope.row.coverStatus.desc}}</span>
         </template>
 
         <!-- 审批单 -->
-        <template #approval="scoped">
-            <span class="link">{{language('LK_AEKO_CHAKAN','查看')}}</span>
+        <template #approval="scope">
+            <span class="link" @click="goToApprovalform(scope.row)">{{language('LK_AEKO_CHAKAN','查看')}}</span>
         </template>
 
         </tableList>
@@ -482,6 +482,29 @@ export default {
             }
           }
       },
+      // 跳转到审批单预览
+    goToApprovalform(row){
+      let transmitObj = {
+          option: 4,
+          aekoApprovalDetails: {
+            linieId: this.userInfo.id,
+            aekoNum: row.aekoCode,
+            requirementAekoId: row.requirementAekoId,
+            aekoManageId: row.aekoManageId,
+            workFlowDTOS:[]
+          }
+      }
+      let routeData = this.$router.resolve({
+        path: `/aeko/AEKOApprovalDetails`,
+        query: {
+          from:'aekodetail',
+          requirementAekoId: row.requirementAekoId,
+          aekoManageId: row.aekoManageId,
+          transmitObj: window.btoa(unescape(encodeURIComponent(JSON.stringify(transmitObj))))
+        }
+      })
+      window.open(routeData.href, '_blank')
+    },
 
     }
 }

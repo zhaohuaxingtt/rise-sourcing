@@ -21,7 +21,7 @@ export const fstitle = [
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
+  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'100',tooltip:false}
 ]
 export const gstitle = [
   {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false,fixed:true},
@@ -42,7 +42,7 @@ export const gstitle = [
   {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentTto',label:'Cur. TTO',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'ebr',label:'EBR',i18n:'',width:'100',tooltip:false}
+  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'100',tooltip:false}
 ]
 //表格循环部分
 export const fstableTileXh = function(index){
@@ -101,13 +101,13 @@ export const gstableTileXh = function(index){
  * @param {*}
  * @return {*}
  */
-export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
 /**
  * @description: gs横轴默认配置项
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['groupName','partNo','partName','currentAPrice','currentBPrice','ebr','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving'] //默认需要显示的数据
+export const whiteListGs = ['groupName','partNo','partName','currentAPrice','currentBPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -366,7 +366,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
                 if(items.props == key){
                   //需要 Lc Aprice . Lc Bprice TTo 
                   if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == "tto"){
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebr'] || 1}`)).toFixed(2)
+                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
                   }else{
                     total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
                   }
@@ -440,7 +440,7 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
           exampleData[number+'tooling'] = value.budget
         }
       }
-      if(key == 'ebr'){
+      if(key == 'ebrCalculatedValue'){
         exampleData[key] = type
       }
     }
@@ -579,14 +579,14 @@ export const leftSideData = [ // fitller
   {props:'partNo',name:'Part'},
   // {props:'partName',name:'Part Name'},
   {props:'partPrjCode',name:'FS/GS/SP No.'},
-  {props:'ebr',name:'EBR'},
+  {props:'ebrCalculatedValue',name:'EBR'},
   {props:'project',name:'Project'},
   {props:'volume',name:'Volume'},
   {props:'europeanLevel',name:'European level(RMB)'},
   {props:'plannedInvest',name:'Planned Invest'},
   {props:'ckdLanded',name:'CKD Landed'},
   {props:'tia',name:'KM'},
-  {props:'mouldPrice',name:'T-TargetPrice'},
+  {props:'mouldPrice',name:'Tooling Target Price'},
   {props:'fTarget',name:'F-Target'},
 ]
 

@@ -289,7 +289,7 @@
           :inputProps="
             ruleForm.biddingStatus !== '01' ? [] : outPutProps
           "
-          :annualOutputObj="annualOutputObj"
+          :annualOutputObj="annualOutput"
           :beginMonth="ruleForm.beginMonth"
           @handlerInputBlur="handlerInputBlur"
         >
@@ -587,13 +587,19 @@ export default {
     handleChangeBeginMonth(val){
       let dateYear = new Date(val).getFullYear();
       this.annualOutput.forEach((item,index)=>{
+        if(!val){
+          for (let i = 1; i < 16; i++) {
+            item[`stage${i}`]='';
+          }
+          return;
+        }
         if((index % 2 ===1 && dayjs(val).isAfter(dayjs(item.stage1))) || (index % 2 ===1 && !item.stage1)){
           for (let i = 1; i < 16; i++) {
             if(i===1){
               item[`stage${i}`]=val;
             }else{
               dateYear=dateYear+1;
-              item[`stage${i}`] = dateYear+'-01';
+              item[`stage${i}`] =dateYear+'-01';
             }
           }
         }
@@ -1186,7 +1192,6 @@ export default {
           return obj;
         }, {});
       }
-
       if (
         !this.ruleForm.biddingProducts?.length &&
         this.ruleForm.roundType !== "03"
@@ -1215,6 +1220,38 @@ export default {
             title: item.productCode,
           })
         });
+      }
+      // ruleForm.roundType === '03'
+      if(!this.ruleForm.productions?.length && this.ruleForm.roundType === '03' && this.ruleForm.beginMonth && this.ruleForm.biddingProducts?.length){
+          console.log(1226,this.ruleForm.beginMonth)
+          let date = new Date(this.ruleForm.beginMonth);
+          this.ruleForm.biddingProducts.forEach((item,index) => {
+            let planBaseDataOfDate = {
+              title: item.fsnrGsnr || '',
+              stage1: this.ruleForm.beginMonth,
+              stage2: date ? date.getFullYear() + 1 + "-01" : "",
+              stage3: date ? date.getFullYear() + 2 + "-01" : "",
+              stage4: date ? date.getFullYear() + 3 + "-01" : "",
+              stage5: date ? date.getFullYear() + 4 + "-01" : "",
+              stage6: date ? date.getFullYear() + 5 + "-01" : "",
+              stage7: date ? date.getFullYear() + 6 + "-01" : "",
+              stage8: date ? date.getFullYear() + 7 + "-01" : "",
+              stage9: date ? date.getFullYear() + 8 + "-01" : "",
+              stage10: date ? date.getFullYear() + 9 + "-01" : "",
+              stage11: date ? date.getFullYear() + 10 + "-01" : "",
+              stage12: date ? date.getFullYear() + 11 + "-01" : "",
+              stage13: date ? date.getFullYear() + 12 + "-01" : "",
+              stage14: date ? date.getFullYear() + 13 + "-01" : "",
+              stage15: date ? date.getFullYear() + 14 + "-01" : "",
+            };
+            let planBaseDataOfDate1={... planBaseData,title:item.productCode};
+            this.annualOutput.splice(index*2+1, 1, {
+              ...planBaseDataOfDate,
+            });
+            this.annualOutput.splice(index*2+2, 1, {
+              ...planBaseDataOfDate1,
+            });
+           })
       }
       this.$nextTick(() => {
         this.handlerInputBlur();

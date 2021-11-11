@@ -174,7 +174,7 @@ export default {
       // this.tableListData = (res.data || []).filter(
       //   (item) => item.nameZh.includes(name) && item.supplierId.includes(code)
       // );
-      this.tableListData = res.data
+      this.tableListData = res?.data
       this.page.total = res.total;
       // this.page.currPage = 1;
       // this.page.pageSize = 1;

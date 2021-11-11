@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-10-29 13:48:23
+ * @LastEditTime: 2021-11-10 23:48:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\axios.js
@@ -38,6 +38,9 @@ import store from '@/store'
     });
 
     instance.interceptors.response.use(function (response) {
+      if (response.config.responseType == 'blob') {
+        return Promise.resolve(response)
+      }
       if(response.data){
         return Promise.resolve(response.data);
       }else{

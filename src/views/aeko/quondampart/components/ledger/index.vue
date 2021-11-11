@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-08 20:20:03
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-11 16:10:50
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -20,7 +20,7 @@
         <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_PARTNUM">
           <iInput
             v-model="form.partNum"
-
+            :disabled="disabled"
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
@@ -82,7 +82,7 @@
           :selectable="selectInit"
         >
           <template #aprice="scope">
-            <iInput class="aPriceSelect" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.aprice" readonly @click.native="aPriceSelect(scope.row)">
+            <iInput class="aPriceSelect" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.aPrice" readonly @click.native="aPriceSelect(scope.row)">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" />
               </div>
@@ -106,7 +106,7 @@
     <!-- 指定AEKO库原零件 -->
     <aekoList ref="aekoList" :ledgerSelection="multipleSelection" :form="form" :aekomultipleSelection="aekomultipleSelection" :objectAekoPartId="objectAekoPartId" @changeAekoSelection="changeAekoSelection"/>
     
-    <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.apriceId" @confirm="confirmAPrice" />
+    <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.aPriceId" @confirm="confirmAPrice" />
   </div>
 </template>
 
@@ -177,15 +177,15 @@ export default {
     await this.getAekoOriginFactory()
     // 新零件号一定存在，所以不需要else
     // if (this.oldPartNumPreset || this.partNum) {
-      if(this.isDeclare==0){ // 优先选择新零件
-        this.form.partNum = this.partNum || this.oldPartNumPreset
-        this.judgeRight('init')  // 初次进入查询新零件
-      }else{  // 优先选择原零件
-        this.form.partNum = this.oldPartNumPreset || this.partNum
-        this.judgeRight()  // 查询原零件
-      }
+    if(this.isDeclare==0 || this.oldPartNumPreset == this.partNum){ // 优先选择新零件
+      this.form.partNum = this.partNum || this.oldPartNumPreset
+      this.judgeRight('init')  // 初次进入查询新零件
+    }else{  // 优先选择原零件
+      this.form.partNum = this.oldPartNumPreset || this.partNum
+      this.judgeRight()  // 查询原零件
+    }
+    this.procureFactorySelectVo()
     // } else {
-      // this.procureFactorySelectVo()
     //   // this.getAekoOriginPartInfo()
     // }
   },
@@ -223,12 +223,12 @@ export default {
       .then(res => {
         if (res.code == 200) {
           if (res.data[0].isView) {
+            // 接口总是判定AEKO的专业采购员 无查看权限:此零件对应材料组未配置专业采购员!，为了跳过阻断所以设置为true
             this.getAekoOriginPartInfo(flag)
           } else {
             iMessage.error(res.data[0].describe)
             this.loading = false
           }
-          this.procureFactorySelectVo()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -308,7 +308,7 @@ export default {
         this.objectAekoPartId = ""
       }
       
-      
+      // this.judgeRight()
       this.getAekoOriginPartInfo()
     },
     reset() {

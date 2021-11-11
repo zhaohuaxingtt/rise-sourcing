@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-10 16:50:23
+ * @LastEditTime: 2021-11-10 17:44:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -14,9 +14,9 @@
         <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
       </iSelect>
     </iFormItem>
-    <iFormItem v-if='isPreview'  label='Analysis：'>
-      <iSelect v-model="previewItems">
-        <el-option v-for='(items,index) in tableData' :label='items.bizId + "-" + items.stuffName + "" + items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
+    <iFormItem  v-if='isPreview'  label='Analysis：'>
+      <iSelect v-model="previewItems" v-loading='loadingRight'>
+        <el-option v-for='(items,index) in (tableData.filter(r=>r.flag))' :label='items.bizId + "-" + items.stuffName + "" + items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
       </iSelect>
     </iFormItem>
   </iFormGroup>
@@ -37,26 +37,31 @@
       </span>
     </template>
   </tabel>
-  <iDialog v-if='!isPreview' :visible.sync="messageBox" width='80%' height='60vh'>
-      <div style="height:70vh" class="flex-center-center">
+  <iDialog v-if='!isPreview' :visible.sync="messageBox" width='80%'>
+      <div style="min-height:70vh" class="flex-center-center">
         <template v-if="['PCA','TIA'].includes(typeSelect)">
           <iframe v-if='pdfUrl' :src="pdfUrl" frameborder="0" height="97%" width="100%"></iframe>
           <span v-else>{{language('DANGQIANZANWUCHAKAN','当前分析类型暂无PDF/图片可以查看')}}</span>
         </template>
         <template v-else>
-          <echartsComponents v-if='rfqId && messageBox' :rfqId='rfqId'></echartsComponents>
+          <echartsComponents v-if='messageBox' :rfqId='rfqId'></echartsComponents>
         </template>
       </div>
   </iDialog>
   <div v-if='isPreview'>
-    <bob v-if='typeSelect == "BOB"'></bob>
-    <vp v-else-if='typeSelect == "VP"'></vp>
-    <pi v-else-if='typeSelect == "PI"'></pi>
-    <div v-else-if='["PCA","TIA"].includes(typeSelect)'>
-      <iframe height='70vh' width="100%" v-if='JSON.parse(previewItems).fileList && JSON.parse(previewItems).fileList[0].filePath' :src="pdfUrl" frameborder="0"></iframe>
+    <bob v-if='typeSelect == "BOB" && previewItems'></bob>
+    <vp v-else-if='typeSelect == "VP" && previewItems'></vp>
+    <pi v-else-if='typeSelect == "PI" && previewItems'></pi>
+    <div v-else-if='["PCA","TIA"].includes(typeSelect)' style="min-height:70vh" class="flex-center-center">
+      <iframe height='70vh' width="100%" v-if='previewItems && JSON.parse(previewItems).fileList && JSON.parse(previewItems).fileList[0].filePath' :src="JSON.parse(previewItems).fileList[0].filePath" frameborder="0"></iframe>
       <div v-else>抱歉当前类型暂无预览文件</div>
     </div>
-    <mek v-else></mek>
+    <template v-else-if='typeSelect == "QT"'>
+          <echartsComponents v-if='previewItems' :rfqId='JSON.parse(previewItems).rfqId'></echartsComponents>
+    </template>
+    <template v-else>
+      <mek v-if='previewItems'></mek>
+    </template>
   </div>
 </iCard>
 </template>
@@ -82,7 +87,7 @@ export default{
       loading:false,
       messageBox:false,
       isPreview:false,
-      previewItems:{}
+      previewItems:null
     }
   },
   created(){
@@ -124,11 +129,11 @@ export default{
       if(['PCA','TIA','QT'].includes(this.typeSelect)){
        try {
           this.pdfUrl = row.fileList.length?row.fileList[0].filePath:null
-          this.rfqId = row.rfqId
        } catch (error) {
           this.pdfUrl = ''
           this.rfqId = ''
        }
+        this.rfqId = row.rfqId
         this.messageBox = true
         return 
       }
@@ -141,12 +146,14 @@ export default{
       window.open(process.env.VUE_APP_SOURCING_URL + urlMaps[this.typeSelect],'_blank')
     },
     costanalysisList(){
-      this.previewItems = JSON.stringify({})
+      this.previewItems = null
       this.loading = true
       const id = this.$route.query.desinateId
+      this.loadingRight = true
       costanalysisList(id,this.typeSelect).then(r=>{
         this.loading = false
         this.tableData = r.data
+        this.loadingRight = false
       }).catch(()=>{
         this.loading = false
       })

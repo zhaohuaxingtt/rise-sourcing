@@ -14,7 +14,13 @@
   >
     <iFormGroup row="4" :rules="rules" >
       <iFormItem v-for="(item, index) in detailTitle" :key="index" :label="item.label">
-        <iText>{{detailList[item.props]}}</iText>
+        <iText v-if="item.props == 'procureFactory'">
+          {{ detailList.procureFactory }} {{ detailList.factoryName ? `-${ detailList.factoryName }` : "" }}
+        </iText>
+        <iText v-else-if="item.props == 'supplierSapCode'">
+          {{ detailList.supplierSapCode }} {{ detailList.supplierNameZh ? `-${ detailList.supplierNameZh }` : "" }}
+        </iText>
+        <iText v-else>{{ translate(detailList[item.props], item.props) }}</iText>
       </iFormItem>
     </iFormGroup>
   </iDialog>
@@ -67,6 +73,28 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
+    },
+    translate(value, type) {
+      const map = {
+        subType: {
+          43: this.language("YUPILIANGCAIGOUSHENQING", "预批量采购申请"),
+          45: this.language("BIAOZHUNCAIGOUSHENQING", "标准采购申请"),
+          411: this.language("GONGXUWEIWAIYAOHUO", "工序委外要货")
+        },
+        itemSource: {
+          1: this.language("SAP", "SAP"),
+          2: this.language("SHOUDONGTONGBU", "手动同步"),
+          3: this.language("RENGONGCHUANGJIAN", "人工创建")
+        },
+        status: { // order工程此处没有走翻译
+          1: "已创建",
+          2: "已关联订单",
+          3: "订单已推送SAP",
+          4: "关闭"
+        }
+      }
+
+      return map[type] ? (map[type][value] || value) : value
     }
   }
 }

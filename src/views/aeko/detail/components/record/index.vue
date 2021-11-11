@@ -111,6 +111,7 @@ import {
   auditFileDelete
 } from '@/api/aeko/detail/approveAttach'
 import * as dateUtils from "@/utils/date";
+import { cloneDeep } from "lodash"
 
 export default {
   name: "aekoDetailRecord",
@@ -135,7 +136,10 @@ export default {
       userInfo: state => state.permission.userInfo,
     }),
     alowSubmit() {
-      return true
+      const {query} = this.$route;
+      const {from=''} = query;
+      if(from == 'check') return false
+      else return true
     },
     checkFirstRecord() {
       if (this.tableListData == null || this.tableListData.length <= 0) return false
@@ -187,8 +191,18 @@ export default {
     const {query} = this.$route;
     const {from=''} = query;
     from=='manage'?setLogMenu('AEKO管理-详情页'):setLogMenu('AEKO表态-详情页-审批记录')
+    let filterTitle = cloneDeep(tableTitle);
     if(from != 'check'){
-      this.tableTitle = tableTitle.filter((item)=>item.props !=='startUser');
+      this.tableTitle = filterTitle.filter((item)=>item.props !=='startUser');
+    }else{
+      // 科室字段变更为审批科室展示
+      filterTitle.map((item)=>{
+        if(item.props == 'assignedDeptFullCode'){
+          item.name = '审批科室';
+          item.key = 'LK_AEKO_SHENPIKESHI';
+        }
+      })
+      this.tableTitle = filterTitle;
     }
   },
   methods: {

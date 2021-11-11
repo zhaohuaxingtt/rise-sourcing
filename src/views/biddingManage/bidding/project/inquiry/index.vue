@@ -235,7 +235,7 @@
         <!-- CBD选择 -->
         <template slot="cbdLevel" slot-scope="scope">
           <div v-if="ruleForm.biddingStatus !== '01'">
-            {{ scope.row["cbdLevel"] }}
+            {{ cbdLevelLib[scope.row["cbdLevel"]] || scope.row["cbdLevel"]}}
           </div>
           <div v-else>
 
@@ -244,10 +244,10 @@
               v-model="scope.row['cbdLevel']"
             >
               <el-option
-                v-for="item in cbdLevelList[scope.row.supplierCode]"
+                v-for="item in scope.row.cbdLevelList"
                 :key="item"
                 :label="item"
-                :value="item == 'L1' ? '01' : item == 'L2' ? '02' : item == 'L3' ? '03' : ''"
+                :value="item === 'L1' ? '01' : item === 'L2' ? '02' : item === 'L3' ? '03' : ''"
               >
               </el-option>
             </iSelect>
@@ -464,7 +464,8 @@ export default {
       pointerEvents: "visible",
       size: "",
       dataType:'',
-      rfqCode:''
+      rfqCode:'',
+      time:''
     };
   },
   computed: {
@@ -504,6 +505,13 @@ export default {
   mounted() {
     this.handleSearchReset();
     this.queryCurrency();
+    this.time = setInterval(() => {
+      if(localStorage.getItem('close')) {
+        clearInterval(this.time)
+        localStorage.removeItem('close')
+        window.location.reload()
+      }
+    }, 1000);
   },
   methods: {
     handleHrefHall(){
@@ -521,7 +529,7 @@ export default {
     handleHref(row){
       console.log('gegadgegee',row)
       const a = process.env.VUE_APP_PORTAL_URL
-      window.open(`${a}supplier/supplierList/details?supplierType=PP&id=${row.id}&subSupplierId=${row.supplierCode}`, "_blank");
+      window.open(`${a}supplier/supplierList/details?supplierType=PP&id=${row.id}&subSupplierId=${row.supplierId}`, "_blank");
     },
     beforeAvatarUpload(file) {
       console.log(file);
@@ -742,12 +750,13 @@ export default {
       if (this.ruleForm.biddingStatus !== "01") {
         const flag = this.$route.path.includes('/bidding/project/inquiry')
         if(flag){
-          this.$router.push({
+          const router = this.$router.resolve({
             name:
               this.ruleForm.roundType == "02"
                 ? "biddingOpen"
                 : "biddingCompetitionBase",
           });
+          window.open(router.href,'_blank')
         } else {
           this.$emit('jump',params) 
         }
@@ -757,12 +766,13 @@ export default {
       this.submitForm(() => {
         const flag = this.$route.path.includes('/bidding/project/inquiry')
         if(flag){
-          this.$router.push({
+          const router = this.$router.resolve({
             name:
               this.ruleForm.roundType == "02"
                 ? "biddingOpen"
                 : "biddingCompetitionBase",
           });
+          window.open(router.href,'_blank')
         } else {
           this.$emit('jump',params) 
         }
@@ -963,6 +973,7 @@ export default {
         suppliers: this.orgRuleForm.suppliers,
         exchangeRates: this.orgRuleForm.exchangeRates,
         inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
+        quotationAreaFlag: roundType !== "05"
       })
         .then((res) => {
           if (res) {
@@ -998,6 +1009,7 @@ export default {
           return obj;
         }),
         supplierIsCompleted: this.clickType == "save" ? 1 : 0,
+        quotationAreaFlag: false
       })
         .then((res) => {
           if (res) {
@@ -1051,6 +1063,7 @@ export default {
         ...this.orgRuleForm,
         exchangeRates: formData.exchangeRates,
         exchangeIsCompleted: this.clickType == "save" ? 1 : 0,
+        quotationAreaFlag: false
       })
         .then((res) => {
           this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
@@ -1079,6 +1092,7 @@ export default {
         ...this.orgRuleForm,
         attachments: formData.attachments,
         attachmentIsCompleted: this.clickType == "save" ? 1 : 0,
+        quotationAreaFlag: false
       })
         .then((res) => {
           this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
@@ -1122,6 +1136,7 @@ export default {
             suppliers: this.orgRuleForm.suppliers,
             exchangeRates: this.orgRuleForm.exchangeRates,
             inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
+            quotationAreaFlag: formData.roundType !== "05",
           },
           content: {
             suppliers: formData.suppliers.map((item) => {
@@ -1192,7 +1207,6 @@ export default {
             suppliers: res.suppliers?.map((supplier) => {
               console.log('obsfsaject',supplier)
               this.querySuppliers(supplier.supplierCode,supplier.supplierId);
-              supplier.cbdLevel = "01"
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1228,7 +1242,6 @@ export default {
           this.initSuppliers = res.suppliers?.map((supplier) => {
             console.log('obsfsaject',supplier)
             this.querySuppliers(supplier.supplierCode,supplier.supplierId);
-            supplier.cbdLevel = "01"
             // if (!supplier.isAttend)
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
@@ -1288,7 +1301,6 @@ export default {
             suppliers: res.suppliers?.map((supplier) => {
               console.log('obsfsaject',supplier)
               this.querySuppliers(supplier.supplierCode,supplier.supplierId);
-              supplier.cbdLevel = "01"
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1325,7 +1337,6 @@ export default {
             console.log('obsfsaject',supplier)
             this.querySuppliers(supplier.supplierCode,supplier.supplierId);
             // if (!supplier.isAttend)
-            supplier.cbdLevel = "01"
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
                 ...supplier,
@@ -1364,6 +1375,17 @@ export default {
       if (!this.cbdLevelList[supplierCode]) {
         const res = await cbdLevel(supplierCode);
         this.$set(this.cbdLevelList, supplierCode, res || []);
+        this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
+          return {
+            ...supplier,
+            mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
+            cbdLevelList: supplier?.cbdArea == "03"
+                  ? this.cbdLevelList[supplierCode].slice(2, 3)
+                  : supplier?.cbdArea == "02"
+                  ? this.cbdLevelList[supplierCode].slice(1, 3)
+                  : this.cbdLevelList[supplierCode]
+          };
+        })
       }
     },
     // 表格选中值集
@@ -1435,6 +1457,9 @@ export default {
       });
     },
   },
+  destroyed(){
+    clearInterval(this.time)
+  }
 };
 </script>
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2021-07-22 11:18:46
+ * @LastEditTime: 2021-11-11 17:27:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\index.vue
@@ -133,6 +133,19 @@
             ></el-option>
           </iSelect>
         </el-form-item>
+        <el-form-item :label="language('LK_SHIFOUXIANSHIZIJI_1', '是否显⽰⾃⼰')">
+          <iSelect
+            v-model="form.showSelf"
+            :placeholder="language('partsprocure.CHOOSE','请选择')"
+          >
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="item in showSelfOptions"
+              :key="item.key"
+            ></el-option>
+          </iSelect>
+        </el-form-item>
       </el-form>
     </iSearch>
     <iCard class="margin-top30" :title="language('GONGYINGSHANGPINGFENGUANLI', '供应商评分管理')">
@@ -217,6 +230,10 @@ export default {
       tableListData: [],
       multipleSelection: [],
       forwardDialogVisible: false,
+      showSelfOptions:[
+        {label:'是',key:'nominationLanguage.Yes',value:'YES'},
+        {label:'否',key:'nominationLanguage.No',value:'NO'},
+      ]
     }
   },
   created() {
@@ -338,6 +355,7 @@ export default {
       })
       form.current = this.page.currPage
       form.size = this.page.pageSize
+      form.showSelf = form.showSelf=='YES'
 
       this.loading = true
       searchRfqBdlRatings(form)

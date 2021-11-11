@@ -80,6 +80,12 @@
           >
             {{ language("HUIWAILIUZHUAN", '会外流转') }}
           </iButton>
+          <iButton
+            @click="tranformRecall"
+            v-permission.auto="SOURCING_NOMINATION_LIUZHUANTUIHUI|流转退回"
+          >
+            {{ language("LIUZHUANTUIHUI", '流转退回') }}
+          </iButton>
           <!-- 提交一致性校验 -->
           <iButton
             @click="consistenceCheck"
@@ -195,7 +201,8 @@ import {
   rsFrozen,
   rsUnFrozen,
   consistenceCheck,
-  nomiApprovalProcess
+  nomiApprovalProcess,
+  tranformRecall
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
@@ -226,7 +233,8 @@ export default {
       carTypeList: [],
       // 定点管理员上传sel状态待确认的sel附件列表
       selNominateId: '',
-      selDialogVisibal: false
+      selDialogVisibal: false,
+      tranformRecallLoading: false
     }
   },
   components: {
@@ -502,7 +510,30 @@ export default {
       console.log(row)
       this.selNominateId = row.id
       this.selDialogVisibal = true
-    }
+    },
+    // 流转退回
+    tranformRecall() {
+      if (!this.selectTableData.length) return iMessage.warn(this.language("QINGXUANZEXUYAOLIUZHUANTUIHUIDEDINGDIANSHENQINGDAN", "请选择需要流转退回的定点申请单"))
+      if (this.selectTableData.some(item => item.nominateProcessType !== "TRANFORM")) return iMessage.warn(this.language("QINGXUANZELIUCHENGLEIXINGWEILIUZHUANDEDINGDIANSHENQINGDAN", "请选择流程类型为流转的定点申请单"))
+      
+      this.tranformRecallLoading = true
+
+      tranformRecall({
+        nominateIdArr: this.selectTableData.map(item => item.id),
+        // recallReason: ""
+      })
+      .then(res => {
+        const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+          this.getFetchData()
+        } else {
+          iMessage.error(message)
+        }
+      })
+      .finally(() => this.tranformRecallLoading = false)
+    },
   }
 }
 </script>
