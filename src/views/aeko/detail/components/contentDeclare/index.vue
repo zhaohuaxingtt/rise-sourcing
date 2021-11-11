@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-11 11:29:38
+ * @LastEditTime: 2021-11-11 14:53:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -230,6 +230,7 @@
           fixed
           v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_TABLE|内容表态表单"
           :lang="true"
+          :selection="isSelection"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
@@ -372,6 +373,13 @@ export default {
         return this.language('CHEXINGXIANGMU', '车型项目')
       }
     },
+    // 是否可勾选
+    isSelection(){
+      const {query} = this.$route;
+      const {from=''} = query;
+      if(from == 'check') return false
+      else return true
+    }
   },
   data() {
     return {

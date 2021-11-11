@@ -136,7 +136,10 @@ export default {
       userInfo: state => state.permission.userInfo,
     }),
     alowSubmit() {
-      return true
+      const {query} = this.$route;
+      const {from=''} = query;
+      if(from == 'check') return false
+      else return true
     },
     checkFirstRecord() {
       if (this.tableListData == null || this.tableListData.length <= 0) return false
