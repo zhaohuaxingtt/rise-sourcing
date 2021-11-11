@@ -17,7 +17,7 @@
       <el-form>
         <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.i18n_label, item.label)" v-permission.dynamic.auto="item.permission">
           <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
-            <el-option value="" :label="language('all','全部')"></el-option>
+            <el-option v-if="!item.hideAll" value="" :label="language('all','全部')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption] || []"
               :key="item.code"
@@ -108,7 +108,8 @@ export default {
         cartypeProjectNum: '',
         procureFactory: '',
         applyType: '',
-        state: ''
+        state: '',
+        showSelf: true
       },
       isEdit: false,
       tableLoading: false,
@@ -124,6 +125,13 @@ export default {
     }
   },
   created() {
+    this.selectOptions = {
+      showSelfOptions: [
+        { name: this.language("SHI", "是"), code: true },
+        { name: this.language("FOU", "否"), code: false }
+      ]
+    }
+
     this.getTableList()
   },
   methods: {

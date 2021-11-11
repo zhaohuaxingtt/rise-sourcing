@@ -117,7 +117,7 @@ export default {
       }
     }
   },
-  inject: ['getbaseInfoData', 'getDisabled'],
+  inject: ['getbaseInfoData', 'getDisabled', 'getBaseInfo'],
   computed: {
     disabled() {
       return this.getDisabled()
@@ -198,6 +198,7 @@ export default {
           this.queryForm = { ...this.queryForm, partNumList: this.partNumList }
           this.$refs.partsTable.page.currPage = 1
           this.$refs.partsTable && this.$refs.partsTable.getTableList()
+          this.getBaseInfo()
         } else {
           this.resultMessage(res)
         }
