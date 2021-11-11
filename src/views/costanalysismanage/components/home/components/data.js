@@ -50,7 +50,8 @@ export const queryForm = {
   tia: "",
   heavyItem: "",
   commodity: "",
-  linieId: ""
+  linieId: "",
+  showSelf: true
 }
 
 export const tableTitle = permissionTitle("COSTANALYSISMANAGE_HOME_TABLE", [
