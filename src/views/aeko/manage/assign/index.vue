@@ -1,12 +1,12 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: YoHo
- * @LastEditTime: 2021-11-09 21:23:25
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-11 09:46:04
  * @Description: 
 -->
 <template>
-  <iPage class="aeko-assign" v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_PAGE|Aeko分配列表">
+  <iPage class="aeko-assign" v-permission.auto.force="AEKO_ASSIGN_ASSIGNLIST_PAGE|Aeko分配列表">
     <projectHeader :subNavList="SUBMENU" />
     <!-- 搜索 -->
     <search @search="getFetchData" ref="search"/>
