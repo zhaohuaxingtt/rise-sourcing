@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-08 14:34:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-09 21:22:22
+ * @LastEditTime: 2021-11-11 10:08:05
  * @Description: 模具目标价相关接口
  * @FilePath: \front-sourcing\src\api\modelTargetPrice\index.js
  */
@@ -197,5 +197,13 @@ export function exportTargetPrice(params) {
     url: '/tooling-target-price-task/export-target-price',
     method: 'POST',
     data: params
+  })
+}
+
+// 检查是否能申请目标价
+export function checkApply(rfqId) {
+  return requst({
+    url: `/tooling-target-price-task/check-apply/${rfqId}`,
+    method: 'POST'
   })
 }
