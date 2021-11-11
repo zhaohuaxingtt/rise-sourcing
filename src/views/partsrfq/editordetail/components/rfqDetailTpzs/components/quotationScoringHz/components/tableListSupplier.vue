@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-08 22:00:36
+ * @LastEditTime: 2021-11-11 15:08:41
  * @LastEditors:  
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -143,6 +143,11 @@
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
               <span :class="{buleColor:scope.row[getPorpsNumber(item.props)+'suggestPartFlag'] == 1}">{{scope.row[item.props]}}</span>
+            </template>
+            <template v-else-if='removeKeysNumber(item.props) == "tto"'>
+              <el-tooltip :content='scope.row[item.props]' effect='light'>
+                <span class="textEplies">{{scope.row[item.props]}}</span>
+              </el-tooltip>
             </template>
             <template v-else slot-scope="scope">
               <span>{{scope.row[item.props]}}</span>
@@ -505,6 +510,13 @@ export default{
           left: 0px;
           bottom: 0px;
           background: blue;
+        }
+        .textEplies{
+          width: 80% !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+          white-space: nowrap;
+          display: inline-block;
         }
     }
     ::v-deep.priceUnderLinePrice{

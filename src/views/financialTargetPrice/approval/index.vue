@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-09 21:11:27
+ * @LastEditors:  
+ * @LastEditTime: 2021-11-11 17:01:48
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -108,7 +108,8 @@ export default {
         cfId: '',
         linieName: '',
         buyerId: '',
-        cfPriceType: ''
+        cfPriceType: '',
+        showSelf:''
       },
       isEdit: false,
       tableLoading: false,
@@ -171,22 +172,40 @@ export default {
         cfId: '',
         linieName: '',
         buyerId: '',
-        cfPriceType: ''
+        cfPriceType: '',
+         showSelf:''
       }
     },
     getDict(type) {
-      getDictByCode(type).then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            [type]: res.data[0]?.subDictResultVo || []
-          }
+      if(type == 'IS_SHOW_SELF') {
+        this.selectOptions = {
+          ...this.selectOptions,
+          [type]:[
+            {
+              code:true,
+              name:'是'
+            },
+             {
+              code:false,
+              name:'否'
+            },
+          ]
         }
-      })
+      } else {
+        getDictByCode(type).then(res => {
+          if (res?.result) {
+            this.selectOptions = {
+              ...this.selectOptions,
+              [type]: res.data[0]?.subDictResultVo || []
+            }
+          }
+        })
+      }
     },
     getDicts() {
       // 申请类型
       this.getDict('CF_PRICE_TYPE')
+      this.getDict('IS_SHOW_SELF')
     },
     getCF() {
       getCFList().then(res => {

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-09 21:12:24
+ * @LastEditors:  
+ * @LastEditTime: 2021-11-11 17:08:11
  * @Description: 财务目标价-目标价查询
  * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
 -->
@@ -121,7 +121,8 @@ export default {
         setKz: '',
         approveStats: '',
         carTypeName: '',
-        assignStats: ''
+        assignStats: '',
+        showSelf:''
       },
       isEdit: false,
       tableLoading: false,
@@ -137,7 +138,7 @@ export default {
   },
   created() {
     this.getSetOptions()
-    // this.getDicts()
+    this.getDicts()
     this.getProcureGroup()
     this.getCartypeDict()
     this.getCF()
@@ -177,28 +178,49 @@ export default {
         setKz: '',
         approveStats: '',
         carTypeName: '',
-        assignStats: ''
+        assignStats: '',
+        showSelf:''
+
       }
     },
     getDict(type) {
-      getDictByCode(type).then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            [type]: res.data[0]?.subDictResultVo || []
-          }
+      if(type == 'IS_SHOW_SELF') {
+        this.selectOptions = {
+          ...this.selectOptions,
+          [type]:[
+            {
+              code:true,
+              name:'是'
+            },
+             {
+              code:false,
+              name:'否'
+            },
+          ]
         }
-      })
+      } else {
+        getDictByCode(type).then(res => {
+          if (res?.result) {
+            this.selectOptions = {
+              ...this.selectOptions,
+              [type]: res.data[0]?.subDictResultVo || []
+            }
+          }
+        })
+      }
     },
     getDicts() {
       // 目标价分类
-      this.getDict('CF_PRICE_TYPE')
+      // this.getDict('CF_PRICE_TYPE')
       //申请状态CF_APPLY_STATUS
-      this.getDict('CF_APPLY_STATUS')
+      // this.getDict('CF_APPLY_STATUS')
       // 审批状态CF_APPROVE_STATUS
-      this.getDict('CF_APPROVE_STATUS')
+      // this.getDict('CF_APPROVE_STATUS')
       // 指派状态CF_ASSIGN_START
-      this.getDict('CF_ASSIGN_START')
+      // this.getDict('CF_ASSIGN_START')
+      //是否显示自己
+      this.getDict('IS_SHOW_SELF')
+
     },
     getPartStatus() {
       getPartStatus().then(res => {
