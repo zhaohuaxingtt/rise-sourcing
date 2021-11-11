@@ -90,6 +90,7 @@ export default {
       })
         .then(() => {
           this.submitForm(() => {
+            localStorage.setItem('close','close')
             window.close()
             // this.$router.push({
             //   name: "biddingProjectInquiry",
