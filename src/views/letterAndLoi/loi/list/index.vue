@@ -193,7 +193,8 @@ export default {
             await getloiList({
                 ...searchParams,
                 ...data,
-                show:show == 'true',
+                show:undefined,
+                showSelf:show == 'true',
                 }).then((res)=>{
                  this.loading = false;
                 const {code,data=[],total} = res;
