@@ -29,11 +29,11 @@
                   :label="item.name">
                   <template slot-scope="scope">
                      <!-- 系统计算EBR值 -->
-                     <span v-if="item.props === 'ebrCalculatedValue'">{{scope.row.ebrCalculatedValue || 0}}</span>
+                     <span v-if="item.props === 'ebrCalculatedValue'">{{ percent(scope.row.ebrCalculatedValue || 0) }}</span>
                      <!-- 手工输入EBR值 -->
                      <span v-else-if="item.props === 'ebrConfirmValue'">
-                        <span v-if="isPreview=='1' || nominationDisabled || rsDisabled">{{scope.row.ebrConfirmValue || 0}}</span>
-                        <iInput v-else v-model="scope.row.ebrConfirmValue" @input="handleInputLimit($event, scope.row)" />
+                        <span v-if="isPreview=='1' || nominationDisabled || rsDisabled">{{ percent(scope.row.ebrConfirmValue || 0) }}</span>
+                        <iInput v-else v-model="scope.row.ebrConfirmValue" @input="handleInputLimit($event, scope.row)" @focus="handleFocus(scope.row.ebrConfirmValue, scope.row)" @blur="handleBlur(scope.row.ebrConfirmValue, scope.row)"/>
                      </span>
                      <span v-else>{{scope.row[item.props] || '-'}}</span>
                   </template>
@@ -132,23 +132,36 @@ export default {
              if(code === '200' && data){
                 const { records=[],total } = data;
                 records.forEach(val => val.mtz === true ? val.mtz = 'MTZ' : val.mtz  = '');
-                this.tableListData = records;
+                this.tableListData = records.map(item => ({ ...item, ebrConfirmValue: item.ebrConfirmValue ? this.percent(item.ebrConfirmValue) : "" }))
                 this.page.totalCount = total;
              }
           }).catch((err)=>{
             this.loading = true;
           })
        },
-       // 输入框 手工输入EBR值 数字的限制
-       handleInputLimit(val, row){
-          this.$set(row, "ebrConfirmValue", numberProcessor(val, 2))
-       },
+      // 输入框 手工输入EBR值 数字的限制
+      handleInputLimit(val, row){
+         this.$set(row, "ebrConfirmValue", numberProcessor(val, 2))
+      },
+      handleFocus(val, row) {
+         this.$set(row, "ebrConfirmValue", val.replace(/^(.*)%$/, "$1"))
+      },
+      handleBlur(val, row) {
+         if (val) {
+            this.$set(row, "ebrConfirmValue", val + "%")
+         } else {
+            this.$set(row, "ebrConfirmValue", "")
+         }
+      },
       // 保存
       async save(){
          this.saveLoading = true;
          const data = {
             partPrjList:[  
-               ...this.tableListData
+               ...this.tableListData.map(item => ({
+                  ...item,
+                  ebrConfirmValue: item.ebrConfirmValue ? math.divide(math.bignumber(item.ebrConfirmValue.replace(/^(.*)%$/, "$1")), 100).toFixed(4) : ""
+               }))
             ]
          }
          await partUpdate(data).then((res)=>{
@@ -176,6 +189,9 @@ export default {
             }
          })
          window.open(router.href,'_blank');
+      },
+      percent(val) {
+         return math.multiply(math.bignumber(val), 100).toString() + '%'
       }
     },
 }

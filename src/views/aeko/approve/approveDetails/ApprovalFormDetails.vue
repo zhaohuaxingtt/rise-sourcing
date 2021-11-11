@@ -36,13 +36,15 @@ export default {
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
     this.aekoApprovalDetails = this.transmitObj.aekoApprovalDetails
+    if(this.transmitObj.option == 3){
+      this.isShow = false //CSF分配人 预览不显示推荐表
+    }
     if (this.transmitObj.option == 1) {
       this.loadAKEOApprovalForm()
     } else if (this.transmitObj.option == 4) {  // Linie 预览
       this.getPreviewData()
     } else if(this.transmitObj.option == 5){
       this.lookAKEOApprovalDetailFromCheck();
-      this.isShow = false //CSF分配人 预览不显示推荐表
     } else {
       this.lookAKEOApprovalForm()
     }

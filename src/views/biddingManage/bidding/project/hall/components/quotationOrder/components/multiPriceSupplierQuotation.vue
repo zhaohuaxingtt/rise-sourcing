@@ -193,7 +193,7 @@
           :tableLoading="false"
           :inputProps="biddingStatus ? [] : outPutProps
           "
-          :annualOutputObj="annualOutputObj"
+          :annualOutputObj="annualOutput"
           :beginMonth="ruleForm.beginMonth"
           @handlerInputBlur="handlerInputBlur"
         >
@@ -429,15 +429,15 @@ export default {
   },
   computed: {
     biddingStatus() {
-      // if (
-      //   (this.ruleForm.biddingStatus === "04" ||
-      //     this.ruleForm.biddingStatus === "05") &&
-      //   this.ruleForm.isSupplierOffer &&
-      //   this.ruleForm.supplierKickOutStatus === "01"
-      // ) {
+      if (
+        (this.ruleForm.biddingStatus === "04" ||
+          this.ruleForm.biddingStatus === "05") &&
+        this.ruleForm.isSupplierOffer &&
+        this.ruleForm.supplierKickOutStatus === "01"
+      ) {
         return false;
-      // }
-      // return true;
+      }
+      return true;
     },
     unit() {
       return this.currencyUnit[this.ruleForm.currencyUnit];

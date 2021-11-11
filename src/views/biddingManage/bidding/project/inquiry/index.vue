@@ -29,7 +29,7 @@
           <!-- 竞价大厅 -->
           <iButton
             v-if="
-              ruleForm.biddingStatus !== '01' 
+              disHall
             "
             @click="handleHrefHall"
             >{{ language('BIDDING_JIANGJIADATING', '竞价大厅') }}</iButton
@@ -464,10 +464,15 @@ export default {
       pointerEvents: "visible",
       size: "",
       dataType:'',
-      rfqCode:''
+      rfqCode:'',
+      time:''
     };
   },
   computed: {
+    disHall(){
+      const {biddingStatus} = this.ruleForm
+      return biddingStatus ==='02' || biddingStatus === '04' || biddingStatus === '06' || biddingStatus === '07' || biddingStatus === '08'
+    },
     formComponent() {
       const { roundType } = this.ruleForm;
       return "05" === roundType
@@ -504,6 +509,13 @@ export default {
   mounted() {
     this.handleSearchReset();
     this.queryCurrency();
+    this.time = setInterval(() => {
+      if(localStorage.getItem('close')) {
+        clearInterval(this.time)
+        localStorage.removeItem('close')
+        window.location.reload()
+      }
+    }, 1000);
   },
   methods: {
     handleHrefHall(){
@@ -742,12 +754,13 @@ export default {
       if (this.ruleForm.biddingStatus !== "01") {
         const flag = this.$route.path.includes('/bidding/project/inquiry')
         if(flag){
-          this.$router.push({
+          const router = this.$router.resolve({
             name:
               this.ruleForm.roundType == "02"
                 ? "biddingOpen"
                 : "biddingCompetitionBase",
           });
+          window.open(router.href,'_blank')
         } else {
           this.$emit('jump',params) 
         }
@@ -757,12 +770,13 @@ export default {
       this.submitForm(() => {
         const flag = this.$route.path.includes('/bidding/project/inquiry')
         if(flag){
-          this.$router.push({
+          const router = this.$router.resolve({
             name:
               this.ruleForm.roundType == "02"
                 ? "biddingOpen"
                 : "biddingCompetitionBase",
           });
+          window.open(router.href,'_blank')
         } else {
           this.$emit('jump',params) 
         }
@@ -1447,6 +1461,9 @@ export default {
       });
     },
   },
+  destroyed(){
+    clearInterval(this.time)
+  }
 };
 </script>
 
@@ -1544,12 +1561,14 @@ export default {
     left: 42px;
     color: #fff;
     z-index: -1111;
+    background: transparent !important;
   }
   .el-switch__label--right {
     position: relative;
     right: 42px;
     color: #fff;
     z-index: -1111;
+    background: transparent !important;
   }
   .el-switch__label--right.is-active {
     z-index: 1;

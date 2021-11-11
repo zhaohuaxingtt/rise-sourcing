@@ -30,7 +30,7 @@ export const nomalDetailTitleBlue = [
     {props: 'currency', name: '货币', enName: 'Currency'},
     {props: 'unit', name: '单位', enName: 'Unit'},
   ],
-  {props: 'mtz', name: '原材料补差价', enName: 'MTZ'},
+  {props: 'mtz', name: '原材料补差', enName: 'MTZ'},
   {props: 'materialGroup', name: '材料组', enName: 'Material Group'},
   {props: 'rawMaterial', name: '原材料', enName: 'Raw Material'},
   {props: 'plannedInvest', name: '计划投资', enName: 'Planned Invest'},

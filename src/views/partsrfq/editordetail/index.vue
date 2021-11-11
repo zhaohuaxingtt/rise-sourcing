@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-09 13:43:22
+ * @LastEditTime: 2021-11-11 10:07:21
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
@@ -16,7 +16,7 @@
       </div>
       <div class="btnList">
         <span v-if="!disabled">
-          <iButton @click="handleApplyModuleTargetPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
+          <iButton @click="handleApplyModuleTargetPrice" :loading="checkApplyLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
             {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
           </iButton>
           <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND|新建RFQ轮次">
@@ -165,6 +165,7 @@ import { getTabelData} from "@/api/partsprocure/home";
 import { pageMixins } from "@/utils/pageMixins";
 import { tableTitle,form } from "@/views/partsprocure/home/components/data";
 import { getRfqInfo } from "@/api/costanalysismanage/rfqdetail"
+import { checkApply } from '@/api/modelTargetPrice/index'
 export default {
   components: {
     iButton,
@@ -206,7 +207,8 @@ export default {
       transferlaoding:false,
       disabled: true,
       linieUserId:'',
-      childFnList:[]
+      childFnList:[],
+      checkApplyLoading: false
     }
   },
   mounted(){
@@ -227,8 +229,19 @@ export default {
   },
   methods: {
     handleApplyModuleTargetPrice() {
-      const item = {rfqId: this.baseInfo.id, applyType: '1'}
-      this.$router.push({path: '/modeltargetprice/detail', query: item})
+      this.checkApplyLoading = true
+      const rfqId = this.baseInfo.id || this.$route.query.id
+      checkApply(rfqId).then(res => {
+        if (res?.result) {
+          const item = {rfqId: rfqId, applyType: '1'}
+          this.$router.push({path: '/modeltargetprice/detail', query: item})
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      }).finally(() => {
+        this.checkApplyLoading = false
+      })
+      
     },
     registerFn(fn){
       this.childFnList.push(fn)

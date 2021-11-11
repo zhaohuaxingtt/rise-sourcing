@@ -8,21 +8,33 @@
 -->
 
 <template>
-  <div :class="isPreview && 'isPreview'">
-    <iCard :title="'CSC定点推荐 - ' + cardTitle">
-      <div slot="header-control" class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+  <div class="meeting" :class="isPreview && 'isPreview'">
+    <iCard>
+      <template #header>
+        <div class="title">
+          <p>CSC定点推荐 - {{ cardTitle }}</p>
+          <p>{{ cardTitleEn }}</p>
+        </div>
+        <div>
+          <div class="control">
+            <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+          </div>
+        </div>
+      </template>
       <div class="rsTop">
         <div class="rsTop-left">
           <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
-            <div class="rsTop-left-item-title">{{ item.name }}{{ item.enName  }}</div>
-            <div class="rsTop-left-item-value">{{basicData[item.props]}}</div>
+            <div class="rsTop-left-item-title">
+              <p>{{ item.name }}</p><p>{{ item.enName }}</p>
+            </div>
+            <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
           </div>
         </div>
         <div class="rsTop-right">
           <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
             <template v-if="Array.isArray(item)">
               <div class="rsTop-right-item-title">
-                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}}{{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
+                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
               </div>
               <div class="rsTop-right-item-value">
                 <div v-for="(subItem, subIndex) in item" :key="subIndex">
@@ -30,7 +42,7 @@
               </div>
             </template>
             <template v-else>
-              <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div>
+              <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
                 <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
                   <div v-for="(item,index) in basicData[item.props]" :key="index">
                       <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
@@ -40,7 +52,8 @@
                   </div>
                 </div>       
                 <div class="rsTop-right-item-value" v-else >
-                  <span v-html="basicData[item.props]" style="word-wrap: break-word;">
+                  <span v-if="item.props == 'mtz'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
+                  <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;">
                   </span>
                 </div>
             </template>
@@ -151,6 +164,18 @@ export default {
       suppliers: ''
     }
   },
+  filters: {
+    booleanFilter(val) {
+      console.log("val", val)
+
+      const obj = {
+        true: "Y",
+        false: "N"
+      }
+
+      return obj[val] || val
+    }
+  },
   computed: {
     exchangeRageCurrency() {
       if (this.basicData.currencyRateMap) {
@@ -199,11 +224,19 @@ export default {
     },
     cardTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
-        return '配件采购 CSC Nomination Recommendation - Spare Part Purchasing'
+        return '配件采购'
       } else if (this.projectType === partProjTypes.FUJIAN) {
-        return '附件采购 CSC Nomination Recommendation – Accessory Purchasing'
+        return '附件采购'
       }
-      return '生产采购 CSC Nomination Recommendation - Production Purchasing'
+      return '生产采购'
+    },
+    cardTitleEn() {
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return 'CSC Nomination Recommendation - Spare Part Purchasing'
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return 'CSC Nomination Recommendation – Accessory Purchasing'
+      }
+      return 'CSC Nomination Recommendation - Production Purchasing'
     },
     getRemarkAll() {
       return this.remarkItem.map(item => item.value).join('\n')
@@ -426,7 +459,7 @@ export default {
   border: 1px dashed #1660F1;
 }
 .rsTable {
-  font-size: 12px;
+  font-size: 8px;
   &::before {
     height: 0;
   }
@@ -434,14 +467,29 @@ export default {
     padding-top: 8px;
     padding-bottom: 8px;
     & > .cell {
-      padding-left: 5px;
-      padding-right: 5px;
+      padding-left: 3px;
+      padding-right: 3px;
       line-height: 14px;
-      span span {
-        font-size: 10px;
+      span {
+        zoom: 0.63;
+      }
+
+      // span span {
+      //   // font-size: 8px;
+      // }
+    }
+  }
+
+  ::v-deep .el-table__row td {
+    .cell {
+      padding-left: 3px;
+      padding-right: 3px;
+
+      span {
+        zoom: 0.63;
       }
     }
-  } 
+  }
 }
 .rsTop {
   display: flex;

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-10-09 19:28:25
+ * @LastEditTime: 2021-11-11 15:57:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -25,7 +25,7 @@
           <span v-else>{{ categoryName }}</span>
         </div>
         <div class="flex"
-             v-show="reportFlag">
+             v-show="reportFlag||!propSchemeId">
           <!--预览-->
           <iButton class="margin-left30"
                    @click="handleAnalysis">{{
@@ -49,7 +49,7 @@
         </div>
       </div>
       <el-row>
-        <el-col :span="4">
+        <el-col :span="propSchemeId?0:4">
           <iCard v-show="reportFlag"
                  style="height:670px">
             <div class=" searchForm"
@@ -123,7 +123,7 @@
             </div>
           </iCard>
         </el-col>
-        <el-col :span="20">
+        <el-col :span="propSchemeId?24:20">
           <iCard class="margin-left20"
                  ref="chartBox"
                  style="height:670px">
@@ -221,20 +221,25 @@
                             class="margin-bottom20 "
                             style="width:20px;height:20px;"></icon>
                     </div>
-                    
+
                     <el-popover placement="bottom"
                                 width="80"
                                 trigger="click"
                                 visible-arrow
-                                class="margin-bottom20" @show="onCarLevelVisible = true" @hide="onCarLevelVisible = false">
-                      <car-level-select :motor-id="item.motorId" :car-level-options="carLevelOptions[item.motorId]" 
-                        :org-checked="checkedCarLevelOptions[item.motorId]" @option-changed="changeCheckList">
+                                class="margin-bottom20"
+                                @show="onCarLevelVisible = true"
+                                @hide="onCarLevelVisible = false">
+                      <car-level-select :motor-id="item.motorId"
+                                        :car-level-options="carLevelOptions[item.motorId]"
+                                        :org-checked="checkedCarLevelOptions[item.motorId]"
+                                        @option-changed="changeCheckList">
                       </car-level-select>
 
                       <div class="motor-selection"
                            slot="reference">
                         <span style="color: #4D4F5C;font-size: 0.875rem;">{{ item.motorName }}</span>
-                        <span :class="onCarLevelVisible ? 'el-icon-arrow-up' : 'el-icon-arrow-down'" style="color:#AAAAAA;font-size:0.75rem;"></span>
+                        <span :class="onCarLevelVisible ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"
+                              style="color:#AAAAAA;font-size:0.75rem;"></span>
                       </div>
                     </el-popover>
                     <span class="margin-bottom20 motorName"
@@ -262,7 +267,8 @@
                       </el-date-picker>
                     </div>
                   </div>
-                  <datasetBar :ref="`${item.motorId}`" :barData="item"
+                  <datasetBar :ref="`${item.motorId}`"
+                              :barData="item"
                               :checkedCarLevel="checkedCarLevelOptions[item.motorId]"
                               :maxWidth="maxWidth"
                               :typeSelection="mekMotorTypeFlag"
@@ -556,12 +562,22 @@ export default {
     // this.getMekTable();
   },
   mounted () { },
+  props: {
+    propSchemeId: {
+      type: String,
+      default: ""
+    },
+    propFactoryName: {
+      type: String,
+      default: ""
+    }
+  },
   methods: {
     async init () {
       this.rfqId = this.$store.state.rfq.rfqId;
       this.entryStatus = this.$store.state.rfq.entryStatus;
-      this.chemeId = this.$route.query.chemeId;
-      this.productFactoryNames = this.$route.query.productFactoryNames;
+      this.chemeId = this.$route.query.chemeId ? this.$route.query.chemeId : this.propSchemeId;
+      this.productFactoryNames = this.$route.query.productFactoryNames ? this.$route.query.productFactoryNames : this.propFactoryName;
       await getSchemeInfo({
         schemeId: this.chemeId,
       }).then((res) => {
@@ -844,7 +860,7 @@ export default {
       })
 
       // this.$forceUpdate();
-      
+
       // this.barData[index].detail.forEach((item, i) => {
       //   if (this.barData[index].checkList.indexOf(item.title) === -1) {
       //     this.barData[index].detail.splice(i, 1);
@@ -1194,7 +1210,7 @@ export default {
       this.getHistogram(params);
       // this.getMekTable();
     },
-    onCarLevelShow() {
+    onCarLevelShow () {
       this.onCarLevelVisible = true;
     },
 
@@ -1568,11 +1584,11 @@ export default {
   font-size: 16px;
   height: 32px;
   width: 150px;
-  border: 0.0625rem solid #E0E6ED;
+  border: 0.0625rem solid #e0e6ed;
   border-radius: 5px;
   padding: 0 5px;
-  display:flex;
-  flex-flow:row nowrap;
+  display: flex;
+  flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
 }

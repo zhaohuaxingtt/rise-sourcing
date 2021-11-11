@@ -218,7 +218,21 @@ export default {
         },
       ],
       transmitObj: {},
-      show:true
+      show:true,
+      stateEnums:[{value:'EMPTY',label:''},
+        {value:'TOBE_STATED',label:'待表态'},
+        {value:'QUOTING',label:'报价中'},
+        {value:'BOUND',label:'已绑定'},
+        {value:'PENDING_APPROVAL',label:'待审批'},
+        {value:'K3_APPROVED',label:'CommodityK3通过'},
+        {value:'K2_APPROVED',label:'Commodity科室通过'},
+        {value:'CSF_K3_APPROVED',label:'CSF K3 通过'},
+        {value:'CSF_FINAL_APPROVAL',label:'CSF 科室通过'},
+        {value:'K1_APPROVED',label:'审批完成'},
+        {value:'REJECT',label:'拒绝'},
+        {value:'SUPPLEMENTAL_RESULT',label:'补充材料'},
+        {value:'DESIGNATED',label:'已定点'},
+      ],//状态枚举
     };
   },
   created() {
@@ -229,6 +243,7 @@ export default {
       this.show = false
     }
     if(this.queryParams?.goto){
+      this.addStatusColumn()
       this.searchApproved(this.queryParams.requirementAekoId)
       this.auditContentStatus = '已审批'
       this.show = false
@@ -275,6 +290,21 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       })
+    },
+    addStatusColumn(){
+      let stausColumn={
+          prop: "status",
+          label: "内容状态",
+          i18n: "LK_LEIRONGZHUANGTAI",
+          headerAlign: "center",
+          align: "center",
+          tooltip: true,
+         customRender: (h, scope, column, extraData) => {
+            let {label}=this.stateEnums.find(item=>item.value==scope.row.status)
+            return <span>{label} </span>
+        }
+      }
+      this.recommendationFormPendingApprovalTitle.splice(5,0,stausColumn)
     }
   },
 };

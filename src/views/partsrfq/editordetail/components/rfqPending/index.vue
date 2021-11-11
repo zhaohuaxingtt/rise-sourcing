@@ -90,7 +90,7 @@ export default {
           return true
         }else{
           if(this.getbaseInfoData().currentRounds > 0){
-            return true
+            return !(this.getbaseInfoData().roundsType == "commonRound")
           }else {
             return false
           }

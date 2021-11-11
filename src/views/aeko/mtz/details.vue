@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-10 17:30:04
+ * @LastEditTime: 2021-11-11 11:47:27
  * @Description: 
 -->
 <template>
@@ -134,6 +134,10 @@ export default {
       pickerOption: null,
       disable: this.$route.query.status === 'SUBMITED'
     }
+  },
+  created() {
+    // 隐藏log按钮
+    this.$emit('showLog', false)
   },
   mounted() {
     this.getFetchData()

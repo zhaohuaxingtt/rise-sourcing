@@ -194,7 +194,12 @@ export default {
       // return item.approvalUserList || item.taskNodeList
     },
     isUserActive(user) {
-      return user.approvalStatus
+      if (['有异议', '补充材料'].includes(user.taskStatus)) {
+        return ['有异议', '补充材料'].includes(user.taskStatus)
+      } else {
+        return user.approvalStatus
+      }
+      
       /* if (!user.taskStatus) {
         return false
       }

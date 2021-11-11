@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-11-02 11:12:44
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-10 18:02:29
+ * @LastEditTime: 2021-11-11 16:31:43
  * @Description: 内容表态组合相关功能
  */
 
@@ -134,11 +134,20 @@ export const combine = {
             this.init()
             console.log('update groupName success', groupName)
           } else if (res) {
+            this.resetGroup(row)
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          } else {
+            this.resetGroup(row)
           }
         }).catch(e => {
+          this.resetGroup(row)
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         })
+      }
+    },
+    resetGroup(row) {
+      if (row && row.groupNameBak) {
+        setTimeout(() => {this.$set(row, 'groupName', row.groupNameBak)}, 1500)
       }
     },
     rowspan(dataList = [], groupKey = 'groupCode', cb = null) {
