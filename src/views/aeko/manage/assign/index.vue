@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-11 09:46:04
+ * @LastEditTime: 2021-11-11 10:45:17
  * @Description: 
 -->
 <template>
@@ -13,6 +13,7 @@
     <!-- 表格 -->
     <iCard class="aeko-assign-table">
       <div class="editControl">
+        <span class="font18 font-weight">{{ language( 'AEKOFENPEI', 'AEKO分配' ) }}</span>
         <iButton
             class="floatright margin-bottom20"
             :loading="assigning"
@@ -411,7 +412,7 @@ export default {
 }
 
 .el-select-multi {
-  width: 70%;
+  width: 60%;
 }
 
 .icon {
