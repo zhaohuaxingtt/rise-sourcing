@@ -2,20 +2,20 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 15:15:44
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
  */
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon',600000)
+const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon', 600000)
 
 export function totalBobOverview(parmars) {
   return requst({
     url: '/batchOverview/totalBobOverview',
     method: 'POST',
     data: {
-      ...parmars
-    }
+      ...parmars,
+    },
   })
 }
 export function totalVolumePricingOverview(parmars) {
@@ -23,8 +23,8 @@ export function totalVolumePricingOverview(parmars) {
     url: '/batchOverview/totalVolumePricingOverview',
     method: 'POST',
     data: {
-      ...parmars
-    }
+      ...parmars,
+    },
   })
 }
 export function totalOverview(parmars) {
@@ -32,8 +32,8 @@ export function totalOverview(parmars) {
     url: '/batchOverview/totalOverview',
     method: 'POST',
     data: {
-      ...parmars
-    }
+      ...parmars,
+    },
   })
 }
 export function pageRfqBaseInfo(parmars) {
@@ -41,7 +41,7 @@ export function pageRfqBaseInfo(parmars) {
     url: '/costAnalysisTool/rfq/pageRfqBaseInfo',
     method: 'POST',
     data: {
-      ...parmars
-    }
+      ...parmars,
+    },
   })
 }

@@ -9,13 +9,25 @@
 
 <template>
   <div class="meeting" :class="isPreview && 'isPreview'">
-    <iCard :title="'CSC定点推荐 - ' + cardTitle">
-      <div slot="header-control" class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+    <iCard>
+      <template #header>
+        <div class="title">
+          <p>CSC定点推荐 - {{ cardTitle }}</p>
+          <p>{{ cardTitleEn }}</p>
+        </div>
+        <div>
+          <div class="control">
+            <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+          </div>
+        </div>
+      </template>
       <div class="rsTop">
         <div class="rsTop-left">
           <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
-            <div class="rsTop-left-item-title">{{ item.name }}{{ item.enName  }}</div>
-            <div class="rsTop-left-item-value">{{basicData[item.props]}}</div>
+            <div class="rsTop-left-item-title">
+              <p>{{ item.name }}</p><p>{{ item.enName }}</p>
+            </div>
+            <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
           </div>
         </div>
         <div class="rsTop-right">
@@ -212,11 +224,19 @@ export default {
     },
     cardTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
-        return '配件采购 CSC Nomination Recommendation - Spare Part Purchasing'
+        return '配件采购'
       } else if (this.projectType === partProjTypes.FUJIAN) {
-        return '附件采购 CSC Nomination Recommendation – Accessory Purchasing'
+        return '附件采购'
       }
-      return '生产采购 CSC Nomination Recommendation - Production Purchasing'
+      return '生产采购'
+    },
+    cardTitleEn() {
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return 'CSC Nomination Recommendation - Spare Part Purchasing'
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return 'CSC Nomination Recommendation – Accessory Purchasing'
+      }
+      return 'CSC Nomination Recommendation - Production Purchasing'
     },
     getRemarkAll() {
       return this.remarkItem.map(item => item.value).join('\n')
