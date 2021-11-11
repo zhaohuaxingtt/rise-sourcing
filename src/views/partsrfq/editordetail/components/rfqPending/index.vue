@@ -118,4 +118,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  :v-deep.card{
+    .is-active{
+      background-color: transparent!important;
+    }
+  }
+  :v-deep.card{
+    .el-switch{
+      .is-active{
+        background-color: transparent!important;
+      }
+    }
+  }
 </style>

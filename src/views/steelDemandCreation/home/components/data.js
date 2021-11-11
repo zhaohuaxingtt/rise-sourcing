@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 13:56:01
- * @LastEditTime: 2021-08-19 14:47:04
+ * @LastEditTime: 2021-11-11 16:46:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steelDemandCreation\home\components\data.js
@@ -112,6 +112,18 @@ export function searchForm({MEETING_TYPE=[],NOMINATE_APP_PROCESS_TYPE=[],NOMINAT
       type:'input',
       List:[],
       moduleKey:'cartypeProjectZh'
+    },
+    {
+      i18nName:'显示自己',
+      i18nKey:'XIXANSHIZIJI',
+      permissionKey:'SOURCING_XIANSHIZIJI',
+      type:'select',
+      List:[
+        {name:'全部',code:''},
+        {name:'是',code:true},
+        {name:'否',code:false}
+      ],
+      moduleKey:'showSelf'
     }
   ]
 }
@@ -130,6 +142,7 @@ export const form = {
   partProjectType:'', //零件采购项目类型
   printStatus:'', //打印状态
   sapNum:'', //sap
+  showSelf:''
 }
 
 export const tableTitle = [
