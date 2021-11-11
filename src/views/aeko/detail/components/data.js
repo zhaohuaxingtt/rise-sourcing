@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-11-09 14:55:59
+ * @LastEditTime: 2021-11-11 11:34:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -22,7 +22,7 @@ export const contentDeclareTableTitle = [
   { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, fixed: true, width: "100",isExport:true },
   { props: "partNameZh", name: "零件名称", key: "LINGJIANMINGCHENG", tooltip: true, fixed: true, width: "100",isExport:true },
   { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true, fixed: true,isExport:true },
-  { props: "statusDesc", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true, fixed:true },
+  { props: "statusDesc", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true, fixed:true,tipsLang: true, tipsKey: "AEKO_DETAIL_CONTENTDECLARE_TABLE_HEADER_STATUS_TIPS", tips: "状态为【已提交】的原因：1. 封面表态未提交；2. 封面表态已优先提交，尚在审批过程中。", },
   { props: "isReferenceDesc", name: "相关表态", key: "XIANGGUANBIAOTAI", tooltip: true },
   { props: "changeType", name: "变更类型", key: "BIANGENGLEIXING", tooltip: true },
   { props: "cartypeZh", name: "涉及⻋型/⻋型项⽬", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width: 130,isExport:true },
