@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 12:44:34
+ * @LastEditTime: 2021-11-11 17:30:33
  * @Description: 
- * @FilePath: \front-web\src\views\project\components\projectHeader.vue
+ * @FilePath: \front-sourcing\src\views\project\components\projectHeader.vue
 -->
 
 <template>
@@ -20,9 +20,10 @@
 </template>
 
 <script>
-import { iNavMvp, icon, iLog } from "rise"
+import { iNavMvp, icon } from "rise"
 import { TAB } from "./data"
 import logButton from "@/components/logButton"
+import iLog from '@/views/project/log'
 
 export default {
   components: {
@@ -34,7 +35,8 @@ export default {
   data() {
     return {
       bizId: 'scheduleRecordId',
-      showDialog: false
+      showDialog: false,
+      module: '零件排程'
     }
   },
   props: {

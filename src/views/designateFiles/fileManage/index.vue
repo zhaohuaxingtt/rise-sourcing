@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 10:56:28
+ * @LastEditTime: 2021-11-11 17:41:39
  * @Description: 附件综合管理
- * @FilePath: \front-web\src\views\designateFiles\fileManage\index.vue
+ * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
 
 <template>
@@ -25,8 +25,8 @@
           <iSearch @sure="sure" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
-                <iSelect v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]">
-                  <el-option value="" :label="language('ALL','全部')"></el-option>
+                <iSelect v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
+                  <!-- <el-option value="" :label="language('ALL','全部')"></el-option> -->
                   <el-option
                     v-for="item in getOptions(item)"
                     :key="item.value"
@@ -51,8 +51,8 @@
                     :value="item.id">
                   </el-option>
                 </iSelect> 
-                <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" v-model="searchParams[item.value]"></iDatePicker>
-                <iInput v-else v-model="searchParams[item.value]"></iInput> 
+                <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
+                <iInput v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
           </iSearch>
@@ -146,7 +146,7 @@ export default {
       selectParts: [],
       tab: "source",
       selectOptions: {
-        yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}]
+        yesOrNoOption: [{value: true, label: this.language('YES','是')},{value: false, label: this.language('NO','否')}]
       },
       joinRfqDialogVisible: false,
       selectLinie: '',

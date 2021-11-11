@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-11-08 10:28:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-11 14:42:34
+ * @LastEditors:  
  * @Description: 定点表格信息
  *
  */
@@ -32,7 +32,7 @@ export const tableTitle = [{
   tooltip: true
 },
 {
-  props: 'carTypeProj',
+  props: 'carType',
   name: 'PROJECT',
   key: 'PROJECT',
   tooltip: true
@@ -44,19 +44,19 @@ export const tableTitle = [{
 //   tooltip: true
 // },
 {
-	props: 'applicationStatus',
+	props: 'applicationStatusDesc',
 	name: '状态',
 	key: 'LK_ZHUANGTAI',
 	tooltip: true 
 },
 {
-  props: 'carType',
+  props: 'partProjTypeDesc',
   name: '项目类型',
   key: 'nominationLanguage_XingMuLeiXing',
   tooltip: true
 },
 {
-  props: 'meetingPresentId',
+  props: 'meetingName',
   name: '会议',
   key: 'nominationLanguage_HuiYi',
   tooltip: true
