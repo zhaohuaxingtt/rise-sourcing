@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-10 17:44:25
+ * @LastEditTime: 2021-11-11 22:51:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -15,7 +15,7 @@
       </iSelect>
     </iFormItem>
     <iFormItem  v-if='isPreview'  label='Analysis：'>
-      <iSelect v-model="previewItems" v-loading='loadingRight'>
+      <iSelect v-model="previewItems" v-loading='loadingRight' @change="refresh">
         <el-option v-for='(items,index) in (tableData.filter(r=>r.flag))' :label='items.bizId + "-" + items.stuffName + "" + items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
       </iSelect>
     </iFormItem>
@@ -49,18 +49,18 @@
       </div>
   </iDialog>
   <div v-if='isPreview'>
-    <bob v-if='typeSelect == "BOB" && previewItems'></bob>
-    <vp v-else-if='typeSelect == "VP" && previewItems'></vp>
-    <pi v-else-if='typeSelect == "PI" && previewItems'></pi>
-    <div v-else-if='["PCA","TIA"].includes(typeSelect)' style="min-height:70vh" class="flex-center-center">
-      <iframe height='70vh' width="100%" v-if='previewItems && JSON.parse(previewItems).fileList && JSON.parse(previewItems).fileList[0].filePath' :src="JSON.parse(previewItems).fileList[0].filePath" frameborder="0"></iframe>
+    <bob v-if='typeSelect == "BOB" && previewItems' :key='keysRender'></bob>
+    <vp v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
+    <pi v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
+    <div v-else-if='["PCA","TIA"].includes(typeSelect)' style="height:600px" class="flex-center-center" :key='keysRender'>
+      <iframe height='600px' width="100%" v-if='previewItems && JSON.parse(previewItems).fileList && JSON.parse(previewItems).fileList[0].filePath' :src="JSON.parse(previewItems).fileList[0].filePath" frameborder="0"></iframe>
       <div v-else>抱歉当前类型暂无预览文件</div>
     </div>
     <template v-else-if='typeSelect == "QT"'>
-          <echartsComponents v-if='previewItems' :rfqId='JSON.parse(previewItems).rfqId'></echartsComponents>
+        <echartsComponents v-if='previewItems' :rfqId='JSON.parse(previewItems).rfqId' :key='keysRender'></echartsComponents>
     </template>
     <template v-else>
-      <mek v-if='previewItems'></mek>
+      <mek v-if='previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></mek>
     </template>
   </div>
 </iCard>
@@ -87,7 +87,8 @@ export default{
       loading:false,
       messageBox:false,
       isPreview:false,
-      previewItems:null
+      previewItems:null,
+      keysRender:parseInt(Math.random()*100000000000)
     }
   },
   created(){
@@ -96,6 +97,9 @@ export default{
     this.isPreview = this.$route.query.isPreview == 1
   },
   methods:{
+    refresh(){
+      this.keysRender = parseInt(Math.random()*10000000000)
+    },
         /**
      * @description: 是否展示
      * @param {*}
