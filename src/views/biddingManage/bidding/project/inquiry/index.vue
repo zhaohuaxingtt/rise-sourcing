@@ -464,7 +464,8 @@ export default {
       pointerEvents: "visible",
       size: "",
       dataType:'',
-      rfqCode:''
+      rfqCode:'',
+      time:''
     };
   },
   computed: {
@@ -504,6 +505,13 @@ export default {
   mounted() {
     this.handleSearchReset();
     this.queryCurrency();
+    this.time = setInterval(() => {
+      if(localStorage.getItem('close')) {
+        clearInterval(this.time)
+        localStorage.removeItem('close')
+        window.location.reload()
+      }
+    }, 1000);
   },
   methods: {
     handleHrefHall(){
@@ -1449,6 +1457,9 @@ export default {
       });
     },
   },
+  destroyed(){
+    clearInterval(this.time)
+  }
 };
 </script>
 
