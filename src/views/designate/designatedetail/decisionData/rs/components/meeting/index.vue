@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <div :class="isPreview && 'isPreview'">
+  <div class="meeting" :class="isPreview && 'isPreview'">
     <iCard :title="'CSC定点推荐 - ' + cardTitle">
       <div slot="header-control" class="singleSourcing" v-if="isSingle">Single Sourcing</div>
       <div class="rsTop">
@@ -22,7 +22,7 @@
           <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
             <template v-if="Array.isArray(item)">
               <div class="rsTop-right-item-title">
-                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}}{{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
+                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
               </div>
               <div class="rsTop-right-item-value">
                 <div v-for="(subItem, subIndex) in item" :key="subIndex">
@@ -30,7 +30,7 @@
               </div>
             </template>
             <template v-else>
-              <div  class="rsTop-right-item-title">{{item.name}} {{item.enName}}</div>
+              <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
                 <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
                   <div v-for="(item,index) in basicData[item.props]" :key="index">
                       <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
@@ -40,7 +40,8 @@
                   </div>
                 </div>       
                 <div class="rsTop-right-item-value" v-else >
-                  <span v-html="basicData[item.props]" style="word-wrap: break-word;">
+                  <span v-if="item.props == 'mtz'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
+                  <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;">
                   </span>
                 </div>
             </template>
@@ -149,6 +150,18 @@ export default {
       projectType: '',
       isSingle: false,
       suppliers: ''
+    }
+  },
+  filters: {
+    booleanFilter(val) {
+      console.log("val", val)
+
+      const obj = {
+        true: "Y",
+        false: "N"
+      }
+
+      return obj[val] || val
     }
   },
   computed: {
@@ -426,7 +439,7 @@ export default {
   border: 1px dashed #1660F1;
 }
 .rsTable {
-  font-size: 12px;
+  font-size: 8px;
   &::before {
     height: 0;
   }
@@ -434,14 +447,29 @@ export default {
     padding-top: 8px;
     padding-bottom: 8px;
     & > .cell {
-      padding-left: 5px;
-      padding-right: 5px;
+      padding-left: 3px;
+      padding-right: 3px;
       line-height: 14px;
-      span span {
-        font-size: 10px;
+      span {
+        zoom: 0.63;
+      }
+
+      // span span {
+      //   // font-size: 8px;
+      // }
+    }
+  }
+
+  ::v-deep .el-table__row td {
+    .cell {
+      padding-left: 3px;
+      padding-right: 3px;
+
+      span {
+        zoom: 0.63;
       }
     }
-  } 
+  }
 }
 .rsTop {
   display: flex;
