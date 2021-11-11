@@ -150,7 +150,13 @@ export default {
   },
   methods: {
     handleSearchReset() {
-      let param = { biddingId: this.id, supplierCode: this.supplierCode };
+      // 采购员
+       let param
+      if( this.supplierCode === '11135'){
+         param = { biddingId: this.id};
+      } else {
+         param = { biddingId: this.id, supplierCode: this.supplierCode };
+      }
       this.query(param);
       findQuoteRule({ id: this.id }).then((res) => {
         this.biddingQuoteRule = res.biddingQuoteRule;

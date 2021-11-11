@@ -29,7 +29,7 @@
           <!-- 竞价大厅 -->
           <iButton
             v-if="
-              ruleForm.biddingStatus !== '01' 
+              disHall
             "
             @click="handleHrefHall"
             >{{ language('BIDDING_JIANGJIADATING', '竞价大厅') }}</iButton
@@ -469,6 +469,10 @@ export default {
     };
   },
   computed: {
+    disHall(){
+      const {biddingStatus} = this.ruleForm
+      return biddingStatus ==='02' || biddingStatus === '04' || biddingStatus === '06' || biddingStatus === '07' || biddingStatus === '08'
+    },
     formComponent() {
       const { roundType } = this.ruleForm;
       return "05" === roundType
@@ -1557,12 +1561,14 @@ export default {
     left: 42px;
     color: #fff;
     z-index: -1111;
+    background: transparent !important;
   }
   .el-switch__label--right {
     position: relative;
     right: 42px;
     color: #fff;
     z-index: -1111;
+    background: transparent !important;
   }
   .el-switch__label--right.is-active {
     z-index: 1;
