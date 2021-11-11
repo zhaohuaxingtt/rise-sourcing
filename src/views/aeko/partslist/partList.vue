@@ -2,15 +2,17 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-03 14:14:59
+ * @LastEditTime: 2021-11-11 11:26:48
  * @Description: 零件列表 AEKO 
 -->
 <template>
   <iPage class="aekoPartslist" v-permission.auto="AEKO_PARTLIST_CSFAEKOPARTLIST_PAGE|CSF&AEKO审批分配人零件清单">
-    <h2 class="title">
-      {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
-    </h2>
-    <iNavMvp :list="describeTab" lang  :lev="2" :query="$route.query || {}" routerPage right></iNavMvp>
+    <div class="aekoPartslist-header">
+      <div class="title">
+        {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
+      </div>
+      <iNavMvp :list="describeTab" lang  :lev="2" :query="$route.query || {}" routerPage right></iNavMvp>
+    </div>
     <div class="contain margin-top20">
       <!-- 搜索区域 -->
       <iSearch @sure="sure" @reset="reset">
@@ -425,6 +427,10 @@ export default {
 
 <style lang="scss" scoped>
   .aekoPartslist{
-
+    overflow: hidden;
+    .aekoPartslist-header {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 </style>
