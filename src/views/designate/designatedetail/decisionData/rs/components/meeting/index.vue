@@ -52,7 +52,7 @@
                   </div>
                 </div>       
                 <div class="rsTop-right-item-value" v-else >
-                  <span v-if="item.props == 'mtz'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
+                  <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
                   <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;">
                   </span>
                 </div>
@@ -166,8 +166,6 @@ export default {
   },
   filters: {
     booleanFilter(val) {
-      console.log("val", val)
-
       const obj = {
         true: "Y",
         false: "N"
@@ -471,7 +469,7 @@ export default {
       padding-right: 3px;
       line-height: 14px;
       span {
-        zoom: 0.63;
+        zoom: 0.85;
       }
 
       // span span {
@@ -486,7 +484,7 @@ export default {
       padding-right: 3px;
 
       span {
-        zoom: 0.63;
+        zoom: 0.88;
       }
     }
   }
