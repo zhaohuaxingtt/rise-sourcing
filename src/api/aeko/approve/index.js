@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-09 20:58:38
+ * @LastEditTime: 2021-11-11 11:28:40
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -10,7 +10,7 @@ import download from '@/utils/axios.download'
 
 const requst_sourcing = axios(process.env.VUE_APP_SOURCING)
 const requst = axios(process.env.VUE_APP_PARTS)
-const requst_log = axios(process.env.VUE_APP_LOG)
+const requst_log = axios(process.env.VUE_APP_BIZLOG)
 const fileRequst = download(process.env.VUE_APP_PARTS)
 
 // 列表查询

@@ -58,7 +58,7 @@ module.exports = {
             compress: {
               drop_debugger: true,
               drop_console: true,
-              pure_funcs: ['console.log','console.warn'],
+              pure_funcs: ['console.log', 'console.warn'],
             },
           },
           sourceMap: false,
@@ -117,7 +117,7 @@ module.exports = {
     https: false,
     hot: true,
     proxy: {
-      '/mtzApi':{
+      '/mtzApi': {
         // target: 'http://10.122.17.38:8046',
         target: 'http://10.122.18.166:8046',
         changeOrigin: true,
@@ -228,9 +228,9 @@ module.exports = {
       },
       '/purchaseApply': {
         target: 'http://10.122.17.38:8026',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/purchaseApply':''
+        changeOrigin: true,
+        pathRewrite: {
+          '^/purchaseApply': ''
         }
       },
       '/risemessage': {
@@ -269,10 +269,13 @@ module.exports = {
         target: "http://10.122.17.38:8017",
         changeOrigin: true
       },
-      '/bizlog': {
-        target: `http://10.122.17.38:8013`,
+      [process.env.VUE_APP_BIZLOG]: {
+        target: `http://10.122.17.38:8013/bizlog`,
         changeOrigin: true,
-      }
+        pathRewrite: {
+          ['^' + process.env.VUE_APP_BIZLOG]: ''
+        }
+      },
     },
   },
 }
