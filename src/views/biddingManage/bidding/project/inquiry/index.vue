@@ -433,7 +433,7 @@ export default {
       cbdLevelList: {},
       cbdLevelLib,
       userListCache: {},
-
+      userListData:{},
       tableTitle,
       isAttendList,
       manualTableTitle,
@@ -1303,7 +1303,6 @@ export default {
               ...item,
             })),
             suppliers: res.suppliers?.map((supplier) => {
-              console.log('obsfsaject',supplier)
               this.querySuppliers(supplier.supplierCode,supplier.supplierId);
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
@@ -1369,11 +1368,14 @@ export default {
     },
     async querySuppliers(supplierCode,supplierId) {
       // 联系人
+      
       if (!this.userListCache[supplierId]) {
         this.$set(this.userListCache, supplierId, []);
         const params = {supplierId, isOnlyValid: true}
         const data = await getSupplierInfoById(params);
         this.$set(this.userListCache, supplierId, data.data || []);
+        const list = this.userListCache[supplierId].filter(item => item.isDefault) || {}
+        this.$set(this.userListData, supplierId, list || []);
       }
       // CBD
       if (!this.cbdLevelList[supplierCode]) {
@@ -1387,7 +1389,10 @@ export default {
                   ? this.cbdLevelList[supplierCode].slice(2, 3)
                   : supplier?.cbdArea == "02"
                   ? this.cbdLevelList[supplierCode].slice(1, 3)
-                  : this.cbdLevelList[supplierCode]
+                  : this.cbdLevelList[supplierCode],
+            contactName:this.userListData[supplier.supplierId]?.[0]?.nameZh,
+            email:this.userListData[supplier.supplierId]?.[0]?.email,
+            telephone:this.userListData[supplier.supplierId]?.[0]?.phoneM
           };
         })
       }
