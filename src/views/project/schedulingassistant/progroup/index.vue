@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:27:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 21:26:16
+ * @LastEditTime: 2021-11-11 12:00:08
  * @Description: 产品组排程页面
- * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\index.vue
 -->
 
 <template>
@@ -28,7 +28,7 @@
         </div>
         <div class="floatright">
           <!--------------------算法配置按钮----------------------------------->
-          <logicSettingBtn ref="logic" logicType="1" :carProject="carProject" :disabled="isSop || isNodeView" :logicList="productLogicList" @handleUse="handleUseLogic" />
+          <logicSettingBtn ref="productLogic" logicType="1" :carProject="carProject" :disabled="isSop || isNodeView" :logicList="productLogicList" @handleUse="handleUseLogic" />
         </div>
       </div>
       <div class="projectCard-content">
@@ -159,7 +159,7 @@ export default {
       updateCarConfig({...data,type:1,cartypeProId:this.carProject}).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.changeLogic(false)
+          this.$refs.productLogic.changeVisible(false)
           this.$nextTick(() => {
             this.initView()
           })
@@ -167,7 +167,7 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       }).finally(() => {
-        this.$refs.logic.changeSaveLoading(false)
+        this.$refs.productLogic.changeSaveLoading(false)
       })
       
     },
