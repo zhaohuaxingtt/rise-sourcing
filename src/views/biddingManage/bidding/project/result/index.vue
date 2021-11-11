@@ -34,7 +34,13 @@ export default {
   computed: {},
   methods: {
     handleSearchReset() {
-      let param = { biddingId: this.id, supplierCode: this.supplierCode };
+      // 采购员
+      let param
+      if( this.supplierCode === '11135'){
+        param = { biddingId: this.id};
+      } else {
+        param = { biddingId: this.id, supplierCode: this.supplierCode };
+      }
       this.query(param);
     },
     async query(e) {
