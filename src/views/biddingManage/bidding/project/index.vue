@@ -185,7 +185,7 @@ export default {
               label: this.language('BIDDING_JINGDANGXINXI','建档信息'),
               path: "biddingSupplierFiling",
             },
-            { value: "hall", label: this.language('BIDDING_JINGJIADATING','竞价大厅'), path: "biddingProjectHall" },
+            { value: "hall", label: this.language('BIDDING_JINGJIADATING','竞价大厅'), path: "biddingSupplierHall" },
             {
               value: "result",
               label: this.language('BIDDING_XIANGMUJIEGUO','项目结果'),
@@ -228,7 +228,7 @@ export default {
   methods: {
     handleBack() {
       this.$router.push({
-        name: "biddingProjectList",
+        path: "/bidding/projectlist",
       });
       sessionStorage.clear();
     },
