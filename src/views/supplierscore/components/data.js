@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 14:36:13
- * @LastEditTime: 2021-07-26 15:31:51
+ * @LastEditTime: 2021-11-11 17:26:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\data.js
@@ -30,6 +30,7 @@ export const queryForm = {
   supplierName: "", // 供应商名称
   modelNameZh: "", // 车型
   carTypeProject: "", // 车型项目
+  showSelf:'YES', // 是否显示自己
 }
 
 export const tableTitle = [
