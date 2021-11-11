@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 15:28:53
+ * @LastEditTime: 2021-11-11 17:47:52
  * @Description: 配件综合管理页面
- * @FilePath: \front-web\src\views\accessoryPart\integratedManage\index.vue
+ * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
 
 <template>
@@ -22,8 +22,8 @@
           <iSearch @sure="sure" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
-                <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]">
-                  <el-option value="" :label="language('ALL','全部')"></el-option>
+                <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
+                  <!-- <el-option value="" :label="language('ALL','全部')"></el-option> -->
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -31,7 +31,7 @@
                     :value="item.value">
                   </el-option>  
                 </iSelect> 
-                <iInput v-else v-model="searchParams[item.value]" @input="item.inputType ? handleInput($event, item, searchParams) : ''"></iInput> 
+                <iInput v-else v-model="searchParams[item.value]" @input="item.inputType ? handleInput($event, item, searchParams) : ''" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
           </iSearch>
@@ -157,7 +157,8 @@ export default {
       selectOptions: {
         yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}],
         cartypeProjectOptions: [],
-        carTypeOptions: []
+        carTypeOptions: [],
+        trueOrFalseOption: [{value: true, label: this.language('YES','是')},{value: false, label: this.language('NO','否')}]
       },
       selectDeptId: '',
       downloadAllLoading: false,

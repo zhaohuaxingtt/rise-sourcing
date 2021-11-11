@@ -3,7 +3,8 @@
     <!--    顶部操作按钮-->
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language('PI.PIFENXI', 'Price Index分析') }}</span>
-      <div class="floatright">
+      <div class="floatright"
+           v-if="!propSchemeId">
         <iButton @click="handleBack">{{ language('PI.PIFENXIKU', 'Price Index分析库') }}</iButton>
         <iButton @click="handlePreview">{{ language('PI.YULAN', '预览') }}</iButton>
         <iButton @click="handleSaveButtonClick">{{ language('PI.BAOCUN', '保存') }}</iButton>
@@ -42,11 +43,13 @@
                 :dataInfo="dataInfo"
                 :currentTab="currentTab"
                 :tableLoading="tableLoading"
+                v-bind="$attrs"
                 @handlePriceTableFinish="handlePriceTableFinish($event, currentTab)"
                 :tableStatus="tableStatus"
                 @handleTableStatus="handleTableStatus" />
       <theTable v-show="currentTab === AVERAGE"
                 ref="theAverageTable"
+                v-bind="$attrs"
                 :averageData="averageData"
                 :currentTab="currentTab"
                 :tableLoading="tableLoading"
@@ -136,6 +139,12 @@ export default {
       piIndexChartParams: (state) => state.rfq.piIndexChartParams,
     }),
   },
+  props: {
+    propSchemeId: {
+      type: String,
+      default: ""
+    }
+  },
   data () {
     return {
       pageLoading: false,
@@ -149,7 +158,7 @@ export default {
       },
       currentTab: CURRENTTIME,
       currentTabData: {
-        analysisSchemeId: this.$route.query.schemeId,
+        analysisSchemeId: this.$route.query.schemeId ? this.$route.query.schemeId : this.propSchemeId,
         partsId: '',
         batchNumber: this.$route.query.batchNumber,
         supplierId: '',

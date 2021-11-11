@@ -126,3 +126,11 @@ export function nomiApprovalProcess(data) {
   })
 }
 
+// 流转退回
+export function tranformRecall(data) {
+  return requst({
+    url: "/nominate-apps/tranformRecall",
+    method: "POST",
+    data,
+  })
+}

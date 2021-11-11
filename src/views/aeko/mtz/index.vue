@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:34:01
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-29 15:31:42
+ * @LastEditTime: 2021-11-11 11:46:52
  * @Description: 
 -->
 <template>
@@ -10,11 +10,11 @@
     <div class="margin-bottom25 aeko-mtz-header">
       <span class="akeoTitle">{{language('LK_MTZBIANGENG', 'MTZ变更')}}:{{ $route.query.aekoNum }}</span>
       <div style="aeko-mtz-submenu">
-        <logButton class="margin-left20" @click="toLogPage" />
+        <logButton class="margin-left20" @click="toLogPage" v-if="showLogButton" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
       </div>
     </div>
-    <router-view></router-view>
+    <router-view @showLog="showLog"></router-view>
   </iPage>
 </template>
 <script>
@@ -27,7 +27,15 @@ export default {
     icon,
     logButton
   },
+  data() {
+    return {
+      showLogButton: true
+    }
+  },
   methods: {
+    showLog(state) {
+      this.showLogButton = state
+    },
     // 跳转查看日志
     toLogPage() {
       const id = 'scheduleRecordId'

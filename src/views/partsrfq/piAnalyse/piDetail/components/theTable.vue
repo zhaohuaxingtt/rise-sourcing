@@ -10,8 +10,9 @@
           }}：{{ totalPriceRatio }}%</span>
       </span>
       <div class="floatright">
-        <template v-if="isPreview">
-          <span class="text timeRange" v-if="currentTab === AVERAGE">{{
+        <template v-if="isPreview||propSchemeId">
+          <span class="text timeRange"
+                v-if="currentTab === AVERAGE">{{
               language('PI.SHIJIANDAN', '时间段')
             }}：{{ beginTime }} - {{ endTime }}</span>
         </template>
@@ -28,50 +29,47 @@
           </template>
           <template v-else>
             <!--编辑-->
-            <iButton @click="handleEdit" v-if="tableStatus !== 'edit' && showEditButton">{{ $t('LK_BIANJI') }}</iButton>
+            <iButton @click="handleEdit"
+                     v-if="tableStatus !== 'edit' && showEditButton">{{ $t('LK_BIANJI') }}</iButton>
           </template>
         </template>
       </div>
     </div>
-
     <!--显示表格-->
-    <theTableTemplate
-        :tableData="tableListData"
-        :tableTitle="tableTitle"
-        :tableLoading="tableLoading"
-        :index="true"
-        :isShowTable="true"
-        :isTableEdit="tableStatus"
-        @handleSelectionChange="handleSelectionChange"
-        @handleHide="handleHide"
-        @handleGetSelectList="({...params})=>handleGetSelectList({...params,tableListData: tableListData})"
-        :selectOptionsObject="selectOptionsObject"
-        @handleSelectReset="({...params})=>handleSelectReset({...params,tableListData: tableListData})"
-        :selection="!isPreview"
-    />
-    <el-divider class="margin-top20 margin-bottom20" v-if="tableStatus === 'edit'"/>
+    <theTableTemplate :tableData="tableListData"
+                      :tableTitle="tableTitle"
+                      :tableLoading="tableLoading"
+                      :index="true"
+                      :isShowTable="true"
+                      :isTableEdit="tableStatus"
+                      @handleSelectionChange="handleSelectionChange"
+                      @handleHide="handleHide"
+                      @handleGetSelectList="({...params})=>handleGetSelectList({...params,tableListData: tableListData})"
+                      :selectOptionsObject="selectOptionsObject"
+                      @handleSelectReset="({...params})=>handleSelectReset({...params,tableListData: tableListData})"
+                      :selection="!isPreview" />
+    <el-divider class="margin-top20 margin-bottom20"
+                v-if="tableStatus === 'edit'" />
     <!--隐藏表格-->
-    <theTableTemplate
-        v-if="tableStatus === 'edit'"
-        :tableData="hideTableData"
-        :tableTitle="tableTitle"
-        :tableLoading="tableLoading"
-        :index="true"
-        :customIndex="tableListData.length"
-        :isShowTable="false"
-        :isTableEdit="tableStatus"
-        @handleSelectionChange="handleHideSelectionChange"
-        @handleShow="handleShow"
-        @handleGetSelectList="({...params})=>handleGetSelectList({...params,tableListData: hideTableData})"
-        :selectOptionsObject="selectOptionsObject"
-        @handleSelectReset="({...params})=>handleSelectReset({...params,tableListData: hideTableData})"
-        :selection="!isPreview"
-    />
+    <theTableTemplate v-if="tableStatus === 'edit'"
+                      :tableData="hideTableData"
+                      :tableTitle="tableTitle"
+                      :tableLoading="tableLoading"
+                      :index="true"
+                      :customIndex="tableListData.length"
+                      :isShowTable="false"
+                      :isTableEdit="tableStatus"
+                      @handleSelectionChange="handleHideSelectionChange"
+                      @handleShow="handleShow"
+                      @handleGetSelectList="({...params})=>handleGetSelectList({...params,tableListData: hideTableData})"
+                      :selectOptionsObject="selectOptionsObject"
+                      @handleSelectReset="({...params})=>handleSelectReset({...params,tableListData: hideTableData})"
+                      :selection="!isPreview" />
   </div>
 </template>
 
 <script>
-import {iButton, iMessage, iMessageBox} from 'rise';
+import { iButton, iMessage, iMessageBox } from 'rise';
 import {
   tableTitle,
   tableEditTitle,
@@ -84,7 +82,7 @@ import {
   AVERAGE,
   FIRSTEXCHANGERATE,
 } from './data';
-import {toFixedNumber, toThousands} from '@/utils';
+import { toFixedNumber, toThousands } from '@/utils';
 import theTableTemplate from './theTableTemplate';
 import _ from 'lodash';
 
@@ -126,13 +124,17 @@ export default {
       type: String,
       default: '',
     },
+    propSchemeId: {
+      type: String,
+      default: ""
+    }
   },
   computed: {
-    pageType() {
+    pageType () {
       return this.$route.query.type;
     },
   },
-  data() {
+  data () {
     return {
       tableListData: [],
       selectTableData: [],
@@ -154,24 +156,24 @@ export default {
       endTime: '',
     };
   },
-  created() {
+  created () {
     this.getTableList();
   },
   methods: {
     toFixedNumber,
     toThousands,
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selectTableData = val;
     },
-    handleHideSelectionChange(val) {
+    handleHideSelectionChange (val) {
       this.hideSelectTableData = val;
     },
-    handleEdit() {
+    handleEdit () {
       this.recordTableData = _.cloneDeep(this.tableListData);
       this.recordHideTableData = _.cloneDeep(this.hideTableData);
       this.$emit('handleTableStatus', 'edit');
     },
-    handleAdd() {
+    handleAdd () {
       const time = new Date().getTime();
       const newItemList = this.tableTitle.map(item => {
         return item.props;
@@ -190,14 +192,14 @@ export default {
       });
       this.selectOptionsObject[time] = {};
     },
-    handleDelete() {
+    handleDelete () {
       if (this.selectTableData.length === 0 && this.hideSelectTableData.length === 0) {
         return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZE'));
       }
       iMessageBox(
-          this.$t('LK_SHIFOUQUERENSHANCHU'),
-          this.$t('LK_WENXINTISHI'),
-          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+        this.$t('LK_SHIFOUQUERENSHANCHU'),
+        this.$t('LK_WENXINTISHI'),
+        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') },
       ).then(async () => {
         let ids = [], times = [], hideIds = [], hideTimes = [];
         // 显示表格
@@ -240,18 +242,18 @@ export default {
         }
       });
     },
-    handleCancel() {
+    handleCancel () {
       this.tableListData = this.recordTableData;
       this.hideTableData = this.recordHideTableData;
       this.$emit('handleTableStatus', '');
     },
-    handleFinish() {
+    handleFinish () {
       // this.handleAllSaveData();
       this.$emit('handlePriceTableFinish', this.handleAllSaveData());
     },
-    handleAllSaveData() {
-      const resTableData = this.handleSystemMatchData({tableListData: this.tableListData});
-      const hideTableData = this.handleSystemMatchData({tableListData: this.hideTableData});
+    handleAllSaveData () {
+      const resTableData = this.handleSystemMatchData({ tableListData: this.tableListData });
+      const hideTableData = this.handleSystemMatchData({ tableListData: this.hideTableData });
       const res = this.handleValidateTableFinish();
       if (res) {
         const tableList = resTableData.concat(hideTableData);
@@ -264,14 +266,14 @@ export default {
         };
       }
     },
-    handleValidateTableFinish() {
-      const resTableData = this.handleSystemMatchData({tableListData: this.tableListData});
-      const hideTableData = this.handleSystemMatchData({tableListData: this.hideTableData});
+    handleValidateTableFinish () {
+      const resTableData = this.handleSystemMatchData({ tableListData: this.tableListData });
+      const hideTableData = this.handleSystemMatchData({ tableListData: this.hideTableData });
       const resTableValidate = this.validateFinish(resTableData);
       const hideTableValidate = this.validateFinish(hideTableData, true);
       return resTableValidate && hideTableValidate;
     },
-    validateFinish(resTableData, isHideTable = false) {
+    validateFinish (resTableData, isHideTable = false) {
       let validateStatus = true;
       resTableData.some((item, index) => {
         const newIndex = !isHideTable ? (index + 1) : this.tableListData.length + index + 1;
@@ -299,7 +301,7 @@ export default {
       });
       return validateStatus;
     },
-    handleSystemMatchData({tableListData}) {
+    handleSystemMatchData ({ tableListData }) {
       const newList = _.cloneDeep(tableListData);
       newList.map(item => {
         const copyItem = _.cloneDeep(item);
@@ -339,7 +341,7 @@ export default {
       });
       return newList;
     },
-    async getTableList() {
+    async getTableList () {
       try {
         this.tableListData = [];
         this.hideTableData = [];
@@ -384,7 +386,7 @@ export default {
         this.hideTableData = [];
       }
     },
-    handleHide(row) {
+    handleHide (row) {
       if (row.time) {
         this.tableListData = this.tableListData.filter(item => {
           return item.time !== row.time;
@@ -397,7 +399,7 @@ export default {
       row.isShow = false;
       this.hideTableData.push(row);
     },
-    handleShow(row) {
+    handleShow (row) {
       if (row.time) {
         this.hideTableData = this.hideTableData.filter(item => {
           return item.time !== row.time;
@@ -410,7 +412,7 @@ export default {
       row.isShow = true;
       this.tableListData.push(row);
     },
-    handleGetSelectList({props, row, selectList, tableListData}) {
+    handleGetSelectList ({ props, row, selectList, tableListData }) {
       const copyObj = _.cloneDeep(this.selectOptionsObject);
       const id = row.id || row.time;
       tableListData.map(item => {
@@ -426,28 +428,28 @@ export default {
       });
       this.selectOptionsObject = copyObj;
     },
-    handleSelectReset({props, row, tableListData}) {
+    handleSelectReset ({ props, row, tableListData }) {
       const id = row.id || row.time;
       if (id) {
         if (props === this.FIRSTSELECT) {
           this.selectOptionsObject[id][this.SECONDSELECT] = [];
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
           if (row.dataType === classType['rawMaterial']) {
-            this.handleSelectValueReset({id, valueArray: ['partNumber', 'partRegion'], tableListData});
+            this.handleSelectValueReset({ id, valueArray: ['partNumber', 'partRegion'], tableListData });
           } else if (row.dataType === classType['manpower']) {
-            this.handleSelectValueReset({id, valueArray: ['workProvince'], tableListData});
+            this.handleSelectValueReset({ id, valueArray: ['workProvince'], tableListData });
           } else if (row.dataType === classType['exchangeRate']) {
-            this.handleSelectValueReset({id, valueArray: ['currency'], tableListData});
+            this.handleSelectValueReset({ id, valueArray: ['currency'], tableListData });
           }
         } else if (props === this.SECONDSELECT) {
           this.selectOptionsObject[id][this.THIRDSELECT] = [];
           if (row.dataType === classType['rawMaterial']) {
-            this.handleSelectValueReset({id, valueArray: ['partRegion'], tableListData});
+            this.handleSelectValueReset({ id, valueArray: ['partRegion'], tableListData });
           }
         }
       }
     },
-    handleSelectValueReset({id, valueArray, tableListData}) {
+    handleSelectValueReset ({ id, valueArray, tableListData }) {
       tableListData.map(item => {
         if ([item.id, item.time].includes(id)) {
           valueArray.map(valueItem => {
@@ -459,7 +461,7 @@ export default {
     },
   },
   watch: {
-    tableStatus(val) {
+    tableStatus (val) {
       if (val === 'edit') {
         this.tableTitle = tableEditTitle;
       } else {
@@ -468,13 +470,13 @@ export default {
     },
     dataInfo: {
       deep: true,
-      handler() {
+      handler () {
         this.getTableList();
       },
     },
     averageData: {
       deep: true,
-      handler() {
+      handler () {
         this.getTableList();
       },
     },

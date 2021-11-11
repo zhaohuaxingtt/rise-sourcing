@@ -237,7 +237,7 @@ export default {
         return;
       }
       filePreview({
-        url: "/bidding/biddingQueryService/viewAuctionEn",
+        url: `${process.env.VUE_APP_BIDDING}/biddingQueryService/viewAuctionEn`,
         data: {
           ...param,
         },

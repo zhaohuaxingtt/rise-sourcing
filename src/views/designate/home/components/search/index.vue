@@ -181,7 +181,7 @@
       <!-- 显示自己 -->
       <el-form-item :label="language('nominationLanguage_XianShiZiJi','显示自己')">
         <iSelect
-          v-model="form.showMe"
+          v-model="form.showSelf"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           v-permission.auto="SOURCING_NOMINATION_SHOWME|显示自己"
           clearable

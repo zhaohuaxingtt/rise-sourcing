@@ -474,9 +474,13 @@ export default {
       return {
         disabledDate: (time) => {
           if (num === 1) {
-            if(this.annualOutputObj[row.title]){
+            if(this.annualOutputObj[row.index+1][props]){
               return (
-                dayjs(time).isBefore(dayjs(this.annualOutputObj[row.title]).add(1,"month")) 
+                dayjs(time).isBefore(dayjs(this.annualOutputObj[row.index+1][props]).add(1,"month")) 
+              );
+            }else if(!this.annualOutputObj[row.index+1][props] && this.beginMonth){
+              return (
+                dayjs(time).isBefore(dayjs(this.beginMonth).add(1,"month")) 
               );
             }
             return;
@@ -506,7 +510,7 @@ export default {
     dateValidator(row, props) {
       let num = Number(props.slice(5));
       let afterDate = dayjs(row[`stage${num - 1}`]);
-      let firstDate = dayjs(this.annualOutputObj[row.title]).add(1, "month");
+      let firstDate = dayjs(this.annualOutputObj[row.index+1][props]).add(1, "month");
       return {
         validator(rule, value, callback) {
           num === 1

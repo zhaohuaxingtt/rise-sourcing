@@ -1,18 +1,19 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: YoHo
- * @LastEditTime: 2021-11-09 21:23:25
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-11 10:45:17
  * @Description: 
 -->
 <template>
-  <iPage class="aeko-assign" v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_PAGE|Aeko分配列表">
+  <iPage class="aeko-assign" v-permission.auto.force="AEKO_ASSIGN_ASSIGNLIST_PAGE|Aeko分配列表">
     <projectHeader :subNavList="SUBMENU" />
     <!-- 搜索 -->
     <search @search="getFetchData" ref="search"/>
     <!-- 表格 -->
     <iCard class="aeko-assign-table">
       <div class="editControl">
+        <span class="font18 font-weight">{{ language( 'AEKOFENPEI', 'AEKO分配' ) }}</span>
         <iButton
             class="floatright margin-bottom20"
             :loading="assigning"
@@ -411,7 +412,7 @@ export default {
 }
 
 .el-select-multi {
-  width: 70%;
+  width: 60%;
 }
 
 .icon {
