@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 14:41:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 11:06:21
+ * @LastEditTime: 2021-11-11 14:30:12
  * @Description: 
- * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\data.js
+ * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\data.js
  */
 export const tableTitle = [
   {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 120},
@@ -47,7 +47,8 @@ export const searchList = [
   {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: 'accessoryTypeOption',permission: 'APREPART_SIGN_PARTSTATE|配件-配件签收-配件状态'},
   {value: 'csfUserDept', label: '是否有询价科室', type: 'select', key: 'SHIFOUYOUXUNJIAKESHI', selectOption: 'yesOrNoOption',permission: 'APREPART_SIGN_HASDEPT|配件-配件签收-是否有询价科室'},
   {value: 'csfUserId', label: '是否有询价采购员', type: 'select', key: 'SHIFOUYOUXUNJIACAIGOUYUAN', selectOption: 'yesOrNoOption',permission: 'APREPART_SIGN_HASBUYER|配件-配件签收-是否有询价采购员'},
-  {value: 'sendDate', label: '需求发送起止日期', type: 'date', key: 'XUQIUFASONGQIZHIRIQI',permission: 'APREPART_SIGN_SENDDATE|配件-配件签收-需求发送起止日期'}
+  {value: 'sendDate', label: '需求发送起止日期', type: 'date', key: 'XUQIUFASONGQIZHIRIQI',permission: 'APREPART_SIGN_SENDDATE|配件-配件签收-需求发送起止日期'},
+  {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'ACCESSORY_MANAGEMENT_ISME|附件-附件管理-是否自己'},
 ]
 
 export const TAB = [
