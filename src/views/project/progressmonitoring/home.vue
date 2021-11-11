@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-05 10:23:14
+ * @LastEditTime: 2021-11-11 11:07:32
  * @Description: 项目进度监控
- * @FilePath: \front-web\src\views\project\progressmonitoring\home.vue
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
 <template>
   <div class="projectoverview" v-permission.auto="PROJECTMGT_PROGRESSMONITORING_PAGE|项目进度监控页面">
@@ -407,6 +407,7 @@ export default {
       text-align: center !important;
       background: #F5F6F7;
       cursor: pointer;
+      height: 40px;
       .itext {
         text-align: center;
         background: #F5F6F7;
