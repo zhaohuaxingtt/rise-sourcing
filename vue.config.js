@@ -199,7 +199,7 @@ module.exports = {
         },
       },
       '/toolingApi': {
-        target: 'http://10.122.17.38:8022',	//	vmsit
+        target: 'http://10.122.17.38:8022', //	vmsit
         changeOrigin: true,
         pathRewrite: {
           '^/toolingApi': '',
@@ -230,8 +230,8 @@ module.exports = {
         target: 'http://10.122.17.38:8026',
         changeOrigin: true,
         pathRewrite: {
-          '^/purchaseApply': ''
-        }
+          '^/purchaseApply': '',
+        },
       },
       '/risemessage': {
         target: 'http://10.122.17.38:8044/risemessage',
@@ -261,20 +261,20 @@ module.exports = {
           '^/baseinfo': '',
         },
       },
-      "/supplierservice": {
-        target: "http://10.122.17.38:8010",
+      '/supplierservice': {
+        target: 'http://10.122.17.38:8010',
         changeOrigin: true,
       },
-      "/supplier": {
-        target: "http://10.122.17.38:8017",
-        changeOrigin: true
+      '/supplier': {
+        target: 'http://10.122.17.38:8017',
+        changeOrigin: true,
       },
       [process.env.VUE_APP_BIZLOG]: {
         target: `http://10.122.17.38:8013/bizlog`,
         changeOrigin: true,
         pathRewrite: {
-          ['^' + process.env.VUE_APP_BIZLOG]: ''
-        }
+          ['^' + process.env.VUE_APP_BIZLOG]: '',
+        },
       },
     },
   },
