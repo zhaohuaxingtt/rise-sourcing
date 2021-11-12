@@ -86,6 +86,11 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
+          if (!res.data.isBnkQuotation) {
+            iMessage.error(res.data.message)
+            return 
+          }
+
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           this.$emit("afterConfirm", this.meetingResult)
           this.status = false
