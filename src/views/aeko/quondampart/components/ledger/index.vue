@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-11 16:10:50
+ * @LastEditTime: 2021-11-12 18:02:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -81,7 +81,7 @@
           @handleSelectionChange="handleSelectionChange"
           :selectable="selectInit"
         >
-          <template #aprice="scope">
+          <template #aPrice="scope">
             <iInput class="aPriceSelect" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.aPrice" readonly @click.native="aPriceSelect(scope.row)">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" />
@@ -328,10 +328,9 @@ export default {
       this.visible = true
 
       this.currentRow = row
-      console.log("this.currentRow.apriceId", this.currentRow.apriceId)
     },
     confirmAPrice(row) {
-      this.currentRow.aprice = row.price
+      this.currentRow.aPrice = row.price
       this.currentRow.currency = row.currency
       this.currentRow.unit = row.priceUnit
       this.currentRow = {}
@@ -341,7 +340,7 @@ export default {
       if (!this.multipleSelection.length && !this.aekomultipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOBAOCUNDEYUANLINGJIAN", "请选择需要保存的原零件"))
 
       this.aekomultipleSelection.map((item)=>{
-        item.aprice = item.newPriceA;
+        item.aPrice = item.newPriceA;
         item.supplierCode = item.supplierSap;
         item.supplierName = item.supplierNameZh;
         item.facadeCode = item.procureFactory;
