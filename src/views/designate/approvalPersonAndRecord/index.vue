@@ -1,10 +1,10 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-07 14:44:09
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-12 14:32:21
  * @Description: 定点-审批人&审批记录
- * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\index.vue
+ * @FilePath: \front-sourcing\src\views\designate\approvalPersonAndRecord\index.vue
 -->
 <template>
   <iPage class="approvalFlow" v-permission.auto="SOURCING_NOMINATION_APPROVAL_PAGE|审批人&审批记录">
@@ -57,7 +57,7 @@
         v-permission.auto="SOURCING_NOMINATION_APPROVAL_TABLE|表格"
       ></tableList>
     </iCard>
-    <approvalFlowDialog :dialogVisible="flowDialogVisible" @changeVisible="changeflowDialogVisible" :processInstanceId="processInstanceId" />
+    <approvalFlowDialog :dialogVisible="flowDialogVisible" @changeVisible="changeflowDialogVisible" :processInstanceId="processInstanceId" :nominationType="nominationType" :nomiAppId="$route.query.desinateId" />
   </iPage>
 </template>
 
