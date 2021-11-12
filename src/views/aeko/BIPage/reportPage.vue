@@ -2,13 +2,15 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:36:41
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-02 19:09:43
+ * @LastEditTime: 2021-11-12 13:57:16
  * @Description: AEKO 审批列表页
 -->
 <template>
   <iPage class="projectoverview">
     <projectTop />
-    <router-view></router-view>
+    <div class="report-content">
+      <router-view></router-view>
+    </div>
   </iPage>
   
 </template>
@@ -26,4 +28,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.report-content{
+  height: calc(100% - 60px);
+}
 </style>

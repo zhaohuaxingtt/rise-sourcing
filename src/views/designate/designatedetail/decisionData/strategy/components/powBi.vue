@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-10 20:17:20
- * @LastEditTime: 2021-11-11 18:00:36
+ * @LastEditTime: 2021-11-12 13:39:59
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\strategy\components\powBi.vue
@@ -46,9 +46,9 @@ export default{
   },
   methods:{
     getPowerBiUrl(){
-      analysisPowerBi().then(r=>{
+      analysisPowerBi(this.$route.query.desinateId).then(r=>{
         this.url = r.data
-        this.init()
+        this.init(r.data.categoryCode || [])
       })
     },
     init(){
@@ -69,9 +69,9 @@ export default{
                 column: "Stuff_ID"
               },
               operator: "In",
-              values: ["030"],
-                    filterType: models.FilterType.BasicFilter,
-                    requireSingleSelection: true
+              values: ["127"],
+              filterType: models.FilterType.BasicFilter,
+              requireSingleSelection: false
         };
         //设置筛选器
         report.setFilters([filter_parameter]);

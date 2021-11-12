@@ -1,6 +1,6 @@
 <template>
   <iPage v-loading="pageLoading">
-    <headerNav ref="headerNav"
+    <headerNav v-if='extendsIsedit' ref="headerNav"
                :showCommonButton="!editStatus">
       <template #extralButton>
         <template v-if="!editStatus">
@@ -137,10 +137,15 @@ export default {
     isEdit: {
       type: Boolean,
       default: true
+    },
+    extendsIsedit:{
+      type:Boolean,
+      default:true
     }
   },
   watch: {
     isEdit (val) {
+      console.log('-------------',val)
       this.editStatus = val
     }
   },
