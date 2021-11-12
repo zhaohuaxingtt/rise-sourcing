@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 10:57:18
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 16:57:05
+ * @LastEditTime: 2021-11-12 17:25:31
  * @Description: 
- * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\part\data.js
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progressconfirm\components\part\data.js
  */
 
 export const tableTitleNomi = [
@@ -13,8 +13,8 @@ export const tableTitleNomi = [
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 150},
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true, minWidth: 150},
   {props:'isBmg',name:'是否BMG', key: "SHIFOUBMG", tooltip: true, minWidth: 90},
-  {props:'scheNomiTimeKw',name:'定点soll1', key: "DINGDIANSOLL1", tooltip: true, minWidth: 120},
-  {props:'scheKickoffTimeKw',name:'Kickoff soll2', key: "KICKOFFSOLL2", tooltip: true, minWidth: 120},
+  {props:'scheNomiTimeKw',name:'定点soll1', key: "DINGDIANSOLL1", tooltip: true, minWidth: 150},
+  {props:'scheKickoffTimeKw',name:'Kickoff soll2', key: "KICKOFFSOLL2", tooltip: true, minWidth: 150},
   {props:'scheFirstTryoutTimeKw',name:'1st tryout prognose', key: "1STTRYOUTPROGNOSE", tooltip: true, minWidth: 180},
   {props:'scheOtsTimeKw',name:'OTS prognose', key: "OTSPROGNOSE", tooltip: true, minWidth: 150},
   {props:'scheEmTimeKw',name:'EM prognose', key: "EMPROGNOSE", tooltip: true, minWidth: 150},
@@ -31,7 +31,7 @@ export const tableTitleKickoff = [
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true, minWidth: 150},
   {props:'isBmg',name:'是否BMG', key: "SHIFOUBMG", tooltip: true, minWidth: 90},
   // {props:'productGroupDe',name:'定点soll1', key: "DINGDIANSOLL1", tooltip: true},
-  {props:'scheKickoffTimeKw',name:'Kickoff soll1', key: "KICKOFFSOLL1", tooltip: true, minWidth: 120},
+  {props:'scheKickoffTimeKw',name:'Kickoff soll1', key: "KICKOFFSOLL1", tooltip: true, minWidth: 150},
   {props:'scheFirstTryoutTimeKw',name:'1st tryout prognose', key: "1STTRYOUTPROGNOSE", tooltip: true, minWidth: 180},
   {props:'scheOtsTimeKw',name:'OTS prognose', key: "OTSPROGNOSE", tooltip: true, minWidth: 150},
   {props:'scheEmTimeKw',name:'EM prognose', key: "EMPROGNOSE", tooltip: true, minWidth: 150},
