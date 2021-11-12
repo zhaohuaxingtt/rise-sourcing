@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 00:41:04
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 11:30:01
+ * @LastEditTime: 2021-11-12 18:01:39
  * @Description: 审批流弹窗
- * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
+ * @FilePath: \front-sourcing\src\views\designate\approvalPersonAndRecord\approvalFlow.vue
 -->
 
 <template>
@@ -12,25 +12,33 @@
     :title="language('SHENPILIU','审批流')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
-    width="678px"
+    width="50%"
   >
-    <ProcessVertical :instanceId="processInstanceId" class="padding-bottom30" />
+    <template>
+      <MeetingProcess ref="MeetingProcess" v-if="nominationType === 'MEETING'" :nomiAppId="nomiAppId" :processInstanceId="processInstanceId" />
+      <ProcessVertical ref="ProcessVertical" v-else :instanceId="processInstanceId" class="padding-bottom30" />
+    </template>
   </iDialog>
 </template>
 
 <script>
-import { iDialog } from 'rise'
+import { iDialog, iMessage } from 'rise'
 import ProcessVertical from './processVertical'
+import MeetingProcess from './meetingProcess'
 export default {
-  components: { iDialog, ProcessVertical },
+  components: { iDialog, ProcessVertical, MeetingProcess },
   props: {
     dialogVisible: { type: Boolean, default: false },
-    processInstanceId: {type: String}
+    processInstanceId: {type: String},
+    nomiAppId: { type: String },
+    nominationType: {type: String}
   },
   data() {
     return {
       panorama: [],
-      detail: {}
+      detail: {},
+      meetingDetail: [],
+      loading: false
     }
   },
   methods: {
