@@ -150,7 +150,7 @@
           </iFormItem>
 
           <iFormItem
-            :label="language('BIDDING_KBJGGKXS', '开标结果公开形式')"
+            :label="language('BIDDING_KBJGGKXS', '结果公开形式')"
             prop="resultOpenForm"
             v-if="roundType"
             class="form-item-row1-clo3-right"
@@ -169,7 +169,7 @@
               </div>
             </iLabelML>
             <iLabel
-              :label="language('BIDDING_KBJGGKXS', '开标结果公开形式')"
+              :label="language('BIDDING_KBJGGKXS', '结果公开形式')"
               slot="label"
               class="form-item-row1-clo3-right"
             ></iLabel>
