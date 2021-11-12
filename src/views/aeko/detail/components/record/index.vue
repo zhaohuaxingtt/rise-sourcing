@@ -190,7 +190,7 @@ export default {
     // 如果是从AEKO查看过来的 tableTitle需要展示一个提交人字段
     const {query} = this.$route;
     const {from=''} = query;
-    from=='manage'?setLogMenu('AEKO管理-详情页'):setLogMenu('AEKO表态-详情页-审批记录')
+    from=='manage'?setLogMenu('AEKO管理-详情页-审批记录'):setLogMenu('AEKO表态-详情页-审批记录')
     let filterTitle = cloneDeep(tableTitle);
     if(from != 'check'){
       this.tableTitle = filterTitle.filter((item)=>item.props !=='startUser');
