@@ -6,6 +6,4 @@
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\utils\echarts\index.js
  */
- export default function echarts() {
-     return window.echarts
- }
+ export default  window.echarts
