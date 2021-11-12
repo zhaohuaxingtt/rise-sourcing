@@ -13,6 +13,20 @@
       <template slot="index" slot-scope="scope">
         <div>{{ scope.row.index + 1 }}</div>
       </template>
+      <template slot="sort">
+        <div v-if="role === 'supplier' && ruleForm.resultOpenForm == '02'"
+          :class="
+              rankDatas.trafficLight == '01'
+                ? 'green-ball'
+                : rankDatas.trafficLight == '02'
+                ? 'yellow-ball'
+                : rankDatas.trafficLight == '03'
+                ? 'red-ball'
+                : ''
+            "
+        >
+        </div>
+      </template>
       <!-- 是否参与本轮RFQ -->
       <template slot="isAttend" slot-scope="scope">
         <div>
@@ -62,6 +76,10 @@ export default {
       type: String,
     },
     value: {
+      type: Object,
+      default: () => ({}),
+    },
+    rankDatas: {
       type: Object,
       default: () => ({}),
     },
@@ -205,6 +223,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.red-ball {
+  background-color: #D10000;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 100%;
+  margin: 0 auto;
+}
+.green-ball {
+  background-color: #4CAF50;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 100%;
+  margin: 0 auto;
+}
+.yellow-ball {
+  background-color: #FFC100;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 100%;
+  margin: 0 auto;
+}
+
 .inquiry {
   &__header {
     &-title {

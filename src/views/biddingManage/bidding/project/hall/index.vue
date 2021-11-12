@@ -38,7 +38,9 @@
           :getRank="getRank"
           v-model="ruleForm"
           @getRank="getRank"
+          @ranksData="ranksData"
           :biddingQuoteRule="biddingQuoteRule"
+          :rankDatas="rankDatas"
         ></component>
       </div>
     </div>
@@ -95,6 +97,7 @@ export default {
       yearsPlans: [],
       procurePlans: [],
       biddingQuoteRule: {},
+      rankDatas:{}
     };
   },
   computed: {
@@ -144,11 +147,15 @@ export default {
   },
   mounted() {
     this.handleSearchReset();
+
   },
   created() {
     this.id = this.$route.params.id;
   },
   methods: {
+    ranksData(data){
+      this.rankDatas = data
+    },
     handleSearchReset() {
       // 采购员
        let param

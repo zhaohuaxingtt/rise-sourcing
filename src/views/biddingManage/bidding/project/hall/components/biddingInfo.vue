@@ -1070,6 +1070,7 @@ export default {
         const r = await getSupplierRank(e).catch(err => {
           console.log(err)
         });
+        this.$emit('ranksData',r)
         this.ranks = {
           ...r,
         };
