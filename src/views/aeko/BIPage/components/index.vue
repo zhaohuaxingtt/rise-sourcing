@@ -1,9 +1,7 @@
 <template>
-	<iPage class="page-content" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PBI|报表管理-状态跟踪报表">
-		<iCard id='powerBiReport'>
-			
-		</iCard>
-	</iPage>
+	<div class="page-content" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PBI|报表管理-状态跟踪报表">
+		<iCard id='powerBiReport'></iCard>
+	</div>
 </template>
 
 <script>
@@ -125,6 +123,10 @@ import { roleMixins } from "@/utils/roleMixins";
 </script>
 
 <style lang="scss" scoped>
+	.page-content{
+		height: 100%;
+		width: 100%;
+	}
 	.title {
 		font-weight: bold;
 		font-size: 20px;
@@ -134,9 +136,10 @@ import { roleMixins } from "@/utils/roleMixins";
 
 	#powerBiReport {
 		width: 100%;
-		height: calc(100vh - 120px);
+		height: 100%;
 		iframe {
 			border: 0px !important;
+			overflow: auto;
 		}
 	}
 </style>
