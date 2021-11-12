@@ -795,9 +795,9 @@ export default {
           biddingId: this.id,
           // id:row.id,
           userList: row.userList,
-          contactName: row.purchaserNameZh,   //联系人
-          email: row.purchaserEmail,          //邮箱
-          telephone: row.phoneM,
+          // contactName: row.purchaserNameZh,   //联系人
+          // email: row.purchaserEmail,          //邮箱
+          // telephone: row.phoneM,
           supplierCode: row.sapCode || row.svwCode || row.svwTempCode || '',
           supplierId: row.subSupplierId,
           supplierName: row.nameZh,
@@ -1368,14 +1368,26 @@ export default {
     },
     async querySuppliers(supplierCode,supplierId) {
       // 联系人
-      
       if (!this.userListCache[supplierId]) {
         this.$set(this.userListCache, supplierId, []);
         const params = {supplierId, isOnlyValid: true}
         const data = await getSupplierInfoById(params);
         this.$set(this.userListCache, supplierId, data.data || []);
-        const list = this.userListCache[supplierId].filter(item => item.isDefault) || {}
+        const list = data.data.filter(item => item.isDefault)
         this.$set(this.userListData, supplierId, list || []);
+         // 手工且是草稿添加联系人默认值
+        const { biddingStatus} = this.ruleForm
+        if ( biddingStatus === '01') {
+          this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
+            return {
+              ...supplier,
+              mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
+              contactName:supplier.contactName || this.userListData[supplier.supplierId]?.[0]?.nameZh,
+              email:supplier.email || this.userListData[supplier.supplierId]?.[0]?.email,
+              telephone:supplier.telephone || this.userListData[supplier.supplierId]?.[0]?.phoneM
+            };
+          })
+        }
       }
       // CBD
       if (!this.cbdLevelList[supplierCode]) {
@@ -1390,12 +1402,11 @@ export default {
                   : supplier?.cbdArea == "02"
                   ? this.cbdLevelList[supplierCode].slice(1, 3)
                   : this.cbdLevelList[supplierCode],
-            contactName:this.userListData[supplier.supplierId]?.[0]?.nameZh,
-            email:this.userListData[supplier.supplierId]?.[0]?.email,
-            telephone:this.userListData[supplier.supplierId]?.[0]?.phoneM
           };
         })
       }
+      
+
     },
     // 表格选中值集
     handleCurrentChange(e) {
