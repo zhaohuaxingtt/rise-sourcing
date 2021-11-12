@@ -123,7 +123,7 @@
           :type="'4'"
           :tableLoading="false"
           :inputProps="biddingStatus ? [] : outPutProps"
-          :annualOutputObj="annualOutputObj"
+          :annualOutputObj="annualOutput"
           :beginMonth="ruleForm.beginMonth"
           @handlerInputBlur="handlerInputBlur"
         >

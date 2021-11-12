@@ -42,7 +42,8 @@ export const searchList = [
   {value: 'applyType', label: '申请类型', type: 'selectDict', i18n_label: 'SHENQINGLEIXING',selectOption: 'sign_page_apply_type',permission: 'MODELTARGETPRICE_QUERY_APPLYTYPE|模具目标价管理-目标价查询-申请类型'},
   {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI', permission: 'MODELTARGETPRICE_MAINTENANCE_APPLYDATE|模具目标价管理-目标价维护-申请日期起止'},
   {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI', permission: 'MODELTARGETPRICE_MAINTENANCE_RESPONSEDATE|模具目标价管理-目标价维护-返回日期起止'},
-  {value: 'taskStateDesc', label: '任务状态', type: 'selectDict', i18n_label: 'RENWUZHUANGTAI',selectOption:'target_price_page_task_state', permission: 'MODELTARGETPRICE_MAINTENANCE_STATUS|模具目标价管理-目标价维护-任务状态'}
+  {value: 'taskStateDesc', label: '任务状态', type: 'selectDict', i18n_label: 'RENWUZHUANGTAI',selectOption:'target_price_page_task_state', permission: 'MODELTARGETPRICE_MAINTENANCE_STATUS|模具目标价管理-目标价维护-任务状态'},
+  {value: 'showSelf', label: '显示自己', type: 'select', hideAll: true, selectOption: "showSelfOptions", i18n_label: 'XIANSHIZIJI',permission: 'MODELTARGETPRICE_MAINTENANCE_SHOWSELF|模具目标价管理-目标价维护-显示自己'},
 ]
 
 export const modifyTableTitle = [

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-11 11:05:14
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-11 16:10:50
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -82,7 +82,7 @@
           :selectable="selectInit"
         >
           <template #aprice="scope">
-            <iInput class="aPriceSelect" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.aprice" readonly @click.native="aPriceSelect(scope.row)">
+            <iInput class="aPriceSelect" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.aPrice" readonly @click.native="aPriceSelect(scope.row)">
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" />
               </div>
@@ -106,7 +106,7 @@
     <!-- 指定AEKO库原零件 -->
     <aekoList ref="aekoList" :ledgerSelection="multipleSelection" :form="form" :aekomultipleSelection="aekomultipleSelection" :objectAekoPartId="objectAekoPartId" @changeAekoSelection="changeAekoSelection"/>
     
-    <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.apriceId" @confirm="confirmAPrice" />
+    <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.aPriceId" @confirm="confirmAPrice" />
   </div>
 </template>
 

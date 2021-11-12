@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-10-28 21:57:37
- * @LastEditors:  
+ * @LastEditTime: 2021-11-11 14:33:45
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
  */
@@ -162,7 +162,8 @@ export const form = {
 	'status': '', //采购项目状态
 	'rfqId': '', //rfq编号
 	'size': '',
-	'current': ""
+	'current': "",
+	'showSelf':""
 }
 
 

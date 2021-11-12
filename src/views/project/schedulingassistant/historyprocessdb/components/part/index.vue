@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-17 15:49:51
+ * @LastEditTime: 2021-11-11 11:36:55
  * @Description: 
- * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
 
 <template>
@@ -290,7 +290,8 @@ export default {
         if (logicData) {
           this.logicData = {
             ...this.$route.query,
-            ...logicData
+            ...logicData,
+            cartypeProId: cartypeProId // 防止logicData没有返回车型id
           }
           this.getFitting()
         }

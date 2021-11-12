@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-11-02 11:12:44
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-10 18:02:29
+ * @LastEditTime: 2021-11-12 11:35:51
  * @Description: 内容表态组合相关功能
  */
 
@@ -30,6 +30,7 @@ export const combine = {
     // 组合
     async combine() {
       const dataList = this.multipleSelection
+      window.data = dataList
       if (dataList.length === 0) {
         this.$message.warning(this.language('GOUXUANXUZUHEDEHANGXIANGMU','请勾选需要组合的行项目'))
         return
@@ -44,8 +45,8 @@ export const combine = {
         return
       }
       const requirementAekoId = this.$route.query.requirementAekoId
-      const oldPartNumPreset = window._.uniq(dataList.map(o => o.oldPartNumPreset))
-      const partNum = window._.uniq(dataList.map(o => o.partNum))
+      const oldPartNumPreset = window._.uniqBy(dataList, o => `${o.oldPartNumPreset}${o.supplierSapCode}`).map(o => o.oldPartNumPreset).filter(o => o)
+      const partNum = window._.uniqBy(dataList, o => `${o.partNum}${o.supplierSapCode}`).map(o => o.partNum).filter(o => o)
       const ids = dataList.map(o => o.objectAekoPartId)
       const params = {
         requirementAekoId,
@@ -54,6 +55,7 @@ export const combine = {
         oldPartNumPreset,
         partNum
       }
+      console.log('params', params)
       this.$confirm(this.language('NINQUEDINGYAOZHIXINGZUHE', '您确定要执行组合吗')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
           saveCombination(params).then(res => {
@@ -73,18 +75,26 @@ export const combine = {
     async cancelCombination() {
       let dataList = this.multipleSelection
       const filtedDataList = window._.uniqBy(dataList, o => o.groupCode)
-      const groupCode = filtedDataList[0].groupCode
-      if (filtedDataList.length > 1) {
-        this.$message.error(this.language('GOUXUANBAOHANDUOGEFENZUCUOWU','勾选的项目包含多个分组'))
-        return
-      }
-      if (dataList.filter(o => o.groupType === 1).length) {
+      let groupCode = filtedDataList.map(o => o.groupCode)
+      // if (filtedDataList.length > 1) {
+      //   this.$message.error(this.language('GOUXUANBAOHANDUOGEFENZUCUOWU','勾选的项目包含多个分组'))
+      //   return
+      // }
+      // 全部都是系统自动组合
+      const autoCombineData = dataList.filter(o => o.groupType === 1)
+      if (autoCombineData.length && autoCombineData.length  === dataList.length) {
         this.$message.error(this.language('XITONGZIDONGZUHEQUXAIOSHIBAI','当前组合项目为系统自动组合，【取消组合】失败'))
         return
+      } else {
+        // 既有系统自动组合，又有手动组合
+        groupCode = dataList.filter(o => o.groupType !== 1).map(o => o.groupCode)
       }
-      dataList = this.tableListData.filter(o => o.groupCode === groupCode)
-      const oldPartNumPreset = window._.uniq(dataList.map(o => o.oldPartNumPreset)).filter(o => o)
-      const partNum = window._.uniq(dataList.map(o => o.partNum)).filter(o => o)
+
+      // 存在同分组内勾选不完整的情况，查出与之相关的所有的零件
+      dataList = this.tableListData.filter(o => groupCode.includes(o.groupCode))
+
+      const oldPartNumPreset = window._.uniqBy(dataList, o => `${o.oldPartNumPreset}${o.supplierSapCode}`).map(o => o.oldPartNumPreset).filter(o => o)
+      const partNum = window._.uniqBy(dataList, o => `${o.partNum}${o.supplierSapCode}`).map(o => o.partNum).filter(o => o)
       const ids = dataList.map(o => o.objectAekoPartId)
       const requirementAekoId = this.$route.query.requirementAekoId
       const params = {
@@ -112,13 +122,14 @@ export const combine = {
     // 修改组合名
     updateGroupName(row) {
       const groupName = row.groupName
-      const groupCode = row.groupCode
+      const groupCode = [row.groupCode]
       const groupType = row.groupType
       const requirementAekoId = this.$route.query.requirementAekoId
       if (groupName && groupCode && groupName !== row.groupNameBak) {
-        const dataList = this.tableListData.filter(o => o.groupCode === groupCode)
-        const oldPartNumPreset = window._.uniq(dataList.map(o => o.oldPartNumPreset)).filter(o => o)
-        const partNum = window._.uniq(dataList.map(o => o.partNum)).filter(o => o)
+        // 存在同分组内勾选不完整的情况，查出与之相关的所有的零件
+        const dataList = this.tableListData.filter(o => groupCode.includes(o.groupCode))
+        const oldPartNumPreset = window._.uniqBy(dataList, o => `${o.oldPartNumPreset}${o.supplierSapCode}`).map(o => o.oldPartNumPreset).filter(o => o)
+        const partNum = window._.uniqBy(dataList, o => `${o.partNum}${o.supplierSapCode}`).map(o => o.partNum).filter(o => o)
         const ids = dataList.map(o => o.objectAekoPartId)
         const params = {
           requirementAekoId,
@@ -134,11 +145,20 @@ export const combine = {
             this.init()
             console.log('update groupName success', groupName)
           } else if (res) {
+            this.resetGroup(row)
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          } else {
+            this.resetGroup(row)
           }
         }).catch(e => {
+          this.resetGroup(row)
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         })
+      }
+    },
+    resetGroup(row) {
+      if (row && row.groupNameBak) {
+        setTimeout(() => {this.$set(row, 'groupName', row.groupNameBak)}, 1500)
       }
     },
     rowspan(dataList = [], groupKey = 'groupCode', cb = null) {

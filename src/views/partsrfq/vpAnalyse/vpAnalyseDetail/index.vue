@@ -1,13 +1,14 @@
 <!--
  * @Author: moxuan
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Description: VP分析详情
 -->
 <template>
   <iPage v-loading="pageLoading">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">Volume Pricing{{ $t('TPZS.FENXI') }}</span>
-      <div class="floatright">
+      <div class="floatright"
+           v-if="!propSchemeId">
         <!--返回-->
         <iButton @click="handleBack">{{ $t('LK_FANHUI') }}</iButton>
         <!--预览-->
@@ -22,89 +23,93 @@
              v-for="(item,index) of partList"
              :key="item"
              :class="{'partItemActive': partItemCurrent === index}"
-             @click="handlePartItemClick(item ,index)"
-        >
-          <div class="quxiaoIconBox" @click="handlePartItemClose($event,item)">
+             @click="handlePartItemClick(item ,index)">
+          <div class="quxiaoIconBox"
+               @click="handlePartItemClose($event,item)">
             <icon symbol
                   name="iconrs-quxiao"
                   class="quxiaoIcon"
-                  v-if="partItemCurrent === index && partList.length > 1 "
-            />
+                  v-if="partItemCurrent === index && partList.length > 1 " />
           </div>
           {{ item.partsId }}
         </div>
       </div>
       <!--      自定义图标-->
-      <div class="customBox" @click="handleOpenCustomDialog">
-        <icon symbol name="iconzidingyi" class="customIcon"/>
+      <div class="customBox"
+           @click="handleOpenCustomDialog">
+        <icon symbol
+              name="iconzidingyi"
+              class="customIcon" />
       </div>
     </div>
     <!--信息-->
-    <iCard tabCard class="margin-bottom20">
-      <baseInfo :dataInfo="dataInfo" @handleSupplierChange="handleSupplierChange"/>
+    <iCard tabCard
+           class="margin-bottom20">
+      <baseInfo :dataInfo="dataInfo"
+                @handleSupplierChange="handleSupplierChange" />
     </iCard>
     <!--总单价表格-->
-    <iCard tabCard class="margin-bottom20">
-      <totalUnitPriceTable
-          :dataInfo="dataInfo"
-          ref="totalUnitPriceTable"
-          @handlePriceTableFinish="saveOrUpdateScheme('table')"
-          :tableLoading="tableLoading"
-      />
+    <iCard tabCard
+           class="margin-bottom20">
+      <totalUnitPriceTable :dataInfo="dataInfo"
+                           ref="totalUnitPriceTable"
+                           @handlePriceTableFinish="saveOrUpdateScheme('table')"
+                           :tableLoading="tableLoading" />
     </iCard>
 
     <!--图形-->
     <div class="chartBox">
-      <iCard class="curveBox" :title="'Volume Pricing' + $t('TPZS.QUXIAN')">
-        <curveChart
-            chartHeight="260px"
-            :newestScatterData="curveChartData.newestScatterData"
-            :targetScatterData="curveChartData.targetScatterData"
-            :cpLineData="curveChartData.cpLineData"
-            :lineData="curveChartData.lineData"
-            :dataInfo="dataInfo"
-        />
+      <iCard class="curveBox"
+             :title="'Volume Pricing' + $t('TPZS.QUXIAN')">
+        <curveChart chartHeight="260px"
+                    :newestScatterData="curveChartData.newestScatterData"
+                    :targetScatterData="curveChartData.targetScatterData"
+                    :cpLineData="curveChartData.cpLineData"
+                    :lineData="curveChartData.lineData"
+                    :dataInfo="dataInfo" />
       </iCard>
 
-      <iCard class="analyzeBox" v-loading="analyzeLoading">
+      <iCard class="analyzeBox"
+             v-loading="analyzeLoading">
         <div class="margin-bottom20 clearFloat">
           <span class="font18 font-weight">Volume Pricing{{ $t('TPZS.FENXI') }}</span>
-          <div class="floatright">
+          <div class="floatright"
+               v-if="!propSchemeId">
             <!--保存-->
             <iButton @click="saveOrUpdateScheme('analyze')">{{ $t('LK_BAOCUN') }}</iButton>
           </div>
         </div>
-        <analyzeChart ref="analyzeChart" :dataInfo="dataInfo"/>
+        <analyzeChart ref="analyzeChart"
+                      :dataInfo="dataInfo" />
       </iCard>
     </div>
 
     <!-- 自定义零件列表 -->
-    <customPart v-if="customDialog.visible" :partList="originPartList" :visible="customDialog.visible"
-                :Key="customDialog.key" @saveCustomPart="saveCustomPart"
-                @handleCloseCustomPart="handleCloseCustomPart"/>
+    <customPart v-if="customDialog.visible"
+                :partList="originPartList"
+                :visible="customDialog.visible"
+                :Key="customDialog.key"
+                @saveCustomPart="saveCustomPart"
+                @handleCloseCustomPart="handleCloseCustomPart" />
 
-    <previewDialog
-        ref="previewDialog"
-        v-model="previewDialog"
-        :dataInfo="dataInfo"
-        :newestScatterData="curveChartData.newestScatterData"
-        :targetScatterData="curveChartData.targetScatterData"
-        :cpLineData="curveChartData.cpLineData"
-        :lineData="curveChartData.lineData"
-    />
+    <previewDialog ref="previewDialog"
+                   v-model="previewDialog"
+                   :dataInfo="dataInfo"
+                   :newestScatterData="curveChartData.newestScatterData"
+                   :targetScatterData="curveChartData.targetScatterData"
+                   :cpLineData="curveChartData.cpLineData"
+                   :lineData="curveChartData.lineData" />
 
     <!--    保存弹框-->
-    <saveDialog
-        ref="saveDialog"
-        v-model="saveDialog"
-        @handleSaveDialog="handleSaveDialog"
-        :dataInfo="dataInfo"
-    />
+    <saveDialog ref="saveDialog"
+                v-model="saveDialog"
+                @handleSaveDialog="handleSaveDialog"
+                :dataInfo="dataInfo" />
   </iPage>
 </template>
 
 <script>
-import {iPage, iButton, icon, iCard, iMessageBox} from 'rise';
+import { iPage, iButton, icon, iCard, iMessageBox } from 'rise';
 import baseInfo from './components/baseInfo';
 import totalUnitPriceTable from './components/totalUnitPriceTable';
 import curveChart from './components/curveChart';
@@ -119,7 +124,7 @@ import {
 } from '../../../../api/partsrfq/vpAnalysis/vpAnalyseDetail';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import saveDialog from './components/saveDialog';
-import {deleteThousands} from '@/utils';
+import { deleteThousands } from '@/utils';
 
 export default {
   mixins: [resultMessageMixin],
@@ -136,10 +141,20 @@ export default {
     previewDialog,
     saveDialog,
   },
-  created() {
+  created () {
     this.getDataInfo();
   },
-  data() {
+  props: {
+    propSchemeId: {
+      type: String,
+      default: ""
+    },
+    propType: {
+      type: String,
+      default: ""
+    }
+  },
+  data () {
     return {
       partList: [],
       originPartList: [],
@@ -162,12 +177,12 @@ export default {
       analyzeLoading: false,
       currentSupplierId: '',
       saveDialog: false,
-      currentSchemeId: this.$route.query.schemeId,
+      currentSchemeId: this.$route.query.schemeId ? this.$route.query.schemeId : this.propSchemeId,
       tableLoading: false,
     };
   },
   methods: {
-    handlePartItemClick(item, index) {
+    handlePartItemClick (item, index) {
       this.partItemCurrent = index;
       this.currentBatchNumber = item.batchNumber;
       this.currentPartsId = item.partsId;
@@ -175,12 +190,12 @@ export default {
       this.currentSchemeId = item.analysisSchemeId;
       this.getDataInfo();
     },
-    handlePartItemClose(e, item) {
+    handlePartItemClose (e, item) {
       e.stopPropagation();
       iMessageBox(
-          this.$t('LK_SHIFOUQUERENSHANCHU'),
-          this.$t('LK_WENXINTISHI'),
-          {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+        this.$t('LK_SHIFOUQUERENSHANCHU'),
+        this.$t('LK_WENXINTISHI'),
+        { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') },
       ).then(async () => {
         const req = {
           id: item.id,
@@ -196,12 +211,13 @@ export default {
       });
     },
     //点击跳转自定义零件弹窗
-    handleOpenCustomDialog() {
+    handleOpenCustomDialog () {
       this.customDialog.key = new Date().getTime();
       this.customDialog.visible = true;
     },
-    async getDataInfo() {
+    async getDataInfo () {
       try {
+        this.type = this.$route.query.type ? this.$route.query.type : this.propType
         this.pageLoading = true;
         this.analyzeLoading = true;
         this.tableLoading = true;
@@ -210,11 +226,11 @@ export default {
           supplierId: this.currentSupplierId,
           inMode: this.$store.state.rfq.entryStatus,
         };
-        if (this.$route.query.type === 'edit') {
+        if (this.type === 'edit') {
           req.id = this.currentSchemeId;
         }
         req.batchNumber = this.currentBatchNumber;
-        if (this.$route.query.type === 'add') {
+        if (this.type === 'add') {
           req.batchNumber = this.$route.query.batchNumber;
         }
         const res = await getAnalysisProcessing(req);
@@ -238,7 +254,7 @@ export default {
         this.tableLoading = false;
       }
     },
-    async saveOrUpdateScheme(params, extraParams = {}) {
+    async saveOrUpdateScheme (params, extraParams = {}) {
       //this.saveDialog = true;
       try {
         const req = {
@@ -251,7 +267,7 @@ export default {
           inMode: this.$store.state.rfq.entryStatus,
           ...extraParams,
         };
-        if (this.$route.query.type === 'edit') {
+        if (this.type === 'edit') {
           req.id = this.currentSchemeId;
         }
         if (req.supplierId) {
@@ -272,14 +288,14 @@ export default {
           req.operationFlag = 'S2';
         }
         req.costDetailList = this.$refs.totalUnitPriceTable.tableListData.concat(
-            this.$refs.totalUnitPriceTable.hideTableData);
+          this.$refs.totalUnitPriceTable.hideTableData);
         req.estimatedActualTotalPro = deleteThousands(this.$refs.analyzeChart.dropPotential.estimatedActualTotalPro);
         const res = await saveOrUpdateScheme(req);
         this.resultMessage(res, () => {
           this.currentSchemeId = res.data;
         });
         if (res.result) {
-          if (this.$route.query.type === 'add') {
+          if (this.type === 'add') {
             this.$router.push({
               path: '/sourcing/partsrfq/vpAnalyseDetail',
               query: {
@@ -303,7 +319,7 @@ export default {
         this.tableLoading = false;
       }
     },
-    async handleSaveAsReport(callback) {
+    async handleSaveAsReport (callback) {
       this.previewDialog = true;
       setTimeout(async () => {
         const res = await this.$refs.previewDialog.getDownloadFile({
@@ -318,14 +334,14 @@ export default {
         }
       }, 1000);
     },
-    async handleSaveDialog(reqParams) {
+    async handleSaveDialog (reqParams) {
       const resCheckName = await this.checkName(reqParams);
       if (resCheckName) {
         this.saveDialog = false;
         iMessageBox(
-            this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
-            this.$t('LK_WENXINTISHI'),
-            {confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO')},
+          this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
+          this.$t('LK_WENXINTISHI'),
+          { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') },
         ).then(async () => {
           await this.handleSaveProcess(reqParams, true);
         }).catch(async () => {
@@ -335,7 +351,7 @@ export default {
         await this.handleSaveProcess(reqParams);
       }
     },
-    async handleSaveProcess(reqParams, isCover = false) {
+    async handleSaveProcess (reqParams, isCover = false) {
       const req = {
         isCover,
       };
@@ -359,7 +375,7 @@ export default {
         this.saveDialog = false;
       }
     },
-    async checkName(reqParams) {
+    async checkName (reqParams) {
       let isRepeat = false;
       const req = {};
       if (reqParams.analysisSave && reqParams.reportSave) {
@@ -376,10 +392,10 @@ export default {
       }
       return isRepeat;
     },
-    handlePreview() {
+    handlePreview () {
       this.previewDialog = true;
     },
-    handleCurveData(data) {
+    handleCurveData (data) {
       this.curveChartData.newestScatterData = [];
       this.curveChartData.targetScatterData = [];
       this.curveChartData.lineData = [];
@@ -399,21 +415,21 @@ export default {
       });
     },
     // 保存自定义零件
-    saveCustomPart() {
+    saveCustomPart () {
       this.$set(this.customDialog, 'visible', false);
       this.getDataInfo();
     },
     // 关闭自定义零件弹窗
-    handleCloseCustomPart() {
+    handleCloseCustomPart () {
       this.$set(this.customDialog, 'visible', false);
     },
     //供应商值改变
-    handleSupplierChange(val) {
+    handleSupplierChange (val) {
       this.currentSupplierId = val;
       this.getDataInfo();
     },
-    handleBack() {
-      const type = this.$route.query.type;
+    handleBack () {
+      const type = this.$route.query.type ? this.$route.query.type : this.propType;
       if (type === 'edit') {
         if (this.$store.state.rfq.entryStatus === 1) {
           this.$router.push({
@@ -462,7 +478,7 @@ export default {
       margin-right: 30px;
       height: 35px;
       padding: 9px 15px;
-      background: #FFFFFF;
+      background: #ffffff;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
       border-radius: 5px;
       font-size: 16px;
@@ -482,7 +498,7 @@ export default {
     }
 
     .partItemActive {
-      color: #1763F7;
+      color: #1763f7;
     }
   }
 
@@ -501,12 +517,12 @@ export default {
 
   .curveBox {
     width: 42%;
-    height: 100%
+    height: 100%;
   }
 
   .analyzeBox {
     width: 57%;
-    height: 100%
+    height: 100%;
   }
 }
 </style>

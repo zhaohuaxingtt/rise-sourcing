@@ -273,6 +273,23 @@
           ></el-option>
         </iSelect>
       </el-form-item>
+      <!-- 显示自己 -->
+      <el-form-item :label="language('nominationLanguage_XianShiZiJi','显示自己')">
+        <iSelect
+          v-model="form.showSelf"
+          :placeholder="language('LK_QINGXUANZE','请选择')"
+          clearable
+        >
+          <el-option
+            value=""
+            :label="language('all','全部') | capitalizeFilter"
+          ></el-option>
+          <el-option :value="true" :label="language('YES','是')"
+          ></el-option>
+          <el-option :value="false" :label="language('NO','否')"
+          ></el-option>
+        </iSelect>
+      </el-form-item>
     </el-form>
   </iSearch>
 </template>

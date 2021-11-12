@@ -779,10 +779,10 @@ export default {
             .then((res) => {
               if (res) {
                 this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
-                console.log(window.open("","_self").close()  )
                 if (this.ruleForm.projectType === "01") {
                   this.ruleForm.projectType = "正式项目";
                 }
+                localStorage.setItem('close','close')
                  window.close() 
                 // this.$router.push({
                 //   path: `/bidding/project/inquiry/${this.id}`,
