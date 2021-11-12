@@ -210,9 +210,6 @@ export default {
     //     rfqCode: code,
     //   };
     // });
-    const data = {id: 90}
-    this.$store.commit('SET_USER_INFO',data)
-    console.log(this.$store.state)
     this.rfqNameList = (res || []).map((code) => {
       return code;
     });
