@@ -224,6 +224,8 @@
             </template>
             <template v-else>
               <i-input
+                type="number"
+                oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 v-model.number="scope.row['purchaseQty']"
                 placeholder="0"
                 :maxlength="maxlength ? maxlength : 300"
@@ -343,6 +345,7 @@ import {
   findMultiPrice,
   saveUnitPrice,
   getRfqInfo,
+  listQuotationByFs
 } from "@/api/bidding/bidding";
 import Big from "big.js";
 
@@ -545,11 +548,15 @@ export default {
       }
     },
     rfqinfoChange(e) {
-      let obj = this.rfqinfoProduct.filter((item) => {
-        return e.fsnrGsnr === item.fsnrGsnr;
-      });
-      e.productName = obj[0]?.productName;
-      e.productCode = obj[0]?.productCode;
+      // let obj = this.rfqinfoProduct.filter((item) => {
+      //   return e.fsnrGsnr === item.fsnrGsnr;
+      // });
+      // e.productName = obj[0]?.productName;
+      // e.productCode = obj[0]?.productCode;
+      listQuotationByFs(e.fsnrGsnr).then(res => {
+        e.productCode = res.partNum
+        e.productName = ""
+      })
     },
     handleInputFocus() {
       this.flag = true;

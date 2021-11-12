@@ -384,3 +384,11 @@ export function cbdLevel(data) {
     method: "POST",
   });
 }
+
+// FS
+export function listQuotationByFs(data) {
+  return requst({
+    url: `/proxyService/listQuotationByFs?fs=${data}`,
+    method: "POST",
+  });
+}
