@@ -244,12 +244,12 @@
           </iFormItem>
         </div>
 
-        <div v-if="onOpenTenderNature">
+        <div >
           <!-- 横线 -->
           <div class="link-gray"></div>
           <div>
-            <div><h2>{{language('BIDDING_JINGJIAXINGZHI','竞价性质')}}</h2></div>
-            <div class="form-item-row1">
+            <div v-if="onOpenTenderNature"><h2>{{language('BIDDING_JINGJIAXINGZHI','竞价性质')}}</h2></div>
+            <div class="form-item-row1" v-if="onOpenTenderNature">
               <div class="form-item-row1-clo1">
                 <div class="bid-opening" v-html="bidOpening"></div>
               </div>
