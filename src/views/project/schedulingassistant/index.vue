@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:12:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-27 10:42:09
+ * @LastEditTime: 2021-11-12 17:40:39
  * @Description: 项目管理-排程助手
- * @FilePath: \front-web\src\views\project\schedulingassistant\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\index.vue
 -->
 
 <template>
@@ -18,7 +18,7 @@
 import { iPage } from "rise"
 import { MENU, MENUFS } from './data'
 import projectTop from '../components/projectHeader'
-import { TAB } from '../components/data'
+import { TAB, COMFIRMTAB } from '../components/data'
 
 export default {
   components: { iPage, projectTop },
@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     subNavList() {
-      if (this.$route.path.includes('proconfirm')) {
+      if (this.$route.path.includes('proconfirm') || this.$route.path.includes('delayconfirm')) {
         // eslint-disable-next-line no-undef
         return _.cloneDeep(MENUFS)
       }
@@ -36,8 +36,9 @@ export default {
       return _.cloneDeep(MENU)
     },
     navList() {
-      if (this.$route.path.includes('proconfirm')) {
-        return TAB.filter(item => item.value === 2 || item.value === 3)
+      if (this.$route.path.includes('proconfirm') || this.$route.path.includes('delayconfirm')) {
+        // eslint-disable-next-line no-undef
+        return _.cloneDeep(COMFIRMTAB)
       }
       // eslint-disable-next-line no-undef
       return _.cloneDeep(TAB)
