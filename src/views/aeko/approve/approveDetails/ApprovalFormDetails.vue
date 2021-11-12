@@ -3,7 +3,7 @@
   <div v-permission.auto="AEKO_APPROVAL_FORM_DETAILS_PAGE|AEKO审批单详情">
     <AEKOApprovalComponents v-if="[1,2].includes(transmitObj.option)" :audit-items="auditItems" :transmit-obj="transmitObj" @refreshForm="refreshForm($event)"/>
     <CoverStatementComponents class="margin-top20" :audit-cover-status="auditCoverStatus" :audit-cover="auditCover"/>
-    <RecommendationTablePendingApprovalComponents v-show="isShow&&Array.isArray(auditContents)&&auditContents.length>0" :audit-contents="auditContents" :audit-content-status="auditContentStatus" class="margin-top20"/>
+    <RecommendationTablePendingApprovalComponents v-permission.auto="AEKO_APPROVAL_RECOMMENDATION_Table|AEKO审批单推荐表" v-show="Array.isArray(auditContents)&&auditContents.length>0" :audit-contents="auditContents" :audit-content-status="auditContentStatus" class="margin-top20"/>
   </div>
 </template>
 
@@ -27,7 +27,6 @@ export default {
       transmitObj: {},
       aekoApprovalDetails: {},
       queryParams: {},
-      isShow:true
     }
   },
 
@@ -36,13 +35,13 @@ export default {
     let str_json = window.atob(this.queryParams.transmitObj)
     this.transmitObj = JSON.parse(decodeURIComponent(escape(str_json)))
     this.aekoApprovalDetails = this.transmitObj.aekoApprovalDetails
-    if(this.transmitObj.option == 3){
-      this.isShow = false //CSF分配人 预览不显示推荐表
-    }
-    if (this.transmitObj.option == 1) {
+    // option: 1:待审批, 2:已审批, 3: CSF分配人查看审批单, 4:Linie预览审批单, 5: AEKO查看-审批单查看
+    if (this.transmitObj.option===1) {  // 查看待审批
       this.loadAKEOApprovalForm()
     } else if (this.transmitObj.option == 4) {  // Linie 预览
       this.getPreviewData()
+    } else if(this.transmitObj.option == 3){  // CSF分配人查看审批单
+      this.lookAKEOApprovalDetailFromCheck();
     } else if(this.transmitObj.option == 5){
       this.lookAKEOApprovalDetailFromCheck();
     } else {
