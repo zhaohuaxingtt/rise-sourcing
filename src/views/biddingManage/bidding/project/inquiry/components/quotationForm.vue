@@ -114,6 +114,7 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
+        this.ruleForm.associatedQuotation = this.ruleForm.associatedQuotation.filter(item => item)
       },
     },
     ruleForm(val) {
@@ -209,6 +210,9 @@ export default {
     //     rfqCode: code,
     //   };
     // });
+    const data = {id: 90}
+    this.$store.commit('SET_USER_INFO',data)
+    console.log(this.$store.state)
     this.rfqNameList = (res || []).map((code) => {
       return code;
     });

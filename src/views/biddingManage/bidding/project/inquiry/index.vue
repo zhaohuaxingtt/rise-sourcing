@@ -977,7 +977,8 @@ export default {
         suppliers: this.orgRuleForm.suppliers,
         exchangeRates: this.orgRuleForm.exchangeRates,
         inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
-        quotationAreaFlag: roundType !== "05"
+        quotationAreaFlag: roundType !== "05",
+        associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null
       })
         .then((res) => {
           if (res) {
@@ -1141,6 +1142,7 @@ export default {
             exchangeRates: this.orgRuleForm.exchangeRates,
             inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
             quotationAreaFlag: formData.roundType !== "05",
+            associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null
           },
           content: {
             suppliers: formData.suppliers.map((item) => {
