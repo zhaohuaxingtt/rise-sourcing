@@ -47,11 +47,34 @@ import { roleMixins } from "@/utils/roleMixins";
 		methods: {
 			// 获取财报iframeurl
 			powerBiUrl() {
+				let username = null
+				if(this.userInfo.id===213123190){	// 唐瑜 WS1CSF-5AekoAD
+					username = 1
+				}
+				if(this.userInfo.id===213123203){	// 王亮亮 WS1CSPK302
+					username = 2
+				}
+				if(this.userInfo.id===190259){	// 严琴 WS1CSPLinie02
+					username = 3
+				}
+				if(this.userInfo.id===190258){	// 俞琴 WS1CSPLinie01
+					username = 4
+				}
+				if(this.userInfo.id===190232){ // 王琴 CSXLinie02
+					username = 5
+				}
+				if(this.userInfo.id===190262){ // 六琴 WS1CSPLinieKZ
+					username = 6
+				}
+				if(this.userInfo.id===190222){	// 江琴 WS1AekoAdmin
+					username = 19
+				}
 				let params = {
 					workspaceId: '876776a9-f959-442e-a011-b4bade0dd862', 
 					reportId: '25724165-8d58-4452-a6e3-363facc62d2b',
           datasets:['734b852b-4b5e-4392-b715-3a698a5a7209'],
-          username: 1 || this.userInfo.id,	// 目前报表那边还没有和用户中心关联user_id,只提供1,3,6,19只给userId
+          // username: 1 || this.userInfo.id,	// 目前报表那边还没有和用户中心关联user_id,只提供1,3,6,19只给userId
+          username: username,	// 目前报表那边还没有和用户中心关联user_id,只提供1,3,6,19只给userId
           roles:['role']||this.roleList,
 				}
 				statement(params).then(res => {
