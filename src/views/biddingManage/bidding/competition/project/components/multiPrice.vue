@@ -249,6 +249,8 @@
             </template>
           </template>
 
+          
+
           <!-- 操作 -->
           <template slot="caozuo" slot-scope="scope">
             <span>
@@ -349,6 +351,7 @@ import {
   getRfqInfo,
   findMultiPrice,
   saveMultiPrice,
+  listQuotationByFs
 } from "@/api/bidding/bidding";
 import Big from "big.js";
 import dayjs from "dayjs";
@@ -396,6 +399,9 @@ export default {
         "moldFee",
         "developFee",
         "targetPrice",
+        "lifecycle",
+        "aveAnnualOutput",
+        "maxAnnualOutput",
       ],
       inputProps: [
         "factoryPrice",
@@ -830,25 +836,43 @@ export default {
     },
     //FSNR/GSNR更改联动零件号 和 采购计划FSNR/GSNR、零件号
     rfqinfoChange(e) {
-      let obj = this.rfqinfoProduct.filter((item) => {
-        return e.fsnrGsnr === item.fsnrGsnr;
-      });
-      if (obj.length < 1) {
+      // let obj = this.rfqinfoProduct.filter((item) => {
+      //   return e.fsnrGsnr === item.fsnrGsnr;
+      // });
+      // if (obj.length < 1) {
+      //   e.productName = "";
+      //   e.productCode = "";
+      // this.yearsPlan[e.index*2].title='';
+      // this.yearsPlan[e.index*2+1].title='';
+      // this.annualOutput[e.index*2+1].title='';
+      // this.annualOutput[e.index*2+2].title='';
+      //   return;
+      // }
+      // e.productName = obj[0]?.productName;
+      // e.productCode = obj[0]?.productCode;
+      // this.yearsPlan[e.index*2].title=obj[0]?.fsnrGsnr;
+      // this.yearsPlan[e.index*2+1].title=obj[0]?.productCode;
+      // this.annualOutput[e.index*2+1].title=obj[0]?.fsnrGsnr;
+      // this.annualOutput[e.index*2+2].title=obj[0]?.productCode;
+      // this.handlerInputBlur();
+      listQuotationByFs(e.fsnrGsnr).then(res => {
+        if (!res) {
+          e.productName = "";
+          e.productCode = "";
+          this.yearsPlan[e.index*2].title='';
+          this.yearsPlan[e.index*2+1].title='';
+          this.annualOutput[e.index*2+1].title='';
+          this.annualOutput[e.index*2+2].title='';
+          return;
+        }
+        e.productCode = res.partNum
         e.productName = "";
-        e.productCode = "";
-      this.yearsPlan[e.index*2].title='';
-      this.yearsPlan[e.index*2+1].title='';
-      this.annualOutput[e.index*2+1].title='';
-      this.annualOutput[e.index*2+2].title='';
-        return;
-      }
-      e.productName = obj[0]?.productName;
-      e.productCode = obj[0]?.productCode;
-      this.yearsPlan[e.index*2].title=obj[0]?.fsnrGsnr;
-      this.yearsPlan[e.index*2+1].title=obj[0]?.productCode;
-      this.annualOutput[e.index*2+1].title=obj[0]?.fsnrGsnr;
-      this.annualOutput[e.index*2+2].title=obj[0]?.productCode;
-      this.handlerInputBlur();
+        this.yearsPlan[e.index*2].title = res.fsnrGsnr;
+        this.yearsPlan[e.index*2+1].title = res.productCode;
+        this.annualOutput[e.index*2+1].title = res.fsnrGsnr;
+        this.annualOutput[e.index*2+2].title = res.productCode;
+        this.handlerInputBlur();
+      })
     },
     //零件号更改联动采购计划零件号
     partNumberChange(e) {

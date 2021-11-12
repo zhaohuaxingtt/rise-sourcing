@@ -117,7 +117,7 @@
             ></iInput>
           </iFormItem>
 
-          <iFormItem :label="language('BIDDING_KBJGGKXS', '开标结果公开形式')" prop="resultOpenForm">
+          <iFormItem :label="language('BIDDING_KBJGGKXS', '结果公开形式')" prop="resultOpenForm">
             <iLabelML showTip class="form-item-resultOpenForm-icon">
               <div class="hover-text">
                 <span
@@ -132,7 +132,7 @@
               </div>
             </iLabelML>
             <iLabel
-              :label="language('BIDDING_KBJGGKXS', '开标结果公开形式')"
+              :label="language('BIDDING_KBJGGKXS', '结果公开形式')"
               slot="label"
               required
             ></iLabel>

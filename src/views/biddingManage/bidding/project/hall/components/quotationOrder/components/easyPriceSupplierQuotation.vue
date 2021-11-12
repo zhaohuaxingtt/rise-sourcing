@@ -53,6 +53,7 @@
                     <iInput
                       v-if="flag"
                       class="form--item--number--input__totalprice"
+                      type="number"
                       oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                       :value="ruleForm.totalPrices"
                       @input="handleInputChange"
@@ -149,6 +150,7 @@
             <i-input
               v-if="ruleForm.biddingMode === '01' && !biddingStatus"
               v-model="scope.row['upsetPrice']"
+              type="number"
               oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
               placeholder="0.00"
             />
