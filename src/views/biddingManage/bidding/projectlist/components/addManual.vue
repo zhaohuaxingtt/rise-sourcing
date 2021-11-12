@@ -60,6 +60,7 @@
             <iSelect
               v-model="form.rfqCode"
               :placeholder="language('BIDDING_QXZYYRFQ', '请选择引用RFQ')"
+              filterable
               clearable
             >
               <el-option
