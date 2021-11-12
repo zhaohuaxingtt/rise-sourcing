@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-11 11:47:27
+ * @LastEditTime: 2021-11-12 17:19:03
  * @Description: 
 -->
 <template>
@@ -150,9 +150,7 @@ export default {
       const dosageChange = row.dosageChange
       const decimal = String(dosageChange).split('.')[1] || ''
       const decimalLength = decimal.length > 6 ? 6 : decimal.length
-      if (decimal) {
-        this.$set(row, 'dosageChange', Number(dosageChange).toFixed(decimalLength))
-      }
+      this.$set(row, 'dosageChange', isNaN(Number(dosageChange)) ? 0 : Number(dosageChange).toFixed(decimalLength))
     },
     clearValidateError() {
       this.tableListData.map(o => {
@@ -272,8 +270,8 @@ export default {
       pageAekoMtz(parmas).then(res => {
         if (res.code === '200') {
           this.tableListData = (res.data && res.data.records || []).map(o => {
-            o.newStartDate = window.moment(o.newStartDate).format('YYYY-MM-DD')
-            o.newEndDate = window.moment(o.newEndDate).format('YYYY-MM-DD')
+            o.newStartDate = o.newStartDate ? window.moment(o.newStartDate).format('YYYY-MM-DD') : ''
+            o.newEndDate = o.newEndDate ? window.moment(o.newEndDate).format('YYYY-MM-DD') : ''
             return o
           })
           this.page.totalCount = res.data.total
