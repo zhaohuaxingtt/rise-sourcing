@@ -422,7 +422,10 @@ export default {
       if (fileList && !fileList.length) return this.$message.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
       this.$confirm(this.language('deleteSure', '您确定要执行删除操作吗？')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
-          auditFileDelete(fileList).then(res => {
+          auditFileDelete({
+            ids: fileList,
+            delType: 1
+          }).then(res => {
             if (res.code === '200') {
               this.$message.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
               cb && typeof cb === 'function' && (cb())
