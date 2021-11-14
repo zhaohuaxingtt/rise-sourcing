@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-15 00:07:18
+ * @LastEditTime: 2021-11-15 00:10:25
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
 -->
 <template>
-  <div>
+  <div v-loading="onDataLoading">
     <iCard>
       <template v-slot:header>
         <div class="flex-between-center titleBox">
@@ -41,17 +41,28 @@
         </div>
       </template>
       <div>
-        <div class="flex tabeleList">
+        <div style="display: flex;flex-flow: row nowrap;width: 100%;">
+          <div class="table-cell"
+               style="justify-content: flex-start;width: 20%"></div>
           <div v-for=" (item,index) in tableTitle"
                :key="index"
-               class="margin-right20 tableTitle"><span>{{item.title}}</span></div>
+               class="table-cell">{{item.title}}</div>
         </div>
-        <div class="tabeleList">
-          <tree v-for="(item,index) in tableListData"
-                :key="index"
-                :model="item">
-            {{item}}
-          </tree>
+        <div class="flex tabeleList">
+          <div style="display:flex;flex-flow:column nowrap;">
+            <div v-for="(item,index) in tableListData"
+                 :key="index"
+                 style="display: flex;flex-flow: row nowrap;width: 100%;">
+              <span class="table-cell"
+                    style="justify-content: flex-start;width: 20%">{{item.title}}</span>
+              <span class="table-cell">{{item.value0}}</span>
+              <span class="table-cell">{{item.value1}}</span>
+              <span class="table-cell">{{item.value2}}</span>
+              <span class="table-cell">{{item.value3}}</span>
+              <span class="table-cell">{{item.value4}}</span>
+              <span class="table-cell">{{item.value5}}</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- <table1 :tableList="tableList"
@@ -152,6 +163,7 @@ export default {
   },
   data () {
     return {
+      onDataLoading: false,
       flag: true,
       flag1: false,
       tableList: [],
@@ -177,10 +189,12 @@ export default {
       expedsArr1: [],
       tableTitle: [],
       tableListData: [],
-      checkList: []
+      expandedItems: [],
+      originExpanded: []
     };
   },
   created () {
+    this.onDataLoading = true;
     this.groupId = this.$route.query.groupId
     this.getRfqToRemark();
   },
@@ -233,22 +247,24 @@ export default {
 
   },
   methods: {
-    createUuid () {
-      var s4 = function () {
-        return Math.floor((1 + Math.random()) * 0x10000)
-          .toString(16)
-          .substring(1)
+    handleCollapse (item) {
+      item.expanded = false;
+    },
+    handleExpand (item) {
+      if (this.expandedItems.indexOf(item.lvlId) >= 0) {
+        this.expandedItems.splice(this.expandedItems.indexOf(item.lvlId), 1)
+        this.collapseItem(this.tableListData[0], item.lvlId)
       }
-      return (
-        s4() +
-        s4() +
-        s4() +
-        s4() +
-        s4() +
-        s4() +
-        s4() +
-        s4()
-      )
+    },
+    collapseItem (colDatas, parentLvlId) {
+      colDatas.filter((item) => {
+        if (item.parentLvl == parentLvlId) {
+          if (this.expandedItems.indexOf(item.lvlId) >= 0) {
+            this.expandedItems.splice(this.expandedItems.indexOf(item.lvlId), 1)
+            this.collapseItem(colDatas, item.lvlId)
+          }
+        }
+      });
     },
     getRfqToRemark () {
       getRfqToRemark({
@@ -269,6 +285,9 @@ export default {
             this.tableTitle = this.tableList.title.filter(item => item.title)
 
             this.prepareData()
+            this.$nextTick(() => {
+              this.onDataLoading = false;
+            })
             // this.tableList.title.forEach(value => {
             //   this.$attrs.supplierList.forEach(i => {
             //     if (value.title == i.supplierId) {
@@ -289,19 +308,31 @@ export default {
           iMessage.error(err.desZh)
         });
     },
+    createUuid () {
+      var s4 = function () {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1)
+      }
+      return (
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4()
+      )
+    },
     prepareData () {
-      var self = this;
-      var tablData = [];
+      var tableData = [];
       var lvl = [];
       var titles = this.tableList.title;
       var elements = this.tableList.element;
-      var rawCols = 0, maCols = 0;
+      var rawCols = 0;
+      var maCols = 0;
       var idCol = {}
-      // "rawTotalColumn": 4,
-      // "rawTotalChild": [289053, 289054, 289055, 289056],
-      // "rawTotalUnGrouped": 4,
-      // "rawUngroupedChild": [289053, 289054, 289055, 289056],
-      // "maTotalColumn": 4,
       titles.forEach((title, index) => {
         if (rawCols < title.rawTotalColumn) {
           rawCols = title.rawTotalColumn;
@@ -326,13 +357,12 @@ export default {
             this.addToColList(idCol, rawCols, maCols, cbdDataLvlZero.code, cbdDataLvlZero, colData, title.label, 0)
             // }
           })
-          tablData.push(colData)
+          tableData.push(colData)
         }
         // }
       });
-      console.log(idCol)
-      console.log(tablData)
-      this.mergeData(tablData)
+      this.mergeData(tableData)
+      // this.originExpanded = _.cloneDeep(this.expandedItems);
     },
     mergeData (tableData) {
       var merged = JSON.parse(JSON.stringify(tableData[0]));
@@ -348,32 +378,9 @@ export default {
           })
         }
       })
+      this.tableListData = merged
       console.log(merged)
-      this.tableListData = arrayToTree(merged, 'id', 'rootId', 'children')
-      console.log(this.tableListData)
-      var firstLvl = 0;
-      var preLvl = 0;
-      var finallydata = []
-      var firstLvls = merged.filter((item) => {
-        return item.level == 0;
-      });
-
-      console.log(firstLvls)
-
-      firstLvls.forEach((item) => {
-        var filtered = merged.filter((child) => {
-          return child.rootId == item.id
-        })
-        console.log(filtered)
-      })
-
-      // var finallydata = {}
-      // merged.forEach((item) => {
-      //   finallydata[item.id] = item
-      // })
-      // console.log(finallydata)
     },
-
     addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, parentIndex) {
       childs.forEach((child) => {
         this.addToColList(idCol, rawCols, maCols, cbdCode, child, colData, key, showLevel, parentId, parentIndex)
@@ -425,7 +432,7 @@ export default {
       looper.forEach((labelChild, index) => {
         if (typeof parentIndex != "undefined") {
           if (parentIndex == index) {
-            let object = {};
+            var object = {};
             object.title = target.title;
             object.value = labelChild;
             object.level = showLevel;
@@ -445,7 +452,7 @@ export default {
           }
           return false;
         } else {
-          let object = {};
+          var object = {};
           object.title = target.title;
           object.value = labelChild;
           object.level = showLevel;
@@ -856,5 +863,16 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+.table-cell {
+  width: 16%;
+  height: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: $font-size16;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
