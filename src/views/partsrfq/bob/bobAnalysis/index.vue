@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-09-14 17:51:41
+ * @LastEditTime: 2021-11-14 12:13:34
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -40,10 +40,31 @@
           </div>
         </div>
       </template>
-      <table1 :tableList="tableList"
+      <div>
+        <div class="flex tabeleList">
+          <div v-for=" (item,index) in tableTitle"
+               :key="index"
+               class="margin-right20 tableTitle"><span class="">{{item.title}}</span></div>
+        </div>
+        <div class="flex tabeleList">
+          <div v-for="(item,index) in tableListData"
+               :key="index">
+            <div v-for="i in item"
+                 :key="i.title"
+                 class="tableData margin-bottom10 flex">
+              <span class="dataTitle margin-right60"
+                    v-if="index===0">{{i.title}}</span>
+              <span class=" dataValue">
+                <el-checkbox></el-checkbox> {{i.value}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <table1 :tableList="tableList"
               v-if="totalTable"
               v-bind="$attrs"
-              :expends="expedsArr"></table1>
+              :expends="expedsArr"></table1> -->
       <groupedTable ref="groupedTable"
                     class="margin-top20"
                     :tableList="groupList"
@@ -163,7 +184,9 @@ export default {
       checkFLag: true,
       SchemeId: "",
       expedsArr: [],
-      expedsArr1: []
+      expedsArr1: [],
+      tableTitle: [],
+      tableListData: []
     };
   },
   created () {
@@ -209,6 +232,10 @@ export default {
   mounted () {
     this.SchemeId = this.analysisSchemeId
     console.log(this.SchemeId)
+    this.$nextTick(() => {
+
+    });
+
     // this.$EventBus.$on("activeName", res => {
     //   this.activeName = res
     // })
@@ -231,18 +258,20 @@ export default {
         .then((res) => {
           try {
             this.tableList = res;
-            this.tableList.title.forEach(value => {
-              this.$attrs.supplierList.forEach(i => {
-                if (value.title == i.supplierId) {
-                  value.title = i.shortNameZh
-                }
-              })
-            })
-            filterEmptyChildren(this.tableList.element, 'detailId')
-            this.tableList.element = this.arrayTreeAddLevel(this.tableList.element)
-            this.$nextTick(() => {
-              this.open();
-            });
+            this.tableTitle = this.tableList.title.filter(item => item.title)
+            this.prepareData()
+            // this.tableList.title.forEach(value => {
+            //   this.$attrs.supplierList.forEach(i => {
+            //     if (value.title == i.supplierId) {
+            //       value.title = i.shortNameZh
+            //     }
+            //   })
+            // })
+            // filterEmptyChildren(this.tableList.element, 'detailId')
+            // this.tableList.element = this.arrayTreeAddLevel(this.tableList.element)
+            // this.$nextTick(() => {
+            //   this.open();
+            // });
           } catch (err) {
             console.log(err)
           }
@@ -251,68 +280,189 @@ export default {
           iMessage.error(err.desZh)
         });
     },
-    arrayTreeAddLevel (array, levelName = 'level', childrenName = 'child') {
-      if (!Array.isArray(array)) return []
-      const recursive = (array, level = 0) => {
-        level++
-        return array.map(v => {
-          v[levelName] = level
-          const child = v[childrenName]
-          if (child && child.length) recursive(child, level)
-          return v
-        })
-      }
-      return recursive(array)
+    prepareData () {
+      var tablData = [];
+      var lvl = [];
+      var titles = this.tableList.title;
+      var elements = this.tableList.element;
+      var rawCols = 0, maCols = 0;
+      titles.forEach((title, index) => {
+        if (rawCols < title.rawTotalColumn) {
+          rawCols = title.rawTotalColumn;
+        }
+        if (maCols < title.maTotalColumn) {
+          maCols = title.maTotalColumn;
+        }
+      });
+
+      elements.forEach((element) => {
+        this.createLevel(element, lvl, -1)
+      });
+      console.log(lvl)
+      titles.forEach((title, index) => {
+        var colData = [];
+
+        if (index > 0) {
+          elements.forEach((cbdDataLvlZero, index) => {
+            // if (index== 1) {
+            this.addToColList(rawCols, maCols, cbdDataLvlZero.code, cbdDataLvlZero, colData, title.label, 0)
+            // }
+          })
+          tablData.push(colData)
+        }
+        // }
+      });
+      this.tableListData = tablData
+      console.log(tablData)
     },
 
-    recursion (data) {
-      if (!data) {
-        // return; 中断执行
+    addChild (rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentIndex) {
+      childs.forEach((child) => {
+        this.addToColList(rawCols, maCols, cbdCode, child, colData, key, showLevel, parentIndex)
+      })
+    },
+
+    addToColList (rawCols, maCols, cbdCode, target, colData, key, showLevel, parentIndex) {
+      if (target.code == "detailId") {
         return;
       }
-      data.forEach(i => {
-        this.expedsArr.push(i.index.toString())
-        if (i.child && i.child.length > 0) {
-          this.recursion(i.child)
+      if (!Array.isArray(target[key])) {
+        if (!target.code) {
+          target[key] = [target[key]];
+        } else {
+          var object = {};
+          object.title = target.title;
+          object.value = target[key];
+          object.level = showLevel;
+          colData.push(object)
+          if (target.child && target.child.length > 0) {
+            this.addChild(rawCols, maCols, cbdCode, target.child, colData, key, ++showLevel)
+          }
+          return;
+        }
+      }
+
+      var looper = JSON.parse(JSON.stringify(target[key]));
+      if (looper.length < rawCols && cbdCode == "1") {
+        while (looper.length < rawCols) {
+          looper.push("");
+        }
+      }
+      if (looper.length < maCols && cbdCode == "2") {
+        while (looper.length < maCols) {
+          looper.push("");
+        }
+      }
+
+      looper.forEach((labelChild, index) => {
+        if (typeof parentIndex != "undefined") {
+          if (parentIndex == index) {
+            let object = {};
+            object.title = target.title;
+            object.value = labelChild;
+            object.level = showLevel;
+            // console.log(target.title, labelChild)
+            colData.push(object)
+            if (target.child && target.child.length > 0) {
+              this.addChild(rawCols, maCols, cbdCode, target.child, colData, key, ++showLevel, index)
+            }
+          }
+          return false;
+        } else {
+          let object = {};
+          object.title = target.title;
+          object.value = labelChild;
+          object.level = showLevel;
+          // console.log(target.title, labelChild)
+          colData.push(object)
+          if (target.child && target.child.length > 0) {
+            this.addChild(rawCols, maCols, cbdCode, target.child, colData, key, ++showLevel, index)
+          }
         }
       })
     },
-    open () {
-      let els = this.$el.getElementsByClassName("el-table__expand-icon");
-      if (this.tableList.element.length != 0 && els.length != 0) {
-        this.flag = false;
-        this.flag1 = true;
-        for (let j1 = 0; j1 < els.length; j1++) {
-          els[j1].classList.add("dafult");
-        }
-        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
-          const open = this.$el.getElementsByClassName(
-            "el-table__expand-icon--expanded"
-          );
-          for (let j = 0; j < open.length; j++) {
-            open[j].classList.remove("dafult");
-          }
-          const dafult = this.$el.getElementsByClassName("dafult");
-          for (let a = 0; a < dafult.length; a++) {
-            dafult[a].click();
-          }
-        }
+    createLevel (parent, lvl, showLevel) {
+      if (parent.code == "detailId") {
+        return;
+      }
+      showLevel++;
+      if (!lvl.some((item) => {
+        return item.title == parent.title
+      })) {
+        lvl.push({
+          title: parent.title,
+          level: showLevel
+        })
+      }
+      if (parent.child && parent.child.length > 0) {
+        parent.child.forEach((child) => {
+          this.createLevel(child, lvl, showLevel)
+        })
       }
     },
-    close () {
-      if (this.tableList.element.length != 0) {
-        this.flag = true;
-        this.flag1 = false;
-        const elsopen = this.$el.getElementsByClassName(
-          "el-table__expand-icon--expanded"
-        );
-        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
-          for (let i = 0; i < elsopen.length; i++) {
-            elsopen[i].click();
-          }
-        }
-      }
-    },
+
+    // arrayTreeAddLevel (array, levelName = 'level', childrenName = 'child') {
+    //   if (!Array.isArray(array)) return []
+    //   const recursive = (array, level = 0) => {
+    //     level++
+    //     return array.map(v => {
+    //       v[levelName] = level
+    //       const child = v[childrenName]
+    //       if (child && child.length) recursive(child, level)
+    //       return v
+    //     })
+    //   }
+    //   return recursive(array)
+    // },
+
+    // recursion (data) {
+    //   if (!data) {
+    //     // return; 中断执行
+    //     return;
+    //   }
+    //   data.forEach(i => {
+    //     this.expedsArr.push(i.index.toString())
+    //     if (i.child && i.child.length > 0) {
+    //       this.recursion(i.child)
+    //     }
+    //   })
+    // },
+    // open () {
+    //   let els = this.$el.getElementsByClassName("el-table__expand-icon");
+    //   if (this.tableList.element.length != 0 && els.length != 0) {
+    //     this.flag = false;
+    //     this.flag1 = true;
+    //     for (let j1 = 0; j1 < els.length; j1++) {
+    //       els[j1].classList.add("dafult");
+    //     }
+    //     if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
+    //       const open = this.$el.getElementsByClassName(
+    //         "el-table__expand-icon--expanded"
+    //       );
+    //       for (let j = 0; j < open.length; j++) {
+    //         open[j].classList.remove("dafult");
+    //       }
+    //       const dafult = this.$el.getElementsByClassName("dafult");
+    //       for (let a = 0; a < dafult.length; a++) {
+    //         dafult[a].click();
+    //       }
+    //     }
+    //   }
+    // },
+    // close () {
+    //   if (this.tableList.element.length != 0) {
+    //     this.flag = true;
+    //     this.flag1 = false;
+    //     const elsopen = this.$el.getElementsByClassName(
+    //       "el-table__expand-icon--expanded"
+    //     );
+    //     if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
+    //       for (let i = 0; i < elsopen.length; i++) {
+    //         elsopen[i].click();
+    //       }
+    //     }
+    //   }
+    // },
     cancel (flag) {
       this.visible = flag;
     },
@@ -564,9 +714,9 @@ export default {
   width: 300px;
   position: relative;
 }
-.title {
-  font-size: $font-size18 !important;
-}
+// .title {
+//   font-size: $font-size18 !important;
+// }
 .remark {
   width: 550px;
   overflow: hidden;
@@ -593,5 +743,32 @@ export default {
 }
 .wrap:hover .remark2 {
   display: block;
+}
+.tabeleList {
+  & > div {
+    flex: 1;
+  }
+  & > div:first-child {
+    flex: 2;
+  }
+  & > span {
+    flex: 1;
+  }
+  & > span:first-child {
+    flex: 2;
+  }
+  .tableTitle {
+    font-size: $font-size16;
+    text-align: center;
+  }
+  .tableData {
+    font-size: $font-size16;
+  }
+  .dataTitle {
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 </style>
