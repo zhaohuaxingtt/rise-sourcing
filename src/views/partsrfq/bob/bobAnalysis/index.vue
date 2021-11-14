@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
 -->
 <template>
-  <div>
+  <div v-loading="onDataLoading">
     <iCard>
       <template v-slot:header>
         <div class="flex-between-center titleBox">
@@ -41,22 +41,21 @@
         </div>
       </template>
       <div>
-        <div class="flex tabeleList">
+        <div style="display: flex;flex-flow: row nowrap;width: 100%;">
+          <div class="table-cell" style="justify-content: flex-start;width: 20%"></div>
           <div v-for=" (item,index) in tableTitle"
-               :key="index"
-               class="margin-right20 tableTitle"><span class="">{{item.title}}</span></div>
+               :key="index" class="table-cell">{{item.title}}</div>
         </div>
         <div class="flex tabeleList">
-          <div v-for="(item,index) in tableListData"
-               :key="index">
-            <div v-for="i in item"
-                 :key="i.title"
-                 class="tableData margin-bottom10 flex">
-              <span class="dataTitle margin-right60"
-                    v-if="index===0">{{i.title}}</span>
-              <span class=" dataValue">
-                <el-checkbox></el-checkbox> {{i.value}}
-              </span>
+          <div style="display:flex;flex-flow:column nowrap;">
+            <div v-for="(item,index) in tableListData" :key="index" style="display: flex;flex-flow: row nowrap;width: 100%;">
+              <span class="table-cell" style="justify-content: flex-start;width: 20%">{{item.title}}</span>
+              <span class="table-cell">{{item.value0}}</span>
+              <span class="table-cell">{{item.value1}}</span>
+              <span class="table-cell">{{item.value2}}</span>
+              <span class="table-cell">{{item.value3}}</span>
+              <span class="table-cell">{{item.value4}}</span>
+              <span class="table-cell">{{item.value5}}</span>
             </div>
           </div>
         </div>
@@ -162,6 +161,7 @@ export default {
   },
   data () {
     return {
+      onDataLoading: false,
       flag: true,
       flag1: false,
       tableList: [],
@@ -186,10 +186,13 @@ export default {
       expedsArr: [],
       expedsArr1: [],
       tableTitle: [],
-      tableListData: []
+      tableListData: [],
+      expandedItems:[],
+      originExpanded:[]
     };
   },
   created () {
+    this.onDataLoading = true;
     this.groupId = this.$route.query.groupId
     this.getRfqToRemark();
   },
@@ -242,6 +245,25 @@ export default {
 
   },
   methods: {
+    handleCollapse(item) {
+      item.expanded = false;
+    },
+    handleExpand(item) {
+      if (this.expandedItems.indexOf(item.lvlId) >=0) {
+        this.expandedItems.splice(this.expandedItems.indexOf(item.lvlId), 1)
+        this.collapseItem(this.tableListData[0], item.lvlId)
+      }
+    },
+    collapseItem(colDatas, parentLvlId) {
+      colDatas.filter((item) => {
+        if (item.parentLvl == parentLvlId) {
+          if (this.expandedItems.indexOf(item.lvlId) >= 0){
+            this.expandedItems.splice(this.expandedItems.indexOf(item.lvlId), 1)
+            this.collapseItem(colDatas, item.lvlId)
+          }
+        }
+      });
+    },
     getRfqToRemark () {
       getRfqToRemark({
         rfqCode: this.rfqCode,
@@ -260,6 +282,9 @@ export default {
             this.tableList = res;
             this.tableTitle = this.tableList.title.filter(item => item.title)
             this.prepareData()
+            this.$nextTick(() => {
+              this.onDataLoading = false;
+            })
             // this.tableList.title.forEach(value => {
             //   this.$attrs.supplierList.forEach(i => {
             //     if (value.title == i.supplierId) {
@@ -280,17 +305,36 @@ export default {
           iMessage.error(err.desZh)
         });
     },
+    createUuid() {
+      var s4 = function() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1)
+      }
+      return (
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4()
+      )
+    },
     prepareData () {
-      var tablData = [];
+      var tableData = [];
       var lvl = [];
       var titles = this.tableList.title;
       var elements = this.tableList.element;
-      var rawCols = 0, maCols = 0;
+      var rawCols=0;
+      var maCols=0;
+      var idCol = {}
       titles.forEach((title, index) => {
-        if (rawCols < title.rawTotalColumn) {
+        if (rawCols<title.rawTotalColumn){
           rawCols = title.rawTotalColumn;
         }
-        if (maCols < title.maTotalColumn) {
+        if (maCols<title.maTotalColumn){
           maCols = title.maTotalColumn;
         }
       });
@@ -299,84 +343,128 @@ export default {
         this.createLevel(element, lvl, -1)
       });
       console.log(lvl)
+
+      // console.log(titles)
       titles.forEach((title, index) => {
         var colData = [];
 
         if (index > 0) {
           elements.forEach((cbdDataLvlZero, index) => {
             // if (index== 1) {
-            this.addToColList(rawCols, maCols, cbdDataLvlZero.code, cbdDataLvlZero, colData, title.label, 0)
-            // }
+            this.addToColList(idCol, rawCols, maCols, cbdDataLvlZero.code ,cbdDataLvlZero, colData, title.label, 0)
+              // }
           })
-          tablData.push(colData)
+          tableData.push(colData)
         }
         // }
       });
-      this.tableListData = tablData
-      console.log(tablData)
+      this.mergeData(tableData)
+      // this.originExpanded = _.cloneDeep(this.expandedItems);
     },
-
-    addChild (rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentIndex) {
+    mergeData(tableData) {
+      var merged = JSON.parse(JSON.stringify(tableData[0]));
+      merged.forEach((item) => {
+        item.value0 = item.value
+        // item.id = createUuid()
+        delete item.value
+      })
+      tableData.forEach((col, index) => {
+        if (index > 0) {
+          col.forEach((item, idx) => {
+            merged[idx]["value" + index] = item.value
+          })
+        }
+      })
+      this.tableListData = merged
+      console.log(merged)
+    },
+    addChild(idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, parentIndex) {
       childs.forEach((child) => {
-        this.addToColList(rawCols, maCols, cbdCode, child, colData, key, showLevel, parentIndex)
+        this.addToColList(idCol, rawCols, maCols, cbdCode, child, colData, key, showLevel, parentId, parentIndex)
       })
     },
 
-    addToColList (rawCols, maCols, cbdCode, target, colData, key, showLevel, parentIndex) {
+    addToColList(idCol, rawCols, maCols, cbdCode, target, colData, key, showLevel, parentId, parentIndex) {
       if (target.code == "detailId") {
         return;
       }
+      // var nextLvl = showLevel + 1;
+      var nextLvl = showLevel + 1;
       if (!Array.isArray(target[key])) {
         if (!target.code) {
-          target[key] = [target[key]];
+          target[key]=[target[key]];
         } else {
           var object = {};
           object.title = target.title;
           object.value = target[key];
           object.level = showLevel;
+          // object.rootId = parentId;
+          if (target.child && target.child.length > 0) {
+            if (!idCol[object.title]) {
+              idCol[object.title] = this.createUuid();
+            }
+            object.id = idCol[object.title];
+            object.hasChild = true
+          }
           colData.push(object)
           if (target.child && target.child.length > 0) {
-            this.addChild(rawCols, maCols, cbdCode, target.child, colData, key, ++showLevel)
+            this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title])
           }
           return;
         }
       }
 
       var looper = JSON.parse(JSON.stringify(target[key]));
-      if (looper.length < rawCols && cbdCode == "1") {
-        while (looper.length < rawCols) {
+      if (looper.length < rawCols && cbdCode=="1") {
+        while(looper.length < rawCols) {
           looper.push("");
         }
       }
-      if (looper.length < maCols && cbdCode == "2") {
-        while (looper.length < maCols) {
+      if (looper.length < maCols && cbdCode=="2") {
+        while(looper.length < maCols) {
           looper.push("");
         }
       }
-
+      
       looper.forEach((labelChild, index) => {
         if (typeof parentIndex != "undefined") {
           if (parentIndex == index) {
-            let object = {};
+            var object = {};
             object.title = target.title;
             object.value = labelChild;
             object.level = showLevel;
+            object.rootId = parentId;
+            if (target.child && target.child.length > 0) {
+              if (!idCol[object.title + index]) {
+                idCol[object.title + index] = this.createUuid();
+              }
+              object.id = idCol[object.title + index];
+              object.hasChild = true
+            }
             // console.log(target.title, labelChild)
             colData.push(object)
             if (target.child && target.child.length > 0) {
-              this.addChild(rawCols, maCols, cbdCode, target.child, colData, key, ++showLevel, index)
+              this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], index)
             }
           }
           return false;
         } else {
-          let object = {};
+          var object = {};
           object.title = target.title;
           object.value = labelChild;
           object.level = showLevel;
+          object.rootId = parentId;
+          if (target.child && target.child.length > 0) {
+            if (!idCol[object.title + index]) {
+              idCol[object.title + index] = this.createUuid();
+            }
+            object.id = idCol[object.title + index];
+            object.hasChild = true
+          }
           // console.log(target.title, labelChild)
           colData.push(object)
           if (target.child && target.child.length > 0) {
-            this.addChild(rawCols, maCols, cbdCode, target.child, colData, key, ++showLevel, index)
+            this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], index)
           }
         }
       })
@@ -770,5 +858,16 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+.table-cell {
+  width: 16%;
+  height: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: $font-size16;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
