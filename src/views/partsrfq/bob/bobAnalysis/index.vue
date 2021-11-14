@@ -53,7 +53,7 @@
           <div style="display:flex;flex-flow:column nowrap;">
             <div v-for="(item,index) in tableListData"
                  :key="index"
-                 style="display: flex;flex-flow: row nowrap;width: 100%;"
+                 style="display: flex;flex-flow: row nowrap;width: 100%;" :class="index%2 == 0 ? 'table-odd' : 'table-even'"
                  v-if="collapseItems.indexOf(item.id) < 0">
               <span class="table-cell"
                     style="justify-content: flex-start;width: 20%"
@@ -252,7 +252,6 @@ export default {
   methods: {
     handleCollapse(item) {
       this.collapseItem(item.id, item.expanded)
-      console.log(this.collapseItems)
       item.expanded = !item.expanded;
     },
     collapseItem (parentId, isCollapse) {
@@ -357,30 +356,23 @@ export default {
       elements.forEach((element) => {
         this.createLevel(element, lvl, -1)
       });
-      console.log(lvl)
 
-      // console.log(titles)
       titles.forEach((title, index) => {
         var colData = [];
 
         if (index > 0) {
           elements.forEach((cbdDataLvlZero, index) => {
-            // if (index== 1) {
             this.addToColList(idCol, rawCols, maCols, cbdDataLvlZero.code, cbdDataLvlZero, colData, title.label, 0)
-            // }
           })
           tableData.push(colData)
         }
-        // }
       });
       this.mergeData(tableData)
-      // this.originExpanded = _.cloneDeep(this.expandedItems);
     },
     mergeData (tableData) {
       var merged = JSON.parse(JSON.stringify(tableData[0]));
       merged.forEach((item) => {
         item.value0 = item.value
-        // item.id = createUuid()
         if (!item.id) {
           item.id = this.createUuid();
         }
@@ -394,7 +386,6 @@ export default {
         }
       })
       this.tableListData = merged
-      console.log(merged)
     },
     addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, parentIndex) {
       childs.forEach((child) => {
@@ -462,7 +453,6 @@ export default {
               object.hasChild = true
               object.expanded = true;
             }
-            // console.log(target.title, labelChild)
             colData.push(object)
             if (target.child && target.child.length > 0) {
               this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], index)
@@ -483,7 +473,6 @@ export default {
             object.hasChild = true
             object.expanded = true;
           }
-          // console.log(target.title, labelChild)
           colData.push(object)
           if (target.child && target.child.length > 0) {
             this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], index)
@@ -885,7 +874,7 @@ export default {
 }
 .table-cell {
   width: 16%;
-  height: 26px;
+  height: 41px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -893,5 +882,11 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.table-odd {
+  background-color: #ffffff;
+}
+.table-even {
+  background-color: rgba(22, 99, 246, 0.07);
 }
 </style>
