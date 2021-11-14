@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-14 12:13:34
+ * @LastEditTime: 2021-11-15 00:07:18
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -44,21 +44,14 @@
         <div class="flex tabeleList">
           <div v-for=" (item,index) in tableTitle"
                :key="index"
-               class="margin-right20 tableTitle"><span class="">{{item.title}}</span></div>
+               class="margin-right20 tableTitle"><span>{{item.title}}</span></div>
         </div>
-        <div class="flex tabeleList">
-          <div v-for="(item,index) in tableListData"
-               :key="index">
-            <div v-for="i in item"
-                 :key="i.title"
-                 class="tableData margin-bottom10 flex">
-              <span class="dataTitle margin-right60"
-                    v-if="index===0">{{i.title}}</span>
-              <span class=" dataValue">
-                <el-checkbox></el-checkbox> {{i.value}}
-              </span>
-            </div>
-          </div>
+        <div class="tabeleList">
+          <tree v-for="(item,index) in tableListData"
+                :key="index"
+                :model="item">
+            {{item}}
+          </tree>
         </div>
       </div>
       <!-- <table1 :tableList="tableList"
@@ -116,15 +109,11 @@
 <script>
 import { iCard, iButton, iDialog, iMessage } from "rise";
 import table1 from "./components/table1.vue";
-import table2 from "./components/table2.vue";
-import table3 from "./components/table3.vue";
-import table4 from "./components/table4.vue";
-import table5 from "./components/table5.vue";
-import table6 from "./components/table6.vue";
+import tree from './tree'
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
-import { filterEmptyChildren } from '@/utils'
+import { arrayToTree } from '@/utils'
 import {
   chargeRetrieve,
   getRfqToRemark,
@@ -156,6 +145,7 @@ export default {
     iDialog,
     iButton,
     table1,
+    tree,
     ungroupedTable,
     groupedTable,
     remarkDialog,
@@ -186,7 +176,8 @@ export default {
       expedsArr: [],
       expedsArr1: [],
       tableTitle: [],
-      tableListData: []
+      tableListData: [],
+      checkList: []
     };
   },
   created () {
@@ -242,6 +233,23 @@ export default {
 
   },
   methods: {
+    createUuid () {
+      var s4 = function () {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1)
+      }
+      return (
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4()
+      )
+    },
     getRfqToRemark () {
       getRfqToRemark({
         rfqCode: this.rfqCode,
@@ -259,6 +267,7 @@ export default {
           try {
             this.tableList = res;
             this.tableTitle = this.tableList.title.filter(item => item.title)
+
             this.prepareData()
             // this.tableList.title.forEach(value => {
             //   this.$attrs.supplierList.forEach(i => {
@@ -281,11 +290,18 @@ export default {
         });
     },
     prepareData () {
+      var self = this;
       var tablData = [];
       var lvl = [];
       var titles = this.tableList.title;
       var elements = this.tableList.element;
       var rawCols = 0, maCols = 0;
+      var idCol = {}
+      // "rawTotalColumn": 4,
+      // "rawTotalChild": [289053, 289054, 289055, 289056],
+      // "rawTotalUnGrouped": 4,
+      // "rawUngroupedChild": [289053, 289054, 289055, 289056],
+      // "maTotalColumn": 4,
       titles.forEach((title, index) => {
         if (rawCols < title.rawTotalColumn) {
           rawCols = title.rawTotalColumn;
@@ -299,33 +315,77 @@ export default {
         this.createLevel(element, lvl, -1)
       });
       console.log(lvl)
+
+      // console.log(titles)
       titles.forEach((title, index) => {
         var colData = [];
 
         if (index > 0) {
           elements.forEach((cbdDataLvlZero, index) => {
             // if (index== 1) {
-            this.addToColList(rawCols, maCols, cbdDataLvlZero.code, cbdDataLvlZero, colData, title.label, 0)
+            this.addToColList(idCol, rawCols, maCols, cbdDataLvlZero.code, cbdDataLvlZero, colData, title.label, 0)
             // }
           })
           tablData.push(colData)
         }
         // }
       });
-      this.tableListData = tablData
+      console.log(idCol)
       console.log(tablData)
+      this.mergeData(tablData)
+    },
+    mergeData (tableData) {
+      var merged = JSON.parse(JSON.stringify(tableData[0]));
+      merged.forEach((item) => {
+        item.value0 = item.value
+        // item.id = createUuid()
+        delete item.value
+      })
+      tableData.forEach((col, index) => {
+        if (index > 0) {
+          col.forEach((item, idx) => {
+            merged[idx]["value" + index] = item.value
+          })
+        }
+      })
+      console.log(merged)
+      this.tableListData = arrayToTree(merged, 'id', 'rootId', 'children')
+      console.log(this.tableListData)
+      var firstLvl = 0;
+      var preLvl = 0;
+      var finallydata = []
+      var firstLvls = merged.filter((item) => {
+        return item.level == 0;
+      });
+
+      console.log(firstLvls)
+
+      firstLvls.forEach((item) => {
+        var filtered = merged.filter((child) => {
+          return child.rootId == item.id
+        })
+        console.log(filtered)
+      })
+
+      // var finallydata = {}
+      // merged.forEach((item) => {
+      //   finallydata[item.id] = item
+      // })
+      // console.log(finallydata)
     },
 
-    addChild (rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentIndex) {
+    addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, parentIndex) {
       childs.forEach((child) => {
-        this.addToColList(rawCols, maCols, cbdCode, child, colData, key, showLevel, parentIndex)
+        this.addToColList(idCol, rawCols, maCols, cbdCode, child, colData, key, showLevel, parentId, parentIndex)
       })
     },
 
-    addToColList (rawCols, maCols, cbdCode, target, colData, key, showLevel, parentIndex) {
+    addToColList (idCol, rawCols, maCols, cbdCode, target, colData, key, showLevel, parentId, parentIndex) {
       if (target.code == "detailId") {
         return;
       }
+      // var nextLvl = showLevel + 1;
+      var nextLvl = showLevel + 1;
       if (!Array.isArray(target[key])) {
         if (!target.code) {
           target[key] = [target[key]];
@@ -334,9 +394,17 @@ export default {
           object.title = target.title;
           object.value = target[key];
           object.level = showLevel;
+          // object.rootId = parentId;
+          if (target.child && target.child.length > 0) {
+            if (!idCol[object.title]) {
+              idCol[object.title] = this.createUuid();
+            }
+            object.id = idCol[object.title];
+            object.hasChild = true
+          }
           colData.push(object)
           if (target.child && target.child.length > 0) {
-            this.addChild(rawCols, maCols, cbdCode, target.child, colData, key, ++showLevel)
+            this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title])
           }
           return;
         }
@@ -361,10 +429,18 @@ export default {
             object.title = target.title;
             object.value = labelChild;
             object.level = showLevel;
+            object.rootId = parentId;
+            if (target.child && target.child.length > 0) {
+              if (!idCol[object.title + index]) {
+                idCol[object.title + index] = this.createUuid();
+              }
+              object.id = idCol[object.title + index];
+              object.hasChild = true
+            }
             // console.log(target.title, labelChild)
             colData.push(object)
             if (target.child && target.child.length > 0) {
-              this.addChild(rawCols, maCols, cbdCode, target.child, colData, key, ++showLevel, index)
+              this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], index)
             }
           }
           return false;
@@ -373,10 +449,18 @@ export default {
           object.title = target.title;
           object.value = labelChild;
           object.level = showLevel;
+          object.rootId = parentId;
+          if (target.child && target.child.length > 0) {
+            if (!idCol[object.title + index]) {
+              idCol[object.title + index] = this.createUuid();
+            }
+            object.id = idCol[object.title + index];
+            object.hasChild = true
+          }
           // console.log(target.title, labelChild)
           colData.push(object)
           if (target.child && target.child.length > 0) {
-            this.addChild(rawCols, maCols, cbdCode, target.child, colData, key, ++showLevel, index)
+            this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], index)
           }
         }
       })
@@ -463,6 +547,9 @@ export default {
     //     }
     //   }
     // },
+    handleChange (val) {
+      console.log(val, 'val')
+    },
     cancel (flag) {
       this.visible = flag;
     },
@@ -634,7 +721,6 @@ export default {
         this.visible1 = false;
       })
     },
-    handleChange (value) { },
     clear () {
       if (!this.activeName) {
         this.activeName = "rawUngrouped"
