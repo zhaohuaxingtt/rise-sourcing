@@ -54,12 +54,7 @@
                 <i v-if="item.hasChild" :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'" style="cursor: pointer;margin-right: 4px;" @click="handleCollapse(item)"></i>
                 {{item.title}}
               </span>
-              <span class="table-cell">{{item.value0}}</span>
-              <span class="table-cell">{{item.value1}}</span>
-              <span class="table-cell">{{item.value2}}</span>
-              <span class="table-cell">{{item.value3}}</span>
-              <span class="table-cell">{{item.value4}}</span>
-              <span class="table-cell">{{item.value5}}</span>
+              <span class="table-cell" v-for="(title, titleIdx) in tableTitle" :key="titleIdx">{{item['value'+titleIdx]}}</span>
             </div>
           </div>
         </div>
@@ -248,6 +243,9 @@ export default {
 
   },
   methods: {
+    hasValue(value) {
+      return typeof value != 'undefined';
+    },
     handleCollapse(item) {
       this.collapseItem(item.id, item.expanded)
       console.log(this.collapseItems)
