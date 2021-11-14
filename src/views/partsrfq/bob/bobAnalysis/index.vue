@@ -28,10 +28,16 @@
                      @click="open">全部展开</iButton>
             <iButton v-show="flag1"
                      @click="close">全部收回</iButton>
-            <iButton @click="remarks">备注</iButton>
-            <iButton @click="reduction">还原</iButton>
-            <iButton @click="group">数据分组</iButton>
-            <iButton @click="down">导出</iButton>
+            <template v-if="!onGroupingModel">
+              <iButton @click="remarks">备注</iButton>
+              <iButton @click="reduction">还原</iButton>
+              <iButton @click="onGroupingModel = true" v-if="!onGroupingModel">数据分组</iButton>
+              <iButton @click="down">导出</iButton>
+            </template>
+            <template v-else>
+              <iButton @click="saveGroup">保存分组</iButton>
+              <iButton @click="onGroupingModel = false">取消</iButton>
+            </template>
           </div>
           <div v-show="!checkFLag">
             <iButton @click="clear">移除</iButton>
@@ -64,7 +70,11 @@
                    @click="handleCollapse(item)"></i>
                 {{item.title}}
               </span>
-              <span class="table-cell" v-for="(title, titleIdx) in tableTitle" :key="titleIdx">{{item['value'+titleIdx]}}</span>
+              <span class="table-cell" v-for="(title, titleIdx) in tableTitle" :key="titleIdx">
+                <el-checkbox v-show="onGroupingModel" v-if="item.groupKey" style="margin-right: 10px;" 
+                  @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
+                {{item['value'+titleIdx]}}
+              </span>
             </div>
           </div>
         </div>
@@ -193,7 +203,8 @@ export default {
       expedsArr1: [],
       tableTitle: [],
       tableListData: [],
-      collapseItems: []
+      collapseItems: [],
+      onGroupingModel: false
     };
   },
   created () {
@@ -276,6 +287,9 @@ export default {
           }
         }
       });
+    },
+    onGroupItemSelected(checked, item, idx) {
+      console.log(checked, item, idx)
     },
     getRfqToRemark () {
       getRfqToRemark({
@@ -408,6 +422,7 @@ export default {
           object.value = target[key];
           object.level = showLevel;
           object.rootId = parentId;
+          object.code = target.code;
           // object.rootId = parentId;
           if (target.child && target.child.length > 0) {
             if (!idCol[object.title]) {
@@ -445,6 +460,9 @@ export default {
             object.value = labelChild;
             object.level = showLevel;
             object.rootId = parentId;
+            if (object.title == '组别' || object.title == '制造工序') {
+              object.groupKey = true;
+            }
             if (target.child && target.child.length > 0) {
               if (!idCol[object.title + index]) {
                 idCol[object.title + index] = this.createUuid();
@@ -465,6 +483,10 @@ export default {
           object.value = labelChild;
           object.level = showLevel;
           object.rootId = parentId;
+          if (object.title == '组别' || object.title == '制造工序') {
+            object.groupKey = true;
+          }
+          
           if (target.child && target.child.length > 0) {
             if (!idCol[object.title + index]) {
               idCol[object.title + index] = this.createUuid();
@@ -627,12 +649,13 @@ export default {
       this.visible = true;
     },
     group () {
-      update(this.formUpdata).then(res => {
-        // iMessage.success("保存成功");
-        this.totalTable = false;
-        this.groupby = true;
-        this.checkFLag = false
-      })
+      this.onGroupingModel = true;
+      // update(this.formUpdata).then(res => {
+      //   // iMessage.success("保存成功");
+      //   this.totalTable = false;
+      //   this.groupby = true;
+      //   this.checkFLag = false
+      // })
     },
     groupBtn (e, result, activeName) {
       if (result.length === 0) {
