@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-14 12:13:34
+ * @LastEditTime: 2021-11-15 00:22:29
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -42,16 +42,26 @@
       </template>
       <div>
         <div style="display: flex;flex-flow: row nowrap;width: 100%;">
-          <div class="table-cell" style="justify-content: flex-start;width: 20%"></div>
+          <div class="table-cell"
+               style="justify-content: flex-start;width: 20%"></div>
           <div v-for=" (item,index) in tableTitle"
-               :key="index" class="table-cell" style="font-weight: bold">{{item.title}}</div>
+               :key="index"
+               class="table-cell"
+               style="font-weight: bold">{{item.title}}</div>
         </div>
         <div class="flex tabeleList">
           <div style="display:flex;flex-flow:column nowrap;">
-            <div v-for="(item,index) in tableListData" :key="index" style="display: flex;flex-flow: row nowrap;width: 100%;" 
-              v-if="collapseItems.indexOf(item.id) < 0">
-              <span class="table-cell" style="justify-content: flex-start;width: 20%" :style="{'padding-left': 20*item.level + 'px'}">
-                <i v-if="item.hasChild" :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'" style="cursor: pointer;margin-right: 4px;" @click="handleCollapse(item)"></i>
+            <div v-for="(item,index) in tableListData"
+                 :key="index"
+                 style="display: flex;flex-flow: row nowrap;width: 100%;"
+                 v-if="collapseItems.indexOf(item.id) < 0">
+              <span class="table-cell"
+                    style="justify-content: flex-start;width: 20%"
+                    :style="{'padding-left': 20*item.level + 'px'}">
+                <i v-if="item.hasChild"
+                   :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
+                   style="cursor: pointer;margin-right: 4px;"
+                   @click="handleCollapse(item)"></i>
                 {{item.title}}
               </span>
               <span class="table-cell" v-for="(title, titleIdx) in tableTitle" :key="titleIdx">{{item['value'+titleIdx]}}</span>
@@ -114,15 +124,11 @@
 <script>
 import { iCard, iButton, iDialog, iMessage } from "rise";
 import table1 from "./components/table1.vue";
-import table2 from "./components/table2.vue";
-import table3 from "./components/table3.vue";
-import table4 from "./components/table4.vue";
-import table5 from "./components/table5.vue";
-import table6 from "./components/table6.vue";
+import tree from './tree'
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
-import { filterEmptyChildren } from '@/utils'
+import { arrayToTree } from '@/utils'
 import {
   chargeRetrieve,
   getRfqToRemark,
@@ -154,6 +160,7 @@ export default {
     iDialog,
     iButton,
     table1,
+    tree,
     ungroupedTable,
     groupedTable,
     remarkDialog,
@@ -186,7 +193,7 @@ export default {
       expedsArr1: [],
       tableTitle: [],
       tableListData: [],
-      collapseItems:[]
+      collapseItems: []
     };
   },
   created () {
@@ -243,19 +250,16 @@ export default {
 
   },
   methods: {
-    hasValue(value) {
-      return typeof value != 'undefined';
-    },
     handleCollapse(item) {
       this.collapseItem(item.id, item.expanded)
       console.log(this.collapseItems)
       item.expanded = !item.expanded;
     },
-    collapseItem(parentId, isCollapse) {
+    collapseItem (parentId, isCollapse) {
       this.tableListData.forEach((item) => {
         if (isCollapse) {
           if (item.rootId && item.rootId == parentId) {
-            if (this.collapseItems.indexOf(item.id) < 0){
+            if (this.collapseItems.indexOf(item.id) < 0) {
               this.collapseItems.push(item.id)
               if (item.hasChild) {
                 this.collapseItem(item.id, isCollapse)
@@ -291,6 +295,7 @@ export default {
           try {
             this.tableList = res;
             this.tableTitle = this.tableList.title.filter(item => item.title)
+
             this.prepareData()
             this.$nextTick(() => {
               this.onDataLoading = false;
@@ -315,8 +320,8 @@ export default {
           iMessage.error(err.desZh)
         });
     },
-    createUuid() {
-      var s4 = function() {
+    createUuid () {
+      var s4 = function () {
         return Math.floor((1 + Math.random()) * 0x10000)
           .toString(16)
           .substring(1)
@@ -337,14 +342,14 @@ export default {
       var lvl = [];
       var titles = this.tableList.title;
       var elements = this.tableList.element;
-      var rawCols=0;
-      var maCols=0;
+      var rawCols = 0;
+      var maCols = 0;
       var idCol = {}
       titles.forEach((title, index) => {
-        if (rawCols<title.rawTotalColumn){
+        if (rawCols < title.rawTotalColumn) {
           rawCols = title.rawTotalColumn;
         }
-        if (maCols<title.maTotalColumn){
+        if (maCols < title.maTotalColumn) {
           maCols = title.maTotalColumn;
         }
       });
@@ -361,8 +366,8 @@ export default {
         if (index > 0) {
           elements.forEach((cbdDataLvlZero, index) => {
             // if (index== 1) {
-            this.addToColList(idCol, rawCols, maCols, cbdDataLvlZero.code ,cbdDataLvlZero, colData, title.label, 0)
-              // }
+            this.addToColList(idCol, rawCols, maCols, cbdDataLvlZero.code, cbdDataLvlZero, colData, title.label, 0)
+            // }
           })
           tableData.push(colData)
         }
@@ -371,7 +376,7 @@ export default {
       this.mergeData(tableData)
       // this.originExpanded = _.cloneDeep(this.expandedItems);
     },
-    mergeData(tableData) {
+    mergeData (tableData) {
       var merged = JSON.parse(JSON.stringify(tableData[0]));
       merged.forEach((item) => {
         item.value0 = item.value
@@ -391,13 +396,13 @@ export default {
       this.tableListData = merged
       console.log(merged)
     },
-    addChild(idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, parentIndex) {
+    addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, parentIndex) {
       childs.forEach((child) => {
         this.addToColList(idCol, rawCols, maCols, cbdCode, child, colData, key, showLevel, parentId, parentIndex)
       })
     },
 
-    addToColList(idCol, rawCols, maCols, cbdCode, target, colData, key, showLevel, parentId, parentIndex) {
+    addToColList (idCol, rawCols, maCols, cbdCode, target, colData, key, showLevel, parentId, parentIndex) {
       if (target.code == "detailId") {
         return;
       }
@@ -405,7 +410,7 @@ export default {
       var nextLvl = showLevel + 1;
       if (!Array.isArray(target[key])) {
         if (!target.code) {
-          target[key]=[target[key]];
+          target[key] = [target[key]];
         } else {
           var object = {};
           object.title = target.title;
@@ -430,17 +435,17 @@ export default {
       }
 
       var looper = JSON.parse(JSON.stringify(target[key]));
-      if (looper.length < rawCols && cbdCode=="1") {
-        while(looper.length < rawCols) {
+      if (looper.length < rawCols && cbdCode == "1") {
+        while (looper.length < rawCols) {
           looper.push("");
         }
       }
-      if (looper.length < maCols && cbdCode=="2") {
-        while(looper.length < maCols) {
+      if (looper.length < maCols && cbdCode == "2") {
+        while (looper.length < maCols) {
           looper.push("");
         }
       }
-      
+
       looper.forEach((labelChild, index) => {
         if (typeof parentIndex != "undefined") {
           if (parentIndex == index) {
@@ -568,6 +573,9 @@ export default {
     //     }
     //   }
     // },
+    handleChange (val) {
+      console.log(val, 'val')
+    },
     cancel (flag) {
       this.visible = flag;
     },
@@ -739,7 +747,6 @@ export default {
         this.visible1 = false;
       })
     },
-    handleChange (value) { },
     clear () {
       if (!this.activeName) {
         this.activeName = "rawUngrouped"
