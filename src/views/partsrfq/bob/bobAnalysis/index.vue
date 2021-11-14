@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-15 00:10:25
+ * @LastEditTime: 2021-11-15 00:22:29
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -46,15 +46,24 @@
                style="justify-content: flex-start;width: 20%"></div>
           <div v-for=" (item,index) in tableTitle"
                :key="index"
-               class="table-cell">{{item.title}}</div>
+               class="table-cell"
+               style="font-weight: bold">{{item.title}}</div>
         </div>
         <div class="flex tabeleList">
           <div style="display:flex;flex-flow:column nowrap;">
             <div v-for="(item,index) in tableListData"
                  :key="index"
-                 style="display: flex;flex-flow: row nowrap;width: 100%;">
+                 style="display: flex;flex-flow: row nowrap;width: 100%;"
+                 v-if="collapseItems.indexOf(item.id) < 0">
               <span class="table-cell"
-                    style="justify-content: flex-start;width: 20%">{{item.title}}</span>
+                    style="justify-content: flex-start;width: 20%"
+                    :style="{'padding-left': 20*item.level + 'px'}">
+                <i v-if="item.hasChild"
+                   :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
+                   style="cursor: pointer;margin-right: 4px;"
+                   @click="handleCollapse(item)"></i>
+                {{item.title}}
+              </span>
               <span class="table-cell">{{item.value0}}</span>
               <span class="table-cell">{{item.value1}}</span>
               <span class="table-cell">{{item.value2}}</span>
@@ -189,8 +198,7 @@ export default {
       expedsArr1: [],
       tableTitle: [],
       tableListData: [],
-      expandedItems: [],
-      originExpanded: []
+      collapseItems: []
     };
   },
   created () {
@@ -248,20 +256,29 @@ export default {
   },
   methods: {
     handleCollapse (item) {
-      item.expanded = false;
+      this.collapseItem(item.id, item.expanded)
+      console.log(this.collapseItems)
+      item.expanded = !item.expanded;
     },
-    handleExpand (item) {
-      if (this.expandedItems.indexOf(item.lvlId) >= 0) {
-        this.expandedItems.splice(this.expandedItems.indexOf(item.lvlId), 1)
-        this.collapseItem(this.tableListData[0], item.lvlId)
-      }
-    },
-    collapseItem (colDatas, parentLvlId) {
-      colDatas.filter((item) => {
-        if (item.parentLvl == parentLvlId) {
-          if (this.expandedItems.indexOf(item.lvlId) >= 0) {
-            this.expandedItems.splice(this.expandedItems.indexOf(item.lvlId), 1)
-            this.collapseItem(colDatas, item.lvlId)
+    collapseItem (parentId, isCollapse) {
+      this.tableListData.forEach((item) => {
+        if (isCollapse) {
+          if (item.rootId && item.rootId == parentId) {
+            if (this.collapseItems.indexOf(item.id) < 0) {
+              this.collapseItems.push(item.id)
+              if (item.hasChild) {
+                this.collapseItem(item.id, isCollapse)
+              }
+            }
+          }
+        } else {
+          if (item.rootId && item.rootId == parentId) {
+            if (this.collapseItems.indexOf(item.id) >= 0) {
+              this.collapseItems.splice(this.collapseItems.indexOf(item.id), 1)
+              if (item.hasChild) {
+                this.collapseItem(item.id, isCollapse)
+              }
+            }
           }
         }
       });
@@ -369,6 +386,9 @@ export default {
       merged.forEach((item) => {
         item.value0 = item.value
         // item.id = createUuid()
+        if (!item.id) {
+          item.id = this.createUuid();
+        }
         delete item.value
       })
       tableData.forEach((col, index) => {
@@ -401,6 +421,7 @@ export default {
           object.title = target.title;
           object.value = target[key];
           object.level = showLevel;
+          object.rootId = parentId;
           // object.rootId = parentId;
           if (target.child && target.child.length > 0) {
             if (!idCol[object.title]) {
@@ -408,6 +429,7 @@ export default {
             }
             object.id = idCol[object.title];
             object.hasChild = true
+            object.expanded = true;
           }
           colData.push(object)
           if (target.child && target.child.length > 0) {
@@ -443,6 +465,7 @@ export default {
               }
               object.id = idCol[object.title + index];
               object.hasChild = true
+              object.expanded = true;
             }
             // console.log(target.title, labelChild)
             colData.push(object)
@@ -463,6 +486,7 @@ export default {
             }
             object.id = idCol[object.title + index];
             object.hasChild = true
+            object.expanded = true;
           }
           // console.log(target.title, labelChild)
           colData.push(object)
