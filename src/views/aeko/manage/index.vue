@@ -301,24 +301,24 @@ export default {
       this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
       this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
-      const { isAekoManager,isCommodityCoordinator,isLinie,$route } = this;
-      const role = {
-        isAekoManager,
-        isCommodityCoordinator,
-        isLinie,
-      };
+      // const { isAekoManager,isCommodityCoordinator,isLinie,$route } = this;
+      // const role = {
+      //   isAekoManager,
+      //   isCommodityCoordinator,
+      //   isLinie,
+      // };
 
-      const filterList = filterRole(role);
-      this.navList = filterList;
+      // const filterList = filterRole(role);
+      // this.navList = filterList;
 
       // 判断当前url是否在可显示列表内 若无则显示列表第一个清单
-      const {path} = $route;
-      const filterPath = filterList.filter((item)=>item.url == path);
-      if(!filterPath.length){
-        this.$router.push({
-          path:filterList[0].url,
-        })
-      }
+      // const {path} = $route;
+      // const filterPath = filterList.filter((item)=>item.url == path);
+      // if(!filterPath.length){
+      //   this.$router.push({
+      //     path:filterList[0].url,
+      //   })
+      // }
 
       this.leftTab = getLeftTab(0);
     },

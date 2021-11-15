@@ -53,7 +53,7 @@
           <div v-for=" (item,index) in tableTitle"
                :key="index"
                class="table-cell"
-               style="font-weight: bold">{{item.title}}</div>
+               :style="{'font-weight': 'bold','width': 'calc(80% / ' + tableTitle.length + ')'}">{{item.title}}</div>
         </div>
         <div class="flex tabeleList">
           <div style="display:flex;flex-flow:column nowrap;">
@@ -66,11 +66,12 @@
                     :style="{'padding-left': 20*item.level + 'px'}">
                 <i v-if="item.hasChild"
                    :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
-                   style="cursor: pointer;margin-right: 4px;"
+                   style="cursor: pointer;padding-right: 4px;"
                    @click="handleCollapse(item)"></i>
                 {{item.title}}
               </span>
-              <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']" v-for="(title, titleIdx) in tableTitle" :key="titleIdx">
+              <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']" v-for="(title, titleIdx) in tableTitle" :key="titleIdx"
+                :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
                 <el-checkbox v-show="onGroupingModel" v-if="item.groupKey" style="margin-right: 10px;" 
                   @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
                 {{item['label#'+titleIdx]}}
@@ -290,21 +291,76 @@ export default {
       });
     },
     onGroupItemSelected(checked, item, idx) {
-      console.log(checked, item, idx)
-      this.tableListData.forEach((obj) => {
-        if (obj.id == item.rootId) {
-          this.groupSelectedItems.push({
-            id: obj.id,
-            idx: idx
-          })
-        } else if (obj.rootId == item.rootId) {
-          this.groupSelectedItems.push({
-            id: obj.id,
-            idx: idx
-          })
+      if (checked) {
+        if (this.groupSelectedItems.some((obj) => {
+          return obj.idx == idx
+        })) {
+          return;
         }
-      })
-      console.log(this.groupSelectedItems)
+        this.tableListData.forEach((obj) => {
+          if (obj.id == item.rootId) {
+            this.groupSelectedItems.push({
+              id: obj.id,
+              idx: idx
+            })
+          } else if (obj.rootId == item.rootId) {
+            this.groupSelectedItems.push({
+              id: obj.id,
+              idx: idx
+            })
+            if (obj.hasChild) {
+              this.iterateChilds(checked, obj, idx)
+            }
+          }
+        })
+      } else {
+        this.tableListData.forEach((obj) => {
+          if (obj.id == item.rootId) {
+            for (var i=this.groupSelectedItems.length-1;i>=0;i--) {
+              if (this.groupSelectedItems[i].id == obj.id) {
+                this.groupSelectedItems.splice(i,1)
+              }
+            }
+          } else if (obj.rootId == item.rootId) {
+            for (var i=this.groupSelectedItems.length-1;i>=0;i--) {
+              if (this.groupSelectedItems[i].id == obj.id) {
+                this.groupSelectedItems.splice(i,1)
+              }
+            }
+            if (obj.hasChild) {
+              this.iterateChilds(checked, obj, idx)
+            }
+          }
+        })
+      }
+    },
+    iterateChilds(checked, item, idx) {
+      if (checked) {
+        this.tableListData.forEach((obj) => {
+          if (obj.rootId == item.id) {
+            this.groupSelectedItems.push({
+              id: obj.id,
+              idx: idx
+            })
+            if (obj.hasChild) {
+              this.iterateChilds(checked, obj, idx)
+            }
+          }
+        })
+      } else {
+        this.tableListData.forEach((obj) => {
+          if (obj.rootId == item.id) {
+            for (var i=this.groupSelectedItems.length-1;i>=0;i--) {
+              if (this.groupSelectedItems[i].id == obj.id) {
+                this.groupSelectedItems.splice(i,1)
+              }
+            }
+            if (obj.hasChild) {
+              this.iterateChilds(checked, obj, idx)
+            }
+          }
+        })
+      }
     },
     hasSelected(item,idx) {
       return this.groupSelectedItems.some((obj) => {
@@ -916,7 +972,6 @@ export default {
   }
 }
 .table-cell {
-  width: 16%;
   height: 41px;
   display: flex;
   justify-content: center;

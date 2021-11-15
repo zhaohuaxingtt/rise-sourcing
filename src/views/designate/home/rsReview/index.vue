@@ -45,7 +45,7 @@
             {{ language("LK_SELDANJUQUEREN","SEL单据确认") }}
           </iButton>
           <!-- 签字单 -->
-          <iDropdown class="margin-left10 margin-right10" @command="toPath">
+          <!-- <iDropdown class="margin-left10 margin-right10" @command="toPath">
             <iButton type="default" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_QIANZIDAN|签字单">
               {{ language("LK_QIANZIDAN",'签字单') }}
               <i class="el-icon-arrow-down el-icon--right"></i>
@@ -57,7 +57,7 @@
                   {{language(item.key, item.name)}}
               </el-dropdown-item>
             </el-dropdown-menu>
-          </iDropdown>
+          </iDropdown> -->
           <!-- 定点 -->
           <iButton
             @click="confirm"

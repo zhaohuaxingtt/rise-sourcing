@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-11-01 17:08:24
+ * @LastEditTime: 2021-11-15 15:11:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -228,30 +228,14 @@ export default {
             bdlInfos: this.selectTableData
         }
         const res = await rfqRoundCreated(req)
-        //保存的时候，如果保存成功！自动将窗口关闭，并且刷新详情数据，和询价管理
+        //保存的时候，如果保存成功！自动将窗口关闭，并且刷新详情数据，和询价管理(包含普通询价)
         if(res.data){
           this.clearDiolog()
-          if(this.roundType !== roundsType.putongxunjia){
-            this.$emit('refreshBaseInfo')
-          }
+          this.$emit('refreshBaseInfo',true)
         }
         this.resultMessage(res, () => {
           this.saveStaus = true
         })
-      }
-    },
-    async saveAndCreate() {
-      const id = this.$route.query.id
-      if (id) {
-        const req = {
-            userId: store.state.permission.userInfo.id,
-            rfqId: id,
-            roundsType: this.roundType,
-            bdlInfos: this.selectTableData
-        }
-        const res = await rfqRoundCreated(req)
-        this.resultMessage(res)
-        this.$emit('refreshBaseInfo')
       }
     },
     async updateRfqStatus(updateType) {
@@ -263,7 +247,7 @@ export default {
       }
       const res = await modification(req)
       this.resultMessage(res)
-      this.$emit('refreshBaseInfo')
+      this.$emit('refreshBaseInfo',true)
     },
     initTimeData() {
       if (this.roundType === 'commonRound') {
