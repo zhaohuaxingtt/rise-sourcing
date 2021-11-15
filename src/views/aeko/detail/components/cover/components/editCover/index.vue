@@ -24,11 +24,12 @@
       <iButton v-if="isTobeStated" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
-      <iFormGroup row='4'>
+      <iFormGroup row='4' class="basic-form">
         <iFormItem 
           v-for="(item, index) in basicTitle" :key="index" 
           :required="item.required" :label="language(item.labelKey, item.label)+':'" 
           v-permission.dynamic.auto="item.editPermissionKey" 
+          :label-width="item.labelWidth || '110px'"
         >
           <template v-if="item.editable && isEdit">
             <template v-if="item.type === 'input'">
@@ -469,6 +470,11 @@ export default {
 
 <style lang="scss" scoped>
 .aeko-editCover{
+  .basic-form{
+      ::v-deep.el-form-item__content {
+          margin-left: 0!important;
+      }
+  }
   padding-top: 20px;
   .remark-label::before{
     content: "*";
