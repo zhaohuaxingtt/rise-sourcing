@@ -292,6 +292,11 @@ export default {
     },
     onGroupItemSelected(checked, item, idx) {
       if (checked) {
+        if (this.groupSelectedItems.some((obj) => {
+          return obj.idx == idx
+        })) {
+          return;
+        }
         this.tableListData.forEach((obj) => {
           if (obj.id == item.rootId) {
             this.groupSelectedItems.push({
