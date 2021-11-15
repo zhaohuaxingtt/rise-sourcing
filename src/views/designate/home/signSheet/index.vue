@@ -4,8 +4,9 @@
  * @Description: 
 -->
 <template>
-  <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE|签字单列表">
-    <div class="margin-bottom20 clearFloat">
+  <div>
+  <!-- <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE|签字单列表"> -->
+    <div class="margin-bottom20 clearFloat" v-if="showTitle">
       <span class="font18 font-weight">{{ language("MQIANZIDAN", "M签字单") }}</span>
     </div>
 
@@ -70,8 +71,8 @@
         :total="page.totalCount"
       />
     </iCard>
-    
-  </iPage>
+    <!-- </iPage> -->
+  </div>
 </template>
 
 <script>
@@ -113,6 +114,12 @@ export default {
       selectTableData: [],
       startLoding: false,
       selDialogVisibal: false
+    }
+  },
+  props: {
+    showTitle: {
+      type: Boolean,
+      default: true
     }
   },
   components: {

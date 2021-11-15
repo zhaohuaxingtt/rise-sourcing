@@ -279,16 +279,16 @@ export default {
           _this.$nextTick(() => {
             this.contentData.map((item, index) => {
               let chartData = [
-                (item.generalBudget ? item.generalBudget.toFixed(2) : 0),
-                (item.fixedAmount ? item.fixedAmount.toFixed(2) : 0),
-                (item.bmAmount ? item.bmAmount.toFixed(2) : 0),
-                (item.paymentAmount ? item.paymentAmount.toFixed(2) : 0)
+                (item.generalBudget ? Number(item.generalBudget).toFixed(2) : 0),
+                (item.fixedAmount ? Number(item.fixedAmount).toFixed(2) : 0),
+                (item.bmAmount ? Number(item.bmAmount).toFixed(2) : 0),
+                (item.paymentAmount ? Number(item.paymentAmount).toFixed(2) : 0)
               ]
               let chartData_commonSourcing = [
-                (item.csGeneralBudget ? item.csGeneralBudget.toFixed(2) : 0),
-                (item.csFixedAmount ? item.csFixedAmount.toFixed(2) : 0),
-                (item.csBmAmount ? item.csBmAmount.toFixed(2) : 0),
-                (item.csPaymentAmount ? item.csPaymentAmount.toFixed(2) : 0)
+                (item.csGeneralBudget ? Number(item.csGeneralBudget).toFixed(2) : 0),
+                (item.csFixedAmount ? Number(item.csFixedAmount).toFixed(2) : 0),
+                (item.csBmAmount ? Number(item.csBmAmount).toFixed(2) : 0),
+                (item.csPaymentAmount ? Number(item.csPaymentAmount).toFixed(2) : 0)
               ]
               const vm1 = echarts().init(document.getElementById("chart" + index));
               let option1 = {
@@ -561,16 +561,16 @@ export default {
             this.$nextTick(() => {
               this.contentData.map((item, index) => {
                 let chartData = [
-                    (item.generalBudget ? item.generalBudget.toFixed(2) : 0),
-                    (item.fixedAmount ? item.fixedAmount.toFixed(2) : 0),
-                    (item.bmAmount ? item.bmAmount.toFixed(2) : 0),
-                    (item.paymentAmount ? item.paymentAmount.toFixed(2) : 0)
+                    (item.generalBudget ? Number(item.generalBudget).toFixed(2) : 0),
+                    (item.fixedAmount ? Number(item.fixedAmount).toFixed(2) : 0),
+                    (item.bmAmount ? Number(item.bmAmount).toFixed(2) : 0),
+                    (item.paymentAmount ? Number(item.paymentAmount).toFixed(2) : 0)
                 ]
                 let chartData_commonSourcing = [
-                  (item.csGeneralBudget ? item.csGeneralBudget.toFixed(2) : 0),
-                  (item.csFixedAmount ? item.csFixedAmount.toFixed(2) : 0),
-                  (item.csBmAmount ? item.csBmAmount.toFixed(2) : 0),
-                  (item.csPaymentAmount ? item.csPaymentAmount.toFixed(2) : 0)
+                  (item.csGeneralBudget ? Number(item.csGeneralBudget).toFixed(2) : 0),
+                  (item.csFixedAmount ? Number(item.csFixedAmount).toFixed(2) : 0),
+                  (item.csBmAmount ? Number(item.csBmAmount).toFixed(2) : 0),
+                  (item.csPaymentAmount ? Number(item.csPaymentAmount).toFixed(2) : 0)
                 ]
                 const vm1 = echarts().init(document.getElementById("chart" + index));
                 let option1 = {

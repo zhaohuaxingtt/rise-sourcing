@@ -28,6 +28,7 @@ import {
   iMessage,
 } from 'rise'
 import { getTerminationPrice } from "@/api/aeko/approve";
+import { floatFixNum } from "../data.js";
 export default {
   components:{
     iCard,
@@ -69,7 +70,7 @@ export default {
         quotationId,
       }).then((res)=>{
         if(res.code == 200){
-          this.value = res.data || '';
+          this.value = floatFixNum(res.data) || '';
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -79,7 +80,7 @@ export default {
       const {basicInfo={}} = this; 
       const {quotationPriceSummaryInfo={}} = basicInfo;
       const terminationPrice = quotationPriceSummaryInfo.terminationPrice;
-      this.value = terminationPrice;
+      this.value = floatFixNum(terminationPrice);
     }
   }
 }
