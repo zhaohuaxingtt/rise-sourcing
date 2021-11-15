@@ -56,18 +56,21 @@
         </iSelect>
       </el-form-item>
       <!-- 有效期 -->
-      <iDatePicker 
+      <el-form-item :label="language('LK_YOUXIAOQI','有效期')">
+      <!-- <iDatePicker 
         v-model="form.validateDate" 
         format="yyyy-MM-dd" 
         value-format="yyyy-MM-dd"
         :clearable="false"
-      />
+      /> -->
       <iDatePicker
         v-model='form.checkDate'
-        v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_CHECKDATE|截止起止日期"
+        @change="setstartEndDate"
         type="daterange"
-        value-format="yyyy-MM-dd">
+        value-format="yyyy-MM-dd"
+        clearable>
       </iDatePicker>
+      </el-form-item>
     </el-form>
   </iSearch>
 </template>
@@ -109,6 +112,7 @@ export default {
     iSearch,
     iInput,
     iSelect,
+    iDatePicker
   },
   mounted() {
     // 获取下拉数据
@@ -117,6 +121,12 @@ export default {
   beforeDestroy() {
   },
   methods: {
+    setstartEndDate(val) {
+      if (val && val.length) {
+        this.$set(this.form, 'startDate', val[0])
+        this.$set(this.form, 'endDate', val[1])
+      }
+    },
     sure() {
       this.$emit('search', this.form)
     },

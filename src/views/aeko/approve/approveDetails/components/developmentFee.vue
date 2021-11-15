@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-06 13:58:50
+ * @LastEditTime: 2021-11-15 15:08:01
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -52,6 +52,7 @@ import { developmentCostTableTitle as tableTitle,developmentCostInfos,statesFilt
 import { getCbdkent } from "@/api/aeko/approve";
 import { getDevFeeByLinie } from "@/api/rfqManageMent/quotationdetail"
 import { cloneDeep } from "lodash"
+import { developmentCostList, formatTableData, floatFixNum } from "../data.js";
 export default {
   name:'developmentCost',
   components:{
@@ -102,11 +103,12 @@ export default {
         this.loading = false
         if(res.code == 200){
           if(res.code == 200){
-            this.tableListData = Array.isArray(res.data.cbdKentList) ? res.data.cbdKentList : [];
-            this.$set(this.dataGroup, "devFee", res.data.shareTotal) // 开发费合计
-            this.$set(this.dataGroup, "shareDevFee", res.data.shareAmount) // 分摊开发费用
-            this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity) // 分摊数量
-            this.$set(this.dataGroup, "unitPrice", res.data.totalPrice) // 单件开发成本
+            let tableListData = Array.isArray(res.data.cbdKentList) ? res.data.cbdKentList : [];
+            this.tableListData = formatTableData(tableListData, developmentCostList)
+            this.$set(this.dataGroup, "devFee", floatFixNum(res.data.totalPrice)) // 开发费合计
+            this.$set(this.dataGroup, "shareDevFee", floatFixNum(res.data.shareTotal)) // 分摊开发费用
+            this.$set(this.dataGroup, "shareQuantity", floatFixNum(res.data.shareQuantity)) // 分摊数量
+            this.$set(this.dataGroup, "unitPrice", floatFixNum(res.data.shareAmount)) // 单件开发成本
           }
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -123,12 +125,13 @@ export default {
       }, this.basicInfo.supplierId)
       .then(res => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data.devFeeInfoList) ? res.data.devFeeInfoList : []
-          this.$set(this.dataGroup, "devFee", res.data.devFee)
-          this.$set(this.dataGroup, "rfqDevFeeTotal", res.data.rfqDevFeeTotal)
-          this.$set(this.dataGroup, "shareDevFee", res.data.shareDevFee)
-          this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity)
-          this.$set(this.dataGroup, "unitPrice", res.data.unitPrice)
+          let tableListData = Array.isArray(res.data.devFeeInfoList) ? res.data.devFeeInfoList : []
+          this.tableListData = formatTableData(tableListData, developmentCostList)
+          this.$set(this.dataGroup, "devFee", floatFixNum(res.data.devFee))
+          this.$set(this.dataGroup, "rfqDevFeeTotal", floatFixNum(res.data.rfqDevFeeTotal))
+          this.$set(this.dataGroup, "shareDevFee", floatFixNum(res.data.shareDevFee))
+          this.$set(this.dataGroup, "shareQuantity", floatFixNum(res.data.shareQuantity))
+          this.$set(this.dataGroup, "unitPrice", floatFixNum(res.data.unitPrice))
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

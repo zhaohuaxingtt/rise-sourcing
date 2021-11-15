@@ -42,6 +42,7 @@ import iTableCustom from "@/components/iTableCustom";
 import { pageMixins } from "@/utils/pageMixins";
 import filters from "@/utils/filters";
 import {searchApproved} from "@/api/aeko/detail";
+import { formatTableData, recommendationList } from "../data.js";
 
 export default {
   name: "RecommendationTablePendingApprovalComponents",
@@ -64,10 +65,11 @@ export default {
   watch: {
     auditContents(val) {
       this.page.totalCount = this.auditContents?.length;
-      this.recommendationFormPendingApprovalList = this.auditContents.slice(
+      let recommendationFormPendingApprovalList = this.auditContents.slice(
         this.page.currPage - 1,
         this.page.pageSize
-      );
+      )
+      this.recommendationFormPendingApprovalList = formatTableData(recommendationFormPendingApprovalList, recommendationList)
     },
   },
   data() {
@@ -271,10 +273,11 @@ export default {
       // console.log(params, this.transmitObj)
     },
     loadRecommendData() {
-      this.recommendationFormPendingApprovalList = this.auditContents.slice(
+      let recommendationFormPendingApprovalList = this.auditContents.slice(
         (this.page.currPage - 1) * this.page.pageSize,
         this.page.currPage * this.page.pageSizes
-      );
+      )
+      this.recommendationFormPendingApprovalList = formatTableData(recommendationFormPendingApprovalList, recommendationList)
     },
     // 查询数据
     searchApproved(requirementAekoId){
@@ -282,10 +285,11 @@ export default {
         this.auditContents = res?.data||[];
         if(res?.code=='200'){
           this.page.totalCount = res.data?.length || 0;
-          this.recommendationFormPendingApprovalList = res.data.slice(
+          let recommendationFormPendingApprovalList = res.data.slice(
             this.page.currPage - 1,
             this.page.pageSize
-          );
+          )
+          this.recommendationFormPendingApprovalList = formatTableData(recommendationFormPendingApprovalList, recommendationList)
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }

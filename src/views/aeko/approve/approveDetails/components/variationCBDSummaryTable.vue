@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-10 18:46:45
+ * @LastEditTime: 2021-11-15 15:19:00
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -235,8 +235,6 @@ export default {
     // 获取基础信息
     async getBasicInfo(quotationId) {
       await getQuotationInfo(quotationId).then(async (res) => {
-        console.log(res);
-        
         const {code, data = {}} = res;
         if (code == 200) {
           const {
@@ -438,6 +436,7 @@ export default {
     getAekoQuotationSummary(quotationId) {
       this.loading = true
       this.getBasicInfo(quotationId)
+      this.tabChange()
       getAekoQuotationSummary({ quotationId })
       .then(res => {
         if (res.code == 200) {

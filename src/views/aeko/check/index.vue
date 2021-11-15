@@ -173,7 +173,7 @@ export default {
     created(){
         this.getSearchList();
         this.getList();
-        this.leftTab = getLeftTab(2);
+        this.leftTab = getLeftTab(3);
         // 表头是否展示内容表态 AEKO_CHECKLIST_TABLE_TITLE_NEIRONGZHUANGTAI
         const isShow = !!this.permission.whiteBtnList["AEKO_CHECKLIST_TABLE_TITLE_NEIRONGZHUANGTAI"];
         this.tableTitle = !isShow ? tableTitle.filter((item)=>item.props!=='contentStatusDesc') : tableTitle;

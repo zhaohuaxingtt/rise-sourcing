@@ -117,7 +117,7 @@ export default {
   created(){
     const {query} = this.$route;
     const {from=''} = query;
-    from=='manage'?setLogMenu('AEKO管理-详情页'):setLogMenu('AEKO表态-详情页-审批附件')
+    from=='manage'?setLogMenu('AEKO管理-详情页-审批附件'):setLogMenu('AEKO表态-详情页-审批附件')
   },
   mounted() {
     this.getFetchData()
@@ -239,7 +239,10 @@ export default {
 				this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？')).then(confirmInfo => {
 				if (confirmInfo === 'confirm') {
           this.deleting = true
-					auditFileDelete(fileList).then(res => {
+					auditFileDelete({
+            ids: fileList,
+            delType: 0
+          }).then(res => {
 						if (res.code === '200') {
 							iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 							this.getFetchData()

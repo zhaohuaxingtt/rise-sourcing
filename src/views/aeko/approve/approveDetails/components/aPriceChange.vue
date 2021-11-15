@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-10 19:26:42
+ * @LastEditTime: 2021-11-15 15:02:07
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -237,7 +237,9 @@
               :tableTitle="otherCostTableTitle"
               :tableData="otherFeesTable"
             >
-              <template #changeAmount="scope">{{floatFixNum(scope.row.changeAmount)}}</template>
+              <template #shareTotal="scope">{{floatFixNum(scope.row.shareTotal)}}</template>
+              <template #shareQuantity="scope">{{floatFixNum(scope.row.shareQuantity)}}</template>
+              <template #shareAmount="scope">{{floatFixNum(scope.row.shareAmount)}}</template>
             </tableList>
           </div>
         </div>

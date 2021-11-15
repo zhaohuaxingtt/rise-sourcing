@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 16:55:21
- * @LastEditTime: 2021-09-17 14:13:13
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-15 11:09:12
+ * @LastEditors: Luoshuang
  * @Description: 项目状态图表
- * @FilePath: /front-web/src/views/project/progressmonitoring/components/projectStateChart.vue
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\projectStateChart.vue
 -->
 <template>
   <div class="projectStateChart" :class="{'disabled': disabled}">

@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-28 14:01:48
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-10-11 17:29:15
+ * @LastEditTime: 2021-11-15 11:38:53
  * @Description: 审批记录
  */
 import axios from '@/utils/axios'
@@ -32,5 +32,23 @@ export function submitForApproval(data) {
     url: `aeko/audit/file/submitForApproval`,
     method: 'POST',
     data
+  })
+}
+
+// 审批附件上传
+export function auditFileSave(data) {
+  return requst({
+    url: '/aeko/audit/file/saveExplainFile',
+    method: 'POST',
+    data,
+  })
+}
+
+// 审批附件删除
+export function auditFileDelete(data) {
+  return requst({
+    url: '/aeko/audit/file/delExplainFile',
+    method: 'DELETE',
+    data,
   })
 }

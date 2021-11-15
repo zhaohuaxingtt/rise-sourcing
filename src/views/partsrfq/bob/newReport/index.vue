@@ -1,5 +1,5 @@
 <template>
-  <iPage class="new-bob">
+  <iPage class="new-bob" v-loading="onDataLoading">
     <div>
       <div class="navBox flex-between-center">
         <span class="title font-weight">BOB{{ $t("TPZS.FENXI")}}
@@ -84,7 +84,7 @@
                       <el-option :value="Number(-1)"
                                  label="最新"
                                  v-if="chartType!=='turn'"></el-option>
-                      <el-option v-for="(i, index) in turnList"
+                      <el-option v-for="(i) in turnList"
                                  :key="i.turn"
                                  :value="i.turn"
                                  :label="'第' + i.turn + '轮'"></el-option>
@@ -117,7 +117,7 @@
                                value-key
                                :multiple-limit="chartType === 'spareParts' ? 5 : 1"
                                v-model="form.spareParts">
-                      <el-option v-for="(i, index) in partList"
+                      <el-option v-for="(i) in partList"
                                  :key="i.fsNo"
                                  :value="i.fsNo"
                                  :label="i.fsNo+'/'+i.spareParts"></el-option>
@@ -383,6 +383,7 @@ export default {
   },
   data () {
     return {
+      onDataLoading: false,
       rfq: "",
       inside: false,
       chartData: [],
@@ -422,6 +423,7 @@ export default {
     };
   },
   async created () {
+    this.onDataLoading = true;
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
     this.analysisSchemeId = this.$route.query.chemeId
@@ -815,6 +817,9 @@ export default {
             // remark: this.$refs.bobAnalysis.remark
           };
         }
+        this.$nextTick(() => {
+          this.onDataLoading = false;
+        })
         this.$refs.bobAnalysis.chargeRetrieve(tableParams);
       });
 
@@ -897,6 +902,9 @@ export default {
             // remark: this.$refs.bobAnalysis.remark
           };
         }
+        this.$nextTick(() => {
+          this.onDataLoading = false;
+        })
         this.$refs.bobAnalysis.chargeRetrieve({
           viewType: 'all',
           isDefault: true,

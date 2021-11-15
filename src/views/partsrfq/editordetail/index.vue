@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-11 10:07:21
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-15 15:14:24
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
 -->
@@ -124,7 +124,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------RFQ待办信息---------------------------->
     <!--------------------------------------------------------------->
-    <rfqPending ref="rfqPending" v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"></rfqPending>
+    <rfqPending ref="rfqPending" v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus" :activityTabIndex='activityTabIndex'></rfqPending>
     <!--------------------------------------------------------------->
     <!-------------------------RFQ详情信息---------------------------->
     <!--------------------------------------------------------------->    
@@ -133,7 +133,7 @@
     <!-------------------------报价助手------------------------------->
     <!--------------------------------------------------------------->
     <rfq-detail-tpzs v-if='navActivtyValue == 2'></rfq-detail-tpzs>
-    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo" :dataRes="newRfqRoundDialogRes" v-if="tabShowStatus"/>
+    <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo(true)" :dataRes="newRfqRoundDialogRes" v-if="tabShowStatus"/>
 
     <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
   </iPage>
@@ -190,6 +190,7 @@ export default {
       navList: navList,
       editStatus: false,
       newRfqRoundDialog: false,
+      activityTabIndex:'0',
       baseInfo: {
         currentRoundsStatus:'',
         currentRounds:'',
@@ -282,7 +283,7 @@ export default {
         return val
       }
     },
-    async getBaseInfo() {
+    async getBaseInfo(dialogPage) {
       const query = this.$route.query
       if (query.id) {
         this.baseInfoLoading = true
@@ -296,6 +297,9 @@ export default {
           if (resList.length > 0) {
             this.baseInfo = res.data[0]
             // 定向刷新部分组件，当主数据更新后。
+            if(dialogPage){ //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
+              this.activityTabIndex = '5'
+            }
             this.childFnList.forEach(i=>i())
             if(typeof this.$store.state.rfq.partfunc === "function")
               this.getPartTableList()
@@ -319,8 +323,6 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.disabled = !!res.data.isFreeze
-            console.log(res.data.isFreeze)
-            console.log(this.disabled)
           } else {
             iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
           }
@@ -337,7 +339,7 @@ export default {
     async newRfq() {
       this.newRfqOpenValidateLoading = true
       const pendingPartsList = this.$store.state.rfq.pendingPartsList
-
+      console.log('pendingPartsList',pendingPartsList)
       await this.getNewRoundList()
       if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
         iMessage.warn(this.language('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG','RFQ零件或者RFQ供应商为空，不能创建RFQ轮次'))
