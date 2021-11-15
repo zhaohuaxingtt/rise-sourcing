@@ -25,4 +25,10 @@ export const heaederSubMenu = [
     path:'/sourcing/partsnomination/record',
     permissionKey: 'SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录页面'
   },
+  {
+    key:'signSheet',
+    name:'M签字单',
+    path:'/sourcing/partsnomination/signSheetBox',
+    permissionKey: 'SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE|签字单列表'
+  },
 ]
