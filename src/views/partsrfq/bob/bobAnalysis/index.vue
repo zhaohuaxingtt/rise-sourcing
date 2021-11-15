@@ -60,7 +60,7 @@
             <div v-for="(item,index) in tableListData"
                  :key="index"
                  style="display: flex;flex-flow: row nowrap;width: 100%;" :class="index%2 == 0 ? 'table-odd' : 'table-even'"
-                 v-if="collapseItems.indexOf(item.id) < 0">
+                 v-if="collapseItems.indexOf(item.id) < 0" :id="item.id" :root-id="item.rootId">
               <span class="table-cell"
                     style="justify-content: flex-start;width: 20%"
                     :style="{'padding-left': 20*item.level + 'px'}">
@@ -70,10 +70,10 @@
                    @click="handleCollapse(item)"></i>
                 {{item.title}}
               </span>
-              <span class="table-cell" v-for="(title, titleIdx) in tableTitle" :key="titleIdx">
+              <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']" v-for="(title, titleIdx) in tableTitle" :key="titleIdx">
                 <el-checkbox v-show="onGroupingModel" v-if="item.groupKey" style="margin-right: 10px;" 
                   @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
-                {{item['value'+titleIdx]}}
+                {{item['label#'+titleIdx]}}
               </span>
             </div>
           </div>
@@ -204,7 +204,8 @@ export default {
       tableTitle: [],
       tableListData: [],
       collapseItems: [],
-      onGroupingModel: false
+      onGroupingModel: false,
+      groupSelectedItems: []
     };
   },
   created () {
@@ -290,6 +291,25 @@ export default {
     },
     onGroupItemSelected(checked, item, idx) {
       console.log(checked, item, idx)
+      this.tableListData.forEach((obj) => {
+        if (obj.id == item.rootId) {
+          this.groupSelectedItems.push({
+            id: obj.id,
+            idx: idx
+          })
+        } else if (obj.rootId == item.rootId) {
+          this.groupSelectedItems.push({
+            id: obj.id,
+            idx: idx
+          })
+        }
+      })
+      console.log(this.groupSelectedItems)
+    },
+    hasSelected(item,idx) {
+      return this.groupSelectedItems.some((obj) => {
+        return obj.id == item.id && idx == obj.idx
+      })
     },
     getRfqToRemark () {
       getRfqToRemark({
@@ -386,7 +406,7 @@ export default {
     mergeData (tableData) {
       var merged = JSON.parse(JSON.stringify(tableData[0]));
       merged.forEach((item) => {
-        item.value0 = item.value
+        item["label#0"] = item.value
         if (!item.id) {
           item.id = this.createUuid();
         }
@@ -395,7 +415,7 @@ export default {
       tableData.forEach((col, index) => {
         if (index > 0) {
           col.forEach((item, idx) => {
-            merged[idx]["value" + index] = item.value
+            merged[idx]["label#" + index] = item.value
           })
         }
       })
@@ -911,5 +931,9 @@ export default {
 }
 .table-even {
   background-color: rgba(22, 99, 246, 0.07);
+}
+.cell-selected {
+  background-color: #4582f9;
+  color: #ffffff;
 }
 </style>
