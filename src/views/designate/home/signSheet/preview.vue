@@ -33,13 +33,16 @@
             v-loading="tableLoading"
             @handleSelectionChange="handleSelectionChange"
           >
-          <template #rsRemark="scope">
-            <span>
-              <p v-if="scope.row.csfMeetMemo">{{scope.row.csfMeetMemo}}</p>
-              <p v-if="scope.row.linieMeetMemo">{{scope.row.linieMeetMemo}}</p>
-              <p v-if="scope.row.cs1MeetMemo">{{scope.row.cs1MeetMemo}}</p>
-            </span>
-          </template>
+            <template #rsRemark="scope">
+              <span>
+                <p v-if="scope.row.csfMeetMemo">{{scope.row.csfMeetMemo}}</p>
+                <p v-if="scope.row.linieMeetMemo">{{scope.row.linieMeetMemo}}</p>
+                <p v-if="scope.row.cs1MeetMemo">{{scope.row.cs1MeetMemo}}</p>
+              </span>
+            </template>
+            <template #tto="scope">
+              <span>{{ scope.row.tto | toThousands }}</span>
+            </template>
           </tablelist>
         </div>
         <div class="signPreview-footer">
@@ -54,6 +57,8 @@
 <script>
 import {signsheetViewTableTitle as tableTitle} from './components/data'
 import tablelist from "@/views/designate/supplier/components/tableList";
+import { toThousands } from "@/utils"
+
 import {
   iPage,
   iCard,
@@ -75,6 +80,9 @@ export default {
     icon,
     iButton,
     tablelist
+  },
+  filters: {
+    toThousands
   },
   data() {
     return {
