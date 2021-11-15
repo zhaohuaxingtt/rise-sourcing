@@ -26,6 +26,14 @@ export const TAB = [
     },
     {
         value: 3,
+        name: 'AEKO审批',
+        message: 0,
+        url: '/aeko/approve',
+        activePath: 'projectoverview',
+        key: 'LK_AEKOSHENPI'
+      },
+    {
+        value: 4,
         name: "AEKO查看",
         message: 0,
         url: "/aeko/checklist",

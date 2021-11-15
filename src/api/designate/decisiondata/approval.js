@@ -1,10 +1,10 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-28 13:41:56
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-06 12:19:04
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-12 14:31:56
  * @Description: 审批流相关接口
- * @FilePath: \front-web\src\api\designate\decisiondata\approval.js
+ * @FilePath: \front-sourcing\src\api\designate\decisiondata\approval.js
  */
 
 import axios from "@/utils/axios"
@@ -81,3 +81,12 @@ export function getSubDeptListByParam(data, grade) {
     method: 'GET',
   })
 }
+
+// 获取上会类型审批流
+export function getApprovalRecordMeeting(nomiAppId, processInstanceId) {
+  return requstRfq({
+    url: `/nominate/nomi-approval-process/getApprovalRecord/${nomiAppId}/${processInstanceId}`,
+    method: 'GET'
+  })
+}
+
