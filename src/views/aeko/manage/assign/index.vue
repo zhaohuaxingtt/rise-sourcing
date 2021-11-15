@@ -2,12 +2,12 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-15 09:56:30
+ * @LastEditTime: 2021-11-15 16:45:56
  * @Description: 
 -->
 <template>
   <iPage class="aeko-assign" v-permission.auto.force="AEKO_ASSIGN_ASSIGNLIST_PAGE|Aeko分配列表">
-    <projectHeader :subNavList="SUBMENU" />
+    <projectHeader :subNavList="SUBMENU" :module="module" />
     <!-- 搜索 -->
     <search @search="getFetchData" ref="search"/>
     <!-- 表格 -->
@@ -137,6 +137,7 @@ export default {
   data() {
     return {
       SUBMENU,
+      module: 'AEKO管理',
       tableTitle,
       tableListData: [],
       tableSelecteData: [],

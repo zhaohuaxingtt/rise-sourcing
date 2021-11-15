@@ -117,7 +117,11 @@ export default {
     optionKey: {
       type: String,
       default: "LOG_TYPE"
-    }
+    },
+    hasId:{
+      type: Boolean,
+      default: true
+    },
   },
   data() {
     return {
@@ -200,7 +204,7 @@ export default {
       const params = {
         current:this.page.currPage - 1,  // 前后端页面定义有一页偏差
         size: this.page.pageSize,
-        extendFields: { ...this.query, module_obj_ae:this.module, createBy_obj_ae: this.userInfo.id, menuName_obj_ae: menu }
+        extendFields: { ...this.query, module_obj_ae:this.module, createBy_obj_ae: this.hasId?this.userInfo.id:'', menuName_obj_ae: menu }
       }
       this.loading = true
       getLogList(params).then(res=>{
