@@ -433,6 +433,11 @@ export default {
     //   this.rfqinfoProduct = res.products;
     //   // this.rfqinfoProductCopy = res.products;
     // });
+    this.$nextTick(()=>{
+      this.ruleForm.biddingProducts.forEach(item => {
+        this.rfqinfoChange(item)
+      })
+    })
     this.rfqinfoProductCopy = this.loadAll();
   },
   computed: {
@@ -553,10 +558,14 @@ export default {
       // });
       // e.productName = obj[0]?.productName;
       // e.productCode = obj[0]?.productCode;
-      listQuotationByFs(e.fsnrGsnr).then(res => {
+      e.productName = "";
+      e.productCode = "";
+      if(e.fsnrGsnr){
+        listQuotationByFs(e.fsnrGsnr).then(res => {
         e.productCode = res.partNum
         e.productName = res.partName
-      })
+        })
+      }
     },
     handleInputFocus() {
       this.flag = true;
