@@ -866,11 +866,11 @@ export default {
           return;
         }
         e.productCode = res.partNum
-        e.productName = "";
-        this.yearsPlan[e.index*2].title = res.fsnrGsnr;
-        this.yearsPlan[e.index*2+1].title = res.productCode;
-        this.annualOutput[e.index*2+1].title = res.fsnrGsnr;
-        this.annualOutput[e.index*2+2].title = res.productCode;
+        e.productName = res.partName;
+        this.yearsPlan[e.index*2].title = res.partPrjCode;
+        this.yearsPlan[e.index*2+1].title = res.partNum;
+        this.annualOutput[e.index*2+1].title = res.partPrjCode;
+        this.annualOutput[e.index*2+2].title = res.partNum;
         this.handlerInputBlur();
       })
     },

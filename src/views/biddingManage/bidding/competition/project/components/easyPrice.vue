@@ -555,7 +555,7 @@ export default {
       // e.productCode = obj[0]?.productCode;
       listQuotationByFs(e.fsnrGsnr).then(res => {
         e.productCode = res.partNum
-        e.productName = ""
+        e.productName = res.partName
       })
     },
     handleInputFocus() {
