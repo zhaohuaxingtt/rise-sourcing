@@ -72,9 +72,9 @@
         <!------------------------------------------------------------------------>
         <tableList :disabled="nominationDisabled || rsDisabled" :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue">
           <!-- 年降开始时间 -->
-          <template #beginYearReduce="scope">
+          <!-- <template #beginYearReduce="scope">
             <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-          </template>
+          </template> -->
         </tableList>
     </iCard>
     <rsDialog :dialogVisible="rsEeditionDialogVisible" @changeVisible="changersEeditionDialogVisible" :otherPreview="false" :otherNominationType="otherNominationType" :otherNominationId="otherNominationId" :otherPartProjectType="otherPartProjectType" />
