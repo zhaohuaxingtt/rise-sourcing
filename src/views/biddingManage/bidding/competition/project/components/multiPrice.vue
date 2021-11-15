@@ -856,23 +856,20 @@ export default {
       // this.annualOutput[e.index*2+2].title=obj[0]?.productCode;
       // this.handlerInputBlur();
       listQuotationByFs(e.fsnrGsnr).then(res => {
-        if (!res) {
-          e.productName = "";
-          e.productCode = "";
-          this.yearsPlan[e.index*2].title='';
-          this.yearsPlan[e.index*2+1].title='';
-          this.annualOutput[e.index*2+1].title='';
-          this.annualOutput[e.index*2+2].title='';
-          return;
-        }
-        e.productCode = res.partNum
-        e.productName = res.partName;
-        this.yearsPlan[e.index*2].title = res.partPrjCode;
-        this.yearsPlan[e.index*2+1].title = res.partNum;
-        this.annualOutput[e.index*2+1].title = res.partPrjCode;
-        this.annualOutput[e.index*2+2].title = res.partNum;
-        this.handlerInputBlur();
+          e.productCode = res.partNum
+          e.productName = res.partName;
+          this.yearsPlan[e.index*2].title = res.partPrjCode;
+          this.yearsPlan[e.index*2+1].title = res.partNum;
+          this.annualOutput[e.index*2+1].title = res.partPrjCode;
+          this.annualOutput[e.index*2+2].title = res.partNum;
+          this.handlerInputBlur();
       })
+      e.productName = "";
+      e.productCode = "";
+      this.yearsPlan[e.index*2].title = '';
+      this.yearsPlan[e.index*2+1].title = '';
+      this.annualOutput[e.index*2+1].title = '';
+      this.annualOutput[e.index*2+2].title = '';
     },
     //零件号更改联动采购计划零件号
     partNumberChange(e) {
