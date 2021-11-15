@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 16:55:21
- * @LastEditTime: 2021-11-15 10:36:39
+ * @LastEditTime: 2021-11-15 11:09:12
  * @LastEditors: Luoshuang
  * @Description: 项目状态图表
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\projectStateChart.vue
@@ -62,9 +62,6 @@ export default {
     }
   },
   watch: {
-    id() {
-      this.init(this.data)
-    },
     data(data) {
       this.init(data)
     },
@@ -81,7 +78,7 @@ export default {
   },
   methods: {
     init(params) {
-      if (this.disabled || !params || !document.getElementById(this.id)) return
+      if (this.disabled || !params) return
       const self = this
       const options = generateOptions(params, params.type)
       console.log('-mokeData-', options, this.id)
