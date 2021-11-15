@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-19 10:59:33
- * @LastEditTime: 2021-11-01 17:00:00
+ * @LastEditTime: 2021-11-12 13:23:03
  * @LastEditors:  
 -->
 <template>
@@ -75,7 +75,7 @@ export default {
   methods: {
     getFetchDataList() {
       let data = {
-        mtzAppId:this.nomiAppId-0,
+        mtzAppId:this.nomiAppId,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       }

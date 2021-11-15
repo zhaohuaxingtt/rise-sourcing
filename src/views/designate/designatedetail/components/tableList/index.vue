@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-07-23 10:30:26
+ * @LastEditTime: 2021-11-15 10:29:16
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
@@ -26,7 +26,15 @@
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItems2' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
-        <template slot-scope="row"><span class="openLinkText cursor" @click="openPage2(row.row)">{{row.row[activeItems2]}}</span></template>
+        <template slot-scope="row">
+          <span class="flexRow">
+            <span class="openLinkText cursor " @click="openPage2(row.row)"> {{ row.row[activeItems2] }}</span>
+            <span v-if="row.row[activeItems2]" class="icon-gray  cursor "  @click="openPage2(row.row)">
+                <icon symbol class="show" name="icontiaozhuananniu" />
+                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+            </span>
+          </span>  
+        </template>
       </el-table-column>
       <!----------------------需要进行排序的列------------------------>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth"  v-else-if='items.props == "paixu"'>
