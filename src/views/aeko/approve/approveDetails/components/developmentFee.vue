@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-15 14:53:43
+ * @LastEditTime: 2021-11-15 15:08:01
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -125,7 +125,6 @@ export default {
       }, this.basicInfo.supplierId)
       .then(res => {
         if (res.code == 200) {
-          console.log(res);
           let tableListData = Array.isArray(res.data.devFeeInfoList) ? res.data.devFeeInfoList : []
           this.tableListData = formatTableData(tableListData, developmentCostList)
           this.$set(this.dataGroup, "devFee", floatFixNum(res.data.devFee))
