@@ -326,16 +326,17 @@ export function toFixedNumber(number, m) {
 }
 
 //转千分位
-export function toThousands(number) {
-  return (number + '').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,')
+export function toThousands(number, decimalThousands = false) {
+  if (!number) return number
+  number = number.toString()
+  return number.replace(new RegExp(`\\B(?=(\\d{3})+(?${ decimalThousands ? ':$|' : '=' }\\.))`, 'g'), ',')
 }
 
 //去除千分位
 export function deleteThousands(number) {
   if (!number) return number
   number = number.toString()
-  number = number.replace(/,/gi, '')
-  return number
+  return number.replace(/,/gi, '')
 }
 /*********************************************************************************************************************************************
  * @description: 业务场景：用户在满足当前角色权限的情况下，业务不满足他去操作当前的组件，列如：仅零件号变更的零件采购项目，rfq，定点管理等...不需要展示。但是同一个

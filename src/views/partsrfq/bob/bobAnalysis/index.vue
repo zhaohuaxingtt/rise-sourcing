@@ -317,13 +317,13 @@ export default {
         this.tableListData.forEach((obj) => {
           if (obj.id == item.rootId) {
             for (var i=this.groupSelectedItems.length-1;i>=0;i--) {
-              if (this.groupSelectedItems[i].id == obj.id) {
+              if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
                 this.groupSelectedItems.splice(i,1)
               }
             }
           } else if (obj.rootId == item.rootId) {
             for (var i=this.groupSelectedItems.length-1;i>=0;i--) {
-              if (this.groupSelectedItems[i].id == obj.id) {
+              if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
                 this.groupSelectedItems.splice(i,1)
               }
             }
@@ -351,7 +351,7 @@ export default {
         this.tableListData.forEach((obj) => {
           if (obj.rootId == item.id) {
             for (var i=this.groupSelectedItems.length-1;i>=0;i--) {
-              if (this.groupSelectedItems[i].id == obj.id) {
+              if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
                 this.groupSelectedItems.splice(i,1)
               }
             }
