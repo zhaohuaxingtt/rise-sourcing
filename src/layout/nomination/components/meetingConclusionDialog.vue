@@ -86,7 +86,7 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          if (!res.data.isBnkQuotation) {
+          if (res.data.isBnkQuotation === false) {
             iMessage.error(res.data.message)
             return 
           }
