@@ -160,7 +160,7 @@
       <!-- TCM导入清单 -->
       <tcmList v-permission.auto="AEKO_TCMLIST_TABLE|AEKO管理TCM导入清单TABLE"/>
     </div>
-    <iLog :show.sync="showDialog" :bizId="bizId" :module="module"></iLog>
+    <iLog :show.sync="showDialog" :bizId="bizId" :module="module" :hasId="hasId"></iLog>
   </iPage>
 </template>
 
@@ -281,6 +281,7 @@ export default {
         debouncer: null,
         showDialog: false,
         bizId: '',
+        hasId: true,  // 列表日志按钮查看所有
         module:'AEKO管理'
       }
     },
@@ -511,14 +512,19 @@ export default {
       },
       // 顶部日志查询
       openLog(){
-        setLogMenu('')
+        setLogMenu('AEKO管理-列表')
         this.bizId = ''
+        this.hasId = true
+        this.module = 'AEKO管理'
         this.showDialog = true
       },
       gotoDBhistory() {},
       // 查看日志
       checkLog(row){
-        setLogMenu('AEKO管理-列表')
+        setLogMenu('')
+        // setLogMenu('AEKO管理-列表')
+        this.hasId = false
+        this.module = ''
         this.bizId = row.requirementAekoId
         this.showDialog = true
       },

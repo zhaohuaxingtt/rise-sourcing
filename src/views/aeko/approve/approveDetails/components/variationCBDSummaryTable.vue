@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-15 15:19:00
+ * @LastEditTime: 2021-11-15 16:58:39
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -416,7 +416,7 @@ export default {
               let data = res.data;
               this.cbdCanEdit = data.cbdCanEdit
               if(data.cbdCanEdit == null) this.cbdCanEdit = true
-              this.switchPartsTable = [data?.extSnapshotVO];
+              this.switchPartsTable = [{...data?.extSnapshotVO, source: data.source}];
               this.aPriceChangeData = data;
               this.loading = false;
               this.hasData = true;

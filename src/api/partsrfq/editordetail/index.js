@@ -440,3 +440,11 @@ export function getPriceRank(params) {
         data:params
     })
 }
+
+// 获取汇率
+export function searchABPageExchangeRate(mimoId) {
+    return requst({
+      url: `/nominate/search-a-b-page-exchange-rate/${mimoId}`,
+      method: 'POST'
+    })
+}
