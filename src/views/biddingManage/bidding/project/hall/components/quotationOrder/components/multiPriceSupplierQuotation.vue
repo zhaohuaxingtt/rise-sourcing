@@ -288,6 +288,9 @@ export default {
         "moldFee",
         "developFee",
         "targetPrice",
+        "lifecycle",
+        "aveAnnualOutput",
+        "maxAnnualOutput",
       ],
       inputProps: [
         "factoryPrice",

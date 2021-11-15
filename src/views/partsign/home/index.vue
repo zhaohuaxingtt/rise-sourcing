@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-11-10 16:00:08
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-11 14:31:15
+ * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
 -->
@@ -151,6 +151,16 @@
                     v-for="(items, index) in fromGroup['TP_CAR_DOSAGE_STATUS'] || []"
                     :key="index"
                   ></el-option>
+                </iSelect>
+              </el-form-item>
+              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSIGN_USAGEVEHICLE|每车用量状态">
+                <iSelect
+                  v-model="form.showSelf"
+                  :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"
+                >
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
+                  <el-option :value="true" :label="language('YES','是')"></el-option>
+                  <el-option :value="false" :label="language('NO','否')"></el-option>
                 </iSelect>
               </el-form-item>
             </el-form>

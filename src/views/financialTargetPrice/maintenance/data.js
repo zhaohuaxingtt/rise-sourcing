@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-16 14:01:51
+ * @LastEditors:  
+ * @LastEditTime: 2021-11-11 17:21:13
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
@@ -50,7 +50,8 @@ export const searchList = [
   {value: 'procureFactoryId', label: '采购工厂', type: 'select', i18n_label: 'CAIGOUGONGCHANG', selectOption: 'PURCHASE_FACTORY', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PROFACTORY|财务目标价管理-目标价维护-采购工厂'},
   {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption: 'CF_PRICE_TYPE', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_PRICETYPE|财务目标价管理-目标价维护-目标价分类'},
   {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_APPLYDATE|财务目标价管理-目标价维护-申请日期起止'},
-  {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_RESPONSEDATE|财务目标价管理-目标价维护-返回日期起止'}
+  {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI', permission: 'FINANCIALTARGETPRICE_MAINTENANCE_RESPONSEDATE|财务目标价管理-目标价维护-返回日期起止'},
+  {value: 'showSelf', label: '显示自己', type: 'select', i18n_label: 'XIANSHIZHIJI', selectOption: 'IS_SHOW_SELF',permission: 'FINANCIALTARGETPRICE_MAINTENANCE_SHOWSELF|财务目标价管理-目标价查询-指派状态'}
 ]
 
 export const modifyTableTitle = [

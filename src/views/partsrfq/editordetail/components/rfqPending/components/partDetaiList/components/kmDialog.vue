@@ -1,7 +1,7 @@
 <!--
  * @Author: ldh
  * @Date: 2021-05-29 16:29:00
- * @LastEditTime: 2021-11-10 21:06:37
+ * @LastEditTime: 2021-11-11 23:37:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\kmDialog.vue
@@ -148,7 +148,7 @@ export default {
     // 提交
     handleSend() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
-      if (this.multipleSelection.some(item => item.cbdLevelCode != "3")) return iMessage.warn(this.language("QINGXUANZECBDCENGJIWEIL3DESHUJU", "请选择CBD层级为L3的数据"))
+      // if (this.multipleSelection.some(item => item.cbdLevelCode != "3")) return iMessage.warn(this.language("QINGXUANZECBDCENGJIWEIL3DESHUJU", "请选择CBD层级为L3的数据"))
       if (this.multipleSelection.some(item => item.sendKmFlag == 1)) return iMessage.warn(this.language("QINGWUXUANZEYIFASONGDESHUJU", "请勿选择已发送的数据"))
 
       this.sendLoading = true

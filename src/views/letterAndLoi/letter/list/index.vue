@@ -197,7 +197,7 @@ export default {
             this.loading = true;
             const {searchParams,page} = this;
             // 若有定点起止时间将其拆分成两个字段
-            const {nominateDate=[]} = searchParams;
+            const {nominateDate=[],showSelf=''} = searchParams;
             const data = {
                 current:page.currPage,
                 size:page.pageSize
@@ -206,7 +206,11 @@ export default {
                 data['nominateDateStart'] = nominateDate[0];
                 data['nominateDateEnd'] = nominateDate[1];
             }
-            await getLetterList({...searchParams,...data}).then((res)=>{
+            await getLetterList({
+                ...searchParams,
+                ...data,
+                showSelf:showSelf=='YES',
+                }).then((res)=>{
                 this.loading = false;
                 res.data.records.forEach(val=> {
                     val.nominateDate = this.getYearMonth(val.nominateDate) === 'undefined' ? '' : this.getYearMonth(val.nominateDate)

@@ -66,6 +66,7 @@
               <iInput
                 v-if="priceProps.includes(items.props)"
                 v-model="scope.row[items.props]"
+                type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"
@@ -119,6 +120,7 @@
             >
               <iInput
                 v-model="scope.row[items.props]"
+                type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 5):value.slice(0,15)"
                 @blur="handleInputOnBlur(scope.row, items.props)"
                 :disabled="items.disabled ? items.disabled : false"
@@ -177,6 +179,7 @@
               <iInput
                 v-else-if="scope.row['index'] %2 === 1"
                 v-model="scope.row[items.props]"
+                type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 5):value.slice(0,15)"
                 @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"
@@ -228,6 +231,7 @@
                 v-else-if="scope.row['index']%2 === 0"
                 v-model="scope.row[items.props]"
                 placeholder="0.00"
+                type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"

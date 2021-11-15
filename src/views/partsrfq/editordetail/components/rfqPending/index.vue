@@ -5,9 +5,9 @@
 * @Description: RFQ待办事项
  -->
 <template>
-  <iTabsList type="card" @tab-click="handleTabClick"  class="margin-top20">
+  <iTabsList type="card" @tab-click="handleTabClick" v-model="activityTabIndex"  class="margin-top20 cardss">
     <template v-for="item of tabList">
-      <el-tab-pane :label="language(item.key,item.label)" :key="item.label" v-if='showTab(item.index)' v-permisstion='item.permissionKey'>
+      <el-tab-pane :label="language(item.key,item.label)" :key="item.label" :name='item.index' v-if='showTab(item.index)' v-permisstion='item.permissionKey'>
         <component :ref='item.component' :key='hashCode' :is="item.component" v-if="activityTabIndex === item.index" @jump='jump'/>
       </el-tab-pane>
     </template>
@@ -32,11 +32,16 @@ export default {
     technicalSeminar,
     inquiryManagement
   },
+  props:{
+    activityTabIndex:{
+      type:String,
+      default:'0'
+    },
+  },
   inject:['getbaseInfoData','registerFn'],
   data() {
     return {
       hashCode:'12099923883',
-      activityTabIndex: '0',
       tabList: [
         {
           index: '0',
@@ -90,7 +95,7 @@ export default {
           return true
         }else{
           if(this.getbaseInfoData().currentRounds > 0){
-            return !(this.getbaseInfoData().roundsType == "commonRound")
+            return true
           }else {
             return false
           }
@@ -112,10 +117,17 @@ export default {
     },
     updateTabs(){
       this.hashCode = Math.random() * 10000000000
-    } 
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+   .cardss{
+    ::v-deep.el-switch{
+      .is-active{
+        background-color: transparent!important;
+      }
+    }
+  }
 </style>

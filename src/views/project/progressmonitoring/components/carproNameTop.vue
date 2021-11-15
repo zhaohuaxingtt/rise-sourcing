@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:18:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 18:05:44
+ * @LastEditTime: 2021-11-11 17:29:58
  * @Description: 
- * @FilePath: \front-web\src\views\project\progressmonitoring\components\carproNameTop.vue
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\carproNameTop.vue
 -->
 
 <template>
@@ -20,8 +20,9 @@
 </template>
 
 <script>
-import { iButton, icon, iLog } from 'rise'
+import { iButton, icon } from 'rise'
 import logButton from "@/components/logButton"
+import iLog from '@/views/project/log'
 export default {
   components: { iButton, icon, logButton, iLog },
   computed: {

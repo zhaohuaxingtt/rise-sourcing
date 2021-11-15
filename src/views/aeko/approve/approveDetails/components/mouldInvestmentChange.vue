@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:40:38
- * @LastEditTime: 2021-11-10 19:17:19
+ * @LastEditTime: 2021-11-15 14:59:02
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -44,6 +44,7 @@ import tableList from "rise/web/quotationdetail/components/tableList";
 import { moduleTableTitle as tableTitle, mouldCostInfos } from "../data";
 import { getMoulds } from "@/api/aeko/approve";
 import { getMoulds as getMouldsByLinie } from "@/api/aeko/quotationdetail";
+import { moduleTableList, formatTableData, floatFixNum } from "../data.js";
 export default {
   components: {
     iCard,
@@ -73,6 +74,7 @@ export default {
     };
   },
   methods: {
+    floatFixNum,
     // 初始化数据
     init() {
       this.workFlowId ? this.getMoulds() : this.getMouldsByLinie();
@@ -94,11 +96,11 @@ export default {
             mouldCbdList.map((item) => {
               item.assembledPartPrjCode = res.data.fs || "";
             });
-            this.tableData = mouldCbdList;
-            this.$set(this.dataGroup, "totalPrice", res.data.totalPrice);
-            this.$set(this.dataGroup, "shareTotal", res.data.shareTotal);
-            this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity);
-            this.$set(this.dataGroup, "shareAmount", res.data.shareAmount);
+            this.tableData = formatTableData(mouldCbdList, moduleTableList)
+            this.$set(this.dataGroup, "totalPrice", floatFixNum(res.data.totalPrice));
+            this.$set(this.dataGroup, "shareTotal", floatFixNum(res.data.shareTotal));
+            this.$set(this.dataGroup, "shareQuantity", floatFixNum(res.data.shareQuantity));
+            this.$set(this.dataGroup, "shareAmount", floatFixNum(res.data.shareAmount));
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
           }
@@ -114,24 +116,25 @@ export default {
       })
         .then((res) => {
           if (res.code == 200) {
-            this.tableData = Array.isArray(res.data.mouldCbdEntityList)
+            let tableData = Array.isArray(res.data.mouldCbdEntityList)
               ? res.data.mouldCbdEntityList
               : [];
+            this.tableData = formatTableData(tableData, moduleTableList)
             this.$set(
               this.dataGroup,
               "totalPrice",
-              res.data.totalInvestmentCost
+              floatFixNum(res.data.totalInvestmentCost)
             );
             this.$set(
               this.dataGroup,
               "shareTotal",
-              res.data.shareInvestmentFee
+              floatFixNum(res.data.shareInvestmentFee)
             );
-            this.$set(this.dataGroup, "shareQuantity", res.data.shareQuantity);
+            this.$set(this.dataGroup, "shareQuantity", floatFixNum(res.data.shareQuantity));
             this.$set(
               this.dataGroup,
               "shareAmount",
-              res.data.unitInvestmentCost
+              floatFixNum(res.data.unitInvestmentCost)
             );
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);

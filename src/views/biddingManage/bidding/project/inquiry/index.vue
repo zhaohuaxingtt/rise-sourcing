@@ -433,7 +433,7 @@ export default {
       cbdLevelList: {},
       cbdLevelLib,
       userListCache: {},
-
+      userListData:{},
       tableTitle,
       isAttendList,
       manualTableTitle,
@@ -795,9 +795,9 @@ export default {
           biddingId: this.id,
           // id:row.id,
           userList: row.userList,
-          contactName: row.purchaserNameZh,   //联系人
-          email: row.purchaserEmail,          //邮箱
-          telephone: row.phoneM,
+          // contactName: row.purchaserNameZh,   //联系人
+          // email: row.purchaserEmail,          //邮箱
+          // telephone: row.phoneM,
           supplierCode: row.sapCode || row.svwCode || row.svwTempCode || '',
           supplierId: row.subSupplierId,
           supplierName: row.nameZh,
@@ -977,7 +977,8 @@ export default {
         suppliers: this.orgRuleForm.suppliers,
         exchangeRates: this.orgRuleForm.exchangeRates,
         inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
-        quotationAreaFlag: roundType !== "05"
+        quotationAreaFlag: roundType !== "05",
+        associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null
       })
         .then((res) => {
           if (res) {
@@ -1141,6 +1142,7 @@ export default {
             exchangeRates: this.orgRuleForm.exchangeRates,
             inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
             quotationAreaFlag: formData.roundType !== "05",
+            associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null
           },
           content: {
             suppliers: formData.suppliers.map((item) => {
@@ -1303,7 +1305,6 @@ export default {
               ...item,
             })),
             suppliers: res.suppliers?.map((supplier) => {
-              console.log('obsfsaject',supplier)
               this.querySuppliers(supplier.supplierCode,supplier.supplierId);
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
@@ -1374,6 +1375,21 @@ export default {
         const params = {supplierId, isOnlyValid: true}
         const data = await getSupplierInfoById(params);
         this.$set(this.userListCache, supplierId, data.data || []);
+        const list = data.data.filter(item => item.isDefault)
+        this.$set(this.userListData, supplierId, list || []);
+         // 手工且是草稿添加联系人默认值
+        const { biddingStatus} = this.ruleForm
+        if ( biddingStatus === '01') {
+          this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
+            return {
+              ...supplier,
+              mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
+              contactName:supplier.contactName || this.userListData[supplier.supplierId]?.[0]?.nameZh,
+              email:supplier.email || this.userListData[supplier.supplierId]?.[0]?.email,
+              telephone:supplier.telephone || this.userListData[supplier.supplierId]?.[0]?.phoneM
+            };
+          })
+        }
       }
       // CBD
       if (!this.cbdLevelList[supplierCode]) {
@@ -1387,10 +1403,12 @@ export default {
                   ? this.cbdLevelList[supplierCode].slice(2, 3)
                   : supplier?.cbdArea == "02"
                   ? this.cbdLevelList[supplierCode].slice(1, 3)
-                  : this.cbdLevelList[supplierCode]
+                  : this.cbdLevelList[supplierCode],
           };
         })
       }
+      
+
     },
     // 表格选中值集
     handleCurrentChange(e) {

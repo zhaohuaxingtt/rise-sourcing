@@ -224,6 +224,8 @@
             </template>
             <template v-else>
               <i-input
+                type="number"
+                oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 v-model.number="scope.row['purchaseQty']"
                 placeholder="0"
                 :maxlength="maxlength ? maxlength : 300"
@@ -343,6 +345,7 @@ import {
   findMultiPrice,
   saveUnitPrice,
   getRfqInfo,
+  listQuotationByFs
 } from "@/api/bidding/bidding";
 import Big from "big.js";
 
@@ -430,6 +433,11 @@ export default {
     //   this.rfqinfoProduct = res.products;
     //   // this.rfqinfoProductCopy = res.products;
     // });
+    this.$nextTick(()=>{
+      this.ruleForm.biddingProducts.forEach(item => {
+        this.rfqinfoChange(item)
+      })
+    })
     this.rfqinfoProductCopy = this.loadAll();
   },
   computed: {
@@ -545,11 +553,19 @@ export default {
       }
     },
     rfqinfoChange(e) {
-      let obj = this.rfqinfoProduct.filter((item) => {
-        return e.fsnrGsnr === item.fsnrGsnr;
-      });
-      e.productName = obj[0]?.productName;
-      e.productCode = obj[0]?.productCode;
+      // let obj = this.rfqinfoProduct.filter((item) => {
+      //   return e.fsnrGsnr === item.fsnrGsnr;
+      // });
+      // e.productName = obj[0]?.productName;
+      // e.productCode = obj[0]?.productCode;
+      e.productName = "";
+      e.productCode = "";
+      if(e.fsnrGsnr){
+        listQuotationByFs(e.fsnrGsnr).then(res => {
+        e.productCode = res.partNum
+        e.productName = res.partName
+        })
+      }
     },
     handleInputFocus() {
       this.flag = true;

@@ -129,6 +129,15 @@
             ></el-option>
           </iSelect>
         </el-form-item>
+        <el-form-item :label="language('XIANSHIZIJI', '显示自己')">
+          <iSelect
+            v-model="form.showSelf"
+            :placeholder="language('QINGXUANZELINIE', '请选择')"
+          >
+            <el-option :value="true" :label="language('SHI', '是')"></el-option>
+            <el-option :value="false" :label="language('FOU', '否')"></el-option>
+          </iSelect>
+        </el-form-item>
       </el-form>
     </iSearch>
     <iCard class="margin-top20" :title="language('RFQLIEBIAO', 'RFQ列表')">

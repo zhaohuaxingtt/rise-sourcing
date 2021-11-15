@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-09 21:11:51
+ * @LastEditors:  
+ * @LastEditTime: 2021-11-11 16:58:30
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -133,7 +133,8 @@ export default {
         partStatus: '',
         carTypeName: '',
         procureFactoryId: '',
-        cfPriceType: ''
+        cfPriceType: '',
+        showSelf:''
       },
       isEdit: false,
       tableLoading: false,
@@ -206,7 +207,8 @@ export default {
         partStatus: '',
         carTypeName: '',
         procureFactoryId: '',
-        cfPriceType: ''
+        cfPriceType: '',
+        showSelf:''
       }
     },
     getCF() {
@@ -225,20 +227,39 @@ export default {
       })
     },
     getDict(type) {
-      getDictByCode(type).then(res => {
-        if (res?.result) {
-          this.selectOptions = {
-            ...this.selectOptions,
-            [type]: res.data[0]?.subDictResultVo || []
-          }
+      if(type == 'IS_SHOW_SELF') {
+        this.selectOptions = {
+          ...this.selectOptions,
+          [type]:[
+            {
+              code:true,
+              name:'是'
+            },
+             {
+              code:false,
+              name:'否'
+            },
+          ]
         }
-      })
+      } else {
+        getDictByCode(type).then(res => {
+          if (res?.result) {
+            this.selectOptions = {
+              ...this.selectOptions,
+              [type]: res.data[0]?.subDictResultVo || []
+            }
+          }
+        })
+
+      }
     },
     getDicts() {
       // 财务目标价分类
       this.getDict('CF_PRICE_TYPE')
       //申请状态CF_APPLY_STATUS
       this.getDict('CF_APPLY_STATUS')
+      //是否显示自己
+      this.getDict('IS_SHOW_SELF')
     },
     handleSelectionChange(val) {
       if (!this.isEdit) {

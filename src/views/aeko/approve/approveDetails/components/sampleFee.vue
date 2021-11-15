@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-06 12:50:24
+ * @LastEditTime: 2021-11-15 14:44:30
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -36,6 +36,7 @@ import tableList from 'rise/web/quotationdetail/components/tableList';
 import { sampleTableTitle } from 'rise/web/quotationdetail/components/sample/data.js'
 import { getToolingsample } from "@/api/aeko/approve";
 import { getToolingSample as getToolingSampleByLinie } from "@/api/rfqManageMent/quotationdetail"
+import { sampleList, formatTableData } from "../data.js";
 export default {
   name:'sampleFee',
   components:{
@@ -75,7 +76,8 @@ export default {
       }).then((res)=>{
         this.loading = false;
         if(res.code == 200){
-          this.tableListData = res.data || [];
+          let tableListData = res.data || [];
+          this.tableListData = formatTableData(tableListData, sampleList)
         }else{
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -88,7 +90,8 @@ export default {
       getToolingSampleByLinie(quotationId)
       .then(res => {
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data.toolingSampleDTOList) ? res.data.toolingSampleDTOList : []
+          let tableListData = Array.isArray(res.data.toolingSampleDTOList) ? res.data.toolingSampleDTOList : []
+          this.tableListData = formatTableData(tableListData, sampleList)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }

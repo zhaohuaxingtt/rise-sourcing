@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-11-10 15:41:49
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-11 16:51:11
+ * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
 -->
@@ -83,6 +83,16 @@
                 <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.heavyItem" v-permission.auto="PARTSRFQ_RFQHEAVYITEMZHUANGTAI|HeavyItem维护状态" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in heavyItemOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
+                </iSelect>
+              </el-form-item>
+              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSIGN_USAGEVEHICLE|每车用量状态">
+                <iSelect
+                  v-model="form.showSelf"
+                  :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"
+                >
+                  <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
+                  <el-option :value="true" :label="language('YES','是')"></el-option>
+                  <el-option :value="false" :label="language('NO','否')"></el-option>
                 </iSelect>
               </el-form-item>
             </el-form>
@@ -254,7 +264,8 @@ export default {
         tpStatus: '',
         mqStatus: '',
         cfStatus: '',
-        heavyItem: ''
+        heavyItem: '',
+        showSelf:''
       },
       activateButtonLoading: false,
       closeButtonLoading: false,

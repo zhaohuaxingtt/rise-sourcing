@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-24 09:47:32
- * @LastEditTime: 2021-10-13 13:46:48
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-11 14:19:56
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\home\components\data.js
  */
@@ -39,7 +39,8 @@ export const form = {
   projectCarType:'',//车型项目
   status:'NOTACCEPTED',//信息单状态，默认查询 解决bug
   tpInfoType:'',//信息单分类
-  userId:store.state.permission.userInfo?.id
+  userId:store.state.permission.userInfo?.id,
+  showSelf:''
 }
 export const fromGroup = JSON.parse(JSON.stringify(form))
 export const clickMessage = function(data) {

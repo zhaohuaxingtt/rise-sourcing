@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 15:29:22
+ * @LastEditTime: 2021-11-11 17:48:29
  * @Description: 配件签收
- * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\index.vue
+ * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
 
 <template>
@@ -22,8 +22,8 @@
           <iSearch @sure="sure" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
-                <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]">
-                  <el-option value="" :label="language('ALL','全部')"></el-option>
+                <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
+                  <!-- <el-option value="" :label="language('ALL','全部')"></el-option> -->
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -31,8 +31,8 @@
                     :value="item.value">
                   </el-option>
                 </iSelect> 
-                <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]"></iDatePicker>
-                <iInput v-else v-model="searchParams[item.value]"></iInput> 
+                <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
+                <iInput v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
           </iSearch>
@@ -134,7 +134,8 @@ export default {
       selectOptions: {
         yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}],
         cartypeProjectOptions: [],
-        cartTypeOptions: []
+        cartTypeOptions: [],
+        trueOrFalseOption: [{value: true, label: this.language('YES','是')},{value: false, label: this.language('NO','否')}]
       },
       selectDeptId: '',
       downloadLoading: false,
