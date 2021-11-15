@@ -481,7 +481,6 @@ export default {
     getUnits({}).then((res) => {
       this.quantityUnit = res.data;
     });
-    
 
   },
   computed: {
@@ -855,7 +854,14 @@ export default {
       // this.annualOutput[e.index*2+1].title=obj[0]?.fsnrGsnr;
       // this.annualOutput[e.index*2+2].title=obj[0]?.productCode;
       // this.handlerInputBlur();
-      listQuotationByFs(e.fsnrGsnr).then(res => {
+      e.productName = "";
+      e.productCode = "";
+      this.yearsPlan[e.index*2].title = '';
+      this.yearsPlan[e.index*2+1].title = '';
+      this.annualOutput[e.index*2+1].title = '';
+      this.annualOutput[e.index*2+2].title = '';
+      if(e.fsnrGsnr) {
+        listQuotationByFs(e.fsnrGsnr).then(res => {
           e.productCode = res.partNum
           e.productName = res.partName;
           this.yearsPlan[e.index*2].title = res.partPrjCode;
@@ -863,13 +869,10 @@ export default {
           this.annualOutput[e.index*2+1].title = res.partPrjCode;
           this.annualOutput[e.index*2+2].title = res.partNum;
           this.handlerInputBlur();
-      })
-      e.productName = "";
-      e.productCode = "";
-      this.yearsPlan[e.index*2].title = '';
-      this.yearsPlan[e.index*2+1].title = '';
-      this.annualOutput[e.index*2+1].title = '';
-      this.annualOutput[e.index*2+2].title = '';
+        })
+      }
+      
+      
     },
     //零件号更改联动采购计划零件号
     partNumberChange(e) {
@@ -1276,6 +1279,9 @@ export default {
       }
       this.$nextTick(() => {
         this.handlerInputBlur();
+        this.ruleForm.biddingProducts.forEach(item => {
+          this.rfqinfoChange(item)
+        })
       });
     },
     // 表格选中值集
