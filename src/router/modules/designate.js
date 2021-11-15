@@ -67,6 +67,14 @@ export default [
         component: () => import('@/views/designate/home/signSheet'),
       },
       {
+        path: '/sourcing/partsnomination/signSheetBox',
+        name: 'designateSignSheetBox',
+        meta: {
+          title: '签字单列表',
+        },
+        component: () => import('@/views/designate/home/signSheet/box'),
+      },
+      {
         path: '/sourcing/partsnomination/signSheet/addSignOverView',
         name: 'addSignOverView',
         meta: {
