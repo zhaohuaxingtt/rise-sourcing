@@ -63,7 +63,7 @@
         </div>
       </div>
       <tableList
-        :activeItems='"rfqId"'
+        :activeItems='"fsnrGsnrNum"'
         selection
         indexKey
         :tableData="partsTableListData"
