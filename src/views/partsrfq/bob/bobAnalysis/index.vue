@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-15 00:22:29
+ * @LastEditTime: 2021-11-15 21:48:41
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -31,7 +31,8 @@
             <template v-if="!onGroupingModel">
               <iButton @click="remarks">备注</iButton>
               <iButton @click="reduction">还原</iButton>
-              <iButton @click="onGroupingModel = true" v-if="!onGroupingModel">数据分组</iButton>
+              <iButton @click="onGroupingModel = true"
+                       v-if="!onGroupingModel">数据分组</iButton>
               <iButton @click="down">导出</iButton>
             </template>
             <template v-else>
@@ -59,8 +60,11 @@
           <div style="display:flex;flex-flow:column nowrap;">
             <div v-for="(item,index) in tableListData"
                  :key="index"
-                 style="display: flex;flex-flow: row nowrap;width: 100%;" :class="index%2 == 0 ? 'table-odd' : 'table-even'"
-                 v-if="collapseItems.indexOf(item.id) < 0" :id="item.id" :root-id="item.rootId">
+                 style="display: flex;flex-flow: row nowrap;width: 100%;"
+                 :class="index%2 == 0 ? 'table-odd' : 'table-even'"
+                 v-if="collapseItems.indexOf(item.id) < 0"
+                 :id="item.id"
+                 :root-id="item.rootId">
               <span class="table-cell"
                     style="justify-content: flex-start;width: 20%"
                     :style="{'padding-left': 20*item.level + 'px'}">
@@ -70,10 +74,14 @@
                    @click="handleCollapse(item)"></i>
                 {{item.title}}
               </span>
-              <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']" v-for="(title, titleIdx) in tableTitle" :key="titleIdx"
-                :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
-                <el-checkbox v-show="onGroupingModel" v-if="item.groupKey" style="margin-right: 10px;" 
-                  @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
+              <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
+                    v-for="(title, titleIdx) in tableTitle"
+                    :key="titleIdx"
+                    :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
+                <el-checkbox v-show="onGroupingModel"
+                             v-if="item.groupKey"
+                             style="margin-right: 10px;"
+                             @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
                 {{item['label#'+titleIdx]}}
               </span>
             </div>
@@ -206,7 +214,8 @@ export default {
       tableListData: [],
       collapseItems: [],
       onGroupingModel: false,
-      groupSelectedItems: []
+      groupSelectedItems: [],
+      cbdSelectedList: []
     };
   },
   created () {
@@ -263,7 +272,7 @@ export default {
 
   },
   methods: {
-    handleCollapse(item) {
+    handleCollapse (item) {
       this.collapseItem(item.id, item.expanded)
       item.expanded = !item.expanded;
     },
@@ -290,43 +299,54 @@ export default {
         }
       });
     },
-    onGroupItemSelected(checked, item, idx) {
+    onGroupItemSelected (checked, item, idx) {
       if (checked) {
         if (this.groupSelectedItems.some((obj) => {
           return obj.idx == idx
         })) {
           return;
         }
+        console.log(this.tableListData)
         this.tableListData.forEach((obj) => {
           if (obj.id == item.rootId) {
             this.groupSelectedItems.push({
               id: obj.id,
-              idx: idx
+              idx: idx,
             })
+            if (obj.title === "CBD轮次明细ID") {
+              this.cbdSelectedList.push(obj['label#' + idx])
+            }
           } else if (obj.rootId == item.rootId) {
             this.groupSelectedItems.push({
               id: obj.id,
               idx: idx
             })
+            if (obj.title === "CBD轮次明细ID") {
+              this.cbdSelectedList.push(obj['label#' + idx])
+            }
             if (obj.hasChild) {
               this.iterateChilds(checked, obj, idx)
             }
           }
         })
+        console.log(this.groupSelectedItems)
+        console.log(this.cbdSelectedList)
       } else {
         this.tableListData.forEach((obj) => {
           if (obj.id == item.rootId) {
-            for (var i=this.groupSelectedItems.length-1;i>=0;i--) {
+            for (var i = this.groupSelectedItems.length - 1; i >= 0; i--) {
               if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
-                this.groupSelectedItems.splice(i,1)
+                this.groupSelectedItems.splice(i, 1)
               }
             }
+            this.cbdSelectedList.splice(idx - 1, 1)
           } else if (obj.rootId == item.rootId) {
-            for (var i=this.groupSelectedItems.length-1;i>=0;i--) {
+            for (var i = this.groupSelectedItems.length - 1; i >= 0; i--) {
               if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
-                this.groupSelectedItems.splice(i,1)
+                this.groupSelectedItems.splice(i, 1)
               }
             }
+            this.cbdSelectedList.splice(idx - 1, 1)
             if (obj.hasChild) {
               this.iterateChilds(checked, obj, idx)
             }
@@ -334,7 +354,7 @@ export default {
         })
       }
     },
-    iterateChilds(checked, item, idx) {
+    iterateChilds (checked, item, idx) {
       if (checked) {
         this.tableListData.forEach((obj) => {
           if (obj.rootId == item.id) {
@@ -350,9 +370,9 @@ export default {
       } else {
         this.tableListData.forEach((obj) => {
           if (obj.rootId == item.id) {
-            for (var i=this.groupSelectedItems.length-1;i>=0;i--) {
+            for (var i = this.groupSelectedItems.length - 1; i >= 0; i--) {
               if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
-                this.groupSelectedItems.splice(i,1)
+                this.groupSelectedItems.splice(i, 1)
               }
             }
             if (obj.hasChild) {
@@ -362,7 +382,7 @@ export default {
         })
       }
     },
-    hasSelected(item,idx) {
+    hasSelected (item, idx) {
       return this.groupSelectedItems.some((obj) => {
         return obj.id == item.id && idx == obj.idx
       })
@@ -384,7 +404,6 @@ export default {
           try {
             this.tableList = res;
             this.tableTitle = this.tableList.title.filter(item => item.title)
-
             this.prepareData()
             this.$nextTick(() => {
               this.onDataLoading = false;
@@ -484,9 +503,9 @@ export default {
     },
 
     addToColList (idCol, rawCols, maCols, cbdCode, target, colData, key, showLevel, parentId, parentIndex) {
-      if (target.code == "detailId") {
-        return;
-      }
+      // if (target.code == "detailId") {
+      //   return;
+      // }
       // var nextLvl = showLevel + 1;
       var nextLvl = showLevel + 1;
       if (!Array.isArray(target[key])) {
@@ -562,7 +581,7 @@ export default {
           if (object.title == '组别' || object.title == '制造工序') {
             object.groupKey = true;
           }
-          
+
           if (target.child && target.child.length > 0) {
             if (!idCol[object.title + index]) {
               idCol[object.title + index] = this.createUuid();
@@ -579,9 +598,9 @@ export default {
       })
     },
     createLevel (parent, lvl, showLevel) {
-      if (parent.code == "detailId") {
-        return;
-      }
+      // if (parent.code == "detailId") {
+      //   return;
+      // }
       showLevel++;
       if (!lvl.some((item) => {
         return item.title == parent.title
@@ -733,6 +752,15 @@ export default {
       //   this.checkFLag = false
       // })
     },
+    saveGroup () {
+      this.visible1 = true
+      getGroupInfo({
+        schemaId: this.SchemeId,
+        code: '1'
+      }).then(res => {
+        this.options = res.data
+      })
+    },
     groupBtn (e, result, activeName) {
       if (result.length === 0) {
         this.$message.error('请选择数据');
@@ -801,9 +829,9 @@ export default {
 
       })
     },
-    returnAcitiveName (val) {
-      this.activeName = val
-    },
+    // returnAcitiveName (val) {
+    //   this.activeName = val
+    // },
     groupToList () {
       if (!this.value1) {
         this.$message.error('请选择分组');
@@ -812,26 +840,32 @@ export default {
       addComponentToGroup({
         groupId: this.value1.matchId,
         groupName: this.value1.groupName,
-        roundDetailIdList: this.result
+        roundDetailIdList: this.cbdSelectedList
       }).then(res => {
         this.groupby = false
-        // this.$refs.ungroupedTable.activeName = ""
-        this.$nextTick(() => {
-          this.groupby = true
-          this.$refs.ungroupedTable.activeName = this.activeName
-          this.$refs.ungroupedTable.chargeRetrieve({
-            isDefault: true,
-            viewType: this.activeName,
-            schemaId: this.SchemeId,
-            groupId: this.groupId
-          })
-        });
-        this.$refs.groupedTable.chargeRetrieve({
+        this.chargeRetrieve({
           isDefault: true,
+          viewType: 'all',
           schemaId: this.SchemeId,
-          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
           groupId: this.groupId
-        })
+        });
+        // this.$refs.ungroupedTable.activeName = ""
+        // this.$nextTick(() => {
+        //   this.groupby = true
+        //   this.$refs.ungroupedTable.activeName = this.activeName
+        //   this.$refs.ungroupedTable.chargeRetrieve({
+        //     isDefault: true,
+        //     viewType: this.activeName,
+        //     schemaId: this.SchemeId,
+        //     groupId: this.groupId
+        //   })
+        // });
+        // this.$refs.groupedTable.chargeRetrieve({
+        //   isDefault: true,
+        //   schemaId: this.SchemeId,
+        //   viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
+        //   groupId: this.groupId
+        // })
         this.visible1 = false;
       })
     },
