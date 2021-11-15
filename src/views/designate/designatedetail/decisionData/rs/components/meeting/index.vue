@@ -96,7 +96,7 @@
         </div>
       </div>
     </iCard>
-    <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
+    <iCard v-if="!isPreview && !showSignatureForm && !isExternal" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
       <div class="meetingRemark">
         <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
@@ -105,7 +105,7 @@
         </div>
       </div>
     </iCard>
-    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+    <iCard v-if="!showSignatureForm && !isExternal" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
           <icon v-if="item.approveStatus == '1'" symbol name="iconrs-wancheng"></icon>
@@ -169,7 +169,8 @@ export default {
       isSingle: false,
       suppliers: '',
       exchangeRateCurrentVersionStr: "",
-      exchangeRatesOldVersions: []
+      exchangeRatesOldVersions: [],
+      isExternal: false
     }
   },
   filters: {
@@ -248,7 +249,10 @@ export default {
       return this.remarkItem.map(item => item.value).join('\n')
     }
   },
-  // created(){this.getPrototypeList()},
+  created(){
+    this.isExternal = this.$route.query.isExternal
+    // this.getPrototypeList()
+  },
   methods: {
     getIsSingle() {
       findFrontPageSeat({nominateId:this.nominateId}).then(res => {
