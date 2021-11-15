@@ -1,9 +1,9 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-08 12:12:50
+ * @LastEditTime: 2021-11-14 23:25:18
  * @LastEditTime: 2021-07-21 17:57:58
- * @LastEditors: YoHo
+ * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
  * @FilePath: \front-web\src\utils\index.js
  */
@@ -133,7 +133,7 @@ export function serialize(data, type = Object) {
     case Array:
       if (Array.isArray(data)) {
         str = data
-          .map(item => {
+          .map((item) => {
             return serialize(item)
           })
           .join('&')
@@ -466,46 +466,48 @@ export function fmoney(s, n) {
 }
 
 export function toThousand(num) {
-  num = (num || 0).toString();
+  num = (num || 0).toString()
   let number = 0,
-      floatNum = '',
-      intNum = '';
+    floatNum = '',
+    intNum = ''
   // 判断是否有小数位，有则截取小数点后的数字
   if (num.indexOf('.') > 0) {
-    number = num.indexOf('.'); // 获取小数点出现的位置
-    floatNum = num.substr(number); // 截取arr.substr(form, length)
-    intNum = num.substring(0,number); // 截取arr.substring(start, end)
+    number = num.indexOf('.') // 获取小数点出现的位置
+    floatNum = num.substr(number) // 截取arr.substr(form, length)
+    intNum = num.substring(0, number) // 截取arr.substring(start, end)
   } else {
-    intNum = num;
+    intNum = num
   }
   let result = [],
-      counter = 0;
-  intNum = intNum.split('');
+    counter = 0
+  intNum = intNum.split('')
   // 利用3的倍数，向数组插入','
   for (let i = intNum.length - 1; i >= 0; i--) {
-    counter++;
-    result.unshift(intNum[i]);
-    if (!(counter % 3) && i != 0) { result.unshift(','); }
+    counter++
+    result.unshift(intNum[i])
+    if (!(counter % 3) && i != 0) {
+      result.unshift(',')
+    }
   }
-  return result.join('') + floatNum || '';
+  return result.join('') + floatNum || ''
 }
 
 // 记录当前页面CODE
-export function setLogCount (count) {
-  store.dispatch("setLogCountVal", count)
+export function setLogCount(count) {
+  store.dispatch('setLogCountVal', count)
 }
 
 // 获取当前页面CODE
-export function getLogCount (){
+export function getLogCount() {
   return store.getters.getLogCount
 }
 
 // 记录当前页面所在模块
-export function setLogMenu (menu) {
-  store.dispatch("setLogMenuVal", menu)
+export function setLogMenu(menu) {
+  store.dispatch('setLogMenuVal', menu)
 }
 
 // 获取当前页面所在模块
-export function getLogMenu (){
+export function getLogMenu() {
   return store.getters.getLogMenu
 }
