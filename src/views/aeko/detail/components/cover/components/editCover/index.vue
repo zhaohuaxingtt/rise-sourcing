@@ -29,7 +29,7 @@
           v-for="(item, index) in basicTitle" :key="index" 
           :required="item.required" :label="language(item.labelKey, item.label)+':'" 
           v-permission.dynamic.auto="item.editPermissionKey" 
-          :label-width="item.labelWidth || '110px'"
+          :label-width="item.labelWidth || '140px'"
         >
           <template v-if="item.editable && isEdit">
             <template v-if="item.type === 'input'">
@@ -470,17 +470,23 @@ export default {
 
 <style lang="scss" scoped>
 .aeko-editCover{
+  padding-top: 20px;
   .basic-form{
       ::v-deep.el-form-item__content {
           margin-left: 0!important;
       }
   }
-  padding-top: 20px;
-  .remark-label::before{
+  .remark-label{
+    font-size: 16px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #4B4B4C;
+    &::before{
     content: "*";
     color: #f56c6c;
     margin-right: 4px;
     display: inline-block;
+  }
   }
   .bottom-tips{
     color: #8C96A7;
