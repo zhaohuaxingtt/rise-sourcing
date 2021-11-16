@@ -2,9 +2,21 @@
   <iCard
     class="volume"
     tabCard
-    :title="`${language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`"
   >
     <div class="body">
+        <div>
+          <span class="title">
+            {{`${language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}
+          </span>
+          <div class="btn-left">
+            <iButton v-if="isEdit">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
+            <iButton v-if="isEdit">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
+            <iButton v-if="isEdit">{{ language("LK_SHANCHU",'删除') }}</iButton>
+            <iButton v-if="isEdit" @click="addCar">{{ language("LK_TIANJIA",'添加') }}</iButton>
+            <iButton v-if="isEdit">{{ language("LK_BAOCUN",'保存') }}</iButton>
+            <iButton v-if="!isEdit" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
+          </div>
+        </div>
       <tableList
         class="table"
         index
@@ -25,11 +37,14 @@
 		    v-update
       />
     </div>
+      <addCarType :dialogVisible="carTypeVisible" @changeVisible="changeVisible">
+
+      </addCarType>
   </iCard>
 </template>
 
 <script>
-import { iCard, iPagination, iMessage } from 'rise';
+import { iCard, iPagination, iMessage, iButton } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { volumeTableTitle as tableTitle } from "./data";
@@ -37,9 +52,9 @@ import {
   getPerCarDosageVersion,
   getPerCarDosageInfo,
 } from "@/api/partsign/editordetail";
-
+import addCarType from './components/addCarType'
 export default {
-  components: { iCard, tableList, iPagination },
+  components: { iCard, tableList, iPagination, iButton, addCarType },
   mixins: [pageMixins],
   data() {
     return {
@@ -48,7 +63,9 @@ export default {
       tableListData: [],
       version: "",
       carTypeConfigId: "",
-      tpId: ""
+      tpId: "",
+      isEdit:false,
+      carTypeVisible:false
     };
   },
   props: {
@@ -116,11 +133,31 @@ export default {
         this.loading = false;
       }
     },
+    edit() {
+      this.isEdit = true
+    },
+    addCar() {
+      this.carTypeVisible = true
+    },
+    changeVisible(val) {
+      this.carTypeVisible = val
+
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.volume {
-}
-</style>
+  .volume {
+    .title{
+      font-size: 18px;
+			color: #131523;
+			font-weight: bold;
+    }
+    .btn-left{
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 20px;
+    }
+  }
+</style> 

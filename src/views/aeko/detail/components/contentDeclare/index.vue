@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-16 16:04:50
+ * @LastEditTime: 2021-11-16 17:49:54
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -945,24 +945,27 @@ export default {
       })
       if (filtRows.length) {
         const confirmMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
-          ${this.aekoInfo.aekoCode}
+          ${filtRows.map(o => o.partNum).join(',')} 
           ${this.language('GONGYINGSHANG','供应商')}:
           ${filtRows.map(o => o.supplierNameZh).join(',')} 
           ${this.language('CAIGOUGONGC1','采购工厂')}:
           ${filtRows.map(o => o.factoryName).join(',')} 
           ${this.language('SINGLEGROUPSENDFIRSTONE','在单一组合中仅能发送一条报价信息，系统将默认发送第一条，请确认')}
           `
-        const confirmCheckInfo = await this.$confirm(
+        try {
+          const confirmCheckInfo = await this.$confirm(
           confirmMsg,
-          this.language('LK_AEKO_NEIRONGBIAOTAI_CAOZUO','操作'),
-          {
-              confirmButtonText: this.language('nominationLanguage.Yes','是'),
-              cancelButtonText: this.language('nominationLanguage.No','否'),
-          }
-        )
-        if (confirmCheckInfo === 'confirm') {
+          this.language('LK_NOTICE','提示'),
+            {
+                confirmButtonText: this.language('nominationLanguage.No','否'),
+                cancelButtonText: this.language('nominationLanguage.Yes','是'),
+            }
+          )
+          if (confirmCheckInfo === 'confirm') return
           multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
-        } else return
+        } catch (e) {
+          multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
+        }
       }
       
       this.declareSendSupplier = true;

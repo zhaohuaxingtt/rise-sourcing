@@ -18,9 +18,10 @@
           </iSelect> 
         </div>
         <div v-if='showRound && !disabel'>
-          <span>Quota. Round：</span>
+          <span>Quotation Round：</span>
           <iSelect v-model="round" @change="changeRound" style="width:100px">
             <el-option :label="items" :value="items" v-for='(items,index) in rundList' :key='index'></el-option>
+            <el-option label="Latest Offer" value="-1"></el-option>
           </iSelect> 
         </div>
         <div v-if='!disabel'>
@@ -150,7 +151,6 @@ export default{
   },
   created(){
     this.layout = this.getLayoutDetaultNumber()
-    console.log(this.layout)
     this.searchABPageExchangeRate()
   },
   destroyed(){
@@ -192,7 +192,7 @@ export default{
       }, 500);
     },
     getTopWidth(){
-      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 100 + 'px'
+      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 60 + 'px'
     },
     removeTags(){
       this.negoAnalysisSummaryLayoutSave()
@@ -482,6 +482,8 @@ export default{
         this.ratingList = []
     },
     searchABPageExchangeRate() {
+      if (!this.$route.query.desinateId) return
+
       searchABPageExchangeRate(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
