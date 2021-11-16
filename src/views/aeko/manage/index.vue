@@ -505,7 +505,7 @@ export default {
       //BI逾期报表
       gotoBIPage(){
         const routeData = this.$router.resolve({
-          path: '/aeko/BIPage',
+          path: '/aeko/report',
           query: {},
         })
         window.open(routeData.href, '_blank')
