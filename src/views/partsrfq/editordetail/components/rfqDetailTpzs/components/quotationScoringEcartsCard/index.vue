@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-11-10 15:48:45
+ * @LastEditTime: 2021-11-16 16:09:35
  * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
@@ -16,7 +16,8 @@
 </template>
 <script>
 import previewsCom from './previewEcharts'
+import {iCard} from 'rise'
 export default{
- components:{previewsCom}
+ components:{previewsCom,iCard}
 }
 </script>
