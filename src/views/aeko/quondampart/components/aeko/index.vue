@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:18
- * @LastEditTime: 2021-09-01 14:35:16
+ * @LastEditTime: 2021-11-16 17:32:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\aeko\index.vue
@@ -12,7 +12,7 @@
     <template #header-control>
        <iButton  
         @click="handleExport" 
-        v-permission.auto="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT|导出"
+        v-permission.auto="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT_AEKO|AEKO库列表导出"
         :disabled="ledgerSelection.length > 0"
        >
        {{ language("DAOCHU", "导出") }}
