@@ -252,7 +252,7 @@ export default {
               partNum,
               buyerName,
               linieDeptNumList:linieDeptNumList.length && linieDeptNumList[0]=='' ? undefined : linieDeptNumList,
-              brand:brand.length && brand[0]=='' ? undefined : brand,
+              brand:brand.length && brand[0]=='' ? undefined : brand.join(','),
               aekoStatusList:aekoStatusList.length && aekoStatusList[0]=='' ? undefined : aekoStatusList,
               coverStatusList:coverStatusList.length && coverStatusList[0]=='' ? undefined : coverStatusList,
               carTypeCodeList:cartypeArr,

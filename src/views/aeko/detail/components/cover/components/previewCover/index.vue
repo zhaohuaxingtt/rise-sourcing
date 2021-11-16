@@ -55,8 +55,8 @@
         <!-- 科室linie费用table -->
         <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE|封面表态LINIE表_预览">
             <p class="btn-list margin-bottom20" v-if="!isFromCheck">
-                <iButton v-if="!disabled" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
-                <iButton @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
+                <iButton v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_QUXIAOTONGGUO|取消通过" v-if="!disabled" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
+                <iButton v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_JIEDONG|解冻" @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
             <tableList
                 index
