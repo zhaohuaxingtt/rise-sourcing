@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-08 13:07:30
+ * @LastEditTime: 2021-11-15 19:22:43
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -34,12 +34,12 @@ export default {
   props: {
     navList: {type:Array, default: window._.cloneDeep(TAB)},
     subNavList: {type:Array, default: window._.cloneDeep(SUBMENU)},
+    module: {type:String, default: 'AEKO审批'},
   },
   data() {
     return {
       showDialog: false,
       bizId: '',
-      module: 'AEKO审批'
     }
   },
   computed: {

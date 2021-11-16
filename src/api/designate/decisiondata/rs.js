@@ -85,3 +85,11 @@ export function getDepartApproval(nominateAppId) {
     method: 'GET'
   })
 }
+
+// 获取汇率
+export function searchRsPageExchangeRate(nominateId) {
+  return requst({
+    url: `/nominate/search-rs-page-exchange-rate/${ nominateId }`,
+    method: 'POST'
+  })
+}

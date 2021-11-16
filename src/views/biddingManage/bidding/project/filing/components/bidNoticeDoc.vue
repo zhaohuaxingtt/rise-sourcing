@@ -285,6 +285,7 @@ export default {
           supplerId: this.supplerId,
         };
       }
+      this.$emit('hanldeAgreeOrReject',param)
       saveSupplierNotification(param).then((res) => {
         // let rejectTerms = false;
         // if (this.type === "01" && !bol) {

@@ -1,6 +1,8 @@
 <template>
 	<div class="page-content" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PBI|报表管理-状态跟踪报表">
-		<iCard id='powerBiReport'></iCard>
+		<iCard id='powerBiReport'>
+			
+		</iCard>
 	</div>
 </template>
 
@@ -8,9 +10,7 @@
 	import {iPage,iCard} from 'rise';
 	import {statement} from '@/api/aeko/approve'
 	import * as pbi from 'powerbi-client';
-import { roleMixins } from "@/utils/roleMixins";
 	export default {
-		mixins:[roleMixins],
 		components: {
 			iPage,
 			iCard,
@@ -45,35 +45,9 @@ import { roleMixins } from "@/utils/roleMixins";
 		methods: {
 			// 获取财报iframeurl
 			powerBiUrl() {
-				let username = 1
-				if(this.userInfo.id===213123190){	// 唐瑜 WS1CSF-5AekoAD
-					username = 1
-				}
-				if(this.userInfo.id===213123203){	// 王亮亮 WS1CSPK302
-					username = 2
-				}
-				if(this.userInfo.id===190259){	// 严琴 WS1CSPLinie02
-					username = 3
-				}
-				if(this.userInfo.id===190258){	// 俞琴 WS1CSPLinie01
-					username = 4
-				}
-				if(this.userInfo.id===190232){ // 王琴 CSXLinie02
-					username = 5
-				}
-				if(this.userInfo.id===190262){ // 六琴 WS1CSPLinieKZ
-					username = 6
-				}
-				if(this.userInfo.id===190222){	// 江琴 WS1AekoAdmin
-					username = 19
-				}
 				let params = {
 					workspaceId: '876776a9-f959-442e-a011-b4bade0dd862', 
-					reportId: '25724165-8d58-4452-a6e3-363facc62d2b',
-          datasets:['734b852b-4b5e-4392-b715-3a698a5a7209'],
-          // username: 1 || this.userInfo.id,	// 目前报表那边还没有和用户中心关联user_id,只提供1,3,6,19只给userId
-          username: username,	// 目前报表那边还没有和用户中心关联user_id,只提供1,3,6,19只给userId
-          roles:['role']||this.roleList,
+					reportId: '6087b0b2-cdd2-40c5-9290-40a7fd2eba36' 
 				}
 				statement(params).then(res => {
 					console.log(res);
@@ -86,12 +60,13 @@ import { roleMixins } from "@/utils/roleMixins";
 			renderBi() {
 				try {
 					var permissions = pbi.models.Permissions.All
+				
 					var config = {
 						type: 'report',
 						tokenType: pbi.models.TokenType.Embed,
 						accessToken: this.url.accessToken,
 						embedUrl: this.url.embedUrl,
-            // pageName: 'ReportSectionae991d05cd104ed2c639',
+            pageName: 'ReportSectionae991d05cd104ed2c639',
 						// id: 'f6bfd646-b718-44dc-a378-b73e6b528204',
 						/*pageName: 'ReportSectioneb8c865100f8508cc533',
 						visualName: '47eb6c0240defd498d4b',
@@ -102,7 +77,7 @@ import { roleMixins } from "@/utils/roleMixins";
 									visible: false
 								},
 								pageNavigation: {
-									visible: false
+									visible: true
 								}
 							}
 						}

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-02 20:19:58
+ * @LastEditTime: 2021-11-16 09:50:02
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -18,7 +18,7 @@
 
 <script>
 import { iNavMvp, icon } from "rise"
-import { TAB,SUBMENU,ATTACHSUBMENU } from "./data"
+import { TAB,SUBMENU } from "./data"
 export default {
   components: {
     iNavMvp,
@@ -34,7 +34,7 @@ export default {
       return this.$route.path.includes('progressconfirmsummary') || this.$route.path.includes('proconfirm')
     },
     subMenu() {
-      return this.$route.meta.subMenuType === 2 ? ATTACHSUBMENU : this.subNavList
+      return this.subNavList
     },
     //eslint-disable-next-line no-undef
     ...Vuex.mapState({

@@ -81,7 +81,7 @@
         </div>
         <div class="project__header-btns">
           <template v-if="actived === 'filing'">
-            <iButton v-if="ruleForm.biddingStatus == '06'">{{
+            <iButton @click="handleHref" v-if="ruleForm.biddingStatus == '06'">{{
               language('BIDDING_TXBJMX', '填写报价明细')
             }}</iButton>
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
@@ -106,6 +106,7 @@
       tag="iDialog"
       :open="showBidNotice"
       @cancel="cancel"
+      @hanldeAgreeOrReject="hanldeAgreeOrReject"
       v-if="showBidNotice"
       :projectCode="ruleForm.projectCode"
       :supplierCode="supplierCode"
@@ -150,12 +151,24 @@ export default {
       showBidNotice: false,
       projectBack: "",
       biddingFinish: false,
+      handleReject:false,
     };
   },
-  mounted() {
+  async mounted() {
     window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
     this.projectBack = sessionStorage.getItem("projectBack");
     console.log(this.projectBack);
+    if (this.actived === 'filing'){
+      const res = await getSupplierNotification({
+          projectCode: this.ruleForm.projectCode,
+          supplerCode: this.supplierCode,
+      });
+      if(!res.systemUseFlag) {
+        const type = '01'
+        const docTitle = '系统使用条款'
+        this.handleShowNotice(type,docTitle)
+      }
+    }
   },
 
   computed: {
@@ -226,6 +239,9 @@ export default {
     },
   },
   methods: {
+    handleHref(){
+      window.open(`${process.env.VUE_APP_SITE_URL}supplier/rfqManageMent/rfqDetail?rfqId=${this.ruleForm.rfqCode}`)
+    },
     handleBack() {
       this.$router.push({
         path: "/bidding/projectlist",
@@ -321,7 +337,14 @@ export default {
       //   path: `/bidding/bidNotice`,
       // });
     },
+    // 发送拒绝/同意请求
+    hanldeAgreeOrReject(param){
+      this.handleReject = param.biddingNtfFlag
+    },
     cancel(blobUrl) {
+      if(this.type == '01' && !this.handleReject) {
+        window.close()
+      }
       this.showBidNotice = false;
       if (blobUrl) {
         window.URL.revokeObjectURL(blobUrl);

@@ -9,7 +9,7 @@
 
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/aon')
+const requst = axios(process.env.VUE_APP_POWEBI_KPI)
 
 // 总览
 export function marketOverview(data) {

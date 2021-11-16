@@ -580,3 +580,11 @@ export function downloadBnkFile(ids) {
     method: 'GET'
   })
 }
+
+// 获取报价单汇率
+export function searchQuotationExchange(params) {
+  return requst({
+    url: `/part/search-quotation-exchange/${ params.quotationId }`,
+    method: 'GET'
+  })
+}
