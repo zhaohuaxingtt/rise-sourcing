@@ -192,7 +192,7 @@ export default{
       }, 500);
     },
     getTopWidth(){
-      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 100 + 'px'
+      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 60 + 'px'
     },
     removeTags(){
       this.negoAnalysisSummaryLayoutSave()
