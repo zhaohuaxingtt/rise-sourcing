@@ -309,6 +309,7 @@
             ruleForm.biddingStatus !== '01' ? [] : outPutProps
           "
           :beginMonth="ruleForm.beginMonth"
+          :ruleForm="ruleForm"
           @handleOutPutInputDate="handleOutPutInputDate"
           @handlerInputBlur="handlerInputBlur"
         >

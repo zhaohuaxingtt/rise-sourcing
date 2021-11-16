@@ -293,7 +293,7 @@
                  @input="handleOutPutInputDate($event, scope)"
                  @blur="handlerInputBlur($event, scope)"
                 :picker-options="handleOutPutPickerOptions(scope.row, items.props)"
-                :disabled="items.props !== 'stage1'"
+                :disabled="ruleForm.roundType === '03' || items.props !== 'stage1'"
               />
             </el-form-item>
           </template>
@@ -457,6 +457,12 @@ export default {
     fileSizeProps: { type: String, default: "fileSize" },
     beginMonth: { type: String, default: "" },
     annualOutputObj:{
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+    ruleForm:{
       type: Object,
       default: () => {
         return {};
