@@ -1,7 +1,7 @@
 /*
  * @Author: YoHo
  * @Date: 2021-10-11 17:18:47
- * @LastEditTime: 2021-11-15 14:58:01
+ * @LastEditTime: 2021-11-16 17:42:40
  * @LastEditors: YoHo
  * @Description: 
  */
@@ -286,14 +286,12 @@ export const list = [
 
 // 保留位数
 export function floatNum(num, minFixed = 2, maxFixed = 4) {
-  if ((num ?? '') === '') return null;
-  let floatNum = Number(Number(num).toFixed(maxFixed));
+  const _num = (num || num === 0) ? num : ''
+  if (_num === '') return null;
+  let floatNum = Number(Number(_num).toFixed(maxFixed));
   let float = floatNum.toString().split(".")[1];
-  floatNum =
-    (float?.length || 0) < minFixed
-      ? floatNum.toFixed(minFixed)
-      : floatNum;
-  return floatNum;
+  const length = typeof float ==='string' ? float.length : 0; 
+  return length < minFixed ? floatNum.toFixed(minFixed) : floatNum;
 }
 
 // 费用千分位处理
@@ -309,7 +307,7 @@ export function fixNumber(str, precision = 2) {
   return fixstr.join(".");
 }
 export function floatFixNum(num, minFixed = 2, maxFixed = 4) {
-  return fixNumber(floatNum(num, minFixed, maxFixed), minFixed)
+  return fixNumber(floatNum(num, parseInt(minFixed), parseInt(maxFixed)), parseInt(minFixed))
 }
 
 // 表格数据 千分符格式化
