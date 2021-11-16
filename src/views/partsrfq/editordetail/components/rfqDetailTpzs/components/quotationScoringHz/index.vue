@@ -18,9 +18,10 @@
           </iSelect> 
         </div>
         <div v-if='showRound && !disabel'>
-          <span>Quota. Round：</span>
+          <span>Quotation Round：</span>
           <iSelect v-model="round" @change="changeRound" style="width:100px">
             <el-option :label="items" :value="items" v-for='(items,index) in rundList' :key='index'></el-option>
+            <el-option label="Latest Offer" value="-1"></el-option>
           </iSelect> 
         </div>
         <div v-if='!disabel'>
@@ -150,7 +151,6 @@ export default{
   },
   created(){
     this.layout = this.getLayoutDetaultNumber()
-    console.log(this.layout)
     this.searchABPageExchangeRate()
   },
   destroyed(){

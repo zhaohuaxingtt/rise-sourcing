@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-12 14:18:06
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-16 17:49:54
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -933,7 +933,41 @@ export default {
     // 发送供应商报价-先校验一品多点
     async sendSupplierPrice(){
       if (!this.multipleSelection.length) return iMessage.warn(this.language("AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU", "请选择需要操作的原零件项目"))
-      const {multipleSelection=[]} = this;
+      let {multipleSelection=[]} = this;
+      
+      // jira-7759 校验同一新零件号同一采购工厂同一供应商”的多个行项目
+      const filtRows = []
+      this.multipleSelection.forEach(item => {
+        const dumplicatedParts = this.tableListData.filter(o => o.partNum === item.partNum && o.factoryCode === item.factoryCode && o.supplierSapCode === item.supplierSapCode)
+        if (dumplicatedParts.length > 1 && !filtRows.find(o => o.partNum === item.partNum)) {
+          filtRows.push(item)
+        }
+      })
+      if (filtRows.length) {
+        const confirmMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
+          ${filtRows.map(o => o.partNum).join(',')} 
+          ${this.language('GONGYINGSHANG','供应商')}:
+          ${filtRows.map(o => o.supplierNameZh).join(',')} 
+          ${this.language('CAIGOUGONGC1','采购工厂')}:
+          ${filtRows.map(o => o.factoryName).join(',')} 
+          ${this.language('SINGLEGROUPSENDFIRSTONE','在单一组合中仅能发送一条报价信息，系统将默认发送第一条，请确认')}
+          `
+        try {
+          const confirmCheckInfo = await this.$confirm(
+          confirmMsg,
+          this.language('LK_NOTICE','提示'),
+            {
+                confirmButtonText: this.language('nominationLanguage.No','否'),
+                cancelButtonText: this.language('nominationLanguage.Yes','是'),
+            }
+          )
+          if (confirmCheckInfo === 'confirm') return
+          multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
+        } catch (e) {
+          multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
+        }
+      }
+      
       this.declareSendSupplier = true;
       const data = {
         requirementAekoId:this.$route.query.requirementAekoId,

@@ -15,9 +15,10 @@
 				:accept="'.jpg,.jpeg,.png,.pdf,.tif'"
 				:buttonText="language('LK_SHANGCHUAN','上传')"
 				:uploadButtonLoading="uploading"
+        v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_UPLOAD|AKEO详情-审批附件上传"
 				@on-success="onUploadsucess"
 			/>
-			<iButton class="margin-left5" @click="deleteFile" :loading="deleting">
+			<iButton class="margin-left5" @click="deleteFile" :loading="deleting" v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_DELETE|AKEO详情-审批附件删除">
         {{ language("LK_SHANCHU", "删除") }}
       </iButton>
 
@@ -31,6 +32,7 @@
       :tableLoading="tableLoading"
       :lang="true"
 			@handleSelectionChange="handleSelectionChange"
+      v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_TABLE|AKEO详情-审批附件列表"
     >
       <template #fileName="scope">
         <div style="text-align: left">
