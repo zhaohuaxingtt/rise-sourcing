@@ -30,7 +30,7 @@ export default {
   watch: {},
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    this.url=window.location.origin+'/portal/#/supplier/NTier/map'
+    this.url=window.location.origin+'/portal/#/supplier/NTier/NTierMap'
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
