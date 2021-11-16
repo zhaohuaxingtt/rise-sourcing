@@ -482,11 +482,11 @@ export default {
     font-weight: 400;
     color: #4B4B4C;
     &::before{
-    content: "*";
-    color: #f56c6c;
-    margin-right: 4px;
-    display: inline-block;
-  }
+      content: "*";
+      color: #f56c6c;
+      margin-right: 4px;
+      display: inline-block;
+    }
   }
   .bottom-tips{
     color: #8C96A7;
