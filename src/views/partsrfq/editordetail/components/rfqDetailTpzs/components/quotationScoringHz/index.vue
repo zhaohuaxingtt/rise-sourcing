@@ -482,6 +482,8 @@ export default{
         this.ratingList = []
     },
     searchABPageExchangeRate() {
+      if (!this.$route.query.desinateId) return
+
       searchABPageExchangeRate(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
