@@ -30,12 +30,11 @@ Promise.all([
 
 Vue.component(iTable.name, iTable)
 
-Vue.prototype.$echarts = echarts;
+Vue.prototype.$echarts = echarts();
 
 new Vue({
   router,
   store,
   i18n,
-  echarts,
   render: (h) => h(App),
 }).$mount('#app')
