@@ -27,10 +27,16 @@ export default {
   // 监听属性 类似于data概念
   computed: {},
   // 监控data中的数据变化
-  watch: {},
+  watch: {
+    "$store.state.rfq.categoryCode": {
+      handler(val) {
+        this.url=window.location.origin+'/portal/#/supplier/NTier/NTierMap?categoryCode='+val
+      }
+    }
+  },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {
-    this.url=window.location.origin+'/portal/#/supplier/NTier/NTierMap'
+    this.url=window.location.origin + '/portal/#/supplier/NTier/NTierMap?categoryCode='+this.$store.state.rfq.categoryCode
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {
