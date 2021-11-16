@@ -97,17 +97,26 @@
           :tableData="approvedList"
           :tableTitle="approvedHeader"
           :lang="true"
+          :selectConfig="selectConfig"
+          :indexConfig="indexConfig"
           v-loading="tableLoading"
       >
-        <template #isTop="scope">
+        <!-- <template #isTop="scope">
           <div>
             <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon" name="iconAEKO_TOP"/></span>
           </div>
-        </template>
+        </template> -->
         <template #aekoNum="scope">
+          
+          <div class="hasIcon">
+            <span class="icon-box"><icon v-if="scope.row.isTop" symbol class="icon" name="icontop"/></span>
             <a class="link-underline" @click="lookDetails(scope.row)">
               {{ scope.row.aekoCode }}
             </a>
+          </div>
+            <!-- <a class="link-underline" @click="lookDetails(scope.row)">
+              {{ scope.row.aekoCode }}
+            </a> -->
         </template>
         <template #auditTypeName="scope">
             <span>{{ scope.row.auditTypeDesc }}</span>
@@ -195,7 +204,7 @@
 
 <script>
 import {iSearch, iInput, iCard, iPagination, icon, iSelect, iMessage} from "rise"
-import {tableAKEOApprovedTitle as approvedHeader} from '../components/data'
+import {tableAKEOApprovedTitle as approvedHeader,  selectConfig, indexConfig} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
 import {queryApproved} from "@/api/aeko/approve";
@@ -237,6 +246,8 @@ export default {
   },
   data() {
     return {
+      selectConfig,
+      indexConfig,
       //查询表单
       queryAkeoForm: {
         aekoCode: '',//aeko号
@@ -512,9 +523,21 @@ export default {
   }
 }
 
-.icon {
-  svg {
-    font-size: 24px;
+.hasIcon{
+  width: 100%;
+  text-align: left;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  .icon-box{
+    width: 25px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+
+      svg {
+        font-size: 24px;
+      }
   }
 }
 
