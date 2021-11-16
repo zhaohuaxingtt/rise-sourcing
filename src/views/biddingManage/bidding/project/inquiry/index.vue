@@ -244,7 +244,7 @@
               v-model="scope.row['cbdLevel']"
             >
               <el-option
-                v-for="item in scope.row.cbdLevelList"
+                v-for="item in cbdLevelList[scope.row.supplierCode]"
                 :key="item"
                 :label="item"
                 :value="item === 'L1' ? '01' : item === 'L2' ? '02' : item === 'L3' ? '03' : ''"
@@ -816,7 +816,7 @@ export default {
       });
       this.ruleForm.suppliers.push(...suppliers);
       this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
-        this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+        this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
           return {
             ...supplier,
           };
@@ -1020,7 +1020,7 @@ export default {
           if (res) {
             this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
             this.initSuppliers = res.suppliers?.map((supplier) => {
-              this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
               
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
@@ -1212,7 +1212,7 @@ export default {
             })),
             suppliers: res.suppliers?.map((supplier) => {
               console.log('obsfsaject',supplier)
-              this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1247,7 +1247,7 @@ export default {
           this.initAttachments = [...res.attachments];
           this.initSuppliers = res.suppliers?.map((supplier) => {
             console.log('obsfsaject',supplier)
-            this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+            this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
             // if (!supplier.isAttend)
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
@@ -1305,7 +1305,7 @@ export default {
               ...item,
             })),
             suppliers: res.suppliers?.map((supplier) => {
-              this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1340,7 +1340,7 @@ export default {
           this.initAttachments = [...res.attachments];
           this.initSuppliers = res.suppliers?.map((supplier) => {
             console.log('obsfsaject',supplier)
-            this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+            this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
             // if (!supplier.isAttend)
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
@@ -1368,7 +1368,7 @@ export default {
       console.log("handleSizeChange", this.page);
       this.page.pageSize = val;
     },
-    async querySuppliers(supplierCode,supplierId) {
+    async querySuppliers(supplierCode,supplierId,cbdArea) {
       // 联系人
       if (!this.userListCache[supplierId]) {
         this.$set(this.userListCache, supplierId, []);
@@ -1395,17 +1395,21 @@ export default {
       if (!this.cbdLevelList[supplierCode]) {
         const res = await cbdLevel(supplierCode);
         this.$set(this.cbdLevelList, supplierCode, res || []);
-        this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
-          return {
-            ...supplier,
-            mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
-            cbdLevelList: supplier?.cbdArea == "03"
-                  ? this.cbdLevelList[supplierCode].slice(2, 3)
-                  : supplier?.cbdArea == "02"
-                  ? this.cbdLevelList[supplierCode].slice(1, 3)
-                  : this.cbdLevelList[supplierCode],
-          };
-        })
+          this.$nextTick(() => {
+            this.cbdLevelList[supplierCode] = cbdArea == "03"
+                      ? this.cbdLevelList[supplierCode].slice(2, 3)
+                      : cbdArea == "02"
+                      ? this.cbdLevelList[supplierCode].slice(1, 3)
+                      : this.cbdLevelList[supplierCode]
+          })
+          this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
+            return {
+              ...supplier,
+              mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
+              
+            };
+          })
+        
       }
       
 

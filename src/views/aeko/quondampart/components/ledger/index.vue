@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-12 18:02:20
+ * @LastEditTime: 2021-11-16 17:34:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -17,26 +17,26 @@
       :searchKey="AEKO_QUONDAMPARTLEDGER_BUTTON_CONFIRM"
     >
       <el-form>
-        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_PARTNUM">
+        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission.auto="AEKO_QUONDAMPARTLEDGER_INPUT_PARTNUM|零件号">
           <iInput
             v-model="form.partNum"
             :disabled="disabled"
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           />
         </el-form-item>
-        <el-form-item :label="language('LK_GONGYINGSHANGSAPHAO', '供应商SAP号')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERSAPCODE">
+        <el-form-item :label="language('LK_GONGYINGSHANGSAPHAO', '供应商SAP号')" v-permission.auto="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERSAPCODE|供应商SAP号">
           <iInput
             v-model="form.supplierSapCode"
             :placeholder="language('LK_QINGSHURUGONGYINGSHANGSAPHAO', '请输入供应商SAP号')"
           />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')" v-permission="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERNAME">
+        <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')" v-permission.auto="AEKO_QUONDAMPARTLEDGER_INPUT_SUPPLIERNAME|供应商简称">
           <iInput
             v-model="form.supplierName"
             :placeholder="language('QINGSHURUGONGYINGSHANGJIANCHENG', '请输入供应商简称')"
           />
         </el-form-item>
-        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission="AEKO_QUONDAMPARTLEDGER_SELECT_FACTORYCODE">
+        <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission.auto="AEKO_QUONDAMPARTLEDGER_SELECT_FACTORYCODE|采购工厂">
           <iSelect
             v-if="!factoryDisabled"
             v-model="form.factoryCode"
@@ -58,12 +58,12 @@
       </el-form>
     </iSearch>
     <!-- 指定台账库 -->
-    <iCard class="margin-top20" :title="language('ZHIDINGTAIZHANGKUYUANLINGJIAN', '指定台账库原零件')" v-if="tableListData.length">
+    <iCard class="margin-top20" :title="language('ZHIDINGTAIZHANGKUYUANLINGJIAN', '指定台账库原零件')" v-permission.auto="AEKO_QUONDAMPARTLEDGER_TABLE_ZHIDINGTAIZHANGKUYUANLINGJIAN|指定台账库原零件" v-if="tableListData.length">
       <template #header-control>
         <!-- <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton> -->
         <iButton 
           @click="handleExport" 
-          v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT"
+          v-permission.auto="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT|台账库列表导出"
           :disabled="aekomultipleSelection.length > 0 "
         >
         {{ language("DAOCHU", "导出") }}
@@ -104,7 +104,7 @@
     </iCard>
 
     <!-- 指定AEKO库原零件 -->
-    <aekoList ref="aekoList" :ledgerSelection="multipleSelection" :form="form" :aekomultipleSelection="aekomultipleSelection" :objectAekoPartId="objectAekoPartId" @changeAekoSelection="changeAekoSelection"/>
+    <aekoList  v-permission.auto="AEKO_QUONDAMPARTLEDGER_TABLE_ZHIDINGAEKOKUYUANLINGJIAN|指定AEKO库原零件" ref="aekoList" :ledgerSelection="multipleSelection" :form="form" :aekomultipleSelection="aekomultipleSelection" :objectAekoPartId="objectAekoPartId" @changeAekoSelection="changeAekoSelection"/>
     
     <presentAllInPriceDialog :visible.sync="visible" :apriceId="currentRow.aPriceId" @confirm="confirmAPrice" />
   </div>
