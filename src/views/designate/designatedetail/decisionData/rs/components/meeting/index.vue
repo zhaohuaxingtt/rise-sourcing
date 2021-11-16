@@ -89,8 +89,14 @@
           1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
         </span>
       </div>
+      <div v-else>
+        <p class="margin-top10" v-if="exchangeRateCurrentVersionStr">Exchange rate: {{ exchangeRateCurrentVersionStr }}</p>
+        <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
+          <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate {{ exchangeRate.version }}: {{ exchangeRate.str }}</p>
+        </div>
+      </div>
     </iCard>
-    <iCard v-if="!isPreview && !showSignatureForm" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
+    <iCard v-if="!isPreview && !showSignatureForm && !isExternal" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
       <div class="meetingRemark">
         <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
@@ -99,7 +105,7 @@
         </div>
       </div>
     </iCard>
-    <iCard v-if="!showSignatureForm" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+    <iCard v-if="!showSignatureForm && !isExternal" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
           <icon v-if="item.approveStatus == '1'" symbol name="iconrs-wancheng"></icon>
@@ -130,7 +136,7 @@
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
 import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, searchRsPageExchangeRate } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
 import { findFrontPageSeat } from '@/api/designate'
 import { zipWith } from "lodash"
@@ -161,7 +167,10 @@ export default {
       processApplyDate: '',
       projectType: '',
       isSingle: false,
-      suppliers: ''
+      suppliers: '',
+      exchangeRateCurrentVersionStr: "",
+      exchangeRatesOldVersions: [],
+      isExternal: false
     }
   },
   filters: {
@@ -240,7 +249,10 @@ export default {
       return this.remarkItem.map(item => item.value).join('\n')
     }
   },
-  // created(){this.getPrototypeList()},
+  created(){
+    this.isExternal = this.$route.query.isExternal
+    // this.getPrototypeList()
+  },
   methods: {
     getIsSingle() {
       findFrontPageSeat({nominateId:this.nominateId}).then(res => {
@@ -377,6 +389,8 @@ export default {
           })
           this.tableData = data
           this.projectType = res.data.partProjectType || ''
+
+          this.searchRsPageExchangeRate()
         } else {
           this.basicData = {}
           this.tableData = []
@@ -440,6 +454,37 @@ export default {
 
         return ltcRateStrArr.length ? ltcRateStrArr.join('/') : '-'
       }
+    },
+
+    // 获取汇率
+    searchRsPageExchangeRate() {
+      searchRsPageExchangeRate(this.$route.query.desinateId)
+      .then(res => {
+        if (res.code == 200 && this.basicData.currency) {
+          const sourceData = Array.isArray(res.data) ? res.data : []
+
+          const currentVersion = sourceData.find(item => item.isCurrentVersion)
+          const exchangeRatesCurrentVersion = currentVersion ? (Array.isArray(currentVersion.exchangeRateVos) ? currentVersion.exchangeRateVos : []) : []
+          const currentCurrencyExchangeRate = exchangeRatesCurrentVersion.find(item => item.currencyCode === this.basicData.currency)
+          this.exchangeRateCurrentVersionStr = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : ""
+
+          const oldVersions = sourceData.filter(item => !item.isCurrentVersion)
+          this.exchangeRatesOldVersions = oldVersions.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length).map(item => {
+            const result = { version: item.exchangeRateVos[0].version }
+            
+            const currentCurrencyExchangeRate = item.exchangeRateVos.find(item => item.currencyCode === this.basicData.currency)
+            result.str = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : ""
+
+            return result
+          })
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+    // 汇率显示处理
+    exchangeRateProcess(row) {
+      return `100${ this.$i18n.locale === "zh" ? row.currencyName : row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ this.$i18n.locale === "zh" ? row.originCurrencyName : row.originCurrencyCode }`
     }
   }
 }

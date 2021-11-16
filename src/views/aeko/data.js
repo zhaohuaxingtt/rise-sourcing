@@ -12,6 +12,7 @@ export const TAB = [
         activePath: "/managelist",
         key: "LK_AEKOGUANLI",
         permissionKey:'AEKO_MANAGE',
+        permissionName:'AEKO管理',
         role:['isAekoManager','isCommodityCoordinator'],
     },
     {
@@ -22,6 +23,7 @@ export const TAB = [
         activePath: "/stancelist",
         key: "LK_AEKOBIAOTAI",
         permissionKey:'AEKO_STANCE',
+        permissionName:'AEKO表态',
         role:['isLinie'],
     },
     {
@@ -30,7 +32,9 @@ export const TAB = [
         message: 0,
         url: '/aeko/approve',
         activePath: 'projectoverview',
-        key: 'LK_AEKOSHENPI'
+        key: 'LK_AEKOSHENPI',
+        permissionKey:'LK_AEKOSHENPI',
+        permissionName:'AEKO审批',
       },
     {
         value: 4,
@@ -40,6 +44,7 @@ export const TAB = [
         activePath: "/checklist",
         key: "LK_AEKOCHAKAN",
         permissionKey:'AEKO_CHECK',
+        permissionName:'AEKO查看',
         role:['isAekoManager','isCommodityCoordinator','isLinie'],
     },
 ]
