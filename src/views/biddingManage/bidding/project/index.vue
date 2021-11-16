@@ -81,7 +81,7 @@
         </div>
         <div class="project__header-btns">
           <template v-if="actived === 'filing'">
-            <iButton v-if="ruleForm.biddingStatus == '06'">{{
+            <iButton @click="handleHref" v-if="ruleForm.biddingStatus == '06'">{{
               language('BIDDING_TXBJMX', '填写报价明细')
             }}</iButton>
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
@@ -239,6 +239,9 @@ export default {
     },
   },
   methods: {
+    handleHref(){
+      window.open(`${process.env.VUE_APP_SITE_URL}supplier/rfqManageMent/rfqDetail?rfqId=${this.ruleForm.rfqCode}`)
+    },
     handleBack() {
       this.$router.push({
         path: "/bidding/projectlist",
