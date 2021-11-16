@@ -166,11 +166,14 @@ import {
 } from '@/api/aeko/detail/partsList.js'
 import {
     searchBrand,
-    searchLinie,
+    // searchLinie,
     // getSearchCartype,
     // searchCartypeProject,
     searchCommodity,
 } from '@/api/aeko/manage'
+import {
+    searchLinie,
+} from '@/api/aeko/detail'
 import { cloneDeep } from "lodash"
 import {user as configUser } from '@/config'
 import { roleMixins } from "@/utils/roleMixins";
