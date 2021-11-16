@@ -63,16 +63,14 @@
         </div>
       </div>
       <tableList
-        :activeItems='"rfqId"'
-        :activeItems2="'fsnrGsnrNum'"
+        :activeItems='"fsnrGsnrNum"'
         selection
         indexKey
         :tableData="partsTableListData"
         :tableTitle="partsTableTitle"
         :tableLoading="partsTableLoading"
         @handleSelectionChange="handlePartsSelectionChange"
-        @openPage="openPartsPage"
-        @openPage2="openPartsSource"
+        @openPage="openPartsSource"
         @updateSlot='partsToTop'
         :selectedItems="partsSelectedItems"
         ref="partTable"

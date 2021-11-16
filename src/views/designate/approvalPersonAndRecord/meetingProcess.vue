@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-12 13:37:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-12 18:08:17
+ * @LastEditTime: 2021-11-15 21:43:36
  * @Description: 
  * @FilePath: \front-sourcing\src\views\designate\approvalPersonAndRecord\meetingProcess.vue
 -->
@@ -19,37 +19,40 @@
           class="node"
           :class="{
             mulitiple: item.taskNodeList,
-            active: ['已提交', '已审批'].includes(item.status)
+            active: ['已提交', '已审批', '已处理'].includes(item.status)
           }"
         >
           <div class="node-icon">
             <icon symbol size="30" :name="getIcon(item)" />
           </div>
           <div class="title">{{ item.status || item.nodeName }}</div>
-          <div class="item-name" v-if="!item.taskNodeList">
+          <div class="item-name" v-if="item.taskNodeList && item.taskNodeList.length < 2">
             <div>
               <span>
                 {{
-                  item.approvalUser && item.approvalUser.assigneeName
+                  item.taskNodeList[0] && item.taskNodeList[0].assigneeName
                 }}
               </span>
             </div>
           </div>
-          <div class="post text-ellipsis" v-if="!item.taskNodeList">
+          <div class="post text-ellipsis" v-if="item.taskNodeList && item.taskNodeList.length < 2">
             <div>
               <span>
-                {{ item.approvalUser && item.approvalUser.positionZhNameList }}
+                {{ item.taskNodeList[0] && item.taskNodeList[0].deptNameZh }}
               </span>
             </div>
           </div>
-          <div class="date" v-if="!item.taskNodeList || appItem.hidens">
-            {{ item.approvalUser && item.approvalUser.endTime || item.endTime }}
+          <div class="date" v-if="item.taskNodeList && item.taskNodeList.length < 2 || appItem.hidens">
+            {{ !appItem.hidens ? item.taskNodeList[0] && item.taskNodeList[0].endTime : item.endTime }}
+          </div>
+          <div class="commit" v-if="item.taskNodeList && item.taskNodeList.length < 2">
+            {{ item.taskNodeList[0] && item.taskNodeList[0].operation }}
           </div>
           <div
-            v-if="item.taskNodeList"
+            v-if="item.taskNodeList && item.taskNodeList.length > 1"
             class="content "
             :class="{
-              active: ['已提交', '已审批'].includes(item.status)
+              active: ['已提交', '已审批', '已处理'].includes(item.status)
             }"
           >
             <div class="type">
@@ -69,7 +72,7 @@
                   </span>
                 </div>
                 <div class="post">
-                  {{ approvalUser.positionZhNameList }}
+                  {{ approvalUser.deptNameZh }}
                 </div>
                 <div class="date" v-if="approvalUser.endTime">
                   {{ approvalUser.endTime }}
@@ -114,38 +117,45 @@ export default {
     approvalList() {
       const approvalList = this.meetingDetail.map((item, index) => {
         const hidens = this.hidensIndex.includes(index)
-        const list = [
-          {
-            nodeName: item[0].activityName,
-            nodeTye: "Non_MultiInst",
-            remark: "提交节点",
-            status: "已提交",
-            approvalUser: item[0]
-          },
-          {
-            nodeName: item[1].activityName,
-            nodeTye: "MultiInst",
-            remark: "正常审批",
-            status: index === this.meetingDetail.length - 1 ? "审批中" : "已审批",
-            taskNodeList: item.filter((node, nodeIndex) => nodeIndex !== 0)
-          },
-          {
-            approvalUserList: null,
-            executionId: null,
-            nodeName: "审批完成",
-            nodeTye: "",
-            remark: null,
-            status: null,
-            isEnd: index === this.meetingDetail.length - 1 ? false : true,
-            endTime: hidens ? item[item.length - 1].endTime : ''
+        // eslint-disable-next-line no-undef
+        const activityList = _.uniqBy(item.items.map(iitem => {return {activityName: iitem.activityName, activityId: iitem.activityId}}), 'activityName')
+        const list = activityList.map(acItem => {
+          const taskNodeList = item.items.filter((node) => node.activityName === acItem.activityName)
+          return {
+            nodeName: acItem.activityName,
+            status: this.getStatus(acItem, item.isEnd),
+            remark: '',
+            nodeTye: acItem.activityId === 'CSCCounterSign' ? "MultiInst" : taskNodeList.length > 1 ? "MultiInst" : "Non_MultiInst",
+            taskNodeList
           }
-        ]
-        return {hidens: hidens, list: hidens ? [list[2]]: list}
+        })
+        list.push({
+          approvalUserList: null,
+          executionId: null,
+          nodeName: "审批完成",
+          nodeTye: "",
+          remark: null,
+          status: null,
+          isEnd: item.isEnd,
+          endTime: hidens ? item.items[item.items.length - 1].endTime : ''
+        })
+        return {hidens: hidens, list: hidens ? [list[list.length - 1]]: list}
       })
+      // console.log(approvalList)
       return approvalList
     }
   },
   methods: {
+    getStatus(item, isEnd) {
+      switch(item.activityId) {
+        case 'autoComplete-task':
+          return "已提交"
+        case 'CSCCounterSign':
+          return isEnd ? "已审批" : "审批中"
+        default:
+          return '已处理'
+      }
+    },
     toggle(appIndex){
       if (!this.hidensIndex.some(item => item === appIndex)) {
         this.hidensIndex.push(appIndex)
@@ -157,6 +167,7 @@ export default {
     getMeetingDetail() {
       if (this.nomiAppId && this.processInstanceId) {
         this.loading = true
+        this.hidensIndex = []
         getApprovalRecordMeeting(this.nomiAppId, this.processInstanceId).then(res => {
           if (res?.result) {
             this.meetingDetail = res.data
@@ -166,11 +177,11 @@ export default {
               }
             });
           } else {
-            this.meetingDetail = []
+            this.meetingDetail = {}
             iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           }
         }).catch(e => {
-          this.meetingDetail = []
+          this.meetingDetail = {}
           iMessage.error(this.$i18n.locale === 'zh' ? e?.desZh : e?.desEn)
         }).finally(() => {
           this.loading = false
@@ -181,7 +192,7 @@ export default {
       if (item.isEnd) {
         return 'iconshenpiliu-yishenpi'
       }
-      if (['已提交', '已审批'].includes(item.status)) {
+      if (['已提交', '已审批', '已处理'].includes(item.status)) {
         return 'iconshenpiliu-yishenpi'
       }
       if (item.status === '审批中') {
@@ -246,6 +257,9 @@ $borderColor: #cbcbcb;
     }
     .date {
       font-size: 14px;
+    }
+    .commit {
+      margin-left: 20px;
     }
     &::before {
       content: '';
