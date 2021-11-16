@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-09 20:45:41
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-16 11:32:00
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
  */
@@ -501,12 +501,12 @@ function factoryListFn(factoryList,index){
 export const centerSupplierList = function(index,factoryList=[]){
   index = index?index:''
   return [
-    {type:'',props:`${index}lcAPrice`,label:'LC A Price',i18n:'',width:'80',tooltip:false},
+    {type:'',props:`${index}lcAPrice`,label:'LC A Price',i18n:'',width:'65',tooltip:false},
     {type:'',props:`${index}skdAPrice`,label:'SKD A Price',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}factory`,label:`${factoryListFn(factoryList,index)}`,i18n:'',width:'',tooltip:false,list:[
-      {type:'',props:`${index}lcBPrice`,label:'LC B Price',i18n:'',width:'80',tooltip:false},
+      {type:'',props:`${index}lcBPrice`,label:'LC B Price',i18n:'',width:'65',tooltip:false},
       {type:'',props:`${index}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
-      {type:'',props:`${index}productionLocation`,label:'Prod.Loc.',i18n:'',width:'100',tooltip:false},
+      {type:'',props:`${index}productionLocation`,label:'Prod.Loc.',i18n:'',width:'98',tooltip:false},
     ]},
     {type:'',props:`${index}lcAPriceWithoutAllocation`,label:'LC A Price without Allocation',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}skdAPriceWithoutAllocation`,label:'SKD A Price without Allocation',i18n:'',width:'120',tooltip:false},
@@ -514,13 +514,13 @@ export const centerSupplierList = function(index,factoryList=[]){
     {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD B Price without Allocation',i18n:'',width:'120',tooltip:false}, 
     {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}bnkApprovalStatus`,label:'BNK Approval Status',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'80',tooltip:false},
+    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'63',tooltip:false},
     {type:'',props:`${index}developmentCost`,label:'Development Cost',i18n:'',width:'',tooltip:false},
     {type:'',props:`${index}supplierSopDate`,label:'Supplier SOP Date',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}ltc`,label:'LTC',i18n:'',width:'55',tooltip:false},
-    {type:'',props:`${index}ltcStaringDate`,label:'LTC Starting Date',i18n:'',width:'80',tooltip:false},
+    {type:'',props:`${index}ltc`,label:'LTC',i18n:'',width:'45',tooltip:false},
+    {type:'',props:`${index}ltcStaringDate`,label:'LTC Starting Date',i18n:'',width:'68',tooltip:false},
     {type:'',props:`${index}prototypePrice`,label:'Prototype Price',i18n:'',width:'100',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>' },
-    {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'110',tooltip:false},
+    {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
     {type:'',props:`${index}externalDevelopmentCost`,label:'External Development Cost',i18n:'',width:'100',tooltip:false, renderHeader: '<p>External</p><p>Dev. Cost</p>'},
     {type:'',props:`${index}releaseCost`,label:'Release Cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}Quotationdetails`,label:'Quo.Details',i18n:'',width:'100',tooltip:false},
@@ -528,9 +528,9 @@ export const centerSupplierList = function(index,factoryList=[]){
 }
 
 export const lastSupplier = [
-  {type:'',props:'mixPrice',label:'Mix Price',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'totalInvest',label:'Total Invest',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'totalTto',label:'Total Turnover',i18n:'',width:'100',tooltip:false},
+  {type:'',props:'mixPrice',label:'Mix Price',i18n:'',width:'60',tooltip:true},
+  {type:'',props:'totalInvest',label:'Total Invest',i18n:'',width:'60',tooltip:false},
+  {type:'',props:'totalTto',label:'Total Turnover',i18n:'',width:'60',tooltip:true},
 ]
 
 export function concactTitlle(supplier){

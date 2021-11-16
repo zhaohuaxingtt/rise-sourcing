@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: tyra liu
+ * @Date: 2021-11-08 14:11:06
+ * @LastEditTime: 2021-11-16 18:02:10
+ * @LastEditors:  
+ */
 export const outputPlanTableTitle = [
   { props: 'pc', name: '年份', key: 'LK_NIANFEN', tooltip: true },
   { props: 'totalOutput', name: 'SUM', key: 'LK_SUM', tooltip: true },
@@ -21,4 +28,9 @@ export const volumeTableTitle = [
   { props: 'otherConf', name: '其他配置', key: 'LK_QITAPEIZHI', tooltip: true },
   { props: 'ratio', name: '配置比例', key: 'LK_PEIZHIBILI', tooltip: true  },
   { props: 'perCarDosage', name: '用量', key: 'LK_YONGLIANG', tooltip: true }
+]
+export const carTitle = [
+  {props: 'id', name: '配置ID', key: "PEIZHIID", tooltip: true},
+  {props: 'number', name: '车型编号', key: "CHEXINGBIANHAO", tooltip: true},
+  {props: 'type', name: '发动机类型', key: "FADONGJILEIXING", tooltip: true},
 ]
