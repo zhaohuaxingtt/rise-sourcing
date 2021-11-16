@@ -15,15 +15,7 @@
       </template>
       <template slot="sort">
         <div v-if="role === 'supplier' && ruleForm.resultOpenForm == '02'"
-          :class="
-              rankDatas.trafficLight == '01'
-                ? 'green-ball'
-                : rankDatas.trafficLight == '02'
-                ? 'yellow-ball'
-                : rankDatas.trafficLight == '03'
-                ? 'red-ball'
-                : ''
-            "
+          :class="comRankDatas"
         >
         </div>
       </template>
@@ -60,7 +52,7 @@
 import { iCard, iPagination } from "rise";
 import commonTable from "@/components/biddingComponents/commonTable";
 import { supplierTableTitle, supplierTableTitles } from "./data";
-import { findHallSupplier, getProjectResults } from "@/api/bidding/bidding";
+import { findHallSupplier, getProjectResults,getSupplierRank } from "@/api/bidding/bidding";
 import { pageMixins } from "@/utils/pageMixins";
 
 export default {
@@ -76,10 +68,6 @@ export default {
       type: String,
     },
     value: {
-      type: Object,
-      default: () => ({}),
-    },
-    rankDatas: {
       type: Object,
       default: () => ({}),
     },
@@ -120,6 +108,7 @@ export default {
       suppliers: [],
 
       timer: null,
+      rankDatas:''
     };
   },
   computed: {
@@ -131,6 +120,15 @@ export default {
       const { currPage, pageSize } = this.page;
       return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
     },
+    comRankDatas(){
+      return this.rankDatas.trafficLight == '01'
+                ? 'green-ball'
+                : this.rankDatas.trafficLight == '02'
+                ? 'yellow-ball'
+                : this.rankDatas.trafficLight == '03'
+                ? 'red-ball'
+                : ''
+    }
   },
   async created() {
     this.id = this.$route.params.id;
@@ -146,6 +144,11 @@ export default {
         this.handleSearchReset();
       }, 1000);
     }
+    let param = { biddingId: this.id, supplierCode: this.supplierCode };
+    const r = await getSupplierRank(param).catch(err => {
+          console.log(err)
+        });
+    this.rankDatas = r
     await this.handleSearchReset();
     this.tableLoading = false;
   },

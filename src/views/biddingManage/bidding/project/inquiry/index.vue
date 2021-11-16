@@ -522,11 +522,11 @@ export default {
       const {biddingStatus} = this.ruleForm
       if(biddingStatus ==='02' || biddingStatus === '04'){
         this.$router.push({
-          name:'biddingProjectHall'
+          path:`/bidding/project/hall/${this.ruleForm.id}`
         })
       }else if (biddingStatus === '06' || biddingStatus === '07' || biddingStatus === '08') {
         this.$router.push({
-          name:'biddingProjectResult'
+          path:`/bidding/project/result/${this.ruleForm.id}`
         })
       }
     },
