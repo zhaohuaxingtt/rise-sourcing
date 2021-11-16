@@ -32,6 +32,7 @@
       :tableLoading="tableLoading"
       :lang="true"
 			@handleSelectionChange="handleSelectionChange"
+      v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_TABLE|AKEO详情-审批附件列表"
     >
       <template #fileName="scope">
         <div style="text-align: left">

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-16 14:44:11
+ * @LastEditTime: 2021-11-16 17:34:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -63,7 +63,7 @@
         <!-- <iButton @click="handleSave" v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_SAVE">{{ language("BAOCUN", "保存") }}</iButton> -->
         <iButton 
           @click="handleExport" 
-          v-permission="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT"
+          v-permission.auto="AEKO_QUONDAMPARTLEDGER_BUTTON_EXPORT|台账库列表导出"
           :disabled="aekomultipleSelection.length > 0 "
         >
         {{ language("DAOCHU", "导出") }}
