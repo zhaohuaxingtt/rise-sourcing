@@ -95,19 +95,24 @@
           :tableData="pendingList"
           :tableTitle="pendingHeader"
           :lang="true"
+          :selectConfig="selectConfig"
+          :indexConfig="indexConfig"
           v-loading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
       >
-        <template #isTop="scope">
+        <!-- <template #isTop="scope">
           <div>
             <span class="icon"><icon v-if="scope.row.isTop" symbol class="icon " name="icontop"/></span>
           </div>
-        </template>
+        </template> -->
         <!--aekoNum-->
         <template #aekoNum="scope">
+          <div class="hasIcon">
+            <span class="icon-box"><icon v-if="scope.row.isTop" symbol class="icon" name="icontop"/></span>
             <a class="link-underline" @click="lookDetails(scope.row)">
               {{ scope.row.aekoNum }}
             </a>
+          </div>
         </template>
         <!--审批类型-->
         <template #auditTypeName="scope">
@@ -204,7 +209,7 @@
 
 <script>
 import {iSearch, iInput, iCard, iButton, iSelect, iPagination, icon, iMessage} from "rise"
-import {tableCsfTitle as pendingHeader} from '../components/data'
+import {tableCsfTitle as pendingHeader, selectConfig, indexConfig} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
 import {pendingApprovalList, aekoAudit, transferAEKO} from "@/api/aeko/approve";
@@ -249,6 +254,8 @@ export default {
 
   data() {
     return {
+      selectConfig,
+      indexConfig,
       //查询表单
       queryAkeoForm: {
         aekoNum: '',//aeko号
@@ -716,11 +723,21 @@ export default {
     padding: 0 !important;
   }
 }
+.hasIcon{
+  width: 100%;
+  text-align: left;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  .icon-box{
+    width: 25px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
 
-.icon {
-  svg {
-    font-size: 24px;
-
+      svg {
+        font-size: 24px;
+      }
   }
 }
 
