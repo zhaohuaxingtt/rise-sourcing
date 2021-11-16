@@ -1,7 +1,7 @@
 /*
  * @Author: YoHo
  * @Date: 2021-10-11 17:18:47
- * @LastEditTime: 2021-11-10 16:48:41
+ * @LastEditTime: 2021-11-15 14:58:01
  * @LastEditors: YoHo
  * @Description: 
  */
@@ -155,9 +155,9 @@ export const manufacturingCostTableTitle = [
 // 报废成本
 export const scrapCostTableTitle = [
   { props: "index", name: "#", width: "60" },
-  { props: "typeNameByLang", key: "BAOFEICHENGBEN", name: "报废成本", width: "100", tooltip: true },
-  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBAOFEILV', '原报废率')}(%)` } }) }, width: "120", tooltip: true },
-  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBAOFEILV', '现报废率')}(%)` } }) }, width: "120", tooltip: true },
+  { props: "typeNameByLang", key: "BAOFEICHENGBEN", name: "报废成本", width: "110", tooltip: true },
+  { props: "originRatio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('YUANBAOFEILV', '原报废率')}(%)` } }) }, width: "140", tooltip: true },
+  { props: "ratio", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('XIANBAOFEILV', '现报废率')}(%)` } }) }, width: "140", tooltip: true },
   { props: "changeAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('BIANDONGJINE', '变动金额')}(RMB/Pc.)` } }) }, tooltip: true },
 ]
 // 管理费
@@ -172,9 +172,9 @@ export const manageCostTableTitle = [
 // 其它费用
 export const otherCostTableTitle = [
   { props: "index", name: "#", width: "60" },
-  { props: "itemTypeNameByLang", key: "QITAFEIYONG", name: "其他费用", width: "100", tooltip: true },
-  { props: "shareTotal", key: "JINE", name: "金额", width: "120", tooltip: true },
-  { props: "shareQuantity", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANSHULIANG', '分摊数量')}(1..n)` } }) }, width: "120", tooltip: true },
+  { props: "itemTypeNameByLang", key: "QITAFEIYONG", name: "其他费用", width: "110", tooltip: true },
+  { props: "shareTotal", key: "JINE", name: "金额", width: "140", tooltip: true },
+  { props: "shareQuantity", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANSHULIANG', '分摊数量')}(1..n)` } }) }, width: "140", tooltip: true },
   { props: "shareAmount", renderHeader(h) { return h('span', { domProps: { innerHTML: `${this.language('FENTANJINE', '分摊金额')}(RMB/Pc.)` } }) }, tooltip: true  },
 ]
 // 利润
@@ -220,23 +220,64 @@ export const mouldCostInfos = [
   { props: "shareAmount", name: "单件投资变动成本", key: "DANJIANTOUZICHENGBENBIANDONG" }
 ]
 
+// 模具投资变动,设置千分符
+export const moduleTableList = [
+  'quantity',
+  'changeUnitPrice',
+  'changeTotalPrice',
+  'originTotalPrice',
+  'totalPrice',
+]
+
+// 开发费,设置千分符
+export const developmentCostList = [
+  'unitPrice',
+  'quantity',
+  'total',
+]
+
+// 样件费,设置千分符
+export const sampleList = [
+  'quantity',
+  'sampleUnitPrice',
+  'addionalMouldCost',
+  'addionalMouldLife'
+]
+
+// 推荐表，设置千分符
+export const recommendationList = [
+  // 推荐表
+  'newAPrice',
+  'apriceChange',
+  'bnkChange',
+  'newBPrice',
+  'incInvestmentCost',
+  'developmentCost',
+]
+
 // 金额数据，千分位格式处理
 export const list = [
   // 汇总表
   'originUnitPrice', 
-  'originTotalPrice', 
+  'originUseage',
+  'originTotalPrice',
   'newUnitPrice', 
+  'newUseage',
   'newTotalPrice', 
   'alteration', 
   'total', 
   // 原材料/散件成本
   'unitPrice',
+  'quantity',
   'directMaterialCost',
   'materialManageCost',
   'materialCost',
   // 制造成本
   'specialDeviceCost',
+  'taktTime',
+  'taktTimeNumber',
   'directLaborRate',
+  'directLaborQuantity',
   'deviceRate',
   'indirectManufacturingAmount',
   'laborCost',
@@ -269,4 +310,19 @@ export function fixNumber(str, precision = 2) {
 }
 export function floatFixNum(num, minFixed = 2, maxFixed = 4) {
   return fixNumber(floatNum(num, minFixed, maxFixed), minFixed)
+}
+
+// 表格数据 千分符格式化
+export function formatTableData(data, list=[]){
+  if(!Array.isArray(data)) return data
+  let result = data.map(item=>{
+    let obj = item
+    Object.keys(obj).forEach(key=>{
+      if(Array.isArray(list) && list.length>0 && list.includes(key)){
+        obj[key] = floatFixNum(obj[key])
+      }
+    })
+    return obj
+  })
+  return result || []
 }

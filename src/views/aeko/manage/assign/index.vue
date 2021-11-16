@@ -1,13 +1,13 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-11 10:45:17
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-15 16:45:56
  * @Description: 
 -->
 <template>
   <iPage class="aeko-assign" v-permission.auto.force="AEKO_ASSIGN_ASSIGNLIST_PAGE|Aeko分配列表">
-    <projectHeader :subNavList="SUBMENU" />
+    <projectHeader :subNavList="SUBMENU" :module="module" />
     <!-- 搜索 -->
     <search @search="getFetchData" ref="search"/>
     <!-- 表格 -->
@@ -137,6 +137,7 @@ export default {
   data() {
     return {
       SUBMENU,
+      module: 'AEKO管理',
       tableTitle,
       tableListData: [],
       tableSelecteData: [],
@@ -152,7 +153,7 @@ export default {
     }
   },
   created() {
-    setLogMenu('AEKO审批-详情页-待审批列表-审批单')
+    setLogMenu('AEKO管理-AEKO分配')
   },
   mounted() {
     this.getFetchData()

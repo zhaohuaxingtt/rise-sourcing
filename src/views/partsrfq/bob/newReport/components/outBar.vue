@@ -171,7 +171,7 @@ export default {
           formatter: (params) => {
             let result = ''
             let domHtml = ''
-           
+
             params.forEach(item => {
               domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + item.color + '"></span>'
               result += domHtml + item.seriesName + ":" + this.doNumber(item.value) + '<br/>'
@@ -289,18 +289,18 @@ export default {
             const sum = this.sumBy(this.take(this.legendArray, i), (k) => {
               return Number(row[this.legendKeys[k]])
             })
-            console.log(sum)
+
             dataList1[v].push(sum)
-            console.log(dataList1)
+
           })
         })
         // console.log(tempArr)
         const minList = []
 
         this.legendArray.forEach((row, i) => {
-          console.log(row)
+
           // const dataList0 = this.cloneDeep(tempArr[row])
-          console.log([...dataList1[row], this.sum(minList)])
+
           const min = this.min(tempArr[row])
           let data = min
           minList.push(data)
@@ -319,7 +319,7 @@ export default {
               position: 'insideTop',
               color: 'white',
               formatter: (params) => {
-               
+
                 return (tempArr[row][0])
               },
             },

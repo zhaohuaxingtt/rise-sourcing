@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-03 20:44:31
- * @LastEditTime: 2021-11-11 17:30:45
+ * @LastEditTime: 2021-11-12 12:18:13
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\decisiondata\costanalysis.js
@@ -51,7 +51,7 @@ export function costAnalysisStrage(data) {
 //powerBi
 export function analysisPowerBi(data) {
   return requst({
-    url: `/cost_analysis/powerBi`,
+    url: `/cost_analysis/powerBi/${data}`,
     method: "GET"
   })
 }

@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "25584083",
+      "name": "GP图标(黑)",
+      "font_class": "a-GPtubiaohei",
+      "unicode": "e767",
+      "unicode_decimal": 59239
+    },
+    {
+      "icon_id": "25583937",
+      "name": "GP图标(蓝)",
+      "font_class": "a-GPtubiaolan",
+      "unicode": "e766",
+      "unicode_decimal": 59238
+    },
+    {
       "icon_id": "25536675",
       "name": "新解释",
       "font_class": "xinjieshi",

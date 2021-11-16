@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-09-14 17:51:41
+ * @LastEditTime: 2021-11-15 21:48:41
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
 -->
 <template>
-  <div>
+  <div v-loading="onDataLoading">
     <iCard>
       <template v-slot:header>
         <div class="flex-between-center titleBox">
@@ -28,10 +28,17 @@
                      @click="open">全部展开</iButton>
             <iButton v-show="flag1"
                      @click="close">全部收回</iButton>
-            <iButton @click="remarks">备注</iButton>
-            <iButton @click="reduction">还原</iButton>
-            <iButton @click="group">数据分组</iButton>
-            <iButton @click="down">导出</iButton>
+            <template v-if="!onGroupingModel">
+              <iButton @click="remarks">备注</iButton>
+              <iButton @click="reduction">还原</iButton>
+              <iButton @click="onGroupingModel = true"
+                       v-if="!onGroupingModel">数据分组</iButton>
+              <iButton @click="down">导出</iButton>
+            </template>
+            <template v-else>
+              <iButton @click="saveGroup">保存分组</iButton>
+              <iButton @click="clearGrouped">取消</iButton>
+            </template>
           </div>
           <div v-show="!checkFLag">
             <iButton @click="clear">移除</iButton>
@@ -40,10 +47,54 @@
           </div>
         </div>
       </template>
-      <table1 :tableList="tableList"
+      <div>
+        <div style="display: flex;flex-flow: row nowrap;width: 100%;">
+          <div class="table-cell"
+               style="justify-content: flex-start;width: 20%"></div>
+          <div v-for=" (item,index) in tableTitle"
+               :key="index"
+               class="table-cell"
+               :style="{'font-weight': 'bold','width': 'calc(80% / ' + tableTitle.length + ')'}">{{item.title}}</div>
+        </div>
+        <div class="flex tabeleList">
+          <div style="display:flex;flex-flow:column nowrap;">
+            <div v-for="(item,index) in tableListData"
+                 :key="index"
+                 style="display: flex;flex-flow: row nowrap;width: 100%;"
+                 :class="index%2 == 0 ? 'table-odd' : 'table-even'"
+                 v-if="collapseItems.indexOf(item.id) < 0"
+                 :id="item.id"
+                 :root-id="item.rootId"
+                 :parent-id="item.parentId">
+              <span class="table-cell"
+                    style="justify-content: flex-start;width: 20%"
+                    :style="{'padding-left': 20*item.level + 'px'}">
+                <i v-if="item.hasChild"
+                   :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
+                   style="cursor: pointer;padding-right: 4px;"
+                   @click="handleCollapse(item)"></i>
+                <el-input v-if="item.grouped" v-model="item.title"></el-input>
+                <span v-else :style="{'font-weight': item.groupChild ? 'bold':''}">{{item.title}}</span>
+              </span>
+              <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
+                    v-for="(title, titleIdx) in tableTitle"
+                    :key="titleIdx"
+                    :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
+                <el-checkbox v-show="onGroupingModel"
+                             v-if="item.groupKey"
+                             style="margin-right: 10px;"
+                             v-model="item['checked#' + titleIdx]"
+                             @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
+                {{item['label#'+titleIdx]}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <table1 :tableList="tableList"
               v-if="totalTable"
               v-bind="$attrs"
-              :expends="expedsArr"></table1>
+              :expends="expedsArr"></table1> -->
       <groupedTable ref="groupedTable"
                     class="margin-top20"
                     :tableList="groupList"
@@ -95,15 +146,11 @@
 <script>
 import { iCard, iButton, iDialog, iMessage } from "rise";
 import table1 from "./components/table1.vue";
-import table2 from "./components/table2.vue";
-import table3 from "./components/table3.vue";
-import table4 from "./components/table4.vue";
-import table5 from "./components/table5.vue";
-import table6 from "./components/table6.vue";
+import tree from './tree'
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
-import { filterEmptyChildren } from '@/utils'
+import { arrayToTree } from '@/utils'
 import {
   chargeRetrieve,
   getRfqToRemark,
@@ -135,12 +182,14 @@ export default {
     iDialog,
     iButton,
     table1,
+    tree,
     ungroupedTable,
     groupedTable,
     remarkDialog,
   },
   data () {
     return {
+      onDataLoading: false,
       flag: true,
       flag1: false,
       tableList: [],
@@ -163,10 +212,17 @@ export default {
       checkFLag: true,
       SchemeId: "",
       expedsArr: [],
-      expedsArr1: []
+      expedsArr1: [],
+      tableTitle: [],
+      tableListData: [],
+      collapseItems: [],
+      onGroupingModel: false,
+      groupSelectedItems: [],
+      cbdSelectedList: []
     };
   },
   created () {
+    this.onDataLoading = true;
     this.groupId = this.$route.query.groupId
     this.getRfqToRemark();
   },
@@ -209,12 +265,150 @@ export default {
   mounted () {
     this.SchemeId = this.analysisSchemeId
     console.log(this.SchemeId)
+    this.$nextTick(() => {
+
+    });
+
     // this.$EventBus.$on("activeName", res => {
     //   this.activeName = res
     // })
 
   },
   methods: {
+    handleCollapse (item) {
+      this.collapseItem(item.id, item.expanded)
+      item.expanded = !item.expanded;
+    },
+    collapseItem (parentId, isCollapse) {
+      this.tableListData.forEach((item) => {
+        if (isCollapse) {
+          if (item.parentId && item.parentId == parentId) {
+            if (this.collapseItems.indexOf(item.id) < 0) {
+              this.collapseItems.push(item.id)
+              if (item.hasChild) {
+                this.collapseItem(item.id, isCollapse)
+              }
+            }
+          }
+        } else {
+          if (item.parentId && item.parentId == parentId) {
+            if (this.collapseItems.indexOf(item.id) >= 0) {
+              this.collapseItems.splice(this.collapseItems.indexOf(item.id), 1)
+              if (item.hasChild) {
+                this.collapseItem(item.id, isCollapse)
+              }
+            }
+          }
+        }
+      });
+    },
+    clearGrouped() {
+      this.groupSelectedItems.forEach((gi) => {
+        this.tableListData.forEach((item) => {
+          if (gi.id == item.id) {
+            Vue.set(item,"checked#" + gi.idx,false)
+          }
+        })
+      })
+      this.groupSelectedItems = [];
+      this.onGroupingModel = false;
+    },
+    onGroupItemSelected (checked, item, idx) {
+      if (checked) {
+        if (this.groupSelectedItems.some((obj) => {
+          return obj.idx == idx && item.rootId == obj.rootId
+        })) {
+          Vue.set(item,"checked#" + idx,false)
+          return;
+        }
+        var groupId = this.createUuid();
+        this.tableListData.forEach((obj) => {
+          if (obj.id == item.parentId) {
+            this.groupSelectedItems.push({
+              id: obj.id,
+              idx: idx,
+              rootId: obj.rootId,
+              parentId: obj.parentId,
+              groupId: groupId
+            })
+            if (obj.title === "CBD轮次明细ID") {
+              this.cbdSelectedList.push(obj['label#' + idx])
+            }
+          } else if (obj.parentId == item.parentId) {
+            this.groupSelectedItems.push({
+              id: obj.id,
+              idx: idx,
+              rootId: obj.rootId,
+              parentId: obj.parentId,
+              groupId: groupId
+            })
+            if (obj.title === "CBD轮次明细ID") {
+              this.cbdSelectedList.push(obj['label#' + idx])
+            }
+            if (obj.hasChild) {
+              this.iterateChilds(checked, obj, idx, groupId)
+            }
+          }
+        })
+      } else {
+        this.tableListData.forEach((obj) => {
+          if (obj.id == item.parentId) {
+            for (var i = this.groupSelectedItems.length - 1; i >= 0; i--) {
+              if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
+                this.groupSelectedItems.splice(i, 1)
+              }
+            }
+            this.cbdSelectedList.splice(idx - 1, 1)
+          } else if (obj.parentId == item.parentId) {
+            for (var i = this.groupSelectedItems.length - 1; i >= 0; i--) {
+              if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
+                this.groupSelectedItems.splice(i, 1)
+              }
+            }
+            this.cbdSelectedList.splice(idx - 1, 1)
+            if (obj.hasChild) {
+              this.iterateChilds(checked, obj, idx)
+            }
+          }
+        })
+      }
+    },
+    iterateChilds (checked, item, idx, groupId) {
+      if (checked) {
+        this.tableListData.forEach((obj) => {
+          if (obj.parentId == item.id) {
+            this.groupSelectedItems.push({
+              id: obj.id,
+              idx: idx,
+              rootId: obj.rootId,
+              parentId: obj.parentId,
+              groupId: groupId
+            })
+            if (obj.hasChild) {
+              this.iterateChilds(checked, obj, idx)
+            }
+          }
+        })
+      } else {
+        this.tableListData.forEach((obj) => {
+          if (obj.parentId == item.id) {
+            for (var i = this.groupSelectedItems.length - 1; i >= 0; i--) {
+              if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
+                this.groupSelectedItems.splice(i, 1)
+              }
+            }
+            if (obj.hasChild) {
+              this.iterateChilds(checked, obj, idx)
+            }
+          }
+        })
+      }
+    },
+    hasSelected (item, idx) {
+      return this.groupSelectedItems.some((obj) => {
+        return obj.id == item.id && idx == obj.idx
+      })
+    },
     getRfqToRemark () {
       getRfqToRemark({
         rfqCode: this.rfqCode,
@@ -231,18 +425,23 @@ export default {
         .then((res) => {
           try {
             this.tableList = res;
-            this.tableList.title.forEach(value => {
-              this.$attrs.supplierList.forEach(i => {
-                if (value.title == i.supplierId) {
-                  value.title = i.shortNameZh
-                }
-              })
-            })
-            filterEmptyChildren(this.tableList.element, 'detailId')
-            this.tableList.element = this.arrayTreeAddLevel(this.tableList.element)
+            this.tableTitle = this.tableList.title.filter(item => item.title)
+            this.prepareData()
             this.$nextTick(() => {
-              this.open();
-            });
+              this.onDataLoading = false;
+            })
+            // this.tableList.title.forEach(value => {
+            //   this.$attrs.supplierList.forEach(i => {
+            //     if (value.title == i.supplierId) {
+            //       value.title = i.shortNameZh
+            //     }
+            //   })
+            // })
+            // filterEmptyChildren(this.tableList.element, 'detailId')
+            // this.tableList.element = this.arrayTreeAddLevel(this.tableList.element)
+            // this.$nextTick(() => {
+            //   this.open();
+            // });
           } catch (err) {
             console.log(err)
           }
@@ -251,67 +450,263 @@ export default {
           iMessage.error(err.desZh)
         });
     },
-    arrayTreeAddLevel (array, levelName = 'level', childrenName = 'child') {
-      if (!Array.isArray(array)) return []
-      const recursive = (array, level = 0) => {
-        level++
-        return array.map(v => {
-          v[levelName] = level
-          const child = v[childrenName]
-          if (child && child.length) recursive(child, level)
-          return v
-        })
+    createUuid () {
+      var s4 = function () {
+        return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1)
       }
-      return recursive(array)
+      return (
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4() +
+        s4()
+      )
+    },
+    prepareData () {
+      var tableData = [];
+      var lvl = [];
+      var titles = this.tableList.title;
+      var elements = this.tableList.element;
+      var rawCols = 0;
+      var maCols = 0;
+      var idCol = {}
+      titles.forEach((title, index) => {
+        if (rawCols < title.rawTotalColumn) {
+          rawCols = title.rawTotalColumn;
+        }
+        if (maCols < title.maTotalColumn) {
+          maCols = title.maTotalColumn;
+        }
+      });
+
+      elements.forEach((element) => {
+        this.createLevel(element, lvl, -1)
+      });
+
+      titles.forEach((title, index) => {
+        var colData = [];
+
+        if (index > 0) {
+          elements.forEach((cbdDataLvlZero, index) => {
+            this.addToColList(idCol, rawCols, maCols, cbdDataLvlZero.code, cbdDataLvlZero, colData, title.label, 0)
+          })
+          tableData.push(colData)
+        }
+      });
+      this.mergeData(tableData)
+    },
+    mergeData (tableData) {
+      var merged = JSON.parse(JSON.stringify(tableData[0]));
+      merged.forEach((item) => {
+        item["label#0"] = item.value
+        if (!item.id) {
+          item.id = this.createUuid();
+        }
+        delete item.value
+      })
+      tableData.forEach((col, index) => {
+        if (index > 0) {
+          col.forEach((item, idx) => {
+            merged[idx]["label#" + index] = item.value
+          })
+        }
+      })
+      this.tableListData = merged
+      console.log(this.tableListData)
+    },
+    addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, rootId, parentIndex) {
+      childs.forEach((child) => {
+        this.addToColList(idCol, rawCols, maCols, cbdCode, child, colData, key, showLevel, parentId, rootId, parentIndex)
+      })
     },
 
-    recursion (data) {
-      if (!data) {
-        // return; 中断执行
-        return;
+    addToColList (idCol, rawCols, maCols, cbdCode, target, colData, key, showLevel, parentId, rootId, parentIndex) {
+      // if (target.code == "detailId") {
+      //   return;
+      // }
+      // var nextLvl = showLevel + 1;
+      var nextLvl = showLevel + 1;
+      if (!Array.isArray(target[key])) {
+        if (!target.code) {
+          target[key] = [target[key]];
+        } else {
+          var object = {};
+          object.title = target.title;
+          object.value = target[key];
+          object.level = showLevel;
+          // object.parentId = parentId;
+          // object.rootId = rootId;
+          object.code = target.code;
+          // object.rootId = parentId;
+          if (target.child && target.child.length > 0) {
+            if (!idCol[object.title]) {
+              idCol[object.title] = this.createUuid();
+            }
+            object.id = idCol[object.title];
+            object.hasChild = true
+            object.expanded = true;
+          }
+          colData.push(object)
+          if (target.child && target.child.length > 0) {
+            this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title], idCol[object.title])
+          }
+          return;
+        }
       }
-      data.forEach(i => {
-        this.expedsArr.push(i.index.toString())
-        if (i.child && i.child.length > 0) {
-          this.recursion(i.child)
+
+      var looper = JSON.parse(JSON.stringify(target[key]));
+      if (looper.length < rawCols && cbdCode == "1") {
+        while (looper.length < rawCols) {
+          looper.push("");
+        }
+      }
+      if (looper.length < maCols && cbdCode == "2") {
+        while (looper.length < maCols) {
+          looper.push("");
+        }
+      }
+
+      looper.forEach((labelChild, index) => {
+        if (typeof parentIndex != "undefined") {
+          if (parentIndex == index) {
+            var object = {};
+            object.title = target.title;
+            object.value = labelChild;
+            object.level = showLevel;
+            object.parentId = parentId;
+            object.rootId = rootId;
+            if (object.title == '组别' || object.title == '制造工序') {
+              object.groupKey = true;
+            }
+            if (target.child && target.child.length > 0) {
+              if (!idCol[object.title + index]) {
+                idCol[object.title + index] = this.createUuid();
+              }
+              object.id = idCol[object.title + index];
+              object.hasChild = true
+              object.expanded = true;
+            }
+            colData.push(object)
+            if (target.child && target.child.length > 0) {
+              this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], rootId, index)
+            }
+          }
+          return false;
+        } else {
+          var object = {};
+          object.title = target.title;
+          object.value = labelChild;
+          object.level = showLevel;
+          object.rootId = rootId;
+          object.parentId = parentId;
+          if (object.title == '组别' || object.title == '制造工序') {
+            object.groupKey = true;
+          }
+
+          if (target.child && target.child.length > 0) {
+            if (!idCol[object.title + index]) {
+              idCol[object.title + index] = this.createUuid();
+            }
+            object.id = idCol[object.title + index];
+            object.hasChild = true
+            object.expanded = true;
+          }
+          colData.push(object)
+          if (target.child && target.child.length > 0) {
+            this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], rootId, index)
+          }
         }
       })
     },
-    open () {
-      let els = this.$el.getElementsByClassName("el-table__expand-icon");
-      if (this.tableList.element.length != 0 && els.length != 0) {
-        this.flag = false;
-        this.flag1 = true;
-        for (let j1 = 0; j1 < els.length; j1++) {
-          els[j1].classList.add("dafult");
-        }
-        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
-          const open = this.$el.getElementsByClassName(
-            "el-table__expand-icon--expanded"
-          );
-          for (let j = 0; j < open.length; j++) {
-            open[j].classList.remove("dafult");
-          }
-          const dafult = this.$el.getElementsByClassName("dafult");
-          for (let a = 0; a < dafult.length; a++) {
-            dafult[a].click();
-          }
-        }
+    createLevel (parent, lvl, showLevel) {
+      // if (parent.code == "detailId") {
+      //   return;
+      // }
+      showLevel++;
+      if (!lvl.some((item) => {
+        return item.title == parent.title
+      })) {
+        lvl.push({
+          title: parent.title,
+          level: showLevel
+        })
+      }
+      if (parent.child && parent.child.length > 0) {
+        parent.child.forEach((child) => {
+          this.createLevel(child, lvl, showLevel)
+        })
       }
     },
-    close () {
-      if (this.tableList.element.length != 0) {
-        this.flag = true;
-        this.flag1 = false;
-        const elsopen = this.$el.getElementsByClassName(
-          "el-table__expand-icon--expanded"
-        );
-        if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
-          for (let i = 0; i < elsopen.length; i++) {
-            elsopen[i].click();
-          }
-        }
-      }
+
+    // arrayTreeAddLevel (array, levelName = 'level', childrenName = 'child') {
+    //   if (!Array.isArray(array)) return []
+    //   const recursive = (array, level = 0) => {
+    //     level++
+    //     return array.map(v => {
+    //       v[levelName] = level
+    //       const child = v[childrenName]
+    //       if (child && child.length) recursive(child, level)
+    //       return v
+    //     })
+    //   }
+    //   return recursive(array)
+    // },
+
+    // recursion (data) {
+    //   if (!data) {
+    //     // return; 中断执行
+    //     return;
+    //   }
+    //   data.forEach(i => {
+    //     this.expedsArr.push(i.index.toString())
+    //     if (i.child && i.child.length > 0) {
+    //       this.recursion(i.child)
+    //     }
+    //   })
+    // },
+    // open () {
+    //   let els = this.$el.getElementsByClassName("el-table__expand-icon");
+    //   if (this.tableList.element.length != 0 && els.length != 0) {
+    //     this.flag = false;
+    //     this.flag1 = true;
+    //     for (let j1 = 0; j1 < els.length; j1++) {
+    //       els[j1].classList.add("dafult");
+    //     }
+    //     if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
+    //       const open = this.$el.getElementsByClassName(
+    //         "el-table__expand-icon--expanded"
+    //       );
+    //       for (let j = 0; j < open.length; j++) {
+    //         open[j].classList.remove("dafult");
+    //       }
+    //       const dafult = this.$el.getElementsByClassName("dafult");
+    //       for (let a = 0; a < dafult.length; a++) {
+    //         dafult[a].click();
+    //       }
+    //     }
+    //   }
+    // },
+    // close () {
+    //   if (this.tableList.element.length != 0) {
+    //     this.flag = true;
+    //     this.flag1 = false;
+    //     const elsopen = this.$el.getElementsByClassName(
+    //       "el-table__expand-icon--expanded"
+    //     );
+    //     if (this.$el.getElementsByClassName("el-table__expand-icon--expanded")) {
+    //       for (let i = 0; i < elsopen.length; i++) {
+    //         elsopen[i].click();
+    //       }
+    //     }
+    //   }
+    // },
+    handleChange (val) {
+      console.log(val, 'val')
     },
     cancel (flag) {
       this.visible = flag;
@@ -375,11 +770,21 @@ export default {
       this.visible = true;
     },
     group () {
-      update(this.formUpdata).then(res => {
-        // iMessage.success("保存成功");
-        this.totalTable = false;
-        this.groupby = true;
-        this.checkFLag = false
+      this.onGroupingModel = true;
+      // update(this.formUpdata).then(res => {
+      //   // iMessage.success("保存成功");
+      //   this.totalTable = false;
+      //   this.groupby = true;
+      //   this.checkFLag = false
+      // })
+    },
+    saveGroup () {
+      this.visible1 = true
+      getGroupInfo({
+        schemaId: this.SchemeId,
+        code: '1'
+      }).then(res => {
+        this.options = res.data
       })
     },
     groupBtn (e, result, activeName) {
@@ -450,41 +855,125 @@ export default {
 
       })
     },
-    returnAcitiveName (val) {
-      this.activeName = val
-    },
+    // returnAcitiveName (val) {
+    //   this.activeName = val
+    // },
     groupToList () {
       if (!this.value1) {
         this.$message.error('请选择分组');
         return
       }
+
+      var newDatas = [];
+      this.groupSelectedItems.forEach((gi) => {
+        this.tableListData.forEach((item) => {
+          if (gi.id == item.id) {
+            var newItem = JSON.parse(JSON.stringify(item));
+            for (var key in newItem) {
+              if (key.indexOf('label#') >= 0 && key != ('label#' + gi.idx)) {
+                newItem[key] = ""
+              }
+            }
+            newItem.idx = gi.idx;
+            newDatas.push(newItem)
+          }
+        })
+      })
+
+      var groupedDatas = {}
+      newDatas.forEach((item) => {
+        if (!groupedDatas[item.rootId]) {
+          groupedDatas[item.rootId] = []
+        }
+        var obj = groupedDatas[item.rootId].filter((a) => {
+          return a.title == item.title && a.rootId == item.rootId
+        })
+        if (obj.length <= 0) {
+          groupedDatas[item.rootId].push(item)
+        } else {
+          obj[0]["label#"+item.idx] = item["label#"+item.idx]
+        }
+      })
+
+      for (var key in groupedDatas) {
+        var rootItemIndex = -1;
+        this.tableListData.forEach((item, index) => {
+          if (key == item.id) {
+            rootItemIndex = index;
+            return false;
+          }
+        })
+        if (rootItemIndex >= 0) {
+          this.refreshGroupedId(groupedDatas, key, 0)
+          groupedDatas[key][0].grouped = true;
+          groupedDatas[key][0].matchId = this.value1.matchId;
+          groupedDatas[key][0].title = this.value1.groupName || "新组别";
+          rootItemIndex++;
+          groupedDatas[key].forEach((item) => {
+            item.expanded = true;
+            item.groupChild = true;
+            this.tableListData.splice(rootItemIndex, 0, item);
+            rootItemIndex++;
+          });
+        }
+      }
+      console.log(this.tableListData)
+
+      this.clearGrouped();
+      this.visible1 = false;
+      this.onGroupingModel = false;
+      return;
       addComponentToGroup({
         groupId: this.value1.matchId,
         groupName: this.value1.groupName,
-        roundDetailIdList: this.result
+        roundDetailIdList: this.cbdSelectedList
       }).then(res => {
         this.groupby = false
-        // this.$refs.ungroupedTable.activeName = ""
-        this.$nextTick(() => {
-          this.groupby = true
-          this.$refs.ungroupedTable.activeName = this.activeName
-          this.$refs.ungroupedTable.chargeRetrieve({
-            isDefault: true,
-            viewType: this.activeName,
-            schemaId: this.SchemeId,
-            groupId: this.groupId
-          })
-        });
-        this.$refs.groupedTable.chargeRetrieve({
+        this.chargeRetrieve({
           isDefault: true,
+          viewType: 'all',
           schemaId: this.SchemeId,
-          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
           groupId: this.groupId
-        })
+        });
+        // this.$refs.ungroupedTable.activeName = ""
+        // this.$nextTick(() => {
+        //   this.groupby = true
+        //   this.$refs.ungroupedTable.activeName = this.activeName
+        //   this.$refs.ungroupedTable.chargeRetrieve({
+        //     isDefault: true,
+        //     viewType: this.activeName,
+        //     schemaId: this.SchemeId,
+        //     groupId: this.groupId
+        //   })
+        // });
+        // this.$refs.groupedTable.chargeRetrieve({
+        //   isDefault: true,
+        //   schemaId: this.SchemeId,
+        //   viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
+        //   groupId: this.groupId
+        // })
         this.visible1 = false;
       })
     },
-    handleChange (value) { },
+    refreshGroupedId(groupedDatas, key, index) {
+      var newId = this.createUuid()
+      if (groupedDatas[key][index].hasChild) {
+        this.refreshChildGroupid(groupedDatas, key, groupedDatas[key][index].id, newId)
+      }
+      groupedDatas[key][index].id = newId;
+    },
+    refreshChildGroupid(groupedDatas, key, parentId, newParentId) {
+      groupedDatas[key].forEach((item) => {
+        if (item.parentId == parentId) {
+          var newId = this.createUuid()
+          if (item.hasChild) {
+            this.refreshChildGroupid(groupedDatas, key, item.id, newId)
+          }
+          item.id = newId;
+          item.parentId = newParentId;
+        }
+      })
+    },
     clear () {
       if (!this.activeName) {
         this.activeName = "rawUngrouped"
@@ -564,9 +1053,9 @@ export default {
   width: 300px;
   position: relative;
 }
-.title {
-  font-size: $font-size18 !important;
-}
+// .title {
+//   font-size: $font-size18 !important;
+// }
 .remark {
   width: 550px;
   overflow: hidden;
@@ -593,5 +1082,59 @@ export default {
 }
 .wrap:hover .remark2 {
   display: block;
+}
+.tabeleList {
+  & > div {
+    flex: 1;
+  }
+  & > div:first-child {
+    flex: 2;
+  }
+  & > span {
+    flex: 1;
+  }
+  & > span:first-child {
+    flex: 2;
+  }
+  .tableTitle {
+    font-size: $font-size16;
+    text-align: center;
+  }
+  .tableData {
+    font-size: $font-size16;
+  }
+  .dataTitle {
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+.table-cell {
+  height: 41px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: $font-size16;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.table-odd {
+  background-color: #ffffff;
+}
+.table-even {
+  background-color: rgba(22, 99, 246, 0.07);
+}
+.cell-selected {
+  background-color: #4582f9;
+  color: #ffffff;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+.el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #ffffff !important;
 }
 </style>

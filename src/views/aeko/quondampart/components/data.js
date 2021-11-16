@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-27 10:49:28
- * @LastEditTime: 2021-09-18 13:45:41
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-15 20:11:57
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\data.js
  */
@@ -38,7 +38,7 @@ export const ledgerTableTitle = [
   { props: "partType", name: "零件类型", key: "LINGJIANLEIXING", tooltip: true },
   { props: "supplierCode", name: "供应商编号", key: "GONGYINGSHANGBIANHAO", tooltip: true },
   { props: "supplierName", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true },
-  { props: "aprice", name: "当前A价", key: "DANGQIANAJIA", tooltip: true },
+  { props: "aPrice", name: "当前A价", key: "DANGQIANAJIA", tooltip: true },
   { props: "facadeName", name: "采购⼯⼚", key: "CAIGOUGONGCHANG", tooltip: true }
 ]
 

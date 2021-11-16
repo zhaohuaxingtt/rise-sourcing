@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-11-10 09:57:29
+ * @LastEditTime: 2021-11-16 10:08:44
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
@@ -310,15 +310,22 @@ export default [
           title: 'AEKO报表'
         },
         component: () => import("@/views/aeko/BIPage/reportPage"),
-        redirect: "/aeko/report/item",
+        redirect: "/aeko/report/overdue",
         children: [
           {
-            path: "item",
-            name: "reportitem",
+            path: "overdue",
+            name: "overdue",
             meta: {
-              title: 'AEKO报表'
+              title: 'AEKO逾期报表'
             },
-            component: () => import("@/views/aeko/BIPage/components"),
+            component: () => import("@/views/aeko/BIPage/components/overdue"),
+          },{
+            path: "statetrack",
+            name: "statetrack",
+            meta: {
+              title: '状态跟踪报表'
+            },
+            component: () => import("@/views/aeko/BIPage/components/statetrack"),
           },
         ]
       }

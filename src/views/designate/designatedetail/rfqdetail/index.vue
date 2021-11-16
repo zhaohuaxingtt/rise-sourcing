@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors:  
- * @LastEditTime: 2021-11-08 20:07:04
+ * @LastEditTime: 2021-11-15 19:32:11
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -63,14 +63,14 @@
         </div>
       </div>
       <tableList
-        :activeItems='"rfqId"'
+        :activeItems='"fsnrGsnrNum"'
         selection
         indexKey
         :tableData="partsTableListData"
         :tableTitle="partsTableTitle"
         :tableLoading="partsTableLoading"
         @handleSelectionChange="handlePartsSelectionChange"
-        @openPage="openPartsPage"
+        @openPage="openPartsSource"
         @updateSlot='partsToTop'
         :selectedItems="partsSelectedItems"
         ref="partTable"
@@ -342,6 +342,18 @@ export default {
      */    
     openPartsPage(row){
       const router =  this.$router.resolve({path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.rfqId}`})
+      window.open(router.href,'_blank')
+    },
+    /* 
+    fs号跳转零件采购项目详情
+    */
+    openPartsSource(row){
+      const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/partsprocure/editordetail',
+        query:{
+          projectId: row.partPrjId, 
+          businessKey: row.partProjectType 
+        }
+      })
       window.open(router.href,'_blank')
     },
     /**

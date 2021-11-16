@@ -44,6 +44,12 @@
     <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1" || layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
     <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
+    <div class="margin-top10 font-size14">
+      <p v-if="exchangeRatesCurrentVersionStr">Exchange rate: {{ exchangeRatesCurrentVersionStr }}</p>
+      <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
+        <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate {{ exchangeRate.version }}: {{ exchangeRate.str }}</p>
+      </div>
+    </div>
     <!-- <tablelistGSasRow v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tablelistGSasRow> -->
     <!--------------弹窗-------------->
     <iDialog title="组合名" :visible.sync="groupVisble" width='25%' >
@@ -66,7 +72,7 @@ import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList,defaultLayoutTemplate} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
@@ -107,7 +113,9 @@ export default{
     kmTooling:'',
     quoteInquiryPriceLoading: false,
     options:{show:false},
-    roundsType
+    roundsType,
+    exchangeRatesCurrentVersionStr: "",
+    exchangeRatesOldVersions: []
   }},
   watch:{
     /**
@@ -143,6 +151,7 @@ export default{
   created(){
     this.layout = this.getLayoutDetaultNumber()
     console.log(this.layout)
+    this.searchABPageExchangeRate()
   },
   destroyed(){
     console.log('---------------')
@@ -471,6 +480,30 @@ export default{
         this.reRenderLastChild = []
         this.exampelData = []
         this.ratingList = []
+    },
+    searchABPageExchangeRate() {
+      searchABPageExchangeRate(this.$route.query.desinateId)
+      .then(res => {
+        if (res.code == 200) {
+          const sourceData = Array.isArray(res.data) ? res.data : []
+
+          const currentVersion = sourceData.find(item => item.isCurrentVersion)
+          const exchangeRatesCurrentVersion = currentVersion ? (Array.isArray(currentVersion.exchangeRateVos) ? currentVersion.exchangeRateVos : []) : []
+          this.exchangeRatesCurrentVersionStr = exchangeRatesCurrentVersion.map(item => this.exchangeRateProcess(item)).join(", ")
+
+          const oldVersions = sourceData.filter(item => !item.isCurrentVersion)
+          this.exchangeRatesOldVersions = oldVersions.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length).map(item => ({
+            version: item.exchangeRateVos[0].version,
+            str: item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(", ")
+          }))
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+    // 汇率显示处理
+    exchangeRateProcess(row) {
+      return `100${ this.$i18n.locale === "zh" ? row.currencyName : row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ this.$i18n.locale === "zh" ? row.originCurrencyName : row.originCurrencyCode }`
     }
   }
 }

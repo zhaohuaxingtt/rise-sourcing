@@ -103,12 +103,12 @@ import {pageMixins} from '@/utils/pageMixins'
 import { setLogMenu } from "@/utils";
 import {
   findHistoryByAeko,
-  submitForApproval
-} from '@/api/aeko/detail/approveRecord'
-import {
-  getAuditFilePage,
+  submitForApproval,
   auditFileSave,
   auditFileDelete
+} from '@/api/aeko/detail/approveRecord'
+import {
+  getAuditFilePage
 } from '@/api/aeko/detail/approveAttach'
 import * as dateUtils from "@/utils/date";
 import { cloneDeep } from "lodash"
@@ -190,7 +190,7 @@ export default {
     // 如果是从AEKO查看过来的 tableTitle需要展示一个提交人字段
     const {query} = this.$route;
     const {from=''} = query;
-    from=='manage'?setLogMenu('AEKO管理-详情页'):setLogMenu('AEKO表态-详情页-审批记录')
+    from=='manage'?setLogMenu('AEKO管理-详情页-审批记录'):setLogMenu('AEKO表态-详情页-审批记录')
     let filterTitle = cloneDeep(tableTitle);
     if(from != 'check'){
       this.tableTitle = filterTitle.filter((item)=>item.props !=='startUser');
@@ -422,7 +422,10 @@ export default {
       if (fileList && !fileList.length) return this.$message.error(this.language('QINGXUANZEZHISHAOYITIAOSHUJU', '请选择至少一条数据'))
       this.$confirm(this.language('deleteSure', '您确定要执行删除操作吗？')).then(confirmInfo => {
         if (confirmInfo === 'confirm') {
-          auditFileDelete(fileList).then(res => {
+          auditFileDelete({
+            ids: fileList,
+            delType: 1
+          }).then(res => {
             if (res.code === '200') {
               this.$message.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
               cb && typeof cb === 'function' && (cb())

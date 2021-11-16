@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 21:01:30
- * @LastEditTime: 2021-09-24 12:05:06
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-15 15:26:51
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\data.js
  */
@@ -76,7 +76,13 @@ export const iconList_car = { //汽车图标
     icon:'iconbaojiafenxi-zhengchejindu-hong' //红色
   },
   'a1':{
+    icon:'iconjindu_jinhangzhong_lv' //绿色
+  },
+  'a4':{
     icon:'iconbaojiafenxi-zhengchejindu-huang1' //黄色浅黄
+  },
+  'a6':{
+    icon:'icondingdianguanlijiedian-jinhangzhong' //蓝色
   },
   'a0':{
     icon:'icondingdianguanlijiedian-yiwancheng' //default
@@ -86,8 +92,8 @@ export const iconList_all_times = { //整体任务进度以及每格进度
   'a2':{
     icon:'iconbaojiapingfengenzong-jiedian-lv' //绿色
   },
-  'a3':{
-    icon:'iconbaojiapingfengenzong-jiedian-huang' //红色
+  'a4':{
+    icon:'iconbaojiapingfengenzong-jiedian-huang' //黄色
   },
   'a1':{
     icon:'iconbaojiapingfengenzong-jiedian-hei' //黑色
@@ -95,11 +101,17 @@ export const iconList_all_times = { //整体任务进度以及每格进度
   'a0':{
     icon:'iconbaojiapingfengenzong-jiedian-hui' //灰色
   },
-  'a6':{
-    icon:'iconbaojiapingfengenzong-jiedian-hui' //灰色
-  },
-  'a4':{
+  'a3':{
     icon:'iconbaojiapingfengenzong-jiedian-cheng' //橙色
+  },
+  'a5': {
+    icon: 'iconzhuanxiangfenxigongju-landian' //蓝色
+  },
+  'a6': {
+    icon: 'iconzhuanxiangfenxigongju-landian' //蓝色
+  },
+  'a7': {
+    icon: 'iconbaojiapingfengenzong-jiedian-hong' //红色
   }
 }
 
