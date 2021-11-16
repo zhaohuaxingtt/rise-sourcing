@@ -166,11 +166,14 @@ import {
 } from '@/api/aeko/detail/partsList.js'
 import {
     searchBrand,
-    searchLinie,
+    // searchLinie,
     // getSearchCartype,
     // searchCartypeProject,
     searchCommodity,
 } from '@/api/aeko/manage'
+import {
+    searchLinie,
+} from '@/api/aeko/detail'
 import { cloneDeep } from "lodash"
 import {user as configUser } from '@/config'
 import { roleMixins } from "@/utils/roleMixins";
@@ -278,6 +281,7 @@ export default {
                 cartype:[''],
                 linieDeptNumList:[''],
                 sendStatus:'',
+                buyerName:'',
             },
             selectOptions:{
                 cartypeCode:[],
@@ -704,6 +708,7 @@ export default {
         handleMultipleChange(value, key,multiple) {
             // 单选不处理
             if(!multiple) {
+                console.log('value',value,'key',key,'multiple',multiple);
                 if(!value){
                     const {selectOptionsCopy={}} = this;
                     this.$set(this.selectOptions,key,selectOptionsCopy[key]);

@@ -303,12 +303,12 @@ export default {
       });
     },
     clearGrouped() {
-      this.groupSelectedItems.forEach((gi) => {
-        this.tableListData.forEach((item) => {
-          if (gi.id == item.id) {
-            Vue.set(item,"checked#" + gi.idx,false)
+      this.tableListData.forEach((item) => {
+        for (var key in item) {
+          if (key.indexOf("checked#") >= 0) {
+            item[key] = false;
           }
-        })
+        }
       })
       this.groupSelectedItems = [];
       this.onGroupingModel = false;
@@ -875,6 +875,7 @@ export default {
               }
             }
             newItem.idx = gi.idx;
+            newItem['checked#'+gi.idx] = false
             newDatas.push(newItem)
           }
         })

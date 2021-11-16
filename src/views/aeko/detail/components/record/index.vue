@@ -9,7 +9,9 @@
       {{ language("SHENPIJILU", "审批记录") }}
     </span>
     <div class="editControl floatright margin-bottom20">
-      <iButton class="" @click="submit" v-if="checkFirstRecord">
+      <iButton class="" @click="submit" v-if="checkFirstRecord"
+      v-permission.auto="AEKO_AEKODETAIL_APPROVE_RECORD_BUTTON_SUBMIT|AKEO详情-审批记录提交"
+      >
         {{ language("TIJIAO", "提交") }}
       </iButton>
     </div>
@@ -25,6 +27,7 @@
         :lang="true"
         @handleSelectionChange="handleSelectionChange"
         v-loading="tableLoading"
+        v-permission.auto="AEKO_AEKODETAIL_APPROVE_RECORD_BUTTON_TABLE|AKEO详情-审批记录列表"
     >
       <template #aekoNum="scope">
         <div style="text-align: left">

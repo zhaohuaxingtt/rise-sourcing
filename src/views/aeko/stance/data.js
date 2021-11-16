@@ -20,7 +20,6 @@ export const searchList = [
   // 表头
   export const tableTitle = [
       { props: "aekoCode", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true,width:140, },
-      { props: "log", name: "⽇志", key: "LK_RIZHI", tooltip: true },
       { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true },
       { props: "cartypeCode", name: "车型项目", key: "LK_AEKOCHEXINGXIANGMU", tooltip: true },
       { props: "aekoStatusDesc", name: "AEKO状态", key: "LK_AEKOZHUANGTAI", tooltip: true },
@@ -28,6 +27,7 @@ export const searchList = [
       { props: "linieAssignTime", name: "分派日期", key: "LK_AEKOFENPAIRIQI", tooltip: true },
       { props: "deadLine", name: "截⽌⽇期", key: "LK_AEKOJIEZHIRIQI", tooltip: true },
       { props: "approval", name: "审批单", key: "LK_AEKOSHENPIDAN" },
+      { props: "log", name: "⽇志", key: "LK_RIZHI", tooltip: true },
   ]
   
   // 查看附件表头

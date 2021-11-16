@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-11-04 14:16:34
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-16 17:22:36
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
  */
@@ -293,3 +293,12 @@ export function importItemExcel(data) {
   })
 }
 
+
+// aeko-列表查询-linie下拉【只针对零件清单的下拉数据】
+export function searchLinie(params) {
+  return requst({
+    url: '/aeko/purchasing/part/search-linie',
+    method: 'GET',
+    params,
+  })
+}
