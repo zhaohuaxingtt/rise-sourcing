@@ -10,7 +10,7 @@
             v-for="(item,index) in basicTitle"
             v-permission.dynamic.auto="item.permissionKey" 
           >
-            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  :label-width="item.labelWidth || '100px'">
+            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  :label-width="item.labelWidth || '120px'">
                 <iText >{{ item.isObj ? basicInfo[item.props+'Desc'] : basicInfo[item.props]}}</iText>
             </iFormItem>
           </template>
@@ -268,6 +268,8 @@ export default {
                             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
                             // 刷新页面
                             this.getList();
+                            this.getLinie()
+                            this.$emit('getBbasicInfo');
                         } else {
                             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                         }
