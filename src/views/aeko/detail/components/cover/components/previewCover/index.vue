@@ -15,7 +15,7 @@
             </iFormItem>
           </template>
       </iFormGroup>
-      <p class="margin-bottom10">{{language('LK_BEIZHU','备注')}}:</p>
+      <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
       <iInput
         disabled
         type="textarea"
@@ -301,6 +301,18 @@ export default {
                 margin-left: 0!important;
             }
         }
+          .remark-label{
+                font-size: 16px;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: #4B4B4C;
+                &::before{
+                content: "*";
+                color: #f56c6c;
+                margin-right: 4px;
+                display: inline-block;
+                }
+            }
         .summaryTable{
             ::v-deep .el-table__body-wrapper{
                 min-height: auto;
