@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-11-17 15:50:04
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-17 21:15:51
+ * @LastEditors:  
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->
@@ -419,7 +419,7 @@ export default {
       this.diologChangeItems = false;
       changeProcure(transfer)
         .then((res) => {
-          if (res.data) {
+          if (res.code == '200') {
             iMessage.success(this.language("LK_ZHUANPAICHENGGONG",'转派成功'));
             this.getTableListFn();
             this.zpLoading = false
