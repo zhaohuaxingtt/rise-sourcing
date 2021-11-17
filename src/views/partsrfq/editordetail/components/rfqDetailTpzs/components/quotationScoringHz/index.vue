@@ -192,7 +192,7 @@ export default{
       }, 500);
     },
     getTopWidth(){
-      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 100 + 'px'
+      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 60 + 'px'
     },
     removeTags(){
       this.negoAnalysisSummaryLayoutSave()
@@ -482,6 +482,8 @@ export default{
         this.ratingList = []
     },
     searchABPageExchangeRate() {
+      if (!this.$route.query.desinateId) return
+
       searchABPageExchangeRate(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {

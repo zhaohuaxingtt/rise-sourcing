@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-11-11 14:31:15
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-16 14:01:23
+ * @LastEditors:  
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
 -->
@@ -375,6 +375,8 @@ export default {
         if (res.code == '200') {
           iMessage.success(this.language("LK_CAOZUOCHENGGONG",'操作成功'));
           this.getTableList();
+        }else{
+          iMessage.error(res.desZh)
         }
       });
     },

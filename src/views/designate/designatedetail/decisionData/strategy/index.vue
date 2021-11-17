@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:35:20
- * @LastEditTime: 2021-11-16 16:40:58
+ * @LastEditTime: 2021-11-16 18:11:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\strategy\index.vue
@@ -21,12 +21,12 @@
 </div>
 </template>
 <script>
-import {iCard} from 'rise'
+import {iCard,iSelect} from 'rise'
 import higthligthts from './components/highligths'
 import powerBi from './components/powBi'
 import listOfinit from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/listOfInitiatives'
 export default{
-  components:{iCard,higthligthts,powerBi,listOfinit},
+  components:{iCard,higthligthts,powerBi,listOfinit,iSelect},
   data(){
     return {
       isEdit:''
