@@ -1280,9 +1280,9 @@ export default {
       }
       this.$nextTick(() => {
         this.handlerInputBlur();
-        this.ruleForm.biddingProducts.forEach(item => {
-          this.rfqinfoChange(item)
-        })
+        // this.ruleForm.biddingProducts.forEach(item => {
+        //   this.rfqinfoChange(item)
+        // })
       });
     },
     // 表格选中值集
