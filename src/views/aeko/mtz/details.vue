@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-12 17:19:03
+ * @LastEditTime: 2021-11-17 09:56:28
  * @Description: 
 -->
 <template>
@@ -132,7 +132,7 @@ export default {
       minStartDate: '',
       maxEndDate: '',
       pickerOption: null,
-      disable: this.$route.query.status === 'SUBMITED'
+      disable: !['TOBE_STATED', 'QUOTING', 'BOUND', 'QUOTED'].includes(this.$route.query.status) // 待表态,报价中,已绑定,已报价支持编辑
     }
   },
   created() {
