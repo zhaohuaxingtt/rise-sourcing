@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-16 17:49:54
+ * @LastEditTime: 2021-11-17 12:48:44
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -655,11 +655,12 @@ export default {
     view(row) {
       const {query} = this.$route;
       const {from=''} = query; // 从AEKO查看跳转至MTZ的不允许变更 只允许查看
-      this.$router.push({name: 'aekoMtzDetails', query: {
+      const routeData = this.$router.resolve({name: 'aekoMtzDetails', query: {
         objectAekoPartId: row.objectAekoPartId,
         aekoNum: this.aekoInfo.aekoCode,
         status: from=='check' ? 'SUBMITED': row.status
       }})
+      window.open(routeData.href, '_blank')
     },
     isAea(str) {
       var asc1 = str.charCodeAt(0);
