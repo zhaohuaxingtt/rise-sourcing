@@ -153,6 +153,7 @@ export default {
         return this.show
       },
       set(val) {
+        this.page.currPage = 1
         this.$emit('update:show', val)
       }
     }
