@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-11-02 14:05:58
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-17 11:11:10
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
@@ -11,7 +11,12 @@
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="55" :fixed="fixed" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
+      <el-table-column :key="$index" align="center"  v-if='item.editable' :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
+        <template slot-scope="scope">
+          <iInput v-if="item.type === 'input'" v-model="scope.row[item.props]"></iInput>
+        </template>
+      </el-table-column>
+      <el-table-column :key="$index" align="center"  v-else :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row"></slot>
         </template>
@@ -22,7 +27,7 @@
 
 <script>
 import tablelist from '@/views/partsign/home/components/tableList'
-
+import {iInput} from 'rise'
 export default {
   props:{
     ...tablelist.props,
@@ -70,6 +75,9 @@ export default {
     },
     selectable: { type: Function },
     spanMethod: { type: Function },
+  },
+  components:{
+    iInput
   },
   created() {
     console.log(this.$slots)
