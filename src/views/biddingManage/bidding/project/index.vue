@@ -372,7 +372,7 @@ export default {
       }
 
       if (val == "result") {
-        if (biddingStatus == "06" || biddingStatus == "08") {
+        if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
           return true;
         } else {
           return false;
