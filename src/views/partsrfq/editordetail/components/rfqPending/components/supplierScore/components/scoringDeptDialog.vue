@@ -263,7 +263,8 @@ export default {
       const list = this.tableListData.filter(item => !item.deleteStatus)
 
       list.forEach(item => {
-        if (!item.coordinatorId || !item.raterId || !item.rateDepartNum) {
+        // coordinatorId 不一定会有，所以去掉!item.coordinatorId判断
+        if (!item.raterId || !item.rateDepartNum) {
           throw iMessage.warn(this.language('LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN', '请选择完数据再做保存'))
         }
       })

@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-11-11 16:51:11
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-17 15:56:26
+ * @LastEditors: Hao,Jiang
  * @Description: RFQ模块首页
  * @FilePath: \rise\src\views\partsrfq\home\index.vue
 -->
@@ -227,6 +227,7 @@ import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
 import { clickMessage} from "@/views/partsign/home/components/data"
 import { selectDictByKeys } from "@/api/dictionary"
+import {setPretreatmentParams} from '@/utils/tool'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -396,11 +397,7 @@ export default {
     async getTableList() {
       this.tableLoading = true;
       // 获取寻源概览过来的预置参数
-      const acceptKeys = require('@/config/dashboard').acceptKeys || []
-      Object.keys(this.$route.query).forEach(key => {
-          const keyValue = this.$route.query[key]
-          acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, key === 'type' ? Number(keyValue) : keyValue))
-      })
+      setPretreatmentParams(this, this.form, this.$route.query)
       const req = {
           userId: store.state.permission.userInfo.id,
           current: this.page.currPage,

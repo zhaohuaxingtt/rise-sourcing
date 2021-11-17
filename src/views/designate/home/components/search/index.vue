@@ -210,6 +210,7 @@ import {
 } from '@/views/designate/home/components/options'
 import {selectDictByKeyss} from '@/api/dictionary'
 import { form } from '../data'
+import {setPretreatmentParams} from '@/utils/tool'
 // import iDicoptions from 'rise/web/components/iDicoptions'
 import {
   iSearch,
@@ -237,17 +238,14 @@ export default {
   },
   mounted() {
     this.form = { 
-      showMe:true, // 默认显示自己
+      showSelf: true, // 默认显示自己
     }
     // 获取寻源概览过来的预置参数
-    const acceptKeys = require('@/config/dashboard').acceptKeys || []
-    Object.keys(this.$route.query).forEach(key => {
-      const keyValue = this.$route.query[key]
+    setPretreatmentParams(this, this.form, this.$route.query, (data) => {
       // 判断寻源概览过来的参数为查询流转中，只有流转中需要带参数
-      if (key === 'nominateProcessType') {
-        this.onNomiProcessTypeChange(keyValue)
+      if (data && data.keyName === 'nominateProcessType') {
+        this.onNomiProcessTypeChange(data && data.keyValue)
       }
-        acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, keyValue))
     })
     this.getOptions()
   },

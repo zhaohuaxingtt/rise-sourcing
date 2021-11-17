@@ -2,11 +2,11 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-02 10:17:43
+ * @LastEditTime: 2021-11-17 11:22:08
  * @Description: 
 -->
 <template>
-  <div class="aeko-mtz" >
+  <div class="aeko-mtz" v-permission.auto="MTZ_MODIFY_LIST_PAGE|查看MTZ变更">
     <!-- 筛选 -->
     <search ref="search" @search="onSearch" />
     <!-- 表格 -->
@@ -19,6 +19,7 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :lang="true"
+        v-permission.auto="MTZ_MODIFY_LIST_PAGE_TABLE|查看MTZ变更表格"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
