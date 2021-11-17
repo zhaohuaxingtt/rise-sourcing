@@ -7,7 +7,7 @@
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
 -->
 <template>
-<iPage>
+<iPage :class="{ isPortal: source === 'portal' }">
   <div class="nomination-wraper">
     <iCard>
       <div class="signPreview">
@@ -92,10 +92,12 @@ export default {
       ltcTitle: [],
       selectTableData: [],
       startLoding: false,
+      source: ""
     }
   },
   created() {
     this.getFetchData()
+    this.source = this.$route.query.source
   },
   computed: {
     tableTitle() {
@@ -185,6 +187,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.isPortal {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .signPreview {
   // min-height: 600px;
   .signPreview-header {
