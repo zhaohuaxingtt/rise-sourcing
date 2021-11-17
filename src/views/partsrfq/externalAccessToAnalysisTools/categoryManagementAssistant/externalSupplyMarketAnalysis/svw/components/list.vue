@@ -26,33 +26,30 @@
       </div>
       <div style="height:360px"
            ref="chart"></div>
-      <div class="interests"
-           v-if="!isEdite">
+      <div style="width: 100%;display:flex;flex-flow: row nowrap;">
         <iSelect v-model="interestsStatus"
                  :disabled="isEdite"
                  @change="handleChange"
-                 style="flex:1.5">
+                 style="width: 132px;margin-left:-40px;" v-if="!isEdite">
           <el-option v-for="(x,index) in iSelectOption"
                      :value="x.value"
                      :label="x.name"
                      :key="index"></el-option>
         </iSelect>
-        <iInput v-model="year1"
-                class="ml-49"
-                :disabled="isEdite"></iInput>
-        <iInput v-model="year2"
-                class="ml-49"
-                :disabled="isEdite"></iInput>
-        <iInput v-model="year3"
-                class="ml-49"
-                :disabled="isEdite"></iInput>
-      </div>
-      <div class="interests"
-           v-else>
-        <div class="interestsName">利润</div>
-        <div class="interestsName">{{profit1+'%'}}</div>
-        <div class="interestsName">{{profit2+'%'}}</div>
-        <div class="interestsName">{{profit3+'%'}}</div>
+        <div v-else style="width: 92px">利润</div>
+        <div v-if="!isEdite" style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
+          <iInput v-model="year1"
+                  style="width: 50px;"></iInput>
+          <iInput v-model="year2"
+                  style="width: 50px;"></iInput>
+          <iInput v-model="year3"
+                  style="width: 50px;"></iInput>
+        </div>
+        <div v-else style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
+          <div style="width: 50px;text-align:center;">{{profit1+'%'}}</div>
+          <div style="width: 50px;text-align:center;">{{profit2+'%'}}</div>
+          <div style="width: 50px;text-align:center;">{{profit3+'%'}}</div>
+        </div>
       </div>
     </div>
     <div class="width3-1">
@@ -163,10 +160,10 @@ export default {
           icon: "circle"
         },
         color: ['#0059FF', '#B4CBF7'],
-        grid: {
-          left: '25%',
-          right: -10
-        },
+        // grid: {
+        //   left: '25%',
+        //   right: -10
+        // },
         xAxis: [
           {
             type: 'category',
@@ -641,6 +638,7 @@ export default {
           //   }
           // }
           this.$nextTick(() => {
+            console.log(this.option)
             this.initCharts()
             // this.initturnover()
           });
