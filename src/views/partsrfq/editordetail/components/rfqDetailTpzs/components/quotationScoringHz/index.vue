@@ -505,7 +505,7 @@ export default{
     },
     // 汇率显示处理
     exchangeRateProcess(row) {
-      return `100${ this.$i18n.locale === "zh" ? row.currencyName : row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ this.$i18n.locale === "zh" ? row.originCurrencyName : row.originCurrencyCode }`
+      return `100${ row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ row.originCurrencyCode }`
     }
   }
 }
