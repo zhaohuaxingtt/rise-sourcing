@@ -24,10 +24,10 @@
 
           </div>
           <div v-show="checkFLag">
-            <iButton v-show="flag"
-                     @click="open">全部展开</iButton>
-            <iButton v-show="flag1"
-                     @click="close">全部收回</iButton>
+            <iButton v-show="!allExpand"
+                     @click="handleAllCollapse(true)">全部展开</iButton>
+            <iButton v-show="allExpand"
+                     @click="handleAllCollapse(false)">全部收回</iButton>
             <template v-if="!onGroupingModel">
               <iButton @click="remarks">备注</iButton>
               <iButton @click="reduction">还原</iButton>
@@ -61,18 +61,18 @@
             <div v-for="(item,index) in tableListData"
                  :key="index"
                  style="display: flex;flex-flow: row nowrap;width: 100%;"
-                 :class="index%2 == 0 ? 'table-odd' : 'table-even'"
+                 :class="decideRowClass(item, index)"
                  v-if="collapseItems.indexOf(item.id) < 0"
                  :id="item.id"
                  :root-id="item.rootId"
-                 :parent-id="item.parentId">
+                 :parent-id="item.parentId" :ref="!item.parentId ? item.id:''">
               <span class="table-cell"
                     style="justify-content: flex-start;width: 20%"
                     :style="{'padding-left': 20*item.level + 'px'}">
                 <i v-if="item.hasChild"
                    :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
                    style="cursor: pointer;padding-right: 4px;"
-                   @click="handleCollapse(item)"></i>
+                   @click="handleCollapse(item, item.expanded)"></i>
                 <el-input v-if="item.grouped" v-model="item.title"></el-input>
                 <span v-else :style="{'font-weight': item.groupChild ? 'bold':''}">{{item.title}}</span>
               </span>
@@ -190,8 +190,9 @@ export default {
   data () {
     return {
       onDataLoading: false,
-      flag: true,
-      flag1: false,
+      allExpand: true,
+      flag: false,
+      flag1: true,
       tableList: [],
       ungroupList: [],
       ungroupByList,
@@ -251,6 +252,7 @@ export default {
     label: {
       handler (val) {
         // this.expedsArr = []
+        debugger
         this.close()
         this.$nextTick(function () {
           this.expedsArr = []
@@ -275,9 +277,38 @@ export default {
 
   },
   methods: {
-    handleCollapse (item) {
-      this.collapseItem(item.id, item.expanded)
-      item.expanded = !item.expanded;
+    decideRowClass(row, idx) {
+      if (this.collapseItems.length == 0) {
+        return idx%2 == 0 ? 'table-odd' : 'table-even';
+      }
+
+      var displayed = this.tableListData.filter((item) => {
+        return this.collapseItems.indexOf(item.id) < 0
+      })
+      console.log(displayed)
+
+      var realIndex = -1;
+      displayed.forEach((item,index) => {
+        if (item.id == row.id) {
+          realIndex = index;
+        }
+      })
+      
+      return realIndex%2 == 0 ? 'table-odd' : 'table-even';
+    },
+    handleAllCollapse(expandAll) {
+      this.allExpand = !this.allExpand
+      // if (!expandAll) this.collapseItems = [];
+      this.tableListData.forEach((item) => {
+        if (!item.parentId) {
+          this.handleCollapse(item, !expandAll)
+        }
+        item.expanded = expandAll;
+      })
+    },
+    handleCollapse (item, isExpand) {
+      this.collapseItem(item.id, isExpand)
+      item.expanded = !isExpand;
     },
     collapseItem (parentId, isCollapse) {
       this.tableListData.forEach((item) => {
@@ -287,6 +318,7 @@ export default {
               this.collapseItems.push(item.id)
               if (item.hasChild) {
                 this.collapseItem(item.id, isCollapse)
+                item.expanded = !isCollapse
               }
             }
           }
@@ -296,6 +328,7 @@ export default {
               this.collapseItems.splice(this.collapseItems.indexOf(item.id), 1)
               if (item.hasChild) {
                 this.collapseItem(item.id, isCollapse)
+                item.expanded = !isCollapse
               }
             }
           }
@@ -306,7 +339,7 @@ export default {
       this.tableListData.forEach((item) => {
         for (var key in item) {
           if (key.indexOf("checked#") >= 0) {
-            item[key] = false;
+            Vue.set(item, key, false);
           }
         }
       })
@@ -539,8 +572,8 @@ export default {
           object.title = target.title;
           object.value = target[key];
           object.level = showLevel;
-          // object.parentId = parentId;
-          // object.rootId = rootId;
+          object.parentId = parentId;
+          object.rootId = rootId;
           object.code = target.code;
           // object.rootId = parentId;
           if (target.child && target.child.length > 0) {
