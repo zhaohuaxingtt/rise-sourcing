@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-17 13:46:38
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-17 15:23:15
  * @Description: 解释附件查看列表
 -->
 <template>
@@ -108,13 +108,11 @@ export default {
       const requirementAekoId = this.$route.query.requirementAekoId || aekoApprovalDetails.requirementAekoId || ''
       const aekoManageId = this.$route.query.aekoManageId || aekoApprovalDetails.aekoManageId || ''
       const linieId = this.$route.query.linieId || aekoApprovalDetails.linieId || ''
-      const taskId = this.$route.query.taskId || aekoApprovalDetails.taskId || ''
       const form = this.$refs.search.form || {}
       const parmas = Object.assign({
         linieId: linieId || '',
 				aekoNum: aekoNum,
 				manageId: Number(aekoManageId) || '',
-				taskId: String(taskId).split(',') || [],
         current: this.page.currPage,
         size: this.page.pageSize
       },form)
