@@ -154,14 +154,14 @@ export default {
         return{
             letterListSearch:letterListSearch,
             searchParams:{
-                showSelf:'YES',
+                showSelf: true,
                 status:'',
             },
             selectOptions:{
                 status:[],
                 showSelf:[
-                    {label:'是',key:'nominationLanguage.Yes',value:'YES'},
-                    {label:'否',key:'nominationLanguage.No',value:'NO'},
+                    {label:'是',key:'nominationLanguage.Yes',value: true},
+                    {label:'否',key:'nominationLanguage.No',value: false},
                 ],
             },
             loading:false,
@@ -195,7 +195,7 @@ export default {
             this.loading = true;
             const {searchParams,page} = this;
             // 若有定点起止时间将其拆分成两个字段
-            const {nominateDate=[],showSelf=''} = searchParams;
+            const {nominateDate=[]} = searchParams;
             const data = {
                 current:page.currPage,
                 size:page.pageSize
@@ -207,7 +207,6 @@ export default {
             await getLetterList({
                 ...searchParams,
                 ...data,
-                showSelf:showSelf=='YES',
                 }).then((res)=>{
                 this.loading = false;
                 res.data.records.forEach(val=> {

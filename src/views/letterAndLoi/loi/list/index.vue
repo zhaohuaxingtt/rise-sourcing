@@ -141,14 +141,14 @@ export default {
         return{
             letterListSearch:loiListSearch,
             searchParams:{
-                show:'true',
+                showSelf: true,
                 loiStatus:'',
             },
             selectOptions:{
                 status:[],
                 isShowMe:[
-                    {label:this.language('nominationLanguage.Yes','是'),value:'true'},
-                    {label:this.language('nominationLanguage.No','否'),value:'false'},
+                    {label:this.language('nominationLanguage.Yes','是'),value: true},
+                    {label:this.language('nominationLanguage.No','否'),value: false},
                 ],
             },
             loading:false,
@@ -179,7 +179,7 @@ export default {
              this.loading = true;
             const {searchParams,page} = this;
             // 若有定点起止时间将其拆分成两个字段
-            const {nominateDate=[],show=''} = searchParams;
+            const {nominateDate=[],showSelf=true} = searchParams;
             const data = {
                 current:page.currPage,
                 size:page.pageSize
@@ -191,8 +191,7 @@ export default {
             await getloiList({
                 ...searchParams,
                 ...data,
-                show:undefined,
-                showSelf:show == 'true',
+                showSelf
                 }).then((res)=>{
                  this.loading = false;
                 const {code,data=[],total} = res;
