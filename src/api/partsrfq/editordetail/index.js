@@ -1,8 +1,10 @@
 import axios from '@/utils/axios'
+import download from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_SOURCING)
 const nego = axios(process.env.VUE_APP_SOURCING)
 const quotation = axios(process.env.VUE_APP_SOURCING)
+const downLoad = download(process.env.VUE_APP_SOURCING)
 
 import { serialize } from "@/utils"
 /*零件清单*/
@@ -446,5 +448,26 @@ export function searchABPageExchangeRate(mimoId) {
     return requst({
       url: `/nominate/search-a-b-page-exchange-rate/${mimoId}`,
       method: 'POST'
+    })
+}
+//导出excel
+export function exportFSPartsAsRow(rfqId,round) {
+    return downLoad({
+        url:`/nego-assistant/export-fs-parts-as-row/${rfqId}/${round}`,
+        method:'GET'
+    })
+}
+//导出excel
+export function exportFsSupplierAsRow(rfqId,round) {
+    return downLoad({
+        url:`/nego-assistant/export-fs-supplier-as-row/${rfqId}/${round}`,
+        method:'GET'
+    })
+}
+//导出excel
+export function exportGsPartsAsRow(rfqId,round) {
+    return downLoad({
+        url:`/nego-assistant/export-gs-parts-as-row/${rfqId}/${round}`,
+        method:'GET'
     })
 }

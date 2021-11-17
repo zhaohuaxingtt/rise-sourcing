@@ -39,6 +39,7 @@
         <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
         <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
         <iButton v-if='isKborJj == 2' @click="options.show = true">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
+        <iButton  @click="exportParts(layout)">{{language('DAOCHU','导出')}}</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
@@ -73,7 +74,7 @@ import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList,defaultLayoutTemplate} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
@@ -504,6 +505,15 @@ export default{
     // 汇率显示处理
     exchangeRateProcess(row) {
       return `100${ this.$i18n.locale === "zh" ? row.currencyName : row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ this.$i18n.locale === "zh" ? row.originCurrencyName : row.originCurrencyCode }`
+    },
+    exportParts(layout) {
+      if(layout === '1') {
+        return exportFSPartsAsRow(this.$route.query.id,this.round)
+      } else if(layout === '2') {
+        return exportFsSupplierAsRow(this.$route.query.id,this.round)
+      } else {
+        return exportGsPartsAsRow(this.$route.query.id,this.round)
+      }
     }
   }
 }
