@@ -438,7 +438,7 @@ export default {
         this.rfqinfoChange(item)
       })
     })
-    this.rfqinfoProductCopy = this.loadAll();
+    // this.rfqinfoProductCopy = this.loadAll();
   },
   computed: {
     unit() {

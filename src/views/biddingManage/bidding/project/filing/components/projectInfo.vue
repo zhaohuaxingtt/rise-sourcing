@@ -352,10 +352,10 @@ export default {
       }, {});
     });
 
-    getRfqInfo({ rfqCode: this.ruleForm.rfqCode }).then((res) => {
-      this.rfqinfoProduct = res.products;
-      // this.rfqinfoProductCopy = res.products;
-    });
+    // getRfqInfo({ rfqCode: this.ruleForm.rfqCode }).then((res) => {
+    //   this.rfqinfoProduct = res.products;
+    //   // this.rfqinfoProductCopy = res.products;
+    // });
   },
   computed: {
     priceComponent() {
