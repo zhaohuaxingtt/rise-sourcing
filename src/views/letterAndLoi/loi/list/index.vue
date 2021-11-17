@@ -120,6 +120,7 @@ import {
 } from '@/api/letterAndLoi/loi'
 import { getDictByCode } from '@/api/dictionary'
 import { numberProcessor } from '@/utils' 
+import {setPretreatmentParams} from '@/utils/tool'
 export default {
     name:'loiList',
      mixins: [pageMixins],
@@ -140,14 +141,14 @@ export default {
         return{
             letterListSearch:loiListSearch,
             searchParams:{
-                show:'true',
+                showSelf: true,
                 loiStatus:'',
             },
             selectOptions:{
                 status:[],
                 isShowMe:[
-                    {label:this.language('nominationLanguage.Yes','是'),value:'true'},
-                    {label:this.language('nominationLanguage.No','否'),value:'false'},
+                    {label:this.language('nominationLanguage.Yes','是'),value: true},
+                    {label:this.language('nominationLanguage.No','否'),value: false},
                 ],
             },
             loading:false,
@@ -167,10 +168,7 @@ export default {
     },
     created(){
         // 获取寻源概览过来的预置参数
-        const acceptKeys = require('@/config/dashboard').acceptKeys || []
-        Object.keys(this.$route.query).forEach(key => {
-            acceptKeys.includes(key) && (this.$set(this.searchParams, `${ key }`, this.$route.query[key]))
-        })
+        setPretreatmentParams(this, this.searchParams, this.$route.query)
         this.getSelectOptions();
         this.getList();
     },
@@ -181,7 +179,7 @@ export default {
              this.loading = true;
             const {searchParams,page} = this;
             // 若有定点起止时间将其拆分成两个字段
-            const {nominateDate=[],show=''} = searchParams;
+            const {nominateDate=[],showSelf=true} = searchParams;
             const data = {
                 current:page.currPage,
                 size:page.pageSize
@@ -193,8 +191,7 @@ export default {
             await getloiList({
                 ...searchParams,
                 ...data,
-                show:undefined,
-                showSelf:show == 'true',
+                showSelf
                 }).then((res)=>{
                  this.loading = false;
                 const {code,data=[],total} = res;

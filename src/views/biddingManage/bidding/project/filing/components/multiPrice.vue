@@ -298,9 +298,9 @@ export default {
     getUnits({}).then((res) => {
       this.quantityUnit = res.data;
     });
-    getRfqInfo({ rfqCode: this.ruleForm.rfqCode }).then((res) => {
-      this.rfqinfoProduct = res.products;
-    });
+    // getRfqInfo({ rfqCode: this.ruleForm.rfqCode }).then((res) => {
+    //   this.rfqinfoProduct = res.products;
+    // });
   },
   computed: {
     disabledAll() {
@@ -614,17 +614,17 @@ export default {
 
     //FSNR/GSNR更改联动零件号 和 采购计划FSNR/GSNR、零件号
     rfqinfoChange(e) {
-      let obj = this.rfqinfoProduct.filter((item) => {
-        return e.fsnrGsnr === item.fsnrGsnr;
-      });
-      if (obj.length < 1) {
-        return;
-      }
-      e.productName = obj[0]?.productName;
-      e.productCode = obj[0]?.productCode;
-      //3n
-      this.purchasePlanTable[e.index * 3].title = obj[0]?.fsnrGsnr;
-      this.purchasePlanTable[e.index * 3 + 1].title = obj[0]?.productCode;
+      // let obj = this.rfqinfoProduct.filter((item) => {
+      //   return e.fsnrGsnr === item.fsnrGsnr;
+      // });
+      // if (obj.length < 1) {
+      //   return;
+      // }
+      // e.productName = obj[0]?.productName;
+      // e.productCode = obj[0]?.productCode;
+      // //3n
+      // this.purchasePlanTable[e.index * 3].title = obj[0]?.fsnrGsnr;
+      // this.purchasePlanTable[e.index * 3 + 1].title = obj[0]?.productCode;
     },
     //零件号更改联动采购计划零件号
     partNumberChange(e) {

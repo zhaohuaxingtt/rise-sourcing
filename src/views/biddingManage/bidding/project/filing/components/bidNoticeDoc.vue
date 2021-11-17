@@ -294,16 +294,16 @@ export default {
         if (res.code === 200) {
           iMessage.success(res.message);
           if (this.$route.name === "bidNoticeDoc") {
-            if(bol) {
-              this.$router.push({
-                name: 'bidNoticeDocBidding',
-                params: this.$route.params,
-                query: this.$route.query,
-              })
-            } else {
-              window.close();
-            }
-            return;
+            // if(bol) {
+            //   this.$router.push({
+            //     name: 'bidNoticeDocBidding',
+            //     params: this.$route.params,
+            //     query: this.$route.query,
+            //   })
+            // } else {
+            //   window.close();
+            // }
+            // return;
           } else if (this.$route.name === "bidNoticeDocTender") {
             this.getView();
           } else if(this.$route.name === "bidNoticeDocBidding") {

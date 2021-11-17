@@ -434,11 +434,11 @@ export default {
     //   // this.rfqinfoProductCopy = res.products;
     // });
     this.$nextTick(()=>{
-      this.ruleForm.biddingProducts.forEach(item => {
-        this.rfqinfoChange(item)
-      })
+      // this.ruleForm.biddingProducts.forEach(item => {
+      //   this.rfqinfoChange(item)
+      // })
     })
-    this.rfqinfoProductCopy = this.loadAll();
+    // this.rfqinfoProductCopy = this.loadAll();
   },
   computed: {
     unit() {

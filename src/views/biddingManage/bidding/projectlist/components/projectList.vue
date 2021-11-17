@@ -10,26 +10,20 @@
       :validate-on-rule-change="false"
     >
       <!-- 项目查询 -->
-      <iCard style="margin-top: 1rem">
+      <iCard style="margin-top: 1rem" :title="language('BIDDING_XIANGMUCHAXUN','项目查询')" collapse>
         <div class="form-top">
-          <div>
+          <!-- <div>
             <h2>{{language('BIDDING_XIANGMUCHAXUE','项目查询')}}</h2>
-          </div>
-          <div>
-            <iButton @click="getTableList">{{language('BIDDING_CHAXUN','查询')}}</iButton>
-            <iButton @click="handleSearchReset('ruleForm')">{{language('BIDDING_CHONGZHI','重置')}}</iButton>
-          </div>
-        </div>
-
-        <div class="item">
+          </div> -->
+           <div class="item">
           <iFormItem :label="language('BIDDING_RFQ/XIANGMUBIANHAO', 'RFQ/项目编号')" prop="rfqCode">
             <iLabel :label="language('BIDDING_RFQ/XIANGMUBIANHAO', 'RFQ/项目编号')" slot="label"></iLabel>
-            <iInput v-model="ruleForm.rfqCode"></iInput>
+            <iInput :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqCode"></iInput>
           </iFormItem>
 
           <iFormItem :label="language('BIDDING_RFQ/XIANGMUMINGCHENG', 'RFQ/项目名称')" prop="rfqName">
             <iLabel :label="language('BIDDING_RFQ/XIANGMUMINGCHENG', 'RFQ/项目名称')" slot="label"></iLabel>
-            <iInput v-model="ruleForm.rfqName"></iInput>
+            <iInput :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqName"></iInput>
           </iFormItem>
 
           <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType">
@@ -47,7 +41,7 @@
 
           <iFormItem :label="language('BIDDING_BAOJIALEIXING', '报价类型')" prop="quoteType">
             <iLabel :label="language('BIDDING_BAOJIALEIXING', '报价类型')" slot="label"></iLabel>
-            <iSelect v-model="ruleForm.quoteType" clearable>
+            <iSelect ref='select' v-model="ruleForm.quoteType" clearable @keydown.native.capture.enter.stop.prevent>
               <el-option
                 v-for="(item, index) in quoteType"
                 :key="index"
@@ -60,7 +54,7 @@
 
           <iFormItem :label="language('BIDDING_JINGJIALEIXING', '竞价类型')" prop="biddingType">
             <iLabel :label="language('BIDDING_JINGJIALEIXING', '竞价类型')" slot="label"></iLabel>
-            <iSelect v-model="ruleForm.biddingType" clearable>
+            <iSelect ref='select' v-model="ruleForm.biddingType" clearable @keydown.native.capture.enter.stop.prevent>
               <el-option
                 v-for="(item, index) in biddingType"
                 :key="index"
@@ -76,6 +70,7 @@
             <iDatePicker
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
+              type="datetime"
               :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.rfqEndTime"
             />
@@ -86,6 +81,7 @@
             <iDatePicker
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
+              type="datetime"
               :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.openTenderTime"
             />
@@ -96,6 +92,7 @@
             <iDatePicker
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
+              type="datetime"
               :placeholder="language('BIDDING_QINGXUANZE', '请选择')"
               v-model="ruleForm.biddingBeginTime"
               :picker-options="biddingBeginTimeOptions"
@@ -104,7 +101,7 @@
 
           <iFormItem :label="language('BIDDING_ZHUANGTAI', '状态')" prop="biddingStatus">
             <iLabel :label="language('BIDDING_ZHUANGTAI', '状态')" slot="label"></iLabel>
-            <iSelect v-model="ruleForm.biddingStatus" clearable>
+            <iSelect ref='select' v-model="ruleForm.biddingStatus" clearable @keydown.native.capture.enter.stop.prevent>
               <el-option
                 v-for="(item, index) in biddingStatus"
                 :key="index"
@@ -117,19 +114,25 @@
 
           <iFormItem :label="language('BIDDING_CHUANGJIANREN', '创建人')" prop="createName">
             <iLabel :label="language('BIDDING_CHUANGJIANREN', '创建人')" slot="label"></iLabel>
-            <iInput v-model="ruleForm.createName"></iInput>
+            <iInput :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.createName"></iInput>
           </iFormItem>
 
           <iFormItem :label="language('BIDDING_LINGJIANHAO', '零件号')" prop="partNumber">
             <iLabel :label="language('BIDDING_LINGJIANHAO', '零件号')" slot="label"></iLabel>
-            <iInput v-model="ruleForm.partNumber"></iInput>
+            <iInput :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.partNumber"></iInput>
           </iFormItem>
+          </div>
+          <div class="item-button">
+            <iButton @click.enter="getTableList">{{language('BIDDING_CHAXUN','查询')}}</iButton>
+            <iButton @click="handleSearchReset('ruleForm')">{{language('BIDDING_CHONGZHI','重置')}}</iButton>
+          </div>
         </div>
+
       </iCard>
 
       <!-- 项目列表 -->
       <iCard style="margin-top: 1rem">
-        <div class="form-top">
+        <div class="form-top1">
           <div>
             <h2>{{language('BIDDING_XIANGMULIEBIAO', '项目列表')}}</h2>
           </div>
@@ -228,6 +231,12 @@ export default {
   },
   mounted() {
     this.getTableList();
+    // 绑定enter事件
+    this.enterKeyup();
+  },
+  destroyed() {
+    // 销毁enter事件
+      this.enterKeyupDestroyed();
   },
   computed: {},
   watch: {
@@ -245,6 +254,24 @@ export default {
     },
   },
   methods: {
+    enterKey(event) {
+      const code = event.keyCode
+          ? event.keyCode
+          : event.which
+              ? event.which
+              : event.charCode;
+      if (code == 13) {
+        console.log(218,this.$refs.select)
+        this.$refs.select.blur();
+          this.getTableList();
+      }
+    },
+    enterKeyupDestroyed() {
+        document.removeEventListener("keyup", this.enterKey);
+    },
+    enterKeyup() {
+        document.addEventListener("keyup", this.enterKey);
+    },
     // 查询
     getTableList() {
       this.page.currPage = 1;
@@ -328,24 +355,44 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+::v-deep .card .cardHeader  {
+  justify-content: flex-end !important;
+  padding-bottom: 0;
+  .title{
+    display: none !important;
+  }
+  .rotate{
+    margin-bottom: 1.875rem;
+  }
+}
 .form-top {
+  display: flex;
+  margin-top: -1.5rem;
+  /* align-items: center;
+  justify-content: space-between; */
+  /* margin-bottom: 1.5rem; */
+}
+.form-top1{
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.5rem;
 }
-
 .item ::v-deep {
   display: flex;
   margin-right: -6rem;
   flex-wrap: wrap;
   .el-form-item {
     /* display: flex; */ //平行解开
-    width: 21rem;
-    margin-right: 6.2rem;
+    width: 13rem;
+    margin-right: 5rem;
     position: relative;
     .el-form-item__label {
-      width: 52%;
+      width: 100%;
+      .flex-align-center{
+        font-weight: 600;
+        font-size: smaller;
+      }
     }
     .el-form-item__content {
       width: 100%;
@@ -356,6 +403,38 @@ export default {
       color: #000;
       text-align: center;
     }
+  }
+}
+
+.item-button{
+  flex: none;
+  margin-top: 2.5rem;
+}
+
+::v-deep .el-date-editor {
+  width: 100%;
+  .el-icon-time::before {
+    content: "";
+    display: none;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0.2rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    color: grey;
+    background-image: url("~@/assets/images/datetime.svg");
+    background-size: 2rem 2rem;
+    background-repeat: no-repeat
+  }
+  &:hover::after {
+    display: none;
+  }
+
+  .el-input__inner {
+    padding-left: 0.875rem;
   }
 }
 </style>

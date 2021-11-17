@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-16 14:41:48
- * @LastEditTime: 2021-11-10 15:50:13
+ * @LastEditTime: 2021-11-17 14:46:14
  * @LastEditors: Hao,Jiang
  * @Description: 寻源概览允许各版块接收的参数
  * @FilePath: /front-web/src/config/dashboard.js
@@ -26,3 +26,4 @@ const acceptKeyArray = [
 ]
 
 export const acceptKeys = Array.from(new Set(acceptKeyArray.flat(Infinity)))
+export const BooleanKeys = ['currentUser', 'isDelay', 'showSelf']

@@ -45,21 +45,21 @@ export function getCurrencyUnit(data) {
 }
 
 //获取汇率
-export function getExchangeRate(data) {
-  return requst({
-    url: `/rise-mock/mockService/getExchangeRate`,
-    method: "POST",
-    data,
-  });
-}
+// export function getExchangeRate(data) {
+//   return requst({
+//     url: `/rise-mock/mockService/getExchangeRate`,
+//     method: "POST",
+//     data,
+//   });
+// }
 //获取rfq全部信息
-export function getRfqInfo(data) {
-  return requst({
-    url: `/rise-mock/mockService/getRfqInfo`,
-    method: "POST",
-    data,
-  });
-}
+// export function getRfqInfo(data) {
+//   return requst({
+//     url: `/rise-mock/mockService/getRfqInfo`,
+//     method: "POST",
+//     data,
+//   });
+// }
 // 根据 ID 获取报价规则
 export function findQuoteRule(data) {
   return requst({
