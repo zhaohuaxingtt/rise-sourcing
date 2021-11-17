@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-17 10:37:21
+ * @LastEditTime: 2021-11-17 13:34:41
  * @Description: 
 -->
 <template>
@@ -68,7 +68,7 @@
               value-format="yyyy-MM-dd"
               :clearable="false"
               @focus="clearValidateError"
-              @change="validateDueDateInput(scope.row)"
+              @change="validateDueDateInput(scope.row, [2])"
               :picker-options="pickerOptions"
           />
         </span>
@@ -82,7 +82,7 @@
               value-format="yyyy-MM-dd"
               :clearable="false"
               @focus="clearValidateError"
-              @change="validateDueDateInput(scope.row)"
+              @change="validateDueDateInput(scope.row, [3])"
               :picker-options="pickerOptions"
           />
         </span>
@@ -99,7 +99,7 @@
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
           :layout="page.layout"
-          :total="page.totalCount" />
+          :total="tablePageSizeTotal" />
       </div>
     </iCard>
   </div>
@@ -128,6 +128,11 @@ export default {
     iPagination,
     tablelist
   },
+  computed: {
+    tablePageSizeTotal() {
+      return this.page.totalCount + this.copyDataLength
+    }
+  },
   data() {
     return {
       tableTitle,
@@ -137,6 +142,7 @@ export default {
       minStartDate: '',
       maxEndDate: '',
       pickerOption: null,
+      copyDataLength: 0,
       disable: !['TOBE_STATED', 'QUOTING', 'BOUND', 'QUOTED'].includes(this.$route.query.status) // 待表态,报价中,已绑定,已报价支持编辑
     }
   },
@@ -156,6 +162,7 @@ export default {
       const decimal = String(dosageChange).split('.')[1] || ''
       const decimalLength = decimal.length > 6 ? 6 : decimal.length
       this.$set(row, 'dosageChange', isNaN(Number(dosageChange)) ? 0 : Number(dosageChange).toFixed(decimalLength))
+      this.validateDueDateInput(row, [1])
     },
     clearValidateError() {
       this.tableListData.map(o => {
@@ -165,37 +172,43 @@ export default {
         return o
       })
     },
-    validateDueDateInput(row) {
+    /**
+     * @description: 
+     * @param {*} row 行数据
+     * @param {*} priority 优先校验 1用量变化 2新有效期 3 新有效期止
+     * @return {*}
+     */    
+    validateDueDateInput(row, priority = [1]) {
       let state = true
       let errorInfo = ''
 
       // 清除错误信息
       this.clearValidateError()
       // 用量必填校验
-      if (state && !row.dosageChange) {
+      if (state && !row.dosageChange && priority.includes(1)) {
         state = false
         errorInfo = this.language('YONGLIANGBIANHUABUNENGWEIKONG', '用量变化不能为空')
          this.$set(row, 'validateDosageChangeError', true)
       }
-      if (state && !row.newStartDate) {
+      if (state && !row.newStartDate && priority.includes(3)) {
         state = false
-        errorInfo = this.language('XINYOUXIAOQIKAISHISHIJIANBITIAN', '新有效期开始时间不能为空')
+        errorInfo = this.language('XINYOUXIAOQIKAISHISHIJIANBITIAN', '有效期开始时间不能为空')
         this.$set(row, 'validateStartError', true)
       }
-      if (state && !row.newEndDate) {
+      if (state && !row.newEndDate && priority.includes(2)) {
         state = false
-        errorInfo = this.language('XINYOUXIAOQIJIESHUJIANBITIAN', '新有效期开始时间结束时间不能为空')
+        errorInfo = this.language('XINYOUXIAOQIJIESHUJIANBITIAN', '有效期结束时间不能为空')
         this.$set(row, 'validateEndError', true)
       }
-      if (state && row.newEndDate < row.newStartDate) {
+      if (state && row.newEndDate && row.newEndDate < row.newStartDate && priority.includes(2)) {
         state = false
-        errorInfo = this.language('XINYOUXIAOQIKAISHIWANYUJIESU', '新有效期结束时间不能早于开始时间')
+        errorInfo = this.language('XINYOUXIAOQIKAISHIWANYUJIESU', '有效期结束时间不能早于开始时间')
         this.$set(row, 'validateStartError', true)
         this.$set(row, 'validateEndError', true)
       }
-      if (state && row.newStartDate > row.newEndDate) {
+      if (state && row.newStartDate && row.newStartDate > row.newEndDate && priority.includes(3)) {
         state = false
-        errorInfo = this.language('XINYOUXIAOQIKAISHIWANYUJIESU', '新有效期开始时间不能晚于结束时间')
+        errorInfo = this.language('XINYOUXIAOQIKAISHIWANYUJIESU', '有效期开始时间不能晚于结束时间')
         this.$set(row, 'validateStartError', true)
         this.$set(row, 'validateEndError', true)
       }
@@ -213,7 +226,7 @@ export default {
       dataList.forEach((item) => {
         console.log(item.id, item.newStartDate, parEndId, parEndDate)
         // 时间段重叠
-        if (state && parEndId !== item.id && item.newStartDate < parEndDate) {
+        if (state && item.newStartDate && parEndDate && parEndId !== item.id && item.newStartDate < parEndDate && window._.intersection(priority, [2,3]).length) {
           state = false
           errorInfo = this.language('LINGJIANSHIJIANDUANCONGDIECUOWU','所填零件行项目有时间段重叠,请修改')
           const parItem = this.tableListData.find(o => o.id === parEndId)
@@ -229,7 +242,7 @@ export default {
         if (theSameEndDateLength > 1 && !theSameNewEndDate) theSameNewEndDate = item.newEndDate
         theSameNewStartDate === item.newStartDate && (this.$set(item, 'validateStartError', true))
         theSameNewEndDate === item.newEndDate && (this.$set(item, 'validateEndError', true))
-        if (state && theSameStartDateLength > 1 || theSameEndDateLength > 1) {
+        if (state && item.newStartDate && item.newEndDate && (theSameStartDateLength > 1 || theSameEndDateLength > 1) && window._.intersection(priority, [2,3]).length) {
           state = false
           errorInfo = this.language('LINGJIANSHIJIANDUANCONGDIECUOWU','所填零件行项目有时间段重叠,请修改')
         }
@@ -296,6 +309,7 @@ export default {
           this.tableListData = []
           this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
+        this.copyDataLength = 0
         this.tableLoading = false
       }).catch(e => {
         this.tableLoading = false
@@ -303,6 +317,12 @@ export default {
       }).finally(() => {
         this.tableLoading = false
       })
+    },
+    modifyCopyDataLength(Num = 0) {
+      this.copyDataLength += Num
+      if (this.copyDataLength < 0) {
+        this.copyDataLength = 0
+      }
     },
     copyAekoMtz() {
       if (!this.selectTableData.length) {
@@ -321,6 +341,7 @@ export default {
         o.isNew = true
         return o
       })
+      this.modifyCopyDataLength(copyData.length)
       this.tableListData = this.tableListData.concat(copyData)
     },
     /**
@@ -366,6 +387,7 @@ export default {
           const targetIndex = this.tableListData.findIndex(o => o.id === item && o.isNew)
           this.tableListData.splice(targetIndex, 1)
         })
+        this.modifyCopyDataLength(-copyDataIds.length)
         return
       }
       // 删除选中的老数据
@@ -394,7 +416,7 @@ export default {
       let state = true
       this.tableListData.forEach(o => {
         if (state) {
-          const validation = this.validateDueDateInput(o) || {}
+          const validation = this.validateDueDateInput(o, [1,2,3]) || {}
           state = validation.state
           console.log(validation)
         }
