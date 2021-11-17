@@ -495,13 +495,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第一年",
+    name: language('BIDDING_DI一NIAN',"第一年"),
   },
   {
     props: "stage2",
@@ -511,13 +511,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第二年",
+    name: language('BIDDING_DI二NIAN',"第二年"),
   },
   {
     props: "stage3",
@@ -527,13 +527,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第三年",
+    name: language('BIDDING_DI三NIAN',"第三年"),
   },
   {
     props: "stage4",
@@ -543,13 +543,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第四年",
+    name: language('BIDDING_DI四NIAN',"第四年"),
   },
   {
     props: "stage5",
@@ -559,13 +559,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第五年",
+    name: language('BIDDING_DI五NIAN',"第五年"),
   },
   {
     props: "stage6",
@@ -575,13 +575,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第六年",
+    name: language('BIDDING_DI六NIAN',"第六年"),
   },
   {
     props: "stage7",
@@ -591,13 +591,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第七年",
+    name: language('BIDDING_DI七NIAN',"第七年"),
   },
   {
     props: "stage8",
@@ -607,13 +607,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第八年",
+    name: language('BIDDING_DI八NIAN',"第八年"),
   },
   {
     props: "stage9",
@@ -623,13 +623,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第九年",
+    name: language('BIDDING_DI九NIAN',"第九年"),
   },
   {
     props: "stage10",
@@ -639,13 +639,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第十年",
+    name: language('BIDDING_DI九NIAN',"第十年"),
   },
   {
     props: "stage11",
@@ -655,13 +655,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第十一年",
+    name: language('BIDDING_DI十一NIAN',"第十一年"),
   },
   {
     props: "stage12",
@@ -671,13 +671,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第十二年",
+    name: language('BIDDING_DI十二NIAN',"第十二年"),
   },
   {
     props: "stage13",
@@ -687,13 +687,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第十三年",
+    name: language('BIDDING_DI十三NIAN',"第十三年"),
   },
   {
     props: "stage14",
@@ -703,13 +703,13 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第十四年",
+    name: language('BIDDING_DI十四NIAN',"第十四年"),
   },
   {
     props: "stage15",
@@ -719,12 +719,12 @@ export const outPutColumn = [
         validator(rule, value, callback) {
           let reg = /^([0-9]+[\d]*(.[0-9]{1,2})?)$/;
             value && !reg.test(value)
-              ? callback(new Error("保留两位小数"))
+              ? callback(new Error(language('BIDDING_BLLWXS',"保留两位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第十五年",
+    name: language('BIDDING_DI十五NIAN',"第十五年"),
   },
 ]

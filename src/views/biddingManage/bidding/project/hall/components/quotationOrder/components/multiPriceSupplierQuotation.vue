@@ -170,7 +170,7 @@
         </tableColumnTemplate>
       </div>
     </iCard>
-    <iCard class="card" title="批量更新年降" v-show=" !biddingStatus ">
+    <iCard class="card" :title="language('BIDDING_PLGXNJ','批量更新年降')" v-show=" !biddingStatus ">
       <tableColumnTemplate
         :tableData="batchUpdateYearsPlan"
         :tableTitle="stageColumn"
@@ -183,7 +183,7 @@
       >
       </tableColumnTemplate>
     </iCard>
-    <iCard class="card yearsPlan" title="年降计划">
+    <iCard class="card yearsPlan" :title="language('BIDDING_NIANJIANGJIHUA','年降计划')">
       <tableColumnTemplate
           ref="yearsPlan"
           :tableData="yearsPlan"

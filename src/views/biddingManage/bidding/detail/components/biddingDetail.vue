@@ -114,7 +114,7 @@
         </commonTable>
       </div>
     </iCard>
-    <iCard class="card yearsPlan" title="年降计划" v-if="ruleForm.biddingMode === '03'">
+    <iCard class="card yearsPlan" :title="language('BIDDING_NIANJIANGJIHUA','年降计划')" v-if="ruleForm.biddingMode === '03'">
       <tableColumnTemplate
           ref="yearsPlan"
           :tableData="yearsPlan"
@@ -140,7 +140,7 @@
         >
       </tableColumnTemplate>
     </iCard> 
-    <iCard class="card" title="年产量" v-if="ruleForm.biddingMode === '03' && role === 'buyer'">
+    <iCard class="card" :title="language('BIDDING_NIANCHANLIANG','年产量')" v-if="ruleForm.biddingMode === '03' && role === 'buyer'">
       <tableColumnTemplate
           ref="annualOutput"
           :tableData="annualOutput"

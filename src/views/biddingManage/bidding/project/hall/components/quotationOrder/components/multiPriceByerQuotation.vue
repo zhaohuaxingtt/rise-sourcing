@@ -157,7 +157,7 @@
         </tableColumnTemplate>
       </div>
     </iCard>
-    <iCard class="card yearsPlan" title="年降计划">
+    <iCard class="card yearsPlan" :title="language('BIDDING_NIANJIANGJIHUA','年降计划')">
       <tableColumnTemplate
         ref="yearsPlan"
         :tableData="yearsPlan"
@@ -168,7 +168,7 @@
       >
       </tableColumnTemplate>
     </iCard>
-    <iCard class="card" title="年产量">
+    <iCard class="card" :title="language('BIDDING_NIANCHANLIANG','年产量')">
       <tableColumnTemplate
         ref="annualOutput"
         :tableData="annualOutput"
