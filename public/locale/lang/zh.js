@@ -1164,6 +1164,10 @@
         'LK_ZHIYOUCAOGAOZHUANGTAICAIYUNXUXIUGAI':'只有草稿状态才允许修改', // 只有草稿状态才允许修改
         'LK_HUOBIRENMINBI':'货币：人民币 | 单位：百万元 | 不含税', // 货币：人民币 | 单位：百万元 | 不含税
 
+        'LK_GONGYINGSCAIWUZHUNGKUANG': '供应商财务状况',
+        'LK_SVWCAIGOUJINEZHANBI': 'SVW采购金额占比',
+        'LK_GONGYINGSHANGZHUYAOKEHU': '供应商主要客户',
+
         // 定点管理
         'nominationLanguage': {
             "DingDianXiangQing": '定点详情', // 定点详情
