@@ -154,10 +154,7 @@ export default {
       handleReject:false,
     };
   },
-  async mounted() {
-    window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
-    this.projectBack = sessionStorage.getItem("projectBack");
-    console.log(this.projectBack);
+  async created() {
     if (this.actived === 'filing'){
       const res = await getSupplierNotification({
           projectCode: this.ruleForm.projectCode,
@@ -169,6 +166,12 @@ export default {
         this.handleShowNotice(type,docTitle)
       }
     }
+  },
+   mounted() {
+    window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
+    this.projectBack = sessionStorage.getItem("projectBack");
+    console.log(this.projectBack);
+    
   },
 
   computed: {
