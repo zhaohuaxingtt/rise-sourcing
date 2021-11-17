@@ -1,14 +1,14 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-13 14:15:18
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-03 13:50:37
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-17 13:46:38
  * @Description: 解释附件查看列表
 -->
 <template>
   <div class="aeko-assign" >
     <!-- 搜索 -->
-    <search @search="getFetchData" ref="search" />
+    <search @search="getFetchData" ref="search" v-permission.auto="AEKO_APPROVED_EXPLAINATTACH_SEARCH|AEKO审批附件搜索区域"  />
     <!-- 表格 -->
     <iCard class="aeko-assign-table">
       <tablelist
@@ -22,6 +22,7 @@
         :selectable="(row, index) => {return row.unresigned}"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
+        v-permission.auto="AEKO_APPROVED_EXPLAINATTACH_TABLE|AEKO审批附件列表" 
       >
       <template #userName="scope">
         <span>{{`${scope.row.deptName ? `${scope.row.deptName} - ` : ''}${scope.row.userName}`}}</span>
