@@ -80,7 +80,7 @@
         <div class="border last">
           <span v-if="isEdite">{{x.totalSalesPro+'%'}}</span>
           <iInput v-else
-                  v-model="x.totalSalesPro"></iInput>
+                  v-model="x.totalSalesPro" :disabled="index == (MarketOverviewObj.mainCustomerDTOList.length - 1)"></iInput>
         </div>
       </div>
     </div>
@@ -487,7 +487,6 @@ export default {
     },
     edite (val) {
       this.isEdite = val
-      console.log(this.isEdite)
       if (!val) {
         if (!this.MarketOverviewObj.mainCustomerDTOList) {
           this.MarketOverviewObj.mainCustomerDTOList = []
@@ -627,18 +626,24 @@ export default {
           //   this.turnover.series[0].data = data
           //   this.turnover.legend.data = legend
           // }
-          // let total = new Number()
-          // if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
-          //   val.mainCustomerDTOList.forEach(item => {
-          //     total += Number(item.totalSalesPro)
-          //   })
-          //   if (total > 100) {
-          //     iMessage.error('超过100%')
-          //     return
-          //   }
-          // }
+          let total = new Number()
+          if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
+            val.mainCustomerDTOList.forEach((item,index) => {
+              if (index < val.mainCustomerDTOList.length - 1) {
+                total += Number(item.totalSalesPro)
+              }
+            })
+
+            console.log(total)
+
+            if (total > 100) {
+              iMessage.error('份额总和不能超过100%')
+              return
+            } else {
+              val.mainCustomerDTOList[val.mainCustomerDTOList.length - 1].totalSalesPro = 100-total
+            }
+          }
           this.$nextTick(() => {
-            console.log(this.option)
             this.initCharts()
             // this.initturnover()
           });
@@ -652,7 +657,6 @@ export default {
     },
     '$store.state.rfq.categoryCode': {
       handler (val) {
-        console.log(val)
         this.categoryCode = val
         if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
           let data = []
@@ -728,7 +732,6 @@ export default {
 
     },
     handleChange (val) {
-      console.log(val)
       this.iSelectOption.forEach(item => {
         if (item.value === val) {
           this.interestsName = item.name
@@ -742,7 +745,6 @@ export default {
       const myChart = echarts().init(this.$refs.turnover);
       // 绘制图表
       const option = this.turnover
-      console.log(option)
       myChart.setOption(option);
       // myChart.dispatchAction({
       //   type: 'showTip',
