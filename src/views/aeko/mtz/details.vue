@@ -2,30 +2,34 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-17 09:56:28
+ * @LastEditTime: 2021-11-17 10:37:21
  * @Description: 
 -->
 <template>
-  <div class="aeko-mtz" >
+  <div class="aeko-mtz" v-permission.auto="MTZ_MODIFY_DETAILS_PAGE|MTZ变更">
     <!-- 表格 -->
     <iCard class="aeko-mtz-table">
       <div class="floatright margin-bottom15" v-if="!disable">
         <iButton
+          v-permission.auto="MTZ_MODIFY_DETAILS_BUTTON_RESET|MTZ重置"
           @click="resetAekoMtz"
         >
           {{ language('REST', '重置') }}
         </iButton>
         <iButton
+          v-permission.auto="MTZ_MODIFY_DETAILS_BUTTON_COPY|MTZ复制"
           @click="copyAekoMtz"
         >
           {{ language('LK_COPY', '复制') }}
         </iButton>
         <iButton
+          v-permission.auto="MTZ_MODIFY_DETAILS_BUTTON_REMOVE|MTZ删除"
           @click="removeAekoMtz"
         >
           {{ language('SHANCHU', '删除') }}
         </iButton>
         <iButton
+          v-permission.auto="MTZ_MODIFY_DETAILS_BUTTON_SAVE|MTZ保存"
           @click="saveAekoMtz"
         >
           {{ language('BAOCUN', '保存') }}
@@ -39,6 +43,7 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         :lang="true"
+        v-permission.auto="MTZ_MODIFY_DETAILS_TABLE|MTZ变更表格"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
