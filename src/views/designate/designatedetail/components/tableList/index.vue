@@ -6,15 +6,15 @@
 -->
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
-    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
-    <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
+    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
+    <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#' :fixed="isFixedIndex">
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
       </template>
     </el-table-column>
     <template v-for="(items,index) in tableTitle">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot-scope="row">
           <span class="flexRow">
             <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
@@ -25,7 +25,7 @@
           </span>  
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItems2' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItems2' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot-scope="row">
           <span class="flexRow">
             <span class="openLinkText cursor " @click="openPage2(row.row)"> {{ row.row[activeItems2] }}</span>
@@ -37,7 +37,7 @@
         </template>
       </el-table-column>
       <!----------------------需要进行排序的列------------------------>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth"  v-else-if='items.props == "paixu"'>
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth"  v-else-if='items.props == "paixu"' :fixed="items.fixed">
         <tempalte slot-scope="scope">
           <span @click="updateSlot(scope.row,0)" v-if='scope.row.recordId && parseInt(scope.row.recordId)'>
             <icon symbol class="cursor" name='iconliebiaoyizhiding' ></icon>
@@ -48,13 +48,13 @@
         </tempalte>
       </el-table-column>
       <!---------------------------可编辑列---------------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.isPC" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.isPC" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot-scope="scope">
           <iInput type="number" v-if="items.type === 'input' && !disabled" v-model="scope.row[items.props]"  @input="val=>changeValue(val, scope.row, items)"></iInput>
           <span>{{ scope.row[items.props] }}</span>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if="items.editable" :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot="header">
           <span>{{items.key ? language(items.key, items.name) : items.name}}</span>
           <span v-if="items.required" style="color:red;">*</span>
@@ -82,7 +82,7 @@
         </template>
       </el-table-column>
       <!-------------------------正常列--------------------------->
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props" :fixed="items.fixed">
         <template slot="header">
           <span v-if="items.enName">{{items.name}}<br/>{{items.enName}}<span v-if="items.enName1">{{items.enName1}}</span></span>
           <span v-else>{{items.key ? language(items.key, items.name) : items.name}}</span>
@@ -154,6 +154,23 @@ export default{
     disabled: {type:Boolean,default: false}
   },
   inject:['vm'],
+  watch: {
+    tableData(nv) {
+      this.$nextTick(() => {
+        const headerWrapperDom = this.$el.querySelector(".el-table__header-wrapper")
+        const bodyWrapperDom = this.$el.querySelector(".el-table__body-wrapper")
+        const tableFixedDom = this.$el.querySelector(".el-table__fixed")
+        tableFixedDom.style.maxHeight = (headerWrapperDom.clientHeight + bodyWrapperDom.clientHeight) + "px"
+      })
+    }
+  },
+  computed: {
+    isFixedIndex() {
+      if (Array.isArray(this.tableTitle)) {
+        return this.tableTitle.find(item => item.fixed) ? true : false
+      } else return false
+    }
+  },
   methods:{
     getRate(row, props) {
       const findItem = row.departmentRate?.find(item => item.rateDepartNum === props)
