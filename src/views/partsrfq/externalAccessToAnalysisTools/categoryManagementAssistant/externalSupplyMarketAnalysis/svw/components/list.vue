@@ -158,7 +158,7 @@ export default {
         },
 
         legend: {
-          data: ['svw', '其他'],
+          data: ['SVW', '其他'],
           right: 0,
           icon: "circle"
         },
@@ -179,7 +179,8 @@ export default {
             },
           }
         ],
-        yAxis: {
+        yAxis: [{
+          position: 'left',
           splitLine: {
             show: true,
           },
@@ -190,9 +191,28 @@ export default {
             show: false,//不显示坐标轴线
           }
         },
+        {
+          type: 'value',
+          min: 0,
+          max: 100,
+          position: 'right',
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#EE6666'
+            }
+          },
+          axisLabel: {
+            formatter: '{value}%'
+          },
+          splitLine: {
+            show: false
+          }
+        }],
         series: [
           {
             name: '其他',
+            yAxisIndex: 0,
             itemStyle: {
               color: "#B4CBF7"
             },
@@ -232,7 +252,8 @@ export default {
             }]
           },
           {
-            name: 'svw',
+            name: 'SVW',
+            yAxisIndex: 0,
             itemStyle: {
               color: "#0059FF"
             },
@@ -271,7 +292,44 @@ export default {
               }
             }]
           },
-
+          {
+            name: 'profit',
+            yAxisIndex: 1,
+            itemStyle: {
+              color: "#EE6666"
+            },
+            z: 30,
+            type: 'line',
+            data: [
+              {
+                value: 2,
+                label: {
+                  normal: {
+                    show: true,
+                    formatter: ''
+                  }
+                }
+              },
+              {
+                value: 3,
+                label: {
+                  normal: {
+                    show: true,
+                    formatter: ''
+                  }
+                }
+              },
+              {
+                value: 7,
+                label: {
+                  normal: {
+                    show: true,
+                    formatter: ''
+                  }
+                }
+              }
+            ]
+          }
         ]
       },
       turnover: {
@@ -508,6 +566,7 @@ export default {
               this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+              this.option.series[2].data[0].value = x.profit
               this.profit1 = x.profit
             }
             if (x.year == date - 2) {
@@ -515,6 +574,7 @@ export default {
               this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+              this.option.series[2].data[1].value = x.profit
               this.profit2 = x.profit
             }
             if (x.year == date - 1) {
@@ -522,6 +582,7 @@ export default {
               this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+              this.option.series[2].data[2].value = x.profit
               this.profit3 = x.profit
             }
           });
