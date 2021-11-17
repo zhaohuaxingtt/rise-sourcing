@@ -133,6 +133,7 @@ import {
 } from '@/api/letterAndLoi/letter'
 import { getDictByCode } from '@/api/dictionary'
 import { numberProcessor } from '@/utils' 
+import {setPretreatmentParams} from '@/utils/tool'
 export default {
     name:'letterList',
     mixins: [pageMixins],
@@ -180,10 +181,7 @@ export default {
     },
     created(){
         // 获取寻源概览过来的预置参数
-        const acceptKeys = require('@/config/dashboard').acceptKeys || []
-        Object.keys(this.$route.query).forEach(key => {
-            acceptKeys.includes(key) && (this.$set(this.searchParams, `${ key }`, this.$route.query[key]))
-        })
+        setPretreatmentParams(this, this.searchParams, this.$route.query)
         this.getSelectOptions();
         this.getList();
     },

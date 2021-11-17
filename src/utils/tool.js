@@ -41,3 +41,29 @@ export function NumFormat(value) {  //  金额显示.00格式
         return intPartFormat + floatPart
     }
 }
+/**
+ * @description: 处理从列表页面进入 加入从路由进来的参数(寻源概览)
+ * @param {*} vm vue对象
+ * @param {*} params 需要修改的param对象
+ * @param {*} query vue 路由的query
+ * @param {*} callback 回调
+ * @return {*}
+ */
+export function setPretreatmentParams(vm, params, query, callback) {
+    const acceptKeys = require('@/config/dashboard').acceptKeys || []
+    const BooleanKeys = require('@/config/dashboard').BooleanKeys || []
+    Object.keys(query).forEach(key => {
+        let keyValue = query[key]
+        // 处理Boolean值
+        if (BooleanKeys.includes(key)) keyValue = keyValue === 'true'
+        if (acceptKeys.includes(key)) {
+            if (vm) {
+                vm.$set(params, key, keyValue)
+            } else {
+                params[key] = keyValue
+            }
+        }
+        callback && typeof callback === 'function' && (callback({keyName: keyValue, keyValue}))
+    })
+    return params
+}
