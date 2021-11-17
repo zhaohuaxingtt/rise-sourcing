@@ -114,31 +114,45 @@ export default {
       }
     },
     methods:{
-       // 获取列表
-       async getListData(){
+      // 获取列表
+      async getListData(){
          const { query } = this.$route;
          const {desinateId =''} = query;
-          this.loading = true;
+
          const {pageSize,currPage} = this.page;
-          const data = {
-             nominateId:desinateId,
-             size:pageSize,
-             current:currPage
-             
-          };
-          await getPartList(data).then((res)=>{
-            this.loading = false;
-             const {code,data} = res;
-             if(code === '200' && data){
-                const { records=[],total } = data;
-                records.forEach(val => val.mtz === true ? val.mtz = 'MTZ' : val.mtz  = '');
-                this.tableListData = records.map(item => ({ ...item, ebrConfirmValue: item.ebrConfirmValue ? this.percent(item.ebrConfirmValue) : "" }))
-                this.page.totalCount = total;
-             }
-          }).catch((err)=>{
-            this.loading = true;
-          })
-       },
+
+         const data = {
+            nominateId:desinateId,
+            size:pageSize,
+            current:currPage
+         }
+
+         this.loading = true
+
+         await getPartList(data)
+         .then(res => {
+            const {code,data} = res;
+            if(code === '200' && data){
+            const { records=[],total } = data;
+            records.forEach(val => val.mtz === true ? val.mtz = 'MTZ' : val.mtz  = '');
+
+            this.tableListData = records.map(item => {
+               const result = { ...item }
+               
+               if (item.ebrConfirmValue) {
+                  result.ebrConfirmValue = (this.isPreview == "1" || this.nominationDisabled || this.rsDisabled) ? item.ebrConfirmValue : this.percent(item.ebrConfirmValue)
+               } else {
+                  result.ebrConfirmValue = ""
+               }
+
+               return result
+            })
+
+            this.page.totalCount = total;
+            }
+         })
+         .finally(() => this.loading = false)
+      },
       // 输入框 手工输入EBR值 数字的限制
       handleInputLimit(val, row){
          this.$set(row, "ebrConfirmValue", numberProcessor(val, 2))
