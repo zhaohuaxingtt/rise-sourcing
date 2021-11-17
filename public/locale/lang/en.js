@@ -1005,6 +1005,10 @@
         'LK_ZHAOPIAN': '照片',  //  照片
         'LK_GUZIMINGCHEN': '固资名称',  //  固资名称
         'LK_DUIBUQIMEIYOUQUANXIAN': 'Sorry, your position does not have the permission of this material group', //  对不起，您所在得岗位没有该材料组权限
+        
+        'LK_GONGYINGSCAIWUZHUNGKUANG': '供应商财务状况',
+        'LK_SVWCAIGOUJINEZHANBI': 'SVW采购金额占比',
+        'LK_GONGYINGSHANGZHUYAOKEHU': '供应商主要客户',
 
         // 定点管理
         'nominationLanguage': {

@@ -1,23 +1,25 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-11-06 10:44:23
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-17 13:38:33
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
   <iCard class="mb-20">
-    <span class="title">{{language('QIEHUANLINGJIAN', '切换零件')}}:</span>
-    <div class="i-select mb-20">
-      <iSelect v-model="partsId" :placeholder="language('QINGXUANZE','请选择')" @change="getCbdDataQuery">
-        <el-option
-          :value="item.key"
-          :label="item.value"
-          v-for="item in partsList"
-          :key="item.key"
-        ></el-option>
-      </iSelect>
-    </div>
+    <template v-permission.auto="AEKO_APPROVAL_DETAIL_CBDSUMMARY_QUEHUANLINGJIAN|切换零件">
+      <span class="title">{{language('QIEHUANLINGJIAN', '切换零件')}}:</span>
+      <div class="i-select mb-20">
+        <iSelect v-model="partsId" :placeholder="language('QINGXUANZE','请选择')" @change="getCbdDataQuery">
+          <el-option
+            :value="item.key"
+            :label="item.value"
+            v-for="item in partsList"
+            :key="item.key"
+          ></el-option>
+        </iSelect>
+      </div>
+    </template>
     <tableList
       v-loading="loading"
       lang
@@ -25,6 +27,7 @@
       :selection="false"
       :tableTitle="tableTitle"
       :tableData="tableData"
+      v-permission.auto="AEKO_APPROVAL_DETAIL_CBDSUMMARY_LINGJIANLIEBIAO|零件列表"
     >
         <template #originAPrice="scope">
           <el-popover
