@@ -707,104 +707,104 @@ export const outPutColumn = [
   {
     props: "stage1",
     required: false,
-    name: "第一年",
+    name: language('BIDDING_DI一NIAN',"第一年"),
   },
   {
     props: "stage2",
     required: false,
     rule: [
     ],
-    name: "第二年",
+    name: language('BIDDING_DI二NIAN',"第二年"),
   },
   {
     props: "stage3",
     required: false,
     rule: [
     ],
-    name: "第三年",
+    name: language('BIDDING_DI三NIAN',"第三年"),
   },
   {
     props: "stage4",
     required: false,
     rule: [
     ],
-    name: "第四年",
+    name: language('BIDDING_DI四NIAN',"第四年"),
   },
   {
     props: "stage5",
     required: false,
     rule: [
     ],
-    name: "第五年",
+    name: language('BIDDING_DI五NIAN',"第五年"),
   },
   {
     props: "stage6",
     required: false,
     rule: [
     ],
-    name: "第六年",
+    name: language('BIDDING_DI六NIAN',"第六年"),
   },
   {
     props: "stage7",
     required: false,
     rule: [
     ],
-    name: "第七年",
+    name: language('BIDDING_DI七NIAN',"第七年"),
   },
   {
     props: "stage8",
     required: false,
     rule: [
     ],
-    name: "第八年",
+    name: language('BIDDING_DI八NIAN',"第八年"),
   },
   {
     props: "stage9",
     required: false,
     rule: [
     ],
-    name: "第九年",
+    name: language('BIDDING_DI九NIAN',"第九年"),
   },
   {
     props: "stage10",
     required: false,
     rule: [
     ],
-    name: "第十年",
+    name: language('BIDDING_DI九NIAN',"第十年"),
   },
   {
     props: "stage11",
     required: false,
     rule: [
     ],
-    name: "第十一年",
+    name: language('BIDDING_DI十一NIAN',"第十一年"),
   },
   {
     props: "stage12",
     required: false,
     rule: [
     ],
-    name: "第十二年",
+    name: language('BIDDING_DI十二NIAN',"第十二年"),
   },
   {
     props: "stage13",
     required: false,
     rule: [
     ],
-    name: "第十三年",
+    name: language('BIDDING_DI十三NIAN',"第十三年"),
   },
   {
     props: "stage14",
     required: false,
     rule: [
     ],
-    name: "第十四年",
+    name: language('BIDDING_DI十四NIAN',"第十四年"),
   },
   {
     props: "stage15",
     required: false,
     rule: [
     ],
-    name: "第十五年",
+    name: language('BIDDING_DI十五NIAN',"第十五年"),
   },
 ]
