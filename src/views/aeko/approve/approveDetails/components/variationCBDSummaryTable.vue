@@ -1,13 +1,13 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-15 16:58:39
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-17 13:37:58
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
   <div>
-    <iCard class="mb-16">
+    <iCard class="mb-16" v-permission.auto="AEKO_APPROVAL_DETAIL_CBDSUMMARY_BIANDONGZHICBDHUIZONGBIAO|变动值CBD-汇总表">
       <p class="title">
         {{
           `${language("BIANDONGZHI", "变动值")}CBD - ${language(

@@ -16,7 +16,7 @@
       <el-form-item :label="language('LINGJIAHAO', '零件号')">
         <iInput
           v-model.trim="form.partNums"
-          v-permission.auto="AEKO_MTZ_MTZLIST_SEARCH_PARTNUM|零件号"
+          v-permission.auto="MTZ_MODIFY_LIST_SEARCH_PARTNUM|零件号"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -25,7 +25,7 @@
       <el-form-item :label="language('GONGYINGSHANGJIANCHENG', '供应商简称')">
         <iInput
           v-model.trim="form.supplierName"
-          v-permission.auto="AEKO_MTZ_MTZLIST_SEARCH_SUPPLIERNAME|供应商简称"
+          v-permission.auto="MTZ_MODIFY_LIST_SEARCH_SUPPLIERNAME|供应商简称"
           :placeholder="language('LK_QINGSHURU','请输入')"
           clearable
         ></iInput>
@@ -35,7 +35,7 @@
         <iSelect
           class="multi-select"
           v-model="form.materialCodeList"
-          v-permission.auto="AEKO_MTZ_MTZLIST_SEARCH_MATERIALIST|原材料"
+          v-permission.auto="MTZ_MODIFY_LIST_SEARCH_MATERIALIST|原材料"
           :placeholder="language('LK_QINGXUANZE','请选择')"
           filter-method="filterMaterial"
           @change="handlemultipleChange"
@@ -65,6 +65,7 @@
       /> -->
       <iDatePicker
         v-model='form.checkDate'
+        v-permission.auto="MTZ_MODIFY_LIST_SEARCH_VALIDATE|有效期"
         @change="setstartEndDate"
         type="daterange"
         value-format="yyyy-MM-dd"

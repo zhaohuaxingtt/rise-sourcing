@@ -54,6 +54,7 @@ export default {
           url: "/aeko/AEKOApprovalDetails/Approvalform",
           activePath: "Approvalform",
           key: "审批单",
+          permissionKey:'AEKO_APPROVAL_DETAIL_TAB_APPROVALFORM',
         },
         {
           value: 2,
@@ -62,6 +63,7 @@ export default {
           url: "/aeko/AEKOApprovalDetails/CBDSummary",
           activePath: "CBDSummary",
           key: "CBD汇总",
+          permissionKey:'AEKO_APPROVAL_DETAIL_TAB_CBDSUMMARY',
         },
         {
           value: 3,
@@ -70,6 +72,7 @@ export default {
           url: "/aeko/AEKOApprovalDetails/explainattach",
           activePath: "explainattach",
           key: "审批附件",
+          permissionKey:'AEKO_APPROVAL_DETAIL_TAB_EXPLAINATTACH',
         },
       ],
       disabled:false,

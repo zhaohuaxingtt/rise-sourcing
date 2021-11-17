@@ -344,7 +344,7 @@ export default {
         iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'))
         return
       }
-      const confirmInfo = await this.$confirm(this.language('revokeSure'))
+      const confirmInfo = await this.$confirm(this.language('REVOKESURE', '您确定要执行撤回操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
@@ -365,7 +365,8 @@ export default {
         iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
         return
       }
-      const confirmInfo = await this.$confirm(this.language('revokeSure','您确定要执行撤回操作吗？'))
+
+      const confirmInfo = await this.$confirm(this.language('REVOKESURE','您确定要执行撤回操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {

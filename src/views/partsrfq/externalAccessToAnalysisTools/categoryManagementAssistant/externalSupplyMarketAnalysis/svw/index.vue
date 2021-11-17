@@ -24,13 +24,13 @@
         <!-- tittle -->
         <div class="moudle-tittle">
           <div class="module1"><img :src="statueImg"
-                 class="imgStatus" />供应商财务状况</div>
+                 class="imgStatus" />{{language("LK_GONGYINGSCAIWUZHUNGKUANG", "供应商财务状况")}}</div>
           <div class="turnover">
             <div class="module2-left"><img class="imgStatus"
-                   :src="svwImg" />营业额占比</div>
+                   :src="svwImg" />{{language("LK_SVWCAIGOUJINEZHANBI", "SVW采购金额占比")}}</div>
           </div>
           <div class="module3"><img class="imgStatus"
-                 :src="userImg" />供应商主要客户</div>
+                 :src="userImg" />{{language("LK_GONGYINGSHANGZHUYAOKEHU", "供应商主要客户")}}</div>
         </div>
       </div>
 

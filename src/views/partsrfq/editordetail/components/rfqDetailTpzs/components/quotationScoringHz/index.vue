@@ -483,6 +483,8 @@ export default{
         this.ratingList = []
     },
     searchABPageExchangeRate() {
+      if (!this.$route.query.desinateId) return
+
       searchABPageExchangeRate(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
@@ -506,6 +508,7 @@ export default{
     exchangeRateProcess(row) {
       return `100${ this.$i18n.locale === "zh" ? row.currencyName : row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ this.$i18n.locale === "zh" ? row.originCurrencyName : row.originCurrencyCode }`
     },
+    //导出
     exportParts(layout) {
       if(layout === '1') {
         return exportFSPartsAsRow(this.$route.query.id,this.round)

@@ -133,6 +133,7 @@ import {
 } from '@/api/letterAndLoi/letter'
 import { getDictByCode } from '@/api/dictionary'
 import { numberProcessor } from '@/utils' 
+import {setPretreatmentParams} from '@/utils/tool'
 export default {
     name:'letterList',
     mixins: [pageMixins],
@@ -153,14 +154,14 @@ export default {
         return{
             letterListSearch:letterListSearch,
             searchParams:{
-                showSelf:'YES',
+                showSelf: true,
                 status:'',
             },
             selectOptions:{
                 status:[],
                 showSelf:[
-                    {label:'是',key:'nominationLanguage.Yes',value:'YES'},
-                    {label:'否',key:'nominationLanguage.No',value:'NO'},
+                    {label:'是',key:'nominationLanguage.Yes',value: true},
+                    {label:'否',key:'nominationLanguage.No',value: false},
                 ],
             },
             loading:false,
@@ -180,10 +181,7 @@ export default {
     },
     created(){
         // 获取寻源概览过来的预置参数
-        const acceptKeys = require('@/config/dashboard').acceptKeys || []
-        Object.keys(this.$route.query).forEach(key => {
-            acceptKeys.includes(key) && (this.$set(this.searchParams, `${ key }`, this.$route.query[key]))
-        })
+        setPretreatmentParams(this, this.searchParams, this.$route.query)
         this.getSelectOptions();
         this.getList();
     },
@@ -197,7 +195,7 @@ export default {
             this.loading = true;
             const {searchParams,page} = this;
             // 若有定点起止时间将其拆分成两个字段
-            const {nominateDate=[],showSelf=''} = searchParams;
+            const {nominateDate=[]} = searchParams;
             const data = {
                 current:page.currPage,
                 size:page.pageSize
@@ -209,7 +207,6 @@ export default {
             await getLetterList({
                 ...searchParams,
                 ...data,
-                showSelf:showSelf=='YES',
                 }).then((res)=>{
                 this.loading = false;
                 res.data.records.forEach(val=> {

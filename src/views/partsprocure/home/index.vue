@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-11-11 14:33:01
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-17 15:50:04
+ * @LastEditors: Hao,Jiang
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
 -->
@@ -291,6 +291,7 @@ import filters from "@/utils/filters";
 import { clickMessage } from "@/views/partsign/home/components/data"
 import {selectDictByKeyss,procureFactorySelectVo} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
+import {setPretreatmentParams} from '@/utils/tool'
 import { log } from 'util';
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -442,10 +443,7 @@ export default {
       this.form.size = this.page.pageSize;
       this.form.current = this.page.currPage;
       // 获取预置的参数
-      const acceptKeys = require('@/config/dashboard').acceptKeys || []
-      Object.keys(this.$route.query).forEach(key => {
-          acceptKeys.includes(key) && (this.$set(this.form, `${ key }`, this.$route.query[key]))
-      })
+      setPretreatmentParams(this, this.form, this.$route.query)
       getTabelData(this.form)
         .then((res) => {
           this.tableLoading = false;

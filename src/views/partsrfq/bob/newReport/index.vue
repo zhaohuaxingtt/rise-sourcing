@@ -1,5 +1,6 @@
 <template>
-  <iPage class="new-bob" v-loading="onDataLoading">
+  <iPage class="new-bob"
+         v-loading="onDataLoading">
     <div>
       <div class="navBox flex-between-center">
         <span class="title font-weight">BOB{{ $t("TPZS.FENXI")}}
@@ -27,7 +28,7 @@
       </div>
       <el-row :gutter="20"
               class="margin-top20">
-        <el-col :span="inside?4:5">
+        <el-col :span="groupIds?0:inside?4:5">
           <iCard :collapse="false"
                  style="height: 620px">
             <el-form label-position="top"
@@ -63,16 +64,7 @@
                         </span>
                       </el-option>
                     </el-select>
-                    <!-- <custom-select :data="supplierList"
-                                   label="nameZh"
-                                   value="supplierId"
-                                   :multiple="true"
-                                   @change="handleMultiChange"
-                                   v-model="form.supplier"
-                                   :disabled="false"
-                                   :search-method="handleMultiSearch"
-                                   :multiple-limit="chartType === 'supplier' ? 5 : 1"
-                                   :popoverClass="'popover-class'" /> -->
+
                   </el-form-item>
                   <!--轮次-->
                   <el-form-item :label="$t('轮次')">
@@ -89,29 +81,11 @@
                                  :value="i.turn"
                                  :label="'第' + i.turn + '轮'"></el-option>
                     </el-select>
-                    <!-- <custom-select :data="supplierList"
-                                   label="turn"
-                                   value="turn"
-                                   :multiple="true"
-                                   @change="handleMultiChange"
-                                   v-model="form.turn"
-                                   :disabled="false"
-                                   :search-method="handleMultiSearch"
-                                   :multiple-limit="chartType === 'turn' ? 5 : 1"
-                                   :popoverClass="'popover-class'" /> -->
+
                   </el-form-item>
                   <!--零件号-->
                   <el-form-item :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')">
-                    <!-- <custom-select :data="partList"
-                                   label="spareParts"
-                                   value="fsNo"
-                                   :multiple="true"
-                                   @change="handleMultiChange"
-                                   v-model="form.spareParts"
-                                   :disabled="false"
-                                   :search-method="handleMultiSearch"
-                                   :multiple-limit="chartType === 'spareParts' ? 5 : 1"
-                                   :popoverClass="'popover-class'" /> -->
+
                     <el-select multiple
                                clearable
                                value-key
@@ -135,21 +109,6 @@
                     </iSelect>
                   </el-form-item>
                   <el-form-item :label="$t('FS号-零件号-供应商')">
-                    <!-- <el-select multiple
-                               clearable
-                               value-key
-                               :multiple-limit="chartType === 'combination' ? 6 : 1"
-                               v-model="form.combination"
-                               @change="selectChange"
-                               @remove-tag="closeTag">
-                      <el-option v-for="(i) in options"
-                                 :key="i.key"
-                                 :value="i.key"
-                                 :label="i.nameZh+''+i.value">
-
-                      </el-option>
-                    </el-select> -->
-
                     <custom-select :data="options"
                                    label="nameZh"
                                    value="key"
@@ -178,7 +137,7 @@
             </div>
           </iCard>
         </el-col>
-        <el-col :span="inside?20:19">
+        <el-col :span="groupIds?24:inside?20:19">
           <iCard style="height: 620px">
             <div style="width: 100%; height: 30px;display: flex;flex-flow: row nowrap;justify-content: space-between;">
               <div> <span class="chartTitle">{{chartTitle}}</span>
@@ -202,7 +161,7 @@
               </div>
             </div>
             <el-row>
-              <el-col :span="inside ? 18 : 24"
+              <el-col :span="groupIds?24:inside ? 18 : 24"
                       style="padding-left:0px">
                 <crown-bar :chartData="chartData"
                            :supplierList="supplierList"
@@ -268,7 +227,7 @@
       </el-row>
       <el-row :gutter="20"
               class="margin-top20">
-        <el-col :span="inside?4:5">
+        <el-col :span="groupIds?0:inside?4:5">
           <iCard :collapse="false">
             <ul class="anchorList flex">
               <li v-for="(i,index) in anchorList"
@@ -279,8 +238,9 @@
             </ul>
           </iCard>
         </el-col>
-        <el-col :span="inside ? 20 : 19">
+        <el-col :span="groupIds?24:inside ? 20 : 19">
           <bobAnalysis ref="bobAnalysis"
+                       v-bind="$attrs"
                        :supplierList="supplierList"
                        :partList="partList"
                        :analysisSchemeId="analysisSchemeId"
@@ -422,11 +382,25 @@ export default {
       maxDataList1: []
     };
   },
+  props: {
+    propSchemeId: {
+      type: String,
+      default: ""
+    },
+    propGroupId: {
+      type: String,
+      default: ""
+    }
+  },
   async created () {
     this.onDataLoading = true;
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus
-    this.analysisSchemeId = this.$route.query.chemeId
+    if (this.$route.query.chemeId) {
+      this.analysisSchemeId = this.$route.query.chemeId
+    } else {
+      this.analysisSchemeId = this.propSchemeId
+    }
     // this.groupId = this.$route.query.groupId
     let res = await generateGroupId()
     this.groupId = res.data
@@ -434,7 +408,11 @@ export default {
       if (this.entryStatus === 1) {
         this.inside = true
         this.rfq = this.$store.state.rfq.rfqId
-        this.analysisSchemeId = this.$route.query.chemeId
+        if (this.$route.query.chemeId) {
+          this.analysisSchemeId = this.$route.query.chemeId
+        } else {
+          this.analysisSchemeId = this.propSchemeId
+        }
         await this.getChartData()
       } else if (this.entryStatus === 0) {
         this.findPart()
@@ -451,7 +429,11 @@ export default {
           this.inside = false
         }
       }
-      this.analysisSchemeId = this.$route.query.chemeId
+      if (this.$route.query.chemeId) {
+        this.analysisSchemeId = this.$route.query.chemeId
+      } else {
+        this.analysisSchemeId = this.propSchemeId
+      }
       await this.getChartData()
     }
   },

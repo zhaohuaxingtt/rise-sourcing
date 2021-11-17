@@ -93,3 +93,11 @@ export function searchRsPageExchangeRate(nominateId) {
     method: 'POST'
   })
 }
+
+// 权限获取RS数据
+export function reviewListRs(nominateAppId) {
+  return requst({
+    url: `/rs/reviewListRs?nominateAppId=${ nominateAppId }`,
+    method: 'GET'
+  })
+}
