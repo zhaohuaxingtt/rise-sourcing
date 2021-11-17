@@ -126,9 +126,8 @@
           <iFormItem label="作废原因" prop="invalidReason">
             <iLabel :label="language('BIDDING_ZUOFEIYUANYIN', '作废原因')" slot="label"></iLabel>
             <div
-              :value="ruleForm.invalidReason"
               class="form-item-clo1-row1"
-            ></div>
+            >{{ruleForm.invalidReason}}</div>
             <!-- <iInput
               type="textarea"
               v-model="ruleForm.invalidReason"
@@ -173,6 +172,7 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
+        console.log(176,val)
       },
     },
     ruleForm(val) {
@@ -331,6 +331,7 @@ export default {
         padding: 0 0.875rem;
         word-wrap: break-word;
         overflow: auto;
+        color: #aaa;
       }
       .el-form-item {
         width: 100%;
