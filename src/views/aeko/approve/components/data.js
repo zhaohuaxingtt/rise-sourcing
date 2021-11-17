@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
- * @LastEditors: YoHo
- * @LastEditTime: 2021-11-16 19:05:47
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-17 09:59:01
  * @Description: 
  */
 
@@ -83,22 +83,65 @@ export  const AEKOAPPROVEMENU=[
 
 
 export const SUBMENU = [
-  {
-    value: 1,
-    name: 'AEKO审批',
-    message: 0,
-    url: '/aeko/approve',
-    activePath: 'projectoverview',
-    key: 'LK_AEKOSHENPI'
+    {
+        value: 1,
+        name: 'AEKO审批',
+        message: 0,
+        url: '/aeko/approve',
+        activePath: 'projectoverview',
+        key: 'LK_AEKOSHENPI',
+        permissionKey:'LK_AEKOSHENPI',
+        permissionName:'AEKO审批',
+      },
+    {
+      value: 2,
+      name: "AEKO管理",
+      message: 0,
+      url: "/aeko/managelist",
+      activePath: "/managelist",
+      key: "LK_AEKOGUANLI",
+      permissionKey:'AEKO_MANAGE',
+      permissionName:'AEKO管理',
+      role:['isAekoManager','isCommodityCoordinator'],
   },
   {
-    value: 2,
-    name: 'AEKO查看',
-    message: 0,
-    url: '/aeko/checklist',
-    activePath: '/checklist',
-    key: 'AEKO_CHECK'
+      value: 3,
+      name: "AEKO表态",
+      message: 0,
+      url: "/aeko/stancelist",
+      activePath: "/stancelist",
+      key: "LK_AEKOBIAOTAI",
+      permissionKey:'AEKO_STANCE',
+      permissionName:'AEKO表态',
+      role:['isLinie'],
   },
+  {
+      value: 4,
+      name: "AEKO查看",
+      message: 0,
+      url: "/aeko/checklist",
+      activePath: "/checklist",
+      key: "LK_AEKOCHAKAN",
+      permissionKey:'AEKO_CHECK',
+      permissionName:'AEKO查看',
+      role:['isAekoManager','isCommodityCoordinator','isLinie'],
+  },
+  // {
+  //   value: 1,
+  //   name: 'AEKO审批',
+  //   message: 0,
+  //   url: '/aeko/approve',
+  //   activePath: 'projectoverview',
+  //   key: 'LK_AEKOSHENPI'
+  // },
+  // {
+  //   value: 2,
+  //   name: 'AEKO查看',
+  //   message: 0,
+  //   url: '/aeko/checklist',
+  //   activePath: '/checklist',
+  //   key: 'AEKO_CHECK'
+  // },
 ]
 // 主菜单
 export const ATTACHSUBMENU = [
