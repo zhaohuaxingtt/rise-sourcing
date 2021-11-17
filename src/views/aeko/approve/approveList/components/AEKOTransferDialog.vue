@@ -23,6 +23,7 @@
 <script>
 import {iButton, iDialog, iSelect} from 'rise'
 import {getRoleUserList} from "@/api/aeko/approve";
+import {roleMixins} from "@/utils/roleMixins";
 
 export default {
   name: "AEKOTransferDialog",
@@ -31,6 +32,7 @@ export default {
     iDialog,
     iSelect
   },
+  mixins:[roleMixins],
   props: {
     value: {type: Boolean, require: true, default: false},
 
@@ -60,7 +62,7 @@ export default {
               code: item.id,
               lowerCaseLabel: typeof item.nameEn === "string" ? item.nameEn.toLowerCase() : item.nameEn
             }
-          });
+          }).filter(item=>item.code!=this.userInfo.id);
         } else {
           this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
