@@ -154,19 +154,6 @@ export default {
       handleReject:false,
     };
   },
-  async created() {
-    if (this.actived === 'filing'){
-      const res = await getSupplierNotification({
-          projectCode: this.ruleForm.projectCode,
-          supplerCode: this.supplierCode,
-      });
-      if(!res.systemUseFlag) {
-        const type = '01'
-        const docTitle = '系统使用条款'
-        this.handleShowNotice(type,docTitle)
-      }
-    }
-  },
    mounted() {
     window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
     this.projectBack = sessionStorage.getItem("projectBack");
@@ -251,7 +238,7 @@ export default {
       });
       sessionStorage.clear();
     },
-    handleChangeTitle(data) {
+     async handleChangeTitle(data) {
       if (data.biddingStatus == "01" || data.biddingStatus == null) {
         if (this.role == "buyer") {
           this.$router.push({ name: "biddingProjectInquiry" });
@@ -264,6 +251,19 @@ export default {
         "CACHE_PROJECT_RULE_FORM",
         JSON.stringify(data)
       );
+      if(data) {
+        if (this.actived === 'filing'){
+        const res = await getSupplierNotification({
+            projectCode: this.ruleForm.projectCode,
+            supplerCode: this.supplierCode,
+        });
+        if(!res?.systemUseFlag) {
+          const type = '01'
+          const docTitle = '系统使用条款'
+          this.handleShowNotice(type,docTitle)
+        }
+    }
+      }
     },
     // 开标结束本轮RFQ
     onOpenCancel() {
