@@ -675,10 +675,15 @@
 			},
 			getProcureGroup() {
 				dictkey().then((res) => {
-					if (res.data) {
+					if (res.code == 200 && res.data) {
+						const map = {}
+						Object.keys(res.data).forEach(key => { // 容错
+							map[key] = Array.isArray(res.data[key]) ? res.data[key] : []
+						})
+
 						this.fromGroup = {
 							...this.fromGroup,
-							...res.data
+							...map
 						}
 						this.purchasingDept()
 						this.getLinie(this.detailData.linieDept)
