@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-10-20 13:55:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-20 16:02:27
+ * @LastEditTime: 2021-11-17 22:13:56
  * @Description: 
- * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\selectKw\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\selectKw\index.vue
 -->
 
 <template> 
@@ -47,7 +47,7 @@ export default {
   watch: {
     dialogVisible(val) {
       if (val) {
-        this.valueTemp = this.value
+        this.valueTemp = this.value || ''
       }
     }
   },
@@ -56,6 +56,7 @@ export default {
   },
   methods: {
     handleChange(val) { 
+      // console.log('val', val)
       this.valueTemp = val.join('-KW') 
     }, 
     handleConfirm() {
@@ -74,7 +75,7 @@ export default {
      */    
     initOption() { 
       const option = [] 
-      for(var i = 2000; i <= moment().year() + 10; i++) { 
+      for(var i = 1900; i <= moment().year() + 10; i++) { 
         const countMonth = moment(i+'-01-01').weeksInYear() 
         const children = [] 
         for(var j = 1; j <= countMonth; j++) { 
@@ -85,6 +86,7 @@ export default {
       return option 
     },
     clearDialog() { 
+      this.valueTemp = ''
       this.$emit('changeVisible', false) 
     }, 
   }
