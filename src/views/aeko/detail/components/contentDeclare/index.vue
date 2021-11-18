@@ -944,8 +944,11 @@ export default {
           filtRows.push(item)
         }
       })
+      // 可支持报价
       if (filtRows.length) {
-        const confirmMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
+        // 待表态的数据支持报价
+        if (filtRows[0] && filtRows[0].status ==='OBE_STATED') {
+          const confirmMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
           ${filtRows.map(o => o.partNum).join(',')} 
           ${this.language('GONGYINGSHANG','供应商')}:
           ${filtRows.map(o => o.supplierNameZh).join(',')} 
@@ -955,18 +958,39 @@ export default {
           `
         
         const confirmCheckInfo = await this.$confirm(
-        this.language('LK_NOTICE','提示'),
-          {
-              message: confirmMsg,
-              confirmButtonText: this.language('nominationLanguage.Yes','是'),
-              cancelButtonText: this.language('nominationLanguage.No','否'),
-              customClass: 'aeko-confirmBox'
+          confirmMsg,
+          this.language('LK_NOTICE','提示'),
+            {
+                confirmButtonText: this.language('nominationLanguage.Yes','是'),
+                cancelButtonText: this.language('nominationLanguage.No','否'),
+                customClass: 'aeko-confirmBox'
+            }
+          )
+          if (confirmCheckInfo === 'confirm') {
+            multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
           }
-        )
-        if (confirmCheckInfo === 'confirm') {
-          multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
+        } else {
+          // 已经报过价格
+          // 已经报过价
+          const errorMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
+          ${filtRows.map(o => o.partNum).join(',')} 
+          ${this.language('GONGYINGSHANG','供应商')}:
+          ${filtRows.map(o => o.supplierNameZh).join(',')} 
+          ${this.language('CAIGOUGONGC1','采购工厂')}:
+          ${filtRows.map(o => o.factoryName).join(',')} 
+          ${this.language('AEKOSENTSUPPLIERPRICENOTALLOWED','已发送报价，不允许再次发送')}
+          `
+        
+          return this.$confirm(
+            errorMsg,
+            this.language('LK_NOTICE','提示'),
+            {
+                confirmButtonText: this.language('SURE','确定'),
+                cancelButtonText: this.language('nominationLanguage.No','否'),
+                customClass: 'aeko-confirmBox hidden-cancel-button'
+            }
+          )
         }
-      
       }
       
       this.declareSendSupplier = true;
@@ -1268,5 +1292,11 @@ export default {
 .aeko-confirmBox .el-message-box__btns .el-button {
   float: right;
   margin-left: 15px;
+}
+.aeko-confirmBox.hidden-cancel-button .el-message-box__btns .el-button {
+  display: none;
+}
+.aeko-confirmBox.hidden-cancel-button .el-message-box__btns .el-button--primary {
+  display: block;
 }
 </style>
