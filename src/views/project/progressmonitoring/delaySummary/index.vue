@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-17 21:44:57
+ * @LastEditTime: 2021-11-18 15:36:47
  * @Description: 延误原因汇总
 -->
 
@@ -66,7 +66,7 @@
         <template #delayReason="scope">
           <span v-if="!isFS || (isFS && !withAllBtn)">{{scope.row.delayReason}}</span>
           <template v-else>
-            <el-autocomplete :fetch-suggestions="querySearch" v-model="scope.row.delayReason" @blur="e => handleBlurChange(scope.partPeriod)" /> 
+            <el-autocomplete :fetch-suggestions="querySearch" v-model="scope.row.delayReason" @focus="e => handleFocusChange(scope.row.partPeriod)" /> 
           </template>
         </template>
       </tableList> 
@@ -163,7 +163,8 @@ export default {
       await exportDelayReasonConfirm(params)
       this.exportLoading = false
     },
-    handleBlurChange(partPeriod) {
+    handleFocusChange(partPeriod) {
+      // console.log('partPeriod', partPeriod)
       this.currPartPeriod = partPeriod
     },
     getDelayReason() {
@@ -177,13 +178,13 @@ export default {
       })
     },
     querySearch(queryString, cb) { 
-      var restaurants = this.delayReasonOptions.OTS_EM_DELAYREASON; 
-      var results = this.currPartPeriod == 7 ? queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants : [];
+      var restaurants = this.currPartPeriod == 7 ? this.delayReasonOptions.OTS_EM_DELAYREASON : []; 
+      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
       // 调用 callback 返回建议列表的数据 
       cb(results); 
     },
     createFilter(queryString) { 
-      return (restaurant=this.delayReasonOptions.OTS_EM_DELAYREASON) => { 
+      return (restaurant=this.currPartPeriod == 7 ? this.delayReasonOptions.OTS_EM_DELAYREASON : []) => { 
         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0); 
       }; 
     },  
