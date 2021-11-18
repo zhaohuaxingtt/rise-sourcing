@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-16 17:34:20
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-18 15:54:14
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -141,6 +141,7 @@ export default {
       objectAekoPartId: "",
       requirementAekoId: "",
       oldPartNumPreset: "",
+      initPartNum: "",
       procureFactoryOptiopns: [],
       form: cloneDeep(ledgerQueryForm),
       loading: false,
@@ -185,6 +186,7 @@ export default {
       this.judgeRight()  // 查询原零件
     }
     this.procureFactorySelectVo()
+    this.initPartNum = this.form.partNum
     // } else {
     //   // this.getAekoOriginPartInfo()
     // }
@@ -313,7 +315,8 @@ export default {
     },
     reset() {
       this.page.currPage = 1
-      this.form = cloneDeep({ ledgerQueryForm, factoryCode: this.factoryDisabled ? this.form.factoryCode : "",partNum: this.oldPartNumPreset ? this.oldPartNumPreset : undefined})
+      this.form = cloneDeep({ ledgerQueryForm, factoryCode: this.factoryDisabled ? this.form.factoryCode : "",partNum: this.initPartNum ? this.initPartNum : undefined})
+      
       this.objectAekoPartId = this.$route.query.objectAekoPartId
       // this.getAekoOriginPartInfo()
     },
