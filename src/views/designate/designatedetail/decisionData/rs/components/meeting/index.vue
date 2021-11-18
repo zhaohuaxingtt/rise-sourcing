@@ -346,6 +346,7 @@ export default {
      * @return {*}
      */    
     init() {
+      // 带路由参数type=auth,表示从外部嵌入走预览模式，走reviewListRs，ab 有权限
       if (this.isAuth) {
         this.reviewListRs()
       } else {
@@ -498,33 +499,40 @@ export default {
       reviewListRs(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
-        //   let temdata = res.data || {}
-        //   temdata.suppliersNow =temdata.supplierVoList
-        //   if(temdata.partNameDe){
-        //     temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
-        //   }
-        //   this.basicData = temdata
-        //   let data = res.data?.lines
-        //   data.forEach((val,index) => {
-        //     let suppliersNowCn =[]
-        //     let suppliersNowEn =[]
-        //     val.supplierVoList.forEach(val =>{
-        //       suppliersNowCn.push(val.shortNameZh)
-        //       suppliersNowEn.push(val.shortNameEn)
-        //     })
-        //     let supplierData=[]
-        //     for(let i = 0 ;i <suppliersNowCn.length;i++) {
-        //       let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
-        //       supplierData.push(dataSuper)
-        //     }
-        //     supplierData = supplierData.length ? supplierData.join('\n') : '-'
-        //     val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
-        //     if(val.supplierNameEn)
-        //     val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
-        //       if(val.partNameDe)
-        //     val.partName = `${val.partName}/${val.partNameDe}`
-        //   })
-        //   this.tableData = data
+          let temdata = res.data || {}
+          temdata.suppliersNow =temdata.supplierVoList
+          if(temdata.partNameDe){
+            temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
+          }
+          this.basicData = temdata
+          let data = res.data?.lines
+          data.forEach((val,index) => {
+            let suppliersNowCn =[]
+            let suppliersNowEn =[]
+            val.supplierVoList.forEach(val =>{
+              suppliersNowCn.push(val.shortNameZh)
+              suppliersNowEn.push(val.shortNameEn)
+            })
+            let supplierData=[]
+            for(let i = 0 ;i <suppliersNowCn.length;i++) {
+              let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
+              supplierData.push(dataSuper)
+            }
+            supplierData = supplierData.length ? supplierData.join('\n') : '-'
+            val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
+            if(val.supplierNameEn)
+            val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
+              if(val.partNameDe)
+            val.partName = `${val.partName}/${val.partNameDe}`
+            // 预览模式,ab价取rsPriceVo
+            if (val.rsPriceVo && val.rsPriceVo.aprice) {
+              val.aprice = val.rsPriceVo && val.rsPriceVo.aprice
+            }
+            if (val.rsPriceVo && val.rsPriceVo.bprice) {
+              val.bprice = val.rsPriceVo && val.rsPriceVo.bprice
+            }
+          })
+          this.tableData = data
           this.projectType = res.data.partProjectType || ""
 
           this.searchRsPageExchangeRate()
