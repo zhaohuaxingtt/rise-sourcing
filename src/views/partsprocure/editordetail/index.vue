@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-05 15:53:53
- * @LastEditors:  
+ * @LastEditTime: 2021-11-18 11:18:24
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsprocure\editordetail\index.vue
+ * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
 	<iPage class="partsprocureEditordetail" v-permission.auto="PARTSPROCURE_EDITORDETAIL_INDEXPAGE|零件采购项目管理详情页">
@@ -351,7 +351,7 @@
 		</iCard>
 		<iTabsList  class="margin-top20" type='card' v-if='infoItem.id'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
-			<el-tab-pane v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == '15'">
+			<el-tab-pane v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.DESIGNATED')">
 				<designateInfo :params="infoItem" />
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
@@ -422,6 +422,7 @@
 	import {cancelProject,creatFsGsNr,createNomiappBtn,createNomiappBtnAccs} from '@/components'
 	import { getNominateDisabled } from "rise/web/common"
     import purchaseApply from "./components/purchaseApply"
+		import { getEnumValue } from "@/config"
 	export default {
 		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs, purchaseApply},
 		provide:function(){
@@ -535,6 +536,7 @@
 			this.getDicts()
 		},
 		methods: {
+			getEnumValue,
    /**
     * @description: 改变部门的时候，拿到最新的line
     * @param {*}

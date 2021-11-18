@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-11-09 21:19:11
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-18 17:04:09
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
@@ -96,6 +96,7 @@ export default {
       requirementAekoId: this.$route.query.requirementAekoId
     }
 
+
     // 若从AEKO查看跳转过来的默认进入封面表态
     if(from == 'check'){
       this.currentTab ='cover';
@@ -135,6 +136,14 @@ export default {
     }else if(auditType&&auditType==3){  // 内容表态
       this.currentTab ='contentDeclare';
     }
+
+    // 从AEKO管理进来的 TAB过滤调审批记录
+    if(from == 'manage'){
+      let newTabs = cloneDeep(this.tabs);
+      newTabs = newTabs.filter((item)=>item.name!=='record');
+      this.tabs = newTabs;
+    }
+
     // 从AEKO跳转查看跳转过来的 tab不需要展示审批附件
     if(from =='check'){
       let newTabs = cloneDeep(this.tabs);

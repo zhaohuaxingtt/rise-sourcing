@@ -374,6 +374,7 @@ export default {
             chiefId,
             aekoManageId: o.aekoManageId || '',
             chiefName: chiefs.value || '',
+            buyerId: o.buyerId
           }
         })
         return chiefName
