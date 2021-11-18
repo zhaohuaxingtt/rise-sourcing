@@ -1082,7 +1082,6 @@ export default {
       formData.modelProjects = modelProjectList;
       formData.procurePlans = procurePlans;
       formData.productions = productions;
-
       //保存
       saveMultiPrice(formData)
         .then((res) => {
@@ -1181,6 +1180,16 @@ export default {
         modelProjects: data.modelProjects?.map((item) => item.projectCode),
         biddingStatus: data.biddingStatus,
       };
+      // 车型
+      const paras = data?.models.map(item => {
+        return {
+          ...item,
+          code:item.modelCode,
+          name:item.model
+        }
+      })
+      this.modelsOption.push(...paras)
+      // 车型项目
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {
