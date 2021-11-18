@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-12 13:37:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-18 10:23:17
+ * @LastEditTime: 2021-11-18 14:21:27
  * @Description: 
  * @FilePath: \front-sourcing\src\views\designate\approvalPersonAndRecord\meetingProcess.vue
 -->
@@ -77,15 +77,21 @@
                         agentUser.assigneeName + ' (代)'
                       }}
                     </span>
+                  </div>
+                </div>
+                <div class="post">
+                  {{ approvalUser.deptNameZh }}
+                  <div 
+                    class="agentUserDept" 
+                    v-for="(agentUser, agentUsersI) in approvalUser.agentUsers" 
+                    :key="agentUsersI"
+                  >
                     <span v-if="agentUser">
                       {{
                         agentUser.deptNameZh
                       }}
                     </span>
                   </div>
-                </div>
-                <div class="post">
-                  {{ approvalUser.deptNameZh }}
                 </div>
                 <div class="date" v-if="approvalUser.endTime">
                   {{ approvalUser.endTime }}
@@ -391,9 +397,6 @@ $borderColor: #cbcbcb;
   color: #8f8f90;
   display: flex;
   margin: 5px 0;
-  span {
-    margin-right: 20px;
-  }
   &::before {
     content: '';
     display: block;
@@ -406,5 +409,10 @@ $borderColor: #cbcbcb;
     position: relative;
     top: 5px;
   }
+}
+.agentUserDept {
+  color: #8f8f90;
+  display: flex;
+  margin: 5px 0;
 }
 </style>
