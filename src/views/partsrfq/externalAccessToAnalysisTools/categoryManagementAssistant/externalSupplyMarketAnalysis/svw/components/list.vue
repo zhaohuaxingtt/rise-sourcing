@@ -107,7 +107,7 @@ export default {
         name: "利润(%）"
       }, {
         value: 'svwAmount',
-        name: "svw(百万元)"
+        name: "SVW(百万元)"
       }, {
         value: 'otherAmount',
         name: "其他(百万元)"
@@ -180,10 +180,7 @@ export default {
           max: 100,
           position: 'right',
           axisLine: {
-            show: true,
-            lineStyle: {
-              color: '#EE6666'
-            }
+            show: false
           },
           axisLabel: {
             formatter: '{value}%'
@@ -276,10 +273,10 @@ export default {
             }]
           },
           {
-            name: 'profit',
+            name: '利润(%)',
             yAxisIndex: 1,
             itemStyle: {
-              color: "#EE6666"
+              color: "#0C47A1"
             },
             z: 30,
             type: 'line',
@@ -626,7 +623,7 @@ export default {
               iMessage.error('份额总和不能超过100%')
               return
             } else {
-              val.mainCustomerDTOList[val.mainCustomerDTOList.length - 1].totalSalesPro = 100-total
+              if (total > 0) val.mainCustomerDTOList[val.mainCustomerDTOList.length - 1].totalSalesPro = 100-total
             }
           }
           this.$nextTick(() => {

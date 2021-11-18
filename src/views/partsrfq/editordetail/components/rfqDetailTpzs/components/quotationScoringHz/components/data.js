@@ -1,36 +1,36 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-17 19:48:12
- * @LastEditors:  
+ * @LastEditTime: 2021-11-18 17:00:18
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
+ * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
  */
 import {_getMathNumber} from '@/utils'
 import {partProjTypes} from '@/config'
 //表格全集。
 export const fstitle = [
-  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'partName',label:'Part Name',i18n:'',width:'130',tooltip:false,fixed:true},
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'90',tooltip:false,fixed:true},
+  {type:'',props:'partName',label:'Part Name',i18n:'',width:'110',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false,fixed:true},
-  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'110',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'100',tooltip:false}
+  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'80',tooltip:false}
 ]
 export const gstitle = [
-  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'partName',label:'Part Name',i18n:'',width:'130',tooltip:false,fixed:true},
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'90',tooltip:false,fixed:true},
+  {type:'',props:'partName',label:'Part Name',i18n:'',width:'110',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'cfPartAPrice',label:'F-T(A)',i18n:'',width:'130',tooltip:false,fixed:true},
-  {type:'',props:'cfPartBPrice',label:'F-T(B)',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-T(A)',i18n:'',width:'110',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-T(B)',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
@@ -42,7 +42,7 @@ export const gstitle = [
   {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentTto',label:'Cur. TTO',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'100',tooltip:false}
+  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'80',tooltip:false}
 ]
 //表格循环部分
 export const fstableTileXh = function(index){
@@ -350,14 +350,29 @@ export function removeKeysNumber(keys){
  * @return {*}
  */
 export function subtotal(tableHeader,dataList,priceInfo){
+  console.log(tableHeader,dataList,priceInfo)
   try {
+    // eslint-disable-next-line no-undef
+    let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId}] : accu}, []), 'groupId')
     const total = {}
     tableHeader.forEach(items=>{
       if(items.props == 'groupName'){
         total["groupId"] = '-'
+        groupArr = groupArr.map(item => {
+          return {
+            ...item,
+            groupId: '-'
+          }
+        })
       }
       if(items.props == 'partNo'){
         total[items.props] = 'Subtotal'
+        groupArr = groupArr.map(item => {
+          return {
+            ...item,
+            [items.props]: 'Group total: '+item.groupName
+          }
+        })
       }else{
         if(needSubTotal.find(s => s == removeKeysNumber(items.props))){
           dataList.forEach(element => {
@@ -366,8 +381,20 @@ export function subtotal(tableHeader,dataList,priceInfo){
                   //需要 Lc Aprice . Lc Bprice TTo 
                   if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == "tto"){
                     total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
+                    groupArr = groupArr.map(item => {
+                      return {
+                        ...item,
+                        [key]: element.groupName === item.groupName ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0
+                      }
+                    })
                   }else{
                     total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
+                    groupArr = groupArr.map(item => {
+                      return {
+                        ...item,
+                        [key]: element.groupName === item.groupName && removeKeysNumber(key) !== 'tooling' ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                      }
+                    })
                   }
                 }
               }
@@ -376,7 +403,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
       }
       
     })
-    return [getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
+    return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
   } catch (error) {
     console.warn(error)
     return {partNo:'Subtotal'}

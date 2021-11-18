@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-18 19:34:21
- * @LastEditors:  
+ * @LastEditTime: 2021-11-18 16:46:59
+ * @LastEditors: Luoshuang
  * @Description: 特殊表格实现
- * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
 <template>
   <div class="conent">
@@ -35,6 +35,7 @@
           >
             <template slot-scope="scope">
                 <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
+                <span v-if="scope.row.partNo.includes('Group total')">{{scope.row.partNo}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -222,9 +223,12 @@ export default{
     spanArr(){
       return this.rowspan(this.tableData,'groupId',null)
     },
+    spanArrGroup() {
+      return this.tableData.reduce((accu, item, index) => item.partNo.includes('Group total') ? [...accu, index] : accu,[])
+    },
     isPreview(){
         return this.$store.getters.isPreview;
-    }
+    },
   },
   methods:{
     ttoShow(data){
@@ -303,6 +307,14 @@ export default{
     return spanArr
   },
   spanMethod({row, column, rowIndex, columnIndex}) {
+    // grouptotal 合并第一、二格
+    if (this.spanArrGroup.includes(rowIndex)) {
+      if (columnIndex === 0) {
+        return [1, 2];
+      } else if (columnIndex === 1) {
+        return [0, 0];
+      }
+    }
     // 只做第一列合并操作
     if (columnIndex === 0 ) {
       const _row = this.spanArr[rowIndex];
@@ -310,9 +322,9 @@ export default{
       return {
         rowspan: _row,
         colspan: _col
-        };
-      }
-    },  
+      };
+    }
+  },  
     getPorpsNumber(key){
       return getPorpsNumber(key)
     },
@@ -345,8 +357,11 @@ export default{
       if(row.partNo == "Subtotal"){
         return 'blueclass'
       }
-      if(rowIndex == this.tableData.length -1 || rowIndex == this.tableData.length -2){
+      if(rowIndex == this.tableData.length -1 || rowIndex == this.tableData.length -2 ){
         return 'lineBlueClass'
+      }
+      if (row.partNo.includes('Group total')) {
+        return 'lineBlueClass groupLineBlueClass'
       }
     },
     /**
@@ -478,6 +493,14 @@ export default{
         background-color: rgba(247, 250, 255, 1)!important;
       }
     }
+    ::v-deep.groupLineBlueClass{
+      td .cell{
+        font-weight: bold;
+      }
+      td:first-child .cell{
+        font-weight: normal;
+      }
+    }
     ::v-deep.leftRightBorder{
       border-left: 1px solid #C5CCD6;
       border-right: 1px solid #C5CCD6;
@@ -496,6 +519,8 @@ export default{
     ::v-deep .is-sortable{
       .cell{
           display: flex;
+          justify-content: center;
+
           .caret-wrapper{
             height: 20px;
             .ascending{
@@ -597,6 +622,20 @@ export default{
             left: inherit;
           }
     }
+
+    // ::v-deep .el-table__header,
+    // .el-table__body,
+    // .el-table__row {
+    //   .cell {
+    //     zoom: 0.85;
+    //   }
+    // }
+
+    // ::v-deep .el-table__row {
+    //   .cell span {
+    //     zoom: 0.85;
+    //   }
+    // }
   }
   .conent{
     height: auto;

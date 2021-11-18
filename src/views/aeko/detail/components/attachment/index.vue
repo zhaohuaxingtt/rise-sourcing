@@ -42,10 +42,10 @@
         </div>
       </template>
       <template #fileDescribe="scope">
-        <iInput v-model="scope.row.fileDescribe" @blur="updateApproveAttach(scope.row)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <iInput v-model="scope.row.fileDescribe" @blur="updateApproveAttach(scope.row, 0)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
       </template>
 			<template #remark="scope">
-        <iInput v-if="!scope.row.taskId" v-model="scope.row.remark" @blur="updateApproveAttach(scope.row)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
+        <iInput v-if="!scope.row.taskId" v-model="scope.row.remark" @blur="updateApproveAttach(scope.row, 1)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
         <span v-else>{{language('JIESHIFUJIAN', '解释附件')}}</span>
       </template>
     </tablelist>
@@ -141,7 +141,7 @@ export default {
 		download(row) {
 			downloadFile(row.uploadId)
 		},
-		updateApproveAttach(fileData) {
+		updateApproveAttach(fileData, isRemark) {
 			const parmas = window._.cloneDeep(fileData)
       // 删除备份
       delete parmas._fileDescribe
@@ -154,6 +154,7 @@ export default {
       }
       // 内容没改变，直接退出
       if (parmas.fileDescribe === fileData._fileDescribe && parmas.remark === fileData._remark) return
+      parmas.isRemark = isRemark  // 0: 描述， 1：备注
 			auditFileUpdate(parmas).then(res => {
         if (res.code !== '200') {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
