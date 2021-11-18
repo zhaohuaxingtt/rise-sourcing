@@ -23,7 +23,7 @@
               
               <div class="floatright" v-if="!readOnly && !nominationDisabled && !rsDisabled">
                 
-                <span class="combine" v-if="multiEditControl && !disabled">
+                <span class="combine" v-if="multiEditControl">
                   <!-- 合并功能 -->
                 <iButton @click="combine" v-if="!hideCombine" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_ZUHE|组合">
                     {{ language("nominationSuggestion_ZuHe",'组合') }}
@@ -41,7 +41,7 @@
                 </span>
                 <span class="combine" v-else>
                   <!-- 编辑 -->
-                  <iButton v-if="!disabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BIANJI|编辑">
+                  <iButton @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BIANJI|编辑">
                     {{ language("LK_BIANJI",'编辑') }}
                   </iButton>
                 </span>
@@ -50,7 +50,7 @@
                   {{ language("nominationSupplier_Reset",'重置') }}
                 </iButton>
                 <!-- 刷新 -->
-                <iButton v-if="!disabled" @click="refresh" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_SHAUXIN|刷新">
+                <iButton @click="refresh" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_SHAUXIN|刷新">
                   {{ language("nominationSupplier_Refresh",'刷新') }}
                 </iButton>
               </div>
@@ -127,6 +127,7 @@ export default {
       type: String,
       default: 'nego'
     },
+    // 只读，不允许编辑
     readOnly: {
       type: Boolean,
       default: false
@@ -187,9 +188,6 @@ export default {
       }
       return api[this.mode] ? api[this.mode] : api['nego']
     },
-    disabled() {
-      return false
-    }
   },
   data() {
     return {
