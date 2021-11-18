@@ -9,20 +9,6 @@
                :src="downImg"
                alt=""></div>
         <div>单位: 百万元</div>
-        <!-- <div class="legend">
-          <ul >
-            <li class="flex">
-              <i class="circle"
-                 :style="color('SVW')"></i>
-              <span style="vertical-align: baseline">SVW</span>
-            </li>
-            <li class="flex">
-              <i class="circle"
-                 :style="color('其他')"></i>
-              <span style="vertical-align: baseline">其他</span>
-            </li>
-          </ul>
-        </div> -->
       </div>
       <div style="height:360px"
            ref="chart"></div>
