@@ -41,7 +41,7 @@
               </span>
             </template>
             <template #tto="scope">
-              <span>{{ scope.row.tto | toThousands }}</span>
+              <span>{{ scope.row.tto | toThousands }} + {{ scope.row.tto ? "%" : "" }}</span>
             </template>
           </tablelist>
         </div>
