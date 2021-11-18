@@ -601,11 +601,12 @@ export default {
             discount:discounts[`stage${i}`]
           });
           //年降后
+          let num = Number(this.findKey(yearsPlanDate,count[0]).slice(5));
           this.prefactoryPrice=
-          !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+          !yearsPlanPercent[`stage${num}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
           .times(
             Big(1)
-              .minus(Number(yearsPlanPercent[`stage${i}`]) / 100)
+              .minus(Number(yearsPlanPercent[`stage${num}`]) / 100)
               .toNumber()
           )
           .toNumber();
@@ -732,6 +733,7 @@ export default {
         }
       });
       this.factoryPricePercent = "";
+      this.handlerInputBlur();
     },
 
     //下一步
