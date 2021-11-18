@@ -179,7 +179,6 @@ export default {
         const genSupTPL = (dataArray, dataCounTotal=0) => {
           const supplierList = self.data.supplierList || []
           let dataTemplate = ''
-          console.log('qweqweqwe', dataArray)
           const dataList = window._.cloneDeep(dataArray && dataArray.filter(o => o) || []).reverse()
           dataList.forEach(item => {
             dataTemplate+=`
@@ -248,7 +247,6 @@ export default {
                 </p>
                 ${genSupTPL(minPartSupplierTToArray, minPartSupplierTToTotal)}
               </div>`)
-              console.log(genSupTPL(minPartSupplierTToArray, minPartSupplierTToTotal))
 
               // Recommend \n Scenario
               params.name === quota[3] && (tpl = `

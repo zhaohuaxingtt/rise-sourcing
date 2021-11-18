@@ -297,11 +297,17 @@ export default {
           const dataLine0 = this.tableListData[0]
           this.maxEndDate = dataLine0.maxEndDate
           this.minStartDate = dataLine0.minStartDate
-          if (dataLine0 && dataLine0.maxEndDate && dataLine0.minStartDate) {
+          if (dataLine0 && (dataLine0.maxEndDate || dataLine0.minStartDate)) {
             console.log(this.maxEndDate, this.minStartDate)
             this.pickerOptions = {
               disabledDate: (time) =>{
-                return time.getTime() < new Date(this.minStartDate).getTime() || time.getTime() > new Date(this.maxEndDate).getTime();
+                let state = true
+                const checkstart = time.getTime() < new Date(this.minStartDate).getTime()
+                const checkend = time.getTime() > new Date(this.maxEndDate).getTime()
+                this.minStartDate &&  (state = checkstart)
+                this.maxEndDate &&  (state = checkend)
+                this.minStartDate && this.maxEndDate && (state = checkstart || checkend)
+                return state;
               }
             }
           }
