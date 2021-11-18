@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-15 15:14:24
+ * @LastEditTime: 2021-11-18 18:44:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
@@ -16,6 +16,7 @@
       </div>
       <div class="btnList">
         <span v-if="!disabled">
+          <iButton @click="goToCesPage">{{ language('LK_XINGJIANCESHIXIANM','新建测试项目') }}</iButton>
           <iButton @click="handleApplyModuleTargetPrice" :loading="checkApplyLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
             {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
           </iButton>
@@ -37,7 +38,6 @@
           <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION|创建定点申请" :loading="createDesignateLoading" @click="createDesignate">
             {{ language('LK_CHUANGJIANDINGDIANSHENQING','创建定点申请') }}
           </iButton>
-          <iButton @click="backPage">{{ language('LK_FANHUI','返回') }}</iButton>
           </span>
           <iButton type="text" @click="toLogPage" v-permission.auto="PARTSRFQ_EDITORDETAIL_LOG|日志">
             <icon symbol name="iconrizhiwuzi" class="log-icon"/>
@@ -229,6 +229,12 @@ export default {
     }
   },
   methods: {
+    goToCesPage(){
+      const router = this.$router.resolve({
+        path:`/bidding/test/addManual/${this.$route.query.id}`
+      })
+      window.open(router.href,'_blank')
+    },
     handleApplyModuleTargetPrice() {
       this.checkApplyLoading = true
       const rfqId = this.baseInfo.id || this.$route.query.id

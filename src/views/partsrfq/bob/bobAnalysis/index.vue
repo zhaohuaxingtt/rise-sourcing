@@ -561,7 +561,6 @@ export default {
         }
       })
       this.tableListData = merged
-      console.log(this.tableListData)
     },
     addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, rootId, parentIndex) {
       childs.forEach((child) => {
@@ -962,11 +961,11 @@ export default {
           });
         }
       }
-      console.log(this.tableListData)
 
       this.clearGrouped();
       this.visible1 = false;
       this.onGroupingModel = false;
+      console.log(this.cbdSelectedList)
       return;
       addComponentToGroup({
         groupId: this.value1.matchId,

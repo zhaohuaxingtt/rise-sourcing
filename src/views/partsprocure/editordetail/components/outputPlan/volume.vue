@@ -20,7 +20,7 @@
       <tableList
         class="table"
         index
-        :tableData="tableListDatatem"
+        :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
         :editable = "perCarDosage"

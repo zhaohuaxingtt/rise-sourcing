@@ -321,7 +321,7 @@ export default {
       //   this.$router.go(-1);
       // } else {
       if (this.$route.name === "bidNoticeDoc") {
-        window.close();
+        // window.close();
       } else if(this.$route.name === "bidNoticeDocBidding") {
         this.gotoSupplier();
       }

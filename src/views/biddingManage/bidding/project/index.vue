@@ -342,7 +342,7 @@ export default {
     },
     // 发送拒绝/同意请求
     hanldeAgreeOrReject(param){
-      this.handleReject = param.biddingNtfFlag
+      this.handleReject = param.systemUseFlag
     },
     cancel(blobUrl) {
       if(this.type == '01' && !this.handleReject) {

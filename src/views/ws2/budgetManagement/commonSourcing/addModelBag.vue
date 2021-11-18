@@ -143,12 +143,12 @@
             <div v-else>{{ materialGroupList.find(item => scope.row.categoryId === item.id).name  }}</div>
           </template>
           <template #targetBudgetTotal="scope">
-            <div v-if="currentVersion" class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(scope.row.targetBudgetTotal.toFixed(2)) }}</span></div>
-            <div v-else>{{ getTousandNum(scope.row.targetBudgetTotal.toFixed(2)) }}</div>
+            <div v-if="currentVersion" class="linkStyle"><span @click="clicktargetBudgetTotal(scope.row)">{{ getTousandNum(Number(scope.row.targetBudgetTotal).toFixed(2)) }}</span></div>
+            <div v-else>{{ getTousandNum(Number(scope.row.targetBudgetTotal).toFixed(2)) }}</div>
           </template>
           <template #fixedPointAllotTotal="scope">
-            <div v-if="currentVersion" class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(scope.row.fixedPointAllotTotal.toFixed(2)) }}</span></div>
-             <div v-else>{{ getTousandNum(scope.row.fixedPointAllotTotal.toFixed(2)) }}</div>
+            <div v-if="currentVersion" class="linkStyle"><span @click="clickfixedPointAllotTotal(scope.row)">{{ getTousandNum(Number(scope.row.fixedPointAllotTotal).toFixed(2)) }}</span></div>
+             <div v-else>{{ getTousandNum(Number(scope.row.fixedPointAllotTotal).toFixed(2)) }}</div>
           </template>
         </iTableList>
       </iCard>
@@ -363,7 +363,7 @@ export default {
                 return prev;
               }
             }, 0);
-            sums[index] = this.getTousandNum(sums[index].toFixed(2))
+            sums[index] = this.getTousandNum(Number(sums[index]).toFixed(2))
           } else {
             sums[index] = 'N/A';
           }
