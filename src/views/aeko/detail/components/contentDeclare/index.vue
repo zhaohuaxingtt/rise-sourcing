@@ -953,20 +953,20 @@ export default {
           ${filtRows.map(o => o.factoryName).join(',')} 
           ${this.language('SINGLEGROUPSENDFIRSTONE','在单一组合中仅能发送一条报价信息，系统将默认发送第一条，请确认')}
           `
-        try {
-          const confirmCheckInfo = await this.$confirm(
-          confirmMsg,
-          this.language('LK_NOTICE','提示'),
-            {
-                confirmButtonText: this.language('nominationLanguage.No','否'),
-                cancelButtonText: this.language('nominationLanguage.Yes','是'),
-            }
-          )
-          if (confirmCheckInfo === 'confirm') return
-          multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
-        } catch (e) {
+        
+        const confirmCheckInfo = await this.$confirm(
+        this.language('LK_NOTICE','提示'),
+          {
+              message: confirmMsg,
+              confirmButtonText: this.language('nominationLanguage.Yes','是'),
+              cancelButtonText: this.language('nominationLanguage.No','否'),
+              customClass: 'aeko-confirmBox'
+          }
+        )
+        if (confirmCheckInfo === 'confirm') {
           multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
         }
+      
       }
       
       this.declareSendSupplier = true;
@@ -1262,5 +1262,11 @@ export default {
       height: 100%;
     }
   }
+}
+</style>
+<style>
+.aeko-confirmBox .el-message-box__btns .el-button {
+  float: right;
+  margin-left: 15px;
 }
 </style>

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-03 20:11:37
+ * @LastEditTime: 2021-11-17 19:44:48
  * @LastEditors:  
  * @Description: 特殊表格实现
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -90,7 +90,7 @@
                         </template>
                         <li v-else :key='indexss'>
                           <span>
-                            {{itemsss.rate}}
+                            {{itemsss.rateEn}}<br/>{{itemsss.rate}}
                           </span>
                           <el-tooltip  effect="light" v-if='itemsss.isRateRisk && !isPreview' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
                               <icon name='icontishi-cheng' symbol></icon>
@@ -108,7 +108,22 @@
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "ebrCalculatedValue"'>
                 <span>{{ebrShow(scope.row[item.props])}}</span>
-              </template>
+              </template>       
+              <template v-else-if='removeKeysNumber(item.props) == "partName"'>
+                <el-tooltip effect='light'>
+                  <div slot="content">
+                    <div>{{scope.row[getPorpsNumber(item.props)+"partNameDe"]}}</div>
+                    <div>{{scope.row[getPorpsNumber(item.props)+"partName"]}}</div>
+                  </div>
+                  <div>
+                    <span class="isEplisDe" >{{scope.row[getPorpsNumber(item.props)+"partNameDe"]}}</span><br/>
+                    <span class="isEplis" >{{scope.row[item.props]}}</span>
+                  </div>
+                </el-tooltip>
+              </template> 
+              <template v-else-if='removeKeysNumber(item.props) == "factory"'>
+                <span >{{scope.row['factoryEn']}}</span>
+              </template>        
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
                   <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
               </template>    
@@ -381,6 +396,21 @@ export default{
   }
   .chengse{
     color: $color-delete;
+  }
+  .isEplisDe{
+    width: 100px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    word-break:keep-all;
+    display: inline-block;
+
+  }  
+  .isEplis{
+    width: 100px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    word-break:keep-all;
+    display: inline-block;
   }
   .el-table {
     position: initial;

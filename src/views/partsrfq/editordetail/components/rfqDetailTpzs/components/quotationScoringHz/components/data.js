@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-16 11:32:00
+ * @LastEditTime: 2021-11-17 19:48:12
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -12,7 +12,7 @@ import {partProjTypes} from '@/config'
 export const fstitle = [
   {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'partName',label:'Part Name',i18n:'',width:'130',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false,fixed:true},
@@ -26,11 +26,11 @@ export const fstitle = [
 export const gstitle = [
   {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'partName',label:'Part Name',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'partName',label:'Part Name',i18n:'',width:'130',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false,fixed:true},
-  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-T(A)',i18n:'',width:'130',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-T(B)',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
@@ -67,7 +67,7 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Development Cost',i18n:'',width:'100',tooltip:false, renderHeader: '<p>External</p><p>Dev. Cost</p>'},
     {type:'',props:`${index?index:''}releaseCost`,label:'Release Cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`Quotationdetails`,label:'Quo.Details',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`Quotationdetails`,label:'View',i18n:'',width:'100',tooltip:false},
   ]
 }
 export const gstableTileXh = function(index){
@@ -92,7 +92,7 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'Internal \n Dev. Cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}releaseCost`,label:'release Cost',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index?index:''}saving`,label:'Saving',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`Quotationdetails`,label:'Quo.Details',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`Quotationdetails`,label:'View',i18n:'',width:'100',tooltip:false},
   ]
 }
 
@@ -205,7 +205,6 @@ export function getRenderTableTile(whiteListService,supplierLength,layout){
           const ratess = JSON.parse(JSON.stringify(rateTitelList))
           ratess.props = (index == 0?'':index) + 'rate';
           ratess.label = itemss.rateDepartNum
-          console.log(ratess,'ratess');
           items.list.push(ratess)
         })
         relTabelListDefault.push(items)
@@ -302,7 +301,7 @@ export function translateRating(supplierList,ratingList) {
         titleList.push(itemsq.rateDepartNum)
       })
      }
-     maps.push({rate:c[0].supplierName,isAllPartRateConsistent:c[0].rfmRate,isRateRisk:c[0].isRateRisk})
+     maps.push({rate:c[0].supplierName,rateEn:c[0].supplierNameEn,isAllPartRateConsistent:c[0].rfmRate,isRateRisk:c[0].isRateRisk})
      //拿到评分部门list 为每个部门设置评分
      titleList.forEach(itemsbb=>{
        const map = c.find(it=>it.rateDepartNum == itemsbb)
@@ -479,8 +478,8 @@ export function defaultSort(list,key){
 export const rateTitelList = {type:'',props:'',label:'',i18n:'',width:'50',tooltip:true}
 
 export const supplierTile = [
-  {type:'',props:'supplierName',label:'Supplier',i18n:'',width:'100',tooltip:false},
-  {type:'',props:'rating',label:'Ratings',i18n:'',width:'150',tooltip:false,list:[]},
+  {type:'',props:'supplierName',label:'Supplier',i18n:'',width:'100',tooltip:true},
+  {type:'',props:'rating',label:'Ratings',i18n:'',width:'150',tooltip:true,list:[]},
 ]
 /**
  * @description: 动态拿到表头factory，在供应商横轴中，从第一条到最后一条里面包含的factoryList实际上是一样的。
@@ -508,10 +507,10 @@ export const centerSupplierList = function(index,factoryList=[]){
       {type:'',props:`${index}skdBPrice`,label:'SKD B Price',i18n:'',width:'100',tooltip:false},
       {type:'',props:`${index}productionLocation`,label:'Prod.Loc.',i18n:'',width:'98',tooltip:false},
     ]},
-    {type:'',props:`${index}lcAPriceWithoutAllocation`,label:'LC A Price without Allocation',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}skdAPriceWithoutAllocation`,label:'SKD A Price without Allocation',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}lcBPriceWithoutAllocation`,label:'LC B Price without Allocation',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD B Price without Allocation',i18n:'',width:'120',tooltip:false}, 
+    {type:'',props:`${index}lcAPriceWithoutAllocation`,label:'LC A Price Without Allocation',i18n:'',width:'120',tooltip:false},
+    {type:'',props:`${index}skdAPriceWithoutAllocation`,label:'SKD A Price Without Allocation',i18n:'',width:'120',tooltip:false},
+    {type:'',props:`${index}lcBPriceWithoutAllocation`,label:'LC B Price Without Allocation',i18n:'',width:'120',tooltip:false},
+    {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'SKD B Price Without Allocation',i18n:'',width:'120',tooltip:false}, 
     {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}bnkApprovalStatus`,label:'BNK Approval Status',i18n:'',width:'120',tooltip:false},
     {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'63',tooltip:false},
@@ -523,7 +522,7 @@ export const centerSupplierList = function(index,factoryList=[]){
     {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
     {type:'',props:`${index}externalDevelopmentCost`,label:'External Development Cost',i18n:'',width:'100',tooltip:false, renderHeader: '<p>External</p><p>Dev. Cost</p>'},
     {type:'',props:`${index}releaseCost`,label:'Release Cost',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}Quotationdetails`,label:'Quo.Details',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index}Quotationdetails`,label:'View',i18n:'',width:'100',tooltip:false},
   ]
 }
 
