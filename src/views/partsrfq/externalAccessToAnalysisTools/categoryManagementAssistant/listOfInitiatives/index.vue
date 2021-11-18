@@ -126,14 +126,15 @@ export default {
       editStatus: true,
       form: {},
       maxlength: 500,
-      categoryCode: this.$store.state.rfq.categoryCode,
-      categoryName: this.$store.state.rfq.categoryName,
+      categoryCode: this.$route.query.categoryCode || this.$store.state.rfq.categoryCode,
+      categoryName: this.$route.query.categoryName || this.$store.state.rfq.categoryName,
       exportStatus: false,
       exportButtonLoading: false,
       saveFlag: false,
     };
   },
   props: {
+    categoryCodeProps:String,
     isEdit: {
       type: Boolean,
       default: true
@@ -141,12 +142,6 @@ export default {
     extendsIsedit:{
       type:Boolean,
       default:true
-    }
-  },
-  watch: {
-    isEdit (val) {
-      console.log('-------------',val)
-      this.editStatus = val
     }
   },
   created () {
@@ -165,7 +160,7 @@ export default {
       try {
         this.pageLoading = true;
         const req = {
-          categoryCode: this.categoryCode,
+          categoryCode: this.categoryCodeProps || this.categoryCode,
           selectList: [],
         };
         const selectList = [];
@@ -195,7 +190,7 @@ export default {
         this.treeDataSelect = {};
         this.treeDataSelectId = [];
         const req = {
-          categoryCode: this.categoryCode,
+          categoryCode: this.categoryCodeProps || this.categoryCode,
         };
         let res = '';
         if (this.editStatus) {
@@ -321,7 +316,7 @@ export default {
           });
           try {
             const req = {
-              categoryCode: this.categoryCode,
+              categoryCode: this.categoryCodeProps || this.categoryCode,
               categoryName: this.categoryName,
               reportFileName: resFile.downloadName,
               reportName: resFile.downloadName.split('|')[0],
@@ -345,6 +340,10 @@ export default {
     '$store.state.rfq.categoryName' () {
       this.categoryName = this.$store.state.rfq.categoryName;
     },
+    isEdit(res){
+      this.editStatus = res
+      this.getList();
+    }
   },
 };
 </script>

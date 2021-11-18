@@ -10,12 +10,12 @@
             v-for="(item,index) in basicTitle"
             v-permission.dynamic.auto="item.permissionKey" 
           >
-            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  :label-width="item.labelWidth || '100px'">
+            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  :label-width="item.labelWidth || '120px'">
                 <iText >{{ item.isObj ? basicInfo[item.props+'Desc'] : basicInfo[item.props]}}</iText>
             </iFormItem>
           </template>
       </iFormGroup>
-      <p class="margin-bottom10">{{language('LK_BEIZHU','备注')}}:</p>
+      <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
       <iInput
         disabled
         type="textarea"
@@ -55,8 +55,8 @@
         <!-- 科室linie费用table -->
         <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE|封面表态LINIE表_预览">
             <p class="btn-list margin-bottom20" v-if="!isFromCheck">
-                <iButton v-if="!disabled" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
-                <iButton @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
+                <iButton v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_QUXIAOTONGGUO|取消通过" v-if="!disabled" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
+                <iButton v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_JIEDONG|解冻" @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
             <tableList
                 index
@@ -268,6 +268,8 @@ export default {
                             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
                             // 刷新页面
                             this.getList();
+                            this.getLinie()
+                            this.$emit('getBbasicInfo');
                         } else {
                             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                         }
@@ -299,6 +301,18 @@ export default {
                 margin-left: 0!important;
             }
         }
+          .remark-label{
+                font-size: 16px;
+                font-family: PingFang SC;
+                font-weight: 400;
+                color: #4B4B4C;
+                &::before{
+                content: "*";
+                color: #f56c6c;
+                margin-right: 4px;
+                display: inline-block;
+                }
+            }
         .summaryTable{
             ::v-deep .el-table__body-wrapper{
                 min-height: auto;

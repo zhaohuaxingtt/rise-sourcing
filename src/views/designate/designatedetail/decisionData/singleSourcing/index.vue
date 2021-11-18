@@ -6,7 +6,7 @@
 <template>
     <iCard title="⽣产采购单⼀供应商说明 Single Sourcing for Production Purchasing" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING|决策资料-SingleSourcing">
         <template slot="header-control">
-             <iButton @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
+             <iButton @click="gotoSupplier" v-if="!fix">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
         </template>
         <div class="decision-data-singleSourcing-content">
             <div class="margin-top30 margin-bottom30">
@@ -113,10 +113,12 @@ export default {
             ],
             projectName:'',
             nominateId:'',
+            fix: false
         }
     },
     created(){
         this.getDetail();
+        this.fix = this.$route.query.fix === "1"
     },
     computed:{
         isPreview(){

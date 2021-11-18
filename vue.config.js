@@ -50,6 +50,11 @@ module.exports = {
     }
   },
   configureWebpack: (config) => {
+    config.plugins.forEach((val) => {
+      if (val['__pluginConstructorName'] === 'HtmlWebpackPlugin') {
+        val.options.CDN_HOST = process.env.CDN_HOST
+      }
+    })
     //为生产环境移除console debugger 代码压缩
     if (process.env.NODE_ENV !== 'dev') {
       config.plugins.push(

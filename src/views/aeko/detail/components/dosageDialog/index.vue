@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-11-01 15:02:59
+ * @LastEditTime: 2021-11-16 14:45:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -22,7 +22,7 @@
           v-if="!disabled"
           :loading="saveLoading"
           @click="handleSave"
-          v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_BUTTON_SAVE"
+          v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_BUTTON_SAVE|保存"
           >{{ language("BAOCUN", "保存") }}</iButton
         >
       </div>

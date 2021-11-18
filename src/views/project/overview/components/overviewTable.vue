@@ -78,7 +78,7 @@
         <!---------------------------------------------------------------------->
         <!----------                  操作列                 -------------------->
         <!---------------------------------------------------------------------->
-        <div v-else-if="item.props === 'caozuo'" class="caozuo">
+        <div v-else-if="item.props === 'caozuo' && showOperation" class="caozuo">
           <div class="cursor" @click="openAssistant(dataItem)">
             <icon symbol name="icontiaozhuanpaicheng"  class="margin-right10"></icon>
             <span class="openLinkText">{{language('TIAOZHUANPAICHENG','跳转排程')}}</span>
@@ -179,7 +179,8 @@ export default {
   props: {
     tableTitle: {type:Array},
     tableData: {type:Array},
-    tableLoading: {type:Boolean, default: false}
+    tableLoading: {type:Boolean, default: false},
+    showOperation: {type:Boolean, default: true}
   },
   data() {
     return {

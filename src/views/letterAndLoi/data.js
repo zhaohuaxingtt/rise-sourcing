@@ -41,7 +41,7 @@ export const loiListSearch = [
   {props:'supplierName',label:'供应商名称',type:'input',labelKey:'LK_GONGYINGSHANGMINGCHENG'},
   {props:'sapNum',label:'供应商SAP号',type:'input',labelKey:'LK_GONGYINGSHANGSAPHAO'},
   {props:'nominateDate',label:'LOI⽣成时间',type:'datePicker',labelKey:'LK_LOISHENGCHENGSHIJIAN'},
-  {props:'show',label:'是否显⽰⾃⼰',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI_1',selectOption:'isShowMe'},
+  {props:'showSelf',label:'是否显⽰⾃⼰',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI_1',selectOption:'isShowMe'},
 ]
 
 // 定点信列表表头

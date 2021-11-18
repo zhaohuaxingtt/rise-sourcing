@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-11-11 14:31:15
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-17 15:47:19
+ * @LastEditors: Hao,Jiang
  * @Description: 零件签收列表界面.
  * @FilePath: \rise\src\views\partsign\index.vue
 -->
@@ -257,6 +257,7 @@ import { cloneDeep } from "lodash"
 import {selectDictByKeyss} from '@/api/dictionary'
 import store from '@/store'
 import { TP_INFO_STATUS } from "./components/data"
+import {setPretreatmentParams} from '@/utils/tool'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -375,6 +376,8 @@ export default {
         if (res.code == '200') {
           iMessage.success(this.language("LK_CAOZUOCHENGGONG",'操作成功'));
           this.getTableList();
+        }else{
+          iMessage.error(res.desZh)
         }
       });
     },
@@ -437,17 +440,13 @@ export default {
     //获取表格数据
     getTableList() {
       this.tableLoading = true;
+      // 用户寻源概览的参数
+      // 获取寻源概览过来的预置参数
+      setPretreatmentParams(this, this.form, this.$route.query)
       const params = {
         ...this.form,
         ...this.page,
       }
-      // 用户寻源概览的参数
-      // 获取寻源概览过来的预置参数
-      const acceptKeys = require('@/config/dashboard').acceptKeys || []
-      Object.keys(this.$route.query).forEach(key => {
-        const keyValue = this.$route.query[key]
-        acceptKeys.includes(key) && (this.$set(params, key, keyValue))
-      })
       getTabelData(params)
         .then((res) => {
           this.tableLoading = false;

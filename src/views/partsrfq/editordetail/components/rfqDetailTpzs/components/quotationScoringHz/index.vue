@@ -18,9 +18,10 @@
           </iSelect> 
         </div>
         <div v-if='showRound && !disabel'>
-          <span>Quota. Round：</span>
+          <span>Quotation Round：</span>
           <iSelect v-model="round" @change="changeRound" style="width:100px">
             <el-option :label="items" :value="items" v-for='(items,index) in rundList' :key='index'></el-option>
+            <el-option label="Latest Offer" value="-1"></el-option>
           </iSelect> 
         </div>
         <div v-if='!disabel'>
@@ -38,6 +39,7 @@
         <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
         <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
         <iButton v-if='isKborJj == 2' @click="options.show = true">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
+        <iButton  @click="exportParts(layout)">{{language('DAOCHU','导出')}}</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
@@ -72,7 +74,7 @@ import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList,defaultLayoutTemplate} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
@@ -150,7 +152,6 @@ export default{
   },
   created(){
     this.layout = this.getLayoutDetaultNumber()
-    console.log(this.layout)
     this.searchABPageExchangeRate()
   },
   destroyed(){
@@ -192,7 +193,7 @@ export default{
       }, 500);
     },
     getTopWidth(){
-      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 100 + 'px'
+      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 60 + 'px'
     },
     removeTags(){
       this.negoAnalysisSummaryLayoutSave()
@@ -482,6 +483,8 @@ export default{
         this.ratingList = []
     },
     searchABPageExchangeRate() {
+      if (!this.$route.query.desinateId) return
+
       searchABPageExchangeRate(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
@@ -504,6 +507,16 @@ export default{
     // 汇率显示处理
     exchangeRateProcess(row) {
       return `100${ this.$i18n.locale === "zh" ? row.currencyName : row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ this.$i18n.locale === "zh" ? row.originCurrencyName : row.originCurrencyCode }`
+    },
+    //导出
+    exportParts(layout) {
+      if(layout === '1') {
+        return exportFSPartsAsRow(this.$route.query.id,this.round)
+      } else if(layout === '2') {
+        return exportFsSupplierAsRow(this.$route.query.id,this.round)
+      } else {
+        return exportGsPartsAsRow(this.$route.query.id,this.round)
+      }
     }
   }
 }

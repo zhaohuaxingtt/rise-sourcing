@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-11 15:08:41
+ * @LastEditTime: 2021-11-17 19:51:18
  * @LastEditors:  
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -51,7 +51,7 @@
                       </li>
                   </template>
                 </ul>
-                <div class="cc" style="width:100px">
+                <div class="cc" style="width:60px">
                   <ul>
                     <template v-for="(itemss,index) in supplierLeftLit">
                         <li :key='index' v-if='itemss.name == "KM"'>{{kmAPrice}}</li>
@@ -59,7 +59,7 @@
                     </template>
                   </ul>
                 </div>
-                <div class="cd" style="width:100px">
+                <div class="cd" style="width:60px">
                   <ul>
                     <template v-for="(itemss,index) in supplierLeftLit">
                         <li :key='index' v-if='itemss.name == "KM"'>{{kmTooling}}</li>
@@ -169,7 +169,6 @@
       :empty-text="$t('LK_ZANWUSHUJU')"
       ref='table'
     >
-    {{tableTitle}}
       <template v-for='(item,index) in tableTitle'>
         <!-----------------表格中内容模块------------------------>
         <el-table-column
@@ -200,7 +199,7 @@
                       </li>
                   </template>
                 </ul>
-                <div class="cc" style="width:100px">
+                <div class="cc" style="width:60px">
                   <ul>
                     <template v-for="(itemss,index) in supplierLeftLit">
                         <li :key='index' v-if='itemss.name == "KM"'>{{kmAPrice}}</li>
@@ -208,7 +207,7 @@
                     </template>
                   </ul>
                 </div>
-                <div class="cd" style="width:100px">
+                <div class="cd" style="width:60px">
                   <ul>
                     <template v-for="(itemss,index) in supplierLeftLit">
                         <li :key='index' v-if='itemss.name == "KM"'>{{kmTooling}}</li>
@@ -243,6 +242,18 @@
             <template v-if ='removeKeysNumber(item.props) == "developmentCost"'>
               <span>{{scope.row[item.props]}}</span>
               <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
+            </template>
+            <template v-if ='removeKeysNumber(item.props) == "supplierName"'>
+              <el-tooltip  effect='light'>
+                <div slot="content">
+                  <div>{{scope.row['supplierNameEn']}}</div>
+                  <div>{{scope.row[item.props]}}</div>
+                </div>
+                <div>
+                  <span class="isEplisSuplier">{{scope.row[getPorpsNumber(item.props)+"supplierNameEn"]}}</span>    
+                  <span class="isEplisSuplier">{{scope.row[item.props]}}</span>    
+                </div>
+              </el-tooltip>
             </template>
             <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
               <span>{{scope.row[item.props]}}</span>
@@ -505,14 +516,20 @@ export default{
           margin: auto;
           position: absolute;
           content:"";
-          width: 80PX;
+          width: 65PX;
           height:3px;
           left: 0px;
           bottom: 0px;
           background: blue;
         }
+        .isEplisSuplier{
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
         .textEplies{
-          width: 80% !important;
+          width: 100% !important;
           overflow: hidden !important;
           text-overflow: ellipsis !important;
           white-space: nowrap;

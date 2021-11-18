@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-26 14:55:05
- * @LastEditors: Hao,Jiang
+ * @LastEditors:  
 * @Description: In User Settings Edit
  -->
 <template>
@@ -169,10 +169,10 @@ export default {
       })
     },
     //转派
-    patchRecordsForTranslate(id){
+    patchRecordsForTranslate(val){
       patchRecords({transferTpInfoGroup:{
         tpIds:[this.partDetails.tpPartID],
-        userId:id
+        userId:val.id
       }}).then(res=>{
         if(res.code == 200){
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))

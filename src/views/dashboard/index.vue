@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-11-10 15:17:53
+ * @LastEditTime: 2021-11-17 13:55:13
  * @LastEditors: Hao,Jiang
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -256,7 +256,7 @@ export default {
       const code = data && data.id || ''
       const applicationStatus = nomiApplicationStatus.find(o => o.name === '流转中')
       const applicationStatusCode = applicationStatus && applicationStatus.id || ''
-      const nominateParams = type === '流转' ? `nominateProcessType=${code}&applicationStatus=${applicationStatusCode}&` : ''
+      const nominateParams = type === '流转' ? `nominateProcessType=${code}&applicationStatus=${applicationStatusCode}&` : `nominateProcessType=${code}&`
       return `/sourcing/partsnomination?showSelf=true&${nominateParams}currentUser=true&isDelay=true`
     },
     // 获取下拉值
