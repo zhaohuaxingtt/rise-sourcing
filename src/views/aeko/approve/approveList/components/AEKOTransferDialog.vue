@@ -73,6 +73,7 @@ export default {
       if (this.selBuyer != null || this.selBuyer != '') {
        this.$emit("confirmTransfer", this.selBuyer);
       }
+      this.clearDiolog()
     }
   },
 

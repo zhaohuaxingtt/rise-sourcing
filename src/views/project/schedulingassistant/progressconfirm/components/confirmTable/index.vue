@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-30 10:47:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-13 15:53:30
+ * @LastEditTime: 2021-11-17 22:07:30
  * @Description: 确认表格-通用
- * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\confirmTable\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progressconfirm\components\confirmTable\index.vue
 -->
 
 <template>
@@ -30,66 +30,81 @@
       <template #scheNomiTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheNomiTimeKw}}</span>
         <template v-else>
-          <el-cascader
+          <!-- <el-cascader
             class="yearWeekSelect"
             :value="scope.row.scheNomiTimeKw ? scope.row.scheNomiTimeKw.split('-KW') : []"
             :options="yearWeekOptions"
             @change="handleChange($event, scope.row, 'scheNomiTimeKw')"
             separator="-KW"
-          ></el-cascader>
-          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          ></el-cascader> -->
+          <div class="yearWeekSelect" @click="openChangeKw(scope.row, 'scheNomiTimeKw', index)">
+            {{scope.row.scheNomiTimeKw}}
+            <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          </div>
         </template>
       </template>
       <template #scheFirstTryoutTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheFirstTryoutTimeKw}}</span>
         <template v-else>
-          <el-cascader
+          <!-- <el-cascader
             class="yearWeekSelect"
             :value="scope.row.scheFirstTryoutTimeKw ? scope.row.scheFirstTryoutTimeKw.split('-KW') : []"
             :options="yearWeekOptions"
             @change="handleChange($event, scope.row, 'scheFirstTryoutTimeKw')"
             separator="-KW"
-          ></el-cascader>
-          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          ></el-cascader> -->
+          <div class="yearWeekSelect" @click="openChangeKw(scope.row, 'scheFirstTryoutTimeKw', index)">
+            {{scope.row.scheFirstTryoutTimeKw}}
+            <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          </div>
         </template>
       </template>
       <template #scheOtsTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheOtsTimeKw}}</span>
         <template v-else>
-          <el-cascader
+          <!-- <el-cascader
             class="yearWeekSelect"
             :value="scope.row.scheOtsTimeKw ? scope.row.scheOtsTimeKw.split('-KW') : []"
             :options="yearWeekOptions"
             @change="handleChange($event, scope.row, 'scheOtsTimeKw')"
             separator="-KW"
-          ></el-cascader>
-          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          ></el-cascader> -->
+          <div class="yearWeekSelect" @click="openChangeKw(scope.row, 'scheOtsTimeKw', index)">
+            {{scope.row.scheOtsTimeKw}}
+            <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          </div>
         </template>
       </template>
       <template #scheEmTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheEmTimeKw}}</span>
         <template v-else>
-          <el-cascader
+          <!-- <el-cascader
             class="yearWeekSelect"
             :value="scope.row.scheEmTimeKw ? scope.row.scheEmTimeKw.split('-KW') : []"
             :options="yearWeekOptions"
             @change="handleChange($event, scope.row, 'scheEmTimeKw')"
             separator="-KW"
-          ></el-cascader>
-          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          ></el-cascader> -->
+          <div class="yearWeekSelect" @click="openChangeKw(scope.row, 'scheEmTimeKw', index)">
+            {{scope.row.scheEmTimeKw}}
+            <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          </div>
         </template>
       </template>
       <template #scheKickoffTimeKw="scope">
         <span v-if="!isFS">{{scope.row.scheKickoffTimeKw}}</span>
         <template v-else>
-          <el-cascader
+          <!-- <el-cascader
             class="yearWeekSelect"
             :value="scope.row.scheKickoffTimeKw ? scope.row.scheKickoffTimeKw.split('-KW') : []"
             :options="yearWeekOptions"
             @change="handleChange($event, scope.row, 'scheKickoffTimeKw')"
             separator="-KW"
-          ></el-cascader>
-          <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          ></el-cascader> -->
+          <div class="yearWeekSelect" @click="openChangeKw(scope.row, 'scheKickoffTimeKw', index)">
+            {{scope.row.scheKickoffTimeKw}}
+            <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+          </div>
         </template>
       </template>
     </tableList> 
@@ -100,6 +115,7 @@
       :current-page="page.currPage"
       :total="page.totalCount"
     />
+    <selectKwDialog :dialogVisible="dialogVisibleSelectKw" @changeVisible="changeSelectKwVisible" :value="selectKw" @handleChange="handleChangeKw" />
   </iCard>
 </template>
 
@@ -114,9 +130,10 @@ import saveBtn from '../commonBtn/saveBtn'
 import backBtn from '../commonBtn/backBtn'
 import transferBtn from '../commonBtn/transferBtn'
 import sendFSBtn from '../commonBtn/sendFSBtn'
+import selectKwDialog from '@/views/project/schedulingassistant/part/components/selectKw'
 export default {
   mixins: [pageMixins],
-  components: { iCard, tableList, iPagination, confirmBtn, saveBtn, backBtn, transferBtn, sendFSBtn, icon },
+  components: { iCard, tableList, iPagination, confirmBtn, saveBtn, backBtn, transferBtn, sendFSBtn, icon, selectKwDialog },
   props: {
     title: {type:String},
     titleKey: {type:String},
@@ -135,12 +152,15 @@ export default {
       withAllBtn: false,
       tableData: [],
       yearWeekOptions: [],
-      collapseValue: true
+      collapseValue: true,
+      selectKw: '',
+      selectKwPro: {},
+      dialogVisibleSelectKw: false
     }
   },
   created() {
     this.getTableList()
-    this.yearWeekOptions = this.initOption()
+    // this.yearWeekOptions = this.initOption()
   },
   computed: {
     /**
@@ -154,21 +174,37 @@ export default {
     }
   },
   methods: {
+    changeSelectKwVisible(visible) {
+      this.dialogVisibleSelectKw = visible
+    },
+    handleChangeKw(val) {
+      console.log('val', val)
+      const { pro, item, index } = this.selectKwPro
+      this.handleChange(val, pro, item, index)
+    },
+    openChangeKw(pro, item, index) {
+      console.log(pro, item, pro[item], index)
+      this.selectKw = pro[item]
+      this.selectKwPro = {pro, item, index}
+      this.changeSelectKwVisible(true)
+    },
     handleCollapse(collapseValue) {
       this.collapseValue = collapseValue
     },
     handleChange(val, item, props) {
-      this.$set(item, props, val.join('-KW'))
+      this.$set(item, props, val)
     },
     initOption() {
       const option = []
-      for(var i = moment().year() - 10; i <= moment().year() + 10; i++) {
-        const countMonth = moment(i+'-01-01').weeksInYear()
-        const children = []
-        for(var j = 1; j <= countMonth; j++) {
-          children.push({value: j<10?'0'+j:j+'',label: j<10?'0'+j:j+''})
+      const childrenTwo = []
+      const childrenThree = []
+      for(var j = 1; j <= 53; j++) {
+          j !== 53 && childrenTwo.push({value: j<10?'0'+j:j+'',label: j<10?'0'+j:j+''})
+          childrenThree.push({value: j<10?'0'+j:j+'',label: j<10?'0'+j:j+''})
         }
-        option.push({value:i+'',label:i+'',children:children})
+      for(var i = 1900; i <= moment().year() + 10; i++) {
+        const countMonth = moment(i+'-01-01').weeksInYear()
+        option.push({value:i+'',label:i+'',children:countMonth === 53 ? childrenThree : childrenTwo})
       }
       return option
     },
@@ -251,17 +287,20 @@ export default {
   display: flex;
 }
 .yearWeekSelect {
-  ::v-deep .el-input__inner {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-  ::v-deep .el-input__suffix {
-    display: none;
-  }
+    height: 30px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
+    border: 0.0625rem solid #E0E6ED;
+    position: relative;
+    text-align: left;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
 }
 .cascader-icon {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 7px;
+  right: 5px;
 }
 </style>
