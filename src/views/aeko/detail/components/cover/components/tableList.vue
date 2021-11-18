@@ -30,6 +30,22 @@
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row"></slot>
         </template>
+        
+        <template #header="scope">
+          <span>{{ scope.column.label }}</span>
+          <i v-if="item.require" class="label-require margin-left3 margin-right3">*</i>
+          <el-popover
+            placement="top"
+            trigger="hover"
+            popper-class="tableTitleTip"
+            :visible-arrow="false"
+            :disabled="!item.showTips">
+            <p v-html="item.showTips ? item.tips() : ''"></p>
+            <span slot="reference">
+              <icon v-if="item.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
+            </span>
+          </el-popover>
+        </template>
       </el-table-column>
     </template>
   </el-table>
@@ -37,8 +53,12 @@
 
 <script>
 import tablelist from '@/views/partsign/home/components/tableList'
+import { icon } from 'rise';
 
 export default {
+  components:{
+    icon,
+  },
   props:{
     ...tablelist.props,
     tableData: { 
@@ -138,11 +158,17 @@ export default {
   ::v-deep .el-checkbox {
     z-index: 0
   }
+
+  ::v-deep th>.cell .label-require{
+    color: #f56c6c;
+    font-style:normal;
+  }
 }
 
 .singleSelectTable {
   ::v-deep .el-table__header-wrapper .el-checkbox {
     display: none;
   }
+
 }
 </style>

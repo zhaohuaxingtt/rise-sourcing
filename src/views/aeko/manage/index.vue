@@ -68,7 +68,7 @@
       <iCard class="contain margin-top20" :title="language('LK_AEKOGUANLI','AEKO管理')">
       <!-- 按钮区域 -->
       <template v-slot:header-control>
-          <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO|逾期BI报表" @click="gotoBIPage">{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton>
+          <!-- <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO|逾期BI报表" @click="gotoBIPage">{{language('LK_YUQIBIBAOBIAO','逾期BI报表')}} </iButton> -->
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_HUIYITONGGUO|会议通过" @click="meetingPass">{{language('LK_AEKOHUIYITONGGUO','会议通过')}} </iButton>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_XIAZAIMUBAN|下载模板" @click="downloadTemplate">{{language('LK_XIAZAIMOBAN','下载模板')}} </iButton>
           <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUAEKO|导入AEKO" class=" margin-left10 margin-right10">

@@ -76,13 +76,12 @@
           :tableData="tableData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
-          :headerClass="headerClass"
         >
         <!-- 增加材料成本(RMB/⻋) -->
         <template #materialIncrease="scope">
           <div class="table-materialIncrease" style="width:120px">
             <iInput :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
-            <span class="icon-tips" v-if="scope.row.isShowTips">
+            <!-- <span class="icon-tips" v-if="scope.row.isShowTips">
               <el-tooltip v-if="scope.row['expressionList'].length > 1" placement="top" effect="light" >
                 <div slot="content">
                   <p class="font-weight margin-bottom5" style="text-align:center">{{scope.row['expressionList'][0] || ''}}</p>
@@ -92,7 +91,7 @@
               </el-tooltip>
 
 
-               <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i>
+               <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i> -->
             </span>
           </div>
             
@@ -260,13 +259,13 @@ export default {
         })
       },
       // 给表头添加*
-      headerClass(row){
-        const { columnIndex } = row; 
-        const list = [2,3,4];
-        if(list.includes(columnIndex)){
-          return 'label-require'
-        }
-      },
+      // headerClass(row){
+      //   const { columnIndex } = row; 
+      //   const list = [2,3,4];
+      //   if(list.includes(columnIndex)){
+      //     return 'label-require'
+      //   }
+      // },
       
       handleNumber(val, row, props) {
         if(props == 'sendCycle'){
