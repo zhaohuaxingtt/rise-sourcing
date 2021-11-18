@@ -23,6 +23,7 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
+        :editable = "perCarDosage"
       />
       <iPagination
         class="pagination margin-top30"
@@ -65,7 +66,12 @@ export default {
       carTypeConfigId: "",
       tpId: "",
       isEdit:false,
-      carTypeVisible:false
+      carTypeVisible:false,
+      tableListDatatem:[
+        {
+          partNum:'11'
+        }
+      ]
     };
   },
   props: {

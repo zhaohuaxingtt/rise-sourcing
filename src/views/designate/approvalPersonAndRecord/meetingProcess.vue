@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-12 13:37:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-15 21:43:36
+ * @LastEditTime: 2021-11-18 10:23:17
  * @Description: 
  * @FilePath: \front-sourcing\src\views\designate\approvalPersonAndRecord\meetingProcess.vue
 -->
@@ -19,40 +19,37 @@
           class="node"
           :class="{
             mulitiple: item.taskNodeList,
-            active: ['已提交', '已审批', '已处理'].includes(item.status)
+            active: ['已提交', '已审批'].includes(item.status)
           }"
         >
           <div class="node-icon">
             <icon symbol size="30" :name="getIcon(item)" />
           </div>
           <div class="title">{{ item.status || item.nodeName }}</div>
-          <div class="item-name" v-if="item.taskNodeList && item.taskNodeList.length < 2">
+          <div class="item-name" v-if="!item.taskNodeList">
             <div>
               <span>
                 {{
-                  item.taskNodeList[0] && item.taskNodeList[0].assigneeName
+                  item.approvalUser && item.approvalUser.assigneeName
                 }}
               </span>
             </div>
           </div>
-          <div class="post text-ellipsis" v-if="item.taskNodeList && item.taskNodeList.length < 2">
+          <div class="post text-ellipsis" v-if="!item.taskNodeList">
             <div>
               <span>
-                {{ item.taskNodeList[0] && item.taskNodeList[0].deptNameZh }}
+                {{ item.approvalUser && item.approvalUser.deptNameZh }}
               </span>
             </div>
           </div>
-          <div class="date" v-if="item.taskNodeList && item.taskNodeList.length < 2 || appItem.hidens">
-            {{ !appItem.hidens ? item.taskNodeList[0] && item.taskNodeList[0].endTime : item.endTime }}
-          </div>
-          <div class="commit" v-if="item.taskNodeList && item.taskNodeList.length < 2">
-            {{ item.taskNodeList[0] && item.taskNodeList[0].operation }}
+          <div class="date" v-if="!item.taskNodeList || appItem.hidens">
+            {{ item.approvalUser && item.approvalUser.endTime || item.endTime }}
           </div>
           <div
-            v-if="item.taskNodeList && item.taskNodeList.length > 1"
+            v-if="item.taskNodeList"
             class="content "
             :class="{
-              active: ['已提交', '已审批', '已处理'].includes(item.status)
+              active: ['已提交', '已审批'].includes(item.status)
             }"
           >
             <div class="type">
@@ -62,7 +59,7 @@
               <li
                 v-for="(approvalUser, i) of item.taskNodeList"
                 :key="i"
-                :class="{ active: approvalUser.endTime }"
+                :class="{ active: approvalUser.endTime || ['已审批'].includes(item.status) }"
               >
                 <div class="item-name">
                   <span v-if="approvalUser">
@@ -70,6 +67,22 @@
                       approvalUser.assigneeName
                     }}
                   </span>
+                  <div 
+                    class="agentUser" 
+                    v-for="(agentUser, agentUsersI) in approvalUser.agentUsers" 
+                    :key="agentUsersI"
+                  >
+                    <span v-if="agentUser">
+                      {{
+                        agentUser.assigneeName + ' (代)'
+                      }}
+                    </span>
+                    <span v-if="agentUser">
+                      {{
+                        agentUser.deptNameZh
+                      }}
+                    </span>
+                  </div>
                 </div>
                 <div class="post">
                   {{ approvalUser.deptNameZh }}
@@ -117,45 +130,38 @@ export default {
     approvalList() {
       const approvalList = this.meetingDetail.map((item, index) => {
         const hidens = this.hidensIndex.includes(index)
-        // eslint-disable-next-line no-undef
-        const activityList = _.uniqBy(item.items.map(iitem => {return {activityName: iitem.activityName, activityId: iitem.activityId}}), 'activityName')
-        const list = activityList.map(acItem => {
-          const taskNodeList = item.items.filter((node) => node.activityName === acItem.activityName)
-          return {
-            nodeName: acItem.activityName,
-            status: this.getStatus(acItem, item.isEnd),
-            remark: '',
-            nodeTye: acItem.activityId === 'CSCCounterSign' ? "MultiInst" : taskNodeList.length > 1 ? "MultiInst" : "Non_MultiInst",
-            taskNodeList
+        const list = [
+          {
+            nodeName: item.items[0]?.activityName,
+            nodeTye: "Non_MultiInst",
+            remark: "提交节点",
+            status: "已提交",
+            approvalUser: item.items[0]
+          },
+          {
+            nodeName: item.items[1]?.activityName,
+            nodeTye: "MultiInst",
+            remark: "正常审批",
+            status: !item.isEnd ? "审批中" : "已审批",
+            taskNodeList: item.items?.filter((node, nodeIndex) => nodeIndex !== 0)
+          },
+          {
+            approvalUserList: null,
+            executionId: null,
+            nodeName: "审批完成",
+            nodeTye: "",
+            remark: null,
+            status: null,
+            isEnd: item.isEnd,
+            endTime: hidens ? item.items[item.items.length - 1]?.endTime : ''
           }
-        })
-        list.push({
-          approvalUserList: null,
-          executionId: null,
-          nodeName: "审批完成",
-          nodeTye: "",
-          remark: null,
-          status: null,
-          isEnd: item.isEnd,
-          endTime: hidens ? item.items[item.items.length - 1].endTime : ''
-        })
-        return {hidens: hidens, list: hidens ? [list[list.length - 1]]: list}
+        ]
+        return {hidens: hidens, list: hidens ? [list[2]]: list}
       })
-      // console.log(approvalList)
       return approvalList
     }
   },
   methods: {
-    getStatus(item, isEnd) {
-      switch(item.activityId) {
-        case 'autoComplete-task':
-          return "已提交"
-        case 'CSCCounterSign':
-          return isEnd ? "已审批" : "审批中"
-        default:
-          return '已处理'
-      }
-    },
     toggle(appIndex){
       if (!this.hidensIndex.some(item => item === appIndex)) {
         this.hidensIndex.push(appIndex)
@@ -167,7 +173,6 @@ export default {
     getMeetingDetail() {
       if (this.nomiAppId && this.processInstanceId) {
         this.loading = true
-        this.hidensIndex = []
         getApprovalRecordMeeting(this.nomiAppId, this.processInstanceId).then(res => {
           if (res?.result) {
             this.meetingDetail = res.data
@@ -177,11 +182,11 @@ export default {
               }
             });
           } else {
-            this.meetingDetail = {}
+            this.meetingDetail = []
             iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           }
         }).catch(e => {
-          this.meetingDetail = {}
+          this.meetingDetail = []
           iMessage.error(this.$i18n.locale === 'zh' ? e?.desZh : e?.desEn)
         }).finally(() => {
           this.loading = false
@@ -192,7 +197,7 @@ export default {
       if (item.isEnd) {
         return 'iconshenpiliu-yishenpi'
       }
-      if (['已提交', '已审批', '已处理'].includes(item.status)) {
+      if (['已提交', '已审批'].includes(item.status)) {
         return 'iconshenpiliu-yishenpi'
       }
       if (item.status === '审批中') {
@@ -311,7 +316,7 @@ $borderColor: #cbcbcb;
         }
         li {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           position: relative;
           padding-left: 22px;
           font-size: 14px;
@@ -328,6 +333,8 @@ $borderColor: #cbcbcb;
             border-radius: 50%;
             background: #fff;
             margin-right: 8px;
+            position: relative;
+            top: 5px;
           }
         }
         li.active {
@@ -378,6 +385,26 @@ $borderColor: #cbcbcb;
     max-height: 35px;
     overflow: hidden;
     min-height: auto;
+  }
+}
+.agentUser {
+  color: #8f8f90;
+  display: flex;
+  margin: 5px 0;
+  span {
+    margin-right: 20px;
+  }
+  &::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border: dashed 1px $borderColor;
+    border-radius: 50%;
+    background: #fff;
+    margin-right: 8px;
+    position: relative;
+    top: 5px;
   }
 }
 </style>

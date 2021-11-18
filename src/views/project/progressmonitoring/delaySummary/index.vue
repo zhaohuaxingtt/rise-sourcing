@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 16:42:10
+ * @LastEditTime: 2021-11-17 21:44:57
  * @Description: 延误原因汇总
 -->
 
@@ -49,14 +49,18 @@
         <template #newPlanDate="scope">
           <span v-if="!isFS || (isFS && !withAllBtn)">{{scope.row.newPlanDate}}</span>
           <template v-else>
-            <el-cascader
+            <div class="yearWeekSelect" @click="openChangeKw(scope.row, 'newPlanDate', index)">
+              {{scope.row.newPlanDate}}
+              <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+            </div>
+            <!-- <el-cascader
               class="yearWeekSelect"
               :value="scope.row.newPlanDate ? scope.row.newPlanDate.split('-KW') : []"
               :options="yearWeekOptions"
               @change="handleChange($event, scope.row, 'newPlanDate')"
               separator="-KW"
-            ></el-cascader>
-            <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon>
+            ></el-cascader> -->
+            <!-- <icon symbol name="iconxuanzeriqi" class="cascader-icon"></icon> -->
           </template>
         </template>
         <template #delayReason="scope">
@@ -75,6 +79,7 @@
       />
     </iCard>
     <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" type="2" :delayList="selectTableData" />
+    <selectKwDialog :dialogVisible="dialogVisibleSelectKw" @changeVisible="changeSelectKwVisible" :value="selectKw" @handleChange="handleChangeKw" />
   </iPage>
   
 </template>
@@ -96,9 +101,10 @@ import transferBtn from '@/views/project/schedulingassistant/progressconfirm/com
 import { getDelayReasonSummary, exportDelayReasonConfirm } from '@/api/project/process'
 import delayReasonDialog from '../monitorDetail/components/delayReson'
 import { selectDictByKeyss } from '@/api/dictionary'
+import selectKwDialog from '@/views/project/schedulingassistant/part/components/selectKw'
 export default {
   mixins: [pageMixins],
-  components: { iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog },
+  components: { selectKwDialog, iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog },
   data() {
     return {
       tableTitle,
@@ -113,7 +119,9 @@ export default {
       yearWeekOptions: [],
       delayReasonOptions: {},
       currPartPeriod: '',
-      exportLoading: false
+      exportLoading: false,
+      dialogVisibleSelectKw: false,
+      selectKw: ''
     }
   },
   computed: {
@@ -126,13 +134,26 @@ export default {
   },
   created() {
     this.initSearchParams()
-    this.yearWeekOptions = this.initOption()
+    // this.yearWeekOptions = this.initOption()
     this.getTableList()
     if(this.isFS) {
       this.getDelayReason()
     }
   },
   methods: {
+    changeSelectKwVisible(visible) {
+      this.dialogVisibleSelectKw = visible
+    },
+    handleChangeKw(val) {
+      const { pro, item, index } = this.selectKwPro
+      this.handleChange(val, pro, item, index)
+    },
+    openChangeKw(pro, item, index) {
+      console.log(pro, item, pro[item], index)
+      this.selectKw = pro[item]
+      this.selectKwPro = {pro, item, index}
+      this.changeSelectKwVisible(true)
+    },
     async handleExport() {
       this.exportLoading = true
       const params = {
@@ -188,7 +209,7 @@ export default {
     },
     initOption() {
       const option = []
-      for(var i = moment().year() - 10; i <= moment().year() + 10; i++) {
+      for(var i = 1900; i <= moment().year() + 10; i++) {
         const countMonth = moment(i+'-01-01').weeksInYear()
         const children = []
         for(var j = 1; j <= countMonth; j++) {
@@ -264,7 +285,7 @@ export default {
       this.selectTableData = val
     },
     handleChange(val, item, props) {
-      this.$set(item, props, val.join('-KW'))
+      this.$set(item, props, val)
     },
   }
 }
@@ -278,17 +299,20 @@ export default {
   // overflow: visible;
 }
 .yearWeekSelect {
-  ::v-deep .el-input__inner {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-  ::v-deep .el-input__suffix {
-    display: none;
-  }
+    height: 30px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
+    border: 0.0625rem solid #E0E6ED;
+    position: relative;
+    text-align: left;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
 }
 .cascader-icon {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 7px;
+  right: 5px;
 }
 </style>

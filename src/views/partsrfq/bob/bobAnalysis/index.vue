@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-15 21:48:41
+ * @LastEditTime: 2021-11-17 17:43:56
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -65,7 +65,8 @@
                  v-if="collapseItems.indexOf(item.id) < 0"
                  :id="item.id"
                  :root-id="item.rootId"
-                 :parent-id="item.parentId" :ref="!item.parentId ? item.id:''">
+                 :parent-id="item.parentId"
+                 :ref="!item.parentId ? item.id:''">
               <span class="table-cell"
                     style="justify-content: flex-start;width: 20%"
                     :style="{'padding-left': 20*item.level + 'px'}">
@@ -73,8 +74,10 @@
                    :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
                    style="cursor: pointer;padding-right: 4px;"
                    @click="handleCollapse(item, item.expanded)"></i>
-                <el-input v-if="item.grouped" v-model="item.title"></el-input>
-                <span v-else :style="{'font-weight': item.groupChild ? 'bold':''}">{{item.title}}</span>
+                <el-input v-if="item.grouped"
+                          v-model="item.title"></el-input>
+                <span v-else
+                      :style="{'font-weight': item.groupChild ? 'bold':''}">{{item.title}}</span>
               </span>
               <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
                     v-for="(title, titleIdx) in tableTitle"
@@ -224,7 +227,12 @@ export default {
   },
   created () {
     this.onDataLoading = true;
-    this.groupId = this.$route.query.groupId
+    if (this.$route.query.groupId) {
+      this.groupId = this.$route.query.groupId
+    } else {
+      this.groupId = this.propGroupId
+    }
+
     this.getRfqToRemark();
   },
   props: {
@@ -238,7 +246,11 @@ export default {
         return {}
       }
     },
-    analysisSchemeId: {
+    propSchemeId: {
+      type: String,
+      default: ""
+    },
+    propGroupId: {
       type: String,
       default: ""
     }
@@ -252,7 +264,6 @@ export default {
     label: {
       handler (val) {
         // this.expedsArr = []
-        debugger
         this.close()
         this.$nextTick(function () {
           this.expedsArr = []
@@ -277,9 +288,9 @@ export default {
 
   },
   methods: {
-    decideRowClass(row, idx) {
+    decideRowClass (row, idx) {
       if (this.collapseItems.length == 0) {
-        return idx%2 == 0 ? 'table-odd' : 'table-even';
+        return idx % 2 == 0 ? 'table-odd' : 'table-even';
       }
 
       var displayed = this.tableListData.filter((item) => {
@@ -288,15 +299,15 @@ export default {
       console.log(displayed)
 
       var realIndex = -1;
-      displayed.forEach((item,index) => {
+      displayed.forEach((item, index) => {
         if (item.id == row.id) {
           realIndex = index;
         }
       })
-      
-      return realIndex%2 == 0 ? 'table-odd' : 'table-even';
+
+      return realIndex % 2 == 0 ? 'table-odd' : 'table-even';
     },
-    handleAllCollapse(expandAll) {
+    handleAllCollapse (expandAll) {
       this.allExpand = !this.allExpand
       // if (!expandAll) this.collapseItems = [];
       this.tableListData.forEach((item) => {
@@ -335,7 +346,7 @@ export default {
         }
       });
     },
-    clearGrouped() {
+    clearGrouped () {
       this.tableListData.forEach((item) => {
         for (var key in item) {
           if (key.indexOf("checked#") >= 0) {
@@ -351,7 +362,7 @@ export default {
         if (this.groupSelectedItems.some((obj) => {
           return obj.idx == idx && item.rootId == obj.rootId
         })) {
-          Vue.set(item,"checked#" + idx,false)
+          Vue.set(item, "checked#" + idx, false)
           return;
         }
         var groupId = this.createUuid();
@@ -550,7 +561,6 @@ export default {
         }
       })
       this.tableListData = merged
-      console.log(this.tableListData)
     },
     addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, rootId, parentIndex) {
       childs.forEach((child) => {
@@ -908,7 +918,7 @@ export default {
               }
             }
             newItem.idx = gi.idx;
-            newItem['checked#'+gi.idx] = false
+            newItem['checked#' + gi.idx] = false
             newDatas.push(newItem)
           }
         })
@@ -925,7 +935,7 @@ export default {
         if (obj.length <= 0) {
           groupedDatas[item.rootId].push(item)
         } else {
-          obj[0]["label#"+item.idx] = item["label#"+item.idx]
+          obj[0]["label#" + item.idx] = item["label#" + item.idx]
         }
       })
 
@@ -951,11 +961,11 @@ export default {
           });
         }
       }
-      console.log(this.tableListData)
 
       this.clearGrouped();
       this.visible1 = false;
       this.onGroupingModel = false;
+      console.log(this.cbdSelectedList)
       return;
       addComponentToGroup({
         groupId: this.value1.matchId,
@@ -989,14 +999,14 @@ export default {
         this.visible1 = false;
       })
     },
-    refreshGroupedId(groupedDatas, key, index) {
+    refreshGroupedId (groupedDatas, key, index) {
       var newId = this.createUuid()
       if (groupedDatas[key][index].hasChild) {
         this.refreshChildGroupid(groupedDatas, key, groupedDatas[key][index].id, newId)
       }
       groupedDatas[key][index].id = newId;
     },
-    refreshChildGroupid(groupedDatas, key, parentId, newParentId) {
+    refreshChildGroupid (groupedDatas, key, parentId, newParentId) {
       groupedDatas[key].forEach((item) => {
         if (item.parentId == parentId) {
           var newId = this.createUuid()
@@ -1168,7 +1178,7 @@ export default {
   background-color: #ffffff !important;
   border-color: #ffffff !important;
 }
-.el-checkbox__input.is-checked+.el-checkbox__label {
+.el-checkbox__input.is-checked + .el-checkbox__label {
   color: #ffffff !important;
 }
 </style>

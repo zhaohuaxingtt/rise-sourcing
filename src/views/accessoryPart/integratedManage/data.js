@@ -8,9 +8,9 @@
  */
 
 export const tableTitle = [
-  {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 120},
-  {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, width: 120},
-  {props:'rfqNum',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 80},
+  {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 100, fixed: "left"},
+  {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, width: 120, fixed: "left"},
+  {props:'rfqNum',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100, fixed: "left"},
   {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 140},
   {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 140},
   {props:'partNameCh',name:'配件零件名称', key: "PEIJIANLINGJIANMINGCHENG", tooltip: true, width: 140},

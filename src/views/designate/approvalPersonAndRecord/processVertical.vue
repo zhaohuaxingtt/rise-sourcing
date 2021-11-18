@@ -59,6 +59,24 @@
                     : getUserName(approvalUser)
                 }}
               </span>
+              <div 
+                class="agentUser" 
+                v-for="(agentUser, agentUsersI) in approvalUser.agentUsers" 
+                :key="agentUsersI"
+              >
+                <span v-if="agentUser">
+                  {{
+                    agentUser.approvedUser
+                    ? getUserName(agentUser.approvedUser)
+                    : getUserName(agentUser) + ' (代)'
+                  }}
+                </span>
+                <span v-if="agentUser">
+                  {{
+                    agentUser.positionZhNameList
+                  }}
+                </span>
+              </div>
             </div>
             <div class="post">
               {{ approvalUser.positionZhNameList }}
@@ -336,7 +354,7 @@ $borderColor: #cbcbcb;
         }
         li {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           position: relative;
           padding-left: 22px;
           font-size: 14px;
@@ -353,6 +371,7 @@ $borderColor: #cbcbcb;
             border-radius: 50%;
             background: #fff;
             margin-right: 8px;
+            top: 5px;
           }
         }
         li.active {
@@ -366,6 +385,26 @@ $borderColor: #cbcbcb;
         }
       }
     }
+  }
+}
+.agentUser {
+  color: #8f8f90;
+  display: flex;
+  margin: 5px 0;
+  span {
+    margin-right: 20px;
+  }
+  &::before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border: dashed 1px $borderColor;
+    border-radius: 50%;
+    background: #fff;
+    margin-right: 8px;
+    position: relative;
+    top: 5px;
   }
 }
 </style>
