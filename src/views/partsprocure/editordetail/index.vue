@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-18 11:18:24
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-18 20:18:57
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
@@ -219,7 +219,7 @@
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT|LINIE部门" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
 							<!-- detailData. -->
 							<iSelect @change="changeUserDept" v-model="linieDept" v-if="!disabled">
-								<el-option :value="item.code" :label="item.name"
+								<el-option :value="item.code" :label="item.id"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
 							<iText v-else>{{ Array.isArray(fromGroup.LINIE_DEPT) && fromGroup.LINIE_DEPT.find(item => item.code === detailData.linieDept) ? getName(detailData.linieDept, "code", fromGroup.LINIE_DEPT) : detailData.linieDeptName }}</iText>

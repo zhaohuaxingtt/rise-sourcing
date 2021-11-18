@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-17 13:37:58
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-18 20:49:57
+ * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
@@ -270,7 +270,7 @@ export default {
       }).finally(() => this.loading = false);
     },
     spanMethod({ row, columnIndex }) {
-      if (row.total) {
+      if (row.total||row.total===0) {
         if (!columnIndex) {
           return [1, 1];
         } else if ((columnIndex = 1)) {

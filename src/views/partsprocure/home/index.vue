@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-11-17 21:15:51
+ * @LastEditTime: 2021-11-18 16:00:37
  * @LastEditors:  
  * @Description: 零件采购项目建立首页。
  * @FilePath: \rise\src\views\partsprocure\home\index.vue
@@ -292,7 +292,6 @@ import { clickMessage } from "@/views/partsign/home/components/data"
 import {selectDictByKeyss,procureFactorySelectVo} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 import {setPretreatmentParams} from '@/utils/tool'
-import { log } from 'util';
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 

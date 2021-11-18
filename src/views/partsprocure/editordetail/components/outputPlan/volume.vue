@@ -9,11 +9,11 @@
             {{`${language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}
           </span>
           <div class="btn-left">
-            <iButton v-if="isEdit">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
+            <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
             <iButton v-if="isEdit">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
-            <iButton v-if="isEdit">{{ language("LK_SHANCHU",'删除') }}</iButton>
+            <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
             <iButton v-if="isEdit" @click="addCar">{{ language("LK_TIANJIA",'添加') }}</iButton>
-            <iButton v-if="isEdit">{{ language("LK_BAOCUN",'保存') }}</iButton>
+            <iButton v-if="isEdit" @click="saveData">{{ language("LK_BAOCUN",'保存') }}</iButton>
             <iButton v-if="!isEdit" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
           </div>
         </div>
@@ -24,6 +24,7 @@
         :tableTitle="tableTitle"
         :tableLoading="loading"
         :editable = "perCarDosage"
+        @handleSelectionChange="handleSelectionChange"
       />
       <iPagination
         class="pagination margin-top30"
@@ -36,6 +37,7 @@
         :layout="page.layout"
         :total="page.totalCount"
 		    v-update
+        
       />
     </div>
       <addCarType :dialogVisible="carTypeVisible" @changeVisible="changeVisible">
@@ -54,6 +56,7 @@ import {
   getPerCarDosageInfo,
 } from "@/api/partsign/editordetail";
 import addCarType from './components/addCarType'
+import { log } from 'util';
 export default {
   components: { iCard, tableList, iPagination, iButton, addCarType },
   mixins: [pageMixins],
@@ -70,8 +73,30 @@ export default {
       tableListDatatem:[
         {
           partNum:'11'
+        },
+         {
+          partNum:'11'
+        },
+         {
+          partNum:'11'
+        },
+         {
+          partNum:'11'
+        },
+         {
+          partNum:'11'
+        },
+         {
+          partNum:'11'
+        },
+         {
+          partNum:'11'
+        },
+         {
+          partNum:'11'
         }
-      ]
+      ],
+      selectData:[]
     };
   },
   props: {
@@ -139,15 +164,65 @@ export default {
         this.loading = false;
       }
     },
+    //编辑
     edit() {
       this.isEdit = true
     },
+    //添加弹框
     addCar() {
       this.carTypeVisible = true
     },
+    //关闭弹框
     changeVisible(val) {
       this.carTypeVisible = val
-
+    },
+    //表格勾选
+    handleSelectionChange(val) {
+      this.selectData = val
+    },
+    //删除
+    async deleteData() {
+      console.log(this.selectData.length,'this.selectData.length');
+      if(!this.selectData.length) {
+        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'))
+        return
+      } else {
+        const flag = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
+        alert('11',flag)
+      }
+    },
+    //向下填充
+    fillDown() {
+      let data={
+        dataDown : '',
+        indexDown : ''
+      }
+      this.tableListDatatem.forEach((value,index) => {
+        if(value.perCarDosage) {
+          data.dataDown = value.perCarDosage
+          data.indexDown = index
+        }
+      })
+      let tableTem = [...this.tableListDatatem]
+      tableTem.forEach(() => {
+        tableTem[data.indexDown++].perCarDosage =data.dataDown
+      console.log(tableTem);
+         
+      })
+      this.tableListDatatem = tableTem
+    },
+    //保存
+    saveData() {
+      let flag = true
+       this.tableListDatatem.forEach(val => {
+        if(!val.perCarDosage) {
+          flag=false
+        }
+      })
+      if(flag == false) {
+        iMessage.error(this.language(' WEITIANXIEMEICHEYONGLIANGDEJILU,BUKEBAOCUN', '存在未填写每车用量的记录，不可保存'))
+        return
+      } 
     }
   },
 };
