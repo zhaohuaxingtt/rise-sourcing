@@ -9,50 +9,33 @@
                :src="downImg"
                alt=""></div>
         <div>单位: 百万元</div>
-        <!-- <div class="legend">
-          <ul >
-            <li class="flex">
-              <i class="circle"
-                 :style="color('SVW')"></i>
-              <span style="vertical-align: baseline">SVW</span>
-            </li>
-            <li class="flex">
-              <i class="circle"
-                 :style="color('其他')"></i>
-              <span style="vertical-align: baseline">其他</span>
-            </li>
-          </ul>
-        </div> -->
       </div>
       <div style="height:360px"
            ref="chart"></div>
-      <div class="interests"
-           v-if="!isEdite">
+      <div style="width: 100%;display:flex;flex-flow: row nowrap;">
         <iSelect v-model="interestsStatus"
                  :disabled="isEdite"
                  @change="handleChange"
-                 style="flex:1.5">
+                 style="width: 132px;margin-left:-40px;" v-if="!isEdite">
           <el-option v-for="(x,index) in iSelectOption"
                      :value="x.value"
                      :label="x.name"
                      :key="index"></el-option>
         </iSelect>
-        <iInput v-model="year1"
-                class="ml-49"
-                :disabled="isEdite"></iInput>
-        <iInput v-model="year2"
-                class="ml-49"
-                :disabled="isEdite"></iInput>
-        <iInput v-model="year3"
-                class="ml-49"
-                :disabled="isEdite"></iInput>
-      </div>
-      <div class="interests"
-           v-else>
-        <div class="interestsName">利润</div>
-        <div class="interestsName">{{profit1+'%'}}</div>
-        <div class="interestsName">{{profit2+'%'}}</div>
-        <div class="interestsName">{{profit3+'%'}}</div>
+        <div v-else style="width: 92px">利润</div>
+        <div v-if="!isEdite" style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
+          <iInput v-model="year1"
+                  style="width: 50px;"></iInput>
+          <iInput v-model="year2"
+                  style="width: 50px;"></iInput>
+          <iInput v-model="year3"
+                  style="width: 50px;"></iInput>
+        </div>
+        <div v-else style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
+          <div style="width: 50px;text-align:center;">{{profit1+'%'}}</div>
+          <div style="width: 50px;text-align:center;">{{profit2+'%'}}</div>
+          <div style="width: 50px;text-align:center;">{{profit3+'%'}}</div>
+        </div>
       </div>
     </div>
     <div class="width3-1">
@@ -83,7 +66,7 @@
         <div class="border last">
           <span v-if="isEdite">{{x.totalSalesPro+'%'}}</span>
           <iInput v-else
-                  v-model="x.totalSalesPro"></iInput>
+                  v-model="x.totalSalesPro" :disabled="index == (MarketOverviewObj.mainCustomerDTOList.length - 1)"></iInput>
         </div>
       </div>
     </div>
@@ -158,15 +141,15 @@ export default {
         },
 
         legend: {
-          data: ['svw', '其他'],
+          data: ['SVW', '其他'],
           right: 0,
           icon: "circle"
         },
         color: ['#0059FF', '#B4CBF7'],
-        grid: {
-          left: '25%',
-          right: -10
-        },
+        // grid: {
+        //   left: '25%',
+        //   right: -10
+        // },
         xAxis: [
           {
             type: 'category',
@@ -179,7 +162,8 @@ export default {
             },
           }
         ],
-        yAxis: {
+        yAxis: [{
+          position: 'left',
           splitLine: {
             show: true,
           },
@@ -190,9 +174,28 @@ export default {
             show: false,//不显示坐标轴线
           }
         },
+        {
+          type: 'value',
+          min: 0,
+          max: 100,
+          position: 'right',
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#EE6666'
+            }
+          },
+          axisLabel: {
+            formatter: '{value}%'
+          },
+          splitLine: {
+            show: false
+          }
+        }],
         series: [
           {
             name: '其他',
+            yAxisIndex: 0,
             itemStyle: {
               color: "#B4CBF7"
             },
@@ -232,7 +235,8 @@ export default {
             }]
           },
           {
-            name: 'svw',
+            name: 'SVW',
+            yAxisIndex: 0,
             itemStyle: {
               color: "#0059FF"
             },
@@ -271,7 +275,44 @@ export default {
               }
             }]
           },
-
+          {
+            name: 'profit',
+            yAxisIndex: 1,
+            itemStyle: {
+              color: "#EE6666"
+            },
+            z: 30,
+            type: 'line',
+            data: [
+              {
+                value: 2,
+                label: {
+                  normal: {
+                    show: true,
+                    formatter: ''
+                  }
+                }
+              },
+              {
+                value: 3,
+                label: {
+                  normal: {
+                    show: true,
+                    formatter: ''
+                  }
+                }
+              },
+              {
+                value: 7,
+                label: {
+                  normal: {
+                    show: true,
+                    formatter: ''
+                  }
+                }
+              }
+            ]
+          }
         ]
       },
       turnover: {
@@ -432,7 +473,6 @@ export default {
     },
     edite (val) {
       this.isEdite = val
-      console.log(this.isEdite)
       if (!val) {
         if (!this.MarketOverviewObj.mainCustomerDTOList) {
           this.MarketOverviewObj.mainCustomerDTOList = []
@@ -508,6 +548,7 @@ export default {
               this.option.series[0].data[0].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[0].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+              this.option.series[2].data[0].value = x.profit
               this.profit1 = x.profit
             }
             if (x.year == date - 2) {
@@ -515,6 +556,7 @@ export default {
               this.option.series[0].data[1].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[1].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+              this.option.series[2].data[1].value = x.profit
               this.profit2 = x.profit
             }
             if (x.year == date - 1) {
@@ -522,6 +564,7 @@ export default {
               this.option.series[0].data[2].value = (x.otherAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].value = (x.svwAmount / 1000000).toFixed(2)
               this.option.series[1].data[2].label.normal.formatter = !x.svwRate ? '0' : x.svwRate + '%'
+              this.option.series[2].data[2].value = x.profit
               this.profit3 = x.profit
             }
           });
@@ -569,16 +612,23 @@ export default {
           //   this.turnover.series[0].data = data
           //   this.turnover.legend.data = legend
           // }
-          // let total = new Number()
-          // if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
-          //   val.mainCustomerDTOList.forEach(item => {
-          //     total += Number(item.totalSalesPro)
-          //   })
-          //   if (total > 100) {
-          //     iMessage.error('超过100%')
-          //     return
-          //   }
-          // }
+          let total = new Number()
+          if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
+            val.mainCustomerDTOList.forEach((item,index) => {
+              if (index < val.mainCustomerDTOList.length - 1) {
+                total += Number(item.totalSalesPro)
+              }
+            })
+
+            console.log(total)
+
+            if (total > 100) {
+              iMessage.error('份额总和不能超过100%')
+              return
+            } else {
+              val.mainCustomerDTOList[val.mainCustomerDTOList.length - 1].totalSalesPro = 100-total
+            }
+          }
           this.$nextTick(() => {
             this.initCharts()
             // this.initturnover()
@@ -593,7 +643,6 @@ export default {
     },
     '$store.state.rfq.categoryCode': {
       handler (val) {
-        console.log(val)
         this.categoryCode = val
         if (this.MarketOverviewObj.supplierAllStuffDTO.supplierStuffCountDTOList.length > 0) {
           let data = []
@@ -669,7 +718,6 @@ export default {
 
     },
     handleChange (val) {
-      console.log(val)
       this.iSelectOption.forEach(item => {
         if (item.value === val) {
           this.interestsName = item.name
@@ -683,7 +731,6 @@ export default {
       const myChart = echarts().init(this.$refs.turnover);
       // 绘制图表
       const option = this.turnover
-      console.log(option)
       myChart.setOption(option);
       // myChart.dispatchAction({
       //   type: 'showTip',

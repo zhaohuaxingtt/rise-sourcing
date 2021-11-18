@@ -26,7 +26,7 @@
 		</template>
       <!-- powerBi -->
       <div id="powerBi">
-       <tableList :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" ></tableList>
+       <tableList :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" :showOperation="false"></tableList>
       </div>
    </iCard>
 </template>
@@ -34,7 +34,7 @@
 import {iCard,iButton,iMessage,iSelect} from "rise";
 import { cloneDeep } from 'lodash';
 import moment from 'moment';
-import tableList from './overviewTable'
+import tableList from '@/views/project/overview/components/overviewTable'
 import {sopList,carTypeProList,sopPipeLineSave,sopParamInit} from "@/api/categoryManagementAssistant/internalDemandAnalysis/sop";
 import {downloadPdfMixins} from '@/utils/pdf';
 import resultMessageMixin from '@/utils/resultMessageMixin.js';

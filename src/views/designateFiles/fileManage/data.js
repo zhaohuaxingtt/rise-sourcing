@@ -8,7 +8,7 @@
  */
 
 export const tableTitle = [
-  {props:'partNum',name:'附件零件号', key: "FUJIANLINGJIANHAO", tooltip: true, minWidth: 120},
+  {props:'partNum',name:'附件零件号', key: "FUJIANLINGJIANHAO", tooltip: true, minWidth: 110, fixed: "left"},
   {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, minWidth: 120},
   {props:'code',name:'编号', key: "BIANHAO", tooltip: true, minWidth: 100},
   {props:'item',name:'导入项次', key: "DAORUXIANGCI", tooltip: true, minWidth: 100},

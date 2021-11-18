@@ -1,6 +1,6 @@
 <template>
   <div>
-    <i-card>
+    <i-card v-permission.auto="AEKO_APPROVED_RECOMMENDATION_TABLE|AEKO推荐表列表">
       <div class="margin-bottom15">
         <span class="card-title"
           >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatus }}</span>

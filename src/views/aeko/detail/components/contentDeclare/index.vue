@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-16 17:49:54
+ * @LastEditTime: 2021-11-17 12:48:44
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -655,11 +655,12 @@ export default {
     view(row) {
       const {query} = this.$route;
       const {from=''} = query; // 从AEKO查看跳转至MTZ的不允许变更 只允许查看
-      this.$router.push({name: 'aekoMtzDetails', query: {
+      const routeData = this.$router.resolve({name: 'aekoMtzDetails', query: {
         objectAekoPartId: row.objectAekoPartId,
         aekoNum: this.aekoInfo.aekoCode,
         status: from=='check' ? 'SUBMITED': row.status
       }})
+      window.open(routeData.href, '_blank')
     },
     isAea(str) {
       var asc1 = str.charCodeAt(0);
@@ -952,20 +953,20 @@ export default {
           ${filtRows.map(o => o.factoryName).join(',')} 
           ${this.language('SINGLEGROUPSENDFIRSTONE','在单一组合中仅能发送一条报价信息，系统将默认发送第一条，请确认')}
           `
-        try {
-          const confirmCheckInfo = await this.$confirm(
-          confirmMsg,
-          this.language('LK_NOTICE','提示'),
-            {
-                confirmButtonText: this.language('nominationLanguage.No','否'),
-                cancelButtonText: this.language('nominationLanguage.Yes','是'),
-            }
-          )
-          if (confirmCheckInfo === 'confirm') return
-          multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
-        } catch (e) {
+        
+        const confirmCheckInfo = await this.$confirm(
+        this.language('LK_NOTICE','提示'),
+          {
+              message: confirmMsg,
+              confirmButtonText: this.language('nominationLanguage.Yes','是'),
+              cancelButtonText: this.language('nominationLanguage.No','否'),
+              customClass: 'aeko-confirmBox'
+          }
+        )
+        if (confirmCheckInfo === 'confirm') {
           multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
         }
+      
       }
       
       this.declareSendSupplier = true;
@@ -1261,5 +1262,11 @@ export default {
       height: 100%;
     }
   }
+}
+</style>
+<style>
+.aeko-confirmBox .el-message-box__btns .el-button {
+  float: right;
+  margin-left: 15px;
 }
 </style>

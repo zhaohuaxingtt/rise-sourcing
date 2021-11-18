@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-16 11:28:05
+ * @LastEditTime: 2021-11-17 19:51:18
  * @LastEditors:  
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -242,6 +242,18 @@
             <template v-if ='removeKeysNumber(item.props) == "developmentCost"'>
               <span>{{scope.row[item.props]}}</span>
               <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
+            </template>
+            <template v-if ='removeKeysNumber(item.props) == "supplierName"'>
+              <el-tooltip  effect='light'>
+                <div slot="content">
+                  <div>{{scope.row['supplierNameEn']}}</div>
+                  <div>{{scope.row[item.props]}}</div>
+                </div>
+                <div>
+                  <span class="isEplisSuplier">{{scope.row[getPorpsNumber(item.props)+"supplierNameEn"]}}</span>    
+                  <span class="isEplisSuplier">{{scope.row[item.props]}}</span>    
+                </div>
+              </el-tooltip>
             </template>
             <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
               <span>{{scope.row[item.props]}}</span>
@@ -509,6 +521,12 @@ export default{
           left: 0px;
           bottom: 0px;
           background: blue;
+        }
+        .isEplisSuplier{
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .textEplies{
           width: 100% !important;
