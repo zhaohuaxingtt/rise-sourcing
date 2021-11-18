@@ -49,14 +49,14 @@
         <span>{{ itemCommentContent(scope.row) }}</span>
       </template>
       <template #explainReason="scope">
-        <iInput v-if="!itemIsCanReply(scope.row)" v-model="scope.row.explainReason" type="textarea" rows="2"
+        <iInput v-if="!itemIsCanReply(scope.row, scope.$index)" v-model="scope.row.explainReason" type="textarea" rows="2"
                 :placeholder="language('LK_QINGSHURU','请输入')" clearable/>
         <span v-else-if="itemExplainShow(scope.row)">{{ itemExplain(scope.row) }}</span>
         <span v-else>{{ scope.row.explainReason }}</span>
       </template>
       <template #attach="scope">
         <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row, false)"
-           v-if="!itemIsCanReply(scope.row)">
+           v-if="!itemIsCanReply(scope.row, scope.$index)">
           {{ language("LK_SHANGCHUAN", "上传") }}
         </a>
         <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row, true)" v-else>
@@ -275,11 +275,9 @@ export default {
     itemExplainShow(row) {
       return row.activityName == "【解释说明回复】"
     },
-    itemIsCanReply(row) {
-      if (row.activityName == "【补充材料通知】补充材料") {
-        let findRes = this.tableListData.filter(item => item.parentTaskId == row.id)
-        return findRes != null && findRes.length > 0
-      }
+    itemIsCanReply(row, index=null) {
+      // 第一行如果是补充材料就允许编辑
+      if (row.activityName == "【补充材料通知】补充材料") return index !== 0
       //不用回复
       return row.disabled
     },
