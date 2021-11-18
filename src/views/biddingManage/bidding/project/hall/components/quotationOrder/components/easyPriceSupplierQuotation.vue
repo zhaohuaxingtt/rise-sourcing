@@ -4,6 +4,7 @@
       <template slot="header-control">
         <div>
           <iButton
+            :disabled="biddingStatus"
             :class="{ yingbiao: biddingStatus, unyingbiao: !biddingStatus }"
             @click="handleNext"
             >{{ language('BIDDING_CHUJIA', '出价') }}</iButton
