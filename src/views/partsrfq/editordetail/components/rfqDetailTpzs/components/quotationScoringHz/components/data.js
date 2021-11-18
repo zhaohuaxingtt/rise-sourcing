@@ -10,27 +10,27 @@ import {_getMathNumber} from '@/utils'
 import {partProjTypes} from '@/config'
 //表格全集。
 export const fstitle = [
-  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'partName',label:'Part Name',i18n:'',width:'130',tooltip:false,fixed:true},
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'90',tooltip:false,fixed:true},
+  {type:'',props:'partName',label:'Part Name',i18n:'',width:'110',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'130',tooltip:false,fixed:true},
-  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-Target(A)',i18n:'',width:'110',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-Target(B)',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'100',tooltip:false}
+  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'80',tooltip:false}
 ]
 export const gstitle = [
-  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'partName',label:'Part Name',i18n:'',width:'130',tooltip:false,fixed:true},
+  {type:'selection',props:'groupName',label:'Group',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'90',tooltip:false,fixed:true},
+  {type:'',props:'partName',label:'Part Name',i18n:'',width:'110',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'cfPartAPrice',label:'F-T(A)',i18n:'',width:'130',tooltip:false,fixed:true},
-  {type:'',props:'cfPartBPrice',label:'F-T(B)',i18n:'',width:'100',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-T(A)',i18n:'',width:'110',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-T(B)',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
@@ -42,7 +42,7 @@ export const gstitle = [
   {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentTto',label:'Cur. TTO',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'100',tooltip:false}
+  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'80',tooltip:false}
 ]
 //表格循环部分
 export const fstableTileXh = function(index){
