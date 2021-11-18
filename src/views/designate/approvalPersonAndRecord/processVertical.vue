@@ -71,15 +71,21 @@
                     : getUserName(agentUser) + ' (代)'
                   }}
                 </span>
+              </div>
+            </div>
+            <div class="post">
+              {{ approvalUser.positionZhNameList }}
+              <div 
+                class="agentUserDept" 
+                v-for="(agentUser, agentUsersI) in approvalUser.agentUsers" 
+                :key="agentUsersI"
+              >
                 <span v-if="agentUser">
                   {{
                     agentUser.positionZhNameList
                   }}
                 </span>
               </div>
-            </div>
-            <div class="post">
-              {{ approvalUser.positionZhNameList }}
             </div>
             <div class="date" v-if="getApprovalDate(approvalUser)">
               {{ getApprovalDate(approvalUser) }}
@@ -391,9 +397,6 @@ $borderColor: #cbcbcb;
   color: #8f8f90;
   display: flex;
   margin: 5px 0;
-  span {
-    margin-right: 20px;
-  }
   &::before {
     content: '';
     display: block;
@@ -406,5 +409,10 @@ $borderColor: #cbcbcb;
     position: relative;
     top: 5px;
   }
+}
+.agentUserDept {
+  color: #8f8f90;
+  display: flex;
+  margin: 5px 0;
 }
 </style>
