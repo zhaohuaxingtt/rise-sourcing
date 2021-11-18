@@ -160,7 +160,7 @@ export default{
         const headerWrapperDom = this.$el.querySelector(".el-table__header-wrapper")
         const bodyWrapperDom = this.$el.querySelector(".el-table__body-wrapper")
         const tableFixedDom = this.$el.querySelector(".el-table__fixed")
-        tableFixedDom.style.maxHeight = (headerWrapperDom.clientHeight + bodyWrapperDom.clientHeight) + "px"
+        tableFixedDom.style.minHeight = tableFixedDom.style.maxHeight = (headerWrapperDom.clientHeight + bodyWrapperDom.clientHeight) + "px"
       })
     }
   },

@@ -222,7 +222,7 @@ export default{
     },
     isPreview(){
         return this.$store.getters.isPreview;
-    }
+    },
   },
   methods:{
     ttoShow(data){
@@ -487,6 +487,8 @@ export default{
     ::v-deep .is-sortable{
       .cell{
           display: flex;
+          justify-content: center;
+
           .caret-wrapper{
             height: 20px;
             .ascending{
@@ -588,6 +590,20 @@ export default{
             left: inherit;
           }
     }
+
+    // ::v-deep .el-table__header,
+    // .el-table__body,
+    // .el-table__row {
+    //   .cell {
+    //     zoom: 0.85;
+    //   }
+    // }
+
+    // ::v-deep .el-table__row {
+    //   .cell span {
+    //     zoom: 0.85;
+    //   }
+    // }
   }
   .conent{
     height: auto;
