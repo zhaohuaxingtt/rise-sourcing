@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-17 19:51:18
+ * @LastEditTime: 2021-11-18 19:26:35
  * @LastEditors:  
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -133,7 +133,7 @@
                   <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
-              <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+              <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">View</span>
             </template>     
             <template v-else-if="removeKeysNumber(item.props) == 'fTarget'">
               <span :class="{lvse:lvseFn(scope.row,item.props,'fTarget')}">{{scope.row[item.props]}}</span>
