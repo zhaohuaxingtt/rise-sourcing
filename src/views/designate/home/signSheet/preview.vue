@@ -44,7 +44,7 @@
               <span>{{ scope.row.tto | toThousands }}</span>
             </template>
             <template #share="scope">
-              <span>{{ scope.row.share`${ scope.row.share ? '%' : '' }` }}</span>
+              <span>{{ scope.row.share + `${ scope.row.share ? '%' : '' }` }}</span>
             </template>
           </tablelist>
         </div>
