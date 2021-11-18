@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-11 22:51:13
+ * @LastEditTime: 2021-11-18 02:04:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -49,7 +49,7 @@
       </div>
   </iDialog>
   <div v-if='isPreview'>
-    <bob v-if='typeSelect == "BOB" && previewItems' :key='keysRender'></bob>
+    <bob v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></bob>
     <vp v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
     <pi v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
     <div v-else-if='["PCA","TIA"].includes(typeSelect)' style="height:600px" class="flex-center-center" :key='keysRender'>
