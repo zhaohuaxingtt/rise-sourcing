@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-02 17:43:12
+ * @LastEditTime: 2021-11-18 10:55:04
  * @Description: 
- * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
 <template>
   <div class="partListView" v-loading="loading"> 
@@ -21,7 +21,7 @@
         <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
-    <div class="partListView-content" ref="partListViewContent"> 
+    <div class="partListView-content" ref="partListViewContent" > 
       <div v-for="pro in listWithNodeDelayWeeks" :key="pro.label" class="productItem"> 
         <div class="productItem-top"> 
           <el-checkbox :value="pro.checked" @change="handleCheckboxChange($event, pro)"> 
@@ -50,6 +50,7 @@
                 placement="top-start"
                 :disabled="!(pro[item.delayReason] || pro[item.delayReason2])"
                 :value="showDelayResaon"
+                :append-to-body="false"
               >
                 <template>
                   <p v-if="pro[item.delayReason]">{{pro[item.delayReason]}}</p>
