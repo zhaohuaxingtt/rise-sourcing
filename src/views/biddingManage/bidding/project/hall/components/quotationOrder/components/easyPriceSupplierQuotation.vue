@@ -4,7 +4,6 @@
       <template slot="header-control">
         <div>
           <iButton
-            :disabled="biddingStatus"
             :class="{ yingbiao: biddingStatus, unyingbiao: !biddingStatus }"
             @click="handleNext"
             >{{ language('BIDDING_CHUJIA', '出价') }}</iButton
@@ -446,7 +445,9 @@ export default {
       //保存
       saveBiddingQuotation(formData)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
+          if (res.code == '200') {
+            this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
+          }
           // this.updateRuleForm(res);
           callback && callback();
         })
