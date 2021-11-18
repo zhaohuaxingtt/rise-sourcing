@@ -4,6 +4,7 @@
     :rules="rules"
     ref="ruleForm"
     :hideRequiredAsterisk="true"
+    :disabled="ruleForm.biddingStatus !== '01'"
   >
     <div class="form-group">
       <iLabelML slot="label">
