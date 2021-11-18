@@ -365,63 +365,135 @@ export const stageColumn = [
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第一段",
+    name: language('BIDDING_DI一DUAN',"第一段"),
   },
   {
     props: "stage2",
     required: false,
     rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+            value && !reg.test(value)
+              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
     ],
-    name: "第二段",
+    name: language('BIDDING_DI二DUAN',"第二段"),
   },
   {
     props: "stage3",
     required: false,
     rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+            value && !reg.test(value)
+              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
     ],
-    name: "第三段",
+    name: language('BIDDING_DI三DUAN',"第三段"),
   },
   {
     props: "stage4",
     required: false,
     rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+            value && !reg.test(value)
+              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
     ],
-    name: "第四段",
+    name: language('BIDDING_DI四DUAN',"第四段"),
   },
   {
     props: "stage5",
     required: false,
     rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+            value && !reg.test(value)
+              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
     ],
-    name: "第五段",
+    name: language('BIDDING_DI五DUAN',"第五段"),
   },
   {
     props: "stage6",
     required: false,
     rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+            value && !reg.test(value)
+              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
     ],
-    name: "第六段",
+    name: language('BIDDING_DI六DUAN',"第六段"),
   },
   {
     props: "stage7",
     required: false,
     rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+            value && !reg.test(value)
+              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
     ],
-    name: "第七段",
+    name: language('BIDDING_DI七DUAN',"第七段"),
   },
   {
     props: "stage8",
     required: false,
     rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+            value && !reg.test(value)
+              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
     ],
-    name: "第八段",
+    name: language('BIDDING_DI八DUAN',"第八段"),
   },
   {
     props: "stage9",
     required: false,
     rule: [
+      {
+        validator(rule, value, callback) {
+          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+            value && !reg.test(value)
+              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              : callback();
+        },
+        trigger: ['blur', 'change'],
+      },
     ],
-    name: "第九段",
+    name: language('BIDDING_DI九DUAN',"第九段"),
   },
 ]
 
