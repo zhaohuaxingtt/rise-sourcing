@@ -311,6 +311,7 @@ export default {
           taskId: o.taskId,
           // workFlowId: '1075838',
           // taskId: '1075873',
+          aekoNum: this.aekoInfo.aekoCode,
           parentTaskId: o.parentTaskId,
           auditUserId: o.assignee,
           explainReason: o.explainReason || '',
