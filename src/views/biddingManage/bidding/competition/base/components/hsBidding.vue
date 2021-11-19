@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 基本信息 -->
-    <iCard style="margin-top: 0.5rem">
+    
       <!-- <div class="form-top">
         <div>
           <h2>基础信息</h2>
@@ -21,6 +21,7 @@
         :validate-on-rule-change="false"
         :disabled="ruleForm.biddingStatus !== '01'"
       >
+      <iCard style="margin-top: 0.5rem">
         <div class="form-top">
           <div>
             <h2>{{language('BIDDING_JICHUXINXI',"基础信息")}}</h2>
@@ -335,8 +336,184 @@
             </div>
           </div>
         </div>
-      </el-form>
     </iCard>
+    
+      <!-- 报价规则 -->
+      <iCard
+        style="margin-top: 2rem"
+        v-if="ruleForm.resultOpenForm === '03' ? false : true"
+      >
+        <div class="form-top-rules">
+          <div>
+            <h2>{{language('BIDDING_BAOJIAGUIZE', '报价规则')}}</h2>
+          </div>
+        </div>
+        <div class="form-rules">
+          <div class="item">
+            <iFormItem :label="language('BIDDING_PMXSGZ', '排名显示规则')" prop="rankShowRule">
+              <iLabel :label="language('BIDDING_PMXSGZ', '排名显示规则')" slot="label"></iLabel>
+              <div>
+                <iLabelML showTip class="form-item-rankShowRule-icon">
+                  <div class="hover-text">
+                    <span>供应商对红绿灯名次区间/偏离比例的</span>
+                    <span class="hover-stick">具体定义不可见</span>
+                    <span>。</span>
+                  </div>
+                </iLabelML>
+              </div>
+              <!-- <iLabel :label="language('排名显示规则', '排名显示规则')" slot="label"></iLabel> -->
+              <iSelect v-model="ruleForm.rankShowRule" style="width: 20rem">
+                <el-option
+                  v-for="(item, index) in rankShowRule"
+                  :key="index"
+                  :value="item.value"
+                  :label="item.label"
+                >
+                </el-option>
+              </iSelect>
+            </iFormItem>
+          </div>
+
+          <!--  显示红绿灯（按名次区间定义）-->
+          <div
+            class="form-content"
+            v-if="
+              ruleForm.rankShowRule === '02' && ruleForm.resultOpenForm != '01'
+            "
+          >
+            <div class="from-item-rankShowRule">
+              <div class="from-item-clo1">
+                <span>{{ language('BIDDING_PMQJLDQJ','排名区间，绿灯区间') }}</span
+                ><span class="form-item1">&nbsp;&nbsp;（{{language('BIDDING_ZHENGSHU','整数')}}）</span>
+              </div>
+              <iFormItem prop="quoteRule.greenLightFrom">
+                <iInput
+                  v-model="ruleForm.quoteRule.greenLightFrom"
+                  maxlength="3"
+                  style="width: 4rem"
+                  @change="handleChangeLightArea"
+                />
+              </iFormItem>
+              <div class="from-item-clo1"><span class="form-line">—</span></div>
+              <iFormItem prop="quoteRule.greenLightTo">
+                <iInput
+                  v-model="ruleForm.quoteRule.greenLightTo"
+                  maxlength="3"
+                  style="width: 4rem"
+                  @change="handleChangeLightArea"
+                />
+              </iFormItem>
+            </div>
+            <div class="from-item-rankShowRule">
+              <div class="from-item-clo1">
+                <span class="form-item2">{{language('BIDDING_HUANGDENGQUJIAN','黄灯区间')}}</span>
+              </div>
+              <iFormItem prop="quoteRule.yellowLightFrom">
+                <iInput
+                  v-model="ruleForm.quoteRule.yellowLightFrom"
+                  maxlength="3"
+                  style="width: 4rem"
+                  @change="handleChangeLightArea"
+                />
+              </iFormItem>
+              <div class="from-item-clo1"><span class="form-line">—</span></div>
+              <iFormItem prop="quoteRule.yellowLightTo">
+                <iInput
+                  v-model="ruleForm.quoteRule.yellowLightTo"
+                  maxlength="3"
+                  style="width: 4rem"
+                  @change="handleChangeLightArea"
+                />
+              </iFormItem>
+            </div>
+            <div class="from-item-rankShowRule">
+              <div class="from-item-clo1">
+                <span class="form-item3">{{language('BIDDING_HONGDENGQUJIAN','红灯区间')}}</span>
+              </div>
+              <iFormItem prop="quoteRule.redLightFrom">
+                <iInput
+                  v-model="ruleForm.quoteRule.redLightFrom"
+                  maxlength="3"
+                  style="width: 4rem"
+                  @change="handleChangeLightArea"
+                />
+              </iFormItem>
+              <div class="from-item-clo1"><span class="form-line">—</span></div>
+              <iFormItem prop="quoteRule.redLightTo">
+                <iInput
+                  v-model="ruleForm.quoteRule.redLightTo"
+                  maxlength="3"
+                  style="width: 4rem"
+                  @change="handleChangeLightArea"
+                />
+              </iFormItem>
+            </div>
+          </div>
+
+          <!-- 显示红绿灯（按目标价偏离比例定义）  -->
+          <div
+            class="form-content2"
+            v-if="
+              ruleForm.rankShowRule === '03' && ruleForm.resultOpenForm != '01'
+            "
+          >
+            <div class="from-item-rankShowRule">
+              <div class="from-item-clo1">
+                <span class="form-item1">{{language('BIDDING_MUBIAOJIA', '目标价')}}</span>
+              </div>
+              <iFormItem prop="quoteRule.targetPrice">
+                <iInput
+                  v-model="ruleForm.quoteRule.targetPrice"
+                  style="width: 10rem"
+                  @change="handleChangeLightDeviation"
+                  oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
+                  type="number"
+                />
+              </iFormItem>
+              <div class="from-item-clo1">
+                <span class="form-line"></span>
+              </div>
+            </div>
+
+            <div class="from-item-rankShowRule">
+              <div class="from-item-clo1">
+                <span class="form-item1">{{language('BIDDING_PIANLIMUBIAOJIA','偏离目标价')}}</span>
+              </div>
+              <iFormItem prop="quoteRule.greenDeviationValue">
+                <iInput
+                  v-model="ruleForm.quoteRule.greenDeviationValue"
+                  style="width: 4rem"
+                  @change="handleChangeLightDeviation"
+                />
+              </iFormItem>
+              <div class="from-item-clo1">
+                <span class="form-line">%{{language('BIDDING_YINEIXIANSHILVDENG','以内，显示绿灯')}}</span>
+              </div>
+            </div>
+            <div class="from-item-rankShowRule">
+              <div class="from-item-clo1">
+                <span class="form-item2">{{language('BIDDING_PIANLIMUBIAOJIA','偏离目标价')}}</span>
+              </div>
+              <iFormItem prop="quoteRule.yellowDeviationValue">
+                <iInput
+                  v-model="ruleForm.quoteRule.yellowDeviationValue"
+                  style="width: 4rem"
+                  @change="handleChangeLightDeviation"
+                />
+              </iFormItem>
+              <div class="from-item-clo1">
+                <span class="form-line">%{{language('BIDDING_YINEIXIANSHIHUANGDENG','以内，显示黄灯')}}</span>
+              </div>
+            </div>
+            <div class="from-item-rankShowRule">
+              <div class="from-item-clo1">
+                <span class="form-item3">{{language('BIDDING_FZXSHD','否则显示红灯')}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </iCard>
+    </el-form>
 
     <!-- 附件 -->
     <!-- <iCard style="margin-top: 2rem">
@@ -423,6 +600,7 @@ import {
   isResultOpen,
   attachments,
   biddingType,
+  rankShowRule
 } from "./data";
 import { getCurrencyUnit, uploadFile } from "@/api/mock/mock";
 import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
@@ -445,7 +623,7 @@ export default {
   data() {
     return {
       id: 0,
-      ruleForm: { ...infoForm, attachments: [] },
+      ruleForm: { ...infoForm,rankShowRule: "", attachments: [] },
       rules: [],
       projectType,
       resultOpenForm,
@@ -488,6 +666,15 @@ export default {
     this.handleSearchReset();
   },
   computed: {
+    rankShowRule() {
+      if (this.ruleForm.resultOpenForm === "01") {
+        return rankShowRule.slice(0, 1);
+      }
+      if (this.ruleForm.resultOpenForm === "02") {
+        return rankShowRule.slice(1, 3);
+      }
+      return [];
+    },
     roundType() {
       if (this.ruleForm.roundType === "05") {
         if (this.ruleForm.manualBiddingType === "02") {
@@ -547,6 +734,40 @@ export default {
     },
   },
   watch: {
+    "ruleForm.quoteRule.greenLightTo"(val) {
+      const { greenLightFrom } = this.ruleForm.quoteRule;
+      if (!(greenLightFrom || 0 === greenLightFrom) && (val || 0 === val)) {
+        this.$set(this.ruleForm.quoteRule, "greenLightFrom", 1);
+      }
+    },
+    "ruleForm.quoteRule.yellowLightTo"(val) {
+      const { greenLightTo, yellowLightFrom } = this.ruleForm.quoteRule;
+      if (
+        !(yellowLightFrom || 0 === yellowLightFrom) &&
+        (val || 0 === val) &&
+        !isNaN(greenLightTo)
+      ) {
+        this.$set(
+          this.ruleForm.quoteRule,
+          "yellowLightFrom",
+          Number(greenLightTo) + 1
+        );
+      }
+    },
+    "ruleForm.quoteRule.redLightTo"(val) {
+      const { yellowLightTo, redLightFrom } = this.ruleForm.quoteRule;
+      if (
+        !(redLightFrom || 0 === redLightFrom) &&
+        (val || 0 === val) &&
+        !isNaN(yellowLightTo)
+      ) {
+        this.$set(
+          this.ruleForm.quoteRule,
+          "redLightFrom",
+          Number(yellowLightTo) + 1
+        );
+      }
+    },
     "ruleForm.biddingMode": {
       immediate: true,
       handler(val) {
@@ -557,6 +778,48 @@ export default {
           this.isMoldFee = false;
         }
       },
+    },
+    "ruleForm.resultOpenForm"(val) {
+      if (val === "01") {
+        this.ruleForm.rankShowRule = "01";
+        rankShowRule.slice(0, 1);
+      }
+      if (val === "02") {
+        if (this.ruleForm.rankShowRule == "01") {
+          this.ruleForm.rankShowRule = "02";
+        }
+        rankShowRule.slice(1, 3);
+        this.ruleForm.rankShowRule = this.ruleForm.rankShowRule || "02";
+      } else if (val === "03") {
+        this.ruleForm.rankShowRule = "";
+      }
+    },
+    "ruleForm.rankShowRule"(val) {
+      if (val === "03" || val === "02") {
+        this.ruleForm.quoteRule = {
+          ...this.ruleForm.quoteRule,
+          ...this.quoteRule,
+        };
+        this.$refs["ruleForm"].clearValidate([
+          "quoteRule.greenLightFrom",
+          "quoteRule.greenLightTo",
+          "quoteRule.yellowLightFrom",
+          "quoteRule.yellowLightTo",
+          "quoteRule.redLightFrom",
+          "quoteRule.redLightTo",
+          "quoteRule.greenDeviationValue",
+          "quoteRule.yellowDeviationValue",
+        ]);
+      }
+    },
+    "ruleForm.quoteRule.targetPrice"(val) {
+      console.log(val);
+      if (val === null || val === "" || val === undefined) {
+        this.$refs["ruleForm"].clearValidate([
+          "quoteRule.greenDeviationValue",
+          "quoteRule.yellowDeviationValue",
+        ]);
+      }
     },
   },
   methods: {
@@ -570,6 +833,27 @@ export default {
     handleSearchReset() {
       let param = { id: this.id };
       this.query(param);
+    },
+    handleChangeLightArea() {
+      this.$refs["ruleForm"].validateField(
+        [
+          "quoteRule.greenLightTo",
+          "quoteRule.yellowLightFrom",
+          "quoteRule.yellowLightTo",
+          "quoteRule.redLightFrom",
+          "quoteRule.redLightTo",
+        ],
+        (error) => {
+          !error &&
+            this.$refs["ruleForm"].validateField("quoteRule.greenLightFrom");
+        }
+      );
+    },
+    handleChangeLightDeviation() {
+      this.$refs["ruleForm"].validateField([
+        "quoteRule.greenDeviationValue",
+        "quoteRule.yellowDeviationValue",
+      ]);
     },
     currencyChange(val) {
       console.log(val);
@@ -668,6 +952,8 @@ export default {
           if (this.ruleForm.projectType === "正式项目") {
             this.ruleForm.projectType = "01";
           }
+          const quoteRule = {...formData.quoteRule,biddingId:this.id}
+          formData = {...formData,quoteRule}
           biddingInfo(formData)
             .then((res) => {
               if (res) {
@@ -676,7 +962,7 @@ export default {
                   path: `/bidding/competition/project/${this.id}`,
                 });
               } else {
-                iMessage.success(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
+                iMessage.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
               }
             })
             .catch((err) => {
@@ -785,8 +1071,13 @@ export default {
         if(res.roundType === "03" ){
           this.ruleForm.currencyUnit = 'RMB'
         }
+        if (!res.rankShowRule) {
+          if (res.resultOpenForm === "01") {
+            this.ruleForm.rankShowRule = "01";
+          }
+        }
         this.$nextTick(() => {
-          this.rules = infoRules;
+          this.rules = infoRules(this.ruleForm);
         });
       });
     },
@@ -843,6 +1134,27 @@ export default {
       position: absolute;
       left: -1.4rem;
     }
+    .form-item-rankShowRule-icon {
+      position: absolute;
+      left: -4rem;
+      /* top: 0.4rem; */
+      top: 2px;
+    }
+  }
+}
+.form-item-targetPrice {
+  position: relative;
+  .form-item-targetPrice-icon {
+    position: absolute;
+    left: -9.5rem;
+    /* top: 0.4rem; */
+    top: 2px;
+  }
+  .form-item-rankShowRule-icon {
+    position: absolute;
+    left: 6rem;
+    /* top: 0.4rem; */
+    top: 2px;
   }
 }
 /* 横线 */
@@ -907,7 +1219,109 @@ export default {
     color: #1660f1;
   }
 }
+/* 报价规则 */
+.form-top-rules {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.form-rules {
+  .form-item-row1-content {
+    /* display: flex; */ //文字平行
+    position: relative;
+    ::v-deep .el-form-item {
+      /* display: flex; */
+      /* flex: 1; */
+      .el-form-item__content {
+        flex: 1;
+      }
+      .el-input__inner {
+        text-align: center;
+      }
+    }
+    .form-item-targetPrice-icon {
+      position: absolute;
+      left: -3.3rem;
+      /* top: 0.4rem; */
+      top: 4px;
+    }
+  }
+  .form-content {
+    display: flex;
+    /* margin-left: 5rem; */
+    margin-left: 12rem;
+    align-items: baseline;
+    .from-item-rankShowRule {
+      display: flex;
+      div {
+        ::v-deep .el-form-item__content {
+          margin-left: 0px !important;
+        }
+      }
+      .from-item-clo1 {
+        margin-top: 0.5rem;
+      }
 
+      ::v-deep .el-form-item__error {
+        padding-left: 0;
+        white-space: nowrap;
+      }
+    }
+
+    .form-item1 {
+      margin-right: 1.5rem;
+      color: red;
+    }
+    .form-item2 {
+      margin-left: 2rem;
+      margin-right: 1rem;
+    }
+    .form-item3 {
+      margin-left: 2rem;
+      margin-right: 1rem;
+    }
+    .form-line {
+      margin: 0 1rem;
+    }
+  }
+  .form-content2 {
+    display: flex;
+    /* margin-left: 5rem; */
+    margin-left: 12rem;
+    align-items: baseline;
+    .from-item-rankShowRule {
+      display: flex;
+      div {
+        ::v-deep .el-form-item__content {
+          margin-left: 0px !important;
+        }
+      }
+      .from-item-clo1 {
+        margin-top: 0.5rem;
+      }
+
+      ::v-deep .el-form-item__error {
+        padding-left: 0;
+        white-space: nowrap;
+      }
+    }
+    .form-item1 {
+      margin-right: 2rem;
+    }
+    .form-item2 {
+      margin-left: 2rem;
+      margin-right: 1rem;
+    }
+    .form-item3 {
+      margin-left: 2rem;
+      margin-right: 1rem;
+    }
+    .form-line {
+      margin: 0 1rem;
+    }
+  }
+}
 /* 附件 */
 .form-top-file {
   display: flex;
