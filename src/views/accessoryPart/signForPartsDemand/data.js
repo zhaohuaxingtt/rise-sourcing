@@ -7,11 +7,11 @@
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\data.js
  */
 export const tableTitle = [
-  {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 100, fixed: "left"},
+  {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 86, fixed: "left"},
   {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, width: 120, fixed: "left"},
   {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 130, fixed: "left"},
-  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 140},
-  {props:'partNameCh',name:'配件零件中文名', key: "PEIJIANLINGJIANZHONGWENMING", tooltip: true, width: 240},
+  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 130, fixed: "left"},
+  {props:'partNameCh',name:'配件零件中文名', key: "PEIJIANLINGJIANZHONGWENMING", tooltip: true, width: 130, fixed: "left"},
   {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true, width: 140},
   {props:'deliveryWarehouse',name:'送货仓库', key: "SONGHUOCANGKU", tooltip: true,width:80},
   {props:'supplierSapCode',name:'供应商号', key: "GONGYINGSHANGHAO", tooltip: true, width: 120},
