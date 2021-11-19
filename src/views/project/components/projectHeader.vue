@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:30:33
+ * @LastEditTime: 2021-11-19 10:05:32
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\components\projectHeader.vue
 -->
@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      bizId: 'scheduleRecordId',
+      // bizId: 'scheduleRecordId',
       showDialog: false,
       module: '零件排程'
     }
@@ -47,6 +47,9 @@ export default {
   computed: {
     isProgressConfirm() {
       return this.$route.path.includes('progressconfirmsummary') || this.$route.path.includes('proconfirm')
+    },
+    bizId() {
+      return this.$route.path.includes('projectprogressmonitoring') ? 'progressMonitorId' : 'scheduleRecordId'
     }
   },
   methods: {
