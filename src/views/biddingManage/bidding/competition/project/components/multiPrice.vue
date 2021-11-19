@@ -1190,7 +1190,12 @@ export default {
         }
       })
       this.modelsOption.push(...paras)
-      // 车型项目
+      let optionData = {}
+      this.modelsOption = this.modelsOption.reduce((pre,cur) => {
+        optionData[cur.code] ? "" : optionData[cur.code] = true && pre.push(cur);
+        return pre;
+      },[])
+
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {

@@ -465,7 +465,8 @@ export default {
       size: "",
       dataType:'',
       rfqCode:'',
-      time:''
+      time:'',
+      firstSupplierFlag:false
     };
   },
   computed: {
@@ -1170,14 +1171,14 @@ export default {
         }
       });
     },
-    query(e) {
+    async query(e) {
       // 根据ID查询条款信息
       this.tableLoading = true;
       const flag = this.$route.path.includes('/bidding/project/inquiry')
       if(!flag)
       {
         const rfqCode = {rfqCode:this.rfqCode}
-        findRfqInquiry(rfqCode)
+       await findRfqInquiry(rfqCode)
         .then((res) => {
           console.log(res);
           if (res.inquiryIsCompleted == true) {
@@ -1271,7 +1272,7 @@ export default {
         });
       
       } else {
-        findInquiry(e)
+       await findInquiry(e)
         .then((res) => {
           console.log(res);
           if (res.inquiryIsCompleted == true) {
@@ -1362,6 +1363,10 @@ export default {
         .catch((err) => {
           this.tableLoading = false;
         });
+
+        this.supplierTime = setTimeout(() => {
+          this.handlefirstSupplier()
+        },1500)
       }
     },
     handleSizeChange(val) {
@@ -1413,6 +1418,18 @@ export default {
       }
       
 
+    },
+    handlefirstSupplier(){
+      if(!this.ruleForm.firstSaveSupplierFlag) {
+        const formData = this.ruleForm;
+        console.log('fsafawf',formData.suppliers)
+        saveInquiryBidding({
+          ...this.orgRuleForm,
+          suppliers: formData.suppliers
+          }).then(res => {
+            console.log('object成功了')
+        })
+      }
     },
     // 表格选中值集
     handleCurrentChange(e) {
@@ -1485,6 +1502,7 @@ export default {
   },
   destroyed(){
     clearInterval(this.time)
+    clearTimeout(this.supplierTime)
   }
 };
 </script>
