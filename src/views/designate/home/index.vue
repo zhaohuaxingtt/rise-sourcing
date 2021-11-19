@@ -129,9 +129,9 @@
         <span>{{(scope.row.applicationStatus && scope.row.applicationStatus.desc) || ''}}</span>
       </template> -->
       <!-- 会议状态 -->
-      <template #meetingStatus="scope">
+      <!-- <template #meetingStatus="scope">
         <span>{{(scope.row.meetingStatus && scope.row.meetingStatus.desc) || ''}}</span>
-      </template>
+      </template> -->
 
       <!-- re冻结日期 -->
       <template #rsFreezeDate="scope">
