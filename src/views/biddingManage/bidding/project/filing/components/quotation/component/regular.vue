@@ -215,7 +215,8 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
+
+    <!-- <div class="form-group">
       <iLabelML>
         <template v-solt="label">
           <iLabel :label="language('BIDDING_PAIMINGGUIZE', '排名规则')" slot="label" class="label"></iLabel>
@@ -452,7 +453,7 @@
           </div>
         </iFormItem>
       </div>
-    </div>
+    </div> -->
   </el-form>
 </template>
 
