@@ -144,6 +144,7 @@ export default {
             this.debouncer = debounce(() => {
                 let _value = typeof value === "string" ? String(value).trim().toLowerCase() : _value;
                 if (_value) {
+                    this.data = _value;
                     this.optionsFilterCache = this.OptionsCache.filter(item => item[optionName].includes(_value)|| item[searchKey].includes(_value));
                     this.optionsCacheChunks = chunk(this.optionsFilterCache, 20);
                 } else {
