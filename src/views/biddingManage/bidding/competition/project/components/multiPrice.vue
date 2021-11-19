@@ -591,8 +591,9 @@ export default {
     },
     //更改起始年月联动年产量年月
     handleChangeBeginMonth(val){
-      let dateYear = new Date(val).getFullYear();
+      
       this.annualOutput.forEach((item,index)=>{
+        let dateYear = new Date(val).getFullYear();
         if(!val){
           for (let i = 1; i < 16; i++) {
             item[`stage${i}`]='';
