@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-28 14:01:48
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-15 11:38:53
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-19 09:56:11
  * @Description: 审批记录
  */
 import axios from '@/utils/axios'
@@ -21,6 +21,15 @@ export function aekoAuditSupplementalresult(data) {
 export function findHistoryByAeko(data) {
   return approve({
     url: `/aeko/findHistoryByAeko`,
+    method: 'POST',
+    data
+  })
+}
+
+// AEKO查看-获取审批记录
+export function getHistoricByParams(data) {
+  return approve({
+    url: '/history/getHistoricByParams',
     method: 'POST',
     data
   })
