@@ -341,7 +341,7 @@
       <!-- 报价规则 -->
       <iCard
         style="margin-top: 2rem"
-        v-if="ruleForm.resultOpenForm === '03' ? false : true"
+        v-if="(ruleForm.resultOpenForm === '03' ? false : true) && roundType"
       >
         <div class="form-top-rules">
           <div>
