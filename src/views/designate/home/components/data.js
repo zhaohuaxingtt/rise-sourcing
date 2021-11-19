@@ -64,13 +64,13 @@ export const tableTitle = [{
   tooltip: true
 },
 {
-  props: 'meetingPresentId',
+  props: 'meetingName',
   name: '会议',
   key: 'nominationLanguage_HuiYi',
   tooltip: true
 },
 {
-  props: 'meetingStatus',
+  props: 'meetingStatusDesc',
   name: '会议状态',
   key: 'nominationLanguage_HuiYiZhuangTai',
   tooltip: true

@@ -4,7 +4,7 @@ import language from "@/utils/language";
 export const infoForm = {
   projectType: "01", //项目类型
   rfqName: "", //RFQ名称
-  resultOpenForm: "", //开标结果公开形式
+  resultOpenForm: "", //结果公开形式
   currencyUnit: "", //货币单位
   pricingDeadline: "", //报价截止时间
   openTenderTime: "", //开标时间

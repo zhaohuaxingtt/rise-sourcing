@@ -29,7 +29,7 @@
           <!-- 竞价大厅 -->
           <iButton
             v-if="
-              ruleForm.biddingStatus !== '01' 
+              disHall
             "
             @click="handleHrefHall"
             >{{ language('BIDDING_JIANGJIADATING', '竞价大厅') }}</iButton
@@ -244,7 +244,7 @@
               v-model="scope.row['cbdLevel']"
             >
               <el-option
-                v-for="item in scope.row.cbdLevelList"
+                v-for="item in cbdLevelList[scope.row.supplierCode]"
                 :key="item"
                 :label="item"
                 :value="item === 'L1' ? '01' : item === 'L2' ? '02' : item === 'L3' ? '03' : ''"
@@ -433,7 +433,7 @@ export default {
       cbdLevelList: {},
       cbdLevelLib,
       userListCache: {},
-
+      userListData:{},
       tableTitle,
       isAttendList,
       manualTableTitle,
@@ -469,6 +469,10 @@ export default {
     };
   },
   computed: {
+    disHall(){
+      const {biddingStatus} = this.ruleForm
+      return biddingStatus ==='02' || biddingStatus === '04' || biddingStatus === '06' || biddingStatus === '07' || biddingStatus === '08'
+    },
     formComponent() {
       const { roundType } = this.ruleForm;
       return "05" === roundType
@@ -518,11 +522,11 @@ export default {
       const {biddingStatus} = this.ruleForm
       if(biddingStatus ==='02' || biddingStatus === '04'){
         this.$router.push({
-          name:'biddingProjectHall'
+          path:`/bidding/project/hall/${this.ruleForm.id}`
         })
       }else if (biddingStatus === '06' || biddingStatus === '07' || biddingStatus === '08') {
         this.$router.push({
-          name:'biddingProjectResult'
+          path:`/bidding/project/result/${this.ruleForm.id}`
         })
       }
     },
@@ -791,9 +795,9 @@ export default {
           biddingId: this.id,
           // id:row.id,
           userList: row.userList,
-          contactName: row.purchaserNameZh,   //联系人
-          email: row.purchaserEmail,          //邮箱
-          telephone: row.phoneM,
+          // contactName: row.purchaserNameZh,   //联系人
+          // email: row.purchaserEmail,          //邮箱
+          // telephone: row.phoneM,
           supplierCode: row.sapCode || row.svwCode || row.svwTempCode || '',
           supplierId: row.subSupplierId,
           supplierName: row.nameZh,
@@ -812,7 +816,7 @@ export default {
       });
       this.ruleForm.suppliers.push(...suppliers);
       this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
-        this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+        this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
           return {
             ...supplier,
           };
@@ -973,7 +977,8 @@ export default {
         suppliers: this.orgRuleForm.suppliers,
         exchangeRates: this.orgRuleForm.exchangeRates,
         inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
-        quotationAreaFlag: roundType !== "05"
+        quotationAreaFlag: roundType !== "05",
+        associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null
       })
         .then((res) => {
           if (res) {
@@ -1015,7 +1020,7 @@ export default {
           if (res) {
             this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
             this.initSuppliers = res.suppliers?.map((supplier) => {
-              this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
               
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
@@ -1137,6 +1142,7 @@ export default {
             exchangeRates: this.orgRuleForm.exchangeRates,
             inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
             quotationAreaFlag: formData.roundType !== "05",
+            associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null
           },
           content: {
             suppliers: formData.suppliers.map((item) => {
@@ -1206,7 +1212,7 @@ export default {
             })),
             suppliers: res.suppliers?.map((supplier) => {
               console.log('obsfsaject',supplier)
-              this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1241,7 +1247,7 @@ export default {
           this.initAttachments = [...res.attachments];
           this.initSuppliers = res.suppliers?.map((supplier) => {
             console.log('obsfsaject',supplier)
-            this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+            this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
             // if (!supplier.isAttend)
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
@@ -1299,8 +1305,7 @@ export default {
               ...item,
             })),
             suppliers: res.suppliers?.map((supplier) => {
-              console.log('obsfsaject',supplier)
-              this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+              this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
               if (supplier.isAttend === null || supplier.isAttend === "")
                 return {
                   ...supplier,
@@ -1335,7 +1340,7 @@ export default {
           this.initAttachments = [...res.attachments];
           this.initSuppliers = res.suppliers?.map((supplier) => {
             console.log('obsfsaject',supplier)
-            this.querySuppliers(supplier.supplierCode,supplier.supplierId);
+            this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
             // if (!supplier.isAttend)
             if (supplier.isAttend === null || supplier.isAttend === "")
               return {
@@ -1363,30 +1368,51 @@ export default {
       console.log("handleSizeChange", this.page);
       this.page.pageSize = val;
     },
-    async querySuppliers(supplierCode,supplierId) {
+    async querySuppliers(supplierCode,supplierId,cbdArea) {
       // 联系人
       if (!this.userListCache[supplierId]) {
         this.$set(this.userListCache, supplierId, []);
         const params = {supplierId, isOnlyValid: true}
         const data = await getSupplierInfoById(params);
         this.$set(this.userListCache, supplierId, data.data || []);
+        const list = data.data.filter(item => item.isDefault)
+        this.$set(this.userListData, supplierId, list || []);
+         // 手工且是草稿添加联系人默认值
+        const { biddingStatus} = this.ruleForm
+        if ( biddingStatus === '01') {
+          this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
+            return {
+              ...supplier,
+              mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
+              contactName:supplier.contactName || this.userListData[supplier.supplierId]?.[0]?.nameZh,
+              email:supplier.email || this.userListData[supplier.supplierId]?.[0]?.email,
+              telephone:supplier.telephone || this.userListData[supplier.supplierId]?.[0]?.phoneM
+            };
+          })
+        }
       }
       // CBD
       if (!this.cbdLevelList[supplierCode]) {
         const res = await cbdLevel(supplierCode);
         this.$set(this.cbdLevelList, supplierCode, res || []);
-        this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
-          return {
-            ...supplier,
-            mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
-            cbdLevelList: supplier?.cbdArea == "03"
-                  ? this.cbdLevelList[supplierCode].slice(2, 3)
-                  : supplier?.cbdArea == "02"
-                  ? this.cbdLevelList[supplierCode].slice(1, 3)
-                  : this.cbdLevelList[supplierCode]
-          };
-        })
+          this.$nextTick(() => {
+            this.cbdLevelList[supplierCode] = cbdArea == "03"
+                      ? this.cbdLevelList[supplierCode].slice(2, 3)
+                      : cbdArea == "02"
+                      ? this.cbdLevelList[supplierCode].slice(1, 3)
+                      : this.cbdLevelList[supplierCode]
+          })
+          this.ruleForm.suppliers = this.ruleForm.suppliers?.map((supplier) => {
+            return {
+              ...supplier,
+              mbdl: supplier.mbdl == '2' || supplier.mbdl == 'M' ? 'M' : '',
+              
+            };
+          })
+        
       }
+      
+
     },
     // 表格选中值集
     handleCurrentChange(e) {
@@ -1557,12 +1583,14 @@ export default {
     left: 42px;
     color: #fff;
     z-index: -1111;
+    background: transparent !important;
   }
   .el-switch__label--right {
     position: relative;
     right: 42px;
     color: #fff;
     z-index: -1111;
+    background: transparent !important;
   }
   .el-switch__label--right.is-active {
     z-index: 1;

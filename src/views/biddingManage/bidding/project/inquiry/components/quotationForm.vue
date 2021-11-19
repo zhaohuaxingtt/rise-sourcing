@@ -114,6 +114,7 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
+        this.ruleForm.associatedQuotation = this.ruleForm.associatedQuotation.filter(item => item)
       },
     },
     ruleForm(val) {
