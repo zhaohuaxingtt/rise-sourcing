@@ -342,7 +342,7 @@ export default {
         return
       }
       const copyData = window._.cloneDeep(this.selectTableData).map(o => {
-        o.id = Math.floor(Math.random() * 10000000)
+        o.id = ''
         o.fromMtzPriceId = o.mtzPriceId ? o.mtzPriceId : o.fromMtzPriceId
         o.mtzPriceId = ''
         o.isNew = true
