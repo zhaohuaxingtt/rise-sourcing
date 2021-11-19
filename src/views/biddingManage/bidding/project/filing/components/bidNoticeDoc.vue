@@ -30,7 +30,7 @@
         "
       >
         <span
-          >{{language('BIDDING_WYYDYSTK','我已阅读以上条款')}}，{{ supplierName }},{{ updateDateNewType }}</span
+          >{{language('BIDDING_WYYDYSTK','我已阅读以上条款')}}，{{ type === '01' ? supplierName :  biddingName}},{{ updateDateNewType }}</span
         >
       </div>
       <div class="operate" v-else>
@@ -71,6 +71,8 @@ import {
   getProjectCode,
   getBiddingId,
 } from "@/api/bidding/bidding";
+import { getUserInfoByToken } from '@/api/usercenter'
+
 import dayjs from "dayjs";
 export default {
   components: {
@@ -120,6 +122,7 @@ export default {
   data() {
     return {
       supplierName: "",
+      biddingName: "",
       projectTermsCode: "",
       supplierTermsCode: window.sessionStorage.getItem("BIDDING_SUPPLIER_CODE") || this.supplierCode || "11135",
       updateBy: "",
@@ -136,6 +139,7 @@ export default {
       fileBlobUrl: "",
       checked: false,
       // open: true,
+      userInfo:{}
     };
   },
   created() {
@@ -184,6 +188,9 @@ export default {
     } else {
       this.getView();
     }
+    getUserInfoByToken().then((res) => {
+      this.userInfo = res.data
+    })
   },
   computed: {
     updateDateNewType: function() {
@@ -244,7 +251,8 @@ export default {
         callback: (e) => {
           this.fileBlobUrl = e;
           getSupplierNotification(param).then((res) => {
-            this.supplierName = res.supplierName;
+            this.supplierName = res.systemUseFlagSignName;
+            this.biddingName = res.biddingNtfFlagSignName;
             this.supplerId = res.id;
             this.biddingNtfFlag = res.biddingNtfFlag;
             this.systemUseFlag = res.systemUseFlag;
@@ -278,11 +286,13 @@ export default {
         param = {
           systemUseFlag: bol,
           supplerId: this.supplerId,
+          systemUseFlagSignName: this.userInfo.nameZh
         };
       } else {
         param = {
           biddingNtfFlag: bol,
           supplerId: this.supplerId,
+          biddingNtfFlagSignName: this.userInfo.nameZh
         };
       }
       this.$emit('hanldeAgreeOrReject',param)
