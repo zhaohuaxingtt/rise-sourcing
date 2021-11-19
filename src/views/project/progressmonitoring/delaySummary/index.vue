@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-18 15:36:47
+ * @LastEditTime: 2021-11-19 15:55:34
  * @Description: 延误原因汇总
 -->
 
@@ -178,13 +178,13 @@ export default {
       })
     },
     querySearch(queryString, cb) { 
-      var restaurants = this.currPartPeriod == 7 ? this.delayReasonOptions.OTS_EM_DELAYREASON : []; 
+      var restaurants = [4,5,6,7].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []; 
       var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
       // 调用 callback 返回建议列表的数据 
       cb(results); 
     },
     createFilter(queryString) { 
-      return (restaurant=this.currPartPeriod == 7 ? this.delayReasonOptions.OTS_EM_DELAYREASON : []) => { 
+      return (restaurant= [4,5,6,7].includes(Number(this.currPartPeriod)) ? this.delayReasonOptions.OTS_EM_DELAYREASON : []) => { 
         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0); 
       }; 
     },  
