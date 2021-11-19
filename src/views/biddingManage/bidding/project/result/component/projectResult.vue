@@ -30,11 +30,11 @@
           <template slot="currentSort" slot-scope="scope">
             <div v-if="role === 'supplier' && form.resultOpenForm == '02'"
               :class="
-                ranks.trafficLight == '01'
+                scope.row['trafficLight'] == '01'
                   ? 'green-ball'
-                  : ranks.trafficLight == '02'
+                  : scope.row['trafficLight'] == '02'
                   ? 'yellow-ball'
-                  : ranks.trafficLight == '03'
+                  : scope.row['trafficLight'] == '03'
                   ? 'red-ball'
                   : ''
               "
