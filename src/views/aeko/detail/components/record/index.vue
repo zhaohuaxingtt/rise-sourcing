@@ -256,13 +256,15 @@ export default {
       if(from == 'check'){
         const data = {
           aekoNo: this.aekoInfo.aekoCode || '',
+          hasParentTaskId: true,
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize
         };
         getHistoricByParams(data).then(res => {
           this.tableLoading = false
+          this.page.totalCount = res.data.total;
           let resDatas = res.data.records
-          resDatas= resDatas.filter(item=>item.comment!='AutoCompleted')
+          // resDatas= resDatas.filter(item=>item.comment!='AutoCompleted')
           this.tableListData = resDatas.map(item => {
             item.disabled = item.activityName != '【补充材料通知】补充材料'
             return item
