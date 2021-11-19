@@ -768,6 +768,20 @@ export default {
           purchaseQty:Number(item.purchaseQty)
         }
       })
+      // 车型
+      const paras = data?.models.map(item => {
+        return {
+          ...item,
+          code:item.modelCode,
+          name:item.model
+        }
+      })
+      this.modelsOption.push(...paras)
+      let optionData = {}
+      this.modelsOption = this.modelsOption.reduce((pre,cur) => {
+        optionData[cur.code] ? "" : optionData[cur.code] = true && pre.push(cur);
+        return pre;
+      },[])
       // if (this.ruleForm.biddingMode === "02") {
       //   //总价
       //   this.ruleForm.totalPrices = Big(this.ruleForm.totalPrices || 0)
