@@ -256,6 +256,7 @@ export default {
       if(from == 'check'){
         const data = {
           aekoNo: this.aekoInfo.aekoCode || '',
+          hasParentTaskId: true,
           pageNo: this.page.currPage,
           pageSize: this.page.pageSize
         };
