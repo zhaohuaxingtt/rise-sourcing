@@ -5,9 +5,9 @@
  * @LastEditTime: 2021-11-15 10:29:16
 -->
 <template>
-  <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
-    <el-table-column v-if="selection" type='selection' width="50" align='center'></el-table-column>
-    <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#' :fixed="isFixedIndex">
+  <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
+    <el-table-column v-if="selection" type='selection' width="34" align='center'></el-table-column>
+    <el-table-column v-if='indexKey' :class-name="indexKey ? 'tableIndex': ''" type='index' width='36' align='center' label='#' :fixed="isFixedIndex">
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
       </template>
@@ -297,5 +297,13 @@ export default{
   }
   ::v-deep .el-date-editor.el-input, .el-date-editor.el-input__inner {
     width: 100%;
+  }
+
+  .table {
+    ::v-deep .el-table-column--selection .cell,
+    ::v-deep .tableIndex .cell {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
   }
 </style>
