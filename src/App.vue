@@ -7,8 +7,8 @@
  * @FilePath: \rise\src\App.vue
 -->
 <template>
-  <div class="app">
-    <router-view></router-view>
+  <div id="app" class="app">
+    <router-view id="appRouterView"></router-view>
   </div>
 </template>
 <script>
