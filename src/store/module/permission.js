@@ -100,7 +100,7 @@ const actions = {
         .then(res => {
           if (res.code == 200 && res.data) {
             commit('SET_MENU_LIST', initMeun(res.data.menuList))
-            commit('SET_WIHTEBTN_LIST', res.data.resourceList)
+            commit('SET_WIHTEBTN_LIST', res.data.resourceList || [])
             r(res.data.menuList)
           } else {
             commit('SET_MENU_LIST', [])
