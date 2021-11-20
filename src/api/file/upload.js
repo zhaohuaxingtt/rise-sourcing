@@ -23,7 +23,7 @@ export function uploadFile(parmars) {
 
 export function udSingleFile(parmars) {
   return requst({
-    url: '/fileud/udMutilfilesController',
+    url: '/fileudApi/udMutilfilesController',
     method: 'POST',
     data: parmars
   })
@@ -65,7 +65,7 @@ export function uploadUdFile(params) {
   formData.append('multifile', params.multifile || []) // 文件
 
   return fileRequst({
-    url: `/fileud/udMutilfilesController`,
+    url: `/fileudApi/udMutilfilesController`,
     method: 'POST',
     data: formData
   }).then(res => {

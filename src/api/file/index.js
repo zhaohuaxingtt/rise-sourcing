@@ -21,7 +21,7 @@ export function downloadFile(parmars) {
 
 export function downloadUdFile(params) {
     return fileRequst({
-        url: `/fileud/udDown?${ Array.isArray(params) ? serialize(params.map(id => ({ fileIds: id })), Array) : 'fileIds=' + params }`,
+        url: `/fileudApi/udDown?${ Array.isArray(params) ? serialize(params.map(id => ({ fileIds: id })), Array) : 'fileIds=' + params }`,
         method: 'POST'
     })
 }
@@ -29,7 +29,7 @@ export function downloadUdFile(params) {
 // 自定义文件名下载
 export function downloadUdFileWithName(params,fileName) {
     return fileRequst({
-        url: `/fileud/udDownWithName?${ Array.isArray(params) ? serialize(params.map(id => ({ fileIds: id })), Array) : 'fileIds=' + params }&fileName=${fileName}`,
+        url: `/fileudApi/udDownWithName?${ Array.isArray(params) ? serialize(params.map(id => ({ fileIds: id })), Array) : 'fileIds=' + params }&fileName=${fileName}`,
         method: 'POST'
     })
 }
