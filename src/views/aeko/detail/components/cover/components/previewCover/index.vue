@@ -173,8 +173,11 @@ export default {
         async getList(type=null){
             this.tableLoading={cost:true,};
             const {query} = this.$route;
-            const { requirementAekoId ='',} = query;
-            await getCoverDetail({requirementAekoId}).then((res)=>{
+            const { requirementAekoId ='',from=''} = query;
+            await getCoverDetail({
+                requirementAekoId,
+                isView:from == 'check' ? 1 :undefined,
+                }).then((res)=>{
                 this.tableLoading={cost:false,};
                 const {code,data} = res;
                 if(code == 200){
@@ -196,10 +199,11 @@ export default {
         // 获取linie分页表格
         async getLinie(){
             const {query} = this.$route;
-            const { requirementAekoId ='',} = query;
+            const { requirementAekoId ='',from=''} = query;
             const {page} = this;
             const data = {
                 requirementAekoId,
+                isView:from == 'check' ? 1 :undefined,
                 current:page.currPage,
                 size:page.pageSize
             };

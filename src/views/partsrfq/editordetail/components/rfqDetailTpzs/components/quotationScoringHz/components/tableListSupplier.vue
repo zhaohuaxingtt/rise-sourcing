@@ -33,7 +33,7 @@
             <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
             <div class="headerContent" v-if='scope.column.label == "Supplier"'>
               <div class="c" :style="{width:cWidth}">
-                <ul class="ca" :style="{width:(100+50*tableTitle[1].list.length) + 'PX'}">
+                <ul class="ca" :style="{width:(100+50*(tableTitle[1] ? (Array.isArray(tableTitle[1].list) ? tableTitle[1].list.length : 0) : 0)) + 'PX'}">
                   <li v-for='(items,index) in supplierLeftLit' :key='index'>
                     {{items.name}}
                   </li>
@@ -133,7 +133,7 @@
                   <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
-              <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+              <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">View</span>
             </template>     
             <template v-else-if="removeKeysNumber(item.props) == 'fTarget'">
               <span :class="{lvse:lvseFn(scope.row,item.props,'fTarget')}">{{scope.row[item.props]}}</span>
@@ -158,7 +158,7 @@
       </template>
     </el-table>
   </div>
-  <div class="leftFlex" :style="{width:(100+50*tableTitle[1].list.length) + 'PX'}">
+  <div class="leftFlex" :style="{width:(100+50*(tableTitle[1] ? (Array.isArray(tableTitle[1].list) ? tableTitle[1].list.length : 0) : 0)) + 'PX'}">
   <div class="selsTable" :style="{paddingTop:paddingTop}">
     <el-table
       tooltip-effect="light"
@@ -184,7 +184,7 @@
             <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
             <div class="headerContent" v-if='scope.column.label == "Supplier"'>
               <div class="c" :style="{width:cWidth}">
-                <ul class="ca" :style="{width: (100+50*tableTitle[1].list.length)+ 'PX'}">
+                <ul class="ca" :style="{width: (100+50*(tableTitle[1] ? (Array.isArray(tableTitle[1].list) ? tableTitle[1].list.length : 0) : 0))+ 'PX'}">
                   <li v-for='(items,index) in supplierLeftLit' :key='index'>
                     {{items.name}}
                   </li>
@@ -290,8 +290,139 @@
     </el-table>
   </div>
   </div>
-  <!-- <div class="rightFlex">
-  </div> -->
+  <div class="rightFlex" style="width: 185px">
+    <div class="rightWrapper">
+      <el-table
+        class="rigthTable"
+        tooltip-effect="light"
+        :height="height"
+        :data="tableData"
+        v-loading="loading"
+        :cell-class-name='cellClassName'
+        :empty-text="$t('LK_ZANWUSHUJU')"
+        ref='table'
+      >
+        <template v-for='(item,index) in tableTitle'>
+          <!-----------------表格中内容模块------------------------>
+          <el-table-column
+            :key="index"
+            :label="item.i18n ? $t(item.i18n) : item.label"
+            :width="item.width"
+            :prop='item.props'
+            align="center"
+            :resizable="false"
+          >
+            <!----------在表头上方需要显示评分的点，插入表头标签------>
+            <template slot="header" slot-scope="scope">
+              <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
+              <div class="headerContent" v-if='scope.column.label == "Supplier"'>
+                <div class="c" :style="{width:cWidth}">
+                <ul class="ca" :style="{width: (100+50*(tableTitle[1] ? (Array.isArray(tableTitle[1].list) ? tableTitle[1].list.length : 0) : 0))+ 'PX'}">
+                  <li v-for='(items,index) in supplierLeftLit' :key='index'>
+                    {{items.name}}
+                  </li>
+                </ul>
+                <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
+                  <template v-for="(itemss,index) in supplierLeftLit">
+                      <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
+                      <li :key="index" v-else class="ftaget">
+                        <span>{{items['cfPartAPrice']}}</span>
+                        <span style="width:99PX"></span>
+                        <span>{{items['cfPartBPrice']}}</span>
+                      </li>
+                  </template>
+                </ul>
+                <div class="cc" style="width:60px">
+                  <ul>
+                    <template v-for="(itemss,index) in supplierLeftLit">
+                        <li :key='index' v-if='itemss.name == "KM"'>{{kmAPrice}}</li>
+                        <li :key="index" v-else class=""></li>
+                    </template>
+                  </ul>
+                </div>
+                <div class="cd" style="width:60px">
+                  <ul>
+                    <template v-for="(itemss,index) in supplierLeftLit">
+                        <li :key='index' v-if='itemss.name == "KM"'>{{kmTooling}}</li>
+                        <li :key='index' v-else-if='itemss.name == "Planned Invest"'>{{budget}}</li>
+                        <li :key="index" v-else class=""></li>
+                    </template>
+                  </ul>
+                </div>
+                </div>
+              </div>
+            </template>
+            <!----------存在二级表头------>
+            <template v-if='item.list && item.list.length >0'>
+              <template v-for="(levelTowItem,levelTowIndex) in item.list">
+                  <el-table-column
+                    :key="levelTowIndex"
+                    :width="levelTowItem.width"
+                    :prop='levelTowItem.props'
+                    align="center"
+                    :resizable="false"
+                  >
+                  <template slot="header">
+                    <el-tooltip :content='levelTowItem.label' effect='light'>
+                      <span class="overText">{{levelTowItem.label}}</span>
+                    </el-tooltip>
+                  </template>
+                  </el-table-column>
+              </template>
+            </template>
+            <!--------------时间格式------------>
+            <template slot-scope="scope">
+              <template v-if ='removeKeysNumber(item.props) == "developmentCost"'>
+                <span>{{scope.row[item.props]}}</span>
+                <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
+              </template>
+              <template v-if ='removeKeysNumber(item.props) == "supplierName"'>
+                <el-tooltip  effect='light'>
+                  <div slot="content">
+                    <div>{{scope.row['supplierNameEn']}}</div>
+                    <div>{{scope.row[item.props]}}</div>
+                  </div>
+                  <div>
+                    <span class="isEplisSuplier">{{scope.row[getPorpsNumber(item.props)+"supplierNameEn"]}}</span>    
+                    <span class="isEplisSuplier">{{scope.row[item.props]}}</span>    
+                  </div>
+                </el-tooltip>
+              </template>
+              <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
+                <span>{{scope.row[item.props]}}</span>
+                <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
+                <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "ltcStaringDate"'>
+                <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
+                <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
+              </template>     
+              <template v-else-if="removeKeysNumber(item.props) == 'fTarget'">
+                <span :class="{lvse:lvseFn(scope.row,item.props,'fTarget')}">{{scope.row[item.props]}}</span>
+              </template>
+              <template v-else-if='item.props== "partName"'>
+                <span style="color:red;" :class="{lvse:lvseFn(scope.row,item.props,'partName')}">{{scope.row[item.props]}}</span>
+              </template>
+              <!-- <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
+                <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
+              </template>
+                  <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
+                      <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
+                  </template> -->
+              <template v-else slot-scope="scope">
+                <span>{{scope.row[item.props]}}</span>
+              </template>
+            </template>
+
+          </el-table-column>
+        </template>
+      </el-table>
+    </div>
+  </div>
 </div>
 </template>
 <script>
@@ -328,10 +459,23 @@ export default{
       type:Array,
       default:()=>[]
     },
+    supplierRightList:{
+      type:Array,
+      default:()=>[]
+    },
     cWidth:{
       type:String,
       default:'0px'
     }
+  },
+  updated() {
+    this.$nextTick(() => { // 处理right在title未占满宽度时强制浮动的问题
+      const tableDom = this.$el.querySelector(".el-table")
+      const tableHeaderDom = this.$el.querySelector(".el-table__header")
+      const rightFlexDom = this.$el.querySelector(".rightFlex")
+
+      rightFlexDom.style.display = tableHeaderDom.clientWidth < tableDom.clientWidth ? "none" : ""
+    })
   },
   data(){
     return {
@@ -446,16 +590,24 @@ export default{
     }
     .rightFlex{
       position: absolute;
-      height: 100%;
+      height: calc(100% - 10px);
       bottom: 10PX;
-      padding-top:10PX;
+      // padding-top:10PX;
       right: 0px;
       z-index: 199;
-      width: 350px;
       overflow: hidden;
       background-color: white;
       display: flex;
       flex-direction: row-reverse;
+      .rightWrapper {
+        position: absolute;
+        bottom: 1px;
+
+        // .rigthTable {
+        //   right: 0;
+        // }
+      }
+
       .selsTable{
         overflow: inherit;
         width: auto;

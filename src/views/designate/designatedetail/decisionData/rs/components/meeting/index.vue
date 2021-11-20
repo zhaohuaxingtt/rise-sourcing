@@ -390,7 +390,8 @@ export default {
             if(val.supplierNameEn)
             val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
               if(val.partNameDe)
-            val.partName = `${val.partName}/${val.partNameDe}`
+            // val.partName = `${val.partName}/${val.partNameDe}`
+            val.partName = val.partNameDe
           })
           this.tableData = data
           this.projectType = res.data.partProjectType || ''
@@ -523,7 +524,8 @@ export default {
             if(val.supplierNameEn)
             val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
               if(val.partNameDe)
-            val.partName = `${val.partName}/${val.partNameDe}`
+            // val.partName = `${val.partName}/${val.partNameDe}`
+            val.partName = val.partNameDe
             // 预览模式,ab价取rsPriceVo
             if (val.rsPriceVo && val.rsPriceVo.aprice) {
               val.aprice = val.rsPriceVo && val.rsPriceVo.aprice

@@ -2,7 +2,7 @@
  * @Description: CF车型配置
  * @Author: tyra liu
  * @Date: 2021-11-16 16:54:18
- * @LastEditTime: 2021-11-17 11:25:17
+ * @LastEditTime: 2021-11-18 16:04:34
  * @LastEditors:  
 -->
 <template>
@@ -16,10 +16,14 @@
         <span class="title">{{language('CHEXING','车型')}}</span>
         <iSelect v-model="carTypeModel">
           <el-option
-            v-for="item in carTypeOptions"
+            value=" "
+           :label="language('all','全部')"
+          ></el-option>
+          <el-option
+            v-for="(item,index) in carTypeOptions"
             :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :label="item.name"
+            :value="index"
           >  
           </el-option>
         </iSelect>
@@ -41,6 +45,7 @@
 import {iDialog, iButton, iSelect} from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import {carTitle} from "../data"
+import {getCartypeDict} from "@/api/partsrfq/home";
 export default {
   components: { iDialog, iButton, tableList, iSelect},
   props: {
@@ -53,30 +58,25 @@ export default {
     return {
       carTableTitle:[...carTitle],
       carTableData:[],
-      carTypeOptions:[{
-        value:'选项1',
-        label:'黄金糕'
-      }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ],
+      carTypeOptions:[],
       carTypeModel:''
     }
+  },
+  created() {
+    this.getCartypeDict()
   },
   methods: {
     changeVisible() {
       this.$emit('changeVisible', false)
-    }
+    },
+    // 获取车型字典
+    getCartypeDict() {
+      getCartypeDict().then(res => {
+        this.carTypeOptions = res.data
+      }).catch(err=>{
+        console.log(err)  
+      })
+    },
   }
 }
 </script>

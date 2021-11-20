@@ -591,8 +591,9 @@ export default {
     },
     //更改起始年月联动年产量年月
     handleChangeBeginMonth(val){
-      let dateYear = new Date(val).getFullYear();
+      
       this.annualOutput.forEach((item,index)=>{
+        let dateYear = new Date(val).getFullYear();
         if(!val){
           for (let i = 1; i < 16; i++) {
             item[`stage${i}`]='';
@@ -1189,7 +1190,12 @@ export default {
         }
       })
       this.modelsOption.push(...paras)
-      // 车型项目
+      let optionData = {}
+      this.modelsOption = this.modelsOption.reduce((pre,cur) => {
+        optionData[cur.code] ? "" : optionData[cur.code] = true && pre.push(cur);
+        return pre;
+      },[])
+
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {

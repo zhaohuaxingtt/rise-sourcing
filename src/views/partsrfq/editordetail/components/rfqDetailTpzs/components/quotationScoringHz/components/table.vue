@@ -91,7 +91,7 @@
                         </template>
                         <li v-else :key='indexss'>
                           <span>
-                            {{itemsss.rateEn}}<br/>{{itemsss.rate}}
+                            {{itemsss.rateEn}}-{{itemsss.rate}}
                           </span>
                           <el-tooltip  effect="light" v-if='itemsss.isRateRisk && !isPreview' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
                               <icon name='icontishi-cheng' symbol></icon>
@@ -111,7 +111,7 @@
                 <span>{{ebrShow(scope.row[item.props])}}</span>
               </template>       
               <template v-else-if='removeKeysNumber(item.props) == "partName"'>
-                <el-tooltip effect='light'>
+                <el-tooltip effect='light' v-if=" scope.row[getPorpsNumber(item.props)+'partNameDe'] || scope.row[getPorpsNumber(item.props)+'partName']">
                   <div slot="content">
                     <div>{{scope.row[getPorpsNumber(item.props)+"partNameDe"]}}</div>
                     <div>{{scope.row[getPorpsNumber(item.props)+"partName"]}}</div>
@@ -135,7 +135,9 @@
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "tto"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}">{{ttoShow(scope.row[item.props])}}</span>
+                <el-tooltip :content='ttoShow(scope.row[item.props])' effect='light'>
+                  <span class="tooEplis" :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}" >{{ttoShow(scope.row[item.props])}}</span>
+                </el-tooltip>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
                 <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">View</span>
@@ -409,11 +411,18 @@ export default{
   .lvse{
     color:$color-green;
   }
+  .ttoEplisDe{
+    width: 90% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: inline-block;
+    word-break: keep-all;
+  }
   .chengse{
     color: $color-delete;
   }
-  .isEplisDe{
-    width: 100px;
+  .tooEplis{
+    width: 90px;
     overflow:hidden;
     text-overflow:ellipsis;
     word-break:keep-all;

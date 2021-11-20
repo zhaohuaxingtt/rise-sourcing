@@ -4,7 +4,7 @@
       <div class="margin-bottom15">
         <span class="card-title"
           >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatus }}</span>
-        <span class="floatright" v-if="show">
+        <span class="floatright" v-if="show && isMtz">
           <iButton @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
         </span>
       </div>
@@ -57,11 +57,12 @@ export default {
     auditContents: { type: Object, require: true, default: () => [] },
     auditContentStatus: { type: String, default: () => "" },
   },
-  // computed:{
-  //   ContentStatus(){
-  //     return this.auditContentStatus
-  //   }
-  // },
+  computed:{
+    // 推荐表是否含有mtz零件
+    isMtz(){
+      return this.recommendationFormPendingApprovalList.filter(o => o.isMtz === 1).length
+    }
+  },
   watch: {
     auditContents(val) {
       this.page.totalCount = this.auditContents?.length;
