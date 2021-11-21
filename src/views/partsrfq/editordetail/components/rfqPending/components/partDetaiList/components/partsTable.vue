@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-11-08 22:02:09
- * @LastEditors:  
+ * @LastEditTime: 2021-11-19 17:58:04
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
 -->
 <template>
   <div class="notPushRfq">
@@ -95,7 +95,7 @@ export default {
         // 这个地方直接取当前rfq的linineId
         this.parmarsNotHasRfq['linieId'] = ''
         this.parmarsNotHasRfq['partProjectType'] = ''
-        this.parmarsNotHasRfq['partNumList'] = ''
+        this.parmarsNotHasRfq['partNumList'] = queryForm.partNumList
         this.parmarsNotHasRfq['isNotInRfqList'] = true
         this.parmarsNotHasRfq['rfqId'] = this.$route.query.id
         getTabelData(this.parmarsNotHasRfq).then(res => {

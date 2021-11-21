@@ -457,6 +457,8 @@ export default {
       for (let i in this.form) {
         this.form[i] = "";
       }
+
+      this.form.showSelf = true
       this.getTableListFn();
     },
 

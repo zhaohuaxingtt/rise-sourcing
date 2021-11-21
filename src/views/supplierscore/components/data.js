@@ -30,7 +30,7 @@ export const queryForm = {
   supplierName: "", // 供应商名称
   modelNameZh: "", // 车型
   carTypeProject: "", // 车型项目
-  showSelf:'YES', // 是否显示自己
+  showSelf: true, // 是否显示自己
 }
 
 export const tableTitle = [

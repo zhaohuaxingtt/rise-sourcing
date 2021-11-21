@@ -9,6 +9,7 @@
 
 // 筛选参数
 export const form = {
+  showSelf: true
 }
 
 // 表单表头

@@ -134,6 +134,10 @@
             v-model="form.showSelf"
             :placeholder="language('QINGXUANZELINIE', '请选择')"
           >
+            <el-option
+              value=""
+              :label="language('ALL', '全部') | capitalizeFilter"
+            ></el-option>
             <el-option :value="true" :label="language('SHI', '是')"></el-option>
             <el-option :value="false" :label="language('FOU', '否')"></el-option>
           </iSelect>
