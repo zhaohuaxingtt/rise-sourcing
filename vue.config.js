@@ -244,7 +244,7 @@ module.exports = {
                 },
             },
             '/fileudApi': {
-                target: 'http://10.122.17.38:8034/fileudApi',
+                target: 'http://10.122.17.38:8034/fileud',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/fileudApi': '',
