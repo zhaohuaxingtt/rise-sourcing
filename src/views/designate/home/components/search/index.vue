@@ -260,7 +260,9 @@ export default {
       this.$emit('search', this.form)
     },
     reset() {
-      this.form = {}
+      this.form = {
+        showSelf: true
+      }
       this.$emit('search', {})
     },
     onNomiProcessTypeChange(type) {

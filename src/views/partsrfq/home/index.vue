@@ -266,7 +266,7 @@ export default {
         mqStatus: '',
         cfStatus: '',
         heavyItem: '',
-        showSelf:''
+        showSelf: true
       },
       activateButtonLoading: false,
       closeButtonLoading: false,
@@ -506,7 +506,7 @@ export default {
     },
     change() {},
     handleSearchReset() {
-      this.form = {}
+      this.form = { showSelf: true }
       this.getTableList()
     },
     exportTable() {

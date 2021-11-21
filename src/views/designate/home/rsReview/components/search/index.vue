@@ -334,7 +334,7 @@ export default {
     iDatePicker
   },
   mounted() {
-    this.form = {}
+    this.form = { showSelf: true }
     // 获取下拉枚举值
     this.getOptions()
   },
@@ -349,7 +349,7 @@ export default {
       this.$emit('search', form)
     },
     reset() {
-      this.form = {}
+      this.form = { showSelf: true }
       this.$emit('search', {})
     },
     oncheckDateChange(data) {
