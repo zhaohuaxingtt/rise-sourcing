@@ -139,6 +139,10 @@
             :placeholder="language('partsprocure.CHOOSE','请选择')"
           >
             <el-option
+              value=""
+              :label="language('ALL', '全部') | capitalizeFilter"
+            ></el-option>
+            <el-option
               :value="item.value"
               :label="item.label"
               v-for="item in showSelfOptions"
@@ -231,8 +235,8 @@ export default {
       multipleSelection: [],
       forwardDialogVisible: false,
       showSelfOptions:[
-        {label:'是',key:'nominationLanguage.Yes',value:'YES'},
-        {label:'否',key:'nominationLanguage.No',value:'NO'},
+        {label:'是',key:'nominationLanguage.Yes',value: true},
+        {label:'否',key:'nominationLanguage.No',value: false},
       ]
     }
   },
@@ -355,7 +359,7 @@ export default {
       })
       form.current = this.page.currPage
       form.size = this.page.pageSize
-      form.showSelf = form.showSelf=='YES'
+      // form.showSelf = form.showSelf=='YES'
 
       this.loading = true
       searchRfqBdlRatings(form)
