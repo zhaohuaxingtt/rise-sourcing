@@ -23,7 +23,7 @@
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
-                  <!-- <el-option value="" :label="language('ALL','全部')"></el-option> -->
+                  <el-option v-if="item.value == 'showSelf'" value="" :label="language('ALL','全部')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -124,7 +124,8 @@ export default {
         carProject: '',
         state: '',
         csfUserDept: '',
-        csfUserId: ''
+        csfUserId: '',
+        showSelf: true
       },
       inquiryDialogVisible: false,
       buyerDialogVisible: false,
@@ -395,7 +396,8 @@ export default {
         carProject: '',
         state: '',
         csfUserDept: '',
-        csfUserId: ''
+        csfUserId: '',
+        showSelf: true
       }
       this.sure()
     },

@@ -25,11 +25,11 @@
         <div v-else style="width: 92px">利润</div>
         <div v-if="!isEdite" style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
           <iInput v-model="year1"
-                  style="width: 50px;"></iInput>
+                  style="width: calc(100% / 3);"></iInput>
           <iInput v-model="year2"
-                  style="width: 50px;"></iInput>
+                  style="width: calc(100% / 3);"></iInput>
           <iInput v-model="year3"
-                  style="width: 50px;"></iInput>
+                  style="width: calc(100% / 3);"></iInput>
         </div>
         <div v-else style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
           <div style="width: 50px;text-align:center;">{{profit1+'%'}}</div>
@@ -623,7 +623,10 @@ export default {
               iMessage.error('份额总和不能超过100%')
               return
             } else {
-              if (total > 0) val.mainCustomerDTOList[val.mainCustomerDTOList.length - 1].totalSalesPro = 100-total
+              if (total > 0) {
+                val.mainCustomerDTOList[val.mainCustomerDTOList.length - 1].customerName = "其他"
+                val.mainCustomerDTOList[val.mainCustomerDTOList.length - 1].totalSalesPro = 100-total
+              }
             }
           }
           this.$nextTick(() => {

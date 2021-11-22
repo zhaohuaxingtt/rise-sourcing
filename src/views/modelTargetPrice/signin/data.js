@@ -37,5 +37,5 @@ export const searchList = [
   {value: 'cfName', label: '模具控制员', type: 'input', i18n_label: 'MOJUKONGZHIYUAN',selectOption:'CF_USER',permission: 'MODELTARGETPRICE_SIGNIN_CF|模具目标价管理-目标价签收-CF'},
   {value: 'applyType', label: '申请类型', type: 'selectDict', i18n_label: 'SHENQINGLEIXING',selectOption: 'sign_page_apply_type',permission: 'MODELTARGETPRICE_SIGNIN_APPLYTYPE|模具目标价管理-目标价签收-申请类型'},
   {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI',permission: 'MODELTARGETPRICE_SIGNIN_APPLYDATE|模具目标价管理-目标价签收-申请日期起止'},
-  {value: 'showSelf', label: '显示自己', type: 'select', hideAll: true, selectOption: "showSelfOptions", i18n_label: 'XIANSHIZIJI',permission: 'MODELTARGETPRICE_SIGNIN_SHOWSELF|模具目标价管理-目标价签收-显示自己'},
+  {value: 'showSelf', label: '显示自己', type: 'select', selectOption: "showSelfOptions", i18n_label: 'XIANSHIZIJI',permission: 'MODELTARGETPRICE_SIGNIN_SHOWSELF|模具目标价管理-目标价签收-显示自己'},
 ]

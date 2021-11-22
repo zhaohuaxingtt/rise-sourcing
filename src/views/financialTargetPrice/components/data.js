@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-08 15:34:35
+ * @LastEditTime: 2021-11-22 15:14:10
  * @Description: 
- * @FilePath: \front-web\src\views\financialTargetPrice\components\data.js
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\components\data.js
  */
 
 export const TAB = [
@@ -29,6 +29,14 @@ export const TAB = [
     key: 'CAIWUMUBIAOJIAGUANLI',
     url: '/financialtargetprice',
     activePath: 'financialtargetprice',
+    message: 0
+  },
+  {
+    value: 2,
+    name: '模具目标价管理',
+    key: 'MUJUMUBIAOJIAGUANLI',
+    url: '/modeltargetprice',
+    activePath: 'modeltargetprice',
     message: 0
   }
 ]

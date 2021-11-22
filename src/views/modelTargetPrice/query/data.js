@@ -45,5 +45,5 @@ export const searchList = [
   {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI',permission: 'MODELTARGETPRICE_QUERY_APPLYDATE|模具目标价管理-目标价查询-申请日期起止'},
   {value: 'responseDate', label: '返回日期起止', type: 'dateRange', i18n_label: 'FANHUIRIQIQIZHI',permission: 'MODELTARGETPRICE_QUERY_RESPONSEDATE|模具目标价管理-目标价查询-返回日期起止'},
   {value: 'state', label: '状态', type: 'selectDict', i18n_label: 'ZHUANGTAI',selectOption: 'tooling_target_price_page_task_state',permission: 'MODELTARGETPRICE_QUERY_STATS|模具目标价管理-目标价查询-状态'},
-  {value: 'showSelf', label: '显示自己', type: 'select', hideAll: true, selectOption: "showSelfOptions", i18n_label: 'XIANSHIZIJI',permission: 'MODELTARGETPRICE_QUERY_SHOWSELF|模具目标价管理-目标价查询-显示自己'},
+  {value: 'showSelf', label: '显示自己', type: 'select', selectOption: "showSelfOptions", i18n_label: 'XIANSHIZIJI',permission: 'MODELTARGETPRICE_QUERY_SHOWSELF|模具目标价管理-目标价查询-显示自己'},
 ]

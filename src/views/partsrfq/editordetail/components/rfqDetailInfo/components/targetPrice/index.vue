@@ -14,6 +14,7 @@
           @handleSelectionChange="handleSelectionChange"
           :hide-open-page="true"
           :index="true"
+          :lang="true"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->

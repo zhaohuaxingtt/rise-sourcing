@@ -24,7 +24,8 @@ export const infoForm = {
   projectName: ''
 }
 
-export const infoRules = {
+const isEmpty = (val) => !val && 0 !== val;
+export const infoRules = (form) =>({
   biddingType: [
     { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
@@ -57,8 +58,117 @@ export const infoRules = {
   ],
   biddingMode: [
     { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
-  ]
-};
+  ],
+  "quoteRule.greenLightFrom": [
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    {
+      validator(rule, value, callback) {
+        const {
+          greenLightFrom,
+          greenLightTo,
+          yellowLightFrom,
+          yellowLightTo,
+          redLightFrom,
+          redLightTo,
+        } = form.quoteRule;
+        if (
+          isEmpty(greenLightFrom) &&
+          isEmpty(greenLightTo) &&
+          isEmpty(yellowLightFrom) &&
+          isEmpty(yellowLightTo) &&
+          isEmpty(redLightFrom) &&
+          isEmpty(redLightTo)
+        ) {
+          return callback(new Error(rule.message)); // 相同区间必须同时填写
+        }
+        if (
+          (isEmpty(greenLightFrom) && !isEmpty(greenLightTo)) ||
+          (!isEmpty(greenLightFrom) && isEmpty(greenLightTo)) ||
+          (isEmpty(yellowLightFrom) && !isEmpty(yellowLightTo)) ||
+          (!isEmpty(yellowLightFrom) && isEmpty(yellowLightTo)) ||
+          (isEmpty(redLightFrom) && !isEmpty(redLightTo)) ||
+          (!isEmpty(redLightFrom) && isEmpty(redLightTo))
+        ) {
+          return callback(new Error(rule.message)); // 相同区间必须同时填写
+        }
+        if (
+          (!isEmpty(greenLightFrom) && isNaN(greenLightFrom)) ||
+          (!isEmpty(greenLightTo) && isNaN(greenLightTo)) ||
+          (!isEmpty(yellowLightFrom) && isNaN(yellowLightFrom)) ||
+          (!isEmpty(yellowLightTo) && isNaN(yellowLightTo)) ||
+          (!isEmpty(redLightFrom) && isNaN(redLightFrom)) ||
+          (!isEmpty(redLightTo) && isNaN(redLightTo))
+        ) {
+          return callback(new Error(rule.message)); // 不能存在非数字
+        }
+        if (
+          Number(greenLightFrom) > Number(greenLightTo) ||
+          Number(yellowLightFrom) > Number(yellowLightTo) ||
+          Number(redLightFrom) > Number(redLightTo)
+        ) {
+          return callback(new Error(rule.message)); // 相同区间必须开始小于截止
+        }
+        const existArea = [
+          [greenLightFrom, greenLightTo],
+          [yellowLightFrom, yellowLightTo],
+          [redLightFrom, redLightTo],
+        ].filter(([form, to]) => !isEmpty(form) && !isEmpty(to));
+        if (Number(existArea[0][0]) !== 1) {
+          return callback(new Error(rule.message)); // 开始第一个值必须等于1
+        }
+        if (
+          (existArea[1] && Number(existArea[1][0]) !== Number(existArea[0][1]) + 1) ||
+          (existArea[2] && Number(existArea[2][0]) !== Number(existArea[1][1]) + 1)
+        ) {
+          return callback(new Error(rule.message)); // 下一区间开始值必须为上一区间截止值+1
+        }
+        callback();
+      },
+      message: language('BIDDING_PMQJPZCW',"排名区间配置错误"),
+      trigger: "blur",
+    },
+  ],
+  "quoteRule.greenDeviationValue": [
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
+    {
+      validator(rule, value, callback) {
+        const { greenDeviationValue, yellowDeviationValue, targetPrice } = form.quoteRule;
+        if (targetPrice === null || targetPrice === undefined || targetPrice === '') {
+          callback(new Error(rule.message))
+        } else {
+          greenDeviationValue ||
+            0 === greenDeviationValue ||
+            yellowDeviationValue ||
+            0 === yellowDeviationValue
+            ? callback()
+            : callback(new Error(rule.message));
+        }
+      },
+      message: language('BIDDING_QTXPLMBJ',"请填写偏离目标价"),
+      trigger: "blur",
+    },
+  ],
+  "quoteRule.targetPrice":[{ required: true, message: "请输入", trigger: "blur" }],
+  "quoteRule.yellowDeviationValue": [
+    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
+    {
+      validator(rule, value, callback) {
+        const { greenDeviationValue, yellowDeviationValue } = form.quoteRule;
+        (greenDeviationValue ||
+          0 === greenDeviationValue ||
+          yellowDeviationValue ||
+          0 === yellowDeviationValue) &&
+          Number(value) <= Number(greenDeviationValue)
+          ? callback(new Error(rule.message))
+          : callback();
+      },
+      message: language('BIDDING_BNXYDYLD',"不能小于等于绿灯"),
+      trigger: "blur",
+    },
+  ],
+});
 
 // 竞拍类型
 export const biddingType = [
@@ -221,4 +331,18 @@ export const attachments = [
   },
 ]
 
-
+// 排名显示规则
+export const rankShowRule = [
+  {
+    value: "01",
+    label: language('BIDDING_XSBFPM',"显示本方排名"),
+  },
+  {
+    value: "02",
+    label: language('BIDDING_XSHLD(AMC QJDY)',"显示红绿灯(按名次 区间定义)"),
+  },
+  {
+    value: "03",
+    label: language('BIDDING_XSHLD(AMBJ PL BL DY)',"显示红绿灯(按目标价 偏离 比例 定义)"),
+  },
+];

@@ -35,21 +35,22 @@
       </el-form>
     </iSearch>
     <iCard class="margin-top20">
-        <div  class="margin-bottom20 clearFloat">
-          	<span  class="font18 font-weight" >{{$t('TPZS.BOBFXK')}}</span>
-          <div class="floatright" v-if="!disabled">
-            <div v-if="!edit">
-              <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
-              <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
-              <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
-            </div>
-            <div v-else>
-              <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>
-              <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
-            </div>
+      <div class="margin-bottom20 clearFloat">
+        <span class="font18 font-weight">{{$t('TPZS.BOBFXK')}}</span>
+        <div class="floatright"
+             v-if="!disabled">
+          <div v-if="!edit">
+            <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
+            <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
+            <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
           </div>
-      <!-- <template v-slot:header-control> -->
+          <div v-else>
+            <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>
+            <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
+          </div>
         </div>
+        <!-- <template v-slot:header-control> -->
+      </div>
       <!-- </template> -->
       <el-table tooltip-effect='light'
                 ref="multipleTable"
@@ -286,7 +287,7 @@ export default {
         return val.fileType == this.$t('TPZS.SCHEME_TYPE') ? flag : null;
       };
     },
-    disabled() {
+    disabled () {
       return typeof this.getDisabled === "function" ? this.getDisabled() : false
     }
   },
@@ -462,7 +463,7 @@ export default {
           rfqId: this.form.rfq,
           groupId: this.groupId
         }).then((res) => {
-          // this.$store.dispatch('setSchemeId', res.data);
+          this.$store.dispatch('setSchemeId', res.data);
           if (res.code === '200') {
             const newBob = this.$router.resolve({
               path: '/sourcing/partsrfq/bobNew',
@@ -472,7 +473,7 @@ export default {
                 groupId: this.groupId
               },
             })
-            window.open(newBob.href,'_blank')
+            window.open(newBob.href, '_blank')
             loading.close()
           } else {
             iMessage.error(res.desZh);
@@ -483,14 +484,14 @@ export default {
           loading.close()
         });
       } else {
-        const newBob =this.$router.resolve({
+        const newBob = this.$router.resolve({
           path: "/sourcing/partsrfq/bobNew",
           query: {
             newBuild: true,
             groupId: this.groupId
           },
         });
-        window.open(newBob.href,'_blank')
+        window.open(newBob.href, '_blank')
         loading.close();
       }
     },
@@ -597,7 +598,7 @@ export default {
     },
     // 点击名称,触发跳转事件
     clickName (val) {
-      console.log(val) 
+      console.log(val)
       if (val.fileType == this.$t('TPZS.SCHEME_TYPE')) {
         const analysisName = this.$router.resolve({
           path: "/sourcing/partsrfq/bobNew",
@@ -607,7 +608,7 @@ export default {
             groupId: this.groupId
           },
         })
-        window.open(analysisName.href,'_blank')
+        window.open(analysisName.href, '_blank')
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
         this.reportTitle = val.name
         this.reportVisible = true;

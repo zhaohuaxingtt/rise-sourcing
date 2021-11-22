@@ -227,7 +227,7 @@ export default {
         // 重置
         reset(){
             this.searchParams = {
-                show:'true',
+                show: true,
                 loiStatus:'',
             };
             this.page.currPage = 1;

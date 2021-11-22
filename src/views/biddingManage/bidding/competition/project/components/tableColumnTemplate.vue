@@ -278,7 +278,7 @@
                 type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 @blur="handlerInputBlur($event, scope)"
-                :disabled="items.disabled ? items.disabled : false"
+                :disabled="ruleForm.roundType === '03'"
               >
               </iInput>
               <iDatePicker
