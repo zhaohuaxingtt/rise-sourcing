@@ -439,7 +439,7 @@
           </iButton>
           <Upload
               class="upload"
-              action="/fileud/udMutilfiles"
+              action="/fileudApi/udMutilfiles"
               :show-file-list="false"
               :data="{ applicationName: 'rise' }"
               name="multipartFile"

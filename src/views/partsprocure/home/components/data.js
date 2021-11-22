@@ -163,7 +163,7 @@ export const form = {
 	'rfqId': '', //rfq编号
 	'size': '',
 	'current': "",
-	'showSelf':""
+	'showSelf': true
 }
 
 

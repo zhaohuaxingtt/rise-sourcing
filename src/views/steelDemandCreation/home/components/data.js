@@ -142,7 +142,7 @@ export const form = {
   partProjectType:'', //零件采购项目类型
   printStatus:'', //打印状态
   sapNum:'', //sap
-  showSelf:''
+  showSelf: true
 }
 
 export const tableTitle = [
