@@ -950,6 +950,8 @@ export default {
           }).then(() => {
             this.formUpdata.remark = this.$refs.bobAnalysis.remark
             this.formUpdata.name = this.analysisName
+            this.formUpdata.defaultBobOptions = this.formUpdata.defaultBobOptions.replaceAll("▼","")
+            console.log(this.formUpdata)
             update(this.formUpdata)
               .then((res) => {
                 iMessage.success("保存成功");
