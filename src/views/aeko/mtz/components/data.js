@@ -25,7 +25,7 @@ export const tableTitle = [
   { props: "compensationRatio", name: "补差系数", key: "LK_BUCHAXISHU", tooltip: true },
   { props: "threshold", name: "阈值", key: "LK_YUZHI", tooltip: true },
   { props: "thresholdCompensationLogic", name: "阈值补差逻辑", key: "LK_YUZHIBUCHALUOJI", tooltip: true },
-  { props: "compensationPeriod", name: "补差周期", key: "LK_BUCHAZHOUQI", tooltip: true },
+  { props: "compensationPeriodZhName", name: "补差周期", key: "LK_BUCHAZHOUQI", tooltip: true },
   { props: "ruleNo", name: "规则编号", key: "LK_GUIZEBIANHAO", tooltip: true, width: 100 },
 ]
 
