@@ -478,7 +478,6 @@ export default {
         .then((allDatas) => {
           try {
             var datas = allDatas;
-
             if (params.viewType == 'all') {
               chargeRetrieve({
                   isDefault: true,
@@ -495,16 +494,15 @@ export default {
                       this.addGroupedToOrigin(currentRoot[0].child, grouped)
                     }
                   })
-
-                  this.tableList = datas;
-                  this.tableTitle = this.tableList.title.filter(item => item.title)
-                  this.prepareData()
-                  this.$nextTick(() => {
-                    this.onDataLoading = false;
-                  })
+                this.tableList = datas;
+              this.tableTitle = this.tableList.title.filter(item => item.title)
+              this.prepareData()
+              this.$nextTick(() => {
+                this.onDataLoading = false;
                 }).catch((err) => {
                   iMessage.error(err.desZh)
                 })
+              })
             }
           } catch (err) {
             console.log(err)
@@ -912,6 +910,7 @@ export default {
       }
 
       addComponentToGroup({
+        schemeId: this.schemaId,
         groupId: this.groupId,
         groupName: this.selectGroupName.groupName,
         roundDetailIdList: this.cbdSelectedList
