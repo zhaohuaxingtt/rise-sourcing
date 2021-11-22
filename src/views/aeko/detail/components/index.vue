@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-11-18 17:04:09
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-22 16:30:29
+ * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
@@ -71,7 +71,7 @@ export default {
     attachment,
     record,
   },
-  created() {
+  async created() {
     const roleList = this.roleList;
     this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
     this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
@@ -131,7 +131,10 @@ export default {
     // 通过permissionKey(权限)字段过滤tabs
     this.tabs = permissionArray("permissionKey", this.tabs)
     
-    if(auditType&&auditType==1||auditType==2){ //封面表态
+    await this.getBbasicInfo(null,'aekodetailPage');  // 申请详情页内嵌部分判断显示哪个tab页
+    if(this.aekoInfo.coverStatusDesc==="补充材料"){
+      this.currentTab ='record';
+    }else if(auditType&&auditType==1||auditType==2){ //封面表态
       this.currentTab ='cover';
     }else if(auditType&&auditType==3){  // 内容表态
       this.currentTab ='contentDeclare';
@@ -213,7 +216,7 @@ export default {
       })
     },
     // 获取基础信息
-    async getBbasicInfo(type=null){
+    async getBbasicInfo(type=null, page=''){
       const {query} = this.$route;
       const { requirementAekoId =''} = query;
       const { aekoInfo={} } = this;
@@ -221,17 +224,17 @@ export default {
         const {code,data={}} = res;
         if(code == 200){
           this.aekoInfo = {...aekoInfo,...data};
-          this.$emit('setAekoInfo',this.aekoInfo)
-          if(!type){
-            // if (this.isLinie) {
-            //   this.currentTab = "contentDeclare"
-            // }
-            this.tabChange();
-          }
-          // 审批记录选项卡，有审批记录或补充材料的，选项卡要做红点标识
-          this.checkAttachAlarm();
-
-         
+          if(page!='aekodetailPage'){
+            this.$emit('setAekoInfo',this.aekoInfo)
+            if(!type){
+              // if (this.isLinie) {
+              //   this.currentTab = "contentDeclare"
+              // }
+              this.tabChange();
+            }
+            // 审批记录选项卡，有审批记录或补充材料的，选项卡要做红点标识
+            this.checkAttachAlarm();
+          }         
         }else{
            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
