@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-21 23:01:35
+ * @LastEditTime: 2021-11-22 19:55:41
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -175,13 +175,13 @@
 							<iText v-else>{{ getName(detailData.carTypeProjectZh, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPE|车型" :label="language('LK_CHEXING','车型') + ':'" name="test" v-if="isCarType">
-							<iSelect v-model="detailData.carTypeModel" v-if="!disabled ">
+							<iSelect v-model="detailData.carTypeModel" multiple collapse-tags v-if="!disabled ">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE" :key="index">
 								</el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.carTypeModel, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
+							<iText v-else>{{ getName(detailData.carTypeModel, "code", fromGroup.CAR_TYPE) }}</iText>
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
@@ -708,7 +708,6 @@
 							...this.fromGroup,
 							...map
 						}
-						
 						this.purchasingDept()
 						this.getLinie(this.detailData.linieDept)
 					}
@@ -805,7 +804,14 @@
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
 				detailData['oldProjectRelations'] = [{...translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
-				
+				// let temData=this.fromGroup['CAR_TYPE'].filter((item)=>{
+				// 	return detailData.carTypeModel.indexOf(item.code) > -1
+				// })
+				// let carTemData=[]
+				// temData.forEach(val=>{
+				// 	carTemData.push({'carTypeCode':val.code,'carTypeId':val.id,'carTypeName':val.name})
+				// })
+				// detailData['cartypes'] = carTemData
 				return new Promise((resolve, reject) => {
 					updateProcure(detailData).then((res) => {
 						this.saveLoading = false

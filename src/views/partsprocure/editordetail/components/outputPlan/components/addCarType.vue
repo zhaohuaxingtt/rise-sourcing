@@ -2,7 +2,7 @@
  * @Description: CF车型配置
  * @Author: tyra liu
  * @Date: 2021-11-16 16:54:18
- * @LastEditTime: 2021-11-18 16:04:34
+ * @LastEditTime: 2021-11-22 17:49:55
  * @LastEditors:  
 -->
 <template>
@@ -14,16 +14,16 @@
     <div class="top">
       <div class="top-left">
         <span class="title">{{language('CHEXING','车型')}}</span>
-        <iSelect v-model="carTypeModel">
+        <iSelect v-model="carTypeModel" @change="changeTable">
           <el-option
             value=" "
            :label="language('all','全部')"
           ></el-option>
           <el-option
             v-for="(item,index) in carTypeOptions"
-            :key="item.value"
-            :label="item.name"
-            :value="index"
+            :key="index"
+            :label="item.carTypeName"
+            :value="item.carTypeId"
           >  
           </el-option>
         </iSelect>
@@ -45,7 +45,7 @@
 import {iDialog, iButton, iSelect} from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import {carTitle} from "../data"
-import {getCartypeDict} from "@/api/partsrfq/home";
+import {searchCarTypeConfig,searchCarType} from "@/api/partsprocure/home"
 export default {
   components: { iDialog, iButton, tableList, iSelect},
   props: {
@@ -63,20 +63,38 @@ export default {
     }
   },
   created() {
-    this.getCartypeDict()
+    this.getPartType()
   },
   methods: {
     changeVisible() {
       this.$emit('changeVisible', false)
     },
-    // 获取车型字典
-    getCartypeDict() {
-      getCartypeDict().then(res => {
-        this.carTypeOptions = res.data
-      }).catch(err=>{
-        console.log(err)  
+    //通过零件采购项目查询车型
+    getPartType() {
+      console.log('11111111111');
+      searchCarType(this.$route.query.projectId).then(res => {
+        if(res.code == '200') {
+          this.carTypeOptions = res.data
+        }
+        console.log(res,'111111111');
       })
     },
+    changeTable(data) {
+      this.getTableList(data)
+    },
+    getTableList(data) {
+      searchCarTypeConfig(data).then(res=>{
+        console.log(res);
+      })
+    }
+    // 获取车型
+    // getCartypeDict() {
+    //   getCartypeDict().then(res => {
+    //     this.carTypeOptions = res.data
+    //   }).catch(err=>{
+    //     console.log(err)  
+    //   })
+    // },
   }
 }
 </script>
