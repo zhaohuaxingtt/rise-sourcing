@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-03 17:40:00
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
@@ -9,7 +9,7 @@ export const tableTitle = [
     {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
     {props:'partNameZh',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG'},
     // {props:'targetPrice',name:'T-TargetPrice',key:'T-TargetPrice'},
-    {props:'targetPrice',name:'Tooling Target Price',key:'Tooling Target Price', width: '180'},
+    {props:'targetPrice',name:'模具目标价',key:'MOJUMUBIAOJIA', width: '180'},
     {props:'applyType',name:'申请类别',key: 'LK_SHENQINGLEIBIE'},
     {props:'expTargetpri',name:'期望目标价',key: 'LK_QIWANGMUBIAOJIA'},
     {props:'lcAPrice',name:'LC_A',key: 'LC_A'},
