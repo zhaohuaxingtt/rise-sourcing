@@ -21,22 +21,27 @@
         </iFormItem>
       </iFormGroup>
     </iCard>
+    <fileTable ref="tec" class="margin-top20" :title="language('JISHUXUNJIAZILIAO', '技术询价资料')" fileType="ACCESSORY_TEC_ATTACHMENT" :hostId="detailData.id" />
+    <fileTable ref="package" class="margin-top20" :title="language('BAOZHUANGXUNJIAZILIAO', '包装询价资料')" fileType="ACCESSORY_PACKAGE_ATTACHMENT" :hostId="detailData.id" />
   </iPage>
 </template>
 
 <script>
 import { iPage, iCard, iFormGroup, iFormItem, iText } from 'rise'
 import topComponents from '../../designate/designatedetail/components/topComponents'
-import { detailList } from './data'
+import { detailList, fileTableTitle } from './data'
 import { getAccessoryOneInfo } from '@/api/accessoryPart/index'
 import { iMessage } from '../../../components'
+import fileTable from "./components/fileTable"
+
 export default {
-  components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText },
+  components: { iPage, topComponents, iCard, iFormGroup, iFormItem, iText, fileTable },
   data() {
     return {
       detailList,
       detailData: {},
-      pageLoading: false
+      pageLoading: false,
+      fileTableTitle
     }
   },
   created() {
@@ -50,6 +55,11 @@ export default {
       getAccessoryOneInfo(this.$route.query.spNum).then(res => {
         if (res.result) {
           this.detailData = res.data
+
+          this.$nextTick(() => {
+            this.$refs.tec.getFiles()
+            this.$refs.package.getFiles()
+          })
         } else {
           this.detailData = {}
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
