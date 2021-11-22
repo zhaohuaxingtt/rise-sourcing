@@ -206,9 +206,9 @@ export default{
      */
     sortChange({props,prop}){
       try {
-        const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-')
+        const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-' || items.groupIdTemp)
         const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
-        const totalData = this.oldExampelData.filter((items)=> items.groupId == '-')
+        const totalData = this.oldExampelData.filter((items)=> items.groupId == '-' && (!items.groupIdTemp))
         if(props == "ascending"){
           this.exampelData = [...notSortData,...sortData.sort((a,b)=>b[prop].toString().localeCompare(a[prop].toString())),...totalData]
         }else if(props == "descending"){
@@ -391,7 +391,19 @@ export default{
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
-          this.exampelData = [...this.exampelData,...subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)]
+          const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)
+          this.exampelData = this.exampelData.reduce((accu, curr, index) => {
+            if (index === this.exampelData.length - 1) {
+              return [...accu, curr, ...subtotalList]
+            }
+            if (curr.groupId && curr.groupId !== this.exampelData[index + 1].groupId) {
+              // eslint-disable-next-line no-undef
+              const subtotalItem = _.remove(subtotalList, function(n) {  return n.groupIdTemp == curr.groupId })
+              return [...accu, curr, ...subtotalItem]
+            }
+            return [...accu, curr]
+          },[])
+          console.log('this.exampelData', this.exampelData)
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
         }
       }).catch(err=>{
@@ -537,11 +549,12 @@ export default{
     .search{
       &>div{
         float: left;
-        margin-right: 20px;
+        margin-right: 10px;
         display: flex;
         justify-content: space-between;
         span{
-          width: 160px;
+          // width: 160px;
+          margin-right: 20px;
           line-height: 30px;
           font-size: 14px;
         }

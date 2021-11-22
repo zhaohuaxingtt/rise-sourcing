@@ -584,7 +584,7 @@ export function downloadBnkFile(ids) {
 // 获取报价单汇率
 export function searchQuotationExchange(params) {
   return requst({
-    url: `/part/search-quotation-exchange/${ params.quotationId }`,
+    url: `/part/search-quotation-pro-exchange/${ params.quotationId }`,
     method: 'GET'
   })
 }

@@ -28,7 +28,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 360
+      default: 460
     },
     top: {
       type: String,
@@ -94,9 +94,9 @@ export default {
                   count += value.percent
                   this.p = this.p + 1
                   if (currentNum <= 50) {
-                    res = `{pieIcon${this.colors.indexOf(value.color)}|} ` + `{text|${value.data.name + ('  ' + value.percent + '%')}}`
+                    res = `{pieIcon${this.colors.indexOf(value.color)}|} ` + `{text|${value.data.name + ('  \n' + value.percent + '%')}}`
                   } else {
-                    res = value.data.name + ('  ' + value.percent + '%') + `   {pieIcon${this.colors.indexOf(value.color)}|}`
+                    res = value.data.name + ('  \n' + value.percent + '%') + `   {pieIcon${this.colors.indexOf(value.color)}|}`
                   }
                   renderArr.push(value.data.name)
                   return res
@@ -104,7 +104,7 @@ export default {
               },
               rich: {
                 text: {
-                  width: 130,
+                  width: 80,
                   align: 'right',
                   fontSize: '12px',
                 },
