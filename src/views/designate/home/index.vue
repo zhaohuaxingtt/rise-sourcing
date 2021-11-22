@@ -182,6 +182,8 @@
 
     <!-- sel确认弹窗 -->
     <selDialog :visible.sync="selDialogVisibal" :nomiAppId="selNominateId" :readOnly="false" />
+    <!-- 撤回弹窗 -->
+    <revokeDialog :visible.sync="showRevokeDialog" @confirm="handleBatchRevoke(...arguments, false)" ref="revokeForm" />
     
   </iPage>
 </template>
@@ -207,6 +209,7 @@ import {
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
 import selDialog from './components/selDialog'
+import revokeDialog from './components/revokeDialog'
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -234,7 +237,8 @@ export default {
       // 定点管理员上传sel状态待确认的sel附件列表
       selNominateId: '',
       selDialogVisibal: false,
-      tranformRecallLoading: false
+      tranformRecallLoading: false,
+      showRevokeDialog: false
     }
   },
   components: {
@@ -246,6 +250,7 @@ export default {
     search,
     tablelist,
     selDialog,
+    revokeDialog,
     icon
   },
   mounted() {
@@ -311,23 +316,30 @@ export default {
       this.selectTableData = data
     },
     // 批量撤回
-    async handleBatchRevoke() {
-      if (!this.selectTableData.length) {
+    async handleBatchRevoke(revokeReason = '', validation = true) {
+      if (validation && !this.selectTableData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+        return
+      }
+      if (validation){
+        this.showRevokeDialog = true
         return
       }
       const confirmInfo = await this.$confirm(this.language('revokeSure','您确定要执行撤回操作吗？'))
       if (confirmInfo !== 'confirm') return
       const idList = this.selectTableData.map(o => Number(o.id))
       try {
-        const res = await batchRevoke({nominateIdArr: idList})
+        this.$refs['revokeForm'].loading = true
+        const res = await batchRevoke({recallReason: revokeReason, nominateIdArr: idList})
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
+        this.$refs['revokeForm'].close()
       } catch (e) {
+        this.$refs['revokeForm'].close()
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       }
     },
