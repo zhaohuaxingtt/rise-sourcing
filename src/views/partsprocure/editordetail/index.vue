@@ -41,14 +41,14 @@
 					<!---出现此按钮。------------------------------------------------------------------->
 					<iButton v-permission.auto='PARTSPROCURE_EDITORDETAIL_WHXGGYS|维护现供供应商' v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
 					<iButton @click="start" v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP|启动项目"
-						v-if="detailData.status == '16'">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
+						v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END')">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
 					<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_CREATEPARTSFSNRNUMBER|生成零件采购项目号"></creatFsGsNr>
 					<cancelProject :backItems='[detailData]'  @refresh="getDatailFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_CANCELPARTSFSNRNUMBER|取消零件采购项目"></cancelProject>
 					<!-- <iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
 						{{ language("LK_CHAIFENCAIGOUGONGCHANG",'拆分采购工厂') }}
 					</iButton> -->
 					<iButton @click="openDiologClose" v-permission.auto="PARTSPROCURE_EDITORDETAIL_ENDPROJECT|结束项目"
-						v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
+						v-if="detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END')">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
 					<iButton :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
 					</iButton>
 					<!-- <iButton @click="back">{{ language("LK_FANHUI",'返回') }}</iButton> -->
@@ -227,7 +227,7 @@
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT|LINIE部门" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
 							<!-- detailData. -->
-							<iSelect @change="changeUserDept" v-model="linieDept" v-if="!disabled">
+							<iSelect @change="changeUserDept" v-model="linieDept" v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))">
 								<el-option :value="item.code" :label="item.deptNum"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
@@ -235,7 +235,7 @@
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINE|LINIE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门' v-if="!disabled">
+							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门' v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))">
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
