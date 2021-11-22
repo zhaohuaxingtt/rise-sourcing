@@ -532,10 +532,13 @@ export default {
   },
   created() {
     this.id = this.$route.params.id;
-    this.findHallQuotation({
-      biddingId: this.id,
-      supplierCode: this.supplierCode,
-    });
+    let param;
+    if( this.supplierCode === '11135'){
+      param= { biddingId: this.id};
+    } else {
+      param = { biddingId: this.id, supplierCode: this.supplierCode };
+    }
+    this.findHallQuotation(param);
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -703,20 +706,20 @@ export default {
     minPrice() {
       let unit = this.currencyMultiples(this.ruleForm?.currencyMultiple) || "";
       return this.amplitudeList.minPrice
-        ? this.dividedBeiShu(this.amplitudeList.minPrice) + unit
+        ? this.dividedBeiShu(this.amplitudeList?.minPrice) + unit
         : "";
     },
     maxPrice() {
       let unit = this.currencyMultiples(this.ruleForm?.currencyMultiple) || "";
       return this.amplitudeList.maxPrice
-        ? this.dividedBeiShu(this.amplitudeList.maxPrice) + unit
+        ? this.dividedBeiShu(this.amplitudeList?.maxPrice) + unit
         : "";
     },
     // 幅度
     amplitude() {
       let { manualBiddingType, totalPrices, biddingType, roundType } =
         this.ruleForm;
-      let { maxPrice, minPrice, finPrice } = this.amplitudeList;
+      let { maxPrice, minPrice, finPrice } = this?.amplitudeList;
       let amp;
       if (manualBiddingType == "02" && biddingType == "01") {
         amp = (
@@ -916,7 +919,10 @@ export default {
      return Big(val).times(this.beishu).toNumber()
     },
     dividedBeiShu(val){
-     return Big(val).div(this.beishu).toNumber()
+      if(val){
+        return Big(val).div(this.beishu).toNumber()
+      }
+      return ''
     },
     reset() {
       this.id = this.$route.params.id;
@@ -950,7 +956,13 @@ export default {
     },
     // 重置
     async handleSearchReset() {
-      let param = { biddingId: this.id, supplierCode: this.supplierCode };
+      // 采购员
+      let param
+      if( this.supplierCode === '11135'){
+         param = { biddingId: this.id};
+      } else {
+         param = { biddingId: this.id, supplierCode: this.supplierCode };
+      }
       this.$emit("reload");
       await this.query(param);
       await this.getSupplierRank(param);
@@ -1058,6 +1070,7 @@ export default {
         const r = await getSupplierRank(e).catch(err => {
           console.log(err)
         });
+        this.$emit('ranksData',r)
         this.ranks = {
           ...r,
         };

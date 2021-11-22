@@ -10,6 +10,7 @@
 import router from './router'
 import App from './App.vue'
 import store from './store'
+import echarts from './utils/echarts'
 import '../public/theme/index.css'
 import '@/assets/style/global/index.scss'
 import './permission'
@@ -28,6 +29,8 @@ Promise.all([
 })
 
 Vue.component(iTable.name, iTable)
+
+Vue.prototype.$echarts = echarts();
 
 new Vue({
   router,

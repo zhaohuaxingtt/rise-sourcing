@@ -42,7 +42,7 @@ export const searchList = [
   {value: 'applyType', label: '申请类型', type: 'selectDict', i18n_label: 'SHENQINGLEIXING',selectOption: 'sign_page_apply_type',permission: 'MODELTARGETPRICE_APPROVAL_APPLYTYPE|模具目标价管理-目标价审批-申请类型'},
   {value: 'applyDate', label: '申请日期起止', type: 'dateRange', i18n_label: 'SHENQINGRIQIQIZHI', permission: 'MODELTARGETPRICE_APPROVAL_APPLYDATE|模具目标价管理-目标价审批-申请日期起止'},
   {value: 'toolingPriceIsZeno', label: '模具费为0的RFQ', type: 'selectDict', i18n_label: 'MOJUFEIWEIODERFQ',selectOption:'target_price_page_tooling_charge_is_zero', permission: 'MODELTARGETPRICE_APPROVAL_MODELFEEZERO|模具目标价管理-目标价审批-模具费为0的RFQ'},
-  {value: 'showSelf', label: '显示自己', type: 'select', hideAll: true, selectOption: "showSelfOptions", i18n_label: 'XIANSHIZIJI',permission: 'MODELTARGETPRICE_APPROVAL_SHOWSELF|模具目标价管理-目标价审批-显示自己'},
+  {value: 'showSelf', label: '显示自己', type: 'select', selectOption: "showSelfOptions", i18n_label: 'XIANSHIZIJI',permission: 'MODELTARGETPRICE_APPROVAL_SHOWSELF|模具目标价管理-目标价审批-显示自己'},
 ]
 
 export const detailList = [

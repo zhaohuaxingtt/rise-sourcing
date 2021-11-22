@@ -337,6 +337,8 @@ export default {
         textStyle: {
           color: "black", //更改坐标轴文字颜色
           fontSize: "1rem", //更改坐标轴文字大小
+          width: window.innerWidth/7 - 60,
+          overflow: 'break'
         },
       };
 
@@ -396,6 +398,8 @@ export default {
           textStyle: {
             fontSize: "1rem",
             padding: 10,
+            width: window.innerWidth/7 - 60,
+            overflow: 'break'
           },
           itemWidth: 40,
           itemGap: 20,
@@ -421,6 +425,8 @@ export default {
             textStyle: {
               color: "black", //更改坐标轴文字颜色
               fontSize: ".8rem", //更改坐标轴文字大小
+              width: window.innerWidth/7 - 60,
+              overflow: 'break'
             },
             formatter: {
               hour: "{hour|{HH}:{mm}}",
@@ -490,6 +496,8 @@ export default {
         textStyle: {
           color: "black", //更改坐标轴文字颜色
           fontSize: "1rem", //更改坐标轴文字大小
+          width: window.innerWidth/7 - 60,
+          overflow: 'break'
         },
       };
 
@@ -548,7 +556,8 @@ export default {
           orient: "vertical",
           textStyle: {
             fontSize: "1rem",
-            padding: 10,
+            width: window.innerWidth/7 - 60,
+            overflow: 'break'
           },
           itemWidth: 40,
           itemGap: 20,
@@ -576,6 +585,8 @@ export default {
             textStyle: {
               color: "black", //更改坐标轴文字颜色
               fontSize: ".8rem", //更改坐标轴文字大小
+              width: window.innerWidth/7 - 60,
+              overflow: 'break'
             },
             formatter: {
               hour: "{hour|{HH}:{mm}}",

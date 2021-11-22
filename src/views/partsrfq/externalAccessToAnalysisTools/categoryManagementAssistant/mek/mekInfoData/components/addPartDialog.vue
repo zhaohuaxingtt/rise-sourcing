@@ -2,30 +2,50 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-05-21 10:18:28
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
-  <iDialog :title="language('TIANJIALINGJIAN','添加零件')" :visible.sync="value" width="60%" @close="clearDiolog">
-    <el-form label-width="60px" label-position="top">
-      <el-row type="flex" align='bottom' justify="space-between">
-        <el-col :span="5">
+  <iDialog :title="language('TIANJIALINGJIAN','添加零件')"
+           :visible.sync="value"
+           width="70%"
+           @close="clearDiolog">
+    <el-form label-width="60px"
+             label-position="top">
+      <el-row type="flex"
+              align='bottom'
+              justify="space-between">
+        <el-col :span="4">
           <el-form-item :label="language('LINGJIANHAO','零件号')">
-            <iInput :placeholder="$t('LK_QINGXUANZE')" v-model="form.partNum">
+            <iInput :placeholder="$t('LK_QINGXUANZE')"
+                    v-model="form.partNum">
             </iInput>
           </el-form-item>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
           <el-form-item :label="language('RSHAO','FS号')">
-            <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.fsNum"></iInput>
+            <iInput :placeholder="$t('LK_QINGSHURU')"
+                    v-model="form.fsNum"></iInput>
           </el-form-item>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
           <el-form-item :label="language('RFQHAO','RFQ号')">
-            <iInput :placeholder="$t('LK_QINGSHURU')" v-model="form.rfq"></iInput>
+            <iInput :placeholder="$t('LK_QINGSHURU')"
+                    v-model="form.rfq"></iInput>
           </el-form-item>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="4">
+          <el-form-item :label="language('XIANGMULEIXING','项目类型')">
+            <el-select v-model="form.project"
+                       :placeholder="language('QINGXUANZE','请选择')">
+              <el-option label="新车型项目"
+                         value="1"></el-option>
+              <el-option label="批量项目"
+                         value="2"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
           <el-form-item>
             <iButton @click="getTableList">{{$t('LK_QUEREN')}}</iButton>
             <iButton @click="handleSearchReset">{{$t('LK_ZHONGZHI')}}</iButton>
@@ -33,9 +53,17 @@
         </el-col>
       </el-row>
     </el-form>
-    <tableList height="350px" class="margin-top20" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' :index="true" @handleSelectionChange="handleSelectionChange">
+    <tableList height="350px"
+               class="margin-top20"
+               :tableData="tableListData"
+               :tableTitle="tableTitle"
+               :tableLoading="tableLoading"
+               :selection='true'
+               :index="true"
+               @handleSelectionChange="handleSelectionChange">
     </tableList>
-    <div slot="footer" class="dialog-footer">
+    <div slot="footer"
+         class="dialog-footer">
       <iButton @click="handleAdd">{{language('TIANJIA','添加')}}</iButton>
     </div>
   </iDialog>
@@ -45,7 +73,7 @@
 import { iInput, iButton, iDialog, icon } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addPartTableTitle } from "./data.js";
-import { partNumList, infoAdd } from "@/api/partsrfq/mek/index.js";
+import { getPartMessage, infoAdd } from "@/api/partsrfq/mek/index.js";
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 
 export default {
@@ -56,7 +84,7 @@ export default {
   props: {
     value: { type: Boolean },
   },
-  data() {
+  data () {
     return {
       tableListData: [],
       tableTitle: addPartTableTitle,
@@ -66,6 +94,7 @@ export default {
         fsNum: '',
         partNum: '',
         rfq: this.$store.state.rfqId || '',
+        project: '1'
       },
       formGoup: {
         materialGroupList: [],
@@ -73,14 +102,14 @@ export default {
       fieldList: []
     }
   },
-  created() {
+  created () {
     this.getTableList()
   },
   methods: {
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selectTableData = val
     },
-    async handleAdd() {
+    async handleAdd () {
       const pms = {
         list: this.selectTableData,
         mekId: this.$route.query.chemeId
@@ -91,18 +120,19 @@ export default {
         this.$parent.handleAdded()
       })
     },
-    clearDiolog() {
+    clearDiolog () {
       this.$emit('input', false);
     },
-    handleSearchReset() {
+    handleSearchReset () {
       this.form = {
         fsNum: '',
         partNum: '',
         rfq: '',
+        project: ""
       }
       this.getTableList()
     },
-    async getTableList() {
+    async getTableList () {
       try {
         this.tableLoading = true
         const pms = {
@@ -110,7 +140,7 @@ export default {
           categoryCode: this.$route.query.categoryCode || '',
           modelIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
         }
-        const res = await partNumList(pms)
+        const res = await getPartMessage(pms)
         this.tableListData = res.data
         this.tableLoading = false
       } catch (error) {

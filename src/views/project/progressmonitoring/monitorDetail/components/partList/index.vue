@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-18 10:55:04
+ * @LastEditTime: 2021-11-19 10:18:16
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -10,8 +10,8 @@
   <div class="partListView" v-loading="loading"> 
     <div class="partListView-title"> 
       <div class="partListView-title-span"> 
-        <!-- <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> 
-        <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>  -->
+        <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> 
+        <!-- <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>  -->
       </div> 
       <div> 
         <iButton @click="showDelayResaons" :loading="saveloading" v-if="partStatus != 1">{{language('CHAKANYANWUYUANYIN', '查看延误原因')}}</iButton> 
@@ -457,12 +457,13 @@ export default {
       })
     },
     handleCheckAllChange(val) {
-      this.parts = this.parts.map(item => {
-        return {
-          ...item,
-          isChecked: val
-        }
-      })
+      this.selectPart = val ? [...this.list] : []
+      // this.parts = this.parts.map(item => {
+      //   return {
+      //     ...item,
+      //     isChecked: val
+      //   }
+      // })
       this.isIndeterminate = false;
     },
     handleCheckboxChange(value, pro) {
@@ -473,13 +474,15 @@ export default {
         this.selectPart = this.selectPart.filter(item => item.id != pro.id)
       }
       // console.log(this.selectPart)
-      // let checkedCount = this.list.filter(item => item.isChecked).length;
-      // this.checkAll = checkedCount === this.list.length;
-      // this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;
+      let checkedCount = this.selectPart.length;
+      this.checkAll = checkedCount === this.list.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length;
     },
     gotoSechedule() {
+      const partschedulingFilterList = this.selectPart.map(item => item.partNum).join(',')
+      localStorage.setItem('partschedulingFilterList', partschedulingFilterList)
       // const selectPart = this.list.filter(item => item.isChecked).map(item => item.partNum)
-      const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/partscheduling`, query: {partNum: this.selectPart.map(item => item.partNum).join(','),carProject:this.cartypeProId, carProjectName: this.carProjectName}}) 
+      const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/partscheduling`, query: {type: '1',carProject:this.cartypeProId, carProjectName: this.carProjectName}}) 
       window.open(router.href,'_blank') 
     },
   }

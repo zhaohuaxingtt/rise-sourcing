@@ -187,6 +187,8 @@ export default{
         Object.keys(this.form).forEach(element => {
           this.form[element] = ''
         });
+
+        this.form.showSelf = true
         this.sure()
       },
       downloadTemplate(){

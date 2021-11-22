@@ -285,6 +285,7 @@ export default {
           supplerId: this.supplerId,
         };
       }
+      this.$emit('hanldeAgreeOrReject',param)
       saveSupplierNotification(param).then((res) => {
         // let rejectTerms = false;
         // if (this.type === "01" && !bol) {
@@ -293,16 +294,16 @@ export default {
         if (res.code === 200) {
           iMessage.success(res.message);
           if (this.$route.name === "bidNoticeDoc") {
-            if(bol) {
-              this.$router.push({
-                name: 'bidNoticeDocBidding',
-                params: this.$route.params,
-                query: this.$route.query,
-              })
-            } else {
-              window.close();
-            }
-            return;
+            // if(bol) {
+            //   this.$router.push({
+            //     name: 'bidNoticeDocBidding',
+            //     params: this.$route.params,
+            //     query: this.$route.query,
+            //   })
+            // } else {
+            //   window.close();
+            // }
+            // return;
           } else if (this.$route.name === "bidNoticeDocTender") {
             this.getView();
           } else if(this.$route.name === "bidNoticeDocBidding") {
@@ -320,7 +321,7 @@ export default {
       //   this.$router.go(-1);
       // } else {
       if (this.$route.name === "bidNoticeDoc") {
-        window.close();
+        // window.close();
       } else if(this.$route.name === "bidNoticeDocBidding") {
         this.gotoSupplier();
       }

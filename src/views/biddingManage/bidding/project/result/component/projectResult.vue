@@ -28,7 +28,19 @@
           :selection="false"
         >
           <template slot="currentSort" slot-scope="scope">
-            <div>
+            <div v-if="role === 'supplier' && form.resultOpenForm == '02'"
+              :class="
+                ranks.trafficLight == '01'
+                  ? 'green-ball'
+                  : ranks.trafficLight == '02'
+                  ? 'yellow-ball'
+                  : ranks.trafficLight == '03'
+                  ? 'red-ball'
+                  : ''
+              "
+            >
+            </div>
+            <div v-else>
               {{
                 form.roundType === "05" && form.manualBiddingType === "02"
                   ? 1
@@ -121,6 +133,9 @@ export default {
       type: String,
     },
     form: {
+      type: Object,
+    },
+    ranks: {
       type: Object,
     },
     isSupplier: Boolean,
@@ -294,6 +309,28 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.red-ball {
+  background-color: #D10000;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 100%;
+  margin: 0 auto;
+}
+.green-ball {
+  background-color: #4CAF50;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 100%;
+  margin: 0 auto;
+}
+.yellow-ball {
+  background-color: #FFC100;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 100%;
+  margin: 0 auto;
+}
+
 .form-top {
   display: flex;
   align-items: center;
