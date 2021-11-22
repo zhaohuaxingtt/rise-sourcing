@@ -32,6 +32,7 @@
         :tableTitle="tableTitle"
         :tableLoading="loading"
         :cellClassName="cellClass"
+        :selectable="selectable"
         @handleSelectionChange="handleSelectionChange">
         <template #sendKmFlag="scope">
           <span>{{ scope.row.cbdLevelCode == "3" ? scope.row.sendKmFlag : "" }}</span>
@@ -201,12 +202,26 @@ export default {
       .catch(() => this.recallLoading = false)
     },
     cellClass(row) {
-      if(!row.row.isQuotationCbd || row.row.isQuotationCbd === "否"){
-        // l1 l2 层级只有当heavyItem 中包含 buc才会限制
-        if(row.row.cbdLevelCode != "3" && row.row.heavyItem && row.row.heavyItem.indexOf('BUC')> -1){
+      if (row.column.type === "selection") {
+        if(!row.row.isQuotationCbd || row.row.isQuotationCbd === "否") {
           return "hideCheckbox"
+        } else {
+          // l1 l2 层级只有当heavyItem 中包含 buc才会限制
+          if(row.row.cbdLevelCode != "3" && (row.row.heavyItem && row.row.heavyItem.indexOf('BUC')> -1)){
+            return "hideCheckbox"
+          }
         }
       }
+    },
+    selectable(row) {
+      if(!row.isQuotationCbd || row.isQuotationCbd === "否") {
+          return false
+        } else {
+          // l1 l2 层级只有当heavyItem 中包含 buc才会限制
+          if(row.cbdLevelCode != "3" && (row.heavyItem && row.heavyItem.indexOf('BUC')> -1)){
+            return false
+          }
+        }
     }
   }
 };
