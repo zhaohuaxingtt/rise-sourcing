@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-10 11:40:25
+ * @LastEditTime: 2021-11-22 15:40:24
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -34,15 +34,15 @@
       <template #operation="scope">
         <template v-if="applyType === '1'">
           <!-----------类型为再申请-------------------------->
-          <span @click.stop="$set(scope.row, 'isEdit', true)" v-if="scope.row.businessType == '2' && !scope.row.isEdit" class="cursor link">再申请</span>
-          <span @click.stop="handleCancel(scope.row, 'expectedTargetPrice')" v-if="scope.row.businessType == '2' && scope.row.isEdit" class="cursor link">取消</span>
+          <span @click.stop="$set(scope.row, 'isEdit', true)" v-if="scope.row.businessType == '2' && !scope.row.isEdit" class="cursor link">{{language('ZAISHENQING','再申请')}}</span>
+          <span @click.stop="handleCancel(scope.row, 'expectedTargetPrice')" v-if="scope.row.businessType == '2' && scope.row.isEdit" class="cursor link">{{language('QUXIAO','取消')}}</span>
           <!-----------类型为新申请-------------------------->
           <span v-else ></span>
         </template>
         <template v-else-if="applyType === '2'">
           <!-----------已有目标价，不在这次申请列表里-------------------------->
-          <span @click.stop="$set(scope.row, 'isEdit', true)" v-if="!scope.row.expectedTargetPrice && !scope.row.isEdit" class="cursor link">修改</span>
-          <span @click.stop="handleCancel(scope.row, 'targetPrice')" v-if="!scope.row.expectedTargetPrice && scope.row.isEdit" class="cursor link">取消</span>
+          <span @click.stop="$set(scope.row, 'isEdit', true)" v-if="!scope.row.expectedTargetPrice && !scope.row.isEdit" class="cursor link">{{language('XIUGAI','修改')}}</span>
+          <span @click.stop="handleCancel(scope.row, 'targetPrice')" v-if="!scope.row.expectedTargetPrice && scope.row.isEdit" class="cursor link">{{language('QUXIAO','取消')}}</span>
           <!-----------当前申请目标价的零件-------------------------->
           <span v-else ></span>
         </template>
