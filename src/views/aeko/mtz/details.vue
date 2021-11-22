@@ -290,6 +290,7 @@ export default {
           this.tableListData = (res.data && res.data.records || []).map(o => {
             o.newStartDate = o.newStartDate ? window.moment(o.newStartDate).format('YYYY-MM-DD') : ''
             o.newEndDate = o.newEndDate ? window.moment(o.newEndDate).format('YYYY-MM-DD') : ''
+            o.pid = Math.floor(Math.random() * 10000000)
             return o
           })
           this.page.totalCount = res.data.total
@@ -341,15 +342,19 @@ export default {
         iMessage.error(this.language('DUMPLIDATEDPARDWARNING', '新零件号和原零件号一致，不可删除/新增，请在现有的项目上进行编辑'))
         return
       }
-      const copyData = window._.cloneDeep(this.selectTableData).map(o => {
+      let lineIndex = this.tableListData.findIndex(o => o.pid ===this.selectTableData[0].pid )
+      const copyData = window._.cloneDeep(this.selectTableData).map((o, index) => {
         o.id = ''
+        o.pid = Math.floor(Math.random() * 10000000)
         o.fromMtzPriceId = o.mtzPriceId ? o.mtzPriceId : o.fromMtzPriceId
         o.mtzPriceId = ''
         o.isNew = true
+        this.tableListData.splice(lineIndex+index, 0, o)
         return o
       })
       this.modifyCopyDataLength(copyData.length)
-      this.tableListData = this.tableListData.concat(copyData)
+      // console.log('this.tableListData', this.tableListData)
+      // this.tableListData = this.tableListData.concat(copyData)
     },
     /**
      * @description: 重置
