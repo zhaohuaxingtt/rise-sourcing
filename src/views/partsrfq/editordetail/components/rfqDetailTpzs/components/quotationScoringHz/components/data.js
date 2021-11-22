@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-18 17:00:18
+ * @LastEditTime: 2021-11-22 17:48:02
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -101,13 +101,13 @@ export const gstableTileXh = function(index){
  * @param {*}
  * @return {*}
  */
-export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
 /**
  * @description: gs横轴默认配置项
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['groupName','partNo','partName','currentAPrice','currentBPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving'] //默认需要显示的数据
+export const whiteListGs = ['groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -361,6 +361,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
         groupArr = groupArr.map(item => {
           return {
             ...item,
+            groupIdTemp: item.groupId,
             groupId: '-'
           }
         })
@@ -384,7 +385,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupName === item.groupName ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0
+                        [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0
                       }
                     })
                   }else{
@@ -392,7 +393,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupName === item.groupName && removeKeysNumber(key) !== 'tooling' ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                        [key]: element.groupId === item.groupIdTemp && removeKeysNumber(key) !== 'tooling' ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
                       }
                     })
                   }
