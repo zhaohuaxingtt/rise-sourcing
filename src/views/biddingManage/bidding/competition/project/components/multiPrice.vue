@@ -1025,6 +1025,14 @@ export default {
       if(new Set(productCode).size !== this.ruleForm.biddingProducts.length){
         return this.$message.error(this.language('BIDDING_CPLJHBNCF',"产品零件号不能重复！"));
       }
+      let optionObj = {}
+      let optionArr = []
+      this.modelsOption.forEach(item => {
+        if(!optionObj[item.name]) {
+          optionObj[item.name] = 1
+          optionArr.push(item)
+        }
+      })
       let modelList = [];
       this.ruleForm.models.forEach((item) => {
         this.modelsOption.forEach((option) => {
@@ -1182,7 +1190,7 @@ export default {
         biddingStatus: data.biddingStatus,
       };
       // 车型
-      const paras = data?.models.map(item => {
+      const paras = data.models?.map(item => {
         return {
           ...item,
           code:item.modelCode,
@@ -1190,12 +1198,33 @@ export default {
         }
       })
       this.modelsOption.push(...paras)
-      let optionData = {}
-      this.modelsOption = this.modelsOption.reduce((pre,cur) => {
-        optionData[cur.code] ? "" : optionData[cur.code] = true && pre.push(cur);
-        return pre;
-      },[])
-
+      let optionObj = {}
+      let optionArr = []
+      this.modelsOption.forEach(item => {
+        if(!optionObj[item.name]) {
+          optionObj[item.name] = 1
+          optionArr.push(item)
+        }
+      })
+      this.modelsOption = [...optionArr]
+      // 车型项目
+      const projectParas = data?.modelProjects.map(item => {
+        return {
+          ...item,
+          code:item.projectCode,
+          name:item.project
+        }
+      })
+      this.modelProjectsOption.push(...projectParas)
+      let projectOptionObj = {}
+      let projectOptionArr = []
+      this.modelProjectsOption.forEach(item => {
+        if (!projectOptionObj[item.name]) {
+          projectOptionObj[item.name] = 1
+          projectOptionArr.push(item)
+        }
+      })
+      this.modelProjectsOption = [...projectOptionArr]
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {

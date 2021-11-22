@@ -29,11 +29,12 @@ export const projectTableTitle = [
   {
     prop: "rfqCode",
     label: language('BIDDING_RFQBIANHAO','RFQ编号'),
+    width: 100,
   },
   {
     prop: "projectName",
     label: language('BIDDING_XIANGMUMINGCHENG','项目名称'),
-    width: 150,
+    width: 130,
     customRender: (h, scope) => {
       return <span>{scope.row.projectName || scope.row.rfqName}</span>;
     },
@@ -43,6 +44,13 @@ export const projectTableTitle = [
     label: language('BIDDING_XIANGMULEIXING','项目类型'),
     customRender: (h, scope) => {
       return <span>{scope.row.projectType === '01' ? '正式' : scope.row.projectType === '02' ? '测试' : ''}</span>;
+    },
+  },
+  {
+    prop: "biddingStatus",
+    label: language('BIDDING_ZHUANGTAI','状态'),
+    customRender: (h, scope) => {
+      return <span>{status(scope.row.biddingStatus)}</span>;
     },
   },
   {
@@ -68,7 +76,7 @@ export const projectTableTitle = [
   {
     prop: "biddingBeginTime,biddingEndTime,roundType,quoteType",
     label: language('BIDDING_JINGJIAQIZHIRIQI','竞价起止日期'),
-    width: 200,
+    width: 170,
     customRender: (h, scope) => {
       return <span>{scope.row.quoteType === '01' ? '' : scope.row.biddingBeginTime?.substring(0, 16).replace('T', ' ')}
         <br />
@@ -81,7 +89,7 @@ export const projectTableTitle = [
   {
     prop: "pricingDeadline",
     label: language('BIDDING_BAOJIAJIEZHIRIQI','报价截止日期'),
-    width: 200,
+    width: 170,
     customRender: (h, scope) => {
       return <span>{scope.row.pricingDeadline?.substring(0, 16).replace('T', ' ')}</span>;
     },
@@ -89,13 +97,26 @@ export const projectTableTitle = [
   {
     prop: "openTenderTime,roundType",
     label: language('BIDDING_KAIBIAOSHIJIAN','开标时间'),
-    width: 200,
+    width: 170,
     customRender: (h, scope) => {
       return <span>{scope.row.roundType === '03' ? '' : scope.row.openTenderTime?.substring(0, 16).replace('T', ' ')}</span>;
     },
   },
 ]
 
+function status(value){
+  return {
+    '01' : '草稿',
+    '02' : '待竞价',
+    '03' : '未开标',
+    '04' : '竞价中',
+    '05' : '已开标',
+    '06' : '已结束',
+    '07' : '已流标',
+    '08' : '已作废',
+    '09' : '已取消',
+  }[value]
+}
 // 项目类型
 export const projectType = [
   {

@@ -1363,10 +1363,6 @@ export default {
         .catch((err) => {
           this.tableLoading = false;
         });
-
-        this.supplierTime = setTimeout(() => {
-          this.handlefirstSupplier()
-        },1500)
       }
     },
     handleSizeChange(val) {
@@ -1394,6 +1390,7 @@ export default {
               telephone:supplier.telephone || this.userListData[supplier.supplierId]?.[0]?.phoneM
             };
           })
+          this.handlefirstSupplier()
         }
       }
       // CBD
@@ -1421,14 +1418,18 @@ export default {
     },
     handlefirstSupplier(){
       if(!this.ruleForm.firstSaveSupplierFlag) {
+        const flag = this.ruleForm.suppliers.every(item => item.contactName && item.email)
         const formData = this.ruleForm;
         console.log('fsafawf',formData.suppliers)
-        saveInquiryBidding({
+        if (flag) {
+          saveInquiryBidding({
           ...this.orgRuleForm,
           suppliers: formData.suppliers
           }).then(res => {
             console.log('object成功了')
-        })
+          })
+        }
+        
       }
     },
     // 表格选中值集
@@ -1502,7 +1503,6 @@ export default {
   },
   destroyed(){
     clearInterval(this.time)
-    clearTimeout(this.supplierTime)
   }
 };
 </script>
