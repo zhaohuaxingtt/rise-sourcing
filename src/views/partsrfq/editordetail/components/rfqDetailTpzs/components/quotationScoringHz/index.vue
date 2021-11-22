@@ -537,11 +537,12 @@ export default{
     .search{
       &>div{
         float: left;
-        margin-right: 20px;
+        margin-right: 10px;
         display: flex;
         justify-content: space-between;
         span{
-          width: 160px;
+          // width: 160px;
+          margin-right: 20px;
           line-height: 30px;
           font-size: 14px;
         }

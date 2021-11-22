@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-11-18 19:49:10
+ * @LastEditTime: 2021-11-22 19:33:43
  * @LastEditors:  
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
@@ -50,7 +50,7 @@
           <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.linieDept" @change="handleChangeByLinieDept">
             <el-option
               :value="item.code"
-              :label="item.id"
+              :label="item.deptNum"
               v-for="(item, index) in fromGroup.LINIE_DEPT"
               :key="index"
             ></el-option>

@@ -1,6 +1,13 @@
+/*
+ * @Description: 
+ * @Author: tyra liu
+ * @Date: 2021-11-08 14:11:06
+ * @LastEditTime: 2021-11-22 20:08:45
+ * @LastEditors:  
+ */
 export const infos = [
   { props: 'categoryCode', label: '材料组编号', key: 'LK_CAILIAOZUBIANHAO' },
-  { props: 'deptNames', label: '材料组LINIE部门', key: 'LK_CAILIAOZULINIEBUMEN' },
+  { props: 'deptCodes', label: '材料组LINIE部门', key: 'LK_CAILIAOZULINIEBUMEN' },
   { props: 'categoryNameZh', label: '材料组名称（中）', key: 'LK_CAILIAOZUMINGCHENGZHONG' },
   { props: 'categoryNameDe', label: '材料组名称（德）', key: 'LK_CAILIAOZUMINGCHENGDE' },
   { props: 'stuffCode', label: '工艺号', key: 'LK_GONGYIHAO' }
