@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-22 14:18:23
+ * @LastEditTime: 2021-11-22 17:45:26
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -101,7 +101,7 @@ export const gstableTileXh = function(index){
  * @param {*}
  * @return {*}
  */
-export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
 /**
  * @description: gs横轴默认配置项
  * @param {*}
