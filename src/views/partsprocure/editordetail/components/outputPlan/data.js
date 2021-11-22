@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-08 14:11:06
- * @LastEditTime: 2021-11-17 11:11:21
+ * @LastEditTime: 2021-11-22 17:51:32
  * @LastEditors:  
  */
 export const outputPlanTableTitle = [
@@ -31,11 +31,11 @@ export const volumeTableTitle = [
 ]
 export const carTitle = [
   {props: 'id', name: '配置ID', key: "PEIZHIID", tooltip: true},
-  {props: 'number', name: '车型编号', key: "CHEXINGBIANHAO", tooltip: true},
-  {props: 'type', name: '发动机类型', key: "FADONGJILEIXING", tooltip: true},
-  {props: 'model', name: '变速箱型号', key: "BIANSUXIANGXINGHAO", tooltip: true},
+  {props: 'cartypeCode', name: '车型编号', key: "CHEXINGBIANHAO", tooltip: true},
+  {props: 'engineType', name: '发动机类型', key: "FADONGJILEIXING", tooltip: true},
+  {props: 'gearboxName', name: '变速箱型号', key: "BIANSUXIANGXINGHAO", tooltip: true},
   {props: 'batteryCapacity  ', name: '电池容量', key: "DAINCHIRONGLIANG", tooltip: true},
-  {props: 'other', name: '其他配置', key: "QITAPEIZHI", tooltip: true},
-  {props: 'grade', name: '车型等级', key: "CHEXINGDENGJI", tooltip: true},
-  {props: 'proportion', name: '配置比例', key: " PEIZHIBILI", tooltip: true},
+  {props: 'otherConf', name: '其他配置', key: "QITAPEIZHI", tooltip: true},
+  {props: 'cartypeLevel', name: '车型等级', key: "CHEXINGDENGJI", tooltip: true},
+  {props: 'cartypeLevelRate', name: '配置比例', key: " PEIZHIBILI", tooltip: true},
 ]
