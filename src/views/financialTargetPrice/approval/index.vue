@@ -109,7 +109,7 @@ export default {
         linieName: '',
         buyerId: '',
         cfPriceType: '',
-        showSelf:''
+        showSelf: true
       },
       isEdit: false,
       tableLoading: false,
@@ -173,7 +173,7 @@ export default {
         linieName: '',
         buyerId: '',
         cfPriceType: '',
-         showSelf:''
+         showSelf: true
       }
     },
     getDict(type) {
