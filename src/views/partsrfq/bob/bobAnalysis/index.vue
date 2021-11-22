@@ -477,33 +477,32 @@ export default {
       chargeRetrieve(params)
         .then((allDatas) => {
           try {
-            var datas = allDatas;
-            if (params.viewType == 'all') {
-              chargeRetrieve({
-                  isDefault: true,
-                  viewType: 'rawGrouped',
-                  schemaId: this.schemaId,
-                  groupId: this.groupId
-                }).then((res) => {
-                  var groupedData = res;
-                  groupedData.element.forEach((grouped) => {
-                    var currentRoot = datas.element.filter((item) => {
-                      return item.title == grouped.title && item.code == grouped.code;
-                    })
-                    if (currentRoot.length > 0) {
-                      this.addGroupedToOrigin(currentRoot[0].child, grouped)
-                    }
-                  })
-                this.tableList = datas;
-              this.tableTitle = this.tableList.title.filter(item => item.title)
-              this.prepareData()
-              this.$nextTick(() => {
-                this.onDataLoading = false;
-                }).catch((err) => {
-                  iMessage.error(err.desZh)
-                })
-              })
-            }
+            // var datas = allDatas;
+            this.tableList = allDatas;
+            this.tableTitle = this.tableList.title.filter(item => item.title)
+            this.prepareData()
+            this.$nextTick(() => {
+              this.onDataLoading = false;
+            })
+            // if (params.viewType == 'all') {
+            //   chargeRetrieve({
+            //       isDefault: true,
+            //       viewType: 'rawGrouped',
+            //       schemaId: this.schemaId,
+            //       groupId: this.groupId
+            //     }).then((res) => {
+            //       var groupedData = res;
+            //       groupedData.element.forEach((grouped) => {
+            //         var currentRoot = datas.element.filter((item) => {
+            //           return item.title == grouped.title && item.code == grouped.code;
+            //         })
+            //         if (currentRoot.length > 0) {
+            //           this.addGroupedToOrigin(currentRoot[0].child, grouped)
+            //         }
+            //       })
+                
+            //   })
+            // }
           } catch (err) {
             console.log(err)
           }
