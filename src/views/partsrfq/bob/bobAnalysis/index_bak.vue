@@ -177,7 +177,6 @@ import {
   ungroupByList,
   ungroupByHeader,
 } from "./components/data.js";
-import datasetBarVue from '../../externalAccessToAnalysisTools/categoryManagementAssistant/mek/components/datasetBar.vue';
 
 export default {
   inheritAttrs: true,
@@ -273,6 +272,7 @@ export default {
         this.$nextTick(function () {
           this.expedsArr = []
           this.expedsArr1 = this.tableList.element.filter(i => i.title === val)
+          console.log(this.expedsArr1)
           this.recursion(this.expedsArr1)
         });
       }
@@ -287,6 +287,7 @@ export default {
       var displayed = this.tableListData.filter((item) => {
         return this.collapseItems.indexOf(item.id) < 0
       })
+      console.log(displayed)
 
       var realIndex = -1;
       displayed.forEach((item, index) => {
@@ -454,58 +455,20 @@ export default {
         }
       });
     },
-    addGroupedToOrigin(childs, grouped) {
-      if (grouped.child.length == 0) {
-        return;
-      }
-      childs.forEach((child, childIndex) => {
-        for (var key in child) {
-          if (key.indexOf("label#") >= 0) {
-            if (!Array.isArray(child[key])) {
-              child[key] = [child[key]]
-            }
-            child[key].unshift(grouped.child[childIndex][key])
-          }
-        }
-        if (child.child && child.child.length > 0) {
-          this.addGroupedToOrigin(child.child, grouped.child[childIndex])
-        }
-      })
-    },
-    chargeRetrieve (params) {
-
+    chargeRetrieve (params, callback) {
       chargeRetrieve(params)
-        .then((allDatas) => {
+        .then((res) => {
           try {
-            var datas = allDatas;
-
-            if (params.viewType == 'all') {
-              chargeRetrieve({
-                  isDefault: true,
-                  viewType: 'rawGrouped',
-                  schemaId: this.schemaId,
-                  groupId: this.groupId
-                }).then((res) => {
-                  var groupedData = res;
-                  groupedData.element.forEach((grouped) => {
-                    var currentRoot = datas.element.filter((item) => {
-                      return item.title == grouped.title && item.code == grouped.code;
-                    })
-                    if (currentRoot.length > 0) {
-                      this.addGroupedToOrigin(currentRoot[0].child, grouped)
-                    }
-                  })
-
-                  this.tableList = datas;
-                  this.tableTitle = this.tableList.title.filter(item => item.title)
-                  this.prepareData()
-                  this.$nextTick(() => {
-                    this.onDataLoading = false;
-                  })
-                }).catch((err) => {
-                  iMessage.error(err.desZh)
-                })
+            if (callback) {
+              callback(res)
+            } else {
+              this.tableList = res;
+              this.tableTitle = this.tableList.title.filter(item => item.title)
+              this.prepareData()
             }
+            this.$nextTick(() => {
+              this.onDataLoading = false;
+            })
           } catch (err) {
             console.log(err)
           }
@@ -783,6 +746,7 @@ export default {
         this.$message.error('请选择数据');
         return
       }
+      console.log(this.schemaId)
       this.groupToDialogVisible = true
       getGroupInfo({
         schemaId: this.schemaId,
@@ -911,8 +875,9 @@ export default {
         }
       }
 
+      // return;
       addComponentToGroup({
-        groupId: this.groupId,
+        groupId: this.selectGroupName.matchId,
         groupName: this.selectGroupName.groupName,
         roundDetailIdList: this.cbdSelectedList
       }).then(res => {
@@ -927,7 +892,6 @@ export default {
         this.groupToDialogVisible = false;
         this.onGroupingModel = false;
       })
-      return;
     },
     refreshGroupedId (groupedDatas, key, index) {
       var newId = this.createUuid()
@@ -999,7 +963,6 @@ export default {
     },
     down () {
       this.formUpdata.remark = this.remark
-      this.formUpdata.defaultBobOptions.replaceAll("▼","")
       this.$confirm('此次导出将默认保存当前”费用详情“界面数据。', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
