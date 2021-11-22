@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-22 15:40:24
+ * @LastEditTime: 2021-11-22 16:39:26
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -143,7 +143,12 @@ export default {
     handleSave() {
       this.$emit('changeSaveLoading', true)
       const params = {
-        maintainingVos: this.tableData,
+        maintainingVos: this.tableData.map(item => {
+          return {
+            ...item,
+            targetPrice: !item.targetPrice || item.targetPrice === '' ? 0 : item.targetPrice
+          }
+        }),
         taskIds: this.tableData.map(item => item.taskId)
       }
       saveMaintain(params).then(res => {
@@ -164,16 +169,21 @@ export default {
      * @return {*}
      */    
     handleSubmit() {
-      if (this.applyType === '1' && this.tableData.some(item => item.businessType == '1' && (!item.expectedTargetPrice || item.expectedTargetPrice === ''))) {
-        iMessage.warn(this.language('XINSHENGQINGMUBIAOJIADELINGJIANQIWANGMUBIAOJIABUNENGWEIKONG', '新申请目标价的零件期望目标价不能为空'))
-        return
-      }
+      // if (this.applyType === '1' && this.tableData.some(item => item.businessType == '1' && (!item.expectedTargetPrice || item.expectedTargetPrice === ''))) {
+      //   iMessage.warn(this.language('XINSHENGQINGMUBIAOJIADELINGJIANQIWANGMUBIAOJIABUNENGWEIKONG', '新申请目标价的零件期望目标价不能为空'))
+      //   return
+      // }
       this.$emit('changeSubmitLoading', true)
       if (this.applyType === '1') {
         const params = {
           remarks: this.remarks,
           rfqId: this.rfqId,
-          toolingTargetPrices: this.tableData
+          toolingTargetPrices: this.tableData.map(item => {
+            return {
+              ...item,
+              expectedTargetPrice: !item.expectedTargetPrice || item.expectedTargetPrice === '' ? 0 : item.expectedTargetPrice
+            }
+          })
         }
         submitApplyTargetPrice(params).then(res => {
           if (res?.result) {
@@ -187,7 +197,12 @@ export default {
         })
       } else {
         const params = {
-          maintainingVos: this.tableData,
+          maintainingVos: this.tableData.map(item => {
+            return {
+              ...item,
+              targetPrice: !item.targetPrice || item.targetPrice === '' ? 0 : item.targetPrice
+            }
+          }),
           taskIds: this.tableData.map(item => item.taskId)
         }
         submitMaintain(params).then(res => {
