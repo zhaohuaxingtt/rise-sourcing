@@ -1025,14 +1025,6 @@ export default {
       if(new Set(productCode).size !== this.ruleForm.biddingProducts.length){
         return this.$message.error(this.language('BIDDING_CPLJHBNCF',"产品零件号不能重复！"));
       }
-      let optionObj = {}
-      let optionArr = []
-      this.modelsOption.forEach(item => {
-        if(!optionObj[item.name]) {
-          optionObj[item.name] = 1
-          optionArr.push(item)
-        }
-      })
       let modelList = [];
       this.ruleForm.models.forEach((item) => {
         this.modelsOption.forEach((option) => {
