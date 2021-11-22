@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-18 20:18:57
+ * @LastEditTime: 2021-11-21 23:01:35
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -165,7 +165,7 @@
 								{{ detailData.statusDesc }}
 							</iText>
 						</iFormItem>
-						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test">
+						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
 							<iSelect v-model="detailData.carTypeProjectZh" v-if="!disabled">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
@@ -173,6 +173,15 @@
 								</el-option>
 							</iSelect>
 							<iText v-else>{{ getName(detailData.carTypeProjectZh, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
+						</iFormItem>
+						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPE|车型" :label="language('LK_CHEXING','车型') + ':'" name="test" v-if="isCarType">
+							<iSelect v-model="detailData.carTypeModel" v-if="!disabled ">
+								<!-- :disabled='carTypeCanselect()'  -->
+								<el-option :value="item.code" :label="item.name"
+									v-for="(item, index) in fromGroup.CAR_TYPE" :key="index">
+								</el-option>
+							</iSelect>
+							<iText v-else>{{ getName(detailData.carTypeModel, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
@@ -219,7 +228,7 @@
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT|LINIE部门" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
 							<!-- detailData. -->
 							<iSelect @change="changeUserDept" v-model="linieDept" v-if="!disabled">
-								<el-option :value="item.code" :label="item.id"
+								<el-option :value="item.code" :label="item.deptNum"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
 							<iText v-else>{{ Array.isArray(fromGroup.LINIE_DEPT) && fromGroup.LINIE_DEPT.find(item => item.code === detailData.linieDept) ? getName(detailData.linieDept, "code", fromGroup.LINIE_DEPT) : detailData.linieDeptName }}</iText>
@@ -412,6 +421,7 @@
 	import currentSupplier from './components/currentSupplier'
 	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
 	import {dictkey,checkFactory,purchasingLiline,purchasingDept} from "@/api/partsprocure/editordetail";
+	import {getCartypeDict} from "@/api/partsrfq/home";
 	import {detailData,partsCommonSourcing,translateDataForService, getOptionField } from "./components/data";
 	import splitFactory from "./components/splitFactory";
 	import designateInfo from './components/designateInfo'
@@ -528,7 +538,8 @@
 				saveLoading:false,
 				detailLoading:false,
 				disabled: false,
-				itemPurchase:{}
+				itemPurchase:{},
+				isCarType:false,
 			};
 		},
 		created() {
@@ -590,6 +601,7 @@
 				this.getDict('TERMS_PURCHASE')
 				// 审批状态CF_APPROVE_STATUS
 				this.getDict('PP_CSTMGMT_CURRENCY')
+				this.getCartypeDict()
 			},
 			fillterss(data){
 				if(data){
@@ -644,6 +656,7 @@
 					this.purchaseProjectId = this.infoItem.id;
 					this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 					this.partProjectType = this.infoItem.partProjectType;
+					this.infoItem.partProjectType == '1000003'||this.infoItem.partProjectType=='50002001'? this.isCarType = true : this.isCarType = false
 					//-------------修改零件采购项目逻辑endding
 					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {
 						this.disabled = getNominateDisabled({
@@ -675,6 +688,14 @@
 					this.fromGroup['LINIE_DEPT'] = r.data || []
 				})
 			},
+			// 获取车型字典
+			getCartypeDict() {
+				getCartypeDict().then(res => {
+					this.fromGroup['CAR_TYPE'] = res.data || []
+				}).catch(err=>{
+					console.log(err)  
+				})
+			},
 			getProcureGroup() {
 				dictkey().then((res) => {
 					if (res.code == 200 && res.data) {
@@ -687,6 +708,7 @@
 							...this.fromGroup,
 							...map
 						}
+						
 						this.purchasingDept()
 						this.getLinie(this.detailData.linieDept)
 					}
@@ -783,6 +805,7 @@
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
 				detailData['oldProjectRelations'] = [{...translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
+				
 				return new Promise((resolve, reject) => {
 					updateProcure(detailData).then((res) => {
 						this.saveLoading = false
@@ -855,7 +878,8 @@
 			*/
 			onPartProjectTypeChange(data) {
 				this.detailData.isDb = data === partProjTypes.DBYICHIXINGCAIGOU
-			},
+				data == '50002001'|| data == '1000003' ? this.isCarType = true : this.isCarType = false
+				},
 			getName(value, code, options) {
 				return getOptionField(value, code, options)
 			},
