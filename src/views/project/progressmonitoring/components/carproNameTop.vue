@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:18:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:29:58
+ * @LastEditTime: 2021-11-19 10:08:53
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\carproNameTop.vue
 -->
@@ -28,11 +28,14 @@ export default {
   computed: {
     carProjectName() {
       return this.$route.query.carProjectName
+    },
+    bizId() {
+      return this.$route.path.includes('projectprogressmonitoring') ? 'progressMonitorId' : 'scheduleRecordId'
     }
   },
   data() {
     return {
-      bizId: 'scheduleRecordId',
+      // bizId: 'scheduleRecordId',
       showDialog: false
     }
   },

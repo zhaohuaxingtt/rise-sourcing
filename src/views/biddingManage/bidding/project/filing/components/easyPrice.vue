@@ -273,11 +273,11 @@ export default {
     getUnits({}).then((res) => {
       this.quantityUnit = res.data;
     });
-    getRfqInfo({ rfqCode: this.ruleForm.rfqCode }).then((res) => {
-      this.rfqinfoProduct = res.products;
-      // this.rfqinfoProductCopy = res.products;
-    });
-    this.rfqinfoProductCopy = this.loadAll();
+    // getRfqInfo({ rfqCode: this.ruleForm.rfqCode }).then((res) => {
+    //   this.rfqinfoProduct = res.products;
+    //   // this.rfqinfoProductCopy = res.products;
+    // });
+    // this.rfqinfoProductCopy = this.loadAll();
   },
   computed: {
     unit() {

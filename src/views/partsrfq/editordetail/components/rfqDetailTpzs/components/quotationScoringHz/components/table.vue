@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-18 16:46:59
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-21 22:52:20
+ * @LastEditors:  
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -83,15 +83,17 @@
                     <ul :key="index" class="lastChild">
                       <template v-for='(itemsss,indexss) in rating'>
                         <!--------------------------------判断逻辑：只要有评分，肯定是有评分部门，如果评分部门为空，则处理当前行不显示------------>
-                        <template v-if="indexss > 0">
-                          <li :key='indexss' v-if='ratingList.firstTile[indexss-1]'>
+                        <template v-if="indexss > 0" >
+                          <li :key='indexss' v-if='ratingList.firstTile[indexss-1]' style="padding: 5px 0">
                             <span style="margin-rigth:10px;">{{itemsss.rate}}</span>
                             <span><icon v-if='!itemsss.isAllPartRateConsistent' name='icontishi-cheng' symbol></icon></span>
                           </li>
                         </template>
                         <li v-else :key='indexss'>
                           <span>
-                            {{itemsss.rateEn}}-{{itemsss.rate}}
+                            {{itemsss.rateEn}}
+                          <br v-if='itemsss.rateEn && itemsss.rate' />      
+                            {{itemsss.rate}}
                           </span>
                           <el-tooltip  effect="light" v-if='itemsss.isRateRisk && !isPreview' :content="`FRM评级：${itemsss.isAllPartRateConsistent}`">
                               <icon name='icontishi-cheng' symbol></icon>
@@ -117,7 +119,7 @@
                     <div>{{scope.row[getPorpsNumber(item.props)+"partName"]}}</div>
                   </div>
                   <div>
-                    <span class="isEplisDe" >{{scope.row[getPorpsNumber(item.props)+"partNameDe"]}}</span><br/>
+                    <span class="isEplis" style="white-space:nowrap">{{ removeSpace(scope.row[getPorpsNumber(item.props)+"partNameDe"])}}</span><br/>
                     <span class="isEplis" >{{scope.row[item.props]}}</span>
                   </div>
                 </el-tooltip>
@@ -396,6 +398,10 @@ export default{
     handleSelectionChange(e,index){
       this.$set(this.tableData,index,e)
       this.$emit('handleSelectionChange',this.tableData.filter(items=>items.active))
+    },
+    //去掉空格
+    removeSpace(str) {
+      return str.replace(/\s+/g,"")
     }
   }
 }
@@ -429,13 +435,7 @@ export default{
     display: inline-block;
 
   }  
-  .isEplis{
-    width: 100px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    word-break:keep-all;
-    display: inline-block;
-  }
+
   .el-table {
     position: initial;
     overflow: visible;
@@ -470,6 +470,14 @@ export default{
       th{
         overflow: visible;
       }
+    }
+    ::v-deep.isEplis{
+      width: 100px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      word-break:keep-all;
+      display: inline-block;
+      white-space: nowrap !important;
     }
     ::v-deep.el-table__body-wrapper{
       overflow:visible;
@@ -578,12 +586,13 @@ export default{
         li{
           border-bottom: 1px solid #C5CCD6;
           height: 38px;
-          line-height: 38px;
           &:last-child{
             border-bottom: none;
           }
           &:first-child{
             background-color:rgba(22, 99, 246, 0.17);
+            height: 60px;
+            padding: 5px 0;
           }
         }
       }

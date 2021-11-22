@@ -298,9 +298,9 @@ export default {
     getUnits({}).then((res) => {
       this.quantityUnit = res.data;
     });
-    getRfqInfo({ rfqCode: this.ruleForm.rfqCode }).then((res) => {
-      this.rfqinfoProduct = res.products;
-    });
+    // getRfqInfo({ rfqCode: this.ruleForm.rfqCode }).then((res) => {
+    //   this.rfqinfoProduct = res.products;
+    // });
   },
   computed: {
     disabledAll() {
@@ -499,11 +499,12 @@ export default {
             discount:discounts[`stage${i}`]
           });
           //年降后
+          let num = Number(this.findKey(yearsPlanDate,count[0]).slice(5));
           this.prefactoryPrice=
-          !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+          !yearsPlanPercent[`stage${num}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
           .times(
             Big(1)
-              .minus(Number(yearsPlanPercent[`stage${i}`]) / 100)
+              .minus(Number(yearsPlanPercent[`stage${num}`]) / 100)
               .toNumber()
           )
           .toNumber();
@@ -614,17 +615,17 @@ export default {
 
     //FSNR/GSNR更改联动零件号 和 采购计划FSNR/GSNR、零件号
     rfqinfoChange(e) {
-      let obj = this.rfqinfoProduct.filter((item) => {
-        return e.fsnrGsnr === item.fsnrGsnr;
-      });
-      if (obj.length < 1) {
-        return;
-      }
-      e.productName = obj[0]?.productName;
-      e.productCode = obj[0]?.productCode;
-      //3n
-      this.purchasePlanTable[e.index * 3].title = obj[0]?.fsnrGsnr;
-      this.purchasePlanTable[e.index * 3 + 1].title = obj[0]?.productCode;
+      // let obj = this.rfqinfoProduct.filter((item) => {
+      //   return e.fsnrGsnr === item.fsnrGsnr;
+      // });
+      // if (obj.length < 1) {
+      //   return;
+      // }
+      // e.productName = obj[0]?.productName;
+      // e.productCode = obj[0]?.productCode;
+      // //3n
+      // this.purchasePlanTable[e.index * 3].title = obj[0]?.fsnrGsnr;
+      // this.purchasePlanTable[e.index * 3 + 1].title = obj[0]?.productCode;
     },
     //零件号更改联动采购计划零件号
     partNumberChange(e) {
@@ -651,6 +652,7 @@ export default {
       });
       this.factoryPricePercent = "";
       this.factoryPricePercentFlag = false;
+      this.handlerInputBlur();
     },
     //上一步
     handlePre() {

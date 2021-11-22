@@ -65,6 +65,7 @@
               <iInput
                 v-if="priceProps.includes(items.props)"
                 v-model="scope.row[items.props]"
+                type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"
@@ -163,6 +164,7 @@
             >
               <iInput
                 v-model="scope.row[items.props]"
+                type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 5):value.slice(0,15)"
                 @blur="handleInputOnBlur(scope.row, items.props)"
                 :disabled="items.disabled ? items.disabled : false"
@@ -221,6 +223,7 @@
               <iInput
                 v-else-if="scope.row['index'] %2 === 1"
                 v-model="scope.row[items.props]"
+                type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 5):value.slice(0,15)"
                 @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"
@@ -272,6 +275,7 @@
                 v-else-if="scope.row['index']%2 === 0"
                 v-model="scope.row[items.props]"
                 placeholder="0.00"
+                type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"
@@ -289,7 +293,7 @@
                  @input="handleOutPutInputDate($event, scope)"
                  @blur="handlerInputBlur($event, scope)"
                 :picker-options="handleOutPutPickerOptions(scope.row, items.props)"
-                :disabled="items.props !== 'stage1'"
+                :disabled="ruleForm.roundType === '03' || items.props !== 'stage1'"
               />
             </el-form-item>
           </template>
@@ -453,6 +457,12 @@ export default {
     fileSizeProps: { type: String, default: "fileSize" },
     beginMonth: { type: String, default: "" },
     annualOutputObj:{
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+    ruleForm:{
       type: Object,
       default: () => {
         return {};

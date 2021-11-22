@@ -170,7 +170,7 @@
         </tableColumnTemplate>
       </div>
     </iCard>
-    <iCard class="card" title="批量更新年降" v-show=" !biddingStatus ">
+    <iCard class="card" :title="language('BIDDING_PLGXNJ','批量更新年降')" v-show=" !biddingStatus ">
       <tableColumnTemplate
         :tableData="batchUpdateYearsPlan"
         :tableTitle="stageColumn"
@@ -183,7 +183,7 @@
       >
       </tableColumnTemplate>
     </iCard>
-    <iCard class="card yearsPlan" title="年降计划">
+    <iCard class="card yearsPlan" :title="language('BIDDING_NIANJIANGJIHUA','年降计划')">
       <tableColumnTemplate
           ref="yearsPlan"
           :tableData="yearsPlan"
@@ -288,6 +288,9 @@ export default {
         "moldFee",
         "developFee",
         "targetPrice",
+        "lifecycle",
+        "aveAnnualOutput",
+        "maxAnnualOutput",
       ],
       inputProps: [
         "factoryPrice",
@@ -598,11 +601,12 @@ export default {
             discount:discounts[`stage${i}`]
           });
           //年降后
+          let num = Number(this.findKey(yearsPlanDate,count[0]).slice(5));
           this.prefactoryPrice=
-          !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+          !yearsPlanPercent[`stage${num}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
           .times(
             Big(1)
-              .minus(Number(yearsPlanPercent[`stage${i}`]) / 100)
+              .minus(Number(yearsPlanPercent[`stage${num}`]) / 100)
               .toNumber()
           )
           .toNumber();
@@ -729,6 +733,7 @@ export default {
         }
       });
       this.factoryPricePercent = "";
+      this.handlerInputBlur();
     },
 
     //下一步
@@ -869,7 +874,9 @@ export default {
       //保存
       saveBiddingQuotation(formData)
         .then((res) => {
-          this.$message.success("出价成功");
+          if (res.code == '200') {
+            this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
+          }
           callback && callback();
         })
         .catch((err) => {

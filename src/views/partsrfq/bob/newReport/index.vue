@@ -719,7 +719,7 @@ export default {
           selectedList.push(item.key)
         })
         params = {
-          analysisSchemeId: this.$store.state.rfq.SchemeId,
+          analysisSchemeId: this.analysisSchemeId,
           analysisDimension: this.chartType,
           combination: selectedList.join(','),
           defaultBobOptions: this.bobType,

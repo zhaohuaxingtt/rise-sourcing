@@ -393,6 +393,8 @@ export default {
           this.form[i] = "";
         }
       }
+
+      this.form.showSelf = true
       this.getTableList();
     },
     getSelectOptions() {

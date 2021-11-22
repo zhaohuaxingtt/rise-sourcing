@@ -81,7 +81,7 @@
         </div>
         <div class="project__header-btns">
           <template v-if="actived === 'filing'">
-            <iButton v-if="ruleForm.biddingStatus == '06'">{{
+            <iButton @click="handleHref" v-if="ruleForm.biddingStatus == '06'">{{
               language('BIDDING_TXBJMX', '填写报价明细')
             }}</iButton>
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
@@ -106,6 +106,7 @@
       tag="iDialog"
       :open="showBidNotice"
       @cancel="cancel"
+      @hanldeAgreeOrReject="hanldeAgreeOrReject"
       v-if="showBidNotice"
       :projectCode="ruleForm.projectCode"
       :supplierCode="supplierCode"
@@ -150,12 +151,14 @@ export default {
       showBidNotice: false,
       projectBack: "",
       biddingFinish: false,
+      handleReject:false,
     };
   },
-  mounted() {
+   mounted() {
     window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
     this.projectBack = sessionStorage.getItem("projectBack");
     console.log(this.projectBack);
+    
   },
 
   computed: {
@@ -226,13 +229,16 @@ export default {
     },
   },
   methods: {
+    handleHref(){
+      window.open(`${process.env.VUE_APP_SITE_URL}supplier/rfqManageMent/rfqDetail?rfqId=${this.ruleForm.rfqCode}`)
+    },
     handleBack() {
       this.$router.push({
         path: "/bidding/projectlist",
       });
       sessionStorage.clear();
     },
-    handleChangeTitle(data) {
+     async handleChangeTitle(data) {
       if (data.biddingStatus == "01" || data.biddingStatus == null) {
         if (this.role == "buyer") {
           this.$router.push({ name: "biddingProjectInquiry" });
@@ -245,6 +251,19 @@ export default {
         "CACHE_PROJECT_RULE_FORM",
         JSON.stringify(data)
       );
+      if(data) {
+        if (this.actived === 'filing'){
+        const res = await getSupplierNotification({
+            projectCode: this.ruleForm.projectCode,
+            supplerCode: this.supplierCode,
+        });
+        if(!res?.systemUseFlag) {
+          const type = '01'
+          const docTitle = '系统使用条款'
+          this.handleShowNotice(type,docTitle)
+        }
+    }
+      }
     },
     // 开标结束本轮RFQ
     onOpenCancel() {
@@ -321,7 +340,14 @@ export default {
       //   path: `/bidding/bidNotice`,
       // });
     },
+    // 发送拒绝/同意请求
+    hanldeAgreeOrReject(param){
+      this.handleReject = param.systemUseFlag
+    },
     cancel(blobUrl) {
+      if(this.type == '01' && !this.handleReject) {
+        window.close()
+      }
       this.showBidNotice = false;
       if (blobUrl) {
         window.URL.revokeObjectURL(blobUrl);
@@ -346,7 +372,7 @@ export default {
       }
 
       if (val == "result") {
-        if (biddingStatus == "06" || biddingStatus == "08") {
+        if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
           return true;
         } else {
           return false;

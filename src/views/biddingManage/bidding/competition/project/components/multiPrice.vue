@@ -249,6 +249,8 @@
             </template>
           </template>
 
+          
+
           <!-- 操作 -->
           <template slot="caozuo" slot-scope="scope">
             <span>
@@ -264,7 +266,7 @@
         </tableColumnTemplate>
       </div>
     </iCard>
-    <iCard class="card" title="批量更新年降" v-show=" ruleForm.biddingStatus === '01' ">
+    <iCard class="card" :title="language('BIDDING_PLGXNJ','批量更新年降')" v-show=" ruleForm.biddingStatus === '01' ">
       <tableColumnTemplate
         :tableData="batchUpdateYearsPlan"
         :tableTitle="stageColumn"
@@ -278,7 +280,7 @@
       >
       </tableColumnTemplate>
     </iCard>
-    <iCard class="card yearsPlan" title="年降计划">
+    <iCard class="card yearsPlan" :title="language('BIDDING_NIANJIANGJIHUA','年降计划')">
       <tableColumnTemplate
           ref="yearsPlan"
           :tableData="yearsPlan"
@@ -295,7 +297,7 @@
         >
         </tableColumnTemplate>
     </iCard>
-    <iCard class="card" title="年产量">
+    <iCard class="card" :title="language('BIDDING_NIANCHANLIANG','年产量')">
       <tableColumnTemplate
           ref="annualOutput"
           :tableData="annualOutput"
@@ -307,6 +309,7 @@
             ruleForm.biddingStatus !== '01' ? [] : outPutProps
           "
           :beginMonth="ruleForm.beginMonth"
+          :ruleForm="ruleForm"
           @handleOutPutInputDate="handleOutPutInputDate"
           @handlerInputBlur="handlerInputBlur"
         >
@@ -349,6 +352,7 @@ import {
   getRfqInfo,
   findMultiPrice,
   saveMultiPrice,
+  listQuotationByFs
 } from "@/api/bidding/bidding";
 import Big from "big.js";
 import dayjs from "dayjs";
@@ -396,6 +400,9 @@ export default {
         "moldFee",
         "developFee",
         "targetPrice",
+        "lifecycle",
+        "aveAnnualOutput",
+        "maxAnnualOutput",
       ],
       inputProps: [
         "factoryPrice",
@@ -475,7 +482,6 @@ export default {
     getUnits({}).then((res) => {
       this.quantityUnit = res.data;
     });
-    
 
   },
   computed: {
@@ -716,11 +722,12 @@ export default {
             discount:discounts[`stage${i}`]
           });
           //年降后
+          let num = Number(this.findKey(yearsPlanDate,count[0]).slice(5));
           this.prefactoryPrice=
-          !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+          !yearsPlanPercent[`stage${num}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
           .times(
             Big(1)
-              .minus(Number(yearsPlanPercent[`stage${i}`]) / 100)
+              .minus(Number(yearsPlanPercent[`stage${num}`]) / 100)
               .toNumber()
           )
           .toNumber();
@@ -830,25 +837,44 @@ export default {
     },
     //FSNR/GSNR更改联动零件号 和 采购计划FSNR/GSNR、零件号
     rfqinfoChange(e) {
-      let obj = this.rfqinfoProduct.filter((item) => {
-        return e.fsnrGsnr === item.fsnrGsnr;
-      });
-      if (obj.length < 1) {
-        e.productName = "";
-        e.productCode = "";
-      this.yearsPlan[e.index*2].title='';
-      this.yearsPlan[e.index*2+1].title='';
-      this.annualOutput[e.index*2+1].title='';
-      this.annualOutput[e.index*2+2].title='';
-        return;
+      // let obj = this.rfqinfoProduct.filter((item) => {
+      //   return e.fsnrGsnr === item.fsnrGsnr;
+      // });
+      // if (obj.length < 1) {
+      //   e.productName = "";
+      //   e.productCode = "";
+      // this.yearsPlan[e.index*2].title='';
+      // this.yearsPlan[e.index*2+1].title='';
+      // this.annualOutput[e.index*2+1].title='';
+      // this.annualOutput[e.index*2+2].title='';
+      //   return;
+      // }
+      // e.productName = obj[0]?.productName;
+      // e.productCode = obj[0]?.productCode;
+      // this.yearsPlan[e.index*2].title=obj[0]?.fsnrGsnr;
+      // this.yearsPlan[e.index*2+1].title=obj[0]?.productCode;
+      // this.annualOutput[e.index*2+1].title=obj[0]?.fsnrGsnr;
+      // this.annualOutput[e.index*2+2].title=obj[0]?.productCode;
+      // this.handlerInputBlur();
+      e.productName = "";
+      e.productCode = "";
+      this.yearsPlan[e.index*2].title = '';
+      this.yearsPlan[e.index*2+1].title = '';
+      this.annualOutput[e.index*2+1].title = '';
+      this.annualOutput[e.index*2+2].title = '';
+      if(e.fsnrGsnr) {
+        listQuotationByFs(e.fsnrGsnr).then(res => {
+          e.productCode = res.partNum
+          e.productName = res.partName;
+          this.yearsPlan[e.index*2].title = res.partPrjCode;
+          this.yearsPlan[e.index*2+1].title = res.partNum;
+          this.annualOutput[e.index*2+1].title = res.partPrjCode;
+          this.annualOutput[e.index*2+2].title = res.partNum;
+          this.handlerInputBlur();
+        })
       }
-      e.productName = obj[0]?.productName;
-      e.productCode = obj[0]?.productCode;
-      this.yearsPlan[e.index*2].title=obj[0]?.fsnrGsnr;
-      this.yearsPlan[e.index*2+1].title=obj[0]?.productCode;
-      this.annualOutput[e.index*2+1].title=obj[0]?.fsnrGsnr;
-      this.annualOutput[e.index*2+2].title=obj[0]?.productCode;
-      this.handlerInputBlur();
+      
+      
     },
     //零件号更改联动采购计划零件号
     partNumberChange(e) {
@@ -876,6 +902,7 @@ export default {
       });
       this.factoryPricePercent = "";
       this.factoryPricePercentFlag = false;
+      this.handlerInputBlur();
     },
     //上一步
     handlePre() {
@@ -1055,7 +1082,6 @@ export default {
       formData.modelProjects = modelProjectList;
       formData.procurePlans = procurePlans;
       formData.productions = productions;
-
       //保存
       saveMultiPrice(formData)
         .then((res) => {
@@ -1154,6 +1180,16 @@ export default {
         modelProjects: data.modelProjects?.map((item) => item.projectCode),
         biddingStatus: data.biddingStatus,
       };
+      // 车型
+      const paras = data?.models.map(item => {
+        return {
+          ...item,
+          code:item.modelCode,
+          name:item.model
+        }
+      })
+      this.modelsOption.push(...paras)
+      // 车型项目
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {
@@ -1255,6 +1291,9 @@ export default {
       }
       this.$nextTick(() => {
         this.handlerInputBlur();
+        // this.ruleForm.biddingProducts.forEach(item => {
+        //   this.rfqinfoChange(item)
+        // })
       });
     },
     // 表格选中值集

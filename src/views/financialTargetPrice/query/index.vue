@@ -122,7 +122,7 @@ export default {
         approveStats: '',
         carTypeName: '',
         assignStats: '',
-        showSelf:''
+        showSelf: true
       },
       isEdit: false,
       tableLoading: false,
@@ -179,7 +179,7 @@ export default {
         approveStats: '',
         carTypeName: '',
         assignStats: '',
-        showSelf:''
+        showSelf: true
 
       }
     },

@@ -208,11 +208,13 @@ export default {
   },
   methods: {
     sure() {
-      let form = {...this.formRecord}
+      let form = {...this.formRecord, showSelf: true}
       this.$emit('search',form)
     },
     reset() {
-      this.formRecord = {}
+      this.formRecord = {
+        showSelf: true
+      }
     this.$emit('search',{})    
     },
     getSelectGroup() {

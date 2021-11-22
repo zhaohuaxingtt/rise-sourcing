@@ -40,7 +40,7 @@ export const form = {
   status:'NOTACCEPTED',//信息单状态，默认查询 解决bug
   tpInfoType:'',//信息单分类
   userId:store.state.permission.userInfo?.id,
-  showSelf:''
+  showSelf: true
 }
 export const fromGroup = JSON.parse(JSON.stringify(form))
 export const clickMessage = function(data) {
