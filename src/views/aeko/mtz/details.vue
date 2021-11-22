@@ -220,13 +220,14 @@ export default {
       // 根据开始日期排序
       const dataList = window._.sortBy(this.tableListData, 'newStartDate')
       // 上一次结束时间
+      const parRuleNo = dataList.length && dataList[0] && dataList[0].ruleNo
       let parEndId = dataList.length && dataList[0] && dataList[0].id
       let parEndDate = dataList.length && dataList[0] && dataList[0].newEndDate
       // 根据日期从小到大排序，校验是否出现每一行数据开始时间小于上一行结束时间的记录
       dataList.forEach((item) => {
         console.log(item.id, item.newStartDate, parEndId, parEndDate)
         // 时间段重叠
-        if (state && item.newStartDate && parEndDate && parEndId !== item.id && item.newStartDate < parEndDate && window._.intersection(priority, [2,3]).length) {
+        if (state && item.newStartDate && parEndDate && parEndId !== item.id && item.ruleNo === parRuleNo && item.newStartDate < parEndDate && window._.intersection(priority, [2,3]).length) {
           state = false
           errorInfo = this.language('LINGJIANSHIJIANDUANCONGDIECUOWU','所填零件行项目有时间段重叠,请修改')
           const parItem = this.tableListData.find(o => o.id === parEndId)
@@ -235,9 +236,9 @@ export default {
           this.$set(curItem, 'validateStartError', true)
         }
 
-        // 校验是否有相同的开始时间或者结束时间
-        const theSameStartDateLength = this.tableListData.filter(o => o.newStartDate === item.newStartDate).length
-        const theSameEndDateLength = this.tableListData.filter(o => o.newEndDate === item.newEndDate).length
+        // 校验是否有相同的开始时间或者结束时间 只针对相同的ruleId
+        const theSameStartDateLength = this.tableListData.filter(o => o.newStartDate === item.newStartDate && o.ruleNo === item.ruleNo).length
+        const theSameEndDateLength = this.tableListData.filter(o => o.newEndDate === item.newEndDate && o.ruleNo === item.ruleNo).length
         if (theSameStartDateLength > 1 && !theSameNewStartDate) theSameNewStartDate = item.newStartDate
         if (theSameEndDateLength > 1 && !theSameNewEndDate) theSameNewEndDate = item.newEndDate
         theSameNewStartDate === item.newStartDate && (this.$set(item, 'validateStartError', true))
