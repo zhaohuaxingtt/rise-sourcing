@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-18 17:00:18
+ * @LastEditTime: 2021-11-22 14:18:23
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -361,6 +361,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
         groupArr = groupArr.map(item => {
           return {
             ...item,
+            groupIdTemp: item.groupId,
             groupId: '-'
           }
         })
@@ -384,7 +385,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupName === item.groupName ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0
+                        [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0
                       }
                     })
                   }else{
@@ -392,7 +393,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupName === item.groupName && removeKeysNumber(key) !== 'tooling' ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                        [key]: element.groupId === item.groupIdTemp && removeKeysNumber(key) !== 'tooling' ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
                       }
                     })
                   }
