@@ -7,9 +7,9 @@
  */
 
 export const tableTitle = [
-  { props: "partNum", name: "新零件号", key: "XINLINGJIANHAO", tooltip: true},
-  { props: "originPartNum", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true },
-  { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true },
+  { props: "partNum", name: "新零件号", key: "XINLINGJIANHAO", tooltip: true, width: 120},
+  { props: "originPartNum", name: "原零件号", key: "YUANLINGJIANHAO", tooltip: true, width: 120 },
+  { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true, width: 120 },
   { props: "supplierSapCode", name: "供应商编码", key: "GONGYINGSHANGBIANMA", tooltip: true },
   { props: "materialCode", name: "原材料牌号", key: "YUANCAILIAOPAIHAO", tooltip: true },
   { props: "material", name: "原材料", key: "YUANCHAOLIAO", tooltip: true },
@@ -26,7 +26,7 @@ export const tableTitle = [
   { props: "threshold", name: "阈值", key: "LK_YUZHI", tooltip: true },
   { props: "thresholdCompensationLogic", name: "阈值补差逻辑", key: "LK_YUZHIBUCHALUOJI", tooltip: true },
   { props: "compensationPeriod", name: "补差周期", key: "LK_BUCHAZHOUQI", tooltip: true },
-  { props: "ruleNo", name: "规则编号", key: "LK_GUIZEBIANHAO", tooltip: true },
+  { props: "ruleNo", name: "规则编号", key: "LK_GUIZEBIANHAO", tooltip: true, width: 100 },
 ]
 
 
