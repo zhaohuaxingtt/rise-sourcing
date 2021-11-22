@@ -325,7 +325,7 @@ export default {
                 }
             })
             // line
-            getBuyers({tagId:configUser.LINLIE}).then((res)=>{
+            getBuyers({ roleCode: "LINIE" }).then((res)=>{ // {tagId:configUser.LINLIE}
                const { code,data=[] } = res;
                if(code ==200){
                    this.linieList = data;
