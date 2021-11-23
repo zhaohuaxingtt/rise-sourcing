@@ -27,7 +27,7 @@
                       :width="540"
                       :height="600"
                       :chartData="pieData"
-                      :pieWidth="[35,65]" />
+                      :pieWidth="[85,125]" />
           </el-col>
           <el-col :span="14">
             <tableList :tableData="tableListData"

@@ -89,13 +89,15 @@ export default { //
         // 获取目标采购员以及目标LINE的人员list
         getMemberList(){
             // tagId: 4 专业采购员，9 前期采购员
-           getBuyers({tagId:configUser.LINLIE}).then((res)=>{
+           getBuyers({ roleCode: "LINIE" }).then((res)=>{
+            //    {tagId:configUser.LINLIE}
                const { code,data=[] } = res;
                if(code ==200){
                    this.linieList = data;
                }
             })
-            getBuyers({tagId:configUser.BEFORBUYER}).then((res)=>{
+            getBuyers({ roleCode: "QQCGY" }).then((res)=>{
+            // {tagId:configUser.BEFORBUYER}
                 const { code,data=[] } = res;
                if(code ==200){
                    this.cfList = data;

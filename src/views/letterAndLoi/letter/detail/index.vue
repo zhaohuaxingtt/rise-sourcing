@@ -5,7 +5,7 @@
 -->
 <template>
     <iPage class="letterDetail" v-permission.auto="LK_LETTER_DETAIL_PAGE|定点信详情页">
-        <div class="header clearFloat">
+        <div class="header">
         <div class="title">{{language('LK_DINGDIANXINBIANHAO','定点信编号')}}: {{detailInfo.letterNum}}</div>
         <div class="control">
             <span v-if="isEdit">
@@ -29,7 +29,16 @@
                 <iButton v-permission.auto="LK_LETTER_DETAIL_DAOCHUBIAOZHUNDINGDIANXIN|导出标准定点信" @click="downloadFiles">{{language('LK_DAOCHUBIAOZHUNDINGDIANXIN','导出标准定点信')}}</iButton>
                 <iButton v-permission.auto="LK_LETTER_DETAIL_LISHIDINGDIANXIN|历史定点信"  @click="changeShowHistory">{{language('LK_LISHIDINGDIANXIN','历史定点信')}} </iButton>
             </span>
-            <logButton class="margin-left20" @click="toLogPage"/>
+            <!-- <logButton class="margin-left20" @click="toLogPage"/> -->
+            <iLoger 
+                class="margin-left25"
+                :config="{
+                    module_obj_ae: '定点信', // 模块
+                    menuName_obj_ae: '', // 菜单
+                    bizId_obj_ae:nomiAppId, // 定点信id
+                    createBy_obj_ae:'', // 当前用户
+                }"
+            />
         </div>
         </div>
         <iCard class="margin-top30" v-permission.auto="LK_LETTER_DETAIL_FORM|表单">
@@ -75,6 +84,8 @@
 
         <!-- 历史定点信弹窗 -->
         <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :nominateLetterId ="nominateLetterId"/>
+        <!-- 日志弹窗 -->
+        <!-- <iLog :show.sync="showLogDialog" :module="module"></iLog> -->
     </iPage>
 </template>
 
@@ -89,9 +100,10 @@ import {
     iSelect,
     iMessage,
 } from 'rise';
-import logButton from "@/components/logButton"
+// import logButton from "@/components/logButton"
 import historyDialog from './components/historyDialog'
 import nonStandard from './components/nonStandard'
+import iLoger from '@/components/iLoger'
 import {
     getLetterDetail,
     downloadLetterFile,
@@ -105,11 +117,11 @@ import {
     fsConfirm,
 } from  '@/api/letterAndLoi/letter'
 import {user as configUser } from '@/config'
+// import iLog from '@/views/aeko/log'
 export default {
     name:'letterDetail',
     components:{
         iPage,
-        logButton,
         iButton,
         iCard,
         historyDialog,
@@ -118,6 +130,9 @@ export default {
         iFormItem,
         iText,
         iSelect,
+        // iLog,
+        // logButton,
+        iLoger,
     },
     data(){
         return{
@@ -137,11 +152,14 @@ export default {
                 lineBack:false,
                 complete:false,
             },
+            showLogDialog:false,
+            module:'定点信'
 
         }
     },
     created(){
         this.getDetail();
+
     },
     methods:{
         // 编辑状态变更
@@ -165,13 +183,13 @@ export default {
         async getDetail(){
             const {query} = this.$route;
             const {id=''} = query;
+            this.nomiAppId = id;
             await getLetterDetail({nominateLetterId:id}).then((res)=>{
                 const {code,data={}} = res;
                 if(code == 200){
                     const { templateType,nominateLetterId,supplierId } = data;
                     this.detailInfo = data;
                     this.radioType = templateType==0 ? 'standard' : 'NonStandard';
-                    this.nomiAppId = id;
                     this.nominateLetterId = nominateLetterId;
                     this.getUserList(supplierId);
 
@@ -190,7 +208,8 @@ export default {
                 }
             })
             // linie
-            getBuyers({tagId:configUser.LINLIE}).then((res)=>{
+            getBuyers({ roleCode: "LINIE" }).then((res)=>{
+            // {tagId:configUser.LINLIE}
                const { code,data=[] } = res;
                if(code ==200){
                    this.linieList = data;
@@ -329,10 +348,12 @@ export default {
 
         // 跳转查看日志
         toLogPage() {
-        const id = this.$route.query.id
-        if (id) {
-            window.open(`/#/log?recordId=${id}`, '_blank')
-        }
+            // const id = this.$route.query.id
+            // if (id) {
+            //     window.open(`/#/log?recordId=${id}`, '_blank')
+            // }
+            // setLogMenu('AEKO管理-列表')
+            this.showLogDialog = true;
         },
     }
 }
@@ -341,7 +362,12 @@ export default {
 <style lang="scss" scoped>
     .letterDetail{
         .header {
-            position: relative;
+            // position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: -10px;
 
             .title {
             font-size: 20px;
@@ -352,13 +378,13 @@ export default {
             }
 
             .control {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translate(0, -50%);
-            display: flex;
-            align-items: center;
-            height: 30px;
+            // position: absolute;
+            // top: 50%;
+            // right: 0;
+            // transform: translate(0, -50%);
+            // display: flex;
+            // align-items: center;
+            // height: 30px;
             }
         }
         .contain{

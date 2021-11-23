@@ -41,14 +41,14 @@
 					<!---出现此按钮。------------------------------------------------------------------->
 					<iButton v-permission.auto='PARTSPROCURE_EDITORDETAIL_WHXGGYS|维护现供供应商' v-if='currentSupplierButton' @click="curentSupplierDialog.show = true">{{language('WEIHUXIANGGYS','维护现供供应商')}}</iButton>	
 					<iButton @click="start" v-permission.auto="PARTSPROCURE_EDITORDETAIL_STARTUP|启动项目"
-						v-if="detailData.status == '16'">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
+						v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END')">{{ language("LK_QIDONGXIANGMU",'启动项目') }}</iButton>
 					<creatFsGsNr :projectItems="[detailData]" @refresh="getDatailFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_CREATEPARTSFSNRNUMBER|生成零件采购项目号"></creatFsGsNr>
 					<cancelProject :backItems='[detailData]'  @refresh="getDatailFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_CANCELPARTSFSNRNUMBER|取消零件采购项目"></cancelProject>
 					<!-- <iButton @click="splitPurchFn" v-permission="PARTSPROCURE_EDITORDETAIL_SPLITFACTORY">
 						{{ language("LK_CHAIFENCAIGOUGONGCHANG",'拆分采购工厂') }}
 					</iButton> -->
 					<iButton @click="openDiologClose" v-permission.auto="PARTSPROCURE_EDITORDETAIL_ENDPROJECT|结束项目"
-						v-if="detailData.status != '16'">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
+						v-if="detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END')">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
 					<iButton :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
 					</iButton>
 					<!-- <iButton @click="back">{{ language("LK_FANHUI",'返回') }}</iButton> -->
@@ -227,15 +227,17 @@
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT|LINIE部门" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
 							<!-- detailData. -->
-							<iSelect @change="changeUserDept" v-model="linieDept" v-if="!disabled">
-								<el-option :value="item.code" :label="item.deptNum"
+							<iSelect @change="changeUserDept" v-model="linieDept" v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))">
+								<!-- 改成取值deptNum, deptNum为部门code -->
+								<el-option :value="item.deptNum" :label="item.deptNum"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
-							<iText v-else>{{ Array.isArray(fromGroup.LINIE_DEPT) && fromGroup.LINIE_DEPT.find(item => item.code === detailData.linieDept) ? getName(detailData.linieDept, "code", fromGroup.LINIE_DEPT) : detailData.linieDeptName }}</iText>
+							<iText v-else>{{ linieDept }}</iText>
+							<!-- <iText v-else>{{ Array.isArray(fromGroup.LINIE_DEPT) && fromGroup.LINIE_DEPT.find(item => item.code === detailData.linieDept) ? getName(detailData.linieDept, "code", fromGroup.LINIE_DEPT) : detailData.linieDeptName }}</iText> -->
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINE|LINIE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门' v-if="!disabled">
+							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门' v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))">
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
@@ -479,15 +481,15 @@
 			},
 			linieDept: {
 				get() {
-					if (Array.isArray(this.fromGroup.LINIE_DEPT) && !this.fromGroup.LINIE_DEPT.find(item => item.code === this.detailData.linieDept)) {
-						return this.detailData.linieDeptName
-					}
+					// if (Array.isArray(this.fromGroup.LINIE_DEPT) && !this.fromGroup.LINIE_DEPT.find(item => item.deptNum === this.detailData.linieDept)) {
+					// 	return this.detailData.linieDeptName
+					// }
 
 					return this.detailData.linieDept
 				},
 				set(nv) {
 					this.detailData.linieDept = nv
-					this.detailData.linieDeptName = this.fromGroup.LINIE_DEPT.find(item => item.code === nv).name
+					this.detailData.linieDeptName = this.fromGroup.LINIE_DEPT.find(item => item.deptNum === nv).name
 				}
 			},
 			cfController: {
@@ -555,7 +557,9 @@
     */
 			changeUserDept(){
 				this.detailData.linieId = ''
-				this.getLinie(this.detailData.linieDept)
+				const currentLinieDept = this.fromGroup["LINIE_DEPT"].find(item => item.deptNum === this.detailData.linieDept)
+
+				this.getLinie(currentLinieDept.code)
 			},
 			getLinie(id){
 				if (!id) return
@@ -685,7 +689,9 @@
 			
 			purchasingDept(){
 				purchasingDept().then(r=>{
-					this.fromGroup['LINIE_DEPT'] = r.data || []
+					if (r.code == 200) {
+						this.fromGroup["LINIE_DEPT"] = Array.isArray(r.data) ? r.data : []
+					}
 				})
 			},
 			// 获取车型字典

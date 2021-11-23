@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-23 17:30:56
+ * @LastEditTime: 2021-11-23 18:58:30
  * @LastEditors:  
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue

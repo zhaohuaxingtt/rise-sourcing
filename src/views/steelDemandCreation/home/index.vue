@@ -162,14 +162,14 @@ export default{
             }).catch(()=>r({}))
           })
       },
-      getBuyers(tagId){
+      getBuyers(roleCode){
         return new Promise(r=>{
-           getBuyers({tagId:tagId}).then(res=>{r(res.data)}).catch(()=>r({}))
+           getBuyers({roleCode}).then(res=>{r(res.data)}).catch(()=>r({}))
         })
       },
       async initSelectOptions(){    
-        const lineOptions = await this.getBuyers(user.LINLIE)
-        const beforBuyer = await this.getBuyers(user.BEFORBUYER)
+        const lineOptions = await this.getBuyers("LINIE") //user.LINLIE
+        const beforBuyer = await this.getBuyers("QQCGY") // user.BEFORBUYER
         const distKeys = await this.dictkey()
         this.searchForm = searchForm({...this.translateOptions('LINLIE',lineOptions),...this.translateOptions('BEFORBUYER',beforBuyer),...distKeys})
       },
