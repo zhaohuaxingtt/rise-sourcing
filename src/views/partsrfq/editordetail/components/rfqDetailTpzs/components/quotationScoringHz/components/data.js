@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-22 17:55:24
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-23 20:00:45
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
  */
@@ -21,7 +21,8 @@ export const fstitle = [
   {type:'',props:'tia',label:'TIA',i18n:'',width:'100',tooltip:false,fixed:true},
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'80',tooltip:false}
+  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'headerEbr',label:'',i18n:'',width:'1',tooltip:false}
 ]
 export const gstitle = [
   {type:'selection',props:'groupName',label:'Group',i18n:'',width:'60',tooltip:false,fixed:true},
@@ -42,7 +43,8 @@ export const gstitle = [
   {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentTto',label:'Cur. TTO',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'80',tooltip:false}
+  {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'headerEbr',label:'',i18n:'',width:'1',tooltip:false}
 ]
 //表格循环部分
 export const fstableTileXh = function(index){
@@ -101,13 +103,13 @@ export const gstableTileXh = function(index){
  * @param {*}
  * @return {*}
  */
-export const whiteList = ['groupName','partNo','partName','cfPartAPrice','cfPartBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
+export const whiteList = ['headerEbr','groupName','partNo','partName','cfPartAPrice','cfPartBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto'] //默认需要显示的数据
 /**
  * @description: gs横轴默认配置项
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving'] //默认需要显示的数据
+export const whiteListGs = ['headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -143,7 +145,7 @@ export function backChooseList(type) {
         }
       })
     }else{
-      if(!whiteLists.find(itemss=> itemss == items.props) && items.props != 'rating'){
+      if(!whiteLists.find(itemss=> itemss == items.props) && items.props != 'rating' && items.props != "headerEbr"){
         arrayList.push(items)
       }
     }
@@ -208,7 +210,6 @@ export function getRenderTableTile(whiteListService,supplierLength,layout){
           items.list.push(ratess)
         })
         relTabelListDefault.push(items)
-        console.log(relTabelListDefault,'relTabelListDefault');
       }
     })
     for(let i = 0;i < xuhTable.length;i++){ //通过白名单过滤一次表头
@@ -235,7 +236,6 @@ export function getRenderTableTile(whiteListService,supplierLength,layout){
     }
     return [...relTabelListDefault,...relTableListXh,...lastSupplier]
    } catch (error) {
-     console.log(error)
      return []
    }  
 }
@@ -316,7 +316,6 @@ export function translateRating(supplierList,ratingList) {
      'ratingList':ratingListPrivate
    }
   }catch(err){
-    console.log(err)
     return {
       'firstTile':[],
       'ratingList':[]
@@ -350,7 +349,6 @@ export function removeKeysNumber(keys){
  * @return {*}
  */
 export function subtotal(tableHeader,dataList,priceInfo){
-  console.log(tableHeader,dataList,priceInfo)
   try {
     // eslint-disable-next-line no-undef
     let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId}] : accu}, []), 'groupId')
@@ -406,7 +404,6 @@ export function subtotal(tableHeader,dataList,priceInfo){
     })
     return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
   } catch (error) {
-    console.warn(error)
     return {partNo:'Subtotal'}
   }
 }
@@ -473,7 +470,6 @@ export function kmOrbukeage(type,priceInfo,exampleDatas){
     }
     return exampleData
   } catch (error) {
-    console.log(error)
     return {}
   }
 }
@@ -598,7 +594,6 @@ export const translateDataListSupplier = function(supplierlist) {
     })
     return {dataList:relData,topList:topData}
   } catch (error) {
-    console.log(error)
   }
 }
 
