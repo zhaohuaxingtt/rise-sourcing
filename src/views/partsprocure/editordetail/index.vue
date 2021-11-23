@@ -228,10 +228,12 @@
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINEDEPARTMENT|LINIE部门" :label="language('LK_LINIEBUMEN','LINIE部门') + ':'" name="test">
 							<!-- detailData. -->
 							<iSelect @change="changeUserDept" v-model="linieDept" v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))">
-								<el-option :value="item.code" :label="item.deptNum"
+								<!-- 改成取值deptNum, deptNum为部门code -->
+								<el-option :value="item.deptNum" :label="item.deptNum"
 									v-for="(item, index) in fromGroup.LINIE_DEPT" :key="index"></el-option>
 							</iSelect>
-							<iText v-else>{{ Array.isArray(fromGroup.LINIE_DEPT) && fromGroup.LINIE_DEPT.find(item => item.code === detailData.linieDept) ? getName(detailData.linieDept, "code", fromGroup.LINIE_DEPT) : detailData.linieDeptName }}</iText>
+							<iText v-else>{{ linieDept }}</iText>
+							<!-- <iText v-else>{{ Array.isArray(fromGroup.LINIE_DEPT) && fromGroup.LINIE_DEPT.find(item => item.code === detailData.linieDept) ? getName(detailData.linieDept, "code", fromGroup.LINIE_DEPT) : detailData.linieDeptName }}</iText> -->
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINE|LINIE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
@@ -479,15 +481,15 @@
 			},
 			linieDept: {
 				get() {
-					if (Array.isArray(this.fromGroup.LINIE_DEPT) && !this.fromGroup.LINIE_DEPT.find(item => item.code === this.detailData.linieDept)) {
-						return this.detailData.linieDeptName
-					}
+					// if (Array.isArray(this.fromGroup.LINIE_DEPT) && !this.fromGroup.LINIE_DEPT.find(item => item.deptNum === this.detailData.linieDept)) {
+					// 	return this.detailData.linieDeptName
+					// }
 
 					return this.detailData.linieDept
 				},
 				set(nv) {
 					this.detailData.linieDept = nv
-					this.detailData.linieDeptName = this.fromGroup.LINIE_DEPT.find(item => item.code === nv).name
+					this.detailData.linieDeptName = this.fromGroup.LINIE_DEPT.find(item => item.deptNum === nv).name
 				}
 			},
 			cfController: {
@@ -555,7 +557,9 @@
     */
 			changeUserDept(){
 				this.detailData.linieId = ''
-				this.getLinie(this.detailData.linieDept)
+				const currentLinieDept = this.fromGroup["LINIE_DEPT"].find(item => item.deptNum === this.detailData.linieDept)
+
+				this.getLinie(currentLinieDept.code)
 			},
 			getLinie(id){
 				if (!id) return
@@ -685,7 +689,9 @@
 			
 			purchasingDept(){
 				purchasingDept().then(r=>{
-					this.fromGroup['LINIE_DEPT'] = r.data || []
+					if (r.code == 200) {
+						this.fromGroup["LINIE_DEPT"] = Array.isArray(r.data) ? r.data : []
+					}
 				})
 			},
 			// 获取车型字典
