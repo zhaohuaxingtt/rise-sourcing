@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-23 18:54:55
- * @LastEditors:  
+ * @LastEditTime: 2021-11-23 23:25:10
+ * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -427,7 +427,6 @@
 </template>
 <script>
 import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
-import {toThousands} from '@/utils'
 export default{
   inject:['getbaseInfoData'],
   props:{
@@ -484,7 +483,7 @@ export default{
   methods:{
     ttoShow(data){
       if(parseInt(data)){
-        return toThousands(parseInt(data))
+        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }

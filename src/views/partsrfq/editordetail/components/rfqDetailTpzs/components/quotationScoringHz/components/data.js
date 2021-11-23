@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-23 20:00:45
+ * @LastEditTime: 2021-11-23 21:30:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -11,7 +11,7 @@ import {partProjTypes} from '@/config'
 //表格全集。
 export const fstitle = [
   {type:'selection',props:'groupName',label:'Group',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'90',tooltip:false,fixed:true},
+  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'110',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
@@ -26,7 +26,7 @@ export const fstitle = [
 ]
 export const gstitle = [
   {type:'selection',props:'groupName',label:'Group',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'90',tooltip:false,fixed:true},
+  {type:'',props:'partNo',label:'Part No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'110',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'100',tooltip:false,fixed:true},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'100',tooltip:false,fixed:true},
