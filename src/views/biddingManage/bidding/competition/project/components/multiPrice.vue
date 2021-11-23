@@ -591,8 +591,9 @@ export default {
     },
     //更改起始年月联动年产量年月
     handleChangeBeginMonth(val){
-      let dateYear = new Date(val).getFullYear();
+      
       this.annualOutput.forEach((item,index)=>{
+        let dateYear = new Date(val).getFullYear();
         if(!val){
           for (let i = 1; i < 16; i++) {
             item[`stage${i}`]='';
@@ -1181,7 +1182,7 @@ export default {
         biddingStatus: data.biddingStatus,
       };
       // 车型
-      const paras = data?.models.map(item => {
+      const paras = data.models?.map(item => {
         return {
           ...item,
           code:item.modelCode,
@@ -1189,7 +1190,33 @@ export default {
         }
       })
       this.modelsOption.push(...paras)
+      let optionObj = {}
+      let optionArr = []
+      this.modelsOption.forEach(item => {
+        if(!optionObj[item.name]) {
+          optionObj[item.name] = 1
+          optionArr.push(item)
+        }
+      })
+      this.modelsOption = [...optionArr]
       // 车型项目
+      const projectParas = data?.modelProjects.map(item => {
+        return {
+          ...item,
+          code:item.projectCode,
+          name:item.project
+        }
+      })
+      this.modelProjectsOption.push(...projectParas)
+      let projectOptionObj = {}
+      let projectOptionArr = []
+      this.modelProjectsOption.forEach(item => {
+        if (!projectOptionObj[item.name]) {
+          projectOptionObj[item.name] = 1
+          projectOptionArr.push(item)
+        }
+      })
+      this.modelProjectsOption = [...projectOptionArr]
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {
