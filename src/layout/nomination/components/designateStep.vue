@@ -27,7 +27,8 @@
                 <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
-                <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
+                <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
+                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', creator:'creator', queryParams:['bizId_obj_ae','creator']}" :creator="userInfo && userInfo.id" isPage class="margin-left20" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
         </div>
@@ -90,6 +91,7 @@ import {
   iMessage
 } from "rise";
 import logButton from '@/components/logButton'
+import iLoger from '@/components/iLoger'
 import mettingDialog from './mettingDialog'
 import {
     nominateAppSExport,
@@ -116,11 +118,12 @@ export default {
     name:'designateStep',
     components:{
         iButton,
-        logButton,
+        // logButton,
         icon,
         iSelect,
         mettingDialog,
         meetingConclusionDialog,
+        iLoger
     },
     props:{
         status: {
@@ -155,6 +158,7 @@ export default {
     computed:{
         // eslint-disable-next-line no-undef
         ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
             nominationDisabled: state => state.nomination.nominationDisabled,
             rsDisabled: state => state.nomination.rsDisabled,
             mtzShow: state => state.nomination.mtzApplyId,
