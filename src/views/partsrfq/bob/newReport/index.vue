@@ -950,6 +950,8 @@ export default {
           }).then(() => {
             this.formUpdata.remark = this.$refs.bobAnalysis.remark
             this.formUpdata.name = this.analysisName
+            this.formUpdata.defaultBobOptions = this.formUpdata.defaultBobOptions.replaceAll("▼","")
+            console.log(this.formUpdata)
             update(this.formUpdata)
               .then((res) => {
                 iMessage.success("保存成功");
@@ -1058,7 +1060,7 @@ export default {
 .new-bob {
   .end {
     text-align: center;
-    bottom: 60px;
+    bottom: 20%;
   }
   .toolTip-div {
     z-index: 20;
@@ -1085,7 +1087,7 @@ export default {
     .icon-add {
       display: flex;
       flex: 1;
-      height: 560px;
+      height: 520%;
       // border-left: 2px dashed #ccc;
       text-align: center;
       & > div {
@@ -1101,7 +1103,7 @@ export default {
 ::v-deep .el-select {
   width: 100%;
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected::after {
-    right: 60px !important;
+    right: 20% !important;
   }
 }
 
