@@ -28,7 +28,16 @@
                 <iButton v-permission.auto="LK_LOI_DETAIL_DAOCHUBIAOZHUNLOI|导出标准LOI" @click="exportLoi">{{language('LK_DAOCHUBIAOZHUNLOI','导出标准LOI')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_DETAIL_LISHILOI|历史LOI" @click="changeShowHistory">{{language('LK_LISHILOI','历史LOI')}} </iButton>
             </span>
-            <logButton class="margin-left20" />
+            <!-- <logButton class="margin-left20" /> -->
+            <iLoger 
+                class="margin-left25"
+                :config="{
+                    module_obj_ae: 'LOI', // 模块
+                    menuName_obj_ae: '', // 菜单
+                    bizId_obj_ae:nomiAppId,
+                    createBy_obj_ae:'', // 当前用户
+                }"
+            />
         </div>
         </div>
         <iCard class="margin-top30" v-permission.auto="LK_LOI_DETAIL_FORM|表单">
@@ -110,6 +119,7 @@ import {
     getBuyers,
 } from  '@/api/letterAndLoi/letter'
 import {user as configUser } from '@/config'
+import iLoger from '@/components/iLoger'
 export default {
     name:'loiDetail',
     components:{
@@ -123,6 +133,7 @@ export default {
         iFormItem,
         iText,
         iSelect,
+        iLoger,
     },
     data(){
         return{
