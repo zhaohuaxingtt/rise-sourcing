@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-22 11:56:44
+ * @LastEditTime: 2021-11-23 15:28:28
  * @Description: 
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\data.js
  */
@@ -11,7 +11,7 @@ export const historyTableTitle = [
   {props:'fsNum',name:'零件采购项目号', key: "LINGJIANCAIGOUXIANGMUHAO", tooltip: true},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
   {props:'targetPrice',name:'投资目标价', key: "TOUZIMUBIAOJIA", tooltip: true},
-  {props:'lcTcCurrencyId',name:'状态', key: "ZHUANGTAI", tooltip: true},
+  {props:'isValidDesc',name:'状态', key: "ZHUANGTAI", tooltip: true},
   {props:'updateUserName',name:'修改人', key: "XIUGAIREN", tooltip: true},
   {props:'updateDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true},
 ]

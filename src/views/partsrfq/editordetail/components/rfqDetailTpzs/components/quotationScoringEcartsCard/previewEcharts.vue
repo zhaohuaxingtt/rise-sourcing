@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-11-16 16:12:47
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-23 15:37:15
+ * @LastEditors: Luoshuang
  * @Description: 供应商维度展示
- * @FilePath: \front-supplier\src\views\rfqManageMent\partsOffer\components\ecartsCard\index.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
 -->
 <template>
   <!----------------------------------------------------------->
@@ -43,6 +43,7 @@
             <iSelect style="width:100px;" :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in RoundList" :key='index' :label="items" :value='items'></el-option>
+              <el-option label="Latest Offer" value="-1"></el-option>
             </iSelect>
           </el-form-item>
           <span class="floatright">
