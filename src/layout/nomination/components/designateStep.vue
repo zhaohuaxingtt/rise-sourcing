@@ -28,7 +28,7 @@
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
-                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', creator:'creator', queryParams:['bizId_obj_ae','creator']}" :creator="userInfo && userInfo.id" isPage class="margin-left20" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
+                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage class="margin-left20" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
         </div>

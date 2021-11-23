@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 11:07:21
- * @LastEditTime: 2021-11-23 14:44:54
+ * @LastEditTime: 2021-11-23 21:29:53
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\components\logButton\index.vue
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import Vuex from 'vuex'
 import { iLog, icon } from 'rise';
 import config from './config'
 
@@ -51,9 +52,21 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+    /**
+     * @description: 是否获取当前用户
+     * @param {*}
+     * @return {*}
+     */    
+    credentials: {
+			type: Boolean,
+			default: false,
+		},
   },
   components: { iLog, icon },
   computed: {
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    }),
     env() {
       return process.env.NODE_ENV
     }
@@ -68,6 +81,9 @@ export default {
     // 根据type 获取日志类型
     const extParams = Object.keys(this.config).length ? this.config : config[this.type]
     if (extParams) {
+      // 写入当前用户
+      this.credentials && (extParams.createBy_obj_ae = this.userInfo && this.userInfo.id)
+
       if (extParams.queryParams && extParams.queryParams.length) {
         extParams.queryParams.forEach(key => {
           const queryString = extParams[key]
