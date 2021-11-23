@@ -352,8 +352,8 @@ export default {
     handleClickOne(scope) {
       this.$nextTick(() => {
         var tr = document.querySelectorAll(
-          "#purchasePlanTableForm .el-table__body-wrapper tr"
-        )[scope.row.index * 3];
+          ".yearsPlan .el-table__body-wrapper tr"
+        )[scope.row.index * 2+1];
         document.querySelector(".routerpage").scrollTop =
           tr.getBoundingClientRect().top +
           document.querySelector(".routerpage").scrollTop -

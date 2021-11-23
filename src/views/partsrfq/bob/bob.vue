@@ -75,7 +75,7 @@
         </el-table-column>
         <el-table-column align="center"
                          header-align="center"
-                         :label="$t('TPZS.FXMC')"
+                         :label="language('FENXIMINGCHENG','分析名称')"
                          width="450">
           <template slot-scope="scope">
             <div class="openPage">
@@ -88,10 +88,7 @@
                               effect="light">
                     <p v-if="!edit"
                        class="ellipsis"
-                       @click="clickName(scope.row)">
-                      {{
-                        scope.row.name
-                    }}
+                       @click="clickName(scope.row)">{{scope.row.name}}
                     </p>
                   </el-tooltip>
                   <iInput v-else
@@ -99,7 +96,7 @@
                           v-model="scope.row.name"></iInput>
                 </el-col>
                 <el-col :span="4">
-                  <span v-if="scope.row.fileType == $t('TPZS.SCHEME_TYPE')">
+                  <span v-if="scope.row.fileType =='方案'">
                     <span class="number">
                       <p>{{ scope.row.reportList.length }}</p>
                     </span>

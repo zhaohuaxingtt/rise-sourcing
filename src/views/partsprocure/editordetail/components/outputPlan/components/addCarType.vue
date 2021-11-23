@@ -2,7 +2,7 @@
  * @Description: CF车型配置
  * @Author: tyra liu
  * @Date: 2021-11-16 16:54:18
- * @LastEditTime: 2021-11-22 17:49:55
+ * @LastEditTime: 2021-11-23 13:52:48
  * @LastEditors:  
 -->
 <template>
@@ -16,10 +16,6 @@
         <span class="title">{{language('CHEXING','车型')}}</span>
         <iSelect v-model="carTypeModel" @change="changeTable">
           <el-option
-            value=" "
-           :label="language('all','全部')"
-          ></el-option>
-          <el-option
             v-for="(item,index) in carTypeOptions"
             :key="index"
             :label="item.carTypeName"
@@ -30,36 +26,55 @@
       </div>
       <div class="top-right">
         <iButton @click="changeVisible">{{language('QUXIAO','取消')}}</iButton>
-        <iButton>{{language('YINGYONG','应用')}}</iButton>
+        <iButton @click="addTableCar">{{language('YINGYONG','应用')}}</iButton>
       </div>
     </div>
-    <tableList
-      lang
-      :tableTitle="carTableTitle"
-      :tableData="carTableData"
-    >
-    </tableList>
+    <div class="margin-bottom20">
+      <tableList
+        lang
+        :tableTitle="carTableTitle"
+        :tableData="carTableData"
+        :tableLoading="tableLoading"
+        @handleSelectionChange="handleSelectionChange"
+      >
+      </tableList>
+      <iPagination
+        v-update
+        @size-change="handleSizeChange($event, getTableListFn)"
+        @current-change="handleCurrentChange($event, getTableListFn)"
+        background
+        :current-page="page.currPage"
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :total="page.totalCount"
+      />
+    </div>
   </iDialog>
 </template>
 <script>
-import {iDialog, iButton, iSelect} from "rise"
+import {iDialog, iButton, iSelect, iMessage, iPagination} from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import {carTitle} from "../data"
 import {searchCarTypeConfig,searchCarType} from "@/api/partsprocure/home"
+import { pageMixins } from "@/utils/pageMixins";
 export default {
-  components: { iDialog, iButton, tableList, iSelect},
+  components: { iDialog, iButton, tableList, iSelect, iPagination},
   props: {
     dialogVisible: {
       type:Boolean,
       default:false
     }
   },
+  mixins: [pageMixins],
   data() {
     return {
       carTableTitle:[...carTitle],
       carTableData:[],
       carTypeOptions:[],
-      carTypeModel:''
+      carTypeModel:'',
+      tableLoading:false,
+      selectData:[]
     }
   },
   created() {
@@ -71,21 +86,34 @@ export default {
     },
     //通过零件采购项目查询车型
     getPartType() {
-      console.log('11111111111');
       searchCarType(this.$route.query.projectId).then(res => {
         if(res.code == '200') {
           this.carTypeOptions = res.data
         }
-        console.log(res,'111111111');
       })
     },
     changeTable(data) {
       this.getTableList(data)
     },
     getTableList(data) {
+      this.tableLoading = true
       searchCarTypeConfig(data).then(res=>{
-        console.log(res);
+        if(res.code == '200' ) {
+          this.tableLoading = false
+          this.carTableData = res.data || []
+        } else {
+          iMessage.error(res.desZh)
+        }
+      }).catch(()=>{
+        this.tableLoading = false
       })
+    },
+    handleSelectionChange(val) {
+      this.selectData = val
+    },
+    addTableCar() {
+      this.$emit('getSelectData', this.selectData)
+      this.$emit('changeVisible', false)
     }
     // 获取车型
     // getCartypeDict() {
