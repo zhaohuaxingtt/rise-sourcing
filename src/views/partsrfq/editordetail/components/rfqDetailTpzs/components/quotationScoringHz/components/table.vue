@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-23 21:04:01
+ * @LastEditTime: 2021-11-23 23:25:46
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -192,7 +192,6 @@
 import {removeKeysNumber,getPorpsNumber} from './data'
 import {icon} from 'rise'
 import moment from 'moment'
-import {toThousands} from '@/utils'
 export default{
   components:{icon},
   props:{
@@ -265,8 +264,8 @@ export default{
       }
     },
     ttoShow(data){
-      if(parseInt(data)){
-        return toThousands(parseInt(data)) 
+      if(data && parseInt(data)){
+        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }
@@ -671,11 +670,13 @@ export default{
                 border-bottom: none;
                 border-top-left-radius: 10px;
                 overflow: hidden;
+                min-width: 100px;
                 li{
                     border-bottom: 1px solid #C5CCD6;
                     line-height: 38px;
                     height: 38px;
                     padding: 0px 5px;
+                    text-align: center;
                     &:last-child{
                       border-bottom: none;
                     }
