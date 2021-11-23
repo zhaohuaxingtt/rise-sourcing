@@ -220,6 +220,8 @@ export default {
           // l1 l2 层级只有当heavyItem 中包含 buc才会限制
           if(row.cbdLevelCode != "3" && (row.heavyItem && row.heavyItem.indexOf('BUC')> -1)){
             return false
+          } else {
+            return true
           }
         }
     }
