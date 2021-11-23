@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-23 20:33:21
+ * @LastEditTime: 2021-11-23 21:04:01
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -71,7 +71,13 @@
                     <li></li>
                     <template v-for='(items,index) in ratingList.firstTile'>
                       <template v-if='ratingList.firstTile.length > 1'>
-                        <li :key='index' v-if='!items==""'>{{items}}</li>
+                        <li :key='index' v-if='!items==""'>
+                          <el-tooltip effect="light" :content="items">
+                            <div class="titleOverflow">
+                              {{items}}
+                            </div>
+                          </el-tooltip>
+                        </li>
                       </template>
                       <template v-else>
                         <li :key='index'>{{items}}</li>
@@ -583,6 +589,12 @@ export default{
       overflow:hidden;
       display: flex;
       border-top: none;
+      .titleOverflow{
+        margin: 0 0 0 25px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+      }
       ul{
         border-right: 1px solid #C5CCD6;
         border-top: 1px solid #C5CCD6;

@@ -40,13 +40,13 @@
         <div class="floatright"
              v-if="!disabled">
           <div v-if="!edit">
-            <iButton @click="newBob">{{ $t("TPZS.LK_CREATE") }}</iButton>
-            <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
-            <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
+            <iButton @click="newBob">{{ language('XINJIAN','新建') }}</iButton>
+            <iButton @click="editBob">{{language('BIANJI','编辑') }}</iButton>
+            <iButton @click="deleteBob">{{ language('SHANCHU','删除') }}</iButton>
           </div>
           <div v-else>
-            <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>
-            <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
+            <iButton @click="cancelEditBob">{{ language('QUXIAO','取消') }}</iButton>
+            <iButton @click="saveEdit">{{language('BAOCUN','保存') }}</iButton>
           </div>
         </div>
         <!-- <template v-slot:header-control> -->
@@ -61,7 +61,6 @@
                 :row-class-name="rowStyle"
                 :tree-props="{ children: 'children' }"
                 @selection-change="handleSelectionChange"
-                @select="rowSelect"
                 @select-all="selectAll">
         <el-table-column align="center"
                          header-align="center"
@@ -76,7 +75,7 @@
         </el-table-column>
         <el-table-column align="center"
                          header-align="center"
-                         :label="$t('TPZS.FXMC')"
+                         :label="language('FENXIMINGCHENG','分析名称')"
                          width="450">
           <template slot-scope="scope">
             <div class="openPage">
@@ -89,10 +88,7 @@
                               effect="light">
                     <p v-if="!edit"
                        class="ellipsis"
-                       @click="clickName(scope.row)">
-                      {{
-                        scope.row.name
-                    }}
+                       @click="clickName(scope.row)">{{scope.row.name}}
                     </p>
                   </el-tooltip>
                   <iInput v-else
@@ -100,7 +96,7 @@
                           v-model="scope.row.name"></iInput>
                 </el-col>
                 <el-col :span="4">
-                  <span v-if="scope.row.fileType == $t('TPZS.SCHEME_TYPE')">
+                  <span v-if="scope.row.fileType =='方案'">
                     <span class="number">
                       <p>{{ scope.row.reportList.length }}</p>
                     </span>
@@ -531,30 +527,30 @@ export default {
     handleSelectionChange (val) {
       this.selection = val;
     },
-    rowSelect (selection, row) {
-      if (row.fileList) { //只对有子节点的行响应
-        if (!row.isChecked) {   //由行数据中的元素isChecked判断当前是否被选中
-          row.fileList.map((item) => { //遍历所有子节点
-            this.$refs.dataTable.toggleRowSelection(item, true); //切换该子节点选中状态
-            /*
-            方法名                    说明                                      参数
-                                 用于多选表格，切换某一行的选中状态，         row, selected
-            toggleRowSelection   如果使用了第二个参数，则是设置这一行
-                                 选中与否（selected 为 true 则选中）
-             */
-            item.isChecked = true;
-          });
-          row.isChecked = true; //当前行isChecked标志元素切换为false
-        } else {
-          row.fileList.map((item) => {
-            this.$refs.dataTable.toggleRowSelection(item, false);
-            item.isChecked = false;
-          });
-          row.isChecked = false;
-        }
-        // console.log(this.multipleSelection, row);
-      }
-    },
+    // rowSelect (selection, row) {
+    //   if (row.fileList) { //只对有子节点的行响应
+    //     if (!row.isChecked) {   //由行数据中的元素isChecked判断当前是否被选中
+    //       row.fileList.map((item) => { //遍历所有子节点
+    //         this.$refs.dataTable.toggleRowSelection(item, true); //切换该子节点选中状态
+    //         /*
+    //         方法名                    说明                                      参数
+    //                              用于多选表格，切换某一行的选中状态，         row, selected
+    //         toggleRowSelection   如果使用了第二个参数，则是设置这一行
+    //                              选中与否（selected 为 true 则选中）
+    //          */
+    //         item.isChecked = true;
+    //       });
+    //       row.isChecked = true; //当前行isChecked标志元素切换为false
+    //     } else {
+    //       row.fileList.map((item) => {
+    //         this.$refs.dataTable.toggleRowSelection(item, false);
+    //         item.isChecked = false;
+    //       });
+    //       row.isChecked = false;
+    //     }
+    //     // console.log(this.multipleSelection, row);
+    //   }
+    // },
     selectAll (selection) {
       // selection 是选中的数据集合
       this.$refs.dataTable.data.map((items) => { //使用$ref获取注册的子组件信息，用data获取所有行，并用map函数遍历行
