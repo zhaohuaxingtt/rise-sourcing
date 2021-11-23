@@ -874,7 +874,7 @@ export default {
       //保存
       saveBiddingQuotation(formData)
         .then((res) => {
-          if (res.code == '200') {
+          if (res) {
             this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
           }
           callback && callback();
