@@ -134,7 +134,7 @@ export default {
             const {code,data} = res;
             if(code === '200' && data){
             const { records=[],total } = data;
-            records.forEach(val => val.mtz === true ? val.mtz = 'MTZ' : val.mtz  = '');
+            records.forEach(val => val.mtz === true ? val.mtz = '是' : val.mtz  = '否');
 
             this.tableListData = records.map(item => {
                const result = { ...item }

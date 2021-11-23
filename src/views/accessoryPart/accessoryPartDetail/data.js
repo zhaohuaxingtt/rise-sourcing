@@ -40,3 +40,10 @@ export const detailList = [
   {value: 'reason', label: '理由', type: 'input', key: 'LIYOU', row: 1},
   {value: 'remark', label: '备注说明', type: 'input', key: 'BEIZHUSHUOMING', row: 1}
 ]
+
+export const fileTableTitle = [
+  { props: "fileName", name: "文件名称", key: "WENJIANMINGCHENG", tooltip: true },
+  { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
+  { props: "uploadDate", name: "上传日期", key: "SHANGCHUANRIQI", tooltip: true },
+  { props: "uploadBy", name: "上传人", key: "SHANGCHUANREN", tooltip: true }
+]

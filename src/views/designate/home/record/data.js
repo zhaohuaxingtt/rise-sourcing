@@ -88,7 +88,7 @@ export const detailList = [
   {value: 'carTypeProj', label: '车型项目', type: 'input', key: 'CHEXINGXIANGMU',},
   {value: 'buyerName', label: '询价采购员', type: 'input', key: 'XUNJIACAIGOUYUAN',},
   {value: 'linie', label: 'LINIE', type: 'input', key: 'LINIE'},
-  {value: 'linieDeptName', label: 'LINIE部门', type: 'input', key: 'LINIEBUMEN'},
+  {value: 'linieDeptNum', label: 'LINIE部门', type: 'input', key: 'LINIEBUMEN'},
   {value: 'nominateTime', label: '定点时间', type: 'input', key: 'DINGDIANSHIJIAN'},
 ]
 

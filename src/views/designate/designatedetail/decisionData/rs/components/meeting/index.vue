@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-22 17:27:52
+ * @LastEditors:  
+ * @LastEditTime: 2021-11-22 20:01:01
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -464,7 +464,8 @@ export default {
 
     // 获取汇率
     searchRsPageExchangeRate() {
-      searchRsPageExchangeRate(this.$route.query.desinateId)
+      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+      searchRsPageExchangeRate(id)
       .then(res => {
         if (res.code == 200) {
           if (this.basicData.currency) {
