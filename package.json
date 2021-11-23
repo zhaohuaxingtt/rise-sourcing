@@ -45,7 +45,7 @@
     "postcss-px2rem": "0.3.0",
     "powerbi-client": "^2.17.2",
     "px2rem-loader": "0.1.9",
-    "rise": "^2.4.8",
+    "rise": "^2.5.8",
     "sass": "^1.26.10",
     "sass-loader": "9.0.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
