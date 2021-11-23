@@ -101,7 +101,12 @@
             popper-class="tableTitleTip"
             :visible-arrow="false">
             <template slot="">
-              <p v-for="(item, index) in (scope.row.fileList || [])" :key="index">{{item.fileName}}</p>
+              <div v-if="Array.isArray(scope.row.fileList) && scope.row.fileList.length">
+                <p v v-for="(item, index) in (scope.row.fileList || [])" :key="index">{{item.fileName}}</p>
+              </div>
+              <div v-else style="text-align: center">
+                {{ language("WUNEIRONG", "无内容") }}
+              </div>
             </template>
             <span slot="reference" @click="handleAttachmentDonwload(scope.row)" class="openLinkText cursor">下载</span>
           </el-popover>

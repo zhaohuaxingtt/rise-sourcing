@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-18 18:44:33
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-23 16:47:23
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
 -->
@@ -15,11 +15,12 @@
         <iNavMvp lang :query='$route.query' :lev='2' routerPage :list='navList' @change='changeRouter'></iNavMvp>
       </div>
       <div class="btnList">
+        <iButton @click="handleApplyModuleTargetPrice" :loading="checkApplyLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
+          {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
+        </iButton>
         <span v-if="!disabled">
           <iButton @click="goToCesPage">{{ language('LK_XINGJIANCESHIXIANM','新建测试项目') }}</iButton>
-          <iButton @click="handleApplyModuleTargetPrice" :loading="checkApplyLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
-            {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
-          </iButton>
+          
           <iButton :loading="newRfqOpenValidateLoading" @click="newRfq" v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND|新建RFQ轮次">
             {{
             language('LK_XINJIANRFQLUNCI','新建RFQ轮次')
@@ -514,7 +515,7 @@ export default {
   .btnList {
     > span {
       font-size: 20px;
-      margin-left: 30px;
+      margin-left: 10px;
     }
   }
 }

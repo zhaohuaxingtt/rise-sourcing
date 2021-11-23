@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-09 21:39:29
+ * @LastEditTime: 2021-11-23 11:18:20
  * @Description: 模具目标价-目标价签收
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\index.vue
 -->
@@ -57,6 +57,10 @@
         @handleSelectionChange="handleSelectionChange" 
         @openAttachmentDialog="openAttachmentDialog"
       >
+        <template #tuzhi="scope">
+          <span v-if="!$store.state.permission.userInfo.isDeptLead && $store.state.permission.userInfo.deptDTO.level === 'K3' && scope.row.approvalStatus == 0"></span>
+          <span class="openLinkText cursor" v-else @click="openAttachmentDialog(scope.row)">{{language('CHAKAN','查看')}}</span>
+        </template>
       </tableList>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -131,7 +135,6 @@ export default {
         { name: this.language("FOU", "否"), code: false }
       ]
     }
-
     this.getTableList()
   },
   methods: {
@@ -334,5 +337,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.openLinkText{
+  color:$color-blue;
+  text-decoration: underline;
+}
 </style>

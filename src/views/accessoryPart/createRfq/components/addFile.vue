@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 19:46:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-17 01:37:38
+ * @LastEditTime: 2021-11-23 10:30:09
  * @Description: 添加附件弹窗
- * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addFile.vue
+ * @FilePath: \front-sourcing\src\views\accessoryPart\createRfq\components\addFile.vue
 -->
 
 <template>
@@ -138,7 +138,8 @@ export default {
         iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEFUJIAN','请选择未分配RFQ的附件'))
         return
       }
-      const selectLINIE = uniq(this.selectParts.map(item => item.csfuserId))
+      // eslint-disable-next-line no-undef
+      const selectLINIE = _.uniq(this.selectParts.map(item => item.csfuserId))
       if (selectLINIE.length > 1 || selectLINIE[0] !== this.$route.query.linie) {
         iMessage.warn(this.language('QINGXUANZEXIANGTONGLINIEDEFUJIAN','请选择相同LINIE的附件'))
         return
