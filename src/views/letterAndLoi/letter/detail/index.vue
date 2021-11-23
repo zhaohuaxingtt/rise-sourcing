@@ -75,6 +75,8 @@
 
         <!-- 历史定点信弹窗 -->
         <historyDialog v-if="showHistory" :dialogVisible="showHistory" @changeVisible="changeShowHistory" :nominateLetterId ="nominateLetterId"/>
+        <!-- 日志弹窗 -->
+        <iLog :show.sync="showLogDialog" :module="module"></iLog>
     </iPage>
 </template>
 
@@ -92,6 +94,7 @@ import {
 import logButton from "@/components/logButton"
 import historyDialog from './components/historyDialog'
 import nonStandard from './components/nonStandard'
+import { setLogMenu } from "@/utils";
 import {
     getLetterDetail,
     downloadLetterFile,
@@ -105,6 +108,7 @@ import {
     fsConfirm,
 } from  '@/api/letterAndLoi/letter'
 import {user as configUser } from '@/config'
+import iLog from '@/views/aeko/log'
 export default {
     name:'letterDetail',
     components:{
@@ -118,6 +122,7 @@ export default {
         iFormItem,
         iText,
         iSelect,
+        iLog,
     },
     data(){
         return{
@@ -137,6 +142,8 @@ export default {
                 lineBack:false,
                 complete:false,
             },
+            showLogDialog:false,
+            module:'定点信'
 
         }
     },
@@ -329,10 +336,12 @@ export default {
 
         // 跳转查看日志
         toLogPage() {
-        const id = this.$route.query.id
-        if (id) {
-            window.open(`/#/log?recordId=${id}`, '_blank')
-        }
+            // const id = this.$route.query.id
+            // if (id) {
+            //     window.open(`/#/log?recordId=${id}`, '_blank')
+            // }
+            // setLogMenu('AEKO管理-列表')
+            this.showLogDialog = true;
         },
     }
 }
