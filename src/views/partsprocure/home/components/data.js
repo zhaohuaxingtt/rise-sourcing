@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-11-11 14:33:45
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-23 10:38:15
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
  */
@@ -21,22 +21,6 @@ export const tableTitle = [{
 		props: 'partNum',
 		name: '零件号',
 		key: 'partsprocure.PARTSPROCUREPARTNUMBER',
-		tooltip: true,
-		width:130,
-		isAekoShow:true,
-	},
-	{
-		props: 'code',
-		name: '采购申请编号',
-		key: 'partsprocure.PARTSPROCUREPUECHASEAPPLYNUMBER',
-		tooltip: true,
-		width:150,
-		isAekoShow:true,
-	},
-	{
-		props: 'item',
-		name: '项次号',
-		key: 'partsprocure.PARTSPROCUREPITEM',
 		tooltip: true,
 		width:130,
 		isAekoShow:true,

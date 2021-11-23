@@ -25,6 +25,8 @@
         :tableLoading="loading"
         :editable = "perCarDosage"
         @handleSelectionChange="handleSelectionChange"
+        @getIndex="getIndex" 
+        @isNum="isNum"
       />
       <iPagination
         class="pagination margin-top30"
@@ -37,10 +39,9 @@
         :layout="page.layout"
         :total="page.totalCount"
 		    v-update
-        
       />
     </div>
-      <addCarType :dialogVisible="carTypeVisible" @changeVisible="changeVisible">
+      <addCarType :dialogVisible="carTypeVisible" @changeVisible="changeVisible" @getSelectData="getSelectData">
 
       </addCarType>
   </iCard>
@@ -55,8 +56,12 @@ import {
   getPerCarDosageVersion,
   getPerCarDosageInfo,
 } from "@/api/partsign/editordetail";
+import {
+  savearDosage,
+  getCarDosage
+  // getPerCarDosageInfo,
+} from "@/api/partsprocure/editordetail";
 import addCarType from './components/addCarType'
-import { log } from 'util';
 export default {
   components: { iCard, tableList, iPagination, iButton, addCarType },
   mixins: [pageMixins],
@@ -70,33 +75,8 @@ export default {
       tpId: "",
       isEdit:false,
       carTypeVisible:false,
-      tableListDatatem:[
-        {
-          partNum:'11'
-        },
-         {
-          partNum:'11'
-        },
-         {
-          partNum:'11'
-        },
-         {
-          partNum:'11'
-        },
-         {
-          partNum:'11'
-        },
-         {
-          partNum:'11'
-        },
-         {
-          partNum:'11'
-        },
-         {
-          partNum:'11'
-        }
-      ],
-      selectData:[]
+      selectData:[],
+      getPerCarDosage:{}
     };
   },
   props: {
@@ -111,7 +91,7 @@ export default {
   },
   methods: {
     async getData() {
-      if (this.params.partProjectSource != 1) return // 手工创建的采购项目不调用该接口
+      // if (this.params.partProjectSource != 1) return // 手工创建的采购项目不调用该接口
 
       this.loading = true;
 
@@ -193,28 +173,18 @@ export default {
     },
     //向下填充
     fillDown() {
-      let data={
-        dataDown : '',
-        indexDown : ''
-      }
-      this.tableListDatatem.forEach((value,index) => {
-        if(value.perCarDosage) {
-          data.dataDown = value.perCarDosage
-          data.indexDown = index
+      let data = [...this.tableListData]
+      data.forEach((val,index)=>{
+        if(index>this.getPerCarDosage.index){
+          val.perCarDosage = this.getPerCarDosage.perCar
         }
       })
-      let tableTem = [...this.tableListDatatem]
-      tableTem.forEach(() => {
-        tableTem[data.indexDown++].perCarDosage =data.dataDown
-      console.log(tableTem);
-         
-      })
-      this.tableListDatatem = tableTem
+      this.tableListData = data
     },
     //保存
     saveData() {
       let flag = true
-       this.tableListDatatem.forEach(val => {
+       this.tableListData.forEach(val => {
         if(!val.perCarDosage) {
           flag=false
         }
@@ -222,7 +192,40 @@ export default {
       if(flag == false) {
         iMessage.error(this.language(' WEITIANXIEMEICHEYONGLIANGDEJILU,BUKEBAOCUN', '存在未填写每车用量的记录，不可保存'))
         return
-      } 
+      }  else {
+
+        savearDosage([...this.tableListData]).then(res=>{
+          if(res.code == '200') {
+            this.getData()
+          } else {
+            iMessage.error(res.desZh)
+          }
+        })
+      }
+    },
+    //获取输入框的index和值
+    getIndex(index,perCar) {
+      this.getPerCarDosage.index = index
+      this.getPerCarDosage.perCar = perCar
+    },
+    //添加表格数据
+    getSelectData(val) {
+      console.log(val,'-------------------');
+      if(this.tableListData.length == '0') {
+        this.tableListData = val
+      } else {
+
+      }
+    },
+    //输入整数
+    isNum(val,key,idx) {
+      this.tableListData.forEach((value,index)=>{
+        if(index == idx) {
+          value.perCarDosage =  (val + '').replace(/\D/g, '')
+          console.log(value.perCarDosage,);
+        }
+      })
+      console.log(idx,val,key,'++++++++++sdfsdfjldskjfjdlkfj');
     }
   },
 };
