@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-23 18:51:19
- * @LastEditors:  
+ * @LastEditTime: 2021-11-23 22:05:06
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
@@ -53,9 +53,18 @@
 					</iButton>
 					<!-- <iButton @click="back">{{ language("LK_FANHUI",'返回') }}</iButton> -->
 				</span>
-				<logButton class="margin-left20" @click="log" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOG|log" />
+				<!-- <logButton class="margin-left20" @click="log" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOG|log" /> -->
+				<iLoger
+					:config="{
+						module_obj_ae: '零件采购项目', 
+						bizId_obj_ae: 'projectId', 
+						queryParams:['bizId_obj_ae']}"
+					credentials
+					isPage
+					class="margin-left20"
+					v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOG|log" />
 				<span>
-					<icon symbol name="icondatabaseweixuanzhong"></icon>
+					<icon symbol name="icondatabaseweixuanzhong" style="font-size:14px;margin-left: 10px"></icon>
 				</span>
 			</div>
 		</div>
@@ -419,7 +428,7 @@
 	import sheet from "./components/drawingSheet/sheet";
 	import remarks from "./components/remarks";
 	import backItems from "@/views/partsign/home/components/backItems";
-	import logButton from "@/components/logButton";
+	// import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
 	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
 	import {dictkey,checkFactory,purchasingLiline,purchasingDept} from "@/api/partsprocure/editordetail";
@@ -435,8 +444,9 @@
 	import { getNominateDisabled } from "rise/web/common"
     import purchaseApply from "./components/purchaseApply"
 		import { getEnumValue } from "@/config"
+		import iLoger from 'rise/web/components/iLoger'
 	export default {
-		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs, purchaseApply},
+		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,iLoger,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs, purchaseApply},
 		provide:function(){
 			return {detailData:this.getDetailData, getDisabled: this.getDisabled}
 		},
