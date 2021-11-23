@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-11-17 11:11:10
+ * @LastEditTime: 2021-11-23 15:31:29
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
@@ -13,7 +13,7 @@
     <template v-for="(item, $index) in tableTitle">
       <el-table-column :key="$index" align="center"  v-if='item.editable' :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
         <template slot-scope="scope">
-          <iInput v-if="item.type === 'input'" v-model="scope.row[item.props]"></iInput>
+          <iInput v-if="item.type === 'input'" v-model="scope.row[item.props]" @blur="getIndex(scope.$index,scope.row[item.props])" @input="isNum($event,scope.row[item.props],scope.$index)" ></iInput>
         </template>
       </el-table-column>
       <el-table-column :key="$index" align="center"  v-else :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
@@ -122,6 +122,12 @@ export default {
     },
     handleRowClick(row, column, event) {
       this.$emit("handleRowClick", row, column, event)
+    },
+    getIndex(index,row){
+      this.$emit("getIndex",index,row)
+    },
+    isNum(val,key,index) {
+      this.$emit("isNum",val,key,index)
     }
   }
 }
