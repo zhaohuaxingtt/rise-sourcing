@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-24 16:39:44
+ * @LastEditTime: 2021-11-24 17:10:15
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -281,6 +281,10 @@
                 :key="item"
               ></el-option>
             </iSelect>
+          </template>
+          <!-- B价变动含分摊 -->
+          <template #bpriceChange="scope">
+            <span>{{scope.row.bpriceChange | thousandsFilter}}</span>
           </template>
           <template #isMtz="scope">
             <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
