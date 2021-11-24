@@ -8,13 +8,16 @@
  */
 export default [
   {
-    path: "/",
+    path: "/costanalysismanageFrame",
+    meta: { title: "KM成本分析" },
+    name: "costanalysismanageFrame",
     component: () => import("@/layout/default"),
+    redirect: "costanalysismanage/home",
     children: [
       {
         path: "/costanalysismanage",
         name: "costanalysismanage",
-        meta: { title: "KM成本分析" },
+        meta: { title: "KM成本分析-首页" },
         component: () => import("@/views/costanalysismanage"),
         redirect: "costanalysismanage/home",
         children: [
