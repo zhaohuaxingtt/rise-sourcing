@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-11-22 16:30:29
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-24 12:12:54
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
@@ -74,7 +74,7 @@ export default {
   async created() {
     const roleList = this.roleList;
     this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
-    this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+    this.isCommodityCoordinator = roleList.includes('AEKOKSXTDY'); // Aeko科室协调员
     this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
     // 判断下多角色情况 若多角色时就判断url的跳转来源

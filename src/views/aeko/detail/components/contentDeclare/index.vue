@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-17 12:48:44
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-24 11:55:47
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -245,12 +245,12 @@
             </div>
           </template>
           <template #oldPartNumPreset="scope">
-            <iInput v-if="scope.row.status === 'EMPTY'||scope.row.status === 'TOBE_STATED' && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.oldPartNumPreset" readonly>
+            <iInput v-if="scope.row.status === 'EMPTY'||scope.row.status === 'TOBE_STATED' && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.showPartNumPreset" readonly>
               <div class="inputSearchIcon" slot="suffix">
                 <icon symbol name="iconshaixuankuangsousuo" class="oldPartNumPresetIcon" @click.native="oldPartNumPresetSelect(scope.row)" />
               </div>
             </iInput>
-            <iInput v-else v-model="scope.row.oldPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
+            <iInput v-else v-model="scope.row.showPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
           </template>
           <template #dosage="scope">
             <span v-if="scope.row.status !='EMPTY'" class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -569,7 +569,12 @@ export default {
         })
         .then(res => {
           if (res.code == 200) {
-            this.tableListData = Array.isArray(res.data) ? res.data : []
+            const list = res.data || [];
+            // isDeclare：0是预设 取oldPartNumPreset（可能为空）  isDeclare：1不预设 取originPartNum 
+            list.map((item)=>{
+              item.showPartNumPreset = item.isDeclare == 1 ? item.originPartNum : item.oldPartNumPreset
+            })
+            this.tableListData = Array.isArray(res.data) ? list : []
             this.tableListData.map(o => {
               // 分组管理需要备份原始分组名称
               o.groupNameBak = o.groupName
