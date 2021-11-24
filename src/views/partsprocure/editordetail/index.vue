@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-23 22:05:06
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-24 11:12:34
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
@@ -569,7 +569,7 @@
 				this.detailData.linieId = ''
 				const currentLinieDept = this.fromGroup["LINIE_DEPT"].find(item => item.deptNum === this.detailData.linieDept)
 
-				this.getLinie(currentLinieDept.code)
+				this.getLinie(currentLinieDept.deptNum)
 			},
 			getLinie(id){
 				if (!id) return
