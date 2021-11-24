@@ -76,7 +76,7 @@
                          v-model="filterCarValue"
                          :data="carType"
                          :multiple="true"
-                         multiple-limit="5"
+                         multiple-limit="4"
                          label="description"
                          value="modelNameZh"
                          @change="handleChangeCarVal" />
@@ -221,6 +221,7 @@ export default {
       categoryCode: '',
       mark: '',
       markShow: false,
+      operateLogClon:[],
       carType: [], //车型项目
       dictData: {
         CATEGORY_MANAGEMENT_CAR_TYPE: [],
@@ -307,6 +308,7 @@ export default {
         if (res.data) {
           let operateLog = JSON.parse(res.data.operateLog)
           if (operateLog) {
+                  this.operateLogClon = operateLog;
             this.filterCarValueName = operateLog.filterCarValue
             this.carType.forEach((item) => {
               this.filterCarValueName.forEach((i) => {
@@ -419,14 +421,33 @@ export default {
       }
       await carTypeByCategoryCode(params).then((res) => {
         this.carType = res.data
+        console.log(res.data)
       })
     },
     // 重置
     reset() {
-      this.selectDate = []
-      this.filterCarValue = []
-      this.filterCarValueName = []
-      this.config.pageName = ''
+        this.filterCarValue=[]
+        this.getCategoryAnalysis()
+//    console.log(this.operateLogClon);
+//       if (this.operateLogClon) {
+//         this.filterCarValue = [];
+//         this.filterCarValueName = [];
+//         this.config.pageName = this.operateLogClon.pageName;
+//         this.selectDate = this.operateLogClon.selectDate;
+//         this.filterCarValueName = this.operateLogClon.filterCarValue;
+//         this.carType.forEach((item) => {
+//           this.filterCarValueName.forEach((i) => {
+//             if (item.modelNameZh === i) {
+//               this.filterCarValue.push(item);
+//             }
+//           });
+//         });
+//       } else {
+//         this.filterCarValue = [];
+//         this.filterCarValueName = [];
+//         this.selectDate = [];
+//         this.config.pageName = "";
+//       }
       this.renderBi()
     },
     // 初始化配置
