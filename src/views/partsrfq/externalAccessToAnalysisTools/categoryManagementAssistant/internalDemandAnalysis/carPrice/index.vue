@@ -507,9 +507,8 @@ export default {
             item.modelNameZh == 'New Santana PA' ||
             item.modelNameZh == 'Tiguan L PA' ||
             item.modelNameZh == 'Passat NF' ||
-            item.modelNameZh == 'Teramont PA' ||
-            item.modelNameZh == 'Lamando' ||
-            item.modelNameZh == 'Gran Santana'
+            item.modelNameZh == 'Teramont PA' 
+ 
           ) {
             this.filterCarValue.push(item)
           }
