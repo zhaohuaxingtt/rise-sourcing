@@ -14,32 +14,33 @@ export default [
       {
         path: "/costanalysismanage",
         name: "costanalysismanage",
+        meta: { title: "KM成本分析" },
         component: () => import("@/views/costanalysismanage"),
         redirect: "costanalysismanage/home",
         children: [
           {
             path: "home",
             name: "costAnalysisManageHome",
-            meta: { title: "成本分析管理" },
+            meta: { title: "KM成本分析-成本分析管理" },
             component: () => import("@/views/costanalysismanage/components/home"),
           },
           {
             path: "datamaintenance",
             name: "costAnalysisManageDataMaintenance",
-            meta: { title: "数据维护" },
+            meta: { title: "KM成本分析-数据维护" },
             component: () => import("@/views/costanalysismanage/components/datamaintenance"),
             redirect: "datamaintenance/costMaintenance",
             children: [
               {
                 path: "costMaintenance",
                 name: "laborCostMaintenance",
-                meta: { title: "人工成本维护" },
+                meta: { title: "KM成本分析-人工成本维护" },
                 component: () => import("@/views/costanalysismanage/components/datamaintenance/components/costMaintenance"),
               },
               {
                 path: "costDataMaintenance",
                 name: "laborCostDataMaintenance",
-                meta: { title: "人工成本数据维护" },
+                meta: { title: "KM成本分析-人工成本数据维护" },
                 component: () => import("@/views/costanalysismanage/components/datamaintenance/components/costDataMaintenance"),
               },
             ]
@@ -49,13 +50,13 @@ export default [
       {
         path: "/costanalysismanage/rfqdetail",
         name: "costAnalysisManageRfqDetail",
-        meta: { title: "RFQ详情" },
+        meta: { title: "KM成本分析-RFQ详情" },
         component: () => import("@/views/costanalysismanage/components/rfqdetail"),
       },
       {
         path: "/costanalysismanage/costanalysis",
         name: "costAnalysisManageCostAnalysis",
-        meta: { title: "成本分析" },
+        meta: { title: "KM成本分析-成本分析" },
         component: () => import("@/views/costanalysismanage/components/costanalysis"),
       }
     ]
