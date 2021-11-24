@@ -100,7 +100,7 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <!-- 操作 -->
-          <template slot="caozuo" slot-scope="scope">
+          <!-- <template slot="caozuo" slot-scope="scope">
             <span>
               <a
                 href="javascript:void(0)"
@@ -110,7 +110,7 @@
                 <i class="el-icon-edit"> </i>
               </a>
             </span>
-          </template>
+          </template> -->
         </commonTable>
       </div>
     </iCard>

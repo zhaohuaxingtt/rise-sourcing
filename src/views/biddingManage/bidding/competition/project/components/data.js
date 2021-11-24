@@ -214,7 +214,7 @@ export const multiPleTableTitle = [
     rule: [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
-        pattern: /^\d+$|^\d*\.\d*$/g,
+        pattern: /^[\d]{0,15}(\.[\d]{0,2})?$/g,
         required: true,
         trigger: 'blur'
       }
@@ -227,7 +227,7 @@ export const multiPleTableTitle = [
     rule: [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
-        pattern: /^\d+$|^\d*\.\d*$/g,
+        pattern: /^[\d]{0,15}(\.[\d]{0,2})?$/g,
         trigger: 'blur'
       }
     ],
@@ -239,7 +239,7 @@ export const multiPleTableTitle = [
     rule: [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
-        pattern: /^\d+$|^\d*\.\d*$/g,
+        pattern: /^[\d]{0,15}(\.[\d]{0,2})?$/g,
         trigger: 'blur'
       }
     ],
@@ -251,7 +251,7 @@ export const multiPleTableTitle = [
     rule: [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
-        pattern: /^\d+$|^\d*\.\d*$/g,
+        pattern: /^[\d]{0,15}(\.[\d]{0,2})?$/g,
         trigger: 'blur'
       }
     ],
@@ -265,7 +265,7 @@ export const multiPleTableTitle = [
     props: "moldFee",
     rule: [
       {
-        pattern: /^\d+$|^\d*\.\d*$/g,
+        pattern: /^[\d]{0,15}(\.[\d]{0,2})?$/g,
         trigger: 'blur'
       }
     ],
@@ -275,7 +275,7 @@ export const multiPleTableTitle = [
     props: "developFee",
     rule: [
       {
-        pattern: /^\d+$|^\d*\.\d*$/g,
+        pattern:/^[\d]{0,15}(\.[\d]{0,2})?$/g,
         // required: true,
         trigger: 'blur'
       }
@@ -286,7 +286,7 @@ export const multiPleTableTitle = [
     props: "targetPrice",
     rule: [
       {
-        pattern: /^\d+$|^\d*\.\d*$/g,
+        pattern: /^[\d]{0,15}(\.[\d]{0,2})?$/g,
         // required: true,
         trigger: 'blur'
       }
