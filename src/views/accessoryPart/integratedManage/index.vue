@@ -30,7 +30,8 @@
                     :label="item.label"
                     :value="item.value">
                   </el-option>  
-                </iSelect> 
+                </iSelect>
+                 <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
                 <iInput v-else v-model="searchParams[item.value]" @input="item.inputType ? handleInput($event, item, searchParams) : ''" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
@@ -103,7 +104,7 @@
 </template>
 
 <script>
-import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp } from 'rise'
+import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, searchList, TAB } from './data'
@@ -129,7 +130,7 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMultiLineInput, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog },
   data() {
     return {
       // 零件项目类型
