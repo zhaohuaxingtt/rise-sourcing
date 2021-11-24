@@ -221,7 +221,7 @@ export default {
       categoryCode: '',
       mark: '',
       markShow: false,
-      operateLogClon:[],
+      operateLogClon: [],
       carType: [], //车型项目
       dictData: {
         CATEGORY_MANAGEMENT_CAR_TYPE: [],
@@ -262,7 +262,7 @@ export default {
       this.selectDate = []
       this.filterCarValue = []
       this.config.pageName = ''
-     await this.carTypeByCategoryCode()
+      await this.carTypeByCategoryCode()
       await this.getCategoryAnalysis()
       this.renderBi()
     },
@@ -309,7 +309,8 @@ export default {
         if (res.data) {
           let operateLog = JSON.parse(res.data.operateLog)
           if (operateLog) {
-                  this.operateLogClon = operateLog;
+            console.log(11111)
+            this.operateLogClon = operateLog
             this.filterCarValueName = operateLog.filterCarValue
             this.carType.forEach((item) => {
               this.filterCarValueName.forEach((i) => {
@@ -318,17 +319,27 @@ export default {
                 }
               })
             })
-         
+
             this.config.pageName = operateLog.pageName
             this.selectDate = operateLog.selectDate
             this.mark = operateLog.mark
           } else {
-         
+            console.log(22222)
+            this.operateLogClon = null
+            this.filterCarValueName = []
+            //    this.filterCarValueName = operateLog.filterCarValue
+            //     this.carType.forEach((item) => {
+            //       this.filterCarValueName.forEach((i) => {
+            //         if (item.modelNameZh === i) {
+            //           this.filterCarValue.push(item)
+            //         }
+            //       })
+            //     })
             this.config.pageName =
               this.dictData.CATEGORY_MANAGEMENT_CAR_TYPE[2].code
             this.selectDate = [this.getFirstMonth(), this.getLastMonth()]
-    
           }
+          console.log(this.operateLogClon)
           // else {
           //   let newArr = window._.clone(this.carType).splice(0, 5);
           //   this.filterCarValueName = newArr.map((item, i) => item.modelNameZh);
@@ -384,6 +395,7 @@ export default {
             pageName: this.config.pageName,
           }),
         }
+        console.log(params)
         categoryAnalysis(params).then((res) => {
           this.saveLoading = false
           if (res.code == '200') {
@@ -426,29 +438,30 @@ export default {
       })
     },
     // 重置
-    reset() {
-        this.filterCarValue=[]
-        this.getCategoryAnalysis()
-//    console.log(this.operateLogClon);
-//       if (this.operateLogClon) {
-//         this.filterCarValue = [];
-//         this.filterCarValueName = [];
-//         this.config.pageName = this.operateLogClon.pageName;
-//         this.selectDate = this.operateLogClon.selectDate;
-//         this.filterCarValueName = this.operateLogClon.filterCarValue;
-//         this.carType.forEach((item) => {
-//           this.filterCarValueName.forEach((i) => {
-//             if (item.modelNameZh === i) {
-//               this.filterCarValue.push(item);
-//             }
-//           });
-//         });
-//       } else {
-//         this.filterCarValue = [];
-//         this.filterCarValueName = [];
-//         this.selectDate = [];
-//         this.config.pageName = "";
-//       }
+    async reset() {
+      this.filterCarValue = []
+      //   await  this.carTypeByCategoryCode()
+      //    console.log(this.operateLogClon);
+      //       if (this.operateLogClon) {
+      //         this.filterCarValue = [];
+      //         this.filterCarValueName = [];
+      //         this.config.pageName = this.operateLogClon.pageName;
+      //         this.selectDate = this.operateLogClon.selectDate;
+      //         this.filterCarValueName = this.operateLogClon.filterCarValue;
+      //         this.carType.forEach((item) => {
+      //           this.filterCarValueName.forEach((i) => {
+      //             if (item.modelNameZh === i) {
+      //               this.filterCarValue.push(item);
+      //             }
+      //           });
+      //         });
+      //       } else {
+      //         this.filterCarValue = [];
+      //         this.filterCarValueName = [];
+      //         this.selectDate = [];
+      //         this.config.pageName = "";
+      //       }
+      await this.getCategoryAnalysis()
       this.renderBi()
     },
     // 初始化配置
@@ -468,30 +481,49 @@ export default {
       this.filter.values = [this.categoryCode]
       filterArr.push(this.filter)
       // 如果没有车型
+      console.log(this.filterCarValueName)
       if (this.filterCarValueName.length == 0) {
-        let newArr = []
+        let newArr = window._.clone(this.carType)
         //  newArr = window._.clone(this.carType).splice(0, 5)
-        this.carType.forEach((v) => {
-          if (
-            v.description == 'Lavida NF PA' ||
-            v.description == 'New Santana PA' ||
-            v.description == 'Tiguan L PA' ||
-            v.description == 'Passat NF' ||
-            v.description == 'Teramont PA'
-          ) {
-            newArr.push(v)
-          }
-        })
-        console.log(newArr)
-        this.filterCarValueName = newArr.map((item, i) => item.modelNameZh)
+        // this.carType.forEach((v) => {
+        //   if (
+        //     v.description == 'Lavida NF PA' ||
+        //     v.description == 'New Santana PA' ||
+        //     v.description == 'Tiguan L PA' ||
+        //     v.description == 'Passat NF' ||
+        //     v.description == 'Teramont PA'||
+        //     v.description=='Superb NF'||
+        //     v.description=='Gran Lavida FL'
+        //   ) {
+        //     newArr.push(v)
+        //   }
+        // })
 
         this.carType.forEach((item) => {
-          this.filterCarValueName.forEach((i) => {
-            if (item.modelNameZh === i) {
-              this.filterCarValue.push(item)
-            }
-          })
+          //   this.filterCarValueName.forEach((i) => {
+          // if (item.modelNameZh === i) {
+          if (
+            item.modelNameZh == 'Lavida NF PA' ||
+            item.modelNameZh == 'New Santana PA' ||
+            item.modelNameZh == 'Tiguan L PA' ||
+            item.modelNameZh == 'Passat NF' ||
+            item.modelNameZh == 'Teramont PA' 
+ 
+          ) {
+            this.filterCarValue.push(item)
+          }
+
+          // }
+          //   })
         })
+        if (this.filterCarValue.length > 0) {
+          this.filterCarValueName = this.filterCarValue.map(
+            (item, i) => item.modelNameZh
+          )
+        }
+        console.log(this.filterCarValue)
+
+        console.log(this.filterCarValueName)
       }
       this.filter_car.values = this.filterCarValueName
       filterArr.push(this.filter_car)

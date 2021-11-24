@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-23 16:57:45
+ * @LastEditTime: 2021-11-24 10:13:06
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -22,13 +22,13 @@
       <template #expectedTargetPrice="scope">
         <iText v-if="applyType !== '1'">{{scope.row.expectedTargetPrice}}</iText>
         <span v-else-if="scope.row.businessType == '2' && !scope.row.isEdit">{{scope.row.expectedTargetPrice}}</span>
-        <iInput v-else :value="scope.row.expectedTargetPrice" maxlength="10" @input="handleInput($event, scope.row, 'expectedTargetPrice')" />
+        <iInput v-else :value="scope.row.expectedTargetPrice" maxlength="8" @input="handleInput($event, scope.row, 'expectedTargetPrice')" />
       </template>
       <!-----------目标价--------------------------->
       <template #targetPrice="scope">
         <iText v-if="applyType !== '2'">{{scope.row.targetPrice}}</iText>
         <span v-else-if="!scope.row.expectedTargetPrice && !scope.row.isEdit">{{scope.row.targetPrice}}</span>
-        <iInput v-else :value="scope.row.targetPrice" maxlength="10" @input="handleInput($event, scope.row, 'targetPrice')" />
+        <iInput v-else :value="scope.row.targetPrice" maxlength="8" @input="handleInput($event, scope.row, 'targetPrice')" />
       </template>
       <!-----------操作--------------------------->
       <template #operation="scope">
