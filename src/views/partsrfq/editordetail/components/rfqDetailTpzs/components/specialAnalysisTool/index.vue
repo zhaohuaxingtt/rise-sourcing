@@ -119,9 +119,7 @@ export default {
       if (res.result) {
         this.viewModelDialog = false
         this.cardData = res.data
-        this.cardData.push(
-          { title: 'Bid-Link', analysisTotal: '', reportTotal: '', analysisLastUpdateDate: '', reportLastUpdateDate: '' }
-        )
+
         // 数据处理
         this.cardData.map((item) => {
           if (!item.analysisTotal) {
