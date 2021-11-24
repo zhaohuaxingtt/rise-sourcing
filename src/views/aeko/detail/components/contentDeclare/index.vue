@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-24 17:10:15
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-24 17:52:02
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -1294,6 +1294,13 @@ export default {
       resize: none;
       box-shadow: none;
       height: 100%;
+    }
+  }
+}
+::v-deep.table {
+  td,th {
+    .cell {
+      width: 100% !important
     }
   }
 }
