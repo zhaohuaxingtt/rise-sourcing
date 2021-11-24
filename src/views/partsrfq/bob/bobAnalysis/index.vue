@@ -81,7 +81,7 @@
                   </template>
                 </el-input>
                 <span v-else
-                      :style="{'font-weight': (item.groupChild || item.isFresh) ? 'bold':''}">{{item.title}}</span>
+                      :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
               </span>
               <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
                     v-for="(title, titleIdx) in tableTitle"
@@ -274,11 +274,13 @@ export default {
     },
     label: {
       handler (val) {
-        this.close()
         this.$nextTick(function () {
-          this.expedsArr = []
-          this.expedsArr1 = this.tableList.element.filter(i => i.title === val)
-          this.recursion(this.expedsArr1)
+          this.tableListData.forEach((item) => {
+            if (item.title == val) {
+              this.$refs[item.id][0].scrollIntoView({behavior: "smooth", block: "end"})
+              console.log(this.$refs[item.id])
+            }
+          })
         });
       }
     }
@@ -612,7 +614,6 @@ export default {
       }
 
       var looper = JSON.parse(JSON.stringify(target[key]));
-      console.log(target.matchId)
       if (target.matchId < 0) {
         if (looper.length < rawCols && cbdCode == "1") {
           while (looper.length < rawCols) {
