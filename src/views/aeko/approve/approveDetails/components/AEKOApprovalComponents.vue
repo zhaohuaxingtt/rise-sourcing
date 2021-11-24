@@ -232,16 +232,19 @@ created(){
     transfer() {
       this.transferDialogVal = true
     },
-    confirmTransfer(selBuyerId) {
+    confirmTransfer(selBuyer) {
       let selectPendingItem = this.transmitObj.aekoApprovalDetails
       if (null != selectPendingItem) {
         let transfers = []
         selectPendingItem.workFlowDTOS.forEach(item => {
           transfers.push({
-            targetUserId: selBuyerId,
+            targetUserId: selBuyer.code,
+            targetUserName:selBuyer.value,
             aekoCode: selectPendingItem.aekoNum,
+            aekoAuditType:selectPendingItem.auditType,
             taskId: item.taskId,
-            userId: this.$store.state.permission.userInfo.id
+            userId: this.$store.state.permission.userInfo.id,
+            userName: this.$store.state.permission.userInfo.nameZh
           })
         })
         this.fullscreenLoading = true
