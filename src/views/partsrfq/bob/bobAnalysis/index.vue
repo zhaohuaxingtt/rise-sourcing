@@ -74,6 +74,7 @@
                    :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
                    style="cursor: pointer;padding-right: 4px;"
                    @click="handleCollapse(item, item.expanded)"></i>
+                   {{item.matchId}}
                 <el-input v-if="item.grouped || item.matchId > 0"
                           v-model="item.title"></el-input>
                 <span v-else
@@ -537,11 +538,11 @@ export default {
       var maCols = 0;
       var idCol = {}
       titles.forEach((title, index) => {
-        if (rawCols < title.rawTotalColumn) {
-          rawCols = title.rawTotalColumn;
+        if (rawCols < title.rawTotalUnGrouped) {
+          rawCols = title.rawTotalUnGrouped;
         }
-        if (maCols < title.maTotalColumn) {
-          maCols = title.maTotalColumn;
+        if (maCols < title.maTotalUnGrouped) {
+          maCols = title.maTotalUnGrouped;
         }
       });
 
@@ -620,12 +621,12 @@ export default {
       }
 
       var looper = JSON.parse(JSON.stringify(target[key]));
-      if (looper.length < rawCols && cbdCode == "1") {
+      if (looper.length < rawCols && cbdCode == "1" && !target.isFresh) {
         while (looper.length < rawCols) {
           looper.push("");
         }
       }
-      if (looper.length < maCols && cbdCode == "2") {
+      if (looper.length < maCols && cbdCode == "2" && !target.isFresh) {
         while (looper.length < maCols) {
           looper.push("");
         }
