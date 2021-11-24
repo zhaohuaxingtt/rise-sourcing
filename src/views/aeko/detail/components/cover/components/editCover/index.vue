@@ -124,6 +124,7 @@ import {
   iInput,
   iSelect,
   iText,
+  iMessage,
 } from 'rise';
 import { previewBaicFrom,coverTableTitleCost } from '../../data'
 import tableList from "../tableList"
@@ -220,7 +221,7 @@ export default {
             this.tableLoading = false;
             const { code,data={} } = res;
             if(code == 200){
-              const {fsId='',coverCostsWithCarType=[]} = data;
+              const {fsId='',coverCostsWithCarType=[],fsName} = data;
   
               const costData = cloneDeep(coverCostsWithCarType);
               costData.map((item)=>{
@@ -240,7 +241,8 @@ export default {
               this.basicInfo = {
                 ...data,
                 coverCostsWithCarType:costData,
-                fsName:fsId
+                fsName:fsId,
+                getFsName:fsName,
               };
   
               this.tableData = costData;
@@ -312,8 +314,9 @@ export default {
           ...basicInfo,
           coverCosts:basicInfo.coverCostsWithCarType || [],
           fsId:basicInfo.fsName,
-          fsName:fsName.length ? fsName[0].label : '',
+          fsName:fsName.length ? fsName[0].label : basicInfo.getFsName,
           requirementAekoId,
+          getFsName:undefined,
         }
         this.btnLoading = true;
         if(type == 'submit'){ // 提交
