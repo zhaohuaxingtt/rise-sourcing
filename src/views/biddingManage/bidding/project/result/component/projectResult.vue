@@ -96,7 +96,7 @@ import {
   currencyMultipleLib
 } from "./data";
 import { getCurrencyUnit } from "@/api/mock/mock";
-import { getProjectResults } from "@/api/bidding/bidding";
+import { getProjectResults, findHallQuotation } from "@/api/bidding/bidding";
 import Big from "big.js";
 
 export default {
@@ -283,27 +283,35 @@ export default {
     async query(e) {
       // 分页查询获取项目列表
       this.tableLoading = true;
+      let param
+      if( this.supplierCode === '11135'){
+        param = { biddingId: this.id};
+      } else {
+        param = { biddingId: this.id, supplierCode: this.supplierCode };
+      }
+      const data = await findHallQuotation(param)
       const res = await getProjectResults(e);
       this.tableLoading = false;
+      this.form = data
       this.tableListData.sort(this.compare("currentSort"));
       this.isTax = res[0].isTax;
-      if (
-        this.form.roundType === "05" &&
-        this.form.manualBiddingType === "02"
-      ) {
-        this.tableListData = res.filter((item) => {
-          return this.supplierCode.includes(item.supplierCode);
-        });
-      } else {
-        this.tableListData = res || [];
-      }
-      this.tableListData = this.tableListData.map(item => {
-        return {
-          ...item,
-          offerPrice : this.dividedBeiShu(item.offerPrice)
+        if (
+        (this.form.roundType === "05" &&
+        this.form.manualBiddingType === "02") || this.form.resultOpenForm === '01'
+        ) {
+          this.tableListData = res.filter((item) => {
+            return this.supplierCode.includes(item.supplierCode);
+          });
+        } else {
+          this.tableListData = res || [];
         }
-      })
-      this.page.total = res.length;
+        this.tableListData = this.tableListData.map(item => {
+          return {
+            ...item,
+            offerPrice : this.dividedBeiShu(item.offerPrice)
+          }
+        })
+        this.page.total = res.length;
     },
   },
 };
