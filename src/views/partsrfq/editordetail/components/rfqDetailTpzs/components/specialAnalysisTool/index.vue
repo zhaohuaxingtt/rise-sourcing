@@ -27,6 +27,8 @@ import PI from '@/assets/images/PI.svg'
 import MEK from '@/assets/images/MEK.svg'
 import PCA from '@/assets/images/PCA.svg'
 import TIA from '@/assets/images/TIA.svg'
+import BL from '@/assets/images/BL.jpg'
+
 import soon from '@/assets/images/soon.png'
 
 export default {
@@ -154,7 +156,7 @@ export default {
               item.imgUrl = PCA
               break;
             case 'Bid-Link':
-              item.imgUrl = soon
+              item.imgUrl = BL
               break;
             default:
               break;
