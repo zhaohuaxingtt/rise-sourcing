@@ -16,12 +16,12 @@
     </div>
     <iCard class="card margin-top65" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
       <template v-slot:header-control>
-        <iButton @click="handleExport">{{ language("DAOCHU", "导出") }}</iButton>
-        <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+        <iButton @click="handleExport" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_EXPORT|导出">{{ language("DAOCHU", "导出") }}</iButton>
+        <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_UPLOAD|上传">
           <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
         </uploadButton>
-        <iButton @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
-        <iButton :loading="deleteLoading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
+        <iButton @click="handleDownload" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_DOWNLOAD|下载">{{ language("XIAZAI", "下载") }}</iButton>
+        <iButton :loading="deleteLoading" @click="handleDelete" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_DELETE|删除">{{ language("SHANCHU", "删除") }}</iButton>
       </template>
       <div class="body">
         <tableList

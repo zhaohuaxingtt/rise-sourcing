@@ -13,12 +13,12 @@
                     accept=".pdf"
                     @on-success="onDraingUploadsucess"
                 /> -->
-                <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+                <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD|上传">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
                 </uploadButton>
             </span>
-            <iButton @click="downloadList">{{language('LK_XIAZAI','下载')}}</iButton>
-            <iButton @click="deleteItem">{{language('delete','删除')}}</iButton>
+            <iButton @click="downloadList" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_DOWNLOAD|下载">{{language('LK_XIAZAI','下载')}}</iButton>
+            <iButton @click="deleteItem" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_DELETE|删除">{{language('delete','删除')}}</iButton>
         </template>
         <div class="body">
         <tableList
