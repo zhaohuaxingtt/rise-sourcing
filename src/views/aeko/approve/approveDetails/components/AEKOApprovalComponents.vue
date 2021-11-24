@@ -110,7 +110,7 @@ import {aekoAudit, transferAEKO} from "@/api/aeko/approve";
 import AEKOExplainAttachmentDialog from "./AEKOExplainAttachmentDialog";
 import {lookDetails} from '../../approveList/lib'
 import { setLogMenu } from "@/utils";
-
+import AEKOTransferDialog from '../../approveList/components/AEKOTransferDialog'
 export default {
   name: "AEKOApprovalComponents",
   props: {
@@ -121,6 +121,7 @@ export default {
 
   components: {
     AEKOExplainAttachmentDialog,
+    AEKOTransferDialog,
     iCard,
     iButton,
     icon,
