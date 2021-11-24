@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-26 14:55:05
- * @LastEditors:  
+ * @LastEditors: Hao,Jiang
 * @Description: In User Settings Edit
  -->
 <template>
@@ -14,7 +14,8 @@
         <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="save" v-permission.auto="PARTSIGN_EDITORDETAIL_SIGNBUTTON|签收">{{ language('LK_QIANSHOU','签收') }}</iButton>
         <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="openDiologBack" v-permission.auto="PARTSIGN_EDITORDETAIL_BACKBUTTON|退回">{{ language('LK_TUIHUI','退回') }}</iButton>
         <iButton @click="back" v-permission.auto="PARTSIGN_EDITORDETAIL_RETURN|返回">{{ language('LK_FANHUI','返回') }}</iButton>
-        <logButton class="margin-left20" @click="log"  v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志"/>
+        <!-- <logButton class="margin-left20" @click="log"  v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志"/> -->
+        <iLoger :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="partDetails && partDetails.partNum" credentials isPage class="margin-left20" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
         </span>
@@ -63,9 +64,10 @@ import changeItems from "../home/components/changeItems";
 import { partDetailTitle, partTitle } from "./components/data";
 // import { getPartInfo } from "@/api/partsign/editordetail";
 import {patchRecords} from "@/api/partsign/home";
-import logButton from '@/components/logButton'
+// import logButton from '@/components/logButton'
 import local from "@/utils/localstorage";
 import { TP_INFO_STATUS } from "@/views/partsign/home/components/data"
+import iLoger from 'rise/web/components/iLoger'
 
 export default {
   components: {
@@ -80,8 +82,9 @@ export default {
     backItems,
     changeItems,
     volumeUnconfirmed,
-    logButton,
-    enquiryUnconfirmed
+    // logButton,
+    enquiryUnconfirmed,
+    iLoger
   },
   data() {
     return {

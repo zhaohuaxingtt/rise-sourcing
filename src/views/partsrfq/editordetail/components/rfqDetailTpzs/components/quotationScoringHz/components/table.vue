@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-23 18:58:30
- * @LastEditors:  
+ * @LastEditTime: 2021-11-23 23:25:46
+ * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -65,9 +65,9 @@
             <!----------在表头上方需要显示评分的点，插入表头标签------>
             <template slot="header" slot-scope="scope">
               <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
-              <div class="headerContent" v-if='scope.column.label == "EBR"'>
+              <div class="headerContent" v-if='scope.column.label == ""'>
                 <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
-                  <ul style="width:99.5px">
+                  <ul style="width:0px">
                     <li></li>
                     <template v-for='(items,index) in ratingList.firstTile'>
                       <template v-if='ratingList.firstTile.length > 1'>
@@ -192,7 +192,6 @@
 import {removeKeysNumber,getPorpsNumber} from './data'
 import {icon} from 'rise'
 import moment from 'moment'
-import {toThousands} from '@/utils'
 export default{
   components:{icon},
   props:{
@@ -225,8 +224,14 @@ export default{
   },
   computed:{
     cWidth(){
-      const index = this.tableTitle.findIndex((item)=>item.label == 'EBR')
-      return (this.tableTitle.length - index) * 100 + 'px'
+      const indexTabs = this.tableTitle.findIndex(i=>i.props == "headerEbr")
+      return this.tableTitle.reduce((a,b,index)=>{
+        if(index > indexTabs) {
+          return a+parseFloat(b.width)
+        }else{
+          return a
+        }
+      },0) + 'px'
     },
     spanArr(){
       return this.rowspan(this.tableData,'groupId',null)
@@ -239,16 +244,33 @@ export default{
     },
   },
   methods:{
+    setfixElement(){
+      try {
+        const needRemovebox = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper .rateList')
+        if(needRemovebox){
+          needRemovebox.parentNode.removeChild(needRemovebox)
+        }
+        const box = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper')
+        let str = `<li></li>`
+        this.ratingList.firstTile.forEach(items=>{
+          str+=(`<li>${items?items:''}</li>`)
+        })
+        const ulDom = document.createElement('div')
+        ulDom.innerHTML = `<ul>${str}</ul>`
+        ulDom.setAttribute('class','rateList')
+        box.appendChild(ulDom)
+      } catch (error) {
+        console.warn(error)
+      }
+    },
     ttoShow(data){
-      if(parseInt(data)){
-        return toThousands(parseInt(data)) 
+      if(data && parseInt(data)){
+        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }
     },
     ebrShow(data) {
-      console.log(data)
-
       if(data == undefined || data == 'Budget' || data == 'KM'  )
        return data 
       else{
@@ -556,14 +578,12 @@ export default{
     .c{
       position: absolute;
       width: 100px;
-      //background-color: red;
       z-index: 123;
       bottom: -1px;
-      left:-98PX;
+      left:0PX;
       border: 1px solid #C5CCD6;
       border-bottom: none;
       border-left:none;
-      border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       overflow:hidden;
       display: flex;
@@ -578,7 +598,6 @@ export default{
         border-right: 1px solid #C5CCD6;
         border-top: 1px solid #C5CCD6;
         &:nth-child(2){
-          border-top-left-radius: 5px;
           overflow: hidden;
         }
         &:first-child{
@@ -586,6 +605,7 @@ export default{
           overflow: hidden;
           border-right: 0px;
           border: none;
+          width: 0px;
           li{
             border-right: 1px solid #C5CCD6;
             &:first-child{
@@ -633,9 +653,41 @@ export default{
           z-index: 124;
           top: 0px;
           .el-table__fixed-header-wrapper{
-            position: static;
+            position: relative;
             top: inherit;
             left: inherit;
+            .rateList{
+              position: absolute;
+              right: 0px;
+              height: 0px;
+              width: 0px;
+              top: 0px;
+              ul{
+                position: absolute;
+                bottom: -1PX;
+                right: 0PX;
+                border: 1px solid #C5CCD6;
+                border-bottom: none;
+                border-top-left-radius: 10px;
+                overflow: hidden;
+                min-width: 100px;
+                li{
+                    border-bottom: 1px solid #C5CCD6;
+                    line-height: 38px;
+                    height: 38px;
+                    padding: 0px 5px;
+                    text-align: center;
+                    &:last-child{
+                      border-bottom: none;
+                    }
+                    &:first-child{
+                      background-color:rgba(22, 99, 246, 0.17);
+                      height: 60px;
+                      padding: 5px 0;
+                    }
+                  }
+              }
+            }
           }
           .el-table__fixed-body-wrapper{
             position: static;

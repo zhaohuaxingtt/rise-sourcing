@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-14 23:25:18
+ * @LastEditTime: 2021-11-23 23:15:55
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -328,6 +328,7 @@ export function toFixedNumber(number, m) {
 //转千分位
 export function toThousands(number, decimalThousands = false) {
   if (!number) return number
+  console.log('================',number)
   number = number.toString()
   return number.replace(new RegExp(`\\B(?=(\\d{3})+(?${ decimalThousands ? ':$|' : '=' }\\.))`, 'g'), ',')
 }
