@@ -5,7 +5,7 @@
     ref="ruleForm"
     :validate-on-rule-change="false"
     :hideRequiredAsterisk="true"
-    :disabled="ruleForm.biddingStatus !== '01'"
+    disabled
   >
     <div class="form-group">
       <iLabelML showTip>
