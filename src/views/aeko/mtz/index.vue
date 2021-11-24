@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:34:01
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-11 11:46:52
+ * @LastEditTime: 2021-11-24 16:39:25
  * @Description: 
 -->
 <template>
@@ -10,7 +10,8 @@
     <div class="margin-bottom25 aeko-mtz-header">
       <span class="akeoTitle">{{language('LK_MTZBIANGENG', 'MTZ变更')}}:{{ $route.query.aekoNum }}</span>
       <div style="aeko-mtz-submenu">
-        <logButton class="margin-left20" @click="toLogPage" v-if="showLogButton" />
+        <!-- <logButton class="margin-left20" @click="toLogPage" v-if="showLogButton" /> -->
+        <iLoger v-if="showLogButton" :config="{module_obj_ae: 'AEKO表态-详情页-内容表态', menuName_obj_ae: 'MTZ变更维护', bizId_obj_ae: 'requirementAekoId', queryParams:['bizId_obj_ae']}" isPage class="margin-left20" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
       </div>
     </div>
@@ -19,13 +20,18 @@
 </template>
 <script>
 import {iPage,icon,} from 'rise'
-import logButton from "@/components/logButton"
+import iLoger from 'rise/web/components/iLoger'
 
 export default {
   components: {
     iPage,
     icon,
-    logButton
+    iLoger
+  },
+  provide() {
+    return {
+      vm: this,
+    };
   },
   data() {
     return {
@@ -33,15 +39,6 @@ export default {
     }
   },
   methods: {
-    showLog(state) {
-      this.showLogButton = state
-    },
-    // 跳转查看日志
-    toLogPage() {
-      const id = 'scheduleRecordId'
-      const router =  this.$router.resolve({path: `/log?recordId=${id}`})
-      window.open(router.href, '_blank')
-    },
     gotoDBhistory() {
       const router =  this.$router.resolve({path: `/projectmgt/projectscheassistant/historyprocessdb`})
       window.open(router.href,'_blank')
