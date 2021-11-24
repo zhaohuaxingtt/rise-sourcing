@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 11:36:55
+ * @LastEditTime: 2021-11-24 14:35:19
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -168,6 +168,7 @@ export default {
           carTypeProPartConfigDTO: this.logicData,
           partHistoryProgressVO: {
             ...this.selectRowPart[0],
+            partNum: this.$route.query.partNum,
             type: 2 // 历史
           }
         }
@@ -177,6 +178,7 @@ export default {
           carTypeProPartConfigDTO: this.logicData,
           partHistoryProgressVO: {
             ...this.partTableData[0],
+            partNum: this.$route.query.partNum,
             fsdocCscWeekly: selectFit.fsdocCscWeekly,
             cscBfWeekly: selectFit.cscBfWeekly,
             bf1stWeekly: selectFit.bf1stWeekly,
