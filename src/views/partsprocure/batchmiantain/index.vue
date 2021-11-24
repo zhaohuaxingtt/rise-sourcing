@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-11-22 19:33:43
- * @LastEditors:  
+ * @LastEditTime: 2021-11-24 11:17:07
+ * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
 -->
@@ -49,7 +49,7 @@
         <el-form-item :label="language('LK_LINIEBUMEN','LINIE部门')">
           <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.linieDept" @change="handleChangeByLinieDept">
             <el-option
-              :value="item.code"
+              :value="item.deptNum"
               :label="item.deptNum"
               v-for="(item, index) in fromGroup.LINIE_DEPT"
               :key="index"
@@ -347,7 +347,7 @@ export default {
     },
     handleChangeByLinieDept(value) {
       this.linie = null
-      this.batch.linieDeptName = this.fromGroup.LINIE_DEPT.find(item => item.code === value)?.id??""
+      this.batch.linieDeptName = value
       this.getLinie(value)
     },
     getLinie(id){

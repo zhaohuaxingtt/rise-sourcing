@@ -31,12 +31,12 @@
             </span>
             <!-- <logButton class="margin-left20" @click="toLogPage"/> -->
             <iLoger 
-                class="margin-left25"
+                class="margin-left25 margin-right5"
+                isPage
                 :config="{
                     module_obj_ae: '定点信', // 模块
                     menuName_obj_ae: '', // 菜单
                     bizId_obj_ae:nomiAppId, // 定点信id
-                    createBy_obj_ae:'', // 当前用户
                 }"
             />
         </div>
@@ -103,7 +103,7 @@ import {
 // import logButton from "@/components/logButton"
 import historyDialog from './components/historyDialog'
 import nonStandard from './components/nonStandard'
-import iLoger from '@/components/iLoger'
+import iLoger from 'rise/web/components/iLoger'
 import {
     getLetterDetail,
     downloadLetterFile,

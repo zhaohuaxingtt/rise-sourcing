@@ -767,7 +767,7 @@ export default {
   margin: 0 6px;
 }
 ::v-deep .input-number100 {
-  width: 100px;
+  width: 150px;
   margin: 0 6px;
 }
 ::v-deep .input-number200 {

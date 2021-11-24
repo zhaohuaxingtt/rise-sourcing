@@ -17,7 +17,8 @@ export const form = {
   nominateUser:'',
   linie:'',
   isNewNominate:'',
-  nominateTime:''
+  nominateTime:'',
+  showSelf: true
 }
 
 export const tableTitle = [

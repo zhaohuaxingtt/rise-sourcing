@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-11-23 16:47:23
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-23 22:39:33
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
 -->
@@ -40,10 +40,19 @@
             {{ language('LK_CHUANGJIANDINGDIANSHENQING','创建定点申请') }}
           </iButton>
           </span>
-          <iButton type="text" @click="toLogPage" v-permission.auto="PARTSRFQ_EDITORDETAIL_LOG|日志">
+          <!-- <iButton type="text" @click="toLogPage" v-permission.auto="PARTSRFQ_EDITORDETAIL_LOG|日志">
             <icon symbol name="iconrizhiwuzi" class="log-icon"/>
             <span class="log-word">{{ language('LK_RIZHI','日志') }}</span>
-          </iButton>
+          </iButton> -->
+          <iLoger
+            :config="{
+              module_obj_ae: 'RFQ管理', 
+              bizId_obj_ae: 'id', 
+              queryParams:['bizId_obj_ae']}"
+            credentials
+            isPage
+            class="margin-left10"
+            v-permission.auto="PARTSRFQ_EDITORDETAIL_LOG|日志" />
         <span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
 				</span>
@@ -167,6 +176,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import { tableTitle,form } from "@/views/partsprocure/home/components/data";
 import { getRfqInfo } from "@/api/costanalysismanage/rfqdetail"
 import { checkApply } from '@/api/modelTargetPrice/index'
+import iLoger from 'rise/web/components/iLoger'
 export default {
   components: {
     iButton,
@@ -182,7 +192,8 @@ export default {
     newRfqRound,
     iNavMvp,
     rfqDetailTpzs,
-    nominateTypeDialog
+    nominateTypeDialog,
+    iLoger
   },
   mixins: [rfqCommonFunMixins,pageMixins],
   data() {

@@ -334,3 +334,20 @@ export function getPurchaseDetail(data) {
 		method:'GET'
 	})
 }
+//保存每车用量
+export function  savearDosage(data) {
+	return requst({
+		url:'/tp-records/perCarDosage/save-car-dosage',
+		method:'POST',
+		data
+	})
+}
+
+//获取每车用量1
+export function getCarDosage(data) {
+	return requst({
+		url:'/tp-records/perCarDosage/info1',
+		method:'POST',
+		data
+	})
+}
