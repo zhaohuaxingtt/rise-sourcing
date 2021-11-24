@@ -221,7 +221,7 @@ export default {
     created() {
         const roleList = this.roleList;
         this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
-        this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+        this.isCommodityCoordinator = roleList.includes('AEKOKSXTDY'); // Aeko科室协调员
         this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
         // 判断下多角色情况 若多角色时就判断url的跳转来源
