@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-24 16:12:27
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-24 17:10:15
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -692,12 +692,13 @@ export default {
         isDeclare: row.isDeclare, // 0: 预设原零件，1: 选择的原零件
         requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: row.objectAekoPartId,
-        oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()
+        originPartNum: row.originPartNum, // 选择的原零件
+        oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()  // 预设的原零件
       }
 
+      if (!query.originPartNum) delete query.originPartNum
       if (!query.oldPartNumPreset) delete query.oldPartNumPreset
 
-      console.log(this);
       this.$router.push({
         path: "/aeko/quondampart",
         query
