@@ -262,6 +262,7 @@ export default {
       this.selectDate = []
       this.filterCarValue = []
       this.config.pageName = ''
+     await this.carTypeByCategoryCode()
       await this.getCategoryAnalysis()
       this.renderBi()
     },
