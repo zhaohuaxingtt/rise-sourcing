@@ -5,7 +5,7 @@
 -->
 <template>
     <iPage class="loiDetail" v-permission.auto="LK_LOI_DETAIL_PAGE|LOI详情页">
-        <div class="header clearFloat">
+        <div class="header">
         <div class="title">{{language('LK_LOIBIANHAO','LOI编号')}}: {{loiInfo.loiNum}}</div>
         <div class="control">
             <span v-if="isEdit">
@@ -30,7 +30,8 @@
             </span>
             <!-- <logButton class="margin-left20" /> -->
             <iLoger 
-                class="margin-left25"
+                class="margin-left25 margin-right5"
+                isPage
                 :config="{
                     module_obj_ae: 'LOI', // 模块
                     menuName_obj_ae: '', // 菜单
@@ -101,7 +102,7 @@ import {
     iSelect,
     iMessage,
 } from 'rise';
-import logButton from "@/components/logButton"
+// import logButton from "@/components/logButton"
 import historyDialog from './components/historyDialog'
 import loiNonStandard from './components/loiNonStandard'
 import {
@@ -119,12 +120,12 @@ import {
     getBuyers,
 } from  '@/api/letterAndLoi/letter'
 import {user as configUser } from '@/config'
-import iLoger from '@/components/iLoger'
+import iLoger from 'rise/web/components/iLoger'
 export default {
     name:'loiDetail',
     components:{
         iPage,
-        logButton,
+        // logButton,
         iButton,
         iCard,
         historyDialog,
@@ -372,7 +373,12 @@ export default {
 <style lang="scss" scoped>
     .loiDetail{
         .header {
-            position: relative;
+            // position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: -10px;
 
             .title {
             font-size: 20px;
@@ -383,13 +389,13 @@ export default {
             }
 
             .control {
-            position: absolute;
-            top: 50%;
-            right: 0;
-            transform: translate(0, -50%);
-            display: flex;
-            align-items: center;
-            height: 30px;
+            // position: absolute;
+            // top: 50%;
+            // right: 0;
+            // transform: translate(0, -50%);
+            // display: flex;
+            // align-items: center;
+            // height: 30px;
             }
         }
         .sendTypeBox{
