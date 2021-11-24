@@ -18,7 +18,7 @@ export const multiSupplierTitle = [
     name: '',
     key: '',
     tooltip: false,
-    width: 250,
+    width: 300,
     tree: true
   },
   {
