@@ -250,13 +250,23 @@ export default {
       keys.forEach(key => this.$set(row, key, undefined))
     },
     // 评分部门变更
-    handleClearCoordinatorAndRater(value, row) {
-      this.getAllRaterAndCoordinator(row.rateTag, value)
+    async handleClearCoordinatorAndRater(value, row) {
+      await this.getAllRaterAndCoordinator(row.rateTag, value)
       this.$set(row, "isCheck", this.deptMap[row.rateTag][value]?.isCheck)
       this.$set(row, "deptId", this.deptMap[row.rateTag][value]?.deptId ?? "")
       
       const keys = ['coordinator', 'coordinatorId', 'rater', 'raterId']
       keys.forEach(key => this.$set(row, key, undefined))
+
+      if (Array.isArray(this.deptMap[row.rateTag][value].raterList)) {
+        row.raterId = this.deptMap[row.rateTag][value].raterList[0].value
+        this.handleChange(row.raterId, this.deptMap[row.rateTag][value].raterList, row, "rater")
+      }
+
+      if (Array.isArray(this.deptMap[row.rateTag][value].coordinatorList)) {
+        row.coordinatorId = this.deptMap[row.rateTag][value].coordinatorList[0].value
+        this.handleChange(row.coordinatorId, this.deptMap[row.rateTag][value].coordinatorList, row, "coordinator")
+      }
     },
     // 保存
     handleSave() {
