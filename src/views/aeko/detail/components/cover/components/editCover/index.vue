@@ -80,7 +80,8 @@
         <!-- 增加材料成本(RMB/⻋) -->
         <template #materialIncrease="scope">
           <div class="table-materialIncrease" style="width:120px">
-            <iInput :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
+            <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled"  :inputValue="scope.row['materialIncrease']" style="width:100px" />
+            <iInput v-else :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
             <!-- <span class="icon-tips" v-if="scope.row.isShowTips">
               <el-tooltip v-if="scope.row['expressionList'].length > 1" placement="top" effect="light" >
                 <div slot="content">
@@ -91,18 +92,21 @@
               </el-tooltip>
 
 
-               <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i> -->
-            </span>
+               <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i>
+            </span> -->
           </div>
             
         </template>
         <!-- 增加投资费⽤(不含税) -->
         <template #investmentIncrease="scope">
-          <iInput :disabled="disabled" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
+          <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled" :inputValue="scope.row['investmentIncrease']" style="width:100px"/>
+          <iInput v-else :disabled="disabled" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
+          
         </template>
         <!-- 其他费⽤(不含税) -->
         <template #otherCost="scope">
-          <iInput :disabled="disabled" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
+          <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled" :inputValue="scope.row['otherCost']" style="width:100px"/>
+          <iInput v-else :disabled="disabled" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
         </template>
         </tableList>
         <p class="bottom-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
@@ -120,6 +124,7 @@ import {
   iInput,
   iSelect,
   iText,
+  iMessage,
 } from 'rise';
 import { previewBaicFrom,coverTableTitleCost } from '../../data'
 import tableList from "../tableList"
@@ -135,6 +140,7 @@ import {
   checkAekoContentSubmitState,
   getCoverDetail,
 } from '@/api/aeko/detail/cover.js'
+import thousandsFilterInput from 'rise/web/aeko/quotationdetail/components/thousandsFilterInput'
 export default {
     name:'editCover',
     mixins: [pageMixins],
@@ -147,6 +153,7 @@ export default {
       iSelect,
       iText,
       tableList,
+      thousandsFilterInput,
     },
     props:{
       aekoInfo:{
@@ -214,7 +221,7 @@ export default {
             this.tableLoading = false;
             const { code,data={} } = res;
             if(code == 200){
-              const {fsId='',coverCostsWithCarType=[]} = data;
+              const {fsId='',coverCostsWithCarType=[],fsName} = data;
   
               const costData = cloneDeep(coverCostsWithCarType);
               costData.map((item)=>{
@@ -234,7 +241,8 @@ export default {
               this.basicInfo = {
                 ...data,
                 coverCostsWithCarType:costData,
-                fsName:fsId
+                fsName:fsId,
+                getFsName:fsName,
               };
   
               this.tableData = costData;
@@ -306,8 +314,9 @@ export default {
           ...basicInfo,
           coverCosts:basicInfo.coverCostsWithCarType || [],
           fsId:basicInfo.fsName,
-          fsName:fsName.length ? fsName[0].label : '',
+          fsName:fsName.length ? fsName[0].label : basicInfo.getFsName,
           requirementAekoId,
+          getFsName:undefined,
         }
         this.btnLoading = true;
         if(type == 'submit'){ // 提交
@@ -536,6 +545,9 @@ export default {
     content: "*";
     color: #f56c6c;
     margin-right: 4px;
+  }
+  .thousandsFilterInput{
+    margin: 0 auto;
   }
 }
 

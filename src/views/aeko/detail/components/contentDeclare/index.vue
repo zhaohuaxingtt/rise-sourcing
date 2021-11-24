@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-24 17:46:43
+ * @LastEditTime: 2021-11-24 17:52:02
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -281,6 +281,10 @@
                 :key="item"
               ></el-option>
             </iSelect>
+          </template>
+          <!-- B价变动含分摊 -->
+          <template #bpriceChange="scope">
+            <span>{{scope.row.bpriceChange | thousandsFilter}}</span>
           </template>
           <template #isMtz="scope">
             <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -688,12 +692,13 @@ export default {
         isDeclare: row.isDeclare, // 0: 预设原零件，1: 选择的原零件
         requirementAekoId: this.aekoInfo.requirementAekoId,
         objectAekoPartId: row.objectAekoPartId,
-        oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()
+        originPartNum: row.originPartNum, // 选择的原零件
+        oldPartNumPreset: typeof row.oldPartNumPreset === "string" && row.oldPartNumPreset.trim()  // 预设的原零件
       }
 
+      if (!query.originPartNum) delete query.originPartNum
       if (!query.oldPartNumPreset) delete query.oldPartNumPreset
 
-      console.log(this);
       this.$router.push({
         path: "/aeko/quondampart",
         query
