@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-11-23 15:37:15
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-25 19:52:31
+ * @LastEditors: Please set LastEditors
  * @Description: 供应商维度展示
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
 -->
@@ -14,12 +14,12 @@
     <div class="margin-bottom20 echarts">
       <el-form inline>
           <el-form-item label="价格维度" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_JIAGEWEIDU_SELECT|价格维度">
-            <iSelect style="width:80px;" :placeholder="language('partsprocure.CHOOSE','请选择')" v-model="form.priceLatitude">
+            <iSelect style="width:90PX;" :placeholder="language('partsprocure.CHOOSE','请选择')" v-model="form.priceLatitude">
               <el-option label="MixPrice" value='1'></el-option>
               <el-option label="To" value='2'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="供应商" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT|供应商" >
+          <el-form-item label="供应商" class="partClass" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_GONGYINGSHANG_SELECT|供应商" >
             <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="supplierSelectlist" @visible-change="removeOther($event,'supplierSelectlist')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in supplierlist" :key='index' :label="items.supplierName" :value='items.supplierNum'></el-option>
@@ -40,7 +40,7 @@
             </iSelect>
           </el-form-item> -->
           <el-form-item :label="language('LK_DANGQIANLUNCI','当前轮次')" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_DANGQIANLUNCI_SELECT|当前轮次">
-            <iSelect style="width:100px;" :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
+            <iSelect style="width:140PX;" :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="luncSelect"  @visible-change="removeOther($event,'luncSelect')">
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in RoundList" :key='index' :label="items" :value='items'></el-option>
               <el-option label="Latest Offer" value="-1"></el-option>
