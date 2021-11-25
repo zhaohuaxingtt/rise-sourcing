@@ -902,6 +902,7 @@ export default {
       
       let param = { biddingId: this.id, supplierCode: this.supplierCode };
       this.query(param);
+      
     },
     async query(e) {
       // 根据 ID 获取竞价大厅报价单列表数据
@@ -909,6 +910,7 @@ export default {
       this.updateRuleForm(res);
     },
     updateRuleForm(data) {
+      this.projectLoading = false
       this.ruleForm = {
         ...data,
         totalPrices: data.supplierOffer?.offerPrice || data.totalPrices,

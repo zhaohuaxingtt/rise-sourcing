@@ -5,7 +5,7 @@
     ref="ruleForm"
     :validate-on-rule-change="false"
     :hideRequiredAsterisk="true"
-    :disabled="ruleForm.biddingStatus !== '01'"
+    disabled
   >
     <div class="form-group">
       <iLabelML showTip>
@@ -159,7 +159,7 @@
             class="inline-block"
             ><iInput
               class="input-number100"
-              :value="ruleForm.biddingQuoteRule.actualValue"
+              :value="actualValueData"
               disabled
             ></iInput></iFormItem
           >{{language('BIDDING_RENMINGBI', '人民币')}}
@@ -511,6 +511,7 @@ export default {
                 .div(100)
                 .toFixed(2)
         );
+        this.actualValueData = this.ruleForm?.biddingQuoteRule.actualValue.replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
       },
     },
     "ruleForm.biddingQuoteRule.quotationScope"(val) {
@@ -593,6 +594,7 @@ export default {
 
       priceDiffLimitSelectList,
       priceDiffObjectSelectList,
+      actualValueData:''
     };
   },
   computed: {
@@ -767,7 +769,7 @@ export default {
   margin: 0 6px;
 }
 ::v-deep .input-number100 {
-  width: 100px;
+  width: 150px;
   margin: 0 6px;
 }
 ::v-deep .input-number200 {

@@ -91,15 +91,16 @@
               <div class="txt">
                 <span>{{ $t('LK_CHEXINGXIANGMU') }}</span><!-- 车型项目 -->
               </div>
-              <iSelect v-if="isCarTypeList" v-model="detailObj.tmCartypeProId" class="input" :placeholder="$t('LK_QINGXUANZE')">
+              <div class="disabled">{{detailObj.tmCartypeProName}}</div>
+              <!-- <iSelect v-if="isCarTypeList" v-model="detailObj.tmCartypeProId" class="input" :placeholder="$t('LK_QINGXUANZE')">
                 <el-option
                     :value="item.tmCartypeProId"
                     :label="item.tmCartypeProName"
                     v-for="(item, index) in fromGroup"
                     :key="index"
                 ></el-option>
-              </iSelect>
-              <div v-else class="disabled">{{fromGroupName}}</div>
+              </iSelect> -->
+              <!-- <div v-else class="disabled">{{fromGroupName}}</div> -->
             </div>
             <div class="item">
               <div class="txt">
@@ -394,6 +395,7 @@ export default {
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
           item: JSON.stringify(query),
+          projectId: scope.row.projectId
         },
       });
     },

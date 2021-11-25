@@ -948,7 +948,7 @@ export default {
         biddingBeginTime,
         manualBiddingType,
       } = this.ruleForm;
-      let endTime = new Date(biddingEndTime).getTime() + 3 * 24 * 3600 * 1000;
+      let endTime = new Date(biddingEndTime).getTime();
       endTime = dayjs(endTime).format("YYYY-MM-DD HH:mm:00");
       const deadline = dayjs(pricingDeadline).format("YYYY-MM-DD HH:mm:00");
       const openTime = dayjs(openTenderTime).format("YYYY-MM-DD HH:mm:00");
@@ -968,7 +968,7 @@ export default {
           return this.$message.error(this.language('BIDDING_JSSJBXYWYKSRQ','结束时间必须要晚于开始日期'));
         } else if (endTime > deadline) {
           console.log(endTime, pricingDeadline);
-          return this.$message.error(this.language('BIDDING_BJJZRQBWYJSSJH3GGZR','报价截止日期不晚于结束时间后3个工作日'));
+          return this.$message.error(this.language('BIDDING_BJJZRQBWYJSSJH3GGZR','报价截止日期不晚于结束时间'));
         }
       }
       const formData = this.ruleForm;
