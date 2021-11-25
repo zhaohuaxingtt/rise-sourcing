@@ -9,9 +9,9 @@ s<!--
 <template>
   <iCard :title="language('LK_LINGJIANQINGDAN','零件清单')">
     <template v-slot:header-control>
-      <iButton @click="handleSave" :loading="saveLoading">{{ language("BAOCUN", "保存") }}</iButton>
-      <iButton @click="handleDownloadTechnicalData">{{ language("XIAZAIJISHUZILIAO", "下载技术资料") }}</iButton>
-      <iButton :loading="downloadLoading" @click="handleDownloadCbd">{{ language("XIAZAICBD", "下载CBD") }}</iButton>
+      <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_PARTLIST_BUTTON_SAVE|保存">{{ language("BAOCUN", "保存") }}</iButton>
+      <iButton @click="handleDownloadTechnicalData" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_PARTLIST_BUTTON_DOWNLOADTECHNICALDATA|下载技术资料">{{ language("XIAZAIJISHUZILIAO", "下载技术资料") }}</iButton>
+      <iButton :loading="downloadLoading" @click="handleDownloadCbd" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_PARTLIST_BUTTON_DOWNLOADCBD|下载CBD">{{ language("XIAZAICBD", "下载CBD") }}</iButton>
     </template>
     <div class="body">
       <tableList

@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-15 17:07:22
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Luoshuang
  * @Description: rfq列表
  */
 
@@ -201,6 +201,23 @@ export function saveTimePlanList(params) {
 export function partLogisticByFs(params){
     return requst({
         url: '/logistic/partLogisticByFs',
+        method: 'POST',
+        data: params
+    })
+}
+
+// 获取用户列表 userType- 0是采购员,1是linie
+export function getRfqUserInfoList(userType) {
+    return requst({
+        url: `/getRfqUserList/${userType}`,
+        method: 'GET'
+    })
+}
+
+// 转派rfq
+export function transferRfq(params) {
+    return requst({
+        url: '/transfer',
         method: 'POST',
         data: params
     })

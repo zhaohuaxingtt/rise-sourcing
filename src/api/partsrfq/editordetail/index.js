@@ -368,7 +368,7 @@ export function findRateDeptInfo(params) {
 // 获取目标价
 export function getCfPrice(params) {
     return requst({
-        url: `/cf-price/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
+        url: `/search-cf-price/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
         method: 'GET'
     })
 }

@@ -1,15 +1,15 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-21 13:59:03
+ * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-23 22:48:17
  * @Description: 配件详情
  * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
 
 <template>
   <iPage v-loading="pageLoading">
-    <topComponents>
+    <topComponents :logModuleName="'配件需求'" :logBizIdKey="'spNum'">
       <span slot="left" class="floatleft font20 font-weight">
         {{language('PEIJIANBIANHAO','配件编号')}}：{{detailData.partNum}}
       </span>

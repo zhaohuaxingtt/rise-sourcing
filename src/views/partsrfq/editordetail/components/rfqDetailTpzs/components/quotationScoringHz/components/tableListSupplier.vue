@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-23 18:54:55
- * @LastEditors:  
+ * @LastEditTime: 2021-11-24 16:31:52
+ * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -121,9 +121,9 @@
                   <div>一次性：{{scope.row[getPorpsNumber(item.props)+"tooling"]-scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                 </template>
-                <span>{{scope.row[item.props]}}</span>
+                <span>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
               </el-tooltip>
-              <span v-else>{{scope.row[item.props]}}</span>
+              <span v-else>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
               <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
@@ -146,7 +146,7 @@
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "tto"'>
               <el-tooltip :content='scope.row[item.props]' effect='light'>
-                <span class="textEplies">{{scope.row[item.props]}}</span>
+                <span class="textEplies">{{ttoShow(scope.row[item.props])}}</span>
               </el-tooltip>
             </template>
             <template v-else slot-scope="scope">
@@ -290,7 +290,7 @@
     </el-table>
   </div>
   </div>
-  <div class="rightFlex" style="width: 185px">
+  <div class="rightFlex" style="width: 220px">
     <div class="rightWrapper">
       <el-table
         class="rigthTable"
@@ -413,6 +413,16 @@
                   <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
                       <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
                   </template> -->
+            <template v-else-if='removeKeysNumber(item.props) == "totalInvest"'>
+              <el-tooltip :content='scope.row[item.props]' effect='light'>
+                <span class="textEplies">{{ttoShow(scope.row[item.props])}}</span>
+              </el-tooltip>
+            </template>
+            <template v-else-if='removeKeysNumber(item.props) == "totalTto"'>
+              <el-tooltip :content='scope.row[item.props]' effect='light'>
+                <span class="textEplies">{{ttoShow(scope.row[item.props])}}</span>
+              </el-tooltip>
+            </template>
               <template v-else slot-scope="scope">
                 <span>{{scope.row[item.props]}}</span>
               </template>
@@ -427,7 +437,6 @@
 </template>
 <script>
 import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
-import {toThousands} from '@/utils'
 export default{
   inject:['getbaseInfoData'],
   props:{
@@ -484,7 +493,7 @@ export default{
   methods:{
     ttoShow(data){
       if(parseInt(data)){
-        return toThousands(parseInt(data))
+        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }
@@ -646,6 +655,7 @@ export default{
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
+
         .price{
           position: absolute;
           top: 0px;
@@ -698,7 +708,7 @@ export default{
       .labelHader{
         width: 100%;
         overflow: hidden;
-        white-space: nowrap;
+        white-space: pre-line;
         text-overflow: ellipsis;
         display: inherit;
       }

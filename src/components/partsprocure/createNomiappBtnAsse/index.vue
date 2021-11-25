@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-10-26 21:45:09
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-24 16:36:01
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\index.vue
+ * @FilePath: \front-sourcing\src\components\partsprocure\createNomiappBtnAsse\index.vue
 -->
 <template>
 <div class="inline margin-left10 margin-right10 ssS" v-permission.auto="PARTSPROCURE_SHENGCHENGDINGDSQ_ACC|总成件-生成定点申请按钮">
@@ -20,7 +20,7 @@
           </iFormItem>
         </iFormGroup>
         <div class="btn">
-          <iButton :loading='loadingbtn' @click="createNomi">{{language('SHENGCHENGDINGDSQD','生成定点申请单')}}</iButton>
+          <iButton :loading='loadingbtn' @click="createNomi('1')">{{language('SHENGCHENGDINGDSQD','生成定点申请单')}}</iButton>
           <iButton @click="diologShow=false">{{language('QUXIAO','取消')}}</iButton>
         </div>
       </div>
@@ -29,16 +29,54 @@
       <!----已经勾选过的需要将前面的勾选框变成disabel状态----------------------------------------->
       <tablelist class="padding-bottom40" ref='tabel' :borderLeftStatus='false' :selectable='disabelRow' selection :tableData='tableList' :tableTitle='tableTitle' @select='handleSelectionChange'></tablelist>
     </iDialog>
+    <!--------------------新增工装样件弹窗----------------------------->
+    <iDialog :visible.sync="dialogVisible" width='90%' style="margin-bottom:40px;" append-to-body>
+      <template slot="title">
+        <div class="clearFloat">
+          <span class="font18 font-weight">{{language('GONGZHUANGYANGJIAN','工装样件')}}</span>
+            <div class="floatright margin-right30">
+              <!--------------------生成定点申请单----------------------------------->
+              <iButton :loading='loadingbtn' @click="createNomi('2')">{{language('SHENGCHENGDINGDSQD','生成定点申请单')}}</iButton>
+              <!--------------------取消----------------------------------->
+              <iButton @click="dialogVisible=false">{{language('QUXIAO','取消')}}</iButton>
+            </div>
+        </div>
+      </template>
+      <tablelist lang class="margin-top20 padding-bottom30" :selection="false" :tableData="toolingSampleDTOList" :tableTitle="sampleTableTitle">
+        <!-- <template #a="scope">
+          <span>{{ $t(scope.row.a) }}</span>
+        </template> -->
+        <template #sampleUnitPrice="scope">
+          <!-- <iInput v-if="!disabled && !isOriginprice" v-model="scope.row.sampleUnitPrice" @input="handleInputBySampleUnitPrice($event, scope.row)" /> -->
+          <thousandsFilterInput :inputValue="scope.row.sampleUnitPrice" :numberProcessor="2" :handleArg="[scope.row]" @handleInput="handleInputBySampleUnitPrice" />
+          <!-- <span v-else>{{ scope.row.sampleUnitPrice | thousandsFilter }}</span> -->
+        </template>
+        <template #addionalMouldCost="scope">
+          <!-- <iInput v-if="!disabled && !isOriginprice" v-model="scope.row.addionalMouldCost" @input="handleInputByAddionalMouldCost($event, scope.row)" /> -->
+          <thousandsFilterInput :inputValue="scope.row.addionalMouldCost"  :numberProcessor="2" :handleArg="[scope.row]"  @handleInput="handleInputByAddionalMouldCost" />
+          <!-- <span v-else>{{ scope.row.addionalMouldCost | thousandsFilter }}</span> -->
+        </template>
+        <template #addionalMouldLife="scope">
+          <iInput v-model="scope.row.addionalMouldLife" @input="handleInputByAddionalMouldLife($event, scope.row)" />
+          <!-- <span v-else>{{ scope.row.addionalMouldLife | thousandsFilter}}</span> -->
+        </template>
+        <template #remark="scope">
+          <iInput v-model="scope.row.remark" />
+          <!-- <span v-else>{{ scope.row.remark }}</span> -->
+        </template>
+      </tablelist>
+    </iDialog>
 </div>
 </template>
 <script>
 import {iButton,iDialog,iMessage,iInput,iFormItem,iFormGroup,iText,iMessageBox} from 'rise'
 import {nomiAutoPartsAssemblyCheck,nomiAutoPartsAssembly,partsAssemblyOutPlan} from '@/api/partsprocure/editordetail'
 import tablelist from "pages/partsign/home/components/tableList";
-import { tableTitle } from './data'
-import {numberProcessor} from '@/utils' 
+import { tableTitle, sampleTableTitle } from './data'
+import {numberProcessor} from '@/utils'
+import thousandsFilterInput from 'rise/web/aeko/quotationdetail/components/thousandsFilterInput'
 export default{
-  components:{iButton,iDialog,iInput,iFormItem,iFormGroup,iText, tablelist},
+  components:{iButton,iDialog,iInput,iFormItem,iFormGroup,iText, tablelist,thousandsFilterInput},
   inject:['detailData'],
   data(){
     return {
@@ -49,7 +87,47 @@ export default{
       rate:'',
       ontologyList:[],
       isUserPackage:true,
-      loadingbtn:false
+      loadingbtn:false,
+      sampleTableTitle:sampleTableTitle(true),
+      dialogVisible: false,
+      toolingSampleDTOList: [
+        {
+          sampleType: "⼯装样件(BS1)",
+          requiredTime: null,
+          quantity: null,
+          sampleUnitPrice: null,
+          addionalMouldCost: null,
+          addionalMouldLife: null,
+          remark: null
+        },
+        {
+          sampleType: "⼯装样件(BS2)",
+          requiredTime: null,
+          quantity: null,
+          sampleUnitPrice: null,
+          addionalMouldCost: null,
+          addionalMouldLife: null,
+          remark: null
+        },
+        {
+          sampleType: "⼯装样件(BS3)",
+          requiredTime: null,
+          quantity: null,
+          sampleUnitPrice: null,
+          addionalMouldCost: null,
+          addionalMouldLife: null,
+          remark: null
+        },
+        {
+          sampleType: "其他样件",
+          requiredTime: null,
+          quantity: null,
+          sampleUnitPrice: null,
+          addionalMouldCost: null,
+          addionalMouldLife: null,
+          remark: null
+        }
+      ]
     }
   },
   computed:{
@@ -66,6 +144,15 @@ export default{
     }
   },
   methods:{
+    handleInputBySampleUnitPrice(value, row) {
+      this.$set(row, "sampleUnitPrice", numberProcessor(value, 2))
+    },
+    handleInputByAddionalMouldCost(value, row) {
+      this.$set(row, "addionalMouldCost", numberProcessor(value, 2))
+    },
+    handleInputByAddionalMouldLife(value, row) {
+      this.$set(row, "addionalMouldLife", numberProcessor(value, 2))
+    },
     disabelRow(row){
       if(row.addAssemblyNomi){
         return false
@@ -188,7 +275,7 @@ export default{
           }else{
             this.ontologyList = this.tableList
             this.rate = res.data.nomiPartsAssemblySupplierVoList[0].nomiPartsAssemblyRecordVoList.find(r=>r.partType == "S").rate || 0
-            this.createNomi() 
+            this.createNomi('1') 
           }
           }else{
             iMessage.error(res.desZh)
@@ -207,36 +294,42 @@ export default{
       });
       return newArray
     },
-    createNomi(){
-      const submitValidate = this.ontologyList.filter(items=>items.partType === 'S')
-      if(this.rate === '') return iMessage.warn(this.language('DANGQIANFENEBNWEIK','抱歉，您还未填写份额！'))
-      if(this.rate === '0%') return iMessage.warn(this.language('QINGSHURUDAYUINGDESHU','抱歉！份额请填写大于0小于等于100的数'))
-      if(submitValidate && submitValidate.length > 1) return iMessage.warn(this.language('XUANZEDEBUNENGDAYULIANGT','抱歉！零件类型【加工装配费】只能为一条！'))
-      this.loadingbtn = true
-      const sendData = {
-        isUserPackage:this.isUserPackage,
-        ontologyList:this.ontologyList.filter(r=>!r.needRow).filter(r=>!r.addAssemblyNomi),
-        rate:this.rate.toString().indexOf('%')>-1?JSON.parse(JSON.stringify(this.rate)).substring(0,this.rate.length - 1):this.rate, //将rate后面的百分号去除
-        purchaseProjectPartId:this.detailData().id
-      }
-      nomiAutoPartsAssembly(sendData).then(res=>{
-        this.loadingbtn = false
-        if(res.data){
-            this.$router.push({
-              path:'/designate/decisiondata/title',
-              query:{
-                desinateId:res.data.nominateId,
-                designateType:res.data.nominateProcessType,
-                partProjType:this.detailData().partProjType
-              }
-            })
-        }else{
-          iMessage.error(res.desZh)
+    createNomi(type = '1'){
+      if (type === '1') {
+        const submitValidate = this.ontologyList.filter(items=>items.partType === 'S')
+        if(this.rate === '') return iMessage.warn(this.language('DANGQIANFENEBNWEIK','抱歉，您还未填写份额！'))
+        if(this.rate === '0%') return iMessage.warn(this.language('QINGSHURUDAYUINGDESHU','抱歉！份额请填写大于0小于等于100的数'))
+        if(submitValidate && submitValidate.length > 1) return iMessage.warn(this.language('XUANZEDEBUNENGDAYULIANGT','抱歉！零件类型【加工装配费】只能为一条！'))
+        this.diologShow = false
+        this.dialogVisible = true
+      } else {
+        this.loadingbtn = true
+        const sendData = {
+          isUserPackage:this.isUserPackage,
+          ontologyList:this.ontologyList.filter(r=>!r.needRow).filter(r=>!r.addAssemblyNomi),
+          rate:this.rate.toString().indexOf('%')>-1?JSON.parse(JSON.stringify(this.rate)).substring(0,this.rate.length - 1):this.rate, //将rate后面的百分号去除
+          purchaseProjectPartId:this.detailData().id,
+          toolingSampleDTOList: this.toolingSampleDTOList // 新增工装样件
         }
-      }).catch(err=>{
-        this.loadingbtn = false
-        iMessage.error(err.desZh)
-      })
+        nomiAutoPartsAssembly(sendData).then(res=>{
+          this.loadingbtn = false
+          if(res.data){
+              this.$router.push({
+                path:'/designate/decisiondata/title',
+                query:{
+                  desinateId:res.data.nominateId,
+                  designateType:res.data.nominateProcessType,
+                  partProjType:this.detailData().partProjType
+                }
+              })
+          }else{
+            iMessage.error(res.desZh)
+          }
+        }).catch(err=>{
+          this.loadingbtn = false
+          iMessage.error(err.desZh)
+        })
+      }
     }
   }
 }

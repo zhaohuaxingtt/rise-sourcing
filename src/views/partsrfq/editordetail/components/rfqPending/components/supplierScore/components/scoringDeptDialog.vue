@@ -230,7 +230,19 @@ export default {
     handleRecover() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN','请选择需要恢复的评分部门'))
 
-      this.multipleSelection.forEach(item => this.$set(item, 'deleteStatus', false))
+      this.multipleSelection.forEach(item => {
+        this.$set(item, 'deleteStatus', false)
+
+        if (Array.isArray(this.deptMap[item.rateTag][item.rateDepartNum].raterList)) {
+          item.raterId = this.deptMap[item.rateTag][item.rateDepartNum].raterList[0].value
+          this.handleChange(item.raterId, this.deptMap[item.rateTag][item.rateDepartNum].raterList, item, "rater")
+        }
+
+        if (Array.isArray(this.deptMap[item.rateTag][item.rateDepartNum].coordinatorList)) {
+          item.coordinatorId = this.deptMap[item.rateTag][item.rateDepartNum].coordinatorList[0].value
+          this.handleChange(item.coordinatorId, this.deptMap[item.rateTag][item.rateDepartNum].coordinatorList, item, "coordinator")
+        }
+      })
     },
     handleChange(val, list, row, key) {
       for (let i = 0, item; (item = list[i++]); ) {
@@ -250,13 +262,23 @@ export default {
       keys.forEach(key => this.$set(row, key, undefined))
     },
     // 评分部门变更
-    handleClearCoordinatorAndRater(value, row) {
-      this.getAllRaterAndCoordinator(row.rateTag, value)
+    async handleClearCoordinatorAndRater(value, row) {
+      await this.getAllRaterAndCoordinator(row.rateTag, value)
       this.$set(row, "isCheck", this.deptMap[row.rateTag][value]?.isCheck)
       this.$set(row, "deptId", this.deptMap[row.rateTag][value]?.deptId ?? "")
       
       const keys = ['coordinator', 'coordinatorId', 'rater', 'raterId']
       keys.forEach(key => this.$set(row, key, undefined))
+
+      if (Array.isArray(this.deptMap[row.rateTag][value].raterList)) {
+        row.raterId = this.deptMap[row.rateTag][value].raterList[0].value
+        this.handleChange(row.raterId, this.deptMap[row.rateTag][value].raterList, row, "rater")
+      }
+
+      if (Array.isArray(this.deptMap[row.rateTag][value].coordinatorList)) {
+        row.coordinatorId = this.deptMap[row.rateTag][value].coordinatorList[0].value
+        this.handleChange(row.coordinatorId, this.deptMap[row.rateTag][value].coordinatorList, row, "coordinator")
+      }
     },
     // 保存
     handleSave() {
