@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-24 10:13:06
+ * @LastEditTime: 2021-11-24 17:43:15
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -188,7 +188,7 @@ export default {
         submitApplyTargetPrice(params).then(res => {
           if (res?.result) {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-            this.gotoQuery()
+            // this.gotoQuery()
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }

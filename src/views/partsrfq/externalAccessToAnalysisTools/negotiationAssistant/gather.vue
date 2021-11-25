@@ -29,6 +29,7 @@
     <mekOverview v-else-if="pageType==='MEK'"></mekOverview>
     <piOverView v-else-if="pageType === 'PI'" pageType="PI" />
     <vpAnalyseList v-else-if="pageType==='VP'" />
+    <bid-link v-else-if="pageType==='BL'"/>
   </div>
 </template>
 
@@ -41,6 +42,7 @@ import mekOverview from "@/views/partsrfq/externalAccessToAnalysisTools/category
 import specialAnalysisTool
   from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/specialAnalysisTool/index.vue';
 import piOverView from '@/views/partsrfq/piAnalyse/piList'
+import bidLink from '@/views/partsrfq/bidLink/index.vue'
 import { icon, iButton, iNavMvp } from 'rise';
 
 export default {
@@ -50,6 +52,7 @@ export default {
     vpAnalyseList,
     mekOverview,
     piOverView,
+    bidLink,
     specialAnalysisTool, icon, iNavMvp, iButton
   },
   data() {
@@ -78,7 +81,6 @@ export default {
   },
   methods: {
     entrance(val) {
-      console.log(val)
       this.pageType = val;
     },
     handleSearch() {

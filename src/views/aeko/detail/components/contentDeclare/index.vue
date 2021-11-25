@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-24 17:10:15
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-24 17:52:02
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -251,6 +251,10 @@
               </div>
             </iInput>
             <iInput v-else v-model="scope.row.showPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
+          </template>
+          <template #oldPartNamePreset="scope">
+            <span v-if="scope.row.isDeclare==0">{{scope.row.oldPartNamePreset}}</span>
+            <span v-else>{{scope.row.originPartName}}</span>
           </template>
           <template #dosage="scope">
             <span v-if="scope.row.status !='EMPTY'" class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -1294,6 +1298,13 @@ export default {
       resize: none;
       box-shadow: none;
       height: 100%;
+    }
+  }
+}
+::v-deep.table {
+  td,th {
+    .cell {
+      width: 100% !important
     }
   }
 }

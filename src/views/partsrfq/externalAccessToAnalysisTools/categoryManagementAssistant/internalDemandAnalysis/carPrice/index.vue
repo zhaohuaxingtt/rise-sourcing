@@ -101,7 +101,7 @@
         </div>
       </div>
       <div class="flex-align-center">
-        <iButton @click="renderBi">{{ language("QUEREN", "确认") }}</iButton>
+        <iButton @click="renderBi('submit')">{{ language("QUEREN", "确认") }}</iButton>
         <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
       </div>
     </div>
@@ -476,13 +476,14 @@ export default {
         pbi.factories.routerFactory
       )
     },
-    renderBi() {
+    renderBi(val) {
       let filterArr = []
       this.filter.values = [this.categoryCode]
       filterArr.push(this.filter)
       // 如果没有车型
       console.log(this.filterCarValueName)
       if (this.filterCarValueName.length == 0) {
+        console.log(1111)
         let newArr = window._.clone(this.carType)
         //  newArr = window._.clone(this.carType).splice(0, 5)
         // this.carType.forEach((v) => {
@@ -498,24 +499,25 @@ export default {
         //     newArr.push(v)
         //   }
         // })
+        if (val != 'submit') {
+          this.carType.forEach((item) => {
+            //   this.filterCarValueName.forEach((i) => {
+            // if (item.modelNameZh === i) {
+            if (
+              item.modelNameZh == 'Lavida NF PA' ||
+              item.modelNameZh == 'New Santana PA' ||
+              item.modelNameZh == 'Tiguan L PA' ||
+              item.modelNameZh == 'Passat NF' ||
+              item.modelNameZh == 'Teramont PA'
+            ) {
+              this.filterCarValue.push(item)
+            }
 
-        this.carType.forEach((item) => {
-          //   this.filterCarValueName.forEach((i) => {
-          // if (item.modelNameZh === i) {
-          if (
-            item.modelNameZh == 'Lavida NF PA' ||
-            item.modelNameZh == 'New Santana PA' ||
-            item.modelNameZh == 'Tiguan L PA' ||
-            item.modelNameZh == 'Passat NF' ||
-            item.modelNameZh == 'Teramont PA' 
- 
-          ) {
-            this.filterCarValue.push(item)
-          }
+            // }
+            //   })
+          })
+        }
 
-          // }
-          //   })
-        })
         if (this.filterCarValue.length > 0) {
           this.filterCarValueName = this.filterCarValue.map(
             (item, i) => item.modelNameZh
