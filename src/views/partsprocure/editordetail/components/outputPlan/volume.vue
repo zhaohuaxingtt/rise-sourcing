@@ -164,7 +164,7 @@ export default {
             {
             res.data.tpRecordList.forEach(val=>{
               this.$set(val,'partNum',this.params.partNum)
-              this.$set(val,'partNameZh',this.params.partNameZh)
+              this.$set(val,'partNameCn',this.params.partNameZh)
               this.$set(val,'partNameDe',this.params.partNameDe)
             })
             this.tableListData = res.data.tpRecordList;
