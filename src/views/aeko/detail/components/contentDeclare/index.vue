@@ -252,6 +252,10 @@
             </iInput>
             <iInput v-else v-model="scope.row.showPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
           </template>
+          <template #oldPartNamePreset="scope">
+            <span v-if="scope.row.isDeclare==0">{{scope.row.oldPartNamePreset}}</span>
+            <span v-else>{{scope.row.originPartName}}</span>
+          </template>
           <template #dosage="scope">
             <span v-if="scope.row.status !='EMPTY'" class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
