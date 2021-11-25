@@ -225,20 +225,23 @@
           </iCard>
         </el-col>
       </el-row>
-      <el-row :gutter="20"
-              class="margin-top20">
-        <el-col :span="groupIds?0:inside?4:5">
-          <iCard :collapse="false">
-            <ul class="anchorList flex">
-              <li v-for="(i,index) in anchorList"
-                  :key="index"
-                  @click="doActive(i,index)"
-                  :class="{active:index==current}">{{i}}
-              </li>
-            </ul>
-          </iCard>
-        </el-col>
-        <el-col :span="groupIds?24:inside ? 20 : 19">
+      <!-- <el-row :gutter="20"
+              class="margin-top20"> -->
+      <div class="margin-top20" style="display:flex;flex-flow:row nowrap;justify-content:flex-end;">
+        <div style="width: calc(100% / 6);padding-right: 20px;">
+          <bob-pin :offset-top="80">
+            <iCard :collapse="false">
+              <ul class="anchorList flex">
+                <li v-for="(i,index) in anchorList"
+                    :key="index"
+                    @click="doActive(i,index)"
+                    :class="{active:index==current}">{{i}}
+                </li>
+              </ul>
+            </iCard>
+          </bob-pin>
+        </div>
+        <div style="width: calc(100% / 6 * 5)">
           <bobAnalysis ref="bobAnalysis"
                        v-bind="$attrs"
                        :supplierList="supplierList"
@@ -250,8 +253,9 @@
                        :chartType="chartType"
                        :heightFlag="true"
                        :formUpdata="formUpdata"></bobAnalysis>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
+      <!-- </el-row> -->
     </div>
     <findingParts v-if="value"
                   v-show="value"
@@ -315,6 +319,7 @@ import {
   iMessage,
 } from "rise";
 import CrownBar from "./components/crownBar.vue";
+import BobPin from "./components/pin.vue";
 import bobAnalysis from "@/views/partsrfq/bob/bobAnalysis/index.vue";
 import findingParts from "@/views/partsrfq/components/findingParts.vue";
 import { getBobLevelOne, removeBobOut, addBobOut } from "@/api/partsrfq/bob";
@@ -339,7 +344,8 @@ export default {
     preview,
     iDialog,
     iInput,
-    customSelect
+    customSelect,
+    BobPin
   },
   data () {
     return {
@@ -990,6 +996,7 @@ export default {
       }
     },
     doActive (i, index) {
+      console.log(i, index)
       this.label = i
       /*  this.$nextTick(() => {
          //页面滚动了的距离
