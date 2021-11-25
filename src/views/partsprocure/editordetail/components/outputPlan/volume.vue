@@ -322,7 +322,7 @@ export default {
           dataItem.cartype  = value.cartypeId
           dataItem.cartypeConfigId  = value.originId
           dataItem.partNum  = value.partNum
-          dataItem.partNameZh  = value.partNameZh
+          dataItem.partNameCn  = value.partNameZh
           dataItem.partNameDe  = value.partNameDe
           dataItem.cartypeLevelRate  = value.cartypeLevelRate
           valTemData.push(dataItem)
@@ -339,7 +339,7 @@ export default {
           dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId
           dataItem.cartypeLevelRate  = value.cartypeLevelRate
            dataItem.partNum  = value.partNum
-          dataItem.partNameZh  = value.partNameZh
+          dataItem.partNameCn  = value.partNameZh
           dataItem.partNameDe  = value.partNameDe
           valTemData.push(dataItem)
         })
