@@ -1,53 +1,44 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 12:00:48
- * @LastEditTime: 2021-09-03 15:13:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-25 15:53:32
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\router\modules\costanalysismanage.js
  */
 export default [
   {
-    path: "/costanalysismanageFrame",
+    path: "/costanalysismanage",
     meta: { title: "KM成本分析" },
-    name: "costanalysismanageFrame",
+    name: "costanalysismanage",
     component: () => import("@/layout/default"),
     redirect: "costanalysismanage/home",
     children: [
       {
-        path: "/costanalysismanage",
-        name: "costanalysismanage",
-        meta: { title: "KM成本分析-首页" },
-        component: () => import("@/views/costanalysismanage"),
-        redirect: "costanalysismanage/home",
+        path: "home",
+        name: "costAnalysisManageHome",
+        meta: { title: "KM成本分析-成本分析管理" },
+        component: () => import("@/views/costanalysismanage/components/home"),
+      },
+      {
+        path: "datamaintenance",
+        name: "costAnalysisManageDataMaintenance",
+        meta: { title: "KM成本分析-数据维护" },
+        component: () => import("@/views/costanalysismanage/components/datamaintenance"),
+        redirect: "datamaintenance/costMaintenance",
         children: [
           {
-            path: "home",
-            name: "costAnalysisManageHome",
-            meta: { title: "KM成本分析-成本分析管理" },
-            component: () => import("@/views/costanalysismanage/components/home"),
+            path: "costMaintenance",
+            name: "laborCostMaintenance",
+            meta: { title: "KM成本分析-人工成本维护" },
+            component: () => import("@/views/costanalysismanage/components/datamaintenance/components/costMaintenance"),
           },
           {
-            path: "datamaintenance",
-            name: "costAnalysisManageDataMaintenance",
-            meta: { title: "KM成本分析-数据维护" },
-            component: () => import("@/views/costanalysismanage/components/datamaintenance"),
-            redirect: "datamaintenance/costMaintenance",
-            children: [
-              {
-                path: "costMaintenance",
-                name: "laborCostMaintenance",
-                meta: { title: "KM成本分析-人工成本维护" },
-                component: () => import("@/views/costanalysismanage/components/datamaintenance/components/costMaintenance"),
-              },
-              {
-                path: "costDataMaintenance",
-                name: "laborCostDataMaintenance",
-                meta: { title: "KM成本分析-人工成本数据维护" },
-                component: () => import("@/views/costanalysismanage/components/datamaintenance/components/costDataMaintenance"),
-              },
-            ]
-          }
+            path: "costDataMaintenance",
+            name: "laborCostDataMaintenance",
+            meta: { title: "KM成本分析-人工成本数据维护" },
+            component: () => import("@/views/costanalysismanage/components/datamaintenance/components/costDataMaintenance"),
+          },
         ]
       },
       {

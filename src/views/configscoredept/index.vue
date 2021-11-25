@@ -1,15 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-09-13 14:21:32
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-25 15:46:38
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\configscoredept\index.vue
+ * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
 -->
 <template>
   <iPage class="configscoredept">
     <div class="header clearFloat">
-      <div class="title">{{ language("PEIZHIPINGFENBUMEN", "配置评分部门") }}</div>
+      <iNavMvp :list="list" :lang="true" :lev="1" routerPage></iNavMvp>
       <div class="control">
         <logButton class="margin-left20" />
         <span class="margin-left20">
@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage } from "rise"
+import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage, iNavMvp } from "rise"
 import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import deptDialog from "./components/deptDialog"
@@ -142,6 +142,7 @@ import { queryForm, tableTitle } from "./components/data"
 import { cloneDeep, isEqual } from "lodash"
 import { getDictByCode } from "@/api/dictionary"
 import { getRfqRateDeparts, saveRfqRateDeparts, deleteRfqRateDeparts } from "@/api/configscoredept"
+import { TAB } from '@/views/financialTargetPrice/components/data'
 
 export default {
   components: {
@@ -154,11 +155,13 @@ export default {
     iInput,
     logButton,
     tableList,
-    deptDialog
+    deptDialog,
+    iNavMvp
   },
   mixins: [ filters ],
   data() {
     return {
+      list: TAB,
       rateDepartNumOptions: [],
       scoreDeptOptions: [],
       form: cloneDeep(queryForm),
@@ -363,7 +366,7 @@ export default {
 .configscoredept {
   .header {
     position: relative;
-
+    margin-bottom: 40px;
     .title {
       font-size: 20px;
       font-weight: bold;
