@@ -46,11 +46,25 @@
           prop="biddingQuoteRule.limitValue"
           :hideRequiredAsterisk="true"
         >
-          <iInput
-            class="input-wrap"
-            v-model="ruleForm.biddingQuoteRule.limitValue"
-            maxlength="15"
-          ></iInput>
+          <template v-if="isInputFlag">
+            <iInput
+              class="input-wrap"
+              @focus="handlerInputFocus"
+              @blur="handlerInputBlur"
+              :value="ruleForm.biddingQuoteRule.limitValue"
+              @input="value => $set(ruleForm.biddingQuoteRule, 'limitValue', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+              maxlength="15"
+            ></iInput>
+          </template>
+          <template v-else>
+            <iInput
+              class="input-wrap"
+              @focus="handlerInputFocus"
+              @blur="handlerInputBlur"
+              :value="limitValueValue"
+              maxlength="15"
+            ></iInput>
+          </template>
         </iFormItem>
       </div>
     </div>
@@ -594,10 +608,16 @@ export default {
 
       priceDiffLimitSelectList,
       priceDiffObjectSelectList,
-      actualValueData:''
+      actualValueData:'',
+      isInputFlag:false
     };
   },
   computed: {
+    limitValueValue(){
+      return this.ruleForm.biddingQuoteRule.limitValue 
+            ? Number(this.ruleForm.biddingQuoteRule.limitValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+            : ''
+    },
     rankDisplayRuleSelectList() {
       if (this.ruleForm.resultOpenForm === "01") {
         return rankDisplayRuleSelectList.slice(0, 1);
@@ -620,6 +640,12 @@ export default {
     },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     handleChangeLightArea() {
       this.$refs["ruleForm"].validateField(
         [
