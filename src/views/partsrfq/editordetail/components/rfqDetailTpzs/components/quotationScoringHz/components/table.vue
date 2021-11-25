@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-24 14:39:19
+ * @LastEditTime: 2021-11-25 20:20:31
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -78,6 +78,7 @@
                             </div>
                           </el-tooltip>
                         </li>
+                         <li v-else :key='index'></li>
                       </template>
                       <template v-else>
                         <li :key='index'>{{items}}</li>
