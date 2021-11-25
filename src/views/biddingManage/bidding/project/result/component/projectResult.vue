@@ -51,7 +51,7 @@
           <template slot="isTax" slot-scope="scope">
             <div>
               {{
-                dividedBeiShu(scope.row["offerPrice"]) +
+                dividedBeiShu(scope.row["offerPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') +
                 currencyMultiples(scope.row["currencyMultiple"]) +
                 "-" + units(scope.row["currencyUnit"])
               }}
@@ -297,7 +297,8 @@ export default {
       this.isTax = res[0].isTax;
         if (
         (this.form.roundType === "05" &&
-        this.form.manualBiddingType === "02") || this.form.resultOpenForm === '01'
+        this.form.manualBiddingType === "02") 
+        || (this.role === "supplier" && this.form.resultOpenForm === '01' || this.form.resultOpenForm === '02')
         ) {
           this.tableListData = res.filter((item) => {
             return this.supplierCode.includes(item.supplierCode);
