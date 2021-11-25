@@ -243,6 +243,7 @@ created(){
             aekoCode: selectPendingItem.aekoNum,
             aekoAuditType:selectPendingItem.auditType,
             taskId: item.taskId,
+            workFlowId:item.workFlowId,
             userId: this.$store.state.permission.userInfo.id,
             userName: this.$store.state.permission.userInfo.nameZh
           })
