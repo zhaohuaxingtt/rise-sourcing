@@ -167,7 +167,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" v-if="ruleForm.biddingQuoteRule.firstOfferLimit">
       <iLabelML>
         <template v-solt="label">
           <iLabel :label="language('BIDDING_DYCBJXZ', '第一次报价限制')" slot="label" class="label"></iLabel>
@@ -189,7 +189,7 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" v-if="ruleForm.biddingQuoteRule.conRankLimit">
       <iLabelML>
         <!-- <div class="hover-text">
           <span>供应商对红绿灯名次区间/偏离比例 的</span>
