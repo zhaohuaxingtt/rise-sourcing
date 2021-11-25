@@ -5,12 +5,12 @@
   >
     <div class="body">
         <div>
-          <span class="title">
+          <span class="title" v-if="params.partProjectSource == 1">
             {{`${language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}
           </span>
           <div class="btn-left">
             <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
-            <iButton v-if="isEdit">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
+            <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
             <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
             <iButton v-if="isEdit" @click="addCar">{{ language("LK_TIANJIA",'添加') }}</iButton>
             <iButton v-if="isEdit" @click="saveData">{{ language("LK_BAOCUN",'保存') }}</iButton>
@@ -41,7 +41,7 @@
 		    v-update
       />
     </div>
-      <addCarType :dialogVisible="carTypeVisible" @changeVisible="changeVisible" @getSelectData="getSelectData">
+      <addCarType :dialogVisible="carTypeVisible" @changeVisible="changeVisible" @getSelectData="getSelectData" :params="params">
 
       </addCarType>
   </iCard>
@@ -58,7 +58,11 @@ import {
 } from "@/api/partsign/editordetail";
 import {
   savearDosage,
-  getCarDosage
+  calculateOutput,
+  manualInfoTable,
+  delCarDosage,
+  fscalculateOutput,
+  gscalculateOutput
   // getPerCarDosageInfo,
 } from "@/api/partsprocure/editordetail";
 import addCarType from './components/addCarType'
@@ -76,7 +80,8 @@ export default {
       isEdit:false,
       carTypeVisible:false,
       selectData:[],
-      getPerCarDosage:{}
+      getPerCarDosage:{},
+      isGs:true
     };
   },
   props: {
@@ -88,60 +93,121 @@ export default {
   },
   created() {
     this.getData();
-  },
+     if(this.params.partProjectType == '1000003' || this.params.partProjectType == '50002001') {
+      this.isGs = true
+    } else {
+      this.isGs = false
+    }
+},
   methods: {
-    async getData() {
-      if (this.params.partProjectSource != 1) return // 手工创建的采购项目不调用该接口
-
+    async getData() {  
       this.loading = true;
-
-      try {
-        if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementId) {
-          const versionRes = await getPerCarDosageVersion({
-            currPage: 1,
-            pageSize: 10,
+      if (this.params.partProjectSource == 1) {
+        try {
+          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementId) {
+            const versionRes = await getPerCarDosageVersion({
+              currPage: 1,
+              pageSize: 10,
+              status: 1,
+              purchasingRequirementId: this.params.purchasingRequirementId,
+            });
+  
+            this.version = "V1";
+  
+            if (versionRes.code != 200) {
+              return iMessage.error(`${ this.$i18n.locale === 'zh' ? versionRes.desZh : versionRes.desEn }`)
+            }
+  
+            if (
+              versionRes.data &&
+              Array.isArray(versionRes.data.tpRecordList) &&
+              versionRes.data.tpRecordList[0]
+            ) {
+              this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId;
+              this.version = versionRes.data.tpRecordList[0].version || "V1";
+              this.tpId = versionRes.data.tpRecordList[0].tpId
+            }
+          }
+  
+          if(!this.carTypeConfigId) return;
+          const infoRes = await getPerCarDosageInfo({
+            carTypeConfigId: this.carTypeConfigId,
+            version: this.version,
+            currPage: this.page.currPage,
+            pageSize: this.page.pageSize,
             status: 1,
-            purchasingRequirementId: this.params.purchasingRequirementId,
+            tpId: this.tpId,
+            purchasingRequirementId: this.params.id,
           });
-
-          this.version = "V1";
-
-          if (versionRes.code != 200) {
-            return iMessage.error(`${ this.$i18n.locale === 'zh' ? versionRes.desZh : versionRes.desEn }`)
+  
+          if (infoRes.code != 200) {
+            return iMessage.error(`${ this.$i18n.locale === 'zh' ? infoRes.desZh : infoRes.desEn }`)
           }
-
-          if (
-            versionRes.data &&
-            Array.isArray(versionRes.data.tpRecordList) &&
-            versionRes.data.tpRecordList[0]
-          ) {
-            this.carTypeConfigId = versionRes.data.tpRecordList[0].carTypeConfigId;
-            this.version = versionRes.data.tpRecordList[0].version || "V1";
-            this.tpId = versionRes.data.tpRecordList[0].tpId
+  
+          if (infoRes.data) {
+            this.tableListData = infoRes.data.tpRecordList;
+            this.page.totalCount = infoRes.data.totalCount || 0;
           }
+        } catch (e) {
+          // console.error(e);
+        } finally {
+          this.loading = false;
         }
-        if(!this.carTypeConfigId) return;
-        const infoRes = await getPerCarDosageInfo({
-          carTypeConfigId: this.carTypeConfigId,
-          version: this.version,
-          currPage: this.page.currPage,
-          pageSize: this.page.pageSize,
-          status: 1,
-          tpId: this.tpId,
-        });
+      } else {
+        try{
+          manualInfoTable({
+            currPage: this.page.currPage,
+            pageSize: this.page.pageSize,
+            purchasingRequirementId: this.params.id,
+          }).then(res=>{
+            if(res.code == '200') 
+            {
+            res.data.tpRecordList.forEach(val=>{
+              this.$set(val,'partNum',this.params.partNum)
+              this.$set(val,'partNameZh',this.params.partNameZh)
+              this.$set(val,'partNameDe',this.params.partNameDe)
+            })
+            this.tableListData = res.data.tpRecordList;
+            this.page.totalCount = res.data.totalCount || 0;
+            } else {
+            return iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
 
-        if (infoRes.code != 200) {
-          return iMessage.error(`${ this.$i18n.locale === 'zh' ? infoRes.desZh : infoRes.desEn }`)
+            }
+          })
+        }catch (e) {
+          console.error(e);
+        } finally {
+          this.loading = false;
         }
-
-        if (infoRes.data) {
-          this.tableListData = infoRes.data.tpRecordList;
-          this.page.totalCount = infoRes.data.totalCount || 0;
+      }
+    },
+    //计算产量
+    calculation() {
+      let flag = true 
+      this.tableListData.forEach(val=>{
+        val.id == undefined ?  flag = false :''
+      })
+      if(flag == false) {
+        iMessage.error(this.language('QINGXIANBAOCUNMEICHEYONGLIANG','请先保存每车用量'))
+      }else {
+        let purchasingProjectPartId=this.params.id
+        if(this.isGs == false) {
+           fscalculateOutput(purchasingProjectPartId).then(res=> {
+            if(res.code == '200') {
+              iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+            } else {
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+          })
+        }else {
+          gscalculateOutput(purchasingProjectPartId).then(res=> {
+            if(res.code == '200') {
+              iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+            } else {
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+          })
         }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.loading = false;
       }
     },
     //编辑
@@ -168,18 +234,54 @@ export default {
         return
       } else {
         const flag = await this.$confirm(this.language('deleteSure','您确定要执行删除操作吗？'))
-        alert('11',flag)
+        if (flag !== 'confirm') return
+          let noInterfaceDelete=[]
+          let interfaceDelete=[]
+          let temData = [...this.selectData]
+          temData.forEach(val =>{
+            if(val.id) {
+              interfaceDelete.push(val)
+            }else {
+              noInterfaceDelete.push(val)
+            }
+          })
+          console.log()
+          const idsLsit = interfaceDelete.map(val => val.id)
+            noInterfaceDelete.forEach(val=>{
+                this.tableListData = this.tableListData.filter((item) => {
+                if(item.cartypeConfigId !== val.cartypeConfigId ) 
+                return item
+              })
+            })
+          console.log(noInterfaceDelete);
+          if(idsLsit.length != 0) {
+            delCarDosage(idsLsit).then(res =>{
+              if(res.code == '200') {
+               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+               this.getData()
+              }
+              else {
+                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+              }
+            })
+          }
+        
       }
+    },
+    //获取输入框的index和值
+    getIndex(index,perCar) {
+      this.getPerCarDosage.index = index
+      this.getPerCarDosage.perCar = perCar
     },
     //向下填充
     fillDown() {
       let data = [...this.tableListData]
       data.forEach((val,index)=>{
         if(index>this.getPerCarDosage.index){
-          val.perCarDosage = this.getPerCarDosage.perCar
+          this.$set(val,'perCarDosage',this.getPerCarDosage.perCar)
         }
       })
-      this.tableListData = data
+      this.tableListData = [...data]
     },
     //保存
     saveData() {
@@ -192,10 +294,10 @@ export default {
       if(flag == false) {
         iMessage.error(this.language(' WEITIANXIEMEICHEYONGLIANGDEJILU,BUKEBAOCUN', '存在未填写每车用量的记录，不可保存'))
         return
-      }  else {
-
-        savearDosage([...this.tableListData]).then(res=>{
+      }  else {         
+        savearDosage(this.tableListData).then(res=>{
           if(res.code == '200') {
+            iMessage.success(res.desZh)
             this.getData()
           } else {
             iMessage.error(res.desZh)
@@ -203,18 +305,51 @@ export default {
         })
       }
     },
-    //获取输入框的index和值
-    getIndex(index,perCar) {
-      this.getPerCarDosage.index = index
-      this.getPerCarDosage.perCar = perCar
-    },
+
     //添加表格数据
     getSelectData(val) {
-      console.log(val,'-------------------');
-      if(this.tableListData.length == '0') {
-        this.tableListData = val
+      console.log(val);
+      let valTemData = []
+      let copyData  = [...val]
+      if(this.isGs == true) {
+        copyData.forEach(value=> {
+          let dataItem = {}
+          dataItem.purchasingRequirementObjectId = this.params.id
+          dataItem.cartypeLevel = value.cartypeLevel
+          dataItem.engineType = value.engineType
+          dataItem.gearType = value.gearboxName
+          dataItem.otherInfo = value.otherConf
+          dataItem.cartype  = value.cartypeId
+          dataItem.cartypeConfigId  = value.originId
+          dataItem.partNum  = value.partNum
+          dataItem.partNameZh  = value.partNameZh
+          dataItem.partNameDe  = value.partNameDe
+          dataItem.cartypeLevelRate  = value.cartypeLevelRate
+          valTemData.push(dataItem)
+        })
       } else {
-
+        copyData.forEach(value=> {
+          let dataItem = {}
+          dataItem.purchasingRequirementObjectId = this.params.id
+          dataItem.cartypeLevel = value.cartypeLevel
+          dataItem.engineType = value.engineVo.engineName
+          dataItem.gearType = value.gearboxVo.gearboxName
+          dataItem.otherInfo = value.otherConf
+          dataItem.cartype  = value.carProjectId
+          dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId
+          dataItem.cartypeLevelRate  = value.cartypeLevelRate
+           dataItem.partNum  = value.partNum
+          dataItem.partNameZh  = value.partNameZh
+          dataItem.partNameDe  = value.partNameDe
+          valTemData.push(dataItem)
+        })
+      }
+      if(this.tableListData.length == '0') {
+        this.tableListData = valTemData
+      } else {
+        let data = [...this.tableListData]
+        data.unshift(...valTemData)
+        this.tableListData = data
       }
     },
     //输入整数
@@ -222,10 +357,8 @@ export default {
       this.tableListData.forEach((value,index)=>{
         if(index == idx) {
           value.perCarDosage =  (val + '').replace(/\D/g, '')
-          console.log(value.perCarDosage,);
         }
       })
-      console.log(idx,val,key,'++++++++++sdfsdfjldskjfjdlkfj');
     }
   },
 };

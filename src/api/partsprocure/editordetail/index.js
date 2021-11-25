@@ -11,6 +11,7 @@ const quotation = axios(process.env.VUE_APP_SOURCING)
 const requestOutputPart = axios(process.env.VUE_APP_SOURCING)
 const requestPriceRecord = axios(process.env.VUE_APP_SOURCING)
 const requestPurchase= axios(process.env.VUE_APP_PURCHASE)
+const carApi= axios(process.env.VUE_APP_PARTSPROCURE_API)
 //自动定点-创建接口
 export function autonomi(params) {
 	return sourcing({
@@ -347,6 +348,58 @@ export function  savearDosage(data) {
 export function getCarDosage(data) {
 	return requst({
 		url:'/tp-records/perCarDosage/info1',
+		method:'POST',
+		data
+	})
+}
+
+//删除每车用量
+export function delCarDosage(data) {
+	return requst({
+		url:'/tp-records/perCarDosage/del-car-dosage',
+		method:'DELETE',
+		data
+	})
+}
+
+//GS 零件-刷新BKM产量预测
+export function bkmOutputForecast(data) {
+	return sourcing({
+		url:`/part-output/gs-part-bkm-output-forecast/${data}`,
+		method:"GET"
+	})
+}
+
+//GS 零件-计算产量
+export function gscalculateOutput(data) {
+	return sourcing({
+		url:`/part-output/gs-part-calculate-output/${data}`,
+		method:"GET"
+	})
+}
+//FS 零件-计算产量
+export function fscalculateOutput(data) {
+	return sourcing({
+		url:`/part-output/fs-part-calculate-output/${data}`,
+		method:"GET"
+	})
+}
+
+//获取每车用量-手动创建
+export function manualInfoTable(data) {
+	return requst({
+		url: '/tp-records/perCarDosage/manual-info',
+		method:'POST',
+		data
+	})
+}
+
+
+//根据车型項目配置信息查詢
+export function cartypeProConfigByCondition(data) {
+	console.log(data);
+	return carApi({
+		url: '/api/cartypeProConfigByCondition',
 		method:'POST',
 		data
 	})
