@@ -238,8 +238,8 @@ export default {
       downloadAll({
         url:
           this.role === "supplier"
-            ? "/bidding/biddingQueryService/exportProjectResults"
-            : "/bidding/biddingService/exportProjectResultForBuyer",
+            ? `${process.env.VUE_APP_BIDDING}/biddingQueryService/exportProjectResults`
+            : `${process.env.VUE_APP_BIDDING}/biddingService/exportProjectResultForBuyer`,
         filename: "项目结果",
         type: "application/vnd.ms-excel",
         data: this.role === "supplier" ? this.dataList : prama,
