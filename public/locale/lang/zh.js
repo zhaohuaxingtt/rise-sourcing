@@ -699,7 +699,7 @@
         'LK_XINJIANXINXILIUSHUIDANHAO': '新件信息流水单号 ', //新件信息流水单号
         'LK_XINJIANRFQLUNCI': '新建RFQ轮次', //新建RFQ轮次
         'LK_XINJIANXINXIDANBEIZHU': '新建信息单备注', //新建信息单备注
-        'LK_XINJIANXINXIDANLIUSHUIHAO': '新件信息单流水号', //新建信息单流水号
+        'XINJIANXINXIDANLIUSHUIHAO': '新件信息单流水号', //新建信息单流水号
         'LK_XINSHENQINGCAIWUMUBIAOJIA': '新申请财务目标价', //新申请财务目标价
         'LK_XINXIDANFENLEI': '信息单分类', //信息单分类
         'LK_XINXIDANLEIXING': '信息单类型', //信息单类型

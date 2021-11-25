@@ -9,7 +9,7 @@
 <template>
   <iCard :title="language('XUNJIAFUJIAN', '询价附件')">
     <template #header-control>
-      <iButton :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
+      <iButton :loading="downloadLoading" @click="handleDownload" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_INQUIRYATTACHMENT_INQUIRYATTACHMENT_BUTTON_DOWNLOAD|下载">{{ language("XIAZAI", "下载") }}</iButton>
     </template>
     <div class="body">
       <tableList
