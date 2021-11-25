@@ -575,7 +575,7 @@ export default {
       padding-right: 3px;
       line-height: 14px;
       span {
-        zoom: 0.85;
+        // zoom: 0.85;
       }
 
       // span span {
@@ -590,7 +590,7 @@ export default {
       padding-right: 3px;
 
       span {
-        zoom: 0.88;
+        // zoom: 0.88;
       }
     }
   }
