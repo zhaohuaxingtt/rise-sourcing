@@ -32,6 +32,7 @@
                   </el-option>
                 </iSelect> 
                 <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
+                <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
                 <iInput v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
@@ -90,7 +91,7 @@
 </template>
 
 <script>
-import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp } from 'rise'
+import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../../designate/designatedetail/components/tableList'
 import { tableTitle, searchList, TAB} from '../signForPartsDemand/data'
@@ -112,7 +113,7 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, iMultiLineInput, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp },
   data() {
     return {
       tableData: [],
@@ -120,6 +121,7 @@ export default {
       tableLoading: false,
       searchList: searchList,
       searchParams: {
+        partNum: '',
         carType: '',
         carProject: '',
         state: '',
@@ -392,6 +394,7 @@ export default {
      */    
     reset() {
       this.searchParams = {
+        partNum: '',
         carType: '',
         carProject: '',
         state: '',

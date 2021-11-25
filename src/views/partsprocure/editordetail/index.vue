@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-23 22:05:06
+ * @LastEditTime: 2021-11-25 10:44:27
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -175,7 +175,7 @@
 							</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
-							<iSelect v-model="detailData.carTypeProjectZh" v-if="!disabled">
+							<iSelect v-model="detailData.carTypeProjectZh" v-if="!disabled" @change="getCarTypeSopTime">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
@@ -431,7 +431,7 @@
 	// import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
 	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
-	import {dictkey,checkFactory,purchasingLiline,purchasingDept} from "@/api/partsprocure/editordetail";
+	import {dictkey,checkFactory,purchasingLiline,purchasingDept,getCarTypeSop} from "@/api/partsprocure/editordetail";
 	import {getCartypeDict} from "@/api/partsrfq/home";
 	import {detailData,partsCommonSourcing,translateDataForService, getOptionField } from "./components/data";
 	import splitFactory from "./components/splitFactory";
@@ -557,6 +557,7 @@
 		created() {
 			this.getDatailFn();
 			this.getDicts()
+			this.getCarTypeSopList()
 		},
 		methods: {
 			getEnumValue,
@@ -569,7 +570,7 @@
 				this.detailData.linieId = ''
 				const currentLinieDept = this.fromGroup["LINIE_DEPT"].find(item => item.deptNum === this.detailData.linieDept)
 
-				this.getLinie(currentLinieDept.code)
+				this.getLinie(currentLinieDept.deptNum)
 			},
 			getLinie(id){
 				if (!id) return
@@ -913,6 +914,22 @@
 				// let data = JSON.parse(this.$route.query.item)
 				this.itemPurchase.riseCode = this.infoItem.code
 				this.itemPurchase.sapItem = this.infoItem.item
+			},
+			// 选择车型项目的时候，需要带出对应车型的SOP时间
+			getCarTypeSopTime(carType) {
+				const carTypeItem = this.carTypeOptions.find(o => o.cartypeProCode === carType)
+				if (carTypeItem && carTypeItem.sop) {
+					this.detailData.sopDate = window.moment(carTypeItem.sop).format('YYYY-MM-DD')
+				}
+			},
+			// 获取车型项目sop
+			getCarTypeSopList() {
+				getCarTypeSop().then(res => {
+					if (res && res.code === '200') {
+						this.carTypeOptions = res.data || []
+						console.log('this.carTypeOptions', this.carTypeOptions)
+					}
+				})
 			}
 		}
 }
