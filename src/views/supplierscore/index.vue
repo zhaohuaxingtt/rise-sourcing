@@ -27,13 +27,13 @@
       :resetKey="PARTSIGN_RESETBUTTON"
       :searchKey="PARTSIGN_CONFIRMBUTTON">
       <el-form>
-        <el-form-item :label="language('RFQBIANHAO', 'RFQ编号')">
+        <el-form-item :label="language('RFQBIANHAO', 'RFQ编号')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_INPUT_RFQID|RFQ编号">
           <iInput v-model="form.rfqId" :placeholder="language('QINGSHURURFQBIANHAO', '请输入RFQ编号')" />
         </el-form-item>
-        <el-form-item :label="language('RFQMINGCHENG', 'RFQ名称')">
+        <el-form-item :label="language('RFQMINGCHENG', 'RFQ名称')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_INPUT_RFQNAME|RFQ名称">
           <iInput v-model="form.rfqName" :placeholder="language('QINGSHURURFQMINGCHENG', '请输入RFQ名称')" />
         </el-form-item>
-        <el-form-item label="LINIE">
+        <el-form-item label="LINIE" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_LINIEUSERID|LINIE">
           <iSelect
             filterable
             remote
@@ -51,7 +51,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('XUNJIACAIGOUYUAN', '询价采购员')">
+        <el-form-item :label="language('XUNJIACAIGOUYUAN', '询价采购员')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_BUYERID|询价采购员">
           <iSelect
             filterable
             remote
@@ -60,6 +60,7 @@
             :loading="buyerLoading"
             :placeholder="language('QINGSHURUXUNJIACAIGOUYUAN', '请输入询价采购员')"
             :loading-text="language('JIAZAIZHONG', '加载中')"
+            
           >
             <el-option
               :value="item.value"
@@ -69,7 +70,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('PINGFENZHUANGTAI', '评分状态')">
+        <el-form-item :label="language('PINGFENZHUANGTAI', '评分状态')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_RATESTATUS|评分状态">
           <iSelect
             v-model="form.rateStatus"
             :placeholder="language('MORENPINGFENZHUANGTAI', '默认评分状态')"
@@ -86,22 +87,22 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LINGJIANHAO', '零件号')">
+        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_INPUT_PARTNUM|零件号">
           <iInput v-model="form.partNum" :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')" />
         </el-form-item>
-        <el-form-item :label="language('LINGJIANMINGCHENG', '零件名称')">
+        <el-form-item :label="language('LINGJIANMINGCHENG', '零件名称')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_INPUT_PARTNAME|零件名称">
           <iInput v-model="form.partName" :placeholder="language('QINGSHURULINGJIANMINGCHENG', '请输入零件名称')" />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGSVWHAO', '供应商SVW号')">
+        <el-form-item :label="language('GONGYINGSHANGSVWHAO', '供应商SVW号')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_INPUT_SUPPLIERSVWCODE|供应商SVW号">
           <iInput v-model="form.supplierSvwCode" :placeholder="language('QINGSHURUGONGYINGSHANGSVWHAO', '请输入供应商SVW号')" />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGSAPHAO', '供应商SAP号')">
+        <el-form-item :label="language('GONGYINGSHANGSAPHAO', '供应商SAP号')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_INPUT_SUPPLIERSAPCODE|供应商SAP号">
           <iInput v-model="form.supplierSapCode" :placeholder="language('QINGSHURUGONGYINGSHANGSAPHAO', '请输入供应商SAP号')" />
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGMINGCHENG', '供应商名称')">
+        <el-form-item :label="language('GONGYINGSHANGMINGCHENG', '供应商名称')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_INPUT_SUPPLIERNAME|供应商名称">
           <iInput v-model="form.supplierName" :placeholder="language('QINGSHURUGONGYINGSHANGMINGCHENG', '请输入供应商名称')" />
         </el-form-item>
-        <el-form-item :label="language('CHEXING', '车型')">
+        <el-form-item :label="language('CHEXING', '车型')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_MODELNAMEZH|车型">
           <iSelect
             v-model="form.modelNameZh"
             :placeholder="language('QINGXUANZECHEXING', '请选择车型')"
@@ -118,7 +119,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
+        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_CARTYPEPROJECT|车型项目">
           <iSelect
             v-model="form.carTypeProject"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
@@ -135,7 +136,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_SHIFOUXIANSHIZIJI_1', '是否显⽰⾃⼰')">
+        <el-form-item :label="language('LK_SHIFOUXIANSHIZIJI_1', '是否显⽰⾃⼰')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_SHOWSELF|是否显示自己">
           <iSelect
             v-model="form.showSelf"
             :placeholder="language('partsprocure.CHOOSE','请选择')"
@@ -156,7 +157,7 @@
     </iSearch>
     <iCard class="margin-top30" :title="language('GONGYINGSHANGPINGFENGUANLI', '供应商评分管理')">
       <template #header-control>
-        <iButton @click="handleTransfer">{{ language("ZHUANPAIPINGFENRENWU", "转派评分任务") }}</iButton>
+        <iButton @click="handleTransfer" v-permission.auto="SUPPLIERSCORE_HOME_BUTTON_TRANSFER|转派评分任务">{{ language("ZHUANPAIPINGFENRENWU", "转派评分任务") }}</iButton>
       </template>
       <div class="body">
         <tableList

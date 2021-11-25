@@ -9,34 +9,33 @@
 export default [
   {
     path: "/supplierscore",
-    name: "supplierscore",
     meta: {
       title: "供应商评分",
     },
-    component: () => import("@/layout/default"),
+    component: () => import("@/views/routerView"),
     redirect: "/supplierscore/home",
     children: [
       {
         path: "home",
-        name: "home",
+        name: "supplierscoreHome",
         meta: {
-          title: "首页",
+          title: "供应商评分-首页",
         },
         component: () => import("@/views/supplierscore"),
       }, 
       {
         path: "rfqdetail",
-        name: "rfqdetail",
+        name: "supplierscoreRfqDetail",
         meta: {
-          title: "RFQ详情",
+          title: "供应商评分-RFQ详情",
         },
         component: () => import("@/views/supplierscore/components/rfqdetail"),
       },
       {
         path: "partscore",
-        name: "partscore",
+        name: "supplierscorePartscore partscore",
         meta: {
-          title: "零件评分",
+          title: "供应商评分-零件评分",
         },
         component: () => import("@/views/supplierscore/components/partscore"),
       }

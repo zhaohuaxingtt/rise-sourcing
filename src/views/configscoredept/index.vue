@@ -26,7 +26,7 @@
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
       <el-form>
-        <el-form-item :label="language('BUMENBIANHAO', '部门编号')">
+        <el-form-item :label="language('BUMENBIANHAO', '部门编号')" v-permission.auto="CONFIGSCOREDEPT_SEARCH_SELECT_RATEDEPARTNUM|部门编号">
           <iSelect
             v-model="form.rateDepartNum"
             :placeholder="language('QINGXUANZEBUMENBIANHAO', '请选择部门编号')"
@@ -43,7 +43,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('BUMENPINGFENLEIXING', '部门评分类型')">
+        <el-form-item :label="language('BUMENPINGFENLEIXING', '部门评分类型')" v-permission.auto="CONFIGSCOREDEPT_SEARCH_SELECT_RATETAG|部门评分类型">
           <iSelect
             v-model="form.rateTag"
             :placeholder="language('QINGXUANZEBUMENPINGFENLEIXING', '请选择部门评分类型')"
@@ -64,13 +64,13 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton v-if="!editStauts" @click="editStauts = true">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton v-if="!editStauts" @click="editStauts = true" v-permission.auto="CONFIGSCOREDEPT_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
         <div v-else>
           <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
-          <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
-          <iButton @click="handleRecovery">{{ language("HUIFU", "恢复") }}</iButton>
-          <iButton @click="handleAdd">{{ language("XINZENGHANG", "新增行") }}</iButton>
-          <iButton :loading="deleteLoading" @click="handleDelete">{{ language("SHANCHUHANG",  "删除行") }}</iButton>
+          <iButton :loading="saveLoading" @click="handleSave" v-permission.auto="CONFIGSCOREDEPT_BUTTON_SAVE|保存">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton @click="handleRecovery" v-permission.auto="CONFIGSCOREDEPT_BUTTON_RECOVERY|恢复">{{ language("HUIFU", "恢复") }}</iButton>
+          <iButton @click="handleAdd" v-permission.auto="CONFIGSCOREDEPT_BUTTON_ADD|新增行">{{ language("XINZENGHANG", "新增行") }}</iButton>
+          <iButton :loading="deleteLoading" @click="handleDelete" v-permission.auto="CONFIGSCOREDEPT_BUTTON_DELETE|删除行">{{ language("SHANCHUHANG",  "删除行") }}</iButton>
         </div>
       </template>
       <div class="body">

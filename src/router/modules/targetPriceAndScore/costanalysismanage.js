@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 12:00:48
- * @LastEditTime: 2021-11-25 15:53:32
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-09-03 15:13:55
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\router\modules\costanalysismanage.js
  */
@@ -10,9 +10,7 @@ export default [
   {
     path: "/costanalysismanage",
     meta: { title: "KM成本分析" },
-    name: "costanalysismanage",
-    component: () => import("@/layout/default"),
-    redirect: "costanalysismanage/home",
+    component: () => import("@/views/routerView"),
     children: [
       {
         path: "home",
@@ -42,13 +40,13 @@ export default [
         ]
       },
       {
-        path: "/costanalysismanage/rfqdetail",
+        path: "rfqdetail",
         name: "costAnalysisManageRfqDetail",
         meta: { title: "KM成本分析-RFQ详情" },
         component: () => import("@/views/costanalysismanage/components/rfqdetail"),
       },
       {
-        path: "/costanalysismanage/costanalysis",
+        path: "costanalysis",
         name: "costAnalysisManageCostAnalysis",
         meta: { title: "KM成本分析-成本分析" },
         component: () => import("@/views/costanalysismanage/components/costanalysis"),
