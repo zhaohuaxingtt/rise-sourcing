@@ -1,21 +1,23 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2021-11-11 17:27:47
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-25 15:44:46
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\supplierscore\index.vue
+ * @FilePath: \front-sourcing\src\views\supplierscore\index.vue
 -->
 <template>
   <iPage class="supplierScore">
-    <div class="header clearFloat">
-      <div class="title">{{ language("XUNYUANZHIXING", "寻源执行") }}</div>
-      <iNavMvp class="nav" :lev="2" :list="navList" />
-      <div class="control">
-        <logButton class="margin-left20" />
-        <span class="margin-left20">
-          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-        </span>
+    <div class="header">
+      <iNavMvp :list="list" :lang="true" :lev="1" routerPage></iNavMvp>
+      <div class="right-control">
+        <iNavMvp class="nav" :lev="2" :list="navList" />
+        <div class="control">
+          <logButton class="margin-left20" />
+          <span class="margin-left20">
+            <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+          </span>
+        </div>
       </div>
     </div>
     <iSearch
@@ -199,6 +201,7 @@ import { cloneDeep } from "lodash"
 import { findDropDownBox, findLinieByName, findInquiryBuyerByName, searchRfqBdlRatings, forward } from "@/api/supplierscore"
 import { getCartypeDict, findBySearches } from "@/api/partsrfq/home"
 import axios from "axios"
+import { TAB } from '@/views/financialTargetPrice/components/data'
 
 export default {
   components: {
@@ -218,6 +221,7 @@ export default {
   mixins: [ filters, pageMixins ], 
   data() {
     return {
+      list: TAB,
       navList,
       scoreStatusOptions: [],
       findLinieByNameSource: null,
@@ -439,7 +443,10 @@ export default {
 .supplierScore {
   .header {
     position: relative;
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
     .title {
       font-size: 20px;
       font-weight: bold;
@@ -447,19 +454,25 @@ export default {
       height: 28px;
       line-height: 28px;
     }
-
+    .right-control {
+      display: flex;
+      align-items: center;
+    }
     .nav {
-      position: absolute;
-      top: 50%;
-      right: 130px;
-      transform: translate(0, -50%);
+      // position: absolute;
+      // top: 50%;
+      // right: 130px;
+      // transform: translate(0, -50%);
+      // &:first-child {
+      //   left: 0;
+      // }
     }
 
     .control {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translate(0, -50%);
+      // position: absolute;
+      // top: 50%;
+      // right: 0;
+      // transform: translate(0, -50%);
       display: flex;
       align-items: center;
       height: 30px;
