@@ -12,7 +12,7 @@ export function downloadPDF({
   callback: callback,
   exportPdf: exportPdf,
 }) {
-  let el = document.getElementById(ele) //通过getElementById获取要导出的内容
+  let el = document.querySelector(ele) //通过getElementById获取要导出的内容
   let eleW = el.offsetWidth // 获得该容器的宽
   let eleH = el.offsetHeight // 获得该容器的高
   let eleOffsetTop = el.offsetTop // 获得该容器到文档顶部的距离
