@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-25 10:44:27
+ * @LastEditTime: 2021-11-25 13:42:30
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -205,7 +205,7 @@
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
 							<!----------------------------------------------------------------------------------------------->
-							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="date"></iDatePicker>
+							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="datetime"></iDatePicker>
 							<iText v-else >
 								{{ detailData.sopDate }}
 							</iText>
@@ -411,8 +411,8 @@
 		<currentSupplier :dialogVisible='curentSupplierDialog'></currentSupplier>
 		<!-----------------------选择原fs号--------------------------------->
 		<selectOldpartsNumber :diolog='selectOldParts' v-model="selectOldParts.selectData"></selectOldpartsNumber>
-    	<!---------------------- 采购申请弹框 -------------------------------->
-        <purchaseApply :visibleDiolog.sync="dialogVisibleCode" :item="itemPurchase"></purchaseApply>	
+    <!---------------------- 采购申请弹框 -------------------------------->
+      <purchaseApply :visibleDiolog.sync="dialogVisibleCode" :item="itemPurchase"></purchaseApply>	
 	</iPage>
 </template>
 <script>
@@ -540,7 +540,7 @@
 				}, //拆分采购工厂
 				purchaseProjectId: "",
 				curentSupplierDialog:{show:false},
-        		dialogVisibleCode:false,
+        dialogVisibleCode:false,
 				fsnrGsnrNum: '',
 				partProjectType: '',
 				selectOldParts:{
@@ -552,6 +552,7 @@
 				disabled: false,
 				itemPurchase:{},
 				isCarType:false,
+				bakCarTypeSopTime: ''
 			};
 		},
 		created() {
@@ -665,6 +666,7 @@
 					this.detailLoading = false
 					console.log(res.data,'-------------------');
 					this.detailData = res.data ||[];
+					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
 					this.checkFactoryString = res.data.procureFactory
 					//-------------修改零件采购项目逻辑Starting
 					this.infoItem = res.data
@@ -917,9 +919,11 @@
 			},
 			// 选择车型项目的时候，需要带出对应车型的SOP时间
 			getCarTypeSopTime(carType) {
+				// 原来有SOP时间才需要联动
+				if(this.bakCarTypeSopTime) return
 				const carTypeItem = this.carTypeOptions.find(o => o.cartypeProCode === carType)
 				if (carTypeItem && carTypeItem.sop) {
-					this.detailData.sopDate = window.moment(carTypeItem.sop).format('YYYY-MM-DD')
+					this.detailData.sopDate = carTypeItem.sop
 				}
 			},
 			// 获取车型项目sop
