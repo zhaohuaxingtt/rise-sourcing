@@ -1,21 +1,24 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-09-13 14:22:10
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-25 16:11:07
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
+ * @FilePath: \front-sourcing\src\views\costanalysismanage\components\home\index.vue
 -->
 <template>
-  <div class="home">
-    <div class="control">
-      <logButton class="margin-left20" />
-      <span class="margin-left20">
-        <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-      </span>
+  <iPage class="home">
+    <div class="header">
+      <iNavMvp :list="tabList" :lang="true" :lev="1" routerPage></iNavMvp>
+      <div class="control">
+        <logButton class="margin-left20" />
+        <span class="margin-left20">
+          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+        </span>
+      </div>
     </div>
     <iSearch
-      class="margin-top65"
+      class="margin-top40"
       @sure="sure"
       @reset="reset"
       :resetKey="PARTSIGN_RESETBUTTON"
@@ -190,11 +193,11 @@
     <downloadDialog :rfqNum='rfqNum' :dialogVisible='downloadDialogVisible' @changeVisible="changeVisible"/>
     <!-- CBD弹窗 -->
     <cbdDialog v-if="cbdDialogVisible" :rfqId='rfqNum' :dialogVisible='cbdDialogVisible'  @changeVisible="changeVisible"/>
-  </div>
+  </iPage>
 </template>
 
 <script>
-import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage } from "rise"
+import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage, iNavMvp, iPage } from "rise"
 import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import downloadDialog from './components/downloadFiles'
@@ -207,6 +210,7 @@ import {setRfqTop} from '@/api/partsrfq/home/index'
 import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 import axios from "axios"
+import { TAB } from '@/views/financialTargetPrice/components/data'
 
 export default {
   components: { 
@@ -220,6 +224,8 @@ export default {
     tableList,
     downloadDialog,
     cbdDialog,
+    iNavMvp,
+    iPage
   },
   mixins: [ filters, pageMixins ],
   computed: {
@@ -230,6 +236,7 @@ export default {
   },
   data(){
     return{
+      tabList: TAB,
       carTypeOptions: [],
       rfqStatusOptions: [],
       heavyItemOptions: [],
@@ -447,10 +454,16 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+  .header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .control {
-    position: absolute;
-    top: 30px;
-    right: 40px;
+    // position: absolute;
+    // top: 30px;
+    // right: 40px;
     display: flex;
     align-items: center;
     height: 30px;

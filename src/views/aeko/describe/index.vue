@@ -132,6 +132,26 @@ export default {
     .remark-tips{
       margin:50px 0;
     }
+    .contain{
+      height: calc(100% - 44px);
+      ::v-deep.el-row{
+        height: 100%;
+        .el-col{
+          height: 100%;
+          .card{
+            display: flex;
+            height: 100%;
+            padding-bottom: 20px;
+            flex-flow: column;
+            &>div:last-child{
+              flex: 1;
+              min-height: 0;
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
     .needScorll{
       ::v-deep.cardBody{
         overflow-y: scroll;
@@ -140,14 +160,14 @@ export default {
     .filesCard{
       padding-bottom: 20px;
       ::v-deep .cardHeader {
-        padding-bottom: 0;
+        // padding-bottom: 0;
         .title{
           text-indent: -15px;
         }
       }
     }
     ::v-deep.cardBody{
-      height: 600px;
+      // height: 600px;
       margin-right: 5px;
       margin-bottom: 10px;
     }
