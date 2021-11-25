@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-23 18:51:19
+ * @LastEditTime: 2021-11-25 21:24:03
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -165,6 +165,7 @@
 								{{ detailData.statusDesc }}
 							</iText>
 						</iFormItem>
+						
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
 							<iSelect v-model="detailData.carTypeProjectZh" v-if="!disabled">
 								<!-- :disabled='carTypeCanselect()'  -->
@@ -175,10 +176,10 @@
 							<iText v-else>{{ getName(detailData.carTypeProjectZh, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPE|车型" :label="language('LK_CHEXING','车型') + ':'" name="test" v-if="isCarType">
-							<iSelect v-model="detailData.carTypeModel" multiple collapse-tags v-if="!disabled ">
+							<iSelect v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled ">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
-									v-for="(item, index) in fromGroup.CAR_TYPE" :key="index">
+									v-for="(item) in fromGroup.CAR_TYPE" :key="item.code">
 								</el-option>
 							</iSelect>
 							<iText v-else>{{ getName(detailData.carTypeModel, "code", fromGroup.CAR_TYPE) }}</iText>
@@ -542,6 +543,7 @@
 				disabled: false,
 				itemPurchase:{},
 				isCarType:false,
+				Split: window._.split,
 			};
 		},
 		created() {
@@ -652,10 +654,11 @@
 				this.detailLoading = true
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
-					console.log(res.data,'-------------------');
 					this.detailData = res.data ||[];
 					this.checkFactoryString = res.data.procureFactory
-					//-------------修改零件采购项目逻辑Starting
+					if(this.detailData.cartypes) {
+						this.$set(this.detailData,'carTypeModel',this.detailData.cartypes.map(val=> val.code))
+					}
 					this.infoItem = res.data
 					this.purchaseProjectId = this.infoItem.id;
 					this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
@@ -810,14 +813,13 @@
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
 				detailData['oldProjectRelations'] = [{...translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
-				// let temData=this.fromGroup['CAR_TYPE'].filter((item)=>{
-				// 	return detailData.carTypeModel.indexOf(item.code) > -1
-				// })
-				// let carTemData=[]
-				// temData.forEach(val=>{
-				// 	carTemData.push({'carTypeCode':val.code,'carTypeId':val.id,'carTypeName':val.name})
-				// })
-				// detailData['cartypes'] = carTemData
+				console.log(detailData.carTypeModel,'update');
+				if(detailData.carTypeModel !=undefined) {
+					let temData=this.fromGroup['CAR_TYPE'].filter((item)=>{
+						return detailData.carTypeModel.indexOf(item.code) > -1
+					})
+				detailData['cartypes'] = temData
+				}
 				return new Promise((resolve, reject) => {
 					updateProcure(detailData).then((res) => {
 						this.saveLoading = false
