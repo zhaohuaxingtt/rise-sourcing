@@ -28,7 +28,7 @@
         </div>
         <div v-else>
           {{
-            form.roundType === "05" && form.manualBiddingType === "02"
+            ruleForm.roundType === "05" && ruleForm.manualBiddingType === "02"
               ? 1
               : scope.row["currentSort"] || 1
           }}

@@ -27,16 +27,16 @@ export const unitTableTitle = [
     props: "purchaseQty",
     required: true,
     rule: [
-      { type: "number", required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
-      { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
-      {
-        validator(rule, value, callback) {
-          if (value > 0 && /^\d+$/.test(value)) callback();
-          else callback(new Error(rule.message))
-        },
-        message: language('BIDDING_BXDY0','必须大于0'),
-        trigger: 'blur',
-      }
+      {  required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
+      // { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+      // {
+      //   validator(rule, value, callback) {
+      //     if (value > 0 && /^\d+$/.test(value)) callback();
+      //     else callback(new Error(rule.message))
+      //   },
+      //   message: language('BIDDING_BXDY0','必须大于0'),
+      //   trigger: 'blur',
+      // }
     ],
     name: language('BIDDING_CAIGOUSHULIANG',"采购数量"),
   },
@@ -104,16 +104,16 @@ export const totalTableTitle = [
     props: "purchaseQty",
     required: true,
     rule: [
-      { type: "number", required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
-      { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
-      {
-        validator(rule, value, callback) {
-          if (value > 0 && /^\d+$/.test(value)) callback();
-          else callback(new Error(rule.message))
-        },
-        message: language('BIDDING_BXDY0','必须大于0'),
-        trigger: 'blur',
-      }
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
+      // { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+      // {
+      //   validator(rule, value, callback) {
+      //     if (value > 0 && /^\d+$/.test(value)) callback();
+      //     else callback(new Error(rule.message))
+      //   },
+      //   message: language('BIDDING_BXDY0','必须大于0'),
+      //   trigger: 'blur',
+      // }
     ],
     name: language('BIDDING_CAIGOUSHULIANG',"采购数量"),
   },
