@@ -154,22 +154,22 @@ export default {
           this.ruleForm = {
             ...res,
             biddingQuoteRule: {
-              priceDiffLimit: "01",
-              priceDiffObject: "01",
+              ...res.biddingQuoteRule,
+              priceDiffLimit: res.biddingQuoteRule.priceDiffLimit || "01",
+              priceDiffObject: res.biddingQuoteRule.priceDiffObject || "01",
               rankDisplayRule:
                 {
                   "01": "01",
                   "02": "02",
                 }[res.resultOpenForm] || "",
-              quotationScope: "01",
-              rankRule: "01",
-              rankDisplayLimit: "01",
-              quotedValue: "",
-              rankLimit: "",
-              priceLimit: "",
-              alertPercentage: "10",
-              rankShowRule: "01",
-              ...res.biddingQuoteRule,
+              quotationScope: res.biddingQuoteRule.quotationScope || "01",
+              rankRule: res.biddingQuoteRule.rankRule || "01",
+              rankDisplayLimit: res.biddingQuoteRule.rankDisplayLimit || "01",
+              quotedValue: res.biddingQuoteRule.quotedValue || "",
+              rankLimit: res.biddingQuoteRule.rankLimit || "",
+              priceLimit: res.biddingQuoteRule.priceLimit || "",
+              alertPercentage: res.biddingQuoteRule.alertPercentage || "10",
+              rankShowRule: res.biddingQuoteRule.rankShowRule || "01",
             },
           };
           this.biddingQuoteRule = {

@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-17 13:34:41
+ * @LastEditTime: 2021-11-24 15:52:44
  * @Description: 
 -->
 <template>
@@ -128,6 +128,7 @@ export default {
     iPagination,
     tablelist
   },
+  inject: ['vm'],
   computed: {
     tablePageSizeTotal() {
       return this.page.totalCount + this.copyDataLength
@@ -148,7 +149,7 @@ export default {
   },
   created() {
     // 隐藏log按钮
-    this.$emit('showLog', false)
+    this.vm.showLogButton = false
   },
   mounted() {
     this.getFetchData()

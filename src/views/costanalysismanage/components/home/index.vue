@@ -1,34 +1,37 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-09-13 14:22:10
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-25 16:11:07
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\costanalysismanage\components\home\index.vue
+ * @FilePath: \front-sourcing\src\views\costanalysismanage\components\home\index.vue
 -->
 <template>
-  <div class="home">
-    <div class="control">
-      <logButton class="margin-left20" />
-      <span class="margin-left20">
-        <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-      </span>
+  <iPage class="home">
+    <div class="header">
+      <iNavMvp :list="tabList" :lang="true" :lev="1" routerPage></iNavMvp>
+      <div class="control">
+        <logButton class="margin-left20" />
+        <span class="margin-left20">
+          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+        </span>
+      </div>
     </div>
     <iSearch
-      class="margin-top65"
+      class="margin-top40"
       @sure="sure"
       @reset="reset"
       :resetKey="PARTSIGN_RESETBUTTON"
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
       <el-form>
-        <el-form-item :label="language('RFQBIANHAO', 'RFQ编号')">
+        <el-form-item :label="language('RFQBIANHAO', 'RFQ编号')" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_INPUT_RFQID|RFQ编号">
           <iInput
             v-model="form.rfqId"
             :placeholder="language('QINGSHURURFQBIANHAO', '请输入RFQ编号')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="language('RFQZHUANGTAI', 'RFQ状态')">
+        <el-form-item :label="language('RFQZHUANGTAI', 'RFQ状态')" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_SELECT_RFQSTATUS|RFQ状态">
           <iSelect
             v-model="form.rfqStatus"
             :placeholder="language('QINGXUANZERFQZHUANGTAI', '请选择RFQ状态')"
@@ -45,19 +48,19 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LINGJIANHAO', '零件号')">
+        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_INPUT_PARTNUM|零件号">
           <iInput
             v-model="form.partNum"
             :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="language('LINGJIANMING', '零件名')">
+        <el-form-item :label="language('LINGJIANMING', '零件名')" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_INPUT_PARTNANE|零件名">
           <iInput
             v-model="form.partName"
             :placeholder="language('QINGSHURULINGJIANMING', '请输入零件名')"
           ></iInput>
         </el-form-item>
-        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
+        <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_SELECT_CARTYPE|车型项目">
           <iSelect
             v-model="form.carType"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
@@ -69,19 +72,19 @@
             <el-option v-for="item in carTypeOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
-        <el-form-item label="PCA">
+        <el-form-item label="PCA" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_INPUT_PCA|PCA">
           <iInput
             v-model="form.pca"
             :placeholder="language('QINGSHURUPCA', '请输入PCA')"
           ></iInput>
         </el-form-item>
-        <el-form-item label="TIA">
+        <el-form-item label="TIA" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_INPUT_TIA|TIA">
           <iInput
             v-model="form.tia"
             :placeholder="language('QINGSHURUTIA', '请输入TIA')"
           ></iInput>
         </el-form-item>
-        <el-form-item label="Heavy Item">
+        <el-form-item label="Heavy Item" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_SELECT_HEAVYITEM|Heavy_Item">
           <iSelect
             v-model="form.heavyItem"
             :placeholder="language('QINGXUANZEHEAVYITEM', '请选择Heavy Item')"
@@ -93,7 +96,7 @@
             <el-option v-for="item in heavyItemOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
-        <el-form-item label="COMMODITY">
+        <el-form-item label="COMMODITY" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_SELECT_COMMODITY|COMMODITY">
           <iSelect
             v-model="form.commodity"
             :placeholder="language('QINGXUANZECOMMODITY', '请选择COMMODITY')"
@@ -110,7 +113,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item label="LINIE">
+        <el-form-item label="LINIE" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_SELECT_LINIE|LINIE">
           <iSelect
             v-model="form.linieId"
             :loading="linieLoading"
@@ -129,7 +132,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('XIANSHIZIJI', '显示自己')">
+        <el-form-item :label="language('XIANSHIZIJI', '显示自己')" v-permission.auto="COSTANALYSISMANAGE_HOME_SEARCH_SELECT_SHOWSELF|显示自己">
           <iSelect
             v-model="form.showSelf"
             :placeholder="language('QINGXUANZELINIE', '请选择')"
@@ -190,11 +193,11 @@
     <downloadDialog :rfqNum='rfqNum' :dialogVisible='downloadDialogVisible' @changeVisible="changeVisible"/>
     <!-- CBD弹窗 -->
     <cbdDialog v-if="cbdDialogVisible" :rfqId='rfqNum' :dialogVisible='cbdDialogVisible'  @changeVisible="changeVisible"/>
-  </div>
+  </iPage>
 </template>
 
 <script>
-import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage } from "rise"
+import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage, iNavMvp, iPage } from "rise"
 import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import downloadDialog from './components/downloadFiles'
@@ -207,6 +210,7 @@ import {setRfqTop} from '@/api/partsrfq/home/index'
 import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 import axios from "axios"
+import { TAB } from '@/views/financialTargetPrice/components/data'
 
 export default {
   components: { 
@@ -220,6 +224,8 @@ export default {
     tableList,
     downloadDialog,
     cbdDialog,
+    iNavMvp,
+    iPage
   },
   mixins: [ filters, pageMixins ],
   computed: {
@@ -230,6 +236,7 @@ export default {
   },
   data(){
     return{
+      tabList: TAB,
       carTypeOptions: [],
       rfqStatusOptions: [],
       heavyItemOptions: [],
@@ -447,10 +454,16 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+  .header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .control {
-    position: absolute;
-    top: 30px;
-    right: 40px;
+    // position: absolute;
+    // top: 30px;
+    // right: 40px;
     display: flex;
     align-items: center;
     height: 30px;

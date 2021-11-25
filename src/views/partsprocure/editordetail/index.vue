@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-25 21:24:03
+ * @LastEditTime: 2021-11-25 21:36:02
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -53,9 +53,18 @@
 					</iButton>
 					<!-- <iButton @click="back">{{ language("LK_FANHUI",'返回') }}</iButton> -->
 				</span>
-				<logButton class="margin-left20" @click="log" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOG|log" />
+				<!-- <logButton class="margin-left20" @click="log" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOG|log" /> -->
+				<iLoger
+					:config="{
+						module_obj_ae: '零件采购项目', 
+						bizId_obj_ae: 'projectId', 
+						queryParams:['bizId_obj_ae']}"
+					credentials
+					isPage
+					class="margin-left20"
+					v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOG|log" />
 				<span>
-					<icon symbol name="icondatabaseweixuanzhong"></icon>
+					<icon symbol name="icondatabaseweixuanzhong" style="font-size:14px;margin-left: 10px"></icon>
 				</span>
 			</div>
 		</div>
@@ -167,7 +176,7 @@
 						</iFormItem>
 						
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
-							<iSelect v-model="detailData.carTypeProjectZh" v-if="!disabled">
+							<iSelect v-model="detailData.carTypeProjectZh" v-if="!disabled" @change="getCarTypeSopTime">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
@@ -197,7 +206,7 @@
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
 							<!----------------------------------------------------------------------------------------------->
-							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="date"></iDatePicker>
+							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="datetime"></iDatePicker>
 							<iText v-else >
 								{{ detailData.sopDate }}
 							</iText>
@@ -403,8 +412,8 @@
 		<currentSupplier :dialogVisible='curentSupplierDialog'></currentSupplier>
 		<!-----------------------选择原fs号--------------------------------->
 		<selectOldpartsNumber :diolog='selectOldParts' v-model="selectOldParts.selectData"></selectOldpartsNumber>
-    	<!---------------------- 采购申请弹框 -------------------------------->
-        <purchaseApply :visibleDiolog.sync="dialogVisibleCode" :item="itemPurchase"></purchaseApply>	
+    <!---------------------- 采购申请弹框 -------------------------------->
+      <purchaseApply :visibleDiolog.sync="dialogVisibleCode" :item="itemPurchase"></purchaseApply>	
 	</iPage>
 </template>
 <script>
@@ -420,10 +429,10 @@
 	import sheet from "./components/drawingSheet/sheet";
 	import remarks from "./components/remarks";
 	import backItems from "@/views/partsign/home/components/backItems";
-	import logButton from "@/components/logButton";
+	// import logButton from "@/components/logButton";
 	import currentSupplier from './components/currentSupplier'
 	import {getProjectDetail,closeProcure,updateProcure,startProcure} from "@/api/partsprocure/home";
-	import {dictkey,checkFactory,purchasingLiline,purchasingDept} from "@/api/partsprocure/editordetail";
+	import {dictkey,checkFactory,purchasingLiline,purchasingDept,getCarTypeSop} from "@/api/partsprocure/editordetail";
 	import {getCartypeDict} from "@/api/partsrfq/home";
 	import {detailData,partsCommonSourcing,translateDataForService, getOptionField } from "./components/data";
 	import splitFactory from "./components/splitFactory";
@@ -436,8 +445,9 @@
 	import { getNominateDisabled } from "rise/web/common"
     import purchaseApply from "./components/purchaseApply"
 		import { getEnumValue } from "@/config"
+		import iLoger from 'rise/web/components/iLoger'
 	export default {
-		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,logButton,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs, purchaseApply},
+		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,iLoger,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs, purchaseApply},
 		provide:function(){
 			return {detailData:this.getDetailData, getDisabled: this.getDisabled}
 		},
@@ -531,7 +541,7 @@
 				}, //拆分采购工厂
 				purchaseProjectId: "",
 				curentSupplierDialog:{show:false},
-        		dialogVisibleCode:false,
+        dialogVisibleCode:false,
 				fsnrGsnrNum: '',
 				partProjectType: '',
 				selectOldParts:{
@@ -543,12 +553,13 @@
 				disabled: false,
 				itemPurchase:{},
 				isCarType:false,
-				Split: window._.split,
+				bakCarTypeSopTime: ''
 			};
 		},
 		created() {
 			this.getDatailFn();
 			this.getDicts()
+			this.getCarTypeSopList()
 		},
 		methods: {
 			getEnumValue,
@@ -561,7 +572,7 @@
 				this.detailData.linieId = ''
 				const currentLinieDept = this.fromGroup["LINIE_DEPT"].find(item => item.deptNum === this.detailData.linieDept)
 
-				this.getLinie(currentLinieDept.code)
+				this.getLinie(currentLinieDept.deptNum)
 			},
 			getLinie(id){
 				if (!id) return
@@ -655,6 +666,7 @@
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data ||[];
+					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
 					this.checkFactoryString = res.data.procureFactory
 					if(this.detailData.cartypes) {
 						this.$set(this.detailData,'carTypeModel',this.detailData.cartypes.map(val=> val.code))
@@ -905,6 +917,24 @@
 				// let data = JSON.parse(this.$route.query.item)
 				this.itemPurchase.riseCode = this.infoItem.code
 				this.itemPurchase.sapItem = this.infoItem.item
+			},
+			// 选择车型项目的时候，需要带出对应车型的SOP时间
+			getCarTypeSopTime(carType) {
+				// 原来有SOP时间才需要联动
+				if(this.bakCarTypeSopTime) return
+				const carTypeItem = this.carTypeOptions.find(o => o.cartypeProCode === carType)
+				if (carTypeItem && carTypeItem.sop) {
+					this.detailData.sopDate = carTypeItem.sop
+				}
+			},
+			// 获取车型项目sop
+			getCarTypeSopList() {
+				getCarTypeSop().then(res => {
+					if (res && res.code === '200') {
+						this.carTypeOptions = res.data || []
+						console.log('this.carTypeOptions', this.carTypeOptions)
+					}
+				})
 			}
 		}
 }

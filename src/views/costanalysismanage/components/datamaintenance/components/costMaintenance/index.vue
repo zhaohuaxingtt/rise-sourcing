@@ -1,35 +1,36 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-09-02 11:25:44
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-11-25 16:42:32
+ * @LastEditors: Luoshuang
  * @Description: 人工成本维护
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\costMaintenance\index.vue
 -->
 <template>
   <div class="datamaintenance">
-    <div class="control">
+    <!-- <div class="control">
       <logButton class="margin-left20" />
       <span class="margin-left20">
         <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
       </span>
-    </div>
-    <iCard class="card margin-top65" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
+    </div> -->
+    <iCard class="card margin-top40" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
       <template v-slot:header-control>
-         <el-upload 
-            class="uploadButton"
-            ref="upload"
-            name="multipartFile"
-            :http-request="upload"
-            accept=".pdf,.xlsx,.docx"
-            :show-file-list="false" 
-            >
-             <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
-         </el-upload>
-         <iButton @click="handleExport">{{ language("DAOCHUMUBAN", "导出模板") }}</iButton>
-         <iButton  class="marginRight10" @click="openDate" :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
-        <iButton @click="handleDownload">{{ language("XIAZAIWENJIAN", "下载文件") }}</iButton>
-        <iButton :loading="deleteLoading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
+        <el-upload 
+          class="uploadButton"
+          ref="upload"
+          name="multipartFile"
+          :http-request="upload"
+          accept=".pdf,.xlsx,.docx"
+          :show-file-list="false"
+          v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTMAINTENANCE_BUTTON_UPLOAD|上传"
+          >
+            <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
+        </el-upload>
+        <iButton @click="handleExport" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTMAINTENANCE_BUTTON_EXPORTTEMPLATE|导出模板">{{ language("DAOCHUMUBAN", "导出模板") }}</iButton>
+        <iButton  class="marginRight10" @click="openDate" :loading="uploadLoading" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTMAINTENANCE_BUTTON_UPLOAD|上传">{{ language("SHANGCHUAN", "上传") }}</iButton>
+        <iButton @click="handleDownload" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTMAINTENANCE_BUTTON_DOWNLOAD|下载文件">{{ language("XIAZAIWENJIAN", "下载文件") }}</iButton>
+        <iButton :loading="deleteLoading" @click="handleDelete" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTMAINTENANCE_BUTTON_DELETE|删除">{{ language("SHANCHU", "删除") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -83,11 +84,11 @@ import dateSelect from "./dateSelect"
 
 export default {
   components: { 
-    icon,
+    // icon,
     iCard,
     iButton,
     iPagination,
-    logButton,
+    // logButton,
     tableList,
    //  uploadButton,
     dateSelect

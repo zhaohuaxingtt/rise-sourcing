@@ -12,11 +12,11 @@
       <div class="title">{{ language("CHENGBENFENXI", "成本分析") }}</div>
       <div class="control">
         <!-- <iButton @click="back">{{ $t("costanalysismanage.FanHui") }}</iButton> -->
-        <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+        <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_COSTANALYSIS_BUTTON_UPLOAD|上传">
           <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
         </uploadButton>
-        <iButton @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
-        <iButton :loading="deleteLoading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
+        <iButton @click="handleDownload" v-permission.auto="COSTANALYSISMANAGE_COSTANALYSIS_BUTTON_DOWNLOAD|下载">{{ language("XIAZAI", "下载") }}</iButton>
+        <iButton :loading="deleteLoading" @click="handleDelete" v-permission.auto="COSTANALYSISMANAGE_COSTANALYSIS_BUTTON_DELETE|删除">{{ language("SHANCHU", "删除") }}</iButton>
         <logButton class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>

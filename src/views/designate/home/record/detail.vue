@@ -2,12 +2,12 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 19:56:57
- * @LastEditTime: 2021-11-05 10:27:30
- * @LastEditors:  
+ * @LastEditTime: 2021-11-23 22:48:21
+ * @LastEditors: Hao,Jiang
 -->
 <template>
   <iPage v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_PAGE|定点记录详情">   
-    <topComponents>
+    <topComponents :logModuleName="'定点明细'" :logBizIdKey="'id'">
       <span slot="left" class="floatleft font20 font-weight">
         {{language('DINGDIANMINGXI','定点明细')}}
       </span>

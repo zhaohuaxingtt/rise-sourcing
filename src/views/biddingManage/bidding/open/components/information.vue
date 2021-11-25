@@ -594,6 +594,7 @@ export default {
           this.ruleForm.rankShowRule = "02";
         }
         rankShowRule.slice(1, 3);
+        this.ruleForm.rankShowRule = "02";
       } else if (val === "03") {
         this.ruleForm.rankShowRule = "";
       }

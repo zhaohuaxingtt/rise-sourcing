@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iCard :title="language('BIDDING_XIANGMUXINXI', '项目信息')" class="card">
+    <iCard :title="language('BIDDING_XIANGMUXINXI', '项目信息')" class="card" v-loading="projectLoading">
       <template slot="header-control">
         <div>
           <iButton
@@ -138,7 +138,7 @@
           :inputProps="biddingStatus ? [] : inputProps"
           :priceProps="priceProps"
           @handleSelectionChange="handleSelectionChange"
-           @handlerInputBlur="handlerInputBlur"
+          @handlerInputBlur="handlerInputBlur"
         >
           <template slot="moldFee" slot-scope="scope">
             <template v-if="ruleForm.moldFee === '01'">
@@ -268,6 +268,8 @@ export default {
       hidens: false,
       totalPriceFlag: false,
       tableLoading: false,
+      projectLoading: false,
+      projectTime:'',
       rules: baseRules,
       ruleForm: {
         beginMonth: "",
@@ -430,6 +432,9 @@ export default {
     });
     this.handleSearchReset();
   },
+  beforeDestroy(){
+    clearTimeout(this.projectTime)
+  },
   computed: {
     biddingStatus() {
       if (
@@ -507,6 +512,7 @@ export default {
     },
     //输入完成出发计算总价方法
     handlerInputBlur(){
+      this.projectLoading = true
       let supplierProducts = this.ruleForm.supplierProducts;
       let sum= supplierProducts.reduce((sum, item, index) => {
         if(isNaN(Number(item.factoryPrice)) ||
@@ -518,6 +524,10 @@ export default {
         return Big(this.calculationDetails(item, index)).add(sum).add(Number(item.moldFee)).add(Number(item.developFee)).toNumber();
       }, 0);
       this.orgTotalPrices=Big(sum).toFixed(2);
+      // 延迟下，展示出loading出来
+       this.projectTime = setTimeout(() => {
+        this.projectLoading = false
+      }, 500);
     },
     toggle() {
       this.hidens = !this.hidens;
@@ -874,7 +884,7 @@ export default {
       //保存
       saveBiddingQuotation(formData)
         .then((res) => {
-          if (res.code == '200') {
+          if (res) {
             this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
           }
           callback && callback();

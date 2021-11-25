@@ -1,27 +1,21 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-08-23 14:54:54
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-11-25 16:42:11
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\costDataMaintenance\index.vue
 -->
 <template>
   <div class="datamaintenance">
-    <div class="control">
-      <logButton class="margin-left20" />
-      <span class="margin-left20">
-        <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-      </span>
-    </div>
-    <iCard class="card margin-top65" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
+    <iCard class="card margin-top40" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
       <template v-slot:header-control>
-        <iButton @click="handleExport">{{ language("DAOCHU", "导出") }}</iButton>
-        <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+        <iButton @click="handleExport" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_EXPORT|导出">{{ language("DAOCHU", "导出") }}</iButton>
+        <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_UPLOAD|上传">
           <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
         </uploadButton>
-        <iButton @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
-        <iButton :loading="deleteLoading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
+        <iButton @click="handleDownload" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_DOWNLOAD|下载">{{ language("XIAZAI", "下载") }}</iButton>
+        <iButton :loading="deleteLoading" @click="handleDelete" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_DELETE|删除">{{ language("SHANCHU", "删除") }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -58,8 +52,7 @@
 </template>
 
 <script>
-import { icon, iCard, iButton, iPagination, iMessage } from "rise"
-import logButton from "@/components/logButton"
+import { iCard, iButton, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import uploadButton from "../../../uploadButton"
 import { tableTitle } from "../data"
@@ -71,11 +64,9 @@ import { downloadFile, downloadUdFile } from "@/api/file"
 
 export default {
   components: { 
-    icon,
     iCard,
     iButton,
     iPagination,
-    logButton,
     tableList,
     uploadButton
   },
@@ -231,14 +222,6 @@ export default {
 
 <style lang="scss" scoped>
 .datamaintenance {
-  .control {
-    position: absolute;
-    top: 30px;
-    right: 40px;
-    display: flex;
-    align-items: center;
-    height: 30px;
-  }
 
   .card {
     .body {

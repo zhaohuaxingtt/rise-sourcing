@@ -215,6 +215,7 @@
         </div>
       </div>
     </div>
+
     <div class="form-group">
       <iLabelML>
         <template v-solt="label">
@@ -244,7 +245,8 @@
         </iFormItem>
       </div>
     </div>
-    <div class="form-group" v-if="rankDisplayRuleSelectList.length > 0">
+    
+    <!-- <div class="form-group" v-if="rankDisplayRuleSelectList.length > 0">
       <iLabelML showTip>
         <div class="hover-text">
           <span>{{language('BIDDING_GYSDHLDMCQJ/PLBLD', '供应商对红绿灯名次区间/偏离比例的')}}</span>
@@ -389,7 +391,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="form-group">
       <iLabelML showTip>
@@ -500,16 +502,18 @@ export default {
     "ruleForm.biddingQuoteRule.alertPercentage": {
       immediate: true,
       handler(val) {
-        this.$set(
-          this.ruleForm.biddingQuoteRule,
-          "actualValue",
-          val == "" || isNaN(Number(val))
-            ? ""
-            : Big(this.ruleForm.totalPrices|| 0)
-                .times(val)
-                .div(100)
-                .toFixed(2)
-        );
+        if(val){
+          this.$set(
+            this.ruleForm?.biddingQuoteRule,
+            "actualValue",
+            val == "" || isNaN(Number(val))
+              ? ""
+              : Big(this.ruleForm?.totalPrices|| 0)
+                  .times(val)
+                  .div(100)
+                  .toFixed(2)
+          );
+        }
       },
     },
     "ruleForm.biddingQuoteRule.quotationScope"(val) {

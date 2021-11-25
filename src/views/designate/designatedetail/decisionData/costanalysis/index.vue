@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-18 02:04:09
+ * @LastEditTime: 2021-11-25 13:42:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -16,7 +16,7 @@
     </iFormItem>
     <iFormItem  v-if='isPreview'  label='Analysis：'>
       <iSelect v-model="previewItems" v-loading='loadingRight' @change="refresh">
-        <el-option v-for='(items,index) in (tableData.filter(r=>r.flag))' :label='items.bizId + "-" + items.stuffName + "" + items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
+        <el-option v-for='(items,index) in (tableData.filter(r=>r.flag))' :label='items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
       </iSelect>
     </iFormItem>
   </iFormGroup>

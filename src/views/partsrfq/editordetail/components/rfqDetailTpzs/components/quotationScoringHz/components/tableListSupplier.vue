@@ -1,14 +1,14 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-23 18:54:55
- * @LastEditors:  
+ * @LastEditTime: 2021-11-24 16:31:52
+ * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
 <template>
 <div class="supplier">
-  <div class="selsTable" :style="{paddingTop:paddingTop}">
+  <div class="selsTable mainTable" :style="{paddingTop:paddingTop}">
     <el-table
       tooltip-effect="light"
       :height="height"
@@ -87,7 +87,7 @@
                 >
                   <template slot="header" slot-scope="scope">
                     <el-tooltip :content='levelTowItem.label' effect='light'>
-                      <span class="overText">{{levelTowItem.label}}</span>
+                      <span class="overText" v-html="levelTowItem.renderHeader || levelTowItem.label"></span>
                     </el-tooltip>
                     <span :class="{price:true,priceb:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
                   </template>
@@ -121,9 +121,9 @@
                   <div>一次性：{{scope.row[getPorpsNumber(item.props)+"tooling"]-scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                 </template>
-                <span>{{scope.row[item.props]}}</span>
+                <span>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
               </el-tooltip>
-              <span v-else>{{scope.row[item.props]}}</span>
+              <span v-else>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
               <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
@@ -146,7 +146,19 @@
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "tto"'>
               <el-tooltip :content='scope.row[item.props]' effect='light'>
-                <span class="textEplies">{{scope.row[item.props]}}</span>
+                <span class="textEplies">{{ttoShow(scope.row[item.props])}}</span>
+              </el-tooltip>
+            </template>
+            <template v-if ='removeKeysNumber(item.props) == "supplierName"'>
+              <el-tooltip  effect='light'>
+                <div slot="content">
+                  <div>{{scope.row['supplierNameEn']}}</div>
+                  <div>{{scope.row[item.props]}}</div>
+                </div>
+                <div>
+                  <span class="isEplisSuplier">{{scope.row[getPorpsNumber(item.props)+"supplierNameEn"]}}</span>    
+                  <span class="isEplisSuplier">{{scope.row[item.props]}}</span>    
+                </div>
               </el-tooltip>
             </template>
             <template v-else slot-scope="scope">
@@ -231,7 +243,7 @@
                 >
                 <template slot="header">
                   <el-tooltip :content='levelTowItem.label' effect='light'>
-                    <span class="overText">{{levelTowItem.label}}</span>
+                    <span class="overText" v-html="levelTowItem.renderHeader || levelTowItem.label"></span>
                   </el-tooltip>
                 </template>
                 </el-table-column>
@@ -290,7 +302,7 @@
     </el-table>
   </div>
   </div>
-  <div class="rightFlex" style="width: 185px">
+  <div class="rightFlex" style="width: 220px">
     <div class="rightWrapper">
       <el-table
         class="rigthTable"
@@ -364,7 +376,7 @@
                   >
                   <template slot="header">
                     <el-tooltip :content='levelTowItem.label' effect='light'>
-                      <span class="overText">{{levelTowItem.label}}</span>
+                      <span class="overText" v-html="levelTowItem.renderHeader || levelTowItem.label"></span>
                     </el-tooltip>
                   </template>
                   </el-table-column>
@@ -413,6 +425,16 @@
                   <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
                       <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
                   </template> -->
+            <template v-else-if='removeKeysNumber(item.props) == "totalInvest"'>
+              <el-tooltip :content='scope.row[item.props]' effect='light'>
+                <span class="textEplies">{{ttoShow(scope.row[item.props])}}</span>
+              </el-tooltip>
+            </template>
+            <template v-else-if='removeKeysNumber(item.props) == "totalTto"'>
+              <el-tooltip :content='scope.row[item.props]' effect='light'>
+                <span class="textEplies">{{ttoShow(scope.row[item.props])}}</span>
+              </el-tooltip>
+            </template>
               <template v-else slot-scope="scope">
                 <span>{{scope.row[item.props]}}</span>
               </template>
@@ -427,7 +449,6 @@
 </template>
 <script>
 import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
-import {toThousands} from '@/utils'
 export default{
   inject:['getbaseInfoData'],
   props:{
@@ -468,23 +489,66 @@ export default{
       default:'0px'
     }
   },
-  updated() {
-    this.$nextTick(() => { // 处理right在title未占满宽度时强制浮动的问题
-      const tableDom = this.$el.querySelector(".el-table")
-      const tableHeaderDom = this.$el.querySelector(".el-table__header")
-      const rightFlexDom = this.$el.querySelector(".rightFlex")
+  created() {
+    this.$nextTick(() => {
+      const domObserver = new MutationObserver(() => {
+        const tableDom = this.$el.querySelector(".el-table")
+        const tableHeaderDom = this.$el.querySelector(".el-table__header")
 
-      rightFlexDom.style.display = tableHeaderDom.clientWidth < tableDom.clientWidth ? "none" : ""
+        const rightFlexDom = this.$el.querySelector(".rightFlex")
+
+        rightFlexDom.style.display = tableHeaderDom.clientWidth < tableDom.clientWidth ? "none" : ""
+
+
+        const mainTableDom = this.$el.querySelector(".mainTable")
+        if (mainTableDom) {
+          const mainTableBodyDom = mainTableDom.querySelector(".el-table")
+          const mainTableClientRect = mainTableDom.getBoundingClientRect()
+          const mainTableBodyClientRect = mainTableBodyDom.getBoundingClientRect()
+
+          const rightFlexBodyDom = rightFlexDom.querySelector(".el-table")
+          rightFlexBodyDom.style.height = rightFlexDom.style.height = `${ mainTableBodyClientRect.height }px`
+          
+          rightFlexDom.style.paddingTop = `${ parseFloat(window.getComputedStyle(mainTableDom).paddingTop) + 1 }px`
+          //  + 0.5       
+          
+          // rightFlexDom.style.bottom = `${ math.chain(math.bignumber(mainTableClientRect.height)).subtract(parseFloat(window.getComputedStyle(mainTableDom).paddingTop)).subtract(mainTableBodyClientRect.height).done().toFixed(6) }px`
+        }
+        
+        
+        console.log("---------------------------------------------------------------")
+        console.log("mainTable.clientHeight", mainTableDom.clientHeight)
+        console.log("mainTable.scrollHeight", mainTableDom.scrollHeight)
+        console.log("mainTable.offsetHeight", mainTableDom.offsetHeight)
+        console.log("mainTable.getBoundingClientRect", mainTableDom.getBoundingClientRect())
+        console.log("---------------------------------------------------------------")
+      })
+
+      domObserver.observe(this.$el, {
+        childList: true,
+        attributes: true,
+        subtree: true
+      })
     })
   },
+  // updated() {
+  //   this.$nextTick(() => { // 处理right在title未占满宽度时强制浮动的问题
+  //     const tableDom = this.$el.querySelector(".el-table")
+  //     const tableHeaderDom = this.$el.querySelector(".el-table__header")
+  //     const rightFlexDom = this.$el.querySelector(".rightFlex")
+
+  //     rightFlexDom.style.display = tableHeaderDom.clientWidth < tableDom.clientWidth ? "none" : ""
+  //   })
+  // },
   data(){
     return {
-    supplierTableTop:supplierTableTop
+      rightFlexId: "",
+      supplierTableTop:supplierTableTop
   }},
   methods:{
     ttoShow(data){
       if(parseInt(data)){
-        return toThousands(parseInt(data))
+        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }
@@ -590,9 +654,9 @@ export default{
     }
     .rightFlex{
       position: absolute;
-      height: calc(100% - 10px);
-      bottom: 10PX;
-      // padding-top:10PX;
+      box-sizing: content-box;
+      // height: 100%;
+      top: 0px;
       right: 0px;
       z-index: 199;
       overflow: hidden;
@@ -627,7 +691,7 @@ export default{
     display: inline-block;
     white-space: nowrap;
     text-overflow: ellipsis;
-    height: 15px;
+    // height: 15px;
     line-height: 100%;
   }
   
@@ -646,6 +710,7 @@ export default{
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
+
         .price{
           position: absolute;
           top: 0px;
@@ -698,7 +763,7 @@ export default{
       .labelHader{
         width: 100%;
         overflow: hidden;
-        white-space: nowrap;
+        white-space: pre-line;
         text-overflow: ellipsis;
         display: inherit;
       }

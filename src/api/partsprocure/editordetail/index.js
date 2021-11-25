@@ -405,3 +405,11 @@ export function cartypeProConfigByCondition(data) {
 	})
 }
 
+// 获取车型项目SOP时间
+export function getCarTypeSop(params) {
+	return sourcing({
+		url:'/purchasing-project-parts/carProSimpleInfoList',
+		method:'GET',
+		params
+	})
+}

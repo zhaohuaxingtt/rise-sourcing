@@ -28,7 +28,7 @@
 
           <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType">
             <iLabel :label="language('BIDDING_XIANGMULEIXING', '项目类型')" slot="label"></iLabel>
-            <iSelect v-model="ruleForm.projectType" clearable>
+            <iSelect ref='select' v-model="ruleForm.projectType" clearable @keydown.native.capture.enter.stop.prevent>
               <el-option
                 v-for="(item, index) in projectType"
                 :key="index"
@@ -335,6 +335,12 @@ export default {
 
     query() {
       this.tableLoading = true;
+      let {rfqCode, rfqName, createName, partNumber} = this.ruleForm
+      rfqCode = rfqCode && rfqCode.trim()  ? rfqCode.trim() : null
+      rfqName = rfqName && rfqName.trim() ? rfqName.trim() : null
+      createName = createName && createName.trim() ? createName.trim() : null
+      partNumber = partNumber && partNumber.trim() ? partNumber.trim() : null
+      this.ruleForm = {...this.ruleForm, rfqCode, rfqName, createName, partNumber}
       let param = {
         ...this.ruleForm,
         pageNum: this.page.currPage,
