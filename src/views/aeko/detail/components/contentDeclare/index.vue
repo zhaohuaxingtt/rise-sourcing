@@ -257,10 +257,10 @@
             <span v-else>{{scope.row.originPartName}}</span>
           </template>
           <template #dosage="scope">
-            <span v-if="scope.row.status !='EMPTY'" class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.status !='EMPTY'" clascope.row.quotationId"s="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotationId="scope">
-            <span v-if="scope.row.quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
+            <span v-if="s class="link-underline" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
           </template>
           <!-- 模具投资变动 -->
           <template #mouldPriceChange="scope">
@@ -963,7 +963,7 @@ export default {
       // 可支持报价
       if (filtRows.length) {
         // 待表态的数据支持报价
-        if (filtRows[0] && filtRows[0].status ==='OBE_STATED') {
+        if (filtRows[0] && filtRows[0].status ==='TOBE_STATED') {
           const confirmMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
           ${filtRows.map(o => o.partNum).join(',')} 
           ${this.language('GONGYINGSHANG','供应商')}:
