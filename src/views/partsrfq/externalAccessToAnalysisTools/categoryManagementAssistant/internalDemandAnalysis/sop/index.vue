@@ -149,6 +149,7 @@ export default ({
          categoryCode:this.categoryCode,
          cartypeProCodes:this.carType
       }
+      console.log(params)
       sopList(params).then(res => {
         if (res?.result) {
           const list = (res.data || []).map(item => {

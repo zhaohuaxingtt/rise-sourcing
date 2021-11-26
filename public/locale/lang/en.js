@@ -1009,6 +1009,10 @@
         'LK_GONGYINGSCAIWUZHUNGKUANG': '供应商财务状况',
         'LK_SVWCAIGOUJINEZHANBI': 'SVW采购金额占比',
         'LK_GONGYINGSHANGZHUYAOKEHU': '供应商主要客户',
+        'LK_CARPROJECT': 'Car Project',
+        'LK_CARPROJECTRFQ': '报价时间',
+        'LK_NUMBERPREFIX': 'No. ',
+        'LK_TURN': ' Turn',
 
         // 定点管理
         'nominationLanguage': {

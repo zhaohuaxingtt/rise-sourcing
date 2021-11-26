@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <div style="height: 540px;width:100%"
+    <div style="height: 440px;width:100%"
          ref="chart">
     </div>
   </div>
@@ -173,7 +173,7 @@ export default {
           left: "8%",
           top: '25%',
           right: '0%',
-          bottom: "22%",
+          bottom: "3%",
           // containLabel: true,
         },
         xAxis: [
@@ -237,11 +237,10 @@ export default {
           {
             type: "value",
             offset: 15,
-            name: "\n\n\n\n\n车型项目\n\n报价时间",
             axisLabel: {
               fontSize: 12,
               color: "#3C4F74",
-              fontWeight: 400,
+              fontWeight: 400
             },
             axisTick: {
               show: false,
@@ -286,37 +285,38 @@ export default {
         const dataList1 = [];
         const typeList = [];
         newVal.forEach((row, i) => {
-          const temp =
-            row.vehicleType +
-            "\n" +
-            window.moment(row.cbdQuotationTime).format("yyyy.MM");
+          // const temp =
+          //   row.vehicleType +
+          //   "\n" +
+          //   window.moment(row.cbdQuotationTime).format("yyyy.MM");
           const turn = row.turn === -1 ? "最新轮" : row.turn;
           const subtext = row.spareParts + '\n' + row.fs
-          //todo
-          let name = row.supplierName
+          // //todo
+          // let name = row.supplierName
 
-          // this.supplierList.forEach(value => {
-          //   if (name == value.supplierId) {
-          //     name = value.shortNameZh
-          //   }
-          // })
+          // // this.supplierList.forEach(value => {
+          // //   if (name == value.supplierId) {
+          // //     name = value.shortNameZh
+          // //   }
+          // // })
 
-          if (this.by === "num") {
-            name = row.spareParts;
-            this.partList.forEach(value => {
-              if (name == value.spareParts) {
-                name = value.shortNameZh
-              }
-            })
-          }
-          const str =
-            name +
-            "\n第{Blue|" +
-            row.turn +
-            "}/" +
-            row.totalTurn +
-            "轮\n\n" +
-            "{font|" + temp + "}";
+          // if (this.by === "num") {
+          //   name = row.spareParts;
+          //   this.partList.forEach(value => {
+          //     if (name == value.spareParts) {
+          //       name = value.shortNameZh
+          //     }
+          //   })
+          // }
+          // const str =
+          //   name +
+          //   "\n第{Blue|" +
+          //   row.turn +
+          //   "}/" +
+          //   row.totalTurn +
+          //   "轮\n\n" +
+          //   "{font|" + temp + "}";
+          let str = "";
           this.labelArray.push({
             value: str,
             textStyle: {
