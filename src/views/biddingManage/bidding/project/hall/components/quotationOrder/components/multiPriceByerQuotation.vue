@@ -439,7 +439,7 @@ export default {
               item.procureYearMonth;
             obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
             obj[item.productId].procureNum[`stage${item.stage}`] =
-              item.procureNum;
+              item.procureNum ? Number(item.procureNum).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : null
             obj[item.productId].procureNum[`id${item.stage}`] = item.id;
             return obj;
           }, {});
