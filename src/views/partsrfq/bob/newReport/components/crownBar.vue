@@ -1,9 +1,56 @@
-
+<style scoped>
+.crown-bar-x-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #7E84A3;
+  font-family: Arial;
+  line-height: 23px;
+  text-align: center;
+  white-space: nowrap;
+}
+</style>
 <template>
-  <div>
+  <div style="width: 100%;">
     <div style="height: 440px;width:100%"
          ref="chart">
     </div>
+    <template v-if="chartData.length > 0">
+      <div style="width: 100%;display:flex;flex-flow:row nowrap;">
+        <span style="width: 8%;"></span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{getCrownBarName(row)}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')','cursor': 'pointer'}" v-popover:bobTypePopper>
+          {{bobType}}<i class="el-select__caret el-input__icon el-icon- el-icon-caret-bottom"/>
+        </span>
+      </div>
+      <el-popover
+        ref="bobTypePopper"
+        placement="bottom"
+        width="150"
+        trigger="click">
+        <el-radio-group v-model="bobType">
+          <el-radio label="Best of Best">Best of Best</el-radio>
+          <el-radio label="Best of Average">Best of Average</el-radio>
+          <el-radio label="Best of Second">Best of Second</el-radio>
+        </el-radio-group>
+      </el-popover>
+      <div style="width: 100%;display:flex;flex-flow:row nowrap;">
+        <span style="width: 8%;"></span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">
+          {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{row.turn}}</a>/{{row.totalTurn}}{{language('LK_TURN','轮')}}
+        </span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+      </div>
+      <div style="width: 100%;display:flex;flex-flow:row nowrap;margin-top: 10px;">
+        <span style="width: 8%;color: #3C4F74;">{{language('LK_CARPROJECT','车型项目')}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{row.vehicleType}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+      </div>
+      <div style="width: 100%;display:flex;flex-flow:row nowrap;">
+        <span style="width: 8%;color: #3C4F74;">{{language('LK_CARPROJECTRFQ','报价时间')}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{getCrownBarReqTime(row)}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+      </div>
+    </template>
   </div>
 </template>
 <script >
@@ -81,6 +128,22 @@ export default {
     };
   },
   methods: {
+    getCrownBarName(row) {
+      let name = row.supplierName
+
+      if (this.chartType === "num") {
+        name = row.spareParts;
+        this.partList.forEach(value => {
+          if (name == value.spareParts) {
+            name = value.shortNameZh
+          }
+        })
+      }
+      return name
+    },
+    getCrownBarReqTime(row) {
+      return window.moment(row.cbdQuotationTime).format("yyyy.MM");
+    },
     bos (arr) {
       const min = this.min(arr);
       let send = this.max(arr);
