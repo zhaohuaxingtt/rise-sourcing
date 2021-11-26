@@ -298,7 +298,8 @@ export default {
         if (
         (this.form.roundType === "05" &&
         this.form.manualBiddingType === "02") 
-        || (this.role === "supplier" && this.form.resultOpenForm === '01' || this.form.resultOpenForm === '02')
+        || (this.role === "supplier" && this.form.resultOpenForm === '01' 
+        || (this.role === "supplier" && this.form.resultOpenForm === '02'))
         ) {
           this.tableListData = res.filter((item) => {
             return this.supplierCode.includes(item.supplierCode);
