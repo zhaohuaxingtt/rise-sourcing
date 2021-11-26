@@ -10,7 +10,7 @@ export default [
   {
     path: "/financialtargetprice",
     meta: { title: "财务目标价管理" },
-    component: () => import("@/layout/default"),
+    component: () => import("@/views/routerView"),
     redirect: "/financialtargetprice/maintenance",
     children: [
       {
@@ -36,7 +36,7 @@ export default [
         name: "targetPriceDetail",
         meta: { title: "目标价详情" },
         component: () => import("@/views/financialTargetPrice/targetPriceDetail"),
-      }
+      },
     ]
   }
 ]

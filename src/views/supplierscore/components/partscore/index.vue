@@ -13,10 +13,10 @@
       <div class="control">
         <div v-if="editStatus">
           <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
-          <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton :loading="saveLoading" @click="handleSave" v-permission.auto="SUPPLIERSCORE_PARTSCORE_BUTTON_SAVE|保存">{{ language("BAOCUN", "保存") }}</iButton>
         </div>
         <div v-else>
-          <iButton @click="editStatus = true">{{ language("JINRUBIANJI", "进入编辑") }}</iButton>
+          <iButton @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_PARTSCORE_BUTTON_EDIT|进入编辑">{{ language("JINRUBIANJI", "进入编辑") }}</iButton>
         </div>
         <logButton class="margin-left20" />
         <span class="margin-left20">

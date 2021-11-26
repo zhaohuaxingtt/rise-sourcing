@@ -11,7 +11,7 @@ export default [
   {
     path: "/modeltargetprice",
     meta: { title: "模具目标价管理" },
-    component: () => import("@/layout/default"),
+    component: () => import("@/views/routerView"),
     redirect: "/modeltargetprice/signin",
     children: [
       {

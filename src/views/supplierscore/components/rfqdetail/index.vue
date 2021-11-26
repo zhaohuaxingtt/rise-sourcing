@@ -19,7 +19,7 @@
     </div>
     <infos class="margin-top30" :rfqInfo="rfqInfo" />
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
-      <el-tab-pane lazy v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name">
+      <el-tab-pane lazy v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="language(tab.key, tab.label)" :name="tab.name" v-permission.dynamic.auto="tab.permissionKey">
         <component :ref="tab.name" :is="component" :rfqId="rfqId" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :disabled="disabled" @updateRfq="updateRfq" />
       </el-tab-pane>
     </iTabsList>
@@ -51,9 +51,9 @@ export default {
       rfqId: "",
       currentTab: "partList",
       tabs: [
-        { label: "零件清单", name: "partList", key: "LK_LINGJIANQINGDAN", components: [ "partList" ] },
-        { label: "供应商评分", name: "supplierScore", key: "LK_GONGYINGSHANGPINGFEN", components: [ "supplierScore" ] },
-        { label: "询价附件", name: "inquiryAttachment", key: "LK_XUNJIAFUJIAN", components: [ "inquiryAttachment" ] }
+        { label: "零件清单", name: "partList", key: "LK_LINGJIANQINGDAN", components: [ "partList" ], permissionKey: "SUPPLIERSCORE_RFQDETAIL_TAB_PARTLIST|零件清单" },
+        { label: "供应商评分", name: "supplierScore", key: "LK_GONGYINGSHANGPINGFEN", components: [ "supplierScore" ], permissionKey: "SUPPLIERSCORE_RFQDETAIL_TAB_SUPPLIERSCORE|供应商评分" },
+        { label: "询价附件", name: "inquiryAttachment", key: "LK_XUNJIAFUJIAN", components: [ "inquiryAttachment" ], permissionKey: "SUPPLIERSCORE_RFQDETAIL_TAB_INQUIRYATTACHMENT|询价附件" }
       ],
       rfqInfo: {}
     }

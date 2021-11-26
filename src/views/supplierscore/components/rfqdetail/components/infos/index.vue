@@ -15,6 +15,7 @@
         :key="index"
         :row="item.row"
         :label="language(item.key, item.name)"
+        v-permission.dynamic.auto="item.permissionKey"
       >
         <iText>{{ rfqInfo[item.props] }}</iText>
       </iFormItem>
