@@ -1,8 +1,8 @@
 <template>
   <iCard class="outputPlan tabCard" :title="language('LK_XUNJIACHANLIANGJIHUA','询价产量计划')" tabCard collapse v-permission="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_INDEXPAGE">
     <template v-slot:header-control v-if="!disabled">
-      <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
-      <!-- <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_REFRESHBKMPRODUCTIONFORECAST|保存">{{language('LK_SHUAXINBKMCHANLIANGYUCE','刷新BKM产量预测')}}</iButton> -->
+      <iButton v-if="isGs == true "@click="forecastBkm" :loading="saveLoading" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_REFRESHBKMPRODUCTIONFORECAST|保存">{{language('LK_SHUAXINBKMCHANLIANGYUCE','刷新BKM产量预测')}}</iButton>
+      <iButton  @click="handleSave" :loading="saveLoading" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_OUTPUTRECORD_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
     </template>
     <div class="body">
       <el-table
@@ -46,7 +46,7 @@
 
 <script>
 import { iCard, iButton, iSelect, iInput, iMessage } from 'rise'
-import { getOutputPlan, updateOutputPlan } from '@/api/partsprocure/editordetail'
+import { getOutputPlan, updateOutputPlan, bkmOutputForecast } from '@/api/partsprocure/editordetail'
 import { outputPlanTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
 
@@ -69,6 +69,7 @@ export default {
       tableListData: [
         { pc: '产量（PC）', info: {} }
       ],
+      isGs:true
     }
   },
   computed: {
@@ -79,6 +80,11 @@ export default {
   created() {
     this.getData()
     this.years = []
+    if(this.params.partProjectType == '1000003' || this.params.partProjectType == '50002001') {
+      this.isGs = true
+    } else {
+      this.isGs = false
+    }
   },
   methods: {
     getData() {
@@ -177,6 +183,17 @@ export default {
     },
     clearTime(){
       this.startYear = ''
+    },
+    //刷新BKM产量预测
+    forecastBkm() {
+      let data = this.params.id
+      bkmOutputForecast(data).then(res => {
+        if(res.code == '200') {
+          iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
     }
   }
 }

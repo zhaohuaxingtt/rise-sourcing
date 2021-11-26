@@ -104,15 +104,21 @@ export default {
                 props: "partNum", name:this.language('零件号','LINGJIANHAO'), key: "LINGJIANHAO", tooltip: true
               });
               data.map((item)=>{
-                carTypeList = carTypeList.concat(item.aekoInvestCarProjectCodes);
-                // 勾选已选项
-                item[item.aekoInvestCarProjectCode] = true;
-                // 排除已选项数据的列表
-                item.aekoInvestCarProjectCodes.map((code)=>{
-                  if(code != item.aekoInvestCarProjectCode){
-                    item[code] = false;
-                  }
-                })
+                if(Array.isArray(item.aekoInvestCarProjectCodes)){
+                  let list = item.aekoInvestCarProjectCodes.map((itemCode)=>itemCode.carTypeProjectCode);
+                  carTypeList = carTypeList.concat(list);
+                  // carTypeList = carTypeList.concat(item.aekoInvestCarProjectCodes);
+
+                  // 勾选已选项
+                  item[item.aekoInvestCarProjectCode] = true;
+                  // 排除已选项数据的列表
+                  list.map((code)=>{
+                    if(code != item.aekoInvestCarProjectCode){
+                      item[code] = false;
+                    }
+                  })
+                }
+                
               })
               carTypeList =  Array.from(new Set(carTypeList)); // 去重
               carTypeList.map((item)=>{
@@ -141,8 +147,9 @@ export default {
                 objectAekoPartId:item.objectAekoPartId,
                 requirementAekoId,
               };
-              item.aekoInvestCarProjectCodes.map((code)=>{
-                if(item[code]){
+              item.aekoInvestCarProjectCodes.map((itemCode)=>{
+                let code = itemCode.carTypeProjectCode;
+                if(code && item[code]){
                   obj.investCarTypePro = code;
                 }
               })

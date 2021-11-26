@@ -12,15 +12,15 @@ import {permissionTitle} from '@/utils'
 // export const tableTitle = permissionTitle("PERMISSION_TESTTABLE",[
   export const tableTitle = [
   // {props:'tpPartID',name:'信息单流水号',key: 'LK_XINXIDANLIUSHUIHAO',tooltip:true ,width:100},
-  {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO',tooltip:false,width:130},
-  {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:true,width:100},
-  {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE',tooltip:true,width:100},
-  {props:'projectCarType',name:'车型项目',key: 'LK_CHEXINGXIANGMU',tooltip:true,width:120},
-  {props:'stuffName',name:'询价采购员',key: 'LK_CAIGOUYUANNEW',tooltip:true,width:90},
-  {props:'tpDeptNum',name:'设计科室',key: 'LK_SHEJIKESHI',tooltip:true,width:100},
-  {props:'tpPrincepalName',name:'工程师',key: 'LK_GONGCHENGSHI',tooltip:true,width:90},
-  {props:'tpInfoType',name:'信息单类型',key: 'LK_XINXIDANLEIXING',tooltip:true,width:120},
-  {props:'status',name:'信息单状态',key: 'LK_XINXIDANZHUANGTAI',tooltip:true,width:80},
+  {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO',tooltip:false,width:150},
+  {props:'partNameCn',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG',tooltip:true,minWidth:100},
+  {props:'partNameDe',name:'零件名（德）',key: 'LK_LINGJIANMINGDE',tooltip:true,minWidth:100},
+  {props:'projectCarType',name:'车型项目',key: 'LK_CHEXINGXIANGMU',tooltip:true,minWidth:120},
+  {props:'stuffName',name:'询价采购员',key: 'LK_CAIGOUYUANNEW',tooltip:true,minWidth:90},
+  {props:'tpDeptNum',name:'设计科室',key: 'LK_SHEJIKESHI',tooltip:true,minWidth:100},
+  {props:'tpPrincepalName',name:'工程师',key: 'LK_GONGCHENGSHI',tooltip:true,minWidth:90},
+  {props:'tpInfoType',name:'信息单类型',key: 'LK_XINXIDANLEIXING',tooltip:true,minWidth:120},
+  {props:'status',name:'信息单状态',key: 'LK_XINXIDANZHUANGTAI',tooltip:true,minWidth:80},
   {props:'attachmentStatus',name:'询价资料状态',key: 'LK_XUNJIAZILIAOZHUANGTAI',tooltip:true,minWidth:100},
   {props:'partDosageStatus',name:'每车用量状态',key: 'LK_MEICHEYONGLIANGZHUANGTAI',tooltip:true,minWidth:100}
 ]

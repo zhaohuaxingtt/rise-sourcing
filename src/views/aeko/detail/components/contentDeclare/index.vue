@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-24 17:52:02
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-26 11:52:08
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -252,6 +252,10 @@
             </iInput>
             <iInput v-else v-model="scope.row.showPartNumPreset" class="inputClass" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" readonly></iInput>
           </template>
+          <template #oldPartNamePreset="scope">
+            <span v-if="scope.row.isDeclare==0">{{scope.row.oldPartNamePreset}}</span>
+            <span v-else>{{scope.row.originPartName}}</span>
+          </template>
           <template #dosage="scope">
             <span v-if="scope.row.status !='EMPTY'" class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
@@ -366,7 +370,8 @@ export default {
       // AEKO状态为撤销以及从AEKO查看跳转过来的
       const {query} = this.$route;
       const {from=''} = query;
-      return this.aekoInfo.aekoStatus == "CANCELED"  || from == 'check';
+      const {auditType=''} = query; // 我的申请详情页内嵌页面
+      return this.aekoInfo.aekoStatus == "CANCELED"  || from == 'check' || auditType;
     },
     // 判断展示车型还是车型项目 展示label
     showCarTypeLabel(){
@@ -614,6 +619,7 @@ export default {
             this.tableListData.map(o => {
               // 分组管理需要备份原始分组名称
               o.groupNameBak = o.groupName
+              o.showPartNumPreset = o.isDeclare == 1 ? o.originPartNum : o.oldPartNumPreset
               return
             })
             this.page.totalCount = data.total || 0
@@ -957,7 +963,7 @@ export default {
       // 可支持报价
       if (filtRows.length) {
         // 待表态的数据支持报价
-        if (filtRows[0] && filtRows[0].status ==='OBE_STATED') {
+        if (filtRows[0] && filtRows[0].status ==='TOBE_STATED') {
           const confirmMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
           ${filtRows.map(o => o.partNum).join(',')} 
           ${this.language('GONGYINGSHANG','供应商')}:

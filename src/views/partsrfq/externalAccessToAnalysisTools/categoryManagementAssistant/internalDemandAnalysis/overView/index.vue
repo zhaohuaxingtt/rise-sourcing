@@ -1,15 +1,18 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-09-26 14:30:00
- * @LastEditors: zbin
+ * @LastEditTime: 2021-11-25 14:28:17
+ * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
 <template>
   <el-row gutter="20">
-    <el-col :span="8" v-for="(item,index) in list" :key="index">
-      <div @click="onJump(item)" class="cursor cardBox">
+    <el-col :span="8"
+            v-for="(item,index) in list"
+            :key="index">
+      <div @click="onJump(item)"
+           class="cursor cardBox">
         <iCard class="icard">
           <div slot="header">
             <span class="title">{{language(item.key,item.name)}}</span>
@@ -29,7 +32,7 @@ export default {
   components: {
     iCard,
   },
-  data() {
+  data () {
     return {
       list: [
         {
@@ -56,7 +59,8 @@ export default {
         }, {
           name: "EKL",
           key: "EKL",
-          image: require("@/assets/images/partRfq/internalDemandAnalysis05.png")
+          image: require("@/assets/images/partRfq/internalDemandAnalysis05.png"),
+          url: "/portal/#/achievement/baseData/list"
         }, {
           name: "SOP进度轴",
           key: "SOPJINDUZHOU",
@@ -89,7 +93,7 @@ export default {
     }
   },
   methods: {
-    onJump(item) {
+    onJump (item) {
       if (this.$store.state.rfq.categoryCode) {
         switch (item.key) {
           // 成本结构
@@ -131,7 +135,7 @@ export default {
       }
     },
     // 获取成本结构数据，用于判断跳转系统/手工页面
-    getCostData() {
+    getCostData () {
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode
       }

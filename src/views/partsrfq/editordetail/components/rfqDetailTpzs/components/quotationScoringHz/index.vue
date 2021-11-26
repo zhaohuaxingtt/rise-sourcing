@@ -86,7 +86,7 @@ export default{
     supplierData:[],
     supplierTile:[],
     //轮次选择
-    round:'',
+    round:'-1',
     rundList:[],
     backChooseLists:[],
     backChoose:[],
@@ -154,11 +154,7 @@ export default{
     this.layout = this.getLayoutDetaultNumber()
     this.searchABPageExchangeRate()
   },
-  destroyed(){
-    console.log('---------------')
-  },
   mounted(){
-    this.round = this.getbaseInfoData().currentRounds || 1
     this.init()
   },
   provide(){
