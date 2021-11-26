@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:35:20
- * @LastEditTime: 2021-11-18 03:00:50
+ * @LastEditTime: 2021-11-25 13:44:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\strategy\index.vue
@@ -19,7 +19,7 @@
   </iCard>
   <higthligthts v-if='categoryCode' :categoryCode="categoryCode" class='margin-top20 margin-bottom20'></higthligthts>
   <iCard :title='language("KEYINITIATIVE","Key initiatives")' class="mineCards">
-    <iButton class="floatright" @click='open'>编辑</iButton>
+    <iButton class="floatright" @click='open'>前往编辑</iButton>
     <listOfinit ref="listOfinit"  v-if='categoryCode' :categoryCodeProps="categoryCode" :extendsIsedit='false' :isEdit='isEdit'></listOfinit>
   </iCard>
 </div>

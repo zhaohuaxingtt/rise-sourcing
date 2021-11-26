@@ -74,10 +74,16 @@
                    :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
                    style="cursor: pointer;padding-right: 4px;"
                    @click="handleCollapse(item, item.expanded)"></i>
-                <el-input v-if="item.grouped || item.matchId > 0"
-                          v-model="item.title"></el-input>
+                <template v-if="item.grouped || item.matchId > 0 || item.isFresh">
+                  <span v-if="editGroupedLabel[item.id]" :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                  <el-input v-else v-model="item.title">
+                    <template slot="append">
+                      <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
+                    </template>
+                  </el-input>
+                </template>
                 <span v-else
-                      :style="{'font-weight': item.groupChild ? 'bold':''}">{{item.title}}</span>
+                      :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
               </span>
               <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
                     v-for="(title, titleIdx) in tableTitle"
@@ -166,7 +172,8 @@ import {
   removeComponentFromGroup,
   groupedCancel,
   groupedSubmit,
-  restore
+  restore,
+  renameComponentGroup
 } from "@/api/partsrfq/bob";
 import { update } from "@/api/partsrfq/bob/analysisList";
 import {
@@ -194,6 +201,7 @@ export default {
   data () {
     return {
       onDataLoading: false,
+      editGroupedLabel:[],
       allExpand: true,
       flag: false,
       flag1: true,
@@ -269,11 +277,13 @@ export default {
     },
     label: {
       handler (val) {
-        this.close()
         this.$nextTick(function () {
-          this.expedsArr = []
-          this.expedsArr1 = this.tableList.element.filter(i => i.title === val)
-          this.recursion(this.expedsArr1)
+          this.tableListData.forEach((item) => {
+            if (item.title == val) {
+              this.$refs[item.id][0].scrollIntoView({behavior: "smooth", block: "end"})
+              console.log(this.$refs[item.id])
+            }
+          })
         });
       }
     }
@@ -484,25 +494,6 @@ export default {
             this.$nextTick(() => {
               this.onDataLoading = false;
             })
-            // if (params.viewType == 'all') {
-            //   chargeRetrieve({
-            //       isDefault: true,
-            //       viewType: 'rawGrouped',
-            //       schemaId: this.schemaId,
-            //       groupId: this.groupId
-            //     }).then((res) => {
-            //       var groupedData = res;
-            //       groupedData.element.forEach((grouped) => {
-            //         var currentRoot = datas.element.filter((item) => {
-            //           return item.title == grouped.title && item.code == grouped.code;
-            //         })
-            //         if (currentRoot.length > 0) {
-            //           this.addGroupedToOrigin(currentRoot[0].child, grouped)
-            //         }
-            //       })
-                
-            //   })
-            // }
           } catch (err) {
             console.log(err)
           }
@@ -537,11 +528,11 @@ export default {
       var maCols = 0;
       var idCol = {}
       titles.forEach((title, index) => {
-        if (rawCols < title.rawTotalColumn) {
-          rawCols = title.rawTotalColumn;
+        if (rawCols < title.rawTotalUnGrouped) {
+          rawCols = title.rawTotalUnGrouped;
         }
-        if (maCols < title.maTotalColumn) {
-          maCols = title.maTotalColumn;
+        if (maCols < title.maTotalUnGrouped) {
+          maCols = title.maTotalUnGrouped;
         }
       });
 
@@ -573,7 +564,7 @@ export default {
       tableData.forEach((col, index) => {
         if (index > 0) {
           col.forEach((item, idx) => {
-            merged[idx]["label#" + index] = item.value
+            if (merged[idx]) merged[idx]["label#" + index] = item.value
           })
         }
       })
@@ -602,6 +593,12 @@ export default {
           object.parentId = parentId;
           object.rootId = rootId;
           object.code = target.code;
+          if (target.matchId) {
+            object.matchId = target.matchId
+          }
+          if (target.isFresh) {
+            object.isFresh = target.isFresh
+          }
           // object.rootId = parentId;
           if (target.child && target.child.length > 0) {
             if (!idCol[object.title]) {
@@ -620,14 +617,16 @@ export default {
       }
 
       var looper = JSON.parse(JSON.stringify(target[key]));
-      if (looper.length < rawCols && cbdCode == "1") {
-        while (looper.length < rawCols) {
-          looper.push("");
+      if (target.matchId < 0) {
+        if (looper.length < rawCols && cbdCode == "1") {
+          while (looper.length < rawCols) {
+            looper.push("");
+          }
         }
-      }
-      if (looper.length < maCols && cbdCode == "2") {
-        while (looper.length < maCols) {
-          looper.push("");
+        if (looper.length < maCols && cbdCode == "2") {
+          while (looper.length < maCols) {
+            looper.push("");
+          }
         }
       }
 
@@ -640,6 +639,12 @@ export default {
             object.level = showLevel;
             object.parentId = parentId;
             object.rootId = rootId;
+            if (target.matchId) {
+              object.matchId = target.matchId
+            }
+            if (target.isFresh) {
+              object.isFresh = target.isFresh
+            }
             if (object.title == '组别' || object.title == '制造工序') {
               object.groupKey = true;
             }
@@ -664,6 +669,12 @@ export default {
           object.level = showLevel;
           object.rootId = rootId;
           object.parentId = parentId;
+          if (target.matchId) {
+            object.matchId = target.matchId
+          }
+          if (target.isFresh) {
+            object.isFresh = target.isFresh
+          }
           if (object.title == '组别' || object.title == '制造工序') {
             object.groupKey = true;
           }
@@ -732,6 +743,7 @@ export default {
             schemaId: this.schemaId,
             groupId: this.groupId
           });
+          this.editGroupedLabel = []
         })
       }).catch(() => {
         loading.close();
@@ -743,8 +755,6 @@ export default {
           groupId: this.groupId
         });
       });
-
-
     },
     sure (val, flag) {
       this.remarkDialogVisible = flag;
@@ -766,15 +776,6 @@ export default {
     remarks () {
       this.remarkDialogVisible = true;
     },
-    group () {
-      this.onGroupingModel = true;
-      // update(this.formUpdata).then(res => {
-      //   // iMessage.success("保存成功");
-      //   this.totalTable = false;
-      //   this.groupby = true;
-      //   this.checkFLag = false
-      // })
-    },
     saveGroup () {
       if (this.groupSelectedItems.length === 0 || !this.schemaId) {
         this.$message.error('请选择数据');
@@ -791,67 +792,13 @@ export default {
         }
       })
     },
-    merge (e, result, activeName) {
-      if (result.length === 0) {
-        this.$message.error('请选择数据');
-        return
-      }
-      this.result = result
-      this.activeName = activeName
-      merge({
-        roundDetailIdList: this.result,
-        comparedType: this.$attrs.chartType
-      }).then(res => {
-        if (res.code === '200') {
-          this.groupby = false
-          this.$nextTick(() => {
-            this.groupby = true
-            this.$refs.ungroupedTable.activeName = this.activeName
-            this.$refs.ungroupedTable.chargeRetrieve({
-              isDefault: true,
-              viewType: this.activeName,
-              schemaId: this.schemaId,
-              groupId: this.groupId
-            })
-          });
-          this.$refs.groupedTable.chargeRetrieve({
-            isDefault: true,
-            schemaId: this.schemaId,
-            viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
-            groupId: this.groupId
-          })
-          iMessage.success(res.desZh)
-        } else {
-          this.groupby = false
-          this.$nextTick(() => {
-            this.groupby = true
-            this.$refs.ungroupedTable.activeName = this.activeName
-            this.$refs.ungroupedTable.chargeRetrieve({
-              isDefault: true,
-              viewType: this.activeName,
-              schemaId: this.schemaId,
-              groupId: this.groupId
-            })
-          });
-          this.$refs.groupedTable.chargeRetrieve({
-            isDefault: true,
-            schemaId: this.schemaId,
-            viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
-            groupId: this.groupId
-          })
-          iMessage.error(res.desZh)
-        }
-
-      })
-    },
-    // returnAcitiveName (val) {
-    //   this.activeName = val
-    // },
     groupToList () {
       if (!this.selectGroupName) {
         this.$message.error('请选择分组');
         return
       }
+
+      this.onDataLoading = true;
 
       var newDatas = [];
       this.groupSelectedItems.forEach((gi) => {
@@ -902,6 +849,7 @@ export default {
           groupedDatas[key].forEach((item) => {
             item.expanded = true;
             item.groupChild = true;
+            this.editGroupedLabel.push[item.id]
             this.tableListData.splice(rootItemIndex, 0, item);
             rootItemIndex++;
           });
@@ -924,6 +872,7 @@ export default {
         this.clearGrouped();
         this.groupToDialogVisible = false;
         this.onGroupingModel = false;
+        this.onDataLoading = false;
       })
       return;
     },
@@ -1012,6 +961,31 @@ export default {
       })
 
     },
+
+    updateGroupedLabel (item) {
+      this.onDataLoading = true;
+      renameComponentGroup({
+        groupId: item.matchId,
+        groupName: item.title,
+        schemaId: this.schemaId
+      }).then(res => {
+        console.log(res)
+        if (res.code === '200') {
+          iMessage.success('修改成功')
+          this.chargeRetrieve({
+            isDefault: true,
+            viewType: 'all',
+            schemaId: this.schemaId,
+            groupId: this.groupId
+          })
+        } else {
+          iMessage.error('修改失败')
+        }
+        this.onDataLoading = false;
+      }).catch((error) => {
+        iMessage.error('修改失败')
+      })
+    }
   },
 };
 </script>

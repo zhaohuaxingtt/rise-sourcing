@@ -215,59 +215,41 @@ export default {
         this.tableLoading = true;
         const {query} = this.$route;
         const { requirementAekoId =''} = query;
-        const {from='', auditType=''} = query;
-        if(!auditType){
-          await getLinieCoverDetail({requirementAekoId}).then((res)=>{
-            this.tableLoading = false;
-            const { code,data={} } = res;
-            if(code == 200){
-              const {fsId='',coverCostsWithCarType=[],fsName} = data;
-  
-              const costData = cloneDeep(coverCostsWithCarType);
-              costData.map((item)=>{
-                item.investmentIncrease = this.fixNumber(item.investmentIncrease,0) || 0;
-                item.otherCost = this.fixNumber(item.otherCost,0) || 0;
-  
-                
-                item.isShowTips = item.materialIncrease == item.calMaterialIncrease;
-                // 提示计算公式的字符串拆分一下
-                item.expressionList = item.expression ? item.expression.split('<br/>') : [];
-  
-                item.materialIncrease = item.materialIncrease || '';
-  
-                
-              })
+        await getLinieCoverDetail({requirementAekoId}).then((res)=>{
+          this.tableLoading = false;
+          const { code,data={} } = res;
+          if(code == 200){
+            const {fsId='',coverCostsWithCarType=[],fsName} = data;
+
+            const costData = cloneDeep(coverCostsWithCarType);
+            costData.map((item)=>{
+              item.investmentIncrease = this.fixNumber(item.investmentIncrease,0) || 0;
+              item.otherCost = this.fixNumber(item.otherCost,0) || 0;
+
               
-              this.basicInfo = {
-                ...data,
-                coverCostsWithCarType:costData,
-                fsName:fsId,
-                getFsName:fsName,
-              };
-  
-              this.tableData = costData;
-            }else{
-              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-            }
-          }).catch((err)=>{
-            this.tableLoading = false;
-          })
-        }else{
-          await getCoverDetail({
-                requirementAekoId,
-                isView:from == 'check' ? 1 :undefined,
-                }).then((res)=>{
-                this.tableLoading=false;
-                const {code,data={}} = res;
-                if(code == 200){
-                    this.basicInfo = data;
-                }else{
-                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                }
-            }).catch((err)=>{
-                this.tableLoading = false;
+              item.isShowTips = item.materialIncrease == item.calMaterialIncrease;
+              // 提示计算公式的字符串拆分一下
+              item.expressionList = item.expression ? item.expression.split('<br/>') : [];
+
+              item.materialIncrease = item.materialIncrease || '';
+
+              
             })
-        }
+            
+            this.basicInfo = {
+              ...data,
+              coverCostsWithCarType:costData,
+              fsName:fsId,
+              getFsName:fsName,
+            };
+
+            this.tableData = costData;
+          }else{
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((err)=>{
+          this.tableLoading = false;
+        })
       },
       // 获取前期采购员下拉列表
       async getSearchUserList(){

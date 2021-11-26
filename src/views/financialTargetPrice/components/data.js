@@ -2,34 +2,21 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-22 15:14:10
+ * @LastEditTime: 2021-11-25 16:39:21
  * @Description: 
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\components\data.js
  */
 
 export const TAB = [
-  // {
-  //   value: 1,
-  //   name: '寻源执行',
-  //   key: 'LK_XUNYUANZHIHANG',
-  //   url: '/sourceinquirypoint/sourcing/partsign',
-  //   activePath: 'sourcing',
-  //   message: 0
-  // },
-  // {
-  //   value: 2,
-  //   name: '进度监控',
-  //   key: 'LK_JINDUJIANKONG',
-  //   url: '/nomination',
-  //   message: 0
-  // },
   {
     value: 1,
     name: '财务目标价管理',
     key: 'CAIWUMUBIAOJIAGUANLI',
     url: '/financialtargetprice',
     activePath: 'financialtargetprice',
-    message: 0
+    message: 0,
+    permissionKey: "FINANCIALTARGETMGT_TAB",
+    permissionName: "财务目标价管理"
   },
   {
     value: 2,
@@ -37,8 +24,47 @@ export const TAB = [
     key: 'MUJUMUBIAOJIAGUANLI',
     url: '/modeltargetprice',
     activePath: 'modeltargetprice',
-    message: 0
-  }
+    message: 0,
+    permissionKey: "MODELTARGETMGT_TAB",
+    permissionName: "模具目标价管理"
+  },
+  {
+    value: 3,
+    name: '评分任务',
+    url: "/supplierscore",
+    activePath: "/supplierscore",
+    key: "PINGFENRENWU",
+    permissionKey: "SUPPLIERSCORE_TAB",
+    permissionName: "评分任务"
+  },
+  {
+    value: 4,
+    name: '评分部门设置',
+    url: "/configscoredept",
+    activePath: "/configscoredept",
+    key: "PINGFENBUMENSHEZHI",
+    permissionKey: "CONFIGSCOREDEPT_TAB",
+    permissionName: "评分部门设置"
+  },
+  {
+    value: 5,
+    name: "成本分析管理",
+    url: "/costanalysismanage/home",
+    activePath: "/costanalysismanage/home",
+    key: "CHENGBENFENXIGUANLI",
+    permissionKey: "COSTANALYSISMANAGE_HOME_TAB",
+    permissionName: "成本分析管理"
+  },
+  {
+    value: 6,
+    name: "数据维护",
+    url: "/costanalysismanage/datamaintenance/costMaintenance",
+    activePath: "/costanalysismanage/datamaintenance",
+    key: "SHUJUWEIHU",
+    permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_TAB",
+    permissionName: "数据维护"
+  },
+  
 ]
 
 export const MENU = [

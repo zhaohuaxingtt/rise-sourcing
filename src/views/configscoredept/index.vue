@@ -1,15 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-09-13 14:21:32
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-25 15:46:38
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\configscoredept\index.vue
+ * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
 -->
 <template>
   <iPage class="configscoredept">
     <div class="header clearFloat">
-      <div class="title">{{ language("PEIZHIPINGFENBUMEN", "配置评分部门") }}</div>
+      <iNavMvp :list="list" :lang="true" :lev="1" routerPage></iNavMvp>
       <div class="control">
         <logButton class="margin-left20" />
         <span class="margin-left20">
@@ -26,7 +26,7 @@
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
       <el-form>
-        <el-form-item :label="language('BUMENBIANHAO', '部门编号')">
+        <el-form-item :label="language('BUMENBIANHAO', '部门编号')" v-permission.auto="CONFIGSCOREDEPT_SEARCH_SELECT_RATEDEPARTNUM|部门编号">
           <iSelect
             v-model="form.rateDepartNum"
             :placeholder="language('QINGXUANZEBUMENBIANHAO', '请选择部门编号')"
@@ -43,7 +43,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('BUMENPINGFENLEIXING', '部门评分类型')">
+        <el-form-item :label="language('BUMENPINGFENLEIXING', '部门评分类型')" v-permission.auto="CONFIGSCOREDEPT_SEARCH_SELECT_RATETAG|部门评分类型">
           <iSelect
             v-model="form.rateTag"
             :placeholder="language('QINGXUANZEBUMENPINGFENLEIXING', '请选择部门评分类型')"
@@ -64,13 +64,13 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton v-if="!editStauts" @click="editStauts = true">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton v-if="!editStauts" @click="editStauts = true" v-permission.auto="CONFIGSCOREDEPT_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
         <div v-else>
           <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
-          <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
-          <iButton @click="handleRecovery">{{ language("HUIFU", "恢复") }}</iButton>
-          <iButton @click="handleAdd">{{ language("XINZENGHANG", "新增行") }}</iButton>
-          <iButton :loading="deleteLoading" @click="handleDelete">{{ language("SHANCHUHANG",  "删除行") }}</iButton>
+          <iButton :loading="saveLoading" @click="handleSave" v-permission.auto="CONFIGSCOREDEPT_BUTTON_SAVE|保存">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton @click="handleRecovery" v-permission.auto="CONFIGSCOREDEPT_BUTTON_RECOVERY|恢复">{{ language("HUIFU", "恢复") }}</iButton>
+          <iButton @click="handleAdd" v-permission.auto="CONFIGSCOREDEPT_BUTTON_ADD|新增行">{{ language("XINZENGHANG", "新增行") }}</iButton>
+          <iButton :loading="deleteLoading" @click="handleDelete" v-permission.auto="CONFIGSCOREDEPT_BUTTON_DELETE|删除行">{{ language("SHANCHUHANG",  "删除行") }}</iButton>
         </div>
       </template>
       <div class="body">
@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage } from "rise"
+import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage, iNavMvp } from "rise"
 import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import deptDialog from "./components/deptDialog"
@@ -142,6 +142,7 @@ import { queryForm, tableTitle } from "./components/data"
 import { cloneDeep, isEqual } from "lodash"
 import { getDictByCode } from "@/api/dictionary"
 import { getRfqRateDeparts, saveRfqRateDeparts, deleteRfqRateDeparts } from "@/api/configscoredept"
+import { TAB } from '@/views/financialTargetPrice/components/data'
 
 export default {
   components: {
@@ -154,11 +155,13 @@ export default {
     iInput,
     logButton,
     tableList,
-    deptDialog
+    deptDialog,
+    iNavMvp
   },
   mixins: [ filters ],
   data() {
     return {
+      list: TAB,
       rateDepartNumOptions: [],
       scoreDeptOptions: [],
       form: cloneDeep(queryForm),
@@ -363,7 +366,7 @@ export default {
 .configscoredept {
   .header {
     position: relative;
-
+    margin-bottom: 40px;
     .title {
       font-size: 20px;
       font-weight: bold;
