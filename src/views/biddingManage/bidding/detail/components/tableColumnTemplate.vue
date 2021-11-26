@@ -268,7 +268,7 @@
             >
               <div v-if="scope.row['index'] === 0">{{scope.row[items.props]}}</div>
 
-              <iInput
+              <operatorInput
                 v-else-if="scope.row['index']%2 === 0"
                 v-model="scope.row[items.props]"
                 placeholder="0.00"
@@ -276,7 +276,7 @@
                 @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"
               >
-              </iInput>
+              </operatorInput>
               <iDatePicker
                 v-else-if="scope.row['index']%2 === 1"
                 class="data--picker"
@@ -412,6 +412,7 @@
 </template>
 <script>
 import { iInput, iDatePicker } from "rise";
+import operatorInput from './operatorInput';
 import dayjs from "dayjs";
 export default {
   props: {
@@ -462,6 +463,7 @@ export default {
   components: {
     iInput,
     iDatePicker,
+    operatorInput
   },
   data() {
     return {
