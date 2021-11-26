@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-26 10:43:08
+ * @LastEditTime: 2021-11-26 11:52:08
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -257,10 +257,10 @@
             <span v-else>{{scope.row.originPartName}}</span>
           </template>
           <template #dosage="scope">
-            <span v-if="scope.row.status !='EMPTY'" clascope.row.quotationId"s="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.status !='EMPTY'" class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotationId="scope">
-            <span v-if="s class="link-underline" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
+            <span v-if="scope.row.quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
           </template>
           <!-- 模具投资变动 -->
           <template #mouldPriceChange="scope">
