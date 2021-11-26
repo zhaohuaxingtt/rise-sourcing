@@ -381,13 +381,13 @@
            <!-- 平均年产量 -->
           <template slot="aveAnnualOutput" slot-scope="scope" >
             <!-- 只读 -->
-            <template  v-if="ruleForm.biddingStatus !== '01'">
+            <template  v-if="biddingStatus">
               <div>{{ scope.row['aveAnnualOutput'] ? multiPriceValue[scope.row['id']].aveAnnualOutput : '' }}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
               <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
+                :disabled="biddingStatus"
                 :value="scope.row['aveAnnualOutput']"
                 @focus="handlerInputFocus"
                 @blur="handlerInputBlur"
@@ -398,7 +398,7 @@
               </template>
               <template v-else>
                 <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
+                  :disabled="biddingStatus"
                   :value="multiPriceValue[scope.row['id']].aveAnnualOutput"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
@@ -411,13 +411,13 @@
           <!-- 最大年产量 -->
           <template slot="maxAnnualOutput" slot-scope="scope" >
             <!-- 只读 -->
-            <template  v-if="ruleForm.biddingStatus !== '01'">
+            <template  v-if="biddingStatus">
               <div>{{ scope.row['maxAnnualOutput'] ? multiPriceValue[scope.row['id']].maxAnnualOutput  : ''}}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
               <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
+                :disabled="biddingStatus"
                 :value="scope.row['maxAnnualOutput']"
                 @focus="handlerInputFocus"
                 @blur="handlerInputBlur"
@@ -428,7 +428,7 @@
               </template>
               <template v-else>
                 <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
+                  :disabled="biddingStatus"
                   :value="multiPriceValue[scope.row['id']].maxAnnualOutput"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
@@ -659,7 +659,8 @@ export default {
         ],
       orgTotalPrices:0,
       multiPriceValue:{},
-      isInputFlag: true
+      isInputFlag: true,
+      clearTime:''
     };
   },
   watch: {
@@ -668,11 +669,10 @@ export default {
         this.handleSearchReset();
       }
     },
-    "ruleForm.supplierProducts": {
-      immediate:true,
-      handler(val){
-        if(val) {
-          this.multiPriceValue = val?.reduce((obj, item, index) => {
+    //监听产品  计算B价 ==出厂价+包装费+运输费+操作费
+    supplierProducts: {
+      handler(val, oldVal) {
+        this.multiPriceValue = this.ruleForm.supplierProducts?.reduce((obj, item, index) => {
             obj[item.id] = {
               factoryPrice:Number(item?.factoryPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
               packingFee:Number(item?.packingFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
@@ -686,14 +686,7 @@ export default {
             }
             return obj;
           },{})
-          this.isInputFlag = false;
-        }
-        
-      }
-    },
-    //监听产品  计算B价 ==出厂价+包装费+运输费+操作费
-    supplierProducts: {
-      handler(val, oldVal) {
+          
         if (val?.length > 0)
           val.forEach((item) => {
             item.bprice =
@@ -732,11 +725,12 @@ export default {
       this.quantityUnit = res.data;
     });
     this.handleSearchReset();
-    clearTimeout(this.projectTime)
     this.projectLoading = false
   },
   beforeDestroy(){
+    this.projectLoading = false;
     clearTimeout(this.projectTime)
+    clearInterval(this.clearTime)
   },
   computed: {
     biddingStatus() {
@@ -817,6 +811,12 @@ export default {
     handlerInputBlur(){
       this.isInputFlag = false
       this.projectLoading = true
+            // 延迟下，展示出loading出来
+      this.projectTime = setTimeout(() => {
+        console.log('object定时器我进来了')
+        this.projectLoading = false
+        clearTimeout(this.projectTime)
+      }, 800);
       let supplierProducts = this.ruleForm.supplierProducts;
       let sum= supplierProducts.reduce((sum, item, index) => {
         if(isNaN(Number(item.factoryPrice)) ||
@@ -828,11 +828,7 @@ export default {
         return Big(this.calculationDetails(item, index)).add(sum).add(Number(item?.moldFee)).add(Number(item?.developFee)).toNumber();
       }, 0);
       this.orgTotalPrices=Big(sum).toFixed(2);
-      // 延迟下，展示出loading出来
-        this.projectTime = setTimeout(() => {
-          this.projectLoading = false
-          clearTimeout(this.projectTime)
-        }, 500);
+
     },
     toggle() {
       this.hidens = !this.hidens;
