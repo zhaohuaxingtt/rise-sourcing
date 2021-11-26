@@ -102,11 +102,25 @@
                 prop="biddingQuoteRule.quotedValue"
                 :hideRequiredAsterisk="true"
                 class="inline-block"
-                ><iInput
+                >
+                <template v-if="isInputFlag">
+                  <iInput
                   class="input-number70"
-                  v-model="ruleForm.biddingQuoteRule.quotedValue"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                  :value="ruleForm.biddingQuoteRule.quotedValue"
+                  @input="value => $set(ruleForm.biddingQuoteRule, 'quotedValue', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+                  ></iInput>
+                </template>
+                <template v-else>
+                  <iInput
+                  class="input-number70"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                  :value="quotedValueValue"
                   oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-                ></iInput>
+                  ></iInput>
+                </template>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
               {{language('BIDDING_xQICHUBAOJIA','x起初报价）')}}</el-radio
@@ -616,6 +630,16 @@ export default {
     limitValueValue(){
       return this.ruleForm.biddingQuoteRule.limitValue 
             ? Number(this.ruleForm.biddingQuoteRule.limitValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+            : ''
+    },
+    quotedValueValue(){
+      return this.ruleForm.biddingQuoteRule.quotedValue 
+            ? Number(this.ruleForm.biddingQuoteRule.quotedValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+            : ''
+    },
+    priceLimitValue(){
+      return this.ruleForm.biddingQuoteRule.priceLimit 
+            ? Number(this.ruleForm.biddingQuoteRule.priceLimit)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
             : ''
     },
     rankDisplayRuleSelectList() {
