@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-04-21 16:39:36
- * @LastEditTime: 2021-08-19 16:14:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-26 10:33:01
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-supplier\src\api\rfqManageMent\mouldOffer\index.js
  */
@@ -38,6 +38,14 @@ export function findRfqInfoList(rfqId) {
 export function downLoadExcel(data) {
   return downLoad({
     url: `/download-price-trend`,
+    method: 'post',
+    data:data
+  })
+}
+// 根据供应商查询零件和轮次列表
+export function rfqQueryLinkage(data) {
+  return requst({
+    url: `/rfqQueryLinkage`,
     method: 'post',
     data:data
   })

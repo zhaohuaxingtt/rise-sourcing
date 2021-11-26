@@ -86,16 +86,16 @@
                   <!--零件号-->
                   <el-form-item :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')">
 
-                    <el-select multiple
+                    <i-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'spareParts' ? 5 : 1"
                                v-model="form.spareParts">
                       <el-option v-for="(i) in partList"
-                                 :key="i.fsNo"
-                                 :value="i.fsNo"
-                                 :label="i.fsNo+'/'+i.spareParts"></el-option>
-                    </el-select>
+                        :key="i.fsNo"
+                        :value="i.fsNo"
+                        :label="i.fsNo+'/'+i.spareParts"></el-option>
+                    </i-select>
                   </el-form-item>
                 </div>
                 <div v-else>
@@ -160,9 +160,8 @@
                 </ul>
               </div>
             </div>
-            <el-row>
-              <el-col :span="groupIds?24:inside ? 18 : 24"
-                      style="padding-left:0px">
+            <div style="display: flex;flex-flow: row nowrap;">
+              <div :style="{'width': groupIds ? '100%' : (inside ? '75%' : '100%')}">
                 <crown-bar :chartData="chartData"
                            :supplierList="supplierList"
                            :partList="partList"
@@ -171,62 +170,82 @@
                            @select="showSelect"
                            :type="bobType"
                            :by="chartType" />
-                <div class="toolTip-div"
-                     ref="toolTipDiv"
-                     v-show="showSelectDiv">
-                  <iSelect v-model="bobType"
-                           ref="toolTipSelect"
-                           @blur="closeDiv"
-                           @change="changeType">
-                    <el-option value="Best of Best"
-                               label="Best of Best ▼"></el-option>
-                    <el-option value="Best of Average"
-                               label="Best of Average ▼"></el-option>
-                    <el-option value="Best of Second"
-                               label="Best of Second ▼"></el-option>
-                  </iSelect>
-                </div>
-              </el-col>
-              <el-col :span="6"
-                      v-if="inside">
-                <!-- <div style="border: 1px dashed #ccc;width: 1px;height:320px;"></div> -->
-                <div class="left-dash1">
-                  <div v-if="chartData1.length > 0"
-                       style="flex:1">
-                    <out-bar :chartData="chartData1"
-                             @del="delOut"
-                             :maxData="maxData"
-                             @change="changeOut"></out-bar>
+                <template v-if="chartData.length > 0">
+                  <div style="width: 100%;display:flex;flex-flow:row nowrap;">
+                      <span style="width: 8%;"></span>
+                      <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{getCrownBarName(row)}}</span>
+                      <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')','cursor': 'pointer'}" v-popover:bobTypePopper>
+                        {{bobType}}<i class="el-select__caret el-input__icon el-icon- el-icon-caret-bottom"/>
+                      </span>
                   </div>
-                  <div v-else
-                       @click="findPart"
-                       class="icon-add">
-                    <div>
-                      <img src="@/assets/images/newZhu.png"
-                           alt=""
-                           style="width:220px;height:300px">
-                      <div style="text-align: center;color:#8F8F90">{{ $t("待添加") }}</div>
-                    </div>
+                  <el-popover
+                    ref="bobTypePopper"
+                    placement="bottom"
+                    width="150"
+                    trigger="click">
+                    <el-radio-group v-model="bobType">
+                      <el-radio label="Best of Best">Best of Best</el-radio>
+                      <el-radio label="Best of Average">Best of Average</el-radio>
+                      <el-radio label="Best of Second">Best of Second</el-radio>
+                    </el-radio-group>
+                  </el-popover>
+                  <div style="width: 100%;display:flex;flex-flow:row nowrap;">
+                    <span style="width: 8%;"></span>
+                    <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">
+                      {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{row.turn}}</a>/{{row.totalTurn}}{{language('LK_TURN','轮')}}
+                    </span>
+                    <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
                   </div>
-                </div>
-              </el-col>
-            </el-row>
-            <!-- <div class="legend">
-              <ul>
-                <li v-for="(item,index) in anchorList"
-                    :key="index">
-                  <i class="circle"
-                     :style="color(item)"></i>
-                  <span style="vertical-align: baseline">{{item}}</span>
-                </li>
-              </ul>
-            </div> -->
-
+                  <div style="width: 100%;display:flex;flex-flow:row nowrap;margin-top: 10px;">
+                    <span style="width: 8%;color: #3C4F74;">{{language('LK_CARPROJECT','车型项目')}}</span>
+                    <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{row.vehicleType}}</span>
+                    <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+                  </div>
+                  <div style="width: 100%;display:flex;flex-flow:row nowrap;">
+                    <span style="width: 8%;color: #3C4F74;">{{language('LK_CARPROJECTRFQ','报价时间')}}</span>
+                    <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{getCrownBarReqTime(row)}}</span>
+                    <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+                  </div>
+                </template>
+              </div>
+              <div style="flex: 1;display: flex;flex-flow: column nowrap;" v-if="inside">
+                <template v-if="chartData1.length > 0">
+                  <out-bar :chartData="chartData1"
+                            @del="delOut"
+                            :maxData="maxData"
+                            @change="changeOut"></out-bar>
+                  <div style="display:flex;flex-flow:row nowrap;">
+                    <span style="width: 14%;"></span>
+                    <span class="crown-bar-x-label" style="width: 86%">{{getCrownBarName(chartData1[0])}}</span>
+                  </div>
+                  <div style="display:flex;flex-flow:row nowrap;">
+                    <span style="width: 14%;"></span>
+                    <span class="crown-bar-x-label" style="width: 86%">
+                      {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{chartData1[0].turn}}</a>/{{chartData1[0].totalTurn}}{{language('LK_TURN','轮')}}
+                    </span>
+                  </div>
+                  <div style="display:flex;flex-flow:row nowrap;margin-top: 10px;">
+                    <span style="width: 14%;"></span>
+                    <span class="crown-bar-x-label" style="width: 86%">{{chartData1[0].vehicleType}}</span>
+                  </div>
+                  <div style="display:flex;flex-flow:row nowrap;">
+                    <span style="width: 14%;"></span>
+                    <span class="crown-bar-x-label" style="width: 86%">{{getCrownBarReqTime(chartData1[0])}}</span>
+                  </div>
+                </template>
+                <template v-else>
+                  <div style="padding: 32% 0% 3% 14%;flex: 1;display: flex;flex-flow:column nowrap;">
+                    <img src="@/assets/images/newZhu.png"
+                          alt=""
+                          style="width:220px;height: calc(440px - 28%);cursor: pointer;" @click="findPart">
+                    <div style="width:220px;text-align: center;color:#7E84A3;margin-top:3%;cursor: pointer;" @click="findPart">{{ $t("待添加") }}</div>
+                  </div>
+                </template>
+              </div>
+            </div>
           </iCard>
         </el-col>
       </el-row>
-      <!-- <el-row :gutter="20"
-              class="margin-top20"> -->
       <div class="margin-top20" style="display:flex;flex-flow:row nowrap;justify-content:flex-end;">
         <div style="width: calc(100% / 6);padding-right: 20px;">
           <bob-pin :offset-top="80">
@@ -473,6 +492,30 @@ export default {
     // window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
+    getCrownBarName(row) {
+      let name = row.supplierName
+
+      if (this.chartType === "num") {
+        name = row.spareParts;
+        this.partList.forEach(value => {
+          if (name == value.spareParts) {
+            name = value.shortNameZh
+          }
+        })
+      }
+      return name
+    },
+    getCrownBarTurn(row) {
+      // const turn = row.turn === -1 ? "最新轮" : row.turn;
+      return "第" +
+            row.turn +
+            "/" +
+            row.totalTurn +
+            "轮";
+    },
+    getCrownBarReqTime(row) {
+      return window.moment(row.cbdQuotationTime).format("yyyy.MM");
+    },
     getOptions () {
       part({
         analysisSchemeId: this.analysisSchemeId,
@@ -602,7 +645,6 @@ export default {
       this.getChartData();
     },
     add (val) {
-      console.log(val)
       if (val.constructor === Object) {
         iMessage.error('请选择数据')
         return
@@ -614,12 +656,7 @@ export default {
         iMessage.error('最多只能选择20条数据')
         return
       }
-      const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      });
+      this.onDataLoading = true;
       if (this.inside) {
         addBobOut({
           analysisSchemeId: this.analysisSchemeId,
@@ -630,7 +667,7 @@ export default {
           groupId: this.groupId
         }).then((res) => {
           if (res.code == 200) {
-            loading.close()
+            
             this.$message.success(res.desZh);
             this.searchChartData()
             this.$refs.bobAnalysis.chargeRetrieve({
@@ -641,12 +678,12 @@ export default {
             })
             this.closeDialog()
           } else {
-            loading.close()
+            
             this.$message.error(res.desZh);
             this.closeDialog()
           }
         }).catch((error) => {
-          loading.close()
+          
           this.$message.error(error.desZh);
           this.closeDialog()
         });
@@ -662,7 +699,7 @@ export default {
         })
         initOut({ list: arr, groupId: this.groupId }).then(res => {
           if (res.code === '200') {
-            loading.close()
+            
             this.$message.success(res.desZh);
             this.analysisSchemeId = res.data
             this.$store.dispatch('setSchemeId', this.analysisSchemeId);
@@ -677,7 +714,7 @@ export default {
             this.getChartData()
             this.closeDialog()
           } else {
-            loading.close()
+            
             this.$message.error(res.desZh);
             this.closeDialog()
           }
@@ -690,6 +727,7 @@ export default {
       this.searchChartData()
     },
     async searchChartData () {
+      this.onDataLoading = true;
       if (this.inside) {
         await this.getOptions();
       } else {
@@ -814,6 +852,7 @@ export default {
     },
 
     async getChartData () {
+      this.onDataLoading = true;
       if (this.inside) {
         await this.getOptions();
       } else {
@@ -915,6 +954,7 @@ export default {
       }
     },
     delOut () {
+      this.onDataLoading = true;
       removeBobOut({
         id: this.chartData1[0].id,
       }).then((res) => {
@@ -1207,5 +1247,14 @@ export default {
   height: 14px;
   vertical-align: baseline;
   margin-right: 10px;
+}
+.crown-bar-x-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #7E84A3;
+  font-family: Arial;
+  line-height: 23px;
+  text-align: center;
+  white-space: nowrap;
 }
 </style>
