@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-25 23:02:25
+ * @LastEditTime: 2021-11-26 10:43:08
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -619,6 +619,7 @@ export default {
             this.tableListData.map(o => {
               // 分组管理需要备份原始分组名称
               o.groupNameBak = o.groupName
+              o.showPartNumPreset = o.isDeclare == 1 ? o.originPartNum : o.oldPartNumPreset
               return
             })
             this.page.totalCount = data.total || 0
