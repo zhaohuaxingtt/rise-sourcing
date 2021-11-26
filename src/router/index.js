@@ -323,7 +323,7 @@ export const staticRouter = [
 ]
 
 // eslint-disable-next-line no-undef
-export default new VueRouter({
+const router = new VueRouter({
 	routes: [
 		...staticRouter,
 		...designateRoutes,
@@ -346,6 +346,16 @@ export default new VueRouter({
 		...sourceInquirypoint,
 		// bidding 相关
 		...biddingRouter,
-		...targetPriceAndScoreRoutes
+		...targetPriceAndScoreRoutes,
 	],
 })
+
+router.afterEach(() => {
+	// Remove initial loading
+	const appLoading = document.getElementById('app-loading')
+	if (appLoading) {
+		appLoading.style.display = 'none'
+	}
+})
+
+export default router

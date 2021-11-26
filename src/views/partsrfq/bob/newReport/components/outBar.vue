@@ -1,6 +1,6 @@
 
 <template>
-  <div style="height:540px;width:100%"
+  <div style="height:440px;width:100%"
        ref="chart"></div>
 </template>
 <script >
@@ -109,7 +109,7 @@ export default {
           left: "14%",
           top: '25%',
           right: '0%',
-          bottom: "22%",
+          bottom: "3%",
         },
         xAxis: [
           {
@@ -235,20 +235,21 @@ export default {
         const tempArr = []
         const dataList1 = []
         newVal.forEach((row, i) => {
-          const temp =
-            row.vehicleType +
-            "\n" +
-            window.moment(row.cbdQuotationTime).format("yyyy.MM");
+          // const temp =
+          //   row.vehicleType +
+          //   "\n" +
+          //   window.moment(row.cbdQuotationTime).format("yyyy.MM");
           // console.log(row)
-          let name = row.supplierName
-          if (this.by === 'num') {
-            name = row.spareParts
-          }
+          // let name = row.supplierName
+          // if (this.by === 'num') {
+          //   name = row.spareParts
+          // }
           // let img = '\t{bobChange|}'
           // if (!this.preview) {
           //   img = ''
           // }
-          const str = name + '\n\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n' + "{font|" + temp + "}";
+          // const str = name + '\n\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n' + "{font|" + temp + "}";
+          const str = "";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
             value: str,
