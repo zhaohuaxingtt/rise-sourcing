@@ -40,7 +40,7 @@
                       :data-value="orgTotalPrices"
                       :value="
                         biddingStatus
-                          ? ruleForm.totalPrices.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+                          ? Number(ruleForm.totalPrices).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
                           : totalPriceFlag
                           ? '0' + currencyMultiple
                           : startingPrice
@@ -159,7 +159,7 @@
           <template slot="factoryPrice" slot-scope="scope" >
             <!-- 只读 -->
             <template  v-if="biddingStatus">
-              <div>{{ scope.row['factoryPrice'] ? scope.row['factoryPrice'].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
+              <div>{{ scope.row['factoryPrice'] ? Number(scope.row['factoryPrice']).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
@@ -190,7 +190,7 @@
           <template slot="packingFee" slot-scope="scope" >
             <!-- 只读 -->
             <template  v-if="biddingStatus">
-              <div>{{ scope.row['packingFee'] ? scope.row['packingFee'].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}</div>
+              <div>{{ scope.row['packingFee'] ? Number(scope.row['packingFee']).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
@@ -220,7 +220,7 @@
           <template slot="transportFee" slot-scope="scope" >
             <!-- 只读 -->
             <template  v-if="biddingStatus">
-              <div>{{ scope.row['transportFee'] ? scope.row['transportFee'].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
+              <div>{{ scope.row['transportFee'] ? Number(scope.row['transportFee']).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
@@ -250,7 +250,7 @@
           <template slot="operationFee" slot-scope="scope" >
             <!-- 只读 -->
             <template  v-if="biddingStatus">
-              <div>{{ scope.row['operationFee'] ? scope.row['operationFee'].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}</div>
+              <div>{{ scope.row['operationFee'] ? Number(scope.row['operationFee']).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
@@ -276,11 +276,23 @@
             </template>
           </template>
 
+          <!-- B价 -->
+          <template slot="bprice" slot-scope="scope" >
+            <!-- 只读 -->
+            <template >
+              <div>{{ scope.row['bprice'] 
+                      ? Number(scope.row['bprice']).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+                      : ''
+                      }}
+              </div>
+            </template>
+          </template>
+
           <!-- 模具费 -->
           <template slot="moldFee" slot-scope="scope" >
             <!-- 只读 -->
             <template  v-if="biddingStatus">
-              <div>{{ scope.row['moldFee'] ? scope.row['moldFee'].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
+              <div>{{ scope.row['moldFee'] ? Number(scope.row['moldFee']).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
@@ -310,7 +322,7 @@
           <template slot="developFee" slot-scope="scope" >
             <!-- 只读 -->
             <template  v-if="biddingStatus">
-              <div>{{ scope.row['developFee'] ? scope.row['developFee'].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
+              <div>{{ scope.row['developFee'] ? Number(scope.row['developFee']).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
@@ -340,7 +352,7 @@
           <template slot="targetPrice" slot-scope="scope" >
             <!-- 只读 -->
             <template  v-if="biddingStatus">
-              <div>{{ scope.row['targetPrice'] ? scope.row['targetPrice'].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
+              <div>{{ scope.row['targetPrice'] ? Number(scope.row['targetPrice']).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ''}}</div>
             </template>
             <template v-else>
               <template v-if="isInputFlag">
@@ -365,6 +377,67 @@
               </template>
             </template>
           </template>
+
+           <!-- 平均年产量 -->
+          <template slot="aveAnnualOutput" slot-scope="scope" >
+            <!-- 只读 -->
+            <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ scope.row['aveAnnualOutput'] ? multiPriceValue[scope.row['id']].aveAnnualOutput : '' }}</div>
+            </template>
+            <template v-else>
+               <template v-if="isInputFlag">
+              <iInput
+                :disabled="ruleForm.biddingStatus !== '01'"
+                :value="scope.row['aveAnnualOutput']"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+                type="number"
+                @input="value => $set(scope.row, 'aveAnnualOutput', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+              >
+              </iInput>
+              </template>
+              <template v-else>
+                <iInput
+                  :disabled="ruleForm.biddingStatus !== '01'"
+                  :value="multiPriceValue[scope.row['id']].aveAnnualOutput"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                >
+                </iInput>
+              </template>
+            </template>
+          </template>
+
+          <!-- 最大年产量 -->
+          <template slot="maxAnnualOutput" slot-scope="scope" >
+            <!-- 只读 -->
+            <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ scope.row['maxAnnualOutput'] ? multiPriceValue[scope.row['id']].maxAnnualOutput  : ''}}</div>
+            </template>
+            <template v-else>
+               <template v-if="isInputFlag">
+              <iInput
+                :disabled="ruleForm.biddingStatus !== '01'"
+                :value="scope.row['maxAnnualOutput']"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+                type="number"
+                @input="value => $set(scope.row, 'maxAnnualOutput', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+              >
+              </iInput>
+              </template>
+              <template v-else>
+                <iInput
+                  :disabled="ruleForm.biddingStatus !== '01'"
+                  :value="multiPriceValue[scope.row['id']].maxAnnualOutput"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                >
+                </iInput>
+              </template>
+            </template>
+          </template>
+
           <!-- 操作 -->
           <template slot="caozuo" slot-scope="scope">
             <span>
@@ -493,8 +566,6 @@ export default {
       multiPleTableTitle,
       priceProps: [
         "lifecycle",
-        "aveAnnualOutput",
-        "maxAnnualOutput",
       ],
       // inputProps: [
       //   "factoryPrice",
@@ -506,8 +577,6 @@ export default {
       // ],
       inputProps: [
         "lifecycle",
-        "aveAnnualOutput",
-        "maxAnnualOutput",
       ],
       quantityUnit: [],
       selectedTableData: [],
@@ -612,6 +681,8 @@ export default {
               moldFee:Number(item?.moldFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
               developFee:Number(item?.developFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
               targetPrice:Number(item?.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+              aveAnnualOutput:Number(item.aveAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+              maxAnnualOutput:Number(item.maxAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
             }
             return obj;
           },{})
@@ -661,6 +732,7 @@ export default {
       this.quantityUnit = res.data;
     });
     this.handleSearchReset();
+    clearTimeout(this.projectTime)
     this.projectLoading = false
   },
   beforeDestroy(){
@@ -716,7 +788,7 @@ export default {
       return digitUppercase(Number(this.totalPrices));
     },
     startingPrice() {
-      return Number(this.totalPrices).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
+      return Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
     supplierProducts() {
       return this.ruleForm.supplierProducts;
@@ -753,12 +825,13 @@ export default {
             return sum;
           }
         item.upsetPrice = Big(this.calculationDetails(item, index)).add(Number(item.moldFee)).add(Number(item.developFee)).toFixed(2);
-        return Big(this.calculationDetails(item, index)).add(sum).add(Number(item.moldFee)).add(Number(item.developFee)).toNumber();
+        return Big(this.calculationDetails(item, index)).add(sum).add(Number(item?.moldFee)).add(Number(item?.developFee)).toNumber();
       }, 0);
       this.orgTotalPrices=Big(sum).toFixed(2);
       // 延迟下，展示出loading出来
         this.projectTime = setTimeout(() => {
-        this.projectLoading = false
+          this.projectLoading = false
+          clearTimeout(this.projectTime)
         }, 500);
     },
     toggle() {
@@ -974,7 +1047,7 @@ export default {
         if (!isNaN(Number(tmp))) {
           e.factoryPrice = Big(e.factoryPrice || 0)
             .times(Number(tmp) === 0 ? 1 : tmp / 100)
-            .toNumber();
+            .toNumber().toFixed(2);
         }
       });
       this.factoryPricePercent = "";
