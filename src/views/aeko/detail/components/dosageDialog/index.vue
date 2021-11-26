@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-11-25 23:02:30
+ * @LastEditTime: 2021-11-26 10:05:07
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -252,7 +252,7 @@ export default {
       const {query} = this.$route;
       const {from=''} = query;
       const {auditType=''} = query; // 我的申请详情页内嵌页面
-      return this.aekoInfo.aekoStatus == "CANCELED"  || from == 'check' || auditType;
+      return this.aekoInfo.aekoStatus == "CANCELED"  || from == 'check' || !!auditType;
     },
   },
   data() {
