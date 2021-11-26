@@ -765,7 +765,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || this.language('BIDDING_YUAN',"元");
     },
     totalPrices() {
-      return this.orgTotalPrices;
+      return this.ruleForm.biddingStatus === '01' ? this.orgTotalPrices : this.ruleForm.totalPrices;
     },
     numberUppercase() {
       return digitUppercase(Number(this.orgTotalPrices));
@@ -1536,8 +1536,13 @@ export default {
           obj[item.productId].procureYearMonth[`stage${item.stage}`] =
             item.procureYearMonth;
           obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
-          obj[item.productId].procureNum[`stage${item.stage}`] =
+          if (this.ruleForm.biddingStatus === '01') {
+            obj[item.productId].procureNum[`stage${item.stage}`] =
             item.procureNum;
+          }else {
+            obj[item.productId].procureNum[`stage${item.stage}`] =
+            item.procureNum ? Number(item.procureNum).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : null
+          }
           obj[item.productId].procureNum[`id${item.stage}`] = item.id;
           return obj;
         }, {});
