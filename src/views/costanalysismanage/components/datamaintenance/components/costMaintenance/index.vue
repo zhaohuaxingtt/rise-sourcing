@@ -1,20 +1,20 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-09-02 11:25:44
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-11-25 16:42:32
+ * @LastEditors: Luoshuang
  * @Description: 人工成本维护
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\costMaintenance\index.vue
 -->
 <template>
   <div class="datamaintenance">
-    <div class="control">
+    <!-- <div class="control">
       <logButton class="margin-left20" />
       <span class="margin-left20">
         <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
       </span>
-    </div>
-    <iCard class="card margin-top65" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
+    </div> -->
+    <iCard class="card margin-top40" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
       <template v-slot:header-control>
         <el-upload 
           class="uploadButton"
@@ -84,11 +84,11 @@ import dateSelect from "./dateSelect"
 
 export default {
   components: { 
-    icon,
+    // icon,
     iCard,
     iButton,
     iPagination,
-    logButton,
+    // logButton,
     tableList,
    //  uploadButton,
     dateSelect

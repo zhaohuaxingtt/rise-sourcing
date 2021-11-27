@@ -27,7 +27,7 @@
                       class="form--item--number--input__totalprice"
                       :value="
                         ruleForm.totalPrices
-                          ? ruleForm.totalPrices + currencyMultiple
+                          ? ruleForm.totalPrices.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + currencyMultiple
                           : ''
                       "
                       disabled
@@ -107,7 +107,7 @@
           <!-- 起拍价格 -->
           <template slot="upsetPrice" slot-scope="scope">
             <div>
-              {{ ruleForm.biddingMode === "01" ? scope.row["upsetPrice"] : "" }}
+              {{ ruleForm.biddingMode === "01" ?  scope.row["upsetPrice"] ? scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : "" : '' }}
             </div>
           </template>
           <!-- 目标价 -->
@@ -116,7 +116,7 @@
               {{
                 ruleForm.biddingMode === "01"
                   ? scope.row["targetPrice"]
-                    ? scope.row["targetPrice"]
+                    ? scope.row["targetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
                     : "" + currencyMultiple
                   : ""
               }}

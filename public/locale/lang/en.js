@@ -647,7 +647,7 @@
         'LK_XINJIANXINXILIUSHUIDANHAO': 'New Tp Sequence No.',//新件信息流水单号
         'LK_XINJIANRFQLUNCI': 'Create New RFQ Round',//新建RFQ轮次
         'LK_XINJIANXINXIDANBEIZHU': 'Create new part info. remark',//新建信息单备注
-        'LK_XINJIANXINXIDANLIUSHUIHAO': 'Part info. Sheet No.',//新建信息单流水号
+        'XINJIANXINXIDANLIUSHUIHAO': 'Part info. Sheet No.',//新建信息单流水号
         'LK_XINSHENQINGCAIWUMUBIAOJIA': 'Apply New CF Target Price',//新申请财务目标价
         'LK_XINXIDANFENLEI': 'Sheet type',//信息单分类
         'LK_XINXIDANLEIXING': 'Sheet type',//信息单类型
@@ -1009,6 +1009,10 @@
         'LK_GONGYINGSCAIWUZHUNGKUANG': '供应商财务状况',
         'LK_SVWCAIGOUJINEZHANBI': 'SVW采购金额占比',
         'LK_GONGYINGSHANGZHUYAOKEHU': '供应商主要客户',
+        'LK_CARPROJECT': 'Car Project',
+        'LK_CARPROJECTRFQ': '报价时间',
+        'LK_NUMBERPREFIX': 'No. ',
+        'LK_TURN': ' Turn',
 
         // 定点管理
         'nominationLanguage': {

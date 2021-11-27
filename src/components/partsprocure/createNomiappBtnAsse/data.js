@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-09-03 16:27:49
- * @LastEditTime: 2021-09-14 12:02:56
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-24 15:53:47
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\components\partsprocure\createNomiappBtnAsse\data.js
+ * @FilePath: \front-sourcing\src\components\partsprocure\createNomiappBtnAsse\data.js
  */
 export const tableTitle = [
   {props:'supplierName',name:'',key: '',tooltip:false,width:''},
@@ -16,4 +16,14 @@ export const tableTitle = [
   {props:'aprice',name:'A价',key: 'LK_AJIA',tooltip:false,width:''},
   {props:'bprice',name:'B价',key: 'LK_BJIA',tooltip:false,width:''},
   {props:'rate',name:'份额',key: 'LK_FENE',tooltip:false,width:''}
+]
+
+export const sampleTableTitle = (isDb)=> [
+	{ props: "sampleType", name: "样件", tooltip: true, key: "LK_YANGJIAN",isAeko:true },
+	{ props: "requiredTime", name: "需要日期(周)", tooltip: true, key: "LK_XUYAORIQIZHOU" },
+	{ props: "quantity", name: "需要数量(件)", tooltip: true, key: "LK_XUYAOSHULIANGJIAN" },
+	{ props: "sampleUnitPrice", name: `${isDb?'工装样件单件费用(RMB)':"工装样件单件费用"}`, key: `${isDb?'LK_GONGZHUANGYANGJIANDANJIANFEIYONGRMB':'LK_GONGZHUANGYANGJIANDANJIANFEIYONG'}` ,isAeko:true},
+	{ props: "addionalMouldCost", name: `${isDb?'附加工装样件模具价格(RMB)':'附加工装样件模具价格'}`, key: `${isDb?'LK_FUJIAGONGZHUANGYANGJIANMUJUJIAGERMB':'LK_FUJIAGONGZHUANGYANGJIANMUJUJIAGE'}` ,isAeko:true},
+	{ props: "addionalMouldLife", name: "附加工装样件模具寿命(个数)", key: "LK_FUJIAGONGZHUANGYANGJIANMUJUSHOUMINGGESHU" ,isAeko:true},
+	{ props: "remark", name: "备注", tooltip: true, key: "LK_BEIZHU" ,isAeko:true},
 ]

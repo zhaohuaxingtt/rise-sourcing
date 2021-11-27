@@ -1,10 +1,10 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-11-17 15:56:26
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-24 19:50:47
+ * @LastEditors: Luoshuang
  * @Description: RFQ模块首页
- * @FilePath: \rise\src\views\partsrfq\home\index.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\home\index.vue
 -->
 <template>
   <iPage class="partsrfqHome">
@@ -118,6 +118,14 @@
                 <iButton @click="assignmentOfScoringTasks" v-permission.auto="PARTSRFQ_ASSIGNMENTTASKS|转派任务评分">
                   {{ language('LK_ZHUANPAIPINGFENRENWUS','转派任务评分') }}
                 </iButton>
+                <!--转派前期采购员：选中RFQ之后，可以手动转派前期采购员-->
+                <iButton @click="openInquiryBuyerDialog('1')" v-permission.auto="PARTSRFQ_ASSIGNMENTTASKS|转派任务评分">
+                  {{ language('ZHUANPAIQIANQICAIGOUYUAN','转派前期采购员') }}
+                </iButton>
+                <!--转派LINIE：选中RFQ之后，可以手动转派转派LINIE-->
+                <iButton @click="openInquiryBuyerDialog('2')" v-permission.auto="PARTSRFQ_ASSIGNMENTTASKS|转派任务评分">
+                  {{ language('ZHUANPAILINIE','转派LINIE') }}
+                </iButton>
                 <!--转谈判：只会出现在前期采购员界面-->
                 <iButton @click="editRfq('03')" :loading="transferNegotiationButtonLoading"
                          v-permission.auto="PARTSRFQ_TRANSFERNEGOTIATION|转谈判">{{ language('LK_ZHUANTANPANS','转谈判') }}
@@ -198,6 +206,10 @@
                 :selectDatalist='selectDatalist'
             /> -->
             <scoringDeptDialog ref="scoringDeptDialog" :visible.sync="scoringDeptVisible" :ids="rfqIds" customAction @handleSave="scoringDeptSave" />
+             <!------------------------------------------------------------------------>
+            <!--                  转派询价采购员/LINIE弹窗                           --->
+            <!------------------------------------------------------------------------>
+            <assignInquiryBuyerDialog ref="assignInquiryBuyerDialog" :dialogVisible="inquiryBuyerVisible" :type="inquiryBuyerDialogType" @changeVisible="changeInquiryBuyerDialogVisible" @handleConfirm="handleTransferConfirm" />
           </iCard>
           <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
         </div>
@@ -218,7 +230,7 @@ import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import filters from "@/utils/filters";
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
-import {getAllScoringDepartmentInfo} from '@/api/partsrfq/home'
+import {getAllScoringDepartmentInfo, transferRfq} from '@/api/partsrfq/home'
 import { getProcureGroup } from "@/api/partsprocure/home";
 import scoringDeptDialog from "@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/scoringDeptDialog"
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
@@ -228,6 +240,7 @@ import nominateTypeDialog from "./components/nominateTypeDialog"
 import { clickMessage} from "@/views/partsign/home/components/data"
 import { selectDictByKeys } from "@/api/dictionary"
 import {setPretreatmentParams} from '@/utils/tool'
+import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -245,7 +258,8 @@ export default {
     iSelect,
     icon,
     scoringDeptDialog,
-    nominateTypeDialog
+    nominateTypeDialog,
+    assignInquiryBuyerDialog
   },
   mixins: [pageMixins, filters, rfqCommonFunMixins],
   data() {
@@ -289,7 +303,9 @@ export default {
       nominateTypeDialogVisible: false,
       rfqRateStatusOptions: [],
       cfApplyStatusOptions: [],
-      heavyItemOptions: []
+      heavyItemOptions: [],
+      inquiryBuyerVisible: false,
+      inquiryBuyerDialogType: '1'
     };
   },
   created() {
@@ -306,6 +322,36 @@ export default {
     ...mapActions(["updateNavList"])
   },
   methods: {
+    handleTransferConfirm(userId, userName) {
+      const params = {
+        rfqIds: this.rfqIds,
+        updateUserType: this.inquiryBuyerDialogType === '1' ? '0' : '1',
+        userId
+      }
+      transferRfq(params).then(res => {
+        if (res?.result) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.changeInquiryBuyerDialogVisible(false)
+          this.getTableList()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      }).finally(() => {
+        this.$refs.assignInquiryBuyerDialog.changeLoading(false)
+      })
+    },
+    openInquiryBuyerDialog(type) {
+      if (this.selectTableData.length > 0) {
+        this.rfqIds = this.selectTableData.map(item => item.id)
+      } else {
+        return iMessage.warn(this.language('BAOQIANNINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDERENWU','抱歉，您当前还未选择您需要转派的任务！'));
+      }
+      this.inquiryBuyerDialogType = type
+      this.changeInquiryBuyerDialogVisible(true)
+    },
+    changeInquiryBuyerDialogVisible(visible) {
+      this.inquiryBuyerVisible = visible
+    },
     getDict() {
       selectDictByKeys([
         { keys: "RfqRateStatus" },

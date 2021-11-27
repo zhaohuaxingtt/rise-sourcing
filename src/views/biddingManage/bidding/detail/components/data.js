@@ -64,11 +64,11 @@ export const multiPleTableTitle = [
     props: "maxAnnualOutput",
     name: language('BIDDING_ZUIDANIANCHANLIANG',"最大年产量"),
   },
-  {
-    props: "caozuo",
-    fixed: 'right',
-    name: language('BIDDING_CAOZUO',"操作"),
-  },
+  // {
+  //   props: "caozuo",
+  //   fixed: 'right',
+  //   name: language('BIDDING_CAOZUO',"操作"),
+  // },
 
 ];
 export const yearsPlanTableColumn = [

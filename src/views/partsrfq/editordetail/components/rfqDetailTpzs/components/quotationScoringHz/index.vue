@@ -12,7 +12,7 @@
       <!--------------输入框模块-------------->
       <div class='search'>
         <div class="needAddWhi" v-if='!disabel'>
-          <span>Hide/unHide：</span>
+          <span>Fillter：</span>
           <iSelect v-model="backChoose" multiple :collapse-tags='true' @remove-tag='removeTags' @visible-change='visibleChange'>
             <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label" :value="items.props"></el-option>
           </iSelect> 
@@ -86,7 +86,7 @@ export default{
     supplierData:[],
     supplierTile:[],
     //轮次选择
-    round:'',
+    round:'-1',
     rundList:[],
     backChooseLists:[],
     backChoose:[],
@@ -154,11 +154,7 @@ export default{
     this.layout = this.getLayoutDetaultNumber()
     this.searchABPageExchangeRate()
   },
-  destroyed(){
-    console.log('---------------')
-  },
   mounted(){
-    this.round = this.getbaseInfoData().currentRounds || 1
     this.init()
   },
   provide(){

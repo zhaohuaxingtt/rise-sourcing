@@ -13,9 +13,6 @@
 // 定点管理
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
-import costanalysismanageRoutes from './modules/costanalysismanage'
-import supplierscoreRoutes from './modules/supplierscore'
-import financialtargetpriceRoutes from './modules/financialtargetprice'
 import negotiationAssistant from './modules/negotiationAssistant'
 import aekoRoutes from './modules/aeko'
 import projectRoutes from './modules/project'
@@ -25,8 +22,8 @@ import mek from './modules/mek'
 import ws2 from './modules/ws2'
 import reportmanage from './modules/reportmanage'
 import sourceInquirypoint from './modules/sourceInquirypoint'
-import modeltargetpriceRoutes from './modules/modeltargetprice'
 import biddingRouter from './modules/biddingManage'
+import targetPriceAndScoreRoutes from './modules/targetPriceAndScore'
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
 
@@ -237,12 +234,12 @@ export const staticRouter = [
 				name: '/ws3Register',
 				component: () => import('@/views/AutomaticallyAssignDe'),
 			},
-			{
-				path: '/configscoredept',
-				name: 'configscoredept',
-				meta: { title: '配置评分部门' },
-				component: () => import('@/views/configscoredept'),
-			},
+			// {
+			// 	path: '/configscoredept',
+			// 	name: 'configscoredept',
+			// 	meta: { title: '配置评分部门' },
+			// 	component: () => import('@/views/configscoredept'),
+			// },
 			{
 				path: '/tooling/budgetManagement/addModelBag',
 				name: 'addModelBag',
@@ -326,15 +323,11 @@ export const staticRouter = [
 ]
 
 // eslint-disable-next-line no-undef
-export default new VueRouter({
+const router = new VueRouter({
 	routes: [
 		...staticRouter,
 		...designateRoutes,
 		...createpartsRoutes,
-		...costanalysismanageRoutes,
-		...supplierscoreRoutes,
-		...financialtargetpriceRoutes,
-		...financialtargetpriceRoutes,
 		//谈判助手
 		...negotiationAssistant,
 		...aekoRoutes,
@@ -351,9 +344,18 @@ export default new VueRouter({
 		...reportmanage,
 		// 询源于定点
 		...sourceInquirypoint,
-		// 模具目标价
-		...modeltargetpriceRoutes,
 		// bidding 相关
 		...biddingRouter,
+		...targetPriceAndScoreRoutes,
 	],
 })
+
+router.afterEach(() => {
+	// Remove initial loading
+	const appLoading = document.getElementById('app-loading')
+	if (appLoading) {
+		appLoading.style.display = 'none'
+	}
+})
+
+export default router

@@ -5,7 +5,7 @@
     ref="ruleForm"
     :validate-on-rule-change="false"
     :hideRequiredAsterisk="true"
-    :disabled="ruleForm.biddingStatus !== '01'"
+    disabled
   >
     <div class="form-group">
       <iLabelML showTip>
@@ -46,11 +46,25 @@
           prop="biddingQuoteRule.limitValue"
           :hideRequiredAsterisk="true"
         >
-          <iInput
-            class="input-wrap"
-            v-model="ruleForm.biddingQuoteRule.limitValue"
-            maxlength="15"
-          ></iInput>
+          <template v-if="isInputFlag">
+            <iInput
+              class="input-wrap"
+              @focus="handlerInputFocus"
+              @blur="handlerInputBlur"
+              :value="ruleForm.biddingQuoteRule.limitValue"
+              @input="value => $set(ruleForm.biddingQuoteRule, 'limitValue', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+              maxlength="15"
+            ></iInput>
+          </template>
+          <template v-else>
+            <iInput
+              class="input-wrap"
+              @focus="handlerInputFocus"
+              @blur="handlerInputBlur"
+              :value="limitValueValue"
+              maxlength="15"
+            ></iInput>
+          </template>
         </iFormItem>
       </div>
     </div>
@@ -88,11 +102,25 @@
                 prop="biddingQuoteRule.quotedValue"
                 :hideRequiredAsterisk="true"
                 class="inline-block"
-                ><iInput
+                >
+                <template v-if="isInputFlag">
+                  <iInput
                   class="input-number70"
-                  v-model="ruleForm.biddingQuoteRule.quotedValue"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                  :value="ruleForm.biddingQuoteRule.quotedValue"
+                  @input="value => $set(ruleForm.biddingQuoteRule, 'quotedValue', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+                  ></iInput>
+                </template>
+                <template v-else>
+                  <iInput
+                  class="input-number70"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                  :value="quotedValueValue"
                   oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-                ></iInput>
+                  ></iInput>
+                </template>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
               {{language('BIDDING_xQICHUBAOJIA','x起初报价）')}}</el-radio
@@ -159,7 +187,7 @@
             class="inline-block"
             ><iInput
               class="input-number100"
-              :value="ruleForm.biddingQuoteRule.actualValue"
+              :value="actualValueData"
               disabled
             ></iInput></iFormItem
           >{{language('BIDDING_RENMINGBI', '人民币')}}
@@ -167,7 +195,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" v-if="ruleForm.biddingQuoteRule.firstOfferLimit">
       <iLabelML>
         <template v-solt="label">
           <iLabel :label="language('BIDDING_DYCBJXZ', '第一次报价限制')" slot="label" class="label"></iLabel>
@@ -189,7 +217,7 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" v-if="ruleForm.biddingQuoteRule.conRankLimit">
       <iLabelML>
         <!-- <div class="hover-text">
           <span>供应商对红绿灯名次区间/偏离比例 的</span>
@@ -511,6 +539,7 @@ export default {
                 .div(100)
                 .toFixed(2)
         );
+        this.actualValueData = this.ruleForm?.biddingQuoteRule.actualValue.replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
       },
     },
     "ruleForm.biddingQuoteRule.quotationScope"(val) {
@@ -593,9 +622,26 @@ export default {
 
       priceDiffLimitSelectList,
       priceDiffObjectSelectList,
+      actualValueData:'',
+      isInputFlag:false
     };
   },
   computed: {
+    limitValueValue(){
+      return this.ruleForm.biddingQuoteRule.limitValue 
+            ? Number(this.ruleForm.biddingQuoteRule.limitValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+            : ''
+    },
+    quotedValueValue(){
+      return this.ruleForm.biddingQuoteRule.quotedValue 
+            ? Number(this.ruleForm.biddingQuoteRule.quotedValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+            : ''
+    },
+    priceLimitValue(){
+      return this.ruleForm.biddingQuoteRule.priceLimit 
+            ? Number(this.ruleForm.biddingQuoteRule.priceLimit)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+            : ''
+    },
     rankDisplayRuleSelectList() {
       if (this.ruleForm.resultOpenForm === "01") {
         return rankDisplayRuleSelectList.slice(0, 1);
@@ -618,6 +664,12 @@ export default {
     },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     handleChangeLightArea() {
       this.$refs["ruleForm"].validateField(
         [

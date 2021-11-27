@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 13:46:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-23 15:28:28
+ * @LastEditTime: 2021-11-25 12:13:51
  * @Description: 
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\data.js
  */
@@ -22,7 +22,7 @@ export const applyTableTitle = [
   {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
   {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMINGZHONG", tooltip: true},
   {props:'partNameDe',name:'零件名(德)', key: "LINGJIANMINGDE", tooltip: true},
-  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
+  {props:'carTypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
   {props:'originalTargetPrice',name:'原目标价', key: "YUANMUBIAOJIA", tooltip: true},
   {props:'businessTypeDesc',name:'类型', key: "LEIXING", tooltip: true},
   {props:'expectedTargetPrice',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true},

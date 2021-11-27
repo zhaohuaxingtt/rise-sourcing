@@ -69,7 +69,7 @@
                   <el-tooltip :content='"KPE:"+dataItem.kpe' effect='light'>
                     <span class="overText" style="width:auto;">KPE:{{dataItem.kpe}}</span>
                   </el-tooltip>
-                  <icon symbol name="iconbianji"  class="margin-left10 cursor"></icon>
+                  <icon v-if="showOperation" symbol name="iconbianji"  class="margin-left10 cursor"></icon>
                 </div>
               </li>
             </ol>

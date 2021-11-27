@@ -209,24 +209,8 @@ export default {
       factoryPricePercent: "",
       multiPleTableTitle,
       priceProps: [
-        "factoryPrice",
-        "packingFee",
-        "packingFee2",
-        "transportFee",
-        "operationFee",
-        "moldFee",
-        "developFee",
-        "targetPrice",
       ],
       inputProps: [
-        "factoryPrice",
-        "packingFee",
-        "packingFee2",
-        "transportFee",
-        "operationFee",
-        "moldFee",
-        "developFee",
-        "targetPrice",
         "lifecycle",
         "aveAnnualOutput",
         "maxAnnualOutput",
@@ -248,6 +232,7 @@ export default {
         "stage14",
         "stage15",
       ],
+      multiPriceValue:{},
       quantityUnit: [],
       selectedTableData: [],
       modelsOption: [],
@@ -333,7 +318,7 @@ export default {
       return digitUppercase(Big(this.orgTotalPrices).toFixed(2));
     },
     startingPrice() {
-      return this.totalPrices + this.currencyMultiple;
+      return Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
     biddingProducts() {
       return this.ruleForm.biddingProducts;
@@ -377,6 +362,19 @@ export default {
     //监听产品  计算B价 ==出厂价+包装费+运输费+操作费
     biddingProducts: {
       handler(val, oldVal) {
+        this.multiPriceValue= this.ruleForm.biddingProducts.reduce((obj, item, index) => {
+        return  obj={...obj,[item.id]:
+                        {
+                          factoryPrice:Number(item.factoryPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          packingFee:Number(item.packingFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          transportFee:Number(item.transportFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          operationFee:Number(item.operationFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          moldFee:Number(item.moldFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          developFee:Number(item.developFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          targetPrice:Number(item.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        }
+                      }
+        },{})
         if (val.length > 0)
           val.forEach((item) => {
             item.bPrice =
