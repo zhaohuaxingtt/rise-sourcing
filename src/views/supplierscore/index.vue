@@ -428,7 +428,7 @@ export default {
     // 跳转RFQ详情
     jumpRfqDetail(row) {
       const route = this.$router.resolve({
-        path: "/supplierscore/rfqdetail",
+        path: "/targetpriceandscore/supplierscore/rfqdetail",
         query: {
           rfqId: row.rfqId,
           currentTab: "supplierScore"

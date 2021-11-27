@@ -353,7 +353,7 @@ export default {
     // 查看零件评分
     viewPartScore(row) {
       const route = this.$router.resolve({
-        path: "/supplierscore/partscore",
+        path: "/targetpriceandscore/supplierscore/partscore",
         query: {
           rfqId: row.rfqId,
           supplierId: row.supplierId

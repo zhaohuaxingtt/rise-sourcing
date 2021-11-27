@@ -27,7 +27,7 @@ export const TAB = [
     value: 1,
     name: '财务目标价管理',
     key: 'CAIWUMUBIAOJIAGUANLI',
-    url: '/financialtargetprice',
+    url: '/targetpriceandscore/financialtargetprice',
     activePath: 'financialtargetprice',
     message: 0
   },
@@ -35,7 +35,7 @@ export const TAB = [
     value: 2,
     name: '模具目标价管理',
     key: 'MUJUMUBIAOJIAGUANLI',
-    url: '/modeltargetprice',
+    url: '/targetpriceandscore/modeltargetprice',
     activePath: 'modeltargetprice',
     message: 0
   }
@@ -46,7 +46,7 @@ export const MENU = [
     value: 1,
     name: '目标价签收',
     message: 0,
-    url: '/modeltargetprice/signin',
+    url: '/targetpriceandscore/modeltargetprice/signin',
     activePath: 'signin',
     key: 'MUBIAOJIAQIANSHOU'
   },
@@ -54,7 +54,7 @@ export const MENU = [
     value: 2,
     name: '目标价维护',
     message: 0,
-    url: '/modeltargetprice/maintenance',
+    url: '/targetpriceandscore/modeltargetprice/maintenance',
     activePath: 'maintenance',
     key: 'MUBIAOJIAWEIHU'
   },
@@ -62,7 +62,7 @@ export const MENU = [
     value: 3,
     name: '目标价审批',
     message: 0,
-    url: '/modeltargetprice/approval',
+    url: '/targetpriceandscore/modeltargetprice/approval',
     activePath: 'approval',
     key: 'MUBIAOJIASHENPI'
   },
@@ -70,7 +70,7 @@ export const MENU = [
     value: 4,
     name: '目标价查询',
     message: 0,
-    url: '/modeltargetprice/query',
+    url: '/targetpriceandscore/modeltargetprice/query',
     activePath: 'query',
     key: 'MUBIAOJIACHAXUN'
   },
