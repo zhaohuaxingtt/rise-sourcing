@@ -17,7 +17,7 @@
 <script>
 import meeting from './components/meeting'
 import circulation from './components/circulation'
-import { getList } from '@/api/designate/decisiondata/rs'
+import { getList, nominateAppSDetail } from '@/api/designate/decisiondata/rs'
 
 export default {
   components: { meeting, circulation },
