@@ -1,7 +1,46 @@
-
+<style scoped>
+.crown-bar-x-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #7E84A3;
+  font-family: Arial;
+  line-height: 23px;
+  text-align: center;
+  white-space: nowrap;
+}
+</style>
 <template>
-  <div style="height:440px;width:100%"
-       ref="chart"></div>
+  <div style="width: 100%;">
+    <div style="height:440px;width: 100%;" ref="chart" v-show="chartData.length > 0"></div>
+    <template v-if="chartData.length > 0">
+      <div style="display:flex;flex-flow:row nowrap;">
+        <span style="width: 14%;"></span>
+        <span class="crown-bar-x-label" style="width: 86%">{{getCrownBarName(chartData[0])}}</span>
+      </div>
+      <div style="display:flex;flex-flow:row nowrap;">
+        <span style="width: 14%;"></span>
+        <span class="crown-bar-x-label" style="width: 86%">
+          {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{chartData[0].turn}}</a>/{{chartData[0].totalTurn}}{{language('LK_TURN','轮')}}
+        </span>
+      </div>
+      <div style="display:flex;flex-flow:row nowrap;margin-top: 10px;">
+        <span style="width: 14%;"></span>
+        <span class="crown-bar-x-label" style="width: 86%">{{chartData[0].vehicleType}}</span>
+      </div>
+      <div style="display:flex;flex-flow:row nowrap;">
+        <span style="width: 14%;"></span>
+        <span class="crown-bar-x-label" style="width: 86%">{{getCrownBarReqTime(chartData[0])}}</span>
+      </div>
+    </template>
+    <template v-else>
+      <div style="padding: 32% 0% 3% 14%;display: flex;flex-flow:column nowrap;height: 100%;">
+        <img src="@/assets/images/newZhu.png"
+              alt=""
+              style="width:220px;height: calc(440px - 28%);cursor: pointer;" @click="findPart">
+        <div style="width:220px;text-align: center;color:#7E84A3;margin-top:3%;cursor: pointer;" @click="findPart">{{ $t("待添加") }}</div>
+      </div>
+    </template>
+  </div>
 </template>
 <script >
 import echarts from '@/utils/echarts'
@@ -53,6 +92,25 @@ export default {
     }
   },
   methods: {
+    getCrownBarName(row) {
+      let name = row.supplierName
+
+      if (this.chartType === "num") {
+        name = row.spareParts;
+        this.partList.forEach(value => {
+          if (name == value.spareParts) {
+            name = value.shortNameZh
+          }
+        })
+      }
+      return name
+    },
+    getCrownBarReqTime(row) {
+      return window.moment(row.cbdQuotationTime).format("yyyy.MM");
+    },
+    findPart() {
+      this.$emit('find-part')
+    },
     bos (arr) {
       const min = this.min(arr)
       let send = this.max(arr)
@@ -214,6 +272,9 @@ export default {
         series: this.dataArray
       };
       myChart.setOption(option);
+      this.$nextTick(() => {
+        myChart.resize()
+      })
       const that = this
       myChart.on('click', function (params) {
 
@@ -363,43 +424,19 @@ export default {
           data: [dataList1['利润'][0]]
         })
 
-
+        console.log(this.chartArray)
         if (this.$refs.chart && this.chartArray.length > 0) {
           this.initCharts();
         }
       }
     }
   },
-  mounted () {
-    this.initCharts();
-  },
   watch: {
-    title: {
-      handler (str) {
-
-        if (this.$refs.chart && this.chartArray.length > 0) {
-          this.initCharts();
-        }
-      },
-      immediate: true
-    },
-    by: {
-      handler (str) {
-        this.initData(this.chartData)
-      }
-    },
-    type: {
-      handler (str) {
-        this.initData(this.chartData)
-      }
-    },
     chartData: {
       handler (newVal) {
         if (newVal && newVal.length > 0) {
           this.initData(newVal)
         }
-
-
       },
       deep: true,
       immediate: true
