@@ -38,9 +38,15 @@ export default {
   },
   created() {
     let data = this.otherPreview ? this.otherNominationId : this.$route.query.desinateId
-    getList(data).then(res => {
-      this.nominateProcessType = res.data?.lines[0].nominateProcessType
-    })
+
+    if (!this.$store.getters.nominationType && !this.$route.query.designateType) {
+      nominateAppSDetail({
+        nominateAppId: data
+      })
+      .then(res => {
+        this.nominateProcessType = res.data.nominateProcessType
+      })
+    }
   },
   computed: {
     // eslint-disable-next-line no-undef
