@@ -146,7 +146,6 @@ export default {
   
           if (infoRes.data) {
             infoRes.data.tpRecordList.forEach(val=>{
-              this.$set(val,'otherInfo',val.otherConf)
             })
             this.tableListData = infoRes.data.tpRecordList;
             this.page.totalCount = infoRes.data.totalCount || 0;
@@ -169,7 +168,6 @@ export default {
               this.$set(val,'partNum',this.params.partNum)
               this.$set(val,'partNameCn',this.params.partNameZh)
               this.$set(val,'partNameDe',this.params.partNameDe)
-              this.$set(val,'otherInfo',val.otherConf)
             })
             this.tableListData = res.data.tpRecordList;
             this.page.totalCount = res.data.totalCount || 0;

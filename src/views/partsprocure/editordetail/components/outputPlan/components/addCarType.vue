@@ -2,7 +2,7 @@
  * @Description: CF车型配置
  * @Author: tyra liu
  * @Date: 2021-11-16 16:54:18
- * @LastEditTime: 2021-11-26 17:26:00
+ * @LastEditTime: 2021-11-28 22:56:59
  * @LastEditors:  
 -->
 <template>
@@ -10,7 +10,6 @@
     :visible.sync="dialogVisible"
     @close="changeVisible"
     width="80%"
-    class="dialog" 
   >
     <div class="top">
       <div class="top-left" v-if="isGs == true">
@@ -34,7 +33,7 @@
         <iButton @click="addTableCar">{{language('YINGYONG','应用')}}</iButton>
       </div>
     </div>
-    <div >
+    <div class="bottom-table">
       <tableList
        v-if="isGs == true"
         lang
@@ -46,10 +45,9 @@
       </tableList>
       <iPagination
         v-if="isGs == true"
-        class="bottom-table"
         v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        @current-change="handleCurrentChange($event, getTableList)"
+        @size-change="handleSizeChange($event, getTableListFn)"
+        @current-change="handleCurrentChange($event, getTableListFn)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -59,7 +57,6 @@
       />
       <tableList
         v-if="isGs == false"
-        
         lang
         :tableTitle="fscarTableTitle"
         :tableData="fscarTableData"
@@ -68,7 +65,6 @@
       >
       </tableList>
       <iPagination
-        class="bottom-table"
         v-if="isGs == false"
         v-update
         @size-change="handleSizeChange($event, fscarTableTitle)"
@@ -80,15 +76,16 @@
         :layout="page.layout"
         :total="page.totalCount"
       />
-      <div class="placeholder"></div>
     </div>
+    <div class="placeholder"></div>
   </iDialog>
 </template>
 <script>
 import {iDialog, iButton, iSelect, iMessage, iPagination} from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import {carTitle,fscarTitle} from "../data"
-import {searchCarTypeConfig,searchCarType,searchCarTypeProConfig} from "@/api/partsprocure/home"
+import {searchCarTypeConfig,searchCarType,} from "@/api/partsprocure/home"
+import {cartypeProConfigByCondition} from "@/api/partsprocure/editordetail"
 import { pageMixins } from "@/utils/pageMixins";
 export default {
   components: { iDialog, iButton, tableList, iSelect, iPagination},
@@ -131,6 +128,7 @@ export default {
     //通过零件采购项目查询车型
     getPartType() {
       if(this.params.partProjectType == '1000003' || this.params.partProjectType == '50002001') {
+
       this.isGs = true
     } else {
       this.isGs = false
@@ -144,15 +142,14 @@ export default {
       } else {
         this.tableLoading = true
         let data ={
-          "cartypeProId":this.params.carTypeProjectId,
-          "current": this.page.currPage,
-          "size": this.page.pageSize
+          codes:[
+            this.params.carTypeProjectNum,
+          ]
         }
-        searchCarTypeProConfig(data).then(res => {
+        cartypeProConfigByCondition(data).then(res => {
           if(res.code == '200') {
             this.tableLoading = false
             this.fscarTableData = res.data || []
-            this.page.totalCount = res.total || 0
           } else {
             iMessage.error(res.desZh)
         }
@@ -162,18 +159,12 @@ export default {
     changeTable(data) {
       this.getTableList(data)
     },
-    getTableList(value) {
+    getTableList(data) {
       this.tableLoading = true
-      let data ={
-        "cartypeId":value,
-        "current": this.page.currPage,
-        "size": this.page.pageSize
-      }
       searchCarTypeConfig(data).then(res=>{
         if(res.code == '200' ) {
           this.tableLoading = false
           this.carTableData = res.data || []
-          this.page.totalCount = res.total || 0
         } else {
           iMessage.error(res.desZh)
         }
@@ -201,8 +192,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .dialog{
-    .top{
+  .top{
     display: flex;
     justify-content: space-between;
     margin:0 0 20px 0 ;
@@ -221,15 +211,12 @@ export default {
         font-weight: bold;
         width: 400px;
       }
-    }      
-    ::v-deep .i-pagination[data-v-20fc8d19] .pagination {
-          margin-bottom: 20px;
-      }
-    
     }
-      .placeholder{
+    .bottom-table{
+      margin-bottom: 20px;
+    }
+     .placeholder{
         height: 30px !important;
       }
   }
-  
 </style>
