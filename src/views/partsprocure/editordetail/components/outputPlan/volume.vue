@@ -5,8 +5,8 @@
   >
     <div class="body">
         <div>
-          <span class="title" v-if="params.partProjectSource == 1">
-            {{`${language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}
+          <span class="title" >
+            {{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}</template>
           </span>
           <div class="btn-left">
             <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
@@ -145,6 +145,8 @@ export default {
           }
   
           if (infoRes.data) {
+            infoRes.data.tpRecordList.forEach(val=>{
+            })
             this.tableListData = infoRes.data.tpRecordList;
             this.page.totalCount = infoRes.data.totalCount || 0;
           }
@@ -281,7 +283,7 @@ export default {
           this.$set(val,'perCarDosage',this.getPerCarDosage.perCar)
         }
       })
-      this.tableListData = [...data]
+      this.tableListData = data
     },
     //保存
     saveData() {

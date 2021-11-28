@@ -9,10 +9,10 @@
 
 export default [
   {
-    path: "/modeltargetprice",
+    path: "modeltargetprice",
     meta: { title: "模具目标价管理" },
     component: () => import("@/views/routerView"),
-    redirect: "/modeltargetprice/signin",
+    redirect: "modeltargetprice/signin",
     children: [
       {
         path: "signin",

@@ -12,7 +12,7 @@ export const TAB = [
     value: 1,
     name: '财务目标价管理',
     key: 'CAIWUMUBIAOJIAGUANLI',
-    url: '/financialtargetprice',
+    url: '/targetpriceandscore/financialtargetprice',
     activePath: 'financialtargetprice',
     message: 0,
     permissionKey: "FINANCIALTARGETMGT_TAB",
@@ -22,7 +22,7 @@ export const TAB = [
     value: 2,
     name: '模具目标价管理',
     key: 'MUJUMUBIAOJIAGUANLI',
-    url: '/modeltargetprice',
+    url: '/targetpriceandscore/modeltargetprice',
     activePath: 'modeltargetprice',
     message: 0,
     permissionKey: "MODELTARGETMGT_TAB",
@@ -31,7 +31,7 @@ export const TAB = [
   {
     value: 3,
     name: '评分任务',
-    url: "/supplierscore",
+    url: "/targetpriceandscore/supplierscore",
     activePath: "/supplierscore",
     key: "PINGFENRENWU",
     permissionKey: "SUPPLIERSCORE_TAB",
@@ -40,7 +40,7 @@ export const TAB = [
   {
     value: 4,
     name: '评分部门设置',
-    url: "/configscoredept",
+    url: "/targetpriceandscore/configscoredept",
     activePath: "/configscoredept",
     key: "PINGFENBUMENSHEZHI",
     permissionKey: "CONFIGSCOREDEPT_TAB",
@@ -49,7 +49,7 @@ export const TAB = [
   {
     value: 5,
     name: "成本分析管理",
-    url: "/costanalysismanage/home",
+    url: "/targetpriceandscore/costanalysismanage/home",
     activePath: "/costanalysismanage/home",
     key: "CHENGBENFENXIGUANLI",
     permissionKey: "COSTANALYSISMANAGE_HOME_TAB",
@@ -58,7 +58,7 @@ export const TAB = [
   {
     value: 6,
     name: "数据维护",
-    url: "/costanalysismanage/datamaintenance/costMaintenance",
+    url: "/targetpriceandscore/costanalysismanage/datamaintenance/costMaintenance",
     activePath: "/costanalysismanage/datamaintenance",
     key: "SHUJUWEIHU",
     permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_TAB",
@@ -72,7 +72,7 @@ export const MENU = [
     value: 1,
     name: '目标价维护',
     message: 0,
-    url: '/financialtargetprice/maintenance',
+    url: '/targetpriceandscore/financialtargetprice/maintenance',
     activePath: 'maintenance',
     key: 'MUBIAOJIAWEIHU'
   },
@@ -80,7 +80,7 @@ export const MENU = [
     value: 2,
     name: '目标价审批',
     message: 0,
-    url: '/financialtargetprice/approval',
+    url: '/targetpriceandscore/financialtargetprice/approval',
     activePath: 'approval',
     key: 'MUBIAOJIASHENPI'
   },
@@ -88,7 +88,7 @@ export const MENU = [
     value: 3,
     name: '目标价查询',
     message: 0,
-    url: '/financialtargetprice/query',
+    url: '/targetpriceandscore/financialtargetprice/query',
     activePath: 'query',
     key: 'MUBIAOJIACHAXUN'
   },

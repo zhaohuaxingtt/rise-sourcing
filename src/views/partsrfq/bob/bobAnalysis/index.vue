@@ -56,7 +56,7 @@
                class="table-cell"
                :style="{'font-weight': 'bold','width': 'calc(80% / ' + tableTitle.length + ')'}">{{item.title}}</div>
         </div>
-        <div class="flex tabeleList">
+        <div class="flex tabeleList" ref="cbdDetailTable">
           <div style="display:flex;flex-flow:column nowrap;">
             <div v-for="(item,index) in tableListData"
                  :key="index"

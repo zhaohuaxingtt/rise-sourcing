@@ -1,6 +1,6 @@
 export default [
   {
-    path: "/configscoredept",
+    path: "configscoredept",
     name: 'configscoredept',
     meta: { title: "配置评分部门" },
     component: () => import("@/views/routerView"),
