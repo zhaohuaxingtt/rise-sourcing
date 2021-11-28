@@ -136,7 +136,7 @@ export default {
   },
   methods: {
     gotoDetail(row) {
-      const router =  this.$router.resolve({path: '/modeltargetprice/detail', query: { ...row,applyType: '4' }})
+      const router =  this.$router.resolve({path: '/targetpriceandscore/modeltargetprice/detail', query: { ...row,applyType: '4' }})
       window.open(router.href,'_blank')
     },
     handleSelectionChange(val) {

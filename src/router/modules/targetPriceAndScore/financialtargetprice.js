@@ -8,10 +8,10 @@
  */
 export default [
   {
-    path: "/financialtargetprice",
+    path: "financialtargetprice",
     meta: { title: "财务目标价管理" },
     component: () => import("@/views/routerView"),
-    redirect: "/financialtargetprice/maintenance",
+    redirect: "financialtargetprice/maintenance",
     children: [
       {
         path: "maintenance",

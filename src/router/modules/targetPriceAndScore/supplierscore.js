@@ -8,12 +8,12 @@
  */
 export default [
   {
-    path: "/supplierscore",
+    path: "supplierscore",
     meta: {
       title: "供应商评分",
     },
     component: () => import("@/views/routerView"),
-    redirect: "/supplierscore/home",
+    redirect: "supplierscore/home",
     children: [
       {
         path: "home",

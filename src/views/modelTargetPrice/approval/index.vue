@@ -265,7 +265,7 @@ export default {
       })
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/modeltargetprice/detail', query: {...row,applyType: '3'}})
+      const router =  this.$router.resolve({path: '/targetpriceandscore/modeltargetprice/detail', query: {...row,applyType: '3'}})
       window.open(router.href,'_blank')
     },
     openApprovalDetailDialog(row){

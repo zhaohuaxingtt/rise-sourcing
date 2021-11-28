@@ -8,9 +8,10 @@
  */
 export default [
   {
-    path: "/costanalysismanage",
+    path: "costanalysismanage",
     meta: { title: "KM成本分析" },
     component: () => import("@/views/routerView"),
+    redirect: "costanalysismanage/home",
     children: [
       {
         path: "home",

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 11:07:22
- * @LastEditTime: 2021-11-22 17:48:50
+ * @LastEditTime: 2021-11-28 22:38:01
  * @LastEditors:  
  * @Description: 零件采购项目创建模块API
  * @FilePath: \rise\src\api\partsprocure\home\index.js
@@ -110,12 +110,31 @@ export function closeProcure(data){
     data:data
   })
 }
-//通过车型id查询车型配置
+//通过车型id查询车型配置分页
+// 
+// export function searchCarTypeConfig(data) {
+//   return requst({
+//     url:`/purchasing-project-parts/search-car-type-config-page`,
+//     method:'POST',
+//     data
+//   })
+// }
+//通过车型id查询车型配置未分页
 
 export function searchCarTypeConfig(data) {
   return requst({
     url:`/purchasing-project-parts/search-car-type-config/${data}`,
     method:'GET',
+  })
+}
+//通过车型项目查询车型项目配置
+
+
+export function searchCarTypeProConfig(data) {
+  return requst({
+    url:`/purchasing-project-parts/search-car-type-pro-config-page`,
+    method:'POST',
+    data
   })
 }
 

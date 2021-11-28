@@ -460,6 +460,9 @@ export default {
           moldFee:Number(item.moldFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
           developFee:Number(item.developFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
           targetPrice:Number(item.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          aveAnnualOutput:Number(item.aveAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          maxAnnualOutput:Number(item.maxAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          bprice:Number(item.bprice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
         }
       })
     },
