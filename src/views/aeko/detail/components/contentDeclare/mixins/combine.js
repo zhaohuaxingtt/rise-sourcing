@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-11-02 11:12:44
  * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-12 11:35:51
+ * @LastEditTime: 2021-11-26 12:20:40
  * @Description: 内容表态组合相关功能
  */
 
@@ -27,6 +27,10 @@ export const combine = {
     },
   },
   methods: {
+    // 获取原零件名
+    getOriginPart(row) {
+      return row.isDeclare === 1 ? row.originPartNum : row.oldPartNumPreset
+    },
     // 组合
     async combine() {
       const dataList = this.multipleSelection
@@ -39,13 +43,17 @@ export const combine = {
         this.$message.error(this.language('GOUXUANDUOLINGJIANZUHE','请勾选多个零件行项目组合'))
         return
       }
+      if (dataList.find(o => (o.isDeclare === 1 && !o.originPartNum) || (o.isDeclare !== 1 && !o.oldPartNumPreset))) {
+        this.$message.error(this.language('GUANLIANYUANLINGJIANZAIZUHE','请先选择原零件后，再进行【组合】操作，以便系统识别出多变多，一变多'))
+        return
+      }
       // 包含已经有分组的零件
       if (dataList.filter(o => o.groupCode).length) {
         this.$message.error(this.language('XUXUANZHONGMEIBEIFENZUDELINGJIAN','需选中没有被分组的零件行项目，请重新选择！'))
         return
       }
       const requirementAekoId = this.$route.query.requirementAekoId
-      const oldPartNumPreset = window._.uniqBy(dataList, o => `${o.oldPartNumPreset}${o.supplierSapCode}`).map(o => o.oldPartNumPreset).filter(o => o)
+      const oldPartNumPreset = window._.uniqBy(dataList, o => `${this.getOriginPart(o)}${o.supplierSapCode}`).map(o => {return this.getOriginPart(o)}).filter(o => o)
       const partNum = window._.uniqBy(dataList, o => `${o.partNum}${o.supplierSapCode}`).map(o => o.partNum).filter(o => o)
       const ids = dataList.map(o => o.objectAekoPartId)
       const params = {
@@ -93,7 +101,7 @@ export const combine = {
       // 存在同分组内勾选不完整的情况，查出与之相关的所有的零件
       dataList = this.tableListData.filter(o => groupCode.includes(o.groupCode))
 
-      const oldPartNumPreset = window._.uniqBy(dataList, o => `${o.oldPartNumPreset}${o.supplierSapCode}`).map(o => o.oldPartNumPreset).filter(o => o)
+      const oldPartNumPreset = window._.uniqBy(dataList, o => `${this.getOriginPart(o)}${o.supplierSapCode}`).map(o => {return this.getOriginPart(o)}).filter(o => o)
       const partNum = window._.uniqBy(dataList, o => `${o.partNum}${o.supplierSapCode}`).map(o => o.partNum).filter(o => o)
       const ids = dataList.map(o => o.objectAekoPartId)
       const requirementAekoId = this.$route.query.requirementAekoId
@@ -128,7 +136,7 @@ export const combine = {
       if (groupName && groupCode && groupName !== row.groupNameBak) {
         // 存在同分组内勾选不完整的情况，查出与之相关的所有的零件
         const dataList = this.tableListData.filter(o => groupCode.includes(o.groupCode))
-        const oldPartNumPreset = window._.uniqBy(dataList, o => `${o.oldPartNumPreset}${o.supplierSapCode}`).map(o => o.oldPartNumPreset).filter(o => o)
+        const oldPartNumPreset = window._.uniqBy(dataList, o => `${this.getOriginPart(o)}${o.supplierSapCode}`).map(o => {return this.getOriginPart(o)}).filter(o => o)
         const partNum = window._.uniqBy(dataList, o => `${o.partNum}${o.supplierSapCode}`).map(o => o.partNum).filter(o => o)
         const ids = dataList.map(o => o.objectAekoPartId)
         const params = {

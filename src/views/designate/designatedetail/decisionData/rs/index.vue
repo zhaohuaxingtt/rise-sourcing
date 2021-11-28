@@ -17,7 +17,7 @@
 <script>
 import meeting from './components/meeting'
 import circulation from './components/circulation'
-import { getList } from '@/api/designate/decisiondata/rs'
+import { getList, nominateAppSDetail } from '@/api/designate/decisiondata/rs'
 
 export default {
   components: { meeting, circulation },
@@ -38,9 +38,15 @@ export default {
   },
   created() {
     let data = this.otherPreview ? this.otherNominationId : this.$route.query.desinateId
-    getList(data).then(res => {
-      this.nominateProcessType = res.data?.lines[0].nominateProcessType
-    })
+
+    if (!this.$store.getters.nominationType && !this.$route.query.designateType) {
+      nominateAppSDetail({
+        nominateAppId: data
+      })
+      .then(res => {
+        this.nominateProcessType = res.data.nominateProcessType
+      })
+    }
   },
   computed: {
     // eslint-disable-next-line no-undef

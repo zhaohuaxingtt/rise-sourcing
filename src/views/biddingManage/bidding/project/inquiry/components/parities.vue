@@ -114,8 +114,8 @@ export default {
       });
       this.$emit("handle-currencys", val);
     },
-    handelCheck(val, { id }) {
-      this.$emit("selectDel", { val, id });
+    handelCheck(val, item) {
+      this.$emit("selectDel", { val, item });
     },
   },
 };

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-11-25 21:36:02
+ * @LastEditTime: 2021-11-26 14:36:24
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -825,13 +825,16 @@
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
 				detailData['oldProjectRelations'] = [{...translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
-				console.log(detailData.carTypeModel,'update');
 				if(detailData.carTypeModel !=undefined) {
 					let temData=this.fromGroup['CAR_TYPE'].filter((item)=>{
 						return detailData.carTypeModel.indexOf(item.code) > -1
 					})
 				detailData['cartypes'] = temData
 				}
+				detailData["procureFactoryId"] = factoryItems ? factoryItems.id : ''
+				let carTypeProject = this.fromGroup.CAR_TYPE_PRO.find(items=>items.code == detailData.carTypeProjectZh)
+				detailData["carTypeProjectId"] = carTypeProject ? carTypeProject.id :''
+				console.log(detailData["procureFactoryId"],'detailData["procureFactoryId"]detailData["procureFactoryId"]detailData["procureFactoryId"]');
 				return new Promise((resolve, reject) => {
 					updateProcure(detailData).then((res) => {
 						this.saveLoading = false
