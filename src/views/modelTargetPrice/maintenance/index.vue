@@ -210,7 +210,7 @@ export default {
         this.selectItems = val
     },
     openPage(row) {
-      const router =  this.$router.resolve({path: '/modeltargetprice/detail', query: { ...row,applyType: '2' }})
+      const router =  this.$router.resolve({path: '/targetpriceandscore/modeltargetprice/detail', query: { ...row,applyType: '2' }})
       window.open(router.href,'_blank')
     },
     /**

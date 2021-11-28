@@ -253,7 +253,7 @@ export default {
       checkApply(rfqId).then(res => {
         if (res?.result) {
           const item = {rfqId: rfqId, applyType: '1'}
-          this.$router.push({path: '/modeltargetprice/detail', query: item})
+          this.$router.push({path: '/targetpriceandscore/modeltargetprice/detail', query: item})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }

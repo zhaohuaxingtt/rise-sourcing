@@ -235,7 +235,7 @@ export const staticRouter = [
 				component: () => import('@/views/AutomaticallyAssignDe'),
 			},
 			// {
-			// 	path: '/configscoredept',
+			// 	path: '/targetpriceandscore/configscoredept',
 			// 	name: 'configscoredept',
 			// 	meta: { title: '配置评分部门' },
 			// 	component: () => import('@/views/configscoredept'),
