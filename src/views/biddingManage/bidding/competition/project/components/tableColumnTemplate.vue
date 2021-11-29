@@ -418,7 +418,7 @@
 </template>
 <script>
 import { iInput, iDatePicker } from "rise";
-import operatorInput from './operatorInput';
+import operatorInput from '@/components/biddingComponents/operatorInput';
 import dayjs from "dayjs";
 export default {
   components: {

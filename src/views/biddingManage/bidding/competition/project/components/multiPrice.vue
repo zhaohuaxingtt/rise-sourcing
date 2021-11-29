@@ -208,26 +208,10 @@
               <div>{{ multiPriceValue[scope.row['ids']].factoryPrice }}</div>
             </template>
             <template v-else>
-               <template v-if="isInputFlag">
-              <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
-                :value="scope.row['factoryPrice']"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(scope.row, 'factoryPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              >
-              </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                  :value="multiPriceValue[scope.row['ids']].factoryPrice"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
+               <operatorInput
+                  v-model="scope.row['factoryPrice']"
                 >
-                </iInput>
-              </template>
+              </operatorInput>
             </template>
            
           </template>
@@ -239,26 +223,10 @@
               <div>{{ multiPriceValue[scope.row['ids']].packingFee }}</div>
             </template>
             <template v-else>
-               <template v-if="isInputFlag">
-              <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
-                :value="scope.row['packingFee']"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(scope.row, 'packingFee', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              >
-              </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                  :value="multiPriceValue[scope.row['ids']].packingFee"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
+               <operatorInput
+                  v-model="scope.row['packingFee']"
                 >
-                </iInput>
-              </template>
+              </operatorInput>
             </template>
           </template>
 
@@ -269,26 +237,10 @@
               <div>{{ multiPriceValue[scope.row['ids']].transportFee }}</div>
             </template>
             <template v-else>
-               <template v-if="isInputFlag">
-              <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
-                :value="scope.row['transportFee']"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(scope.row, 'transportFee', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              >
-              </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                  :value="multiPriceValue[scope.row['ids']].transportFee"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
+               <operatorInput
+                  v-model="scope.row['transportFee']"
                 >
-                </iInput>
-              </template>
+              </operatorInput>
             </template>
           </template>
 
@@ -299,26 +251,10 @@
               <div>{{ multiPriceValue[scope.row['ids']].operationFee }}</div>
             </template>
             <template v-else>
-               <template v-if="isInputFlag">
-              <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
-                :value="scope.row['operationFee']"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(scope.row, 'operationFee', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              >
-              </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                  :value="multiPriceValue[scope.row['ids']].operationFee"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
+               <operatorInput
+                  v-model="scope.row['operationFee']"
                 >
-                </iInput>
-              </template>
+              </operatorInput>
             </template>
           </template>
 
@@ -341,26 +277,10 @@
               <div>{{ multiPriceValue[scope.row['ids']].moldFee }}</div>
             </template>
             <template v-else>
-               <template v-if="isInputFlag">
-              <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
-                :value="scope.row['moldFee']"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(scope.row, 'moldFee', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              >
-              </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                  :value="multiPriceValue[scope.row['ids']].moldFee"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
+               <operatorInput
+                  v-model="scope.row['moldFee']"
                 >
-                </iInput>
-              </template>
+              </operatorInput>
             </template>
           </template>
 
@@ -371,57 +291,28 @@
               <div>{{ multiPriceValue[scope.row['ids']].developFee }}</div>
             </template>
             <template v-else>
-               <template v-if="isInputFlag">
-              <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
-                :value="scope.row['developFee']"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(scope.row, 'developFee', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              >
-              </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                  :value="multiPriceValue[scope.row['ids']].developFee"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
+               <operatorInput
+                  v-model="scope.row['developFee']"
                 >
-                </iInput>
-              </template>
+              </operatorInput>
             </template>
           </template>
 
           <!-- 目标价 -->
           <template slot="targetPrice" slot-scope="scope" >
+            <template  >
+              <div>{{ multiPriceValue[scope.row['ids']].targetPrice }}</div>
+            </template>
             <!-- 只读 -->
-            <template  v-if="ruleForm.biddingStatus !== '01'">
+            <!-- <template  v-if="ruleForm.biddingStatus !== '01'">
               <div>{{ multiPriceValue[scope.row['ids']].targetPrice }}</div>
             </template>
             <template v-else>
-               <template v-if="isInputFlag">
-              <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
-                :value="scope.row['targetPrice']"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(scope.row, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              >
-              </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                  :value="multiPriceValue[scope.row['ids']].targetPrice"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
+               <operatorInput
+                  v-model="scope.row['targetPrice']"
                 >
-                </iInput>
-              </template>
-            </template>
+              </operatorInput>
+            </template> -->
           </template>
 
           <!-- 产品名称 -->
@@ -476,62 +367,36 @@
 
           <!-- 平均年产量 -->
           <template slot="aveAnnualOutput" slot-scope="scope" >
+            <template >
+              <div>{{ multiPriceValue[scope.row['ids']].aveAnnualOutput }}</div>
+            </template>
             <!-- 只读 -->
-            <template  v-if="ruleForm.biddingStatus !== '01'">
+            <!-- <template  v-if="ruleForm.biddingStatus !== '01'">
               <div>{{ multiPriceValue[scope.row['ids']].aveAnnualOutput }}</div>
             </template>
             <template v-else>
-               <template v-if="isInputFlag">
-              <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
-                :value="scope.row['aveAnnualOutput']"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(scope.row, 'aveAnnualOutput', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              >
-              </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                  :value="multiPriceValue[scope.row['ids']].aveAnnualOutput"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
+               <operatorInput
+                  v-model="scope.row['aveAnnualOutput']"
                 >
-                </iInput>
-              </template>
-            </template>
+              </operatorInput>
+            </template> -->
           </template>
 
           <!-- 最大年产量 -->
           <template slot="maxAnnualOutput" slot-scope="scope" >
+            <template >
+              <div>{{ multiPriceValue[scope.row['ids']].maxAnnualOutput }}</div>
+            </template>
             <!-- 只读 -->
-            <template  v-if="ruleForm.biddingStatus !== '01'">
+            <!-- <template  v-if="ruleForm.biddingStatus !== '01'">
               <div>{{ multiPriceValue[scope.row['ids']].maxAnnualOutput }}</div>
             </template>
             <template v-else>
-               <template v-if="isInputFlag">
-              <iInput
-                :disabled="ruleForm.biddingStatus !== '01'"
-                :value="scope.row['maxAnnualOutput']"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(scope.row, 'maxAnnualOutput', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              >
-              </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                  :value="multiPriceValue[scope.row['ids']].maxAnnualOutput"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
+               <operatorInput
+                  v-model="scope.row['maxAnnualOutput']"
                 >
-                </iInput>
-              </template>
-            </template>
+              </operatorInput>
+            </template> -->
           </template>
 
           <!-- 操作 -->
@@ -639,6 +504,7 @@ import {
 } from "@/api/bidding/bidding";
 import Big from "big.js";
 import dayjs from "dayjs";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -651,6 +517,7 @@ export default {
     iSelect,
     iDatePicker,
     tableColumnTemplate,
+    operatorInput
   },
   props: {
     id: String,
@@ -676,10 +543,10 @@ export default {
       factoryPricePercent: "",
       multiPleTableTitle,
       priceProps: [
-        "lifecycle",
+        // "lifecycle",
       ],
       inputProps: [
-        "lifecycle",
+        // "lifecycle",
       ],
       quantityUnit: [],
       selectedTableData: [],
@@ -1518,7 +1385,7 @@ export default {
             item.procureYearMonth;
           obj[item.productId].yearMonth[`id${item.stage}`] = item.id;
           obj[item.productId].cutPricePlan[`stage${item.stage}`] =
-            item.cutPricePlan;
+           this.ruleForm.biddingStatus === '01' ? item.cutPricePlan : (item.cutPricePlan + '%');
           obj[item.productId].cutPricePlan[`id${item.stage}`] = item.id;
           return obj;
         }, {});

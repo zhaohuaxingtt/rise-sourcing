@@ -276,7 +276,6 @@
                   :rows="4"
                   resize="none"
                   :maxlength="1000"
-                  :placeholder="language('BIDDING_ZSXZW1000Z','字数限制为1000字')"
                   show-word-limit
                   v-model="ruleForm.otherProjectNotice"
                   disabled
