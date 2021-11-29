@@ -1171,6 +1171,7 @@
         'LK_CARPROJECTRFQ': '报价时间',
         'LK_NUMBERPREFIX': '第',
         'LK_TURN': '轮',
+        'LK_NONGROUPEDBREAKTIPS': '以下为未分组数据',
 
         // 定点管理
         'nominationLanguage': {
