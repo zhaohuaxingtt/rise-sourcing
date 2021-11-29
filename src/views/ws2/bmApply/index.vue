@@ -491,7 +491,7 @@ export default {
           iMessage.error(result4);
         }
 
-        if(res[5].data){
+        if(res[5]){
           this.isAdmin = res[5].data;
         }else{
           iMessage.error(result5);
