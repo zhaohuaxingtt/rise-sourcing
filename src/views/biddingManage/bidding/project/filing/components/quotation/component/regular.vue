@@ -158,7 +158,7 @@
       </div>
     </div>
 
-    <!-- <div class="form-group">
+    <div class="form-group" v-if="ruleForm.biddingQuoteRule.alertPercentage">
       <iLabelML showTip>
         <div class="hover-text">
           <span>{{language('BIDDING_GSYSRD', '供应商输入的')}}</span>
@@ -193,7 +193,7 @@
           >{{language('BIDDING_RENMINGBI', '人民币')}}
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div class="form-group" v-if="ruleForm.biddingQuoteRule.firstOfferLimit">
       <iLabelML>
