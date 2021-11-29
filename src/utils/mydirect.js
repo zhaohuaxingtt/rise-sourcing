@@ -3,6 +3,7 @@ import store from '../store'
 import router from '@/router'
 import {businessPermission} from '@/utils'
 import {getTousandNum, delcommafy} from "@/utils/tool";
+const openProcess = process.env.NODE_ENV == 'dev'
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
@@ -27,25 +28,25 @@ Vue.directive('permission', {
                 // eslint-disable-next-line no-debugger
                 const splitValue = value.split('|')
                 if(splitValue.length > 1){store.dispatch('uploadResource',splitValue)}
-                // if (!store.state.permission.whiteBtnList[splitValue[0]]) {
-                //     el.parentNode.removeChild(el)
-                // }else{
+                if (!store.state.permission.whiteBtnList[splitValue[0]]) {
+                    if(openProcess) el.parentNode.removeChild(el)
+                }else{
                     if(businessPermission(splitValue[0],router.currentRoute.query)){
                        el.parentNode.removeChild(el)
                     }
-                // }
+                }
                 // force permission
                 if (binding.modifiers.force && !store.state.permission.whiteBtnList[splitValue[0]]) {
                     el.parentNode.removeChild(el)
                 }
             } else { //remove
-                // if (!store.state.permission.whiteBtnList[binding.expression]) {
-                //     el.parentNode.removeChild(el)
-                // }else{
+                if (!store.state.permission.whiteBtnList[binding.expression]) {
+                    if(openProcess) el.parentNode.removeChild(el)
+                }else{
                     if(businessPermission(value,router.currentRoute.query)){
                        el.parentNode.removeChild(el)
                     }
-                // }
+                }
             }
         }
     })

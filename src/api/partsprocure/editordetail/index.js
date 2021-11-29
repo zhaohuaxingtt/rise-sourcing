@@ -397,7 +397,6 @@ export function manualInfoTable(data) {
 
 //根据车型項目配置信息查詢
 export function cartypeProConfigByCondition(data) {
-	console.log(data);
 	return carApi({
 		url: '/api/cartypeProConfigByCondition',
 		method:'POST',

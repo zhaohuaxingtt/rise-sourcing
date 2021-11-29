@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-11-18 16:00:37
- * @LastEditors:  
+ * @LastEditTime: 2021-11-29 15:04:04
+ * @LastEditors: Luoshuang
  * @Description: 零件采购项目建立首页。
- * @FilePath: \rise\src\views\partsprocure\home\index.vue
+ * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
 -->
 <template>
   <iPage class="partsprocureHome">
@@ -71,7 +71,7 @@
                 </iInput>
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')"
-              v-permission.atuo="PARTSPROCURE_LINIEINPUT|LINIE"
+              v-permission.auto="PARTSPROCURE_LINIEINPUT|LINIE"
               >
                 <iInput
                   :placeholder="
@@ -152,6 +152,7 @@
               </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')"
+                v-permission.auto="PARTSPROCURE_PARTITEMTYPE|零件项目类型"
               >
                 <iSelect
                   :placeholder="
@@ -159,7 +160,6 @@
                     language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')
                   "
                   v-model="form['partProjectType']"
-                  v-permission.auto="PARTSPROCURE_PARTITEMTYPE|零件项目类型"
                 >
                   <el-option
                     value=""
@@ -176,6 +176,7 @@
               </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREPURCHASINGFACTORY','采购工厂')"
+                v-permission.auto="PARTSPROCURE_PURCHASINGFACTORY|采购工厂"
               >
                 <iSelect
                   :placeholder="
@@ -183,7 +184,6 @@
                     language('partsprocure.PARTSPROCUREPURCHASINGFACTORY','采购工厂')
                   "
                   v-model="form['procureFactory']"
-                  v-permission.auto="PARTSPROCURE_PURCHASINGFACTORY|采购工厂"
                 >
                   <el-option
                     value=""
@@ -198,7 +198,7 @@
                   </el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSIGN_USAGEVEHICLE|每车用量状态">
+              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSPROCURE_SHOWSELF|显示自己">
                 <iSelect
                   v-model="form.showSelf"
                   :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"

@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-25 20:20:31
+ * @LastEditTime: 2021-11-26 18:32:15
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -574,7 +574,7 @@ export default{
   .headerContent{
     position: absolute;
     top: 0px;
-    right: 0px;
+    left: -1px;
     height: 0px;
     width: 0px;
     .c{
@@ -654,20 +654,21 @@ export default{
           background-color: white;
           z-index: 124;
           top: 0px;
+          left: 1px;
           .el-table__fixed-header-wrapper{
             position: relative;
             top: inherit;
             left: inherit;
             .rateList{
               position: absolute;
-              right: 0px;
+              right: -1px;
               height: 0px;
               width: 0px;
-              top: 0px;
+              top: -1px;
               ul{
                 position: absolute;
-                bottom: -1PX;
-                right: 0PX;
+                bottom: -1.8px;
+                right: 1.6px;
                 border: 1px solid #C5CCD6;
                 border-bottom: none;
                 border-top-left-radius: 10px;
