@@ -56,7 +56,7 @@
                class="table-cell"
                :style="{'font-weight': 'bold','width': 'calc(80% / ' + tableTitle.length + ')'}">{{item.title}}</div>
         </div>
-        <div class="flex tabeleList">
+        <div class="flex tabeleList" ref="cbdDetailTable">
           <div style="display:flex;flex-flow:column nowrap;">
             <div v-for="(item,index) in tableListData"
                  :key="index"
@@ -74,12 +74,14 @@
                    :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
                    style="cursor: pointer;padding-right: 4px;"
                    @click="handleCollapse(item, item.expanded)"></i>
-                <el-input v-if="item.grouped || item.matchId > 0 || item.isFresh"
-                          v-model="item.title">
-                  <template slot="append">
-                    <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
-                  </template>
-                </el-input>
+                <template v-if="item.grouped || item.matchId > 0 || item.isFresh">
+                  <span v-if="editGroupedLabel[item.id]" :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                  <el-input v-else v-model="item.title">
+                    <template slot="append">
+                      <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
+                    </template>
+                  </el-input>
+                </template>
                 <span v-else
                       :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
               </span>
@@ -199,6 +201,7 @@ export default {
   data () {
     return {
       onDataLoading: false,
+      editGroupedLabel:[],
       allExpand: true,
       flag: false,
       flag1: true,
@@ -740,6 +743,7 @@ export default {
             schemaId: this.schemaId,
             groupId: this.groupId
           });
+          this.editGroupedLabel = []
         })
       }).catch(() => {
         loading.close();
@@ -772,15 +776,6 @@ export default {
     remarks () {
       this.remarkDialogVisible = true;
     },
-    group () {
-      this.onGroupingModel = true;
-      // update(this.formUpdata).then(res => {
-      //   // iMessage.success("保存成功");
-      //   this.totalTable = false;
-      //   this.groupby = true;
-      //   this.checkFLag = false
-      // })
-    },
     saveGroup () {
       if (this.groupSelectedItems.length === 0 || !this.schemaId) {
         this.$message.error('请选择数据');
@@ -797,62 +792,6 @@ export default {
         }
       })
     },
-    merge (e, result, activeName) {
-      if (result.length === 0) {
-        this.$message.error('请选择数据');
-        return
-      }
-      this.result = result
-      this.activeName = activeName
-      merge({
-        roundDetailIdList: this.result,
-        comparedType: this.$attrs.chartType
-      }).then(res => {
-        if (res.code === '200') {
-          this.groupby = false
-          this.$nextTick(() => {
-            this.groupby = true
-            this.$refs.ungroupedTable.activeName = this.activeName
-            this.$refs.ungroupedTable.chargeRetrieve({
-              isDefault: true,
-              viewType: this.activeName,
-              schemaId: this.schemaId,
-              groupId: this.groupId
-            })
-          });
-          this.$refs.groupedTable.chargeRetrieve({
-            isDefault: true,
-            schemaId: this.schemaId,
-            viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
-            groupId: this.groupId
-          })
-          iMessage.success(res.desZh)
-        } else {
-          this.groupby = false
-          this.$nextTick(() => {
-            this.groupby = true
-            this.$refs.ungroupedTable.activeName = this.activeName
-            this.$refs.ungroupedTable.chargeRetrieve({
-              isDefault: true,
-              viewType: this.activeName,
-              schemaId: this.schemaId,
-              groupId: this.groupId
-            })
-          });
-          this.$refs.groupedTable.chargeRetrieve({
-            isDefault: true,
-            schemaId: this.schemaId,
-            viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : 'maGrouped',
-            groupId: this.groupId
-          })
-          iMessage.error(res.desZh)
-        }
-
-      })
-    },
-    // returnAcitiveName (val) {
-    //   this.activeName = val
-    // },
     groupToList () {
       if (!this.selectGroupName) {
         this.$message.error('请选择分组');
@@ -910,6 +849,7 @@ export default {
           groupedDatas[key].forEach((item) => {
             item.expanded = true;
             item.groupChild = true;
+            this.editGroupedLabel.push[item.id]
             this.tableListData.splice(rootItemIndex, 0, item);
             rootItemIndex++;
           });

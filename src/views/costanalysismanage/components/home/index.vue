@@ -394,7 +394,7 @@ export default {
     // 跳转RFQ详情
     jumpRfq(row) {
       const route = this.$router.resolve({
-        path: "/costanalysismanage/rfqdetail",
+        path: "/targetpriceandscore/costanalysismanage/rfqdetail",
         query: {
           rfqId: row.id
         }
@@ -418,7 +418,7 @@ export default {
     // 分析报告
     analysisReport(row) {
       const route = this.$router.resolve({
-        path: "/costanalysismanage/costanalysis",
+        path: "/targetpriceandscore/costanalysismanage/costanalysis",
         query: { rfqId: row.id }
       })
       window.open(route.href, "_blank")

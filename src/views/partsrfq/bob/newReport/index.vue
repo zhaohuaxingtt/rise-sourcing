@@ -86,16 +86,16 @@
                   <!--零件号-->
                   <el-form-item :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')">
 
-                    <el-select multiple
+                    <i-select multiple
                                clearable
                                value-key
                                :multiple-limit="chartType === 'spareParts' ? 5 : 1"
                                v-model="form.spareParts">
                       <el-option v-for="(i) in partList"
-                                 :key="i.fsNo"
-                                 :value="i.fsNo"
-                                 :label="i.fsNo+'/'+i.spareParts"></el-option>
-                    </el-select>
+                        :key="i.fsNo"
+                        :value="i.fsNo"
+                        :label="i.fsNo+'/'+i.spareParts"></el-option>
+                    </i-select>
                   </el-form-item>
                 </div>
                 <div v-else>
@@ -160,9 +160,8 @@
                 </ul>
               </div>
             </div>
-            <el-row>
-              <el-col :span="groupIds?24:inside ? 18 : 24"
-                      style="padding-left:0px">
+            <div style="display: flex;flex-flow: row nowrap;">
+              <div :style="{'width': groupIds ? '100%' : (inside ? '75%' : '100%')}">
                 <crown-bar :chartData="chartData"
                            :supplierList="supplierList"
                            :partList="partList"
@@ -171,62 +170,16 @@
                            @select="showSelect"
                            :type="bobType"
                            :by="chartType" />
-                <div class="toolTip-div"
-                     ref="toolTipDiv"
-                     v-show="showSelectDiv">
-                  <iSelect v-model="bobType"
-                           ref="toolTipSelect"
-                           @blur="closeDiv"
-                           @change="changeType">
-                    <el-option value="Best of Best"
-                               label="Best of Best ▼"></el-option>
-                    <el-option value="Best of Average"
-                               label="Best of Average ▼"></el-option>
-                    <el-option value="Best of Second"
-                               label="Best of Second ▼"></el-option>
-                  </iSelect>
-                </div>
-              </el-col>
-              <el-col :span="6"
-                      v-if="inside">
-                <!-- <div style="border: 1px dashed #ccc;width: 1px;height:320px;"></div> -->
-                <div class="left-dash1">
-                  <div v-if="chartData1.length > 0"
-                       style="flex:1">
-                    <out-bar :chartData="chartData1"
-                             @del="delOut"
-                             :maxData="maxData"
-                             @change="changeOut"></out-bar>
-                  </div>
-                  <div v-else
-                       @click="findPart"
-                       class="icon-add">
-                    <div>
-                      <img src="@/assets/images/newZhu.png"
-                           alt=""
-                           style="width:220px;height:300px">
-                      <div style="text-align: center;color:#8F8F90">{{ $t("待添加") }}</div>
-                    </div>
-                  </div>
-                </div>
-              </el-col>
-            </el-row>
-            <!-- <div class="legend">
-              <ul>
-                <li v-for="(item,index) in anchorList"
-                    :key="index">
-                  <i class="circle"
-                     :style="color(item)"></i>
-                  <span style="vertical-align: baseline">{{item}}</span>
-                </li>
-              </ul>
-            </div> -->
-
+              </div>
+              <out-bar :chartData="chartData1"
+                        @del="delOut"
+                        :maxData="maxData"
+                        @change="changeOut"
+                        @find-part="findPart" style="flex: 1;" v-if="inside"></out-bar>
+            </div>
           </iCard>
         </el-col>
       </el-row>
-      <!-- <el-row :gutter="20"
-              class="margin-top20"> -->
       <div class="margin-top20" style="display:flex;flex-flow:row nowrap;justify-content:flex-end;">
         <div style="width: calc(100% / 6);padding-right: 20px;">
           <bob-pin :offset-top="80">
@@ -602,7 +555,6 @@ export default {
       this.getChartData();
     },
     add (val) {
-      console.log(val)
       if (val.constructor === Object) {
         iMessage.error('请选择数据')
         return
@@ -614,12 +566,7 @@ export default {
         iMessage.error('最多只能选择20条数据')
         return
       }
-      const loading = this.$loading({
-        lock: true,
-        text: 'Loading',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      });
+      this.onDataLoading = true;
       if (this.inside) {
         addBobOut({
           analysisSchemeId: this.analysisSchemeId,
@@ -630,7 +577,7 @@ export default {
           groupId: this.groupId
         }).then((res) => {
           if (res.code == 200) {
-            loading.close()
+            
             this.$message.success(res.desZh);
             this.searchChartData()
             this.$refs.bobAnalysis.chargeRetrieve({
@@ -641,12 +588,12 @@ export default {
             })
             this.closeDialog()
           } else {
-            loading.close()
+            
             this.$message.error(res.desZh);
             this.closeDialog()
           }
         }).catch((error) => {
-          loading.close()
+          
           this.$message.error(error.desZh);
           this.closeDialog()
         });
@@ -662,7 +609,7 @@ export default {
         })
         initOut({ list: arr, groupId: this.groupId }).then(res => {
           if (res.code === '200') {
-            loading.close()
+            
             this.$message.success(res.desZh);
             this.analysisSchemeId = res.data
             this.$store.dispatch('setSchemeId', this.analysisSchemeId);
@@ -677,7 +624,7 @@ export default {
             this.getChartData()
             this.closeDialog()
           } else {
-            loading.close()
+            
             this.$message.error(res.desZh);
             this.closeDialog()
           }
@@ -690,6 +637,7 @@ export default {
       this.searchChartData()
     },
     async searchChartData () {
+      this.onDataLoading = true;
       if (this.inside) {
         await this.getOptions();
       } else {
@@ -743,6 +691,7 @@ export default {
       }
       getBobLevelOne(params).then((res) => {
         const allData = res.data || [];
+        if (!allData) return;
         this.maxDataList = []
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0
@@ -814,6 +763,7 @@ export default {
     },
 
     async getChartData () {
+      this.onDataLoading = true;
       if (this.inside) {
         await this.getOptions();
       } else {
@@ -915,6 +865,7 @@ export default {
       }
     },
     delOut () {
+      this.onDataLoading = true;
       removeBobOut({
         id: this.chartData1[0].id,
       }).then((res) => {

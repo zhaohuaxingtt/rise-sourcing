@@ -309,7 +309,7 @@ export default {
      * @return {*}
      */    
     openEditdetail(row) {
-      const router =  this.$router.resolve({path: '/financialtargetprice/detail', query: { item: JSON.stringify(row) }})
+      const router =  this.$router.resolve({path: '/targetpriceandscore/financialtargetprice/detail', query: { item: JSON.stringify(row) }})
       window.open(router.href,'_blank')
     },
     openPage(row) {

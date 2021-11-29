@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-08 14:11:06
- * @LastEditTime: 2021-11-25 17:59:12
+ * @LastEditTime: 2021-11-26 10:33:12
  * @LastEditors:  
  */
 export const outputPlanTableTitle = [
@@ -25,7 +25,7 @@ export const volumeTableTitle = [
   { props: 'engineType', name: '发动机配置', key: 'LK_FADONGJIPEIZHI', tooltip: true  },
   { props: 'gearType', name: '变速箱配置', key: 'LK_BIANSUXIANGPEIZHI', tooltip: true },
   { props: 'cartypeLevel', name: '等级配置', key: 'LK_DENGJIPEIZHI', tooltip: true },
-  { props: 'otherConf', name: '其他配置', key: 'LK_QITAPEIZHI', tooltip: true },
+  { props: 'otherInfo', name: '其他配置', key: 'LK_QITAPEIZHI', tooltip: true },
   { props: 'cartypeLevelRate', name: '配置比例', key: 'LK_PEIZHIBILI', tooltip: true  },
   { props: 'perCarDosage', name: '用量', key: 'LK_YONGLIANG', tooltip: true,type:'input',editable:true }
 ]

@@ -2,7 +2,7 @@
  * @Description: CF车型配置
  * @Author: tyra liu
  * @Date: 2021-11-16 16:54:18
- * @LastEditTime: 2021-11-25 11:09:56
+ * @LastEditTime: 2021-11-28 22:56:59
  * @LastEditors:  
 -->
 <template>
@@ -77,6 +77,7 @@
         :total="page.totalCount"
       />
     </div>
+    <div class="placeholder"></div>
   </iDialog>
 </template>
 <script>
@@ -127,15 +128,12 @@ export default {
     //通过零件采购项目查询车型
     getPartType() {
       if(this.params.partProjectType == '1000003' || this.params.partProjectType == '50002001') {
-      console.log(this.params.partProjectType,'jkfhkjs');
 
       this.isGs = true
     } else {
-      console.log('falsefalsefasledsfafdsf');
       this.isGs = false
     }
       if(this.isGs == true) {
-        console.log(this.isGs,'000000000000000000000000000000000000000000000');
         searchCarType(this.$route.query.projectId).then(res => {
           if(res.code == '200') {
             this.carTypeOptions = res.data
@@ -143,7 +141,6 @@ export default {
         })
       } else {
         this.tableLoading = true
-        console.log(this.isGs,'1111111111111111111111111111111111111111111111');
         let data ={
           codes:[
             this.params.carTypeProjectNum,
@@ -212,11 +209,14 @@ export default {
         font-size: 18px;
         color: #131523;
         font-weight: bold;
-        width: 200px;
+        width: 400px;
       }
     }
     .bottom-table{
       margin-bottom: 20px;
     }
+     .placeholder{
+        height: 30px !important;
+      }
   }
 </style>

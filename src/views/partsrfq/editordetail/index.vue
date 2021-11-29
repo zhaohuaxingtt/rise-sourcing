@@ -253,7 +253,7 @@ export default {
       checkApply(rfqId).then(res => {
         if (res?.result) {
           const item = {rfqId: rfqId, applyType: '1'}
-          this.$router.push({path: '/modeltargetprice/detail', query: item})
+          this.$router.push({path: '/targetpriceandscore/modeltargetprice/detail', query: item})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -355,17 +355,19 @@ export default {
       this.navActivtyValue = target.index
     },
     async newRfq() {
-      this.newRfqOpenValidateLoading = true
       const pendingPartsList = this.$store.state.rfq.pendingPartsList
-      console.log('pendingPartsList',pendingPartsList)
-      await this.getNewRoundList()
-      if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
-        iMessage.warn(this.language('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG','RFQ零件或者RFQ供应商为空，不能创建RFQ轮次'))
+      this.newRfqOpenValidateLoading = true
+
+      try {
+        await this.getNewRoundList()
+        if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
+          iMessage.warn(this.language('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG','RFQ零件或者RFQ供应商为空，不能创建RFQ轮次'))
+          return false
+        } else {
+          this.newRfqRoundDialog = true
+        }
+      } finally {
         this.newRfqOpenValidateLoading = false
-        return false
-      } else {
-        this.newRfqOpenValidateLoading = false
-        this.newRfqRoundDialog = true
       }
     },
     async updateRfqStatus(updateType) {
@@ -463,9 +465,14 @@ export default {
         }
         try {
           const res = await pageRfqRound(req)
-          this.newRfqRoundDialogRes = res;
-          this.newRfqRoundList = res.data;
-        } catch {
+
+          if (res.code == 200) {
+            this.newRfqRoundDialogRes = res;
+            this.newRfqRoundList = res.data;
+          } else {
+            // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } finally {
           this.newRfqOpenValidateLoading = false
         }
       }
