@@ -38,10 +38,10 @@ export default {
     // option: 1:待审批, 2:已审批, 3: CSF分配人查看审批单, 4:Linie预览审批单, 5: AEKO查看-审批单查看
     if (this.transmitObj.option===1) {  // 查看待审批
       this.loadAKEOApprovalForm()
-    } else if (this.transmitObj.option == 4) {  // Linie 预览
-      this.getPreviewData()
     } else if(this.transmitObj.option == 3){  // CSF分配人查看审批单
-      this.lookAKEOApprovalDetailFromCheck();
+      this.getPreviewData(false);
+    } else if (this.transmitObj.option == 4) {  // Linie 预览
+      this.getPreviewData(true)
     } else if(this.transmitObj.option == 5){
       this.lookAKEOApprovalDetailFromCheck();
     } else {
@@ -130,12 +130,12 @@ export default {
         }
       })
     },
-    // Linie 审批单预览数据
-    getPreviewData(){
+    // Linie 审批单预览数据 flag: Linie 预览为true,分配人查看为false
+    getPreviewData(flag){
       let params = {
         "aekoCode": this.transmitObj.aekoApprovalDetails.aekoNum,
-        "isLinie": true,
-        "linieIds": [this.transmitObj.aekoApprovalDetails.linieId]
+        "isLinie": flag,
+        "linieIds": this.transmitObj.aekoApprovalDetails.linieId?[this.transmitObj.aekoApprovalDetails.linieId]:[]
       }
       getAekoCheckPreview(params).then(res=>{
         if (res.code == 200) {
