@@ -1376,7 +1376,7 @@ export default {
             item.procureYearMonth;
           obj[item.productId].yearMonth[`id${item.stage}`] = item.id;
           obj[item.productId].cutPricePlan[`stage${item.stage}`] =
-            item.cutPricePlan;
+           this.ruleForm.biddingStatus === '01' ? item.cutPricePlan : (item.cutPricePlan + '%');
           obj[item.productId].cutPricePlan[`id${item.stage}`] = item.id;
           return obj;
         }, {});
