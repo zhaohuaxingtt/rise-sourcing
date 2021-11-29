@@ -258,9 +258,9 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>FS/GS</span><!-- FS/GS -->
+                <span>{{ $t('LK_CAIGOULEIXING') }}</span><!-- 采购类型 -->
               </div>
-              <div class="disabled">{{detailObj.fsGs}}</div>
+              <div class="disabled">{{detailObj.partsPurchaseTypeName}}</div>
             </div>
             <div class="item">
               <div class="txt">
