@@ -173,6 +173,7 @@
               </div>
               <out-bar :chartData="chartData1"
                         :maxData="maxData"
+                        preview
                         @del="delOut"
                         @change="changeOut"
                         @find-part="findPart" style="flex: 1;" v-if="inside"></out-bar>

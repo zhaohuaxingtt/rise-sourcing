@@ -141,7 +141,7 @@ export default {
       // 绘制图表
       const option = {
         title: {
-          show: !this.preview,
+          show: this.preview,
           text: '{del|}',
           left: '85%',
           top: 60,

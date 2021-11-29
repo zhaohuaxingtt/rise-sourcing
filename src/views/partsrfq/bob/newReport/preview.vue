@@ -34,7 +34,7 @@
         <out-bar ref="outBarChartData"
                 :chartData="outBarChartData"
                 :maxData="maxData"
-                :preview="true" style="flex: 1;"></out-bar>
+                :preview="false" style="flex: 1;"></out-bar>
       </div>
       <div style="margin-top:20px;">
         <span style="font-weight:bold;font-size:14px">
