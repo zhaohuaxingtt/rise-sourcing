@@ -176,7 +176,7 @@
               <template v-else>
                 <iInput
                   :disabled="biddingStatus"
-                  :value="multiPriceValue[scope.row['id']].factoryPrice"
+                  :value="multiPriceValue[scope.row['ids']].factoryPrice"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
                 >
@@ -207,7 +207,7 @@
               <template v-else>
                 <iInput
                   :disabled="biddingStatus"
-                  :value="multiPriceValue[scope.row['id']].packingFee"
+                  :value="multiPriceValue[scope.row['ids']].packingFee"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
                 >
@@ -237,7 +237,7 @@
               <template v-else>
                 <iInput
                   :disabled="biddingStatus"
-                  :value="multiPriceValue[scope.row['id']].transportFee"
+                  :value="multiPriceValue[scope.row['ids']].transportFee"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
                 >
@@ -267,7 +267,7 @@
               <template v-else>
                 <iInput
                   :disabled="biddingStatus"
-                  :value="multiPriceValue[scope.row['id']].operationFee"
+                  :value="multiPriceValue[scope.row['ids']].operationFee"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
                 >
@@ -309,7 +309,7 @@
               <template v-else>
                 <iInput
                   :disabled="biddingStatus"
-                  :value="multiPriceValue[scope.row['id']].moldFee"
+                  :value="multiPriceValue[scope.row['ids']].moldFee"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
                 >
@@ -339,7 +339,7 @@
               <template v-else>
                 <iInput
                   :disabled="biddingStatus"
-                  :value="multiPriceValue[scope.row['id']].developFee"
+                  :value="multiPriceValue[scope.row['ids']].developFee"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
                 >
@@ -369,7 +369,7 @@
               <template v-else>
                 <iInput
                   :disabled="biddingStatus"
-                  :value="multiPriceValue[scope.row['id']].targetPrice"
+                  :value="multiPriceValue[scope.row['ids']].targetPrice"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
                 >
@@ -382,7 +382,7 @@
           <template slot="aveAnnualOutput" slot-scope="scope" >
             <!-- 只读 -->
             <template  v-if="biddingStatus">
-              <div>{{ scope.row['aveAnnualOutput'] ? multiPriceValue[scope.row['id']].aveAnnualOutput : '' }}</div>
+              <div>{{ scope.row['aveAnnualOutput'] ? multiPriceValue[scope.row['ids']].aveAnnualOutput : '' }}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
@@ -399,7 +399,7 @@
               <template v-else>
                 <iInput
                   :disabled="biddingStatus"
-                  :value="multiPriceValue[scope.row['id']].aveAnnualOutput"
+                  :value="multiPriceValue[scope.row['ids']].aveAnnualOutput"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
                 >
@@ -412,7 +412,7 @@
           <template slot="maxAnnualOutput" slot-scope="scope" >
             <!-- 只读 -->
             <template  v-if="biddingStatus">
-              <div>{{ scope.row['maxAnnualOutput'] ? multiPriceValue[scope.row['id']].maxAnnualOutput  : ''}}</div>
+              <div>{{ scope.row['maxAnnualOutput'] ? multiPriceValue[scope.row['ids']].maxAnnualOutput  : ''}}</div>
             </template>
             <template v-else>
                <template v-if="isInputFlag">
@@ -429,7 +429,7 @@
               <template v-else>
                 <iInput
                   :disabled="biddingStatus"
-                  :value="multiPriceValue[scope.row['id']].maxAnnualOutput"
+                  :value="multiPriceValue[scope.row['ids']].maxAnnualOutput"
                   @focus="handlerInputFocus"
                   @blur="handlerInputBlur"
                 >
@@ -673,7 +673,7 @@ export default {
     supplierProducts: {
       handler(val, oldVal) {
         this.multiPriceValue = this.ruleForm.supplierProducts?.reduce((obj, item, index) => {
-            obj[item.id] = {
+            obj[item.ids] = {
               factoryPrice:Number(item?.factoryPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
               packingFee:Number(item?.packingFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
               transportFee:Number(item?.transportFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
@@ -686,7 +686,7 @@ export default {
             }
             return obj;
           },{})
-          
+
         if (val?.length > 0)
           val.forEach((item) => {
             item.bprice =
@@ -1325,6 +1325,11 @@ export default {
         }
       });
       
+      let num = 1
+      for (let i = 0; i < this.ruleForm.supplierProducts.length; i++) {
+        this.ruleForm.supplierProducts[i].ids = num
+        num += 1
+      }
       this.$nextTick(() => {
         this.handlerInputBlur();
         this.projectLoading = false
