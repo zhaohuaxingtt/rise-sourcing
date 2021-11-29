@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-17 17:43:56
+ * @LastEditTime: 2021-11-29 10:06:31
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -56,7 +56,8 @@
                class="table-cell"
                :style="{'font-weight': 'bold','width': 'calc(80% / ' + tableTitle.length + ')'}">{{item.title}}</div>
         </div>
-        <div class="flex tabeleList" ref="cbdDetailTable">
+        <div class="flex tabeleList"
+             ref="cbdDetailTable">
           <div style="display:flex;flex-flow:column nowrap;">
             <div v-for="(item,index) in tableListData"
                  :key="index"
@@ -75,10 +76,14 @@
                    style="cursor: pointer;padding-right: 4px;"
                    @click="handleCollapse(item, item.expanded)"></i>
                 <template v-if="item.grouped || item.matchId > 0 || item.isFresh">
-                  <span v-if="editGroupedLabel[item.id]" :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
-                  <el-input v-else v-model="item.title">
+                  <span v-if="editGroupedLabel[item.id]"
+                        :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                  <el-input v-else
+                            v-model="item.title">
                     <template slot="append">
-                      <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
+                      <i class="el-icon-check"
+                         @click.stop="updateGroupedLabel(item)"
+                         style="cursor: pointer;"></i>
                     </template>
                   </el-input>
                 </template>
@@ -201,7 +206,7 @@ export default {
   data () {
     return {
       onDataLoading: false,
-      editGroupedLabel:[],
+      editGroupedLabel: [],
       allExpand: true,
       flag: false,
       flag1: true,
@@ -280,7 +285,7 @@ export default {
         this.$nextTick(function () {
           this.tableListData.forEach((item) => {
             if (item.title == val) {
-              this.$refs[item.id][0].scrollIntoView({behavior: "smooth", block: "end"})
+              this.$refs[item.id][0].scrollIntoView({ behavior: "smooth", block: "end" })
               console.log(this.$refs[item.id])
             }
           })
@@ -464,7 +469,7 @@ export default {
         }
       });
     },
-    addGroupedToOrigin(childs, grouped) {
+    addGroupedToOrigin (childs, grouped) {
       if (grouped.child.length == 0) {
         return;
       }
@@ -483,7 +488,6 @@ export default {
       })
     },
     chargeRetrieve (params) {
-
       chargeRetrieve(params)
         .then((allDatas) => {
           try {
@@ -946,7 +950,7 @@ export default {
     },
     down () {
       this.formUpdata.remark = this.remark
-      this.formUpdata.defaultBobOptions.replaceAll("▼","")
+      this.formUpdata.defaultBobOptions.replaceAll("▼", "")
       this.$confirm('此次导出将默认保存当前”费用详情“界面数据。', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
