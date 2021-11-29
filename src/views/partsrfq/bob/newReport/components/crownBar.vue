@@ -64,10 +64,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    supplierList: {
-      type: Array,
-      default: () => []
-    },
     partList: {
       type: Array,
       default: () => []
@@ -110,6 +106,7 @@ export default {
         "其他费用",
         "利润",
       ],
+      bobType: "",
       dataArray: [],
       subtext: "",
       sum: window._.sum,
@@ -283,6 +280,7 @@ export default {
               alignWithLabel: true,
             },
             axisLabel: {
+              show: false,
               align: 'center',
               fontFamily: "Arial",
               interval: 0,
@@ -348,38 +346,24 @@ export default {
         const dataList1 = [];
         const typeList = [];
         newVal.forEach((row, i) => {
-          // const temp =
-          //   row.vehicleType +
-          //   "\n" +
-          //   window.moment(row.cbdQuotationTime).format("yyyy.MM");
+          const temp =
+            row.vehicleType +
+            "\n" +
+            window.moment(row.cbdQuotationTime).format("yyyy.MM");
           const turn = row.turn === -1 ? "最新轮" : row.turn;
           const subtext = row.spareParts + '\n' + row.fs
-          // //todo
-          // let name = row.supplierName
+          //todo
+          let name = row.supplierName
 
-          // // this.supplierList.forEach(value => {
-          // //   if (name == value.supplierId) {
-          // //     name = value.shortNameZh
-          // //   }
-          // // })
-
-          // if (this.by === "num") {
-          //   name = row.spareParts;
-          //   this.partList.forEach(value => {
-          //     if (name == value.spareParts) {
-          //       name = value.shortNameZh
-          //     }
-          //   })
-          // }
-          // const str =
-          //   name +
-          //   "\n第{Blue|" +
-          //   row.turn +
-          //   "}/" +
-          //   row.totalTurn +
-          //   "轮\n\n" +
-          //   "{font|" + temp + "}";
-          let str = "";
+          if (this.by === "num") {
+            name = row.spareParts;
+            this.partList.forEach(value => {
+              if (name == value.spareParts) {
+                name = value.shortNameZh
+              }
+            })
+          }
+          const str = name
           this.labelArray.push({
             value: str,
             textStyle: {
@@ -427,16 +411,16 @@ export default {
           const min = Number(this.min(tempArr[row]))
           let sumList = tempArr[row].map(Number)
           let data = min;
-          if (this.type === "Best of Average") {
+          if (this.bobType === "Best of Average") {
             // data = this.doNumber((this.sum(tempArr[row]) / tempArr[row].length))
-            data = (this.sum(sumList) / tempArr[row].length)
+            data = tempArr[row].length <= 0 ? 0 : (this.sum(sumList) / tempArr[row].length)
 
-          } else if (this.type === "Best of Second") {
+          } else if (this.bobType === "Best of Second") {
             data = this.bos(sumList);
           }
           minList.push(data);
           if (i === 0) {
-            tempArr[this.type] = [];
+            tempArr[this.bobType] = [];
           }
 
           this.dataArray.push({
@@ -457,7 +441,7 @@ export default {
               distance: 15,
               offset: [-2, 0],
               formatter: (params) => {
-                if (params.name === this.type) {
+                if (params.name === this.bobType) {
                   return this.doNumber(data);
                 } else {
                   return this.doNumber(tempArr[row][params.dataIndex]);
@@ -496,7 +480,7 @@ export default {
               formatter: (params) => {
                 if (
                   data == params.value &&
-                  params.name !== this.type &&
+                  params.name !== this.bobType &&
                   this.type !== "Best of Average"
                 ) {
                   return "\t\t{lv|}";
@@ -528,7 +512,8 @@ export default {
         });
         // console.log(this.dataArray)
 
-        this.labelArray.push(this.type);
+        this.labelArray.push(this.bobType);
+        
         this.dataArray.push({
           name: "sum",
           type: "bar",
@@ -545,9 +530,8 @@ export default {
               const min = this.min(dataList1["利润"]);
               // const sum=this.sum(tempArr[params.name])
               const index = params.dataIndex;
-              if (params.name === this.type) {
+              if (params.name === this.bobType) {
                 const sum = this.sum(minList);
-                // console.log(sum)
                 return this.doNumber(sum)
                 // return '{bold|'+sum+'}'
               } else if (min) {
@@ -610,7 +594,8 @@ export default {
     },
   },
   mounted () {
-    this.initCharts();
+    this.bobType = this.type;
+    // this.initCharts();
   },
   watch: {
     title: {
@@ -629,6 +614,7 @@ export default {
     },
     type: {
       handler (str) {
+      if (str) this.bobType = str;
         this.initData(this.chartData);
       },
       immediate: true,
@@ -639,6 +625,9 @@ export default {
       },
       immediate: true,
     },
+    bobType(val) {
+      this.$emit("type-changed", val)
+    }
   },
 };
 </script>

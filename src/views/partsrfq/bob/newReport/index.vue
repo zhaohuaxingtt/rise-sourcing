@@ -8,7 +8,7 @@
         <div class="flex-align-center">
           <!--预览-->
           <iButton class="margin-left30"
-                   @click="pre = true">{{
+                   @click="handlePreview">{{
             $t("LK_YULAN")
           }}</iButton>
           <!--保存-->
@@ -163,17 +163,17 @@
             <div style="display: flex;flex-flow: row nowrap;">
               <div :style="{'width': groupIds ? '100%' : (inside ? '75%' : '100%')}">
                 <crown-bar :chartData="chartData"
-                           :supplierList="supplierList"
                            :partList="partList"
                            :title="chartTitle"
                            :maxData="maxData"
-                           @select="showSelect"
                            :type="bobType"
-                           :by="chartType" />
+                           :by="chartType"
+                           @select="showSelect"
+                           @type-changed="bobTypeChanged" />
               </div>
               <out-bar :chartData="chartData1"
-                        @del="delOut"
                         :maxData="maxData"
+                        @del="delOut"
                         @change="changeOut"
                         @find-part="findPart" style="flex: 1;" v-if="inside"></out-bar>
             </div>
@@ -196,16 +196,10 @@
         </div>
         <div style="width: calc(100% / 6 * 5)">
           <bobAnalysis ref="bobAnalysis"
-                       v-bind="$attrs"
-                       :supplierList="supplierList"
-                       :partList="partList"
-                       :analysisSchemeId="analysisSchemeId"
-                       :reportSave="reportSave"
                        :label="label"
-                       :bobType="bobType"
-                       :chartType="chartType"
-                       :heightFlag="true"
-                       :formUpdata="formUpdata"></bobAnalysis>
+                       :formUpdata="formUpdata"
+                       :propSchemeId="analysisSchemeId"
+                       :propGroupId="groupId"></bobAnalysis>
         </div>
       </div>
       <!-- </el-row> -->
@@ -219,17 +213,18 @@
     <preview ref="preview"
              v-if="pre"
              :value="pre"
-             :supplierList="supplierList"
+             :crownBarChartData="chartData"
+             :outBarChartData="chartData1"
              :partList="partList"
-             :analysisSchemeId="analysisSchemeId"
-             :groupId="groupId"
-             :chartType="chartType"
-             :bobType="bobType"
-             :chartData="chartData"
-             :chartData1="chartData1"
-             :chartTitle="chartTitle"
+             :title="chartTitle"
+             :type="bobType"
+             :by="chartType"
+             :maxData="maxData"
+             :label="label"
+             :formUpdata="formUpdata"
+             :propSchemeId="analysisSchemeId"
+             :propGroupId="groupId"
              :reportName="reportName"
-             :heightFlag="false"
              @closeDialog="closePreView"></preview>
     <iDialog title="保存"
              :visible.sync="dialogVisible"
@@ -426,6 +421,18 @@ export default {
     // window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
+    handlePreview() {
+      this.pre = true
+      setTimeout(() => {
+        if (!this.bobType) {
+          this.bobType = "Best of Best"
+        }
+        this.$refs.preview.open();
+      }, 200)
+    },
+    bobTypeChanged(type) {
+      this.bobType = type;
+    },
     getOptions () {
       part({
         analysisSchemeId: this.analysisSchemeId,
@@ -708,7 +715,6 @@ export default {
           first += '0'
         }
         this.maxData = first
-        console.log(this.maxData)
         this.chartType = allData.analysisDimension;
         this.bobType = allData.defaultBobOptionsForFront;
         if (this.chartType === 'combination') {
@@ -806,7 +812,6 @@ export default {
               }
             })
           })
-          console.log('', this.form.combination)
         } else {
           this.form = {
             supplier: [],
@@ -908,7 +913,6 @@ export default {
             this.formUpdata.remark = this.$refs.bobAnalysis.remark
             this.formUpdata.name = this.analysisName
             this.formUpdata.defaultBobOptions = this.formUpdata.defaultBobOptions.replaceAll("▼","")
-            console.log(this.formUpdata)
             update(this.formUpdata)
               .then((res) => {
                 iMessage.success("保存成功");
@@ -947,7 +951,6 @@ export default {
       }
     },
     doActive (i, index) {
-      console.log(i, index)
       this.label = i
       /*  this.$nextTick(() => {
          //页面滚动了的距离

@@ -8,8 +8,8 @@
 -->
 <template>
   <div v-loading="onDataLoading">
-    <iCard>
-      <template v-slot:header>
+    <iCard :class="[onPreview?'preview-card':'']">
+      <template v-slot:header v-if="!onPreview">
         <div class="flex-between-center titleBox">
           <div class="flex-between-center">
             <span class="title">费用详情</span>
@@ -23,7 +23,7 @@
             </div>
 
           </div>
-          <div v-show="checkFLag">
+          <div>
             <iButton v-show="!allExpand"
                      @click="handleAllCollapse(true)">全部展开</iButton>
             <iButton v-show="allExpand"
@@ -39,11 +39,6 @@
               <iButton @click="saveGroup">保存分组</iButton>
               <iButton @click="clearGrouped">取消</iButton>
             </template>
-          </div>
-          <div v-show="!checkFLag">
-            <iButton @click="clear">移除</iButton>
-            <iButton @click="finish">完成</iButton>
-            <iButton @click="off">取消</iButton>
           </div>
         </div>
       </template>
@@ -100,19 +95,6 @@
           </div>
         </div>
       </div>
-      <!-- <table1 :tableList="tableList"
-              v-if="totalTable"
-              v-bind="$attrs"
-              :expends="expedsArr"></table1> -->
-      <!-- <groupedTable ref="groupedTable"
-                    class="margin-top20"
-                    :tableList="groupList"
-                    v-if="!totalTable"
-                    :activeName="activeName"
-                    :SchemeId="schemaId"
-                    @removeList="removeList"
-                    @groupBy="groupBtn"
-                    v-bind="$attrs"></groupedTable> -->
       <iDialog :visible.sync="groupToDialogVisible"
                title="分组至"
                width="20%">
@@ -140,15 +122,6 @@
                     @remake="sure"
                     @cancel="cancel"></remarkDialog>
     </iCard>
-    <!-- <ungroupedTable ref="ungroupedTable"
-                    class="margin-top10"
-                    :tableList="ungroupList"
-                    :SchemeId="schemaId"
-                    @activeName="returnAcitiveName"
-                    v-if="groupby"
-                    @groupBy="groupBtn"
-                    @merge="merge"
-                    v-bind="$attrs"></ungroupedTable> -->
   </div>
 </template>
 
@@ -159,17 +132,13 @@ import tree from './tree'
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
-import { arrayToTree } from '@/utils'
 import {
   chargeRetrieve,
   getRfqToRemark,
-  modifyRfqToRemark,
   down,
   getGroupInfo,
   addComponentToGroup,
-  merge,
   groupTerms,
-  removeComponentFromGroup,
   groupedCancel,
   groupedSubmit,
   restore,
@@ -177,14 +146,10 @@ import {
 } from "@/api/partsrfq/bob";
 import { update } from "@/api/partsrfq/bob/analysisList";
 import {
-  tableList,
-  ungroupList,
-  groupList,
   groupByList,
   ungroupByList,
   ungroupByHeader,
 } from "./components/data.js";
-import datasetBarVue from '../../externalAccessToAnalysisTools/categoryManagementAssistant/mek/components/datasetBar.vue';
 
 export default {
   inheritAttrs: true,
@@ -197,6 +162,30 @@ export default {
     ungroupedTable,
     groupedTable,
     remarkDialog,
+  },
+  props: {
+    label: {
+      type: String,
+      default: ""
+    },
+    formUpdata: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    propSchemeId: {
+      type: String,
+      default: ""
+    },
+    propGroupId: {
+      type: String,
+      default: ""
+    },
+    onPreview: {
+      type: Boolean,
+      default: false
+    }
   },
   data () {
     return {
@@ -247,27 +236,8 @@ export default {
       this.schemaId = this.propSchemeId
     }
 
+console.log(this.schemaId,this.groupId)
     this.getRfqToRemark();
-  },
-  props: {
-    label: {
-      type: String,
-      default: ""
-    },
-    formUpdata: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
-    propSchemeId: {
-      type: String,
-      default: ""
-    },
-    propGroupId: {
-      type: String,
-      default: ""
-    }
   },
   watch: {
     activeName: {
@@ -289,6 +259,14 @@ export default {
     }
   },
   methods: {
+    onPreviewStyle() {
+      if (this.onPreview) {
+        return {
+          boxShadow: 'none'
+        }
+      }
+      return {}
+    },
     decideRowClass (row, idx) {
       if (this.collapseItems.length == 0) {
         return idx % 2 == 0 ? 'table-odd' : 'table-even';
@@ -895,27 +873,6 @@ export default {
         }
       })
     },
-    clear () {
-      if (!this.activeName) {
-        this.activeName = "rawUngrouped"
-      }
-      removeComponentFromGroup({
-        roundDetailIdList: this.$refs.groupedTable.checkLists
-      }).then(res => {
-        this.$refs.groupedTable.chargeRetrieve({
-          isDefault: true,
-          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : "maGrouped",
-          schemaId: this.schemaId,
-          groupId: this.groupId
-        })
-        this.$refs.ungroupedTable.chargeRetrieve({
-          isDefault: true,
-          viewType: this.activeName,
-          schemaId: this.schemaId,
-          groupId: this.groupId
-        })
-      })
-    },
     finish () {
       groupedSubmit({
         schemaId: this.schemaId,
@@ -1083,5 +1040,8 @@ export default {
 }
 .el-checkbox__input.is-checked + .el-checkbox__label {
   color: #ffffff !important;
+}
+.preview-card {
+  box-shadow: none !important;
 }
 </style>
