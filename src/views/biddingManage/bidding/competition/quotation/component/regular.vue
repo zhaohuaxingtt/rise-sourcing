@@ -46,25 +46,12 @@
           prop="biddingQuoteRule.limitValue"
           :hideRequiredAsterisk="true"
         >
-          <template v-if="isInputFlag">
-            <iInput
-              class="input-wrap"
-              @focus="handlerInputFocus"
-              @blur="handlerInputBlur"
-              :value="ruleForm.biddingQuoteRule.limitValue"
-              @input="value => $set(ruleForm.biddingQuoteRule, 'limitValue', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-              maxlength="15"
-            ></iInput>
-          </template>
-          <template v-else>
-            <iInput
-              class="input-wrap"
-              @focus="handlerInputFocus"
-              @blur="handlerInputBlur"
-              :value="limitValueValue"
-              maxlength="15"
-            ></iInput>
-          </template>
+          <operatorInput
+            class="input-wrap"
+            v-model="ruleForm.biddingQuoteRule.limitValue"
+            maxlength="15"
+          >
+          </operatorInput>
         </iFormItem>
       </div>
     </div>
@@ -103,24 +90,12 @@
                 :hideRequiredAsterisk="true"
                 class="inline-block"
                 >
-                <template v-if="isInputFlag">
-                  <iInput
+                <operatorInput
                   class="input-number70"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
-                  :value="ruleForm.biddingQuoteRule.quotedValue"
-                  @input="value => $set(ruleForm.biddingQuoteRule, 'quotedValue', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-                  ></iInput>
-                </template>
-                <template v-else>
-                  <iInput
-                  class="input-number70"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
-                  :value="quotedValueValue"
-                  oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-                  ></iInput>
-                </template>
+                  v-model="ruleForm.biddingQuoteRule.quotedValue"
+                  maxlength="15"
+                >
+                </operatorInput>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
               {{language('BIDDING_xQICHUBAOJIA','x起初报价）')}}</el-radio
@@ -450,25 +425,12 @@
                 :hideRequiredAsterisk="true"
                 class="inline-block"
                 >
-                <template v-if="isInputFlag">
-                  <iInput
-                    class="input-number70"
-                    @focus="handlerInputFocus"
-                    @blur="handlerInputBlur"
-                    :value="ruleForm.biddingQuoteRule.priceLimit"
-                    @input="value => $set(ruleForm.biddingQuoteRule, 'priceLimit', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-                    maxlength="15"
-                  ></iInput>
-                </template>
-                <template v-else>
-                  <iInput
-                    class="input-number70"
-                    @focus="handlerInputFocus"
-                    @blur="handlerInputBlur"
-                    :value="priceLimitValue"
-                    maxlength="15"
-                  ></iInput>
-                </template>
+                <operatorInput
+                  class="input-number70"
+                  v-model="ruleForm.biddingQuoteRule.priceLimit"
+                  maxlength="15"
+                >
+                </operatorInput>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
               {{language('BIDDING_HCNXSJJPM', '后，才能显示竞价排名')}}</el-radio
@@ -512,6 +474,7 @@ import {
   baseRules,
   currencyMultipleLib,
 } from "./data.js";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   components: {
@@ -520,6 +483,7 @@ export default {
     iLabel,
     iLabelML,
     iSelect,
+    operatorInput
   },
   props: {
     value: {

@@ -4,7 +4,7 @@
     v-bind="$attrs"
     v-on="$listeners"
     :type="isFocus ? 'number' : 'text'"
-    :value="isFocus ? value : formatValue"
+    :value="isFocus ? innerValue : formatValue"
     :oninput="`value=value.indexOf('.') > -1 ? value.slice(value.indexOf('.') - ${maxIntLen}, value.indexOf('.')) + value.slice(value.indexOf('.'), value.indexOf('.') + 1 + ${maxDecimalLen}):value.slice(0,${maxIntLen})`"
     @focus="handleFocus"
     @blur="handleBlur"
@@ -36,13 +36,26 @@ export default {
   },
   data() {
     return {
+      innerValue: this.value,
       isFocus: false,
+    }
+  },
+  watch: {
+    isFocus(val) {
+      if(val) {
+        if (this.innerValue) {
+          this.innerValue = Number(this.innerValue)?.toFixed(2);
+        }
+      }
+    },
+    value(val) {
+      this.innerValue = val;
     }
   },
   computed: {
     formatValue() {
-      return Number(this.value)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,');
-    }
+      return Number(this.innerValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,');
+    },
   },
   methods: {
     handleFocus(evt) {
@@ -54,7 +67,7 @@ export default {
       this.$emit('blur', evt);
     },
     handleInput(value) {
-      this.$emit('input', value)
+      this.$emit('input', Number(value))
     }
   },
 }

@@ -137,7 +137,7 @@ export default {
           return [
             { label: "报价单", path: 1, components: "quotationOrder" },
             { label: "出价列表", path: 2, components: "bidList" },
-            { label: "询价附件", path: 3, components: "" },
+            { label: "询价附件", path: 3, components: "attachment" },
             { label: "供应商排名", path: 4, components: "supplierList" },
           ];
         default:
@@ -228,11 +228,12 @@ export default {
         }
       }
       if(path == 3){
-        if(roundType === '05'){
-          return true
-        } else {
-          return false
-        }
+        // if(roundType === '05'){
+        //   return true
+        // } else {
+        //   return false
+        // }
+        return true
       }
       if (path == 4) {
         if (
