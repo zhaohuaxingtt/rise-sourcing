@@ -1,15 +1,16 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-17 17:43:56
+ * @LastEditTime: 2021-11-29 20:20:43
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
 -->
 <template>
   <div v-loading="onDataLoading">
-    <iCard>
-      <template v-slot:header>
+    <iCard :class="[onPreview?'preview-card':'']">
+      <template v-slot:header
+                v-if="!onPreview">
         <div class="flex-between-center titleBox">
           <div class="flex-between-center">
             <span class="title">费用详情</span>
@@ -23,7 +24,7 @@
             </div>
 
           </div>
-          <div v-show="checkFLag">
+          <div>
             <iButton v-show="!allExpand"
                      @click="handleAllCollapse(true)">全部展开</iButton>
             <iButton v-show="allExpand"
@@ -40,11 +41,6 @@
               <iButton @click="clearGrouped">取消</iButton>
             </template>
           </div>
-          <div v-show="!checkFLag">
-            <iButton @click="clear">移除</iButton>
-            <iButton @click="finish">完成</iButton>
-            <iButton @click="off">取消</iButton>
-          </div>
         </div>
       </template>
       <div>
@@ -56,7 +52,8 @@
                class="table-cell"
                :style="{'font-weight': 'bold','width': 'calc(80% / ' + tableTitle.length + ')'}">{{item.title}}</div>
         </div>
-        <div class="flex tabeleList" ref="cbdDetailTable">
+        <div class="flex tabeleList"
+             ref="cbdDetailTable">
           <div style="display:flex;flex-flow:column nowrap;">
             <div v-for="(item,index) in tableListData"
                  :key="index"
@@ -67,52 +64,51 @@
                  :root-id="item.rootId"
                  :parent-id="item.parentId"
                  :ref="!item.parentId ? item.id:''">
-              <span class="table-cell"
-                    style="justify-content: flex-start;width: 20%"
-                    :style="{'padding-left': 20*item.level + 'px'}">
-                <i v-if="item.hasChild"
-                   :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
-                   style="cursor: pointer;padding-right: 4px;"
-                   @click="handleCollapse(item, item.expanded)"></i>
-                <template v-if="item.grouped || item.matchId > 0 || item.isFresh">
-                  <span v-if="editGroupedLabel[item.id]" :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
-                  <el-input v-else v-model="item.title">
-                    <template slot="append">
-                      <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
-                    </template>
-                  </el-input>
-                </template>
-                <span v-else
-                      :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
-              </span>
-              <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
-                    v-for="(title, titleIdx) in tableTitle"
-                    :key="titleIdx"
-                    :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
-                <el-checkbox v-show="onGroupingModel"
-                             v-if="item.groupKey"
-                             style="margin-right: 10px;"
-                             v-model="item['checked#' + titleIdx]"
-                             @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
-                {{item['label#'+titleIdx]}}
-              </span>
+              <template v-if="item.isBreakLine">
+                <span class="table-cell"
+                      style="width: 100%;text-align:center;font-weight: bold;">
+                  {{language("LK_NONGROUPEDBREAKTIPS","以下为未分组数据")}}
+                </span>
+              </template>
+              <template v-else>
+                <span class="table-cell"
+                      style="justify-content: flex-start;width: 20%"
+                      :style="{'padding-left': 20*item.level + 'px'}">
+                  <i v-if="item.hasChild"
+                     :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
+                     style="cursor: pointer;padding-right: 4px;"
+                     @click="handleCollapse(item, item.expanded)"></i>
+                  <template v-if="(item.grouped || item.matchId > 0 || item.isFresh) && !onPreview">
+                    <span v-if="editGroupedLabel[item.id]"
+                          :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                    <el-input v-else
+                              v-model="item.title">
+                      <template slot="append">
+                        <i class="el-icon-check"
+                           @click.stop="updateGroupedLabel(item)"
+                           style="cursor: pointer;"></i>
+                      </template>
+                    </el-input>
+                  </template>
+                  <span v-else
+                        :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                </span>
+                <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
+                      v-for="(title, titleIdx) in tableTitle"
+                      :key="titleIdx"
+                      :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
+                  <el-checkbox v-show="onGroupingModel"
+                               v-if="item.groupKey"
+                               style="margin-right: 10px;"
+                               v-model="item['checked#' + titleIdx]"
+                               @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
+                  {{item['label#'+titleIdx]}}
+                </span>
+              </template>
             </div>
           </div>
         </div>
       </div>
-      <!-- <table1 :tableList="tableList"
-              v-if="totalTable"
-              v-bind="$attrs"
-              :expends="expedsArr"></table1> -->
-      <!-- <groupedTable ref="groupedTable"
-                    class="margin-top20"
-                    :tableList="groupList"
-                    v-if="!totalTable"
-                    :activeName="activeName"
-                    :SchemeId="schemaId"
-                    @removeList="removeList"
-                    @groupBy="groupBtn"
-                    v-bind="$attrs"></groupedTable> -->
       <iDialog :visible.sync="groupToDialogVisible"
                title="分组至"
                width="20%">
@@ -140,15 +136,6 @@
                     @remake="sure"
                     @cancel="cancel"></remarkDialog>
     </iCard>
-    <!-- <ungroupedTable ref="ungroupedTable"
-                    class="margin-top10"
-                    :tableList="ungroupList"
-                    :SchemeId="schemaId"
-                    @activeName="returnAcitiveName"
-                    v-if="groupby"
-                    @groupBy="groupBtn"
-                    @merge="merge"
-                    v-bind="$attrs"></ungroupedTable> -->
   </div>
 </template>
 
@@ -159,17 +146,13 @@ import tree from './tree'
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
 import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
-import { arrayToTree } from '@/utils'
 import {
   chargeRetrieve,
   getRfqToRemark,
-  modifyRfqToRemark,
   down,
   getGroupInfo,
   addComponentToGroup,
-  merge,
   groupTerms,
-  removeComponentFromGroup,
   groupedCancel,
   groupedSubmit,
   restore,
@@ -177,14 +160,10 @@ import {
 } from "@/api/partsrfq/bob";
 import { update } from "@/api/partsrfq/bob/analysisList";
 import {
-  tableList,
-  ungroupList,
-  groupList,
   groupByList,
   ungroupByList,
   ungroupByHeader,
 } from "./components/data.js";
-import datasetBarVue from '../../externalAccessToAnalysisTools/categoryManagementAssistant/mek/components/datasetBar.vue';
 
 export default {
   inheritAttrs: true,
@@ -198,10 +177,34 @@ export default {
     groupedTable,
     remarkDialog,
   },
+  props: {
+    label: {
+      type: String,
+      default: ""
+    },
+    formUpdata: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    propSchemeId: {
+      type: String,
+      default: ""
+    },
+    propGroupId: {
+      type: String,
+      default: ""
+    },
+    onPreview: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     return {
       onDataLoading: false,
-      editGroupedLabel:[],
+      editGroupedLabel: [],
       allExpand: true,
       flag: false,
       flag1: true,
@@ -247,27 +250,8 @@ export default {
       this.schemaId = this.propSchemeId
     }
 
+    console.log(this.schemaId, this.groupId)
     this.getRfqToRemark();
-  },
-  props: {
-    label: {
-      type: String,
-      default: ""
-    },
-    formUpdata: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
-    propSchemeId: {
-      type: String,
-      default: ""
-    },
-    propGroupId: {
-      type: String,
-      default: ""
-    }
   },
   watch: {
     activeName: {
@@ -280,7 +264,7 @@ export default {
         this.$nextTick(function () {
           this.tableListData.forEach((item) => {
             if (item.title == val) {
-              this.$refs[item.id][0].scrollIntoView({behavior: "smooth", block: "end"})
+              this.$refs[item.id][0].scrollIntoView({ behavior: "smooth", block: "end" })
               console.log(this.$refs[item.id])
             }
           })
@@ -289,6 +273,14 @@ export default {
     }
   },
   methods: {
+    onPreviewStyle () {
+      if (this.onPreview) {
+        return {
+          boxShadow: 'none'
+        }
+      }
+      return {}
+    },
     decideRowClass (row, idx) {
       if (this.collapseItems.length == 0) {
         return idx % 2 == 0 ? 'table-odd' : 'table-even';
@@ -464,7 +456,7 @@ export default {
         }
       });
     },
-    addGroupedToOrigin(childs, grouped) {
+    addGroupedToOrigin (childs, grouped) {
       if (grouped.child.length == 0) {
         return;
       }
@@ -483,7 +475,6 @@ export default {
       })
     },
     chargeRetrieve (params) {
-
       chargeRetrieve(params)
         .then((allDatas) => {
           try {
@@ -554,10 +545,14 @@ export default {
     },
     mergeData (tableData) {
       var merged = JSON.parse(JSON.stringify(tableData[0]));
+      var needInsertBreakLine = false;
       merged.forEach((item) => {
         item["label#0"] = item.value
         if (!item.id) {
           item.id = this.createUuid();
+        }
+        if (item.matchId > 0 && !needInsertBreakLine) {
+          needInsertBreakLine = true;
         }
         delete item.value
       })
@@ -568,6 +563,19 @@ export default {
           })
         }
       })
+
+      if (needInsertBreakLine) {
+        for (var i = 0; i < merged.length; i++) {
+          if (merged[i].matchId < 0 && i != merged.length - 1) {
+            var breakLine = JSON.parse(JSON.stringify(merged[i - 1]))
+            breakLine.isBreakLine = true;
+            merged.splice(i, 0, breakLine)
+            break;
+          }
+        }
+      }
+
+      console.log(merged)
       this.tableListData = merged
     },
     addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, rootId, parentIndex) {
@@ -895,27 +903,6 @@ export default {
         }
       })
     },
-    clear () {
-      if (!this.activeName) {
-        this.activeName = "rawUngrouped"
-      }
-      removeComponentFromGroup({
-        roundDetailIdList: this.$refs.groupedTable.checkLists
-      }).then(res => {
-        this.$refs.groupedTable.chargeRetrieve({
-          isDefault: true,
-          viewType: this.activeName === 'rawUngrouped' ? 'rawGrouped' : "maGrouped",
-          schemaId: this.schemaId,
-          groupId: this.groupId
-        })
-        this.$refs.ungroupedTable.chargeRetrieve({
-          isDefault: true,
-          viewType: this.activeName,
-          schemaId: this.schemaId,
-          groupId: this.groupId
-        })
-      })
-    },
     finish () {
       groupedSubmit({
         schemaId: this.schemaId,
@@ -946,7 +933,7 @@ export default {
     },
     down () {
       this.formUpdata.remark = this.remark
-      this.formUpdata.defaultBobOptions.replaceAll("▼","")
+      // this.formUpdata.defaultBobOptions.replaceAll("▼","")
       this.$confirm('此次导出将默认保存当前”费用详情“界面数据。', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -1083,5 +1070,8 @@ export default {
 }
 .el-checkbox__input.is-checked + .el-checkbox__label {
   color: #ffffff !important;
+}
+.preview-card {
+  box-shadow: none !important;
 }
 </style>
