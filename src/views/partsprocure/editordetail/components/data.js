@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:50
- * @LastEditTime: 2021-11-25 10:31:57
+ * @LastEditTime: 2021-11-26 13:58:41
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
@@ -14,6 +14,7 @@ export const detailData = {
 	cartypeCategory: "", //车型大类
 	carTypeProjectNum: "", //	车型项目编号
 	carTypeProjectZh: "", //	 车型项目
+	carTypeProjectId:"",//车型项目ID
 	categoryCode: "", //	 材料组编号
 	cfController: "", //	integer($int64) CF控制员
 	isCommonSourcing: "", //	
@@ -53,6 +54,7 @@ export const detailData = {
 	isDB: 0,// 是否DB件
 	oldFsnrGsnrNum:'', //老零件号
 	carTypeModel:[],//车型
+	procureFactoryId:""//采购工厂ID
 }
 // 采购项目拆分表头
 export const splitPurchTitle = [

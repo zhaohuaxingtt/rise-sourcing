@@ -5,8 +5,8 @@
   >
     <div class="body">
         <div>
-          <span class="title" v-if="params.partProjectSource == 1">
-            {{`${language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}
+          <span class="title" >
+            {{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}</template>
           </span>
           <div class="btn-left">
             <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
@@ -145,6 +145,8 @@ export default {
           }
   
           if (infoRes.data) {
+            infoRes.data.tpRecordList.forEach(val=>{
+            })
             this.tableListData = infoRes.data.tpRecordList;
             this.page.totalCount = infoRes.data.totalCount || 0;
           }
@@ -228,7 +230,6 @@ export default {
     },
     //删除
     async deleteData() {
-      console.log(this.selectData.length,'this.selectData.length');
       if(!this.selectData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'))
         return
@@ -245,7 +246,6 @@ export default {
               noInterfaceDelete.push(val)
             }
           })
-          console.log()
           const idsLsit = interfaceDelete.map(val => val.id)
             noInterfaceDelete.forEach(val=>{
                 this.tableListData = this.tableListData.filter((item) => {
@@ -253,7 +253,6 @@ export default {
                 return item
               })
             })
-          console.log(noInterfaceDelete);
           if(idsLsit.length != 0) {
             delCarDosage(idsLsit).then(res =>{
               if(res.code == '200') {
@@ -281,7 +280,7 @@ export default {
           this.$set(val,'perCarDosage',this.getPerCarDosage.perCar)
         }
       })
-      this.tableListData = [...data]
+      this.tableListData = data
     },
     //保存
     saveData() {
@@ -308,7 +307,6 @@ export default {
 
     //添加表格数据
     getSelectData(val) {
-      console.log(val);
       let valTemData = []
       let copyData  = [...val]
       if(this.isGs == true) {
@@ -332,8 +330,8 @@ export default {
           let dataItem = {}
           dataItem.purchasingRequirementObjectId = this.params.id
           dataItem.cartypeLevel = value.cartypeLevel
-          dataItem.engineType = value.engineVo.engineName
-          dataItem.gearType = value.gearboxVo.gearboxName
+          dataItem.engineType = value.engineVo?.engineName
+          dataItem.gearType = value.gearboxVo?.gearboxName
           dataItem.otherInfo = value.otherConf
           dataItem.cartype  = value.carProjectId
           dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId

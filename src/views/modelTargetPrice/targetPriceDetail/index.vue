@@ -118,7 +118,7 @@ export default {
       this.exportLoading = loading
     },
     gotoQuery() {
-      this.$router.push('/modeltargetprice/query')
+      this.$router.push('/targetpriceandscore/modeltargetprice/query')
     },
     handleConfirm(reason) {
       const params = {
