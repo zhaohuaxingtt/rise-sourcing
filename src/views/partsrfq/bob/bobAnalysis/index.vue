@@ -62,35 +62,42 @@
                  :root-id="item.rootId"
                  :parent-id="item.parentId"
                  :ref="!item.parentId ? item.id:''">
-              <span class="table-cell"
-                    style="justify-content: flex-start;width: 20%"
-                    :style="{'padding-left': 20*item.level + 'px'}">
-                <i v-if="item.hasChild"
-                   :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
-                   style="cursor: pointer;padding-right: 4px;"
-                   @click="handleCollapse(item, item.expanded)"></i>
-                <template v-if="(item.grouped || item.matchId > 0 || item.isFresh) && !onPreview">
-                  <span v-if="editGroupedLabel[item.id]" :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
-                  <el-input v-else v-model="item.title">
-                    <template slot="append">
-                      <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
-                    </template>
-                  </el-input>
-                </template>
-                <span v-else
-                      :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
-              </span>
-              <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
-                    v-for="(title, titleIdx) in tableTitle"
-                    :key="titleIdx"
-                    :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
-                <el-checkbox v-show="onGroupingModel"
-                             v-if="item.groupKey"
-                             style="margin-right: 10px;"
-                             v-model="item['checked#' + titleIdx]"
-                             @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
-                {{item['label#'+titleIdx]}}
-              </span>
+              <template v-if="item.isBreakLine">
+                  <span class="table-cell" style="width: 100%;text-align:center;font-weight: bold;">
+                    {{language("LK_NONGROUPEDBREAKTIPS","以下为未分组数据")}}
+                  </span>
+              </template>
+              <template v-else>
+                <span class="table-cell"
+                      style="justify-content: flex-start;width: 20%"
+                      :style="{'padding-left': 20*item.level + 'px'}">
+                  <i v-if="item.hasChild"
+                    :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
+                    style="cursor: pointer;padding-right: 4px;"
+                    @click="handleCollapse(item, item.expanded)"></i>
+                  <template v-if="(item.grouped || item.matchId > 0 || item.isFresh) && !onPreview">
+                    <span v-if="editGroupedLabel[item.id]" :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                    <el-input v-else v-model="item.title">
+                      <template slot="append">
+                        <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
+                      </template>
+                    </el-input>
+                  </template>
+                  <span v-else
+                        :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                </span>
+                <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
+                      v-for="(title, titleIdx) in tableTitle"
+                      :key="titleIdx"
+                      :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
+                  <el-checkbox v-show="onGroupingModel"
+                              v-if="item.groupKey"
+                              style="margin-right: 10px;"
+                              v-model="item['checked#' + titleIdx]"
+                              @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
+                  {{item['label#'+titleIdx]}}
+                </span>
+              </template>
             </div>
           </div>
         </div>
@@ -532,10 +539,14 @@ console.log(this.schemaId,this.groupId)
     },
     mergeData (tableData) {
       var merged = JSON.parse(JSON.stringify(tableData[0]));
+      var needInsertBreakLine = false;
       merged.forEach((item) => {
         item["label#0"] = item.value
         if (!item.id) {
           item.id = this.createUuid();
+        }
+        if (item.matchId > 0 && !needInsertBreakLine) {
+          needInsertBreakLine = true;
         }
         delete item.value
       })
@@ -546,6 +557,19 @@ console.log(this.schemaId,this.groupId)
           })
         }
       })
+
+      if (needInsertBreakLine) {
+        for (var i=0;i<merged.length;i++) {
+          if (merged[i].matchId < 0 && i != merged.length - 1) {
+            var breakLine = JSON.parse(JSON.stringify(merged[i-1]))
+            breakLine.isBreakLine = true;
+            merged.splice(i,0,breakLine)
+            break;
+          }
+        }
+      }
+
+      console.log(merged)
       this.tableListData = merged
     },
     addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, rootId, parentIndex) {
