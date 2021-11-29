@@ -83,17 +83,13 @@
                       <span :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
                       <i class="el-icon-edit" style="cursor: pointer;margin-left: 10px;" @click.stop="changeToEditMode(item.id)"></i>
                     </template>
-                    <el-input v-else
-                              v-model="item.title">
+                    <el-input v-else v-model="item.title">
                       <template slot="append">
-                        <i class="el-icon-check"
-                           @click.stop="updateGroupedLabel(item)"
-                           style="cursor: pointer;"></i>
+                        <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
                       </template>
                     </el-input>
                   </template>
-                  <span v-else
-                        :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                  <span v-else :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
                 </span>
                 <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
                       v-for="(title, titleIdx) in tableTitle"
