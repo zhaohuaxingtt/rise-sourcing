@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-23 23:15:55
+ * @LastEditTime: 2021-11-26 17:30:47
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -227,16 +227,18 @@ function _permissionKeySendToService(router) {
   )
   console.log(store.state.permission.resourceList)
   const serviceData = router.matched.map((r, i) => {
-    return {
-      type: 3,
-      name: r.meta.title,
-      permissionKey: r.path.toUpperCase(),
-      url: r.path,
-      target: r.path,
-      resourceList:
-        i == router.matched.length - 1
-          ? store.state.permission.resourceList
-          : [],
+    if(r.meta.title && r.path){
+      return {
+        type: 3,
+        name: r.meta.title,
+        permissionKey: r.path.toUpperCase(),
+        url: r.path,
+        target: r.path,
+        resourceList:
+          i == router.matched.length - 1
+            ? store.state.permission.resourceList
+            : [],
+      }
     }
   })
   sendPermissonKey(serviceData)
