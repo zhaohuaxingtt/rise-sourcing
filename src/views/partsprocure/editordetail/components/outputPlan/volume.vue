@@ -230,7 +230,6 @@ export default {
     },
     //删除
     async deleteData() {
-      console.log(this.selectData.length,'this.selectData.length');
       if(!this.selectData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'))
         return
@@ -247,7 +246,6 @@ export default {
               noInterfaceDelete.push(val)
             }
           })
-          console.log()
           const idsLsit = interfaceDelete.map(val => val.id)
             noInterfaceDelete.forEach(val=>{
                 this.tableListData = this.tableListData.filter((item) => {
@@ -255,7 +253,6 @@ export default {
                 return item
               })
             })
-          console.log(noInterfaceDelete);
           if(idsLsit.length != 0) {
             delCarDosage(idsLsit).then(res =>{
               if(res.code == '200') {
@@ -310,7 +307,6 @@ export default {
 
     //添加表格数据
     getSelectData(val) {
-      console.log(val);
       let valTemData = []
       let copyData  = [...val]
       if(this.isGs == true) {
@@ -334,8 +330,8 @@ export default {
           let dataItem = {}
           dataItem.purchasingRequirementObjectId = this.params.id
           dataItem.cartypeLevel = value.cartypeLevel
-          dataItem.engineType = value.engineVo.engineName
-          dataItem.gearType = value.gearboxVo.gearboxName
+          dataItem.engineType = value.engineVo?.engineName
+          dataItem.gearType = value.gearboxVo?.gearboxName
           dataItem.otherInfo = value.otherConf
           dataItem.cartype  = value.carProjectId
           dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId
