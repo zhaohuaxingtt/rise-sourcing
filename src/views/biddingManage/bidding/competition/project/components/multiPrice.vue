@@ -300,8 +300,11 @@
 
           <!-- 目标价 -->
           <template slot="targetPrice" slot-scope="scope" >
+            <template  >
+              <div>{{ multiPriceValue[scope.row['ids']].targetPrice }}</div>
+            </template>
             <!-- 只读 -->
-            <template  v-if="ruleForm.biddingStatus !== '01'">
+            <!-- <template  v-if="ruleForm.biddingStatus !== '01'">
               <div>{{ multiPriceValue[scope.row['ids']].targetPrice }}</div>
             </template>
             <template v-else>
@@ -309,7 +312,7 @@
                   v-model="scope.row['targetPrice']"
                 >
               </operatorInput>
-            </template>
+            </template> -->
           </template>
 
           <!-- 产品名称 -->
@@ -364,8 +367,11 @@
 
           <!-- 平均年产量 -->
           <template slot="aveAnnualOutput" slot-scope="scope" >
+            <template >
+              <div>{{ multiPriceValue[scope.row['ids']].aveAnnualOutput }}</div>
+            </template>
             <!-- 只读 -->
-            <template  v-if="ruleForm.biddingStatus !== '01'">
+            <!-- <template  v-if="ruleForm.biddingStatus !== '01'">
               <div>{{ multiPriceValue[scope.row['ids']].aveAnnualOutput }}</div>
             </template>
             <template v-else>
@@ -373,13 +379,16 @@
                   v-model="scope.row['aveAnnualOutput']"
                 >
               </operatorInput>
-            </template>
+            </template> -->
           </template>
 
           <!-- 最大年产量 -->
           <template slot="maxAnnualOutput" slot-scope="scope" >
+            <template >
+              <div>{{ multiPriceValue[scope.row['ids']].maxAnnualOutput }}</div>
+            </template>
             <!-- 只读 -->
-            <template  v-if="ruleForm.biddingStatus !== '01'">
+            <!-- <template  v-if="ruleForm.biddingStatus !== '01'">
               <div>{{ multiPriceValue[scope.row['ids']].maxAnnualOutput }}</div>
             </template>
             <template v-else>
@@ -387,7 +396,7 @@
                   v-model="scope.row['maxAnnualOutput']"
                 >
               </operatorInput>
-            </template>
+            </template> -->
           </template>
 
           <!-- 操作 -->
@@ -534,10 +543,10 @@ export default {
       factoryPricePercent: "",
       multiPleTableTitle,
       priceProps: [
-        "lifecycle",
+        // "lifecycle",
       ],
       inputProps: [
-        "lifecycle",
+        // "lifecycle",
       ],
       quantityUnit: [],
       selectedTableData: [],
