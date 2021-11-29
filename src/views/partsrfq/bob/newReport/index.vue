@@ -912,7 +912,7 @@ export default {
           }).then(() => {
             this.formUpdata.remark = this.$refs.bobAnalysis.remark
             this.formUpdata.name = this.analysisName
-            this.formUpdata.defaultBobOptions = this.formUpdata.defaultBobOptions.replaceAll("▼","")
+            // this.formUpdata.defaultBobOptions = this.formUpdata.defaultBobOptions.replaceAll("▼","")
             update(this.formUpdata)
               .then((res) => {
                 iMessage.success("保存成功");

@@ -69,7 +69,7 @@
                    :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
                    style="cursor: pointer;padding-right: 4px;"
                    @click="handleCollapse(item, item.expanded)"></i>
-                <template v-if="item.grouped || item.matchId > 0 || item.isFresh">
+                <template v-if="(item.grouped || item.matchId > 0 || item.isFresh) && !onPreview">
                   <span v-if="editGroupedLabel[item.id]" :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
                   <el-input v-else v-model="item.title">
                     <template slot="append">
@@ -903,7 +903,7 @@ console.log(this.schemaId,this.groupId)
     },
     down () {
       this.formUpdata.remark = this.remark
-      this.formUpdata.defaultBobOptions.replaceAll("▼","")
+      // this.formUpdata.defaultBobOptions.replaceAll("▼","")
       this.$confirm('此次导出将默认保存当前”费用详情“界面数据。', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

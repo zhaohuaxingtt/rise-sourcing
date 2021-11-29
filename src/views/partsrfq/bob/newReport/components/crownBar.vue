@@ -280,7 +280,7 @@ export default {
               alignWithLabel: true,
             },
             axisLabel: {
-              show: false,
+              // show: false,
               align: 'center',
               fontFamily: "Arial",
               interval: 0,
