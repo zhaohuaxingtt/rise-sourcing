@@ -79,8 +79,10 @@
                      style="cursor: pointer;padding-right: 4px;"
                      @click="handleCollapse(item, item.expanded)"></i>
                   <template v-if="(item.grouped || item.matchId > 0 || item.isFresh) && !onPreview">
-                    <span v-if="editGroupedLabel[item.id]"
-                          :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                    <template v-if="onEditLabels.indexOf(item.id) < 0">
+                      <span :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                      <i class="el-icon-edit" style="cursor: pointer;margin-left: 10px;" @click.stop="changeToEditMode(item.id)"></i>
+                    </template>
                     <el-input v-else
                               v-model="item.title">
                       <template slot="append">
@@ -140,7 +142,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iDialog, iMessage } from "rise";
+import { icon, iCard, iButton, iDialog, iMessage } from "rise";
 import table1 from "./components/table1.vue";
 import tree from './tree'
 import remarkDialog from "./components/remarkDialog.vue";
@@ -168,6 +170,7 @@ import {
 export default {
   inheritAttrs: true,
   components: {
+    icon,
     iCard,
     iDialog,
     iButton,
@@ -234,7 +237,8 @@ export default {
       collapseItems: [],
       onGroupingModel: false,
       groupSelectedItems: [],
-      cbdSelectedList: []
+      cbdSelectedList: [],
+      onEditLabels: []
     };
   },
   created () {
@@ -250,7 +254,6 @@ export default {
       this.schemaId = this.propSchemeId
     }
 
-    console.log(this.schemaId, this.groupId)
     this.getRfqToRemark();
   },
   watch: {
@@ -264,8 +267,7 @@ export default {
         this.$nextTick(function () {
           this.tableListData.forEach((item) => {
             if (item.title == val) {
-              this.$refs[item.id][0].scrollIntoView({ behavior: "smooth", block: "end" })
-              console.log(this.$refs[item.id])
+              this.$refs[item.id][0].scrollIntoView({ behavior: "smooth", block: "center" })
             }
           })
         });
@@ -273,6 +275,11 @@ export default {
     }
   },
   methods: {
+    changeToEditMode(id) {
+      console.log(id)
+      this.onEditLabels.push(id)
+      console.log(this.onEditLabels)
+    },
     onPreviewStyle () {
       if (this.onPreview) {
         return {
@@ -387,7 +394,6 @@ export default {
             }
           }
         })
-        console.log(this.cbdSelectedList)
       } else {
         this.tableListData.forEach((obj) => {
           if (obj.id == item.parentId) {
@@ -577,7 +583,6 @@ export default {
         }
       }
 
-      console.log(merged)
       this.tableListData = merged
     },
     addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, rootId, parentIndex) {
@@ -953,9 +958,9 @@ export default {
         groupName: item.title,
         schemaId: this.schemaId
       }).then(res => {
-        console.log(res)
         if (res.code === '200') {
           iMessage.success('修改成功')
+          this.onEditLabels.splice(this.onEditLabels.indexOf(item.id),1)
           this.chargeRetrieve({
             isDefault: true,
             viewType: 'all',
