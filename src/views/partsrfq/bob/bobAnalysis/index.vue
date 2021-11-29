@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-29 20:20:43
+ * @LastEditTime: 2021-11-29 21:25:01
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -347,6 +347,7 @@ export default {
         }
       })
       this.groupSelectedItems = [];
+      this.cbdSelectedList = [];
       this.onGroupingModel = false;
     },
     onGroupItemSelected (checked, item, idx) {
@@ -386,6 +387,7 @@ export default {
             }
           }
         })
+        console.log(this.cbdSelectedList)
       } else {
         this.tableListData.forEach((obj) => {
           if (obj.id == item.parentId) {
@@ -795,9 +797,9 @@ export default {
         code: '1'
       }).then(res => {
         this.groupNameOptions = res.data
-        if (!this.groupNameOptions.matchId) {
-          this.groupNameOptions.matchId = 1;
-        }
+        // if (!this.groupNameOptions.matchId) {
+        //   this.groupNameOptions.matchId = '';
+        // }
       })
     },
     groupToList () {
@@ -805,9 +807,7 @@ export default {
         this.$message.error('请选择分组');
         return
       }
-
       this.onDataLoading = true;
-
       var newDatas = [];
       this.groupSelectedItems.forEach((gi) => {
         this.tableListData.forEach((item) => {
@@ -824,7 +824,6 @@ export default {
           }
         })
       })
-
       var groupedDatas = {}
       newDatas.forEach((item) => {
         if (!groupedDatas[item.rootId]) {
@@ -839,7 +838,6 @@ export default {
           obj[0]["label#" + item.idx] = item["label#" + item.idx]
         }
       })
-
       for (var key in groupedDatas) {
         var rootItemIndex = -1;
         this.tableListData.forEach((item, index) => {
@@ -863,10 +861,9 @@ export default {
           });
         }
       }
-
       addComponentToGroup({
         schemeId: this.schemaId,
-        groupId: this.groupId,
+        groupId: this.selectGroupName.matchId || '',
         groupName: this.selectGroupName.groupName,
         roundDetailIdList: this.cbdSelectedList
       }).then(res => {
