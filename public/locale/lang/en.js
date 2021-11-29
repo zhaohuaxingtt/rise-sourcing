@@ -1013,6 +1013,7 @@
         'LK_CARPROJECTRFQ': '报价时间',
         'LK_NUMBERPREFIX': 'No. ',
         'LK_TURN': ' Turn',
+        'LK_CAIGOULEIXING': '采购类型',
 
         // 定点管理
         'nominationLanguage': {
