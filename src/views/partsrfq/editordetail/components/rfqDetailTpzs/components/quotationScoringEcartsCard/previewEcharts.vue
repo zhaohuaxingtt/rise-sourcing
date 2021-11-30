@@ -129,9 +129,16 @@ export default{
         this.changeParts(data)
         // 清空轮次已选择
         this.luncSelect = ['all']
+        this.supplierSelectlist = ['all']
       }
-      // 只有供应商、零件变化实行联动
-      ['supplierSelectlist', 'partsSelect'].includes(props) && (this.rfqQueryLinkage(data, props))
+      if (props === 'luncSelect') {
+        // 清空零件，轮次已选择
+        this.partsSelect = ['all']
+        this.supplierSelectlist = ['all']
+      }
+      
+      // 联动
+      this.rfqQueryLinkage(data, props)
       
     },
     /**
@@ -252,6 +259,7 @@ export default{
     // 根据供应商查询零件和轮次列表
     rfqQueryLinkage(val=[], key='supplierSelectlist') {
       const supplierIdList =  this.supplierSelectlist.filter(o => o !== 'all')
+      const roundList =  this.RoundList.filter(o => o !== 'all')
       // 查找选中零件的FS号
       const partNumList =  this.partsSelect.filter(o => o !== 'all')
       const fsNumListArray = this.partList.filter(o => partNumList.includes(o.value))
@@ -259,16 +267,25 @@ export default{
       const params = {
         rfqId: this.form.rfqId,
         supplierIdList,
-        fsNumList
+        fsNumList,
+        roundList
       }
       rfqQueryLinkage(params).then(res => {
         if (res && res.code === '200') {
+          // 选择的是供应商，联动零件，轮次
           if (key === 'supplierSelectlist') {
             this.partList = this.translatePartList(res.data.partNum || [])
             this.RoundList = res.data.round || []
           }
+          // 选择的是零件，联动供应商，轮次
           if (key === 'partsSelect') {
+            this.supplierlist = res.data.supplier || []
             this.RoundList = res.data.round || []
+          }
+          // 选择的是轮次，联动供应商，零件
+          if (key === 'luncSelect') {
+            this.supplierlist = res.data.supplier || []
+            this.partList = this.translatePartList(res.data.partNum || [])
           }
         }
       })
