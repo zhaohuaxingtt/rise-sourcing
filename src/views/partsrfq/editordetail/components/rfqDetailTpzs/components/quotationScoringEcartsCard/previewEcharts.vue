@@ -259,7 +259,7 @@ export default{
     // 根据供应商查询零件和轮次列表
     rfqQueryLinkage(val=[], key='supplierSelectlist') {
       const supplierIdList =  this.supplierSelectlist.filter(o => o !== 'all')
-      const roundList =  this.RoundList.filter(o => o !== 'all')
+      const roundList =  this.luncSelect.filter(o => o !== 'all')
       // 查找选中零件的FS号
       const partNumList =  this.partsSelect.filter(o => o !== 'all')
       const fsNumListArray = this.partList.filter(o => partNumList.includes(o.value))
