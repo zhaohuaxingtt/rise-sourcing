@@ -437,7 +437,7 @@
 	import {detailData,partsCommonSourcing,translateDataForService, getOptionField } from "./components/data";
 	import splitFactory from "./components/splitFactory";
 	import designateInfo from './components/designateInfo'
-	import { getDictByCode } from '@/api/dictionary'
+	import { selectDictByRootKeys } from '@/api/dictionary'
 	import {partProjTypes,partsType} from '@/config'
 	import {filterProjectList} from '@/utils'
 	import selectOldpartsNumber from './components/selectOldpartsNumber'
@@ -601,23 +601,27 @@
 			getDetailData(){
 				return this.detailData
 			},
-			getDict(type) {
-				getDictByCode(type).then(res => {
+			getDict() {
+				selectDictByRootKeys([
+					{ keys: "TERMS_PAYMENT" },
+					{ keys: "TERMS_PURCHASE" },
+					{ keys: "PP_CSTMGMT_CURRENCY" }
+				])
+				.then(res => {
 					if (res.code == 200) {
-						this.fromGroup = {
-							...this.fromGroup,
-							[type]: res.data[0]?.subDictResultVo || []
-						}
+						Object.keys(res.data).forEach(key => {
+							this.fromGroup = {
+								...this.fromGroup,
+								[key]: Array.isArray(res.data[key]) ? res.data[key] : []
+							}
+						})
+
+						console.log("this.fromGroup", this.fromGroup)
 					}
 				})
 			},
 			getDicts() {
-				// 支付条款
-				this.getDict('TERMS_PAYMENT')
-				//采购条款
-				this.getDict('TERMS_PURCHASE')
-				// 审批状态CF_APPROVE_STATUS
-				this.getDict('PP_CSTMGMT_CURRENCY')
+				this.getDict()
 				this.getCartypeDict()
 			},
 			fillterss(data){
