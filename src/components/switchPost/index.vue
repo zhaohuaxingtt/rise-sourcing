@@ -1,13 +1,15 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-11-30 14:33:11
- * @LastEditTime: 2021-11-30 16:51:54
+ * @LastEditTime: 2021-11-30 20:34:25
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
-  <div class="switchPost">
-    <i-button @click="dialogVisible = !dialogVisible">{{ language("QIEHUANGANGWEI", "切换岗位") }}</i-button>
+  <div class="switchPost" v-if="pending">
+    <i-button @click="dialogVisible = !dialogVisible">{{
+      language("QIEHUANGANGWEI", "切换岗位")
+    }}</i-button>
     <iDialog
       :visible.sync="dialogVisible"
       @close="clearDialog"
@@ -53,6 +55,7 @@ export default {
     return {
       dialogVisible: false,
       positionId: null,
+      pending: false, // 需求未确认
     };
   },
   computed: {
@@ -84,14 +87,14 @@ export default {
 <style lang="scss" scoped>
 .switchPost {
   margin-left: 20px;
-  .label{
+  .label {
     font-size: 14px;
     color: #000;
     font-weight: 400;
     line-height: 14px;
     margin-bottom: 8px;
   }
-  .switchPostDialog{
+  .switchPostDialog {
     .confirmBtn {
       text-align: right;
     }
