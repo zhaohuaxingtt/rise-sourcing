@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 13:52:18
+ * @LastEditTime: 2021-11-30 14:00:14
  * @Description: RS单维护界面
- * @FilePath: \front-web\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
+ * @FilePath: \front-sourcing\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
 
 <template>
-  <iPage>
+  <iPage v-permission.auto="RSSINGLEMAINTENANCE_PAGE|RS单维护页面">
     <!------------------------------------------------------------------------>
     <!--                     界面标题模块                                   --->
     <!------------------------------------------------------------------------>
@@ -22,19 +22,19 @@
     <!------------------------------------------------------------------------>
     <iSearch class="margin-bottom20 margin-top20" icon @reset="handleSearchReset" @sure="filterTableData">
       <el-form>
-        <el-form-item :label="language('LINGJIANCAIGOUXIANGMUBIANHAO','零件采购项目编号')" >
+        <el-form-item :label="language('LINGJIANCAIGOUXIANGMUBIANHAO','零件采购项目编号')" v-permission.auto="RSSINGLEMAINTENANCE_FSNRGSNRNUM|RS单维护-零件采购项目编号">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.fsnrGsnrNum"></iInput>
         </el-form-item>
-        <el-form-item :label="language('LINGJIANHAO','零件号')" >
+        <el-form-item :label="language('LINGJIANHAO','零件号')" v-permission.auto="RSSINGLEMAINTENANCE_PARTNUM|RS单维护-零件号">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.partNo"></iInput>
         </el-form-item>
-        <el-form-item :label="language('LINGJIANMINGCHENG','零件名称')" >
+        <el-form-item :label="language('LINGJIANMINGCHENG','零件名称')" v-permission.auto="RSSINGLEMAINTENANCE_PARTNAME|RS单维护-零件名称">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.partName"></iInput>
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGBIANHAO','供应商编号')" >
+        <el-form-item :label="language('GONGYINGSHANGBIANHAO','供应商编号')" v-permission.auto="RSSINGLEMAINTENANCE_SUPPLIERNO|RS单维护-供应商编号">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.supplierNo"></iInput>
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGMINGCHENG','供应商名称')" >
+        <el-form-item :label="language('GONGYINGSHANGMINGCHENG','供应商名称')" v-permission.auto="RSSINGLEMAINTENANCE_SUPPLIERNAME|RS单维护-供应商名称">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.supplierName"></iInput>
         </el-form-item>
       </el-form>
@@ -43,9 +43,9 @@
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
             <!--------------------返回按钮----------------------------------->
-            <iButton v-if="!nominationDisabled && !rsDisabled" @click="handleSave" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
+            <iButton v-if="!nominationDisabled && !rsDisabled" @click="handleSave" :loading="saveLoading" v-permission.auto="RSSINGLEMAINTENANCE_SAVEBTN|RS单维护-保存按钮">{{language('BAOCUN','保存')}}</iButton>
             <!--------------------选择按钮----------------------------------->
-            <iButton v-if="!nominationDisabled && !rsDisabled" @click="downloadTemp" :loading="downloadLoading">{{language('XIAZAIMOBAN','下载模板')}}</iButton>
+            <iButton v-if="!nominationDisabled && !rsDisabled" @click="downloadTemp" :loading="downloadLoading" v-permission.auto="RSSINGLEMAINTENANCE_DOWNLOADTEMPLATEBTN|RS单维护-下载模板按钮">{{language('XIAZAIMOBAN','下载模板')}}</iButton>
             <!--------------------返回按钮----------------------------------->
             <!-- <iButton @click="goBack">上传</iButton> -->
             <el-upload
@@ -58,19 +58,20 @@
               :on-progress='()=>{uploadLoading=true}'
               :on-error='()=>{uploadLoading=false;iMessage.error(language("SHANGCHUANSHIBAI","上传失败！"))}'
               :on-success='fileSuccess'
+              v-permission.auto="RSSINGLEMAINTENANCE_UPLOADBTN|RS单维护-上传按钮"
             >
               <iButton :loading='uploadLoading' >{{language('SHANGCHUAN','上传')}}</iButton>
             </el-upload>
             <!--------------------选择按钮----------------------------------->
-            <iButton v-if="!nominationDisabled && !rsDisabled" @click="handleReadQuotation" :loading="readQuotationLoading">{{language('DUQUBAOJIADAN','读取报价单')}}</iButton>
+            <iButton v-if="!nominationDisabled && !rsDisabled" @click="handleReadQuotation" :loading="readQuotationLoading" v-permission.auto="RSSINGLEMAINTENANCE_READQUOTATIONBTN|RS单维护-读取报价单按钮">{{language('DUQUBAOJIADAN','读取报价单')}}</iButton>
             <!--------------------RS单预览按钮----------------------------------->
-            <iButton @click="handlePreviewRS">{{language('RSDANYULAN','RS单预览')}}</iButton>
+            <iButton @click="handlePreviewRS" v-permission.auto="RSSINGLEMAINTENANCE_RSPREVIEWBTN|RS单维护-RS单预览按钮">{{language('RSDANYULAN','RS单预览')}}</iButton>
           </div>
       </div>
         <!------------------------------------------------------------------------>
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
-        <tableList :disabled="nominationDisabled || rsDisabled" :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue">
+        <tableList v-permission.auto="RSSINGLEMAINTENANCE_TABLEVIEW|RS单维护-表格" :disabled="nominationDisabled || rsDisabled" :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue">
           <!-- 年降开始时间 -->
           <!-- <template #beginYearReduce="scope">
             <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
