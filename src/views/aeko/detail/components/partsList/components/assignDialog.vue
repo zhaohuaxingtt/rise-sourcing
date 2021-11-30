@@ -352,29 +352,29 @@ export default {
         // 获取linie列表
         async getLinieList(){
             const { buyerName=[],userInfo={} } = this;
-            if(buyerName.length){
-                 buyerName.map((item)=>{
-                    item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                    item.value = item.id;
-                })
-                this.linieSelectOptions = buyerName;
+            // if(buyerName.length){
+            //      buyerName.map((item)=>{
+            //         item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
+            //         item.value = item.id;
+            //     })
+            //     this.linieSelectOptions = buyerName;
 
-            }else{
+            // }else{
                 const {deptDTO={}} = userInfo;
                 const deptId = deptDTO.id;
-                searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
+                await searchLinie({tagId:configUser.LINLIE,deptId,}).then((res)=>{
                     const {code,data} = res;
                     if(code ==200 ){
                         data.map((item)=>{
                         item.label = this.$i18n.locale === "zh" ? item.nameZh : item.nameEn;
-                        item.value = item.id;
+                        item.value = item.id+'';
                         })
                         this.linieSelectOptions = data;
                     }else{
                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
                 })
-            }
+            // }
 
             // 判断一下预设采购员 如果可选列表内无预设采购员选项则不显示预设
             const { linieSelectOptions=[],refferenceSmtNum='' } = this;
