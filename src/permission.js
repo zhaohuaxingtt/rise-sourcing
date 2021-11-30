@@ -29,7 +29,12 @@ router.beforeEach((to, from, next) => {
 							.then((res) => {
 								if (res.length == 0) {
 									removeToken()
-									next('/login')
+									// next('/login')
+									store.dispatch('loginOut').then(()=>{
+										next("/login");
+									}).catch(()=>{
+										next("/login");
+									})
 								}
 								//router.addRoutes(res);
 								router.replace({ path: to.path, query: to.query })
@@ -42,15 +47,15 @@ router.beforeEach((to, from, next) => {
 								 * 测试逻辑，先将本地的token清除掉之后重定向
 								 *************************************/
 								removeToken()
-								next('/login')
+								// next('/login')
 								/*************************************
 								 * 正确逻辑，先退出登录一次，再重定向到登录
 								 *************************************/
-								// store.dispatch('loginOut').then(()=>{
-								//   next("/login");
-								// }).catch(()=>{
-								//   next("/login");
-								// })
+								store.dispatch('loginOut').then(()=>{
+								  next("/login");
+								}).catch(()=>{
+								  next("/login");
+								})
 							})
 					})
 					.catch(() => {
