@@ -4,7 +4,7 @@
  * @Description: 报告清单列表
 -->
 <template>
-    <iCard :title="language('costanalysismanage.BaoGaoQingDan','报告清单')">
+    <iCard class="reportList" :title="language('costanalysismanage.BaoGaoQingDan','报告清单')">
         <template v-slot:header-control>
             <span class="margin-right10">
                 <!-- <Upload 
@@ -13,8 +13,14 @@
                     accept=".pdf"
                     @on-success="onDraingUploadsucess"
                 /> -->
-                <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD|上传">
+                <!-- <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD|上传">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
+                </uploadButton> -->
+                <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_PCA|上传PCA报告">
+                    <iButton :loading="uploadLoading">{{ language("SHANGCHUANPCABAOGAO", "上传PCA报告") }}</iButton>
+                </uploadButton>
+                <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_TIA|上传TIA报告">
+                    <iButton :loading="uploadLoading">{{ language("SHANGCHUANTIABAOGAO", "上传TIA报告") }}</iButton>
                 </uploadButton>
             </span>
             <iButton @click="downloadList" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_DOWNLOAD|下载">{{language('LK_XIAZAI','下载')}}</iButton>
@@ -275,7 +281,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.uploadButton {
-    display: inline;
+.reportList {
+    .uploadButton {
+        display: inline;
+
+        & + .uploadButton {
+            margin-left: 10px;
+        }
+    }
 }
 </style>
