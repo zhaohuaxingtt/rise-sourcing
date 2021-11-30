@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-30 16:16:33
+ * @LastEditTime: 2021-11-30 17:38:17
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -230,8 +230,8 @@ function _permissionKeySendToService(router) {
       type: 3,
       name: r.meta.title,
       permissionKey: r.path.toUpperCase(),
-      url: r.path,
-      target: r.path,
+      url: (i == 0?'/sourcing/#':'')+r.path,
+      target: (i == 0?'/sourcing/#':'')+r.path,
       resourceList:
         i == router.matched.length - 1
           ? store.state.permission.resourceList
