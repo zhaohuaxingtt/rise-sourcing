@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-30 16:09:01
+ * @LastEditTime: 2021-11-30 16:16:33
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -256,7 +256,8 @@ function _permissionKeySendToService(router) {
   if(errorData(serviceData).length == 0){
     sendPermissonKey(serviceData) 
   }else{
-    console.error('您上次权限失败的数据为',errorData(serviceData))
+    console.error('您上次权限失败的数据为:')
+    console.log(errorData(serviceData))
     alert(`权限自动上传中有${errorData(serviceData).length}条错误，请查看控制台中的错误日志，解决后再上传`)
   }
   store.dispatch('clearResource', [])
