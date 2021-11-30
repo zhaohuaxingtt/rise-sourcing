@@ -29,6 +29,14 @@ export function selectDictByKeys(params) {
     })
 }
 
+// 字典 根节点
+export function selectDictByRootKeys(params) {
+    return requst({
+        url: `/selectDictByKeys?${ serialize(params, Array) }&parentId=-1`,
+        method: 'GET'
+    })
+}
+
 //原产国
 export function selectDictByKeyss(type) {
     return requst({
