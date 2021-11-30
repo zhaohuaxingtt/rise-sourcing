@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-15 19:22:43
+ * @LastEditTime: 2021-11-30 17:02:25
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -12,6 +12,7 @@
     <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav" />
     <div style="display:flex;align-items:center">
       <iNavMvp v-if="subMenu" :lev="2" :list="subMenu" :lang="true" routerPage class="nav-sub" />
+      <switchPost />
       <log-button v-if="$route.name !== 'explainattach'" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
       <iLog :show.sync="showDialog" :bizId="bizId" :module="module"></iLog>
@@ -24,12 +25,14 @@ import { iNavMvp, icon } from "rise"
 import { TAB,SUBMENU,ATTACHSUBMENU } from "./data"
 import iLog from "../../log";
 import logButton from "../../../../components/logButton";
+import switchPost from '@/components/switchPost'
 export default {
   components: {
     iNavMvp,
     icon,
     logButton,
-    iLog
+    iLog,
+    switchPost
   },
   props: {
     navList: {type:Array, default: window._.cloneDeep(TAB)},

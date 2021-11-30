@@ -90,6 +90,7 @@
       <!--表格展示区-->
       <tablelist
           height="400"
+          class="aeko-pending-table"
           index
           :selection="true"
           :tableData="pendingList"
@@ -733,7 +734,7 @@ export default {
     width: 25px;
     display: inline-block;
     vertical-align: middle;
-    margin-right: 10px;
+    margin-right: 8px;
 
       svg {
         font-size: 24px;
@@ -761,6 +762,42 @@ export default {
     &:hover {
       .iconSuffix {
         color: #ffffff;
+      }
+    }
+  }
+}
+.aeko-pending-table{
+  ::v-deep .el-table__header{
+    .has-gutter{
+      tr{
+        th:nth-child(2){
+          .cell{
+            padding: 0 5px;
+          }
+        }
+        th:nth-child(3){
+          .slotHeader{
+            padding-left: 30px;
+          }
+        }
+        th:nth-child(9){
+          letter-spacing: -0.3px;
+        }
+        th:nth-child(10){
+          letter-spacing: -0.3px;
+        }
+        th:nth-child(11){
+          letter-spacing: -0.3px;
+        }
+      }
+    }
+  }
+  ::v-deep .el-table__body{
+    tr{
+      td:nth-child(2){
+        .cell{
+          padding: 0 5px;
+        }
       }
     }
   }
