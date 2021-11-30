@@ -11,6 +11,7 @@
       <!-- <h2>{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2> -->
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
+        <switchPost />
         <log-button @click="openLog" class="margin-left25"/>
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
@@ -184,6 +185,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
+import switchPost from '@/components/switchPost'
 import logButton from "@/components/logButton";
 import {user as configUser } from '@/config'
 import aekoSelect from '../components/aekoSelect'
@@ -231,7 +233,8 @@ export default {
       aekoSelect,
       tcmList,
       iLog,
-      logButton
+      logButton,
+      switchPost
     },
     data(){
       return{

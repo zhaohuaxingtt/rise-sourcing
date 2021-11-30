@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-11-11 14:31:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-30 17:00:33
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
 -->
@@ -14,6 +14,7 @@
         <iButton v-if="isLinie && !fromCheck" v-permission.auto="AEKO_DETAIL_BUTTON_SHENPIDANYULAN|审批单预览" @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
         <iButton v-permission.auto="AEKO_DETAIL_BUTTON_AEKOXIANGQING|AEKO详情" @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
         <template v-if="!fromCheck">
+          <switchPost />
           <logButton @click="openLog" class="margin-left20" />
           <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
         </template>
@@ -31,6 +32,7 @@ import {
   iMessage
  } from "rise"
 import logButton from "@/components/logButton"
+import switchPost from '@/components/switchPost'
 import pageContent from "./components"
 import { roleMixins } from "@/utils/roleMixins";
 import iLog from "../log";
@@ -42,7 +44,8 @@ export default {
     iButton,
     logButton,
     pageContent,
-    iLog
+    iLog,
+    switchPost
   },
   created() {
     const roleList = this.roleList;
