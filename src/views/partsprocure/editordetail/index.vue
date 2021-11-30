@@ -603,7 +603,7 @@
 			},
 			getDict(type) {
 				getDictByCode(type).then(res => {
-					if (res?.result) {
+					if (res.code == 200) {
 						this.fromGroup = {
 							...this.fromGroup,
 							[type]: res.data[0]?.subDictResultVo || []
