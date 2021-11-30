@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-26 17:30:47
+ * @LastEditTime: 2021-11-30 16:09:01
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -225,23 +225,40 @@ function _permissionKeySendToService(router) {
   console.log(
     `============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`
   )
-  console.log(store.state.permission.resourceList)
   const serviceData = router.matched.map((r, i) => {
-    if(r.meta.title && r.path){
-      return {
-        type: 3,
-        name: r.meta.title,
-        permissionKey: r.path.toUpperCase(),
-        url: r.path,
-        target: r.path,
-        resourceList:
-          i == router.matched.length - 1
-            ? store.state.permission.resourceList
-            : [],
-      }
+    return {
+      type: 3,
+      name: r.meta.title,
+      permissionKey: r.path.toUpperCase(),
+      url: r.path,
+      target: r.path,
+      resourceList:
+        i == router.matched.length - 1
+          ? store.state.permission.resourceList
+          : [],
     }
   })
-  sendPermissonKey(serviceData)
+  //做一次数据监测，监测的对象为如果是菜单，则监测当前是否存在空的名字菜单。如果是资源则监测名字和key
+  const errorData = (data)=> data.filter(items=>{
+    if(items.type == 3){
+      if(items.name == '' || items.url == ''){
+        return items
+      }
+      if(items.resourceList.length > 0){
+        items.resourceList.forEach(itemss=>{
+          if(itemss.permissionKey == "undefined" || !itemss.permissionKey || itemss.name == "undefined" || !itemss.name || itemss.name.indexOf('permissionName')> -1 || itemss.permissionKey.indexOf('permissionKey')>-1){
+            return itemss
+          }
+        })
+      }
+    }
+  })  
+  if(errorData(serviceData).length == 0){
+    sendPermissonKey(serviceData) 
+  }else{
+    console.error('您上次权限失败的数据为',errorData(serviceData))
+    alert(`权限自动上传中有${errorData(serviceData).length}条错误，请查看控制台中的错误日志，解决后再上传`)
+  }
   store.dispatch('clearResource', [])
 }
 /**********************************************************************************************************************************************
