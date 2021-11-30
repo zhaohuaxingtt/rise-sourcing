@@ -58,8 +58,8 @@ export const TAB = [
   {
     value: 6,
     name: "数据维护",
-    url: "/targetpriceandscore/costanalysismanage/datamaintenance/costMaintenance",
-    activePath: "/costanalysismanage/datamaintenance",
+    url: "/targetpriceandscore/datamaintenance/costMaintenance",
+    activePath: "/datamaintenance",
     key: "SHUJUWEIHU",
     permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_TAB",
     permissionName: "数据维护"

@@ -18,8 +18,8 @@ export const navList= [
   {
     value: 1,
     name: "人工成本维护",
-    url: "/targetpriceandscore/costanalysismanage/datamaintenance/costMaintenance",
-    activePath: "/costanalysismanage/datamaintenance/costMaintenance",
+    url: "/targetpriceandscore/datamaintenance/costMaintenance",
+    activePath: "/datamaintenance/costMaintenance",
     key: "RENGONGCHENGBENWEIHU",
     permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_COSTMAINTENANCE_TAB",
     permissionName: "人工成本维护"
