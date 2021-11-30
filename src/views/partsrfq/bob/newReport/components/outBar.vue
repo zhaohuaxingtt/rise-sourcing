@@ -121,7 +121,6 @@ export default {
           }
         }
       })
-      // console.log(send)
       return send
     },
     doNumber (x) {
@@ -238,7 +237,7 @@ export default {
           },
           textStyle: {
             fontSize: 12,
-            color: "#e1e1e2"
+            color: "#7E84A3"
           }
         },
         yAxis: [
@@ -288,7 +287,6 @@ export default {
     },
     initData (newVal) {
       if (newVal) {
-        // console.log(newVal)
         this.chartArray = newVal
         this.labelArray = []
         this.labelArray1 = []
@@ -296,20 +294,6 @@ export default {
         const tempArr = []
         const dataList1 = []
         newVal.forEach((row, i) => {
-          // const temp =
-          //   row.vehicleType +
-          //   "\n" +
-          //   window.moment(row.cbdQuotationTime).format("yyyy.MM");
-          // console.log(row)
-          // let name = row.supplierName
-          // if (this.by === 'num') {
-          //   name = row.spareParts
-          // }
-          // let img = '\t{bobChange|}'
-          // if (!this.preview) {
-          //   img = ''
-          // }
-          // const str = name + '\n\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n' + "{font|" + temp + "}";
           const str = "";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
@@ -341,7 +325,6 @@ export default {
           this.labelArray1.push({
             value: subtext,
           });
-          // console.log(this.labelArray)
           this.legendArray.map((v, i) => {
             if (!tempArr[v]) {
               tempArr[v] = []
@@ -356,18 +339,14 @@ export default {
 
           })
         })
-        // console.log(tempArr)
         const minList = []
 
         this.legendArray.forEach((row, i) => {
-
-          // const dataList0 = this.cloneDeep(tempArr[row])
 
           const min = this.min(tempArr[row])
           let data = min
           minList.push(data)
 
-          // console.log(dataList1)
           this.dataArray.push({
             name: row,
             type: 'bar',
@@ -408,7 +387,6 @@ export default {
             fontFamily: "Arial",
             align: 'center',
             formatter: (params) => {
-              // console.log(params)
               const sum = dataList1['利润'][0]
               return this.doNumber(sum)
             },
@@ -424,7 +402,6 @@ export default {
           data: [dataList1['利润'][0]]
         })
 
-        console.log(this.chartArray)
         if (this.$refs.chart && this.chartArray.length > 0) {
           this.initCharts();
         }

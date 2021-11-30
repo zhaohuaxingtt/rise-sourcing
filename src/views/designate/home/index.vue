@@ -332,7 +332,7 @@ export default {
         this.$refs['revokeForm'].loading = true
         const res = await batchRevoke({recallReason: revokeReason, nominateIdArr: idList})
         if (res.code === '200') {
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          iMessage.success(res.data && (this.$i18n.locale === "zh" ? res.data.zhMsg : res.data.engMsg) || this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
