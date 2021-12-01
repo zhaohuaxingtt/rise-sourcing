@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-11-15 15:11:21
+ * @LastEditTime: 2021-12-01 20:22:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -11,9 +11,9 @@
       <div class="clearFloat">
         <div class="floatright title-button-box">
           <template>
-            <iButton @click="save" v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE">{{ language('LK_BAOCUN','保存') }}</iButton>
+            <iButton @click="save" v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAVE|新建rfq轮次弹窗-保存">{{ language('LK_BAOCUN','保存') }}</iButton>
             <iButton v-if="roundType === 'commonRound'" @click="updateRfqStatus('06')" :disabled="!saveStaus"
-                     v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND">{{ language('LK_FASONGXUNJIA','发送询价') }}
+                     v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_SAND|新建rfq轮次弹窗-发出询价">{{ language('LK_FASONGXUNJIA','发送询价') }}
             </iButton>
           </template>
           <!-- <template v-else>
@@ -25,7 +25,7 @@
       </div>
       <iFormGroup inline icon label-width='120px'>
         <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')" name="test"
-                   v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE">
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE|新建rfq轮次弹窗-轮次类型">
           <i-select v-model="roundType" @change="handleSelectChange">
             <el-option v-for="items in roundTypeOptions" :key='items.code' :value='items.code' :label="items.name" :disabled="items.disabled"/>
           </i-select>
@@ -33,10 +33,10 @@
         <iFormItem :label="language('LK_BENLUNBAOJIAQIZHISHIJIAN','本轮报价起止时间')" name="test" v-if="['commonRound', 'manualBidding','autoBidding','bidRound','biddingRound'].includes(roundType)">
           <div class="flex">
             <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="startTime" value-format="yyyy-MM-dd"
-                            v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME" disabled></iDatePicker> 
+                            v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_STARTTIME|新建rfq轮次弹窗-起始时间" disabled></iDatePicker> 
             <span class="padding10 flex"></span>
             <iDatePicker type="date" :placeholder="language('LK_QINGXUANZE','请选择')" v-model="endTime" value-format="yyyy-MM-dd"
-                          v-permission="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME"
+                          v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ENDTIME|新建rfq轮次弹窗-结束时间"
                           :picker-options="{
                             disabledDate(time) {
                               return time.getTime() < Date.now()
