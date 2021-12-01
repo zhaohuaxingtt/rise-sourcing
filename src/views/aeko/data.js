@@ -100,7 +100,8 @@ export const getLeftTab = function(index=0){
           message: 0,
           url: '/aeko/report',
           activePath: '/report',
-          key: 'LK_AEKOBAOBIAO'
+          key: 'LK_AEKOBAOBIAO',
+          permissionKey:'LK_AEKOBAOBIAO'
         },
     ];
     const item = TAB[index];
