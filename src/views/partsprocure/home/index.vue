@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-11-29 15:04:04
+ * @LastEditTime: 2021-12-01 10:49:21
  * @LastEditors: Luoshuang
  * @Description: 零件采购项目建立首页。
  * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
@@ -499,7 +499,7 @@ export default {
     },
     openCreateParts() {
       const creatParts = this.$router.resolve({
-        path:'/sourcing/createparts/home'
+        path:'/sourceinquirypoint/sourcing/createparts/home'
       })
       window.open(creatParts.href, '_blank')
     },
