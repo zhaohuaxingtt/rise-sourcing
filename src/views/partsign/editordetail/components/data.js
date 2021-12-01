@@ -1,7 +1,7 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2021-11-24 20:38:31
+ * @LastEditTime: 2021-12-01 15:02:17
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
@@ -127,6 +127,7 @@ export const volumeTableTitle = [
   { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING', tooltip: true },
   { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI', tooltip: true },
   { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI', tooltip: true },
+  { props: 'ratio', name: '比例', key: 'LK_BILI', tooltip: true },
   { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG', tooltip: true }
 ]
 
@@ -137,6 +138,7 @@ export const volumeDialogTableTitle = [
   { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING', tooltip: true },
   { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI', tooltip: true },
   { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI', tooltip: true },
+  { props: 'ratio', name: '比例', key: 'LK_BILI', tooltip: true },
   { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG', tooltip: true }
 ]
 

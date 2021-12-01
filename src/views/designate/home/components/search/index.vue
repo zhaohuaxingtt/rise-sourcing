@@ -13,40 +13,36 @@
   >
     <el-form>
       <!-- 零件号 -->
-      <el-form-item :label="language('nominationLanguage_LingJianHao', '零件号')">
+      <el-form-item :label="language('nominationLanguage_LingJianHao', '零件号')" v-permission.auto="SOURCING_NOMINATION_PARTNUM|零件号">
         <iInput
           v-model="form.partNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
-          v-permission.auto="SOURCING_NOMINATION_PARTNUM|零件号"
           clearable
         ></iInput>
       </el-form-item>
       <!-- 申请单号 -->
-      <el-form-item :label="language('nominationLanguage_ShenQingDanHao','申请单号')">
+      <el-form-item :label="language('nominationLanguage_ShenQingDanHao','申请单号')" v-permission.auto="SOURCING_NOMINATION_NOMINATEID|申请单号">
         <iInput
           v-model="form.nominateId"
           :placeholder="language('LK_QINGSHURU','请输入')"
-          v-permission.auto="SOURCING_NOMINATION_NOMINATEID|申请单号"
           clearable
           @input="form.nominateId = numberProcessor(form.nominateId, 0)"
         ></iInput>
       </el-form-item>
         <!-- RFQ编号 -->
-      <el-form-item :label="language('nominationLanguage_RFQBianHao','RFQ编号')">
+      <el-form-item :label="language('nominationLanguage_RFQBianHao','RFQ编号')" v-permission.auto="SOURCING_NOMINATION_RFQID|RFQ编号">
         <iInput
           v-model="form.rfqId"
           :placeholder="language('LK_QINGSHURU','请输入')"
-          v-permission.auto="SOURCING_NOMINATION_RFQID|RFQ编号"
           @input="form.rfqId = numberProcessor(form.rfqId, 0)"
           clearable
         ></iInput>
       </el-form-item>
       <!-- 流程类型 -->
-      <el-form-item :label="language('nominationLanguage_LiuChengLeiXing','流程类型')">
+      <el-form-item :label="language('nominationLanguage_LiuChengLeiXing','流程类型')" v-permission.auto="SOURCING_NOMINATION_NOMINATEPROCESSTYPE|流程类型">
         <iSelect
           v-model="form.nominateProcessType"
           :placeholder="language('LK_QINGXUANZE','请选择')"
-          v-permission.auto="SOURCING_NOMINATION_NOMINATEPROCESSTYPE|流程类型"
           @change="onNomiProcessTypeChange"
           clearable
         >
@@ -63,11 +59,10 @@
         </iSelect>
       </el-form-item>
       <!-- 申请状态 -->
-      <el-form-item :label="language('nominationLanguage_ShenQingZhuangTai','申请状态')">
+      <el-form-item :label="language('nominationLanguage_ShenQingZhuangTai','申请状态')" v-permission.auto="SOURCING_NOMINATION_APPLICATIONSTATUS|申请状态">
         <iSelect
           v-model="form.applicationStatus"
           :placeholder="language('LK_QINGXUANZE','请选择')"
-          v-permission.auto="SOURCING_NOMINATION_APPLICATIONSTATUS|申请状态"
           clearable
         >
           <el-option
@@ -83,25 +78,23 @@
         </iSelect>
       </el-form-item>
         <!-- FSNR/GSNR -->
-      <el-form-item label="零件采购项目号/GSNR">
+      <el-form-item label="零件采购项目号/GSNR" v-permission.auto="SOURCING_NOMINATION_FSNRGSNRNUM|零件采购项目号GSNR">
         <iInput
           v-model="form.fsnrGsnrNum"
           :placeholder="language('LK_QINGSHURU','请输入')"
-          v-permission.auto="SOURCING_NOMINATION_FSNRGSNRNUM|零件采购项目号GSNR"
           clearable
         ></iInput>
       </el-form-item>
       <!-- 零件名 -->
-      <el-form-item :label="language('nominationLanguage_LingJianMing','零件名')">
+      <el-form-item :label="language('nominationLanguage_LingJianMing','零件名')" v-permission.auto="SOURCING_NOMINATION_PARTNAMECN|零件名">
         <iInput
           v-model="form.partNameCn"
           :placeholder="language('LK_QINGSHURU','请输入')"
-          v-permission.auto="SOURCING_NOMINATION_PARTNAMECN|零件名"
           clearable
         ></iInput>
       </el-form-item>
       <!-- 询价采购员 -->
-      <el-form-item :label="language('nominationLanguage_XunJiaCaiGouYuan','询价采购员')">
+      <el-form-item :label="language('nominationLanguage_XunJiaCaiGouYuan','询价采购员')" v-permission.auto="SOURCING_NOMINATION_BUYERNAME|询价采购员">
         <iInput
           v-model="form.buyerName"
           :placeholder="language('LK_QINGSHURU','请输入')"
@@ -109,21 +102,19 @@
         ></iInput>
       </el-form-item>
       <!-- LINIE -->
-      <el-form-item label="LINIE">
+      <el-form-item label="LINIE" v-permission.auto="SOURCING_NOMINATION_LINIENAME|LINIE">
         <iInput
           v-model="form.linieName"
           :placeholder="language('LK_QINGSHURU','请输入')"
-          v-permission.auto="SOURCING_NOMINATION_LINIENAME|LINIE"
           clearable
         ></iInput>
       </el-form-item>
       <!-- 车型项目 -->
-      <el-form-item :label="language('nominationLanguage_CheXingXiangMu','车型项目')">
+      <el-form-item :label="language('nominationLanguage_CheXingXiangMu','车型项目')" v-permission.auto="SOURCING_NOMINATION_CARTYPEPRO|车型项目">
         <!-- <iDicoptions v-model="form.carTypeProj" :optionKey="'CAR_TYPE_PRO'" /> -->
         <iSelect
           v-model="form.carTypeProj"
           :placeholder="language('LK_QINGXUANZE','请选择')"
-          v-permission.auto="SOURCING_NOMINATION_CARTYPEPRO|车型项目"
           filterable
           clearable
         >
@@ -141,11 +132,10 @@
         </iSelect>
       </el-form-item>
       <!-- 报价一致性校验 -->
-      <el-form-item :label="language('nominationLanguage_BaoJiaYiZhiXingJiaoYan','报价一致性校验')">
+      <el-form-item :label="language('nominationLanguage_BaoJiaYiZhiXingJiaoYan','报价一致性校验')" v-permission.auto="SOURCING_NOMINATION_ISPRICECONSISTENT|报价一致性校验">
         <iSelect
           v-model="form.isPriceConsistent"
           :placeholder="language('LK_QINGXUANZE','请选择')"
-          v-permission.auto="SOURCING_NOMINATION_ISPRICECONSISTENT|报价一致性校验"
           clearable
         >
           <el-option
@@ -161,11 +151,10 @@
         </iSelect>
       </el-form-item>
       <!-- 是否单一供应商 -->
-      <el-form-item :label="language('nominationLanguage_ShiFouDnaYiGongYingShang','是否单一供应商')">
+      <el-form-item :label="language('nominationLanguage_ShiFouDnaYiGongYingShang','是否单一供应商')" v-permission.auto="SOURCING_NOMINATION_SINGLESOURCING|是否单一供应商">
         <iSelect
           v-model="form.singleSourcing"
           :placeholder="language('LK_QINGXUANZE','请选择')"
-          v-permission.auto="SOURCING_NOMINATION_SINGLESOURCING|是否单一供应商"
           clearable
         >
           <el-option
@@ -179,11 +168,10 @@
         </iSelect>
       </el-form-item>
       <!-- 显示自己 -->
-      <el-form-item :label="language('nominationLanguage_XianShiZiJi','显示自己')">
+      <el-form-item :label="language('nominationLanguage_XianShiZiJi','显示自己')" v-permission.auto="SOURCING_NOMINATION_SHOWME|显示自己">
         <iSelect
           v-model="form.showSelf"
           :placeholder="language('LK_QINGXUANZE','请选择')"
-          v-permission.auto="SOURCING_NOMINATION_SHOWME|显示自己"
           clearable
         >
           <el-option

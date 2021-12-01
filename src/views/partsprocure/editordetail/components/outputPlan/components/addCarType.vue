@@ -2,7 +2,7 @@
  * @Description: CF车型配置
  * @Author: tyra liu
  * @Date: 2021-11-16 16:54:18
- * @LastEditTime: 2021-11-29 15:01:39
+ * @LastEditTime: 2021-12-01 15:28:43
  * @LastEditors:  
 -->
 <template>
@@ -151,7 +151,14 @@ export default {
         searchCarTypeProConfig(data).then(res => {
           if(res.code == '200') {
             this.tableLoading = false
+            res.data.forEach(val=>{
+              console.log(val);
+              this.$set(val,'engineType',val.engineVo?.engineName)
+              this.$set(val,'gearboxName',val.gearboxVo?.gearboxName)
+              this.$set(val,'batteryCapacity',val.batteryVo?.capacity)
+            })
             this.fscarTableData = res.data || []
+
             this.page.totalCount = res.total || 0
           } else {
             iMessage.error(res.desZh)

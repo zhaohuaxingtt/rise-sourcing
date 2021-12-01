@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-12-01 10:49:21
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-01 17:47:56
+ * @LastEditors:  
  * @Description: 零件采购项目建立首页。
  * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
 -->
@@ -220,7 +220,7 @@
               >
               <div class="floatright">
                 <!-- 手工采购项目创建 -->
-                <iButton @click="openCreateParts" v-permission.auto="PARTSPROCURE_TRANSFER|手工采购项目创建">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
+                <iButton @click="openCreateParts" v-permission.auto="PARTSPROCURE_CREATEMANUALPROCUREMENTITEM|手工采购项目创建">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton :loading='zpLoading' @click="openDiologChangeItems" v-permission.auto="PARTSPROCURE_TRANSFER|转派">{{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }} </iButton>
                 <creatFsGsNr :projectItems="selectTableData" @refresh="getTableListFn" v-permission.auto="PARTSPROCURE_GENERATEFSBUTTON|生成零件采购项目号" ></creatFsGsNr>
                 <cancelProject :backItems='selectTableData'  @refresh="getTableListFn" v-permission.auto="PARTSPROCURE_CANCELPROCUREMENTITEMS|取消零件采购项目号"></cancelProject>

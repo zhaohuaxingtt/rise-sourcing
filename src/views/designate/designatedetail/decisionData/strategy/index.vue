@@ -7,21 +7,26 @@
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\strategy\index.vue
 -->
 <template>
-<div :key='randomNumber'>
+<div class="strategy" :key='randomNumber'>
   <iCard :title="language('OVERVIEWS','Overviews')">
-    <div class="flex-align-center floatright" style="width:200px;">
-      <span style="width:80px;">材料组</span>
-      <iSelect v-model="categoryCode" @change="randomNumber++"> 
-        <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryName"></el-option> 
-      </iSelect>
+    <div class="control" v-if="!isPreview && !nominationDisabled && !rsDisabled">
+      <div class="flex-align-center">
+        <span class="label">材料组</span>
+        <iSelect v-model="categoryCode" @change="randomNumber++"> 
+          <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryName"></el-option> 
+        </iSelect>
+        <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_BUTTON_FILEMANAGE|文件管理" class="margin-left20" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
+      </div>
     </div>
-    <powerBi :categoryCode="categoryCode" @updateCatgreyCode='updateCode'></powerBi>
+    <imageList class="padding-top20" v-if="images.length" :images="images" />
+    <powerBi v-show="!images.length" :categoryCode="categoryCode" @updateCatgreyCode='updateCode'></powerBi>
   </iCard>
   <higthligthts v-if='categoryCode' :categoryCode="categoryCode" class='margin-top20 margin-bottom20'></higthligthts>
   <iCard :title='language("KEYINITIATIVE","Key initiatives")' class="mineCards">
     <iButton class="floatright" @click='open'>前往编辑</iButton>
     <listOfinit ref="listOfinit"  v-if='categoryCode' :categoryCodeProps="categoryCode" :extendsIsedit='false' :isEdit='isEdit'></listOfinit>
   </iCard>
+  <fileManageDialog :visible.sync="fileDialogVisible" :nominateAppId="nominateAppId" @afterClose="getStrategy" />
 </div>
 </template>
 <script>
@@ -29,15 +34,36 @@ import {iCard,iSelect,iButton} from 'rise'
 import higthligthts from './components/highligths'
 import powerBi from './components/powBi'
 import listOfinit from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/listOfInitiatives'
+import fileManageDialog from './components/fileManageDialog'
+import imageList from './components/imageList'
+import { getStrategy } from '@/api/designate/designatedetail/decisionData/strategy'
+
 export default{
-  components:{iCard,higthligthts,powerBi,listOfinit,iSelect,iButton},
+  components:{iCard,higthligthts,powerBi,listOfinit,iSelect,iButton,fileManageDialog, imageList},
   data(){
     return {
       catCodeList:[],
       randomNumber:1,
       categoryCode:'',
-      isEdit:''
+      isEdit:'',
+      fileDialogVisible:false,
+      nominateAppId: "", // 定点申请id
+      loading: false,
+      images: [],
+      isPreview: false
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
+  },
+  created() {
+    this.nominateAppId = this.$route.query.desinateId
+    this.isPreview = this.$route.query.isPreview == 1
+    this.getStrategy()
   },
   methods:{
     open(){
@@ -62,15 +88,73 @@ export default{
         this.isEdit = false
       }, 500);
     },
+    // 获取附件列表
+    getStrategy() {
+      this.loading = true
 
+      getStrategy({
+        nominateAppId: this.nominateAppId // 定点申请id
+      })
+      .then(res => {
+        if (res.code == 200) {
+          try {
+            const data = JSON.parse(res.data.reportFiles)
+            this.images = Array.isArray(data.fileList) ? data.fileList.filter(item => item.flag === 1) : []
+          } catch(e) {
+            this.images = []
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => this.loading = false)
+    },
   }
 }
 </script>
 <style lang='scss' scoped>
-  .mineCards{
-    ::v-deep.routerpage{
-      padding: 0px;
-      overflow: hidden;
+.strategy {
+  .control {
+    // width: 360px;
+    height: 40px;
+
+    .label {
+      width: 70px;
+    }
+    
+    .flex-align-center {
+      justify-content: flex-end;
+    }
+
+    ::v-deep .el-select {
+      width: 200px;
     }
   }
+
+  .table {
+    ::v-deep .el-table__body-wrapper {
+      height: auto !important;
+    }
+  }
+
+  .icon {
+    font-size: 16px;
+  }
+
+  .cursor {
+    cursor: pointer;
+  }
+
+  .desc {
+    transform: rotate(180deg);
+    margin-left: 10px;
+  }
+}
+
+.mineCards{
+  ::v-deep.routerpage{
+    padding: 0px;
+    overflow: hidden;
+  }
+}
 </style>
