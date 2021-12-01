@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-26 11:52:08
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-01 11:15:11
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -715,7 +715,8 @@ export default {
         requirementAekoId: this.aekoInfo.requirementAekoId,
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        currentTab: "contentDeclare"
+        currentTab: "contentDeclare",
+        from:routeQuery.from,
       }))
     },
     // 相关无关切换

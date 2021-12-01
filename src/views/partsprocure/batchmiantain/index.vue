@@ -1,16 +1,16 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-11-24 11:17:07
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-01 11:27:55
+ * @LastEditors: Luoshuang
  * @Description: 零件采购项目批量维护界面
- * @FilePath: \front-web\src\views\partsprocure\batchmiantain\index.vue
+ * @FilePath: \front-sourcing\src\views\partsprocure\batchmiantain\index.vue
 -->
 
 <template>
   <iPage
     class="batchmiantain"
-    v-permission="PARTSPROCURE_BATCHMIANTAIN_INDEXPAGE"
+    v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_INDEXPAGE|批量维护零件采购项目"
   >
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{
@@ -19,7 +19,7 @@
       <div class="floatright">
         <!-- 供应商创建定点申请单 -->
 				<createNomiappBtn :datalist='selectTableData'></createNomiappBtn>
-        <iButton @click="save('partSrcProjec')" :loading='saveButchLoading' v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRMJLJH"
+        <iButton @click="save('partSrcProjec')" :loading='saveButchLoading' v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRMJLJH|保存按钮"
           >{{ language("LK_QUERENJINGLINGJHAOJLJHBG",'保存') }}
         </iButton>
         <!-- 	<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">
@@ -27,7 +27,7 @@
 				</iButton> -->
         <creatFsGsNr :projectItems="selectTableData" keys='purchaseProjectId' @refresh="getTableListFn"></creatFsGsNr>
         <!-- <startProject :startItems='selectTableData' keys='purchaseProjectId' v-permission="PARTSPROCURE_BATCHMIANTAIN_STARTINQUIRY"></startProject> -->
-        <iButton @click="back" v-permission="PARTSPROCURE_BATCHMIANTAIN_SAVE">{{language("LK_FANHUI",'返回')}}</iButton>
+        <iButton @click="back" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_SAVE|返回按钮">{{language("LK_FANHUI",'返回')}}</iButton>
       </div>
     </div>
     <iSearch
@@ -36,7 +36,7 @@
       tabCard
     >
       <el-form>
-        <el-form-item :label="language('LK_LINGJIANCAIGOUXIANGMULEIXING','零件采购项目类型')">
+        <el-form-item :label="language('LK_LINGJIANCAIGOUXIANGMULEIXING','零件采购项目类型')" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_PARTSPROCURETYPE|零件采购项目类型">
           <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.type">
             <el-option
               :value="item.code"
@@ -46,7 +46,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_LINIEBUMEN','LINIE部门')">
+        <el-form-item :label="language('LK_LINIEBUMEN','LINIE部门')" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_LINIEDEPT|LINIE部门">
           <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.linieDept" @change="handleChangeByLinieDept">
             <el-option
               :value="item.deptNum"
@@ -56,7 +56,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item label="LINIE">
+        <el-form-item label="LINIE" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_LINIE|LINIE">
           <iSelect
             :placeholder="language('LK_QINGXIANXUANZELINIEBUMEN','请先选择LINIE部门')"
             v-model="linie"
@@ -70,7 +70,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_LINGJIANLEIXING','零件类型')">
+        <el-form-item :label="language('LK_LINGJIANLEIXING','零件类型')" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_PARTTYPE|零件类型">
           <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.partType" :disabled="isDisabled">
             <el-option
               :value="item.code"
@@ -80,7 +80,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item v-permission='PARTSPROCURE_BATCHMIANTAIN_CHEXINXIANGMU' :label="language('LK_CHEXINGXIANGMU','车型项目')">
+        <el-form-item v-permission.auto='PARTSPROCURE_BATCHMIANTAIN_CHEXINXIANGMU|车型项目' :label="language('LK_CHEXINGXIANGMU','车型项目')">
           <iSelect
             :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model='carTypeProject'
@@ -94,7 +94,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_CAIGOUGONGCHANG','采购工厂')" >
+        <el-form-item :label="language('LK_CAIGOUGONGCHANG','采购工厂')" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPFACTORY|采购工厂">
           <iSelect
             :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="batch.procureFactory"
@@ -108,7 +108,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_DANWEI','价格单位')">
+        <el-form-item :label="language('LK_DANWEI','价格单位')" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPUNIT|价格单位">
           <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="batch.unit" :disabled="isDisabled">
             <el-option
               :value="item.code"
@@ -118,7 +118,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_CFKONGZHIYUAN','CF控制员')">
+        <el-form-item :label="language('LK_CFKONGZHIYUAN','CF控制员')" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCFCONTROLLER|CF控制员">
           <iSelect
             :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="batch.cfController"
@@ -137,12 +137,12 @@
         <iButton
           @click="save('partSrcProjec')"
            :loading='saveButchLoading'
-          v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRM"
+          v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM|确认按钮"
           >{{ language("LK_QUEREN",'确认') }}
         </iButton>
         <iButton
           @click="reset"
-          v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASERESET"
+          v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET|重置按钮"
           >{{ language("LK_ZHONGZHI",'重置') }}
         </iButton>
       </template>
@@ -155,7 +155,7 @@
     >
     <!-- LK_CAILIAOZUGONGYISHEZHI -->
       <el-form>
-        <el-form-item :label="language('LK_CAILIAOZUSHAIXUAN','材料组筛选')"><!-- LK_CAILIAOZU -->
+        <el-form-item :label="language('LK_CAILIAOZUSHAIXUAN','材料组筛选')" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCATEGORYCHOOSE|材料组筛选"><!-- LK_CAILIAOZU -->
           <iSelect
             :placeholder="language('LK_QINGXUANZE','请选择')"
             v-model="categoryObj"
@@ -170,7 +170,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_GONGYIZUXUANDING','工艺组选定')"><!-- LK_GONGYI -->
+        <el-form-item :label="language('LK_GONGYIZUXUANDING','工艺组选定')" v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPSTUFFCHOOSE|工艺组选定"><!-- LK_GONGYI -->
           <iSelect
             :placeholder="language('LK_QINGXUANZHEXIANCAILIAOZU','请选择先材料组')"
             v-model="stuff"
@@ -190,13 +190,13 @@
         <iButton
          :loading='stuffLoading'
           @click="save"
-          v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM"
+          v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPCONFIRM|确认按钮"
         >
           {{ language("LK_QUEREN",'确认') }}
         </iButton>
         <iButton
           @click="resetStuff"
-          v-permission="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET"
+          v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_MATERIALGROUPRESET|重置按钮"
         >
           {{ language("LK_ZHONGZHI",'重置') }}
         </iButton>
@@ -205,13 +205,13 @@
     <!---------------------------------------------------------------------->
     <!----------------------------仅零件变更--------------------------------->
     <!---------------------------------------------------------------------->
-    <onlyPartsChange @updateCategoryGroup="updateCategoryGroup" v-if='partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey' ref='onlyPartsChange' v-permission='PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE' @handleSelectionChange="handleSelectionChange"></onlyPartsChange>
+    <onlyPartsChange @updateCategoryGroup="updateCategoryGroup" v-if='partProjTypes.JINLINGJIANHAOGENGGAI == this.$route.query.businessKey' ref='onlyPartsChange' v-permission.auto='PARTSPROCURE_BATCHMIANTAIN_ONLYCHANGE|仅零件变更' @handleSelectionChange="handleSelectionChange"></onlyPartsChange>
     <!---------------------------------------------------------------------->
     <!----------------------------非仅零件变更-------------------------------->
     <!---------------------------------------------------------------------->
     <outputPlan
       v-else
-      v-permission='PARTSPROCURE_BATCHMIANTAIN_OUTPUTLINE'
+      v-permission.auto='PARTSPROCURE_BATCHMIANTAIN_OUTPUTLINE|零件产量计划'
       ref="outputPlan"
       class="margin-bottom20"
       @handleSelectionChange="handleSelectionChange"
