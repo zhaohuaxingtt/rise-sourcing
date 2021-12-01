@@ -97,7 +97,6 @@
           :tableTitle="pendingHeader"
           :lang="true"
           :selectConfig="selectConfig"
-          :indexConfig="indexConfig"
           v-loading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
       >
