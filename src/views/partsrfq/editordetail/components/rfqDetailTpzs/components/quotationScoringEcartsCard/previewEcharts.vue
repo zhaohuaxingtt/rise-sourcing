@@ -152,7 +152,7 @@ export default{
         return false
       }
       row.forEach(item=>{
-        this.fslist = [...this.partList.find(items=>items.name == item).list,...this.fslist]
+        this.fslist = [...this.partList.find(items=>items.value == item).list,...this.fslist]
       })
       
     },
@@ -242,7 +242,7 @@ export default{
         }else{
           partList.push({
             name:element.partNum+'-'+element.fsNum+'-'+element.partName+'-'+element.partNameDe,
-            value:element.partNum,
+            value:element.fsNum,
             fsNum: element.fsNum,
             list:[
               {
