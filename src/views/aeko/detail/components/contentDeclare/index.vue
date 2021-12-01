@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-26 11:52:08
+ * @LastEditTime: 2021-12-01 16:43:13
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -264,7 +264,7 @@
           </template>
           <!-- 模具投资变动 -->
           <template #mouldPriceChange="scope">
-            <span>{{scope.row.mouldPriceChange | thousandsFilter}}</span>
+            <span>{{floatFixNum(scope.row.mouldPriceChange)}}</span>
           </template>
           <!-- 价格轴 -->
           <template #priceAxis="scope">
@@ -288,7 +288,7 @@
           </template>
           <!-- B价变动含分摊 -->
           <template #bpriceChange="scope">
-            <span>{{scope.row.bpriceChange | thousandsFilter}}</span>
+            <span>{{floatFixNum(scope.row.bpriceChange)}}</span>
           </template>
           <template #isMtz="scope">
             <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -348,7 +348,7 @@ import {combine} from './mixins/combine'
 
 import Upload from '@/components/Upload'
 
-import filters from "@/utils/filters"
+import {floatFixNum} from "../../../approve/approveDetails/data.js"
 
 import { setLogMenu } from "@/utils";
 
@@ -358,7 +358,7 @@ import { setLogMenu } from "@/utils";
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload },
-  mixins: [ pageMixins, combine,filters ],
+  mixins: [ pageMixins, combine ],
   props: {
     aekoInfo: {
       type: Object,
@@ -462,6 +462,7 @@ export default {
     
   },
   methods: {
+    floatFixNum,
     searchCartypeProject() {
       const {query} = this.$route;
       const { requirementAekoId ='',} = query;
