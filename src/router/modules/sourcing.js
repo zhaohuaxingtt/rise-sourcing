@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-11-05 15:24:50
- * @LastEditors:  
+ * @LastEditTime: 2021-12-01 10:58:02
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\router\modules\sourcing.js
+ * @FilePath: \front-sourcing\src\router\modules\sourcing.js
  */
 export default [
   {
@@ -264,6 +264,30 @@ export default [
             },
             component: () =>
                 import ("@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/partScoring"),
+        },
+        {
+            path: "createparts/home",
+            name: "createPartsHome",
+            meta: { title: "手工采购项目创建" },
+            component: () => import("@/views/partsprocure/createparts/components/home"),
+        },
+        {
+            path: "createparts/steelbatchpurchase",
+            name: "createPartsSteelBatchPurchase",
+            meta: { title: "钢材批量采购" },
+            component: () => import("@/views/partsprocure/createparts/components/steelbatchpurchase"),
+        },
+        {
+            path: "createparts/steelsinglepurchase",
+            name: "createPartsSteelSinglePurchase",
+            meta: { title: "钢材一次性采购" },
+            component: () => import("@/views/partsprocure/createparts/components/steelsinglepurchase"),
+        },
+        {
+            path: "createparts/factoryrelocate",
+            name: "createPartsFactoryRelocate",
+            meta: { title: "工厂迁移" },
+            component: () => import("@/views/partsprocure/createparts/components/factoryrelocate"),
         }
       ]
     }

@@ -1,18 +1,20 @@
 /*
  * @Author: your name
  * @Date: 2021-05-24 16:28:13
- * @LastEditTime: 2021-06-28 10:58:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-01 11:09:58
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsprocure\createparts\components\data.js
+ * @FilePath: \front-sourcing\src\views\partsprocure\createparts\components\data.js
  */
 export const navList = [
   {
     value: 1,
     name: "手工采购项目创建",
-    url: "/sourcing/createparts/home",
+    url: "/sourceinquirypoint/sourcing/createparts/home",
     activePath: "/createparts/home",
-    key: "SHOUGONGCAIGOUXIANGMUCHUANGJIAN"
+    key: "SHOUGONGCAIGOUXIANGMUCHUANGJIAN",
+    permissionKey: 'CREATEPARTSHOME_TAB',
+    permissionName: '手工采购项目创建'
   },
   // {
   //   value: 2,
@@ -29,10 +31,12 @@ export const navList = [
   //   key: "createparts.GangCaiYiCiXingCaiGou"
   // },
   {
-    value: 4,
+    value: 2,
     name: "工厂迁移",
-    url: "/sourcing/createparts/factoryrelocate",
+    url: "/sourceinquirypoint/sourcing/createparts/factoryrelocate",
     activePath: "/createparts/factoryrelocate",
-    key: "GONGCHANGQIANYI"
+    key: "GONGCHANGQIANYI",
+    permissionKey: 'FACTORYRELOCATE_TAB',
+    permissionName: '工厂迁移'
   }
 ]
