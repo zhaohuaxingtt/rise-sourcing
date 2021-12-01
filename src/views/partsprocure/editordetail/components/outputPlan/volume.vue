@@ -14,7 +14,7 @@
             <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
             <iButton v-if="isEdit" @click="addCar">{{ language("LK_TIANJIA",'添加') }}</iButton>
             <iButton v-if="isEdit" @click="saveData">{{ language("LK_BAOCUN",'保存') }}</iButton>
-            <iButton v-if="!isEdit" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
+            <iButton v-if="!isEdit && ispartProjectSource" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
           </div>
         </div>
       <tableList
@@ -41,7 +41,7 @@
 		    v-update
       />
     </div>
-      <addCarType :dialogVisible="carTypeVisible" @changeVisible="changeVisible" @getSelectData="getSelectData" :params="params">
+      <addCarType :dialogVisible="carTypeVisible" v-if="carTypeVisible"  @changeVisible="changeVisible" @getSelectData="getSelectData" :params="params">
 
       </addCarType>
   </iCard>
@@ -81,7 +81,7 @@ export default {
       carTypeVisible:false,
       selectData:[],
       getPerCarDosage:{},
-      isGs:true
+      isGs:true,
     };
   },
   props: {
@@ -98,7 +98,21 @@ export default {
     } else {
       this.isGs = false
     }
+    if(this.params.partProjectSource == 2) {
+      this.ispartProjectSource = true
+    } else {
+      this.ispartProjectSource = false
+    }
 },
+  computed:{
+    ispartProjectSource() {
+       if(this.params.partProjectSource == 2) {
+      return true
+    } else {
+      return false
+    }
+    }
+  },
   methods: {
     async getData() {  
       this.loading = true;
