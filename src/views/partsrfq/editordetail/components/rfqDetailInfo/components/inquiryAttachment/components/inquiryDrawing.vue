@@ -48,6 +48,9 @@ import {downloadFile, downloadUdFile} from "@/api/file";
 
 
 export default {
+  props:{
+    rfqId:String
+  },
   components: {
     iCard,
     iButton,
@@ -69,7 +72,7 @@ export default {
   },
   methods: {
     async getTableList() {
-      const id = this.$route.query.id
+      const id = this.$route.query.id || this.rfqId
       if (id) {
         this.tableLoading = true;
         const req = {
