@@ -235,11 +235,12 @@ export default {
         }
       }
       if(path == 3){
-        if(roundType === '05'){
-          return true
-        } else {
-          return false
-        }
+        // if(roundType === '05'){
+        //   return true
+        // } else {
+        //   return false
+        // }
+        return true
       }
       if (path == 4) {
         if (

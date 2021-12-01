@@ -201,6 +201,121 @@
             </template>
           </template>
 
+          <!-- 出厂价 -->
+          <template slot="factoryPrice" slot-scope="scope" >
+            <!-- 只读 -->
+            <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ multiPriceValue[scope.row['ids']].factoryPrice }}</div>
+            </template>
+            <template v-else>
+               <operatorInput
+                  v-model="scope.row['factoryPrice']"
+                >
+              </operatorInput>
+            </template>
+           
+          </template>
+
+          <!-- 包装费 -->
+          <template slot="packingFee" slot-scope="scope" >
+            <!-- 只读 -->
+            <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ multiPriceValue[scope.row['ids']].packingFee }}</div>
+            </template>
+            <template v-else>
+               <operatorInput
+                  v-model="scope.row['packingFee']"
+                >
+              </operatorInput>
+            </template>
+          </template>
+
+          <!-- 运输费 -->
+          <template slot="transportFee" slot-scope="scope" >
+            <!-- 只读 -->
+            <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ multiPriceValue[scope.row['ids']].transportFee }}</div>
+            </template>
+            <template v-else>
+               <operatorInput
+                  v-model="scope.row['transportFee']"
+                >
+              </operatorInput>
+            </template>
+          </template>
+
+          <!-- 操作费 -->
+          <template slot="operationFee" slot-scope="scope" >
+            <!-- 只读 -->
+            <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ multiPriceValue[scope.row['ids']].operationFee }}</div>
+            </template>
+            <template v-else>
+               <operatorInput
+                  v-model="scope.row['operationFee']"
+                >
+              </operatorInput>
+            </template>
+          </template>
+
+          <!-- B价 -->
+          <template slot="bprice" slot-scope="scope" >
+            <!-- 只读 -->
+            <template >
+              <div>{{ scope.row['bprice'] 
+                      ? Number(scope.row['bprice']).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+                      : ''
+                      }}
+              </div>
+            </template>
+          </template>
+
+          <!-- 模具费 -->
+          <template slot="moldFee" slot-scope="scope" >
+            <!-- 只读 -->
+            <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ multiPriceValue[scope.row['ids']].moldFee }}</div>
+            </template>
+            <template v-else>
+               <operatorInput
+                  v-model="scope.row['moldFee']"
+                >
+              </operatorInput>
+            </template>
+          </template>
+
+          <!-- 开发费 -->
+          <template slot="developFee" slot-scope="scope" >
+            <!-- 只读 -->
+            <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ multiPriceValue[scope.row['ids']].developFee }}</div>
+            </template>
+            <template v-else>
+               <operatorInput
+                  v-model="scope.row['developFee']"
+                >
+              </operatorInput>
+            </template>
+          </template>
+
+          <!-- 目标价 -->
+          <template slot="targetPrice" slot-scope="scope" >
+            <template  >
+              <div>{{ multiPriceValue[scope.row['ids']].targetPrice }}</div>
+            </template>
+            <!-- 只读 -->
+            <!-- <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ multiPriceValue[scope.row['ids']].targetPrice }}</div>
+            </template>
+            <template v-else>
+               <operatorInput
+                  v-model="scope.row['targetPrice']"
+                >
+              </operatorInput>
+            </template> -->
+          </template>
+
+          <!-- 产品名称 -->
           <template slot="productName" slot-scope="scope">
             <!-- 只读 -->
             <template v-if="ruleForm.biddingStatus !== '01'">
@@ -212,6 +327,7 @@
             </template>
           </template>
 
+          <!-- 产品编号 -->
           <template slot="productCode" slot-scope="scope">
             <!-- 只读 -->
             <template v-if="ruleForm.biddingStatus !== '01'">
@@ -249,7 +365,39 @@
             </template>
           </template>
 
-          
+          <!-- 平均年产量 -->
+          <template slot="aveAnnualOutput" slot-scope="scope" >
+            <template >
+              <div>{{ multiPriceValue[scope.row['ids']].aveAnnualOutput }}</div>
+            </template>
+            <!-- 只读 -->
+            <!-- <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ multiPriceValue[scope.row['ids']].aveAnnualOutput }}</div>
+            </template>
+            <template v-else>
+               <operatorInput
+                  v-model="scope.row['aveAnnualOutput']"
+                >
+              </operatorInput>
+            </template> -->
+          </template>
+
+          <!-- 最大年产量 -->
+          <template slot="maxAnnualOutput" slot-scope="scope" >
+            <template >
+              <div>{{ multiPriceValue[scope.row['ids']].maxAnnualOutput }}</div>
+            </template>
+            <!-- 只读 -->
+            <!-- <template  v-if="ruleForm.biddingStatus !== '01'">
+              <div>{{ multiPriceValue[scope.row['ids']].maxAnnualOutput }}</div>
+            </template>
+            <template v-else>
+               <operatorInput
+                  v-model="scope.row['maxAnnualOutput']"
+                >
+              </operatorInput>
+            </template> -->
+          </template>
 
           <!-- 操作 -->
           <template slot="caozuo" slot-scope="scope">
@@ -356,6 +504,7 @@ import {
 } from "@/api/bidding/bidding";
 import Big from "big.js";
 import dayjs from "dayjs";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -368,6 +517,7 @@ export default {
     iSelect,
     iDatePicker,
     tableColumnTemplate,
+    operatorInput
   },
   props: {
     id: String,
@@ -393,28 +543,10 @@ export default {
       factoryPricePercent: "",
       multiPleTableTitle,
       priceProps: [
-        "factoryPrice",
-        "packingFee",
-        "transportFee",
-        "operationFee",
-        "moldFee",
-        "developFee",
-        "targetPrice",
-        "lifecycle",
-        "aveAnnualOutput",
-        "maxAnnualOutput",
+        // "lifecycle",
       ],
       inputProps: [
-        "factoryPrice",
-        "packingFee",
-        "transportFee",
-        "operationFee",
-        "moldFee",
-        "developFee",
-        "targetPrice",
-        "lifecycle",
-        "aveAnnualOutput",
-        "maxAnnualOutput",
+        // "lifecycle",
       ],
       quantityUnit: [],
       selectedTableData: [],
@@ -461,6 +593,8 @@ export default {
         "stage15",
         ],
       orgTotalPrices:0,
+      multiPriceValue:{},
+      isInputFlag:false
     };
   },
   mounted() {
@@ -498,13 +632,13 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || this.language('BIDDING_YUAN',"元");
     },
     totalPrices() {
-      return this.orgTotalPrices;
+      return this.ruleForm.biddingStatus === '01' ? this.orgTotalPrices : this.ruleForm.totalPrices;
     },
     numberUppercase() {
       return digitUppercase(Number(this.orgTotalPrices));
     },
     startingPrice() {
-      return this.totalPrices + this.currencyMultiple;
+      return Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
     biddingProducts() {
       return this.ruleForm.biddingProducts;
@@ -559,6 +693,21 @@ export default {
     //监听产品  计算B价 ==出厂价+包装费+运输费+操作费
     biddingProducts: {
       handler(val, oldVal) {
+      this.multiPriceValue= this.ruleForm.biddingProducts.reduce((obj, item, index) => {
+       return  obj={...obj,[item.ids]:
+                      {
+                        factoryPrice:Number(item.factoryPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        packingFee:Number(item.packingFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        transportFee:Number(item.transportFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        operationFee:Number(item.operationFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        moldFee:Number(item.moldFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        developFee:Number(item.developFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        targetPrice:Number(item.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        aveAnnualOutput:Number(item.aveAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        maxAnnualOutput:Number(item.maxAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                      }
+                    }
+      },{})
         if (val.length > 0)
           val.forEach((item) => {
             item.bprice =
@@ -626,7 +775,8 @@ export default {
       this.handlerInputBlur();
     },
     //输入完成出发计算总价方法
-    handlerInputBlur(){
+    handlerInputBlur(event){
+      this.isInputFlag = false
       let biddingProducts = this.ruleForm.biddingProducts;
       let sum= biddingProducts.reduce((sum, item, index) => {
         return isNaN(Number(item.factoryPrice)) ||
@@ -636,6 +786,9 @@ export default {
           : Big(this.calculationDetails(item, index)).add(sum).add(Number(item.moldFee)).add(Number(item.developFee)).toNumber();
       }, 0);
       this.orgTotalPrices=Big(sum).toFixed(2);
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
     },
     //产品操作事件
     handleClickOne(scope) {
@@ -898,7 +1051,7 @@ export default {
         if (!isNaN(Number(tmp))) {
           e.factoryPrice = Big(e.factoryPrice || 0)
             .times(Number(tmp) === 0 ? 1 : tmp / 100)
-            .toNumber();
+            .toNumber().toFixed(2);
         }
       });
       this.factoryPricePercent = "";
@@ -1113,6 +1266,7 @@ export default {
         lifecycle: "",
         aveAnnualOutput: "",
         maxAnnualOutput: "",
+        ids:new Date().getTime()
       });
       this.handleAddPurchase();
       this.page.total = this.ruleForm.biddingProducts.length;
@@ -1231,7 +1385,7 @@ export default {
             item.procureYearMonth;
           obj[item.productId].yearMonth[`id${item.stage}`] = item.id;
           obj[item.productId].cutPricePlan[`stage${item.stage}`] =
-            item.cutPricePlan;
+           this.ruleForm.biddingStatus === '01' ? item.cutPricePlan : (item.cutPricePlan + '%');
           obj[item.productId].cutPricePlan[`id${item.stage}`] = item.id;
           return obj;
         }, {});
@@ -1249,8 +1403,13 @@ export default {
           obj[item.productId].procureYearMonth[`stage${item.stage}`] =
             item.procureYearMonth;
           obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
-          obj[item.productId].procureNum[`stage${item.stage}`] =
+          if (this.ruleForm.biddingStatus === '01') {
+            obj[item.productId].procureNum[`stage${item.stage}`] =
             item.procureNum;
+          }else {
+            obj[item.productId].procureNum[`stage${item.stage}`] =
+            item.procureNum ? Number(item.procureNum).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : null
+          }
           obj[item.productId].procureNum[`id${item.stage}`] = item.id;
           return obj;
         }, {});
@@ -1316,6 +1475,12 @@ export default {
             });
            })
       }
+      this.ruleForm.biddingProducts = this.ruleForm.biddingProducts?.map(item => {
+        return {
+          ...item,
+          ids:item.id
+        }
+      })
       this.$nextTick(() => {
         this.handlerInputBlur();
         // this.ruleForm.biddingProducts.forEach(item => {
