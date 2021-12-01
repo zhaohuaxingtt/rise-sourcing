@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
- * @LastEditors: YoHo
- * @LastEditTime: 2021-11-30 17:02:25
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-01 15:17:43
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -22,10 +22,13 @@
 
 <script>
 import { iNavMvp, icon } from "rise"
-import { TAB,SUBMENU,ATTACHSUBMENU } from "./data"
+import { 
+  // TAB,
+  SUBMENU,ATTACHSUBMENU } from "./data"
 import iLog from "../../log";
 import logButton from "../../../../components/logButton";
 import switchPost from '@/components/switchPost'
+import { getLeftTab } from '../../data'
 export default {
   components: {
     iNavMvp,
@@ -35,7 +38,10 @@ export default {
     switchPost
   },
   props: {
-    navList: {type:Array, default: window._.cloneDeep(TAB)},
+    navList: {type:Array, 
+    // default: window._.cloneDeep(TAB)
+    default:()=>getLeftTab(2)
+    },
     subNavList: {type:Array, default: window._.cloneDeep(SUBMENU)},
     module: {type:String, default: 'AEKO审批'},
   },

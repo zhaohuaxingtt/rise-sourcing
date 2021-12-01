@@ -8,22 +8,22 @@
         <iFormGroup row="4" class="basic-form">
           <template 
             v-for="(item,index) in basicTitle"
-            v-permission.dynamic.auto="item.permissionKey" 
           >
-            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  :label-width="item.labelWidth || '120px'">
+            <iFormItem v-permission.auto="item.permissionKey"  :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  :label-width="item.labelWidth || '120px'">
                 <iText >{{ item.isObj ? basicInfo[item.props+'Desc'] : basicInfo[item.props]}}</iText>
             </iFormItem>
           </template>
       </iFormGroup>
-      <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
-      <iInput
-        disabled
-        type="textarea"
-        rows="10" 
-        resize="none"
-        v-model="basicInfo.remark"
-        v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TEXT_TIPS|封面表态备注框_预览"
-      />
+      <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TEXT_TIPS|封面表态备注框_预览">
+        <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
+        <iInput
+            disabled
+            type="textarea"
+            rows="10" 
+            resize="none"
+            v-model="basicInfo.remark"
+        />
+      </div>
       <!-- 费用合计table -->
       <div class="margin-top40" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_CARTYPE|封面表态费用表单_预览">
         <tableList

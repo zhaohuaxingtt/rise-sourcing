@@ -14,7 +14,7 @@
             v-show="!item.showCode || (item.showCode && (item.showCode).includes(aekoInfo.aekoType))"
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"
-            v-permission.dynamic="item.permissionKey"
+            v-permission.auto="item.permissionKey"
             >
                 <template v-if="item.type === 'select'" >
                      <aeko-select 
