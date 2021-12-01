@@ -70,6 +70,9 @@ import {downloadFile, downloadUdFile} from '@/api/file'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
+  props:{
+    rfqId:String
+  },
   components: {
     iCard,
     iButton,
@@ -103,7 +106,7 @@ export default {
   },
   methods: {
     async getTableList() {
-      const id = this.$route.query.id
+      const id = this.$route.query.id || this.rfqId
       if (id) {
         this.tableLoading = true;
         const req = {
@@ -141,7 +144,7 @@ export default {
       })
     },
     async uploadAttachments(data, size) {
-      const id = this.$route.query.id
+      const id = this.$route.query.id || this.rfqId
       if (id) {
         this.tableLoading = true
         this.uploadAttachmentsButtonLoading = true
@@ -162,7 +165,7 @@ export default {
       }
     },
     async notifyAllSuppliers() {
-      const id = this.$route.query.id
+      const id = this.$route.query.id || this.rfqId
       const res = await notifySuppliers(id)
       this.resultMessage(res)
     },
