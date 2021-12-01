@@ -1,7 +1,7 @@
 <template>
   <div class="imageList" ref="imageList">
     <div class="image" v-for="(image, $index) in images" :key="$index">
-      <div v-if="image.filePath" v-loading="image.loading" class="imageWrapper">
+      <div v-if="image.filePath" v-loading="loadingObj[image.uploadId]" class="imageWrapper">
         <img :id="`image_${ $index }`" :src="image.filePath" :alt="image.fileName" @click="jumpImg(image.filePath)">
       </div>
     </div>
@@ -16,25 +16,41 @@ export default {
       default: () => ([])
     }
   },
+  data() {
+    return {
+      loadingObj: {}
+    }
+  },
   created() {
     this.imageLoad()
   },
   watch: {
     images() {
       this.imageLoad()
+    },
+    loadingObj: {
+      handler() {
+        const timer = setTimeout(() => {
+          Object.keys(this.loadingObj).forEach(key => {
+            this.$set(this.loadingObj, key, false)
+          })
+          clearTimeout(timer)
+        }, 5000)
+      },
+      deep: true
     }
   },
   methods: {
     imageLoad() {
       this.images.forEach((item, index) => {
-        this.$set(item, "loading", true)
+        this.$set(this.loadingObj, item.uploadId, true)
         this.$nextTick(() => {
           const imgDom = this.$refs.imageList.querySelector(`#image_${ index }`)
           imgDom.addEventListener("load", () => {
-            this.$set(item, "loading", false)
+            this.$set(this.loadingObj, item.uploadId, false)
           })
           imgDom.addEventListener("error", () => {
-            this.$set(item, "loading", false)
+            this.$set(this.loadingObj, item.uploadId, false)
           })
         })
       })

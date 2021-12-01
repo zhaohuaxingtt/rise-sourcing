@@ -9,7 +9,7 @@
 <template>
 <div class="strategy" :key='randomNumber'>
   <iCard :title="language('OVERVIEWS','Overviews')">
-    <div class="control" v-if="!isPreview">
+    <div class="control" v-if="!isPreview && !nominationDisabled && !rsDisabled">
       <div class="flex-align-center">
         <span class="label">材料组</span>
         <iSelect v-model="categoryCode" @change="randomNumber++"> 
@@ -52,6 +52,13 @@ export default{
       images: [],
       isPreview: false
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
   },
   created() {
     this.nominateAppId = this.$route.query.desinateId
