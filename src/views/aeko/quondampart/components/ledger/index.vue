@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-24 16:41:28
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-01 11:22:50
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -73,7 +73,6 @@
         <tableList
           class="table"
           index
-          v-permission="AEKO_QUONDAMPARTLEDGER_TABLE"
           :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
