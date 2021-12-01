@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 15:12:41
- * @LastEditTime: 2021-12-01 11:27:55
+ * @LastEditTime: 2021-12-01 13:54:50
  * @LastEditors: Luoshuang
  * @Description: 零件采购项目批量维护界面
  * @FilePath: \front-sourcing\src\views\partsprocure\batchmiantain\index.vue
@@ -19,7 +19,7 @@
       <div class="floatright">
         <!-- 供应商创建定点申请单 -->
 				<createNomiappBtn :datalist='selectTableData'></createNomiappBtn>
-        <iButton @click="save('partSrcProjec')" :loading='saveButchLoading' v-permission="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRMJLJH|保存按钮"
+        <iButton @click="save('partSrcProjec')" :loading='saveButchLoading' v-permission.auto="PARTSPROCURE_BATCHMIANTAIN_PURCHASINGCONFIRMJLJH|保存按钮"
           >{{ language("LK_QUERENJINGLINGJHAOJLJHBG",'保存') }}
         </iButton>
         <!-- 	<iButton @click="creatFs" v-permission="PARTSPROCURE_BATCHMIANTAIN_GENERATEFSNUMBER">
