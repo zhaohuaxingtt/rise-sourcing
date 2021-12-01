@@ -94,7 +94,11 @@ export default {
   inject: ["getDisabled"],
   computed: {
     disabled() {
-      return this.getDisabled()
+      try {
+        return this.getDisabled()
+      } catch (error) {
+        return true
+      }
     }
   },
   methods: {
