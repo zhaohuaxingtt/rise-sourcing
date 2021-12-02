@@ -124,7 +124,7 @@
           </div>
           <div class="item-button">
             <iButton @click.enter="getTableList">{{language('BIDDING_CHAXUN','查询')}}</iButton>
-            <iButton @click="handleSearchReset('ruleForm')">{{language('BIDDING_CHONGZHI','重置')}}</iButton>
+            <iButton class="item-button-child2" @click="handleSearchReset('ruleForm')">{{language('BIDDING_CHONGZHI','重置')}}</iButton>
           </div>
         </div>
 
@@ -386,18 +386,18 @@ export default {
 }
 .item ::v-deep {
   display: flex;
-  margin-right: -6rem;
+  /* margin-right: -6rem; */
   flex-wrap: wrap;
   .el-form-item {
     /* display: flex; */ //平行解开
-    width: 13rem;
-    margin-right: 5rem;
+    width: 220px;
+    margin-right: 4rem;
     position: relative;
     .el-form-item__label {
       width: 100%;
       .flex-align-center{
         font-weight: 600;
-        font-size: smaller;
+        font-size: 14px;
         height: 16px;
         margin-bottom: 12px;
       }
@@ -405,6 +405,9 @@ export default {
     .el-form-item__content {
       width: 100%;
       line-height:35px;
+      .el-input{
+        font-size: 14px;
+      }
     }
     /* 禁用样式 */
     .el-input.is- .el-input__inner {
@@ -420,6 +423,9 @@ export default {
 .item-button{
   flex: none;
   margin-top: 1.5rem;
+  .item-button-child2{
+    margin-left: 20px;
+  }
 }
 
 ::v-deep .el-date-editor {
