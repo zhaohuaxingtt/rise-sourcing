@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-26 18:32:15
+ * @LastEditTime: 2021-12-02 18:58:39
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -191,7 +191,7 @@
 </template>
 <script>
 import {removeKeysNumber,getPorpsNumber} from './data'
-import {icon} from 'rise'
+import {icon,iMessage} from 'rise'
 import moment from 'moment'
 export default{
   components:{icon},
@@ -295,6 +295,7 @@ export default{
       }
     },
     optionPage(items,index){
+      if(items[index+'hasNoBidOpen']) return iMessage.warn(this.language('AIBIAOSHIJIANWEIDAO','抱歉！开标时间未到，暂时无法查看报价单！'))
       const router = this.$router.resolve({
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
