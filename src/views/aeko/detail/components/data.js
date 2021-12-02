@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-12-02 14:10:57
+ * @LastEditTime: 2021-12-02 15:30:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -33,6 +33,8 @@ export const contentDeclareTableTitle = [
   { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true, width: 100 },
   { props: "bpriceChange", name: "B价变动(含分摊)", key: "BJIABIANDONGHANFENTAN", tooltip: true, width: 130 },
   { props: "mouldPriceChange", name: "模具投资变动", key: "MUJUTOUZIBIANDONG", tooltip: true, width: 110 },
+  { props: "originPriceA", name: "原零件A价", key: "YUANLINGJIANAJIA", tooltip: true, width: 90 },
+  { props: "originPriceB", name: "原零件B价", key: "YUANLINGJIANBJIA", tooltip: true, width: 90 },
   { props: "dosage", name: "装⻋率/每⻋⽤量", key: "ZHUANGCHELVMEICHEYONGLIANG", tooltip: true, width: 120 },
   { props: "quotationId", name: "报价单", key: "BAOJIADAN", tooltip: true },
   { props: "priceAxis", name: "价格轴", key: "JIAGEZHOU", tooltip: true },

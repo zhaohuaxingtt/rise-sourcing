@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: Hao,Jiang
+ * @LastEditors: Luoshuang
 * @Description: BDL列表
  -->
 <template>
@@ -9,7 +9,7 @@
     <div class="header flex-between-center">
       <div class="input">
         <!-- <iInput :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey" @input="handleInputBySearchKey"></iInput> -->
-        <iInput :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" v-model="supplierName">
+        <iInput :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" v-model="supplierName" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERNAMESEARCH|BDL供应商名称查询">
           <div class="inputSearchIcon" slot="suffix">
             <icon symbol name="iconshaixuankuangsousuo" @click.native="query" />
           </div>
@@ -33,7 +33,9 @@
                @openPage="openPage"
                @log="log" ref="table"
                @handleSelect="handleSelect"
-               @handleSelectAll="handleSelectAll"></tableList>
+               @handleSelectAll="handleSelectAll"
+               v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TABLE|BDL列表"
+    ></tableList>
     <iPagination v-update @size-change="handleSizeChange($event, getTableList)"
 			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
 			:page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount"></iPagination>

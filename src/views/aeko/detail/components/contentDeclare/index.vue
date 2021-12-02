@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-12-02 14:18:24
+ * @LastEditTime: 2021-12-02 15:30:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -266,6 +266,14 @@
           <template #mouldPriceChange="scope">
             <span>{{floatFixNum(scope.row.mouldPriceChange)}}</span>
           </template>
+          <!-- 原零件A价 -->
+          <template #originPriceA="scope">
+            <span>{{floatFixNum(scope.row.originPriceA)}}</span>
+          </template>
+          <!-- 原零件B价 -->
+          <template #originPriceB="scope">
+            <span>{{floatFixNum(scope.row.originPriceB)}}</span>
+          </template>
           <!-- 价格轴 -->
           <template #priceAxis="scope">
             <!-- -disabled -->
@@ -456,7 +464,10 @@ export default {
         }
       })
       this.tableTitle = filterTable;
-    }else{
+    } else if(from == 'stance'){
+      let filterTable = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc');
+      this.tableTitle = filterTable;
+    } else{
       this.tableTitle = tableTitle.filter((item)=>item.props!='tranWayDesc'&&item.props!='buyerName')
     }
     
@@ -1150,7 +1161,6 @@ export default {
 
     // 承运方式展示字段
     getRranWayDesc(row){
-      console.log(row,'getRranWayDesc');
       if(row.originBnkTranWay==null && row.newBnkTranWay==null){
         return ' '
       }else if(row.originBnkTranWay == row.newBnkTranWay){ //若新原零件承运方式相同，则承运方式显示自运或者承运

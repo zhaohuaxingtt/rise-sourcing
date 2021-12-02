@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-12-01 15:37:12
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-02 11:16:33
+ * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
@@ -211,7 +211,7 @@ export default {
     // 页签切换
     tabChange() {
       this.$nextTick(() => {
-        const component = this.$refs[this.currentTab][0]
+        const component = this.$refs[this.currentTab]&&this.$refs[this.currentTab][0]
         if (typeof component.init === "function") component.init()
       })
     },

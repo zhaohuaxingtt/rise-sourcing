@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Luoshuang
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -20,7 +20,9 @@
       </iButton>
     </div>
     <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="confirmTableLoading"
-               @handleSelectionChange="handleSelectionChange" @poenPage="openPage">
+               @handleSelectionChange="handleSelectionChange" @poenPage="openPage"
+               v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表"
+    >
       <template #fsnrGsnrNum="scope">
         <span v-if="scope.row.partProjectType === partProjTypes.PEIJIAN" class="openLinkText cursor " @click="gotoAccessoryDetail(scope.row)"> {{ scope.row.fsnrGsnrNum }}</span>
         <span v-else  class="openLinkText cursor "  @click="openPage(scope.row)">{{ scope.row.fsnrGsnrNum }}</span>
@@ -31,16 +33,18 @@
                  :page-size="page.pageSize" :current-page="page.currPage" :layout="page.layout"
                  :total="page.totalCount"></iPagination>
     <div class="addFs flex-align-center" v-if="!disabled">
-      <iInput class="partInput" v-model="partNumList" :placeholder="language('partsprocure.PARTSPROCURE', '请输入零件号')">
-        <div class="inputSearchIcon" slot="suffix">
-          <icon symbol name="iconshaixuankuangsousuo" @click.native="queryParts" />
-        </div>
-      </iInput>
+      <div>
+        <iInput class="partInput" v-model="partNumList" :placeholder="language('partsprocure.PARTSPROCURE', '请输入零件号')" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_PARTNUMSEARCH|零件清单-零件号搜索">
+          <div class="inputSearchIcon" slot="suffix">
+            <icon symbol name="iconshaixuankuangsousuo" @click.native="queryParts" />
+          </div>
+        </iInput>
+      </div>
       <iButton @click="start" :loading="addLoding" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD|零件清单添加">
         {{ language('LK_TIANJIA','添加') }}
       </iButton>
     </div>
-    <partsTable v-if="!disabled && rfqId" ref="partsTable" :rfqId="rfqId" :queryForm="queryForm" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
+    <partsTable v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表" v-if="!disabled && rfqId" ref="partsTable" :rfqId="rfqId" :queryForm="queryForm" @targetHand="waitSelect" @openPage='(row)=>openPage(row)' @gotoAccessoryDetail="gotoAccessoryDetail"></partsTable>
     <!-- 新申请财务目标价 -->
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM ---------->
