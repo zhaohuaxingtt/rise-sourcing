@@ -19,6 +19,7 @@
           open-page-props="ninePartNum"
           @openPage="openPage"
           :openPageGetRowData="true"
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TABLE|零件产量表格"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->

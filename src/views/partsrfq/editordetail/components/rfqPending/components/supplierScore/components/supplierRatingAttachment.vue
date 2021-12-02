@@ -21,6 +21,7 @@
         openPageProps="fileName"
         :openPageGetRowData="true"
         @openPage="handleDownload"
+        v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_TABLE|供应商评分附件-列表"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
