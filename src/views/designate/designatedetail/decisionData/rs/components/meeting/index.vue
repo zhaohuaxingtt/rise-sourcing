@@ -75,6 +75,42 @@
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
 
+        <template #demand="scope">
+          <span>{{ scope.row.demand | kFilter }}</span>
+        </template>
+        <template #output="scope">
+          <span>{{ scope.row.output | kFilter }}</span>
+        </template>
+        <template #presentPrice="scope">
+          <span>{{ scope.row.presentPrice | toThousands }}</span>
+        </template>
+        <template #cfTargetAPrice="scope">
+          <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+        </template>
+        <template #cfTargetBPrice="scope">
+          <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+        </template>
+        <template #aprice="scope">
+          <span>{{ scope.row.aprice | toThousands }}</span>
+        </template>
+        <template #bprice="scope">
+          <span>{{ scope.row.bprice | toThousands }}</span>
+        </template>
+        <template #investFee="scope">
+          <span>{{ scope.row.investFee | toThousands }}</span>
+        </template>
+        <template #devFee="scope">
+          <span>{{ scope.row.devFee | toThousands }}</span>
+        </template>
+        <template #addFee="scope">
+          <span>{{ scope.row.addFee | toThousands }}</span>
+        </template>
+        <template #savingFee="scope">
+          <span>{{ scope.row.savingFee | toThousands }}</span>
+        </template>
+        <template #tto="scope">
+          <span>{{ scope.row.tto | toThousands }}</span>
+        </template>
       </tableList>
       <!-- v-if="isPreview" -->
       <div class="beizhu">
@@ -138,7 +174,8 @@ import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, searchRsPageExchangeRate, reviewListRs } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
 import { findFrontPageSeat } from '@/api/designate'
-import { zipWith } from "lodash"
+import { toThousands } from "@/utils"
+
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
@@ -172,6 +209,7 @@ export default {
     }
   },
   filters: {
+    toThousands,
     booleanFilter(val) {
       const obj = {
         true: "Y",
@@ -179,6 +217,9 @@ export default {
       }
 
       return obj[val] || val
+    },
+    kFilter(val) {
+      return math.divide(math.bignumber(val || 0), 1000).toString()
     }
   },
   computed: {

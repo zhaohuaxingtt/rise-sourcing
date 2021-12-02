@@ -32,9 +32,11 @@
               {{ language("LK_BIANJI",'编辑') }}
             </iButton>
           </template>
-            <iButton v-else @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
+          <div v-else>
+            <iButton v-if="!isDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
               {{ language("LK_BIANJI",'编辑') }}
             </iButton>
+          </div>
         </span>
       </div>
       <div class="clearfix"></div>
@@ -84,6 +86,9 @@ export default {
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
     }),
+    isDisabled() {
+      return false
+    }
   },
   components: {
     // iInput,

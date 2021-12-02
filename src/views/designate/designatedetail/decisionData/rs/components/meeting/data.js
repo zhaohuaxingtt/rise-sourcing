@@ -140,7 +140,7 @@ export const sparePartTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // 附件
@@ -161,7 +161,7 @@ export const accessoryTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // GS零件
@@ -188,7 +188,7 @@ export const gsTableTitle = [
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
   {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 85},
   {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 120},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // DB零件
@@ -215,7 +215,7 @@ export const dbTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 export const meetingRemark = [
