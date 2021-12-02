@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-23 11:18:20
+ * @LastEditTime: 2021-12-02 16:48:02
  * @Description: 模具目标价-目标价签收
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\index.vue
 -->
@@ -43,7 +43,7 @@
           <!--------------------指派按钮----------------------------------->
           <iButton @click="openAssignDialog" v-permission.auto='MODELTARGETPRICE_SIGNIN_ASSIGNBTN|模具目标价管理-目标价签收-指派按钮'>{{language('LK_ZHIPAI','指派')}}</iButton>
           <!--------------------无投资按钮----------------------------------->
-          <iButton @click="openNoInvest" v-permission.auto='MODELTARGETPRICE_SIGNIN_NOINVESTBTN|模具目标价管理-目标价签收-无投资按钮'>{{language('WUTOUZI','无投资')}}</iButton>
+          <iButton @click="openNoInvest" v-permission.auto='MODELTARGETPRICE_SIGNIN_BACK|模具目标价管理-目标价签收-退回按钮'>{{language('TUIHUI','退回')}}</iButton>
           <!--------------------签收按钮----------------------------------->
           <iButton @click="handleSignIn" :loading="signLoading" v-permission.auto='MODELTARGETPRICE_SIGNIN_SIGNINBTN|模具目标价管理-目标价签收-签收按钮'>{{language('QIANSHOU','签收')}}</iButton>
         </div>
