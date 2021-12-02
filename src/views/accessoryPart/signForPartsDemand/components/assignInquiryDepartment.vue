@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:57:31
  * @LastEditors:  
- * @LastEditTime: 2021-12-02 10:19:17
+ * @LastEditTime: 2021-12-02 14:46:20
  * @Description: 分配询价科室弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryDepartment.vue
 -->
@@ -82,7 +82,7 @@ export default {
         return
       }
       this.loading = true
-      this.$emit('sendAccessory', this.respDept)
+      this.$emit('sendAccessory', this.respDept, this.deptOptions?.find(item => item.value === this.respDept)?.label)
     },
     changeLoading(loading) {
       this.loading = loading

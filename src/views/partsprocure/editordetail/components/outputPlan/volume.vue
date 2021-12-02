@@ -326,7 +326,7 @@ export default {
       if(this.isGs == true) {
         copyData.forEach(value=> {
           let dataItem = {}
-          dataItem.purchasingRequirementObjectId = this.params.id
+          dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
           dataItem.cartypeLevel = value.cartypeLevel
           dataItem.engineType = value.engineType
           dataItem.gearType = value.gearboxName
@@ -342,7 +342,7 @@ export default {
       } else {
         copyData.forEach(value=> {
           let dataItem = {}
-          dataItem.purchasingRequirementObjectId = this.params.id
+          dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
           dataItem.cartypeLevel = value.cartypeLevel
           dataItem.engineType = value.engineVo?.engineName
           dataItem.gearType = value.gearboxVo?.gearboxName

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors:  
- * @LastEditTime: 2021-12-01 14:33:27
+ * @LastEditTime: 2021-12-02 14:49:26
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryBuyer.vue
 -->
@@ -12,59 +12,41 @@
     :title="language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
-    width="600px"
-    class="dialog"
+    width="381px"
   >
     <template slot="footer">
       <iButton @click="handleConfirm" :loading="loading">{{language('QUEREN','确认')}}</iButton>
       <iButton @click="handleCancel">{{language('QUXIAO','取消')}}</iButton>
     </template>
-      <el-form class="elForm">
-        <el-form-item :label="language('QINGXUANZEXUNJIACAIGOUKESHI','请选择询价采购科室')">
-          <iSelect v-model="queryPurchaseDept"  nameZh @change="changeDept">
-            <el-option
-              v-for="item in purchaseDeptOptions"
-              :key="item.id"
-              :label="item.deptNum"
-              :value="item">
-            </el-option>  
-          </iSelect> 
-        </el-form-item>
-        <el-form-item :label="language('QINGXUANZEXUNJIACAIGOUYUAN','请选择询价采购员')">
-          <iSelect v-model="queryPurchaseBuyer"  value-key="id" @change="changepurchaseBuyer">
-            <el-option
-              v-for="item in purchaseBuyerOptions"
-              :key="item.value"
-              :label="item.nameZh"
-              :value="item">
-            </el-option>  
-          </iSelect> 
-        </el-form-item>
-      </el-form>
+    <el-form>
+      <el-form-item :label="language('QINGXUANZEXUNJIACAIGOUYUAN','请选择询价采购员')">
+        <iSelect v-model="respLINIE">
+          <el-option
+            v-for="item in userOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>  
+        </iSelect> 
+      </el-form-item>
+    </el-form>
   </iDialog>
 </template>
 
 <script>
 import { iDialog, iButton, iSelect, iMessage } from 'rise'
-import { listUserByDepartIdAndRoleCode , listDepartByTag, updateCsfOrLinie} from '@/api/accessoryPart/index'
+import { getUserList } from '@/api/accessoryPart/index'
 export default {
   components: { iDialog, iButton, iSelect },
   props: {
     dialogVisible: { type: Boolean, default: false },
-    deptId: { type: String},
-    idList:{
-      type:String,
-    }
+    deptId: { type: String}
   },
   data() {
     return {
-      queryPurchaseDept: '',
-      queryPurchaseBuyer: '',
-      purchaseDeptOptions: [],
-      purchaseBuyerOptions: [],
-      loading: false,
-      purchaseUpdata:{
-      }
+      respLINIE: '',
+      userOptions: [],
+      loading: false
     }
   },
   watch: {
@@ -75,83 +57,38 @@ export default {
       }
     }
   },
-  created(){
-    this.getPurchaseDeptOptions()
-  },
   methods: {
     getUserList() {
-      // getUserList({deptId:this.deptId,tag:'9'}).then(res => {
-      //   if (res.result) {
-      //     this.userOptions = res.data?.map(item => {return {value:item.id, label:item.nameZh}})
-      //   } else {
-      //     this.userOptions = []
-      //   }
-      // })
-    },
-    getPurchaseDeptOptions() {
-      let data = '26'
-      listDepartByTag(data).then(res=>{
-          this.purchaseDeptOptions = res.data|| []
-      })
-    },
-    getBuyerList(val) {
-      let data ={
-        deptId : val,
-        roleCode : "QQCGY",
-      }
-      listUserByDepartIdAndRoleCode(data).then(res=>{
-        this.purchaseBuyerOptions = res.data || []
+      getUserList({deptId:this.deptId,tag:'9'}).then(res => {
+        if (res.result) {
+          this.userOptions = res.data?.map(item => {return {value:item.id, label:item.nameZh}})
+        } else {
+          this.userOptions = []
+        }
       })
     },
     clearDialog() {
-      this.queryPurchaseDept = ''
-      this.queryPurchaseBuyer = ''
+      this.respLINIE = ''
       this.$emit('changeVisible', false)
     },
     handleCancel() {
       this.clearDialog()
     },
     handleConfirm() {
-       if (this.purchaseUpdata.csfDept === '') {
-        iMessage.warn(this.language('QINGXUANZEXUNJIACAIGOUKESHI','请选择询价采购科室'))
-        return
-      } 
-      if(this.purchaseUpdata.csfuserId === '') {
+      if (this.respLINIE === '') {
         iMessage.warn(this.language('QINGXUANZEXUNJIACAIGOUYUAN','请选择询价采购员'))
         return
       }
-      this.purchaseUpdata.accessoryIdList = this.idList
-      updateCsfOrLinie(this.purchaseUpdata).then(res=>{
-        this.loading = true
-        if(res.code == '200') {
-           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-           this.$emit('changeVisible', false)
-           this.loading = false
-        } else {
-           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-           this.loading = false
-        }
-      })
+      this.loading = true
+      this.$emit('sendAccessory', this.respLINIE, this.userOptions?.find(item => item.value === this.respLINIE)?.label)
     },
     changeLoading(loading) {
       this.loading = loading
-    },
-    changeDept(val) {
-      this.purchaseUpdata.csfDept = val.id
-      this.purchaseUpdata.csfDeptName = val.deptNum
-      this.getBuyerList(val.id)
-    },
-    changepurchaseBuyer(val) {
-      this.purchaseUpdata.csfuserId = val.id
-      this.purchaseUpdata.csfuserName = val.nameZh
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .elForm{
-    display: flex;
-    justify-content: space-around;
-  }
+
 </style>
