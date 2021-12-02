@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors:  
- * @LastEditTime: 2021-12-01 14:39:18
+ * @LastEditTime: 2021-12-02 10:18:16
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -83,7 +83,6 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          {{selectBuyerPartId}}
           <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" :idList="selectBuyerPartId" />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
@@ -109,8 +108,8 @@ import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage,
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, searchList, TAB } from './data'
-import assignInquiryDepartmentDialog from '../signForPartsDemand/components/assignInquiryDepartment'
-import assignInquiryBuyerDialog from '../signForPartsDemand/components/assignInquiryBuyer'
+import assignInquiryDepartmentDialog from './components/distributionLinie'
+import assignInquiryBuyerDialog from './components/distributionBuyer'
 import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
 import { uniq } from 'lodash'

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2021-11-01 03:07:23
+ * @LastEditTime: 2021-12-02 10:22:56
  * @LastEditors:  
 -->
 <template>
@@ -142,7 +142,7 @@ export default {
       this.selectTableData = data
     },
     exportRecord() {
-      let data = Object.assign({...this.$refs.search.formRecord},{size:1})
+      let data = this.$refs.search.formRecord
       exportNomiRecordExcel(data).then(res=> {
         
       })
