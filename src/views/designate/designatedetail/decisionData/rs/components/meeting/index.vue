@@ -219,7 +219,8 @@ export default {
       return obj[val] || val
     },
     kFilter(val) {
-      return math.divide(math.bignumber(val || 0), 1000).toString()
+      if (val) return math.divide(math.bignumber(val), 1000).toString()
+      return val
     }
   },
   computed: {
