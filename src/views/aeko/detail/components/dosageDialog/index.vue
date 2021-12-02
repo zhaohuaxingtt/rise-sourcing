@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-11-26 10:05:07
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-02 14:14:10
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
 -->
@@ -35,7 +35,7 @@
           :required="item.required"
           :key="$index"
           :label="`${language(item.key, item.name)}`"
-          v-permission.dynamic="item.permissionKey"
+          v-permission.auto="item.permissionKey"
         >
           <div v-if="item.props === 'cartypeProject'">
             <iSelect
@@ -72,7 +72,7 @@
         </iFormItem>
       </iFormGroup>
       <el-table
-        v-permission="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TABLE"
+        v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TABLE|装车率_表格"
         class="table margin-top30"
         height="480"
         :data="

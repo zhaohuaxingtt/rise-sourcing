@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 13:59:01
- * @LastEditTime: 2021-08-13 03:10:47
+ * @LastEditTime: 2021-12-02 14:04:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\presentAllInPriceDialog\index.vue
@@ -16,7 +16,7 @@
     <template #title>
       <p class="title">{{ language("DANGQIANAJIA", "当前A价") }}</p>
       <div class="control" id="control">
-        <iButton @click="handleConfirm" v-permission="AEKO_QUONDAMPARTLEDGER_PRESENTALLINPRICEDIALOG_BUTTON_CONFIRM">{{ language("QUEREN", "确认") }}</iButton>
+        <iButton @click="handleConfirm" v-permission.auto="AEKO_QUONDAMPARTLEDGER_PRESENTALLINPRICEDIALOG_BUTTON_CONFIRM|当前A价确认按钮">{{ language("QUEREN", "确认") }}</iButton>
       </div>
     </template>
     <div class="body">
@@ -27,7 +27,7 @@
         class="table"
         lang
         singleSelect
-        v-permission="AEKO_QUONDAMPARTLEDGER_PRESENTALLINPRICEDIALOG_TABLE"
+        v-permission.auto="AEKO_QUONDAMPARTLEDGER_PRESENTALLINPRICEDIALOG_TABLE|当前A价表格"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
