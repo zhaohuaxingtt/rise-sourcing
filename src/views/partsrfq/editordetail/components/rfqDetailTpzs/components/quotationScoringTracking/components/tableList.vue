@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-12-02 19:06:48
+ * @LastEditTime: 2021-12-02 19:10:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -47,7 +47,7 @@
           <!------------------------内容是打勾------------------------>
           <!--------------------------------------------------------->
             <span v-if='scope.row[item.props].schedule == 3 && scope.row[item.props].quotationId' class="cursor blue-color" @click="openUrl('3',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
-              <span v-if='item.roundHeadDetailVO.isNoBidOpen'>——</span>
+              <span class="cursor blue-color" v-if='item.roundHeadDetailVO.isNoBidOpen'>——</span>
               <icon v-else name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon>
             </span>
           <!--------------------------------------------------------->
