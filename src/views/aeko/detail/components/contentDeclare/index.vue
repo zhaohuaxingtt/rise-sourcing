@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-12-02 11:24:08
+ * @LastEditTime: 2021-12-02 19:21:25
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -843,8 +843,12 @@ export default {
     // 提交
     handleSubmit() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN", "请选择需要提交表态的零件"))
-
-      for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
+      // 什么都不提示，所以放在下一个提示之前
+      let multipleSelection =this.multipleSelection.filter(item=>{
+        return item.statusDesc != "已绑定"
+      })
+      if(!multipleSelection.length) return
+      for (let i = 0, item; (item = multipleSelection[i++]); ) {
         if (!['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(item.status))
           return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
       }
@@ -853,7 +857,7 @@ export default {
 
       patchAekoContent({
         requirementAekoId: this.aekoInfo.requirementAekoId,
-        objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
+        objectAekoPartId: multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
