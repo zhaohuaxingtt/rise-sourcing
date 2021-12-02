@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-11-25 19:45:49
+ * @LastEditTime: 2021-12-01 22:33:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -68,7 +68,7 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Dev. Cost',i18n:'',width:'90',tooltip:false, renderHeader: '<p>External</p><p>Dev. Cost</p>'},
     {type:'',props:`${index?index:''}releaseCost`,label:'Release Cost',i18n:'',width:'82',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
-    {type:'',props:`Quotationdetails`,label:'View',i18n:'',width:'60',tooltip:false},
+    {type:'',props:`Quotationdetails`,label:'Quo. \n Details',i18n:'',width:'60',tooltip:false},
   ]
 }
 export const gstableTileXh = function(index){
@@ -93,7 +93,7 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Dev. Cost',i18n:'',width:'90',tooltip:false},
     {type:'',props:`${index?index:''}releaseCost`,label:'Release \n Cost',i18n:'',width:'82',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
     {type:'',props:`${index?index:''}saving`,label:'Saving',i18n:'',width:'70',tooltip:false},
-    {type:'',props:`Quotationdetails`,label:'View',i18n:'',width:'60',tooltip:false},
+    {type:'',props:`Quotationdetails`,label:'Quo. \n Details',i18n:'',width:'60',tooltip:false},
   ]
 }
 
