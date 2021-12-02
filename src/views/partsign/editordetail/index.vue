@@ -15,7 +15,7 @@
         <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="openDiologBack" v-permission.auto="PARTSIGN_EDITORDETAIL_BACKBUTTON|退回">{{ language('LK_TUIHUI','退回') }}</iButton>
         <iButton @click="back" v-permission.auto="PARTSIGN_EDITORDETAIL_RETURN|返回">{{ language('LK_FANHUI','返回') }}</iButton>
         <!-- <logButton class="margin-left20" @click="log"  v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志"/> -->
-        <iLoger :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="partDetails && partDetails.partNum" credentials isPage class="margin-left20" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
+        <iLoger :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="partDetails && partDetails.tpPartID" credentials isPage class="margin-left20" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
         </span>

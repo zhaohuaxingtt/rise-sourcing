@@ -26,7 +26,7 @@
   </div>
   <div class="headerNav-sub margin-top30">
     <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
-      <el-tab-pane lazy v-for="(item,index) in heaederSubMenu" :key="index" :label="item.name" :name="item.key" v-permission.dynamic.auto="item.permissionKey"></el-tab-pane>
+      <el-tab-pane v-for="(item,index) in headerSubMenuWithPermission" :key="index" :label="item.name" :name="item.key" v-permission.dynamic.auto="item.permissionKey"></el-tab-pane>
     </iTabsList>
   </div>
 </div>
@@ -62,7 +62,11 @@ export default {
   },
   computed: {
     ...mapState(["navList","navListLeft"]),
-    ...mapActions(["updateNavList"])
+    ...mapActions(["updateNavList"]),
+    headerSubMenuWithPermission() {
+      return this.heaederSubMenu
+      // return this.heaederSubMenu.filter(item => this.$store.state.permission.whiteBtnList[item.permissionKey.split('|')[0]])
+    }
   },
   methods: {
     change() {
