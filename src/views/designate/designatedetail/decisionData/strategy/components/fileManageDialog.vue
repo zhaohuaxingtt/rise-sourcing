@@ -11,11 +11,17 @@
     </template>
     <div class="body">
       <div class="control">
-        <uploadButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_UPLOAD|上传" uploadClass="uploadButton" accept=".jpg,.jpeg,.png,.bmp,.webp" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+        <uploadButton 
+          uploadClass="uploadButton" 
+          accept=".jpg,.jpeg,.png,.bmp,.webp" 
+          v-if="!isDisabled"
+          v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_UPLOAD|上传"  
+          :beforeUpload="beforeUpload" 
+          @success="uploadSuccess" @error="uploadError">
           <iButton :disabled="loading" :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
         </uploadButton>
         <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_DOWNLOAD|下载" :disabled="loading" :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
-        <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_DELETE|删除" :disabled="loading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
+        <iButton v-if="!isDisabled" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_DELETE|删除" :disabled="loading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
       </div>
       <tableList
         index
@@ -30,12 +36,17 @@
             <span class="link-underline" @click="handleDownloadByRow(scope.row)">{{ scope.row.fileName }}</span>
           </template>
           <template #flag="scope"> <!-- 0: 不展示, 1: 展示 -->
-            <icon symbol class="icon cursor" :name="scope.row.flag === 1 ? 'iconxianshi' : 'iconyincang'" @click.native="handleChangeVisibility(scope.row)" />
+            <icon 
+              symbol 
+              class="icon" 
+              :class="{ cursor: !isDisabled }"
+              :name="scope.row.flag === 1 ? 'iconxianshi' : 'iconyincang'" 
+              @click.native="isDisabled ? '' : handleChangeVisibility(scope.row)" />
           </template>
           <template #sortOrder="scope">
             <div>
-              <icon symbol :class="{ cursor: scope.$index !== 0 }" class="icon" :name="scope.$index === 0 ? 'iconliebiaoweizhiding' : 'iconliebiaoyizhiding'" @click.native="handleChangeSort(scope.row, 'Up')" />
-              <icon symbol :class="{ cursor: scope.$index !== tableListData.length - 1 }" class="icon desc" :name="scope.$index === tableListData.length - 1 ? 'iconliebiaoweizhiding' : 'iconliebiaoyizhiding'" @click.native="handleChangeSort(scope.row, 'Down')" />
+              <icon symbol :class="{ cursor: !isDisabled && scope.$index !== 0 }" class="icon" :name="scope.$index === 0 ? 'iconliebiaoweizhiding' : 'iconliebiaoyizhiding'" @click.native="isDisabled ? '' : handleChangeSort(scope.row, 'Up')" />
+              <icon symbol :class="{ cursor: !isDisabled && (scope.$index !== tableListData.length - 1) }" class="icon desc" :name="scope.$index === tableListData.length - 1 ? 'iconliebiaoweizhiding' : 'iconliebiaoyizhiding'" @click.native="isDisabled ? '' : handleChangeSort(scope.row, 'Down')" />
             </div>
           </template>
       </tableList>
@@ -59,6 +70,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isPreview: {
+      type: Boolean,
+      default: false
+    },
     nominateAppId: {
       type: String,
       require: true
@@ -75,6 +90,16 @@ export default {
       tableTitle,
       tableListData: [],
       multipleSelection: []
+    }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
+    isDisabled() {
+      return this.isPreview || this.nominationDisabled || this.rsDisabled
     }
   },
   watch: {
