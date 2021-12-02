@@ -118,7 +118,7 @@ export default {
       this.loading = true;
       if (this.params.partProjectSource == 1) {
         try {
-          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementId) {
+          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementObjectId) {
             const versionRes = await getPerCarDosageVersion({
               currPage: 1,
               pageSize: 10,
@@ -174,7 +174,7 @@ export default {
           manualInfoTable({
             currPage: this.page.currPage,
             pageSize: this.page.pageSize,
-            purchasingRequirementId: this.params.id,
+            purchasingRequirementId: this.params.purchasingRequirementObjectId,
           }).then(res=>{
             if(res.code == '200') 
             {
@@ -207,10 +207,12 @@ export default {
         iMessage.error(this.language('QINGXIANBAOCUNMEICHEYONGLIANG','请先保存每车用量'))
       }else {
         let purchasingProjectPartId=this.params.id
+        
         if(this.isGs == false) {
            fscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+              this.$emit('updateStartYear')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
@@ -219,6 +221,7 @@ export default {
           gscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+              this.$emit('updateStartYear')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
@@ -289,6 +292,10 @@ export default {
     //向下填充
     fillDown() {
       let data = [...this.tableListData]
+      if(this.getPerCarDosage.perCar === '') {
+        iMessage.warn(this.language('QINGSHURUMEICHEYONGLIANG','请输入每车用量'))
+        return
+      }
       data.forEach((val,index)=>{
         if(index>this.getPerCarDosage.index){
           this.$set(val,'perCarDosage',this.getPerCarDosage.perCar)
