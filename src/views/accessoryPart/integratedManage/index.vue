@@ -654,10 +654,11 @@ export default {
       if (selectStuffId.length > 1) {
         iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
         return
-      } if (!selectStuffId[0]) {
-        iMessage.warn(this.language('GAIGONGYINGSHANGBUZAIGONGYIZUBDLNEI','该供应商不在工艺组BDL内，请与EPS确认'))
-        return
-      }
+      } 
+      // if (!selectStuffId[0]) {
+      //   iMessage.warn(this.language('GAIGONGYINGSHANGBUZAIGONGYIZUBDLNEI','该供应商不在工艺组BDL内，请与EPS确认'))
+      //   return
+      // }
       this.selectLinieDept = selectLINIEDept[0]
       const query = {
         type: '1',
