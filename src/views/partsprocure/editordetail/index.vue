@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-12-01 18:14:28
+ * @LastEditTime: 2021-12-02 20:16:13
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -251,7 +251,8 @@
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.linieId, "code", fromGroup.LINIE) }}</iText>
+							<!-- <iText v-else>{{ getName(detailData.linieId, "code", fromGroup.LINIE) }}</iText> -->
+							<iText v-else>{{ detailData.linieName }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER|CF控制员" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
 							<iSelect v-model="cfController" v-if="!disabled">
@@ -383,7 +384,7 @@
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN|零件产量计划">
 				<outputPlan ref="outputPlan" :params="infoItem" @updateStartYear="updateStartYear" v-permission.auto="PARTSPROCURE_EDITORDETAIL_XUNJIACHANLIANJIHUA|询价产量计划" />
 				<outputRecord v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANCHANLIANGJILU|零件产量记录" ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
-				<volume ref="volume" class="margin-top20" :params="infoItem" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANMEICHEYONGLIANG|零件每车用量" />
+				<volume ref="volume" class="margin-top20" :params="infoItem" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANMEICHEYONGLIANG|零件每车用量" @updateStartYear="updateStartYear"  />
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE|图纸和信息单详情">
@@ -553,7 +554,7 @@
 				disabled: false,
 				itemPurchase:{},
 				isCarType:false,
-				bakCarTypeSopTime: ''
+				bakCarTypeSopTime: '',
 			};
 		},
 		created() {
@@ -678,7 +679,7 @@
 					this.infoItem = res.data
 					this.purchaseProjectId = this.infoItem.id;
 					this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
-					this.partProjectType = this.infoItem.partProjectType;
+					this.partProjectType = this.infoItem.partProjectType;					 
 					this.infoItem.partProjectType == '1000003'||this.infoItem.partProjectType=='50002001'? this.isCarType = true : this.isCarType = false
 					//-------------修改零件采购项目逻辑endding
 					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {

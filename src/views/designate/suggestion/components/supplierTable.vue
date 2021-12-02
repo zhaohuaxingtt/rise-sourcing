@@ -52,6 +52,7 @@
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         ref="tablelist"
+        v-permission.auto="SOURCING_NOMINATION_SUGGESTION_TABLE|表格"
       >
         <template #rfqNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.rfqNum}}</a>
