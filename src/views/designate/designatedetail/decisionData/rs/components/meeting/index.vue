@@ -38,7 +38,7 @@
               </div>
               <div class="rsTop-right-item-value">
                 <div v-for="(subItem, subIndex) in item" :key="subIndex">
-                  {{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                  {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
               </div>
             </template>
             <template v-else>
@@ -90,9 +90,8 @@
         </span>
       </div>
       <div v-else>
-        <p class="margin-top10" v-if="exchangeRateCurrentVersionStr">Exchange rate: {{ exchangeRateCurrentVersionStr }}</p>
-        <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
-          <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate {{ index + 1 }}: {{ exchangeRate.str }}</p>
+        <div class="margin-top10">
+          <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
         </div>
       </div>
     </iCard>
@@ -168,8 +167,7 @@ export default {
       projectType: '',
       isSingle: false,
       suppliers: '',
-      exchangeRateCurrentVersionStr: "",
-      exchangeRatesOldVersions: [],
+      exchangeRates: [],
       isAuth: false,
     }
   },
@@ -471,20 +469,20 @@ export default {
           if (this.basicData.currency) {
             const sourceData = Array.isArray(res.data) ? res.data : []
 
-            const currentVersion = sourceData.find(item => item.isCurrentVersion)
-            const exchangeRatesCurrentVersion = currentVersion ? (Array.isArray(currentVersion.exchangeRateVos) ? currentVersion.exchangeRateVos : []) : []
-            const currentCurrencyExchangeRate = exchangeRatesCurrentVersion.find(item => item.currencyCode === this.basicData.currency)
-            this.exchangeRateCurrentVersionStr = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : ""
+            this.exchangeRates = sourceData
+              .filter(item => !item.isCurrentVersion)
+              .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+              .map(item => {
+                const result = { version: item.exchangeRateVos[0].version }
+                
+                const currentCurrencyExchangeRate = item.exchangeRateVos.find(item => item.originCurrencyCode === this.basicData.currency)
+                result.str = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : "100RMB = 100RMB"
+                result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
 
-            const oldVersions = sourceData.filter(item => !item.isCurrentVersion)
-            this.exchangeRatesOldVersions = oldVersions.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length).map(item => {
-              const result = { version: item.exchangeRateVos[0].version }
-              
-              const currentCurrencyExchangeRate = item.exchangeRateVos.find(item => item.currencyCode === this.basicData.currency)
-              result.str = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : ""
-
-              return result
-            }) 
+                return result
+              })
+          } else {
+            
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

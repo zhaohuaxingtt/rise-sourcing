@@ -185,7 +185,7 @@
 							<iText v-else>{{ getName(detailData.carTypeProjectZh, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPE|车型" :label="language('LK_CHEXING','车型') + ':'" name="test" v-if="isCarType">
-							<iSelect v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled ">
+							<iSelect ref="carTypeModelSelect" v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled ">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item) in fromGroup.CAR_TYPE" :key="item.code">
@@ -911,9 +911,17 @@
 			* @return {*}
 			*/
 			onPartProjectTypeChange(data) {
+				this.$set(this.detailData, "carTypeProjectZh", "")
+				this.$set(this.detailData, "carTypeProjectId", "")
+				this.$set(this.detailData, "carTypeModel", [])
+
+				this.$nextTick(() => {
+					if (this.$refs.carTypeModelSelect) this.$refs.carTypeModelSelect.$el.querySelector("input").value = ""
+				})
+
 				this.detailData.isDb = data === partProjTypes.DBYICHIXINGCAIGOU
 				data == '50002001'|| data == '1000003' ? this.isCarType = true : this.isCarType = false
-				},
+			},
 			getName(value, code, options) {
 				return getOptionField(value, code, options)
 			},
