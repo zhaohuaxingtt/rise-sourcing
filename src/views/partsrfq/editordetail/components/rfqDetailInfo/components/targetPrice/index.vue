@@ -15,6 +15,7 @@
           :hide-open-page="true"
           :index="true"
           :lang="true"
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_TABLE|财务目标价-表格"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->

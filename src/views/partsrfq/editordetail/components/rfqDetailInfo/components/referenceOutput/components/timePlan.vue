@@ -4,7 +4,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language('LK_SHIJIANJIHUA','时间计划') }}</span>
         <div class="floatright">
-          <span v-if="!disabled">
+          <span v-if="!disabled" class="margin-right20">
             <template v-if="!editStatus">
               <iButton @click="edit" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_EDIT|时间计划-编辑">{{
                   language('LK_BIANJI','编辑')
