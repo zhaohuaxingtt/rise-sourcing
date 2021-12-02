@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:35:20
- * @LastEditTime: 2021-11-25 13:44:12
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-02 19:45:28
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\strategy\index.vue
 -->
@@ -15,7 +15,7 @@
         <iSelect v-model="categoryCode" :disabled="isPreview || nominationDisabled || rsDisabled" @change="randomNumber++"> 
           <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryName"></el-option> 
         </iSelect>
-        <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_BUTTON_FILEMANAGE|文件管理" class="margin-left20" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
+        <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="margin-left20" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
       </div>
     </div>
     <imageList class="padding-top20" v-if="images.length" :images="images" />
@@ -23,7 +23,7 @@
   </iCard>
   <higthligthts v-if='categoryCode' :categoryCode="categoryCode" class='margin-top20 margin-bottom20'></higthligthts>
   <iCard :title='language("KEYINITIATIVE","Key initiatives")' class="mineCards">
-    <iButton class="floatright" @click='open'>前往编辑</iButton>
+    <iButton  v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_GOTOEDIT|前往编辑"  class="floatright" @click='open'>前往编辑</iButton>
     <listOfinit ref="listOfinit"  v-if='categoryCode' :categoryCodeProps="categoryCode" :extendsIsedit='false' :isEdit='isEdit'></listOfinit>
   </iCard>
   <fileManageDialog :visible.sync="fileDialogVisible" :nominateAppId="nominateAppId" :isPreview="isPreview" @afterClose="getStrategy" />

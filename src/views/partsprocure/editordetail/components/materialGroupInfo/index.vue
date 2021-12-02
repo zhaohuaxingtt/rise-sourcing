@@ -39,7 +39,9 @@
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
+          :singleSelect="true"
           @handleSelectionChange="handleSelectionChange"
+          @handleSingleSelectChange="handleSingleSelectChange"
         />
         <iPagination
           v-if="false"
@@ -67,7 +69,7 @@ import infos from './components/infos'
 import {partProjTypes} from '@/config'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
-import {getMaterialGroup,getMeterialStuff} from '@/api/partsprocure/editordetail'
+import {getMaterialGroup,getMeterialStuff,getAttachMeterialStuff} from '@/api/partsprocure/editordetail'
 import { batchUpdateStuff } from '@/api/partsprocure/home'
 // import logDialog from "@/views/partsign/editordetail/components/logDialog"
 
@@ -88,6 +90,9 @@ export default {
     }),
     disabled() {
       return this.getDisabled()
+    },
+    isAttach() {
+      return this.params.partProjectType === '1000061' && this.params.partProjectTypeDesc === '附件'
     }
   },
   data() {
@@ -106,7 +111,14 @@ export default {
   },
   watch: {
     setMaterialGroupStatus(status) {
-      if (status) this.getMeterialStuff()
+      if (status) {
+        // 零件项目类型为附件单独调接口拿工艺组数据
+        if (this.isAttach) {
+          this.getAttachMeterialStuff()
+        } else {
+          this.getMeterialStuff()
+        }
+      }
     },
   },
   mounted() {
@@ -186,9 +198,34 @@ export default {
         })
         .catch(() => this.tableLoading = false)
     },
+    // 获取零件项目类型为附件时候的零件可选的工艺组数据
+    getAttachMeterialStuff() {
+      this.tableLoading = true
+      getAttachMeterialStuff()
+        .then((res) => {
+          if (res.code == 200) {
+            this.tableListData = (res.data || [])
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+          // this.page.totalCount = res.total
+          this.tableLoading = false
+        })
+        .catch(() => this.tableLoading = false)
+      // this.tableListData = require('./moke.json').data
+    },
     // 表格多选
     handleSelectionChange(list) {
       this.multipleSelection = list
+    },
+    handleSingleSelectChange(row={}) {
+      if (this.isAttach) {
+        row.deptCodes = row.deptName
+        row.categoryNameDe = row.materialStuffGroupNameDe
+        row.categoryNameZh = row.materialStuffGroupName
+        this.info = row
+        this.multipleSelection = [row]
+      }
     },
     // 日志
     // log() {
@@ -197,7 +234,7 @@ export default {
     // 返回
     back() {
       this.setMaterialGroupStatus = false
-      this.tableListData = []
+      this.tableListData = [] 
       this.loading = false
     },
     jumpBdl() {

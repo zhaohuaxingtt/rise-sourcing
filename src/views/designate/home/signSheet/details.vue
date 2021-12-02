@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-11-10 19:49:18
+ * @LastEditTime: 2021-12-02 20:14:37
  * @LastEditors:  
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -308,6 +308,7 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
           this.getChooseData()
+          this.$router.go(0)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
