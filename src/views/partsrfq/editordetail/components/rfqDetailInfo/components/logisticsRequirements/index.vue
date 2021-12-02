@@ -14,6 +14,7 @@
           @handleSelectionChange="handleSelectionChange"
           @openPage='openPage'
           open-page-props="fsGsNum"
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_TABLE|物流要求-表格"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->

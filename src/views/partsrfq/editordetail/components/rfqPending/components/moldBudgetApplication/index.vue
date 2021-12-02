@@ -13,6 +13,7 @@
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
+        v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_TABLE|模具预算申请表格"
       >
         <template #budget="scope">
           <iInput v-model="scope.row.budget" v-if="!disabled" @input="handleInput($event, scope.row)" @blur="handleBlurByBudget(scope.row.budget, scope.row)" />
