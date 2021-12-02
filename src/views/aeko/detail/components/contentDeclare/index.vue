@@ -976,7 +976,7 @@ export default {
       // 可支持报价
       if (filtRows.length) {
         // 待表态的数据支持报价
-        if (filtRows[0] && filtRows[0].status ==='TOBE_STATED') {
+        if (this.multipleSelection.length > 1 && filtRows.filter(o => o.status ==='TOBE_STATED').length) {
           const confirmMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
           ${filtRows.map(o => o.partNum).join(',')} 
           ${this.language('GONGYINGSHANG','供应商')}:
@@ -998,9 +998,11 @@ export default {
           if (confirmCheckInfo === 'confirm') {
             multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
           }
-        } else {
+          
+        } 
+        // 都不支持报价
+        if (filtRows.filter(o => o.status !=='TOBE_STATED').length === this.multipleSelection.length) {
           // 已经报过价格
-          // 已经报过价
           const errorMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
           ${filtRows.map(o => o.partNum).join(',')} 
           ${this.language('GONGYINGSHANG','供应商')}:

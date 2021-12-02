@@ -460,6 +460,8 @@ export default {
       entryStatus: "",
       //rfqId
       rfqId: "",
+      // 是否绑定rfq
+      isBindingRfq: false,
       //材料组
       categoryCode: "",
       //材料组ID
@@ -588,6 +590,7 @@ export default {
         this.exceptPart = data.exceptPart;
         this.targetMotor = data.targetMotor.toString();
         this.comparedType = data.comparedType;
+        this.isBindingRfq = data.isBindingRfq;
         if (data.firstComparedMotor) {
           this.ComparedMotor.push(data.firstComparedMotor.toString());
         }
@@ -608,16 +611,18 @@ export default {
           this.categoryList = res.data;
         });
         let params = {};
-        if (this.entryStatus == 1) {
+        if (this.entryStatus === 1) {
           params = {
             categoryId: this.categoryId,
-            isBindingRfq: true,
+            isBindingRfq: this.isBindingRfq,
             req: this.rfqId,
+            schemeId: this.chemeId
           };
         } else {
           params = {
             categoryId: this.categoryId,
             isBindingRfq: false,
+            schemeId: this.chemeId
           };
         }
         //目标车型
@@ -645,6 +650,7 @@ export default {
           categoryId: this.categoryId,
           isTarget: true,
           targetMotorId: this.targetMotor,
+          isBindingRfq: this.isBindingRfq
         }).then((res) => {
           this.ComparedMotorList = res.data;
           this.ComparedMotorList.forEach((item) => {
