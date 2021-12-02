@@ -10,7 +10,7 @@ export default [
   {
     path: "supplierscore",
     meta: {
-      title: "供应商评分",
+      title: "评分任务",
     },
     component: () => import("@/views/routerView"),
     redirect: "supplierscore/home",
@@ -19,7 +19,7 @@ export default [
         path: "home",
         name: "supplierscoreHome",
         meta: {
-          title: "供应商评分-首页",
+          title: "评分任务-首页",
         },
         component: () => import("@/views/supplierscore"),
       }, 
@@ -27,7 +27,7 @@ export default [
         path: "rfqdetail",
         name: "supplierscoreRfqDetail",
         meta: {
-          title: "供应商评分-RFQ详情",
+          title: "评分任务-RFQ详情",
         },
         component: () => import("@/views/supplierscore/components/rfqdetail"),
       },
@@ -35,7 +35,7 @@ export default [
         path: "partscore",
         name: "supplierscorePartscore partscore",
         meta: {
-          title: "供应商评分-零件评分",
+          title: "评分任务-零件评分",
         },
         component: () => import("@/views/supplierscore/components/partscore"),
       }

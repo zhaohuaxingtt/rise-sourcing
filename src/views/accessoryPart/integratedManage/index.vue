@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:47:52
+ * @LastEditors:  
+ * @LastEditTime: 2021-12-02 10:18:16
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -43,10 +43,10 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANZONGHECHAXUN','配件综合查询')}}</span>
                 <div class="floatright">
-                  <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_MANAGFMENT_SENDDEPT|配件-配件管理-分配询价科室">{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_MANAGFMENT_SENDBUYPER|配件-配件管理-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
+                  <!--------------------分配Linie按钮----------------------------------->
+                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_MANAGFMENT_SENDDEPT|配件-配件管理-分配Linie">{{language('FENPEILINIE','分配Linie')}}</iButton>
                   <!--------------------退回按钮----------------------------------->
                   <iButton @click="changebackDialogVisible(true)" v-permission.auto="APREPART_MANAGFMENT_BACK|配件-配件管理-退回">{{language('TUIHUI','退回')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
@@ -79,11 +79,11 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" />
+          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId"/>
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" />
+          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" :idList="selectBuyerPartId" />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
@@ -108,8 +108,8 @@ import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage,
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, searchList, TAB } from './data'
-import assignInquiryDepartmentDialog from '../signForPartsDemand/components/assignInquiryDepartment'
-import assignInquiryBuyerDialog from '../signForPartsDemand/components/assignInquiryBuyer'
+import assignInquiryDepartmentDialog from './components/distributionLinie'
+import assignInquiryBuyerDialog from './components/distributionBuyer'
 import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
 import { uniq } from 'lodash'
@@ -167,6 +167,8 @@ export default {
       downloadLoading: false,
       joinRfqDialogVisible: false,
       list:TAB,
+      selectBuyerPartId:'',
+      selectliniePartId:''
     }
   },
   created() {
@@ -446,10 +448,12 @@ export default {
         return
       }
       const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
-      if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
-        iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
-        return
-      }
+      this.selectliniePartId = uniq(this.selectParts.map(item => item.id))
+      // if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
+      //   return
+      // }
+
       this.changeInquiryDialogVisible(true)
     },
     /**
@@ -459,24 +463,26 @@ export default {
      * @return {*}
      */    
     openBuyerDialog() {
-      if (this.selectParts.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
-        return
-      }
+      // if (this.selectParts.length < 1) {
+      //   iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
+      //   return
+      // }
       const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
       const selectPartsUser = uniq(this.selectParts.map(item => item.csfuserId))
-      if (selectPartsDept.length !== 1) {
-        iMessage.warn(this.language('QINGXUANZEXIANGTONGBUMENDEPEIJIAN','请选择相同部门的配件'))
-        return
-      }
-      if (!selectPartsDept[0]) {
-        iMessage.warn(this.language('QINGXUANZEYOUBUMENDEPEIJIAN','请选择有部门的配件'))
-        return
-      }
-      if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
-        iMessage.warn(this.language('QINGXUANZEWEIFENPEICAIGOUYUANDEPEIJIAN','请选择未分配采购员的配件'))
-        return
-      }
+       this.selectBuyerPartId = uniq(this.selectParts.map(item => item.id))
+      // if (selectPartsDept.length !== 1) {
+      //   iMessage.warn(this.language('QINGXUANZEXIANGTONGBUMENDEPEIJIAN','请选择相同部门的配件'))
+      //   return
+      // }
+      // if (!selectPartsDept[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEYOUBUMENDEPEIJIAN','请选择有部门的配件'))
+      //   return
+      // }
+      // if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEWEIFENPEICAIGOUYUANDEPEIJIAN','请选择未分配采购员的配件'))
+      //   return
+      // }
+    
       this.selectDeptId = selectPartsDept[0]
       this.changeBuyerDialogVisible(true)
     },

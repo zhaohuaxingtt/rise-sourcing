@@ -92,7 +92,7 @@
       <div v-else>
         <p class="margin-top10" v-if="exchangeRateCurrentVersionStr">Exchange rate: {{ exchangeRateCurrentVersionStr }}</p>
         <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
-          <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate {{ exchangeRate.version }}: {{ exchangeRate.str }}</p>
+          <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate {{ index + 1 }}: {{ exchangeRate.str }}</p>
         </div>
       </div>
     </iCard>
@@ -581,6 +581,13 @@ export default {
       // span span {
       //   // font-size: 8px;
       // }
+      p {
+        min-height: 16px;
+      }
+
+      p + p {
+        margin-top: 8px;
+      }
     }
   }
 

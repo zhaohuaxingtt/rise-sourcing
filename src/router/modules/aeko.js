@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-11-16 10:08:44
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-11-30 17:27:11
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\router\modules\aeko.js
  */
@@ -11,7 +11,7 @@ export default [
     path: "/aeko",
     name: "aeko",
     meta: {
-      title: 'AEKO'
+      title: 'AEKO技术变更'
     },
     component: () => import("@/layout/default"),
     redirect: "/aeko/managelist",

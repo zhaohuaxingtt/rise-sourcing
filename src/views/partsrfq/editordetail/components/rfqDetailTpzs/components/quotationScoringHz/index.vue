@@ -64,7 +64,7 @@
       </template>
     </iDialog>
     <!-------开标结果------->
-    <bidOpenResult :options='options' :round='round'></bidOpenResult>
+    <bidOpenResult :options='options' :round='round' :rundList='rundList'></bidOpenResult>
   </div>
 </template>
 <script>

@@ -91,14 +91,13 @@
       <!--表格展示区-->
       <tablelist
           height="400"
-          class="margin-top20"
+          class="margin-top20 aeko-approved-table"
           index
           :selection="true"
           :tableData="approvedList"
           :tableTitle="approvedHeader"
           :lang="true"
           :selectConfig="selectConfig"
-          :indexConfig="indexConfig"
           v-loading="tableLoading"
       >
         <!-- <template #isTop="scope">
@@ -548,5 +547,42 @@ export default {
   height: 0;
   border: 1px solid #000000;
   opacity: 1;
+}
+
+.aeko-approved-table{
+  ::v-deep .el-table__header{
+    .has-gutter{
+      tr{
+        th:nth-child(2){
+          .cell{
+            padding: 0 5px;
+          }
+        }
+        th:nth-child(3){
+          .slotHeader{
+            padding-left: 30px;
+          }
+        }
+        th:nth-child(9){
+          letter-spacing: -0.3px;
+        }
+        th:nth-child(10){
+          letter-spacing: -0.3px;
+        }
+        th:nth-child(11){
+          letter-spacing: -0.3px;
+        }
+      }
+    }
+  }
+  ::v-deep .el-table__body{
+    tr{
+      td:nth-child(2){
+        .cell{
+          padding: 0 5px;
+        }
+      }
+    }
+  }
 }
 </style>

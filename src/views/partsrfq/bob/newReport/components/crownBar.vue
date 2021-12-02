@@ -217,7 +217,7 @@ export default {
           },
           textStyle: {
             fontSize: 12,
-            color: "#e1e1e2"
+            color: "#7E84A3"
           }
         },
         // legend: {

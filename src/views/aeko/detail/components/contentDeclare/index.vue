@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-26 11:52:08
+ * @LastEditTime: 2021-12-02 11:24:08
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -264,7 +264,15 @@
           </template>
           <!-- 模具投资变动 -->
           <template #mouldPriceChange="scope">
-            <span>{{scope.row.mouldPriceChange | thousandsFilter}}</span>
+            <span>{{floatFixNum(scope.row.mouldPriceChange)}}</span>
+          </template>
+          <!-- 原零件A价 -->
+          <template #originPriceA="scope">
+            <span>{{floatFixNum(scope.row.originPriceA)}}</span>
+          </template>
+          <!-- 原零件B价 -->
+          <template #originPriceB="scope">
+            <span>{{floatFixNum(scope.row.originPriceB)}}</span>
           </template>
           <!-- 价格轴 -->
           <template #priceAxis="scope">
@@ -288,7 +296,7 @@
           </template>
           <!-- B价变动含分摊 -->
           <template #bpriceChange="scope">
-            <span>{{scope.row.bpriceChange | thousandsFilter}}</span>
+            <span>{{floatFixNum(scope.row.bpriceChange)}}</span>
           </template>
           <template #isMtz="scope">
             <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -348,7 +356,7 @@ import {combine} from './mixins/combine'
 
 import Upload from '@/components/Upload'
 
-import filters from "@/utils/filters"
+import {floatFixNum} from "../../../approve/approveDetails/data.js"
 
 import { setLogMenu } from "@/utils";
 
@@ -358,7 +366,7 @@ import { setLogMenu } from "@/utils";
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload },
-  mixins: [ pageMixins, combine,filters ],
+  mixins: [ pageMixins, combine ],
   props: {
     aekoInfo: {
       type: Object,
@@ -456,12 +464,16 @@ export default {
         }
       })
       this.tableTitle = filterTable;
-    }else{
+    } else if(from == 'stance'){
+      let filterTable = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc');
+      this.tableTitle = filterTable;
+    } else{
       this.tableTitle = tableTitle.filter((item)=>item.props!='tranWayDesc'&&item.props!='buyerName')
     }
     
   },
   methods: {
+    floatFixNum,
     searchCartypeProject() {
       const {query} = this.$route;
       const { requirementAekoId ='',} = query;
@@ -715,7 +727,8 @@ export default {
         requirementAekoId: this.aekoInfo.requirementAekoId,
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        currentTab: "contentDeclare"
+        currentTab: "contentDeclare",
+        from:routeQuery.from,
       }))
     },
     // 相关无关切换
@@ -1148,7 +1161,6 @@ export default {
 
     // 承运方式展示字段
     getRranWayDesc(row){
-      console.log(row,'getRranWayDesc');
       if(row.originBnkTranWay==null && row.newBnkTranWay==null){
         return ' '
       }else if(row.originBnkTranWay == row.newBnkTranWay){ //若新原零件承运方式相同，则承运方式显示自运或者承运

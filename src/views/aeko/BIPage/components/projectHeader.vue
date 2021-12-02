@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-24 16:43:14
+ * @LastEditTime: 2021-11-30 16:58:30
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -12,6 +12,7 @@
     <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav" />
     <div style="display:flex;align-items:center">
       <iNavMvp v-if="subMenu" :lev="2" :list="subMenu" :lang="true" routerPage class="nav-sub" />
+      <switchPost />
     </div>
   </div>
 </template>
@@ -20,11 +21,13 @@
 import { iNavMvp, icon } from "rise"
 import { TAB,SUBMENU } from "./data"
 import { roleMixins } from '@/utils/roleMixins'
+import switchPost from '@/components/switchPost'
 export default {
   mixins:[roleMixins],
   components: {
     iNavMvp,
     icon,
+    switchPost
   },
   props: {
     // navList: {type:Array, default: window._.cloneDeep(TAB)},

@@ -1,18 +1,28 @@
 <!--
  * @Author: YUSZHOU
  * @Date: 2021-05-24 17:17:01
- * @LastEditTime: 2021-06-29 16:37:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-01 11:12:46
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsprocure\createparts\components\factoryrelocate\index.vue
+ * @FilePath: \front-sourcing\src\views\partsprocure\createparts\components\factoryrelocate\index.vue
 -->
 <template>
-    <iCard class="margin-top60">
+  <iPage class="home">
+    <div class="header">
+      <iNavMvp :lev="1" :list="navList" :lang="true" routerPage class="nav" />
+      <div class="control">
+        <!-- <logButton class="margin-left20" @click="log" />
+        <span class="margin-left20">
+          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+        </span> -->
+      </div>
+    </div>
+    <iCard class="margin-top40">
       <div class="textalineright margin-bottom20">
-        <iButton>{{language('DUNLOADTEMPATE','下载模板')}}</iButton>
-        <iButton>{{language('UPLOADFILE','上传文件')}}</iButton>
+        <iButton v-permission.auto="FACTORYRELOCATE_DOWNLOAD|工厂迁移-下载模板">{{language('DUNLOADTEMPATE','下载模板')}}</iButton>
+        <iButton v-permission.auto="FACTORYRELOCATE_UPLOAD|工厂迁移-上传文件">{{language('UPLOADFILE','上传文件')}}</iButton>
       </div> 
-      <el-table v-loading='tablaLoading' :data='tableData'>
+      <el-table v-loading='tablaLoading' :data='tableData' v-permission.auto="FACTORYRELOCATE_TABLE|工厂迁移-表格">
         <template v-for="(items,index) in tableFileTitle">
           <el-table-column align="center" :prop="items.props" :label="language(items.key,items.name)" :key='index'></el-table-column>
         </template>
@@ -30,18 +40,21 @@
 	      v-update
       />
     </iCard> 
+  </iPage>
 </template>
 
 <script>
-import {iCard,iButton,iPagination} from 'rise'
+import {iCard,iButton,iPagination,iPage,iNavMvp} from 'rise'
 import {tableFileTitle} from './components/data'
 import { pageMixins } from "@/utils/pageMixins";
 import {factoryTranslate} from '@/api/partsprocure/editordetail'
+import { navList } from "../data"
 export default {
-  components:{iCard,iButton,iPagination},
+  components:{iCard,iButton,iPagination,iPage,iNavMvp},
   mixins:[pageMixins],
   data(){
     return {
+      navList,
       tableData:[],
       tableFileTitle:tableFileTitle,
       tablaLoading:false
@@ -62,6 +75,25 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.home {
+  .header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .control {
+    // position: absolute;
+    // top: 30px;
+    // right: 40px;
+    display: flex;
+    align-items: center;
+    height: 30px;
+  }
+}
+</style>
 
 <style>
   .textalineright{
