@@ -1,15 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-04 11:13:18
- * @LastEditTime: 2021-07-22 17:57:54
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-02 10:51:16
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\drawingSheet\sheet.vue
 -->
 <template>
   <iCard class="outputRecord" tabCard :title="`${ language('LK_LINGJIANHAO','零件号') }：${ this.data.partNum || '' }`" v-loading="loading">
     <div class="body">
-      <iFormGroup v-for="(chunk, $index) in items" :key="$index" :row="3" inline>
+      <iFormGroup v-for="(chunk, $index) in items" :key="$index" :row="3" inline v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_PARTNUMBER|询价附件-零件号列表">
         <iFormItem v-for="item in chunk" :key="item.props" :label="language(item.key,item.name)">
           <iText v-if="item.props === 'status'">{{ item.value }}</iText>
           <iText v-else-if="item.props === 'createDate' || item.props === 'drawingDate'">{{ item.value | dateFilter }}</iText>

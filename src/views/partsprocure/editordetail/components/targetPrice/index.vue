@@ -77,7 +77,7 @@
 				</iInput>
 			</iFormItem>
 		</iFormGroup>
-		<tablelist :tableData='tableListData' :tableTitle='targeTitle' :loading='tableLoading'
+		<tablelist v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_TABLE|申请财务目标价-表格" :tableData='tableListData' :tableTitle='targeTitle' :loading='tableLoading'
 			@handleSelectionChange='handleSelectionChange'></tablelist>
 		<iPagination
         class="pagination margin-top30"

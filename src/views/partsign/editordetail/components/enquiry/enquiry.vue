@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-10-27 13:27:53
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-02 11:34:30
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
 -->
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList v-permission.auto="PARTSIGN_EDITORDETAIL_ENQUIRY_TABLE|询价资料附件列表-表格"  index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #tpPartAttachmentName="scope">
           <span class="flexRow">
             <span class="openLinkText cursor"   @click="preview(scope.row)" >{{ scope.row.tpPartAttachmentName }}</span>

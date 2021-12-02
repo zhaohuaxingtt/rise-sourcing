@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-19 10:59:33
- * @LastEditTime: 2021-11-12 13:23:03
+ * @LastEditTime: 2021-12-02 11:02:48
  * @LastEditors:  
 -->
 <template>
@@ -19,10 +19,12 @@
       :tableData ="mtzTableData"
       :tableLoading ="tbaleLoading"
       v-loading="tableLoading"
+      :activeItems="'fileName'"
+      @openPage="openPage"
     >
     <template #uploadDate="scope">
       {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
-    </template>
+    </template>  
     </tablelist>
     <iPagination
     v-update
@@ -46,6 +48,8 @@ import { mtzuploadtableTitle} from './data'
 import { attachMixins } from '@/utils/attachMixins'
 import { pageMixins } from '@/utils/pageMixins'
 import { getMtzAttachmentPageList } from '@/api/designate/designatedetail/attachment'
+import { downloadUdFile } from "@/api/file"
+
 export default {
   mixins: [ attachMixins, pageMixins ],
   components: {
@@ -83,7 +87,10 @@ export default {
       getMtzAttachmentPageList(data).then(res => {
         this.mtzTableData = res.data
       })
-    }
+    },
+    async openPage(val) {
+     await  downloadUdFile(val.id)
+    },
   }
 }
 </script>
