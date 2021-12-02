@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-12-01 10:58:02
+ * @LastEditTime: 2021-12-02 16:30:36
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\router\modules\sourcing.js
@@ -114,8 +114,8 @@ export default [
         },
         {
             path: "createrfq",
-            name: "创建RFQ",
-            meta: { title: "创建RFQ" },
+            name: "配附件创建RFQ",
+            meta: { title: "配附件创建RFQ" },
             component: () => import("@/views/accessoryPart/createRfq/index"),
         },
         //竞价开标
