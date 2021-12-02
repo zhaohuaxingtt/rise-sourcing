@@ -104,6 +104,7 @@ export const moduleTargePriceTableTitle = [
 	{ props: "applicationType", name: "申请类型", key: "SHENQINGLEIXING" },
 	{ props: "cfName", name: "CF负责人", key: "CFFUZEREN" },
 	{ props: "expectedTargetPrice", name: "期望目标价", key: "QIWANGMUBIAOJIA" },
+	{ props: 'targetPrice', name: '目标价', key: 'MUBIAOJIA' },
 	{ props: "approvalStatus", name: "申请状态", key: "SHENQINGZHUANGTAI" },
 	{ props: "remarks", name: "备注", key: "BEIZHU" },
 ]

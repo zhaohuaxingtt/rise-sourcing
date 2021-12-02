@@ -20,6 +20,7 @@
         open-page-props="tpPartAttachmentName"
         :openPageGetRowData="true"
         @openPage="handleOpenPage"
+        v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGTABLE|询价图纸表格"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
