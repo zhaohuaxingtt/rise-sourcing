@@ -14,7 +14,7 @@
   <div class="uploadList">
       <!-- 按钮区域 -->
       <p class="btn-list">
-          <iButton @click="download">{{language('LK_XIAZAI','下载')}}</iButton>
+          <iButton v-permission.auto="AEKO_MANAGELIST_DIALOG_FUJIANXIAZAI|附件下载"  @click="download">{{language('LK_XIAZAI','下载')}}</iButton>
           <iButton v-if="fromPage!='check'" v-permission.auto="AEKO_MANAGELIST_DIALOG_SHANCHUFUJIAN|附件删除" @click="deleteFiles">{{language('LK_SHANCHU','删除')}}</iButton>
       </p>
         <!-- 表格区域 -->
