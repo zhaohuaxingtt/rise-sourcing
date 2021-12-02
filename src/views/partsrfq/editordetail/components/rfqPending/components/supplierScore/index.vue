@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-  <div v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE">
+  <div v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE|供应商评分页面">
     <supplier-score/>
     <supplier-rating-attachment class="margin-top20"/>
   </div>

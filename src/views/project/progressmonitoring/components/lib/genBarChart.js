@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-10-19 14:20:18
+ * @LastEditTime: 2021-12-02 14:09:05
  * @LastEditors: Luoshuang
  * @Description: 风险图的配置文件
- * @FilePath: \front-web\src\views\project\progressmonitoring\components\lib\genBarChart.js
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\lib\genBarChart.js
  */
 /**
  * @description: 
@@ -20,7 +20,7 @@ export function generateOptions(params = {}, type = 1) {
             // 正常
             {
                 key: 'value1',
-                name: '正常',
+                name: '无风险',
                 index: 0,
                 style: {
                     color: colors[3],
@@ -30,7 +30,7 @@ export function generateOptions(params = {}, type = 1) {
             // 风险
             {
                 key: 'value2',
-                name: '风险',
+                name: '中风险',
                 index: 1,
                 style: {
                     color: colors[2],
@@ -40,7 +40,7 @@ export function generateOptions(params = {}, type = 1) {
             // 延误
             {
                 key: 'value3',
-                name: '延误',
+                name: '高风险',
                 index: 2,
                 style: {
                     color: colors[1],
@@ -197,7 +197,7 @@ export function generateOptions(params = {}, type = 1) {
             }
         },
         grid: {
-            left: type === 3 ? 55 : 40,
+            left: type === 2 ? 40 : 55,
             right: 10,
             bottom: 10,
             top: 5,

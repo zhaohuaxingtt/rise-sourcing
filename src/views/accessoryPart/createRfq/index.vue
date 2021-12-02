@@ -1,16 +1,16 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-22 20:30:21
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-02 16:29:09
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
- * @FilePath: \front-web\src\views\accessoryPart\createRfq\index.vue
+ * @FilePath: \front-sourcing\src\views\accessoryPart\createRfq\index.vue
 -->
 
 <template>
-  <iPage>
+  <iPage v-permission.auto="ACCESSORYPART_CREATERFQ_PAGE|配附件创建RFQ页面">
     <topComponents>
       <span slot="left" class="floatleft font20 font-weight">
         RFQ编号：{{detailData.rfqId}}
@@ -18,7 +18,7 @@
     </topComponents>
     <iCard :title="language('JICHUXINXI','基础信息')" collapse v-loading="basicLoading">
       <iFormGroup row="4" class="accessoryPartDetail">
-        <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''">
+        <iFormItem v-for="(item, index) in basicInfo" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''" v-permission.dynamic.auto="item.permission">
           <iText v-if="!item.editable">{{detailData[item.value]}}</iText>
           <iInput v-else-if="item.type === 'input'" v-model="detailData[item.value]"></iInput>
           <iSelect v-else-if="item.type === 'select' && item.value === 'linie'" v-model="linie" :disabled="linieAndDeptDisable(item.value)" @change="val => handleDeptChange(item.value, val)">
@@ -40,8 +40,8 @@
         </iFormItem>
       </iFormGroup>
       <div style="text-align:right;">
-        <iButton @click="handleSaveRfq">{{language('BAOCUN','保存')}}</iButton>
-        <iButton>{{language('QUXIAO','取消')}}</iButton>
+        <iButton @click="handleSaveRfq" v-permission.auto="ACCESSORYPART_CREATERFQ_RFQSAVEBTN|配附件创建RFQ-RFQ保存按钮">{{language('BAOCUN','保存')}}</iButton>
+        <iButton v-permission.auto="ACCESSORYPART_CREATERFQ_CANCELBTN|配附件创建RFQ-取消按钮">{{language('QUXIAO','取消')}}</iButton>
       </div>
     </iCard>
     <iCard class="margin-top20">
@@ -49,16 +49,16 @@
         <span class="font18 font-weight"></span>
           <div class="floatright">
             <!--------------------保存按钮----------------------------------->
-            <iButton @click="handleSave" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
+            <iButton @click="handleSave" :loading="saveLoading" v-permission.auto="ACCESSORYPART_CREATERFQ_PARTSAVEBTN|配附件创建RFQ-零件保存按钮">{{language('BAOCUN','保存')}}</iButton>
             <!--------------------添加按钮----------------------------------->
-            <iButton @click="handleAddParts" >{{language('TIANJIA','添加')}}</iButton>
+            <iButton @click="handleAddParts" v-permission.auto="ACCESSORYPART_CREATERFQ_ADDBTN|配附件创建RFQ-添加按钮">{{language('TIANJIA','添加')}}</iButton>
             <!--------------------删除按钮----------------------------------->
-            <iButton @click="handleDelete" >{{language('SHANCHU','删除')}}</iButton>
+            <iButton @click="handleDelete" v-permission.auto="ACCESSORYPART_CREATERFQ_DELETEBTN|配附件创建RFQ-删除按钮">{{language('SHANCHU','删除')}}</iButton>
             <!--------------------批量更新采购工厂----------------------------------->
-            <iButton @click="handleChangeFactory" >{{language('PILIANGGENGXINCAIGOUGONGCHANG','批量更新采购工厂')}}</iButton>
+            <iButton @click="handleChangeFactory" v-permission.auto="ACCESSORYPART_CREATERFQ_UPDATEFACTORYBTN|配附件创建RFQ-批量更新采购工厂按钮">{{language('PILIANGGENGXINCAIGOUGONGCHANG','批量更新采购工厂')}}</iButton>
           </div>
       </div>
-      <tableList :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPlan="openPlanDialog"></tableList>
+      <tableList v-permission.auto="ACCESSORYPART_CREATERFQ_LINGJIANTABLE|配附件创建RFQ-零件列表" :activeItems='"a1"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPlan="openPlanDialog"></tableList>
     </iCard>
     <!------------------------------------------------------------------------>
     <!--                  添加配件弹窗                                          --->
