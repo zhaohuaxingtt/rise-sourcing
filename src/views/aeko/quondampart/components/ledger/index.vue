@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-12-01 11:22:50
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-02 11:22:56
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -372,10 +372,10 @@ export default {
           if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
             try {
               const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
-
               this.$router.replace({
                 path: "/aeko/aekodetail",
                 query: {
+                  from:aekoConatentDeclareParams.from || undefined,
                   requirementAekoId: aekoConatentDeclareParams.requirementAekoId
                 }
               })
