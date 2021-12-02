@@ -373,7 +373,7 @@ export default {
 }
 .form-top {
   display: flex;
-  margin-top: -1.5rem;
+  margin-top: -0.8rem;
   /* align-items: center;
   justify-content: space-between; */
   /* margin-bottom: 1.5rem; */
@@ -398,10 +398,13 @@ export default {
       .flex-align-center{
         font-weight: 600;
         font-size: smaller;
+        height: 16px;
+        margin-bottom: 12px;
       }
     }
     .el-form-item__content {
       width: 100%;
+      line-height:35px;
     }
     /* 禁用样式 */
     .el-input.is- .el-input__inner {
@@ -411,10 +414,12 @@ export default {
     }
   }
 }
-
+::v-deep .el-icon-arrow-up:before {
+  font-weight: bold;
+}
 .item-button{
   flex: none;
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
 }
 
 ::v-deep .el-date-editor {
