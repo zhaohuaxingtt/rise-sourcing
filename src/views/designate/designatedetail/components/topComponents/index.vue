@@ -21,6 +21,8 @@
           queryParams:['bizId_obj_ae']}"
         credentials
         isPage
+        optionDicKey="LOG_OPERATION_TYPES"
+				optionDicKey2="定点申请详情页"
         class="margin-left20 margin-right10 " />
       <icon class="package" symbol name="icondatabaseweixuanzhong" color='#CAD9F8' style="font-size: 14px"></icon>
     </span>
