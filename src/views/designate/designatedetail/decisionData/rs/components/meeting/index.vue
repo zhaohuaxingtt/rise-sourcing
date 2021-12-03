@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors:  
- * @LastEditTime: 2021-11-22 20:01:01
+ * @LastEditTime: 2021-12-03 10:25:12
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -96,7 +96,7 @@
       </div>
     </iCard>
     <iCard v-if="!isPreview && !showSignatureForm && !isAuth" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
-      <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
+      <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE|保存">{{language('BAOCUN','保存')}}</iButton>
       <div class="meetingRemark">
         <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
           <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
