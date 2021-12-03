@@ -876,7 +876,7 @@ export default {
               let num = Number(this.findKey(yearsPlanDate,item).slice(5));
               //计算本年出厂价
               this.prefactoryPrice=
-              !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+              !yearsPlanPercent[`stage${i}`] || num ===1 ?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
               .times(
                 Big(1)
                   .minus(Number(yearsPlanPercent[`stage${num-1}`]) / 100)
