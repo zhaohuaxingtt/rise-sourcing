@@ -11,6 +11,7 @@ import store from '@/store'
 import { getToken, removeToken } from '@/utils'
 // eslint-disable-next-line no-unused-vars
 const whiteList = ['/login', '/ui', '/superLogin']
+import { MessageBox } from 'element-ui'
 router.beforeEach((to, from, next) => {
 	const token = getToken()
 	// eslint-disable-next-line no-debugger
@@ -29,10 +30,28 @@ router.beforeEach((to, from, next) => {
 							.then((res) => {
 								if (res.length == 0) {
 									removeToken()
-									next('/login')
+									// next('/login')
+									// 打个提示框，不然无权限用户会重复跳转
+									const appLoading = document.getElementById('app-loading')
+									if (appLoading) {
+										appLoading.style.display = 'none'
+									}
+									MessageBox.alert(
+										'该账号无任何权限，请授予权限或切换账号再登录!',
+										'无权限',
+										{
+											confirmButtonText: '确定',
+											type: 'warning ',
+											callback: (action) => {
+												console.groupEnd('action ', action)
+												next('/login')
+											},
+										}
+									)
+								} else {
+									//router.addRoutes(res);
+									router.replace({ path: to.path, query: to.query })
 								}
-								//router.addRoutes(res);
-								router.replace({ path: to.path, query: to.query })
 							})
 							.catch(() => {
 								console.warn(
