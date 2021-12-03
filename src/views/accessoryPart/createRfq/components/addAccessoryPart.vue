@@ -163,10 +163,10 @@ export default {
         iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
         return
       } 
-      if (!selectStuffId[0]) {
-        iMessage.warn(this.language('GAIGONGYINGSHANGBUZAIGONGYIZUBDLNEI','该供应商不在工艺组BDL内，请与EPS确认'))
-        return
-      }
+      // if (!selectStuffId[0]) {
+      //   iMessage.warn(this.language('GAIGONGYINGSHANGBUZAIGONGYIZUBDLNEI','该供应商不在工艺组BDL内，请与EPS确认'))
+      //   return
+      // }
       this.$emit('selectPart', this.selectParts.map(item => item.spnrNum))
     },
     /**
