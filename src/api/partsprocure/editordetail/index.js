@@ -23,7 +23,7 @@ export function autonomi(params) {
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params) {
 	return requstPartsProcure({
-		url: '/materialGroup',
+		url: '/materialGroupByPartNum',
 		method: 'GET',
 		params: params
 	})
