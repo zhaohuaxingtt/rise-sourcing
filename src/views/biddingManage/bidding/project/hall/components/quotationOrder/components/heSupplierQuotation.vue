@@ -201,27 +201,27 @@ export default {
   mounted() {
     this.ruleForm = { ...this.initData };
     this.handleSearchReset();
-    getModels().then((res) => {
-      this.modelsOption = res?.data;
+    // getModels().then((res) => {
+    //   this.modelsOption = res?.data;
 
-      let obj = {};
-      this.modelsOption = this.modelsOption.reduce(function (item, next) {
-        obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-        return item;
-      }, []);
-    });
-    getProjects().then((res) => {
-      this.modelProjectsOption = res?.data;
-      let obj = {};
-      this.modelProjectsOption = this.modelProjectsOption.reduce(function (
-        item,
-        next
-      ) {
-        obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-        return item;
-      },
-      []);
-    });
+    //   let obj = {};
+    //   this.modelsOption = this.modelsOption.reduce(function (item, next) {
+    //     obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+    //     return item;
+    //   }, []);
+    // });
+    // getProjects().then((res) => {
+    //   this.modelProjectsOption = res?.data;
+    //   let obj = {};
+    //   this.modelProjectsOption = this.modelProjectsOption.reduce(function (
+    //     item,
+    //     next
+    //   ) {
+    //     obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+    //     return item;
+    //   },
+    //   []);
+    // });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
