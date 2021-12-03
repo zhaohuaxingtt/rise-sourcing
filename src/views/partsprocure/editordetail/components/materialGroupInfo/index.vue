@@ -34,13 +34,12 @@
       <infos :data="info" />
       <div v-if="setMaterialGroupStatus">
         <tableList
+          singleSelect
           class="table margin-top20"
           :indexLabel="language('LK_BIANHAO','编号')"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
-          :singleSelect="true"
-          @handleSelectionChange="handleSelectionChange"
           @handleSingleSelectChange="handleSingleSelectChange"
         />
         <iPagination
@@ -153,7 +152,7 @@ export default {
     },
     // 设置工艺组请求
     confirmMaterialGroup() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU','抱歉，此处只能选择一条工艺组数据'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU','抱歉，此处必须选择一条工艺组数据'))
       if (!this.info.id) return iMessage.warn(this.language('LK_QUESHIYOUXIAODEGONGYIZUID','缺失有效的工艺组id'))
       if (!this.params.partNum) return iMessage.warn(this.language('LK_QUESHIYOUXIAODELINGJIANBIANHAO','缺失有效的零件编号'))
       const data = this.multipleSelection[0]
@@ -214,17 +213,19 @@ export default {
         .catch(() => this.tableLoading = false)
       // this.tableListData = require('./moke.json').data
     },
-    // 表格多选
-    handleSelectionChange(list) {
-      this.multipleSelection = list
-    },
     handleSingleSelectChange(row={}) {
-      if (this.isAttach) {
-        row.deptCodes = row.deptName
-        row.categoryNameDe = row.materialStuffGroupNameDe
-        row.categoryNameZh = row.materialStuffGroupName
+      if (row) {
+        if (this.isAttach) {
+          row.deptCodes = row.deptName
+          row.categoryNameDe = row.materialStuffGroupNameDe
+          row.categoryNameZh = row.materialStuffGroupName
+        }
+
         this.info = row
         this.multipleSelection = [row]
+      } else {
+        this.info = {}
+        this.multipleSelection = []
       }
     },
     // 日志
