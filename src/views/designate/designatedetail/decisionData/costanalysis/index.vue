@@ -20,20 +20,20 @@
       </iSelect>
     </iFormItem>
   </iFormGroup>
-  <tabel v-if='!isPreview' :tableLoading='loading' :tableTitle='tableTitle' :tableData='tableData' selection  v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_TABLE|table">
+  <tabel v-if='!isPreview' :tableLoading='loading' :tableTitle='tableTitleComputed' :tableData='tableData' selection  v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_TABLE|table">
     <template #operate='scope'>
       <span class="underline" @click="openPage(scope.row)">{{language('CHAKAN','查看')}}</span>
     </template>
     <template #flag='scope'>
-      <span class="bule font10 cursor" @click="costanalysisShow(scope.row)">
+      <span :class="{ cursor: !isDisabled }" class="bule font10" @click="isDisabled ? '' : costanalysisShow(scope.row)">
         <i v-if='scope.row.flag' class="iconfont iconxianshi"></i>
         <i v-else class="iconfont iconyincang"></i>
       </span>
     </template>
     <template #sortOrder='scope'> 
-      <span class="bule font10 cursor">
-        <i @click="upOrDown(scope.row,1)" class="iconfont iconpaixu-xiangshang margin-right10"></i>
-        <i @click="upOrDown(scope.row,0)" class="iconfont iconpaixu-xiangxia"></i>
+      <span :class="{ cursor: !isDisabled }" class="bule font10">
+        <i @click="isDisabled ? '' : upOrDown(scope.row,1)" class="iconfont iconpaixu-xiangshang margin-right10"></i>
+        <i @click="isDisabled ? '' : upOrDown(scope.row,0)" class="iconfont iconpaixu-xiangxia"></i>
       </span>
     </template>
   </tabel>
@@ -89,6 +89,20 @@ export default{
       isPreview:false,
       previewItems:null,
       keysRender:parseInt(Math.random()*100000000000)
+    }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
+    isDisabled() {
+      return this.isPreview || this.nominationDisabled || this.rsDisabled
+    },
+    tableTitleComputed() {
+      if (this.isDisabled) return this.tableTitle.filter(item => item.props !== "sortOrder")
+      return this.tableTitle
     }
   },
   created(){
