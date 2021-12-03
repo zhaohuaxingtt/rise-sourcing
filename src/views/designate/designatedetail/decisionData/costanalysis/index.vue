@@ -91,6 +91,16 @@ export default{
       keysRender:parseInt(Math.random()*100000000000)
     }
   },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
+    isDisabled() {
+      return this.isPreview || this.nominationDisabled || this.rsDisabled
+    }
+  },
   created(){
     this.costanalysisList()
     //当前状态是否是预览状态
