@@ -278,11 +278,28 @@
               </div>
             </iLabelML>
             <iLabel :label="language('BIDDING_MUBIAOJIA', '目标价')" slot="label"></iLabel>
-            <iInput
-              type="number"
-              oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
+            <operatorInput
               v-model="ruleForm.targetPrice"
-            ></iInput>
+            >
+            </operatorInput>
+            <!-- <template v-if="isInputFlag">
+              <iInput
+                :value="ruleForm.targetPrice"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+                type="number"
+                @input="value => $set(ruleForm, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+              >
+              </iInput>
+            </template>
+            <template v-else>
+              <iInput
+                :value="targetPriceValue"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+              >
+              </iInput>
+            </template> -->
           </iFormItem>
         </div>
 
@@ -462,13 +479,34 @@
                 <span class="form-item1">{{language('BIDDING_MUBIAOJIA', '目标价')}}</span>
               </div>
               <iFormItem prop="quoteRule.targetPrice">
-                <iInput
-                  v-model="ruleForm.quoteRule.targetPrice"
+                <operatorInput
                   style="width: 10rem"
+                  v-model="ruleForm.quoteRule.targetPrice"
                   @change="handleChangeLightDeviation"
-                  oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-                  type="number"
-                />
+                >
+                </operatorInput>
+                <!-- <template v-if="isInputFlag">
+                  <iInput
+                    :value="ruleForm.quoteRule.targetPrice"
+                    style="width: 10rem"
+                    @focus="handlerInputFocus"
+                    @blur="handlerInputBlur"
+                    @change="handleChangeLightDeviation"
+                    type="number"
+                    @input="value => $set(ruleForm.quoteRule, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+                  >
+                  </iInput>
+                </template>
+                <template v-else>
+                  <iInput
+                    :value="quoteRuleTargetPriceValue"
+                    style="width: 10rem"
+                    @focus="handlerInputFocus"
+                    @change="handleChangeLightDeviation"
+                    @blur="handlerInputBlur"
+                  >
+                  </iInput>
+                </template> -->
               </iFormItem>
               <div class="from-item-clo1">
                 <span class="form-line"></span>
@@ -606,6 +644,7 @@ import { getCurrencyUnit, uploadFile } from "@/api/mock/mock";
 import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
 import iLabelML from "@/components/biddingComponents/iLabelML";
 import { pageMixins } from "@/utils/pageMixins";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -617,6 +656,7 @@ export default {
     iButton,
     iLabel,
     iLabelML,
+    operatorInput
     // iTableCustom,
     // iPagination,
   },
@@ -646,6 +686,9 @@ export default {
       pricingDeadline: "",
       biddingType,
       isMoldFee: false,
+      isInputFlag:false,
+      targetPriceValue:'',
+      quoteRuleTargetPriceValue:'',
       currencyVlaue: "",
       selectedTableData: [],
       bidOpeningLeft: `<p>本次竞价为项目谈判的中间过程，竞价结果作为选定供应商的参考，最终供应商的选择以最终谈判结果及上汽大众联合采购委员会（CSC）会议决策为准。</p>
@@ -812,17 +855,32 @@ export default {
         ]);
       }
     },
-    "ruleForm.quoteRule.targetPrice"(val) {
-      console.log(val);
-      if (val === null || val === "" || val === undefined) {
-        this.$refs["ruleForm"].clearValidate([
-          "quoteRule.greenDeviationValue",
-          "quoteRule.yellowDeviationValue",
-        ]);
+    "ruleForm.quoteRule.targetPrice": {
+      immediate: true,
+      handler(val) {
+        this.quoteRuleTargetPriceValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+        if (val === null || val === "" || val === undefined) {
+          this.$refs["ruleForm"].clearValidate([
+            "quoteRule.greenDeviationValue",
+            "quoteRule.yellowDeviationValue",
+          ]);
+      }
+      }
+    },
+    "ruleForm.targetPrice": {
+      immediate: true,
+      handler(val) {
+        this.targetPriceValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
       }
     },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     // 返回
     handleBack() {
       this.$router.push({

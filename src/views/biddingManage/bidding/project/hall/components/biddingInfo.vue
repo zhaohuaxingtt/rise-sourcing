@@ -612,7 +612,7 @@ export default {
     totalPrices() {
       let totalPrices = this.ruleForm.totalPrices || 0;
       let unit = this.currencyMultiples(this.ruleForm?.currencyMultiple) || "";
-      return totalPrices + "" + unit;
+      return totalPrices.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + "" + unit;
     },
     startingPrice() {
       return this.totalPrices + this.currencyMultiple;
@@ -706,13 +706,13 @@ export default {
     minPrice() {
       let unit = this.currencyMultiples(this.ruleForm?.currencyMultiple) || "";
       return this.amplitudeList.minPrice
-        ? this.dividedBeiShu(this.amplitudeList?.minPrice) + unit
+        ? this.dividedBeiShu(this.amplitudeList?.minPrice).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + unit
         : "";
     },
     maxPrice() {
       let unit = this.currencyMultiples(this.ruleForm?.currencyMultiple) || "";
       return this.amplitudeList.maxPrice
-        ? this.dividedBeiShu(this.amplitudeList?.maxPrice) + unit
+        ? this.dividedBeiShu(this.amplitudeList?.maxPrice).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + unit
         : "";
     },
     // 幅度

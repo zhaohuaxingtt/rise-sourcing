@@ -382,7 +382,7 @@ export default {
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">出价</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
-                          unit + " " + series.value[1] + " " + multiple
+                          unit + " " + series.value[1].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + " " + multiple
                         }</div>
                         </div>
                     </div>
@@ -540,7 +540,7 @@ export default {
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">出价</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
-                          unit + " " + series.value[1] + " " + multiple
+                          unit + " " + series.value[1].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + " " + multiple
                         }</div>
                         </div>
                     </div>

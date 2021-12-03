@@ -26,6 +26,13 @@
             "
         >
         </div>
+        <div v-else>
+          {{
+            ruleForm.roundType === "05" && ruleForm.manualBiddingType === "02"
+              ? 1
+              : scope.row["currentSort"] || 1
+          }}
+        </div>
       </template>
       <!-- 是否参与本轮RFQ -->
       <template slot="isAttend" slot-scope="scope">
