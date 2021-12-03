@@ -34,12 +34,13 @@
       <infos :data="info" />
       <div v-if="setMaterialGroupStatus">
         <tableList
+          singleSelect
           class="table margin-top20"
           :indexLabel="language('LK_BIANHAO','编号')"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
-          @handleSelectionChange="handleSelectionChange"
+          @handleSingleSelectChange="handleSingleSelectChange"
         />
         <iPagination
           v-if="false"
@@ -67,7 +68,7 @@ import infos from './components/infos'
 import {partProjTypes} from '@/config'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { pageMixins } from '@/utils/pageMixins'
-import {getMaterialGroup,getMeterialStuff} from '@/api/partsprocure/editordetail'
+import {getMaterialGroup,getMeterialStuff,getAttachMeterialStuff} from '@/api/partsprocure/editordetail'
 import { batchUpdateStuff } from '@/api/partsprocure/home'
 // import logDialog from "@/views/partsign/editordetail/components/logDialog"
 
@@ -88,6 +89,9 @@ export default {
     }),
     disabled() {
       return this.getDisabled()
+    },
+    isAttach() {
+      return this.params.partProjectType === '1000061' && this.params.partProjectTypeDesc === '附件'
     }
   },
   data() {
@@ -106,7 +110,14 @@ export default {
   },
   watch: {
     setMaterialGroupStatus(status) {
-      if (status) this.getMeterialStuff()
+      if (status) {
+        // 零件项目类型为附件单独调接口拿工艺组数据
+        if (this.isAttach) {
+          this.getAttachMeterialStuff()
+        } else {
+          this.getMeterialStuff()
+        }
+      }
     },
   },
   mounted() {
@@ -141,7 +152,7 @@ export default {
     },
     // 设置工艺组请求
     confirmMaterialGroup() {
-      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU','抱歉，此处只能选择一条工艺组数据'))
+      if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU','抱歉，此处必须选择一条工艺组数据'))
       if (!this.info.id) return iMessage.warn(this.language('LK_QUESHIYOUXIAODEGONGYIZUID','缺失有效的工艺组id'))
       if (!this.params.partNum) return iMessage.warn(this.language('LK_QUESHIYOUXIAODELINGJIANBIANHAO','缺失有效的零件编号'))
       const data = this.multipleSelection[0]
@@ -186,9 +197,36 @@ export default {
         })
         .catch(() => this.tableLoading = false)
     },
-    // 表格多选
-    handleSelectionChange(list) {
-      this.multipleSelection = list
+    // 获取零件项目类型为附件时候的零件可选的工艺组数据
+    getAttachMeterialStuff() {
+      this.tableLoading = true
+      getAttachMeterialStuff()
+        .then((res) => {
+          if (res.code == 200) {
+            this.tableListData = (res.data || [])
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+          // this.page.totalCount = res.total
+          this.tableLoading = false
+        })
+        .catch(() => this.tableLoading = false)
+      // this.tableListData = require('./moke.json').data
+    },
+    handleSingleSelectChange(row={}) {
+      if (row) {
+        if (this.isAttach) {
+          row.deptCodes = row.deptName
+          row.categoryNameDe = row.materialStuffGroupNameDe
+          row.categoryNameZh = row.materialStuffGroupName
+        }
+
+        this.info = row
+        this.multipleSelection = [row]
+      } else {
+        this.info = {}
+        this.multipleSelection = []
+      }
     },
     // 日志
     // log() {
@@ -197,7 +235,7 @@ export default {
     // 返回
     back() {
       this.setMaterialGroupStatus = false
-      this.tableListData = []
+      this.tableListData = [] 
       this.loading = false
     },
     jumpBdl() {
