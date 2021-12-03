@@ -12,7 +12,7 @@
     <!-- 类型TAB -->
     <div class="headerNav-sub margin-top30">
       <iTabsList type="card" v-model="cardType">
-      <template v-for="(item,index) in tabData">
+      <template v-for="(item,index) in tabDataWithPermission">
         <el-tab-pane lazy  :key="'tabData_'+index" :label="language(item.label,item.name)" v-permission.dynamic="item.permissionKey" :name="item.key"></el-tab-pane>
       </template>
       </iTabsList>
@@ -50,7 +50,11 @@ export default {
     },
     computed: {
       ...mapState(["navList","navListLeft"]),
-      ...mapActions(["updateNavList"])
+      ...mapActions(["updateNavList"]),
+      tabDataWithPermission() {
+      return this.tabData
+      // return this.tabData.filter(item => this.$store.state.permission.whiteBtnList[item.permissionKey.split('|')[0]])
+    }
     },
     data(){
       return{
