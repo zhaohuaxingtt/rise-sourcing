@@ -325,7 +325,7 @@ export default {
       if (this.ruleForm.totalPrices == null) {
         return 0 + this.currencyMultiple;
       }
-      return this.ruleForm.totalPrices + this.currencyMultiple;
+      return Number(this.ruleForm.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
   },
   methods: {

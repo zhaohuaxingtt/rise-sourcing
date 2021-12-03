@@ -220,17 +220,39 @@
           <template slot="purchaseQty" slot-scope="scope">
             <!-- 只读 -->
             <template v-if="ruleForm.biddingStatus !== '01'">
-              <div>{{ scope.row["purchaseQty"] }}</div>
+              <!-- <div>{{ scope.row["purchaseQty"] }}</div> -->
+              <div>{{ dataProducts[scope.row['id']].purchaseQty }}</div>
             </template>
             <template v-else>
-              <i-input
+              
+              <!-- <i-input
                 type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 v-model.number="scope.row['purchaseQty']"
                 placeholder="0"
                 :maxlength="maxlength ? maxlength : 300"
                 :disabled="ruleForm.biddingStatus !== '01'"
-              />
+              /> -->
+              <template v-if="isInputFlag">
+                <iInput
+                  :value="scope.row['purchaseQty']"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                  :maxlength="maxlength ? maxlength : 300"
+                  type="number"
+                  @input="value => $set(scope.row, 'purchaseQty', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,12))"
+                  :disabled="ruleForm.biddingStatus !== '01'"
+                >
+                </iInput>
+              </template>
+              <template v-else>
+                <iInput
+                  :value="dataProducts[scope.row['id']].purchaseQty"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                >
+                </iInput>
+              </template>
             </template>
           </template>
 
@@ -256,10 +278,11 @@
           <template slot="upsetPrice" slot-scope="scope">
             <!-- 只读 -->
             <template v-if="ruleForm.biddingStatus !== '01'">
-              <div>{{ scope.row["upsetPrice"] }}</div>
+              <!-- <div>{{ scope.row["upsetPrice"] }}</div> -->
+              <div>{{ dataProducts[scope.row['id']].upsetPrice }}</div>
             </template>
             <template v-else>
-              <iInput
+              <!-- <iInput
                 v-if="ruleForm.biddingMode === '01'"
                 v-model="scope.row['upsetPrice']"
                 placeholder="0.00"
@@ -269,8 +292,35 @@
                 :disabled="ruleForm.biddingStatus !== '01'"
               >
                 <template slot="suffix">{{ currencyMultiple }}</template>
-              </iInput>
-              <div v-else>-</div>
+              </iInput> -->
+              <!-- <div v-else>-</div> -->
+              <template v-if="isInputFlag">
+                <iInput
+                  v-if="ruleForm.biddingMode === '01'"
+                  :value="scope.row['upsetPrice']"
+                  @focus="handlerInputFocus"
+                  placeholder="0.00"
+                  @blur="handlerInputBlur"
+                  :maxlength="maxlength ? maxlength : 300"
+                  type="number"
+                  @input="value => $set(scope.row, 'upsetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+                  :disabled="ruleForm.biddingStatus !== '01'"
+                >
+                  <template slot="suffix">{{ currencyMultiple }}</template>
+                </iInput>
+                <div v-else>-</div> 
+              </template>
+              <template v-else>
+                <iInput
+                  v-if="ruleForm.biddingMode === '01'"
+                  :value="dataProducts[scope.row['id']].upsetPrice"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                >
+                <template slot="suffix">{{ currencyMultiple }}</template>
+                </iInput>
+                <div v-else>-</div> 
+              </template>
             </template>
           </template>
 
@@ -279,10 +329,11 @@
             <!-- 只读 -->
             <template v-if="ruleForm.biddingStatus !== '01'">
               <div v-if="ruleForm.biddingMode === '02'"></div>
-              <div v-else>{{ scope.row["targetPrice"] }}</div>
+              <!-- <div v-else>{{ scope.row["targetPrice"] }}</div> -->
+              <div v-else>{{ dataProducts[scope.row['id']].targetPrice }}</div>
             </template>
             <template v-else>
-              <iInput
+              <!-- <iInput
                 v-if="ruleForm.biddingMode === '01'"
                 v-model="scope.row['targetPrice']"
                 placeholder="0.00"
@@ -292,7 +343,34 @@
               >
                 <template slot="suffix">{{ currencyMultiple }}</template>
               </iInput>
-              <div v-else>-</div>
+              <div v-else>-</div> -->
+              <template v-if="isInputFlag">
+                <iInput
+                  v-if="ruleForm.biddingMode === '01'"
+                  :value="scope.row['targetPrice']"
+                  @focus="handlerInputFocus"
+                  placeholder="0.00"
+                  @blur="handlerInputBlur"
+                  :maxlength="maxlength ? maxlength : 300"
+                  type="number"
+                  @input="value => $set(scope.row, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+                  :disabled="ruleForm.biddingStatus !== '01'"
+                >
+                  <template slot="suffix">{{ currencyMultiple }}</template>
+                </iInput>
+                  <div v-else>-</div> 
+              </template>
+              <template v-else>
+                <iInput
+                  v-if="ruleForm.biddingMode === '01'"
+                  :value="dataProducts[scope.row['id']].targetPrice"
+                  @focus="handlerInputFocus"
+                  @blur="handlerInputBlur"
+                >
+                <template slot="suffix">{{ currencyMultiple }}</template>
+                </iInput>
+                <div v-else>-</div> 
+              </template>
             </template>
           </template>
 
@@ -368,7 +446,23 @@ export default {
       default: () => ({}),
     },
   },
-  watch: {},
+  watch: {
+    "ruleForm.biddingProducts":{
+      deep:true,
+      handler(val){
+        console.log(395,val)
+        this.dataProducts = val.reduce((pre,cur) => {
+          return {...pre,[cur.id]:
+                        {
+                          purchaseQty:Number(cur.purchaseQty)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          upsetPrice:Number(cur.upsetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          targetPrice:Number(cur.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        }
+          }
+        },{})
+      }
+    }
+  },
   data() {
     return {
       flag: false,
@@ -381,6 +475,7 @@ export default {
         biddingProducts: [],
         totalPrices: 0,
       },
+      dataProducts:{},
       unitTableTitle,
       totalTableTitle,
       inputProps: ["productName", "productCode"],
@@ -409,6 +504,7 @@ export default {
       rfqinfoProductCopy: [],
       timeout: "",
       quantityUnit: [],
+      isInputFlag:false,
     };
   },
   mounted() {
@@ -480,16 +576,22 @@ export default {
       );
     },
     startingPrice() {
-      return this.orgTotalPrices + this.currencyMultiple;
+      return  Number(this.orgTotalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
     totalStartingPriceString() {
       if (this.ruleForm.totalPrices == null) {
         return 0 + this.currencyMultiple;
       }
-      return this.ruleForm.totalPrices + this.currencyMultiple;
+      return Number(this.ruleForm.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     loadAll() {
       return [
         { value: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },

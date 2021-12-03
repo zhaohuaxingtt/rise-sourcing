@@ -14,7 +14,7 @@
             scope.row["upsetPrice"] === "" ||
             scope.row["upsetPrice"] === null
               ? ""
-              : scope.row["upsetPrice"] +
+              : scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') +
                 currencyMultiples(form.currencyMultiple) +
                 "-" +
                 units(form.currencyUnit)

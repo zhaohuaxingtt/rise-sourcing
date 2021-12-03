@@ -466,7 +466,8 @@ export default {
       dataType:'',
       rfqCode:'',
       time:'',
-      firstSupplierFlag:false
+      firstSupplierFlag:false,
+      exchangeRateList:{}
     };
   },
   computed: {
@@ -668,15 +669,15 @@ export default {
       console.log(this.ruleForm);
     },
     selectDel(evt) {
-      let { val, id } = evt;
+      let { val,item } = evt;
       if (val) {
-        this.exchangeRateIds.push(id);
+        this.exchangeRateIds.push(item.id);
       } else {
         this.exchangeRateIds = new Set(this.exchangeRateIds);
-        this.exchangeRateIds.delete(id);
+        this.exchangeRateIds.delete(item.id);
       }
       this.exchangeRateIds = [...new Set(this.exchangeRateIds)];
-      console.log(this.exchangeRateIds);
+      this.exchangeRateList = item
     },
     handleCurrencys(e) {
       console.log(this.currencys);
@@ -685,6 +686,12 @@ export default {
     handleDelete() {
       if (this.exchangeRateIds.length === 0) {
         return this.$message.error(this.language('BIDDING_QINGXUANZEHUILV','请选择汇率'));
+      }
+      let flag = this.ruleForm.currencyUnit
+                  ?  this.ruleForm.currencyUnit.includes(this.exchangeRateList?.currency)
+                  : false
+      if (flag) {
+        return this.$message.error(this.language('BIDDING_BJDWWFSC','比价单位无法删除'))
       }
       this.$confirm(this.language('BIDDING_SFSCHLXX',"是否删除汇率信息？"), this.language('BIDDING_TISHI',"提示"), {
         confirmButtonText: this.language('BIDDING_SHI',"是"),
@@ -948,7 +955,7 @@ export default {
         biddingBeginTime,
         manualBiddingType,
       } = this.ruleForm;
-      let endTime = new Date(biddingEndTime).getTime() + 3 * 24 * 3600 * 1000;
+      let endTime = new Date(biddingEndTime).getTime();
       endTime = dayjs(endTime).format("YYYY-MM-DD HH:mm:00");
       const deadline = dayjs(pricingDeadline).format("YYYY-MM-DD HH:mm:00");
       const openTime = dayjs(openTenderTime).format("YYYY-MM-DD HH:mm:00");
@@ -968,7 +975,7 @@ export default {
           return this.$message.error(this.language('BIDDING_JSSJBXYWYKSRQ','结束时间必须要晚于开始日期'));
         } else if (endTime > deadline) {
           console.log(endTime, pricingDeadline);
-          return this.$message.error(this.language('BIDDING_BJJZRQBWYJSSJH3GGZR','报价截止日期不晚于结束时间后3个工作日'));
+          return this.$message.error(this.language('BIDDING_BJJZRQBWYJSSJH3GGZR','报价截止日期不晚于结束时间'));
         }
       }
       const formData = this.ruleForm;

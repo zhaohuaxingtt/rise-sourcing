@@ -32,6 +32,7 @@
                   <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
+                      v-if="flag"
                       class="form--item--number--input__totalprice"
                       :value="
                         heRuleForm.currentOffer
@@ -39,6 +40,13 @@
                           : ''
                       "
                       disabled
+                    ></iInput>
+                    <iInput
+                      v-else
+                      class="form--item--number--input__totalprice"
+                      :value="totalStartingPriceString"
+                      @focus="handleInputFocus"
+                      :disabled="biddingStatus"
                     ></iInput>
                     <div class="form--item--number--lable">{{ unit }}</div>
                   </div>
@@ -255,8 +263,18 @@ export default {
           .toNumber()
       );
     },
+    totalStartingPriceString(){
+      return this.heRuleForm.currentOffer.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+    }
   },
   watch: {
+    // 'heRuleForm.currentOffer':{
+    //   immediate:true,
+    //   deep:true,
+    //   handler(val){
+    //     this.currentOfferData = val.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+    //   }
+    // },
     curTime: function (val) {
       // if (!this.isClick) {
       //   if (val > dayjs(this.heRuleForm.createDate).valueOf()) {
