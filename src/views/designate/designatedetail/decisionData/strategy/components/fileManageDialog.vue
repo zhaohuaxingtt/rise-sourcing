@@ -29,7 +29,7 @@
         height="100%"
         class="table"
         :tableData="tableListData"
-        :tableTitle="tableTitle"
+        :tableTitle="tableTitleComputed"
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange">
           <template #fileName="scope">
@@ -100,6 +100,10 @@ export default {
     }),
     isDisabled() {
       return this.isPreview || this.nominationDisabled || this.rsDisabled
+    },
+    tableTitleComputed() {
+      if (this.isDisabled) return this.tableTitle.filter(item => item.props !== "sortOrder")
+      return this.tableTitle
     }
   },
   watch: {
