@@ -600,14 +600,14 @@ export default {
   mounted() {
     this.handleSearchReset();
     
-    getModels().then((res) => {
-      this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
-    });
-    getProjects().then((res) => {
-      this.modelProjectsOption = res?.data?.filter(
-        (item) => item.name?.length > 0
-      );
-    });
+    // getModels().then((res) => {
+    //   this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
+    // });
+    // getProjects().then((res) => {
+    //   this.modelProjectsOption = res?.data?.filter(
+    //     (item) => item.name?.length > 0
+    //   );
+    // });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
@@ -1236,6 +1236,7 @@ export default {
       formData.modelProjects = modelProjectList;
       formData.procurePlans = procurePlans;
       formData.productions = productions;
+      console.log(1239,formData)
       //保存
       saveMultiPrice(formData)
         .then((res) => {
@@ -1336,41 +1337,50 @@ export default {
         biddingStatus: data.biddingStatus,
       };
       // 车型
-      const paras = data.models?.map(item => {
-        return {
-          ...item,
-          code:item.modelCode,
-          name:item.model
-        }
-      })
-      this.modelsOption.push(...paras)
-      let optionObj = {}
-      let optionArr = []
-      this.modelsOption.forEach(item => {
-        if(!optionObj[item.name]) {
-          optionObj[item.name] = 1
-          optionArr.push(item)
-        }
-      })
-      this.modelsOption = [...optionArr]
+      getModels().then((res) => {
+        this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
+        const paras = data.models?.map(item => {
+          return {
+            ...item,
+            code:item.modelCode,
+            name:item.model
+          }
+        })
+        this.modelsOption.push(...paras)
+        let optionObj = {}
+        let optionArr = []
+        this.modelsOption.forEach(item => {
+          if(!optionObj[item.name]) {
+            optionObj[item.name] = 1
+            optionArr.push(item)
+          }
+        })
+        this.modelsOption = [...optionArr]
+      });
+      
       // 车型项目
-      const projectParas = data?.modelProjects.map(item => {
-        return {
-          ...item,
-          code:item.projectCode,
-          name:item.project
-        }
-      })
-      this.modelProjectsOption.push(...projectParas)
-      let projectOptionObj = {}
-      let projectOptionArr = []
-      this.modelProjectsOption.forEach(item => {
-        if (!projectOptionObj[item.name]) {
-          projectOptionObj[item.name] = 1
-          projectOptionArr.push(item)
-        }
-      })
-      this.modelProjectsOption = [...projectOptionArr]
+      getProjects().then((res) => {
+        this.modelProjectsOption = res?.data?.filter(
+          (item) => item.name?.length > 0
+        );
+        const projectParas = data?.modelProjects.map(item => {
+          return {
+            ...item,
+            code:item.projectCode,
+            name:item.project
+          }
+        })
+        this.modelProjectsOption.push(...projectParas)
+        let projectOptionObj = {}
+        let projectOptionArr = []
+        this.modelProjectsOption.forEach(item => {
+          if (!projectOptionObj[item.name]) {
+            projectOptionObj[item.name] = 1
+            projectOptionArr.push(item)
+          }
+        })
+        this.modelProjectsOption = [...projectOptionArr]
+      });
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {
