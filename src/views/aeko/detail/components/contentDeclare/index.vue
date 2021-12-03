@@ -181,7 +181,7 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
         </iButton>
-        <span class="margin-left5 margin-right5" v-if="!disabled" v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">
+        <span class="margin-left5 margin-right5" v-if="!disabled" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">
           <Upload 
             hideTip
             :buttonText="language('DAORU','导⼊')"
