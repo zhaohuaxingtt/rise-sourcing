@@ -22,7 +22,7 @@
         credentials
         isPage
         optionDicKey="LOG_OPERATION_TYPES"
-				optionDicKey2="定点申请详情页"
+				:optionDicKey2="optionDicKey2"
         class="margin-left20 margin-right10 " />
       <icon class="package" symbol name="icondatabaseweixuanzhong" color='#CAD9F8' style="font-size: 14px"></icon>
     </span>
@@ -39,7 +39,9 @@ export default{
     pageMenu:{type:Array,default:()=>[]},
     query:{type:Object,default:()=>{}},
     logModuleName: {type: String},
-    logBizIdKey: {type: String}
+    logBizIdKey: {type: String},
+    // 业务模块参数
+    optionDicKey2: {type: String}
   }
 }
 </script>
