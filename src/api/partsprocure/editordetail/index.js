@@ -54,6 +54,14 @@ export function getMeterialStuff(params) {
 		params: params
 	})
 }
+// 采购项目-获取材料组信息 - 附件类型
+export function getAttachMeterialStuff(params) {
+	return sourcing({
+		url: '/purchasing-project-parts/materialGroupStuff',
+		method: 'GET',
+		params: params
+	})
+}
 // 设置工艺组
 export function putMaterialGroup(params) {
 	return requstPartsProcure({

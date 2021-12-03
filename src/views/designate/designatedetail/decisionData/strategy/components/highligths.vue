@@ -16,8 +16,23 @@ export default {
   },
   data(){
     return {
-      higth:false
+      higth: false,
+      isPreview: false
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
+    isDisabled() {
+      console.log("this.isPreview || this.nominationDisabled || this.rsDisabled", this.isPreview || this.nominationDisabled || this.rsDisabled)
+      return this.isPreview || this.nominationDisabled || this.rsDisabled
+    }
+  },
+  created() {
+    this.isPreview = this.$route.query.isPreview == 1
   },
   methods:{
     submit(){

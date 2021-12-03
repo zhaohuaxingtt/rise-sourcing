@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors:  
- * @LastEditTime: 2021-11-15 19:32:11
+ * @LastEditTime: 2021-12-02 16:22:36
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -59,7 +59,7 @@
         <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
           <!--------------------保存按钮----------------------------------->
-          <iButton v-if="!nominationDisabled && !rsDisabled" @click="saveParts">{{language('BAOCUN','保存')}}</iButton>
+          <iButton v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_PARTDETAILTSAVE|零件清单保存" v-if="!nominationDisabled && !rsDisabled" @click="saveParts">{{language('BAOCUN','保存')}}</iButton>
         </div>
       </div>
       <tableList

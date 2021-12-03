@@ -30,12 +30,9 @@ export default {
     },
     loadingObj: {
       handler() {
-        const timer = setTimeout(() => {
-          Object.keys(this.loadingObj).forEach(key => {
-            this.$set(this.loadingObj, key, false)
-          })
-          clearTimeout(timer)
-        }, 5000)
+        Object.keys(this.loadingObj).forEach(key => {
+          this.$set(this.loadingObj, key, false)
+        })
       },
       deep: true
     }

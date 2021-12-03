@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-11-09 17:12:21
+ * @LastEditTime: 2021-12-02 16:31:26
  * @Description: 业务分配模拟
 -->
 
@@ -71,7 +71,7 @@
                 :batchEdit="multiEditControl"
                 :height="530"
                 v-loading="tableLoading"
-                v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TABLE|表格"
+                v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TABLE|业务分配模拟-表格"
                 ref="monitorTable" />
             </div>
           </div>
