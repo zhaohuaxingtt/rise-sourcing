@@ -55,8 +55,8 @@
                     <el-option
                       v-for="item in modelsOption"
                       :key="item.id"
-                      :label="item.name"
-                      :value="item.code"
+                      :label="item.model"
+                      :value="item.modelCode"
                     >
                     </el-option>
                   </iSelect>
@@ -85,8 +85,8 @@
                     <el-option
                       v-for="item in modelProjectsOption"
                       :key="item.id"
-                      :label="item.name"
-                      :value="item.code"
+                      :label="item.project"
+                      :value="item.projectCode"
                     >
                     </el-option>
                   </iSelect>
@@ -267,14 +267,14 @@ export default {
   mounted() {
     this.handleSearchReset();
     
-    getModels().then((res) => {
-      this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
-    });
-    getProjects().then((res) => {
-      this.modelProjectsOption = res?.data?.filter(
-        (item) => item.name?.length > 0
-      );
-    });
+    // getModels().then((res) => {
+    //   this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
+    // });
+    // getProjects().then((res) => {
+    //   this.modelProjectsOption = res?.data?.filter(
+    //     (item) => item.name?.length > 0
+    //   );
+    // });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
@@ -957,7 +957,8 @@ export default {
         models: data.models?.map((item) => item.modelCode),
         modelProjects: data.modelProjects?.map((item) => item.projectCode),
       };
-      
+      this.modelProjectsOption = data.modelProjects
+      this.modelsOption = data.models
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {
