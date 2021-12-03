@@ -1154,7 +1154,7 @@ export default {
           this.submitannualOutput(annualOutput, callback);
         }
         else {
-          this.$message.error("年降计划数据有误！");
+          this.$message.error(this.language('BIDDING_NJJHSJYW',"年降计划数据有误！"));
           return;
         }
         
@@ -1165,7 +1165,7 @@ export default {
         if (valid) {
           this.handleSaveData(callback);
         } else {
-          this.$message.error("年产量数据有误！");
+          this.$message.error(this.language('BIDDING_NCLSJYW',"年产量数据有误！"));
           return;
         }
       });
