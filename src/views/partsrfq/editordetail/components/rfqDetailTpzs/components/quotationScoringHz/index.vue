@@ -34,12 +34,12 @@
         </div>            
       </div>
       <div class="btnSearch" v-if='!disabel && !disabled'>
-        <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading">引用报价</iButton>
-        <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
-        <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
+        <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_QUOTEINQUIRYPRICE|报价分析汇总-零件-引用报价按钮">引用报价</iButton>
+        <iButton @click="group"  v-if='layout == "1" && !abPrice' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_GROUPBTN|报价分析汇总-零件-组合按钮">组合</iButton>
+        <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_REMOVEBTN|报价分析汇总-零件-取消组合按钮">取消组合</iButton>
         <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
-        <iButton v-if='isKborJj == 2' @click="options.show = true">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
-        <iButton  @click="exportParts(layout)">{{language('DAOCHU','导出')}}</iButton>
+        <iButton v-if='isKborJj == 2' @click="options.show = true" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_KBOJJBTN|报价分析汇总-零件-开标结果按钮">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
+        <iButton  @click="exportParts(layout)" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_DOWNLOADBTN|报价分析汇总-零件导出按钮">{{language('DAOCHU','导出')}}</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
@@ -47,9 +47,9 @@
     <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :supplierRightList='supplierRightList' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
     <div class="margin-top10 font-size14">
-      <p v-if="exchangeRatesCurrentVersionStr">Exchange rate: {{ exchangeRatesCurrentVersionStr }}</p>
+      <p v-if="exchangeRatesCurrentVersionStr">Current Exchange rate: {{ exchangeRatesCurrentVersionStr }}</p>
       <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
-        <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate {{ exchangeRate.version }}: {{ exchangeRate.str }}</p>
+        <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
       </div>
     </div>
     <!-- <tablelistGSasRow v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tablelistGSasRow> -->
@@ -508,7 +508,8 @@ export default{
           const oldVersions = sourceData.filter(item => !item.isCurrentVersion)
           this.exchangeRatesOldVersions = oldVersions.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length).map(item => ({
             version: item.exchangeRateVos[0].version,
-            str: item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(", ")
+            str: item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(", "),
+            fsNumsStr: Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
           }))
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -517,7 +518,7 @@ export default{
     },
     // 汇率显示处理
     exchangeRateProcess(row) {
-      return `100${ this.$i18n.locale === "zh" ? row.currencyName : row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ this.$i18n.locale === "zh" ? row.originCurrencyName : row.originCurrencyCode }`
+      return `100${ row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ row.originCurrencyCode }`
     },
     //导出
     exportParts(layout) {

@@ -600,14 +600,14 @@ export default {
   mounted() {
     this.handleSearchReset();
     
-    getModels().then((res) => {
-      this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
-    });
-    getProjects().then((res) => {
-      this.modelProjectsOption = res?.data?.filter(
-        (item) => item.name?.length > 0
-      );
-    });
+    // getModels().then((res) => {
+    //   this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
+    // });
+    // getProjects().then((res) => {
+    //   this.modelProjectsOption = res?.data?.filter(
+    //     (item) => item.name?.length > 0
+    //   );
+    // });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
@@ -917,7 +917,7 @@ export default {
               let num = Number(this.findKey(yearsPlanDate,item).slice(5));
               //计算本年出厂价
               this.prefactoryPrice=
-              !yearsPlanPercent[`stage${i}`]?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
+              !yearsPlanPercent[`stage${i}`] || num ===1 ?this.prefactoryPrice:Big(this.prefactoryPrice || 0)
               .times(
                 Big(1)
                   .minus(Number(yearsPlanPercent[`stage${num-1}`]) / 100)
@@ -1154,7 +1154,7 @@ export default {
           this.submitannualOutput(annualOutput, callback);
         }
         else {
-          this.$message.error("年降计划数据有误！");
+          this.$message.error(this.language('BIDDING_NJJHSJYW',"年降计划数据有误！"));
           return;
         }
         
@@ -1165,7 +1165,7 @@ export default {
         if (valid) {
           this.handleSaveData(callback);
         } else {
-          this.$message.error("年产量数据有误！");
+          this.$message.error(this.language('BIDDING_NCLSJYW',"年产量数据有误！"));
           return;
         }
       });
@@ -1236,6 +1236,7 @@ export default {
       formData.modelProjects = modelProjectList;
       formData.procurePlans = procurePlans;
       formData.productions = productions;
+      console.log(1239,formData)
       //保存
       saveMultiPrice(formData)
         .then((res) => {
@@ -1336,41 +1337,50 @@ export default {
         biddingStatus: data.biddingStatus,
       };
       // 车型
-      const paras = data.models?.map(item => {
-        return {
-          ...item,
-          code:item.modelCode,
-          name:item.model
-        }
-      })
-      this.modelsOption.push(...paras)
-      let optionObj = {}
-      let optionArr = []
-      this.modelsOption.forEach(item => {
-        if(!optionObj[item.name]) {
-          optionObj[item.name] = 1
-          optionArr.push(item)
-        }
-      })
-      this.modelsOption = [...optionArr]
+      getModels().then((res) => {
+        this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
+        const paras = data.models?.map(item => {
+          return {
+            ...item,
+            code:item.modelCode,
+            name:item.model
+          }
+        })
+        this.modelsOption.push(...paras)
+        let optionObj = {}
+        let optionArr = []
+        this.modelsOption.forEach(item => {
+          if(!optionObj[item.name]) {
+            optionObj[item.name] = 1
+            optionArr.push(item)
+          }
+        })
+        this.modelsOption = [...optionArr]
+      });
+      
       // 车型项目
-      const projectParas = data?.modelProjects.map(item => {
-        return {
-          ...item,
-          code:item.projectCode,
-          name:item.project
-        }
-      })
-      this.modelProjectsOption.push(...projectParas)
-      let projectOptionObj = {}
-      let projectOptionArr = []
-      this.modelProjectsOption.forEach(item => {
-        if (!projectOptionObj[item.name]) {
-          projectOptionObj[item.name] = 1
-          projectOptionArr.push(item)
-        }
-      })
-      this.modelProjectsOption = [...projectOptionArr]
+      getProjects().then((res) => {
+        this.modelProjectsOption = res?.data?.filter(
+          (item) => item.name?.length > 0
+        );
+        const projectParas = data?.modelProjects.map(item => {
+          return {
+            ...item,
+            code:item.projectCode,
+            name:item.project
+          }
+        })
+        this.modelProjectsOption.push(...projectParas)
+        let projectOptionObj = {}
+        let projectOptionArr = []
+        this.modelProjectsOption.forEach(item => {
+          if (!projectOptionObj[item.name]) {
+            projectOptionObj[item.name] = 1
+            projectOptionArr.push(item)
+          }
+        })
+        this.modelProjectsOption = [...projectOptionArr]
+      });
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {
@@ -1385,7 +1395,7 @@ export default {
             item.procureYearMonth;
           obj[item.productId].yearMonth[`id${item.stage}`] = item.id;
           obj[item.productId].cutPricePlan[`stage${item.stage}`] =
-           this.ruleForm.biddingStatus === '01' ? item.cutPricePlan : (item.cutPricePlan + '%');
+           this.ruleForm.biddingStatus === '01' ? item.cutPricePlan : (item.cutPricePlan ? (item.cutPricePlan + '%') : '');
           obj[item.productId].cutPricePlan[`id${item.stage}`] = item.id;
           return obj;
         }, {});

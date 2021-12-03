@@ -119,6 +119,15 @@ export default [
         },
         component: () => import("@/views/aeko/partslist/partList")
       },
+      // AEKO零件清单 iSelect 展示demo
+      {
+        path: "partslist2",
+        name: "aekoPartslist2",
+        meta: {
+          title: 'AEKO零件清单'
+        },
+        component: () => import("@/views/aeko/partslist/demo")
+      },
       {
         path: "quotationdetail",
         name: "aekoQuotationDetail",

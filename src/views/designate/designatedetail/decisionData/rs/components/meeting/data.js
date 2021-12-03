@@ -109,7 +109,7 @@ export const nomalTableTitle = [
   {props:'supplierName',name:'供应商', enName: 'Supplier', key: "",minWidth:62},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "",minWidth:88},
   {props:'share',name:'份额', enName: 'Share', enName1:'(%)', key: "",minWidth:60},
-  {props:'rw',name:'欧价', enName: 'RW', key: "",minWidth:60},
+  // {props:'rw',name:'欧价', enName: 'RW', key: "",minWidth:60},
   {props:'cfTargetAPrice',name:'财务目标A价', enName: 'F-T(A)', key: "",minWidth:84},
   {props:'cfTargetBPrice',name:'财务目标B价', enName: 'F-T(B)', key: "",minWidth:84},
   {props:'status',name:'状态', enName: 'Status', key: "",minWidth:50},
@@ -140,7 +140,7 @@ export const sparePartTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // 附件
@@ -161,7 +161,7 @@ export const accessoryTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // GS零件
@@ -188,7 +188,7 @@ export const gsTableTitle = [
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
   {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 85},
   {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 120},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // DB零件
@@ -203,7 +203,7 @@ export const dbTableTitle = [
   {props:'supplierName',name:'供应商', enName: 'Supplier', key: "", minWidth: 66},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "", minWidth: 88},
   {props:'share',name:'份额', enName: 'Share', enName1:'(%)', key: "", minWidth: 60},
-  {props:'rw',name:'欧价', enName: 'RW', key: "", minWidth: 60},
+  // {props:'rw',name:'欧价', enName: 'RW', key: "", minWidth: 60},
   {props:'cfTargetAPrice',name:'财务目标A价', enName: 'F-T(A)', key: "", minWidth: 84},
   {props:'cfTargetBPrice',name:'财务目标B价', enName: 'F-T(B)', key: "", minWidth: 84},
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 50},
@@ -215,7 +215,7 @@ export const dbTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 export const meetingRemark = [

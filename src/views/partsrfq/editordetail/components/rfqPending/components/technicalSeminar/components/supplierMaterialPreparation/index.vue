@@ -4,15 +4,15 @@
  * @Description: 
 -->
 <template>
-  <i-card v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_INDEXPAGE">
+  <i-card v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SUPPLIERDOCUMENTS|技术交底会-供应商材料准备">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGCAILIAOZHUNBEI','供应商材料准备') }}</span>
       <div class="floatright" v-if="!disabled">
-        <iButton @click="add" v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_ADD">{{language('LK_TIANJIA','添加')}}</iButton>
+        <iButton @click="add" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SUPPLIERDOCUMENTS_ADD|技术交底会-供应商材料准备-添加按钮">{{language('LK_TIANJIA','添加')}}</iButton>
       </div>
     </div>
     <iFormGroup :row="3" inline icon class="label-zero" v-model="dynamicForm" v-if="showStatus"
-                v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_DESTEXT">
+                v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_SUPPLIERDOCUMENTS_DESTEXT|技术交底会-供应商材料准备-描述内容">
       <template v-for="(item,index) of dynamicForm.baseInfo">
         <iFormItem label=" " :name="index" :key="index" class="form-item-style">
           <iInput type="textarea" :disabled="disabled" :rows="4" resize="none" :placeholder="language(item.placeholderkey,item.placeholder)" v-model="item.value"

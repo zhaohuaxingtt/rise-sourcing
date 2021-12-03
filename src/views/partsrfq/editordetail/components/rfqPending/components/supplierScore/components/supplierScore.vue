@@ -24,6 +24,7 @@
         @openMultiHeaderPropsPage="openMultiHeaderPropsPage"
         :disabled="!editStatus || disabled"
         @link="link"
+        v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_TABLE|供应商评分列表"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->

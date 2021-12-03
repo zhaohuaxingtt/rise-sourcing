@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors:  
- * @LastEditTime: 2021-11-22 20:01:01
+ * @LastEditTime: 2021-12-03 10:25:12
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -38,7 +38,7 @@
               </div>
               <div class="rsTop-right-item-value">
                 <div v-for="(subItem, subIndex) in item" :key="subIndex">
-                  {{subItem.props === 'currency' ? basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : '' : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                  {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
               </div>
             </template>
             <template v-else>
@@ -75,6 +75,42 @@
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
 
+        <template #demand="scope">
+          <span>{{ scope.row.demand | kFilter }}</span>
+        </template>
+        <template #output="scope">
+          <span>{{ scope.row.output | kFilter }}</span>
+        </template>
+        <template #presentPrice="scope">
+          <span>{{ scope.row.presentPrice | toThousands }}</span>
+        </template>
+        <template #cfTargetAPrice="scope">
+          <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+        </template>
+        <template #cfTargetBPrice="scope">
+          <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+        </template>
+        <template #aprice="scope">
+          <span>{{ scope.row.aprice | toThousands }}</span>
+        </template>
+        <template #bprice="scope">
+          <span>{{ scope.row.bprice | toThousands }}</span>
+        </template>
+        <template #investFee="scope">
+          <span>{{ scope.row.investFee | toThousands }}</span>
+        </template>
+        <template #devFee="scope">
+          <span>{{ scope.row.devFee | toThousands }}</span>
+        </template>
+        <template #addFee="scope">
+          <span>{{ scope.row.addFee | toThousands }}</span>
+        </template>
+        <template #savingFee="scope">
+          <span>{{ scope.row.savingFee | toThousands }}</span>
+        </template>
+        <template #tto="scope">
+          <span>{{ scope.row.tto | toThousands }}</span>
+        </template>
       </tableList>
       <!-- v-if="isPreview" -->
       <div class="beizhu">
@@ -90,14 +126,13 @@
         </span>
       </div>
       <div v-else>
-        <p class="margin-top10" v-if="exchangeRateCurrentVersionStr">Exchange rate: {{ exchangeRateCurrentVersionStr }}</p>
-        <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
-          <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate {{ index + 1 }}: {{ exchangeRate.str }}</p>
+        <div class="margin-top10">
+          <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
         </div>
       </div>
     </iCard>
     <iCard v-if="!isPreview && !showSignatureForm && !isAuth" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
-      <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
+      <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE|保存">{{language('BAOCUN','保存')}}</iButton>
       <div class="meetingRemark">
         <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
           <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
@@ -139,7 +174,8 @@ import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, searchRsPageExchangeRate, reviewListRs } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
 import { findFrontPageSeat } from '@/api/designate'
-import { zipWith } from "lodash"
+import { toThousands } from "@/utils"
+
 export default {
   props: {
     isPreview: {type:Boolean, default:false},
@@ -168,12 +204,12 @@ export default {
       projectType: '',
       isSingle: false,
       suppliers: '',
-      exchangeRateCurrentVersionStr: "",
-      exchangeRatesOldVersions: [],
+      exchangeRates: [],
       isAuth: false,
     }
   },
   filters: {
+    toThousands,
     booleanFilter(val) {
       const obj = {
         true: "Y",
@@ -181,6 +217,10 @@ export default {
       }
 
       return obj[val] || val
+    },
+    kFilter(val) {
+      if (val) return math.divide(math.bignumber(val), 1000).toString()
+      return val
     }
   },
   computed: {
@@ -471,20 +511,20 @@ export default {
           if (this.basicData.currency) {
             const sourceData = Array.isArray(res.data) ? res.data : []
 
-            const currentVersion = sourceData.find(item => item.isCurrentVersion)
-            const exchangeRatesCurrentVersion = currentVersion ? (Array.isArray(currentVersion.exchangeRateVos) ? currentVersion.exchangeRateVos : []) : []
-            const currentCurrencyExchangeRate = exchangeRatesCurrentVersion.find(item => item.currencyCode === this.basicData.currency)
-            this.exchangeRateCurrentVersionStr = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : ""
+            this.exchangeRates = sourceData
+              .filter(item => !item.isCurrentVersion)
+              .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+              .map(item => {
+                const result = { version: item.exchangeRateVos[0].version }
+                
+                const currentCurrencyExchangeRate = item.exchangeRateVos.find(item => item.originCurrencyCode === this.basicData.currency)
+                result.str = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : "100RMB = 100RMB"
+                result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
 
-            const oldVersions = sourceData.filter(item => !item.isCurrentVersion)
-            this.exchangeRatesOldVersions = oldVersions.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length).map(item => {
-              const result = { version: item.exchangeRateVos[0].version }
-              
-              const currentCurrencyExchangeRate = item.exchangeRateVos.find(item => item.currencyCode === this.basicData.currency)
-              result.str = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : ""
-
-              return result
-            }) 
+                return result
+              })
+          } else {
+            
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
