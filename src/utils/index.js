@@ -240,27 +240,6 @@ function _languageSendToService() {
 	languageList = []
 }
 function _permissionKeySendToService(router) {
-<<<<<<< HEAD
-	console.log(
-		`============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`
-	)
-	console.log(store.state.permission.resourceList)
-	const serviceData = router.matched.map((r, i) => {
-		return {
-			type: 3,
-			name: r.meta.title,
-			permissionKey: r.path.toUpperCase(),
-			url: r.path,
-			target: r.path,
-			resourceList:
-				i == router.matched.length - 1
-					? store.state.permission.resourceList
-					: [],
-		}
-	})
-	sendPermissonKey(serviceData)
-	store.dispatch('clearResource', [])
-=======
   console.log(
     `============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`
   )
@@ -301,7 +280,6 @@ function _permissionKeySendToService(router) {
     alert(`权限自动上传中有${errorData(serviceData).length}条错误，请查看控制台中的错误日志，解决后再上传`)
   }
   store.dispatch('clearResource', [])
->>>>>>> 5325d4bf9b6fc9055f3b6d39a3f342e6e0be4d96
 }
 /**********************************************************************************************************************************************
  * @description: 结合业务逻辑和角色，处理权限列表, 过滤逻辑：
