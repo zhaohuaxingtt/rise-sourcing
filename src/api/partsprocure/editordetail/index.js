@@ -62,14 +62,6 @@ export function getAttachMeterialStuff(params) {
 		params: params
 	})
 }
-// 设置工艺组
-export function putMaterialGroup(params) {
-	return requstPartsProcure({
-		url: '/materialGroup',
-		method: 'PUT',
-		params: params
-	})
-}
 
 // 获取tp单数据
 export function getTpInfo(params) {

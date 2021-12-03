@@ -35,10 +35,10 @@
         </div>
         <div class="floatright" v-else>
           <!-- 编辑 -->
-          <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="handlEdit" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑TASKS">
+          <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="handlEdit" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITTASK|编辑TASKS">
             {{ language("nominationSupplier_Edit",'编辑') }}
           </iButton>
-          <iButton @click="exportTasks" v-if="!$store.getters.isPreview" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EXPORT|导出TASKS">
+          <iButton @click="exportTasks" v-if="!$store.getters.isPreview" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EXPORT|导出TASKS ">
             {{ language("nominationSupplier_Export",'导出') }}
           </iButton>
         </div>

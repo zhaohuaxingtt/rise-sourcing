@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2021-07-07 15:38:15
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-03 10:32:03
+ * @LastEditors:  
  * @Description: 决策资料 - 附件
 -->
 <template>
@@ -13,7 +13,7 @@
       >
       <div class="floatright">
         <!-- 下载 -->
-        <iButton @click="downloadFile" class="margin-right10">
+        <iButton @click="downloadFile" class="margin-right10" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_DOWNLOAD|Attachment-下载">
           {{ language("strategicdoc_XiaZai",'下载') }}
         </iButton>
         <!-- 删除 -->
@@ -21,7 +21,9 @@
           <iButton
             class="margin-right10"
             @click="deleteFile($event, getFetchDataList)"
-            v-if="!$store.getters.isPreview && !rsDisabled">
+            v-if="!$store.getters.isPreview && !rsDisabled"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_DELETE|Attachment-删除"
+            >
             {{ language("LK_SHANCHU",'删除') }}
           </iButton>
           <!-- 上传文件 -->
@@ -37,6 +39,7 @@
             :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
             :buttonText="language('strategicdoc_ShangChuanWenJian','上传文件')"
             @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '102'}), getFetchDataList)"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_UPLOAD|Attachment-上传文件"
           />
         </span>
       </div>
@@ -49,6 +52,7 @@
       :tableLoading="tableLoading"
       v-loading="tableLoading"
       @handleSelectionChange="handleSelectionChange"
+      v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_TABLE|Attachment-表格"
     >
     <template #uploadDate="scope">
       {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}

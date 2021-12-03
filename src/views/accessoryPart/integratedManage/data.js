@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:44:03
+ * @LastEditTime: 2021-12-02 17:03:29
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\data.js
  */
@@ -58,7 +58,7 @@ export const searchList = [
   // {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
   {value: 'rfqId', label: 'rfq编号', type: 'input', key: 'RFQBIANHAO', permission: 'APREPART_MANAGFMENT_RFQBIANHAO|配件-配件管理-RFQ编号', inputType: "int"},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption', permission: 'APREPART_MANAGFMENT_IDSTATS|配件-配件管理-ID状态'},
-  {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'ACCESSORY_MANAGEMENT_ISME|附件-附件管理-是否自己'},
+  {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'APREPART_MANAGEMENT_ISME|附件-附件管理-是否自己'},
 ]
 export const TAB = [
   {
