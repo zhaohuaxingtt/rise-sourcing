@@ -112,6 +112,8 @@ export default{
       this.partsSelect = ['all']
       this.supplierSelectlist = ['all']
       this.getDataList()
+      // 还原原来的筛选
+      this.supplierPart()
     },
     onFilteDataChange(data=[], props) {
       if (!data.length || data[data.length - 1] === 'all') {
