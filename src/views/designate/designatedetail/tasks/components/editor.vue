@@ -16,24 +16,24 @@
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.gif'"
             :buttonText="language('strategicdoc_ShangChuanTuPian','上传图片')"
-            v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_UPLOAD|上传图片"
+            v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_UPLOAD${isTask}|上传图片${isTask}`"
             @on-success="onUploadsucess"
           />
-          <iButton @click="submit" :loading="submiting" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKSAVE|保存备注">
+          <iButton @click="submit" :loading="submiting" v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_REMARKSAVE${isTask}|保存备注${isTask}`">
             {{ language("LK_BAOCUN",'保存') }}
           </iButton>
-          <iButton @click="multiEditControl = false" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKEXITEDIT|结束编辑备注">
+          <iButton @click="multiEditControl = false" v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_REMARKEXITEDIT${isTask}|结束编辑备注${isTask}`">
             {{ language("strategicdoc_JieSuBianJi",'结束编辑') }}
           </iButton>
         </span>
         <span v-else>
           <template v-if='higth'>
-            <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
+            <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="multiEditControl = true" v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_EDIT${isTask}|编辑备注${isTask}`">
               {{ language("LK_BIANJI",'编辑') }}
             </iButton>
           </template>
           <div v-else>
-            <iButton v-if="!isDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
+            <iButton v-if="!isDisabled" @click="multiEditControl = true" v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_EDIT${isTask}|编辑备注${isTask}`">
               {{ language("LK_BIANJI",'编辑') }}
             </iButton>
           </div>
@@ -46,7 +46,7 @@
         :menus=[]
         :disabled="!multiEditControl"
         v-model="content"
-        v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR|备注编辑框"
+        v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR${isTask}|备注编辑框${isTask}`"
         ref="editor"
 
        />
@@ -69,6 +69,11 @@ import {
 } from '@/api/designate/decisiondata/tasks'
 
 export default {
+  props: {
+    isTask:{
+      type: String
+    }
+  },
   data() {
     return {
       id: '',

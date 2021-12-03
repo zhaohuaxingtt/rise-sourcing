@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-19 10:59:33
- * @LastEditTime: 2021-12-02 11:02:48
+ * @LastEditTime: 2021-12-03 10:32:23
  * @LastEditors:  
 -->
 <template>
@@ -21,6 +21,7 @@
       v-loading="tableLoading"
       :activeItems="'fileName'"
       @openPage="openPage"
+      v-permission.auto="SOURCING_NOMINATION_ATTATCH_MTZATTACHMENT_TABLE|MTZAttachment-表格"
     >
     <template #uploadDate="scope">
       {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
