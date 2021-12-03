@@ -414,12 +414,16 @@ export default {
       let firstDate = dayjs(this.annualOutputObj[row.index+1][props]).add(1, "month");
       return {
         validator(rule, value, callback) {
-          num === 1
-            ? dayjs(value).isBefore(firstDate)
-            ? callback(new Error(rule.message)):callback()
-            : dayjs(value).isBefore(afterDate)
-            ? callback(new Error(rule.message))
-            : callback();
+          if(value){
+            num === 1
+              ? dayjs(value).isBefore(firstDate)
+              ? callback(new Error(rule.message)):callback()
+              : dayjs(value).isBefore(afterDate) || dayjs(value).isSame(afterDate)
+              ? callback(new Error(rule.message))
+              : callback();
+          } else {
+            callback();
+          }
         },
         message: "日期错误",
         trigger: ["blur","change"],

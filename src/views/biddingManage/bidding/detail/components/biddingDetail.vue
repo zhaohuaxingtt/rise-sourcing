@@ -65,7 +65,7 @@
                   <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
-                      {{ tag.name }}
+                      {{ tag.model }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -75,7 +75,7 @@
                   <iLabel :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
-                      {{ tag.name }}
+                      {{ tag.project }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -379,22 +379,23 @@ export default {
       }
       const totalPrices = this.dividedBeiShu(this.ruleForm.totalPrices)
       this.ruleForm = {... this.ruleForm,supplierOffer,totalPrices}
+      this.modelsOption = data.models
+      this.modelProjectsOption = data.modelProjects
+      // getModels().then((res) => {
+      //   data.models.forEach((item) => {
+      //     this.modelsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.modelCode)
+      //     );
+      //   });
+      // });
 
-      getModels().then((res) => {
-        data.models.forEach((item) => {
-          this.modelsOption.push(
-            ...res?.data?.filter((e) => e.code === item.modelCode)
-          );
-        });
-      });
-
-      getProjects().then((res) => {
-        data.modelProjects.forEach((item) => {
-          this.modelProjectsOption.push(
-            ...res?.data?.filter((e) => e.code === item.projectCode)
-          );
-        });
-      });
+      // getProjects().then((res) => {
+      //   data.modelProjects.forEach((item) => {
+      //     this.modelProjectsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.projectCode)
+      //     );
+      //   });
+      // });
       this.ruleForm.supplierProducts?.forEach((items) => {
         let o = items.supplierPlans.reduce((obj, item) => {
           if (!obj[item.supplierProdId]) {
