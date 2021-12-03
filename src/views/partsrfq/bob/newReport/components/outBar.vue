@@ -1,7 +1,46 @@
-
+<style scoped>
+.crown-bar-x-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #7E84A3;
+  font-family: Arial;
+  line-height: 23px;
+  text-align: center;
+  white-space: nowrap;
+}
+</style>
 <template>
-  <div style="height:540px;width:100%"
-       ref="chart"></div>
+  <div style="width: 100%;">
+    <div style="height:440px;width: 100%;" ref="chart" v-show="chartData.length > 0"></div>
+    <template v-if="chartData.length > 0">
+      <div style="display:flex;flex-flow:row nowrap;">
+        <span style="width: 14%;"></span>
+        <span class="crown-bar-x-label" style="width: 86%">{{getCrownBarName(chartData[0])}}</span>
+      </div>
+      <div style="display:flex;flex-flow:row nowrap;">
+        <span style="width: 14%;"></span>
+        <span class="crown-bar-x-label" style="width: 86%">
+          {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{chartData[0].turn}}</a>/{{chartData[0].totalTurn}}{{language('LK_TURN','轮')}}
+        </span>
+      </div>
+      <div style="display:flex;flex-flow:row nowrap;margin-top: 10px;">
+        <span style="width: 14%;"></span>
+        <span class="crown-bar-x-label" style="width: 86%">{{chartData[0].vehicleType}}</span>
+      </div>
+      <div style="display:flex;flex-flow:row nowrap;">
+        <span style="width: 14%;"></span>
+        <span class="crown-bar-x-label" style="width: 86%">{{getCrownBarReqTime(chartData[0])}}</span>
+      </div>
+    </template>
+    <template v-else>
+      <div style="padding: 32% 0% 3% 14%;display: flex;flex-flow:column nowrap;height: 100%;">
+        <img src="@/assets/images/newZhu.png"
+              alt=""
+              style="width:220px;height: calc(440px - 28%);cursor: pointer;" @click="findPart">
+        <div style="width:220px;text-align: center;color:#7E84A3;margin-top:3%;cursor: pointer;" @click="findPart">{{ $t("待添加") }}</div>
+      </div>
+    </template>
+  </div>
 </template>
 <script >
 import echarts from '@/utils/echarts'
@@ -53,6 +92,25 @@ export default {
     }
   },
   methods: {
+    getCrownBarName(row) {
+      let name = row.supplierName
+
+      if (this.chartType === "num") {
+        name = row.spareParts;
+        this.partList.forEach(value => {
+          if (name == value.spareParts) {
+            name = value.shortNameZh
+          }
+        })
+      }
+      return name
+    },
+    getCrownBarReqTime(row) {
+      return window.moment(row.cbdQuotationTime).format("yyyy.MM");
+    },
+    findPart() {
+      this.$emit('find-part')
+    },
     bos (arr) {
       const min = this.min(arr)
       let send = this.max(arr)
@@ -63,7 +121,6 @@ export default {
           }
         }
       })
-      // console.log(send)
       return send
     },
     doNumber (x) {
@@ -109,7 +166,7 @@ export default {
           left: "14%",
           top: '25%',
           right: '0%',
-          bottom: "22%",
+          bottom: "3%",
         },
         xAxis: [
           {
@@ -180,7 +237,7 @@ export default {
           },
           textStyle: {
             fontSize: 12,
-            color: "#e1e1e2"
+            color: "#7E84A3"
           }
         },
         yAxis: [
@@ -214,6 +271,9 @@ export default {
         series: this.dataArray
       };
       myChart.setOption(option);
+      this.$nextTick(() => {
+        myChart.resize()
+      })
       const that = this
       myChart.on('click', function (params) {
 
@@ -227,7 +287,6 @@ export default {
     },
     initData (newVal) {
       if (newVal) {
-        // console.log(newVal)
         this.chartArray = newVal
         this.labelArray = []
         this.labelArray1 = []
@@ -235,20 +294,7 @@ export default {
         const tempArr = []
         const dataList1 = []
         newVal.forEach((row, i) => {
-          const temp =
-            row.vehicleType +
-            "\n" +
-            window.moment(row.cbdQuotationTime).format("yyyy.MM");
-          // console.log(row)
-          let name = row.supplierName
-          if (this.by === 'num') {
-            name = row.spareParts
-          }
-          // let img = '\t{bobChange|}'
-          // if (!this.preview) {
-          //   img = ''
-          // }
-          const str = name + '\n\n第{Blue|' + row.turn + '}/' + row.totalTurn + '轮\n\n\n' + "{font|" + temp + "}";
+          const str = "";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
             value: str,
@@ -279,7 +325,6 @@ export default {
           this.labelArray1.push({
             value: subtext,
           });
-          // console.log(this.labelArray)
           this.legendArray.map((v, i) => {
             if (!tempArr[v]) {
               tempArr[v] = []
@@ -294,18 +339,14 @@ export default {
 
           })
         })
-        // console.log(tempArr)
         const minList = []
 
         this.legendArray.forEach((row, i) => {
-
-          // const dataList0 = this.cloneDeep(tempArr[row])
 
           const min = this.min(tempArr[row])
           let data = min
           minList.push(data)
 
-          // console.log(dataList1)
           this.dataArray.push({
             name: row,
             type: 'bar',
@@ -346,7 +387,6 @@ export default {
             fontFamily: "Arial",
             align: 'center',
             formatter: (params) => {
-              // console.log(params)
               const sum = dataList1['利润'][0]
               return this.doNumber(sum)
             },
@@ -362,43 +402,18 @@ export default {
           data: [dataList1['利润'][0]]
         })
 
-
         if (this.$refs.chart && this.chartArray.length > 0) {
           this.initCharts();
         }
       }
     }
   },
-  mounted () {
-    this.initCharts();
-  },
   watch: {
-    title: {
-      handler (str) {
-
-        if (this.$refs.chart && this.chartArray.length > 0) {
-          this.initCharts();
-        }
-      },
-      immediate: true
-    },
-    by: {
-      handler (str) {
-        this.initData(this.chartData)
-      }
-    },
-    type: {
-      handler (str) {
-        this.initData(this.chartData)
-      }
-    },
     chartData: {
       handler (newVal) {
         if (newVal && newVal.length > 0) {
           this.initData(newVal)
         }
-
-
       },
       deep: true,
       immediate: true

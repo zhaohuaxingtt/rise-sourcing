@@ -1,17 +1,18 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-26 16:47:13
- * @LastEditors: YoHo
- * @LastEditTime: 2021-11-04 17:11:08
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-01 15:57:10
  * @Description: 审批列表 Commodity审批人/CSF审批人
 -->
 <template>
   <div class="aeko-assign">
-    <!-- tab 待审批/已审批切换 -->
+    <!-- tab 待审批/已审批切换permissionKey-->
     <div class="headerNav-sub">
       <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
         <el-tab-pane lazy v-for="(item,index) in navList" :key="index" :label="language(item.key, item.name)"
-                     :name="item.code"></el-tab-pane>
+                     :name="item.code"
+                     ></el-tab-pane>
       </iTabsList>
     </div>
     <router-view></router-view>
@@ -22,6 +23,7 @@ import {navList} from '../components/data'
 import AKEOPendingPage from "./AKEOPendingPage"
 import AKEOApprovedPage from "./AKEOApprovedPage";
 import {iTabsList} from 'rise'
+import { permissionArray } from "@/utils"
 
 
 export default {
@@ -35,12 +37,25 @@ export default {
     }
   },
   created() {
-    if(this.$route.name=='AKEOPendingPage'){
-      this.tab='1'
-    }
-    if(this.$route.name=='AKEOApprovedPage'){
-      this.tab='2'
-    }
+    // 通过permissionKey(权限)字段过滤tabs
+    // this.navList = permissionArray('permissionKey',this.navList);
+    // const {navList} = this;
+    // if(navList.length == 1 && navList[0].code == '2'){ // 只显示已审批
+    //   this.tab = '2';
+    //   this.$router.push({
+    //       path:'/aeko/AKEOPageContent/approvelistcsf/AKEOApprovedPage',
+    //     })
+    // }else{
+      if(this.$route.name=='AKEOPendingPage'){
+        this.tab='1'
+      }
+      if(this.$route.name=='AKEOApprovedPage'){
+        this.tab='2'
+      }
+    // }
+
+
+    
   },
   methods: {
     //tab切换

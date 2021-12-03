@@ -23,7 +23,7 @@ export function autonomi(params) {
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params) {
 	return requstPartsProcure({
-		url: '/materialGroup',
+		url: '/materialGroupByPartNum',
 		method: 'GET',
 		params: params
 	})
@@ -54,11 +54,11 @@ export function getMeterialStuff(params) {
 		params: params
 	})
 }
-// 设置工艺组
-export function putMaterialGroup(params) {
-	return requstPartsProcure({
-		url: '/materialGroup',
-		method: 'PUT',
+// 采购项目-获取材料组信息 - 附件类型
+export function getAttachMeterialStuff(params) {
+	return sourcing({
+		url: '/purchasing-project-parts/materialGroupStuff',
+		method: 'GET',
 		params: params
 	})
 }
@@ -397,7 +397,6 @@ export function manualInfoTable(data) {
 
 //根据车型項目配置信息查詢
 export function cartypeProConfigByCondition(data) {
-	console.log(data);
 	return carApi({
 		url: '/api/cartypeProConfigByCondition',
 		method:'POST',

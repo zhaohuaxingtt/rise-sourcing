@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-26 14:55:05
- * @LastEditors: Hao,Jiang
+ * @LastEditors: Luoshuang
 * @Description: In User Settings Edit
  -->
 <template>
@@ -15,29 +15,29 @@
         <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="openDiologBack" v-permission.auto="PARTSIGN_EDITORDETAIL_BACKBUTTON|退回">{{ language('LK_TUIHUI','退回') }}</iButton>
         <iButton @click="back" v-permission.auto="PARTSIGN_EDITORDETAIL_RETURN|返回">{{ language('LK_FANHUI','返回') }}</iButton>
         <!-- <logButton class="margin-left20" @click="log"  v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志"/> -->
-        <iLoger :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="partDetails && partDetails.partNum" credentials isPage class="margin-left20" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
+        <iLoger :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="partDetails && partDetails.tpPartID" credentials isPage class="margin-left20" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
         </span>
       </div>
     </div>
     <!-- 零件详情内容 -->
-    <iCard class="partsDetail" v-permission="PARTSIGN_EDITORDETAIL_ALLTXT">
+    <iCard class="partsDetail" v-permission.auto="PARTSIGN_EDITORDETAIL_ALLTXT|新建信息单详情-零件详情内容">
       <partInfo icons :title="partTitle" :data="partDetails"></partInfo>
     </iCard>
     <!-- 零件详情tab页 -->
     <div class="iTabs">
       <iTabs-list type="card" class="margin-top20" value="2">
-        <el-tab-pane lazy :label="language('LK_XINXIDANXIANGQING','信息单详情')" name="1" v-permission="PARTSIGN_EDITORDETAIL_INFORMATIONSHEETDETAILS">
+        <el-tab-pane lazy :label="language('LK_XINXIDANXIANGQING','信息单详情')" name="1" v-permission.auto="PARTSIGN_EDITORDETAIL_INFORMATIONSHEETDETAILS|新建信息单详情-信息单详情Tab">
           <iCard>
             <partInfo :title="item" :data="partDetails" v-for="(item,index) in partDetailTitle" :key="index"></partInfo>
           </iCard>
         </el-tab-pane>
-        <el-tab-pane lazy :label="language('LK_XUNJIAZILIAO','询价资料')" name="2" v-permission="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION">
+        <el-tab-pane lazy :label="language('LK_XUNJIAZILIAO','询价资料')" name="2" v-permission.auto="PARTSIGN_EDITORDETAIL_INQUIRYINFORMATION|新建信息单详情-询价资料Tab">
           <enquiryUnconfirmed ref="enquiryUnconfirmed" class="enquiryUnconfirmed" :data="partDetails" :disabled="isDisabled" @updateVersion="updateEnquiryVersion" />
           <enquiry ref="enquiry" class="enquiry" :data="partDetails" :disabled="isDisabled" />
         </el-tab-pane>
-        <el-tab-pane lazy :label="language('LK_MEICHEYONGLIANG','每车用量')" name="3" v-permission="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE">
+        <el-tab-pane lazy :label="language('LK_MEICHEYONGLIANG','每车用量')" name="3" v-permission.auto="PARTSIGN_EDITORDETAIL_USAGEPERVEHICLE|新建信息单详情-每车用量Tab">
           <volumeUnconfirmed ref="volumeUnconfirmed" class="volumeUnconfirmed" :data="partDetails" :disabled="isDisabled" @updateVersion="updateVolumeVersion" />
           <volume ref="volume" class="volume" :data="partDetails" :disabled="isDisabled" />
         </el-tab-pane>

@@ -91,15 +91,15 @@
               <div class="txt">
                 <span>{{ $t('LK_CHEXINGXIANGMU') }}</span><!-- 车型项目 -->
               </div>
-              <div class="disabled">{{detailObj.tmCartypeProName}}</div>
-              <!-- <iSelect v-if="isCarTypeList" v-model="detailObj.tmCartypeProId" class="input" :placeholder="$t('LK_QINGXUANZE')">
+              <iSelect v-if="isAdmin" v-model="detailObj.tmCartypeProId" class="input" :placeholder="$t('LK_QINGXUANZE')">
                 <el-option
                     :value="item.tmCartypeProId"
                     :label="item.tmCartypeProName"
                     v-for="(item, index) in fromGroup"
                     :key="index"
                 ></el-option>
-              </iSelect> -->
+              </iSelect>
+              <div class="disabled" v-else>{{detailObj.tmCartypeProName}}</div>
               <!-- <div v-else class="disabled">{{fromGroupName}}</div> -->
             </div>
             <div class="item">
@@ -258,9 +258,9 @@
             </div>
             <div class="item">
               <div class="txt">
-                <span>FS/GS</span><!-- FS/GS -->
+                <span>{{ $t('LK_CAIGOULEIXING') }}</span><!-- 采购类型 -->
               </div>
-              <div class="disabled">{{detailObj.fsGs}}</div>
+              <div class="disabled">{{detailObj.partsPurchaseTypeName}}</div>
             </div>
             <div class="item">
               <div class="txt">
@@ -328,7 +328,7 @@ import {
 import { bmPopupTableHead } from "./components/data";
 import { bmTableCount, getBmDetailById, getBmPartsList,
   getProductionFactoryPullDown, deptPullDown, bmCarTypePullDown,
-  bmDetailUpdate
+  bmDetailUpdate, getIsAdmin
 } from "@/api/ws2/bmApply";
 import BmPopup from "./components/popup";
 import AllBmListBlock from "./components/allBmListBlock";
@@ -368,14 +368,15 @@ export default {
       getTousandNum,
       NumFormat,
       fromGroupName: '',
-      isCarTypeList: true,
+      // isCarTypeList: true,
+      isAdmin: false,
     }
   },
 
   created(){
-    const key = store.state.permission.whiteBtnList['TOOLING_BUDGET_BMAPPLICATION_SELECT'];  //  车型下拉列表
+    // const key = store.state.permission.whiteBtnList['TOOLING_BUDGET_BMAPPLICATION_SELECT'];  //  车型下拉列表
     this.bmTableCount();  //  获取table数量
-    this.isCarTypeList = key ? true : false;
+    // this.isCarTypeList = key ? true : false;
   },
 
   methods: {
@@ -432,16 +433,18 @@ export default {
       this.allTableLoading = true;
       this.bmVisible = true;
 
-      //  BM详情、零件号列表、采购工厂、专业科室、车型项目
+      //  BM详情、零件号列表、采购工厂、专业科室、车型项目、判断管理员权限
       Promise.all([
         getBmDetailById({id: scope.id}), getBmPartsList({id: scope.id}),
-        getProductionFactoryPullDown(), deptPullDown(), bmCarTypePullDown()
+        getProductionFactoryPullDown(), deptPullDown(), bmCarTypePullDown(),
+        getIsAdmin(),
       ]).then(res => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn;
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn;
         const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn;
         const result3 = this.$i18n.locale === 'zh' ? res[3].desZh : res[3].desEn;
         const result4 = this.$i18n.locale === 'zh' ? res[4].desZh : res[4].desEn;
+        const result5 = this.$i18n.locale === 'zh' ? res[5].desZh : res[5].desEn;
 
         if(res[0].data){
           const date = new Date();
@@ -487,6 +490,13 @@ export default {
         }else{
           iMessage.error(result4);
         }
+
+        if(res[5]){
+          this.isAdmin = res[5].data;
+        }else{
+          iMessage.error(result5);
+        }
+
         this.allTableLoading = false;
       }).catch(err => {
         this.allTableLoading = false;

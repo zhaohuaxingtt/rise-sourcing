@@ -85,14 +85,14 @@
           prop="biddingQuoteRule.quotationScope"
           :hideRequiredAsterisk="true"
         >
-          <div class="section-first">
+          <div class="section-first" v-if="ruleForm.biddingQuoteRule.quotationScope === '01'">
             <el-radio
               v-model="ruleForm.biddingQuoteRule.quotationScope"
               label="01"
               >{{language('BIDDING_TANGEBAOJIA','严格报价')}}<span class="text-span">{{language('BIDDING_（≦QICHUJIAGE）','（≦起初价格）')}}</span></el-radio
             >
           </div>
-          <div class="section-second">
+          <div class="section-second" v-if="ruleForm.biddingQuoteRule.quotationScope === '02'">
             <el-radio
               v-model="ruleForm.biddingQuoteRule.quotationScope"
               label="02"
@@ -158,7 +158,7 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" v-if="ruleForm.biddingQuoteRule.alertPercentage">
       <iLabelML showTip>
         <div class="hover-text">
           <span>{{language('BIDDING_GSYSRD', '供应商输入的')}}</span>

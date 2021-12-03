@@ -1,14 +1,14 @@
 export default [
   {
-    path: "/configscoredept",
+    path: "configscoredept",
     name: 'configscoredept',
-    meta: { title: "配置评分部门" },
+    meta: { title: "评分部门设置" },
     component: () => import("@/views/routerView"),
     children: [
       {
         path: "",
         name: "configscoredeptHome",
-        meta: { title: "配置评分部门-首页" },
+        meta: { title: "评分部门设置-首页" },
         component: () => import("@/views/configscoredept"),
       }
     ]

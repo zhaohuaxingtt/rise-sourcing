@@ -18,8 +18,8 @@ export const navList= [
   {
     value: 1,
     name: "人工成本维护",
-    url: "/costanalysismanage/datamaintenance/costMaintenance",
-    activePath: "/costanalysismanage/datamaintenance/costMaintenance",
+    url: "/targetpriceandscore/datamaintenance/costMaintenance",
+    activePath: "/datamaintenance/costMaintenance",
     key: "RENGONGCHENGBENWEIHU",
     permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_COSTMAINTENANCE_TAB",
     permissionName: "人工成本维护"
@@ -27,7 +27,7 @@ export const navList= [
   {
     value: 2,
     name: "人工成本数据维护",
-    url: "/costanalysismanage/datamaintenance/costDataMaintenance",
+    url: "/targetpriceandscore/costanalysismanage/datamaintenance/costDataMaintenance",
     activePath: "/costanalysismanage/datamaintenance/costDataMaintenance",
     key: "RGCBSJWH",
     permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_TAB",
@@ -36,7 +36,7 @@ export const navList= [
   {
     value: 3,
     name: "Heavy Item清单维护",
-    url: "/costanalysismanage/datamaintenance/heavyItem",
+    url: "/targetpriceandscore/costanalysismanage/datamaintenance/heavyItem",
     activePath: "/costanalysismanage/datamaintenance/heavyItem",
     key: "HEAVYITEMQDWH",
     permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_HEAVYITEM_TAB",

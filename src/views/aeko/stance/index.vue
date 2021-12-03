@@ -11,6 +11,7 @@
       <!-- <h2>{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2> -->
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
+        <switchPost />
         <log-button v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
@@ -147,6 +148,7 @@ import {
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
+import switchPost from '@/components/switchPost'
 import { TAB,filterRole,getLeftTab } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filesListDialog from '../manage/components/filesListDialog'
@@ -182,7 +184,8 @@ export default {
       filesListDialog,
       aekoSelect,
       iLog,
-      logButton
+      logButton,
+      switchPost
     },
     data(){
       return{

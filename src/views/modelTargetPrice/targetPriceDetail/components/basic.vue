@@ -249,7 +249,7 @@ export default {
       window.open(router.href,'_blank')
     },
     gotoQuery() {
-      this.$router.push('/modeltargetprice/query')
+      this.$router.push('/targetpriceandscore/modeltargetprice/query')
     },
     /**
      * @Description: 获取目标价申请列表

@@ -9,7 +9,7 @@
 <template>
   <el-upload 
     :class="uploadClass"
-    multiple
+    :multiple="multiple"
     ref="upload"
     name="multipartFile"
     :http-request="upload"
@@ -28,6 +28,10 @@ export default {
     uploadClass: {
       type: String,
       default: "uploadButton"
+    },
+    multiple: {
+      type: Boolean,
+      default: true
     },
     accept: {
       type: String,

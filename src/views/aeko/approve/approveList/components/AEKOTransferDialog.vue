@@ -35,7 +35,6 @@ export default {
   mixins:[roleMixins],
   props: {
     value: {type: Boolean, require: true, default: false},
-
   },
   data() {
     return {

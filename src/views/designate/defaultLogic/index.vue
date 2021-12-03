@@ -1,14 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 18:06:45
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-09 14:08:59
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-11-30 15:22:53
  * @Description: 定点申请预设逻辑界面
- * @FilePath: \front-web\src\views\designate\defaultLogic\index.vue
+ * @FilePath: \front-sourcing\src\views\designate\defaultLogic\index.vue
 -->
 
 <template>
-  <iPage>
+  <iPage v-permission.auto="DESIGNATEDEFAULTLOGIC_PAGE|定点申请预设逻辑-页面">
     <!------------------------------------------------------------------------>
     <!--                     界面标题模块                                   --->
     <!------------------------------------------------------------------------>
@@ -21,9 +21,9 @@
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
             <!--------------------添加按钮----------------------------------->
-            <iButton @click="handleAdd">{{language('LK_TIANJIA','添加')}}</iButton>
+            <iButton @click="handleAdd" v-permission.auto="DESIGNATEDEFAULTLOGIC_ADDBTN|定点申请预设逻辑-添加按钮">{{language('LK_TIANJIA','添加')}}</iButton>
             <!--------------------删除按钮----------------------------------->
-            <iButton @click="handleDelete">{{language('LK_SHANCHU','删除')}}</iButton>
+            <iButton @click="handleDelete" v-permission.auto="DESIGNATEDEFAULTLOGIC_DELETEBTN|定点申请预设逻辑-删除按钮">{{language('LK_SHANCHU','删除')}}</iButton>
             <!--------------------恢复按钮----------------------------------->
             <!-- <iButton @click="handleRecover">恢复</iButton> -->
             <!--------------------保存按钮----------------------------------->
@@ -33,7 +33,7 @@
         <!------------------------------------------------------------------------>
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
-        <tableList selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" ></tableList>
+        <tableList v-permission.auto="DESIGNATEDEFAULTLOGIC_TABLE|定点申请预设逻辑-表格" selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" ></tableList>
         <!------------------------------------------------------------------------>
         <!--                  表格分页                                          --->
         <!------------------------------------------------------------------------>

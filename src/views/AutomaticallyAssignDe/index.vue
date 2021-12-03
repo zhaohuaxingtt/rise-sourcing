@@ -1,17 +1,17 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-24 17:41:24
- * @LastEditTime: 2021-05-24 21:05:15
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-30 14:46:09
+ * @LastEditors: Luoshuang
  * @Description: 自动分配科室
                   1）配件分配会分两步：首先根据零件6位号匹配材料组，找到对应的科室，如果材料组是轮胎或机油则分配给CSX，如果不是轮胎或机油，则分配给CSS；分配科室之后，再根据零件和采购员（采购岗位）的匹配关系分给对应的采购员
                   2）配件目前是分轮胎&机油和其他，未来可能会调整，需要设置可配置的表格（表格1,2,列为全量材料组，第三列可批量编辑分配科室）
                   3）分配不到人的配件需求会继续在需求任务界面显示，由配件管理员手动分配；已经分配到人的任务会在配件综合管理界面显示
- * @FilePath: \front-web\src\views\AutomaticallyAssignDe\index.vue
+ * @FilePath: \front-sourcing\src\views\AutomaticallyAssignDe\index.vue
 -->
 
 <template>
-  <iPage>
+  <iPage v-permission.auto="AUTOMATICALLYASSIGNDE_PAGE|配件自动分配科室-页面">
     <!----------------------------------------------------------------->
     <!---------------------------配件自动分配头部------------------------->
     <!----------------------------------------------------------------->
@@ -23,13 +23,13 @@
     <!----------------------------------------------------------------->
     <iSearch class="margin-top20" :icon='true'>
       <el-form>
-        <el-form-item label="材料组编号">
+        <el-form-item label="材料组编号" v-permission.auto="AUTOMATICALLYASSIGNDE_CAILIAOZUBIANHAO|配件自动分配科室-材料组编号">
           <iSelect></iSelect>  
         </el-form-item>
-        <el-form-item label="材料组名称">
+        <el-form-item label="材料组名称" v-permission.auto="AUTOMATICALLYASSIGNDE_CAILIAOZUMINGCHENG|配件自动分配科室-材料组名称">
           <iInput></iInput>  
         </el-form-item>
-        <el-form-item label="科室">
+        <el-form-item label="科室" v-permission.auto="AUTOMATICALLYASSIGNDE_KESHI|配件自动分配科室-科室">
           <iSelect></iSelect>  
         </el-form-item>
       </el-form>
@@ -42,16 +42,16 @@
           <span class="font18 font-weight">配件自动分配科室</span>
             <div class="floatright">
               <!--------------------批量分配科室----------------------------------->
-              <iButton @click="batchData">批量分配科室</iButton>
+              <iButton @click="batchData" v-permission.auto="AUTOMATICALLYASSIGNDE_PILINAGFENPEIBTN|配件自动分配科室-批量分配科室按钮">批量分配科室</iButton>
               <!--------------------拒绝按钮----------------------------------->
-              <iButton @click="edit" v-if='editData'>编辑</iButton>
+              <iButton @click="edit" v-if='editData' v-permission.auto="AUTOMATICALLYASSIGNDE_BIANJIBTN|配件自动分配科室-编辑按钮">编辑</iButton>
               <!--------------------接受按钮----------------------------------->
-              <iButton @click="save" v-if='!editData'>保存</iButton>
+              <iButton @click="save" v-if='!editData' v-permission.auto="AUTOMATICALLYASSIGNDE_SAVEBTN|配件自动分配科室-保存按钮">保存</iButton>
               <!--------------------拒绝按钮----------------------------------->
-              <iButton @click="remove" v-if='!editData'>取消</iButton>
+              <iButton @click="remove" v-if='!editData' v-permission.auto="AUTOMATICALLYASSIGNDE_CANCELBTN|配件自动分配科室-取消按钮">取消</iButton>
             </div>
         </div>
-      <tableList :tableData='tableData' :tableTitle='tabelTile' @handleSelectionChange="handleSelectionChange"></tableList>
+      <tableList :tableData='tableData' :tableTitle='tabelTile' @handleSelectionChange="handleSelectionChange" v-permission.auto="AUTOMATICALLYASSIGNDE_TABLE|配件自动分配科室-表格"></tableList>
           <!------------------------------------------------------------------------>
           <!--                  表格分页                                          --->
           <!------------------------------------------------------------------------>

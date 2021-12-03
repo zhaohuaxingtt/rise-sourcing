@@ -11,7 +11,7 @@ export const navList = [
     value: 1,
     name: "RFQ管理",
     message: 0,
-    url: "/supplierScore/home",
+    url: "/targetpriceandscore/supplierScore/home",
     activePath: "home",
     key: "LK_RFQGUANLI"
   },

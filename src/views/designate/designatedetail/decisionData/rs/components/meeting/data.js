@@ -12,11 +12,14 @@ export const nomalDetailTitle = [
   {props: 'partNo', name: '零件号', enName: 'Part-No', key: 'LINGJIANHAO'},
   {props: 'fsnrGsnrNum', name: 'FS号', enName: 'FS-No', key: 'FSNO'},
   {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date', key: 'XUNJIAZILIAORIQI'},
-  {props: 'buyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  // {props: 'buyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  {props: 'buyer', name: '询价采购员', enName: 'Sourcing', key: 'XUNJIACAIGOUYUAN'},
   {props: 'project', name: '项目', enName: 'Project', key: 'XIANGMU'},
-  {props: 'linieName', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  // {props: 'linieName', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  {props: 'linieName', name: '专业采购员', enName: 'Linie', key: 'ZHUANYECAIGOUYUAN'},
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
-  {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  // {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  {props: 'epen', name: '工程师', enName: 'FOP', key: 'GONGCHENGSHI'},
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型\n', enName: 'Part Project Type', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
@@ -29,11 +32,14 @@ export const nomalDetailTitleGS = [
   {props: 'partNo', name: '零件号', enName: 'Part-No', key: 'LINGJIANHAO'},
   {props: 'fsnrGsnrNum', name: 'GS号', enName: 'GS-No', key: 'FSNO'},
   {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date', key: 'XUNJIAZILIAORIQI'},
-  {props: 'buyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  // {props: 'buyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  {props: 'buyer', name: '询价采购员', enName: 'Sourcing', key: 'XUNJIACAIGOUYUAN'},
   {props: 'project', name: '项目', enName: 'Project', key: 'XIANGMU'},
-  {props: 'linieName', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  // {props: 'linieName', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  {props: 'linieName', name: '专业采购员', enName: 'Linie', key: 'ZHUANYECAIGOUYUAN'},
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
-  {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  // {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  {props: 'epen', name: '工程师', enName: 'FOP', key: 'GONGCHENGSHI'},
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型\n', enName: 'Part Project Type', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
@@ -45,11 +51,14 @@ export const nomalDetailTitlePF = [
   {props: 'partNo', name: '零件号', enName: 'Part-No', key: 'LINGJIANHAO'},
   {props: 'fsnrGsnrNum', name: 'SP号', enName: 'SP-No', key: 'FSNO'},
   {props: 'rfqDocDate', name: '询价资料日期', enName: 'RFQ Doc. Date', key: 'XUNJIAZILIAORIQI'},
-  {props: 'buyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  // {props: 'buyer', name: '前期采购员', enName: 'FS', key: 'QIANQICAIGOUYUAN'},
+  {props: 'buyer', name: '询价采购员', enName: 'Sourcing', key: 'XUNJIACAIGOUYUAN'},
   {props: 'project', name: '项目', enName: 'Project', key: 'XIANGMU'},
-  {props: 'linieName', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  // {props: 'linieName', name: '采购员', enName: 'Buyer', key: 'CAIGOUYUAN'},
+  {props: 'linieName', name: '专业采购员', enName: 'Linie', key: 'ZHUANYECAIGOUYUAN'},
   {props: 'sop', name: '投产时间', enName: 'SOP', key: 'TOUCHANSHIJIAN'},
-  {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  // {props: 'epen', name: '工程师', enName: 'EP/EN', key: 'GONGCHENGSHI'},
+  {props: 'epen', name: '工程师', enName: 'FOP', key: 'GONGCHENGSHI'},
   {props: 'carLine', name: '车型', enName: 'Carline', key: 'CHEXING'},
   {props: 'lifeTime', name: '生命周期', enName: 'Lifetime', key: 'SHENGMINGZHOUQI'},
   {props: 'partProjectTypeDesc', name: '零件采购项目类型\n', enName: 'Part Project Type', key: 'LINGJIANCAIGOUXIANGMULEIXING'}
@@ -131,7 +140,7 @@ export const sparePartTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // 附件
@@ -152,7 +161,7 @@ export const accessoryTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // GS零件
@@ -179,7 +188,7 @@ export const gsTableTitle = [
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
   {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 85},
   {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 120},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // DB零件
@@ -206,7 +215,7 @@ export const dbTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 100},
+  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 export const meetingRemark = [

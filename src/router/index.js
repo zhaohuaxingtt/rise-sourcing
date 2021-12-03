@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-06 15:05:44
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-11-30 14:48:11
+ * @LastEditors: Luoshuang
  * @Description: 系统静态路由.
- * @FilePath: \front-web\src\router\index.js
+ * @FilePath: \front-sourcing\src\router\index.js
  *
  */
 /* eslint-disable no-undef */
@@ -232,10 +232,13 @@ export const staticRouter = [
 			{
 				path: '/partsfp/automaticallyassignde', //管理员看到的，手动分配配件任务。
 				name: '/ws3Register',
+				meta: {
+					title: '配件自动分配科室',
+				},
 				component: () => import('@/views/AutomaticallyAssignDe'),
 			},
 			// {
-			// 	path: '/configscoredept',
+			// 	path: '/targetpriceandscore/configscoredept',
 			// 	name: 'configscoredept',
 			// 	meta: { title: '配置评分部门' },
 			// 	component: () => import('@/views/configscoredept'),
@@ -284,6 +287,9 @@ export const staticRouter = [
 			{
 				path: '/partsfp/automaticallyassignde', //管理员看到的，手动分配配件任务。
 				name: '/ws3Register',
+				meta: {
+					title: '配件自动分配科室',
+				},
 				component: () => import('@/views/AutomaticallyAssignDe'),
 			},
 		],

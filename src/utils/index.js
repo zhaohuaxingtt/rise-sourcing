@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-23 23:15:55
+ * @LastEditTime: 2021-12-02 14:53:14
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -240,6 +240,7 @@ function _languageSendToService() {
 	languageList = []
 }
 function _permissionKeySendToService(router) {
+<<<<<<< HEAD
 	console.log(
 		`============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`
 	)
@@ -259,6 +260,48 @@ function _permissionKeySendToService(router) {
 	})
 	sendPermissonKey(serviceData)
 	store.dispatch('clearResource', [])
+=======
+  console.log(
+    `============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`
+  )
+  const serviceData = router.matched.map((r, i) => {
+    return {
+      type: 3,
+      name: r.meta.title,
+      permissionKey: r.path.toUpperCase(),
+      parentPermissionKey:r.meta.parentId,
+      url: (i == 0?'/sourcing/#':'')+r.path,
+      target: (i == 0?'/sourcing/#':'')+r.path,
+      resourceList:
+        i == router.matched.length - 1
+          ? store.state.permission.resourceList
+          : [],
+    }
+  })
+  //做一次数据监测，监测的对象为如果是菜单，则监测当前是否存在空的名字菜单。如果是资源则监测名字和key
+  const errorData = (data)=> data.filter(items=>{
+    if(items.type == 3){
+      if(items.name == '' || items.url == ''){
+        return items
+      }
+      if(items.resourceList.length > 0){
+        items.resourceList.forEach(itemss=>{
+          if(itemss.permissionKey == "undefined" || !itemss.permissionKey || itemss.name == "undefined" || !itemss.name || itemss.name.indexOf('permissionName')> -1 || itemss.permissionKey.indexOf('permissionKey')>-1){
+            return itemss
+          }
+        })
+      }
+    }
+  })  
+  if(errorData(serviceData).length == 0){
+    sendPermissonKey(serviceData) 
+  }else{
+    console.error('您上次权限失败的数据为:')
+    console.log(errorData(serviceData))
+    alert(`权限自动上传中有${errorData(serviceData).length}条错误，请查看控制台中的错误日志，解决后再上传`)
+  }
+  store.dispatch('clearResource', [])
+>>>>>>> 5325d4bf9b6fc9055f3b6d39a3f342e6e0be4d96
 }
 /**********************************************************************************************************************************************
  * @description: 结合业务逻辑和角色，处理权限列表, 过滤逻辑：
