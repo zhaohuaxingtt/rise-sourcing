@@ -31,6 +31,8 @@
             <!-- <logButton class="margin-left20" /> -->
             <iLoger 
                 class="margin-left25 margin-right5"
+                optionDicKey="LOG_OPERATION_TYPES"
+				optionDicKey2="LOI详情页"
                 isPage
                 :config="{
                     module_obj_ae: 'LOI', // 模块

@@ -52,6 +52,8 @@
             credentials
             isPage
             class="margin-left10"
+            optionDicKey="LOG_OPERATION_TYPES"
+				    optionDicKey2="RFQ详情页"
             v-permission.auto="PARTSRFQ_EDITORDETAIL_LOG|日志" />
         <span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
