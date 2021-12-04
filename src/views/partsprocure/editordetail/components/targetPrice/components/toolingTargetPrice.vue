@@ -1,17 +1,25 @@
+<!--
+ * @Description: 
+ * @Author: tyra liu
+ * @Date: 2021-11-15 19:58:57
+ * @LastEditTime: 2021-12-02 15:12:51
+ * @LastEditors: Luoshuang
+-->
 <template>
   <div class="toolingTargetPrice">
     <div class="header flex-between-center-center">
 			<span class="title">{{ language('SHENQINGTOUZIMUBIAOJIA','投资目标价') }}</span>
 		</div>
 		<iFormGroup row="3" icon inline>
-			<iFormItem :label="language('TOUZIMUBIAOJIA', '投资目标价')" name="test">
+     
+			<iFormItem v-permission.auto="ARTSPROCURE_EDITORDETAIL_TARGETPRICE_TOOLINGTARGETPRICE|申请目标价-投资目标价" :label="language('TOUZIMUBIAOJIA', '投资目标价')" name="test">
 				<iText>{{ targetPrice }}</iText>
 			</iFormItem>
 		</iFormGroup>
 		<div class="header flex-between-center-center">
 			<span class="title">{{ language('XIUGAIJILU','修改记录') }}</span>
 		</div>
-    <tableList lang :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" />
+    <tableList lang :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" v-permission.auto="ARTSPROCURE_EDITORDETAIL_TARGETPRICE_TOOLINGTARGETPRICE_TABLE|申请目标价-投资目标价表格" />
     <iPagination
       class="pagination margin-top30"
       v-update

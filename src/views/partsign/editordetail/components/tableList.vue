@@ -18,7 +18,7 @@
       </el-table-column>
       <el-table-column :key="$index" align="center"  v-else :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
-          <slot :name="item.props" :row="scope.row"></slot>
+          <slot :name="item.props" :row="scope.row" :$index="scope.$index"></slot>
         </template>
       </el-table-column>
     </template>

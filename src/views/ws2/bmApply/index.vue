@@ -375,7 +375,7 @@ export default {
 
   created(){
     // const key = store.state.permission.whiteBtnList['TOOLING_BUDGET_BMAPPLICATION_SELECT'];  //  车型下拉列表
-    // this.bmTableCount();  //  获取table数量
+    this.bmTableCount();  //  获取table数量
     // this.isCarTypeList = key ? true : false;
   },
 

@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-11-24 19:50:47
+ * @LastEditTime: 2021-12-01 17:54:46
  * @LastEditors: Luoshuang
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing\src\views\partsrfq\home\index.vue
@@ -28,64 +28,61 @@
                 <iInput :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
                         v-permission="PARTSRFQ_SEARCHBOX"></iInput>
               </el-form-item> -->
-              <el-form-item class="currentWidth" :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')">
-                <iInput  :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
-                        v-permission.auto="PARTSRFQ_SEARCHBOX|零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称"></iInput>
+              <el-form-item class="currentWidth" :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')"
+              v-permission.auto="PARTSRFQ_SEARCHBOX|零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称">
+                <iInput  :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"></iInput>
               </el-form-item>
-              <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.carType"
-                         v-permission.auto="PARTSRFQ_MODELPROJECT|车型项目">
+              <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSRFQ_MODELPROJECT|车型项目">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.carType">
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型')">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.partType"
-                         v-permission.auto="PARTSRFQ_PARTITEMTYPE|零件项目类型">
+              <el-form-item :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型')" v-permission.auto="PARTSRFQ_PARTITEMTYPE|零件项目类型">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.partType">
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_RFQZHUANGTAI','RFQ状态')">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.rfqStatus"
-                         v-permission.auto="PARTSRFQ_RFQSTATUS|RFQ状态">
+              <el-form-item :label="language('LK_RFQZHUANGTAI','RFQ状态')" v-permission.auto="PARTSRFQ_RFQSTATUS|RFQ状态">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.rfqStatus">
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                              :label="items.name"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_CHEXING','车型')">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.modelCode" v-permission.auto="PARTSRFQ_RFQCHEXING|车型" filterable>
+              <el-form-item :label="language('LK_CHEXING','车型')" v-permission.auto="PARTSRFQ_RFQCHEXING|车型">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.modelCode" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in cartTypeOptions" :key="item.key" :value="item.value" :label="item.label"/>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_JISHUPINGFENZHUANGTAI','技术评分状态')">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.tpStatus" v-permission.auto="PARTSRFQ_RFQJISHUPINFENZHUANGTAI|技术评分状态" filterable>
+              <el-form-item :label="language('LK_JISHUPINGFENZHUANGTAI','技术评分状态')" v-permission.auto="PARTSRFQ_RFQJISHUPINFENZHUANGTAI|技术评分状态">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.tpStatus" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in rfqRateStatusOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_ZHILIANGPINGFENZHUANGTAI','质量评分状态')">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.mqStatus" v-permission.auto="PARTSRFQ_RFQZILIANGPINFENZHUANGTAI|质量评分状态" filterable>
+              <el-form-item :label="language('LK_ZHILIANGPINGFENZHUANGTAI','质量评分状态')" v-permission.auto="PARTSRFQ_RFQZILIANGPINFENZHUANGTAI|质量评分状态">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.mqStatus" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in rfqRateStatusOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_CAIWUMUBIAOJIAZHUANGTAI','财务目标价状态')">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.cfStatus" v-permission.auto="PARTSRFQ_RFQCAIWUMUBIAOJIAZHUANGTAI|财务目标价状态" filterable>
+              <el-form-item :label="language('LK_CAIWUMUBIAOJIAZHUANGTAI','财务目标价状态')" v-permission.auto="PARTSRFQ_RFQCAIWUMUBIAOJIAZHUANGTAI|财务目标价状态">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.cfStatus" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in cfApplyStatusOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_HEAVYITEMWEIHUZHUANGTAI','Heavy Item维护状态')">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.heavyItem" v-permission.auto="PARTSRFQ_RFQHEAVYITEMZHUANGTAI|HeavyItem维护状态" filterable>
+              <el-form-item :label="language('LK_HEAVYITEMWEIHUZHUANGTAI','Heavy Item维护状态')" v-permission.auto="PARTSRFQ_RFQHEAVYITEMZHUANGTAI|HeavyItem维护状态">
+                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.heavyItem" filterable>
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="item in heavyItemOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSIGN_USAGEVEHICLE|每车用量状态">
+              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')" v-permission.auto="PARTSRFQ_SHOWSELF|显示自己">
                 <iSelect
                   v-model="form.showSelf"
                   :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"
@@ -119,11 +116,11 @@
                   {{ language('LK_ZHUANPAIPINGFENRENWUS','转派任务评分') }}
                 </iButton>
                 <!--转派前期采购员：选中RFQ之后，可以手动转派前期采购员-->
-                <iButton @click="openInquiryBuyerDialog('1')" v-permission.auto="PARTSRFQ_ASSIGNMENTTASKS|转派任务评分">
+                <iButton @click="openInquiryBuyerDialog('1')" v-permission.auto="PARTSRFQ_ASSIGNMENTBUYER|转派前期采购员">
                   {{ language('ZHUANPAIQIANQICAIGOUYUAN','转派前期采购员') }}
                 </iButton>
                 <!--转派LINIE：选中RFQ之后，可以手动转派转派LINIE-->
-                <iButton @click="openInquiryBuyerDialog('2')" v-permission.auto="PARTSRFQ_ASSIGNMENTTASKS|转派任务评分">
+                <iButton @click="openInquiryBuyerDialog('2')" v-permission.auto="PARTSRFQ_ASSIGNMENTLINIE|转派LINIE">
                   {{ language('ZHUANPAILINIE','转派LINIE') }}
                 </iButton>
                 <!--转谈判：只会出现在前期采购员界面-->

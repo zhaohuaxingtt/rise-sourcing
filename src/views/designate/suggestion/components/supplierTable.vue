@@ -3,17 +3,18 @@
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
           <!-- 创建MTZ申请 -->
-          <iButton @click="handlecreatemtz" :disabled="isMtzDisabled || getSelectedMtzFlag">
+          <iButton @click="handlecreatemtz" :disabled="isMtzDisabled || getSelectedMtzFlag"  v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请">
             {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
            </iButton>
           <span v-if="!nominationDisabled && !rsDisabled" class="margin-left10">
             <!-- 批量编辑 -->
-            <iButton @click="handleBatchEdit">
+            <iButton @click="handleBatchEdit" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BATCHEDIT|批量编辑">
               {{ language("LK_BATCHEDIT",'批量编辑') }}
             </iButton>
             <!-- 复制 -->
             <iButton
               @click="copyLines"
+              v-permission.auto="SOURCING_NOMINATION_SUGGESTION_COPY|复制"
             >
               {{ language("LK_COPY",'复制') }}
             </iButton>
@@ -21,19 +22,22 @@
             <iButton
               :disabled="checkCanbeDelete"
               @click="handleBatchDelete"
+              v-permission.auto="SOURCING_NOMINATION_SUGGESTION_DELETE|删除"
             >
               {{ language("LK_DELETE",'删除') }}
             </iButton>
             <iButton
               @click="submit"
               :loading="submiting"
+              v-permission.auto="SOURCING_NOMINATION_SUGGESTION_SAVE|保存"
             >
               {{ language("LK_BAOCUN","保存") }}
             </iButton>
           </span>
           <iButton
             class="margin-left10"
-            @click="showMouldVisibal"
+            @click="showMouldVisibal" 
+            v-permission.auto="SOURCING_NOMINATION_SUGGESTION_MOLDBUDGETMANAGEMENT|模具预算管理"
           >
             {{ language("MOJUYUSUANGUANLI","模具预算管理") }}
           </iButton>
@@ -48,6 +52,7 @@
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         ref="tablelist"
+        v-permission.auto="SOURCING_NOMINATION_SUGGESTION_TABLE|表格"
       >
         <template #rfqNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.rfqNum}}</a>

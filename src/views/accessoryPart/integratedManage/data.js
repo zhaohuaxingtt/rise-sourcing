@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:44:03
+ * @LastEditTime: 2021-12-02 17:03:29
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\data.js
  */
@@ -11,8 +11,8 @@ export const tableTitle = [
   {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 100, fixed: "left"},
   {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, width: 120, fixed: "left"},
   {props:'rfqNum',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100, fixed: "left"},
-  {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 140},
-  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 140},
+  {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 120, fixed: "left"},
+  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 120, fixed: "left"},
   {props:'partNameCh',name:'配件零件名称', key: "PEIJIANLINGJIANMINGCHENG", tooltip: true, width: 140},
   {props:'supplierSapCode',name:'供应商号', key: "GONGYINGSHANGHAO", tooltip: true, width: 120},
   {props:'supplierNameZh',name:'供应商中文名', key: "GONGYINGSHANGMINGCHENG", tooltip: true, width: 240},
@@ -58,7 +58,7 @@ export const searchList = [
   // {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
   {value: 'rfqId', label: 'rfq编号', type: 'input', key: 'RFQBIANHAO', permission: 'APREPART_MANAGFMENT_RFQBIANHAO|配件-配件管理-RFQ编号', inputType: "int"},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption', permission: 'APREPART_MANAGFMENT_IDSTATS|配件-配件管理-ID状态'},
-  {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'ACCESSORY_MANAGEMENT_ISME|附件-附件管理-是否自己'},
+  {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'APREPART_MANAGEMENT_ISME|附件-附件管理-是否自己'},
 ]
 export const TAB = [
   {

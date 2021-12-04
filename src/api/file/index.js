@@ -11,6 +11,7 @@ import { serialize } from '@/utils'
 import httpAxios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_COMMON)
 const fileRequst = axios(process.env.VUE_APP_BASE_UPLOAD_API)
+const file = httpAxios(process.env.VUE_APP_BASE_UPLOAD_API)
 const sourcing = httpAxios(process.env.VUE_APP_SOURCING)
 export function downloadFile(parmars) {
     return requst({
@@ -82,5 +83,13 @@ export function uploadfile(data) {
         url: `/file-histories/upload-file`,
         method: "POST",
         data
+    })
+}
+
+// 文件删除
+export function delFiles(params) {
+    return file({
+        url: `/udDel?${ serialize(params, Array) }`,
+        method: 'POST'
     })
 }

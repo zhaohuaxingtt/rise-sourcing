@@ -154,7 +154,11 @@
               </div>
             </iLabelML>
             <iLabel :label="language('BIDDING_MUBIAOJIA', '目标价')" slot="label"></iLabel>
-            <template v-if="isInputFlag">
+            <operatorInput
+              v-model="ruleForm.targetPrice"
+            >
+            </operatorInput>
+            <!-- <template v-if="isInputFlag">
               <iInput
                 :value="ruleForm.targetPrice"
                 @focus="handlerInputFocus"
@@ -171,7 +175,7 @@
                 @blur="handlerInputBlur"
               >
               </iInput>
-            </template>
+            </template> -->
           </iFormItem>
         </div>
 
@@ -343,14 +347,13 @@
                 <span class="form-item1">{{language('BIDDING_MUBIAOJIA', '目标价')}}</span>
               </div>
               <iFormItem prop="quoteRule.targetPrice">
-                <!-- <iInput
-                  v-model="ruleForm.quoteRule.targetPrice"
+                <operatorInput
                   style="width: 10rem"
+                  v-model="ruleForm.targetPrice"
                   @change="handleChangeLightDeviation"
-                  oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-                  type="number"
-                /> -->
-                <template v-if="isInputFlag">
+                >
+                </operatorInput>
+                <!-- <template v-if="isInputFlag">
                   <iInput
                     :value="ruleForm.quoteRule.targetPrice"
                     style="width: 10rem"
@@ -371,7 +374,7 @@
                     @blur="handlerInputBlur"
                   >
                   </iInput>
-                </template>
+                </template> -->
               </iFormItem>
               <div class="from-item-clo1">
                 <span class="form-line"></span>
@@ -504,6 +507,7 @@ import { uploadFile, getCurrencyUnit } from "@/api/mock/mock";
 import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
 import iLabelML from "@/components/biddingComponents/iLabelML";
 import { pageMixins } from "@/utils/pageMixins";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -515,6 +519,7 @@ export default {
     iButton,
     iLabel,
     iLabelML,
+    operatorInput
     // iPagination,
     // iTableCustom,
   },

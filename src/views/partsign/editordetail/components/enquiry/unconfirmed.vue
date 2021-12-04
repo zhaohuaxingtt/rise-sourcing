@@ -9,7 +9,11 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList ref="table" class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
+      <tableList   ref="table" class="table" index :tableData="tableListData"
+       :tableTitle="tableTitle" :tableLoading="loading" 
+       @handleSelectionChange="handleSelectionChange"
+        v-permission.auto="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_TABLE|询价资料待确认版本-表格"
+       >
         <template #version="scope">
           <span class="flexRow">
             <span class="openLinkText cursor " @click="enquiry(scope.row)"> {{ scope.row.version }}</span>

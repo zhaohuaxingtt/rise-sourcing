@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-05 16:56:24
+ * @LastEditTime: 2021-12-02 10:41:28
  * @Description: 零件排程列表
- * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
 
 <template> 
@@ -607,7 +607,7 @@ export default {
       this.$set(item, props, val) 
       // const index = this.nodeList.findIndex(item => item.kw === props || item.kw2 === props) 
       if (this.nodeList[index - 1]) {  
-        this.$set(item, this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
+        this.$set(item, props === 'otsTimeKw' ? this.nodeList[index - 1].keyPoint2 : this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
       } 
       if (this.nodeList[index + 1]) { 
         this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val, props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw])) 

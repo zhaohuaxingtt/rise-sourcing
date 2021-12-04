@@ -14,7 +14,7 @@
             <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
             <iButton v-if="isEdit" @click="addCar">{{ language("LK_TIANJIA",'添加') }}</iButton>
             <iButton v-if="isEdit" @click="saveData">{{ language("LK_BAOCUN",'保存') }}</iButton>
-            <iButton v-if="!isEdit" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
+            <iButton v-if="!isEdit && ispartProjectSource" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
           </div>
         </div>
       <tableList
@@ -41,7 +41,7 @@
 		    v-update
       />
     </div>
-      <addCarType :dialogVisible="carTypeVisible" @changeVisible="changeVisible" @getSelectData="getSelectData" :params="params">
+      <addCarType :dialogVisible="carTypeVisible" v-if="carTypeVisible"  @changeVisible="changeVisible" @getSelectData="getSelectData" :params="params">
 
       </addCarType>
   </iCard>
@@ -81,7 +81,7 @@ export default {
       carTypeVisible:false,
       selectData:[],
       getPerCarDosage:{},
-      isGs:true
+      isGs:true,
     };
   },
   props: {
@@ -98,13 +98,27 @@ export default {
     } else {
       this.isGs = false
     }
+    if(this.params.partProjectSource == 2) {
+      this.ispartProjectSource = true
+    } else {
+      this.ispartProjectSource = false
+    }
 },
+  computed:{
+    ispartProjectSource() {
+       if(this.params.partProjectSource == 2) {
+      return true
+    } else {
+      return false
+    }
+    }
+  },
   methods: {
     async getData() {  
       this.loading = true;
       if (this.params.partProjectSource == 1) {
         try {
-          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementId) {
+          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementObjectId) {
             const versionRes = await getPerCarDosageVersion({
               currPage: 1,
               pageSize: 10,
@@ -160,7 +174,7 @@ export default {
           manualInfoTable({
             currPage: this.page.currPage,
             pageSize: this.page.pageSize,
-            purchasingRequirementId: this.params.id,
+            purchasingRequirementId: this.params.purchasingRequirementObjectId,
           }).then(res=>{
             if(res.code == '200') 
             {
@@ -193,10 +207,12 @@ export default {
         iMessage.error(this.language('QINGXIANBAOCUNMEICHEYONGLIANG','请先保存每车用量'))
       }else {
         let purchasingProjectPartId=this.params.id
+        
         if(this.isGs == false) {
            fscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+              this.$emit('updateStartYear')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
@@ -205,6 +221,7 @@ export default {
           gscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+              this.$emit('updateStartYear')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
@@ -230,7 +247,6 @@ export default {
     },
     //删除
     async deleteData() {
-      console.log(this.selectData.length,'this.selectData.length');
       if(!this.selectData.length) {
         iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu', '请选择至少一条数据'))
         return
@@ -247,7 +263,6 @@ export default {
               noInterfaceDelete.push(val)
             }
           })
-          console.log()
           const idsLsit = interfaceDelete.map(val => val.id)
             noInterfaceDelete.forEach(val=>{
                 this.tableListData = this.tableListData.filter((item) => {
@@ -255,7 +270,6 @@ export default {
                 return item
               })
             })
-          console.log(noInterfaceDelete);
           if(idsLsit.length != 0) {
             delCarDosage(idsLsit).then(res =>{
               if(res.code == '200') {
@@ -278,6 +292,10 @@ export default {
     //向下填充
     fillDown() {
       let data = [...this.tableListData]
+      if(this.getPerCarDosage.perCar === '') {
+        iMessage.warn(this.language('QINGSHURUMEICHEYONGLIANG','请输入每车用量'))
+        return
+      }
       data.forEach((val,index)=>{
         if(index>this.getPerCarDosage.index){
           this.$set(val,'perCarDosage',this.getPerCarDosage.perCar)
@@ -310,13 +328,12 @@ export default {
 
     //添加表格数据
     getSelectData(val) {
-      console.log(val);
       let valTemData = []
       let copyData  = [...val]
       if(this.isGs == true) {
         copyData.forEach(value=> {
           let dataItem = {}
-          dataItem.purchasingRequirementObjectId = this.params.id
+          dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
           dataItem.cartypeLevel = value.cartypeLevel
           dataItem.engineType = value.engineType
           dataItem.gearType = value.gearboxName
@@ -332,10 +349,10 @@ export default {
       } else {
         copyData.forEach(value=> {
           let dataItem = {}
-          dataItem.purchasingRequirementObjectId = this.params.id
+          dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
           dataItem.cartypeLevel = value.cartypeLevel
-          dataItem.engineType = value.engineVo.engineName
-          dataItem.gearType = value.gearboxVo.gearboxName
+          dataItem.engineType = value.engineVo?.engineName
+          dataItem.gearType = value.gearboxVo?.gearboxName
           dataItem.otherInfo = value.otherConf
           dataItem.cartype  = value.carProjectId
           dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId

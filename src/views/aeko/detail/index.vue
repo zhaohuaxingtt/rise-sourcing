@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-11-11 14:31:26
+ * @LastEditTime: 2021-12-01 10:29:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -11,9 +11,10 @@
     <div class="header flex-between-center margin-bottom20">
       <h2>AEKO号：{{ aekoInfo.aekoCode }}</h2>
       <div>
-        <iButton v-if="isLinie && !fromCheck" v-permission.auto="AEKO_DETAIL_BUTTON_SHENPIDANYULAN|审批单预览" @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
+        <iButton v-if="fromStance" v-permission.auto="AEKO_DETAIL_BUTTON_SHENPIDANYULAN|审批单预览" @click="goToApprovalform">{{language('SHENPIDANYUANLIAN','审批单预览')}}</iButton>
         <iButton v-permission.auto="AEKO_DETAIL_BUTTON_AEKOXIANGQING|AEKO详情" @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
         <template v-if="!fromCheck">
+          <switchPost />
           <logButton @click="openLog" class="margin-left20" />
           <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
         </template>
@@ -31,6 +32,7 @@ import {
   iMessage
  } from "rise"
 import logButton from "@/components/logButton"
+import switchPost from '@/components/switchPost'
 import pageContent from "./components"
 import { roleMixins } from "@/utils/roleMixins";
 import iLog from "../log";
@@ -42,7 +44,8 @@ export default {
     iButton,
     logButton,
     pageContent,
-    iLog
+    iLog,
+    switchPost
   },
   created() {
     const roleList = this.roleList;
@@ -53,6 +56,7 @@ export default {
     const {query} = this.$route;
     const {from=''} = query;
     if(from == 'check') this.fromCheck = true;
+    if(from == 'stance') this.fromStance = true;
   },
   data() {
     return {
@@ -61,6 +65,7 @@ export default {
       bizId: '',
       isLinie: false,
       fromCheck:false,
+      fromStance:false,
     }
   },
   methods: {

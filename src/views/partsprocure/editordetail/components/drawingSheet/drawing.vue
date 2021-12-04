@@ -24,7 +24,9 @@
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
         :tableLoading="loading"
-        @handleSelectionChange="handleSelectionChange">
+        @handleSelectionChange="handleSelectionChange"
+         v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_table|询价附件-表格"
+        >
         <template #tpPartAttachmentName="scope">
           <span class="flexRow">
             <span class="openLinkText cursor" @click="preview(scope.row)"> {{scope.row.tpPartAttachmentName}}</span>

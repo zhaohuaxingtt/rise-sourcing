@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-06 12:18:00
+ * @LastEditors:  
+ * @LastEditTime: 2021-12-01 11:42:36
  * @Description: 配件相关接口
  * @FilePath: \front-web\src\api\accessoryPart\index.js
  */
@@ -159,5 +159,37 @@ export function updateRfq(params) {
     url: '/rfq/updateRfqInfo',
     method: 'PATCH',
     data: params
+  })
+}
+// 根据标签获取所有的询价采购科室
+export function listDepartByTag(tagId) {
+  return requst({
+    url: `/tp-records/accessoryInfo/listDepartByTag/${tagId}`,
+    method: 'POST',
+  })
+}
+
+// 获取采购员下拉
+export function listUserByDepartIdAndRoleCode(data) {
+  return requst({
+    url: `/tp-records/accessoryInfo/listUserByDepartIdAndRoleCode/${data.deptId}/${data.roleCode}`,
+    method: 'GET',
+  })
+}
+
+// 获取所有linie部门
+export function listLinieDept() {
+  return requst({
+    url: '/tp-records/accessoryInfo/listLinieDept',
+    method: 'GET',
+  })
+}
+// 更新询价采购员或者linie
+export function updateCsfOrLinie(data) {
+  console.log(data);
+  return requst({
+    url: '/tp-records/accessoryInfo/updateCsfOrLinie',
+    method: 'PATCH',
+    data
   })
 }
