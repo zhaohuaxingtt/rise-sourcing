@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 16:11:07
  * @LastEditors:  
- * @LastEditTime: 2021-12-02 10:16:11
+ * @LastEditTime: 2021-12-03 14:00:47
  * @Description: 分配询价采购员弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryBuyer.vue
 -->
@@ -21,7 +21,7 @@
     </template>
       <el-form class="elForm">
         <el-form-item :label="language('QINGXUANZEXUNJIACAIGOUKESHI','请选择询价采购科室')">
-          <iSelect v-model="queryPurchaseDept"  nameZh @change="changeDept">
+          <iSelect v-model="queryPurchaseDept"   value-key="id"  @change="changeDept">
             <el-option
               v-for="item in purchaseDeptOptions"
               :key="item.id"
@@ -97,26 +97,28 @@ export default {
     getBuyerList(val) {
       let data ={
         deptId : val,
-        roleCode : "QQCGY",
+        roleCode : "PJCGY",
       }
       listUserByDepartIdAndRoleCode(data).then(res=>{
         this.purchaseBuyerOptions = res.data || []
       })
     },
     clearDialog() {
-      this.queryPurchaseDept = ''
+     this.purchaseUpdata={}
       this.queryPurchaseBuyer = ''
+      this.queryPurchaseDept = ''
       this.$emit('changeVisible', false)
     },
     handleCancel() {
       this.clearDialog()
     },
     handleConfirm() {
-       if (this.purchaseUpdata.csfDept === '') {
+      console.log(this.purchaseUpdata.csfDept,'1',this.purchaseUpdata.csfuserId,'this.purchaseUpdata.csfuserIdthis.purchaseUpdata.csfuserId');
+       if (this.purchaseUpdata.csfDept === '' || this.purchaseUpdata.csfDept == undefined) {
         iMessage.warn(this.language('QINGXUANZEXUNJIACAIGOUKESHI','请选择询价采购科室'))
         return
       } 
-      if(this.purchaseUpdata.csfuserId === '') {
+      if(this.purchaseUpdata.csfuserId === '' || this.purchaseUpdata.csfuserId == undefined) {
         iMessage.warn(this.language('QINGXUANZEXUNJIACAIGOUYUAN','请选择询价采购员'))
         return
       }
@@ -125,10 +127,12 @@ export default {
         this.loading = true
         if(res.code == '200') {
            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-           this.$emit('changeVisible', false)
+           this.clearDialog()
+           this.$emit('init')
            this.loading = false
         } else {
            iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+           this.clearDialog()
            this.loading = false
         }
       })
@@ -137,6 +141,7 @@ export default {
       this.loading = loading
     },
     changeDept(val) {
+      this.queryPurchaseBuyer = ''
       this.purchaseUpdata.csfDept = val.id
       this.purchaseUpdata.csfDeptName = val.deptNum
       this.getBuyerList(val.id)

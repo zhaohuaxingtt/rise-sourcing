@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-12-02 19:21:25
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-03 11:48:34
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -181,7 +181,7 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
         </iButton>
-        <span class="margin-left5 margin-right5" v-if="!disabled" v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">
+        <span class="margin-left5 margin-right5" v-if="!disabled" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">
           <Upload 
             hideTip
             :buttonText="language('DAORU','导⼊')"

@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-11-26 15:32:32
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-03 11:48:39
+ * @LastEditors:  
  * @Description: 供应商维度展示
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
 -->
@@ -25,7 +25,7 @@
               <el-option v-for="(items,index) in supplierlist" :key='index' :label="items.supplierName" :value='items.supplierNum'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('Lk_LINGJIAN','零件')" class="ccc partClass"  v-permission.atuo="RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT | 零件">
+          <el-form-item :label="language('Lk_LINGJIAN','零件')" class="ccc partClass"  v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT | 零件">
             <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="partsSelect" @change="onFilteDataChange($event,'partsSelect')" >
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in partList" :key='index' :label="items.name" :value='items.value'></el-option>

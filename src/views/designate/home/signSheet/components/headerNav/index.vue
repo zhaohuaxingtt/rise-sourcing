@@ -18,12 +18,12 @@
             <iButton @click="submit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
               {{ language("LK_TIJIAO",'提交') }}
             </iButton>
-            <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
+            <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_BACKEDIT|签字单详情编辑返回"  @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
               {{ language("FANHUI",'返回') }}
             </iButton>
           </span>
           <span v-else>
-            <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
+            <iButton v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_BACK|签字单详情返回"  @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
               {{ language("LK_FANHUI",'返回') }}
             </iButton>
           </span>

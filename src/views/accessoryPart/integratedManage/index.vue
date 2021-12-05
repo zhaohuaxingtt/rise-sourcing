@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors:  
- * @LastEditTime: 2021-12-02 10:18:16
+ * @LastEditTime: 2021-12-03 13:54:21
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -79,11 +79,11 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId"/>
+          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId" @init="init"/>
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" :idList="selectBuyerPartId" />
+          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" :idList="selectBuyerPartId" @init="init" />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
@@ -191,6 +191,7 @@ export default {
       window.open(router.href,'_blank')
     },
     async init() {
+
        this.getSelectOptions()
       //  this.getCarTypeOptions()
        this.getCartypeDict()

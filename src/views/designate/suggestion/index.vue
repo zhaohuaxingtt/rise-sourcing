@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-09-07 14:25:05
+ * @LastEditTime: 2021-12-03 14:16:40
  * @description: 定点建议页面
 -->
 <template>
@@ -15,6 +15,7 @@
       :tableSelection="true"
       :hideCombine="false"
       :readOnly="false"
+      :isnomination="'nomination'"
       v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR|业务分配模拟" />
   </div>
 </template>

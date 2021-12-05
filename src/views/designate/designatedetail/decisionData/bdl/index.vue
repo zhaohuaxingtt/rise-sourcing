@@ -1,16 +1,16 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-07 16:04:23
+ * @LastEditors:  
+ * @LastEditTime: 2021-12-03 15:47:45
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
 
 <template>
   <iPage class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
-    <div class="margin-top20" style="text-align:right;" v-if="!isPreview">
-      <iButton @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
+    <div class="margin-top20" style="text-align:right;" >
+      <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_GOTOSUPPLIERMAINTENANCE|跳转供应商维护"  @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
     </div>
     <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
       <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)">
