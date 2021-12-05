@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:57:31
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-16 22:15:45
+ * @LastEditors:  
+ * @LastEditTime: 2021-12-03 14:06:38
  * @Description: 分配询价科室弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryDepartment.vue
 -->
@@ -61,7 +61,7 @@ export default {
     }
     getDeptList(params).then(res => {
       if (res.result) {
-        this.deptOptions = res.data?.map(item => {return {value:item.id, label:item.nameZh}})
+        this.deptOptions = res.data?.map(item => {return {value:item.id, label:item.deptNum}})
       } else {
         this.deptOptions = []
       }

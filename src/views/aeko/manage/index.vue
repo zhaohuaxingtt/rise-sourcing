@@ -11,6 +11,7 @@
       <!-- <h2>{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2> -->
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
+        <switchPost />
         <log-button @click="openLog" class="margin-left25"/>
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
@@ -83,7 +84,7 @@
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO|删除AEKO" :loading="btnLoading.deleteItem" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_CHEXIAOAEKO|撤销AEKO" @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
-          <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN|上传文件" class=" margin-left10 margin-right10">
+          <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN|上传文件" class="margin-left10 margin-right10">
             <Upload 
                 hideTip
                 style="display:none;"
@@ -93,7 +94,7 @@
                 @on-success="fileSuccess"
                 :uploadButtonLoading="btnLoading.uploadFiles"
             />
-            <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
+            <iButton :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
 
@@ -184,6 +185,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
+import switchPost from '@/components/switchPost'
 import logButton from "@/components/logButton";
 import {user as configUser } from '@/config'
 import aekoSelect from '../components/aekoSelect'
@@ -231,7 +233,8 @@ export default {
       aekoSelect,
       tcmList,
       iLog,
-      logButton
+      logButton,
+      switchPost
     },
     data(){
       return{

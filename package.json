@@ -15,7 +15,7 @@
     "macdev": "npm run start:win:dev",
     "build:win:dev:publish": "vue-cli-service build --mode dev && node ./loadersPlugins/publishDevCode.js",
     "conect": "node ./loadersPlugins/publishDevCode.js",
-    "fix-memory-limit": "cross-env LIMIT=3500 increase-memory-limit"
+    "fix-memory-limit": "cross-env LIMIT=8192 increase-memory-limit"
   },
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
@@ -45,7 +45,7 @@
     "postcss-px2rem": "0.3.0",
     "powerbi-client": "^2.17.2",
     "px2rem-loader": "0.1.9",
-    "rise": "^2.6.5",
+    "rise": "^2.7.4",
     "sass": "^1.26.10",
     "sass-loader": "9.0.2",
     "uglifyjs-webpack-plugin": "^2.2.0",

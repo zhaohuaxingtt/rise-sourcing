@@ -32,6 +32,7 @@
                   <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
+                      v-if="flag"
                       class="form--item--number--input__totalprice"
                       :value="
                         heRuleForm.currentOffer
@@ -39,6 +40,13 @@
                           : ''
                       "
                       disabled
+                    ></iInput>
+                    <iInput
+                      v-else
+                      class="form--item--number--input__totalprice"
+                      :value="totalStartingPriceString"
+                      @focus="handleInputFocus"
+                      :disabled="biddingStatus"
                     ></iInput>
                     <div class="form--item--number--lable">{{ unit }}</div>
                   </div>
@@ -193,27 +201,27 @@ export default {
   mounted() {
     this.ruleForm = { ...this.initData };
     this.handleSearchReset();
-    getModels().then((res) => {
-      this.modelsOption = res?.data;
+    // getModels().then((res) => {
+    //   this.modelsOption = res?.data;
 
-      let obj = {};
-      this.modelsOption = this.modelsOption.reduce(function (item, next) {
-        obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-        return item;
-      }, []);
-    });
-    getProjects().then((res) => {
-      this.modelProjectsOption = res?.data;
-      let obj = {};
-      this.modelProjectsOption = this.modelProjectsOption.reduce(function (
-        item,
-        next
-      ) {
-        obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-        return item;
-      },
-      []);
-    });
+    //   let obj = {};
+    //   this.modelsOption = this.modelsOption.reduce(function (item, next) {
+    //     obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+    //     return item;
+    //   }, []);
+    // });
+    // getProjects().then((res) => {
+    //   this.modelProjectsOption = res?.data;
+    //   let obj = {};
+    //   this.modelProjectsOption = this.modelProjectsOption.reduce(function (
+    //     item,
+    //     next
+    //   ) {
+    //     obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+    //     return item;
+    //   },
+    //   []);
+    // });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
@@ -255,8 +263,18 @@ export default {
           .toNumber()
       );
     },
+    totalStartingPriceString(){
+      return this.heRuleForm.currentOffer.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+    }
   },
   watch: {
+    // 'heRuleForm.currentOffer':{
+    //   immediate:true,
+    //   deep:true,
+    //   handler(val){
+    //     this.currentOfferData = val.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+    //   }
+    // },
     curTime: function (val) {
       // if (!this.isClick) {
       //   if (val > dayjs(this.heRuleForm.createDate).valueOf()) {

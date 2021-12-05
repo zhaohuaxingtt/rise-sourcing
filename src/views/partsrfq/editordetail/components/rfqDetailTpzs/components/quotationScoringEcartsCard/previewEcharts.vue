@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-11-26 15:32:32
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-05 15:23:45
+ * @LastEditors:  
  * @Description: 供应商维度展示
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
 -->
@@ -25,7 +25,7 @@
               <el-option v-for="(items,index) in supplierlist" :key='index' :label="items.supplierName" :value='items.supplierNum'></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('Lk_LINGJIAN','零件')" class="ccc partClass"  v-permission.atuo="RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT | 零件">
+          <el-form-item :label="language('Lk_LINGJIAN','零件')" class="ccc partClass"  v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI_LINGJIAN_SELECT|零件">
             <iSelect :placeholder="language('partsprocure.CHOOSE','请选择')" multiple collapse-tags v-model="partsSelect" @change="onFilteDataChange($event,'partsSelect')" >
               <el-option label="All" value="all"></el-option>
               <el-option v-for="(items,index) in partList" :key='index' :label="items.name" :value='items.value'></el-option>
@@ -112,6 +112,8 @@ export default{
       this.partsSelect = ['all']
       this.supplierSelectlist = ['all']
       this.getDataList()
+      // 还原原来的筛选
+      this.supplierPart()
     },
     onFilteDataChange(data=[], props) {
       if (!data.length || data[data.length - 1] === 'all') {
@@ -129,9 +131,16 @@ export default{
         this.changeParts(data)
         // 清空轮次已选择
         this.luncSelect = ['all']
+        this.supplierSelectlist = ['all']
       }
-      // 只有供应商、零件变化实行联动
-      ['supplierSelectlist', 'partsSelect'].includes(props) && (this.rfqQueryLinkage(data, props))
+      if (props === 'luncSelect') {
+        // 清空零件，轮次已选择
+        this.partsSelect = ['all']
+        this.supplierSelectlist = ['all']
+      }
+      
+      // 联动
+      this.rfqQueryLinkage(data, props)
       
     },
     /**
@@ -145,7 +154,7 @@ export default{
         return false
       }
       row.forEach(item=>{
-        this.fslist = [...this.partList.find(items=>items.name == item).list,...this.fslist]
+        this.fslist = [...this.partList.find(items=>items.value == item).list,...this.fslist]
       })
       
     },
@@ -235,7 +244,7 @@ export default{
         }else{
           partList.push({
             name:element.partNum+'-'+element.fsNum+'-'+element.partName+'-'+element.partNameDe,
-            value:element.partNum,
+            value:element.fsNum,
             fsNum: element.fsNum,
             list:[
               {
@@ -252,6 +261,7 @@ export default{
     // 根据供应商查询零件和轮次列表
     rfqQueryLinkage(val=[], key='supplierSelectlist') {
       const supplierIdList =  this.supplierSelectlist.filter(o => o !== 'all')
+      const roundList =  this.luncSelect.filter(o => o !== 'all')
       // 查找选中零件的FS号
       const partNumList =  this.partsSelect.filter(o => o !== 'all')
       const fsNumListArray = this.partList.filter(o => partNumList.includes(o.value))
@@ -259,16 +269,25 @@ export default{
       const params = {
         rfqId: this.form.rfqId,
         supplierIdList,
-        fsNumList
+        fsNumList,
+        roundList
       }
       rfqQueryLinkage(params).then(res => {
         if (res && res.code === '200') {
+          // 选择的是供应商，联动零件，轮次
           if (key === 'supplierSelectlist') {
             this.partList = this.translatePartList(res.data.partNum || [])
             this.RoundList = res.data.round || []
           }
+          // 选择的是零件，联动供应商，轮次
           if (key === 'partsSelect') {
+            this.supplierlist = res.data.supplier || []
             this.RoundList = res.data.round || []
+          }
+          // 选择的是轮次，联动供应商，零件
+          if (key === 'luncSelect') {
+            this.supplierlist = res.data.supplier || []
+            this.partList = this.translatePartList(res.data.partNum || [])
           }
         }
       })

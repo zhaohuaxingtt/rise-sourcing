@@ -46,11 +46,12 @@
           prop="biddingQuoteRule.limitValue"
           :hideRequiredAsterisk="true"
         >
-          <iInput
+          <operatorInput
             class="input-wrap"
             v-model="ruleForm.biddingQuoteRule.limitValue"
             maxlength="15"
-          ></iInput>
+          >
+          </operatorInput>
         </iFormItem>
       </div>
     </div>
@@ -88,11 +89,13 @@
                 prop="biddingQuoteRule.quotedValue"
                 :hideRequiredAsterisk="true"
                 class="inline-block"
-                ><iInput
+                >
+                <operatorInput
                   class="input-number70"
                   v-model="ruleForm.biddingQuoteRule.quotedValue"
-                  oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-                ></iInput>
+                  maxlength="15"
+                >
+                </operatorInput>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
               {{language('BIDDING_xQICHUBAOJIA','x起初报价）')}}</el-radio
@@ -159,7 +162,7 @@
             class="inline-block"
             ><iInput
               class="input-number100"
-              :value="ruleForm.biddingQuoteRule.actualValue"
+              :value="actualValueData"
               disabled
             ></iInput></iFormItem
           >{{language('BIDDING_RENMINGBI', '人民币')}}
@@ -421,11 +424,13 @@
                 prop="biddingQuoteRule.priceLimit"
                 :hideRequiredAsterisk="true"
                 class="inline-block"
-                ><iInput
+                >
+                <operatorInput
                   class="input-number70"
                   v-model="ruleForm.biddingQuoteRule.priceLimit"
                   maxlength="15"
-                ></iInput>
+                >
+                </operatorInput>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
               {{language('BIDDING_HCNXSJJPM', '后，才能显示竞价排名')}}</el-radio
@@ -469,6 +474,7 @@ import {
   baseRules,
   currencyMultipleLib,
 } from "./data.js";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   components: {
@@ -477,6 +483,7 @@ export default {
     iLabel,
     iLabelML,
     iSelect,
+    operatorInput
   },
   props: {
     value: {
@@ -514,6 +521,7 @@ export default {
                   .toFixed(2)
           );
         }
+        this.actualValueData = this.ruleForm?.biddingQuoteRule.actualValue.replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
       },
     },
     "ruleForm.biddingQuoteRule.quotationScope"(val) {
@@ -597,9 +605,26 @@ export default {
 
       priceDiffLimitSelectList,
       priceDiffObjectSelectList,
+      actualValueData:'',
+      isInputFlag:false
     };
   },
   computed: {
+    limitValueValue(){
+      return this.ruleForm.biddingQuoteRule.limitValue 
+            ? Number(this.ruleForm.biddingQuoteRule.limitValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+            : ''
+    },
+    quotedValueValue(){
+      return this.ruleForm.biddingQuoteRule.quotedValue 
+            ? Number(this.ruleForm.biddingQuoteRule.quotedValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+            : ''
+    },
+    priceLimitValue(){
+      return this.ruleForm.biddingQuoteRule.priceLimit 
+            ? Number(this.ruleForm.biddingQuoteRule.priceLimit)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') 
+            : ''
+    },
     rankDisplayRuleSelectList() {
       if (this.ruleForm.resultOpenForm === "01") {
         return rankDisplayRuleSelectList.slice(0, 1);
@@ -622,6 +647,12 @@ export default {
     },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     handleChangeLightArea() {
       this.$refs["ruleForm"].validateField(
         [
@@ -772,7 +803,7 @@ export default {
   margin: 0 6px;
 }
 ::v-deep .input-number100 {
-  width: 100px;
+  width: 150px;
   margin: 0 6px;
 }
 ::v-deep .input-number200 {

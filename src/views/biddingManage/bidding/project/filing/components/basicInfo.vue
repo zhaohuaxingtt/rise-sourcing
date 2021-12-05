@@ -10,6 +10,7 @@
         label-position="left"
         :hideRequiredAsterisk="true"
         :validate-on-rule-change="false"
+        disabled
       >
         <div class="item">
           <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType">
@@ -236,11 +237,24 @@
               </div>
             </iLabelML>
             <iLabel :label="language('BIDDING_MUBIAOJIA', '目标价')" slot="label"></iLabel>
-            <iInput
-              type="number"
-              v-model="ruleForm.targetPrice"
-              disabled
-            ></iInput>
+            <template v-if="isInputFlag">
+              <iInput
+                :value="ruleForm.targetPrice"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+                type="number"
+                @input="value => $set(ruleForm, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+              >
+              </iInput>
+            </template>
+            <template v-else>
+              <iInput
+                :value="targetPriceValue"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+              >
+              </iInput>
+            </template>
           </iFormItem>
         </div>
 
@@ -262,7 +276,6 @@
                   :rows="4"
                   resize="none"
                   :maxlength="1000"
-                  :placeholder="language('BIDDING_ZSXZW1000Z','字数限制为1000字')"
                   show-word-limit
                   v-model="ruleForm.otherProjectNotice"
                   disabled
@@ -332,6 +345,8 @@ export default {
       pricingDeadline: "",
       biddingType,
       isMoldFee: false,
+      isInputFlag: false,
+      targetPriceValue: '',
       currencyVlaue: "",
       selectedTableData: [],
       bidOpeningLeft: `<p>本次竞价为项目谈判的中间过程，竞价结果作为选定供应商的参考，最终供应商的选择以最终谈判结果及上汽大众联合采购委员会（CSC）会议决策为准。</p>
@@ -350,6 +365,7 @@ export default {
   mounted() {
     // this.queryUnit();
     // this.handleSearchReset();
+    
   },
   computed: {
     roundType() {
@@ -434,8 +450,20 @@ export default {
         }
       },
     },
+    "ruleForm.targetPrice": {
+      immediate: true,
+      handler(val) {
+        this.targetPriceValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+      }
+    },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     // 重置
     handleSearchReset() {
       let param = { id: this.id };

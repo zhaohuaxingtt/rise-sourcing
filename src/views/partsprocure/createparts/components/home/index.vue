@@ -1,21 +1,24 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-24 17:06:01
- * @LastEditTime: 2021-11-08 21:54:48
- * @LastEditors:  
+ * @LastEditTime: 2021-12-01 11:10:09
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsprocure\createparts\components\home\index.vue
+ * @FilePath: \front-sourcing\src\views\partsprocure\createparts\components\home\index.vue
 -->
 <template>
-  <div class="home">
-    <div class="control">
-      <logButton class="margin-left20" @click="log" />
-      <span class="margin-left20">
-        <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-      </span>
+  <iPage class="home">
+    <div class="header">
+      <iNavMvp :lev="1" :list="navList" :lang="true" routerPage class="nav" />
+      <div class="control">
+        <logButton class="margin-left20" @click="log" />
+        <span class="margin-left20">
+          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+        </span>
+      </div>
     </div>
     <iSearch
-      class="margin-top65"
+      class="margin-top40"
       @sure="sure"
       @reset="reset"
       :resetKey="PARTSPROCURE_RESET"
@@ -23,16 +26,16 @@
       :icon="true"
     >
       <el-form>
-        <el-form-item :label="language('LINGJIANHAO', '零件号')">
+        <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission.auto="CREATEPARTSHOME_PARTNUM|手工采购项目创建-零件号">
           <iInput :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')" v-model="form.partNum" />
         </el-form-item>
-        <el-form-item :label="language('LINGJIANMINGZHONG', '零件名(中)')">
+        <el-form-item :label="language('LINGJIANMINGZHONG', '零件名(中)')" v-permission.auto="CREATEPARTSHOME_PARTNAMEZH|手工采购项目创建-零件名中">
           <iInput :placeholder="language('QINGSHURULINGJIANMINGZHONG', '请输入零件名(中)')" v-model="form.partNameZh" />
         </el-form-item>
-        <el-form-item :label="language('LINGJIANMINGDE', '零件名(德)')">
+        <el-form-item :label="language('LINGJIANMINGDE', '零件名(德)')" v-permission.auto="CREATEPARTSHOME_PARTNAMEDE|手工采购项目创建-零件名德">
           <iInput :placeholder="language('QINGSHURULINGJIANMINGDE', '请输入零件名(德)')" v-model="form.partNameDe" />
         </el-form-item>
-        <el-form-item :label="language('LINGJIANZHUANGTAI', '零件状态')">
+        <el-form-item :label="language('LINGJIANZHUANGTAI', '零件状态')" v-permission.auto="CREATEPARTSHOME_PARTSTATUS|手工采购项目创建-零件状态">
           <iSelect :placeholder="language('QINGXUANZELINGJIANZHUANGTAI', '请选择零件状态')" v-model="form.partStatus">
             <el-option
               value=""
@@ -41,7 +44,7 @@
             <el-option v-for="item in dictMap.PART_STATE" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LINGJIANLAIYUAN', '零件来源')">
+        <el-form-item :label="language('LINGJIANLAIYUAN', '零件来源')" v-permission.auto="CREATEPARTSHOME_PARTSOURCE|手工采购项目创建-零件来源">
           <iSelect :placeholder="language('QINGXUANZELINGJIANLAIYUAN', '请选择零件来源')" v-model="form.source">
             <el-option
               value=""
@@ -54,9 +57,9 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton :loading="createPartsLoading" @click="createParts">{{ language("CHUANGJIANCAIGOUXIANGMU", "创建采购项目") }}</iButton>
+        <iButton v-permission.auto="CREATEPARTSHOME_CREATEBTN|手工采购项目创建-创建采购项目按钮" :loading="createPartsLoading" @click="createParts">{{ language("CHUANGJIANCAIGOUXIANGMU", "创建采购项目") }}</iButton>
       </template>
-      <div class="body">
+      <div class="body" v-permission.auto="CREATEPARTSHOME_TABLE|手工采购项目创建-表格">
         <tableList
           class="table"
           index
@@ -87,12 +90,12 @@
           :total="page.totalCount" />
       </div>
     </iCard>
-  </div>
+  </iPage>
 </template>
 
 <script>
 import Vuex from 'vuex'
-import { icon, iSearch, iInput, iSelect, iCard, iButton, iPagination, iMessage } from "rise"
+import { icon, iSearch, iInput, iSelect, iCard, iButton, iPagination, iMessage, iNavMvp, iPage } from "rise"
 import logButton from "@/components/logButton"
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle, queryForm } from "./components/data"
@@ -103,6 +106,7 @@ import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 import { serialize } from "@/utils"
 import {BKMROLETAGID} from '@/config'
+import { navList } from "../data"
 
 export default {
   components: { 
@@ -114,7 +118,9 @@ export default {
     iButton,
     iPagination,
     logButton,
-    tableList
+    tableList,
+    iNavMvp,
+    iPage
   },
   mixins: [ filters, pageMixins ],
   data() {
@@ -128,7 +134,8 @@ export default {
       tableTitle,
       tableListData: [],
       multipleSelection: [],
-      createPartsLoading: false
+      createPartsLoading: false,
+      navList
     }
   },
   computed: {
@@ -258,10 +265,16 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+  .header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   .control {
-    position: absolute;
-    top: 30px;
-    right: 40px;
+    // position: absolute;
+    // top: 30px;
+    // right: 40px;
     display: flex;
     align-items: center;
     height: 30px;

@@ -273,16 +273,16 @@
             >
               <div v-if="scope.row['index'] === 0">{{scope.row[items.props]}}</div>
 
-              <iInput
+              <operatorInput
                 v-else-if="scope.row['index']%2 === 0"
                 v-model="scope.row[items.props]"
                 placeholder="0.00"
                 type="number"
-                oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
+                
                 @blur="handlerInputBlur($event, scope)"
                 :disabled="ruleForm.roundType === '03'"
               >
-              </iInput>
+              </operatorInput>
               <iDatePicker
                 v-else-if="scope.row['index']%2 === 1"
                 class="data--picker"
@@ -418,8 +418,15 @@
 </template>
 <script>
 import { iInput, iDatePicker } from "rise";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 import dayjs from "dayjs";
 export default {
+  components: {
+    iInput,
+    iDatePicker,
+
+    operatorInput,
+  },
   props: {
     type: { type: String },
     tableData: { type: Array },
@@ -471,10 +478,6 @@ export default {
       },
     },
   },
-  components: {
-    iInput,
-    iDatePicker,
-  },
   data() {
     return {
       rules: [],
@@ -525,12 +528,16 @@ export default {
       let firstDate = dayjs(this.annualOutputObj[row.index+1][props]).add(1, "month");
       return {
         validator(rule, value, callback) {
-          num === 1
-            ? dayjs(value).isBefore(firstDate)
-            ? callback(new Error(rule.message)):callback()
-            : dayjs(value).isBefore(afterDate)
-            ? callback(new Error(rule.message))
-            : callback();
+          if(value){
+            num === 1
+              ? dayjs(value).isBefore(firstDate)
+              ? callback(new Error(rule.message)):callback()
+              : dayjs(value).isBefore(afterDate) || dayjs(value).isSame(afterDate)
+              ? callback(new Error(rule.message))
+              : callback();
+          } else {
+            callback();
+          }
         },
         message: "日期错误",
         trigger: ["blur","change"],

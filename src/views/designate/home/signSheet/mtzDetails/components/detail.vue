@@ -1,8 +1,8 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-11-06 18:28:10
- * @LastEditTime: 2021-11-10 14:48:06
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-05 15:17:12
+ * @LastEditors:  
  * @Description: MTZ定点申请单详情
  * @FilePath: \front-web\src\views\designate\home\signSheet\mtzDetails\components\detail.vue
 -->
@@ -33,15 +33,15 @@
           </el-form-item>
         </el-form>
         <div class="searchButton">
-          <iButton @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
-          <iButton @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
+          <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_SUBMIT|MTZ签字单确认" @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
+          <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_RESET|MTZ签字单重置"  @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
         </div>
       </div>
       <el-divider style="marginTop: 20px;"></el-divider>
       <div class="contentBox" >
         <div class="tableOptionBox">
           <p class="tableTitle">{{language('DINGDIANSHENQINGLIEBIAO', '定点申请列表')}}</p>
-          <iButton @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton>
+          <iButton v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_CHOOSE|MTZ签字单选择" @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton>
         </div>
         <tableList
           ref="addTable"
@@ -49,7 +49,9 @@
           :tableTitle="tableTitle"
           :tableLoading="loading"
           :index="true"
-          @handleSelectionChange="handleSelectionChange">
+          @handleSelectionChange="handleSelectionChange"
+          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_TABLE|MTZ签字表格" @click="handleSubmitChoose"
+          >
         </tableList>
         <!-- <iPagination
         v-update

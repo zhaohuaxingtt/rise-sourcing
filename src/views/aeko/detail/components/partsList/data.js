@@ -49,6 +49,7 @@ export const linieSearchList = [
   {props:'buyerName',label:'Linie',selectOption:'buyerName',type:'select',noShowAll:true,clearable:true,labelKey:'LK_AEKOLINIE',disabled:false,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIE|Linie-LINIE"},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_BRAND|品牌-LINIE"},
   {props:'cartype',label:'车型',type:'select',multiple:true,labelKey:'LK_AEKO_CHEXING',selectOption:'cartypeCode',showCode:['AeA'],permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_CARTYPECODE|车型-LINIE"},
+  {props:'sendStatus',label:'分派状态',type:'select',labelKey:'LK_AEKO_FENPAIZHUANGTAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_FENPAIZHUANGTAI|分派状态',selectOption:'sendStatus',clearable:true,isDicoptions:true,dicoptionKey:'AEKO_SEND_STATUS'}
 ]
 
 export const checkSearchList=[
@@ -61,6 +62,7 @@ export const checkSearchList=[
   {props:'cartype',label:'车型',isNewSelect:true,type:'select',labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_CARTYPE|车型',selectOption:'cartype',multiple:true,showCode:['AeA'],filterable:true},
   {props:'cartypeCode',label:'⻋型项⽬',isNewSelect:true,type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_CARTYPECODE|⻋型项⽬',selectOption:'cartypeCode',showCode:['Aeko','MP'],multiple:true,filterable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_BRAND|品牌-LINIE"},
+  {props:'sendStatus',label:'分派状态',type:'select',labelKey:'LK_AEKO_FENPAIZHUANGTAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_FENPAIZHUANGTAI|分派状态',selectOption:'sendStatus',clearable:true,isDicoptions:true,dicoptionKey:'AEKO_SEND_STATUS'}
 ]
 
 export const linieQueryForm = {

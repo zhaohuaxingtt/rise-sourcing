@@ -40,6 +40,7 @@ export const partListTableTitle = [
 export const reportListTableTitle = [
   { props: "fileName", name: "文件名称", key: "WENJIANMINGCHENG", tooltip: true },
   { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
+  { props: "fileType", name: "报告类型", key: "BAOGAOLEIXING", tooltip: true },
   { props: "uploadDate", name: "上传日期", key: "SHANGCHUANRIQI", tooltip: true },
   { props: "uploadBy", name: "上传人", key: "SHANGCHUANREN", tooltip: true },
 ]

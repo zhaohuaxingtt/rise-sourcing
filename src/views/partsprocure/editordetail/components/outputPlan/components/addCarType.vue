@@ -2,7 +2,7 @@
  * @Description: CF车型配置
  * @Author: tyra liu
  * @Date: 2021-11-16 16:54:18
- * @LastEditTime: 2021-11-29 15:01:39
+ * @LastEditTime: 2021-12-02 17:37:13
  * @LastEditors:  
 -->
 <template>
@@ -15,7 +15,7 @@
     <div class="top">
       <div class="top-left" v-if="isGs == true">
           <span class="title">{{language('CHEXING','车型')}}</span>
-          <iSelect v-model="carTypeModel" @change="changeTable" multiple  collapse-tags>
+          <iSelect class="carselect" v-model="carTypeModel" @change="changeTable" multiple  collapse-tags>
             <el-option
               v-for="(item,index) in carTypeOptions"
               :key="index"
@@ -151,7 +151,14 @@ export default {
         searchCarTypeProConfig(data).then(res => {
           if(res.code == '200') {
             this.tableLoading = false
+            res.data.forEach(val=>{
+              console.log(val);
+              this.$set(val,'engineType',val.engineVo?.engineName)
+              this.$set(val,'gearboxName',val.gearboxVo?.gearboxName)
+              this.$set(val,'batteryCapacity',val.batteryVo?.capacity)
+            })
             this.fscarTableData = res.data || []
+
             this.page.totalCount = res.total || 0
           } else {
             iMessage.error(res.desZh)
@@ -222,6 +229,11 @@ export default {
         color: #131523;
         font-weight: bold;
         width: 400px;
+      }
+      .carselect{
+        ::v-deep.el-input__inner{
+          width: 350px;
+        }
       }
     }      
     ::v-deep .i-pagination[data-v-20fc8d19] .pagination {

@@ -16,25 +16,27 @@
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.gif'"
             :buttonText="language('strategicdoc_ShangChuanTuPian','上传图片')"
-            v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_UPLOAD|上传图片"
+            v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_UPLOAD${task}|上传图片${task}`"
             @on-success="onUploadsucess"
           />
-          <iButton @click="submit" :loading="submiting" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKSAVE|保存备注">
+          <iButton @click="submit" :loading="submiting" v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_REMARKSAVE${task}|保存备注${task}`">
             {{ language("LK_BAOCUN",'保存') }}
           </iButton>
-          <iButton @click="multiEditControl = false" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_REMARKEXITEDIT|结束编辑备注">
+          <iButton @click="multiEditControl = false" v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_REMARKEXITEDIT${task}|结束编辑备注${task}`">
             {{ language("strategicdoc_JieSuBianJi",'结束编辑') }}
           </iButton>
         </span>
         <span v-else>
           <template v-if='higth'>
-            <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
+            <iButton v-if="!$store.getters.isPreview && !nominationDisabled && !rsDisabled" @click="multiEditControl = true" v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_EDIT${task}|编辑备注${isTask}`">
               {{ language("LK_BIANJI",'编辑') }}
             </iButton>
           </template>
-            <iButton v-else @click="multiEditControl = true" v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDIT|编辑备注">
+          <div v-else>
+            <iButton v-if="!isDisabled" @click="multiEditControl = true" v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_EDIT${task}|编辑备注${task}`">
               {{ language("LK_BIANJI",'编辑') }}
             </iButton>
+          </div>
         </span>
       </div>
       <div class="clearfix"></div>
@@ -44,7 +46,7 @@
         :menus=[]
         :disabled="!multiEditControl"
         v-model="content"
-        v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR|备注编辑框"
+        v-permission.auto="`SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR${task}|备注编辑框${task}`"
         ref="editor"
 
        />
@@ -67,6 +69,11 @@ import {
 } from '@/api/designate/decisiondata/tasks'
 
 export default {
+  props: {
+    isTask:{
+      type: String
+    }
+  },
   data() {
     return {
       id: '',
@@ -75,8 +82,12 @@ export default {
       pictures: [],
       submiting: false,
       multiEditControl: false,
-      higth:true
+      higth:true,
+      task:''
     }
+  },
+  created() {
+    this.isTask == true ? this.task = 'Background&Objective' :this.task=''
   },
   computed: {
     // eslint-disable-next-line no-undef
@@ -84,6 +95,9 @@ export default {
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
     }),
+    isDisabled() {
+      return false
+    }
   },
   components: {
     // iInput,

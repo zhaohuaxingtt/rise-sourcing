@@ -25,6 +25,7 @@
           :customOpenPageWord="language('LK_CHAKAN','查看')"
           @openPage="openPage"
           :openPageGetRowData="true"
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_TABLE|技术交底会-表格"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->

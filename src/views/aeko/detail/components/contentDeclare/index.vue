@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-11-26 11:52:08
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-03 11:48:34
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -181,7 +181,7 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
         </iButton>
-        <span class="margin-left5 margin-right5" v-if="!disabled" v-permission.atuo="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">
+        <span class="margin-left5 margin-right5" v-if="!disabled" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">
           <Upload 
             hideTip
             :buttonText="language('DAORU','导⼊')"
@@ -264,7 +264,15 @@
           </template>
           <!-- 模具投资变动 -->
           <template #mouldPriceChange="scope">
-            <span>{{scope.row.mouldPriceChange | thousandsFilter}}</span>
+            <span>{{floatFixNum(scope.row.mouldPriceChange)}}</span>
+          </template>
+          <!-- 原零件A价 -->
+          <template #originPriceA="scope">
+            <span>{{floatFixNum(scope.row.originPriceA)}}</span>
+          </template>
+          <!-- 原零件B价 -->
+          <template #originPriceB="scope">
+            <span>{{floatFixNum(scope.row.originPriceB)}}</span>
           </template>
           <!-- 价格轴 -->
           <template #priceAxis="scope">
@@ -288,7 +296,7 @@
           </template>
           <!-- B价变动含分摊 -->
           <template #bpriceChange="scope">
-            <span>{{scope.row.bpriceChange | thousandsFilter}}</span>
+            <span>{{floatFixNum(scope.row.bpriceChange)}}</span>
           </template>
           <template #isMtz="scope">
             <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
@@ -348,7 +356,7 @@ import {combine} from './mixins/combine'
 
 import Upload from '@/components/Upload'
 
-import filters from "@/utils/filters"
+import {floatFixNum} from "../../../approve/approveDetails/data.js"
 
 import { setLogMenu } from "@/utils";
 
@@ -358,7 +366,7 @@ import { setLogMenu } from "@/utils";
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload },
-  mixins: [ pageMixins, combine,filters ],
+  mixins: [ pageMixins, combine ],
   props: {
     aekoInfo: {
       type: Object,
@@ -456,12 +464,16 @@ export default {
         }
       })
       this.tableTitle = filterTable;
-    }else{
+    } else if(from == 'stance'){
+      let filterTable = tableTitle.filter((item)=>item.props!='originBnkTranWayDesc' && item.props!='newBnkTranWayDesc');
+      this.tableTitle = filterTable;
+    } else{
       this.tableTitle = tableTitle.filter((item)=>item.props!='tranWayDesc'&&item.props!='buyerName')
     }
     
   },
   methods: {
+    floatFixNum,
     searchCartypeProject() {
       const {query} = this.$route;
       const { requirementAekoId ='',} = query;
@@ -715,7 +727,8 @@ export default {
         requirementAekoId: this.aekoInfo.requirementAekoId,
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        currentTab: "contentDeclare"
+        currentTab: "contentDeclare",
+        from:routeQuery.from,
       }))
     },
     // 相关无关切换
@@ -830,8 +843,12 @@ export default {
     // 提交
     handleSubmit() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN", "请选择需要提交表态的零件"))
-
-      for (let i = 0, item; (item = this.multipleSelection[i++]); ) {
+      // 什么都不提示，所以放在下一个提示之前
+      let multipleSelection =this.multipleSelection.filter(item=>{
+        return item.statusDesc != "已绑定"
+      })
+      if(!multipleSelection.length) return
+      for (let i = 0, item; (item = multipleSelection[i++]); ) {
         if (!['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(item.status))
           return iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
       }
@@ -840,7 +857,7 @@ export default {
 
       patchAekoContent({
         requirementAekoId: this.aekoInfo.requirementAekoId,
-        objectAekoPartId: this.multipleSelection.map(item => item.objectAekoPartId)
+        objectAekoPartId: multipleSelection.map(item => item.objectAekoPartId)
       })
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
@@ -963,7 +980,7 @@ export default {
       // 可支持报价
       if (filtRows.length) {
         // 待表态的数据支持报价
-        if (filtRows[0] && filtRows[0].status ==='TOBE_STATED') {
+        if (this.multipleSelection.length > 1 && filtRows.filter(o => o.status ==='TOBE_STATED').length) {
           const confirmMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
           ${filtRows.map(o => o.partNum).join(',')} 
           ${this.language('GONGYINGSHANG','供应商')}:
@@ -985,9 +1002,11 @@ export default {
           if (confirmCheckInfo === 'confirm') {
             multipleSelection = window._.uniqBy(multipleSelection, o => `${o.partNum}${o.factoryCode}${o.supplierSapCode}`)
           }
-        } else {
+          
+        } 
+        // 都不支持报价
+        if (filtRows.filter(o => o.status !=='TOBE_STATED').length === this.multipleSelection.length) {
           // 已经报过价格
-          // 已经报过价
           const errorMsg = `${this.language('LK_CURRENTPARTNUMBER','当前针对零件号')}:
           ${filtRows.map(o => o.partNum).join(',')} 
           ${this.language('GONGYINGSHANG','供应商')}:
@@ -1148,7 +1167,6 @@ export default {
 
     // 承运方式展示字段
     getRranWayDesc(row){
-      console.log(row,'getRranWayDesc');
       if(row.originBnkTranWay==null && row.newBnkTranWay==null){
         return ' '
       }else if(row.originBnkTranWay == row.newBnkTranWay){ //若新原零件承运方式相同，则承运方式显示自运或者承运

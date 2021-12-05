@@ -1,28 +1,28 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-23 22:48:17
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-02 16:47:16
  * @Description: 配件详情
- * @FilePath: \front-web\src\views\accessoryPart\accessoryPartDetail\index.vue
+ * @FilePath: \front-sourcing\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
 
 <template>
-  <iPage v-loading="pageLoading">
-    <topComponents :logModuleName="'配件需求'" :logBizIdKey="'spNum'">
+  <iPage v-loading="pageLoading" v-permission.auto="ACCESSORYPART_DETAILINFO_PAGE|配件详情页面">
+    <topComponents logModuleName="配件需求" logBizIdKey="spNum" optionDicKey2="配件需求详情页">
       <span slot="left" class="floatleft font20 font-weight">
         {{language('PEIJIANBIANHAO','配件编号')}}：{{detailData.partNum}}
       </span>
     </topComponents>
     <iCard :title="language('JICHUXINXI','基础信息')">
       <iFormGroup row="4" class="accessoryPartDetail">
-        <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''">
+        <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''" v-permission.dynamic.auto="item.permission">
           <iText>{{detailData[item.value] ? detailData[item.value].desc || detailData[item.value] : ''}}</iText>
         </iFormItem>
       </iFormGroup>
     </iCard>
-    <fileTable ref="tec" class="margin-top20" :title="language('JISHUXUNJIAZILIAO', '技术询价资料')" fileType="ACCESSORY_TEC_ATTACHMENT" :hostId="detailData.id" />
-    <fileTable ref="package" class="margin-top20" :title="language('BAOZHUANGXUNJIAZILIAO', '包装询价资料')" fileType="ACCESSORY_PACKAGE_ATTACHMENT" :hostId="detailData.id" />
+    <fileTable v-permission.auto="ACCESSORYPART_DETAILINFO_TECATTACHMENT|配件详情页面-技术询价资料" ref="tec" class="margin-top20" :title="language('JISHUXUNJIAZILIAO', '技术询价资料')" fileType="ACCESSORY_TEC_ATTACHMENT" :hostId="detailData.id" />
+    <fileTable v-permission.auto="ACCESSORYPART_DETAILINFO_PACHAGEATTACHMENT|配件详情页面-包装询价资料" ref="package" class="margin-top20" :title="language('BAOZHUANGXUNJIAZILIAO', '包装询价资料')" fileType="ACCESSORY_PACKAGE_ATTACHMENT" :hostId="detailData.id" />
   </iPage>
 </template>
 

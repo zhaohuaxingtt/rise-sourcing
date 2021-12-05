@@ -40,6 +40,7 @@
         open-page-props="fileName"
         :openPageGetRowData="true"
         @openPage="handleOpenPage"
+        v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_TABLE|询价附件-表格"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -70,6 +71,9 @@ import {downloadFile, downloadUdFile} from '@/api/file'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 
 export default {
+  props:{
+    rfqId:String
+  },
   components: {
     iCard,
     iButton,
@@ -94,12 +98,16 @@ export default {
   inject: ["getDisabled"],
   computed: {
     disabled() {
-      return this.getDisabled()
+      try {
+        return this.getDisabled()
+      } catch (error) {
+        return true
+      }
     }
   },
   methods: {
     async getTableList() {
-      const id = this.$route.query.id
+      const id = this.$route.query.id || this.rfqId
       if (id) {
         this.tableLoading = true;
         const req = {
@@ -137,7 +145,7 @@ export default {
       })
     },
     async uploadAttachments(data, size) {
-      const id = this.$route.query.id
+      const id = this.$route.query.id || this.rfqId
       if (id) {
         this.tableLoading = true
         this.uploadAttachmentsButtonLoading = true
@@ -158,7 +166,7 @@ export default {
       }
     },
     async notifyAllSuppliers() {
-      const id = this.$route.query.id
+      const id = this.$route.query.id || this.rfqId
       const res = await notifySuppliers(id)
       this.resultMessage(res)
     },

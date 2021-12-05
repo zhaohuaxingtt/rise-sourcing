@@ -32,6 +32,8 @@
             <!-- <logButton class="margin-left20" @click="toLogPage"/> -->
             <iLoger 
                 class="margin-left25 margin-right5"
+                optionDicKey="LOG_OPERATION_TYPES"
+				optionDicKey2="定点信详情页"
                 isPage
                 :config="{
                     module_obj_ae: '定点信', // 模块

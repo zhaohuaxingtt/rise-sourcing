@@ -20,6 +20,7 @@
         open-page-props="tpPartAttachmentName"
         :openPageGetRowData="true"
         @openPage="handleOpenPage"
+        v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_INQUIRYATTACHMENT_INQUIRYATTACHMENT_DRAWINGTABLE|询价图纸表格"
     ></tablelist>
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
@@ -48,6 +49,9 @@ import {downloadFile, downloadUdFile} from "@/api/file";
 
 
 export default {
+  props:{
+    rfqId:String
+  },
   components: {
     iCard,
     iButton,
@@ -69,7 +73,7 @@ export default {
   },
   methods: {
     async getTableList() {
-      const id = this.$route.query.id
+      const id = this.$route.query.id || this.rfqId
       if (id) {
         this.tableLoading = true;
         const req = {

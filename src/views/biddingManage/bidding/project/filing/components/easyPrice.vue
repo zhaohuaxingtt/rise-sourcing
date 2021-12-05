@@ -48,8 +48,8 @@
                     <el-option
                       v-for="item in modelsOption"
                       :key="item.id"
-                      :label="item.name"
-                      :value="item.code"
+                      :label="item.model"
+                      :value="item.modelCode"
                     >
                     </el-option>
                   </iSelect>
@@ -72,8 +72,8 @@
                     <el-option
                       v-for="item in modelProjectsOption"
                       :key="item.id"
-                      :label="item.name"
-                      :value="item.code"
+                      :label="item.project"
+                      :value="item.projectCode"
                     >
                     </el-option>
                   </iSelect>
@@ -257,14 +257,14 @@ export default {
   },
   mounted() {
     this.updateRuleForm(this.initData);
-    getModels().then((res) => {
-      this.modelsOption = res?.data.filter((item) => item.name?.length > 0);
-    });
-    getProjects().then((res) => {
-      this.modelProjectsOption = res?.data.filter(
-        (item) => item.name?.length > 0
-      );
-    });
+    // getModels().then((res) => {
+    //   this.modelsOption = res?.data.filter((item) => item.name?.length > 0);
+    // });
+    // getProjects().then((res) => {
+    //   this.modelProjectsOption = res?.data.filter(
+    //     (item) => item.name?.length > 0
+    //   );
+    // });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
@@ -325,7 +325,7 @@ export default {
       if (this.ruleForm.totalPrices == null) {
         return 0 + this.currencyMultiple;
       }
-      return this.ruleForm.totalPrices + this.currencyMultiple;
+      return Number(this.ruleForm.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
   },
   methods: {
@@ -560,6 +560,8 @@ export default {
       } else {
         this.page.total = this.ruleForm.biddingProducts.length;
       }
+      this.modelProjectsOption = data.modelProjects
+      this.modelsOption = data.models
       // if (this.ruleForm.biddingMode === "02") {
       //   //总价
       //   this.ruleForm.totalPrices = Big(this.ruleForm.totalPrices || 0)

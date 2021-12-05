@@ -1014,6 +1014,7 @@
         'LK_NUMBERPREFIX': 'No. ',
         'LK_TURN': ' Turn',
         'LK_NONGROUPEDBREAKTIPS': '以下为未分组数据',
+        'LK_CAIGOULEIXING': '采购类型', //  采购类型
 
         // 定点管理
         'nominationLanguage': {
