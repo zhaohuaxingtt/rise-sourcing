@@ -62,6 +62,8 @@
 					credentials
 					isPage
 					class="margin-left20"
+					optionDicKey="LOG_OPERATION_TYPES"
+					optionDicKey2="零件采购项目详情页"
 					v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOG|log" />
 				<span>
 					<icon symbol name="icondatabaseweixuanzhong" style="font-size:14px;margin-left: 10px"></icon>

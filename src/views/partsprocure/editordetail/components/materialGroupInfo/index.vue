@@ -71,6 +71,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import {getMaterialGroup,getMeterialStuff,getAttachMeterialStuff} from '@/api/partsprocure/editordetail'
 import { batchUpdateStuff } from '@/api/partsprocure/home'
 // import logDialog from "@/views/partsign/editordetail/components/logDialog"
+import { cloneDeep } from "lodash"
 
 export default {
   components: { iButton, iCard, iPagination, tableList, infos },
@@ -105,6 +106,7 @@ export default {
       multipleSelection: [], // 工艺组多选项
       // logVisible: false,
       info: {}, // 材料组数据
+      infoSource: {}, // 材料组后端数据备份
       confirmLoading: false, // 确认按钮loading
     };
   },
@@ -131,10 +133,11 @@ export default {
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
       //if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHICAILIAOZUBIANHAOETC'))
       this.loading = true
-      getMaterialGroup({ partNum: this.params.partNum })
+      getMaterialGroup({ partNum: this.params.partNum, pprjId: this.params.id })
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
+            this.infoSource = cloneDeep(this.info)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
@@ -221,10 +224,10 @@ export default {
           row.categoryNameZh = row.materialStuffGroupName
         }
 
-        this.info = row
+        this.$set(this.info, "stuffCode", row.stuffCode)
         this.multipleSelection = [row]
       } else {
-        this.info = {}
+        this.info = cloneDeep(this.infoSource)
         this.multipleSelection = []
       }
     },

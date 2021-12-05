@@ -5,6 +5,7 @@
     width="35.25rem"
     :close-on-click-modal="false"
     destroy-on-close
+    @close="handleCancel"
   >
     <iEditForm>
       <el-form
@@ -128,6 +129,9 @@ export default {
   },
 
   methods: {
+    handleCancel(){
+      window.close()
+    },
     handleOK() {
       this.$refs["ruleForm"].validate((valid) => {
         if (valid) {

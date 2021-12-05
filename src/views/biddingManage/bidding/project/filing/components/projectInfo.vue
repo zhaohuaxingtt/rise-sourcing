@@ -321,6 +321,21 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
+        this.ruleForm.products = this.ruleForm?.products?.map(item => {
+          return {
+            ...item,
+            factoryPrice:Number(item.factoryPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            packingFee:Number(item.packingFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            transportFee:Number(item.transportFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            operationFee:Number(item.operationFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            moldFee:Number(item.moldFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            developFee:Number(item.developFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            targetPrice:Number(item.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            aveAnnualOutput:Number(item.aveAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            maxAnnualOutput:Number(item.maxAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            bprice:Number(item.bprice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          }
+        })
       },
     },
     ruleForm(val) {
@@ -338,14 +353,14 @@ export default {
         this.annualOutput[0]={...o};
       });
     // this.handleSearchReset();
-    getModels().then((res) => {
-      this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
-    });
-    getProjects().then((res) => {
-      this.modelProjectsOption = res?.data?.filter(
-        (item) => item.name?.length > 0
-      );
-    });
+    // getModels().then((res) => {
+    //   this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
+    // });
+    // getProjects().then((res) => {
+    //   this.modelProjectsOption = res?.data?.filter(
+    //     (item) => item.name?.length > 0
+    //   );
+    // });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };

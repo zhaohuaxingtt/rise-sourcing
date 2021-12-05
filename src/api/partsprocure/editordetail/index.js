@@ -23,7 +23,7 @@ export function autonomi(params) {
 // 采购项目-获取材料组信息
 export function getMaterialGroup(params) {
 	return requstPartsProcure({
-		url: '/materialGroup',
+		url: '/materialGroupByPartNum',
 		method: 'GET',
 		params: params
 	})
@@ -59,14 +59,6 @@ export function getAttachMeterialStuff(params) {
 	return sourcing({
 		url: '/purchasing-project-parts/materialGroupStuff',
 		method: 'GET',
-		params: params
-	})
-}
-// 设置工艺组
-export function putMaterialGroup(params) {
-	return requstPartsProcure({
-		url: '/materialGroup',
-		method: 'PUT',
 		params: params
 	})
 }

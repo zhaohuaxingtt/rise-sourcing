@@ -26,7 +26,7 @@
                       class="form--item--number--input__center"
                       :value="
                         ruleForm.supplierOffer.offerPrice
-                          ? ruleForm.supplierOffer.offerPrice + currencyMultiple
+                          ? ruleForm.supplierOffer.offerPrice.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + currencyMultiple
                           : ''
                       "
                       disabled
@@ -65,7 +65,7 @@
                   <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
-                      {{ tag.name }}
+                      {{ tag.model }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -75,7 +75,7 @@
                   <iLabel :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
-                      {{ tag.name }}
+                      {{ tag.project }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -100,7 +100,7 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <!-- 操作 -->
-          <template slot="caozuo" slot-scope="scope">
+          <!-- <template slot="caozuo" slot-scope="scope">
             <span>
               <a
                 href="javascript:void(0)"
@@ -110,7 +110,7 @@
                 <i class="el-icon-edit"> </i>
               </a>
             </span>
-          </template>
+          </template> -->
         </commonTable>
       </div>
     </iCard>
@@ -379,22 +379,23 @@ export default {
       }
       const totalPrices = this.dividedBeiShu(this.ruleForm.totalPrices)
       this.ruleForm = {... this.ruleForm,supplierOffer,totalPrices}
+      this.modelsOption = data.models
+      this.modelProjectsOption = data.modelProjects
+      // getModels().then((res) => {
+      //   data.models.forEach((item) => {
+      //     this.modelsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.modelCode)
+      //     );
+      //   });
+      // });
 
-      getModels().then((res) => {
-        data.models.forEach((item) => {
-          this.modelsOption.push(
-            ...res?.data?.filter((e) => e.code === item.modelCode)
-          );
-        });
-      });
-
-      getProjects().then((res) => {
-        data.modelProjects.forEach((item) => {
-          this.modelProjectsOption.push(
-            ...res?.data?.filter((e) => e.code === item.projectCode)
-          );
-        });
-      });
+      // getProjects().then((res) => {
+      //   data.modelProjects.forEach((item) => {
+      //     this.modelProjectsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.projectCode)
+      //     );
+      //   });
+      // });
       this.ruleForm.supplierProducts?.forEach((items) => {
         let o = items.supplierPlans.reduce((obj, item) => {
           if (!obj[item.supplierProdId]) {
@@ -449,6 +450,21 @@ export default {
             ...output[items.id]?.procureNum,
             title: items.productCode,
           })
+      })
+      this.ruleForm.supplierProducts = this.ruleForm.supplierProducts.map(item => {
+        return {
+          ...item,
+          factoryPrice:Number(item.factoryPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          packingFee:Number(item.packingFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          transportFee:Number(item.transportFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          operationFee:Number(item.operationFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          moldFee:Number(item.moldFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          developFee:Number(item.developFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          targetPrice:Number(item.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          aveAnnualOutput:Number(item.aveAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          maxAnnualOutput:Number(item.maxAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          bprice:Number(item.bprice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+        }
       })
     },
   },

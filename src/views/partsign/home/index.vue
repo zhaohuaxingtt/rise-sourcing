@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-11-17 15:47:19
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-03 17:11:49
+ * @LastEditors: Luoshuang
  * @Description: 零件签收列表界面.
- * @FilePath: \rise\src\views\partsign\index.vue
+ * @FilePath: \front-sourcing\src\views\partsign\home\index.vue
 -->
 <template>
   <iPage class="partsignHome">
@@ -198,6 +198,7 @@
               @handleSelectionChange="handleSelectionChange"
               @openPage="openPage"
               :activeItems="'partNum'"
+              v-permission.auto="PARTSIGN_TABLE|表格"
             >
             </tablelist>
             <!------------------------------------------------------------------------>
