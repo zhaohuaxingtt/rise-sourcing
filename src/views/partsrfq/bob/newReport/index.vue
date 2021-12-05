@@ -699,7 +699,10 @@ export default {
       }
       getBobLevelOne(params).then((res) => {
         const allData = res.data || [];
-        if (!allData) return;
+        if (!allData) {
+          this.$message.error(res.desZh);
+          return;
+        }
         this.maxDataList = []
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0
@@ -765,6 +768,11 @@ export default {
           this.onDataLoading = false;
         })
         this.$refs.bobAnalysis.chargeRetrieve(tableParams);
+      }, () => {
+        
+        this.$nextTick(() => {
+          this.onDataLoading = false;
+        })
       });
 
     },
@@ -782,6 +790,11 @@ export default {
       }).then((res) => {
 
         const allData = res.data || [];
+        if (allData.length == 0) {
+          this.$message.error(res.desZh);
+          this.onDataLoading = false;
+          return;
+        }
         this.chartData = allData.bobLevelOneVOList.filter(
           (r) => r.isIntroduce === 0
         );
@@ -854,6 +867,11 @@ export default {
           isDefault: true,
           schemaId: this.analysisSchemeId,
           groupId: this.groupId
+        })
+      }, () => {
+        
+        this.$nextTick(() => {
+          this.onDataLoading = false;
         })
       });
     },

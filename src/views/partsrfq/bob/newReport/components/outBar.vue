@@ -257,9 +257,9 @@ export default {
             max: this.maxData
           }
         ],
-        emphasis: {
-          focus: 'series'
-        },
+        // emphasis: {
+        //   focus: 'series'
+        // },
         color: [
           "#C6DEFF",
           "#9BBEFF",
@@ -352,9 +352,9 @@ export default {
             type: 'bar',
             barGap: '-100%',
             z: 20 - i,
-            emphasis: {
-              focus: 'series'
-            },
+            // emphasis: {
+            //   focus: 'series'
+            // },
             label: {
               show: true,
               position: 'insideTop',
