@@ -154,8 +154,13 @@
         >
           <!-- 起拍价格 -->
           <template slot="upsetPrice" slot-scope="scope">
-
-            <template v-if="flag"> 
+            <operatorInput
+                v-if="ruleForm.biddingMode === '01' && !biddingStatus"
+                v-model="scope.row['upsetPrice']"
+                @blur="handlerInputBlur"
+              >
+              </operatorInput>
+            <!-- <template v-if="flag"> 
               <i-input
                 v-if="ruleForm.biddingMode === '01' && !biddingStatus"
                 :value="scope.row['upsetPrice']"
@@ -181,7 +186,7 @@
                 {{ scope.row["upsetPrice"] ? scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}
               </div>
               <div v-else></div>
-            </template>
+            </template> -->
           </template>
           <!-- 目标价 -->
           <template slot="targetPrice" slot-scope="scope">
@@ -216,6 +221,7 @@ import {
 import { findHallQuotation, saveBiddingQuotation } from "@/api/bidding/bidding";
 import Big from "big.js";
 import dayjs from "dayjs";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -226,6 +232,7 @@ export default {
     iFormItem,
     iLabel,
     tableColumnTemplate,
+    operatorInput
   },
   props: {
     id: String,

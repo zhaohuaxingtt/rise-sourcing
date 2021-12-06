@@ -210,6 +210,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['factoryPrice']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -225,6 +226,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['packingFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -239,6 +241,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['transportFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -253,6 +256,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['operationFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -279,6 +283,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['moldFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -293,6 +298,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['developFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -722,7 +728,6 @@ export default {
                     .add(item.operationFee || 0)
                     .toFixed(2);
           });
-          this.handlerInputBlur();
       },
       deep: true, //true 深度监听
     },
