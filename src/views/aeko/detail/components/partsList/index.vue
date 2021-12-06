@@ -103,8 +103,9 @@
                     <span v-else @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
                 </span>
                
+               <!-- coverIsSubmit:封面提交状态不能分派采购员 -->
                 <span 
-                    v-if="isCommodityCoordinator && !scoped.row.isOperate" 
+                    v-if="isCommodityCoordinator && !scoped.row.isOperate && !scoped.row.coverIsSubmit" 
                     class="link-underline" 
                     @click="assign(scoped.row,'linie')"
                 >
@@ -569,7 +570,7 @@ export default {
                                 this.assignVisible = true;
                             }
                         }else{ // 采购员分派 
-                            const arr = selectItems.filter((item)=>item.isOperate);
+                            const arr = selectItems.filter((item)=>item.isOperate || item.coverIsSubmit);
                             if(arr.length){
                                 const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI','行零件已表态,linie无法修改');
                                 return iMessage.warn(tips);
@@ -589,7 +590,7 @@ export default {
                                 this.assignVisible = true;
                             }
                         }else{ // 采购员分派
-                            const arr = selectItems.filter((item)=>item.isOperate);
+                            const arr = selectItems.filter((item)=>item.isOperate || item.coverIsSubmit);
                             if(arr.length){
                                 const arrIndex = arr.map((item)=>item.lineIndex);
                                 const tips = arrIndex.toString() + this.language('LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI','行零件已表态,linie无法修改');

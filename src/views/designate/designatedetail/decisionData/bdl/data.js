@@ -36,11 +36,11 @@ export const partsRatingTableTitle = [
   {props:'partNameDe',name:'零件名称(德)', key: "LINGJIANMINGCHEN_DE", tooltip: true, width: 150},
   {props:'carProjectType',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
   {props:'relatedModels',name:'相关车型', key: "XIANGGUANCHEXING", tooltip: true},
-  {props:'h',name:'ER', key: "ER", tooltip: true, children: [
-    {props: 'grade', name: '评分', key: "PINGFEN", require},
-    {props: 'externaFee', name: '外部开发费(元)', key: "WAIBUKAIFAFEI_YUAN"},
-    {props: 'addFee', name: '增加的认可费(元)', key: "ZENGJIARENKEFEI_YUAN"},
-    {props: 'confirmCycle', name: '认可周期(周)', key: "RENKEZHOUQI_ZHOU"},
-    // {props: 'beizhu', name: '备注', key: "BEIZHU"}
-  ]}
+  // {props:'h',name:'ER', key: "ER", tooltip: true, children: [
+  //   {props: 'grade', name: '评分', key: "PINGFEN", require},
+  //   {props: 'externaFee', name: '外部开发费(元)', key: "WAIBUKAIFAFEI_YUAN"},
+  //   {props: 'addFee', name: '增加的认可费(元)', key: "ZENGJIARENKEFEI_YUAN"},
+  //   {props: 'confirmCycle', name: '认可周期(周)', key: "RENKEZHOUQI_ZHOU"},
+  //   // {props: 'beizhu', name: '备注', key: "BEIZHU"}
+  // ]}
 ]
