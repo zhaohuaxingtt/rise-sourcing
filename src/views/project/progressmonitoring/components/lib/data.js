@@ -125,7 +125,7 @@ export const projectRisk = [
   },
   {
     code: '2',
-    name: '中风险',
+    name: '低风险',
   },
   {
     code: '3',
