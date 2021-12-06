@@ -251,7 +251,7 @@
             <template v-else>
                <operatorInput
                   :disabled="biddingStatus"
-                  v-model="scope.row['moldFee']"
+                  v-model="scope.row['developFee']"
                 >
               </operatorInput>
             </template>
@@ -621,6 +621,7 @@ export default {
                     .add(Number(item.operationFee) || 0)
                     .toFixed(2);
           });
+          this.handlerInputBlur();
       },
       deep: true, //true 深度监听
     },
@@ -733,7 +734,6 @@ export default {
       this.projectLoading = true
             // 延迟下，展示出loading出来
       this.projectTime = setTimeout(() => {
-        console.log('object定时器我进来了')
         this.projectLoading = false
         clearTimeout(this.projectTime)
       }, 800);
@@ -973,6 +973,9 @@ export default {
     //下一步
     handleNext() {
       // 拍买
+      if (Number(this.totalPrices) == '0') {
+        return this.$message.error(this.language('BIDDING_ZJW0BNCJ','总价为 0 不能出价'))
+      }
       if (this.ruleForm.biddingType === "01") {
         if (
           Number(this.totalPrices) < Number(this.biddingQuoteRule.actualValue)
