@@ -82,7 +82,6 @@
         <template #supplierSapCode="scope">
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
-
         <template #demand="scope">
           <span>{{ scope.row.demand | kFilter }}</span>
         </template>
@@ -126,9 +125,9 @@
         <template #savingFee="scope">
           <span>{{ scope.row.savingFee | toThousands }}</span>
         </template>
-        <template #tto="scope">
+        <!-- <template #tto="scope">
           <span>{{ scope.row.tto | toThousands }}</span>
-        </template>
+        </template> -->
       </tableList>
       <!-- v-if="isPreview" -->
       <div class="beizhu">
@@ -491,7 +490,7 @@ export default {
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
         const list = row.filter((item)=> item.ltcRateStr!='0');
-        return list.length ? list[0].ltcDate : '-'
+        return list.length ? moment(list[0].ltcDate).format("YYYY-MM") : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
        let strList = [];
