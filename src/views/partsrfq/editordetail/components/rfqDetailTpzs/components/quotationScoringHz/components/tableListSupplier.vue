@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-24 16:31:52
+ * @LastEditTime: 2021-12-06 14:01:27
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -130,7 +130,7 @@
               <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "ltcStaringDate"'>
-                  <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
+              <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
             </template>
             <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
               <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">View</span>
@@ -169,281 +169,6 @@
         </el-table-column>
       </template>
     </el-table>
-  </div>
-  <div class="leftFlex" :style="{width:(100+50*(tableTitle[1] ? (Array.isArray(tableTitle[1].list) ? tableTitle[1].list.length : 0) : 0)) + 'PX'}">
-  <div class="selsTable" :style="{paddingTop:paddingTop}">
-    <el-table
-      tooltip-effect="light"
-      :height="height"
-      :data="tableData"
-      v-loading="loading"
-      :cell-class-name='cellClassName'
-      :empty-text="$t('LK_ZANWUSHUJU')"
-      ref='table'
-    >
-      <template v-for='(item,index) in tableTitle'>
-        <!-----------------表格中内容模块------------------------>
-        <el-table-column
-          :key="index"
-          :label="item.i18n ? $t(item.i18n) : item.label"
-          :width="item.width"
-          :prop='item.props'
-          align="center"
-          :resizable="false"
-        >
-          <!----------在表头上方需要显示评分的点，插入表头标签------>
-          <template slot="header" slot-scope="scope">
-            <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
-            <div class="headerContent" v-if='scope.column.label == "Supplier"'>
-              <div class="c" :style="{width:cWidth}">
-                <ul class="ca" :style="{width: (100+50*(tableTitle[1] ? (Array.isArray(tableTitle[1].list) ? tableTitle[1].list.length : 0) : 0))+ 'PX'}">
-                  <li v-for='(items,index) in supplierLeftLit' :key='index'>
-                    {{items.name}}
-                  </li>
-                </ul>
-                <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
-                  <template v-for="(itemss,index) in supplierLeftLit">
-                      <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
-                      <li :key="index" v-else class="ftaget">
-                        <span>{{items['cfPartAPrice']}}</span>
-                        <span style="width:99PX"></span>
-                        <span>{{items['cfPartBPrice']}}</span>
-                      </li>
-                  </template>
-                </ul>
-                <div class="cc" style="width:60px">
-                  <ul>
-                    <template v-for="(itemss,index) in supplierLeftLit">
-                        <li :key='index' v-if='itemss.name == "KM"'>{{kmAPrice}}</li>
-                        <li :key="index" v-else class=""></li>
-                    </template>
-                  </ul>
-                </div>
-                <div class="cd" style="width:60px">
-                  <ul>
-                    <template v-for="(itemss,index) in supplierLeftLit">
-                        <li :key='index' v-if='itemss.name == "KM"'>{{kmTooling}}</li>
-                        <li :key='index' v-else-if='itemss.name == "Planned Invest"'>{{budget}}</li>
-                        <li :key="index" v-else class=""></li>
-                    </template>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </template>
-          <!----------存在二级表头------>
-          <template v-if='item.list && item.list.length >0'>
-            <template v-for="(levelTowItem,levelTowIndex) in item.list">
-                <el-table-column
-                  :key="levelTowIndex"
-                  :width="levelTowItem.width"
-                  :prop='levelTowItem.props'
-                  align="center"
-                  :resizable="false"
-                >
-                <template slot="header">
-                  <el-tooltip :content='levelTowItem.label' effect='light'>
-                    <span class="overText" v-html="levelTowItem.renderHeader || levelTowItem.label"></span>
-                  </el-tooltip>
-                </template>
-                </el-table-column>
-            </template>
-          </template>
-          <!--------------时间格式------------>
-          <template slot-scope="scope">
-            <template v-if ='removeKeysNumber(item.props) == "developmentCost"'>
-              <span>{{scope.row[item.props]}}</span>
-              <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
-            </template>
-            <template v-if ='removeKeysNumber(item.props) == "supplierName"'>
-              <el-tooltip  effect='light'>
-                <div slot="content">
-                  <div>{{scope.row['supplierNameEn']}}</div>
-                  <div>{{scope.row[item.props]}}</div>
-                </div>
-                <div>
-                  <span class="isEplisSuplier">{{scope.row[getPorpsNumber(item.props)+"supplierNameEn"]}}</span>    
-                  <span class="isEplisSuplier">{{scope.row[item.props]}}</span>    
-                </div>
-              </el-tooltip>
-            </template>
-            <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
-              <span>{{scope.row[item.props]}}</span>
-              <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
-              <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "ltcStaringDate"'>
-              <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
-              <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
-            </template>     
-            <template v-else-if="removeKeysNumber(item.props) == 'fTarget'">
-              <span :class="{lvse:lvseFn(scope.row,item.props,'fTarget')}">{{scope.row[item.props]}}</span>
-            </template>
-            <template v-else-if='item.props== "partName"'>
-              <span style="color:red;" :class="{lvse:lvseFn(scope.row,item.props,'partName')}">{{scope.row[item.props]}}</span>
-            </template>
-            <!-- <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
-            </template>
-                <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-                    <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
-                </template> -->
-            <template v-else slot-scope="scope">
-              <span>{{scope.row[item.props]}}</span>
-            </template>
-          </template>
-
-        </el-table-column>
-      </template>
-    </el-table>
-  </div>
-  </div>
-  <div class="rightFlex" style="width: 220px">
-    <div class="rightWrapper">
-      <el-table
-        class="rigthTable"
-        tooltip-effect="light"
-        :height="height"
-        :data="tableData"
-        v-loading="loading"
-        :cell-class-name='cellClassName'
-        :empty-text="$t('LK_ZANWUSHUJU')"
-        ref='table'
-      >
-        <template v-for='(item,index) in tableTitle'>
-          <!-----------------表格中内容模块------------------------>
-          <el-table-column
-            :key="index"
-            :label="item.i18n ? $t(item.i18n) : item.label"
-            :width="item.width"
-            :prop='item.props'
-            align="center"
-            :resizable="false"
-          >
-            <!----------在表头上方需要显示评分的点，插入表头标签------>
-            <template slot="header" slot-scope="scope">
-              <el-tooltip :content="scope.column.label" effect='light'><span class="labelHader">{{scope.column.label}}</span></el-tooltip>
-              <div class="headerContent" v-if='scope.column.label == "Supplier"'>
-                <div class="c" :style="{width:cWidth}">
-                <ul class="ca" :style="{width: (100+50*(tableTitle[1] ? (Array.isArray(tableTitle[1].list) ? tableTitle[1].list.length : 0) : 0))+ 'PX'}">
-                  <li v-for='(items,index) in supplierLeftLit' :key='index'>
-                    {{items.name}}
-                  </li>
-                </ul>
-                <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
-                  <template v-for="(itemss,index) in supplierLeftLit">
-                      <li :key='index' v-if='itemss.name != "F-Target"'>{{items[itemss.props]}}</li>
-                      <li :key="index" v-else class="ftaget">
-                        <span>{{items['cfPartAPrice']}}</span>
-                        <span style="width:99PX"></span>
-                        <span>{{items['cfPartBPrice']}}</span>
-                      </li>
-                  </template>
-                </ul>
-                <div class="cc" style="width:60px">
-                  <ul>
-                    <template v-for="(itemss,index) in supplierLeftLit">
-                        <li :key='index' v-if='itemss.name == "KM"'>{{kmAPrice}}</li>
-                        <li :key="index" v-else class=""></li>
-                    </template>
-                  </ul>
-                </div>
-                <div class="cd" style="width:60px">
-                  <ul>
-                    <template v-for="(itemss,index) in supplierLeftLit">
-                        <li :key='index' v-if='itemss.name == "KM"'>{{kmTooling}}</li>
-                        <li :key='index' v-else-if='itemss.name == "Planned Invest"'>{{budget}}</li>
-                        <li :key="index" v-else class=""></li>
-                    </template>
-                  </ul>
-                </div>
-                </div>
-              </div>
-            </template>
-            <!----------存在二级表头------>
-            <template v-if='item.list && item.list.length >0'>
-              <template v-for="(levelTowItem,levelTowIndex) in item.list">
-                  <el-table-column
-                    :key="levelTowIndex"
-                    :width="levelTowItem.width"
-                    :prop='levelTowItem.props'
-                    align="center"
-                    :resizable="false"
-                  >
-                  <template slot="header">
-                    <el-tooltip :content='levelTowItem.label' effect='light'>
-                      <span class="overText" v-html="levelTowItem.renderHeader || levelTowItem.label"></span>
-                    </el-tooltip>
-                  </template>
-                  </el-table-column>
-              </template>
-            </template>
-            <!--------------时间格式------------>
-            <template slot-scope="scope">
-              <template v-if ='removeKeysNumber(item.props) == "developmentCost"'>
-                <span>{{scope.row[item.props]}}</span>
-                <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
-              </template>
-              <template v-if ='removeKeysNumber(item.props) == "supplierName"'>
-                <el-tooltip  effect='light'>
-                  <div slot="content">
-                    <div>{{scope.row['supplierNameEn']}}</div>
-                    <div>{{scope.row[item.props]}}</div>
-                  </div>
-                  <div>
-                    <span class="isEplisSuplier">{{scope.row[getPorpsNumber(item.props)+"supplierNameEn"]}}</span>    
-                    <span class="isEplisSuplier">{{scope.row[item.props]}}</span>    
-                  </div>
-                </el-tooltip>
-              </template>
-              <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
-                <span>{{scope.row[item.props]}}</span>
-                <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
-              </template>
-              <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
-                <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
-              </template>
-              <template v-else-if='removeKeysNumber(item.props) == "ltcStaringDate"'>
-                <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
-              </template>
-              <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
-                <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">查看详情</span>
-              </template>     
-              <template v-else-if="removeKeysNumber(item.props) == 'fTarget'">
-                <span :class="{lvse:lvseFn(scope.row,item.props,'fTarget')}">{{scope.row[item.props]}}</span>
-              </template>
-              <template v-else-if='item.props== "partName"'>
-                <span style="color:red;" :class="{lvse:lvseFn(scope.row,item.props,'partName')}">{{scope.row[item.props]}}</span>
-              </template>
-              <!-- <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
-              </template>
-                  <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-                      <span class="priceUnderLinePrice">{{scope.row[item.props]}}</span>
-                  </template> -->
-            <template v-else-if='removeKeysNumber(item.props) == "totalInvest"'>
-              <el-tooltip :content='scope.row[item.props]' effect='light'>
-                <span class="textEplies">{{ttoShow(scope.row[item.props])}}</span>
-              </el-tooltip>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "totalTto"'>
-              <el-tooltip :content='scope.row[item.props]' effect='light'>
-                <span class="textEplies">{{ttoShow(scope.row[item.props])}}</span>
-              </el-tooltip>
-            </template>
-              <template v-else slot-scope="scope">
-                <span>{{scope.row[item.props]}}</span>
-              </template>
-            </template>
-
-          </el-table-column>
-        </template>
-      </el-table>
-    </div>
   </div>
 </div>
 </template>
@@ -510,18 +235,7 @@ export default{
           rightFlexBodyDom.style.height = rightFlexDom.style.height = `${ mainTableBodyClientRect.height }px`
           
           rightFlexDom.style.paddingTop = `${ parseFloat(window.getComputedStyle(mainTableDom).paddingTop) + 1 }px`
-          //  + 0.5       
-          
-          // rightFlexDom.style.bottom = `${ math.chain(math.bignumber(mainTableClientRect.height)).subtract(parseFloat(window.getComputedStyle(mainTableDom).paddingTop)).subtract(mainTableBodyClientRect.height).done().toFixed(6) }px`
         }
-        
-        
-        console.log("---------------------------------------------------------------")
-        console.log("mainTable.clientHeight", mainTableDom.clientHeight)
-        console.log("mainTable.scrollHeight", mainTableDom.scrollHeight)
-        console.log("mainTable.offsetHeight", mainTableDom.offsetHeight)
-        console.log("mainTable.getBoundingClientRect", mainTableDom.getBoundingClientRect())
-        console.log("---------------------------------------------------------------")
       })
 
       domObserver.observe(this.$el, {
@@ -566,7 +280,7 @@ export default{
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
           rfqId:this.$route.query.id,
-          round:this.getbaseInfoData().currentRounds,
+          round:items.round,
           supplierId:items.supplierId,
           fsNum:items[index+'partPrjCode'],
           fix:true,
@@ -666,10 +380,6 @@ export default{
       .rightWrapper {
         position: absolute;
         bottom: 1px;
-
-        // .rigthTable {
-        //   right: 0;
-        // }
       }
 
       .selsTable{
@@ -710,7 +420,7 @@ export default{
     overflow: visible;
     ::v-deep.cell{
       overflow: visible;
-
+        
         .price{
           position: absolute;
           top: 0px;
