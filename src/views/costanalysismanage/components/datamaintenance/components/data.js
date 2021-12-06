@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 13:50:49
- * @LastEditTime: 2021-08-23 15:25:25
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-12-06 17:30:12
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\data.js
  */
@@ -27,8 +27,8 @@ export const navList= [
   {
     value: 2,
     name: "人工成本数据维护",
-    url: "/targetpriceandscore/costanalysismanage/datamaintenance/costDataMaintenance",
-    activePath: "/costanalysismanage/datamaintenance/costDataMaintenance",
+    url: "/targetpriceandscore/datamaintenance/costDataMaintenance",
+    activePath: "/datamaintenance/costDataMaintenance",
     key: "RGCBSJWH",
     permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_TAB",
     permissionName: "人工成本数据维护"
