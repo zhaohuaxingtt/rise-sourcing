@@ -44,7 +44,7 @@
               v-model="basicInfo[item.props]" 
               :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
               @visible-change="selectVisibleChange($event, item.selectOption)"
-              :disabled="disabled" 
+              :disabled="selectDisabled(item.props)" 
               
             >
               <el-option
@@ -172,7 +172,8 @@ export default {
       isTobeStated(){
         const { basicInfo={} } = this;
         return basicInfo.coverStatus == 'TOBE_STATED' || basicInfo.coverStatus == '';
-      }
+      },
+
       
     },
     data(){
@@ -472,6 +473,13 @@ export default {
           break
           default:
         }
+      },
+      
+      // 未保存的情况下 是否相关 字段禁用
+      selectDisabled(type){
+        console.log(type);
+        const { disabled,basicInfo } = this;
+        return disabled || (type == 'isReference' && !basicInfo.aekoCoverId)
       },
     }
 }
