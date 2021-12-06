@@ -27,7 +27,6 @@ export default {
       rsDisabled: state => state.nomination.rsDisabled,
     }),
     isDisabled() {
-      console.log("this.isPreview || this.nominationDisabled || this.rsDisabled", this.isPreview || this.nominationDisabled || this.rsDisabled)
       return this.isPreview || this.nominationDisabled || this.rsDisabled
     }
   },
