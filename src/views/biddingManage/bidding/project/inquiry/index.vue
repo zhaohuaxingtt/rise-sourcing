@@ -187,7 +187,6 @@
               inactive-text="N"
               :active-value='true'
               :inactive-value='false'
-              @change="handleChange($event, scope.row)"
               :disabled="ruleForm.biddingStatus !== '01'"
             >
             </el-switch>
@@ -1427,7 +1426,6 @@ export default {
       if(!this.ruleForm.firstSaveSupplierFlag) {
         const flag = this.ruleForm.suppliers.every(item => item.contactName && item.email)
         const formData = this.ruleForm;
-        console.log('fsafawf',formData.suppliers)
         if (flag) {
           saveInquiryBidding({
           ...this.orgRuleForm,

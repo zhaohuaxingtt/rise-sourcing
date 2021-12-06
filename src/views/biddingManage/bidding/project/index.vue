@@ -319,16 +319,29 @@ export default {
         return this.$message.error(this.language('BIDDING_WWCXJGLSZWFFQJJ','未完成询价管理设置, 无法发起竞价'));
       }
 
-      this.$refs.child.submitForm(() => {
-        const { projectCode } = this.ruleForm;
-        const fromdata = { projectCode };
-        sendEmail(fromdata)
-          .then((res) => {
-            window.location.reload();
-          })
-          .catch((err) => {
-            this.$message.error(err.message);
-          });
+      const { projectCode } = this.ruleForm;
+      const fromdata = { projectCode };
+      // this.$refs.child.submitForm(() => {
+      //   sendEmail(fromdata)
+      //     .then((res) => {
+      //       window.location.reload();
+      //     })
+      //     .catch((err) => {
+      //       this.$message.error(err.message);
+      //     });
+      // });
+      sendEmail(fromdata)
+      .then((res) => {
+        if (res.code == 200) {
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+           if (document.getElementsByClassName("el-message").length === 0) {
+             this.$message.error(err.message);
+           }
+        }
       });
     },
     handleShowNotice(type, docTitle) {

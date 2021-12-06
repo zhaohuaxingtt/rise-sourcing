@@ -50,11 +50,11 @@
                   <span v-else>{{ scope.row.grade }}</span>
                 </template>
                 <template v-else-if="item.props === 'externaFee' || item.props === 'addFee'" v-slot="scope">
-                  <iInput v-if="editStatus" v-model="scope.row[item.props]" />
+                  <iInput v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
                   <span v-else>{{ scope.row[item.props] }}</span>
                 </template>
                 <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
-                  <iInput v-if="editStatus" v-model="scope.row.confirmCycle" />
+                  <iInput v-if="editStatus" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
                   <span v-else>{{ scope.row.confirmCycle }}</span>
                 </template>
                 <template v-else-if="item.props === 'remark'" v-slot="scope">
@@ -82,6 +82,7 @@ import { tableTitle, deptScoreTableTitle } from "./components/data"
 import { cloneDeep, isEqual } from "lodash"
 import { getRfqPartRatingsByCurrentDept, updateRfqPartRatings, updateRfqPartRatingMemo } from "@/api/supplierscore"
 import { afterSaleLeaderIds } from "@/views/supplierscore/components/data"
+import { numberProcessor } from "@/utils"
 
 export default {
   components: {
@@ -239,6 +240,16 @@ export default {
       .catch(() => this.$refs.remarkDialog.updateConfirmLoading(false))
       
     },
+    // 输入金额
+    handleInputByMoney(value, key, row) {
+      this.$set(row, key, numberProcessor(value, 2))
+    },
+    // 输入周期
+    handleInputByWeek(value, key, row) {
+      let week = numberProcessor(value, 0)
+      if (+week > 53) week = "53"
+      this.$set(row, key, week)
+    }
   }
 }
 </script>

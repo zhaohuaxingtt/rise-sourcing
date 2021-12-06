@@ -85,8 +85,8 @@
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key, items.name) : items.name" :prop="items.props" :fixed="items.fixed">
         <template slot="header">
           <div v-if="items.enName">
-            <p>{{items.name}}</p>
-            <p>{{items.enName}}<span v-if="items.enName1">{{items.enName1}}</span></p>
+            <p v-if="items.name">{{items.name}}</p>
+            <p v-if="items.enName">{{items.enName}}<span v-if="items.enName1">{{items.enName1}}</span></p>
           </div>
           <span v-else>{{items.key ? language(items.key, items.name) : items.name}}</span>
         </template>
