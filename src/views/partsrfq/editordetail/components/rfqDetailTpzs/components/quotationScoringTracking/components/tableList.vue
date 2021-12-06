@@ -86,7 +86,7 @@
           <!------------------------零件评分弹窗----------------------->
           <!--------------------------------------------------------->
 
-    <riteDialog :dialogVisible='dialogVisible' :rfqId='this.$route.query.id' :supplierId='supplierId'></riteDialog>
+    <riteDialog :dialogVisible.sync='dialogVisible' :rfqId='this.$route.query.id' :supplierId='supplierId'></riteDialog>
   </div>
 </template>
 <script>

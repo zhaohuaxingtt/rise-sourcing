@@ -8,14 +8,14 @@
 -->
 
 <template>
-  <iDialog 
+  <iDialog
     :title="language('LINGJIANPINGFEN','零件评分')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="95%"
     class="addPartsDialog"
   >
-    <tableList selection indexKey :tableTitle="tableTitle" :tableData="tableData" class="doubleHeader"></tableList>
+    <tableList :selection="false" indexKey :tableTitle="tableTitle" :tableData="tableData" class="doubleHeader"></tableList>
     <iPagination v-update 
       @size-change="handleSizeChange($event, getTableData)" 
       @current-change="handleCurrentChange($event, getTableData)" 
@@ -36,6 +36,8 @@ import tableList from '../../components/tableList'
 import { pageMixins } from "@/utils/pageMixins"
 import { partsRatingTableTitle } from './data'
 import { getRateByRfqIdAndSupplierPage } from '@/api/designate/decisiondata/bdl'
+import { cloneDeep } from "lodash"
+
 export default {
   mixins: [pageMixins],
   components: { iDialog, tableList, iPagination },
@@ -50,6 +52,8 @@ export default {
       if (val) {
         this.getTableData()
       }
+
+      this.$emit("update:dialogVisible", val)
     }
   },
   data() {
@@ -68,15 +72,52 @@ export default {
       const params = {
         rfqId: this.rfqId,
         supplierId: this.supplierId,
-        current: this.page.currPage,
-        size: this.page.pageSize
+        // current: this.page.currPage,
+        // size: this.page.pageSize
       }
       getRateByRfqIdAndSupplierPage(params).then(res => {
-        if (res?.result) {
-          this.tableData = res.data
-          this.page.currPage = Number(res.pageNum)
-          this.page.pageSize = Number(res.pageSize)
-          this.page.totalCount = Number(res.total)
+        if (res.code == 200) {
+          this.tableTitle = cloneDeep(partsRatingTableTitle)
+          
+          if (Array.isArray(res.data) && res.data.length > 0) {
+            const item = res.data[0]
+            if (Array.isArray(item.deptList)) {
+              item.deptList.forEach(dept => {
+                this.tableTitle.push({
+                  name: dept.deptNum,
+                  tooltip: true,
+                  children: [
+                    { props: `grade_${ dept.deptNum }`, name: "评分", key: "PINGFEN", width: "80" },
+                    { props: `externaFee_${ dept.deptNum }`, name: "外部开发费(元)", key: "WAIBUKAIFAFEI_YUAN", width: "120" },
+                    { props: `addFee_${ dept.deptNum }`, name: "增加的认可费(元)", key: "ZENGJIARENKEFEI_YUAN", width: "130" },
+                    { props: `confirmCycle_${ dept.deptNum }`, name: "认可周期(周)", key: "RENKEZHOUQI_ZHOU", width: "110" },
+                    { props: `memo_${ dept.deptNum }`, name: '备注', key: "BEIZHU", width: "80" }
+                  ]
+                })
+              })
+            }
+
+            this.tableData = res.data.map(item => {
+              const result = { ...item }
+
+              if (Array.isArray(item.deptList)) {
+                item.deptList.forEach(dept => {
+                  this.$set(result, `grade_${ dept.deptNum }`, dept.grade)
+                  this.$set(result, `externaFee_${ dept.deptNum }`, dept.externaFee)
+                  this.$set(result, `addFee_${ dept.deptNum }`, dept.addFee)
+                  this.$set(result, `confirmCycle_${ dept.deptNum }`, dept.confirmCycle)
+                  this.$set(result, `memo_${ dept.deptNum }`, dept.memo_)
+                })
+              }
+
+              return result
+            })
+          }
+
+          console.log("this.tableData", this.tableData)
+          // this.page.currPage = Number(res.pageNum)
+          // this.page.pageSize = Number(res.pageSize)
+          // this.page.totalCount = Number(res.total)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
@@ -132,6 +173,11 @@ export default {
     //   height: calc(100% - 70px);
     //   overflow: auto;
     // }
+    position: absolute;
+    margin: 0 !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 </style>
