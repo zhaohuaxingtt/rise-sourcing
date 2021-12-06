@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-21 10:49:39
+ * @LastEditTime: 2021-11-29 11:34:57
  * @Description: 项目管理相关接口
- * @FilePath: \front-web\src\api\project\index.js
+ * @FilePath: \front-sourcing\src\api\project\index.js
  */
 
 import axios from '@/utils/axios'
@@ -449,6 +449,23 @@ export function partSchedulePartFitting(params) {
 export function getWorkDay(params) {
   return requstBaseInfo({
     url: '/queryCalendar',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 获取默认配置
+export function getDefaultConfig() {
+  return requst({
+    url: `/project-group-config/sys`,
+    method: 'GET'
+  })
+}
+
+// 保存默认配置
+export function saveUpdateConfig(params) {
+  return requst({
+    url: `/project-group-config/sys`,
     method: 'POST',
     data: params
   })

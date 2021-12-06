@@ -13,6 +13,7 @@ export const arrayOfselect = [
   {label:'BoB',value:'BOB'},
   {label:'Volume Pricing',value:'VP'},
   {label:'TIA',value:'TIA'},
+  {label:'Bidlink',value:'BL'},
   {label:'报价趋势',value:'QT'},
 ]
 
