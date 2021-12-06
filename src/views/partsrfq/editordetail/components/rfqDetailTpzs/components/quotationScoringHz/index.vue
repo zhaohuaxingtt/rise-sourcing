@@ -116,6 +116,7 @@ export default{
     quoteInquiryPriceLoading: false,
     options:{show:false},
     roundsType,
+    DataRoundsType:'',
     exchangeRatesCurrentVersionStr: "",
     exchangeRatesOldVersions: []
   }},
@@ -144,9 +145,8 @@ export default{
     },
     //判断当前是开标还是竞价，需要对按钮做不同的展示。
     isKborJj(){
-      console.log(this.getbaseInfoData())
-      if(this.getbaseInfoData().roundsType == this.roundsType.zxjjys) return 1
-      if(this.getbaseInfoData().roundsType == this.roundsType.zxkb) return 2
+      if(this.DataRoundsType == this.roundsType.zxjjys) return 1
+      if(this.DataRoundsType == this.roundsType.zxkb) return 2
       return 0
     }
   },
@@ -380,6 +380,7 @@ export default{
         this.fsTableLoading = false
         this.clearDataFs()
         if(res.data && res.data.partInfoList && res.data.partInfoList){
+          this.DataRoundsType = res.data.roundsType
           this.partInfoList = res.data.partInfoList
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
@@ -460,6 +461,7 @@ export default{
         fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
           this.supplierTableLoading = false
           if(res.code == 200 && res.data && res.data.bdlInfoList){
+            this.DataRoundsType = res.data.roundsType
             const data = translateDataListSupplier(res.data.bdlInfoList) // 数据模型转化。
             this.supplierData = data.dataList
             this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
