@@ -722,6 +722,7 @@ export default {
                     .add(item.operationFee || 0)
                     .toFixed(2);
           });
+          this.handlerInputBlur();
       },
       deep: true, //true 深度监听
     },
@@ -760,6 +761,20 @@ export default {
           }
         }
       })
+      // 批量更新年降
+      if (this.ruleForm.roundType === '05' && !this.ruleForm.rfqCode) {
+        this.yearsPlan.forEach((item,index)=>{
+          console.log(item,index)
+          let dateYear = new Date(val).getFullYear();
+          if(index % 2 === 0 ){
+            for (let i = 1; i < 10; i++) {
+                dateYear = dateYear + 1;
+                item[`stage${i}`] = dateYear + '-01';
+              
+            }
+          }
+        })
+      }
     },
     //批量更新年降 鼠标移出更新年将列表
     handleInputOnBlur(row, props){
@@ -1279,12 +1294,31 @@ export default {
       if (nowYear) {
         date = dayjs(nowYear).year();
       }
-      this.yearsPlan.push({
-        ...planBaseYear,
-        title: typeof e === "undefined" ? "" : e.fsnrGsnr,
-      },{
-        ...planBaseYear
-      })
+
+      if (this.ruleForm.roundType === '05' && !this.ruleForm.rfqCode) {
+        this.yearsPlan.push({
+          title: typeof e === "undefined" ? "" : e.fsnrGsnr,
+          stage1: date ? date  + 1 + "-01" : "",
+          stage2: date ? date  + 2 + "-01" : "",
+          stage3: date ? date  + 3 + "-01" : "",
+          stage4: date ? date  + 4 + "-01" : "",
+          stage5: date ? date  + 5 + "-01" : "",
+          stage6: date ? date  + 6 + "-01" : "",
+          stage7: date ? date  + 7 + "-01" : "",
+          stage8: date ? date  + 8 + "-01" : "",
+          stage9: date ? date  + 9 + "-01" : "",
+        },{
+          ...planBaseYear
+        })
+      } else {
+        this.yearsPlan.push({
+          ...planBaseYear,
+          title: typeof e === "undefined" ? "" : e.fsnrGsnr,
+          },{
+            ...planBaseYear
+        })
+      }
+      
       this.annualOutput.push(
         {
           title: typeof e === "undefined" ? "" : e.fsnrGsnr,
