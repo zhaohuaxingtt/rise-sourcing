@@ -146,7 +146,8 @@ export default{
     openPage(row){
       if(['PCA','TIA','QT'].includes(this.typeSelect)){
        try {
-          this.pdfUrl = row.fileList.length?row.fileList[0].filePath:null
+          // this.pdfUrl = row.fileList.length?row.fileList[0].filePath:null
+          this.pdfUrl = row.reportLink
        } catch (error) {
           this.pdfUrl = ''
           this.rfqId = ''

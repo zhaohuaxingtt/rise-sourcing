@@ -71,6 +71,14 @@
           <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
 
+        <template #status="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>SKD</p>
+            <p>LC</p>
+          </div>
+          <span v-else>{{ scope.row.status }}</span>
+        </template>
+
         <template #supplierSapCode="scope">
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
@@ -91,10 +99,20 @@
           <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
         </template>
         <template #aprice="scope">
-          <span>{{ scope.row.aprice | toThousands }}</span>
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdAPrice | toThousands }}</p>
+            <p>{{ scope.row.aprice | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
+          <span v-else>{{ scope.row.aprice | toThousands }}</span>
         </template>
         <template #bprice="scope">
-          <span>{{ scope.row.bprice | toThousands }}</span>
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdBPrice | toThousands }}</p>
+            <p>{{ scope.row.bprice | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
+          <span v-else>{{ scope.row.bprice | toThousands }}</span>
         </template>
         <template #investFee="scope">
           <span>{{ scope.row.investFee | toThousands }}</span>

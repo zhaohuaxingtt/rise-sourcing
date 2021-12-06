@@ -140,7 +140,9 @@ const actions = {
     })
   },
   setUserInfo({ commit }, data) {},
-  loginOut({ commit }) {},
+  loginOut({ commit }) {
+    commit('SET_MENU_LIST', [])
+  },
   refreshToken() {},
   uploadResource({ commit, state }, resource) {
     const template = JSON.parse(JSON.stringify(state.resourceList))

@@ -230,6 +230,9 @@ export default {
             let domHtml = ''
 
             params.forEach(item => {
+              if (item.seriesName == "sum") {
+                return false;
+              }
               domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + item.color + '"></span>'
               result += domHtml + item.seriesName + ":" + this.doNumber(item.value) + '<br/>'
             })
