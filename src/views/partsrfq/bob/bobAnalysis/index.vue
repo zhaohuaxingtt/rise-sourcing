@@ -37,6 +37,7 @@
               <iButton @click="down">导出</iButton>
             </template>
             <template v-else>
+              <iButton @click="clear">移除</iButton>
               <iButton @click="saveGroup">保存分组</iButton>
               <iButton @click="cancelGroupMode">取消</iButton>
             </template>
@@ -67,11 +68,11 @@
               <template v-if="item.isBreakLine">
                 <span class="table-cell"
                       style="width: 100%;text-align:center;font-weight: bold;background-color: #1763F7;color: #fff;">
-                  {{language("LK_NONGROUPEDBREAKTIPS","以下为未分组数据")}}
+                  {{$t("LK_NONGROUPEDBREAKTIPS",{"msg": item.title})}}
                 </span>
               </template>
               <template v-else>
-                <div :class="['table-cell',item.level == 1 && item.matchId < 0? 'collapse-group':'']"
+                <div :class="['table-cell', showCollapseOutLine(item)]"
                       :style="{'padding-left': 20*item.level + 'px','justify-content': 'flex-start','width': '20%'}">
                   <i v-if="item.hasChild"
                      :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
@@ -94,7 +95,7 @@
                     </span>
                   </template>
                 </div>
-                <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'', item.level == 1 && item.matchId < 0? 'collapse-group':'']"
+                <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'', showCollapseOutLine(item)]"
                       v-for="(title, titleIdx) in tableTitle"
                       :key="titleIdx"
                       :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
@@ -142,7 +143,6 @@
 
 <script>
 import { icon, iCard, iButton, iDialog, iMessage } from "rise";
-import table1 from "./components/table1.vue";
 import tree from './tree'
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
@@ -157,6 +157,7 @@ import {
   groupedCancel,
   groupedSubmit,
   restore,
+  removeComponentFromGroup,
   renameComponentGroup
 } from "@/api/partsrfq/bob";
 import { update } from "@/api/partsrfq/bob/analysisList";
@@ -173,11 +174,10 @@ export default {
     iCard,
     iDialog,
     iButton,
-    table1,
     tree,
     ungroupedTable,
     groupedTable,
-    remarkDialog,
+    remarkDialog
   },
   props: {
     label: {
@@ -240,7 +240,8 @@ export default {
       onEditLabels: [],
       suppliers: [],
       subCbdDetails: {},
-      subCbdDetailShowPositions: []
+      subCbdDetailShowPositions: [],
+      removeCbdIds: []
     };
   },
   created () {
@@ -276,6 +277,13 @@ export default {
     }
   },
   methods: {
+    showCollapseOutLine(item) {
+      if (item.level == 0) {
+        return 'collapse-root'
+      } else {
+        return (item.level == 1 && typeof item.matchId != 'undefined') ? 'collapse-group':''
+      }
+    },
     changeToEditMode(id) {
       console.log(id)
       this.onEditLabels.push(id)
@@ -290,11 +298,6 @@ export default {
       return {}
     },
     decideRowClass (row, idx) {
-      // if (this.collapseItems.length == 0) {
-      //   if (idx<3) console.log(idx)
-      //   return idx % 2 == 0 ? 'table-odd' : 'table-even';
-      // }
-
       var displayed = this.tableListData.filter((item) => {
         return this.collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'
       })
@@ -364,6 +367,15 @@ export default {
       // this.onGroupingModel = false;
     },
     onGroupItemSelected (checked, item, idx) {
+      var parent = this.tableListData.filter((line) => {
+        return line.id == item.parentId
+      })
+      if (parent.length > 0 && parent[0].matchId > 0) {
+        var cbd = this.tableListData.filter((line) => {
+          return line.parentId == item.parentId && line.code == "detailId"
+        })
+        this.removeCbdIds.push(cbd[0]["label#" + idx])
+      }
       if (checked) {
         if (this.groupSelectedItems.some((obj) => {
           return obj.idx == idx && item.rootId == obj.rootId
@@ -531,15 +543,20 @@ export default {
       this.subCbdDetails = {};
       this.subCbdDetailShowPositions = [];
       var elements = this.tableList.element;
+      var rootTitle;
       elements.forEach((cbdLvlZero) => {
         if (cbdLvlZero.code == code) {
+          rootTitle = cbdLvlZero.title
           this.processGroupDatas(cbdLvlZero, this.addCategory(cbdLvlZero))
         }
       })
 
       this.insertGroupedArr()
+      if (this.subCbdDetailShowPositions.length > 0) {
+        this.subCbdDetailShowPositions.push(['breakLine'])
+      }
       this.insertUnGroupedArr(prop)
-      this.addToTable(code)
+      this.addToTable(rootTitle)
     },
     processGroupDatas(cbdLvlZero, rootId) {
       if (!cbdLvlZero.child || cbdLvlZero.child.length <= 0) {
@@ -559,10 +576,7 @@ export default {
               }
               
               var cbdDetailHead = this.createDetailHead(cbdHead, supplier, isArray ? idx : -1, rootId, rootId, 1)
-              if (cbdHead.child && cbdHead.child.length > 0) {
-                cbdDetailHead.hasChild = true;
-                cbdDetailHead.expanded = true;
-              }
+              this.setCollapse(cbdHead, cbdDetailHead)
               this.subCbdDetails[cbdSubId].push(cbdDetailHead)
               
               if (cbdHead.child && cbdHead.child.length > 0) {
@@ -596,10 +610,7 @@ export default {
             temp["checked#" + supp.replace("label#","")] = false;
           })
         }
-        if (child.child && child.child.length > 0) {
-          temp.hasChild = true;
-          temp.expanded = true
-        }
+        this.setCollapse(child, temp)
         this.subCbdDetails[cbdId].push(temp)
         if (child.child && child.child.length > 0) {
           this.createDetail(child, cbdId, supplier, index, rootId, temp.id, nextLevel)
@@ -643,13 +654,16 @@ export default {
         var lvlItem = this.createNewCbdDetailLine(cbdDetail.code, cbdDetail.title, rootId, parentId)
         lvlItem.id = this.createUuid()
         lvlItem.level = level;
-        if (cbdDetail.child && cbdDetail.child.length > 0) {
-          lvlItem.hasChild = true;
-          lvlItem.expanded = true;
-        }
+        this.setCollapse(cbdDetail, lvlItem)
         this.tableListData.push(lvlItem)
         this.addSub(cbdDetail, rootId, lvlItem.id, nextLevel)
       });
+    },
+    setCollapse(ref, item) {
+      if (ref.child && ref.child.length > 0) {
+        item.hasChild = true;
+        item.expanded = true;
+      }
     },
     addCategory(cbdLvlZero) {
       var lvlZero = JSON.parse(JSON.stringify(cbdLvlZero));
@@ -660,12 +674,24 @@ export default {
       this.tableListData.push(lvlZero)
       return lvlZero.id
     },
-    addToTable() {
+    addToTable(rootTitle) {
       this.subCbdDetailShowPositions.forEach((line) => {
         var lineDatas;
         line.forEach((cbdId) => {
           if (!cbdId) {
             return false;
+          }
+          if (cbdId == "breakLine") {
+            lineDatas = []
+            var rootId = this.tableListData[this.tableListData.length - 1].rootId
+            lineDatas.push({
+              id: this.createUuid(),
+              isBreakLine: true,
+              rootId: rootId,
+              parentId: rootId,
+              title: rootTitle
+            })
+            return false
           }
           if (!lineDatas) {
             lineDatas = this.subCbdDetails[cbdId]
@@ -822,6 +848,17 @@ export default {
         code: '1'
       }).then(res => {
         console.log(res.data)
+        if (res.data) {
+          res.data.forEach((matchId) => {
+            if (!matchId.matchId) {
+              if (res.data.some((item) => {
+                return matchId.groupName == item.groupName
+              })) {
+                matchId.groupName = matchId.groupName + res.data.length
+              }
+            }
+          })
+        }
         this.groupNameOptions = res.data
       })
     },
@@ -870,6 +907,24 @@ export default {
         }
       })
     },
+
+    clear () {
+      this.onDataLoading = true;
+      removeComponentFromGroup({
+        schemeId: this.schemaId,
+        roundDetailIdList: this.removeCbdIds
+      }).then(res => {
+        this.removeCbdIds = []
+        this.chargeRetrieve({
+          isDefault: true,
+          viewType: 'all',
+          schemaId: this.schemaId,
+          groupId: this.groupId
+        });
+      this.onDataLoading = false;
+      })
+    },
+
     finish () {
       groupedSubmit({
         schemaId: this.schemaId,
@@ -1048,5 +1103,8 @@ export default {
 }
 .collapse-group {
   border-top: 3px solid #1763F7;
+}
+.collapse-root {
+  border-top: 3px solid #000000;
 }
 </style>

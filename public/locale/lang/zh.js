@@ -1171,7 +1171,7 @@
         'LK_CARPROJECTRFQ': '报价时间',
         'LK_NUMBERPREFIX': '第',
         'LK_TURN': '轮',
-        'LK_NONGROUPEDBREAKTIPS': '以下为未分组数据',
+        'LK_NONGROUPEDBREAKTIPS': '以下为 {msg} 未分组数据',
         'LK_CAIGOULEIXING': '采购类型', //  采购类型
 
         // 定点管理
