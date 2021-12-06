@@ -31,8 +31,10 @@
             <div class="flex">
                <iButton @click="onJump360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
                <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
-               <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
-               <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+               <template v-if="!paramCategoryCode">
+                  <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+                  <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+               </template>
             </div>
          </div>
 		</template>
@@ -52,6 +54,9 @@ import {downloadPdfMixins} from '@/utils/pdf';
 export default {
    mixins: [downloadPdfMixins],
    components:{iCard,iButton,marks,icon},
+   props: {
+      paramCategoryCode: String
+   },
    data () {
       return {
          config :{
@@ -95,7 +100,11 @@ export default {
       }
    },
    created () {
-      this.categoryCode=this.$store.state.rfq.categoryCode
+      if (this.paramCategoryCode) {
+         this.categoryCode = this.paramCategoryCode
+      } else {
+         this.categoryCode=this.$store.state.rfq.categoryCode
+      }
       this.getCategoryAnalysis()
    },
    mounted () {
@@ -111,6 +120,17 @@ export default {
          this.categoryCode=this.$store.state.rfq.categoryCode
          this.mark=''
          this.renderBi()
+      },
+      paramCategoryCode: {
+         handler(val) {
+            if (val) {
+            this.categoryCode = val
+      console.log("categoryCode", this.categoryCode)
+            // this.getCategoryAnalysis()
+         this.renderBi()
+            }
+         },
+         immediate: true
       }
    },
    methods: {

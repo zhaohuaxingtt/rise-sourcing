@@ -105,6 +105,7 @@ export default {
         const res = await getOneRfqInfo(this.$route.query.id);
         if (res.result) {
           this.form = res.data;
+          this.$emit("rfqInfo", this.form)
         }
         this.tableLoading = false;
       } catch {
