@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-12 22:25:32
+ * @LastEditTime: 2021-12-06 14:11:57
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\index.vue
 -->
@@ -35,13 +35,13 @@ export default {
       return this.$route.meta.withoutTop
     },
     subMenu() {
-      return this.$route.path.includes('delayconfirm') ? MENUFS : MENU
+      return MENU
     },
     navList() {
-      if (this.$route.path.includes('delayconfirm')) {
-        // eslint-disable-next-line no-undef
-        return _.cloneDeep(COMFIRMTAB)
-      }
+      // if (this.$route.path.includes('delayconfirm')) {
+      //   // eslint-disable-next-line no-undef
+      //   return _.cloneDeep(COMFIRMTAB)
+      // }
       // eslint-disable-next-line no-undef
       return _.cloneDeep(TAB)
     }
