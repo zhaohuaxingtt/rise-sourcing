@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 14:41:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 14:30:12
+ * @LastEditTime: 2021-12-02 17:03:54
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\data.js
  */
@@ -48,7 +48,7 @@ export const searchList = [
   {value: 'csfUserDept', label: '是否有询价科室', type: 'select', key: 'SHIFOUYOUXUNJIAKESHI', selectOption: 'yesOrNoOption',permission: 'APREPART_SIGN_HASDEPT|配件-配件签收-是否有询价科室'},
   {value: 'csfUserId', label: '是否有询价采购员', type: 'select', key: 'SHIFOUYOUXUNJIACAIGOUYUAN', selectOption: 'yesOrNoOption',permission: 'APREPART_SIGN_HASBUYER|配件-配件签收-是否有询价采购员'},
   {value: 'sendDate', label: '需求发送起止日期', type: 'date', key: 'XUQIUFASONGQIZHIRIQI',permission: 'APREPART_SIGN_SENDDATE|配件-配件签收-需求发送起止日期'},
-  {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'ACCESSORY_MANAGEMENT_ISME|附件-附件管理-是否自己'},
+  {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'APREPART_SIGN_ISME|附件-附件管理-是否自己'},
 ]
 
 export const TAB = [

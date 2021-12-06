@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:12:19
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-12 17:40:39
+ * @LastEditTime: 2021-11-29 11:11:17
  * @Description: 项目管理-排程助手
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\index.vue
 -->
@@ -28,18 +28,18 @@ export default {
   },
   computed: {
     subNavList() {
-      if (this.$route.path.includes('proconfirm') || this.$route.path.includes('delayconfirm')) {
-        // eslint-disable-next-line no-undef
-        return _.cloneDeep(MENUFS)
-      }
+      // if (this.$route.path.includes('proconfirm') || this.$route.path.includes('delayconfirm')) {
+      //   // eslint-disable-next-line no-undef
+      //   return _.cloneDeep(MENUFS)
+      // }
       // eslint-disable-next-line no-undef
       return _.cloneDeep(MENU)
     },
     navList() {
-      if (this.$route.path.includes('proconfirm') || this.$route.path.includes('delayconfirm')) {
-        // eslint-disable-next-line no-undef
-        return _.cloneDeep(COMFIRMTAB)
-      }
+      // if (this.$route.path.includes('proconfirm') || this.$route.path.includes('delayconfirm')) {
+      //   // eslint-disable-next-line no-undef
+      //   return _.cloneDeep(COMFIRMTAB)
+      // }
       // eslint-disable-next-line no-undef
       return _.cloneDeep(TAB)
     }

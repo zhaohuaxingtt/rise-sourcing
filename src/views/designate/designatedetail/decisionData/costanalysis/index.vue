@@ -1,39 +1,39 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-11-25 13:42:27
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-03 10:15:20
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
 -->
 <template>
 <iCard>
   <iFormGroup row='4' label-width='100px' class="Iform">
-    <iFormItem  :label='language("FENXILEIX","分析类型")'>
+    <iFormItem  :label='language("FENXILEIX","分析类型")' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSISTYPE|分析类型">
       <iSelect v-model="typeSelect" @change="costanalysisList">
         <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
       </iSelect>
     </iFormItem>
-    <iFormItem  v-if='isPreview'  label='Analysis：'>
+    <iFormItem  v-if='isPreview'  label='Analysis：' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSIS|Analysis">
       <iSelect v-model="previewItems" v-loading='loadingRight' @change="refresh">
         <el-option v-for='(items,index) in (tableData.filter(r=>r.flag))' :label='items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
       </iSelect>
     </iFormItem>
   </iFormGroup>
-  <tabel v-if='!isPreview' :tableLoading='loading' :tableTitle='tableTitle' :tableData='tableData' selection>
+  <tabel v-if='!isPreview' :tableLoading='loading' :tableTitle='tableTitleComputed' :tableData='tableData' selection  v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_TABLE|table">
     <template #operate='scope'>
       <span class="underline" @click="openPage(scope.row)">{{language('CHAKAN','查看')}}</span>
     </template>
     <template #flag='scope'>
-      <span class="bule font10 cursor" @click="costanalysisShow(scope.row)">
+      <span :class="{ cursor: !isDisabled }" class="bule font10" @click="isDisabled ? '' : costanalysisShow(scope.row)">
         <i v-if='scope.row.flag' class="iconfont iconxianshi"></i>
         <i v-else class="iconfont iconyincang"></i>
       </span>
     </template>
     <template #sortOrder='scope'> 
-      <span class="bule font10 cursor">
-        <i @click="upOrDown(scope.row,1)" class="iconfont iconpaixu-xiangshang margin-right10"></i>
-        <i @click="upOrDown(scope.row,0)" class="iconfont iconpaixu-xiangxia"></i>
+      <span :class="{ cursor: !isDisabled }" class="bule font10">
+        <i @click="isDisabled ? '' : upOrDown(scope.row,1)" class="iconfont iconpaixu-xiangshang margin-right10"></i>
+        <i @click="isDisabled ? '' : upOrDown(scope.row,0)" class="iconfont iconpaixu-xiangxia"></i>
       </span>
     </template>
   </tabel>
@@ -89,6 +89,20 @@ export default{
       isPreview:false,
       previewItems:null,
       keysRender:parseInt(Math.random()*100000000000)
+    }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
+    isDisabled() {
+      return this.isPreview || this.nominationDisabled || this.rsDisabled
+    },
+    tableTitleComputed() {
+      if (this.isDisabled) return this.tableTitle.filter(item => item.props !== "sortOrder")
+      return this.tableTitle
     }
   },
   created(){

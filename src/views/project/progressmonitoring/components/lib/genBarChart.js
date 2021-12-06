@@ -30,7 +30,7 @@ export function generateOptions(params = {}, type = 1) {
             // 风险
             {
                 key: 'value2',
-                name: '中风险',
+                name: '低风险',
                 index: 1,
                 style: {
                     color: colors[2],

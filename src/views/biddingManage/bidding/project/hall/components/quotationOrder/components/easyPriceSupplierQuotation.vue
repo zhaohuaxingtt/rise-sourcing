@@ -35,8 +35,15 @@
                   <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
+                      v-if="flag"
                       class="form--item--number--input__totalprice"
                       :value="startingPrice"
+                      disabled
+                    ></iInput>
+                    <iInput
+                      v-else
+                      class="form--item--number--input__totalprice"
+                      :value="startingPriceString"
                       disabled
                     ></iInput>
                     <div class="form--item--number--lable">{{ unit }}</div>
@@ -108,7 +115,7 @@
                   <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
-                      {{ tag.name }}
+                      {{ tag.model }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -118,7 +125,7 @@
                   <iLabel :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
-                      {{ tag.name }}
+                      {{ tag.project }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -147,17 +154,34 @@
         >
           <!-- 起拍价格 -->
           <template slot="upsetPrice" slot-scope="scope">
-            <i-input
-              v-if="ruleForm.biddingMode === '01' && !biddingStatus"
-              v-model="scope.row['upsetPrice']"
-              type="number"
-              oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-              placeholder="0.00"
-            />
-            <div v-else-if="ruleForm.biddingMode === '01' && biddingStatus">
-              {{ scope.row["upsetPrice"] }}
-            </div>
-            <div v-else></div>
+
+            <template v-if="flag"> 
+              <i-input
+                v-if="ruleForm.biddingMode === '01' && !biddingStatus"
+                :value="scope.row['upsetPrice']"
+                type="number"
+                @input="value => $set(scope.row, 'upsetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+                placeholder="0.00"
+                @focus="handleInputFocus"
+                @blur="handleInputBlur"
+              />
+              <div v-else-if="ruleForm.biddingMode === '01' && biddingStatus">
+                {{ scope.row["upsetPrice"] ? scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}
+              </div>
+              <div v-else></div>
+            </template>
+            <template v-else>
+              <i-input
+                v-if="ruleForm.biddingMode === '01' && !biddingStatus"
+                :value="multiPriceValue[scope.row['id']].upsetPrice"
+                @focus="handleInputFocus"
+                @blur="handleInputBlur"
+              />
+              <div v-else-if="ruleForm.biddingMode === '01' && biddingStatus">
+                {{ scope.row["upsetPrice"] ? scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}
+              </div>
+              <div v-else></div>
+            </template>
           </template>
           <!-- 目标价 -->
           <template slot="targetPrice" slot-scope="scope">
@@ -165,7 +189,7 @@
               {{
                 ruleForm.biddingMode === "01"
                   ? scope.row["targetPrice"]
-                    ? scope.row["targetPrice"]
+                    ? multiPriceValue[scope.row['id']].targetPrice
                     : "" + currencyMultiple
                   : ""
               }}
@@ -237,6 +261,7 @@ export default {
       modelProjectsOption: [],
       currencyUnit: {},
       supplierOffer: {},
+      multiPriceValue:{},
     };
   },
   watch: {
@@ -245,6 +270,19 @@ export default {
         this.handleSearchReset();
       }
     },
+    'ruleForm.supplierProducts':{
+      immediate:true,
+      handler(val){
+        this.multiPriceValue = val?.reduce((obj, item, index) => {
+          obj[item.id] = {
+            upsetPrice:Number(item?.upsetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            targetPrice:Number(item?.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          }
+          return obj;
+          },{})
+      },
+      deep:true,
+    }
   },
   created() {
     this.id = this.$route.params.id;
@@ -313,8 +351,14 @@ export default {
       if (this.ruleForm.totalPrices == null) {
         return 0 + this.currencyMultiple;
       }
-      return this.ruleForm.totalPrices + this.currencyMultiple;
+      return Number(this.ruleForm.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
+    startingPriceString(){
+      if (this.orgTotalPrices == null) {
+        return 0 + this.currencyMultiple;
+      }
+      return Number(this.orgTotalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
+    }
   },
   methods: {
     numberTotal(prices) {
@@ -474,43 +518,46 @@ export default {
       if(this.ruleForm.totalPrices){
         this.ruleForm.totalPrices= this.dividedBeiShu(this.ruleForm?.totalPrices);
       }
-      getModels().then((res) => {
-        console.log(res);
-        data.models.forEach((item) => {
-          console.log(item);
-          this.modelsOption.push(
-            ...res?.data?.filter((e) => e.code === item.modelCode)
-          );
+      this.modelsOption = data.models
+      this.modelProjectsOption = data.modelProjects
+      // getModels().then((res) => {
+      //   console.log(res);
+      //   data.models.forEach((item) => {
+      //     console.log(item);
+      //     this.modelsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.modelCode)
+      //     );
 
-          let obj = {};
-          this.modelsOption = this.modelsOption.reduce(function (item, next) {
-            obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-            return item;
-          }, []);
-        });
-      });
-      getProjects().then((res) => {
-        data.modelProjects.forEach((item) => {
-          this.modelProjectsOption.push(
-            ...res?.data?.filter((e) => e.code === item.projectCode)
-          );
+      //     let obj = {};
+      //     this.modelsOption = this.modelsOption.reduce(function (item, next) {
+      //       obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+      //       return item;
+      //     }, []);
+      //   });
+      // });
+      // getProjects().then((res) => {
+      //   data.modelProjects.forEach((item) => {
+      //     this.modelProjectsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.projectCode)
+      //     );
 
-          let obj = {};
-          this.modelProjectsOption = this.modelProjectsOption.reduce(function (
-            item,
-            next
-          ) {
-            obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-            return item;
-          },
-          []);
-        });
-      });
+      //     let obj = {};
+      //     this.modelProjectsOption = this.modelProjectsOption.reduce(function (
+      //       item,
+      //       next
+      //     ) {
+      //       obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+      //       return item;
+      //     },
+      //     []);
+      //   });
+      // });
       if (!this.ruleForm.supplierProducts?.length) {
         this.ruleForm.supplierProducts = data.biddingProducts;
-        this.ruleForm.supplierProducts.forEach((item) => {
-          item.id = "";
-        });
+        
+        // this.ruleForm.supplierProducts.forEach((item) => {
+        //   item.id = "";
+        // });
       }
     },
   },

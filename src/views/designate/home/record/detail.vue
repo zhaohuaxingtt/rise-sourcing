@@ -7,7 +7,7 @@
 -->
 <template>
   <iPage v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_PAGE|定点记录详情">   
-    <topComponents :logModuleName="'定点明细'" :logBizIdKey="'id'">
+    <topComponents :logModuleName="'定点明细'" :logBizIdKey="'id'" optionDicKey2="定点申请详情页">
       <span slot="left" class="floatleft font20 font-weight">
         {{language('DINGDIANMINGXI','定点明细')}}
       </span>

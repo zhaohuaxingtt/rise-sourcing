@@ -14,7 +14,7 @@
       <template slot="isTax" slot-scope="scope">
         <div>
           {{
-            dividedBeiShu(scope.row["offerPrice"])  +
+            dividedBeiShu(scope.row["offerPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')  +
             currencyMultiples(scope.row["currencyMultiple"]) +
             "-" +
             units(scope.row["currencyUnit"])

@@ -23,6 +23,7 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
+        :ispartProjectSource="ispartProjectSource"
         :editable = "perCarDosage"
         @handleSelectionChange="handleSelectionChange"
         @getIndex="getIndex" 
@@ -82,6 +83,7 @@ export default {
       selectData:[],
       getPerCarDosage:{},
       isGs:true,
+      ispartProjectSource:false
     };
   },
   props: {
@@ -105,20 +107,20 @@ export default {
     }
 },
   computed:{
-    ispartProjectSource() {
-       if(this.params.partProjectSource == 2) {
-      return true
-    } else {
-      return false
-    }
-    }
+    // ispartProjectSource() {
+    //    if(this.params.partProjectSource == 2) {
+    //   return true
+    // } else {
+    //   return false
+    // }
+    // }
   },
   methods: {
     async getData() {  
       this.loading = true;
       if (this.params.partProjectSource == 1) {
         try {
-          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementId) {
+          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementObjectId) {
             const versionRes = await getPerCarDosageVersion({
               currPage: 1,
               pageSize: 10,
@@ -174,7 +176,7 @@ export default {
           manualInfoTable({
             currPage: this.page.currPage,
             pageSize: this.page.pageSize,
-            purchasingRequirementId: this.params.id,
+            purchasingRequirementId: this.params.purchasingRequirementObjectId,
           }).then(res=>{
             if(res.code == '200') 
             {
@@ -207,10 +209,12 @@ export default {
         iMessage.error(this.language('QINGXIANBAOCUNMEICHEYONGLIANG','请先保存每车用量'))
       }else {
         let purchasingProjectPartId=this.params.id
+        
         if(this.isGs == false) {
            fscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+              this.$emit('updateTable')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
@@ -219,6 +223,7 @@ export default {
           gscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
+              this.$emit('updateStartYear')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
@@ -289,6 +294,10 @@ export default {
     //向下填充
     fillDown() {
       let data = [...this.tableListData]
+      if(this.getPerCarDosage.perCar === '') {
+        iMessage.warn(this.language('QINGSHURUMEICHEYONGLIANG','请输入每车用量'))
+        return
+      }
       data.forEach((val,index)=>{
         if(index>this.getPerCarDosage.index){
           this.$set(val,'perCarDosage',this.getPerCarDosage.perCar)
@@ -333,9 +342,9 @@ export default {
           dataItem.otherInfo = value.otherConf
           dataItem.cartype  = value.cartypeId
           dataItem.cartypeConfigId  = value.originId
-          dataItem.partNum  = value.partNum
-          dataItem.partNameCn  = value.partNameZh
-          dataItem.partNameDe  = value.partNameDe
+          dataItem.partNum  = this.params.partNum
+          dataItem.partNameCn  = this.params.partNameZh
+          dataItem.partNameDe  = this.params.partNameDe
           dataItem.cartypeLevelRate  = value.cartypeLevelRate
           valTemData.push(dataItem)
         })
@@ -350,9 +359,9 @@ export default {
           dataItem.cartype  = value.carProjectId
           dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId
           dataItem.cartypeLevelRate  = value.cartypeLevelRate
-           dataItem.partNum  = value.partNum
-          dataItem.partNameCn  = value.partNameZh
-          dataItem.partNameDe  = value.partNameDe
+          dataItem.partNum  = this.params.partNum
+          dataItem.partNameCn  = this.params.partNameZh
+          dataItem.partNameDe  = this.params.partNameDe
           valTemData.push(dataItem)
         })
       }
@@ -360,7 +369,17 @@ export default {
         this.tableListData = valTemData
       } else {
         let data = [...this.tableListData]
-        data.unshift(...valTemData)
+        console.log(data,'data');
+        console.log(valTemData,'valTemData');
+        const idList = data.map(val=> val.cartypeConfigId)
+        console.log(idList);
+        let pushvalTemData =[]
+        pushvalTemData =  valTemData.filter(value=>{
+          let res = !(idList.indexOf(value.cartypeConfigId)>-1)
+          return res
+        })
+        console.log(pushvalTemData,'pushvalTemData');
+        data.unshift(...pushvalTemData)
         this.tableListData = data
       }
     },
