@@ -15,7 +15,7 @@
         <iSelect v-model="categoryCode" :disabled="isPreview || nominationDisabled || rsDisabled" @change="randomNumber++"> 
           <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryName"></el-option> 
         </iSelect>
-        <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="margin-left20" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
+        <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="fileManageButton" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
       </div>
     </div>
     <imageList class="padding-top20" v-if="images.length" :images="images" />
@@ -154,6 +154,10 @@ export default{
   .desc {
     transform: rotate(180deg);
     margin-left: 10px;
+  }
+
+  .fileManageButton {
+    margin-left: 20px;
   }
 }
 
