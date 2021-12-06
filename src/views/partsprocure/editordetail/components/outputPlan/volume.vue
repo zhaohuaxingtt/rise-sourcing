@@ -23,6 +23,7 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
+        :ispartProjectSource="ispartProjectSource"
         :editable = "perCarDosage"
         @handleSelectionChange="handleSelectionChange"
         @getIndex="getIndex" 
@@ -82,6 +83,7 @@ export default {
       selectData:[],
       getPerCarDosage:{},
       isGs:true,
+      ispartProjectSource:false
     };
   },
   props: {
@@ -105,13 +107,13 @@ export default {
     }
 },
   computed:{
-    ispartProjectSource() {
-       if(this.params.partProjectSource == 2) {
-      return true
-    } else {
-      return false
-    }
-    }
+    // ispartProjectSource() {
+    //    if(this.params.partProjectSource == 2) {
+    //   return true
+    // } else {
+    //   return false
+    // }
+    // }
   },
   methods: {
     async getData() {  
@@ -212,7 +214,7 @@ export default {
            fscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
-              this.$emit('updateStartYear')
+              this.$emit('updateTable')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
@@ -340,9 +342,9 @@ export default {
           dataItem.otherInfo = value.otherConf
           dataItem.cartype  = value.cartypeId
           dataItem.cartypeConfigId  = value.originId
-          dataItem.partNum  = value.partNum
-          dataItem.partNameCn  = value.partNameZh
-          dataItem.partNameDe  = value.partNameDe
+          dataItem.partNum  = this.params.partNum
+          dataItem.partNameCn  = this.params.partNameZh
+          dataItem.partNameDe  = this.params.partNameDe
           dataItem.cartypeLevelRate  = value.cartypeLevelRate
           valTemData.push(dataItem)
         })
@@ -357,9 +359,9 @@ export default {
           dataItem.cartype  = value.carProjectId
           dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId
           dataItem.cartypeLevelRate  = value.cartypeLevelRate
-           dataItem.partNum  = value.partNum
-          dataItem.partNameCn  = value.partNameZh
-          dataItem.partNameDe  = value.partNameDe
+          dataItem.partNum  = this.params.partNum
+          dataItem.partNameCn  = this.params.partNameZh
+          dataItem.partNameDe  = this.params.partNameDe
           valTemData.push(dataItem)
         })
       }
@@ -367,7 +369,17 @@ export default {
         this.tableListData = valTemData
       } else {
         let data = [...this.tableListData]
-        data.unshift(...valTemData)
+        console.log(data,'data');
+        console.log(valTemData,'valTemData');
+        const idList = data.map(val=> val.cartypeConfigId)
+        console.log(idList);
+        let pushvalTemData =[]
+        pushvalTemData =  valTemData.filter(value=>{
+          let res = !(idList.indexOf(value.cartypeConfigId)>-1)
+          return res
+        })
+        console.log(pushvalTemData,'pushvalTemData');
+        data.unshift(...pushvalTemData)
         this.tableListData = data
       }
     },

@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-11-26 15:32:32
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-05 15:23:45
+ * @LastEditors:  
  * @Description: 供应商维度展示
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
 -->
