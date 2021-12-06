@@ -82,12 +82,12 @@
         <template #supplierSapCode="scope">
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
-        <template #demand="scope">
+        <!-- <template #demand="scope">
           <span>{{ scope.row.demand | kFilter }}</span>
         </template>
         <template #output="scope">
           <span>{{ scope.row.output | kFilter }}</span>
-        </template>
+        </template> -->
         <template #presentPrice="scope">
           <span>{{ scope.row.presentPrice | toThousands }}</span>
         </template>
@@ -235,10 +235,10 @@ export default {
 
       return obj[val] || val
     },
-    kFilter(val) {
-      if (val) return math.divide(math.bignumber(val), 1000).toString()
-      return val
-    }
+    // kFilter(val) {
+    //   if (val) return math.divide(math.bignumber(val), 1000).toString()
+    //   return val
+    // }
   },
   computed: {
     exchangeRageCurrency() {
