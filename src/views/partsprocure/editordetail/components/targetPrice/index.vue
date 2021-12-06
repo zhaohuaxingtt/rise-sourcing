@@ -229,7 +229,7 @@ import toolingTargetPrice from "./components/toolingTargetPrice"
 		created() {
 			this.getTargetPriceDetail()
 			this.getTargetPrice()
-			this.targePriceDetail()
+			// this.targePriceDetail()
 		},
 		methods: {
 			getTargetPriceDetail() {
@@ -270,22 +270,22 @@ import toolingTargetPrice from "./components/toolingTargetPrice"
 				.catch(() => {})
 			},
 			// 获取申请目标价数据
-			targePriceDetail(){
-				let data = {
-					"cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
-				};
-				getTabelData(data).then((res) => {
-					let price=res.data.targetprice
-					// if (price.cfTargetPriceDetail) {
-					// 	this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
-					// 	this.tableListData=JSON.parse(JSON.stringify([price.cfTargetPriceDetail]))  
-					// }
-					if (price?.rwApplication) {
-						this.targetprice.rwApplication=price.rwApplication
-						this.targeRwData=JSON.parse(JSON.stringify([price.rwApplication]))
-					}
-				});
-			},
+			// targePriceDetail(){
+			// 	let data = {
+			// 		// "cfTargetpriceReq.purchaseProjectId": this.purchaseProjectId,
+			// 	};
+			// 	getTabelData(data).then((res) => {
+			// 		let price=res.data.targetprice
+			// 		// if (price.cfTargetPriceDetail) {
+			// 		// 	this.targetprice.cfTargetPriceDetail=price.cfTargetPriceDetail
+			// 		// 	this.tableListData=JSON.parse(JSON.stringify([price.cfTargetPriceDetail]))  
+			// 		// }
+			// 		if (price?.rwApplication) {
+			// 			this.targetprice.rwApplication=price.rwApplication
+			// 			this.targeRwData=JSON.parse(JSON.stringify([price.rwApplication]))
+			// 		}
+			// 	});
+			// },
 			//表格选中值集
 			handleSelectionChange(val) {
 				// this.selectTableData = val
@@ -303,7 +303,7 @@ import toolingTargetPrice from "./components/toolingTargetPrice"
 					if (res.result) {
 						iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
 						this.getTargetPriceDetail()
-						this.targePriceDetail()
+						// this.targePriceDetail()
 						this.getTargetPrice()
 					}else{
 						iMessage.error(res.desZh)
@@ -323,7 +323,7 @@ import toolingTargetPrice from "./components/toolingTargetPrice"
 				}).then((res) => {
 					if(res.code == 200){
 						iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-						this.targePriceDetail()
+						// this.targePriceDetail()
 					}else{
 						iMessage.error(res.desZh)
 					}
@@ -346,7 +346,7 @@ import toolingTargetPrice from "./components/toolingTargetPrice"
 						iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
 						this.applyPriceShow = false
 						this.getTargetPriceDetail()
-						this.targePriceDetail()
+						// this.targePriceDetail()
 						this.getTargetPrice()
 					} else {
 						iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
