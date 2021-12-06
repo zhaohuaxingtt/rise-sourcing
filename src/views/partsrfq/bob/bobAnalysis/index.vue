@@ -285,9 +285,7 @@ export default {
       }
     },
     changeToEditMode(id) {
-      console.log(id)
       this.onEditLabels.push(id)
-      console.log(this.onEditLabels)
     },
     onPreviewStyle () {
       if (this.onPreview) {
@@ -535,7 +533,6 @@ export default {
       this.reBuild("2", "maUngroupedChild")
       this.addOrigin()
 
-      console.log(this.tableListData)
       var b= new Date().getTime()
       console.log(b - a)
     },
@@ -847,7 +844,6 @@ export default {
         schemaId: this.schemaId,
         code: '1'
       }).then(res => {
-        console.log(res.data)
         if (res.data) {
           res.data.forEach((matchId) => {
             if (!matchId.matchId) {

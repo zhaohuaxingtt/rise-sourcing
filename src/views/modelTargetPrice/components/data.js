@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-22 15:14:13
+ * @LastEditTime: 2021-12-06 15:58:33
  * @Description: 
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\components\data.js
  */
@@ -48,7 +48,9 @@ export const MENU = [
     message: 0,
     url: '/targetpriceandscore/modeltargetprice/signin',
     activePath: 'signin',
-    key: 'MUBIAOJIAQIANSHOU'
+    key: 'MUBIAOJIAQIANSHOU',
+    permissionKey: 'MODELTARGETPRICE_SIGNIN_PAGE',
+    permissionName: '模具目标价管理-目标价签收-页面'
   },
   {
     value: 2,
@@ -56,7 +58,9 @@ export const MENU = [
     message: 0,
     url: '/targetpriceandscore/modeltargetprice/maintenance',
     activePath: 'maintenance',
-    key: 'MUBIAOJIAWEIHU'
+    key: 'MUBIAOJIAWEIHU',
+    permissionKey: 'MODELTARGETPRICE_MAINTENANCE_PAGE',
+    permissionName: '模具目标价管理-目标价维护-页面'
   },
   {
     value: 3,
@@ -64,7 +68,9 @@ export const MENU = [
     message: 0,
     url: '/targetpriceandscore/modeltargetprice/approval',
     activePath: 'approval',
-    key: 'MUBIAOJIASHENPI'
+    key: 'MUBIAOJIASHENPI',
+    permissionKey: 'MODELTARGETPRICE_APPROVAL_PAGE',
+    permissionName: '模具目标价管理-目标价审批-页面'
   },
   {
     value: 4,
@@ -72,6 +78,8 @@ export const MENU = [
     message: 0,
     url: '/targetpriceandscore/modeltargetprice/query',
     activePath: 'query',
-    key: 'MUBIAOJIACHAXUN'
+    key: 'MUBIAOJIACHAXUN',
+    permissionKey: 'MODELTARGETPRICE_QUERY_PAGE',
+    permissionName: '模具目标价管理-目标价查询-页面'
   },
 ]
