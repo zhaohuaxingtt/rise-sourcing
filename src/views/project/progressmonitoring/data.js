@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-08-24 14:53:57
- * @LastEditTime: 2021-09-23 10:48:20
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-11-29 13:51:50
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: /front-web/src/views/project/progressmonitoring/data.js
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\data.js
  */
 
 export const MENU = [
@@ -14,7 +14,9 @@ export const MENU = [
     message: 0,
     url: '/projectmgt/projectprogressmonitoring/home',
     activePath: 'home',
-    key: 'XIANGMUJINDUJIANKONG'
+    key: 'XIANGMUJINDUJIANKONG',
+    permissionKey: 'PROJECTMGT_PROGRESSMONITORING_PAGE',
+    permissionName: '项目进度监控页面'
   },
   {
     value: 2,
@@ -22,7 +24,19 @@ export const MENU = [
     message: 0,
     url: '/projectmgt/projectprogressmonitoring/delaySummary',
     activePath: 'delaySummary',
-    key: 'YANWUYUANYINHUIZONG'
+    key: 'YANWUYUANYINHUIZONG',
+    permissionKey: 'PROJECTMGT_DELAYSUMMARY_PAGE',
+    permissionName: '项目管理-进度监控-延误原因汇总页面'
+  },
+  {
+    value: 3,
+    name: '延误原因确认',
+    message: 0,
+    url: '/projectmgt/projectprogressmonitoring/delayconfirm',
+    activePath: 'delayconfirm',
+    key: 'YANWUYUANYINQUEREN',
+    permissionKey: 'PROJECTMGT_DELAYCONFIRM_PAGE',
+    permissionName: '项目管理-排程助手-延误原因确认页面'
   },
 ]
 

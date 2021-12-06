@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:17:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-27 10:38:41
+ * @LastEditTime: 2021-11-29 14:44:33
  * @Description: 
- * @FilePath: \front-web\src\views\project\schedulingassistant\data.js
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\data.js
  */
 
 export const MENU = [
@@ -14,7 +14,9 @@ export const MENU = [
     message: 0,
     url: '/projectmgt/projectscheassistant/progroupscheduling',
     activePath: 'progroupscheduling',
-    key: 'CHANPINZUPAICHENG'
+    key: 'CHANPINZUPAICHENG',
+    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_PAGE',
+    permissionName: '项目管理-排程助手-产品组排程页面'
   },
   {
     value: 2,
@@ -22,7 +24,9 @@ export const MENU = [
     message: 0,
     url: '/projectmgt/projectscheassistant/partscheduling',
     activePath: 'partscheduling',
-    key: 'LINGJIANPAICHENG'
+    key: 'LINGJIANPAICHENG',
+    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_PAGE',
+    permissionName: '项目管理-排程助手-零件排程页面'
   },
   {
     value: 3,
@@ -30,7 +34,9 @@ export const MENU = [
     message: 0,
     url: '/projectmgt/projectscheassistant/progressconfirmsummary',
     activePath: 'progressconfirmsummary',
-    key: 'JINDUQUERENHUIZONG'
+    key: 'JINDUQUERENHUIZONG',
+    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_PAGE',
+    permissionName: '项目管理-排程助手-排程确认页面'
   },
   {
     value: 4,
@@ -38,7 +44,9 @@ export const MENU = [
     message: 0,
     url: '/projectmgt/projectscheassistant/scheduleversion',
     activePath: 'scheduleversion',
-    key: 'PAICHENGBANBENCHAXUN'
+    key: 'PAICHENGBANBENCHAXUN',
+    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION',
+    permissionName: '项目管理-排程助手-排程版本查询'
   },
   {
     value: 5,
@@ -46,25 +54,71 @@ export const MENU = [
     message: 0,
     url: '/projectmgt/projectscheassistant/historyprocessdb',
     activePath: 'historyprocessdb',
-    key: 'LISHIJINDUSHUJUKU'
+    key: 'LISHIJINDUSHUJUKU',
+    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PAGE',
+    permissionName: '项目管理-排程助手-历史进度数据库'
   },
-]
-
-export const MENUFS = [
   {
-    value: 1,
+    value: 6,
+    name: '默认排程算法配置',
+    message: 0,
+    url: '/projectmgt/projectscheassistant/defaultscheLogic',
+    activePath: 'defaultscheLogic',
+    key: 'MORENPAICHENGSUANFAPEIZHI',
+    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANTPORTAL_DEFAULTSCHELOGIC',
+    permissionName: '项目管理-排程助手-默认排程算法配置'
+  },
+  {
+    value: 7,
+    name: '风险预警配置',
+    message: 0,
+    url: '/projectmgt/projectscheassistant/riskAndAlarmConfig',
+    activePath: 'riskAndAlarmConfig',
+    key: 'FENGXIANYUJINGPEIZHI',
+    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANTPORTAL_RISKANDALARMCONFIG',
+    permissionName: '项目管理-排程助手-风险预警配置'
+  },
+  {
+    value: 8,
     name: '进度确认',
     message: 0,
     url: '/projectmgt/projectscheassistant/proconfirm',
     activePath: 'proconfirm',
-    key: 'JINDUQUEREN'
+    key: 'JINDUQUEREN',
+    permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY_PAGE',
+    permissionName: '项目管理-排程助手-进度确认汇总页面'
   },
-  {
-    value: 2,
-    name: '延误原因确认',
-    message: 0,
-    url: '/projectmgt/projectprogressmonitoring/delayconfirm',
-    activePath: 'delayconfirm',
-    key: 'YANWUYUANYINQUEREN'
-  },
+  // {
+  //   value: 2,
+  //   name: '延误原因确认',
+  //   message: 0,
+  //   url: '/projectmgt/projectprogressmonitoring/delayconfirm',
+  //   activePath: 'delayconfirm',
+  //   key: 'YANWUYUANYINQUEREN',
+  //   permissionKey: 'PROJECTMGT_DELAYCONFIRM_PAGE',
+  //   permissionName: '项目管理-排程助手-延误原因确认页面'
+  // },
+]
+
+export const MENUFS = [
+  // {
+  //   value: 1,
+  //   name: '进度确认',
+  //   message: 0,
+  //   url: '/projectmgt/projectscheassistant/proconfirm',
+  //   activePath: 'proconfirm',
+  //   key: 'JINDUQUEREN',
+  //   permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_PAGE',
+  //   permissionName: '项目管理-排程助手-产品组排程页面'
+  // },
+  // {
+  //   value: 2,
+  //   name: '延误原因确认',
+  //   message: 0,
+  //   url: '/projectmgt/projectprogressmonitoring/delayconfirm',
+  //   activePath: 'delayconfirm',
+  //   key: 'YANWUYUANYINQUEREN',
+  //   permissionKey: 'PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_PAGE',
+  //   permissionName: '项目管理-排程助手-产品组排程页面'
+  // },
 ]
