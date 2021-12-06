@@ -53,7 +53,7 @@
                          :show-overflow-tooltip="items.tooltip"
                          v-if="items.props == activeItems"
                          :prop="items.props"
-                         :label="items.key?language(items.key,items.name):items.name"
+                         :label="items.key?$t(items.key):items.name"
                          :min-width="items.minWidth"
                          :width="items.width">
           <template slot-scope="row">

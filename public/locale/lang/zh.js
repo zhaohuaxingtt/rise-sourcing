@@ -1588,6 +1588,13 @@
             'LK_JIESHURIQI': '结束⽇期', //结束⽇期
 
         },
+
+        //  ------------------------模具相关（张入圆）------------------------------
+        'MOULDADD':{
+            'CHAKANLISHI': '查看历史',  //  查看历史
+            'SOPSHIJIAN': 'SOP时间',    //  SOP时间
+        },
+
     }
     var xmlHttp = ''
     if(window.XMLHttpRequest){

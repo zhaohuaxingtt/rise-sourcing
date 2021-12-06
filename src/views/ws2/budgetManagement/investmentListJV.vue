@@ -125,7 +125,7 @@
           </div>
           <div>
             <iButton v-show="pageEdit" @click="pageEdit = false"
-                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('退出编辑') }}
+                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_TUICHUBIANJI1') }}
             </iButton>
             <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
             <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
@@ -135,9 +135,9 @@
             <iButton v-show="pageEdit" @click="addRow">{{ $t('LK_TIANJIAHANG') }}</iButton>
             <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('LK_SHANCHUHANG') }}</iButton>
             <iButton v-show="pageEdit" @click="referenceModelShow = true">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
-            <iButton @click="downloadList">下载投资清单</iButton>
+            <iButton @click="downloadList">{{$t('LK_XIAZHAITOUZHIQINDAN')}}</iButton>
             <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>
-            <iButton @click="toJV">{{ $t('查看Common预算') }}</iButton>
+            <iButton @click="toJV">{{ language('LK_CHAKANCOMMONYUSUAN', '查看Common预算') }}</iButton>
           </div>
         </div>
         <div>
