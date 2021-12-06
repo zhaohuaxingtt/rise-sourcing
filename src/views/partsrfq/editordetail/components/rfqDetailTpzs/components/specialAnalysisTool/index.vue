@@ -2,15 +2,20 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 13:46:18
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: 专项分析工具
 -->
 <template>
   <div>
-    <enterSpecificAnalysisToolsDialog :keyword="keyword" @getDataList='getDataList' v-model="viewModelDialog" />
+    <enterSpecificAnalysisToolsDialog :keyword="keyword"
+                                      @getDataList='getDataList'
+                                      v-model="viewModelDialog" />
     <el-row :gutter="16">
-      <el-col v-for="(item,index) in cardData" :key="index" :span="12">
-        <card @click.native="entrance(item)" :cardData="item" />
+      <el-col v-for="(item,index) in cardData"
+              :key="index"
+              :span="12">
+        <card @click.native="entrance(item)"
+              :cardData="item" />
       </el-col>
     </el-row>
   </div>
@@ -32,7 +37,7 @@ import soon from '@/assets/images/soon.png'
 
 export default {
   components: { card, iPage, enterSpecificAnalysisToolsDialog, iButton },
-  data() {
+  data () {
     return {
       title: '',
       viewModelDialog: false,
@@ -40,11 +45,11 @@ export default {
       keyword: ''
     }
   },
-  created() {
+  created () {
     this.getDataList('', '', '', '', '')
   },
   methods: {
-    entrance(param) {
+    entrance (param) {
       // 默认项
       if (param.isDefault) {
         switch (param.title) {
@@ -93,7 +98,7 @@ export default {
       }
     },
     // 获取数据
-    async getDataList({ rfqId = '', categoryName = '', categoryCode = '', partNum = '', rfqName = '' }) {
+    async getDataList ({ rfqId = '', categoryName = '', categoryCode = '', partNum = '', rfqName = '' }) {
       // 把数据存在store
       if (this.$store.state.rfq.entryStatus === 0) {
         window.sessionStorage.setItem('rfqId', rfqId)
@@ -116,54 +121,55 @@ export default {
         materialGroup: categoryName,
         spareParts: this.$store.state.rfq.spareParts,
       }
-      const res = await totalOverview(pms)
-      if (res.result) {
-        this.viewModelDialog = false
-        this.cardData = res.data
-
-        // 数据处理
-        this.cardData.map((item) => {
-          if (!item.analysisTotal) {
-            item.analysisTotal = ''
-          }
-          if (!item.reportTotal) {
-            item.reportTotal = ''
-          }
-          if (!item.analysisLastUpdateDate) {
-            item.analysisLastUpdateDate = ''
-          }
-          if (!item.reportLastUpdateDate) {
-            item.reportLastUpdateDate = ''
-          }
-          switch (item.title) {
-            case 'BoB(Best of Best)':
-              item.imgUrl = BoB
-              break;
-            case 'Volume Pricing':
-              item.imgUrl = VP
-              break;
-            case 'Pricing Index':
-              item.imgUrl = PI
-              break;
-            case 'MEK':
-              item.imgUrl = MEK
-              break;
-            case 'TIA':
-              item.imgUrl = TIA
-              break;
-            case 'PCA':
-              item.imgUrl = PCA
-              break;
-            case 'Bid-Link':
-              item.imgUrl = BL
-              break;
-            default:
-              break;
-          }
-        })
-      }
+      totalOverview(pms).then(res => {
+        if (res.result) {
+          this.viewModelDialog = false
+          this.cardData = res.data
+          // 数据处理
+          this.cardData.map((item) => {
+            if (!item.analysisTotal) {
+              item.analysisTotal = ''
+            }
+            if (!item.reportTotal) {
+              item.reportTotal = ''
+            }
+            if (!item.analysisLastUpdateDate) {
+              item.analysisLastUpdateDate = ''
+            }
+            if (!item.reportLastUpdateDate) {
+              item.reportLastUpdateDate = ''
+            }
+            switch (item.title) {
+              case 'BoB(Best of Best)':
+                item.imgUrl = BoB
+                break;
+              case 'Volume Pricing':
+                item.imgUrl = VP
+                break;
+              case 'Pricing Index':
+                item.imgUrl = PI
+                break;
+              case 'MEK':
+                item.imgUrl = MEK
+                break;
+              case 'TIA':
+                item.imgUrl = TIA
+                break;
+              case 'PCA':
+                item.imgUrl = PCA
+                break;
+              case 'Bid-Link':
+                item.imgUrl = BL
+                break;
+              default:
+                break;
+            }
+          })
+        }
+      }).catch(error => {
+      })
     },
-    handleSearch() {
+    handleSearch () {
       this.viewModelDialog = true
     },
   }

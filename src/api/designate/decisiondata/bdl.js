@@ -27,10 +27,18 @@ export function findRfqSupplierQuotationPage({nominateId,rfqId, current, size}) 
 }
 
 // 根据rfqId和供应商id获取零件评分
+// export function getRateByRfqIdAndSupplierPage(params) {
+//   return requst({
+//     url: '/rfq-part-ratings/getRateByRfqIdAndSupplierPage',
+//     method: 'GET',
+//     params: params
+//   })
+// }
+
+// 根据rfqId和供应商id获取零件评分
 export function getRateByRfqIdAndSupplierPage(params) {
   return requst({
-    url: '/rfq-part-ratings/getRateByRfqIdAndSupplierPage',
-    method: 'GET',
-    params: params
+    url: `/rfq-part-ratings/getPartRating/${ params.rfqId }/${ params.supplierId }`,
+    method: 'GET'
   })
 }
