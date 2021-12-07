@@ -13,12 +13,14 @@
             <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
             <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
             <iButton v-if="isEdit" @click="addCar">{{ language("LK_TIANJIA",'添加') }}</iButton>
-            <iButton v-if="isEdit" @click="saveData">{{ language("LK_BAOCUN",'保存') }}</iButton>
+            <iButton v-if="isEdit" @click="saveData" :loading="saveLoading">{{ language("LK_BAOCUN",'保存') }}</iButton>
             <iButton v-if="!isEdit && ispartProjectSource" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
+            <iButton v-if="isEdit" @click="cancelEdit">{{ language("QUXIAO",'取消') }}</iButton>
           </div>
         </div>
       <tableList
         class="table"
+        ref="table"
         index
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -26,7 +28,7 @@
         :ispartProjectSource="ispartProjectSource"
         :editable = "perCarDosage"
         @handleSelectionChange="handleSelectionChange"
-        @getIndex="getIndex" 
+        @handleFocusByInput="handleFocusByInput" 
         @isNum="isNum"
       />
       <iPagination
@@ -67,6 +69,8 @@ import {
   // getPerCarDosageInfo,
 } from "@/api/partsprocure/editordetail";
 import addCarType from './components/addCarType'
+import { cloneDeep } from "lodash"
+
 export default {
   components: { iCard, tableList, iPagination, iButton, addCarType },
   mixins: [pageMixins],
@@ -75,15 +79,16 @@ export default {
       loading: false,
       tableTitle,
       tableListData: [],
+      tableListDataCache: [], // 表格缓存
+      totalCountCache: 0, // 数据量缓存
       version: "",
       carTypeConfigId: "",
       tpId: "",
       isEdit:false,
       carTypeVisible:false,
       selectData:[],
-      getPerCarDosage:{},
       isGs:true,
-      ispartProjectSource:false
+      ispartProjectSource:false,
     };
   },
   props: {
@@ -92,6 +97,10 @@ export default {
       require: true,
       default:()=>{}
     },
+    isSameGroupPartProjectType: {
+      type: Boolean,
+      default: true
+    }
   },
   created() {
     this.getData();
@@ -105,7 +114,7 @@ export default {
     } else {
       this.ispartProjectSource = false
     }
-},
+  },
   computed:{
     // ispartProjectSource() {
     //    if(this.params.partProjectSource == 2) {
@@ -163,8 +172,12 @@ export default {
           if (infoRes.data) {
             infoRes.data.tpRecordList.forEach(val=>{
             })
-            this.tableListData = infoRes.data.tpRecordList;
+            this.tableListData = Array.isArray(infoRes.data.tpRecordList) ? infoRes.data.tpRecordList : []
             this.page.totalCount = infoRes.data.totalCount || 0;
+          }
+
+          if (!this.isSameGroupPartProjectType) {
+            this.tableListData = []
           }
         } catch (e) {
           // console.error(e);
@@ -172,31 +185,34 @@ export default {
           this.loading = false;
         }
       } else {
-        try{
-          manualInfoTable({
-            currPage: this.page.currPage,
-            pageSize: this.page.pageSize,
-            purchasingRequirementId: this.params.purchasingRequirementObjectId,
-          }).then(res=>{
-            if(res.code == '200') 
-            {
-            res.data.tpRecordList.forEach(val=>{
-              this.$set(val,'partNum',this.params.partNum)
-              this.$set(val,'partNameCn',this.params.partNameZh)
-              this.$set(val,'partNameDe',this.params.partNameDe)
-            })
-            this.tableListData = res.data.tpRecordList;
-            this.page.totalCount = res.data.totalCount || 0;
-            } else {
-            return iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
-
-            }
+        manualInfoTable({
+          currPage: this.page.currPage,
+          pageSize: this.page.pageSize,
+          purchasingRequirementId: this.params.purchasingRequirementObjectId,
+        }).then(res=>{
+          if(res.code == '200') 
+          {
+          res.data.tpRecordList.forEach(val=>{
+            this.$set(val,'partNum',this.params.partNum)
+            this.$set(val,'partNameCn',this.params.partNameZh)
+            this.$set(val,'partNameDe',this.params.partNameDe)
           })
-        }catch (e) {
-          console.error(e);
-        } finally {
-          this.loading = false;
-        }
+          this.tableListData = Array.isArray(res.data.tpRecordList) ? res.data.tpRecordList : []
+          this.tableListDataCache = cloneDeep(Array.isArray(res.data.tpRecordList) ? res.data.tpRecordList : [])
+          this.page.totalCount = res.data.totalCount || 0;
+          this.totalCountCache = res.data.totalCount || 0
+
+          this.selectData = []
+
+          if (!this.isSameGroupPartProjectType) {
+            this.tableListData = []
+          }
+          } else {
+          return iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
+
+          }
+        })
+        .finally(() => this.loading = false)
       }
     },
     //计算产量
@@ -234,6 +250,11 @@ export default {
     //编辑
     edit() {
       this.isEdit = true
+    },
+    // 取消编辑
+    cancelEdit() {
+      this.isEdit = false
+      this.tableListData = cloneDeep(this.tableListDataCache)
     },
     //添加弹框
     addCar() {
@@ -286,24 +307,26 @@ export default {
         
       }
     },
-    //获取输入框的index和值
-    getIndex(index,perCar) {
-      this.getPerCarDosage.index = index
-      this.getPerCarDosage.perCar = perCar
+    // 获取最后一次失焦的行
+    handleFocusByInput(row) {
+      this.$refs.table.$refs.table.clearSelection()
+      this.$refs.table.$refs.table.toggleRowSelection(row, true)
     },
     //向下填充
     fillDown() {
-      let data = [...this.tableListData]
-      if(this.getPerCarDosage.perCar === '') {
-        iMessage.warn(this.language('QINGSHURUMEICHEYONGLIANG','请输入每车用量'))
-        return
-      }
-      data.forEach((val,index)=>{
-        if(index>this.getPerCarDosage.index){
-          this.$set(val,'perCarDosage',this.getPerCarDosage.perCar)
-        }
+      this.$nextTick(() => {
+        if (this.selectData.length != 1) return iMessage.warn(this.language("QINGXUANZEYITIAOMEICHEYONGLIANGSHUJUJINXINGXIANGXIATIANCHONG", "请选择一条每车用量数据进行向下填充"))
+        if (!this.selectData[0].perCarDosage) return iMessage.warn(this.language('QINGSHURUMEICHEYONGLIANG','请输入每车用量'))
+
+        let afterFoucsRowFlag = false
+        this.tableListData.forEach(item => {
+          if (afterFoucsRowFlag) this.$set(item, "perCarDosage", this.selectData[0].perCarDosage)
+
+          if (item === this.selectData[0]) afterFoucsRowFlag = true
+        })
+
+        this.$refs.table.$refs.table.clearSelection()
       })
-      this.tableListData = data
     },
     //保存
     saveData() {
@@ -316,7 +339,8 @@ export default {
       if(flag == false) {
         iMessage.error(this.language(' WEITIANXIEMEICHEYONGLIANGDEJILU,BUKEBAOCUN', '存在未填写每车用量的记录，不可保存'))
         return
-      }  else {         
+      } else {
+        this.saveLoading = true     
         savearDosage(this.tableListData).then(res=>{
           if(res.code == '200') {
             iMessage.success(res.desZh)
@@ -324,7 +348,7 @@ export default {
           } else {
             iMessage.error(res.desZh)
           }
-        })
+        }).finally(() => this.saveLoading = false)
       }
     },
 
@@ -390,6 +414,21 @@ export default {
           value.perCarDosage =  (val + '').replace(/\D/g, '')
         }
       })
+    },
+    // 清空数据
+    clearAll() {
+      if (this.params.partProjectSource == 1) return
+
+      this.tableListData = []
+      this.selectData = []
+      this.page.totalCount = 0
+    },
+    // 还原表格
+    reduction() {
+      if (this.params.partProjectSource == 1) return
+
+      this.tableListData = this.tableListDataCache
+      this.page.totalCount = this.totalCountCache
     }
   },
 };
