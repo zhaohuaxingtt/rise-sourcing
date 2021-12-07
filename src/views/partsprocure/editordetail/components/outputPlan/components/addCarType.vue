@@ -131,6 +131,7 @@ export default {
   },
   created() {
     this.getPartType()
+    this.getTableList([])
   },
   methods: {
     changeVisible() {
@@ -181,7 +182,6 @@ export default {
     },
     getTableList(value) {
       this.tableLoading = true
-      console.log(value);
       let data ={
         "cartypeIds":value,
         "current": this.page.currPage,
