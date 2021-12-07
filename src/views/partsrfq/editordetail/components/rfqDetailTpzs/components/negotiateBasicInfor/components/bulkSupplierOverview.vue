@@ -6,7 +6,7 @@
  * @Descripttion: 概览
 -->
 <template>
-  <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" :defalutCollVal='false' collapse>
+  <!-- <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" :defalutCollVal='false' collapse>
     <div class="header-title">{{remark}}</div>
     <div class="title-btn">
       <iButton @click="handleHerf">{{$t('TPZS.GYS360')}}</iButton>
@@ -14,21 +14,26 @@
     </div>
     <remarkDialog @getRemark="getRemark" :remark='remark' v-model="remarkDialog" />
     <div id='powerBi'>
-      <!-- <iframe :src='url.embedUrl' scrolling="auto" frameborder="0" width="100%" height="500px"></iframe> -->
     </div>
-  </iCard>
+  </iCard> -->
+  <batch-supplier :paramCategoryCode="paramCategoryCode"/>
 </template>
 
 <script>
 import { iCard, iButton, } from "rise";
+import batchSupplier from "@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/batchSupplier"
 import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
 import { getRfqToRemark, pageRfqPartPurPro, powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 
 export default {
-  components: { iCard, iButton, remarkDialog },
+  components: { iCard, iButton, remarkDialog, batchSupplier },
+  props: {
+    categoryCode: String
+  },
   data() {
     return {
+      paramCategoryCode: "",
       remark: '',
       remarkDialog: false,
       url: {
@@ -49,6 +54,14 @@ export default {
         filterType: null,
         requireSingleSelection: true
       },
+    }
+  },
+  watch: {
+    categoryCode: {
+      handler(val) {
+        this.paramCategoryCode = val
+      },
+      immediate: true
     }
   },
   created() {
