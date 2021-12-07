@@ -8,7 +8,7 @@
           <span class="title" >
             {{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}</template>
           </span>
-          <div class="btn-left">
+          <div v-if="!disabled" class="btn-left">
             <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
             <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
             <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
@@ -25,12 +25,13 @@
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
-        :ispartProjectSource="ispartProjectSource"
-        :editable = "perCarDosage"
         @handleSelectionChange="handleSelectionChange"
-        @handleFocusByInput="handleFocusByInput" 
-        @isNum="isNum"
-      />
+      >
+        <template #perCarDosage="scope">
+          <iInput v-if="isEdit && ispartProjectSource" v-model="scope.row.perCarDosage" @click.native.stop @focus="handleFocusByInput(scope.row)" @input="handleInputByPerCarDosage($event, scope.row)" />
+          <span v-else>{{ scope.row.perCarDosage }}</span>
+        </template>
+      </tableList>
       <iPagination
         class="pagination margin-top30"
         @size-change="handleSizeChange($event, getData)"
@@ -51,7 +52,7 @@
 </template>
 
 <script>
-import { iCard, iPagination, iMessage, iButton } from 'rise';
+import { iCard, iPagination, iMessage, iButton, iInput } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { volumeTableTitle as tableTitle } from "./data";
@@ -70,9 +71,10 @@ import {
 } from "@/api/partsprocure/editordetail";
 import addCarType from './components/addCarType'
 import { cloneDeep } from "lodash"
+import { numberProcessor } from "@/utils"
 
 export default {
-  components: { iCard, tableList, iPagination, iButton, addCarType },
+  components: { iCard, tableList, iPagination, iButton, addCarType, iInput },
   mixins: [pageMixins],
   data() {
     return {
@@ -100,6 +102,10 @@ export default {
     isSameGroupPartProjectType: {
       type: Boolean,
       default: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   created() {
@@ -307,7 +313,7 @@ export default {
         
       }
     },
-    // 获取最后一次失焦的行
+    // input聚焦转换成自动勾选当前行
     handleFocusByInput(row) {
       this.$refs.table.$refs.table.clearSelection()
       this.$refs.table.$refs.table.toggleRowSelection(row, true)
@@ -408,12 +414,8 @@ export default {
       }
     },
     //输入整数
-    isNum(val,key,idx) {
-      this.tableListData.forEach((value,index)=>{
-        if(index == idx) {
-          value.perCarDosage =  (val + '').replace(/\D/g, '')
-        }
-      })
+    handleInputByPerCarDosage(value, row) {
+      this.$set(row, "perCarDosage", numberProcessor(value, 0))
     },
     // 清空数据
     clearAll() {
