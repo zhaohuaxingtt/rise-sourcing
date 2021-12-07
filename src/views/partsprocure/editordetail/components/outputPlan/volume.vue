@@ -3,11 +3,12 @@
     class="volume"
     tabCard
   >
-    <div class="body">
-        <div>
-          <span class="title" >
-            {{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}</template>
-          </span>
+    <template #header>
+      <div class="title">
+      <p>{{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}</template></p>
+      </div>
+      <div>
+        <div class="control">
           <div v-if="!disabled" class="btn-left">
             <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
             <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
@@ -18,6 +19,9 @@
             <iButton v-if="isEdit" @click="cancelEdit">{{ language("QUXIAO",'取消') }}</iButton>
           </div>
         </div>
+      </div>
+    </template>
+    <div class="body">
       <tableList
         class="table"
         ref="table"
@@ -428,16 +432,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .volume {
-    .title{
-      font-size: 18px;
-			color: #131523;
-			font-weight: bold;
-    }
-    .btn-left{
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 20px;
-    }
-  }
 </style> 
