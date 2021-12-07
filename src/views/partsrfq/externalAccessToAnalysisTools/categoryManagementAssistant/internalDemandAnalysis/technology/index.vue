@@ -12,7 +12,7 @@
 	<div class="margin-bottom20 clearFloat">
 		<span class="font18 font-weight">{{ language("JISHULUXIAN","技术路线") }}</span>
 			<div class="floatright">
-				<iButton @click="down">{{ language("MUBANXIAZAI", "模版下载") }}</iButton>
+				<iButton @click="down" :disabled="downType" v-loading="downType">{{ language("MUBANXIAZAI", "模版下载") }}</iButton>
 				<el-upload
 					class="upload"
 					:show-file-list="false"
@@ -58,7 +58,7 @@
 	import {specialToolsTitle} from './data';
 	import {pageMixins} from '@/utils/pageMixins';
 	import {technologyFile,technologyAdd,technologyDelete,template} from "@/api/categoryManagementAssistant/internalDemandAnalysis/technology";
-	import {downloadFile} from '@/api/file';
+	import {downloadFileUd} from '@/api/file';
 	import {uploadFile} from '@/api/file/upload';
 	import resultMessageMixin from '@/utils/resultMessageMixin';
 	export default{
@@ -79,7 +79,8 @@
 				tableLoading:false,
 				selectData:[],
 				uploadButtonLoading:false,
-				categoryCode:""
+				categoryCode:"",
+				downType:false,
 			}
 		},
 		created() {
@@ -153,8 +154,25 @@
 			},
 			// 模板下载
 			down(){
+				this.downType = true;
+				console.log(55555555)
 				template().then(res=>{
-					window.open(res.data)
+					// window.open(res.data)
+					downloadFileUd(res.data).then(e=>{
+						let blob = new Blob([e], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8" });
+						let objectUrl = URL.createObjectURL(blob);
+						let link = document.createElement("a");
+						link.href = objectUrl;
+						let fname = "点价单上传模板.xlsx";
+						link.setAttribute("download", fname);
+						document.body.appendChild(link);
+						link.click();
+						link.parentNode.removeChild(link);
+						iMessage.success("链接成功！")
+						setTimeout(() => {
+							this.downType = false;
+						}, 1000);
+					})
 				})
 				// if (this.selectData.length==0) {
 				// 	iMessage.error(this.$t('TPZS.CANNOTSELECT'))

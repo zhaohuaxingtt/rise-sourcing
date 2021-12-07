@@ -71,8 +71,8 @@
         class="bottom-table"
         v-if="isGs == false"
         v-update
-        @size-change="handleSizeChange($event, fscarTableTitle)"
-        @current-change="handleCurrentChange($event, fscarTableTitle)"
+        @size-change="handleSizeChange($event, searchCarTypeConfig)"
+        @current-change="handleCurrentChange($event, searchCarTypeConfig)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
