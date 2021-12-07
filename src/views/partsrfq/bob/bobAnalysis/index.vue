@@ -104,7 +104,7 @@
                                style="margin-right: 10px;"
                                v-model="item['checked#' + titleIdx]"
                                @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
-                  {{item['label#'+titleIdx]}}
+                  {{item['label#'+titleIdx] == "false" ? $t("nominationLanguage.No") : (item['label#'+titleIdx] == "true" ? $t("nominationLanguage.Yes") : item['label#'+titleIdx])}}
                 </div>
               </template>
             </div>

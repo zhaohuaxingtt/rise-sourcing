@@ -373,7 +373,7 @@
 				</div>
 			</iFormGroup>
 		</iCard>
-		<iTabsList  class="margin-top20" type='card' v-if='infoItem.id'>
+		<iTabsList class="margin-top20" type='card' v-if='infoItem.id'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
 			<el-tab-pane v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.DESIGNATED')">
 				<designateInfo :params="infoItem" />
@@ -386,7 +386,7 @@
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN|零件产量计划">
 				<outputPlan ref="outputPlan" :params="infoItem" @updateStartYear="updateStartYear" v-permission.auto="PARTSPROCURE_EDITORDETAIL_XUNJIACHANLIANJIHUA|询价产量计划" />
 				<outputRecord v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANCHANLIANGJILU|零件产量记录" ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
-				<volume ref="volume" class="margin-top20" :params="infoItem" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANMEICHEYONGLIANG|零件每车用量" @updateStartYear="updateTabs"   />
+				<volume ref="volume" class="margin-top20" :params="infoItem" :isSameGroupPartProjectType="isSameGroupPartProjectType" :disabled="disabled" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANMEICHEYONGLIANG|零件每车用量" @updateStartYear="updateTabs" />
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE|图纸和信息单详情">
@@ -522,6 +522,14 @@
 			originPartIsDb() { // 采购项目类型为仅零件号变更，且原零件号的采购项目类型为DB
 				return [this.partProjTypes.JINLINGJIANHAOGENGGAI].includes(this.detailData.partProjectType) && this.detailData.oldPartProjectType === this.partProjTypes.DBLINGJIAN
 			},
+			// 是否是同类型的零件类型（GS/非GS）
+			isSameGroupPartProjectType() {
+				if ((this.isGs(this.sourcePartProjectType) && this.isGs(this.detailData.partProjectType)) || (!this.isGs(this.sourcePartProjectType) && !this.isGs(this.detailData.partProjectType))) {
+					return true
+				}
+
+				return false
+			}
 		},
 		watch:{
 			'selectOldParts.selectData':function(res){
@@ -557,6 +565,7 @@
 				itemPurchase:{},
 				isCarType:false,
 				bakCarTypeSopTime: '',
+				sourcePartProjectType: '', // 后端返回的partProjectType
 			};
 		},
 		created() {
@@ -673,6 +682,7 @@
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data ||[];
+					this.sourcePartProjectType = res.data.partProjectType
 					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
 					this.checkFactoryString = res.data.procureFactory
 					if(this.detailData.cartypes) {
@@ -923,6 +933,17 @@
 
 				this.detailData.isDb = data === partProjTypes.DBYICHIXINGCAIGOU
 				data == '50002001'|| data == '1000003' ? this.isCarType = true : this.isCarType = false
+
+				// GS => 非GS, 非GS => GS, 清空零件每车用量
+				if ((this.isGs(this.sourcePartProjectType) && this.isGs(data)) || (!this.isGs(this.sourcePartProjectType) && !this.isGs(data))) {
+					this.$refs.volume && typeof this.$refs.volume.reduction === "function" && this.$refs.volume.reduction()
+				} else {
+					this.$refs.volume && typeof this.$refs.volume.clearAll === "function" && this.$refs.volume.clearAll()
+				}
+			},
+			// 判断是否为GS类零件
+			isGs(partProjectType) {
+				return partProjectType == partProjTypes.GSLINGJIAN || partProjectType == partProjTypes.GSLINGJIANIP || partProjectType == partProjTypes.GSCOMMONSOURCING
 			},
 			getName(value, code, options) {
 				return getOptionField(value, code, options)

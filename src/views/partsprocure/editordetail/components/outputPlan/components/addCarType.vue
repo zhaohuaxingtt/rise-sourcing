@@ -8,6 +8,7 @@
 <template>
   <iDialog
     :visible.sync="dialogVisible"
+    :close-on-click-modal="false"
     @close="changeVisible"
     width="80%"
     class="dialog" 
@@ -71,8 +72,8 @@
         class="bottom-table"
         v-if="isGs == false"
         v-update
-        @size-change="handleSizeChange($event, fscarTableTitle)"
-        @current-change="handleCurrentChange($event, fscarTableTitle)"
+        @size-change="handleSizeChange($event, searchCarTypeConfig)"
+        @current-change="handleCurrentChange($event, searchCarTypeConfig)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -107,6 +108,11 @@ export default {
     },
   },
   mixins: [pageMixins],
+  watch: {
+    dialogVisible(status) {
+      if (!status) this.selectData = []
+    }
+  },
   data() {
     return {
       carTableTitle:[...carTitle],
@@ -194,6 +200,8 @@ export default {
       this.selectData = val
     },
     addTableCar() {
+      if (!this.selectData.length) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
+
       this.$emit('getSelectData', this.selectData)
       this.$emit('changeVisible', false)
     }
