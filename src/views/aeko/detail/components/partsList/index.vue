@@ -66,8 +66,10 @@
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
-                <iButton v-if="isShowAddPart" :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件" @click="addParts">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
-                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                <template v-if="isShowAddPart">
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件" @click="addParts">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                </template>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI|科室退回" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
         </template>
@@ -511,12 +513,15 @@ export default {
           if(!selectItems.length){
               iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
           }else{
+            const h = this.$createElement;
             this.$confirm(
             this.language('LK_TIPS_SHIFOUSHANCHUGAILINGJIAN','是否删除该零件？'),
             this.language('LK_AEKO_SHANCHULINGJIAN','删除零件'),
             {
                 confirmButtonText: this.language('nominationLanguage.Yes','是'),
                 cancelButtonText: this.language('nominationLanguage.No','否'),
+                cancelButtonClass:'confirmCancelBtn',
+                customClass:'aekoMessageBoxDeleteParts',
             }
             ).then(()=>{
                 this.btnLoading.deleteParts = true;
@@ -856,4 +861,12 @@ export default {
             }
         }
     }
+</style>
+<style lang="scss" >
+.aekoMessageBoxDeleteParts{
+    ::v-deep .confirmCancelBtn{
+        float: right;
+        margin-left: 15px;
+    }
+}
 </style>
