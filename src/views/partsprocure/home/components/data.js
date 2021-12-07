@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-12-07 14:39:05
+ * @LastEditTime: 2021-12-07 14:43:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -63,15 +63,14 @@ export const tableTitle = [{
 		width:60,
 		isAekoShow:false,
 	},
-	// 经过BA确认，会议决议不展示cf
-	// {
-	// 	props: 'cfControllerName',
-	// 	name: 'CF',
-	// 	key: 'partsprocure.CF',
-	// 	tooltip: true,
-	// 	width:70,
-	// 	isAekoShow:false,
-	// },
+	{
+		props: 'cfControllerName',
+		name: 'CF',
+		key: 'partsprocure.CF',
+		tooltip: true,
+		width:70,
+		isAekoShow:false,
+	},
 	// {
 	// 	props: 'cfControllerZh',
 	// 	name: 'CF',
