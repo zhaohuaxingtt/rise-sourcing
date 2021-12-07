@@ -92,6 +92,7 @@ import {carTitle,fscarTitle} from "../data"
 import {searchCarTypeConfig,searchCarType,searchCarTypeProConfig} from "@/api/partsprocure/home"
 import { pageMixins } from "@/utils/pageMixins";
 import { savearDosage } from "@/api/partsprocure/editordetail";
+import { log } from 'util';
 export default {
   components: { iDialog, iButton, tableList, iSelect, iPagination},
   props: {
@@ -126,12 +127,12 @@ export default {
       selectData:[],
       isGs:true,
       fscarTableTitle:[...fscarTitle],
-      saveLoading: false
+      saveLoading: false,
+      carIds:[]
     }
   },
   created() {
     this.getPartType()
-    this.getTableList([])
   },
   methods: {
     changeVisible() {
@@ -148,6 +149,8 @@ export default {
         searchCarType(this.$route.query.projectId).then(res => {
           if(res.code == '200') {
             this.carTypeOptions = res.data
+            this.carIds = this.carTypeOptions.map(item=>item.id)
+            this.changeTable(this.carIds)
           }
         })
       } else {
@@ -169,7 +172,6 @@ export default {
               this.$set(val,'batteryCapacity',val.batteryVo?.capacity)
             })
             this.fscarTableData = res.data || []
-
             this.page.totalCount = res.total || 0
           } else {
             iMessage.error(res.desZh)
@@ -178,7 +180,11 @@ export default {
       }
     },
     changeTable(data) {
-      this.getTableList(data)
+      if(data.length == 0) {
+        this.getTableList(this.carIds)
+      } else {
+        this.getTableList(data)
+      }
     },
     getTableList(value) {
       this.tableLoading = true
