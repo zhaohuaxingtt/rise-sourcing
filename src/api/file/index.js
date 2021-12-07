@@ -21,10 +21,10 @@ export function downloadFile(parmars) {
 }
 
 export function downloadFileUd(params) {//blob
-    return fileRequst({
-        url: `/fileud/udDown?fileIds=${params}`,
+    return file({
+        url: `/udDown?fileIds=${params}`,
         method: 'POST',
-        responseType: 'blob',
+        // responseType: 'blob',
     })
 }
 
