@@ -8,7 +8,7 @@
           <span class="title" >
             {{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}</template>
           </span>
-          <div class="btn-left">
+          <div v-if="!disabled" class="btn-left">
             <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
             <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
             <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
@@ -20,16 +20,18 @@
         </div>
       <tableList
         class="table"
+        ref="table"
         index
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
-        :ispartProjectSource="ispartProjectSource"
-        :editable = "perCarDosage"
         @handleSelectionChange="handleSelectionChange"
-        @getIndex="getIndex" 
-        @isNum="isNum"
-      />
+      >
+        <template #perCarDosage="scope">
+          <iInput v-if="isEdit && ispartProjectSource" v-model="scope.row.perCarDosage" @click.native.stop @focus="handleFocusByInput(scope.row)" @input="handleInputByPerCarDosage($event, scope.row)" />
+          <span v-else>{{ scope.row.perCarDosage }}</span>
+        </template>
+      </tableList>
       <iPagination
         class="pagination margin-top30"
         @size-change="handleSizeChange($event, getData)"
@@ -50,7 +52,7 @@
 </template>
 
 <script>
-import { iCard, iPagination, iMessage, iButton } from 'rise';
+import { iCard, iPagination, iMessage, iButton, iInput } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { volumeTableTitle as tableTitle } from "./data";
@@ -69,9 +71,10 @@ import {
 } from "@/api/partsprocure/editordetail";
 import addCarType from './components/addCarType'
 import { cloneDeep } from "lodash"
+import { numberProcessor } from "@/utils"
 
 export default {
-  components: { iCard, tableList, iPagination, iButton, addCarType },
+  components: { iCard, tableList, iPagination, iButton, addCarType, iInput },
   mixins: [pageMixins],
   data() {
     return {
@@ -86,9 +89,8 @@ export default {
       isEdit:false,
       carTypeVisible:false,
       selectData:[],
-      getPerCarDosage:{},
       isGs:true,
-      ispartProjectSource:false
+      ispartProjectSource:false,
     };
   },
   props: {
@@ -100,6 +102,10 @@ export default {
     isSameGroupPartProjectType: {
       type: Boolean,
       default: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   created() {
@@ -202,6 +208,8 @@ export default {
           this.page.totalCount = res.data.totalCount || 0;
           this.totalCountCache = res.data.totalCount || 0
 
+          this.selectData = []
+
           if (!this.isSameGroupPartProjectType) {
             this.tableListData = []
           }
@@ -228,7 +236,7 @@ export default {
            fscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
-              this.$emit('updateTable')
+              this.$emit('updateStartYear')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
@@ -305,24 +313,26 @@ export default {
         
       }
     },
-    //获取输入框的index和值
-    getIndex(index,perCar) {
-      this.getPerCarDosage.index = index
-      this.getPerCarDosage.perCar = perCar
+    // input聚焦转换成自动勾选当前行
+    handleFocusByInput(row) {
+      this.$refs.table.$refs.table.clearSelection()
+      this.$refs.table.$refs.table.toggleRowSelection(row, true)
     },
     //向下填充
     fillDown() {
-      let data = [...this.tableListData]
-      if(this.getPerCarDosage.perCar === '') {
-        iMessage.warn(this.language('QINGSHURUMEICHEYONGLIANG','请输入每车用量'))
-        return
-      }
-      data.forEach((val,index)=>{
-        if(index>this.getPerCarDosage.index){
-          this.$set(val,'perCarDosage',this.getPerCarDosage.perCar)
-        }
+      this.$nextTick(() => {
+        if (this.selectData.length != 1) return iMessage.warn(this.language("QINGXUANZEYITIAOMEICHEYONGLIANGSHUJUJINXINGXIANGXIATIANCHONG", "请选择一条每车用量数据进行向下填充"))
+        if (!this.selectData[0].perCarDosage) return iMessage.warn(this.language('QINGSHURUMEICHEYONGLIANG','请输入每车用量'))
+
+        let afterFoucsRowFlag = false
+        this.tableListData.forEach(item => {
+          if (afterFoucsRowFlag) this.$set(item, "perCarDosage", this.selectData[0].perCarDosage)
+
+          if (item === this.selectData[0]) afterFoucsRowFlag = true
+        })
+
+        this.$refs.table.$refs.table.clearSelection()
       })
-      this.tableListData = data
     },
     //保存
     saveData() {
@@ -388,34 +398,22 @@ export default {
       if(this.tableListData.length == '0') {
         this.tableListData = valTemData
       } else {
-        let data = [...this.tableListData]
-        console.log(data,'data');
-        console.log(valTemData,'valTemData');
-        const idList = data.map(val=> val.cartypeConfigId)
-        console.log(idList);
-        let pushvalTemData =[]
-        pushvalTemData =  valTemData.filter(value=>{
-          let res = !(idList.indexOf(value.cartypeConfigId)>-1)
-          return res
-        })
-        console.log(pushvalTemData,'pushvalTemData');
-        data.unshift(...pushvalTemData)
-        this.tableListData = data
+        // 去重
+        const savedOriginIds = this.tableListData.map(item => item.originId)
+        const data = val.filter(item => !savedOriginIds.includes(item.originId))
+        this.tableListData = data.concat(this.tableListData)
       }
     },
     //输入整数
-    isNum(val,key,idx) {
-      this.tableListData.forEach((value,index)=>{
-        if(index == idx) {
-          value.perCarDosage =  (val + '').replace(/\D/g, '')
-        }
-      })
+    handleInputByPerCarDosage(value, row) {
+      this.$set(row, "perCarDosage", numberProcessor(value, 0))
     },
     // 清空数据
     clearAll() {
       if (this.params.partProjectSource == 1) return
 
       this.tableListData = []
+      this.selectData = []
       this.page.totalCount = 0
     },
     // 还原表格
