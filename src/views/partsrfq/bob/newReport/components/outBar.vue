@@ -230,6 +230,9 @@ export default {
             let domHtml = ''
 
             params.forEach(item => {
+              if (item.seriesName == "sum") {
+                return false;
+              }
               domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + item.color + '"></span>'
               result += domHtml + item.seriesName + ":" + this.doNumber(item.value) + '<br/>'
             })
@@ -257,9 +260,9 @@ export default {
             max: this.maxData
           }
         ],
-        emphasis: {
-          focus: 'series'
-        },
+        // emphasis: {
+        //   focus: 'series'
+        // },
         color: [
           "#C6DEFF",
           "#9BBEFF",
@@ -352,9 +355,9 @@ export default {
             type: 'bar',
             barGap: '-100%',
             z: 20 - i,
-            emphasis: {
-              focus: 'series'
-            },
+            // emphasis: {
+            //   focus: 'series'
+            // },
             label: {
               show: true,
               position: 'insideTop',

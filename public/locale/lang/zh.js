@@ -1171,7 +1171,7 @@
         'LK_CARPROJECTRFQ': '报价时间',
         'LK_NUMBERPREFIX': '第',
         'LK_TURN': '轮',
-        'LK_NONGROUPEDBREAKTIPS': '以下为未分组数据',
+        'LK_NONGROUPEDBREAKTIPS': '以下为 {msg} 未分组数据',
         'LK_CAIGOULEIXING': '采购类型', //  采购类型
 
         // 定点管理
@@ -1588,6 +1588,13 @@
             'LK_JIESHURIQI': '结束⽇期', //结束⽇期
 
         },
+
+        //  ------------------------模具相关（张入圆）------------------------------
+        'MOULDADD':{
+            'CHAKANLISHI': '查看历史',  //  查看历史
+            'SOPSHIJIAN': 'SOP时间',    //  SOP时间
+        },
+
     }
     var xmlHttp = ''
     if(window.XMLHttpRequest){

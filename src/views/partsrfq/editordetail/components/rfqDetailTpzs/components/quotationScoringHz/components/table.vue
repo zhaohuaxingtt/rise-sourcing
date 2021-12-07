@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-02 18:58:39
+ * @LastEditTime: 2021-12-06 14:01:03
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -300,7 +300,7 @@ export default{
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
           rfqId:this.$route.query.id,
-          round:this.round,
+          round:items.round,
           supplierId:items[index+'supplierId'],
           fsNum:items.partPrjCode,
           fix:true,

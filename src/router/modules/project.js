@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-15 17:10:35
+ * @LastEditTime: 2021-11-29 11:10:21
  * @Description: 
- * @FilePath: \front-web\src\router\modules\project.js
+ * @FilePath: \front-sourcing\src\router\modules\project.js
  */
 
 export default [
@@ -80,6 +80,22 @@ export default [
               title: "项目管理-排程助手-进度确认",
             },
             component: () => import("@/views/project/schedulingassistant/progressconfirm")
+          },
+          {
+            path: 'defaultscheLogic',
+            name: 'defaultScheLogic',
+            meta: {
+              title: '排程助手-默认排程算法配置'
+            },
+            component: () => import('@/views/project/schedulingassistant/defaultScheLogic')
+          },
+          {
+            path: 'riskAndAlarmConfig',
+            name: 'riskAndAlarmConfig',
+            meta: {
+              title: '排程助手-风险预警配置'
+            },
+            component: () => import('@/views/project/schedulingassistant/riskAndAlarmConfig')
           }
         ]
       },

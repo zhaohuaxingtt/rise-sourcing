@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-19 10:05:32
+ * @LastEditTime: 2021-12-06 13:55:51
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\components\projectHeader.vue
 -->
@@ -10,10 +10,12 @@
 <template>
   <div :class="`projectTop ${isProgressConfirm ? 'withAfter' : ''}`">
     <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav" />
-    <div style="display:flex;align-items:center">
+    <div style="display:flex;align-items:center" class="right-control">
       <iNavMvp v-if="subNavList" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
-      <logButton class="margin-left20" @click="toLogPage" />
-      <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
+      <div class="control">
+        <logButton class="margin-left20" @click="toLogPage" />
+        <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
+      </div>
       <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
     </div>
   </div>
@@ -74,6 +76,15 @@ export default {
   align-items: center;
   margin-bottom: 20px;
   position: relative;
+  .right-control {
+    width: 60%;
+    // flex-wrap: wrap;
+    justify-content: flex-end;
+    .control {
+      flex-shrink: 0;
+      // width: 150px;
+    }
+  }
   &.withAfter::after {
     content: '';
     width: 100%;

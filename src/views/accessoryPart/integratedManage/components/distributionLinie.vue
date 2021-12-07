@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:57:31
  * @LastEditors:  
- * @LastEditTime: 2021-12-02 10:16:30
+ * @LastEditTime: 2021-12-03 13:52:41
  * @Description: 分配询价科室弹窗
  * @FilePath: \front-web\src\views\accessoryPart\signForPartsDemand\components\assignInquiryDepartment.vue
 -->
@@ -74,7 +74,9 @@ export default {
   watch: {
     dialogVisible(val) {
       if (val) {
-        this.respDept = ''
+        this.queryLinieDept = ''
+        this.queryLinie = ''
+        this.linieUpdata={}
       }
     }
   },
@@ -115,11 +117,11 @@ export default {
       this.clearDialog()
     },
     handleConfirm() {
-      if (this.linieUpdata.linieDept === '') {
+      if (this.linieUpdata.linieDept === ''|| this.linieUpdata.linieDept == undefined) {
         iMessage.warn(this.language('QINGXUANZELINIEKESHI','请选择linie科室'))
         return
       } 
-      if(this.linieUpdata.linieId === '') {
+      if(this.linieUpdata.linieId === ''|| this.linieUpdata.linieId == undefined) {
         iMessage.warn(this.language('QINGXUANZELINIE','请选择linie'))
         return
       }
@@ -128,6 +130,7 @@ export default {
       updateCsfOrLinie(this.linieUpdata).then(res=>{
         if(res.code == '200') {
            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+           this.$emit('init')
           this.$emit('changeVisible', false)
            this.loading = false
         } else {
@@ -140,6 +143,7 @@ export default {
       this.loading = loading
     },
     changeUserDept(val) {
+      this.queryLinie=""
       this.linieUpdata.linieDept = val.id
       this.linieUpdata.linieDeptName = val.deptNum
       this.getBuyerList(val.id)

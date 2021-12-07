@@ -37,8 +37,9 @@
               <iButton @click="down">导出</iButton>
             </template>
             <template v-else>
+              <iButton @click="clear">移除</iButton>
               <iButton @click="saveGroup">保存分组</iButton>
-              <iButton @click="clearGrouped">取消</iButton>
+              <iButton @click="cancelGroupMode">取消</iButton>
             </template>
           </div>
         </div>
@@ -59,28 +60,27 @@
                  :key="index"
                  style="display: flex;flex-flow: row nowrap;width: 100%;"
                  :class="decideRowClass(item, index)"
-                 v-if="collapseItems.indexOf(item.id) < 0 && item.title != 'CBD轮次明细ID'"
+                 v-if="collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'"
                  :id="item.id"
                  :root-id="item.rootId"
                  :parent-id="item.parentId"
                  :ref="!item.parentId ? item.id:''">
               <template v-if="item.isBreakLine">
                 <span class="table-cell"
-                      style="width: 100%;text-align:center;font-weight: bold;">
-                  {{language("LK_NONGROUPEDBREAKTIPS","以下为未分组数据")}}
+                      style="width: 100%;text-align:center;font-weight: bold;background-color: #1763F7;color: #fff;">
+                  {{$t("LK_NONGROUPEDBREAKTIPS",{"msg": item.title})}}
                 </span>
               </template>
               <template v-else>
-                <span class="table-cell"
-                      style="justify-content: flex-start;width: 20%"
-                      :style="{'padding-left': 20*item.level + 'px'}">
+                <div :class="['table-cell', showCollapseOutLine(item)]"
+                      :style="{'padding-left': 20*item.level + 'px','justify-content': 'flex-start','width': '20%'}">
                   <i v-if="item.hasChild"
                      :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
                      style="cursor: pointer;padding-right: 4px;"
                      @click="handleCollapse(item, item.expanded)"></i>
-                  <template v-if="(item.grouped || item.matchId > 0 || item.isFresh) && !onPreview">
+                  <template v-if="item.matchId > 0 && !onPreview">
                     <template v-if="onEditLabels.indexOf(item.id) < 0">
-                      <span :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
+                      <span :style="{'font-weight': item.matchId > 0 ? 'bold':''}">{{item.title}}</span>
                       <i class="el-icon-edit" style="cursor: pointer;margin-left: 10px;" @click.stop="changeToEditMode(item.id)"></i>
                     </template>
                     <el-input v-else v-model="item.title">
@@ -89,19 +89,23 @@
                       </template>
                     </el-input>
                   </template>
-                  <span v-else :style="{'font-weight': (item.groupChild || item.isFresh || !item.parentId) ? 'bold':''}">{{item.title}}</span>
-                </span>
-                <span :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'']"
+                  <template v-else>
+                    <span :title="item.title" class="title-cell" :style="{'font-weight': (item.matchId < 0 && item.level == 1) || item.level == 0 ? 'bold':''}">
+                      {{item.title}}
+                    </span>
+                  </template>
+                </div>
+                <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'', showCollapseOutLine(item)]"
                       v-for="(title, titleIdx) in tableTitle"
                       :key="titleIdx"
                       :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
                   <el-checkbox v-show="onGroupingModel"
-                               v-if="item.groupKey"
+                               v-if="item.groupKey && item['label#' + titleIdx]"
                                style="margin-right: 10px;"
                                v-model="item['checked#' + titleIdx]"
                                @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
                   {{item['label#'+titleIdx]}}
-                </span>
+                </div>
               </template>
             </div>
           </div>
@@ -139,7 +143,6 @@
 
 <script>
 import { icon, iCard, iButton, iDialog, iMessage } from "rise";
-import table1 from "./components/table1.vue";
 import tree from './tree'
 import remarkDialog from "./components/remarkDialog.vue";
 import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
@@ -154,6 +157,7 @@ import {
   groupedCancel,
   groupedSubmit,
   restore,
+  removeComponentFromGroup,
   renameComponentGroup
 } from "@/api/partsrfq/bob";
 import { update } from "@/api/partsrfq/bob/analysisList";
@@ -170,11 +174,10 @@ export default {
     iCard,
     iDialog,
     iButton,
-    table1,
     tree,
     ungroupedTable,
     groupedTable,
-    remarkDialog,
+    remarkDialog
   },
   props: {
     label: {
@@ -234,11 +237,14 @@ export default {
       onGroupingModel: false,
       groupSelectedItems: [],
       cbdSelectedList: [],
-      onEditLabels: []
+      onEditLabels: [],
+      suppliers: [],
+      subCbdDetails: {},
+      subCbdDetailShowPositions: [],
+      removeCbdIds: []
     };
   },
   created () {
-    this.onDataLoading = true;
     if (this.$route.query.groupId) {
       this.groupId = this.$route.query.groupId
     } else {
@@ -271,10 +277,15 @@ export default {
     }
   },
   methods: {
+    showCollapseOutLine(item) {
+      if (item.level == 0) {
+        return 'collapse-root'
+      } else {
+        return (item.level == 1 && typeof item.matchId != 'undefined') ? 'collapse-group':''
+      }
+    },
     changeToEditMode(id) {
-      console.log(id)
       this.onEditLabels.push(id)
-      console.log(this.onEditLabels)
     },
     onPreviewStyle () {
       if (this.onPreview) {
@@ -285,12 +296,8 @@ export default {
       return {}
     },
     decideRowClass (row, idx) {
-      if (this.collapseItems.length == 0) {
-        return idx % 2 == 0 ? 'table-odd' : 'table-even';
-      }
-
       var displayed = this.tableListData.filter((item) => {
-        return this.collapseItems.indexOf(item.id) < 0
+        return this.collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'
       })
 
       var realIndex = -1;
@@ -341,6 +348,10 @@ export default {
         }
       });
     },
+    cancelGroupMode() {
+      this.clearGrouped()
+      this.onGroupingModel = false;
+    },
     clearGrouped () {
       this.tableListData.forEach((item) => {
         for (var key in item) {
@@ -351,9 +362,18 @@ export default {
       })
       this.groupSelectedItems = [];
       this.cbdSelectedList = [];
-      this.onGroupingModel = false;
+      // this.onGroupingModel = false;
     },
     onGroupItemSelected (checked, item, idx) {
+      var parent = this.tableListData.filter((line) => {
+        return line.id == item.parentId
+      })
+      if (parent.length > 0 && parent[0].matchId > 0) {
+        var cbd = this.tableListData.filter((line) => {
+          return line.parentId == item.parentId && line.code == "detailId"
+        })
+        this.removeCbdIds.push(cbd[0]["label#" + idx])
+      }
       if (checked) {
         if (this.groupSelectedItems.some((obj) => {
           return obj.idx == idx && item.rootId == obj.rootId
@@ -371,7 +391,7 @@ export default {
               parentId: obj.parentId,
               groupId: groupId
             })
-            if (obj.title === "CBD轮次明细ID") {
+            if (obj.code === "detailId") {
               this.cbdSelectedList.push(obj['label#' + idx])
             }
           } else if (obj.parentId == item.parentId) {
@@ -382,7 +402,7 @@ export default {
               parentId: obj.parentId,
               groupId: groupId
             })
-            if (obj.title === "CBD轮次明细ID") {
+            if (obj.code === "detailId") {
               this.cbdSelectedList.push(obj['label#' + idx])
             }
             if (obj.hasChild) {
@@ -460,32 +480,15 @@ export default {
         }
       });
     },
-    addGroupedToOrigin (childs, grouped) {
-      if (grouped.child.length == 0) {
-        return;
-      }
-      childs.forEach((child, childIndex) => {
-        for (var key in child) {
-          if (key.indexOf("label#") >= 0) {
-            if (!Array.isArray(child[key])) {
-              child[key] = [child[key]]
-            }
-            child[key].unshift(grouped.child[childIndex][key])
-          }
-        }
-        if (child.child && child.child.length > 0) {
-          this.addGroupedToOrigin(child.child, grouped.child[childIndex])
-        }
-      })
-    },
     chargeRetrieve (params) {
+      this.onDataLoading = true;
       chargeRetrieve(params)
         .then((allDatas) => {
           try {
             // var datas = allDatas;
             this.tableList = allDatas;
             this.tableTitle = this.tableList.title.filter(item => item.title)
-            this.prepareData()
+            this.reContructData()
             this.$nextTick(() => {
               this.onDataLoading = false;
             })
@@ -514,214 +517,258 @@ export default {
         s4()
       )
     },
-    prepareData () {
-      var tableData = [];
-      var lvl = [];
+    reContructData() {
+      var a = new Date().getTime()
+      this.tableListData = [];
+      this.suppliers = [];
       var titles = this.tableList.title;
+
+      titles.forEach((supplier) => {
+        if (supplier.label != "title") {
+          this.suppliers.push(supplier.label)
+        }
+      })
+
+      this.reBuild("1", "rawUngroupedChild")
+      this.reBuild("2", "maUngroupedChild")
+      this.addOrigin()
+
+      var b= new Date().getTime()
+      console.log(b - a)
+    },
+    reBuild(code, prop) {
+      this.subCbdDetails = {};
+      this.subCbdDetailShowPositions = [];
       var elements = this.tableList.element;
-      var rawCols = 0;
-      var maCols = 0;
-      var idCol = {}
-      titles.forEach((title, index) => {
-        if (rawCols < title.rawTotalUnGrouped) {
-          rawCols = title.rawTotalUnGrouped;
-        }
-        if (maCols < title.maTotalUnGrouped) {
-          maCols = title.maTotalUnGrouped;
-        }
-      });
-
-      elements.forEach((element) => {
-        this.createLevel(element, lvl, -1)
-      });
-
-      titles.forEach((title, index) => {
-        var colData = [];
-
-        if (index > 0) {
-          elements.forEach((cbdDataLvlZero, index) => {
-            this.addToColList(idCol, rawCols, maCols, cbdDataLvlZero.code, cbdDataLvlZero, colData, title.label, 0)
-          })
-          tableData.push(colData)
-        }
-      });
-      this.mergeData(tableData)
-    },
-    mergeData (tableData) {
-      var merged = JSON.parse(JSON.stringify(tableData[0]));
-      var needInsertBreakLine = false;
-      merged.forEach((item) => {
-        item["label#0"] = item.value
-        if (!item.id) {
-          item.id = this.createUuid();
-        }
-        if (item.matchId > 0 && !needInsertBreakLine) {
-          needInsertBreakLine = true;
-        }
-        delete item.value
-      })
-      tableData.forEach((col, index) => {
-        if (index > 0) {
-          col.forEach((item, idx) => {
-            if (merged[idx]) merged[idx]["label#" + index] = item.value
-          })
+      var rootTitle;
+      elements.forEach((cbdLvlZero) => {
+        if (cbdLvlZero.code == code) {
+          rootTitle = cbdLvlZero.title
+          this.processGroupDatas(cbdLvlZero, this.addCategory(cbdLvlZero))
         }
       })
 
-      if (needInsertBreakLine) {
-        for (var i = 0; i < merged.length; i++) {
-          if (merged[i].matchId < 0 && i != merged.length - 1) {
-            var breakLine = JSON.parse(JSON.stringify(merged[i - 1]))
-            breakLine.isBreakLine = true;
-            merged.splice(i, 0, breakLine)
-            break;
-          }
-        }
+      this.insertGroupedArr()
+      if (this.subCbdDetailShowPositions.length > 0) {
+        this.subCbdDetailShowPositions.push(['breakLine'])
       }
-
-      this.tableListData = merged
+      this.insertUnGroupedArr(prop)
+      this.addToTable(rootTitle)
     },
-    addChild (idCol, rawCols, maCols, cbdCode, childs, colData, key, showLevel, parentId, rootId, parentIndex) {
-      childs.forEach((child) => {
-        this.addToColList(idCol, rawCols, maCols, cbdCode, child, colData, key, showLevel, parentId, rootId, parentIndex)
-      })
-    },
-
-    addToColList (idCol, rawCols, maCols, cbdCode, target, colData, key, showLevel, parentId, rootId, parentIndex) {
-      // if (target.code == "detailId") {
-      //   return;
-      // }
-      // var nextLvl = showLevel + 1;
-      var nextLvl = showLevel + 1;
-      if (!Array.isArray(target[key])) {
-        if (!target.code) {
-          target[key] = [target[key]];
-        } else {
-          var object = {};
-          object.title = target.title;
-          object.value = target[key];
-          object.level = showLevel;
-          object.parentId = parentId;
-          object.rootId = rootId;
-          object.code = target.code;
-          if (target.matchId) {
-            object.matchId = target.matchId
-          }
-          if (target.isFresh) {
-            object.isFresh = target.isFresh
-          }
-          // object.rootId = parentId;
-          if (target.child && target.child.length > 0) {
-            if (!idCol[object.title]) {
-              idCol[object.title] = this.createUuid();
-            }
-            object.id = idCol[object.title];
-            object.hasChild = true
-            object.expanded = true;
-          }
-          colData.push(object)
-          if (target.child && target.child.length > 0) {
-            this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title], idCol[object.title])
-          }
-          return;
-        }
+    processGroupDatas(cbdLvlZero, rootId) {
+      if (!cbdLvlZero.child || cbdLvlZero.child.length <= 0) {
+        return;
       }
-
-      var looper = JSON.parse(JSON.stringify(target[key]));
-      if (target.matchId < 0) {
-        if (looper.length < rawCols && cbdCode == "1") {
-          while (looper.length < rawCols) {
-            looper.push("");
-          }
-        }
-        if (looper.length < maCols && cbdCode == "2") {
-          while (looper.length < maCols) {
-            looper.push("");
-          }
-        }
-      }
-
-      looper.forEach((labelChild, index) => {
-        if (typeof parentIndex != "undefined") {
-          if (parentIndex == index) {
-            var object = {};
-            object.title = target.title;
-            object.value = labelChild;
-            object.level = showLevel;
-            object.parentId = parentId;
-            object.rootId = rootId;
-            if (target.matchId) {
-              object.matchId = target.matchId
+      cbdLvlZero.child.forEach((cbdHead) => {
+        this.suppliers.forEach((supplier) => {
+          var cbdId = this.findCbdId(cbdHead, supplier)
+          if (cbdId) {
+            var isArray = Array.isArray(cbdId);
+            if (!isArray) {
+              cbdId = [cbdId]
             }
-            if (target.isFresh) {
-              object.isFresh = target.isFresh
-            }
-            if (object.title == '组别' || object.title == '制造工序') {
-              object.groupKey = true;
-            }
-            if (target.child && target.child.length > 0) {
-              if (!idCol[object.title + index]) {
-                idCol[object.title + index] = this.createUuid();
+            cbdId.forEach((cbdSubId, idx) => {
+              if (!this.subCbdDetails[cbdSubId]) {
+                this.subCbdDetails[cbdSubId] = []
               }
-              object.id = idCol[object.title + index];
-              object.hasChild = true
-              object.expanded = true;
-            }
-            colData.push(object)
-            if (target.child && target.child.length > 0) {
-              this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], rootId, index)
-            }
+              
+              var cbdDetailHead = this.createDetailHead(cbdHead, supplier, isArray ? idx : -1, rootId, rootId, 1)
+              this.setCollapse(cbdHead, cbdDetailHead)
+              this.subCbdDetails[cbdSubId].push(cbdDetailHead)
+              
+              if (cbdHead.child && cbdHead.child.length > 0) {
+                this.createDetail(cbdHead, cbdSubId, supplier, isArray ? idx : -1, rootId, cbdDetailHead.id, 2)
+              }
+            })
           }
-          return false;
-        } else {
-          var object = {};
-          object.title = target.title;
-          object.value = labelChild;
-          object.level = showLevel;
-          object.rootId = rootId;
-          object.parentId = parentId;
-          if (target.matchId) {
-            object.matchId = target.matchId
-          }
-          if (target.isFresh) {
-            object.isFresh = target.isFresh
-          }
-          if (object.title == '组别' || object.title == '制造工序') {
-            object.groupKey = true;
-          }
-
-          if (target.child && target.child.length > 0) {
-            if (!idCol[object.title + index]) {
-              idCol[object.title + index] = this.createUuid();
-            }
-            object.id = idCol[object.title + index];
-            object.hasChild = true
-            object.expanded = true;
-          }
-          colData.push(object)
-          if (target.child && target.child.length > 0) {
-            this.addChild(idCol, rawCols, maCols, cbdCode, target.child, colData, key, nextLvl, idCol[object.title + index], rootId, index)
-          }
+        })
+      })
+    },
+    findCbdId(cbdLvlZeroHead, supplier) {
+      if (!cbdLvlZeroHead.child || cbdLvlZeroHead.child.length < 0) {
+        return;
+      }
+      for (var i=0;i<cbdLvlZeroHead.child.length;i++) {
+        if (cbdLvlZeroHead.child[i].code == "detailId") {
+          return cbdLvlZeroHead.child[i][supplier];
+        }
+      }
+      return;
+    },
+    createDetail(cbdHead, cbdId, supplier, index, rootId, parentId, level) {
+      var nextLevel = level + 1
+      cbdHead.child.forEach((child) => {
+        var temp = this.createNewCbdDetailLine(child.code, child.title, rootId, parentId)
+        temp[supplier] = index >= 0 ? child[supplier][index] : child[supplier]
+        temp.level = level
+        if (temp.code == "ogt" || temp.code == "206") {
+          temp.groupKey = true
+          this.suppliers.forEach((supp) => {
+            temp["checked#" + supp.replace("label#","")] = false;
+          })
+        }
+        this.setCollapse(child, temp)
+        this.subCbdDetails[cbdId].push(temp)
+        if (child.child && child.child.length > 0) {
+          this.createDetail(child, cbdId, supplier, index, rootId, temp.id, nextLevel)
         }
       })
     },
-    createLevel (parent, lvl, showLevel) {
-      // if (parent.code == "detailId") {
-      //   return;
-      // }
-      showLevel++;
-      if (!lvl.some((item) => {
-        return item.title == parent.title
-      })) {
-        lvl.push({
-          title: parent.title,
-          level: showLevel
+    createDetailHead(cbdHead, supplier, index, rootId, parentId, level) {
+      var cbdDetailHead = this.createNewCbdDetailLine(cbdHead.code, cbdHead.title, rootId, parentId)
+      cbdDetailHead[supplier] = index >= 0 ? cbdHead[supplier][index] : cbdHead[supplier]
+      cbdDetailHead.matchId = cbdHead.matchId
+      cbdDetailHead.level = level
+      return cbdDetailHead
+    },
+    createNewCbdDetailLine(code, title, rootId, parentId) {
+      var temp = {
+        "code": code,
+        "title": title,
+        "id": this.createUuid(),
+        "rootId": rootId,
+        "parentId": parentId
+      }
+      
+      return temp
+    },
+    addOrigin() {
+      var elements = this.tableList.element;
+      elements.forEach((cbdLvlZero) => {
+        if (cbdLvlZero.code < "3") {
+          return false;
+        }
+        var rootId = this.addCategory(cbdLvlZero)
+        this.addSub(cbdLvlZero, rootId, rootId, 1)
+      });
+    },
+    addSub(parent, rootId, parentId, level) {
+      if (!parent.child || parent.child.length <= 0) {
+        return;
+      }
+      var nextLevel = level + 1;
+      parent.child.forEach((cbdDetail) => {
+        var lvlItem = this.createNewCbdDetailLine(cbdDetail.code, cbdDetail.title, rootId, parentId)
+        lvlItem.id = this.createUuid()
+        lvlItem.level = level;
+        this.setCollapse(cbdDetail, lvlItem)
+        this.tableListData.push(lvlItem)
+        this.addSub(cbdDetail, rootId, lvlItem.id, nextLevel)
+      });
+    },
+    setCollapse(ref, item) {
+      if (ref.child && ref.child.length > 0) {
+        item.hasChild = true;
+        item.expanded = true;
+      }
+    },
+    addCategory(cbdLvlZero) {
+      var lvlZero = JSON.parse(JSON.stringify(cbdLvlZero));
+      lvlZero.id = this.createUuid()
+      lvlZero.level = 0;
+      lvlZero.hasChild = true;
+      lvlZero.expanded = true;
+      this.tableListData.push(lvlZero)
+      return lvlZero.id
+    },
+    addToTable(rootTitle) {
+      this.subCbdDetailShowPositions.forEach((line) => {
+        var lineDatas;
+        line.forEach((cbdId) => {
+          if (!cbdId) {
+            return false;
+          }
+          if (cbdId == "breakLine") {
+            lineDatas = []
+            var rootId = this.tableListData[this.tableListData.length - 1].rootId
+            lineDatas.push({
+              id: this.createUuid(),
+              isBreakLine: true,
+              rootId: rootId,
+              parentId: rootId,
+              title: rootTitle
+            })
+            return false
+          }
+          if (!lineDatas) {
+            lineDatas = this.subCbdDetails[cbdId]
+          } else {
+            if (!this.subCbdDetails[cbdId]) {
+              return false;
+            }
+            this.subCbdDetails[cbdId].forEach((item, idx) => {
+              for (var key in item) {
+                if (key.indexOf("label#") >= 0) {
+                  lineDatas[idx][key] = item[key]
+                }
+              }
+            })
+          }
+        })
+        if (lineDatas && lineDatas.length > 0) {
+          lineDatas.forEach((item) => {
+            this.tableListData.push(item)
+          })
+        }
+      })
+    },
+    insertGroupedArr() {
+      var cbdMatchArr = {}
+      for (var cbdId in this.subCbdDetails) {
+        var matchItem = this.subCbdDetails[cbdId].filter((item) => {
+          return item.matchId > 0
+        })
+        if (matchItem.length <= 0) {
+          continue;
+        }
+        if (!cbdMatchArr[matchItem[0].matchId]) {
+          cbdMatchArr[matchItem[0].matchId] = []
+        }
+        
+        this.suppliers.forEach((supplier,idx) => {
+          if (matchItem[0][supplier]) {
+            cbdMatchArr[matchItem[0].matchId][idx] = cbdId
+          } else {
+            if (!cbdMatchArr[matchItem[0].matchId][idx]) {
+              cbdMatchArr[matchItem[0].matchId][idx] = ""
+            }
+          }
         })
       }
-      if (parent.child && parent.child.length > 0) {
-        parent.child.forEach((child) => {
-          this.createLevel(child, lvl, showLevel)
-        })
+      
+      if (cbdMatchArr.length <= 0) {
+        return;
+      }
+      var matchIds = Object.keys(cbdMatchArr);
+      matchIds.sort()
+      matchIds.forEach((matchId) => {
+        this.subCbdDetailShowPositions.push(cbdMatchArr[matchId])
+      })
+    },
+    insertUnGroupedArr(prop) {
+      var max = 0;
+      var titles = this.tableList.title;
+      
+      titles.forEach((supplier) => {
+        if (supplier.label == "title") {
+          return false
+        }
+
+        if (max < supplier[prop].length) {
+          max = supplier[prop].length
+        }
+      })
+
+      for (var j=0;j<max;j++) {
+        var temp = []
+        for (var i=1;i<titles.length;i++) {
+          if (titles[i][prop][j]) {
+            temp.push(titles[i][prop][j])
+          } else {
+            temp.push("")
+          }
+        }
+        this.subCbdDetailShowPositions.push(temp)
       }
     },
     handleChange (val) {
@@ -797,10 +844,18 @@ export default {
         schemaId: this.schemaId,
         code: '1'
       }).then(res => {
+        if (res.data) {
+          res.data.forEach((matchId) => {
+            if (!matchId.matchId) {
+              if (res.data.some((item) => {
+                return matchId.groupName == item.groupName
+              })) {
+                matchId.groupName = matchId.groupName + res.data.length
+              }
+            }
+          })
+        }
         this.groupNameOptions = res.data
-        // if (!this.groupNameOptions.matchId) {
-        //   this.groupNameOptions.matchId = '';
-        // }
       })
     },
     groupToList () {
@@ -809,59 +864,6 @@ export default {
         return
       }
       this.onDataLoading = true;
-      var newDatas = [];
-      this.groupSelectedItems.forEach((gi) => {
-        this.tableListData.forEach((item) => {
-          if (gi.id == item.id) {
-            var newItem = JSON.parse(JSON.stringify(item));
-            for (var key in newItem) {
-              if (key.indexOf('label#') >= 0 && key != ('label#' + gi.idx)) {
-                newItem[key] = ""
-              }
-            }
-            newItem.idx = gi.idx;
-            newItem['checked#' + gi.idx] = false
-            newDatas.push(newItem)
-          }
-        })
-      })
-      var groupedDatas = {}
-      newDatas.forEach((item) => {
-        if (!groupedDatas[item.rootId]) {
-          groupedDatas[item.rootId] = []
-        }
-        var obj = groupedDatas[item.rootId].filter((a) => {
-          return a.title == item.title && a.rootId == item.rootId
-        })
-        if (obj.length <= 0) {
-          groupedDatas[item.rootId].push(item)
-        } else {
-          obj[0]["label#" + item.idx] = item["label#" + item.idx]
-        }
-      })
-      for (var key in groupedDatas) {
-        var rootItemIndex = -1;
-        this.tableListData.forEach((item, index) => {
-          if (key == item.id) {
-            rootItemIndex = index;
-            return false;
-          }
-        })
-        if (rootItemIndex >= 0) {
-          this.refreshGroupedId(groupedDatas, key, 0)
-          groupedDatas[key][0].grouped = true;
-          groupedDatas[key][0].matchId = this.selectGroupName.matchId;
-          groupedDatas[key][0].title = this.selectGroupName.groupName || "新组别";
-          rootItemIndex++;
-          groupedDatas[key].forEach((item) => {
-            item.expanded = true;
-            item.groupChild = true;
-            this.editGroupedLabel.push[item.id]
-            this.tableListData.splice(rootItemIndex, 0, item);
-            rootItemIndex++;
-          });
-        }
-      }
       addComponentToGroup({
         schemeId: this.schemaId,
         groupId: this.selectGroupName.matchId || '',
@@ -869,15 +871,15 @@ export default {
         roundDetailIdList: this.cbdSelectedList
       }).then(res => {
         this.groupby = false
+        this.clearGrouped();
+        this.groupToDialogVisible = false;
         this.chargeRetrieve({
           isDefault: true,
           viewType: 'all',
           schemaId: this.schemaId,
           groupId: this.groupId
         });
-        this.clearGrouped();
-        this.groupToDialogVisible = false;
-        this.onGroupingModel = false;
+        // this.onGroupingModel = false;
         this.onDataLoading = false;
       })
       return;
@@ -901,6 +903,24 @@ export default {
         }
       })
     },
+
+    clear () {
+      this.onDataLoading = true;
+      removeComponentFromGroup({
+        schemeId: this.schemaId,
+        roundDetailIdList: this.removeCbdIds
+      }).then(res => {
+        this.removeCbdIds = []
+        this.chargeRetrieve({
+          isDefault: true,
+          viewType: 'all',
+          schemaId: this.schemaId,
+          groupId: this.groupId
+        });
+      this.onDataLoading = false;
+      })
+    },
+
     finish () {
       groupedSubmit({
         schemaId: this.schemaId,
@@ -1071,5 +1091,16 @@ export default {
 }
 .preview-card {
   box-shadow: none !important;
+}
+.title-cell {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.collapse-group {
+  border-top: 3px solid #1763F7;
+}
+.collapse-root {
+  border-top: 3px solid #000000;
 }
 </style>

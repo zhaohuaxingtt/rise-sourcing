@@ -9,7 +9,7 @@
 
 <template>
   <iPage v-loading="pageLoading" v-permission.auto="ACCESSORYPART_DETAILINFO_PAGE|配件详情页面">
-    <topComponents :logModuleName="'配件需求'" :logBizIdKey="'spNum'">
+    <topComponents logModuleName="配件需求" logBizIdKey="spNum" optionDicKey2="配件需求详情页">
       <span slot="left" class="floatleft font20 font-weight">
         {{language('PEIJIANBIANHAO','配件编号')}}：{{detailData.partNum}}
       </span>

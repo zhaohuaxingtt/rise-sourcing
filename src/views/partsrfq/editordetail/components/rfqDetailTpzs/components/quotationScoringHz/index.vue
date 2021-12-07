@@ -43,8 +43,13 @@
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList ref="tableList" v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1" || layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-    <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :supplierRightList='supplierRightList' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
+    <template v-if='!hasNoBidOpen'>
+      <tableList ref="tableList" v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1" || layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+      <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :supplierRightList='supplierRightList' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
+    </template>
+    <template v-else>
+      <span class="flex-center-center font18 noData">抱歉！当前轮次还未开标您无法查看报价汇总信息。</span>
+    </template>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
     <div class="margin-top10 font-size14">
       <p v-if="exchangeRatesCurrentVersionStr">Current Exchange rate: {{ exchangeRatesCurrentVersionStr }}</p>
@@ -116,8 +121,10 @@ export default{
     quoteInquiryPriceLoading: false,
     options:{show:false},
     roundsType,
+    DataRoundsType:'',
     exchangeRatesCurrentVersionStr: "",
-    exchangeRatesOldVersions: []
+    exchangeRatesOldVersions: [],
+    hasNoBidOpen:false
   }},
   watch:{
     /**
@@ -144,9 +151,8 @@ export default{
     },
     //判断当前是开标还是竞价，需要对按钮做不同的展示。
     isKborJj(){
-      console.log(this.getbaseInfoData())
-      if(this.getbaseInfoData().roundsType == this.roundsType.zxjjys) return 1
-      if(this.getbaseInfoData().roundsType == this.roundsType.zxkb) return 2
+      if(this.DataRoundsType == this.roundsType.zxjjys) return 1
+      if(this.DataRoundsType == this.roundsType.zxkb) return 2
       return 0
     }
   },
@@ -380,6 +386,8 @@ export default{
         this.fsTableLoading = false
         this.clearDataFs()
         if(res.data && res.data.partInfoList && res.data.partInfoList){
+          this.DataRoundsType = res.data.roundsType
+          this.hasNoBidOpen = res.data.hasNoBidOpen
           this.partInfoList = res.data.partInfoList
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
@@ -460,6 +468,8 @@ export default{
         fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
           this.supplierTableLoading = false
           if(res.code == 200 && res.data && res.data.bdlInfoList){
+            this.DataRoundsType = res.data.roundsType
+            this.hasNoBidOpen = res.data.hasNoBidOpen
             const data = translateDataListSupplier(res.data.bdlInfoList) // 数据模型转化。
             this.supplierData = data.dataList
             this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
@@ -534,6 +544,13 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+  .noData{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid ghostwhite;
+    padding: 20px;
+    text-align: center;
+  }
   .mine_height{
     min-height: 100px;
     display: flex;
