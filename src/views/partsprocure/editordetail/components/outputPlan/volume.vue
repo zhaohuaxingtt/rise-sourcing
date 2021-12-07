@@ -13,8 +13,9 @@
             <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
             <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
             <iButton v-if="isEdit" @click="addCar">{{ language("LK_TIANJIA",'添加') }}</iButton>
-            <iButton v-if="isEdit" @click="saveData">{{ language("LK_BAOCUN",'保存') }}</iButton>
+            <iButton v-if="isEdit" @click="saveData" :loading="saveLoading">{{ language("LK_BAOCUN",'保存') }}</iButton>
             <iButton v-if="!isEdit && ispartProjectSource" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
+            <iButton v-if="isEdit" @click="cancelEdit">{{ language("QUXIAO",'取消') }}</iButton>
           </div>
         </div>
       <tableList
@@ -67,6 +68,8 @@ import {
   // getPerCarDosageInfo,
 } from "@/api/partsprocure/editordetail";
 import addCarType from './components/addCarType'
+import { cloneDeep } from "lodash"
+
 export default {
   components: { iCard, tableList, iPagination, iButton, addCarType },
   mixins: [pageMixins],
@@ -75,6 +78,8 @@ export default {
       loading: false,
       tableTitle,
       tableListData: [],
+      tableListDataCache: [], // 表格缓存
+      totalCountCache: 0, // 数据量缓存
       version: "",
       carTypeConfigId: "",
       tpId: "",
@@ -92,6 +97,10 @@ export default {
       require: true,
       default:()=>{}
     },
+    isSameGroupPartProjectType: {
+      type: Boolean,
+      default: true
+    }
   },
   created() {
     this.getData();
@@ -105,7 +114,7 @@ export default {
     } else {
       this.ispartProjectSource = false
     }
-},
+  },
   computed:{
     // ispartProjectSource() {
     //    if(this.params.partProjectSource == 2) {
@@ -163,8 +172,12 @@ export default {
           if (infoRes.data) {
             infoRes.data.tpRecordList.forEach(val=>{
             })
-            this.tableListData = infoRes.data.tpRecordList;
+            this.tableListData = Array.isArray(infoRes.data.tpRecordList) ? infoRes.data.tpRecordList : []
             this.page.totalCount = infoRes.data.totalCount || 0;
+          }
+
+          if (!this.isSameGroupPartProjectType) {
+            this.tableListData = []
           }
         } catch (e) {
           // console.error(e);
@@ -172,31 +185,32 @@ export default {
           this.loading = false;
         }
       } else {
-        try{
-          manualInfoTable({
-            currPage: this.page.currPage,
-            pageSize: this.page.pageSize,
-            purchasingRequirementId: this.params.purchasingRequirementObjectId,
-          }).then(res=>{
-            if(res.code == '200') 
-            {
-            res.data.tpRecordList.forEach(val=>{
-              this.$set(val,'partNum',this.params.partNum)
-              this.$set(val,'partNameCn',this.params.partNameZh)
-              this.$set(val,'partNameDe',this.params.partNameDe)
-            })
-            this.tableListData = res.data.tpRecordList;
-            this.page.totalCount = res.data.totalCount || 0;
-            } else {
-            return iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
-
-            }
+        manualInfoTable({
+          currPage: this.page.currPage,
+          pageSize: this.page.pageSize,
+          purchasingRequirementId: this.params.purchasingRequirementObjectId,
+        }).then(res=>{
+          if(res.code == '200') 
+          {
+          res.data.tpRecordList.forEach(val=>{
+            this.$set(val,'partNum',this.params.partNum)
+            this.$set(val,'partNameCn',this.params.partNameZh)
+            this.$set(val,'partNameDe',this.params.partNameDe)
           })
-        }catch (e) {
-          console.error(e);
-        } finally {
-          this.loading = false;
-        }
+          this.tableListData = Array.isArray(res.data.tpRecordList) ? res.data.tpRecordList : []
+          this.tableListDataCache = cloneDeep(Array.isArray(res.data.tpRecordList) ? res.data.tpRecordList : [])
+          this.page.totalCount = res.data.totalCount || 0;
+          this.totalCountCache = res.data.totalCount || 0
+
+          if (!this.isSameGroupPartProjectType) {
+            this.tableListData = []
+          }
+          } else {
+          return iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
+
+          }
+        })
+        .finally(() => this.loading = false)
       }
     },
     //计算产量
@@ -234,6 +248,11 @@ export default {
     //编辑
     edit() {
       this.isEdit = true
+    },
+    // 取消编辑
+    cancelEdit() {
+      this.isEdit = false
+      this.tableListData = cloneDeep(this.tableListDataCache)
     },
     //添加弹框
     addCar() {
@@ -316,7 +335,8 @@ export default {
       if(flag == false) {
         iMessage.error(this.language(' WEITIANXIEMEICHEYONGLIANGDEJILU,BUKEBAOCUN', '存在未填写每车用量的记录，不可保存'))
         return
-      }  else {         
+      } else {
+        this.saveLoading = true     
         savearDosage(this.tableListData).then(res=>{
           if(res.code == '200') {
             iMessage.success(res.desZh)
@@ -324,7 +344,7 @@ export default {
           } else {
             iMessage.error(res.desZh)
           }
-        })
+        }).finally(() => this.saveLoading = false)
       }
     },
 
@@ -390,6 +410,20 @@ export default {
           value.perCarDosage =  (val + '').replace(/\D/g, '')
         }
       })
+    },
+    // 清空数据
+    clearAll() {
+      if (this.params.partProjectSource == 1) return
+
+      this.tableListData = []
+      this.page.totalCount = 0
+    },
+    // 还原表格
+    reduction() {
+      if (this.params.partProjectSource == 1) return
+
+      this.tableListData = this.tableListDataCache
+      this.page.totalCount = this.totalCountCache
     }
   },
 };
