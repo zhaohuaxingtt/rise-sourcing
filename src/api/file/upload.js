@@ -76,21 +76,5 @@ export function uploadUdFile(params) {
         url: `/udMutilfilesController`,
         method: 'POST',
         data: formData
-    }).then(res => {
-        if (Array.isArray(res) || res.length > 0) {
-            return {
-                code: 200,
-                data: res,
-                desEn: "success",
-                desZh: "操作成功"
-            }
-        } else {
-            return {
-                code: 400,
-                data: null,
-                desEn: "error",
-                desZh: "操作失败"
-            }
-        }
     })
 }
