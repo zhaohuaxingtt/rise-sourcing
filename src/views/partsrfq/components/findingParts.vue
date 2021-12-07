@@ -51,9 +51,11 @@
       </div>
       <tableList :tableData="confirmTableData"
                  :tableTitle="confirmTableHead"
+                 ref="partSelectionTable"
                  class="table-footerStyle"
                  v-loading="loading"
                  :radio="status===1?true:false"
+                 :selectedParts="selectedParts"
                  @handleSelectionChange="handleSelectionChange">
       </tableList>
     </div>
@@ -89,6 +91,12 @@ export default {
         return [];
       },
     },
+    selectedParts: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    }
   },
   data () {
     return {
@@ -128,10 +136,29 @@ export default {
             this.confirmTableData.forEach((value, index) => {
               value.index = index + 1;
             });
-            this.loading = false
-            if (!res.data) {
-              iMessage.error('抱歉，无法查询到结果（输入错误或者不存在），请确认后重新输入。')
-            }
+            console.log(this.confirmTableData)
+            this.$nextTick(() => {
+              if (this.selectedParts && this.selectedParts.length > 0) {
+                var selectedList = []
+                this.selectedParts.forEach((paramPart) => {
+                  var selected = this.confirmTableData.filter((item) => {
+                    return item.fsNum == paramPart.fs
+                  })
+                  if (selected.length > 0) {
+                    selectedList.push(selected[0])
+                  }
+                })
+                if (selectedList.length > 0) {
+                  selectedList.forEach((sel) => {
+                    this.$refs.partSelectionTable.$refs.moviesTable.toggleRowSelection(sel,true)
+                  })
+                }
+              }
+              this.loading = false
+              if (!res.data) {
+                iMessage.error('抱歉，无法查询到结果（输入错误或者不存在），请确认后重新输入。')
+              }
+            })
           }
         })
         .catch((e) => {
