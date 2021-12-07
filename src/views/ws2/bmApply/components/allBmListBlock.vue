@@ -113,8 +113,21 @@ export default {
 
     //  预览RSpdf
     openViewPdf(scope){
-      const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
-      window.open(url);
+      const first = scope.rsNum.slice(0,1);
+      if(~~first === 5){
+        let routeData = this.$router.resolve({
+          path: '/tooling/investmentReport/rsDetails',
+          query: {
+            rsNum: scope.rsNum,
+            pageType: 0,
+          },
+        })
+        window.open(routeData.href, '_blank')
+      }else{
+        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
+        window.open(url);
+      }
+      
     },
 
     //  打开详情

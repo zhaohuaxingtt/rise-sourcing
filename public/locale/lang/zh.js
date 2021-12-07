@@ -1593,6 +1593,7 @@
         'MOULDADD':{
             'CHAKANLISHI': '查看历史',  //  查看历史
             'SOPSHIJIAN': 'SOP时间',    //  SOP时间
+            'LK_RFQBIANHAO': 'RFQ号',   //  RFQ号
         },
 
     }

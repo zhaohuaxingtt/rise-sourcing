@@ -31,7 +31,7 @@
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
-        <el-form-item :label="$t('LK_RFQHAO')">
+        <el-form-item :label="language('LK_RFQHAO', 'RFQ号')">
           <iInput v-model="form['search.rfqId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
@@ -41,7 +41,7 @@
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
-        <el-form-item :label="$t('LK_YUSUANZHUANGTAI')">
+        <el-form-item :label="language('LK_YUSUANZHUANGTAI', '预算状态')">
           <iSelect
               :placeholder="$t('partsprocure.PLEENTER')"
               v-model="form['search.approvalStatus']"
@@ -71,7 +71,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_SHENQINGSHIJIANQIZHI')">
+        <el-form-item :label="language('LK_SHENQINGSHIJIANQIZHI', '申请时间起止')">
           <el-date-picker
               v-model="form['search.timeStarEnd']"
               class="budgetApprovalDate"
