@@ -21,6 +21,14 @@ export function uploadFile(parmars) {
     })
 }
 
+export function uploadFileNew(parmars) {
+    return requst({
+        url: '/uploadFile',
+        method: 'POST',
+        data: parmars
+    })
+}
+
 export function udSingleFile(parmars) {
     return requst({
         url: '/udMutilfilesController',
