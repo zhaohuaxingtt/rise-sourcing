@@ -7,9 +7,9 @@
 -->
 <template>
   <iCard :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id" :defalutCollVal='false' collapse>
-    <projectInfor />
+    <projectInfor  @rfqInfo="emitRfq"/>
     <el-divider></el-divider>
-    <partInforTable />
+    <partInforTable/>
     <supplierTable class="margin-top20" />
   </iCard>
 </template>
@@ -36,7 +36,9 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-
+    emitRfq(rfq) {
+      this.$emit("rfqInfo", rfq)
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
   created() {

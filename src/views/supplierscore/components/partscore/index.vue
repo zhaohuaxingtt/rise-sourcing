@@ -247,7 +247,7 @@ export default {
     // 输入周期
     handleInputByWeek(value, key, row) {
       let week = numberProcessor(value, 0)
-      if (+week > 54) week = "54"
+      if (+week > 53) week = "53"
       this.$set(row, key, week)
     }
   }

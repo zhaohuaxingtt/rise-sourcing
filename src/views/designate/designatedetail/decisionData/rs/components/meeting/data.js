@@ -99,7 +99,7 @@ export const gsDetailTitleBlue = [
 
 
 export const nomalTableTitle = [
-  {props:'fsnrGsnrNum',name:'FS号', enName: 'FS-NO.', key: "",minWidth:54},
+  {props:'fsnrGsnrNum',enName: 'FS-NO.', key: "",minWidth:54},
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "",minWidth:74},
   {props:'output',name:'年产量', enName: 'Demand', enName1:'(K)',key: "",minWidth:74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "",minWidth:64},
@@ -119,12 +119,12 @@ export const nomalTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", key: "", minWidth: 100},
+  {props:'ttoStr',name:'采购金额', enName: 'Turnover', key: "", key: "", minWidth: 100},
 ]
 
 // 配件
 export const sparePartTableTitle = [
-  {props:'fsnrGsnrNum',name:'SP号', enName: 'SP-NO.', key: "", minWidth: 54},
+  {props:'fsnrGsnrNum',enName: 'SP-NO.', key: "", minWidth: 54},
   {props:'output',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 64},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 76},
@@ -140,12 +140,12 @@ export const sparePartTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
+  {props:'ttoStr',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // 附件
 export const accessoryTableTitle = [
-  {props:'fsnrGsnrNum',name:'SP号', enName: 'SP-NO.', key: "", minWidth: 54},
+  {props:'fsnrGsnrNum',enName: 'SP-NO.', key: "", minWidth: 54},
   {props:'output',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 64},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 76},
@@ -161,12 +161,12 @@ export const accessoryTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
+  {props:'ttoStr',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // GS零件
 export const gsTableTitle = [
-  {props:'fsnrGsnrNum',name:'GS号', enName: 'GS-NO.', key: "",minWidth:60},
+  {props:'fsnrGsnrNum',enName: 'GS-NO.', key: "",minWidth:60},
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74},
   {props:'output',name:'年产量', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 68},
@@ -188,12 +188,12 @@ export const gsTableTitle = [
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
   {props:'addFee',name:'认可费', enName: 'Release Cost', key: "", minWidth: 85},
   {props:'savingFee',name:'估算节约值', enName: 'Estimaled Savings', key: "", minWidth: 120},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
+  {props:'ttoStr',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 // DB零件
 export const dbTableTitle = [
-  {props:'fsnrGsnrNum',name:'FS号', enName: 'FS-NO.', key: "", minWidth: 60},
+  {props:'fsnrGsnrNum',enName: 'FS-NO.', key: "", minWidth: 60},
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74},
   {props:'output',name:'年产量', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 68},
@@ -215,7 +215,7 @@ export const dbTableTitle = [
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
-  {props:'tto',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
+  {props:'ttoStr',name:'采购金额', enName: 'Turnover', key: "", minWidth: 110},
 ]
 
 export const meetingRemark = [

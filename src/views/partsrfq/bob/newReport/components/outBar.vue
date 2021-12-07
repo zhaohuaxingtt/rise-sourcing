@@ -279,7 +279,6 @@ export default {
       })
       const that = this
       myChart.on('click', function (params) {
-
         if (params.componentType === 'title') {
           that.$emit('del')
         }

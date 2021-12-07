@@ -20,6 +20,14 @@ export function downloadFile(parmars) {
     })
 }
 
+export function downloadFileUd(params) {//blob
+    return file({
+        url: `/udDown?fileIds=${params}`,
+        method: 'POST',
+        // responseType: 'blob',
+    })
+}
+
 export function downloadUdFile(params) {
     return fileRequst({
         url: `/udDown?${ Array.isArray(params) ? serialize(params.map(id => ({ fileIds: id })), Array) : 'fileIds=' + params }`,
