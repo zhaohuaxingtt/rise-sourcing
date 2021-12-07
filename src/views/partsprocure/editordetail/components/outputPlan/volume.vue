@@ -20,6 +20,7 @@
         </div>
       <tableList
         class="table"
+        ref="table"
         index
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -27,7 +28,7 @@
         :ispartProjectSource="ispartProjectSource"
         :editable = "perCarDosage"
         @handleSelectionChange="handleSelectionChange"
-        @getIndex="getIndex" 
+        @handleFocusByInput="handleFocusByInput" 
         @isNum="isNum"
       />
       <iPagination
@@ -86,9 +87,8 @@ export default {
       isEdit:false,
       carTypeVisible:false,
       selectData:[],
-      getPerCarDosage:{},
       isGs:true,
-      ispartProjectSource:false
+      ispartProjectSource:false,
     };
   },
   props: {
@@ -202,6 +202,8 @@ export default {
           this.page.totalCount = res.data.totalCount || 0;
           this.totalCountCache = res.data.totalCount || 0
 
+          this.selectData = []
+
           if (!this.isSameGroupPartProjectType) {
             this.tableListData = []
           }
@@ -305,24 +307,26 @@ export default {
         
       }
     },
-    //获取输入框的index和值
-    getIndex(index,perCar) {
-      this.getPerCarDosage.index = index
-      this.getPerCarDosage.perCar = perCar
+    // 获取最后一次失焦的行
+    handleFocusByInput(row) {
+      this.$refs.table.$refs.table.clearSelection()
+      this.$refs.table.$refs.table.toggleRowSelection(row, true)
     },
     //向下填充
     fillDown() {
-      let data = [...this.tableListData]
-      if(this.getPerCarDosage.perCar === '') {
-        iMessage.warn(this.language('QINGSHURUMEICHEYONGLIANG','请输入每车用量'))
-        return
-      }
-      data.forEach((val,index)=>{
-        if(index>this.getPerCarDosage.index){
-          this.$set(val,'perCarDosage',this.getPerCarDosage.perCar)
-        }
+      this.$nextTick(() => {
+        if (this.selectData.length != 1) return iMessage.warn(this.language("QINGXUANZEYITIAOMEICHEYONGLIANGSHUJUJINXINGXIANGXIATIANCHONG", "请选择一条每车用量数据进行向下填充"))
+        if (!this.selectData[0].perCarDosage) return iMessage.warn(this.language('QINGSHURUMEICHEYONGLIANG','请输入每车用量'))
+
+        let afterFoucsRowFlag = false
+        this.tableListData.forEach(item => {
+          if (afterFoucsRowFlag) this.$set(item, "perCarDosage", this.selectData[0].perCarDosage)
+
+          if (item === this.selectData[0]) afterFoucsRowFlag = true
+        })
+
+        this.$refs.table.$refs.table.clearSelection()
       })
-      this.tableListData = data
     },
     //保存
     saveData() {
@@ -416,6 +420,7 @@ export default {
       if (this.params.partProjectSource == 1) return
 
       this.tableListData = []
+      this.selectData = []
       this.page.totalCount = 0
     },
     // 还原表格
