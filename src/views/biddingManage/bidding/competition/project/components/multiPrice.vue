@@ -1216,7 +1216,7 @@ export default {
         })
       })
       if (!flag) {
-        return this.$message.error('单一零件年产量不能全为空');
+        return this.$message.error(this.language('BIDDING_DYLJNCLBNQWK','单一零件年产量不能全为空'));
       }
 
       let modelList = [];
