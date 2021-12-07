@@ -6,7 +6,7 @@
  -->
 <template>
   <iTabsList type="card" @tab-click="handleTabClick" v-model="activityTabIndex"  class="margin-top20 cardss">
-    <template v-for="item of tabList">
+    <template v-for="item of tabs">
       <el-tab-pane :label="language(item.key,item.label)" :key="item.label" :name='item.index' v-if='showTab(item.index)' v-permisstion='item.permissionKey'>
         <component :ref='item.component' :key='hashCode' :is="item.component" v-if="activityTabIndex === item.index" @jump='jump'/>
       </el-tab-pane>
@@ -22,6 +22,8 @@ import supplierScore from "./components/supplierScore";
 import moldBudgetApplication from "./components/moldBudgetApplication";
 import technicalSeminar from "./components/technicalSeminar";
 import inquiryManagement from '@/views/biddingManage/bidding/project/inquiry';
+import { partProjTypes } from "@/config"
+
 export default {
   components: {
     iTabsList,
@@ -101,7 +103,14 @@ export default {
           }
         }
       }
-    } 
+    },
+    baseInfo() {
+      return this.getbaseInfoData()
+    },
+    tabs() {
+      if (Array.isArray(this.baseInfo.partProjectType) && (this.baseInfo.partProjectType[0] === partProjTypes.PEIJIAN)) return this.tabList.filter(item => item.index != 3)
+      return this.tabList
+    }
   },
   created(){
     setTimeout(() => {
