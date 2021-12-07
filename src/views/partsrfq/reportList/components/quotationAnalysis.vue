@@ -15,16 +15,15 @@
 			</template>
 		</tableList>
 		<iPagination
-			    v-update
-			    @size-change="handleSizeChange($event, getTableList)"
-			    @current-change="handleCurrentChange($event, getTableList)"
-			    background
-			    :page-sizes="page.pageSizes"
-			    :page-size="page.pageSize"
-			    :layout="page.layout"
-			    :current-page='page.currPage'
-			    :total="page.totalCount"/>
-		</iCard>
+			v-update
+			@size-change="handleSizeChange($event, getTableList)"
+			@current-change="handleCurrentChange($event, getTableList)"
+			background
+			:page-sizes="page.pageSizes"
+			:page-size="page.pageSize"
+			:layout="page.layout"
+			:current-page='page.currPage'
+			:total="page.totalCount"/>
 	</iCard>
 </template>
 

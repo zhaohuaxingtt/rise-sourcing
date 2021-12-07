@@ -3,12 +3,13 @@
     class="volume"
     tabCard
   >
-    <div class="body">
-        <div>
-          <span class="title" >
-            {{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}</template>
-          </span>
-          <div class="btn-left">
+    <template #header>
+      <div class="title">
+      <p>{{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}</template></p>
+      </div>
+      <div>
+        <div class="control">
+          <div v-if="!disabled" class="btn-left">
             <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
             <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
             <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
@@ -18,19 +19,24 @@
             <iButton v-if="isEdit" @click="cancelEdit">{{ language("QUXIAO",'取消') }}</iButton>
           </div>
         </div>
+      </div>
+    </template>
+    <div class="body">
       <tableList
         class="table"
         ref="table"
         index
+        lang
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
-        :ispartProjectSource="ispartProjectSource"
-        :editable = "perCarDosage"
         @handleSelectionChange="handleSelectionChange"
-        @handleFocusByInput="handleFocusByInput" 
-        @isNum="isNum"
-      />
+      >
+        <template #perCarDosage="scope">
+          <iInput v-if="isEdit && ispartProjectSource" v-model="scope.row.perCarDosage" @click.native.stop @focus="handleFocusByInput(scope.row)" @input="handleInputByPerCarDosage($event, scope.row)" />
+          <span v-else>{{ scope.row.perCarDosage }}</span>
+        </template>
+      </tableList>
       <iPagination
         class="pagination margin-top30"
         @size-change="handleSizeChange($event, getData)"
@@ -44,14 +50,12 @@
 		    v-update
       />
     </div>
-      <addCarType :dialogVisible="carTypeVisible" v-if="carTypeVisible"  @changeVisible="changeVisible" @getSelectData="getSelectData" :params="params">
-
-      </addCarType>
+      <addCarType :dialogVisible="carTypeVisible" v-if="carTypeVisible"  @changeVisible="changeVisible" @getSelectData="getSelectData" :params="params" @afterSave="getData" />
   </iCard>
 </template>
 
 <script>
-import { iCard, iPagination, iMessage, iButton } from 'rise';
+import { iCard, iPagination, iMessage, iButton, iInput } from 'rise';
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { volumeTableTitle as tableTitle } from "./data";
@@ -70,9 +74,10 @@ import {
 } from "@/api/partsprocure/editordetail";
 import addCarType from './components/addCarType'
 import { cloneDeep } from "lodash"
+import { numberProcessor } from "@/utils"
 
 export default {
-  components: { iCard, tableList, iPagination, iButton, addCarType },
+  components: { iCard, tableList, iPagination, iButton, addCarType, iInput },
   mixins: [pageMixins],
   data() {
     return {
@@ -100,6 +105,10 @@ export default {
     isSameGroupPartProjectType: {
       type: Boolean,
       default: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   created() {
@@ -230,7 +239,7 @@ export default {
            fscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
-              this.$emit('updateTable')
+              this.$emit('updateStartYear')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
@@ -307,7 +316,7 @@ export default {
         
       }
     },
-    // 获取最后一次失焦的行
+    // input聚焦转换成自动勾选当前行
     handleFocusByInput(row) {
       this.$refs.table.$refs.table.clearSelection()
       this.$refs.table.$refs.table.toggleRowSelection(row, true)
@@ -353,67 +362,54 @@ export default {
     },
 
     //添加表格数据
-    getSelectData(val) {
-      let valTemData = []
-      let copyData  = [...val]
-      if(this.isGs == true) {
-        copyData.forEach(value=> {
-          let dataItem = {}
-          dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
-          dataItem.cartypeLevel = value.cartypeLevel
-          dataItem.engineType = value.engineType
-          dataItem.gearType = value.gearboxName
-          dataItem.otherInfo = value.otherConf
-          dataItem.cartype  = value.cartypeId
-          dataItem.cartypeConfigId  = value.originId
-          dataItem.partNum  = this.params.partNum
-          dataItem.partNameCn  = this.params.partNameZh
-          dataItem.partNameDe  = this.params.partNameDe
-          dataItem.cartypeLevelRate  = value.cartypeLevelRate
-          valTemData.push(dataItem)
-        })
-      } else {
-        copyData.forEach(value=> {
-          let dataItem = {}
-          dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
-          dataItem.cartypeLevel = value.cartypeLevel
-          dataItem.engineType = value.engineVo?.engineName
-          dataItem.gearType = value.gearboxVo?.gearboxName
-          dataItem.otherInfo = value.otherConf
-          dataItem.cartype  = value.carProjectId
-          dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId
-          dataItem.cartypeLevelRate  = value.cartypeLevelRate
-          dataItem.partNum  = this.params.partNum
-          dataItem.partNameCn  = this.params.partNameZh
-          dataItem.partNameDe  = this.params.partNameDe
-          valTemData.push(dataItem)
-        })
-      }
-      if(this.tableListData.length == '0') {
-        this.tableListData = valTemData
-      } else {
-        let data = [...this.tableListData]
-        console.log(data,'data');
-        console.log(valTemData,'valTemData');
-        const idList = data.map(val=> val.cartypeConfigId)
-        console.log(idList);
-        let pushvalTemData =[]
-        pushvalTemData =  valTemData.filter(value=>{
-          let res = !(idList.indexOf(value.cartypeConfigId)>-1)
-          return res
-        })
-        console.log(pushvalTemData,'pushvalTemData');
-        data.unshift(...pushvalTemData)
-        this.tableListData = data
-      }
-    },
+    // getSelectData(val) {
+    //   let valTemData = []
+    //   let copyData  = [...val]
+    //   if(this.isGs == true) {
+    //     copyData.forEach(value=> {
+    //       let dataItem = {}
+    //       dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
+    //       dataItem.cartypeLevel = value.cartypeLevel
+    //       dataItem.engineType = value.engineType
+    //       dataItem.gearType = value.gearboxName
+    //       dataItem.otherInfo = value.otherConf
+    //       dataItem.cartype  = value.cartypeId
+    //       dataItem.cartypeConfigId  = value.originId
+    //       dataItem.partNum  = this.params.partNum
+    //       dataItem.partNameCn  = this.params.partNameZh
+    //       dataItem.partNameDe  = this.params.partNameDe
+    //       dataItem.cartypeLevelRate  = value.cartypeLevelRate
+    //       valTemData.push(dataItem)
+    //     })
+    //   } else {
+    //     copyData.forEach(value=> {
+    //       let dataItem = {}
+    //       dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
+    //       dataItem.cartypeLevel = value.cartypeLevel
+    //       dataItem.engineType = value.engineVo?.engineName
+    //       dataItem.gearType = value.gearboxVo?.gearboxName
+    //       dataItem.otherInfo = value.otherConf
+    //       dataItem.cartype  = value.carProjectId
+    //       dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId
+    //       dataItem.cartypeLevelRate  = value.cartypeLevelRate
+    //       dataItem.partNum  = this.params.partNum
+    //       dataItem.partNameCn  = this.params.partNameZh
+    //       dataItem.partNameDe  = this.params.partNameDe
+    //       valTemData.push(dataItem)
+    //     })
+    //   }
+    //   if(this.tableListData.length == '0') {
+    //     this.tableListData = valTemData
+    //   } else {
+    //     // 去重
+    //     const savedOriginIds = this.tableListData.map(item => item.originId)
+    //     const data = val.filter(item => !savedOriginIds.includes(item.originId))
+    //     this.tableListData = data.concat(this.tableListData)
+    //   }
+    // },
     //输入整数
-    isNum(val,key,idx) {
-      this.tableListData.forEach((value,index)=>{
-        if(index == idx) {
-          value.perCarDosage =  (val + '').replace(/\D/g, '')
-        }
-      })
+    handleInputByPerCarDosage(value, row) {
+      this.$set(row, "perCarDosage", numberProcessor(value, 0))
     },
     // 清空数据
     clearAll() {
@@ -435,16 +431,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .volume {
-    .title{
-      font-size: 18px;
-			color: #131523;
-			font-weight: bold;
-    }
-    .btn-left{
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 20px;
-    }
-  }
 </style> 
