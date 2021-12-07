@@ -398,19 +398,10 @@ export default {
       if(this.tableListData.length == '0') {
         this.tableListData = valTemData
       } else {
-        let data = [...this.tableListData]
-        console.log(data,'data');
-        console.log(valTemData,'valTemData');
-        const idList = data.map(val=> val.cartypeConfigId)
-        console.log(idList);
-        let pushvalTemData =[]
-        pushvalTemData =  valTemData.filter(value=>{
-          let res = !(idList.indexOf(value.cartypeConfigId)>-1)
-          return res
-        })
-        console.log(pushvalTemData,'pushvalTemData');
-        data.unshift(...pushvalTemData)
-        this.tableListData = data
+        // 去重
+        const savedOriginIds = this.tableListData.map(item => item.originId)
+        const data = val.filter(item => !savedOriginIds.includes(item.originId))
+        this.tableListData = data.concat(this.tableListData)
       }
     },
     //输入整数
