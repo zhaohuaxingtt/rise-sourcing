@@ -621,7 +621,7 @@ export default {
         } else {
           params = {
             categoryId: this.categoryId,
-            isBindingRfq: false,
+            isBindingRfq: this.isBindingRfq,
             schemeId: this.chemeId
           };
         }
@@ -793,13 +793,13 @@ export default {
       if (this.entryStatus == 1) {
         params = {
           categoryId: this.categoryId,
-          isBindingRfq: true,
+          isBindingRfq: this.isBindingRfq,
           req: this.rfqId,
         };
       } else {
         params = {
           categoryId: this.categoryId,
-          isBindingRfq: false,
+          isBindingRfq: this.isBindingRfq,
         };
       }
       getTargetMotor(params).then((res) => {
