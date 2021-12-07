@@ -214,7 +214,7 @@ export default {
            fscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
-              this.$emit('updateTable')
+              this.$emit('updateStartYear')
             } else {
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             }
