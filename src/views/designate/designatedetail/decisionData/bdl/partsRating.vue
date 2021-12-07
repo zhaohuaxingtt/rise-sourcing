@@ -40,7 +40,7 @@ import { cloneDeep } from "lodash"
 
 export default {
   // mixins: [pageMixins],
-  components: { iDialog, tableList, iPagination },
+  components: { iDialog, tableList },
   props: {
     dialogVisible: { type: Boolean, default: false },
     // tableData: {type:Array},
