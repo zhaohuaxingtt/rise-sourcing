@@ -1199,6 +1199,26 @@ export default {
       if(new Set(productCode).size !== this.ruleForm.biddingProducts.length){
         return this.$message.error(this.language('BIDDING_CPLJHBNCF',"产品零件号不能重复！"));
       }
+
+      let flag
+      this.ruleForm.biddingProducts.forEach(it => {
+        flag = this.annualOutput.every((item,index) => {
+          if (index % 2 === 0 && index !== 0) {
+              for (let i = 1; i < 16; i++) {
+                if (it.productCode == item.title  && item[`stage${i}`] && (item[`stage${i}`] ?? '') !== '' && item[`stage${i}`] != 0) {
+                  return true;
+                }
+              }
+            return false;
+          } else {
+            return true;
+          }
+        })
+      })
+      if (!flag) {
+        return this.$message.error('单一零件年产量不能全为空');
+      }
+
       let modelList = [];
       this.ruleForm.models.forEach((item) => {
         this.modelsOption.forEach((option) => {
