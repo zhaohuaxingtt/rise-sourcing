@@ -145,7 +145,7 @@
 				formData.append('applicationName', content.file.name);
 				const res = await uploadFileNew(formData);
 				if(res.code == "200" && res.result){
-					iMessage.success(this.language("SHANGCHUANSHIBAI","上传成功！"))
+					iMessage.success(this.language("SHANGCHUANCHENGGONG","上传成功！"))
 					loading.close()
 					const result=await technologyAdd({
 						fileName:res.data.name,
