@@ -26,6 +26,7 @@
         class="table"
         ref="table"
         index
+        lang
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"
@@ -49,9 +50,7 @@
 		    v-update
       />
     </div>
-      <addCarType :dialogVisible="carTypeVisible" v-if="carTypeVisible"  @changeVisible="changeVisible" @getSelectData="getSelectData" :params="params">
-
-      </addCarType>
+      <addCarType :dialogVisible="carTypeVisible" v-if="carTypeVisible"  @changeVisible="changeVisible" @getSelectData="getSelectData" :params="params" @afterSave="getData" />
   </iCard>
 </template>
 
@@ -363,51 +362,51 @@ export default {
     },
 
     //添加表格数据
-    getSelectData(val) {
-      let valTemData = []
-      let copyData  = [...val]
-      if(this.isGs == true) {
-        copyData.forEach(value=> {
-          let dataItem = {}
-          dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
-          dataItem.cartypeLevel = value.cartypeLevel
-          dataItem.engineType = value.engineType
-          dataItem.gearType = value.gearboxName
-          dataItem.otherInfo = value.otherConf
-          dataItem.cartype  = value.cartypeId
-          dataItem.cartypeConfigId  = value.originId
-          dataItem.partNum  = this.params.partNum
-          dataItem.partNameCn  = this.params.partNameZh
-          dataItem.partNameDe  = this.params.partNameDe
-          dataItem.cartypeLevelRate  = value.cartypeLevelRate
-          valTemData.push(dataItem)
-        })
-      } else {
-        copyData.forEach(value=> {
-          let dataItem = {}
-          dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
-          dataItem.cartypeLevel = value.cartypeLevel
-          dataItem.engineType = value.engineVo?.engineName
-          dataItem.gearType = value.gearboxVo?.gearboxName
-          dataItem.otherInfo = value.otherConf
-          dataItem.cartype  = value.carProjectId
-          dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId
-          dataItem.cartypeLevelRate  = value.cartypeLevelRate
-          dataItem.partNum  = this.params.partNum
-          dataItem.partNameCn  = this.params.partNameZh
-          dataItem.partNameDe  = this.params.partNameDe
-          valTemData.push(dataItem)
-        })
-      }
-      if(this.tableListData.length == '0') {
-        this.tableListData = valTemData
-      } else {
-        // 去重
-        const savedOriginIds = this.tableListData.map(item => item.originId)
-        const data = val.filter(item => !savedOriginIds.includes(item.originId))
-        this.tableListData = data.concat(this.tableListData)
-      }
-    },
+    // getSelectData(val) {
+    //   let valTemData = []
+    //   let copyData  = [...val]
+    //   if(this.isGs == true) {
+    //     copyData.forEach(value=> {
+    //       let dataItem = {}
+    //       dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
+    //       dataItem.cartypeLevel = value.cartypeLevel
+    //       dataItem.engineType = value.engineType
+    //       dataItem.gearType = value.gearboxName
+    //       dataItem.otherInfo = value.otherConf
+    //       dataItem.cartype  = value.cartypeId
+    //       dataItem.cartypeConfigId  = value.originId
+    //       dataItem.partNum  = this.params.partNum
+    //       dataItem.partNameCn  = this.params.partNameZh
+    //       dataItem.partNameDe  = this.params.partNameDe
+    //       dataItem.cartypeLevelRate  = value.cartypeLevelRate
+    //       valTemData.push(dataItem)
+    //     })
+    //   } else {
+    //     copyData.forEach(value=> {
+    //       let dataItem = {}
+    //       dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
+    //       dataItem.cartypeLevel = value.cartypeLevel
+    //       dataItem.engineType = value.engineVo?.engineName
+    //       dataItem.gearType = value.gearboxVo?.gearboxName
+    //       dataItem.otherInfo = value.otherConf
+    //       dataItem.cartype  = value.carProjectId
+    //       dataItem.cartypeConfigId  = value.originId == null ? value.id  : value.originId
+    //       dataItem.cartypeLevelRate  = value.cartypeLevelRate
+    //       dataItem.partNum  = this.params.partNum
+    //       dataItem.partNameCn  = this.params.partNameZh
+    //       dataItem.partNameDe  = this.params.partNameDe
+    //       valTemData.push(dataItem)
+    //     })
+    //   }
+    //   if(this.tableListData.length == '0') {
+    //     this.tableListData = valTemData
+    //   } else {
+    //     // 去重
+    //     const savedOriginIds = this.tableListData.map(item => item.originId)
+    //     const data = val.filter(item => !savedOriginIds.includes(item.originId))
+    //     this.tableListData = data.concat(this.tableListData)
+    //   }
+    // },
     //输入整数
     handleInputByPerCarDosage(value, row) {
       this.$set(row, "perCarDosage", numberProcessor(value, 0))

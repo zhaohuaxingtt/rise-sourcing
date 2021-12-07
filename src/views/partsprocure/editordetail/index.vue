@@ -943,7 +943,7 @@
 			},
 			// 判断是否为GS类零件
 			isGs(partProjectType) {
-				return partProjectType == partProjTypes.GSLINGJIAN || partProjectType == partProjTypes.GSLINGJIANIP || partProjectType == partProjTypes.GSCOMMONSOURCING
+				return partProjectType == partProjTypes.GSLINGJIAN || partProjectType == partProjTypes.GSCOMMONSOURCING
 			},
 			getName(value, code, options) {
 				return getOptionField(value, code, options)

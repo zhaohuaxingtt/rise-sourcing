@@ -22,6 +22,7 @@ export const volumeTableTitle = [
   { props: 'partNameCn', name: '零件名（中）', key: 'LK_LINGJIANMINGCHENGZHONG', tooltip: true },
   { props: 'partNameDe', name: '零件名（德）', key: 'LK_LINGJIANMINGDE', tooltip: true },
   // { props: 'd', name: '配置编码', key: 'LK_PEIZHIBIANMA' },
+  { props: 'cartypeCategory', name: '车型/车型项目', key: 'CHEXINGORCHEXINGXIANGMU', tooltip: true },
   { props: 'engineType', name: '发动机配置', key: 'LK_FADONGJIPEIZHI', tooltip: true  },
   { props: 'gearType', name: '变速箱配置', key: 'LK_BIANSUXIANGPEIZHI', tooltip: true },
   { props: 'cartypeLevel', name: '等级配置', key: 'LK_DENGJIPEIZHI', tooltip: true },
