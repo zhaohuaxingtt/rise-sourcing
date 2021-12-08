@@ -805,7 +805,7 @@
         'LK_TOUZIBAOGAO': 'Investment Report',//投资报告
 
         'LK_BANMUBER': 'BA号',  //  BA号
-        'LK_FIXEDPOINTSUPPLIER': '定点供应商', // 定点供应商
+        'LK_FIXEDPOINTSUPPLIER': 'Designated supplier', // 定点供应商
         'LK_MODULFIXEDPOINTMONEY': '模具定点金额',  //  模具定点金额
         'LK_REGINOCONTROLLER': '区域控制员',    //  区域控制员
         'LK_RSODDNUMBERS': 'RS单号',    //  RS单号
@@ -903,7 +903,7 @@
         'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
         'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
         'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
-        'LK_BMDANHAO': 'BM单号',    //  BM单号
+        'LK_BMDANHAO': 'BM No',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
         'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
         'LK_BMDANJINE':  'BM单金额', //  BM单金额
@@ -1417,6 +1417,18 @@
             'LK_YIBMJINE': 'BM amount paid',  //  已BM金额
             'LK_LISHISHUJUKU': 'Historical database',    //  历史数据库
             'LK_XINBANBENMINGMING': 'Naming of new edition', //  新版本命名
+            'LK_CAILIAOZU': 'Material group',   //  材料组
+            'LK_LINGJIANHAO': 'Part No',    //  零件号
+            'LK_SHENGQINGBAJINE': 'BA amount applied', //  申请BA金额
+            'LK_AHAO': 'A No',   //  A号
+            'LK_RENMINGBI': 'RMB',  //  人民币
+            'LK_DANWEI': 'Unit',    //  单位
+            'LK_BUHANSUI': 'Tax excluded',    //  不含税
+            'LK_BMDANJINE': 'BM doc amount', //  BM单金额
+            'LK_BMDANHAO': 'BM No',    //  BM单号
+            'LK_APPLYAMOUNT': 'Application amount',   //  申请金额
+            'LK_FIXEDPOINTSUPPLIER': 'Designated supplier', // 定点供应商
+            'LK_DINGDIANRIQI': 'Fixed date',  //  定点日期
         },
     }
     var xmlHttp = ''
