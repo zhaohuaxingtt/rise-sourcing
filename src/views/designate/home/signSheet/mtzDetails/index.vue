@@ -193,14 +193,31 @@ export default {
       if(this.selection && this.selection.length == 0) {
         return iMessage.warn(this.language('QZSXZYTSJ', '请至少选中一条数据'))
       }
-      const confirmInfo = await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
-      if (confirmInfo !== 'confirm') return
-      const arr = window._.cloneDeep(this.tableListData)
-      window._.remove(arr, (item) => {
-        return this.selection.find(selectItem => selectItem.id == item.id) 
-      })
-      this.selection = []
-      this.$set(this, 'tableListData', arr)
+
+      var num = 0;
+      try{
+        this.selection.forEach(e=>{
+          // console.log(e.ttNominateAppId)
+          if(e.ttNominateAppId !== null){
+            num++;
+            iMessage.warn(this.language('YGLLJDDSQDMTZSQDBNYC', '已关联零件定点申请的MTZ申请单不能移除！'))
+            throw new Error("EndIterative");
+          }
+        })
+      }catch(e){
+        if(e.message != "EndIterative") throw e;
+      }
+
+      if(num == 0){
+        const confirmInfo = await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
+        if (confirmInfo !== 'confirm') return
+        const arr = window._.cloneDeep(this.tableListData)
+        window._.remove(arr, (item) => {
+          return this.selection.find(selectItem => selectItem.id == item.id) 
+        })
+        this.selection = []
+        this.$set(this, 'tableListData', arr)
+      }
     }
 
   }
