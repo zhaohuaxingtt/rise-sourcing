@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors:  
- * @LastEditTime: 2021-12-03 13:54:21
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-08 18:11:38
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -112,7 +112,6 @@ import assignInquiryDepartmentDialog from './components/distributionLinie'
 import assignInquiryBuyerDialog from './components/distributionBuyer'
 import backEpsDialog from './components/backEps'
 import backDialog from './components/back'
-import { uniq } from 'lodash'
 import { getAccessoryManageList, sendAccessoryInfo, downloadManageList, downLoadAccessoryAll, back, backEPS } from '@/api/accessoryPart/index'
 import { getDictByCode } from '@/api/dictionary'
 import {findBySearches,getCartypeDict} from "@/api/partsrfq/home";
@@ -269,7 +268,8 @@ export default {
         iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
-      const selectRfq = uniq(this.selectParts.map(item => item.rfqNum))
+      // eslint-disable-next-line no-undef
+      const selectRfq = _.uniq(this.selectParts.map(item => item.rfqNum))
       if (selectRfq.length > 1 || selectRfq[0]) {
         iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
         return
@@ -448,8 +448,10 @@ export default {
         iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
-      this.selectliniePartId = uniq(this.selectParts.map(item => item.id))
+      // eslint-disable-next-line no-undef
+      const selectPartsDept = _.uniq(this.selectParts.map(item => item.csfuserDept))
+      // eslint-disable-next-line no-undef
+      this.selectliniePartId = _.uniq(this.selectParts.map(item => item.id))
       // if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
       //   iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
       //   return
@@ -468,9 +470,12 @@ export default {
       //   iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
       //   return
       // }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
-      const selectPartsUser = uniq(this.selectParts.map(item => item.csfuserId))
-       this.selectBuyerPartId = uniq(this.selectParts.map(item => item.id))
+      // eslint-disable-next-line no-undef
+      const selectPartsDept = _.uniq(this.selectParts.map(item => item.csfuserDept))
+      // eslint-disable-next-line no-undef
+      const selectPartsUser = _.uniq(this.selectParts.map(item => item.csfuserId))
+       // eslint-disable-next-line no-undef
+       this.selectBuyerPartId = _.uniq(this.selectParts.map(item => item.id))
       // if (selectPartsDept.length !== 1) {
       //   iMessage.warn(this.language('QINGXUANZEXIANGTONGBUMENDEPEIJIAN','请选择相同部门的配件'))
       //   return
@@ -633,7 +638,7 @@ export default {
       this.backEpsDialogVisible = visible
     },
     /**
-     * @Description: 点击创建RFQ按钮跳转事件
+     * @Description: 点击创建RFQ按钮跳转事件，判断询价采购员，linie和供应商相同
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
@@ -646,31 +651,25 @@ export default {
 
       for (let i = 0, item; item = this.selectParts[i++]; ) {
         if (item.rfqNum) return iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
+        if (!item.csfuserId || !item.csfuserDept) return iMessage.warn(this.language("QINGXUANZEYIFENPEIXUNJIAKESHIHEXUNJIACAIGOUYUANDEPEIJIAN", "请选择已分配询价科室和询价采购员的配件"))
+        if ((item.csfuserId != this.selectParts[0].csfuserId) || (item.csfuserDept != this.selectParts[0].csfuserDept)) return iMessage.warn(this.language("QINGXUANZEXIANGTONGXUNJIAKESHIHEXUNJIACAIGOUYUANDEPEIJIAN", "请选择相同询价科室和询价采购员的配件"))
         if (!item.respLinie || !item.respDept) return iMessage.warn(this.language("QINGXUANZEYIFENPEILINIEKESHIHELINIEDEPEIJIAN", "请选择已分配LINIE科室和LINIE的配件"))
         if ((item.respLinie != this.selectParts[0].respLinie) || (item.respDept != this.selectParts[0].respDept)) return iMessage.warn(this.language("QINGXUANZEXIANGTONGLINIEKESHIHELINIEDEPEIJIAN", "请选择相同LINIE科室和LINIE的配件"))
+        if (item.selectSupplierSapCode != this.selectParts[0].selectSupplierSapCode) return iMessage.warn(this.language("QINGXUANZEXIANGTONGGONGYINGSHANGDEPEIJIAN", "请选择相同供应商的配件"))
       }
-
-      const selectLINIE = uniq(this.selectParts.map(item => item.respLinie)).filter(item => !!item)
-      const selectLINIEName = uniq(this.selectParts.map(item => item.respLinieName)).filter(item => !!item)
-      const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept)).filter(item => !!item)
-      const selectLINIEDeptName = uniq(this.selectParts.map(item => item.respDeptName)).filter(item => !!item)
-      const selectStuffId = uniq(this.selectParts.map(item => item.stuffId))
-      if (selectStuffId.length > 1) {
-        iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
-        return
-      } 
-      // if (!selectStuffId[0]) {
-      //   iMessage.warn(this.language('GAIGONGYINGSHANGBUZAIGONGYIZUBDLNEI','该供应商不在工艺组BDL内，请与EPS确认'))
-      //   return
-      // }
-      this.selectLinieDept = selectLINIEDept[0]
+      
       const query = {
         type: '1',
         ids: this.selectParts.map(item => item.spnrNum).join(','),
-        linie: selectLINIE.length === 1 ? selectLINIE[0] : null,
-        linieName: selectLINIE.length === 1 ? selectLINIEName[0] : null,
-        linieDept: selectLINIE.length === 1 ? selectLINIEDept[0] : null,
-        linieDeptName: selectLINIE.length === 1 ? selectLINIEDeptName[0] : null
+        linie: this.selectParts[0].respLinie,
+        linieName: this.selectParts[0].respLinieName,
+        linieDept: this.selectParts[0].respDept,
+        linieDeptName: this.selectParts[0].respDeptName,
+        supplier: this.selectParts[0].supplierSapCode,
+        csfName: this.selectParts[0].csfuserName,
+        csf: this.selectParts[0].csfuserId,
+        csfDept: this.selectParts[0].csfuserDeptName,
+        supplierNameZh: this.selectParts[0].supplierNameZh
       }
       const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/createrfq', query})
       window.open(router.href,'_blank')
