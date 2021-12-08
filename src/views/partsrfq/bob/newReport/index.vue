@@ -5,7 +5,7 @@
       <div class="navBox flex-between-center">
         <span class="title font-weight">BOB{{ $t("TPZS.FENXI")}}
           <span v-if="inside">-RFQ {{ rfq }}</span></span>
-        <div class="flex-align-center">
+        <div class="flex-align-center" v-if="!isComponent">
           <!--预览-->
           <iButton class="margin-left30"
                    @click="handlePreview">{{
@@ -28,7 +28,7 @@
       </div>
       <el-row :gutter="20"
               class="margin-top20">
-        <el-col :span="groupIds?0:inside?4:5">
+        <el-col span="4" v-if="!isComponent">
           <iCard :collapse="false"
                  style="height: 620px">
             <el-form label-position="top"
@@ -137,7 +137,7 @@
             </div>
           </iCard>
         </el-col>
-        <el-col :span="groupIds?24:inside?20:19">
+        <el-col :span="isComponent?24:20">
           <iCard style="height: 620px">
             <div style="width: 100%; height: 30px;display: flex;flex-flow: row nowrap;justify-content: space-between;">
               <div> <span class="chartTitle">{{chartTitle}}</span>
@@ -183,9 +183,8 @@
           </iCard>
         </el-col>
       </el-row>
-      <div class="margin-top20"
-           style="display:flex;flex-flow:row nowrap;justify-content:flex-end;">
-        <div style="width: calc(100% / 6);padding-right: 20px;">
+      <el-row :gutter="20" class="margin-top20">
+        <el-col span="4" v-if="!isComponent">
           <bob-pin :offset-top="80">
             <iCard :collapse="false">
               <ul class="anchorList flex">
@@ -197,15 +196,25 @@
               </ul>
             </iCard>
           </bob-pin>
-        </div>
-        <div style="width: calc(100% / 6 * 5)">
+        </el-col>
+        <el-col span="4" v-if="!isComponent" style="border:1px solid #F8F9FA;"></el-col>
+        <el-col :span="isComponent?24:20">
           <bobAnalysis ref="bobAnalysis"
                        :label="label"
                        :formUpdata="formUpdata"
                        :propSchemeId="analysisSchemeId"
                        :propGroupId="groupId"></bobAnalysis>
+        </el-col>
+      </el-row>
+      <!-- <div class="margin-top20"
+           style="display:flex;flex-flow:row nowrap;justify-content:flex-end;">
+        <div style="width: calc(100% / 6);padding-right: 20px; border:1px solid #f00;" v-if="!isComponent" >
+          
         </div>
-      </div>
+        <div style="width: calc(100% / 6 * 5);border:1px solid #f90;">
+          
+        </div>
+      </div> -->
       <!-- </el-row> -->
     </div>
     <findingParts v-if="value"
@@ -338,7 +347,8 @@ export default {
       maxData: '',
       maxData1: '',
       maxDataList: [],
-      maxDataList1: []
+      maxDataList1: [],
+      isComponent: false,
     };
   },
   props: {
@@ -352,6 +362,10 @@ export default {
     }
   },
   async created () {
+    // 当组件使用的时候隐藏侧边及顶部按钮
+    if (this.propSchemeId || this.propGroupId) {
+      this.isComponent = true;
+    }
     this.onDataLoading = true;
     this.newBuild = this.$route.query.newBuild;
     this.entryStatus = this.$store.state.rfq.entryStatus

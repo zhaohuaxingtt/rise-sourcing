@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-02 16:28:44
+ * @LastEditTime: 2021-12-08 20:15:49
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\createRfq\data.js
  */
@@ -15,7 +15,7 @@ export const basicInfo = [
   {value: 'linieDept', label: 'LINIE科室', type: 'select', key: 'LINIEKESHI', editable: true, require:true, selectOption: 'LINIE_DEPT', permission: 'ACCESSORYPART_CREATERFQ_LINIEDEPT|配附件创建RFQ-LINIE科室'},
   {value: 'linie', label: 'LINIE', type: 'select', key: 'LINIE', editable: true, selectOption: 'LINIE', permission: 'ACCESSORYPART_CREATERFQ_LINIE|配附件创建RFQ-LINIE'},
   {value: 'g', label: 'RFQ创建日期', type: 'input', key: 'RFQCHUANGJIANRIQI', editable: false, permission: 'ACCESSORYPART_CREATERFQ_RFQCREATEDATE|配附件创建RFQ-RFQ创建日期'},
-  {value: 'h', label: '询价采购员负责人', type: 'input', key: 'XUNJIACAIGOUYUANFUZEREN', editable: false, permission: 'ACCESSORYPART_CREATERFQ_BUYER|配附件创建RFQ-询价采购员负责人'}
+  {value: 'csfuserName', label: '询价采购员负责人', type: 'input', key: 'XUNJIACAIGOUYUANFUZEREN', editable: false, permission: 'ACCESSORYPART_CREATERFQ_BUYER|配附件创建RFQ-询价采购员负责人'}
 ]
 
 export const tableTitle = [

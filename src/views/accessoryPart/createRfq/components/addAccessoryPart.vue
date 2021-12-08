@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-08 18:17:25
+ * @LastEditTime: 2021-12-08 20:14:36
  * @Description: 添加配件弹窗
  * @FilePath: \front-sourcing\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
@@ -160,19 +160,12 @@ export default {
         iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
-      if (this.selectParts.some(item => item.rfqNum)) {
-        iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
-        return
+      for (let i = 0, item; item = this.selectParts[i++]; ) {
+        if (item.rfqNum) return iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
+        if ((item.csfuserId != this.searchParams.csfuserId)) return iMessage.warn(this.language("QINGXUANZEXIANGTONGXUNJIAKESHIHEXUNJIACAIGOUYUANDEPEIJIAN", "请选择相同询价科室和询价采购员的配件"))
+        if ((item.respLinie != this.searchParams.respLinie)) return iMessage.warn(this.language("QINGXUANZEXIANGTONGLINIEKESHIHELINIEDEPEIJIAN", "请选择相同LINIE科室和LINIE的配件"))
+        if (item.supplierSapCode != this.searchParams.supplierSapCode) return iMessage.warn(this.language("QINGXUANZEXIANGTONGGONGYINGSHANGDEPEIJIAN", "请选择相同供应商的配件"))
       }
-      const selectStuffId = uniq(this.selectParts.map(item => item.stuffId))
-      if (selectStuffId.length > 1 || (this.stuffId && selectStuffId[0] !== this.stuffId)) {
-        iMessage.warn(this.language('QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN','请选择相同工艺组的配件'))
-        return
-      } 
-      // if (!selectStuffId[0]) {
-      //   iMessage.warn(this.language('GAIGONGYINGSHANGBUZAIGONGYIZUBDLNEI','该供应商不在工艺组BDL内，请与EPS确认'))
-      //   return
-      // }
       this.$emit('selectPart', this.selectParts.map(item => item.spnrNum))
     },
     /**
