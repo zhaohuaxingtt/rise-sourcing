@@ -9,7 +9,7 @@
     <div slot="title" class="title">
       <div class="text">{{ $t(title) }}</div>
     </div>
-    <p class="newVersion">采购员</p>
+    <p class="newVersion">{{$t('MODEL-ORDER.LK_CAIGOUYUAN')}}</p>
     <div class="changeContent">
       <iSelect
           :placeholder="$t('partsprocure.PLEENTER')"
