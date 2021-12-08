@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-08 18:11:38
+ * @LastEditTime: 2021-12-08 20:00:53
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -655,7 +655,7 @@ export default {
         if ((item.csfuserId != this.selectParts[0].csfuserId) || (item.csfuserDept != this.selectParts[0].csfuserDept)) return iMessage.warn(this.language("QINGXUANZEXIANGTONGXUNJIAKESHIHEXUNJIACAIGOUYUANDEPEIJIAN", "请选择相同询价科室和询价采购员的配件"))
         if (!item.respLinie || !item.respDept) return iMessage.warn(this.language("QINGXUANZEYIFENPEILINIEKESHIHELINIEDEPEIJIAN", "请选择已分配LINIE科室和LINIE的配件"))
         if ((item.respLinie != this.selectParts[0].respLinie) || (item.respDept != this.selectParts[0].respDept)) return iMessage.warn(this.language("QINGXUANZEXIANGTONGLINIEKESHIHELINIEDEPEIJIAN", "请选择相同LINIE科室和LINIE的配件"))
-        if (item.selectSupplierSapCode != this.selectParts[0].selectSupplierSapCode) return iMessage.warn(this.language("QINGXUANZEXIANGTONGGONGYINGSHANGDEPEIJIAN", "请选择相同供应商的配件"))
+        if (item.supplierSapCode != this.selectParts[0].supplierSapCode) return iMessage.warn(this.language("QINGXUANZEXIANGTONGGONGYINGSHANGDEPEIJIAN", "请选择相同供应商的配件"))
       }
       
       const query = {
