@@ -259,7 +259,9 @@ export default {
       saveLoading: false,
       saveNewVersion: false,
       systemTableLoading: false,
-      vereceive: {},
+      vereceive: {
+        editFlag: true
+      },
       planYearCommutity: [],
       isThen: true,
       manualSaveLoading: false,

@@ -1594,6 +1594,44 @@
             'CHAKANLISHI': '查看历史',  //  查看历史
             'SOPSHIJIAN': 'SOP时间',    //  SOP时间
             'LK_RFQBIANHAO': 'RFQ号',   //  RFQ号
+            'LK_SHENQINGREN': '申请人',//申请人
+            'LK_PIZHUAN': '批准',//批准
+            'LK_QINGSHURUJUJUEYUANYIN': '请输入拒绝原因',   //  请输入拒绝原因
+            'LK_TIANJIAHANG': '添加行', //  添加行
+            'LK_SHANCHUHANG': '删除⾏',//删除⾏
+            'LK_CAILIAOZUBIANHAO2': '材料组编号',//材料组编号
+            'LK_CAILIAOZUMINGCENGZHONG': '材料组名称（中）',//材料组名称（中）
+            'LK_CAILIAOZUMINGCENGDE': '材料组名称（德）',//材料组名称（德）
+            'LK_ZHUANYEKESHI': '专业科室',//专业科室
+            'LK_CommonSourcing': 'Common Sourcing',
+            'LK_MOJUSHUXIN': '模具属性',//模具属性
+            'LK_LINIE': 'Linie', //Linie
+            'LK_ZP': 'ZP',//ZP
+            'LK_CANKAOCHEXINXIANGMUYI': '参考车型项目⼀',//参考车型项目⼀
+            'LK_CANKAOCHEXINXIANGMUER': '参考车型项目⼆',//参考车型项目⼆
+            'LK_CANKAOCHEXINXIANGMUSAN': '参考车型项目三',//参考车型项目三
+            'LK_QITACHEXINXIANGMUBEIXUAN': '其它⻋型项⽬备选',//其它⻋型项⽬备选
+            'LK_CHEXINXIANGMULEIXIN': '⻋型项⽬类型',//⻋型项⽬类型
+            'LK_CHEXINXIANGMUQIZHINIANFEN': '⻋型项⽬起⽌年份',//⻋型项⽬起⽌年份
+            'LK_YUSUANGUANLITIPS1': '本窗口的功能为选择参考车型项目，未SOP的车型项目不作为参考数据',    //本窗口的功能为选择参考车型项目，未SOP的车型项目不作为参考数据
+            'LK_YUSUANGUANLITIPS2': '参考的金额是模具的定点金额',   //  参考的金额是模具的定点金额
+            'LK_YUSUANGUANLITIPS3': '选择好所有条件后，系统会根据你的选择，首先计算第一顺位车型项目的各个材料组的历史投资金额；',   //  选择好所有条件后，系统会根据你的选择，首先计算第一顺位车型项目的各个材料组的历史投资金额；
+            'LK_YUSUANGUANLITIPS4': '若某个材料组的计算结果为0，则计算第二顺位车型项目的各个材料组的历史投资金额进行补充；',    //  若某个材料组的计算结果为0，则计算第二顺位车型项目的各个材料组的历史投资金额进行补充；
+            'LK_YUSUANGUANLITIPS5': '若某个材料组的计算结果再次为0，则计算第三顺位车型项目的各个材料组的历史投资金额进行补充；',    //  若某个材料组的计算结果再次为0，则计算第三顺位车型项目的各个材料组的历史投资金额进行补充；
+            'LK_YUSUANGUANLITIPS6': '若某个材料组的计算结果依旧为0，系统根据【其他参考】【车型项目类型】【项目年份】筛选出多个车型项目，并调用模具投资金额最大的项目作为参考项目的模具投资金额，显示在【模具投资清单页面】',    //  若某个材料组的计算结果依旧为0，系统根据【其他参考】【车型项目类型】【项目年份】筛选出多个车型项目，并调用模具投资金额最大的项目作为参考项目的模具投资金额，显示在【模具投资清单页面】
+            'LK_SHIFOUJIXU': '您还没有选择参考车型项目，是否继续?', //  您还没有选择参考车型项目，是否继续?
+            'LK_SHENGCHANGONGCHANG': '生产工厂',    //  生产工厂
+            'LK_YUSUANJINEPSK': '预算金额PSK(Mio.RMB)', //  预算金额PSK(Mio.RMB)
+            'LK_SOURCINGLEIXIN': 'Sourcing type',   //  Sourcing类型
+            'LK_CANKAOXIANGMU': '参考项目', //  参考项目
+            'LK_CANKAOXINGMUMOJUJINE': '参考项目模具定点金额(Mio.RMB)',//参考项⽬模具⾦额
+            'LK_YUSUANBEIZHU': '预算备注',//预算备注
+            'LK_YISHENQINGJINE': '已申请金额',  //  已申请金额
+            'LK_YIDINGDNIANJINE': '已定点金额', //  已定点金额
+            'LK_YIBAJINE': '已BA金额',  //  已BA金额
+            'LK_YIBMJINE': '已BM金额',  //  已BM金额
+            'LK_LISHISHUJUKU': '历史数据库',    //  历史数据库
+            'LK_XINBANBENMINGMING': '新版本命名', //  新版本命名
         },
 
     }

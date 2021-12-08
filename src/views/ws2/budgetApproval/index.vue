@@ -56,7 +56,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_SHENQINGREN')">
+        <el-form-item :label="$t('MOULDADD.LK_SHENQINGREN')">
           <iSelect
               :placeholder="$t('partsprocure.PLEENTER')"
               v-model="form['search.applyUserId']"
@@ -87,7 +87,7 @@
       <div class="icardHeader">
         <div></div>
         <div>
-          <iButton @click="approvalBtn" v-loading="saveLoading">{{ $t('LK_PIZHUAN') }}</iButton>
+          <iButton @click="approvalBtn" v-loading="saveLoading">{{ $t('MOULDADD.LK_PIZHUAN') }}</iButton>
           <iButton @click="rejectShowBtn">{{ $t('LK_JUJUE') }}</iButton>
           <iButton @click="transferBtn">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
