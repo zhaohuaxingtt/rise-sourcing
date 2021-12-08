@@ -1,27 +1,39 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-09-26 18:14:14
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-12-08 12:02:49
+ * @LastEditors: Please set LastEditors
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\categoryGroup.vue
 -->
 <template>
-    <!-- 材料组定位 -->
-    <iDialog :title='language("CAILIAOZU", "材料组")' :visible.sync="value" class="iDialog" width="400px" @close='clearDiolog' top="40vh">
-      <p class="tip margin-bottom10">{{ language("QXZCAILIAOZU", "请选择材料组") }}</p>
-      <!-- <el-autocomplete class="autocomplete" v-model="categoryName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete> -->
-      <iSelect class="select" v-model="category" filterable value-key="categoryCode">
-        <el-option :value="item" :label="item.categoryCode+'-'+item.categoryName" v-for="(item,index) in group" :key="index"></el-option>
-      </iSelect>
-      <span slot="footer" class="dialog-footer">
-        <iButton @click="confirm">{{ language("QUEREN", "确认") }}</iButton>
-      </span>
-    </iDialog>
+  <!-- 材料组定位 -->
+  <iDialog :title='language("CAILIAOZU", "材料组")'
+           :visible.sync="value"
+           class="iDialog"
+           width="400px"
+           @close='clearDiolog'
+           top="40vh">
+    <p class="tip margin-bottom10">{{ language("QXZCAILIAOZU", "请选择材料组") }}</p>
+    <!-- <el-autocomplete class="autocomplete" v-model="categoryName" :fetch-suggestions="querySearchAsync" placeholder="请输入内容" @select="handleSelect"></el-autocomplete> -->
+    <iSelect class="select"
+             v-model="category"
+             filterable
+             value-key="categoryCode">
+      <el-option :value="item"
+                 :label="item.categoryCode+'-'+item.categoryName"
+                 v-for="(item,index) in group"
+                 :key="index"></el-option>
+    </iSelect>
+    <span slot="footer"
+          class="dialog-footer">
+      <iButton @click="confirm">{{ language("QUEREN", "确认") }}</iButton>
+    </span>
+  </iDialog>
 </template>
 
 <script>
-import {iButton, iDialog ,iSelect,iMessage} from 'rise';
+import { iButton, iDialog, iSelect, iMessage } from 'rise';
 import { getMaterialGroupByUserIds } from "@/api/partsrfq/costAnalysis";
 export default {
   components: {
@@ -30,29 +42,32 @@ export default {
     iSelect
   },
   props: {
-     value:{
-        type:Boolean,
-        default:false
-     }
-  },
-  data() {
-    return {
-      category:{
-        categoryName: "",//材料组名称
-        categoryCode: "",//材料组编号
-        categoryId:"",//材料组ID
-      },
-      group:[]
+    value: {
+      type: Boolean,
+      default: false
     }
   },
-  created() {
+  data () {
+    return {
+      category: {
+        categoryName: "",//材料组名称
+        categoryCode: "",//材料组编号
+        categoryId: "",//材料组ID
+      },
+      group: []
+    }
+  },
+  created () {
+    if (this.$route.query.groupList) {
+      this.groupList = JSON.parse(this.$route.query.groupList)
+    }
     this.getDefaultCostStructure()
   },
   watch: {
-    "value"(){
-      this.category.categoryName=this.$store.state.rfq.categoryName
-      this.category.categoryCode=this.$store.state.rfq.categoryCode
-		}
+    "value" () {
+      this.category.categoryName = this.$store.state.rfq.categoryName
+      this.category.categoryCode = this.$store.state.rfq.categoryCode
+    }
   },
   methods: {
     // querySearchAsync(queryString, cb) {
@@ -69,15 +84,18 @@ export default {
     //   })
     // },
     // 获取当前用户的材料组
-    getDefaultCostStructure(){
-      getMaterialGroupByUserIds({}).then(res=>{
-        this.group=res.data
+    getDefaultCostStructure () {
+      getMaterialGroupByUserIds({}).then(res => {
+        this.group = res.data
       })
+      if (this.groupList) {
+        this.group = this.groupList
+      }
     },
     // 确认
-    confirm() {
-      if(!this.category.categoryCode){
-        iMessage.error(this.language('QXZCLZ','请选择材料组'))
+    confirm () {
+      if (!this.category.categoryCode) {
+        iMessage.error(this.language('QXZCLZ', '请选择材料组'))
         return
       }
       this.$store.dispatch('setCategoryCode', this.category.categoryCode)
@@ -85,13 +103,13 @@ export default {
       this.$emit('clearDiolog')
     },
     // 重新定位材料组
-    openCategoryCode() {
+    openCategoryCode () {
       this.value = true
     },
     // handleSelect(item) {
     //   this.categoryCode = item.categoryCode
     // },
-    clearDiolog() {
+    clearDiolog () {
       this.$emit('input', false);
     },
   }

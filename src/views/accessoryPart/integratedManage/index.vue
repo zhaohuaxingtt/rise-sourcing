@@ -643,10 +643,13 @@ export default {
         iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
         return
       }
-      if (this.selectParts.some(item => item.rfqNum)) {
-        iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
-        return
+
+      for (let i = 0, item; item = this.selectParts[i++]; ) {
+        if (item.rfqNum) return iMessage.warn(this.language('LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN','请选择未分配RFQ的配件'))
+        if (!item.respLinie || !item.respDept) return iMessage.warn(this.language("QINGXUANZEYIFENPEILINIEKESHIHELINIEDEPEIJIAN", "请选择已分配LINIE科室和LINIE的配件"))
+        if ((item.respLinie != this.selectParts[0].respLinie) || (item.respDept != this.selectParts[0].respDept)) return iMessage.warn(this.language("QINGXUANZEXIANGTONGLINIEKESHIHELINIEDEPEIJIAN", "请选择相同LINIE科室和LINIE的配件"))
       }
+
       const selectLINIE = uniq(this.selectParts.map(item => item.respLinie)).filter(item => !!item)
       const selectLINIEName = uniq(this.selectParts.map(item => item.respLinieName)).filter(item => !!item)
       const selectLINIEDept = uniq(this.selectParts.map(item => item.respDept)).filter(item => !!item)
