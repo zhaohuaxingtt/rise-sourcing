@@ -1592,6 +1592,10 @@ export default {
       this.annualOutput = this.annualOutput.filter(
         (item, index) => !annualIndexs.includes(index)
       );
+      this.$refs['tableDataForm'].$children[0].clearValidate()
+      this.$nextTick(() => {
+        this.handlerInputBlur();
+      })
     },
   },
 };
