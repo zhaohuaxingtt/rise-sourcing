@@ -32,9 +32,9 @@ export function costanalysisSort(data) {
 
 
 // 获取举措清单
-export function costAnalysisGet(data) {
+export function costAnalysisGet(params) {
   return requst({
-    url: `/cost_analysis/${data}`,
+    url: `/cost_analysis/strategy/${ params.nominateAppId }/${ params.type }`,
     method: "get"
   })
 }
@@ -44,7 +44,7 @@ export function costAnalysisStrage(data) {
   return requst({
     url: `/cost_analysis/strategy`,
     method: "PATCH",
-    data:data
+    data
   })
 }
 
