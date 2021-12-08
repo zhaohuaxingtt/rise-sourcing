@@ -25,32 +25,32 @@
                 
                 <span class="combine" v-if="multiEditControl">
                   <!-- 合并功能 -->
-                <iButton @click="combine" v-if="!hideCombine"   v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_ZUHE${moni}|${moni}组合`">
+                <iButton @click="combine" v-if="!hideCombine"   v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_ZUHE${isnomination}|${isnomination}组合`">
                     {{ language("nominationSuggestion_ZuHe",'组合') }}
                   </iButton>
-                  <iButton @click="cancelSummaryGroup" v-if="!hideCombine" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_QUXAIOZUHE${moni}|${moni}取消组合`">
+                  <iButton @click="cancelSummaryGroup" v-if="!hideCombine" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_QUXAIOZUHE${isnomination}|${isnomination}取消组合`">
                     {{ language("nominationSuggestion_QuXiaoZuHe",'取消组合') }}
                   </iButton>
                   <!-- 退出编辑 -->
-                  <iButton @click="exit" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TUICHUBIANJI${moni}|${moni}退出编辑`">
+                  <iButton @click="exit" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TUICHUBIANJI${isnomination}|${isnomination}退出编辑`">
                     {{ language("TUICHUBIANJI",'退出编辑') }}
                   </iButton>
-                  <iButton @click="submit" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BAOCUN${moni}|${moni}保存`">
+                  <iButton @click="submit" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BAOCUN${isnomination}|${isnomination}保存`">
                     {{ language("LK_BAOCUN",'保存') }}
                   </iButton>
                 </span>
                 <span class="combine"  v-else>
                   <!-- 编辑 -->
-                  <iButton @click="multiEditControl = true" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BIANJI${moni}|${moni}编辑`">
+                  <iButton @click="multiEditControl = true" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BIANJI${isnomination}|${isnomination}编辑`">
                     {{ language("LK_BIANJI",'编辑') }}
                   </iButton>
                 </span>
                 <!-- 重置 -->
-                <iButton @click="getFetchData" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_CHONGZHI${moni}|${moni}重置`">
+                <iButton @click="getFetchData" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_CHONGZHI${isnomination}|${isnomination}重置`">
                   {{ language("nominationSupplier_Reset",'重置') }}
                 </iButton>
                 <!-- 刷新 -->
-                <iButton @click="refresh" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_SHAUXIN${moni}|${moni}刷新`">
+                <iButton @click="refresh" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_SHAUXIN${isnomination}|${isnomination}刷新`">
                   {{ language("nominationSupplier_Refresh",'刷新') }}
                 </iButton>
               </div>
@@ -71,7 +71,7 @@
                 :batchEdit="multiEditControl"
                 :height="530"
                 v-loading="tableLoading"
-                v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TABLE${moni}|${moni}业务分配模拟-表格`"
+                v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TABLE${isnomination}|${isnomination}业务分配模拟-表格`"
                 ref="monitorTable" />
             </div>
           </div>
@@ -83,7 +83,7 @@
           <buMonitorCharts
             :supplier="supplierList"
             :data="chartData"
-            v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_CHART${moni}|${moni}图表`"
+            v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_CHART${isnomination}|${isnomination}图表`"
           />
         </div>
       </el-col>
@@ -214,9 +214,7 @@ export default {
     }
   },
   created() {
-    this.init()
-    this.isnomination === 'nomination' ? this.moni='nomination' : this.moni="rfq" 
-      
+    this.init()      
   },
   methods: {
     async init() {

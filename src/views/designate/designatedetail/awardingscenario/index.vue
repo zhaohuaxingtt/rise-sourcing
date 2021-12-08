@@ -4,6 +4,7 @@
       title="Awarding Scenario"
       :mode="'nomi'"
       :hideUpdateTime="true"
+      :isnomination="'awardingscenario'"
       readOnly />
   </div>
 </template>

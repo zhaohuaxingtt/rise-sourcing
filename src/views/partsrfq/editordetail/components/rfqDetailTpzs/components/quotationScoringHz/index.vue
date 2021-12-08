@@ -52,10 +52,10 @@
     </template>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
     <div class="margin-top10 font-size14">
-      <p v-if="exchangeRatesCurrentVersionStr">Current Exchange rate: {{ exchangeRatesCurrentVersionStr }}</p>
       <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
         <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
       </div>
+      <p v-if="exchangeRatesCurrentVersionStr">Current Exchange rate: {{ exchangeRatesCurrentVersionStr }}</p>
     </div>
     <!-- <tablelistGSasRow v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tablelistGSasRow> -->
     <!--------------弹窗-------------->

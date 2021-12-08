@@ -405,9 +405,17 @@ export default {
            
           });
         });
+
         const minList = [];
         this.legendArray.forEach((row, i) => {
           const dataList0 = this.cloneDeep(tempArr[row]);
+          if (tempArr[row] && tempArr[row].length > 0) {
+            var temp = []
+            tempArr[row].forEach((num) => {
+              temp.push(Number(num))
+            })
+            tempArr[row] = temp;
+          }
           const min = Number(this.min(tempArr[row]))
           let sumList = tempArr[row].map(Number)
           let data = min;

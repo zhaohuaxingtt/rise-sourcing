@@ -92,7 +92,6 @@ export default {
       isEdit:false,
       carTypeVisible:false,
       selectData:[],
-      isGs:true,
       ispartProjectSource:false,
     };
   },
@@ -109,15 +108,13 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    sourcePartProjectType: {
+      type:String
     }
   },
   created() {
     this.getData();
-     if(this.params.partProjectType == '1000003' || this.params.partProjectType == '50002001') {
-      this.isGs = true
-    } else {
-      this.isGs = false
-    }
     if(this.params.partProjectSource == 2) {
       this.ispartProjectSource = true
     } else {
@@ -235,7 +232,7 @@ export default {
       }else {
         let purchasingProjectPartId=this.params.id
         
-        if(this.isGs == false) {
+        if(this.isGSType(this.sourcePartProjectType) == false) {
            fscalculateOutput(purchasingProjectPartId).then(res=> {
             if(res.code == '200') {
               iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
@@ -360,7 +357,6 @@ export default {
         }).finally(() => this.saveLoading = false)
       }
     },
-
     //添加表格数据
     // getSelectData(val) {
     //   let valTemData = []
@@ -425,6 +421,11 @@ export default {
 
       this.tableListData = this.tableListDataCache
       this.page.totalCount = this.totalCountCache
+    },
+    //是否GS
+    isGSType(data) {
+      console.log('daa',data);
+      return data == '1000003' || data =='50002001'
     }
   },
 };
