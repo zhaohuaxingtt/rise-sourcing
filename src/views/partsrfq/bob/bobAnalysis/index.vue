@@ -278,11 +278,11 @@ export default {
   },
   methods: {
     showCollapseOutLine(item) {
-      if (item.level == 0) {
-        return 'collapse-root'
-      } else {
+      // if (item.level == 0) {
+      //   return 'collapse-root'
+      // } else {
         return (item.level == 1 && typeof item.matchId != 'undefined') ? 'collapse-group':''
-      }
+      // }
     },
     changeToEditMode(id) {
       this.onEditLabels.push(id)
@@ -652,6 +652,11 @@ export default {
         lvlItem.id = this.createUuid()
         lvlItem.level = level;
         this.setCollapse(cbdDetail, lvlItem)
+        for (var key in cbdDetail) {
+          if (key.indexOf("label#") >= 0) {
+            lvlItem[key] = cbdDetail[key]
+          }
+        }
         this.tableListData.push(lvlItem)
         this.addSub(cbdDetail, rootId, lvlItem.id, nextLevel)
       });
@@ -1101,6 +1106,6 @@ export default {
   border-top: 3px solid #1763F7;
 }
 .collapse-root {
-  border-top: 3px solid #000000;
+  border-top: 3px solid #1763F7;
 }
 </style>

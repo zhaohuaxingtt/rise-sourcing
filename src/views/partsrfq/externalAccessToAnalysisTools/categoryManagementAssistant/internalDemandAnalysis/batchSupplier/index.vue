@@ -7,7 +7,7 @@
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
 -->
 <template>
-   <iCard class="margin-top20" id="batchSupplier">
+   <iCard class="margin-top20" id="batchSupplier" :collapse="paramCategoryCode">
       <template slot="header">
          <div class="flex-between-center title">
             <div class="flex-align-center">

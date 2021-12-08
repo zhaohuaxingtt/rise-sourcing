@@ -52,9 +52,11 @@
     <bob v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></bob>
     <vp v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
     <pi v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
-    <div v-else-if='["PCA","TIA"].includes(typeSelect)' style="height:600px" class="flex-center-center" :key='keysRender'>
-      <iframe height='600px' width="100%" v-if='previewItems && JSON.parse(previewItems).fileList && JSON.parse(previewItems).fileList[0].filePath' :src="JSON.parse(previewItems).fileList[0].filePath" frameborder="0"></iframe>
-      <div v-else>抱歉当前类型暂无预览文件</div>
+    <div v-else-if='["PCA","TIA"].includes(typeSelect)' style="height:600px" id="preview2" class="flex-center-center" :key='keysRender'>
+      <div v-if="previewItems">
+        <iframe height='600px' width="100%" v-if='previewItems && JSON.parse(previewItems).reportLink' :src="JSON.parse(previewItems).reportLink" frameborder="0"></iframe>
+        <div v-else>抱歉当前类型暂无预览文件</div>
+      </div>
     </div>
     <template v-else-if='typeSelect == "QT"'>
         <echartsComponents v-if='previewItems' :rfqId='JSON.parse(previewItems).rfqId' :key='keysRender'></echartsComponents>
@@ -109,6 +111,18 @@ export default{
     this.costanalysisList()
     //当前状态是否是预览状态
     this.isPreview = this.$route.query.isPreview == 1
+  },
+  watch: {
+    previewItems(nv) {
+      if (this.isPreview && ['PCA','TIA'].includes(this.typeSelect) && nv) {
+        this.$nextTick(() => {
+          const previewDom = this.$el.querySelector("#preview2")
+          if (previewDom) {
+            previewDom.querySelector("iframe").style.width = `${ previewDom.offsetWidth }px`
+          }
+        })
+      }
+    }
   },
   methods:{
     refresh(){
@@ -180,6 +194,12 @@ export default{
       costanalysisList(id,this.typeSelect).then(r=>{
         this.loading = false
         this.tableData = r.data
+
+        if (Array.isArray(this.tableData)) { 
+          const views = this.tableData.filter(item => item.flag)
+          this.previewItems = views.length ? JSON.stringify(views[0]) : ""
+        }
+
         this.loadingRight = false
       }).catch(()=>{
         this.loading = false
