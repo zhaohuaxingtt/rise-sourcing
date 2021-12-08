@@ -788,7 +788,7 @@ export default {
     clickfixedPointAllotTotal(row){
       this.fixedAssignmentShow = true
       this.fixedAssignmentId = row.id
-      this.targetBudgetAmount = row.fixedPointAllotTotal
+      this.targetBudgetAmount = row.targetBudgetTotal
       let category = this.materialGroupList.find(item => Number(item.id) === Number(row.categoryId))
       let info = (category ? category.value : '') + ' ' + row.partNameZh
       this.fixedAssignmentInfo = info

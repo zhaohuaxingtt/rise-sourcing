@@ -11,7 +11,7 @@
     <div class="changeContent">
       <iInput
           type="textarea"
-          placeholder="请输入拒绝原因"
+          :placeholder="$t('MOULDADD.LK_QINGSHURUJUJUEYUANYIN')"
           v-model="approvalComments">
       </iInput>
     </div>
@@ -42,7 +42,8 @@ export default {
   },
   data() {
     return {
-      approvalComments: ''
+      approvalComments: '',
+      iDialogLoading: false,
     }
   },
   mounted() {

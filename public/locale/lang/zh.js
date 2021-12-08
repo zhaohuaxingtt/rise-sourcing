@@ -1594,6 +1594,9 @@
             'CHAKANLISHI': '查看历史',  //  查看历史
             'SOPSHIJIAN': 'SOP时间',    //  SOP时间
             'LK_RFQBIANHAO': 'RFQ号',   //  RFQ号
+            'LK_SHENQINGREN': '申请人',//申请人
+            'LK_PIZHUAN': '批准',//批准
+            'LK_QINGSHURUJUJUEYUANYIN': '请输入拒绝原因',   //  请输入拒绝原因
         },
 
     }
