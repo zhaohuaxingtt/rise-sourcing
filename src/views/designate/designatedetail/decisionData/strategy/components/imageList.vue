@@ -77,6 +77,7 @@ export default {
     text-decoration: underline;
     color: #1763f7;
     cursor: pointer;
+    max-width: 100%;
   }
 }
 </style>

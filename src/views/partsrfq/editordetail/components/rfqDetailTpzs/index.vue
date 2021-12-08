@@ -9,6 +9,9 @@
   <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
     <el-tab-pane name="one" label="报价分析">
       <template>
+          <div class="right-btn">
+              <iButton @click="handleReport" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_BUTTON_BAOGAOQINGDAN|报告清单">{{ $t('TPZS.BGQD') }}</iButton>
+          </div>
          <!--------------------报价评分跟踪----------------------------------------->
          <iCard title="报价与评分跟踪" @handleCollapse='handleCollapse($event,"1")' collapse v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAYUPINGFENGENZONG|报价与评分跟踪">
            <quotationScoringTracking v-if='cardShow.find(items=>items.key == "1").show'></quotationScoringTracking>
@@ -37,7 +40,7 @@
   </iTabsList>
 </template>
 <script>
-import { iTabsList, iCard } from 'rise'
+import { iTabsList, iCard,iButton } from 'rise'
 import quotationScoringTracking from './components/quotationScoringTracking'
 import quotationScoringMj from './components/quotationScoringMj'
 import quotationScoringHZ from './components/quotationScoringHz'
@@ -49,7 +52,7 @@ import negotiateBasicInfor from "./components/negotiateBasicInfor";
 
 
 export default {
-  components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, gather, negotiateBasicInfor },
+  components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, gather, negotiateBasicInfor ,iButton},
   data() {
     return {
       cardShow: JSON.parse(JSON.stringify(icardData)),
@@ -71,9 +74,6 @@ export default {
      * @param {*} key
      * @return {*}
      */
-
-
-
     handleCollapse(e, key) {
       this.cardShow.forEach(i => {
         if (i.key == key) {
@@ -85,6 +85,9 @@ export default {
     clickReturn() {
 
     },
+    handleReport() {
+      this.$router.push({ path: '/sourcing/partsrfq/reportList' });
+    },
     //点击报告清单
     clickReport() {
 
@@ -95,5 +98,10 @@ export default {
 <style lang='scss' scoped>
 .el-tabs--card {
   position: relative;
+}
+.right-btn {
+    position: absolute;
+    top: -3.5rem;
+    right: 0;
 }
 </style>

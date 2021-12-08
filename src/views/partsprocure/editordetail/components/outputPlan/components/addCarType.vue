@@ -32,7 +32,7 @@
       </div>
       <div class="top-right">
         <iButton @click="changeVisible">{{language('QUXIAO','取消')}}</iButton>
-        <iButton @click="addTableCar">{{language('YINGYONG','应用')}}</iButton>
+        <iButton :loading="saveLoading" @click="addTableCar">{{language('YINGYONG','应用')}}</iButton>
       </div>
     </div>
     <div >
@@ -91,6 +91,8 @@ import tableList from "@/views/partsign/editordetail/components/tableList";
 import {carTitle,fscarTitle} from "../data"
 import {searchCarTypeConfig,searchCarType,searchCarTypeProConfig} from "@/api/partsprocure/home"
 import { pageMixins } from "@/utils/pageMixins";
+import { savearDosage } from "@/api/partsprocure/editordetail";
+import { log } from 'util';
 export default {
   components: { iDialog, iButton, tableList, iSelect, iPagination},
   props: {
@@ -110,6 +112,7 @@ export default {
   mixins: [pageMixins],
   watch: {
     dialogVisible(status) {
+      if (status) this.getPartType()
       if (!status) this.selectData = []
     }
   },
@@ -123,12 +126,13 @@ export default {
       tableLoading:false,
       selectData:[],
       isGs:true,
-      fscarTableTitle:[...fscarTitle]
+      fscarTableTitle:[...fscarTitle],
+      saveLoading: false,
+      carIds:[]
     }
   },
   created() {
     this.getPartType()
-    
   },
   methods: {
     changeVisible() {
@@ -145,9 +149,13 @@ export default {
         searchCarType(this.$route.query.projectId).then(res => {
           if(res.code == '200') {
             this.carTypeOptions = res.data
+            this.carIds = this.carTypeOptions.map(item=>item.id)
+            this.changeTable(this.carIds)
           }
         })
       } else {
+        if (!this.params.carTypeProjectId) return iMessage.warn(this.language("DANGQIANSHUJUMEIYOUCHEXINGXIANGMUID", "当前数据没有车型项目ID，请选择车型项目后保存重试"))
+
         this.tableLoading = true
         let data ={
           "cartypeProId":this.params.carTypeProjectId,
@@ -164,7 +172,6 @@ export default {
               this.$set(val,'batteryCapacity',val.batteryVo?.capacity)
             })
             this.fscarTableData = res.data || []
-
             this.page.totalCount = res.total || 0
           } else {
             iMessage.error(res.desZh)
@@ -173,11 +180,14 @@ export default {
       }
     },
     changeTable(data) {
-      this.getTableList(data)
+      if(data.length == 0) {
+        this.getTableList(this.carIds)
+      } else {
+        this.getTableList(data)
+      }
     },
     getTableList(value) {
       this.tableLoading = true
-      console.log(value);
       let data ={
         "cartypeIds":value,
         "current": this.page.currPage,
@@ -202,8 +212,53 @@ export default {
     addTableCar() {
       if (!this.selectData.length) return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
 
-      this.$emit('getSelectData', this.selectData)
-      this.$emit('changeVisible', false)
+      let params = null
+      if(this.isGs) {
+        params = this.selectData.map(item => ({
+          purchasingRequirementObjectId: this.params.purchasingRequirementObjectId,
+          cartypeLevel: item.cartypeLevel,
+          engineType: item.engineType,
+          gearType: item.gearboxName,
+          otherInfo: item.otherConf,
+          cartype: item.cartypeId,
+          cartypeConfigId: item.originId,
+          partNum: this.params.partNum,
+          partNameCn: this.params.partNameZh,
+          partNameDe: this.params.partNameDe,
+          cartypeLevelRate: item.cartypeLevelRate,
+          cartypeCategory: item.cartypeCode
+        }))
+      } else {
+        params = this.selectData.map(item => ({
+          purchasingRequirementObjectId: this.params.purchasingRequirementObjectId,
+          cartypeLevel: item.cartypeLevel,
+          engineType: item.engineVo?.engineName,
+          gearType: item.gearboxVo?.gearboxName,
+          otherInfo: item.otherConf,
+          cartype: item.carProjectId,
+          cartypeConfigId: item.originId,
+          partNum: this.params.partNum,
+          partNameCn: this.params.partNameZh,
+          partNameDe: this.params.partNameDe,
+          cartypeLevelRate: item.cartypeLevelRate,
+          cartypeCategory: item.cartypeProCode
+        }))
+      }
+
+      this.saveLoading = true
+      savearDosage(params)
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.$emit("afterSave")
+          this.$emit('changeVisible', false)
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => this.saveLoading = false)
+
+      // this.$emit('getSelectData', this.selectData)
     }
     // 获取车型
     // getCartypeDict() {

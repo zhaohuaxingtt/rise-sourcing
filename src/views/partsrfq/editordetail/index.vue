@@ -385,23 +385,27 @@ export default {
         this.transferlaoding = true
       }
       const req = {
-          updateType,
-          tmRfqIdList: [query.id],
-          userId: store.state.permission.userInfo.id
-      }
-      const res = await modification(req)
-      this.resultMessage(res)
-      this.getBaseInfo()
-      if(updateType === '06') {
-        this.rfqloading = false
-      }      
-      if(updateType === '05') {
-        this.endingloading = false
-      }      
-      if(updateType === '03') {
-        this.transferlaoding = false
+        updateType,
+        tmRfqIdList: [query.id],
+        userId: store.state.permission.userInfo.id
       }
 
+      try {
+        
+        const res = await modification(req)
+        this.resultMessage(res)
+        this.getBaseInfo()
+      } finally {
+        if(updateType === '06') {
+          this.rfqloading = false
+        }      
+        if(updateType === '05') {
+          this.endingloading = false
+        }      
+        if(updateType === '03') {
+          this.transferlaoding = false
+        }
+      }
     },
     edit() {
       const rfqName = this.baseInfo.rfqName
