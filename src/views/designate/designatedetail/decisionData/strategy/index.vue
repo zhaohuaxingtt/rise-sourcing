@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:35:20
- * @LastEditTime: 2021-12-02 19:45:28
- * @LastEditors:  
+ * @LastEditTime: 2021-12-07 22:37:38
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\strategy\index.vue
 -->
@@ -72,7 +72,8 @@ export default{
         path:`/sourcing/categoryManagementAssistant/listOfInitiatives`,
         query:{
           categoryCode:this.categoryCode,
-          categoryName:this.categoryName
+          categoryName:this.categoryName,
+          groupList:this.catCodeList
         }
       })
     },

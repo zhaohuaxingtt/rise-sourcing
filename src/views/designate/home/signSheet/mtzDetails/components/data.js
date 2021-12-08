@@ -8,11 +8,11 @@
  */
 export const tableTitle = [
   {props: 'id', name: '申请单号', key: 'SHENQINGDANHAO'},
-  {props: 'appName', name: 'MTZ申请单名称', key: 'MTZSHENQINGDANMINGCHENG', tooltip: true},
+  {props: 'appName', name: '申请单名称', key: 'SHENQINGDANMINGCHENG', tooltip: true},
   {props: 'flowTypeDesc', name: '申请类型', key: 'SHENQINGLEIXING'},
   {props: 'appStatusDesc', name: '状态', key: 'ZHUANGTAI'},
   {props: 'meetingName', name: '会议', key: 'HUIYI'},
-  {props: 'rsFreezeDate', name: '冻结日期', key: 'DONGJIERIQI'},
+  // {props: 'rsFreezeDate', name: '冻结日期', key: 'DONGJIERIQI'},
   {props: 'linieDeptName', name: '科室', key: 'KESHI'},
   {props: 'buyerName', name: '采购员', key: 'CAIGOUYUAN'},
 ]

@@ -142,7 +142,7 @@ export default {
       this.selectTableData = data
     },
     exportRecord() {
-      let data = this.$refs.search.formRecord
+      let data = Object.assign({...this.$refs.search.formRecord},{size:this.page.pageSize},{current:this.page.currPage})
       exportNomiRecordExcel(data).then(res=> {
         
       })
