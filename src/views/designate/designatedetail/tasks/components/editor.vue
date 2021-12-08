@@ -87,7 +87,7 @@ export default {
     }
   },
   created() {
-    this.isTask == true ? this.task = 'Background&Objective' :this.task=''
+    this.isTask == true ? this.task = 'Background&Objective' :this.task='highligths'
   },
   computed: {
     // eslint-disable-next-line no-undef
