@@ -15,7 +15,7 @@
       :tableSelection="true"
       :hideCombine="false"
       :readOnly="false"
-      :isnomination="'nomination'"
+      :isnomination="'sugestion'"
       v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR|业务分配模拟" />
   </div>
 </template>
