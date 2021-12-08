@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iCard :title="language('BIDDING_XIANGMUXINXI', '项目信息')" class="card" v-loading="projectLoading">
+    <iCard :title="language('BIDDING_XIANGMUXINXI', '项目信息')" class="card" v-loading="projectLoading || isOffer">
       <template slot="header-control">
         <div>
           <iButton
@@ -40,9 +40,9 @@
                       :data-value="orgTotalPrices"
                       :value="
                         biddingStatus
-                          ? Number(ruleForm.totalPrices).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+                          ? (ruleForm.totalPrices ? Number(ruleForm.totalPrices).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ' ')
                           : totalPriceFlag
-                          ? '0' + currencyMultiple
+                          ? ' ' + currencyMultiple
                           : startingPrice
                       "
                       disabled
@@ -586,7 +586,8 @@ export default {
       orgTotalPrices:0,
       multiPriceValue:{},
       isInputFlag: true,
-      clearTime:''
+      clearTime:'',
+      isOffer: false
     };
   },
   watch: {
@@ -708,7 +709,9 @@ export default {
       return digitUppercase(Number(this.totalPrices));
     },
     startingPrice() {
-      return Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
+      return Number(this.totalPrices) !== 0 
+      ? Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple 
+      : ' ';
     },
     supplierProducts() {
       return this.ruleForm.supplierProducts;
@@ -752,7 +755,7 @@ export default {
         item.upsetPrice = Big(this.calculationDetails(item, index)).add(Number(item.moldFee)).add(Number(item.developFee)).toFixed(2);
         return Big(this.calculationDetails(item, index)).add(sum).add(Number(item?.moldFee)).add(Number(item?.developFee)).toNumber();
       }, 0);
-      this.orgTotalPrices=Big(sum).toFixed(2);
+      this.orgTotalPrices = Big(sum).toFixed(2);
 
     },
     toggle() {
@@ -1137,9 +1140,11 @@ export default {
       
     },
     async query(e) {
+      this.isOffer = true
       // 根据 ID 获取竞价大厅报价单列表数据
       const res = await findHallQuotation(e);
       this.updateRuleForm(res);
+      this.isOffer = false
     },
     updateRuleForm(data) {
       this.projectLoading = false

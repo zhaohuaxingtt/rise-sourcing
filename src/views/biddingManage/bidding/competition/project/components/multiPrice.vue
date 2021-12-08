@@ -749,7 +749,7 @@ export default {
       
       this.annualOutput.forEach((item,index)=>{
         let dateYear = new Date(val).getFullYear();
-        if(!val){
+        if(!val && index % 2 ===1){
           for (let i = 1; i < 16; i++) {
             item[`stage${i}`]='';
           }
@@ -768,17 +768,18 @@ export default {
       })
       // 批量更新年降
       if (this.ruleForm.roundType === '05' && !this.ruleForm.rfqCode) {
-        this.yearsPlan.forEach((item,index)=>{
-          console.log(item,index)
-          let dateYear = new Date(val).getFullYear();
-          if(index % 2 === 0 ){
-            for (let i = 1; i < 10; i++) {
-                dateYear = dateYear + 1;
-                item[`stage${i}`] = dateYear + '-01';
-              
+        if (val) {
+          this.yearsPlan.forEach((item,index)=>{
+            let dateYear = new Date(val).getFullYear();
+            if(index % 2 === 0 ){
+              for (let i = 1; i < 10; i++) {
+                  dateYear = dateYear + 1;
+                  item[`stage${i}`] = dateYear + '-01';
+                
+              }
             }
-          }
-        })
+          })
+        } 
       }
     },
     //批量更新年降 鼠标移出更新年将列表
@@ -1198,6 +1199,26 @@ export default {
       if(new Set(productCode).size !== this.ruleForm.biddingProducts.length){
         return this.$message.error(this.language('BIDDING_CPLJHBNCF',"产品零件号不能重复！"));
       }
+
+      let flag
+      this.ruleForm.biddingProducts.forEach(it => {
+        flag = this.annualOutput.every((item,index) => {
+          if (index % 2 === 0 && index !== 0) {
+              for (let i = 1; i < 16; i++) {
+                if (it.productCode == item.title  && item[`stage${i}`] && (item[`stage${i}`] ?? '') !== '' && item[`stage${i}`] != 0) {
+                  return true;
+                }
+              }
+            return false;
+          } else {
+            return true;
+          }
+        })
+      })
+      if (!flag) {
+        return this.$message.error(this.language('BIDDING_DYLJNCLBNQWK','单一零件年产量不能全为空'));
+      }
+
       let modelList = [];
       this.ruleForm.models.forEach((item) => {
         this.modelsOption.forEach((option) => {

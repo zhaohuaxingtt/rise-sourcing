@@ -211,6 +211,7 @@
     <findingParts v-if="value"
                   v-show="value"
                   :value="value"
+                  :selectedParts="chartData1"
                   @sure="sure"
                   @close="closeDialog"
                   @add="add"></findingParts>
@@ -425,6 +426,17 @@ export default {
     // window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
+    getSelectedParts() {
+      if (this.chartData1 && this.chartData1.length > 0) {
+        var results = []
+        this.chartData1.forEach((item) => {
+          results.push(item.id)
+        })
+        return results
+      } else {
+        return []
+      }
+    },
     handlePreview () {
       this.pre = true
       setTimeout(() => {
@@ -457,21 +469,6 @@ export default {
         analysisSchemeId: this.analysisSchemeId,
       }).then((res) => {
         this.options = res.data
-        // this.$nextTick(() => {
-        //   let html = ""
-        //   this.options.forEach((value, index) => {
-        //     html +=
-        //       `<div class="el-tag el-tag--info el-tag--large el-tag--light" style="display:flex;justify-content: center;align-items: center;">
-        //     <div >
-        //      <p class="el-select__tags-text">${value.nameZh}</p>
-        //      <p class="el-select__tags-text">${value.value}</p>
-        //     </div> 
-        //      <i class="el-tag__close el-icon-close" style="z-index:1000" @click="closeTag"></i>
-        //    </div>`
-        //   })
-        //   this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`
-
-        // });
       })
     },
     selectChange (e) {
@@ -573,41 +570,23 @@ export default {
       if (val.length && val.length === 0) {
         iMessage.error('请选择数据')
         return
-      } else if (val.length > 20) {
-        iMessage.error('最多只能选择20条数据')
+      } else if (this.inside && val.length > 1) {
+        iMessage.error('最多只能选择1条数据')
         return
+      } else if (!this.inside && val.length > 20) {
+        iMessage.error('最多只能选择20条数据')
       }
       this.onDataLoading = true;
       if (this.inside) {
-        addBobOut({
-          analysisSchemeId: this.analysisSchemeId,
-          fs: val[0].fsNum,
-          partNumber: val[0].partNum,
-          rfqId: val[0].rfqId,
-          supplierId: val[0].supplierId,
-          groupId: this.groupId
-        }).then((res) => {
-          if (res.code == 200) {
-
-            this.$message.success(res.desZh);
-            this.searchChartData()
-            this.$refs.bobAnalysis.chargeRetrieve({
-              viewType: 'all',
-              isDefault: true,
-              schemaId: this.analysisSchemeId,
-              groupId: this.groupId
-            })
-            this.closeDialog()
-          } else {
-
-            this.$message.error(res.desZh);
-            this.closeDialog()
-          }
-        }).catch((error) => {
-
-          this.$message.error(error.desZh);
-          this.closeDialog()
-        });
+        if (this.chartData1.length > 0 && this.chartData1[0].id) {
+          removeBobOut({
+            id: this.chartData1[0].id
+          }).then(() => {
+            this.doAddBobOut(val)
+          });
+        } else {
+          this.doAddBobOut(val)
+        }
       } else {
         let arr = []
         val.forEach(value => {
@@ -641,6 +620,37 @@ export default {
           }
         })
       }
+    },
+    doAddBobOut(val) { 
+      addBobOut({
+        analysisSchemeId: this.analysisSchemeId,
+        fs: val[0].fsNum,
+        partNumber: val[0].partNum,
+        rfqId: val[0].rfqId,
+        supplierId: val[0].supplierId,
+        groupId: this.groupId
+      }).then((res) => {
+        if (res.code == 200) {
+
+          this.$message.success(res.desZh);
+          this.searchChartData()
+          this.$refs.bobAnalysis.chargeRetrieve({
+            viewType: 'all',
+            isDefault: true,
+            schemaId: this.analysisSchemeId,
+            groupId: this.groupId
+          })
+          this.closeDialog()
+        } else {
+
+          this.$message.error(res.desZh);
+          this.closeDialog()
+        }
+      }).catch((error) => {
+
+        this.$message.error(error.desZh);
+        this.closeDialog()
+      });
     },
     async refresh () {
       // let res = await generateGroupId()
@@ -863,7 +873,6 @@ export default {
             // remark: this.$refs.bobAnalysis.remark
           };
         }
-        console.log('444')
         this.$nextTick(() => {
           this.onDataLoading = false;
         })
@@ -913,9 +922,9 @@ export default {
       });
     },
     changeOut () {
-      removeBobOut({
-        id: this.chartData1[0].id,
-      });
+      // removeBobOut({
+      //   id: this.chartData1[0].id
+      // });
       this.findPart();
     },
     handleMultiChange (val) {

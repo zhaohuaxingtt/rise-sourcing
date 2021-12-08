@@ -16,7 +16,7 @@
     class="addPartsDialog"
   >
     <tableList :selection="false" indexKey :tableTitle="tableTitle" :tableData="tableData" class="doubleHeader"></tableList>
-    <iPagination v-update 
+    <!-- <iPagination v-update 
       @size-change="handleSizeChange($event, getTableData)" 
       @current-change="handleCurrentChange($event, getTableData)" 
       background 
@@ -26,21 +26,21 @@
       :current-page="page.currPage"
       :total="page.totalCount"
       class="padding-bottom20"
-    />
+    /> -->
   </iDialog>
 </template>
 
 <script>
-import { iDialog, iMessage, iPagination } from 'rise'
+import { iDialog, iMessage } from 'rise'
 import tableList from '../../components/tableList'
-import { pageMixins } from "@/utils/pageMixins"
+// import { pageMixins } from "@/utils/pageMixins"
 import { partsRatingTableTitle } from './data'
 import { getRateByRfqIdAndSupplierPage } from '@/api/designate/decisiondata/bdl'
 import { cloneDeep } from "lodash"
 
 export default {
-  mixins: [pageMixins],
-  components: { iDialog, tableList, iPagination },
+  // mixins: [pageMixins],
+  components: { iDialog, tableList },
   props: {
     dialogVisible: { type: Boolean, default: false },
     // tableData: {type:Array},
@@ -113,8 +113,6 @@ export default {
               return result
             })
           }
-
-          console.log("this.tableData", this.tableData)
           // this.page.currPage = Number(res.pageNum)
           // this.page.pageSize = Number(res.pageSize)
           // this.page.totalCount = Number(res.total)

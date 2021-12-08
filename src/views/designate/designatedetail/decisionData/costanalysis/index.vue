@@ -38,7 +38,7 @@
     </template>
   </tabel>
   <iDialog v-if='!isPreview' :visible.sync="messageBox" width='80%'>
-      <div style="min-height:70vh" class="flex-center-center">
+      <div id="preview" style="min-height:70vh" class="flex-center-center">
         <template v-if="['PCA','TIA'].includes(typeSelect)">
           <iframe v-if='pdfUrl' :src="pdfUrl" frameborder="0" height="97%" width="100%"></iframe>
           <span v-else>{{language('DANGQIANZANWUCHAKAN','当前分析类型暂无PDF/图片可以查看')}}</span>
@@ -154,6 +154,14 @@ export default{
        }
         this.rfqId = row.rfqId
         this.messageBox = true
+
+        this.$nextTick(() => {
+          const previewDom = this.$el.querySelector("#preview")
+          if (previewDom) {
+            previewDom.querySelector("iframe").style.height = `${ previewDom.offsetHeight * 0.97 }px`
+          }
+        })
+
         return 
       }
       const urlMaps = {

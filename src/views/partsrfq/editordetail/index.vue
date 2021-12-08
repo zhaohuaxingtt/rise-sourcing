@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-01 18:01:56
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-07 14:33:34
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
 -->
@@ -79,10 +79,11 @@
             <iFormItem :label="language('LK_EP','技术评分人')+':'" name="ep" v-permission.auto="PARTSRFQ_EDITORDETAIL_EP|技术评分人">
               <iText  forceTooltip :tooltipContent="baseInfo.ep">{{ nameProcessor(baseInfo.ep) }}</iText>
             </iFormItem>
-            <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf"  v-permission.auto="PARTSRFQ_EDITORDETAIL_CF|财务控制员">
+            <!---BA确认过这东西不需要--->
+            <!-- <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf"  v-permission.auto="PARTSRFQ_EDITORDETAIL_CF|财务控制员"> -->
               <!-- <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission.auto="PARTSRFQ_EDITORDETAIL_CF"></iInput> -->
-              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
-            </iFormItem>
+              <!-- <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
+            </iFormItem> -->
 
             <iFormItem :label="language('LK_BENLUNBAOJIAJIEZHISHIJIAN','本轮报价截止时间')+':'" name="currentRoundsEndTime" v-permission.auto="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS|本轮报价截止时间">
               <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
@@ -384,23 +385,27 @@ export default {
         this.transferlaoding = true
       }
       const req = {
-          updateType,
-          tmRfqIdList: [query.id],
-          userId: store.state.permission.userInfo.id
-      }
-      const res = await modification(req)
-      this.resultMessage(res)
-      this.getBaseInfo()
-      if(updateType === '06') {
-        this.rfqloading = false
-      }      
-      if(updateType === '05') {
-        this.endingloading = false
-      }      
-      if(updateType === '03') {
-        this.transferlaoding = false
+        updateType,
+        tmRfqIdList: [query.id],
+        userId: store.state.permission.userInfo.id
       }
 
+      try {
+        
+        const res = await modification(req)
+        this.resultMessage(res)
+        this.getBaseInfo()
+      } finally {
+        if(updateType === '06') {
+          this.rfqloading = false
+        }      
+        if(updateType === '05') {
+          this.endingloading = false
+        }      
+        if(updateType === '03') {
+          this.transferlaoding = false
+        }
+      }
     },
     edit() {
       const rfqName = this.baseInfo.rfqName

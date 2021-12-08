@@ -12,7 +12,7 @@
 	<div class="margin-bottom20 clearFloat">
 		<span class="font18 font-weight">{{ language("JISHULUXIAN","技术路线") }}</span>
 			<div class="floatright">
-				<iButton @click="down">{{ language("MUBANXIAZAI", "模版下载") }}</iButton>
+				<iButton @click="down" :disabled="downType">{{ language("MUBANXIAZAI", "模版下载") }}</iButton>
 				<el-upload
 					class="upload"
 					:show-file-list="false"
@@ -58,8 +58,8 @@
 	import {specialToolsTitle} from './data';
 	import {pageMixins} from '@/utils/pageMixins';
 	import {technologyFile,technologyAdd,technologyDelete,template} from "@/api/categoryManagementAssistant/internalDemandAnalysis/technology";
-	import {downloadFile} from '@/api/file';
-	import {uploadFile} from '@/api/file/upload';
+	import {downloadFileUd,downloadUdFile} from '@/api/file';
+	import {uploadFile,uploadFileNew} from '@/api/file/upload';
 	import resultMessageMixin from '@/utils/resultMessageMixin';
 	export default{
 		mixins: [pageMixins,resultMessageMixin],
@@ -79,7 +79,9 @@
 				tableLoading:false,
 				selectData:[],
 				uploadButtonLoading:false,
-				categoryCode:""
+				categoryCode:"",
+				downType:false,
+				loading:false,
 			}
 		},
 		created() {
@@ -134,27 +136,37 @@
 			},
 			//上传
 			async myUpload(content) {
-				const loading = this.$loading({
+				// console.log(content)
+				var loading = this.$loading({
 					lock: true,
 				});
 				const formData = new FormData();
-				formData.append('multipartFile', content.file);
-				formData.append('applicationName', 'rise');
-				const res = await uploadFile(formData);
-				const result=await technologyAdd({
-					fileName:res.data[0].fileName,
-					fileUrl:res.data[0].filePath,
-					categoryCode:this. categoryCode
-				})
-				loading.close()
-				this.resultMessage(result,()=>{
-					this.getTableList()
-				})
+				formData.append('file', content.file);
+				formData.append('applicationName', content.file.name);
+				const res = await uploadFileNew(formData);
+				if(res.code == "200" && res.result){
+					iMessage.success(this.language("SHANGCHUANCHENGGONG","上传成功！"))
+					loading.close()
+					const result=await technologyAdd({
+						fileName:res.data.name,
+						fileUrl:res.data.path,
+						categoryCode:this. categoryCode
+					})
+					this.resultMessage(result,()=>{
+						this.getTableList()
+					})
+				}else{
+					iMessage.error(this.language("SHANGCHUANSHIBAI","上传失败！"))
+				}
 			},
 			// 模板下载
 			down(){
+				this.downType = true;
 				template().then(res=>{
-					window.open(res.data)
+					downloadUdFile(res.data)
+					setTimeout(() => {
+						this.downType = false;
+					}, 1000);
 				})
 				// if (this.selectData.length==0) {
 				// 	iMessage.error(this.$t('TPZS.CANNOTSELECT'))

@@ -10,9 +10,9 @@
     <div class="right-btn">
       <iButton @click="handleReport" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_BUTTON_BAOGAOQINGDAN|报告清单">{{ $t('TPZS.BGQD') }}</iButton>
     </div>
-    <projectOverview v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_PROJECTOVERVIEW|项目概览" />
-    <bulkSupplierOverview class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_SUPPLIEROVERVIEW|批量供应商概览" />
-    <bulkSupplierPandect class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_FACTORYOVERVIEW|批量供应商工厂总览" />
+    <projectOverview v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_PROJECTOVERVIEW|项目概览" @rfqInfo="emitRfq"/>
+    <bulkSupplierOverview class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_SUPPLIEROVERVIEW|批量供应商概览" :categoryCode="rfqInfo.categoryCode"/>
+    <bulkSupplierPandect class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_FACTORYOVERVIEW|批量供应商工厂总览" :paramCategoryCode="rfqInfo.categoryCode" :paramCategoryName="rfqInfo.categoryName"/>
     <fixedRecord class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_NOMINATERECORD|定点记录" />
   </div>
 </template>
@@ -27,7 +27,8 @@ export default {
   components: { bulkSupplierOverview, bulkSupplierPandect, projectOverview, fixedRecord, iButton },
   data() {
     return {
-      title: 'BoB(Best of Best)'
+      title: 'BoB(Best of Best)',
+      rfqInfo: {}
     }
   },
   created() {
@@ -36,6 +37,10 @@ export default {
     handleReport() {
       this.$router.push({ path: '/sourcing/partsrfq/reportList' });
     },
+    emitRfq(rfq) {
+      console.log(rfq)
+      this.rfqInfo = rfq;
+    }
   }
 }
 </script>
