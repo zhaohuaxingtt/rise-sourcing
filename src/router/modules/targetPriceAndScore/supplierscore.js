@@ -1,16 +1,17 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 14:40:19
- * @LastEditTime: 2021-06-24 10:56:59
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-08 10:00:05
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\router\modules\supplierscore.js
+ * @FilePath: \front-sourcing\src\router\modules\targetPriceAndScore\supplierscore.js
  */
 export default [
   {
     path: "supplierscore",
     meta: {
       title: "评分任务",
+      activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE']
     },
     component: () => import("@/views/routerView"),
     redirect: "supplierscore/home",
@@ -20,6 +21,7 @@ export default [
         name: "supplierscoreHome",
         meta: {
           title: "评分任务-首页",
+          activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE']
         },
         component: () => import("@/views/supplierscore"),
       }, 
@@ -28,6 +30,7 @@ export default [
         name: "supplierscoreRfqDetail",
         meta: {
           title: "评分任务-RFQ详情",
+          activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE']
         },
         component: () => import("@/views/supplierscore/components/rfqdetail"),
       },
@@ -36,6 +39,7 @@ export default [
         name: "supplierscorePartscore partscore",
         meta: {
           title: "评分任务-零件评分",
+          activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE']
         },
         component: () => import("@/views/supplierscore/components/partscore"),
       }
