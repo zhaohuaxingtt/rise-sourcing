@@ -195,10 +195,12 @@ export default{
         this.loading = false
         this.tableData = r.data
 
-        if (Array.isArray(this.tableData)) { 
-          const views = this.tableData.filter(item => item.flag)
-          this.previewItems = views.length ? JSON.stringify(views[0]) : ""
-        }
+        this.$nextTick(() => {
+          if (Array.isArray(this.tableData)) { 
+            const views = this.tableData.filter(item => item.flag)
+            this.previewItems = views.length ? JSON.stringify(views[0]) : ""
+          }
+        })
 
         this.loadingRight = false
       }).catch(()=>{
