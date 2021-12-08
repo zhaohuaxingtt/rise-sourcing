@@ -204,13 +204,14 @@ export default {
       })
     },
     linieAndDeptDisable(type) {
-      if (type === 'linie' && this.$route.query.type !== '1') {
-        return true
-      }
-      if (type === 'linieDept' && this.$route.query.type !== '1') {
-        return true
-      }
-      return false
+      // if (type === 'linie' && this.$route.query.type !== '1') {
+      //   return true
+      // }
+      // if (type === 'linieDept' && this.$route.query.type !== '1') {
+      //   return true
+      // }
+      // return false
+      return true
     },
     //获取上方group信息
     getProcureGroup() {

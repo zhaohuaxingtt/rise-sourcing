@@ -29,7 +29,7 @@
                 ref="carTypeProjectRef"
             >
               <div class="addCarTypeProject">
-                <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
+                <iInput v-model="addCarTypeProject" :placeholder="language('LK_QINGSHURUZIDINGYIMINGCHENG','请输入自定义名称')"></iInput>
                 <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ $t('LK_QUEREN') }}</iButton>
               </div>
               <el-option
@@ -70,7 +70,7 @@
               </el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="燃料类型">
+          <el-form-item :label="language('LK_RANLIAOLEIXING','燃料类型')">
             <iSelect
                 :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.modelCategory']"
@@ -108,8 +108,8 @@
             </iInput>
           </div>
           <div>
-            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_TIANJIAHANG') }}</iButton>
-            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('MOULDADD.LK_TIANJIAHANG') }}</iButton>
+            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('MOULDADD.LK_SHANCHUHANG') }}</iButton>
             <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
             <!--                <iButton @click="saveRow" :disabled="(form['search.carTypeProject'] == '')">保存</iButton>-->
 <!--            <iButton @click="investmentList" :disabled="(form['search.carTypeProject'] == '')">下一步</iButton>-->
