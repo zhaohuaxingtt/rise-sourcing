@@ -67,9 +67,9 @@
                 placement="top-start"
                 trigger="hover">
               <div class="popoverDiv">
-                <p>{{ $t('生产工厂') }}</p>
+                <p>{{ $t('MOULDADD.LK_SHENGCHANGONGCHANG') }}</p>
               </div>
-              <label slot="reference">{{ $t('生产工厂') }}:</label>
+              <label slot="reference">{{ $t('MOULDADD.LK_SHENGCHANGONGCHANG') }}:</label>
             </Popover>
             <!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
             <span class="infoIcardValue">{{ form['search.purchasingFactory'] }}</span>
@@ -108,7 +108,7 @@
         <!------------------------------------------------------------------------>
         <div class="header margin-bottom20">
           <div class="search">
-            {{ $t('LK_ZHUANYEKESHI') }}:
+            {{ $t('MOULDADD.LK_ZHUANYEKESHI') }}:
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="form['search.DeptSelect']"
@@ -132,8 +132,8 @@
             <iButton v-show="!pageEdit" @click="pageEdit = true"
                      :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_BIANJI') }}
             </iButton>
-            <iButton v-show="pageEdit" @click="addRow">{{ $t('LK_TIANJIAHANG') }}</iButton>
-            <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton v-show="pageEdit" @click="addRow">{{ $t('MOULDADD.LK_TIANJIAHANG') }}</iButton>
+            <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('MOULDADD.LK_SHANCHUHANG') }}</iButton>
             <iButton v-show="pageEdit" @click="referenceModelShow = true">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
             <iButton @click="downloadList">{{$t('LK_XIAZHAITOUZHIQINDAN')}}</iButton>
             <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>

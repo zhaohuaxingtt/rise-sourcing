@@ -116,49 +116,49 @@ export const budgetManagementData = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
         props: 'categoryCode',
         name: '材料组编号',
-        key: 'LK_CAILIAOZUBIANHAO2',
+        key: 'MOULDADD.LK_CAILIAOZUBIANHAO2',
         tooltip: false
     },
     {
         props: 'categoryNameZh',
         name: '材料组名称（中）',
-        key: 'LK_CAILIAOZUMINGCENGZHONG',
+        key: 'MOULDADD.LK_CAILIAOZUMINGCENGZHONG',
         tooltip: false
     },
     {
         props: 'categoryNameDe',
         name: '材料组名称（德）',
-        key: 'LK_CAILIAOZUMINGCENGDE',
+        key: 'MOULDADD.LK_CAILIAOZUMINGCENGDE',
         tooltip: false
     },
     {
         props: 'commodity',
         name: '专业科室',
-        key: 'LK_ZHUANYEKESHI',
+        key: 'MOULDADD.LK_ZHUANYEKESHI',
         tooltip: false
     },
     {
         props: 'isCommonSourcing',
         name: 'Common Sourcing',
-        key: 'LK_CommonSourcing',
+        key: 'MOULDADD.LK_CommonSourcing',
         tooltip: false
     },
     {
         props: 'moldProperties',
         name: '模具属性',
-        key: 'LK_MOJUSHUXIN',
+        key: 'MOULDADD.LK_MOJUSHUXIN',
         tooltip: false
     },
     {
         props: 'newLinieName',
         name: 'LINIE',
-        key: 'LK_LINIE',
+        key: 'MOULDADD.LK_LINIE',
         tooltip: false
     },
     {
         props: 'zp',
         name: 'ZP',
-        key: 'LK_ZP',
+        key: 'MOULDADD.LK_ZP',
         tooltip: false
     },
     // {
@@ -172,49 +172,49 @@ export const addListInvestment = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
         props: 'categoryCode',
         name: '材料组编号',
-        key: 'LK_CAILIAOZUBIANHAO2',
+        key: 'MOULDADD.LK_CAILIAOZUBIANHAO2',
         tooltip: false
     },
     {
         props: 'categoryNameZh',
         name: '材料组名称（中）',
-        key: 'LK_CAILIAOZUMINGCENGZHONG',
+        key: 'MOULDADD.LK_CAILIAOZUMINGCENGZHONG',
         tooltip: false
     },
     {
         props: 'categoryNameDe',
         name: '材料组名称（德）',
-        key: 'LK_CAILIAOZUMINGCENGDE',
+        key: 'MOULDADD.LK_CAILIAOZUMINGCENGDE',
         tooltip: false
     },
     {
         props: 'commodity',
         name: '专业科室',
-        key: 'LK_ZHUANYEKESHI',
+        key: 'MOULDADD.LK_ZHUANYEKESHI',
         tooltip: false
     },
     {
         props: 'isCommonSourcing',
         name: 'Common Sourcing',
-        key: 'LK_CommonSourcing',
+        key: 'MOULDADD.LK_CommonSourcing',
         tooltip: false
     },
     {
         props: 'moldProperties',
         name: '模具属性',
-        key: 'LK_MOJUSHUXIN',
+        key: 'MOULDADD.LK_MOJUSHUXIN',
         tooltip: false
     },
     {
         props: 'linie',
         name: 'LINIE',
-        key: 'LK_LINIE',
+        key: 'MOULDADD.LK_LINIE',
         tooltip: false
     },
     {
         props: 'zp',
         name: 'ZP',
-        key: 'LK_ZP',
+        key: 'MOULDADD.LK_ZP',
         tooltip: false
     },
 ]
@@ -222,112 +222,112 @@ export const investmentListJV = [{
     //export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
         props: 'categoryCode',
         name: '材料组编号',
-        key: 'LK_CAILIAOZUBIANHAO2',
+        key: 'MOULDADD.LK_CAILIAOZUBIANHAO2',
         width: 120,
         tooltip: false
     },
     {
         props: 'categoryNameZh',
         name: '材料组名称（中）',
-        key: 'LK_CAILIAOZUMINGCENGZHONG',
+        key: 'MOULDADD.LK_CAILIAOZUMINGCENGZHONG',
         width: 150,
         tooltip: false
     },
     {
         props: 'categoryNameDe',
         name: '材料组名称（德）',
-        key: 'LK_CAILIAOZUMINGCENGDE',
+        key: 'MOULDADD.LK_CAILIAOZUMINGCENGDE',
         width: 150,
         tooltip: false
     },
     {
         props: 'commodity',
         name: '专业科室',
-        key: 'LK_ZHUANYEKESHI',
+        key: 'MOULDADD.LK_ZHUANYEKESHI',
         width: 100,
         tooltip: false
     },
     {
         props: 'budgetAmount',
         name: '预算金额PSK(Mio.RMB)',
-        key: 'LK_YUSUANJINEPSK',
+        key: 'MOULDADD.LK_YUSUANJINEPSK',
         width: 220,
         tooltip: false
     },
     {
         props: 'moldProperties',
         name: '模具属性',
-        key: 'LK_MOJUSHUXIN',
+        key: 'MOULDADD.LK_MOJUSHUXIN',
         width: 130,
         tooltip: false
     },
     {
         props: 'sourcingType',
         name: 'Sourcing类型',
-        key: 'LK_SOURCINGLEIXIN',
+        key: 'MOULDADD.LK_SOURCINGLEIXIN',
         width: 150,
         tooltip: false
     },
     {
         props: 'linie',
         name: 'LINIE',
-        key: 'LK_LINIE',
+        key: 'MOULDADD.LK_LINIE',
         width: 200,
         tooltip: false
     },
     {
         props: 'zp',
         name: 'ZP',
-        key: 'LK_ZP',
+        key: 'MOULDADD.LK_ZP',
         width: 60,
         tooltip: false
     },
     {
         props: 'refCartypeName',
         name: '参考项目',
-        key: 'LK_CANKAOXIANGMU',
+        key: 'MOULDADD.LK_CANKAOXIANGMU',
         width: 130,
         tooltip: false
     },
     {
         props: 'refMoldAmount',
         name: '参考项目模具金额(Mio.RMB)',
-        key: 'LK_CANKAOXINGMUMOJUJINE',
+        key: 'MOULDADD.LK_CANKAOXINGMUMOJUJINE',
         width: 320,
         tooltip: false
     },
     {
         props: 'remarks',
         name: '预算备注',
-        key: 'LK_YUSUANBEIZHU',
+        key: 'MOULDADD.LK_YUSUANBEIZHU',
         width: 140,
         tooltip: false
     },
     {
         props: 'applyAmount',
         name: '已申请金额',
-        key: '已申请金额',
+        key: 'MOULDADD.LK_YISHENQINGJINE',
         width: 140,
         tooltip: false
     },
     {
         props: 'nomiAmount',
         name: '已定点金额',
-        key: '已定点金额',
+        key: 'MOULDADD.LK_YIDINGDNIANJINE',
         width: 140,
         tooltip: false
     },
     {
         props: 'baAmount',
         name: '已BA金额',
-        key: '已BA金额',
+        key: 'MOULDADD.LK_YIBAJINE',
         width: 140,
         tooltip: false
     },
     {
         props: 'bmAmount',
         name: '已BM金额',
-        key: '已BM金额',
+        key: 'MOULDADD.LK_YIBMJINE',
         width: 140,
         tooltip: false
     },
