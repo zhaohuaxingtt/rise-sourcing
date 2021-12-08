@@ -10,7 +10,7 @@
     </span>
     <div class="editControl floatright margin-bottom20">
       <upload
-				class="upload-trigger"
+				class="upload-trigger margin-right10"
 				:hideTip="true"
 				:accept="'.jpg,.jpeg,.png,.pdf,.tif'"
 				:buttonText="language('LK_SHANGCHUAN','上传')"
@@ -18,7 +18,7 @@
         v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_UPLOAD|AKEO详情-审批附件上传"
 				@on-success="onUploadsucess"
 			/>
-			<iButton class="margin-left5" @click="deleteFile" :loading="deleting" v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_DELETE|AKEO详情-审批附件删除">
+			<iButton @click="deleteFile" :loading="deleting" v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_DELETE|AKEO详情-审批附件删除">
         {{ language("LK_SHANCHU", "删除") }}
       </iButton>
 
