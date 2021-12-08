@@ -276,10 +276,10 @@ export default {
         return
       }
       const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
-      if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
-        iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
-        return
-      }
+      // if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
+      //   return
+      // }
       this.changeInquiryDialogVisible(true)
     },
     /**

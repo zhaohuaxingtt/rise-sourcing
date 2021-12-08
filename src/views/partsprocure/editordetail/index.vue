@@ -388,7 +388,7 @@
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN|零件产量计划">
 				<outputPlan ref="outputPlan" :params="infoItem" @updateStartYear="updateStartYear" v-permission.auto="PARTSPROCURE_EDITORDETAIL_XUNJIACHANLIANJIHUA|询价产量计划" />
 				<outputRecord v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANCHANLIANGJILU|零件产量记录" ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
-				<volume ref="volume" class="margin-top20" :params="infoItem" :isSameGroupPartProjectType="isSameGroupPartProjectType" :disabled="disabled || !(detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.NO_RFQ') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.NO_PROJECT_NUM'))" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANMEICHEYONGLIANG|零件每车用量" @updateStartYear="updateTabs" :sourcePartProjectType="sourcePartProjectType"/>
+				<volume ref="volume" class="margin-top20" :params="infoItem" :isSameGroupPartProjectType="isSameGroupPartProjectType" :disabled="disabled || !(detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.NO_RFQ') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.NO_PROJECT_NUM') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.APPLICATION_DESIGNAT'))" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANMEICHEYONGLIANG|零件每车用量" @updateStartYear="updateTabs" :sourcePartProjectType="sourcePartProjectType"/>
 			</el-tab-pane>
 			<el-tab-pane lazy :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE|图纸和信息单详情">
