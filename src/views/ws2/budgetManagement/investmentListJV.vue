@@ -1185,28 +1185,32 @@ export default {
       this.moneyComponentShow = true
       this.moneyComponentParams = {
         tmCategoryId: row.categoryId,
-        tmCartypeProId: this.params.id
+        tmCartypeProId: this.params.id,
+        listVerisonId: this.form['search.version'],
       }
     },
     clickNomiAmountDetail(row) {
       this.nomiAmountDetailShow = true
       this.nomiAmountDetailParams = {
         tmCategoryId: row.categoryId,
-        tmCartypeProId: this.params.id
+        tmCartypeProId: this.params.id,
+        listVerisonId: this.form['search.version'],
       }
     },
     clickBaAmountDetail(row) {
       this.baAmountDetailShow = true
       this.baAmountDetailParams = {
         tmCategoryId: row.categoryId,
-        tmCartypeProId: this.params.id
+        tmCartypeProId: this.params.id,
+        listVerisonId: this.form['search.version'],
       }
     },
     clickBmAmountDetail(row) {
       this.bmAmountDetailShow = true
       this.bmAmountDetailParams = {
         tmCategoryId: row.categoryId,
-        tmCartypeProId: this.params.id
+        tmCartypeProId: this.params.id,
+        listVerisonId: this.form['search.version'],
       }
     },
     deleteIRow() {
