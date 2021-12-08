@@ -1,10 +1,10 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 14:48:50
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-13 14:18:37
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-08 18:17:25
  * @Description: 添加配件弹窗
- * @FilePath: \front-web\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
+ * @FilePath: \front-sourcing\src\views\accessoryPart\createRfq\components\addAccessoryPart.vue
 -->
 
 <template>
@@ -58,7 +58,7 @@ import { pageMixins } from "@/utils/pageMixins"
 import { tableTitle, searchList } from '../../integratedManage/data'
 import {findBySearches, getCartypeDict} from "@/api/partsrfq/home";
 import { getDictByCode } from '@/api/dictionary'
-import { getAccessoryManageList } from '@/api/accessoryPart/index'
+import { getAccessoryManageListForAccessory } from '@/api/accessoryPart/index'
 import { uniq } from 'lodash'
 import {
   dictkey,
@@ -68,7 +68,8 @@ export default {
   components: { iDialog, iButton, iSelect, iInput, tableList, iSearch, iPagination },
   props: {
     dialogVisible: { type: Boolean, default: false },
-    stuffId: {type: String}
+    stuffId: {type: String},
+    defaultSearch: {type:Object}
   },
   data() {
     return {
@@ -98,6 +99,11 @@ export default {
     dialogVisible(val) {
       if(val) {
         this.page.currPage = 1
+        this.searchParams = {
+          ...this.searchParams,
+          ...this.defaultSearch,
+          state: 'ACCEPTED'
+        }
         this.getTableList()
         
       }
@@ -254,7 +260,7 @@ export default {
         current: this.page.currPage,
         size: this.page.pageSize
       }
-      getAccessoryManageList(params).then(res => {
+      getAccessoryManageListForAccessory(params).then(res => {
         if(res.result) {
           this.tableData = res.data.records
           this.page.pageSize = res.data.size
