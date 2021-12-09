@@ -559,6 +559,8 @@ export default {
       params.isBindingRfq = false;
     }
     if (this.categoryId && this.chemeId && this.categoryCode) {
+      console.log(params, this.entryStatus)
+      params.isBindingRfq= this.isBindingRfq
       await this.getHistogram(params);
     }
     // this.getMekTable();
