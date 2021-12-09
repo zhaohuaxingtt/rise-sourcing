@@ -5,7 +5,7 @@
   >
     <template #header>
       <div class="title">
-      <p>{{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : V${version}）`}}</template></p>
+      <p>{{language('LK_LINGJIANMEICHEYONGLIANG','零件每车用量')}} <template v-if="params.partProjectSource == 1">{{`（${ language('LK_DANGQIANBANBEN','当前版本') } : ${ versionComputed }）`}}</template></p>
       </div>
       <div>
         <div class="control">
@@ -129,6 +129,11 @@ export default {
     //   return false
     // }
     // }
+    versionComputed() {
+      const str = this.version ? this.version + "" : "V1"
+      
+      return !/^v\d+$/i.test(str) ? `V${ str }` : str 
+    }
   },
   methods: {
     async getData() {  

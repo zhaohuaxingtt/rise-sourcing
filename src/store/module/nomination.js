@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-27 14:29:09
- * @LastEditTime: 2021-11-10 16:17:19
- * @LastEditors:  
+ * @LastEditTime: 2021-12-09 15:48:10
+ * @LastEditors: Please set LastEditors
  * @Description: 定点管理状态管理，缓存定点管理 - 决策资料 - 预览状态，
  * 其他页面统一通过isPreview这个状态，禁用自己页面编辑
  *
@@ -38,7 +38,9 @@ const state = {
   nominationDisabled: false,
   rsDisabled: false,
   applicationStatus: "", // 定点状态
-  mtzApplyId: ''
+  mtzApplyId: '',
+  //定点管理 costType
+  costType:'',
 };
 
 const mutations = {
@@ -78,9 +80,15 @@ const mutations = {
   SET_MTZAPPID_STATUS(state, data) {
     state.mtzApplyId = data
   },
+  SET_COSTTYPE(state,data){
+    state.costType = data
+  }
 };
 
 const actions = {
+  setCostType({commit},data){
+    commit('SET_COSTTYPE',data)
+  },
   setNominationTypeDisable({commit}, state) {
     commit('SET_DISABLE_NOMINATION', state)
   },
