@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-12-03 10:15:20
- * @LastEditors:  
+ * @LastEditTime: 2021-12-09 15:50:00
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
 -->
@@ -10,7 +10,7 @@
 <iCard class="costanalysis" :class="{ isPreview: isPreview }">
   <iFormGroup row='4' label-width='100px' class="Iform">
     <iFormItem label="Tool" v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSISTYPE|分析类型">
-      <iSelect v-model="typeSelect" @change="costanalysisList">
+      <iSelect v-model="typeSelect" @change="changeCostanalysisList">
         <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
       </iSelect>
     </iFormItem>
@@ -116,6 +116,7 @@ export default{
     }
   },
   created(){
+    this.typeSelect = this.$route.query.typeSelect || 'BOB'
     this.costanalysisList()
     //当前状态是否是预览状态
     this.isPreview = this.$route.query.isPreview == 1
@@ -133,6 +134,11 @@ export default{
     }
   },
   methods:{
+    changeCostanalysisList(){
+      this.$store.dispatch('setCostType',this.typeSelect) //记录preview的时候的下拉类型，保证在url打开的时候是匹配的
+      console.log(this.$store.state.nomination.costType)
+      this.costanalysisList()
+    },
     refresh(){
       this.keysRender = parseInt(Math.random()*10000000000)
     },
