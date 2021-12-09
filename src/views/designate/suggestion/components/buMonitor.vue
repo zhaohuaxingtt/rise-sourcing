@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-25 09:42:07
- * @LastEditTime: 2021-12-05 15:19:53
+ * @LastEditTime: 2021-12-09 14:55:59
  * @Description: 业务分配模拟
 -->
 
@@ -306,7 +306,6 @@ export default {
         groupName,
         groupIdList
       }
-      console.log(params)
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？',''))
       if (confirmInfo !== 'confirm') return
       try {
