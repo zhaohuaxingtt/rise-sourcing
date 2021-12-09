@@ -1180,7 +1180,9 @@
           'GYS360': "Supplier 360", //供应商360						
           'DW': "Unit", //单位					
           'XMGL': "Project Overview:", //项目概览						
-          'XMXX': "Project Info", //项目信息						
+          'XMXX': "Project Info", //项目信息
+          'FSCSS': 'Sourcing Buyer',
+          'FOP' : "FOP",					
           'MQXTY': "MQ Coordinator", //MQ协调员						
           'PLXTY': "PL Coordinator", //PL协调员						
           'CFXTY': "CF Coordinator", //CF协调员						
