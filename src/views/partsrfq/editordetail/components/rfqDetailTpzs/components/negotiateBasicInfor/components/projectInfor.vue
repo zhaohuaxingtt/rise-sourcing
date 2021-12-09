@@ -18,13 +18,13 @@
         <iText>{{  form.categoryName }}</iText>
       </iFormItem>
       <iFormItem>
-        <iLabel :label="'FS/CSS'" slot="label"></iLabel>
+        <iLabel :label="$t('TPZS.FSCSS')" slot="label"></iLabel>
         <iText>{{  form.buyerName }}</iText>
       </iFormItem>
       <iFormItem>
       </iFormItem>
       <iFormItem>
-        <iLabel :label="'FOP'" slot="label"></iLabel>
+        <iLabel :label="$t('TPZS.FOP')" slot="label"></iLabel>
         <iText>{{  form.ep }}</iText>
       </iFormItem>
       <iFormItem>
