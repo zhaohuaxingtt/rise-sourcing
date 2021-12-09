@@ -14,7 +14,7 @@
         <div class="col">
           <iFormItem v-for="(item,index) in titleData" :key="'titleData'+index"  :label="item.label+':'">
             <iText v-if="item.props === 'currency'">
-              {{ basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : '' }}
+              {{ basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : basicData.currency }}
             </iText>
             <iText v-else-if="item.props === 'exchangeRate'">
               <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
@@ -83,6 +83,7 @@ import {uploadFiles} from '@/api/costanalysismanage/costanalysis'
 import {partProjTypes,fileType} from '@/config'
 import Upload from '@/components/Upload'
 import {getFile,downloadUdFile,deleteFiles} from '@/api/file'
+
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText ,Upload},
   props: {
@@ -99,11 +100,11 @@ export default {
       fileTableSelect:[],
       titleData:[
         {label:'零件关系',value:'配件', props: 'partProjectType'},
-        {label:'询价采购员',value:'胡伟', props: 'fsBuyer'},
+        {label:'询价采购员',value:'胡伟', props: 'buyer'},
         {label:'货币单位',value:'RMB', props: 'currency'},
         {label:'申请单号',value:'', props: 'nominateAppId'},
         {label:'申请日期',value:'2020-01-01', props: 'nominateAppTime'},
-        {label:'LINIE采购员',value:'胡伟', props: 'buyer'},
+        {label:'LINIE采购员',value:'胡伟', props: 'linieName'},
         {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: 'exchangeRate'},
       ],
       // tableTitle: cloneDeep(nomalTableTitle),

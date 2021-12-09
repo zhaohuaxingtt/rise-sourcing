@@ -9,12 +9,12 @@
 <template>
 <iCard>
   <iFormGroup row='4' label-width='100px' class="Iform">
-    <iFormItem  :label='language("FENXILEIX","分析类型")' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSISTYPE|分析类型">
+    <iFormItem label="Tool" v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSISTYPE|分析类型">
       <iSelect v-model="typeSelect" @change="costanalysisList">
         <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
       </iSelect>
     </iFormItem>
-    <iFormItem  v-if='isPreview'  label='Analysis：' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSIS|Analysis">
+    <iFormItem  v-if='isPreview'  label='Analysis' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSIS|Analysis">
       <iSelect v-model="previewItems" v-loading='loadingRight' @change="refresh">
         <el-option v-for='(items,index) in (tableData.filter(r=>r.flag))' :label='items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
       </iSelect>
