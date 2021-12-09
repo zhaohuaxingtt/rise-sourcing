@@ -41,7 +41,8 @@
 <script>
 import { iMessage } from 'rise'
 import { login } from '@/api/usercenter'
-import { setToken } from '@/utils'
+import { setToken, encryptPwd } from '@/utils'
+
 export default {
 	data() {
 		return {
@@ -62,26 +63,35 @@ export default {
 	},
 	methods: {
 		login() {
-			if (this.passWord == '' || this.userName == '')
-				return iMessage.error(
-					this.language(
-						'LK_YONGHUMINGHUOMIMABUNENGWEIKONG',
-						'抱歉，用户名或密码不能为空！'
-					)
-				)
-			this.loading = true
-			login({ userName: this.userName, passWord: this.passWord })
-				.then(async (res) => {
-					this.loading = false
-					await setToken(res.data.token)
-					this.$router.replace({
-						path: '/index',
-					})
-				})
-				.catch(() => {
-					this.loading = false
-				})
-		},
+      if (this.passWord === '' || this.userName === '') {
+        return iMessage.error(this.language('抱歉，用户名或密码不能为空！'))
+      }
+      this.loading = true
+      const requestData = {
+        userName: this.userName,
+        passWord: encryptPwd(this.passWord)
+      }
+      login(requestData)
+        .then(async (res) => {
+          if (res && res.result) {
+            this.loading = false
+            await setToken(res.data.token)
+            this.$router
+              .replace({
+                path: '/index'
+              })
+              .catch((err) => console.log(err))
+          }
+        })
+        .catch((err) => {
+          console.log('err', err)
+          iMessage.error(err.desEn || this.language('登录失败'))
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+
 		stopAutoComplate() {
 			this.readonly = true
 			setTimeout(() => (this.readonly = false), 10)
