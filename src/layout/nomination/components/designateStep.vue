@@ -285,7 +285,8 @@ export default {
               path,
               query: {
                 ...query,
-                isPreview:'1'
+                isPreview:'1',
+                typeSelect:this.$store.state.nomination.costType || ''
               }
             })
         },
