@@ -51,19 +51,19 @@
           <template slot="isTax" slot-scope="scope">
             <div>
               {{
-                dividedBeiShu(scope.row["offerPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') +
+                scope.row["offerPrice"] ? (dividedBeiShu(scope.row["offerPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') +
                 currencyMultiples(scope.row["currencyMultiple"]) +
-                "-" + units(scope.row["currencyUnit"])
+                "-" + units(scope.row["currencyUnit"])) : ''
               }}
             </div>
           </template>
           <template slot="serverTime" slot-scope="scope">
             <div>
-              {{ scope.row["serverTime"].replace("T", " ") }}
+              {{ scope.row["serverTime"] ? scope.row["serverTime"].replace("T", " ") : ''}}
             </div>
           </template>
           <template slot="operation" slot-scope="scope">
-            <div class="toView" @click="handleGoDetail(scope)">{{language('BIDDING_CHAKAN','查看')}}</div>
+            <div class="toView" @click="handleGoDetail(scope)">{{scope.row["offerPrice"] ? language('BIDDING_CHAKAN','查看') : ''}}</div>
           </template>
         </commonTable>
         <iPagination
@@ -200,7 +200,7 @@ export default {
       return this.currencyUnit[unit];
     },
     dividedBeiShu(val){
-     return Big(val).div(this.beishu).toNumber()
+     return val ? Big(val).div(this.beishu).toNumber() : ''
     },
     currencyMultiples(currencyMultiple) {
       return {
