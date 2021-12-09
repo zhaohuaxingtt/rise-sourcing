@@ -61,7 +61,7 @@
               </el-form-item>
           </el-form>
         </iSearch>
-        <iCard class="margin-top20">
+        <iCard class="margin-top20" :title="language('LK_AEKOCHAKAN','AEKO查看')">
             <!-- 表单区域 -->
             <div v-permission.auto="AEKO_CHECKLIST_TABLE|AEKO查看TABLE" >
                 <tableList
