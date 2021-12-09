@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-08 20:16:45
+ * @LastEditTime: 2021-12-09 13:28:05
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -147,7 +147,8 @@ export default {
         respLinie: this.$route.query.linie,
         respLinieName: this.$route.query.linieName,
         supplierSapCode: this.$route.query.supplier,
-        supplierNameZh: this.$route.query.supplierNameZh
+        supplierNameZh: this.$route.query.supplierNameZh,
+        spnrNumList: this.ids.split(',')
       }
       this.getList()
     }
@@ -292,7 +293,7 @@ export default {
      */    
     handleSaveRfq() {
       if(this.detailData.rfqId) {
-        // 如果rfq编号已存在则变为更新rfq
+      //   // 如果rfq编号已存在则变为更新rfq
         this.updateRfq()
       } else {
         this.basicLoading = true
@@ -307,6 +308,8 @@ export default {
           if (res?.result) {
             iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
             this.detailData.rfqId = res.data.rfqId
+            this.detailData.currentStatus = res.data?.currentStatus
+            this.detailData.createDateTiem = res.data?.createDate
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           }

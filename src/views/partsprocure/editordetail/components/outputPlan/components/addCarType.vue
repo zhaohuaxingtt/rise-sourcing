@@ -92,7 +92,6 @@ import {carTitle,fscarTitle} from "../data"
 import {searchCarTypeConfig,searchCarType,searchCarTypeProConfig} from "@/api/partsprocure/home"
 import { pageMixins } from "@/utils/pageMixins";
 import { savearDosage } from "@/api/partsprocure/editordetail";
-import { log } from 'util';
 export default {
   components: { iDialog, iButton, tableList, iSelect, iPagination},
   props: {
@@ -166,7 +165,6 @@ export default {
           if(res.code == '200') {
             this.tableLoading = false
             res.data.forEach(val=>{
-              console.log(val);
               this.$set(val,'engineType',val.engineVo?.engineName)
               this.$set(val,'gearboxName',val.gearboxVo?.gearboxName)
               this.$set(val,'batteryCapacity',val.batteryVo?.capacity)
@@ -193,7 +191,6 @@ export default {
         "current": this.page.currPage,
         "size": this.page.pageSize
       }
-      console.log(data);
       searchCarTypeConfig(data).then(res=>{
         if(res.code == '200' ) {
           this.tableLoading = false

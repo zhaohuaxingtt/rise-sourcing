@@ -2,7 +2,7 @@
   <iCard>
     <commonTable
       ref="tableDataForm"
-      :tableData="suppliers"
+      :tableData="suppliersPage"
       :tableTitle="
         role === 'supplier' ? supplierTableTitles : supplierTableTitle
       "
@@ -131,7 +131,7 @@ export default {
       return this.$route.meta.role;
     },
     suppliersPage() {
-      const { suppliers } = this.ruleForm;
+      const { suppliers } = this;
       const { currPage, pageSize } = this.page;
       return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
     },

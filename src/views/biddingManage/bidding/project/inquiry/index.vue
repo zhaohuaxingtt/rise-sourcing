@@ -630,8 +630,10 @@ export default {
       }
       delayBidding(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          location.reload();
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            location.reload();
+          }
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));

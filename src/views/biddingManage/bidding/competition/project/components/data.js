@@ -68,7 +68,7 @@ export const unitTableTitle = [
       // {  required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         pattern: /^\d+$|^\d*\.\d*$/g,
-        // required: true,
+        required: true,
         trigger: 'blur'
       }
     ],
@@ -131,7 +131,7 @@ export const totalTableTitle = [
   },
   {
     props: "targetPrice",
-    required: true,
+    // required: true,
     name: language('BIDDING_MUBIAOJIA',"目标价"),
   },
   {

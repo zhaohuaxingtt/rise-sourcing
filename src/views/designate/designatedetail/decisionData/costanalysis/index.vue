@@ -1,20 +1,20 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-12-03 10:15:20
- * @LastEditors:  
+ * @LastEditTime: 2021-12-09 15:50:00
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
 -->
 <template>
-<iCard>
+<iCard class="costanalysis" :class="{ isPreview: isPreview }">
   <iFormGroup row='4' label-width='100px' class="Iform">
-    <iFormItem  :label='language("FENXILEIX","分析类型")' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSISTYPE|分析类型">
-      <iSelect v-model="typeSelect" @change="costanalysisList">
+    <iFormItem label="Tool" v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSISTYPE|分析类型">
+      <iSelect v-model="typeSelect" @change="changeCostanalysisList">
         <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
       </iSelect>
     </iFormItem>
-    <iFormItem  v-if='isPreview'  label='Analysis：' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSIS|Analysis">
+    <iFormItem  v-if='isPreview'  label='Analysis' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSIS|Analysis">
       <iSelect v-model="previewItems" v-loading='loadingRight' @change="refresh">
         <el-option v-for='(items,index) in (tableData.filter(r=>r.flag))' :label='items.analysisName' :value='JSON.stringify(items)' :key='index'></el-option>
       </iSelect>
@@ -25,22 +25,30 @@
       <span class="underline" @click="openPage(scope.row)">{{language('CHAKAN','查看')}}</span>
     </template>
     <template #flag='scope'>
-      <span :class="{ cursor: !isDisabled }" class="bule font10" @click="isDisabled ? '' : costanalysisShow(scope.row)">
+      <icon 
+        symbol 
+        class="icon" 
+        :class="{ cursor: !isDisabled }"
+        :name="scope.row.flag ? 'iconxianshi' : 'iconyincang'" 
+        @click.native="isDisabled ? '' : costanalysisShow(scope.row)" />
+      <!-- <span :class="{ cursor: !isDisabled }" class="bule font10" @click="isDisabled ? '' : costanalysisShow(scope.row)">
         <i v-if='scope.row.flag' class="iconfont iconxianshi"></i>
         <i v-else class="iconfont iconyincang"></i>
-      </span>
+      </span> -->
     </template>
     <template #sortOrder='scope'> 
-      <span :class="{ cursor: !isDisabled }" class="bule font10">
-        <i @click="isDisabled ? '' : upOrDown(scope.row,1)" class="iconfont iconpaixu-xiangshang margin-right10"></i>
-        <i @click="isDisabled ? '' : upOrDown(scope.row,0)" class="iconfont iconpaixu-xiangxia"></i>
+      <span class="bule font10">
+        <icon symbol :class="{ cursor: !isDisabled && scope.$index !== 0 }" class="icon" :name="scope.$index === 0 ? 'iconliebiaoweizhiding' : 'iconliebiaoyizhiding'" @click.native="isDisabled ? '' : upOrDown(scope.row, 1)" />
+        <icon symbol :class="{ cursor: !isDisabled && (scope.$index !== tableData.length - 1) }" class="icon desc" :name="scope.$index === tableData.length - 1 ? 'iconliebiaoweizhiding' : 'iconliebiaoyizhiding'" @click.native="isDisabled ? '' : upOrDown(scope.row, 0)" />
+        <!-- <i @click="isDisabled ? '' : upOrDown(scope.row,1)" class="iconfont iconpaixu-xiangshang margin-right10"></i>
+        <i @click="isDisabled ? '' : upOrDown(scope.row,0)" class="iconfont iconpaixu-xiangxia"></i> -->
       </span>
     </template>
   </tabel>
-  <iDialog v-if='!isPreview' :visible.sync="messageBox" width='80%'>
-      <div id="preview" style="min-height:70vh" class="flex-center-center">
+  <iDialog class="previewDialog" v-if='!isPreview' :visible.sync="messageBox" width='80%'>
+      <div id="preview" style="min-height:80vh" class="flex-center-center">
         <template v-if="['PCA','TIA'].includes(typeSelect)">
-          <iframe v-if='pdfUrl' :src="pdfUrl" frameborder="0" height="97%" width="100%"></iframe>
+          <iframe v-if='pdfUrl' :src="`${ pdfUrl }#view=fith`" frameborder="0" height="97%" width="100%"></iframe>
           <span v-else>{{language('DANGQIANZANWUCHAKAN','当前分析类型暂无PDF/图片可以查看')}}</span>
         </template>
         <template v-else>
@@ -52,9 +60,9 @@
     <bob v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></bob>
     <vp v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
     <pi v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
-    <div v-else-if='["PCA","TIA"].includes(typeSelect)' style="height:600px" id="preview2" class="flex-center-center" :key='keysRender'>
+    <div v-else-if='["PCA","TIA"].includes(typeSelect)' id="preview2" :key='keysRender'>
       <div v-if="previewItems">
-        <iframe height='600px' width="100%" v-if='previewItems && JSON.parse(previewItems).reportLink' :src="JSON.parse(previewItems).reportLink" frameborder="0"></iframe>
+        <iframe class="iframe" width="100%" v-if='previewItems && JSON.parse(previewItems).reportLink' :src="`${ JSON.parse(previewItems).reportLink }#view=fith`" frameborder="0"></iframe>
         <div v-else>抱歉当前类型暂无预览文件</div>
       </div>
     </div>
@@ -68,7 +76,7 @@
 </iCard>
 </template>
 <script>
-import {iCard,iFormGroup,iFormItem,iSelect,iDialog} from 'rise'
+import {iCard,iFormGroup,iFormItem,iSelect,iDialog,icon} from 'rise'
 import tabel from '@/views/partsign/home/components/tableList'
 import {arrayOfselect,tableTitle} from './data'
 import {costanalysisList,costanalysisShow,costanalysisSort} from '@/api/designate/decisiondata/costanalysis'
@@ -78,7 +86,7 @@ import pi from '@/views/partsrfq/piAnalyse/piDetail'
 import mek from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekDetails'
 import echartsComponents from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringEcartsCard/previewEcharts'
 export default{
-  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog,bob,vp,pi,mek,echartsComponents},
+  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog,bob,vp,pi,mek,echartsComponents,icon},
   data(){
     return {
       typesOfData:'',
@@ -108,6 +116,7 @@ export default{
     }
   },
   created(){
+    this.typeSelect = this.$route.query.typeSelect || 'BOB'
     this.costanalysisList()
     //当前状态是否是预览状态
     this.isPreview = this.$route.query.isPreview == 1
@@ -125,6 +134,11 @@ export default{
     }
   },
   methods:{
+    changeCostanalysisList(){
+      this.$store.dispatch('setCostType',this.typeSelect) //记录preview的时候的下拉类型，保证在url打开的时候是匹配的
+      console.log(this.$store.state.nomination.costType)
+      this.costanalysisList()
+    },
     refresh(){
       this.keysRender = parseInt(Math.random()*10000000000)
     },
@@ -162,6 +176,7 @@ export default{
        try {
           // this.pdfUrl = row.fileList.length?row.fileList[0].filePath:null
           this.pdfUrl = row.reportLink
+          window.open(`${ row.reportLink }#view=fith`, "_blank")
        } catch (error) {
           this.pdfUrl = ''
           this.rfqId = ''
@@ -211,6 +226,42 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+.costanalysis {
+  .previewDialog {
+    ::v-deep .el-dialog {
+      position: absolute;
+      margin: 0 !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 88vh;
+    }
+  }
+
+  .iframe {
+    height: calc(100vh - 70px);
+  }
+
+  .icon {
+    font-size: 16px;
+  }
+
+  .cursor {
+    cursor: pointer;
+  }
+
+  .desc {
+    transform: rotate(180deg);
+    margin-left: 10px;
+  }
+}
+
+.isPreview {
+  ::v-deep .cardBody {
+    padding-top: 0;
+  }
+}
+
 .Iform{
     ::v-deep.el-form-item__content{
       margin-left: 0px!important;
