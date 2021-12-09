@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-02 17:03:29
+ * @LastEditTime: 2021-12-09 10:01:22
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\data.js
  */
@@ -27,7 +27,7 @@ export const tableTitle = [
   {props:'signDate',name:'需求签收日期', key: "XUQIUQIANSHOURIQI", tooltip: true, width: 120},
   {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true, width: 120},
   {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true, width: 140},
-  {props:'idStateDesc',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
+  {props:'idState',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
   {props:'priceType',name:'价格类型', key: "JIAGELEIXING", tooltip: true},
   {props:'tcUnitName',name:'单位', key: "DANWEI", tooltip: true},
   {props:'sendDate',name:'需求发送日期', key: "XUQIUFASONGRIQI", tooltip: true, width: 120},
