@@ -37,7 +37,8 @@ import { iCard, iButton, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { fileTableTitle as tableTitle } from "../data"
-import { getFiles, downloadUdFile } from "@/api/file"
+import { downloadUdFile } from "@/api/file"
+import { getFiles } from '@/api/accessoryPart/index'
 
 export default {
   components: { iCard, iButton, tableList, iPagination },

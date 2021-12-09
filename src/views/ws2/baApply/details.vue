@@ -10,7 +10,7 @@
       <iNavWS2
       ></iNavWS2>
     </div>
-    <DetailsSearch @reset="handleReset" @sure="handleSure" />
+    <DetailsSearch @reset="handleReset" @sure="handleSearchSure" />
 
     <iCard>
       <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableListData" :tableLoading="tableLoading" />
@@ -42,6 +42,7 @@ import { iNavWS2 } from '@/components';
 import { detailsForm } from "./components/data";
 import store from '@/store';
 import UnitExplain from "./components/unitExplain";
+import {cloneDeep} from 'lodash'
 
 export default {
   mixins: [pageMixins],
@@ -64,6 +65,7 @@ export default {
         pageSize: 10,
       },
       isBa: false,
+      form: cloneDeep(detailsForm)
     }
   },
 
@@ -74,15 +76,20 @@ export default {
   methods: {
 
     handelConfirmSuccess(){
-      this.handleSure(detailsForm);
+      this.handleSure();
+    },
+
+    handleSearchSure(data){
+      this.form = data;
+      this.handleSure();
     },
 
     //  查询
-    handleSure(form){
+    handleSure(){
       this.tableLoading = true;
       const param = {
-        ...form,
-        moldStatus: form['moldStatus'] === '' ? [] : [form['moldStatus']],
+        ...this.form,
+        moldStatus: this.form['moldStatus'] === '' ? [] : [this.form['moldStatus']],
         current: this.page.currPage,
         size: this.page.pageSize,
         baAcountType: this.$store.state.baApply.baAcountType,
@@ -90,7 +97,7 @@ export default {
       findBaPartsList(param).then(res => {
         this.tableListData = res.data;
         this.page.currPage = ~~res.pageNum;
-        this.page.pageSize = ~~res.pageSize;
+        // this.page.pageSize = ~~res.pageSize;
         this.page.totalCount = ~~res.total;
 
         this.tableLoading = false;

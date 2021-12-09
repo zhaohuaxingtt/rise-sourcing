@@ -521,7 +521,7 @@ export const dataBaseData = [
     {
         props: 'categoryNameZh',
         name: '材料组',
-        key: '材料组',
+        key: 'MOULDADD.LK_CAILIAOZU',
         tooltip: false
     },
     {
@@ -533,13 +533,13 @@ export const dataBaseData = [
     {
         props: 'nomiAmount',
         name: '定点金额',
-        key: '定点金额',
+        key: 'TPZS.DDJE',
         tooltip: false
     },
     {
         props: 'bmAmount',
         name: 'BM单金额',
-        key: 'BM单金额',
+        key: 'MOULDADD.LK_BMDANJINE',
         tooltip: false
     },
     {
@@ -572,7 +572,7 @@ export const tmCartypeProList = [
     {
         props: 'categoryNameZh',
         name: '材料组',
-        key: '材料组',
+        key: 'MOULDADD.LK_CAILIAOZU',
         tooltip: false
     },
     {
@@ -605,19 +605,19 @@ export const partsList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: '零件号',
+        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
         tooltip: false
     },
     {
         props: 'partNameZh',
         name: '零件名称（中）',
-        key: '零件名称（中）',
+        key: 'partsignLanguage.LingJianMingChengZH',
         tooltip: false
     },
     {
         props: 'partNameDe',
         name: '零件名称（德）',
-        key: '零件名称（德）',
+        key: 'LK_LINGJIANMINGCHENGDE',
         tooltip: false
     },
     {
@@ -644,7 +644,7 @@ export const appliedList = [
     {
         props: 'categoryName',
         name: '材料组',
-        key: '材料组',
+        key: 'MOULDADD.LK_CAILIAOZU',
         tooltip: false
     },
     {
@@ -656,37 +656,37 @@ export const appliedList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: '零件号',
+        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
         tooltip: false
     },
     {
         props: 'partNameZh',
         name: '零件名称（中）',
-        key: '零件名称（中）',
+        key: 'partsignLanguage.LingJianMingChengZH',
         tooltip: false
     },
     {
         props: 'partNameDe',
         name: '零件名称（德）',
-        key: '零件名称（德）',
+        key: 'LK_LINGJIANMINGCHENGDE',
         tooltip: false
     },
     {
         props: 'budgetApplyAmount',
         name: '申请金额',
-        key: '申请金额',
+        key: 'MOULDADD.LK_APPLYAMOUNT',
         tooltip: false
     },
     {
         props: 'applyAmountStatus',
         name: '申请状态',
-        key: '申请状态',
+        key: 'LK_SHENQINGZHUANGTAI',
         tooltip: false
     },
     {
         props: 'purchaserName',
         name: '询价采购员',
-        key: '询价采购员',
+        key: 'LK_XUNJIACAIGOUYUAN',
         tooltip: false
     },
 ]
@@ -695,7 +695,7 @@ export const nomiAmountDetailList = [
     {
         props: 'categoryName',
         name: '材料组',
-        key: '材料组',
+        key: 'MOULDADD.LK_CAILIAOZU',
         tooltip: false
     },
     {
@@ -707,43 +707,43 @@ export const nomiAmountDetailList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: '零件号',
+        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
         tooltip: false
     },
     {
         props: 'partNameZh',
         name: '零件名称（中）',
-        key: '零件名称（中）',
+        key: 'partsignLanguage.LingJianMingChengZH',
         tooltip: false
     },
     {
         props: 'partNameDe',
         name: '零件名称（德）',
-        key: '零件名称（德）',
+        key: 'LK_LINGJIANMINGCHENGDE',
         tooltip: false
     },
     {
         props: 'nomiAmount',
         name: '定点金额',
-        key: '定点金额',
+        key: 'TPZS.DDJE',
         tooltip: false
     },
     {
         props: 'supplierName',
         name: '定点供应商',
-        key: '定点供应商',
+        key: 'MOULDADD.LK_FIXEDPOINTSUPPLIER',
         tooltip: false
     },
     {
         props: 'purchaserName',
         name: '询价采购员',
-        key: '询价采购员',
+        key: 'LK_XUNJIACAIGOUYUAN',
         tooltip: false
     },
     {
         props: 'nomiDate',
         name: '定点日期',
-        key: '定点日期',
+        key: 'MOULDADD.LK_DINGDIANRIQI',
         tooltip: false
     },
 ]
@@ -752,7 +752,7 @@ export const baAmountDetailList = [
     {
         props: 'categoryName',
         name: '材料组',
-        key: '材料组',
+        key: 'MOULDADD.LK_CAILIAOZU',
         tooltip: false
     },
     {
@@ -764,37 +764,37 @@ export const baAmountDetailList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: '零件号',
+        key: 'LK_LINGJIANHAO',
         tooltip: false
     },
     {
         props: 'partNameZh',
         name: '零件名称（中）',
-        key: '零件名称（中）',
+        key: 'partsignLanguage.LingJianMingChengZH',
         tooltip: false
     },
     {
         props: 'partNameDe',
         name: '零件名称（德）',
-        key: '零件名称（德）',
+        key: 'LK_LINGJIANMINGCHENGDE',
         tooltip: false
     },
     {
         props: 'baAmount',
         name: '申请BA金额',
-        key: '申请BA金额',
+        key: 'MOULDADD.LK_SHENGQINGBAJINE',
         tooltip: false
     },
     {
         props: 'baNum',
         name: 'A号',
-        key: 'A号',
+        key: 'MOULDADD.LK_AHAO',
         tooltip: false
     },
     {
         props: 'purchaserName',
         name: '询价采购员',
-        key: '询价采购员',
+        key: 'LK_XUNJIACAIGOUYUAN',
         tooltip: false
     },
 ]
@@ -803,7 +803,7 @@ export const bmAmountDetailList = [
     {
         props: 'categoryName',
         name: '材料组',
-        key: '材料组',
+        key: 'MOULDADD.LK_CAILIAOZU',
         tooltip: false
     },
     {
@@ -815,31 +815,31 @@ export const bmAmountDetailList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: '零件号',
+        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
         tooltip: false
     },
     {
         props: 'partNameZh',
         name: '零件名称（中）',
-        key: '零件名称（中）',
+        key: 'partsignLanguage.LingJianMingChengZH',
         tooltip: false
     },
     {
         props: 'partNameDe',
         name: '零件名称（德）',
-        key: '零件名称（德）',
+        key: 'LK_LINGJIANMINGCHENGDE',
         tooltip: false
     },
     {
         props: 'bmAmount',
         name: 'BM单金额',
-        key: 'BM单金额',
+        key: 'MOULDADD.LK_BMDANJINE',
         tooltip: false
     },
     {
         props: 'bmNum',
         name: 'BM单号',
-        key: 'BM单号',
+        key: 'MOULDADD.LK_BMDANHAO',
         tooltip: false
     },
     {
@@ -851,7 +851,7 @@ export const bmAmountDetailList = [
     {
         props: 'purchaserName',
         name: '询价采购员',
-        key: '询价采购员',
+        key: 'LK_XUNJIACAIGOUYUAN',
         tooltip: false
     },
 ]

@@ -19,7 +19,7 @@
             <div>{{ getTousandNum(Number(scope.row.budgetApplyAmount).toFixed(2)) }}</div>
           </template>
         </iTableList>
-        <div class="money">货币：人民币  |  单位：元  |  不含税 </div>
+        <div class="money">{{$t('LK_HUOBI')}}：{{$t('MOULDADD.LK_RENMINGBI')}}  |  {{$t('MOULDADD.LK_DANWEI')}}：{{$t('TPZS.YUAN')}}  |  {{$t('MOULDADD.LK_BUHANSUI')}} </div>
         <iPagination
             v-update
             @size-change="handleSizeChange($event, findAddColumnInvestmentBuild)"
@@ -58,7 +58,7 @@ export default {
     iPagination,
   },
   props: {
-    title: {type: String, default: '已申请金额'},
+    title: {type: String, default: 'MOULDADD.LK_YISHENQINGJINE'},
     moneyComponentParams: {type: Object, default: () => {}},
     value: {type: Boolean},
   },

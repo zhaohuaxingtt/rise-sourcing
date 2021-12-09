@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\strategy\index.vue
 -->
 <template>
-<div class="strategy" :key='randomNumber'>
+<div class="strategy">
   <iCard :title="language('OVERVIEWS','Overviews')">
     <div class="control">
       <div class="flex-align-center">
@@ -15,18 +15,18 @@
         <iSelect v-model="categoryCode" :disabled="isPreview || nominationDisabled || rsDisabled" @change="randomNumber++"> 
           <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryName"></el-option> 
         </iSelect>
-        <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="fileManageButton" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
+        <iButton v-if="categoryCode" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="fileManageButton" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
       </div>
     </div>
     <imageList class="padding-top20" v-if="images.length" :images="images" />
-    <powerBi v-show="!forceHide && !images.length" :categoryCode="categoryCode" @updateCatgreyCode='updateCode'></powerBi>
+    <powerBi :key='randomNumber' v-show="!forceHide && !images.length" :categoryCode="categoryCode" @updateCatgreyCode='updateCode'></powerBi>
   </iCard>
-  <higthligthts v-if='categoryCode' :categoryCode="categoryCode" class='margin-top20 margin-bottom20'></higthligthts>
+  <higthligthts :key='randomNumber' v-if='categoryCode' :categoryCode="categoryCode" class='margin-top20 margin-bottom20'></higthligthts>
   <iCard :title='language("KEYINITIATIVE","Key initiatives")' class="mineCards">
     <iButton v-if="!isPreview && !nominationDisabled && !rsDisabled" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_GOTOEDIT|前往编辑"  class="floatright" @click='open'>前往编辑</iButton>
-    <listOfinit ref="listOfinit"  v-if='categoryCode' :categoryCodeProps="categoryCode" :extendsIsedit='false' :isEdit='isEdit'></listOfinit>
+    <listOfinit :key='randomNumber' ref="listOfinit"  v-if='categoryCode' :categoryCodeProps="categoryCode" :extendsIsedit='false' :isEdit='isEdit'></listOfinit>
   </iCard>
-  <fileManageDialog :visible.sync="fileDialogVisible" :nominateAppId="nominateAppId" :isPreview="isPreview" @afterClose="getStrategy" />
+  <fileManageDialog :visible.sync="fileDialogVisible" :nominateAppId="nominateAppId" :categoryCode="categoryCode" :isPreview="isPreview" @afterClose="getStrategy" />
 </div>
 </template>
 <script>
@@ -64,7 +64,11 @@ export default{
   created() {
     this.nominateAppId = this.$route.query.desinateId
     this.isPreview = this.$route.query.isPreview == 1
-    this.getStrategy()
+  },
+  watch: {
+    categoryCode(code) {
+      if (code) this.getStrategy()
+    }
   },
   methods:{
     open(){
@@ -80,8 +84,10 @@ export default{
     updateCode(res){
       this.catCodeList = res
       try {
-        this.categoryCode = this.catCodeList[0].categoryCode
-        this.categoryName = this.catCodeList[0].categoryName
+        if (!this.categoryCode && !this.categoryName) {
+          this.categoryCode = this.catCodeList[0].categoryCode
+          this.categoryName = this.catCodeList[0].categoryName
+        }
       } catch (error) {
         this.categoryCode = ''
         this.categoryName = ''
@@ -97,7 +103,8 @@ export default{
       this.loading = true
 
       getStrategy({
-        nominateAppId: this.nominateAppId // 定点申请id
+        nominateAppId: this.nominateAppId, // 定点申请id
+        categoryCode: this.categoryCode, // 材料组code
       })
       .then(res => {
         if (res.code == 200) {

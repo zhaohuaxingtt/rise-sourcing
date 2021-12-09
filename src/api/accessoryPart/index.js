@@ -1,10 +1,10 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-01 14:50:12
- * @LastEditors:  
- * @LastEditTime: 2021-12-01 11:42:36
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-08 17:31:33
  * @Description: 配件相关接口
- * @FilePath: \front-web\src\api\accessoryPart\index.js
+ * @FilePath: \front-sourcing\src\api\accessoryPart\index.js
  */
 
 import axios from "@/utils/axios"
@@ -191,5 +191,23 @@ export function updateCsfOrLinie(data) {
     url: '/tp-records/accessoryInfo/updateCsfOrLinie',
     method: 'PATCH',
     data
+  })
+}
+
+// 配件查询相同linie、询价采购员、供应商的数据
+export function getAccessoryManageListForAccessory(data) {
+  return requst({
+    url: '/tp-records/accessoryInfo/getAccessoryManageListForAccessory',
+    method: 'POST',
+    data
+  })
+}
+
+// 获取文件列表带分页。
+export function getFiles(params) {
+  let { fileType, hostId, isAsc = true, sortColumn = 'uploadDate', page, currPage } = params
+  return requst({
+      url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${page}/${currPage}`,
+      method: 'get'
   })
 }

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-02 16:29:09
+ * @LastEditTime: 2021-12-08 20:16:45
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -63,7 +63,7 @@
     <!------------------------------------------------------------------------>
     <!--                  添加配件弹窗                                          --->
     <!------------------------------------------------------------------------>
-    <addAccessoryPartDialog :dialogVisible="accDialogVisible" @changeVisible="changeAccDialogVisible" @selectPart="selectPart" :stuffId="stuffId" />
+    <addAccessoryPartDialog :dialogVisible="accDialogVisible" @changeVisible="changeAccDialogVisible" @selectPart="selectPart" :stuffId="stuffId" :defaultSearch="defaultSearch" />
     <!------------------------------------------------------------------------>
     <!--                  批量更新采购工厂弹窗                                          --->
     <!------------------------------------------------------------------------>
@@ -124,7 +124,8 @@ export default {
       linie: '',
       linieDept: '',
       saveLoading: false,
-      stuffId: ''
+      stuffId: '',
+      defaultSearch: {}
     }
   },
   computed: {
@@ -139,6 +140,15 @@ export default {
     // this.getUserOptions()
     if (this.$route.query.ids) {
       this.ids = this.$route.query.ids
+      this.detailData.csfuserName = this.$route.query.csfName
+      this.defaultSearch = {
+        csfuserName: this.$route.query.csfName,
+        csfuserId: this.$route.query.csf,
+        respLinie: this.$route.query.linie,
+        respLinieName: this.$route.query.linieName,
+        supplierSapCode: this.$route.query.supplier,
+        supplierNameZh: this.$route.query.supplierNameZh
+      }
       this.getList()
     }
     if (this.$route.query.linie) {

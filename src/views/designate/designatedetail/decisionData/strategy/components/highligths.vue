@@ -45,7 +45,10 @@ export default {
       })
     },
     getFetchData(){
-      costAnalysisGet(this.$route.query.desinateId,this.categoryCode).then(r=>{
+      costAnalysisGet({
+        nominateAppId: this.$route.query.desinateId,
+        type: this.categoryCode
+      },).then(r=>{
         this.content = r.data.content
         this.$refs.editor.html(this.content)
       })

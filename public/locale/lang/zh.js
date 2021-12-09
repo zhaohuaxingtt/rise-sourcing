@@ -1632,6 +1632,18 @@
             'LK_YIBMJINE': '已BM金额',  //  已BM金额
             'LK_LISHISHUJUKU': '历史数据库',    //  历史数据库
             'LK_XINBANBENMINGMING': '新版本命名', //  新版本命名
+            'LK_CAILIAOZU': '材料组',   //  材料组
+            'LK_LINGJIANHAO': '零件号',    //  零件号
+            'LK_SHENGQINGBAJINE': '申请BA金额', //  申请BA金额
+            'LK_AHAO': 'A号',   //  A号
+            'LK_RENMINGBI': '人民币',  //  人民币
+            'LK_DANWEI': '单位',    //  单位
+            'LK_BUHANSUI': '不含税',    //  不含税
+            'LK_BMDANJINE': 'BM单金额', //  BM单金额
+            'LK_BMDANHAO': 'BM单号',    //  BM单号
+            'LK_APPLYAMOUNT': '申请金额',   //  申请金额
+            'LK_FIXEDPOINTSUPPLIER': '定点供应商', // 定点供应商
+            'LK_DINGDIANRIQI': '定点日期',  //  定点日期
         },
 
     }
