@@ -172,16 +172,21 @@ export default{
      * @return {*}
      */
     openPage(row){
-      if(['PCA','TIA','QT'].includes(this.typeSelect)){
-       try {
+      this.rfqId = row.rfqId
+
+      if(['PCA','TIA'].includes(this.typeSelect)){
+        try {
           // this.pdfUrl = row.fileList.length?row.fileList[0].filePath:null
-          this.pdfUrl = row.reportLink
+          // this.pdfUrl = row.reportLink
           window.open(`${ row.reportLink }#view=fith`, "_blank")
-       } catch (error) {
+          return
+        } catch (error) {
           this.pdfUrl = ''
           this.rfqId = ''
-       }
-        this.rfqId = row.rfqId
+        }
+      }
+
+      if (this.typeSelect === "QT") {
         this.messageBox = true
 
         this.$nextTick(() => {
@@ -191,8 +196,9 @@ export default{
           }
         })
 
-        return 
+        return
       }
+
       const urlMaps = {
         'BOB':`sourcing/partsrfq/bobNew?chemeId=${row.bizId}&rfqId=${row.rfqId}&groupId=`,
         'VP':`sourcing/partsrfq/vpAnalyseDetail?type=edit&schemeId=${row.bizId}&round&rfqId=${row.rfqId}`,
