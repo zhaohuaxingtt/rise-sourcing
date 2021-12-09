@@ -1414,8 +1414,19 @@ export default {
             optionObj[item.name] = 1
             optionArr.push(item)
           }
+
         })
+        let modelsData = []
         this.modelsOption = [...optionArr]
+        this.modelsOption.forEach(item => {
+          data.models.forEach(it => {
+            if (it.model === item.name) {
+              // this.$set(this.ruleForm,'models',[item.code])
+              modelsData.push(item.code)
+            }
+          })
+        })
+        this.ruleForm.models = modelsData
       });
       
       // 车型项目
@@ -1439,7 +1450,16 @@ export default {
             projectOptionArr.push(item)
           }
         })
+        let modelProjectsData = []
         this.modelProjectsOption = [...projectOptionArr]
+        this.modelProjectsOption.forEach(item => {
+          data.modelProjects.forEach(it => {
+            if (it.project === item.name) {
+              modelProjectsData.push(item.code)
+            }
+          })
+        })
+        this.ruleForm.modelProjects = modelProjectsData
       });
       //this.ruleForm.procurePlans 年降计划
       let o = {};

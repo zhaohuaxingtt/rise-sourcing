@@ -103,7 +103,7 @@
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
-                      :value="language('BIDDING_ZIDONGYINGBIAO', '自动应标')"
+                      :value="language('BIDDING_ZIDONGYINGBIAO', '应标')"
                       disabled
                     ></iInput>
                   </div>
