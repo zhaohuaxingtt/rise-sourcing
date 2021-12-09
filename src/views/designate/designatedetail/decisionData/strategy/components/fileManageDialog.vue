@@ -208,6 +208,7 @@ export default {
           }))
 
           this.handleSave()
+          this.fileList = []
 
           this.uploadLoading = false
           clearTimeout(this.timer)

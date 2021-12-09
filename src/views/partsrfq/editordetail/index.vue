@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-09 10:08:23
+ * @LastEditTime: 2021-12-09 17:49:33
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
@@ -17,6 +17,9 @@
       <div class="btnList">
         <iButton @click="handleApplyModuleTargetPrice" :loading="checkApplyLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
           {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
+        </iButton>
+        <iButton  :loading='endEngotiationlaoding' @click="updateRfqStatus('07')" v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDNEGOTIATION|谈判完成">
+          {{ language('TANPANWANCHENG','谈判完成') }}
         </iButton>
         <span v-if="!disabled">
           <iButton @click="goToCesPage" v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWTESTPROG|新建测试项目">{{ language('LK_XINGJIANCESHIXIANM','新建测试项目') }}</iButton>
@@ -224,7 +227,8 @@ export default {
       disabled: true,
       linieUserId:'',
       childFnList:[],
-      checkApplyLoading: false
+      checkApplyLoading: false,
+      endEngotiationlaoding: false
     }
   },
   mounted(){
@@ -384,6 +388,9 @@ export default {
       if(updateType === '03') {
         this.transferlaoding = true
       }
+      if (updateType === '07') {
+        this.endEngotiationlaoding = true
+      }
       const req = {
         updateType,
         tmRfqIdList: [query.id],
@@ -404,6 +411,9 @@ export default {
         }      
         if(updateType === '03') {
           this.transferlaoding = false
+        }
+        if (updateType === '07') {
+          this.endEngotiationlaoding = false
         }
       }
     },

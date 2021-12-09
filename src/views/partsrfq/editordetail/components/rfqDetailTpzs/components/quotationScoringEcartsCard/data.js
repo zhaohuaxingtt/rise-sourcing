@@ -185,8 +185,8 @@ export function translateGetLunci(params,gjhLunchi) {
         options['xAxis'].push({value:`${gjhLunchi}${' '}${element.round}`,textStyle:{color:'#7E84A3',fontSize:12}})
         showRounds.push(element.round)
       })
-      // options['xAxis'] = [...options['xAxis'],...[{value:'',textStyle:{color:'#7E84A3',fontSize:12}},{value:'有效报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
-      options['xAxis'] = [...options['xAxis'],...[{value:'有效报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
+      // options['xAxis'] = [...options['xAxis'],...[{value:'',textStyle:{color:'#7E84A3',fontSize:12}},{value:'最新报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
+      options['xAxis'] = [...options['xAxis'],...[{value:'最新报价',textStyle:{color:'#7E84A3',fontSize:12}}]]
       const validRounds = []
 
       const _params = params.map(item => ({ // 限轮
@@ -198,7 +198,7 @@ export function translateGetLunci(params,gjhLunchi) {
         for(let a = e.data.length-1;a>=0;a--){
           if(e.data[a].value){
             // e.data = [...e.data,...[{round: "",symbolSize: "",value: null},e.data[a]]]
-            validRounds.push({ ...e, data: [['有效报价', e.data[a].value]], type: 'scatter', symbolSize: 6 })
+            validRounds.push({ ...e, data: [['最新报价', e.data[a].value]], type: 'scatter', symbolSize: 6 })
             break;
           }
         }
@@ -212,7 +212,7 @@ export function translateGetLunci(params,gjhLunchi) {
           const Xname = params[0].name
           htmlContentText += '<div style="margin-bottom:10px;"> '+ Xname + '<div/>'
           for (let index = 0; index < params.length; index++) {
-            if (params[index].axisDim === "x" && params[index].axisValueLabel === "有效报价") {
+            if (params[index].axisDim === "x" && params[index].axisValueLabel === "最新报价") {
               htmlContentText += '<div>';
               htmlContentText += '<span style="margin-right:5px;display:inline-block;height:13px;width:13px;font-size: 12pt; border-radius:50%;background-color:'+params[index].color+'"></span>';
               htmlContentText += '<span>'+(params[index].seriesName.indexOf('series')> -1?'Null':params[index].seriesName) +"："+params[index].data[1]+'</span>';
