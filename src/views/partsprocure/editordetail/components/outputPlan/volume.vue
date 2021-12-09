@@ -424,7 +424,6 @@ export default {
     },
     //是否GS
     isGSType(data) {
-      console.log('daa',data);
       return data == '1000003' || data =='50002001'
     }
   },
