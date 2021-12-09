@@ -1378,7 +1378,7 @@
         'MOULDADD':{
             'CHAKANLISHI': 'View history',  //  查看历史
             'SOPSHIJIAN': 'SOP Date',    //  SOP时间
-            'LK_RFQBIANHAO': 'RFQ号',   //  RFQ号
+            'LK_RFQBIANHAO': 'RFQ No',   //  RFQ号
             'LK_SHENQINGREN': 'applicant',//申请人
             'LK_PIZHUAN': 'approval',//批准
             'LK_QINGSHURUJUJUEYUANYIN': 'Please enter the rejection reason',   //  请输入拒绝原因
@@ -1429,6 +1429,8 @@
             'LK_APPLYAMOUNT': 'Application amount',   //  申请金额
             'LK_FIXEDPOINTSUPPLIER': 'Designated supplier', // 定点供应商
             'LK_DINGDIANRIQI': 'Fixed date',  //  定点日期
+            'LK_QIANQICAIGOUYUAN': 'Preliminary purchaser',    //  前期采购员
+            'LK_SCFPFUZHEREN': 'CSF(P)person in charge',  //  CSF(P)负责人
         },
     }
     var xmlHttp = ''

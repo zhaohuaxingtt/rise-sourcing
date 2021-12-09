@@ -22,19 +22,19 @@ export const budgetApprovalData = [
     {
         props: 'rfqId',
         name: 'RFQ号',
-        key: 'RFQ号',
+        key: 'MOULDADD.LK_RFQBIANHAO',
         tooltip: false
     },
     {
         props: 'tmCartypeProName',
         name: '车型项目',
-        key: '车型项目',
+        key: 'partsprocure.PARTSPROCUREMODELPROJECT',
         tooltip: false
     },
     {
         props: 'fsName',
         name: '前期采购员',
-        key: '前期采购员',
+        key: 'MOULDADD.LK_QIANQICAIGOUYUAN',
         tooltip: false
     },
     {
@@ -100,19 +100,19 @@ export const RFQList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: '零件号',
+        key: 'MOULDADD.LK_LINGJIANHAO',
         tooltip: false
     },
     {
         props: 'partName',
         name: '零件名称',
-        key: '零件名称',
+        key: 'LK_LINGJIANMINGCHENG',
         tooltip: false
     },
     {
         props: 'procureFactory',
         name: '采购工厂',
-        key: '采购工厂',
+        key: 'MOULDADD.LK_CAIGOUGONGCHANG',
         tooltip: false
     },
     {
@@ -124,25 +124,25 @@ export const RFQList = [
     {
         props: 'applyTime',
         name: '申请日期',
-        key: '申请日期',
+        key: 'LK_SHENQINGRIQI',
         tooltip: false
     },
     {
         props: 'cartypeProjectZh',
         name: '车型项目',
-        key: '车型项目',
+        key: 'partsprocure.PARTSPROCUREMODELPROJECT',
         tooltip: false
     },
     {
         props: 'budget',
         name: '投资预算',
-        key: '投资预算',
+        key: 'LK_TOUZIYUSUAN',
         tooltip: false
     },
     {
         props: 'csfPDiretor',
         name: 'CSF(P)负责人',
-        key: 'CSF(P)负责人',
+        key: 'MOULDADD.LK_SCFPFUZHEREN',
         tooltip: false
     }
 ]
@@ -169,13 +169,13 @@ export const budgetApplyAmountList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: '零件号',
+        key: 'MOULDADD.LK_LINGJIANHAO',
         tooltip: false
     },
     {
         props: 'rfqId',
         name: 'RFQ号',
-        key: 'RFQ号',
+        key: 'MOULDADD.LK_RFQBIANHAO',
         tooltip: false
     },
     {
