@@ -1351,21 +1351,23 @@ export default {
           targetMotor: this.targetMotor,
           name: this.analysisName,
         };
-        if (this.barData[0]) {
-          params.firstComparedMotor = this.barData[0].motorId || "";
-          params.firstComparedPrice = this.barData[0].priceType || "";
-        }
-        if (this.barData[1]) {
-          params.secondComparedMotor = this.barData[1].motorId || "";
-          params.secondComparedPrice = this.barData[1].priceType || "";
-        }
-        if (this.barData[2]) {
-          params.thirdComparedMotor = this.barData[2].motorId || "";
-          params.thirdComparedPrice = this.barData[2].priceType || "";
-        }
-        if (this.barData[3]) {
-          params.forthComparedMotor = this.barData[3].motorId || "";
-          params.forthComparedPrice = this.barData[3].priceType || "";
+        if (this.barData) {
+          if (this.barData[0]) {
+            params.firstComparedMotor = this.barData[0].motorId || "";
+            params.firstComparedPrice = this.barData[0].priceType || "";
+          }
+          if (this.barData[1]) {
+            params.secondComparedMotor = this.barData[1].motorId || "";
+            params.secondComparedPrice = this.barData[1].priceType || "";
+          }
+          if (this.barData[2]) {
+            params.thirdComparedMotor = this.barData[2].motorId || "";
+            params.thirdComparedPrice = this.barData[2].priceType || "";
+          }
+          if (this.barData[3]) {
+            params.forthComparedMotor = this.barData[3].motorId || "";
+            params.forthComparedPrice = this.barData[3].priceType || "";
+          }
         }
         updateScheme(params).then(() => {
           this.loading = false;
