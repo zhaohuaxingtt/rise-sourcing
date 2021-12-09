@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-26 14:55:05
- * @LastEditors: Luoshuang
+ * @LastEditors: Hao,Jiang
 * @Description: In User Settings Edit
  -->
 <template>
@@ -15,7 +15,7 @@
         <iButton v-if="!isDisabled" :disabled='tpInfoStuats()' @click="openDiologBack" v-permission.auto="PARTSIGN_EDITORDETAIL_BACKBUTTON|退回">{{ language('LK_TUIHUI','退回') }}</iButton>
         <iButton @click="back" v-permission.auto="PARTSIGN_EDITORDETAIL_RETURN|返回">{{ language('LK_FANHUI','返回') }}</iButton>
         <!-- <logButton class="margin-left20" @click="log"  v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志"/> -->
-        <iLoger :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="partDetails && partDetails.tpPartID" credentials isPage class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="新件信息单详情页" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
+        <iLoger :config="{module_obj_ae: '新件信息单', bizId_obj_ae: 'bizId_obj_ae', queryParams:['bizId_obj_ae']}" :bizId_obj_ae="logBizId" credentials isPage class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="新件信息单详情页" @onTypeChange="onTypeChange" v-permission.auto="PARTSIGN_EDITORDETAIL_LOGBUTTON|日志" />
         <span>
           <icon symbol name="icondatabaseweixuanzhong"></icon>
         </span>
@@ -93,7 +93,8 @@ export default {
       diologChangeItems: false, //转派弹窗
       diologBack: false, //退回弹窗
       partDetails: {}, //零件信息单详情
-      backmark:''
+      backmark:'',
+      logFiltType: ''
     };
   },
   computed: {
@@ -101,11 +102,19 @@ export default {
     isDisabled() {
       return this.$route.meta.isPreview
     },
+    // 日志组件bizId
+    logBizId() {
+      const logType = ['拒绝每车用量','确认每车用量','拒绝询价资料','确认询价资料']
+      return logType.includes(this.logFiltType) ? this.partDetails.purchasingRequirementTargetId : this.partDetails.tpPartID
+    }
   },
   created() {
     this.getPartInfo();
   },
   methods: {
+    onTypeChange(type) {
+      this.logFiltType = type
+    },
     //如果当前状态的信息单是已经签收的，则签收和退回需要变成灰色
     tpInfoStuats(){
       if(this.partDetails.status == "已签收" || this.partDetails.status == "已更新" || this.partDetails.status == "已退回"){
