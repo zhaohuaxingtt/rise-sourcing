@@ -10,7 +10,7 @@
       <iNavWS2
       ></iNavWS2>
     </div>
-    <DetailsSearch @reset="handleReset" @sure="handleSure" />
+    <DetailsSearch @reset="handleReset" @sure="handleSearchSure" />
 
     <iCard>
       <DetailsTable @handelConfirmSuccess="handelConfirmSuccess" :tableListData="tableListData" :tableLoading="tableLoading" />
@@ -76,6 +76,11 @@ export default {
   methods: {
 
     handelConfirmSuccess(){
+      this.handleSure();
+    },
+
+    handleSearchSure(data){
+      this.form = data;
       this.handleSure();
     },
 
