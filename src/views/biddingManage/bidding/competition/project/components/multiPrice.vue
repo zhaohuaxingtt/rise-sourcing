@@ -641,7 +641,7 @@ export default {
       return this.ruleForm.biddingStatus === '01' ? this.orgTotalPrices : this.ruleForm.totalPrices;
     },
     numberUppercase() {
-      return digitUppercase(Number(this.orgTotalPrices));
+      return this.ruleForm.biddingStatus === '01' ? digitUppercase(Number(this.orgTotalPrices)) : digitUppercase(Number(this.ruleForm.totalPrices));
     },
     startingPrice() {
       return Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
