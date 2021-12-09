@@ -1392,8 +1392,8 @@ export default {
     updateRuleForm(data) {
       this.ruleForm = {
         ...data,
-        models: data.models?.map((item) => item.modelCode),
-        modelProjects: data.modelProjects?.map((item) => item.projectCode),
+        // models: data.models?.map((item) => item.modelCode),
+        // modelProjects: data.modelProjects?.map((item) => item.projectCode),
         biddingStatus: data.biddingStatus,
       };
       // 车型
@@ -1407,6 +1407,7 @@ export default {
           }
         })
         this.modelsOption.push(...paras)
+        
         let optionObj = {}
         let optionArr = []
         this.modelsOption.forEach(item => {
