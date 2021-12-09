@@ -1203,9 +1203,9 @@ export default {
       let flag
       this.ruleForm.biddingProducts.forEach(it => {
         flag = this.annualOutput.every((item,index) => {
-          if (index % 2 === 0 && index !== 0) {
+          if (index % 2 === 0 && index !== 0 && it.productCode == item.title ) {
               for (let i = 1; i < 16; i++) {
-                if (it.productCode == item.title  && item[`stage${i}`] && (item[`stage${i}`] ?? '') !== '' && item[`stage${i}`] != 0) {
+                if (item[`stage${i}`] && (item[`stage${i}`] ?? '') !== '' && item[`stage${i}`] != 0) {
                   return true;
                 }
               }
