@@ -14,7 +14,7 @@ export const arrayOfselect = [
   {label:'Volume Pricing',value:'VP'},
   {label:'TIA',value:'TIA'},
   {label:'Bidlink',value:'BL'},
-  {label:'报价趋势',value:'QT'},
+  {label:'Quotation Tendency',value:'QT'},
 ]
 
 export const tableTitle = [
