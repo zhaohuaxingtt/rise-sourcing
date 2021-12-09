@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-04 16:53:01
+ * @LastEditTime: 2021-12-09 10:46:46
  * @Description: 节点视图
- * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
 <template>
   <div class="periodicView" v-loading="loading">
@@ -80,7 +80,7 @@ export default {
       nodeList: [
         {label: '释放', key: 'SHIFANG', pvs: 'pvsTargetReleaseWeek', vff: 'vffTargetReleaseWeek', os: 'zerosTargetReleaseWeek', status: 'releaseStatus'},
         {label: '定点', key: 'DINGDIAN', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetNomiWeek', os: 'zerosTargetNomiWeek', status: 'nomiStatus'},
-        {label: 'BF', pvs: 'pvsTargetBfWeek', vff: 'vffTargetBfWeek', os: 'zerosTargetBfWeek', status: 'bfStatus'},
+        {label: '数据冻结', pvs: 'pvsTargetBfWeek', vff: 'vffTargetBfWeek', os: 'zerosTargetBfWeek', status: 'bfStatus'},
         {label: '1st Tryout', pvs: 'pvsTargetFirstTryWeek', vff: 'vffTargetFirstTryWeek', os: 'zerosTargetFirstTryWeek', status: 'firstTryStatus'},
         {label: 'EM(OTS)', pvs: 'pvsTargetEmWeek', vff: 'vffTargetEmWeek', os: 'zerosTargetEmWeek', pvs1: 'pvsTargetOtsWeek', vff1: 'vffTargetOtsWeek', os1: 'zerosTargetOtsWeek', status: 'emStatus'}
       ],
