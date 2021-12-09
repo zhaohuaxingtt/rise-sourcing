@@ -81,7 +81,7 @@
         </div>
         <div class="project__header-btns">
           <template v-if="actived === 'filing'">
-            <iButton @click="handleHref" v-if="ruleForm.biddingStatus == '06'">{{
+            <iButton @click="handleHref" v-if="ruleForm.roundType !== '05' && ruleForm.biddingStatus == '06'">{{
               language('BIDDING_TXBJMX', '填写报价明细')
             }}</iButton>
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{

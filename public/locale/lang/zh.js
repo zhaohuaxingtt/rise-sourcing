@@ -1644,6 +1644,8 @@
             'LK_APPLYAMOUNT': '申请金额',   //  申请金额
             'LK_FIXEDPOINTSUPPLIER': '定点供应商', // 定点供应商
             'LK_DINGDIANRIQI': '定点日期',  //  定点日期
+            'LK_QIANQICAIGOUYUAN': '前期采购员',    //  前期采购员
+            'LK_SCFPFUZHEREN': 'CSF(P)负责人',  //  CSF(P)负责人
         },
 
     }

@@ -42,10 +42,9 @@
           <iFormItem
             :label="language('BIDDING_XIANGMULEIXING', '项目类型')"
             prop="projectType"
-            v-if="onProjectType"
           >
             <iLabel :label="language('BIDDING_XIANGMULEIXING', '项目类型')" slot="label" required></iLabel>
-            <iSelect v-model="ruleForm.projectType">
+            <iSelect v-model="ruleForm.projectType" :disabled="onProjectType">
               <el-option
                 v-for="(item, index) in projectType"
                 :key="index"
@@ -56,10 +55,10 @@
             </iSelect>
           </iFormItem>
 
-          <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType" v-else>
+          <!-- <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType" v-else>
             <iLabel :label="language('BIDDING_XIANGMULEIXING', '项目类型')" slot="label" required></iLabel>
             <iInput v-model="ruleForm.projectType" disabled></iInput>
-          </iFormItem>
+          </iFormItem> -->
 
           <iFormItem :label="language('BIDDING_RFQMINGCHENG', 'RFQ名称')" prop="rfqName" v-if="onRFQname">
             <iLabel :label="language('BIDDING_RFQMINGCHENG', 'RFQ名称')" slot="label"></iLabel>
@@ -727,7 +726,7 @@ export default {
       return true;
     },
     onProjectType() {
-      if (this.ruleForm.roundType === "05") {
+      if (this.ruleForm.isTest || this.ruleForm.roundType === "03") {
         return true;
       }
       return false;
@@ -1007,9 +1006,11 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let formData = this.ruleForm;
-          if (this.ruleForm.projectType === "正式项目") {
-            this.ruleForm.projectType = "01";
-          }
+          // if (this.ruleForm.projectType === "正式项目") {
+          //   this.ruleForm.projectType = "01";
+          // } else if (this.ruleForm.projectType === "测试项目") {
+          //   this.ruleForm.projectType = "02";
+          // }
           const quoteRule = {...formData.quoteRule,biddingId:this.id}
           formData = {...formData,quoteRule}
           biddingInfo(formData)
@@ -1084,14 +1085,15 @@ export default {
         };
         this.$parent.$emit("change-title", res);
         // 项目类型
-        if (res.roundType === "03" || res.roundType === "04") {
-          this.ruleForm.projectType === "01";
+        if (res.isTest) {
+          this.ruleForm.projectType = "02";
         }
-        if (this.ruleForm.projectType === "01") {
-          this.ruleForm.projectType = "正式项目";
+        else if (res.roundType === "03" || res.roundType === "05") {
+          this.ruleForm.projectType = "01";
         }
+        
         // 竞标报价方式
-        if (res.roundType === "03") {
+        if (res.roundType === "03" || (res.roundType === "05" && res.manualBiddingType === "01")) {
           if (!res.biddingMode) {
             this.ruleForm.biddingMode = "03";
           }
@@ -1177,6 +1179,12 @@ export default {
       color: #000;
       text-align: center;
     }
+    .el-select .el-input.is-disabled {
+    .el-input__suffix {
+      display: none;
+    }
+  }
+    
     .form-item-row1-clo3-right {
       line-height: initial;
       text-align: left;

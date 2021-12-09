@@ -31,7 +31,7 @@
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
-        <el-form-item :label="language('LK_RFQHAO', 'RFQ号')">
+        <el-form-item :label="$t('MOULDADD.LK_RFQBIANHAO')">
           <iInput v-model="form['search.rfqId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
