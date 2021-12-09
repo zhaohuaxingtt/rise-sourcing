@@ -292,7 +292,7 @@ export default {
      */    
     handleSaveRfq() {
       if(this.detailData.rfqId) {
-        // 如果rfq编号已存在则变为更新rfq
+      //   // 如果rfq编号已存在则变为更新rfq
         this.updateRfq()
       } else {
         this.basicLoading = true
@@ -307,6 +307,8 @@ export default {
           if (res?.result) {
             iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
             this.detailData.rfqId = res.data.rfqId
+            this.detailData.currentStatus = res.data?.currentStatus
+            this.detailData.createDateTiem = res.data?.createDate
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           }
