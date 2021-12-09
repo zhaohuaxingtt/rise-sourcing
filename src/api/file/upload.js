@@ -70,11 +70,24 @@ export function uploadUdFile(params) {
         // formData.append('currentUserId', store.state.permission.userInfo.id) // 用户id
     formData.append('currentUser', store.state.permission.userInfo.id) // 用户id
     formData.append('type', params.type || 1) // 文件类型 1:OBS 2:NFS，默认1
-    formData.append('multifile', params.multifile || []) // 文件
+    // formData.append('multifile', params.multifile || []) // 文件
+    formData.append('file', params.multifile)
 
     return fileRequst({
-        url: `/udMutilfilesController`,
+        // url: `/udMutilfilesController`,
+        url: `/udSingleFile`,
         method: 'POST',
         data: formData
+    }).then(res => {
+        if (Array.isArray(res.data)) {
+            return res
+        } else if (typeof res.data === "object")  {
+            return {
+                ...res,
+                data: [res.data]
+            }
+        }
+
+        return res
     })
 }
