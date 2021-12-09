@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-09 10:46:37
+ * @LastEditTime: 2021-12-09 11:21:51
  * @Description: 周期视图
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -109,7 +109,7 @@ export default {
       nodeList: [
         {label: '释放', key: 'SHIFANG', const: 'constReleaseToNomiWeek', keyPoint: 'keyReleaseToNomiWeek', history: 'hiReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus'},
         {label: '定点', key: 'DINGDIAN', const: 'constNomiToBffWeek', keyPoint: 'keyNomiToBffWeek', history: 'hiNomiToBffWeek', isChange: 'keyNomiToBffStatus'},
-        {label: '数据待冻结', const: 'constBfToFirstTryoutWeek', keyPoint: 'keyBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
+        {label: '数据冻结', const: 'constBfToFirstTryoutWeek', keyPoint: 'keyBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
         {label: '1st Tryout', const: 'constFirstTryEmWeek', keyPoint: 'keyFirstTryEmWeek', history: 'hiFirstTryEmWeek', isChange: 'keyFirstTryEmStatus'},
         {label: 'EM(OTS)', const: 'constFirstTryOtsWeek', keyPoint: 'keyFirstTryOtsWeek', history: 'hiFirstTryOtsWeek', isChange: 'keyFirstTryOtsStatus'}
       ],

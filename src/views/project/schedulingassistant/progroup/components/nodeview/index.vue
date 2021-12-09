@@ -80,7 +80,7 @@ export default {
       nodeList: [
         {label: '释放', key: 'SHIFANG', pvs: 'pvsTargetReleaseWeek', vff: 'vffTargetReleaseWeek', os: 'zerosTargetReleaseWeek', status: 'releaseStatus'},
         {label: '定点', key: 'DINGDIAN', pvs: 'pvsTargetNomiWeek', vff: 'vffTargetNomiWeek', os: 'zerosTargetNomiWeek', status: 'nomiStatus'},
-        {label: '数据待冻结', pvs: 'pvsTargetBfWeek', vff: 'vffTargetBfWeek', os: 'zerosTargetBfWeek', status: 'bfStatus'},
+        {label: '数据冻结', pvs: 'pvsTargetBfWeek', vff: 'vffTargetBfWeek', os: 'zerosTargetBfWeek', status: 'bfStatus'},
         {label: '1st Tryout', pvs: 'pvsTargetFirstTryWeek', vff: 'vffTargetFirstTryWeek', os: 'zerosTargetFirstTryWeek', status: 'firstTryStatus'},
         {label: 'EM(OTS)', pvs: 'pvsTargetEmWeek', vff: 'vffTargetEmWeek', os: 'zerosTargetEmWeek', pvs1: 'pvsTargetOtsWeek', vff1: 'vffTargetOtsWeek', os1: 'zerosTargetOtsWeek', status: 'emStatus'}
       ],

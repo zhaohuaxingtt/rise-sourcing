@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-09 10:47:12
+ * @LastEditTime: 2021-12-09 11:21:46
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -162,7 +162,7 @@ export default {
       nodeList: [ 
         {label: '释放', key: 'SHIFANG', kw: 'releaseTimeKw', keyPoint: 'keyReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus', status: 'releaseStatus'}, 
         {label: '定点', key: 'DINGDIAN', kw: 'nomiTimeKw', keyPoint: 'keyNomiToBffWeek', isChange: 'keyNomiToBffStatus', status: 'nomiStatus'}, 
-        {label: '数据待冻结', kw: 'bfTimeKw', keyPoint: 'keyBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus', status: 'bfStatus'}, 
+        {label: '数据冻结', kw: 'bfTimeKw', keyPoint: 'keyBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus', status: 'bfStatus'}, 
         {label: '1st Tryout', kw: 'firstTryoutTimeKw', keyPoint: 'keyFirstTryEmWeek', keyPoint2: 'keyFirstTryOtsWeek', isChange: 'keyFirstTryEmStatus', status: 'firstTryStatus'}, 
         {label: 'EM(OTS)', kw: 'emTimeKw', keyPoint: 'keyFirstTryOtsWeek', kw2: 'otsTimeKw', status: 'emStatus', status2: 'otsStatus' } 
       ], 
