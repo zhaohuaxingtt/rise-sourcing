@@ -38,9 +38,9 @@
           </span>  
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip'  v-else :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props">
+      <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-else :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props">
         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
-          <slot :name="items.props" :row="scope.row"></slot>
+          <slot :name="items.props" :row="scope.row" :$index="scope.$index"></slot>
         </template>
       </el-table-column>
     </template>
