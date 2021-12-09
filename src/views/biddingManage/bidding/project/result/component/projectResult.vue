@@ -294,7 +294,7 @@ export default {
       this.tableLoading = false;
       this.form = data
       this.tableListData.sort(this.compare("currentSort"));
-      this.isTax = res[0].isTax;
+      this.isTax = res[0]?.isTax;
         if (
         (this.form.roundType === "05" &&
         this.form.manualBiddingType === "02") 
