@@ -309,7 +309,7 @@ export default {
             iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
             this.detailData.rfqId = res.data.rfqId
             this.detailData.currentStatus = res.data?.currentStatus
-            this.detailData.createDateTiem = res.data?.createDate
+            this.detailData.createDateTime = res.data?.createDate
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
           }
