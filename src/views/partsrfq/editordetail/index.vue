@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-07 14:33:34
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-09 10:08:23
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
 -->
@@ -255,7 +255,7 @@ export default {
       const rfqId = this.baseInfo.id || this.$route.query.id
       checkApply(rfqId).then(res => {
         if (res?.result) {
-          const item = {rfqId: rfqId, applyType: '1'}
+          const item = {rfqId: rfqId, applyType: '1', isAgain: res.data || false}
           this.$router.push({path: '/targetpriceandscore/modeltargetprice/detail', query: item})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
