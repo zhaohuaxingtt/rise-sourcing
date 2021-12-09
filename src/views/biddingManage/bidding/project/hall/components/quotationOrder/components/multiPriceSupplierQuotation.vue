@@ -1265,7 +1265,8 @@ export default {
         num += 1
       }
       this.$nextTick(() => {
-        this.handlerInputBlur();
+        this.orgTotalPrices = this.ruleForm.supplierOffer?.offerPrice || this.ruleForm.totalPrices
+        // this.handlerInputBlur();
         this.projectLoading = false
       });
     },
