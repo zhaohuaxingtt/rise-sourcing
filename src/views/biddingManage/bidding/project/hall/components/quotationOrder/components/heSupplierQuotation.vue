@@ -103,7 +103,7 @@
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
-                      :value="language('BIDDING_ZIDONGYINGBIAO', '自动应标')"
+                      :value="language('BIDDING_ZIDONGYINGBIAO', '应标')"
                       disabled
                     ></iInput>
                   </div>
@@ -264,7 +264,7 @@ export default {
       );
     },
     totalStartingPriceString(){
-      return this.heRuleForm.currentOffer.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+      return Number(this.heRuleForm.currentOffer).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
     }
   },
   watch: {

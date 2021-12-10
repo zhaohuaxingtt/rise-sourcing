@@ -81,7 +81,7 @@
         </div>
         <div class="project__header-btns">
           <template v-if="actived === 'filing'">
-            <iButton @click="handleHref" v-if="ruleForm.biddingStatus == '06'">{{
+            <iButton @click="handleHref" v-if="ruleForm.roundType !== '05' && ruleForm.biddingStatus == '06'">{{
               language('BIDDING_TXBJMX', '填写报价明细')
             }}</iButton>
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
@@ -271,8 +271,10 @@ export default {
       const fromdata = { projectCode };
       cancelOpenTender(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          location.reload();
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            location.reload();
+          }
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
@@ -284,14 +286,16 @@ export default {
       const fromdata = { projectCode };
       cancelBidding(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          if (this.ruleForm.isRfqCompleted === null) {
-            localStorage.setItem("finish", true);
-          } else {
-            localStorage.removeItem("finish");
-            console.log(this.language('BIDDING_YIBEISHANGCHU','已被删除'));
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            if (this.ruleForm.isRfqCompleted === null) {
+              localStorage.setItem("finish", true);
+            } else {
+              localStorage.removeItem("finish");
+              console.log(this.language('BIDDING_YIBEISHANGCHU','已被删除'));
+            }
+            location.reload();
           }
-          location.reload();
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
@@ -319,16 +323,29 @@ export default {
         return this.$message.error(this.language('BIDDING_WWCXJGLSZWFFQJJ','未完成询价管理设置, 无法发起竞价'));
       }
 
-      this.$refs.child.submitForm(() => {
-        const { projectCode } = this.ruleForm;
-        const fromdata = { projectCode };
-        sendEmail(fromdata)
-          .then((res) => {
-            window.location.reload();
-          })
-          .catch((err) => {
-            this.$message.error(err.message);
-          });
+      const { projectCode } = this.ruleForm;
+      const fromdata = { projectCode };
+      // this.$refs.child.submitForm(() => {
+      //   sendEmail(fromdata)
+      //     .then((res) => {
+      //       window.location.reload();
+      //     })
+      //     .catch((err) => {
+      //       this.$message.error(err.message);
+      //     });
+      // });
+      sendEmail(fromdata)
+      .then((res) => {
+        if (res.code == 200) {
+          window.location.reload();
+        }
+      })
+      .catch((err) => {
+        if (err) {
+           if (document.getElementsByClassName("el-message").length === 0) {
+             this.$message.error(err.message);
+           }
+        }
       });
     },
     handleShowNotice(type, docTitle) {

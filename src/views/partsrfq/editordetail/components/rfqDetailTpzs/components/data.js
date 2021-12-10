@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 13:02:38
- * @LastEditTime: 2021-06-09 20:52:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-10 15:35:12
+ * @LastEditors: caopeng
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\data.js
+ * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\data.js
  */
 
 export const iconList_car = { //汽车图标

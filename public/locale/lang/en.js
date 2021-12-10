@@ -805,7 +805,7 @@
         'LK_TOUZIBAOGAO': 'Investment Report',//投资报告
 
         'LK_BANMUBER': 'BA号',  //  BA号
-        'LK_FIXEDPOINTSUPPLIER': '定点供应商', // 定点供应商
+        'LK_FIXEDPOINTSUPPLIER': 'Designated supplier', // 定点供应商
         'LK_MODULFIXEDPOINTMONEY': '模具定点金额',  //  模具定点金额
         'LK_REGINOCONTROLLER': '区域控制员',    //  区域控制员
         'LK_RSODDNUMBERS': 'RS单号',    //  RS单号
@@ -903,7 +903,7 @@
         'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
         'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
         'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
-        'LK_BMDANHAO': 'BM单号',    //  BM单号
+        'LK_BMDANHAO': 'BM No',    //  BM单号
         'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
         'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
         'LK_BMDANJINE':  'BM单金额', //  BM单金额
@@ -1374,7 +1374,66 @@
             'LK_KAISHIRIQI': 'Start Date', //开始日期
             'LK_JIESHURIQI': 'End Date', //结束日期
 
-        }
+        },
+
+        //  ------------------------模具相关（张入圆）------------------------------
+        'MOULDADD':{
+            'CHAKANLISHI': 'View history',  //  查看历史
+            'SOPSHIJIAN': 'SOP Date',    //  SOP时间
+            'LK_RFQBIANHAO': 'RFQ No',   //  RFQ号
+            'LK_SHENQINGREN': 'applicant',//申请人
+            'LK_PIZHUAN': 'approval',//批准
+            'LK_QINGSHURUJUJUEYUANYIN': 'Please enter the rejection reason',   //  请输入拒绝原因
+            'LK_TIANJIAHANG': 'Add', //  添加行
+            'LK_SHANCHUHANG': 'Delete',//删除⾏
+            'LK_CAILIAOZUBIANHAO2': 'MG No',//材料组编号
+            'LK_CAILIAOZUMINGCENGZHONG': 'MG Name_CN',//材料组名称（中）
+            'LK_CAILIAOZUMINGCENGDE': 'MG Name_GE',//材料组名称（德）
+            'LK_ZHUANYEKESHI': 'Commodity',//专业科室
+            'LK_CommonSourcing': 'Common Sourcing',
+            'LK_MOJUSHUXIN': 'Mold Property',//模具属性
+            'LK_LINIE': 'Linie',//Linie
+            'LK_ZP': 'ZP',//ZP
+            'LK_CANKAOCHEXINXIANGMUYI': '1st Refer',//参考⻋型项⽬⼀
+            'LK_CANKAOCHEXINXIANGMUER': '2nd Refer ',//参考⻋型项⽬⼆
+            'LK_CANKAOCHEXINXIANGMUSAN': '3rd Refer',//参考⻋型项⽬三
+            'LK_QITACHEXINXIANGMUBEIXUAN': 'Others',//其它⻋型项⽬备选
+            'LK_CHEXINXIANGMULEIXIN': 'Project Type',//⻋型项⽬类型
+            'LK_CHEXINXIANGMUQIZHINIANFEN': 'Project SOP',//⻋型项⽬起⽌年份
+            'LK_YUSUANGUANLITIPS1': 'The function of this window is to select the reference model items, and the model items without SOP are not used as reference data',    //本窗口的功能为选择参考车型项目，未SOP的车型项目不作为参考数据
+            'LK_YUSUANGUANLITIPS2': 'The referenced amount is the fixed-point amount of the mold',   //  参考的金额是模具的定点金额
+            'LK_YUSUANGUANLITIPS3': 'After selecting all conditions, the system will first calculate the historical investment amount of each material group of the first ranking vehicle type project according to your selection;',   //  选择好所有条件后，系统会根据你的选择，首先计算第一顺位车型项目的各个材料组的历史投资金额；
+            'LK_YUSUANGUANLITIPS4': 'If the calculation result of a material group is 0, calculate the historical investment amount of each material group of the second sequential vehicle project to supplement;',    //  若某个材料组的计算结果为0，则计算第二顺位车型项目的各个材料组的历史投资金额进行补充；
+            'LK_YUSUANGUANLITIPS5': 'If the calculation result of a material group is 0 again, calculate the historical investment amount of each material group of the third sequential vehicle project to supplement;',    //  若某个材料组的计算结果再次为0，则计算第三顺位车型项目的各个材料组的历史投资金额进行补充；
+            'LK_YUSUANGUANLITIPS6': 'If the calculation result of a material group is still 0, the system will select multiple model items according to [other reference] [model item type] [project year], and call the item with the largest mold investment amount as the mold investment amount of the reference item, which will be displayed on the [mold investment list page]',    //  若某个材料组的计算结果依旧为0，系统根据【其他参考】【车型项目类型】【项目年份】筛选出多个车型项目，并调用模具投资金额最大的项目作为参考项目的模具投资金额，显示在【模具投资清单页面】
+            'LK_SHIFOUJIXU': 'You have not selected the reference model item, do you want to continue?', //  您还没有选择参考车型项目，是否继续?
+            'LK_SHENGCHANGONGCHANG': 'Production plant',    //  生产工厂
+            'LK_YUSUANJINEPSK': 'Budget amount PSK(Mio.RMB)', //  预算金额PSK(Mio.RMB)
+            'LK_SOURCINGLEIXIN': 'Sourcing type',   //  Sourcing类型
+            'LK_CANKAOXIANGMU': 'Reference items', //  参考项目
+            'LK_CANKAOXINGMUMOJUJINE': 'Refer Project Nomi Amount(Mio.RMB)',//参考项⽬模具⾦额
+            'LK_YUSUANBEIZHU': 'Budget Remark',//预算备注
+            'LK_YISHENQINGJINE': 'Applied amount',  //  已申请金额
+            'LK_YIDINGDNIANJINE': 'Fixed amount', //  已定点金额
+            'LK_YIBAJINE': 'Ba amount paid',  //  已BA金额
+            'LK_YIBMJINE': 'BM amount paid',  //  已BM金额
+            'LK_LISHISHUJUKU': 'Historical database',    //  历史数据库
+            'LK_XINBANBENMINGMING': 'Naming of new edition', //  新版本命名
+            'LK_CAILIAOZU': 'Material group',   //  材料组
+            'LK_LINGJIANHAO': 'Part No',    //  零件号
+            'LK_SHENGQINGBAJINE': 'BA amount applied', //  申请BA金额
+            'LK_AHAO': 'A No',   //  A号
+            'LK_RENMINGBI': 'RMB',  //  人民币
+            'LK_DANWEI': 'Unit',    //  单位
+            'LK_BUHANSUI': 'Tax excluded',    //  不含税
+            'LK_BMDANJINE': 'BM doc amount', //  BM单金额
+            'LK_BMDANHAO': 'BM No',    //  BM单号
+            'LK_APPLYAMOUNT': 'Application amount',   //  申请金额
+            'LK_FIXEDPOINTSUPPLIER': 'Designated supplier', // 定点供应商
+            'LK_DINGDIANRIQI': 'Fixed date',  //  定点日期
+            'LK_QIANQICAIGOUYUAN': 'Preliminary purchaser',    //  前期采购员
+            'LK_SCFPFUZHEREN': 'CSF(P)person in charge',  //  CSF(P)负责人
+        },
     }
     var xmlHttp = ''
     if(window.XMLHttpRequest){

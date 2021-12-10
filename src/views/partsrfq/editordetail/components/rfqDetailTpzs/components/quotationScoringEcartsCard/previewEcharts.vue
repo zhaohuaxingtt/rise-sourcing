@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-12-05 15:23:45
- * @LastEditors:  
+ * @LastEditTime: 2021-12-10 14:42:28
+ * @LastEditors: caopeng
  * @Description: 供应商维度展示
- * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
+ * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
 -->
 <template>
   <!----------------------------------------------------------->
@@ -95,7 +95,8 @@ export default{
      * @param {*}
      * @return {*}
      */
-    exportExcel(){
+    exportExcel(v){
+        console.log(v)
       downLoadExcel(Object.assign(this.getQuery()))
     },
     removeOther(row,type){

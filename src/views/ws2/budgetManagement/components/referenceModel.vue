@@ -13,12 +13,12 @@
             placement="top-start"
             trigger="hover">
           <div class="popoverDiv">
-            <div>本窗口的功能为选择参考车型项目，未SOP的车型项目不作为参考数据</div>
-            <div>参考的金额是模具的定点金额</div>
-            <div>选择好所有条件后，系统会根据你的选择，首先计算第一顺位车型项目的各个材料组的历史投资金额；</div>
-            <p>若某个材料组的计算结果为0，则计算第二顺位车型项目的各个材料组的历史投资金额进行补充；</p>
-            <p>若某个材料组的计算结果再次为0，则计算第三顺位车型项目的各个材料组的历史投资金额进行补充；</p>
-            <p>若某个材料组的计算结果依旧为0，系统根据【其他参考】【车型项目类型】【项目年份】筛选出多个车型项目，并调用模具投资金额最大的项目作为参考项目的模具投资金额，显示在【模具投资清单页面】</p>
+            <div>{{$t('MOULDADD.LK_YUSUANGUANLITIPS1')}}</div>
+            <div>{{$t('MOULDADD.LK_YUSUANGUANLITIPS2')}}</div>
+            <div>{{$t('MOULDADD.LK_YUSUANGUANLITIPS3')}}</div>
+            <p>{{$t('MOULDADD.LK_YUSUANGUANLITIPS4')}}</p>
+            <p>{{$t('MOULDADD.LK_YUSUANGUANLITIPS5')}}</p>
+            <p>{{$t('MOULDADD.LK_YUSUANGUANLITIPS6')}}</p>
           </div>
           <icon symbol name="iconxinxitishi" slot="reference"></icon>
         </Popover>
@@ -31,7 +31,7 @@
           :searchKey="PARTSPROCURE_CONFIRM"
       >
         <el-form class="form1 clearfix">
-          <el-form-item :label="language('LK_CANKAOCHEXINXIANGMUYI','参考⻋型项⽬⼀')">
+          <el-form-item :label="$t('MOULDADD.LK_CANKAOCHEXINXIANGMUYI')">
             <iSelect
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="referenceModel1"
@@ -47,7 +47,7 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_CANKAOCHEXINXIANGMUER','参考⻋型项⽬⼆')">
+          <el-form-item :label="$t('MOULDADD.LK_CANKAOCHEXINXIANGMUER')">
             <iSelect
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="referenceModel2"
@@ -63,7 +63,7 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_CANKAOCHEXINXIANGMUSAN','参考⻋型项⽬三')">
+          <el-form-item :label="$t('MOULDADD.LK_CANKAOCHEXINXIANGMUSAN')">
             <iSelect
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="referenceModel3"
@@ -79,7 +79,7 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_QITACHEXINXIANGMUBEIXUAN','其它⻋型项⽬备选')">
+          <el-form-item :label="$t('MOULDADD.LK_QITACHEXINXIANGMUBEIXUAN')">
             <iSelect
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="otherModel"
@@ -97,7 +97,7 @@
           </el-form-item>
         </el-form>
         <el-form class="clearfix">
-          <el-form-item :label="language('LK_CHEXINXIANGMULEIXIN','⻋型项⽬类型')">
+          <el-form-item :label="$t('MOULDADD.LK_CHEXINXIANGMULEIXIN')">
             <iSelect
                 :placeholder="language('LK_QINGXUANZE','请选择')"
                 v-model="modelProject"
@@ -113,7 +113,7 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('LK_CHEXINXIANGMUQIZHINIANFEN','⻋型项⽬起⽌年份')">
+          <el-form-item :label="$t('MOULDADD.LK_CHEXINXIANGMUQIZHINIANFEN')">
             <div class="timeClass">
               <iDatePicker
                   v-model="sopBegin"

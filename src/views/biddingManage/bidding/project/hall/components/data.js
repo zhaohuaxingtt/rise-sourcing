@@ -417,7 +417,10 @@ export const biddingStatue = [
   }, {
     name: language('BIDDING_YIQUXIAO', '已取消'),
     value: '09'
-  }
+  }, {
+    value: '10',
+    label: language('BIDDING_YIFACHU','已发出')
+  },
 ]
 
 export const bidTableTitle = [

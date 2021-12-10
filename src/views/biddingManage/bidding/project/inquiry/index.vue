@@ -187,7 +187,6 @@
               inactive-text="N"
               :active-value='true'
               :inactive-value='false'
-              @change="handleChange($event, scope.row)"
               :disabled="ruleForm.biddingStatus !== '01'"
             >
             </el-switch>
@@ -631,8 +630,10 @@ export default {
       }
       delayBidding(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          location.reload();
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            location.reload();
+          }
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
@@ -1427,7 +1428,6 @@ export default {
       if(!this.ruleForm.firstSaveSupplierFlag) {
         const flag = this.ruleForm.suppliers.every(item => item.contactName && item.email)
         const formData = this.ruleForm;
-        console.log('fsafawf',formData.suppliers)
         if (flag) {
           saveInquiryBidding({
           ...this.orgRuleForm,

@@ -10,6 +10,7 @@
     @blur="handleBlur"
     @input="handleInput"
   >
+    <slot name="suffix" slot="suffix"></slot>
   </iInput>
 </template>
 

@@ -129,9 +129,9 @@ export default {
   computed: {
     openDeadlineTimeOptions() {
       return {
-        // selectableRange: [
-        //   `${dayjs(new Date().getTime()).format("HH:mm:00")} - 23:59:59`,
-        // ],
+        selectableRange: [
+          `${dayjs(new Date().getTime()).format("HH:mm:00")} - 23:59:59`,
+        ],
         disabledDate: (time) => {
           return time.getTime() < Date.now() - 8.64e7;
         },
