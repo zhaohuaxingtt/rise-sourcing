@@ -123,8 +123,8 @@ module.exports = {
     hot: true,
     proxy: {
       '/mtzApi': {
-        // target: 'http://10.122.17.38:8046',
-        target: 'http://10.122.18.166:8046/mtz',
+        target: 'http://10.122.17.38:8046/mtz',
+        // target: 'http://10.122.18.166:8046/mtz',
         changeOrigin: true,
         pathRewrite: {
           '^/mtzApi': '',

@@ -5,7 +5,8 @@
       <div class="navBox flex-between-center">
         <span class="title font-weight">BOB{{ $t("TPZS.FENXI")}}
           <span v-if="inside">-RFQ {{ rfq }}</span></span>
-        <div class="flex-align-center" v-if="!isComponent">
+        <div class="flex-align-center"
+             v-if="!isComponent">
           <!--预览-->
           <iButton class="margin-left30"
                    @click="handlePreview">{{
@@ -28,7 +29,8 @@
       </div>
       <el-row :gutter="20"
               class="margin-top20">
-        <el-col span="4" v-if="!isComponent">
+        <el-col span="4"
+                v-if="!isComponent">
           <iCard :collapse="false"
                  style="height: 620px">
             <el-form label-position="top"
@@ -183,8 +185,10 @@
           </iCard>
         </el-col>
       </el-row>
-      <el-row :gutter="20" class="margin-top20">
-        <el-col span="4" v-if="!isComponent">
+      <el-row :gutter="20"
+              class="margin-top20">
+        <el-col span="4"
+                v-if="!isComponent">
           <bob-pin :offset-top="80">
             <iCard :collapse="false">
               <ul class="anchorList flex">
@@ -197,7 +201,9 @@
             </iCard>
           </bob-pin>
         </el-col>
-        <el-col span="4" v-if="!isComponent" style="border:1px solid #F8F9FA;"></el-col>
+        <el-col span="4"
+                v-if="!isComponent"
+                style="border:1px solid #F8F9FA;"></el-col>
         <el-col :span="isComponent?24:20">
           <bobAnalysis ref="bobAnalysis"
                        :label="label"
@@ -359,6 +365,10 @@ export default {
     propGroupId: {
       type: String,
       default: ""
+    },
+    statusProps: {
+      type: Boolean,
+      default: false
     }
   },
   async created () {
@@ -368,7 +378,11 @@ export default {
     }
     this.onDataLoading = true;
     this.newBuild = this.$route.query.newBuild;
-    this.entryStatus = this.$store.state.rfq.entryStatus
+    if (this.statusProps) {
+      this.entryStatus = 1
+    } else {
+      this.entryStatus = this.$store.state.rfq.entryStatus
+    }
     if (this.$route.query.chemeId) {
       this.analysisSchemeId = this.$route.query.chemeId
     } else {
@@ -440,7 +454,7 @@ export default {
     // window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
-    getSelectedParts() {
+    getSelectedParts () {
       if (this.chartData1 && this.chartData1.length > 0) {
         var results = []
         this.chartData1.forEach((item) => {
@@ -635,7 +649,7 @@ export default {
         })
       }
     },
-    doAddBobOut(val) { 
+    doAddBobOut (val) {
       addBobOut({
         analysisSchemeId: this.analysisSchemeId,
         fs: val[0].fsNum,
@@ -796,7 +810,7 @@ export default {
         })
         this.$refs.bobAnalysis.chargeRetrieve(tableParams);
       }, () => {
-        
+
         this.$nextTick(() => {
           this.onDataLoading = false;
         })
@@ -897,7 +911,7 @@ export default {
           groupId: this.groupId
         })
       }, () => {
-        
+
         this.$nextTick(() => {
           this.onDataLoading = false;
         })
