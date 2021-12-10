@@ -2,7 +2,7 @@
   <iCard>
     <commonTable
       ref="tableDataForm"
-      :tableData="suppliers"
+      :tableData="suppliersPage"
       :tableTitle="tableTitle"
       :tableLoading="tableLoading"
       :selection="false"
@@ -91,6 +91,11 @@ export default {
     };
   },
   computed: {
+    suppliersPage() {
+      const { suppliers } = this; 
+      const { currPage, pageSize } = this.page;
+      return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
+    },
     beishu() {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },

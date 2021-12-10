@@ -161,43 +161,17 @@ export default {
         },
       },
 
-      pricingDeadlineOptions: {
-        disabledDate: (time) => {
-          let year = new Date().getFullYear();
-          let month = new Date().getMonth() + 2;
-          if (month == 13) {
-            month = 1;
-          } else if (month == 14) {
-            month = 2;
-          }
-          let date = new Date().getDate();
-          let nextMonth = new Date(year + "-" + month + "-" + date).getTime();
-
-          let curDate = this.ruleForm.biddingEndTime
-            ? new Date(this.ruleForm.biddingEndTime).getTime()
-            : Date.now() - 8.64e7;
-          let three = 30 * 24 * 3600 * 1000;
-          let threeMonths = curDate + three;
-          return time.getTime() < curDate || time.getTime() > nextMonth;
-        },
-      },
+      
     };
   },
   computed: {
-    pricingEndTimeOptions() {
+    pricingDeadlineOptions() {
       return {
         selectableRange: [
-          `${dayjs(
-            new Date(this.ruleForm.biddingBeginTime).getTime() + 60000
-          ).format("HH:mm:00")} - 23:59:59`,
+          `${dayjs(new Date().getTime()).format("HH:mm:00")} - 23:59:59`,
         ],
         disabledDate: (time) => {
-          return (
-            time.getTime() <
-              dayjs(this.ruleForm.biddingBeginTime).startOf("date").valueOf() ||
-            time.getTime() >
-              dayjs(this.ruleForm.biddingBeginTime).endOf("date").valueOf()
-          );
+           return time.getTime() < Date.now() - 8.64e7;
         },
       };
     },

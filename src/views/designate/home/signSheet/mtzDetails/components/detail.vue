@@ -166,7 +166,6 @@ export default {
     }
   },
   created() {
-    this.getTableData()
     getMtzGenericAppId({}).then(res=>{
       this.getMtzGenericAppId = res.data;
     })
@@ -179,6 +178,7 @@ export default {
     getNominateAppIdList({}).then(res=>{
       this.getNominateAppIdList = res.data;
     })
+    this.getTableData()
   },
   methods: {
     // 获取表格数据

@@ -67,9 +67,9 @@
                 placement="top-start"
                 trigger="hover">
               <div class="popoverDiv">
-                <p>{{ $t('生产工厂') }}</p>
+                <p>{{ $t('MOULDADD.LK_SHENGCHANGONGCHANG') }}</p>
               </div>
-              <label slot="reference">{{ $t('生产工厂') }}:</label>
+              <label slot="reference">{{ $t('MOULDADD.LK_SHENGCHANGONGCHANG') }}:</label>
             </Popover>
             <!--            <label :title="$t('LK_CAIGOUGONGCHANG')">{{ $t('LK_CAIGOUGONGCHANG') }}:</label>-->
             <span class="infoIcardValue">{{ form['search.purchasingFactory'] }}</span>
@@ -108,7 +108,7 @@
         <!------------------------------------------------------------------------>
         <div class="header margin-bottom20">
           <div class="search">
-            {{ $t('LK_ZHUANYEKESHI') }}:
+            {{ $t('MOULDADD.LK_ZHUANYEKESHI') }}:
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="form['search.DeptSelect']"
@@ -125,19 +125,19 @@
           </div>
           <div>
             <iButton v-show="pageEdit" @click="pageEdit = false"
-                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('退出编辑') }}
+                     :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_TUICHUBIANJI1') }}
             </iButton>
             <iButton v-show="pageEdit" @click="saveRow">{{ $t('LK_BAOCUN') }}</iButton>
             <iButton v-show="pageEdit" @click="saveAsRow">{{ $t('LK_BAOCUNWEIXINBANBEN') }}</iButton>
             <iButton v-show="!pageEdit" @click="pageEdit = true"
                      :disabled="versionList[0] && form['search.version'] != versionList[0].id">{{ $t('LK_BIANJI') }}
             </iButton>
-            <iButton v-show="pageEdit" @click="addRow">{{ $t('LK_TIANJIAHANG') }}</iButton>
-            <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton v-show="pageEdit" @click="addRow">{{ $t('MOULDADD.LK_TIANJIAHANG') }}</iButton>
+            <iButton v-show="pageEdit" @click="deleteIRow">{{ $t('MOULDADD.LK_SHANCHUHANG') }}</iButton>
             <iButton v-show="pageEdit" @click="referenceModelShow = true">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
-            <iButton @click="downloadList">下载投资清单</iButton>
+            <iButton @click="downloadList">{{$t('LK_XIAZHAITOUZHIQINDAN')}}</iButton>
             <iButton v-show="pageEdit" @click="conversionRatioShow = true">{{ $t('LK_ANBILIZHESUAN') }}</iButton>
-            <iButton @click="toJV">{{ $t('查看Common预算') }}</iButton>
+            <iButton @click="toJV">{{ language('LK_CHAKANCOMMONYUSUAN', '查看Common预算') }}</iButton>
           </div>
         </div>
         <div>
@@ -1185,28 +1185,32 @@ export default {
       this.moneyComponentShow = true
       this.moneyComponentParams = {
         tmCategoryId: row.categoryId,
-        tmCartypeProId: this.params.id
+        tmCartypeProId: this.params.id,
+        listVerisonId: this.form['search.version'],
       }
     },
     clickNomiAmountDetail(row) {
       this.nomiAmountDetailShow = true
       this.nomiAmountDetailParams = {
         tmCategoryId: row.categoryId,
-        tmCartypeProId: this.params.id
+        tmCartypeProId: this.params.id,
+        listVerisonId: this.form['search.version'],
       }
     },
     clickBaAmountDetail(row) {
       this.baAmountDetailShow = true
       this.baAmountDetailParams = {
         tmCategoryId: row.categoryId,
-        tmCartypeProId: this.params.id
+        tmCartypeProId: this.params.id,
+        listVerisonId: this.form['search.version'],
       }
     },
     clickBmAmountDetail(row) {
       this.bmAmountDetailShow = true
       this.bmAmountDetailParams = {
         tmCategoryId: row.categoryId,
-        tmCartypeProId: this.params.id
+        tmCartypeProId: this.params.id,
+        listVerisonId: this.form['search.version'],
       }
     },
     deleteIRow() {
