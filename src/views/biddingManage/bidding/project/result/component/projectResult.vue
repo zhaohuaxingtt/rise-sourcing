@@ -296,10 +296,8 @@ export default {
       this.tableListData.sort(this.compare("currentSort"));
       this.isTax = res[0]?.isTax;
         if (
-        (this.form.roundType === "05" &&
-        this.form.manualBiddingType === "02") 
-        || (this.role === "supplier" && this.form.resultOpenForm === '01' 
-        || (this.role === "supplier" && this.form.resultOpenForm === '02'))
+          (this.role === "supplier" && this.form.resultOpenForm === '01' 
+          || (this.role === "supplier" && this.form.resultOpenForm === '02'))
         ) {
           this.tableListData = res.filter((item) => {
             return this.supplierCode.includes(item.supplierCode);
@@ -314,6 +312,7 @@ export default {
           }
         })
         this.page.total = res.length;
+        console.log('object',this.tableListData)
     },
   },
 };
