@@ -44,6 +44,9 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
+        <template #cartypeLevelRate="scope">
+          <span>{{ percent(scope.row.cartypeLevelRate) }}</span>
+        </template>
       </tableList>
       <iPagination
         v-if="isGs == true"
@@ -67,6 +70,9 @@
         :tableLoading="fstableLoading"
         @handleSelectionChange="handleSelectionChange"
       >
+        <template #cartypeLevelPercentRate="scope">
+          <span>{{ percent(scope.row.cartypeLevelPercentRate) }}</span>
+        </template>
       </tableList>
       <iPagination
         class="bottom-table"
@@ -149,6 +155,7 @@ export default {
           if(res.code == '200') {
             this.carTypeOptions = res.data
             this.carIds = this.carTypeOptions.map(item=>item.id)
+            this.carTypeModel = this.carIds
             this.changeTable(this.carIds)
           }
         })
@@ -256,7 +263,7 @@ export default {
       .finally(() => this.saveLoading = false)
 
       // this.$emit('getSelectData', this.selectData)
-    }
+    },
     // 获取车型
     // getCartypeDict() {
     //   getCartypeDict().then(res => {
@@ -265,6 +272,9 @@ export default {
     //     console.log(err)  
     //   })
     // },
+    percent(val) {
+      return math.multiply(math.bignumber(val), 100).toString() + '%'
+    }
   }
 }
 </script>

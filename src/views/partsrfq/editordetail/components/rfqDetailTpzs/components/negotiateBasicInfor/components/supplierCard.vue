@@ -48,7 +48,8 @@ export default {
       handler(data) {
         this.tableData = data
         this.tableData.map(item => {
-          return item.factoryAddress = item.factoryAddress.split(',')
+          console.log(item.factoryAddress)
+          return item.factoryAddress = item.factoryAddress ? item.factoryAddress.split(',') : []
         })
       }
     }

@@ -75,7 +75,7 @@
                   <iButton @click="handleDelete" v-permission.auto="ACCESSORY_MANAGEMENT_DELETE|附件-附件管理-删除">{{language('SHANCHU','删除')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight"></tableList>
+            <tableList :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight"></tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
