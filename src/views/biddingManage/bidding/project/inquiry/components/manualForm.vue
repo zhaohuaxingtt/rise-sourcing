@@ -125,7 +125,7 @@
             />
           </iFormItem>
           <!-- 报价截止日期 -->
-          <iFormItem label="报价截止日期" prop="pricingDeadline">
+          <!-- <iFormItem label="报价截止日期" prop="pricingDeadline">
             <iLabel :label="language('BIDDING_BJJZRQ', '报价截止日期')" slot="label" required></iLabel>
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
@@ -146,29 +146,50 @@
               :picker-options="pricingDeadlineOptions"
               v-else
             />
-          </iFormItem>
+          </iFormItem> -->
           <!-- 引用RFQ -->
           <iFormItem
-            v-if="ruleForm.manualBiddingType === '02'"
             label="引用RFQ"
             :hideRequiredAsterisk="true"
           >
             <iLabel :label="language('BIDDING_YYRFQ', '引用RFQ')" slot="label"></iLabel>
             <iInput v-model="ruleForm.rfqCode" disabled></iInput>
           </iFormItem>
+
+          <iFormItem label="关联RFQ" :hideRequiredAsterisk="true" v-if="ruleForm.manualBiddingType === '02'">
+            <iLabel :label="language('BIDDING_GLRFQ', '关联RFQ')" slot="label"></iLabel>
+            <iSelect
+              v-model="ruleForm.rfqs"
+              value-key="rfqCode"
+              placeholder="请关联"
+              class="rfqs-search"
+              filterable
+              multiple
+              :disabled="ruleForm.biddingStatus !== '01'"
+            >
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              <el-option
+                v-for="item in rfqNameList"
+                :key="item.rfqCode"
+                :label="item.rfqCode"
+                :value="item"
+              >
+              </el-option>
+            </iSelect>
+          </iFormItem>
         </div>
-        <div class="form-row">
+        <div class="form-row" v-if="ruleForm.manualBiddingType === '01'">
           <!-- 引用RFQ -->
-          <iFormItem
+          <!-- <iFormItem
             v-if="ruleForm.manualBiddingType !== '02'"
             label="引用RFQ"
             :hideRequiredAsterisk="true"
           >
             <iLabel :label="language('BIDDING_YYRFQ', '引用RFQ')" slot="label"></iLabel>
             <iInput v-model="ruleForm.rfqCode" disabled></iInput>
-          </iFormItem>
+          </iFormItem> -->
           <!-- 关联RFQ -->
-          <iFormItem label="关联RFQ" :hideRequiredAsterisk="true">
+          <iFormItem label="关联RFQ" :hideRequiredAsterisk="true" >
             <iLabel :label="language('BIDDING_GLRFQ', '关联RFQ')" slot="label"></iLabel>
             <iSelect
               v-model="ruleForm.rfqs"
@@ -191,6 +212,8 @@
           </iFormItem>
           <!-- 占位 -->
           <iFormItem v-if="ruleForm.manualBiddingType === '02'"></iFormItem>
+          <!-- 占位 -->
+          <iFormItem></iFormItem>
           <!-- 占位 -->
           <iFormItem></iFormItem>
         </div>

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-11-24 16:36:01
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-10 15:14:16
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\components\partsprocure\createNomiappBtnAsse\index.vue
 -->
@@ -292,6 +292,8 @@ export default{
         newArray.push({supplierName:element.supplierName,supplierId:element.supplierId,needRow:true,addAssemblyNomi:element.nomiPartsAssemblyRecordVoList.every(i=>i.addAssemblyNomi),itemKey:Math.random()})
         newArray = [...newArray,...element.nomiPartsAssemblyRecordVoList.map(r=>{return {...r,...{supplierName:'',sname:r.supplierName,needRow:false,itemKey:Math.random()}}})]
       });
+      // CRW1-9727 不显示 addAssemblyNomi 的项目
+      newArray = newArray.filter(o => !o.addAssemblyNomi)
       return newArray
     },
     createNomi(type = '1'){
@@ -300,8 +302,23 @@ export default{
         if(this.rate === '') return iMessage.warn(this.language('DANGQIANFENEBNWEIK','抱歉，您还未填写份额！'))
         if(this.rate === '0%') return iMessage.warn(this.language('QINGSHURUDAYUINGDESHU','抱歉！份额请填写大于0小于等于100的数'))
         if(submitValidate && submitValidate.length > 1) return iMessage.warn(this.language('XUANZEDEBUNENGDAYULIANGT','抱歉！零件类型【加工装配费】只能为一条！'))
-        this.diologShow = false
-        this.dialogVisible = true
+        this.$confirm(this.language('LK_BUCHONGTIANXIEGONGZHUANGYANGJIANFEI','是否需要补充填写工装样件费?'), this.language('LK_NOTICE','温馨提示'), {
+          type: 'warning',
+          distinguishCancelAndClose: true,
+          confirmButtonText: this.language('LK_TIANXIE','填写'),
+          cancelButtonText: this.language('LK_SKIP','跳过'),
+        })
+        .then(() => {
+          this.diologShow = false
+          this.dialogVisible = true
+        })
+        .catch(action => {
+          if(action === 'cancel') {
+            // 生成定点申请单
+            this.createNomi('2')
+          }
+        });
+        
       } else {
         this.loadingbtn = true
         const sendData = {

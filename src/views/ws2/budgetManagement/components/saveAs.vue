@@ -8,7 +8,7 @@
     <div slot="title" class="title">
       <div class="text">{{ $t(title) }}</div>
     </div>
-    <p class="newVersion">新版本命名</p>
+    <p class="newVersion">{{$t('MOULDADD.LK_XINBANBENMINGMING')}}</p>
     <div class="changeContent">
       <div>PSK</div>
       <iInput v-model="saveParams.version" :placeholder="language('LK_QINGSHURU','请输入')" maxlength="5"></iInput>

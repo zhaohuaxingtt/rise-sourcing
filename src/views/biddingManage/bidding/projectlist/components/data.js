@@ -195,6 +195,10 @@ export const biddingStatus = [
     value: '09',
     label: language('BIDDING_YIQUXIAO','已取消')
   },
+  {
+    value: '10',
+    label: language('BIDDING_YIFACHU','已发出')
+  },
 ]
 
 export const infoForm = {

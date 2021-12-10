@@ -210,6 +210,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['factoryPrice']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -225,6 +226,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['packingFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -239,6 +241,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['transportFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -253,6 +256,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['operationFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -279,6 +283,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['moldFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -293,6 +298,7 @@
             <template v-else>
                <operatorInput
                   v-model="scope.row['developFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -635,7 +641,7 @@ export default {
       return this.ruleForm.biddingStatus === '01' ? this.orgTotalPrices : this.ruleForm.totalPrices;
     },
     numberUppercase() {
-      return digitUppercase(Number(this.orgTotalPrices));
+      return this.ruleForm.biddingStatus === '01' ? digitUppercase(Number(this.orgTotalPrices)) : digitUppercase(Number(this.ruleForm.totalPrices));
     },
     startingPrice() {
       return Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
@@ -722,7 +728,6 @@ export default {
                     .add(item.operationFee || 0)
                     .toFixed(2);
           });
-          this.handlerInputBlur();
       },
       deep: true, //true 深度监听
     },
@@ -744,7 +749,7 @@ export default {
       
       this.annualOutput.forEach((item,index)=>{
         let dateYear = new Date(val).getFullYear();
-        if(!val){
+        if(!val && index % 2 ===1){
           for (let i = 1; i < 16; i++) {
             item[`stage${i}`]='';
           }
@@ -763,18 +768,20 @@ export default {
       })
       // 批量更新年降
       if (this.ruleForm.roundType === '05' && !this.ruleForm.rfqCode) {
-        this.yearsPlan.forEach((item,index)=>{
-          console.log(item,index)
-          let dateYear = new Date(val).getFullYear();
-          if(index % 2 === 0 ){
-            for (let i = 1; i < 10; i++) {
-                dateYear = dateYear + 1;
-                item[`stage${i}`] = dateYear + '-01';
-              
+        if (val) {
+          this.yearsPlan.forEach((item,index)=>{
+            let dateYear = new Date(val).getFullYear();
+            if(index % 2 === 0 ){
+              for (let i = 1; i < 10; i++) {
+                  dateYear = dateYear + 1;
+                  item[`stage${i}`] = dateYear + '-01';
+                
+              }
             }
-          }
-        })
+          })
+        } 
       }
+      this.handlerInputBlur()
     },
     //批量更新年降 鼠标移出更新年将列表
     handleInputOnBlur(row, props){
@@ -1042,7 +1049,7 @@ export default {
           this.handlerInputBlur();
         })
       }
-      
+      this.handlerInputBlur();
       
     },
     //零件号更改联动采购计划零件号
@@ -1193,6 +1200,26 @@ export default {
       if(new Set(productCode).size !== this.ruleForm.biddingProducts.length){
         return this.$message.error(this.language('BIDDING_CPLJHBNCF',"产品零件号不能重复！"));
       }
+
+      let flag
+      this.ruleForm.biddingProducts.forEach(it => {
+        flag = this.annualOutput.every((item,index) => {
+          if (index % 2 === 0 && index !== 0 && it.productCode == item.title ) {
+              for (let i = 1; i < 16; i++) {
+                if (item[`stage${i}`] && (item[`stage${i}`] ?? '') !== '' && item[`stage${i}`] != 0) {
+                  return true;
+                }
+              }
+            return false;
+          } else {
+            return true;
+          }
+        })
+      })
+      if (!flag) {
+        return this.$message.error(this.language('BIDDING_DYLJNCLBNQWK','单一零件年产量不能全为空'));
+      }
+
       let modelList = [];
       this.ruleForm.models.forEach((item) => {
         this.modelsOption.forEach((option) => {
@@ -1366,8 +1393,8 @@ export default {
     updateRuleForm(data) {
       this.ruleForm = {
         ...data,
-        models: data.models?.map((item) => item.modelCode),
-        modelProjects: data.modelProjects?.map((item) => item.projectCode),
+        // models: data.models?.map((item) => item.modelCode),
+        // modelProjects: data.modelProjects?.map((item) => item.projectCode),
         biddingStatus: data.biddingStatus,
       };
       // 车型
@@ -1381,6 +1408,7 @@ export default {
           }
         })
         this.modelsOption.push(...paras)
+        
         let optionObj = {}
         let optionArr = []
         this.modelsOption.forEach(item => {
@@ -1388,8 +1416,19 @@ export default {
             optionObj[item.name] = 1
             optionArr.push(item)
           }
+
         })
+        let modelsData = []
         this.modelsOption = [...optionArr]
+        this.modelsOption.forEach(item => {
+          data.models.forEach(it => {
+            if (it.model === item.name) {
+              // this.$set(this.ruleForm,'models',[item.code])
+              modelsData.push(item.code)
+            }
+          })
+        })
+        this.ruleForm.models = modelsData
       });
       
       // 车型项目
@@ -1413,7 +1452,16 @@ export default {
             projectOptionArr.push(item)
           }
         })
+        let modelProjectsData = []
         this.modelProjectsOption = [...projectOptionArr]
+        this.modelProjectsOption.forEach(item => {
+          data.modelProjects.forEach(it => {
+            if (it.project === item.name) {
+              modelProjectsData.push(item.code)
+            }
+          })
+        })
+        this.ruleForm.modelProjects = modelProjectsData
       });
       //this.ruleForm.procurePlans 年降计划
       let o = {};
@@ -1566,6 +1614,10 @@ export default {
       this.annualOutput = this.annualOutput.filter(
         (item, index) => !annualIndexs.includes(index)
       );
+      this.$refs['tableDataForm'].$children[0].clearValidate()
+      this.$nextTick(() => {
+        this.handlerInputBlur();
+      })
     },
   },
 };

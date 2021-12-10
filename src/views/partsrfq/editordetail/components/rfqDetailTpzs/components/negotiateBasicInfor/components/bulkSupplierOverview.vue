@@ -6,17 +6,18 @@
  * @Descripttion: 概览
 -->
 <template>
-  <!-- <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" :defalutCollVal='false' collapse>
-    <div class="header-title">{{remark}}</div>
+  <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" :defalutCollVal='false' collapse>
+    <batch-supplier :paramCategoryCode="paramCategoryCode" class="card-change" :isInside="true"/>
+    <!-- <div class="header-title">{{remark}}</div>
     <div class="title-btn">
       <iButton @click="handleHerf">{{$t('TPZS.GYS360')}}</iButton>
       <iButton @click="handleRemark">{{$t('costanalysismanage.BeiZhu')}}</iButton>
     </div>
     <remarkDialog @getRemark="getRemark" :remark='remark' v-model="remarkDialog" />
     <div id='powerBi'>
-    </div>
-  </iCard> -->
-  <batch-supplier :paramCategoryCode="paramCategoryCode"/>
+    </div> -->
+  </iCard>
+  
 </template>
 
 <script>
@@ -204,6 +205,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-change {
+  box-shadow: none !important;
+  border-radius: 0.375rem;
+  background: #fff;
+  margin-top: 0 !important;
+}
 .supplier-item {
   .title-btn {
     display: flex;

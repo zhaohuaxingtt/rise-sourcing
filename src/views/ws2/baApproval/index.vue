@@ -202,7 +202,7 @@
           class="table-footerStyle"
         >
           <template #rsNum="scope">
-            <a @click="openViewPdf(scope)" class="detailed">{{scope.row.rsNum}}</a>
+            <a @click="openViewPdf(scope.row)" class="detailed">{{scope.row.rsNum}}</a>
           </template>
         </iTableList>
       </template>
@@ -346,9 +346,20 @@ export default {
 
     //  rs单号
     openViewPdf(scope){
-      let url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsForAudit/' + scope.row.rsNum;
-      console.log('url', url);
-      window.open(url)
+      const first = scope.rsNum.slice(0,1);
+      if(~~first === 5){
+        let routeData = this.$router.resolve({
+          path: '/tooling/investmentReport/rsDetails',
+          query: {
+            rsNum: scope.rsNum,
+            pageType: 1,
+          },
+        })
+        window.open(routeData.href, '_blank')
+      }else{
+        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
+        window.open(url);
+      }
     },
 
     clearTipsDiolog(){
@@ -722,7 +733,7 @@ export default {
   }
 
   ::v-deep .el-dialog{
-    height: auto !important;
+    height: 80% !important;
     padding-bottom: 10px !important;
     overflow: auto;
   }

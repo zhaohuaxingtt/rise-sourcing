@@ -134,7 +134,8 @@
               <div>{{ Number(scope.row.dataSource) === 1 ? 'JV预算' : 'CommonSourcing预算' }}</div>
             </template>
             <template #refMoldAmount="scope">
-              <div>{{ getTousandNum(scope.row.refMoldAmount) }}</div>
+              <div v-if="Number(scope.row.dataSource) === 1">{{ getTousandNum(scope.row.refMoldAmount) }}</div>
+              <div v-else></div>
             </template>
           </iTableList>
         </div>

@@ -823,8 +823,7 @@
 				this.fsProjectTypeAnIscommonSroucing(this.save)
 				//刷新产量计划时间之前。得清空一下选择时间。
 				this.setYearNull()
-				//更新每车用量
-				this.$refs.volume.getData();
+				
 			},
 			//修改详情。
 			save(val) {
@@ -871,6 +870,8 @@
 								//刷新零件产量逻辑。1.如果当前零件是gs零件 则sop时间用户是可以自己选择的。一旦选择过后零件产量里面的开始时间。后端得重新默认一个
 								//所以需要刷新一下零件产量页签
 								this.updateTabs()
+								//更新每车用量
+								this.$refs.volume.getData()
 							resolve(res)
 						} else {
 							iMessage.error(res.desZh);

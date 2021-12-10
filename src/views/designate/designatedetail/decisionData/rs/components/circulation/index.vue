@@ -1,10 +1,10 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors:  
- * @LastEditTime: 2021-10-25 19:46:44
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-10 09:52:59
  * @Description: 流转RS单
- * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
+ * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
@@ -105,7 +105,7 @@ export default {
         {label:'申请单号',value:'', props: 'nominateAppId'},
         {label:'申请日期',value:'2020-01-01', props: 'nominateAppTime'},
         {label:'LINIE采购员',value:'胡伟', props: 'linieName'},
-        {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: 'exchangeRate'},
+        {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: 'currency'},
       ],
       // tableTitle: cloneDeep(nomalTableTitle),
       tableData: [],

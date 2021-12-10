@@ -46,5 +46,5 @@ export const fscarTitle = [
   {props: 'batteryCapacity', name: '电池容量', key: "DAINCHIRONGLIANG", tooltip: true},
   {props: 'otherConf', name: '其他配置', key: "QITAPEIZHI", tooltip: true},
   {props: 'cartypeLevel', name: '车型等级', key: "CHEXINGDENGJI", tooltip: true},
-  {props: 'cartypeLevelPercentRate', name: '配置比例', key: " PEIZHIBILI", tooltip: true},
+  {props: 'cartypeLevelRate', name: '配置比例', key: " PEIZHIBILI", tooltip: true},
 ]

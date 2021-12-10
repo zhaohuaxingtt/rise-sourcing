@@ -224,6 +224,14 @@ export const staticRouter = [
 				],
 			},
 			{
+        path: '/tooling/investmentReport/rsDetails',
+        name: 'investmentReportRsDetails',
+        meta: {
+          title: 'RS单号详情'
+        },
+        component: () => import (`@/views/ws2/rsDetails`),
+      },
+			{
 				path: '/ws3-register',
 				name: '/ws3Register',
 				component: () => import('@/views/ws3/register'),
