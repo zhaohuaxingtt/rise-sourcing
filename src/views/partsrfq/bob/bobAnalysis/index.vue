@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-11-29 21:25:01
+ * @LastEditTime: 2021-12-10 10:33:57
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -11,9 +11,9 @@
     <iCard :class="[onPreview?'preview-card':'']">
       <template v-slot:header
                 v-if="!onPreview">
-        <div class="flex-between-center titleBox">
+        <div class="flex titleBox">
           <div class="flex-between-center">
-            <span class="title">费用详情</span>
+            <span class="title">{{language('FEIYONGXIANGQING','费用详情')}}</span>
             <div class="wrap">
               <div v-if="remark"
                    class="margin-left40 remark">
@@ -73,7 +73,7 @@
               </template>
               <template v-else>
                 <div :class="['table-cell', showCollapseOutLine(item)]"
-                      :style="{'padding-left': 20*item.level + 'px','justify-content': 'flex-start','width': '20%'}">
+                     :style="{'padding-left': 20*item.level + 'px','justify-content': 'flex-start','width': '20%'}">
                   <i v-if="item.hasChild"
                      :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
                      style="cursor: pointer;padding-right: 4px;"
@@ -81,24 +81,31 @@
                   <template v-if="item.matchId > 0 && !onPreview">
                     <template v-if="onEditLabels.indexOf(item.id) < 0">
                       <span :style="{'font-weight': item.matchId > 0 ? 'bold':''}">{{item.title}}</span>
-                      <i class="el-icon-edit" style="cursor: pointer;margin-left: 10px;" @click.stop="changeToEditMode(item.id)"></i>
+                      <i class="el-icon-edit"
+                         style="cursor: pointer;margin-left: 10px;"
+                         @click.stop="changeToEditMode(item.id)"></i>
                     </template>
-                    <el-input v-else v-model="item.title">
+                    <el-input v-else
+                              v-model="item.title">
                       <template slot="append">
-                        <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
+                        <i class="el-icon-check"
+                           @click.stop="updateGroupedLabel(item)"
+                           style="cursor: pointer;"></i>
                       </template>
                     </el-input>
                   </template>
                   <template v-else>
-                    <span :title="item.title" class="title-cell" :style="{'font-weight': (item.matchId < 0 && item.level == 1) || item.level == 0 ? 'bold':''}">
+                    <span :title="item.title"
+                          class="title-cell"
+                          :style="{'font-weight': (item.matchId < 0 && item.level == 1) || item.level == 0 ? 'bold':''}">
                       {{item.title}}
                     </span>
                   </template>
                 </div>
                 <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'', showCollapseOutLine(item)]"
-                      v-for="(title, titleIdx) in tableTitle"
-                      :key="titleIdx"
-                      :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
+                     v-for="(title, titleIdx) in tableTitle"
+                     :key="titleIdx"
+                     :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
                   <el-checkbox v-show="onGroupingModel"
                                v-if="item.groupKey && item['label#' + titleIdx]"
                                style="margin-right: 10px;"
@@ -277,14 +284,14 @@ export default {
     }
   },
   methods: {
-    showCollapseOutLine(item) {
+    showCollapseOutLine (item) {
       // if (item.level == 0) {
       //   return 'collapse-root'
       // } else {
-        return (item.level == 1 && typeof item.matchId != 'undefined') ? 'collapse-group':''
+      return (item.level == 1 && typeof item.matchId != 'undefined') ? 'collapse-group' : ''
       // }
     },
-    changeToEditMode(id) {
+    changeToEditMode (id) {
       this.onEditLabels.push(id)
     },
     onPreviewStyle () {
@@ -348,7 +355,7 @@ export default {
         }
       });
     },
-    cancelGroupMode() {
+    cancelGroupMode () {
       this.clearGrouped()
       this.onGroupingModel = false;
     },
@@ -517,7 +524,7 @@ export default {
         s4()
       )
     },
-    reContructData() {
+    reContructData () {
       var a = new Date().getTime()
       this.tableListData = [];
       this.suppliers = [];
@@ -533,10 +540,10 @@ export default {
       this.reBuild("2", "maUngroupedChild")
       this.addOrigin()
 
-      var b= new Date().getTime()
+      var b = new Date().getTime()
       console.log(b - a)
     },
-    reBuild(code, prop) {
+    reBuild (code, prop) {
       this.subCbdDetails = {};
       this.subCbdDetailShowPositions = [];
       var elements = this.tableList.element;
@@ -555,7 +562,7 @@ export default {
       this.insertUnGroupedArr(prop)
       this.addToTable(rootTitle)
     },
-    processGroupDatas(cbdLvlZero, rootId) {
+    processGroupDatas (cbdLvlZero, rootId) {
       if (!cbdLvlZero.child || cbdLvlZero.child.length <= 0) {
         return;
       }
@@ -571,11 +578,11 @@ export default {
               if (!this.subCbdDetails[cbdSubId]) {
                 this.subCbdDetails[cbdSubId] = []
               }
-              
+
               var cbdDetailHead = this.createDetailHead(cbdHead, supplier, isArray ? idx : -1, rootId, rootId, 1)
               this.setCollapse(cbdHead, cbdDetailHead)
               this.subCbdDetails[cbdSubId].push(cbdDetailHead)
-              
+
               if (cbdHead.child && cbdHead.child.length > 0) {
                 this.createDetail(cbdHead, cbdSubId, supplier, isArray ? idx : -1, rootId, cbdDetailHead.id, 2)
               }
@@ -584,18 +591,18 @@ export default {
         })
       })
     },
-    findCbdId(cbdLvlZeroHead, supplier) {
+    findCbdId (cbdLvlZeroHead, supplier) {
       if (!cbdLvlZeroHead.child || cbdLvlZeroHead.child.length < 0) {
         return;
       }
-      for (var i=0;i<cbdLvlZeroHead.child.length;i++) {
+      for (var i = 0; i < cbdLvlZeroHead.child.length; i++) {
         if (cbdLvlZeroHead.child[i].code == "detailId") {
           return cbdLvlZeroHead.child[i][supplier];
         }
       }
       return;
     },
-    createDetail(cbdHead, cbdId, supplier, index, rootId, parentId, level) {
+    createDetail (cbdHead, cbdId, supplier, index, rootId, parentId, level) {
       var nextLevel = level + 1
       cbdHead.child.forEach((child) => {
         var temp = this.createNewCbdDetailLine(child.code, child.title, rootId, parentId)
@@ -604,7 +611,7 @@ export default {
         if (temp.code == "ogt" || temp.code == "206") {
           temp.groupKey = true
           this.suppliers.forEach((supp) => {
-            temp["checked#" + supp.replace("label#","")] = false;
+            temp["checked#" + supp.replace("label#", "")] = false;
           })
         }
         this.setCollapse(child, temp)
@@ -614,14 +621,14 @@ export default {
         }
       })
     },
-    createDetailHead(cbdHead, supplier, index, rootId, parentId, level) {
+    createDetailHead (cbdHead, supplier, index, rootId, parentId, level) {
       var cbdDetailHead = this.createNewCbdDetailLine(cbdHead.code, cbdHead.title, rootId, parentId)
       cbdDetailHead[supplier] = index >= 0 ? cbdHead[supplier][index] : cbdHead[supplier]
       cbdDetailHead.matchId = cbdHead.matchId
       cbdDetailHead.level = level
       return cbdDetailHead
     },
-    createNewCbdDetailLine(code, title, rootId, parentId) {
+    createNewCbdDetailLine (code, title, rootId, parentId) {
       var temp = {
         "code": code,
         "title": title,
@@ -629,10 +636,10 @@ export default {
         "rootId": rootId,
         "parentId": parentId
       }
-      
+
       return temp
     },
-    addOrigin() {
+    addOrigin () {
       var elements = this.tableList.element;
       elements.forEach((cbdLvlZero) => {
         if (cbdLvlZero.code < "3") {
@@ -642,7 +649,7 @@ export default {
         this.addSub(cbdLvlZero, rootId, rootId, 1)
       });
     },
-    addSub(parent, rootId, parentId, level) {
+    addSub (parent, rootId, parentId, level) {
       if (!parent.child || parent.child.length <= 0) {
         return;
       }
@@ -661,13 +668,13 @@ export default {
         this.addSub(cbdDetail, rootId, lvlItem.id, nextLevel)
       });
     },
-    setCollapse(ref, item) {
+    setCollapse (ref, item) {
       if (ref.child && ref.child.length > 0) {
         item.hasChild = true;
         item.expanded = true;
       }
     },
-    addCategory(cbdLvlZero) {
+    addCategory (cbdLvlZero) {
       var lvlZero = JSON.parse(JSON.stringify(cbdLvlZero));
       lvlZero.id = this.createUuid()
       lvlZero.level = 0;
@@ -676,7 +683,7 @@ export default {
       this.tableListData.push(lvlZero)
       return lvlZero.id
     },
-    addToTable(rootTitle) {
+    addToTable (rootTitle) {
       this.subCbdDetailShowPositions.forEach((line) => {
         var lineDatas;
         line.forEach((cbdId) => {
@@ -717,7 +724,7 @@ export default {
         }
       })
     },
-    insertGroupedArr() {
+    insertGroupedArr () {
       var cbdMatchArr = {}
       for (var cbdId in this.subCbdDetails) {
         var matchItem = this.subCbdDetails[cbdId].filter((item) => {
@@ -729,8 +736,8 @@ export default {
         if (!cbdMatchArr[matchItem[0].matchId]) {
           cbdMatchArr[matchItem[0].matchId] = []
         }
-        
-        this.suppliers.forEach((supplier,idx) => {
+
+        this.suppliers.forEach((supplier, idx) => {
           if (matchItem[0][supplier]) {
             cbdMatchArr[matchItem[0].matchId][idx] = cbdId
           } else {
@@ -740,7 +747,7 @@ export default {
           }
         })
       }
-      
+
       if (cbdMatchArr.length <= 0) {
         return;
       }
@@ -750,10 +757,10 @@ export default {
         this.subCbdDetailShowPositions.push(cbdMatchArr[matchId])
       })
     },
-    insertUnGroupedArr(prop) {
+    insertUnGroupedArr (prop) {
       var max = 0;
       var titles = this.tableList.title;
-      
+
       titles.forEach((supplier) => {
         if (supplier.label == "title") {
           return false
@@ -764,9 +771,9 @@ export default {
         }
       })
 
-      for (var j=0;j<max;j++) {
+      for (var j = 0; j < max; j++) {
         var temp = []
-        for (var i=1;i<titles.length;i++) {
+        for (var i = 1; i < titles.length; i++) {
           if (titles[i][prop][j]) {
             temp.push(titles[i][prop][j])
           } else {
@@ -922,7 +929,7 @@ export default {
           schemaId: this.schemaId,
           groupId: this.groupId
         });
-      this.onDataLoading = false;
+        this.onDataLoading = false;
       })
     },
 
@@ -981,7 +988,7 @@ export default {
       }).then(res => {
         if (res.code === '200') {
           iMessage.success('修改成功')
-          this.onEditLabels.splice(this.onEditLabels.indexOf(item.id),1)
+          this.onEditLabels.splice(this.onEditLabels.indexOf(item.id), 1)
           this.chargeRetrieve({
             isDefault: true,
             viewType: 'all',
@@ -1001,11 +1008,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .titleBox {
-//   width: 100%;
-//   font-weight: bold;
-//   font-size: $font-size18 ;
-// }
+.titleBox {
+  justify-content: space-between;
+}
 .wrap {
   width: 300px;
   position: relative;
@@ -1103,9 +1108,9 @@ export default {
   text-overflow: ellipsis;
 }
 .collapse-group {
-  border-top: 3px solid #1763F7;
+  border-top: 3px solid #1763f7;
 }
 .collapse-root {
-  border-top: 3px solid #1763F7;
+  border-top: 3px solid #1763f7;
 }
 </style>
