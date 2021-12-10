@@ -1397,6 +1397,7 @@
             'XMXX': "项目信息", //项目信息
             'FSCSS': 'Sourcing Buyer',
             'FOP' : "FOP",
+            'EPXTY': "技术评分人",
             'MQXTY': "质量评分人", //MQ协调员
             'PLXTY': "BNK审核人", //PL协调员
             'CFXTY': "财务控制员", //CF协调员
