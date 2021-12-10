@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-11-17 13:38:33
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-09 17:54:58
+ * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
@@ -73,7 +73,7 @@
 import { switchPartsTableTitle, floatFixNum } from "../data.js";
 import { iCard, iSelect, iMessage } from "rise";
 import tableList from "rise/web/quotationdetail/components/tableList";
-import { getSwitchParts, getSwitchPartsByParams } from "@/api/aeko/approve";
+import { getSwitchParts, getSwitchPartsPOST, getSwitchPartsByParams } from "@/api/aeko/approve";
 export default {
   components: {
     iCard,
@@ -112,7 +112,7 @@ export default {
     // 获取切换零件下拉框数据
     getPartsList() {
       this.loading = true
-      getSwitchParts({workFlowId:this.workFlowId}).then((res)=>{
+      getSwitchPartsPOST(this.transmitObj.aekoApprovalDetails.workFlowDTOS.map(item=> item.workFlowId)).then((res)=>{
         if(res?.code==='200'){
           this.partsList = res.data;
           this.partsId = this.partsList&&this.partsList[0].key
@@ -124,6 +124,18 @@ export default {
       }).catch(()=>{
         this.loading = false
       })
+      // getSwitchParts({workFlowId:this.workFlowId}).then((res)=>{
+      //   if(res?.code==='200'){
+      //     this.partsList = res.data;
+      //     this.partsId = this.partsList&&this.partsList[0].key
+      //     this.getCbdDataQuery()
+      //   }else{
+      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+      //   }
+      //   this.loading = false
+      // }).catch(()=>{
+      //   this.loading = false
+      // })
     },
     // Linie预览
     getSwitchPartsByParams(){

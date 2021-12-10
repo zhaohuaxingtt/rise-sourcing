@@ -30,10 +30,11 @@
           >
             <el-form>
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"  v-permission.auto="PARTSPROCURE_PARTNUMBER|零件号">
-                <iInput
+                <iMultiLineInput
                   :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
                   v-model="form['partNum']"
-                ></iInput>
+                ></iMultiLineInput>
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')" v-permission.auto="PARTSPROCURE_PARTNAMEZH|零件名中文">
                 <iInput
@@ -279,7 +280,8 @@ import {
   iSearch,
   iInput,
   iSelect,
-  iNavMvp
+  iNavMvp,
+  iMultiLineInput
 } from "rise";
 import { pageMixins } from "@/utils/pageMixins";
 import {cancelProject,creatFsGsNr,startProject} from '@/components'
@@ -311,6 +313,7 @@ export default {
     creatFsGsNr,
     cancelProject,
     startProject,
+    iMultiLineInput
   },
   data() {
     return {

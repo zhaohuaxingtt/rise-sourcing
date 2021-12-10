@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-09 21:13:41
+ * @LastEditTime: 2021-12-09 10:20:34
  * @Description: 目标价详情
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\index.vue
 -->
@@ -29,10 +29,12 @@
         </el-upload>
         <!--------------------保存按钮----------------------------------->
         <iButton v-if="applyType === '2'" @click="handleSave" :loading="saveLoading" >{{language('BAOCUN','保存')}}</iButton>
+        <!--------------------再申请按钮----------------------------------->
+        <iButton v-if="applyType === '1' && isAgain && !isAgainEdit" @click="() => isAgainEdit = true" :loading="exportLoading" >{{language('ZAISHENQING','再申请')}}</iButton>
         <!--------------------取消按钮----------------------------------->
-        <iButton v-if="applyType === '1'" @click="handleCancel" :loading="exportLoading" >{{language('QUXIAO','取消')}}</iButton>
+        <iButton v-if="applyType === '1' && (isAgain ? isAgainEdit : true)" @click="handleCancel" :loading="exportLoading" >{{language('QUXIAO','取消')}}</iButton>
         <!--------------------提交按钮----------------------------------->
-        <iButton v-if="applyType === '1' || applyType === '2'" @click="handleSubmit" :loading="submitLoading" >{{language('TIJIAO','提交')}}</iButton>
+        <iButton v-if="applyType === '1' && (isAgain ? isAgainEdit : true) || applyType === '2'" @click="handleSubmit" :loading="submitLoading" >{{language('TIJIAO','提交')}}</iButton>
         <!--------------------批准按钮----------------------------------->
         <iButton v-if="applyType === '3'" @click="openApprovalDetailDialog('1')" :loading="exportLoading" >{{language('PIZHUN','批准')}}</iButton>
         <!--------------------拒绝按钮----------------------------------->
@@ -52,6 +54,8 @@
       @changeSaveLoading="changeSaveLoading" 
       @changeExportLoading="changeExportLoading" 
       @changeUploadLoaing="changeUploadLoaing" 
+      :isAgain="isAgain"
+      :isAgainEdit="isAgainEdit"
     />
     <!------------------------------------------------------------------------>
     <!--                 修改历史                                          --->
@@ -80,7 +84,8 @@ export default {
       submitLoading: false,
       saveLoading: false,
       exportLoading: false,
-      uploadLoading: false
+      uploadLoading: false,
+      isAgainEdit: false
     }
   },
   computed: {
@@ -98,6 +103,10 @@ export default {
     },
     taskId() {
       return this.$route.query.taskId || ''
+    },
+    isAgain() {
+      console.log(this.$route.query.isAgain, this.$route.query.isAgain || false)
+      return this.$route.query.isAgain == 'false' ? false : true
     }
   },
   methods: {

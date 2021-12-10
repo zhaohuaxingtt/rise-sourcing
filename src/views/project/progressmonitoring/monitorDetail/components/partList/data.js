@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-09-16 15:17:46
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-26 13:54:06
+ * @LastEditTime: 2021-12-09 11:24:22
  * @Description: 
- * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\partList\data.js
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\data.js
  */
 
 export const svgList = {
@@ -39,7 +39,7 @@ export const nodeList = [
     delayWeeks: 'nomiDelayWeeks',
   },
   {
-    label: 'BF', 
+    label: '数据冻结', 
     kw: 'bfTimeKw', 
     planKw: 'planBfTimeKw', 
     partPeriod: 4, 
