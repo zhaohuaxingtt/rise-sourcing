@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-03 14:20:08
- * @LastEditTime: 2021-12-10 11:44:53
+ * @LastEditTime: 2021-12-10 15:14:16
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\components\partsprocure\createNomiappBtnAsse\index.vue
@@ -292,6 +292,8 @@ export default{
         newArray.push({supplierName:element.supplierName,supplierId:element.supplierId,needRow:true,addAssemblyNomi:element.nomiPartsAssemblyRecordVoList.every(i=>i.addAssemblyNomi),itemKey:Math.random()})
         newArray = [...newArray,...element.nomiPartsAssemblyRecordVoList.map(r=>{return {...r,...{supplierName:'',sname:r.supplierName,needRow:false,itemKey:Math.random()}}})]
       });
+      // CRW1-9727 不显示 addAssemblyNomi 的项目
+      newArray = newArray.filter(o => !o.addAssemblyNomi)
       return newArray
     },
     createNomi(type = '1'){
