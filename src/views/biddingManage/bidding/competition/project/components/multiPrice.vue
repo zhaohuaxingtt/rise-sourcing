@@ -781,6 +781,7 @@ export default {
           })
         } 
       }
+      this.handlerInputBlur()
     },
     //批量更新年降 鼠标移出更新年将列表
     handleInputOnBlur(row, props){
@@ -1048,7 +1049,7 @@ export default {
           this.handlerInputBlur();
         })
       }
-      
+      this.handlerInputBlur();
       
     },
     //零件号更改联动采购计划零件号

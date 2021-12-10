@@ -155,7 +155,7 @@
               disabled
             ></iInput>
           </iFormItem>
-          <iFormItem :label="language('BIDDING_BJJZSJ', '报价截止时间')" prop="pricingDeadline">
+          <iFormItem :label="language('BIDDING_BJJZSJ', '报价截止时间')" prop="pricingDeadline" v-if="ruleForm.roundType !== '05'">
             <iLabel :label="language('BIDDING_BJJZSJ', '报价截止时间')" slot="label"></iLabel>
             <iInput
               :value="

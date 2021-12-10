@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-12-09 17:54:13
+ * @LastEditTime: 2021-12-10 11:03:53
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -451,7 +451,7 @@ export default {
       })
     },
     // 获取A价变动其它数据
-    getCbdDataQuery(partsId) {
+    getCbdDataQuery(partsId, workFlowId) {
       this.partsId = partsId;
       this.loading = true;
       if (!partsId) {
@@ -459,8 +459,8 @@ export default {
         this.loading = false;
         return;
       }
-      if(this.workFlowId){
-        cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
+      if(this.workFlowId){  //workFlowId和this.workFlowId 不是同一个
+        cbdDataQuery({ workFlowId: workFlowId, quotationId: partsId }).then(
           (res) => {
             if (res?.code === "200") {
               let data = res.data;

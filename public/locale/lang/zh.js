@@ -1395,13 +1395,16 @@
             'DW': "单位:", //单位
             'XMGL': "项目概览:", //项目概览
             'XMXX': "项目信息", //项目信息
-            'MQXTY': "MQ协调员", //MQ协调员
-            'PLXTY': "PL协调员", //PL协调员
-            'CFXTY': "CF协调员", //CF协调员
-            'FOPQK': "FOP情况", //FOP情况
-            'MQQK': "MQ情况", //MQ情况
-            'PLQK': "PL情况", //PL情况
-            'CFQK': "CF情况", //CF情况
+            'FSCSS': 'Sourcing Buyer',
+            'FOP' : "FOP",
+            'EPXTY': "技术评分人",
+            'MQXTY': "质量评分人", //MQ协调员
+            'PLXTY': "BNK审核人", //PL协调员
+            'CFXTY': "财务控制员", //CF协调员
+            'FOPQK': "TE Rating", //FOP情况
+            'MQQK': "Q Rating", //MQ情况
+            'PLQK': "BNK审核", //PL情况
+            'CFQK': "目标价情况", //CF情况
             'CXLC': "车型量产", //车型量产
             'SOPRQ': "SOP日期", //SOP日期
             'LCHTIPS': "绿：已提交，且没有超期<br/> 黄：没有提交，还没有超期（2周内）<br/> 橙：没有提交，还没有超期（2-4周内）<br/> 红：没有提交，且超期", //绿：已提交，且没有超期 黄：没有提交，还没有超期（2周内） 橙：没有提交，还没有超期（2-4周内） 红：没有提交，且超期
@@ -1418,9 +1421,9 @@
             'SZD': "所在地", //所在地
             'SFMBDL': "是否MBDL", //是否MBDL
             'BJZT': "报价状态", //报价状态
-            'MQDF': "MQ打分", //MQ打分
-            'PLDF': "PL打分", //PL打分
-            'EPDF': "EP打分", //EP打分
+            'MQDF': "质量评分", //MQ打分
+            'PLDF': "BNK评分", //PL打分
+            'EPDF': "技术评分", //EP打分
             'CLZMC': "材料组名称", //材料组名称
             'GYZMC': "工艺组名称", //工艺组名称
             'DDJE': "定点金额", //定点金额

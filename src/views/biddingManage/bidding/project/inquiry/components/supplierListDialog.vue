@@ -208,7 +208,7 @@ export default {
       if (this.suppliers.length != 0) {
         for (let i = 0; i < this.suppliers.length; i++) {
           for (let j = 0; j < val.length; j++) {
-            if (this.suppliers[i].supplierCode == val[j].subSupplierId) {
+            if (this.suppliers[i].supplierId == val[j].subSupplierId) {
               isHad = true;
               selection.splice(j, 1);
               val.splice(j, 1);

@@ -271,8 +271,10 @@ export default {
       const fromdata = { projectCode };
       cancelOpenTender(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          location.reload();
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            location.reload();
+          }
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
@@ -284,14 +286,16 @@ export default {
       const fromdata = { projectCode };
       cancelBidding(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          if (this.ruleForm.isRfqCompleted === null) {
-            localStorage.setItem("finish", true);
-          } else {
-            localStorage.removeItem("finish");
-            console.log(this.language('BIDDING_YIBEISHANGCHU','已被删除'));
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            if (this.ruleForm.isRfqCompleted === null) {
+              localStorage.setItem("finish", true);
+            } else {
+              localStorage.removeItem("finish");
+              console.log(this.language('BIDDING_YIBEISHANGCHU','已被删除'));
+            }
+            location.reload();
           }
-          location.reload();
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));

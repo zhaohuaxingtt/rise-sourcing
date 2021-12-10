@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:48:29
+ * @LastEditTime: 2021-12-10 15:46:15
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -127,6 +127,7 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
+        sendDate: null
         // showSelf: true
       },
       inquiryDialogVisible: false,
@@ -400,6 +401,7 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
+        sendDate: null
         // showSelf: true
       }
       this.sure()
@@ -464,7 +466,7 @@ export default {
     },
     sure() {
       this.page.currPage = 1
-      this.searchParams.sendDate = this.searchParams.sendDate ? moment.utc(this.searchParams.sendDate) : null
+      this.searchParams.sendDate = this.searchParams.sendDate ? moment(this.searchParams.sendDate).format('YYYY-MM-DDT00:00:00'): null
       this.getTableList()
     },
     /**

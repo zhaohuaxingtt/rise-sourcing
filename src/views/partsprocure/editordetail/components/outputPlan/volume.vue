@@ -10,11 +10,11 @@
       <div>
         <div class="control">
           <div v-if="!disabled" class="btn-left">
-            <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
-            <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
-            <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
             <iButton v-if="isEdit" @click="addCar">{{ language("LK_TIANJIA",'添加') }}</iButton>
             <iButton v-if="isEdit" @click="saveData" :loading="saveLoading">{{ language("LK_BAOCUN",'保存') }}</iButton>
+            <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
+            <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
+            <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
             <iButton v-if="!isEdit && ispartProjectSource" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
             <iButton v-if="isEdit" @click="cancelEdit">{{ language("QUXIAO",'取消') }}</iButton>
           </div>
@@ -35,6 +35,9 @@
         <template #perCarDosage="scope">
           <iInput v-if="isEdit && ispartProjectSource" v-model="scope.row.perCarDosage" @click.native.stop @focus="handleFocusByInput(scope.row)" @input="handleInputByPerCarDosage($event, scope.row)" />
           <span v-else>{{ scope.row.perCarDosage }}</span>
+        </template>
+        <template #cartypeLevelRate="scope">
+          <span>{{ percent(scope.row.cartypeLevelRate) }}</span>
         </template>
       </tableList>
       <iPagination
@@ -430,6 +433,9 @@ export default {
     //是否GS
     isGSType(data) {
       return data == '1000003' || data =='50002001'
+    },
+    percent(val) {
+      return math.multiply(math.bignumber(val), 100).toString() + '%'
     }
   },
 };
