@@ -12,12 +12,35 @@
       <div class="optionBox">
         <el-form :inline="true" :model="searchForm" label-position="top" class="demo-form-inline">
           <el-form-item style="marginRight:68px;" :label="language('SHENQINGDANHAO', '申请单号')">
-            <iInput v-model="searchForm['mtzAppId']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+            <i-select v-model="searchForm['mtzAppId']"
+                      clearable
+                      filterable
+                      :placeholder="language('XUANZE', '选择')"
+                    >
+                <el-option
+                    v-for="item in getMtzGenericAppId"
+                    :key="item.code"
+                    :label="item.codeMessage"
+                    :value="item.code">
+                </el-option>
+            </i-select>
           </el-form-item>
           <el-form-item style="marginRight:68px;" :label="language('YUANCAILIAOPAIHAO', '原材料牌号')">
-            <iInput v-model="searchForm['materialCode']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+            <i-select v-model="searchForm['materialCode']"
+                      clearable
+                      filterable
+                      :placeholder="language('XUANZE', '选择')"
+                    >
+                <el-option
+                    v-for="item in getRawMaterial"
+                    :key="item.code"
+                    :label="item.codeMessage"
+                    :value="item.code">
+                </el-option>
+            </i-select>
           </el-form-item>
           <el-form-item style="marginRight:68px;" :label="language('LINGJIANHAO', '零件号')">
+            
             <!-- <iInput v-model="searchForm['assemblyPartnum']" :placeholder="language('QINGSHURU','请输入')"></iInput> -->
             <input-custom 
               v-model="searchForm.assemblyPartnum"
@@ -26,14 +49,38 @@
               :placeholder="language('QINGSHURU','请输入')"> </input-custom>
           </el-form-item>
           <el-form-item style="marginRight:68px;" :label="language('CAIGOUYUAN', '采购员')">
-            <iInput v-model="searchForm['buyer']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+            <i-select v-model="searchForm['buyer']"
+                      clearable
+                      filterable
+                      :placeholder="language('XUANZE', '选择')"
+                    >
+                <el-option
+                    v-for="item in getCurrentUser"
+                    :key="item.code"
+                    :label="item.message"
+                    :value="item.code">
+                </el-option>
+            </i-select>
           </el-form-item>
           <el-form-item style="marginRight:68px;" :label="language('GUANLIANDANHAO', '关联单号')">
-            <iInput v-model="searchForm['ttNominateAppId']" :placeholder="language('QINGSHURU','请输入')"></iInput>
+            <i-select v-model="searchForm['ttNominateAppId']"
+                      clearable
+                      filterable
+                      :placeholder="language('XUANZE', '选择')"
+                    >
+                <el-option
+                    v-for="item in getNominateAppIdList"
+                    :key="item.code"
+                    :label="item.message"
+                    :value="item.code">
+                </el-option>
+            </i-select>
           </el-form-item>
         </el-form>
         <div class="searchButton">
+          <!-- <iButton @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton> -->
           <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_SUBMIT|MTZ签字单确认" @click="handleSubmitSearch">{{language('QR', '确认')}}</iButton>
+          <!-- <iButton @click="handleSearchReset">{{language('CZ', '重置')}}</iButton> -->
           <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_RESET|MTZ签字单重置"  @click="handleSearchReset">{{language('CZ', '重置')}}</iButton>
         </div>
       </div>
@@ -42,6 +89,7 @@
         <div class="tableOptionBox">
           <p class="tableTitle">{{language('DINGDIANSHENQINGLIEBIAO', '定点申请列表')}}</p>
           <iButton v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_CHOOSE|MTZ签字单选择" @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton>
+          <!-- <iButton  @click="handleSubmitChoose">{{language('XUANZE', '选择')}}</iButton> -->
         </div>
         <tableList
           ref="addTable"
@@ -50,7 +98,8 @@
           :tableLoading="loading"
           :index="true"
           @handleSelectionChange="handleSelectionChange"
-          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_TABLE|MTZ签字表格" @click="handleSubmitChoose"
+          @click="handleSubmitChoose"
+          v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_MTZ_TABLE|MTZ签字表格" 
           >
         </tableList>
         <!-- <iPagination
@@ -69,12 +118,17 @@
 </template>
 
 <script>
-import {iDialog, iInput, iPagination, iButton, iMessage} from 'rise'
+import {iDialog, iInput,iSelect, iPagination, iButton, iMessage} from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import {detailTableTitle} from './data'
 import { pageMixins } from "@/utils/pageMixins";
 import inputCustom from '@/components/inputCustom'
-import { getTableData } from "@/api/designate/nomination/mtz"
+import { getTableData,
+    getMtzGenericAppId,
+    getRawMaterial,
+    getCurrentUser,
+    getNominateAppIdList
+} from "@/api/designate/nomination/mtz"
 
 export default {
   mixins: [pageMixins],
@@ -94,7 +148,8 @@ export default {
     iPagination,
     iButton,
     tableList,
-    inputCustom
+    inputCustom,
+    iSelect
   },
   data () {
     return {
@@ -103,10 +158,27 @@ export default {
       tableListData: [],
       selection: [],
       loading: false,
+
+      getMtzGenericAppId:[],//申请单号
+      getRawMaterial:[],
+      getCurrentUser:[],
+      getNominateAppIdList:[],//关联申请单
     }
   },
   created() {
     this.getTableData()
+    getMtzGenericAppId({}).then(res=>{
+      this.getMtzGenericAppId = res.data;
+    })
+    getRawMaterial({}).then(res=>{
+      this.getRawMaterial = res.data;
+    })
+    getCurrentUser({}).then(res=>{
+      this.getCurrentUser = res.data;
+    })
+    getNominateAppIdList({}).then(res=>{
+      this.getNominateAppIdList = res.data;
+    })
   },
   methods: {
     // 获取表格数据
