@@ -43,13 +43,39 @@ export default {
         }
         const res = await listFixedPointHistory(pms);
         if (res.result) {
-          this.tableListData = res.data;
+          var resData = res.data;
+          if (resData && resData.length > 0) {
+            resData.forEach((header) => {
+              if (header.nomiRecordDetailVO && header.nomiRecordDetailVO.length > 0) {
+                header.nomiRecordDetailVO.forEach((detail) => {
+                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.material,"",header.carTypeProj,this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
+                })
+              } else {
+                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.material,"",header.carTypeProj,"","",header.nominateTime))
+              }
+            })
+          }
         }
         this.tableLoading = false;
       } catch {
         this.tableListData = [];
         this.tableLoading = false;
       }
+    },
+    createTableRow(fsnrGsnrNum,partNum,rfqId,rfqName,material,stuffName,carTypeProj,supplierNameCn,apriceModel,nominateDate) {
+      var tableRow = {
+        fsnrGsnrNum: fsnrGsnrNum,
+        partNum: partNum,
+        rfqId: rfqId,
+        rfqName: rfqName,
+        material: material,
+        stuffName: stuffName,
+        carTypeProj: carTypeProj,
+        supplierNameCn: supplierNameCn,
+        apriceModel: apriceModel,
+        nominateDate: nominateDate
+      }
+      return tableRow
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
