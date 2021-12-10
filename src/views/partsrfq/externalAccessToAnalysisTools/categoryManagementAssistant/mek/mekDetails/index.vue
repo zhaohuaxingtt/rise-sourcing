@@ -8,7 +8,7 @@
 -->
 <template>
   <iPage class="new-MEK">
-    <div id="content">
+    <div id="content" v-loading="onDataLoading">
       <div class="navBox flex-between-center"
            style="margin-bottom:20px">
         <div class="title font-weight flex">
@@ -526,10 +526,12 @@ export default {
       checkAllList: [],
       carLevelOptions: {},
       checkedCarLevelOptions: {},
-      onCarLevelVisible: false
+      onCarLevelVisible: false,
+      onDataLoading: false
     };
   },
   async created () {
+    this.onDataLoading = true
     await this.init();
     let params = {
       comparedType: this.comparedType,
@@ -558,11 +560,13 @@ export default {
     } else {
       params.isBindingRfq = false;
     }
-    if (this.categoryId && this.chemeId && this.categoryCode) {
-      console.log(params, this.entryStatus)
-      params.isBindingRfq= this.isBindingRfq
-      await this.getHistogram(params);
-    }
+    this.onDataLoading = false
+    this.$nextTick(() => {
+      if (this.categoryId && this.chemeId && this.categoryCode) {
+        params.isBindingRfq= this.isBindingRfq
+        this.getHistogram(params);
+      }
+    })
     // this.getMekTable();
   },
   mounted () { },
@@ -1223,15 +1227,14 @@ export default {
     },
 
     getHistogram (params) {
-      const loading = this.$loading({
-        lock: true,
-        text: "Loading",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
-      });
+      this.onDataLoading = true
       getHistogram(params).then((res) => {
+        if (!res) {
+          iMessage.error("Request Error!");
+          this.onDataLoading = false;
+          return;
+        }
         this.$nextTick(() => {
-          loading.close();
           let data = res.data;
           this.totalData = _.cloneDeep(res.data);
           let maxWidthList = [];
@@ -1285,10 +1288,13 @@ export default {
             }
             this.getMekTable();
           } else {
-            loading.close();
             iMessage.error(res.desZh);
           }
+          this.onDataLoading = false;
         });
+      },(res) => {
+        iMessage.error(res.desZh);
+        this.onDataLoading = false;
       });
     },
     handleMEKInfo () {
