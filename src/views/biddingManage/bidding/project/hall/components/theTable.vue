@@ -30,7 +30,7 @@
       :page-size="page.pageSize"
       prev-text="上一页"
       next-text="下一页"
-      layout="prev, pager, next, jumper"
+      :layout="page.layout"
       :current-page="page.currPage"
       :total="tableListData.length"
     />
