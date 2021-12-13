@@ -9,161 +9,157 @@
 
 <template>
   <div class="overviewTable" v-loading="tableLoading">
-    <div v-for="(item, index) in tableTitle" :key="index" class="overviewTable-column" >
+    <div v-for="(item, index) in tableTitle" :key="index" class="overviewTable-column">
       <!---------------------------------------------------------------------->
       <!----------                 表头                        ---------------->
       <!---------------------------------------------------------------------->
-      <template v-if="item.key === 'CAOZUO' && !showOperation">
-      </template>
-      <tmeplate v-else>
-        <div class="overviewTable-cell title">
-          {{item.key ? language(item.key, item.name) : item.name}}
+      <div class="overviewTable-cell title">
+        {{item.key ? language(item.key, item.name) : item.name}}
+      </div>
+      <div v-for="(dataItem, index) in tableData" :key="index" class="overviewTable-cell">
+        <!---------------------------------------------------------------------->
+        <!----------                  基础信息列                 ---------------->
+        <!---------------------------------------------------------------------->
+        <div class="baiscInfo" v-if="item.props === 'basic'">
+          <div class="baiscInfo-top">
+            <img src="../../../../assets/images/car.png" />
+            <span>{{dataItem.cartypeProjectZh}}</span>
+          </div>
+          <div class="baiscInfo-bottom">
+            <ol clasdivs="baiscInfo-bottom-column">
+              <li>
+                <div>
+                  <el-tooltip :content='dataItem.carPlatformCode' effect='light'>
+                    <span class="overText">{{dataItem.carPlatformCode}}</span>
+                  </el-tooltip>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <el-tooltip :content='dataItem.brandName' effect='light'>
+                    <span class="overText">{{dataItem.brandName}}</span>
+                  </el-tooltip>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <el-tooltip :content='dataItem.carTypeLevel + " class"' effect='light'>
+                    <span class="overText">{{dataItem.carTypeLevel}} class</span>
+                  </el-tooltip>
+                </div>
+              </li>
+            </ol>
+            <ol class="baiscInfo-bottom-column">
+              <li>
+                <div>
+                  <el-tooltip :content='dataItem.factoryName' effect='light'>
+                    <span class="overText">{{dataItem.factoryName}}</span>
+                  </el-tooltip>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <el-tooltip :content='"SOP:"+dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk' effect='light'>
+                    <span class="overText">SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</span>
+                  </el-tooltip>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <el-tooltip :content='"KPE:"+dataItem.kpe' effect='light'>
+                    <span class="overText" style="width:auto;">KPE:{{dataItem.kpe}}</span>
+                  </el-tooltip>
+                  <icon v-if="showOperation" symbol name="iconbianji"  class="margin-left10 cursor"></icon>
+                </div>
+              </li>
+            </ol>
+          </div>
         </div>
-        <div v-for="(dataItem, index) in tableData" :key="index" class="overviewTable-cell">
-          <!---------------------------------------------------------------------->
-          <!----------                  基础信息列                 ---------------->
-          <!---------------------------------------------------------------------->
-          <div class="baiscInfo" v-if="item.props === 'basic'">
-            <div class="baiscInfo-top">
-              <img src="../../../../assets/images/car.png" />
-              <span>{{dataItem.cartypeProjectZh}}</span>
-            </div>
-            <div class="baiscInfo-bottom">
-              <ol clasdivs="baiscInfo-bottom-column">
-                <li>
-                  <div>
-                    <el-tooltip :content='dataItem.carPlatformCode' effect='light'>
-                      <span class="overText">{{dataItem.carPlatformCode}}</span>
-                    </el-tooltip>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <el-tooltip :content='dataItem.brandName' effect='light'>
-                      <span class="overText">{{dataItem.brandName}}</span>
-                    </el-tooltip>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <el-tooltip :content='dataItem.carTypeLevel + " class"' effect='light'>
-                      <span class="overText">{{dataItem.carTypeLevel}} class</span>
-                    </el-tooltip>
-                  </div>
-                </li>
-              </ol>
-              <ol class="baiscInfo-bottom-column">
-                <li>
-                  <div>
-                    <el-tooltip :content='dataItem.factoryName' effect='light'>
-                      <span class="overText">{{dataItem.factoryName}}</span>
-                    </el-tooltip>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <el-tooltip :content='"SOP:"+dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk' effect='light'>
-                      <span class="overText">SOP:{{dataItem.pepTimeNode && dataItem.pepTimeNode.pepSopWk}}</span>
-                    </el-tooltip>
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    <el-tooltip :content='"KPE:"+dataItem.kpe' effect='light'>
-                      <span class="overText" style="width:auto;">KPE:{{dataItem.kpe}}</span>
-                    </el-tooltip>
-                    <icon v-if="showOperation" symbol name="iconbianji"  class="margin-left10 cursor"></icon>
-                  </div>
-                </li>
-              </ol>
-            </div>
+        <!---------------------------------------------------------------------->
+        <!----------                  操作列                 -------------------->
+        <!---------------------------------------------------------------------->
+        <div v-else-if="item.props === 'caozuo' && showOperation" class="caozuo">
+          <div class="cursor" @click="openAssistant(dataItem)">
+            <icon symbol name="icontiaozhuanpaicheng"  class="margin-right10"></icon>
+            <span class="openLinkText">{{language('TIAOZHUANPAICHENG','跳转排程')}}</span>
           </div>
-          <!---------------------------------------------------------------------->
-          <!----------                  操作列                 -------------------->
-          <!---------------------------------------------------------------------->
-          <div v-else-if="item.props === 'caozuo' && showOperation" class="caozuo">
-            <div class="cursor" @click="openAssistant(dataItem)">
-              <icon symbol name="icontiaozhuanpaicheng"  class="margin-right10"></icon>
-              <span class="openLinkText">{{language('TIAOZHUANPAICHENG','跳转排程')}}</span>
-            </div>
-            <div class="cursor margin-top30" @click="openMonitoring(dataItem)">
-              <icon symbol name="icontiaozhuanjiankong"  class="margin-right10"></icon>
-              <span class="openLinkText">{{language('TIAOZHUANJIANKONG','跳转监控')}}</span>
-            </div>
+          <div class="cursor margin-top30" @click="openMonitoring(dataItem)">
+            <icon symbol name="icontiaozhuanjiankong"  class="margin-right10"></icon>
+            <span class="openLinkText">{{language('TIAOZHUANJIANKONG','跳转监控')}}</span>
           </div>
-          <div v-else-if="item.props === 'output'">{{getTousandNum(dataItem[item.props])}}</div>
-          <!---------------------------------------------------------------------->
-          <!----------                年份列-节点渲染               ---------------->
-          <!---------------------------------------------------------------------->
-          <div v-else-if="item.type === 'year'" class="yearCell">
-            <div v-for="indexItem in [1,2,3,4]" :key="indexItem" class="yearCell-item" :style="`flex-direction:${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1?'column':'row'};justify-content:${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1?'flex-start':'center'}`">
-              <template v-if="getNodeList(item.props, indexItem, dataItem.nodeList).length > 1">
-                <div class="iconBox">
-                  <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node small-node1" :style="`left:${nodeItem.left}%;z-index:${nodeItem.left*10}`">
-                    <!-- 已完成 -->
-                    <icon v-if="nodeItem.status == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
-                    <!-- 正在进行中 -->
-                    <icon v-else-if="nodeItem.status == 2" symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
-                    <!-- 未完成 -->
-                    <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
-                    <template v-if="nodeItem.withLine">
-                      <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon>
-                      <!-- 已完成 -->
-                      <icon v-else-if="nodeItem.line.lineStatus == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="short-between-icon"></icon>
-                      <!-- 未完成 -->
-                      <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="short-between-icon"></icon>
-                    </template>
-                  </div>
-                </div>
-                <div class="textBox">
-                  <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node small-node1">
-                    <span class="node-title">{{nodeItem.label}}</span>
-                    <span class="node-week" :class="minFontSize < 10 ? '' : 'withScale'">KW{{ nodeItem.week }}</span>
-                  </div>
-                </div>
-              </template>
-              <div v-else v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" :class="`node ${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1 && 'small-node'+getNodeList(item.props, indexItem, dataItem.nodeList).length}`">
-                <!-- 已完成 -->
-                <icon v-if="nodeItem.status == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
-                <!-- 正在进行中 -->
-                <icon v-else-if="nodeItem.status == 2" symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
-                <!-- 未完成 -->
-                <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
-                <span class="node-title">{{nodeItem.label}}</span>
-                <span class="node-week" :class="minFontSize < 10 ? '' : 'withScale'">KW{{ nodeItem.week }}</span>
-                <template v-if="nodeItem.withLine">
-                  <!-- <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon> -->
-                  <span v-if="nodeItem.line.lineStatus == 2" v-html="svgList['iconchanpinzupaicheng_jinhangzhong']" class="short-between-icon"></span>
+        </div>
+        <div v-else-if="item.props === 'output'">{{getTousandNum(dataItem[item.props])}}</div>
+        <!---------------------------------------------------------------------->
+        <!----------                年份列-节点渲染               ---------------->
+        <!---------------------------------------------------------------------->
+        <div v-else-if="item.type === 'year'" class="yearCell">
+          <div v-for="indexItem in [1,2,3,4]" :key="indexItem" class="yearCell-item" :style="`flex-direction:${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1?'column':'row'};justify-content:${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1?'flex-start':'center'}`">
+            <template v-if="getNodeList(item.props, indexItem, dataItem.nodeList).length > 1">
+              <div class="iconBox">
+                <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node small-node1" :style="`left:${nodeItem.left}%;z-index:${nodeItem.left*10}`">
                   <!-- 已完成 -->
-                  <!-- <icon v-else-if="nodeItem.line.lineStatus == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="short-between-icon"></icon> -->
-                  <span v-else-if="nodeItem.line.lineStatus == 1" v-html="svgList['iconchanpinzupaicheng_yiwancheng']" class="short-between-icon"></span>
+                  <icon v-if="nodeItem.status == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
+                  <!-- 正在进行中 -->
+                  <icon v-else-if="nodeItem.status == 2" symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
                   <!-- 未完成 -->
-                  <!-- <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="short-between-icon"></icon> -->
-                  <span v-else v-html="svgList['iconchanpinzupaicheng_weijinhang']" class="short-between-icon"></span>
-                </template>
+                  <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
+                  <template v-if="nodeItem.withLine">
+                    <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon>
+                    <!-- 已完成 -->
+                    <icon v-else-if="nodeItem.line.lineStatus == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="short-between-icon"></icon>
+                    <!-- 未完成 -->
+                    <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="short-between-icon"></icon>
+                  </template>
+                </div>
               </div>
-              <div v-if="getLineNode(item.props, indexItem, dataItem.nodeList)" class="node nodeLine">
-                <!-- <icon v-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 4" symbol name="iconchanpinzupaicheng_xuxian" class="step-between-icon"></icon> -->
-                <span v-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 4" v-html="svgList['iconchanpinzupaicheng_xuxian']" class="step-between-icon"></span>
-                <!-- <icon v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon> -->
-                <span v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 2" v-html="svgList['iconchanpinzupaicheng_jinhangzhong']" class="step-between-icon"></span>
+              <div class="textBox">
+                <div v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" class="node small-node1">
+                  <span class="node-title">{{nodeItem.label}}</span>
+                  <span class="node-week" :class="minFontSize < 10 ? '' : 'withScale'">KW{{ nodeItem.week }}</span>
+                </div>
+              </div>
+            </template>
+            <div v-else v-for="(nodeItem, index) in getNodeList(item.props, indexItem, dataItem.nodeList)" :key="index" :class="`node ${getNodeList(item.props, indexItem, dataItem.nodeList).length > 1 && 'small-node'+getNodeList(item.props, indexItem, dataItem.nodeList).length}`">
+              <!-- 已完成 -->
+              <icon v-if="nodeItem.status == 1" symbol name="icondingdianguanli-yiwancheng"  class="step-icon"></icon> 
+              <!-- 正在进行中 -->
+              <icon v-else-if="nodeItem.status == 2" symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>
+              <!-- 未完成 -->
+              <icon v-else symbol name="icondingdianguanlijiedian-yiwancheng" class="step-icon"></icon>
+              <span class="node-title">{{nodeItem.label}}</span>
+              <span class="node-week" :class="minFontSize < 10 ? '' : 'withScale'">KW{{ nodeItem.week }}</span>
+              <template v-if="nodeItem.withLine">
+                <!-- <icon v-if="nodeItem.line.lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="short-between-icon"></icon> -->
+                <span v-if="nodeItem.line.lineStatus == 2" v-html="svgList['iconchanpinzupaicheng_jinhangzhong']" class="short-between-icon"></span>
                 <!-- 已完成 -->
-                <!-- <icon v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="step-between-icon"></icon> -->
-                <span v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 1" v-html="svgList['iconchanpinzupaicheng_yiwancheng']" class="step-between-icon"></span>
+                <!-- <icon v-else-if="nodeItem.line.lineStatus == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="short-between-icon"></icon> -->
+                <span v-else-if="nodeItem.line.lineStatus == 1" v-html="svgList['iconchanpinzupaicheng_yiwancheng']" class="short-between-icon"></span>
                 <!-- 未完成 -->
-                <!-- <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="step-between-icon"></icon> -->
-                <span v-else v-html="svgList['iconchanpinzupaicheng_weijinhang']" class="step-between-icon"></span>
-                <span class="node-title"></span>
-                <span class="node-week"></span>
-              </div>
+                <!-- <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="short-between-icon"></icon> -->
+                <span v-else v-html="svgList['iconchanpinzupaicheng_weijinhang']" class="short-between-icon"></span>
+              </template>
+            </div>
+            <div v-if="getLineNode(item.props, indexItem, dataItem.nodeList)" class="node nodeLine">
+              <!-- <icon v-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 4" symbol name="iconchanpinzupaicheng_xuxian" class="step-between-icon"></icon> -->
+              <span v-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 4" v-html="svgList['iconchanpinzupaicheng_xuxian']" class="step-between-icon"></span>
+              <!-- <icon v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 2" symbol name="iconchanpinzupaicheng_jinhangzhong" class="step-between-icon"></icon> -->
+              <span v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 2" v-html="svgList['iconchanpinzupaicheng_jinhangzhong']" class="step-between-icon"></span>
+              <!-- 已完成 -->
+              <!-- <icon v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 1" symbol name="iconchanpinzupaicheng_yiwancheng" class="step-between-icon"></icon> -->
+              <span v-else-if="getLineNode(item.props, indexItem, dataItem.nodeList) && getLineNode(item.props, indexItem, dataItem.nodeList).lineStatus == 1" v-html="svgList['iconchanpinzupaicheng_yiwancheng']" class="step-between-icon"></span>
+              <!-- 未完成 -->
+              <!-- <icon v-else symbol name="iconchanpinzupaicheng_weijinhang" class="step-between-icon"></icon> -->
+              <span v-else v-html="svgList['iconchanpinzupaicheng_weijinhang']" class="step-between-icon"></span>
+              <span class="node-title"></span>
+              <span class="node-week"></span>
             </div>
           </div>
-          <!---------------------------------------------------------------------->
-          <!----------                  常规列                     ---------------->
-          <!---------------------------------------------------------------------->
-          <div v-else class="nomal-cell">{{dataItem[item.props]}}</div>
         </div>
-      </tmeplate>
+        <!---------------------------------------------------------------------->
+        <!----------                  常规列                     ---------------->
+        <!---------------------------------------------------------------------->
+        <div v-else class="nomal-cell">{{dataItem[item.props]}}</div>
+      </div>
     </div>
     <!---------------------------------------------------------------------->
     <!----------                  暂无数据                      ------------->

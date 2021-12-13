@@ -36,7 +36,7 @@
           <iButton @click="openSelectCar" v-permission.auto='PROJECTMGT_OVERVIEW_SELECTVISIBLECARPROJECT|项目管理-概览-选择显示车型项目'>{{language('XUANZEXIANSHICHEXINGXIANGMU', '选择显示车型项目')}}</iButton>
           <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
           <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
-          <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton @click="save" :loading="onSave">{{ language("BAOCUN", "保存") }}</iButton>
           <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
         </template>
         <el-form>
@@ -61,7 +61,7 @@
       <!---------------------------------------------------------------------->
       <!----------                 表格                        ---------------->
       <!---------------------------------------------------------------------->
-      <iCard class="margin-top20" v-permission.auto='PROJECTMGT_OVERVIEW_CARPROJECTTALBE|项目管理-概览-表格'>
+      <iCard class="margin-top20" v-permission.auto='PROJECTMGT_OVERVIEW_CARPROJECTTALBE|项目管理-概览-表格' id="sop">
         <tableList :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" :showOperation="false"></tableList>
       </iCard>
       <!---------------------------------------------------------------------->
@@ -78,10 +78,13 @@ import moment from 'moment'
 import tableList from '@/views/project/overview/components/overviewTable'
 import selectCarProDialog from '@/views/project/overview/components/selectcarpro'
 import { getOverview } from '@/api/project'
+import {sopPipeLineSave} from "@/api/categoryManagementAssistant/internalDemandAnalysis/sop";
 import productPurchaserSelect from '@/views/project/components/commonSelect/productPurchaserSelect'
 import {downloadPdfMixins} from '@/utils/pdf'
+import resultMessageMixin from '@/utils/resultMessageMixin.js'
+
 export default {
-  mixins:[downloadPdfMixins],
+  mixins:[downloadPdfMixins, resultMessageMixin],
   components: { iCard, iSearch, iButton, iDatePicker, iSelect, tableList, selectCarProDialog, productPurchaserSelect },
   data() {
     const currentYear = moment().year()
@@ -99,8 +102,7 @@ export default {
         {props: currentYear + 2, name: currentYear + 2, type: 'year'},
         {props: currentYear + 3, name: currentYear + 3, type: 'year'},
         {props: 'output', name: '产量', key: 'CHANLIANG'},
-        {props: 'projectPurchaserName', name: '项目采购员', key: 'XIANGMUCAIGOUYUAN'},
-        {props: 'caozuo', name: '操作', key: 'CAOZUO'}
+        {props: 'projectPurchaserName', name: '项目采购员', key: 'XIANGMUCAIGOUYUAN'}
       ],
       tableData: [],
       tableLoading: false,
@@ -119,7 +121,8 @@ export default {
       ],
       tableDataTemp: [],
       categoryCode: "",
-      id: ""
+      id: "",
+      onSave: false
     }
   },
   async created() {
@@ -136,24 +139,28 @@ export default {
     back(){
       this.$router.go(-1)
     },
-    async save(){
-      const resFile = await this.getDownloadFileAndExportPdf({
-        domId: 'sop',
-        watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
-        pdfName:'品类管理助手_SOP进度轴_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
-      });
-      let params={
-        categoryCode:this.categoryCode,
-        fileType:"PDF",
-        reportFileName: resFile.downloadName,
-        reportName: resFile.downloadName,
-        schemeName:"",
-        reportUrl: resFile.downloadUrl,
-        id:this.id,
-        carTypeProDTO:this.carType
-      }
-      sopPipeLineSave(params).then(res=>{
-        this.resultMessage(res)
+    save(){
+      this.onSave = true;
+      this.$nextTick(async () => {
+        const resFile = await this.getDownloadFileAndExportPdf({
+          domId: '#sop',
+          watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
+          pdfName:'品类管理助手_SOP进度轴_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
+        });
+        let params={
+          categoryCode:this.categoryCode,
+          fileType:"PDF",
+          reportFileName: resFile.downloadName,
+          reportName: resFile.downloadName,
+          schemeName:"",
+          reportUrl: resFile.downloadUrl,
+          id:this.id,
+          carTypeProDTO:this.carType
+        }
+        sopPipeLineSave(params).then(res=>{
+          this.resultMessage(res)
+          this.onSave = false;
+        })
       })
     },
     /**
