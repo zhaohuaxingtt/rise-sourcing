@@ -62,7 +62,7 @@
       </div>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogSure">确 定</el-button>
+        <el-button type="primary" @click="dialogSure">{{language('QUEDING','确 定')}}</el-button>
       </div>
 
     </iDialog>
