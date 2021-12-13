@@ -22,7 +22,7 @@
     <powerBi :key='randomNumber' v-show="!forceHide && !images.length" :categoryCode="categoryCode" @updateCatgreyCode='updateCode'></powerBi>
   </iCard>
   <higthligthts :key='randomNumber' v-if='categoryCode' :categoryCode="categoryCode" class='margin-top20 margin-bottom20'></higthligthts>
-  <iCard :title='language("KEYINITIATIVE","Key initiatives")' class="mineCards">
+  <iCard :title='language("KEYINITIATIVE","Key Initiatives")' class="mineCards" collapse :defalutCollVal="false">
     <iButton v-if="!isPreview && !nominationDisabled && !rsDisabled" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_GOTOEDIT|前往编辑"  class="floatright" @click='open'>前往编辑</iButton>
     <listOfinit :key='randomNumber' ref="listOfinit"  v-if='categoryCode' :categoryCodeProps="categoryCode" :extendsIsedit='false' :isEdit='isEdit'></listOfinit>
   </iCard>
