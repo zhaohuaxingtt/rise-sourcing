@@ -12,7 +12,7 @@
     <div class="control">
       <div class="flex-align-center">
         <span class="label">材料组</span>
-        <iSelect v-model="categoryCode" :disabled="isPreview || nominationDisabled || rsDisabled" @change="randomNumber++"> 
+        <iSelect v-model="categoryCode" @change="randomNumber++"> 
           <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryCode+'-'+items.categoryName"></el-option> 
         </iSelect>
         <iButton v-if="categoryCode" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="fileManageButton" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
