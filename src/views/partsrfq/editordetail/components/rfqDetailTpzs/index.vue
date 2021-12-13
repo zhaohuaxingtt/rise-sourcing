@@ -14,7 +14,7 @@
               <iButton @click="handleReport" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_BUTTON_BAOGAOQINGDAN|报告清单">{{ $t('TPZS.BGQD') }}</iButton>
           </div>
          <!--------------------报价评分跟踪----------------------------------------->
-         <iCard  collapse v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAYUPINGFENGENZONG|报价与评分跟踪">
+         <iCard title="报价与评分跟踪" @handleTitle="addFile(1,'报价与评分跟踪')"  @handleCollapse="handleCollapse($event,'1')"  collapse v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAYUPINGFENGENZONG|报价与评分跟踪">
          <div slot="header"
                class="clearfix">
             <div>
@@ -32,7 +32,7 @@
            <quotationScoringTracking id="card1" v-if='cardShow.find(items=>items.key == "1").show'></quotationScoringTracking>
          </iCard>
          <!--------------------报价分析汇总-零件----------------------------------------->
-         <iCard title="报价分析汇总-零件" @handleCollapse="handleCollapse($event,'2','报价分析汇总-零件')" collapse class="margin-top20" :defalutCollVal='cardShow.find(items=>items.key == "2").show' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN|报价分析汇总-零件">
+         <iCard title="报价分析汇总-零件" @handleCollapse="handleCollapse($event,'2')" collapse class="margin-top20" :defalutCollVal='cardShow.find(items=>items.key == "2").show' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN|报价分析汇总-零件">
            <quotationScoringHZ  id="card2" v-if='cardShow.find(items=>items.key == "2").show'></quotationScoringHZ>
          </iCard>
           <!--------------------报价分析汇总-模具----------------------------------------->
@@ -43,7 +43,7 @@
          <iCard title="报价趋势" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'4')" collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI|报价趋势"></iCard>
           <!--------------------报价分析汇总-业务分配模拟----------------------------------------->
          <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')" id="card5" :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_YEWYFENPEIMONI|业务分配模拟"></buMonitor>
-         <iCard title="业务分配模拟" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'5','业务分配模拟')"  collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
+         <iCard title="业务分配模拟" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'5')"  collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
       </template>
     </el-tab-pane>
     <el-tab-pane lazy name="two" label="专项分析工具" v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU|专项分析工具">
@@ -78,7 +78,8 @@ export default {
          { code:'QUOTE_IMITATE',
           msg:'业务分配模拟'},
         { code:'QUOTE_TRACK',
-          msg:'报价与评分跟踪'}
+          msg:'报价与评分跟踪'},
+          {code:'NEGOTIATION_BASE',msg:'项目概览'}
           
       ]
     }
@@ -102,7 +103,7 @@ export default {
     handleCollapse(e, key) {
       this.cardShow.forEach(i => {
         if (i.key == key) {
-          i.show = !i.show 
+          i.show = !i.show
         }
       })
     },
