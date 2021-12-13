@@ -11,7 +11,7 @@
   <iFormGroup row='4' label-width='100px' class="Iform">
     <iFormItem label="Tool" v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSISTYPE|分析类型">
       <iSelect v-model="typeSelect" @change="changeCostanalysisList">
-        <el-option v-for='(items,index) in arrayOfselect' :label='items.label' :value='items.value' :key='index'></el-option>
+        <el-option v-for='(items,index) in tools' :label='items.label' :value='items.value' :key='index'></el-option>
       </iSelect>
     </iFormItem>
     <iFormItem  v-if='isPreview'  label='Analysis' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSIS|Analysis">
@@ -57,7 +57,7 @@
       </div>
   </iDialog>
   <div v-if='isPreview'>
-    <bob v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></bob>
+    <bob v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender' :statusProps="true"></bob>
     <vp v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
     <pi v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
     <div v-else-if='["PCA","TIA"].includes(typeSelect)' id="preview2" :key='keysRender'>
@@ -79,7 +79,7 @@
 import {iCard,iFormGroup,iFormItem,iSelect,iDialog,icon} from 'rise'
 import tabel from '@/views/partsign/home/components/tableList'
 import {arrayOfselect,tableTitle} from './data'
-import {costanalysisList,costanalysisShow,costanalysisSort} from '@/api/designate/decisiondata/costanalysis'
+import {costanalysisList,costanalysisShow,costanalysisSort,getTools} from '@/api/designate/decisiondata/costanalysis'
 import bob from '@/views/partsrfq/bob/newReport'
 import vp from '@/views/partsrfq/vpAnalyse/vpAnalyseDetail'
 import pi from '@/views/partsrfq/piAnalyse/piDetail'
@@ -90,7 +90,7 @@ export default{
   data(){
     return {
       typesOfData:'',
-      arrayOfselect,
+      tools: arrayOfselect,
       tableTitle,
       tableData:[],
       typeSelect:'BOB',
@@ -115,11 +115,28 @@ export default{
       return this.tableTitle
     }
   },
-  created(){
-    this.typeSelect = this.$route.query.typeSelect || 'BOB'
-    this.costanalysisList()
+  async created(){
     //当前状态是否是预览状态
     this.isPreview = this.$route.query.isPreview == 1
+
+    if (this.isPreview) {
+      await this.getTools()
+
+      if (!this.tools.some(item => item.value === this.$route.query.typeSelect)) {
+        this.typeSelect = this.tools[0]?.value
+      } else {
+        this.typeSelect = this.$route.query.typeSelect || "BOB"
+      }
+
+      this.$store.dispatch('setCostType',this.typeSelect)
+      
+      this.costanalysisList()
+    } else {
+      this.typeSelect = "BOB"
+      this.$store.dispatch('setCostType',this.typeSelect)
+      this.tools = arrayOfselect
+      this.costanalysisList()
+    }
   },
   watch: {
     previewItems(nv) {
@@ -134,6 +151,7 @@ export default{
     }
   },
   methods:{
+
     changeCostanalysisList(){
       this.$store.dispatch('setCostType',this.typeSelect) //记录preview的时候的下拉类型，保证在url打开的时候是匹配的
       console.log(this.$store.state.nomination.costType)
@@ -226,6 +244,20 @@ export default{
         this.loadingRight = false
       }).catch(()=>{
         this.loading = false
+      })
+    },
+    // 获取有数据的Tool下拉框
+    getTools() {
+      return getTools({
+        nominateAppId: this.$route.query.desinateId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.tools = 
+            Array.isArray(res.data) ?
+            arrayOfselect.filter(item => res.data.some(code => code === item.value)) :
+            []
+        }
       })
     }
   }
