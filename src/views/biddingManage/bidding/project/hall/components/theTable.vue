@@ -24,7 +24,8 @@
     </commonTable>
     <iPagination
       v-update
-      @current-change="handleCurrentChange($event)"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
       background
       :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
@@ -110,7 +111,11 @@ export default {
     },
     handleCurrentChange(e) {
       this.page.currPage = e;
-      this.pageNum = e;
+      // this.pageNum = e;
+    },
+    handleSizeChange(val) {
+      this.page.currPage = 1;
+      this.page.pageSize = val;
     },
   },
 };
