@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-09 11:21:46
+ * @LastEditTime: 2021-12-13 11:14:29
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -20,6 +20,7 @@
         <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton> 
         <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton> 
         <el-popover 
+          class="margin-left10"
           placement="bottom" 
           width="156" 
           trigger="click" 
@@ -28,7 +29,7 @@
           <div class="partListView-downloadContent"> 
             <div class="cursor" v-for="item in downloadTypeList" :key="item.key" @click="handleDownload(item)">{{language(item.key, item.label)}}</div> 
           </div> 
-          <iButton class="margin-left10" slot="reference" :loading="downloadLoading"> 
+          <iButton slot="reference" :loading="downloadLoading"> 
             {{language('DAOCHUPAICHENGQINGDAN', '导出排程清单')}} 
             <icon class="margin-left16" v-if="!showDownloadContent" symbol name="icona-Icon-ArrowDropDown"></icon> 
             <icon class="margin-left16" v-else symbol name="icona-Icon-Arrowshouqi"></icon> 
@@ -39,16 +40,18 @@
     <div class="partListView-content" ref="partSchedulPartListViewContent" v-infinite-scroll="load" :infinite-scroll-distance="20"> 
       <div v-for="pro in showParts" :key="pro.label" class="productItem" ref="partSchedulPartListViewItem"> 
         <div class="productItem-top"> 
-          <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
-            <el-popover
-              v-if="pro.zp && pro.zp === 'ZP5'"
-              :content="language('ZP5LINGJIANZHENGXUPAICHENGCONGDINGIDIANJIEDIANKAISHI','ZP5零件，正序排程从定点节点开始')"
-              placement="top-start"
-              trigger="hover">
-              <span slot="reference" >*</span>
-            </el-popover>
-            {{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} 
-          </el-checkbox> 
+          <div class="checkBox-wrapper">
+            <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
+              <el-popover
+                v-if="pro.zp && pro.zp === 'ZP5'"
+                :content="language('ZP5LINGJIANZHENGXUPAICHENGCONGDINGIDIANJIEDIANKAISHI','ZP5零件，正序排程从定点节点开始')"
+                placement="top-start"
+                trigger="hover">
+                <span slot="reference" >*</span>
+              </el-popover>
+            </el-checkbox> 
+            <span @click="() => {$set(pro, 'isChecked', !pro.isChecked);handleCheckboxChange()}" class="checkBox-wrapper-text">{{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} </span>
+          </div>
           <div class="productItem-top-targetList"> 
             <!---------------------------目标指示灯，1-正常 2-风险 3-延误-------------------------------------------> 
             <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item"> 
@@ -668,10 +671,10 @@ export default {
     getFitPartNameZhList(partNameZh) { 
       return this.partsTemp.reduce((accu, curr) => { 
         const filterRes = []
-        if (curr.partNameZh && curr.partNameZh.includes(partNameZh)) { 
+        if (curr.partNameZh && curr.partNameZh.toLocaleLowerCase().includes(partNameZh.toLocaleLowerCase())) { 
           filterRes.push({value:curr.partNameZh})
         } 
-        if (curr.partNameDe && curr.partNameDe.includes(partNameZh)) { 
+        if (curr.partNameDe && curr.partNameDe.toLocaleLowerCase().includes(partNameZh.toLocaleLowerCase())) { 
           filterRes.push({value:curr.partNameDe})
         } 
         return [...accu, ...filterRes] 
@@ -703,10 +706,10 @@ export default {
       this.parts = this.partsTemp.filter(item => { 
         let result = true 
         if (partNum && result === true) { 
-          result = item.partNum.includes(partNum) 
+          result = item.partNum && item.partNum.toLocaleLowerCase().includes(partNum.toLocaleLowerCase()) 
         } 
         if (partNameZh && result === true) { 
-          result = item.partNameZh.includes(partNameZh) || item.partNameDe.includes(partNameZh) 
+          result = item.partNameZh && item.partNameZh.toLocaleLowerCase().includes(partNameZh.toLocaleLowerCase()) || item.partNameDe && item.partNameDe.toLocaleLowerCase().includes(partNameZh.toLocaleLowerCase()) 
         } 
         if (partNameDe && result === true) { 
           result = item.partNameDe.includes(partNameDe) 
@@ -864,6 +867,15 @@ export default {
       display: flex; 
       align-items: center; 
       justify-content: space-between; 
+      .checkBox-wrapper {
+        display: flex;
+        &-text {
+          font-weight: bold;
+          font-size: 18px;
+          margin-left: 10px;
+          cursor: pointer;
+        }
+      }
       &-targetList { 
         margin-left: 130px; 
         display: flex; 
