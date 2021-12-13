@@ -57,9 +57,9 @@
       </div>
   </iDialog>
   <div v-if='isPreview'>
-    <bob v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender' :statusProps="true"></bob>
-    <vp v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
-    <pi v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
+    <bob class="bob" v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender' :statusProps="true"></bob>
+    <vp class="vp" v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
+    <pi class="pi" v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
     <div v-else-if='["PCA","TIA"].includes(typeSelect)' id="preview2" :key='keysRender'>
       <div v-if="previewItems">
         <iframe class="iframe" width="100%" v-if='previewItems && JSON.parse(previewItems).reportLink' :src="`${ JSON.parse(previewItems).reportLink }#view=fith`" frameborder="0"></iframe>
@@ -70,7 +70,7 @@
         <echartsComponents v-if='previewItems' :rfqId='JSON.parse(previewItems).rfqId' :key='keysRender'></echartsComponents>
     </template>
     <template v-else>
-      <mek v-if='previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></mek>
+      <mek class="mek" v-if='previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></mek>
     </template>
   </div>
 </iCard>
@@ -291,6 +291,19 @@ export default{
   .desc {
     transform: rotate(180deg);
     margin-left: 10px;
+  }
+
+  .bob, .pi, .vp, .mek {
+    overflow: hidden !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+
+    ::v-deep .cardBody {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      padding-bottom: 0 !important;
+    }
   }
 }
 

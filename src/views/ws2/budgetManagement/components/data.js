@@ -593,12 +593,12 @@ export const tmCartypeProList = [
         key: '',
         tooltip: false
     },
-    {
-        props: 'apply',
-        name: '',
-        key: '',
-        tooltip: false
-    },
+    // {
+    //     props: 'apply',
+    //     name: '',
+    //     key: '',
+    //     tooltip: false
+    // },
 ]
 
 export const partsList = [

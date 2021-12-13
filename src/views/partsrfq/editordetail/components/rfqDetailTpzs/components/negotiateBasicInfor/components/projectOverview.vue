@@ -2,11 +2,12 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-18 10:24:09
- * @LastEditors: zbin
+ * @LastEditors: caopeng
  * @Descripttion: 项目概览
 -->
 <template>
-  <iCard :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id" :defalutCollVal='false' collapse>
+<!-- @handleTitle="addFile(6,'项目概览')"  -->
+  <iCard id="card6" :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id+`<icon class='icon cursor' name='icongouwuche' symbol></icon>`" :defalutCollVal='false' collapse>
     <projectInfor  @rfqInfo="emitRfq"/>
     <el-divider></el-divider>
     <partInforTable/>
@@ -21,13 +22,22 @@ import { iCard, iFormItem, iText, iFormGroup, iLabel, icon } from "rise";
 import projectInfor from "./projectInfor.vue";
 import partInforTable from "./partInforTable.vue";
 import supplierTable from "./supplierTable.vue";
+import {  downloadPdfMixins } from '@/utils/pdf'
 export default {
+  mixins: [downloadPdfMixins],
   // import引入的组件需要注入到对象中才能使用
   components: { iCard, iFormItem, iText, iFormGroup, iLabel, icon, projectInfor, partInforTable, supplierTable },
   data() {
     // 这里存放数据
     return {
-
+  toolType:[
+         { code:'QUOTE_IMITATE',
+          msg:'业务分配模拟'},
+        { code:'QUOTE_TRACK',
+          msg:'报价与评分跟踪'},
+          {code:'NEGOTIATION_BASE',msg:'项目概览'}
+          
+      ]
     }
   },
   // 监听属性 类似于data概念
