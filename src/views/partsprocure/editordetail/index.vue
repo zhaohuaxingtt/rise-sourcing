@@ -627,7 +627,8 @@
 				selectDictByRootKeys([
 					{ keys: "TERMS_PAYMENT" },
 					{ keys: "TERMS_PURCHASE" },
-					{ keys: "PP_CSTMGMT_CURRENCY" }
+					{ keys: "PP_CSTMGMT_CURRENCY" },
+					{ keys: "CAR_TYPE_PRO" }
 				])
 				.then(res => {
 					if (res.code == 200) {
@@ -748,7 +749,9 @@
 					if (res.code == 200 && res.data) {
 						const map = {}
 						Object.keys(res.data).forEach(key => { // 容错
-							map[key] = Array.isArray(res.data[key]) ? res.data[key] : []
+							if (key !== "CAR_TYPE_PRO") {
+								map[key] = Array.isArray(res.data[key]) ? res.data[key] : []
+							}
 						})
 
 						this.fromGroup = {
