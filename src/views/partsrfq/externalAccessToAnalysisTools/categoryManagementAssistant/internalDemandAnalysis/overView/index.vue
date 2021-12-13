@@ -17,8 +17,7 @@
           <div slot="header">
             <span class="title">{{language(item.key,item.name)}}</span>
           </div>
-          <div class="img">
-            <img :src="item.image">
+          <div class="img" :style="{'background-image': 'url('+item.image+')'}">
           </div>
         </iCard>
       </div>
@@ -162,12 +161,10 @@ export default {
   height: 406px;
   margin-bottom: 20px;
   .img {
-    height: 100%;
+    height: 18rem;
+    background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
-    img {
-      width: 100%;
-      height: 18rem;
-    }
   }
 }
 </style>
