@@ -57,7 +57,7 @@
       </div>
   </iDialog>
   <div v-if='isPreview'>
-    <bob v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></bob>
+    <bob v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender' :statusProps="true"></bob>
     <vp v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
     <pi v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
     <div v-else-if='["PCA","TIA"].includes(typeSelect)' id="preview2" :key='keysRender'>
@@ -127,9 +127,13 @@ export default{
       } else {
         this.typeSelect = this.$route.query.typeSelect || "BOB"
       }
+
+      this.$store.dispatch('setCostType',this.typeSelect)
       
       this.costanalysisList()
     } else {
+      this.typeSelect = "BOB"
+      this.$store.dispatch('setCostType',this.typeSelect)
       this.tools = arrayOfselect
       this.costanalysisList()
     }
