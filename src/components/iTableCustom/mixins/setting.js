@@ -1,5 +1,4 @@
-import { iMessage } from 'rise'
-import iTableHeaderSorter from '@/components/iTableHeaderSort'
+import { iMessage,iTableHeaderSorter } from 'rise'
 export default {
   components: { iTableHeaderSorter },
   computed: {
