@@ -33,7 +33,7 @@
         <!-- 专业采购员 -->
         <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='buyerId'>
           <i-select
-              v-model.trim="queryAkeoForm.buyerId"
+              v-model.trim="queryAkeoForm.linieId"
               filterable
               remote
               reserve-keyword
