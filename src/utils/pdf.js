@@ -1,5 +1,6 @@
 import html2canvas from 'html2canvas'
 import JsPDF from 'jspdf'
+import { iMessage } from 'rise'
 import {
     uploads
 } from '@/api/file/upload'
