@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:35:20
- * @LastEditTime: 2021-12-08 10:24:16
+ * @LastEditTime: 2021-12-13 12:05:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\strategy\index.vue
@@ -13,7 +13,7 @@
       <div class="flex-align-center">
         <span class="label">材料组</span>
         <iSelect v-model="categoryCode" :disabled="isPreview || nominationDisabled || rsDisabled" @change="randomNumber++"> 
-          <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryName"></el-option> 
+          <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryCode+'-'+items.categoryName"></el-option> 
         </iSelect>
         <iButton v-if="categoryCode" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="fileManageButton" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
       </div>
@@ -22,7 +22,7 @@
     <powerBi :key='randomNumber' v-show="!forceHide && !images.length" :categoryCode="categoryCode" @updateCatgreyCode='updateCode'></powerBi>
   </iCard>
   <higthligthts :key='randomNumber' v-if='categoryCode' :categoryCode="categoryCode" class='margin-top20 margin-bottom20'></higthligthts>
-  <iCard :title='language("KEYINITIATIVE","Key initiatives")' class="mineCards">
+  <iCard :title='language("KEYINITIATIVE","Key Initiatives")' class="mineCards" collapse :defalutCollVal="false">
     <iButton v-if="!isPreview && !nominationDisabled && !rsDisabled" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_GOTOEDIT|前往编辑"  class="floatright" @click='open'>前往编辑</iButton>
     <listOfinit :key='randomNumber' ref="listOfinit"  v-if='categoryCode' :categoryCodeProps="categoryCode" :extendsIsedit='false' :isEdit='isEdit'></listOfinit>
   </iCard>
