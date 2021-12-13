@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-19 10:31:57
+ * @LastEditTime: 2021-12-13 16:54:58
  * @Description: 零件排程页面
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\index.vue
 -->
@@ -23,7 +23,7 @@
           <div v-for="(item, index) in searchList" :key="index" class="titleSearch-item">
             <span class="titleSearch-item-lable">{{language(item.key, item.label)}}</span>
             <el-autocomplete :placeholder="language('QINGSHURU', '请输入')" class="titleSearch-item-content" :fetch-suggestions="item.querySearch" v-if="item.type === 'input'" v-model="searchParams[item.value]" :trigger-on-focus="false" />
-            <iDicoptions v-else-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="false" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
+            <iDicoptions v-else-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="true" :optionKey="item.selectOption" v-model="searchParams[item.value]" />
           </div>
         </div>
         <div>
@@ -56,7 +56,10 @@ export default {
         {value: 'partStatus', label: '零件状态', key: 'LINGJIANZHUANGTAI', type: 'selectDict', selectOption: 'PART_PERIOD_TYPE'},
         {value: 'level', label: '风险等级', key: 'FENGXIANDENGJI', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG'},
       ],
-      searchParams: {},
+      searchParams: {
+        partStatus: '',
+        level: ''
+      },
       isSop: false,
       collapseValue: true,
       delayGradeConfigOption: []
@@ -100,7 +103,10 @@ export default {
      * @return {*}
      */    
     handleReset() {
-      this.searchParams = {}
+      this.searchParams = {
+        partStatus: '',
+        level: ''
+      }
       this.$nextTick(() => {
         this.handleSure()
       })
