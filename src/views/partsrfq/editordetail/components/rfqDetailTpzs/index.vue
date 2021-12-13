@@ -10,6 +10,7 @@
     <el-tab-pane name="one" label="报价分析">
       <template>
           <div class="right-btn">
+              <!-- <iButton  @click="addFile(1,'报价与评分跟踪')" >点击</iButton> -->
               <iButton @click="handleReport" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_BUTTON_BAOGAOQINGDAN|报告清单">{{ $t('TPZS.BGQD') }}</iButton>
           </div>
          <!--------------------报价评分跟踪----------------------------------------->
@@ -60,7 +61,9 @@ export default {
       activityTabIndex: 'one',
       toolType:[
          { code:'QUOTE_IMITATE',
-          msg:'业务分配模拟'}
+          msg:'业务分配模拟'},
+              { code:'QUOTE_TRACK',
+          msg:'报价与评分跟踪'}
       ]
     }
   },
@@ -70,7 +73,7 @@ export default {
     }
   },
   methods: {
-          async upLoad(key, name) {
+          async addFile(key, name) {
       //   let el = document.querySelector('#'+val)
       //   let el = document.querySelector('rightaa')
       //        iMessageBox(
@@ -86,9 +89,9 @@ export default {
       this.downloadButtonLoading = true
 
     if(key=='4'){
-        this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('upload')
+        this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('addFile')
         }else  if(key=='3'){
-       this.$refs.quotationScoringMj.handleDownload('upload')
+       this.$refs.quotationScoringMj.handleDownload('addFile')
         }else{
         downloadPDF({
             idEle: '#card' + key,
@@ -115,8 +118,12 @@ export default {
                         toolType:this.toolType.find(res=>res.msg==name).code,
                         downloadUrl:res.data[0].id
                     }
-                    reportAdd().then(v=>{
-
+                    reportAdd(req).then(v=>{
+                    if (res && res.code == 200) {
+                            iMessage.success(res.desZh)
+                            } else {
+                            iMessage.error(res.desZh)
+                            }
                     })
                     }else{
                          iMessage.error(this.language('SHANGCHUANSHIBAI', '上传失败'))
@@ -140,14 +147,11 @@ export default {
      * @return {*}
      */
     handleCollapse(e, key,name) {
-      
       this.cardShow.forEach(i => {
         if (i.key == key) {
           i.show = e
         }
       })
-      
-    //   this.upLoad(key,name)
     },
     //点击返回
     clickReturn() {
