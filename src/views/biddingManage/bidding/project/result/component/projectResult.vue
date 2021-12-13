@@ -44,7 +44,7 @@
               {{
                 form.roundType === "05" && form.manualBiddingType === "02"
                   ? 1
-                  : scope.row["currentSort"] || 1
+                  : scope.row["currentSort"]
               }}
             </div>
           </template>
@@ -215,7 +215,7 @@ export default {
       console.log(this.role);
       const data = this.tableListData;
       for (let i = 0; i < this.tableListData.length; i++) {
-        let currentSort = this.tableListData[i].currentSort || 1;
+        let currentSort = this.tableListData[i].currentSort || '';
         let price = this.tableListData[i].offerPrice;
         let currencyMultiple = this.currencyMultiples(
           this.tableListData[i].currencyMultiple
@@ -223,7 +223,7 @@ export default {
         let currencyUnit = this.units(this.tableListData[i].currencyUnit);
         let offerPrice = this.dividedBeiShu(price) + currencyMultiple + "-" + currencyUnit;
         let supplierName = this.tableListData[i].supplierName;
-        let serverTime = this.tableListData[i].serverTime.replace("T", " ");
+        let serverTime = this.tableListData[i]?.serverTime ? this.tableListData[i]?.serverTime.replace("T", " ") : '';
         let isTax =
           this.tableListData[i].isTax === "01" ? "不含可抵扣税" : "含税";
         this.dataList.push({
@@ -296,10 +296,8 @@ export default {
       this.tableListData.sort(this.compare("currentSort"));
       this.isTax = res[0]?.isTax;
         if (
-        (this.form.roundType === "05" &&
-        this.form.manualBiddingType === "02") 
-        || (this.role === "supplier" && this.form.resultOpenForm === '01' 
-        || (this.role === "supplier" && this.form.resultOpenForm === '02'))
+          (this.role === "supplier" && this.form.resultOpenForm === '01' 
+          || (this.role === "supplier" && this.form.resultOpenForm === '02'))
         ) {
           this.tableListData = res.filter((item) => {
             return this.supplierCode.includes(item.supplierCode);
@@ -314,6 +312,7 @@ export default {
           }
         })
         this.page.total = res.length;
+        console.log('object',this.tableListData)
     },
   },
 };
