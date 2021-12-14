@@ -140,7 +140,14 @@
         </el-col>
         <el-col span="4" v-if="!isComponent" style="border:1px solid #F8F9FA;"></el-col>
         <el-col :span="isComponent ? 24 : 20">
-          <bobAnalysis ref="bobAnalysis" :label="label" :formUpdata="formUpdata" :propSchemeId="analysisSchemeId" :propGroupId="groupId" :isPreview="isPreview"></bobAnalysis>
+          <bobAnalysis
+            ref="bobAnalysis"
+            :label="label"
+            :formUpdata="formUpdata"
+            :propSchemeId="analysisSchemeId"
+            :propGroupId="groupId"
+            :isPreview="isPreview"
+          ></bobAnalysis>
         </el-col>
       </el-row>
       <!-- <div class="margin-top20"
