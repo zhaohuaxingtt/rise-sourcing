@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-12-10 11:33:42
+ * @LastEditTime: 2021-12-14 10:48:42
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -93,6 +93,10 @@ export default {
     tableList,
   },
   props: {
+    noLinie: {
+      type: Boolean,
+      default: true
+    },
     workFlowId: {
       type: String,
       require: true,
@@ -118,7 +122,7 @@ export default {
     let str_json = window.atob(this.queryParams.transmitObj);
     let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
     this.transmitObj = transmitObj;
-    this.workFlowId ? this.getPartsList() : this.getSwitchPartsByParams();
+    this.noLinie ? this.getPartsList() : this.getSwitchPartsByParams();
   },
   methods: {
     floatFixNum,

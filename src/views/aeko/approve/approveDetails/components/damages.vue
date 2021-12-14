@@ -37,6 +37,10 @@ export default {
     iText,
   },
   props: {
+    noLinie: {
+      type: Boolean,
+      default: true
+    },
     basicInfo: {
       type: Object,
       default: () => {},
@@ -62,7 +66,7 @@ export default {
   },
   methods: {
     init() {
-      this.workFlowId
+      this.noLinie
         ? this.getTerminationPrice()
         : this.getTerminationPriceByLinie();
     },
