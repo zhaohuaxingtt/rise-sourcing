@@ -22,7 +22,7 @@
       <logButton class="logButton" />
       <!--      报告清单-->
       <reportInventory v-model="reportInventoryDialog" />
-      <categoryGroup v-model="openCatecoryDialog" @clearDiolog="clearDiolog"></categoryGroup>
+      <categoryGroup v-model="openCatecoryDialog" @clearDiolog="clearDiolog" :categoryCodeProps="categoryCodeProps" :categoryCodeOptions="categoryCodeOptions"></categoryGroup>
     </div>
   </div>
 </template>
@@ -46,7 +46,9 @@ export default {
     showCommonButton: {
       type: Boolean,
       default: true
-    }
+    },
+    categoryCodeProps: String,
+    categoryCodeOptions: Array
   },
   data() {
     return {
