@@ -149,6 +149,7 @@ export default {
               pageSize: 10,
               status: 1,
               purchasingRequirementId: this.params.purchasingRequirementId,
+              cartypeProjectId: this.params.carTypeProjectId,
             });
   
             this.version = "V1";
