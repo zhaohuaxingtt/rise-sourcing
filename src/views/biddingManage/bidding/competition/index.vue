@@ -99,8 +99,9 @@ export default {
   },
   computed: {
     title() {
-      const { rfqCode, projectCode } = this.ruleForm || {};
-      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
+      const { rfqCode, projectCode,roundType,isTest } = this.ruleForm || {};
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode} ${roundType == '05' ? isTest ?  '（测试）' : '（正式）' : ''}` 
+              : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode} ${roundType == '05' ? isTest ?  '（测试）' : '（正式）' : ''}`;
     },
     role() {
       return this.$route.meta.role;

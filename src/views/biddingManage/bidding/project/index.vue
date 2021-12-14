@@ -152,12 +152,20 @@ export default {
       projectBack: "",
       biddingFinish: false,
       handleReject:false,
+      getSupplierData:{}
     };
   },
-   mounted() {
+   async mounted() {
     window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
     this.projectBack = sessionStorage.getItem("projectBack");
     console.log(this.projectBack);
+    if (this.role === "supplier") {
+      const res = await getSupplierNotification({
+          projectCode: this.ruleForm.projectCode,
+          supplerCode: this.supplierCode,
+      });
+      this.getSupplierData = res
+    }
     
   },
 
@@ -209,9 +217,10 @@ export default {
       }
     },
     title() {
-      const { rfqCode, projectCode } = this.ruleForm || {};
+      const { rfqCode, projectCode,roundType,isTest } = this.ruleForm || {};
       // return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
-      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode} ${roundType == '05' ? isTest ?  '（测试）' : '（正式）' : ''}` 
+                    : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode} ${roundType == '05' ? isTest ?  '（测试）' : '（正式）' : ''}`;
     },
   },
   watch: {
@@ -382,11 +391,7 @@ export default {
         window.URL.revokeObjectURL(blobUrl);
       }
     },
-    async buttonShow(val) {
-      const res = await getSupplierNotification({
-            projectCode: this.ruleForm.projectCode,
-            supplerCode: this.supplierCode,
-        });
+    buttonShow(val) {
       const { biddingStatus, roundType } = this.ruleForm || {};
       this.biddingFinish = localStorage.getItem("finish");
       if (val == "hall") {
@@ -398,7 +403,7 @@ export default {
             return false;
           } else if (roundType == "02") {
             return false;
-          } else if ((biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09') && (!res.biddingNtfFlag && !res.systemUseFlag )){
+          } else if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )){
             return false
           } else {
             return true;
@@ -407,7 +412,7 @@ export default {
       }
 
       if (val == "result") {
-        if ((biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09') && (!res.biddingNtfFlag && !res.systemUseFlag )) {
+        if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )) {
           return false
         } else if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
           return true;
