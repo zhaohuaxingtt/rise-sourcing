@@ -23,23 +23,23 @@
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.FOP')" slot="label"></iLabel>
-        <iText>{{  form.fop }}</iText>
+        <iText>{{  form.fop ? form.fop : "-" }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.EPXTY')" slot="label"></iLabel>
-        <iText>{{  form.ep }}</iText>
+        <iText>{{  form.ep?form.ep:'-' }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.MQXTY')" slot="label"></iLabel>
-        <iText>{{  form.mq }}</iText>
+        <iText>{{  form.mq ? form.mq:'-' }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.PLXTY')" slot="label"></iLabel>
-        <iText>{{  form.pl }}</iText>
+        <iText>{{  form.pl?form.pl:'-' }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.CFXTY')" slot="label"></iLabel>
-        <iText>{{  form.cf }}</iText>
+        <iText>{{  form.cf ? form.cf : '-' }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.FOPQK')" slot="label"></iLabel>
