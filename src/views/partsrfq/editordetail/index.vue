@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-14 21:33:53
+ * @LastEditTime: 2021-12-14 21:39:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
@@ -374,7 +374,7 @@ export default {
         this.rfqloading = true
       }
       if(updateType === '05') {
-        if(this.baseInfo.roundsType == this.roundsType.zxkb && this.baseInfo.currentRoundsStatusCode == 'RUNNING'){
+        if(this.baseInfo.roundsType == this.roundsType.zxkb && this.baseInfo.currentRoundsStatusCode == 'RUNNING' && this.baseInfo.currentStatus == "IN_REQ"){
           if(!this.showReason) return this.showReason = true
           if(!this.reason) return iMessage.warn(this.language('NINGDANGQIANHAIWEITXX','您当前还未填写原因，请填写后再试！'))
         } 
