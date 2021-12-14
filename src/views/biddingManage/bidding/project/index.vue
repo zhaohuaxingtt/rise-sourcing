@@ -159,13 +159,6 @@ export default {
     window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
     this.projectBack = sessionStorage.getItem("projectBack");
     console.log(this.projectBack);
-    if (this.role === "supplier") {
-      const res = await getSupplierNotification({
-          projectCode: this.ruleForm.projectCode,
-          supplerCode: this.supplierCode,
-      });
-      this.getSupplierData = res
-    }
     
   },
 
@@ -275,6 +268,7 @@ export default {
             projectCode: this.ruleForm.projectCode,
             supplerCode: this.supplierCode,
         });
+        this.getSupplierData = res
 
         if(!res?.systemUseFlag) {
           const type = '01'
