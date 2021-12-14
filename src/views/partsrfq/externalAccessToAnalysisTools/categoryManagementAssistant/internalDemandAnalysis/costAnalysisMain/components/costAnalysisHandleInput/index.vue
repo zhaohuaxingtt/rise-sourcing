@@ -214,7 +214,7 @@ export default {
       return new Promise(resolve => {
         this.downloadButtonLoading = true
         const pdfParam = {
-          domId: 'content',
+          domId: '#content',
           watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
           pdfName: this.schemeName,
         }

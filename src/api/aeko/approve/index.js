@@ -190,7 +190,7 @@ export function queryApprovalStatus(id){
 // Aeko审批-详情页-CBD-模具投资变动
 export function getMoulds(data){
   return requst_sourcing({
-    url:`/aeko/get/mouldcbd/${data.workFlowId}/${data.quotationId} `,
+    url:`/aeko/get/mouldcbd/${data.workFlowId}/${data.quotationId}`,
     method:'GET',
   })
 }

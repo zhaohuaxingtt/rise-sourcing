@@ -317,7 +317,7 @@ export default {
         this.$nextTick(async () => {
           const pdfName = `品类管理助手-举措清单-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
           const resFile = await this.getDownloadFileAndExportPdf({
-            domId: 'container',
+            domId: '#container',
             watermark: nameEn + '-' + userNum + '-' + nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName: pdfName,
           });

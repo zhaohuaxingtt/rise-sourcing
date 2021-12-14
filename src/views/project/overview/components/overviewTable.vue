@@ -9,7 +9,7 @@
 
 <template>
   <div class="overviewTable" v-loading="tableLoading">
-    <div v-for="(item, index) in tableTitle" :key="index" class="overviewTable-column" >
+    <div v-for="(item, index) in tableTitle" :key="index" class="overviewTable-column">
       <!---------------------------------------------------------------------->
       <!----------                 表头                        ---------------->
       <!---------------------------------------------------------------------->
