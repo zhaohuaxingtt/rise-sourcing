@@ -12,13 +12,13 @@ const acceptKeyArray = [
   // 零件签收
   ['currentUser', 'showSelf'],
   // 采购项目建立
-  ['status','buyerName','linieName','currentUser','isDelay', 'showSelf'],
+  ['status','buyerName','linieName','currentUser','isDelay', 'showSelf', 'jumpType'],
   // RFQ管理 未转谈判、待上会流转
-  ['type','currentUser','isDelay'],
+  ['type','currentUser','isDelay', 'jumpType'],
   // RFQ管理 时间轴
   ['type','currentUser','isDelay'],
   // 定点管理
-  ['nominateProcessType', 'applicationStatus', 'currentUser', 'isDelay'],
+  ['nominateProcessType', 'applicationStatus', 'currentUser', 'isDelay', 'jumpType'],
   // 定点信
   ['status','linieName','csfCssName', 'currentUser', 'isDelay'],
   // LOI
