@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-15 14:44:30
+ * @LastEditTime: 2021-12-14 10:51:00
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -44,6 +44,10 @@ export default {
     tableList,
   },
   props:{
+    noLinie: {
+      type: Boolean,
+      default: true
+    },
     workFlowId:{
       type:String,
       default:''
@@ -65,7 +69,7 @@ export default {
   },
   methods:{
     init(){
-      this.workFlowId?this.getToolingsample():this.getToolingSampleByLinie()
+      this.noLinie?this.getToolingsample():this.getToolingSampleByLinie()
     },
     async getToolingsample(){
       const {workFlowId,quotationId} = this;

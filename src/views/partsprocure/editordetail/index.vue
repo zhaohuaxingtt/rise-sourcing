@@ -180,7 +180,7 @@
 						</iFormItem>
 						
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
-							<iSelect v-model="detailData.carTypeProjectZh" v-if="!disabled" @change="getCarTypeSopTime">
+							<iSelect v-model="detailData.carTypeProjectZh" filterable v-if="!disabled" @change="getCarTypeSopTime">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
@@ -628,7 +628,7 @@
 					{ keys: "TERMS_PAYMENT" },
 					{ keys: "TERMS_PURCHASE" },
 					{ keys: "PP_CSTMGMT_CURRENCY" },
-					{ keys: "CAR_TYPE_PRO" }
+					// { keys: "CAR_TYPE_PRO" }
 				])
 				.then(res => {
 					if (res.code == 200) {
@@ -973,18 +973,29 @@
 			},
 			// 选择车型项目的时候，需要带出对应车型的SOP时间
 			getCarTypeSopTime(carType) {
-				// 原来有SOP时间才需要联动
+				// 原来有SOP时间不需要联动
 				if(this.bakCarTypeSopTime) return
-				const carTypeItem = this.carTypeOptions.find(o => o.cartypeProCode === carType)
-				if (carTypeItem && carTypeItem.sop) {
-					this.detailData.sopDate = carTypeItem.sop
+				const carTypeItem = this.fromGroup.CAR_TYPE_PRO.find(o => o.code === carType)
+				if (carTypeItem && carTypeItem.sopDate) {
+					this.detailData.sopDate = carTypeItem.sopDate
+					// polo gp
 				}
 			},
 			// 获取车型项目sop
 			getCarTypeSopList() {
 				getCarTypeSop().then(res => {
 					if (res && res.code === '200') {
-						this.carTypeOptions = res.data || []
+						this.fromGroup.CAR_TYPE_PRO = 
+							Array.isArray(res.data) ?
+							res.data.map(item => ({
+								id: item.id,
+								code: item.cartypeProCode,
+								name: item.cartypeProName,
+								sopDate: item.sop
+							})) :
+							[]
+
+						this.$forceUpdate()
 					}
 				})
 			}

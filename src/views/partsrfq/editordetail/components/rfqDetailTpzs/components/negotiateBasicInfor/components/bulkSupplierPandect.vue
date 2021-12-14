@@ -83,7 +83,7 @@ export default {
     async handleSave() {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
-        domId: 'allContainer',
+        domId: '#allContainer',
         watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
         pdfName: this.language('PINLEIGUANLIZHUSHOU', '品类管理助手') + '-' + this.language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN', '批量供应商工厂总览') + '-' + this.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
       });
