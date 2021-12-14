@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-12-02 14:09:05
+ * @LastEditTime: 2021-12-14 14:50:43
  * @LastEditors: Luoshuang
  * @Description: 风险图的配置文件
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\lib\genBarChart.js
@@ -170,14 +170,12 @@ export function generateOptions(params = {}, type = 1) {
         seaiesValues.push(value)
         // 辅助柱子的值
         assistValue = NumAll - diffValue
-        // console.log(item.name, value, assistLineValue, assistLineData, assistLineData[index - 1])
         // 辅助柱状图数据
         assistData.push(assistValue)
         // 辅助线数据
         assistLineData.push(assistLineValue)
     })
     
-
     const option = {
         color: ['#4382FA', '#E30D0D','#FFCA53','#00BF87'],
         tooltip: {
@@ -290,7 +288,7 @@ export function generateOptions(params = {}, type = 1) {
                 },
                 label: {
                     show: true,
-                    position: 'right',
+                    position: 'insideLeft',
                     textStyle: {
                         fontSize: 10,
                         color: '#000'
@@ -299,7 +297,7 @@ export function generateOptions(params = {}, type = 1) {
                         return seaiesData[params.dataIndex].value !== '0' && params.dataIndex !== seaiesData.length - 2 && Number(seaiesData[params.dataIndex].value) < Number(seaiesData[seaiesData.length - 1].value) * (0.1 * (seaiesData[params.dataIndex].value + '').length) ? seaiesData[params.dataIndex].value : ''
                     }
                 },
-                data: seaiesData.map(item => 0)
+                data: seaiesData.map((item, index) => seaiesData[seaiesData.length - 1].value - (item.value + assistData[index]))
             },
             {
                 name: '辅助线',
