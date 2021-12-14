@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-09 17:49:33
+ * @LastEditTime: 2021-12-14 09:52:48
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
@@ -18,7 +18,7 @@
         <iButton @click="handleApplyModuleTargetPrice" :loading="checkApplyLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
           {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
         </iButton>
-        <iButton  :loading='endEngotiationlaoding' @click="updateRfqStatus('07')" v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDNEGOTIATION|谈判完成">
+        <iButton v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && baseInfo.partProjectType[0] === partProjTypes.PEIJIAN"  :loading='endEngotiationlaoding' @click="updateRfqStatus('07')" v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDNEGOTIATION|谈判完成">
           {{ language('TANPANWANCHENG','谈判完成') }}
         </iButton>
         <span v-if="!disabled">
@@ -183,6 +183,7 @@ import { tableTitle,form } from "@/views/partsprocure/home/components/data";
 import { getRfqInfo } from "@/api/costanalysismanage/rfqdetail"
 import { checkApply } from '@/api/modelTargetPrice/index'
 import iLoger from 'rise/web/components/iLoger'
+import {partProjTypes} from '@/config'
 export default {
   components: {
     iButton,
@@ -228,7 +229,8 @@ export default {
       linieUserId:'',
       childFnList:[],
       checkApplyLoading: false,
-      endEngotiationlaoding: false
+      endEngotiationlaoding: false,
+      partProjTypes
     }
   },
   mounted(){
