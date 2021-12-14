@@ -87,7 +87,7 @@
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
               language('系统使用条款', '系统使用条款')
             }}</iButton> -->
-            <iButton @click="handleShowNotice('02', '竞价告知书')">{{
+            <iButton v-if="isShowBidding" @click="handleShowNotice('02', '竞价告知书')">{{
               language('BIDDING_JINJIAGAOZHISHU', '竞价告知书')
             }}</iButton>
           </template>
@@ -162,6 +162,15 @@ export default {
   },
 
   computed: {
+    // 没有同意系统使用条款或者告知书的供应商只能看建档页面
+    isShowBidding(){
+      const {biddingStatus} = this.ruleForm
+      if (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09') {
+        return false
+      } else {
+        return true
+      }
+    },
     role() {
       return this.$route.meta.role;
     },
@@ -257,6 +266,7 @@ export default {
             projectCode: this.ruleForm.projectCode,
             supplerCode: this.supplierCode,
         });
+
         if(!res?.systemUseFlag) {
           const type = '01'
           const docTitle = '系统使用条款'
@@ -351,7 +361,9 @@ export default {
     handleShowNotice(type, docTitle) {
       this.type = type;
       this.docTitle = docTitle;
-      this.showBidNotice = true;
+      const {biddingStatus} = this.ruleForm
+      // 打开弹窗
+      this.showBidNotice = biddingStatus === '02' || biddingStatus === '04';
       // this.$router.push('/bidding/bidNotice')
       // this.$router.push({
       //   path: `/bidding/bidNotice`,
@@ -370,7 +382,11 @@ export default {
         window.URL.revokeObjectURL(blobUrl);
       }
     },
-    buttonShow(val) {
+    async buttonShow(val) {
+      const res = await getSupplierNotification({
+            projectCode: this.ruleForm.projectCode,
+            supplerCode: this.supplierCode,
+        });
       const { biddingStatus, roundType } = this.ruleForm || {};
       this.biddingFinish = localStorage.getItem("finish");
       if (val == "hall") {
@@ -382,6 +398,8 @@ export default {
             return false;
           } else if (roundType == "02") {
             return false;
+          } else if ((biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09') && (!res.biddingNtfFlag && !res.systemUseFlag )){
+            return false
           } else {
             return true;
           }
@@ -389,7 +407,9 @@ export default {
       }
 
       if (val == "result") {
-        if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
+        if ((biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09') && (!res.biddingNtfFlag && !res.systemUseFlag )) {
+          return false
+        } else if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
           return true;
         } else {
           return false;
