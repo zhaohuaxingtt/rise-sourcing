@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 20:59:42
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-05 15:55:31
+ * @LastEditTime: 2021-12-14 14:59:56
  * @Description: 
- * @FilePath: \front-web\src\views\project\overview\components\overviewTable.vue
+ * @FilePath: \front-sourcing\src\views\project\overview\components\overviewTable.vue
 -->
 
 <template>
@@ -69,7 +69,7 @@
                   <el-tooltip :content='"KPE:"+dataItem.kpe' effect='light'>
                     <span class="overText" style="width:auto;">KPE:{{dataItem.kpe}}</span>
                   </el-tooltip>
-                  <icon v-if="showOperation" symbol name="iconbianji"  class="margin-left10 cursor"></icon>
+                  <!-- <icon v-if="showOperation" symbol name="iconbianji"  class="margin-left10 cursor"></icon> -->
                 </div>
               </li>
             </ol>
