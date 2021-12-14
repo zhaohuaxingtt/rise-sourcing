@@ -7,7 +7,9 @@
 -->
 <template>
   <iCard  @handleTitle="addFile($event,9, '定点记录')" :title="$t('TPZS.DDJV')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal='false' collapse>
-    <tableList id="card9" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="true" @handleSelectionChange="handleSelectionChange" />
+    <tableList id="card9" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="true" @handleSelectionChange="handleSelectionChange">
+
+    </tableList>
   </iCard>
 </template>
 
@@ -52,10 +54,10 @@ export default {
             resData.forEach((header) => {
               if (header.nomiRecordDetailVO && header.nomiRecordDetailVO.length > 0) {
                 header.nomiRecordDetailVO.forEach((detail) => {
-                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.material,"",header.carTypeProj,this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
+                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.materialGroup+"-"+header.material,"",header.carTypeProj,this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
                 })
               } else {
-                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.material,"",header.carTypeProj,"","",header.nominateTime))
+                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.materialGroup+"-"+header.material,"",header.carTypeProj,"","",header.nominateTime))
               }
             })
           }
