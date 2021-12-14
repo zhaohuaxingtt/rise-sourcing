@@ -2,12 +2,12 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 16:28:01
- * @LastEditors: zbin
+ * @LastEditors: caopeng
  * @Descripttion: 总览
 -->
 <template>
-  <iCard id="allContainer" :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
-    <div class="center">
+  <iCard id="allContainer " @handleTitle="addFile($event,8, '批量供应商工厂总览')"  :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
+    <div class="center" id="card8">
       <div class="tip">
         <el-popover trigger="hover" placement="top-start" width="400" :content="language('TLJJGLJCLGYSGHBLCXCL','Turnover=零件价格*零件产量*供应商供货比例*车型产量')">
           <icon slot="reference" style="font-size:1.375rem" name="iconxinxitishi" tip="" symbol></icon>
@@ -32,6 +32,7 @@ import { overviewBatchSupplierMap, saveOverviewSupplierBatchReport } from "@/api
 import supplierCard from "./supplierCard.vue";
 import { downloadPdfMixins } from '@/utils/pdf';
 import resultMessageMixin from '@/utils/resultMessageMixin';
+import { icardData } from '../../data'
 export default {
   mixins: [resultMessageMixin, downloadPdfMixins],
   components: { iCard, icon, iButton, map1, supplierCard, theMapIcon },
@@ -41,6 +42,7 @@ export default {
   },
   data() {
     return {
+     cardShow: JSON.parse(JSON.stringify(icardData)),
       saveButtonLoading: false,
       mapListData: {},
       supplierDataList: [],
@@ -138,6 +140,6 @@ export default {
 .tip {
   position: absolute;
   top: -3.22rem;
-  left: 11.3rem;
+  left: 13.3rem;
 }
 </style>
