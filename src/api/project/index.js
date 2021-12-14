@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-29 15:30:08
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-29 11:34:57
+ * @LastEditTime: 2021-12-13 14:52:36
  * @Description: 项目管理相关接口
  * @FilePath: \front-sourcing\src\api\project\index.js
  */
@@ -466,6 +466,14 @@ export function getDefaultConfig() {
 export function saveUpdateConfig(params) {
   return requst({
     url: `/project-group-config/sys`,
+    method: 'POST',
+    data: params
+  })
+}
+
+export function downAllFile(params) {
+  return downloadRequst({
+    url: '/part-task/downAllFile',
     method: 'POST',
     data: params
   })

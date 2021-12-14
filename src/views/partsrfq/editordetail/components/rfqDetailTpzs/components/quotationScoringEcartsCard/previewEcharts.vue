@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-12-10 14:42:28
+ * @LastEditTime: 2021-12-13 13:52:48
  * @LastEditors: caopeng
  * @Description: 供应商维度展示
  * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
@@ -95,9 +95,10 @@ export default{
      * @param {*}
      * @return {*}
      */
-    exportExcel(v){
+   async exportExcel(v){
         console.log(v)
-      downLoadExcel(Object.assign(this.getQuery()))
+    const res= await downLoadExcel(Object.assign(this.getQuery()))
+    console.log(res)
     },
     removeOther(row,type){
       if(!row){
