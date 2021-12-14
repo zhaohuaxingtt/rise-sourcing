@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-06 14:01:03
+ * @LastEditTime: 2021-12-13 19:43:19
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -272,7 +272,7 @@ export default{
       }
     },
     ebrShow(data) {
-      if(data == undefined || data == 'Budget' || data == 'KM'  )
+      if(!data || data == 'Budget' || data == 'KM')
        return data 
       else{
         // eslint-disable-next-line no-undef
@@ -431,7 +431,11 @@ export default{
     },
     //去掉空格
     removeSpace(str) {
-      return str.replace(/\s+/g,"")
+      try {
+        return str.replace(/\s+/g,"")
+      } catch (error) { 
+        return str 
+      }
     }
   }
 }
