@@ -87,10 +87,6 @@ export default {
     getDefaultCostStructure () {
       if (this.groupList) {
         this.group = this.groupList
-        // this.category.categoryName = this.$route.query.categoryName
-        // this.category.categoryCode = this.$route.query.categoryCode
-        // this.$store.dispatch('setCategoryCode', this.category.categoryCode)
-        // this.$store.dispatch('setCategoryName', this.category.categoryName)
       } else {
         getMaterialGroupByUserIds({}).then(res => {
           this.group = res.data

@@ -193,7 +193,7 @@ export default {
       };
     },
     disabled() {
-      console.log(this.getDisabled, '???问题');
+      // console.log(this.getDisabled(), '???问题');
       return typeof this.getDisabled === 'function' ? this.getDisabled() : false;
     },
   },

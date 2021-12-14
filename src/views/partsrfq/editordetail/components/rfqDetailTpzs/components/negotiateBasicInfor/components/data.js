@@ -21,7 +21,7 @@ export const supplierTableTitle = [
   { props: 'sapNum', name: 'SAP号', key: 'nominationSupplier.SAPHao', width: 120, tooltip: true },
   { props: 'supplierProductionPlace', name: '所在地', key: 'TPZS.SZD', tooltip: true },
   { props: 'isSelectMbdl', name: '是否MBDL', key: 'TPZS.SFMBDL', tooltip: true },
-  { props: 'quotationStatusName', name: '报价状态', key: 'TPZS.BJZT', tooltip: true },
+  { props: 'rfqParts', name: '报价状态', key: 'TPZS.BJZT', tooltip: true },
   { props: 'epRate', name: 'EP打分', key: 'TPZS.EPDF', tooltip: true },
   { props: 'mqRate', name: '质量打分', key: 'TPZS.MQDF', tooltip: true },
   { props: 'plRate', name: 'BNK打分', key: 'TPZS.PLDF', tooltip: true }
