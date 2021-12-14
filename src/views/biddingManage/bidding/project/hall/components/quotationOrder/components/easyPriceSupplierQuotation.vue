@@ -644,10 +644,14 @@ export default {
                 border-color: transparent;
                 border-radius: 0.25rem;
                 .el-tag {
-                  background-color: #f5f7fa;
+                  /* background-color: #f5f7fa;
                   color: #000;
                   border-radius: 18px;
-                  border-color: #fff;
+                  border-color: #fff; */
+                  background-color: #f7f7f7;
+                  color: #000;
+                  border-radius: 1.25rem;
+                  border-color: #eef6ff;
                   margin-left: 3px;
                   min-width: 15px;
                 }

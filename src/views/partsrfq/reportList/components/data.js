@@ -1,3 +1,9 @@
+/*
+ * @Date: 2021-11-16 11:06:02
+ * @LastEditors: caopeng
+ * @LastEditTime: 2021-12-10 16:46:37
+ * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\reportList\components\data.js
+ */
 // 搜索
 export const search=[
 	{props: 'name', name: '报告名称', type: 'input',key:'TPZS.BGMC',placeholder:'TPZS.QSRBGMC'},
@@ -18,16 +24,23 @@ export const specialToolsTitle = [
    { props: 'createByName', name: '创建人', key: 'TPZS.CJR', tooltip: true },
    { props: 'createDate', name: '创建日期', key: 'LK_CHUANGJIANRIQI', tooltip: true },
    { props: 'updateDate', name: '上次修改日期', key: 'TPZS.SCXGRQ', tooltip: true },
+   { props: 'btnList', name: '操作', key: 'CAOZUO', tooltip: true },
 ]
 
 // 报价分析
 export const quotationAnalysisTitle = [
-   { props: 'version', name: '报告名称', key: 'TPZS.BGMC', tooltip: true },
-   { props: 'tpId', name: 'RFQ', key: 'TPZS.RFQ', tooltip: true },
+    { props: 'toolType', name: '模块', key: 'MOKUAI', tooltip: true },
+   { props: 'name', name: '报告名称', key: 'TPZS.BGMC', tooltip: true },
+   { props: 'createDate', name: '创建日期', key: 'LK_CHUANGJIANRIQI', tooltip: true },
+   { props: 'btnList', name: '操作', key: 'CAOZUO', tooltip: true },
 ]
 
 // 谈判基本信息
 export const negotiationBasicTitle = [
-   { props: 'version', name: '报告名称', key: 'TPZS.BGMC', tooltip: true },
-   { props: 'tpId', name: 'RFQ', key: 'TPZS.RFQ', tooltip: true },
+   { props: 'toolType', name: '模块', key: 'MOKUAI', tooltip: true },
+
+   { props: 'name', name: '报告名称', key: 'TPZS.BGMC', tooltip: true },
+
+   { props: 'createDate', name: '创建日期', key: 'LK_CHUANGJIANRIQI', tooltip: true },
+   { props: 'btnList', name: '操作', key: 'CAOZUO', tooltip: true },
 ]

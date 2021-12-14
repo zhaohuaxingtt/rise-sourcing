@@ -269,9 +269,11 @@
     </iCard>
 
     <supplierListDialog
-      :show.sync="showSupplierDialog"
+      v-if="showSupplierDialog"
+      :show="showSupplierDialog"
       @save-checked="handleSupplierChecked"
       :suppliers="ruleForm.suppliers"
+      @update-show="supplierClose"
     />
 
     <!-- 汇率 -->
@@ -792,12 +794,16 @@ export default {
         return;
       });
     },
+    // 关闭供应商
+    supplierClose(){
+      this.showSupplierDialog = false
+    },
     handleSupplierChecked(rows) {
       console.log('gdsagdsgdsg',rows)
       const len = this.ruleForm.suppliers.length;
       const suppliersList = this.ruleForm.suppliers;
       // console.log('点击保存供应商',suppliersList, rows);
-      const suppliers = rows.map((row, index) => {
+      const suppliers = rows?.map((row, index) => {
         this.$set(this.userListCache, row.id, row.purchaserNameZh);
         return {
           sort: Number(len + index) + 1,

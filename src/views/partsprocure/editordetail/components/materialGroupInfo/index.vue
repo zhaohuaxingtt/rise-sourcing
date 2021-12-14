@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-10-27 14:28:27
+ * @LastEditTime: 2021-12-13 15:50:11
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { tableTitle } from './components/data'
+import { tableTitle, infos as materialTitle } from './components/data'
 import { iButton, iCard, iPagination, iMessage } from 'rise'
 import infos from './components/infos'
 import {partProjTypes} from '@/config'
@@ -123,11 +123,17 @@ export default {
     },
   },
   mounted() {
-    if(this.params.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
-      this.getMaterialGroup()
-    }
+    this.init()
   },
   methods: {
+    async init() {
+      if (this.isAttach) {
+        await this.getAttachMeterialStuff()
+      }
+      if(this.params.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
+        this.getMaterialGroup()
+      }
+    },
     // 获取材料组数据
     getMaterialGroup() {
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
@@ -137,6 +143,16 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
+            // 为附件类型 查看接口出来的材料组编号和工艺号是否在附件类型的材料工艺列表中
+            if (this.isAttach) {
+              const tarAttachMaterialItem = this.tableListData.find(o => o.categoryCode === this.info.categoryCode && o.stuffCode === this.info.stuffCode)
+              if (!tarAttachMaterialItem) {
+                materialTitle.forEach(mitem => {
+                  this.info[mitem.props] = ''
+                })
+              }
+            }
+            
             this.infoSource = cloneDeep(this.info)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -201,20 +217,20 @@ export default {
         .catch(() => this.tableLoading = false)
     },
     // 获取零件项目类型为附件时候的零件可选的工艺组数据
-    getAttachMeterialStuff() {
+    async getAttachMeterialStuff() {
       this.tableLoading = true
-      getAttachMeterialStuff()
-        .then((res) => {
-          if (res.code == 200) {
-            this.tableListData = (res.data || [])
-          } else {
-            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-          }
-          // this.page.totalCount = res.total
-          this.tableLoading = false
-        })
-        .catch(() => this.tableLoading = false)
-      // this.tableListData = require('./moke.json').data
+      try {
+        const res = await getAttachMeterialStuff()
+        if (res.code == 200) {
+          this.tableListData = (res.data || [])
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+        // this.page.totalCount = res.total
+        this.tableLoading = false
+      } catch (e) {
+        this.tableLoading = false
+      }
     },
     handleSingleSelectChange(row={}) {
       if (row) {

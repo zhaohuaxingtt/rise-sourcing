@@ -140,7 +140,7 @@ export default {
         {
           prop: "newAPrice",
           label: "新A价",
-          i18n: "",
+          i18n: "LK_XIANAJIA",
           headerAlign: "center",
           align: "center",
           tooltip: true,
@@ -149,7 +149,7 @@ export default {
         {
           prop: "apriceChange",
           label: "A价变动",
-          i18n: "",
+          i18n: "LK_AJIABIANDONG",
           headerAlign: "center",
           align: "center",
           tooltip: true,
@@ -158,7 +158,7 @@ export default {
         {
           prop: "bnkChange",
           label: "BNK变动",
-          i18n: "",
+          i18n: "LK_BNKBIANDONG",
           headerAlign: "center",
           align: "center",
           tooltip: true,
@@ -167,7 +167,7 @@ export default {
         {
           prop: "newBPrice",
           label: "新B价",
-          i18n: "",
+          i18n: "LK_XINBJIA",
           headerAlign: "center",
           align: "center",
           tooltip: true,
@@ -176,7 +176,7 @@ export default {
         {
           prop: "incInvestmentCost",
           label: "增加投资费(不含税)",
-          i18n: "",
+          i18n: "LK_ZENGJIATOUZIFEIBUHANSUI",
           headerAlign: "center",
           align: "center",
           tooltip: true,
@@ -186,7 +186,7 @@ export default {
         {
           prop: "developmentCost",
           label: "开发费",
-          i18n: "",
+          i18n: "KAIFAFEI",
           headerAlign: "center",
           align: "center",
           tooltip: true,
@@ -204,7 +204,7 @@ export default {
         {
           prop: "supplierSapCode",
           label: "供应商编号",
-          i18n: "",
+          i18n: "LK_GONGYINGSHANGBIANHAO",
           headerAlign: "center",
           align: "center",
           tooltip: true,

@@ -41,8 +41,7 @@
               <el-form-item :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型')" v-permission.auto="PARTSRFQ_PARTITEMTYPE|零件项目类型">
                 <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.partType">
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
-                  <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
-                             :label="items.name"/>
+                  <el-option v-for="item in partTypeOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
                 </iSelect>
               </el-form-item>
               <el-form-item :label="language('LK_RFQZHUANGTAI','RFQ状态')" v-permission.auto="PARTSRFQ_RFQSTATUS|RFQ状态">
@@ -235,7 +234,7 @@ import { downloadFile, downloadUdFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
 import { clickMessage} from "@/views/partsign/home/components/data"
-import { selectDictByKeys } from "@/api/dictionary"
+import { selectDictByRootKeys } from '@/api/dictionary'
 import {setPretreatmentParams} from '@/utils/tool'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
 
@@ -310,8 +309,8 @@ export default {
     this.getDict()
     this.getTableList()
     this.getCarTypeOptions()
-    this.getPartTypeOptions()
-    this.getRfqStatusOptions()
+    // this.getPartTypeOptions()
+    // this.getRfqStatusOptions()
     this.updateNavList
   },
   computed: {
@@ -350,10 +349,12 @@ export default {
       this.inquiryBuyerVisible = visible
     },
     getDict() {
-      selectDictByKeys([
+      selectDictByRootKeys([
         { keys: "RfqRateStatus" },
         { keys: "CF_APPLY_STATUS" },
-        { keys: "HEAVY_ITEM" }
+        { keys: "HEAVY_ITEM" },
+        { keys: "PPT" },
+        { keys: "RFQ_STATE" },
       ])
       .then(res => {
         if (res.code == 200) {
@@ -389,6 +390,30 @@ export default {
                 this.heavyItemOptions = 
                   Array.isArray(res.data["HEAVY_ITEM"]) ? 
                   res.data["HEAVY_ITEM"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
+                break
+              case "PPT":
+                this.partTypeOptions = Array.isArray(res.data["PPT"]) ? 
+                  res.data["PPT"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
+                break
+              case "RFQ_STATE":
+                this.rfqStatusOptions = this.partTypeOptions = Array.isArray(res.data["RFQ_STATE"]) ? 
+                  res.data["RFQ_STATE"].map(item => ({
                     ...item,
                     key: item.code,
                     value: item.code,
@@ -577,14 +602,17 @@ export default {
       const res = await findBySearches('01')
       this.carTypeOptions = res.data
     },
-    async getPartTypeOptions() {
-      const res = await findBySearches('02')
-      this.partTypeOptions = res.data
-    },
-    async getRfqStatusOptions() {
-      const res = await findBySearches('03')
-      this.rfqStatusOptions = res.data
-    },
+    // async getPartTypeOptions() {
+    //   const res = await findBySearches('02')
+    //   this.partTypeOptions = res.data
+    // },
+    // async getRfqStatusOptions() {
+    //   const res = await findBySearches('03')
+    //   this.rfqStatusOptions = res.data
+    // },
+
+
+
     // 分析报告下载
     downLoad(row) {
       // downloadFile({

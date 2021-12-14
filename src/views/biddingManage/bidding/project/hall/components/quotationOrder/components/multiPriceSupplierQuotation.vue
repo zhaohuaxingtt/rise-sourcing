@@ -814,7 +814,11 @@ export default {
         }
         //本年产量日期
         let annualYesr = dayjs(dateList[`stage${i}`]).year();
-        let dateArray= Object.values(yearsPlanDate);
+        let dateArray = []
+        for (let j = 1; j < 9; j++) {
+          dateArray.push(yearsPlanDate[`stage${j}`])
+        }
+        
         //产量年度在该零件年降计划出现次数数组count
         let count =dateArray.filter(item=>{
           if(item && item?.toString().includes(annualYesr)){
@@ -1326,11 +1330,16 @@ export default {
               box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
               border-color: transparent;
               border-radius: 0.25rem;
+              background-color: #f5f7fa;
               .el-tag {
-                background-color: #f5f7fa;
+                /* background-color: #f5f7fa;
                 color: #000;
                 border-radius: 18px;
-                border-color: #fff;
+                border-color: #fff; */
+                background-color: #f7f7f7;
+                color: #000;
+                border-radius: 1.25rem;
+                border-color: #eef6ff;
                 margin-left: 3px;
                 min-width: 15px;
               }

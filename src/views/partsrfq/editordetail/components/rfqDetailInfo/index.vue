@@ -7,7 +7,7 @@
   <div>
     <iTabsList class="margin-top20" type='card' @tab-click="handleTabClick" >
       <el-tab-pane lazy :label="language(item.keystring,item.label)" v-for="item of tabList" :key="item.label" v-permisstion='item.permissionKey'>
-        <component :is="item.component" v-if="activityTabIndex === item.index"/>
+        <component :rfqId='$route.query.id' :is="item.component" v-if="activityTabIndex === item.index"/>
       </el-tab-pane>
     </iTabsList>
   </div>

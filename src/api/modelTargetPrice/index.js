@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-08 14:34:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 10:08:05
+ * @LastEditTime: 2021-12-14 10:48:22
  * @Description: 模具目标价相关接口
  * @FilePath: \front-sourcing\src\api\modelTargetPrice\index.js
  */
@@ -205,5 +205,23 @@ export function checkApply(rfqId) {
   return requst({
     url: `/tooling-target-price-task/check-apply/${rfqId}`,
     method: 'POST'
+  })
+}
+
+//退回 
+export function sendBack(params) {
+  return requst({
+    url: '/tooling-target-price-task/send-back',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 是否存在有效目标价
+export function existValidTargetPrice(params) {
+  return requst({
+    url: '/tooling-target-price-task/exists-valid-target-price',
+    method: 'POST',
+    data: params
   })
 }

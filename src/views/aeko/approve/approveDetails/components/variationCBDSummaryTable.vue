@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-12-10 11:03:53
+ * @LastEditTime: 2021-12-14 10:48:22
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -85,6 +85,7 @@
     </iCard>
     <switchParts
       :workFlowId="workFlowId"
+      :noLinie="noLinie"
       :tableData="switchPartsTable"
       @getCbdDataQuery="getCbdDataQuery"
     />
@@ -113,6 +114,7 @@
             :apriceChange="apriceChangeVal"
             :key="$componentIndex"
             :workFlowId="workFlowId"
+            :noLinie="noLinie"
             :cbdCanEdit="cbdCanEdit"
             :quotationId="partsId"
             :partInfo="partInfo"
@@ -211,7 +213,8 @@ export default {
       partInfo:{},
       basicInfo:{},
       cbdCanEdit:true,
-      currency: 'RMB'
+      currency: 'RMB',
+      noLinie: true,
     };
   },
   computed: {
@@ -224,11 +227,10 @@ export default {
     let str_json = window.atob(this.queryParams.transmitObj);
     let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
     this.transmitObj = transmitObj
-    this.workFlowId =
-      transmitObj.aekoApprovalDetails.workFlowId ||
-      transmitObj.aekoApprovalDetails.workFlowDTOS[0]?.workFlowId ||
-      "";
-    this.workFlowId ? this.getTableData() : this.alterationCbdSummaryByLinie();
+    this.noLinie =
+      (transmitObj.aekoApprovalDetails.workFlowId ||
+      transmitObj.aekoApprovalDetails.workFlowDTOS[0]?.workFlowId)? true : false;
+    this.noLinie ? this.getTableData() : this.alterationCbdSummaryByLinie();
   },
   methods: {
     totalRowClass,
@@ -452,6 +454,7 @@ export default {
     },
     // 获取A价变动其它数据
     getCbdDataQuery(partsId, workFlowId) {
+      this.workFlowId = workFlowId
       this.partsId = partsId;
       this.loading = true;
       if (!partsId) {
@@ -459,7 +462,7 @@ export default {
         this.loading = false;
         return;
       }
-      if(this.workFlowId){  //workFlowId和this.workFlowId 不是同一个
+      if(this.noLinie){
         cbdDataQuery({ workFlowId: workFlowId, quotationId: partsId }).then(
           (res) => {
             if (res?.code === "200") {
