@@ -1326,11 +1326,16 @@ export default {
               box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
               border-color: transparent;
               border-radius: 0.25rem;
+              background-color: #f5f7fa;
               .el-tag {
-                background-color: #f5f7fa;
+                /* background-color: #f5f7fa;
                 color: #000;
                 border-radius: 18px;
-                border-color: #fff;
+                border-color: #fff; */
+                background-color: #f7f7f7;
+                color: #000;
+                border-radius: 1.25rem;
+                border-color: #eef6ff;
                 margin-left: 3px;
                 min-width: 15px;
               }
