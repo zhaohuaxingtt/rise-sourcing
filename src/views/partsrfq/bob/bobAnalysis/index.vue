@@ -8,152 +8,148 @@
 -->
 <template>
   <div v-loading="onDataLoading">
-    <iCard :class="[onPreview?'preview-card':'']">
-      <template v-slot:header
-                v-if="!onPreview">
+    <iCard :class="[onPreview ? 'preview-card' : '']">
+      <template v-slot:header v-if="!onPreview">
         <div class="flex titleBox">
           <div class="flex-between-center">
-            <span class="title">{{language('FEIYONGXIANGQING','费用详情')}}</span>
+            <span class="title">{{ language('FEIYONGXIANGQING', '费用详情') }}</span>
             <div class="wrap">
-              <div v-if="remark"
-                   class="margin-left40 remark">
-                <span style="font-size:12px">{{ remark}}</span>
+              <div v-if="remark" class="margin-left40 remark">
+                <span style="font-size:12px">{{ remark }}</span>
               </div>
-              <div v-if="remark"
-                   class="margin-left40 remark2">备注：{{ remark }}</div>
+              <div v-if="remark" class="margin-left40 remark2">备注：{{ remark }}</div>
             </div>
-
           </div>
           <div>
-            <iButton v-show="!allExpand"
-                     @click="handleAllCollapse(true)">全部展开</iButton>
-            <iButton v-show="allExpand"
-                     @click="handleAllCollapse(false)">全部收回</iButton>
-            <template v-if="!onGroupingModel">
-              <iButton @click="remarks">备注</iButton>
-              <iButton @click="reduction">还原</iButton>
-              <iButton @click="onGroupingModel = true"
-                       v-if="!onGroupingModel">数据分组</iButton>
-              <iButton @click="down">导出</iButton>
-            </template>
-            <template v-else>
-              <iButton @click="clear">移除</iButton>
-              <iButton @click="saveGroup">保存分组</iButton>
-              <iButton @click="cancelGroupMode">取消</iButton>
+            <template v-if="!isPreview">
+              <iButton v-show="!allExpand" @click="handleAllCollapse(true)">全部展开</iButton>
+              <iButton v-show="allExpand" @click="handleAllCollapse(false)">全部收回</iButton>
+              <template v-if="!onGroupingModel">
+                <iButton @click="remarks">备注</iButton>
+                <iButton @click="reduction">还原</iButton>
+                <iButton @click="onGroupingModel = true" v-if="!onGroupingModel">数据分组</iButton>
+                <iButton @click="down">导出</iButton>
+              </template>
+              <template v-else>
+                <iButton @click="clear">移除</iButton>
+                <iButton @click="saveGroup">保存分组</iButton>
+                <iButton @click="cancelGroupMode">取消</iButton>
+              </template>
             </template>
           </div>
         </div>
       </template>
       <div>
         <div style="display: flex;flex-flow: row nowrap;width: 100%;">
-          <div class="table-cell"
-               style="justify-content: flex-start;width: 20%"></div>
-          <div v-for=" (item,index) in tableTitle"
-               :key="index"
-               class="table-cell"
-               :style="{'font-weight': 'bold','width': 'calc(80% / ' + tableTitle.length + ')'}">{{item.title}}</div>
+          <div class="table-cell" style="justify-content: flex-start;width: 20%"></div>
+          <div
+            v-for="(item, index) in tableTitle"
+            :key="index"
+            class="table-cell"
+            :style="{ 'font-weight': 'bold', width: 'calc(80% / ' + tableTitle.length + ')' }"
+          >
+            {{ item.title }}
+          </div>
         </div>
-        <div class="flex tabeleList"
-             ref="cbdDetailTable">
+        <div class="flex tabeleList" ref="cbdDetailTable">
           <div style="display:flex;flex-flow:column nowrap;">
-            <div v-for="(item,index) in tableListData"
-                 :key="index"
-                 style="display: flex;flex-flow: row nowrap;width: 100%;"
-                 :class="decideRowClass(item, index)"
-                 v-if="collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'"
-                 :id="item.id"
-                 :root-id="item.rootId"
-                 :parent-id="item.parentId"
-                 :ref="!item.parentId ? item.id:''">
+            <div
+              v-for="(item, index) in tableListData"
+              :key="index"
+              style="display: flex;flex-flow: row nowrap;width: 100%;"
+              :class="decideRowClass(item, index)"
+              v-if="collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'"
+              :id="item.id"
+              :root-id="item.rootId"
+              :parent-id="item.parentId"
+              :ref="!item.parentId ? item.id : ''"
+            >
               <template v-if="item.isBreakLine">
-                <span class="table-cell"
-                      style="width: 100%;text-align:center;font-weight: bold;background-color: #1763F7;color: #fff;">
-                  {{$t("LK_NONGROUPEDBREAKTIPS",{"msg": item.title})}}
+                <span class="table-cell" style="width: 100%;text-align:center;font-weight: bold;background-color: #1763F7;color: #fff;">
+                  {{ $t('LK_NONGROUPEDBREAKTIPS', { msg: item.title }) }}
                 </span>
               </template>
               <template v-else>
-                <div :class="['table-cell', showCollapseOutLine(item)]"
-                     :style="{'padding-left': 20*item.level + 'px','justify-content': 'flex-start','width': '20%'}">
-                  <i v-if="item.hasChild"
-                     :class="item.expanded ? 'el-icon-arrow-down':'el-icon-arrow-right'"
-                     style="cursor: pointer;padding-right: 4px;"
-                     @click="handleCollapse(item, item.expanded)"></i>
+                <div
+                  :class="['table-cell', showCollapseOutLine(item)]"
+                  :style="{ 'padding-left': 20 * item.level + 'px', 'justify-content': 'flex-start', width: '20%' }"
+                >
+                  <i
+                    v-if="item.hasChild"
+                    :class="item.expanded ? 'el-icon-arrow-down' : 'el-icon-arrow-right'"
+                    style="cursor: pointer;padding-right: 4px;"
+                    @click="handleCollapse(item, item.expanded)"
+                  ></i>
                   <template v-if="item.matchId > 0 && !onPreview">
                     <template v-if="onEditLabels.indexOf(item.id) < 0">
-                      <span :style="{'font-weight': item.matchId > 0 ? 'bold':''}">{{item.title}}</span>
-                      <i class="el-icon-edit"
-                         style="cursor: pointer;margin-left: 10px;"
-                         @click.stop="changeToEditMode(item.id)"></i>
+                      <span :style="{ 'font-weight': item.matchId > 0 ? 'bold' : '' }">{{ item.title }}</span>
+                      <i class="el-icon-edit" style="cursor: pointer;margin-left: 10px;" @click.stop="changeToEditMode(item.id)"></i>
                     </template>
-                    <el-input v-else
-                              v-model="item.title">
+                    <el-input v-else v-model="item.title">
                       <template slot="append">
-                        <i class="el-icon-check"
-                           @click.stop="updateGroupedLabel(item)"
-                           style="cursor: pointer;"></i>
+                        <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
                       </template>
                     </el-input>
                   </template>
                   <template v-else>
-                    <span :title="item.title"
-                          class="title-cell"
-                          :style="{'font-weight': (item.matchId < 0 && item.level == 1) || item.level == 0 ? 'bold':''}">
-                      {{item.title}}
+                    <span
+                      :title="item.title"
+                      class="title-cell"
+                      :style="{ 'font-weight': (item.matchId < 0 && item.level == 1) || item.level == 0 ? 'bold' : '' }"
+                    >
+                      {{ item.title }}
                     </span>
                   </template>
                 </div>
-                <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected':'', showCollapseOutLine(item)]"
-                     v-for="(title, titleIdx) in tableTitle"
-                     :key="titleIdx"
-                     :style="{'width': 'calc(80% / ' + tableTitle.length + ')'}">
-                  <el-checkbox v-show="onGroupingModel"
-                               v-if="item.groupKey && item['label#' + titleIdx]"
-                               style="margin-right: 10px;"
-                               v-model="item['checked#' + titleIdx]"
-                               @change="function(checked){onGroupItemSelected(checked, item, titleIdx)}"></el-checkbox>
-                  {{item['label#'+titleIdx] == "false" ? $t("nominationLanguage.No") : (item['label#'+titleIdx] == "true" ? $t("nominationLanguage.Yes") : item['label#'+titleIdx])}}
+                <div
+                  :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
+                  v-for="(title, titleIdx) in tableTitle"
+                  :key="titleIdx"
+                  :style="{ width: 'calc(80% / ' + tableTitle.length + ')' }"
+                >
+                  <el-checkbox
+                    v-show="onGroupingModel"
+                    v-if="item.groupKey && item['label#' + titleIdx]"
+                    style="margin-right: 10px;"
+                    v-model="item['checked#' + titleIdx]"
+                    @change="onGroupItemSelected(checked, item, titleIdx)"
+                  ></el-checkbox>
+                  {{
+                    item['label#' + titleIdx] == 'false'
+                      ? $t('nominationLanguage.No')
+                      : item['label#' + titleIdx] == 'true'
+                      ? $t('nominationLanguage.Yes')
+                      : item['label#' + titleIdx]
+                  }}
                 </div>
               </template>
             </div>
           </div>
         </div>
       </div>
-      <iDialog :visible.sync="groupToDialogVisible"
-               title="分组至"
-               width="20%">
+      <iDialog :visible.sync="groupToDialogVisible" title="分组至" width="20%">
         <el-form>
           <el-form-item label="分组至">
-            <el-select v-model="selectGroupName"
-                       clearable
-                       placeholder="请选择"
-                       value-key="matchId">
-              <el-option v-for="(item) in groupNameOptions"
-                         :key="item.matchId"
-                         :label="item.groupName"
-                         :value="item">
-              </el-option>
+            <el-select v-model="selectGroupName" clearable placeholder="请选择" value-key="matchId">
+              <el-option v-for="item in groupNameOptions" :key="item.matchId" :label="item.groupName" :value="item"> </el-option>
             </el-select>
           </el-form-item>
         </el-form>
-        <span slot="footer"
-              class="dialog-footer">
-          <el-button type="primary"
-                     @click="groupToList">确 定</el-button>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="groupToList">确 定</el-button>
         </span>
       </iDialog>
-      <remarkDialog :visible="remarkDialogVisible"
-                    @remake="sure"
-                    @cancel="cancel"></remarkDialog>
+      <remarkDialog :visible="remarkDialogVisible" @remake="sure" @cancel="cancel"></remarkDialog>
     </iCard>
   </div>
 </template>
 
 <script>
-import { icon, iCard, iButton, iDialog, iMessage } from "rise";
-import tree from './tree'
-import remarkDialog from "./components/remarkDialog.vue";
-import ungroupedTable from "@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue";
-import groupedTable from "@/views/partsrfq/bob/bobAnalysis/groupedTable.vue";
+import { icon, iCard, iButton, iDialog, iMessage } from 'rise';
+import tree from './tree';
+import remarkDialog from './components/remarkDialog.vue';
+import ungroupedTable from '@/views/partsrfq/bob/bobAnalysis/ungroupedTable.vue';
+import groupedTable from '@/views/partsrfq/bob/bobAnalysis/groupedTable.vue';
 import {
   chargeRetrieve,
   getRfqToRemark,
@@ -165,14 +161,10 @@ import {
   groupedSubmit,
   restore,
   removeComponentFromGroup,
-  renameComponentGroup
-} from "@/api/partsrfq/bob";
-import { update } from "@/api/partsrfq/bob/analysisList";
-import {
-  groupByList,
-  ungroupByList,
-  ungroupByHeader,
-} from "./components/data.js";
+  renameComponentGroup,
+} from '@/api/partsrfq/bob';
+import { update } from '@/api/partsrfq/bob/analysisList';
+import { groupByList, ungroupByList, ungroupByHeader } from './components/data.js';
 
 export default {
   inheritAttrs: true,
@@ -184,33 +176,38 @@ export default {
     tree,
     ungroupedTable,
     groupedTable,
-    remarkDialog
+    remarkDialog,
   },
   props: {
     label: {
       type: String,
-      default: ""
+      default: '',
     },
     formUpdata: {
       type: Object,
       default: () => {
-        return {}
-      }
+        return {};
+      },
     },
     propSchemeId: {
       type: String,
-      default: ""
+      default: '',
     },
     propGroupId: {
       type: String,
-      default: ""
+      default: '',
     },
     onPreview: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
+    // 是否预览
+    isPreview: {
+      type: Boolean,
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       onDataLoading: false,
       editGroupedLabel: [],
@@ -226,16 +223,16 @@ export default {
       expends: [],
       remarkDialogVisible: false,
       groupToDialogVisible: false,
-      remark: "",
+      remark: '',
       groupby: false,
       totalTable: true,
-      value: "",
-      selectGroupName: "",
+      value: '',
+      selectGroupName: '',
       groupNameOptions: [],
       result: [],
-      activeName: "",
+      activeName: '',
       checkFLag: true,
-      schemaId: "",
+      schemaId: '',
       expedsArr: [],
       expedsArr1: [],
       tableTitle: [],
@@ -248,144 +245,146 @@ export default {
       suppliers: [],
       subCbdDetails: {},
       subCbdDetailShowPositions: [],
-      removeCbdIds: []
+      removeCbdIds: [],
     };
   },
-  created () {
+  created() {
     if (this.$route.query.groupId) {
-      this.groupId = this.$route.query.groupId
+      this.groupId = this.$route.query.groupId;
     } else {
-      this.groupId = this.propGroupId
+      this.groupId = this.propGroupId;
     }
     if (this.$route.query.chemeId) {
-      this.schemaId = this.$route.query.chemeId
+      this.schemaId = this.$route.query.chemeId;
     } else {
-      this.schemaId = this.propSchemeId
+      this.schemaId = this.propSchemeId;
     }
 
     this.getRfqToRemark();
   },
   watch: {
     activeName: {
-      handler (val) {
-        console.log(val, "acitve")
-      }
+      handler(val) {
+        console.log(val, 'acitve');
+      },
     },
     label: {
-      handler (val) {
-        this.$nextTick(function () {
+      handler(val) {
+        this.$nextTick(function() {
           this.tableListData.forEach((item) => {
             if (item.title == val) {
-              this.$refs[item.id][0].scrollIntoView({ behavior: "smooth", block: "center" })
+              this.$refs[item.id][0].scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
-          })
+          });
         });
-      }
-    }
+      },
+    },
   },
   methods: {
-    showCollapseOutLine (item) {
+    showCollapseOutLine(item) {
       // if (item.level == 0) {
       //   return 'collapse-root'
       // } else {
-      return (item.level == 1 && typeof item.matchId != 'undefined') ? 'collapse-group' : ''
+      return item.level == 1 && typeof item.matchId != 'undefined' ? 'collapse-group' : '';
       // }
     },
-    changeToEditMode (id) {
-      this.onEditLabels.push(id)
+    changeToEditMode(id) {
+      this.onEditLabels.push(id);
     },
-    onPreviewStyle () {
+    onPreviewStyle() {
       if (this.onPreview) {
         return {
-          boxShadow: 'none'
-        }
+          boxShadow: 'none',
+        };
       }
-      return {}
+      return {};
     },
-    decideRowClass (row, idx) {
+    decideRowClass(row, idx) {
       var displayed = this.tableListData.filter((item) => {
-        return this.collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'
-      })
+        return this.collapseItems.indexOf(item.id) < 0 && item.code != 'detailId';
+      });
 
       var realIndex = -1;
       displayed.forEach((item, index) => {
         if (item.id == row.id) {
           realIndex = index;
         }
-      })
+      });
 
       return realIndex % 2 == 0 ? 'table-odd' : 'table-even';
     },
-    handleAllCollapse (expandAll) {
-      this.allExpand = !this.allExpand
+    handleAllCollapse(expandAll) {
+      this.allExpand = !this.allExpand;
       // if (!expandAll) this.collapseItems = [];
       this.tableListData.forEach((item) => {
         if (!item.parentId) {
-          this.handleCollapse(item, !expandAll)
+          this.handleCollapse(item, !expandAll);
         }
         item.expanded = expandAll;
-      })
+      });
     },
-    handleCollapse (item, isExpand) {
-      this.collapseItem(item.id, isExpand)
+    handleCollapse(item, isExpand) {
+      this.collapseItem(item.id, isExpand);
       item.expanded = !isExpand;
     },
-    collapseItem (parentId, isCollapse) {
+    collapseItem(parentId, isCollapse) {
       this.tableListData.forEach((item) => {
         if (isCollapse) {
           if (item.parentId && item.parentId == parentId) {
             if (this.collapseItems.indexOf(item.id) < 0) {
-              this.collapseItems.push(item.id)
+              this.collapseItems.push(item.id);
               if (item.hasChild) {
-                this.collapseItem(item.id, isCollapse)
-                item.expanded = !isCollapse
+                this.collapseItem(item.id, isCollapse);
+                item.expanded = !isCollapse;
               }
             }
           }
         } else {
           if (item.parentId && item.parentId == parentId) {
             if (this.collapseItems.indexOf(item.id) >= 0) {
-              this.collapseItems.splice(this.collapseItems.indexOf(item.id), 1)
+              this.collapseItems.splice(this.collapseItems.indexOf(item.id), 1);
               if (item.hasChild) {
-                this.collapseItem(item.id, isCollapse)
-                item.expanded = !isCollapse
+                this.collapseItem(item.id, isCollapse);
+                item.expanded = !isCollapse;
               }
             }
           }
         }
       });
     },
-    cancelGroupMode () {
-      this.clearGrouped()
+    cancelGroupMode() {
+      this.clearGrouped();
       this.onGroupingModel = false;
     },
-    clearGrouped () {
+    clearGrouped() {
       this.tableListData.forEach((item) => {
         for (var key in item) {
-          if (key.indexOf("checked#") >= 0) {
+          if (key.indexOf('checked#') >= 0) {
             Vue.set(item, key, false);
           }
         }
-      })
+      });
       this.groupSelectedItems = [];
       this.cbdSelectedList = [];
       // this.onGroupingModel = false;
     },
-    onGroupItemSelected (checked, item, idx) {
+    onGroupItemSelected(checked, item, idx) {
       var parent = this.tableListData.filter((line) => {
-        return line.id == item.parentId
-      })
+        return line.id == item.parentId;
+      });
       if (parent.length > 0 && parent[0].matchId > 0) {
         var cbd = this.tableListData.filter((line) => {
-          return line.parentId == item.parentId && line.code == "detailId"
-        })
-        this.removeCbdIds.push(cbd[0]["label#" + idx])
+          return line.parentId == item.parentId && line.code == 'detailId';
+        });
+        this.removeCbdIds.push(cbd[0]['label#' + idx]);
       }
       if (checked) {
-        if (this.groupSelectedItems.some((obj) => {
-          return obj.idx == idx && item.rootId == obj.rootId
-        })) {
-          Vue.set(item, "checked#" + idx, false)
+        if (
+          this.groupSelectedItems.some((obj) => {
+            return obj.idx == idx && item.rootId == obj.rootId;
+          })
+        ) {
+          Vue.set(item, 'checked#' + idx, false);
           return;
         }
         var groupId = this.createUuid();
@@ -396,10 +395,10 @@ export default {
               idx: idx,
               rootId: obj.rootId,
               parentId: obj.parentId,
-              groupId: groupId
-            })
-            if (obj.code === "detailId") {
-              this.cbdSelectedList.push(obj['label#' + idx])
+              groupId: groupId,
+            });
+            if (obj.code === 'detailId') {
+              this.cbdSelectedList.push(obj['label#' + idx]);
             }
           } else if (obj.parentId == item.parentId) {
             this.groupSelectedItems.push({
@@ -407,40 +406,40 @@ export default {
               idx: idx,
               rootId: obj.rootId,
               parentId: obj.parentId,
-              groupId: groupId
-            })
-            if (obj.code === "detailId") {
-              this.cbdSelectedList.push(obj['label#' + idx])
+              groupId: groupId,
+            });
+            if (obj.code === 'detailId') {
+              this.cbdSelectedList.push(obj['label#' + idx]);
             }
             if (obj.hasChild) {
-              this.iterateChilds(checked, obj, idx, groupId)
+              this.iterateChilds(checked, obj, idx, groupId);
             }
           }
-        })
+        });
       } else {
         this.tableListData.forEach((obj) => {
           if (obj.id == item.parentId) {
             for (var i = this.groupSelectedItems.length - 1; i >= 0; i--) {
               if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
-                this.groupSelectedItems.splice(i, 1)
+                this.groupSelectedItems.splice(i, 1);
               }
             }
-            this.cbdSelectedList.splice(idx - 1, 1)
+            this.cbdSelectedList.splice(idx - 1, 1);
           } else if (obj.parentId == item.parentId) {
             for (var i = this.groupSelectedItems.length - 1; i >= 0; i--) {
               if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
-                this.groupSelectedItems.splice(i, 1)
+                this.groupSelectedItems.splice(i, 1);
               }
             }
-            this.cbdSelectedList.splice(idx - 1, 1)
+            this.cbdSelectedList.splice(idx - 1, 1);
             if (obj.hasChild) {
-              this.iterateChilds(checked, obj, idx)
+              this.iterateChilds(checked, obj, idx);
             }
           }
-        })
+        });
       }
     },
-    iterateChilds (checked, item, idx, groupId) {
+    iterateChilds(checked, item, idx, groupId) {
       if (checked) {
         this.tableListData.forEach((obj) => {
           if (obj.parentId == item.id) {
@@ -449,34 +448,34 @@ export default {
               idx: idx,
               rootId: obj.rootId,
               parentId: obj.parentId,
-              groupId: groupId
-            })
+              groupId: groupId,
+            });
             if (obj.hasChild) {
-              this.iterateChilds(checked, obj, idx)
+              this.iterateChilds(checked, obj, idx);
             }
           }
-        })
+        });
       } else {
         this.tableListData.forEach((obj) => {
           if (obj.parentId == item.id) {
             for (var i = this.groupSelectedItems.length - 1; i >= 0; i--) {
               if (this.groupSelectedItems[i].id == obj.id && this.groupSelectedItems[i].idx == idx) {
-                this.groupSelectedItems.splice(i, 1)
+                this.groupSelectedItems.splice(i, 1);
               }
             }
             if (obj.hasChild) {
-              this.iterateChilds(checked, obj, idx)
+              this.iterateChilds(checked, obj, idx);
             }
           }
-        })
+        });
       }
     },
-    hasSelected (item, idx) {
+    hasSelected(item, idx) {
       return this.groupSelectedItems.some((obj) => {
-        return obj.id == item.id && idx == obj.idx
-      })
+        return obj.id == item.id && idx == obj.idx;
+      });
     },
-    getRfqToRemark () {
+    getRfqToRemark() {
       getRfqToRemark({
         rfqCode: this.rfqCode,
       }).then((res) => {
@@ -487,351 +486,344 @@ export default {
         }
       });
     },
-    chargeRetrieve (params) {
+    chargeRetrieve(params) {
       this.onDataLoading = true;
       chargeRetrieve(params)
         .then((allDatas) => {
           try {
             // var datas = allDatas;
             this.tableList = allDatas;
-            this.tableTitle = this.tableList.title.filter(item => item.title)
-            this.reContructData()
+            this.tableTitle = this.tableList.title.filter((item) => item.title);
+            this.reContructData();
             this.$nextTick(() => {
               this.onDataLoading = false;
-            })
+            });
           } catch (err) {
-            console.log(err)
+            console.log(err);
           }
         })
         .catch((err) => {
-          iMessage.error(err.desZh)
+          iMessage.error(err.desZh);
         });
     },
-    createUuid () {
-      var s4 = function () {
+    createUuid() {
+      var s4 = function() {
         return Math.floor((1 + Math.random()) * 0x10000)
           .toString(16)
-          .substring(1)
-      }
-      return (
-        s4() +
-        s4() +
-        s4() +
-        s4() +
-        s4() +
-        s4() +
-        s4() +
-        s4()
-      )
+          .substring(1);
+      };
+      return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
     },
-    reContructData () {
-      var a = new Date().getTime()
+    reContructData() {
+      var a = new Date().getTime();
       this.tableListData = [];
       this.suppliers = [];
       var titles = this.tableList.title;
 
       titles.forEach((supplier) => {
-        if (supplier.label != "title") {
-          this.suppliers.push(supplier.label)
+        if (supplier.label != 'title') {
+          this.suppliers.push(supplier.label);
         }
-      })
+      });
 
-      this.reBuild("1", "rawUngroupedChild")
-      this.reBuild("2", "maUngroupedChild")
-      this.addOrigin()
+      this.reBuild('1', 'rawUngroupedChild');
+      this.reBuild('2', 'maUngroupedChild');
+      this.addOrigin();
 
-      var b = new Date().getTime()
-      console.log(b - a)
+      var b = new Date().getTime();
+      console.log(b - a);
     },
-    reBuild (code, prop) {
+    reBuild(code, prop) {
       this.subCbdDetails = {};
       this.subCbdDetailShowPositions = [];
       var elements = this.tableList.element;
       var rootTitle;
       elements.forEach((cbdLvlZero) => {
         if (cbdLvlZero.code == code) {
-          rootTitle = cbdLvlZero.title
-          this.processGroupDatas(cbdLvlZero, this.addCategory(cbdLvlZero))
+          rootTitle = cbdLvlZero.title;
+          this.processGroupDatas(cbdLvlZero, this.addCategory(cbdLvlZero));
         }
-      })
+      });
 
-      this.insertGroupedArr()
+      this.insertGroupedArr();
       if (this.subCbdDetailShowPositions.length > 0) {
-        this.subCbdDetailShowPositions.push(['breakLine'])
+        this.subCbdDetailShowPositions.push(['breakLine']);
       }
-      this.insertUnGroupedArr(prop)
-      this.addToTable(rootTitle)
+      this.insertUnGroupedArr(prop);
+      this.addToTable(rootTitle);
     },
-    processGroupDatas (cbdLvlZero, rootId) {
+    processGroupDatas(cbdLvlZero, rootId) {
       if (!cbdLvlZero.child || cbdLvlZero.child.length <= 0) {
         return;
       }
       cbdLvlZero.child.forEach((cbdHead) => {
         this.suppliers.forEach((supplier) => {
-          var cbdId = this.findCbdId(cbdHead, supplier)
+          var cbdId = this.findCbdId(cbdHead, supplier);
           if (cbdId) {
             var isArray = Array.isArray(cbdId);
             if (!isArray) {
-              cbdId = [cbdId]
+              cbdId = [cbdId];
             }
             cbdId.forEach((cbdSubId, idx) => {
               if (!this.subCbdDetails[cbdSubId]) {
-                this.subCbdDetails[cbdSubId] = []
+                this.subCbdDetails[cbdSubId] = [];
               }
 
-              var cbdDetailHead = this.createDetailHead(cbdHead, supplier, isArray ? idx : -1, rootId, rootId, 1)
-              this.setCollapse(cbdHead, cbdDetailHead)
-              this.subCbdDetails[cbdSubId].push(cbdDetailHead)
+              var cbdDetailHead = this.createDetailHead(cbdHead, supplier, isArray ? idx : -1, rootId, rootId, 1);
+              this.setCollapse(cbdHead, cbdDetailHead);
+              this.subCbdDetails[cbdSubId].push(cbdDetailHead);
 
               if (cbdHead.child && cbdHead.child.length > 0) {
-                this.createDetail(cbdHead, cbdSubId, supplier, isArray ? idx : -1, rootId, cbdDetailHead.id, 2)
+                this.createDetail(cbdHead, cbdSubId, supplier, isArray ? idx : -1, rootId, cbdDetailHead.id, 2);
               }
-            })
+            });
           }
-        })
-      })
+        });
+      });
     },
-    findCbdId (cbdLvlZeroHead, supplier) {
+    findCbdId(cbdLvlZeroHead, supplier) {
       if (!cbdLvlZeroHead.child || cbdLvlZeroHead.child.length < 0) {
         return;
       }
       for (var i = 0; i < cbdLvlZeroHead.child.length; i++) {
-        if (cbdLvlZeroHead.child[i].code == "detailId") {
+        if (cbdLvlZeroHead.child[i].code == 'detailId') {
           return cbdLvlZeroHead.child[i][supplier];
         }
       }
       return;
     },
-    createDetail (cbdHead, cbdId, supplier, index, rootId, parentId, level) {
-      var nextLevel = level + 1
+    createDetail(cbdHead, cbdId, supplier, index, rootId, parentId, level) {
+      var nextLevel = level + 1;
       cbdHead.child.forEach((child) => {
-        var temp = this.createNewCbdDetailLine(child.code, child.title, rootId, parentId)
-        temp[supplier] = index >= 0 ? child[supplier][index] : child[supplier]
-        temp.level = level
-        if (temp.code == "ogt" || temp.code == "206") {
-          temp.groupKey = true
+        var temp = this.createNewCbdDetailLine(child.code, child.title, rootId, parentId);
+        temp[supplier] = index >= 0 ? child[supplier][index] : child[supplier];
+        temp.level = level;
+        if (temp.code == 'ogt' || temp.code == '206') {
+          temp.groupKey = true;
           this.suppliers.forEach((supp) => {
-            temp["checked#" + supp.replace("label#", "")] = false;
-          })
+            temp['checked#' + supp.replace('label#', '')] = false;
+          });
         }
-        this.setCollapse(child, temp)
-        this.subCbdDetails[cbdId].push(temp)
+        this.setCollapse(child, temp);
+        this.subCbdDetails[cbdId].push(temp);
         if (child.child && child.child.length > 0) {
-          this.createDetail(child, cbdId, supplier, index, rootId, temp.id, nextLevel)
+          this.createDetail(child, cbdId, supplier, index, rootId, temp.id, nextLevel);
         }
-      })
-    },
-    createDetailHead (cbdHead, supplier, index, rootId, parentId, level) {
-      var cbdDetailHead = this.createNewCbdDetailLine(cbdHead.code, cbdHead.title, rootId, parentId)
-      cbdDetailHead[supplier] = index >= 0 ? cbdHead[supplier][index] : cbdHead[supplier]
-      cbdDetailHead.matchId = cbdHead.matchId
-      cbdDetailHead.level = level
-      return cbdDetailHead
-    },
-    createNewCbdDetailLine (code, title, rootId, parentId) {
-      var temp = {
-        "code": code,
-        "title": title,
-        "id": this.createUuid(),
-        "rootId": rootId,
-        "parentId": parentId
-      }
-
-      return temp
-    },
-    addOrigin () {
-      var elements = this.tableList.element;
-      elements.forEach((cbdLvlZero) => {
-        if (cbdLvlZero.code < "3") {
-          return false;
-        }
-        var rootId = this.addCategory(cbdLvlZero)
-        this.addSub(cbdLvlZero, rootId, rootId, 1)
       });
     },
-    addSub (parent, rootId, parentId, level) {
+    createDetailHead(cbdHead, supplier, index, rootId, parentId, level) {
+      var cbdDetailHead = this.createNewCbdDetailLine(cbdHead.code, cbdHead.title, rootId, parentId);
+      cbdDetailHead[supplier] = index >= 0 ? cbdHead[supplier][index] : cbdHead[supplier];
+      cbdDetailHead.matchId = cbdHead.matchId;
+      cbdDetailHead.level = level;
+      return cbdDetailHead;
+    },
+    createNewCbdDetailLine(code, title, rootId, parentId) {
+      var temp = {
+        code: code,
+        title: title,
+        id: this.createUuid(),
+        rootId: rootId,
+        parentId: parentId,
+      };
+
+      return temp;
+    },
+    addOrigin() {
+      var elements = this.tableList.element;
+      elements.forEach((cbdLvlZero) => {
+        if (cbdLvlZero.code < '3') {
+          return false;
+        }
+        var rootId = this.addCategory(cbdLvlZero);
+        this.addSub(cbdLvlZero, rootId, rootId, 1);
+      });
+    },
+    addSub(parent, rootId, parentId, level) {
       if (!parent.child || parent.child.length <= 0) {
         return;
       }
       var nextLevel = level + 1;
       parent.child.forEach((cbdDetail) => {
-        var lvlItem = this.createNewCbdDetailLine(cbdDetail.code, cbdDetail.title, rootId, parentId)
-        lvlItem.id = this.createUuid()
+        var lvlItem = this.createNewCbdDetailLine(cbdDetail.code, cbdDetail.title, rootId, parentId);
+        lvlItem.id = this.createUuid();
         lvlItem.level = level;
-        this.setCollapse(cbdDetail, lvlItem)
+        this.setCollapse(cbdDetail, lvlItem);
         for (var key in cbdDetail) {
-          if (key.indexOf("label#") >= 0) {
-            lvlItem[key] = cbdDetail[key]
+          if (key.indexOf('label#') >= 0) {
+            lvlItem[key] = cbdDetail[key];
           }
         }
-        this.tableListData.push(lvlItem)
-        this.addSub(cbdDetail, rootId, lvlItem.id, nextLevel)
+        this.tableListData.push(lvlItem);
+        this.addSub(cbdDetail, rootId, lvlItem.id, nextLevel);
       });
     },
-    setCollapse (ref, item) {
+    setCollapse(ref, item) {
       if (ref.child && ref.child.length > 0) {
         item.hasChild = true;
         item.expanded = true;
       }
     },
-    addCategory (cbdLvlZero) {
+    addCategory(cbdLvlZero) {
       var lvlZero = JSON.parse(JSON.stringify(cbdLvlZero));
-      lvlZero.id = this.createUuid()
+      lvlZero.id = this.createUuid();
       lvlZero.level = 0;
       lvlZero.hasChild = true;
       lvlZero.expanded = true;
-      this.tableListData.push(lvlZero)
-      return lvlZero.id
+      this.tableListData.push(lvlZero);
+      return lvlZero.id;
     },
-    addToTable (rootTitle) {
+    addToTable(rootTitle) {
       this.subCbdDetailShowPositions.forEach((line) => {
         var lineDatas;
         line.forEach((cbdId) => {
           if (!cbdId) {
             return false;
           }
-          if (cbdId == "breakLine") {
-            lineDatas = []
-            var rootId = this.tableListData[this.tableListData.length - 1].rootId
+          if (cbdId == 'breakLine') {
+            lineDatas = [];
+            var rootId = this.tableListData[this.tableListData.length - 1].rootId;
             lineDatas.push({
               id: this.createUuid(),
               isBreakLine: true,
               rootId: rootId,
               parentId: rootId,
-              title: rootTitle
-            })
-            return false
+              title: rootTitle,
+            });
+            return false;
           }
           if (!lineDatas) {
-            lineDatas = this.subCbdDetails[cbdId]
+            lineDatas = this.subCbdDetails[cbdId];
           } else {
             if (!this.subCbdDetails[cbdId]) {
               return false;
             }
             this.subCbdDetails[cbdId].forEach((item, idx) => {
               for (var key in item) {
-                if (key.indexOf("label#") >= 0) {
-                  lineDatas[idx][key] = item[key]
+                if (key.indexOf('label#') >= 0) {
+                  lineDatas[idx][key] = item[key];
                 }
               }
-            })
+            });
           }
-        })
+        });
         if (lineDatas && lineDatas.length > 0) {
           lineDatas.forEach((item) => {
-            this.tableListData.push(item)
-          })
+            this.tableListData.push(item);
+          });
         }
-      })
+      });
     },
-    insertGroupedArr () {
-      var cbdMatchArr = {}
+    insertGroupedArr() {
+      var cbdMatchArr = {};
       for (var cbdId in this.subCbdDetails) {
         var matchItem = this.subCbdDetails[cbdId].filter((item) => {
-          return item.matchId > 0
-        })
+          return item.matchId > 0;
+        });
         if (matchItem.length <= 0) {
           continue;
         }
         if (!cbdMatchArr[matchItem[0].matchId]) {
-          cbdMatchArr[matchItem[0].matchId] = []
+          cbdMatchArr[matchItem[0].matchId] = [];
         }
 
         this.suppliers.forEach((supplier, idx) => {
           if (matchItem[0][supplier]) {
-            cbdMatchArr[matchItem[0].matchId][idx] = cbdId
+            cbdMatchArr[matchItem[0].matchId][idx] = cbdId;
           } else {
             if (!cbdMatchArr[matchItem[0].matchId][idx]) {
-              cbdMatchArr[matchItem[0].matchId][idx] = ""
+              cbdMatchArr[matchItem[0].matchId][idx] = '';
             }
           }
-        })
+        });
       }
 
       if (cbdMatchArr.length <= 0) {
         return;
       }
       var matchIds = Object.keys(cbdMatchArr);
-      matchIds.sort()
+      matchIds.sort();
       matchIds.forEach((matchId) => {
-        this.subCbdDetailShowPositions.push(cbdMatchArr[matchId])
-      })
+        this.subCbdDetailShowPositions.push(cbdMatchArr[matchId]);
+      });
     },
-    insertUnGroupedArr (prop) {
+    insertUnGroupedArr(prop) {
       var max = 0;
       var titles = this.tableList.title;
 
       titles.forEach((supplier) => {
-        if (supplier.label == "title") {
-          return false
+        if (supplier.label == 'title') {
+          return false;
         }
 
         if (max < supplier[prop].length) {
-          max = supplier[prop].length
+          max = supplier[prop].length;
         }
-      })
+      });
 
       for (var j = 0; j < max; j++) {
-        var temp = []
+        var temp = [];
         for (var i = 1; i < titles.length; i++) {
           if (titles[i][prop][j]) {
-            temp.push(titles[i][prop][j])
+            temp.push(titles[i][prop][j]);
           } else {
-            temp.push("")
+            temp.push('');
           }
         }
-        this.subCbdDetailShowPositions.push(temp)
+        this.subCbdDetailShowPositions.push(temp);
       }
     },
-    handleChange (val) {
-      console.log(val, 'val')
+    handleChange(val) {
+      console.log(val, 'val');
     },
-    cancel (flag) {
+    cancel(flag) {
       this.remarkDialogVisible = flag;
     },
-    reduction () {
+    reduction() {
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
         spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
+        background: 'rgba(0, 0, 0, 0.7)',
       });
       this.$confirm('是否还原？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(async () => {
-        await restore(this.schemaId)
-        groupTerms({
-          analysisSchemeId: this.schemaId
-        }).then(res => {
+        type: 'warning',
+      })
+        .then(async () => {
+          await restore(this.schemaId);
+          groupTerms({
+            analysisSchemeId: this.schemaId,
+          }).then((res) => {
+            loading.close();
+            iMessage.success('还原成功');
+            this.chargeRetrieve({
+              isDefault: true,
+              viewType: 'all',
+              schemaId: this.schemaId,
+              groupId: this.groupId,
+            });
+            this.editGroupedLabel = [];
+          });
+        })
+        .catch(() => {
           loading.close();
-          iMessage.success('还原成功')
+          iMessage.error('还原失败');
           this.chargeRetrieve({
             isDefault: true,
             viewType: 'all',
             schemaId: this.schemaId,
-            groupId: this.groupId
+            groupId: this.groupId,
           });
-          this.editGroupedLabel = []
-        })
-      }).catch(() => {
-        loading.close();
-        iMessage.error('还原失败')
-        this.chargeRetrieve({
-          isDefault: true,
-          viewType: 'all',
-          schemaId: this.schemaId,
-          groupId: this.groupId
         });
-      });
     },
-    sure (val, flag) {
+    sure(val, flag) {
       this.remarkDialogVisible = flag;
       this.remark = val;
     },
     // 递归获取checked属性方法
-    getTreeExpandKeys (obj) {
+    getTreeExpandKeys(obj) {
       // obj是传入的array
       if (obj && obj.length !== 0) {
         obj.forEach((item) => {
@@ -843,166 +835,168 @@ export default {
         });
       }
     },
-    remarks () {
+    remarks() {
       this.remarkDialogVisible = true;
     },
-    saveGroup () {
+    saveGroup() {
       if (this.groupSelectedItems.length === 0 || !this.schemaId) {
         this.$message.error('请选择数据');
-        return
+        return;
       }
-      this.groupToDialogVisible = true
+      this.groupToDialogVisible = true;
       getGroupInfo({
         schemaId: this.schemaId,
-        code: '1'
-      }).then(res => {
+        code: '1',
+      }).then((res) => {
         if (res.data) {
           res.data.forEach((matchId) => {
             if (!matchId.matchId) {
-              if (res.data.some((item) => {
-                return matchId.groupName == item.groupName
-              })) {
-                matchId.groupName = matchId.groupName + res.data.length
+              if (
+                res.data.some((item) => {
+                  return matchId.groupName == item.groupName;
+                })
+              ) {
+                matchId.groupName = matchId.groupName + res.data.length;
               }
             }
-          })
+          });
         }
-        this.groupNameOptions = res.data
-      })
+        this.groupNameOptions = res.data;
+      });
     },
-    groupToList () {
+    groupToList() {
       if (!this.selectGroupName) {
         this.$message.error('请选择分组');
-        return
+        return;
       }
       this.onDataLoading = true;
       addComponentToGroup({
         schemeId: this.schemaId,
         groupId: this.selectGroupName.matchId || '',
         groupName: this.selectGroupName.groupName,
-        roundDetailIdList: this.cbdSelectedList
-      }).then(res => {
-        this.groupby = false
+        roundDetailIdList: this.cbdSelectedList,
+      }).then((res) => {
+        this.groupby = false;
         this.clearGrouped();
         this.groupToDialogVisible = false;
         this.chargeRetrieve({
           isDefault: true,
           viewType: 'all',
           schemaId: this.schemaId,
-          groupId: this.groupId
+          groupId: this.groupId,
         });
         // this.onGroupingModel = false;
         this.onDataLoading = false;
-      })
+      });
       return;
     },
-    refreshGroupedId (groupedDatas, key, index) {
-      var newId = this.createUuid()
+    refreshGroupedId(groupedDatas, key, index) {
+      var newId = this.createUuid();
       if (groupedDatas[key][index].hasChild) {
-        this.refreshChildGroupid(groupedDatas, key, groupedDatas[key][index].id, newId)
+        this.refreshChildGroupid(groupedDatas, key, groupedDatas[key][index].id, newId);
       }
       groupedDatas[key][index].id = newId;
     },
-    refreshChildGroupid (groupedDatas, key, parentId, newParentId) {
+    refreshChildGroupid(groupedDatas, key, parentId, newParentId) {
       groupedDatas[key].forEach((item) => {
         if (item.parentId == parentId) {
-          var newId = this.createUuid()
+          var newId = this.createUuid();
           if (item.hasChild) {
-            this.refreshChildGroupid(groupedDatas, key, item.id, newId)
+            this.refreshChildGroupid(groupedDatas, key, item.id, newId);
           }
           item.id = newId;
           item.parentId = newParentId;
         }
-      })
+      });
     },
 
-    clear () {
+    clear() {
       this.onDataLoading = true;
       removeComponentFromGroup({
         schemeId: this.schemaId,
-        roundDetailIdList: this.removeCbdIds
-      }).then(res => {
-        this.removeCbdIds = []
+        roundDetailIdList: this.removeCbdIds,
+      }).then((res) => {
+        this.removeCbdIds = [];
         this.chargeRetrieve({
           isDefault: true,
           viewType: 'all',
           schemaId: this.schemaId,
-          groupId: this.groupId
+          groupId: this.groupId,
         });
         this.onDataLoading = false;
-      })
+      });
     },
 
-    finish () {
+    finish() {
       groupedSubmit({
         schemaId: this.schemaId,
-        groupId: this.groupId
+        groupId: this.groupId,
       }).then((res) => {
-        this.finishGroup()
-      })
+        this.finishGroup();
+      });
     },
-    off () {
+    off() {
       groupedCancel({
         schemaId: this.schemaId,
-        groupId: this.groupId
-      }).then(res => {
-        this.finishGroup()
-      })
-
+        groupId: this.groupId,
+      }).then((res) => {
+        this.finishGroup();
+      });
     },
-    finishGroup () {
-      this.totalTable = true
-      this.groupby = false
-      this.checkFLag = true
+    finishGroup() {
+      this.totalTable = true;
+      this.groupby = false;
+      this.checkFLag = true;
       this.chargeRetrieve({
         isDefault: true,
         viewType: 'all',
         schemaId: this.schemaId,
-        groupId: this.groupId
+        groupId: this.groupId,
       });
     },
-    down () {
-      this.formUpdata.remark = this.remark
+    down() {
+      this.formUpdata.remark = this.remark;
       // this.formUpdata.defaultBobOptions.replaceAll("▼","")
       this.$confirm('此次导出将默认保存当前”费用详情“界面数据。', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       }).then(() => {
-        update(this.formUpdata).then(res => {
-          iMessage.success("保存成功");
+        update(this.formUpdata).then((res) => {
+          iMessage.success('保存成功');
           down({
             schemaId: this.schemaId,
-          }).then((res) => { });
-        })
-      })
-
+          }).then((res) => {});
+        });
+      });
     },
 
-    updateGroupedLabel (item) {
+    updateGroupedLabel(item) {
       this.onDataLoading = true;
       renameComponentGroup({
         groupId: item.matchId,
         groupName: item.title,
-        schemaId: this.schemaId
-      }).then(res => {
-        if (res.code === '200') {
-          iMessage.success('修改成功')
-          this.onEditLabels.splice(this.onEditLabels.indexOf(item.id), 1)
-          this.chargeRetrieve({
-            isDefault: true,
-            viewType: 'all',
-            schemaId: this.schemaId,
-            groupId: this.groupId
-          })
-        } else {
-          iMessage.error('修改失败')
-        }
-        this.onDataLoading = false;
-      }).catch((error) => {
-        iMessage.error('修改失败')
+        schemaId: this.schemaId,
       })
-    }
+        .then((res) => {
+          if (res.code === '200') {
+            iMessage.success('修改成功');
+            this.onEditLabels.splice(this.onEditLabels.indexOf(item.id), 1);
+            this.chargeRetrieve({
+              isDefault: true,
+              viewType: 'all',
+              schemaId: this.schemaId,
+              groupId: this.groupId,
+            });
+          } else {
+            iMessage.error('修改失败');
+          }
+          this.onDataLoading = false;
+        })
+        .catch((error) => {
+          iMessage.error('修改失败');
+        });
+    },
   },
 };
 </script>
