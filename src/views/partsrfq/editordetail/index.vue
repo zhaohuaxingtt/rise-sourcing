@@ -349,6 +349,7 @@ export default {
         })
         .then(res => {
           if (res.code == 200) {
+            console.log(res.data.isFreeze, '====>>是否禁用');
             this.disabled = !!res.data.isFreeze
           } else {
             iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
