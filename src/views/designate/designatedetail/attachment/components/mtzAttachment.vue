@@ -102,7 +102,7 @@ export default {
       })
     },
     async openPage(val) {
-     await  downloadUdFile(val.id)
+     await  downloadUdFile(val.fileId)
     },
   }
 }
