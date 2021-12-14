@@ -57,7 +57,7 @@
       </div>
   </iDialog>
   <div v-if='isPreview'>
-    <bob class="bob" v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender' :statusProps="true"></bob>
+    <bob class="bob" v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender' :statusProps="true" :isPreview="isPreview"></bob>
     <vp class="vp" v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
     <pi class="pi" v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
     <div v-else-if='["PCA","TIA"].includes(typeSelect)' id="preview2" :key='keysRender'>
@@ -98,7 +98,7 @@ export default{
       messageBox:false,
       isPreview:false,
       previewItems:null,
-      keysRender:parseInt(Math.random()*100000000000)
+      keysRender:parseInt(Math.random()*100000000000),
     }
   },
   computed: {
@@ -260,6 +260,9 @@ export default{
         }
       })
     }
+  },
+  mounted() {
+    console.log(this.$route, '路由参数')
   }
 }
 </script>

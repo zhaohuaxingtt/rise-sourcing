@@ -988,6 +988,7 @@
 						this.fromGroup.CAR_TYPE_PRO = 
 							Array.isArray(res.data) ?
 							res.data.map(item => ({
+								id: item.id,
 								code: item.cartypeProCode,
 								name: item.cartypeProName,
 								sopDate: item.sop

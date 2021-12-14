@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-08 18:03:08
+ * @LastEditTime: 2021-12-14 11:29:43
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -26,7 +26,8 @@
       </template>
       <!-----------目标价--------------------------->
       <template #targetPrice="scope">
-        <iText v-if="applyType !== '2'">{{scope.row.targetPrice}}</iText>
+        <iInput v-if="applyType === '3'" :value="scope.row.targetPrice" maxlength="8" @input="handleInput($event, scope.row, 'targetPrice')" />
+        <iText v-else-if="applyType !== '2'">{{scope.row.targetPrice}}</iText>
         <span v-else-if="!scope.row.expectedTargetPrice && !scope.row.isEdit">{{scope.row.targetPrice}}</span>
         <iInput v-else :value="scope.row.targetPrice" maxlength="8" @input="handleInput($event, scope.row, 'targetPrice')" />
       </template>

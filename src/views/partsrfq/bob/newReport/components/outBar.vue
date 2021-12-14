@@ -57,6 +57,11 @@ export default {
       type: Boolean,
       default: true
     },
+    // 预览模式
+    isPreview: {
+      type: Boolean,
+      default: false,
+    },
     maxData: {
       type: String,
       default: "",
@@ -153,7 +158,7 @@ export default {
                 right: 0,
                 align: 'right',
                 backgroundColor: {
-                  image: this.del
+                  image: this.isPreview ? '' :this.del
                 }
               },
             }
@@ -283,7 +288,10 @@ export default {
           that.$emit('del')
         }
         if (params.componentType === 'xAxis') {
-          that.$emit('change')
+          console.log('点击了',that.isPreview);
+          if (!that.isPreview) {
+            that.$emit('change')
+          }
         }
       });
     },
