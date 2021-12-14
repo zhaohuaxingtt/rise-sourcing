@@ -2,7 +2,7 @@
   <iPage v-loading="pageLoading">
     <headerNav v-if='extendsIsedit'
                ref="headerNav"
-               :showCommonButton="!editStatus">
+               :showCommonButton="!editStatus" :categoryCodeProps="categoryCodeProps" :categoryCodeOptions="categoryCodeOptions">
       <template #extralButton>
         <template v-if="!editStatus">
           <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
@@ -136,6 +136,7 @@ export default {
   },
   props: {
     categoryCodeProps: String,
+    categoryCodeOptions: Array,
     isEdit: {
       type: Boolean,
       default: true
@@ -298,7 +299,7 @@ export default {
     downloadFile () {
       const pdfName = `品类管理助手-举措清单-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
       downloadPDF({
-        idEle: 'container',
+        idEle: '#container',
         pdfName,
         exportPdf: true,
       });
@@ -317,7 +318,7 @@ export default {
         this.$nextTick(async () => {
           const pdfName = `品类管理助手-举措清单-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
           const resFile = await this.getDownloadFileAndExportPdf({
-            domId: 'container',
+            domId: '#container',
             watermark: nameEn + '-' + userNum + '-' + nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName: pdfName,
           });

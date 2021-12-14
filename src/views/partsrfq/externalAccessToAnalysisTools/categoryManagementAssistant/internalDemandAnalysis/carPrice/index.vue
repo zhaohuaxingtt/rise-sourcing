@@ -364,7 +364,7 @@ export default {
       try {
         this.saveLoading = true
         const resFile = await this.getDownloadFileAndExportPdf({
-          domId: 'carPrice',
+          domId: '#carPrice',
           watermark:
             this.$store.state.permission.userInfo.deptDTO.nameEn +
             '-' +

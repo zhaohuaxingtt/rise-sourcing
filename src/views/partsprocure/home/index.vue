@@ -108,6 +108,7 @@
                 v-permission.auto="PARTSPROCURE_VEHICLECATEGORIES|车型大类"
               >
                 <iSelect
+                  filterable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREVEHICLECATEGORIES','车型大类')
@@ -132,6 +133,7 @@
                 v-permission.auto="PARTSPROCURE_MODELPROJECT|车型项目"
               >
                 <iSelect
+                  filterable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')
@@ -294,6 +296,7 @@ import { clickMessage } from "@/views/partsign/home/components/data"
 import {selectDictByKeyss,procureFactorySelectVo} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 import {setPretreatmentParams} from '@/utils/tool'
+import { getCarTypeSop } from "@/api/partsprocure/editordetail";
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -340,6 +343,7 @@ export default {
   created() {
     this.getTableListFn();
     this.getProcureGroup();
+    this.getCarTypeSop()
     this.updateNavList
   },
   methods: {
@@ -353,6 +357,7 @@ export default {
     getCartypeDict() {
       getCartypeDict().then(res => {
         this.fromGroup['CARTYPE_CATEGORY'] = res.data
+        this.$forceUpdate()
       }).catch(err=>{
         console.log(err)  
       })
@@ -390,7 +395,7 @@ export default {
     getProcureGroup() {
       let types = [
         "RFQ_PART_STATUS_CODE_TYPE",
-        "CAR_TYPE_PRO",
+        // "CAR_TYPE_PRO",
         "PPT"
       ];
       selectDictByKeyss(types).then((res) => {
@@ -507,8 +512,24 @@ export default {
       window.open(creatParts.href, '_blank')
     },
     // 通过待办数跳转
-    clickMessage
+    clickMessage,
+    // 获取车型项目
+    getCarTypeSop() {
+      getCarTypeSop()
+      .then(res => {
+        if (res.code == 200) {
+          this.fromGroup.CAR_TYPE_PRO = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              code: item.cartypeProCode,
+              name: item.cartypeProName
+            })) :
+            []
 
+          this.$forceUpdate()
+        }
+      })
+    }
   }
 };
 </script>

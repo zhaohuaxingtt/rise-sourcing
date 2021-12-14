@@ -58,11 +58,12 @@
             <div>{{ getTousandNum(scope.row.entryAmount) }}</div>
           </template>
           <template #info="scope">
-            <div class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
+            <div v-if="isApply" class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
+            <div v-else class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
           </template>
-          <template #apply="scope" v-if="isApply">
+          <!-- <template #apply="scope" v-if="isApply">
             <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
-          </template>
+          </template> -->
         </iTableList>
         <iTableList
             v-if="tableListData2.length != 0"
@@ -231,10 +232,10 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        if(!this.isApply){
-          this.tmCartypeProTableTitle = cloneDeep(this.tmCartypeProTableTitle)
-          this.tmCartypeProTableTitle.pop()
-        }
+        // if(!this.isApply){
+        //   this.tmCartypeProTableTitle = cloneDeep(this.tmCartypeProTableTitle)
+        //   this.tmCartypeProTableTitle.pop()
+        // }
         this.noLine = ''
         this.form['search.carTypeProject'] = this.referenceCarProjectParams.carTypeProId
         this.searchRelationCarTypeList()
