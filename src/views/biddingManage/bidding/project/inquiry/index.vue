@@ -815,6 +815,7 @@ export default {
           supplierCode: row.sapCode || row.svwCode || row.svwTempCode || '',
           supplierId: row.subSupplierId,
           supplierName: row.nameZh,               //供应商全称
+          supplierFullName: row.nameZh,               //供应商全称
           supplierShortName: row.shortNameZh,     //供应商简称
           mbdl: "",
           isAttend: true,
