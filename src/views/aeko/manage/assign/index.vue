@@ -107,7 +107,7 @@
 <script>
 import search from './components/search'
 import {tableTitle, SUBMENU} from './components/data'
-import projectHeader from '@/views/aeko/approve/components/projectHeader'
+import projectHeader from './components/projectHeader'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {iPage, iCard, iSelect, iButton, iPagination, icon, iMessage} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
