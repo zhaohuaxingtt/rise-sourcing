@@ -64,8 +64,8 @@ export default {
     ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"]),
     headerSubMenuWithPermission() {
-      return process.env.NODE_ENV == 'dev' ? this.heaederSubMenu.filter(item => this.$store.state.permission.whiteBtnList[item.permissionKey.split('|')[0]]) : this.heaederSubMenu
-      // return this.heaederSubMenu.filter(item => this.$store.state.permission.whiteBtnList[item.permissionKey.split('|')[0]])
+      // return process.env.NODE_ENV == 'dev' ? this.heaederSubMenu.filter(item => this.$store.state.permission.whiteBtnList[item.permissionKey.split('|')[0]]) : this.heaederSubMenu
+      return this.heaederSubMenu.filter(item => this.$store.state.permission.whiteBtnList[item.permissionKey.split('|')[0]])
     }
   },
   methods: {
