@@ -815,7 +815,7 @@ export default {
         //本年产量日期
         let annualYesr = dayjs(dateList[`stage${i}`]).year();
         let dateArray = []
-        for (let j = 1; j < 9; j++) {
+        for (let j = 1; j < 10; j++) {
           dateArray.push(yearsPlanDate[`stage${j}`])
         }
         
