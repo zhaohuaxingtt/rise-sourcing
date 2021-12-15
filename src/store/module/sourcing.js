@@ -133,8 +133,27 @@ const state = {
       key: "XUANYUANCAIDAN",
       permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_MENU',
       permissionName: '寻源执行'
-    }
-  ]
+    },
+    {
+      value: 2,
+      name: "寻源概览",
+      message: 0,
+      url: "/sourcing/dashboard",
+      activePath: "dashboard",
+      key: "XUANYUANGAILAN",
+      permissionKey: 'DASHBOARD_OVERVIEW_PAGE',
+      permissionName: '寻源概览'
+    },
+    {
+      value: 3,
+      name: "报表管理",
+      message: 0,
+      url: "/sourceinquirypoint/sourcing/reportmgmt/report",
+      activePath: "reportmgmt",
+      key: "LK_BAOBIAOGUANLI",
+      permissionKey: 'REPORTMGMT_STATUSREPORT_PROCESS_PBI',
+      permissionName: '报表管理-状态跟踪报表'
+    },  ]
 }
 
 const mutations = {

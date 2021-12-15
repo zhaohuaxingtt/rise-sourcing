@@ -280,7 +280,7 @@ export default {
         // 预览
         preview(){
             const {path,query} = this.$route;
-            console.log(path);
+            console.log(path, '当前路径');
             this.$router.push({
               path,
               query: {
