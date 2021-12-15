@@ -219,8 +219,8 @@ export default {
     title() {
       const { rfqCode, projectCode,roundType,isTest } = this.ruleForm || {};
       // return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
-      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode} ${roundType == '05' ? isTest ?  '（测试）' : '（正式）' : ''}` 
-                    : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode} ${roundType == '05' ? isTest ?  '（测试）' : '（正式）' : ''}`;
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode} ${roundType == '05' ? isTest ?  `${this.language('BIDDING_CESHI','（测试）')}` : `${this.language('BIDDING_ZHENGSHI',`${this.language('BIDDING_ZHENGSHI','（正式）')}`)}` : ''}` 
+                    : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode} ${roundType == '05' ? isTest ?  `${this.language('BIDDING_CESHI','（测试）')}`: `${this.language('BIDDING_ZHENGSHI','（正式）')}` : ''}`;
     },
   },
   watch: {

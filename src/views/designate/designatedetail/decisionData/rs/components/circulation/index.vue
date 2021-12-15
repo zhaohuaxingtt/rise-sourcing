@@ -105,7 +105,7 @@ export default {
         {label:'申请单号',value:'', props: 'nominateAppId'},
         {label:'申请日期',value:'2020-01-01', props: 'nominateAppTime'},
         {label:'LINIE采购员',value:'胡伟', props: 'linieName'},
-        {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: 'currency'},
+        {label:'Exchange rate',value:'', props: 'cfExchangeRate'},
       ],
       // tableTitle: cloneDeep(nomalTableTitle),
       tableData: [],
