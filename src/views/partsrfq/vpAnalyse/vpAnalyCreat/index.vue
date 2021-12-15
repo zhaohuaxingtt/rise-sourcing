@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 15:52:39
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: 新建
 -->
 <template>
@@ -10,10 +10,15 @@
     <div class="header">{{$t('TPZS.VPFX')}}{{!!$store.state.rfq.rfqId?'-'+$store.state.rfq.rfqId:''}}
       <div>
         <iButton @click="handleAnalysis">{{$t('TPZS.VPFXK')}}</iButton>
-        <icon class="icon-x" name='icondatabaseweixuanzhong' symbol></icon>
+        <icon class="icon-x"
+              name='icondatabaseweixuanzhong'
+              symbol></icon>
       </div>
     </div>
-    <el-row :gutter="16" type="flex" justify="space-between" class="margin-top25">
+    <el-row :gutter="16"
+            type="flex"
+            justify="space-between"
+            class="margin-top25">
       <el-col :span="12">
         <carVolumeAnalysis @handleCurrentChange="handleCurrentChange" />
       </el-col>
@@ -33,7 +38,7 @@ import partsTable from "./components/partsTable.vue";
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iCard, iPage, iButton, icon, carVolumeAnalysis, partsTable },
-  data() {
+  data () {
     // 这里存放数据
     return {
 
@@ -45,10 +50,11 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-    handleCurrentChange(data) {
+    handleCurrentChange (data) {
+      console.log(data)
       this.$refs.partsTable.getTableList(data)
     },
-    handleAnalysis() {
+    handleAnalysis () {
       if (this.$store.state.rfq.entryStatus) {
         this.$router.push({ path: '/sourceinquirypoint/sourcing/partsrfq/assistant', query: { id: this.$store.state.rfq.rfqId, round: this.$route.query.round, pageType: 'VP', activityTabIndex: 'two' } })
       } else {
@@ -57,11 +63,11 @@ export default {
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {
+  created () {
 
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
+  mounted () {
 
   },
 }
