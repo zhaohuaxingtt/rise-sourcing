@@ -12,10 +12,10 @@
     <search @search="getFetchData" ref="search"/>
     <!-- 表格 -->
     <iCard class="aeko-assign-table">
-      <div class="editControl">
+      <div class="editControl margin-bottom20">
         <span class="font18 font-weight">{{ language( 'AEKOFENPEI', 'AEKO分配' ) }}</span>
         <iButton
-            class="floatright margin-bottom20"
+            class="floatright"
             :loading="assigning"
             v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_PAGE_ASSIGN|分配"
             @click="assign"
@@ -409,6 +409,9 @@ export default {
   .aeko-assign-table {
     .cardBody {
       padding: 10px;
+    }
+    .editControl {
+      line-height: 35px;
     }
   }
 }
