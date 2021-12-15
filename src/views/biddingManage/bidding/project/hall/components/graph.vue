@@ -30,7 +30,7 @@
     <iCard :title="language('BIDDING_GONGYINGSHAN', '供应商')">
       <commonTable
         ref="tableDataForm"
-        :tableData="suppliers"
+        :tableData="suppliersPage"
         :tableTitle="supplierRankTableTitle"
         :tableLoading="tableLoading"
         :selection="false"
@@ -52,7 +52,8 @@
       </commonTable>
       <iPagination
         v-update
-        @current-change="handleCurrentChange($event)"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
@@ -61,7 +62,6 @@
         :layout="page.layout"
         :current-page="page.currPage"
         :total="page.total"
-        @size-change="handleSizeChange"
       />
     </iCard>
   </div>
@@ -155,7 +155,7 @@ export default {
   },
   computed: {
     suppliersPage() {
-      const { suppliers } = this.ruleForm;
+      const { suppliers } = this;
       const { currPage, pageSize } = this.page;
       return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
     },
@@ -230,6 +230,7 @@ export default {
       row.supplierCode = item.supplierCode;
     },
     handleSizeChange(val) {
+      this.page.currPage = 1;
       this.page.pageSize = val;
     },
     // 表格选中值集
