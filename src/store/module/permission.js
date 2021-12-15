@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-08-31 12:01:14
+ * @LastEditTime: 2021-12-15 20:16:25
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -40,17 +40,16 @@ function initMeun(data) {
   return data
 }
 /**
- * @description: 拿到用户权限过渡方法。==> 后期用户中心会处理为一层 roleList []
+ * @description: 拿到用户权限过渡方法
  * @param {*} userInfo
  * @return {*}
  */
 function translateUserRole(userInfo) {
+  console.log(userInfo)
   try {
     const roleList = []
-    userInfo.positionList.forEach(i => {
-      i.roleDTOList.forEach(u => {
-        roleList.push(u.code)
-      })
+    userInfo.roleList.forEach(i => {
+      roleList.push(i.code)
     })
     return roleList
   } catch (error) {
