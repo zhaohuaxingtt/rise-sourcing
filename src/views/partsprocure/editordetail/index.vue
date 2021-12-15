@@ -180,7 +180,7 @@
 						</iFormItem>
 						
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
-							<iSelect v-model="detailData.carTypeProjectZh" v-if="!disabled" @change="getCarTypeSopTime">
+							<iSelect v-model="detailData.carTypeProjectZh" filterable v-if="!disabled" @change="getCarTypeSopTime">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
@@ -377,28 +377,28 @@
 		</iCard>
 		<iTabsList class="margin-top20" type='card' v-if='infoItem.id'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
-			<el-tab-pane v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.DESIGNATED')">
+			<el-tab-pane v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.DESIGNATED') && !isSteelPurchase" v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')">
 				<designateInfo :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION|材料组信息">
-				<materialGroupInfo ref='materialGroupInfo' :params="infoItem" />
+				<materialGroupInfo ref='materialGroupInfo' :params="infoItem" :detailData="detailData" />
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN|零件产量计划">
 				<outputPlan ref="outputPlan" :params="infoItem" @updateStartYear="updateStartYear" v-permission.auto="PARTSPROCURE_EDITORDETAIL_XUNJIACHANLIANJIHUA|询价产量计划" />
 				<outputRecord v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANCHANLIANGJILU|零件产量记录" ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
 				<volume ref="volume" class="margin-top20" :params="infoItem" :isSameGroupPartProjectType="isSameGroupPartProjectType" :disabled="disabled || !(detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.NO_RFQ') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.NO_PROJECT_NUM') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.APPLICATION_DESIGNAT'))" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANMEICHEYONGLIANG|零件每车用量" @updateStartYear="updateTabs" :sourcePartProjectType="sourcePartProjectType"/>
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE|图纸和信息单详情">
 				<drawing :params="infoItem" />
 				<sheet class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_WULIUYAOQIU','物流要求')" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS|物流要求">
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_WULIUYAOQIU','物流要求')" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS|物流要求">
 				<logistics :infoItem="infoItem"></logistics>
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE|申请目标价">
 				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="detailData.partProjectType || partProjectType" :params="infoItem"></targePrice>
 			</el-tab-pane>
@@ -576,6 +576,7 @@
 				isCarType:false,
 				bakCarTypeSopTime: '',
 				sourcePartProjectType: '', // 后端返回的partProjectType
+				isSteelPurchase: false // 采购项目类型为钢材一次性、批量采购
 			};
 		},
 		created() {
@@ -628,7 +629,7 @@
 					{ keys: "TERMS_PAYMENT" },
 					{ keys: "TERMS_PURCHASE" },
 					{ keys: "PP_CSTMGMT_CURRENCY" },
-					{ keys: "CAR_TYPE_PRO" }
+					// { keys: "CAR_TYPE_PRO" }
 				])
 				.then(res => {
 					if (res.code == 200) {
@@ -692,6 +693,12 @@
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data ||[];
+
+					// 采购项目类型为钢材一次性、批量采购
+					if ([ this.partProjTypes.GANGCAIYICIXINGCAIGOU, this.partProjTypes.GANGCAIPILIANGCAIGOU ].includes(this.detailData.partProjectType)) {
+						this.isSteelPurchase = true
+					}
+
 					this.sourcePartProjectType = res.data.partProjectType
 					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
 					this.checkFactoryString = res.data.procureFactory
@@ -973,18 +980,29 @@
 			},
 			// 选择车型项目的时候，需要带出对应车型的SOP时间
 			getCarTypeSopTime(carType) {
-				// 原来有SOP时间才需要联动
+				// 原来有SOP时间不需要联动
 				if(this.bakCarTypeSopTime) return
-				const carTypeItem = this.carTypeOptions.find(o => o.cartypeProCode === carType)
-				if (carTypeItem && carTypeItem.sop) {
-					this.detailData.sopDate = carTypeItem.sop
+				const carTypeItem = this.fromGroup.CAR_TYPE_PRO.find(o => o.code === carType)
+				if (carTypeItem && carTypeItem.sopDate) {
+					this.detailData.sopDate = carTypeItem.sopDate
+					// polo gp
 				}
 			},
 			// 获取车型项目sop
 			getCarTypeSopList() {
 				getCarTypeSop().then(res => {
 					if (res && res.code === '200') {
-						this.carTypeOptions = res.data || []
+						this.fromGroup.CAR_TYPE_PRO = 
+							Array.isArray(res.data) ?
+							res.data.map(item => ({
+								id: item.id,
+								code: item.cartypeProCode,
+								name: item.cartypeProName,
+								sopDate: item.sop
+							})) :
+							[]
+
+						this.$forceUpdate()
 					}
 				})
 			}

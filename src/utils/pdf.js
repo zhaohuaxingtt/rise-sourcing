@@ -16,6 +16,7 @@ import {
 
 
 export function downloadPDF({
+    
     idEle: ele,
     pdfName: pdfName,
     callback: callback,
@@ -112,6 +113,7 @@ export function dataURLtoFile(dataurl, filename) {
 
 // pdf相关处理
 export const downloadPdfMixins = {
+   
     methods: {
         getDownloadFileAndExportPdf({
             domId,
@@ -148,7 +150,21 @@ export const downloadPdfMixins = {
                 })
             })
         },
-        addFile(key, name) {
+        addFile(e,key, name) {
+          const  toolType=[
+                { code:'QUOTE_IMITATE',
+                 msg:'业务分配模拟'},
+               { code:'QUOTE_TRACK',
+                 msg:'报价与评分跟踪'},
+                 {code:'NEGOTIATION_BASE',msg:'项目概览'},
+                 {code:'NEGOTIATION_SUPPLIER',msg:'批量供应商概览'},
+                 {code:'NEGOTIATION_NOMI',msg:'定点记录'},
+                 {code:'NEGOTIATION_PLANT',msg:'批量供应商工厂总览'},
+                 
+                 {code:'QUOTE_PARTS',msg:'报价分析汇总-零件'},
+                 
+             ]
+             
             return new Promise((resolve) => {
                 //   let el = document.querySelector('#'+val)
                 //   let el = document.querySelector('rightaa')
@@ -162,12 +178,9 @@ export const downloadPdfMixins = {
                 //     )
                 //   .then(async () => {
                 //   })
-                this.downloadButtonLoading = true
-                this.cardShow.forEach(i => {
-                    if (i.key == key) {
-                        i.show = true
-                    }
-                })
+                this.$set(this.cardShow.find(items=>items.key == key), 'show', true)
+                console.log(e)
+                e.collapseValue=true
                 this.$nextTick(() => {
                     if (key == '4') {
                         this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('addFile')
@@ -195,7 +208,7 @@ export const downloadPdfMixins = {
                                                 instanceId: -1,
                                                 isBindingInstantce: false,
                                                 Type: '报告',
-                                                toolType: this.toolType.find(res => res.msg == name).code || '',
+                                                toolType: toolType.find(res => res.msg == name).code || '',
                                                 downloadUrl: res.data[0].id
                                             }
                                             reportAdd(req).then(v => {

@@ -396,7 +396,7 @@ export default {
     .el-form-item__label {
       width: 100%;
       .flex-align-center{
-        font-weight: 600;
+        /* font-weight: 600; */
         font-size: 14px;
         height: 16px;
         margin-bottom: 12px;

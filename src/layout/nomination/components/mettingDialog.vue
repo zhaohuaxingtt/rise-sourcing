@@ -51,7 +51,11 @@
         v-show="visible" class="table margin-top20" 
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
-        @handleSelectionChange="handleSelectionChange" />
+        @handleSelectionChange="handleSelectionChange">
+        <template #startTime="scope">
+          <span>{{ scope.row.startTime | dateFilter("HH:mm", "HH:mm:ss") }}</span>
+        </template>
+      </tableList>
     </div>
     <div slot="footer" class="footer">
       <iPagination v-update

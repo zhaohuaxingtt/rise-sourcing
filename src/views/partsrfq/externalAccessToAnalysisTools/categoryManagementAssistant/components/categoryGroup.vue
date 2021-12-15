@@ -85,11 +85,12 @@ export default {
     // },
     // 获取当前用户的材料组
     getDefaultCostStructure () {
-      getMaterialGroupByUserIds({}).then(res => {
-        this.group = res.data
-      })
       if (this.groupList) {
         this.group = this.groupList
+      } else {
+        getMaterialGroupByUserIds({}).then(res => {
+          this.group = res.data
+        })
       }
     },
     // 确认

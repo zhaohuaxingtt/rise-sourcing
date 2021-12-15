@@ -2,12 +2,12 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 16:28:01
- * @LastEditors: zbin
+ * @LastEditors: caopeng
  * @Descripttion: 概览
 -->
 <template>
-  <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" :defalutCollVal='false' collapse>
-    <batch-supplier :paramCategoryCode="paramCategoryCode" class="card-change" :isInside="true"/>
+  <iCard  @handleTitle="addFile($event,7, '批量供应商概览')" class="supplier-item" :title="$t('TPZS.PLGYSGL')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal='false' collapse>
+    <batch-supplier id="card7" :paramCategoryCode="paramCategoryCode" class="card-change" :isInside="true"/>
     <!-- <div class="header-title">{{remark}}</div>
     <div class="title-btn">
       <iButton @click="handleHerf">{{$t('TPZS.GYS360')}}</iButton>
@@ -27,13 +27,17 @@ import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
 import { getRfqToRemark, pageRfqPartPurPro, powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 
+import { downloadPdfMixins } from '@/utils/pdf'
+import { icardData } from '../../data'
 export default {
+  mixins: [downloadPdfMixins],
   components: { iCard, iButton, remarkDialog, batchSupplier },
   props: {
     categoryCode: String
   },
   data() {
     return {
+    cardShow: JSON.parse(JSON.stringify(icardData)),
       paramCategoryCode: "",
       remark: '',
       remarkDialog: false,

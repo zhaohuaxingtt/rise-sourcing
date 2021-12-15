@@ -57,7 +57,7 @@
       </div>
   </iDialog>
   <div v-if='isPreview'>
-    <bob class="bob" v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender' :statusProps="true"></bob>
+    <bob class="bob" v-if='typeSelect == "BOB" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender' :statusProps="true" :isPreview="isPreview"></bob>
     <vp class="vp" v-else-if='typeSelect == "VP" && previewItems' propType='edit' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></vp>
     <pi class="pi" v-else-if='typeSelect == "PI" && previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></pi>
     <div v-else-if='["PCA","TIA"].includes(typeSelect)' id="preview2" :key='keysRender'>
@@ -78,8 +78,8 @@
 <script>
 import {iCard,iFormGroup,iFormItem,iSelect,iDialog,icon} from 'rise'
 import tabel from '@/views/partsign/home/components/tableList'
-import {arrayOfselect,tableTitle} from './data'
-import {costanalysisList,costanalysisShow,costanalysisSort,getTools} from '@/api/designate/decisiondata/costanalysis'
+import { tableTitle } from './data'
+import {costanalysisList,costanalysisShow,costanalysisSort,getTools,getHaveDataTools} from '@/api/designate/decisiondata/costanalysis'
 import bob from '@/views/partsrfq/bob/newReport'
 import vp from '@/views/partsrfq/vpAnalyse/vpAnalyseDetail'
 import pi from '@/views/partsrfq/piAnalyse/piDetail'
@@ -90,7 +90,7 @@ export default{
   data(){
     return {
       typesOfData:'',
-      tools: arrayOfselect,
+      tools: [],
       tableTitle,
       tableData:[],
       typeSelect:'BOB',
@@ -98,7 +98,7 @@ export default{
       messageBox:false,
       isPreview:false,
       previewItems:null,
-      keysRender:parseInt(Math.random()*100000000000)
+      keysRender:parseInt(Math.random()*100000000000),
     }
   },
   computed: {
@@ -120,7 +120,7 @@ export default{
     this.isPreview = this.$route.query.isPreview == 1
 
     if (this.isPreview) {
-      await this.getTools()
+      await this.getHaveDataTools()
 
       if (!this.tools.some(item => item.value === this.$route.query.typeSelect)) {
         this.typeSelect = this.tools[0]?.value
@@ -134,7 +134,9 @@ export default{
     } else {
       this.typeSelect = "BOB"
       this.$store.dispatch('setCostType',this.typeSelect)
-      this.tools = arrayOfselect
+
+      this.getTools()
+
       this.costanalysisList()
     }
   },
@@ -246,7 +248,6 @@ export default{
         this.loading = false
       })
     },
-    // 获取有数据的Tool下拉框
     getTools() {
       return getTools({
         nominateAppId: this.$route.query.desinateId
@@ -255,11 +256,34 @@ export default{
         if (res.code == 200) {
           this.tools = 
             Array.isArray(res.data) ?
-            arrayOfselect.filter(item => res.data.some(code => code === item.value)) :
+            res.data.map(item => ({
+              label: item.desc,
+              value: item.code
+            })) :
+            []
+        }
+      })
+    },
+    // 获取有数据的Tool下拉框
+    getHaveDataTools() {
+      return getHaveDataTools({
+        nominateAppId: this.$route.query.desinateId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.tools = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              label: item.desc,
+              value: item.code
+            })) :
             []
         }
       })
     }
+  },
+  mounted() {
+    console.log(this.$route, '路由参数')
   }
 }
 </script>
