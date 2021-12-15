@@ -85,7 +85,6 @@ export default {
   },
   methods: {
     entrance(val) {
-      console.log(val, '==父组件');
       this.pageType = val;
     },
     handleSearch() {

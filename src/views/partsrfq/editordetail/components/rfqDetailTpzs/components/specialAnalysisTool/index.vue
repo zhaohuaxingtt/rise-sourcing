@@ -46,7 +46,6 @@ export default {
   },
   methods: {
     entrance(param) {
-      console.log(param, '点击了图表');
       // 默认项
       if (param.isDefault) {
         switch (param.title) {
