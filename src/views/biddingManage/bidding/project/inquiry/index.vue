@@ -799,7 +799,6 @@ export default {
       this.showSupplierDialog = false
     },
     handleSupplierChecked(rows) {
-      console.log('gdsagdsgdsg',rows)
       const len = this.ruleForm.suppliers.length;
       const suppliersList = this.ruleForm.suppliers;
       // console.log('点击保存供应商',suppliersList, rows);
@@ -815,7 +814,9 @@ export default {
           // telephone: row.phoneM,
           supplierCode: row.sapCode || row.svwCode || row.svwTempCode || '',
           supplierId: row.subSupplierId,
-          supplierName: row.nameZh,
+          supplierName: row.nameZh,               //供应商全称
+          supplierFullName: row.nameZh,               //供应商全称
+          supplierShortName: row.shortNameZh,     //供应商简称
           mbdl: "",
           isAttend: true,
           // ...(this.ruleForm.roundType == "05"
@@ -836,7 +837,6 @@ export default {
             ...supplier,
           };
       })
-      console.log('gdsagdsgdsg5555555',this.ruleForm.suppliers)
       this.page.total = this.ruleForm.suppliers.length;
     },
     handleUserChange(row, item) {

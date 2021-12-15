@@ -133,8 +133,17 @@ const state = {
       key: "XUANYUANCAIDAN",
       permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_MENU',
       permissionName: '寻源执行'
-    }
-  ]
+    },
+    {
+      value: 2,
+      name: "寻源概览",
+      message: 0,
+      url: "/sourcing/dashboard",
+      activePath: "dashboard",
+      key: "XUANYUANGAILAN",
+      permissionKey: 'DASHBOARD_OVERVIEW_PAGE',
+      permissionName: '寻源概览'
+    }, ]
 }
 
 const mutations = {

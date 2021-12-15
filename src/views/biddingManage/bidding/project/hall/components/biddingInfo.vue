@@ -798,8 +798,7 @@ export default {
       return (biddingStatus == "04" ||
         biddingStatus == "06" ||
         biddingStatus == "07" ||
-        biddingStatus == "08") &&
-        manualBiddingType != "01"
+        biddingStatus == "08") 
         ? true
         : false;
     },
