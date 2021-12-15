@@ -6,38 +6,50 @@
  * @Descripttion: 项目概览
 -->
 <template>
-<!-- @handleTitle="addFile(6,'项目概览')"  -->
-  <iCard id="card6" :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id+`<icon class='icon cursor' name='icongouwuche' symbol></icon>`" :defalutCollVal='false' collapse>
-    <projectInfor  @rfqInfo="emitRfq"/>
-    <el-divider></el-divider>
-    <partInforTable/>
-    <supplierTable class="margin-top20" />
+  <!-- @handleTitle="addFile(6,'项目概览')"  -->
+  <iCard 
+         @handleTitle="addFile($event,6, '项目概览')"
+         :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+         :defalutCollVal='false'
+         collapse>
+         <div id="card6">
+            <projectInfor />
+                <el-divider></el-divider>
+                <partInforTable />
+                <supplierTable class="margin-top20" />
+         </div>
+   
   </iCard>
+
 </template>
 
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { iCard, iFormItem, iText, iFormGroup, iLabel, icon } from "rise";
-import projectInfor from "./projectInfor.vue";
-import partInforTable from "./partInforTable.vue";
-import supplierTable from "./supplierTable.vue";
-import {  downloadPdfMixins } from '@/utils/pdf'
+import { iCard, iFormItem, iText, iFormGroup, iLabel, icon } from 'rise'
+import projectInfor from './projectInfor.vue'
+import partInforTable from './partInforTable.vue'
+import supplierTable from './supplierTable.vue'
+import { downloadPdfMixins } from '@/utils/pdf'
+import { icardData } from '../../data'
 export default {
   mixins: [downloadPdfMixins],
   // import引入的组件需要注入到对象中才能使用
-  components: { iCard, iFormItem, iText, iFormGroup, iLabel, icon, projectInfor, partInforTable, supplierTable },
+  components: {
+    iCard,
+    iFormItem,
+    iText,
+    iFormGroup,
+    iLabel,
+    icon,
+    projectInfor,
+    partInforTable,
+    supplierTable,
+  },
   data() {
     // 这里存放数据
     return {
-  toolType:[
-         { code:'QUOTE_IMITATE',
-          msg:'业务分配模拟'},
-        { code:'QUOTE_TRACK',
-          msg:'报价与评分跟踪'},
-          {code:'NEGOTIATION_BASE',msg:'项目概览'}
-          
-      ]
+      cardShow: JSON.parse(JSON.stringify(icardData)),
     }
   },
   // 监听属性 类似于data概念
@@ -47,17 +59,14 @@ export default {
   // 方法集合
   methods: {
     emitRfq(rfq) {
-      this.$emit("rfqInfo", rfq)
-    }
+      this.$emit('rfqInfo', rfq)
+    },
+ 
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {
-
-  },
+  created() {},
   // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
-
-  },
+  mounted() {},
 }
 </script>
 <style lang='scss' >

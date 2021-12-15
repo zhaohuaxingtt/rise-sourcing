@@ -7,8 +7,8 @@
  * @FilePath: /front-web/src/views/dashboard/index.vue
 -->
 <template>
-  <iPage class="dashboard">
-    <headerNav v-permission.auto="DASHBOARD_OVERVIEW_PAGE|寻源概览" />
+  <iPage class="dashboard" v-permission.auto="DASHBOARD_OVERVIEW_PAGE|寻源概览">
+    <headerNav />
     <!-- 功能卡片 -->
     <div class="dashboard-card">
       <el-row :gutter="10">
