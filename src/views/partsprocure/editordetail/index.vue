@@ -382,7 +382,7 @@
 			</el-tab-pane>
 			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION|材料组信息">
-				<materialGroupInfo ref='materialGroupInfo' :params="infoItem" />
+				<materialGroupInfo ref='materialGroupInfo' :params="infoItem" :detailData="detailData" />
 			</el-tab-pane>
 			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN|零件产量计划">
