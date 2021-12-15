@@ -12,6 +12,15 @@
       <template #isSelectMbdl="scope">
         <span>{{scope.row.isSelectMbdl?$t('nominationLanguage.Yes'):$t('nominationLanguage.No')}}</span>
       </template>
+      <template #epRate="scope">
+        <span>{{scope.row.epRate?scope.row.epRate:'-'}}</span>
+      </template>
+      <template #mqRate="scope">
+        <span>{{scope.row.mqRate?scope.row.mqRate:'-'}}</span>
+      </template>
+      <template #plRate="scope">
+        <span>{{scope.row.plRate?scope.row.plRate:'-'}}</span>
+      </template>
     </tableList>
   </div>
 </template>
