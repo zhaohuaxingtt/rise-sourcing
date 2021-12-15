@@ -15,7 +15,9 @@ export const TAB = [
     message: 0,
     url: "/sourcing/dashboard",
     activePath: "dashboard",
-    key: "XUANYUANGAILAN"
+    key: "XUANYUANGAILAN",
+    permissionKey: 'DASHBOARD_OVERVIEW_PAGE',
+    permissionName: '寻源概览'
   },
   {
     value: 2,
@@ -23,7 +25,9 @@ export const TAB = [
     message: 0,
     url: "/sourceinquirypoint/sourcing/partsign",
     activePath: "partsign",
-    key: "XUANYUANCAIDAN"
+    key: "XUANYUANCAIDAN",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_MENU',
+    permissionName: '寻源执行'
   },
   {
     value: 3,
@@ -31,7 +35,9 @@ export const TAB = [
     message: 0,
     url: "/sourceinquirypoint/sourcing/reportmgmt/details",
     activePath: "reportmgmt",
-    key: "LK_BAOBIAOGUANLI"
+    key: "LK_BAOBIAOGUANLI",
+    permissionKey: 'REPORTMGMT_STATUSREPORT_PROCESSDETAILS_PAGE',
+    permissionName: '报表管理-状态跟踪详情'
   },
 ]
 
@@ -42,7 +48,9 @@ export const MENU = [
     message: 0,
     url: '/sourceinquirypoint/sourcing/reportmgmt/report',
     activePath: 'reportmgmt/report',
-    key: 'LK_ZHUANGTAIGENZHONGBAOBIAO'
+    key: 'LK_ZHUANGTAIGENZHONGBAOBIAO',
+    permissionKey: 'REPORTMGMT_STATUSREPORT_PROCESS_PBI',
+    permissionName: '报表管理-状态跟踪报表'
   },
   {
     value: 2,
@@ -50,7 +58,9 @@ export const MENU = [
     message: 0,
     url: '/sourceinquirypoint/sourcing/reportmgmt/details',
     activePath: 'reportmgmt/details',
-    key: 'LK_ZHUANGTAIGENZHONGXIANGQING'
+    key: 'LK_ZHUANGTAIGENZHONGXIANGQING',
+    permissionKey: 'REPORTMGMT_STATUSREPORT_PROCESSDETAILS_PAGE',
+    permissionName: '报表管理-状态跟踪详情'
   },
 ]
 
