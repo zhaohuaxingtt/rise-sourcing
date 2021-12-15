@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <div>
+  <div class="quotationScoringTrackingTableList">
     <el-table class="table" tooltip-effect="light" height="400px"  :data="tableData" v-loading="tableLoading" :empty-text="$t('LK_ZANWUSHUJU')">
       <template v-for="(item,index) in tableTile">
         <!--------------------------------------------------------->
@@ -39,7 +39,11 @@
                <p>{{`询价开始时间: ${item.roundHeadDetailVO.roundsStartTime || "-"}`}}</p>
                <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
               </template>
-              <span>{{item.key ? $t(item.key) : item.name}}<icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon></span>
+              <p>
+                <span class="title">{{item.key ? $t(item.key) : item.name}}</span>
+                <icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon>
+                <icon v-if="item.roundHeadDetailVO.roundType === 'biddingRound'" name="iconjingbiao" class="iconjingbiao margin-left5"></icon>
+              </p>
             </el-tooltip>
           </template> 
           <template slot-scope="scope">
@@ -76,7 +80,7 @@
           </template>
         </el-table-column>
       </template>
-    </el-table>  
+    </el-table>
     <div class="miaosu">
       <span><icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon> 全报</span>
       <span>\ 未发送询价</span>
@@ -211,6 +215,14 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+.quotationScoringTrackingTableList {
+  .title {
+    vertical-align: top;
+  }
+  .iconjingbiao {
+    font-size: 18px;
+  }
+}
   .blue-color{
     color:rgb(23, 99, 247)
   }
