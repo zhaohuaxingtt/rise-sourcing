@@ -370,7 +370,7 @@ export default {
     },
     getRfqInfo() {
       this.baseInfoLoading = true;
-      console.log(this.$route.query.id, '????11');
+      console.log(this.$route.query.id, '????11', this.disabled);
       if (this.$route.query.id) {
         getRfqInfo({
           rfqId: this.$route.query.id,
