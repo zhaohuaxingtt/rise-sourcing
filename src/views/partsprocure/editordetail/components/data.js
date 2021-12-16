@@ -7,6 +7,7 @@
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
  */
 import {partProjTypes} from '@/config'
+
 //零件采购详情数据
 export const detailData = {
 	bmg: "", //Boolean
@@ -94,8 +95,38 @@ export function translateDataForService(data){
 export function getOptionField(value, valueField, options, otherField = "name") {
 	if (!Array.isArray(options)) return value
 
-	const currentOption = options.find(item => item[valueField] === value)
-	if (!currentOption) return value
+	if (Array.isArray(value)) {
+		const map = new Map()
 
-	return currentOption[otherField]
+		value.forEach((v, i) => map.set(v, i)) // 数据为key, 序号为value
+		const result = []
+
+		options.every(item => {
+			if (map.size) {
+				if (map.has(item[valueField])) {
+					result[map.get(item[valueField])] = item[valueField]
+					map.delete(item[valueField])
+				}
+			}
+			
+			return false
+		})
+
+		if (map.size) {
+			map.forEach((value, key) => {
+				result[value] = key
+			})
+		}
+
+		return result.join(",")
+	}
+
+	if (typeof value === "string") {
+		const currentOption = options.find(item => item[valueField] === value)
+		if (!currentOption) return value
+
+		return currentOption[otherField]
+	}
+
+	return value
 }

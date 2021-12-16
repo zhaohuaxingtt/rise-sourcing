@@ -87,7 +87,7 @@
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
               language('系统使用条款', '系统使用条款')
             }}</iButton> -->
-            <iButton @click="handleShowNotice('02', '竞价告知书')">{{
+            <iButton v-if="isShowBidding" @click="handleShowNotice('02', '竞价告知书')">{{
               language('BIDDING_JINJIAGAOZHISHU', '竞价告知书')
             }}</iButton>
           </template>
@@ -152,16 +152,33 @@ export default {
       projectBack: "",
       biddingFinish: false,
       handleReject:false,
+      getSupplierData:{}
     };
   },
-   mounted() {
+   async mounted() {
     window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
     this.projectBack = sessionStorage.getItem("projectBack");
     console.log(this.projectBack);
+    if (this.role === "supplier") {
+      const res = await getSupplierNotification({
+          projectCode: this.ruleForm.projectCode,
+          supplerCode: this.supplierCode,
+      });
+      this.getSupplierData = res
+    }
     
   },
 
   computed: {
+    // 没有同意系统使用条款或者告知书的供应商只能看建档页面
+    isShowBidding(){
+      const {biddingStatus} = this.ruleForm
+      if (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09') {
+        return false
+      } else {
+        return true
+      }
+    },
     role() {
       return this.$route.meta.role;
     },
@@ -200,9 +217,10 @@ export default {
       }
     },
     title() {
-      const { rfqCode, projectCode } = this.ruleForm || {};
+      const { rfqCode, projectCode,roundType,isTest } = this.ruleForm || {};
       // return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
-      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode} ${roundType == '05' ? isTest ?  `${this.language('BIDDING_CESHI','（测试）')}` : `${this.language('BIDDING_ZHENGSHI',`${this.language('BIDDING_ZHENGSHI','（正式）')}`)}` : ''}` 
+                    : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode} ${roundType == '05' ? isTest ?  `${this.language('BIDDING_CESHI','（测试）')}`: `${this.language('BIDDING_ZHENGSHI','（正式）')}` : ''}`;
     },
   },
   watch: {
@@ -257,6 +275,8 @@ export default {
             projectCode: this.ruleForm.projectCode,
             supplerCode: this.supplierCode,
         });
+        this.getSupplierData = res
+        
         if(!res?.systemUseFlag) {
           const type = '01'
           const docTitle = '系统使用条款'
@@ -351,7 +371,9 @@ export default {
     handleShowNotice(type, docTitle) {
       this.type = type;
       this.docTitle = docTitle;
-      this.showBidNotice = true;
+      const {biddingStatus} = this.ruleForm
+      // 打开弹窗
+      this.showBidNotice = biddingStatus === '02' || biddingStatus === '04';
       // this.$router.push('/bidding/bidNotice')
       // this.$router.push({
       //   path: `/bidding/bidNotice`,
@@ -382,6 +404,8 @@ export default {
             return false;
           } else if (roundType == "02") {
             return false;
+          } else if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )){
+            return false
           } else {
             return true;
           }
@@ -389,7 +413,9 @@ export default {
       }
 
       if (val == "result") {
-        if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
+        if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )) {
+          return false
+        } else if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
           return true;
         } else {
           return false;

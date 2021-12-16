@@ -117,6 +117,7 @@ export default {
           desinateId,
           designateType,
           partProjType,
+          businessKey:partProjType
         }
       })
       window.open(openPageRs.href,'_blank')
