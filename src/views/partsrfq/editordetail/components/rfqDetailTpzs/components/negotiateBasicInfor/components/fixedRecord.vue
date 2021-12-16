@@ -84,7 +84,7 @@ export default {
         craft: stuffName,
         carTypeProj: carTypeProj,
         supplierNameCn: supplierNameCn,
-        apriceModel: apriceModel,
+        apriceModel: apriceModel && String(apriceModel).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
         nominateDate: nominateDate
       }
       return tableRow
