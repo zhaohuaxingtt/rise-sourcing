@@ -355,8 +355,8 @@ export default {
           top: "24%",
           text: this.xAxisTitle,
         },{
-          right: "2%",
-          bottom: "1%",
+          right: "3%",
+          bottom: "-1%",
           text: '竞价结束时间',
         }],
         tooltip: {
@@ -534,7 +534,7 @@ export default {
           text: this.xAxisTitle,
         },{
           right: "3.5%",
-          bottom: "1%",
+          bottom: "-1%",
           text: '竞价结束时间',
         }],
         tooltip: {
