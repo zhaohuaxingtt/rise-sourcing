@@ -48,6 +48,7 @@ export default {
             item.cycleOutput = item.cycleOutput && String(item.cycleOutput).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
             return item.maxOutput = item.maxOutput && String(item.maxOutput).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
           })
+          console.log(res.data)
           this.tableListData = res.data;
         }
         this.tableLoading = false;
