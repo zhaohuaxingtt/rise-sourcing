@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:43:37
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 10:11:30
+ * @LastEditTime: 2021-12-16 14:28:45
  * @Description: 
- * @FilePath: \front-web\src\views\modelTargetPrice\signin\components\noInvestConfirm.vue
+ * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\components\noInvestConfirm.vue
 -->
 
 <template>
   <iDialog 
-    :title="language('WUTOUZIQUEREN','无投资确认')"
+    :title="language('WUTOUZIQUERENLK','无投资确认')"
     :visible.sync="dialogVisible"
     @close="clearDialog"
     width="30%"

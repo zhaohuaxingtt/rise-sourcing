@@ -130,6 +130,7 @@ export default{
               desinateId: row.nominateId, 
               designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
               partProjType: (row.partProjectType && row.partProjectType.code) || row.partProjectType || '',
+              businessKey: (row.partProjectType && row.partProjectType.code) || row.partProjectType || '',
               applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
             }
           })

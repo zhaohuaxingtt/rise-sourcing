@@ -734,7 +734,7 @@ export default {
         ).toFixed(2);
       } else {
         amp = (
-          ((totalPrices - this.dividedBeiShu(minPrice)) / totalPrices).toFixed(4) * 100
+          ((this.dividedBeiShu(minPrice) - totalPrices) / totalPrices).toFixed(4) * 100
         ).toFixed(2);
       }
       return isNaN(amp) ? "" : amp + "%";
