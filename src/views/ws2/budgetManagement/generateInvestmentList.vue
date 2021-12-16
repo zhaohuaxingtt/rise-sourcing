@@ -356,7 +356,7 @@ export default {
         return
       }
       this.loadingiSearch = true
-      this.carTypeProjectObj = this.fromGroup.find(item => item.id == val)
+      this.carTypeProjectObj = this.fromGroup.find(item => item.id == val) || {}
       this.$store.commit('SET_budgetManagement', {
         carTypeProject: this.carTypeProjectObj.id,
         sourceStatus: this.carTypeProjectObj.sourceStatus
