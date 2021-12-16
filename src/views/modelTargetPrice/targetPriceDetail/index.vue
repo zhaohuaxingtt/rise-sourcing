@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-09 10:20:34
+ * @LastEditTime: 2021-12-16 14:42:34
  * @Description: 目标价详情
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\index.vue
 -->
@@ -132,7 +132,10 @@ export default {
     handleConfirm(reason) {
       const params = {
         remarks: reason,
-        taskIds: [this.taskId]
+        taskIds: [this.taskId],
+        maintainingVos: this.$refs.modelBasic.tableData.map(item => {
+          return { fsNum: item.fsnrGsnrNum, targetPrice: !item.targetPrice || item.targetPrice === '' ? 0 : item.targetPrice}
+        })
       }
       if (this.type === '1') {
         approve(params).then(res => {
