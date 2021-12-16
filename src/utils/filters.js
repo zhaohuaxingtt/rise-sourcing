@@ -13,8 +13,8 @@ export default {
       return typeof val === 'string' ? val.slice(0, 1).toUpperCase() + val.slice(1).toLowerCase() : val
     },
     // 日期格式化
-    dateFilter(val, format = "YYYY-MM-DD HH:mm:ss") {
-      return typeof val === 'string' ||  typeof val === 'number' ? window.moment(val).format(format) : val
+    dateFilter(val, format = "YYYY-MM-DD HH:mm:ss", sourceFormat) {
+      return typeof val === 'string' ||  typeof val === 'number' ? window.moment(val, sourceFormat).format(format) : val
     },
     // boolean 转 是/否
     boolFilter(val) {

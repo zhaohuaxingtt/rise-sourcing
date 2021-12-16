@@ -52,12 +52,13 @@ export default {
           var resData = res.data;
           if (resData && resData.length > 0) {
             resData.forEach((header) => {
+              console.log(header)
               if (header.nomiRecordDetailVO && header.nomiRecordDetailVO.length > 0) {
                 header.nomiRecordDetailVO.forEach((detail) => {
-                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.materialGroup+"-"+header.material,"",header.carTypeProj,this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
+                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.materialGroup+"-"+header.material,header.craft,header.carTypeProj,this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
                 })
               } else {
-                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.materialGroup+"-"+header.material,"",header.carTypeProj,"","",header.nominateTime))
+                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.materialGroup+"-"+header.material,header.craft,header.carTypeProj,"","",header.nominateTime))
               }
             })
           }
@@ -75,7 +76,7 @@ export default {
         rfqId: rfqId,
         rfqName: rfqName,
         material: material,
-        stuffName: stuffName,
+        craft: stuffName,
         carTypeProj: carTypeProj,
         supplierNameCn: supplierNameCn,
         apriceModel: apriceModel,
