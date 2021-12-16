@@ -12,7 +12,7 @@
       <el-form :model="searchForm" ref="bidLinKQueryFormRef">
           <!--RFQ/项目编号-->
           <el-form-item :label="language('RFQXIANGMUBIANHAO', 'RFQ/项目编号')" prop='rfqCode'>
-            <iInput :placeholder="language('QINGSHURU', '请输入')" v-model="searchForm.rfqCode"></iInput>
+            <iInput :placeholder="language('QINGSHURU', '请输入')" v-model="searchForm.rfqCode" :disabled="rfqStatus"></iInput>
           </el-form-item>
           <!--RFQ/项目名称-->
           <el-form-item :label="language('RFQXIANGMUMINGCHENG', 'RFQ/项目名称')" prop='rfqName'>
@@ -199,15 +199,23 @@ export default {
         {code: '全部',name:'全部', message: null},
         {code: '拍买(价低者得)', message: '01'},
         {code: '拍卖(价高者得)', message: '02'}],
-      statusList: []
+      statusList: [],
+      rfqStatus: false
     }
   },
   created() {
+    this.initialSearchData()
     this.queryStatus()
     this.page.currPage=1
     this.queryLoadBdLink()
   },
   methods: {
+    initialSearchData() {
+      if (this.$store.state.rfq.entryStatus == 1) {
+        this.rfqStatus = true;
+        this.searchForm.rfqCode = this.$store.state.rfq.rfqId
+      }
+    },
     //表格展示报价类型
     queryofferTypeName(code){
     let item=  this.offerTypeList.find(item=>item.message===code)

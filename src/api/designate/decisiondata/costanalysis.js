@@ -56,8 +56,16 @@ export function analysisPowerBi(data) {
   })
 }
 
-// 获取有数据的Tool下拉框
+// 获取Tool下拉框
 export function getTools(params) {
+  return requst({
+    url: `/cost_analysis/list/${ params.nominateAppId }`,
+    method: "GET"
+  })
+}
+
+// 获取有数据的Tool下拉框
+export function getHaveDataTools(params) {
   return requst({
     url: `/cost_analysis/type/${ params.nominateAppId }`,
     method: "GET"

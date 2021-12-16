@@ -682,7 +682,8 @@ export default {
 }
 ::v-deep .mutiple-form {
   .el-input.is-disabled .el-input__inner {
-    background-color: transparent;
+    /* background-color: transparent; */
+    background-color: #f5f7fa !important;
   }
 }
 </style>

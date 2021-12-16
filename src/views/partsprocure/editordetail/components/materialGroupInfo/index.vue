@@ -82,6 +82,11 @@ export default {
       type: Object,
       require: true,
     },
+    // 零件采购项目数据
+    detailData: {
+      type: Object,
+      default: () => ({})
+    }
   },
   computed: {
     // eslint-disable-next-line no-undef
@@ -127,15 +132,35 @@ export default {
   },
   methods: {
     async init() {
-      if (this.isAttach) {
-        await this.getAttachMeterialStuff()
-      }
       if(this.params.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
         this.getMaterialGroup()
       }
     },
+    // 设置特定材料组数据，目前只有附件类型
+    async setAttachMaterialGroup(categoryCode=null, stuffCode=null) {
+      if (this.isAttach) {
+        materialTitle.forEach(mitem => {
+          const detailDataLength = Object.keys(this.detailData).length
+          this.info[mitem.props] = detailDataLength ? this.detailData[mitem.props] : ''
+        })
+
+        // 获取附件材料工艺组数据
+        if (!this.tableListData.length) {
+          await this.getAttachMeterialStuff()
+        }
+        
+        // 根据材料组编号，工艺号在附件类型的材料工艺列表中找到 该工艺组，补全数据
+        categoryCode = categoryCode || this.detailData.categoryCode || ''
+        stuffCode = stuffCode || this.detailData.stuffCode || ''
+        const tarAttachMaterialItem = this.tableListData.find(o => o.categoryCode === String(categoryCode) && o.stuffCode === String(stuffCode))
+        materialTitle.forEach(mitem => {
+          this.info[mitem.props] = tarAttachMaterialItem ? tarAttachMaterialItem[mitem.props] : ''
+        })
+        
+      }
+    },
     // 获取材料组数据
-    getMaterialGroup() {
+    getMaterialGroup(categoryCode=null, stuffCode=null) {
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
       //if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHICAILIAOZUBIANHAOETC'))
       this.loading = true
@@ -143,16 +168,7 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
-            // 为附件类型 查看接口出来的材料组编号和工艺号是否在附件类型的材料工艺列表中
-            if (this.isAttach) {
-              const tarAttachMaterialItem = this.tableListData.find(o => o.categoryCode === this.info.categoryCode && o.stuffCode === this.info.stuffCode)
-              if (!tarAttachMaterialItem) {
-                materialTitle.forEach(mitem => {
-                  this.info[mitem.props] = ''
-                })
-              }
-            }
-            
+            this.setAttachMaterialGroup(categoryCode, stuffCode)
             this.infoSource = cloneDeep(this.info)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -189,7 +205,9 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-            this.getMaterialGroup()
+            const resData = res.data && res.data.length && res.data[0] || {}
+            // 刷新材料组数据
+            this.getMaterialGroup(resData.categoryCode, resData.stuffCode)
             this.back()
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -222,7 +240,12 @@ export default {
       try {
         const res = await getAttachMeterialStuff()
         if (res.code == 200) {
-          this.tableListData = (res.data || [])
+          this.tableListData = (res.data || []).map(row => {
+            row.deptCodes = row.deptName
+            row.categoryNameDe = row.materialStuffGroupNameDe
+            row.categoryNameZh = row.materialStuffGroupName
+            return row
+          })
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
@@ -235,9 +258,9 @@ export default {
     handleSingleSelectChange(row={}) {
       if (row) {
         if (this.isAttach) {
-          row.deptCodes = row.deptName
-          row.categoryNameDe = row.materialStuffGroupNameDe
-          row.categoryNameZh = row.materialStuffGroupName
+          materialTitle.forEach(mitem => {
+            this.info[mitem.props] = row[mitem.props]
+          })
         }
 
         this.$set(this.info, "stuffCode", row.stuffCode)
