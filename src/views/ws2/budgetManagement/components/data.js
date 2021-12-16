@@ -41,7 +41,7 @@ export const tableTitle = [{
         {
             props: 'procureFactoryName',
             name: '零件号',
-            key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+            key: 'partsprocure.PARTSPROCUREPARTNUMBER',
             tooltip: false
         },
         {
@@ -605,7 +605,7 @@ export const partsList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+        key: 'partsprocure.PARTSPROCUREPARTNUMBER',
         tooltip: false
     },
     {
@@ -656,7 +656,7 @@ export const appliedList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+        key: 'partsprocure.PARTSPROCUREPARTNUMBER',
         tooltip: false
     },
     {
@@ -707,7 +707,7 @@ export const nomiAmountDetailList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+        key: 'partsprocure.PARTSPROCUREPARTNUMBER',
         tooltip: false
     },
     {
@@ -815,7 +815,7 @@ export const bmAmountDetailList = [
     {
         props: 'partNum',
         name: '零件号',
-        key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
+        key: 'partsprocure.PARTSPROCUREPARTNUMBER',
         tooltip: false
     },
     {
