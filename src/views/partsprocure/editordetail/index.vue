@@ -539,6 +539,10 @@
 				} else{
 					return false
 				}
+			},
+			// 采购项目类型为钢材一次性、批量采购
+			isSteelPurchase() {
+				return this.detailData.partProjectType == this.partProjTypes.GANGCAIYICIXINGCAIGOU || this.detailData.partProjectType == this.partProjTypes.GANGCAIPILIANGCAIGOU
 			}
 		},
 		watch:{
@@ -576,7 +580,6 @@
 				isCarType:false,
 				bakCarTypeSopTime: '',
 				sourcePartProjectType: '', // 后端返回的partProjectType
-				isSteelPurchase: false // 采购项目类型为钢材一次性、批量采购
 			};
 		},
 		created() {
@@ -693,12 +696,6 @@
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data ||[];
-
-					// 采购项目类型为钢材一次性、批量采购
-					if ([ this.partProjTypes.GANGCAIYICIXINGCAIGOU, this.partProjTypes.GANGCAIPILIANGCAIGOU ].includes(this.detailData.partProjectType)) {
-						this.isSteelPurchase = true
-					}
-
 					this.sourcePartProjectType = res.data.partProjectType
 					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
 					this.checkFactoryString = res.data.procureFactory
