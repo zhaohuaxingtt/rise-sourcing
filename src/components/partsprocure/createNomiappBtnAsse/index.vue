@@ -336,7 +336,8 @@ export default{
                 query:{
                   desinateId:res.data.nominateId,
                   designateType:res.data.nominateProcessType,
-                  partProjType:this.detailData().partProjType
+                  partProjType:this.detailData().partProjType,
+                  businessKey:this.detailData().partProjType
                 }
               })
           }else{

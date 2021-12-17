@@ -52,13 +52,18 @@ export default {
           var resData = res.data;
           if (resData && resData.length > 0) {
             resData.forEach((header) => {
-              console.log(header)
               if (header.nomiRecordDetailVO && header.nomiRecordDetailVO.length > 0) {
                 header.nomiRecordDetailVO.forEach((detail) => {
-                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.materialGroup+"-"+header.material,header.craft,header.carTypeProj,this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
+                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,
+                  header.materialCode?header.materialCode+"-"+header.materialName : header.materialName,
+                  header.craftCode?header.craftCode+'-'+header.craftName:header.craftName,header.carTypeProj,
+                  this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
                 })
               } else {
-                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,header.materialGroup+"-"+header.material,header.craft,header.carTypeProj,"","",header.nominateTime))
+                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,
+                  header.materialCode?header.materialCode+"-"+header.materialName : header.materialName,
+                  header.craftCode?header.craftCode+'-'+header.craftName:header.craftName,header.carTypeProj,
+                  "","",""))
               }
             })
           }
@@ -79,7 +84,7 @@ export default {
         craft: stuffName,
         carTypeProj: carTypeProj,
         supplierNameCn: supplierNameCn,
-        apriceModel: apriceModel,
+        apriceModel: apriceModel && String(apriceModel).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
         nominateDate: nominateDate
       }
       return tableRow

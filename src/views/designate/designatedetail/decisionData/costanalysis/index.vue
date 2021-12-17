@@ -10,8 +10,10 @@
 <iCard class="costanalysis" :class="{ isPreview: isPreview }">
   <iFormGroup row='4' label-width='100px' class="Iform">
     <iFormItem label="Tool" v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSISTYPE|分析类型">
-      <iSelect v-model="typeSelect" @change="changeCostanalysisList">
-        <el-option v-for='(items,index) in tools' :label='items.label' :value='items.value' :key='index'></el-option>
+      <iSelect :loading="toolsLoading" :loading-text="language('JIAZAIZHONG', '加载中')" v-model="typeSelect" @change="changeCostanalysisList">
+        <el-option class="flex-aligin-items-center" v-for='(items,index) in tools' :label='items.label' :value='items.value' :key='index'>
+          <span v-if="items.showTag" style="display: inline-block; width: 10px; color: #1763f7; font-size: 1.05rem;" :style="{ visibility: items.analysisTotal ? 'visible' : 'hidden' }">*</span><span>{{ items.label }}</span>
+        </el-option>
       </iSelect>
     </iFormItem>
     <iFormItem  v-if='isPreview'  label='Analysis' v-permission.auto="SOURCING_NOMINATION_ATTATCH_CONSTANALYSIS_ANALYSIS|Analysis">
@@ -99,6 +101,7 @@ export default{
       isPreview:false,
       previewItems:null,
       keysRender:parseInt(Math.random()*100000000000),
+      toolsLoading: false
     }
   },
   computed: {
@@ -249,6 +252,8 @@ export default{
       })
     },
     getTools() {
+      this.toolsLoading = true
+
       return getTools({
         nominateAppId: this.$route.query.desinateId
       })
@@ -258,14 +263,19 @@ export default{
             Array.isArray(res.data) ?
             res.data.map(item => ({
               label: item.desc,
-              value: item.code
+              value: item.code,
+              analysisTotal: item.analysisTotal,
+              showTag: true
             })) :
             []
         }
       })
+      .finally(() => this.toolsLoading = false)
     },
     // 获取有数据的Tool下拉框
     getHaveDataTools() {
+      this.toolsLoading = true
+
       return getHaveDataTools({
         nominateAppId: this.$route.query.desinateId
       })
@@ -275,11 +285,13 @@ export default{
             Array.isArray(res.data) ?
             res.data.map(item => ({
               label: item.desc,
-              value: item.code
+              value: item.code,
+              showTag: false
             })) :
             []
         }
       })
+      .finally(() => this.toolsLoading = false)
     }
   },
   mounted() {

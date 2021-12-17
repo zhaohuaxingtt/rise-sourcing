@@ -160,6 +160,7 @@ export default {
           path: '/designate/rfqdetail',
           query: {
             desinateId: row.id, 
+            businessKey: row.partProjType, 
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || ''
           }
         })

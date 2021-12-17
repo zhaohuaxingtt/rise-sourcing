@@ -239,8 +239,8 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.currentPartsId = this.partList[0] ? this.partList[0].partsId : '';
-        this.currentBatchNumber = this.partList[0] ? this.partList[0].batchNumber : '';
+        this.currentPartsId =  res.data.partsId ? res.data.partsId : '';
+        this.currentBatchNumber = res.data.batchNumber ? res.data.batchNumber : '';
         this.currentSupplierId = res.data.supplierId;
         const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
         this.handleCurveData(analysisCurveData);
@@ -256,6 +256,13 @@ export default {
     },
     async saveOrUpdateScheme (params, extraParams = {}) {
       //this.saveDialog = true;
+      // this.partItemCurrent = index;
+      // this.currentBatchNumber = item.batchNumber;
+      // this.currentPartsId = item.partsId;
+      // this.currentSupplierId = item.supplierId;
+      // this.currentSchemeId = item.analysisSchemeId;
+      // this.getDataInfo();
+      console.log(this.currentPartsId)
       try {
         const req = {
           ...this.dataInfo,
@@ -267,6 +274,7 @@ export default {
           inMode: this.$store.state.rfq.entryStatus,
           ...extraParams,
         };
+        console.log(req)
         if (this.type === 'edit') {
           req.id = this.currentSchemeId;
         }
