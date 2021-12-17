@@ -8,7 +8,7 @@
             <span>{{ amplitude }}</span
             >%
           </div>
-          <div class="graph-amplitude__bottom">{{language('BIDDING_FUDU','幅度')}}</div>
+          <div class="graph-amplitude__bottom">{{ language('BIDDING_FUDU', '幅度') }}</div>
         </div>
       </div>
     </iCard>
@@ -38,16 +38,12 @@
       >
         <template slot="currentSort" slot-scope="scope">
           <div>
-            {{
-              ruleForm.manualBiddingType == "02"
-                ? suppliers.length
-                : scope.row["currentSort"]
-            }}
+            {{ ruleForm.manualBiddingType == '02' ? suppliers.length : scope.row['currentSort'] }}
           </div>
         </template>
         <!-- 是否参与本轮RFQ -->
         <template slot="isAttend" slot-scope="scope">
-          <div>{{ scope.row["isAttend"] == "0" ? "否" : "是" }}</div>
+          <div>{{ scope.row['isAttend'] == '0' ? '否' : '是' }}</div>
         </template>
       </commonTable>
       <iPagination
@@ -68,20 +64,15 @@
 </template>
 
 <script>
-import { iCard, iPagination } from "rise";
-import commonTable from "@/components/biddingComponents/commonTable";
-import { supplierTableTitle, supplierRankTableTitle, currencyMultipleLib } from "./data";
-import {
-  findHallSupplier,
-  getCurve,
-  getProjectResults,
-  getBiddingDetails
-} from "@/api/bidding/bidding";
-import { pageMixins } from "@/utils/pageMixins";
-import { getCurrencyUnit } from "@/api/mock/mock";
-import dayjs from "dayjs";
-import Big from "big.js";
-import supplierListVue from "./supplierList.vue";
+import { iCard, iPagination } from 'rise';
+import commonTable from '@/components/biddingComponents/commonTable';
+import { supplierTableTitle, supplierRankTableTitle, currencyMultipleLib } from './data';
+import { findHallSupplier, getCurve, getProjectResults, getBiddingDetails } from '@/api/bidding/bidding';
+import { pageMixins } from '@/utils/pageMixins';
+import { getCurrencyUnit } from '@/api/mock/mock';
+import dayjs from 'dayjs';
+import Big from 'big.js';
+import supplierListVue from './supplierList.vue';
 
 export default {
   mixins: [pageMixins],
@@ -102,7 +93,6 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
-        
       },
     },
   },
@@ -129,7 +119,7 @@ export default {
       supplierRankTableTitle,
       currencyMultipleLib,
 
-      clickType: "",
+      clickType: '',
 
       suppliers: [],
 
@@ -137,13 +127,13 @@ export default {
       supplierlist: [],
       currencyUnit: {},
 
-      xAxisTitle: "",
+      xAxisTitle: '',
       xAxisData: [],
 
       supplierOffers: [],
 
-      maxDate: "",
-      minDate: "",
+      maxDate: '',
+      minDate: '',
 
       split: 1,
       amplitudeList: {
@@ -163,31 +153,21 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || '元';
     },
     // 幅度
     amplitude() {
-      let { manualBiddingType, totalPrices, biddingType, roundType } =
-        this.ruleForm;
+      let { manualBiddingType, totalPrices, biddingType, roundType } = this.ruleForm;
       let { maxPrice, minPrice, finPrice } = this.amplitudeList;
       let amp;
-      if (manualBiddingType == "02" && biddingType == "01") {
-        amp = (
-          ((finPrice - totalPrices) / totalPrices).toFixed(4) * 100
-        ).toFixed(2);
-      } else if (
-        (manualBiddingType == "01" || roundType == "03") &&
-        biddingType == "02"
-      ) {
-        amp = (
-          ((maxPrice - totalPrices) / totalPrices).toFixed(4) * 100
-        ).toFixed(2);
+      if (manualBiddingType == '02' && biddingType == '01') {
+        amp = (((finPrice - totalPrices) / totalPrices).toFixed(4) * 100).toFixed(2);
+      } else if ((manualBiddingType == '01' || roundType == '03') && biddingType == '02') {
+        amp = (((maxPrice - totalPrices) / totalPrices).toFixed(4) * 100).toFixed(2);
       } else {
-        amp = (
-          ((totalPrices - minPrice) / totalPrices).toFixed(4) * 100
-        ).toFixed(2);
+        amp = (((totalPrices - minPrice) / totalPrices).toFixed(4) * 100).toFixed(2);
       }
-      return isNaN(amp) ? "" : amp;
+      return isNaN(amp) ? '' : amp;
     },
   },
   async created() {
@@ -210,14 +190,16 @@ export default {
     },
     currencyMultiples(currencyMultiple) {
       return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
+        '01': '元',
+        '02': '千',
+        '03': '万',
+        '04': '百万',
       }[currencyMultiple];
     },
-    dividedBeiShu(val){
-     return Big(val).div(this.beishu).toNumber()
+    dividedBeiShu(val) {
+      return Big(val)
+        .div(this.beishu)
+        .toNumber();
     },
     handleUserChange(row, item) {
       row.contactName = item.nameZh;
@@ -265,27 +247,25 @@ export default {
       const result = await getCurve({
         id: e,
       });
-      this.$emit("change-title", res);
+      this.$emit('change-title', res);
       this.page.total = res.length;
       this.page.currPage = 1;
 
       const biddingDetail = await getBiddingDetails({
         id: e,
       }).catch((err) => {
-        console.log(err)
+        console.log(err);
       });
 
       if (biddingDetail || biddingDetail?.length > 0) {
         this.handlePrice(biddingDetail);
       }
-      this.xAxisTitle = `(${this.currencyMultiples(result?.currencyMultiple)})${
-        this.currencyUnit[result?.currencyUnit]
-      }`;
-      result.amplitude = (result.amplitude * 100).toFixed(2)
+      this.xAxisTitle = `(${this.currencyMultiples(result?.currencyMultiple)})${this.currencyUnit[result?.currencyUnit]}`;
+      result.amplitude = (result.amplitude * 100).toFixed(2);
       this.ruleForm = {
         ...result,
       };
-      console.log(287,this.ruleForm)
+      console.log(287, this.ruleForm);
       // const supplierOffer = {
       // ...this.ruleForm.supplierOffer,
       // offerPrice: this.dividedBeiShu(this.ruleForm.supplierOffer.offerPrice)
@@ -297,7 +277,7 @@ export default {
       let beginTime = dayjs(biddingBeginTime).valueOf();
       let endTime = dayjs(biddingEndTime).valueOf();
       const interval = (endTime - beginTime) / 1000 / 60;
-      let split = Math.ceil(interval/2) - 1; 
+      let split = Math.ceil(interval / 2) - 1;
       if (split <= 0) {
         const interval2 = (Math.ceil(dayjs(biddingBeginTime).valueOf() / 1000 / 60) * 1000 * 60 - beginTime) / (endTime - beginTime) || 0.01;
         this.split = interval < 1 ? 0.01 : interval2;
@@ -308,11 +288,11 @@ export default {
         this.split = 15;
       }
 
-      this.minDate = dayjs(beginTime).format("YYYY/MM/DD HH:mm:ss");
-      this.maxDate = dayjs(endTime).format("YYYY/MM/DD HH:mm:ss");
-      console.log(result)
-      if (result.roundType == "05" && result.manualBiddingType == "02") {
-        this.suppliers = res?.filter(item => item?.supplierCode == result?.finalOfferSupplier)
+      this.minDate = dayjs(beginTime).format('YYYY/MM/DD HH:mm:ss');
+      this.maxDate = dayjs(endTime).format('YYYY/MM/DD HH:mm:ss');
+      console.log(result);
+      if (result.roundType == '05' && result.manualBiddingType == '02') {
+        this.suppliers = res?.filter((item) => item?.supplierCode == result?.finalOfferSupplier);
         this.handleHeGraphData(result.supplierOffers);
         this.handleHeLine(result.dutchOfferCurveDTOS);
         this.drawHeLine();
@@ -330,16 +310,14 @@ export default {
     },
     // 英式曲线图
     drawLine() {
-      let chartLine = this.$echarts.init(
-        document.getElementById("chartLineBox")
-      );
+      let chartLine = this.$echarts.init(document.getElementById('chartLineBox'));
       let fontOptions = {
         show: true,
         textStyle: {
-          color: "black", //更改坐标轴文字颜色
-          fontSize: "1rem", //更改坐标轴文字大小
-          width: window.innerWidth/7 - 60,
-          overflow: 'break'
+          color: 'black', //更改坐标轴文字颜色
+          fontSize: '1rem', //更改坐标轴文字大小
+          width: window.innerWidth / 7 - 60,
+          overflow: 'break',
         },
       };
 
@@ -348,23 +326,23 @@ export default {
 
       let options = {
         title: {
-          left: "18%",
-          top: "14%",
+          left: '18%',
+          top: '14%',
           text: this.xAxisTitle,
         },
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
-            type: "line",
+            type: 'line',
             label: {
-              formatter: function (params) {
+              formatter: function(params) {
                 if (params.seriesData.length === 0) {
                   window.mouseCurValue = params.value;
                 }
               },
             },
           },
-          formatter:(params) =>{
+          formatter: (params) => {
             let htmlStr = ``;
             let series = params[0];
             htmlStr = `<div style="width: 35rem;background: #fff;padding: 1.875rem 2.5rem;border-radius: 0.375rem;">
@@ -377,14 +355,16 @@ export default {
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">时间</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${dayjs(
                           series.axisValue
-                        ).format("HH:mm:ss")}</div>
+                        ).format('HH:mm:ss')}</div>
                         </div>
                         <!-- 出价 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">出价</div>
-                        <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
-                          unit + " " + series.value[1].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + " " + multiple
-                        }</div>
+                        <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${unit +
+                          ' ' +
+                          series.value[1].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') +
+                          ' ' +
+                          multiple}</div>
                         </div>
                     </div>
                     </div>`;
@@ -394,29 +374,29 @@ export default {
         legend: {
           data: this.supplierlist,
           left: 0,
-          top: "30%",
-          orient: "vertical",
+          top: '30%',
+          orient: 'vertical',
           textStyle: {
-            fontSize: "1rem",
+            fontSize: '1rem',
             padding: 10,
-            width: window.innerWidth/7 - 60,
-            overflow: 'break'
+            width: window.innerWidth / 7 - 60,
+            overflow: 'break',
           },
           itemWidth: 40,
           itemGap: 20,
           itemHeight: 15,
         },
         grid: {
-          left: "20%",
-          right: "4%",
-          bottom: "3%",
-          top: "20%",
+          left: '20%',
+          right: '4%',
+          bottom: '3%',
+          top: '20%',
           containLabel: true,
         },
         xAxis: {
           min: this.minDate,
           max: this.maxDate,
-          type: "time",
+          type: 'time',
           boundaryGap: false,
           splitLine: {
             show: false,
@@ -424,27 +404,27 @@ export default {
           splitNumber: this.split,
           axisLabel: {
             textStyle: {
-              color: "black", //更改坐标轴文字颜色
-              fontSize: ".8rem", //更改坐标轴文字大小
-              width: window.innerWidth/7 - 60,
-              overflow: 'break'
+              color: 'black', //更改坐标轴文字颜色
+              fontSize: '.8rem', //更改坐标轴文字大小
+              width: window.innerWidth / 7 - 60,
+              overflow: 'break',
             },
             formatter: {
-              hour: "{hour|{HH}:{mm}}",
-              second: "{HH}:{mm}",
-              millisecond: "{HH}:{mm}",
-              none: "{HH}:{mm}",
+              hour: '{hour|{HH}:{mm}}',
+              second: '{HH}:{mm}',
+              millisecond: '{HH}:{mm}',
+              none: '{HH}:{mm}',
             },
             rich: {
               hour: {
-                fontSize: ".8rem",
+                fontSize: '.8rem',
               },
             },
           },
           axisLine: {
             show: true,
             lineStyle: {
-              color: "#333",
+              color: '#333',
               width: 3,
             },
           },
@@ -458,7 +438,7 @@ export default {
           offset: 10,
         },
         yAxis: {
-          type: "value",
+          type: 'value',
           axisLabel: fontOptions,
           offset: 20,
           splitLine: {
@@ -477,8 +457,8 @@ export default {
           // },
           {
             show: true,
-            type: "inside",
-            filterMode: "none",
+            type: 'inside',
+            filterMode: 'none',
             yAxisIndex: [0],
           },
         ],
@@ -489,16 +469,14 @@ export default {
     },
     // 荷氏曲线图
     drawHeLine() {
-      let chartLine = this.$echarts.init(
-        document.getElementById("chartLineBox")
-      );
+      let chartLine = this.$echarts.init(document.getElementById('chartLineBox'));
       let fontOptions = {
         show: true,
         textStyle: {
-          color: "black", //更改坐标轴文字颜色
-          fontSize: "1rem", //更改坐标轴文字大小
-          width: window.innerWidth/7 - 60,
-          overflow: 'break'
+          color: 'black', //更改坐标轴文字颜色
+          fontSize: '1rem', //更改坐标轴文字大小
+          width: window.innerWidth / 7 - 60,
+          overflow: 'break',
         },
       };
 
@@ -506,28 +484,28 @@ export default {
       let unit = this.ruleForm?.currencyUnit;
       let options = {
         title: {
-          left: "18%",
-          top: "14%",
+          left: '18%',
+          top: '14%',
           text: this.xAxisTitle,
         },
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
-            type: "line",
+            type: 'line',
             label: {
-              formatter: function (params) {
+              formatter: function(params) {
                 if (params.seriesData.length === 0) {
                   window.mouseCurValue = params.value;
                 }
               },
             },
           },
-          formatter:(params) => {
+          formatter: (params) => {
             let htmlStr = ``;
             let series = params[0];
-              htmlStr = `<div style="width: 35rem;background: #fff;padding: 1.875rem 2.5rem;border-radius: 0.375rem;">
+            htmlStr = `<div style="width: 35rem;background: #fff;padding: 1.875rem 2.5rem;border-radius: 0.375rem;">
                     <div class="tool-tip-title" style="padding-bottom: 1.875rem;font-size: 1.125rem;color: #131523;font-weight: bold;">${
-                      series.componentSubType == "scatter" ? series.seriesName : this.language('BIDDING_CAIGOUYUAN', '采购员')
+                      series.componentSubType == 'scatter' ? series.seriesName : this.language('BIDDING_CAIGOUYUAN', '采购员')
                     }</div>
                     <div class="form">
                         <!-- 时间 -->
@@ -535,14 +513,16 @@ export default {
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">时间</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${dayjs(
                           series.axisValue
-                        ).format("HH:mm:ss")}</div>
+                        ).format('HH:mm:ss')}</div>
                         </div>
                         <!-- 出价 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">出价</div>
-                        <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
-                          unit + " " + series.value[1].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + " " + multiple
-                        }</div>
+                        <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${unit +
+                          ' ' +
+                          series.value[1].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') +
+                          ' ' +
+                          multiple}</div>
                         </div>
                     </div>
                     </div>`;
@@ -553,28 +533,28 @@ export default {
         legend: {
           data: this.supplierlist,
           left: 0,
-          top: "30%",
-          orient: "vertical",
+          top: '30%',
+          orient: 'vertical',
           textStyle: {
-            fontSize: "1rem",
-            width: window.innerWidth/7 - 60,
-            overflow: 'break'
+            fontSize: '1rem',
+            width: window.innerWidth / 7 - 60,
+            overflow: 'break',
           },
           itemWidth: 40,
           itemGap: 20,
           itemHeight: 15,
         },
         grid: {
-          left: "20%",
-          right: "4%",
-          bottom: "3%",
-          top: "20%",
+          left: '20%',
+          right: '4%',
+          bottom: '3%',
+          top: '20%',
           containLabel: true,
         },
         xAxis: {
           // min: this.minDate,
           // max: this.maxDate,
-          type: "time",
+          type: 'time',
           boundaryGap: false,
           splitLine: {
             show: false,
@@ -584,27 +564,27 @@ export default {
           axisLabel: {
             // interval: 0,
             textStyle: {
-              color: "black", //更改坐标轴文字颜色
-              fontSize: ".8rem", //更改坐标轴文字大小
-              width: window.innerWidth/7 - 60,
-              overflow: 'break'
+              color: 'black', //更改坐标轴文字颜色
+              fontSize: '.8rem', //更改坐标轴文字大小
+              width: window.innerWidth / 7 - 60,
+              overflow: 'break',
             },
             formatter: {
-              hour: "{hour|{HH}:{mm}}",
-              second: "{HH}:{mm}",
-              millisecond: "{HH}:{mm}",
-              none: "{HH}:{mm}",
+              hour: '{hour|{HH}:{mm}}',
+              second: '{HH}:{mm}',
+              millisecond: '{HH}:{mm}',
+              none: '{HH}:{mm}',
             },
             rich: {
               hour: {
-                fontSize: ".8rem",
+                fontSize: '.8rem',
               },
             },
           },
           axisLine: {
             show: true,
             lineStyle: {
-              color: "#333",
+              color: '#333',
               width: 3,
             },
           },
@@ -619,7 +599,7 @@ export default {
           offset: 10,
         },
         yAxis: {
-          type: "value",
+          type: 'value',
           axisLabel: fontOptions,
           offset: 20,
           splitLine: {
@@ -640,8 +620,8 @@ export default {
           // },
           {
             show: true,
-            type: "inside",
-            filterMode: "none",
+            type: 'inside',
+            filterMode: 'none',
             yAxisIndex: [0],
           },
         ],
@@ -663,9 +643,7 @@ export default {
         for (let j = 0; j < list[supplierlist[i]].length; j++) {
           data.push({
             value: [
-              dayjs(
-                list[supplierlist[i]][j].serverTime.replace("T", " ")
-              ).format("YYYY/MM/DD HH:mm:ss"),
+              dayjs(list[supplierlist[i]][j].serverTime.replace('T', ' ')).format('YYYY/MM/DD HH:mm:ss'),
               this.dividedBeiShu(list[supplierlist[i]][j].offerPrice),
             ],
           });
@@ -675,21 +653,19 @@ export default {
           //     ).format("YYYY/MM/DD HH:mm:ss"),
           //     list[supplierlist[i]][j].offerPrice,
           //   ]);
-          let time = dayjs(
-            list[supplierlist[i]][j].serverTime.replace("T", " ")
-          ).format("YYYY/MM/DD HH:mm:ss");
+          let time = dayjs(list[supplierlist[i]][j].serverTime.replace('T', ' ')).format('YYYY/MM/DD HH:mm:ss');
           xData.push(time);
         }
         this.xAxisData = xData;
         offerPriceList.push({
           name: supplierlist[i],
-          type: "line",
+          type: 'line',
           data: data,
-          symbol: "circle",
+          symbol: 'circle',
           showSymbol: true,
           symbolSize: 20,
         });
-        console.log(681,offerPriceList)
+        console.log(681, offerPriceList);
       }
       this.offerPriceList = [...offerPriceList];
     },
@@ -707,9 +683,7 @@ export default {
         for (let j = 0; j < list[supplierlist[i]].length; j++) {
           data.push({
             value: [
-              dayjs(
-                list[supplierlist[i]][j].serverTime.replace("T", " ")
-              ).format("YYYY/MM/DD HH:mm:ss"),
+              dayjs(list[supplierlist[i]][j].serverTime.replace('T', ' ')).format('YYYY/MM/DD HH:mm:ss'),
               this.dividedBeiShu(list[supplierlist[i]][j].offerPrice),
             ],
           });
@@ -721,21 +695,19 @@ export default {
           //   ]);
 
           // 荷式线
-          let time = dayjs(
-            list[supplierlist[i]][j].serverTime.replace("T", " ")
-          ).format("YYYY/MM/DD HH:mm:ss");
+          let time = dayjs(list[supplierlist[i]][j].serverTime.replace('T', ' ')).format('YYYY/MM/DD HH:mm:ss');
           xData.push(time);
         }
         this.xAxisData = xData;
         offerPriceList.push({
           name: supplierlist[i],
-          type: "scatter",
+          type: 'scatter',
           data: data,
-          symbol: "circle",
+          symbol: 'circle',
           showSymbol: true,
           symbolSize: 20,
         });
-        console.log(726,offerPriceList)
+        console.log(726, offerPriceList);
       }
       offerPriceList.forEach((item) => {
         this.offerPriceList.push(item);
@@ -751,27 +723,17 @@ export default {
       let offerPriceList = [];
       let data = [];
       for (let i = 0; i < list.length; i++) {
-        let xData = [
-          dayjs(list[i].createDate.replace("T", " ")).format(
-            "YYYY/MM/DD HH:mm:ss"
-          ),
-          this.dividedBeiShu(list[i].currentOffer),
-        ];
-        let yData = [
-          dayjs(list[i].expiryDate.replace("T", " ")).format(
-            "YYYY/MM/DD HH:mm:ss"
-          ),
-          this.dividedBeiShu(list[i].currentOffer),
-        ];
+        let xData = [dayjs(list[i].createDate.replace('T', ' ')).format('YYYY/MM/DD HH:mm:ss'), this.dividedBeiShu(list[i].currentOffer)];
+        let yData = [dayjs(list[i].expiryDate.replace('T', ' ')).format('YYYY/MM/DD HH:mm:ss'), this.dividedBeiShu(list[i].currentOffer)];
         if (i == 0) {
           data.push(xData, yData);
         } else {
           data.push(yData);
         }
         offerPriceList.push({
-          type: "line",
+          type: 'line',
           data: data,
-          step: "start",
+          step: 'start',
         });
       }
       this.offerPriceList.push(offerPriceList[0]);
