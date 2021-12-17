@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-30 16:58:30
+ * @LastEditTime: 2021-12-17 16:21:21
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -42,17 +42,11 @@ export default {
   computed: {
     navList(){
       let TAB = window._.cloneDeep(this.TAB)
-      let path = this.from.path
+      let path = JSON.parse(window.localStorage.getItem('fromPath')) || this.from?.path
       if(!path||path=='/'){
-        if(this.userRole.isCSFAEKOFENPEI){ // AEKO 管理
           path = '/aeko/managelist'
-        }else if(this.userRole.isZYCG){ // AEKO 表态
-          path = '/aeko/stancelist'
-        }else if(this.userRole.isZYCG){ // AEKO 审批
-          path = '/aeko/approve'
-        }else if(this.userRole.isZYCG){ // AEKO 查看
-          path = '/aeko/checklist'
-        }
+      }else{
+        localStorage.setItem('fromPath',JSON.stringify(path))
       }
       TAB[0].url = path
       return TAB
