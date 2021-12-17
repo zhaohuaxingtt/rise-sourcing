@@ -262,7 +262,7 @@ export default {
               item.hisPartsList.fill({carTypeProName: "", nomiAmount: ''}, start, 10)
               return item
             });
-            
+            console.log('this.tableListData', this.tableListData);
             if(this.tableListData && this.tableListData.length > 0){
               let temp = []
               this.tableListData[0].hisPartsList.map((item, index) => {
