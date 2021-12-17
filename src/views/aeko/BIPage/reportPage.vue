@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:36:41
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-24 16:43:02
+ * @LastEditTime: 2021-12-17 16:16:16
  * @Description: AEKO 审批列表页
 -->
 <template>
@@ -26,12 +26,12 @@ export default {
       from: {}
     }
   },
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter (to, from, next) { // AEKO操作返回之前页
     // 注意，在路由进入之前，组件实例还未渲染，所以无法获取this实例，只能通过vm来访问组件实例
     next(vm => {
       vm.from = from
     })
-}
+  }
 }
 </script>
 <style lang="scss" scoped>
