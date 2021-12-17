@@ -92,7 +92,6 @@ export default {
   watch: {
     chartData: {
       handler(newVal) {
-        console.log(newVal);
         if (newVal) {
           this.flag = true
         }

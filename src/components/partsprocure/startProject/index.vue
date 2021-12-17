@@ -45,6 +45,7 @@ export default{
           );
           return;
         }
+        if (this.startItems.find(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030')) return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
         if (this.startItems.find((items) => items.fsnrGsnrNum == "")) {
           r(false);
           iMessage.warn(

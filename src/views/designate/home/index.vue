@@ -294,7 +294,8 @@ export default {
             desinateId: row.id, 
             mtzApplyId: row.mtzApplyId, 
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
-            partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
+            partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',  
+            businessKey: (row.partProjType && row.partProjType.code) || row.partProjType || '',
             applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
           }
         })
