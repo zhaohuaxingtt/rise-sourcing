@@ -178,7 +178,7 @@ export default {
       const confirmInfo = await this.$confirm(this.language('submitSure', '您确定要执行提交操作吗？'))
       if (confirmInfo !== 'confirm') return
       submitSignSheet({
-        signId: Number(this.$route.query.id)
+        signIdArr:[Number(this.$route.query.id)]
       }).then(res => {
         if (res.code === '200') {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
