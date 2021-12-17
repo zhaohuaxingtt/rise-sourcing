@@ -32,7 +32,7 @@ export const fixedRecordTableTitle = [
   { props: 'rfqId', name: 'RFQ编号', key: 'costanalysismanage.RfqBianHao', width: 120, tooltip: true },
   { props: 'rfqName', name: 'RFQ名称', key: 'costanalysismanage.RfqMingCheng', tooltip: true },
   { props: 'material', name: '材料组名称', key: 'TPZS.CLZMC', tooltip: true },
-  { props: 'stuffName', name: '工艺组名称', key: 'TPZS.GYZMC', tooltip: true },
+  { props: 'craft', name: '工艺组名称', key: 'TPZS.GYZMC', tooltip: true },
   { props: 'carTypeProj', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG', tooltip: true },
   { props: 'supplierNameCn', name: '定点供应商', key: 'LK_FIXEDPOINTSUPPLIER', tooltip: true },
   { props: 'apriceModel', name: '定点金额', key: 'TPZS.DDJE', tooltip: true },

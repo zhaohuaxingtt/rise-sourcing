@@ -47,6 +47,14 @@
             style="margin-bottom:36px"
             class="baApply-table"
           >
+            <template #locationFactoryName="scope">
+              <div v-if="scope.row.locationFactoryName">{{scope.row.locationFactoryName}}</div>
+              <div v-else></div>
+            </template>
+            <template #deptName="scope">
+              <div v-if="scope.row.deptName">{{scope.row.deptName}}</div>
+              <div v-else></div>
+            </template>
             <template #amount="scope">
               <iInput :placeholder="$t('LK_QINGSHURU')" v-model="scope.row.amount" v-if="scope.row.deptName === 'Aeko'"
                       maxlength="20"></iInput>

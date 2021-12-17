@@ -875,6 +875,7 @@ export default {
           isTax: res.isTax || "01",
           resultOpenForm: res.resultOpenForm || "01",
           openTenderNature: res.openTenderNature || "01",
+          currencyUnit: res.currencyUnit || 'RMB'
         };
         this.quoteRule = { ...this.quoteRule, ...res.quoteRule };
         this.$emit("change-title", res);
@@ -898,9 +899,6 @@ export default {
     queryUnit() {
       getCurrencyUnit().then((res) => {
         this.currencyUnit = res.data;
-        if (!this.ruleForm.currencyUnit) {
-          this.ruleForm.currencyUnit = this.currencyUnit[0]?.code;
-        }
       });
     },
   },

@@ -196,6 +196,7 @@ import { getRfqInfo } from "@/api/costanalysismanage/rfqdetail"
 import { checkApply } from '@/api/modelTargetPrice/index'
 import iLoger from 'rise/web/components/iLoger'
 import {partProjTypes,roundsType} from '@/config'
+import {mockData} from './mock.js';
 export default {
   components: {
     iButton,
@@ -325,14 +326,18 @@ export default {
     },
     getBaseInfo(dialogPage) {
       this.baseInfoLoading = true
+      console.log(this.$route, '当前路由参数',this.$route.query.id);
       if(this.$route.query.id){
         getRfqInfo({
           rfqId: this.$route.query.id
         })
         .then(res => {
+          console.log(res, '查询数据');
+          // const res = mockData;
           if (res.code == 200 && res.data) {
             this.baseInfo = res.data
-            this.disabled = !!res.data.isFreeze
+            this.disabled =!!res.data.isFreeze
+            console.log(this.disabled, '最终数据1');
              if(dialogPage){ //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
               this.activityTabIndex = '5'
             }
@@ -348,6 +353,7 @@ export default {
         this.disabled = false
         this.baseInfoLoading = false
       }
+      console.log(this.disabled, '最终数据');
     },
     changeNav(target) {
       this.navActivtyValue = target.index
@@ -511,7 +517,8 @@ export default {
             query: {
               desinateId: res.data.nominateId, 
               designateType: res.data.nominateProcessType,
-              partProjType: this.$route.query.businessKey
+              partProjType: this.$route.query.businessKey,
+              businessKey: this.$route.query.businessKey
             }
           })
         } else {

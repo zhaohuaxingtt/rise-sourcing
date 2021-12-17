@@ -55,7 +55,11 @@ export default {
       try {
         const res = await getRfqSupplierRate(this.$route.query.id);
         if (res.result) {
-          this.tableListData = res.data;
+          var resData = res.data;
+          resData.forEach((item) => {
+            item.supplierNameZh = this.$i18n.locale == 'zh' ? item.supplierNameZh : item.supplierNameEn
+          })
+          this.tableListData = resData;
         }
         this.tableLoading = false;
       } catch {

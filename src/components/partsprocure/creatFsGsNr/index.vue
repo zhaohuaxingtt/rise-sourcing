@@ -49,6 +49,7 @@
 			// 生成fs号
 			creatFs() {
 				if (this.projectItems.length == 0) return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU','抱歉，您当前还未选择您需要生成FS号的零件采购项目！'));
+				if (this.projectItems.find(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030')) return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
 				this.partNumberLoading = true
 				let fs = {
 					ids: this.projectItems.map(res=>res[this.keys]),

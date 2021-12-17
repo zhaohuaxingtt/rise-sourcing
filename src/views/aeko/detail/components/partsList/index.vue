@@ -271,7 +271,10 @@ export default {
             this.isLinie = true;
             this.isAekoManager = false;
             this.isCommodityCoordinator = false;
-            this.searchParams = cloneDeep(linieQueryForm)
+            this.searchParams = {
+                ...cloneDeep(linieQueryForm),
+                brand:[''],
+            }
         }
 
     },
@@ -347,6 +350,15 @@ export default {
                     cartype:[''],
                     linieDeptNumList:[''],
                 };
+            }
+             const {query} = this.$route;
+            const {from=''} = query;
+            // 若从aeko查看跳转过来
+            if(from == 'check'){
+                 this.searchParams = {
+                ...cloneDeep(linieQueryForm),
+                brand:[''],
+                }
             }
 
             this.init()
@@ -643,7 +655,7 @@ export default {
                 partNum,
                 partNameZh,
                 buyerName,
-                brand,
+                brandList:(brand.length == 1 && brand[0] === '') ? [] : brand,
                 current: this.page.currPage,
                 size: this.page.pageSize
             })

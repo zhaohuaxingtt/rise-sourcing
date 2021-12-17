@@ -252,7 +252,7 @@ export default {
             this.page.totalCount = res.data.total;
             this.tableListData = res.data.records.map((item, index) => {
               item.index = index
-              item.nomiAmountTotal = item.nomiAmountTotal != null ? this.getTousandNum(item.nomiAmountTotal.toFixed(2)) : ''
+              item.nomiAmountTotal = item.nomiAmountTotal != null ? this.getTousandNum(Number(item.nomiAmountTotal).toFixed(2)) : ''
               let start = item.hisPartsList.length
               item.hisPartsList = item.hisPartsList.map(a => {
                 a.nomiAmount = this.getTousandNum(Number(a.nomiAmount).toFixed(2))
@@ -262,6 +262,7 @@ export default {
               item.hisPartsList.fill({carTypeProName: "", nomiAmount: ''}, start, 10)
               return item
             });
+            
             if(this.tableListData && this.tableListData.length > 0){
               let temp = []
               this.tableListData[0].hisPartsList.map((item, index) => {

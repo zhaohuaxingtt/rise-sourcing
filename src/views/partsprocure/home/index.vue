@@ -488,6 +488,7 @@ export default {
           )
         );
       }
+      if (this.selectTableData.find(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030')) return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
       if(!this.selectTableData.every(i=>i.partProjectType == this.selectTableData[0].partProjectType)){
         return iMessage.warn(
           this.language(

@@ -71,7 +71,6 @@ export default {
   },
   methods: {
     handleMap() {
-      console.log('creat map');
       // 初始化地图
       var map = new AMap.Map('container', {
         WebGLParams: {
@@ -169,7 +168,6 @@ export default {
         marker.setMap(map)
         marker.on('click', () => {
           handleTooltip.open(map, [item.lon, item.lat])
-          console.log('purchase');
         })
         var handleTooltip = new AMap.InfoWindow({
           content: `<div class='tips' style="height="300px"">
