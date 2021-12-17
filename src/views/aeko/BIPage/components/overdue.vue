@@ -1,5 +1,5 @@
 <template>
-	<div class="page-content" v-permission.auto="AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO|逾期BI报表">
+	<div class="page-content" v-permission.auto="AEKOYUQIBAOBIAO|逾期BI报表">
 		<iCard id='powerBiReport'>
 			
 		</iCard>
@@ -46,7 +46,7 @@
 		},
 		created() {
 			// 没有逾期报表查看权限，调整状态跟踪
-			if(!this.whiteBtnList['AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO']){
+			if(!this.whiteBtnList['AEKOYUQIBAOBIAO']){
         this.$router.push({
           path: '/aeko/report/statetrack',
           query: {},

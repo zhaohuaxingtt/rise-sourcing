@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-14 10:49:08
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-17 15:22:40
  * @Description: 
  */
 
@@ -12,8 +12,8 @@ export const TAB = [
     value: 1,
     name: 'AEKO操作',
     message: 0,
-    url: '/aeko/approve',
-    activePath: '/approve',
+    url: '/aeko/managelist',
+    activePath: '/managelist',
     key: 'LK_AEKOCAOZUO',
     permissionKey:'LK_AEKOCAOZUO',
     permissionName:'AEKO操作',
