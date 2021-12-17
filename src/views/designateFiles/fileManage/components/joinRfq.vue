@@ -22,19 +22,16 @@
               :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
       <el-form>
         <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
-          <iInput :placeholder="language('QINGSHURU','请输入')" v-model="form.searchConditions"
-                  v-permission="PARTSRFQ_SEARCHBOX"></iInput>
+          <iInput :placeholder="language('QINGSHURU','请输入')" v-model="form.searchConditions"></iInput>
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
-          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.carType"
-                    v-permission="PARTSRFQ_MODELPROJECT">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.carType">
             <el-option value="" :label="language('ALL','全部') | capitalizeFilter"></el-option>
             <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('RFQZHUANGTAI','RFQ状态')">
-          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.rfqStatus"
-                    v-permission="PARTSRFQ_RFQSTATUS">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.rfqStatus">
             <el-option value="" :label="language('ALL','全部') | capitalizeFilter"></el-option>
             <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
