@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-28 14:05:06
+ * @LastEditTime: 2021-12-17 10:17:21
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -100,7 +100,7 @@ export default {
         },
         "2": {
           titleName: 'CKD/HT/ZSB零件',
-          titleKey: 'CKDHTZSBLINGJIAN',
+          titleKey: 'CKDHTZSBLINGJIANEN',
           title: CKDHTtableTitle,
           permision: 'PROJECTMGT-MONITORPARTLIST-CKDHTTABLE|项目管理-监控零件清单-CKDHT表格'
         }

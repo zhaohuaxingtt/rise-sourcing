@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-10-26 10:54:02
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-05 09:56:56
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-17 17:23:15
  * @Description: 
  */
 import {getAekoDetail} from "@/api/aeko/detail";
@@ -19,7 +19,7 @@ import {getAekoDetail} from "@/api/aeko/detail";
  */
 export function lookDetails(vm, row, _blank=true, queue=null,isfromCheck=false, originLength = 1) {
   let reqP = {requirementAekoId: row.requirementAekoId}
-  let workFlowDTOS = row.workFlowDTOS || [];
+  let workFlowDTOS =  row.workFlowDTOS || row.aekoWorkFlowDTOS || [];
     getAekoDetail(reqP).then(res => {
       if (res.code == 200) {
         let taskIds = workFlowDTOS.map((item) => item.taskId)

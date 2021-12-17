@@ -303,7 +303,7 @@ export default {
       const idList = this.tableListData.map(o => Number(o.id))
       try {
         const res = await submitSignSheet({
-          signId:Number(this.form.signId)
+          signIdArr:[Number(this.form.signId)]
         })
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))

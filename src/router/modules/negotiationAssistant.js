@@ -86,10 +86,11 @@ export default [
         component: () => import('../../views/partsrfq/piAnalyse/piDetail'),
       },
       {
-        path: 'partsrfq/graph/:id',
+        path: 'partsrfq/graph',
         name: 'graph',
         component: () => import('../../views/biddingManage/bidding/project/hall/components/graph.vue'),
       },
     ],
   },
 ];
+

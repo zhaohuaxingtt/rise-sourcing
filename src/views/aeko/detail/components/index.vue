@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-12-02 11:16:33
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-17 16:11:02
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
@@ -143,7 +143,7 @@ export default {
     // 从AEKO管理进来的 TAB过滤调审批记录和审批附件
     if(from == 'manage'){
       let newTabs = cloneDeep(this.tabs);
-      newTabs = newTabs.filter((item)=>item.name!=='record' && item.name!=='attachment');
+      newTabs = newTabs.filter((item)=>item.name!=='record' && item.name!=='attachment'&item.name!=='contentDeclare');
       this.tabs = newTabs;
     }
 

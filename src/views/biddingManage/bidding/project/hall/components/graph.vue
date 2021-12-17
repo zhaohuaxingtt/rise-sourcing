@@ -165,7 +165,13 @@ export default {
       } else if ((manualBiddingType == '01' || roundType == '03') && biddingType == '02') {
         amp = (((maxPrice - totalPrices) / totalPrices).toFixed(4) * 100).toFixed(2);
       } else {
+<<<<<<< HEAD
         amp = (((totalPrices - minPrice) / totalPrices).toFixed(4) * 100).toFixed(2);
+=======
+        amp = (
+          ((minPrice - totalPrices) / totalPrices).toFixed(4) * 100
+        ).toFixed(2);
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
       }
       return isNaN(amp) ? '' : amp;
     },
@@ -260,8 +266,16 @@ export default {
       if (biddingDetail || biddingDetail?.length > 0) {
         this.handlePrice(biddingDetail);
       }
+<<<<<<< HEAD
       this.xAxisTitle = `(${this.currencyMultiples(result?.currencyMultiple)})${this.currencyUnit[result?.currencyUnit]}`;
       result.amplitude = (result.amplitude * 100).toFixed(2);
+=======
+      // this.xAxisTitle = `(${this.currencyMultiples(result?.currencyMultiple)})${
+      //   this.currencyUnit[result?.currencyUnit]
+      // }`;
+      this.xAxisTitle = `(单位：${this.currencyMultiples(result?.currencyMultiple)}  ${this.currencyUnit[result?.currencyUnit]})`;
+      result.amplitude = (result.amplitude * 100).toFixed(2)
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
       this.ruleForm = {
         ...result,
       };
@@ -310,7 +324,14 @@ export default {
     },
     // 英式曲线图
     drawLine() {
+<<<<<<< HEAD
       let chartLine = this.$echarts.init(document.getElementById('chartLineBox'));
+=======
+      let chartLine = this.$echarts.init(
+        document.getElementById("chartLineBox")
+      );
+      // 设置 Y轴样式
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
       let fontOptions = {
         show: true,
         textStyle: {
@@ -325,11 +346,22 @@ export default {
       let unit = this.ruleForm?.currencyUnit;
 
       let options = {
+<<<<<<< HEAD
         title: {
           left: '18%',
           top: '14%',
+=======
+        // 更改曲线图头部货币单位
+        title: [{
+          left: "0%",
+          top: "24%",
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
           text: this.xAxisTitle,
-        },
+        },{
+          right: "3%",
+          bottom: "-1%",
+          text: '竞价结束时间',
+        }],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -371,28 +403,57 @@ export default {
             return htmlStr;
           },
         },
+        
+        // 更改附件供应商名称排版
         legend: {
           data: this.supplierlist,
+<<<<<<< HEAD
           left: 0,
           top: '30%',
           orient: 'vertical',
+=======
+          type: 'scroll',
+          left: '16%',
+          top: "10%",
+          bottom: 2,
+          pageIconSize:30,
+          pageTextStyle:{
+            fontSize:20
+          },
+          // orient: "vertical",
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
           textStyle: {
             fontSize: '1rem',
             padding: 10,
+<<<<<<< HEAD
             width: window.innerWidth / 7 - 60,
             overflow: 'break',
+=======
+            width: window.innerWidth/12 - 60,
+            overflow: 'break'
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
           },
           itemWidth: 40,
-          itemGap: 20,
+          itemGap: 37,
           itemHeight: 15,
         },
+        
+        // 更改曲线总布局
         grid: {
+<<<<<<< HEAD
           left: '20%',
           right: '4%',
           bottom: '3%',
           top: '20%',
+=======
+          left: "5%",
+          right: "4%",
+          bottom: "6%",
+          top: "30%",
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
           containLabel: true,
         },
+
         xAxis: {
           min: this.minDate,
           max: this.maxDate,
@@ -402,6 +463,8 @@ export default {
             show: false,
           },
           splitNumber: this.split,
+
+          // 更改 x轴 数据
           axisLabel: {
             textStyle: {
               color: 'black', //更改坐标轴文字颜色
@@ -469,7 +532,15 @@ export default {
     },
     // 荷氏曲线图
     drawHeLine() {
+<<<<<<< HEAD
       let chartLine = this.$echarts.init(document.getElementById('chartLineBox'));
+=======
+      let chartLine = this.$echarts.init(
+        document.getElementById("chartLineBox")
+      );
+
+      // 设置 Y轴样式
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
       let fontOptions = {
         show: true,
         textStyle: {
@@ -483,11 +554,22 @@ export default {
       let multiple = this.currencyMultiples(this.ruleForm?.currencyMultiple);
       let unit = this.ruleForm?.currencyUnit;
       let options = {
+<<<<<<< HEAD
         title: {
           left: '18%',
           top: '14%',
+=======
+        // 更改曲线图头部货币单位
+        title: [{
+          left: "0%",
+          top: "24%",
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
           text: this.xAxisTitle,
-        },
+        },{
+          right: "3.5%",
+          bottom: "-1%",
+          text: '竞价结束时间',
+        }],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -530,8 +612,11 @@ export default {
             return htmlStr;
           },
         },
+
+        // 更改附件供应商名称排版
         legend: {
           data: this.supplierlist,
+<<<<<<< HEAD
           left: 0,
           top: '30%',
           orient: 'vertical',
@@ -539,18 +624,43 @@ export default {
             fontSize: '1rem',
             width: window.innerWidth / 7 - 60,
             overflow: 'break',
+=======
+          type: 'scroll',
+          left: '16%',
+          top: "10%",
+          bottom: 2,
+          pageIconSize:30,
+          pageTextStyle:{
+            fontSize:20
+          },
+          // orient: "vertical",
+          textStyle: {
+            fontSize: "1rem",
+            width: window.innerWidth/12 - 60,
+            overflow: 'break'
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
           },
           itemWidth: 40,
-          itemGap: 20,
+          itemGap: 37,
           itemHeight: 15,
         },
+
+        // 更改曲线总布局
         grid: {
+<<<<<<< HEAD
           left: '20%',
           right: '4%',
           bottom: '3%',
           top: '20%',
+=======
+          left: "5%",
+          right: "4%",
+          bottom: "6%",
+          top: "30%",
+>>>>>>> ee29270c69db61b6039c5ffefdffd95ebacc1115
           containLabel: true,
         },
+
         xAxis: {
           // min: this.minDate,
           // max: this.maxDate,
@@ -561,6 +671,7 @@ export default {
           },
           // 3
           splitNumber: this.split,
+          // 更改 x轴 数据
           axisLabel: {
             // interval: 0,
             textStyle: {
