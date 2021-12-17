@@ -4,7 +4,7 @@
       <div class="header clearFloat">
         <span class="title">{{ language('LK_QUANBUBANBEN','全部版本') }}</span>
         <div class="control">
-          <iButton v-permission="PARTSIGN_EDITORDETAIL_ENQUIRY_VERSION_DOWNLOAD" @click="download">{{ language('LK_XIAZAI','下载') }}</iButton>
+          <iButton v-permission.auto="PARTSIGN_EDITORDETAIL_ENQUIRY_VERSION_DOWNLOAD|下载" @click="download">{{ language('LK_XIAZAI','下载') }}</iButton>
         </div>
       </div>
       <div class="body margin-top25">
