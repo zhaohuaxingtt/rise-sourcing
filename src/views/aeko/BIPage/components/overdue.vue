@@ -39,8 +39,21 @@
 				values:[]
 			}
 		},
+		computed:{
+			...Vuex.mapState({
+					whiteBtnList: state => state.permission.whiteBtnList,
+			})
+		},
 		created() {
-			this.powerBiUrl()
+			// 没有逾期报表查看权限，调整状态跟踪
+			if(!this.whiteBtnList['AEKO_MANAGELIST_BUTTON_YUQIBIBAOBIAO']){
+        this.$router.push({
+          path: '/aeko/report/statetrack',
+          query: {},
+        })
+			}else{
+				this.powerBiUrl()
+			}
 		},
 		methods: {
 			// 获取财报iframeurl
