@@ -86,7 +86,7 @@ export default [
         component: () => import('../../views/partsrfq/piAnalyse/piDetail'),
       },
       {
-        path: 'partsrfq/graph',
+        path: 'partsrfq/graph/:id',
         name: 'graph',
         component: () => import('../../views/biddingManage/bidding/project/hall/components/graph.vue'),
       },
