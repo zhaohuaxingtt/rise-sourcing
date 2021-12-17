@@ -105,7 +105,6 @@ export default {
       var str = ""
       list.forEach((item) => {
         if (prop) {
-          console.log(item[prop])
           str = str + item[prop] + ","
         } else {
           str = str + item + ","

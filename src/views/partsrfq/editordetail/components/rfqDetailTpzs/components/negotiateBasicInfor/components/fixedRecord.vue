@@ -52,7 +52,6 @@ export default {
           var resData = res.data;
           if (resData && resData.length > 0) {
             resData.forEach((header) => {
-              console.log(header)
               if (header.nomiRecordDetailVO && header.nomiRecordDetailVO.length > 0) {
                 header.nomiRecordDetailVO.forEach((detail) => {
                   this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,
@@ -85,7 +84,7 @@ export default {
         craft: stuffName,
         carTypeProj: carTypeProj,
         supplierNameCn: supplierNameCn,
-        apriceModel: apriceModel,
+        apriceModel: apriceModel && String(apriceModel).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
         nominateDate: nominateDate
       }
       return tableRow
