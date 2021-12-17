@@ -39,19 +39,20 @@ export default {
   created() {
     // 通过permissionKey(权限)字段过滤tabs
     this.navList = permissionArray('permissionKey',this.navList);
+    debugger
     const {navList} = this;
     if(navList.length == 1){ // 只显示已审批
       if( navList[0].code == '2'){
         this.tab = '2';
-        this.$router.replace({
+     /*   this.$router.push({
           path:'/aeko/AKEOPageContent/approvelistcsf/AKEOApprovedPage',
-        })
+        })*/
       }
       if(navList[0].code == '1'){
         this.tab = '1';
-        this.$router.replace({
+       /* this.$router.push({
           path:'/aeko/AKEOPageContent/approvelistcsf/AKEOPendingPage',
-        })
+        })*/
       }
     }else{
       if(this.$route.name=='AKEOPendingPage'){
