@@ -17,11 +17,11 @@
         <div class="floatright title-button-box">
           <iButton
             @click="add"
-            v-permission="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE"
+            v-permission.auto="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_SAVE|添加"
             >{{ language("LK_TIANJIA",'添加') }}</iButton
           >
-          <iButton @click="deleteItems">{{ language("LK_SHANCHU",'删除') }}</iButton>
-          <iButton @click="save">{{ language("LK_ZHUANPAI",'转派') }}</iButton>
+          <iButton v-permission.auto="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_DELETE|删除" @click="deleteItems">{{ language("LK_SHANCHU",'删除') }}</iButton>
+          <iButton v-permission.auto="PARTSRFQ_ASSIGNMENTOFSCORINGTASKS_ZHUANPAI|转派" @click="save">{{ language("LK_ZHUANPAI",'转派') }}</iButton>
         </div>
       </div>
       <tablelist
