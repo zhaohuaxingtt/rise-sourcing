@@ -58,8 +58,10 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
+          <iButton v-if="!nominationDisabled && !rsDisabled">{{ language("CHUANGJIANMTZSHENQIGN", "创建MTZ申请") }}</iButton>
           <!--------------------保存按钮----------------------------------->
-          <iButton v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_PARTDETAILTSAVE|零件清单保存" v-if="!nominationDisabled && !rsDisabled" @click="saveParts">{{language('BAOCUN','保存')}}</iButton>
+          <iButton v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_PARTDETAILTSAVE|零件清单保存" v-if="!nominationDisabled && !rsDisabled" @click="saveParts">{{language('JIARUSHENQING','加入申请')}}</iButton>
+          <iButton v-if="!nominationDisabled && !rsDisabled">{{ language("QUXIAOSHENQING", "取消申请") }}</iButton>
         </div>
       </div>
       <tableList
