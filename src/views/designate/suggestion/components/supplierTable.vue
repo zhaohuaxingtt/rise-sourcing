@@ -35,7 +35,7 @@
             </iButton>
           </span>
           <iButton
-            class="margin-left10"
+            class="leftMargin"
             @click="showMouldVisibal" 
             v-permission.auto="SOURCING_NOMINATION_SUGGESTION_MOLDBUDGETMANAGEMENT|模具预算管理"
           >
@@ -489,5 +489,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .supplierTable {
+  .leftMargin{
+    margin: 0 0 0 10px;
+  }
 }
 </style>

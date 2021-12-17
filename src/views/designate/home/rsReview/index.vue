@@ -282,6 +282,7 @@ export default {
             designateType: "MEETING",
             applicationStatus: row.applicationStatus,
             partProjType: row.partProjType,
+            businessKey: row.partProjType,
             mtzApplyId: row.mtzApplyId
           }
         })

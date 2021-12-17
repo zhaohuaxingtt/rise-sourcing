@@ -232,7 +232,7 @@ export default {
             supplierIds.push(item.supplierId)
             materialGroups.push(item.materialGroup)
           })
-          if (!partsIds.includes(item.partsId) && !supplierIds.includes(item.supplierId) && !materialGroups.includes(item.materialGroup)) {
+          if (!partsIds.includes(item.partsId) || !supplierIds.includes(item.supplierId) || !materialGroups.includes(item.materialGroup)) {
             if (this.middleListData.length < 100) {
               this.middleListData.push(item)
             } else {
