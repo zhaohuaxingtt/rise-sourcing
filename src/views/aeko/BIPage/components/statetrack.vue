@@ -1,5 +1,5 @@
 <template>
-	<div class="page-content" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PBI|报表管理-状态跟踪报表">
+	<div class="page-content" v-permission.auto="ZHUANGTAIGENZONGBAOBIAO|状态跟踪报表">
 		<iCard id='powerBiReport'></iCard>
 	</div>
 </template>
