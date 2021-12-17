@@ -1094,6 +1094,7 @@ export default {
     },
     //数据验证通过提交数据
     handleSaveData(callback) {
+      this.projectLoading = true
       let formData = { ...this.ruleForm };
       //采购计划
       this.ruleForm.supplierProducts.forEach((item, index) => {
@@ -1121,19 +1122,25 @@ export default {
       formData.supplierOffer = supplierOffer;
       console.log(869,formData)
       //保存
-      saveBiddingQuotation(formData)
-        .then((res) => {
-          if (res) {
-            this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
-          }
+      saveBiddingQuotation(formData).then((res) => {
+        if (res) {
+          this.projectLoading = false
+          this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
           callback && callback();
-        })
-        .catch((err) => {
-          console.log(err);
+        } else {
+          this.projectLoading = false
           this.yearsPlanTable = [];
           this.purchasePlanTable = [];
           this.handleSearchReset();
-        });
+        }
+        callback && callback();
+      }).catch((err) => {
+        this.projectLoading = false
+        this.yearsPlanTable = [];
+        this.purchasePlanTable = [];
+        this.handleSearchReset();
+        // callback && callback();
+      });
     },
     handleSearchReset() {
       this.yearsPlan = [];
