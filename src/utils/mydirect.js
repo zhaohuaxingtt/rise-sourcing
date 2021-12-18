@@ -8,6 +8,8 @@ const openProcess = process.env.NODE_ENV == 'dev' ||  process.env.NODE_ENV == 's
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
   inserted: function(el, binding, vnode) {
+    return // 权限重新初始化，近期请勿打开该功能
+
     //如果是个变量则使用变量，否则当做字符串处理
     const value = binding.value ? binding.value : binding.expression
     // dynamic、auto共用时处理

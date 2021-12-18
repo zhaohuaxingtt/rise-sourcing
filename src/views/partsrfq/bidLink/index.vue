@@ -252,7 +252,8 @@ export default {
     // 点击项目编号
     handleClickNo(item) {
       let routeData = this.$router.resolve({
-        path: `/bidding/project/inquiry/${item.id}`,
+        // path: `/bidding/project/inquiry/${item.id}`,
+        path:`/sourcing/partsrfq/graph/${item.id}`
       })
       window.open(routeData.href, '_blank')
     },
