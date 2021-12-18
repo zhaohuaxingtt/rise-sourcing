@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-02 18:58:39
+ * @LastEditTime: 2021-12-13 20:02:52
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -71,7 +71,7 @@
                     <li></li>
                     <template v-for='(items,index) in ratingList.firstTile'>
                       <template v-if='ratingList.firstTile.length > 1'>
-                        <li :key='index' v-if='!items==""'>
+                        <li :key='index' v-if='items'>
                           <el-tooltip effect="light" :content="items">
                             <div class="titleOverflow">
                               {{items}}
@@ -272,7 +272,7 @@ export default{
       }
     },
     ebrShow(data) {
-      if(data == undefined || data == 'Budget' || data == 'KM'  )
+      if(!data || data == 'Budget' || data == 'KM')
        return data 
       else{
         // eslint-disable-next-line no-undef
@@ -300,7 +300,7 @@ export default{
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
           rfqId:this.$route.query.id,
-          round:this.round,
+          round:items.round,
           supplierId:items[index+'supplierId'],
           fsNum:items.partPrjCode,
           fix:true,
@@ -431,7 +431,11 @@ export default{
     },
     //去掉空格
     removeSpace(str) {
-      return str.replace(/\s+/g,"")
+      try {
+        return str.replace(/\s+/g,"")
+      } catch (error) { 
+        return str 
+      }
     }
   }
 }

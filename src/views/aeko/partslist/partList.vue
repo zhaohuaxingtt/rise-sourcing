@@ -433,4 +433,11 @@ export default {
       justify-content: space-between;
     }
   }
+  .title{
+      font-size: 20px;
+      font-family: Arial;
+      font-weight: bold;
+      align-items: center;
+      color: #000000;
+  }
 </style>

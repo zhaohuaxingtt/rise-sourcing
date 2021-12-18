@@ -31,6 +31,8 @@
             <!-- <logButton class="margin-left20" /> -->
             <iLoger 
                 class="margin-left25 margin-right5"
+                optionDicKey="LOG_OPERATION_TYPES"
+				optionDicKey2="LOI详情页"
                 isPage
                 :config="{
                     module_obj_ae: 'LOI', // 模块
@@ -73,7 +75,7 @@
                                     v-for="item in linieList || []"
                                     :key="item.id"
                                     :label="$i18n.locale === 'zh' ? item.nameZh : item.nameEn"
-                                    :value="item.id">
+                                    :value="item.id+''">
                                 </el-option>  
                             </iSelect>
                             <iText v-else>{{loiInfo.linieName}}</iText>

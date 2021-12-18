@@ -21,7 +21,7 @@
         </div>
         <commonTable
           ref="tableDataForm"
-          :tableData="tableListData"
+          :tableData="suppliersPage"
           :key="isTax"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -44,32 +44,32 @@
               {{
                 form.roundType === "05" && form.manualBiddingType === "02"
                   ? 1
-                  : scope.row["currentSort"] || 1
+                  : scope.row["currentSort"]
               }}
             </div>
           </template>
           <template slot="isTax" slot-scope="scope">
             <div>
               {{
-                dividedBeiShu(scope.row["offerPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') +
+                scope.row["offerPrice"] ? (dividedBeiShu(scope.row["offerPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') +
                 currencyMultiples(scope.row["currencyMultiple"]) +
-                "-" + units(scope.row["currencyUnit"])
+                "-" + units(scope.row["currencyUnit"])) : ''
               }}
             </div>
           </template>
           <template slot="serverTime" slot-scope="scope">
             <div>
-              {{ scope.row["serverTime"].replace("T", " ") }}
+              {{ scope.row["serverTime"] ? scope.row["serverTime"].replace("T", " ") : ''}}
             </div>
           </template>
           <template slot="operation" slot-scope="scope">
-            <div class="toView" @click="handleGoDetail(scope)">{{language('BIDDING_CHAKAN','查看')}}</div>
+            <div class="toView" @click="handleGoDetail(scope)">{{scope.row["offerPrice"] ? language('BIDDING_CHAKAN','查看') : ''}}</div>
           </template>
         </commonTable>
         <iPagination
           v-update
-          @current-change="handleCurrentChange($event, query)"
-          @size-change="handleSizeChange($event, query)"
+          @current-change="handleCurrentChange($event)"
+          @size-change="handleSizeChange($event)"
           background
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
@@ -163,6 +163,11 @@ export default {
     role() {
       return this.$route.meta.role;
     },
+    suppliersPage() {
+      const { tableListData } = this;
+      const { currPage, pageSize } = this.page;
+      return tableListData?.slice((currPage - 1) * pageSize, pageSize * currPage);
+    },
     // lookOver() {
     //   if (
     //     this.form.roundType === "05" &&
@@ -200,7 +205,7 @@ export default {
       return this.currencyUnit[unit];
     },
     dividedBeiShu(val){
-     return Big(val).div(this.beishu).toNumber()
+     return val ? Big(val).div(this.beishu).toNumber() : ''
     },
     currencyMultiples(currencyMultiple) {
       return {
@@ -210,12 +215,19 @@ export default {
         "04": "百万",
       }[currencyMultiple];
     },
+    handleSizeChange(val) {
+      this.page.currPage = 1;
+      this.page.pageSize = val;
+    },
+    handleCurrentChange(e) {
+      this.page.currPage = e;
+    },
     // 导出
     handleExport() {
       console.log(this.role);
       const data = this.tableListData;
       for (let i = 0; i < this.tableListData.length; i++) {
-        let currentSort = this.tableListData[i].currentSort || 1;
+        let currentSort = this.tableListData[i].currentSort || '';
         let price = this.tableListData[i].offerPrice;
         let currencyMultiple = this.currencyMultiples(
           this.tableListData[i].currencyMultiple
@@ -223,7 +235,7 @@ export default {
         let currencyUnit = this.units(this.tableListData[i].currencyUnit);
         let offerPrice = this.dividedBeiShu(price) + currencyMultiple + "-" + currencyUnit;
         let supplierName = this.tableListData[i].supplierName;
-        let serverTime = this.tableListData[i].serverTime.replace("T", " ");
+        let serverTime = this.tableListData[i]?.serverTime ? this.tableListData[i]?.serverTime.replace("T", " ") : '';
         let isTax =
           this.tableListData[i].isTax === "01" ? "不含可抵扣税" : "含税";
         this.dataList.push({
@@ -294,12 +306,10 @@ export default {
       this.tableLoading = false;
       this.form = data
       this.tableListData.sort(this.compare("currentSort"));
-      this.isTax = res[0].isTax;
+      this.isTax = res[0]?.isTax;
         if (
-        (this.form.roundType === "05" &&
-        this.form.manualBiddingType === "02") 
-        || (this.role === "supplier" && this.form.resultOpenForm === '01' 
-        || (this.role === "supplier" && this.form.resultOpenForm === '02'))
+          (this.role === "supplier" && this.form.resultOpenForm === '01' 
+          || (this.role === "supplier" && this.form.resultOpenForm === '02'))
         ) {
           this.tableListData = res.filter((item) => {
             return this.supplierCode.includes(item.supplierCode);
@@ -314,6 +324,7 @@ export default {
           }
         })
         this.page.total = res.length;
+        console.log('object',this.tableListData)
     },
   },
 };

@@ -71,16 +71,23 @@
           <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
 
+        <template #status="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>SKD</p>
+            <p>LC</p>
+          </div>
+          <span v-else>{{ scope.row.status }}</span>
+        </template>
+
         <template #supplierSapCode="scope">
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
-
-        <template #demand="scope">
+        <!-- <template #demand="scope">
           <span>{{ scope.row.demand | kFilter }}</span>
         </template>
         <template #output="scope">
           <span>{{ scope.row.output | kFilter }}</span>
-        </template>
+        </template> -->
         <template #presentPrice="scope">
           <span>{{ scope.row.presentPrice | toThousands }}</span>
         </template>
@@ -91,10 +98,20 @@
           <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
         </template>
         <template #aprice="scope">
-          <span>{{ scope.row.aprice | toThousands }}</span>
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdAPrice | toThousands }}</p>
+            <p>{{ scope.row.aprice | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
+          <span v-else>{{ scope.row.aprice | toThousands }}</span>
         </template>
         <template #bprice="scope">
-          <span>{{ scope.row.bprice | toThousands }}</span>
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdBPrice | toThousands }}</p>
+            <p>{{ scope.row.bprice | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
+          <span v-else>{{ scope.row.bprice | toThousands }}</span>
         </template>
         <template #investFee="scope">
           <span>{{ scope.row.investFee | toThousands }}</span>
@@ -108,9 +125,9 @@
         <template #savingFee="scope">
           <span>{{ scope.row.savingFee | toThousands }}</span>
         </template>
-        <template #tto="scope">
+        <!-- <template #tto="scope">
           <span>{{ scope.row.tto | toThousands }}</span>
-        </template>
+        </template> -->
       </tableList>
       <!-- v-if="isPreview" -->
       <div class="beizhu">
@@ -218,10 +235,10 @@ export default {
 
       return obj[val] || val
     },
-    kFilter(val) {
-      if (val) return math.divide(math.bignumber(val), 1000).toString()
-      return val
-    }
+    // kFilter(val) {
+    //   if (val) return math.divide(math.bignumber(val), 1000).toString()
+    //   return val
+    // }
   },
   computed: {
     exchangeRageCurrency() {
@@ -473,7 +490,7 @@ export default {
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
         const list = row.filter((item)=> item.ltcRateStr!='0');
-        return list.length ? list[0].ltcDate : '-'
+        return list.length ? moment(list[0].ltcDate).format("YYYY-MM") : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
        let strList = [];

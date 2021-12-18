@@ -23,12 +23,12 @@
             <div class="btnList flex-align-center">
                 <iButton @click="gotoRsMainten" v-if="designateType === 'MEETING'" v-permission.auto="NOMINATION_MENU_RSTYPEMANTAINCE|RS单维护">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
                 <iButton v-if="showExport" @click="rsExport" v-permission.auto="NOMINATION_MENU_EXPORT|导出">{{language('LK_DAOCHU','导出')}}</iButton>
-                <iButton v-if="!nominationDisabled && !rsDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
-                <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
+                <iButton v-if="!nominationDisabled && !rsDisabled && !submitDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
+                <!-- <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton> -->
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
-                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage class="margin-left20" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
+                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
         </div>
@@ -178,6 +178,10 @@ export default {
             // 是否是RS扩产能
             const isKuochanneng = this.$route.query.partProjType === allitemsList.KUOCHANNENG && this.$route.name === 'designateDecisionRS'
             return this.$route.meta.exportButton || isKuochanneng
+        },
+        // 是否为提交后的状态
+        submitDisabled() {
+            return this.$store.getters.applicationStatus !== "NEW" // 基本就是除了草稿后的状态
         }
     },
     data(){
@@ -280,12 +284,13 @@ export default {
         // 预览
         preview(){
             const {path,query} = this.$route;
-            console.log(path);
+            console.log(path, '当前路径');
             this.$router.push({
               path,
               query: {
                 ...query,
-                isPreview:'1'
+                isPreview:'1',
+                typeSelect:this.$store.state.nomination.costType || ''
               }
             })
         },

@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-11-26 15:32:32
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-13 13:52:48
+ * @LastEditors: caopeng
  * @Description: 供应商维度展示
- * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
+ * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
 -->
 <template>
   <!----------------------------------------------------------->
@@ -95,8 +95,10 @@ export default{
      * @param {*}
      * @return {*}
      */
-    exportExcel(){
-      downLoadExcel(Object.assign(this.getQuery()))
+   async exportExcel(v){
+        console.log(v)
+    const res= await downLoadExcel(Object.assign(this.getQuery()))
+    console.log(res)
     },
     removeOther(row,type){
       if(!row){
@@ -214,10 +216,11 @@ export default{
       })
     },
     getQuery(){
-      this.form.partNum = this.partsSelect.find(items=>items == "all")?[]:this.partsSelect
+      this.form.partNum = this.partsSelect.find(items=>items == "all")?[]:this.partList.filter(o => this.partsSelect.includes(o.fsNum)).map(o => o.partNum).filter(o => o)
       this.form.round = this.luncSelect.find(items=>items == "all")?[]:this.luncSelect.sort((a,b)=>{return a-b})
       this.form.supplierID = this.supplierSelectlist.find(items=>items == "all")?[]:this.supplierSelectlist
-      this.form.fsSelect = this.fsSelect.find(items=>items == 'all')?[]:this.fsSelect
+      // 之前的一个bug，fs号唯一，零件号不唯一，所以选中零件号，才会传对应的fs号,零件号关联了FS号和零件号2哥条件
+      this.form.fsSelect = this.partsSelect.find(items=>items == "all")?[]:this.partsSelect
       const templateMap = {}
       Object.keys(this.form).forEach(items=>{
         if(items == "fsSelect"){
@@ -236,6 +239,7 @@ export default{
             if(itemss.name == element.partNum){//将当前数据推到已经存在的列表中
               itemss.list.push({
               fsNum: element.fsNum,
+              partNum: element.partNum,
               name:element.fsNum,
               value:element.fsNum
             })
@@ -245,10 +249,12 @@ export default{
           partList.push({
             name:element.partNum+'-'+element.fsNum+'-'+element.partName+'-'+element.partNameDe,
             value:element.fsNum,
+            partNum: element.partNum,
             fsNum: element.fsNum,
             list:[
               {
                 fsNum: element.fsNum,
+                partNum: element.partNum,
                 name:element.fsNum,
                 value:element.fsNum
               }

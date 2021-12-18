@@ -77,6 +77,10 @@ export default {
     nominateAppId: {
       type: String,
       require: true
+    },
+    categoryCode: {
+      type: String,
+      require: true
     }
   },
   data() {
@@ -132,7 +136,8 @@ export default {
       this.loading = true
 
       getStrategy({
-        nominateAppId: this.nominateAppId // 定点申请id
+        nominateAppId: this.nominateAppId, // 定点申请id
+        categoryCode: this.categoryCode // 材料组code
       })
       .then(res => {
         if (res.code == 200) {
@@ -157,6 +162,7 @@ export default {
 
       setStrategy({
         nominateAppId: this.nominateAppId, // 定点申请id
+        categoryCode: this.categoryCode, // 材料组code
         reportFiles: JSON.stringify({ fileList: this.tableListData }), // 文件列表json字符串
       })
       .then(res => {
@@ -202,6 +208,7 @@ export default {
           }))
 
           this.handleSave()
+          this.fileList = []
 
           this.uploadLoading = false
           clearTimeout(this.timer)

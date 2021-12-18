@@ -57,7 +57,14 @@
                     required
                   ></iLabel>
                   <div class="form--item--number">
-                    <iInput
+                    <operatorInput
+                      class="form--item--number--input__totalprice"
+                      v-model="ruleForm.totalPrices"
+                      @blur="handleInputBlur"
+                      :disabled="biddingStatus"
+                    >
+                    </operatorInput>
+                    <!-- <iInput
                       v-if="flag"
                       class="form--item--number--input__totalprice"
                       type="number"
@@ -73,7 +80,7 @@
                       :value="totalStartingPriceString"
                       @focus="handleInputFocus"
                       :disabled="biddingStatus"
-                    ></iInput>
+                    ></iInput> -->
                     <div class="form--item--number--lable">{{ unit }}</div>
                   </div>
                 </iFormItem>
@@ -152,10 +159,29 @@
           :type="'0'"
           :tableLoading="tableLoading"
         >
+          <!--采购数量 -->
+          <template slot="purchaseQty" slot-scope="scope">
+            <div>
+              {{
+                  scope.row["purchaseQty"]
+                  ? Number(scope.row["purchaseQty"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+                  : ''
+              }}
+            </div>
+          </template>
           <!-- 起拍价格 -->
           <template slot="upsetPrice" slot-scope="scope">
-
-            <template v-if="flag"> 
+            <operatorInput
+              v-if="ruleForm.biddingMode === '01' && !biddingStatus"
+              v-model="scope.row['upsetPrice']"
+              @blur="handleInputBlur"
+            >
+            </operatorInput>
+            <div v-else-if="ruleForm.biddingMode === '01' && biddingStatus">
+                {{ scope.row["upsetPrice"] ? Number(scope.row["upsetPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}
+              </div>
+            <div v-else></div>
+            <!-- <template v-if="flag"> 
               <i-input
                 v-if="ruleForm.biddingMode === '01' && !biddingStatus"
                 :value="scope.row['upsetPrice']"
@@ -181,7 +207,7 @@
                 {{ scope.row["upsetPrice"] ? scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}
               </div>
               <div v-else></div>
-            </template>
+            </template> -->
           </template>
           <!-- 目标价 -->
           <template slot="targetPrice" slot-scope="scope">
@@ -216,6 +242,7 @@ import {
 import { findHallQuotation, saveBiddingQuotation } from "@/api/bidding/bidding";
 import Big from "big.js";
 import dayjs from "dayjs";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -226,6 +253,7 @@ export default {
     iFormItem,
     iLabel,
     tableColumnTemplate,
+    operatorInput
   },
   props: {
     id: String,
@@ -554,7 +582,6 @@ export default {
       // });
       if (!this.ruleForm.supplierProducts?.length) {
         this.ruleForm.supplierProducts = data.biddingProducts;
-        
         // this.ruleForm.supplierProducts.forEach((item) => {
         //   item.id = "";
         // });
@@ -617,10 +644,14 @@ export default {
                 border-color: transparent;
                 border-radius: 0.25rem;
                 .el-tag {
-                  background-color: #f5f7fa;
+                  /* background-color: #f5f7fa;
                   color: #000;
                   border-radius: 18px;
-                  border-color: #fff;
+                  border-color: #fff; */
+                  background-color: #f7f7f7;
+                  color: #000;
+                  border-radius: 1.25rem;
+                  border-color: #eef6ff;
                   margin-left: 3px;
                   min-width: 15px;
                 }

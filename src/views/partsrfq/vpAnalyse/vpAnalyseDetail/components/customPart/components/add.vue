@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-23 16:47:14
- * @LastEditTime: 2021-08-11 10:00:40
+ * @LastEditTime: 2021-12-15 17:08:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\customPart\components\add.vue
@@ -12,9 +12,15 @@
       <iButton @click="handleCloseAdd">{{language('FH', '返回')}}</iButton>
     </div>
     <div class="optionBox">
-      <el-form :inline="true" :model="searchForm" :label-position="labelPosition" class="demo-form-inline">
-        <el-form-item style="marginRight:68px" :label="item.key ? language(item.key, item.name) : item.name" v-for="(item,index) in searchData" :key="index">
-          <iInput v-model="searchForm[item.props]" ></iInput>
+      <el-form :inline="true"
+               :model="searchForm"
+               :label-position="labelPosition"
+               class="demo-form-inline">
+        <el-form-item style="marginRight:68px"
+                      :label="item.key ? language(item.key, item.name) : item.name"
+                      v-for="(item,index) in searchData"
+                      :key="index">
+          <iInput v-model="searchForm[item.props]"></iInput>
         </el-form-item>
         <el-form-item class="searchButton">
           <el-button @click="handleSubmitSearch">{{language('QR', '确认')}}</el-button>
@@ -23,42 +29,40 @@
       </el-form>
     </div>
     <el-divider style="marginTop: 20px;"></el-divider>
-    <div class="contentBox" >
+    <div class="contentBox">
       <div class="tableOptionBox">
         <p class="tableTitle">搜索结果</p>
         <iButton @click="handleSubmitAdd">{{language('TJ', '添加')}}</iButton>
       </div>
-      <tableList
-        ref="addTable"
-        :tableData="tableListData"
-        :tableTitle="tableTitle"
-        :tableLoading="false"
-        :index="true"
-        @select="rowSelect">
+      <tableList ref="addTable"
+                 :tableData="tableListData"
+                 :tableTitle="tableTitle"
+                 :tableLoading="false"
+                 :index="true"
+                 @select="rowSelect">
         <template #isNominate="scope">
           {{scope.row.isNominate ? language('YDD', '已定点') : language('WDD', '未定点') }}
         </template>
       </tableList>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableData)"
-        @current-change="handleCurrentChange($event, getTableData)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page='page.currPage'
-        :total="page.totalCount"/>
+      <iPagination v-update
+                   @size-change="handleSizeChange($event, getTableData)"
+                   @current-change="handleCurrentChange($event, getTableData)"
+                   background
+                   :page-sizes="page.pageSizes"
+                   :page-size="page.pageSize"
+                   :layout="page.layout"
+                   :current-page='page.currPage'
+                   :total="page.totalCount" />
     </div>
   </div>
 </template>
 
 <script>
-import {iButton, iInput, iPagination} from 'rise'
-import {search, addTableTitle} from './data'
+import { iButton, iInput, iPagination } from 'rise'
+import { search, addTableTitle } from './data'
 import tableList from '@/components/ws3/commonTable';
-import {pageMixins} from '@/utils/pageMixins';
-import {getAllPartList} from '@/api/partsrfq/vpAnalysis/vpCustomPart'
+import { pageMixins } from '@/utils/pageMixins';
+import { getAllPartList } from '@/api/partsrfq/vpAnalysis/vpCustomPart'
 export default {
   name: 'CustomPartAdd',
   mixins: [pageMixins],
@@ -84,16 +88,16 @@ export default {
       selectionList: window._.cloneDeep(this.defaultList)
     }
   },
-  created() {
+  created () {
     this.getTableData()
   },
   methods: {
     // 初始化查询数据
-    initSearchData() {
+    initSearchData () {
       this.searchForm = {}
     },
     // 初始化表格数据
-    getTableData() {
+    getTableData () {
       const params = {
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
@@ -103,45 +107,51 @@ export default {
         partId: this.searchForm.partId
       }
       getAllPartList(params).then(res => {
-        if(res && res.code == 200) {
-            this.page.totalCount = res.total
-            this.tableListData = res.data
-            this.initDefaultSelection()
-          }
+        if (res && res.code == 200) {
+          this.page.totalCount = res.total
+          this.tableListData = res.data
+          this.initDefaultSelection()
+        }
       })
     },
     // 初始化默认选中
-    initDefaultSelection() {
+    initDefaultSelection () {
       this.$nextTick(() => {
         this.tableListData.forEach(item => {
           const obj = this.defaultList.find(defaultItem => defaultItem.supplierId == item.supplierId && defaultItem.partsId == item.partsId)
-          if(obj) this.$refs.addTable.$refs.dataTable.toggleRowSelection(item, true)
+          if (obj) {
+            this.$nextTick(() => {
+              this.$refs.addTable.$refs.dataTable.toggleRowSelection(item, true)
+            })
+          }
         })
       })
     },
     // 取消新增零件
-    handleCloseAdd() {
+    handleCloseAdd () {
       this.$emit('handleCloseAdd')
     },
     //点击确认按钮
-    handleSubmitSearch() {
+    handleSubmitSearch () {
       this.getTableData()
     },
     //点击重置按钮
-    handleSearchReset() {
+    handleSearchReset () {
       this.initSearchData()
       this.getTableData()
     },
     //点击添加按钮
-    handleSubmitAdd() {
+    handleSubmitAdd () {
+      console.log(this.selectionList)
       this.$emit('handleSubmitAdd', this.selectionList)
     },
     //选中表格数据事件
-    rowSelect(selection, row) {
+    rowSelect (selection, row) {
+      console.log(selection, row)
       let selected = selection.length && selection.indexOf(row) !== -1
-      if(selected) {
-        let maxSortObj = window._.maxBy(this.selectionList, function(o) { return o.sort; });
-        if(!maxSortObj) {
+      if (selected) {
+        let maxSortObj = window._.maxBy(this.selectionList, function (o) { return o.sort; });
+        if (!maxSortObj) {
           maxSortObj = {
             sort: 0
           }
@@ -158,7 +168,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.topBox{
+.topBox {
   text-align: right;
   position: absolute;
   right: 65px;
@@ -173,9 +183,9 @@ export default {
       width: 100px;
       height: 35px;
       border: none;
-      background-color: #EEF2FB;
+      background-color: #eef2fb;
       font-weight: bold;
-      color: #1660F1;
+      color: #1660f1;
       font-size: 16px;
     }
   }
@@ -197,5 +207,4 @@ export default {
     }
   }
 }
-
 </style>

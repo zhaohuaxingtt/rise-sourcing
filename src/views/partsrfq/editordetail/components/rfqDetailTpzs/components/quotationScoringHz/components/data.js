@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-01 22:33:31
+ * @LastEditTime: 2021-12-06 20:44:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -202,7 +202,6 @@ export function getRenderTableTile(whiteListService,supplierLength,layout){
         relTabelListDefault.push(items)
       }else{
         supplierDataList[0].bdlRateInfoList.filter(i=>i.supplierId == supplierDataList[0].bdlRateInfoList[0].supplierId).forEach((itemss,index)=>{
-        // supplierDataList[0].bdlRateInfoList.forEach((itemss,index)=>{
           const ratess = JSON.parse(JSON.stringify(rateTitelList))
           ratess.props = (index == 0?'':index) + 'rate';
           ratess.label = itemss.rateDepartNum
@@ -501,8 +500,8 @@ export function defaultSort(list,key){
 export const rateTitelList = {type:'',props:'',label:'',i18n:'',width:'50',tooltip:true}
 
 export const supplierTile = [
-  {type:'',props:'supplierName',label:'Supplier',i18n:'',width:'100',tooltip:true},
-  {type:'',props:'rating',label:'Ratings',i18n:'',width:'150',tooltip:true,list:[]},
+  {type:'',props:'supplierName',label:'Supplier',i18n:'',width:'100',tooltip:true,fixed:'left'},
+  {type:'',props:'rating',label:'Ratings',i18n:'',width:'150',tooltip:true,list:[],fixed:'left'},
 ]
 /**
  * @description: 动态拿到表头factory，在供应商横轴中，从第一条到最后一条里面包含的factoryList实际上是一样的。
@@ -537,22 +536,22 @@ export const centerSupplierList = function(index,factoryList=[]){
     {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'80',tooltip:false},
     {type:'',props:`${index}bnkApprovalStatus`,label:'BNK \n Status',i18n:'',width:'70',tooltip:false, renderHeader: '<p>BNK</p><p>Status</p>'},
     {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'74',tooltip:false},
-    {type:'',props:`${index}developmentCost`,label:'Dev. \n Cost',i18n:'',width:'',tooltip:false},
+    {type:'',props:`${index}developmentCost`,label:'Dev. \n Cost',i18n:'',width:'80',tooltip:false},
     {type:'',props:`${index}supplierSopDate`,label:'Supplier \n SOP Date',i18n:'',width:'100',tooltip:false},
     {type:'',props:`${index}ltc`,label:'LTC',i18n:'',width:'50',tooltip:false},
     {type:'',props:`${index}ltcStaringDate`,label:'LTC \n Start Date',i18n:'',width:'95',tooltip:false},
     {type:'',props:`${index}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'100',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>' },
     {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
     {type:'',props:`${index}externalDevelopmentCost`,label:'External \n Dev. Cost',i18n:'',width:'90',tooltip:false, renderHeader: '<p>External</p><p>Dev. Cost</p>'},
-    {type:'',props:`${index}releaseCost`,label:'Release \n Cost',i18n:'',width:'82',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
+    {type:'',props:`${index}releaseCost`,label:'Release \n Cost',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
     {type:'',props:`${index}Quotationdetails`,label:'View',i18n:'',width:'60',tooltip:false},
   ]
 }
 
 export const lastSupplier = [
-  {type:'',props:'mixPrice',label:'Mix \n Price',i18n:'',width:'60',tooltip:true},
-  {type:'',props:'totalInvest',label:'Total \n Invest',i18n:'',width:'60',tooltip:false},
-  {type:'',props:'totalTto',label:'Total \n Turnover',i18n:'',width:'100',tooltip:true},
+  {type:'',props:'mixPrice',label:'Mix \n Price',i18n:'',width:'60',tooltip:true,fixed:'right'},
+  {type:'',props:'totalInvest',label:'Total \n Invest',i18n:'',width:'60',tooltip:false,fixed:'right'},
+  {type:'',props:'totalTto',label:'Total \n Turnover',i18n:'',width:'100',tooltip:true,fixed:'right'},
 ]
 
 export function concactTitlle(supplier){

@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-30 16:54:12
+ * @LastEditTime: 2021-12-09 17:44:57
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -111,6 +111,15 @@ export function alterationCbdSummary({ workFlowId }) {
   })
 }
 
+// 查询CBD汇总表
+export function alterationCbdSummaryPOST(data) {
+  return requst_sourcing({
+    url: `/aeko/get/alterationCbdSummarySnapshot`,
+    method: 'POST',
+    data
+  })
+}
+
 // Linie预览 查询CBD汇总表
 export function alterationCbdSummaryByLinie({ requirementAekoId, linieId }) {
   return requst_sourcing({
@@ -124,6 +133,15 @@ export function getSwitchParts({ workFlowId }) {
   return requst({
     url: `/aeko/purchasing/aekopart/getSwitchParts/${workFlowId}`,
     method: 'GET',
+  })
+}
+
+// 切换零件下拉框接口
+export function getSwitchPartsPOST(data) {
+  return requst({
+    url: `/aeko/purchasing/aekopart/getSwitchParts`,
+    method: 'POST',
+    data
   })
 }
 
@@ -172,7 +190,7 @@ export function queryApprovalStatus(id){
 // Aeko审批-详情页-CBD-模具投资变动
 export function getMoulds(data){
   return requst_sourcing({
-    url:`/aeko/get/mouldcbd/${data.workFlowId}/${data.quotationId} `,
+    url:`/aeko/get/mouldcbd/${data.workFlowId}/${data.quotationId}`,
     method:'GET',
   })
 }

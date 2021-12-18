@@ -145,6 +145,7 @@ export default {
     },
     patchTpInfoByAttachment() {
       patchTpInfoByAttachment({
+        projectId: this.$route.query.projectId,
         partAttachmentList: this.fileList,
         purchasingRequirementId: this.params.purchasingRequirementId
       })
@@ -192,7 +193,7 @@ export default {
 
       // 后端删除
       this.deleteLoading = true
-      deleteFile({ ids: deleteArr.map(item => item.id) })
+      deleteFile({ projectId: this.$route.query.projectId, ids: deleteArr.map(item => item.id) })
         .then(res => {
           iMessage.success(this.language('LK_SHANCHUCHENGGONG','删除成功'))
           this.getInfoAnnexPage()

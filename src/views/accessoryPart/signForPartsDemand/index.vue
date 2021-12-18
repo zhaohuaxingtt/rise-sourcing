@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:48:29
+ * @LastEditTime: 2021-12-10 15:46:15
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -23,7 +23,7 @@
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
-                  <el-option v-if="item.value == 'showSelf'" value="" :label="language('ALL','全部')"></el-option>
+                  <!-- <el-option v-if="item.value == 'showSelf'" value="" :label="language('ALL','全部')"></el-option> -->
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -127,7 +127,8 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
-        showSelf: true
+        sendDate: null
+        // showSelf: true
       },
       inquiryDialogVisible: false,
       buyerDialogVisible: false,
@@ -276,10 +277,10 @@ export default {
         return
       }
       const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
-      if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
-        iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
-        return
-      }
+      // if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
+      //   return
+      // }
       this.changeInquiryDialogVisible(true)
     },
     /**
@@ -400,7 +401,8 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
-        showSelf: true
+        sendDate: null
+        // showSelf: true
       }
       this.sure()
     },
@@ -464,7 +466,7 @@ export default {
     },
     sure() {
       this.page.currPage = 1
-      this.searchParams.sendDate = this.searchParams.sendDate ? moment.utc(this.searchParams.sendDate) : null
+      this.searchParams.sendDate = this.searchParams.sendDate ? moment(this.searchParams.sendDate).format('YYYY-MM-DDT00:00:00'): null
       this.getTableList()
     },
     /**

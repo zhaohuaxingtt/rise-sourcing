@@ -233,26 +233,11 @@
                 :maxlength="maxlength ? maxlength : 300"
                 :disabled="ruleForm.biddingStatus !== '01'"
               /> -->
-              <template v-if="isInputFlag">
-                <iInput
-                  :value="scope.row['purchaseQty']"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
-                  :maxlength="maxlength ? maxlength : 300"
-                  type="number"
-                  @input="value => $set(scope.row, 'purchaseQty', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,12))"
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                >
-                </iInput>
-              </template>
-              <template v-else>
-                <iInput
-                  :value="dataProducts[scope.row['id']].purchaseQty"
-                  @focus="handlerInputFocus"
+              <operatorInput
+                  v-model="scope.row['purchaseQty']"
                   @blur="handlerInputBlur"
                 >
-                </iInput>
-              </template>
+              </operatorInput>
             </template>
           </template>
 
@@ -294,33 +279,12 @@
                 <template slot="suffix">{{ currencyMultiple }}</template>
               </iInput> -->
               <!-- <div v-else>-</div> -->
-              <template v-if="isInputFlag">
-                <iInput
-                  v-if="ruleForm.biddingMode === '01'"
-                  :value="scope.row['upsetPrice']"
-                  @focus="handlerInputFocus"
-                  placeholder="0.00"
-                  @blur="handlerInputBlur"
-                  :maxlength="maxlength ? maxlength : 300"
-                  type="number"
-                  @input="value => $set(scope.row, 'upsetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                >
-                  <template slot="suffix">{{ currencyMultiple }}</template>
-                </iInput>
-                <div v-else>-</div> 
-              </template>
-              <template v-else>
-                <iInput
-                  v-if="ruleForm.biddingMode === '01'"
-                  :value="dataProducts[scope.row['id']].upsetPrice"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
-                >
-                <template slot="suffix">{{ currencyMultiple }}</template>
-                </iInput>
-                <div v-else>-</div> 
-              </template>
+              <operatorInput
+                v-model="scope.row['upsetPrice']"
+                @blur="handlerInputBlur"
+              >
+              <template slot="suffix">{{ currencyMultiple }}</template>
+              </operatorInput>
             </template>
           </template>
 
@@ -344,33 +308,12 @@
                 <template slot="suffix">{{ currencyMultiple }}</template>
               </iInput>
               <div v-else>-</div> -->
-              <template v-if="isInputFlag">
-                <iInput
-                  v-if="ruleForm.biddingMode === '01'"
-                  :value="scope.row['targetPrice']"
-                  @focus="handlerInputFocus"
-                  placeholder="0.00"
-                  @blur="handlerInputBlur"
-                  :maxlength="maxlength ? maxlength : 300"
-                  type="number"
-                  @input="value => $set(scope.row, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-                  :disabled="ruleForm.biddingStatus !== '01'"
-                >
-                  <template slot="suffix">{{ currencyMultiple }}</template>
-                </iInput>
-                  <div v-else>-</div> 
-              </template>
-              <template v-else>
-                <iInput
-                  v-if="ruleForm.biddingMode === '01'"
-                  :value="dataProducts[scope.row['id']].targetPrice"
-                  @focus="handlerInputFocus"
-                  @blur="handlerInputBlur"
-                >
-                <template slot="suffix">{{ currencyMultiple }}</template>
-                </iInput>
-                <div v-else>-</div> 
-              </template>
+              <operatorInput
+                v-model="scope.row['targetPrice']"
+                @blur="handlerInputBlur"
+              >
+              <template slot="suffix">{{ currencyMultiple }}</template>
+              </operatorInput>
             </template>
           </template>
 
@@ -426,6 +369,7 @@ import {
   listQuotationByFs
 } from "@/api/bidding/bidding";
 import Big from "big.js";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -438,6 +382,7 @@ export default {
     iSelect,
     iDatePicker,
     commonTable,
+    operatorInput
   },
   props: {
     id: String,
@@ -870,42 +815,74 @@ export default {
           purchaseQty:Number(item.purchaseQty)
         }
       })
+
       // 车型
-      const paras = data.models?.map(item => {
-        return {
-          ...item,
-          code:item.modelCode,
-          name:item.model
-        }
-      })
-      this.modelsOption.push(...paras)
-      let optionObj = {}
-      let optionArr = []
-      this.modelsOption.forEach(item => {
-        if(!optionObj[item.name]) {
-          optionObj[item.name] = 1
-          optionArr.push(item)
-        }
-      })
-      this.modelsOption = [...optionArr]
+      getModels().then((res) => {
+        this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
+        const paras = data.models?.map(item => {
+          return {
+            ...item,
+            code:item.modelCode,
+            name:item.model
+          }
+        })
+        this.modelsOption.push(...paras)
+        
+        let optionObj = {}
+        let optionArr = []
+        this.modelsOption.forEach(item => {
+          if(!optionObj[item.name]) {
+            optionObj[item.name] = 1
+            optionArr.push(item)
+          }
+
+        })
+        let modelsData = []
+        this.modelsOption = [...optionArr]
+        this.modelsOption.forEach(item => {
+          data.models.forEach(it => {
+            if (it.model === item.name) {
+              // this.$set(this.ruleForm,'models',[item.code])
+              modelsData.push(item.code)
+            }
+          })
+        })
+        this.ruleForm.models = modelsData
+      });
+      
       // 车型项目
-      const projectParas = data?.modelProjects.map(item => {
-        return {
-          ...item,
-          code:item.projectCode,
-          name:item.project
-        }
-      })
-      this.modelProjectsOption.push(...projectParas)
-      let projectOptionObj = {}
-      let projectOptionArr = []
-      this.modelProjectsOption.forEach(item => {
-        if (!projectOptionObj[item.name]) {
-          projectOptionObj[item.name] = 1
-          projectOptionArr.push(item)
-        }
-      })
-      this.modelProjectsOption = [...projectOptionArr]
+      getProjects().then((res) => {
+        this.modelProjectsOption = res?.data?.filter(
+          (item) => item.name?.length > 0
+        );
+        const projectParas = data?.modelProjects.map(item => {
+          return {
+            ...item,
+            code:item.projectCode,
+            name:item.project
+          }
+        })
+        this.modelProjectsOption.push(...projectParas)
+        let projectOptionObj = {}
+        let projectOptionArr = []
+        this.modelProjectsOption.forEach(item => {
+          if (!projectOptionObj[item.name]) {
+            projectOptionObj[item.name] = 1
+            projectOptionArr.push(item)
+          }
+        })
+        let modelProjectsData = []
+        this.modelProjectsOption = [...projectOptionArr]
+        this.modelProjectsOption.forEach(item => {
+          data.modelProjects.forEach(it => {
+            if (it.project === item.name) {
+              modelProjectsData.push(item.code)
+            }
+          })
+        })
+        this.ruleForm.modelProjects = modelProjectsData
+      });
+      
       // if (this.ruleForm.biddingMode === "02") {
       //   //总价
       //   this.ruleForm.totalPrices = Big(this.ruleForm.totalPrices || 0)

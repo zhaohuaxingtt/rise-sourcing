@@ -2,7 +2,7 @@
   <iCard>
     <commonTable
       ref="tableDataForm"
-      :tableData="suppliers"
+      :tableData="suppliersPage"
       :tableTitle="
         role === 'supplier' ? supplierTableTitles : supplierTableTitle
       "
@@ -49,7 +49,8 @@
     </commonTable>
     <iPagination
       v-update
-      @current-change="handleCurrentChange($event)"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
       background
       :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
@@ -58,7 +59,6 @@
       :layout="page.layout"
       :current-page="page.currPage"
       :total="page.total"
-      @size-change="handleSizeChange"
     />
   </iCard>
 </template>
@@ -131,7 +131,7 @@ export default {
       return this.$route.meta.role;
     },
     suppliersPage() {
-      const { suppliers } = this.ruleForm;
+      const { suppliers } = this;
       const { currPage, pageSize } = this.page;
       return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
     },
@@ -186,10 +186,9 @@ export default {
       row.supplierCode = item.supplierCode;
     },
     handleSizeChange(val) {
-      console.log("handleSizeChange", this.page);
+      this.page.currPage = 1;
       this.page.pageSize = val;
     },
-    // 表格选中值集
     handleCurrentChange(e) {
       this.page.currPage = e;
     },

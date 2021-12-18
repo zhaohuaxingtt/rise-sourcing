@@ -30,10 +30,11 @@
           >
             <el-form>
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"  v-permission.auto="PARTSPROCURE_PARTNUMBER|零件号">
-                <iInput
+                <iMultiLineInput
                   :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
                   v-model="form['partNum']"
-                ></iInput>
+                ></iMultiLineInput>
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')" v-permission.auto="PARTSPROCURE_PARTNAMEZH|零件名中文">
                 <iInput
@@ -107,6 +108,7 @@
                 v-permission.auto="PARTSPROCURE_VEHICLECATEGORIES|车型大类"
               >
                 <iSelect
+                  filterable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREVEHICLECATEGORIES','车型大类')
@@ -131,6 +133,7 @@
                 v-permission.auto="PARTSPROCURE_MODELPROJECT|车型项目"
               >
                 <iSelect
+                  filterable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')
@@ -279,7 +282,8 @@ import {
   iSearch,
   iInput,
   iSelect,
-  iNavMvp
+  iNavMvp,
+  iMultiLineInput
 } from "rise";
 import { pageMixins } from "@/utils/pageMixins";
 import {cancelProject,creatFsGsNr,startProject} from '@/components'
@@ -292,6 +296,7 @@ import { clickMessage } from "@/views/partsign/home/components/data"
 import {selectDictByKeyss,procureFactorySelectVo} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 import {setPretreatmentParams} from '@/utils/tool'
+import { getCarTypeSop } from "@/api/partsprocure/editordetail";
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -311,6 +316,7 @@ export default {
     creatFsGsNr,
     cancelProject,
     startProject,
+    iMultiLineInput
   },
   data() {
     return {
@@ -337,6 +343,7 @@ export default {
   created() {
     this.getTableListFn();
     this.getProcureGroup();
+    this.getCarTypeSop()
     this.updateNavList
   },
   methods: {
@@ -350,6 +357,7 @@ export default {
     getCartypeDict() {
       getCartypeDict().then(res => {
         this.fromGroup['CARTYPE_CATEGORY'] = res.data
+        this.$forceUpdate()
       }).catch(err=>{
         console.log(err)  
       })
@@ -387,7 +395,7 @@ export default {
     getProcureGroup() {
       let types = [
         "RFQ_PART_STATUS_CODE_TYPE",
-        "CAR_TYPE_PRO",
+        // "CAR_TYPE_PRO",
         "PPT"
       ];
       selectDictByKeyss(types).then((res) => {
@@ -480,6 +488,7 @@ export default {
           )
         );
       }
+      if (this.selectTableData.find(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030')) return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
       if(!this.selectTableData.every(i=>i.partProjectType == this.selectTableData[0].partProjectType)){
         return iMessage.warn(
           this.language(
@@ -504,8 +513,24 @@ export default {
       window.open(creatParts.href, '_blank')
     },
     // 通过待办数跳转
-    clickMessage
+    clickMessage,
+    // 获取车型项目
+    getCarTypeSop() {
+      getCarTypeSop()
+      .then(res => {
+        if (res.code == 200) {
+          this.fromGroup.CAR_TYPE_PRO = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              code: item.cartypeProCode,
+              name: item.cartypeProName
+            })) :
+            []
 
+          this.$forceUpdate()
+        }
+      })
+    }
   }
 };
 </script>

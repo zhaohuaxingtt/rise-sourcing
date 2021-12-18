@@ -247,7 +247,7 @@ export default {
       this.isEdit = true;
       this.pageLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
-        domId: "materialGroup",
+        domId: "#materialGroup",
         watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
         pdfName: `品类管理助手_材料组定位_${
           this.$store.state.rfq.categoryName

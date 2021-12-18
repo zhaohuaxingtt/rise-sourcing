@@ -12,7 +12,7 @@
 				</div>
 
 
-				<div>
+				<div v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_LINIE_SHOW|Linie备注">
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_LINIEBEIZHU','Linie备注') }}</span>
@@ -31,7 +31,7 @@
 				</div>
 
 				
-				<div>
+				<div v-permission.auto="PARTSPROCURE_EDITORDETAIL_REMARKS_CS1|CS1备注">
 					<p>
 						<icon symbol name="iconbeizhuxinxi"></icon>
 						<span>{{ language('LK_CS_1BEIZHU','CS*1备注') }}</span>

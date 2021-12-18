@@ -11,7 +11,7 @@ const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 
 export function powerBiUrl(parmars) {
   return requst({
-    url: '/batchOverview/getSupplierPbi',
+    url: '/batchOverview/getCmSupplierPbi',
     method: 'GET',
   })
 }

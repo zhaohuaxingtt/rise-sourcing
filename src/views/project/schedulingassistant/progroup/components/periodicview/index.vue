@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-04 16:53:23
+ * @LastEditTime: 2021-12-09 11:21:51
  * @Description: 周期视图
- * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
 
 <template>
@@ -109,7 +109,7 @@ export default {
       nodeList: [
         {label: '释放', key: 'SHIFANG', const: 'constReleaseToNomiWeek', keyPoint: 'keyReleaseToNomiWeek', history: 'hiReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus'},
         {label: '定点', key: 'DINGDIAN', const: 'constNomiToBffWeek', keyPoint: 'keyNomiToBffWeek', history: 'hiNomiToBffWeek', isChange: 'keyNomiToBffStatus'},
-        {label: 'BF', const: 'constBfToFirstTryoutWeek', keyPoint: 'keyBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
+        {label: '数据冻结', const: 'constBfToFirstTryoutWeek', keyPoint: 'keyBfToFirstTryoutWeek', history: 'hiBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus'},
         {label: '1st Tryout', const: 'constFirstTryEmWeek', keyPoint: 'keyFirstTryEmWeek', history: 'hiFirstTryEmWeek', isChange: 'keyFirstTryEmStatus'},
         {label: 'EM(OTS)', const: 'constFirstTryOtsWeek', keyPoint: 'keyFirstTryOtsWeek', history: 'hiFirstTryOtsWeek', isChange: 'keyFirstTryOtsStatus'}
       ],
@@ -385,7 +385,10 @@ export default {
       }
       const res = await getWorkDay(params) 
       if (res && res.result && res.data && res.data.length > 0) {
-        const { year, month, day } = res.data[res.data.length - 1]
+        let { year, month, day } = res.data[res.data.length - 1]
+        if(+day <10){
+          day = '0'+day
+        }
         return year + '-' + month + '-' + day
       }
     },

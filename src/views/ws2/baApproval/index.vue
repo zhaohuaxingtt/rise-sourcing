@@ -35,7 +35,7 @@
 
     <keep-alive>
       <div v-if="tableIndex === 0" v-permission="TOOLING_BUDGET_BAAPPROVAL_ALL">
-        <SearchBlock @sure="handleSure" />
+        <SearchBlock @sure="handleSureBlock" />
 
         <iCard>
           <div class="table-head">
@@ -59,11 +59,11 @@
             @size-change="handleSizeChange($event, handleSure)"
             @current-change="handleCurrentChange($event, handleSure)"
             background
-            :current-page="allPage.currPage"
-            :page-sizes="allPage.pageSizes"
-            :page-size="allPage.pageSize"
-            :layout="allPage.layout"
-            :total="allPage.totalCount"
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
           />
         </iCard>
       </div>
@@ -103,11 +103,11 @@
             @size-change="handleSizeChange($event, getPageData)"
             @current-change="handleCurrentChange($event, getPageData)"
             background
-            :current-page="waitPage.currPage"
-            :page-sizes="waitPage.pageSizes"
-            :page-size="waitPage.pageSize"
-            :layout="waitPage.layout"
-            :total="waitPage.totalCount"
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
           />
         </iCard>
       </div>
@@ -140,11 +140,11 @@
             @size-change="handleSizeChange($event, getPageData)"
             @current-change="handleCurrentChange($event, getPageData)"
             background
-            :current-page="waitAddPage.currPage"
-            :page-sizes="waitAddPage.pageSizes"
-            :page-size="waitAddPage.pageSize"
-            :layout="waitAddPage.layout"
-            :total="waitAddPage.totalCount"
+            :current-page="page.currPage"
+            :page-sizes="page.pageSizes"
+            :page-size="page.pageSize"
+            :layout="page.layout"
+            :total="page.totalCount"
           />
         </iCard>
       </div>
@@ -202,7 +202,7 @@
           class="table-footerStyle"
         >
           <template #rsNum="scope">
-            <a @click="openViewPdf(scope)" class="detailed">{{scope.row.rsNum}}</a>
+            <a @click="openViewPdf(scope.row)" class="detailed">{{scope.row.rsNum}}</a>
           </template>
         </iTableList>
       </template>
@@ -318,15 +318,7 @@ export default {
         amountCount: 0,
         applyCount: 0,
       },
-      allPage: {
-        currPage: 1,
-        pageSize: 10,
-      },
-      waitPage: {
-        currPage: 1,
-        pageSize: 10,
-      },
-      waitAddPage: {
+      page: {
         currPage: 1,
         pageSize: 10,
       },
@@ -346,9 +338,20 @@ export default {
 
     //  rs单号
     openViewPdf(scope){
-      let url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsForAudit/' + scope.row.rsNum;
-      console.log('url', url);
-      window.open(url)
+      const first = scope.rsNum.slice(0,1);
+      if(~~first === 5){
+        let routeData = this.$router.resolve({
+          path: '/tooling/investmentReport/rsDetails',
+          query: {
+            rsNum: scope.rsNum,
+            pageType: 1,
+          },
+        })
+        window.open(routeData.href, '_blank')
+      }else{
+        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
+        window.open(url);
+      }
     },
 
     clearTipsDiolog(){
@@ -513,18 +516,23 @@ export default {
     clearDiolog(){
       this.visible = false;
     },
+
+    handleSureBlock(form){
+      this.form = form;
+      this.handleSure();
+    },
     
-    handleSure(form){
+    handleSure(){
       this.allListLoading = true;
       const param = {
-        ...form,
-        current: this.allPage.currPage,
-        size: this.allPage.pageSize,
+        ...this.form,
+        current: this.page.currPage,
+        size: this.page.pageSize,
       }
       findListConditoons(param).then(res => {
-        this.allPage.currPage = ~~res.pageNum || 1;
-        this.allPage.pageSize = ~~res.pageSize || 10;
-        this.allPage.totalCount = ~~res.total;
+        this.page.currPage = ~~res.pageNum || 1;
+        this.page.pageSize = ~~res.pageSize || 10;
+        this.page.totalCount = ~~res.total;
         this.allTableData = res.data;
 
         this.allListLoading = false;
@@ -547,9 +555,9 @@ export default {
     getPageData(){
       const { tableIndex } = this;
       const pageMap = {
-        0: 'allPage',
-        1: 'waitPage',
-        3: 'waitAddPage',
+        0: 'page',
+        1: 'page',
+        3: 'page',
       }
       const dataMap = {
         0: 'allTableData',
@@ -657,6 +665,10 @@ export default {
       this.allSelectList = [];
       this.waitSelectList = [];
       this.waitAddSelectList = [];
+      this.page = {
+        currPage: 1,
+        pageSize: 10,
+      };
       this.getPageData();
     },
 
@@ -722,7 +734,7 @@ export default {
   }
 
   ::v-deep .el-dialog{
-    height: auto !important;
+    height: 80% !important;
     padding-bottom: 10px !important;
     overflow: auto;
   }

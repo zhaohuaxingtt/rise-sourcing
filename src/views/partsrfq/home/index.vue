@@ -41,8 +41,7 @@
               <el-form-item :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型')" v-permission.auto="PARTSRFQ_PARTITEMTYPE|零件项目类型">
                 <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.partType">
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
-                  <el-option v-for="items in partTypeOptions" :key='items.code' :value='items.code'
-                             :label="items.name"/>
+                  <el-option v-for="item in partTypeOptions" :key="item.code" :value="item.value" :label="item[$i18n.locale]" />
                 </iSelect>
               </el-form-item>
               <el-form-item :label="language('LK_RFQZHUANGTAI','RFQ状态')" v-permission.auto="PARTSRFQ_RFQSTATUS|RFQ状态">
@@ -235,7 +234,7 @@ import { downloadFile, downloadUdFile } from "@/api/file"
 import { selectRfq } from "@/api/designate/designatedetail/addRfq"
 import nominateTypeDialog from "./components/nominateTypeDialog"
 import { clickMessage} from "@/views/partsign/home/components/data"
-import { selectDictByKeys } from "@/api/dictionary"
+import { selectDictByRootKeys } from '@/api/dictionary'
 import {setPretreatmentParams} from '@/utils/tool'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
 
@@ -310,8 +309,8 @@ export default {
     this.getDict()
     this.getTableList()
     this.getCarTypeOptions()
-    this.getPartTypeOptions()
-    this.getRfqStatusOptions()
+    // this.getPartTypeOptions()
+    // this.getRfqStatusOptions()
     this.updateNavList
   },
   computed: {
@@ -350,10 +349,12 @@ export default {
       this.inquiryBuyerVisible = visible
     },
     getDict() {
-      selectDictByKeys([
+      selectDictByRootKeys([
         { keys: "RfqRateStatus" },
         { keys: "CF_APPLY_STATUS" },
-        { keys: "HEAVY_ITEM" }
+        { keys: "HEAVY_ITEM" },
+        { keys: "PPT" },
+        { keys: "RFQ_STATE" },
       ])
       .then(res => {
         if (res.code == 200) {
@@ -389,6 +390,30 @@ export default {
                 this.heavyItemOptions = 
                   Array.isArray(res.data["HEAVY_ITEM"]) ? 
                   res.data["HEAVY_ITEM"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
+                break
+              case "PPT":
+                this.partTypeOptions = Array.isArray(res.data["PPT"]) ? 
+                  res.data["PPT"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
+                break
+              case "RFQ_STATE":
+                this.rfqStatusOptions = this.partTypeOptions = Array.isArray(res.data["RFQ_STATE"]) ? 
+                  res.data["RFQ_STATE"].map(item => ({
                     ...item,
                     key: item.code,
                     value: item.code,
@@ -473,6 +498,7 @@ export default {
       this.selectTableData = val;
     },
     newRfq() {
+
       const newRfqUrl = this.$router.resolve({
         path: '/sourceinquirypoint/sourcing/partsrfq/editordetail'
       })
@@ -481,6 +507,15 @@ export default {
     async editRfq(updateType) {
       if (this.selectTableData.length === 0) {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZE','抱歉！您当前还未选择！'));
+      }
+      let a = true
+      this.selectTableData.forEach(val=>{
+        val.partProjectType.find(o=>
+          o == '1000040' || o == '1000030'
+        ) != undefined ? a = false :''       
+      })
+      if (!a) {
+         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
       }
       const idList = this.selectTableData.map(item => {
         return item.id
@@ -502,6 +537,15 @@ export default {
         this.rfqIds = this.selectTableData.map(item => item.id)
       } else {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU','抱歉，您当前还未选择您需要转派的评分任务！'));
+      }
+      let a = true
+      this.selectTableData.forEach(val=>{
+        val.partProjectType.find(o=>
+          o == '1000040' || o == '1000030'
+        ) != undefined ? a = false :''       
+      })
+      if (!a) {
+         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
       }
       this.scoringDeptVisible = true
       // if (this.selectTableData.length == 0)
@@ -577,14 +621,17 @@ export default {
       const res = await findBySearches('01')
       this.carTypeOptions = res.data
     },
-    async getPartTypeOptions() {
-      const res = await findBySearches('02')
-      this.partTypeOptions = res.data
-    },
-    async getRfqStatusOptions() {
-      const res = await findBySearches('03')
-      this.rfqStatusOptions = res.data
-    },
+    // async getPartTypeOptions() {
+    //   const res = await findBySearches('02')
+    //   this.partTypeOptions = res.data
+    // },
+    // async getRfqStatusOptions() {
+    //   const res = await findBySearches('03')
+    //   this.rfqStatusOptions = res.data
+    // },
+
+
+
     // 分析报告下载
     downLoad(row) {
       // downloadFile({
@@ -637,6 +684,15 @@ export default {
     },
     openNominateTypeDialog() {
       if (this.selectTableData.length !== 1) return iMessage.warn(this.language("LK_QINGXUANZEYITIAORFQ","请选择一条RFQ"))
+      let a = true
+      this.selectTableData.forEach(val=>{
+        val.partProjectType.find(o=>
+          o == '1000040' || o == '1000030'
+        ) != undefined ? a = false :''       
+      })
+      if (!a) {
+         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
+      }
       // this.nominateTypeDialogVisible = true
       this.createDesignate()
     },

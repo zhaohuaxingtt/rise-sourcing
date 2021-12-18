@@ -1,14 +1,14 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-12-02 19:10:37
+ * @LastEditTime: 2021-12-14 11:51:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
 -->
 
 <template>
-  <div>
+  <div class="quotationScoringTrackingTableList">
     <el-table class="table" tooltip-effect="light" height="400px"  :data="tableData" v-loading="tableLoading" :empty-text="$t('LK_ZANWUSHUJU')">
       <template v-for="(item,index) in tableTile">
         <!--------------------------------------------------------->
@@ -39,7 +39,11 @@
                <p>{{`询价开始时间: ${item.roundHeadDetailVO.roundsStartTime || "-"}`}}</p>
                <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
               </template>
-              <span>{{item.key ? $t(item.key) : item.name}}<icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon></span>
+              <p>
+                <span class="title">{{item.key ? $t(item.key) : item.name}}</span>
+                <icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon>
+                <icon v-if="item.roundHeadDetailVO.roundType === 'biddingRound'" name="iconjingbiao" class="iconjingbiao margin-left5"></icon>
+              </p>
             </el-tooltip>
           </template> 
           <template slot-scope="scope">
@@ -47,7 +51,7 @@
           <!------------------------内容是打勾------------------------>
           <!--------------------------------------------------------->
             <span v-if='scope.row[item.props].schedule == 3 && scope.row[item.props].quotationId' class="cursor blue-color" @click="openUrl('3',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
-              <span class="cursor blue-color" v-if='item.roundHeadDetailVO.isNoBidOpen'>——</span>
+              <span class="cursor blue-color" v-if='item.roundHeadDetailVO.isNoBidOpen'>―</span>
               <icon v-else name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon>
             </span>
           <!--------------------------------------------------------->
@@ -60,8 +64,11 @@
           <!------------------------内容是横岗百分比------------------->
           <!--------------------------------------------------------->
           <template v-else>
-            <span v-if='scope.row[item.props].quotationId' class="cursor blue-color" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">{{scope.row[item.props].schedule}}</span>
-            <span v-else>\</span>
+            <span class="cursor blue-color" v-if='item.roundHeadDetailVO.isNoBidOpen'>―</span>
+            <template v-else>
+              <span v-if='scope.row[item.props].quotationId' class="cursor blue-color" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">{{scope.row[item.props].schedule}}</span>
+              <span v-else>\</span>
+            </template>
           </template>
           </template>
         </el-table-column>
@@ -73,7 +80,7 @@
           </template>
         </el-table-column>
       </template>
-    </el-table>  
+    </el-table>
     <div class="miaosu">
       <span><icon name='iconbaojiazhuangtailiebiao_yibaojia' symbol></icon> 全报</span>
       <span>\ 未发送询价</span>
@@ -86,7 +93,7 @@
           <!------------------------零件评分弹窗----------------------->
           <!--------------------------------------------------------->
 
-    <riteDialog :dialogVisible='dialogVisible' :rfqId='this.$route.query.id' :supplierId='supplierId'></riteDialog>
+    <riteDialog :dialogVisible.sync='dialogVisible' :rfqId='this.$route.query.id' :supplierId='supplierId'></riteDialog>
   </div>
 </template>
 <script>
@@ -208,6 +215,14 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+.quotationScoringTrackingTableList {
+  .title {
+    vertical-align: top;
+  }
+  .iconjingbiao {
+    font-size: 18px;
+  }
+}
   .blue-color{
     color:rgb(23, 99, 247)
   }

@@ -187,7 +187,6 @@
               inactive-text="N"
               :active-value='true'
               :inactive-value='false'
-              @change="handleChange($event, scope.row)"
               :disabled="ruleForm.biddingStatus !== '01'"
             >
             </el-switch>
@@ -270,9 +269,11 @@
     </iCard>
 
     <supplierListDialog
-      :show.sync="showSupplierDialog"
+      v-if="showSupplierDialog"
+      :show="showSupplierDialog"
       @save-checked="handleSupplierChecked"
       :suppliers="ruleForm.suppliers"
+      @update-show="supplierClose"
     />
 
     <!-- 汇率 -->
@@ -631,8 +632,10 @@ export default {
       }
       delayBidding(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          location.reload();
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            location.reload();
+          }
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
@@ -791,12 +794,15 @@ export default {
         return;
       });
     },
+    // 关闭供应商
+    supplierClose(){
+      this.showSupplierDialog = false
+    },
     handleSupplierChecked(rows) {
-      console.log('gdsagdsgdsg',rows)
       const len = this.ruleForm.suppliers.length;
       const suppliersList = this.ruleForm.suppliers;
       // console.log('点击保存供应商',suppliersList, rows);
-      const suppliers = rows.map((row, index) => {
+      const suppliers = rows?.map((row, index) => {
         this.$set(this.userListCache, row.id, row.purchaserNameZh);
         return {
           sort: Number(len + index) + 1,
@@ -808,7 +814,9 @@ export default {
           // telephone: row.phoneM,
           supplierCode: row.sapCode || row.svwCode || row.svwTempCode || '',
           supplierId: row.subSupplierId,
-          supplierName: row.nameZh,
+          supplierName: row.nameZh,               //供应商全称
+          supplierFullName: row.nameZh,               //供应商全称
+          supplierShortName: row.shortNameZh,     //供应商简称
           mbdl: "",
           isAttend: true,
           // ...(this.ruleForm.roundType == "05"
@@ -829,7 +837,6 @@ export default {
             ...supplier,
           };
       })
-      console.log('gdsagdsgdsg5555555',this.ruleForm.suppliers)
       this.page.total = this.ruleForm.suppliers.length;
     },
     handleUserChange(row, item) {
@@ -1427,7 +1434,6 @@ export default {
       if(!this.ruleForm.firstSaveSupplierFlag) {
         const flag = this.ruleForm.suppliers.every(item => item.contactName && item.email)
         const formData = this.ruleForm;
-        console.log('fsafawf',formData.suppliers)
         if (flag) {
           saveInquiryBidding({
           ...this.orgRuleForm,

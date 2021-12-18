@@ -20,10 +20,18 @@ export function downloadFile(parmars) {
     })
 }
 
+export function downloadFileUd(params) {//blob
+    return file({
+        url: `/udDown?fileIds=${params}`,
+        method: 'GET',
+        // responseType: 'blob',
+    })
+}
+
 export function downloadUdFile(params) {
     return fileRequst({
         url: `/udDown?${ Array.isArray(params) ? serialize(params.map(id => ({ fileIds: id })), Array) : 'fileIds=' + params }`,
-        method: 'POST'
+        method: 'GET'
     })
 }
 
@@ -31,7 +39,7 @@ export function downloadUdFile(params) {
 export function downloadUdFileWithName(params, fileName) {
     return fileRequst({
         url: `/udDownWithName?${ Array.isArray(params) ? serialize(params.map(id => ({ fileIds: id })), Array) : 'fileIds=' + params }&fileName=${fileName}`,
-        method: 'POST'
+        method: 'GET'
     })
 }
 

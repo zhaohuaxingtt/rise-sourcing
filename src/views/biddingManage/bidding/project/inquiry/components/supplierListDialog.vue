@@ -2,8 +2,7 @@
   <!--转派-->
   <iDialog
     :title="language('BIDDING_YAOQINGGONGYINGSHANG', '邀请供应商')"
-    :visible="show"
-    @update:visible="$emit('update:show', $event)"
+    :visible.sync="show"
     append-to-body="true"
     width="95%"
     top="5vh"
@@ -153,6 +152,7 @@ export default {
         },
       ],
       selectedTableData: [],
+      tableLoading: false,
     };
   },
   mounted() {
@@ -189,7 +189,7 @@ export default {
       this.query();
     },
     clearDiolog() {
-      this.$emit("update:show", false);
+      this.$emit("update-show");
     },
     // handleChangePage(e) {
     //   this.page.currPage = e;
@@ -208,7 +208,7 @@ export default {
       if (this.suppliers.length != 0) {
         for (let i = 0; i < this.suppliers.length; i++) {
           for (let j = 0; j < val.length; j++) {
-            if (this.suppliers[i].supplierCode == val[j].subSupplierId) {
+            if (this.suppliers[i].supplierId == val[j].subSupplierId) {
               isHad = true;
               selection.splice(j, 1);
               val.splice(j, 1);

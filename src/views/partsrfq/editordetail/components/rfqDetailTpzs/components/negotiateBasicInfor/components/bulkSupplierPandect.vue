@@ -2,12 +2,12 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 16:28:01
- * @LastEditors: zbin
+ * @LastEditors: caopeng
  * @Descripttion: 总览
 -->
 <template>
-  <iCard id="allContainer" :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
-    <div class="center">
+  <iCard id="allContainer " @handleTitle="addFile($event,8, '批量供应商工厂总览')"  :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
+    <div class="center" id="card8">
       <div class="tip">
         <el-popover trigger="hover" placement="top-start" width="400" :content="language('TLJJGLJCLGYSGHBLCXCL','Turnover=零件价格*零件产量*供应商供货比例*车型产量')">
           <icon slot="reference" style="font-size:1.375rem" name="iconxinxitishi" tip="" symbol></icon>
@@ -32,22 +32,46 @@ import { overviewBatchSupplierMap, saveOverviewSupplierBatchReport } from "@/api
 import supplierCard from "./supplierCard.vue";
 import { downloadPdfMixins } from '@/utils/pdf';
 import resultMessageMixin from '@/utils/resultMessageMixin';
+import { icardData } from '../../data'
 export default {
   mixins: [resultMessageMixin, downloadPdfMixins],
   components: { iCard, icon, iButton, map1, supplierCard, theMapIcon },
+  props: {
+    paramCategoryCode: String,
+    paramCategoryName: String
+  },
   data() {
     return {
+     cardShow: JSON.parse(JSON.stringify(icardData)),
       saveButtonLoading: false,
       mapListData: {},
       supplierDataList: [],
+      categoryCode: "",
+      categoryName: ""
     }
   },
   watch: {
     '$store.state.rfq.categoryName'(data) {
       this.getMapList()
+    },
+    paramCategoryCode: {
+      handler(val) {
+        if (val) {
+          this.categoryCode = this.paramCategoryCode
+          this.categoryName = this.paramCategoryName
+        }
+      },
+      immediate: true
     }
   },
   created() {
+    if (this.paramCategoryCode) {
+      this.categoryCode = this.paramCategoryCode
+      this.categoryName = this.paramCategoryName
+    } else {
+      this.categoryCode = this.$store.state.rfq.categoryCode
+      this.categoryName = this.$store.state.rfq.categoryName
+    }
     this.getMapList()
   },
   mounted() {
@@ -59,12 +83,12 @@ export default {
     async handleSave() {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
-        domId: 'allContainer',
+        domId: '#allContainer',
         watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
-        pdfName: this.language('PINLEIGUANLIZHUSHOU', '品类管理助手') + '-' + this.language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN', '批量供应商工厂总览') + '-' + this.$store.state.rfq.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
+        pdfName: this.language('PINLEIGUANLIZHUSHOU', '品类管理助手') + '-' + this.language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN', '批量供应商工厂总览') + '-' + this.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
       });
       let params = {
-        categoryCode: this.$store.state.rfq.categoryCode,
+        categoryCode: this.categoryCode,
         reportFileName: resFile.downloadName,
         reportName: resFile.downloadName,
         reportUrl: resFile.downloadUrl
@@ -81,7 +105,7 @@ export default {
       if (this.$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant') {
         pms.rfqId = this.$route.query.id
       } else {
-        pms.categoryCode = this.$store.state.rfq.categoryCode
+        pms.categoryCode = this.categoryCode
       }
       const res = await overviewBatchSupplierMap(pms)
       this.mapListData = res.data
@@ -116,6 +140,6 @@ export default {
 .tip {
   position: absolute;
   top: -3.22rem;
-  left: 11.3rem;
+  left: 13.3rem;
 }
 </style>

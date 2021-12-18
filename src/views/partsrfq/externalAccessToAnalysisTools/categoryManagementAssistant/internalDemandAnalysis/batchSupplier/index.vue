@@ -10,7 +10,7 @@
    <iCard class="margin-top20" id="batchSupplier">
       <template slot="header">
          <div class="flex-between-center title">
-            <div class="flex-align-center">
+            <div class="flex-align-center" v-if="!isInside">
                <span class="margin-right10">{{language("PLGYSGL","批量供应商概览")}}</span>
                <el-popover trigger="hover"  placement="bottom-start" width="800">
                   <div>提供过往三年至未来两年的材料组内批量供应商的供货金额，LTC&JPV数据概览：</div>
@@ -28,11 +28,13 @@
                   <span class="mark cursor" slot="reference">{{mark}}</span>
                </el-popover>
             </div>
-            <div class="flex">
-               <iButton @click="onJump360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
-               <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
-               <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
-               <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+            <div class="flex" :style="getStyle()">
+               <template v-if="!isInside">
+                  <iButton @click="onJump360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
+                  <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
+                  <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+                  <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
+               </template>
             </div>
          </div>
 		</template>
@@ -52,6 +54,13 @@ import {downloadPdfMixins} from '@/utils/pdf';
 export default {
    mixins: [downloadPdfMixins],
    components:{iCard,iButton,marks,icon},
+   props: {
+      paramCategoryCode: String,
+      isInside: {
+         type: Boolean,
+         default: false
+      }
+   },
    data () {
       return {
          config :{
@@ -95,8 +104,12 @@ export default {
       }
    },
    created () {
-      this.categoryCode=this.$store.state.rfq.categoryCode
-      this.getCategoryAnalysis()
+      if (this.paramCategoryCode) {
+         this.categoryCode = this.paramCategoryCode
+      } else {
+         this.categoryCode = this.$store.state.rfq.categoryCode
+      }
+      if (!this.isInside) this.getCategoryAnalysis()
    },
    mounted () {
 		this.getPowerBiUrl()
@@ -111,9 +124,30 @@ export default {
          this.categoryCode=this.$store.state.rfq.categoryCode
          this.mark=''
          this.renderBi()
+      },
+      paramCategoryCode: {
+         handler(val) {
+            if (val) {
+               this.categoryCode = val
+               this.renderBi()
+            }
+         },
+         immediate: true
       }
    },
    methods: {
+      getStyle() {
+         if (this.isInside) {
+            return {
+               justifyContent: 'flex-end',
+               flex: '1'
+            }
+         } else {
+            return {
+               justifyContent: 'flex-start'
+            }
+         }
+      },
       // 获取近期操作数据
       getCategoryAnalysis(){
          let params={
@@ -138,7 +172,7 @@ export default {
       // 保存
       async save(){
          const resFile = await this.getDownloadFileAndExportPdf({
-            domId: 'batchSupplier',
+            domId: '#batchSupplier',
             watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName:'品类管理助手_批量供应商概览_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
         });

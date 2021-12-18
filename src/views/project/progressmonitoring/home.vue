@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 11:07:32
+ * @LastEditTime: 2021-12-17 10:16:57
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
@@ -68,7 +68,7 @@
               <span class="cursor" @click="toPartList(1)"><iText>{{showTips ? notInTips : 0}}</iText></span>
             </iFormItem>
             <iFormItem>
-              <span slot="label">{{language('CKDHTZSBLINGJIAN', 'CKD/HT/ZSB零件')}}:</span>
+              <span slot="label">{{language('CKDHTZSBLINGJIANEN', 'CKD/HT/ZSB零件')}}:</span>
               <span class="cursor" @click="toPartList(2)"><iText>{{showTips ? ckdconfirm : 0}}</iText></span>
             </iFormItem>
          </iFormGroup>
@@ -144,7 +144,7 @@ export default {
     onSeriesBarClick(params) {
       if (params.disabled) return
       console.log(params)
-      const itemName = params.seriesName || params.title
+      const itemName = params.title
       const target = this.data.find(o => o.title === itemName) || {}
       const targetIndex = this.data.findIndex(o => o.title === itemName)
       // 进度风险对象

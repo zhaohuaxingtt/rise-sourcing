@@ -2,33 +2,43 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 16:28:01
- * @LastEditors: zbin
+ * @LastEditors: caopeng
  * @Descripttion: 概览
 -->
 <template>
-  <iCard class="supplier-item" :title="$t('TPZS.PLGYSGL')" :defalutCollVal='false' collapse>
-    <div class="header-title">{{remark}}</div>
+  <iCard  @handleTitle="addFile($event,7, '批量供应商概览')" class="supplier-item" :title="$t('TPZS.PLGYSGL')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal='false' collapse>
+    <batch-supplier id="card7" :paramCategoryCode="paramCategoryCode" class="card-change" :isInside="true"/>
+    <!-- <div class="header-title">{{remark}}</div>
     <div class="title-btn">
       <iButton @click="handleHerf">{{$t('TPZS.GYS360')}}</iButton>
       <iButton @click="handleRemark">{{$t('costanalysismanage.BeiZhu')}}</iButton>
     </div>
     <remarkDialog @getRemark="getRemark" :remark='remark' v-model="remarkDialog" />
     <div id='powerBi'>
-      <!-- <iframe :src='url.embedUrl' scrolling="auto" frameborder="0" width="100%" height="500px"></iframe> -->
-    </div>
+    </div> -->
   </iCard>
+  
 </template>
 
 <script>
 import { iCard, iButton, } from "rise";
+import batchSupplier from "@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/batchSupplier"
 import * as pbi from 'powerbi-client';
 import remarkDialog from "./remarkDialog.vue";
 import { getRfqToRemark, pageRfqPartPurPro, powerBiUrl } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 
+import { downloadPdfMixins } from '@/utils/pdf'
+import { icardData } from '../../data'
 export default {
-  components: { iCard, iButton, remarkDialog },
+  mixins: [downloadPdfMixins],
+  components: { iCard, iButton, remarkDialog, batchSupplier },
+  props: {
+    categoryCode: String
+  },
   data() {
     return {
+    cardShow: JSON.parse(JSON.stringify(icardData)),
+      paramCategoryCode: "",
       remark: '',
       remarkDialog: false,
       url: {
@@ -49,6 +59,14 @@ export default {
         filterType: null,
         requireSingleSelection: true
       },
+    }
+  },
+  watch: {
+    categoryCode: {
+      handler(val) {
+        this.paramCategoryCode = val
+      },
+      immediate: true
     }
   },
   created() {
@@ -147,12 +165,10 @@ export default {
           //设置过滤条件	
           report.setFilters([partNumListFilter]);
           //report.updateFilters(models.FiltersOperations.Add, [filter_suppliers]);
-          console.log("Report filter was added.");
         }
         catch (errors) {
           console.log(errors);
         }
-        console.log("Loaded");
       });
 
       // Report.off removes a given event handler if it exists.
@@ -160,26 +176,20 @@ export default {
 
       // Report.on will add an event handler which prints to Log window.
       report.on("rendered", function() {
-        console.log("Rendered");
       });
       report.off("filtersApplied")
 
       report.on("filtersApplied", function() {
-        console.log("filtersApplied");
       });
 
       report.on("error", function(event) {
-        console.log(event.detail);
         report.off("error");
       });
 
       report.off("saved");
       report.on("saved", function(event) {
-        console.log(event.detail);
         if (event.detail.saveAs) {
-          console.log(
-            'In order to interact with the new report, create a new token and load the new report'
-          );
+          
         }
       });
 
@@ -191,6 +201,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.card-change {
+  box-shadow: none !important;
+  border-radius: 0.375rem;
+  background: #fff;
+  margin-top: 0 !important;
+}
 .supplier-item {
   .title-btn {
     display: flex;

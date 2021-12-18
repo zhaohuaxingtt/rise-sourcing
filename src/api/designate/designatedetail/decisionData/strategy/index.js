@@ -5,7 +5,7 @@ const requst = axios(process.env.VUE_APP_SOURCING)
 // 获取举措清单
 export function getStrategy(params) {
   return requst({
-    url: `/cost_analysis/${ params.nominateAppId }`,
+    url: `/cost_analysis/strategy/${ params.nominateAppId }/${ params.categoryCode }`,
     method: "GET"
   })
 }

@@ -91,18 +91,18 @@ export default {
       labelArray: [],
       labelArray1: [],
       legendKeys: {
-        "原材料/散件": "rawMaterialSummary",
-        '制造费': "manufacturingCostSummary",
+        "原材料/散件成本": "rawMaterialSummary",
+        '制造成本': "manufacturingCostSummary",
         '报废成本': "discardCostsSummary",
-        '管理费': "administrationCostsSummary",
+        '管理费用': "administrationCostsSummary",
         '其他费用': "otherCostsSummary",
         '利润': "profit",
       },
       legendArray: [
-        "原材料/散件",
-        "制造费",
+        "原材料/散件成本",
+        "制造成本",
         "报废成本",
-        "管理费",
+        "管理费用",
         "其他费用",
         "利润",
       ],
@@ -314,9 +314,9 @@ export default {
             max: this.maxData
           },
         ],
-        emphasis: {
-          focus: "series",
-        },
+        // emphasis: {
+        //   focus: "series",
+        // },
         color: [
           "#C6DEFF",
           "#9BBEFF",
@@ -405,9 +405,17 @@ export default {
            
           });
         });
+
         const minList = [];
         this.legendArray.forEach((row, i) => {
           const dataList0 = this.cloneDeep(tempArr[row]);
+          if (tempArr[row] && tempArr[row].length > 0) {
+            var temp = []
+            tempArr[row].forEach((num) => {
+              temp.push(Number(num))
+            })
+            tempArr[row] = temp;
+          }
           const min = Number(this.min(tempArr[row]))
           let sumList = tempArr[row].map(Number)
           let data = min;
@@ -429,9 +437,9 @@ export default {
             // stack:"lv",
             barGap: "-100%",
             z: 20 - i,
-            emphasis: {
-              focus: "series",
-            },
+            // emphasis: {
+            //   focus: "series",
+            // },
             label: {
               show: true,
               position: "insideTop",
@@ -470,9 +478,9 @@ export default {
             name: row + "lv",
             type: "bar",
             stack: "lv",
-            emphasis: {
-              focus: "series",
-            },
+            // emphasis: {
+            //   focus: "series",
+            // },
             label: {
               show: true,
               position: "right",

@@ -1,5 +1,5 @@
 <template>
-	<div class="page-content" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PBI|报表管理-状态跟踪报表">
+	<div class="page-content" v-permission.auto="AEKOYUQIBAOBIAO|逾期BI报表">
 		<iCard id='powerBiReport'>
 			
 		</iCard>
@@ -39,8 +39,21 @@
 				values:[]
 			}
 		},
+		computed:{
+			...Vuex.mapState({
+					whiteBtnList: state => state.permission.whiteBtnList,
+			})
+		},
 		created() {
-			this.powerBiUrl()
+			// 没有逾期报表查看权限，调整状态跟踪
+			if(!this.whiteBtnList['AEKOYUQIBAOBIAO']){
+        this.$router.push({
+          path: '/aeko/report/statetrack',
+          query: {},
+        })
+			}else{
+				this.powerBiUrl()
+			}
 		},
 		methods: {
 			// 获取财报iframeurl

@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 16:02:48
- * @LastEditTime: 2021-11-15 15:08:01
+ * @LastEditTime: 2021-12-14 10:51:34
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -63,6 +63,10 @@ export default {
     iText,
   },
   props:{
+    noLinie: {
+      type: Boolean,
+      default: true
+    },
     basicInfo:{
       type:Object,
       default:()=>{},
@@ -90,7 +94,7 @@ export default {
   },
   methods:{
     init(){
-      this.workFlowId?this.getCbdkent():this.getCbdkentByLinie();
+      this.noLinie?this.getCbdkent():this.getCbdkentByLinie();
     },
     // 获取开发费列表数据
     async getCbdkent(){

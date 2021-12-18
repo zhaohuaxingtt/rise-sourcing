@@ -104,6 +104,16 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
         >
+          <!--采购数量 -->
+          <template slot="purchaseQty" slot-scope="scope">
+            <div>
+              {{
+                  scope.row["purchaseQty"]
+                  ? Number(scope.row["purchaseQty"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+                  : ''
+              }}
+            </div>
+          </template>
           <!-- 起拍价格 -->
           <template slot="upsetPrice" slot-scope="scope">
             <div>
@@ -331,11 +341,16 @@ export default {
                 box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
                 border-color: transparent;
                 border-radius: 0.25rem;
+                background-color: #f5f7fa;
                 .el-tag {
-                  background-color: #f5f7fa;
+                  /* background-color: #f5f7fa;
                   color: #000;
                   border-radius: 18px;
-                  border-color: #fff;
+                  border-color: #fff; */
+                  background-color: #f7f7f7;
+                  color: #000;
+                  border-radius: 1.25rem;
+                  border-color: #eef6ff;
                   margin-left: 3px;
                   min-width: 15px;
                 }

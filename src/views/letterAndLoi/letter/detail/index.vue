@@ -32,6 +32,8 @@
             <!-- <logButton class="margin-left20" @click="toLogPage"/> -->
             <iLoger 
                 class="margin-left25 margin-right5"
+                optionDicKey="LOG_OPERATION_TYPES"
+				optionDicKey2="定点信详情页"
                 isPage
                 :config="{
                     module_obj_ae: '定点信', // 模块
@@ -66,7 +68,7 @@
                                     v-for="item in linieList || []"
                                     :key="item.id"
                                     :label="$i18n.locale === 'zh' ? item.nameZh : item.nameEn"
-                                    :value="item.id">
+                                    :value="item.id+''">
                                 </el-option>  
                             </iSelect>
                             <iText v-else>{{detailInfo.linieName}}</iText>

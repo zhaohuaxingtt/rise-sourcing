@@ -2,31 +2,50 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-21 16:12:47
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
-  <iCard style="height:870px" :title="$t('TPZS.CXJHCLYXSLJCLFX')">
+  <iCard style="height:870px"
+         :title="$t('TPZS.CXJHCLYXSLJCLFX')">
     <template slot="header">
       <div> <span class="title">
           {{$t('TPZS.LJLB')}}
         </span>
-        <el-popover trigger="hover" placement="top-start" width="400" :content="$t('TPZS.JHCLDQSJCLSOP')">
-          <icon slot="reference" name="iconxinxitishi" tip="" symbol></icon>
+        <el-popover trigger="hover"
+                    placement="top-start"
+                    width="400"
+                    :content="$t('TPZS.JHCLDQSJCLSOP')">
+          <icon slot="reference"
+                name="iconxinxitishi"
+                tip=""
+                symbol></icon>
         </el-popover>
       </div>
     </template>
     <div class="btn">
-      <iButton v-if="activityTabIndex==='unSelect'" @click="hanleParts">{{$t('TPZS.CZLJ')}}</iButton>
-      <iButton @click="handleAffirm" v-if="activityTabIndex==='unSelect'">{{$t('LK_QUEREN')}}</iButton>
-      <iButton @click="handleAnalyse" v-if="activityTabIndex==='selected'">{{$t('TPZS.JRFX')}}</iButton>
+      <iButton v-if="activityTabIndex==='unSelect'"
+               @click="hanleParts">{{$t('TPZS.CZLJ')}}</iButton>
+      <iButton @click="handleAffirm"
+               v-if="activityTabIndex==='unSelect'">{{$t('LK_QUEREN')}}</iButton>
+      <iButton @click="handleAnalyse"
+               v-if="activityTabIndex==='selected'">{{$t('TPZS.JRFX')}}</iButton>
     </div>
     <div class="circle">{{middleListData.length}}</div>
     <div class="itab">
-      <iTabsList v-model="activityTabIndex" @tab-click="handleTabClick" type="card" slot="components" class='margin-top20'>
+      <iTabsList v-model="activityTabIndex"
+                 @tab-click="handleTabClick"
+                 type="card"
+                 slot="components"
+                 class='margin-top20'>
         <!-------------------------已选零件-  ----------------------------------------->
-        <el-tab-pane name="unSelect" :label="$t('TPZS.QLLJ')">
-          <tableList :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' @handleSelectionChange="handleSelectionChange">
+        <el-tab-pane name="unSelect"
+                     :label="$t('TPZS.QLLJ')">
+          <tableList :tableData="tablePageData"
+                     :tableTitle="tableTitle"
+                     :tableLoading="tableLoading"
+                     :selection='true'
+                     @handleSelectionChange="handleSelectionChange">
             <template #supplyBeginTime="scope">
               <span>{{scope.row.supplyBeginTime.slice(0, 7)}}</span>
             </template>
@@ -40,10 +59,25 @@
               <span>{{scope.row.increaseRate}}%</span>
             </template>
           </tableList>
-          <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
+          <iPagination :pager-count='3'
+                       v-update
+                       @size-change="handleSizeChange($event)"
+                       @current-change="handleCurrentChange($event)"
+                       background
+                       :page-sizes="page.pageSizes"
+                       :page-size="pageData.pageSize"
+                       :layout="page.layout"
+                       :current-page='pageData.currPage'
+                       :total="pageData.totalCount" />
         </el-tab-pane>
-        <el-tab-pane name="selected" :label="$t('TPZS.YXLJ')">
-          <tableList ref="tableList" :tableData="tablePageData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='true' @handleSelectionChange="handleSelectionChange">
+        <el-tab-pane name="selected"
+                     :label="$t('TPZS.YXLJ')">
+          <tableList ref="tableList"
+                     :tableData="tablePageData"
+                     :tableTitle="tableTitle"
+                     :tableLoading="tableLoading"
+                     :selection='true'
+                     @handleSelectionChange="handleSelectionChange">
             <template #supplyBeginTime="scope">
               <span>{{scope.row.supplyBeginTime.slice(0, 7)}}</span>
             </template>
@@ -57,11 +91,22 @@
               <span>{{scope.row.increaseRate}}%</span>
             </template>
           </tableList>
-          <iPagination :pager-count='3' v-update @size-change="handleSizeChange($event)" @current-change="handleCurrentChange($event)" background :page-sizes="page.pageSizes" :page-size="pageData.pageSize" :layout="page.layout" :current-page='pageData.currPage' :total="pageData.totalCount" />
+          <iPagination :pager-count='3'
+                       v-update
+                       @size-change="handleSizeChange($event)"
+                       @current-change="handleCurrentChange($event)"
+                       background
+                       :page-sizes="page.pageSizes"
+                       :page-size="pageData.pageSize"
+                       :layout="page.layout"
+                       :current-page='pageData.currPage'
+                       :total="pageData.totalCount" />
         </el-tab-pane>
       </iTabsList>
     </div>
-    <searchPartDialog @add="add" :carType="carType" v-model="partsDialog" />
+    <searchPartDialog @add="add"
+                      :carType="carType"
+                      v-model="partsDialog" />
   </iCard>
 </template>
 
@@ -81,7 +126,7 @@ export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iCard, icon, tableList, iTabsList, iButton, iPagination, searchPartDialog },
   mixins: [pageMixins, resultMessageMixin],
-  data() {
+  data () {
     // 这里存放数据
     return {
       partsDialog: false,
@@ -111,10 +156,10 @@ export default {
   // 方法集合
   methods: {
     toThousands,
-    hanleParts() {
+    hanleParts () {
       this.partsDialog = true
     },
-    async getTableList(data) {
+    async getTableList (data) {
       if (data) {
         this.carType = data.carType
       }
@@ -153,7 +198,7 @@ export default {
       }
     },
     // 根据分页数据获取指定范围的数据
-    setPageTableData() {
+    setPageTableData () {
       this.tablePageData = []
       const beginIndex = (this.pageData.currPage - 1) * this.pageData.pageSize
       const endIndex = (this.pageData.currPage * this.pageData.pageSize) - 1
@@ -165,26 +210,29 @@ export default {
       // console.log('tablePageData', this.tablePageData);
     },
     // 每页数量发生改变
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.$set(this.pageData, 'pageSize', val)
       this.$set(this.pageData, 'currPage', 1)
       this.setPageTableData()
     },
     // 当前页发生改变
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.$set(this.pageData, 'currPage', val)
       this.setPageTableData()
     },
-    handleTabClick(target) {
+    handleTabClick (target) {
       this.activityTabIndex = target.name
       if (target.name === 'selected') {
         var partsIds = []
-
+        var supplierIds = []
+        var materialGroups = []
         this.selectTableData.forEach(item => {
           this.middleListData.forEach(item => {
             partsIds.push(item.partsId)
+            supplierIds.push(item.supplierId)
+            materialGroups.push(item.materialGroup)
           })
-          if (!partsIds.includes(item.partsId)) {
+          if (!partsIds.includes(item.partsId) || !supplierIds.includes(item.supplierId) || !materialGroups.includes(item.materialGroup)) {
             if (this.middleListData.length < 100) {
               this.middleListData.push(item)
             } else {
@@ -204,21 +252,21 @@ export default {
         this.getTableList()
       }
     },
-    add(val, data) {
+    add (val, data) {
       this.selectTableData = data
       this.handleTabClick({ name: val })
     },
-    handleSelectionChange(data) {
+    handleSelectionChange (data) {
       this.selectTableData = data
     },
-    handleAffirm() {
+    handleAffirm () {
       if (this.selectTableData.length === 0) {
         iMessage.warn(this.$t('TPZS.QXZYTSJ'))
         return false
       }
       this.handleTabClick({ name: 'selected' })
     },
-    async handleAnalyse() {
+    async handleAnalyse () {
       if (!this.selectTableData.length) {
         iMessage.warn(this.$t('TPZS.BQYXLJMYSJQZQLLJZTJZYXLJ'))
         return false
@@ -234,10 +282,10 @@ export default {
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {
+  created () {
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
+  mounted () {
   },
 }
 </script>

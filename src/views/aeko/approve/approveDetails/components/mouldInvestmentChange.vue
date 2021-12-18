@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:40:38
- * @LastEditTime: 2021-11-15 14:59:02
+ * @LastEditTime: 2021-12-14 10:47:01
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -52,6 +52,10 @@ export default {
     tableList,
   },
   props: {
+    noLinie: {
+      type: Boolean,
+      default: true
+    },
     workFlowId: {
       type: String,
       default: "",
@@ -77,7 +81,8 @@ export default {
     floatFixNum,
     // 初始化数据
     init() {
-      this.workFlowId ? this.getMoulds() : this.getMouldsByLinie();
+      console.log(this.noLinie);
+      this.noLinie ? this.getMoulds() : this.getMouldsByLinie();
     },
     // 获取数据
     async getMoulds() {

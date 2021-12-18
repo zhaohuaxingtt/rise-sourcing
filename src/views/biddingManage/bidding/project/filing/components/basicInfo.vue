@@ -111,7 +111,7 @@
             ></iInput>
           </iFormItem>
 
-          <iFormItem :label="language('BIDDING_BJJZSJ', '报价截止时间')" prop="pricingDeadline">
+          <iFormItem :label="language('BIDDING_BJJZSJ', '报价截止时间')" prop="pricingDeadline" v-if="ruleForm.roundType !== '05'">
             <iLabel :label="language('BIDDING_BJJZSJ', '报价截止时间')" slot="label"></iLabel>
             <iInput
               :value="
@@ -237,23 +237,11 @@
               </div>
             </iLabelML>
             <iLabel :label="language('BIDDING_MUBIAOJIA', '目标价')" slot="label"></iLabel>
-            <template v-if="isInputFlag">
-              <iInput
-                :value="ruleForm.targetPrice"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-                type="number"
-                @input="value => $set(ruleForm, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+            <template >
+              <operatorInput
+                v-model="ruleForm.targetPrice"
               >
-              </iInput>
-            </template>
-            <template v-else>
-              <iInput
-                :value="targetPriceValue"
-                @focus="handlerInputFocus"
-                @blur="handlerInputBlur"
-              >
-              </iInput>
+              </operatorInput>
             </template>
           </iFormItem>
         </div>
@@ -308,6 +296,7 @@ import { getCurrencyUnit, uploadFile } from "@/api/mock/mock";
 import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
 import iLabelML from "@/components/biddingComponents/iLabelML";
 import { pageMixins } from "@/utils/pageMixins";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -318,6 +307,7 @@ export default {
     iCard,
     iLabel,
     iLabelML,
+    operatorInput
   },
   props: {
     value: {

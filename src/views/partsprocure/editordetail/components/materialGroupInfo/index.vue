@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 10:29:09
- * @LastEditTime: 2021-10-27 14:28:27
+ * @LastEditTime: 2021-12-13 15:50:11
  * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\materialGroupInfo\index.vue
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { tableTitle } from './components/data'
+import { tableTitle, infos as materialTitle } from './components/data'
 import { iButton, iCard, iPagination, iMessage } from 'rise'
 import infos from './components/infos'
 import {partProjTypes} from '@/config'
@@ -82,6 +82,11 @@ export default {
       type: Object,
       require: true,
     },
+    // 零件采购项目数据
+    detailData: {
+      type: Object,
+      default: () => ({})
+    }
   },
   computed: {
     // eslint-disable-next-line no-undef
@@ -123,13 +128,39 @@ export default {
     },
   },
   mounted() {
-    if(this.params.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
-      this.getMaterialGroup()
-    }
+    this.init()
   },
   methods: {
+    async init() {
+      if(this.params.partProjectType !== this.partProjTypes.GANGCAIYICIXINGCAIGOU){
+        this.getMaterialGroup()
+      }
+    },
+    // 设置特定材料组数据，目前只有附件类型
+    async setAttachMaterialGroup(categoryCode=null, stuffCode=null) {
+      if (this.isAttach) {
+        materialTitle.forEach(mitem => {
+          const detailDataLength = Object.keys(this.detailData).length
+          this.info[mitem.props] = detailDataLength ? this.detailData[mitem.props] : ''
+        })
+
+        // 获取附件材料工艺组数据
+        if (!this.tableListData.length) {
+          await this.getAttachMeterialStuff()
+        }
+        
+        // 根据材料组编号，工艺号在附件类型的材料工艺列表中找到 该工艺组，补全数据
+        categoryCode = categoryCode || this.detailData.categoryCode || ''
+        stuffCode = stuffCode || this.detailData.stuffCode || ''
+        const tarAttachMaterialItem = this.tableListData.find(o => o.categoryCode === String(categoryCode) && o.stuffCode === String(stuffCode))
+        materialTitle.forEach(mitem => {
+          this.info[mitem.props] = tarAttachMaterialItem ? tarAttachMaterialItem[mitem.props] : ''
+        })
+        
+      }
+    },
     // 获取材料组数据
-    getMaterialGroup() {
+    getMaterialGroup(categoryCode=null, stuffCode=null) {
       // 签收的时候默认会设置一个采购项目为这个零件号。移除提示问题
       //if (!this.params.categoryCode) return iMessage.warn(this.$t('LK_QUESHICAILIAOZUBIANHAOETC'))
       this.loading = true
@@ -137,6 +168,7 @@ export default {
         .then(res => {
           if (res.code == 200) {
             this.info = res.data || {}
+            this.setAttachMaterialGroup(categoryCode, stuffCode)
             this.infoSource = cloneDeep(this.info)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -173,7 +205,9 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-            this.getMaterialGroup()
+            const resData = res.data && res.data.length && res.data[0] || {}
+            // 刷新材料组数据
+            this.getMaterialGroup(resData.categoryCode, resData.stuffCode)
             this.back()
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
@@ -201,27 +235,32 @@ export default {
         .catch(() => this.tableLoading = false)
     },
     // 获取零件项目类型为附件时候的零件可选的工艺组数据
-    getAttachMeterialStuff() {
+    async getAttachMeterialStuff() {
       this.tableLoading = true
-      getAttachMeterialStuff()
-        .then((res) => {
-          if (res.code == 200) {
-            this.tableListData = (res.data || [])
-          } else {
-            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-          }
-          // this.page.totalCount = res.total
-          this.tableLoading = false
-        })
-        .catch(() => this.tableLoading = false)
-      // this.tableListData = require('./moke.json').data
+      try {
+        const res = await getAttachMeterialStuff()
+        if (res.code == 200) {
+          this.tableListData = (res.data || []).map(row => {
+            row.deptCodes = row.deptName
+            row.categoryNameDe = row.materialStuffGroupNameDe
+            row.categoryNameZh = row.materialStuffGroupName
+            return row
+          })
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+        // this.page.totalCount = res.total
+        this.tableLoading = false
+      } catch (e) {
+        this.tableLoading = false
+      }
     },
     handleSingleSelectChange(row={}) {
       if (row) {
         if (this.isAttach) {
-          row.deptCodes = row.deptName
-          row.categoryNameDe = row.materialStuffGroupNameDe
-          row.categoryNameZh = row.materialStuffGroupName
+          materialTitle.forEach(mitem => {
+            this.info[mitem.props] = row[mitem.props]
+          })
         }
 
         this.$set(this.info, "stuffCode", row.stuffCode)

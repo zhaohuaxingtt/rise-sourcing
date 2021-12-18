@@ -2,7 +2,7 @@
   <iCard>
     <commonTable
       ref="tableDataForm"
-      :tableData="suppliers"
+      :tableData="suppliersPage"
       :tableTitle="tableTitle"
       :tableLoading="tableLoading"
       :selection="false"
@@ -28,13 +28,14 @@
     </commonTable>
     <iPagination
       v-update
-      @current-change="handleCurrentChange($event)"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
       background
       :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
       prev-text="上一页"
       next-text="下一页"
-      layout="prev,pager,next,jumper"
+      :layout="page.layout"
       :current-page="page.currPage"
       :total="page.total"
     />
@@ -91,6 +92,11 @@ export default {
     };
   },
   computed: {
+    suppliersPage() {
+      const { suppliers } = this; 
+      const { currPage, pageSize } = this.page;
+      return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
+    },
     beishu() {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
@@ -145,7 +151,11 @@ export default {
     },
     handleCurrentChange(e) {
       this.page.currPage = e;
-      this.pageNum = e;
+      // this.pageNum = e;
+    },
+    handleSizeChange(val) {
+      this.page.currPage = 1;
+      this.page.pageSize = val;
     },
     async query(e) {
       const res = await getBiddingDetails({

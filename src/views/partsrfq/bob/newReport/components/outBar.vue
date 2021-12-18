@@ -57,6 +57,11 @@ export default {
       type: Boolean,
       default: true
     },
+    // 预览模式
+    isPreview: {
+      type: Boolean,
+      default: false,
+    },
     maxData: {
       type: String,
       default: "",
@@ -153,7 +158,7 @@ export default {
                 right: 0,
                 align: 'right',
                 backgroundColor: {
-                  image: this.del
+                  image: this.isPreview ? '' :this.del
                 }
               },
             }
@@ -230,6 +235,9 @@ export default {
             let domHtml = ''
 
             params.forEach(item => {
+              if (item.seriesName == "sum") {
+                return false;
+              }
               domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + item.color + '"></span>'
               result += domHtml + item.seriesName + ":" + this.doNumber(item.value) + '<br/>'
             })
@@ -257,9 +265,9 @@ export default {
             max: this.maxData
           }
         ],
-        emphasis: {
-          focus: 'series'
-        },
+        // emphasis: {
+        //   focus: 'series'
+        // },
         color: [
           "#C6DEFF",
           "#9BBEFF",
@@ -276,12 +284,14 @@ export default {
       })
       const that = this
       myChart.on('click', function (params) {
-
         if (params.componentType === 'title') {
           that.$emit('del')
         }
         if (params.componentType === 'xAxis') {
-          that.$emit('change')
+          console.log('点击了',that.isPreview);
+          if (!that.isPreview) {
+            that.$emit('change')
+          }
         }
       });
     },
@@ -352,9 +362,9 @@ export default {
             type: 'bar',
             barGap: '-100%',
             z: 20 - i,
-            emphasis: {
-              focus: 'series'
-            },
+            // emphasis: {
+            //   focus: 'series'
+            // },
             label: {
               show: true,
               position: 'insideTop',

@@ -10,6 +10,7 @@
     @blur="handleBlur"
     @input="handleInput"
   >
+    <slot name="suffix" slot="suffix"></slot>
   </iInput>
 </template>
 
@@ -45,7 +46,7 @@ export default {
       if(val) {
         if (this.innerValue) {
           this.innerValue = Number(this.innerValue)?.toFixed(2);
-        }
+        } 
       }
     },
     value(val) {
@@ -54,7 +55,7 @@ export default {
   },
   computed: {
     formatValue() {
-      return Number(this.innerValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,');
+      return this.innerValue ? Number(this.innerValue)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '';
     },
   },
   methods: {

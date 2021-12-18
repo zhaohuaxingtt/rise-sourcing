@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-05-25 13:02:38
- * @LastEditTime: 2021-06-09 20:52:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-14 15:51:52
+ * @LastEditors: caopeng
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\data.js
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\data.js
  */
 
 export const iconList_car = { //汽车图标
@@ -49,6 +49,22 @@ export const icardData = [
   },
   {
     key:'5',
+    show:false
+  },
+  {
+    key:'6',
+    show:false
+  },
+  {
+    key:'7',
+    show:false
+  },
+  {
+    key:'8',
+    show:false
+  },
+  {
+    key:'9',
     show:false
   }
 ]

@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-10-11 10:31:41
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-25 11:13:50
+ * @LastEditTime: 2021-12-13 14:48:02
  * @Description: 
- * @FilePath: \front-web\src\views\project\progressmonitoring\partsTaskList\data.js
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\partsTaskList\data.js
  */
 
 export const searchList = [
@@ -25,7 +25,7 @@ export const tableTitle = [
   {props:'statusDesc',name:'处理状态', key: "CHULIZHUANGTAI", tooltip: true},
   {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'linieName',name:'专业采购员', key: "ZHUANYECAIGOUYUAN", tooltip: true},
-  {props:'epEngineer',name:'EP工程师',key:'EPGONCHENGSHI',tooltip: true},
+  {props:'epEngineer',name:'FOP',key:'FOP',tooltip: true},
 ]
 
 export const partSortStatus = {

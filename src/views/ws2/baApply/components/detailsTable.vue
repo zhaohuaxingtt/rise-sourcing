@@ -23,7 +23,7 @@
         <div>{{scope.row.baNum === '' ? '无' : scope.row.baNum}}</div>
       </template>
       <template #rsNum="scope">
-        <a @click="openViewPdf(scope)" class="detailed">{{scope.row.rsNum}}</a>
+        <a @click="openViewPdf(scope.row)" class="detailed">{{scope.row.rsNum}}</a>
       </template>
     </iTableList>
 
@@ -47,6 +47,14 @@
             style="margin-bottom:36px"
             class="baApply-table"
           >
+            <template #locationFactoryName="scope">
+              <div v-if="scope.row.locationFactoryName">{{scope.row.locationFactoryName}}</div>
+              <div v-else></div>
+            </template>
+            <template #deptName="scope">
+              <div v-if="scope.row.deptName">{{scope.row.deptName}}</div>
+              <div v-else></div>
+            </template>
             <template #amount="scope">
               <iInput :placeholder="$t('LK_QINGSHURU')" v-model="scope.row.amount" v-if="scope.row.deptName === 'Aeko'"
                       maxlength="20"></iInput>
@@ -108,8 +116,20 @@ export default {
 
     //  预览RSpdf
     openViewPdf(scope){
-      const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.row.rsNum;
-      window.open(url);
+      const first = scope.rsNum.slice(0,1);
+      if(~~first === 5){
+        let routeData = this.$router.resolve({
+          path: '/tooling/investmentReport/rsDetails',
+          query: {
+            rsNum: scope.rsNum,
+            pageType: 0,
+          },
+        })
+        window.open(routeData.href, '_blank')
+      }else{
+        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
+        window.open(url);
+      }
     },
 
     downloadExport(){

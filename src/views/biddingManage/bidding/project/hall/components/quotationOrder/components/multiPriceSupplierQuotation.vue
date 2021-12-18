@@ -1,6 +1,6 @@
 <template>
   <div>
-    <iCard :title="language('BIDDING_XIANGMUXINXI', '项目信息')" class="card" v-loading="projectLoading">
+    <iCard :title="language('BIDDING_XIANGMUXINXI', '项目信息')" class="card" v-loading="projectLoading || isOffer">
       <template slot="header-control">
         <div>
           <iButton
@@ -40,9 +40,9 @@
                       :data-value="orgTotalPrices"
                       :value="
                         biddingStatus
-                          ? Number(ruleForm.totalPrices).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+                          ? (ruleForm.totalPrices ? Number(ruleForm.totalPrices).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : ' ')
                           : totalPriceFlag
-                          ? '0' + currencyMultiple
+                          ? ' ' + currencyMultiple
                           : startingPrice
                       "
                       disabled
@@ -165,6 +165,7 @@
               <operatorInput
                 :disabled="biddingStatus"
                 v-model="scope.row['factoryPrice']"
+                @blur="handlerInputBlur"
               >
               </operatorInput>
             </template>
@@ -180,6 +181,7 @@
                <operatorInput
                   :disabled="biddingStatus"
                   v-model="scope.row['packingFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -195,6 +197,7 @@
               <operatorInput
                   :disabled="biddingStatus"
                   v-model="scope.row['transportFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -210,6 +213,7 @@
                <operatorInput
                   :disabled="biddingStatus"
                   v-model="scope.row['operationFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -237,6 +241,7 @@
                <operatorInput
                   :disabled="biddingStatus"
                   v-model="scope.row['moldFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -251,7 +256,8 @@
             <template v-else>
                <operatorInput
                   :disabled="biddingStatus"
-                  v-model="scope.row['moldFee']"
+                  v-model="scope.row['developFee']"
+                  @blur="handlerInputBlur"
                 >
               </operatorInput>
             </template>
@@ -580,7 +586,8 @@ export default {
       orgTotalPrices:0,
       multiPriceValue:{},
       isInputFlag: true,
-      clearTime:''
+      clearTime:'',
+      isOffer: false
     };
   },
   watch: {
@@ -702,7 +709,9 @@ export default {
       return digitUppercase(Number(this.totalPrices));
     },
     startingPrice() {
-      return Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
+      return Number(this.totalPrices) !== 0 
+      ? Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple 
+      : ' ';
     },
     supplierProducts() {
       return this.ruleForm.supplierProducts;
@@ -733,7 +742,6 @@ export default {
       this.projectLoading = true
             // 延迟下，展示出loading出来
       this.projectTime = setTimeout(() => {
-        console.log('object定时器我进来了')
         this.projectLoading = false
         clearTimeout(this.projectTime)
       }, 800);
@@ -747,7 +755,7 @@ export default {
         item.upsetPrice = Big(this.calculationDetails(item, index)).add(Number(item.moldFee)).add(Number(item.developFee)).toFixed(2);
         return Big(this.calculationDetails(item, index)).add(sum).add(Number(item?.moldFee)).add(Number(item?.developFee)).toNumber();
       }, 0);
-      this.orgTotalPrices=Big(sum).toFixed(2);
+      this.orgTotalPrices = Big(sum).toFixed(2);
 
     },
     toggle() {
@@ -806,7 +814,11 @@ export default {
         }
         //本年产量日期
         let annualYesr = dayjs(dateList[`stage${i}`]).year();
-        let dateArray= Object.values(yearsPlanDate);
+        let dateArray = []
+        for (let j = 1; j < 10; j++) {
+          dateArray.push(yearsPlanDate[`stage${j}`])
+        }
+        
         //产量年度在该零件年降计划出现次数数组count
         let count =dateArray.filter(item=>{
           if(item && item?.toString().includes(annualYesr)){
@@ -973,6 +985,9 @@ export default {
     //下一步
     handleNext() {
       // 拍买
+      if (Number(this.totalPrices) == '0') {
+        return this.$message.error(this.language('BIDDING_ZJW0BNCJ','总价为 0 不能出价'))
+      }
       if (this.ruleForm.biddingType === "01") {
         if (
           Number(this.totalPrices) < Number(this.biddingQuoteRule.actualValue)
@@ -1079,6 +1094,7 @@ export default {
     },
     //数据验证通过提交数据
     handleSaveData(callback) {
+      this.projectLoading = true
       let formData = { ...this.ruleForm };
       //采购计划
       this.ruleForm.supplierProducts.forEach((item, index) => {
@@ -1106,19 +1122,25 @@ export default {
       formData.supplierOffer = supplierOffer;
       console.log(869,formData)
       //保存
-      saveBiddingQuotation(formData)
-        .then((res) => {
-          if (res) {
-            this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
-          }
+      saveBiddingQuotation(formData).then((res) => {
+        if (res) {
+          this.projectLoading = false
+          this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
           callback && callback();
-        })
-        .catch((err) => {
-          console.log(err);
+        } else {
+          this.projectLoading = false
           this.yearsPlanTable = [];
           this.purchasePlanTable = [];
           this.handleSearchReset();
-        });
+        }
+        callback && callback();
+      }).catch((err) => {
+        this.projectLoading = false
+        this.yearsPlanTable = [];
+        this.purchasePlanTable = [];
+        this.handleSearchReset();
+        // callback && callback();
+      });
     },
     handleSearchReset() {
       this.yearsPlan = [];
@@ -1129,9 +1151,11 @@ export default {
       
     },
     async query(e) {
+      this.isOffer = true
       // 根据 ID 获取竞价大厅报价单列表数据
       const res = await findHallQuotation(e);
       this.updateRuleForm(res);
+      this.isOffer = false
     },
     updateRuleForm(data) {
       this.projectLoading = false
@@ -1252,7 +1276,8 @@ export default {
         num += 1
       }
       this.$nextTick(() => {
-        this.handlerInputBlur();
+        this.orgTotalPrices = this.ruleForm.supplierOffer?.offerPrice || this.ruleForm.totalPrices
+        // this.handlerInputBlur();
         this.projectLoading = false
       });
     },
@@ -1312,11 +1337,16 @@ export default {
               box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
               border-color: transparent;
               border-radius: 0.25rem;
+              background-color: #f5f7fa;
               .el-tag {
-                background-color: #f5f7fa;
+                /* background-color: #f5f7fa;
                 color: #000;
                 border-radius: 18px;
-                border-color: #fff;
+                border-color: #fff; */
+                background-color: #f7f7f7;
+                color: #000;
+                border-radius: 1.25rem;
+                border-color: #eef6ff;
                 margin-left: 3px;
                 min-width: 15px;
               }

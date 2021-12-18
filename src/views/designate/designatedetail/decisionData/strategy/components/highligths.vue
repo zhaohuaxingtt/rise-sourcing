@@ -27,7 +27,6 @@ export default {
       rsDisabled: state => state.nomination.rsDisabled,
     }),
     isDisabled() {
-      console.log("this.isPreview || this.nominationDisabled || this.rsDisabled", this.isPreview || this.nominationDisabled || this.rsDisabled)
       return this.isPreview || this.nominationDisabled || this.rsDisabled
     }
   },
@@ -46,7 +45,10 @@ export default {
       })
     },
     getFetchData(){
-      costAnalysisGet(this.$route.query.desinateId,this.categoryCode).then(r=>{
+      costAnalysisGet({
+        nominateAppId: this.$route.query.desinateId,
+        type: this.categoryCode
+      },).then(r=>{
         this.content = r.data.content
         this.$refs.editor.html(this.content)
       })

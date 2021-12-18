@@ -21,7 +21,7 @@
           :dataBaseInit="dataBaseInit"
           :navList="budgetManagement3rd"
           :isIconShow="isIconShow"
-          hoverText="历史数据库"
+          :hoverText="$t('MOULDADD.LK_LISHISHUJUKU')"
           @nextStep="nextStep"
           @changeDataBase="$refs.iNavMvpRef.activeIndex = 999"
       ></iNavWS2>
@@ -32,7 +32,7 @@
     <!------------------------------------------------------------------------>
     <!--                  内容                                  --->
     <!------------------------------------------------------------------------>
-    <iDialog title="您还没有选择参考车型项目，是否继续?" :visible.sync="nextStepvalue" width="381px" top="0s" @close='clearDiolog'
+    <iDialog :title="$t('MOULDADD.LK_SHIFOUJIXU')" :visible.sync="nextStepvalue" width="381px" top="0s" @close='clearDiolog'
              v-loading="iDialogLoading" class="iDialogNextStep">
       <span slot="footer" class="dialog-footer">
         <iButton @click="nextStepvalue = false">{{ $t('LK_QUXIAO') }}</iButton>

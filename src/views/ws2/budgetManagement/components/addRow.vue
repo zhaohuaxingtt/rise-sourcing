@@ -27,7 +27,7 @@
               <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
             </iInput>
           </el-form-item>
-          <el-form-item :label="$t('LK_MOJUSHUXIN')">
+          <el-form-item :label="$t('MOULDADD.LK_MOJUSHUXIN')">
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="mouldAttr"
@@ -46,7 +46,7 @@
             <!--              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>-->
             <!--            </iInput>-->
           </el-form-item>
-          <el-form-item :label="$t('LK_ZHUANYEKESHI')">
+          <el-form-item :label="$t('MOULDADD.LK_ZHUANYEKESHI')">
             <iSelect
                 :placeholder="$t('LK_QINGXUANZE')"
                 v-model="professionalDepartments"

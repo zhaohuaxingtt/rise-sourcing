@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-25 16:39:21
+ * @LastEditTime: 2021-12-06 16:00:13
  * @Description: 
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\components\data.js
  */
@@ -74,7 +74,9 @@ export const MENU = [
     message: 0,
     url: '/targetpriceandscore/financialtargetprice/maintenance',
     activePath: 'maintenance',
-    key: 'MUBIAOJIAWEIHU'
+    key: 'MUBIAOJIAWEIHU',
+    permissionKey: 'FINANCIALTARGETPRICE_MAINTENANCE_PAGE',
+    permissionName: '财务目标价管理-目标价维护-页面'
   },
   {
     value: 2,
@@ -82,7 +84,9 @@ export const MENU = [
     message: 0,
     url: '/targetpriceandscore/financialtargetprice/approval',
     activePath: 'approval',
-    key: 'MUBIAOJIASHENPI'
+    key: 'MUBIAOJIASHENPI',
+    permissionKey: 'FINANCIALTARGETPRICE_APPROVAL_PAGE',
+    permissionName: '财务目标价管理-目标价审批-页面'
   },
   {
     value: 3,
@@ -90,6 +94,8 @@ export const MENU = [
     message: 0,
     url: '/targetpriceandscore/financialtargetprice/query',
     activePath: 'query',
-    key: 'MUBIAOJIACHAXUN'
+    key: 'MUBIAOJIACHAXUN',
+    permissionKey: 'FINANCIALTARGETPRICE_QUERY_PAGE',
+    permissionName: '财务目标价管理-目标价查询-页面'
   },
 ]

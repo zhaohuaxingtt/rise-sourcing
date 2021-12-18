@@ -84,7 +84,7 @@
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO|删除AEKO" :loading="btnLoading.deleteItem" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_CHEXIAOAEKO|撤销AEKO" @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
-          <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN|上传文件" class="margin-right10">
+          <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN|上传文件" class="margin-left10 margin-right10">
             <Upload 
                 hideTip
                 style="display:none;"
@@ -94,7 +94,7 @@
                 @on-success="fileSuccess"
                 :uploadButtonLoading="btnLoading.uploadFiles"
             />
-            <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
+            <iButton :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
 
@@ -296,6 +296,18 @@ export default {
         }),
     },
     created(){
+      // 进来的时候判断是否有aeko管理页面的权限 如果没有就顺延到下个月权限页面跳转
+      for(var i  = 0; i<TAB.length;i++){
+        if(TAB[i].permissionKey == 'AEKO_MANAGE' && this.permission.whiteBtnList[TAB[i].permissionKey]) break;
+        else if(this.permission.whiteBtnList[TAB[i].permissionKey]){
+          this.$router.push({
+            path:TAB[i].url
+          })
+          break;
+        }
+      }
+
+
       this.sure();
       this.getSearchList();
 
@@ -304,25 +316,6 @@ export default {
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
       this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
       this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
-
-      // const { isAekoManager,isCommodityCoordinator,isLinie,$route } = this;
-      // const role = {
-      //   isAekoManager,
-      //   isCommodityCoordinator,
-      //   isLinie,
-      // };
-
-      // const filterList = filterRole(role);
-      // this.navList = filterList;
-
-      // 判断当前url是否在可显示列表内 若无则显示列表第一个清单
-      // const {path} = $route;
-      // const filterPath = filterList.filter((item)=>item.url == path);
-      // if(!filterPath.length){
-      //   this.$router.push({
-      //     path:filterList[0].url,
-      //   })
-      // }
 
       this.leftTab = getLeftTab(0);
     },

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-01 18:01:56
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-14 21:44:58
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
 -->
@@ -17,6 +17,9 @@
       <div class="btnList">
         <iButton @click="handleApplyModuleTargetPrice" :loading="checkApplyLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
           {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
+        </iButton>
+        <iButton v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && baseInfo.partProjectType[0] === partProjTypes.PEIJIAN"  :loading='endEngotiationlaoding' @click="updateRfqStatus('07')" v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDNEGOTIATION|谈判完成">
+          {{ language('TANPANWANCHENG','谈判完成') }}
         </iButton>
         <span v-if="!disabled">
           <iButton @click="goToCesPage" v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWTESTPROG|新建测试项目">{{ language('LK_XINGJIANCESHIXIANM','新建测试项目') }}</iButton>
@@ -52,6 +55,8 @@
             credentials
             isPage
             class="margin-left10"
+            optionDicKey="LOG_OPERATION_TYPES"
+				    optionDicKey2="RFQ详情页"
             v-permission.auto="PARTSRFQ_EDITORDETAIL_LOG|日志" />
         <span>
 					<icon symbol name="icondatabaseweixuanzhong"></icon>
@@ -77,10 +82,11 @@
             <iFormItem :label="language('LK_EP','技术评分人')+':'" name="ep" v-permission.auto="PARTSRFQ_EDITORDETAIL_EP|技术评分人">
               <iText  forceTooltip :tooltipContent="baseInfo.ep">{{ nameProcessor(baseInfo.ep) }}</iText>
             </iFormItem>
-            <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf"  v-permission.auto="PARTSRFQ_EDITORDETAIL_CF|财务控制员">
+            <!---BA确认过这东西不需要--->
+            <!-- <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf"  v-permission.auto="PARTSRFQ_EDITORDETAIL_CF|财务控制员"> -->
               <!-- <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission.auto="PARTSRFQ_EDITORDETAIL_CF"></iInput> -->
-              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
-            </iFormItem>
+              <!-- <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
+            </iFormItem> -->
 
             <iFormItem :label="language('LK_BENLUNBAOJIAJIEZHISHIJIAN','本轮报价截止时间')+':'" name="currentRoundsEndTime" v-permission.auto="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS|本轮报价截止时间">
               <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
@@ -88,7 +94,7 @@
           </div>
           <div class="col">
             <iFormItem :label="language('LK_RFQZHUANGTAI','RFQ状态')+':'" name="statusName" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQSTATUS|RFQ状态">
-              <iText>{{ baseInfo.currentStatus }}</iText>
+              <iText>{{ baseInfo.statusName }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_XUNJIACAIGOUYUAN','询价采购员')+':'" name="buyerName" v-permission.auto="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER|询价采购员">
               <iText>{{ baseInfo.buyerName }}</iText>
@@ -146,6 +152,17 @@
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo(true)" :dataRes="newRfqRoundDialogRes" v-if="tabShowStatus"/>
 
     <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
+
+    <!-------------------------结束本轮询价的时候，如果当前的轮次类型为开标，并且rfq状态为询价中，当前轮次状态是进行中则需要填写一个结束备注-------->
+    <iDialog :visible.sync='showReason' :title="language('QINGITANXIEJIESUYUANY','结束原因')" width='500px'>
+      <div>
+        <iInput rows='5' maxlength='200' v-model="reason" type="textarea"></iInput>
+      </div>
+        <div class="margin-top20 padding-bottom20" style="text-align:right;">
+          <iButton :loading='endingloading' @click="updateRfqStatus('05')">{{language('QUEDING','确定')}}</iButton>
+          <iButton @click="showReason=false;endingloading=false">{{language('QUXIAO','取消')}}</iButton>
+        </div>
+    </iDialog>
   </iPage>
 </template>
 <script>
@@ -159,7 +176,8 @@ import {
   iText,
   iInput,
   iMessage,
-  iNavMvp
+  iNavMvp,
+  iDialog
 } from "rise";
 import rfqPending from './components/rfqPending'
 import rfqDetailInfo from './components/rfqDetailInfo'
@@ -177,6 +195,8 @@ import { tableTitle,form } from "@/views/partsprocure/home/components/data";
 import { getRfqInfo } from "@/api/costanalysismanage/rfqdetail"
 import { checkApply } from '@/api/modelTargetPrice/index'
 import iLoger from 'rise/web/components/iLoger'
+import {partProjTypes,roundsType} from '@/config'
+import {mockData} from './mock.js';
 export default {
   components: {
     iButton,
@@ -193,11 +213,13 @@ export default {
     iNavMvp,
     rfqDetailTpzs,
     nominateTypeDialog,
-    iLoger
+    iLoger,
+    iDialog
   },
   mixins: [rfqCommonFunMixins,pageMixins],
   data() {
     return {
+      showReason:false,
       navActivtyValue: '',
       navList: navList,
       editStatus: false,
@@ -221,16 +243,17 @@ export default {
       disabled: true,
       linieUserId:'',
       childFnList:[],
-      checkApplyLoading: false
+      checkApplyLoading: false,
+      endEngotiationlaoding: false,
+      partProjTypes,
+      reason:'',
+      roundsType
     }
   },
-  mounted(){
-    this.getBaseInfo()
-  },
   created() {
-    this.getTableList()
-    this.getRfqInfo()
     this.getPartTableList = this.$store.state.rfq.partfunc
+    this.getTableList()
+    this.getBaseInfo()
   },
   provide: function(){
     return {
@@ -252,7 +275,7 @@ export default {
       const rfqId = this.baseInfo.id || this.$route.query.id
       checkApply(rfqId).then(res => {
         if (res?.result) {
-          const item = {rfqId: rfqId, applyType: '1'}
+          const item = {rfqId: rfqId, applyType: '1', isAgain: res.data || false}
           this.$router.push({path: '/targetpriceandscore/modeltargetprice/detail', query: item})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -301,48 +324,28 @@ export default {
         return val
       }
     },
-    async getBaseInfo(dialogPage) {
-      const query = this.$route.query
-      if (query.id) {
-        this.baseInfoLoading = true
-        const req = {
-            userId: store.state.permission.userInfo.id,
-            rfqId: query.id
-        }
-        try {
-          const res = await getRfqList(req)
-          const resList = res.data
-          if (resList.length > 0) {
-            this.baseInfo = res.data[0]
-            // 定向刷新部分组件，当主数据更新后。
-            if(dialogPage){ //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
-              this.activityTabIndex = '5'
-            }
-            this.childFnList.forEach(i=>i())
-            if(typeof this.$store.state.rfq.partfunc === "function")
-              this.getPartTableList()
-          } else {
-            this.baseInfo = ''
-          }
-          this.baseInfoLoading = false
-        } catch {
-          this.baseInfoLoading = false
-        }
-      } else {
-        this.editStatus = true
-      }
-    },
-    getRfqInfo() {
+    getBaseInfo(dialogPage) {
       this.baseInfoLoading = true
+      console.log(this.$route, '当前路由参数',this.$route.query.id);
       if(this.$route.query.id){
         getRfqInfo({
           rfqId: this.$route.query.id
         })
         .then(res => {
-          if (res.code == 200) {
-            this.disabled = !!res.data.isFreeze
+          console.log(res, '查询数据');
+          // const res = mockData;
+          if (res.code == 200 && res.data) {
+            this.baseInfo = res.data
+            this.disabled =!!res.data.isFreeze
+            console.log(this.disabled, '最终数据1');
+             if(dialogPage){ //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
+              this.activityTabIndex = '5'
+            }
+            this.childFnList.forEach(i=>i())
+            if(typeof this.$store.state.rfq.partfunc === "function") this.getPartTableList()
           } else {
             iMessage.error(this.language("HUOQURFQDINGDIANXINXISHIBAI", "获取RFQ定点信息失败"))
+            this.baseInfo = ''
           }
         })
         .finally(() => this.baseInfoLoading = false)
@@ -350,6 +353,7 @@ export default {
         this.disabled = false
         this.baseInfoLoading = false
       }
+      console.log(this.disabled, '最终数据');
     },
     changeNav(target) {
       this.navActivtyValue = target.index
@@ -376,29 +380,45 @@ export default {
         this.rfqloading = true
       }
       if(updateType === '05') {
-        this.endingloading = true   
+        if(this.baseInfo.roundsType == this.roundsType.zxkb && this.baseInfo.currentRoundsStatusCode == 'RUNNING' && this.baseInfo.currentStatus == "IN_REQ"){
+          if(!this.showReason) return this.showReason = true
+          if(!this.reason) return iMessage.warn(this.language('NINGDANGQIANHAIWEITXX','您当前还未填写原因，请填写后再试！'))
+        } 
+        this.endingloading = true 
       }
       if(updateType === '03') {
         this.transferlaoding = true
       }
-      const req = {
-          updateType,
-          tmRfqIdList: [query.id],
-          userId: store.state.permission.userInfo.id
+      if (updateType === '07') {
+        this.endEngotiationlaoding = true
       }
-      const res = await modification(req)
-      this.resultMessage(res)
-      this.getBaseInfo()
-      if(updateType === '06') {
-        this.rfqloading = false
-      }      
-      if(updateType === '05') {
-        this.endingloading = false
-      }      
-      if(updateType === '03') {
-        this.transferlaoding = false
+      const req = {
+        updateType,
+        tmRfqIdList: [query.id],
+        userId: store.state.permission.userInfo.id,
+        reason:this.reason
       }
 
+      try {
+        const res = await modification(req)
+        this.resultMessage(res)
+        this.getBaseInfo()
+      } finally {
+        if(updateType === '06') {
+          this.rfqloading = false
+        }      
+        if(updateType === '05') {
+          this.endingloading = false
+          this.showReason = false
+          this.reason = ''
+        }      
+        if(updateType === '03') {
+          this.transferlaoding = false
+        }
+        if (updateType === '07') {
+          this.endEngotiationlaoding = false
+        }
+      }
     },
     edit() {
       const rfqName = this.baseInfo.rfqName
@@ -497,7 +517,8 @@ export default {
             query: {
               desinateId: res.data.nominateId, 
               designateType: res.data.nominateProcessType,
-              partProjType: this.$route.query.businessKey
+              partProjType: this.$route.query.businessKey,
+              businessKey: this.$route.query.businessKey
             }
           })
         } else {

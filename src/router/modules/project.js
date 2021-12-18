@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-15 17:10:35
+ * @LastEditTime: 2021-12-08 09:58:02
  * @Description: 
- * @FilePath: \front-web\src\router\modules\project.js
+ * @FilePath: \front-sourcing\src\router\modules\project.js
  */
 
 export default [
@@ -14,6 +14,7 @@ export default [
     redirect: "/projectmgt/projectoverview",
     meta: {
       title: "项目管理",
+      activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
     },
     children: [
       {
@@ -21,6 +22,7 @@ export default [
         name: "overview",
         meta: {
           title: "项目管理-概览",
+          activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
         },
         component: () => import("@/views/project/overview"),
       },
@@ -29,6 +31,7 @@ export default [
         name: "schedulingAssistant",
         meta: {
           title: "项目管理-排程助手",
+          activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
         },
         component: () => import("@/views/project/schedulingassistant"),
         redirect: "/projectmgt/projectscheassistant/progroupscheduling",
@@ -38,6 +41,7 @@ export default [
             name: "productGroupScheduling",
             meta: {
               title: "项目管理-排程助手-产品组排程",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/schedulingassistant/progroup")
           },
@@ -46,6 +50,7 @@ export default [
             name: "partScheduling",
             meta: {
               title: "项目管理-排程助手-零件排程",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/schedulingassistant/part")
           },
@@ -54,6 +59,7 @@ export default [
             name: "progressConfirmSummary",
             meta: {
               title: "项目管理-排程助手-进度确认汇总",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/schedulingassistant/progressconfirm")
           },
@@ -62,6 +68,7 @@ export default [
             name: "scheduleVersion",
             meta: {
               title: "项目管理-排程助手-排程版本查询",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/schedulingassistant/scheduleVersion")
           },
@@ -70,6 +77,7 @@ export default [
             name: "historyProcessDb",
             meta: {
               title: "项目管理-排程助手-历史进度数据库",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/schedulingassistant/historyprocessdb")
           },
@@ -78,8 +86,27 @@ export default [
             name: "proconfirm",
             meta: {
               title: "项目管理-排程助手-进度确认",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/schedulingassistant/progressconfirm")
+          },
+          {
+            path: 'defaultscheLogic',
+            name: 'defaultScheLogic',
+            meta: {
+              title: '排程助手-默认排程算法配置',
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
+            },
+            component: () => import('@/views/project/schedulingassistant/defaultScheLogic')
+          },
+          {
+            path: 'riskAndAlarmConfig',
+            name: 'riskAndAlarmConfig',
+            meta: {
+              title: '排程助手-风险预警配置',
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
+            },
+            component: () => import('@/views/project/schedulingassistant/riskAndAlarmConfig')
           }
         ]
       },
@@ -88,6 +115,7 @@ export default [
         name: "projectProgressMonitoring",
         meta: {
           title: "项目管理-项目进度监控",
+          activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
         },
         component: () => import("@/views/project/progressmonitoring"),
         redirect: "/projectmgt/projectprogressmonitoring/home",
@@ -97,6 +125,7 @@ export default [
             name: "progressmonitoring-monitoring",
             meta: {
               title: "项目管理-项目进度监控",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/progressmonitoring/home"),
           },
@@ -105,6 +134,7 @@ export default [
             name: "progressmonitoring-delaySummary",
             meta: {
               title: "延误原因汇总",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/progressmonitoring/delaySummary"),
           },
@@ -114,6 +144,7 @@ export default [
             meta: {
               title: "零件列表",
               withoutTop: true,
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/progressmonitoring/partList"),
           },
@@ -123,6 +154,7 @@ export default [
             meta: {
               title: "项目管理-零件任务清单",
               withoutTop: true,
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/progressmonitoring/partsTaskList")
           },
@@ -132,6 +164,7 @@ export default [
             meta: {
               title: "项目管理-监控明细",
               withoutTop: true,
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/progressmonitoring/monitorDetail")
           },
@@ -140,6 +173,7 @@ export default [
             name: "progressmonitoring-delayconfirm",
             meta: {
               title: "延误原因确认",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/progressmonitoring/delaySummary"),
           },
@@ -150,6 +184,7 @@ export default [
         name: "projectProgressReport",
         meta: {
           title: "项目管理-项目进度报告",
+          activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
         },
         component: () => import("@/views/project/progressreport"),
         redirect: "/projectmgt/projectprogressreport/partprogress",
@@ -159,6 +194,7 @@ export default [
             name: "partprogress",
             meta: {
               title: "项目管理-项目进度报告-零件进度报告",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/progressreport/partprogress"),
           },
@@ -167,6 +203,7 @@ export default [
             name: "materialcost",
             meta: {
               title: "项目管理-项目进度报告-材料成本报告",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/progressreport/materialcost"),
           },
@@ -175,6 +212,7 @@ export default [
             name: "performanceanalysis",
             meta: {
               title: "项目管理-项目进度报告-项目管理绩效分析",
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
             },
             component: () => import("@/views/project/progressreport/performanceanalysis"),
           }

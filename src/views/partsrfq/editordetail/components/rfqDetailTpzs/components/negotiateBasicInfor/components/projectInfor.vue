@@ -18,26 +18,28 @@
         <iText>{{  form.categoryName }}</iText>
       </iFormItem>
       <iFormItem>
-        <iLabel :label="'FS/CSS'" slot="label"></iLabel>
+        <iLabel :label="$t('TPZS.FSCSS')" slot="label"></iLabel>
         <iText>{{  form.buyerName }}</iText>
       </iFormItem>
       <iFormItem>
+        <iLabel :label="$t('TPZS.FOP')" slot="label"></iLabel>
+        <iText>{{  form.fopPerson ? form.fopPerson : "-" }}</iText>
       </iFormItem>
       <iFormItem>
-        <iLabel :label="'FOP'" slot="label"></iLabel>
-        <iText>{{  form.ep }}</iText>
+        <iLabel :label="$t('TPZS.EPXTY')" slot="label"></iLabel>
+        <iText>{{  form.ep?form.ep:'-' }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.MQXTY')" slot="label"></iLabel>
-        <iText>{{  form.mq }}</iText>
+        <iText>{{  form.mq ? form.mq:'-' }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.PLXTY')" slot="label"></iLabel>
-        <iText>{{  form.pl }}</iText>
+        <iText>{{  form.plDirectorName?form.plDirectorName:'-' }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel :label="$t('TPZS.CFXTY')" slot="label"></iLabel>
-        <iText>{{  form.cf }}</iText>
+        <iText>{{  form.cfPerson ? form.cfPerson : '-' }}</iText>
       </iFormItem>
       <iFormItem>
         <iLabel icons="iconxinxitishi" :tip="$t('TPZS.LCHTIPS')" :label="$t('TPZS.FOPQK')" slot="label"></iLabel>
@@ -99,12 +101,31 @@ export default {
   watch: {},
   // 方法集合
   methods: {
+    listToString(list, prop) {
+      var str = ""
+      list.forEach((item) => {
+        if (prop) {
+          str = str + item[prop] + ","
+        } else {
+          str = str + item + ","
+        }
+      })
+      return str.substring(0, str.length - 1)
+    },
     async getTableList() {
       this.tableLoading = true;
       try {
         const res = await getOneRfqInfo(this.$route.query.id);
         if (res.result) {
-          this.form = res.data;
+          var pjInfo = res.data;
+          if (pjInfo.fop && pjInfo.fop.length > 0) {
+            pjInfo.fopPerson = this.listToString(pjInfo.fop, "stylist")
+          }
+          if (pjInfo.cfControllerNames && pjInfo.cfControllerNames.length > 0) {
+            pjInfo.cfPerson = this.listToString(pjInfo.cfControllerNames)
+          }
+          this.form = pjInfo;
+          this.$emit("rfqInfo", this.form)
         }
         this.tableLoading = false;
       } catch {
