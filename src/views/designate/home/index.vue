@@ -13,9 +13,9 @@
     <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
-      <div class="margin-bottom20 clearFloat">
+      <div class="clearFloat">
         <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
-        <div class="floatright">
+        <div class="designateEditControl floatright">
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
@@ -92,11 +92,8 @@
             v-permission.auto="SOURCING_NOMINATION_TIJIAOYIZHIXINGJIAOYAN|提交一致性校验"
           >
             {{ language("nominationLanguage_TiJiaoYiZhiXingJiaoYan", '提交一致性校验') }}
-          </iButton>        
-        </div>
-      </div>
-      <div class="margin-bottom20 clearFloat">
-        <div class="floatright">
+          </iButton>
+          <!-- 取消MTZ绑定 -->
           <iButton
             @click="ttss"
             v-permission.auto="SOURCING_NOMINATION_UNBINDMTZ|取消MTZ绑定"
@@ -579,7 +576,6 @@ export default {
       flex: 1;
       width: 0;
     }
-    .right {}
 
     .link {
       flex: 1;
@@ -618,6 +614,13 @@ export default {
   .arrow {
     margin-left: 5px;
   }
+  .designateEditControl {
+    max-width: 85%;
+    text-align: right;
+    ::v-deep.el-button {
+      margin-bottom: 20px;
+    }
+  }
 }
 .openLinkText {
   flex: 1;
@@ -636,9 +639,9 @@ export default {
   text-decoration: underline;
 }
 .aotoTableHeight{
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;  
-      overflow: auto !important ;
-    }
+  ::v-deep .el-table__body-wrapper {
+    min-height: 422px !important;  
+    overflow: auto !important ;
   }
+}
 </style>
