@@ -52,8 +52,9 @@ export default {
       ...mapState(["navList","navListLeft"]),
       ...mapActions(["updateNavList"]),
       tabDataWithPermission() {
-      return process.env.NODE_ENV == 'dev' ? this.tabData.filter(item => this.$store.state.permission.whiteBtnList[item.permissionKey.split('|')[0]]) : this.tabData
+      // return process.env.NODE_ENV == 'dev' ? this.tabData.filter(item => this.$store.state.permission.whiteBtnList[item.permissionKey.split('|')[0]]) : this.tabData
       // return this.tabData.filter(item => this.$store.state.permission.whiteBtnList[item.permissionKey.split('|')[0]])
+      return this.tabData
     }
     },
     data(){

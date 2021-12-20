@@ -75,7 +75,7 @@
                                     v-for="item in linieList || []"
                                     :key="item.id"
                                     :label="$i18n.locale === 'zh' ? item.nameZh : item.nameEn"
-                                    :value="item.id">
+                                    :value="item.id+''">
                                 </el-option>  
                             </iSelect>
                             <iText v-else>{{loiInfo.linieName}}</iText>

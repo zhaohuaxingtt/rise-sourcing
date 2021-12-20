@@ -377,28 +377,28 @@
 		</iCard>
 		<iTabsList class="margin-top20" type='card' v-if='infoItem.id'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
-			<el-tab-pane v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')" v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.DESIGNATED')">
+			<el-tab-pane v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.DESIGNATED') && !isSteelPurchase" v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')">
 				<designateInfo :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_MATERIALGROUPINFORMATION|材料组信息">
-				<materialGroupInfo ref='materialGroupInfo' :params="infoItem" />
+				<materialGroupInfo ref='materialGroupInfo' :params="infoItem" :detailData="detailData" />
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_PARTSPRODUCTIONPLAN|零件产量计划">
 				<outputPlan ref="outputPlan" :params="infoItem" @updateStartYear="updateStartYear" v-permission.auto="PARTSPROCURE_EDITORDETAIL_XUNJIACHANLIANJIHUA|询价产量计划" />
 				<outputRecord v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANCHANLIANGJILU|零件产量记录" ref="outputRecord" class="margin-top20" :params="infoItem" @updateOutput="updateOutput" />
 				<volume ref="volume" class="margin-top20" :params="infoItem" :isSameGroupPartProjectType="isSameGroupPartProjectType" :disabled="disabled || !(detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.NO_RFQ') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.NO_PROJECT_NUM') || detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.APPLICATION_DESIGNAT'))" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINGJIANMEICHEYONGLIANG|零件每车用量" @updateStartYear="updateTabs" :sourcePartProjectType="sourcePartProjectType"/>
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_TUZHIHETPDANXIANGQING','图纸和信息单详情')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSANDTPDETAILSPAGE|图纸和信息单详情">
 				<drawing :params="infoItem" />
 				<sheet class="margin-top20" :params="infoItem" />
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_WULIUYAOQIU','物流要求')" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS|物流要求">
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_WULIUYAOQIU','物流要求')" v-permission.auto="PARTSPROCURE_EDITORDETAIL_LOGISTICSREQUIREMENTS|物流要求">
 				<logistics :infoItem="infoItem"></logistics>
 			</el-tab-pane>
-			<el-tab-pane lazy :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
+			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_SHENQINGMUBIAOJIA','申请目标价')"
 				v-permission.auto="PARTSPROCURE_EDITORDETAIL_APPLYFORTARGETPRICE|申请目标价">
 				<targePrice :purchaseProjectId="purchaseProjectId" :fsnrGsnrNum="fsnrGsnrNum" :partProjectType="detailData.partProjectType || partProjectType" :params="infoItem"></targePrice>
 			</el-tab-pane>
@@ -539,6 +539,10 @@
 				} else{
 					return false
 				}
+			},
+			// 采购项目类型为钢材一次性、批量采购
+			isSteelPurchase() {
+				return this.detailData.partProjectType == this.partProjTypes.GANGCAIYICIXINGCAIGOU || this.detailData.partProjectType == this.partProjTypes.GANGCAIPILIANGCAIGOU
 			}
 		},
 		watch:{

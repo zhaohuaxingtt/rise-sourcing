@@ -21,7 +21,7 @@ export const supplierTableTitle = [
   { props: 'sapNum', name: 'SAP号', key: 'nominationSupplier.SAPHao', width: 120, tooltip: true },
   { props: 'supplierProductionPlace', name: '所在地', key: 'TPZS.SZD', tooltip: true },
   { props: 'isSelectMbdl', name: '是否MBDL', key: 'TPZS.SFMBDL', tooltip: true },
-  { props: 'quotationStatusName', name: '报价状态', key: 'TPZS.BJZT', tooltip: true },
+  { props: 'rfqParts', name: '报价状态', key: 'TPZS.BJZT', tooltip: true },
   { props: 'epRate', name: 'EP打分', key: 'TPZS.EPDF', tooltip: true },
   { props: 'mqRate', name: '质量打分', key: 'TPZS.MQDF', tooltip: true },
   { props: 'plRate', name: 'BNK打分', key: 'TPZS.PLDF', tooltip: true }
@@ -32,7 +32,7 @@ export const fixedRecordTableTitle = [
   { props: 'rfqId', name: 'RFQ编号', key: 'costanalysismanage.RfqBianHao', width: 120, tooltip: true },
   { props: 'rfqName', name: 'RFQ名称', key: 'costanalysismanage.RfqMingCheng', tooltip: true },
   { props: 'material', name: '材料组名称', key: 'TPZS.CLZMC', tooltip: true },
-  { props: 'stuffName', name: '工艺组名称', key: 'TPZS.GYZMC', tooltip: true },
+  { props: 'craft', name: '工艺组名称', key: 'TPZS.GYZMC', tooltip: true },
   { props: 'carTypeProj', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG', tooltip: true },
   { props: 'supplierNameCn', name: '定点供应商', key: 'LK_FIXEDPOINTSUPPLIER', tooltip: true },
   { props: 'apriceModel', name: '定点金额', key: 'TPZS.DDJE', tooltip: true },

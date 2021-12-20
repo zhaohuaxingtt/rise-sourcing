@@ -12,7 +12,7 @@
 </div>
 </template>
 <script>
-import {TAB, MENU} from '../data'
+import {TAB, MENU} from '@/views/dashboard/components/data'
 import {
   iNavMvp,
   // icon,

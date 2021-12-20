@@ -814,7 +814,11 @@ export default {
         }
         //本年产量日期
         let annualYesr = dayjs(dateList[`stage${i}`]).year();
-        let dateArray= Object.values(yearsPlanDate);
+        let dateArray = []
+        for (let j = 1; j < 10; j++) {
+          dateArray.push(yearsPlanDate[`stage${j}`])
+        }
+        
         //产量年度在该零件年降计划出现次数数组count
         let count =dateArray.filter(item=>{
           if(item && item?.toString().includes(annualYesr)){
@@ -1090,6 +1094,7 @@ export default {
     },
     //数据验证通过提交数据
     handleSaveData(callback) {
+      this.projectLoading = true
       let formData = { ...this.ruleForm };
       //采购计划
       this.ruleForm.supplierProducts.forEach((item, index) => {
@@ -1117,19 +1122,25 @@ export default {
       formData.supplierOffer = supplierOffer;
       console.log(869,formData)
       //保存
-      saveBiddingQuotation(formData)
-        .then((res) => {
-          if (res) {
-            this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
-          }
+      saveBiddingQuotation(formData).then((res) => {
+        if (res) {
+          this.projectLoading = false
+          this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
           callback && callback();
-        })
-        .catch((err) => {
-          console.log(err);
+        } else {
+          this.projectLoading = false
           this.yearsPlanTable = [];
           this.purchasePlanTable = [];
           this.handleSearchReset();
-        });
+        }
+        callback && callback();
+      }).catch((err) => {
+        this.projectLoading = false
+        this.yearsPlanTable = [];
+        this.purchasePlanTable = [];
+        this.handleSearchReset();
+        // callback && callback();
+      });
     },
     handleSearchReset() {
       this.yearsPlan = [];
@@ -1326,11 +1337,16 @@ export default {
               box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
               border-color: transparent;
               border-radius: 0.25rem;
+              background-color: #f5f7fa;
               .el-tag {
-                background-color: #f5f7fa;
+                /* background-color: #f5f7fa;
                 color: #000;
                 border-radius: 18px;
-                border-color: #fff;
+                border-color: #fff; */
+                background-color: #f7f7f7;
+                color: #000;
+                border-radius: 1.25rem;
+                border-color: #eef6ff;
                 margin-left: 3px;
                 min-width: 15px;
               }

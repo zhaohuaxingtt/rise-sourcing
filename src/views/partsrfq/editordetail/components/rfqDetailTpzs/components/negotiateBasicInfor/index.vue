@@ -47,7 +47,6 @@ export default {
       this.$router.push({ path: '/sourcing/partsrfq/reportList' });
     },
     emitRfq(rfq) {
-      console.log(rfq)
       this.rfqInfo = rfq;
     }
   }

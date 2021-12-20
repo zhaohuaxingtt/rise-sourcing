@@ -169,12 +169,10 @@ export default {
           //设置过滤条件	
           report.setFilters([partNumListFilter]);
           //report.updateFilters(models.FiltersOperations.Add, [filter_suppliers]);
-          console.log("Report filter was added.");
         }
         catch (errors) {
           console.log(errors);
         }
-        console.log("Loaded");
       });
 
       // Report.off removes a given event handler if it exists.
@@ -182,26 +180,20 @@ export default {
 
       // Report.on will add an event handler which prints to Log window.
       report.on("rendered", function() {
-        console.log("Rendered");
       });
       report.off("filtersApplied")
 
       report.on("filtersApplied", function() {
-        console.log("filtersApplied");
       });
 
       report.on("error", function(event) {
-        console.log(event.detail);
         report.off("error");
       });
 
       report.off("saved");
       report.on("saved", function(event) {
-        console.log(event.detail);
         if (event.detail.saveAs) {
-          console.log(
-            'In order to interact with the new report, create a new token and load the new report'
-          );
+          
         }
       });
 

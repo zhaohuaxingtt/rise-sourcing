@@ -39,6 +39,7 @@ export default{
             '抱歉，您当前还未选择您需要取消的零件采购项目！'
           )
         );
+      if (this.backItems.find(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030')) return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
       this.diologBack = true;
     },
        // 取消零件采购

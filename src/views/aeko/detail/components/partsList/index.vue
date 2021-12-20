@@ -251,8 +251,6 @@ export default {
             this.SearchList = linieSearchList
             this.tableTitle = linieTableTitle
             this.searchParams = cloneDeep(linieQueryForm)
-            // this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
-            // this.searchParams.buyerName = this.userInfo.nameZh
         } else if (this.isCommodityCoordinator) {
             this.SearchList = SearchList
             this.tableTitle = commodityTableTitle;
@@ -271,7 +269,26 @@ export default {
             this.isLinie = true;
             this.isAekoManager = false;
             this.isCommodityCoordinator = false;
+            this.searchParams = {
+                ...cloneDeep(linieQueryForm),
+                brand:[''],
+            }
+        }else if(from == 'manage'){
+            if(this.this.isCommodityCoordinator){
+                 this.SearchList = SearchList
+            this.tableTitle = commodityTableTitle;
+            }else{
+                this.SearchList = SearchList
+                this.tableTitle = tableTitle;
+            }
+            
+        }else if(from =='stance'){
+            this.SearchList = linieSearchList
+            this.tableTitle = linieTableTitle
             this.searchParams = cloneDeep(linieQueryForm)
+        }else {
+            this.SearchList = []
+            this.tableTitle = []
         }
 
     },
@@ -347,6 +364,15 @@ export default {
                     cartype:[''],
                     linieDeptNumList:[''],
                 };
+            }
+             const {query} = this.$route;
+            const {from=''} = query;
+            // 若从aeko查看跳转过来
+            if(from == 'check'){
+                 this.searchParams = {
+                ...cloneDeep(linieQueryForm),
+                brand:[''],
+                }
             }
 
             this.init()
@@ -643,7 +669,7 @@ export default {
                 partNum,
                 partNameZh,
                 buyerName,
-                brand,
+                brandList:(brand.length == 1 && brand[0] === '') ? [] : brand,
                 current: this.page.currPage,
                 size: this.page.pageSize
             })

@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-12-14 10:48:22
+ * @LastEditTime: 2021-12-17 17:28:35
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -229,7 +229,7 @@ export default {
     this.transmitObj = transmitObj
     this.noLinie =
       (transmitObj.aekoApprovalDetails.workFlowId ||
-      transmitObj.aekoApprovalDetails.workFlowDTOS[0]?.workFlowId)? true : false;
+      transmitObj.aekoApprovalDetails.workFlowDTOS?.length)? true : false;
     this.noLinie ? this.getTableData() : this.alterationCbdSummaryByLinie();
   },
   methods: {
