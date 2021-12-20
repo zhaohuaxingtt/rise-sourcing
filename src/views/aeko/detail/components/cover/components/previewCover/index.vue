@@ -117,6 +117,7 @@ import {
 } from '@/api/aeko/detail/cover.js'
 import unfreezeDialog from './unfreezeDialog'
 import { roleMixins } from "@/utils/roleMixins";
+import { cloneDeep } from "lodash"
 export default {
     name:'previewCover',
     mixins: [pageMixins, roleMixins],
@@ -179,6 +180,13 @@ export default {
                 )
             }
         }
+
+        // 提示不可见
+        const coverTableTitle = cloneDeep(coverTableTitleCost);
+        coverTableTitle.map((item)=>{
+            if(item.props == 'materialIncrease') item.showTips = false;
+        })
+        this.tableTitleCost = coverTableTitle;
     },
     methods:{
         // 获取详情
