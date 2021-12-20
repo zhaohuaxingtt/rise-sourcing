@@ -9,7 +9,23 @@
 
 <template>
   <iPage class="targetPriceDetail">
-    <div class="font20 font-weight">{{language('LINGJIANHAO','零件号')}}：{{detailData.partNum}}</div>
+    <div class="font20 font-weight targetPriceDetail-title">
+      <div>{{language('LINGJIANHAO','零件号')}}：{{detailData.partNum}}</div>
+      <!-- 日志 -->
+      <div>
+        <iLoger
+					:config="{
+						module_obj_ae: '财务目标价', 
+						bizId_obj_ae: 'partNum', 
+						queryParams:['bizId_obj_ae']}"
+          :partNum="detailData.partNum"
+					credentials
+					isPage
+					class="margin-left20"
+					optionDicKey="LOG_OPERATION_TYPES"
+					optionDicKey2="财务目标价详情页" />
+      </div>
+    </div>
     <!------------------------------------------------------------------------>
     <!--                 基础信息                                          --->
     <!------------------------------------------------------------------------>
@@ -30,8 +46,9 @@ import { iPage } from 'rise'
 import history from './components/history'
 import basic from './components/basic'
 import designateInfo from './components/designateInfo'
+import iLoger from 'rise/web/components/iLoger'
 export default {
-  components: {iPage,history,basic,designateInfo},
+  components: {iPage,history,basic,designateInfo,iLoger},
   data() {
     return {
       detailData: {}
@@ -66,5 +83,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.targetPriceDetail-title {
+  display: flex;
+  justify-content: space-between;
+}
 </style>
