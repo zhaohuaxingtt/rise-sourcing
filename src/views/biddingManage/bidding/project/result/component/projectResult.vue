@@ -21,7 +21,7 @@
         </div>
         <commonTable
           ref="tableDataForm"
-          :tableData="tableListData"
+          :tableData="suppliersPage"
           :key="isTax"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -68,8 +68,8 @@
         </commonTable>
         <iPagination
           v-update
-          @current-change="handleCurrentChange($event, query)"
-          @size-change="handleSizeChange($event, query)"
+          @current-change="handleCurrentChange($event)"
+          @size-change="handleSizeChange($event)"
           background
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
@@ -163,6 +163,11 @@ export default {
     role() {
       return this.$route.meta.role;
     },
+    suppliersPage() {
+      const { tableListData } = this;
+      const { currPage, pageSize } = this.page;
+      return tableListData?.slice((currPage - 1) * pageSize, pageSize * currPage);
+    },
     // lookOver() {
     //   if (
     //     this.form.roundType === "05" &&
@@ -209,6 +214,13 @@ export default {
         "03": "万",
         "04": "百万",
       }[currencyMultiple];
+    },
+    handleSizeChange(val) {
+      this.page.currPage = 1;
+      this.page.pageSize = val;
+    },
+    handleCurrentChange(e) {
+      this.page.currPage = e;
     },
     // 导出
     handleExport() {
