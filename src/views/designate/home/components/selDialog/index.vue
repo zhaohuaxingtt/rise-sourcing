@@ -23,7 +23,7 @@
       </div>
     </div>
     <div class="body" v-loading="tableLoading">
-      <tableList v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SEL_TABLE|SEL分摊单附件-表格"  index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="dataList" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
+      <tableList  index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="dataList" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
         <template #fileName="scope">
           <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
         </template>
