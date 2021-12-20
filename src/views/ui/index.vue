@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-11-25 17:48:01
+ * @LastEditTime: 2021-12-20 12:11:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -41,7 +41,7 @@
 						<el-col :span="8">
 							<iCard title="title">
 								<template v-slot:header-control>
-									<el-button size="mini">button1</el-button>
+									<el-button size="mini">button1111</el-button>
 									<el-button size="mini">button2</el-button>
 								</template>
 								<div>body</div>
