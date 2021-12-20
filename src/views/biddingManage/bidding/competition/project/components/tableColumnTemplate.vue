@@ -524,7 +524,7 @@ export default {
     // },
     dateValidator(row, props) {
       let num = Number(props.slice(5));
-      let afterDate = dayjs(row[`stage${num - 1}`]);
+      let afterDate = row[`stage${num - 1}`] ? dayjs(row[`stage${num - 1}`]) : '';
       let firstDate = dayjs(this.annualOutputObj[row.index+1][props]).add(1, "month");
       return {
         validator(rule, value, callback) {
@@ -532,7 +532,7 @@ export default {
             num === 1
               ? dayjs(value).isBefore(firstDate)
               ? callback(new Error(rule.message)):callback()
-              : dayjs(value).isBefore(afterDate) || dayjs(value).isSame(afterDate)
+              : dayjs(value).isBefore(afterDate) || dayjs(value).isSame(afterDate) || !afterDate
               ? callback(new Error(rule.message))
               : callback();
           } else {
