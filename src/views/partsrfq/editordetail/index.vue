@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-14 21:44:58
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-20 10:03:37
+ * @LastEditors: caopeng
  * @Description: In User Settings Edit
- * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\index.vue
 -->
 <template>
   <iPage>
@@ -148,7 +148,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------报价助手------------------------------->
     <!--------------------------------------------------------------->
-    <rfq-detail-tpzs v-if='navActivtyValue == 2'></rfq-detail-tpzs>
+    <rfq-detail-tpzs :rfqInfoData="rfqInfo" v-if='navActivtyValue == 2'></rfq-detail-tpzs>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo(true)" :dataRes="newRfqRoundDialogRes" v-if="tabShowStatus"/>
 
     <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
@@ -247,7 +247,8 @@ export default {
       endEngotiationlaoding: false,
       partProjTypes,
       reason:'',
-      roundsType
+      roundsType,
+       rfqInfo:{}
     }
   },
   created() {
@@ -336,6 +337,7 @@ export default {
           // const res = mockData;
           if (res.code == 200 && res.data) {
             this.baseInfo = res.data
+            this.rfqInfo=res.data
             this.disabled =!!res.data.isFreeze
             console.log(this.disabled, '最终数据1');
              if(dialogPage){ //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
