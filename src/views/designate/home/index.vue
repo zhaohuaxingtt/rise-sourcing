@@ -13,9 +13,9 @@
     <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
-      <div class="margin-bottom20 clearFloat">
+      <div class="clearFloat">
         <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
-        <div class="floatright">
+        <div class="designateEditControl floatright">
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
@@ -92,7 +92,14 @@
             v-permission.auto="SOURCING_NOMINATION_TIJIAOYIZHIXINGJIAOYAN|提交一致性校验"
           >
             {{ language("nominationLanguage_TiJiaoYiZhiXingJiaoYan", '提交一致性校验') }}
-          </iButton>        
+          </iButton>
+          <!-- 取消MTZ绑定 -->
+          <iButton
+            @click="ttss"
+            v-permission.auto="SOURCING_NOMINATION_UNBINDMTZ|取消MTZ绑定"
+          >
+            {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
+          </iButton>
         </div>
       </div>
       <tablelist
@@ -110,15 +117,20 @@
       
       <!-- 定点单号 -->
       <template #nominateName="scope">
-         <span class="flexRow-link">
-            <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
-              <span class="openLinkText cursor leftRow"  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateName }}</span>
-            </el-tooltip>
-            <span class="icon-gray cursor rightRow"  @click="viewNominationDetail(scope.row)">
-                <icon symbol class="show" name="icontiaozhuananniu" />
-                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-        </span> 
+        <div class="flexBox">
+          <div class="left">
+            <div class="flexBox">
+              <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
+                <div class="link" @click="viewNominationDetail(scope.row)">{{ scope.row.nominateName }}</div>
+              </el-tooltip>
+              <icon v-if="scope.row.mtzApplyId" class="iconMTZ right" symbol name="iconMTZ" />
+            </div>
+          </div>
+          <div class="rigth icon-gray cursor arrow" @click="viewNominationDetail(scope.row)">
+            <icon symbol class="show" name="icontiaozhuananniu" />
+            <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+          </div>
+        </div>
       </template>
       <!-- 定点类型 -->
       <!-- <template #nominateProcessType="scope">
@@ -279,7 +291,8 @@ export default {
             desinateId: row.id, 
             mtzApplyId: row.mtzApplyId, 
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
-            partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
+            partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',  
+            businessKey: (row.partProjType && row.partProjType.code) || row.partProjType || '',
             applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
           }
         })
@@ -546,13 +559,77 @@ export default {
       })
       .finally(() => this.tranformRecallLoading = false)
     },
+    // 取消MTZ绑定
+    ttss() {}
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.designateHome {
+  .flexBox {
+    display: flex;
+    align-items: center;
+    text-align: left;
+
+    .left {
+      flex: 1;
+      width: 0;
+    }
+
+    .link {
+      flex: 1;
+      width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .iconMTZ {
+    margin-left: 5px;
+    width: 25px;
+  }
+
+  .icon-gray {
+    .show {
+      display: inline-block;
+    }
+
+    .active {
+      display: none;
+    }
+    
+    &:hover {
+      .show {
+        display: none;
+      }
+
+      .active {
+        display: inline-block;
+      }
+    }
+  }
+
+  .arrow {
+    margin-left: 5px;
+  }
+  .designateEditControl {
+    max-width: 85%;
+    text-align: right;
+    ::v-deep.el-button {
+      margin-bottom: 20px;
+    }
+  }
+}
 .openLinkText {
+  flex: 1;
   color: $color-blue;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  width: 100vw;
 }
 .designateSearch {
   margin-top: 20px;
@@ -562,9 +639,9 @@ export default {
   text-decoration: underline;
 }
 .aotoTableHeight{
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;  
-      overflow: auto !important ;
-    }
+  ::v-deep .el-table__body-wrapper {
+    min-height: 422px !important;  
+    overflow: auto !important ;
   }
+}
 </style>

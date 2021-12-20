@@ -303,7 +303,7 @@ export default {
       const idList = this.tableListData.map(o => Number(o.id))
       try {
         const res = await submitSignSheet({
-          signId:Number(this.form.signId)
+          signIdArr:[Number(this.form.signId)]
         })
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG', '操作成功'))
@@ -349,6 +349,7 @@ export default {
             desinateId: row.id,
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
             partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
+            businessKey: (row.partProjType && row.partProjType.code) || row.partProjType || '',
             applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
           }
         })

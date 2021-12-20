@@ -5,7 +5,7 @@
  * @LastEditTime: 2021-11-15 10:29:16
 -->
 <template>
-  <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
+  <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft"  >
     <el-table-column v-if="selection" type='selection' width="34" align='center'></el-table-column>
     <el-table-column v-if='indexKey' :class-name="indexKey ? 'tableIndex': ''" type='index' width='36' align='center' label='#' :fixed="isFixedIndex">
       <template slot-scope="scope">
@@ -238,6 +238,11 @@ export default{
     handleSelect(selection,row){
       const selectdBorder = row.selectedBorder
       this.$set(row,'selectedBorder',!selectdBorder)
+      this.tableData.forEach(item => {
+          if(item.partProjectType == '1000040' || item.partProjectType == '1000030') {
+            this.$refs.multipleTable.toggleRowSelection(row, true);           
+          }
+        })
     },
     handleSelectAll(selection){  
       const flag = selection.length
@@ -245,6 +250,13 @@ export default{
         this.$set(selection[i],'selectedBorder',!!flag)
       }
       !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+      // if(
+      //   this.tableData.find(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030')
+      // ) {this.$refs.multipleTable.toggleRowSelection(selection, true); console.log('想不到吧我来了');    }
+      this.$nextTick(()=>{
+         this.toggleSelection(
+          this.tableData.filter(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030'), true)
+      })
     },
     borderLeft({row, column, rowIndex, columnIndex}){
       if(columnIndex === 0 && row.selectedBorder === true){
@@ -253,6 +265,7 @@ export default{
       else{
         return ""
       }
+
     },
     showLabel(value, options = []) {
       const current =  options.find(item => item.value === value)

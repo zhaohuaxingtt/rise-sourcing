@@ -18,25 +18,25 @@
            <quotationScoringTracking  v-if='cardShow.find(items=>items.key == "1").show'></quotationScoringTracking>
          </iCard>
          <!--------------------报价分析汇总-零件----------------------------------------->
-         <iCard @handleTitle="addFile($event,2,'报价分析汇总-零件')" :title="'报价分析汇总-零件'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" @handleCollapse="handleCollapse($event,'2')" collapse class="margin-top20" :defalutCollVal='cardShow.find(items=>items.key == "2").show' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN|报价分析汇总-零件">
-           <quotationScoringHZ  id="card2" v-if='cardShow.find(items=>items.key == "2").show'></quotationScoringHZ>
+         <iCard id="card2" @handleTitle="addFile($event,2,'报价分析汇总-零件')" :title="'报价分析汇总-零件'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" @handleCollapse="handleCollapse($event,'2')" collapse class="margin-top20" :defalutCollVal='cardShow.find(items=>items.key == "2").show' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN|报价分析汇总-零件">
+           <quotationScoringHZ   v-if='cardShow.find(items=>items.key == "2").show'></quotationScoringHZ>
          </iCard>
           <!--------------------报价分析汇总-模具----------------------------------------->
          <quotationScoringMj ref='quotationScoringMj' v-if='cardShow.find(items=>items.key == "3").show' class="margin-top20" titleKey='LK_BJFXHZMJ' @handleCollapse='handleCollapse($event,"3")'></quotationScoringMj>
-         <iCard  title="报价分析汇总-模具" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"3")' collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGMOJU|报价分析汇总-模具"></iCard>
+         <iCard  :title="'报价分析汇总-模具'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"3")' collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGMOJU|报价分析汇总-模具"></iCard>
           <!--------------------报价分析汇总-报价趋势----------------------------------------->
          <quotationScoringEcartsCard ref='quotationScoringEcartsCard' v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
-         <iCard title="报价趋势" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'4')" collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI|报价趋势"></iCard>
+         <iCard :title="'报价趋势'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'4')" collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI|报价趋势"></iCard>
           <!--------------------报价分析汇总-业务分配模拟----------------------------------------->
-         <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')" id="card5" :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_YEWYFENPEIMONI|业务分配模拟"></buMonitor>
+         <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')"  id="card5"  :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_YEWYFENPEIMONI|业务分配模拟"></buMonitor>
          <iCard @handleTitle="addFile($event,5,'业务分配模拟')" id="card5" :title="'业务分配模拟'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'5')"  collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
       </template>
     </el-tab-pane>
     <el-tab-pane lazy name="two" label="专项分析工具" v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU|专项分析工具">
-      <gather />
+      <gather  />
     </el-tab-pane>
     <el-tab-pane lazy name="three" label="谈判基本信息" v-permission.auto="RFQ_DETAIL_TIPS_TANPANJIBENXINXI|谈判基本信息">
-      <negotiateBasicInfor></negotiateBasicInfor>
+      <negotiateBasicInfor :rfqInfoData="rfqInfoData"></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
 </template>
@@ -55,6 +55,15 @@ import { udMutilfiles,reportAdd } from '@/api/partsrfq/reportList/index'
 export default {
   mixins: [downloadPdfMixins],
   components: { icon,iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, gather, negotiateBasicInfor ,iButton},
+  props:{
+          rfqInfoData: { type: Object },
+  },
+  watch:{
+      rfqInfoData(val){
+          this.rfqInfoData=val
+          console.log(val)
+      }
+  },
   data() {
     return {
       cardShow: JSON.parse(JSON.stringify(icardData)),

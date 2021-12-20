@@ -8,11 +8,12 @@
 <template>
   <!-- @handleTitle="addFile(6,'项目概览')"  -->
   <iCard 
+  id="card6"
          @handleTitle="addFile($event,6, '项目概览')"
          :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
          :defalutCollVal='false'
          collapse>
-         <div id="card6">
+         <div  id="card6">
             <projectInfor />
                 <el-divider></el-divider>
                 <partInforTable />
@@ -46,6 +47,9 @@ export default {
     partInforTable,
     supplierTable,
   },
+    props:{
+          rfqInfoData: { type: Object },
+  },
   data() {
     // 这里存放数据
     return {
@@ -55,7 +59,11 @@ export default {
   // 监听属性 类似于data概念
   computed: {},
   // 监控data中的数据变化
-  watch: {},
+  watch: {
+          rfqInfoData(val){
+          this.rfqInfoData=val
+      }
+  },
   // 方法集合
   methods: {
     emitRfq(rfq) {

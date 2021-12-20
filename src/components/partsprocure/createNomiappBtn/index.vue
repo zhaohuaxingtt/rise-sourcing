@@ -106,7 +106,8 @@ export default{
         query:{
           desinateId:items.nominateId || '',
           designateType:items.nominateProcessType || '',
-          partProjType:items.partProjectType || ''
+          partProjType:items.partProjectType || '',
+          businessKey:items.partProjectType || ''
         }
       })
       window.open(routeData.href, '_blank')

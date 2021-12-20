@@ -251,8 +251,6 @@ export default {
             this.SearchList = linieSearchList
             this.tableTitle = linieTableTitle
             this.searchParams = cloneDeep(linieQueryForm)
-            // this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
-            // this.searchParams.buyerName = this.userInfo.nameZh
         } else if (this.isCommodityCoordinator) {
             this.SearchList = SearchList
             this.tableTitle = commodityTableTitle;
@@ -275,6 +273,22 @@ export default {
                 ...cloneDeep(linieQueryForm),
                 brand:[''],
             }
+        }else if(from == 'manage'){
+            if(this.this.isCommodityCoordinator){
+                 this.SearchList = SearchList
+            this.tableTitle = commodityTableTitle;
+            }else{
+                this.SearchList = SearchList
+                this.tableTitle = tableTitle;
+            }
+            
+        }else if(from =='stance'){
+            this.SearchList = linieSearchList
+            this.tableTitle = linieTableTitle
+            this.searchParams = cloneDeep(linieQueryForm)
+        }else {
+            this.SearchList = []
+            this.tableTitle = []
         }
 
     },

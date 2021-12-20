@@ -734,7 +734,7 @@ export default {
         ).toFixed(2);
       } else {
         amp = (
-          ((totalPrices - this.dividedBeiShu(minPrice)) / totalPrices).toFixed(4) * 100
+          ((this.dividedBeiShu(minPrice) - totalPrices) / totalPrices).toFixed(4) * 100
         ).toFixed(2);
       }
       return isNaN(amp) ? "" : amp + "%";
@@ -1312,13 +1312,13 @@ html {
 }
 
 .invalidReason {
-  background: #f5f7fa;
+  background-color: #f4f5f6;
   padding: 10px 15px 10px 15px;
   margin-right: 70px;
   transform: translateX(30px);
   height: 59.5px;
   min-height: 59.5px;
-  color: #aaaaaa;
+  color: #000;
   border-radius: 6px;
   font-size: 15px;
   line-height: 15px;

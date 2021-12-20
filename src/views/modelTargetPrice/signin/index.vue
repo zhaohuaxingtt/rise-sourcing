@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-14 13:59:39
+ * @LastEditTime: 2021-12-16 14:30:48
  * @Description: 模具目标价-目标价签收
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\index.vue
 -->
@@ -85,7 +85,7 @@
      <!------------------------------------------------------------------------>
     <!--                  无投资确认弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <!-- <noInvestConfirmDialog ref="noInvestConfirm" :dialogVisible="noInvestDialogVisible" @changeVisible="changeNoInvestDialogVisible" @handleConfirm="handleNoInvestConfirm" /> -->
+    <noInvestConfirmDialog ref="noInvestConfirm" :dialogVisible="noInvestDialogVisible" @changeVisible="changeNoInvestDialogVisible" @handleConfirm="handleNoInvestConfirm" />
     <!------------------------------------------------------------------------>
     <!--                  退回弹窗                                      --->
     <!------------------------------------------------------------------------>
@@ -104,14 +104,14 @@ import { getCartypeDict} from "@/api/partsrfq/home"
 import { getTargetPriceSingPage, noInvestment, taskSign, appoint, existValidTargetPrice, sendBack } from '@/api/modelTargetPrice/index'
 import iDicoptions from 'rise/web/components/iDicoptions'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
-// import noInvestConfirmDialog from './components/noInvestConfirm'
+import noInvestConfirmDialog from './components/noInvestConfirm'
 import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect' 
 import procureFactorySelect from '@/views/modelTargetPrice/components/procureFactorySelect'
 import moment from 'moment'
 import sendBackDialog from './components/sendBack'
 export default {
   mixins: [pageMixins],
-  components: {carProjectSelect,procureFactorySelect,iDicoptions,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,attachmentDialog, assignDialog, sendBackDialog},
+  components: {carProjectSelect,procureFactorySelect,iDicoptions,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,attachmentDialog, assignDialog, sendBackDialog, noInvestConfirmDialog},
   data() {
     return {
       tableTitle: tableTitle,
@@ -147,6 +147,10 @@ export default {
     this.getTableList()
   },
   methods: {
+    openNoInvest() {
+      this.noInvestLoading = false
+      this.changeNoInvestDialogVisible(true)
+    },
     handleSendBackConfirm(memo) {
       const params = {
         remarks: memo,
@@ -167,6 +171,12 @@ export default {
     changeSendBackDialogVisible(visible) {
       this.sendBackDialogVisible = visible
     },
+    /**
+     * @Description: 无投资
+     * @Author: Luoshuang
+     * @param {*}
+     * @return {*}
+     */    
     async handleNoInvest() {
       if (this.selectItems.length < 1) {
         iMessage.warn(this.language('ZHISHAOXUANZEYITIAOJILU','至少选择一条记录'))
@@ -177,7 +187,6 @@ export default {
         const existValidTargetPriceRes = await existValidTargetPrice(this.selectItems.map(item => item.rfqId))
         if (existValidTargetPriceRes?.result) {
           if (existValidTargetPriceRes?.data) {
-            const _this = this
             this.$confirm(
               this.language('RFQHASVALIDTARGETPRICECONFIRMNOINVESTMENT','RFQ已有目标价返回，是否确认无投资？'), 
               this.language('WUTOUZIQUEREN','无投资确认'), 
@@ -189,13 +198,13 @@ export default {
             ).then(confirmInfo => {
               console.log('confirmInfo',confirmInfo)
               if (confirmInfo === 'confirm') {
-                _this.handleNoInvestConfirm()
+                this.openNoInvest()
               }
             }).catch(()=> {
               this.noInvestLoading = false
             })
           } else {
-            this.handleNoInvestConfirm()
+            this.openNoInvest()
           }
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? existValidTargetPriceRes?.desZh : existValidTargetPriceRes?.desEn)
@@ -362,7 +371,7 @@ export default {
       })
     },
     /**
-     * @Description: 无投资
+     * @Description: 退回
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
@@ -385,21 +394,20 @@ export default {
      */    
     handleNoInvestConfirm(memo) {
       const params = {
-        // remarks: memo,
+        remarks: memo,
         taskIds: this.selectItems.map(item => item.taskId)
       }
       noInvestment(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          // this.changeNoInvestDialogVisible(false)
+          this.changeNoInvestDialogVisible(false)
           
           this.getTableList()
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       }).finally(() => {
-        this.noInvestLoading = false
-        // this.refs.noInvestConfirm.changeSaveLoading(false)
+        this.refs.noInvestConfirm.changeSaveLoading(false)
       })
     }
   }

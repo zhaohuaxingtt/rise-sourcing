@@ -1258,7 +1258,7 @@ export default {
               this.clientHeight = false;
             }
             this.totalWidth = this.totalWidth + 75 + "px";
-            this.maxData = _.max(maxList).toString();
+            this.maxData = maxList ? _.max(maxList).toString() : "";
             let first = Number(this.maxData.slice(0, 1)) + 1;
             for (let i = 0; i < this.maxData.length - 1; i++) {
               first += "0";
