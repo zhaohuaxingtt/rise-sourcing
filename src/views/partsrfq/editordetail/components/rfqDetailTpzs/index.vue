@@ -61,6 +61,7 @@ export default {
   watch:{
       rfqInfoData(val){
           this.rfqInfoData=val
+          console.log(val)
       }
   },
   data() {
