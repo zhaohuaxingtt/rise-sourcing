@@ -33,10 +33,10 @@
       </template>
     </el-tab-pane>
     <el-tab-pane lazy name="two" label="专项分析工具" v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU|专项分析工具">
-      <gather />
+      <gather  />
     </el-tab-pane>
     <el-tab-pane lazy name="three" label="谈判基本信息" v-permission.auto="RFQ_DETAIL_TIPS_TANPANJIBENXINXI|谈判基本信息">
-      <negotiateBasicInfor></negotiateBasicInfor>
+      <negotiateBasicInfor :rfqInfoData="rfqInfoData"></negotiateBasicInfor>
     </el-tab-pane>
   </iTabsList>
 </template>
@@ -55,6 +55,14 @@ import { udMutilfiles,reportAdd } from '@/api/partsrfq/reportList/index'
 export default {
   mixins: [downloadPdfMixins],
   components: { icon,iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, gather, negotiateBasicInfor ,iButton},
+  props:{
+          rfqInfoData: { type: Object },
+  },
+  watch:{
+      rfqInfoData(val){
+          this.rfqInfoData=val
+      }
+  },
   data() {
     return {
       cardShow: JSON.parse(JSON.stringify(icardData)),

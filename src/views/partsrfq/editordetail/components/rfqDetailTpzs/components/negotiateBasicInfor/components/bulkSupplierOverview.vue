@@ -33,7 +33,8 @@ export default {
   mixins: [downloadPdfMixins],
   components: { iCard, iButton, remarkDialog, batchSupplier },
   props: {
-    categoryCode: String
+    categoryCode: String,
+     rfqInfoData: { type: Object },
   },
   data() {
     return {
@@ -67,7 +68,10 @@ export default {
         this.paramCategoryCode = val
       },
       immediate: true
-    }
+    },
+        rfqInfoData(val){
+          this.rfqInfoData=val
+      }
   },
   created() {
     this.powerBiUrl()

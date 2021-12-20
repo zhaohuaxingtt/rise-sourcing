@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-14 09:52:48
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-20 09:45:34
+ * @LastEditors: caopeng
  * @Description: In User Settings Edit
- * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\index.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\index.vue
 -->
 <template>
   <iPage>
@@ -180,7 +180,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------报价助手------------------------------->
     <!--------------------------------------------------------------->
-    <rfq-detail-tpzs v-if="navActivtyValue == 2"></rfq-detail-tpzs>
+    <rfq-detail-tpzs :rfqInfoData="rfqInfo" v-if="navActivtyValue == 2"></rfq-detail-tpzs>
     <new-rfq-round v-model="newRfqRoundDialog" @refreshBaseInfo="getBaseInfo(true)" :dataRes="newRfqRoundDialogRes" v-if="tabShowStatus" />
 
     <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
@@ -252,6 +252,7 @@ export default {
       checkApplyLoading: false,
       endEngotiationlaoding: false,
       partProjTypes,
+      rfqInfo:{}
     };
   },
   mounted() {
@@ -379,6 +380,8 @@ export default {
             if (res.code == 200) {
               console.log(res.data.isFreeze, '====>>是否禁用');
               this.disabled = !!res.data.isFreeze;
+              this.rfqInfo=res.data
+              console.log(this.rfqInfo)
             } else {
               iMessage.error(this.language('HUOQURFQDINGDIANXINXISHIBAI', '获取RFQ定点信息失败'));
             }
