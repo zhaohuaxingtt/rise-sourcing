@@ -20,8 +20,7 @@ export default [
       {
         path: 'partsrfq/vpAnalyseDetail',
         name: 'vpAnalyseDetail',
-        component: () =>
-          import('../../views/partsrfq/vpAnalyse/vpAnalyseDetail'),
+        component: () => import('../../views/partsrfq/vpAnalyse/vpAnalyseDetail'),
       },
       {
         path: 'partsrfq/reportList',
@@ -34,20 +33,12 @@ export default [
       {
         path: 'partsrfq/vpAnalyCreat',
         name: 'vpAnalyCreat',
-        component: () =>
-          import('@/views/partsrfq/vpAnalyse/vpAnalyCreat/index'),
+        component: () => import('@/views/partsrfq/vpAnalyse/vpAnalyCreat/index'),
       },
       {
         path: 'partsrfq/externalNegotiationAssistant',
         name: 'externalNegotiationAssistant',
-        mate: {
-          name: '谈判助手',
-          activeMenu: ['RISE_WORKBENCH', 'WORKBENCH_NEGOCIATE'], // 一级菜单,二级菜单
-        },
-        component: () =>
-          import(
-            '../../views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant'
-          ),
+        component: () => import('../../views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant'),
       },
       {
         path: 'partsrfq/bob',
@@ -71,10 +62,7 @@ export default [
         meta: {
           title: 'MEKInfoData',
         },
-        component: () =>
-          import(
-            '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekInfoData/index.vue'
-          ),
+        component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekInfoData/index.vue'),
       },
       {
         path: 'partsrfq/pi',
@@ -90,14 +78,19 @@ export default [
         meta: {
           title: '原材料价格总览',
         },
-        component: () =>
-          import('@/views/partsrfq/piAnalyse/components/rawMateria/index'),
+        component: () => import('@/views/partsrfq/piAnalyse/components/rawMateria/index'),
       },
       {
         path: 'partsrfq/piAnalyseDetail',
         name: 'piAnalyseDetail',
         component: () => import('../../views/partsrfq/piAnalyse/piDetail'),
       },
+      {
+        path: 'partsrfq/graph/:id',
+        name: 'graph',
+        component: () => import('../../views/biddingManage/bidding/project/hall/components/graph.vue'),
+      },
     ],
   },
-]
+];
+

@@ -160,7 +160,6 @@ export const downloadPdfMixins = {
                  {code:'NEGOTIATION_SUPPLIER',msg:'批量供应商概览'},
                  {code:'NEGOTIATION_NOMI',msg:'定点记录'},
                  {code:'NEGOTIATION_PLANT',msg:'批量供应商工厂总览'},
-                 
                  {code:'QUOTE_PARTS',msg:'报价分析汇总-零件'},
                  
              ]
@@ -208,8 +207,12 @@ export const downloadPdfMixins = {
                                                 instanceId: -1,
                                                 isBindingInstantce: false,
                                                 Type: '报告',
+                                                name:toolType.find(res => res.msg == name).msg || '',
                                                 toolType: toolType.find(res => res.msg == name).code || '',
-                                                downloadUrl: res.data[0].id
+                                                downloadUrl: res.data[0].id,
+                                                materialGroupName:this.rfqInfoData.categoryName||'',
+                                                materialGroupNo:this.rfqInfoData.categoryCode||'',
+                                                partsNo:''
                                             }
                                             reportAdd(req).then(v => {
                                                 if (res && res.code == 200) {
