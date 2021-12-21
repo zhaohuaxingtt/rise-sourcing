@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-20 13:53:17
+ * @LastEditTime: 2021-12-21 18:09:16
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -588,17 +588,40 @@ export default {
      * @param {*} between 间隔周数
      * @return {*}
      */    
-    getKw(start, between) {
+    getKw(start, betweenKW) {
       if (!start) {
         return null
       }
+      const between = betweenKW || 0
       const startYear = Number(start.split('-KW')[0]) 
       const startWeek = Number(start.split('-KW')[1]) 
       const startAllWeek = moment(startYear+'-01-01').weeksInYear()
-      if (startWeek + between <= startAllWeek) {
+      if (startWeek + between > 0 && startWeek + between <= startAllWeek) {
         return startYear + '-KW' + ((startWeek + between) < 10 ? '0' + (startWeek + between) : (startWeek + between))
+      } else if (startWeek + between > startAllWeek) {
+        let addYearNum = 0
+        let addWeek = startWeek + between - startAllWeek
+        let nextYear = startYear+addYearNum
+        let yearWeek = moment(nextYear+'-01-01').weeksInYear()
+        for (let i = addWeek; i > 0; i -= yearWeek) {
+          addYearNum += 1
+          addWeek = i
+          nextYear = startYear+addYearNum
+          yearWeek = moment(nextYear+'-01-01').weeksInYear()
+        }
+        return (startYear + addYearNum) + '-KW' + (addWeek < 10 ? '0' + addWeek : addWeek)
       } else {
-        return (startYear + 1) + '-KW' + ((startWeek + between - startAllWeek) < 10 ? '0' + (startWeek + between - startAllWeek) : (startWeek + between - startAllWeek))
+        let descYearNum = 0
+        let deWeek = startWeek + between
+        let lastYear = startYear-descYearNum
+        let lasYearWeek = moment(lastYear+'-01-01').weeksInYear()
+        for (let j = deWeek; j < 0; j += lasYearWeek) {
+          descYearNum += 1
+          lastYear = startYear-descYearNum
+          lasYearWeek = moment(lastYear+'-01-01').weeksInYear()
+          deWeek = lasYearWeek+j
+        }
+        return (startYear - descYearNum) + '-KW' + (deWeek < 10 ? '0' + deWeek : deWeek)
       }
     },
     /** 
@@ -607,7 +630,7 @@ export default {
      * @param {*} val
      * @param {*} item
      * @param {*} props
-     * @param {*} index
+     * @param {*} index nodeList的index
      * @return {*}
      */    
     handleChange(val, item, props, index) { 
@@ -617,9 +640,9 @@ export default {
         this.$set(item, props === 'otsTimeKw' ? this.nodeList[index - 1].keyPoint2 : this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
       } 
       if (this.nodeList[index + 1]) { 
-        for (let i = index + 1; i < this.nodeList.length - 1; i++) {
-          this.$set(this.nodeList[i], this.nodeList[i].kw, this.getKw(this.nodeList[i - 1], this.nodeList[i - 1].keyPoint))
-          i === this.nodeList.length - 1 && this.$set(this.nodeList[i], this.nodeList[i].kw2, this.getKw(this.nodeList[i - 1], this.nodeList[i - 1].keyPoint2))
+        for (let i = index + 1; i < this.nodeList.length; i++) {
+          this.$set(item, this.nodeList[i].kw, this.getKw(item[this.nodeList[i - 1].kw], item[this.nodeList[i - 1].keyPoint]))
+          i === this.nodeList.length - 1 && this.$set(item, this.nodeList[i].kw2, this.getKw(item[this.nodeList[i - 1].kw], item[this.nodeList[i - 1].keyPoint2]))
         }
         // this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val, props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw])) 
       } 
