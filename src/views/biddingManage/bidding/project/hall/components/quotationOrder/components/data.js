@@ -355,6 +355,7 @@ export const stageColumn = [
     props: "stage1",
     required: false,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
@@ -371,6 +372,7 @@ export const stageColumn = [
     props: "stage2",
     required: false,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
@@ -387,6 +389,7 @@ export const stageColumn = [
     props: "stage3",
     required: false,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
@@ -403,6 +406,7 @@ export const stageColumn = [
     props: "stage4",
     required: false,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
@@ -419,6 +423,7 @@ export const stageColumn = [
     props: "stage5",
     required: false,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
@@ -435,6 +440,7 @@ export const stageColumn = [
     props: "stage6",
     required: false,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
@@ -451,6 +457,7 @@ export const stageColumn = [
     props: "stage7",
     required: false,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
@@ -467,6 +474,7 @@ export const stageColumn = [
     props: "stage8",
     required: false,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
@@ -483,6 +491,7 @@ export const stageColumn = [
     props: "stage9",
     required: false,
     rule: [
+      { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;

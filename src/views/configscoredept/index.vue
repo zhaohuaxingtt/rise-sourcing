@@ -11,7 +11,14 @@
     <div class="header clearFloat">
       <iNavMvp :list="list" :lang="true" :lev="1" routerPage></iNavMvp>
       <div class="control">
-        <logButton class="margin-left20" />
+        <iLoger
+          :config="{
+            module_obj_ae: '评分部门', 
+            menuName_obj_ae: ''
+          }"
+          isPage
+          credentials
+          class="margin-left20"/>
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
         </span>
@@ -134,7 +141,7 @@
 
 <script>
 import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage, iNavMvp } from "rise"
-import logButton from "@/components/logButton"
+import iLoger from 'rise/web/components/iLoger'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import deptDialog from "./components/deptDialog"
 import filters from "@/utils/filters"
@@ -153,7 +160,7 @@ export default {
     iCard,
     iButton,
     iInput,
-    logButton,
+    iLoger,
     tableList,
     deptDialog,
     iNavMvp
@@ -379,7 +386,8 @@ export default {
       position: absolute;
       top: 50%;
       right: 0;
-      transform: translate(0, -50%);
+      // 影响到了日志弹窗，暂时注释掉，后面用其他属性代替
+      // transform: translate(0, -50%);
       display: flex;
       align-items: center;
       height: 30px;

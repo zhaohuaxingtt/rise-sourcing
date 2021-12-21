@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-19 10:18:16
+ * @LastEditTime: 2021-12-15 16:44:34
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -14,7 +14,7 @@
         <!-- <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>  -->
       </div> 
       <div> 
-        <iButton @click="showDelayResaons" :loading="saveloading" v-if="partStatus != 1">{{language('CHAKANYANWUYUANYIN', '查看延误原因')}}</iButton> 
+        <iButton @click="showDelayResaons" :loading="saveloading" v-if="partStatus != 1" :class="showDelayResaon ? 'showDelayReasonsActive' : ''">{{language('CHAKANYANWUYUANYIN', '查看延误原因')}}</iButton> 
         <iButton @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
         <iButton @click="handleSendFs" v-if="partStatus == 2 || partStatus == 3">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
         <iButton @click="openDelayReasonDialog" v-if="[3,2,5,6, 7].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
@@ -27,11 +27,11 @@
           <el-checkbox :value="pro.checked" @change="handleCheckboxChange($event, pro)"> 
             {{`${pro.partNameZh || ''}`}} 
           </el-checkbox> 
-          <icon v-if="partStatus != 7" @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
+          <icon v-if="partStatus != 9" @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
           <template>
-            <icon class="productItem-top-icon2" v-if="(pro.partStatus == 7  && pro.projectProc == 2) || (pro.partStatus != 7  && pro.projectRisk == '3')" symbol name="iconzhuangtai_hong"></icon>
-            <icon class="productItem-top-icon2" v-else-if="pro.partStatus != 7 && pro['projectRisk'] == '2'" symbol name="iconzhuangtai_huang"></icon>
-            <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 7 ? 'projectProc' :'projectRisk'] == '1'" symbol name="iconzhuangtai_lv"></icon>
+            <icon class="productItem-top-icon2" v-if="(pro.partStatus == 9  && pro.projectProc == 2) || (pro.partStatus != 7  && pro.projectRisk == '3')" symbol name="iconzhuangtai_hong"></icon>
+            <icon class="productItem-top-icon2" v-else-if="pro.partStatus != 9 && pro['projectRisk'] == '2'" symbol name="iconzhuangtai_huang"></icon>
+            <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 9 ? 'projectProc' :'projectRisk'] == '1'" symbol name="iconzhuangtai_lv"></icon>
           </template>
           <span class="productItem-top-desc">{{`${pro.partNum || ''}  ${pro.partNameDe || ''}  ${pro.buyerName || ''}  ${pro.buyerId || ''}`}}</span>
         </div> 
@@ -58,16 +58,16 @@
                 </template>
                 <!------------------------------节点图标----------------------------------->
                 <template v-if="Number(pro.partStatus) > item.partPeriod" slot="reference">
-                  <icon v-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 1 " symbol name="iconjindu_yiwancheng_lv" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 3 " symbol name="iconjindu_yiwancheng_huang" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 5 " symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) > 4" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
+                  <icon v-if="pro[item.delayWeeks] < 1 " symbol name="iconjindu_yiwancheng_lv" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro[item.delayWeeks] < 3 " symbol name="iconjindu_yiwancheng_huang" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro[item.delayWeeks] < 5 " symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro[item.delayWeeks] > 4" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
                 </template>
                 <template v-else-if="item.partPeriod == 4 ? [4,3].includes(Number(pro.partStatus)) : Number(pro.partStatus) == item.partPeriod" slot="reference">
-                  <icon v-if="item.key === 'SHIFANG' || ( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 1  " symbol name="iconjindu_jinhangzhong_lv" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 3 " symbol name="iconjindu_jinhangzhong_huang" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) < 5 " symbol name="iconjindu_jinhangzhong_hong" class="step-icon  click-icon"></icon>
-                  <icon v-else-if="( item.partPeriod == 6 ? pro[item.delayWeeksLarger] : pro[item.delayWeeks]) > 4 " symbol name="iconjindu_jinhangzhong_hei" class="step-icon  click-icon"></icon>
+                  <icon v-if="item.key === 'SHIFANG' || pro[item.delayWeeks] < 1  " symbol name="iconjindu_jinhangzhong_lv" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro[item.delayWeeks] < 3 " symbol name="iconjindu_jinhangzhong_huang" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro[item.delayWeeks] < 5 " symbol name="iconjindu_jinhangzhong_hong" class="step-icon  click-icon"></icon>
+                  <icon v-else-if="pro[item.delayWeeks] > 4 " symbol name="iconjindu_jinhangzhong_hei" class="step-icon  click-icon"></icon>
                   <icon v-else symbol name="iconjindu_daijinhang" class="step-icon  click-icon"></icon>
                 </template>
                 <template v-else slot="reference">
@@ -83,20 +83,20 @@
                   placement="top-start"
                   :disabled="taItem.key !== 'JIHUASHIJIAN' || !(pro[item.soll2] || pro[item.soll22])"
                 >
-                  <iText slot="reference"  v-if="Number(pro.partStatus) <= item.partPeriod" class="productItem-bottom-stepBetween-input text " :class="index === nodeList.length - 1 ? 'largeText' : ''">
+                  <iText slot="reference"  v-if="Number(pro.partStatus) <= item.partPeriod" class="productItem-bottom-stepBetween-input text " >
                     {{taItem.key === 'JIHUASHIJIAN' ? pro[item.kw] : ''}}
-                    {{taItem.key === 'JIHUASHIJIAN' ? index === nodeList.length - 1 && pro[item.kw] ? '('+(pro[item.kw1] || '')+')' : '' : ''}}
+                    <!-- {{taItem.key === 'JIHUASHIJIAN' ? index === nodeList.length - 1 && pro[item.kw] ? '('+(pro[item.kw1] || '')+')' : '' : ''}} -->
                   </iText>
-                  <iText slot="reference"  v-else class="productItem-bottom-stepBetween-input text " :class="index === nodeList.length - 1 ? 'largeText' : ''">
+                  <iText slot="reference"  v-else class="productItem-bottom-stepBetween-input text " >
                     {{pro[item[taItem.props]]}}
                     <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0">+W{{pro[item.delayWeeks]}}</span>
-                    {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '( '+(pro[item[taItem.props1]] || '') : ''}}
-                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="index === nodeList.length - 1 && pro[item.kw1] && pro[item.delayWeeks2] > 0">+W{{pro[item.delayWeeks2]}}</span>
-                    {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? ')' : ''}}
+                    <!-- {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '( '+(pro[item[taItem.props1]] || '') : ''}} -->
+                    <!-- <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="index === nodeList.length - 1 && pro[item.kw1] && pro[item.delayWeeks2] > 0">+W{{pro[item.delayWeeks2]}}</span> -->
+                    <!-- {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? ')' : ''}} -->
                   </iText>
                   <div>
-                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll1：{{pro[item.soll1]}} <span v-if="pro[item.soll22]">OTS soll1：{{pro[item.soll12]}}</span></p>
-                    <p>{{index === nodeList.length - 1 ? 'EM' : ''}} soll2：{{pro[item.soll2]}} <span v-if="pro[item.soll22]">OTS soll2：{{pro[item.soll22]}}</span></p>
+                    <p> soll1：{{pro[item.soll1]}} </p>
+                    <p> soll2：{{pro[item.soll2]}} </p>
                   </div>
                 </el-popover>
               </div>
@@ -564,7 +564,9 @@ export default {
         justify-content: center;
       }
       &-text {
-        flex: 1;
+        // flex: 1;
+        width: 8%;
+        flex-shrink: 0;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -578,11 +580,12 @@ export default {
         }
       }
       &-node {
-        flex: 2;
+        // flex: 1;
+        width: 15%;
         position: relative;
         display: flex;
         &:last-child {
-          // flex: 1;
+          width: 10%;
         }
         .productItem-bottom-nodeItem {
           display: flex;
@@ -618,7 +621,7 @@ export default {
           &-input {
             font-size: 14px;
             height: 30px;
-            min-width: 180px;
+            width: 150px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -680,6 +683,10 @@ export default {
     font-size: 18px;
     font-weight: bold;
     color: #41434A;
+  }
+  .showDelayReasonsActive {
+    background-color: #1763f7;
+    color: #fff;
   }
 }
 </style>
