@@ -11,7 +11,7 @@
   <iCard class="desinate-detail">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language( 'DINGDIANSHENGQINGXINAGQING', '定点申请详情' ) }}</span>
-      <div class="floatright">
+      <div class="floatright" v-if="nominationData && nominationData.applicationStatus === 'NEW'">
         <iButton :loading="isLoading" @click="updateNominate()">{{
           language("LK_BAOCUN", "保存")
         }}</iButton>
