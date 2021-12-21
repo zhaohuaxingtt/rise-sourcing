@@ -13,7 +13,16 @@
     <div class="right-control">
       <iNavMvp @change="change" class="pull-right" :lang="true" right routerPage lev="2" :list="navList" />
       <div class="control">
-        <logButton class="margin-left20" />
+        <iLoger
+          :config="{
+            module_obj_ae: '模具目标价', 
+            menuName_obj_ae: ''
+          }"
+          isPage
+          credentials
+          optionDicKey="LOG_OPERATION_TYPES"
+          optionDicKey2="模具目标价详情页"
+          class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
         </span>
@@ -25,10 +34,10 @@
 <script>
 import { iNavMvp, icon } from 'rise'
 import { MENU } from './data'
-import logButton from "@/components/logButton"
+import iLoger from 'rise/web/components/iLoger'
 import { TAB } from '@/views/financialTargetPrice/components/data'
 export default {
-  components: {iNavMvp, icon, logButton},
+  components: {iNavMvp, icon, iLoger},
   data() {
     return {
       list: TAB,
