@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 14:39:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-30 14:00:14
+ * @LastEditTime: 2021-12-21 10:03:54
  * @Description: RS单维护界面
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\rsSingleMaintenance\index.vue
 -->
@@ -348,6 +348,7 @@ export default {
         supplierNo: '',
         supplierName: ''
       }
+      this.filterTableData()
     },
     /**
      * @Description: 过滤表格数据
@@ -358,19 +359,19 @@ export default {
     filterTableData() {
       this.tableListData = this.tableListDataTemp.filter(item => {
         let result = true
-        if (this.form.fsnrGsnrNum) {
+        if (this.form.fsnrGsnrNum && result) {
           result = result && item.fsnrGsnrNum.includes(this.form.fsnrGsnrNum)
         }
-        if (this.form.partNo) {
+        if (this.form.partNo && result) {
           result = result && item.partNo.includes(this.form.partNo)
         }
-        if (this.form.partName) {
+        if (this.form.partName && result) {
           result = result && item.partName.includes(this.form.partName)
         }
-        if (this.form.supplierNo) {
+        if (this.form.supplierNo && result) {
           result = result && item.supplierId.includes(this.form.supplierNo)
         }
-        if (this.form.supplierName) {
+        if (this.form.supplierName && result) {
           result = result && item.supplierName.includes(this.form.supplierName)
         }
         return result

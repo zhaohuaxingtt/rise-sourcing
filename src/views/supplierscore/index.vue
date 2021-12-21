@@ -13,7 +13,16 @@
       <div class="right-control">
         <iNavMvp class="nav" :lev="2" :list="navList" />
         <div class="control">
-          <logButton class="margin-left20" />
+          <iLoger
+          :config="{
+            module_obj_ae: '评分任务', 
+            menuName_obj_ae: ''
+          }"
+          isPage
+          credentials
+          class="margin-left20"
+          optionDicKey="LOG_OPERATION_TYPES"
+          optionDicKey2="供应商评分任务详情"/>
           <span class="margin-left20">
             <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
           </span>
@@ -192,7 +201,7 @@
 
 <script>
 import { iPage, iNavMvp, icon, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage } from "rise"
-import logButton from "@/components/logButton"
+import iLoger from 'rise/web/components/iLoger'
 import forwardDialog from "@/views/supplierscore/components/forwardDialog"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filters from "@/utils/filters"
@@ -215,7 +224,7 @@ export default {
     iCard,
     iButton,
     iPagination,
-    logButton,
+    iLoger,
     forwardDialog,
     tableList
   },

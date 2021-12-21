@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:51:18
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-09 11:25:43
+ * @LastEditTime: 2021-12-21 09:35:47
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件 列表表头
  */
 
@@ -17,7 +17,9 @@ export const TIPStableTitle = [
   {props:'fsnrGsnrNum',name:'FS号', key: "LK_FSHAO", tooltip: true},
   {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'linieName',name:'Linie', key: "LINIE", tooltip: true},
-  {props:'fop',name:'零件对应EP',key:'LINGJIANDUIYINGEP',tooltip: true}
+  {props:'fop',name:'FOP',key:'FOP',tooltip: true},
+  {props:'fg',name:'FG',key:'FG',tooltip: true},
+  {props:'zp',name:'ZP',key:'ZP',tooltip: true}
 ]
 
 // CKD/HT零件表头
@@ -28,5 +30,7 @@ export const CKDHTtableTitle = [
   {props:'partNameZh',name:'零件名称(中)', key: "LINGJIANMINGCHEN_ZH", tooltip: true},
   {props:'partNameDe',name:'零件名称(德)', key: "LINGJIANMINGCHEN_DE", tooltip: true},
   {props:'productGroup',name:'产品组', key: "LK_CHANPINZU", tooltip: true},
-  {props:'fop',name:'零件对应EP',key:'LINGJIANDUIYINGEP',tooltip: true}
+  {props:'fop',name:'FOP',key:'FOP',tooltip: true},
+  {props:'fg',name:'FG',key:'FG',tooltip: true},
+  {props:'zp',name:'ZP',key:'ZP',tooltip: true}
 ]

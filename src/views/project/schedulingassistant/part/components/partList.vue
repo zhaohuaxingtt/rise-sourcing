@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-13 11:14:29
+ * @LastEditTime: 2021-12-20 13:53:17
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -70,31 +70,15 @@
             <div class="productItem-bottom-nodeItem">  
               <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span> 
               <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span> 
-              <icon v-if="pro[item.status] == 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon> 
+              <icon v-if="index === nodeList.length - 1 ? pro[item.status] == 1 && pro[item.status2] == 1 : pro[item.status] == 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon> 
               <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>  
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------> 
-              <template v-if="index == nodeList.length - 1"> 
-                <iText v-if="pro[item.status] == 1 && pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
-                <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw2]}}</iText> 
-                <!-- <el-cascader 
-                  v-else-if="pro.emIsLarger" 
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` " 
-                  :value="pro[item.kw].split('-KW')" 
-                  :options="yearWeekOptions(pro, item.kw, index)" 
-                  @change="handleChange($event, pro, item.kw, index)" 
-                  separator="-KW" 
-                ></el-cascader> 
-                <el-cascader 
-                  v-else 
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "  
-                  :value="pro[item.kw2].split('-KW')" 
-                  :options="yearWeekOptions(pro, item.kw2, index)" 
-                  @change="handleChange($event, pro, item.kw2, index)" 
-                  separator="-KW" 
-                ></el-cascader>   -->
-                <span v-else-if="pro.emIsLarger"  :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
+              <div v-if="index == nodeList.length - 1"> 
+                <iText v-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
+                <span v-else  :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
+                <iText v-if="pro[item.status2] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw2]}}</iText> 
                 <span v-else :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>
-              </template>   
+              </div>   
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
               <!-- <el-cascader 
                   v-else 
@@ -110,8 +94,8 @@
               <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom5`"> 
                 <!--------------------------节点时长-不可编辑------------------------------------> 
                 <template v-if="index == nodeList.length - 2"> 
-                  <iText v-if="pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
-                  <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText> 
+                  <iText :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
+                  <iText :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText> 
                 </template> 
                 <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
               </div>  
@@ -597,6 +581,26 @@ export default {
       } 
       return -this.getWeekBetween(time2, time1) 
     },  
+    /**
+     * @Description: 根据起始kw时间和间隔周数计算下一个kw时间
+     * @Author: Luoshuang
+     * @param {*} start 起始kw时间
+     * @param {*} between 间隔周数
+     * @return {*}
+     */    
+    getKw(start, between) {
+      if (!start) {
+        return null
+      }
+      const startYear = Number(start.split('-KW')[0]) 
+      const startWeek = Number(start.split('-KW')[1]) 
+      const startAllWeek = moment(startYear+'-01-01').weeksInYear()
+      if (startWeek + between <= startAllWeek) {
+        return startYear + '-KW' + ((startWeek + between) < 10 ? '0' + (startWeek + between) : (startWeek + between))
+      } else {
+        return (startYear + 1) + '-KW' + ((startWeek + between - startAllWeek) < 10 ? '0' + (startWeek + between - startAllWeek) : (startWeek + between - startAllWeek))
+      }
+    },
     /** 
      * @Description: 下拉框更改 
      * @Author: Luoshuang
@@ -613,7 +617,11 @@ export default {
         this.$set(item, props === 'otsTimeKw' ? this.nodeList[index - 1].keyPoint2 : this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
       } 
       if (this.nodeList[index + 1]) { 
-        this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val, props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw])) 
+        for (let i = index + 1; i < this.nodeList.length - 1; i++) {
+          this.$set(this.nodeList[i], this.nodeList[i].kw, this.getKw(this.nodeList[i - 1], this.nodeList[i - 1].keyPoint))
+          i === this.nodeList.length - 1 && this.$set(this.nodeList[i], this.nodeList[i].kw2, this.getKw(this.nodeList[i - 1], this.nodeList[i - 1].keyPoint2))
+        }
+        // this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val, props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw])) 
       } 
     }, 
     /**
@@ -715,7 +723,7 @@ export default {
           result = item.partNameDe.includes(partNameDe) 
         } 
         if (partStatus && result === true) {
-          result = item.partPeriod == partStatus
+          result = ['7','8'].includes(partStatus) ? item.partPeriod == partStatus || item.partPeriod == '6'  : item.partPeriod == partStatus
         }
         if (level && result === true) { 
           const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget] 
@@ -1006,6 +1014,29 @@ export default {
             }
           } 
         } 
+        &:nth-child(5) {
+          .productItem-bottom-stepBetween {
+            .productItem-bottom-stepBetween-double .productItem-bottom-stepBetween-input {
+              width: 80px;
+              &:last-child {
+                margin-left: 10px;
+              }
+            }
+          }
+        }
+        &:nth-child(6) {
+          .productItem-bottom-nodeItem {
+            div {
+              display: flex;
+              .productItem-bottom-stepBetween-input {
+                width: 100px;
+                &:last-child {
+                  margin-left: 10px;
+                }
+              }
+            }
+          }
+        }
       } 
     } 
   } 
