@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-06 20:44:07
+ * @LastEditTime: 2021-12-20 23:10:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -129,8 +129,8 @@ export function backChooseList(type) {
      whiteLists = whiteList
      allTablelist = [...fstitle,...fstableTileXh(0)]
   }else if(type == 2){ //supplier as list
-    whiteLists = supplierWhiteList
-    allTablelist = [...supplierTile,...centerSupplierList(0),...lastSupplier,...leftSideData]
+    // whiteLists = supplierWhiteList
+    // allTablelist = [...supplierTile,...centerSupplierList(0),...lastSupplier,...leftSideData]
   }else{
     whiteLists = whiteListGs
     allTablelist = [...gstitle,...gstableTileXh(0)]
@@ -183,59 +183,6 @@ export function getRenderTableTile(whiteListService,supplierLength,layout){
     }
   }
   return {title:[...relTabelListDefault,...relTableListXh],xhLastChildProps:lastChildProps}
-}
-/**
- * @description: 获取表格真实表头。请求完白名单和数据之后，拿到供应商的个数反推表头数 供应商横轴
- * @param {*} whiteListService
- * @param {*} supplierLength
- * @return {*}
- */
- export function getRenderTableTileSupplier(whiteListService=[],supplierDataList){
-   try {
-    const relWhiteList = [...supplierWhiteList,...whiteListService] //
-    const xuhTable =  JSON.parse(JSON.stringify(centerSupplierList(0,supplierDataList[0].partInfoList)))
-    const relTabelListDefault = []
-    let relTableListXh = []
-    let templateListxh = []
-    JSON.parse(JSON.stringify(supplierTile)).forEach(items=>{ //评分表头数据组装。
-      if(items.props == 'supplierName'){
-        relTabelListDefault.push(items)
-      }else{
-        supplierDataList[0].bdlRateInfoList.filter(i=>i.supplierId == supplierDataList[0].bdlRateInfoList[0].supplierId).forEach((itemss,index)=>{
-          const ratess = JSON.parse(JSON.stringify(rateTitelList))
-          ratess.props = (index == 0?'':index) + 'rate';
-          ratess.label = itemss.rateDepartNum
-          items.list.push(ratess)
-        })
-        relTabelListDefault.push(items)
-      }
-    })
-    for(let i = 0;i < xuhTable.length;i++){ //通过白名单过滤一次表头
-      if(relWhiteList.find(ii=>ii == xuhTable[i].props)){
-        if(xuhTable[i].list){
-          xuhTable[i].list.forEach((items,index)=>{
-            if(!relWhiteList.find(ii=>ii == items.props)){
-              xuhTable[i].list.splice(index,1)
-            }
-          })
-          relTableListXh.push(xuhTable[i])
-          templateListxh.push(xuhTable[i])
-        }
-        else{
-          relTableListXh.push(xuhTable[i])
-          templateListxh.push(xuhTable[i])
-        }
-      }
-    }
-    for(let i = 0; i<supplierDataList[0].partInfoList.length;i++){
-      if(i>0){
-        relTableListXh = [...relTableListXh,...addtitle(JSON.parse(JSON.stringify(templateListxh)),i,supplierDataList[0].partInfoList)]
-      }
-    }
-    return [...relTabelListDefault,...relTableListXh,...lastSupplier]
-   } catch (error) {
-     return []
-   }  
 }
 /**
  * @description:将title将表头追加一个动态数字 
@@ -499,144 +446,77 @@ export function defaultSort(list,key){
 //------------------------------------------fs数据构造供应商评分部门表头-------------------
 export const rateTitelList = {type:'',props:'',label:'',i18n:'',width:'50',tooltip:true}
 
-export const supplierTile = [
-  {type:'',props:'supplierName',label:'Supplier',i18n:'',width:'100',tooltip:true,fixed:'left'},
-  {type:'',props:'rating',label:'Ratings',i18n:'',width:'150',tooltip:true,list:[],fixed:'left'},
-]
-/**
- * @description: 动态拿到表头factory，在供应商横轴中，从第一条到最后一条里面包含的factoryList实际上是一样的。
- *                所以只需要拿到第一条供应商的factoryList 拿出每个factory 对应起来  
- * @param {*}
- * @return {*}
- */
-function factoryListFn(factoryList,index){
-  try {
-    if(index == ''){
-      index = 0
-    }
-    return factoryList[index].factory
-  } catch (error) {
-    return '暂无'
-  }
-}
-export const centerSupplierList = function(index,factoryList=[]){
-  index = index?index:''
-  return [
-    {type:'',props:`${index}lcAPrice`,label:'A Price(LC)',i18n:'',width:'80',tooltip:false},
-    {type:'',props:`${index}skdAPrice`,label:'A Price(SKD)',i18n:'',width:'80',tooltip:false},
-    {type:'',props:`${index}factory`,label:`${factoryListFn(factoryList,index)}`,i18n:'',width:'',tooltip:false,list:[
-      {type:'',props:`${index}lcBPrice`,label:'B Price \n (LC)',i18n:'',width:'80',tooltip:false, renderHeader: '<p>B Price</p><p>(LC)</p>'},
-      {type:'',props:`${index}skdBPrice`,label:'B Price \n (SKD)',i18n:'',width:'80',tooltip:false, renderHeader: '<p>B Price</p><p>(SKD)</p>'},
-      {type:'',props:`${index}productionLocation`,label:'Prod. \n Loc.',i18n:'',width:'60',tooltip:false, renderHeader: '<p>Prod. </p><p>Loc.</p>'},
-    ]},
-    {type:'',props:`${index}lcAPriceWithoutAllocation`,label:'A Price(LC) \n w/o Alloc.',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}skdAPriceWithoutAllocation`,label:'A Price(SKD) \n w/o Alloc.',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}lcBPriceWithoutAllocation`,label:'B Price(LC) \n w/o Alloc.',i18n:'',width:'120',tooltip:false},
-    {type:'',props:`${index}skdBPriceWithoutAllocation`,label:'B Price(SKD) \n w/o Alloc.',i18n:'',width:'120',tooltip:false}, 
-    {type:'',props:`${index}bnk`,label:'BNK',i18n:'',width:'80',tooltip:false},
-    {type:'',props:`${index}bnkApprovalStatus`,label:'BNK \n Status',i18n:'',width:'70',tooltip:false, renderHeader: '<p>BNK</p><p>Status</p>'},
-    {type:'',props:`${index}tooling`,label:'Tooling',i18n:'',width:'74',tooltip:false},
-    {type:'',props:`${index}developmentCost`,label:'Dev. \n Cost',i18n:'',width:'80',tooltip:false},
-    {type:'',props:`${index}supplierSopDate`,label:'Supplier \n SOP Date',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index}ltc`,label:'LTC',i18n:'',width:'50',tooltip:false},
-    {type:'',props:`${index}ltcStaringDate`,label:'LTC \n Start Date',i18n:'',width:'95',tooltip:false},
-    {type:'',props:`${index}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'100',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>' },
-    {type:'',props:`${index}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
-    {type:'',props:`${index}externalDevelopmentCost`,label:'External \n Dev. Cost',i18n:'',width:'90',tooltip:false, renderHeader: '<p>External</p><p>Dev. Cost</p>'},
-    {type:'',props:`${index}releaseCost`,label:'Release \n Cost',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
-    {type:'',props:`${index}Quotationdetails`,label:'View',i18n:'',width:'60',tooltip:false},
-  ]
-}
-
-export const lastSupplier = [
-  {type:'',props:'mixPrice',label:'Mix \n Price',i18n:'',width:'60',tooltip:true,fixed:'right'},
-  {type:'',props:'totalInvest',label:'Total \n Invest',i18n:'',width:'60',tooltip:false,fixed:'right'},
-  {type:'',props:'totalTto',label:'Total \n Turnover',i18n:'',width:'100',tooltip:true,fixed:'right'},
-]
-
 export function concactTitlle(supplier){
   return [...supplierTile,...supplier,...lastSupplier]
 }
-/**
- * @description: 供应商横轴默认显示数据
- * @param {*}
- * @return {*}
- */
-export const supplierWhiteList = ['supplierName','lcAPrice','lcBPrice','productionLocation','tooling','ltc','ltcStaringDate','tto','mixPrice','totalInvest','totalTurnover','partNo','partName','project','tia','fTarget','factory', 'mouldPrice','developmentCost']
-export const supplierTableTop = []
-/**
- * @description: 转换供应商数据
- * @param {*} supplierlist
- * @return {*}
- */
-export const translateDataListSupplier = function(supplierlist) {
-  const relData = []
-  let topData = []
-  try {
-    supplierlist.forEach((items,wcIndex)=>{
-      if(wcIndex == 0) topData = items.partInfoList //每个供应商对应的零件数据都可以是一样的
-      const map = items
-      items.bdlRateInfoList.filter(filterRate=>filterRate.supplierId == items.supplierId).forEach((items,index)=>{
-        for(let key in items){
-          if(key != 'supplierName' || key != 'supplierId'){
-           map[(index==0?'':index)+key] = items[key]
-          }
-       }
-      })
-      for(let ii = 0; ii<items.partInfoList.length;ii++){  
-        for(let keys in items.partInfoList[ii]){
-          map[(ii==0?'':ii) + keys] = items.partInfoList[ii][keys]
-        }
-      }
-      relData.push(map) 
-    })
-    return {dataList:relData,topList:topData}
-  } catch (error) {
-  }
-}
-
-export const leftSideData = [ // fitller
-  {props:'partNo',name:'Part'},
-  // {props:'partName',name:'Part Name'},
-  {props:'partPrjCode',name:'FS/GS/SP No.'},
-  {props:'ebrCalculatedValue',name:'EBR'},
-  {props:'project',name:'Project'},
-  {props:'volume',name:'Volume'},
-  {props:'europeanLevel',name:'European level(RMB)'},
-  {props:'plannedInvest',name:'Planned Invest'},
-  {props:'ckdLanded',name:'CKD Landed'},
-  {props:'tia',name:'KM'},
-  {props:'mouldPrice',name:'Tooling Target'},
-  {props:'fTarget',name:'F-Target'},
-]
-
-export function getleftTittleList(whiteList){ 
-  const relWhiteList = [...supplierWhiteList,...whiteList]
-  const list = []
-  leftSideData.forEach(items=>{
-    if(relWhiteList.find(itemss=>items.props == itemss)){
-      list.push(items)
-    }
-  })
-  return list
-}
-
-
 export const defaultLayoutTemplate = {}
 defaultLayoutTemplate[partProjTypes.GSLINGJIAN] = '3'
 defaultLayoutTemplate[partProjTypes.GSLINGJIANIP] = '3'
 defaultLayoutTemplate[partProjTypes.GSCOMMONSOURCING] = '3'
 
 
-/**
- * @description: 静态数据在线报价结果表头字段
- * @param {*}
- * @return {*}
- */
-export const suplierTableDataTitel = [
-  {type:'',props:'currentSort',name:'排名',key:'PAIMINGKEY',width:'100',tooltip:false},
-  {type:'',props:'supplierCode',name:'供应商编号',key:'GONGYINGSMINGC',width:'',tooltip:false},
-  {type:'',props:'supplierName',name:'供应商名称',key:'',width:'GONGYSBIANHAO',tooltip:false},
-  {type:'',props:'offerPrice',name:'TTO',key:'',width:'100',tooltip:false},
-  // {type:'',props:'mixPrice',name:'报价进度',key:'BAOJIAJINGDU',width:'100',tooltip:false}
-]
+//////////////////////////////供应商横轴////////////////////////////////////////////////
+export function showOrHide(data){
+  return data
+}
+
+export function getRowAndcolSpanArray(data){
+  try {
+    console.log('=============================此备注为了查看数据正确性，dev切勿删除=========')
+    console.log('==每个元素第一位：向下合并个数，第二位：向右合并个数，第三位：是否需要合并======')
+    data.data.forEach((w,wi)=>{
+      const arrays = []
+      w.forEach((l,li)=>{
+        if(l.isMerge) {
+          l['mergeArray'] = [getcol(data.data,l.data,wi,li),getRow(data.data,l.data,wi,li)] 
+          arrays.push(l['mergeArray'][0]+ ',' + l['mergeArray'][1]+',T')
+        }else{
+          l['mergeArray'] = [1,1]
+          arrays.push(l['mergeArray'][0]+ ',' + l['mergeArray'][1]+',F')
+        }
+      })
+      console.log(arrays)
+    })
+    console.log('=============================ending====================================')
+    return data
+  } catch (error) {
+    console.log(error)
+    return {}
+  }
+}
+
+function getcol(allData,currentKey,wi,li){
+  try {
+    let number = 0
+    if(wi > 0 && (allData[wi-1].find((items,index)=> index == li).data) == currentKey) return number
+    for (let index = wi; index < allData.length; index++){
+      if(allData[index].find((items,index)=> index == li).data == currentKey){
+        number ++
+      }else {
+        break;
+      }   
+    }
+    return number
+  } catch (error) {
+    console.log(error)
+    return 1
+  }
+}
+
+function getRow(allData,currentKey,wi,li){
+  try {
+    let number = 0
+    if(li>0 && (allData[wi].find((items,i)=>i == li-1).data == currentKey)) return number
+    for (let index = li; index < allData[wi].length; index++){
+      if(allData[wi].find((items,i)=>i == index).data == currentKey){
+        number ++
+      }else{
+        break;
+      }
+    }
+    return number
+  } catch (error) {
+    console.log(error)
+    return 1
+  }
+}
