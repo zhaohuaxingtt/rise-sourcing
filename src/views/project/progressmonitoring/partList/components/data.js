@@ -18,7 +18,7 @@ export const TIPStableTitle = [
   {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'linieName',name:'Linie', key: "LINIE", tooltip: true},
   {props:'fop',name:'FOP',key:'FOP',tooltip: true},
-  {props:'fg',name:'FG',key:'FG',tooltip: true},
+  {props:'dept',name:'FG',key:'FG',tooltip: true},
   {props:'zp',name:'ZP',key:'ZP',tooltip: true}
 ]
 
@@ -31,6 +31,6 @@ export const CKDHTtableTitle = [
   {props:'partNameDe',name:'零件名称(德)', key: "LINGJIANMINGCHEN_DE", tooltip: true},
   {props:'productGroup',name:'产品组', key: "LK_CHANPINZU", tooltip: true},
   {props:'fop',name:'FOP',key:'FOP',tooltip: true},
-  {props:'fg',name:'FG',key:'FG',tooltip: true},
+  {props:'dept',name:'FG',key:'FG',tooltip: true},
   {props:'zp',name:'ZP',key:'ZP',tooltip: true}
 ]
