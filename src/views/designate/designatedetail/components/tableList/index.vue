@@ -243,6 +243,11 @@ export default{
     handleSelect(selection,row){
       const selectdBorder = row.selectedBorder
       this.$set(row,'selectedBorder',!selectdBorder)
+      this.tableData.forEach(item => {
+          if(item.partProjectType == '1000040' || item.partProjectType == '1000030') {
+            this.$refs.multipleTable.toggleRowSelection(row, true);           
+          }
+        })
     },
     handleSelectAll(selection){  
       const flag = selection.length
@@ -250,6 +255,13 @@ export default{
         this.$set(selection[i],'selectedBorder',!!flag)
       }
       !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
+      // if(
+      //   this.tableData.find(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030')
+      // ) {this.$refs.multipleTable.toggleRowSelection(selection, true); console.log('想不到吧我来了');    }
+      this.$nextTick(()=>{
+         this.toggleSelection(
+          this.tableData.filter(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030'), true)
+      })
     },
     borderLeft({row, column, rowIndex, columnIndex}){
       if(columnIndex === 0 && row.selectedBorder === true){
@@ -258,6 +270,7 @@ export default{
       else{
         return ""
       }
+
     },
     showLabel(value, options = []) {
       const current =  options.find(item => item.value === value)

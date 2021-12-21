@@ -38,8 +38,10 @@ export default {
   components: { iCard, icon, iButton, map1, supplierCard, theMapIcon },
   props: {
     paramCategoryCode: String,
-    paramCategoryName: String
+    paramCategoryName: String,
+     rfqInfoData: { type: Object },
   },
+
   data() {
     return {
      cardShow: JSON.parse(JSON.stringify(icardData)),
@@ -62,7 +64,10 @@ export default {
         }
       },
       immediate: true
-    }
+    },
+        rfqInfoData(val){
+          this.rfqInfoData=val
+      }
   },
   created() {
     if (this.paramCategoryCode) {

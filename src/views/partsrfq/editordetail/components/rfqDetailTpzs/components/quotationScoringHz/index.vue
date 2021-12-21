@@ -45,7 +45,7 @@
     </div>
     <template v-if='!hasNoBidOpen'>
       <tableList ref="tableList" v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1" || layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-      <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :supplierRightList='supplierRightList' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
+      <tableListSupplier ref='tableSupplier' v-if='layout == "2"' :parentsData='tabelDataSupplier'></tableListSupplier>
     </template>
     <template v-else>
       <span class="flex-center-center font18 noData">抱歉！当前轮次还未开标您无法查看报价汇总信息。</span>
@@ -78,7 +78,7 @@ import tableList from './components/table'
 import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
-import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList,defaultLayoutTemplate, lastSupplier} from './components/data'
+import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,showOrHide,getRowAndcolSpanArray,defaultLayoutTemplate} from './components/data'
 import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
@@ -124,7 +124,8 @@ export default{
     DataRoundsType:'',
     exchangeRatesCurrentVersionStr: "",
     exchangeRatesOldVersions: [],
-    hasNoBidOpen:false
+    hasNoBidOpen:false,
+    tabelDataSupplier:{}
   }},
   watch:{
     /**
@@ -184,18 +185,6 @@ export default{
       } catch (error) {
         return '1'
       }
-    },
-    reRenderTable(){
-      this.showTable = false,
-      setTimeout(() => {
-        this.showTable = true
-      },0)
-      setTimeout(() => {
-        this.getTopWidth()
-      }, 500);
-    },
-    getTopWidth(){
-      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 60 + 'px'
     },
     removeTags(){
       this.negoAnalysisSummaryLayoutSave()
@@ -467,19 +456,9 @@ export default{
         this.supplierTableLoading = true
         fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
           this.supplierTableLoading = false
-          if(res.code == 200 && res.data && res.data.bdlInfoList){
-            this.DataRoundsType = res.data.roundsType
-            this.hasNoBidOpen = res.data.hasNoBidOpen
-            const data = translateDataListSupplier(res.data.bdlInfoList) // 数据模型转化。
-            this.supplierData = data.dataList
-            this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
-            this.supplierLeftLit = getleftTittleList(this.backChoose)
-            this.supplierRightList = lastSupplier
-            this.suppliertopList = data.topList
-            this.kmAPrice = res.data.kmAPrice
-            this.kmTooling = res.data.kmTooling
-            this.budget = res.data.budget
-            this.reRenderTable() 
+          if(res.code == 200 && res.data){
+            this.tabelDataSupplier = getRowAndcolSpanArray(showOrHide(res.data))
+            console.log(this.tabelDataSupplier)
             r()
           } 
         }).catch(err=>{

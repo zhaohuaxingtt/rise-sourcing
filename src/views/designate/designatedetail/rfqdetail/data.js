@@ -29,7 +29,7 @@ export const rfqListTitle = [
 export const partsListTitle = [
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true},
   {props:'fsnrGsnrNum',name:'FS/GS/SP No.', key: "FSGSSP", tooltip: true, width: 150},
-  {props:'flag',name:'是否加入申请',key:'SHIFOUJIARUSHENQING'},
+  {props:'selected',name:'是否加入申请',key:'SHIFOUJIARUSHENQING'},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
   {props:'partNameZh',name:'零件名（中）', key: "LINGJIANMING_ZH", tooltip: true, width: 120},
   {props:'partNameDe',name:'零件名（德）', key: "LINGJIANMING_DE", tooltip: true, width: 120},
@@ -43,4 +43,5 @@ export const partsListTitle = [
   // {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true},
   {props:'n',name:'CF目标价', key: "CFMUBIAOJIA", tooltip: true},
   // {props:'q',name:'',key: '',tooltip:false,width:'50'}
+  { props: 'sort', showAllSortBtn: true }
 ]

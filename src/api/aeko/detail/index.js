@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-28 14:58:07
- * @LastEditTime: 2021-11-16 17:22:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-21 19:05:40
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\aeko\detail\index.js
  */
@@ -285,11 +285,12 @@ export function cancelCombination(params) {
 }
 
 // 内容表态导入
-export function importItemExcel(data) {
+export function importItemExcel(data, params) {
   return requst({
     url: '/aeko/importItemExcel',
     method: 'POST',
     data,
+    params,
   })
 }
 

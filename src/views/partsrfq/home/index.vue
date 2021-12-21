@@ -498,6 +498,7 @@ export default {
       this.selectTableData = val;
     },
     newRfq() {
+
       const newRfqUrl = this.$router.resolve({
         path: '/sourceinquirypoint/sourcing/partsrfq/editordetail'
       })
@@ -506,6 +507,15 @@ export default {
     async editRfq(updateType) {
       if (this.selectTableData.length === 0) {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZE','抱歉！您当前还未选择！'));
+      }
+      let a = true
+      this.selectTableData.forEach(val=>{
+        val.partProjectType.find(o=>
+          o == '1000040' || o == '1000030'
+        ) != undefined ? a = false :''       
+      })
+      if (!a) {
+         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
       }
       const idList = this.selectTableData.map(item => {
         return item.id
@@ -527,6 +537,15 @@ export default {
         this.rfqIds = this.selectTableData.map(item => item.id)
       } else {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU','抱歉，您当前还未选择您需要转派的评分任务！'));
+      }
+      let a = true
+      this.selectTableData.forEach(val=>{
+        val.partProjectType.find(o=>
+          o == '1000040' || o == '1000030'
+        ) != undefined ? a = false :''       
+      })
+      if (!a) {
+         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
       }
       this.scoringDeptVisible = true
       // if (this.selectTableData.length == 0)
@@ -665,6 +684,15 @@ export default {
     },
     openNominateTypeDialog() {
       if (this.selectTableData.length !== 1) return iMessage.warn(this.language("LK_QINGXUANZEYITIAORFQ","请选择一条RFQ"))
+      let a = true
+      this.selectTableData.forEach(val=>{
+        val.partProjectType.find(o=>
+          o == '1000040' || o == '1000030'
+        ) != undefined ? a = false :''       
+      })
+      if (!a) {
+         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
+      }
       // this.nominateTypeDialogVisible = true
       this.createDesignate()
     },

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 14:06:11
- * @LastEditTime: 2021-12-02 13:56:11
+ * @LastEditTime: 2021-12-16 16:58:15
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\lib\data.js
@@ -42,7 +42,8 @@ export const chartData = [
     disabled: true,
     hideTaskProcess: true,
     type: 3,
-    code: '0'
+    code: '0',
+    i18n: 'PIPEIYICHANG'
   },
   {
     id: 'chart102',
@@ -54,7 +55,8 @@ export const chartData = [
     disabled: true,
     hideTaskProcess: true,
     type: 1,
-    code: '1'
+    code: '1',
+    i18n: 'DAISHIFANG'
   },
   {
     id: 'chart3',
@@ -64,7 +66,8 @@ export const chartData = [
     value3: 20,
     value4: 100,
     type: 1,
-    code: '2'
+    code: '2',
+    i18n: 'DAIDINGDIAN'
   },
   {
     id: 'chart4',
@@ -74,7 +77,8 @@ export const chartData = [
     value3: 20,
     value4: 100,
     type: 1,
-    code: '3'
+    code: '3',
+    i18n: 'DAIKICKOFF'
   },
   {
     id: 'chart5',
@@ -84,7 +88,8 @@ export const chartData = [
     value3: 20,
     value4: 100,
     type: 1,
-    code: '4'
+    code: '4',
+    i18n: 'SHUJUDAIDONGJIE'
   },
   {
     id: 'chart6',
@@ -94,26 +99,30 @@ export const chartData = [
     value3: 20,
     value4: 100,
     type: 1,
-    code: '5'
+    code: '5',
+    i18n: 'TRYOUTDAIWANCHENG'
   },
   {
     id: 'chart7',
-    title: "EM&OTS待完成",
+    title: "EM待完成",
     value1: 70,
     value2: 10,
     value3: 20,
     value4: 100,
     type: 1,
-    code: '6'
+    code: '7',
+    i18n: 'EMDAIWANCHENG'
   },
   {
     id: 'chart8',
-    title: "EM&OTS已完成",
-    value4: 50,
-    value5: 30,
-    value6: 20,
-    type: 2,
-    code: '7'
+    title: "OTS待完成",
+    value1: 70,
+    value2: 10,
+    value3: 20,
+    value4: 100,
+    type: 1,
+    code: '8',
+    i18n: 'OTSDAIWANCHENG'
   },
 
 ]

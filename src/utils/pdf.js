@@ -1,6 +1,9 @@
 import html2canvas from 'html2canvas'
 import JsPDF from 'jspdf'
-import { iMessage } from 'rise'
+import {
+    iMessage,
+    iMessageBox
+} from 'rise'
 import {
     uploads
 } from '@/api/file/upload'
@@ -16,7 +19,7 @@ import {
 
 
 export function downloadPDF({
-    
+
     idEle: ele,
     pdfName: pdfName,
     callback: callback,
@@ -113,7 +116,7 @@ export function dataURLtoFile(dataurl, filename) {
 
 // pdf相关处理
 export const downloadPdfMixins = {
-   
+
     methods: {
         getDownloadFileAndExportPdf({
             domId,
@@ -150,89 +153,117 @@ export const downloadPdfMixins = {
                 })
             })
         },
-        addFile(e,key, name) {
-          const  toolType=[
-                { code:'QUOTE_IMITATE',
-                 msg:'业务分配模拟'},
-               { code:'QUOTE_TRACK',
-                 msg:'报价与评分跟踪'},
-                 {code:'NEGOTIATION_BASE',msg:'项目概览'},
-                 {code:'NEGOTIATION_SUPPLIER',msg:'批量供应商概览'},
-                 {code:'NEGOTIATION_NOMI',msg:'定点记录'},
-                 {code:'NEGOTIATION_PLANT',msg:'批量供应商工厂总览'},
-                 
-                 {code:'QUOTE_PARTS',msg:'报价分析汇总-零件'},
-                 
-             ]
-             
-            return new Promise((resolve) => {
-                //   let el = document.querySelector('#'+val)
-                //   let el = document.querySelector('rightaa')
-                //        iMessageBox(
-                //       this.language('SHIFOUTUISONGKUAIZHAOZHIBAOGAOQINGDAN', '是否推送快照至报告清单?'),
-                //       this.language('TUISONG', '推送'),
-                //       {
-                //         confirmButtonText: this.language('QUEREN', '确认'),
-                //         cancelButtonText: this.language('QUXIAO', '取消')
-                //       }
-                //     )
-                //   .then(async () => {
-                //   })
-                this.$set(this.cardShow.find(items=>items.key == key), 'show', true)
-                console.log(e)
-                e.collapseValue=true
-                this.$nextTick(() => {
-                    if (key == '4') {
-                        this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('addFile')
-                    } else if (key == '3') {
-                        this.$refs.quotationScoringMj.handleDownload('addFile')
-                    } else {
-                        downloadPDF({
-                            idEle: '#card' + key,
-                            pdfName: name,
-                            exportPdf: true,
-                            waterMark: true,
-                            callback: async (pdf, pdfName) => {
-                                try {
-                                    const filename = pdfName.replaceAll(/\./g, '_') + '.pdf'
-                                    const pdfFile = pdf.output('datauristring')
-                                    const blob = dataURLtoFile(pdfFile, filename)
-                                    const formData = new FormData()
-                                    formData.append('businessId', Math.ceil(Math.random() * 100000)) // 业务id，默认固定8025
-                                    formData.append('applicationName', name)
-                                    formData.append('multifile', blob || []) // 文件
-                                    udMutilfiles(formData).then((res) => {
-                                        if (res && res.code == 200) {
-                                            // iMessage.success(this.language('CAOZUOCHENGGONG', '操作成功'))
-                                            let req = {
-                                                instanceId: -1,
-                                                isBindingInstantce: false,
-                                                Type: '报告',
-                                                toolType: toolType.find(res => res.msg == name).code || '',
-                                                downloadUrl: res.data[0].id
-                                            }
-                                            reportAdd(req).then(v => {
-                                                if (res && res.code == 200) {
-                                                    iMessage.success(res.desZh)
-                                                    this.downloadButtonLoading = false
-                                                } else {
-                                                    iMessage.error(res.desZh)
-                                                    this.downloadButtonLoading = false
-                                                }
-                                            })
-                                        } else {
-                                            iMessage.error(this.language('SHANGCHUANSHIBAI', '上传失败'))
-                                        }
-                                    })
-                                } catch {
-                                    iMessage.error(this.language('SHENGCHENGSHIBAI', '生成失败'))
-                                }
-                            },
-                        })
-                    }
+        addFile(e, key, name) {
+            const toolType = [{
+                    code: 'QUOTE_IMITATE',
+                    msg: '业务分配模拟'
+                },
+                {
+                    code: 'QUOTE_TRACK',
+                    msg: '报价与评分跟踪'
+                },
+                {
+                    code: 'NEGOTIATION_BASE',
+                    msg: '项目概览'
+                },
+                {
+                    code: 'NEGOTIATION_SUPPLIER',
+                    msg: '批量供应商概览'
+                },
+                {
+                    code: 'NEGOTIATION_NOMI',
+                    msg: '定点记录'
+                },
+                {
+                    code: 'NEGOTIATION_PLANT',
+                    msg: '批量供应商工厂总览'
+                },
+                {
+                    code: 'QUOTE_PARTS',
+                    msg: '报价分析汇总-零件'
+                },
 
-                })
+            ]
+
+            return new Promise((resolve) => {
+                iMessageBox(
+                        this.language('SHIFOUTUISONGKUAIZHAOZHIBAOGAOQINGDAN', '是否推送快照至报告清单?'),
+                        this.language('TUISONG', '推送'), {
+                            confirmButtonText: this.language('QUEREN', '确认'),
+                            cancelButtonText: this.language('QUXIAO', '取消')
+                        }
+                    )
+                    .then(async () => {
+                        this.$set(this.cardShow.find(items => items.key == key), 'show', true)
+                        console.log(e)
+                        var timeout = 0
+                        e.collapseValue = true
+                        this.$nextTick(() => {
+                            if (key == '4') {
+                                this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('addFile')
+                            } else if (key == '3') {
+                                this.$refs.quotationScoringMj.handleDownload('addFile')
+                            }  else {
+                                if (key == '8') {
+                                    timeout = 2000
+                                } 
+                                setTimeout(() => {
+                                    downloadPDF({
+                                        idEle: '#card' + key,
+                                        pdfName: name,
+                                        exportPdf: true,
+                                        waterMark: true,
+                                        callback: async (pdf, pdfName) => {
+                                            try {
+                                                const filename = pdfName.replaceAll(/\./g, '_') + '.pdf'
+                                                const pdfFile = pdf.output('datauristring')
+                                                const blob = dataURLtoFile(pdfFile, filename)
+                                                const formData = new FormData()
+                                                formData.append('businessId', Math.ceil(Math.random() * 100000)) // 业务id，默认固定8025
+                                                formData.append('applicationName', name)
+                                                formData.append('multifile', blob || []) // 文件
+                                                udMutilfiles(formData).then((res) => {
+                                                    if (res && res.code == 200) {
+                                                        // iMessage.success(this.language('CAOZUOCHENGGONG', '操作成功'))
+                                                        let req = {
+                                                            instanceId: -1,
+                                                            isBindingInstantce: false,
+                                                            Type: '报告',
+                                                            name: toolType.find(res => res.msg == name).msg || '',
+                                                            toolType: toolType.find(res => res.msg == name).code || '',
+                                                            downloadUrl: res.data[0].id,
+                                                            materialGroupName: this.rfqInfoData.categoryName || '',
+                                                            materialGroupNo: this.rfqInfoData.categoryCode || '',
+                                                            partsNo: ''
+                                                        }
+                                                        reportAdd(req).then(v => {
+                                                            if (res && res.code == 200) {
+                                                                iMessage.success(res.desZh)
+                                                                this.downloadButtonLoading = false
+                                                            } else {
+                                                                iMessage.error(res.desZh)
+                                                                this.downloadButtonLoading = false
+                                                            }
+                                                        })
+                                                    } else {
+                                                        iMessage.error(this.language('SHANGCHUANSHIBAI', '上传失败'))
+                                                    }
+                                                })
+                                            } catch {
+                                                iMessage.error(this.language('SHENGCHENGSHIBAI', '生成失败'))
+                                            }
+                                        },
+                                    })
+                                }, timeout);
+
+                            }
+
+                        })
+                    })
             })
+
+
+
         }
     },
 }

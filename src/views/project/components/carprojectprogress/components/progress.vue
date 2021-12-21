@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-24 10:24:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-16 10:55:54
+ * @LastEditTime: 2021-12-14 17:30:15
  * @Description: 车型项目详情
- * @FilePath: \front-web\src\views\project\components\carprojectprogress\components\progress.vue
+ * @FilePath: \front-sourcing\src\views\project\components\carprojectprogress\components\progress.vue
 -->
 
 <template>

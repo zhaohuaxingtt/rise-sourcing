@@ -96,6 +96,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    graphId: Number
   },
   watch: {
     value: {
@@ -205,7 +206,7 @@ export default {
   },
   methods: {
     handleSearchReset() {
-      let param = this.id;
+      let param = this.id || this.graphId;
       this.query(param);
     },
     currencyMultiples(currencyMultiple) {
