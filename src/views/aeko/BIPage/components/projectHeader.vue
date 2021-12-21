@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2021-12-17 16:21:21
+ * @LastEditTime: 2021-12-20 10:37:36
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
 
 <template>
-  <div :class="`projectTop`">
-    <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav" />
+  <div class="projectTop">
+    <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav margin-10" />
     <div style="display:flex;align-items:center">
       <iNavMvp v-if="subMenu" :lev="2" :list="subMenu" :lang="true" routerPage class="nav-sub" />
       <switchPost />
@@ -42,7 +42,7 @@ export default {
   computed: {
     navList(){
       let TAB = window._.cloneDeep(this.TAB)
-      let path = JSON.parse(window.localStorage.getItem('fromPath')) || this.from?.path
+      let path = this.from.path || JSON.parse(window.localStorage.getItem('fromPath'))
       if(!path||path=='/'){
           path = '/aeko/managelist'
       }else{
@@ -71,8 +71,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 27px;
   position: relative;
+  padding-bottom: 5px;
   &.withAfter::after {
     content: '';
     width: 100%;

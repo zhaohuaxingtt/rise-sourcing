@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 16:55:21
- * @LastEditTime: 2021-11-15 11:09:12
+ * @LastEditTime: 2021-12-17 10:33:02
  * @LastEditors: Luoshuang
  * @Description: 项目状态图表
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\projectStateChart.vue
 -->
 <template>
   <div class="projectStateChart" :class="{'disabled': disabled}">
-    <div class="tit" @click="onTitleClick" v-html="(data && data.title) || ''"></div>
+    <div class="tit" @click="onTitleClick" >{{data && data.title ? language(data.i18n, data.title) : ''}}</div>
     <div class="projectStateChart-container">
       <div class="subtit" v-show="!disabled">{{language('XIANGMUFENGXIAN', '项目风险')}}</div>
       <div v-show="!disabled" :id="id" class="projectStateChart-charts"></div>

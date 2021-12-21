@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-16 15:17:46
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-09 11:24:22
+ * @LastEditTime: 2021-12-15 15:31:00
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\data.js
  */
@@ -61,22 +61,25 @@ export const nodeList = [
     delayWeeks: 'firstTryoutDelayWeeks',
   },
   {
-    label: 'EM(OTS)', 
+    label: 'OTS', 
+    kw: 'otsTimeKw', 
+    planKw: 'planOtsTimeKw', 
+    partPeriod: 7, 
+    isDelay: 'otsDelay',
+    delayReason: 'otsRemark', 
+    soll1: 'otsSoll1', 
+    soll2: 'otsSoll2' , 
+    delayWeeks: 'otsDelayWeeks'
+  },
+  {
+    label: 'EM', 
     kw: 'emTimeKw', 
     planKw: 'planEmTimeKw', 
-    kw1: 'otsTimeKw', 
-    planKw1: 'planOtsTimeKw', 
-    partPeriod: 6, 
+    partPeriod: 8, 
     isDelay: 'emDelay',
     delayReason: 'emRemark', 
     soll1: 'emSoll1', 
     soll2: 'emSoll2' , 
-    isDelay2: 'otsDelay',
-    delayReason2: 'otsRemark', 
-    soll12: 'otsSoll1', 
-    soll22: 'otsSoll2', 
     delayWeeks: 'emDelayWeeks',
-    delayWeeks2: 'otsDelayWeeks',
-    delayWeeksLarger: 'emOtsDelayWeeks'
   }
 ]

@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-17 10:17:21
+ * @LastEditTime: 2021-12-17 13:40:25
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -93,8 +93,8 @@ export default {
     tableTitle() {
       const title = {
         "1": {
-          titleName: '未进TIPS表的已释放零件',
-          titleKey: 'WEIJINTIPSBIAOYISHIFANGLINGJIAN',
+          titleName: '询价资料已释放',
+          titleKey: 'XUNJIAZILIAOYISHIFANG',
           title: TIPStableTitle,
           permision: 'PROJECTMGT-MONITORPARTLIST-NOTIPSTABLE|项目管理-监控零件清单-未进TIPS表格'
         },
@@ -103,6 +103,12 @@ export default {
           titleKey: 'CKDHTZSBLINGJIANEN',
           title: CKDHTtableTitle,
           permision: 'PROJECTMGT-MONITORPARTLIST-CKDHTTABLE|项目管理-监控零件清单-CKDHT表格'
+        },
+        "3": {
+          titleName: 'EM&OTS已完成零件',
+          titleKey: 'EMOTSYIWANCHENGLINGJIAN',
+          title: CKDHTtableTitle,
+          permision: 'PROJECTMGT-MONITORPARTLIST-EMOTSDONEABLE|项目管理-监控零件清单-EM&OTS已完成表格'
         }
       }
       const type = this.$route.query.type || 1
@@ -120,8 +126,8 @@ export default {
     async getFetchData(params = {}) {
       this.tableLoading = true
       params = Object.assign({
-        partMonitorStatus: this.$route.query.type,
-        partStatus: 1,
+        partMonitorStatus: this.$route.query.type == 3 ? 4 : this.$route.query.type,
+        partStatus: this.$route.query.type == 3 ? 9 : 1,
         projectId: this.$route.query.carProjectId,
         current: this.page.currPage,
         size: this.page.pageSize

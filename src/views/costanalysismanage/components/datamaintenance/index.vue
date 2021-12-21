@@ -13,7 +13,14 @@
       <div class="right-control">
         <iNavMvp class="pull-right" :lang="true" right routerPage lev="2" :list="navList" />
         <div class="control">
-          <logButton class="margin-left20" />
+          <iLoger
+          :config="{
+            module_obj_ae: '数据维护', 
+            menuName_obj_ae: ''
+          }"
+          isPage
+          credentials
+          class="margin-left20" />
           <span class="margin-left20">
             <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
           </span>
@@ -28,7 +35,7 @@
 import { iPage, iNavMvp, icon } from "rise";
 import { navList } from "./components/data";
 import { cloneDeep } from "lodash";
-import logButton from "@/components/logButton"
+import iLoger from 'rise/web/components/iLoger'
 import { TAB } from '@/views/financialTargetPrice/components/data'
 
 export default {
@@ -36,7 +43,7 @@ export default {
     iNavMvp,
     iPage,
     icon,
-    logButton
+    iLoger
   },
   data() {
     return {
