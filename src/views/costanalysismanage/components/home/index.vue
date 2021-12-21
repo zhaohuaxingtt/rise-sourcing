@@ -11,7 +11,14 @@
     <div class="header">
       <iNavMvp :list="tabList" :lang="true" :lev="1" routerPage></iNavMvp>
       <div class="control">
-        <logButton class="margin-left20" />
+        <iLoger
+          :config="{
+            module_obj_ae: '成本分析管理', 
+            menuName_obj_ae: ''
+          }"
+          isPage
+          credentials
+          class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
         </span>
@@ -198,7 +205,7 @@
 
 <script>
 import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage, iNavMvp, iPage } from "rise"
-import logButton from "@/components/logButton"
+import iLoger from 'rise/web/components/iLoger'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import downloadDialog from './components/downloadFiles'
 import cbdDialog from './components/cbdStatus'
@@ -220,7 +227,7 @@ export default {
     iSelect,
     iCard,
     iPagination,
-    logButton,
+    iLoger,
     tableList,
     downloadDialog,
     cbdDialog,
