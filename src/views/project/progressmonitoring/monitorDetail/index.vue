@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-05 15:40:06
+ * @LastEditTime: 2021-12-17 14:12:22
  * @Description: 监控明细
- * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\index.vue
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
 
 <template>
@@ -12,7 +12,13 @@
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                   ---------------->
     <!---------------------------------------------------------------------->
-    <iCard class="carProgress" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_CARPROGRESS|项目管理-监控明细-车型项目进度状态部分">
+    <iCard class="carProgress" :class="{titleWithCollapse:!collapseValue}" :collapse="true" @handleCollapse="handleCollapse" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_CARPROGRESS|项目管理-监控明细-车型项目进度状态部分">
+      <div class="clearFloat" slot="header-control">
+        <div class="titleSearch">
+          <!-- <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
+          <carProjectSelect optionType="2" :filterable="true" v-model="carProjectId" @change="handleCarProjectChange" :disabled="disabled" /> -->
+        </div>
+      </div>
       <carProject :carProjectId="carProjectId" />
     </iCard>
     <iCard class="margin-top20 projectCard" :class="{withCollapse:!collapseValue}" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_PARTLIST|项目管理-监控明细-零件列表">
@@ -155,6 +161,15 @@ export default {
   height: calc(100% - 65px);
   overflow: visible;
   .carProgress {
+    ::v-deep .cardHeader {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    ::v-deep .cardBody {
+      position: relative;
+      top: -20px;
+      padding-bottom: 0;
+    }
     .carProject {
       padding-top: 0;
       padding-bottom: 0;
@@ -189,8 +204,8 @@ export default {
     height: calc(100% - 200px);
     overflow: hidden;
     &.withCollapse {
-      height: calc(100% - 120px);
-      overflow: auto;
+      height: calc(100% - 50px);
+      overflow: hidden;
     }
     &-content {
       height: calc(100% - 40px);

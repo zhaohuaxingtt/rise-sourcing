@@ -196,59 +196,66 @@ export const downloadPdfMixins = {
                     .then(async () => {
                         this.$set(this.cardShow.find(items => items.key == key), 'show', true)
                         console.log(e)
+                        var timeout = 0
                         e.collapseValue = true
                         this.$nextTick(() => {
                             if (key == '4') {
                                 this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('addFile')
                             } else if (key == '3') {
                                 this.$refs.quotationScoringMj.handleDownload('addFile')
-                            } else {
-                                downloadPDF({
-                                    idEle: '#card' + key,
-                                    pdfName: name,
-                                    exportPdf: true,
-                                    waterMark: true,
-                                    callback: async (pdf, pdfName) => {
-                                        try {
-                                            const filename = pdfName.replaceAll(/\./g, '_') + '.pdf'
-                                            const pdfFile = pdf.output('datauristring')
-                                            const blob = dataURLtoFile(pdfFile, filename)
-                                            const formData = new FormData()
-                                            formData.append('businessId', Math.ceil(Math.random() * 100000)) // 业务id，默认固定8025
-                                            formData.append('applicationName', name)
-                                            formData.append('multifile', blob || []) // 文件
-                                            udMutilfiles(formData).then((res) => {
-                                                if (res && res.code == 200) {
-                                                    // iMessage.success(this.language('CAOZUOCHENGGONG', '操作成功'))
-                                                    let req = {
-                                                        instanceId: -1,
-                                                        isBindingInstantce: false,
-                                                        Type: '报告',
-                                                        name: toolType.find(res => res.msg == name).msg || '',
-                                                        toolType: toolType.find(res => res.msg == name).code || '',
-                                                        downloadUrl: res.data[0].id,
-                                                        materialGroupName: this.rfqInfoData.categoryName || '',
-                                                        materialGroupNo: this.rfqInfoData.categoryCode || '',
-                                                        partsNo: ''
-                                                    }
-                                                    reportAdd(req).then(v => {
-                                                        if (res && res.code == 200) {
-                                                            iMessage.success(res.desZh)
-                                                            this.downloadButtonLoading = false
-                                                        } else {
-                                                            iMessage.error(res.desZh)
-                                                            this.downloadButtonLoading = false
+                            }  else {
+                                if (key == '8') {
+                                    timeout = 2000
+                                } 
+                                setTimeout(() => {
+                                    downloadPDF({
+                                        idEle: '#card' + key,
+                                        pdfName: name,
+                                        exportPdf: true,
+                                        waterMark: true,
+                                        callback: async (pdf, pdfName) => {
+                                            try {
+                                                const filename = pdfName.replaceAll(/\./g, '_') + '.pdf'
+                                                const pdfFile = pdf.output('datauristring')
+                                                const blob = dataURLtoFile(pdfFile, filename)
+                                                const formData = new FormData()
+                                                formData.append('businessId', Math.ceil(Math.random() * 100000)) // 业务id，默认固定8025
+                                                formData.append('applicationName', name)
+                                                formData.append('multifile', blob || []) // 文件
+                                                udMutilfiles(formData).then((res) => {
+                                                    if (res && res.code == 200) {
+                                                        // iMessage.success(this.language('CAOZUOCHENGGONG', '操作成功'))
+                                                        let req = {
+                                                            instanceId: -1,
+                                                            isBindingInstantce: false,
+                                                            Type: '报告',
+                                                            name: toolType.find(res => res.msg == name).msg || '',
+                                                            toolType: toolType.find(res => res.msg == name).code || '',
+                                                            downloadUrl: res.data[0].id,
+                                                            materialGroupName: this.rfqInfoData.categoryName || '',
+                                                            materialGroupNo: this.rfqInfoData.categoryCode || '',
+                                                            partsNo: ''
                                                         }
-                                                    })
-                                                } else {
-                                                    iMessage.error(this.language('SHANGCHUANSHIBAI', '上传失败'))
-                                                }
-                                            })
-                                        } catch {
-                                            iMessage.error(this.language('SHENGCHENGSHIBAI', '生成失败'))
-                                        }
-                                    },
-                                })
+                                                        reportAdd(req).then(v => {
+                                                            if (res && res.code == 200) {
+                                                                iMessage.success(res.desZh)
+                                                                this.downloadButtonLoading = false
+                                                            } else {
+                                                                iMessage.error(res.desZh)
+                                                                this.downloadButtonLoading = false
+                                                            }
+                                                        })
+                                                    } else {
+                                                        iMessage.error(this.language('SHANGCHUANSHIBAI', '上传失败'))
+                                                    }
+                                                })
+                                            } catch {
+                                                iMessage.error(this.language('SHENGCHENGSHIBAI', '生成失败'))
+                                            }
+                                        },
+                                    })
+                                }, timeout);
+
                             }
 
                         })
