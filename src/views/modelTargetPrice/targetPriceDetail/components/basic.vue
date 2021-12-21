@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-14 11:29:43
+ * @LastEditTime: 2021-12-21 15:19:43
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -178,16 +178,19 @@ export default {
       // }
       this.$emit('changeSubmitLoading', true)
       if (this.applyType === '1') {
+        console.log(this.tableData)
         const params = {
           remarks: this.remarks,
           rfqId: this.rfqId,
           toolingTargetPrices: this.tableData.map(item => {
             return {
               ...item,
-              expectedTargetPrice: item.businessType == 2 ? item.isEdit ? !item.expectedTargetPrice || item.expectedTargetPrice === '' ? 0 : item.expectedTargetPrice : Number(item.originalTargetPrice).toFixed() : !item.expectedTargetPrice || item.expectedTargetPrice === '' ? 0 : item.expectedTargetPrice
+              expectedTargetPrice: item.expectedTargetPrice ? item.expectedTargetPrice : item.businessType == 2 && item.expectedTargetPrice != 0 ? item.originalTargetPrice == '-' ? 0 : item.originalTargetPrice : item.expectedTargetPrice || 0,
+              originalTargetPrice: item.originalTargetPrice === '-' ? -1 : item.originalTargetPrice
             }
           })
         }
+        console.log('params',params)
         submitApplyTargetPrice(params).then(res => {
           if (res?.result) {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
