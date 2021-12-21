@@ -165,7 +165,12 @@
           <template slot-scope="scope">
             <el-form-item
               :prop="'tableData.' + scope.$index + '.' + items.props"
-              :rules="scope.row['index'] %2 === 0?[dateValidator(scope.row, items.props)]:items.rule ? items.rule : ''"
+              :rules="scope.row['index'] %2 === 0 
+              ? [
+                  {required:true,message: language('BIDDING_BITIAN','必填'), trigger: 'blur'},
+                  {validator:dateValidator(scope.row, items.props), trigger: ['blur', 'change'],}
+                ] 
+              : items.rule"
             >
               <iDatePicker
                 v-if="scope.row['index']%2 === 0"
@@ -412,22 +417,18 @@ export default {
       let num = Number(props.slice(5));
       let afterDate = dayjs(row[`stage${num - 1}`]);
       let firstDate = dayjs(this.annualOutputObj[row.index+1][props]).add(1, "month");
-      return {
-        validator(rule, value, callback) {
-          if(value){
-            num === 1
-              ? dayjs(value).isBefore(firstDate)
-              ? callback(new Error(rule.message)):callback()
-              : dayjs(value).isBefore(afterDate) || dayjs(value).isSame(afterDate)
-              ? callback(new Error(rule.message))
-              : callback();
-          } else {
-            callback();
-          }
-        },
-        message: "日期错误",
-        trigger: ["blur","change"],
-      };
+      return function validator(rule, value, callback) {
+        if(value){
+          num === 1
+            ? dayjs(value).isBefore(firstDate)
+            ? callback(new Error('日期错误')):callback()
+            : dayjs(value).isBefore(afterDate) || dayjs(value).isSame(afterDate) || !afterDate
+            ? callback(new Error('日期错误'))
+            : callback();
+        } else {
+          callback();
+        }
+      }
     },
     handleSelectionChange(val) {
       this.$emit("handleSelectionChange", val);
