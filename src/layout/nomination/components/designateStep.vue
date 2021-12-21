@@ -715,7 +715,7 @@ export default {
             flex-grow: 1;
             text-align: center;
             .step-list-item{
-                width: 80px;
+                width: 56px;
                 display: flex;
                 justify-content: center;
                 align-items: center;

@@ -130,6 +130,7 @@ export default {
           userId: store.state.permission.userInfo.id,
           current: this.page.currPage,
           size: this.page.pageSize,
+          showSelf: true,
           ...this.form
       }
       try {
@@ -169,7 +170,7 @@ export default {
         if (res.code == 200) {
           iMessage.success(message)
           const openDesignate = this.$router.resolve({
-            path: "/designate/rfqdetail", 
+            path: "/designate/details", 
             query: {
               desinateId: res.data.nominateId, 
               designateType: res.data.nominateProcessType,

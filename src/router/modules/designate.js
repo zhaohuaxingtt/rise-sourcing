@@ -151,6 +151,17 @@ export default [
         },
         redirect: '/designate/rfqdetail',
         children: [
+          // 定点管理详情
+          {
+            path: '/designate/details',
+            name: 'designateDetails',
+            meta: {
+              hideTabLV3: true,
+              title: '定点管理-定点管理详情',
+              activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+            },
+            component: () => import('@/views/designate/designatedetail/details/index'),
+          },
           // 供应商&单一供应商
           {
             path: '/designate/supplier',

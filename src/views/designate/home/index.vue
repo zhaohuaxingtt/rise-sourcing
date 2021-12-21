@@ -296,7 +296,7 @@ export default {
       this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
         const routeData = this.$router.resolve({
-          path: '/designate/rfqdetail',
+          path: '/designate/details',
           query: {
             desinateId: row.id, 
             mtzApplyId: row.mtzApplyId, 

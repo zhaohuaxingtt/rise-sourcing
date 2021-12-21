@@ -14,6 +14,7 @@ export const applyType = [
 ]
 // 定点申请步骤栏
 export const applyStep = [
+    {id:0,name:'定点申请详情',key:'DINGDIANSHENGQINGXINAGQING',path:'/designate/details'},
     {id:1,name:'RFQ & 零件清单',key:'nominationLanguage.RFQANDLINGJIANQINGDAN',path:'/designate/rfqdetail'},
     {id:2,name:'供应商 & 单⼀供应商',key:'nominationLanguage.GONGYINGSHANGANDDANYIGONGYINGSHANG',path:'/designate/supplier',hasInfo:true},
     {id:3,name:'定点建议',key:'nominationLanguage.DINGDIANJIANYI',path:'/designate/suggestion'},

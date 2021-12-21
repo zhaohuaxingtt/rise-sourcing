@@ -682,7 +682,7 @@ export default {
         if (res.code == 200) {
           iMessage.success(message)
           const openDesignate = this.$router.resolve({
-            path: "/designate/rfqdetail", 
+            path: "/designate/details", 
             query: {
               desinateId: res.data.nominateId, 
               designateType: res.data.nominateProcessType,
