@@ -199,7 +199,8 @@
     <selDialog :visible.sync="selDialogVisibal" :nomiAppId="selNominateId" :readOnly="false" />
     <!-- 撤回弹窗 -->
     <revokeDialog :visible.sync="showRevokeDialog" @confirm="handleBatchRevoke(...arguments, false)" ref="revokeForm" />
-    
+    <!-- 新建定点申请弹窗 -->
+    <rfqDialog :visible.sync="newNomiAppStatus" :nomiAppId="selNominateId" :readOnly="false" />
   </iPage>
 </template>
 
@@ -225,6 +226,7 @@ import {
 // import { applyType } from '@/layout/nomination/components/data'
 import selDialog from './components/selDialog'
 import revokeDialog from './components/revokeDialog'
+import rfqDialog from './components/rfqDialog'
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -253,7 +255,9 @@ export default {
       selNominateId: '',
       selDialogVisibal: false,
       tranformRecallLoading: false,
-      showRevokeDialog: false
+      showRevokeDialog: false,
+      // 新建定点申请单
+      newNomiAppStatus: false
     }
   },
   components: {
@@ -266,6 +270,7 @@ export default {
     tablelist,
     selDialog,
     revokeDialog,
+    rfqDialog,
     icon
   },
   mounted() {
@@ -276,10 +281,12 @@ export default {
     createNomination() {
       // 缓存/更新定点申请类型
       this.$store.dispatch('setNominationTypeDisable', false)
-      this.$nextTick(() => {
-        const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
-        window.open(routeData.href, '_blank')
-      })
+      // this.$nextTick(() => {
+      //   const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
+      //   window.open(routeData.href, '_blank')
+      // })
+      // 修改为弹窗选择rfq创建
+      this.newNomiAppStatus = true
     },
     // 查看详情
     viewNominationDetail(row) {
