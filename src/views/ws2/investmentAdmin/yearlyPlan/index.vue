@@ -95,7 +95,8 @@
             </template>
             <template #linieName="scope">
               <div v-if="scope.row.statType === 'backlog'"></div>
-              <div v-else>{{getTousandNum(NumFormat(scope.row.linieName))}}</div>
+              <!-- <div v-else>{{getTousandNum(NumFormat(scope.row.linieName))}}</div> -->
+              <div v-else>{{scope.row.linieName}}</div>
             </template>
             <template #carTypeProName="scope">
               <div class="backlog" v-if="scope.row.statType === 'backlog'">
