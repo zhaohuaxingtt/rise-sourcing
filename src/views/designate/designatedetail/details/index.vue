@@ -23,7 +23,8 @@
     <div class="body">
       <el-form class="desinate-detail-rows" label-width="104px">
         <el-form-item v-for="(item, index) in titleData" :key="index" :label="language(item.key,item.label)">
-          <iInput v-if="item.props === 'nominateName'" v-model="data.nominateName" :placeholder="language('LK_QINGSHURU','请输入')" />
+          <!-- 定点单名称，状态为草稿才能编辑 -->
+          <iInput v-if="item.props === 'nominateName' && nominationData && nominationData.applicationStatus === 'NEW'" v-model="data.nominateName" :placeholder="language('LK_QINGSHURU','请输入')" />
           <iText v-else>{{data[item.props] ? data[item.props] : ''}}</iText>
         </el-form-item>
       </el-form>
