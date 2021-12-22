@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-17 13:40:20
+ * @LastEditTime: 2021-12-22 10:54:24
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
@@ -63,8 +63,8 @@
       <!--  -->
       <div class="countView" v-permission.auto="PROJECTMGT_PROGRESSMONITORING_COUNTTIPS|统计信息">
          <iFormGroup row="4" class="form">
-            <iFormItem>
-              <span slot="label">{{language('XUNJIAZILIAOYISHIFANG', '询价资料已释放')}}:</span>
+            <iFormItem class="largeFromItem">
+              <span slot="label">{{language('WEIJINTIPSBIAOXUNJIAZILIAOYISHIFANG', '未进TIPS表(询价资料已释放)')}}:</span>
               <span class="cursor" @click="toPartList(1)"><iText>{{showTips ? notInTips : 0}}</iText></span>
             </iFormItem>
             <iFormItem>
@@ -424,6 +424,12 @@ export default {
         background: #F5F6F7;
         color: rgba(22, 96, 241, 1);
         cursor: pointer;
+      }
+    }
+    &.largeFromItem {
+      width: 420px ;
+      .el-form-item__label {
+        width: 260px;
       }
     }
   }
