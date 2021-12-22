@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-12-14 11:51:02
+ * @LastEditTime: 2021-12-22 21:30:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -57,14 +57,20 @@
           <!--------------------------------------------------------->
           <!------------------------内容是打叉------------------------>
           <!--------------------------------------------------------->
-            <span v-else-if='scope.row[item.props].schedule == 2 && scope.row[item.props].quotationId' class="cursor blue-color" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
+            <span v-else-if='scope.row[item.props].schedule == 2 && scope.row[item.props].quotationId && !item.roundHeadDetailVO.isNoBidOpen' class="cursor blue-color" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
               X
+            </span>
+          <!--------------------------------------------------------->
+          <!------------------------内容是打叉------------------------>
+          <!--------------------------------------------------------->
+            <span v-else-if='scope.row[item.props].schedule == 2 && scope.row[item.props].quotationId && item.roundHeadDetailVO.isNoBidOpen' class="cursor blue-color" @click="openUrl('2',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">
+              -
             </span>
           <!--------------------------------------------------------->
           <!------------------------内容是横岗百分比------------------->
           <!--------------------------------------------------------->
           <template v-else>
-            <span class="cursor blue-color" v-if='item.roundHeadDetailVO.isNoBidOpen'>―</span>
+            <span class="cursor blue-color" v-if='item.roundHeadDetailVO.isNoBidOpen' @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">―</span>
             <template v-else>
               <span v-if='scope.row[item.props].quotationId' class="cursor blue-color" @click="openUrl('1',scope.row,item.props,scope.row[item.props].schedule,item.roundHeadDetailVO)">{{scope.row[item.props].schedule}}</span>
               <span v-else>\</span>
