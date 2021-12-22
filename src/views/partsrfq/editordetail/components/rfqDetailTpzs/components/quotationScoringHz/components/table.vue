@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-13 20:02:52
+ * @LastEditTime: 2021-12-22 15:28:26
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -238,11 +238,17 @@ export default{
       return this.rowspan(this.tableData,'groupId',null)
     },
     spanArrGroup() {
-      return this.tableData.reduce((accu, item, index) => item.partNo.includes('Group total') ? [...accu, index] : accu,[])
+      return this.tableData.reduce((accu, item, index) => {
+        if(item.partNo && item.partNo.length && item.partNo.includes('Group total')){
+          return [...accu, index]
+        }else{
+          return accu
+        }
+      })
     },
     isPreview(){
         return this.$store.getters.isPreview;
-    },
+    }
   },
   methods:{
     setfixElement(){
@@ -340,7 +346,7 @@ export default{
   },
   spanMethod({row, column, rowIndex, columnIndex}) {
     // grouptotal 合并第一、二格
-    if (this.spanArrGroup.includes(rowIndex)) {
+    if (this.spanArrGroup && this.spanArrGroup.length && this.spanArrGroup.includes(rowIndex)) {
       if (columnIndex === 0) {
         return [1, 2];
       } else if (columnIndex === 1) {
@@ -392,7 +398,7 @@ export default{
       if(rowIndex == this.tableData.length -1 || rowIndex == this.tableData.length -2 ){
         return 'lineBlueClass'
       }
-      if (row.partNo.includes('Group total')) {
+      if (row.partNo && row.partNo.length && row.partNo.includes('Group total')) {
         return 'lineBlueClass groupLineBlueClass'
       }
     },
@@ -563,7 +569,8 @@ export default{
       .cell{
           display: flex;
           justify-content: center;
-
+          white-space: pre;
+          align-items: center;
           .caret-wrapper{
             height: 20px;
             .ascending{

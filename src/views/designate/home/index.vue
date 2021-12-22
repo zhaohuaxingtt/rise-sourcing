@@ -96,7 +96,6 @@
           <!-- 取消MTZ绑定 -->
           <iButton
             @click="ttss"
-            v-permission.auto="SOURCING_NOMINATION_UNBINDMTZ|取消MTZ绑定"
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
@@ -196,7 +195,8 @@
     <selDialog :visible.sync="selDialogVisibal" :nomiAppId="selNominateId" :readOnly="false" />
     <!-- 撤回弹窗 -->
     <revokeDialog :visible.sync="showRevokeDialog" @confirm="handleBatchRevoke(...arguments, false)" ref="revokeForm" />
-    
+    <!-- 新建定点申请弹窗 -->
+    <rfqDialog :visible.sync="newNomiAppStatus" :nomiAppId="selNominateId" :readOnly="false" />
   </iPage>
 </template>
 
@@ -216,12 +216,15 @@ import {
   rsUnFrozen,
   consistenceCheck,
   nomiApprovalProcess,
-  tranformRecall
+  tranformRecall,
+  unbindMtzCheck,
+  unbindMtz
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
 import selDialog from './components/selDialog'
 import revokeDialog from './components/revokeDialog'
+import rfqDialog from './components/rfqDialog'
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -250,7 +253,9 @@ export default {
       selNominateId: '',
       selDialogVisibal: false,
       tranformRecallLoading: false,
-      showRevokeDialog: false
+      showRevokeDialog: false,
+      // 新建定点申请单
+      newNomiAppStatus: false
     }
   },
   components: {
@@ -263,6 +268,7 @@ export default {
     tablelist,
     selDialog,
     revokeDialog,
+    rfqDialog,
     icon
   },
   mounted() {
@@ -273,10 +279,12 @@ export default {
     createNomination() {
       // 缓存/更新定点申请类型
       this.$store.dispatch('setNominationTypeDisable', false)
-      this.$nextTick(() => {
-        const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
-        window.open(routeData.href, '_blank')
-      })
+      // this.$nextTick(() => {
+      //   const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
+      //   window.open(routeData.href, '_blank')
+      // })
+      // 修改为弹窗选择rfq创建
+      this.newNomiAppStatus = true
     },
     // 查看详情
     viewNominationDetail(row) {
@@ -286,7 +294,7 @@ export default {
       this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
         const routeData = this.$router.resolve({
-          path: '/designate/rfqdetail',
+          path: '/designate/details',
           query: {
             desinateId: row.id, 
             mtzApplyId: row.mtzApplyId, 
@@ -560,7 +568,51 @@ export default {
       .finally(() => this.tranformRecallLoading = false)
     },
     // 取消MTZ绑定
-    ttss() {}
+    async ttss() {
+      // 校验是否支持解绑
+      const state = await this.unbindMtzCheck()
+      if (state) {
+        const data = {
+          nomiId: this.selectTableData[0].id,
+        };
+        try {
+          const confirmInfo = await this.$confirm(this.language('LK_NINGQUEDINGYAOQUXIAOMTZBANGDING', '您确定要取消MTZ绑定吗？'));
+          if (confirmInfo !== 'confirm') return;
+          const res = await unbindMtz(data)
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } catch(e) {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        }
+      }
+    },
+    // 取消MTZ绑定校验
+    async unbindMtzCheck() {
+      let state = true
+      if (this.selectTableData.length !== 1) return iMessage.warn(this.language("QINGXUANZEYIGELIE","请选择一条数据！"))
+      const data = {
+        nomiId: this.selectTableData[0].id,
+      };
+      try {
+        const res = await unbindMtzCheck(data)
+        const { code } = res;
+        if(code == 200){
+          state = true
+        }else{
+          state = false
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch(e) {
+        state = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+      return state
+    },
   }
 }
 </script>

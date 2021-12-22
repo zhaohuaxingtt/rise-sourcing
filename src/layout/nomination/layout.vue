@@ -92,7 +92,7 @@ export default {
             this.$store.dispatch('setApplicationStatus', res.data.applicationStatus)
             this.$store.dispatch('setNominationType', res.data.nominateProcessType)
             this.$store.dispatch('setMtzAppid',res.data.mtzApplyId)
-            
+            this.$store.dispatch('setNominateData',res.data || {})
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }

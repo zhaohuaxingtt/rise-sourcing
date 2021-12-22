@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-08-26 15:34:28
+ * @LastEditTime: 2021-12-22 16:49:13
  * @LastEditors: Please set LastEditors
  * @Description: 项目中登录时候获取整个项目的权限以及token.
  * @FilePath: \rise\src\permission.js
@@ -21,14 +21,14 @@ router.beforeEach((to, from, next) => {
 			next('/')
 		} else {
 			const userRule = store.state.permission.menuList.length
-			if (userRule === 0) {
+			if (userRule === 0) { 
 				store
 					.dispatch('userInfoByToken')
 					.then(() => {
 						store
 							.dispatch('getPermissinInfo')
 							.then((res) => {
-								if (res.length == 0) {
+								if (res.length == 0 && store.state.permission.userInfo.userType == 1) { // 解决onlinebiddig 过渡方案
 									removeToken()
 									// next('/login')
 									// 打个提示框，不然无权限用户会重复跳转
