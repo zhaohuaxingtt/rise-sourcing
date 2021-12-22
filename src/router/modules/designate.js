@@ -391,6 +391,6 @@ export default [
       title: '签字单预览下载',
       activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
     },
-    component: () => import('@/views/designate/home/signSheet/preview'),
+    component: () => import('@/views/designate/home/signSheet/signPreview'),
   },
 ]

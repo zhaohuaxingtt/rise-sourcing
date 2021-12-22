@@ -102,7 +102,7 @@ export default {
   },
   created() {
     this.searchCriteria.rfq=this.$store.state.rfq.rfqId
-    // this.searchCriteria.rfq = 60001169
+    // this.searchCriteria.rfq = '60001706'
     this.inside = this.$store.state.rfq.entryStatus === 1 ? true : false
     this.getAllSelect()
     this.getDownTable()

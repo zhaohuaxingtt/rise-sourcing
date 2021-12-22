@@ -87,7 +87,7 @@
         </tableList>
       
       </iCard>
-      <iCard class="margin-top20">
+      <!-- <iCard class="margin-top20">
         <div slot="header"
             class="headBox">
           <p class="headTitle">{{language('BEIZHU', '备注')}}-Remarks</p>
@@ -97,7 +97,7 @@
                 :disabled="true"
                 :rows="8"
                 type="textarea" />
-      </iCard>
+      </iCard> -->
       <iCard v-if="applayDateData.length>0" class="margin-top20">
         <p>{{language('SHENQINGRIQI','申请日期')}}:{{moment(new Date()).format('YYYY-MM-DD')}}</p>
         <div class="applayDateBox1">

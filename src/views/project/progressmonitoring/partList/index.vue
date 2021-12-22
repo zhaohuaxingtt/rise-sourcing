@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-17 13:40:25
+ * @LastEditTime: 2021-12-22 10:17:07
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -93,8 +93,8 @@ export default {
     tableTitle() {
       const title = {
         "1": {
-          titleName: '询价资料已释放',
-          titleKey: 'XUNJIAZILIAOYISHIFANG',
+          titleName: '未进TIPS表(询价资料已释放)',
+          titleKey: 'WEIJINTIPSBIAOXUNJIAZILIAOYISHIFANG',
           title: TIPStableTitle,
           permision: 'PROJECTMGT-MONITORPARTLIST-NOTIPSTABLE|项目管理-监控零件清单-未进TIPS表格'
         },

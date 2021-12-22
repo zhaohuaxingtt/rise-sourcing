@@ -157,3 +157,21 @@ export function fetchSignPreviewDept(parmars) {
     data: parmars
   })
 }
+
+// mtz单-审批详情(上会&流转)
+export function getApproveRsMtzDetail(params) {
+  return requst({
+    url: `/mtz/approveRs/mtzDetail`,
+    method: 'GET',
+    params
+  })
+}
+
+// mtz单-审批详情(上会&流转)
+export function getApproveSignMtzDetail(params) {
+  return requst({
+    url: `/mtz/approveSign/mtzDetail`,
+    method: 'GET',
+    params
+  })
+}
