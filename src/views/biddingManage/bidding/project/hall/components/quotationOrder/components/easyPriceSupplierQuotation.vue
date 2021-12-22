@@ -520,7 +520,7 @@ export default {
         .then((res) => {
           if(res.kickoutReason) {
             if (document.getElementsByClassName('el-message').length == 0) {
-              this.$message.error(res.kickOutMessage)
+              return this.$message.error(res.kickOutMessage)
             }
           }
           if (res) {
