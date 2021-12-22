@@ -1125,7 +1125,8 @@ export default {
       saveBiddingQuotation(formData).then((res) => {
         if(res.kickoutReason) {
           if (document.getElementsByClassName('el-message').length == 0) {
-            this.$message.error(res.kickOutMessage)
+            this.projectLoading = false
+            return this.$message.error(res.kickOutMessage)
           }
         }
         if (res) {

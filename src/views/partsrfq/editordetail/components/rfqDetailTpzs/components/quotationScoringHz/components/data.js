@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-22 15:17:50
+ * @LastEditTime: 2021-12-22 20:23:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -29,19 +29,19 @@ export const gstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>FS/GS/SP</p><p>No.</p>'},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'cfPartAPrice',label:'F-T(A)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'cfPartBPrice',label:'F-T(B)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Tooling</p><p>Target</p>'},
-  {type:'',props:'currentSupplier',label:'Cur. Supplier',i18n:'',width:'60',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>Supplier</p>'},
+  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'currentSupplier',label:'Current \n Supplier',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'currentShare',label:'Share',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'currentAPrice',label:'Cur. \n A Price',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>A Price</p>'},
-  {type:'',props:'currentBPrice',label:'Cur. \n B Price',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>B Price</p>'},
+  {type:'',props:'currentAPrice',label:'Current \n A Price',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'currentBPrice',label:'Current \n B Price',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'50',tooltip:false,fixed:true},
-  {type:'',props:'currentTto',label:'Cur. TTO',i18n:'',width:'90',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>TTO</p>'},
-  {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'90',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>Sup.Saving</p>'},
+  {type:'',props:'currentTto',label:'Current \n TTO',i18n:'',width:'90',tooltip:false,fixed:true},
+  {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'50',tooltip:false,fixed:true},
   {type:'',props:'headerEbr',label:'',i18n:'',width:'1',tooltip:false}
 ]
@@ -108,7 +108,7 @@ export const whiteList = ['headerEbr','groupName','partNo','partName','cfPartAPr
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving'] //默认需要显示的数据
+export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
