@@ -45,6 +45,9 @@ export default {
       ]
     }
   },
+  create() {
+    this.getApproveSignMtzDetail()
+  },
   methods: {
     handleCollapse() {
       this.$refs.signPreview.handleCollapse()
