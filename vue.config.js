@@ -116,7 +116,7 @@ module.exports = {
   //引入全局css变量
   css: {
     //是否开起css分离
-    extract: false,
+    extract: process.env.NODE_ENV != 'dev',
     sourceMap: false,
     requireModuleExtension: true,
     loaderOptions: {
@@ -134,12 +134,11 @@ module.exports = {
   //本地server配置
   devServer: {
     open: true,
-    host: '0.0.0.0',
+    host: 'localhost',
     port: 8080,
     https: false,
     hot: true,
-    overlay:true,
-    compress:true,
+    clientLogLevel:'none',
     proxy: {
       '/mtzApi': {
         target: 'http://10.122.17.38:8046/mtz',

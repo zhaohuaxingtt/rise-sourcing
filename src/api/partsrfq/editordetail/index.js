@@ -279,7 +279,8 @@ export function gsPartsAsRow(rfqId,round){
 //报价分析-供应商轴
 export function fsSupplierAsRow(rfqId,round){
     return nego({
-        url: `/nego-assistant/nego-analysis-summary/fs-supplier-as-row/${rfqId}/${round}`,
+        // url: `/nego-assistant/nego-analysis-summary/fs-supplier-as-row/${rfqId}/${round}`,
+        url: `https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/nego-assistant/nego-analysis-summary/fs-supplier-as-row`,
         method: 'GET'
     })
 }

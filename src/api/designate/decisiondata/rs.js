@@ -11,6 +11,7 @@ import axiosDownload from '@/utils/axios.download'
 
 const requst = axios(process.env.VUE_APP_SOURCING)
 const requestDownload = axiosDownload(process.env.VUE_APP_SOURCING)
+const requestMtz = axios(process.env.VUE_APP_MTZ + '/web/mtz')
 
 // 读取报价单
 export function readQuotation(params) {
@@ -99,5 +100,60 @@ export function reviewListRs(nominateAppId) {
   return requst({
     url: `/rs/reviewListRs?nominateAppId=${ nominateAppId }`,
     method: 'GET'
+  })
+}
+
+//mtz申请单信息
+export function getAppFormInfo(parmars) {
+  //mtz申请单信息
+  return requestMtz({
+    url: '/mtzAppNomi/getAppFormInfo',
+    method: 'POST',
+    data: parmars
+  })
+}
+
+//维护MTZ原材料规则-分页查询
+export function pageAppRule(parmars) {
+  return requestMtz({
+    url: '/mtzAppNomi/pageAppRule',
+    method: 'POST',
+    data: parmars
+  })
+}
+
+//维护MTZ零件主数据-分页查询
+export function pagePartMasterData(parmars) {
+  return requestMtz({
+    url: '/mtzAppNomi/pagePartMasterData',
+    method: 'POST',
+    data: parmars
+  })
+}
+
+//用量单位下拉
+export function approvalList(params) {
+  return requestMtz({
+    url: '/mtzAppNomiDecisionData/approvalList',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 决策资料-保存备注
+export function fetchSaveCs1Remark(parmars) {
+  return requestMtz({
+    url: '/mtzAppNomi/saveCs1Remark',
+    method: 'POST',
+    data: parmars
+  })
+}
+
+// 决策资料-会外流转单-查询部门
+export function fetchSignPreviewDept(parmars) {
+  return requestMtz({
+    url: '/mtzAppNomiApprove/queryApprovalDepartment',
+    method: 'POST',
+    data: parmars
   })
 }

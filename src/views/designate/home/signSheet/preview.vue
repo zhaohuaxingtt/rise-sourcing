@@ -7,11 +7,14 @@
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
 -->
 <template>
-<iPage :class="{ isPortal: source === 'portal' }">
+<!-- <iPage :class="{ isPortal: source === 'portal' }"> -->
   <div class="nomination-wraper">
-    <iCard>
+    <iCard collapse title="Summary List For Production Purchasing" >
+      <template #header-control>
+        <iButton @click="exportSignSheet">{{ language('LK_DAOCHU', '导出') }}</iButton>
+      </template>
       <div class="signPreview">
-        <div class="signPreview-header">
+        <!-- <div class="signPreview-header">
           <div class="font18 font-weight">{{'Summary List For Production Purchasing'}}</div>
           <div class="control">
             <iButton @click="exportSignSheet">
@@ -21,8 +24,8 @@
               <icon symbol name="iconguanbixiaoxiliebiaokapiannei"></icon>
             </span>
           </div>
-        </div>
-        <div class="signPreview-body padding-top30">
+        </div> -->
+        <div class="signPreview-body">
           <tablelist
             height="450"
             index
@@ -55,7 +58,7 @@
       </div>
     </iCard>
   </div>
-</iPage>
+<!-- </iPage> -->
 </template>
 <script>
 import {signsheetViewTableTitle as tableTitle} from './components/data'
@@ -63,7 +66,7 @@ import tablelist from "@/views/designate/supplier/components/tableList";
 import { toThousands } from "@/utils"
 
 import {
-  iPage,
+  // iPage,
   iCard,
   icon,
   iButton,
@@ -78,7 +81,7 @@ import filters from "@/utils/filters"
 export default {
   mixins: [ filters, pageMixins ],
   components: {
-    iPage,
+    // iPage,
     iCard,
     icon,
     iButton,
