@@ -1123,6 +1123,11 @@ export default {
       console.log(869,formData)
       //保存
       saveBiddingQuotation(formData).then((res) => {
+        if(res.kickoutReason) {
+          if (document.getElementsByClassName('el-message').length == 0) {
+            this.$message.error(res.kickOutMessage)
+          }
+        }
         if (res) {
           this.projectLoading = false
           this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
@@ -1139,7 +1144,7 @@ export default {
         this.yearsPlanTable = [];
         this.purchasePlanTable = [];
         this.handleSearchReset();
-        // callback && callback();
+        callback && callback();
       });
     },
     handleSearchReset() {
@@ -1148,7 +1153,6 @@ export default {
       
       let param = { biddingId: this.id, supplierCode: this.supplierCode };
       this.query(param);
-      
     },
     async query(e) {
       this.isOffer = true
@@ -1198,6 +1202,24 @@ export default {
        //this.ruleForm.productions 采购员年产量
       this.ruleForm.biddingProducts?.forEach((items,index) => {
         let output = {};
+        let annualOutput = [{
+        title: "折现率",
+        stage1: 1,
+        stage2: 0.9,
+        stage3: 0.81,
+        stage4: 0.73,
+        stage5: 0.66,
+        stage6: 0.59,
+        stage7: 0.53,
+        stage8: 0.48,
+        stage9: 0.43,
+        stage10: 0.39,
+        stage11: 0.35,
+        stage12: 0.31,
+        stage13: 0.28,
+        stage14: 0.25,
+        stage15: 0.23,
+        }]
         output = items.productions.reduce((obj, item) => {
           if (!obj[item.productId]) {
             obj[item.productId] = {
@@ -1213,16 +1235,18 @@ export default {
           obj[item.productId].procureNum[`id${item.stage}`] = item.id;
           return obj;
         }, {});
-        this.annualOutput.push({
+        annualOutput.push({
             ...planBaseData,
           ...output[items.id]?.procureYearMonth,
           title: items.fsnrGsnr,
         })
-        this.annualOutput.push({
+        annualOutput.push({
           ...planBaseData,
           ...output[items.id]?.procureNum,
           title: items.productCode,
         })
+        this.annualOutput = annualOutput
+
       })
       if (!this.ruleForm.supplierProducts?.length) {
         this.ruleForm.supplierProducts = data.biddingProducts;

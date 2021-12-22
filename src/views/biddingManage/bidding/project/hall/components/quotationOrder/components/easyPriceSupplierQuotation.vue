@@ -518,6 +518,11 @@ export default {
       //保存
       saveBiddingQuotation(formData)
         .then((res) => {
+          if(res.kickoutReason) {
+            if (document.getElementsByClassName('el-message').length == 0) {
+              this.$message.error(res.kickOutMessage)
+            }
+          }
           if (res) {
             this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
           }
