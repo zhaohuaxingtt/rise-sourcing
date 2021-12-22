@@ -10,6 +10,7 @@
 // 定点管理申请状态
 export const nomiApplicationStatus = [
   {id:'NEW',name:'草稿',key:'LK_CAOGAO'},
+  {id:'FLOWED_FAIL',name:'未通过',key:'LK_WEITONGGUO'},
   {id:'SUBMIT',name:'已提交',key:'LK_TIJIAO'},
   // {id:'NOTPASS',name:'未通过',key:'LK_WEITONGGUO'},
   {id:'PASS',name:'会议通过',key:'LK_HUIYITONGGUO'},
@@ -26,7 +27,7 @@ export const nomiApplicationStatus = [
 // 申请状态与定点类型之间的联动
 export const nomiApplicationObject = {
   MEETING: ['NEW', 'SUBMIT', 'NOTPASS', 'PASS', 'CHECK_INPROCESS', 'CHECK_PASS', 'CHECK_FAIL', 'FREERE', 'M_CHECK_INPROCESS', 'M_CHECK_FAIL', 'NOMINATE'],
-  TRANFORM: ['NEW', 'SUBMIT', 'FREERE', 'ONFLOW', 'FINISHFLOW', 'NOMINATE'],
+  TRANFORM: ['NEW', 'FLOWED_FAIL', 'SUBMIT', 'FREERE', 'ONFLOW', 'FINISHFLOW', 'NOMINATE'],
   RECORD: ['NEW', 'SUBMIT', 'FREERE', 'NOMINATE']
 }
 

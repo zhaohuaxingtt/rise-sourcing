@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-08-09 16:46:25
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-21 22:38:12
+ * @LastEditors: Hao,Jiang
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\nomination\index.js
  */
@@ -132,5 +132,23 @@ export function tranformRecall(data) {
     url: "/nominate-apps/tranformRecall",
     method: "POST",
     data,
+  })
+}
+
+// 检查是否可以解绑
+export function unbindMtzCheck(params) {
+  return requst({
+    url: `/nominate-apps/unbindMtzCheck/${params.nomiId}`,
+    method: "GET",
+    params,
+  })
+}
+
+// 解绑MTZ
+export function unbindMtz(params) {
+  return requst({
+    url: `/nominate-apps/unbindMtz/${params.nomiId}`,
+    method: "GET",
+    params,
   })
 }

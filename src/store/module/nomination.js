@@ -41,6 +41,8 @@ const state = {
   mtzApplyId: '',
   //定点管理 costType
   costType:'',
+  // 缓存定点管理数据
+  nominationData: {}
 };
 
 const mutations = {
@@ -82,10 +84,16 @@ const mutations = {
   },
   SET_COSTTYPE(state,data){
     state.costType = data
-  }
+  },
+  SET_NOMINATEDATA(state,data){
+    state.nominationData = data
+  },
 };
 
 const actions = {
+  setNominateData({commit},data) {
+    commit('SET_NOMINATEDATA',data)
+  },
   setCostType({commit},data){
     commit('SET_COSTTYPE',data)
   },
@@ -189,7 +197,8 @@ const getters = {
   isPartListNull: (state) => state.isPartListNull,
   nominationDisabled: (state) => state.nominationDisabled,
   rsDisabled: (state) => state.rsDisabled,
-  applicationStatus: (state) => state.applicationStatus
+  applicationStatus: (state) => state.applicationStatus,
+  nominationData: (state) => state.nominationData
 };
 
 export default {
