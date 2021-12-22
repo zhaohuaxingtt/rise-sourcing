@@ -31,6 +31,7 @@ export default {
     return {
       tab: "nomi",
       collapseValue: true,
+      showMtz: false,
       tabs: [
         {
           label: "Production Purchasing",
@@ -46,7 +47,6 @@ export default {
     }
   },
   created() {
-    console.log("ttdddd")
     this.getApproveSignMtzDetail()
   },
   methods: {
@@ -65,7 +65,7 @@ export default {
 
             this.mtzData = {
               ruleTableListData: Array.isArray(res.data.ruleList) ? res.data.ruleList : [],
-              partTableListData: Array.isArray(res.data.ruleLpartsListist) ? res.data.partsList : []
+              partTableListData: Array.isArray(res.data.partsList) ? res.data.partsList : []
             }
           } else {
             this.showMtz = false
