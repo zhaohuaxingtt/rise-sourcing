@@ -400,6 +400,7 @@ export default {
           res.data.forEach(val => {val.mtz == true ? val.mtz = '是' : val.mtz = '否'})
           this.partsTableListData = res.data
           this.partsTableListDataTemp = cloneDeep(res.data)
+          this.$store.dispatch('setPartListNull', !this.partsTableListDataTemp.filter(item => item.selected == 1).length)
           this.$nextTick(()=>{
             this.defaultSelectTable()
           })
@@ -419,7 +420,7 @@ export default {
     handlePartsSelectionChange(selectItems){
       this.partsSelectedItems = selectItems
       // 零件清单标记为空
-      this.$store.dispatch('setPartListNull', !this.partsSelectedItems.length)
+      // this.$store.dispatch('setPartListNull', !this.partsSelectedItems.length)
     },
     /**
      * @Description: 零件列表点击零件号跳转事件
