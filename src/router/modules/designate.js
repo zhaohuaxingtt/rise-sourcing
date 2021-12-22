@@ -382,7 +382,7 @@ export default [
       activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
     },
     component: () =>
-      import('@/views/designate/designatedetail/decisionData/rs/index'),
+      import('@/views/designate/designatedetail/decisionData/rs/preview'),
   },
   {
     path: '/sourcing/partsnomination/signSheet/preview',
