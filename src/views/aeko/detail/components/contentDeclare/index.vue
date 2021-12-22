@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-12-03 11:48:34
- * @LastEditors:  
+ * @LastEditTime: 2021-12-21 19:06:37
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -359,6 +359,7 @@ import Upload from '@/components/Upload'
 import {floatFixNum} from "../../../approve/approveDetails/data.js"
 
 import { setLogMenu } from "@/utils";
+import qs from 'qs'
 
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
@@ -1183,7 +1184,7 @@ export default {
     async onHttpUploaded(formData,content){
       const newFormData = new FormData()
       newFormData.append('uploadFile', content.file)
-      await importItemExcel(newFormData).then((res)=>{
+      await importItemExcel(newFormData,{requirementAekoId:this.$route.query.requirementAekoId}).then((res)=>{
         const {code} = res;
         if(code!=200){
           const tips = this.$i18n.locale === "zh" ? res.desZh : res.desEn;

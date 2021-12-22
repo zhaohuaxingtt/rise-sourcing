@@ -151,6 +151,17 @@ export default [
         },
         redirect: '/designate/rfqdetail',
         children: [
+          // 定点管理详情
+          {
+            path: '/designate/details',
+            name: 'designateDetails',
+            meta: {
+              hideTabLV3: true,
+              title: '定点管理-定点管理详情',
+              activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+            },
+            component: () => import('@/views/designate/designatedetail/details/index'),
+          },
           // 供应商&单一供应商
           {
             path: '/designate/supplier',
@@ -371,7 +382,7 @@ export default [
       activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
     },
     component: () =>
-      import('@/views/designate/designatedetail/decisionData/rs/index'),
+      import('@/views/designate/designatedetail/decisionData/rs/preview'),
   },
   {
     path: '/sourcing/partsnomination/signSheet/preview',
@@ -380,6 +391,6 @@ export default [
       title: '签字单预览下载',
       activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
     },
-    component: () => import('@/views/designate/home/signSheet/preview'),
+    component: () => import('@/views/designate/home/signSheet/signPreview'),
   },
 ]

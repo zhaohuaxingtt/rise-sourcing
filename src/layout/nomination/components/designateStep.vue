@@ -8,9 +8,21 @@
         <!-- 顶部信息栏 -->
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
-                <span class="icon-mtz margin-left10" v-if="mtzShow"><icon symbol name="iconMTZ"></icon></span>
-                <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></span>
-                <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
+                <div class="title-text margin-left10">
+                    <p>{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></p>
+                    <p v-if="!!mtzApplyId">
+                        <span class="padding-left5 padding-right5">-</span>
+                        <span class="mtzNum" @click="toMtzDetail">MTZ{{ mtzApplyId }}</span>
+                        <el-popover
+                            placement="right"
+                            width="200"
+                            trigger="hover"
+                            :content="language('BINDMTZTIPS', '此申请单已关联MTZ申请，点击可查看MTZ申请详情')">
+                            <icon slot="reference" class="iconxinxitishi" symbol name="iconxinxitishi" />
+                        </el-popover>
+                    </p>
+                </div>
+                <span class="select-text margin-left14">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
                 <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled || rsDisabled" v-permission.auto="NOMINATION_MENU_CHANGENOMINATETYPE|定点申请类型">
                     <el-option
                     :value="item.id"
@@ -161,7 +173,7 @@ export default {
             userInfo: state => state.permission.userInfo,
             nominationDisabled: state => state.nomination.nominationDisabled,
             rsDisabled: state => state.nomination.rsDisabled,
-            mtzShow: state => state.nomination.mtzApplyId,
+            mtzApplyId: state => state.nomination.mtzApplyId,
         }),
         phaseType(){
             return this.$store.getters.phaseType;
@@ -249,7 +261,8 @@ export default {
             console.log(this.$store.getters.isPartListNull, item.path)
             // 前4步零件非空校验不通过
             if (this.$store.getters.isPartListNull && item.path !== '/designate/rfqdetail') {
-                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
+                // iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
+                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXINGOTHER','当前零件清单没有已加入申请的零件，请至少将一个零件加入申请后再进行操作'))
                 return
             }
              // 合理的跳转到下一步
@@ -650,7 +663,10 @@ export default {
                 }
             })
         },
-
+        // 跳转MTZ申请详情
+        toMtzDetail() {
+            window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow?currentStep=1&mtzAppId=${ this.mtzApplyId }`, "_blank")
+        }
     }
 }
 </script>
@@ -666,6 +682,10 @@ export default {
             font-weight: bold;
             white-space: nowrap;
             // margin-bottom: 10px;
+
+            p {
+                display: inline-block;
+            }
         }
         .select-text{
             font-size: 14px;
@@ -676,7 +696,17 @@ export default {
         }
         .desinateId {
             display: inline-block;
-            min-width: 100PX;
+            // min-width: 100PX;
+        }
+
+        .mtzNum {
+            color: $color-blue;
+            cursor: pointer;
+        }
+
+        .iconxinxitishi {
+            width: 14px;
+            margin-left: 5px;
         }
     }
     .step-list{

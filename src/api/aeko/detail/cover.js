@@ -108,3 +108,12 @@ export function cancelPass(aekoManageId) {
         method: 'POST',
     })
 }
+
+// 封面表态重置--记录日志
+export function resetCover(params) {
+    return requst({
+        url: `/aeko/cover/resetCover/${params.requirementAekoId}/${params.deptNum}`,
+        method: 'GET',
+        params,
+    })
+}

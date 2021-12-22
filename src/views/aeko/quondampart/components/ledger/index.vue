@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-12-02 11:22:56
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-21 17:26:48
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -409,9 +409,9 @@ export default {
     },
     // 勾选限制
     selectInit(row){
-      const idArr = this.aekomultipleSelection.map((item)=>item.partNum);
+      const idArr = this.aekomultipleSelection.map((item)=>item.partNum.trim());
       // 判断AEKO零件列表是否已存在相同原零件 若存在 则不勾选
-      if(!idArr.includes(row.partNum)){
+      if(!idArr.includes(row.partNum.trim())){
         return true 
       }else{
         return false
