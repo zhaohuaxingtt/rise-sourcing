@@ -495,17 +495,17 @@ export default {
           { cancelButtonText: this.language("FOU", "否"), confirmButtonText: this.language("SHI", "是") }
         )
 
-        const res = await xx()
-        if (res.code == 200) {
-          window.location.href = `${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.mtzApplyId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
+        // const res = await xx()
+        // if (res.code == 200) {
+        //   window.location.href = `${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`
+        // } else {
+        //   iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        // }
 
-        return
+        // return
       }
 
-      window.location.href = `${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.mtzApplyId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`
+      window.location.href = `${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`
     },
     // 是否加入申请
     selectedFormat(status) {
