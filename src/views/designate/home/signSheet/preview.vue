@@ -9,10 +9,10 @@
 <template>
 <!-- <iPage :class="{ isPortal: source === 'portal' }"> -->
   <div class="nomination-wraper">
-    <iCard collapse title="Summary List For Production Purchasing" >
-      <template #header-control>
+    <!-- <iCard collapse title="Summary List For Production Purchasing" > -->
+      <!-- <template #header-control>
         <iButton @click="exportSignSheet">{{ language('LK_DAOCHU', '导出') }}</iButton>
-      </template>
+      </template> -->
       <div class="signPreview">
         <!-- <div class="signPreview-header">
           <div class="font18 font-weight">{{'Summary List For Production Purchasing'}}</div>
@@ -56,7 +56,7 @@
           <div class="time">{{currentDate}}</div>
         </div>
       </div>
-    </iCard>
+    <!-- </iCard> -->
   </div>
 <!-- </iPage> -->
 </template>
@@ -124,7 +124,8 @@ export default {
         return
       }
       const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-      const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export?signId=${signId}`
+      // const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export?signId=${signId}`
+      const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export-sign-single?signId=${signId}`
       console.log(fileURL)
       window.open(fileURL)
     },
@@ -251,6 +252,7 @@ export default {
     display: flex;
     align-content: center;
     justify-content: space-between;
+    align-items: flex-end;
     .tit {
       span {
         font-weight: bold;

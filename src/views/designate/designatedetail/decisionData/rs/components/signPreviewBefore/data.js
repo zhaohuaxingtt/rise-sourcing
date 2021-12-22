@@ -110,7 +110,7 @@ export const ruleTableTitle1_1 = [//决策资料规则清单暂用
     minWidth:105,
   },
   {
-    props: 'source',
+    props: 'sourceType',
     name: '市场价来源',
     key: 'SHICHANGJIALAIYUAN',
     overlap:true,
