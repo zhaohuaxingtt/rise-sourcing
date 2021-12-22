@@ -448,6 +448,7 @@ export default {
         if (confirmInfo === 'confirm') {
           auditFileDelete({
             ids: fileList,
+            isSubmited: !this.checkFirstRecord, // 是否已提交
             delType: 1
           }).then(res => {
             if (res.code === '200') {
