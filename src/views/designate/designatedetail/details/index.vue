@@ -15,18 +15,23 @@
         <iButton :loading="isLoading" @click="updateNominate()">{{
           language("LK_BAOCUN", "保存")
         }}</iButton>
-        <iButton @click="reset()" style="margin-right: 10px !important">{{
+        <iButton @click="reset()" style="margin-left:15px">{{
           language("LK_QUXIAO", "取 消")
         }}</iButton>
       </div>
     </div>
     <div class="body">
       <el-form class="desinate-detail-rows" label-width="104px">
-        <el-form-item v-for="(item, index) in titleData" :key="index" :label="language(item.key,item.label)">
-          <!-- 定点单名称，状态为草稿才能编辑 -->
-          <iInput v-if="item.props === 'nominateName' && nominationData && nominationData.applicationStatus === 'NEW'" v-model="data.nominateName" :placeholder="language('LK_QINGSHURU','请输入')" />
-          <iText v-else>{{data[item.props] ? data[item.props] : ''}}</iText>
-        </el-form-item>
+        <el-row>
+          <el-col :span="!(index%3) ? 12 : 6" v-for="(item, index) in titleData" :key="index">
+            <el-form-item :label="language(item.key,item.label)">
+              <!-- 定点单名称，状态为草稿才能编辑 -->
+              <iInput v-if="item.props === 'nominateName' && nominationData && nominationData.applicationStatus === 'NEW'" v-model="data.nominateName" :placeholder="language('LK_QINGSHURU','请输入')" />
+              <iText v-else>{{data[item.props] ? data[item.props] : ''}}</iText>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        
       </el-form>
       <div class="clearFloat"></div>
     </div>
@@ -96,24 +101,13 @@ export default {
 .desinate-detail {
   height: 520px;
   .desinate-detail-rows {
+    .el-col-6 .el-form-item{
+      padding-left: 60px;
+    }
     ::v-deep.el-form-item {
-      float: left;
-      margin-right: 60px;
-      &:nth-child(3n+1) {
-        clear: left;
-        .el-form-item__content {
-          width: 640px;
-        }
-      }
-      &:nth-child(3n) {
-        margin-right: 0px !important;
-      }
       .el-form-item__label {
         width: 104px;
         text-align: left;
-      }
-      .el-form-item__content {
-        width: 244px;
       }
     }
   }
