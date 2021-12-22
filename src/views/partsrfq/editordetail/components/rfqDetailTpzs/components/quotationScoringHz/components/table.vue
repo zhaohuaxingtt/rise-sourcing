@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-22 15:28:26
+ * @LastEditTime: 2021-12-22 20:13:26
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -35,7 +35,7 @@
           >
             <template slot-scope="scope">
                 <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
-                <span v-if="scope.row.partNo.includes('Group total')">{{scope.row.partNo}}</span>
+                <span v-if="scope.row.partNo && scope.row.partNo.length && scope.row.partNo.includes('Group total')">{{scope.row.partNo}}</span>
             </template>
           </el-table-column>
           <el-table-column
