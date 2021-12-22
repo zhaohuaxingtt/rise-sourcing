@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-20 23:10:26
+ * @LastEditTime: 2021-12-22 15:17:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -15,8 +15,8 @@ export const fstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>FS/GS/SP</p><p>No.</p>'},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'cfPartAPrice',label:'F-T(A)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'cfPartBPrice',label:'F-T(B)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
