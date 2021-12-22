@@ -45,7 +45,8 @@ export default {
       ]
     }
   },
-  create() {
+  created() {
+    console.log("ttdddd")
     this.getApproveSignMtzDetail()
   },
   methods: {
@@ -54,8 +55,6 @@ export default {
       this.collapseValue = !this.collapseValue
     },
     getApproveSignMtzDetail() {
-      if (!this.mtzAppId) return
-
       return getApproveSignMtzDetail({
         signId: this.$route.query.signId
       })
