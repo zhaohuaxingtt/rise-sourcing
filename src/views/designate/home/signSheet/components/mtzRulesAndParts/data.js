@@ -1,255 +1,169 @@
 // MTZ-规则清单
 export const ruleTableTitle = [//决策资料规则清单暂用
-  { 
-      props: 'yearCw',
-      name: 'Year CW',
-      key: 'Year CW',
-      // overlap:true,
-      // overlapbottom:"Rule No.",
-      minWidth:80
+  {
+    props: 'yearCw',
+    key: 'Year CW'
   },
   {
-      props: 'ttMtzAppId',
-      name: 'Nomination No.',
-      key: 'Nomination No.',
-      // overlap:true,
-      // overlapbottom:"MTZ group",
-      minWidth:103
-  },
-  { 
-      props: 'ruleNo', 
-      name: 'Rule No.', 
-      key: 'Rule No.',
-      // overlap:true,
-      // overlapbottom:"Carline",
-      minWidth:60,
+    props: 'ttMtzAppId',
+    key: 'Nomination No.',
+    minWidth: '100'
   },
   {
-      props: 'materialGroupName',
-      name: 'MTZ Materiral Group',
-      key: 'MTZ Materiral Group',
-      overlap:true,
-      overlapbottom:"Group",
-      minWidth:110,
+    props: 'ruleNo',
+    key: 'Rule No.'
   },
   {
-      props: 'carline',
-      name: 'Carline',
-      key: 'Carline',
-      // overlap:true,
-      // overlapbottom:"Material Code",
-      minWidth:80,
+    props: 'materialGroupName',
+    key: 'MTZ Materiral Group',
+    renderHeader: h => h('div', [
+      h('p', 'MTZ Materiral'),
+      h('p', 'Group')
+    ])
   },
   {
-      props: 'supplierName',
-      name: 'Supplier',
-      key: 'Supplier',
-      // overlap:true,
-      // overlapbottom:"Material Division",
-      minWidth:100,
-  },
-  { 
-      props: 'materialName', 
-      name: 'Material', 
-      key: 'Material',
-      // overlap:true,
-      // overlapbottom:"Base price",
-      minWidth:70,
+    props: 'carline',
+    key: 'Carline'
   },
   {
-      props: 'materialCode',
-      name: 'Material Code',
-      key: 'Material Code',
-      overlap:true,
-      overlapbottom:"Code",
-      minWidth:115,
-  },
-  { 
-      props: 'price', 
-      name: 'Price', 
-      key: 'Price',
-      // overlap:true,
-      // overlapbottom:"Currency",
-      minWidth:70,
-  },
-  { 
-      props: 'priceMeasureUnit', 
-      name: 'Price Unit', 
-      key: 'Price Unit',
-      overlap:true,
-      overlapbottom:"Unit",
-      minWidth:105,
+    props: 'supplierName',
+    key: 'Supplier'
   },
   {
-      props: 'tcCurrence',
-      name: 'Currency',
-      key: 'Currency',
-      // overlap:true,
-      // overlapbottom:"Market",
-      minWidth:95,
+    props: 'materialName',
+    key: 'Material'
   },
   {
-      props: 'tcExchangeRate',
-      name: 'Exchange Rate',
-      key: 'Exchange Rate',
-      overlap:true,
-      overlapbottom:"Rate",
-      minWidth:80,
+    props: 'materialCode',
+    key: 'Material Code',
+    renderHeader: h => h('div', [
+      h('p', 'Material'),
+      h('p', 'Code')
+    ])
   },
-  { 
-      props: 'sourceType', 
-      name: 'Price Market', 
-      key: 'Price Market',
-      overlap:true,
-      overlapbottom:"Market",
-      minWidth:90,
+  {
+    props: 'price',
+    key: 'Price'
   },
-  { 
-      props: 'compensationPeriod', 
-      name: 'Period', 
-      key: 'Period',
-      // overlap:true,
-      // overlapbottom:"Valid To",
-      minWidth:90,
+  {
+    props: 'priceMeasureUnit',
+    key: 'Price Unit',
+    renderHeader: h => h('div', [
+      h('p', 'Price'),
+      h('p', 'Unit')
+    ])
   },
-  { 
-      props: 'startDate', 
-      name: 'Valid From', 
-      key: 'Valid From',
-      // overlap:true,
-      // overlapbottom:"Valid To",
-      minWidth:90,
+  {
+    props: 'tcCurrence',
+    key: 'Currency'
   },
-  { 
-      props: 'endDate', 
-      name: 'Valid To', 
-      key: 'Valid To',
-      // overlap:true,
-      // overlapbottom:"Valid To",
-      minWidth:90,
+  {
+    props: 'tcExchangeRate',
+    key: 'Exchange Rate',
+    renderHeader: h => h('div', [
+      h('p', 'Exchange'),
+      h('p', 'Rate')
+    ])
+  },
+  {
+    props: 'sourceType',
+    key: 'Price Market',
+    renderHeader: h => h('div', [
+      h('p', 'Price'),
+      h('p', 'Market')
+    ])
+  },
+  {
+    props: 'compensationPeriod',
+    key: 'Period'
+  },
+  {
+    props: 'startDate',
+    key: 'Valid From'
+  },
+  {
+    props: 'endDate',
+    key: 'Valid To'
   },
 ]
 
 // MTZ-零件清单
 export const partTableTitle = [
-  { 
-      props: 'yearCw',
-      name: 'Year CW',
-      key: 'Year CW',
-      // overlap:true,
-      // overlapbottom:"Rule No.",
-      minWidth:80
+  {
+    props: 'yearCw',
+    key: 'Year CW',
   },
   {
-      props: 'ttMtzAppId',
-      name: 'Nomination No.',
-      key: 'Nomination No.',
-      // overlap:true,
-      // overlapbottom:"MTZ group",
-      minWidth:103
+    props: 'ttMtzAppId',
+    key: 'Nomination No.',
+    minWidth: '100'
   },
-  { 
-      props: 'carline', 
-      name: 'Part No.', 
-      key: 'Part_No.',
-      // overlap:true,
-      // overlapbottom:"Carline",
-      minWidth:60,
+  {
+    props: 'ruleNo',
+    key: 'Part_No.'
   },
   {
     props: 'partName',
-    name: 'Part Name',
-    key: 'Part_Name',
-  //   overlap:true,
-  //   overlapbottom:"Material Code",
-    minWidth: 80,
-  },
-  { 
-      props: 'supplierName', 
-      name: 'Supplier',
-      key: 'Supplier',
-      // overlap:true,
-      // overlapbottom:"Material",
-      minWidth: 60,
-  },
-  { 
-      props: 'materialName', 
-      name: 'Material', 
-      key: 'Material',
-      // overlap:true,
-      // overlapbottom:"Supplier",
-      minWidth: 60,
+    key: 'Part_Name'
   },
   {
-      props: 'materialCode', 
-      name: 'Material Code', 
-      key: 'Material Code',
-      overlap:true,
-      overlapbottom:"Code",
-       minWidth: 70,
+    props: 'supplierName',
+    key: 'Supplier'
   },
   {
-      props: 'dosage',
-      name: 'Usage',
-      key: 'Usage',
-      // overlap:true,
-      // overlapbottom:"Base price Unit",
-      minWidth: 80,
-  },
-  { 
-      props: 'dosageMeasureUnit', 
-      name: 'Usage Unit', 
-      key: 'Usage Unit',
-      overlap:true,
-      overlapbottom:"Unit",
-      minWidth: 50,
+    props: 'materialName',
+    key: 'Material'
   },
   {
-      props: 'tcCurrence',
-      name: 'Currency',
-      key: 'Currency',
-      // overlap:true,
-      // overlapbottom:"Part Unit",
-      minWidth: 80,
-  },
-  { 
-      props: 'tcExchangeRate', 
-      name: 'Exchange Rate', 
-      key: 'Exchange Rate',
-      overlap:true,
-      overlapbottom:"Rate",
-      minWidth: 60,
+    props: 'materialCode',
+    key: 'Material Code',
+    renderHeader: h => h('div', [
+      h('p', 'Material'),
+      h('p', 'Code')
+    ])
   },
   {
-      props: 'sourceType',
-      name: 'Price Market',
-      key: 'Price Market',
-      overlap:true,
-      overlapbottom:"Market",
-      minWidth: 80,
+    props: 'dosage',
+    key: 'Usage'
   },
   {
-      props: 'compensationPeriod',
-      name: 'Period',
-      key: 'Period',
-      // overlap:true,
-      // overlapbottom:"Market",
-      minWidth: 70,
+    props: 'dosageMeasureUnit',
+    key: 'Usage Unit',
+    renderHeader: h => h('div', [
+      h('p', 'Usage'),
+      h('p', 'Unit')
+    ])
   },
-  { 
-      props: 'startDate', 
-      name: 'Valid From',
-      key: 'Valid From',
-      // overlap:true,
-      // overlapbottom:"Valid From",
-      minWidth: 75,
+  {
+    props: 'tcCurrence',
+    key: 'Currency'
   },
-  { 
-      props: 'endDate', 
-      name: 'Valid To', 
-      key: 'Valid To',
-      // overlap:true,
-      // overlapbottom:"Valid To",
-      minWidth: 75,
+  {
+    props: 'tcExchangeRate',
+    key: 'Exchange Rate',
+    renderHeader: h => h('div', [
+      h('p', 'Exchange'),
+      h('p', 'Rate')
+    ])
+  },
+  {
+    props: 'sourceType',
+    key: 'Price Market',
+    renderHeader: h => h('div', [
+      h('p', 'Price'),
+      h('p', 'Market')
+    ])
+  },
+  {
+    props: 'compensationPeriod',
+    key: 'Period'
+  },
+  {
+    props: 'startDate',
+    key: 'Valid From'
+  },
+  {
+    props: 'endDate',
+    key: 'Valid To'
   },
 ]
