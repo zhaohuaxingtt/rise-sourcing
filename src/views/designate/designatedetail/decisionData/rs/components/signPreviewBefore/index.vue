@@ -9,10 +9,10 @@
 <template>
 <div class="tabsBoxWrap">
   <div id="tabsBoxWrap">
-    <span class="download_btn" v-if="approve">
+    <!-- <span class="download_btn" v-if="approve">
       <iButton @click="handleClickExport">{{language('DAOCHU', '导出')}}</iButton>
-    </span>
-    <div ref="qrCodeDiv" class="sign_swap" @click="rulesClick">
+    </span> -->
+    <div ref="qrCodeDiv" class="sign_swap">
       <iCard class="upload_hr">
         <div slot="header" class="headBox">
           <p class="headTitle">{{title}}</p>
@@ -45,9 +45,8 @@
         <p class="tableTitle">{{language('GUIZEQINGDAN', '规则清单')}}-Regulation</p>
           <tableList
             class="margin-top20"
-            :tableData="ruleTableListData"
+            :tableData="mtzData.ruleTableListData"
             :tableTitle="ruleTableTitle1_1"
-            @handleClickRow="handleCurrentChangeTable"
             :tableLoading="loadingRule"
             :index="true"
             :selection="false"
@@ -68,7 +67,7 @@
         <p class="tableTitle">{{language('LJQD', '零件清单')}}-Part List</p>
           <tableList
             class="margin-top20 over_flow_y_ture"
-            :tableData="partTableListData"
+            :tableData="mtzData.partTableListData"
             :tableTitle="partTableTitle1_1"
             :tableLoading="loadingPart"
             :index="true"
@@ -87,7 +86,7 @@
             </template>
           </tableList>
       </iCard>
-      <iCard class="margin-top20">
+      <!-- <iCard class="margin-top20">
         <div slot="header"
             class="headBox">
           <p class="headTitle">{{language('BEIZHU', '备注')}}-Remarks</p>
@@ -98,7 +97,7 @@
                 :rows="8"
                 :disabled="true"
                 type="textarea" />
-      </iCard>
+      </iCard> -->
       <iCard v-if="isMeeting && applayDateData.length>0" class="margin-top20">
           <p>{{language('SHENQINGRIQI','申请日期')}}:{{moment(new Date()).format('YYYY-MM-DD')}}</p>
           <div class="applayDateBox1">
@@ -138,7 +137,7 @@ import { iCard, icon, iInput, iButton, iMessage, iPagination,iDialog } from 'ris
 import { formList } from './data'
 import tableList from '@/components/commonTable/index.vue'
 import { ruleTableTitle1_1,partTableTitle1_1} from './data'
-import { getAppFormInfo, pageAppRule, pagePartMasterData,approvalList } from '@/api/designate/decisiondata/rs'
+import { getAppFormInfo, pageAppRule,approvalList } from '@/api/designate/decisiondata/rs'
 import { pageMixins } from '@/utils/pageMixins'
 import signPreview from "./signPreview";
 export default {
@@ -158,6 +157,10 @@ export default {
     mtzAppId: {
       type: String || Number,
       default: ""
+    },
+    mtzData: {
+      type: Object,
+      default: () => ({})
     }
   },
   data () {
@@ -197,8 +200,8 @@ export default {
   created() {
     this.initApplayDateData()
     this.getAppFormInfo()
-    this.getPageAppRule()
-    this.getPagePartMasterData()
+    // this.getPageAppRule()
+    // this.getPagePartMasterData()
   },
   computed: {
     mtzObject(){
@@ -229,39 +232,6 @@ export default {
     }
   },
   methods: {
-    handleCurrentChangeTable(e){
-      this.clickRulesNumber = 1;
-      this.loadingPart = true;
-      var list = {
-        mtzAppId: this.mtzObject.mtzAppId || this.mtzAppId,
-        pageNo: 1,
-        pageSize: 99999,
-        ruleNo:e.ruleNo,
-      }
-      pagePartMasterData(list).then(res => {
-        if (res && res.code == 200) {
-          this.partTableListData = res.data
-          this.clickRulesNumber = 0;
-          this.loadingPart = false;
-        } else iMessage.error(res.desZh)
-      })
-    },
-    rulesClick(){
-      if(this.clickRulesNumber == 0){
-        this.loadingPart = true;
-        var list = {
-          mtzAppId: this.mtzObject.mtzAppId || this.mtzAppId,
-          pageNo: 1,
-          pageSize: 99999,
-        }
-        pagePartMasterData(list).then(res => {
-          if (res && res.code == 200) {
-            this.partTableListData = res.data
-            this.loadingPart = false;
-          } else iMessage.error(res.desZh)
-        })
-      }
-    },
     closeRS(){
       this.signPreviewType = false;
     },
@@ -292,38 +262,6 @@ export default {
               this.approve = false;
             }
           }
-        } else iMessage.error(res.desZh)
-      })
-    },
-    // 获取规则清单表格数据
-    getPageAppRule() {
-      var list = {};
-      list = {
-        mtzAppId:this.mtzAppId,
-        pageNo: 1,
-        pageSize: 99999,
-      }
-      
-      pageAppRule(list).then(res => {
-        if(res && res.code == 200) {
-          this.ruleTableListData = res.data
-          this.rulePageParams.totalCount = res.total
-        } else iMessage.error(res.desZh)
-      })
-    },
-    // 获取零件清单表格数据
-    getPagePartMasterData() {
-      var list = {};
-      list = {
-        mtzAppId:this.mtzAppId,
-        pageNo: 1,
-        pageSize: 99999,
-      }
-
-      pagePartMasterData(list).then(res => {
-        if(res && res.code == 200) {
-          this.partTableListData = res.data
-          this.partPageParams.totalCount = res.total
         } else iMessage.error(res.desZh)
       })
     },
