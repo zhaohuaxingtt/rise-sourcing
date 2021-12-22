@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-12-15 20:16:25
+ * @LastEditTime: 2021-12-22 19:58:48
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -30,14 +30,18 @@ const getVuerouter = function(router) {
 }
 //初始化菜单，新增active字段和默认选中第一个点亮
 function initMeun(data) {
-  data.forEach((items, index) => {
-    if (index == 0) {
-      items['active'] = false
-    } else {
-      items['active'] = false
-    }
-  })
-  return data
+  try {
+    data.forEach((items, index) => {
+      if (index == 0) {
+        items['active'] = false
+      } else {
+        items['active'] = false
+      }
+    })
+    return data
+  } catch (error) {
+    return []
+  }
 }
 /**
  * @description: 拿到用户权限过渡方法
@@ -100,7 +104,7 @@ const actions = {
           if (res.code == 200 && res.data) {
             commit('SET_MENU_LIST', initMeun(res.data.menuList))
             commit('SET_WIHTEBTN_LIST', res.data.resourceList || [])
-            r(res.data.menuList)
+            r(res.data.menuList || [])
           } else {
             commit('SET_MENU_LIST', [])
             commit('SET_WIHTEBTN_LIST', [])
