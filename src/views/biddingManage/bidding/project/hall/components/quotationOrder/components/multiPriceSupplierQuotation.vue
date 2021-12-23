@@ -634,15 +634,6 @@ export default {
   },
   mounted() {
     this.projectLoading = false
-    getDiscount({}).then((res) => {
-      let o = {...planBaseData,title:'折现率'};
-      res?.data?.md_discount_rate.map(item=>{
-        let x = Number(item.code.replace('Y','0'));
-        o[`stage${x}`]=item.describe;
-      })
-      this.annualOutput[0]={...o};
-      this.annualOutput1[0]={...o};
-    });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
@@ -1157,6 +1148,15 @@ export default {
     },
     async query(e) {
       this.isOffer = true
+      // 获取折现率
+     const countRes =  await getDiscount({})
+      let o = {...planBaseData,title:'折现率'};
+      countRes?.data?.md_discount_rate.map(item=>{
+        let x = Number(item.code.replace('Y','0'));
+        o[`stage${x}`]=item.describe;
+      })
+      this.annualOutput[0]={...o};
+      this.annualOutput1[0]={...o};
       // 根据 ID 获取竞价大厅报价单列表数据
       const res = await findHallQuotation(e);
       this.updateRuleForm(res);
@@ -1201,26 +1201,9 @@ export default {
       //   });
       // });
        //this.ruleForm.productions 采购员年产量
+      let annualOutput = []
       this.ruleForm.biddingProducts?.forEach((items,index) => {
         let output = {};
-        let annualOutput = [{
-        title: "折现率",
-        stage1: 1,
-        stage2: 0.9,
-        stage3: 0.81,
-        stage4: 0.73,
-        stage5: 0.66,
-        stage6: 0.59,
-        stage7: 0.53,
-        stage8: 0.48,
-        stage9: 0.43,
-        stage10: 0.39,
-        stage11: 0.35,
-        stage12: 0.31,
-        stage13: 0.28,
-        stage14: 0.25,
-        stage15: 0.23,
-        }]
         output = items.productions.reduce((obj, item) => {
           if (!obj[item.productId]) {
             obj[item.productId] = {
@@ -1246,9 +1229,10 @@ export default {
           ...output[items.id]?.procureNum,
           title: items.productCode,
         })
-        this.annualOutput = annualOutput
-
+        
       })
+      this.annualOutput = [...this.annualOutput,...annualOutput]
+
       if (!this.ruleForm.supplierProducts?.length) {
         this.ruleForm.supplierProducts = data.biddingProducts;
       }
