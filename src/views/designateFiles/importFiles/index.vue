@@ -7,15 +7,7 @@
     <iPage class="importFiles" v-permission.auto="ACCESSORY_IMPORT_PAGE|附件-附件导入-页面">
         <!-- <el-tabs v-model="tab" class="tab"> -->
             <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-<<<<<<< HEAD
-              <headerNav/>
-=======
-                 <div class="topMenu">
-                    <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-                    <!-- <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
-                    <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="headerSubMenu" reversePosit @message="clickMessage" />
-                </div>
->>>>>>> ed89a4e6eaa276b1a6dc2ba600b9145523fc9a5e
+             <headerNav/>
                 <!-- 内容区 -->
                 <iCard v-permission.auto="ACCESSORY_IMPORT_TABLE|附件-附件导入-表格">
                   <div class="margin-bottom20 clearFloat">
@@ -86,7 +78,6 @@ import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle } from "./data";
 import headerNav from '@/views/accessoryPart/headerNav'
-import { headerSubMenu } from '@/views/accessoryPart/headerNav/components/data'
 
 import {
   getAffixList,

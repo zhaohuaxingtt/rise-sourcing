@@ -148,8 +148,8 @@ const state = {
       value: 2,
       name: "需求管理",
       message: 0,
-      url: "/sourceinquirypoint/sourcing/signforpartsdemand",
-      activePath: "signforpartsdemand",
+      url: "/sourceinquirypoint/sourcing/partsign",
+      activePath: "partsign",
       key: "XUQIUGUANLI",
       permissionKey: 'XUQIUGUANLI_PAGE',
       permissionName: '需求管理'
