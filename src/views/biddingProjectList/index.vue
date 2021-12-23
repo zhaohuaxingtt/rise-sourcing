@@ -2,14 +2,15 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-05 12:03:00
- * @LastEditTime: 2021-11-09 10:40:11
- * @LastEditors:  
+ * @LastEditTime: 2021-12-23 16:35:17
+ * @LastEditors: Please set LastEditors
 -->
 <template>
     <iPage  class="partsignHome">
         <div class="topMenu">
             <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-            <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
+            <!-- <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
+            <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" reversePosit :list="partsprocureNavList" @message="clickMessage" />
         </div>
         <bidding/>
     </iPage>
@@ -17,6 +18,7 @@
 <script>
 import { iPage, iNavMvp } from "rise";
 import bidding from "./bidding"
+import { partsprocureNavList } from "pages/partsrfq/home/components/data";
 // import projectlist from "../../../node_modules/front-bidding/src/views/manage/bidding/projectlist/components/projectList.vue"
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default {
@@ -24,6 +26,11 @@ export default {
       computed: {
     ...mapState(["navList","navListLeft"]),
     ...mapActions(["updateNavList"])
+  },
+  data(){
+    return{
+      partsprocureNavList,
+    }
   }
 }
 </script>
