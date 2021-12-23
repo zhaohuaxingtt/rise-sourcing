@@ -587,7 +587,8 @@ export default {
       multiPriceValue:{},
       isInputFlag: true,
       clearTime:'',
-      isOffer: false
+      isOffer: false,
+      isOfferStatus:false
     };
   },
   watch: {
@@ -652,6 +653,7 @@ export default {
   },
   computed: {
     biddingStatus() {
+      if (this.isOfferStatus) return true
       if (
         (this.ruleForm.biddingStatus === "04" ||
           this.ruleForm.biddingStatus === "05") &&
@@ -1117,6 +1119,7 @@ export default {
         if(res.kickoutReason) {
           if (document.getElementsByClassName('el-message').length == 0) {
             this.projectLoading = false
+            this.isOfferStatus = true
             return this.$message.error(res.kickOutMessage)
           }
         }
@@ -1142,7 +1145,6 @@ export default {
     handleSearchReset() {
       this.yearsPlan = [];
       this.annualOutput = [];
-      
       let param = { biddingId: this.id, supplierCode: this.supplierCode };
       this.query(param);
     },
