@@ -6,7 +6,7 @@
 <template>
 <div class="headerNav-wraper margin-bottom10">
   <div class="headerNav">
-    <iNavMvp :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
+    <iNavMvp :list="navListLeft" lang @change="change" :lev="1" routerPage ></iNavMvp>
     <!-- <div class="ext">
       <div class="pull-right">
         <a href="javascript:;" class="iconMenu">
@@ -23,6 +23,7 @@
 <!--       
     </div> -->
     <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
+    <!-- <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" reversePosit :list="heaederSubMenu" @message="clickMessage" /> -->
   </div>
   <div class="headerNav-sub margin-top30">
     <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
