@@ -155,7 +155,6 @@ export default {
       selectLinieDept: '',
       loading: false,
       options: [],
-      headerSubMenu,
     }
   },
   created() {

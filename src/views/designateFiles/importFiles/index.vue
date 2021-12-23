@@ -112,7 +112,6 @@ export default {
             selectItems:[],
             uploadImportFile:uploadImportFile,
             tableListData:[],
-            headerSubMenu,
         }
     },
     created(){

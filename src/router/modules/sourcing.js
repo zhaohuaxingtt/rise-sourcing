@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-12-23 17:35:21
+ * @LastEditTime: 2021-12-23 18:35:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\router\modules\sourcing.js
@@ -75,7 +75,7 @@ export default [
                 import ("@/views/supplier/quotationdetail")
         },
         {
-            path: "signforpartsdemand/importfiles",
+            path: "partsign/importfiles",
             name: "importFiles",
             meta:{
                 title:'附件导入',
@@ -95,20 +95,20 @@ export default [
                 import ("@/views/designateFiles/importFiles/detail"),
         } ,
         {
-            path: "signforpartsdemand/filemanage",
+            path: "partsign/filemanage",
             name: "fileManage",
             meta: { title: "附件综合管理", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/designateFiles/fileManage/index"),
         },   
         // 配件相关路由
         {
-            path: "signforpartsdemand",
+            path: "partsign/signforpartsdemand",
             name: "signForPartsDemand",
             meta: { title: "配件需求签收", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/accessoryPart/signForPartsDemand/index"),
         },
         {
-            path: "signforpartsdemand/integratedmanage",
+            path: "partsign/integratedmanage",
             name: "integratedManage",
             meta: { title: "配件综合管理", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/accessoryPart/integratedManage/index"),

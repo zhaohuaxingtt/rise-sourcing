@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2021-12-02 17:13:45
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-23 18:53:52
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\steelDemandCreation\home\index.vue
 -->
@@ -10,7 +10,9 @@
   <iPage >
     <div class="topMenu" v-permission.auto="SOURCING_STEELDEMANCREATION_PAGE|钢材管理">
       <iNavMvp class="margin-bottom30" lang @change="change" :list='navListLeft' routerPage lev="1" @message="clickMessage" />
-      <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
+
+      <!-- <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
+      <iNavMvp class="margin-bottom30" lang @change="change" right routerPage  lev="2" reversePosit :list="headerSubMenu" @message="clickMessage" />
     </div>
     <iSearch class="margin-bottom20" @sure="sure" @reset='reset()' v-permission.auto="SOURCING_STEELDEMANCREATION_SEARCH|搜索">
       <el-form>
@@ -83,6 +85,7 @@ import { selectDictByKeys } from "@/api/dictionary"
 import {getBuyers} from '@/api/letterAndLoi/letter'
 import {user} from '@/config'
 import {getToken} from '@/utils'
+import { headerSubMenu } from '@/views/accessoryPart/headerNav/components/data'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default{
@@ -105,7 +108,8 @@ export default{
         tabelLoading:false,
         tabelList:[],
         decArrayList:['applicationStatus','nominateProcessType','partProjectType'],
-        selectRow:[]
+        selectRow:[],
+        headerSubMenu,
       }
     },
     computed: {
