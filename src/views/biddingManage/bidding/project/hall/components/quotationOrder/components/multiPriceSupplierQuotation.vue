@@ -653,6 +653,7 @@ export default {
   },
   computed: {
     biddingStatus() {
+      if (this.isOfferStatus) return true
       if (
         (this.ruleForm.biddingStatus === "04" ||
           this.ruleForm.biddingStatus === "05") &&
@@ -661,7 +662,6 @@ export default {
       ) {
         return false;
       }
-      if (this.isOfferStatus) return true
       return true;
     },
     unit() {
