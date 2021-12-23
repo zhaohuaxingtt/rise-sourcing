@@ -494,18 +494,9 @@ export default {
           this.language("TISHI", "提示"), 
           { cancelButtonText: this.language("FOU", "否"), confirmButtonText: this.language("SHI", "是") }
         )
-
-        // const res = await xx()
-        // if (res.code == 200) {
-        //   window.location.href = `${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`
-        // } else {
-        //   iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        // }
-
-        // return
       }
 
-      window.location.href = `${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`, "_blank")
     },
     // 是否加入申请
     selectedFormat(status) {
