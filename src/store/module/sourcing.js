@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-11-05 15:13:26
- * @LastEditors:  
+ * @LastEditTime: 2021-12-23 14:27:22
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
  */
@@ -124,18 +124,18 @@ const state = {
     },
   ],
   navListLeft:[ //sourcing 三级菜单列表
+    // {
+    //   value: 1,
+    //   name: "寻源执行",
+    //   message: 0,
+    //   url: "/sourceinquirypoint/sourcing/partsign",
+    //   activePath: "sourcing",
+    //   key: "XUANYUANCAIDAN",
+    //   permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_MENU',
+    //   permissionName: '寻源执行'
+    // },
     {
       value: 1,
-      name: "寻源执行",
-      message: 0,
-      url: "/sourceinquirypoint/sourcing/partsign",
-      activePath: "sourcing",
-      key: "XUANYUANCAIDAN",
-      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_MENU',
-      permissionName: '寻源执行'
-    },
-    {
-      value: 2,
       name: "寻源概览",
       message: 0,
       url: "/sourcing/dashboard",
@@ -143,7 +143,58 @@ const state = {
       key: "XUANYUANGAILAN",
       permissionKey: 'DASHBOARD_OVERVIEW_PAGE',
       permissionName: '寻源概览'
-    }, ]
+    }, 
+    {
+      value: 2,
+      name: "需求管理",
+      message: 0,
+      url: "/sourcing/dashboard",
+      activePath: "dashboard",
+      key: "XUQIUGUANLI",
+      permissionKey: 'XUQIUGUANLI_PAGE',
+      permissionName: '需求管理'
+    },
+    {
+      value:3,
+      name: "采购项目",
+      message: 0,
+      url: "/sourceinquirypoint/sourcing/partsprocure",
+      activePath: "partsprocure",
+      key: "LK_CAIGOUXIANGMUJIANLI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSPROCURE',
+      permissionName: '采购项目'
+    },
+    {
+      value:3,
+      name: "RFQ管理",
+      message: 0,
+      url: "/sourceinquirypoint/sourcing/partsrfq",
+      activePath: "partsrfq",
+      key: "LK_RFQGUANLI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSRFQ',
+      permissionName: 'RFQ管理'
+    },
+    {
+      value:4,
+      name: "定点管理",
+      message: 0,
+      url: "/sourcing/partsnomination",
+      activePath: "partsnomination",
+      key: "LK_DINGDIANGUANLI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSNOMINATION',
+      permissionName: '定点管理'
+    },
+    {
+      value:5, 
+      name: "定点信/LOI",
+      message: 0,
+      url: "/sourceinquirypoint/sourcing/partsletter",
+      activePath: "partsletter",
+      key: "LK_DINGDIANXINLOI",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSLETTER',
+      permissionName: '寻源执行-定点信/LOI'
+    }
+  ]
 }
 
 const mutations = {
