@@ -66,6 +66,7 @@ export default {
       immediate: true, // 一旦监听到路由的变化立即执行
       handler(to, from) {
         const index = to.name.indexOf('investmentAdmin');
+        console.log('indexindexindexindex', index);
         let list = [];
         if(index >= 0){
           list = budgetManagement3rd.filter(item => item.value >=3 && item.value <= 5);
