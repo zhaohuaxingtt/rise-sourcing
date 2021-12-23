@@ -22,13 +22,13 @@
       </div> -->
 <!--       
     </div> -->
-    <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" />
-    <!-- <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" reversePosit :list="heaederSubMenu" @message="clickMessage" /> -->
+    <!-- <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
+    <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" reversePosit :list="heaederSubMenu" @message="clickMessage" />
   </div>
   <div class="headerNav-sub margin-top30">
-    <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
+    <!-- <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
       <el-tab-pane v-for="(item,index) in headerSubMenuWithPermission" :key="index" :label="item.name" :name="item.key" v-permission.dynamic.auto="item.permissionKey"></el-tab-pane>
-    </iTabsList>
+    </iTabsList> -->
   </div>
 </div>
 </template>
