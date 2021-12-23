@@ -50,10 +50,8 @@ export default {
     );
     this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : "nomination";
     this.updateNavList;
-    console.log(this.$route.path);
     this.group =
       this.thirdMenu.filter((i) => i.url == this.$route.path)[0].group;
-    console.log(this.group);
   },
   computed: {
     ...mapState(["navList", "navListLeft", "thirdMenu"]),
