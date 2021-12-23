@@ -9,7 +9,8 @@
             <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
                  <div class="topMenu">
                     <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-                    <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
+                    <!-- <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
+                    <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="headerSubMenu" reversePosit @message="clickMessage" />
                 </div>
                 <!-- 内容区 -->
                 <iCard v-permission.auto="ACCESSORY_IMPORT_TABLE|附件-附件导入-表格">
@@ -80,6 +81,7 @@ import Upload from '@/components/Upload'
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle } from "./data";
+import { headerSubMenu } from '@/views/accessoryPart/headerNav/components/data'
 
 import {
   getAffixList,
@@ -112,7 +114,8 @@ export default {
             tableTitle:tableTitle,
             selectItems:[],
             uploadImportFile:uploadImportFile,
-            tableListData:[]
+            tableListData:[],
+            headerSubMenu,
         }
     },
     created(){
