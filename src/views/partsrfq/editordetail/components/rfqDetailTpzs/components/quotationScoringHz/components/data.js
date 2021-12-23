@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-22 20:23:34
+ * @LastEditTime: 2021-12-22 23:22:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -9,6 +9,11 @@
 import {_getMathNumber} from '@/utils'
 import {partProjTypes} from '@/config'
 //表格全集。
+export const depNumData = {
+  'PL':'L',
+  'EP':'TE',
+  'MQ':'Q'
+}
 export const fstitle = [
   {type:'selection',props:'groupName',label:'Group',i18n:'',width:'40',tooltip:false,fixed:true},
   {type:'',props:'partNo',label:'Part No.',i18n:'',width:'90',tooltip:false,fixed:true},
@@ -17,6 +22,8 @@ export const fstitle = [
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPriceSkd',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPriceSkd',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
@@ -31,17 +38,20 @@ export const gstitle = [
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPriceSkd',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPriceSkd',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Tooling</p><p>Target</p>'},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'currentSupplier',label:'Current \n Supplier',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'currentShare',label:'Share',i18n:'',width:'100',tooltip:false,fixed:true},
-  {type:'',props:'currentAPrice',label:'Current \n A Price',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'currentBPrice',label:'Current \n B Price',i18n:'',width:'80',tooltip:false,fixed:true},
+
+  {type:'',props:'currentSupplier',label:'Current \n Supplier',i18n:'',width:'60',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>Supplier</p>'},
+  {type:'',props:'currentShare',label:'Share',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'currentAPrice',label:'Cur. \n A Price',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>A Price</p>'},
+  {type:'',props:'currentBPrice',label:'Cur. \n B Price',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>B Price</p>'},
   {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'50',tooltip:false,fixed:true},
-  {type:'',props:'currentTto',label:'Current \n TTO',i18n:'',width:'90',tooltip:false,fixed:true},
-  {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'90',tooltip:false,fixed:true},
+  {type:'',props:'currentTto',label:'Cur. TTO',i18n:'',width:'90',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>TTO</p>'},
+ // {type:'',props:'currentSupplierSaving',label:'Cur.\n Sup.Saving',i18n:'',width:'90',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>Sup.Saving</p>'},
   {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'50',tooltip:false,fixed:true},
   {type:'',props:'headerEbr',label:'',i18n:'',width:'1',tooltip:false}
 ]
@@ -53,18 +63,18 @@ export const fstableTileXh = function(index){
     {type:'',props:`${index?index:''}lcBPrice`,label:'B Price(LC)',i18n:'',width:'80',tooltip:false, renderHeader: '<p>B Price</p><p>(LC)</p>'},
     {type:'',props:`${index?index:''}skdBPrice`,label:'B Price(SKD)',i18n:'',width:'80',tooltip:false, renderHeader: '<p>B Price</p><p>(SKD)</p>'},
     {type:'',props:`${index?index:''}productionLocation`,label:'Prod. \n Location',i18n:'',width:'70',tooltip:false},
-    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:"A Price(LC) \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:"A Price(SKD) \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:"B Price(LC) \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:"B Price(SKD) \n w/o Alloc.",i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:"A Price(LC) \n w/o Alloc.",i18n:'',width:'80',tooltip:false},
+    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:"A Price(SKD) \n w/o Alloc.",i18n:'',width:'80',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:"B Price(LC) \n w/o Alloc.",i18n:'',width:'80',tooltip:false},
+    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:"B Price(SKD) \n w/o Alloc.",i18n:'',width:'80',tooltip:false},
     {type:'',props:`${index?index:''}bnk`,label:'BNK',i18n:'',width:'80',tooltip:false},
     {type:'',props:`${index?index:''}bnkApprovalStatus`,label:'BNK \n Status',i18n:'',width:'62',tooltip:false, renderHeader: '<p>BNK</p><p>Status</p>'},
     {type:'',props:`${index?index:''}tooling`,label:'Tooling',i18n:'',width:'54',tooltip:false},
     {type:'',props:`${index?index:''}developmentCost`,label:'Dev. \n Cost',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Dev.</p><p>Cost</p>'},
-    {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier \n SOP Date',i18n:'',width:'100',tooltip:true},
+    {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier \n SOP Date',i18n:'',width:'95',tooltip:true},
     {type:'',props:`${index?index:''}ltc`,label:'LTC',i18n:'',width:'50',tooltip:false},
     {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC \n Start Date',i18n:'',width:'95',tooltip:true},
-    {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'100',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>'},
+    {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>'},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
     {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Dev. Cost',i18n:'',width:'90',tooltip:false, renderHeader: '<p>External</p><p>Dev. Cost</p>'},
     {type:'',props:`${index?index:''}releaseCost`,label:'Release Cost',i18n:'',width:'82',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
@@ -77,21 +87,22 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}skdAPrice`,label:'A Price(SKD)',i18n:'',width:'80',tooltip:false, renderHeader: '<p>A Price</p><p>(SKD)</p>'},
     {type:'',props:`${index?index:''}lcBPrice`,label:'B Price(LC)',i18n:'',width:'80',tooltip:false, renderHeader: '<p>B Price</p><p>(LC)</p>'},
     {type:'',props:`${index?index:''}skdBPrice`,label:'B Price(SKD)',i18n:'',width:'80',tooltip:false, renderHeader: '<p>B Price</p><p>(SKD)</p>'},
-    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:'A Price(LC) \n w/o Alloc.',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:'A Price(SKD) \n w/o Alloc.',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:'B Price(LC) \n w/o Alloc.',i18n:'',width:'100',tooltip:false},
-    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:'B Price(SKD) \n w/o Alloc.',i18n:'',width:'100',tooltip:false},
+    {type:'',props:`${index?index:''}productionLocation`,label:'Prod. \n Location',i18n:'',width:'70',tooltip:false},
+    {type:'',props:`${index?index:''}lcAPriceWithoutAllocation`,label:'A Price(LC) \n w/o Alloc.',i18n:'',width:'80',tooltip:false},
+    {type:'',props:`${index?index:''}skdAPriceWithoutAllocation`,label:'A Price(SKD) \n w/o Alloc.',i18n:'',width:'80',tooltip:false},
+    {type:'',props:`${index?index:''}lcBPriceWithoutAllocation`,label:'B Price(LC) \n w/o Alloc.',i18n:'',width:'80',tooltip:false},
+    {type:'',props:`${index?index:''}skdBPriceWithoutAllocation`,label:'B Price(SKD) \n w/o Alloc.',i18n:'',width:'80',tooltip:false},
     {type:'',props:`${index?index:''}bnk`,label:'BNK',i18n:'',width:'80',tooltip:false},
     {type:'',props:`${index?index:''}bnkApprovalStatus`,label:'BNK \n Status',i18n:'',width:'70',tooltip:false, renderHeader: '<p>BNK</p><p>Status</p>'},
     {type:'',props:`${index?index:''}tooling`,label:'Tooling',i18n:'',width:'54',tooltip:false},
     {type:'',props:`${index?index:''}developmentCost`,label:'Dev. \n Cost',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Dev.</p><p>Cost</p>'},
-    {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier \n SOP Date',i18n:'',width:'100',tooltip:true},
+    {type:'',props:`${index?index:''}supplierSopDate`,label:'Supplier \n SOP Date',i18n:'',width:'95',tooltip:true},
     {type:'',props:`${index?index:''}ltc`,label:'LTC',i18n:'',width:'50',tooltip:false},
     {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC \n Start Date',i18n:'',width:'95',tooltip:true},
-    {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'100',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>'},
+    {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>'},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
-    {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Dev. Cost',i18n:'',width:'90',tooltip:false},
-    {type:'',props:`${index?index:''}releaseCost`,label:'Release \n Cost',i18n:'',width:'82',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
+    {type:'',props:`${index?index:''}internalDevelopmentCost`,label:'Internal \n Dev. Cost',i18n:'',width:'90',tooltip:false},
+    {type:'',props:`${index?index:''}releaseCost`,label:'Release \n Cost',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
     {type:'',props:`${index?index:''}saving`,label:'Saving',i18n:'',width:'70',tooltip:false},
     {type:'',props:`Quotationdetails`,label:'Quo. \n Details',i18n:'',width:'60',tooltip:false},
   ]
@@ -243,15 +254,15 @@ export function translateRating(supplierList,ratingList) {
      //如果是第一个供应商的时候，需要构造一个评分部门list
      if(index == 0){
       c.forEach(itemsq=>{
-        titleList.push(itemsq.rateDepartNum)
+        titleList.push(itemsq.rateType)
       })
      }
      maps.push({rate:c[0].supplierName,rateEn:c[0].supplierNameEn,isAllPartRateConsistent:c[0].rfmRate,isRateRisk:c[0].isRateRisk})
      //拿到评分部门list 为每个部门设置评分
      titleList.forEach(itemsbb=>{
-       const map = c.find(it=>it.rateDepartNum == itemsbb)
+       const map = c.find(it=>it.rateType == itemsbb)
        if(map){
-        maps.push({rate:map.rate,isAllPartRateConsistent:map.isAllPartRateConsistent} || '') 
+        maps.push({rate:map.rateList,isAllPartRateConsistent:map.isAllPartRateConsistent} || '') 
        }
      })
      ratingListPrivate.push(maps)
