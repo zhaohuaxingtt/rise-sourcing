@@ -1,16 +1,21 @@
 <!--
  * @Author: your name
  * @Date: 2021-10-12 21:45:35
- * @LastEditTime: 2021-10-27 14:27:58
+ * @LastEditTime: 2021-12-23 16:55:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\previewDialog.vue
 -->
 <template>
-  <iDialog :visible.sync="value"
+  <iDialog :visible="value"
            width="95%"
            @close="clearDiolog">
-    <vpPreview></vpPreview>
+    <vpPreview ref="vpPreview"
+               :dataInfo="dataInfo"
+               :newestScatterData="newestScatterData"
+               :targetScatterData="targetScatterData"
+               :lineData="lineData"
+               :cpLineData="cpLineData"></vpPreview>
   </iDialog>
 </template>
 
@@ -69,6 +74,15 @@ export default {
     return {
       downloadButtonLoading: false,
     };
+  },
+  watch: {
+    lineData: {
+      handler (val) {
+        console.log(val, "fu")
+      },
+      immediate: true,
+      deep: true
+    }
   },
   methods: {
     clearDiolog () {
