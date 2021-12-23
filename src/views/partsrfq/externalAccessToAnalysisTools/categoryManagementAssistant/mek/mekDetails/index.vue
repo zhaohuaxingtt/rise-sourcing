@@ -1,14 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-11-11 15:57:58
+ * @LastEditTime: 2021-12-21 15:41:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
 -->
 <template>
   <iPage class="new-MEK">
-    <div id="content" v-loading="onDataLoading">
+    <div id="content"
+         v-loading="onDataLoading">
       <div class="navBox flex-between-center"
            style="margin-bottom:20px">
         <div class="title font-weight flex">
@@ -563,7 +564,7 @@ export default {
     this.onDataLoading = false
     this.$nextTick(() => {
       if (this.categoryId && this.chemeId && this.categoryCode) {
-        params.isBindingRfq= this.isBindingRfq
+        params.isBindingRfq = this.isBindingRfq
         this.getHistogram(params);
       }
     })
@@ -597,6 +598,7 @@ export default {
         this.targetMotor = data.targetMotor.toString();
         this.comparedType = data.comparedType;
         this.isBindingRfq = data.isBindingRfq;
+        this.checkedCarLevelOptions = data.selectedOptions
         if (data.firstComparedMotor) {
           this.ComparedMotor.push(data.firstComparedMotor.toString());
         }
@@ -1292,7 +1294,7 @@ export default {
           }
           this.onDataLoading = false;
         });
-      },(res) => {
+      }, (res) => {
         iMessage.error(res.desZh);
         this.onDataLoading = false;
       });
@@ -1343,7 +1345,6 @@ export default {
     save () {
       this.loading = true;
       this.analysisSave = true;
-
       if (this.analysisSave) {
         let params = {
           categoryCode: this.categoryCode,
@@ -1358,6 +1359,7 @@ export default {
           schemeId: this.chemeId,
           targetMotor: this.targetMotor,
           name: this.analysisName,
+          selectedOptions: this.checkedCarLevelOptions
         };
         if (this.barData) {
           if (this.barData[0]) {
