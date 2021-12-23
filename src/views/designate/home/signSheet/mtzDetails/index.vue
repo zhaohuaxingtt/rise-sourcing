@@ -123,7 +123,7 @@ export default {
       }).then(res => {
         this.loading = false
         if (res && res.code == 200) {
-          this.tableListData = res.data
+          this.tableListData = Array.isArray(res.data) ? res.data : []
         } else iMessage.error(res.desZh)
       })
     },
