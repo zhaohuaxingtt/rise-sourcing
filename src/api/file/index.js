@@ -56,7 +56,7 @@ export function getFile(params) {
 export function getFiles(params) {
     let { fileType, hostId, isAsc = true, sortColumn = 'uploadDate', page, currPage } = params
     return sourcing({
-        url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${page}/${currPage}`,
+        url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${currPage}/${page}`,
         method: 'get'
     })
 }
