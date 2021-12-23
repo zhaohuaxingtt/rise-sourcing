@@ -13,7 +13,8 @@
     <iCard class="margin-top20">
       <div slot="header" class="headBox">
         <p class="headTitle">{{$t('TPZS.VPFXK')}}</p>
-        <span v-if="!disabled">
+        <!-- 是否显示新建按钮 -->
+        <span v-if="disabled">
           <span class="buttonBox" v-if="!editMode">
             <iButton @click="clickAdd">{{$t('TPZS.LK_CREATE')}}</iButton>
             <iButton @click="clickEdit">{{$t('LK_BIANJI')}}</iButton>

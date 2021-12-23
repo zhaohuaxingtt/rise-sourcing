@@ -7,7 +7,7 @@
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
 <template>
-  <div  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
+  <div v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSPAGE|签字单详情">
     <iCard>
 
       <el-form class="signsheet-filter"
@@ -34,7 +34,7 @@
             <el-form-item :label="`${language('MIAOSHU','描述')}:`"
                           class="desc">
               <iInput v-model="form.description"
-                      :placeholder="language('LK_QINGSHURU','请输入')"></iInput>
+                      :placeholder="language('LK_QINGSHURU','请输入')" @input="handleInputByDescription"></iInput>
             </el-form-item>
           </el-col>
         </el-row>
@@ -111,15 +111,6 @@
         </template>
 
       </tablelist>
-      <iPagination v-update
-                   @size-change="handleSizeChange($event, getChooseData)"
-                   @current-change="handleCurrentChange($event, getChooseData)"
-                   background
-                   :page-sizes="page.pageSizes"
-                   :page-size="page.pageSize"
-                   :layout="page.layout"
-                   :current-page="page.currPage"
-                   :total="page.totalCount" />
     </iCard>
     <addSignsheet :dialogVisible='dialogVisible'
                   @changeVisible='dialogVisible = false'
@@ -140,7 +131,6 @@
 </template>
 <script>
 import { detailsTableTitle as tableTitle, } from './components/data'
-import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 import tablelist from "@/views/designate/supplier/components/tableList";
 import designateSign from "@/views/designate/home/designateSign/index";
@@ -160,12 +150,11 @@ import {
   iCard,
   iInput,
   iButton,
-  iPagination,
   iMessage
 } from "rise";
 
 export default {
-  mixins: [filters, pageMixins],
+  mixins: [filters],
   data () {
     return {
       mode: this.$route.query.mode || '',
@@ -184,18 +173,29 @@ export default {
       chooseSienSheet:[]
     }
   },
+  props: {
+    description: {
+      type: String,
+      default: ""
+    }
+  },
+  watch: {
+    description(nv) {
+      this.form.description = nv
+    }
+  },
   components: {
     iPage,
     iCard,
     iInput,
     iButton,
-    iPagination,
     tablelist,
     addSignsheet,
     headerNav
     // designateSign
   },
   created () {
+    this.form.description = this.description
     const { query = {} } = this.$route
     const { signCode, status, id, desc } = query
     this.form.signId = id
@@ -245,19 +245,14 @@ export default {
       })
     },
     // 获取已经选择的数据
-    getChooseData (params) {
+    getChooseData() {
       this.tableLoading = true
       getNomiSelectedPage({
-        ...params,
-        signId: Number(this.form.signId) || '',
-        current: this.page.currPage,
-        size: this.page.pageSize
+        signId: Number(this.form.signId) || ''
       }).then(res => {
         this.tableLoading = false
         if (res.code === '200') {
           this.tableListData = res.data.records || []
-          this.page.totalCount = res.data.total
-          console.log(this.selectTableData)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -359,6 +354,9 @@ export default {
     chooseSignsheet () {
       this.dialogVisible = true
       this.chooseSienSheet=[]
+    },
+    handleInputByDescription(value) {
+      this.$emit("update:description", value)
     }
   }
 
