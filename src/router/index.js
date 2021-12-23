@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-30 14:48:11
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-23 11:03:50
+ * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-sourcing\src\router\index.js
  *
@@ -342,6 +342,15 @@ export const staticRouter = [
 			title: '登录',
 		},
 		component: () => import('@/views/login'),
+	},
+	{
+			path:'/sourceinquirypoint/sourcing/previewfssugs',
+			name:'谈判助手-预览界面',
+			meta:{
+					title:'谈判助手-预览界面',
+					activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+			},
+			component:()=> import("@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz/preview.vue")
 	},
 	{
 		path: '*',

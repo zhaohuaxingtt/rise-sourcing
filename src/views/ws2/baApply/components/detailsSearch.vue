@@ -13,7 +13,7 @@
       <el-form>
 
         <!-- 车型项目 -->
-        <el-form-item :label="$t('LK_CHEXINXIANGMU')" v-permission="TOOLING_BUDGET_BAAPPLICATION_CARTYPE">
+        <el-form-item :label="$t('LK_CHEXINXIANGMU')" v-if="!isShow">
         <!-- <el-form-item :label="$t('LK_CHEXINXIANGMU')"> -->
           <iSelect
               :placeholder="$t('partsprocure.CHOOSE')"
@@ -97,6 +97,7 @@ import {
   iSelect,
 } from "rise";
 import { cloneDeep } from 'lodash';
+import store from '@/store';
 
 export default {
   components: {
@@ -104,6 +105,13 @@ export default {
     iSelect,
   },
   props: {
+  },
+  computed: {
+    isShow: function(){
+      const codes = ['SOURCINGTZGLY', 'KCNTZGLY'];  //  JV和扩产能code
+      const roleList = store.state.permission.roleList;
+      return roleList.some(item => codes.includes(item));
+    },
   },
   data(){
     return {
