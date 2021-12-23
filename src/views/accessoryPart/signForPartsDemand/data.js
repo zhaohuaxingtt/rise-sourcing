@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-25 14:41:07
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-02 17:03:54
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-23 17:34:51
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\data.js
  */
@@ -84,7 +84,7 @@ export const navManagingDemandList = [
     value: 2,
     name: "配件管理",
     message: 0,
-    url: "/sourceinquirypoint/sourcing/integratedmanage",
+    url: "/sourceinquirypoint/sourcing/signforpartsdemand/integratedmanage",
     activePath: "integratedmanage",
     key: "LK_PEIJIANZONGHEGUANLI",
     permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_INTEGRATEDMANAGE',
@@ -94,7 +94,7 @@ export const navManagingDemandList = [
     value: 3,
     name: "附件导入",
     message: 0,
-    url: "/sourceinquirypoint/sourcing/importfiles",
+    url: "/sourceinquirypoint/sourcing/signforpartsdemand/importfiles",
     activePath: "importfiles",
     key: "LK_FUJIANXUQIUDAORU",
     permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_IMPORTFILES',
@@ -104,7 +104,7 @@ export const navManagingDemandList = [
     value: 4,
     name: "附件管理",
     message: 0,
-    url: "/sourceinquirypoint/sourcing/filemanage",
+    url: "/sourceinquirypoint/sourcing/signforpartsdemand/filemanage",
     activePath: "filemanage",
     key: "LK_FUJIANZONGHEGUANLI",
     permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_FILEMANAGE',
