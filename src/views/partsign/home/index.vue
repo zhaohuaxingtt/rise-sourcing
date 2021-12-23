@@ -9,10 +9,7 @@
 <template>
   <iPage class="partsignHome">
         <div>
-          <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-            <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div>
+        <headerNav/>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
@@ -259,6 +256,7 @@ import {selectDictByKeyss} from '@/api/dictionary'
 import store from '@/store'
 import { TP_INFO_STATUS } from "./components/data"
 import {setPretreatmentParams} from '@/utils/tool'
+import headerNav from '@/views/accessoryPart/headerNav'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -275,6 +273,7 @@ export default {
     iSearch,
     iInput,
     iSelect,
+    headerNav
   },
   mixins: [pageMixins, filters],
   data() {
