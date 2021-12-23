@@ -68,3 +68,46 @@ export const TAB = [
   //   message: 0
   // }
 ]
+
+export const navManagingDemandList = [
+  {
+    value: 1,
+    name: "配件签收",
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/signforpartsdemand",
+    activePath: "signforpartsdemand",
+    key: "LK_PEIJIANXUQIUQIANSHOU",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_SIGNFORPARTSDEMAND',
+    permissionName: '寻源执行-配件签收'
+  },
+  {
+    value: 2,
+    name: "配件管理",
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/integratedmanage",
+    activePath: "integratedmanage",
+    key: "LK_PEIJIANZONGHEGUANLI",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_INTEGRATEDMANAGE',
+    permissionName: '寻源执行-配件管理'
+  },
+  {
+    value: 3,
+    name: "附件导入",
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/importfiles",
+    activePath: "importfiles",
+    key: "LK_FUJIANXUQIUDAORU",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_IMPORTFILES',
+    permissionName: '寻源执行-附件导入'
+  },
+  {
+    value: 4,
+    name: "附件管理",
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/filemanage",
+    activePath: "filemanage",
+    key: "LK_FUJIANZONGHEGUANLI",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_FILEMANAGE',
+    permissionName: '寻源执行-附件管理'
+  },
+]

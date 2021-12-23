@@ -12,10 +12,7 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div>
-          <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-            <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div>
+          <headerNav/>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
@@ -106,6 +103,7 @@
 <script>
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
+import headerNav from '@/views/accessoryPart/headerNav'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, searchList, TAB } from './data'
 import assignInquiryDepartmentDialog from './components/distributionLinie'
@@ -129,7 +127,7 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMultiLineInput, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMultiLineInput, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog, headerNav },
   data() {
     return {
       // 零件项目类型
@@ -167,7 +165,8 @@ export default {
       joinRfqDialogVisible: false,
       list:TAB,
       selectBuyerPartId:'',
-      selectliniePartId:''
+      selectliniePartId:'',
+      
     }
   },
   created() {

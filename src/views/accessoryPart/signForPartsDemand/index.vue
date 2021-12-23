@@ -12,10 +12,7 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>
-          <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-            <iNavMvp class="margin-bottom30" @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div>
+          <headerNav/>
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
@@ -93,8 +90,9 @@
 <script>
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
+import headerNav from '@/views/accessoryPart/headerNav'
 import tableList from '../../designate/designatedetail/components/tableList'
-import { tableTitle, searchList, TAB} from '../signForPartsDemand/data'
+import { tableTitle, searchList, TAB,navManagingDemandList} from '../signForPartsDemand/data'
 import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
 import backDialog from '../integratedManage/components/backEps'
@@ -113,7 +111,7 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, iMultiLineInput, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, iMultiLineInput, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp, headerNav },
   data() {
     return {
       tableData: [],
@@ -145,6 +143,7 @@ export default {
       downloadLoading: false,
       signLoading: false,
       list: TAB,
+      navManagingDemandList,
     }
   },
   created() {
