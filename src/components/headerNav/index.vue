@@ -22,7 +22,6 @@
         lev="2"
         reversePosit
         :list="heaederSubMenu"
-        ref="nav"
       />
     </div>
     <div class="headerNav-sub margin-top30"></div>
@@ -36,7 +35,6 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing");
 export default {
   data() {
     return {
-      tab: "",
       group: null,
     };
   },
@@ -45,16 +43,11 @@ export default {
     iTabsList,
   },
   created() {
-    const heaederSubMenuItem = this.heaederSubMenu.find(
-      (o) => o.path === this.$route.path
-    );
-    this.tab = heaederSubMenuItem ? heaederSubMenuItem.key : "nomination";
     this.updateNavList;
-    this.group =
-      this.thirdMenu.filter((i) => i.url == this.$route.path)[0].group;
+    this.group = this.thirdMenu.filter((i) => i.url == this.$route.path)[0].group;
   },
   computed: {
-    ...mapState(["navList", "navListLeft", "thirdMenu"]),
+    ...mapState(["navListLeft", "thirdMenu"]),
     ...mapActions(["updateNavList"]),
     heaederSubMenu() {
       let heaederSubMenu = this.thirdMenu

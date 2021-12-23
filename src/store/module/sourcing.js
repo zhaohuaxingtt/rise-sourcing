@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-12-23 18:55:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-23 22:30:29
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
  */
@@ -204,7 +204,6 @@ const state = {
 
   thirdMenu: [ //sourcing 4级菜单列表
     {
-      value: 1,
       name: "概览",
       message: 0,
       url: "/sourcing/dashboard/index",
@@ -215,7 +214,6 @@ const state = {
       group: 1
     },
     {
-      value: 2,
       name: '状态跟踪报表',
       message: 0,
       url: '/sourcing/dashboard/report',
@@ -226,7 +224,6 @@ const state = {
       group: 1
     },
     {
-      value: 3,
       name: '状态跟踪详情',
       message: 0,
       url: '/sourcing/dashboard/details',
@@ -237,8 +234,6 @@ const state = {
       group: 1
     },
     {
-      // Temporary
-      value: 4,
       name: "批量件签收",
       message: 0,
       url: "/sourceinquirypoint/sourcing/signforpartsdemand",
@@ -249,7 +244,6 @@ const state = {
       group: 2
     },
     {
-      value: 5,
       name: "配件签收",
       message: 0,
       url: "/sourceinquirypoint/sourcing/signforpartsdemand",
@@ -260,7 +254,6 @@ const state = {
       group: 2
     },
     {
-      value: 6,
       name: "配件管理",
       message: 0,
       url: "/sourceinquirypoint/sourcing/integratedmanage",
@@ -271,7 +264,6 @@ const state = {
       group: 2
     },
     {
-      value: 7,
       name: "附件导入",
       message: 0,
       url: "/sourceinquirypoint/sourcing/importfiles",
@@ -282,7 +274,6 @@ const state = {
       group: 2
     },
     {
-      value: 8,
       name: "附件管理",
       message: 0,
       url: "/sourceinquirypoint/sourcing/filemanage",
@@ -293,7 +284,6 @@ const state = {
       group: 2
     },
     {
-      value: 9,
       name: "钢材创建",
       message: 0,
       url: "/sourceinquirypoint/sourcing/steeldemandcreation",
@@ -305,7 +295,6 @@ const state = {
     },
 
     {
-      value: 10,
       name: "RFQ管理",
       message: 0,
       url: "/sourceinquirypoint/sourcing/partsrfq",
@@ -316,7 +305,6 @@ const state = {
       group: 4
     },
     {
-      value: 11,
       name: "竞价开标",
       message: 0,
       url: "/sourceinquirypoint/sourcing/biddingProjectList",
@@ -371,7 +359,6 @@ const state = {
       group: 5
     },
     {
-      value: 16,
       name: "定点信",
       message: 0,
       url: "/sourcing/partsnomination",
@@ -382,7 +369,6 @@ const state = {
       group: 6
     },
     {
-      value: 17,
       name: "LOI",
       message: 0,
       url: "/sourceinquirypoint/sourcing/partsletter",
