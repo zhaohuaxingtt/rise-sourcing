@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:41:39
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-23 17:46:53
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -13,7 +13,8 @@
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div class="topMenu">
           <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
+          <!-- <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
+          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="headerSubMenu" reversePosit @message="clickMessage" />
         </div>
         <div>
           <!-- <div class="margin-bottom33">
@@ -120,6 +121,7 @@ import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
 import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
+import { headerSubMenu } from '@/views/accessoryPart/headerNav/components/data'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -153,7 +155,8 @@ export default {
       selectLinie: '',
       selectLinieDept: '',
       loading: false,
-      options: []
+      options: [],
+      headerSubMenu,
     }
   },
   created() {
