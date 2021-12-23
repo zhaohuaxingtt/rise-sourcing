@@ -14,7 +14,7 @@ export const ruleTableTitle = [//决策资料规则清单暂用
     key: 'Rule No.'
   },
   {
-    props: 'materialGroupName',
+    props: 'materialGroup',
     key: 'MTZ Materiral Group',
     renderHeader: h => h('div', [
       h('p', 'MTZ Materiral'),
@@ -147,7 +147,7 @@ export const partTableTitle = [
     ])
   },
   {
-    props: 'sourceType',
+    props: 'priceSource',
     key: 'Price Market',
     renderHeader: h => h('div', [
       h('p', 'Price'),
