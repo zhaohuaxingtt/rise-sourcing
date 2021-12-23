@@ -185,6 +185,7 @@
 import {iSearch, iInput, iSelect, iDatePicker, iMessage} from 'rise'
 import {selectDictByKeyss} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
+import { getCarTypeSop } from "@/api/partsprocure/editordetail"
 
 import {
   getNominateType
@@ -205,6 +206,7 @@ export default {
   },
   created() {
     this.getSelectGroup()
+    this.getCarTypeSop()
   },
   methods: {
     sure() {
@@ -220,7 +222,6 @@ export default {
     getSelectGroup() {
       let types = [
         "RFQ_PART_STATUS_CODE_TYPE",
-        "CAR_TYPE_PRO",
         "PPT",
         'PRICE_STATE'
       ];
@@ -256,6 +257,25 @@ export default {
             })) :
             []
           this.$set(this.fromGroup,'cartOptions',data)
+      })
+    },
+    // 获取车型项目
+    getCarTypeSop() {
+      getCarTypeSop().then(res => {
+        if (res.code === '200') {
+          this.$set(
+            this.fromGroup,
+            "CAR_TYPE_PRO",
+            Array.isArray(res.data) ?
+              res.data.map(item => ({
+                id: item.id,
+                code: item.cartypeProCode,
+                name: item.cartypeProName,
+                value: item.cartypeProName
+              })) :
+              []
+          )
+        }
       })
     }
   }

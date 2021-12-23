@@ -283,8 +283,8 @@ import {
   signSheetStatus,
   priceConsistentStatus 
 } from '@/views/designate/home/components/options'
+import { getCarTypeSop } from "@/api/partsprocure/editordetail"
 import { getDictByCode } from '@/api/dictionary'
-import {selectDictByKeyss} from '@/api/dictionary'
 import {
   iSearch,
   iInput,
@@ -345,12 +345,7 @@ export default {
       // 获取单一原因数据字典
       this.getDictionary('reason', 'SINGLE_SOURCING_REASON')
       // 获取车型项目
-      selectDictByKeyss([
-        "CAR_TYPE_PRO",
-      ]).then((res) => {
-        const optionList = (res.data && res.data['CAR_TYPE_PRO']) || []
-        this.$set(this.selectOptions, 'CAR_TYPE_PRO', optionList)
-      });
+      this.getCarTypeSop()
     },
     // 获取数据字典
     getDictionary(optionName, optionType, key = {value: 'code', label: 'name'}) {
@@ -362,6 +357,25 @@ export default {
         }
       })
     },
+    // 获取车型项目
+    getCarTypeSop() {
+      getCarTypeSop().then(res => {
+        if (res.code === '200') {
+          this.$set(
+            this.selectOptions,
+            "CAR_TYPE_PRO",
+            Array.isArray(res.data) ?
+              res.data.map(item => ({
+                id: item.id,
+                code: item.cartypeProCode,
+                name: item.cartypeProName,
+                value: item.cartypeProName
+              })) :
+              []
+          )
+        }
+      })
+    }
   },
   // watch: {
   //   form: {
