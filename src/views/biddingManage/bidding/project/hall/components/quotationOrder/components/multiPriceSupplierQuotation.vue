@@ -660,7 +660,8 @@ export default {
         this.ruleForm.supplierKickOutStatus === "01"
       ) {
         return false;
-      }else if (this.isOfferStatus) return true
+      }
+      if (this.isOfferStatus) return true
       return true;
     },
     unit() {
