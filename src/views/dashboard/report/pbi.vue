@@ -1,10 +1,13 @@
 <template>
-	<iPage class="page-content" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PBI|报表管理-状态跟踪报表">
-		<headerNav />
-		<iCard id='powerBiReport'>
-			
-		</iCard>
-	</iPage>
+	<!-- <iPage class="page-content" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PBI|报表管理-状态跟踪报表"> -->
+		<!-- <headerNav /> -->
+		<div class="page-content" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESS_PBI|报表管理-状态跟踪报表">
+			<iCard id='powerBiReport'>
+				
+			</iCard>
+
+		</div>
+	<!-- </iPage> -->
 </template>
 
 <script>

@@ -7,12 +7,14 @@
 <div class="headerNav-wraper margin-bottom10">
   <div class="headerNav">
     <iNavMvp :list="list" lang @change="change" :lev="1" routerPage></iNavMvp>
-    <span class="freshDate">{{language('SHUJUJIEZHIZHI', '数据截止至')}}：{{freshDate}}</span>
+    <iNavMvp @change="change" lang class="pull-right" right routerPage lev="2" reversePosit :list="heaederSubMenu" @message="clickMessage" />
+    <!-- <span class="freshDate">{{language('SHUJUJIEZHIZHI', '数据截止至')}}：{{freshDate}}</span> -->
   </div>
 </div>
 </template>
 <script>
 import {TAB} from '../data'
+import {heaederSubMenu} from './components/data'
 import moment from 'moment'
 import {
   iNavMvp,
@@ -22,7 +24,8 @@ export default {
   data() {
     return {
       list: TAB,
-      tab: ''
+      tab: '',
+      heaederSubMenu
     }
   },
   computed: {
