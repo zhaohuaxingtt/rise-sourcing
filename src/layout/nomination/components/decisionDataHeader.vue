@@ -167,7 +167,7 @@ export default {
         padding: 20px 30px;
         position: relative;
         ::v-deep.el-tabs__nav-scroll{
-				overflow: hidden;
+				overflow: hidden !important;
 			}
         .tab-list{
             width: calc(100% - 50px);

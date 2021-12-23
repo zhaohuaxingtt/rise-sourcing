@@ -239,7 +239,7 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.currentPartsId =  res.data.partsId ? res.data.partsId : '';
+        this.currentPartsId = res.data.partsId ? res.data.partsId : '';
         this.currentBatchNumber = res.data.batchNumber ? res.data.batchNumber : '';
         this.currentSupplierId = res.data.supplierId;
         const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
@@ -330,7 +330,7 @@ export default {
     async handleSaveAsReport (callback) {
       this.previewDialog = true;
       setTimeout(async () => {
-        const res = await this.$refs.previewDialog.getDownloadFile({
+        const res = await this.$refs.previewDialog.$refs.vpPreview.getDownloadFile({
           callBack: () => {
             this.previewDialog = false;
           },
