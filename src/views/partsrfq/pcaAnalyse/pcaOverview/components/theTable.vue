@@ -142,11 +142,13 @@ export default {
         };
         const res = await getRfqKmInfo(req);
         if (res.result) {
+          console.log(res)
           this.tableListData = res.data;
-          this.tableListData = []
+          // this.tableListData = []
           this.page.currPage = res.pageNum;
           this.page.pageSize = res.pageSize;
           this.page.totalCount = res.total || 0;
+          this.getTiledTableListData();
         } else {
           this.resultMessage(res);
           this.tableListData = [];
@@ -156,7 +158,7 @@ export default {
         this.tableListData = [];
         this.tableLoading = false;
       }
-      this.getTiledTableListData();
+
     },
     handleEdit () {
       this.tableStatus = 'edit';
@@ -177,6 +179,7 @@ export default {
           });
         }
       });
+      console.log(this.tiledTableListData)
     },
     handleOpenPreviewDialog (row) {
       this.previewDialog = true;
