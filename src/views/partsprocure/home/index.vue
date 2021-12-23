@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-12-01 17:47:56
- * @LastEditors:  
+ * @LastEditTime: 2021-12-23 16:19:01
+ * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
 -->
@@ -16,7 +16,7 @@
           </div> -->
           <div class="topMenu">
             <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-            <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
+            <!-- <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
           </div>
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
@@ -287,7 +287,7 @@ import {
 } from "rise";
 import { pageMixins } from "@/utils/pageMixins";
 import {cancelProject,creatFsGsNr,startProject} from '@/components'
-import { tableTitle, form,validateProjectConfig } from "./components/data";
+import { tableTitle, form,validateProjectConfig,partsprocureNavList } from "./components/data";
 import tablelist from "../../partsign/home/components/tableList";
 import { getTabelData,changeProcure} from "@/api/partsprocure/home";
 import changeItems from "../../partsign/home/components/changeItems";
@@ -330,7 +330,7 @@ export default {
       diologBack: false, //退回
       tab: "source",
       zpLoading:false,
-      cancelLoading:false
+      cancelLoading:false,
     };
   },
   computed: {

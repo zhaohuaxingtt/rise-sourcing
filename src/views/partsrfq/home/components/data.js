@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-03 09:52:00
- * @LastEditTime: 2021-09-07 16:33:59
+ * @LastEditTime: 2021-12-23 16:33:01
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\home\components\data.js
@@ -38,4 +38,27 @@ export const assignmentOfScroingTasksTableTitle = [
 
 export const attachmentTableTitle = [
     { props: 'fileName', name: '文件名称', key: 'WENJIANMINGCHENG' }
+]
+
+export const partsprocureNavList = [
+	{
+		value: 1,
+		name: "RFQ管理",
+		message: 0,
+		url: "/sourceinquirypoint/sourcing/partsrfq",
+		activePath: "partsrfq",
+		key: "LK_RFQGUANLI",
+		permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSRFQ',
+		permissionName: '寻源执行-RFQ管理'
+	},
+    {
+      value: 2,
+      name: "竞价开标",
+      message: 0,
+      url: "/sourceinquirypoint/sourcing/partsrfq/biddingProjectList",
+      activePath: "biddingProjectList",
+      key: "LK_JINGJIAKAIBIAO",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_BIDDINGPROJECTLIST',
+      permissionName: '寻源执行-竞价开标'
+    },
 ]

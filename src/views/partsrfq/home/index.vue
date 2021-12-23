@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-12-01 17:54:46
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-23 16:20:04
+ * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing\src\views\partsrfq\home\index.vue
 -->
@@ -12,7 +12,8 @@
       <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div class="topMenu">
           <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
+          <!-- <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
+          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="partsprocureNavList" @message="clickMessage" />
         </div>
         <div>
           <!-- <div class="margin-bottom33">
@@ -220,7 +221,7 @@ import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} fro
 import { iNavMvp, iSearch } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
 import {pageMixins} from "@/utils/pageMixins";
-import {tableTitle, attachmentTableTitle} from "pages/partsrfq/home/components/data";
+import {tableTitle, attachmentTableTitle,partsprocureNavList} from "pages/partsrfq/home/components/data";
 import {findBySearches, getRfqList, getCartypeDict, modification, ratingTranslate, setRfqTop} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
@@ -301,7 +302,8 @@ export default {
       cfApplyStatusOptions: [],
       heavyItemOptions: [],
       inquiryBuyerVisible: false,
-      inquiryBuyerDialogType: '1'
+      inquiryBuyerDialogType: '1',
+      partsprocureNavList:partsprocureNavList,
     };
   },
   created() {

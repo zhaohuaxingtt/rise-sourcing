@@ -138,7 +138,7 @@ export default [
         },
         //竞价开标
         {
-            path:"biddingProjectList",  
+            path:"partsrfq/biddingProjectList",  
             name:'biddingProjectList',
             meta: {
                 title:"竞价开标",
