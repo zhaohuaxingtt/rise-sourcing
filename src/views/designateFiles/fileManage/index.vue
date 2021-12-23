@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:41:39
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-23 17:46:53
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -11,8 +11,10 @@
   <iPage class="signForParts" v-permission.auto="ACCESSORY_MANAGEMENT_PAGE|附件-附件管理-页面">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
+
         <headerNav/>
-        <div>
+
+
           <!-- <div class="margin-bottom33">
             <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div> -->
@@ -119,6 +121,7 @@ import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
 import headerNav from '@/views/accessoryPart/headerNav'
 
+
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -151,7 +154,8 @@ export default {
       selectLinie: '',
       selectLinieDept: '',
       loading: false,
-      options: []
+      options: [],
+      headerSubMenu,
     }
   },
   created() {
