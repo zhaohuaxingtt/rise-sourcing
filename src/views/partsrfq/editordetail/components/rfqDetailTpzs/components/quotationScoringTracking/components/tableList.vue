@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-12-23 13:56:46
+ * @LastEditTime: 2021-12-23 16:10:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -42,7 +42,7 @@
               <p>
                 <span class="title">{{item.key ? $t(item.key) : item.name}}</span>
                 <icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon>
-                <icon v-if="item.roundHeadDetailVO.roundType === 'biddingRound'" name="iconjingbiao" class="iconjingbiao margin-left5"></icon>
+                <icon v-if="item.roundHeadDetailVO.roundType === 'biddingRound'" name="iconpaimai" class="iconpaimai margin-left5"></icon>
               </p>
             </el-tooltip>
           </template> 
@@ -249,5 +249,8 @@ export default{
     span{
       margin-right: 10px;
     }
+  }
+  .iconpaimai{
+    color:red;
   }
 </style>

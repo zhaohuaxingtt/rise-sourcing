@@ -14,7 +14,7 @@
         <div class="needAddWhi" v-if='!disabel'>
           <span>Fillter：</span>
           <iSelect v-model="backChoose" multiple :collapse-tags='true' @remove-tag='removeTags' @visible-change='visibleChange'>
-            <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label" :value="items.props"></el-option>
+            <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label || items.name" :value="items.props || items.name"></el-option>
           </iSelect> 
         </div>
         <div v-if='showRound && !disabel'>
@@ -45,7 +45,7 @@
     </div>
     <template v-if='!hasNoBidOpen'>
       <tableList ref="tableList" v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1" || layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-      <tableListSupplier ref='tableSupplier' v-if='layout == "2"' :parentsData='tabelDataSupplier'></tableListSupplier>
+      <tableListSupplier v-loading='supplierTableLoading' ref='tableSupplier' v-if='layout == "2"' :parentsData='tabelDataSupplier'></tableListSupplier>
     </template>
     <template v-else>
       <span class="flex-center-center font18 noData">抱歉！当前轮次还未开标您无法查看报价汇总信息。</span>
@@ -83,6 +83,7 @@ import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSumm
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
+    supplierLoading:false,
     title:getRenderTableTile([],0,1),
     exampelData:exampelData,
     groupSelectData:[],
@@ -454,11 +455,11 @@ export default{
     supplierfsSupplierAsRow(){
       return new Promise(r=>{
         this.supplierTableLoading = true
-        fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
+        fsSupplierAsRow(this.$route.query.id,this.round,this.backChoose).then(res=>{
           this.supplierTableLoading = false
           if(res.code == 200 && res.data){
-            this.tabelDataSupplier = getRowAndcolSpanArray(showOrHide(res.data))
-            console.log(this.tabelDataSupplier)
+            this.tabelDataSupplier = getRowAndcolSpanArray(res.data)
+            this.backChooseLists = res.data.header || []
             r()
           } 
         }).catch(err=>{
