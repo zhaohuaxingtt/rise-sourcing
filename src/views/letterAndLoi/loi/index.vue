@@ -1,25 +1,15 @@
 <!--
  * @Author: wentliao
- * @Date: 2021-06-18 10:22:21
- * @Description: 定点信/LOI 列表页
+ * @Date: 2021-12-23 15:53:12
+ * @Description: LOI首页
 -->
 <template>
   <iPage class="letterAndLoi" v-permission.auto="LK_LETTERANDLOI_PAGE|定点信/LOI页面">
     <div class="headerNav">
     <iNavMvp :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-    <iNavMvp @change="change" lang class="pull-right" right routerPage reversePosit lev="2" :list="rightNavList" @message="clickMessage" />
+    <iNavMvp @change="change" lang class="pull-right" right reversePosit routerPage lev="2" :list="rightNavList" @message="clickMessage" />
   </div>
-    <!-- 类型TAB -->
-    <!-- <div class="headerNav-sub margin-top30">
-      <iTabsList type="card" v-model="cardType">
-      <template v-for="(item,index) in tabDataWithPermission">
-        <el-tab-pane lazy  :key="'tabData_'+index" :label="language(item.label,item.name)" v-permission.dynamic="item.permissionKey" :name="item.key"></el-tab-pane>
-      </template>
-      </iTabsList>
-    </div> -->
-
-    <letterList  class="margin-top30" v-if="cardType=='letter'" v-permission.auto="LK_LETTERANDLOI_LETTER_PAGE|定点信页面" />
-    <!-- <loiList  class="margin-top30" v-if="cardType=='LOI'" v-permission.auto="LK_LETTERANDLOI_LOI_PAGE|LOI页面" /> -->
+    <loiList  class="margin-top30" v-permission.auto="LK_LETTERANDLOI_LOI_PAGE|LOI页面" />
   </iPage>
 </template>
 
@@ -30,9 +20,8 @@ import {
   iTabsList,
 } from 'rise';
 import { clickMessage } from "@/views/partsign/home/components/data"
-import { letterAndLoiType,heaederSubMenu } from './data';
-import letterList from './letter/list';
-import loiList from './loi/list';
+import { letterAndLoiType,heaederSubMenu } from '../data';
+import loiList from './list';
 
 
 // eslint-disable-next-line no-undef
@@ -42,11 +31,9 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default {
     name:'letterAndLoi',
     components:{
-      letterList,
       loiList,
       iPage,
       iNavMvp,
-      iTabsList,
     },
     computed: {
       ...mapState(["navList","navListLeft"]),

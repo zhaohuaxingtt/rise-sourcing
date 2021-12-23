@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-12-23 10:29:55
+ * @LastEditTime: 2021-12-23 16:00:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\router\modules\sourcing.js
@@ -26,6 +26,15 @@ export default [
                 activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () => import ("@/views/letterAndLoi")
+        },
+        {
+            path: "partsletter/loi",
+            name: "loi",
+            meta:{
+                title:'LOI',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+            },
+            component: () => import ("@/views/letterAndLoi/loi")
         },
         {
             path: "partsletter/letterdetail",

@@ -101,3 +101,26 @@ export const historyLoiListTitle=[
   { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
   { props: "uploadUserName", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
 ]
+
+export const heaederSubMenu = [
+  {
+    value:1,
+    name:'定点信',
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/partsletter",
+    activePath: "/partsletter",
+    key: "LK_DINGDIANXINLOI_TITLE",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSLETTER_LETTER',
+    permissionName: '定点信',
+  },
+  {
+    value:2,
+    name:'LOI',
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/partsletter/loi",
+    activePath: "/loi",
+    key: "LK_DINGDIANXINLOI_LOI",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSLETTER_LOI',
+    permissionName: 'LOI',
+  },
+]
