@@ -30,7 +30,8 @@
             <iInput
             style="width: 300px;"
             v-model="infoForm.description"
-            :placeholder="language('QINGSHURUMIAOSHU','请输入描述')"/>
+            :placeholder="language('QINGSHURUMIAOSHU','请输入描述')"
+            @input="handleInputByDescription" />
           </el-form-item>
         </el-form>
       </iCard>
@@ -96,7 +97,19 @@ export default {
       selection: []
     }
   },
+  props: {
+    description: {
+      type: String,
+      default: ""
+    }
+  },
+  watch: {
+    description(nv) {
+      this.infoForm.description = nv
+    }
+  },
   created() {
+    this.infoForm.description = this.description
     this.getTableData()
     this.getsignSheetDetails()
   },
@@ -105,13 +118,12 @@ export default {
     getTableData() {
       this.loading = true
       getMTZSignPage({
-        size: -1,
         signId: Number(this.$route.query.id)
         // signId: 69
       }).then(res => {
         this.loading = false
         if (res && res.code == 200) {
-          this.tableListData = res.data
+          this.tableListData = Array.isArray(res.data) ? res.data : []
         } else iMessage.error(res.desZh)
       })
     },
@@ -218,8 +230,10 @@ export default {
         this.selection = []
         this.$set(this, 'tableListData', arr)
       }
+    },
+    handleInputByDescription(value) {
+      this.$emit("update:description", value)
     }
-
   }
 }
 </script>

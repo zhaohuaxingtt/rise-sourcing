@@ -455,7 +455,7 @@
                 ></iInput>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
-              {{language('BIDDING_HCNXSJJPM', '后，才能显示竞价排名')}}</el-radio
+              {{language('BIDDING_HHCNXSJJPM', '后（含），才能显示竞价排名')}}</el-radio
             >
           </div>
           <div class="section-second section-second_bot">
@@ -476,7 +476,7 @@
               ></iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
               (<span class="text-warn">{{language('BIDDING_ZHENGSHU', '整数')}}</span
-              >){{language('BIDDING_MYQCNXSJJPM', '名以前，才能显示竞价排名')}}</el-radio
+              >){{language('BIDDING_MYQHCNXSJJPM', '名以前（含），才能显示竞价排名')}}</el-radio
             >
           </div>
         </iFormItem>

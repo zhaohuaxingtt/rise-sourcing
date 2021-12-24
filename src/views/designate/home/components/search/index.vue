@@ -196,7 +196,7 @@ import {
   nomiApplicationStatus,
   nomiApplicationObject
 } from '@/views/designate/home/components/options'
-import {selectDictByKeyss} from '@/api/dictionary'
+import { getCarTypeSop } from "@/api/partsprocure/editordetail"
 import { form } from '../data'
 import {setPretreatmentParams} from '@/utils/tool'
 // import iDicoptions from 'rise/web/components/iDicoptions'
@@ -258,12 +258,23 @@ export default {
       this.applicationStatus = this.nomiApplicationStatus.filter(o => types.includes(o.id))
     },
     getOptions() {
-      let types = [
-        "CAR_TYPE_PRO",
-      ];
-      selectDictByKeyss(types).then((res) => {
-        this.fromGroup = res.data;
-      });
+      getCarTypeSop()
+      .then(res => {
+        if (res.code == 200) {
+          this.$set(
+            this.fromGroup, 
+            "CAR_TYPE_PRO", 
+            Array.isArray(res.data) ?
+							res.data.map(item => ({
+								id: item.id,
+								code: item.cartypeProCode,
+								name: item.cartypeProName,
+                value: item.cartypeProName
+							})) :
+							[]
+          )
+        }
+      })
     },
   },
   // watch: {

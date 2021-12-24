@@ -358,7 +358,7 @@ export const stageColumn = [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
-          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+          let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
               ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
               : callback();
@@ -375,7 +375,7 @@ export const stageColumn = [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
-          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+          let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
               ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
               : callback();
@@ -392,7 +392,7 @@ export const stageColumn = [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
-          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+          let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
               ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
               : callback();
@@ -409,7 +409,7 @@ export const stageColumn = [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
-          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+          let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
               ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
               : callback();
@@ -426,7 +426,7 @@ export const stageColumn = [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
-          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+          let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
               ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
               : callback();
@@ -443,7 +443,7 @@ export const stageColumn = [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
-          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+          let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
               ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
               : callback();
@@ -460,7 +460,7 @@ export const stageColumn = [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
-          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+          let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
               ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
               : callback();
@@ -477,7 +477,7 @@ export const stageColumn = [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
-          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+          let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
               ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
               : callback();
@@ -494,7 +494,7 @@ export const stageColumn = [
       { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
       {
         validator(rule, value, callback) {
-          let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
+          let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
               ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
               : callback();

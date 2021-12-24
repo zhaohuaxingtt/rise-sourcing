@@ -159,7 +159,7 @@ export default {
     window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
     this.projectBack = sessionStorage.getItem("projectBack");
     console.log(this.projectBack);
-    if (this.role === "supplier") {
+    if (this.role === "supplier" && this.ruleForm.projectCode) {
       const res = await getSupplierNotification({
           projectCode: this.ruleForm.projectCode,
           supplerCode: this.supplierCode,
@@ -256,7 +256,7 @@ export default {
       });
       sessionStorage.clear();
     },
-     async handleChangeTitle(data) {
+    async handleChangeTitle(data) {
       if (data.biddingStatus == "01" || data.biddingStatus == null) {
         if (this.role == "buyer") {
           this.$router.push({ name: "biddingProjectInquiry" });
@@ -271,18 +271,18 @@ export default {
       );
       if(data) {
         if (this.actived === 'filing'){
-        const res = await getSupplierNotification({
-            projectCode: this.ruleForm.projectCode,
-            supplerCode: this.supplierCode,
-        });
-        this.getSupplierData = res
+          const res = await getSupplierNotification({
+              projectCode: this.ruleForm.projectCode,
+              supplerCode: this.supplierCode,
+          });
+          this.getSupplierData = res
         
-        if(!res?.systemUseFlag) {
-          const type = '01'
-          const docTitle = '系统使用条款'
-          this.handleShowNotice(type,docTitle)
+          if(!res?.systemUseFlag) {
+            const type = '01'
+            const docTitle = '系统使用条款'
+            this.handleShowNotice(type,docTitle)
+          }
         }
-    }
       }
     },
     // 开标结束本轮RFQ

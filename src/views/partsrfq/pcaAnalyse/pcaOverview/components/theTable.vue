@@ -5,18 +5,18 @@
             v-if="pageType === 'PCA'">{{ $t('TPZS.PCAZONGLAN') }}</span>
       <span class="font18 font-weight"
             v-else-if="pageType === 'TIA'">{{ $t('TPZS.TIAZONGLAN') }}</span>
-      <!-- <div class="floatright">
+      <div class="floatright">
         <template v-if="!tableStatus">
-          &lt;!&ndash;编辑&ndash;&gt;
+          <!-- &lt;!&ndash;编辑&ndash;&gt; -->
           <iButton @click="handleEdit">{{ $t('LK_BIANJI') }}</iButton>
         </template>
         <template v-else>
-          &lt;!&ndash;取消&ndash;&gt;
+          <!-- &lt;!&ndash;取消&ndash;&gt; -->
           <iButton @click="handleCancel">{{ $t('LK_QUXIAO') }}</iButton>
-          &lt;!&ndash;保存&ndash;&gt;
+          <!-- &lt;!&ndash;保存&ndash;&gt; -->
           <iButton @click="handleSave">{{ $t('LK_BAOCUN') }}</iButton>
         </template>
-      </div> -->
+      </div>
     </div>
     <tableList :tableData="tableListData"
                :tableTitle="tableTitle"
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { iCard, iPagination, icon } from 'rise';
+import { iCard, iPagination, icon, iButton } from 'rise';
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -96,6 +96,7 @@ export default {
     iPagination,
     icon,
     previewDialog,
+    iButton
   },
   props: {
     pageType: {
