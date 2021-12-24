@@ -77,7 +77,7 @@ import Upload from '@/components/Upload'
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle } from "./data";
-import headerNav from '@/views/accessoryPart/headerNav'
+import headerNav from '@/components/headerNav'
 
 import {
   getAffixList,

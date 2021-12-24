@@ -11,13 +11,7 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div>
-          <!-- <div class="margin-bottom33">
-            <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div> -->
-          <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-            <!-- <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
-          </div>
+          <headerNav />          
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
@@ -282,9 +276,9 @@ import {
   iSearch,
   iInput,
   iSelect,
-  iNavMvp,
   iMultiLineInput
 } from "rise";
+import headerNav from "@/components/headerNav"
 import { pageMixins } from "@/utils/pageMixins";
 import {cancelProject,creatFsGsNr,startProject} from '@/components'
 import { tableTitle, form,validateProjectConfig,partsprocureNavList } from "./components/data";
@@ -298,7 +292,7 @@ import {getCartypeDict} from "@/api/partsrfq/home";
 import {setPretreatmentParams} from '@/utils/tool'
 import { getCarTypeSop } from "@/api/partsprocure/editordetail";
 // eslint-disable-next-line no-undef
-const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+const { mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins, filters],
@@ -309,14 +303,14 @@ export default {
     tablelist,
     changeItems,
     iPagination,
-    iNavMvp,
     iSearch,
     iInput,
     iSelect,
     creatFsGsNr,
     cancelProject,
     startProject,
-    iMultiLineInput
+    iMultiLineInput,
+    headerNav
   },
   data() {
     return {
@@ -337,14 +331,11 @@ export default {
     projectIds() {
       return this.getPurchasePrjectId();
     },
-    ...mapState(["navList","navListLeft"]),
-    ...mapActions(["updateNavList"])
   },
   created() {
     this.getTableListFn();
     this.getProcureGroup();
     this.getCarTypeSop()
-    this.updateNavList
   },
   methods: {
     //获取采购工厂

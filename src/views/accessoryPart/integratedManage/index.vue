@@ -103,7 +103,7 @@
 <script>
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
-import headerNav from '@/views/accessoryPart/headerNav'
+import headerNav from '@/components/headerNav'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { tableTitle, searchList, TAB } from './data'
 import assignInquiryDepartmentDialog from './components/distributionLinie'

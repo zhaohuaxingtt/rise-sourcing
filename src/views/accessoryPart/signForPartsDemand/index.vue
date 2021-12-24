@@ -12,7 +12,7 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>
-          <headerNav/>
+          <headerNav />
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
@@ -90,7 +90,7 @@
 <script>
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
-import headerNav from '@/views/accessoryPart/headerNav'
+import headerNav from '@/components/headerNav'
 import tableList from '../../designate/designatedetail/components/tableList'
 import { tableTitle, searchList, TAB,navManagingDemandList} from '../signForPartsDemand/data'
 import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'

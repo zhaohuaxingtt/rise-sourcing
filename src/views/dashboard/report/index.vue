@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import headerNav from './components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search'
 import rfqList from './components/rfqList'
 import {iPage, iCard, iMessage,iPagination} from 'rise'

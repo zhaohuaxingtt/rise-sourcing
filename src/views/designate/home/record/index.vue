@@ -55,7 +55,7 @@
 </template>
 <script>
 import {iPage, iCard, iPagination, icon, iButton, iMessage} from "rise"
-import headerNav from '@/views/designate/home/components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search.vue'
 import tablelist from "@/views/designate/supplier/components/tableList"
 import {tableTitle} from './data'

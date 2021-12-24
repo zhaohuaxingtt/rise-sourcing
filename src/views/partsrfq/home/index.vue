@@ -10,11 +10,7 @@
   <iPage class="partsrfqHome">
     <!-- <el-tabs v-model="tab" class="tab">
       <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-        <div class="topMenu">
-          <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-          <!-- <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
-          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="partsprocureNavList" @message="clickMessage" />
-        </div>
+        <headerNav />
         <div>
           <!-- <div class="margin-bottom33">
             <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
@@ -219,6 +215,7 @@
 <script>
 import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "rise";
 import { iNavMvp, iSearch } from "rise";
+import headerNav from "@/components/headerNav"
 import tablelist from "pages/partsrfq/components/tablelist";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, attachmentTableTitle,partsprocureNavList} from "pages/partsrfq/home/components/data";
@@ -256,7 +253,8 @@ export default {
     icon,
     scoringDeptDialog,
     nominateTypeDialog,
-    assignInquiryBuyerDialog
+    assignInquiryBuyerDialog,
+    headerNav
   },
   mixins: [pageMixins, filters, rfqCommonFunMixins],
   data() {
