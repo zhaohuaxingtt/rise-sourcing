@@ -1,7 +1,7 @@
 <!--
  * @Date: 2021-11-16 11:06:02
  * @LastEditors: caopeng
- * @LastEditTime: 2021-12-24 14:09:07
+ * @LastEditTime: 2021-12-24 14:49:20
  * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\quotationAnalysis.vue
 -->
 <!--
@@ -73,6 +73,7 @@ export default {
       this.tableLoading = true
       let data = {
         ...this.searchCriteria,
+        instanceId: -1,
          isBindingInstance:0,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
