@@ -203,15 +203,15 @@ export const downloadPdfMixins = {
                                 this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('addFile')
                             } else if (key == '3') {
                                 this.$refs.quotationScoringMj.handleDownload('addFile')
-                            }  else {
+                            } else {
                                 if (key == '8') {
                                     timeout = 2000
-                                } 
+                                }
                                 setTimeout(() => {
                                     downloadPDF({
                                         idEle: '#card' + key,
                                         pdfName: name,
-                                        exportPdf: true,
+                                        exportPdf: false,
                                         waterMark: true,
                                         callback: async (pdf, pdfName) => {
                                             try {
@@ -227,14 +227,17 @@ export const downloadPdfMixins = {
                                                         // iMessage.success(this.language('CAOZUOCHENGGONG', '操作成功'))
                                                         let req = {
                                                             instanceId: -1,
-                                                            isBindingInstantce: false,
-                                                            Type: '报告',
-                                                            name: toolType.find(res => res.msg == name).msg || '',
+                                                            isBindingInstantce: this.$store.state.rfq.entryStatus,
+                                                            type: '报告',
+                                                            name: toolType.find(res => res.msg == name).msg + getCurrentTime() || '',
                                                             toolType: toolType.find(res => res.msg == name).code || '',
                                                             downloadUrl: res.data[0].id,
+                                                            downloadName: res.data[0].name,
+                                                            rfq: this.$route.query.id || '',
                                                             materialGroupName: this.rfqInfoData.categoryName || '',
                                                             materialGroupNo: this.rfqInfoData.categoryCode || '',
-                                                            partsNo: ''
+                                                            partsNo: '',
+                                                            isDefault: this.$store.state.rfq.entryStatus
                                                         }
                                                         reportAdd(req).then(v => {
                                                             if (res && res.code == 200) {
@@ -266,4 +269,14 @@ export const downloadPdfMixins = {
 
         }
     },
+}
+export function getCurrentTime() {
+    //获取当前时间并打印
+    let yy = new Date().getFullYear();
+    let mm = new Date().getMonth() + 1;
+    let dd = new Date().getDate();
+    // let hh = new Date().getHours();
+    // let mf = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
+    let ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
+    return '_' + yy + mm + dd + ss + '_';
 }

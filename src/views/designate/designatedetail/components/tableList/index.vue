@@ -5,8 +5,8 @@
  * @LastEditTime: 2021-11-15 10:29:16
 -->
 <template>
-  <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft"  >
-    <el-table-column v-if="selection" type='selection' width="34" align='center'></el-table-column>
+  <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :cell-class-name="cellClassName">
+    <el-table-column v-if="selection" type='selection' width="34" align='center' :selectable="selectable"></el-table-column>
     <el-table-column v-if='indexKey' :class-name="indexKey ? 'tableIndex': ''" type='index' width='36' align='center' label='#' :fixed="isFixedIndex">
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
@@ -91,7 +91,7 @@
           <span v-else>{{items.key ? language(items.key, items.name) : items.name}}</span>
         </template>
         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
-          <slot :name="items.props" :row="scope.row"></slot>
+          <slot :name="items.props" :row="scope.row" :$index="scope.$index"></slot>
         </template>
         <template v-else slot-scope="scope">
           <!----------------------------附件综合管理-创建RFQ-产能计划列-------------------------------->
@@ -159,7 +159,12 @@ export default{
     selectedItems:{type:Array},
     editCompare: {type: Boolean, default: true},
     activeItems2:{type:String,default:'b'},
-    disabled: {type:Boolean,default: false}
+    disabled: {type:Boolean,default: false},
+    cellClassName: {
+      type: String || Function,
+      default: ""
+    },
+    selectable: { type: Function },
   },
   inject:['vm'],
   watch: {

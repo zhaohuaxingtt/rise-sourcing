@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-10-20 13:55:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-17 22:13:56
+ * @LastEditTime: 2021-12-24 10:21:19
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\selectKw\index.vue
 -->
@@ -48,10 +48,12 @@ export default {
     dialogVisible(val) {
       if (val) {
         this.valueTemp = this.value || ''
+      } else {
+        this.valueTemp = ''
       }
     }
   },
-  mounted() {
+  created() {
     this.option = this.initOption()
   },
   methods: {

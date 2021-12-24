@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-22 11:05:40
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
  * @Descripttion: your project
 -->
 <template>
@@ -97,7 +97,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .icondatabaseweixuanzhong {
   font-size: 21px;
   margin-left: 1.875rem;

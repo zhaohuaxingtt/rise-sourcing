@@ -42,3 +42,30 @@ export function deleteRfq(params) {
     data: params
   })
 }
+
+// RFQ&零件清单-加入申请
+export function addPartNominate(data) {
+  return requst({
+      url: '/nominate-create/addPartNominate',
+      method: "POST",
+      data,
+  })
+}
+
+// RFQ&零件清单-取消申请
+export function cancelPartNominate(data) {
+  return requst({
+      url: '/nominate-create/cancelPartNominate',
+      method: "POST",
+      data,
+  })
+}
+
+// RFQ&零件清单-零件排序
+export function sortPartNominate(data) {
+  return requst({
+      url: '/nominate-create/sortPartNominate',
+      method: "POST",
+      data,
+  })
+}

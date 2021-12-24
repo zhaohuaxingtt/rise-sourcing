@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-10-27 11:10:38
- * @LastEditTime: 2021-10-27 11:24:31
+ * @LastEditTime: 2021-12-23 16:41:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseDetail\components\vpPreviw.vue
@@ -101,8 +101,18 @@ export default {
       downloadButtonLoading: false,
     };
   },
+  watch: {
+    lineData: {
+      handler (val) {
+        console.log(val, "zi")
+      },
+      immediate: true,
+      deep: true
+    }
+  },
   methods: {
     getDownloadFile ({ exportPdf = false, callBack } = {}) {
+      console.log(this.$store.state.permission.userInfo)
       return this.getDownloadFileAndExportPdf({
         domId: '#content',
         watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),

@@ -252,11 +252,11 @@ export default {
              }
             return { value: item.code, label: item.name }
           })
-          if(optionName == 'partTaskPartSortQuery' ){
-            this.selectOptions[optionName] = this.selectOptions[optionName].filter(item => {
-              return item.value !='5';
-            })
-          }
+          // if(optionName == 'partTaskPartSortQuery' ){
+          //   this.selectOptions[optionName] = this.selectOptions[optionName].filter(item => {
+          //     return item.value !='5';
+          //   })
+          // }
         }
       })
     },
