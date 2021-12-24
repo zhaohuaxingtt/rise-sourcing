@@ -251,8 +251,8 @@ export default {
         signId: Number(this.form.signId) || ''
       }).then(res => {
         this.tableLoading = false
-        if (res.code === '200') {
-          this.tableListData = res.data.records || []
+        if (res.code == 200) {
+          this.tableListData = Array.isArray(res.data) ? res.data : []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

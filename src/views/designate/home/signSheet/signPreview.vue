@@ -1,19 +1,20 @@
 <template>
-  <iCard ref="signPreview" class="signPreview">
+  <iCard v-show="showNomi || showMtz" ref="signPreview" class="signPreview">
     <template #header>
-      <iTabsList v-if="showMtz" class="tabs" type="card" v-model="tab">
+      <iTabsList v-if="showNomi && showMtz" class="tabs" type="card" v-model="tab">
         <el-tab-pane lazy v-for="(tab, $tabIndex) in tabs" :key="$tabIndex" :label="tab.key ? language(tab.key, tab.label) : tab.label" :name="tab.name">
           <!-- <component :ref="tab.name" :is="component" v-for="(component, $componentIndex) in tab.components" :class="$componentIndex !== 0 ? 'margin-top20' : ''" :key="$componentIndex" :mtzAppId="mtzAppId" :mtzData="mtzData" /> -->
         </el-tab-pane>
       </iTabsList>
-      <p class="title" v-else>Production Purchasing</p>
+      <p class="title" v-if="!showMtz && showNomi">Production Purchasing</p>
+      <p class="title" v-if="showMtz && !showNomi">MTZ Rules&Parts</p>
       <div>
         <iButton @click="handleExport">{{ language("DAOCHU", "导出") }}</iButton>
         <i @click="handleCollapse" class="el-icon-arrow-up collapse margin-left20 cursor" :class="{ rotate: !collapseValue }"></i>
       </div>
     </template>
     <div>
-      <nomi ref="nomi" v-show="tab === 'nomi'" />
+      <nomi v-if="showNomi" ref="nomi" v-show="tab === 'nomi'" @haveData="showNomi = true" @noData="showNomi = false; tab = 'mtz'" />
       <mtz v-if="showMtz" v-show="tab === 'mtz'" :mtzData="mtzData" />
     </div>
   </iCard>
@@ -32,6 +33,7 @@ export default {
       tab: "nomi",
       collapseValue: true,
       showMtz: false,
+      showNomi: true,
       tabs: [
         {
           label: "Production Purchasing",
