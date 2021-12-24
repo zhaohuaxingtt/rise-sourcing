@@ -234,7 +234,10 @@ router.afterEach((to, from) => {
     process.env.NODE_ENV == 'dev' &&
     store.state.permission.resourceList.length > 0
   ) {
-    _permissionKeySendToService(from)
+    console.log("------------------------------------------------------------------------------------------------------------------------------------------")
+    store.state.permission.resourceList.filter(item => item.type != 3).forEach(item => console.log(`name: ${item.name}, permissionKey: ${item.permissionKey}`))
+    console.log("------------------------------------------------------------------------------------------------------------------------------------------")
+    // _permissionKeySendToService(from)
   }
 })
 function _languageSendToService() {
