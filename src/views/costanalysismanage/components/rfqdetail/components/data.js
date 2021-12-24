@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-05-27 17:29:03
- * @LastEditTime: 2021-10-28 09:51:20
- * @LastEditors:  
+ * @LastEditTime: 2021-12-24 13:52:43
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\costanalysismanage\components\rfqdetail\components\data.js
+ * @FilePath: \front-sourcing\src\views\costanalysismanage\components\rfqdetail\components\data.js
  */
 export const infos = [
   { row: 4, name: "RFQ编号", props: "id", key: "RFQBIANHAO", permissionKey: "COSTANALYSISMANAGE_RFQDETAIL_INFOS_ID|RFQ编号" },
@@ -33,7 +33,10 @@ export const partListTableTitle = [
   { props: "cbdStatus", name: "CBD", key: "CBD", tooltip: true },
   { props: "supplierName", name: "供应商", key: "GONGYINGSHANG", tooltip: true },
   { props: "pcaResult", name: "PCA分析结果", key: "PCAFENXIJIEGUO", tooltip: true, width: 110 },
-  { props: "tiaResult", name: "TIA分析结果", key: "TIAFENXIJIEGUO", tooltip: true, width: 110 }
+  { props: "greenFieldMeasure", name: "Green Field Measures", key: "GREENFIELDMEASURES", tooltip: true, width: 150 },
+  { props: "openGap", name: "Open GAP", key: "OPENGAP", tooltip: true, width: 110 },
+  { props: "openPotential", name: "Open Potentia", key: "OPENPOTENTIA", tooltip: true, width: 120 },
+  { props: "tiaResult", name: "TIA分析结果", key: "TIAFENXIJIEGUO", tooltip: true, width: 110 },
 ]
 
 // 报告清单表头
