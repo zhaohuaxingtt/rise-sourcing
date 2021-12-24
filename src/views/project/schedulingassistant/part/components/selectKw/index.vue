@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-10-20 13:55:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-24 10:21:19
+ * @LastEditTime: 2021-12-24 11:03:23
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\selectKw\index.vue
 -->
@@ -25,6 +25,7 @@
       :options="option"  
       @change="handleChange" 
       separator="-KW" 
+      popper-class="projectmgt-cascader-popper"
     ></el-cascader>
   </iDialog> 
 </template> 
@@ -98,5 +99,14 @@ export default {
 <style lang="scss" scoped>
 .kwChange {
   width: 100%;
+}
+
+</style>
+
+<style lang="scss">
+.projectmgt-cascader-popper {
+  .el-cascader-panel, .el-cascader-menu__wrap{
+    height: 300px;
+  }
 }
 </style>
