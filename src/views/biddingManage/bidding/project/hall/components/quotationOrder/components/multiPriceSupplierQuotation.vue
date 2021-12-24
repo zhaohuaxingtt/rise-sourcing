@@ -406,7 +406,7 @@
         >
         </tableColumnTemplate>
     </iCard>
-    <iCard class="card" title="折现率">
+    <iCard class="card" :title="language('BIDDING_ZHEXIANLV','折现率')">
       <tableColumnTemplate
           ref="annualOutput"
           :tableData="annualOutput1"
@@ -587,7 +587,8 @@ export default {
       multiPriceValue:{},
       isInputFlag: true,
       clearTime:'',
-      isOffer: false
+      isOffer: false,
+      isOfferStatus:false
     };
   },
   watch: {
@@ -634,15 +635,6 @@ export default {
   },
   mounted() {
     this.projectLoading = false
-    getDiscount({}).then((res) => {
-      let o = {...planBaseData,title:'折现率'};
-      res?.data?.md_discount_rate.map(item=>{
-        let x = Number(item.code.replace('Y','0'));
-        o[`stage${x}`]=item.describe;
-      })
-      this.annualOutput[0]={...o};
-      this.annualOutput1[0]={...o};
-    });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
@@ -661,6 +653,7 @@ export default {
   },
   computed: {
     biddingStatus() {
+      if (this.isOfferStatus) return true
       if (
         (this.ruleForm.biddingStatus === "04" ||
           this.ruleForm.biddingStatus === "05") &&
@@ -1123,6 +1116,13 @@ export default {
       console.log(869,formData)
       //保存
       saveBiddingQuotation(formData).then((res) => {
+        if(res.kickoutReason) {
+          if (document.getElementsByClassName('el-message').length == 0) {
+            this.projectLoading = false
+            this.isOfferStatus = true
+            return this.$message.error(res.kickOutMessage)
+          }
+        }
         if (res) {
           this.projectLoading = false
           this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
@@ -1139,19 +1139,26 @@ export default {
         this.yearsPlanTable = [];
         this.purchasePlanTable = [];
         this.handleSearchReset();
-        // callback && callback();
+        callback && callback();
       });
     },
     handleSearchReset() {
       this.yearsPlan = [];
       this.annualOutput = [];
-      
       let param = { biddingId: this.id, supplierCode: this.supplierCode };
       this.query(param);
-      
     },
     async query(e) {
       this.isOffer = true
+      // 获取折现率
+     const countRes =  await getDiscount({})
+      let o = {...planBaseData,title:'折现率'};
+      countRes?.data?.md_discount_rate.map(item=>{
+        let x = Number(item.code.replace('Y','0'));
+        o[`stage${x}`]=item.describe;
+      })
+      this.annualOutput[0]={...o};
+      this.annualOutput1[0]={...o};
       // 根据 ID 获取竞价大厅报价单列表数据
       const res = await findHallQuotation(e);
       this.updateRuleForm(res);
@@ -1196,6 +1203,7 @@ export default {
       //   });
       // });
        //this.ruleForm.productions 采购员年产量
+      let annualOutput = []
       this.ruleForm.biddingProducts?.forEach((items,index) => {
         let output = {};
         output = items.productions.reduce((obj, item) => {
@@ -1213,17 +1221,20 @@ export default {
           obj[item.productId].procureNum[`id${item.stage}`] = item.id;
           return obj;
         }, {});
-        this.annualOutput.push({
+        annualOutput.push({
             ...planBaseData,
           ...output[items.id]?.procureYearMonth,
           title: items.fsnrGsnr,
         })
-        this.annualOutput.push({
+        annualOutput.push({
           ...planBaseData,
           ...output[items.id]?.procureNum,
           title: items.productCode,
         })
+        
       })
+      this.annualOutput = [...this.annualOutput,...annualOutput]
+
       if (!this.ruleForm.supplierProducts?.length) {
         this.ruleForm.supplierProducts = data.biddingProducts;
       }
