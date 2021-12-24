@@ -15,6 +15,7 @@
         <iNavMvp lang :query='$route.query' :lev='2' routerPage :list='navList' @change='changeRouter'></iNavMvp>
       </div>
       <div class="btnList">
+        <iButton v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
         <iButton @click="handleApplyModuleTargetPrice" :loading="checkApplyLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
           {{ language('SHENQINGMOJUMUBIAOJIA','申请模具目标价') }}
         </iButton>
