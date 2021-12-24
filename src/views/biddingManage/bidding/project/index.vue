@@ -87,7 +87,7 @@
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
               language('系统使用条款', '系统使用条款')
             }}</iButton> -->
-            <iButton v-if="isShowBidding" @click="handleShowNotice('02', '竞价告知书')">{{
+            <iButton v-if="isShowBidding" @click="handleShowNotice('02', language('BIDDING_JINJIAGAOZHISHU','竞价告知书'))">{{
               language('BIDDING_JINJIAGAOZHISHU', '竞价告知书')
             }}</iButton>
           </template>

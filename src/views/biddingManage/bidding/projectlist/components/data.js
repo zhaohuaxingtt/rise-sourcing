@@ -106,15 +106,15 @@ export const projectTableTitle = [
 
 function status(value){
   return {
-    '01' : '草稿',
-    '02' : '待竞价',
-    '03' : '未开标',
-    '04' : '竞价中',
-    '05' : '已开标',
-    '06' : '已结束',
-    '07' : '已流标',
-    '08' : '已作废',
-    '09' : '已取消',
+    '01' : language('BIDDING_CAOGAO','草稿'),
+    '02' : language('BIDDING_DAIJINGJIA','待竞价'),
+    '03' : language('BIDDING_WEIKAIBIAO','未开标'),
+    '04' : language('BIDDING_JINGJIAZHONG','竞价中'),
+    '05' : language('BIDDING_YIKAIBIAO','已开标'),
+    '06' : language('BIDDING_YIJIESHU','已结束'),
+    '07' : language('BIDDING_YILIUBIAO','已流标'),
+    '08' : language('BIDDING_YIZUOFEI','已作废'),
+    '09' : language('BIDDING_YIQUXIAO','已取消'),
   }[value]
 }
 // 项目类型

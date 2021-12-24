@@ -1,10 +1,10 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-12-01 17:54:46
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-24 09:42:45
+ * @LastEditors: caopeng
  * @Description: RFQ模块首页
- * @FilePath: \front-sourcing\src\views\partsrfq\home\index.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
 -->
 <template>
   <iPage class="partsrfqHome">
@@ -457,7 +457,7 @@ export default {
     //动态获取转派评分任务
     openPage(row) {
       const openUrl = this.$router.resolve({
-        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}&businessKey=${row.partProjectType}`
+        path: `/sourceinquirypoint/sourcing/partsrfq/editordetail?id=${row.id}&round=${row.currentRounds}&carTypeNames=${row.carTypeNames}&businessKey=${row.partProjectType}&rfqName=${row.rfqName}`
       })
       window.open(openUrl.href,'_blank')
     },

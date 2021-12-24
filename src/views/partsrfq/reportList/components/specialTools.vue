@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-07-06 13:40:04
- * @LastEditTime: 2021-12-22 11:42:18
+ * @LastEditTime: 2021-12-24 14:09:11
  * @LastEditors: caopeng
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\specialTools.vue
@@ -86,7 +86,7 @@ export default {
         ...this.searchCriteria,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
-        isBindingInstance:false
+        isBindingInstance:1,
       }
       reportList(data).then((res) => {
         if (res.data) {

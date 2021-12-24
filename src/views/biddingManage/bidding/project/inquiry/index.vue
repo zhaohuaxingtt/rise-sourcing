@@ -340,7 +340,7 @@
             :show-file-list="false"
             :http-request="httpUpload"
           >
-            <iButton>新增</iButton>
+            <iButton>{{ language('BIDDING_XINZHENG', '新增') }}</iButton>
           </el-upload>
           <iButton @click="delAttachments">{{language('BIDDING_SHANCHU', '删除') }}</iButton>
           <iButton @click="handleSave('attach')">{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
@@ -1144,7 +1144,6 @@ export default {
         updateDate: "",
       });
       this.$message.success(this.language('BIDDINGH_SHANGCHUANCHENGGONG', '上传成功'));
-      console.log(this.ruleForm.attachments);
     },
     saveForms(callback) {
       const formData = this.ruleForm;
