@@ -75,6 +75,7 @@ import {downloadFile} from 'rise/web/components/iFile/lib'
 import {iCard, iButton, iPagination, iInput, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import { setLogMenu } from "@/utils";
+import {recordmMixins} from '../mixin'
 import {
   getAuditFilePage,
   auditFileSave,
@@ -84,7 +85,7 @@ import {
 
 export default {
   name: "aekoDetailRecord",
-  mixins: [pageMixins],
+  mixins: [pageMixins, recordmMixins],
   components: {
     iCard,
     iButton,
@@ -123,6 +124,8 @@ export default {
   },
   mounted() {
     this.getFetchData()
+    // 获取cf审批记录，拿提交状态，用于删除解释附件
+    this.getexplainList()
   },
   methods: {
   /**
@@ -243,6 +246,7 @@ export default {
 				if (confirmInfo === 'confirm') {
           this.deleting = true
 					auditFileDelete({
+            isSubmited: !this.checkFirstRecord, // 从mixin中拿到的计算属性，如果是审批记录的话，是否已提交
             ids: fileList,
             delType: 0
           }).then(res => {

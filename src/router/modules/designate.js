@@ -101,16 +101,16 @@ export default [
             },
             component: () => import('@/views/designate/home/signSheet/details'),
           },
-          {
-            path: 'mtzDetails',
-            name: 'mtzDesignateNewSignSheet',
-            meta: {
-              title: 'MTZ定点申请单',
-              activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
-            },
-            component: () =>
-              import('@/views/designate/home/signSheet/mtzDetails/index.vue'),
-          },
+          // {
+          //   path: 'mtzDetails',
+          //   name: 'mtzDesignateNewSignSheet',
+          //   meta: {
+          //     title: 'MTZ定点申请单',
+          //     activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+          //   },
+          //   component: () =>
+          //     import('@/views/designate/home/signSheet/mtzDetails/index.vue'),
+          // },
         ],
       },
       {
@@ -391,6 +391,6 @@ export default [
       title: '签字单预览下载',
       activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
     },
-    component: () => import('@/views/designate/home/signSheet/preview'),
+    component: () => import('@/views/designate/home/signSheet/signPreview'),
   },
 ]

@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-09 20:31:14
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-24 14:27:01
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\data.js
  */
@@ -46,7 +46,8 @@ export const nomalDetailTitleBlue = [
 export const nomalTableTitle = [
   {props:'fsnrGsnrNum',name:'FS No.', key: "", minWidth: 110},
   {props:'partNo',name:'Part No.', key: "", minWidth: 95},
-  {props:'oldPartNum',name:'Old Part No.', key: "", minWidth: 95}, // oldPartNo => partNo
+  {props:'partNum',name:'Old Part No.', key: "", minWidth: 95}, // 12/24 业务说取partNum
+  // {props:'oldPartNum',name:'Old Part No.', key: "", minWidth: 95}, // oldPartNo => partNo
   {props:'oldAPrice',name:'Old A Price', key: "", minWidth: 85},
   {props:'partName',name:'Part Name', key: "", minWidth: 85},
   {props:'unit',name:'Unit', key: "", minWidth: 45},

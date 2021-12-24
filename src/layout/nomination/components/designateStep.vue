@@ -261,7 +261,8 @@ export default {
             console.log(this.$store.getters.isPartListNull, item.path)
             // 前4步零件非空校验不通过
             if (this.$store.getters.isPartListNull && item.path !== '/designate/rfqdetail') {
-                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
+                // iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
+                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXINGOTHER','当前零件清单没有已加入申请的零件，请至少将一个零件加入申请后再进行操作'))
                 return
             }
              // 合理的跳转到下一步

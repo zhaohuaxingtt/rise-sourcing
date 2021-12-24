@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-21 18:09:16
+ * @LastEditTime: 2021-12-22 15:20:25
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -421,6 +421,7 @@ export default {
     async handleSendFs() { 
       await this.autoSave() 
       try { 
+        console.log('3')
         this.loading = true 
         // 筛选出待定点和待kickoff的数据 
         const selectRows = this.partsTemp.filter(item => { 
@@ -653,21 +654,20 @@ export default {
      * @param {*} refresh 
      * @return {*}
      */    
-    handleSave(refresh = true) { 
+    async handleSave(refresh = true) { 
+      console.log('1')
       this.saveloading = true 
-      updatePartSchedule(this.partsTemp.map(item => { 
+      const res = await updatePartSchedule(this.partsTemp.map(item => { 
         const findItem = this.parts.find(pItem => pItem.partNum === item.partNum) 
         return findItem ? findItem : item 
-      })).then(res => { 
-        if (res?.result) { 
-          refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
-          refresh && this.getPartList(this.cartypeProId) 
-        } else { 
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)  
-        } 
-      }).finally(() => { 
-        this.saveloading = false 
-      }) 
+      }))
+      if (res?.result) { 
+        refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        await this.getPartList(this.cartypeProId) 
+      } else { 
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)  
+      } 
+      this.saveloading = false 
     },
     /**
      * @Description: 算法配置弹窗状态更新 
@@ -802,6 +802,7 @@ export default {
      * @return {*} 
      */    
     getPartList(cartypeProId, selectPartNums = '') {  
+      console.log('2')
       this.loading = true 
       this.$emit('reSetSearchParams')
       getPartSchedule(cartypeProId).then(res => { 

@@ -207,7 +207,7 @@ export function getAccessoryManageListForAccessory(data) {
 export function getFiles(params) {
   let { fileType, hostId, isAsc = true, sortColumn = 'uploadDate', page, currPage } = params
   return requst({
-      url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${page}/${currPage}`,
+      url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${currPage}/${page}`,
       method: 'get'
   })
 }

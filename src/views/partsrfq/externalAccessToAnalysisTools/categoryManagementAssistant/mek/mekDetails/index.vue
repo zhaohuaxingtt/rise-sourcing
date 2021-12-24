@@ -1,14 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-11-11 15:57:58
+ * @LastEditTime: 2021-12-21 15:41:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
 -->
 <template>
   <iPage class="new-MEK">
-    <div id="content" v-loading="onDataLoading">
+    <div id="content"
+         v-loading="onDataLoading">
       <div class="navBox flex-between-center"
            style="margin-bottom:20px">
         <div class="title font-weight flex">
@@ -563,7 +564,7 @@ export default {
     this.onDataLoading = false
     this.$nextTick(() => {
       if (this.categoryId && this.chemeId && this.categoryCode) {
-        params.isBindingRfq= this.isBindingRfq
+        params.isBindingRfq = this.isBindingRfq
         this.getHistogram(params);
       }
     })
@@ -582,7 +583,7 @@ export default {
   },
   methods: {
     async init () {
-      this.rfqId = this.$store.state.rfq.rfqId;
+      this.rfqId = this.$store.state.rfq.rfqId || this.$route.query.rfqId;
       this.entryStatus = this.$store.state.rfq.entryStatus;
       this.chemeId = this.$route.query.chemeId ? this.$route.query.chemeId : this.propSchemeId;
       this.productFactoryNames = this.$route.query.productFactoryNames ? this.$route.query.productFactoryNames : this.propFactoryName;
@@ -594,9 +595,10 @@ export default {
         this.categoryId = data.categoryId;
         this.categoryName = data.categoryName;
         this.exceptPart = data.exceptPart;
-        this.targetMotor = data.targetMotor.toString();
+        this.targetMotor = data.targetMotor || data.targetMotor.toString();
         this.comparedType = data.comparedType;
         this.isBindingRfq = data.isBindingRfq;
+        this.checkedCarLevelOptions = data.selectedOptions
         if (data.firstComparedMotor) {
           this.ComparedMotor.push(data.firstComparedMotor.toString());
         }
@@ -1128,7 +1130,12 @@ export default {
               mekTypeName = item.name;
             }
           });
-          data.config["label#-1"] = mekTypeName;
+          if (data) {
+            if (!data.config) {
+              data.config = {}
+            }
+            data.config["label#-1"] = mekTypeName;
+          }
           this.gridData = data;
         });
       }
@@ -1258,7 +1265,9 @@ export default {
               this.clientHeight = false;
             }
             this.totalWidth = this.totalWidth + 75 + "px";
-            this.maxData = maxList ? _.max(maxList).toString() : "";
+            console.log("error here s")
+            this.maxData = maxList && maxList.length > 0 ? _.max(maxList).toString() : "";
+            console.log("error here e")
             let first = Number(this.maxData.slice(0, 1)) + 1;
             for (let i = 0; i < this.maxData.length - 1; i++) {
               first += "0";
@@ -1292,7 +1301,7 @@ export default {
           }
           this.onDataLoading = false;
         });
-      },(res) => {
+      }, (res) => {
         iMessage.error(res.desZh);
         this.onDataLoading = false;
       });
@@ -1343,7 +1352,6 @@ export default {
     save () {
       this.loading = true;
       this.analysisSave = true;
-
       if (this.analysisSave) {
         let params = {
           categoryCode: this.categoryCode,
@@ -1358,6 +1366,7 @@ export default {
           schemeId: this.chemeId,
           targetMotor: this.targetMotor,
           name: this.analysisName,
+          selectedOptions: this.checkedCarLevelOptions
         };
         if (this.barData) {
           if (this.barData[0]) {
