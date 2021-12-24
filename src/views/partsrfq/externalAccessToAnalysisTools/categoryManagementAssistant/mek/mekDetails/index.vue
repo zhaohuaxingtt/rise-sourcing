@@ -582,7 +582,7 @@ export default {
   },
   methods: {
     async init () {
-      this.rfqId = this.$store.state.rfq.rfqId;
+      this.rfqId = this.$store.state.rfq.rfqId || this.$route.query.rfqId;
       this.entryStatus = this.$store.state.rfq.entryStatus;
       this.chemeId = this.$route.query.chemeId ? this.$route.query.chemeId : this.propSchemeId;
       this.productFactoryNames = this.$route.query.productFactoryNames ? this.$route.query.productFactoryNames : this.propFactoryName;
@@ -594,7 +594,7 @@ export default {
         this.categoryId = data.categoryId;
         this.categoryName = data.categoryName;
         this.exceptPart = data.exceptPart;
-        this.targetMotor = data.targetMotor.toString();
+        this.targetMotor = data.targetMotor || data.targetMotor.toString();
         this.comparedType = data.comparedType;
         this.isBindingRfq = data.isBindingRfq;
         if (data.firstComparedMotor) {
@@ -1128,7 +1128,12 @@ export default {
               mekTypeName = item.name;
             }
           });
-          data.config["label#-1"] = mekTypeName;
+          if (data) {
+            if (!data.config) {
+              data.config = {}
+            }
+            data.config["label#-1"] = mekTypeName;
+          }
           this.gridData = data;
         });
       }
@@ -1258,7 +1263,9 @@ export default {
               this.clientHeight = false;
             }
             this.totalWidth = this.totalWidth + 75 + "px";
-            this.maxData = maxList ? _.max(maxList).toString() : "";
+            console.log("error here s")
+            this.maxData = maxList && maxList.length > 0 ? _.max(maxList).toString() : "";
+            console.log("error here e")
             let first = Number(this.maxData.slice(0, 1)) + 1;
             for (let i = 0; i < this.maxData.length - 1; i++) {
               first += "0";
