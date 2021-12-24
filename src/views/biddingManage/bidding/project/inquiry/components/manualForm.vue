@@ -161,7 +161,7 @@
             <iSelect
               v-model="ruleForm.rfqs"
               value-key="rfqCode"
-              placeholder="请关联"
+              :placeholder="language('BIDDING_QINGGUANLIAN', '请关联')"
               class="rfqs-search"
               filterable
               multiple
@@ -194,7 +194,7 @@
             <iSelect
               v-model="ruleForm.rfqs"
               value-key="rfqCode"
-              placeholder="请关联"
+              :placeholder="language('BIDDING_QINGGUANLIAN', '请关联')"
               class="rfqs-search"
               filterable
               multiple

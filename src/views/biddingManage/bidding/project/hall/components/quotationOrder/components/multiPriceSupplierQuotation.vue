@@ -529,7 +529,7 @@ export default {
       ],
       yearsPlan: [],
       annualOutput: [{
-        title: "折现率",
+        title: this.language('BIDDING_ZHEXIANLV','折现率'),
         stage1: 1,
         stage2: 0.9,
         stage3: 0.81,
@@ -548,7 +548,7 @@ export default {
         }
       ],
       annualOutput1: [{
-        title: "折现率",
+        title: this.language('BIDDING_ZHEXIANLV','折现率'),
         stage1: 1,
         stage2: 0.9,
         stage3: 0.81,
@@ -985,7 +985,7 @@ export default {
         if (
           Number(this.totalPrices) < Number(this.biddingQuoteRule.actualValue)
         ) {
-          this.$confirm("本次报价小于规则设定的警戒值，是否继续？",this.language('BIDDING_TISHI',"提示"), {
+          this.$confirm(this.language('BIDDING_BCBJXYGZSDDJJZSFJX',"本次报价小于规则设定的警戒值，是否继续？"),this.language('BIDDING_TISHI',"提示"), {
             confirmButtonText: this.language('BIDDING_QUEDING',"确定"),
         cancelButtonText: this.language('BIDDING_QUXIAO',"取消"),
             type: "warning",
@@ -1017,9 +1017,9 @@ export default {
         if (
           Number(this.totalPrices) > Number(this.biddingQuoteRule.actualValue)
         ) {
-          this.$confirm("本次报价大于规则设定的警戒值，是否继续？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
+          this.$confirm(this.language('BIDDING_BCBJDYGZSDDJJZSFJX',"本次报价大于规则设定的警戒值，是否继续？"), this.language('BIDDING_TISHI',"提示"), {
+            confirmButtonText: this.language('BIDDING_QUEDING',"确定"),
+            cancelButtonText: this.language('BIDDING_QUXIAO',"取消"),
             type: "warning",
           })
             .then(() => {
@@ -1152,7 +1152,7 @@ export default {
       this.isOffer = true
       // 获取折现率
      const countRes =  await getDiscount({})
-      let o = {...planBaseData,title:'折现率'};
+      let o = {...planBaseData,title:this.language('BIDDING_ZHEXIANLV','折现率')};
       countRes?.data?.md_discount_rate.map(item=>{
         let x = Number(item.code.replace('Y','0'));
         o[`stage${x}`]=item.describe;

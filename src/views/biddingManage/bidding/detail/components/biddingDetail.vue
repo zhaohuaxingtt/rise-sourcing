@@ -129,7 +129,7 @@
         >
         </tableColumnTemplate>
     </iCard>
-    <iCard class="card" title="折现率" v-if="ruleForm.biddingMode === '03' && role === 'supplier'">
+    <iCard class="card" :title="language('BIDDING_ZHEXIANLV','折现率')" v-if="ruleForm.biddingMode === '03' && role === 'supplier'">
       <tableColumnTemplate
           ref="annualOutput"
           :tableData="annualOutput1"
@@ -230,7 +230,7 @@ export default {
       outPutColumn,
       yearsPlan: [],
       annualOutput: [{
-        title: "折现率",
+        title: this.language('BIDDING_ZHEXIANLV',"折现率"),
         stage1: 1,
         stage2: 0.9,
         stage3: 0.81,
@@ -249,7 +249,7 @@ export default {
         }
       ],
       annualOutput1: [{
-        title: "折现率",
+        title: this.language('BIDDING_ZHEXIANLV',"折现率"),
         stage1: 1,
         stage2: 0.9,
         stage3: 0.81,
@@ -314,7 +314,7 @@ export default {
      return Big(val).div(this.beishu).toNumber()
     },
     async query(e) {
-      let o = {...planBaseData,title:'折现率'};
+      let o = {...planBaseData,title:this.language('BIDDING_ZHEXIANLV',"折现率")};
       const res = await  getDiscount({});
       if(res?.data != null){
         res?.data?.md_discount_rate.map(item=>{

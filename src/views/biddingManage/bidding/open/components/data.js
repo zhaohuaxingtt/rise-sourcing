@@ -141,7 +141,7 @@ export const infoRules = (form) => ({
       trigger: "blur",
     },
   ],
-  "quoteRule.targetPrice":[{ required: true, message: "请输入", trigger: "blur" }],
+  "quoteRule.targetPrice":[{ required: true, message: language('BIDDING_QINGSHURU',"请输入"), trigger: "blur" }],
   "quoteRule.yellowDeviationValue": [
     { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },

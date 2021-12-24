@@ -287,7 +287,7 @@ export default {
       // this.xAxisTitle = `(${this.currencyMultiples(result?.currencyMultiple)})${
       //   this.currencyUnit[result?.currencyUnit]
       // }`;
-      this.xAxisTitle = `(单位：${this.currencyMultiples(
+      this.xAxisTitle = `(${this.language('BIDDING_DANWEI', "单位")}：${this.currencyMultiples(
         result?.currencyMultiple
       )}  ${this.currencyUnit[result?.currencyUnit]})`;
       result.amplitude = (result.amplitude * 100).toFixed(2);
@@ -373,8 +373,8 @@ export default {
           },
           {
             right: "3%",
-            bottom: "-1%",
-            text: "竞价结束时间",
+            bottom: "0%",
+            text: this.language('BIDDING_JJJSSJ', "竞价结束时间"),
           },
         ],
         tooltip: {
@@ -399,14 +399,14 @@ export default {
                     <div class="form">
                         <!-- 时间 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">时间</div>
+                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_SHIJIAN', '时间')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${dayjs(
                           series.axisValue
                         ).format("HH:mm:ss")}</div>
                         </div>
                         <!-- 出价 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">出价</div>
+                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_CHUJIA', '出价')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
                           unit +
                           " " +
@@ -450,7 +450,7 @@ export default {
         grid: {
           left: "5%",
           right: "4%",
-          bottom: "6%",
+          bottom: "8%",
           top: "30%",
           containLabel: true,
         },
@@ -560,8 +560,8 @@ export default {
           },
           {
             right: "3.5%",
-            bottom: "-1%",
-            text: "竞价结束时间",
+            bottom: "0%",
+            text: this.language('BIDDING_JJJSSJ', "竞价结束时间"),
           },
         ],
         tooltip: {
@@ -588,14 +588,14 @@ export default {
                     <div class="form">
                         <!-- 时间 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">时间</div>
+                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_SHIJIAN', '时间')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${dayjs(
                           series.axisValue
                         ).format("HH:mm:ss")}</div>
                         </div>
                         <!-- 出价 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">出价</div>
+                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_CHUJIA', '出价')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
                           unit +
                           " " +
@@ -639,7 +639,7 @@ export default {
         grid: {
           left: "5%",
           right: "4%",
-          bottom: "6%",
+          bottom: "8%",
           top: "30%",
           containLabel: true,
         },
