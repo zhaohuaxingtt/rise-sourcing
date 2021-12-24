@@ -8,7 +8,7 @@
 
 <script>
 import { iPage } from "rise"
-import headerNav from "@/views/designate/home/components/headerNav"
+import headerNav from "@/components/headerNav"
 import signSheet from "./index"
 
 export default {

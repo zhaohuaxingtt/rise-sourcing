@@ -119,7 +119,7 @@ import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
 import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
-import headerNav from '@/views/accessoryPart/headerNav'
+import headerNav from '@/components/headerNav'
 
 
 // eslint-disable-next-line no-undef

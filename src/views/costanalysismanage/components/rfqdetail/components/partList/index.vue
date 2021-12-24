@@ -150,7 +150,9 @@ export default {
           pcaResult: item.pcaResult,
           rfqId: this.rfqId,
           supplierId: item.supplierId,
-          tiaResult: item.tiaResult
+          tiaResult: item.tiaResult,
+          openGap: item.openGap,
+          greenFieldMeasure: item.greenFieldMeasure
         }))
       })
       .then(res => {

@@ -202,7 +202,7 @@
 
 <script>
 import { tableTitle } from './components/data'
-import headerNav from './components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import { 

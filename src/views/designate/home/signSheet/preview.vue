@@ -147,38 +147,47 @@ export default {
         // const res = require('./components/moke.json')
         this.tableLoading = false
           if (res.code === '200') {
-            // const ltcTitlt = res.data.ltcList || []
-            this.tableListData = res.data.nomiList || []
-            // 按年份去取ltc表头
-            const ltcYearObj = {}
-            this.tableListData.forEach(item => {
-              const itemLTC = item.ltcList || []
-              itemLTC.forEach(ltcItem => {
-                const ltcYear = window.moment(ltcItem.yearMonths).format('YYYY')
-                ltcYearObj[ltcYear] = ltcYear
+            if (res.data) {
+              // const ltcTitlt = res.data.ltcList || []
+              this.tableListData = res.data.nomiList || []
+              
+              if (this.tableListData.length) this.$emit("haveData")
+              else this.$emit("noData")
+
+              // 按年份去取ltc表头
+              const ltcYearObj = {}
+              this.tableListData.forEach(item => {
+                const itemLTC = item.ltcList || []
+                itemLTC.forEach(ltcItem => {
+                  const ltcYear = window.moment(ltcItem.yearMonths).format('YYYY')
+                  ltcYearObj[ltcYear] = ltcYear
+                })
               })
-            })
-            // 根据年份做数据格式化
-            this.tableListData.map((o) => {
-              const ltcList = o.ltcList || []
-              Object.keys(ltcYearObj).forEach((ltcYear) => {
-                const ltcArray = ltcList.filter(ltc => window.moment(ltc.yearMonths).format('YYYY') === ltcYear)
-                const ltcValue = ltcArray.map(p => Number(p.priceReduceRate).toFixed((Number(p.priceReduceRate)%1 === 0 ? 0 : 2))).join('/')
-                o[`ltc_${ltcYear}`] = ltcValue
-                o.rsRemark = [o.csfMeetMemo || '', o.linieMeetMemo || '',o.cs1MeetMemo || ''].join('\n')
-                return o
+              // 根据年份做数据格式化
+              this.tableListData.map((o) => {
+                const ltcList = o.ltcList || []
+                Object.keys(ltcYearObj).forEach((ltcYear) => {
+                  const ltcArray = ltcList.filter(ltc => window.moment(ltc.yearMonths).format('YYYY') === ltcYear)
+                  const ltcValue = ltcArray.map(p => Number(p.priceReduceRate).toFixed((Number(p.priceReduceRate)%1 === 0 ? 0 : 2))).join('/')
+                  o[`ltc_${ltcYear}`] = ltcValue
+                  o.rsRemark = [o.csfMeetMemo || '', o.linieMeetMemo || '',o.cs1MeetMemo || ''].join('\n')
+                  return o
+                })
               })
-            })
-            Object.keys(ltcYearObj).forEach((year, index) => {
-              this.ltcTitle.push({
-                props: `ltc_${year}`,
-                name: `LTC ${year}`,
-                key: `LTC ${year}`,
-                width: 200,
-                tooltip: false
+              Object.keys(ltcYearObj).forEach((year, index) => {
+                this.ltcTitle.push({
+                  props: `ltc_${year}`,
+                  name: `LTC ${year}`,
+                  key: `LTC ${year}`,
+                  width: 200,
+                  tooltip: false
+                })
               })
-            })
-            console.log(this.tableListData, ltcYearObj, this.tableTitle)
+              console.log(this.tableListData, ltcYearObj, this.tableTitle)
+            } else {
+              this.$emit("noData")
+            }
+            
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }

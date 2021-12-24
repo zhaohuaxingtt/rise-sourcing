@@ -159,7 +159,7 @@
 <script>
 import { tableTitle, signMenu } from './components/data'
 // import checklistData from './lib/checklist.json'
-import headerNav from '@/views/designate/home/components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import selDialog from '../components/selDialog'

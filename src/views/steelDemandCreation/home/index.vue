@@ -7,13 +7,8 @@
  * @FilePath: \front-sourcing\src\views\steelDemandCreation\home\index.vue
 -->
 <template>
-  <iPage >
-    <div class="topMenu" v-permission.auto="SOURCING_STEELDEMANCREATION_PAGE|钢材管理">
-      <iNavMvp class="margin-bottom30" lang @change="change" :list='navListLeft' routerPage lev="1" @message="clickMessage" />
-
-      <!-- <iNavMvp class="margin-bottom30" lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" /> -->
-      <iNavMvp class="margin-bottom30" lang @change="change" right routerPage  lev="2" reversePosit :list="headerSubMenu" @message="clickMessage" />
-    </div>
+  <iPage>
+    <headerNav />
     <iSearch class="margin-bottom20" @sure="sure" @reset='reset()' v-permission.auto="SOURCING_STEELDEMANCREATION_SEARCH|搜索">
       <el-form>
         <template v-for='(items,index) in searchForm'>
@@ -76,7 +71,8 @@
   </iPage>
 </template>
 <script>
-import {iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,iMessage,icon} from 'rise'
+import {iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,iMessage,icon} from 'rise'
+import headerNav from "@/components/headerNav"
 import {searchForm,form,tableTitle} from './components/data'
 import {steeldemandcreation,downloadExcelBatch,printTransferOrderBatch,printTransferOrderOne} from '@/api/steelDemandCreation/home'
 import {pageMixins} from "@/utils/pageMixins";
@@ -87,10 +83,9 @@ import {user} from '@/config'
 import {getToken} from '@/utils'
 import { headerSubMenu } from '@/views/accessoryPart/headerNav/components/data'
 // eslint-disable-next-line no-undef
-const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 export default{
   mixins:[pageMixins],
-  components:{iPage,iSearch,iCard,iNavMvp,iSelect,iInput,iButton,iPagination,tablePart,icon},
+  components:{iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,tablePart,icon, headerNav},
     created(){
       this.initSelectOptions()
       this.steeldemandcreation()
@@ -111,10 +106,6 @@ export default{
         selectRow:[],
         headerSubMenu,
       }
-    },
-    computed: {
-      ...mapState(["navList","navListLeft"]),
-      ...mapActions(["updateNavList"])
     },
     methods:{
       /**

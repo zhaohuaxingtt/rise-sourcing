@@ -4,12 +4,6 @@
  * @Description: 定点信/LOI 相关DATA
  */
 
-// homepage的类型tab
-export const letterAndLoiType = [
-    {label:'LK_DINGDIANXIN',key:'letter',name:'定点信', permissionKey: 'LK_LETTERANDLOI_LETTER_PAGE'},
-    {label:'LK_LOI',key:'LOI',name:'LOI', permissionKey: 'LK_LETTERANDLOI_LOI_PAGE'},
-]
-
 // 定点信搜索条件
 export const letterListSearch =[
     {props:'letterNum',label:'定点信编号',type:'input',labelKey:'LK_DINGDIANXINBIANHAO',permissionKey: 'LK_LETTER_LIST_LETTERNUM'},
@@ -100,27 +94,4 @@ export const historyLoiListTitle=[
   { props: "fileSize", name: "大小", key: "DAXIAO", tooltip: true },
   { props: "uploadDate", name: "上传日期", key: "LK_SHANGCHUANRIQI", tooltip: true },
   { props: "uploadUserName", name: "上传人", key: "LK_SHANGCHUANREN", tooltip: true },
-]
-
-export const heaederSubMenu = [
-  {
-    value:1,
-    name:'定点信',
-    message: 0,
-    url: "/sourceinquirypoint/sourcing/partsletter",
-    activePath: "/partsletter",
-    key: "LK_DINGDIANXINLOI_TITLE",
-    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSLETTER_LETTER',
-    permissionName: '定点信',
-  },
-  {
-    value:2,
-    name:'LOI',
-    message: 0,
-    url: "/sourceinquirypoint/sourcing/partsletter/loi",
-    activePath: "/loi",
-    key: "LK_DINGDIANXINLOI_LOI",
-    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSLETTER_LOI',
-    permissionName: 'LOI',
-  },
 ]

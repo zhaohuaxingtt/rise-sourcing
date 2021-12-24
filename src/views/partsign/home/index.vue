@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsignHome">
         <div>
-        <headerNav/>
+        <headerNav />
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
@@ -256,7 +256,7 @@ import {selectDictByKeyss} from '@/api/dictionary'
 import store from '@/store'
 import { TP_INFO_STATUS } from "./components/data"
 import {setPretreatmentParams} from '@/utils/tool'
-import headerNav from '@/views/accessoryPart/headerNav'
+import headerNav from '@/components/headerNav'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
