@@ -406,7 +406,7 @@
         >
         </tableColumnTemplate>
     </iCard>
-    <iCard class="card" title="折现率">
+    <iCard class="card" :title="language('BIDDING_ZHEXIANLV','折现率')">
       <tableColumnTemplate
           ref="annualOutput"
           :tableData="annualOutput1"

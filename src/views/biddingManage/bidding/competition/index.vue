@@ -40,7 +40,7 @@
                 >
               </div>
               <template v-else>
-                <iButton :class="{ active: actived === 1 }">{{language('BIDDING_JIBENXINXI', '基本信息')}}</iButton>
+                <iButton :class="{ active: actived === 1 }">{{language('BIDDING_JICHUXINXI', '基础信息')}}</iButton>
                 <iButton :class="{ active: actived === 2 }">{{language('BIDDING_XIANGMUXINXI', '项目信息')}}</iButton>
                 <iButton :class="{ active: actived === 3 }">{{language('BIDDING_BAOJIAGUIZE', '报价规则')}}</iButton>
               </template>
