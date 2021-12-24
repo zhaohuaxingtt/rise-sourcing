@@ -148,8 +148,8 @@ export const baseRules = {
   beginMonth: [
     { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
   ],
-  modelProjects: [{ type: 'array', required: true, message: i18n.t('必选'), trigger: "change" }],
-  models: [{ type: 'array', required: true, message: i18n.t('必选'), trigger: "change" }],
+  modelProjects: [{ type: 'array', required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+  models: [{ type: 'array', required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" }],
   // totalPrices: [
   // { rule: [{ pattern: /^[\d]{0,10}(\.[\d]{0,6})?$|^(\d|[1-9]\d)(\.\d+)*$/, trigger: 'blur' }], required: true, message: "起始总价范围是0~9999999999.999999", trigger: "blur" },
   // ],
@@ -169,22 +169,22 @@ export const baseRules = {
 export const currencyMultipleLib = {
   "01": {
     beishu: 1,
-    unit: '元',
+    unit: language('BIDDING_YUAN',"元"),
   },
   "02": {
     beishu: 1000,
-    unit: '千',
+    unit: language('BIDDING_YUAN',"千"),
   },
   "03": {
     beishu: 10000,
-    unit: '万',
+    unit: language('BIDDING_YUAN',"万"),
   },
   "04": {
     beishu: 1000000,
-    unit: '百万',
+    unit: language('BIDDING_YUAN',"百万"),
   }
-
 }
+
 export const multiPleTableTitle = [
   {
     props: "fsnrGsnr",
@@ -417,7 +417,7 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
@@ -434,7 +434,7 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
@@ -451,7 +451,7 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
@@ -468,7 +468,7 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
@@ -485,7 +485,7 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
@@ -502,7 +502,7 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
@@ -519,7 +519,7 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
@@ -536,7 +536,7 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
@@ -553,7 +553,7 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[0-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100,保留四位小数"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],

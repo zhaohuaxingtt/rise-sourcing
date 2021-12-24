@@ -26,11 +26,11 @@ export const infoForm = {
 
 export const isAttendList = [
   {
-    name: "是",
+    name: language('BIDDING_SHI','是'),
     isAttend: true,
   },
   {
-    name: "否",
+    name: language('BIDDING_FOU','否'),
     isAttend: false,
   },
 ];
@@ -372,21 +372,20 @@ export const tableListData = [
 export const currencyMultipleLib = {
   "01": {
     beishu: 1,
-    unit: '元',
+    unit: language('BIDDING_YUAN',"元"),
   },
   "02": {
     beishu: 1000,
-    unit: '千',
+    unit: language('BIDDING_YUAN',"千"),
   },
   "03": {
     beishu: 10000,
-    unit: '万',
+    unit: language('BIDDING_YUAN',"万"),
   },
   "04": {
     beishu: 1000000,
-    unit: '百万',
+    unit: language('BIDDING_YUAN',"百万"),
   }
-
 }
 
 export const biddingStatue = [

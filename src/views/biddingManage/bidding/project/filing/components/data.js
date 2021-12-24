@@ -503,8 +503,8 @@ export const baseRules = {
   beginMonth: [
     { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
   ],
-  modelProjects: [{ type: 'array', required: true, message: '必选', trigger: "change" }],
-  models: [{ type: 'array', required: true, message: '必选', trigger: "change" }],
+  modelProjects: [{ type: 'array', required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+  models: [{ type: 'array', required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" }],
   totalPrices: [
     { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
     {
@@ -572,21 +572,20 @@ export const tableListData = [
 export const currencyMultipleLib = {
   "01": {
     beishu: 1,
-    unit: '元',
+    unit: language('BIDDING_YUAN',"元"),
   },
   "02": {
     beishu: 1000,
-    unit: '千',
+    unit: language('BIDDING_YUAN',"千"),
   },
   "03": {
     beishu: 10000,
-    unit: '万',
+    unit: language('BIDDING_YUAN',"万"),
   },
   "04": {
     beishu: 1000000,
-    unit: '百万',
+    unit: language('BIDDING_YUAN',"百万"),
   }
-
 }
 
 
@@ -639,63 +638,63 @@ export const stageColumn = [
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第一段",
+    name: language('BIDDING_DI一DUAN',"第一段"),
   },
   {
     props: "stage2",
     required: false,
     rule: [
     ],
-    name: "第二段",
+    name: language('BIDDING_DI二DUAN',"第二段"),
   },
   {
     props: "stage3",
     required: false,
     rule: [
     ],
-    name: "第三段",
+    name: language('BIDDING_DI三DUAN',"第三段"),
   },
   {
     props: "stage4",
     required: false,
     rule: [
     ],
-    name: "第四段",
+    name: language('BIDDING_DI四DUAN',"第四段"),
   },
   {
     props: "stage5",
     required: false,
     rule: [
     ],
-    name: "第五段",
+    name: language('BIDDING_DI五DUAN',"第五段"),
   },
   {
     props: "stage6",
     required: false,
     rule: [
     ],
-    name: "第六段",
+    name: language('BIDDING_DI六DUAN',"第六段"),
   },
   {
     props: "stage7",
     required: false,
     rule: [
     ],
-    name: "第七段",
+    name: language('BIDDING_DI七DUAN',"第七段"),
   },
   {
     props: "stage8",
     required: false,
     rule: [
     ],
-    name: "第八段",
+    name: language('BIDDING_DI八DUAN',"第八段"),
   },
   {
     props: "stage9",
     required: false,
     rule: [
     ],
-    name: "第九段",
+    name: language('BIDDING_DI九DUAN',"第九段"),
   },
 ]
 
