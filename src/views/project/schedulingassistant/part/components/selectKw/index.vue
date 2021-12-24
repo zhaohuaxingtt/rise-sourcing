@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-10-20 13:55:59
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-21 17:14:27
+ * @LastEditTime: 2021-12-24 10:21:19
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\selectKw\index.vue
 -->
@@ -53,7 +53,7 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.option = this.initOption()
   },
   methods: {
