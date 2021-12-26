@@ -11,6 +11,9 @@ import {
     udMutilfiles,
     reportAdd
 } from '@/api/partsrfq/reportList/index'
+import {
+    cbdDownloadFileTWO
+} from "@/api/rfqManageMent/quotationdetail"
 /**
  * @param  ele          要生成 pdf 的DOM元素（容器）
  * @param  padfName     PDF文件生成后的文件名字
@@ -153,7 +156,7 @@ export const downloadPdfMixins = {
                 })
             })
         },
-        addFile(e, key, name) {//e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name
+        addFile(e, key, name) { //e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name
             return new Promise((resolve) => {
                 iMessageBox(
                         this.language('SHIFOUTUISONGKUAIZHAOZHIBAOGAOQINGDAN', '是否推送快照至报告清单?'),
@@ -167,7 +170,7 @@ export const downloadPdfMixins = {
                         console.log(e)
                         var timeout = 0
                         var instanceId = 0
-                        if ([1, 2, 3, 4, 5].includes(key)) {//用于区分谈判信息和报价分析
+                        if ([1, 2, 3, 4, 5].includes(key)) { //用于区分谈判信息和报价分析
                             instanceId = -1
                         } else {
                             instanceId = 0
@@ -177,7 +180,18 @@ export const downloadPdfMixins = {
                             if (key == '4') {
                                 this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('addFile')
                             } else if (key == '3') {
-                                this.$refs.quotationScoringMj.handleDownload('addFile')
+                                this.$refs.quotationScoringMj.getRfqSupplierList().then(res => {
+                                    console.log(this.$refs.quotationScoringMj.getbaseInfoData().currentRounds)
+                                    cbdDownloadFileTWO({
+                                        rfqId: parseInt(this.$route.query.id),
+                                        round: this.$refs.quotationScoringMj.getbaseInfoData().currentRounds,
+                                        supplierId: res.data[0].supplierId
+                                    }).then(res => {
+                                        // console.log(res)
+                                    })
+                                    // this.$refs.quotationScoringMj.handleDownload('addFile')
+                                })
+
                             } else {
                                 if (key == '8') {
                                     timeout = 2000
