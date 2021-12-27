@@ -54,13 +54,14 @@ export default {
       // 默认项
       if (param.isDefault) {
         switch (param.title) {
-          case 'BoB(Best of Best)':
+          case 'BoB(Best of Best)':
             this.$router.push({ path: '/sourcing/partsrfq/bobNew', query: { chemeId: param.reportId, round: this.$route.query.round } });
             break;
-          case 'Volume Pricing':
+          case 'Volume Pricing':
+            console.log('111')
             this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', schemeId: param.reportId, round: this.$route.query.round } });
             break;
-          case 'Pricing Index':
+          case 'Pricing Index':
             this.$router.push({ path: '/sourcing/partsrfq/piAnalyseDetail', query: { schemeId: param.reportId, round: this.$route.query.round } });
             break;
           case 'MEK':
