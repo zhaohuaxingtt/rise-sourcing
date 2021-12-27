@@ -160,8 +160,8 @@
     <iCard v-if="!showSignatureForm && !isAuth" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
-          <icon v-if="item.approveStatus == '1'" symbol name="iconrs-wancheng"></icon>
-          <icon v-else-if="item.approveStatus == '2'" symbol name="iconrs-quxiao"></icon>
+          <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
+          <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
           <div v-else class="" >-</div>
           <div class="checkList-item-info">
             <span>Dept.:</span>
