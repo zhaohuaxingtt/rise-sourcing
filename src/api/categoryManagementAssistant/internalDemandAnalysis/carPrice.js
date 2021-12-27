@@ -17,13 +17,11 @@ export function getCmCarTypePricePbi() {
     });
 }
 
-
 // 根据材料组编号获取对应的在供车型
 export function carTypeByCategoryCode(params) {
   return request({
-     url: '/sopPipeLine/carTypeByCategoryCode',
-     method: 'POST',
-     data: params
+     url: '/batchOverview/queryCarType/' + params.categoryCode,
+     method: 'GET'
   });
 }
 

@@ -432,9 +432,18 @@ export default {
       let params = {
         categoryCode: this.categoryCode,
       }
+      this.carType = []
       await carTypeByCategoryCode(params).then((res) => {
-        this.carType = res.data
-        console.log(res.data)
+        if (res.data) {
+          if (res.data.carTypeList && res.data.carTypeList.length > 0) {
+            res.data.carTypeList.forEach((item) => {
+              this.carType.push({
+                description: item,
+                modelNameZh: item
+              })
+            })
+          }
+        }
       })
     },
     // 重置
