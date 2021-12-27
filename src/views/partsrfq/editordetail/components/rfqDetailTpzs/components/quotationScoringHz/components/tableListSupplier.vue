@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 11:48:04
- * @LastEditTime: 2021-12-23 17:33:43
+ * @LastEditTime: 2021-12-23 17:42:02
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
@@ -55,7 +55,6 @@ export default{
       return row[columnIndex].mergeArray
     },
     cellStyleName({row, column, rowIndex, columnIndex}){
-      console.log(row, column, rowIndex, columnIndex)
       try {
         return {
         'fontWeight':row[columnIndex].style.isBold?'bold':'',
@@ -63,7 +62,6 @@ export default{
         'backgroundColor':row[columnIndex].style.backgroundColor || 'white'
       }
       } catch (error) {
-        console.log(error)
        return {
         'fontWeight':'',
         'color':'#707070',
