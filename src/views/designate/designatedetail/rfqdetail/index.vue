@@ -60,7 +60,8 @@
         <div class="floatright">
           <iButton 
             v-if="!isDisabled && !createMtzDisabled"
-            v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请" 
+            v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请"
+            :loading="createMtzLoading"
             @click="handleCreateMtz">
               {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
           </iButton>
@@ -116,6 +117,7 @@ import tableList from '../components/tableList'
 import { rfqListTitle, partsListTitle } from './data'
 import { pageMixins } from "@/utils/pageMixins";
 import { getRfqList, getPartList, updatePart, deleteRfq, addPartNominate, cancelPartNominate, sortPartNominate } from '@/api/designate/designatedetail/rfqdetail/index'
+import { updateProcureButch } from "@/api/partsprocure/home"
 import { cloneDeep } from 'lodash'
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { attachmentTableTitle} from "@/views/partsrfq/home/components/data";
@@ -142,6 +144,7 @@ export default {
       attachmentLoading: false,
       addSelectedLoading: false, // 加入申请loading
       cancelSelectedLoading: false, // 取消申请loading
+      createMtzLoading: false
     }
   },
   computed: {
@@ -397,7 +400,7 @@ export default {
       this.partsTableLoading = true
       getPartList(this.desinateId).then(res => {
         if(res?.result) {
-          res.data.forEach(val => {val.mtz == true ? val.mtz = '是' : val.mtz = '否'})
+          // res.data.forEach(val => {val.mtz == true ? val.mtz = '是' : val.mtz = '否'})
           this.partsTableListData = res.data
           this.partsTableListDataTemp = cloneDeep(res.data)
           this.$store.dispatch('setPartListNull', !this.partsTableListDataTemp.filter(item => item.selected == 1).length)
@@ -488,6 +491,7 @@ export default {
       if (!this.partsSelectedItems.length) return iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
 
       const notMtzParts = this.partsSelectedItems.filter(item => !item.mtz)
+
       if (notMtzParts.length) {
         await iMessageBox(
           `${ this.language("SUOXUAN", "所选") }${ notMtzParts.reduce((acc, cur) => acc ? `${ acc }、${ cur.fsnrGsnrNum }` : cur.fsnrGsnrNum, "") }${ this.language("FEIMTZLINGJIAN", "非MTZ零件") }，${ this.language("SHIFOUGENGXINWEIMTZBINGJIXUCHUANGJIANMTZSHENQING", "是否更新为MTZ并继续创建MTZ申请") }？`, 
@@ -495,17 +499,29 @@ export default {
           { cancelButtonText: this.language("FOU", "否"), confirmButtonText: this.language("SHI", "是") }
         )
 
-        // const res = await xx()
-        // if (res.code == 200) {
-        //   window.location.href = `${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`
-        // } else {
-        //   iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        // }
+        this.createMtzLoading = true
+        try {
+          const res = await updateProcureButch({
+            ids: notMtzParts.map(item => item.partPrjId),
+            updateInfo: {
+              mtz: true
+            }
+          })
 
-        // return
+          if (res.code == 200) {
+            iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.getPartsTableList()
+            window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`, "_blank")
+          } else {
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } finally {
+          this.createMtzLoading = false
+          return
+        }
       }
 
-      window.location.href = `${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`, "_blank")
     },
     // 是否加入申请
     selectedFormat(status) {
