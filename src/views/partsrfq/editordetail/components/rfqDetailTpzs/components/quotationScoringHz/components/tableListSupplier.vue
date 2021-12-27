@@ -1,16 +1,16 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 11:48:04
- * @LastEditTime: 2021-12-23 17:42:02
+ * @LastEditTime: 2021-12-27 15:42:23
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
 -->
 <template>
-  <el-table class="table" :data="tabelData" :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
-    <el-table-column v-for="(i,index) in tabelTitle" :props='i' :key='index' align="center">
+  <el-table class="table" :data="tabelData" :fit='true' :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
+    <el-table-column v-for="(i,index) in tabelTitle" :props='i' :key='index' :fixed='fixedFn(index)' align="center">
       <template slot-scope="scope">
-        {{scope.row[i].data | deleteContent}}
+        {{scope.row[i].data | deleteContent | dateFillter}}
       </template>
     </el-table-column>
   </el-table>  
@@ -25,6 +25,15 @@ export default{
     }
   },
   filters:{
+    dateFillter(val){
+      // eslint-disable-next-line no-undef
+      if(isNaN(val)&&!isNaN(Date.parse(val))){
+        // eslint-disable-next-line no-undef
+        return moment(val).format('YYYY-MM-DD')
+      }else{
+        return val
+      }
+    },
     deleteContent(val){
       if(val == 'DEL') {
         return ''
@@ -51,6 +60,11 @@ export default{
     }
   },
   methods:{
+    fixedFn(index){
+      if(index<4) return 'left'
+      if(index>this.tabelTitle.length-4) return 'right'
+      return false
+    },
     spanMethod({ row, column, rowIndex, columnIndex }){
       return row[columnIndex].mergeArray
     },
