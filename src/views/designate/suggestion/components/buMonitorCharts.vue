@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     thousandsFilter(num) {
-      return filters.filters.thousandsFilter(num)
+      return filters.filters.thousandsFilter(num, 0)
     },
     init() {
       // 初始化，默认isShowWeightStick判断是否展示权重柱子
@@ -196,7 +196,7 @@ export default {
           grid: {
             left: '10',
             right: '0',
-            bottom: '0',
+            bottom: '20',
             top: '10%',
             containLabel: true
           },
@@ -269,7 +269,7 @@ export default {
           },
           xAxis: {
             type: 'category',
-            offset: 0,
+            offset: 10,
             // x轴数据
             data: xAxisData,
             axisTick: {
@@ -282,7 +282,8 @@ export default {
             },
             axisLabel:{
               textStyle:{
-                color: '#485465'
+                color: '#485465',
+                'lineHeight': 16
               },
               formatter: function (val) {
                 // console.log(val)

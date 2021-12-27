@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-23 15:33:15
+ * @LastEditTime: 2021-12-27 14:13:59
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -501,7 +501,7 @@ function getcol(allData,currentKey,wi,li){
     let number = 0
     if(wi > 0 && (allData[wi-1].find((items,index)=> index == li).data) == currentKey) return number
     for (let index = wi; index < allData.length; index++){
-      if(allData[index].find((items,index)=> index == li).data == currentKey){
+      if(allData[index].find((items,index)=> index == li).data == currentKey && allData[index].find((items,index)=> index == li).isMerge){
         number ++
       }else {
         break;
@@ -519,7 +519,7 @@ function getRow(allData,currentKey,wi,li){
     let number = 0
     if(li>0 && (allData[wi].find((items,i)=>i == li-1).data == currentKey)) return number
     for (let index = li; index < allData[wi].length; index++){
-      if(allData[wi].find((items,i)=>i == index).data == currentKey){
+      if(allData[wi].find((items,i)=>i == index).data == currentKey && allData[wi].find((items,i)=>i == index).isMerge){
         number ++
       }else{
         break;

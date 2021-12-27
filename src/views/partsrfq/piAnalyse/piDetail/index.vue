@@ -445,7 +445,7 @@ export default {
     async handleSaveAsReport (callback) {
       this.previewDialog = true;
       setTimeout(async () => {
-        const res = await this.$refs.previewDialog.getDownloadFile({
+        const res = await this.$refs.previewDialog.$refs.piPreview.getDownloadFile({
           callBack: () => {
             this.previewDialog = false;
           },

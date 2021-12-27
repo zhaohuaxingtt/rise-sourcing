@@ -638,6 +638,14 @@ export default {
 .monitorTable {
   ::v-deep .el-table {
     height: 450px;
+    .el-table__header {
+      background-color: #e8efff;
+    }
+    tr:nth-child(even) {
+      td,th {
+        background-color: #f7faff;
+      }
+    }
     .supplier-tto {
       display: flex;
       width: 100%;
@@ -655,12 +663,13 @@ export default {
       border-bottom: 1px solid #fff !important;
       border-right: 1px solid #fff !important;
       &.pin {
-        background: #95f1ec;
+        background: #e8f5fb !important;
         &.dbl {
-          background: #95f1ec;
+          background: #effbfb !important;
         }
         .cell {
-          color: #094e4a;
+          color: #00C1B9;
+          font-weight: bold;
         }
       }
     }
