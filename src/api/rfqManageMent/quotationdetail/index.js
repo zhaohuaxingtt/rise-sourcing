@@ -1,10 +1,10 @@
 /*
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-08 10:21:23
+ * @LastEditors: caopeng
+ * @LastEditTime: 2021-12-24 17:28:40
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\api\rfqManageMent\quotationdetail\index.js
+ * @FilePath: \front-sourcing-new\src\api\rfqManageMent\quotationdetail\index.js
  */
 import axios from '@/utils/axios'
 import axiosFile from '@/utils/axios.download'
@@ -115,6 +115,16 @@ export function cbdDownloadFile(params) {
     }
   })
 }
+// 下载cbd模板不下载文件
+export function cbdDownloadFileTWO(params) {
+    return requst({
+      url: `/part/cbd/downLoadFile/${ params.rfqId }/${ params.round }?supplierId=${params.supplierId}`,
+      method: 'GET',
+      params: {
+        partNum: params.partNum
+      }
+    })
+  }
 
 // 上传报价
 export function uploadModuleCbd(params) {

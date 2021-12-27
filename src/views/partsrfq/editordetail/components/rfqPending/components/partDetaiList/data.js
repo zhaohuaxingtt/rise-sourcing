@@ -31,3 +31,17 @@ export const kmDialogTableTitle = [
   { props: "isQuotationCbd", name: "是否已报CBD", tooltip: true, key: "SHIFOUYIBAOCBD" },
   { props: "sendKmFlag", name: "发送状态", tooltip: true, key: "FASONGZHUANGTAI" },
 ]
+
+export const startMonitorTitle = [
+  { props: "SourcingNumber", name: "SourcingNumber", tooltip: true, key: "SOURCINGNUMBER" ,width:160},
+  { props: "PartNumber", name: "PartNumber", tooltip: true, key: "PARTNUMBER" },
+  { props: "SvwPlant", name: "SvwPlant", tooltip: true, key: "SVWPLANT" },
+  { props: "Supplier", name: "Supplier", tooltip: true, key: "SUPPLIER" },
+  { props: "DunsCode", name: "DunsCode", tooltip: true, key: "DUNSCODE" },
+  { props: "Share", name: "Share", tooltip: true, key: "SHARE" },
+  { props: "A", name: "A Price", tooltip: true, key: "APRICE" },
+  { props: "B", name: "B Price", tooltip: true, key: "BPRICE" },
+  { props: "Ltc", name: "Ltc", tooltip: true, key: "LTC" },
+  { props: "Tooling", name: "Tooling", tooltip: true, key: "TOOLING" },
+
+]
