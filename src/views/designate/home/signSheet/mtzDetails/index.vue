@@ -202,37 +202,30 @@ export default {
     },
     // 移除
     async handleRemove() {
-      if(this.selection && this.selection.length == 0) {
+      if (this.selection && this.selection.length == 0) {
         return iMessage.warn(this.language('QZSXZYTSJ', '请至少选中一条数据'))
       }
 
-      var num = 0;
-      try{
-        this.selection.forEach(e=>{
-          // console.log(e.ttNominateAppId)
-          if(e.ttNominateAppId !== null){
-            num++;
-            iMessage.warn(this.language('YGLLJDDSQDMTZSQDBNYC', '已关联零件定点申请的MTZ申请单不能移除！'))
-            throw new Error("EndIterative");
-          }
+      const ids = []
+      try {
+        this.selection.forEach(item => {
+          if (!item.flagSelect) ids.push(item.id)
         })
-      }catch(e){
-        if(e.message != "EndIterative") throw e;
+
+        if (ids.length) throw ids
+      } catch(e) {
+        return iMessage.warn(`${ this.language("SHENQINGDANHAO", "申请单号") }: ${ ids.join("、") } ${ this.language("MTZDONTDELETE", "与零件定点申请相关联，不能移除") }`)
       }
 
-      if(num == 0){
-        const confirmInfo = await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
-        if (confirmInfo !== 'confirm') return
-        const arr = window._.cloneDeep(this.tableListData)
-        window._.remove(arr, (item) => {
-          return this.selection.find(selectItem => selectItem.id == item.id) 
-        })
-        this.selection = []
-        this.$set(this, 'tableListData', arr)
-      }
+      await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
+      this.tableListData = this.tableListData.filter(item => !this.selection.includes(item))
+      this.selection = []
     },
     handleInputByDescription(value) {
       this.$emit("update:description", value)
+    },
+    forceDelete(ids = []) {
+      this.tableListData = this.tableListData.filter(item => !(ids.map(item => item + "")).includes(item.id + ""))
     }
   }
 }
