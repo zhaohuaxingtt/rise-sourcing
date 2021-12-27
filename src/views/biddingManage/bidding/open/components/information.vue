@@ -41,7 +41,7 @@
                 v-for="(item, index) in projectType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -87,7 +87,7 @@
                 v-for="(item, index) in isTax"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -141,7 +141,7 @@
                 v-for="(item, index) in resultOpenForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -252,7 +252,7 @@
                   v-for="(item, index) in rankShowRule"
                   :key="index"
                   :value="item.value"
-                  :label="item.label"
+                  :label="language(item.key, item.label)"
                 >
                 </el-option>
               </iSelect>
