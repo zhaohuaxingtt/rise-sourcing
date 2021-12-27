@@ -57,7 +57,7 @@
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM ---------->
     <kmDialog :rfqId="rfqId" :parts="handleSelectArr" :visible.sync="kmDialogVisible" />
-    
+    <relationStarMon :startVisible="startVisible" @changeVisible="relationStarMon" />
   </iCard>
 </template>
 
@@ -94,6 +94,7 @@ import {
 } from "pages/partsrfq/components/commonFun";
 import kmDialog from "./components/kmDialog";
 import {partProjTypes} from '@/config'
+import relationStarMon from './components/relationStarMon';
 
 export default {
   mixins: [pageMixins, rfqCommonFunMixins],
@@ -106,7 +107,8 @@ export default {
     partsTable,
     kmDialog,
     iInput,
-    icon
+    icon,
+    relationStarMon
   },
   async mounted() {
     const {id,businessKey} = this.$route.query;
@@ -153,6 +155,7 @@ export default {
          buyerId:''
       },
       partNumList: "",
+      startVisible:false,//关联StartMonitor
       
     };
   },
@@ -301,8 +304,9 @@ export default {
       this.$refs.partsTable.getTableList(this.queryForm)
     },
     //打开关联starMonitoe弹窗
-    relationStarMon(){
-
+    relationStarMon(val){
+      this.startVisible = val
+      console.log(this.startVisible,'111111111');
     }
   },
 };

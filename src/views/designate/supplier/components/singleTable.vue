@@ -96,7 +96,7 @@
         <template #department="scope">
           <div v-if="singleEditControl || scope.row.isEdit" class="required">
             <iSelect
-              v-model="scope.row.department"
+              v-model="scope.row.departmentList"
               multiple
               collapse-tags
               :placeholder="language('LK_QINGXUANZE','请选择')">
@@ -108,7 +108,7 @@
               ></el-option>
             </iSelect>
           </div>
-          <span v-else>{{scope.row.department}}</span>
+          <span v-else>{{scope.row.departmentList && scope.row.departmentList.length ? Array.from(scope.row.departmentList).join(',') : ''}}</span>
         </template>
         <template #sapCode="scope">
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
@@ -219,7 +219,7 @@ export default {
       const items = [...this.singleListData, ...this.deletedRowList];
       let state = true
       items.forEach(item => {
-        if (state && !item.isDelete && (!item.suppliersName || !item.singleReason || !item.department)) {
+        if (state && !item.isDelete && (!item.suppliersName || !item.singleReason || !(item.departmentList && item.departmentList.length))) {
           state = false
         }
       })
