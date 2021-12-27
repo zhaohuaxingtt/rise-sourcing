@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-27 17:20:05
+ * @LastEditTime: 2021-12-27 20:02:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -24,9 +24,9 @@ export const fstitle = [
   {type:'',props:'lcBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'skdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'skdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'50',tooltip:false,fixed:true},
   {type:'',props:'headerEbr',label:'',i18n:'',width:'1',tooltip:false}
 ]
@@ -101,7 +101,7 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC \n Start Date',i18n:'',width:'95',tooltip:true},
     {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>'},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
-    {type:'',props:`${index?index:''}internalDevelopmentCost`,label:'Internal \n Dev. Cost',i18n:'',width:'90',tooltip:false},
+    {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Dev. Cost',i18n:'',width:'90',tooltip:false},
     {type:'',props:`${index?index:''}releaseCost`,label:'Release \n Cost',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
     {type:'',props:`${index?index:''}saving`,label:'Saving',i18n:'',width:'70',tooltip:false},
     {type:'',props:`Quotationdetails`,label:'Quo. \n Details',i18n:'',width:'60',tooltip:false},
