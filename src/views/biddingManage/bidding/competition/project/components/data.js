@@ -191,17 +191,17 @@ export const currencyMultipleLib = {
   "02": {
     beishu: 1000,
     unit: "千",
-    key:'BIDDING_YUAN'
+    key:'BIDDING_QIAN'
   },
   "03": {
     beishu: 10000,
     unit: "万",
-    key:'BIDDING_YUAN'
+    key:'BIDDING_WAN'
   },
   "04": {
     beishu: 1000000,
     unit: "百万",
-    key:'BIDDING_YUAN'
+    key:'BIDDING_BAIWAN'
   }
 }
 

@@ -10,19 +10,23 @@ export const baseRules = {
 export const currencyMultipleLib = {
   "01": {
     beishu: 1,
-    unit: language('BIDDING_YUAN',"元"),
+    unit: "元",
+    key:'BIDDING_YUAN'
   },
   "02": {
     beishu: 1000,
-    unit: language('BIDDING_YUAN',"千"),
+    unit: "千",
+    key:'BIDDING_QIAN'
   },
   "03": {
     beishu: 10000,
-    unit: language('BIDDING_YUAN',"万"),
+    unit: "万",
+    key:'BIDDING_WAN'
   },
   "04": {
     beishu: 1000000,
-    unit: language('BIDDING_YUAN',"百万"),
+    unit: "百万",
+    key:'BIDDING_BAIWAN'
   }
 }
 
