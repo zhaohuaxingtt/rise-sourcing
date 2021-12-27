@@ -167,9 +167,12 @@ export const downloadPdfMixins = {
                     )
                     .then(async () => {
                         this.$set(this.cardShow.find(items => items.key == key), 'show', true)
-                        console.log(e)
+                        var blob ={}
                         var timeout = 0
                         var instanceId = 0
+                        const formData = new FormData()
+                        formData.append('businessId', Math.ceil(Math.random() * 100000)) // 业务id，默认固定8025
+                        formData.append('applicationName', name)
                         if ([1, 2, 3, 4, 5].includes(key)) { //用于区分谈判信息和报价分析
                             instanceId = -1
                         } else {
@@ -181,13 +184,19 @@ export const downloadPdfMixins = {
                                 this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('addFile')
                             } else if (key == '3') {
                                 this.$refs.quotationScoringMj.getRfqSupplierList().then(res => {
-                                    console.log(this.$refs.quotationScoringMj.getbaseInfoData().currentRounds)
                                     cbdDownloadFileTWO({
                                         rfqId: parseInt(this.$route.query.id),
                                         round: this.$refs.quotationScoringMj.getbaseInfoData().currentRounds,
                                         supplierId: res.data[0].supplierId
                                     }).then(res => {
-                                        // console.log(res)
+                                        let blob = new Blob([res], { type:'application/vnd.ms-excel' })
+                                        //文件流转换为base64
+                                        getBase64(blob).then(resBase64 => {
+                                            blob = dataURLtoFile(resBase64, name+'.xlxs')
+                                            formData.append('multifile', blob)
+                                            console.log(blob)
+                                            this.setfile(formData, instanceId, name)
+                                        })
                                     })
                                     // this.$refs.quotationScoringMj.handleDownload('addFile')
                                 })
@@ -206,10 +215,7 @@ export const downloadPdfMixins = {
                                             try {
                                                 const filename = pdfName.replaceAll(/\./g, '_') + '.pdf'
                                                 const pdfFile = pdf.output('datauristring')
-                                                const blob = dataURLtoFile(pdfFile, filename)
-                                                const formData = new FormData()
-                                                formData.append('businessId', Math.ceil(Math.random() * 100000)) // 业务id，默认固定8025
-                                                formData.append('applicationName', name)
+                                                blob = dataURLtoFile(pdfFile, filename)
                                                 formData.append('multifile', blob || []) // 文件
                                                 this.setfile(formData, instanceId, name)
                                             } catch {
@@ -296,7 +302,25 @@ export const downloadPdfMixins = {
         }
     },
 }
-
+export function getBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        let fileResult = ''
+        reader.readAsDataURL(file)
+        // 开始转
+        reader.onload = () => {
+          fileResult = reader.result
+        }
+        // 转 失败
+        reader.onerror = (error) => {
+          reject(error)
+        }
+        // 转 结束
+        reader.onloadend = () => {
+          resolve(fileResult)
+        }
+      })
+  }
 export function getCurrentTime() {
     //获取当前时间并打印
     let yy = new Date().getFullYear();
