@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-17 14:12:22
+ * @LastEditTime: 2021-12-27 11:24:42
  * @Description: 监控明细
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -27,6 +27,19 @@
           <div v-for="(item, index) in searchListByPartStatus" :key="index" class="titleSearch-item" v-permission.auto="item.permission">
             <span class="titleSearch-item-lable">{{language(item.key, item.label)}}</span>
             <iDicoptions @change="handleChange" v-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="item.optionAll" :optionKey="item.selectOption" v-model="searchParams[item.value]" :optionAllText="language('ZONGJI','总计')" />
+            <iSelect v-else-if="item.type === 'select'" v-model="searchParams[item.value]" class="titleSearch-item-content" >
+              <el-option
+                v-if="item.optionAll"
+                value=""
+                :label="language('ZONGJI','总计')"
+              ></el-option>
+              <el-option
+                :value="items.code"
+                :label="items.value"
+                v-for="(items, index) in options"
+                :key="index"
+              ></el-option>
+            </iSelect>
           </div>
         </div>
         <div>
@@ -42,18 +55,19 @@
 </template>
 
 <script>
-import { iPage, iCard, iButton, iMessage } from 'rise'
+import { iPage, iCard, iButton, iMessage, iSelect } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress/components/progress'
 import iDicoptions from 'rise/web/components/iDicoptions'
 import partList from './components/partList'
 import { getProProgressMonitorDetail } from '@/api/project/process'
+import {selectDictByKeyss} from '@/api/dictionary'
 export default {
-  components: { iPage, carProject, iCard, iDicoptions, iButton, partList },
+  components: { iPage, carProject, iCard, iDicoptions, iButton, partList, iSelect },
   data() {
     return {
       collapseValue: true,
       searchList: [
-        {value: 'partStatus', label: '零件状态', key: 'LINGJIANZHUANGTAI', type: 'selectDict', selectOption: 'PART_PERIOD_TYPE', optionAll: false, permission: 'PROJECTMGT_MONITORINGDETAIL_PARTSTATUS|项目管理-监控明细-零件状态'},
+        {value: 'partStatus', label: '零件状态', key: 'LINGJIANZHUANGTAI', type: 'select', selectOption: 'PART_PERIOD_TYPE', optionAll: false, permission: 'PROJECTMGT_MONITORINGDETAIL_PARTSTATUS|项目管理-监控明细-零件状态'},
         {value: 'projectRisk', label: '项目风险', key: 'XIANGMUFENGXIAN', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG', optionAll: true, permission: 'PROJECTMGT_MONITORINGDETAIL_PROJECTRISK|项目管理-监控明细-项目风险'},
         {value: 'projectProc', label: '项目进度', key: 'XIANGMUJINDU', type: 'selectDict', selectOption: 'PROJECTDONE', optionAll: true,permission: 'PROJECTMGT_MONITORINGDETAIL_PROJECTDONE|项目管理-监控明细-项目进度'},
         {value: 'partProc', label: '零件进度', key: 'LINGJIANJINDU', type: 'selectDict', selectOption: 'PARTS_PROGRESS', optionAll: true,permission: 'PROJECTMGT_MONITORINGDETAIL_PARTPROC|项目管理-监控明细-零件进度'},
@@ -64,7 +78,8 @@ export default {
       },
       partList: [],
       loading: false,
-      partStatus: 0
+      partStatus: 0,
+      options: []
     }
   },
   computed: {
@@ -105,7 +120,20 @@ export default {
     this.searchParams = { projectId: carProjectId, partStatus, projectRisk, projectProc: projectDone, partProc }
     this.handleSure()
   },
+  mounted() {
+    this.getDict()
+  },
   methods: {
+    getDict() {
+      selectDictByKeyss('PART_PERIOD_TYPE').then((res) => {
+        const options = res.data && res.data['PART_PERIOD_TYPE'] || [];
+        this.options = options.filter(item => item.code !== '9').map(o => {
+          o.value = o.value || o.name || o.nameEn
+          if (this.lang) o.value = this.$i18n.locale === 'zh' ? o.value : o.nameEn
+          return o
+        })
+      })
+    },
     handleChange(val) {
       console.log(val)
     },
@@ -201,7 +229,7 @@ export default {
     }
   }
   .projectCard {
-    height: calc(100% - 200px);
+    height: calc(100% - 180px);
     overflow: hidden;
     &.withCollapse {
       height: calc(100% - 50px);

@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 10:36:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-21 15:16:33
+ * @LastEditTime: 2021-12-27 15:08:59
  * @Description: 指示灯修改弹窗
- * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\components\changeLight\index.vue
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\changeLight\index.vue
 -->
 
 <template>
@@ -19,7 +19,7 @@
     </template>
     <el-form label-position="top">
       <el-form-item class="formItem-inRow" >
-        <span slot="label"><span class="margin-right5" style="color:red;font-size:14px">*</span>{{language('YUJINGDENGYANSE','预警灯颜色')}}:</span>
+        <span slot="label"><span class="margin-right5" style="color:red;font-size:14px">*</span>{{language('FENGXIANDENGJI','风险等级')}}:</span>
         <iSelect v-model="delayLevelPro" :placeholder="language('QINGXUANZE','请选择')" style="width:220px" >
           <el-option
             v-for="item in lightOption"
@@ -49,9 +49,9 @@ export default {
   data() {
     return {
       lightOption: [
-        {value: '1', label: this.language('LVDENG', '绿灯')},
-        {value: '2', label: this.language('HUANGDENG', '黄灯')},
-        {value: '3', label: this.language('HONGDENG', '红灯')}
+        {value: '1', label: this.language('WUFENGXIANLVDENG', '无风险(绿灯)')},
+        {value: '2', label: this.language('DIFENGXIANHUANGDENG', '低风险(黄灯)')},
+        {value: '3', label: this.language('GAOFENGXIANHONGDENG', '高风险(红灯)')}
       ],
       loading: false,
       saveLoading: false,
