@@ -240,8 +240,8 @@
               <div>
                 <iLabelML showTip class="form-item-rankShowRule-icon">
                   <div class="hover-text">
-                    <span>供应商对红绿灯名次区间/偏离比例的</span>
-                    <span class="hover-stick">具体定义不可见</span>
+                    <span>{{language('BIDDING_GYSDHLDMCQJ/PLBLD', '供应商对红绿灯名次区间/偏离比例的')}}</span>
+                    <span class="hover-stick">{{language('BIDDING_JTDYBKJ', '具体定义不可见')}}</span>
                     <span>。</span>
                   </div>
                 </iLabelML>
