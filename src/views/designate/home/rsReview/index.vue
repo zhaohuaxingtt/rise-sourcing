@@ -98,9 +98,14 @@
       <!-- 定点单号 -->
       <template #nominateName="scope">
         <span class="flexRow">
-          <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
-            <span class="openLinkText cursor leftRow"  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.nominateName}}</span>
-          </el-tooltip>
+          <div class="flexLeft">
+            <div class="flexRow">
+              <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
+                <span class="openLinkText cursor leftRow"  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.nominateName}}</span>
+              </el-tooltip>
+              <icon v-if="scope.row.mtzApplyId" class="iconMTZ right" symbol name="iconMTZ" />
+            </div>
+          </div>
             <span class="icon-gray  cursor rightRow" v-if="scope.row.nominateName"  @click="viewRsSheetDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
@@ -559,6 +564,10 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    .flexLeft {
+      flex: 1;
+      width: 0;
+    }
     .leftRow{
       width:85%;
       text-align: left;
@@ -570,6 +579,10 @@ export default {
     .rightRow{
       width:5%
     }
+  }
+  .iconMTZ {
+    margin-left: 5px;
+    width: 25px;
   }
   .icon-gray:hover{
     cursor: pointer;
