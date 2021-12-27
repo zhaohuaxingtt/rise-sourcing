@@ -27,6 +27,7 @@
         v-loading="tableLoading"
         @openPage="openPage"
         @handleSelectionChange="handleSelectionChange"
+        v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_TABLE|定点记录表格"
        >
        <!-- FS号 -->
       <template #fsnrGsnrNum="scope">

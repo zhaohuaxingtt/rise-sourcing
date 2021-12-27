@@ -95,6 +95,7 @@
           </iButton>
           <!-- 取消MTZ绑定 -->
           <iButton
+          v-permission.auto="SOURCING_NOMINATION_QUXIAOMTZBANGDING|取消MTZ绑定"
             @click="ttss"
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
