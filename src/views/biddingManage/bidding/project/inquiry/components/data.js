@@ -228,34 +228,34 @@ export const supplierTableListColumns = [
     type: "index",
     width: 50,
     label: language('BIDDING_XUHAO',"序号"),
-    key:'BIDDING_XUHAO'
+    i18n:'BIDDING_XUHAO'
   },
   {
     prop: "nameZh",
     label: language('BIDDING_GYSZWM',"供应商中文名"),
-    key:'BIDDING_GYSZWM'
+    i18n:'BIDDING_GYSZWM'
   },
   {
     prop: "nameEn",
     label: language('BIDDING_GYSYWM',"供应商英文名"),
-    key:'BIDDING_GYSYWM'
+    i18n:'BIDDING_GYSYWM'
   },
   {
     prop: "code",
     label: language('BIDDING_LINSHIHAO',"临时号"),
-    key:'BIDDING_LINSHIHAO'
+    i18n:'BIDDING_LINSHIHAO'
   },
 
   {
     prop: "sapCode",
     label: language('BIDDING_SAPHAO',"SAP号"),
-    key:'BIDDING_SAPHAO'
+    i18n:'BIDDING_SAPHAO'
   },
 
   {
     prop: "svwCode",
     label: language('BIDDING_SVWZSH',"SVW正式号"),
-    key:'BIDDING_SVWZSH'
+    i18n:'BIDDING_SVWZSH'
   },
 ];
 

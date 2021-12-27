@@ -214,21 +214,21 @@ export const baseHeRules = {
 
 //差价限制
 export const priceDiffLimitSelectList = [
-  { id: "01", name: language('BIDDING_JSCJ',"基数差价") },
-  { id: "02", name: language('BIDDING_BFBCJ',"百分比差价") },
+  { id: "01", name: "基数差价", key:'BIDDING_JSCJ' },
+  { id: "02", name: "百分比差价", key:'BIDDING_BFBCJ' },
 ];
 
 // 排名显示规则
 export const rankDisplayRuleSelectList = [
-  { id: "01", name: language('BIDDING_XSBFPM',"显示本方排名") },
-  { id: "02", name: language('BIDDING_XSHLD(AMC QJDY)',"显示红绿灯(按名次 区间定义)") },
-  { id: "03", name: language('BIDDING_XSHLD(AMBJ PL BL DY)',"显示红绿灯(按目标价 偏离 比例 定义)") },
+  { id: "01", name: "显示本方排名", key:'BIDDING_XSBFPM' },
+  { id: "02", name: "显示红绿灯(按名次 区间定义)", key:'BIDDING_XSHLD(AMC QJDY)' },
+  { id: "03", name: "显示红绿灯(按目标价 偏离 比例 定义)", key:'BIDDING_XSHLD(AMBJ PL BL DY)' },
 ];
 
 //报价对象
 export const priceDiffObjectSelectList = [
-  { id: "01", name: language('BIDDING_ZIJI',"自己") },
-  { id: "02", name: language('BIDDING_SUOYOU',"所有") },
+  { id: "01", name: "自己", key:'BIDDING_ZIJI' },
+  { id: "02", name: "所有", key:'BIDDING_SUOYOU' },
 ];
 
 // 单位

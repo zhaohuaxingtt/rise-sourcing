@@ -797,14 +797,16 @@ export const bidDetailsHe = [
 export const projectNotes = [
   {
     type: "index",
-    width: 100,
+    width: 150,
     label: language('BIDDING_XUHAO', "序号"),
-    key:'BIDDING_XUHAO'
+    key:'BIDDING_XUHAO',
+    i18n:'BIDDING_XUHAO'
   },
   {
     prop: "supplierName",
     label: language('BIDDING_GYSMC', "供应商名称"),
-    key:'BIDDING_GYSMC'
+    key:'BIDDING_GYSMC',
+    i18n:'BIDDING_GYSMC'
   },
   {
     prop: "updateDate",
@@ -812,7 +814,8 @@ export const projectNotes = [
     customRender: (h, scope) => {
       return <span >{scope.row.updateDate?.replace('T', ' ')}</span>;
     },
-    key:'BIDDING_TICHUSHIJIAN'
+    key:'BIDDING_TICHUSHIJIAN',
+    i18n:'BIDDING_TICHUSHIJIAN',
   },
   {
     prop: "kickoutReasonValue",
@@ -820,7 +823,8 @@ export const projectNotes = [
     customRender: (h, scope) => {
       return <span>{scope.row.kickoutReason === '01' ? language('BIDDING_WMZDYCBJXZ', '未满足第一次报价限制') : language('BIDDING_WMZLXPMXZ', '未满足连续排名限制')}</span>;
     },
-    key:'BIDDING_TICHULIYOU'
+    key:'BIDDING_TICHULIYOU',
+    i18n:'BIDDING_TICHULIYOU',
   }
 ];
 
