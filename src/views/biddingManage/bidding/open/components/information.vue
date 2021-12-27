@@ -470,8 +470,8 @@
             background
             :page-sizes="10"
             :page-size="10"
-            prev-text="上一页"
-            next-text="下一页"
+            :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+            :next-text="language('BIDDING_XIAYIYE','下一页')"
             layout="prev, pager, next, jumper"
             :current-page="page.currPage"
             :total="ruleForm.attachments.length"
