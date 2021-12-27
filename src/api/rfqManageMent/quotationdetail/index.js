@@ -2,7 +2,7 @@
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
  * @LastEditors: caopeng
- * @LastEditTime: 2021-12-24 17:28:40
+ * @LastEditTime: 2021-12-27 09:57:40
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing-new\src\api\rfqManageMent\quotationdetail\index.js
  */
