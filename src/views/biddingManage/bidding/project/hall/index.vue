@@ -129,23 +129,23 @@ export default {
       switch (this.role) {
         case "buyer":
           return [
-            { label: `${this.language('BIDDING_BAOJIADAN',"报价单")}`, path: 1, components: "quotationOrder" },
+            { label: this.language('BIDDING_BAOJIADAN',"报价单"), path: 1, components: "quotationOrder" },
             // { label: "出价列表", path: 2, components: "bidList" },
-            { label: `${this.language('BIDDING_XUNJIAFUJIAN',"询价附件")}`, path: 3, components: "attachment" },
-            { label: `${this.language('BIDDING_XUNJIAFUJIAN',"询价附件")}`, path: 9, components: "inquiryAttachment" },
-            { label: `${this.language('BIDDING_GONGYINGSHANGLIEBIAO',"供应商列表")}`, path: 4, components: "supplierList" },
-            { label: `${this.language('BIDDING_QUXIANTU',"曲线图")}`, path: 5, components: "graph" },
-            { label: `${this.language('BIDDING_FENXIANGPAIMING',"分项排名")}`, path: 6, components: "itemNumber" },
-            { label: `${this.language('BIDDING_JINGJIAMINGXI',"竞价明细")}`, path: 7, components: "bidDetail" },
-            { label: `${this.language('BIDDING_XIANGMUBEIZHU',"项目备注")}`, path: 8, components: "projectNotes" },
+            { label: this.language('BIDDING_XUNJIAFUJIAN',"询价附件"), path: 3, components: "attachment" },
+            { label: this.language('BIDDING_XUNJIAFUJIAN',"询价附件"), path: 9, components: "inquiryAttachment" },
+            { label: this.language('BIDDING_GONGYINGSHANGLIEBIAO',"供应商列表"), path: 4, components: "supplierList" },
+            { label: this.language('BIDDING_QUXIANTU',"曲线图"), path: 5, components: "graph" },
+            { label: this.language('BIDDING_FENXIANGPAIMING',"分项排名"), path: 6, components: "itemNumber" },
+            { label: this.language('BIDDING_JINGJIAMINGXI',"竞价明细"), path: 7, components: "bidDetail" },
+            { label: this.language('BIDDING_XIANGMUBEIZHU',"项目备注"), path: 8, components: "projectNotes" },
           ];
         case "supplier":
           return [
-            { label: `${this.language('BIDDING_BAOJIADAN',"报价单")}`, path: 1, components: "quotationOrder" },
-            { label: `${this.language('BIDDING_CHUJIALIEBIAO',"出价列表")}`, path: 2, components: "bidList" },
-            { label: `${this.language('BIDDING_XUNJIAFUJIAN',"询价附件")}`, path: 3, components: "attachment" },
-            { label: `${this.language('BIDDING_XUNJIAFUJIAN',"询价附件")}`, path: 9, components: "inquiryAttachment" },
-            { label: `${this.language('BIDDING_GONGYINGSHANGPAIMING',"供应商排名")}`, path: 4, components: "supplierList" },
+            { label: this.language('BIDDING_BAOJIADAN',"报价单"), path: 1, components: "quotationOrder" },
+            { label: this.language('BIDDING_CHUJIALIEBIAO',"出价列表"), path: 2, components: "bidList" },
+            { label: this.language('BIDDING_XUNJIAFUJIAN',"询价附件"), path: 3, components: "attachment" },
+            { label: this.language('BIDDING_XUNJIAFUJIAN',"询价附件"), path: 9, components: "inquiryAttachment" },
+            { label: this.language('BIDDING_GONGYINGSHANGPAIMING',"供应商排名"), path: 4, components: "supplierList" },
           ];
         default:
           return [];

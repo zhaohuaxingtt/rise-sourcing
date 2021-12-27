@@ -94,7 +94,7 @@ export const tableTitle = [
     props: "contactName",
     required: true,
     rule: [
-      { required: true, message: "必选", trigger: "blur" },
+      { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
     ],
     name: language('BIDDING_LIANXIREN','联系人'),
   },
@@ -163,7 +163,7 @@ export const manualTableTitle = [
     props: "contactName",
     required: true,
     rule: [
-      { required: true, message: "必选", trigger: "blur" },
+      { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
     ],
     name: language('BIDDING_LIANXIREN','联系人'),
   },
@@ -245,21 +245,21 @@ export const tableListData = [
 export const currencyMultipleLib = {
   "01": {
     beishu: 1,
-    unit: "元",
+    unit: language('BIDDING_YUAN',"元"),
   },
   "02": {
     beishu: 1000,
-    unit: "千",
+    unit: language('BIDDING_YUAN',"千"),
   },
   "03": {
     beishu: 10000,
-    unit: "万",
+    unit: language('BIDDING_YUAN',"万"),
   },
   "04": {
     beishu: 1000000,
-    unit: "百万",
-  },
-};
+    unit: language('BIDDING_YUAN',"百万"),
+  }
+}
 
 export const RFQTurnList = [
   // { value: "01", label: "普通询价" },

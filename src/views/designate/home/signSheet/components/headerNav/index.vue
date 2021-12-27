@@ -34,7 +34,7 @@
       <div class="headerNav-sub margin-top30 margin-bottom30">
         <iTabsList type="card" v-model="tab">
           <el-tab-pane v-for="(tab, $index) in tabs" :key="$index" :label="tab.name" :name="tab.key">
-            <div class="margin-top20"><component :ref="tab.key" :is="tab.component" :description.sync="description" /></div>
+            <div class="margin-top20"><component :ref="tab.key" :is="tab.component" :description.sync="description" @deleteData="deleteData" /></div>
           </el-tab-pane>
         </iTabsList>
       </div>
@@ -157,6 +157,10 @@ export default {
     },
     // 通过待办数跳转
     clickMessage,
+    // 关联删除mtz
+    deleteData(data) {
+      if (Array.isArray(data)) this.$refs.MTZDesignateOrders[0].forceDelete(data.map(item => item.mtzApplyId))
+    }
   }
 }
 </script>

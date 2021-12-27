@@ -172,7 +172,7 @@ export const baseRules = ({ ruleForm: form, realTotalPrices }) => ({
       trigger: "blur",
     },
   ],
-  "biddingQuoteRule.targetPrice":[{ required: true, message: "请输入", trigger: "blur" }],
+  "biddingQuoteRule.targetPrice":[{ required: true, message: language('BIDDING_QINGSHURU',"请输入"), trigger: "blur" }],
   "biddingQuoteRule.yellowDeviationValue": [
     { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
@@ -284,18 +284,18 @@ export const priceDiffObjectSelectList = [
 export const currencyMultipleLib = {
   "01": {
     beishu: 1,
-    unit: "元",
+    unit: language('BIDDING_YUAN',"元"),
   },
   "02": {
     beishu: 1000,
-    unit: "千",
+    unit: language('BIDDING_YUAN',"千"),
   },
   "03": {
     beishu: 10000,
-    unit: "万",
+    unit: language('BIDDING_YUAN',"万"),
   },
   "04": {
     beishu: 1000000,
-    unit: "百万",
-  },
-};
+    unit: language('BIDDING_YUAN',"百万"),
+  }
+}

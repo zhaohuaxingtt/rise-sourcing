@@ -852,7 +852,7 @@
 				const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.detailData.procureFactory)
 				detailData['cfController'] = this.detailData.cfController
 				const cfController = this.fromGroup.CF_CONTROL.find(items=>items.code == this.detailData.cfController)
-				detailData['cfControllerZh'] = cfController ? cfController.name : ""
+				detailData['cfControllerName'] = cfController ? cfController.name : ""
 				detailData['linieId'] = this.detailData.linieId
 				const linie = this.fromGroup.LINIE.find(items=>items.code == this.detailData.linieId)
 				detailData['linieName'] = linie ? linie.name : ""

@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-22 10:17:07
+ * @LastEditTime: 2021-12-27 17:10:39
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -10,7 +10,7 @@
     <iCard v-permission.auto="tableTitle.permision">
       <div class="cardview">
         <div class="cardview-header">
-          <div class="font18 font-weight">{{language(tableTitle.titleKey, tableTitle.titleName)}}</div>
+          <div class="font18 font-weight">{{titleKey ? language(tableTitle.titleKey, tableTitle.titleName) : tableTitle.titleName}}</div>
           <div class="control">
             <iButton @click="exportfile">
               {{ language('LK_DAOCHU', '导出') }}
@@ -109,6 +109,11 @@ export default {
           titleKey: 'EMOTSYIWANCHENGLINGJIAN',
           title: CKDHTtableTitle,
           permision: 'PROJECTMGT-MONITORPARTLIST-EMOTSDONEABLE|项目管理-监控零件清单-EM&OTS已完成表格'
+        },
+        "4": {
+          titleName: '1999',
+          title: CKDHTtableTitle,
+          // permision: 'PROJECTMGT-MONITORPARTLIST-1999TABLE|项目管理-监控零件清单-1999表格'
         }
       }
       const type = this.$route.query.type || 1
@@ -126,11 +131,12 @@ export default {
     async getFetchData(params = {}) {
       this.tableLoading = true
       params = Object.assign({
-        partMonitorStatus: this.$route.query.type == 3 ? 4 : this.$route.query.type,
-        partStatus: this.$route.query.type == 3 ? 9 : 1,
+        partMonitorStatus: this.$route.query.type == 4 ? '' : this.$route.query.type == 3 ? 4 : this.$route.query.type,
+        partStatus: this.$route.query.type == 4 ? '': this.$route.query.type == 3 ? 9 : 1,
         projectId: this.$route.query.carProjectId,
         current: this.page.currPage,
-        size: this.page.pageSize
+        size: this.page.pageSize,
+        csFgBemerkung: this.$route.query.type == 4 ? '1999'  : ''
       }, params)
       try {
         const res = await pageProProgressMonitorData(params)

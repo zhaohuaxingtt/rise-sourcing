@@ -252,7 +252,7 @@ export default {
           this.role === "supplier"
             ? `${process.env.VUE_APP_BIDDING}/biddingQueryService/exportProjectResults`
             : `${process.env.VUE_APP_BIDDING}/biddingService/exportProjectResultForBuyer`,
-        filename: "项目结果",
+        filename: this.language('BIDDING_XIANGMUJIEGUO', "项目结果"),
         type: "application/vnd.ms-excel",
         data: this.role === "supplier" ? this.dataList : prama,
         callback: (e) => {

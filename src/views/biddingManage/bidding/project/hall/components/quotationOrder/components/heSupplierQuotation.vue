@@ -7,7 +7,7 @@
             :disabled="yingbiao"
             :class="{ yingbiao: yingbiao, unyingbiao: !yingbiao }"
             @click="handleNext"
-            >{{ language('应标', '应标') }}</iButton
+            >{{ language('BIDDING_YINGBIAO', '应标') }}</iButton
           >
         </div>
         <i

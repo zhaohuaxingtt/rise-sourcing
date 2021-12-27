@@ -81,7 +81,10 @@ export default {
       .catch(() => this.showMtz = false)
     },
     handleExport() {
-      this.$refs.nomi.exportSignSheet()
+      // this.$refs.nomi.exportSignSheet()
+      const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+      const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export-sign-single?signId=${ this.$route.query.signId }`
+      window.open(fileURL)
     }
   }
 }

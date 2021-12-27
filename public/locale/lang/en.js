@@ -1215,7 +1215,8 @@
           'DDSJ': "Nominated Time", //定点时间						
           'SQDZDZ': "SVW Address", //上汽大众地址：						
           'ZXSE': "Total Sales:", //总销售额：						
-          'DDJV': "Nominated Record", //定点记录						
+          'DDJV': "Nominated Record", //定点记录	
+          'DDJLMEMO': "  Recent 12 month nominated record", //定点记录					
           'VPFX': "Volume Pricing Analysis",//Volume Pricing分析						
           'VPFXK': "Volume Pricing Analysis Database",//Volume Pricing分析库						
           'CXJHCLYXSLJCLFX': "Analysis of the planned yield and the actual cumulative yield",//车型计划产量与现实累计产量分析（截止2021-02）						

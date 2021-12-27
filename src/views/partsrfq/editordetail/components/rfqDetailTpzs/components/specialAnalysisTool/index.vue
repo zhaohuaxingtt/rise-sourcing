@@ -58,7 +58,8 @@ export default {
             this.$router.push({ path: '/sourcing/partsrfq/bobNew', query: { chemeId: param.reportId, round: this.$route.query.round } });
             break;
           case 'Volume Pricing':
-            this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', chemeId: param.reportId, round: this.$route.query.round } });
+            console.log('111')
+            this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', schemeId: param.reportId, round: this.$route.query.round } });
             break;
           case 'Pricing Index':
             this.$router.push({ path: '/sourcing/partsrfq/piAnalyseDetail', query: { schemeId: param.reportId, round: this.$route.query.round } });

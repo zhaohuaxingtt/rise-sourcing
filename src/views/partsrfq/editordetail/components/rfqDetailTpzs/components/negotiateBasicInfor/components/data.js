@@ -30,11 +30,11 @@ export const fixedRecordTableTitle = [
   { props: 'fsnrGsnrNum', name: 'FS号', key: 'LK_FSHAO', tooltip: true },
   { props: 'partNum', name: '零件号', key: 'TPZS.LJH', tooltip: true },
   { props: 'rfqId', name: 'RFQ编号', key: 'costanalysismanage.RfqBianHao', width: 120, tooltip: true },
-  { props: 'rfqName', name: 'RFQ名称', key: 'costanalysismanage.RfqMingCheng', tooltip: true },
-  { props: 'material', name: '材料组名称', key: 'TPZS.CLZMC', tooltip: true },
-  { props: 'craft', name: '工艺组名称', key: 'TPZS.GYZMC', tooltip: true },
+  { props: 'rfqName', name: 'RFQ名称', key: 'costanalysismanage.RfqMingCheng', tooltip: true, width: 250 },
+  { props: 'nominateDate', name: '定点时间', key: 'TPZS.DDSJ', tooltip: true, width: 200 },
   { props: 'carTypeProj', name: '车型项目名称', key: 'LK_CHEXINGXIANGMUMINGCHENG', tooltip: true },
+  { props: 'craft', name: '采购工厂', key: 'costanalysismanage.CaiGouGongChang', tooltip: true },
   { props: 'supplierNameCn', name: '定点供应商', key: 'LK_FIXEDPOINTSUPPLIER', tooltip: true },
   { props: 'apriceModel', name: '定点金额', key: 'TPZS.DDJE', tooltip: true },
-  { props: 'nominateDate', name: '定点时间', key: 'TPZS.DDSJ', tooltip: true },
+  { props: 'material', name: 'Linie', key: 'LK_XINDELINIE', tooltip: true, width: 100 }
 ]
