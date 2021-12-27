@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:59:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-02 16:55:04
+ * @LastEditTime: 2021-12-27 15:22:51
  * @Description: 发送FS确认弹窗
- * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\fsconfirm\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\fsconfirm\index.vue
 -->
 
 <template> 
@@ -22,11 +22,11 @@
     </template> 
     <div class="tableWrapper" v-if="tableListNomi && tableListNomi.length > 0"> 
       <span class="tableTitle">{{language('DAIDINGDIAN','待定点')}}</span> 
-      <tableList indexKey :tableTitle="tableTitleNomi" :tableData="tableListNomi" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeNomi" @handleSelectChange="handleSelectChange"></tableList> 
+      <tableList height="300" border indexKey :tableTitle="tableTitleNomi" :tableData="tableListNomi" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeNomi" @handleSelectChange="handleSelectChange"></tableList> 
     </div> 
     <div class="tableWrapper borderTop" v-if="tableListKickoff && tableListKickoff.length > 0"> 
       <span class="tableTitle">{{language('DAIKICKOFF','待Kickoff')}}</span> 
-      <tableList indexKey :tableTitle="tableTitleKickoff" :tableData="tableListKickoff" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeKickoff" @handleSelectChange="handleSelectChange"></tableList> 
+      <tableList height="300" border indexKey :tableTitle="tableTitleKickoff" :tableData="tableListKickoff" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeKickoff" @handleSelectChange="handleSelectChange"></tableList> 
     </div> 
   </iDialog> 
 </template> 
