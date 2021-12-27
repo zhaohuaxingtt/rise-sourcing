@@ -219,7 +219,7 @@ export default {
       const items = [...this.singleListData, ...this.deletedRowList];
       let state = true
       items.forEach(item => {
-        if (state && !item.isDelete && (!item.suppliersName || !item.singleReason || !item.department)) {
+        if (state && !item.isDelete && (!item.suppliersName || !item.singleReason || !(item.departmentList && item.departmentList.length))) {
           state = false
         }
       })

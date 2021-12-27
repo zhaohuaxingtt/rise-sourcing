@@ -343,10 +343,12 @@ export default {
         iMessage.warn('请勾选未审批的项目')
         return
       }
-      if(this.multipleSelection.some(item => item.budgetApplyAmount > item.budgetLeftoverAmount)){
+      const isNext = this.multipleSelection.some(item => item.budgetApplyAmount > item.budgetLeftoverAmount);
+      const filterLenth = this.multipleSelection.filter(item => !['50002001','1000003','50003001'].includes(item.partPurchaseProType));
+      if(isNext && filterLenth.length != 0){
         let redMultipleSelection = []
         this.multipleSelection.map(item => {
-          if(item.budgetApplyAmount > item.budgetLeftoverAmount){
+          if(item.budgetApplyAmount > item.budgetLeftoverAmount && !['50002001','1000003','50003001'].includes(item.partPurchaseProType)){
             redMultipleSelection.push(item)
           }
         })

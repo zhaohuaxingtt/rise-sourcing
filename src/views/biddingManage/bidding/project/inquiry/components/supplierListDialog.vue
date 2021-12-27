@@ -70,8 +70,8 @@
           background
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
-          prev-text="上一页"
-          next-text="下一页"
+          :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+          :next-text="language('BIDDING_XIAYIYE','下一页')"
           :layout="page.layout"
           :current-page="page.currPage"
           :total="page.total"
@@ -84,6 +84,7 @@
 <script>
 import { iDialog, iInput, iButton, iPagination,iSelect } from "rise";
 import iTableCustom from "@/components/biddingComponents/iTableCustom";
+import commonTable from "@/components/biddingComponents/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { getSupplierInfo } from "@/api/mock/mock";
 import { supplierTableListColumns } from "./data";

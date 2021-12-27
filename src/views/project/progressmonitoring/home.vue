@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-22 10:54:24
+ * @LastEditTime: 2021-12-27 16:50:08
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
@@ -63,7 +63,7 @@
       <!--  -->
       <div class="countView" v-permission.auto="PROJECTMGT_PROGRESSMONITORING_COUNTTIPS|统计信息">
          <iFormGroup row="4" class="form">
-            <iFormItem class="largeFromItem">
+            <iFormItem >
               <span slot="label">{{language('WEIJINTIPSBIAOXUNJIAZILIAOYISHIFANG', '未进TIPS表(询价资料已释放)')}}:</span>
               <span class="cursor" @click="toPartList(1)"><iText>{{showTips ? notInTips : 0}}</iText></span>
             </iFormItem>
@@ -74,6 +74,10 @@
             <iFormItem>
               <span slot="label">{{language('EMOTSYIWANCHENG', 'EM&OTS已完成')}}:</span>
               <span class="cursor" @click="toPartList(3)"><iText>{{showTips ? emOtsNum : 0}}</iText></span>
+            </iFormItem>
+            <iFormItem>
+              <span slot="label">1999:</span>
+              <span class="cursor" @click="toPartList(4)"><iText>{{showTips ? csFgBemerkung : 0}}</iText></span>
             </iFormItem>
          </iFormGroup>
       </div>
@@ -110,7 +114,8 @@ export default {
       emOtsNum: 0,
       tipsSum: 0,
       options: {},
-      loading: false
+      loading: false,
+      csFgBemerkung: 0
     }
   },
   mounted() {
@@ -321,6 +326,7 @@ export default {
           // ckdconfirm
           this.ckdconfirm = res.data && res.data.ckdNum || 0
           this.emOtsNum = res.data && res.data.emOtsNum || 0
+          this.csFgBemerkung = res.data && res.data.csFgBemerkung || 0
           // tipsSum
           this.tipsSum = res.data && res.data.tipsSum || 0
           this.updateTime = res.data && res.data.synDate || ''
