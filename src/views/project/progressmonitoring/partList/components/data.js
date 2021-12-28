@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:51:18
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 11:01:20
+ * @LastEditTime: 2021-12-28 14:20:27
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件 列表表头
  */
 
@@ -47,6 +47,6 @@ export const OTSEMtableTitle = [
   {props:'dept',name:'FG',key:'FG',tooltip: true},
   {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'linieName',name:'Linie', key: "LINIE", tooltip: true},
-  {props:'buyerName',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true},
-  {props:'',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true},
+  {props:'projectPurchaserName',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true},
+  {props:'partStatusDesc',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true},
 ]
