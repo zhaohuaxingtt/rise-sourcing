@@ -117,7 +117,7 @@
                       v-for="(item, index) in biddingStatue"
                       :key="index"
                       :value="item.value"
-                      :label="item.name"
+                      :label="language(item.key, item.name)"
                     >
                     </el-option>
                   </iSelect>
@@ -291,7 +291,7 @@
                     v-for="(item, index) in biddingType"
                     :key="index"
                     :value="item.value"
-                    :label="item.label"
+                    :label="language(item.key, item.label)"
                   >
                   </el-option>
                 </iSelect>
@@ -356,7 +356,7 @@
                     v-for="(item, index) in biddingStatue"
                     :key="index"
                     :value="item.value"
-                    :label="item.name"
+                    :label="language(item.key, item.name)"
                   >
                   </el-option>
                 </iSelect>
@@ -928,12 +928,13 @@ export default {
       this.handleSearchReset();
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit ) 
     },
     // 荷式时间
     async getCurrentDutchOffer(e) {

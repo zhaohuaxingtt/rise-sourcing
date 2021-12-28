@@ -7,8 +7,8 @@
 <template>
   <iCard>
     <div class="header flex-align-center" v-if="!disabled">
-      <iButton v-permission.auto="QUXIAOGUANLIANSTARTMONIORJILU|取消关联StarMonior记录">{{
-          language('QUXIAOGUANLIANSTARTMONIORJILU','取消关联StarMonior记录')
+      <iButton @click="cancelRelationStarMon" v-permission.auto="QUXIAOGUANLIANSTARTMONIORJILU|取消关联StarMonior记录">{{
+          language('QUXIAOGUANLIANSTARJILU','取消关联StarMonior记录')
         }}
       </iButton>    
       <iButton @click="relationStarMon" v-permission.auto="GUANLIANSTARTMONIORJILU|关联StarMonior记录">{{
@@ -57,7 +57,7 @@
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM ---------->
     <kmDialog :rfqId="rfqId" :parts="handleSelectArr" :visible.sync="kmDialogVisible" />
-    <relationStarMon :startVisible="startVisible" @changeVisible="relationStarMon" />
+    <relationStarMon  ref="relationStarMon" :rfqId="rfqId" :startVisible.sync="startVisible" :handleSelectArr="handleSelectArr" />
   </iCard>
 </template>
 
@@ -77,7 +77,7 @@ import {
   form
 } from "@/views/partsprocure/home/components/data";
 import {
-  deleteRfqPart
+  deleteRfqPart, cancelRef
 } from '@/api/partsrfq/editordetail';
 import { getTabelData} from "@/api/partsprocure/home";
 import {
@@ -304,9 +304,25 @@ export default {
       this.$refs.partsTable.getTableList(this.queryForm)
     },
     //打开关联starMonitoe弹窗
-    relationStarMon(val){
-      this.startVisible = val
-      console.log(this.startVisible,'111111111');
+    relationStarMon(){
+      if (!this.handleSelectArr.length) return iMessage.warn(this.language("LK_QINGXUANZEZHISHAOYITIAOSHUJU",'请选择至少一条数据'))
+     this.$refs.relationStarMon.showStarMo()
+    //  this.$refs.relationStarMon.$refs.tips.closedunsshow()
+    },
+    //取消关联StarMonitor
+    cancelRelationStarMon() {
+      if (!this.handleSelectArr.length) return iMessage.warn(this.language("LK_QINGXUANZEZHISHAOYITIAOSHUJU",'请选择至少一条数据'))
+      let data = {
+        rfqId:this.$route.query.id,
+        projectIds:this.handleSelectArr.map(val=>val.id)
+      }
+      cancelRef(data).then(res=>{
+        if(res.code === '200') {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
     }
   },
 };
