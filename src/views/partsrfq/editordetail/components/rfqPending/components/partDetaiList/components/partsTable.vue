@@ -80,6 +80,7 @@ export default {
     if(businessKey == partProjTypes.AEKOLINGJIAN){
       this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
     }
+    this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
     this.$store.commit('SET_PART_PROJECT', this.getTableList)
     this.getTableList()
   },

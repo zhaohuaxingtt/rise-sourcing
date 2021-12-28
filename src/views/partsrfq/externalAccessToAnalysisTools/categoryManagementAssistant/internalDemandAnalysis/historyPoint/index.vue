@@ -86,7 +86,7 @@ export default {
     }
   },
   async created () {
-    this.searchCriteria.categoryCode = this.$store.state.rfq.categoryCode
+    this.searchCriteria.categoryCode = this.$store.state.rfq.categoryCode || JSON.parse(sessionStorage.getItem('categoryCode'))
     await this.getNomiHistoryParamInit()
     this.getDict()
     this.getNomiSupplier()
@@ -94,11 +94,11 @@ export default {
   },
   watch: {
     async "$store.state.rfq.categoryCode" () {
-      this.searchCriteria.categoryCode = this.$store.state.rfq.categoryCode
+      this.searchCriteria.categoryCode = this.$store.state.rfq.categoryCode || JSON.parse(sessionStorage.getItem('categoryCode'))
       this.searchCriteria.id = ""
       this.searchCriteria.latestYear = ""
       this.searchCriteria.supplierId = ""
-      this.searchCriteria.categoryCode = ""
+      // this.searchCriteria.categoryCode = ""
       await this.getNomiHistoryParamInit()
       this.value == 1 ? this.$refs.pointTable.getTableList() : this.$refs.supplierTable.getTableList()
     }

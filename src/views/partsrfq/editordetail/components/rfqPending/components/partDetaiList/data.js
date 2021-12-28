@@ -46,6 +46,8 @@ export const startMonitorTitle = [
 ]
 
 export const dunsTipsTitle = [
-  { props: "supplierName", name: "供应商", tooltip: true, key: "SOURCINGNUMBER" ,width:160},
+  { props: "sourcingNo", name: "SourcingNumber", tooltip: true, key: "SOURCINGNUMBER" ,width:160},
+  { props: "supplierName", name: "供应商", tooltip: true, key: "SUPPLIER" ,width:160},
   { props: "supplierDunsCode", name: "DUNS Code", tooltip: true, key: "DUNSCODE" },
+  { props: "failReason", name: "失败原因", tooltip: true, key: "SHIBAIYUANYIN" }
 ]
