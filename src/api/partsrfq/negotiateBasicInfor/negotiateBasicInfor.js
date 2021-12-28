@@ -79,6 +79,20 @@ export function overviewBatchSupplierMap(parmars) {
     data: parmars
   })
 }
+//供应商总览地图
+export function queryRfqSupplierList(params) {
+  return requst({
+    url: `/batchOverview/queryRfqSupplierList/`+params.rfqId,
+    method: 'GET'
+  })
+}
+//供应商总览地图
+export function queryRfqSupplierListByCategory(params) {
+  return requst({
+    url: `/batchOverview/queryRfqSupplierListByCategory/`+params.categoryCode,
+    method: 'GET'
+  })
+}
 //定点记录
 export function listFixedPointHistory(parmars) {
   return requst({

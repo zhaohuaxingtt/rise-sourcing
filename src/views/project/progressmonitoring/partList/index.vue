@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 10:15:56
+ * @LastEditTime: 2021-12-28 11:00:11
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -55,7 +55,7 @@
   </div>
 </template>
 <script>
-import {TIPStableTitle,CKDHTtableTitle} from './components/data'
+import {TIPStableTitle,CKDHTtableTitle, OTSEMtableTitle} from './components/data'
 import tablelist from "rise/web/components/iFile/tableList";
 import {
   iCard,
@@ -107,7 +107,7 @@ export default {
         "3": {
           titleName: 'EM&OTS已完成零件',
           titleKey: 'EMOTSYIWANCHENGLINGJIAN',
-          title: CKDHTtableTitle,
+          title: OTSEMtableTitle,
           permision: 'PROJECTMGT-MONITORPARTLIST-EMOTSDONEABLE|项目管理-监控零件清单-EM&OTS已完成表格'
         },
         "4": {

@@ -28,7 +28,7 @@
          <quotationScoringEcartsCard ref='quotationScoringEcartsCard' v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
          <iCard @handleTitle="addFile($event,4,'报价趋势')" :title="'报价趋势'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'4')" collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI|报价趋势"></iCard>
           <!--------------------报价分析汇总-业务分配模拟----------------------------------------->
-         <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')"  id="card5"  :collapse='true' v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_YEWYFENPEIMONI|业务分配模拟"></buMonitor>
+         <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')"  id="card5"  :collapse='true' :hideCombine="false" :readOnly="false" :tableSelection="true" v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_YEWYFENPEIMONI|业务分配模拟"></buMonitor>
          <iCard @handleTitle="addFile($event,5,'业务分配模拟')" id="card5" :title="'业务分配模拟'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'5')"  collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
       </template>
     </el-tab-pane>
