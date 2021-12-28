@@ -582,7 +582,7 @@ export default {
   }
   .iconMTZ {
     margin-left: 5px;
-    width: 25px;
+    width: 25px !important;
   }
   .icon-gray:hover{
     cursor: pointer;
