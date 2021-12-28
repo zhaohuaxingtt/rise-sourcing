@@ -100,11 +100,11 @@ export const partTableTitle = [
   },
   {
     props: 'ruleNo',
-    key: 'Part_No.'
+    key: 'Part No.'
   },
   {
-    props: 'partName',
-    key: 'Part_Name'
+    props: 'assemblyPartnum',
+    key: 'Part Name'
   },
   {
     props: 'supplierName',

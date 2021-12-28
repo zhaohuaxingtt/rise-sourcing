@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 14:06:11
- * @LastEditTime: 2021-12-16 16:58:15
+ * @LastEditTime: 2021-12-28 10:04:59
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\lib\data.js
@@ -190,6 +190,6 @@ export const patchStatus = [
   },
   {
     code: '2',
-    name: '待处理'
+    name: '已处理'
   },
 ]

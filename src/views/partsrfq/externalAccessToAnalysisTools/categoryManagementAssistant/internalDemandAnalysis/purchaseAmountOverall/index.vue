@@ -2,35 +2,51 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-07-30 17:31:22
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
-  <iCard id="allContainer" class="content">
+  <iCard id="allContainer"
+         class="content">
 
     <div class="title flex-between-center-center margin-bottom30">
       <div>
         <div class="text flex">{{language('CAIGOUJINGEZONGLAN','采购金额总览')}}
-          <el-popover class="margin-left10 tip" trigger="hover" placement="bottom-start">
+          <el-popover class="margin-left10 tip"
+                      trigger="hover"
+                      placement="bottom-start">
             <div>{{language('TGGWSNZWLLNDCLZCGJEZL','提供过往三年至未来两年的材料组采购金额总览：')}}</div>
             <div style="text-indent: 15px">{{language('JGSJLYYLJTZJG','价格数据：来源于零件台账价格')}}</div>
             <div style="text-indent: 15px">{{language('CLSHLSLJCLSJLYYFISCXSCJLYJPBOM','产量数据：历史零件产量数据来源于FIS车型生产记录以及PBOM，未来零件产量数据来源于最新的BKM KTB产量计划')}}</div>
-            <icon slot="reference" name="iconxinxitishi" symbol></icon>
+            <icon slot="reference"
+                  name="iconxinxitishi"
+                  symbol></icon>
           </el-popover>
         </div>
-        <el-row class="margin-top35" style="width:430px" :gutter="15">
+        <el-row class="margin-top35"
+                style="width:430px"
+                :gutter="15">
           <el-col :span="12">
-            <iDatePicker :placeholder="language('QINGXUANZHEMNIANFENG','请选择年份')" value-format="yyyy" type="year" v-model="form.year" :picker-options="pickerOptions" />
+            <iDatePicker :placeholder="language('QINGXUANZHEMNIANFENG','请选择年份')"
+                         value-format="yyyy"
+                         type="year"
+                         v-model="form.year"
+                         :picker-options="pickerOptions" />
           </el-col>
           <el-col :span="12">
-            <iSelect :placeholder="$t('LK_QINGXUANZE')" v-model="form.page">
-              <el-option :value="item.code" :label="item.name" v-for="item of formGoup.pageList" :key="item.code"></el-option>
+            <iSelect :placeholder="$t('LK_QINGXUANZE')"
+                     v-model="form.page">
+              <el-option :value="item.code"
+                         :label="item.name"
+                         v-for="item of formGoup.pageList"
+                         :key="item.code"></el-option>
             </iSelect>
           </el-col>
         </el-row>
       </div>
       <div>
-        <iButton @click="handleSave" :loading="saveButtonLoading">{{$t('LK_BAOCUN')}}</iButton>
+        <iButton @click="handleSave"
+                 :loading="saveButtonLoading">{{$t('LK_BAOCUN')}}</iButton>
         <iButton @click="handleBack">{{$t('LK_FANHUI')}}</iButton>
         <div class="margin-top30">
           <iButton @click="handleConfirm">{{$t('LK_QUEREN')}}</iButton>
@@ -58,7 +74,7 @@ export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iCard, iSelect, iPage, iButton, iDatePicker, icon },
   mixins: [resultMessageMixin, downloadPdfMixins],
-  data() {
+  data () {
     // 这里存放数据
     return {
       powerbi: '',
@@ -103,7 +119,7 @@ export default {
         pageList: []
       },
       pickerOptions: {
-        disabledDate(time) {
+        disabledDate (time) {
           let currentYear = new Date().getFullYear()
           return time.getFullYear() !== currentYear && time.getFullYear() !== currentYear - 1 && time.getFullYear() !== currentYear - 2;
         }
@@ -116,14 +132,14 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-    handleConfirm() {
+    handleConfirm () {
       if (this.form.year) {
         this.filter_year.values = [parseInt(this.form.year)]
-        if (!!this.form.page) {
+        if (this.form.page) {
           this.report.setPage(this.form.page);
         }
         let filterAll = [this.filter_year]
-        if (!!this.form.categoryCode) {
+        if (this.form.categoryCode) {
           filterAll.push(this.filter_category)
         }
         this.report.setFilters(filterAll);
@@ -131,7 +147,7 @@ export default {
         iMessage.warn(this.language('NIANFENGBIXUAN', '年份必选'))
       }
     },
-    async dictByCode() {
+    async dictByCode () {
       const res = await dictByCode('CATEGORY_MANAGEMENT_LIST')
       this.formGoup.pageList = res
       if (this.form.page === '') {
@@ -140,7 +156,7 @@ export default {
       this.init()
       this.renderBi()
     },
-    async getCategoryAnalysis() {
+    async getCategoryAnalysis () {
       const pms = {
         categoryCode: this.form.categoryCode,
         schemeType: 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT'
@@ -151,7 +167,7 @@ export default {
       }
       this.dictByCode()
     },
-    async handleSave() {
+    async handleSave () {
       let page = ''
       this.formGoup.pageList.forEach(item => {
         if (item.code === this.form.page) {
@@ -174,6 +190,7 @@ export default {
         schemeName: "",
         reportUrl: resFile.downloadUrl
       }
+      console.log(resFile)
       switch (this.form.page) {
         case 'ReportSection':
           params.schemeType = 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT_SUPPLIER'
@@ -194,14 +211,14 @@ export default {
       this.resultMessage(res);
       this.saveButtonLoading = false;
     },
-    async powerBiUrl() {
+    async powerBiUrl () {
       const res = await getPurchaseAmountPbi()
       if (res.data) {
         this.url = res.data
         this.getCategoryAnalysis()
       }
     },
-    init() {
+    init () {
       this.config = {
         type: 'report',
         tokenType: pbi.models.TokenType.Embed,
@@ -242,7 +259,7 @@ export default {
       this.powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
     },
     // 初始化页面
-    renderBi() {
+    renderBi () {
       this.report = this.powerbi.embed(this.reportContainer, this.config);
       this.filter_year.values = parseInt(this.form.year)
       let report = this.report
@@ -273,10 +290,10 @@ export default {
       // Report.on will add an event handler which prints to Log window.
       // this.config.pageName = this.form.page
       let filterAll = [filter_year]
-      if (!!this.form.categoryCode) {
+      if (this.form.categoryCode) {
         filterAll.push(filter_category)
       }
-      report.on("loaded", function() {
+      report.on("loaded", function () {
         // 年份
         //设置过滤条件	
         report.setFilters(filterAll);
@@ -288,19 +305,19 @@ export default {
       report.off("rendered");
 
       // Report.on will add an event handler which prints to Log window.
-      report.on("rendered", function() {
+      report.on("rendered", function () {
       });
       report.off("filtersApplied")
 
-      report.on("filtersApplied", function() {
+      report.on("filtersApplied", function () {
       });
 
-      report.on("error", function(event) {
+      report.on("error", function (event) {
         report.off("error");
       });
 
       report.off("saved");
-      report.on("saved", function(event) {
+      report.on("saved", function (event) {
         if (event.detail.saveAs) {
           console.log(
             'In order to interact with the new report, create a new token and load the new report'
@@ -311,11 +328,11 @@ export default {
       document.getElementsByTagName('iframe')[0].style.border = 'none'
     },
     // 返回
-    handleBack() {
+    handleBack () {
       this.$router.go(-1)
     },
     // 重置
-    handleSearchReset() {
+    handleSearchReset () {
       this.form = {
         year: '',
         page: ''
@@ -323,10 +340,10 @@ export default {
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {
+  created () {
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
+  mounted () {
     this.powerBiUrl()
   },
 }
