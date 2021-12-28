@@ -783,23 +783,26 @@ export default {
         this.rules = infoRules(this.ruleForm, this)
         this.$refs["ruleForm"].clearValidate()
         this.$nextTick(() => {
-          this.$refs["ruleForm"].validateField([
-            'biddingType',
-            'projectName',
-            'projectType',
-            'currencyUnit',
-            'currencyMultiple',
-            'isTax',
-            'resultOpenForm',
-            'moldFee',
-            'openTenderNature',
-            'isResultOpen',
-            'biddingMode',
-            'quoteRule.greenLightFrom',
-            'quoteRule.greenDeviationValue',
-            'quoteRule.targetPrice',
-            'quoteRule.yellowDeviationValue'
-          ])
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'biddingType',
+          //   'projectName',
+          //   'projectType',
+          //   'currencyUnit',
+          //   'currencyMultiple',
+          //   'isTax',
+          //   'resultOpenForm',
+          //   'moldFee',
+          //   'openTenderNature',
+          //   'isResultOpen',
+          //   'biddingMode',
+          //   'quoteRule.greenLightFrom',
+          //   'quoteRule.greenDeviationValue',
+          //   'quoteRule.targetPrice',
+          //   'quoteRule.yellowDeviationValue'
+          // ])
         })
       }
     },

@@ -703,12 +703,15 @@ export default {
         this.rules = baseRules(this)
         this.$refs["ruleForm"].clearValidate()
         this.$nextTick(() => {
-          this.$refs["ruleForm"].validateField([
-            'beginMonth',
-            'modelProjects',
-            'models',
-            'totalPrices'
-          ])
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'beginMonth',
+          //   'modelProjects',
+          //   'models',
+          //   'totalPrices'
+          // ])
         })
       }
     },

@@ -509,26 +509,29 @@ export default {
         this.rules = baseRules(this.ruleForm, this)
         this.$refs["ruleForm"].clearValidate()
         this.$nextTick(() => {
-          this.$refs["ruleForm"].validateField([
-            'biddingQuoteRule.limitValue',
-            'biddingQuoteRule.quotationScope',
-            'biddingQuoteRule.quotedValue',
-            'biddingQuoteRule.alertPercentage',
-            'biddingQuoteRule.firstOfferLimit',
-            'biddingQuoteRule.conRankLimit',
-            'biddingQuoteRule.rankRule',
-            'biddingQuoteRule.greenLightFrom',
-            'biddingQuoteRule.greenLightTo',
-            'biddingQuoteRule.yellowLightFrom',
-            'biddingQuoteRule.yellowLightTo',
-            'biddingQuoteRule.redLightFrom',
-            'biddingQuoteRule.redLightTo',
-            'biddingQuoteRule.greenDeviationValue',
-            'biddingQuoteRule.yellowDeviationValue',
-            'biddingQuoteRule.rankDisplayLimit',
-            'biddingQuoteRule.priceLimit',
-            'biddingQuoteRule.rankLimit',
-          ])
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'biddingQuoteRule.limitValue',
+          //   'biddingQuoteRule.quotationScope',
+          //   'biddingQuoteRule.quotedValue',
+          //   'biddingQuoteRule.alertPercentage',
+          //   'biddingQuoteRule.firstOfferLimit',
+          //   'biddingQuoteRule.conRankLimit',
+          //   'biddingQuoteRule.rankRule',
+          //   'biddingQuoteRule.greenLightFrom',
+          //   'biddingQuoteRule.greenLightTo',
+          //   'biddingQuoteRule.yellowLightFrom',
+          //   'biddingQuoteRule.yellowLightTo',
+          //   'biddingQuoteRule.redLightFrom',
+          //   'biddingQuoteRule.redLightTo',
+          //   'biddingQuoteRule.greenDeviationValue',
+          //   'biddingQuoteRule.yellowDeviationValue',
+          //   'biddingQuoteRule.rankDisplayLimit',
+          //   'biddingQuoteRule.priceLimit',
+          //   'biddingQuoteRule.rankLimit',
+          // ])
         })
       }
     },
