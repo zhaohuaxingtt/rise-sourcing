@@ -7,7 +7,7 @@
 -->
 <template>
   <iCard id="bulkSupplierPandect" @handleTitle="addFile($event,8, '批量供应商工厂总览')"  :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
-    <div class="center" id="card8">
+    <div class="center" id="card8" v-loading="onDataLoading">
       <div class="tip">
         <el-popover trigger="hover" placement="top-start" width="400" :content="language('TLJJGLJCLGYSGHBLCXCL','Turnover=零件价格*零件产量*供应商供货比例*车型产量')">
           <icon slot="reference" style="font-size:1.375rem" name="iconxinxitishi" tip="" symbol></icon>
@@ -49,7 +49,8 @@ export default {
       mapListData: {},
       supplierDataList: [],
       categoryCode: "",
-      categoryName: ""
+      categoryName: "",
+      onDataLoading: false
     }
   },
   watch: {
@@ -104,6 +105,7 @@ export default {
       this.saveButtonLoading = false;
     },
     async getMapList() {
+      this.onDataLoading = true
       const pms = {
         rfqId: '',
         categoryCode: ''
@@ -118,6 +120,9 @@ export default {
       }
       this.mapListData = res.data
       this.supplierDataList = res.data.supplierList || []
+      this.$nextTick(() => {
+        this.onDataLoading = false
+      })
     }
   }
 }
