@@ -4,7 +4,7 @@
  * @Description: 特殊定点-配附件--附件需求导入列表
 -->
 <template>
-    <iPage class="importFiles" v-permission.auto="ACCESSORY_IMPORT_PAGE|附件-附件导入-页面">
+    <iPage class="importFiles">
         <!-- <el-tabs v-model="tab" class="tab"> -->
             <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
              <headerNav :type="sourceinquirypoint" />

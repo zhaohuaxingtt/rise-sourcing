@@ -1,13 +1,13 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-06 15:21:13
- * @LastEditTime: 2021-12-23 17:54:53
+ * @LastEditTime: 2021-12-28 13:55:24
  * @LastEditors: YoHo
  * @Description: 状态跟踪详情
  * @FilePath: /front-web/src/views/dashboard/report/index.vue
 -->
 <template>
-  <div class="dashboard-report" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESSDETAILS_PAGE|报表管理-状态跟踪详情">
+  <div class="dashboard-report">
     <!-- <headerNav /> -->
     <div class="dashboard-card margin-top10">
       <el-row :gutter="10">

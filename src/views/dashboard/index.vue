@@ -1,13 +1,13 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-12-23 17:59:05
+ * @LastEditTime: 2021-12-28 13:31:50
  * @LastEditors: YoHo
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
 -->
 <template>
-  <div class="dashboard" v-permission.auto="DASHBOARD_OVERVIEW_PAGE|寻源概览">
+  <div class="dashboard">
     <!-- <headerNav /> -->
     <!-- 功能卡片 -->
     <div class="dashboard-card">

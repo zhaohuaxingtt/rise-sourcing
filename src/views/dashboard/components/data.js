@@ -1,8 +1,8 @@
 /*
  * @Author: hoajiang
  * @Date: 2021-08-05 10:36:42
- * @LastEditTime: 2021-09-07 17:56:22
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-28 13:55:09
+ * @LastEditors: YoHo
  * @Description: 寻源概览配置
  * @FilePath: /front-web/src/views/dashboard/components/data.js
  */
@@ -17,7 +17,7 @@ export const TAB = [
     activePath: "dashboard",
     key: "XUANYUANGAILAN",
     permissionKey: 'DASHBOARD_OVERVIEW_PAGE',
-    permissionName: '寻源概览'
+    permissionName: '概览'
   },
   {
     value: 2,
@@ -36,7 +36,7 @@ export const TAB = [
     url: "/sourceinquirypoint/sourcing/reportmgmt/details",
     activePath: "reportmgmt",
     key: "LK_BAOBIAOGUANLI",
-    permissionKey: 'REPORTMGMT_STATUSREPORT_PROCESS_PBI',
+    permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_REPORT',
     permissionName: '报表管理'
   },
 ]
@@ -49,7 +49,7 @@ export const MENU = [
     url: '/sourceinquirypoint/sourcing/reportmgmt/report',
     activePath: 'reportmgmt/report',
     key: 'LK_ZHUANGTAIGENZHONGBAOBIAO',
-    permissionKey: 'REPORTMGMT_STATUSREPORT_PROCESS_PBI',
+    permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_REPORT',
     permissionName: '报表管理-状态跟踪报表'
   },
   {
@@ -59,7 +59,7 @@ export const MENU = [
     url: '/sourceinquirypoint/sourcing/reportmgmt/details',
     activePath: 'reportmgmt/details',
     key: 'LK_ZHUANGTAIGENZHONGXIANGQING',
-    permissionKey: 'REPORTMGMT_STATUSREPORT_PROCESSDETAILS_PAGE',
+    permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_DETAILS',
     permissionName: '报表管理-状态跟踪详情'
   },
 ]

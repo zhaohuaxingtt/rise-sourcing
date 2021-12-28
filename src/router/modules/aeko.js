@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-12-08 10:13:04
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-28 13:53:27
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\router\modules\aeko.js
  */
@@ -337,14 +337,6 @@ export default [
       },
       // 逾期报表
       {
-        path: "bipage",
-        name: "bipage",
-        meta: {
-          title: 'AEKO-逾期报表',
-          activeMenu: ['RISE_WORKBENCH', '/AEKO']
-        },
-        component: () => import("@/views/aeko/BIPage"),
-      }, {
         path: "report",
         name: "report",
         meta: {
