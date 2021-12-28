@@ -143,6 +143,7 @@
 	.add{
 		justify-content: flex-end;
 		margin-bottom: 20px;
+		background: transparent !important;
 	}
 	.placeholder{
 		height: 30px;
