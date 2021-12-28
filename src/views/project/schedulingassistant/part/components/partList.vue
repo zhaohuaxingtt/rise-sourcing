@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-22 15:20:25
+ * @LastEditTime: 2021-12-27 10:31:10
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -64,7 +64,13 @@
         </div> 
         <div class="productItem-bottom"> 
           <div class="productItem-bottom-text"> 
-            <icon @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon>  
+            <el-popover
+              :content="language('TIAOZHUANLISHIJINDUSHUJUKU','跳转历史进度数据库')"
+              placement="top-start"
+              trigger="hover">
+              <icon slot="reference" @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon> 
+            </el-popover>
+             
           </div> 
           <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node"> 
             <div class="productItem-bottom-nodeItem">  
@@ -161,7 +167,7 @@ export default {
       downloadTypeList: [ 
         {label: '风险预警零件', key: 'FENGXIANYUJINGLINGJIAN', type: 1}, 
         {label: '未释放零件', key: 'WEISHIFANGLINGJIAN', type: 3}, 
-        {label: '未BF零件', key: 'WEIBFLINGJIAN', type: 2} 
+        {label: '数据待冻结零件', key: 'SHUJUDAIDONGJIELINGJIAN', type: 2} 
       ], 
       downloadLoading: false,
       svgList: {

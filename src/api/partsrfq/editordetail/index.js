@@ -457,26 +457,29 @@ export function searchABPageExchangeRate(mimoId) {
     })
 }
 //导出excel
-export function exportFSPartsAsRow(rfqId,round) {
+export function exportFSPartsAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-fs-parts-as-row/${rfqId}/${round}`,
-        method:'GET'
+        method:'POST',
+        data:dataList
     })
 }
 
 //导出excel
-export function exportFsSupplierAsRow(rfqId,round) {
+export function exportFsSupplierAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-fs-supplier-as-row/${rfqId}/${round}`,
-        method:'GET'
+        method:'POST',
+        data:dataList
     })
 }
 
 //导出excel
-export function exportGsPartsAsRow(rfqId,round) {
+export function exportGsPartsAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-gs-parts-as-row/${rfqId}/${round}`,
-        method:'GET'
+        method:'POST',
+        data:dataList
     })
 }
 

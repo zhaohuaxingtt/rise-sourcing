@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-15 16:44:34
+ * @LastEditTime: 2021-12-27 11:32:53
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -10,14 +10,14 @@
   <div class="partListView" v-loading="loading"> 
     <div class="partListView-title"> 
       <div class="partListView-title-span"> 
-        <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox> 
+        <el-checkbox class="partListView-title-check" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选 {{selectCount}}/{{countAll}}</el-checkbox> 
         <!-- <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>  -->
       </div> 
       <div> 
         <iButton @click="showDelayResaons" :loading="saveloading" v-if="partStatus != 1" :class="showDelayResaon ? 'showDelayReasonsActive' : ''">{{language('CHAKANYANWUYUANYIN', '查看延误原因')}}</iButton> 
         <iButton @click="gotoSechedule">{{language('CHAKANPAICHENGJIHUA', '查看排程计划')}}</iButton> 
         <iButton @click="handleSendFs" v-if="partStatus == 2 || partStatus == 3">{{language('FASONGJINDUQUEREN', '发送进度确认')}}</iButton> 
-        <iButton @click="openDelayReasonDialog" v-if="[3,2,5,6, 7].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
+        <iButton @click="openDelayReasonDialog" v-if="[3,2,5, 7, 8].includes(Number(partStatus))" >{{language('YANWUYUANYINQUEREN', '延误原因确认')}}</iButton> 
         <iButton @click="handleExport" :loading="downloadLoading">{{language('DAOCHUQINGDAN', '导出清单')}}</iButton> 
       </div> 
     </div> 
@@ -89,7 +89,7 @@
                   </iText>
                   <iText slot="reference"  v-else class="productItem-bottom-stepBetween-input text " >
                     {{pro[item[taItem.props]]}}
-                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0">+W{{pro[item.delayWeeks]}}</span>
+                    <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="pro[item.kw] && pro[item.delayWeeks] > 0">+{{pro[item.delayWeeks]}}W</span>
                     <!-- {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? '( '+(pro[item[taItem.props1]] || '') : ''}} -->
                     <!-- <span class="flowWeek" :class="taItem.key !== 'JIHUASHIJIAN' ? '' : 'hidden'" v-if="index === nodeList.length - 1 && pro[item.kw1] && pro[item.delayWeeks2] > 0">+W{{pro[item.delayWeeks2]}}</span> -->
                     <!-- {{index === nodeList.length - 1 && pro[item[taItem.props1]] ? ')' : ''}} -->
@@ -160,10 +160,16 @@ export default {
       dialogVisibleLight: false,
       selectParts: {},
       dialogVisibleDelayReason: false,
-      moment,
+      moment
     }
   },
   computed: {
+    countAll() {
+      return this.list.length
+    },
+    selectCount() {
+      return this.selectPart.length
+    },
     selectPartNums() {
       return this.selectPart.map(item => {return {partNum: item.partNum, tempCode: item.tempCode}})
     },

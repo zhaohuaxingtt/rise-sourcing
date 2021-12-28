@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 16:13:36
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 16:58:26
+ * @LastEditTime: 2021-12-27 15:23:27
  * @Description: 
- * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\tableList\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\tableList\index.vue
 -->
 
 <template>
-  <el-table ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
-    <el-table-column v-if="selection" type='selection' width="56" align='center'></el-table-column>
+  <el-table ref="multipleTable" fit tooltip-effect='light' :border="border" :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
+    <el-table-column v-if="selection" type='selection' width="56" align='center' fixed></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
@@ -86,7 +86,8 @@ export default{
     selectedItems:{type:Array},
     editCompare: {type: Boolean, default: true},
     activeItems2:{type:String,default:'b'},
-    showPot: {type: Boolean,default:false}
+    showPot: {type: Boolean,default:false},
+    border: {type:Boolean,default:false}
   },
   inject:['vm'],
   computed: {
