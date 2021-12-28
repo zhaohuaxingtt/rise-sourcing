@@ -26,12 +26,22 @@ export const tableTitle = [{
 		isAekoShow:true,
 	},
 	{
+		props: 'sourcingNumber',
+		name: 'SourcingNumber',
+		key: 'SOURCINGNUMBER',
+		tooltip: true,
+		isAekoShow:false,
+		isCommonSourcingShow:true,
+		width:160
+	},
+	{
 		props: 'partNameZh',
 		name: '零件名（中）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
 		tooltip: true,
 		width:100,
 		isAekoShow:true,
+		
 	},
 	{
 		props: 'partNameDe',

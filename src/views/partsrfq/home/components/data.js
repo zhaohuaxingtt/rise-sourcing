@@ -47,9 +47,9 @@ export const maintainSupplierTitle = [
     { props: 'e', name: '工厂地址', key: 'GONGCHANGDIZHI', tooltip: true },
 ]
 export const noStarMonitorTable = [
-    { props: 'a', name: '零件采购项目号', key: 'FSGSSPNO', tooltip: true },
-    { props: 'b', name: '零件号', key: 'LK_LINGJIANHAO', tooltip: true },
-    { props: 'c', name: '采购工厂', key: 'CAIGOUGONGCHANG', tooltip: true },
+    { props: 'fsnrGsnrNum', name: '零件采购项目号', key: 'FSGSSPNO', tooltip: true },
+    { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO', tooltip: true },
+    { props: 'procureFactoryName', name: '采购工厂', key: 'CAIGOUGONGCHANG', tooltip: true },
 ]
 export const noBnkTitle = [
     { props: 'a', name: '零件采购项目号', key: 'FSGSSPNO', tooltip: true },

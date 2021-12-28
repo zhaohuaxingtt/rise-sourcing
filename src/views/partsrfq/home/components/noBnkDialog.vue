@@ -1,18 +1,16 @@
 <template>
   <iDialog
-  :visible.sync="tipsVislble"
+  :visible.sync="bnkVislble"
   class="createDesignateTips"
-  @close="sure"
   :title="language('BIDDING_TISHI','提示')"
   :close-on-click-modal="false"
   >
     <div>
       <span class="fontStyle">
-       {{language('YIXIALINGJIANCAIGOUXIANGMUWEIGUANLIANSTARTMONITORJILUQINGWANCHENGGUANLIANHOUYICHUGAILINGJIANCAIGOUXIANGMUHOUZAICHUANGIANDINGDIANSHENQING','以下零件采购项目未关联StartMonitor记录，请完成关联，或移除该零件采购项目后再创建定点申请')}}
+       {{language('YIXIALINGJIANCAIGOUXIANGMUBKNSHENHEWEITONGGUOWUFACHUANGJIANDINGDIANSHENQING','以下零件采购项目BNK审核未通过，无法创建定点申请')}}
      </span>
     </div>
     <tableList
-      v-show="tipsVislble"
       class="dunsTable"
       :index="true"
       :selection="false"
@@ -28,44 +26,24 @@
 <script>
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import {iDialog, iButton} from "rise"
-import {noStarMonitorTable as tableTitle} from './data'
+import {noBnkTable as tableTitle} from './data'
 export default {
   components:{
     iDialog,
     tableList,
     iButton
   },
-  props:{
-    starMonitorTable:{
-      type:Array,
-      default:() =>[]
-    }
-  },
   data() {
     return {
       tipsTitle:"",
       tableTitle,
       tableData:[],
-      tipsVislble:false
+      bnkVislble:false
     }
-  },
-  watch: {
-   tipsVislble(val) {
-     if(val) {
-       this.tableData = this.starMonitorTable
-       
-     }
-   }
   },
   methods:{
     show() {
-      this.tipsVislble = true
-    },
-    sure() {
-      this.$emit('changeTipsDialog')
-    },
-    close() {
-       this.tipsVislble = false
+        this.bnkVislble = true
     }
   }
   

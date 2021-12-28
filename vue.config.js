@@ -24,47 +24,47 @@ module.exports = {
     config.resolve.alias
       .set('@', resolve('src'))
       .set('pages', resolve('src/views'))
-    if (process.env.NODE_ENV == 'dev') {
-      config.optimization.splitChunks({
-        chunks: 'initial',
-        cacheGroups: {
-          vendors: {
-            name: 'vendors',
-            test: /[\\/]node_modules[\\/]/,
-            priority: -10,
-            reuseExistingChunk: true,
+      if(process.env.NODE_ENV == 'dev'){
+        config.optimization.splitChunks({
+          chunks: 'initial',
+          cacheGroups: {
+            vendors: {
+              name: 'vendors',
+              test: /[\\/]node_modules[\\/]/,
+              priority: -10,
+              reuseExistingChunk: true
+            },
+            commons: {
+              name: 'commons',
+              priority: -11,
+              reuseExistingChunk: true,
+            },
           },
-          commons: {
-            name: 'commons',
-            priority: -11,
-            reuseExistingChunk: true,
+        })
+      }else{
+        config.optimization.splitChunks({
+          chunks: 'all',
+          maxAsyncRequests:5,
+          minChunks:2,
+          minSize:30000,
+          automaticNameDelimiter:'_',
+          maxInitialRequests:3,
+          name:true,
+          cacheGroups: {
+            vendors: {
+              name: 'vendors',
+              test: /[\\/]node_modules[\\/]/,
+              priority: -10,
+              reuseExistingChunk: true
+            },
+            commons: {
+              name: 'commons',
+              priority: -11,
+              reuseExistingChunk: true,
+            },
           },
-        },
-      })
-    } else {
-      config.optimization.splitChunks({
-        chunks: 'all',
-        maxAsyncRequests: 5,
-        minChunks: 2,
-        minSize: 30000,
-        automaticNameDelimiter: '_',
-        maxInitialRequests: 3,
-        name: true,
-        cacheGroups: {
-          vendors: {
-            name: 'vendors',
-            test: /[\\/]node_modules[\\/]/,
-            priority: -10,
-            reuseExistingChunk: true,
-          },
-          commons: {
-            name: 'commons',
-            priority: -11,
-            reuseExistingChunk: true,
-          },
-        },
-      })
-    }
+        })
+      }
   },
   configureWebpack: (config) => {
     config.plugins.forEach((val) => {
@@ -135,9 +135,9 @@ module.exports = {
     open: true,
     host: 'localhost',
     port: 8080,
-    https:'10.160.138.158',
+    https: false,
     hot: true,
-    clientLogLevel: 'none',
+    clientLogLevel:'none',
     proxy: {
       '/mtzApi': {
         target: 'http://10.122.17.38:8046/mtz',
@@ -163,7 +163,7 @@ module.exports = {
       },
       '/sourcingApi': {
         //   供应商
-        target: 'http://10.160.137.110:18025',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/sourcingApi': '',
@@ -172,7 +172,7 @@ module.exports = {
       '/usercenterApi': {
         target: 'http://10.122.17.38:8015/usercenter',
         changeOrigin: true,
-        logLevel: 'info',
+        logLevel:'info',
         pathRewrite: {
           '^/usercenterApi': '',
         },
@@ -261,11 +261,11 @@ module.exports = {
           '^/risemessage': '',
         },
       },
-      '/fileApi': {
+      '/fileudApi': {
         target: 'http://10.122.17.38:8034/fileud',
         changeOrigin: true,
         pathRewrite: {
-          '^/fileApi': '',
+          '^/fileudApi': '',
         },
       },
       '/biddingApi': {
@@ -296,7 +296,7 @@ module.exports = {
         pathRewrite: {
           ['^' + process.env.VUE_APP_BIZLOG]: '',
         },
-      },
+      }
     },
   },
 }

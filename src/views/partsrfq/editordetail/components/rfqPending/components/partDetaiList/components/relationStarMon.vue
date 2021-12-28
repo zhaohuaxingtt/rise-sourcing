@@ -98,7 +98,7 @@ import tipsDialog from './tipsDialog'
         this.tableLoading = true
         console.log(this.handleSelectArr,'handleSelectArr');
         let data ={
-          rfqId:this.$route.query.id,
+          refRfqId:this.$route.query.id,
           partNums:this.handleSelectArr.map(val=>val.partNum),
           procureFactoryIds:this.handleSelectArr.map(val=>val.procureFactoryId),
           current: this.page.currPage,
@@ -125,12 +125,13 @@ import tipsDialog from './tipsDialog'
           return
         }
         let data={
-          rfqId:this.$route.query.id,
+          refRfqId:this.$route.query.id,
           projectIds:this.handleSelectArr.map(val=>val.id),
           ids:this.selection.map(val=>val.id),
         }
-        if(data.projectIds.length!=data.ids.length) {
-          iMessage.warn(this.language('QINZHISHAOXUANZEYITIAOSHUJU','请至少选择一条数据'))
+        console.log(data.projectIds.length,data.ids.length,'-------------------');
+        if(data.projectIds.length<data.ids.length) {
+          iMessage.warn(this.language('XUANZEDELINGJIANCAIGOXIANGMUSHULIANGBUNENGXIAOYUXUANZEDESTARTMONITORJILUSHULIANG','选择的零件采购项目数量不能小于选择的StartMonitor记录数量'))
           return
         }
         checkInfo(data).then(res=>{
@@ -138,15 +139,14 @@ import tipsDialog from './tipsDialog'
             if(res.data) {
               this.applyTable = Array.isArray(res.data)?res.data:[]
               this.$refs.tips.dunsshow()
-              this.startVisible = false
+              // this.startVisible = false
             } else {
+              this.$router.go(0)
               iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
               this.startVisible = false
             }
           } else {
-            // this.startVisible = false
-            this.$refs.tips.dunsshow()
-            this.applyTable = this.selection
+            this.startVisible = false
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         })
