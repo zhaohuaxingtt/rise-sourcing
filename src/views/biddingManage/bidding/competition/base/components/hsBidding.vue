@@ -801,18 +801,6 @@ export default {
             'quoteRule.yellowDeviationValue'
           ])
         })
-        // if (this.ruleForm.resultOpenForm === '02') {
-        //   this.$refs["ruleForm"].clearValidate([
-        //     "quoteRule.greenLightFrom",
-        //     "quoteRule.greenLightTo",
-        //     "quoteRule.yellowLightFrom",
-        //     "quoteRule.yellowLightTo",
-        //     "quoteRule.redLightFrom",
-        //     "quoteRule.redLightTo",
-        //     "quoteRule.greenDeviationValue",
-        //     "quoteRule.yellowDeviationValue",
-        //   ]);
-        // }
       }
     },
     "ruleForm.quoteRule.greenLightTo"(val) {

@@ -392,6 +392,22 @@ export default {
     },
   },
   watch: {
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs["ruleForm"].validateField([
+            'beginMonth',
+            'modelProjects',
+            'models',
+            'totalPrices'
+          ])
+        })
+      }
+    },
     "ruleForm.biddingProducts":{
       deep:true,
       handler(val){
@@ -412,7 +428,7 @@ export default {
     return {
       flag: false,
       tableLoading: false,
-      rules: baseRules,
+      rules: baseRules(this),
       ruleForm: {
         beginMonth: "",
         modelProjects: [],
