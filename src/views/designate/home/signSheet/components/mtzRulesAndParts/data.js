@@ -112,12 +112,12 @@ export const partTableTitle = [
     minWidth: '100'
   },
   {
-    props: 'ruleNo',
+    props: 'assemblyPartnum',
     key: 'PARTNO.',
     name: 'Part No.',
   },
   {
-    props: 'assemblyPartnum',
+    props: 'partName',
     key: 'PARTNAME',
     name: 'Part Name',
   },
