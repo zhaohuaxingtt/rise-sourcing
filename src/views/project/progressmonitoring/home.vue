@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-27 16:50:08
+ * @LastEditTime: 2021-12-28 10:00:44
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
@@ -77,7 +77,7 @@
             </iFormItem>
             <iFormItem>
               <span slot="label">1999:</span>
-              <span class="cursor" @click="toPartList(4)"><iText>{{showTips ? csFgBemerkung : 0}}</iText></span>
+              <span class="cursor" @click="toPartList(4)"><iText>{{showTips ? csfFgBemerkung : 0}}</iText></span>
             </iFormItem>
          </iFormGroup>
       </div>
@@ -115,7 +115,7 @@ export default {
       tipsSum: 0,
       options: {},
       loading: false,
-      csFgBemerkung: 0
+      csfFgBemerkung: 0
     }
   },
   mounted() {
@@ -326,7 +326,7 @@ export default {
           // ckdconfirm
           this.ckdconfirm = res.data && res.data.ckdNum || 0
           this.emOtsNum = res.data && res.data.emOtsNum || 0
-          this.csFgBemerkung = res.data && res.data.csFgBemerkung || 0
+          this.csfFgBemerkung = res.data && res.data.csfFgBemerkung || 0
           // tipsSum
           this.tipsSum = res.data && res.data.tipsSum || 0
           this.updateTime = res.data && res.data.synDate || ''
