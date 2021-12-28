@@ -23,7 +23,7 @@
               <el-option
                 v-for="(item, index) in procureTypeList"
                 :key="index"
-                :label="item.label"
+                :label="language(item.key, item.label)"
                 :value="item.value"
               >
               </el-option>
@@ -47,7 +47,7 @@
               <el-option
                 v-for="(item, index) in manualBiddingTypeList"
                 :key="index"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.manualBiddingType"
               >
               </el-option>

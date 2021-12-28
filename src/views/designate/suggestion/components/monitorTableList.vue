@@ -394,11 +394,11 @@ export default {
           // 传了index 求单一零件的 推荐供应商tto 汇总
           if (index !== null) {
             if (index === tIndex) {
-              const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(2)
+              const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(0)
               weightedArray.push(Number(t) * percent)
             }
           } else {
-            const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(2)
+            const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(0)
             weightedArray.push(Number(t) * percent)
           }
         })
@@ -484,7 +484,7 @@ export default {
       // wholePackage 排序
       countSupplier = countSupplier.sort((a, b) => a.data - b.data)
       console.log('countSupplier', countSupplier)
-      const wholePackage = Number(countSupplier[0] && countSupplier[0].data).toFixed(2) || 0
+      const wholePackage = Number(countSupplier[0] && countSupplier[0].data).toFixed(0) || 0
       const wholePackageIndex = (countSupplier[0] && countSupplier[0].index) || 0
       // 记录该供应商
       supplier.push(wholePackageIndex)

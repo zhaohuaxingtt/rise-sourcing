@@ -49,7 +49,7 @@
                 v-for="(item, index) in projectType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -83,7 +83,7 @@
                 v-for="(item, index) in biddingType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -112,7 +112,7 @@
                 v-for="(item, index) in currencyMultiple"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -124,7 +124,7 @@
                 v-for="(item, index) in isTax"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -182,7 +182,7 @@
                 v-for="(item, index) in biddingMode"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -194,7 +194,7 @@
                 v-for="(item, index) in biddingResultForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -227,7 +227,7 @@
                 v-for="(item, index) in resultOpenForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -243,7 +243,7 @@
                 v-for="(item, index) in isResultOpen"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -255,7 +255,7 @@
                 v-for="(item, index) in moldFee"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -371,8 +371,8 @@
               <div>
                 <iLabelML showTip class="form-item-rankShowRule-icon">
                   <div class="hover-text">
-                    <span>供应商对红绿灯名次区间/偏离比例的</span>
-                    <span class="hover-stick">具体定义不可见</span>
+                    <span>{{language('BIDDING_GYSDHLDMCQJ/PLBLD', '供应商对红绿灯名次区间/偏离比例的')}}</span>
+                    <span class="hover-stick">{{language('BIDDING_JTDYBKJ', '具体定义不可见')}}</span>
                     <span>。</span>
                   </div>
                 </iLabelML>
@@ -383,7 +383,7 @@
                   v-for="(item, index) in rankShowRule"
                   :key="index"
                   :value="item.value"
-                  :label="item.label"
+                  :label="language(item.key,item.label)"
                 >
                 </el-option>
               </iSelect>
@@ -602,8 +602,8 @@
             background
             :page-sizes="page.pageSizes"
             :page-size="page.pageSize"
-            prev-text="上一页"
-            next-text="下一页"
+            :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+            :next-text="language('BIDDING_XIAYIYE','下一页')"
             layout="prev, pager, next, jumper"
             :current-page="page.currPage"
             :total="ruleForm.attachments.length"
