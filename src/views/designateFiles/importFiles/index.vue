@@ -120,7 +120,7 @@ export default {
       this.updateNavList
     },
     computed: {
-      ...mapState(["navList","navListLeft"]),
+      ...mapState(["navList"]),
       ...mapActions(["updateNavList"])
     },
     methods:{

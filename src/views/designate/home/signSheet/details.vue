@@ -135,7 +135,6 @@ import filters from "@/utils/filters"
 import tablelist from "@/views/designate/supplier/components/tableList";
 import designateSign from "@/views/designate/home/designateSign/index";
 import addSignsheet from "./components/addSignsheet";
-import headerNav from "./components/headerNav";
 import {
   getNomiSelectedPage,
   getNomiNotSelectedPage,
@@ -191,7 +190,6 @@ export default {
     iButton,
     tablelist,
     addSignsheet,
-    headerNav
     // designateSign
   },
   created () {

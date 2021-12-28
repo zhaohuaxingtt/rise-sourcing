@@ -81,7 +81,6 @@ import { selectDictByKeys } from "@/api/dictionary"
 import {getBuyers} from '@/api/letterAndLoi/letter'
 import {user} from '@/config'
 import {getToken} from '@/utils'
-import { headerSubMenu } from '@/views/accessoryPart/headerNav/components/data'
 // eslint-disable-next-line no-undef
 export default{
   mixins:[pageMixins],
@@ -104,7 +103,6 @@ export default{
         tabelList:[],
         decArrayList:['applicationStatus','nominateProcessType','partProjectType'],
         selectRow:[],
-        headerSubMenu,
       }
     },
     methods:{
