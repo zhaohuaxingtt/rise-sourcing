@@ -13,19 +13,21 @@
         :lev="1"
         routerPage
       ></iNavMvp>
-      <iNavMvp
-        @change="change"
-        lang
-        class="pull-right"
-        right
-        :routerPage="true"
-        lev="2"
-        reversePosit
-        :list="heaederSubMenu"
-      />
+      <div class="flexRight">
+        <iNavMvp
+          @change="change"
+          lang
+          class="pull-right"
+          right
+          :routerPage="true"
+          lev="2"
+          reversePosit
+          :list="heaederSubMenu"
+        />
+        <slot></slot>
+      </div>
     </div>
     <div class="headerNav-sub margin-top30"></div>
-    <slot></slot>
   </div>
 </template>
 <script>
@@ -93,6 +95,8 @@ export default {
   display: flex;
   justify-content: space-between;
   position: relative;
+  width: 100%;
+
   &:after {
     content: "";
     width: 100%;
@@ -102,6 +106,12 @@ export default {
     position: absolute;
     left: 0px;
     bottom: -0.5rem;
+  }
+
+  .flexRight {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
   .ext {
     ul {

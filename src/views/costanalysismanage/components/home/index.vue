@@ -27,7 +27,7 @@
       </headerNav>
     </div>
     <iSearch
-      class="margin-top40"
+      class="margin-top25"
       @sure="sure"
       @reset="reset"
       :resetKey="PARTSIGN_RESETBUTTON"
@@ -467,10 +467,12 @@ export default {
 .home {
   .headerNav {
     display: flex;
+    width: 100%;
   }
   
   .header {
     position: relative;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;

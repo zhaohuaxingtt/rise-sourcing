@@ -8,8 +8,8 @@
 -->
 
 <template>
-  <iPage v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_PAGE|财务目标价管理-目标价维护-页面">
-    <headerNav type="financialmanage" />
+  <iPage class="maintenance" v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_PAGE|财务目标价管理-目标价维护-页面">
+    <headerNav />
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
     <!----------------------------------------------------------------->
@@ -103,8 +103,9 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
-import headerNav from '@/components/headerNav'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage, icon } from 'rise'
+import iLoger from 'rise/web/components/iLoger'
+import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
@@ -118,7 +119,7 @@ import {omit} from 'lodash'
 import moment from 'moment'
 export default {
   mixins: [pageMixins],
-  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog},
+  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog,iLoger, icon},
   data() {
     return {
       tableTitle: tableTitle,
@@ -489,5 +490,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.maintenance {
+  .control {
+    display: flex;
+    align-items: center;
+  }
+}
 </style>

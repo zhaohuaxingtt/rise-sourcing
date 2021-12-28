@@ -9,24 +9,25 @@
 <template>
   <iPage class="supplierScore">
     <div class="header">
-      <headerNav type="scoremanage" />
-      <div class="right-control">
-        <div class="control">
-          <iLoger
-          :config="{
-            module_obj_ae: '评分任务', 
-            menuName_obj_ae: ''
-          }"
-          isPage
-          credentials
-          class="margin-left20"
-          optionDicKey="LOG_OPERATION_TYPES"
-          optionDicKey2="供应商评分任务详情"/>
-          <span class="margin-left20">
-            <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-          </span>
+      <headerNav class="headerNav" type="scoremanage">
+        <div class="right-control">
+          <div class="control">
+            <iLoger
+            :config="{
+              module_obj_ae: '评分任务', 
+              menuName_obj_ae: ''
+            }"
+            isPage
+            credentials
+            class="margin-left20"
+            optionDicKey="LOG_OPERATION_TYPES"
+            optionDicKey2="供应商评分任务详情"/>
+            <span class="margin-left20">
+              <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+            </span>
+          </div>
         </div>
-      </div>
+      </headerNav>
     </div>
     <iSearch
       class="margin-top25"
@@ -452,11 +453,15 @@ export default {
 <style lang="scss" scoped>
 .supplierScore {
   .header {
+    width: 100%;
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+
+    .headerNav {
+      width: 100%;
+    }
     .title {
       font-size: 20px;
       font-weight: bold;
