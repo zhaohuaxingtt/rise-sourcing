@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-27 09:39:09
+ * @LastEditTime: 2021-12-28 16:33:38
  * @Description: 目标价详情
- * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\index.vue
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\targetPriceDetail\index.vue
 -->
 
 <template>
@@ -33,7 +33,7 @@
     <!------------------------------------------------------------------------>
     <!--                 修改历史                                          --->
     <!------------------------------------------------------------------------>
-    <history ref="history" :id="applyId" />
+    <history ref="history" :id="fsNum" />
     <!------------------------------------------------------------------------>
     <!--                 定点信息                                          --->
     <!------------------------------------------------------------------------>
@@ -72,6 +72,9 @@ export default {
     },
     partNum() {
       return this.detailData.partNum || ''
+    },
+    fsNum() {
+      return this.detailData.fsnrGsnrNum || ''
     }
   },
   methods: {

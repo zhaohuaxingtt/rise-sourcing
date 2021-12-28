@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 14:08:28
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 15:48:27
+ * @LastEditTime: 2021-12-28 16:26:05
  * @Description: 修改历史card
- * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\components\history.vue
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\targetPriceDetail\components\history.vue
 -->
 
 <template>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {iCard,iPagination,iButton} from 'rise'
+import {iCard,iPagination,iButton,iMessage} from 'rise'
 import tableList from '../../components/tableList'
 import { historyTableTitle } from '../data'
 import { pageMixins } from "@/utils/pageMixins"

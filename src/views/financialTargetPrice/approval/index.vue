@@ -1,10 +1,10 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
- * @LastEditors:  
- * @LastEditTime: 2021-11-11 17:01:48
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-28 17:15:44
  * @Description: 财务目标价-目标价审批
- * @FilePath: \front-web\src\views\financialTargetPrice\approval\index.vue
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\approval\index.vue
 -->
 
 <template>
@@ -175,6 +175,7 @@ export default {
         cfPriceType: '',
          showSelf: true
       }
+      this.sure()
     },
     getDict(type) {
       if(type == 'IS_SHOW_SELF') {
