@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-12-24 14:45:55
+ * @LastEditTime: 2021-12-28 10:16:16
  * @LastEditors: Please set LastEditors
  * @Description: 人工成本维护
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\costMaintenance\index.vue
@@ -197,19 +197,12 @@ export default {
     // 多选下载
     handleDownload () {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOXIAZAIDEWENJIAN", "请选择需要下载的文件"))
-
-      downloadFile({
-        applicationName: "rise",
-        fileList: this.multipleSelection.map(item => item.fileName)
-      })
+      downloadUdFile(this.multipleSelection.map(item => item.url))
       // downloadUdFile(this.multipleSelection.map(item => item.uploadId))
     },
     // 单个下载
     download (row) {
-      downloadFile({
-        applicationName: "rise",
-        fileList: row.fileName
-      })
+      downloadUdFile(row.url)
       // downloadUdFile(row.uploadId)
     },
     // 删除

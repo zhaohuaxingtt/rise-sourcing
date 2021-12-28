@@ -7,7 +7,7 @@
 -->
 <template>
     <iPage class="partsignHome">
-      <headerNav />
+      <headerNav :type="sourceinquirypoint" />
       <bidding/>
     </iPage>
 </template>

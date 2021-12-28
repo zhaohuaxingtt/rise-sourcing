@@ -9,7 +9,7 @@
 <template>
   <iPage class="partsignHome">
         <div>
-        <headerNav />
+        <headerNav :type="sourceinquirypoint" />
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
@@ -309,7 +309,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["navList","navListLeft"]),
+    ...mapState(["navList"]),
     ...mapActions(["updateNavList"])
   },
   methods: {

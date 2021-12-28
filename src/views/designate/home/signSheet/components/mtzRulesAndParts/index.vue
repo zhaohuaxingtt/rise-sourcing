@@ -6,6 +6,7 @@
                   :tableTitle="ruleTableTitle"
                   :index="true"
                   :selection="false"
+                  lang
                   >
         <!-- <template slot-scope="scope"
                   slot="compensationPeriod">
@@ -28,6 +29,7 @@
                   :tableTitle="partTableTitle"
                   :index="true"
                   :selection="false"
+                  lang
                   >
         <!-- <template slot-scope="scope"
                   slot="compensationPeriod">

@@ -46,6 +46,14 @@ s<!--
           <iInput v-if="scope.row.sendKmFlag == 1" v-model="scope.row.tiaResult" @input="handleInputByTiaResult($event, scope.row)" />
           <span v-else>{{ scope.row.tiaResult }}</span>
         </template>
+        <template #greenFieldMeasure="scope">
+          <iInput v-if="scope.row.sendKmFlag == 1" v-model="scope.row.greenFieldMeasure" @input="handleInputByGreenFieldMeasure($event, scope.row)" />
+          <span v-else>{{ scope.row.greenFieldMeasure }}</span>
+        </template>
+        <template #openGap="scope">
+          <iInput v-if="scope.row.sendKmFlag == 1" v-model="scope.row.openGap" @input="handleInputByOpenGap($event, scope.row)" />
+          <span v-else>{{ scope.row.openGap }}</span>
+        </template>
       </tableList>
       <iPagination 
         v-update
@@ -66,7 +74,7 @@ s<!--
 <script>
 import { iCard, iButton, iInput, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
-import { partListTableTitle as tableTitle } from "../data"
+import { partListTableTitle } from "../data"
 import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
 import { numberProcessor } from "@/utils"
@@ -94,7 +102,6 @@ export default {
   data() {
     return {
       loading: false,
-      tableTitle,
       tableListData: [],
       saveLoading: false,
       downloadDialogVisible: false,
@@ -104,6 +111,43 @@ export default {
   },
   mounted() {
     this.getKmPartList()
+  },
+  computed: {
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    }),
+    roleCodeList() {
+      if (Array.isArray(this.userInfo.positionList)) {
+        return this.userInfo.positionList.reduce((acc, cur) => {
+          if (Array.isArray(cur.roleDTOList)) {
+            return acc.concat(cur.roleDTOList.map(item => item.code))
+          } else {
+            return acc
+          }
+        }, [])
+      } else {
+        return []
+      }
+    },
+    isPca() { // 零件成本分析员 临时
+      return this.roleCodeList.some(item => item.indexOf("LJCBFXY") > -1)
+    },
+    isTia() { // 模具成本分析员 临时
+      return this.roleCodeList.some(item => item.indexOf("MJCBFXY") > -1)
+    },
+    tableTitle() {
+      if (this.isPca && !this.isTia) {
+        return partListTableTitle.filter(item => item.props !== "tiaResult")
+      }
+
+      if (this.isTia && !this.isPca) {
+        return partListTableTitle.filter(item => item.props !== "pcaResult" && item.props !== "greenFieldMeasure" && item.props !== "openGap" && item.props !== "openPotential")
+      }
+
+      if (this.isPca && this.isTia) return partListTableTitle
+
+      return partListTableTitle.filter(item => item.props !== "tiaResult" && item.props !== "pcaResult" && item.props !== "greenFieldMeasure" && item.props !== "openGap" && item.props !== "openPotential")
+    }
   },
   methods: {
     getEnumValue,
@@ -212,6 +256,15 @@ export default {
     },
     handleInputByTiaResult(value, row) {
       this.$set(row, "tiaResult", numberProcessor(value, 2))
+    },
+    handleInputByGreenFieldMeasure(value, row) {
+      this.$set(row, "greenFieldMeasure", numberProcessor(value, 2))
+    },
+    handleInputByGreenFieldMeasure(value, row) {
+      this.$set(row, "greenFieldMeasure", numberProcessor(value, 2))
+    },
+    handleInputByOpenGap(value, row) {
+      this.$set(row, "openGap", numberProcessor(value, 2))
     },
     // 关闭弹窗
     changeVisible(type){

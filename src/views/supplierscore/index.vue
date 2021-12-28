@@ -9,9 +9,8 @@
 <template>
   <iPage class="supplierScore">
     <div class="header">
-      <iNavMvp :list="list" :lang="true" :lev="1" routerPage></iNavMvp>
+      <headerNav type="scoremanage" />
       <div class="right-control">
-        <iNavMvp class="nav" :lev="2" :list="navList" />
         <div class="control">
           <iLoger
           :config="{
@@ -200,7 +199,8 @@
 </template>
 
 <script>
-import { iPage, iNavMvp, icon, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage } from "rise"
+import { iPage, icon, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage } from "rise"
+import headerNav from '@/components/headerNav'
 import iLoger from 'rise/web/components/iLoger'
 import forwardDialog from "@/views/supplierscore/components/forwardDialog"
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -216,7 +216,6 @@ import { TAB } from '@/views/financialTargetPrice/components/data'
 export default {
   components: {
     iPage,
-    iNavMvp,
     icon,
     iSearch, 
     iSelect, 
@@ -226,7 +225,8 @@ export default {
     iPagination,
     iLoger,
     forwardDialog,
-    tableList
+    tableList,
+    headerNav
   },
   mixins: [ filters, pageMixins ], 
   data() {

@@ -9,9 +9,10 @@
 <template>
   <iPage>
     <div class="headerNav">
-      <iNavMvp :lev="1" :list="list" :lang="true" routerPage class="nav" />
+      <!-- <iNavMvp :lev="1" :list="list" :lang="true" routerPage class="nav" /> -->
+      <headerNav type="costanalysismanage" />
       <div class="right-control">
-        <iNavMvp class="pull-right" :lang="true" right routerPage lev="2" :list="navList" />
+        <!-- <iNavMvp class="pull-right" :lang="true" right routerPage lev="2" :list="navList" /> -->
         <div class="control">
           <iLoger
           :config="{
@@ -33,6 +34,7 @@
 
 <script>
 import { iPage, iNavMvp, icon } from "rise";
+import headerNav from "@/components/headerNav"
 import { navList } from "./components/data";
 import { cloneDeep } from "lodash";
 import iLoger from 'rise/web/components/iLoger'
@@ -43,7 +45,8 @@ export default {
     iNavMvp,
     iPage,
     icon,
-    iLoger
+    iLoger,
+    headerNav
   },
   data() {
     return {

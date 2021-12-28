@@ -8,7 +8,7 @@
 -->
 <template>
   <iPage>
-    <headerNav />
+    <headerNav :type="sourceinquirypoint" />
     <iSearch class="margin-bottom20" @sure="sure" @reset='reset()' v-permission.auto="SOURCING_STEELDEMANCREATION_SEARCH|搜索">
       <el-form>
         <template v-for='(items,index) in searchForm'>
@@ -81,7 +81,6 @@ import { selectDictByKeys } from "@/api/dictionary"
 import {getBuyers} from '@/api/letterAndLoi/letter'
 import {user} from '@/config'
 import {getToken} from '@/utils'
-import { headerSubMenu } from '@/views/accessoryPart/headerNav/components/data'
 // eslint-disable-next-line no-undef
 export default{
   mixins:[pageMixins],
@@ -104,7 +103,6 @@ export default{
         tabelList:[],
         decArrayList:['applicationStatus','nominateProcessType','partProjectType'],
         selectRow:[],
-        headerSubMenu,
       }
     },
     methods:{

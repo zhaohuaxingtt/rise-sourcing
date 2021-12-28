@@ -123,7 +123,7 @@ const state = {
       permissionName: '寻源执行-定点信/LOI'
     },
   ],
-  navListLeft: [ //sourcing 三级菜单列表
+  sourceinquirypointNavListLeft: [ //sourcing 三级菜单列表
     // {
     //   value: 1,
     //   name: "寻源执行",
@@ -202,7 +202,7 @@ const state = {
     }
   ],
 
-  thirdMenu: [ //sourcing 4级菜单列表
+  sourceinquirypointThirdMenu: [ //sourcing 4级菜单列表
     {
       name: "概览",
       message: 0,
@@ -377,7 +377,171 @@ const state = {
       permissionName: 'LOI',
       group: 6
     },
-  ]
+  ],
+
+  financialmanageNavListLeft: [
+    {
+      value: 1,
+      name: "零件目标价",
+      message: 0,
+      url: "/targetpriceandscore/financialtargetprice/maintenance",
+      activePath: "maintenance",
+      key: "LINGJIANMUBIAOJIA",
+      permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE',
+      permissionName: '零件目标价',
+      group: 1
+    },
+    {
+      value: 2,
+      name: "模具目标价",
+      message: 0,
+      url: "/targetpriceandscore/modeltargetprice/signin",
+      activePath: "signin",
+      key: "MOJUMUBIAOJIA",
+      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE',
+      permissionName: '模具目标价',
+      group: 2
+    },
+  ],
+  financialmanageThirdMenu: [
+    {
+      name: "维护",
+      message: 0,
+      url: "/targetpriceandscore/financialtargetprice/maintenance",
+      activePath: "maintenance",
+      key: "WEIHU",
+      permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE_SUBMENU_MAINTENANCE',
+      permissionName: '维护',
+      group: 1
+    },
+    {
+      name: "审批",
+      message: 0,
+      url: "/targetpriceandscore/financialtargetprice/approval",
+      activePath: "approval",
+      key: "SHENPI",
+      permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE_SUBMENU_APPROVAL',
+      permissionName: '审批',
+      group: 1
+    },
+    {
+      name: "查询",
+      message: 0,
+      url: "/targetpriceandscore/financialtargetprice/query",
+      activePath: "query",
+      key: "CHAXUN",
+      permissionKey: 'FINANCIALMANAGE_MENU_PARTTARGETPRICE_SUBMENU_QUERY',
+      permissionName: '查询',
+      group: 1
+    },
+    {
+      name: "签收",
+      message: 0,
+      url: "/targetpriceandscore/modeltargetprice/signin",
+      activePath: "signin",
+      key: "QIANSHOU",
+      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_SIGNIN',
+      permissionName: '签收',
+      group: 2
+    },
+    {
+      name: "维护",
+      message: 0,
+      url: "/targetpriceandscore/modeltargetprice/maintenance",
+      activePath: "maintenance",
+      key: "WEIHU",
+      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_MAINTENANCE',
+      permissionName: '维护',
+      group: 2
+    },
+    {
+      name: "审批",
+      message: 0,
+      url: "/targetpriceandscore/modeltargetprice/approval",
+      activePath: "approval",
+      key: "SHENPI",
+      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_APPROVAL',
+      permissionName: '审批',
+      group: 2
+    },
+    {
+      name: "查询",
+      message: 0,
+      url: "/targetpriceandscore/modeltargetprice/query",
+      activePath: "query",
+      key: "CHAXUN",
+      permissionKey: 'FINANCIALMANAGE_MENU_MODELTARGETPRICE_SUBMENU_QUERY',
+      permissionName: '查询',
+      group: 2
+    },
+  ],
+
+  scoremanageNavListLeft: [
+    {
+      value: 1,
+      name: "评分任务",
+      message: 0,
+      url: "/targetpriceandscore/supplierscore/home",
+      activePath: "home",
+      key: "PINGFENRENWU",
+      permissionKey: 'CSCSCOREMANAGE_MENU_SUPPLIERSCORE',
+      permissionName: '评分任务',
+      group: 1
+    },
+  ],
+  scoremanageThirdMenu: [],
+
+  costanalysismanageNavListLeft: [
+    {
+      value: 1,
+      name: "成本分析管理",
+      message: 0,
+      url: "/targetpriceandscore/costanalysismanage/home",
+      activePath: "home",
+      key: "CHENGBENFENXIGUANLI",
+      permissionKey: 'COSTANALYSISMANAGE_MENU_COSTANALYSISMANAGE',
+      permissionName: '成本分析管理',
+      group: 1
+    },
+    {
+      value: 2,
+      name: "基础数据维护",
+      message: 0,
+      url: "/targetpriceandscore/datamaintenance/costMaintenance",
+      activePath: "costMaintenance",
+      key: "JICHUSHUJUWEIHU",
+      permissionKey: 'COSTANALYSISMANAGE_MENU_DATAMAINTENANCE',
+      permissionName: '基础数据维护',
+      group: 2
+    },
+  ],
+  costanalysismanageThirdMenu: [
+    {
+      name: "人工成本维护",
+      message: 0,
+      url: "/targetpriceandscore/datamaintenance/costMaintenance",
+      activePath: "costMaintenance",
+      key: "RENGONGCHENGBENWEIHU",
+      permissionKey: 'COSTANALYSISMANAGE_MENU_DATAMAINTENANCE_SUBMENU_COSTMAINTENANCE',
+      permissionName: '人工成本维护',
+      group: 2
+    },
+  ],
+
+  configscoredeptNavListLeft: [
+    {
+      value: 1,
+      name: "评分部门设置",
+      message: 0,
+      url: "/targetpriceandscore/configscoredept",
+      activePath: "configscoredept",
+      key: "PINGFENBUMENSHEZHI",
+      permissionKey: 'MANAGEBACKEND_MENU_CONFIGSCOREDEPT',
+      permissionName: '评分部门设置',
+      group: 1
+    },
+  ],
+  configscoredeptThirdMenu: []
 }
 
 const mutations = {
