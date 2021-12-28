@@ -2,16 +2,19 @@
 export const ruleTableTitle = [//决策资料规则清单暂用
   {
     props: 'yearCw',
-    key: 'Year CW'
+    key: 'YEARCW',
+    name: 'Year CW'
   },
   {
     props: 'ttMtzAppId',
-    key: 'Nomination No.',
+    key: 'NOMINATIONNO.',
+    name: 'Nomination No.',
     minWidth: '100'
   },
   {
     props: 'ruleNo',
-    key: 'Rule No.'
+    key: 'RULENO.',
+    name: 'Rule No.',
   },
   {
     props: 'materialGroup',
@@ -23,15 +26,18 @@ export const ruleTableTitle = [//决策资料规则清单暂用
   },
   {
     props: 'carline',
-    key: 'Carline'
+    key: 'CARLINE',
+    name: 'Carline',
   },
   {
     props: 'supplierName',
-    key: 'Supplier'
+    key: 'SUPPLIEREN',
+    name: 'Supplier',
   },
   {
     props: 'materialName',
-    key: 'Material'
+    key: 'MATERIAL',
+    name: 'Material',
   },
   {
     props: 'materialCode',
@@ -43,7 +49,8 @@ export const ruleTableTitle = [//决策资料规则清单暂用
   },
   {
     props: 'price',
-    key: 'Price'
+    key: 'PRICE',
+    name: 'Price',
   },
   {
     props: 'priceMeasureUnit',
@@ -55,7 +62,8 @@ export const ruleTableTitle = [//决策资料规则清单暂用
   },
   {
     props: 'tcCurrence',
-    key: 'Currency'
+    key: 'CURRENCY',
+    name: 'Currency',
   },
   {
     props: 'tcExchangeRate',
@@ -75,15 +83,18 @@ export const ruleTableTitle = [//决策资料规则清单暂用
   },
   {
     props: 'compensationPeriod',
-    key: 'Period'
+    key: 'PERIOD',
+    name: 'Period',
   },
   {
     props: 'startDate',
-    key: 'Valid From'
+    key: 'VALIDFROM',
+    name: 'Valid From',
   },
   {
     props: 'endDate',
-    key: 'Valid To'
+    key: 'VALIDTO',
+    name: 'Valid To',
   },
 ]
 
@@ -91,28 +102,34 @@ export const ruleTableTitle = [//决策资料规则清单暂用
 export const partTableTitle = [
   {
     props: 'yearCw',
-    key: 'Year CW',
+    key: 'YEARCW',
+    name: 'Year CW'
   },
   {
     props: 'ttMtzAppId',
-    key: 'Nomination No.',
+    key: 'NOMINATIONNO.',
+    name: 'Nomination No.',
     minWidth: '100'
   },
   {
     props: 'ruleNo',
-    key: 'Part_No.'
+    key: 'PARTNO.',
+    name: 'Part No.',
   },
   {
-    props: 'partName',
-    key: 'Part_Name'
+    props: 'assemblyPartnum',
+    key: 'PARTNAME',
+    name: 'Part Name',
   },
   {
     props: 'supplierName',
-    key: 'Supplier'
+    key: 'SUPPLIEREN',
+    name: 'Supplier',
   },
   {
     props: 'materialName',
-    key: 'Material'
+    key: 'MATERIAL',
+    name: 'Material',
   },
   {
     props: 'materialCode',
@@ -124,7 +141,8 @@ export const partTableTitle = [
   },
   {
     props: 'dosage',
-    key: 'Usage'
+    key: 'USAGE',
+    name: 'Usage'
   },
   {
     props: 'dosageMeasureUnit',
@@ -136,7 +154,8 @@ export const partTableTitle = [
   },
   {
     props: 'tcCurrence',
-    key: 'Currency'
+    key: 'CURRENCY',
+    name: 'Currency'
   },
   {
     props: 'tcExchangeRate',
@@ -156,14 +175,17 @@ export const partTableTitle = [
   },
   {
     props: 'compensationPeriod',
-    key: 'Period'
+    key: 'PERIOD',
+    name: 'Period'
   },
   {
     props: 'startDate',
-    key: 'Valid From'
+    key: 'VALIDFROM',
+    name: 'Valid From',
   },
   {
     props: 'endDate',
-    key: 'Valid To'
+    key: 'VALIDTO',
+    name: 'Valid To',
   },
 ]

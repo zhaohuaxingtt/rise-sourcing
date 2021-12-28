@@ -20,7 +20,9 @@
                  @change="changeRouter"></iNavMvp>
       </div>
       <div class="btnList">
-        <iButton v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
+      <!-- <iButton v-if="isCommonSourcing" @click="waitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
+        <iButton  v-if="isCommonSourcing" @click="cancelWaitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN||取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton> -->
+     <iButton v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
         <iButton @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
                  v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE | 申请模具目标价">
@@ -258,6 +260,11 @@ import { getRfqInfo } from '@/api/costanalysismanage/rfqdetail';
 import { checkApply } from '@/api/modelTargetPrice/index';
 import iLoger from 'rise/web/components/iLoger';
 import { partProjTypes, roundsType } from '@/config';
+import {
+  waitStarMonitorUpdate,
+  cancelWaitStarMonitorUpdate
+  
+} from '@/api/partsrfq/editordetail';
 import { mockData } from './mock.js';
 export default {
   components: {
@@ -311,6 +318,7 @@ export default {
       reason: '',
       roundsType,
       rfqInfo: {},
+      isCommonSourcing:false,
     };
   },
   created () {
@@ -406,7 +414,10 @@ export default {
             if (res.code == 200 && res.data) {
               this.baseInfo = res.data;
               this.rfqInfo = res.data;
+              res.data.partProjectType[0] === '50002000' || res.data.partProjectType[0] === '50002001'? this.isCommonSourcing === true :''
               this.disabled = !!res.data.isFreeze;
+              console.log(this.isCommonSourcing, '222222222222222222222222222')
+              console.log(res.data.partProjectType[0], '1111111111')
               console.log(this.disabled, '最终数据1');
               if (dialogPage) {
                 //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
@@ -603,6 +614,27 @@ export default {
     getDisabled () {
       return this.disabled;
     },
+    //等待StarMonitor定点更新
+    waitStarmonitor() {
+       const rfqId = this.baseInfo.id || this.$route.query.id;
+      waitStarMonitorUpdate(rfqId).then(res=>{
+         if(res.code === '200') {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    cancelWaitStarmonitor() {
+       const rfqId = this.baseInfo.id || this.$route.query.id;
+      cancelWaitStarMonitorUpdate().then(res=>{
+        if(res.code === '200') {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    }
   },
 };
 </script>

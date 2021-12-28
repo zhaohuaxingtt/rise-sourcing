@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-27 20:02:24
+ * @LastEditTime: 2021-12-28 11:03:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -119,7 +119,7 @@ export const whiteList = ['headerEbr','groupName','partNo','partName','cfPartAPr
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice'] //默认需要显示的数据
+export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice','releaseCost'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -516,7 +516,9 @@ export function getRowAndcolSpanArray(data){
 function getcol(allData,currentKey,wi,li){
   try {
     let number = 0
-    if(wi > 0 && (allData[wi-1].find((items,index)=> index == li).data) == currentKey) return number
+    if(wi > 0 && ((allData[wi-1].find((items,index)=> index == li).data) == currentKey) && allData[wi-1].find((items,index)=> index == li).isMerge) {
+        return number
+    }
     for (let index = wi; index < allData.length; index++){
       if(allData[index].find((items,index)=> index == li).data == currentKey && allData[index].find((items,index)=> index == li).isMerge){
         number ++
@@ -534,7 +536,9 @@ function getcol(allData,currentKey,wi,li){
 function getRow(allData,currentKey,wi,li){
   try {
     let number = 0
-    if(li>0 && (allData[wi].find((items,i)=>i == li-1).data == currentKey)) return number
+    if(li>0 && (allData[wi].find((items,i)=>i == li-1).data == currentKey) && (allData[wi].find((items,i)=>i == li-1).isMerge)) {
+        return number
+    }
     for (let index = li; index < allData[wi].length; index++){
       if(allData[wi].find((items,i)=>i == index).data == currentKey && allData[wi].find((items,i)=>i == index).isMerge){
         number ++
