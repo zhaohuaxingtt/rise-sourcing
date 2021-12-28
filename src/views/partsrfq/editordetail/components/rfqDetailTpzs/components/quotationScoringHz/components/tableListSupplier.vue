@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 11:48:04
- * @LastEditTime: 2021-12-28 14:57:03
+ * @LastEditTime: 2021-12-28 15:06:31
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
@@ -73,7 +73,7 @@ export default{
         const style = {
         'fontWeight':row[columnIndex].style.isBold?'bold':'',
         'color':row[columnIndex].style.fontColor || '#707070',
-        'backgroundColor':row[columnIndex].style.backgroundColor || 'white',
+        'backgroundColor':row[columnIndex].style.backgroundColor || 'white'
         }
         if(row[columnIndex].style.borderRight) return {...style,...{borderRight:'none'}}
         return style
@@ -95,6 +95,9 @@ export default{
     }
     ::v-deep td{
         border-bottom: 1px solid #EBEEF5;
+        .cell{
+          white-space: pre-line;
+        }
     }
   }
 </style>
