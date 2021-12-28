@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 11:48:04
- * @LastEditTime: 2021-12-28 15:06:31
+ * @LastEditTime: 2021-12-28 15:34:43
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
@@ -10,7 +10,8 @@
   <el-table class="table" :data="tabelData" :fit='true' :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
     <el-table-column v-for="(i,index) in tabelTitle" :props='i' :key='index' :fixed='fixedFn(index)' align="center">
       <template slot-scope="scope">
-        {{scope.row[i].data | deleteContent | dateFillter}}
+        <span v-if='scope.row[i].data == "View"'>View</span>
+        <template v-else>{{scope.row[i].data | deleteContent | dateFillter}}</template>
       </template>
     </el-table-column>
   </el-table>  
@@ -27,19 +28,12 @@ export default{
   filters:{
     dateFillter(val){
       // eslint-disable-next-line no-undef
-      if(isNaN(val)&&!isNaN(Date.parse(val))){
-        // eslint-disable-next-line no-undef
-        return moment(val).format('YYYY-MM-DD')
-      }else{
-        return val
-      }
+      if(isNaN(val)&&!isNaN(Date.parse(val))) return moment(val).format('YYYY-MM-DD')
+      return val
     },
     deleteContent(val){
-      if(val == 'DEL') {
-        return ''
-      }else{
-        return val
-      }
+      if(val == 'DEL') return ''
+      return val
     }
   },
   computed:{
@@ -70,12 +64,13 @@ export default{
     },
     cellStyleName({row, column, rowIndex, columnIndex}){
       try {
-        const style = {
+        let style = {
         'fontWeight':row[columnIndex].style.isBold?'bold':'',
         'color':row[columnIndex].style.fontColor || '#707070',
         'backgroundColor':row[columnIndex].style.backgroundColor || 'white'
         }
-        if(row[columnIndex].style.borderRight) return {...style,...{borderRight:'none'}}
+        if(row[columnIndex].style.borderRight) style = {...style,...{borderRight:'none'}}
+        if(row[columnIndex].style.underscore) style = {...style,...{borderBottom:'2px solid #1763F7'}}
         return style
       } catch (error) {
        return {
