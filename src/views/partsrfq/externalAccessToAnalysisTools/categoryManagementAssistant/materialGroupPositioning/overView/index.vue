@@ -35,11 +35,12 @@ export default {
               key:"CAILIAOZUDINGWEI",
               image:require("@/assets/images/partRfq/materialGroup01.png"),
               url:"/sourcing/categoryManagementAssistant/materialGroupPositioning/materialGroup"
-           },{
-              name:"供应商定位",
-              key:"GONGYINGSHANGDINGWEI",
-              image:require("@/assets/images/partRfq/internalDemandAnalysis05.png")
-           }
+           },
+         //   {
+         //      name:"供应商定位",
+         //      key:"GONGYINGSHANGDINGWEI",
+         //      image:require("@/assets/images/partRfq/internalDemandAnalysis05.png")
+         //   }
         ]
      }
   },
