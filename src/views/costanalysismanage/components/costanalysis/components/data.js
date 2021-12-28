@@ -9,6 +9,7 @@
 export const tableTitle = [
   { props: "fileName", name: "文件名称", key: "costanalysismanage.WenJianMingCheng", tooltip: true },
   { props: "fileSize", name: "大小", key: "costanalysismanage.DaXiao", tooltip: true },
+  { props: "fileType", name: "报告类型", key: "BAOGAOLEIXING", tooltip: true },
   { props: "uploadDate", name: "上传日期", key: "costanalysismanage.ShangChuanRiQi", tooltip: true },
   { props: "uploadBy", name: "上传人", key: "costanalysismanage.ShangChuanRen", tooltip: true }
 ]
