@@ -131,12 +131,15 @@ export default {
         this.rules = baseHeRules(this.ruleForm, this)
         this.$refs["ruleForm"].clearValidate()
         this.$nextTick(() => {
-          this.$refs["ruleForm"].validateField([
-            'biddingQuoteRule.highestOffer',
-            'biddingQuoteRule.amplitudeValue',
-            'biddingQuoteRule.biddingInterval',
-            'biddingQuoteRule.autoPriceLimit',
-          ])
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'biddingQuoteRule.highestOffer',
+          //   'biddingQuoteRule.amplitudeValue',
+          //   'biddingQuoteRule.biddingInterval',
+          //   'biddingQuoteRule.autoPriceLimit',
+          // ])
         })
       }
     },
