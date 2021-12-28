@@ -29,27 +29,18 @@
                @handleSelectionChange="handleSelectionChange">
       <template #fileName="scope">
         <div class="reportContainer">
-          <template v-if="scope.row.fileList">
-            <span class="number">{{ scope.row.fileList && scope.row.fileList.length }}</span>
-            <icon symbol
-                  name="iconwenjianshuliangbeijing"
-                  class="reportIcon" />
-          </template>
-          <template v-else>
+          <template>
             <div @click="handleOpenPreviewDialog(scope.row)"
                  class="openLinkText cursor">{{
-                scope.row['fileName']
+                scope.row.reportName
               }}
             </div>
           </template>
         </div>
       </template>
       <template #createName="scope">
-        <template v-if="scope.row.fileList">
+        <template v-if="scope.row.createBy">
           <span>{{ scope.row.createName }}</span>
-        </template>
-        <template v-else>
-          <span>{{ scope.row.uploadBy }}</span>
         </template>
       </template>
       <template #categoryName="scope">
@@ -59,7 +50,7 @@
       </template>
       <template #rfqName="scope">
         <template v-if="scope.row.rfqName">
-          <span>{{ scope.row.id }}-{{ scope.row.rfqName }}</span>
+          <span>{{ scope.row.rfqId }}-{{ scope.row.rfqName }}</span>
         </template>
       </template>
     </tableList>
@@ -184,8 +175,8 @@ export default {
     },
     handleOpenPreviewDialog (row) {
       this.previewDialog = true;
-      this.fileUrl = row.filePath;
-      this.fileName = row.fileName.split('.pdf')[0];
+      this.fileUrl = row.reportLink;
+      this.fileName = row.reportName.split('.pdf')[0];
     },
   },
 };
