@@ -463,6 +463,7 @@ export function exportFSPartsAsRow(rfqId,round) {
         method:'GET'
     })
 }
+
 //导出excel
 export function exportFsSupplierAsRow(rfqId,round) {
     return downLoad({
@@ -470,10 +471,55 @@ export function exportFsSupplierAsRow(rfqId,round) {
         method:'GET'
     })
 }
+
 //导出excel
 export function exportGsPartsAsRow(rfqId,round) {
     return downLoad({
         url:`/nego-assistant/export-gs-parts-as-row/${rfqId}/${round}`,
         method:'GET'
     })
+}
+
+//关联StarMonitor记录
+export function starMonitorList(data) {
+    return requst({
+        url:'/star-monitor/list',
+        method:'POST',
+        data
+    })
+}
+
+//应用关联记录校验
+export function checkInfo(data) {
+    return requst({
+        url:'star-monitor/check',
+        method:'POST',
+        data
+    })
+}
+
+//取消关联StarMonitor
+export function cancelRef(data) {
+    return requst({
+        url:'/star-monitor/cancel',
+        method:'POST',
+        data
+    })
+}
+
+//取消等待StarMonitor定点更新
+export function cancelWaitStarMonitorUpdate(rfqId) {
+    return requst({
+        url:`star-monitor/cancel-wait/${rfqId}`,
+        method:'GET',
+    })
+}
+
+//等待StarMonitor定点更新
+export function waitStarMonitorUpdate(rfqId) {
+    return requst({
+        url:`star-monitor/wait-update/${rfqId}`,
+        method:'GET'
+    })
+
 }
