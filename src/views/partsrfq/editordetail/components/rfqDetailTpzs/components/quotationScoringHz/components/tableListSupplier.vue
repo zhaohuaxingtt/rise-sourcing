@@ -1,23 +1,23 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 11:48:04
- * @LastEditTime: 2021-12-28 19:43:56
+ * @LastEditTime: 2021-12-28 21:27:19
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
 -->
 <template>
-  <el-table class="table" :data="tabelData" :fit='true' :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
-    <el-table-column v-for="(i,index) in tabelTitle" :props='i' :key='index' :fixed='fixedFn(index)' align="center">
+  <el-table class="table" :data="tabelData"  :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
+    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center">
       <template slot-scope="scope">
         <span class="link" @click="openPage(scope.row[i].style.hyperlink)" v-if='scope.row[i].data == "View" && !scope.row[i].isHeader'>View</span>
         <template v-else-if='scope.row[i] && scope.row[i].data && scope.row[i].data.match(/\n/)'>
-          <p>{{scope.row[i].data.split(/\n/)[0]}}</p>
-          <p>{{scope.row[i].data.split(/\n/)[1]}}</p>
+          <div>{{scope.row[i].data.split(/\n/)[0]}}</div>
+          <div>{{scope.row[i].data.split(/\n/)[1]}}</div>
         </template>
-        <span v-else>{{scope.row[i].data | deleteContent | dateFillter}}</span>
+        <div v-else>{{scope.row[i].data | deleteContent | dateFillter}}</div>
       </template>
-    </el-table-column>
+    </af-table-column>
   </el-table>  
 </template>
 <script>
@@ -115,7 +115,7 @@ export default{
         .cell{
           white-space:nowrap;
           word-break: normal;
-          p{
+          div{
             text-align: center;
           }
         }

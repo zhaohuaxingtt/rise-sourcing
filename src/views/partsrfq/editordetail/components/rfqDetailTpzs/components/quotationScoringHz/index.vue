@@ -319,7 +319,7 @@ export default{
      */
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
-      negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
+      return negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
         if(res.data && res.data.layout){
           this.backChoose = JSON.parse(res.data.layout) // 
         }
@@ -372,10 +372,10 @@ export default{
      */
     fsPartsAsRow(){
       this.fsTableLoading = true
+      this.clearDataFs()
       // eslint-disable-next-line no-unexpected-multiline
       this.changeFnForGSandFS(this.layout).then(res=>{
         this.fsTableLoading = false
-        this.clearDataFs()
         if(res.data && res.data.partInfoList && res.data.partInfoList){
           this.DataRoundsType = res.data.roundsType
           this.hasNoBidOpen = res.data.hasNoBidOpen
@@ -455,6 +455,8 @@ export default{
      * @return {*}
      */
     supplierfsSupplierAsRow(){
+      this.backChooseList = []
+      this.tabelDataSupplier = []
       return new Promise(r=>{
         this.supplierTableLoading = true
         fsSupplierAsRow(this.$route.query.id,this.round,this.backChoose).then(res=>{
