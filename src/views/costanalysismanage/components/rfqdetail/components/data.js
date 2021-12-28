@@ -32,11 +32,11 @@ export const partListTableTitle = [
   { props: "round", name: "RFQ轮次", key: "RFQLUNCI", tooltip: true },
   { props: "cbdStatus", name: "CBD", key: "CBD", tooltip: true },
   { props: "supplierName", name: "供应商", key: "GONGYINGSHANG", tooltip: true },
-  { props: "pcaResult", name: "PCA分析结果", key: "PCAFENXIJIEGUO", tooltip: true, width: 110 },
+  { props: "pcaResult", name: "KGF", key: "KGF", tooltip: true, width: 110 },
   { props: "greenFieldMeasure", name: "Green Field Measures", key: "GREENFIELDMEASURES", tooltip: true, minWidth: 180 },
   { props: "openGap", name: "Open GAP", key: "OPENGAP", tooltip: true, width: 110 },
   { props: "openPotential", name: "Open Potential", key: "OPENPOTENTIAL", tooltip: true, minWidth: 140 },
-  { props: "tiaResult", name: "TIA分析结果", key: "TIAFENXIJIEGUO", tooltip: true, width: 110 },
+  { props: "tiaResult", name: "TIA", key: "TIA", tooltip: true, width: 110 },
 ]
 
 // 报告清单表头
