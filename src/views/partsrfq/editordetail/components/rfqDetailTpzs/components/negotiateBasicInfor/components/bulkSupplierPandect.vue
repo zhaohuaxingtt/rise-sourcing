@@ -6,7 +6,7 @@
  * @Descripttion: 总览
 -->
 <template>
-  <iCard id="allContainer " @handleTitle="addFile($event,8, '批量供应商工厂总览')"  :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
+  <iCard id="bulkSupplierPandect" @handleTitle="addFile($event,8, '批量供应商工厂总览')"  :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
     <div class="center" id="card8">
       <div class="tip">
         <el-popover trigger="hover" placement="top-start" width="400" :content="language('TLJJGLJCLGYSGHBLCXCL','Turnover=零件价格*零件产量*供应商供货比例*车型产量')">
@@ -28,7 +28,7 @@
 import { iCard, icon, iButton } from "rise";
 import map1 from "./map.vue";
 import theMapIcon from "./theMapIcon.vue";
-import { overviewBatchSupplierMap, saveOverviewSupplierBatchReport } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
+import { saveOverviewSupplierBatchReport, queryRfqSupplierList, queryRfqSupplierListByCategory } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import supplierCard from "./supplierCard.vue";
 import { downloadPdfMixins } from '@/utils/pdf';
 import resultMessageMixin from '@/utils/resultMessageMixin';
@@ -87,8 +87,9 @@ export default {
     },
     async handleSave() {
       this.saveButtonLoading = true;
+      console.log(document.querySelector("#bulkSupplierPandect"))
       const resFile = await this.getDownloadFileAndExportPdf({
-        domId: '#allContainer',
+        domId: '#bulkSupplierPandect',
         watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
         pdfName: this.language('PINLEIGUANLIZHUSHOU', '品类管理助手') + '-' + this.language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN', '批量供应商工厂总览') + '-' + this.categoryName + '-' + window.moment().format('YYYY-MM-DD') + '|',
       });
@@ -107,14 +108,16 @@ export default {
         rfqId: '',
         categoryCode: ''
       }
+      var res;
       if (this.$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant') {
         pms.rfqId = this.$route.query.id
+        res = await queryRfqSupplierList(pms)
       } else {
         pms.categoryCode = this.categoryCode
+        res = await queryRfqSupplierListByCategory(pms)
       }
-      const res = await overviewBatchSupplierMap(pms)
       this.mapListData = res.data
-      this.supplierDataList = res.data.supplierDataList || []
+      this.supplierDataList = res.data.supplierList || []
     }
   }
 }
