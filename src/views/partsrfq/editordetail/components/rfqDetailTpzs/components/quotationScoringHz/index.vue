@@ -83,6 +83,7 @@ import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSumm
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
+    exportTile:[],
     supplierLoading:false,
     title:getRenderTableTile([],0,1),
     exampelData:exampelData,
@@ -382,6 +383,7 @@ export default{
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
           this.title = relTitle.title
+          this.exportTile = relTitle.allExportHiddenOrShow
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
@@ -513,11 +515,11 @@ export default{
     //导出
     exportParts(layout) {
       if(layout === '1') {
-        return exportFSPartsAsRow(this.$route.query.id,this.round)
+        return exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       } else if(layout === '2') {
-        return exportFsSupplierAsRow(this.$route.query.id,this.round)
+        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
       } else {
-        return exportGsPartsAsRow(this.$route.query.id,this.round)
+        return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       }
     }
   }

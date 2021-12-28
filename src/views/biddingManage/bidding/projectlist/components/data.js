@@ -2,130 +2,95 @@ import language from "@/utils/language";
 
 export const projectTableTitle = [
   {
-    type: "selection",
-    width: 60,
+    props: "index",
+    name: language('BIDDING_XUHAO','序号'),
+    key:'BIDDING_XUHAO'
   },
   {
-    type: "index",
-    width: 70,
-    label: language('BIDDING_XUHAO','序号'),
+    props: "quoteType",
+    name: language('BIDDING_BAOJIALEIXING','报价类型'),
+    key:'BIDDING_BAOJIALEIXING',
   },
   {
-    prop: "quoteType",
-    label: language('BIDDING_BAOJIALEIXING','报价类型'),
-    customRender: (h, scope) => {
-      return <span>{scope.row.quoteType === '01' ? language('BIDDING_KAIBIAO','开标') : scope.row.quoteType === '02' ? language('BIDDING_YINGSHI','英式') : scope.row.quoteType === '03' ? language('BIDDING_HESHI','荷氏') : ''}</span>;
-    },
-  },
-  {
-    prop: "projectCode",
+    props: "projectCode",
     width: 140,
-    label: language('BIDDING_XIANGMUBIANHAO','项目编号'),
-    emit: 'go-detail',
-    customRender: (h, scope) => {
-      return <span class="open-link-text" style="cursor: pointer;">{scope.row.projectCode}</span>;
-    },
+    name: language('BIDDING_XIANGMUBIANHAO','项目编号'),
+    key:'BIDDING_XIANGMUBIANHAO'
   },
   {
-    prop: "rfqCode",
-    label: language('BIDDING_RFQBIANHAO','RFQ编号'),
+    props: "rfqCode",
+    name: language('BIDDING_RFQBIANHAO','RFQ编号'),
     width: 100,
+    key:'BIDDING_RFQBIANHAO'
   },
   {
-    prop: "projectName",
-    label: language('BIDDING_XIANGMUMINGCHENG','项目名称'),
+    props: "projectName",
+    name: language('BIDDING_XIANGMUMINGCHENG','项目名称'),
     width: 130,
-    customRender: (h, scope) => {
-      return <span>{scope.row.projectName || scope.row.rfqName}</span>;
-    },
+    key:'BIDDING_XIANGMUMINGCHENG'
   },
   {
-    prop: "projectType",
-    label: language('BIDDING_XIANGMULEIXING','项目类型'),
-    customRender: (h, scope) => {
-      return <span>{scope.row.projectType === '01' ? '正式' : scope.row.projectType === '02' ? '测试' : ''}</span>;
-    },
+    props: "projectType",
+    name: language('BIDDING_XIANGMULEIXING','项目类型'),
+    key:'BIDDING_XIANGMULEIXING'
   },
   {
-    prop: "biddingStatus",
-    label: language('BIDDING_ZHUANGTAI','状态'),
-    customRender: (h, scope) => {
-      return <span>{status(scope.row.biddingStatus)}</span>;
-    },
+    props: "biddingStatus",
+    name: language('BIDDING_ZHUANGTAI','状态'),
+    key:'BIDDING_ZHUANGTAI'
   },
   {
-    prop: "rfqRound",
-    label: language('BIDDING_DANGQIANLUNCI','当前轮次'),
+    props: "rfqRound",
+    name: language('BIDDING_DANGQIANLUNCI','当前轮次'),
+    key:'BIDDING_DANGQIANLUNCI'
   },
   {
-    prop: "createDate",
-    label: language('BIDDING_CHUANGJIANRIQI','创建日期'),
+    props: "createDate",
+    name: language('BIDDING_CHUANGJIANRIQI','创建日期'),
     width: 150,
-    customRender: (h, scope) => {
-      return <span>{scope.row.createDate?.substring(0, 10)}</span>;
-    },
+    key:"BIDDING_CHUANGJIANRIQI"
   },
   {
-    prop: "createName",
-    label: language('BIDDING_CHUANGJIANREN','创建人'),
+    props: "createName",
+    name: language('BIDDING_CHUANGJIANREN','创建人'),
+    key:'BIDDING_CHUANGJIANREN'
   },
   {
-    prop: "createDept",
-    label: language('BIDDING_CHUANGJIANBUMEN','创建部门'),
+    props: "createDept",
+    name: language('BIDDING_CHUANGJIANBUMEN','创建部门'),
+    key:'BIDDING_CHUANGJIANBUMEN'
   },
   {
-    prop: "biddingBeginTime,biddingEndTime,roundType,quoteType",
-    label: language('BIDDING_JINGJIAQIZHIRIQI','竞价起止日期'),
+    props: "biddingBeginTime",
+    name: language('BIDDING_JINGJIAQIZHIRIQI','竞价起止日期'),
     width: 170,
-    customRender: (h, scope) => {
-      return <span>{scope.row.quoteType === '01' ? '' : scope.row.biddingBeginTime?.substring(0, 16).replace('T', ' ')}
-        <br />
-        {(scope.row.roundType === '05' && scope.row.quoteType === '03') || scope.row.quoteType === '01'
-          ? ''
-          : scope.row.biddingEndTime?.substring(0, 16).replace('T', ' ')}
-      </span>;
-    },
+    key:'BIDDING_JINGJIAQIZHIRIQI'
   },
   {
-    prop: "pricingDeadline",
-    label: language('BIDDING_BAOJIAJIEZHIRIQI','报价截止日期'),
+    props: "pricingDeadline",
+    name: language('BIDDING_BAOJIAJIEZHIRIQI','报价截止日期'),
     width: 170,
-    customRender: (h, scope) => {
-      return <span>{scope.row.pricingDeadline?.substring(0, 16).replace('T', ' ')}</span>;
-    },
+    key:'BIDDING_BAOJIAJIEZHIRIQI'
   },
   {
-    prop: "openTenderTime,roundType",
-    label: language('BIDDING_KAIBIAOSHIJIAN','开标时间'),
+    props: "openTenderTime",
+    name: language('BIDDING_KAIBIAOSHIJIAN','开标时间'),
     width: 170,
-    customRender: (h, scope) => {
-      return <span>{scope.row.roundType === '03' ? '' : scope.row.openTenderTime?.substring(0, 16).replace('T', ' ')}</span>;
-    },
+    key:'BIDDING_KAIBIAOSHIJIAN'
   },
 ]
 
-function status(value){
-  return {
-    '01' : language('BIDDING_CAOGAO','草稿'),
-    '02' : language('BIDDING_DAIJINGJIA','待竞价'),
-    '03' : language('BIDDING_WEIKAIBIAO','未开标'),
-    '04' : language('BIDDING_JINGJIAZHONG','竞价中'),
-    '05' : language('BIDDING_YIKAIBIAO','已开标'),
-    '06' : language('BIDDING_YIJIESHU','已结束'),
-    '07' : language('BIDDING_YILIUBIAO','已流标'),
-    '08' : language('BIDDING_YIZUOFEI','已作废'),
-    '09' : language('BIDDING_YIQUXIAO','已取消'),
-  }[value]
-}
 // 项目类型
 export const projectType = [
   {
     value: '01',
-    label: language('BIDDING_ZHENGSHIXIANGMU','正式项目')
+    label: '正式项目',
+    key:'BIDDING_ZHENGSHIXIANGMU'
   },
   {
     value: '02',
-    label: language('BIDDING_CESHIXIANGMU','测试项目')
+    label: '测试项目',
+    key:'BIDDING_CESHIXIANGMU'
   },
 ]
 
@@ -133,15 +98,18 @@ export const projectType = [
 export const quoteType = [
   {
     value: '01',
-    label: language('BIDDING_KAIBIAO','开标')
+    label: '开标',
+    key:'BIDDING_KAIBIAO'
   },
   {
     value: '02',
-    label: language('BIDDING_YINGSHI','英式')
+    label: '英式',
+    key:'BIDDING_YINGSHI'
   },
   {
     value: '03',
-    label: language('BIDDING_HESHI','荷式')
+    label: '荷式',
+    key:'BIDDING_HESHI'
   },
 ]
 
@@ -149,11 +117,13 @@ export const quoteType = [
 export const biddingType = [
   {
     value: '01',
-    label: language('BIDDING_PM（JDZD）','拍买（价低者得）')
+    label: '拍买（价低者得）',
+    key:'BIDDING_PM（JDZD）'
   },
   {
     value: '02',
-    label: language('BIDDING_PM（JGZD）','拍卖（价高者得）')
+    label: '拍卖（价高者得）',
+    key:'BIDDING_PM（JGZD）'
   },
 ]
 
@@ -161,43 +131,53 @@ export const biddingType = [
 export const biddingStatus = [
   {
     value: '01',
-    label: language('BIDDING_CAOGAO','草稿')
+    label: '草稿',
+    key:'BIDDING_CAOGAO'
   },
   {
     value: '02',
-    label: language('BIDDING_DAIJINGJIA','待竞价')
+    label: '待竞价',
+    key:'BIDDING_DAIJINGJIA'
   },
   {
     value: '03',
-    label: language('BIDDING_WEIKAIBIAO','未开标')
+    label: '未开标',
+    key:'BIDDING_WEIKAIBIAO'
   },
   {
     value: '04',
-    label: language('BIDDING_JINGJIAZHONG','竞价中')
+    label: '竞价中',
+    key:'BIDDING_JINGJIAZHONG'
   },
   {
     value: '05',
-    label: language('BIDDING_YIKAIBIAO','已开标')
+    label: '已开标',
+    key:'BIDDING_YIKAIBIAO'
   },
   {
     value: '06',
-    label: language('BIDDING_YIJIESHU','已结束')
+    label: '已结束',
+    key:'BIDDING_YIJIESHU'
   },
   {
     value: '07',
-    label: language('BIDDING_YILIUBIAO','已流标')
+    label: '已流标',
+    key:'BIDDING_YILIUBIAO'
   },
   {
     value: '08',
-    label: language('BIDDING_YIZUOFEI','已作废')
+    label: '已作废',
+    key:'BIDDING_YIZUOFEI'
   },
   {
     value: '09',
-    label: language('BIDDING_YIQUXIAO','已取消')
+    label: '已取消',
+    key:'BIDDING_YIQUXIAO'
   },
   {
     value: '10',
-    label: language('BIDDING_YIFACHU','已发出')
+    label: '已发出',
+    key:'BIDDING_YIFACHU'
   },
 ]
 
@@ -217,23 +197,25 @@ export const infoForm = {
 
 export const RFQTurnList = [
   // { value: "01", label: "普通询价" },
-  { value: "02", label: language('BIDDING_ZAIXIANKAIBIAO','在线开标') },
-  { value: "03", label: language('BIDDING_ZAIXIANJINGJIA_YINGSHI','在线竞价-英式') },
+  { value: "02", label: '在线开标', key:'BIDDING_ZAIXIANKAIBIAO' },
+  { value: "03", label: '在线竞价-英式', key:'BIDDING_ZAIXIANJINGJIA_YINGSHI' },
 ]
 
 export const procureTypeList = [
-  { value: "01", label: language('BIDDING_SHENGCHANCAIGOU','生产采购') },
-  { value: "02", label: language('BIDDING_YIBANCAIGOU','一般采购') },
+  { value: "01", label: '生产采购', key:'BIDDING_SHENGCHANCAIGOU' },
+  { value: "02", label: '一般采购', key:'BIDDING_YIBANCAIGOU' },
 ]
 
 export const manualBiddingTypeList = [
   {
-    name: language('BIDDING_ZAIXIANJINGJIA_YINGSHI','在线竞价-英式'),
+    name: '在线竞价-英式',
     manualBiddingType: "01",
+    key:'BIDDING_ZAIXIANJINGJIA_YINGSHI'
   },
   {
-    name: language('BIDDING_ZAIXIANJINGJIA_HESHI','在线竞价-荷式'),
+    name: '在线竞价-荷式',
     manualBiddingType: "02",
+    key:'BIDDING_ZAIXIANJINGJIA_HESHI'
   },
 ]
 
