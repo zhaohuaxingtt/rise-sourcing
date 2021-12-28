@@ -64,11 +64,13 @@ export const infoRules = {
 export const biddingType = [
   {
     value: '01',
-    label: language('BIDDING_PM（JDZD）','拍买（价低者得）')
+    label: '拍买（价低者得）',
+    key:'BIDDING_PM（JDZD）'
   },
   {
     value: '02',
-    label: language('BIDDING_PM（JGZD）','拍卖（价高者得）')
+    label: '拍卖（价高者得）',
+    key:'BIDDING_PM（JGZD）'
   },
 ]
 
@@ -76,11 +78,13 @@ export const biddingType = [
 export const moldFee = [
   {
     value: '01',
-    label: language('BIDDING_SUODING','锁定')
+    label: '锁定',
+    key:'BIDDING_SUODING'
   },
   {
     value: '02',
-    label: language('BIDDING_FEISUODING','非锁定')
+    label: '非锁定',
+    key:'BIDDING_FEISUODING'
   }
 ]
 
@@ -88,15 +92,18 @@ export const moldFee = [
 export const biddingMode = [
   {
     value: '01',
-    label: language('BIDDING_DANJIA','单价')
+    label: '单价',
+    key:'BIDDING_DANJIA'
   },
   {
     value: '02',
-    label: language('BIDDING_ZONGJIA','总价')
+    label: '总价',
+    key:'BIDDING_ZONGJIA'
   },
   {
     value: '03',
-    label: language('BIDDING_DUOJIAGE','多价格')
+    label: '多价格',
+    key:'BIDDING_DUOJIAGE'
   },
 ]
 
@@ -104,11 +111,13 @@ export const biddingMode = [
 export const isTax = [
   {
     value: '01',
-    label: language('BIDDING_BHKDKS','不含可抵扣税')
+    label: '不含可抵扣税',
+    key:'BIDDING_BHKDKS'
   },
   {
     value: '02',
-    label: language('BIDDING_HANSHUI','含税')
+    label: '含税',
+    key:'BIDDING_HANSHUI'
   }
 ]
 
@@ -116,11 +125,13 @@ export const isTax = [
 export const projectType = [
   {
     value: '01',
-    label: language('BIDDING_ZHENGSHIXIANGMU','正式项目')
+    label: '正式项目',
+    key:'BIDDING_ZHENGSHIXIANGMU',
   },
   {
     value: '02',
-    label: language('BIDDING_CESHIXIANGMU','测试项目')
+    label: '测试项目',
+    key:'BIDDING_CESHIXIANGMU',
   }
 ]
 
@@ -128,11 +139,13 @@ export const projectType = [
 export const biddingResultForm = [
   {
     value: '01',
-    label: language('BIDDING_ZONGJIA','总价')
+    label: '总价',
+    key:'BIDDING_ZONGJIA'
   },
   {
     value: '02',
-    label: language('BIDDING_DANJIA&ZONGJIA','单价&总价')
+    label: '单价&总价',
+    key:'BIDDING_DANJIA'
   },
 ]
 
@@ -140,15 +153,18 @@ export const biddingResultForm = [
 export const resultOpenForm = [
   {
     value: '01',
-    label: language('BIDDING_PAIMING','排名')
+    label: '排名',
+    key:'BIDDING_PAIMING'
   },
   {
     value: '02',
-    label: language('BIDDING_HONGLVDENG','红绿灯')
+    label: '红绿灯',
+    key:'BIDDING_HONGLVDENG'
   },
   {
     value: '03',
-    label: language('BIDDING_SUOYOUPAIMING','所有排名')
+    label: '所有排名',
+    key:'BIDDING_SUOYOUPAIMING'
   },
 ]
 
@@ -156,11 +172,13 @@ export const resultOpenForm = [
 export const isResultOpen = [
   {
     value: '01',
-    label: language('BIDDING_GONGKAI','公开')
+    label: '公开',
+    key:'BIDDING_GONGKAI'
   },
   {
     value: '02',
-    label: language('BIDDING_BUGONGKAI','不公开')
+    label: '不公开',
+    key:'BIDDING_BUGONGKAI'
   },
 ]
 
@@ -176,19 +194,23 @@ export const currencyUnit = [
 export const currencyMultiple = [
   {
     value: '01',
-    label: language('BIDDING_YUAN','元')
+    label: '元',
+    key:'BIDDING_YUAN'
   },
   {
     value: '02',
-    label: language('BIDDING_QIAN','千')
+    label: '千',
+    key:'BIDDING_QIAN'
   },
   {
     value: '03',
-    label: language('BIDDING_WAN','万')
+    label: '万',
+    key:'BIDDING_WAN'
   },
   {
     value: '04',
-    label: language('BIDDING_BAIWAN','百万')
+    label: '百万',
+    key:'BIDDING_BAIWAN'
   },
 ]
 
@@ -298,34 +320,42 @@ export const unitTableTitle = [
   {
     props: "fsnrGsnr",
     name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
+    key:'BIDDING_FSGSSPNO'
   },
   {
     props: "productName",
     name: language('BIDDING_CHANPINMINGCHENG',"产品名称"),
+    key:'BIDDING_CHANPINMINGCHENG'
   },
   {
     props: "productCode",
-    name: language('BIDDING_CHANPINBIANHAO',"产品编号"),
+    name: language('BIDDING_LINGJIANHAO',"零件号"),
+    key:'BIDDING_LINGJIANHAO'
   },
   {
     props: "purchaseQty",
     name: language('BIDDING_CAIGOUSHULIANG',"采购数量"),
+    key:'BIDDING_CAIGOUSHULIANG'
   },
   {
     props: "quantityUnit",
     name: language('BIDDING_SHULIANGDANWEI',"数量单位"),
+    key:'BIDDING_SHULIANGDANWEI'
   },
   {
     props: "upsetPrice",
     name: language('BIDDING_QIPAIJIAGE',"起拍价格"),
+    key:'BIDDING_QIPAIJIAGE'
   },
   {
     props: "targetPrice",
     name: language('BIDDING_MUBIAOJIA',"目标价"),
+    key:'BIDDING_MUBIAOJIA'
   },
   {
     props: "productParm",
     name: language('BIDDING_CHANPINCANSHU',"产品参数"),
+    key:'BIDDING_CHANPINCANSHU'
   },
 
 ];
@@ -333,34 +363,42 @@ export const totalTableTitle = [
   {
     props: "fsnrGsnr",
     name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
+    key:'BIDDING_FSGSSPNO'
   },
   {
     props: "productName",
     name: language('BIDDING_CHANPINMINGCHENG',"产品名称"),
+    key:'BIDDING_CHANPINMINGCHENG'
   },
   {
     props: "productCode",
     name: language('BIDDING_CHANPINBIANHAO',"产品编号"),
+    key:'BIDDING_CHANPINBIANHAO'
   },
   {
     props: "purchaseQty",
     name: language('BIDDING_CAIGOUSHULIANG',"采购数量"),
+    key:'BIDDING_CAIGOUSHULIANG'
   },
   {
     props: "quantityUnit",
     name: language('BIDDING_SHULIANGDANWEI',"数量单位"),
+    key:'BIDDING_SHULIANGDANWEI'
   },
   {
     props: "upsetPrice",
     name: language('BIDDING_QIPAIJIAGE',"起拍价格"),
+    key:'BIDDING_QIPAIJIAGE'
   },
   {
     props: "targetPrice",
     name: language('BIDDING_MUBIAOJIA',"目标价"),
+    key:'BIDDING_MUBIAOJIA'
   },
   {
     props: "productParm",
     name: language('BIDDING_CHANPINCANSHU',"产品参数"),
+    key:'BIDDING_CHANPINCANSHU'
   }
 ];
 
@@ -368,67 +406,88 @@ export const totalTableTitle = [
 export const multiPleTableTitle = [
   {
     props: "fsnrGsnr",
-    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
     width: 150,
+    name: language('BIDDING_FSGSSPNO',"FS/GS/SP No."),
+    key:'BIDDING_FSGSSPNO'
   },
   {
     props: "productName",
     width: 220,
     name: language('BIDDING_CHANPINMINGCHENG',"产品名称"),
+    key:'BIDDING_CHANPINMINGCHENG'
   },
   {
     props: "productCode",
     width: 120,
     name: language('BIDDING_LINGJIANHAO',"零件号"),
+    key:'BIDDING_LINGJIANHAO'
   },
   {
     props: "factoryPrice",
     name: language('BIDDING_CHUCHANJIA',"出厂价"),
+    key:'BIDDING_CHUCHANJIA'
   },
   {
     props: "packingFee",
     name: language('BIDDING_BAOZHUANGFEI',"包装费"),
+    key:'BIDDING_BAOZHUANGFEI'
   },
   {
     props: "transportFee",
     name: language('BIDDING_YUNSHUFEI',"运输费"),
+    key:'BIDDING_YUNSHUFEI'
   },
   {
     props: "operationFee",
     name: language('BIDDING_CAOZUOFEI',"操作费"),
+    key:'BIDDING_CAOZUOFEI'
   },
   {
     props: "bprice",
     name: language('BIDDING_BJIA',"B价"),
+    key:'BIDDING_BJIA'
   },
   {
     props: "moldFee",
     name: language('BIDDING_MOJUFEI',"模具费"),
+    key:'BIDDING_MOJUFEI'
   },
   {
     props: "developFee",
     name: language('BIDDING_KAIFAFEI',"开发费"),
+    key:'BIDDING_KAIFAFEI'
   },
   {
     props: "targetPrice",
     name: language('BIDDING_MUBIAOJIA',"目标价"),
+    key:'BIDDING_MUBIAOJIA'
   },
   {
     props: "quantityUnit",
     name: language('BIDDING_SHULIANGDANWEI',"数量单位"),
+    key:'BIDDING_SHULIANGDANWEI'
   },
   {
     props: "lifecycle",
     name: language('BIDDING_SHENGMINGZHOUQIZHOU',"生命周期(周)"),
+    key:'BIDDING_SHENGMINGZHOUQIZHOU'
   },
   {
     props: "aveAnnualOutput",
     name: language('BIDDING_PINGJUNNIANCHANLIANG',"平均年产量"),
+    key:'BIDDING_PINGJUNNIANCHANLIANG'
   },
   {
     props: "maxAnnualOutput",
     name: language('BIDDING_ZUIDANIANCHANLIANG',"最大年产量"),
+    key:'BIDDING_ZUIDANIANCHANLIANG'
   },
+  // {
+  //   props: "caozuo",
+  //   fixed: 'right',
+  //   name: language('BIDDING_CAOZUO',"操作"),
+  // },
+
 ];
 
 export const yearsTableTitle = [
@@ -503,8 +562,8 @@ export const baseRules = {
   beginMonth: [
     { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
   ],
-  modelProjects: [{ type: 'array', required: true, message: '必选', trigger: "change" }],
-  models: [{ type: 'array', required: true, message: '必选', trigger: "change" }],
+  modelProjects: [{ type: 'array', required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+  models: [{ type: 'array', required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" }],
   totalPrices: [
     { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
     {
@@ -541,24 +600,28 @@ export const supplierTableListColumns = [
     type: "index",
     width: 50,
     label: language('BIDDING_XUHAO',"序号"),
+    i18n:'BIDDING_XUHAO',
   },
   {
     prop: "nameZh",
     label: language('BIDDING_GYSZWM',"供应商中文名"),
-    i18n: 'TERMS_GONGYINGSHANGZHONGWENMING',
+    i18n: 'BIDDING_GYSZWM',
   },
   {
     prop: "nameEn",
     label: language('BIDDING_GYSYWM',"供应商英文名"),
+    i18n:'BIDDING_GYSYWM'
   },
   {
     prop: "svwTempCode",
     label: language('BIDDING_LINSHIHAO',"临时号"),
+    i18n:'BIDDING_LINSHIHAO'
   },
 
   {
     prop: "sapCode",
     label: language('BIDDING_SAPHAO',"SAP号"),
+    i18n:'BIDDING_SAPHAO'
   },
 ]
 
@@ -572,21 +635,24 @@ export const tableListData = [
 export const currencyMultipleLib = {
   "01": {
     beishu: 1,
-    unit: '元',
+    unit: "元",
+    key:'BIDDING_YUAN'
   },
   "02": {
     beishu: 1000,
-    unit: '千',
+    unit: "千",
+    key:'BIDDING_QIAN'
   },
   "03": {
     beishu: 10000,
-    unit: '万',
+    unit: "万",
+    key:'BIDDING_WAN'
   },
   "04": {
     beishu: 1000000,
-    unit: '百万',
+    unit: "百万",
+    key:'BIDDING_BAIWAN'
   }
-
 }
 
 
@@ -633,69 +699,78 @@ export const stageColumn = [
         validator(rule, value, callback) {
           let reg = /^100$|^[1-9]\d{0,1}$|^[1-9]\d{0,1}\.{1}\d{1,4}$|^0\.{1}\d{1,4}$/g;
             value && !reg.test(value)
-              ? callback(new Error("必须大于0，并且小于等于100"))
+              ? callback(new Error(language('BIDDING_BXDY0BQXYDY100BLSWXS',"必须大于0，并且小于等于100,保留四位小数")))
               : callback();
         },
         trigger: ['blur', 'change'],
       },
     ],
-    name: "第一段",
+    name: language('BIDDING_DI一DUAN',"第一段"),
+    key:'BIDDING_DI一DUAN'
   },
   {
     props: "stage2",
     required: false,
     rule: [
     ],
-    name: "第二段",
+    name: language('BIDDING_DI二DUAN',"第二段"),
+    key:'BIDDING_DI二DUAN'
   },
   {
     props: "stage3",
     required: false,
     rule: [
     ],
-    name: "第三段",
+    name: language('BIDDING_DI三DUAN',"第三段"),
+    key:'BIDDING_DI三DUAN'
   },
   {
     props: "stage4",
     required: false,
     rule: [
     ],
-    name: "第四段",
+    name: language('BIDDING_DI四DUAN',"第四段"),
+    key:'BIDDING_DI四DUAN'
   },
   {
     props: "stage5",
     required: false,
     rule: [
     ],
-    name: "第五段",
+    name: language('BIDDING_DI五DUAN',"第五段"),
+    key:'BIDDING_DI五DUAN'
   },
   {
     props: "stage6",
     required: false,
     rule: [
     ],
-    name: "第六段",
+    name: language('BIDDING_DI六DUAN',"第六段"),
+    key:'BIDDING_DI六DUAN'
   },
   {
     props: "stage7",
     required: false,
     rule: [
     ],
-    name: "第七段",
+    name: language('BIDDING_DI七DUAN',"第七段"),
+    key:'BIDDING_DI七DUAN'
   },
   {
     props: "stage8",
     required: false,
     rule: [
     ],
-    name: "第八段",
+    name: language('BIDDING_DI八DUAN',"第八段"),
+    key:'BIDDING_DI八DUAN'
   },
   {
     props: "stage9",
     required: false,
     rule: [
     ],
-    name: "第九段",
+    name: language('BIDDING_DI九DUAN',"第九段"),
+    key:'BIDDING_DI九DUAN'
   },
 ]
 
@@ -708,6 +783,7 @@ export const outPutColumn = [
     props: "stage1",
     required: false,
     name: language('BIDDING_DI一NIAN',"第一年"),
+    key:'BIDDING_DI一NIAN'
   },
   {
     props: "stage2",
@@ -715,6 +791,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI二NIAN',"第二年"),
+    key:'BIDDING_DI二NIAN'
   },
   {
     props: "stage3",
@@ -722,6 +799,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI三NIAN',"第三年"),
+    key:'BIDDING_DI三NIAN'
   },
   {
     props: "stage4",
@@ -729,6 +807,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI四NIAN',"第四年"),
+    key:'BIDDING_DI四NIAN'
   },
   {
     props: "stage5",
@@ -736,6 +815,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI五NIAN',"第五年"),
+    key:'BIDDING_DI五NIAN'
   },
   {
     props: "stage6",
@@ -743,6 +823,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI六NIAN',"第六年"),
+    key:'BIDDING_DI六NIAN'
   },
   {
     props: "stage7",
@@ -750,6 +831,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI七NIAN',"第七年"),
+    key:'BIDDING_DI七NIAN'
   },
   {
     props: "stage8",
@@ -757,6 +839,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI八NIAN',"第八年"),
+    key:'BIDDING_DI八NIAN'
   },
   {
     props: "stage9",
@@ -764,6 +847,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI九NIAN',"第九年"),
+    key:'BIDDING_DI九NIAN'
   },
   {
     props: "stage10",
@@ -771,6 +855,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI九NIAN',"第十年"),
+    key:'BIDDING_DI九NIAN'
   },
   {
     props: "stage11",
@@ -778,6 +863,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI十一NIAN',"第十一年"),
+    key:'BIDDING_DI十一NIAN'
   },
   {
     props: "stage12",
@@ -785,6 +871,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI十二NIAN',"第十二年"),
+    key:'BIDDING_DI十二NIAN'
   },
   {
     props: "stage13",
@@ -792,6 +879,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI十三NIAN',"第十三年"),
+    key:'BIDDING_DI十三NIAN'
   },
   {
     props: "stage14",
@@ -799,6 +887,7 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI十四NIAN',"第十四年"),
+    key:'BIDDING_DI十四NIAN'
   },
   {
     props: "stage15",
@@ -806,5 +895,6 @@ export const outPutColumn = [
     rule: [
     ],
     name: language('BIDDING_DI十五NIAN',"第十五年"),
+    key:'BIDDING_DI十五NIAN'
   },
 ]

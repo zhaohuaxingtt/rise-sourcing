@@ -1431,6 +1431,7 @@
             'SQDZDZ': "上汽大众地址：", //上汽大众地址：
             'ZXSE': "总销售额：", //总销售额：
             'DDJV': "定点记录", //定点记录
+            'DDJLMEMO': "  近12个月定点记录", //定点记录
             'VPFX':"Volume Pricing分析",//Volume Pricing分析
             'VPFXK':"Volume Pricing分析库",//Volume Pricing分析库
             'CXJHCLYXSLJCLFX':"车型计划产量与现实累计产量分析",//车型计划产量与现实累计产量分析（截止2021-02）

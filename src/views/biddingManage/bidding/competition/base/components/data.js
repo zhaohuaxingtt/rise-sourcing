@@ -149,7 +149,7 @@ export const infoRules = (form) =>({
       trigger: "blur",
     },
   ],
-  "quoteRule.targetPrice":[{ required: true, message: "请输入", trigger: "blur" }],
+  "quoteRule.targetPrice":[{ required: true, message: language('BIDDING_QINGSHURU',"请输入"), trigger: "blur" }],
   "quoteRule.yellowDeviationValue": [
     { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
@@ -174,11 +174,13 @@ export const infoRules = (form) =>({
 export const biddingType = [
   {
     value: '01',
-    label: language('BIDDING_PM（JDZD）','拍买（价低者得）')
+    label: '拍买（价低者得）',
+    key:'BIDDING_PM（JDZD）'
   },
   {
     value: '02',
-    label: language('BIDDING_PM（JGZD）','拍卖（价高者得）')
+    label: '拍卖（价高者得）',
+    key:'BIDDING_PM（JGZD）'
   },
 ]
 
@@ -186,11 +188,13 @@ export const biddingType = [
 export const moldFee = [
   {
     value: '01',
-    label: language('BIDDING_SUODING','锁定')
+    label: '锁定',
+    key:'BIDDING_SUODING'
   },
   {
     value: '02',
-    label: language('BIDDING_FEISUODING','非锁定')
+    label: '非锁定',
+    key:'BIDDING_FEISUODING'
   }
 ]
 
@@ -198,15 +202,18 @@ export const moldFee = [
 export const biddingMode = [
   {
     value: '01',
-    label: language('BIDDING_DANJIA','单价')
+    label: '单价',
+    key:'BIDDING_DANJIA'
   },
   {
     value: '02',
-    label: language('BIDDING_ZONGJIA','总价')
+    label: '总价',
+    key:'BIDDING_ZONGJIA'
   },
   {
     value: '03',
-    label: language('BIDDING_DUOJIAGE','多价格')
+    label: '多价格',
+    key:'BIDDING_DUOJIAGE'
   },
 ]
 
@@ -214,11 +221,13 @@ export const biddingMode = [
 export const isTax = [
   {
     value: '01',
-    label: language('BIDDING_BHKDKS','不含可抵扣税')
+    label: '不含可抵扣税',
+    key:'BIDDING_BHKDKS'
   },
   {
     value: '02',
-    label: language('BIDDING_HANSHUI','含税')
+    label: '含税',
+    key:'BIDDING_HANSHUI'
   }
 ]
 
@@ -226,11 +235,13 @@ export const isTax = [
 export const projectType = [
   {
     value: '01',
-    label: language('BIDDING_ZHENGSHIXIANGMU','正式项目')
+    label: '正式项目',
+    key:'BIDDING_ZHENGSHIXIANGMU',
   },
   {
     value: '02',
-    label: language('BIDDING_CESHIXIANGMU','测试项目')
+    label: '测试项目',
+    key:'BIDDING_CESHIXIANGMU',
   }
 ]
 
@@ -238,11 +249,13 @@ export const projectType = [
 export const biddingResultForm = [
   {
     value: '01',
-    label: language('BIDDING_ZONGJIA','总价')
+    label: '总价',
+    key:'BIDDING_ZONGJIA'
   },
   {
     value: '02',
-    label: language('BIDDING_DANJIA&ZONGJIA','单价&总价')
+    label: '单价&总价',
+    key:'BIDDING_DANJIA'
   },
 ]
 
@@ -250,15 +263,18 @@ export const biddingResultForm = [
 export const resultOpenForm = [
   {
     value: '01',
-    label: language('BIDDING_PAIMING','排名')
+    label: '排名',
+    key:'BIDDING_PAIMING'
   },
   {
     value: '02',
-    label: language('BIDDING_HONGLVDENG','红绿灯')
+    label: '红绿灯',
+    key:'BIDDING_HONGLVDENG'
   },
   {
     value: '03',
-    label: language('BIDDING_SUOYOUPAIMING','所有排名')
+    label: '所有排名',
+    key:'BIDDING_SUOYOUPAIMING'
   },
 ]
 
@@ -266,11 +282,13 @@ export const resultOpenForm = [
 export const isResultOpen = [
   {
     value: '01',
-    label: language('BIDDING_GONGKAI','公开')
+    label: '公开',
+    key:'BIDDING_GONGKAI'
   },
   {
     value: '02',
-    label: language('BIDDING_BUGONGKAI','不公开')
+    label: '不公开',
+    key:'BIDDING_BUGONGKAI'
   },
 ]
 
@@ -286,23 +304,27 @@ export const currencyUnit = [
 export const currencyMultiple = [
   {
     value: '01',
-    label: language('BIDDING_YUAN','元')
+    label: '元',
+    key:'BIDDING_YUAN'
   },
   {
     value: '02',
-    label: language('BIDDING_QIAN','千')
+    label: '千',
+    key:'BIDDING_QIAN'
   },
   {
     value: '03',
-    label: language('BIDDING_WAN','万')
+    label: '万',
+    key:'BIDDING_WAN'
   },
   {
     value: '04',
-    label: language('BIDDING_BAIWAN','百万')
+    label: '百万',
+    key:'BIDDING_BAIWAN'
   },
 ]
 
-// 附件列表
+// 附件列表,没有用到
 export const attachments = [
   {
     type: "selection",
@@ -335,14 +357,17 @@ export const attachments = [
 export const rankShowRule = [
   {
     value: "01",
-    label: language('BIDDING_XSBFPM',"显示本方排名"),
+    label: "显示本方排名",
+    key:'BIDDING_XSBFPM'
   },
   {
     value: "02",
-    label: language('BIDDING_XSHLD(AMC QJDY)',"显示红绿灯(按名次 区间定义)"),
+    label: "显示红绿灯(按名次 区间定义)",
+    key:'BIDDING_XSHLD(AMC QJDY)'
   },
   {
     value: "03",
-    label: language('BIDDING_XSHLD(AMBJ PL BL DY)',"显示红绿灯(按目标价 偏离 比例 定义)"),
+    label: "显示红绿灯(按目标价 偏离 比例 定义)",
+    key:'BIDDING_XSHLD(AMBJ PL BL DY)'
   },
 ];

@@ -19,7 +19,7 @@
                 v-for="(item, index) in projectType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -42,7 +42,7 @@
                 v-for="(item, index) in biddingType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -68,7 +68,7 @@
                 v-for="(item, index) in currencyMultiple"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -81,7 +81,7 @@
                 v-for="(item, index) in isTax"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -131,7 +131,7 @@
                 v-for="(item, index) in biddingMode"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -144,7 +144,7 @@
                 v-for="(item, index) in biddingResultForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -179,7 +179,7 @@
                 v-for="(item, index) in resultOpenForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -196,7 +196,7 @@
                 v-for="(item, index) in isResultOpen"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -209,7 +209,7 @@
                 v-for="(item, index) in moldFee"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>

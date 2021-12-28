@@ -635,7 +635,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || this.language('BIDDING_YUAN',"元");
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     totalPrices() {
       return this.ruleForm.biddingStatus === '01' ? this.orgTotalPrices : this.ruleForm.totalPrices;
@@ -1375,7 +1375,7 @@ export default {
     async query(e) {
       // 根据ID查询条款信息
       this.tableLoading = true;
-      let o = {...planBaseData,title:'折现率'};
+      let o = {...planBaseData, title: this.language('BIDDING_ZHEXIANLV','折现率')};
       const res = await  getDiscount({});
       if(res?.data != null){
         res?.data?.md_discount_rate.map(item=>{

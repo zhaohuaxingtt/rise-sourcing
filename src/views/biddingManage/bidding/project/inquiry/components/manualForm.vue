@@ -22,7 +22,7 @@
               <el-option
                 v-for="item in procureTypeList"
                 :key="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
                 :value="item.value"
               >
               </el-option>
@@ -40,7 +40,7 @@
               <el-option
                 v-for="item in roundTypeList"
                 :key="item.roundType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.roundType"
               >
               </el-option>
@@ -62,7 +62,7 @@
               <el-option
                 v-for="item in manualBiddingTypeList"
                 :key="item.manualBiddingType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.manualBiddingType"
               >
               </el-option>
@@ -161,7 +161,7 @@
             <iSelect
               v-model="ruleForm.rfqs"
               value-key="rfqCode"
-              placeholder="请关联"
+              :placeholder="language('BIDDING_QINGGUANLIAN', '请关联')"
               class="rfqs-search"
               filterable
               multiple
@@ -194,7 +194,7 @@
             <iSelect
               v-model="ruleForm.rfqs"
               value-key="rfqCode"
-              placeholder="请关联"
+              :placeholder="language('BIDDING_QINGGUANLIAN', '请关联')"
               class="rfqs-search"
               filterable
               multiple

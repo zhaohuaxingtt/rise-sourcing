@@ -26,7 +26,7 @@
               <el-option
                 v-for="item in roundTypeLists"
                 :key="item.roundType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.roundType"
               >
               </el-option>
@@ -62,7 +62,7 @@
               <el-option
                 v-for="item in biddingStatus"
                 :key="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
                 :value="item.value"
               >
               </el-option>

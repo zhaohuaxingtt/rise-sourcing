@@ -33,9 +33,9 @@ export const infoForm = {
 const isEmpty = (val) => !val && 0 !== val;
 // form规则
 export const infoRules = (form) => ({
-  currencyUnit: [{ required: true, message: "请选择", trigger: "change" }],
-  isTax: [{ required: true, message: "请选择", trigger: "change" }],
-  resultOpenForm: [{ required: true, message: "请选择", trigger: "change" }],
+  currencyUnit: [{ required: true, message: language('BIDDING_QINGXUANZE',"请选择"), trigger: "change" }],
+  isTax: [{ required: true, message: language('BIDDING_QINGXUANZE',"请选择"), trigger: "change" }],
+  resultOpenForm: [{ required: true, message: language('BIDDING_QINGXUANZE',"请选择"), trigger: "change" }],
   "quoteRule.greenLightFrom": [
     { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     {
@@ -141,7 +141,7 @@ export const infoRules = (form) => ({
       trigger: "blur",
     },
   ],
-  "quoteRule.targetPrice":[{ required: true, message: "请输入", trigger: "blur" }],
+  "quoteRule.targetPrice":[{ required: true, message: language('BIDDING_QINGSHURU',"请输入"), trigger: "blur" }],
   "quoteRule.yellowDeviationValue": [
     { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
@@ -166,41 +166,48 @@ export const infoRules = (form) => ({
 export const isTax = [
   {
     value: '01',
-    label: language('BIDDING_BHKDKS','不含可抵扣税')
+    label: '不含可抵扣税',
+    key:'BIDDING_BHKDKS'
   },
   {
     value: '02',
-    label: language('BIDDING_HANSHUI','含税')
+    label: '含税',
+    key:'BIDDING_HANSHUI'
   }
-];
+]
 
 // 项目类型
 export const projectType = [
   {
     value: '01',
-    label: language('BIDDING_ZHENGSHIXIANGMU','正式项目')
+    label: '正式项目',
+    key:'BIDDING_ZHENGSHIXIANGMU',
   },
   {
     value: '02',
-    label: language('BIDDING_CESHIXIANGMU','测试项目')
+    label: '测试项目',
+    key:'BIDDING_CESHIXIANGMU',
   }
-];
+]
 
 // 结果公开形式
 export const resultOpenForm = [
   {
     value: '01',
-    label: language('BIDDING_PAIMING','排名')
+    label: '排名',
+    key:'BIDDING_PAIMING'
   },
   {
     value: '02',
-    label: language('BIDDING_HONGLVDENG','红绿灯')
+    label: '红绿灯',
+    key:'BIDDING_HONGLVDENG'
   },
   {
     value: '03',
-    label: language('BIDDING_SUOYOUPAIMING','所有排名')
+    label: '所有排名',
+    key:'BIDDING_SUOYOUPAIMING'
   },
-];
+]
 
 // 货币单位倍数
 export const currencyUnit = [
@@ -215,26 +222,30 @@ export const currencyUnit = [
 ];
 
 // 货币单位倍数
-export const currencyUnitMultiples = [
+export const currencyMultiple = [
   {
     value: '01',
-    label: language('BIDDING_YUAN','元')
+    label: '元',
+    key:'BIDDING_YUAN'
   },
   {
     value: '02',
-    label: language('BIDDING_QIAN','千')
+    label: '千',
+    key:'BIDDING_QIAN'
   },
   {
     value: '03',
-    label: language('BIDDING_WAN','万')
+    label: '万',
+    key:'BIDDING_WAN'
   },
   {
     value: '04',
-    label: language('BIDDING_BAIWAN','百万')
+    label: '百万',
+    key:'BIDDING_BAIWAN'
   },
-];
+]
 
-// 附件列表
+// 附件列表,没有用到
 export const attachments = [
   {
     type: "selection",
@@ -272,14 +283,17 @@ export const rulesForm = {
 export const rankShowRule = [
   {
     value: "01",
-    label: language('BIDDING_XSBFPM',"显示本方排名"),
+    label: "显示本方排名",
+    key:'BIDDING_XSBFPM'
   },
   {
     value: "02",
-    label: language('BIDDING_XSHLD(AMC QJDY)',"显示红绿灯(按名次 区间定义)"),
+    label: "显示红绿灯(按名次 区间定义)",
+    key:'BIDDING_XSHLD(AMC QJDY)'
   },
   {
     value: "03",
-    label: language('BIDDING_XSHLD(AMBJ PL BL DY)',"显示红绿灯(按目标价 偏离 比例 定义)"),
+    label: "显示红绿灯(按目标价 偏离 比例 定义)",
+    key:'BIDDING_XSHLD(AMBJ PL BL DY)'
   },
 ];

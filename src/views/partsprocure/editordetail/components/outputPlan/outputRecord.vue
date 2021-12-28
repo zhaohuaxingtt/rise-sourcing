@@ -33,6 +33,7 @@ import { getOutputPlanMarks } from '@/api/partsprocure/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { outputRecordTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
+import { partProjTypes } from '@/config'
 
 export default {
   components: { iCard, iButton, tablelist, iPagination },
@@ -46,6 +47,7 @@ export default {
   },
   data() {
     return {
+      partProjTypes,
       loading: false,
       tableTitle: cloneDeep(tableTitle),
       tableListData: [],
@@ -55,7 +57,10 @@ export default {
   },
   computed: {
     disabled() {
-      return typeof this.getDisabled === "function" && this.getDisabled()
+      return (typeof this.getDisabled === "function" && this.getDisabled()) || this.isOnlyPartNumChange
+    },
+    isOnlyPartNumChange() {
+      return this.params.partProjectType == this.partProjTypes.JINLINGJIANHAOGENGGAI
     }
   },
   created() {

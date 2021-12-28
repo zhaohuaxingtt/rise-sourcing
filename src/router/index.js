@@ -94,6 +94,7 @@ export const staticRouter = [
 						name: 'investmentAdminPayBlock',
 						meta: {
 							title: '付款看板',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/payBlock`),
 					},
@@ -102,6 +103,7 @@ export const staticRouter = [
 						name: 'investmentAdminYearlyPlan',
 						meta: {
 							title: '年度计划',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/yearlyPlan`),
 					},
@@ -110,6 +112,7 @@ export const staticRouter = [
 						name: 'investmentAdminMonthlyPlan',
 						meta: {
 							title: '月度计划',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/monthlyPlan`),
 					},
@@ -123,6 +126,7 @@ export const staticRouter = [
 						name: 'carTypeOverview',
 						meta: {
 							title: '生成投资清单',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/carTypeOverview`),
@@ -132,6 +136,7 @@ export const staticRouter = [
 						name: 'generateInvestmentList',
 						meta: {
 							title: '生成投资清单',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/generateInvestmentList`),
@@ -141,6 +146,7 @@ export const staticRouter = [
 						name: 'investmentListJV',
 						meta: {
 							title: '投资清单JV',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/investmentListJV`),
@@ -150,6 +156,7 @@ export const staticRouter = [
 						name: 'investmentListCommon',
 						meta: {
 							title: '投资清单Common',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/investmentListCommon`),
@@ -159,6 +166,7 @@ export const staticRouter = [
 						name: 'commonSourcing',
 						meta: {
 							title: 'commonSourcing',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/commonSourcing/index`),
@@ -168,6 +176,7 @@ export const staticRouter = [
 						name: 'baApplyIndex',
 						meta: {
 							title: 'BA申请',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/baApply`),
 					},
@@ -176,6 +185,7 @@ export const staticRouter = [
 						name: 'baApprovalIndex',
 						meta: {
 							title: 'BA审批',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/baApproval`),
 					},
@@ -185,6 +195,7 @@ export const staticRouter = [
 						name: 'dataBase',
 						meta: {
 							title: '历史数据库',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/dataBase`),
 					},
@@ -194,6 +205,7 @@ export const staticRouter = [
 						name: 'budgetApproval',
 						meta: {
 							title: '预算审批',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/budgetApproval`),
 					},
@@ -202,6 +214,7 @@ export const staticRouter = [
 						name: 'bmApplyIndex',
 						meta: {
 							title: 'BM申请',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/bmApply`),
 					},
@@ -210,6 +223,7 @@ export const staticRouter = [
 						name: 'carTypeProOverview',
 						meta: {
 							title: '车型项目概览',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentReport`),
 					},
@@ -218,6 +232,7 @@ export const staticRouter = [
 						name: 'investmentReport',
 						meta: {
 							title: '投资报告',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentReport`),
 					},
@@ -227,7 +242,8 @@ export const staticRouter = [
         path: '/tooling/investmentReport/rsDetails',
         name: 'investmentReportRsDetails',
         meta: {
-          title: 'RS单号详情'
+          title: 'RS单号详情',
+					activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
         },
         component: () => import (`@/views/ws2/rsDetails`),
       },
@@ -256,6 +272,7 @@ export const staticRouter = [
 				name: 'addModelBag',
 				meta: {
 					title: 'addModelBag',
+					activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 				},
 				component: () =>
 					import(`@/views/ws2/budgetManagement/commonSourcing/addModelBag`),

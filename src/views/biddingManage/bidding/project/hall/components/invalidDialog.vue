@@ -22,7 +22,7 @@
             v-model="form.invalidReason"
             type="textarea"
             :rows="10"
-            placeholder="请填写作废原因"
+            :placeholder="language('BIDDING_QTXZFYY','请填写作废原因')"
             resize="none"
             show-word-limit
             style="padding: 20px 0 40px 0"

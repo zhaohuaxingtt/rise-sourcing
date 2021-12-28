@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-22 11:05:40
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
@@ -19,10 +19,18 @@ import gather from "./gather.vue";
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: { iPage, gather },
-  data() {
+  data () {
     // 这里存放数据
     return {
-
+      disabled: true
+    }
+  },
+  provide: function () {
+    return {
+      // getBaseInfo: this.getBaseInfo, //当前是一个请求
+      // getbaseInfoData: this.getbaseInfoData,  //直接reture当前请求完的数据
+      getDisabled: this.getDisabled,
+      // registerFn: this.registerFn
     }
   },
   // 监听属性 类似于data概念
@@ -31,14 +39,16 @@ export default {
   watch: {},
   // 方法集合
   methods: {
-
+    getDisabled () {
+      return this.disabled
+    }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {
+  created () {
 
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
+  mounted () {
 
   },
 }

@@ -346,7 +346,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     orgTotalPrices() {
       let supplierProducts = this.ruleForm.supplierProducts;
@@ -518,6 +518,11 @@ export default {
       //保存
       saveBiddingQuotation(formData)
         .then((res) => {
+          if(res.kickoutReason) {
+            if (document.getElementsByClassName('el-message').length == 0) {
+              return this.$message.error(res.kickOutMessage)
+            }
+          }
           if (res) {
             this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
           }

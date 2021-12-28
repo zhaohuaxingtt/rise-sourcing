@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-23 15:33:15
+ * @LastEditTime: 2021-12-27 20:02:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -24,9 +24,9 @@ export const fstitle = [
   {type:'',props:'lcBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'skdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'skdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'50',tooltip:false,fixed:true},
   {type:'',props:'headerEbr',label:'',i18n:'',width:'1',tooltip:false}
 ]
@@ -101,7 +101,7 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC \n Start Date',i18n:'',width:'95',tooltip:true},
     {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>'},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
-    {type:'',props:`${index?index:''}internalDevelopmentCost`,label:'Internal \n Dev. Cost',i18n:'',width:'90',tooltip:false},
+    {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Dev. Cost',i18n:'',width:'90',tooltip:false},
     {type:'',props:`${index?index:''}releaseCost`,label:'Release \n Cost',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
     {type:'',props:`${index?index:''}saving`,label:'Saving',i18n:'',width:'70',tooltip:false},
     {type:'',props:`Quotationdetails`,label:'Quo. \n Details',i18n:'',width:'60',tooltip:false},
@@ -170,30 +170,47 @@ export function backChooseList(type) {
  * @return {*}
  */
 export function getRenderTableTile(whiteListService,supplierLength,layout){
-  const relWhiteList = layout==1?[...whiteList,...whiteListService]:[...whiteListGs,...whiteListService]
-  const xuhTable = layout==1?fstableTileXh(0):gstableTileXh(0)
-  const fstitleFn = layout==1?fstitle:gstitle
-  const relTabelListDefault = []
-  let relTableListXh = []
-  let templateListxh = []
-  fstitleFn.forEach(items=>{
-    if(relWhiteList.find(i=>i == items.props)){
-      relTabelListDefault.push(items)
+  try {
+    const relWhiteList = layout==1?[...whiteList,...whiteListService]:[...whiteListGs,...whiteListService]
+    const xuhTable = layout==1?fstableTileXh(0):gstableTileXh(0)
+    const fstitleFn = layout==1?fstitle:gstitle
+    const relTabelListDefault = []
+    let relTableListXh = []
+    let templateListxh = []
+    let allxunhuanTableList = xuhTable
+    //为导出做数据准备。
+    let relTabelListDefaultExport = []
+    fstitleFn.forEach((items,index)=>{
+      if(relWhiteList.find(i=>i == items.props)){
+        relTabelListDefault.push(items)
+      }
+    })
+    for(let i = 0;i < xuhTable.length;i++){
+      if(relWhiteList.find(ii=>ii == xuhTable[i].props)){
+        relTableListXh.push(xuhTable[i])
+        templateListxh.push(xuhTable[i])
+      }
     }
-  })
-  for(let i = 0;i < xuhTable.length;i++){
-    if(relWhiteList.find(ii=>ii == xuhTable[i].props)){
-      relTableListXh.push(xuhTable[i])
-      templateListxh.push(xuhTable[i])
+    const lastChildProps = {name:relTableListXh[relTableListXh.length -1].label,props:relTableListXh[relTableListXh.length -1].props}
+    for(let i = 0; i<supplierLength;i++){
+      if(i>0){
+        relTableListXh = [...relTableListXh,...addtitle(templateListxh,i)]
+        allxunhuanTableList = [...allxunhuanTableList,...addtitle(xuhTable,i)]
+      }
     }
+    ([...fstitleFn.filter(items=>items.props != 'headerEbr'),...allxunhuanTableList]).forEach((items,index)=>{
+      if([...relTabelListDefault,...relTableListXh].find(items1=>items1.props == items.props)){
+        relTabelListDefaultExport.push({...items,...{hidden:false,index:index,name:items.label}})
+      }else{
+        relTabelListDefaultExport.push({...items,...{hidden:true,index:index,name:items.label}})
+      }
+    })
+    return {title:[...relTabelListDefault,...relTableListXh],xhLastChildProps:lastChildProps,allExportHiddenOrShow:relTabelListDefaultExport}
+  } catch (error) {
+    console.log(error)
+    return {title:[],xhLastChildProps:[],allExportHiddenOrShow:[]}
   }
-  const lastChildProps = {name:relTableListXh[relTableListXh.length -1].label,props:relTableListXh[relTableListXh.length -1].props}
-  for(let i = 0; i<supplierLength;i++){
-    if(i>0){
-      relTableListXh = [...relTableListXh,...addtitle(templateListxh,i)]
-    }
-  }
-  return {title:[...relTabelListDefault,...relTableListXh],xhLastChildProps:lastChildProps}
+
 }
 /**
  * @description:将title将表头追加一个动态数字 
@@ -501,7 +518,7 @@ function getcol(allData,currentKey,wi,li){
     let number = 0
     if(wi > 0 && (allData[wi-1].find((items,index)=> index == li).data) == currentKey) return number
     for (let index = wi; index < allData.length; index++){
-      if(allData[index].find((items,index)=> index == li).data == currentKey){
+      if(allData[index].find((items,index)=> index == li).data == currentKey && allData[index].find((items,index)=> index == li).isMerge){
         number ++
       }else {
         break;
@@ -519,7 +536,7 @@ function getRow(allData,currentKey,wi,li){
     let number = 0
     if(li>0 && (allData[wi].find((items,i)=>i == li-1).data == currentKey)) return number
     for (let index = li; index < allData[wi].length; index++){
-      if(allData[wi].find((items,i)=>i == index).data == currentKey){
+      if(allData[wi].find((items,i)=>i == index).data == currentKey && allData[wi].find((items,i)=>i == index).isMerge){
         number ++
       }else{
         break;
