@@ -140,15 +140,15 @@ export default {
       },
       supplierType:[
         {
-          label:'生产',
+          label: this.language('BIDDING_SHENGCHAN', '生产'),
           value:'PP',
         },
         {
-          label:'一般',
+          label: this.language('BIDDING_YIBAN', '一般'),
           value:'GP',
         },
         {
-          label:'共用',
+          label: this.language('BIDDING_GONGYONG', '共用'),
           value:'PD',
         },
       ],
