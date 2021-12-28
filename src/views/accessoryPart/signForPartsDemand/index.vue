@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <iPage class="signForParts" v-permission.auto="APREPART_SIGN_PAGE|配件-配件签收-页面">
+  <iPage class="signForParts">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>

@@ -1,7 +1,7 @@
 /*
  * @Author: YoHo
  * @Date: 2021-12-23 15:58:25
- * @LastEditTime: 2021-12-23 16:02:58
+ * @LastEditTime: 2021-12-28 13:55:03
  * @LastEditors: YoHo
  * @Description: 
  */
@@ -31,7 +31,7 @@ export const heaederSubMenu = [
     url: '/sourceinquirypoint/sourcing/reportmgmt/report',
     activePath: 'reportmgmt/report',
     key: 'LK_ZHUANGTAIGENZHONGBAOBIAO',
-    permissionKey: 'REPORTMGMT_STATUSREPORT_PROCESS_PBI',
+    permissionKey: 'SOURCEINQUIRYPOINT_MENU_DASHBOARD_SUBMENU_REPORT',
     permissionName: '报表管理-状态跟踪报表',
     group: 1
   },

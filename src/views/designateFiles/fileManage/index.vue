@@ -1,14 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-23 17:46:53
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-28 13:44:56
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" v-permission.auto="ACCESSORY_MANAGEMENT_PAGE|附件-附件管理-页面">
+  <iPage class="signForParts">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
 

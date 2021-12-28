@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2021-12-23 22:30:29
+ * @LastEditTime: 2021-12-28 13:34:20
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
@@ -373,7 +373,7 @@ const state = {
       url: "/sourceinquirypoint/sourcing/partsletter/loi",
       activePath: "loi",
       key: "LK_DINGDIANXINLOI_LOI",
-      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSLETTER_SUBMENU_PARTSLETTER',
+      permissionKey: 'SOURCEINQUIRYPOINT_MENU_PARTSLETTER_SUBMENU_LOI',
       permissionName: 'LOI',
       group: 6
     },

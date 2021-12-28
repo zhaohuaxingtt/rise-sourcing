@@ -1,14 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-08 20:00:53
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-28 13:43:29
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" v-permission.auto="APREPART_MANAGFMENT_PAGE|配件-配件管理-页面">
+  <iPage class="signForParts">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div>
