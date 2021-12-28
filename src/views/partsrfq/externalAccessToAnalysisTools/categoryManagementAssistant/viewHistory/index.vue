@@ -139,7 +139,10 @@ export default {
       this.form = {
         categoryCode: '',
         years: ''
-      }
+      };
+      this.page.currPage = 1;
+      this.page.pageSize = 10;
+      this.getTableList();
     },
     async getTableList() {
       try {
