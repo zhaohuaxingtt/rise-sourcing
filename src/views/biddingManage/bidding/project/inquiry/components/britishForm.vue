@@ -167,11 +167,6 @@ export default {
       default: true,
     },
   },
-
-  created(){
-    console.log(172,baseRules(this))
-    console.log(173,this)
-  },
   watch: {
     value: {
       immediate: true,

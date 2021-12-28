@@ -594,22 +594,27 @@ export default {
   },
   watch: {
     '$i18n.locale':{
-      immediate:true,
+      // immediate:true,
       deep:true,
       handler(val){
         this.rules = infoRules(this.ruleForm, this)
-        if (this.ruleForm.resultOpenForm === '02') {
-          this.$refs["ruleForm"].clearValidate([
-            "quoteRule.greenLightFrom",
-            "quoteRule.greenLightTo",
-            "quoteRule.yellowLightFrom",
-            "quoteRule.yellowLightTo",
-            "quoteRule.redLightFrom",
-            "quoteRule.redLightTo",
-            "quoteRule.greenDeviationValue",
-            "quoteRule.yellowDeviationValue",
+        this.$refs["ruleForm"].clearValidate();
+        this.$nextTick(() => {
+          this.$refs["ruleForm"].validateField([
+            'currencyUnit',
+            'isTax',
+            'resultOpenForm',
+            'quoteRule.greenLightFrom',
+            'quoteRule.greenLightTo',
+            'quoteRule.yellowLightFrom',
+            'quoteRule.yellowLightTo',
+            'quoteRule.redLightFrom',
+            'quoteRule.redLightTo',
+            'quoteRule.greenDeviationValue',
+            'quoteRule.targetPrice',
+            'quoteRule.yellowDeviationValue',
           ]);
-        }
+        })
       }
     },
     "ruleForm.quoteRule.greenLightTo"(val) {

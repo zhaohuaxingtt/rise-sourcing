@@ -776,6 +776,45 @@ export default {
     },
   },
   watch: {
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = infoRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs["ruleForm"].validateField([
+            'biddingType',
+            'projectName',
+            'projectType',
+            'currencyUnit',
+            'currencyMultiple',
+            'isTax',
+            'resultOpenForm',
+            'moldFee',
+            'openTenderNature',
+            'isResultOpen',
+            'biddingMode',
+            'quoteRule.greenLightFrom',
+            'quoteRule.greenDeviationValue',
+            'quoteRule.targetPrice',
+            'quoteRule.yellowDeviationValue'
+          ])
+        })
+        // if (this.ruleForm.resultOpenForm === '02') {
+        //   this.$refs["ruleForm"].clearValidate([
+        //     "quoteRule.greenLightFrom",
+        //     "quoteRule.greenLightTo",
+        //     "quoteRule.yellowLightFrom",
+        //     "quoteRule.yellowLightTo",
+        //     "quoteRule.redLightFrom",
+        //     "quoteRule.redLightTo",
+        //     "quoteRule.greenDeviationValue",
+        //     "quoteRule.yellowDeviationValue",
+        //   ]);
+        // }
+      }
+    },
     "ruleForm.quoteRule.greenLightTo"(val) {
       const { greenLightFrom } = this.ruleForm.quoteRule;
       if (!(greenLightFrom || 0 === greenLightFrom) && (val || 0 === val)) {
@@ -859,10 +898,12 @@ export default {
       handler(val) {
         this.quoteRuleTargetPriceValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
         if (val === null || val === "" || val === undefined) {
-          this.$refs["ruleForm"].clearValidate([
-            "quoteRule.greenDeviationValue",
-            "quoteRule.yellowDeviationValue",
-          ]);
+          if (this.ruleForm.resultOpenForm === '02') {
+            this.$refs["ruleForm"].clearValidate([
+              "quoteRule.greenDeviationValue",
+              "quoteRule.yellowDeviationValue",
+            ]);
+          }
       }
       }
     },
@@ -1137,7 +1178,7 @@ export default {
           }
         }
         this.$nextTick(() => {
-          this.rules = infoRules(this.ruleForm);
+          this.rules = infoRules(this.ruleForm, this);
         });
       });
     },
