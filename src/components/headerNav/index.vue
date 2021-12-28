@@ -25,6 +25,7 @@
       />
     </div>
     <div class="headerNav-sub margin-top30"></div>
+    <slot></slot>
   </div>
 </template>
 <script>
@@ -59,7 +60,11 @@ export default {
       "financialmanageNavListLeft",
       "financialmanageThirdMenu",
       "scoremanageNavListLeft",
-      "scoremanageThirdMenu"
+      "scoremanageThirdMenu",
+      "costanalysismanageNavListLeft",
+      "costanalysismanageThirdMenu",
+      "configscoredeptNavListLeft",
+      "configscoredeptThirdMenu"
     ]),
     ...mapActions(["updateNavList"]),
     navListLeft() {

@@ -9,20 +9,22 @@
 <template>
   <iPage class="home">
     <div class="header">
-      <iNavMvp :list="tabList" :lang="true" :lev="1" routerPage></iNavMvp>
-      <div class="control">
-        <iLoger
-          :config="{
-            module_obj_ae: '成本分析管理', 
-            menuName_obj_ae: ''
-          }"
-          isPage
-          credentials
-          class="margin-left20" />
-        <span class="margin-left20">
-          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-        </span>
-      </div>
+      <!-- <iNavMvp :list="tabList" :lang="true" :lev="1" routerPage></iNavMvp> -->
+      <headerNav class="headerNav" type="costanalysismanage">
+        <div class="control">
+          <iLoger
+            :config="{
+              module_obj_ae: '成本分析管理', 
+              menuName_obj_ae: ''
+            }"
+            isPage
+            credentials
+            class="margin-left20" />
+          <span class="margin-left20">
+            <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+          </span>
+        </div>
+      </headerNav>
     </div>
     <iSearch
       class="margin-top40"
@@ -205,6 +207,7 @@
 
 <script>
 import { icon, iSearch, iInput, iSelect, iCard, iPagination, iMessage, iNavMvp, iPage } from "rise"
+import headerNav from "@/components/headerNav"
 import iLoger from 'rise/web/components/iLoger'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import downloadDialog from './components/downloadFiles'
@@ -232,7 +235,8 @@ export default {
     downloadDialog,
     cbdDialog,
     iNavMvp,
-    iPage
+    iPage,
+    headerNav
   },
   mixins: [ filters, pageMixins ],
   computed: {
@@ -461,6 +465,10 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+  .headerNav {
+    display: flex;
+  }
+  
   .header {
     position: relative;
     display: flex;
