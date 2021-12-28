@@ -32,12 +32,12 @@ export const infoForm = {
 
 const isEmpty = (val) => !val && 0 !== val;
 // form规则
-export const infoRules = (form) => ({
-  currencyUnit: [{ required: true, message: language('BIDDING_QINGXUANZE',"请选择"), trigger: "change" }],
-  isTax: [{ required: true, message: language('BIDDING_QINGXUANZE',"请选择"), trigger: "change" }],
-  resultOpenForm: [{ required: true, message: language('BIDDING_QINGXUANZE',"请选择"), trigger: "change" }],
+export const infoRules = (form, vm) => ({
+  currencyUnit: [{ required: true, message: vm.language('BIDDING_QINGXUANZE',"请选择"), trigger: "change" }],
+  isTax: [{ required: true, message: vm.language('BIDDING_QINGXUANZE',"请选择"), trigger: "change" }],
+  resultOpenForm: [{ required: true, message: vm.language('BIDDING_QINGXUANZE',"请选择"), trigger: "change" }],
   "quoteRule.greenLightFrom": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const {
@@ -101,28 +101,28 @@ export const infoRules = (form) => ({
         }
         callback();
       },
-      message: language('BIDDING_PMQJPZCW',"排名区间配置错误"),
+      message: vm.language('BIDDING_PMQJPZCW',"排名区间配置错误"),
       trigger: "blur",
     },
   ],
   "quoteRule.greenLightTo": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.yellowLightFrom": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.yellowLightTo": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.redLightFrom": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.redLightTo": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
   "quoteRule.greenDeviationValue": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
-    { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^(\d|[1-9]\d|100)$/, message: vm.language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { greenDeviationValue, yellowDeviationValue, targetPrice } = form.quoteRule;
@@ -137,14 +137,14 @@ export const infoRules = (form) => ({
             : callback(new Error(rule.message));
         }
       },
-      message: language('BIDDING_QTXPLMBJ',"请填写偏离目标价"),
+      message: vm.language('BIDDING_QTXPLMBJ',"请填写偏离目标价"),
       trigger: "blur",
     },
   ],
-  "quoteRule.targetPrice":[{ required: true, message: language('BIDDING_QINGSHURU',"请输入"), trigger: "blur" }],
+  "quoteRule.targetPrice":[{ required: true, message: vm.language('BIDDING_QINGSHURU',"请输入"), trigger: "blur" }],
   "quoteRule.yellowDeviationValue": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
-    { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^(\d|[1-9]\d|100)$/, message: vm.language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { greenDeviationValue, yellowDeviationValue } = form.quoteRule;
@@ -156,7 +156,7 @@ export const infoRules = (form) => ({
           ? callback(new Error(rule.message))
           : callback();
       },
-      message: language('BIDDING_BNXYDYLD',"不能小于等于绿灯"),
+      message: vm.language('BIDDING_BNXYDYLD',"不能小于等于绿灯"),
       trigger: "blur",
     },
   ],

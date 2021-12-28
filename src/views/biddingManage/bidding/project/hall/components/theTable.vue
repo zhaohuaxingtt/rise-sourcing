@@ -43,6 +43,9 @@ import { iCard, iPagination } from "rise";
 import commonTable from "@/components/biddingComponents/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { getCurrencyUnit } from "@/api/mock/mock";
+import {
+  currencyMultipleLib
+} from "./data";
 export default {
   mixins: [pageMixins],
   components: {
@@ -78,6 +81,7 @@ export default {
       pageSize: 10,
       pageNum: 1,
       currencyUnit: {},
+      currencyMultipleLib
     };
   },
   mounted() {
@@ -102,12 +106,13 @@ export default {
       return this.currencyUnit[unit];
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit ) 
     },
     handleCurrentChange(e) {
       this.page.currPage = e;

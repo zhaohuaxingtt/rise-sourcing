@@ -593,6 +593,33 @@ export default {
     },
   },
   watch: {
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = infoRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate();
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'currencyUnit',
+          //   'isTax',
+          //   'resultOpenForm',
+          //   'quoteRule.greenLightFrom',
+          //   'quoteRule.greenLightTo',
+          //   'quoteRule.yellowLightFrom',
+          //   'quoteRule.yellowLightTo',
+          //   'quoteRule.redLightFrom',
+          //   'quoteRule.redLightTo',
+          //   'quoteRule.greenDeviationValue',
+          //   'quoteRule.targetPrice',
+          //   'quoteRule.yellowDeviationValue',
+          // ]);
+        })
+      }
+    },
     "ruleForm.quoteRule.greenLightTo"(val) {
       const { greenLightFrom } = this.ruleForm.quoteRule;
       if (!(greenLightFrom || 0 === greenLightFrom) && (val || 0 === val)) {
@@ -815,7 +842,7 @@ export default {
         if (valid) {
           this.$confirm(this.language('BIDDING_SFBCGBJXX',"是否保存该报价信息？"), this.language('BIDDING_TISHI',"提示"), {
             confirmButtonText: this.language('BIDDING_SHI',"是"),
-        cancelButtonText: this.language('BIDDING_FOU',"否"),
+            cancelButtonText: this.language('BIDDING_FOU',"否"),
             type: "warning",
           })
             .then(() => {
@@ -892,7 +919,7 @@ export default {
           }
         }
         this.$nextTick(() => {
-          this.rules = infoRules(this.ruleForm);
+          this.rules = infoRules(this.ruleForm,this);
         });
       });
     },

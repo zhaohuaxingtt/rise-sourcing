@@ -12,8 +12,14 @@
       <div class="title">{{ language("CHENGBENFENXI", "成本分析") }}</div>
       <div class="control">
         <!-- <iButton @click="back">{{ $t("costanalysismanage.FanHui") }}</iButton> -->
-        <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_COSTANALYSIS_BUTTON_UPLOAD|上传">
+        <!-- <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_COSTANALYSIS_BUTTON_UPLOAD|上传">
           <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
+        </uploadButton> -->
+        <uploadButton v-if="isPca" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessPca" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_COSTANALYSIS_BUTTON_UPLOAD_PCA|上传PCA报告">
+          <iButton :loading="uploadLoading">{{ language("SHANGCHUANPCABAOGAO", "上传PCA报告") }}</iButton>
+        </uploadButton>
+        <uploadButton v-if="isTia" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessTia" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_COSTANALYSIS_BUTTON_UPLOAD_TIA|上传TIA报告">
+            <iButton :loading="uploadLoading">{{ language("SHANGCHUANTIABAOGAO", "上传TIA报告") }}</iButton>
         </uploadButton>
         <iButton @click="handleDownload" v-permission.auto="COSTANALYSISMANAGE_COSTANALYSIS_BUTTON_DOWNLOAD|下载">{{ language("XIAZAI", "下载") }}</iButton>
         <iButton :loading="deleteLoading" @click="handleDelete" v-permission.auto="COSTANALYSISMANAGE_COSTANALYSIS_BUTTON_DELETE|删除">{{ language("SHANCHU", "删除") }}</iButton>
@@ -91,12 +97,38 @@ export default {
       uploadLoading: false,
       deleteLoading: false,
       timer: 0,
-      fileList: []
+      // fileList: [],
+      fileListPCA: [],
+      fileListTIA: [],
     }
   },
   created() {
     this.rfqId = this.$route.query.rfqId
     this.getKmFileHistory()
+  },
+  computed: {
+    ...Vuex.mapState({
+      userInfo: state => state.permission.userInfo,
+    }),
+    roleCodeList() {
+      if (Array.isArray(this.userInfo.positionList)) {
+        return this.userInfo.positionList.reduce((acc, cur) => {
+          if (Array.isArray(cur.roleDTOList)) {
+              return acc.concat(cur.roleDTOList.map(item => item.code))
+          } else {
+              return acc
+          }
+        }, [])
+      } else {
+        return []
+      }
+    },
+    isPca() { // 零件成本分析员 临时
+      return this.roleCodeList.some(item => item.indexOf("LJCBFXY") > -1)
+    },
+    isTia() { // 模具成本分析员 临时
+      return this.roleCodeList.some(item => item.indexOf("MJCBFXY") > -1)
+    },
   },
   methods: {
     getKmFileHistory() {
@@ -128,18 +160,19 @@ export default {
     beforeUpload() {
       this.uploadLoading = true
     },
-    uploadFiles() {
+    uploadFiles(type) {
       this.loading = true
 
       kmUploadFiles({
-        fileHistoryDTOS: this.fileList.map(item => ({
+        fileHistoryDTOS: this[`fileList${ type }`].map(item => ({
           fileCode: "0",
           fileName: item.fileName,
           filePath: item.filePath,
           fileSize: item.size,
           hostId: this.rfqId,
           source: 0,
-          uploadId: item.id
+          uploadId: item.id,
+          fileType: type === "PCA" ? 126 : 127 // 126 PCA / 127 TIA
         })),
         type: 1
       })
@@ -159,15 +192,22 @@ export default {
         this.loading = false
       })
     },
-    uploadSuccess(res, file) {
+    uploadSuccessPca(res, file) {
+      this.uploadSuccess(res, file, "PCA")
+    },
+    uploadSuccessTia(res, file) {
+      this.uploadSuccess(res, file, "TIA")
+    },
+    uploadSuccess(res, file, type) {
       if (res.code != 200) {
         iMessage.error(`${ this.$i18n.locale === "zh" ? res.desZh : res.desEn }`)
       } else {
+        this[`fileList${ type }`] = []
         clearTimeout(this.timer)
         iMessage.success(`${ file.name } ${ this.language("SHANGCHUANCHENGGONG", "上传成功") }`)
-        this.fileList.push({ id: res.data[0].id, fileName: res.data[0].name, filePath: res.data[0].path, size: file.size })
+        this[`fileList${ type }`].push({ id: res.data[0].id, fileName: res.data[0].name, filePath: res.data[0].path, size: file.size })
         this.timer = setTimeout(() => {
-          this.uploadFiles()
+          this.uploadFiles(type)
           clearTimeout(this.timer)
         }, 700)
       }

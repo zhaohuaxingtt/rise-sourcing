@@ -11,22 +11,22 @@
       <iCard class="right margin-bottom5" v-for="(item,index) in tableData" :key="index">
         <div class="flex">
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
-          <div class="title">{{item.name}}</div>
+          <div class="title">{{item.supplierAbbrName}}</div>
         </div>
         <iLabel class="margin-top8 title1" :label="language('CHEXINGXI','车型：')"></iLabel>
         <div class="carBox">
-          <span v-for="(val,ix) in item.carTypeProjectList" :key="ix">{{item.carTypeProjectList.length-1>ix?val+' |&nbsp;&nbsp;':val}}</span>
+          <span v-for="(val,ix) in item.carTypeProject" :key="ix">{{item.carTypeProject.length-1>ix?val+' |&nbsp;&nbsp;':val}}</span>
         </div>
         <div class="address">
-          <div v-for="(val,i) in item.factoryAddress" :key="i">
+          <div v-for="(val,i) in item.plantList" :key="i">
             <iLabel class="margin-top8 title1" :label="`${language('GONGYINGSHANGGONGCHANGDIZI','供应商工厂地址')}${i+1}：`"></iLabel>
             <div>
-              {{ val}}
+              {{ val.plantAddress }}
             </div>
           </div>
         </div>
         <iLabel class="margin-top8 title1" :label="language('GONGCHANGZONGXIAOSHOUE','工厂总销售额：')"></iLabel>
-        <div style="height:14px">{{String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'}}</div>
+        <div style="height:14px">{{String(item.amount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'}}</div>
       </iCard>
     </div>
   </div>

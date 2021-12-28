@@ -160,27 +160,27 @@ export const totalTableTitle = [
 ];
 
 
-export const baseRules = {
+export const baseRules = (vm) => ({
   beginMonth: [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
   ],
-  modelProjects: [{ type: 'array', required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" }],
-  models: [{ type: 'array', required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+  modelProjects: [{ type: 'array', required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+  models: [{ type: 'array', required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
   // totalPrices: [
   // { rule: [{ pattern: /^[\d]{0,10}(\.[\d]{0,6})?$|^(\d|[1-9]\d)(\.\d+)*$/, trigger: 'blur' }], required: true, message: "起始总价范围是0~9999999999.999999", trigger: "blur" },
   // ],
   totalPrices: [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
     {
       validator(rule, value, callback) {
         if (value && value > 0 && /^[\d]{0,15}(\.[\d]{0,2})?$/.test(value)) callback();
         else callback(new Error(rule.message))
       },
-      message: language('BIDDING_QSZJFWS0~999999999999999.99','起始总价范围是0~999999999999999.99'),
+      message: vm.language('BIDDING_QSZJFWS0~999999999999999.99','起始总价范围是0~999999999999999.99'),
       trigger: 'blur',
     }
   ],
-};
+})
 
 export const currencyMultipleLib = {
   "01": {

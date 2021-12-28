@@ -103,8 +103,9 @@
           <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
         </template>
         <template #categoryBudget="scope">
-          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
+          <div class="linkStyle" v-if="+scope.row.isHideColumn === 1"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
           </div>
+          <div v-else>-</div>
         </template>
         <template #budgetApplyAmount="scope">
           <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span
@@ -112,7 +113,8 @@
           </div>
         </template>
         <template #budgetLeftoverAmount="scope">
-          <div>{{ getTousandNum(scope.row.budgetLeftoverAmount) }}</div>
+          <div v-if="+scope.row.isHideColumn === 1">{{ getTousandNum(scope.row.budgetLeftoverAmount) }}</div>
+          <div v-else>-</div>
         </template>
         <template #approvalStatus="scope">
           <div>
