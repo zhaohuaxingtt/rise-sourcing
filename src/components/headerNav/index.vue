@@ -39,8 +39,10 @@ export default {
     };
   },
   props: {
-    type: String,
-    default: "sourceinquirypoint"
+    type: {
+      type: String,
+      default: "sourceinquirypoint"
+    }
   },
   components: {
     iNavMvp,
@@ -48,13 +50,23 @@ export default {
   },
   created() {
     this.updateNavList;
-    this.group = this.thirdMenu.filter((i) => i.url == this.$route.path)[0].group;
+    this.group = this[`${ this.type }ThirdMenu`].filter((i) => i.url == this.$route.path)[0].group;
   },
   computed: {
-    ...mapState(["navListLeft", "thirdMenu"]),
+    ...mapState([
+      "sourceinquirypointNavListLeft", 
+      "sourceinquirypointThirdMenu",
+      "financialmanageNavListLeft",
+      "financialmanageThirdMenu",
+      "scoremanageNavListLeft",
+      "scoremanageThirdMenu"
+    ]),
     ...mapActions(["updateNavList"]),
+    navListLeft() {
+      return this[`${ this.type }NavListLeft`] || []
+    },
     heaederSubMenu() {
-      let heaederSubMenu = this.thirdMenu
+      let heaederSubMenu = this[`${ this.type }ThirdMenu`]
         .filter((i) => i.group == this.group)
         .map((item, index) => {
           item.value = 1 + index;

@@ -9,7 +9,7 @@
 
 <template>
   <iPage v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_PAGE|财务目标价管理-目标价维护-页面">
-    <headerNav />
+    <headerNav type="financialmanage" />
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
     <!----------------------------------------------------------------->
@@ -104,7 +104,7 @@
 
 <script>
 import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
-import headerNav from '../components/headerNav'
+import headerNav from '@/components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
