@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 14:35:39
+ * @LastEditTime: 2021-12-28 15:22:05
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -142,8 +142,8 @@ export default {
       this.tableLoading = true
       const fsOptions = await this.getFsUserList(this.delayList || [])
       this.tableList = this.delayList.map(item => {
-        const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
-        const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+        const fs = item.fs
+        const fsId = item.fsId + ''
         const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
           if (item.userId) { 
             return [...accu, { 

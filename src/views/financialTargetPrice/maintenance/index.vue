@@ -1,10 +1,10 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
- * @LastEditors:  
- * @LastEditTime: 2021-11-11 16:58:30
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-28 17:14:55
  * @Description: 财务目标价-目标价维护
- * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\maintenance\index.vue
 -->
 
 <template>
@@ -210,6 +210,7 @@ export default {
         cfPriceType: '',
         showSelf: true
       }
+      this.sure()
     },
     getCF() {
       getCFList().then(res => {
