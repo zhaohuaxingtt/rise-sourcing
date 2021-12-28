@@ -273,7 +273,11 @@ export default {
         const count = _.sum(percent.map(o => Number(o)))
         // 校验是否包含负数比例
         const containNGNumber = percent.filter(m => m < 0).length
-        if (state && isNaN(count) || count > 100 || containNGNumber) {
+        if (state && count > 100) {
+          state = false
+          info = this.language('FENEBUCHAOGUOHUNDRENDPERCENT', '定点份额不超过100%')
+        }
+        if (state && isNaN(count) || containNGNumber) {
           state = false
           info = this.language('FENPEIBILIBUHEFA', '分配比例不合法')
         }
@@ -287,6 +291,10 @@ export default {
     handleEditPercent(row, Index) {
       const percent = row.percent || []
       const count = _.sum(percent.map(o => Number(o)))
+      if (count > 100) {
+        iMessage.error(this.language('FENEBUCHAOGUOHUNDRENDPERCENT', '定点份额不超过100%'))
+        return
+      }
       // 校验是否包含负数比例
       const containNGNumber = percent.filter(m => m < 0).length
       if (isNaN(count) || count > 100 || containNGNumber) {
