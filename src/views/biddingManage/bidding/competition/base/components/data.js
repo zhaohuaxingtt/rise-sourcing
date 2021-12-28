@@ -25,42 +25,42 @@ export const infoForm = {
 }
 
 const isEmpty = (val) => !val && 0 !== val;
-export const infoRules = (form) =>({
+export const infoRules = (form, vm) =>({
   biddingType: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   projectName: [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
   ],
   projectType: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   currencyUnit: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   currencyMultiple: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   isTax: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   resultOpenForm: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: 'change' },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: 'change' },
   ],
   moldFee: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   openTenderNature: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   isResultOpen: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   biddingMode: [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "change" },
+    { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" },
   ],
   "quoteRule.greenLightFrom": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const {
@@ -124,13 +124,13 @@ export const infoRules = (form) =>({
         }
         callback();
       },
-      message: language('BIDDING_PMQJPZCW',"排名区间配置错误"),
+      message: vm.language('BIDDING_PMQJPZCW',"排名区间配置错误"),
       trigger: "blur",
     },
   ],
   "quoteRule.greenDeviationValue": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
-    { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^(\d|[1-9]\d|100)$/, message: vm.language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { greenDeviationValue, yellowDeviationValue, targetPrice } = form.quoteRule;
@@ -145,14 +145,14 @@ export const infoRules = (form) =>({
             : callback(new Error(rule.message));
         }
       },
-      message: language('BIDDING_QTXPLMBJ',"请填写偏离目标价"),
+      message: vm.language('BIDDING_QTXPLMBJ',"请填写偏离目标价"),
       trigger: "blur",
     },
   ],
-  "quoteRule.targetPrice":[{ required: true, message: language('BIDDING_QINGSHURU',"请输入"), trigger: "blur" }],
+  "quoteRule.targetPrice":[{ required: true, message: vm.language('BIDDING_QINGSHURU',"请输入"), trigger: "blur" }],
   "quoteRule.yellowDeviationValue": [
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
-    { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { pattern: /^(\d|[1-9]\d|100)$/, message: vm.language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { greenDeviationValue, yellowDeviationValue } = form.quoteRule;
@@ -164,7 +164,7 @@ export const infoRules = (form) =>({
           ? callback(new Error(rule.message))
           : callback();
       },
-      message: language('BIDDING_BNXYDYLD',"不能小于等于绿灯"),
+      message: vm.language('BIDDING_BNXYDYLD',"不能小于等于绿灯"),
       trigger: "blur",
     },
   ],

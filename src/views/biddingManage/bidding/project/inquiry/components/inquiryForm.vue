@@ -100,6 +100,13 @@ export default {
         this.ruleForm = val;
       },
     },
+    '$i18n.locale':{
+      immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+      }
+    },
     ruleForm(val) {
       this.$emit("input", val);
     },
@@ -118,7 +125,7 @@ export default {
   },
   data() {
     return {
-      rules: baseRules,
+      rules: baseRules(this),
       ruleForm: {},
       status: "未开标",
       openTenderStatusList,

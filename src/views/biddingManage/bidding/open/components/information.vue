@@ -593,6 +593,30 @@ export default {
     },
   },
   watch: {
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = infoRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate();
+        this.$nextTick(() => {
+          this.$refs["ruleForm"].validateField([
+            'currencyUnit',
+            'isTax',
+            'resultOpenForm',
+            'quoteRule.greenLightFrom',
+            'quoteRule.greenLightTo',
+            'quoteRule.yellowLightFrom',
+            'quoteRule.yellowLightTo',
+            'quoteRule.redLightFrom',
+            'quoteRule.redLightTo',
+            'quoteRule.greenDeviationValue',
+            'quoteRule.targetPrice',
+            'quoteRule.yellowDeviationValue',
+          ]);
+        })
+      }
+    },
     "ruleForm.quoteRule.greenLightTo"(val) {
       const { greenLightFrom } = this.ruleForm.quoteRule;
       if (!(greenLightFrom || 0 === greenLightFrom) && (val || 0 === val)) {
@@ -892,7 +916,7 @@ export default {
           }
         }
         this.$nextTick(() => {
-          this.rules = infoRules(this.ruleForm);
+          this.rules = infoRules(this.ruleForm,this);
         });
       });
     },

@@ -1,7 +1,7 @@
 import language from "@/utils/language";
 
 const isEmpty = (val) => !val && 0 !== val;
-export const baseRules = ({ ruleForm: form, realTotalPrices }) => ({
+export const baseRules = ( form,vm) => ({
   "biddingQuoteRule.limitValue": [
     { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
     { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
@@ -13,7 +13,7 @@ export const baseRules = ({ ruleForm: form, realTotalPrices }) => ({
             ? callback(new Error(language('BIDDING_BXDY0，BXXYDY100',"必须大于0，并且小于等于100")))
             : callback();
         } else {
-          value === "0" || value >= realTotalPrices
+          value === "0" || value >= vm.realTotalPrices
             ? callback(new Error(language('BIDDING_JCCJBXDY0，BQXYQPJ',"基础差价必须大于0，并且小于起拍价")))
             : callback();
         }
@@ -207,9 +207,9 @@ export const baseRules = ({ ruleForm: form, realTotalPrices }) => ({
   ],
 });
 
-export const baseHeRules = (form) => ({
+export const baseHeRules = (form, vm) => ({
   "biddingQuoteRule.highestOffer": [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { amplitudeValue = '' } = form.biddingQuoteRule
@@ -218,13 +218,13 @@ export const baseHeRules = (form) => ({
           ? callback()
           : callback(new Error(rule.message));
       },
-      message: language('BIDDING_BXDYFDZ',"必须大于幅度值"),
+      message: vm.language('BIDDING_BXDYFDZ',"必须大于幅度值"),
       trigger: "blur",
     },
   ],
   "biddingQuoteRule.amplitudeValue": [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
-    { pattern: /^\+?[0-9]\d*$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { pattern: /^\+?[0-9]\d*$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { highestOffer = '' } = form.biddingQuoteRule;
@@ -233,7 +233,7 @@ export const baseHeRules = (form) => ({
           : callback();
 
       },
-      message: language('BIDDING_BXXYZGBJ',"必须小于最高报价"),
+      message: vm.language('BIDDING_BXXYZGBJ',"必须小于最高报价"),
       trigger: "blur",
     },
     {
@@ -242,23 +242,23 @@ export const baseHeRules = (form) => ({
           ? callback(new Error(rule.message))
           : callback();
       },
-      message: language('BIDDING_BXWDY0',"必须为大于0"),
+      message: vm.language('BIDDING_BXWDY0',"必须为大于0"),
       trigger: "blur",
     },
   ],
   "biddingQuoteRule.biddingInterval": [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
-    { pattern: /^\+?[0-9]\d*$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { pattern: /^\+?[0-9]\d*$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     {
       // pattern: /^([1-9]|[0-9][0-9]|600)$/,
       pattern: /^[5-9]{1}$|^[1-9]{1}[0-9]{1}$|^[1-5]{1}[0-9]{1}[0-9]{1}$|^600$/,
-      message: language('BIDDING_ZNSR5-600M',"只能输入5-600秒"),
+      message: vm.language('BIDDING_ZNSR5-600M',"只能输入5-600秒"),
       trigger: "blur",
     },
   ],
   "biddingQuoteRule.autoPriceLimit": [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
 });
 

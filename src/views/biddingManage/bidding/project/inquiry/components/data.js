@@ -6,52 +6,53 @@
  */
 import language from "@/utils/language";
 
-export const baseRules = {
-  beginMonth: [{ required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" }],
-  modelProjects: [
-    {
-      type: "array",
-      required: true,
-      message: language('BIDDING_BIXUAN','必选'),
-      trigger: "change",
-    },
-  ],
-  models: [
-    {
-      type: "array",
-      required: true,
-      message: language('BIDDING_BIXUAN','必选'),
-      trigger: "change",
-    },
-  ],
-  totalPrices: [{ required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" }],
+export const baseRules = (vm) => ({
+    beginMonth: [{ required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" }],
+    modelProjects: [
+      {
+        type: "array",
+        required: true,
+        message: vm.language('BIDDING_BIXUAN','必选'),
+        trigger: "change",
+      },
+    ],
+    models: [
+      {
+        type: "array",
+        required: true,
+        message: vm.language('BIDDING_BIXUAN','必选'),
+        trigger: "change",
+      },
+    ],
+    totalPrices: [{ required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" }],
+  
+    "manualBiddingType": [
+      { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "blur" },
+    ],
+    "biddingBeginTime": [
+      { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "blur" },
+    ],
+    "biddingEndTime": [
+      { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "blur" },
+    ],
+    "pricingDeadline": [
+      { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "blur" },
+    ],
+    "roundType": [
+      { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "blur" },
+    ],
+    "openTenderTime": [
+      { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "blur" },
+    ],
+    "isAttend": [
+      { required: true, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "blur" },
+    ],
+    "cbdLevel": [
+      { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    ]
+})
 
-  "manualBiddingType": [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
-  ],
-  "biddingBeginTime": [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
-  ],
-  "biddingEndTime": [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
-  ],
-  "pricingDeadline": [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
-  ],
-  "roundType": [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
-  ],
-  "openTenderTime": [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
-  ],
-  "isAttend": [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
-  ],
-  "cbdLevel": [
-    { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
-  ]
-};
-
+// 没有用到
 export const suppliersRules = {
   "contactName": [
     { required: true, message: language('BIDDING_BIXUAN','必选'), trigger: "blur" },
@@ -63,6 +64,7 @@ export const suppliersRules = {
     { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
   ],
 }
+
 export const tableTitle = [
   {
     props: "sort",

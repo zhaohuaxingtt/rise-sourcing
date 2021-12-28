@@ -17,31 +17,10 @@
           prop="biddingQuoteRule.highestOffer"
           :hideRequiredAsterisk="true"
         >
-          <!-- <iInput
-            oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
+          <operatorInput
             v-model="ruleForm.biddingQuoteRule.highestOffer"
             class="input-wrap"
-          ></iInput> -->
-          <template v-if="isInputFlag">
-            <iInput
-              class="input-wrap"
-              :value="ruleForm.biddingQuoteRule.highestOffer"
-              @focus="handlerInputFocus"
-              @blur="handlerInputBlur"
-              type="number"
-              @input="value => $set(ruleForm.biddingQuoteRule, 'highestOffer', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
-            >
-            </iInput>
-          </template>
-          <template v-else>
-            <iInput
-              class="input-wrap"
-              :value="highestOfferValue"
-              @focus="handlerInputFocus"
-              @blur="handlerInputBlur"
-            >
-            </iInput>
-          </template>
+          ></operatorInput>
         </iFormItem>
       </div>
     </div>
@@ -56,32 +35,11 @@
           prop="biddingQuoteRule.amplitudeValue"
           :hideRequiredAsterisk="true"
         >
-          <!-- <iInput
+          <operatorInput
             v-model="ruleForm.biddingQuoteRule.amplitudeValue"
             class="input-wrap"
             maxlength="15"
-          ></iInput> -->
-          <template v-if="isInputFlag">
-            <iInput
-              class="input-wrap"
-              maxlength="15"
-              v-model="ruleForm.biddingQuoteRule.amplitudeValue"
-              @focus="handlerInputFocus"
-              @blur="handlerInputBlur"
-              type="number"
-            >
-            </iInput>
-          </template>
-          <template v-else>
-            <iInput
-              class="input-wrap"
-              maxlength="15"
-              :value="amplitudeValueData"
-              @focus="handlerInputFocus"
-              @blur="handlerInputBlur"
-            >
-            </iInput>
-          </template>
+          ></operatorInput>
         </iFormItem>
       </div>
     </div>
@@ -143,9 +101,11 @@
 import { iInput, iLabel, iFormItem } from "rise";
 import iLabelML from "@/components/biddingComponents/iLabelML";
 import { baseHeRules } from "./data.js";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   components: {
+    operatorInput,
     iInput,
     iLabel,
     iLabelML,
@@ -162,8 +122,23 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
-        this.rules = baseHeRules(this.ruleForm);
       },
+    },
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseHeRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs["ruleForm"].validateField([
+            'biddingQuoteRule.highestOffer',
+            'biddingQuoteRule.amplitudeValue',
+            'biddingQuoteRule.biddingInterval',
+            'biddingQuoteRule.autoPriceLimit',
+          ])
+        })
+      }
     },
     ruleForm(val) {
       this.$emit("input", val);
@@ -191,7 +166,7 @@ export default {
   },
   data() {
     return {
-      rules: baseHeRules(this.ruleForm),
+      rules: baseHeRules(this.ruleForm, this),
       isInputFlag:false,
       highestOfferValue:'',
       amplitudeValueData:'',
