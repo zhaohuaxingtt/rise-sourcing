@@ -376,6 +376,7 @@ export default {
 .configscoredept {
   .headerNav {
     display: flex;
+    width: 100%;
   }
 
   .header {

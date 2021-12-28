@@ -9,7 +9,7 @@
 
 <template>
   <iPage v-permission.auto='MODELTARGETPRICE_APPROVAL_PAGE|模具目标价管理-目标价审批-页面'>
-    <headerNav type="financialmanage" />
+    <headerNav />
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
     <!----------------------------------------------------------------->
@@ -86,7 +86,7 @@
 
 <script>
 import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
-import headerNav from '@/components/headerNav'
+import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
 import tableList from '../components/tableList'
