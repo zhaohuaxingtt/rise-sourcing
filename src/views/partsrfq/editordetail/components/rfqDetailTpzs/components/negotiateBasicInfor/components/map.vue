@@ -44,18 +44,32 @@ export default {
         const data = cloneDeep(objects)
         var sum = 0
 
-        this.svwData = data.purchaseDataList
-        this.tableData = data.offerDataList
+        this.svwData = data.purchaseFactoryList
+        this.tableData = data.supplierList
         this.tableData && this.tableData.forEach(item => {
-          sum = sum + parseFloat(item.toAmount)
+          sum = sum + parseFloat(item.amount)
         })
         this.tableData && this.tableData.map(item => {
-          item.symbolSize = parseFloat(item.toAmount) / sum * 100 / 5
-          item.toAmount = String(item.toAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'
-          return item.value = [item.lon, item.lat]
+          if (item.plantList && item.plantList.length > 0) {
+            item.plantList.forEach((plant) => {
+              if (plant.amount) {
+                var ratio = parseFloat(plant.amount) / sum * 100 / 5
+                if (ratio > 64) {
+                  ratio = 64
+                } else if (ratio < 5) {
+                  ratio = 5
+                }
+                plant.symbolSize = ratio
+              } else {
+                plant.symbolSize = 10
+              }
+              plant.amount = String(plant.amount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'
+              plant.value = [plant.lon, plant.lat]
+            })
+          }
         })
         this.svwData && this.svwData.map(item => {
-          return item.value = [item.lon, item.lat]
+          return item.value = [item.longitude, item.latitude]
         })
         if (this.$refs.charMap && (this.tableData || this.svwData)) {
           this.handleMap()
@@ -87,69 +101,73 @@ export default {
       });
       // 圆点
       this.tableData && this.tableData.map((item, index) => {
-        let carTypeList = ''
-        item.carTypeProjectList.forEach((val, i) => {
-          carTypeList += item.carTypeProjectList.length - 1 > i ? val + ' | ' : val
-        })
-        var circleMarker = new AMap.CircleMarker({
-          center: [item.lon, item.lat],
-          radius: item.symbolSize,//3D视图下，CircleMarker半径不要超过64px
-          strokeColor: this.color[index],
-          strokeWeight: 2,
-          strokeOpacity: 1,
-          fillColor: this.color[index],
-          fillOpacity: 1,
-          zIndex: 10,
-          bubble: true,
-          cursor: 'pointer',
-          clickable: true,
-          data: item
-        })
-        circleMarker.setMap(map)
-        let clickIcon = new AMap.Icon({
-          image: this.highlight,
-          size: new AMap.Size(40, 30),
-          imageSize: new AMap.Size(20, 30),
-          anchor: 'center',
-        });
-        // 点
-        let marker = new AMap.Marker({
-          position: new AMap.LngLat(item.lon, item.lat),
-          icon: clickIcon,
-          clickable: true,
-          anchor: "center",
-          offset: new AMap.Pixel(-10, 0) //设置偏移量
-        });
-        marker.setMap(map)
-        marker.hide()
-        circleMarker.on('click', () => {
-          marker.show()
-          handleTooltip.open(map, [item.lon, item.lat])
-        })
-        circleMarker.on('mouseout', () => {
-          map.clearInfoWindow()
-          marker.hide()
-        })
-        var handleTooltip = new AMap.InfoWindow({
-          content: `<div class='tips' style="height:'350px'">
-                      <div class='flex'>
-                        <div class="img"></div><div class='title'>${item.name}</div>
-                      </div>
-                      <div class='label'>${this.language('CHEXINGXIANGMUMAOHAO', '车型：')}</div>
-                      <div class='carType'>${carTypeList}</div>
-                      <div class='label'>${this.language('GONGYINGSHANGGONGCHANGDIZHI', '供应商工厂地址：')}</div>
-                      <div class='value'>${item.factoryName}-${item.factoryAddress}</div>
-                      <div class='label'>${this.language('GONGCHANGZONGXIAOSHOUE', '工厂总销售额：')}</div>
-                      <div class='value'>${item.toAmount}</div>
-                  </div>`,
-          offset: new AMap.Pixel(-0, -15)
-        });
+        if (item.plantList && item.plantList.length > 0) {
+          item.plantList.forEach((plant) => {
+            if (!plant.lat || !plant.lon) {
+              return false;
+            }
+            let carTypeList = plant.modelName
+            var circleMarker = new AMap.CircleMarker({
+              center: [plant.lon, plant.lat],
+              radius: plant.symbolSize,//3D视图下，CircleMarker半径不要超过64px
+              strokeColor: this.color[index],
+              strokeWeight: 2,
+              strokeOpacity: 1,
+              fillColor: this.color[index],
+              fillOpacity: 1,
+              zIndex: 10,
+              bubble: true,
+              cursor: 'pointer',
+              clickable: true,
+              data: plant
+            })
+            circleMarker.setMap(map)
+            // let clickIcon = new AMap.Icon({
+            //   image: this.highlight,
+            //   size: new AMap.Size(40, 30),
+            //   imageSize: new AMap.Size(20, 30),
+            //   anchor: 'center',
+            // });
+            // // 点
+            // let marker = new AMap.Marker({
+            //   position: new AMap.LngLat(plant.lon, plant.lat),
+            //   icon: clickIcon,
+            //   clickable: true,
+            //   anchor: "center",
+            //   offset: [-10,-15]
+            // });
+            // marker.setMap(map)
+            // marker.hide()
+            circleMarker.on('click', () => {
+              // marker.show()
+              handleTooltip.open(map, [plant.lon, plant.lat])
+            })
+            circleMarker.on('mouseout', () => {
+              map.clearInfoWindow()
+              // marker.hide()
+            })
+            var handleTooltip = new AMap.InfoWindow({
+              content: `<div class='tips' style="height:'350px'">
+                          <div class='flex'>
+                            <div class="img"></div><div class='title'>${plant.plantName}</div>
+                          </div>
+                          <div class='label'>${this.language('CHEXINGXIANGMUMAOHAO', '车型：')}</div>
+                          <div class='carType'>${carTypeList}</div>
+                          <div class='label'>${this.language('GONGYINGSHANGGONGCHANGDIZHI', '供应商工厂地址：')}</div>
+                          <div class='value'>${plant.factoryName}-${plant.plantAddress}</div>
+                          <div class='label'>${this.language('GONGCHANGZONGXIAOSHOUE', '工厂总销售额：')}</div>
+                          <div class='value'>${plant.amount}</div>
+                      </div>`,
+              offset: new AMap.Pixel(0, -10)
+            });
+          })
+        }
       })
       // svw图标
       this.svwData && this.svwData.map(item => {
         let carTypeList = ''
-        item.carTypeProjectList.forEach((val, index) => {
-          carTypeList += item.carTypeProjectList.length - 1 > index ? val + ' | ' : val
+        item.carType.forEach((val, index) => {
+          carTypeList += item.carType.length - 1 > index ? val + ' | ' : val
         })
         // 图标
         var svwImg = new AMap.Icon({
@@ -159,28 +177,30 @@ export default {
           anchor: 'center',
         });
         // 点
-        let marker = new AMap.Marker({
-          position: new AMap.LngLat(item.lon, item.lat),
-          icon: svwImg,
-          clickable: true,
-          anchor: "center"
-        });
-        marker.setMap(map)
-        marker.on('click', () => {
-          handleTooltip.open(map, [item.lon, item.lat])
-        })
-        var handleTooltip = new AMap.InfoWindow({
-          content: `<div class='tips' style="height="300px"">
-                        <div class='flex'>
-                          <div class="img-svw"></div><div class='title'>${item.name}</div>
-                        </div>
-                        <div class='label'>${this.$t('LK_CHEXING')}:</div>
-                        <div class='carType'>${carTypeList}</div>
-                        <div class='label'>${this.language('GONGCHANGDIZHI', '工厂地址')}:</div>
-                        <div class='value'>${item.factoryName}-${item.factoryAddress}</div>
-                      </div>`,
-          offset: new AMap.Pixel(7, -15)
-        });
+        if (item.addressInfo && item.addressInfo.longitude && item.addressInfo.latitude) {
+          let marker = new AMap.Marker({
+            position: new AMap.LngLat(item.addressInfo.longitude, item.addressInfo.latitude),
+            icon: svwImg,
+            clickable: true,
+            anchor: "center"
+          });
+          marker.setMap(map)
+          marker.on('click', () => {
+            handleTooltip.open(map, [item.addressInfo.longitude, item.addressInfo.latitude])
+          })
+          var handleTooltip = new AMap.InfoWindow({
+            content: `<div class='tips' style="height="300px"">
+                          <div class='flex'>
+                            <div class="img-svw"></div><div class='title'>${item.factoryName}</div>
+                          </div>
+                          <div class='label'>${this.$t('LK_CHEXING')}:</div>
+                          <div class='carType'>${carTypeList}</div>
+                          <div class='label'>${this.language('GONGCHANGDIZHI', '工厂地址')}:</div>
+                          <div class='value'>${item.addressInfo.address}</div>
+                        </div>`,
+            offset: new AMap.Pixel(7, -15)
+          });
+        }
       })
     },
   }

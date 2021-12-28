@@ -16,10 +16,10 @@
                 <!-- <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD|上传">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
                 </uploadButton> -->
-                <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessPca" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_PCA|上传PCA报告">
+                <uploadButton v-if="isPca" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessPca" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_PCA|上传PCA报告">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUANPCABAOGAO", "上传PCA报告") }}</iButton>
                 </uploadButton>
-                <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessTia" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_TIA|上传TIA报告">
+                <uploadButton v-if="isTia" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessTia" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_TIA|上传TIA报告">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUANTIABAOGAO", "上传TIA报告") }}</iButton>
                 </uploadButton>
             </span>
@@ -92,6 +92,30 @@ export default {
         tableList,
         Upload,
         uploadButton
+    },
+    computed: {
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+        }),
+        roleCodeList() {
+            if (Array.isArray(this.userInfo.positionList)) {
+                return this.userInfo.positionList.reduce((acc, cur) => {
+                if (Array.isArray(cur.roleDTOList)) {
+                    return acc.concat(cur.roleDTOList.map(item => item.code))
+                } else {
+                    return acc
+                }
+                }, [])
+            } else {
+                return []
+            }
+        },
+        isPca() { // 零件成本分析员 临时
+            return this.roleCodeList.some(item => item.indexOf("LJCBFXY") > -1)
+        },
+        isTia() { // 模具成本分析员 临时
+            return this.roleCodeList.some(item => item.indexOf("MJCBFXY") > -1)
+        },
     },
     created(){
         this.getList();
