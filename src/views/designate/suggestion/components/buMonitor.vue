@@ -271,7 +271,13 @@ export default {
       const params = {
         scenarioType: this.scenarioType[this.mode],
         groupName: this.groupForm.groupName,
-        groupInfoList
+      }
+      // 谈判助手模式传参区别
+      if (this.mode === 'nego') {
+        if (this.$route.query.id) params.rfqId = this.$route.query.id
+        params['partPrjCode'] = groupInfoList.map(o => o.partPrjCode)
+      } else {
+        params['groupInfoList'] = groupInfoList
       }
       console.log(params)
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
@@ -305,6 +311,10 @@ export default {
         scenarioType: this.scenarioType[this.mode],
         groupName,
         groupIdList
+      }
+      if (this.mode === 'nego') {
+        if (this.$route.query.id) params.rfqId = this.$route.query.id
+        params['partPrjCode'] = selectedData.map(o => o.partPrjCode)
       }
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？',''))
       if (confirmInfo !== 'confirm') return

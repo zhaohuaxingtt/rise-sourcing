@@ -11,7 +11,6 @@
       <div class="floatright">
         <span v-if="multiEditControl">
           <upload
-            v-if='hight'
             class="upload-trigger margin-right10"
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.gif'"
@@ -43,7 +42,7 @@
       <iEditor
         class="editor-content margin-top20"
         id="textEditor"
-        :menus=[]
+        :showMenus="false"
         :disabled="!multiEditControl"
         v-model="content"
         v-permission.auto="SOURCING_NOMINATION_ATTATCH_TASKS_EDITOR|备注编辑框"

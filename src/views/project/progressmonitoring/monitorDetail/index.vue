@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-27 11:24:42
+ * @LastEditTime: 2021-12-28 14:59:20
  * @Description: 监控明细
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -92,19 +92,19 @@ export default {
     searchListByPartStatus() {
       return this.searchList.reduce((accu, curr) => {
         if (curr.key === 'XIANGMUFENGXIAN') {
-          if (Number(this.searchParams.partStatus) !== 7) {
+          if (Number(this.searchParams.partStatus) !== 9) {
             return [...accu, curr]
           } else {
             return accu
           }
         } else if (curr.key === 'XIANGMUJINDU') {
-          if (this.searchParams.partStatus == 7) {
+          if (this.searchParams.partStatus == 9) {
             return [...accu, curr]
           } else {
             return accu
           }
         } else if (curr.key === 'LINGJIANJINDU') {
-          if (Number(this.searchParams.partStatus) !== 7 && Number(this.searchParams.partStatus) !== 1) {
+          if (Number(this.searchParams.partStatus) !== 9 && Number(this.searchParams.partStatus) !== 1) {
             return [...accu, curr]
           } else {
             return accu
