@@ -1,7 +1,7 @@
 <template>
   <iPage class="signSheetBox" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE|签字单列表" >
     <!-- 头部 -->
-    <headerNav  />
+    <headerNav :type="sourceinquirypoint" />
     <signSheet class="signSheet" :showTitle="false" />
   </iPage>
 </template>

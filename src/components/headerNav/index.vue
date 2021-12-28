@@ -38,6 +38,10 @@ export default {
       group: null,
     };
   },
+  props: {
+    type: String,
+    default: "sourceinquirypoint"
+  },
   components: {
     iNavMvp,
     iTabsList,

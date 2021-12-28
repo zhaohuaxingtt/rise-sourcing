@@ -10,7 +10,7 @@
   <iPage class="partsrfqHome">
     <!-- <el-tabs v-model="tab" class="tab">
       <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-        <headerNav />
+        <headerNav :type="sourceinquirypoint" />
         <div>
           <!-- <div class="margin-bottom33">
             <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />

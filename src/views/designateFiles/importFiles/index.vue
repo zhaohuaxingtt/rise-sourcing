@@ -7,7 +7,7 @@
     <iPage class="importFiles" v-permission.auto="ACCESSORY_IMPORT_PAGE|附件-附件导入-页面">
         <!-- <el-tabs v-model="tab" class="tab"> -->
             <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-             <headerNav/>
+             <headerNav :type="sourceinquirypoint" />
                 <!-- 内容区 -->
                 <iCard v-permission.auto="ACCESSORY_IMPORT_TABLE|附件-附件导入-表格">
                   <div class="margin-bottom20 clearFloat">

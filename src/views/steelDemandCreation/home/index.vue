@@ -8,7 +8,7 @@
 -->
 <template>
   <iPage>
-    <headerNav />
+    <headerNav :type="sourceinquirypoint" />
     <iSearch class="margin-bottom20" @sure="sure" @reset='reset()' v-permission.auto="SOURCING_STEELDEMANCREATION_SEARCH|搜索">
       <el-form>
         <template v-for='(items,index) in searchForm'>

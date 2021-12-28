@@ -12,7 +12,7 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>
-          <headerNav />
+          <headerNav :type="sourceinquirypoint" />
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
@@ -151,7 +151,7 @@ export default {
     this.updateNavList
   },
   computed: {
-    ...mapState(["navList","navListLeft"]),
+    ...mapState(["navList"]),
     ...mapActions(["updateNavList"])
   },
   methods: {
