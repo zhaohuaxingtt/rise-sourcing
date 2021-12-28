@@ -21,10 +21,10 @@
       </div>
       <div class="btnList">
       <iButton 
-      v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
+      v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starmonitorstaus !== '1'"
       @click="waitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
       <iButton  
-       v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
+       v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starmonitorstaus === '1'"
      @click="cancelWaitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN||取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton>
         <iButton @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
@@ -221,7 +221,9 @@
 
     <nominateTypeDialog :visible.sync="nominateTypeDialogVisible"
                         @confirm="createDesignate" />
-
+    <!-------------------维护供应商----------------------------------->
+    <maintainSupplier ref="maintainSupplier"></maintainSupplier>
+    <createDesignateTips/>
     <!-------------------------结束本轮询价的时候，如果当前的轮次类型为开标，并且rfq状态为询价中，当前轮次状态是进行中则需要填写一个结束备注-------->
     <iDialog :visible.sync="showReason"
              :title="language('QINGITANXIEJIESUYUANY', '结束原因')"
@@ -255,6 +257,7 @@ import store from '@/store';
 import { rfqCommonFunMixins } from 'pages/partsrfq/components/commonFun';
 import { navList } from './components/data';
 import nominateTypeDialog from '@/views/partsrfq/home/components/nominateTypeDialog';
+import maintainSupplier from '@/views/partsrfq/home/components/maintainSupplier';
 import { selectRfq } from '@/api/designate/designatedetail/addRfq';
 import { getTabelData } from '@/api/partsprocure/home';
 import { pageMixins } from '@/utils/pageMixins';
@@ -287,6 +290,7 @@ export default {
     nominateTypeDialog,
     iLoger,
     iDialog,
+    maintainSupplier
   },
   mixins: [rfqCommonFunMixins, pageMixins],
   data () {
@@ -584,11 +588,28 @@ export default {
     },
     // eslint-disable-next-line no-undef
     moment,
+    //
+    createDesignateTips(data){
+      if(this.data.maintainSupplierVislble == true ){
+        this.$refs.maintainSupplier.show()
+        this.$refs.noStarMonitor.changeTips()
+        this.$refs.noBNKVisible.changeTips()
+      } else if (this.data.noStarMonitorVisible == true) {
+        this.$refs.noStarMonitor.show()
+        this.$refs.maintainSupplier.changeTips()
+        this.$refs.noBNKVisible.changeTips()
+      } else {
+        this.$refs.noBNKVisible.show()
+        this.$refs.noStarMonitor.changeTips()
+        this.$refs.maintainSupplier.changeTips()
+      }
+    },
     // 创建定点申请
     createDesignate () {
       // this.nominateTypeDialogVisible = false
       this.createDesignateLoading = true;
-
+      //维护供应商
+      this.maintainSupplier.show()
       selectRfq({
         rfqIdArr: [this.$route.query.id],
       })

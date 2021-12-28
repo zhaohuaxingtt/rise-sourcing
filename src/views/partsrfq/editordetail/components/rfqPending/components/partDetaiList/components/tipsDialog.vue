@@ -16,11 +16,10 @@
       :selection="false"
       :tableData="tableData"
       :tableTitle="dunsTitle"
-      :tableLoading="tableLoading"
       ></tableList>
       <div  slot="footer"  class="dialog-footer btnClass">
         <iButton @click="closedunsshow">{{language('CHONGXINXUANZE','重新选择')}}</iButton>
-        <iButton @click="closedunsshow">{{language('LK_QUEDING','确定')}}</iButton>
+        <iButton @click="closeAll">{{language('LK_QUEDING','确定')}}</iButton>
       </div>
       <div style="height:20px"></div>
    </div>
@@ -43,7 +42,6 @@ export default {
       tipsVislble:false,
       dunsTitle,
       tableData:[],
-      tableLoading:false,
     }
   },
   watch(){},
@@ -56,6 +54,10 @@ export default {
     closedunsshow() {
       this.tipsVislble = false
     },
+    closeAll() {
+      this.tipsVislble = false
+      this.$emit('closeshowStarMo',false)
+    }
   }
 }
 </script>

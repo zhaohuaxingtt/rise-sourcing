@@ -7,11 +7,13 @@
 <template>
   <iCard>
     <div class="header flex-align-center" v-if="!disabled">
-      <iButton @click="cancelRelationStarMon" v-permission.auto="QUXIAOGUANLIANSTARTMONIORJILU|取消关联StarMonior记录">{{
+      <iButton 
+      @click="cancelRelationStarMon" v-permission.auto="QUXIAOGUANLIANSTARTMONIORJILU|取消关联StarMonior记录">{{
           language('QUXIAOGUANLIANSTARJILU','取消关联StarMonior记录')
         }}
       </iButton>    
-      <iButton @click="relationStarMon" v-permission.auto="GUANLIANSTARTMONIORJILU|关联StarMonior记录">{{
+      <iButton 
+      @click="relationStarMon" v-permission.auto="GUANLIANSTARTMONIORJILU|关联StarMonior记录">{{
           language('GUANLIANSTARTMONIORJILU','关联StarMonior记录')
         }}
       </iButton>
@@ -136,7 +138,12 @@ export default {
   computed: {
     disabled() {
       return this.getDisabled()
+    },
+    baseInfoData() {
+      return this.getbaseInfoData()
     }
+
+    
   },
   data() {
     return {

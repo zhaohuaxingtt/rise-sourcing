@@ -135,7 +135,7 @@ module.exports = {
     open: true,
     host: 'localhost',
     port: 8080,
-    https: false,
+    https:'10.160.138.158',
     hot: true,
     clientLogLevel:'none',
     proxy: {
@@ -163,7 +163,7 @@ module.exports = {
       },
       '/sourcingApi': {
         //   供应商
-        target: 'http://10.122.17.38:8025',
+        target: 'http://10.160.137.110:18025',
         changeOrigin: true,
         pathRewrite: {
           '^/sourcingApi': '',

@@ -9,18 +9,19 @@
     <div class="queryNumber">
       <div>
         <label class="fontsize">Sourcing Number</label>
-        <iInput class="queryInput" v-model="inputNumber" :placeholder="language('QINGSHURU','请输入')"  />
+        <iInput  v-on:keyup.enter.native="queryinitStartMon" class="queryInput" v-model="inputNumber" :placeholder="language('QINGSHURU','请输入')"  />
       </div>
-      <div class="btnPlace">
-        <iButton>{{language('QUERY','查询')}}</iButton>
-        <iButton>{{language('RESET','重置')}}</iButton>
-      </div>
-    </div>
-    <el-divider class="divider"/>
-    <main class="tableMain">
-      <div class="btnRight">
+      <div >
         <iButton @click="apply"> {{ language("YINGYONG",'应用') }}</iButton>
       </div>
+      <!-- <div class="btnPlace">
+        <iButton>{{language('QUERY','查询')}}</iButton>
+        <iButton>{{language('RESET','重置')}}</iButton>
+      </div> -->
+    </div>
+    <!-- <el-divider class="divider"/> -->
+    <main class="tableMain">
+      
       <tableList
         :selection="true"
         :tableData="tableData"
@@ -39,7 +40,8 @@
         :layout="page.layout"
         :total="page.totalCount" />
     </main>
-    <tipsDialog ref="tips" @tipsChangeVisble="tipsChangeVisble"  :applyTable="applyTable"/>
+    <tipsDialog ref="tips" @tipsChangeVisble="tipsChangeVisble"  :applyTable="applyTable" @closeshowStarMo="closeshowStarMo" />
+    <div style="height:20px"></div>
   </iDialog>
 </template>
 <script>
@@ -88,6 +90,10 @@ import tipsDialog from './tipsDialog'
       // this.initStartMon()
       },
     methods: {
+      queryinitStartMon(){
+        this.page.currPage = 1
+        this.initStartMon()
+      },
       initStartMon() {
         this.tableLoading = true
         console.log(this.handleSelectArr,'handleSelectArr');
@@ -97,6 +103,7 @@ import tipsDialog from './tipsDialog'
           procureFactoryIds:this.handleSelectArr.map(val=>val.procureFactoryId),
           current: this.page.currPage,
           size: this.page.pageSize,
+          sourcingNo:this.inputNumber
         }
           starMonitorList(data).then(res=>{
             if(res.code === "200") {
@@ -150,6 +157,10 @@ import tipsDialog from './tipsDialog'
       },
       showStarMo() {
         this.startVisible = true
+      },
+      closeshowStarMo(val) {
+        this.startVisible = val
+        console.log(this.startVisible);
       }
     }
   }
@@ -160,6 +171,8 @@ import tipsDialog from './tipsDialog'
       margin: auto;
       display: flex;
       justify-content: space-between;
+      margin: 0 0 20px 0;
+      align-items: center;
       .fontsize{
         font-size: 14px;
         font-weight: bold;

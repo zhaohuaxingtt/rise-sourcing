@@ -39,3 +39,21 @@ export const assignmentOfScroingTasksTableTitle = [
 export const attachmentTableTitle = [
     { props: 'fileName', name: '文件名称', key: 'WENJIANMINGCHENG' }
 ]
+export const maintainSupplierTitle = [
+    { props: 'a', name: '零件采购项目号', key: 'FSGSSPNO', tooltip: true },
+    { props: 'b', name: '零件号', key: 'LK_LINGJIANHAO', tooltip: true },
+    { props: 'c', name: '采购工厂', key: 'CAIGOUGONGCHANG', tooltip: true },
+    { props: 'd', name: '供应商', key: 'SUPPLIER', tooltip: true },
+    { props: 'e', name: '工厂地址', key: 'GONGCHANGDIZHI', tooltip: true },
+]
+export const noStarMonitorTable = [
+    { props: 'a', name: '零件采购项目号', key: 'FSGSSPNO', tooltip: true },
+    { props: 'b', name: '零件号', key: 'LK_LINGJIANHAO', tooltip: true },
+    { props: 'c', name: '采购工厂', key: 'CAIGOUGONGCHANG', tooltip: true },
+]
+export const noBnkTitle = [
+    { props: 'a', name: '零件采购项目号', key: 'FSGSSPNO', tooltip: true },
+    { props: 'b', name: '零件号', key: 'LK_LINGJIANHAO', tooltip: true },
+    { props: 'c', name: '采购工厂', key: 'CAIGOUGONGCHANG', tooltip: true },
+    { props: 'd', name: '供应商', key: 'SUPPLIER', tooltip: true },
+]
