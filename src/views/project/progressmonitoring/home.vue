@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 10:00:44
+ * @LastEditTime: 2021-12-29 10:07:07
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
@@ -63,7 +63,7 @@
       <!--  -->
       <div class="countView" v-permission.auto="PROJECTMGT_PROGRESSMONITORING_COUNTTIPS|统计信息">
          <iFormGroup row="4" class="form">
-            <iFormItem >
+            <iFormItem class="largeFromItem">
               <span slot="label">{{language('WEIJINTIPSBIAOXUNJIAZILIAOYISHIFANG', '未进TIPS表(询价资料已释放)')}}:</span>
               <span class="cursor" @click="toPartList(1)"><iText>{{showTips ? notInTips : 0}}</iText></span>
             </iFormItem>
@@ -75,8 +75,8 @@
               <span slot="label">{{language('EMOTSYIWANCHENG', 'EM&OTS已完成')}}:</span>
               <span class="cursor" @click="toPartList(3)"><iText>{{showTips ? emOtsNum : 0}}</iText></span>
             </iFormItem>
-            <iFormItem>
-              <span slot="label">1999:</span>
+            <iFormItem class="smallFromItem">
+              <span slot="label" >1999:</span>
               <span class="cursor" @click="toPartList(4)"><iText>{{showTips ? csfFgBemerkung : 0}}</iText></span>
             </iFormItem>
          </iFormGroup>
@@ -436,6 +436,12 @@ export default {
       width: 420px ;
       .el-form-item__label {
         width: 260px;
+      }
+    }
+    &.smallFromItem {
+      width: 270px ;
+      .el-form-item__label {
+        width: 100px;
       }
     }
   }

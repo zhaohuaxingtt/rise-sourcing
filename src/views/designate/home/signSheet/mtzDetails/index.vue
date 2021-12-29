@@ -38,7 +38,7 @@
       <iCard class="margin-top20">
         <div slot="header" class="headBox">
           <p class="headTitle">{{language('XIANGQINGLIEBIAO', '详情列表')}}</p>
-          <span class="buttonBox">
+          <span class="buttonBox" v-if="$route.query.mode === 'add'">
             <iButton @click="handleClickChoose">{{language('XUANZE', '选择')}}</iButton>
             <iButton @click="handleRemove">{{language('YICHU', '移除')}}</iButton>
           </span>
