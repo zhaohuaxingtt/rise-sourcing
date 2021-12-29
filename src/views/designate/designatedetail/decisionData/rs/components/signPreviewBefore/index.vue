@@ -8,7 +8,7 @@
 -->
 <template>
 <div class="tabsBoxWrap">
-  <div id="tabsBoxWrap">
+  <div>
     <!-- <span class="download_btn" v-if="approve">
       <iButton @click="handleClickExport">{{language('DAOCHU', '导出')}}</iButton>
     </span> -->
