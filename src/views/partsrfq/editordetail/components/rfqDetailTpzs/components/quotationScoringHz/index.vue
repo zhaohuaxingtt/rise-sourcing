@@ -40,7 +40,7 @@
         <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
         <iButton v-if='isKborJj == 2' @click="options.show = true" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_KBOJJBTN|报价分析汇总-零件-开标结果按钮">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
         <iButton  @click="exportParts(layout)" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_DOWNLOADBTN|报价分析汇总-零件导出按钮">{{language('DAOCHU','导出')}}</iButton>
-        <iButton @click="openView" v-if='!preview'>放大查看</iButton>
+        <iButton @click="openView" v-if='!preview'>{{language('SOURCING_RFQDETAIL_FANGDACHAK','放大查看')}}</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
@@ -49,7 +49,7 @@
       <tableListSupplier v-loading='supplierTableLoading' ref='tableSupplier' v-if='layout == "2"' :parentsData='tabelDataSupplier'></tableListSupplier>
     </template>
     <template v-else>
-      <span class="flex-center-center font18 noData">抱歉！当前轮次还未开标您无法查看报价汇总信息。</span>
+      <span class="flex-center-center font18 noData">{{language('BAOQIANDANGQIANWUFACHAKKBXX','抱歉！当前轮次还未开标您无法查看报价汇总信息。')}}</span>
     </template>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
     <div class="margin-top10 font-size14">
