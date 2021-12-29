@@ -62,7 +62,12 @@
           :data="tableListData"
           :columns="supplierTableListColumns"
           @handle-selection-change="handleSelectionChange"
-        />
+        >
+          <template #nameZh="scope">
+            {{scope.row.nameZh}}
+            <!-- <supplierBlackIcon/> -->
+          </template>
+        </iTableCustom>
         <iPagination
           v-update
           @current-change="handleCurrentChange($event, query)"
@@ -88,6 +93,7 @@ import commonTable from "@/components/biddingComponents/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { getSupplierInfo } from "@/api/mock/mock";
 import { supplierTableListColumns } from "./data";
+import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 export default {
   mixins: [pageMixins],
   components: {
@@ -97,6 +103,7 @@ export default {
     iPagination,
     iTableCustom,
     iButton,
+    // supplierBlackIcon,
   },
   props: {
     show: { type: Boolean, default: false },
