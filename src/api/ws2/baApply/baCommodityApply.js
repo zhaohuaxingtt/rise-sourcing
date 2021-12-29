@@ -33,7 +33,7 @@ export function baConfirm(parmars) {
 
 export function downloadExport(params) {
     return requstFile({
-        url: `/export?akeoAmount=${params.akeoAmount}`,
+        url: `/export?akeoAmount=${params.aekoAmount}`,
         method: 'POST',
         data: params.body,
     })
