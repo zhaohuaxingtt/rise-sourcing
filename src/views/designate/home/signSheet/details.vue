@@ -316,8 +316,9 @@ export default {
       if (!this.selectTableData.length) return iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
       await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
       this.tableListData = this.tableListData.filter(item => !this.selectTableData.includes(item))
-      this.selectTableData = []
+      // 清空之前先发出事件
       this.$emit("deleteData", this.selectTableData)
+      this.selectTableData = []
     },
     // 查看详情
     viewNominationDetail (row) {
