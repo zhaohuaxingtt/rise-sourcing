@@ -40,7 +40,7 @@
         <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
         <iButton v-if='isKborJj == 2' @click="options.show = true" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_KBOJJBTN|报价分析汇总-零件-开标结果按钮">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
         <iButton  @click="exportParts(layout)" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_DOWNLOADBTN|报价分析汇总-零件导出按钮">{{language('DAOCHU','导出')}}</iButton>
-        <iButton @click="openView" v-if='!preview'>{{language('SOURCING_RFQDETAIL_FANGDACHAK','放大查看')}}</iButton>
+        <iButton @click="openView" v-if='!preview'>{{language('SOURCING_RFQDETAIL_FANGDACHAK','预览')}}</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
