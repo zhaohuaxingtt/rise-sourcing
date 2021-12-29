@@ -31,7 +31,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ $t('TPZS.BOBFXK') }}</span>
         <!-- 是否显示新建按钮 -->
-        <div class="floatright" v-if="disabled">
+        <div class="floatright"> <!-- v-if="disabled"--> 
           <div v-if="!edit">
             <iButton @click="newBob">{{ language('XINJIAN', '新建') }}</iButton>
             <iButton @click="editBob">{{ language('BIANJI', '编辑') }}</iButton>
