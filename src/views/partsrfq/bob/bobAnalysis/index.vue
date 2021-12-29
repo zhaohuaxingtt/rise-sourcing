@@ -726,9 +726,43 @@ export default {
           }
         });
         if (lineDatas && lineDatas.length > 0) {
+          var tempData = [];
           lineDatas.forEach((item) => {
-            this.tableListData.push(item);
+            var allEmpty = true;
+            for (var key in item) {
+              if (key.indexOf('label#') >= 0 && (item[key] || item.hasChild)) {
+                allEmpty = false;
+                break;
+              }
+            }
+            if (!allEmpty) {
+              tempData.push(item);
+            }
           });
+          console.log(tempData)
+          for (var i=tempData.length-1;i>=0;i--) {
+            if (tempData[i].hasChild) {
+              var filtered = tempData.filter((child) => {
+                return child.parentId == tempData[i].id
+              })
+              if (filtered.length == 0) {
+                var allEmpty = true;
+                for (var key in tempData[i]) {
+                  if (key.indexOf('label#') >= 0 && tempData[i][key]) {
+                    allEmpty = false;
+                    break;
+                  }
+                }
+                if (allEmpty) {
+                  tempData.splice(i,1)
+                }
+              }
+            }
+          }
+          tempData.forEach((item) => {
+
+            this.tableListData.push(item)
+          })
         }
       });
     },
