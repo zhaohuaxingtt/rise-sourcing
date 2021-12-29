@@ -211,7 +211,6 @@ import findingParts from '@/views/partsrfq/components/findingParts.vue';
 import { getBobLevelOne, removeBobOut, addBobOut } from '@/api/partsrfq/bob';
 import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList, generateGroupId } from '@/api/partsrfq/bob/analysisList';
 import customSelect from '@/views/demo';
-import { downloadPDF, dataURLtoFile } from '@/utils/pdf';
 import preview from './preview.vue';
 import OutBar from './components/outBar.vue';
 
@@ -927,6 +926,13 @@ export default {
       }
       if (this.reportSave) {
         this.pre = true;
+        setTimeout(() => {
+          console.log("save report")
+          if (!this.bobType) {
+            this.bobType = 'Best of Best';
+          }
+          this.$refs.preview.open();
+        }, 200);
       }
     },
     doActive(i, index) {

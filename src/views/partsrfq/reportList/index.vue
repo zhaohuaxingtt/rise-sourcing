@@ -46,12 +46,12 @@
     <el-row v-if="inside">
       <el-col :span="12">
         <!-- 报价分析 -->
-        <quotationAnalysis :searchCriteria="searchCriteria"
+        <quotationAnalysis @joinTable='joinTable'  @delTable='delTable' :searchCriteria="searchCriteria"
                            class="margin-right20"></quotationAnalysis>
       </el-col>
       <el-col :span="12">
         <!-- 谈判基本信息 -->
-        <negotiationBasic :searchCriteria="searchCriteria"
+        <negotiationBasic @joinTable='joinTable'  @delTable='delTable'  :searchCriteria="searchCriteria"
                           class="margin-left20"></negotiationBasic>
       </el-col>
     </el-row>
@@ -102,9 +102,8 @@ export default {
   },
   created() {
     this.searchCriteria.rfq=this.$store.state.rfq.rfqId
-    console.log(window.sessionStorage.getItem('entryStatus'))
-    // this.searchCriteria.rfq = '60001706'
-    this.inside = this.$store.state.rfq.entryStatus === 0 ? true : false
+    // this.searchCriteria.rfq = '1139'
+    this.inside = this.$store.state.rfq.entryStatus === 1 ? true : false
     this.getAllSelect()
     this.getDownTable()
   },
