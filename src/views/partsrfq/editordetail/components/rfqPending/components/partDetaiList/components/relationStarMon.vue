@@ -140,7 +140,6 @@ import tipsDialog from './tipsDialog'
               this.$refs.tips.dunsshow()
               // this.startVisible = false
             } else {
-              console.log('-------------------------------------------------------------------------------------------------------------------------');
               this.$emit('updateStarMonitor')
               iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
               this.startVisible = false
