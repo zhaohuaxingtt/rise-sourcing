@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
- * @LastEditors:  
- * @LastEditTime: 2021-12-03 15:47:45
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-29 16:43:52
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -22,6 +22,7 @@
                 <icon symbol name="iconzhongyaoxinxitishi" />
               </span>
             </el-tooltip>
+            <!-- <supplierBlackIcon/> -->
           </div>
         </template>
         <template #sapCode="scope">
@@ -51,9 +52,12 @@ import partsRatingDialog from './partsRating'
 import { readQuotation, findRfqSupplierQuotationPage} from '@/api/designate/decisiondata/bdl'
 import { pageMixins } from "@/utils/pageMixins"
 import { cloneDeep, uniq } from 'lodash'
+import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 export default {
   mixins: [pageMixins],
-  components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton, icon },
+  components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton, icon,
+  // supplierBlackIcon
+   },
   data() {
     return {
       rfqList: [],
