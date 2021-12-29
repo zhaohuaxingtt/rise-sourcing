@@ -62,7 +62,7 @@ export default {
       this.tipsVislble = true
     },
     sure() {
-      this.$emit('changeTipsDialog')
+      this.$emit('changeTipsDialog','starMonitor')
     },
     close() {
        this.tipsVislble = false

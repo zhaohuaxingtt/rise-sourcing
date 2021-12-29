@@ -131,6 +131,11 @@ export default{
     }
   }
   ::v-deep.el-table.moviesTable {
+    .el-table__header-wrapper {
+      .tree {
+        text-align: center;
+      }
+    }
     .tree {
       text-align: right;
       box-sizing: border-box;
