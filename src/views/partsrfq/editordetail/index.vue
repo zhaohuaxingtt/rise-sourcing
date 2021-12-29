@@ -608,6 +608,7 @@ export default {
     //
     //common sourcing 创建定点申请 打开提示框
     changeTipsDialog(val){
+
       if(val === 'supplier') {
         this.$refs.maintainSupplier.close() 
         if(this.projectPartDTOSShow) {

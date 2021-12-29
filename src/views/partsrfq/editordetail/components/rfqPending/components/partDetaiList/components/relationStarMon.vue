@@ -129,7 +129,6 @@ import tipsDialog from './tipsDialog'
           projectIds:this.handleSelectArr.map(val=>val.id),
           ids:this.selection.map(val=>val.id),
         }
-        console.log(data.projectIds.length,data.ids.length,'-------------------');
         if(data.projectIds.length<data.ids.length) {
           iMessage.warn(this.language('XUANZEDELINGJIANCAIGOXIANGMUSHULIANGBUNENGXIAOYUXUANZEDESTARTMONITORJILUSHULIANG','选择的零件采购项目数量不能小于选择的StartMonitor记录数量'))
           return
@@ -141,7 +140,8 @@ import tipsDialog from './tipsDialog'
               this.$refs.tips.dunsshow()
               // this.startVisible = false
             } else {
-              this.$router.go(0)
+              console.log('-------------------------------------------------------------------------------------------------------------------------');
+              this.$emit('updateStarMonitor')
               iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
               this.startVisible = false
             }
