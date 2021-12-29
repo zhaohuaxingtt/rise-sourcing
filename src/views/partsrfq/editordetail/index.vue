@@ -20,41 +20,53 @@
                  @change="changeRouter"></iNavMvp>
       </div>
       <div class="btnList">
-      <!-- <iButton v-if="isCommonSourcing" @click="waitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
-        <iButton  v-if="isCommonSourcing" @click="cancelWaitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN||取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton> -->
-     <iButton v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
-        <iButton @click="handleApplyModuleTargetPrice"
+      <iButton 
+      v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus !== 1"
+      @click="waitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
+      <iButton  
+       v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus === 1"
+     @click="cancelWaitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN||取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton>
+        <iButton
+          v-if="baseInfo.starMonitorStatus !== 1"
+         @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
                  v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE | 申请模具目标价">
           {{ language('SHENQINGMOJUMUBIAOJIA', '申请模具目标价') }}
         </iButton>
-        <iButton v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && baseInfo.partProjectType[0] === partProjTypes.PEIJIAN"
+        <iButton v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && baseInfo.partProjectType[0] === partProjTypes.PEIJIAN && baseInfo.starMonitorStatus !== 1"
                  :loading="endEngotiationlaoding"
                  @click="updateRfqStatus('07')"
                  v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDNEGOTIATION | 谈判完成">
           {{ language('TANPANWANCHENG', '谈判完成') }}
         </iButton>
-        <span v-if="!disabled">
+        <span v-if="!disabled && baseInfo.starMonitorStatus !== 1">
           <iButton @click="goToCesPage"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWTESTPROG | 新建测试项目">{{
             language('LK_XINGJIANCESHIXIANM', '新建测试项目')
           }}</iButton>
-
-          <iButton :loading="newRfqOpenValidateLoading"
-                   @click="newRfq"
-                   v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND | 新建RFQ轮次">
+          <iButton
+            v-if="baseInfo.starMonitorRef != 1 && baseInfo.starMonitorStatus !== 1"
+            :loading="newRfqOpenValidateLoading"
+            @click="newRfq"
+            v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND | 新建RFQ轮次">
             {{ language('LK_XINJIANRFQLUNCI', '新建RFQ轮次') }}
           </iButton>
-          <iButton :loading="rfqloading"
+          <iButton 
+            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1"
+            :loading="rfqloading"
                    @click="updateRfqStatus('06')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_SENDINQUIRY | 发出询价">{{ language('LK_FACHUXUNJIA', '发出询价') }}
           </iButton>
-          <iButton :loading="endingloading"
-                   @click="updateRfqStatus('05')"
-                   v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDQUOTATION | 结束本轮询价">
+          <iButton 
+            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1" 
+            :loading="endingloading"
+            @click="updateRfqStatus('05')"
+            v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDQUOTATION | 结束本轮询价">
             {{ language('LK_JIESHUBENLUNXUNJIA', '结束本轮询价') }}
           </iButton>
-          <iButton :loading="transferlaoding"
+          <iButton 
+            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1"
+            :loading="transferlaoding"
                    @click="updateRfqStatus('03')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION | 转谈判">
             {{ language('LK_ZHUANTANPAN', '转谈判') }}
@@ -218,7 +230,12 @@
 
     <nominateTypeDialog :visible.sync="nominateTypeDialogVisible"
                         @confirm="createDesignate" />
-
+    <!-------------------commonsourcing类型维护供应商（目前未用）----------------------------------->
+    <maintainSupplier ref="maintainSupplier"></maintainSupplier>
+    <!-------------------commonsourcing类型以下零件采购项目未关联StartMonitor记录----------------------------------->
+    <createDesignateTips ref="createDesignateTips" :starMonitorTable="starMonitorTable" @changeTipsDialog="changeTipsDialog"/>
+    <!-------------------commonsourcing类型以下零件采购项目BNK审核未通过----------------------------------->
+    <noBnkDialog ref="noBnkDialog" />
     <!-------------------------结束本轮询价的时候，如果当前的轮次类型为开标，并且rfq状态为询价中，当前轮次状态是进行中则需要填写一个结束备注-------->
     <iDialog :visible.sync="showReason"
              :title="language('QINGITANXIEJIESUYUANY', '结束原因')"
@@ -252,7 +269,10 @@ import store from '@/store';
 import { rfqCommonFunMixins } from 'pages/partsrfq/components/commonFun';
 import { navList } from './components/data';
 import nominateTypeDialog from '@/views/partsrfq/home/components/nominateTypeDialog';
-import { selectRfq } from '@/api/designate/designatedetail/addRfq';
+import maintainSupplier from '@/views/partsrfq/home/components/maintainSupplier';
+import createDesignateTips from '@/views/partsrfq/home/components/createDesignateTips';
+import noBnkDialog from '@/views/partsrfq/home/components/noBnkDialog';
+import { selectRfq, starMonitorAutoNomi } from '@/api/designate/designatedetail/addRfq';
 import { getTabelData } from '@/api/partsprocure/home';
 import { pageMixins } from '@/utils/pageMixins';
 import { tableTitle, form } from '@/views/partsprocure/home/components/data';
@@ -266,6 +286,7 @@ import {
   
 } from '@/api/partsrfq/editordetail';
 import { mockData } from './mock.js';
+import { linieQueryForm } from '../../aeko/detail/components/partsList/data';
 export default {
   components: {
     iButton,
@@ -284,6 +305,9 @@ export default {
     nominateTypeDialog,
     iLoger,
     iDialog,
+    maintainSupplier,
+    createDesignateTips,
+    noBnkDialog
   },
   mixins: [rfqCommonFunMixins, pageMixins],
   data () {
@@ -319,6 +343,8 @@ export default {
       roundsType,
       rfqInfo: {},
       isCommonSourcing:false,
+      starMonitorTable:[],
+      bnkNotApprovesshow:false
     };
   },
   created () {
@@ -409,16 +435,12 @@ export default {
           rfqId: this.$route.query.id,
         })
           .then((res) => {
-            console.log(res, '查询数据');
             // const res = mockData;
             if (res.code == 200 && res.data) {
               this.baseInfo = res.data;
               this.rfqInfo = res.data;
               res.data.partProjectType[0] === '50002000' || res.data.partProjectType[0] === '50002001'? this.isCommonSourcing === true :''
               this.disabled = !!res.data.isFreeze;
-              console.log(this.isCommonSourcing, '222222222222222222222222222')
-              console.log(res.data.partProjectType[0], '1111111111')
-              console.log(this.disabled, '最终数据1');
               if (dialogPage) {
                 //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
                 this.activityTabIndex = '5';
@@ -581,35 +603,73 @@ export default {
     },
     // eslint-disable-next-line no-undef
     moment,
+    //
+    //common sourcing 创建定点申请
+    changeTipsDialog(){
+      if(this.bnkNotApprovesshow == true) {
+        this.$refs.createDesignateTips.close() 
+        this.$refs.noBnkDialog.show() 
+      } else {
+        this.$refs.createDesignateTips.close() 
+      }
+    },
     // 创建定点申请
     createDesignate () {
       // this.nominateTypeDialogVisible = false
       this.createDesignateLoading = true;
-
-      selectRfq({
-        rfqIdArr: [this.$route.query.id],
-      })
-        .then((res) => {
+      //如果零件类型为common sourcing 类型时候调用的创建定点申请接口
+      if(this.baseInfo && this.baseInfo.partProjectType[0] && this.baseInfo.partProjectType[0] === this.partProjTypes.GSCOMMONSOURCING || this.baseInfo.partProjectType[0] === this.partProjTypes.FSCOMMONSOURCING )
+      {
+        starMonitorAutoNomi(this.$route.query.id).then(res=>{
+          this.createDesignateLoading = false
           const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
-
-          if (res.code == 200) {
-            iMessage.success(message);
-            this.$router.push({
-              path: '/designate/rfqdetail',
-              query: {
-                desinateId: res.data.nominateId,
-                designateType: res.data.nominateProcessType,
-                partProjType: this.$route.query.businessKey,
-                businessKey: this.$route.query.businessKey,
-              },
-            });
-          } else {
+          if(res.code === '200') {
+            if(res.data.projectPartDTOS !== null){
+              this.$refs.createDesignateTips.show() 
+              this.starMonitorTable = res.data.projectPartDTOS  
+              res.data.bnkNotApproves !== null? this.bnkNotApprovesshow = true :  this.bnkNotApprovesshow = false       
+            } else {
+              this.$router.push({
+                path: '/designate/rfqdetail',
+                query: {
+                  desinateId: res.data.nominateId,
+                  designateType: res.data.nominateProcessType,
+                  partProjType: this.$route.query.businessKey,
+                  businessKey: this.$route.query.businessKey,
+                },
+              })
+            }
+          } else{
             iMessage.error(message);
           }
-
-          this.createDesignateLoading = false;
         })
-        .catch(() => (this.createDesignateLoading = false));
+         .catch(() => (this.createDesignateLoading = false));
+      } else {
+        selectRfq({
+          rfqIdArr: [this.$route.query.id],
+        })
+          .then((res) => {
+            const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
+  
+            if (res.code == 200) {
+              iMessage.success(message);
+              this.$router.push({
+                path: '/designate/rfqdetail',
+                query: {
+                  desinateId: res.data.nominateId,
+                  designateType: res.data.nominateProcessType,
+                  partProjType: this.$route.query.businessKey,
+                  businessKey: this.$route.query.businessKey,
+                },
+              })
+            } else {
+              iMessage.error(message);
+            }
+  
+            this.createDesignateLoading = false;
+          })
+          .catch(() => (this.createDesignateLoading = false));
+      }
     },
     getDisabled () {
       return this.disabled;
@@ -619,6 +679,7 @@ export default {
        const rfqId = this.baseInfo.id || this.$route.query.id;
       waitStarMonitorUpdate(rfqId).then(res=>{
          if(res.code === '200') {
+          this.$router.go(0)
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -627,8 +688,9 @@ export default {
     },
     cancelWaitStarmonitor() {
        const rfqId = this.baseInfo.id || this.$route.query.id;
-      cancelWaitStarMonitorUpdate().then(res=>{
+      cancelWaitStarMonitorUpdate(rfqId).then(res=>{
         if(res.code === '200') {
+          this.$router.go(0)
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)

@@ -341,6 +341,7 @@ export default {
     ...mapActions(["updateNavList"])
   },
   created() {
+    this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
     this.getTableListFn();
     this.getProcureGroup();
     this.getCarTypeSop()

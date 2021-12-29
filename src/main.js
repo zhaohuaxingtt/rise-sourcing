@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-11-08 18:26:02
+ * @LastEditTime: 2021-12-28 20:27:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\main.js
@@ -18,6 +18,7 @@ import Vue from "vue"
 import { iTable } from 'rise' 
 // import AmapVue from '@amap/amap-vue'
 import './utils/mydirect'
+import afTableColumn  from 'af-table-column'
 require('./auto').init()
 Vue.config.productionTip = false
 Promise.all([
@@ -29,7 +30,7 @@ Promise.all([
 })
 
 Vue.component(iTable.name, iTable)
-
+Vue.use(afTableColumn)
 Vue.prototype.$echarts = echarts();
 
 new Vue({
