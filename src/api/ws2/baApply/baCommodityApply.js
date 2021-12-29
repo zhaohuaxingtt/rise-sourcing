@@ -31,10 +31,10 @@ export function baConfirm(parmars) {
 //   })
 // }
 
-export function downloadExport(parmars) {
+export function downloadExport(params) {
     return requstFile({
         url: `/export?akeoAmount=${params.akeoAmount}`,
         method: 'POST',
-        data: parmars.body,
+        data: params.body,
     })
 }

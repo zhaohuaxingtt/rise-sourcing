@@ -153,7 +153,7 @@ export default {
           iMessage.success(result);
           this.visible = false;
           const l = res.data.listDate[0].length;
-          this.downloadExport({ amount: res.data.listDate[0][l - 1 ].amount });
+          this.downloadExport({ amount: res.data.listDate[0][l - 1].amount });
           this.$emit('handelConfirmSuccess');
         }else{
           iMessage.error(result);
