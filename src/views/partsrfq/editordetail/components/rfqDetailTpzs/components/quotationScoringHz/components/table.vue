@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-29 15:36:22
+ * @LastEditTime: 2021-12-29 16:42:34
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -278,7 +278,7 @@ export default{
       }
     },
     ebrShow(data) {
-      if(!data || data == 'Invest \n Budget' || data == 'KM')
+      if(!data || data.indexOf('Budget') > -1 || data == 'KM')
        return data 
       else{
         // eslint-disable-next-line no-undef
