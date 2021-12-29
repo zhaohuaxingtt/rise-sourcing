@@ -40,6 +40,7 @@
         <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
         <iButton v-if='isKborJj == 2' @click="options.show = true" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_KBOJJBTN|报价分析汇总-零件-开标结果按钮">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
         <iButton  @click="exportParts(layout)" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_DOWNLOADBTN|报价分析汇总-零件导出按钮">{{language('DAOCHU','导出')}}</iButton>
+        <iButton @click="openView" v-if='!preview'>放大查看</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
@@ -169,12 +170,25 @@ export default{
   provide(){
     return {vm:this}
   },
+  props:{
+    preview:Boolean
+  },
   methods:{
     /**
      * @description: 点击进入竞价大厅。
      * @param {*}
      * @return {*}
      */
+    openView(){
+      let routerView = this.$router.resolve({
+        path:'/sourceinquirypoint/sourcing/previewfssugs',
+        query:{
+          id:this.$route.query.id
+        }
+      })
+      window.open(routerView.href,'_blank')
+    },
+
     openjjdt(){
       alert('online-bidding 暂未提供跳转url,稍等片刻...')
     },
