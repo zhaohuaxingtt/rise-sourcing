@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-09 13:28:05
+ * @LastEditTime: 2021-12-29 14:40:14
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -41,7 +41,7 @@
       </iFormGroup>
       <div style="text-align:right;">
         <iButton @click="handleSaveRfq" v-permission.auto="ACCESSORYPART_CREATERFQ_RFQSAVEBTN|配附件创建RFQ-RFQ保存按钮">{{language('BAOCUN','保存')}}</iButton>
-        <iButton v-permission.auto="ACCESSORYPART_CREATERFQ_CANCELBTN|配附件创建RFQ-取消按钮">{{language('QUXIAO','取消')}}</iButton>
+        <!-- <iButton @click="handleCancel" v-permission.auto="ACCESSORYPART_CREATERFQ_CANCELBTN|配附件创建RFQ-取消按钮">{{language('QUXIAO','取消')}}</iButton> -->
       </div>
     </iCard>
     <iCard class="margin-top20">
@@ -162,6 +162,11 @@ export default {
     }
   },
   methods: {
+    handleCancel() {
+      // const type = this.$route.query.type
+      // const url = type === '1' ? '/sourceinquirypoint/sourcing/integratedmanage' : '/sourceinquirypoint/sourcing/filemanage'
+
+    },
     handleDelete() {
       if(this.selectItems.length < 1) {
         iMessage.warn(this.language('QINGXUANZEXUYAOSHANCHUDEHANG','请选择需要删除的行'))
