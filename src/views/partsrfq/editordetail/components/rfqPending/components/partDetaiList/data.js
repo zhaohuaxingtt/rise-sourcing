@@ -33,15 +33,21 @@ export const kmDialogTableTitle = [
 ]
 
 export const startMonitorTitle = [
-  { props: "SourcingNumber", name: "SourcingNumber", tooltip: true, key: "SOURCINGNUMBER" ,width:160},
-  { props: "PartNumber", name: "PartNumber", tooltip: true, key: "PARTNUMBER" },
-  { props: "SvwPlant", name: "SvwPlant", tooltip: true, key: "SVWPLANT" },
-  { props: "Supplier", name: "Supplier", tooltip: true, key: "SUPPLIER" },
-  { props: "DunsCode", name: "DunsCode", tooltip: true, key: "DUNSCODE" },
-  { props: "Share", name: "Share", tooltip: true, key: "SHARE" },
-  { props: "A", name: "A Price", tooltip: true, key: "APRICE" },
-  { props: "B", name: "B Price", tooltip: true, key: "BPRICE" },
-  { props: "Ltc", name: "Ltc", tooltip: true, key: "LTC" },
-  { props: "Tooling", name: "Tooling", tooltip: true, key: "TOOLING" },
+  { props: "sourcingNo", name: "SourcingNumber", tooltip: true, key: "SOURCINGNUMBER" ,width:160},
+  { props: "partNum", name: "PartNumber", tooltip: true, key: "PARTNUMBER" },
+  { props: "svwPlantId", name: "SvwPlant", tooltip: true, key: "SVWPLANT" },
+  { props: "supplierName", name: "Supplier", tooltip: true, key: "SUPPLIER" },
+  { props: "supplierDunsCode", name: "DunsCode", tooltip: true, key: "DUNSCODE" },
+  { props: "share", name: "Share", tooltip: true, key: "SHARE" },
+  { props: "aprice", name: "A Price", tooltip: true, key: "APRICE" },
+  { props: "bprice", name: "B Price", tooltip: true, key: "BPRICE" },
+  { props: "ltc", name: "Ltc", tooltip: true, key: "LTC" },
+  { props: "tooling", name: "Tooling", tooltip: true, key: "TOOLING" },
+]
 
+export const dunsTipsTitle = [
+  { props: "sourcingNo", name: "SourcingNumber", tooltip: true, key: "SOURCINGNUMBER" ,width:160},
+  { props: "supplierName", name: "供应商", tooltip: true, key: "SUPPLIER" ,width:160},
+  { props: "supplierDunsCode", name: "DUNS Code", tooltip: true, key: "DUNSCODE" },
+  { props: "failReason", name: "失败原因", tooltip: true, key: "SHIBAIYUANYIN" }
 ]

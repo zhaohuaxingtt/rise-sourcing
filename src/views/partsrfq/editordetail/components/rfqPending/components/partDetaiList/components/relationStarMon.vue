@@ -1,26 +1,27 @@
 <template>
   <iDialog
     :visible.sync="startVisible"
-    @close="changeVisible"
     :title="language('STARMONITORDINGDIANJILUCHAXUN','STARMONITOR定点记录查询')"
     width='70%'
     class="StarMo"
+    
   >
     <div class="queryNumber">
       <div>
         <label class="fontsize">Sourcing Number</label>
-        <iInput class="queryInput" v-model="inputNumber" :placeholder="language('QINGSHURU','请输入')"  />
+        <iInput  v-on:keyup.enter.native="queryinitStartMon" class="queryInput" v-model="inputNumber" :placeholder="language('QINGSHURU','请输入')"  />
       </div>
-      <div class="btnPlace">
-        <iButton>{{language('QUERY','查询')}}</iButton>
-        <iButton>{{language('RESET','重置')}}</iButton>
-      </div>
-    </div>
-    <el-divider class="divider"/>
-    <main class="tableMain">
-      <div class="btnRight">
+      <div >
         <iButton @click="apply"> {{ language("YINGYONG",'应用') }}</iButton>
       </div>
+      <!-- <div class="btnPlace">
+        <iButton>{{language('QUERY','查询')}}</iButton>
+        <iButton>{{language('RESET','重置')}}</iButton>
+      </div> -->
+    </div>
+    <!-- <el-divider class="divider"/> -->
+    <main class="tableMain">
+      
       <tableList
         :selection="true"
         :tableData="tableData"
@@ -28,20 +29,40 @@
         :tableLoading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
       ></tableList>
+       <iPagination v-update
+        class="pagination"
+        @size-change="handleSizeChange($event, initStartMon)"
+        @current-change="handleCurrentChange($event, initStartMon)"
+        background
+        :current-page="page.currPage"
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :total="page.totalCount" />
     </main>
-    <tipsDialog :tipsVislble="tipsVislble" @tipsChangeVisble="tipsChangeVisble" />
+    <tipsDialog ref="tips" @tipsChangeVisble="tipsChangeVisble"  :applyTable="applyTable" @closeshowStarMo="closeshowStarMo" />
+    <div style="height:20px"></div>
   </iDialog>
 </template>
 <script>
-import {iDialog, iButton, iInput, iMessage} from "rise"
+import {iDialog, iButton, iInput, iMessage, iPagination} from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import {startMonitorTitle as tableTitle} from  "../data"
+
+import { pageMixins } from "@/utils/pageMixins"
+import {
+  starMonitorList,
+  checkInfo
+} from '@/api/partsrfq/editordetail';
 import tipsDialog from './tipsDialog'
   export default {
-    components:{iDialog, iButton, iInput, tableList, tipsDialog},
+    components:{iDialog, iButton, iInput, tableList, tipsDialog, iPagination},
+    mixins: [ pageMixins ],
     props:{
-      startVisible: {
-        type:Boolean
+      ...iDialog.props,
+      handleSelectArr: {
+        type: Array,
+        default: () => []
       }
     },
     data() {
@@ -49,61 +70,99 @@ import tipsDialog from './tipsDialog'
         inputNumber:'',
         tableTitle,
         selection:[],
-        tableData:[
-          {
-            SourcingNumber:'2',
-            PartNumber:'3',
-            SvwPlant:'4',
-            Supplier:'5',
-            DunsCode:'6',
-            Share:'3',
-            A:'d',
-            B:'f',
-            Ltc:'2',
-            Tooling:'4',
-          },
-                    {
-            SourcingNumber:'2',
-            PartNumber:'3',
-            SvwPlant:'4',
-            Supplier:'5',
-            DunsCode:'6',
-            Share:'3',
-            A:'d',
-            B:'f',
-            Ltc:'2',
-            Tooling:'4',
-          }
-        ],
+        tableData:[],
         tipsVislble:false,
-
+        tableLoading:false,
+        startVisible:false,
+        applyTable:[],
+        
       }
     },
+    watch: {
+      startVisible(val) {
+        if (val) { 
+          // 请求
+          this.initStartMon()
+        } 
+    },
+    },
     created() {
-      console.log(this.startVisible,'startVisible');
-      console.log(this.tableTitle,'tableTitle');
+      // this.initStartMon()
       },
-      methods: {
-        changeVisible() {
-          this.$emit('relationStarMon',false)
-        },
-        handleSelectionChange(val){
-          this.selection = val
-        },
-        apply() {
-          if(!this.selection.length) {
-            iMessage.error(this.language('QINZHISHAOXUANZEYITIAOSHUJU','请至少选择一条数据'))
-            return
-          }
-          if(this.selection[0].SourcingNumber == '2') {
-            console.log('111');
-            this.tipsChangeVisble(true)
-          }  
-        },
-        tipsChangeVisble(val) {
-          this.tipsVislble = val
+    methods: {
+      queryinitStartMon(){
+        this.page.currPage = 1
+        this.initStartMon()
+      },
+      initStartMon() {
+        this.tableLoading = true
+        console.log(this.handleSelectArr,'handleSelectArr');
+        let data ={
+          refRfqId:this.$route.query.id,
+          partNums:this.handleSelectArr.map(val=>val.partNum),
+          procureFactoryIds:this.handleSelectArr.map(val=>val.procureFactoryId),
+          current: this.page.currPage,
+          size: this.page.pageSize,
+          sourcingNo:this.inputNumber
         }
+          starMonitorList(data).then(res=>{
+            if(res.code === "200") {
+              this.tableData= Array.isArray(res.data)?res.data:[]
+              this.page.totalCount = res.total || 0
+            } else {
+              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            }
+            this.tableLoading = false
+          }
+        )
+      },
+      handleSelectionChange(val){
+        this.selection = val
+      },
+      apply() {
+        if(!this.selection.length) {
+          iMessage.warn(this.language('QINZHISHAOXUANZEYITIAOSHUJU','请至少选择一条数据'))
+          return
+        }
+        let data={
+          refRfqId:this.$route.query.id,
+          projectIds:this.handleSelectArr.map(val=>val.id),
+          ids:this.selection.map(val=>val.id),
+        }
+        console.log(data.projectIds.length,data.ids.length,'-------------------');
+        if(data.projectIds.length<data.ids.length) {
+          iMessage.warn(this.language('XUANZEDELINGJIANCAIGOXIANGMUSHULIANGBUNENGXIAOYUXUANZEDESTARTMONITORJILUSHULIANG','选择的零件采购项目数量不能小于选择的StartMonitor记录数量'))
+          return
+        }
+        checkInfo(data).then(res=>{
+          if(res.code === '200') {
+            if(res.data) {
+              this.applyTable = Array.isArray(res.data)?res.data:[]
+              this.$refs.tips.dunsshow()
+              // this.startVisible = false
+            } else {
+              this.$router.go(0)
+              iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+              this.startVisible = false
+            }
+          } else {
+            this.startVisible = false
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        })
+        // this.
+      },
+      tipsChangeVisble(val) {
+        this.tipsVislble = val
+      },
+      showStarMo() {
+        this.startVisible = true
+      },
+      closeshowStarMo(val) {
+        this.startVisible = val
+        console.log(this.startVisible);
       }
+    }
   }
 </script>
 <style scoped lang='scss' >
@@ -112,6 +171,8 @@ import tipsDialog from './tipsDialog'
       margin: auto;
       display: flex;
       justify-content: space-between;
+      margin: 0 0 20px 0;
+      align-items: center;
       .fontsize{
         font-size: 14px;
         font-weight: bold;

@@ -1,21 +1,27 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 11:48:04
- * @LastEditTime: 2021-12-27 15:42:23
+ * @LastEditTime: 2021-12-28 21:27:19
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
 -->
 <template>
-  <el-table class="table" :data="tabelData" :fit='true' :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
-    <el-table-column v-for="(i,index) in tabelTitle" :props='i' :key='index' :fixed='fixedFn(index)' align="center">
+  <el-table class="table" :data="tabelData"  :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
+    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center">
       <template slot-scope="scope">
-        {{scope.row[i].data | deleteContent | dateFillter}}
+        <span class="link" @click="openPage(scope.row[i].style.hyperlink)" v-if='scope.row[i].data == "View" && !scope.row[i].isHeader'>View</span>
+        <template v-else-if='scope.row[i] && scope.row[i].data && scope.row[i].data.match(/\n/)'>
+          <div>{{scope.row[i].data.split(/\n/)[0]}}</div>
+          <div>{{scope.row[i].data.split(/\n/)[1]}}</div>
+        </template>
+        <div v-else>{{scope.row[i].data | deleteContent | dateFillter}}</div>
       </template>
-    </el-table-column>
+    </af-table-column>
   </el-table>  
 </template>
 <script>
+import {iMessage} from 'rise'
 export default{
   inject:['getbaseInfoData'],
   props:{
@@ -27,19 +33,12 @@ export default{
   filters:{
     dateFillter(val){
       // eslint-disable-next-line no-undef
-      if(isNaN(val)&&!isNaN(Date.parse(val))){
-        // eslint-disable-next-line no-undef
-        return moment(val).format('YYYY-MM-DD')
-      }else{
-        return val
-      }
+      if(isNaN(val)&&!isNaN(Date.parse(val))) return moment(val).format('YYYY-MM-DD')
+      return val
     },
     deleteContent(val){
-      if(val == 'DEL') {
-        return ''
-      }else{
-        return val
-      }
+      if(val == 'DEL') return ''
+      return val
     }
   },
   computed:{
@@ -60,6 +59,23 @@ export default{
     }
   },
   methods:{
+    openPage(items,index){
+      if(!JSON.parse(items)) return iMessage.warn('关键数据为空，请联系管理员')
+      let itemss = JSON.parse(items)
+      if(itemss['hasNoBidOpen']) return iMessage.warn(this.language('AIBIAOSHIJIANWEIDAO','抱歉！开标时间未到，暂时无法查看报价单！'))
+      const router = this.$router.resolve({
+        path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
+        query:{
+          rfqId:this.$route.query.id,
+          round:itemss.round,
+          supplierId:itemss.supplierId,
+          fsNum:itemss.partPrjCode,
+          fix:true,
+          sourcing:true
+        }
+      })
+      window.open(router.href,'_blank')
+    },
     fixedFn(index){
       if(index<4) return 'left'
       if(index>this.tabelTitle.length-4) return 'right'
@@ -70,11 +86,14 @@ export default{
     },
     cellStyleName({row, column, rowIndex, columnIndex}){
       try {
-        return {
+        let style = {
         'fontWeight':row[columnIndex].style.isBold?'bold':'',
         'color':row[columnIndex].style.fontColor || '#707070',
         'backgroundColor':row[columnIndex].style.backgroundColor || 'white'
-      }
+        }
+        if(row[columnIndex].style.borderRight) style = {...style,...{borderRight:'none'}}
+        if(row[columnIndex].style.underscore) style = {...style,...{borderBottom:'2px solid #1763F7'}}
+        return style
       } catch (error) {
        return {
         'fontWeight':'',
@@ -93,6 +112,13 @@ export default{
     }
     ::v-deep td{
         border-bottom: 1px solid #EBEEF5;
+        .cell{
+          white-space:nowrap;
+          word-break: normal;
+          div{
+            text-align: center;
+          }
+        }
     }
   }
 </style>

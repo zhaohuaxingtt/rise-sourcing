@@ -83,6 +83,7 @@ import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSumm
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
+    exportTile:[],
     supplierLoading:false,
     title:getRenderTableTile([],0,1),
     exampelData:exampelData,
@@ -318,7 +319,7 @@ export default{
      */
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
-      negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
+      return negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
         if(res.data && res.data.layout){
           this.backChoose = JSON.parse(res.data.layout) // 
         }
@@ -371,10 +372,10 @@ export default{
      */
     fsPartsAsRow(){
       this.fsTableLoading = true
+      this.clearDataFs()
       // eslint-disable-next-line no-unexpected-multiline
       this.changeFnForGSandFS(this.layout).then(res=>{
         this.fsTableLoading = false
-        this.clearDataFs()
         if(res.data && res.data.partInfoList && res.data.partInfoList){
           this.DataRoundsType = res.data.roundsType
           this.hasNoBidOpen = res.data.hasNoBidOpen
@@ -382,6 +383,7 @@ export default{
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
           this.title = relTitle.title
+          this.exportTile = relTitle.allExportHiddenOrShow
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
@@ -453,6 +455,8 @@ export default{
      * @return {*}
      */
     supplierfsSupplierAsRow(){
+      this.backChooseList = []
+      this.tabelDataSupplier = []
       return new Promise(r=>{
         this.supplierTableLoading = true
         fsSupplierAsRow(this.$route.query.id,this.round,this.backChoose).then(res=>{
@@ -513,11 +517,11 @@ export default{
     //导出
     exportParts(layout) {
       if(layout === '1') {
-        return exportFSPartsAsRow(this.$route.query.id,this.round)
+        return exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       } else if(layout === '2') {
-        return exportFsSupplierAsRow(this.$route.query.id,this.round)
+        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
       } else {
-        return exportGsPartsAsRow(this.$route.query.id,this.round)
+        return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       }
     }
   }

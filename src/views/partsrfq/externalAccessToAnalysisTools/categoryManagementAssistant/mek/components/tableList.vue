@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-10-09 18:51:25
+ * @LastEditTime: 2021-12-28 14:27:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -107,7 +107,7 @@ export default {
     },
     gridData: {
       handler (newVal) {
-        
+
         if (newVal) {
           if (newVal.data) {
             this.tableData = newVal.data
@@ -233,7 +233,7 @@ export default {
       })
       this.gridData1.push(addRowList)
       this.gridData1 = [...this.gridData1]
-      
+
     },
   },
   mounted () {
@@ -249,6 +249,6 @@ export default {
 .titleBox {
   display: flex;
   width: 100%;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
 }
 </style>

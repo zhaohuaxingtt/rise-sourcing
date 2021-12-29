@@ -36,3 +36,10 @@ export function selectRfq(params) {
     data: params
   })
 }
+//starMonitor自动生成定点申请
+export function starMonitorAutoNomi(rfqId) {
+  return requst({
+    url: `/auto-nomi/star-monitor/auto/${rfqId}`,
+    method: 'GET',
+  })
+}

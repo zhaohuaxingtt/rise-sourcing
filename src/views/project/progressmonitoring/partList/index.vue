@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-27 17:10:39
+ * @LastEditTime: 2021-12-28 11:00:11
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -55,7 +55,7 @@
   </div>
 </template>
 <script>
-import {TIPStableTitle,CKDHTtableTitle} from './components/data'
+import {TIPStableTitle,CKDHTtableTitle, OTSEMtableTitle} from './components/data'
 import tablelist from "rise/web/components/iFile/tableList";
 import {
   iCard,
@@ -107,7 +107,7 @@ export default {
         "3": {
           titleName: 'EM&OTS已完成零件',
           titleKey: 'EMOTSYIWANCHENGLINGJIAN',
-          title: CKDHTtableTitle,
+          title: OTSEMtableTitle,
           permision: 'PROJECTMGT-MONITORPARTLIST-EMOTSDONEABLE|项目管理-监控零件清单-EM&OTS已完成表格'
         },
         "4": {
@@ -132,11 +132,11 @@ export default {
       this.tableLoading = true
       params = Object.assign({
         partMonitorStatus: this.$route.query.type == 4 ? '' : this.$route.query.type == 3 ? 4 : this.$route.query.type,
-        partStatus: this.$route.query.type == 4 ? '': this.$route.query.type == 3 ? 9 : 1,
+        partStatus: this.$route.query.type == 4 ? '10': this.$route.query.type == 3 ? 9 : 1,
         projectId: this.$route.query.carProjectId,
         current: this.page.currPage,
         size: this.page.pageSize,
-        csFgBemerkung: this.$route.query.type == 4 ? '1999'  : ''
+        csfFgBemerkung: this.$route.query.type == 4 ? '1999'  : ''
       }, params)
       try {
         const res = await pageProProgressMonitorData(params)
@@ -156,10 +156,11 @@ export default {
     async exportfile() {
       try {
         const params = {
-        partMonitorStatus: this.$route.query.type,
-        partStatus: 1,
+        partMonitorStatus: this.$route.query.type == 4 ? '' : this.$route.query.type == 3 ? 4 : this.$route.query.type,
+        partStatus: this.$route.query.type == 4 ? '10': this.$route.query.type == 3 ? 9 : 1,
         projectId: this.$route.query.carProjectId,
-        ids: this.selectTableData.map(item => item.id)
+        ids: this.selectTableData.map(item => item.id),
+        csfFgBemerkung: this.$route.query.type == 4 ? '1999'  : ''
       }
         proProgressMonitorFile(params)
       } catch(e) {

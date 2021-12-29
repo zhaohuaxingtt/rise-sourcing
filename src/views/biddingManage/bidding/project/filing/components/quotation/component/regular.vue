@@ -36,9 +36,9 @@
             <el-option
               v-for="(item, index) of priceDiffLimitSelectList"
               :key="index"
-              :label="item.name"
+              :label="language(item.key, item.name)"
               :value="item.id"
-              >{{ item.name }}</el-option
+              >{{ language(item.key, item.name) }}</el-option
             >
           </iSelect>
         </iFormItem>
@@ -149,9 +149,9 @@
             <el-option
               v-for="(item, index) of priceDiffObjectSelectList"
               :key="index"
-              :label="item.name"
+              :label="language(item.key, item.name)"
               :value="item.id"
-              >{{ item.name }}</el-option
+              >{{ language(item.key, item.name) }}</el-option
             >
           </iSelect>
         </iFormItem>
@@ -299,9 +299,9 @@
                 <el-option
                   v-for="(item, index) of rankDisplayRuleSelectList"
                   :key="index"
-                  :label="item.name"
+                  :label="language(item.key, item.name)"
                   :value="item.id"
-                  >{{ item.name }}</el-option
+                  >{{ language(item.key, item.name) }}</el-option
                 >
               </iSelect>
             </iFormItem>
