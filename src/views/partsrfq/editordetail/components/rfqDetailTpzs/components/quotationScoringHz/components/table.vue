@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-29 16:42:34
+ * @LastEditTime: 2021-12-29 21:41:24
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -174,9 +174,9 @@
                   <div>一次性：{{scope.row[getPorpsNumber(item.props)+"tooling"]-scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                 </template>
-                <span>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
+                <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
               </el-tooltip>
-              <span v-else>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
+              <span v-else>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
               </template>
               <template v-else>
