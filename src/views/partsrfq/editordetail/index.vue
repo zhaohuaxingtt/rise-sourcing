@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-29 16:47:02
+ * @LastEditTime: 2021-12-29 16:49:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -231,11 +231,11 @@
     <nominateTypeDialog :visible.sync="nominateTypeDialogVisible"
                         @confirm="createDesignate" />
     <!-------------------commonsourcing类型维护供应商（目前未用）----------------------------------->
-    <maintainSupplier ref="maintainSupplier"></maintainSupplier>
+    <maintainSupplier ref="maintainSupplier" :supplierNamesTable="supplierNamesTable" @changeTipsDialog="changeTipsDialog" ></maintainSupplier>
     <!-------------------commonsourcing类型以下零件采购项目未关联StartMonitor记录----------------------------------->
     <createDesignateTips ref="createDesignateTips" :starMonitorTable="starMonitorTable" @changeTipsDialog="changeTipsDialog"/>
-    <!-------------------commonsourcing类型以下零件采购项目BNK审核未通过----------------------------------->
-    <noBnkDialog ref="noBnkDialog" />
+    <!-------------------commonsourcing类型以下零件采购项目BNK审核未通过----------------------------------->    
+    <noBnkDialog ref="noBnkDialog" :bnkNotApprovesTable="bnkNotApprovesTable" @changeTipsDialog="changeTipsDialog"/>
     <!-- RFQ错误提示框 -->
     <dialogTableTips ref="dialogTableTips"/>
     <!-------------------------结束本轮询价的时候，如果当前的轮次类型为开标，并且rfq状态为询价中，当前轮次状态是进行中则需要填写一个结束备注-------->
@@ -348,7 +348,11 @@ export default {
       rfqInfo: {},
       isCommonSourcing:false,
       starMonitorTable:[],
-      bnkNotApprovesshow:false
+      supplierNamesTable:[],
+      bnkNotApprovesTable:[],
+      bnkNotApprovesShow:false,
+      supplierNamesShow:false,
+      projectPartDTOSShow:false
     };
   },
   created () {
@@ -433,7 +437,6 @@ export default {
     },
     getBaseInfo (dialogPage) {
       this.baseInfoLoading = true;
-      console.log(this.$route, '当前路由参数', this.$route.query.id);
       if (this.$route.query.id) {
         getRfqInfo({
           rfqId: this.$route.query.id,
@@ -461,7 +464,6 @@ export default {
         this.disabled = true;
         this.baseInfoLoading = false;
       }
-      console.log(this.disabled, '最终数据');
     },
     changeNav (target) {
       this.navActivtyValue = target.index;
@@ -612,14 +614,22 @@ export default {
     // eslint-disable-next-line no-undef
     moment,
     //
-    //common sourcing 创建定点申请
-    changeTipsDialog(){
-      if(this.bnkNotApprovesshow == true) {
-        this.$refs.createDesignateTips.close() 
-        this.$refs.noBnkDialog.show() 
-      } else {
-        this.$refs.createDesignateTips.close() 
+    //common sourcing 创建定点申请 打开提示框
+    changeTipsDialog(val){
+      if(val === 'supplier') {
+        this.$refs.maintainSupplier.close() 
+        if(this.projectPartDTOSShow) {
+          this.$refs.createDesignateTips.show() 
+        } else if(this.bnkNotApprovesShow) {
+          this.$refs.noBnkDialog.show() 
+        }
       }
+      if(val === 'starMonitor') {
+        this.$refs.createDesignateTips.close() 
+        this.bnkNotApprovesShow ? this.$refs.noBnkDialog.show() :''
+      }
+      val === 'BNK' ? this.$refs.noBnkDialog.close() :''
+
     },
     // 创建定点申请
     createDesignate () {
@@ -632,10 +642,20 @@ export default {
           this.createDesignateLoading = false
           const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
           if(res.code === '200') {
-            if(res.data.projectPartDTOS !== null){
-              this.$refs.createDesignateTips.show() 
-              this.starMonitorTable = res.data.projectPartDTOS  
-              res.data.bnkNotApproves !== null? this.bnkNotApprovesshow = true :  this.bnkNotApprovesshow = false       
+            this.supplierNamesTable = res.data.supplierNames //供应商列表记录  
+            this.starMonitorTable = res.data.projectPartDTOS  //fs号列表（未关联StarMonitor记录）
+            this.bnkNotApprovesTable = res.data.bnkNotApproves  //fs号列表（零件采购项⽬BNK审核未通过，⽆法创建定点申请列表）
+            res.data.supplierNames !== null ? this.supplierNamesShow = true : this.bnkNotApprovesShow = false       
+            res.data.projectPartDTOS !== null? this.projectPartDTOSShow = true : this.projectPartDTOSShow = false       
+            res.data.bnkNotApproves !== null? this.bnkNotApprovesShow = true : this.bnkNotApprovesShow = false 
+            if(this.supplierNamesShow || this.projectPartDTOSShow || this.bnkNotApprovesShow){
+              if(this.supplierNamesShow ) {
+                this.$refs.maintainSupplier.show() 
+              } else if(this.projectPartDTOSShow ) {
+                this.$refs.createDesignateTips.show() 
+              } else {
+                this.$refs.noBnkDialog.show() 
+              }
             } else {
               this.$router.push({
                 path: '/designate/rfqdetail',

@@ -4,6 +4,7 @@
   class="createDesignateTips"
   :title="language('BIDDING_TISHI','提示')"
   :close-on-click-modal="false"
+  @close="sure"
   >
     <div>
       <span class="fontStyle">
@@ -11,6 +12,7 @@
      </span>
     </div>
     <tableList
+      v-show="bnkVislble"
       class="dunsTable"
       :index="true"
       :selection="false"
@@ -44,6 +46,12 @@ export default {
   methods:{
     show() {
         this.bnkVislble = true
+    },
+    sure() {
+      this.$emit('changeTipsDialog','BNK')
+    },
+    close() {
+       this.bnkVislble = false
     }
   }
   
