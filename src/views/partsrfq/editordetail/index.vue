@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-27 15:44:57
+ * @LastEditTime: 2021-12-29 16:49:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -234,8 +234,10 @@
     <maintainSupplier ref="maintainSupplier" :supplierNamesTable="supplierNamesTable" @changeTipsDialog="changeTipsDialog" ></maintainSupplier>
     <!-------------------commonsourcing类型以下零件采购项目未关联StartMonitor记录----------------------------------->
     <createDesignateTips ref="createDesignateTips" :starMonitorTable="starMonitorTable" @changeTipsDialog="changeTipsDialog"/>
-    <!-------------------commonsourcing类型以下零件采购项目BNK审核未通过----------------------------------->
+    <!-------------------commonsourcing类型以下零件采购项目BNK审核未通过----------------------------------->    
     <noBnkDialog ref="noBnkDialog" :bnkNotApprovesTable="bnkNotApprovesTable" @changeTipsDialog="changeTipsDialog"/>
+    <!-- RFQ错误提示框 -->
+    <dialogTableTips ref="dialogTableTips"/>
     <!-------------------------结束本轮询价的时候，如果当前的轮次类型为开标，并且rfq状态为询价中，当前轮次状态是进行中则需要填写一个结束备注-------->
     <iDialog :visible.sync="showReason"
              :title="language('QINGITANXIEJIESUYUANY', '结束原因')"
@@ -287,6 +289,7 @@ import {
 } from '@/api/partsrfq/editordetail';
 import { mockData } from './mock.js';
 import { linieQueryForm } from '../../aeko/detail/components/partsList/data';
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 export default {
   components: {
     iButton,
@@ -307,7 +310,8 @@ export default {
     iDialog,
     maintainSupplier,
     createDesignateTips,
-    noBnkDialog
+    noBnkDialog,
+    dialogTableTips,
   },
   mixins: [rfqCommonFunMixins, pageMixins],
   data () {
@@ -507,7 +511,11 @@ export default {
 
       try {
         const res = await modification(req);
-        this.resultMessage(res);
+        // if(updateType === '06'){
+        //   this.$refs.dialogTableTips.show() 
+        // }else{
+          this.resultMessage(res);
+        // }
         this.getBaseInfo();
       } finally {
         if (updateType === '06') {

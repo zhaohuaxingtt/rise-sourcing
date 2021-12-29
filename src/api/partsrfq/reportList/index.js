@@ -1,8 +1,8 @@
 /*
  * @Date: 2021-11-16 11:06:01
  * @LastEditors: caopeng
- * @LastEditTime: 2021-12-10 17:42:22
- * @FilePath: \德勤项目\front-sourcing-new\src\api\partsrfq\reportList\index.js
+ * @LastEditTime: 2021-12-29 14:54:08
+ * @FilePath: \front-sourcing-new\src\api\partsrfq\reportList\index.js
  */
 /**
  * @Author: shujie
@@ -60,8 +60,8 @@ export function reportUserDownload(parmars) {
 // 删除报告清单
 export function reportDelete(parmars) {
     return requstApi({
-        url: 'report/delete',
-        method: 'POST',
+        url: 'report',
+        method: 'DELETE',
         data: parmars
     })
 }

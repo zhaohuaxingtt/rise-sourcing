@@ -27,6 +27,13 @@
           {{ scope.row.isMbdl == 2 ? 'M' : '' }}
         </template>
       </el-table-column>
+      <!-- 供应商名称 -->
+      <el-table-column :key="index" align='center' :label="language(items.key,items.name)" v-else-if="items.props === 'supplierNameZh'">
+        <template slot-scope="scope">
+          {{ scope.row.supplierNameZh}}
+          <!-- <supplierBlackIcon/> -->
+        </template>
+      </el-table-column>
       <el-table-column :key="index" align='center'
                        v-else-if='selectProps.includes(items.props)' :prop="items.props"
                        :label="language(items.key,items.name)">
@@ -44,6 +51,7 @@
 <script>
 import {iSelect} from 'rise'
 import {partProjTypes} from '@/config'
+	import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 export default {
   props: {
     tableData: {type: Array},
@@ -68,7 +76,8 @@ export default {
     roundType: {type: String, default: ''}
   },
   components: {
-    iSelect
+    iSelect,
+    // supplierBlackIcon,
   },
   computed:{
         //eslint-disable-next-line no-undef
