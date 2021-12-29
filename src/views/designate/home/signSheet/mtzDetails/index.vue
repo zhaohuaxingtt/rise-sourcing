@@ -38,7 +38,7 @@
       <iCard class="margin-top20">
         <div slot="header" class="headBox">
           <p class="headTitle">{{language('XIANGQINGLIEBIAO', '详情列表')}}</p>
-          <span class="buttonBox">
+          <span class="buttonBox" v-if="$route.query.mode === 'add'">
             <iButton @click="handleClickChoose">{{language('XUANZE', '选择')}}</iButton>
             <iButton @click="handleRemove">{{language('YICHU', '移除')}}</iButton>
           </span>
@@ -157,6 +157,11 @@ export default {
     // 提交选择数据
     handleSubmitAdd(val) {
       this.detailParams.visible = false
+      if (val.length) val.map(o => {
+        // 做前端标记
+        o.flagSelect = true
+        return o
+      })
       this.$set(this, 'tableListData', this.tableListData.concat(val))
     },
     // 选中数据
@@ -183,7 +188,7 @@ export default {
         this.getTableData()
       } else {
         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      }
+      } 
     },
     // 提交
     async handleSubmit() {

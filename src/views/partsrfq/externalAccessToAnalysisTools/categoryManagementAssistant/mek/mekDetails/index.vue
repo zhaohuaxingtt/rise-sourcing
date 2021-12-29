@@ -599,6 +599,9 @@ export default {
         this.comparedType = data.comparedType;
         this.isBindingRfq = data.isBindingRfq;
         this.checkedCarLevelOptions = data.selectedOptions
+        if (!this.checkedCarLevelOptions) {
+          this.checkedCarLevelOptions = {}
+        }
         if (data.firstComparedMotor) {
           this.ComparedMotor.push(data.firstComparedMotor.toString());
         }
