@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-22 23:35:34
+ * @LastEditTime: 2021-12-29 16:42:34
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -78,7 +78,7 @@
                             </div>
                           </el-tooltip>
                         </li>
-                         <li v-else :key='index'></li>
+                         <li v-else :key='index'>Dept</li>
                       </template>
                       <template v-else>
                         <li :key='index'>{{items}}</li>
@@ -258,7 +258,7 @@ export default{
           needRemovebox.parentNode.removeChild(needRemovebox)
         }
         const box = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper')
-        let str = `<li></li>`
+        let str = `<li>Dept</li>`
         this.ratingList.firstTile.forEach(items=>{
           str+=(`<li>${items?items:''}</li>`)
         })
@@ -278,7 +278,7 @@ export default{
       }
     },
     ebrShow(data) {
-      if(!data || data == 'Budget' || data == 'KM')
+      if(!data || data.indexOf('Budget') > -1 || data == 'KM')
        return data 
       else{
         // eslint-disable-next-line no-undef
@@ -685,7 +685,7 @@ export default{
                 border-bottom: none;
                 border-top-left-radius: 10px;
                 overflow: hidden;
-                min-width: 100px;
+                min-width: 70px;
                 li{
                     border-bottom: 1px solid #C5CCD6;
                     line-height: 38px;
@@ -699,6 +699,7 @@ export default{
                       background-color:rgba(22, 99, 246, 0.17);
                       height: 60px;
                       padding: 5px 0;
+                      font-weight: bold;
                     }
                   }
               }
