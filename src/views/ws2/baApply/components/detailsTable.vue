@@ -152,8 +152,8 @@ export default {
         if(res.data){
           iMessage.success(result);
           this.visible = false;
-          const l = this.tableLayerListData.list[0].length;
-          this.downloadExport({ amount: res.data.listDate[0][l -1].amount });
+          const l = res.data.listDate[0].length;
+          this.downloadExport({ amount: res.data.listDate[0][l - 1 ].amount });
           this.$emit('handelConfirmSuccess');
         }else{
           iMessage.error(result);
