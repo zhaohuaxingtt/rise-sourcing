@@ -117,6 +117,9 @@ export default {
 
         if(infoRes.data){
           this.tableListData = infoRes.data.tpRecordList
+          this.tableListData.forEach(val=>{
+            this.$set(val,'projectCarType',this.data.projectCarType)
+          })
           this.page.totalCount = infoRes.data.totalCount
         }
       } catch(e) {

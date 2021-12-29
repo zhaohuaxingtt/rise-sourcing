@@ -121,7 +121,7 @@ export const volumeUnconfirmedTableTitle = [
 ]
 
 export const volumeTableTitle = [
-  { props: 'cartypeCategory', name: '车型大类', key: 'LK_CHEXINGDALEI', tooltip: true },
+  { props: 'projectCarType', name: '车型项目', key: 'LK_CHEXINGXIANGMU', tooltip: true },
   { props: 'engineType', name: '发动机类型', key: 'LK_FADONGJILEIXING', tooltip: true },
   { props: 'batteryCapacity', name: '电池容量', key: 'LK_DIANCHIRONGLIANG', tooltip: true },
   { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING', tooltip: true },

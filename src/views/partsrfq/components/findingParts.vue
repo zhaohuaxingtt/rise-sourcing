@@ -127,7 +127,7 @@ export default {
       let res = await category({});
       this.optionList = res.data
       if (this.status === 1) {
-        this.form.status = '15'
+        this.form.status = 'NOMINATED'
       }
       pagePart(this.form)
         .then((res) => {
