@@ -198,6 +198,7 @@
             @click="handleHref(scope.row)"
             >{{ scope.row.supplierName }}
           </a>
+          <!-- <supplierBlackIcon/> -->
         </template>
         <!-- 联系人 -->
         <template slot="contactName" slot-scope="scope">
@@ -396,6 +397,8 @@ import {
 } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
 
+import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
+
 export default {
   mixins: [pageMixins],
   components: {
@@ -418,6 +421,7 @@ export default {
     quotationForm,
 
     supplierListDialog,
+    supplierBlackIcon,
   },
   data() {
     return {
