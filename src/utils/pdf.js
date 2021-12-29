@@ -181,7 +181,16 @@ export const downloadPdfMixins = {
                         e.collapseValue = true
                         this.$nextTick(() => {
                             if (key == '4') {
-                                this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel('addFile')
+                                this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcelTwo().then(res=>{
+                                    let blob = new Blob([res], { type:'application/vnd.ms-excel' })
+                                        //文件流转换为base64
+                                        getBase64(blob).then(resBase64 => {
+                                            blob = dataURLtoFile(resBase64, name+'.xlxs')
+                                            formData.append('multifile', blob)
+                                            this.setfile(formData, instanceId, name)
+                                        })
+                                })
+                                // console.log(this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel())
                             } else if (key == '3') {
                                 this.$refs.quotationScoringMj.getRfqSupplierList().then(res => {
                                     cbdDownloadFileTWO({
@@ -194,7 +203,6 @@ export const downloadPdfMixins = {
                                         getBase64(blob).then(resBase64 => {
                                             blob = dataURLtoFile(resBase64, name+'.xlxs')
                                             formData.append('multifile', blob)
-                                            console.log(blob)
                                             this.setfile(formData, instanceId, name)
                                         })
                                     })
