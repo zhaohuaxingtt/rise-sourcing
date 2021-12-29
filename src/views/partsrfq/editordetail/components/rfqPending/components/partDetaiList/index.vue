@@ -9,13 +9,13 @@
     <div class="header flex-align-center" v-if="!disabled">
       <iButton 
       v-if="baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
-      @click="cancelRelationStarMon" v-permission.auto="QUXIAOGUANLIANSTARTMONIORJILU|取消关联StarMonitor记录">{{
+      @click="cancelRelationStarMon" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_QUXIAOGUANLIANSTARTMONIORJILU|取消关联StarMonitor记录">{{
           language('QUXIAOGUANLIANSTARMONITORJILU','取消关联StarMonitor记录')
         }}
       </iButton>    
       <iButton 
       v-if="baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
-      @click="relationStarMon" v-permission.auto="GUANLIANSTARTMONIORJILU|关联StarMonitor记录">{{
+      @click="relationStarMon" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_GUANLIANSTARTMONIORJILU|关联StarMonitor记录">{{
           language('GUANLIANSTARTMONITORJILU','关联StarMonitor记录')
         }}
       </iButton>
@@ -265,7 +265,6 @@ export default {
     },
     // 新申请财务目标价
     showApplyPrice() {
-      console.log(this.handleSelectArr.length);
       if (this.handleSelectArr.length == 0) {
         iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU','抱歉，您当前还未选择需要申请目标价的采购项目！'));
         return

@@ -15,8 +15,8 @@ export const form = {
 export const multiSupplierTitle = [
   {
     props: 'descr',
-    name: '',
-    key: '',
+    name: 'RFQ信息',
+    key: 'RFQXINXI',
     tooltip: false,
     width: 300,
     tree: true
