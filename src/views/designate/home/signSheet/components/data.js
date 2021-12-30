@@ -152,56 +152,56 @@ export const signsheetViewTableTitle = [
   {
     props: 'yearCw',
     name: 'Year CW',
-    key: 'Year CW',
+    key: 'YEARCW',
     tooltip: true,
     minWidth: '120'
   },
   {
     props: 'nominateId',
     name: 'Nomination No.',
-    key: 'Nomination No.',
+    key: 'NOMINATIONNO.',
     tooltip: true,
     minWidth: '140'
   },
   {
     props: 'partNameCn',
     name: 'Part Name(CN)',
-    key: 'Part Name(CN)',
+    key: 'PARTNAMECN',
     tooltip: true,
     minWidth: '140'
   },
   {
     props: 'partNameDe',
     name: 'Part Name(DE)',
-    key: 'Part Name(DE)',
+    key: 'PARTNAMEDE',
     tooltip: true,
     minWidth: '140'
   },
   {
     props: 'carTypeProj',
     name: 'Carline',
-    key: 'Carline',
+    key: 'CARLINE',
     tooltip: true,
     minWidth: '120'
   },
   {
     props: 'partNum',
     name: 'SVW Part No',
-    key: 'SVW Part No',
+    key: 'SVWPARTNO',
     tooltip: true,
     minWidth: '140'
   },
   {
     props: 'supplierNameCn',
     name: 'Supplier',
-    key: 'Supplier',
+    key: 'SUPPLIER',
     tooltip: true,
     minWidth: '120'
   },
   {
     props: 'share',
     name: 'Share',
-    key: 'Share',
+    key: 'SHARE',
     tooltip: true
   },
   {
@@ -213,7 +213,7 @@ export const signsheetViewTableTitle = [
   {
     props: 'rsRemark',
     name: 'Remark',
-    key: 'Remark',
+    key: 'REMARK',
     tooltip: true
   },
 ]

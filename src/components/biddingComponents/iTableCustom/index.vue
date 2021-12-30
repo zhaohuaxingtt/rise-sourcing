@@ -31,7 +31,11 @@
         :label="item.i18n ? $t(item.i18n) : item.label"
         :width="item.width || 'auto'"
       >
-        <template slot-scope="scope">
+        <template v-if="$scopedSlots[item.prop] || $slots[item.prop]" v-slot="scope">
+          <slot :name="item.prop" :row="scope.row"></slot>
+        </template>
+
+        <template slot-scope="scope" v-else>
           <div @click="handleEmit(item, scope.row)">
             <i-table-column
               v-if="item.customRender || item.type === 'expanded'"

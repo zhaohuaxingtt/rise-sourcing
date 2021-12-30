@@ -61,7 +61,7 @@
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM ---------->
     <kmDialog :rfqId="rfqId" :parts="handleSelectArr" :visible.sync="kmDialogVisible" />
-    <relationStarMon  ref="relationStarMon" :rfqId="rfqId" :startVisible.sync="startVisible" :handleSelectArr="handleSelectArr" />
+    <relationStarMon  ref="relationStarMon" :rfqId="rfqId"  @updateStarMonitor="updateStarMonitor" :startVisible.sync="startVisible" :handleSelectArr="handleSelectArr" />
   </iCard>
 </template>
 
@@ -327,15 +327,21 @@ export default {
         refRfqId:this.$route.query.id,
         projectIds:this.handleSelectArr.map(val=>val.id)
       }
-    cancelRef(data).then(res=>{
-      if(res.code === '200') {
-        iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-        this.$router.go(0)
-      } else {
-        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-      }
-    })
-  }
+      cancelRef(data).then(res=>{
+        if(res.code === '200') {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.getTableList()
+          this.getBaseInfo()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    updateStarMonitor() {
+      console.log('==============================');
+      this.getTableList()
+      this.getBaseInfo()
+    }
   },
 };
 </script>

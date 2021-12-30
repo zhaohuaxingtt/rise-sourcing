@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-17 16:49:20
- * @LastEditTime: 2021-09-09 16:29:35
+ * @LastEditTime: 2021-12-29 15:36:12
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\components\data.js
@@ -44,3 +44,10 @@ export const confirmTableHead = [
     tooltip: false,
   },
 ]
+
+export const errTipsTableTitle={
+  '1':[
+    { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true },
+    { props: "aekoStatusDesc", name: "AEKO状态", key: "LK_AEKOZHUANGTAI", tooltip: true },
+  ]
+}

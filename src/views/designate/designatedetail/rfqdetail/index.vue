@@ -59,7 +59,7 @@
         <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
           <iButton 
-            v-if="!isDisabled && !createMtzDisabled"
+            v-if="!isDisabled && createMtzDisabled"
             v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请"
             :loading="createMtzLoading"
             @click="handleCreateMtz">
@@ -150,8 +150,8 @@ export default {
   computed: {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
-      nominationType: state => state.nominationType,
-      applicationStatus: state => state.applicationStatus,
+      nominationType: state => state.nomination.nominationType,
+      applicationStatus: state => state.nomination.applicationStatus,
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
       mtzApplyId: state => state.nomination.mtzApplyId,
