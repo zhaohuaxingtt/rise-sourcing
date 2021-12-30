@@ -209,7 +209,7 @@ export default {
         return iMessage.warn(this.$t('LK_QINGXUANZHE'))
       }
 
-      excelExport(this.selectTableList, this.bmTableHead, 'BM申请单');
+      excelExport(this.selectTableList, this.aekoTableHead, 'BM申请单');
     },
 
     handleSelectionChange(val){
