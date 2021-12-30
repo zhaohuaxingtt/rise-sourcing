@@ -11,7 +11,9 @@ Vue.directive('permission', {
     const value = binding.value ? binding.value : binding.expression
     const splitValue = value.split('|')
     store.dispatch('uploadResource', splitValue)
-    el.style.border = "1px solid red"
+    if(!store.state.permission.whiteBtnList[value]){
+      el.style.border = "1px solid red"
+    }
     return // 权限重新初始化，近期请勿打开该功能
 
     //如果是个变量则使用变量，否则当做字符串处理
