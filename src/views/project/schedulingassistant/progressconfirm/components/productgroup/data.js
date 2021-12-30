@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 11:09:43
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 16:27:39
+ * @LastEditTime: 2021-12-30 14:19:45
  * @Description: 
- * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\data.js
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progressconfirm\components\productgroup\data.js
  */
 
 export const searchList = [
@@ -20,7 +20,7 @@ export const tableTitle = [
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true, minWidth: 120},
   {props:'productGroupZh',name:'产品组中文名称', key: "CHANPINZUZHONGWENMINGCHENG", tooltip: true, minWidth: 150},
   {props:'productGroupDe',name:'产品组德文名称', key: "CHANPINZUDEWENMINGCHENG", tooltip: true, minWidth: 150},
-  {props:'scheBfToFirstTryoutWeek',name:'BF-1st tryout (周)', key: "BF1STTRYOUTZHOU", tooltip: true, minWidth: 160},
+  {props:'scheBfToFirstTryoutWeek',name:'数据冻结-1st tryout (周)', key: "SHUJUDONGJIE1STTRYOUTZHOU", tooltip: true, minWidth: 200},
   {props:'scheFirstTryEmWeek',name:'1st tryout-EM (周)', key: "1STTRYOUTEMZHOU", tooltip: true, minWidth: 160},
   {props:'scheFirstTryOtsWeek',name:'1st tryout-OTS (周)', key: "1STTRYOUTOTSZHOU", tooltip: true, minWidth: 160},
   {props:'fs',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, minWidth: 120},

@@ -2,14 +2,17 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:18:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-19 10:08:53
+ * @LastEditTime: 2021-12-30 10:36:53
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\carproNameTop.vue
 -->
 
 <template>
   <div class="carProjectTop">
-    <span class="carProjectTop-name">{{language('CHEXINGXIANGMU','车型项目')}}: {{carProjectName}}</span>
+    <div>
+      <span class="carProjectTop-name">{{language('CHEXINGXIANGMU','车型项目')}}: {{carProjectName}}</span>
+      <i @click="handleCollapse" v-if='collapse' class="el-icon-arrow-up collapse margin-left20 cursor" :class="{ rotate: !collapseValue }"></i>
+    </div>
     <div class="carProjectTop-control">
       <iButton @click="handleBack">{{language('FANHUI', '返回')}}</iButton>
       <logButton class="margin-left20" @click="toLogPage" />
@@ -31,6 +34,9 @@ export default {
     },
     bizId() {
       return this.$route.path.includes('projectprogressmonitoring') ? 'progressMonitorId' : 'scheduleRecordId'
+    },
+    collapse() {
+      return this.$route.meta.collapse
     }
   },
   data() {

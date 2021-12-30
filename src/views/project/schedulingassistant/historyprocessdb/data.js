@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:35:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 17:03:44
+ * @LastEditTime: 2021-12-30 14:14:03
  * @Description: 
- * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\data.js
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\data.js
  */
 
 export const searchListPro = [
@@ -28,8 +28,8 @@ export const regularTableTitle = [
   {props:'pgNameZh',name:'产品组中文名称', key: "CHANPINZUZHONGWENMINGCHENG", tooltip: true},
   {props:'pgNameDe',name:'产品组德文名称', key: "CHANPINZUDEWENMINGCHENG", tooltip: true},
   {props:'releaseNomiWeek',name:'释放-定点(周)', key: "SHIFANGDINGDIANZHOU", tooltip: true},
-  {props:'nomiToBffWeek',name:'定点-BF(周)', key: "DINGDIANBFZHOU", tooltip: true},
-  {props:'bfFirstTryoutWeek',name:'BF-1st Tryout(周)', key: "BFFIRSTTRYOUTZHOU", tooltip: true},
+  {props:'nomiToBffWeek',name:'定点-数据冻结(周)', key: "DINGDIANSHUJUDONGJIEZHOU", tooltip: true},
+  {props:'bfFirstTryoutWeek',name:'数据冻结-1st Tryout(周)', key: "SHUJUDONGJIEFIRSTTRYOUTZHOU", tooltip: true},
   {props:'firstTryOtsWeek',name:'1st Tryout-OTS(周)', key: "FIRSTTRYOUTOTSZHOU", tooltip: true},
   {props:'firstTryEmWeek',name:'1st Tryout-EM(周)', key: "FIRSTTRYOUTEMZHOU", tooltip: true},
   {props:'sixPartCode',name:'代表6位号', key: "DAIBIAOLIUWEIHAO", tooltip: true},
@@ -56,10 +56,10 @@ export const partTableTitle = [
   {props:'cscIst',name:'定点ist', key: "DINGDIANIST", tooltip: true, isSelect: true, minWidth: 120},
   {props:'cscDelay',name:'定点是否延误', key: "DINGDIANSHIFOUYANWU", tooltip: true, isSelect: true, minWidth: 120},
   {props:'cscReason',name:'定点延误原因', key: "DINGDIANYANWUYUANYIN", tooltip: true, isSelect: true, minWidth: 120},
-  {props:'bfSoll1',name:'BF soll1', key: "BFSOLL1", tooltip: true, isSelect: true, minWidth: 120},
-  {props:'bfSoll2',name:'BF soll2', key: "BFSOLL2", tooltip: true, isSelect: true, minWidth: 120},
-  {props:'bfIst',name:'BF ist', key: "BFIST", tooltip: true, isSelect: true, minWidth: 120},
-  {props:'bfReason',name:'BF延误原因', key: "BFYANWUYUANYIN", tooltip: true, isSelect: true, minWidth: 120, checkWidth: '36%'},
+  {props:'bfSoll1',name:'数据冻结 soll1', key: "SHUJUDONGJIESOLL1", tooltip: true, isSelect: true, minWidth: 120},
+  {props:'bfSoll2',name:'数据冻结 soll2', key: "SHUJUDONGJIESOLL2", tooltip: true, isSelect: true, minWidth: 120},
+  {props:'bfIst',name:'数据冻结 ist', key: "SHUJUDONGJIEIST", tooltip: true, isSelect: true, minWidth: 120},
+  {props:'bfReason',name:'数据冻结延误原因', key: "SHUJUDONGJIEYANWUYUANYIN", tooltip: true, isSelect: true, minWidth: 120, checkWidth: '36%'},
   {props:'isttryoutSoll1',name:'1st tryout soll1', key: "1STTRYOUTSOLL1", tooltip: true, isSelect: true, minWidth: 180},
   {props:'isttryoutSoll2',name:'1st tryout soll2', key: "1STTRYOUTSOLL2", tooltip: true, isSelect: true, minWidth: 180},
   {props:'isttryoutIst',name:'1st tryout ist', key: "1STTRYOUTIST", tooltip: true, isSelect: true, minWidth: 120},
@@ -101,15 +101,15 @@ export const partTableTitle = [
   {props:'cartypeProType',name:'车型项目类型', key: "CHEXINGXIANGMULEIXING", tooltip: true, isSelect: true, minWidth: 120},
   {props:'partProjectType',name:'零件采购项目类型', key: "LINGJIANCAIGOUXIANGMULEIXING", tooltip: true, isSelect: true, minWidth: 180},
   {props:'fsdocCscWeekly',name:'释放-定点(周)', key: "SHIFANGDINGDIANZHOU", tooltip: true, isSelect: true, disabled: true, minWidth: 120},
-  {props:'cscBfWeekly',name:'定点-BF(周)', key: "DINGDIANBFZHOU", tooltip: true, isSelect: true, disabled: true, minWidth: 150},
-  {props:'bf1stWeekly',name:'BF-1st Tryout(周)', key: "BFFIRSTTRYOUTZHOU", tooltip: true, isSelect: true, disabled: true, minWidth: 180},
+  {props:'cscBfWeekly',name:'定点-数据冻结(周)', key: "DINGDIANSHUJUDONGJIEZHOU", tooltip: true, isSelect: true, disabled: true, minWidth: 150},
+  {props:'bf1stWeekly',name:'数据冻结-1st Tryout(周)', key: "SHUJUDONGJIEFIRSTTRYOUTZHOU", tooltip: true, isSelect: true, disabled: true, minWidth: 180},
   {props:'ots1stWeekly',name:'1st Tryout-OTS(周)', key: "FIRSTTRYOUTOTSZHOU", tooltip: true, isSelect: true, disabled: true, minWidth: 180},
   {props:'em1stWeekly',name:'1st Tryout-EM(周)', key: "FIRSTTRYOUTEMZHOU", tooltip: true, isSelect: true, disabled: true, minWidth: 180},
   {props:'oldPartNum',name:'原零件号', key: "YUANLINGJIANHAO", tooltip: true, isSelect: true, minWidth: 120},
   {props:'oldFsnrGsnrNum',name:'原FS号', key: "YUANFSHAO", tooltip: true, isSelect: true, minWidth: 120},
   {props:'oldFsdocIst',name:'原零件释放ist', key: "YUANLINGJIANSHIFANGIST", tooltip: true, isSelect: true, minWidth: 180},
   {props:'oldCscSoll1',name:'原零件定点ist', key: "YUANLINGJAINDINGDIANIST", tooltip: true, isSelect: true, minWidth: 180},
-  {props:'oldBfIst',name:'原零件BF ist', key: "YUANLINGJIANBFIST", tooltip: true, isSelect: true, minWidth: 180},
+  {props:'oldBfIst',name:'原零件数据冻结 ist', key: "YUANLINGJIANSHUJUDONGJIEIST", tooltip: true, isSelect: true, minWidth: 180},
   {props:'oldKickoffIst',name:'原零件Kickoff ist', key: "YUANLINGJIANKICKOFFIST", tooltip: true, isSelect: true, minWidth: 180},
   {props:'oldOtsIst',name:'原零件OTS ist', key: "YUANLINGJIANOTSIST", tooltip: true, isSelect: true, minWidth: 180},
   {props:'oldEmIst',name:'原零件EM ist', key: "YUANLINGJIANEMIST", tooltip: true, isSelect: true, minWidth: 180},

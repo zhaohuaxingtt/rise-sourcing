@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-24 14:53:57
- * @LastEditTime: 2021-11-29 11:14:31
+ * @LastEditTime: 2021-12-29 10:44:52
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\riskAndAlarmConfig\components\data.js
@@ -20,7 +20,13 @@ export const MENU = [
 
 export const riskAndAlarmTitle = [
   {
-    props: 'level',
+    props: 'delayTypeDesc',
+    name: '风险类型',
+    key: 'FENGXIANLEIXING',
+    tooltip: false
+  },
+  {
+    props: 'delayLevelDesc',
     name: '风险等级',
     key: 'FENGXIANDENGJI',
     tooltip: false

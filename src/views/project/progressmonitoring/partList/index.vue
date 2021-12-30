@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 11:00:11
+ * @LastEditTime: 2021-12-30 10:09:35
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -56,7 +56,7 @@
 </template>
 <script>
 import {TIPStableTitle,CKDHTtableTitle, OTSEMtableTitle} from './components/data'
-import tablelist from "rise/web/components/iFile/tableList";
+import tablelist from "@/views/project/schedulingassistant/progroup/components/tableList";
 import {
   iCard,
   iButton,
