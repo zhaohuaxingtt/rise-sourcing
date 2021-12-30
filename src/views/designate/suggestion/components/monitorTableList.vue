@@ -33,7 +33,7 @@
         </template>
       </el-table-column> -->
       <el-table-column
-        width="100"
+        width="56"
         label='Group'
         align='center'>
         <template slot-scope="scope">
@@ -76,7 +76,7 @@
       <!-- 循环取出厂商以及TTO -->
       <el-table-column
         align='center'
-        width="150"
+        width="100"
         label-class-name="tline"
         v-for="(head, hindex) in supplier"
         :key="hindex"
@@ -101,7 +101,7 @@
       >
         <el-table-column
           align='center'
-          width="150"
+          width="120"
           :key="hindex"
           :label="`Recommend Supplier ${hindex + 1}`">
           <template slot="header">
@@ -667,6 +667,10 @@ export default {
     }
   }
   ::v-deep .el-table--border {
+    border: 0px !important;
+    &:after,&:before {
+      background-color: #fff;
+    }
     th,td {
       border-bottom: 1px solid #fff !important;
       border-right: 1px solid #fff !important;
@@ -696,10 +700,13 @@ export default {
       line-height: 1;
     }
     .titleCN {
-      padding: 0 10px
+      padding: 0px 10px;
+      height: 35px;
+      line-height: 35px;
     }
     .titleEN {
-      height: 24PX;
+      height: 35px;
+      line-height: 35px;
       text-overflow: ellipsis;
       overflow: hidden;
       padding: 0 5px;
@@ -720,6 +727,21 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  // 滚动条
+  ::v-deep.el-table__body-wrapper {
+    &::-webkit-scrollbar {
+      width: 89px !important;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #c9d2e6;
+    }
+    &::-webkit-scrollbar-track {
+      display: none;
+    }
+    ::-webkit-scrollbar-corner {
+      background-color: #111;
+    }
   }
 }
 
