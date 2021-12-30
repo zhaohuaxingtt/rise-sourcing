@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-12-23 10:29:55
+ * @LastEditTime: 2021-12-23 18:35:18
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\router\modules\sourcing.js
@@ -26,6 +26,15 @@ export default [
                 activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () => import ("@/views/letterAndLoi")
+        },
+        {
+            path: "partsletter/loi",
+            name: "loi",
+            meta:{
+                title:'LOI',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+            },
+            component: () => import ("@/views/letterAndLoi/loi")
         },
         {
             path: "partsletter/letterdetail",
@@ -66,7 +75,7 @@ export default [
                 import ("@/views/supplier/quotationdetail")
         },
         {
-            path: "importfiles",
+            path: "partsign/importfiles",
             name: "importFiles",
             meta:{
                 title:'附件导入',
@@ -86,20 +95,20 @@ export default [
                 import ("@/views/designateFiles/importFiles/detail"),
         } ,
         {
-            path: "filemanage",
+            path: "partsign/filemanage",
             name: "fileManage",
             meta: { title: "附件综合管理", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/designateFiles/fileManage/index"),
         },   
         // 配件相关路由
         {
-            path: "signforpartsdemand",
+            path: "partsign/signforpartsdemand",
             name: "signForPartsDemand",
             meta: { title: "配件需求签收", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/accessoryPart/signForPartsDemand/index"),
         },
         {
-            path: "integratedmanage",
+            path: "partsign/integratedmanage",
             name: "integratedManage",
             meta: { title: "配件综合管理", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/accessoryPart/integratedManage/index"),
@@ -129,7 +138,7 @@ export default [
         },
         //竞价开标
         {
-            path:"biddingProjectList",  
+            path:"partsrfq/biddingProjectList",  
             name:'biddingProjectList',
             meta: {
                 title:"竞价开标",

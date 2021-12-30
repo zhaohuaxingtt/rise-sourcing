@@ -6,7 +6,7 @@
 <template>
   <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_PAGE|定点管理页面">
     <!-- 头部 -->
-    <headerNav />
+    <headerNav :type="sourceinquirypoint" />
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
@@ -95,6 +95,7 @@
           </iButton>
           <!-- 取消MTZ绑定 -->
           <iButton
+          v-permission.auto="SOURCING_NOMINATION_QUXIAOMTZBANGDING|取消MTZ绑定"
             @click="ttss"
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
@@ -202,7 +203,7 @@
 
 <script>
 import { tableTitle } from './components/data'
-import headerNav from './components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import { 

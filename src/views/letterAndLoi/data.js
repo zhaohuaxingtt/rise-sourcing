@@ -4,12 +4,6 @@
  * @Description: 定点信/LOI 相关DATA
  */
 
-// homepage的类型tab
-export const letterAndLoiType = [
-    {label:'LK_DINGDIANXIN',key:'letter',name:'定点信', permissionKey: 'LK_LETTERANDLOI_LETTER_PAGE'},
-    {label:'LK_LOI',key:'LOI',name:'LOI', permissionKey: 'LK_LETTERANDLOI_LOI_PAGE'},
-]
-
 // 定点信搜索条件
 export const letterListSearch =[
     {props:'letterNum',label:'定点信编号',type:'input',labelKey:'LK_DINGDIANXINBIANHAO',permissionKey: 'LK_LETTER_LIST_LETTERNUM'},

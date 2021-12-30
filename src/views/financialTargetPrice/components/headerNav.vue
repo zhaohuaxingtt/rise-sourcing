@@ -9,9 +9,7 @@
 
 <template>
   <div class="headerNav">
-    <iNavMvp :list="list" @change="change" :lang="true" :lev="1" routerPage></iNavMvp>
-    <div class="right-control">
-      <iNavMvp @change="change" class="pull-right" :lang="true" right routerPage lev="2" :list="navList" />
+    <headerNav type="financialmanage">
       <div class="control">
         <iLoger
           :config="{
@@ -27,16 +25,17 @@
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
         </span>
       </div>
-    </div>
+    </headerNav>
   </div>
 </template>
 
 <script>
-import { iNavMvp, icon } from 'rise'
+import { icon } from 'rise'
 import { TAB, MENU } from './data'
+import headerNav from "@/components/headerNav"
 import iLoger from 'rise/web/components/iLoger'
 export default {
-  components: {iNavMvp,icon, iLoger},
+  components: {headerNav,icon, iLoger},
   data() {
     return {
       list: TAB,
@@ -54,7 +53,11 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  width: 100%;
+
+  ::v-deep .headerNav-wraper {
+    width: 100%;
+  }
   .nav div {
     margin-left: 0;
   }

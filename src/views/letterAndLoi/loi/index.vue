@@ -1,27 +1,27 @@
 <!--
  * @Author: wentliao
- * @Date: 2021-06-18 10:22:21
- * @Description: 定点信/LOI 列表页
+ * @Date: 2021-12-23 15:53:12
+ * @Description: LOI首页
 -->
 <template>
   <iPage class="letterAndLoi" v-permission.auto="LK_LETTERANDLOI_PAGE|定点信/LOI页面">
     <headerNav :type="sourceinquirypoint" />
-    <letterList class="margin-top30" />
+    <loiList class="margin-top30" />
   </iPage>
 </template>
 
 <script>
 import { iPage } from 'rise';
 import headerNav from "@/components/headerNav"
-import letterList from './letter/list';
+import loiList from './list';
 
 export default {
     name:'letterAndLoi',
     components:{
       iPage,
       headerNav,
-      letterList
-    }
+      loiList
+    },
 }
 </script>
 

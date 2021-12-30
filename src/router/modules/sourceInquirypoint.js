@@ -17,7 +17,7 @@ export default [
         activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
     },
     component: () => import("@/layout/default"),
-    redirect: "/sourceinquirypoint/sourcing",
+    redirect: "/sourcing/dashboard",
     children:[
       ...sourcing,
       ...steeldemandcreation

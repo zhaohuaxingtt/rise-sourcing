@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-25 14:41:07
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-02 17:03:54
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-23 17:34:51
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\data.js
  */
@@ -67,4 +67,47 @@ export const TAB = [
   //   url: '/nomination',
   //   message: 0
   // }
+]
+
+export const navManagingDemandList = [
+  {
+    value: 1,
+    name: "配件签收",
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/signforpartsdemand",
+    activePath: "signforpartsdemand",
+    key: "LK_PEIJIANXUQIUQIANSHOU",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_SIGNFORPARTSDEMAND',
+    permissionName: '寻源执行-配件签收'
+  },
+  {
+    value: 2,
+    name: "配件管理",
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/signforpartsdemand/integratedmanage",
+    activePath: "integratedmanage",
+    key: "LK_PEIJIANZONGHEGUANLI",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_INTEGRATEDMANAGE',
+    permissionName: '寻源执行-配件管理'
+  },
+  {
+    value: 3,
+    name: "附件导入",
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/signforpartsdemand/importfiles",
+    activePath: "importfiles",
+    key: "LK_FUJIANXUQIUDAORU",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_IMPORTFILES',
+    permissionName: '寻源执行-附件导入'
+  },
+  {
+    value: 4,
+    name: "附件管理",
+    message: 0,
+    url: "/sourceinquirypoint/sourcing/signforpartsdemand/filemanage",
+    activePath: "filemanage",
+    key: "LK_FUJIANZONGHEGUANLI",
+    permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_FILEMANAGE',
+    permissionName: '寻源执行-附件管理'
+  },
 ]

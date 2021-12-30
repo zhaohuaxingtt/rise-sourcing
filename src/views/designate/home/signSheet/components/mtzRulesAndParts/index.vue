@@ -1,5 +1,11 @@
 <template>
   <div class="mtzRulesAndParts">
+    <div class="inforFutitle">
+      <span class="big_font">Regulation:</span>
+      <br />
+      <span class="big_font">MTZ Payment=(Effective Price-Base Price)*Raw Material Weight*Settle accounts Quantity*Ratio</span>
+      <span class="big_small">When:effective price > base price *(1+threshold)</span>
+    </div>
     <p class="tableTitle">MTZ Rules</p>
       <tableList class="margin-top20"
                   :tableData="mtzData.ruleTableListData"
@@ -83,6 +89,18 @@ export default {
 
 <style lang="scss" scoped>
 .mtzRulesAndParts {
+  .inforFutitle {
+    margin-bottom: 20px;
+    padding:0.5rem 0;
+    font-size:15px!important;
+    line-height:25px;
+    .big_font{
+      font-weight: bold;
+    }
+    .big_small{
+      padding-left:15px;
+    }
+  }
   .tableTitle {
     display: inline-block;
     font-weight: bold;

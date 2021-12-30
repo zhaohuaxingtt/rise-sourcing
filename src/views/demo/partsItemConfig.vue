@@ -7,12 +7,14 @@
   <iPage class="partsItemConfig">
       <iCard title="零件采购项目类型配置">
           <template v-slot:header-control>
-              <iButton>保存</iButton>
+              <iButton @click="save()" :loading="saveLoading">保存</iButton>
           </template>
           <!-- 表单区域 -->
           <el-table
             :data="tableData"
-            style="width: 100%">
+            style="width: 100%"
+            v-loading="tableLoading"
+            >
             <template v-for="(item, $index) in tableHeader">
                 <el-table-column :key="$index+'_partsItemConfig'" :prop="item.type" :label="item.name" >
                     <template slot-scope="scope">
@@ -65,6 +67,10 @@ import {
     iSelect,
     iInput,
 } from 'rise'
+import {
+    getPartCheck,
+    savePartCheck,
+} from '@/api/partsItemConfig'
 export default {
     name:'partsItemConfig',
     components:{
@@ -78,6 +84,8 @@ export default {
         return{
             tableData:[],
             tableHeader:[],
+            tableLoading:false,
+            saveLoading:false,
             resData:{
                 "headers":[
                     {
@@ -161,18 +169,49 @@ export default {
         }
     },
     created(){
-        this.restData();
+        this.getData();
     },
     methods:{ 
-        restData(){
-            this.tableHeader = [
-                {
-                    "name": "零件项目采购类型",
-                    "type": "name",
-                },
-                ...this.resData['headers']
-            ];
-            this.tableData = this.resData.data || [];
+        async getData(){
+            this.tableLoading = true;
+            await getPartCheck().then((res)=>{
+                this.tableLoading = false;
+                const {code,data} = res;
+                if(code == 200){
+                    const headersData = data['headers'] || [];
+                    this.tableHeader = [
+                        {
+                            "name": "零件项目采购类型",
+                            "type": "name",
+                        },
+                        ...headersData
+                    ];
+                    this.tableData = data['data'] || [];
+                }else{
+                    this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+                }
+            }).catch(()=>{this.tableLoading = false})
+            // this.tableHeader = [
+            //     {
+            //         "name": "零件项目采购类型",
+            //         "type": "name",
+            //     },
+            //     ...this.resData['headers']
+            // ];
+            // this.tableData = this.resData.data || [];
+        },
+        // 保存
+        async save(){
+            this.saveLoading = true;
+            await savePartCheck(this.tableData).then((res)=>{
+                this.saveLoading = false;
+                if(res.code == 200){
+                    this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                    this.getData();
+                }else{
+                   this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn); 
+                }
+            }).catch(()=>{ this.saveLoading = false })
         }
     }
 }
