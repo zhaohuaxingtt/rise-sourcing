@@ -147,10 +147,6 @@ export default {
       excelExport(this.selectTableList, this.allTableHead, 'BM申请单')
     },
 
-    getTableData(){
-      this.allSerch(bmApplyForm)
-    },
-
     handleSelectionChange(val){
       this.selectTableList = val;
     },
@@ -183,6 +179,10 @@ export default {
     },
 
     allSerch(data){
+      this.page = {
+        currPage: 1,
+        pageSize: 10,
+      },
       this.form = data;
       this.getPageData();
     },
