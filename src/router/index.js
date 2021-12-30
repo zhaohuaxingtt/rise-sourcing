@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-12-23 11:03:50
+ * @LastEditTime: 2021-12-30 10:29:41
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-sourcing\src\router\index.js
@@ -316,6 +316,15 @@ export const staticRouter = [
 					title: '配件自动分配科室',
 				},
 				component: () => import('@/views/AutomaticallyAssignDe'),
+			},
+			{	
+				// 暂时放在souring下 后面会移动到portal
+				path: '/demo/partsconfig',
+				name: 'partsconfig',
+				meta: {
+					title: '零件采购项目类型配置',
+				},
+				component: () => import('@/views/demo/partsItemConfig'),
 			},
 		],
 	},

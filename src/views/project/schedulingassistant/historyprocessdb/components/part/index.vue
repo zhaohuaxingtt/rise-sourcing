@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-29 10:34:47
+ * @LastEditTime: 2021-12-30 14:15:48
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -87,11 +87,11 @@ export default {
         'CHANPINZUBIANHAO',
         'CHANPINZUZHONGWENMINGCHENG',
         'CHANPINZUDEWENMINGCHENG',
-        'BFSOLL1',
-        'BFSOLL2',
-        'BFIST',
-        'BFSHIFOUYANWU',
-        'BFYANWUYUANYIN'
+        'SHUJUDONGJIESOLL1',
+        'SHUJUDONGJIESOLL2',
+        'SHUJUDONGJIEIST',
+        'SHUJUDONGJIESHIFOUYANWU',
+        'SHUJUDONGJIEYANWUYUANYIN'
       ],
       selectRowFit: [],
       selectRowPart: [],
@@ -104,8 +104,8 @@ export default {
         'CAILIAOZUMINGCHENG',
         'CHEXINGXIANGMU',
         'SHIFANGDINGDIANZHOU',
-        'DINGDIANBFZHOU',
-        'BFFIRSTTRYOUTZHOU',
+        'DINGDIANSHUJUDONGJIEZHOU',
+        'SHUJUDONGJIEFIRSTTRYOUTZHOU',
         'FIRSTTRYOUTOTSZHOU',
         'FIRSTTRYOUTEMZHOU',
         'SOURCINGLEIXING',

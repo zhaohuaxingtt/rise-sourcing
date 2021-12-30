@@ -12,7 +12,7 @@ export const rich = {
     // fontWeight: 'bold'
   },
   n: {
-    fontSize: 12,
+    fontSize: 10,
     lineHeight: 12
   },
   p: {

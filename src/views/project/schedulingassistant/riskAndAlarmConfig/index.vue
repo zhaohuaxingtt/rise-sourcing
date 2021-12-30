@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-24 15:19:33
- * @LastEditTime: 2021-11-29 14:40:56
+ * @LastEditTime: 2021-12-29 10:49:34
  * @LastEditors: Luoshuang
  * @Description: 风险预警配置
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\riskAndAlarmConfig\index.vue
@@ -113,10 +113,10 @@ export default {
       const index = scope.$index
       const value = scope.row[key] || ''
       if (isNaN(Number(value))) return
-      if (key === 'delayWeekLeft' && index !== 0) {
+      if (key === 'delayWeekLeft' && index !== 0 && this.data[index-1].delayType === scope.row.delayType) {
         this.$set(this.data[index-1], 'delayWeekRight', value)
       }
-      if (key === 'delayWeekRight' && index !== (this.data.length-1)) {
+      if (key === 'delayWeekRight' && index !== (this.data.length-1) && this.data[index+1].delayType === scope.row.delayType) {
         this.$set(this.data[index+1], 'delayWeekLeft', value)
       }
     },

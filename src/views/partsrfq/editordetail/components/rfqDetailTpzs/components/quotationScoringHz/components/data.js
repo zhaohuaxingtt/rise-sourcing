@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-28 11:03:14
+ * @LastEditTime: 2021-12-29 15:47:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -20,8 +20,8 @@ export const fstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>FS/GS/SP</p><p>No.</p>'},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'lcAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'lcBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'skdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'skdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
@@ -46,7 +46,7 @@ export const gstitle = [
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
 
   {type:'',props:'currentSupplier',label:'Current \n Supplier',i18n:'',width:'60',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>Supplier</p>'},
-  {type:'',props:'currentShare',label:'Share',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'currentShare',label:'Share',i18n:'',width:'50',tooltip:false,fixed:true},
   {type:'',props:'currentAPrice',label:'Cur. \n A Price',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>A Price</p>'},
   {type:'',props:'currentBPrice',label:'Cur. \n B Price',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>B Price</p>'},
   {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'50',tooltip:false,fixed:true},
@@ -375,7 +375,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
       }
       
     })
-    return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
+    return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Invest \n Budget',priceInfo,dataList[0])]
   } catch (error) {
     return {partNo:'Subtotal'}
   }
