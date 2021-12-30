@@ -8,6 +8,15 @@ const openProcess = process.env.NODE_ENV == 'dev'
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
   inserted: function(el, binding, vnode) {
+    const value = binding.value ? binding.value : binding.expression
+    console.log(value)
+    const splitValue = value.split('|')
+    store.dispatch('uploadResource', splitValue)
+    if(store.state.permission.whiteBtnList[splitValue[0]]){
+      el.style.border = "1px solid green"
+    }else{
+      el.style.border = "1px solid red"
+    }
     return // 权限重新初始化，近期请勿打开该功能
 
     //如果是个变量则使用变量，否则当做字符串处理
