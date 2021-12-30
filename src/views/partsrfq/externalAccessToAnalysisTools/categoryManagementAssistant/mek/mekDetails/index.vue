@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-12-21 15:41:28
+ * @LastEditTime: 2021-12-30 10:54:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -595,7 +595,7 @@ export default {
         this.categoryId = data.categoryId;
         this.categoryName = data.categoryName;
         this.exceptPart = data.exceptPart;
-        this.targetMotor = data.targetMotor || data.targetMotor.toString();
+        this.targetMotor = data.targetMotor.toString();
         this.comparedType = data.comparedType;
         this.isBindingRfq = data.isBindingRfq;
         this.checkedCarLevelOptions = data.selectedOptions
