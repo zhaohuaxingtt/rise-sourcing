@@ -8,10 +8,9 @@ const openProcess = process.env.NODE_ENV == 'dev'
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
   inserted: function(el, binding, vnode) {
-    return // 权限重新初始化，近期请勿打开该功能
-
+    return //权限初始化勾选中，切勿打开
     //如果是个变量则使用变量，否则当做字符串处理
-    // const value = binding.value ? binding.value : binding.expression
+    const value = binding.value ? binding.value : binding.expression
     // dynamic、auto共用时处理
     if (binding.modifiers.dynamic && binding.modifiers.auto) {
       binding.modifiers.dynamic = false
@@ -27,7 +26,7 @@ Vue.directive('permission', {
         !store.state.permission.whiteBtnList[value] &&
         businessPermission(value, router.currentRoute.query)
       ) {
-        el.parentNode.removeChild(el)
+        if (openProcess) el.parentNode.removeChild(el)
       }
     } else if (binding.modifiers.auto) {
       // eslint-disable-next-line no-debugger
@@ -39,7 +38,7 @@ Vue.directive('permission', {
         if (openProcess) el.parentNode.removeChild(el)
       } else {
         if (businessPermission(splitValue[0], router.currentRoute.query)) {
-          el.parentNode.removeChild(el)
+          if (openProcess) el.parentNode.removeChild(el)
         }
       }
       // force permission
@@ -47,7 +46,7 @@ Vue.directive('permission', {
         binding.modifiers.force &&
         !store.state.permission.whiteBtnList[splitValue[0]]
       ) {
-        el.parentNode.removeChild(el)
+        if (openProcess) el.parentNode.removeChild(el)
       }
     } else {
       //remove
@@ -55,7 +54,7 @@ Vue.directive('permission', {
         if (openProcess) el.parentNode.removeChild(el)
       } else {
         if (businessPermission(value, router.currentRoute.query)) {
-          el.parentNode.removeChild(el)
+          if (openProcess) el.parentNode.removeChild(el)
         }
       }
     }
