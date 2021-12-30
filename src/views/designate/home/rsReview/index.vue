@@ -75,6 +75,7 @@
           <!-- 取消MTZ绑定 -->
           <iButton
             @click="ttss"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_QUXIAOMTZBANGDING|取消MTZ绑定"
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
