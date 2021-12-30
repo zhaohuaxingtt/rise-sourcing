@@ -200,12 +200,13 @@ export default {
      return Big(val).div(this.beishu).toNumber()
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit )
     },
     handleSearchReset() {
       let param = { biddingId: this.id, supplierCode: this.supplierCode };

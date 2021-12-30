@@ -209,11 +209,11 @@ export default {
 
     //  下载清单
     downloadList(){
-      if(!this.selectTableList.length){
-        return iMessage.warn(this.$t('LK_QINGXUANZHE'))
-      }
-
-      excelExport(this.selectTableList, this.bmTableHead, 'BM申请单');
+      console.log(this.selectTableList, this.aekoBmTableHead, '1212')
+      // if(!this.selectTableList.length){
+      //   return iMessage.warn(this.$t('LK_QINGXUANZHE'))
+      // }
+      excelExport(this.selectTableList, this.aekoBmTableHead, 'BM申请单');
     },
 
     handleSelectionChange(val){

@@ -500,8 +500,40 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
-        this.rules = baseRules(this);
       },
+    },
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'biddingQuoteRule.limitValue',
+          //   'biddingQuoteRule.quotationScope',
+          //   'biddingQuoteRule.quotedValue',
+          //   'biddingQuoteRule.alertPercentage',
+          //   'biddingQuoteRule.firstOfferLimit',
+          //   'biddingQuoteRule.conRankLimit',
+          //   'biddingQuoteRule.rankRule',
+          //   'biddingQuoteRule.greenLightFrom',
+          //   'biddingQuoteRule.greenLightTo',
+          //   'biddingQuoteRule.yellowLightFrom',
+          //   'biddingQuoteRule.yellowLightTo',
+          //   'biddingQuoteRule.redLightFrom',
+          //   'biddingQuoteRule.redLightTo',
+          //   'biddingQuoteRule.greenDeviationValue',
+          //   'biddingQuoteRule.yellowDeviationValue',
+          //   'biddingQuoteRule.rankDisplayLimit',
+          //   'biddingQuoteRule.priceLimit',
+          //   'biddingQuoteRule.rankLimit',
+          // ])
+        })
+      }
     },
     ruleForm(val) {
       this.$emit("input", val);
@@ -600,7 +632,7 @@ export default {
   },
   data() {
     return {
-      rules: baseRules(this),
+      rules: [],
       ruleForm: {},
 
       priceDiffLimitSelectList,
@@ -608,6 +640,11 @@ export default {
       actualValueData:'',
       isInputFlag:false
     };
+  },
+  mounted(){
+    this.$nextTick(() => {
+      this.rules = baseRules(this.ruleForm, this)
+    });
   },
   computed: {
     limitValueValue(){

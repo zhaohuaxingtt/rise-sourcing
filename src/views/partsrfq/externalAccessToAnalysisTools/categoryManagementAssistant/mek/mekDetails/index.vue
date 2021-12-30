@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-12-30 10:54:34
+ * @LastEditTime: 2021-12-30 20:05:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -391,6 +391,7 @@ import carLevelSelect from "../components/carLevelSelect"
 import {
   getMekTable,
   getHistogram,
+  mekInnerTarget,
   category,
   getComparedMotor,
   getTargetMotor,
@@ -558,16 +559,29 @@ export default {
     if (this.entryStatus === 1) {
       params.isBindingRfq = true;
       params.rfq = this.rfqId;
+      let entryParams = _.cloneDeep(params)
+      entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+      mekInnerTarget(entryParams).then(res => {
+        this.firstBarData = res.data[0];
+      })
+      params.info = params.info.filter(item => item.isTargetMotor === false)
+      this.$nextTick(() => {
+        if (this.categoryId && this.chemeId && this.categoryCode) {
+          params.isBindingRfq = this.isBindingRfq
+          this.getHistogram(params);
+        }
+      })
     } else {
       params.isBindingRfq = false;
+      this.onDataLoading = false
+      this.$nextTick(() => {
+        if (this.categoryId && this.chemeId && this.categoryCode) {
+          params.isBindingRfq = this.isBindingRfq
+          this.getHistogram(params);
+        }
+      })
     }
-    this.onDataLoading = false
-    this.$nextTick(() => {
-      if (this.categoryId && this.chemeId && this.categoryCode) {
-        params.isBindingRfq = this.isBindingRfq
-        this.getHistogram(params);
-      }
-    })
+
     // this.getMekTable();
   },
   mounted () { },
@@ -1276,10 +1290,11 @@ export default {
               first += "0";
             }
             this.maxData = first;
-            this.firstBarData = data[0];
-            data.shift();
+            if (this.entryStatus !== 1) {
+              this.firstBarData = data[0];
+              data.shift();
+            }
             this.barData = data;
-
             this.carLevelOptions = {};
             this.barData.forEach((item) => {
               item.checkList = [];
