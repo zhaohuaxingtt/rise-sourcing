@@ -375,7 +375,11 @@ export default {
               const supplier = (suppDataList && suppDataList.find(o => o.supplierName == suppName)) || {}
               const recommendSupplier = (o.recommendBdlInfoList && o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName)) || {}
               o.TTo.push(supplier.tto || 0)
-              o.percentCalc[index] = Number(recommendSupplier.share).toFixed(0) || 0
+              // o.percentCalc[index] = Number(recommendSupplier.share).toFixed(0) || 0
+              o.percentCalc.push({
+                key: suppName,
+                value: Number(recommendSupplier.share).toFixed(0) || 0
+              })
               // 提取供应商英文
               const supplierObj = suppDataList.find(o => o.supplierName === suppName) || {}
               !this.supplierListEN[index] && (this.supplierListEN[index] = supplierObj.supplierNameEn || '')
