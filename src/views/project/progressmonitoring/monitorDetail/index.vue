@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 14:59:20
+ * @LastEditTime: 2021-12-30 10:32:39
  * @Description: 监控明细
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -149,9 +149,9 @@ export default {
     handleSure() {
       this.searchParams = {
         ...this.searchParams,
-        projectRisk: this.searchParams.partStatus == 7 ? '' : this.searchParams.projectRisk,
-        projectProc: this.searchParams.partStatus == 7 ? this.searchParams.projectProc : '',
-        partProc: this.searchParams.partStatus == 7 && this.searchParams.partStatus == 1 ? '' : this.searchParams.partProc
+        projectRisk: this.searchParams.partStatus == 9 ? '' : this.searchParams.projectRisk,
+        projectProc: this.searchParams.partStatus == 9 ? this.searchParams.projectProc : '',
+        partProc: this.searchParams.partStatus == 9 && this.searchParams.partStatus == 1 ? '' : this.searchParams.partProc
       }
       this.partStatus = this.searchParams.partStatus
       this.loading = true
