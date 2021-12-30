@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-06 14:11:57
+ * @LastEditTime: 2021-12-30 14:48:44
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\index.vue
 -->
 <template>
   <iPage class="projectoverview">
     <projectTop :subNavList="subMenu" v-if="!withoutTop" :navList="navList" />
-    <carProNameTop v-else />
+    <carProNameTop v-else @handleCollapse="handleCollapse" />
     <router-view></router-view>
   </iPage>
   
@@ -28,7 +28,11 @@ export default {
   data() {
     return {
       // subMenu: MENU,
+      collapseValue: true
     }
+  },
+  provide(){
+    return {vm:this}
   },
   computed: {
     withoutTop() {
@@ -44,6 +48,11 @@ export default {
       // }
       // eslint-disable-next-line no-undef
       return _.cloneDeep(TAB)
+    }
+  },
+  methods: {
+    handleCollapse(collapseValue) {
+      this.collapseValue = collapseValue
     }
   }
 }

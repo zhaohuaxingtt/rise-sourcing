@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:02:20
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-08 09:58:02
+ * @LastEditTime: 2021-12-30 14:44:20
  * @Description: 
  * @FilePath: \front-sourcing\src\router\modules\project.js
  */
@@ -164,7 +164,8 @@ export default [
             meta: {
               title: "项目管理-监控明细",
               withoutTop: true,
-              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT']
+              activeMenu: ['RISE_WORKBENCH', '/PROJECTMGT'],
+              collapse: true
             },
             component: () => import("@/views/project/progressmonitoring/monitorDetail")
           },
