@@ -7,7 +7,7 @@
   <iPage class="partsItemConfig">
       <iCard title="零件采购项目类型配置">
           <template v-slot:header-control>
-              <iButton @click="save()" :loading="saveLoading">保存</iButton>
+              <iButton @click="save()" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
           </template>
           <!-- 表单区域 -->
           <el-table
