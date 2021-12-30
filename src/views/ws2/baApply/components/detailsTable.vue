@@ -132,8 +132,11 @@ export default {
       }
     },
 
-    downloadExport(){
-      downloadExport(this.selectTableData).then(res => {
+    downloadExport(amount){
+      downloadExport({
+        aekoAmount: amount,
+        body: this.selectTableData
+      }).then(res => {
         
       })
     },
@@ -149,7 +152,8 @@ export default {
         if(res.data){
           iMessage.success(result);
           this.visible = false;
-          this.downloadExport();
+          const l = res.data.listDate[0].length - 1;
+          this.downloadExport(res.data.listDate[0][l].amount);
           this.$emit('handelConfirmSuccess');
         }else{
           iMessage.error(result);
