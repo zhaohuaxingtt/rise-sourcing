@@ -169,7 +169,7 @@ export default {
   },
   data() {
     return {
-      rules: baseHeRules(this.ruleForm, this),
+      rules: [],
       isInputFlag:false,
       highestOfferValue:'',
       amplitudeValueData:'',
@@ -177,6 +177,11 @@ export default {
         biddingQuoteRule: {},
       },
     };
+  },
+  mounted(){
+    this.$nextTick(() => {
+      this.rules = baseHeRules(this.ruleForm, this)
+    })
   },
   methods: {
     handlerInputBlur(){

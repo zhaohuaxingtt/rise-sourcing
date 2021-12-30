@@ -537,7 +537,7 @@ export default {
       factoryPricePercentFlag: true,
       totalPriceFlag: false,
       tableLoading: false,
-      rules: baseRules(this),
+      rules: [],
       ruleForm: {
         beginMonth: "",
         modelProjects: [],
@@ -605,7 +605,9 @@ export default {
   },
   mounted() {
     this.handleSearchReset();
-    
+    this.$nextTick(() => {
+      this.rules = baseRules(this)
+    })
     // getModels().then((res) => {
     //   this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
     // });

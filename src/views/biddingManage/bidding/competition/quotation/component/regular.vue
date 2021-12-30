@@ -632,7 +632,7 @@ export default {
   },
   data() {
     return {
-      rules: baseRules(this.ruleForm,this),
+      rules: [],
       ruleForm: {},
 
       priceDiffLimitSelectList,
@@ -640,6 +640,11 @@ export default {
       actualValueData:'',
       isInputFlag:false
     };
+  },
+  mounted(){
+    this.$nextTick(() => {
+      this.rules = baseRules(this.ruleForm, this)
+    });
   },
   computed: {
     limitValueValue(){
