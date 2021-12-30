@@ -71,7 +71,7 @@ import {
     iCard,
     iButton,
 } from 'rise'
-import { TAB } from '@/views/financialTargetPrice/components/data'
+import { TAB } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "./components/data"
 import addRulesDialog from './components/addRulesDialog'
