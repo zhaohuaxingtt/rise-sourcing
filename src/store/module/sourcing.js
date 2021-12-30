@@ -123,6 +123,7 @@ const state = {
       permissionName: '寻源执行-定点信/LOI'
     },
   ],
+
   sourceinquirypointNavListLeft: [ //sourcing 三级菜单列表
     // {
     //   value: 1,
@@ -201,7 +202,6 @@ const state = {
       group: 6
     }
   ],
-
   sourceinquirypointThirdMenu: [ //sourcing 4级菜单列表
     {
       name: "概览",
@@ -298,7 +298,7 @@ const state = {
       message: 0,
       url: "/sourceinquirypoint/sourcing/partsrfq",
       activePath: "partsrfq",
-      key: "RFQ",
+      key: "RFQUPPERCASE",
       permissionKey: 'SOURCEINQUIRYPOINT_MENU_RFQMANAGE_SUBMENU_RFQ',
       permissionName: 'RFQ',
       group: 4

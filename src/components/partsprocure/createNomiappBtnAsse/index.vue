@@ -7,7 +7,7 @@
  * @FilePath: \front-sourcing\src\components\partsprocure\createNomiappBtnAsse\index.vue
 -->
 <template>
-<div class="inline margin-left10 margin-right10 ssS" v-permission.auto="PARTSPROCURE_SHENGCHENGDINGDSQ_ACC|总成件-生成定点申请按钮">
+<div class="inline margin-left10 margin-right10 ssS">
     <iButton :loading='loadind' @click="created">{{language('SHENGCDINGIDANSHENGQACC','生成定点申请单')}}</iButton>
     <iDialog :visible.sync="diologShow" :title="language('ZONGCHNEGGONGYS','总成供应商')" width='70%' style="margin-bottom:40px;" append-to-body>
       <div class="top">

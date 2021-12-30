@@ -6,7 +6,7 @@
 <template>
   <iPage class="letterAndLoi" v-permission.auto="LK_LETTERANDLOI_PAGE|定点信/LOI页面">
     <headerNav :type="sourceinquirypoint" />
-    <loiList class="margin-top30" v-permission.auto="LK_LETTERANDLOI_LOI_PAGE|LOI页面" />
+    <loiList class="margin-top30" />
   </iPage>
 </template>
 
