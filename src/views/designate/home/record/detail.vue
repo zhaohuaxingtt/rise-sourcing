@@ -32,6 +32,7 @@
         v-loading="tableLoading"
         :selection="false"
         @openPage="openPage"
+        v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_DETAIL_TABLE|定点记录详情-表格"
         >
 
         <template #ltc="scope">
