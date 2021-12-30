@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -239,6 +239,7 @@ export default {
         this.parmarsHasRfq['size'] = this.page.pageSize
         this.parmarsHasRfq['current'] = this.page.currPage
         this.parmarsHasRfq['rfqId'] = this.rfqId || ''
+        this.parmarsHasRfq['status'] = ''
         return getTabelData(this.parmarsHasRfq).then(res => {
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
