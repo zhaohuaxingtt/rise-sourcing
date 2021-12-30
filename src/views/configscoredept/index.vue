@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-11-25 15:46:38
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-30 15:16:24
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
 -->
