@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-27 11:32:53
+ * @LastEditTime: 2021-12-30 11:06:03
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -29,7 +29,7 @@
           </el-checkbox> 
           <icon v-if="partStatus != 9" @click.native="openChangeLight(pro)" class="productItem-top-icon cursor" symbol name="iconbianji"></icon>
           <template>
-            <icon class="productItem-top-icon2" v-if="(pro.partStatus == 9  && pro.projectProc == 2) || (pro.partStatus != 7  && pro.projectRisk == '3')" symbol name="iconzhuangtai_hong"></icon>
+            <icon class="productItem-top-icon2" v-if="(pro.partStatus == 9  && pro.projectProc == 2) || (pro.partStatus != 9  && pro.projectRisk == '3')" symbol name="iconzhuangtai_hong"></icon>
             <icon class="productItem-top-icon2" v-else-if="pro.partStatus != 9 && pro['projectRisk'] == '2'" symbol name="iconzhuangtai_huang"></icon>
             <icon class="productItem-top-icon2" v-else-if="pro[pro.partStatus == 9 ? 'projectProc' :'projectRisk'] == '1'" symbol name="iconzhuangtai_lv"></icon>
           </template>
@@ -57,13 +57,13 @@
                   <!-- <p v-if="pro[item.delayReason2]">{{pro[item.delayReason2] || ''}}</p> -->
                 </template>
                 <!------------------------------节点图标----------------------------------->
-                <template v-if="Number(pro.partStatus) > item.partPeriod" slot="reference">
+                <template v-if="Number(pro.partStatusTemp) > item.partPeriod" slot="reference">
                   <icon v-if="pro[item.delayWeeks] < 1 " symbol name="iconjindu_yiwancheng_lv" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] < 3 " symbol name="iconjindu_yiwancheng_huang" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] < 5 " symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] > 4" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
                 </template>
-                <template v-else-if="item.partPeriod == 4 ? [4,3].includes(Number(pro.partStatus)) : Number(pro.partStatus) == item.partPeriod" slot="reference">
+                <template v-else-if="item.partPeriod == 4 ? [4,3].includes(Number(pro.partStatusTemp)) : Number(pro.partStatusTemp) == item.partPeriod" slot="reference">
                   <icon v-if="item.key === 'SHIFANG' || pro[item.delayWeeks] < 1  " symbol name="iconjindu_jinhangzhong_lv" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] < 3 " symbol name="iconjindu_jinhangzhong_huang" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] < 5 " symbol name="iconjindu_jinhangzhong_hong" class="step-icon  click-icon"></icon>
@@ -102,10 +102,10 @@
               </div>
             </div>
             <div class="productItem-bottom-stepBetween" v-if="index < nodeList.length - 1">
-              <template v-if="Number(pro.partStatus) > nodeList[index + 1].partPeriod" >
+              <template v-if="Number(pro.partStatusTemp) > nodeList[index + 1].partPeriod" >
                 <span v-html="svgList['iconliuchengjiedianyiwancheng1']" class="step-between-icon margin-top45"></span>
               </template>
-              <template v-else-if="nodeList[index + 1].partPeriod == 4 ? [4,3].includes(Number(pro.partStatus)) : Number(pro.partStatus) == nodeList[index + 1].partPeriod" >
+              <template v-else-if="nodeList[index + 1].partPeriod == 4 ? [4,3].includes(Number(pro.partStatusTemp)) : Number(pro.partStatusTemp) == nodeList[index + 1].partPeriod" >
                 <span v-html="svgList['iconliuchengjiedianjinhangzhong1']" class="step-between-icon margin-top45"></span>
               </template>
               <template v-else>
@@ -189,7 +189,8 @@ export default {
           emDelayWeeks,
           otsDelayWeeks,
           emOtsDelayWeeks: partStatus > 5 ? Math.max(emDelayWeeks,otsDelayWeeks): 0,
-          checked: this.selectPart.some(sitem => sitem.id == item.id)
+          checked: this.selectPart.some(sitem => sitem.id == item.id),
+          partStatusTemp: partStatus == 7 ? 8 : partStatus == 8 ? 7 : partStatus
         }
       }) : []
     }

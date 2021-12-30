@@ -35,9 +35,9 @@
 			<div class="floatright">
 				<span v-if="!disabled">
 					<!-- 供应商创建定点申请单 -->
-					<createNomiappBtn :datalist='[detailData]'></createNomiappBtn>
+					<createNomiappBtn v-permission.auto="PARTSPROCURE_EDITORDETAIL_CREATENOMIAPPLICATION|生成定点申请单" :datalist='[detailData]'></createNomiappBtn>
 					<!-------------------零件总成件的自动生成定点申请单--------------------->
-					<createNomiappBtnAccs v-if='createdNomiappAsscShow'></createNomiappBtnAccs>
+					<createNomiappBtnAccs v-permission.auto="PARTSPROCURE_EDITORDETAIL_ZC_CREATENOMIAPPLICATION|总成件-生成定点申请按钮" v-if='createdNomiappAsscShow'></createNomiappBtnAccs>
 					<!-------------------------------------------------------------------------------->
 					<!---维护现供供应商逻辑：1，只有当零件采购项目类型为[GS零件]或[GS common sourcing]时才---->
 					<!---出现此按钮。------------------------------------------------------------------->
@@ -283,8 +283,7 @@
 							<iSelect v-model="detailData.isCommonSourcing"
 								v-if="!disabled"
 								:disabled='canSelectCommonSourcing'
-								@change="changeCommonSourcing"
-								v-permission.auto="PARTSPROCURE_EDITORDETAIL_COMMONSOURCING|fs_commonsourcing">
+								@change="changeCommonSourcing">
 								<el-option :value="true" label="是"></el-option>
 								<el-option :value="false" label="否"></el-option>
 							</iSelect>
@@ -337,7 +336,7 @@
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_ISDBPAYCLAUSE|DB零件的支付条款" v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
-							<iSelect v-model="detailData.payClause" v-if="!disabled" v-permission.auto="PARTSPROCURE_EDITORDETAIL_PAYMENTSTRATEGY|支付条款">
+							<iSelect v-model="detailData.payClause" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
 								</el-option>

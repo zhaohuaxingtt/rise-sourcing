@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-29 16:49:26
+ * @LastEditTime: 2021-12-30 17:12:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -20,58 +20,50 @@
                  @change="changeRouter"></iNavMvp>
       </div>
       <div class="btnList">
-      <iButton 
-      v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus !== 1"
-      @click="waitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
-      <iButton  
-       v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus === 1"
-     @click="cancelWaitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN||取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton>
-        <iButton
-          v-if="baseInfo.starMonitorStatus !== 1"
-         @click="handleApplyModuleTargetPrice"
+      <!-- <iButton v-if="isCommonSourcing" @click="waitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
+        <iButton  v-if="isCommonSourcing" @click="cancelWaitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN||取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton> -->
+     <iButton v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN|等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
+        <iButton @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
-                 v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE | 申请模具目标价">
+                 v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
           {{ language('SHENQINGMOJUMUBIAOJIA', '申请模具目标价') }}
         </iButton>
         <iButton v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && baseInfo.partProjectType[0] === partProjTypes.PEIJIAN && baseInfo.starMonitorStatus !== 1"
                  :loading="endEngotiationlaoding"
                  @click="updateRfqStatus('07')"
-                 v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDNEGOTIATION | 谈判完成">
+                 v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDNEGOTIATION|谈判完成">
           {{ language('TANPANWANCHENG', '谈判完成') }}
         </iButton>
         <span v-if="!disabled && baseInfo.starMonitorStatus !== 1">
           <iButton @click="goToCesPage"
-                   v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWTESTPROG | 新建测试项目">{{
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWTESTPROG|新建测试项目">{{
             language('LK_XINGJIANCESHIXIANM', '新建测试项目')
           }}</iButton>
-          <iButton
-            v-if="baseInfo.starMonitorRef != 1 && baseInfo.starMonitorStatus !== 1"
-            :loading="newRfqOpenValidateLoading"
-            @click="newRfq"
-            v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND | 新建RFQ轮次">
+
+          <iButton :loading="newRfqOpenValidateLoading"
+                   @click="newRfq"
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND|新建RFQ轮次">
             {{ language('LK_XINJIANRFQLUNCI', '新建RFQ轮次') }}
           </iButton>
           <iButton 
             v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1"
             :loading="rfqloading"
                    @click="updateRfqStatus('06')"
-                   v-permission.auto="PARTSRFQ_EDITORDETAIL_SENDINQUIRY | 发出询价">{{ language('LK_FACHUXUNJIA', '发出询价') }}
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_SENDINQUIRY|发出询价">{{ language('LK_FACHUXUNJIA', '发出询价') }}
           </iButton>
-          <iButton 
-            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1" 
-            :loading="endingloading"
-            @click="updateRfqStatus('05')"
-            v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDQUOTATION | 结束本轮询价">
+          <iButton :loading="endingloading"
+                   @click="updateRfqStatus('05')"
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDQUOTATION|结束本轮询价">
             {{ language('LK_JIESHUBENLUNXUNJIA', '结束本轮询价') }}
           </iButton>
           <iButton 
             v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1"
             :loading="transferlaoding"
                    @click="updateRfqStatus('03')"
-                   v-permission.auto="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION | 转谈判">
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION|转谈判">
             {{ language('LK_ZHUANTANPAN', '转谈判') }}
           </iButton>
-          <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION | 创建定点申请"
+          <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION|创建定点申请"
                    :loading="createDesignateLoading"
                    @click="createDesignate">
             {{ language('LK_CHUANGJIANDINGDIANSHENQING', '创建定点申请') }}
@@ -90,8 +82,7 @@
                 isPage
                 class="margin-left10"
                 optionDicKey="LOG_OPERATION_TYPES"
-                optionDicKey2="RFQ详情页"
-                v-permission.auto="PARTSRFQ_EDITORDETAIL_LOG | 日志" />
+                optionDicKey2="RFQ详情页" />
         <span>
           <icon symbol
                 name="icondatabaseweixuanzhong"></icon>
@@ -110,12 +101,12 @@
                   :rules="rules">
         <div class="row">
           <div class="col">
-            <iFormItem v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNUMBER | RFQ编号"
+            <iFormItem v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNUMBER|RFQ编号"
                        :label="language('LK_RFQBIANHAO', 'RFQ编号') + ':'"
                        name="id">
               <iText>{{ baseInfo.id }}</iText>
             </iFormItem>
-            <iFormItem v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNAME | RFQ名称"
+            <iFormItem v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNAME|RFQ名称"
                        :label="language('LK_RFQMINGCHENG', 'RFQ名称') + ':'"
                        name="rfqName">
               <iInput v-if="editStatus"
@@ -126,7 +117,7 @@
             </iFormItem>
             <iFormItem :label="language('LK_EP', '技术评分人') + ':'"
                        name="ep"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_EP | 技术评分人">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_EP|技术评分人">
               <iText forceTooltip
                      :tooltipContent="baseInfo.ep">{{ nameProcessor(baseInfo.ep) }}</iText>
             </iFormItem>
@@ -138,35 +129,35 @@
 
             <iFormItem :label="language('LK_BENLUNBAOJIAJIEZHISHIJIAN', '本轮报价截止时间') + ':'"
                        name="currentRoundsEndTime"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS | 本轮报价截止时间">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS|本轮报价截止时间">
               <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
             </iFormItem>
           </div>
           <div class="col">
             <iFormItem :label="language('LK_RFQZHUANGTAI', 'RFQ状态') + ':'"
                        name="statusName"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQSTATUS | RFQ状态">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQSTATUS|RFQ状态">
               <iText>{{ baseInfo.statusName }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_XUNJIACAIGOUYUAN', '询价采购员') + ':'"
                        name="buyerName"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER | 询价采购员">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER|询价采购员">
               <iText>{{ baseInfo.buyerName }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_MQ', '质量评分人') + ':'"
                        name="mq"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_MQ | 质量评分人">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_MQ|质量评分人">
               <iText forceTooltip
                      :tooltipContent="baseInfo.mq">{{ nameProcessor(baseInfo.mq) }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_DANGQIANLUNCI', '当前轮次') + ':'"
                        name="currentRounds"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTROUND | 当前轮次">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTROUND|当前轮次">
               <iText>{{ baseInfo.currentRounds }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_LUNCILEIXING', '轮次类型') + ':'"
                        name="roundsTypeName"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_ROUNDTYPE | 轮次类型">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_ROUNDTYPE|轮次类型">
               <iText>
                 {{ baseInfo.roundsTypeName }}
               </iText>
@@ -175,32 +166,32 @@
           <div class="col">
             <iFormItem :label="language('LK_CHUANGJIANRIQI', '创建日期') + ':'"
                        name="createDate"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATIONDATE | 创建日期">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATIONDATE|创建日期">
               <iText>
                 {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
               </iText>
             </iFormItem>
             <iFormItem label="LINIE："
                        name="linieNameZh"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_LINE | LINIE">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_LINE|LINIE">
               <iText>{{ baseInfo.linieNameZh }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_PL', '物流审核人') + ':'"
                        name="test"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_PL | 物流审核人">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_PL|物流审核人">
               <!-- <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission.auto="PARTSRFQ_EDITORDETAIL_PL"></iInput> -->
               <iText forceTooltip
                      :tooltipContent="baseInfo.pl">{{ nameProcessor(baseInfo.pl) }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_BENLUNZHUANGTAI', '本轮状态') + ':'"
                        name="test"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTSTATE | 本轮状态">
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTSTATE|本轮状态">
               <iText>{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
               <i-button v-if="!disabled"
                         @click="edit"
-                        v-permission.auto="PARTSRFQ_EDITORDETAIL_SAVE | (编辑 / 保存)">{{ !editStatus ? language('LK_BIANJI', '编辑') : language('LK_BAOCUN', '保存') }}
+                        v-permission.auto="PARTSRFQ_EDITORDETAIL_SAVE|(编辑 / 保存)">{{ !editStatus ? language('LK_BIANJI', '编辑') : language('LK_BAOCUN', '保存') }}
               </i-button>
             </div>
           </div>
@@ -216,8 +207,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------RFQ详情信息---------------------------->
     <!--------------------------------------------------------------->
-    <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus"
-                     v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_CARD | RFQ详情信息"></rfq-detail-info>
+    <rfq-detail-info v-if="navActivtyValue === '1' && tabShowStatus"></rfq-detail-info>
     <!--------------------------------------------------------------->
     <!-------------------------报价助手------------------------------->
     <!--------------------------------------------------------------->

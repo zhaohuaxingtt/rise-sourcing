@@ -8,20 +8,20 @@
 -->
 
 <template>
-  <iCard class="desinate-detail">
+  <iCard class="desinate-detail" v-permission.auto="SOURCING_NOMINATION_DETAIL|定点申请详情页面">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language( 'DINGDIANSHENGQINGXINAGQING', '定点申请详情' ) }}</span>
-      <div class="floatright" v-if="nominationData && nominationData.applicationStatus === 'NEW'">
-        <iButton :loading="isLoading" @click="updateNominate()">{{
+      <div class="floatright" >
+        <iButton :loading="isLoading" @click="updateNominate()" v-permission.auto="SOURCING_NOMINATION_DETAIL_BAOCUN|定点申请详情页面-保存">{{
           language("LK_BAOCUN", "保存")
         }}</iButton>
-        <iButton @click="reset()" style="margin-left:15px">{{
+        <iButton @click="reset()" style="margin-left:15px" v-permission.auto="SOURCING_NOMINATION_DETAIL_QUXIAO|定点申请详情页面-取消">{{
           language("LK_QUXIAO", "取 消")
         }}</iButton>
       </div>
     </div>
-    <div class="body">
-      <el-form class="desinate-detail-rows" label-width="104px">
+    <div class="body" v-permission.auto="SOURCING_NOMINATION_DETAIL_BIAODAN|定点申请详情页面-表单">
+      <el-form class="desinate-detail-rows" label-width="104px" >
         <el-row>
           <el-col :span="!(index%3) ? 12 : 6" v-for="(item, index) in titleData" :key="index">
             <el-form-item :label="language(item.key,item.label)">

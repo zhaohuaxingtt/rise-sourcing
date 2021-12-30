@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
- * @LastEditors:  
- * @LastEditTime: 2021-11-11 17:20:06
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-28 17:31:58
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
  */
@@ -56,6 +56,6 @@ export const searchList = [
   {value: 'approveStats', label: '审批状态', type: 'selectDict', i18n_label: 'SHENPIZHUANGTAI',selectOption: 'CF_APPROVE_STATUS',permission: 'FINANCIALTARGETPRICE_QUERY_APPROVESTATS|财务目标价管理-目标价查询-审批状态'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO',permission: 'FINANCIALTARGETPRICE_QUERY_CARPROJECT|财务目标价管理-目标价查询-车型项目'},
   {value: 'assignStats', label: '指派状态', type: 'selectDict', i18n_label: 'ZHIPAIZHUANGTAI',selectOption: 'CF_ASSIGN_START',permission: 'FINANCIALTARGETPRICE_QUERY_ASSIGNSTATS|财务目标价管理-目标价查询-指派状态'},
-  {value: 'showSelf', label: '显示自己', type: 'select', i18n_label: 'XIANSHIZHIJI', selectOption: 'IS_SHOW_SELF',permission: 'FINANCIALTARGETPRICE_QUERY_SHOWSELF|财务目标价管理-目标价查询-指派状态'}
+  {value: 'showSelf', label: '显示自己', type: 'select', i18n_label: 'XIANSHIZHIJI', selectOption: 'IS_SHOW_SELF',permission: 'FINANCIALTARGETPRICE_QUERY_SHOWSELF|显示自己'}
 
 ]

@@ -22,7 +22,8 @@ export default {
   data() {
     return {
       list: TAB,
-      tab: ''
+      tab: '',
+      heaederSubMenu
     }
   },
   computed: {

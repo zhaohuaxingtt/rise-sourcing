@@ -73,6 +73,7 @@ export default {
     }
   },
   created() {
+      window.sessionStorage.setItem('entryStatus', 1);
       this.$store.dispatch('setRfqId',  this.$route.query.id);
     if (this.$route.query.activityTabIndex) {
       this.activityTabIndex = this.$route.query.activityTabIndex
