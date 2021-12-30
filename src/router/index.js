@@ -36,7 +36,7 @@ export const staticRouter = [
 		path: '/',
 		name: 'index',
 		component: () => import('@/layout/default'),
-		redirect: '/sourceinquirypoint',
+		redirect: '/sourcing/dashboard',
 		children: [
 			{
 				path: '/index',

@@ -14,7 +14,7 @@
         <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
       </span>
     </div> -->
-    <iCard class="card margin-top40"
+    <iCard class="card"
            :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
       <template v-slot:header-control>
         <el-upload class="uploadButton"
