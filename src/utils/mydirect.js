@@ -9,9 +9,12 @@ const openProcess = process.env.NODE_ENV == 'dev' ||  process.env.NODE_ENV == 's
 Vue.directive('permission', {
   inserted: function(el, binding, vnode) {
     const value = binding.value ? binding.value : binding.expression
+    console.log(value)
     const splitValue = value.split('|')
     store.dispatch('uploadResource', splitValue)
-    if(!store.state.permission.whiteBtnList[value]){
+    if(store.state.permission.whiteBtnList[splitValue[0]]){
+      el.style.border = "1px solid green"
+    }else{
       el.style.border = "1px solid red"
     }
     return // 权限重新初始化，近期请勿打开该功能
