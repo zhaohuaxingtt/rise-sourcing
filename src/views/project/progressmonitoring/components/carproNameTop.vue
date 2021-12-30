@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:18:12
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 10:36:53
+ * @LastEditTime: 2021-12-30 14:47:26
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\carproNameTop.vue
 -->
@@ -42,10 +42,15 @@ export default {
   data() {
     return {
       // bizId: 'scheduleRecordId',
-      showDialog: false
+      showDialog: false,
+      collapseValue: true
     }
   },
   methods: {
+    handleCollapse() {
+      this.collapseValue = !this.collapseValue
+      this.$emit('handleCollapse', this.collapseValue)
+    },
     handleBack() {
       this.$router.go(-1)
     },
@@ -76,6 +81,23 @@ export default {
   }
   .log-icon {
     font-size: 20px;
+  }
+  .el-icon-arrow-up {
+    transition: all 0.5s;
+  }
+
+  .rotate {
+    transform: rotate(180deg);
+    color: $color-blue;
+  }
+
+  .collapse {
+    font-size: 20px;
+    color:#D3D3DB;
+
+    &:hover {
+      color:$color-blue;
+    }
   }
 }
 </style>
