@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-26 14:27:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-30 14:24:55
+ * @LastEditTime: 2021-12-30 17:40:12
  * @Description: 
  * @FilePath: \front-sourcing\src\router\modules\targetPriceAndScore\index.js
  */
@@ -11,7 +11,6 @@ import modeltargetpriceRoutes from "./modeltargetprice" // 模具目标价
 import supplierscoreRoutes from "./supplierscore" // 供应商评分
 import configscoredeptRoutes from "./configscoredept" // 设置评分部门
 import costanalysismanageRoutes from "./costanalysismanage" // KM成本分析
-import qualityscorerules from "./qualityscorerules" // 质量评分预设规则
 
 export default [
   {
@@ -25,7 +24,6 @@ export default [
       ...supplierscoreRoutes,
       ...configscoredeptRoutes,
       ...costanalysismanageRoutes,
-      ...qualityscorerules
     ]
   }
 ]

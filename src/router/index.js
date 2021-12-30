@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-12-30 10:29:41
+ * @LastEditTime: 2021-12-30 17:41:13
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-sourcing\src\router\index.js
@@ -24,6 +24,7 @@ import reportmanage from './modules/reportmanage'
 import sourceInquirypoint from './modules/sourceInquirypoint'
 import biddingRouter from './modules/biddingManage'
 import targetPriceAndScoreRoutes from './modules/targetPriceAndScore'
+import scoreConfig from './modules/scoreConfig'
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
 
@@ -396,6 +397,7 @@ const router = new VueRouter({
 		// bidding 相关
 		...biddingRouter,
 		...targetPriceAndScoreRoutes,
+		...scoreConfig,
 	],
 })
 
