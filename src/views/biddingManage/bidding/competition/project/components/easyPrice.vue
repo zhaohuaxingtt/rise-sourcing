@@ -431,7 +431,7 @@ export default {
     return {
       flag: false,
       tableLoading: false,
-      rules: baseRules(this),
+      rules: [],
       ruleForm: {
         beginMonth: "",
         modelProjects: [],
@@ -473,6 +473,9 @@ export default {
   },
   mounted() {
     this.updateRuleForm(this.initData);
+    this.$nextTick(() => {
+      this.rules = baseRules(this)
+    })
     getModels().then((res) => {
       this.modelsOption = res?.data.filter((item) => item.name?.length > 0);
     });

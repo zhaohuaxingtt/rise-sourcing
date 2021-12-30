@@ -110,10 +110,10 @@ export default {
       if (this.selectTableData.some(item => item.approvalStatus === "已提交" || item.approvalStatus === "submitted"))
         return iMessage.warn(this.language("QINGWUXUANZEYITIJIAODESHUJU", "请勿选择已提交的数据"))
 
-      this.selectTableData = this.selectTableData.map(item => {
-        item.approvalStatus = 'submitted'
-        return item
-      })
+      //this.selectTableData = this.selectTableData.map(item => {
+        //item.approvalStatus = 'submitted' //后台晓伟指出不转换
+        //return item
+      //})
       const req = this.selectTableData
       const res = await patchMouldBudget({
         updateType: 1,
@@ -131,10 +131,10 @@ export default {
       if (this.selectTableData.some(item => item.approvalStatus === "已撤销" || item.approvalStatus === "revoked"))
         return iMessage.warn(this.language("QINGWUXUANZEYICHEXIAODESHUJU", "请勿选择已撤销的数据"))
 
-      this.selectTableData = this.selectTableData.map(item => {
-        item.approvalStatus = 'revoked'
-        return item
-      })
+     // this.selectTableData = this.selectTableData.map(item => {
+        // item.approvalStatus = 'revoked' 晓伟说不用转换
+       // return item
+     // })
       const req = this.selectTableData
       const res = await patchMouldBudget({
         updateType: 0,
