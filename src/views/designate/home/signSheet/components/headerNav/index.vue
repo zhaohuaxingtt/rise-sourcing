@@ -121,7 +121,9 @@ export default {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           this.$refs.partDesignateOrders[0].getChooseData()
+          this.$refs.partDesignateOrders[0].getSignSheetDetails()
           this.$refs.MTZDesignateOrders[0].getTableData()
+          this.$refs.MTZDesignateOrders[0].getsignSheetDetails()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -143,7 +145,9 @@ export default {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           this.$refs.partDesignateOrders[0].getChooseData()
+          this.$refs.partDesignateOrders[0].getSignSheetDetails()
           this.$refs.MTZDesignateOrders[0].getTableData()
+          this.$refs.MTZDesignateOrders[0].getsignSheetDetails()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
