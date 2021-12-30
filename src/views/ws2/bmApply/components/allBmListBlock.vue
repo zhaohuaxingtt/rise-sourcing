@@ -24,7 +24,7 @@
 
           <!-- RS单号 -->
           <template #rsNum="scope">
-            <div  @click="openViewPdf(scope.row)" class="table-link">{{scope.row.rsNum}}</div>
+            <div  @click="openViewPdf(scope.row)" :class="scope.row.rsNum == 'AEKO RS单'?'':'table-link'">{{scope.row.rsNum}}</div>
           </template>
         </iTableList>
 
@@ -113,6 +113,9 @@ export default {
 
     //  预览RSpdf
     openViewPdf(scope){
+      if(scope.rsNum == 'AEKO RS单') {
+        return
+      }
       const first = scope.rsNum.slice(0,1);
       if(~~first === 5){
         let routeData = this.$router.resolve({
