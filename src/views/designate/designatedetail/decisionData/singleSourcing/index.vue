@@ -28,6 +28,7 @@
                     :tableData="tableListData"
                     :tableTitle="tableTitle"
                     :tableLoading="loading"
+                     v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_TABLE|决策资料-SingleSourcing-表格"
                 >
                     <template #suppliersName="scope">
                         <div>

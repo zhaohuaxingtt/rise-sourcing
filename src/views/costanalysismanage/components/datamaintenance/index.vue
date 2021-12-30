@@ -9,23 +9,23 @@
 <template>
   <iPage>
     <div class="headerNav">
-      <iNavMvp :lev="1" :list="list" :lang="true" routerPage class="nav" />
-      <div class="right-control">
-        <iNavMvp class="pull-right" :lang="true" right routerPage lev="2" :list="navList" />
-        <div class="control">
-          <iLoger
-          :config="{
-            module_obj_ae: '数据维护', 
-            menuName_obj_ae: ''
-          }"
-          isPage
-          credentials
-          class="margin-left20" />
-          <span class="margin-left20">
-            <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-          </span>
+      <headerNav type="costanalysismanage">
+        <div class="right-control">
+          <div class="control">
+            <iLoger
+            :config="{
+              module_obj_ae: '数据维护', 
+              menuName_obj_ae: ''
+            }"
+            isPage
+            credentials
+            class="margin-left20" />
+            <span class="margin-left20">
+              <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+            </span>
+          </div>
         </div>
-      </div>
+      </headerNav>
     </div>
     <router-view></router-view>
   </iPage>
@@ -33,6 +33,7 @@
 
 <script>
 import { iPage, iNavMvp, icon } from "rise";
+import headerNav from "@/components/headerNav"
 import { navList } from "./components/data";
 import { cloneDeep } from "lodash";
 import iLoger from 'rise/web/components/iLoger'
@@ -43,7 +44,8 @@ export default {
     iNavMvp,
     iPage,
     icon,
-    iLoger
+    iLoger,
+    headerNav
   },
   data() {
     return {
@@ -56,10 +58,14 @@ export default {
 
 <style lang="scss" scoped>
 .headerNav {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+
+  ::v-deep .headerNav-wraper {
+    width: 100%;
+  }
   .nav div {
     margin-left: 0;
   }

@@ -84,7 +84,7 @@ export default {
           index: '5',
           label: '询价管理',
           component: 'inquiryManagement',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TECHNICALSEMINAR_BASICINFORMATIONMEETING_INDEXPAGE|询价管理',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_INQUIRYMANAGEMENT_INDEXPAGE|询价管理',
           key: 'XUNJIAGUANLI'
         }
       ]

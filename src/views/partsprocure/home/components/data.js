@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-12-07 14:43:00
+ * @LastEditTime: 2021-12-23 16:18:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -187,5 +187,7 @@ export function getPlanyear(defaultNumberMax=15){
 	}
 	return batchMaintainTableTitle
 }
+
+
 
 
