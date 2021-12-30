@@ -9,25 +9,25 @@
 <template>
   <iPage class="supplierScore">
     <div class="header">
-      <iNavMvp :list="list" :lang="true" :lev="1" routerPage></iNavMvp>
-      <div class="right-control">
-        <iNavMvp class="nav" :lev="2" :list="navList" />
-        <div class="control">
-          <iLoger
-          :config="{
-            module_obj_ae: '评分任务', 
-            menuName_obj_ae: ''
-          }"
-          isPage
-          credentials
-          class="margin-left20"
-          optionDicKey="LOG_OPERATION_TYPES"
-          optionDicKey2="供应商评分任务详情"/>
-          <span class="margin-left20">
-            <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-          </span>
+      <headerNav class="headerNav" type="scoremanage">
+        <div class="right-control">
+          <div class="control">
+            <iLoger
+            :config="{
+              module_obj_ae: '评分任务', 
+              menuName_obj_ae: ''
+            }"
+            isPage
+            credentials
+            class="margin-left20"
+            optionDicKey="LOG_OPERATION_TYPES"
+            optionDicKey2="供应商评分任务详情"/>
+            <span class="margin-left20">
+              <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+            </span>
+          </div>
         </div>
-      </div>
+      </headerNav>
     </div>
     <iSearch
       class="margin-top25"
@@ -200,7 +200,8 @@
 </template>
 
 <script>
-import { iPage, iNavMvp, icon, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage } from "rise"
+import { iPage, icon, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage } from "rise"
+import headerNav from '@/components/headerNav'
 import iLoger from 'rise/web/components/iLoger'
 import forwardDialog from "@/views/supplierscore/components/forwardDialog"
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -216,7 +217,6 @@ import { TAB } from '@/views/financialTargetPrice/components/data'
 export default {
   components: {
     iPage,
-    iNavMvp,
     icon,
     iSearch, 
     iSelect, 
@@ -226,7 +226,8 @@ export default {
     iPagination,
     iLoger,
     forwardDialog,
-    tableList
+    tableList,
+    headerNav
   },
   mixins: [ filters, pageMixins ], 
   data() {
@@ -452,11 +453,15 @@ export default {
 <style lang="scss" scoped>
 .supplierScore {
   .header {
+    width: 100%;
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+
+    .headerNav {
+      width: 100%;
+    }
     .title {
       font-size: 20px;
       font-weight: bold;
