@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-10-28 16:53:38
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-17 13:04:53
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-31 09:47:39
  * @Description: mtz
  */
 
@@ -13,14 +13,14 @@ export const tableTitle = [
   { props: "supplierSapCode", name: "供应商编码", key: "GONGYINGSHANGBIANMA", tooltip: true },
   { props: "materialCode", name: "原材料牌号", key: "YUANCAILIAOPAIHAO", tooltip: true },
   { props: "material", name: "原材料", key: "YUANCHAOLIAO", tooltip: true },
-  { props: "price", name: "基价", key: "LK_JIJIA", tooltip: true },
-  { props: "priceCountUnit", name: "基价计量单位", key: "LK_JIJIAJILIANGDANWEI", tooltip: true },
+  // { props: "price", name: "基价", key: "LK_JIJIA", tooltip: true },  // 12-31 取消
+  // { props: "priceCountUnit", name: "基价计量单位", key: "LK_JIJIAJILIANGDANWEI", tooltip: true }, 12-31 取消
   { props: "originDosage", name: "原用量", key: "LK_YUANYONGLIANG", tooltip: true },
   { props: "dosageChange", name: "用量变化", key: "LK_YONGLIANGBIANHUA", tooltip: true, _headerRequiredRight: true},
   { props: "newDosage", name: "新用量", key: "LK_XINYONGLIANG", tooltip: true },
   { props: "dosageMeasureUnit", name: "用量计量单位", key: "LK_YONGLIANGJILIANGDANWEI", tooltip: true },
-  { props: "newStartDate", name: "有效期起", key: "LK_XINYOUXIAOQIQI", tooltip: true, _headerRequiredRight: true, width: 140 },
-  { props: "newEndDate", name: "有效期止", key: "LK_XINYOUXIAOQIZHI", tooltip: true, _headerRequiredRight: true, width: 140 },
+  // { props: "newStartDate", name: "有效期起", key: "LK_XINYOUXIAOQIQI", tooltip: true, _headerRequiredRight: true, width: 140 }, 12-31 取消
+  // { props: "newEndDate", name: "有效期止", key: "LK_XINYOUXIAOQIZHI", tooltip: true, _headerRequiredRight: true, width: 140 }, 12-31 取消
   { props: "priceSource", name: "市场价来源", key: "LK_SHICHANGJIALAIYUAN", tooltip: true },
   { props: "compensationRatio", name: "补差系数", key: "LK_BUCHAXISHU", tooltip: true },
   { props: "threshold", name: "阈值", key: "LK_YUZHI", tooltip: true },
