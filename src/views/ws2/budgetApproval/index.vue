@@ -103,8 +103,9 @@
           <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
         </template>
         <template #categoryBudget="scope">
-          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
+          <div class="linkStyle" v-if="+scope.row.isHideColumn === 1"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
           </div>
+          <div v-else>-</div>
         </template>
         <template #budgetApplyAmount="scope">
           <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span
@@ -112,7 +113,8 @@
           </div>
         </template>
         <template #budgetLeftoverAmount="scope">
-          <div>{{ getTousandNum(scope.row.budgetLeftoverAmount) }}</div>
+          <div v-if="+scope.row.isHideColumn === 1">{{ getTousandNum(scope.row.budgetLeftoverAmount) }}</div>
+          <div v-else>-</div>
         </template>
         <template #approvalStatus="scope">
           <div>
@@ -343,10 +345,12 @@ export default {
         iMessage.warn('请勾选未审批的项目')
         return
       }
-      if(this.multipleSelection.some(item => item.budgetApplyAmount > item.budgetLeftoverAmount)){
+      const isNext = this.multipleSelection.some(item => item.budgetApplyAmount > item.budgetLeftoverAmount);
+      const filterLenth = this.multipleSelection.filter(item => !['50002001','1000003','50003001'].includes(item.partPurchaseProType));
+      if(isNext && filterLenth.length != 0){
         let redMultipleSelection = []
         this.multipleSelection.map(item => {
-          if(item.budgetApplyAmount > item.budgetLeftoverAmount){
+          if(item.budgetApplyAmount > item.budgetLeftoverAmount && !['50002001','1000003','50003001'].includes(item.partPurchaseProType)){
             redMultipleSelection.push(item)
           }
         })

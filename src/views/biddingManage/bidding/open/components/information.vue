@@ -41,7 +41,7 @@
                 v-for="(item, index) in projectType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -87,7 +87,7 @@
                 v-for="(item, index) in isTax"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -141,7 +141,7 @@
                 v-for="(item, index) in resultOpenForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -240,8 +240,8 @@
               <div>
                 <iLabelML showTip class="form-item-rankShowRule-icon">
                   <div class="hover-text">
-                    <span>供应商对红绿灯名次区间/偏离比例的</span>
-                    <span class="hover-stick">具体定义不可见</span>
+                    <span>{{language('BIDDING_GYSDHLDMCQJ/PLBLD', '供应商对红绿灯名次区间/偏离比例的')}}</span>
+                    <span class="hover-stick">{{language('BIDDING_JTDYBKJ', '具体定义不可见')}}</span>
                     <span>。</span>
                   </div>
                 </iLabelML>
@@ -252,7 +252,7 @@
                   v-for="(item, index) in rankShowRule"
                   :key="index"
                   :value="item.value"
-                  :label="item.label"
+                  :label="language(item.key, item.label)"
                 >
                 </el-option>
               </iSelect>
@@ -470,8 +470,8 @@
             background
             :page-sizes="10"
             :page-size="10"
-            prev-text="上一页"
-            next-text="下一页"
+            :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+            :next-text="language('BIDDING_XIAYIYE','下一页')"
             layout="prev, pager, next, jumper"
             :current-page="page.currPage"
             :total="ruleForm.attachments.length"
@@ -593,6 +593,33 @@ export default {
     },
   },
   watch: {
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = infoRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate();
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'currencyUnit',
+          //   'isTax',
+          //   'resultOpenForm',
+          //   'quoteRule.greenLightFrom',
+          //   'quoteRule.greenLightTo',
+          //   'quoteRule.yellowLightFrom',
+          //   'quoteRule.yellowLightTo',
+          //   'quoteRule.redLightFrom',
+          //   'quoteRule.redLightTo',
+          //   'quoteRule.greenDeviationValue',
+          //   'quoteRule.targetPrice',
+          //   'quoteRule.yellowDeviationValue',
+          // ]);
+        })
+      }
+    },
     "ruleForm.quoteRule.greenLightTo"(val) {
       const { greenLightFrom } = this.ruleForm.quoteRule;
       if (!(greenLightFrom || 0 === greenLightFrom) && (val || 0 === val)) {
@@ -815,7 +842,7 @@ export default {
         if (valid) {
           this.$confirm(this.language('BIDDING_SFBCGBJXX',"是否保存该报价信息？"), this.language('BIDDING_TISHI',"提示"), {
             confirmButtonText: this.language('BIDDING_SHI',"是"),
-        cancelButtonText: this.language('BIDDING_FOU',"否"),
+            cancelButtonText: this.language('BIDDING_FOU',"否"),
             type: "warning",
           })
             .then(() => {
@@ -892,7 +919,7 @@ export default {
           }
         }
         this.$nextTick(() => {
-          this.rules = infoRules(this.ruleForm);
+          this.rules = infoRules(this.ruleForm,this);
         });
       });
     },

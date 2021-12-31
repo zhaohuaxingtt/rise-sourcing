@@ -146,7 +146,7 @@ export function searchRelationCarTypeList(parmars) {
 }
 //投资清单-参考车型项目零件列表
 export function relationCarTypePartsList(parmars) {
-    return VVUE_APP_REFCARTYPEPRO({
+    return VUE_APP_REFCARTYPEPRO({
         url: '/relationCarTypePartsList',
         method: 'POST',
         params: parmars

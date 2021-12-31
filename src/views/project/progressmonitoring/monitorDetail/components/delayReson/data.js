@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:54:07
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-17 14:43:57
+ * @LastEditTime: 2021-12-27 11:30:51
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\data.js
  */
@@ -17,6 +17,7 @@ export const tableTitle = [
   {props:'partPeriodDesc',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true}, 
   {props:'planDate',name:'原计划时间', key: "YUANJIHUASHIJIAN", tooltip: true}, 
   {props:'delayWeek',name:'已延误周数', key: "YIYANWUZHOUSHU", tooltip: true}, 
+  {props:'backReason',name:'退回原因', key: "TUIHUIYUANYIN", tooltip: true}, 
   {props:'fsId',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, editable: true, type: 'select'}, 
   {props:'confirmDateDeadline',name:'回复截止日期', key: "HUIFUJIEZHIRIQI", tooltip: true, editable: true, type: 'date', minWidth: 150}, 
 ]

@@ -90,6 +90,7 @@ export default {
         async init(){
           this.tableLoading = true;
           const param = {
+            objectAekoPartIdList:this.multipleSelection.map((item)=>item.objectAekoPartId),
             partNums:this.multipleSelection.map((item)=>item.partNum),
             requirementAekoId:this.$route.query.requirementAekoId,
           };

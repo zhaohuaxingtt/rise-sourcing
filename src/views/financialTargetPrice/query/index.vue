@@ -1,10 +1,10 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
- * @LastEditors:  
- * @LastEditTime: 2021-11-11 17:08:11
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-28 17:15:30
  * @Description: 财务目标价-目标价查询
- * @FilePath: \front-web\src\views\financialTargetPrice\query\index.vue
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\query\index.vue
 -->
 
 <template>
@@ -182,6 +182,7 @@ export default {
         showSelf: true
 
       }
+      this.sure()
     },
     getDict(type) {
       if(type == 'IS_SHOW_SELF') {

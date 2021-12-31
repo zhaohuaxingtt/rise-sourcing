@@ -1,16 +1,23 @@
 <template>
   <div class="mtzRulesAndParts">
+    <div class="inforFutitle">
+      <span class="big_font">Regulation:</span>
+      <br />
+      <span class="big_font">MTZ Payment=(Effective Price-Base Price)*Raw Material Weight*Settle accounts Quantity*Ratio</span>
+      <span class="big_small">When:effective price > base price *(1+threshold)</span>
+    </div>
     <p class="tableTitle">MTZ Rules</p>
       <tableList class="margin-top20"
                   :tableData="mtzData.ruleTableListData"
                   :tableTitle="ruleTableTitle"
                   :index="true"
                   :selection="false"
+                  lang
                   >
-        <template slot-scope="scope"
+        <!-- <template slot-scope="scope"
                   slot="compensationPeriod">
           <span>{{scope.row.compensationPeriod == "A"?"年度":scope.row.compensationPeriod == "H"?"半年度":scope.row.compensationPeriod == "Q"?"季度":scope.row.compensationPeriod == "M"?"月度":""}}</span>
-        </template>
+        </template> -->
         <template slot-scope="scope"
                   slot="thresholdCompensationLogic">
           <span>{{scope.row.thresholdCompensationLogic == "A"?"全额补差":scope.row.thresholdCompensationLogic == "B"?"超额补差":""}}</span>
@@ -28,11 +35,12 @@
                   :tableTitle="partTableTitle"
                   :index="true"
                   :selection="false"
+                  lang
                   >
-        <template slot-scope="scope"
+        <!-- <template slot-scope="scope"
                   slot="compensationPeriod">
           <span>{{scope.row.compensationPeriod == "A"?"年度":scope.row.compensationPeriod == "H"?"半年度":scope.row.compensationPeriod == "Q"?"季度":scope.row.compensationPeriod == "M"?"月度":""}}</span>
-        </template>
+        </template> -->
         <template slot-scope="scope"
                   slot="thresholdCompensationLogic">
           <span>{{scope.row.thresholdCompensationLogic == "A"?"全额补差":scope.row.thresholdCompensationLogic == "B"?"超额补差":""}}</span>
@@ -81,6 +89,18 @@ export default {
 
 <style lang="scss" scoped>
 .mtzRulesAndParts {
+  .inforFutitle {
+    margin-bottom: 20px;
+    padding:0.5rem 0;
+    font-size:15px!important;
+    line-height:25px;
+    .big_font{
+      font-weight: bold;
+    }
+    .big_small{
+      padding-left:15px;
+    }
+  }
   .tableTitle {
     display: inline-block;
     font-weight: bold;

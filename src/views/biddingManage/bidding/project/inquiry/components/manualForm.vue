@@ -22,7 +22,7 @@
               <el-option
                 v-for="item in procureTypeList"
                 :key="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
                 :value="item.value"
               >
               </el-option>
@@ -40,7 +40,7 @@
               <el-option
                 v-for="item in roundTypeList"
                 :key="item.roundType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.roundType"
               >
               </el-option>
@@ -62,7 +62,7 @@
               <el-option
                 v-for="item in manualBiddingTypeList"
                 :key="item.manualBiddingType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.manualBiddingType"
               >
               </el-option>
@@ -161,7 +161,7 @@
             <iSelect
               v-model="ruleForm.rfqs"
               value-key="rfqCode"
-              placeholder="请关联"
+              :placeholder="language('BIDDING_QINGGUANLIAN', '请关联')"
               class="rfqs-search"
               filterable
               multiple
@@ -194,7 +194,7 @@
             <iSelect
               v-model="ruleForm.rfqs"
               value-key="rfqCode"
-              placeholder="请关联"
+              :placeholder="language('BIDDING_QINGGUANLIAN', '请关联')"
               class="rfqs-search"
               filterable
               multiple
@@ -288,6 +288,13 @@ export default {
         this.ruleForm = val;
       },
     },
+    '$i18n.locale':{
+      immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+      }
+    },
     ruleForm(val) {
       this.$emit("input", val);
     },
@@ -301,29 +308,33 @@ export default {
       this.ruleForm.biddingEndTime = dayjs(endTime).format("YYYY-MM-DD HH:mm:00");
       this.$nextTick(() => {
         this.$refs["ruleForm"].validateField(["biddingEndTime"]);
-        this.$refs["ruleForm"].validateField(["pricingDeadline"]);
+        // this.$refs["ruleForm"].validateField(["pricingDeadline"]);
       });
       if (val == null) {
-        this.$set(this.ruleForm, "biddingEndTime", "");
-        this.$set(this.ruleForm, "pricingDeadline", "");
+        this.$set(this.ruleForm, "biddingEndTime", null);
+        // this.$set(this.ruleForm, "pricingDeadline", "");
         this.$nextTick(() => {
           this.$refs["ruleForm"].clearValidate(["biddingEndTime"]);
-          this.$refs["ruleForm"].clearValidate(["pricingDeadline"]);
+          // this.$refs["ruleForm"].clearValidate(["pricingDeadline"]);
         });
       }
     },
     "ruleForm.manualBiddingType"(val) {
-      console.log(val);
+      this.$nextTick(() => {
+        this.$refs["ruleForm"].clearValidate();
+      });
     },
     "ruleForm.biddingEndTime"(val) {
-      let three = 3 * 24 * 3600 * 1000;
-       let time = new Date(val).getTime() + three;
-       this.ruleForm.pricingDeadline = dayjs(time).format("YYYY-MM-DD HH:mm:00");
+      if (val) {
+        let three = 3 * 24 * 3600 * 1000;
+        let time = new Date(val).getTime() + three;
+        this.ruleForm.pricingDeadline = dayjs(time).format("YYYY-MM-DD HH:mm:00");
+      }
     }
   },
   data() {
     return {
-      rules: baseRules,
+      rules: baseRules(this),
       ruleForm: {},
       manualBiddingTypeList,
       procureTypeList,

@@ -23,7 +23,7 @@
               <el-option
                 v-for="item in roundTypeLists"
                 :key="item.roundType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.roundType"
               >
               </el-option>
@@ -117,6 +117,13 @@ export default {
         this.ruleForm.associatedQuotation = this.ruleForm.associatedQuotation.filter(item => item)
       },
     },
+    '$i18n.locale':{
+      immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+      }
+    },
     ruleForm(val) {
       this.$emit("input", val);
     },
@@ -147,7 +154,7 @@ export default {
   },
   data() {
     return {
-      rules: baseRules,
+      rules: baseRules(this),
       ruleForm: {},
       manualBiddingTypeList,
       procureTypeList,

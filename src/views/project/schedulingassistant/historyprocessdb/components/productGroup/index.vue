@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-31 15:42:42
+ * @LastEditTime: 2021-12-30 14:15:58
  * @Description: 产品组
- * @FilePath: \front-web\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
 
 <template>
@@ -102,8 +102,8 @@ export default {
         'LINGJIANHAO',
         'CHEXINGXIANGMU',
         'SHIFANGDINGDIANZHOU',
-        'DINGDIANBFZHOU',
-        'BFFIRSTTRYOUTZHOU',
+        'DINGDIANSHUJUDONGJIEZHOU',
+        'SHUJUDONGJIEFIRSTTRYOUTZHOU',
         'FIRSTTRYOUTOTSZHOU',
         'FIRSTTRYOUTEMZHOU',
         'SOURCINGLEIXING',

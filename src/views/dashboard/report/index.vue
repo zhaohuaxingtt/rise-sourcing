@@ -1,14 +1,14 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-06 15:21:13
- * @LastEditTime: 2021-11-10 15:44:46
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-28 13:55:24
+ * @LastEditors: YoHo
  * @Description: 状态跟踪详情
  * @FilePath: /front-web/src/views/dashboard/report/index.vue
 -->
 <template>
-  <iPage class="dashboard-report" v-permission.auto="REPORTMGMT_STATUSREPORT_PROCESSDETAILS_PAGE|报表管理-状态跟踪详情">
-    <headerNav />
+  <div class="dashboard-report">
+    <!-- <headerNav /> -->
     <div class="dashboard-card margin-top10">
       <el-row :gutter="10">
         <!-- 零件签收 -->
@@ -42,11 +42,11 @@
         /> -->
       </iCard>
     </div>
-  </iPage>
+  </div>
 </template>
 
 <script>
-import headerNav from './components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search'
 import rfqList from './components/rfqList'
 import {iPage, iCard, iMessage,iPagination} from 'rise'

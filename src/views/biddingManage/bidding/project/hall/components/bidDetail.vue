@@ -33,8 +33,8 @@
       background
       :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
-      prev-text="上一页"
-      next-text="下一页"
+      :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+      :next-text="language('BIDDING_XIAYIYE','下一页')"
       :layout="page.layout"
       :current-page="page.currPage"
       :total="page.total"
@@ -138,12 +138,13 @@ export default {
      return Big(val).div(this.beishu).toNumber()
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit )
     },
     handleSearchReset() {
       let param = this.id;

@@ -1,13 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-08-07 10:24:35
- * @LastEditTime: 2021-11-09 11:58:35
+ * @LastEditTime: 2021-12-27 15:03:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\api\kpiChart\index.js
  */
 import axios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_KPI + '/web/aon')
+const request = axios(process.env.VUE_APP_KPI)
 const chrequst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 const rr = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 
@@ -116,7 +117,7 @@ export function getCategoryData(data) {
 }
 // 折叠列表——获取部门
 export function getDeptData(data) {
-  return requst({
+  return request({
     url: '/web/kpi/totalScore/template/dept',
     method: 'GET',
     params: data,

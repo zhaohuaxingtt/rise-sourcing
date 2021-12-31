@@ -135,7 +135,6 @@ import filters from "@/utils/filters"
 import tablelist from "@/views/designate/supplier/components/tableList";
 import designateSign from "@/views/designate/home/designateSign/index";
 import addSignsheet from "./components/addSignsheet";
-import headerNav from "./components/headerNav";
 import {
   getNomiSelectedPage,
   getNomiNotSelectedPage,
@@ -191,7 +190,6 @@ export default {
     iButton,
     tablelist,
     addSignsheet,
-    headerNav
     // designateSign
   },
   created () {
@@ -313,23 +311,12 @@ export default {
     },
     // 移除项目
     async handleRemove () {
-      if (!this.selectTableData.length) {
-        iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
-        return
-      }
-      const confirmInfo = await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
-      if (confirmInfo !== 'confirm') return
-      const idList = this.selectTableData.map(o => Number(o.id))
-      try {
-        let temListDAta =  this.tableListData
-        let newListData = temListDAta.filter(val => {
-          let res = !(idList.indexOf(val.id)>-1)
-          return res 
-        })
-        this.tableListData = newListData
-      } catch (e) {
-        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
-      }
+      if (!this.selectTableData.length) return iMessage.error(this.language('QINGXAUNZEDINGDIANSHENQINGDAN', '请选择定点申请单号'))
+      await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
+      this.tableListData = this.tableListData.filter(item => !this.selectTableData.includes(item))
+      // 清空之前先发出事件
+      this.$emit("deleteData", this.selectTableData)
+      this.selectTableData = []
     },
     // 查看详情
     viewNominationDetail (row) {

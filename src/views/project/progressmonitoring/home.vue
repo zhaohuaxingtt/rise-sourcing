@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-22 10:54:24
+ * @LastEditTime: 2021-12-29 10:07:07
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
@@ -75,6 +75,10 @@
               <span slot="label">{{language('EMOTSYIWANCHENG', 'EM&OTS已完成')}}:</span>
               <span class="cursor" @click="toPartList(3)"><iText>{{showTips ? emOtsNum : 0}}</iText></span>
             </iFormItem>
+            <iFormItem class="smallFromItem">
+              <span slot="label" >1999:</span>
+              <span class="cursor" @click="toPartList(4)"><iText>{{showTips ? csfFgBemerkung : 0}}</iText></span>
+            </iFormItem>
          </iFormGroup>
       </div>
     </iCard>
@@ -110,7 +114,8 @@ export default {
       emOtsNum: 0,
       tipsSum: 0,
       options: {},
-      loading: false
+      loading: false,
+      csfFgBemerkung: 0
     }
   },
   mounted() {
@@ -321,6 +326,7 @@ export default {
           // ckdconfirm
           this.ckdconfirm = res.data && res.data.ckdNum || 0
           this.emOtsNum = res.data && res.data.emOtsNum || 0
+          this.csfFgBemerkung = res.data && res.data.csfFgBemerkung || 0
           // tipsSum
           this.tipsSum = res.data && res.data.tipsSum || 0
           this.updateTime = res.data && res.data.synDate || ''
@@ -430,6 +436,12 @@ export default {
       width: 420px ;
       .el-form-item__label {
         width: 260px;
+      }
+    }
+    &.smallFromItem {
+      width: 270px ;
+      .el-form-item__label {
+        width: 100px;
       }
     }
   }

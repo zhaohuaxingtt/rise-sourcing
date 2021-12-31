@@ -33,7 +33,7 @@
         </template>
       </el-table-column> -->
       <el-table-column
-        width="100"
+        width="56"
         label='Group'
         align='center'>
         <template slot-scope="scope">
@@ -76,7 +76,7 @@
       <!-- 循环取出厂商以及TTO -->
       <el-table-column
         align='center'
-        width="150"
+        width="100"
         label-class-name="tline"
         v-for="(head, hindex) in supplier"
         :key="hindex"
@@ -101,7 +101,7 @@
       >
         <el-table-column
           align='center'
-          width="150"
+          width="120"
           :key="hindex"
           :label="`Recommend Supplier ${hindex + 1}`">
           <template slot="header">
@@ -265,7 +265,6 @@ export default {
     },
     // 校验输入的比例是否合法
     checkPercent() {
-      console.log(this.data)
       let state = true
       let info = ''
       this.data.forEach(row => {
@@ -273,7 +272,11 @@ export default {
         const count = _.sum(percent.map(o => Number(o)))
         // 校验是否包含负数比例
         const containNGNumber = percent.filter(m => m < 0).length
-        if (state && isNaN(count) || count > 100 || containNGNumber) {
+        if (state && count > 100) {
+          state = false
+          info = this.language('FENEBUCHAOGUOHUNDRENDPERCENT', '定点份额不超过100%')
+        }
+        if (state && isNaN(count) || containNGNumber) {
           state = false
           info = this.language('FENPEIBILIBUHEFA', '分配比例不合法')
         }
@@ -287,6 +290,10 @@ export default {
     handleEditPercent(row, Index) {
       const percent = row.percent || []
       const count = _.sum(percent.map(o => Number(o)))
+      if (count > 100) {
+        iMessage.error(this.language('FENEBUCHAOGUOHUNDRENDPERCENT', '定点份额不超过100%'))
+        return
+      }
       // 校验是否包含负数比例
       const containNGNumber = percent.filter(m => m < 0).length
       if (isNaN(count) || count > 100 || containNGNumber) {
@@ -307,24 +314,21 @@ export default {
     onPercentChangeWhiteBack(item) {
       const supplierChosen = item.supplierChosen || []
       const percentCalc = item.percentCalc || []
-      supplierChosen.forEach((o, index) => {
+      supplierChosen.forEach((supName, index) => {
         // 找到对应的供应商修改的tto
         const value = item.percent[index]
-        // 找到供应商的index
-        const calcIndex = this.supplier.findIndex(p => p === o)
-        percentCalc[calcIndex] = Number(value) || 0
-      })
-      percentCalc.map((calcValue, index) => {
-        const supName = this.supplier[index]
-        // console.log('supplierChosen', calcValue, supName, percentCalc)
-        if (!supplierChosen.includes(supName) && calcValue > 0) {
-          percentCalc[index] = 0
-          // console.log('supplierChosen2', calcValue, supName, percentCalc)
+        // 存在这个供应商推荐比例
+        const targetP = percentCalc.find(pitem => pitem.key === supName)
+        if (targetP) {
+          Vue.set(targetP, 'value', Number(value) || 0)
+        } else {
+          percentCalc.push({
+            key: supName,
+            value: Number(value) || 0
+          })
         }
-        return calcValue
       })
       Vue.set(item, 'percentCalc', percentCalc)
-      // console.log('percentCalc', percentCalc, item)
     },
     /**
      * 分组函数，用于element-ui table 分组合并
@@ -384,27 +388,32 @@ export default {
         })
       })
     },
-    cacleSc(data = [], index = null) {
+    cacleSc(data = [], supplierName = null) {
       let count = 0
-      let str = ''
+      let formula = [] // 计算公式,用于debug
       const weightedArray = []
       data.forEach((item) => {
         const tto = item.TTo || []
-        tto.forEach((t, tIndex) => {
-          // 传了index 求单一零件的 推荐供应商tto 汇总
-          if (index !== null) {
-            if (index === tIndex) {
-              const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(2)
-              weightedArray.push(Number(t) * percent)
-            }
-          } else {
-            const percent = ((item.percentCalc[tIndex] || 0) / 100).toFixed(2)
+        if (supplierName !== null) {
+          const percentCalc = item.percentCalc || []
+          const targetPitem = percentCalc.find(p => p.key === supplierName)
+          const bdlInfo = (item.bdlInfoList || []).find(o => o.supplierName === supplierName)
+          const t = bdlInfo && !isNaN(Number(bdlInfo.tto)) ? Number(bdlInfo.tto) : 0
+          if (targetPitem) {
+            // ----***注意:这里是百分比,必须保留2位小数***----
+            let percent = Number(((targetPitem.value || 0) / 100).toFixed(2))
+            // ----***注意:这里是百分比,必须保留2位小数***----
+            percent = isNaN(percent) ? 0 : percent
             weightedArray.push(Number(t) * percent)
+            // 统计计算公式
+            formula.push(`${Number(t)}x${percent}`)
           }
-        })
+        }
       })
       count = _.sum(weightedArray)
-      // console.log(data, str, count)
+
+      const formulaStr = formula.join('+')
+      console.log('cacleSc日志',  supplierName, formulaStr, count, data)
       return Number(count).toFixed(0)
     },
     // 筛选出分组最低的供应商
@@ -483,8 +492,8 @@ export default {
       })
       // wholePackage 排序
       countSupplier = countSupplier.sort((a, b) => a.data - b.data)
-      console.log('countSupplier', countSupplier)
-      const wholePackage = Number(countSupplier[0] && countSupplier[0].data).toFixed(2) || 0
+      // console.log('countSupplier', countSupplier)
+      const wholePackage = Number(countSupplier[0] && countSupplier[0].data).toFixed(0) || 0
       const wholePackageIndex = (countSupplier[0] && countSupplier[0].index) || 0
       // 记录该供应商
       supplier.push(wholePackageIndex)
@@ -502,7 +511,7 @@ export default {
         const groupedArray = data.filter(o => o[GroupKey] === gid)
         // 已分组，取最低TTO，
         const itemBestGroup = this.filterBestGrouper(groupedArray)
-        console.log('最低tto-group', itemBestGroup)
+        // console.log('最低tto-group', itemBestGroup)
         if (itemBestGroup) {
           bestGroup.push(itemBestGroup)
         }
@@ -534,7 +543,7 @@ export default {
       // 记录该供应商
       supplier.push(bestGroupSupplierIndex)
       
-      console.log('weightSupplier', weightSupplier, unGroupedList)
+      // console.log('weightSupplier', weightSupplier, unGroupedList)
 
 
       // Best TTO \n by Part
@@ -582,7 +591,6 @@ export default {
       let weightSupplier = []
       
       supplierTemlate.forEach((supplierName, index) => {
-        // 分供应商筛选出报价最高和最低的零件
         let baojiaArray = []
         data.forEach((dataItem) => {
           // 取出推荐供应商有效报价的零件价格
@@ -591,7 +599,7 @@ export default {
           }
         })
         // 求对应供应商的权重
-        const weightSupplierItem = this.cacleSc(baojiaArray, index)
+        const weightSupplierItem = this.cacleSc(baojiaArray, supplierName)
         if (Number(weightSupplierItem) > 0) {
           weightSupplier[index] = {
             index,
@@ -638,6 +646,14 @@ export default {
 .monitorTable {
   ::v-deep .el-table {
     height: 450px;
+    .el-table__header {
+      background-color: #e8efff;
+    }
+    tr:nth-child(even) {
+      td,th {
+        background-color: #f7faff;
+      }
+    }
     .supplier-tto {
       display: flex;
       width: 100%;
@@ -651,16 +667,21 @@ export default {
     }
   }
   ::v-deep .el-table--border {
+    border: 0px !important;
+    &:after,&:before {
+      background-color: #fff;
+    }
     th,td {
       border-bottom: 1px solid #fff !important;
       border-right: 1px solid #fff !important;
       &.pin {
-        background: #95f1ec;
+        background: #e8f5fb !important;
         &.dbl {
-          background: #95f1ec;
+          background: #effbfb !important;
         }
         .cell {
-          color: #094e4a;
+          color: #00C1B9;
+          font-weight: bold;
         }
       }
     }
@@ -679,10 +700,13 @@ export default {
       line-height: 1;
     }
     .titleCN {
-      padding: 0 10px
+      padding: 0px 10px;
+      height: 35px;
+      line-height: 35px;
     }
     .titleEN {
-      height: 24PX;
+      height: 35px;
+      line-height: 35px;
       text-overflow: ellipsis;
       overflow: hidden;
       padding: 0 5px;
@@ -703,6 +727,21 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  // 滚动条
+  ::v-deep.el-table__body-wrapper {
+    &::-webkit-scrollbar {
+      width: 89px !important;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #c9d2e6;
+    }
+    &::-webkit-scrollbar-track {
+      display: none;
+    }
+    ::-webkit-scrollbar-corner {
+      background-color: #111;
+    }
   }
 }
 

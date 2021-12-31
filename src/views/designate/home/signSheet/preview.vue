@@ -29,6 +29,7 @@
           <tablelist
             height="450"
             index
+            lang
             :selection="false"
             :tableData="tableListData"
             :tableTitle="tableTitle"
@@ -117,18 +118,18 @@ export default {
     close() {
       this.$router.back()
     },
-    exportSignSheet() {
-      const signId = this.$route.query.signId
-      if (!signId) {
-        iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
-        return
-      }
-      const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-      // const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export?signId=${signId}`
-      const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export-sign-single?signId=${signId}`
-      console.log(fileURL)
-      window.open(fileURL)
-    },
+    // exportSignSheet() {
+    //   const signId = this.$route.query.signId
+    //   if (!signId) {
+    //     iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
+    //     return
+    //   }
+    //   const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+    //   // const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export?signId=${signId}`
+    //   const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export-sign-single?signId=${signId}`
+    //   console.log(fileURL)
+    //   window.open(fileURL)
+    // },
     // 获取定点管理列表
     async getFetchData(params = {}) {
       this.tableLoading = true

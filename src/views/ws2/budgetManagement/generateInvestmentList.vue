@@ -89,7 +89,7 @@
         <div class="searchSure">
           <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>
 <!--          <iButton @click="sure">查询</iButton>-->
-<!--          <iButton @click="reset">重置</iButton>-->
+          <iButton @click="reset">重置</iButton>
         </div>
       </iSearch>
       <iCard>

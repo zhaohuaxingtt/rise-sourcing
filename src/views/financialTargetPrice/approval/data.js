@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
- * @LastEditors:  
- * @LastEditTime: 2021-11-11 17:21:23
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-28 17:31:22
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\approval\data.js
  */
@@ -44,7 +44,7 @@ export const searchList = [
   {value: 'linieName', label: 'LINIE', type: 'input', i18n_label: 'LINIE',selectOption: 'LINIE',permission: 'FINANCIALTARGETPRICE_APPROVAL_LINIE|财务目标价管理-目标价审批-LINIE'},
   // {value: 'buyerName', label: '询价采购员', type: 'input', i18n_label: 'XUNJIACAIGOUYUAN',},
   {value: 'cfPriceType', label: '目标价分类', type: 'select', i18n_label: 'MUBIAOJIAFENLEI',selectOption:'CF_PRICE_TYPE',permission: 'FINANCIALTARGETPRICE_APPROVAL_PRICETYPE|财务目标价管理-目标价审批-目标价分类'},
-  {value: 'showSelf', label: '显示自己', type: 'select', i18n_label: 'XIANSHIZHIJI', selectOption: 'IS_SHOW_SELF',permission: 'FINANCIALTARGETPRICE_APPROVAL_SHOWSELF|财务目标价管理-目标价查询-指派状态'}
+  {value: 'showSelf', label: '显示自己', type: 'select', i18n_label: 'XIANSHIZHIJI', selectOption: 'IS_SHOW_SELF',permission: 'FINANCIALTARGETPRICE_APPROVAL_SHOWSELF|显示自己'}
 
 ]
 

@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-12-13 13:52:48
+ * @LastEditTime: 2021-12-29 09:42:34
  * @LastEditors: caopeng
  * @Description: 供应商维度展示
- * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
 -->
 <template>
   <!----------------------------------------------------------->
@@ -57,12 +57,12 @@
   </div>
 </template>
 <script>
-import {iCard,iSelect,iButton,iMessage} from 'rise'
+import {iSelect,iButton,iMessage} from 'rise'
 import echarts from '@/utils/echarts'
 import {chartsOptions,form,translateGetLunci} from './data'
 import { quotations,findRfqInfoList,downLoadExcel,rfqQueryLinkage } from '@/api/rfqManageMent/mouldOffer'
 export default{
-  components:{iCard,iSelect,iButton},
+  components:{iSelect,iButton},
   props:{
     rfqId:String
   },
@@ -79,7 +79,8 @@ export default{
       refreshLoading:false,
       supplierlist:[],
       supplierSelectlist:['all'],
-      exportLoading:false
+      exportLoading:false,
+      filterQUeue: [], //报价趋势筛选队列，用于条件寄存
     }
   },
   created(){
@@ -96,9 +97,13 @@ export default{
      * @return {*}
      */
    async exportExcel(v){
-        console.log(v)
     const res= await downLoadExcel(Object.assign(this.getQuery()))
-    console.log(res)
+    },
+    exportExcelTwo(v){
+        return new Promise (r=>{
+            const res=  downLoadExcel(Object.assign(this.getQuery()))
+            r(res)
+        })
     },
     removeOther(row,type){
       if(!row){
@@ -113,6 +118,8 @@ export default{
       this.luncSelect = ['all']
       this.partsSelect = ['all']
       this.supplierSelectlist = ['all']
+      // 清空寄存列表
+      this.filterQUeue = []
       this.getDataList()
       // 还原原来的筛选
       this.supplierPart()
@@ -123,27 +130,14 @@ export default{
       } else {
         this[props]=data.filter(item => item !== 'all')
       }
-      if (props === 'supplierSelectlist') {
-        // 清空零件，轮次已选择
-        this.partsSelect = ['all']
-        this.luncSelect = ['all']
-      }
       if (props === 'partsSelect') {
         // 原来的逻辑
         this.changeParts(data)
-        // 清空轮次已选择
-        this.luncSelect = ['all']
-        this.supplierSelectlist = ['all']
       }
-      if (props === 'luncSelect') {
-        // 清空零件，轮次已选择
-        this.partsSelect = ['all']
-        this.supplierSelectlist = ['all']
-      }
-      
+      // 筛选寄存
+      if (!this.filterQUeue.includes(props)) this.filterQUeue.push(props)
       // 联动
-      this.rfqQueryLinkage(data, props)
-      
+      this.$nextTick(() => {this.rfqQueryLinkage(data, props)})
     },
     /**
      * @description: 多选零件的时候，存在多个fs号的情况
@@ -280,21 +274,21 @@ export default{
       }
       rfqQueryLinkage(params).then(res => {
         if (res && res.code === '200') {
-          // 选择的是供应商，联动零件，轮次
-          if (key === 'supplierSelectlist') {
-            this.partList = this.translatePartList(res.data.partNum || [])
-            this.RoundList = res.data.round || []
-          }
-          // 选择的是零件，联动供应商，轮次
-          if (key === 'partsSelect') {
-            this.supplierlist = res.data.supplier || []
-            this.RoundList = res.data.round || []
-          }
-          // 选择的是轮次，联动供应商，零件
-          if (key === 'luncSelect') {
-            this.supplierlist = res.data.supplier || []
-            this.partList = this.translatePartList(res.data.partNum || [])
-          }
+          // 待更新的key
+          const queueArrayKeys = ['supplierSelectlist','partsSelect','luncSelect']
+          // 求 待更新的key与已经寄存的key的交集
+          const intersectionArray = window._.intersection(queueArrayKeys, this.filterQUeue)
+          // 在寄存列表中的条件枚举不更新(寄存下来),其他对应的枚举要更新
+          const willBefiltedArray = queueArrayKeys.filter(o => !intersectionArray.includes(o))
+          // 遍历待更新的列表
+          willBefiltedArray.forEach(key => {
+            // 更新供应商
+            if (key === 'supplierSelectlist') this.supplierlist = res.data.supplier || []
+            // 更新零件
+            if (key === 'partsSelect') this.partList = this.translatePartList(res.data.partNum || [])
+            // 更新轮次
+            if (key === 'luncSelect') this.RoundList = res.data.round || []
+          })
         }
       })
     } 

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-23 15:33:15
+ * @LastEditTime: 2021-12-29 15:47:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -20,13 +20,13 @@ export const fstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>FS/GS/SP</p><p>No.</p>'},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'lcAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'lcBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'skdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'skdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'ebrCalculatedValue',label:'EBR',i18n:'',width:'50',tooltip:false,fixed:true},
   {type:'',props:'headerEbr',label:'',i18n:'',width:'1',tooltip:false}
 ]
@@ -46,7 +46,7 @@ export const gstitle = [
   // {type:'',props:'mouldPrice',label:'T-Target Price',i18n:'',width:'100',tooltip:false,fixed:true},
 
   {type:'',props:'currentSupplier',label:'Current \n Supplier',i18n:'',width:'60',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>Supplier</p>'},
-  {type:'',props:'currentShare',label:'Share',i18n:'',width:'80',tooltip:false,fixed:true},
+  {type:'',props:'currentShare',label:'Share',i18n:'',width:'50',tooltip:false,fixed:true},
   {type:'',props:'currentAPrice',label:'Cur. \n A Price',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>A Price</p>'},
   {type:'',props:'currentBPrice',label:'Cur. \n B Price',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Cur.</p><p>B Price</p>'},
   {type:'',props:'currentLtc',label:'LTC',i18n:'',width:'50',tooltip:false,fixed:true},
@@ -101,7 +101,7 @@ export const gstableTileXh = function(index){
     {type:'',props:`${index?index:''}ltcStaringDate`,label:'LTC \n Start Date',i18n:'',width:'95',tooltip:true},
     {type:'',props:`${index?index:''}prototypePrice`,label:'Prototype \n Price',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Prototype</p><p>Price</p>'},
     {type:'',props:`${index?index:''}tto`,label:'TTO',i18n:'',width:'90',tooltip:false},
-    {type:'',props:`${index?index:''}internalDevelopmentCost`,label:'Internal \n Dev. Cost',i18n:'',width:'90',tooltip:false},
+    {type:'',props:`${index?index:''}externalDevelopmentCost`,label:'External \n Dev. Cost',i18n:'',width:'90',tooltip:false},
     {type:'',props:`${index?index:''}releaseCost`,label:'Release \n Cost',i18n:'',width:'80',tooltip:false, renderHeader: '<p>Release</p><p>Cost</p>'},
     {type:'',props:`${index?index:''}saving`,label:'Saving',i18n:'',width:'70',tooltip:false},
     {type:'',props:`Quotationdetails`,label:'Quo. \n Details',i18n:'',width:'60',tooltip:false},
@@ -119,7 +119,7 @@ export const whiteList = ['headerEbr','groupName','partNo','partName','cfPartAPr
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice'] //默认需要显示的数据
+export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice','releaseCost'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -170,30 +170,47 @@ export function backChooseList(type) {
  * @return {*}
  */
 export function getRenderTableTile(whiteListService,supplierLength,layout){
-  const relWhiteList = layout==1?[...whiteList,...whiteListService]:[...whiteListGs,...whiteListService]
-  const xuhTable = layout==1?fstableTileXh(0):gstableTileXh(0)
-  const fstitleFn = layout==1?fstitle:gstitle
-  const relTabelListDefault = []
-  let relTableListXh = []
-  let templateListxh = []
-  fstitleFn.forEach(items=>{
-    if(relWhiteList.find(i=>i == items.props)){
-      relTabelListDefault.push(items)
+  try {
+    const relWhiteList = layout==1?[...whiteList,...whiteListService]:[...whiteListGs,...whiteListService]
+    const xuhTable = layout==1?fstableTileXh(0):gstableTileXh(0)
+    const fstitleFn = layout==1?fstitle:gstitle
+    const relTabelListDefault = []
+    let relTableListXh = []
+    let templateListxh = []
+    let allxunhuanTableList = xuhTable
+    //为导出做数据准备。
+    let relTabelListDefaultExport = []
+    fstitleFn.forEach((items,index)=>{
+      if(relWhiteList.find(i=>i == items.props)){
+        relTabelListDefault.push(items)
+      }
+    })
+    for(let i = 0;i < xuhTable.length;i++){
+      if(relWhiteList.find(ii=>ii == xuhTable[i].props)){
+        relTableListXh.push(xuhTable[i])
+        templateListxh.push(xuhTable[i])
+      }
     }
-  })
-  for(let i = 0;i < xuhTable.length;i++){
-    if(relWhiteList.find(ii=>ii == xuhTable[i].props)){
-      relTableListXh.push(xuhTable[i])
-      templateListxh.push(xuhTable[i])
+    const lastChildProps = {name:relTableListXh[relTableListXh.length -1].label,props:relTableListXh[relTableListXh.length -1].props}
+    for(let i = 0; i<supplierLength;i++){
+      if(i>0){
+        relTableListXh = [...relTableListXh,...addtitle(templateListxh,i)]
+        allxunhuanTableList = [...allxunhuanTableList,...addtitle(xuhTable,i)]
+      }
     }
+    ([...fstitleFn.filter(items=>items.props != 'headerEbr'),...allxunhuanTableList]).forEach((items,index)=>{
+      if([...relTabelListDefault,...relTableListXh].find(items1=>items1.props == items.props)){
+        relTabelListDefaultExport.push({...items,...{hidden:false,index:index,name:items.label}})
+      }else{
+        relTabelListDefaultExport.push({...items,...{hidden:true,index:index,name:items.label}})
+      }
+    })
+    return {title:[...relTabelListDefault,...relTableListXh],xhLastChildProps:lastChildProps,allExportHiddenOrShow:relTabelListDefaultExport}
+  } catch (error) {
+    console.log(error)
+    return {title:[],xhLastChildProps:[],allExportHiddenOrShow:[]}
   }
-  const lastChildProps = {name:relTableListXh[relTableListXh.length -1].label,props:relTableListXh[relTableListXh.length -1].props}
-  for(let i = 0; i<supplierLength;i++){
-    if(i>0){
-      relTableListXh = [...relTableListXh,...addtitle(templateListxh,i)]
-    }
-  }
-  return {title:[...relTabelListDefault,...relTableListXh],xhLastChildProps:lastChildProps}
+
 }
 /**
  * @description:将title将表头追加一个动态数字 
@@ -358,7 +375,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
       }
       
     })
-    return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Budget',priceInfo,dataList[0])]
+    return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Invest \n Budget',priceInfo,dataList[0])]
   } catch (error) {
     return {partNo:'Subtotal'}
   }
@@ -499,9 +516,11 @@ export function getRowAndcolSpanArray(data){
 function getcol(allData,currentKey,wi,li){
   try {
     let number = 0
-    if(wi > 0 && (allData[wi-1].find((items,index)=> index == li).data) == currentKey) return number
+    if(wi > 0 && ((allData[wi-1].find((items,index)=> index == li).data) == currentKey) && allData[wi-1].find((items,index)=> index == li).isMerge) {
+        return number
+    }
     for (let index = wi; index < allData.length; index++){
-      if(allData[index].find((items,index)=> index == li).data == currentKey){
+      if(allData[index].find((items,index)=> index == li).data == currentKey && allData[index].find((items,index)=> index == li).isMerge){
         number ++
       }else {
         break;
@@ -517,9 +536,11 @@ function getcol(allData,currentKey,wi,li){
 function getRow(allData,currentKey,wi,li){
   try {
     let number = 0
-    if(li>0 && (allData[wi].find((items,i)=>i == li-1).data == currentKey)) return number
+    if(li>0 && (allData[wi].find((items,i)=>i == li-1).data == currentKey) && (allData[wi].find((items,i)=>i == li-1).isMerge)) {
+        return number
+    }
     for (let index = li; index < allData[wi].length; index++){
-      if(allData[wi].find((items,i)=>i == index).data == currentKey){
+      if(allData[wi].find((items,i)=>i == index).data == currentKey && allData[wi].find((items,i)=>i == index).isMerge){
         number ++
       }else{
         break;

@@ -34,7 +34,7 @@
       <div class="headerNav-sub margin-top30 margin-bottom30">
         <iTabsList type="card" v-model="tab">
           <el-tab-pane v-for="(tab, $index) in tabs" :key="$index" :label="tab.name" :name="tab.key">
-            <div class="margin-top20"><component :ref="tab.key" :is="tab.component" :description.sync="description" /></div>
+            <div class="margin-top20"><component :ref="tab.key" :is="tab.component" :description.sync="description" @deleteData="deleteData" /></div>
           </el-tab-pane>
         </iTabsList>
       </div>
@@ -121,7 +121,9 @@ export default {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           this.$refs.partDesignateOrders[0].getChooseData()
+          this.$refs.partDesignateOrders[0].getSignSheetDetails()
           this.$refs.MTZDesignateOrders[0].getTableData()
+          this.$refs.MTZDesignateOrders[0].getsignSheetDetails()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -143,7 +145,9 @@ export default {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           this.$refs.partDesignateOrders[0].getChooseData()
+          this.$refs.partDesignateOrders[0].getSignSheetDetails()
           this.$refs.MTZDesignateOrders[0].getTableData()
+          this.$refs.MTZDesignateOrders[0].getsignSheetDetails()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -157,6 +161,10 @@ export default {
     },
     // 通过待办数跳转
     clickMessage,
+    // 关联删除mtz
+    deleteData(data) {
+      if (Array.isArray(data)) this.$refs.MTZDesignateOrders[0].forceDelete(data.map(item => item.mtzApplyId))
+    }
   }
 }
 </script>

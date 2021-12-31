@@ -40,7 +40,7 @@
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
-                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
+                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
         </div>
@@ -102,7 +102,7 @@ import {
   iSelect,
   iMessage
 } from "rise";
-import logButton from '@/components/logButton'
+// import logButton from '@/components/logButton'
 import iLoger from '@/components/iLoger'
 import mettingDialog from './mettingDialog'
 import {
@@ -121,6 +121,10 @@ import {
     updateNominate,
     rsAttachExport
 } from '@/api/designate'
+import { 
+    approvalSync
+} from '@/api/designate/decisiondata/approval'
+
 import { applyStep,svgList } from './data'
 import meetingConclusionDialog from "./meetingConclusionDialog"
 import {allitemsList} from '@/config'
@@ -367,6 +371,22 @@ export default {
             }
             return state
         },
+        // 同步审批人
+        async synchronization() {
+            let state = false
+            try {
+                const res = await approvalSync(this.$store.getters.nomiAppId)
+                if (res.code === '200') {
+                    state = true
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            } catch (e) {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = false
+            }
+            return state
+        },
          // 定点建议
         // async onSuggestionSave() {
         //     let state = false
@@ -411,13 +431,15 @@ export default {
                 console.log('step 2', proc)
                 if (!proc) return
             }
-            // 流程有调整，取消这个接口
             // 当前步骤在定点建议
-            // if (step === 3) {
-            //     const proc = await this.onSuggestionSave()
-            //     console.log('step 3', proc)
-            //     if (!proc) return
-            // }
+            if (step === 3) {
+                // 流程有调整，取消这个接口
+                // const proc = await this.onSuggestionSave()
+                // console.log('step 3', proc)
+                // if (!proc) return
+                // 从定点建议跳转到审批人 & 审批记录,先同步一下审批人
+                this.synchronization()
+            }
             updatePresenPageSeat({
                 nominateId: this.$store.getters.nomiAppId,
                 phaseType: this.$store.getters.phaseType,

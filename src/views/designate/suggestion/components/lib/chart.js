@@ -8,7 +8,7 @@
  */
 export const rich = {
   b: {
-    fontSize: 12,
+    fontSize: 14,
     // fontWeight: 'bold'
   },
   n: {
@@ -16,7 +16,7 @@ export const rich = {
     lineHeight: 12
   },
   p: {
-    fontSize: 7,
+    fontSize: 12,
     color: '#fff',
     align: 'center',
     textShadowColor: 'rgba(0, 0, 0, 1)',

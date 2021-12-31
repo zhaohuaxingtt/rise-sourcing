@@ -19,7 +19,6 @@
         <iSelect
           popper-class="mapControl"
           v-model="mapControl"
-          v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BUMONITOR_FANGANXUANZE|图表方案选择"
           @change="load"
           :multiple="true"
           :placeholder="language('nominationSuggestion_FanAnXuanZhe','方案选择')">
@@ -104,7 +103,7 @@ export default {
   },
   methods: {
     thousandsFilter(num) {
-      return filters.filters.thousandsFilter(num)
+      return filters.filters.thousandsFilter(num, 0)
     },
     init() {
       // 初始化，默认isShowWeightStick判断是否展示权重柱子
@@ -186,7 +185,7 @@ export default {
                 <span class="margin-right5" style="background-color:${colorPanel[item.index]};display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;"></span>
                 <span class="ttoTitle">${supplierList[item.index]}</span>
               </p>
-              <p class="ttolist padding-left25"><span>TTO:${self.thousandsFilter(item.data)}</span><span>${Number(item.data/dataCounTotal*100).toFixed(2)}%</span></p>
+              <p class="ttolist padding-left25"><span>TTO:${self.thousandsFilter(item.data)}</span><span>${Number(item.data/dataCounTotal*100).toFixed(0)}%</span></p>
             `
           })
           return dataTemplate
@@ -196,7 +195,7 @@ export default {
           grid: {
             left: '10',
             right: '0',
-            bottom: '0',
+            bottom: '20',
             top: '10%',
             containLabel: true
           },
@@ -234,7 +233,7 @@ export default {
               params.name === quota[1] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((bestGroupSupplierTotal - wholePackage)/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((bestGroupSupplierTotal - wholePackage)/wholePackage*100).toFixed(0)}%</span>
                 </p>
                 ${genSupTPL(bestGroup, bestGroupSupplierTotal)}
               </div>`)
@@ -243,7 +242,7 @@ export default {
               params.name === quota[2] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((minPartSupplierTToTotal - wholePackage)/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((minPartSupplierTToTotal - wholePackage)/wholePackage*100).toFixed(0)}%</span>
                 </p>
                 ${genSupTPL(minPartSupplierTToArray, minPartSupplierTToTotal)}
               </div>`)
@@ -252,13 +251,13 @@ export default {
               params.name === quota[3] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((weightSupplierTotal - wholePackage)/wholePackage*100).toFixed(2)}%</span>
+                  <span class="value">${Number((weightSupplierTotal - wholePackage)/wholePackage*100).toFixed(0)}%</span>
                 </p>
                 ${genSupTPL(weightSupplier, weightSupplierTotal)}
               </div>`)
               // <p class="margin-top15" style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">${self.language('GONGYINGSHANGTTO','供应商TTO')}: ${params.data}</p>
               // <p style="display: ${(params.data/weightSupplierTotal*100) < 10 ? 'block' : 'none'}">
-              //   share: ${Number(params.data/weightSupplierTotal*100).toFixed(2)}%
+              //   share: ${Number(params.data/weightSupplierTotal*100).toFixed(0)}%
               // </p>
               return `
               <div class="toolTipBox" style="${!params.data ? 'display: none' : ''}">
@@ -269,7 +268,7 @@ export default {
           },
           xAxis: {
             type: 'category',
-            offset: 0,
+            offset: 10,
             // x轴数据
             data: xAxisData,
             axisTick: {
@@ -282,7 +281,8 @@ export default {
             },
             axisLabel:{
               textStyle:{
-                color: '#485465'
+                color: '#485465',
+                'lineHeight': 16
               },
               formatter: function (val) {
                 // console.log(val)
@@ -352,7 +352,7 @@ export default {
           textStyle: {
             color: '#485465'
           },
-          formatter: self.thousandsFilter(Number(wholePackage).toFixed(2))
+          formatter: self.thousandsFilter(Number(wholePackage).toFixed(0))
         },
         itemStyle: {
           normal: {
@@ -387,7 +387,7 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(bestGroupSupplierTotal)
-              const percent = parseFloat(fz/fm*100).toFixed(2)
+              const percent = parseFloat(fz/fm*100).toFixed(0)
               return `{p|${percent}%}`
             },
             rich,
@@ -415,7 +415,7 @@ export default {
             color: '#485465'
           },
           formatter: function() {
-            return self.thousandsFilter(Number(bestGroupSupplierTotal).toFixed(2))
+            return self.thousandsFilter(Number(bestGroupSupplierTotal).toFixed(0))
           }
         },
       }))
@@ -439,7 +439,7 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(minPartSupplierTToTotal)
-              const percent =parseFloat(fz/fm*100).toFixed(2)
+              const percent =parseFloat(fz/fm*100).toFixed(0)
               return `{p|${percent}%}`
             },
             rich,
@@ -467,7 +467,7 @@ export default {
             color: '#485465'
           },
           formatter: function() {
-            return self.thousandsFilter(Number(minPartSupplierTToTotal).toFixed(2))
+            return self.thousandsFilter(Number(minPartSupplierTToTotal).toFixed(0))
           }
         }
       }))
@@ -491,7 +491,7 @@ export default {
             formatter: function(params) {
               const fz = Number(params.data)
               const fm = Number(weightSupplierTotal)
-              const percent =(index === weightSupplier.length - 1) ? (100 - weightPercent).toFixed(2) : (fz/fm*100).toFixed(2)
+              const percent =(index === weightSupplier.length - 1) ? (100 - weightPercent).toFixed(0) : (fz/fm*100).toFixed(0)
               weightPercent += Number(percent)
               return percent < 10 ?  '' : `{p|${percent}%}`
             },
@@ -520,7 +520,7 @@ export default {
             color: '#485465'
           },
           formatter: function() {
-            return self.thousandsFilter(Number(weightSupplierTotal).toFixed(2))
+            return self.thousandsFilter(Number(weightSupplierTotal).toFixed(0))
           }
         }
       }))

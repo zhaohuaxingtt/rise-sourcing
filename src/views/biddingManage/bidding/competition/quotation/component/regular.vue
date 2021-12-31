@@ -36,9 +36,9 @@
             <el-option
               v-for="(item, index) of priceDiffLimitSelectList"
               :key="index"
-              :label="item.name"
+              :label="language(item.key, item.name)"
               :value="item.id"
-              >{{ item.name }}</el-option
+              >{{ language(item.key, item.name) }}</el-option
             >
           </iSelect>
         </iFormItem>
@@ -124,9 +124,9 @@
             <el-option
               v-for="(item, index) of priceDiffObjectSelectList"
               :key="index"
-              :label="item.name"
+              :label="language(item.key, item.name)"
               :value="item.id"
-              >{{ item.name }}</el-option
+              >{{ language(item.key, item.name)}}</el-option
             >
           </iSelect>
         </iFormItem>
@@ -433,7 +433,7 @@
                 </operatorInput>
               </iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
-              {{language('BIDDING_HCNXSJJPM', '后，才能显示竞价排名')}}</el-radio
+              {{language('BIDDING_HHCNXSJJPM', '后（含），才能显示竞价排名')}}</el-radio
             >
           </div>
           <div class="section-second section-second_bot">
@@ -454,7 +454,7 @@
               ></iFormItem>
               <iInput v-else class="input-number70" disabled></iInput>
               (<span class="text-warn">{{language('BIDDING_ZHENGSHU', '整数')}}</span
-              >){{language('BIDDING_MYQCNXSJJPM', '名以前，才能显示竞价排名')}}</el-radio
+              >){{language('BIDDING_MYQHCNXSJJPM', '名以前（含），才能显示竞价排名')}}</el-radio
             >
           </div>
         </iFormItem>
@@ -500,8 +500,40 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
-        this.rules = baseRules(this);
       },
+    },
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'biddingQuoteRule.limitValue',
+          //   'biddingQuoteRule.quotationScope',
+          //   'biddingQuoteRule.quotedValue',
+          //   'biddingQuoteRule.alertPercentage',
+          //   'biddingQuoteRule.firstOfferLimit',
+          //   'biddingQuoteRule.conRankLimit',
+          //   'biddingQuoteRule.rankRule',
+          //   'biddingQuoteRule.greenLightFrom',
+          //   'biddingQuoteRule.greenLightTo',
+          //   'biddingQuoteRule.yellowLightFrom',
+          //   'biddingQuoteRule.yellowLightTo',
+          //   'biddingQuoteRule.redLightFrom',
+          //   'biddingQuoteRule.redLightTo',
+          //   'biddingQuoteRule.greenDeviationValue',
+          //   'biddingQuoteRule.yellowDeviationValue',
+          //   'biddingQuoteRule.rankDisplayLimit',
+          //   'biddingQuoteRule.priceLimit',
+          //   'biddingQuoteRule.rankLimit',
+          // ])
+        })
+      }
     },
     ruleForm(val) {
       this.$emit("input", val);
@@ -600,7 +632,7 @@ export default {
   },
   data() {
     return {
-      rules: baseRules(this),
+      rules: [],
       ruleForm: {},
 
       priceDiffLimitSelectList,
@@ -608,6 +640,11 @@ export default {
       actualValueData:'',
       isInputFlag:false
     };
+  },
+  mounted(){
+    this.$nextTick(() => {
+      this.rules = baseRules(this.ruleForm, this)
+    });
   },
   computed: {
     limitValueValue(){

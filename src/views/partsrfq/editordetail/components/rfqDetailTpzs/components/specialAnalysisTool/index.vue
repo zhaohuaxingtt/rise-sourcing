@@ -7,11 +7,16 @@
 -->
 <template>
   <div>
-    <enterSpecificAnalysisToolsDialog :keyword="keyword" @getDataList="getDataList" v-model="viewModelDialog" />
+    <enterSpecificAnalysisToolsDialog :keyword="keyword"
+                                      @getDataList="getDataList"
+                                      v-model="viewModelDialog" />
     <!-- 渲染图表 -->
     <el-row :gutter="16">
-      <el-col v-for="(item, index) in cardData" :key="index" :span="12">
-        <card @click.native="entrance(item)" :cardData="item" />
+      <el-col v-for="(item, index) in cardData"
+              :key="index"
+              :span="12">
+        <card @click.native="entrance(item)"
+              :cardData="item" />
       </el-col>
     </el-row>
   </div>
@@ -33,7 +38,7 @@ import soon from '@/assets/images/soon.png';
 
 export default {
   components: { card, iPage, enterSpecificAnalysisToolsDialog, iButton },
-  data() {
+  data () {
     return {
       title: '',
       viewModelDialog: false,
@@ -41,11 +46,11 @@ export default {
       keyword: '',
     };
   },
-  created() {
+  created () {
     this.getDataList('', '', '', '', '');
   },
   methods: {
-    entrance(param) {
+    entrance (param) {
       // 默认项
       if (param.isDefault) {
         switch (param.title) {
@@ -53,7 +58,8 @@ export default {
             this.$router.push({ path: '/sourcing/partsrfq/bobNew', query: { chemeId: param.reportId, round: this.$route.query.round } });
             break;
           case 'Volume Pricing':
-            this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', chemeId: param.reportId, round: this.$route.query.round } });
+            console.log('111')
+            this.$router.push({ path: '/sourcing/partsrfq/vpAnalyseDetail', query: { type: 'edit', schemeId: param.reportId, round: this.$route.query.round } });
             break;
           case 'Pricing Index':
             this.$router.push({ path: '/sourcing/partsrfq/piAnalyseDetail', query: { schemeId: param.reportId, round: this.$route.query.round } });
@@ -94,7 +100,7 @@ export default {
       }
     },
     // 获取数据
-    async getDataList({ rfqId = '', categoryName = '', categoryCode = '', partNum = '', rfqName = '' }) {
+    async getDataList ({ rfqId = '', categoryName = '', categoryCode = '', partNum = '', rfqName = '' }) {
       // 把数据存在store
       if (this.$store.state.rfq.entryStatus === 0) {
         window.sessionStorage.setItem('rfqId', rfqId);
@@ -164,9 +170,9 @@ export default {
             });
           }
         })
-        .catch((error) => {});
+        .catch((error) => { });
     },
-    handleSearch() {
+    handleSearch () {
       this.viewModelDialog = true;
     },
   },

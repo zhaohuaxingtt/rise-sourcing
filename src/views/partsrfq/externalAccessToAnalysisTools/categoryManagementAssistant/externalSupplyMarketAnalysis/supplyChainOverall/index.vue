@@ -2,12 +2,19 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-10-21 17:22:40
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
   <div class=''>
-    <iframe :src="url" id="flowForm" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" />
+    <iframe :src="url"
+            id="flowForm"
+            frameborder="no"
+            border="0"
+            marginwidth="0"
+            marginheight="0"
+            scrolling="no"
+            allowtransparency="yes" />
   </div>
 </template>
 
@@ -18,7 +25,7 @@
 export default {
   // import引入的组件需要注入到对象中才能使用
   components: {},
-  data() {
+  data () {
     // 这里存放数据
     return {
       url: ''
@@ -29,17 +36,19 @@ export default {
   // 监控data中的数据变化
   watch: {
     "$store.state.rfq.categoryCode": {
-      handler(val) {
-        this.url=window.location.origin+'/portal/#/supplier/NTier/NTierMap?categoryCode='+val
+      handler (val) {
+
+        this.url = window.location.origin + '/portal/#/NTierMap?categoryCode=' + val
       }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {
-    this.url=window.location.origin + '/portal/#/supplier/NTier/NTierMap?categoryCode='+this.$store.state.rfq.categoryCode
+  created () {
+    console.log(window.location.origin, "222")
+    this.url = window.location.origin + '/portal/#/NTierMap?categoryCode=' + this.$store.state.rfq.categoryCode
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
+  mounted () {
 
   },
   // 方法集合

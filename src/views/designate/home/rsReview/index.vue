@@ -6,7 +6,7 @@
 <template>
   <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PAGE|上会复核页面">
     <!-- 头部 -->
-    <headerNav  />
+    <headerNav :type="sourceinquirypoint" />
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
@@ -72,6 +72,13 @@
           >
             {{ language("DAOCHU", "导出") }}
           </iButton>
+          <!-- 取消MTZ绑定 -->
+          <iButton
+            @click="ttss"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_QUXIAOMTZBANGDING|取消MTZ绑定"
+          >
+            {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
+          </iButton>
 
           
         </div>
@@ -92,9 +99,14 @@
       <!-- 定点单号 -->
       <template #nominateName="scope">
         <span class="flexRow">
-          <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
-            <span class="openLinkText cursor leftRow"  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.nominateName}}</span>
-          </el-tooltip>
+          <div class="flexLeft">
+            <div class="flexRow">
+              <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
+                <span class="openLinkText cursor leftRow"  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.nominateName}}</span>
+              </el-tooltip>
+              <icon v-if="scope.row.mtzApplyId" class="iconMTZ right" symbol name="iconMTZ" />
+            </div>
+          </div>
             <span class="icon-gray  cursor rightRow" v-if="scope.row.nominateName"  @click="viewRsSheetDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
@@ -159,7 +171,7 @@
 <script>
 import { tableTitle, signMenu } from './components/data'
 // import checklistData from './lib/checklist.json'
-import headerNav from '@/views/designate/home/components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import selDialog from '../components/selDialog'
@@ -179,6 +191,10 @@ import {
 import { 
   createSignSheet
 } from '@/api/designate/nomination/signsheet'
+import { 
+  unbindMtzCheck,
+  unbindMtz
+} from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
 
@@ -466,7 +482,53 @@ export default {
       this.selStatus = (row.selStatus && row.selStatus.code) || row.selStatus
       this.selNominateId = row.id
       this.selDialogVisibal = true
-    }
+    },
+    // 取消MTZ绑定
+    async ttss() {
+      // 校验是否支持解绑
+      const state = await this.unbindMtzCheck()
+      if (state) {
+        const data = {
+          nomiId: this.selectTableData[0].id,
+        };
+        try {
+          const confirmInfo = await this.$confirm(this.language('LK_NINGQUEDINGYAOQUXIAOMTZBANGDING', '您确定要取消MTZ绑定吗？'));
+          if (confirmInfo !== 'confirm') return;
+          const res = await unbindMtz(data)
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } catch(e) {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        }
+      }
+    },
+    // 取消MTZ绑定校验
+    async unbindMtzCheck() {
+      let state = true
+      if (this.selectTableData.length !== 1) return iMessage.warn(this.language("QINGXUANZEYIGELIE","请选择一条数据！"))
+      const data = {
+        nomiId: this.selectTableData[0].id,
+      };
+      try {
+        const res = await unbindMtzCheck(data)
+        const { code } = res;
+        if(code == 200){
+          state = true
+        }else{
+          state = false
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch(e) {
+        state = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+      return state
+    },
 
   }
 }
@@ -503,6 +565,10 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    .flexLeft {
+      flex: 1;
+      width: 0;
+    }
     .leftRow{
       width:85%;
       text-align: left;
@@ -514,6 +580,10 @@ export default {
     .rightRow{
       width:5%
     }
+  }
+  .iconMTZ {
+    margin-left: 5px;
+    width: 25px !important;
   }
   .icon-gray:hover{
     cursor: pointer;

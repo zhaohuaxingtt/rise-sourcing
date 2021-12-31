@@ -40,6 +40,7 @@
         <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
         <iButton v-if='isKborJj == 2' @click="options.show = true" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_KBOJJBTN|报价分析汇总-零件-开标结果按钮">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
         <iButton  @click="exportParts(layout)" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_DOWNLOADBTN|报价分析汇总-零件导出按钮">{{language('DAOCHU','导出')}}</iButton>
+        <iButton @click="openView" v-if='!preview'>{{language('SOURCING_RFQDETAIL_FANGDACHAK','预览')}}</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
@@ -48,7 +49,7 @@
       <tableListSupplier v-loading='supplierTableLoading' ref='tableSupplier' v-if='layout == "2"' :parentsData='tabelDataSupplier'></tableListSupplier>
     </template>
     <template v-else>
-      <span class="flex-center-center font18 noData">抱歉！当前轮次还未开标您无法查看报价汇总信息。</span>
+      <span class="flex-center-center font18 noData">{{language('BAOQIANDANGQIANWUFACHAKKBXX','抱歉！当前轮次还未开标您无法查看报价汇总信息。')}}</span>
     </template>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
     <div class="margin-top10 font-size14">
@@ -83,6 +84,7 @@ import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSumm
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
+    exportTile:[],
     supplierLoading:false,
     title:getRenderTableTile([],0,1),
     exampelData:exampelData,
@@ -168,12 +170,25 @@ export default{
   provide(){
     return {vm:this}
   },
+  props:{
+    preview:Boolean
+  },
   methods:{
     /**
      * @description: 点击进入竞价大厅。
      * @param {*}
      * @return {*}
      */
+    openView(){
+      let routerView = this.$router.resolve({
+        path:'/sourceinquirypoint/sourcing/previewfssugs',
+        query:{
+          id:this.$route.query.id
+        }
+      })
+      window.open(routerView.href,'_blank')
+    },
+
     openjjdt(){
       alert('online-bidding 暂未提供跳转url,稍等片刻...')
     },
@@ -318,7 +333,7 @@ export default{
      */
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
-      negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
+      return negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
         if(res.data && res.data.layout){
           this.backChoose = JSON.parse(res.data.layout) // 
         }
@@ -371,10 +386,10 @@ export default{
      */
     fsPartsAsRow(){
       this.fsTableLoading = true
+      this.clearDataFs()
       // eslint-disable-next-line no-unexpected-multiline
       this.changeFnForGSandFS(this.layout).then(res=>{
         this.fsTableLoading = false
-        this.clearDataFs()
         if(res.data && res.data.partInfoList && res.data.partInfoList){
           this.DataRoundsType = res.data.roundsType
           this.hasNoBidOpen = res.data.hasNoBidOpen
@@ -382,6 +397,7 @@ export default{
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
           this.title = relTitle.title
+          this.exportTile = relTitle.allExportHiddenOrShow
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
@@ -453,6 +469,8 @@ export default{
      * @return {*}
      */
     supplierfsSupplierAsRow(){
+      this.backChooseList = []
+      this.tabelDataSupplier = []
       return new Promise(r=>{
         this.supplierTableLoading = true
         fsSupplierAsRow(this.$route.query.id,this.round,this.backChoose).then(res=>{
@@ -513,11 +531,11 @@ export default{
     //导出
     exportParts(layout) {
       if(layout === '1') {
-        return exportFSPartsAsRow(this.$route.query.id,this.round)
+        return exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       } else if(layout === '2') {
-        return exportFsSupplierAsRow(this.$route.query.id,this.round)
+        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
       } else {
-        return exportGsPartsAsRow(this.$route.query.id,this.round)
+        return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       }
     }
   }

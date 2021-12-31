@@ -4,13 +4,10 @@
  * @Description: 特殊定点-配附件--附件需求导入列表
 -->
 <template>
-    <iPage class="importFiles" v-permission.auto="ACCESSORY_IMPORT_PAGE|附件-附件导入-页面">
+    <iPage class="importFiles">
         <!-- <el-tabs v-model="tab" class="tab"> -->
             <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-                 <div class="topMenu">
-                    <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-                    <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
-                </div>
+             <headerNav :type="sourceinquirypoint" />
                 <!-- 内容区 -->
                 <iCard v-permission.auto="ACCESSORY_IMPORT_TABLE|附件-附件导入-表格">
                   <div class="margin-bottom20 clearFloat">
@@ -80,6 +77,7 @@ import Upload from '@/components/Upload'
 import { pageMixins } from "@/utils/pageMixins";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { tableTitle } from "./data";
+import headerNav from '@/components/headerNav'
 
 import {
   getAffixList,
@@ -103,7 +101,8 @@ export default {
         iPagination,
         Upload,
         tableList,
-        icon
+        icon,
+        headerNav
     },
     data(){
         return{
@@ -112,7 +111,7 @@ export default {
             tableTitle:tableTitle,
             selectItems:[],
             uploadImportFile:uploadImportFile,
-            tableListData:[]
+            tableListData:[],
         }
     },
     created(){
@@ -121,7 +120,7 @@ export default {
       this.updateNavList
     },
     computed: {
-      ...mapState(["navList","navListLeft"]),
+      ...mapState(["navList"]),
       ...mapActions(["updateNavList"])
     },
     methods:{

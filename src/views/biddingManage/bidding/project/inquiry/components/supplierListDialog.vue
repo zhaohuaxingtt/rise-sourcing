@@ -62,7 +62,12 @@
           :data="tableListData"
           :columns="supplierTableListColumns"
           @handle-selection-change="handleSelectionChange"
-        />
+        >
+          <template #nameZh="scope">
+            {{scope.row.nameZh}}
+            <!-- <supplierBlackIcon/> -->
+          </template>
+        </iTableCustom>
         <iPagination
           v-update
           @current-change="handleCurrentChange($event, query)"
@@ -70,8 +75,8 @@
           background
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
-          prev-text="上一页"
-          next-text="下一页"
+          :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+          :next-text="language('BIDDING_XIAYIYE','下一页')"
           :layout="page.layout"
           :current-page="page.currPage"
           :total="page.total"
@@ -84,9 +89,11 @@
 <script>
 import { iDialog, iInput, iButton, iPagination,iSelect } from "rise";
 import iTableCustom from "@/components/biddingComponents/iTableCustom";
+import commonTable from "@/components/biddingComponents/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { getSupplierInfo } from "@/api/mock/mock";
 import { supplierTableListColumns } from "./data";
+import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 export default {
   mixins: [pageMixins],
   components: {
@@ -96,6 +103,7 @@ export default {
     iPagination,
     iTableCustom,
     iButton,
+    // supplierBlackIcon,
   },
   props: {
     show: { type: Boolean, default: false },
@@ -139,15 +147,15 @@ export default {
       },
       supplierType:[
         {
-          label:'生产',
+          label: this.language('BIDDING_SHENGCHAN', '生产'),
           value:'PP',
         },
         {
-          label:'一般',
+          label: this.language('BIDDING_YIBAN', '一般'),
           value:'GP',
         },
         {
-          label:'共用',
+          label: this.language('BIDDING_GONGYONG', '共用'),
           value:'PD',
         },
       ],
