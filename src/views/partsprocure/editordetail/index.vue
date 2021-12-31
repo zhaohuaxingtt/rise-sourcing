@@ -225,7 +225,7 @@
 						</iFormItem> -->
 						<!------------------------零件采购项目类型为DB类型时--------------------------------------->
 						<iFormItem  v-permission.auto="PARTSPROCURE_EDITORDETAIL_ISDBCURRENCYCODE|DB类型的货币" v-if="([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || originPartIsDb" :label="language('LK_HUOBI','货币') + ':'" name="test">
-							<iSelect v-model="detailData.currencyCode" v-if="!disabled">
+							<iSelect v-model="detailData.currencyCode" v-if="!disabled && detailData.partProjectType != partProjTypes.JINLINGJIANHAOGENGGAI">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CURRENCY_TYPE" :key="index">
 								</el-option>
@@ -291,7 +291,7 @@
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
 						<iFormItem  v-permission.auto="PARTSPROCURE_BASIC_ISDBPUECHASECLAUSE|DB零件的采购条款"  v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('CAIGOUTIAOKUAN','采购条款') + ':'" name="test">
-							<iSelect v-model="detailData.purchaseClause" v-if="!disabled">
+							<iSelect v-model="detailData.purchaseClause" v-if="!disabled && detailData.partProjectType != partProjTypes.JINLINGJIANHAOGENGGAI">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PURCHASE" :key="index">
 								</el-option>
@@ -336,7 +336,7 @@
 						</iFormItem>
 						<!----------------------零件采购项目类型为DB零件时----------------------------------->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_ISDBPAYCLAUSE|DB零件的支付条款" v-if="[partProjTypes.DBLINGJIAN].includes(detailData.partProjectType) || ([partProjTypes.DBYICHIXINGCAIGOU, partProjTypes.YICIXINGCAIGOU].includes(detailData.partProjectType) && detailData.isDb) || [partProjTypes.DBLINGJIAN].includes(detailData.oldPartProjectType)" :label="language('ZHIFUTIAOKUAN', '支付条款') + ':'" name="test">
-							<iSelect v-model="detailData.payClause" v-if="!disabled">
+							<iSelect v-model="detailData.payClause" v-if="!disabled && detailData.partProjectType != partProjTypes.JINLINGJIANHAOGENGGAI">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.TERMS_PAYMENT" :key="index">
 								</el-option>

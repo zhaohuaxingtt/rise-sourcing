@@ -8,7 +8,7 @@
  */
 
 export const tableTitle = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true}, 
+  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true,minWidth: 200},
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true}, 
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true}, 
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true}, 
