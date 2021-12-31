@@ -57,7 +57,7 @@ export default {
         {label:'linie采购员',key:'RECORDLINIECAIGOUYUAN', props: 'linieName'},
         {label:'会议名称',key:'HUIYIMINGCHENG', props: 'meetingName'},
         {label:'申请状态',key:'SHENQINGZHUANGTAI', props: 'applicationStatusDesc'},
-        {label:'采购项目类型',key:'LK_CAIGOUXIANGMULEIXING', props: 'partProjType'},
+        {label:'采购项目类型',key:'LK_CAIGOUXIANGMULEIXING', props: 'partProjTypeDesc'},
       ],
       nominateName: '',
       data: {}
