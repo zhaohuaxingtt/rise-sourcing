@@ -739,7 +739,6 @@ export default {
               tempData.push(item);
             }
           });
-          console.log(tempData)
           for (var i=tempData.length-1;i>=0;i--) {
             if (tempData[i].hasChild) {
               var filtered = tempData.filter((child) => {
@@ -760,7 +759,6 @@ export default {
             }
           }
           tempData.forEach((item) => {
-
             this.tableListData.push(item)
           })
         }

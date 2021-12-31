@@ -52,12 +52,11 @@
         :lang="true"
         @handleSelectionChange="handleSingleSelectionChange"
         @openPage="openPage"
-        :activeItems="'partNum'"
         v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_TABLE|单一供应商表格"
       >
-        <template #partNum="scope">
+        <!-- <template #partNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.partNum}}</a>
-        </template>
+        </template> -->
         <!-- 供应商名 -->
         <template #suppliersName="scope">
           <div v-if="singleEditControl || scope.row.isEdit" class="required">

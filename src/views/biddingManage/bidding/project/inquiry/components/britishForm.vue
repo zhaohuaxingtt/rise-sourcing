@@ -172,8 +172,14 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
-        console.log(176,val)
       },
+    },
+    '$i18n.locale':{
+      immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+      }
     },
     ruleForm(val) {
       this.$emit("input", val);
@@ -197,8 +203,8 @@ export default {
         this.$refs["ruleForm"].validateField(["pricingDeadline"]);
       });
       if (val == null) {
-        this.$set(this.ruleForm, "biddingEndTime", "");
-        this.$set(this.ruleForm, "pricingDeadline", "");
+        this.$set(this.ruleForm, "biddingEndTime", null);
+        this.$set(this.ruleForm, "pricingDeadline", null);
         this.$nextTick(() => {
           this.$refs["ruleForm"].clearValidate(["biddingEndTime"]);
           this.$refs["ruleForm"].clearValidate(["pricingDeadline"]);
@@ -212,14 +218,16 @@ export default {
       });
     },
     "ruleForm.biddingEndTime"(val) {
-      let three = 3 * 24 * 3600 * 1000;
-       let time = new Date(val).getTime() + three;
-       this.ruleForm.pricingDeadline = dayjs(time).format("YYYY-MM-DD HH:mm:00");
+      if (val) {
+        let three = 3 * 24 * 3600 * 1000;
+        let time = new Date(val).getTime() + three;
+        this.ruleForm.pricingDeadline = dayjs(time).format("YYYY-MM-DD HH:mm:00");
+      }
     }
   },
   data() {
     return {
-      rules: baseRules,
+      rules: baseRules(this),
       roundTypeLists,
       ruleForm: {},
       biddingStatus,

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-06 15:34:45
- * @LastEditTime: 2021-08-31 15:57:52
+ * @LastEditTime: 2021-12-30 18:04:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\categoryManagementAssistant\mek\index.js
@@ -39,6 +39,14 @@ export function deleteMekTable(params) {
 export function getHistogram(params) {
   return request({
     url: '/mekScheme/mek',
+    method: 'POST',
+    data: params,
+  })
+}
+//获取mek分析柱状图详情
+export function mekInnerTarget(params) {
+  return request({
+    url: '/mekScheme/mekInnerTarget',
     method: 'POST',
     data: params,
   })

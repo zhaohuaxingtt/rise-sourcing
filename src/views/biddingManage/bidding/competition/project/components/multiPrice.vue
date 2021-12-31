@@ -537,7 +537,7 @@ export default {
       factoryPricePercentFlag: true,
       totalPriceFlag: false,
       tableLoading: false,
-      rules: baseRules,
+      rules: [],
       ruleForm: {
         beginMonth: "",
         modelProjects: [],
@@ -605,7 +605,9 @@ export default {
   },
   mounted() {
     this.handleSearchReset();
-    
+    this.$nextTick(() => {
+      this.rules = baseRules(this)
+    })
     // getModels().then((res) => {
     //   this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
     // });
@@ -696,6 +698,25 @@ export default {
     //     }
     //   }
     // },
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'beginMonth',
+          //   'modelProjects',
+          //   'models',
+          //   'totalPrices'
+          // ])
+        })
+      }
+    },
     //监听产品  计算B价 ==出厂价+包装费+运输费+操作费
     biddingProducts: {
       handler(val, oldVal) {
