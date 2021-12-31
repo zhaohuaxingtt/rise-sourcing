@@ -511,7 +511,7 @@ export default {
           if (res.code == 200) {
             iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             this.getPartsTableList()
-            window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`, "_blank")
+            window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&flowType=${ this.nominationType }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`, "_blank")
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
