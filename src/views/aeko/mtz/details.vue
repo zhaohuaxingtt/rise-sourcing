@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-24 15:52:44
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-31 09:47:47
  * @Description: 
 -->
 <template>
@@ -16,12 +16,13 @@
         >
           {{ language('REST', '重置') }}
         </iButton>
-        <iButton
+         <!-- 12-31 取消 -->
+        <!-- <iButton
           v-permission.auto="MTZ_MODIFY_DETAILS_BUTTON_COPY|MTZ复制"
           @click="copyAekoMtz"
         >
           {{ language('LK_COPY', '复制') }}
-        </iButton>
+        </iButton> -->
         <iButton
           v-permission.auto="MTZ_MODIFY_DETAILS_BUTTON_REMOVE|MTZ删除"
           @click="removeAekoMtz"
