@@ -189,7 +189,7 @@
               <iText>{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
             <div class="edit-button-row">
-              <i-button v-if="!disabled"
+              <i-button v-if="beforeCreate || !disabled"
                         @click="edit"
                         v-permission.auto="PARTSRFQ_EDITORDETAIL_SAVE|(编辑 / 保存)">{{ !editStatus ? language('LK_BIANJI', '编辑') : language('LK_BAOCUN', '保存') }}
               </i-button>
@@ -342,7 +342,8 @@ export default {
       bnkNotApprovesTable:[],
       bnkNotApprovesShow:false,
       supplierNamesShow:false,
-      projectPartDTOSShow:false
+      projectPartDTOSShow:false,
+      beforeCreate: false
     };
   },
   created () {
@@ -453,6 +454,7 @@ export default {
       } else {
         this.disabled = true;
         this.baseInfoLoading = false;
+        this.beforeCreate = true
       }
     },
     changeNav (target) {
