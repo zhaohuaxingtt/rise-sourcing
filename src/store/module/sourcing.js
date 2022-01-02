@@ -547,10 +547,17 @@ const state = {
 const mutations = {
   SET_NAV_LIST(state, data) {
     state.navList = data
-  }
+  },
+  SET_SOURCEINQUIRYPOINT_NAV_LIST_LEFT(state, data) {
+    state.sourceinquirypointNavListLeft = data
+  },
+  SET_SOURCEINQUIRYPOINT_THIRD_MENU(state, data) {
+    state.sourceinquirypointThirdMenu = data
+  },
 }
 
 let source = null
+
 const actions = {
   updateNavList({ commit, state }) {
     if (source) source.cancel()
@@ -560,38 +567,33 @@ const actions = {
       getAgentTasksNum({ cancelToken: source.token })
         .then(res => {
           if (res.code == 200) {
-            const navList = cloneDeep(state.navList)
+            const sourceinquirypointNavListLeft = cloneDeep(state.sourceinquirypointNavListLeft)
+            const sourceinquirypointThirdMenu = cloneDeep(state.sourceinquirypointThirdMenu)
 
             Object.keys(res.data).forEach(key => {
-              for (let i = 0, item; (item = navList[i++]);) {
+            //   for (let i = 0, item; (item = navList[i++]);) {
                 switch (key) {
                   case "partAgentNum": // 零件签收待办
-                    if (item.url.indexOf("partsign") > -1) {
-                      item.message = res.data[key] || 0
-                    }
-                    break;
+                    sourceinquirypointThirdMenu[3].message = res.data[key] || 0
+                    break
                   case "purchaseProjectAgentNum": // 采购项目待办
-                    if (item.url.indexOf("partsprocure") > -1) {
-                      item.message = res.data[key] || 0
-                    }
-                    break;
+                    sourceinquirypointNavListLeft[2].message = res.data[key] || 0
+                    break
                   case "rfqAgentNum": // RFQ待办
-                    if (item.url.indexOf("partsrfq") > -1) {
-                      item.message = res.data[key] || 0
-                    }
-                    break;
+                    sourceinquirypointThirdMenu[9].message = res.data[key] || 0
+                    break
                   case "normiAgentNun": // 定点管理待办
-                    if (item.url.indexOf("partsnomination") > -1) {
-                      item.message = res.data[key] || 0
-                    }
-                    break;
+                    sourceinquirypointThirdMenu[11].message = res.data[key] || 0
+                  break
                   default:
-                    break;
+                    break
                 }
-              }
+            //   }
             })
 
-            commit("SET_NAV_LIST", navList)
+            // commit("SET_NAV_LIST", navList)
+            commit("SET_SOURCEINQUIRYPOINT_NAV_LIST_LEFT", sourceinquirypointNavListLeft)
+            commit("SET_SOURCEINQUIRYPOINT_THIRD_MENU", sourceinquirypointThirdMenu)
             resolve(res)
           } else {
             reject(res)
@@ -603,7 +605,7 @@ const actions = {
 }
 
 const getters = {
-  navList: state => state.navList,
+  navList: state => state.navList
 }
 
 export default {
