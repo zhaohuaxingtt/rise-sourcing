@@ -52,8 +52,9 @@ export default {
     iTabsList,
   },
   created() {
-    this.updateNavList;
-    this.group = this[`${ this.type }ThirdMenu`].filter((i) => i.url == this.$route.path)[0].group;
+    this.group = this[`${ this.type }ThirdMenu`].filter((i) => i.url == this.$route.path)[0]?.group ?? ''
+    
+    this.updateNavList
   },
   computed: {
     ...mapState([
@@ -73,18 +74,17 @@ export default {
       return this[`${ this.type }NavListLeft`] || []
     },
     heaederSubMenu() {
-      let heaederSubMenu = this[`${ this.type }ThirdMenu`]
+      return this[`${ this.type }ThirdMenu`]
         .filter((i) => i.group == this.group)
         .map((item, index) => {
-          item.value = 1 + index;
-          return item;
-        });
-      return heaederSubMenu;
+          item.value = 1 + index
+          return item
+        })
     },
   },
   methods: {
     change(pramas) {
-      this.group = pramas.group;
+      this.group = pramas.group
     },
   },
 };

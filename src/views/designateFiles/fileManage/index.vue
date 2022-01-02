@@ -12,7 +12,7 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
 
-        <headerNav :type="sourceinquirypoint" />
+        <headerNav />
 
 
           <!-- <div class="margin-bottom33">
