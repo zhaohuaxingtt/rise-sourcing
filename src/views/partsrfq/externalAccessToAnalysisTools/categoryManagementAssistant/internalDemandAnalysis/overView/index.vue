@@ -17,7 +17,8 @@
           <div slot="header">
             <span class="title">{{language(item.key,item.name)}}</span>
           </div>
-          <div class="img" :style="{'background-image': 'url('+item.image+')'}">
+          <div class="img"
+               :style="{'background-image': 'url('+item.image+')'}">
           </div>
         </iCard>
       </div>
@@ -59,7 +60,8 @@ export default {
           name: "EKL",
           key: "EKL",
           image: require("@/assets/images/partRfq/internalDemandAnalysis05.png"),
-          url: process.env.VUE_APP_PORTAL_URL + "achievement/baseData/list"
+          // url: process.env.VUE_APP_PORTAL_URL + "achievement/baseData/list"
+          url: process.env.VUE_APP_PORTAL_URL + "achievement/baseData/mymerit"
         }, {
           name: "SOP进度轴",
           key: "SOPJINDUZHOU",

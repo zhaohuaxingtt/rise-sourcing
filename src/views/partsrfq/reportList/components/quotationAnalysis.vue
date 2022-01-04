@@ -1,8 +1,8 @@
 <!--
  * @Date: 2021-11-16 11:06:02
  * @LastEditors: caopeng
- * @LastEditTime: 2021-12-10 17:45:49
- * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\reportList\components\quotationAnalysis.vue
+ * @LastEditTime: 2021-12-29 14:04:11
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\quotationAnalysis.vue
 -->
 <!--
  * @author: shujie
@@ -74,6 +74,7 @@ export default {
       let data = {
         ...this.searchCriteria,
         instanceId: -1,
+         isBindingInstance:0,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
       }
@@ -87,6 +88,7 @@ export default {
       })
     },
       join(row) {
+          console.log(row)
       const req = {
         ids: [row.id],
       }

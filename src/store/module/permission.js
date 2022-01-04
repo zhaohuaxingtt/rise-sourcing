@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-12-15 20:16:25
+ * @LastEditTime: 2021-12-30 15:39:20
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -30,14 +30,18 @@ const getVuerouter = function(router) {
 }
 //初始化菜单，新增active字段和默认选中第一个点亮
 function initMeun(data) {
-  data.forEach((items, index) => {
-    if (index == 0) {
-      items['active'] = false
-    } else {
-      items['active'] = false
-    }
-  })
-  return data
+  try {
+    data.forEach((items, index) => {
+      if (index == 0) {
+        items['active'] = false
+      } else {
+        items['active'] = false
+      }
+    })
+    return data
+  } catch (error) {
+    return []
+  }
 }
 /**
  * @description: 拿到用户权限过渡方法
@@ -91,6 +95,17 @@ const mutations = {
     state.resourceList = data
   }
 }
+//合并菜单的key到resouce里面去，满足菜单勾选取消后，能将界面上是菜单类型的permissionremove掉
+function mergeMenuToresouce(resouce,menuList){
+  try {
+    menuList.forEach(items=>{
+      if(items.permissionKey) resouce[items.permissionKey] = 'menu'
+      if(items.menuList && items.menuList.length > 0){mergeMenuToresouce(resouce,items.menuList)}
+    })
+  } catch (error) {
+    return []
+  }
+}
 const actions = {
   // 通过异步方式获取菜单。
   getPermissinInfo({ commit }) {
@@ -99,8 +114,10 @@ const actions = {
         .then(res => {
           if (res.code == 200 && res.data) {
             commit('SET_MENU_LIST', initMeun(res.data.menuList))
+            mergeMenuToresouce(res.data.resourceList,res.data.menuList)
+            console.log(res.data.resourceList)
             commit('SET_WIHTEBTN_LIST', res.data.resourceList || [])
-            r(res.data.menuList)
+            r(res.data.menuList || [])
           } else {
             commit('SET_MENU_LIST', [])
             commit('SET_WIHTEBTN_LIST', [])

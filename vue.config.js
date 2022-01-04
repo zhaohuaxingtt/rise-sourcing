@@ -118,7 +118,6 @@ module.exports = {
     //是否开起css分离
     extract: process.env.NODE_ENV != 'dev',
     sourceMap: false,
-    requireModuleExtension: true,
     loaderOptions: {
       sass: {
         implementation: require('sass'),

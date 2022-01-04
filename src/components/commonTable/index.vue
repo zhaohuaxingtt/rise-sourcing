@@ -10,7 +10,7 @@
     <el-table :height="height"
               tooltip-effect='light'
               :data='tableData'
-              :empty-text="$t('LK_ZANWUSHUJU')"
+              :empty-text="language('LK_ZANWUSHUJU', '暂无数据')"
               v-loading='tableLoading'
               @selection-change="handleSelectionChange"
               :row-class-name="handleTableRow">
@@ -20,7 +20,7 @@
         <!-- 点击事件-->
         <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip'
                          v-if='items.props === openPageProps' :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name" :fixed="items.fixed">
+                         :label="language ? language(items.key, items.name) : $t(items.key)" :fixed="items.fixed">
           <template slot-scope="scope">
             <el-form-item>
             <span class="openLinkText cursor"
@@ -33,13 +33,13 @@
         <!--输入框-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                          v-else-if='inputProps.includes(items.props)' :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="language ? language(items.key, items.name) : $t(items.key)">
           <template #header>
-            {{ items.key ? $t(items.key) : items.name }}
+            {{ language ? language(items.key, items.name) : $t(items.key) }}
             <span class="required" v-if="items.required">*</span>
             <el-popover
                 trigger="hover"
-                :content="items.iconTextKey ? $t(items.iconTextKey) : items.iconText"
+                :content="language ? language(items.iconTextKey, items.iconText) : $t(items.iconTextKey)"
                 placement="top-start">
               <icon slot="reference" symbol v-if="items.icon" :name="items.icon" class="font-size16 marin-left5"/>
             </el-popover>
@@ -55,16 +55,16 @@
         <!--普通下拉框-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                          v-else-if='selectProps.includes(items.props)' :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="language ? language(items.key, items.name) : $t(items.key)">
           <template #header>
-            {{ items.key ? $t(items.key) : items.name }}
+            {{ language ? language(items.key, items.name) : $t(items.key) }}
             <span class="required" v-if="items.required">*</span>
           </template>
           <template slot-scope="scope">
             <el-form-item :prop="'tableData.' + scope.$index + '.' + items.props" :rules="items.rule ? items.rule : ''">
               <i-select v-model="scope.row[items.props]">
                 <el-option v-for="items in selectPropsOptionsObject[items.props]" :key='items.code' :value='items.code'
-                           :label="items.key ? $t(items.key) : items.name"/>
+                           :label="language ? language(items.key, items.name) : $t(items.key)"/>
               </i-select>
             </el-form-item>
           </template>
@@ -72,7 +72,7 @@
         <!--文件大小-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                          v-else-if='items.props === fileSizeProps' :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="language ? language(items.key, items.name) : $t(items.key)">
           <template slot-scope="scope">
             <el-form-item>
               {{ scope.row[items.props] ? scope.row[items.props] / 1024 / 1024 : 0 }}
@@ -81,15 +81,15 @@
         </el-table-column>
         <!--纯展示-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else
-                         :label="items.key ? $t(items.key) : items.name"
+                         :label="language ? language(items.key, items.name) : $t(items.key)"
                          :prop="items.props" :fixed="items.fixed">
           <!--自定义嵌入-->
           <template #header>
-            {{ items.key ? $t(items.key) : items.name }}
+            {{ language ? language(items.key, items.name) : $t(items.key) }}
             <span class="required" v-if="items.required">*</span>
             <el-popover
                 trigger="hover"
-                :content="items.iconTextKey ? $t(items.iconTextKey) : items.iconText"
+                :content="language ? language(items.iconTextKey, items.iconText) : $t(items.iconTextKey)"
                 placement="top-start">
               <icon slot="reference" symbol v-if="items.icon" :name="items.icon" class="font-size16 marin-left5"/>
             </el-popover>
@@ -135,6 +135,7 @@ export default {
     openPageGetRowData: {type: Boolean, default: false},
     inputType: {type: String, default: ''},
     fileSizeProps: {type: String, default: 'fileSize'},
+    lang: {type: Boolean, default: false}
   },
   components: {
     iInput,

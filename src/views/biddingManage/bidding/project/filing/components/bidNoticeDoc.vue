@@ -6,7 +6,7 @@
       ? {
         width: '108.75rem',
         class: 'summary-dialog-box',
-        title: type === '01' ? '系统使用条款' : title,
+        title: type === '01' ? language('BIDDING_XTSYTK', '系统使用条款' ): title,
         visible: open || type === '01',
         ['close-on-click-modal']: false,
       } 
@@ -147,11 +147,11 @@ export default {
     Object.assign(this, this.$route.query);
     this.supplierTermsCode = this.supplierCode || this.supplierTermsCode;
     if (this.$route.name === "bidNoticeDocTender") {
-      this.title = "开标告知书";
+      this.title = this.language('BIDDING_KBGZS', "开标告知书" );
       this.type = "02";
       this.open = true;
     } else if (this.$route.name === "bidNoticeDocBidding") {
-      this.title = "竞价告知书";
+      this.title = this.language('BIDDING_JJGZS', "竞价告知书" );
       this.type = "02";
       this.open = true;
     }

@@ -1,10 +1,10 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-07-06 13:40:04
- * @LastEditTime: 2021-12-10 17:42:24
+ * @LastEditTime: 2021-12-24 15:01:40
  * @LastEditors: caopeng
  * @Description: 导出 报告清单 弹窗
- * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\reportList\components\exportReport.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\exportReport.vue
 -->
 <template>
   <iDialog :visible.sync="value"
@@ -80,7 +80,7 @@ export default {
       }
       let fileIds = []
       this.selectData.map((item) => {
-        fileIds.push(item.id)
+        fileIds.push(item.downloadUrl)
       })
       const req = {
         fileName: 'rise.zip',

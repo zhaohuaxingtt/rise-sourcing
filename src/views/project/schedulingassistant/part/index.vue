@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 13:59:40
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-13 16:54:58
+ * @LastEditTime: 2021-12-27 11:24:26
  * @Description: 零件排程页面
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\index.vue
 -->

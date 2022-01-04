@@ -3,9 +3,9 @@
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
           <!-- 创建MTZ申请 -->
-          <iButton @click="handlecreatemtz" :disabled="isMtzDisabled || getSelectedMtzFlag"  v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请">
+          <!-- <iButton @click="handlecreatemtz" :disabled="isMtzDisabled || getSelectedMtzFlag"  v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请">
             {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
-           </iButton>
+           </iButton> -->
           <span v-if="!nominationDisabled && !rsDisabled" class="margin-left10">
             <!-- 批量编辑 -->
             <iButton @click="handleBatchEdit" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BATCHEDIT|批量编辑">
@@ -467,20 +467,19 @@ export default {
       this.mouldVisibal = true
     },
     // 创建MTZ申请
-    handlecreatemtz() {
-      if(!this.selectData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }else {
-        let nom = this.selectData[0].nominateId || ''
-        let item =[]
-        let supplierId = []
-        item = this.selectData.map(val => val.partNum).join(',') || ''
-        supplierId = this.selectData.map(val => val.supplierId).join(',') || ''
-        window.location.href=`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=`+nom+`&item=`+item+`&supplierId=`+supplierId
-      }
-    },
-  
+    // handlecreatemtz() {
+    //   if(!this.selectData.length) {
+    //     iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+    //     return
+    //   }else {
+    //     let nom = this.selectData[0].nominateId || ''
+    //     let item =[]
+    //     let supplierId = []
+    //     item = this.selectData.map(val => val.partNum).join(',') || ''
+    //     supplierId = this.selectData.map(val => val.supplierId).join(',') || ''
+    //     window.location.href=`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=`+nom+`&item=`+item+`&supplierId=`+supplierId
+    //   }
+    // },
   },
   created(){
     this.nominateAppSDetail()

@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 10:32:07
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-06 16:00:13
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-30 15:54:09
  * @Description: 
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\components\data.js
  */
@@ -64,6 +64,15 @@ export const TAB = [
     permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_TAB",
     permissionName: "数据维护"
   },
+  // {
+  //   value: 7,
+  //   name: '质量评分预设规则',
+  //   url: "/targetpriceandscore/qualityscorerules",
+  //   activePath: "/qualityscorerules",
+  //   key: "ZHILIANGPINGFENYUSHEGUIZE",
+  //   permissionKey: "QUALITYSCORERULES_TAB",
+  //   permissionName: "质量评分预设规则"
+  // },
   
 ]
 

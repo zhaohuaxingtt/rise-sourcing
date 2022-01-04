@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-11-26 14:27:07
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-08 09:59:34
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-30 17:40:12
  * @Description: 
  * @FilePath: \front-sourcing\src\router\modules\targetPriceAndScore\index.js
  */
@@ -23,7 +23,7 @@ export default [
       ...modeltargetpriceRoutes,
       ...supplierscoreRoutes,
       ...configscoredeptRoutes,
-      ...costanalysismanageRoutes
+      ...costanalysismanageRoutes,
     ]
   }
 ]

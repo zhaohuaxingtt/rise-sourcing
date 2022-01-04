@@ -1,8 +1,8 @@
 /*
  * @Author: haojiang
  * @Date: 2021-08-06 15:49:46
- * @LastEditTime: 2021-12-08 10:17:21
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-23 18:30:53
+ * @LastEditors: YoHo
  * @Description: 报表管理
  * @FilePath: \front-sourcing\src\router\modules\reportmanage.js
  */
@@ -16,7 +16,7 @@ export default [
       title: "寻源概览",
       activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
     },
-    component: () => import ("@/layout/default"),
+    component: () => import("@/layout/default"),
     children: [
       {
         path: "/sourcing/dashboard",
@@ -25,7 +25,36 @@ export default [
           title: "寻源概览",
           activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
         },
-        component: () => import ("@/views/dashboard/index")
+        component: () => import("@/views/dashboard/layout"),
+        redirect: "/sourcing/dashboard/index",
+        children: [
+          {
+            path: "index",
+            name: "reportmgmt-report",
+            meta: {
+              title: "寻源概览",
+              activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+            },
+            component: () => import("@/views/dashboard/index")
+          }, {
+            path: "report",
+            name: "reportmgmt-report",
+            meta: {
+              title: "状态跟踪报表",
+              activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+            },
+            component: () => import("@/views/dashboard/report/pbi")
+          },
+          {
+            path: "details",
+            name: "reportmgmt-details",
+            meta: {
+              title: "状态跟踪详情",
+              activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+            },
+            component: () => import("@/views/dashboard/report")
+          },
+        ]
       },
     ]
   },
@@ -36,7 +65,7 @@ export default [
       title: "报表管理",
       activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
     },
-    component: () => import ("@/layout/default"),
+    component: () => import("@/layout/default"),
     redirect: "/sourceinquirypoint/sourcing/reportmgmt/report",
     children: [
       {
@@ -46,7 +75,7 @@ export default [
           title: "状态跟踪报表",
           activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
         },
-        component: () => import ("@/views/dashboard/report/pbi")
+        component: () => import("@/views/dashboard/report/pbi")
       },
       {
         path: "/sourceinquirypoint/sourcing/reportmgmt/details",
@@ -55,9 +84,9 @@ export default [
           title: "状态跟踪详情",
           activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
         },
-        component: () => import ("@/views/dashboard/report")
+        component: () => import("@/views/dashboard/report")
       },
     ]
   }
-  
+
 ]

@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-03 09:52:00
- * @LastEditTime: 2021-09-07 16:33:59
+ * @LastEditTime: 2021-12-30 17:14:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\home\components\data.js
@@ -38,4 +38,45 @@ export const assignmentOfScroingTasksTableTitle = [
 
 export const attachmentTableTitle = [
     { props: 'fileName', name: '文件名称', key: 'WENJIANMINGCHENG' }
+]
+export const maintainSupplierTitle = [
+    // { props: 'fsnrGsnrNum', name: '零件采购项目号', key: 'FSGSSPNO', tooltip: true },
+    // { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO', tooltip: true },
+    // { props: 'procureFactoryName', name: '采购工厂', key: 'CAIGOUGONGCHANG', tooltip: true },
+    { props: 'supplierNameZh', name: '供应商', key: 'SUPPLIER', tooltip: true },
+    // { props: 'e', name: '工厂地址', key: 'GONGCHANGDIZHI', tooltip: true },
+]
+export const noStarMonitorTable = [
+    { props: 'fsnrGsnrNum', name: '零件采购项目号', key: 'FSGSSPNO', tooltip: true },
+    { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO', tooltip: true },
+    { props: 'procureFactoryName', name: '采购工厂', key: 'CAIGOUGONGCHANG', tooltip: true },
+]
+export const noBnkTable = [
+    { props: 'fsnrGsnrNum', name: '零件采购项目号', key: 'FSGSSPNO', tooltip: true },
+    { props: 'partNumb', name: '零件号', key: 'LK_LINGJIANHAO', tooltip: true },
+    { props: 'procureFactoryName', name: '采购工厂', key: 'CAIGOUGONGCHANG', tooltip: true },
+    { props: 'supplierName', name: '供应商', key: 'SUPPLIER', tooltip: true },
+]
+
+export const partsprocureNavList = [
+	{
+		value: 1,
+		name: "RFQ管理",
+		message: 0,
+		url: "/sourceinquirypoint/sourcing/partsrfq",
+		activePath: "partsrfq",
+		key: "LK_RFQGUANLI",
+		permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_PARTSRFQ',
+		permissionName: '寻源执行-RFQ管理'
+	},
+    {
+      value: 2,
+      name: "竞价开标",
+      message: 0,
+      url: "/sourceinquirypoint/sourcing/partsrfq/biddingProjectList",
+      activePath: "biddingProjectList",
+      key: "LK_JINGJIAKAIBIAO",
+      permissionKey: 'SOURCEINQUIRYPOINT_SOURCING_SUBMENU_BIDDINGPROJECTLIST',
+      permissionName: '寻源执行-竞价开标'
+    },
 ]

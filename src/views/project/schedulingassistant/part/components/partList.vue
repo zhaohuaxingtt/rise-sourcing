@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-20 13:53:17
+ * @LastEditTime: 2021-12-28 11:21:43
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -64,7 +64,13 @@
         </div> 
         <div class="productItem-bottom"> 
           <div class="productItem-bottom-text"> 
-            <icon @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon>  
+            <el-popover
+              :content="language('TIAOZHUANLISHIJINDUSHUJUKU','跳转历史进度数据库')"
+              placement="top-start"
+              trigger="hover">
+              <icon slot="reference" @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon> 
+            </el-popover>
+             
           </div> 
           <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node"> 
             <div class="productItem-bottom-nodeItem">  
@@ -73,11 +79,11 @@
               <icon v-if="index === nodeList.length - 1 ? pro[item.status] == 1 && pro[item.status2] == 1 : pro[item.status] == 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon> 
               <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>  
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------> 
-              <div v-if="index == nodeList.length - 1"> 
-                <iText v-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
-                <span v-else  :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
-                <iText v-if="pro[item.status2] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw2]}}</iText> 
-                <span v-else :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>
+              <div v-if="index == nodeList.length - 1" class="margin-top20 doubleItem"> 
+                <iText v-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro[item.kw]}}</iText> 
+                <span v-else  :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
+                (<iText v-if="pro.bmgFlag === '是' || pro[item.status2] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro.bmgFlag === '是' ? '/' : pro[item.kw2]}}</iText> 
+                <span v-else :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>)
               </div>   
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
               <!-- <el-cascader 
@@ -95,7 +101,7 @@
                 <!--------------------------节点时长-不可编辑------------------------------------> 
                 <template v-if="index == nodeList.length - 2"> 
                   <iText :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
-                  <iText :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText> 
+                  (<iText :class="`productItem-bottom-stepBetween-input text `">{{pro.bmgFlag === '是' ? '/' : pro[item.keyPoint2] + 'W'}}</iText>) 
                 </template> 
                 <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
               </div>  
@@ -161,7 +167,7 @@ export default {
       downloadTypeList: [ 
         {label: '风险预警零件', key: 'FENGXIANYUJINGLINGJIAN', type: 1}, 
         {label: '未释放零件', key: 'WEISHIFANGLINGJIAN', type: 3}, 
-        {label: '未BF零件', key: 'WEIBFLINGJIAN', type: 2} 
+        {label: '数据待冻结零件', key: 'SHUJUDAIDONGJIELINGJIAN', type: 2} 
       ], 
       downloadLoading: false,
       svgList: {
@@ -421,6 +427,7 @@ export default {
     async handleSendFs() { 
       await this.autoSave() 
       try { 
+        console.log('3')
         this.loading = true 
         // 筛选出待定点和待kickoff的数据 
         const selectRows = this.partsTemp.filter(item => { 
@@ -588,17 +595,40 @@ export default {
      * @param {*} between 间隔周数
      * @return {*}
      */    
-    getKw(start, between) {
+    getKw(start, betweenKW) {
       if (!start) {
         return null
       }
+      const between = betweenKW || 0
       const startYear = Number(start.split('-KW')[0]) 
       const startWeek = Number(start.split('-KW')[1]) 
       const startAllWeek = moment(startYear+'-01-01').weeksInYear()
-      if (startWeek + between <= startAllWeek) {
+      if (startWeek + between > 0 && startWeek + between <= startAllWeek) {
         return startYear + '-KW' + ((startWeek + between) < 10 ? '0' + (startWeek + between) : (startWeek + between))
+      } else if (startWeek + between > startAllWeek) {
+        let addYearNum = 0
+        let addWeek = startWeek + between - startAllWeek
+        let nextYear = startYear+addYearNum
+        let yearWeek = moment(nextYear+'-01-01').weeksInYear()
+        for (let i = addWeek; i > 0; i -= yearWeek) {
+          addYearNum += 1
+          addWeek = i
+          nextYear = startYear+addYearNum
+          yearWeek = moment(nextYear+'-01-01').weeksInYear()
+        }
+        return (startYear + addYearNum) + '-KW' + (addWeek < 10 ? '0' + addWeek : addWeek)
       } else {
-        return (startYear + 1) + '-KW' + ((startWeek + between - startAllWeek) < 10 ? '0' + (startWeek + between - startAllWeek) : (startWeek + between - startAllWeek))
+        let descYearNum = 0
+        let deWeek = startWeek + between
+        let lastYear = startYear-descYearNum
+        let lasYearWeek = moment(lastYear+'-01-01').weeksInYear()
+        for (let j = deWeek; j < 0; j += lasYearWeek) {
+          descYearNum += 1
+          lastYear = startYear-descYearNum
+          lasYearWeek = moment(lastYear+'-01-01').weeksInYear()
+          deWeek = lasYearWeek+j
+        }
+        return (startYear - descYearNum) + '-KW' + (deWeek < 10 ? '0' + deWeek : deWeek)
       }
     },
     /** 
@@ -607,7 +637,7 @@ export default {
      * @param {*} val
      * @param {*} item
      * @param {*} props
-     * @param {*} index
+     * @param {*} index nodeList的index
      * @return {*}
      */    
     handleChange(val, item, props, index) { 
@@ -617,9 +647,9 @@ export default {
         this.$set(item, props === 'otsTimeKw' ? this.nodeList[index - 1].keyPoint2 : this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
       } 
       if (this.nodeList[index + 1]) { 
-        for (let i = index + 1; i < this.nodeList.length - 1; i++) {
-          this.$set(this.nodeList[i], this.nodeList[i].kw, this.getKw(this.nodeList[i - 1], this.nodeList[i - 1].keyPoint))
-          i === this.nodeList.length - 1 && this.$set(this.nodeList[i], this.nodeList[i].kw2, this.getKw(this.nodeList[i - 1], this.nodeList[i - 1].keyPoint2))
+        for (let i = index + 1; i < this.nodeList.length; i++) {
+          this.$set(item, this.nodeList[i].kw, this.getKw(item[this.nodeList[i - 1].kw], item[this.nodeList[i - 1].keyPoint]))
+          i === this.nodeList.length - 1 && item.bmgFlag !== '是' && this.$set(item, this.nodeList[i].kw2, this.getKw(item[this.nodeList[i - 1].kw], item[this.nodeList[i - 1].keyPoint2]))
         }
         // this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val, props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw])) 
       } 
@@ -630,21 +660,20 @@ export default {
      * @param {*} refresh 
      * @return {*}
      */    
-    handleSave(refresh = true) { 
+    async handleSave(refresh = true) { 
+      console.log('1')
       this.saveloading = true 
-      updatePartSchedule(this.partsTemp.map(item => { 
+      const res = await updatePartSchedule(this.partsTemp.map(item => { 
         const findItem = this.parts.find(pItem => pItem.partNum === item.partNum) 
         return findItem ? findItem : item 
-      })).then(res => { 
-        if (res?.result) { 
-          refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
-          refresh && this.getPartList(this.cartypeProId) 
-        } else { 
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)  
-        } 
-      }).finally(() => { 
-        this.saveloading = false 
-      }) 
+      }))
+      if (res?.result) { 
+        refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        await this.getPartList(this.cartypeProId) 
+      } else { 
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)  
+      } 
+      this.saveloading = false 
     },
     /**
      * @Description: 算法配置弹窗状态更新 
@@ -779,6 +808,7 @@ export default {
      * @return {*} 
      */    
     getPartList(cartypeProId, selectPartNums = '') {  
+      console.log('2')
       this.loading = true 
       this.$emit('reSetSearchParams')
       getPartSchedule(cartypeProId).then(res => { 
@@ -948,6 +978,10 @@ export default {
             width: 36px; 
             height: 36px; 
           } 
+          .doubleItem {
+            display: flex;
+            align-items: center;
+          }
         } 
         .productItem-bottom-stepBetween { 
           // position: absolute; 
@@ -1016,22 +1050,28 @@ export default {
         } 
         &:nth-child(5) {
           .productItem-bottom-stepBetween {
-            .productItem-bottom-stepBetween-double .productItem-bottom-stepBetween-input {
-              width: 80px;
-              &:last-child {
-                margin-left: 10px;
+            .productItem-bottom-stepBetween-double {
+              font-size: 18px;
+              .productItem-bottom-stepBetween-input {
+                width: 80px;
+                margin-right: 5px;
+                &:last-child {
+                  margin-left: 5px;
+                }
               }
-            }
+            } 
           }
         }
         &:nth-child(6) {
           .productItem-bottom-nodeItem {
             div {
               display: flex;
+              font-size: 18px;
               .productItem-bottom-stepBetween-input {
                 width: 100px;
+                margin-right: 5px;
                 &:last-child {
-                  margin-left: 10px;
+                  margin-left: 5px;
                 }
               }
             }

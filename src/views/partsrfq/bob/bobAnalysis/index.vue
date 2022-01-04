@@ -119,7 +119,7 @@
                       ? $t('nominationLanguage.No')
                       : item['label#' + titleIdx] == 'true'
                       ? $t('nominationLanguage.Yes')
-                      : item['label#' + titleIdx]
+                      : formatIfNumber(item['label#' + titleIdx])
                   }}
                 </div>
               </template>
@@ -281,6 +281,25 @@ export default {
     },
   },
   methods: {
+    formatIfNumber(val) {
+      if (!val) {
+        return val;
+      }
+      if (this.isNumber(val.toString())) {
+        return val.toString().replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g,'$1,');
+      } else {
+        return val;
+      }
+    },
+    isNumber(val) {
+      var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+      var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+      if(regPos.test(val) || regNeg.test(val)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     showCollapseOutLine(item) {
       // if (item.level == 0) {
       //   return 'collapse-root'
@@ -531,7 +550,6 @@ export default {
       this.addOrigin();
 
       var b = new Date().getTime();
-      console.log(b - a);
     },
     reBuild(code, prop) {
       this.subCbdDetails = {};
@@ -708,9 +726,41 @@ export default {
           }
         });
         if (lineDatas && lineDatas.length > 0) {
+          var tempData = [];
           lineDatas.forEach((item) => {
-            this.tableListData.push(item);
+            var allEmpty = true;
+            for (var key in item) {
+              if (key.indexOf('label#') >= 0 && (item[key] || item.hasChild)) {
+                allEmpty = false;
+                break;
+              }
+            }
+            if (!allEmpty) {
+              tempData.push(item);
+            }
           });
+          for (var i=tempData.length-1;i>=0;i--) {
+            if (tempData[i].hasChild) {
+              var filtered = tempData.filter((child) => {
+                return child.parentId == tempData[i].id
+              })
+              if (filtered.length == 0) {
+                var allEmpty = true;
+                for (var key in tempData[i]) {
+                  if (key.indexOf('label#') >= 0 && tempData[i][key]) {
+                    allEmpty = false;
+                    break;
+                  }
+                }
+                if (allEmpty) {
+                  tempData.splice(i,1)
+                }
+              }
+            }
+          }
+          tempData.forEach((item) => {
+            this.tableListData.push(item)
+          })
         }
       });
     },

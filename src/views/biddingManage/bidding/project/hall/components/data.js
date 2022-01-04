@@ -24,13 +24,14 @@ export const infoForm = {
   projectName: ''
 }
 
+// 没有用到
 export const isAttendList = [
   {
-    name: "是",
+    name: language('BIDDING_SHI','是'),
     isAttend: true,
   },
   {
-    name: "否",
+    name: language('BIDDING_FOU','否'),
     isAttend: false,
   },
 ];
@@ -75,11 +76,13 @@ export const infoRules = {
 export const biddingType = [
   {
     value: '01',
-    label: language('BIDDING_PM（JDZD）', '拍买（价低者得）')
+    label: '拍买（价低者得）',
+    key:'BIDDING_PM（JDZD）'
   },
   {
     value: '02',
-    label: language('BIDDING_PM（JGZD）', '拍卖（价高者得）')
+    label: '拍卖（价高者得）',
+    key:'BIDDING_PM（JGZD）'
   },
 ]
 
@@ -99,15 +102,18 @@ export const moldFee = [
 export const biddingMode = [
   {
     value: '01',
-    label: language('BIDDING_DANJIA', '单价')
+    label: '单价',
+    key:'BIDDING_DANJIA'
   },
   {
     value: '02',
-    label: language('BIDDING_ZONGJIA', '总价')
+    label: '总价',
+    key:'BIDDING_ZONGJIA'
   },
   {
     value: '03',
-    label: language('BIDDING_DUOJIAGE', '多价格')
+    label: '多价格',
+    key:'BIDDING_DUOJIAGE'
   },
 ]
 
@@ -115,11 +121,13 @@ export const biddingMode = [
 export const isTax = [
   {
     value: '01',
-    label: language('BIDDING_BHKDKS', '不含可抵扣税')
+    label: '不含可抵扣税',
+    key:'BIDDING_BHKDKS'
   },
   {
     value: '02',
-    label: language('BIDDING_HANSHUI', '含税')
+    label: '含税',
+    key:'BIDDING_HANSHUI'
   }
 ]
 
@@ -127,11 +135,13 @@ export const isTax = [
 export const projectType = [
   {
     value: '01',
-    label: language('BIDDING_ZHENGSHIXIANGMU', '正式项目')
+    label: '正式项目',
+    key:'BIDDING_ZHENGSHIXIANGMU',
   },
   {
     value: '02',
-    label: language('BIDDING_CESHIXIANGMU', '测试项目')
+    label: '测试项目',
+    key:'BIDDING_CESHIXIANGMU',
   }
 ]
 
@@ -139,11 +149,13 @@ export const projectType = [
 export const biddingResultForm = [
   {
     value: '01',
-    label: language('BIDDING_ZONGJIA', '总价')
+    label: '总价',
+    key:'BIDDING_ZONGJIA'
   },
   {
     value: '02',
-    label: language('BIDDING_DANJIA&ZONGJIA', '单价&总价')
+    label: '单价&总价',
+    key:'BIDDING_DANJIA'
   },
 ]
 
@@ -151,15 +163,18 @@ export const biddingResultForm = [
 export const resultOpenForm = [
   {
     value: '01',
-    label: language('BIDDING_PAIMING', '排名')
+    label: '排名',
+    key:'BIDDING_PAIMING'
   },
   {
     value: '02',
-    label: language('BIDDING_HONGLVDENG', '红绿灯')
+    label: '红绿灯',
+    key:'BIDDING_HONGLVDENG'
   },
   {
     value: '03',
-    label: language('BIDDING_SUOYOUPAIMING', '所有排名')
+    label: '所有排名',
+    key:'BIDDING_SUOYOUPAIMING'
   },
 ]
 
@@ -167,11 +182,13 @@ export const resultOpenForm = [
 export const isResultOpen = [
   {
     value: '01',
-    label: language('BIDDING_GONGKAI', '公开')
+    label: '公开',
+    key:'BIDDING_GONGKAI'
   },
   {
     value: '02',
-    label: language('BIDDING_BUGONGKAI', '不公开')
+    label: '不公开',
+    key:'BIDDING_BUGONGKAI'
   },
 ]
 
@@ -187,23 +204,27 @@ export const currencyUnit = [
 export const currencyMultiple = [
   {
     value: '01',
-    label: language('BIDDING_YUAN', '元')
+    label: '元',
+    key:'BIDDING_YUAN'
   },
   {
     value: '02',
-    label: language('BIDDING_QIAN', '千')
+    label: '千',
+    key:'BIDDING_QIAN'
   },
   {
     value: '03',
-    label: language('BIDDING_WAN', '万')
+    label: '万',
+    key:'BIDDING_WAN'
   },
   {
     value: '04',
-    label: language('BIDDING_BAIWAN', '百万')
+    label: '百万',
+    key:'BIDDING_BAIWAN'
   },
 ]
 
-// 附件列表
+// 附件列表,没有用到
 export const attachments = [
   {
     type: "selection",
@@ -233,7 +254,7 @@ export const attachments = [
 ]
 
 
-
+// 没有用到
 export const unitTableTitle = [
   {
     props: "fsnrGsnr",
@@ -333,6 +354,7 @@ export const statusList = [
     value: '未发布',
   },
 ];
+// 没有用到
 export const supplierTableListColumns = [
   {
     type: "selection",
@@ -372,54 +394,76 @@ export const tableListData = [
 export const currencyMultipleLib = {
   "01": {
     beishu: 1,
-    unit: '元',
+    unit: "元",
+    key:'BIDDING_YUAN'
   },
   "02": {
     beishu: 1000,
-    unit: '千',
+    unit: "千",
+    key:'BIDDING_QIAN'
   },
   "03": {
     beishu: 10000,
-    unit: '万',
+    unit: "万",
+    key:'BIDDING_WAN'
   },
   "04": {
     beishu: 1000000,
-    unit: '百万',
+    unit: "百万",
+    key:'BIDDING_BAIWAN'
   }
-
 }
 
 export const biddingStatue = [
   {
-    name: language('BIDDING_CAOGAO', '草稿'),
-    value: '01'
-  }, {
-    name: language('BIDDING_DAIJINGJIA', '待竞价'),
-    value: '02'
-  }, {
-    name: language('BIDDING_WEIKAIBIAO', '未开标'),
-    value: '03'
-  }, {
-    name: language('BIDDING_JINGJIAZHONG', '竞价中'),
-    value: '04'
-  }, {
-    name: language('BIDDING_YIKAIBIAO', '已开标'),
-    value: '05'
-  }, {
-    name: language('BIDDING_YIJIESHU', '已结束'),
-    value: '06'
-  }, {
-    name: language('BIDDING_YILIUBIAO', '已流标'),
-    value: '07'
-  }, {
-    name: language('BIDDING_YIZUOFEI', '已作废'),
-    value: '08'
-  }, {
-    name: language('BIDDING_YIQUXIAO', '已取消'),
-    value: '09'
-  }, {
+    value: '01',
+    name: '草稿',
+    key:'BIDDING_CAOGAO'
+  },
+  {
+    value: '02',
+    name: '待竞价',
+    key:'BIDDING_DAIJINGJIA'
+  },
+  {
+    value: '03',
+    name: '未开标',
+    key:'BIDDING_WEIKAIBIAO'
+  },
+  {
+    value: '04',
+    name: '竞价中',
+    key:'BIDDING_JINGJIAZHONG'
+  },
+  {
+    value: '05',
+    name: '已开标',
+    key:'BIDDING_YIKAIBIAO'
+  },
+  {
+    value: '06',
+    name: '已结束',
+    key:'BIDDING_YIJIESHU'
+  },
+  {
+    value: '07',
+    name: '已流标',
+    key:'BIDDING_YILIUBIAO'
+  },
+  {
+    value: '08',
+    name: '已作废',
+    key:'BIDDING_YIZUOFEI'
+  },
+  {
+    value: '09',
+    name: '已取消',
+    key:'BIDDING_YIQUXIAO'
+  },
+  {
     value: '10',
-    label: language('BIDDING_YIFACHU','已发出')
+    name: '已发出',
+    key:'BIDDING_YIFACHU'
   },
 ]
 
@@ -428,26 +472,32 @@ export const bidTableTitle = [
     props: "currentSort",
     width: 70,
     name: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO'
   },
   {
     props: "currencyUnit",
     name: language('BIDDING_HUOBIDANWEI', "货币单位"),
+    key:'BIDDING_HUOBIDANWEI'
   },
   {
     props: "isTax",
     name: language('BIDDING_BHKDKS', '不含可抵扣税'),
+    key:'BIDDING_BHKDKS'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   },
   {
     props: "serverTime",
     name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
+    key:'BIDDING_BAOJIASHIJIAN'
   },
   {
     props: "operation",
     name: language('BIDDING_CAOZUO', "操作"),
+    key:'BIDDING_CAOZUO'
   },
 ];
 
@@ -456,26 +506,32 @@ export const bidTableTitles = [
     props: "currentSort",
     width: 70,
     name: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO'
   },
   {
     props: "currencyUnit",
     name: language('BIDDING_HUOBIDANWEI', "货币单位"),
+    key:'BIDDING_HUOBIDANWEI'
   },
   {
     props: "isTax",
     name: language('BIDDING_HANSHUI', "含税"),
+    key:'BIDDING_HANSHUI'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   },
   {
     props: "serverTime",
     name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
+    key:'BIDDING_BAOJIASHIJIAN'
   },
   {
     props: "operation",
     name: language('BIDDING_CAOZUO', "操作"),
+    key:'BIDDING_CAOZUO'
   },
 ];
 export const heBidTableTitle = [
@@ -483,22 +539,27 @@ export const heBidTableTitle = [
     props: "currentSort",
     width: 70,
     name: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO'
   },
   {
     props: "currencyUnit",
     name: language('BIDDING_HUOBIDANWEI', "货币单位"),
+    key:'BIDDING_HUOBIDANWEI'
   },
   {
     props: "isTax",
-    name: language('BIDDING_BHKDKS', '不含可抵扣税')
+    name: language('BIDDING_BHKDKS', '不含可抵扣税'),
+    key:'BIDDING_BHKDKS'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   },
   {
     props: "serverTime",
     name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
+    key:'BIDDING_BAOJIASHIJIAN'
   },
 ];
 
@@ -507,22 +568,27 @@ export const heBidTableTitles = [
     props: "currentSort",
     width: 70,
     name: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO'
   },
   {
     props: "currencyUnit",
     name: language('BIDDING_HUOBIDANWEI', "货币单位"),
+    key:'BIDDING_HUOBIDANWEI'
   },
   {
     props: "isTax",
     name: language('BIDDING_HANSHUI', "含税"),
+    key:'BIDDING_HANSHUI'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   },
   {
     props: "serverTime",
     name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
+    key:'BIDDING_BAOJIASHIJIAN'
   },
 ];
 
@@ -530,36 +596,44 @@ export const supplierTableTitle = [
   {
     props: "index",
     name: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   },
   {
     props: "contactName",
     name: language('BIDDING_GYSLXR', "供应商联系人"),
+    key:'BIDDING_GYSLXR'
   },
   {
     props: "telephone",
     name: language('BIDDING_GYSLXDH', "供应商联系电话"),
+    key:'BIDDING_GYSLXDH'
   },
   {
     props: "email",
     name: language('BIDDING_GYSYX', "供应商邮箱"),
+    key:'BIDDING_GYSYX'
   },
   {
     props: "isAttend",
     name: language('BIDDING_FSYJR', "是否已进入"),
+    key:'BIDDING_FSYJR'
   },
 ];
 export const supplierTableTitles = [
   {
     props: "sort",
     name: language('BIDDING_PAIMING', "排名"),
+    key:'BIDDING_PAIMING'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   }
 ];
 
@@ -569,10 +643,12 @@ export const supplierRankTableTitle = [
   {
     props: "currentSort",
     name: language('BIDDING_PAIMING', "排名"),
+    key:'BIDDING_PAIMING'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   }
 ];
 
@@ -580,14 +656,17 @@ export const itemNumber = [
   {
     props: "sort",
     name: language('BIDDING_PAIMING', "排名"),
+    key:'BIDDING_PAIMING'
   },
   {
     props: "supplierName",
     name: language('BIDDING_CPGYS', "产品供应商"),
+    key:'BIDDING_CPGYS'
   },
   {
     props: "upsetPrice",
     name: language('BIDDING_BHKDKSDJ', "不含可抵扣税单价"),
+    key:'BIDDING_BHKDKSDJ'
   }
 ];
 
@@ -595,14 +674,17 @@ export const itemNumbers = [
   {
     props: "sort",
     name: language('BIDDING_PAIMING', "排名"),
+    key:'BIDDING_PAIMING'
   },
   {
     props: "supplierName",
     name: language('BIDDING_CPGYS', "产品供应商"),
+    key:'BIDDING_CPGYS'
   },
   {
     props: "upsetPrice",
     name: language('BIDDING_HANSHUI','含税'),
+    key:'BIDDING_HANSHUI'
   }
 ];
 
@@ -611,22 +693,27 @@ export const bidDetail = [
   {
     props: "currentSort",
     name: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO'
   },
   {
     props: "isTax",
     name: language('BIDDING_BHKDKS', '不含可抵扣税'),
+    key:'BIDDING_BHKDKS'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   },
   {
     props: "serverTime",
     name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
+    key:'BIDDING_BAOJIASHIJIAN'
   },
   {
     props: "caozuo",
     name: language('BIDDING_CAOZUO', "操作"),
+    key:'BIDDING_CAOZUO'
   }
 ];
 
@@ -635,18 +722,22 @@ export const bidDetailHe = [
   {
     props: "currentSort",
     name: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO'
   },
   {
     props: "isTax",
     name: language('BIDDING_BHKDKS', '不含可抵扣税'),
+    key:'BIDDING_BHKDKS'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   },
   {
     props: "serverTime",
     name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
+    key:'BIDDING_BAOJIASHIJIAN'
   },
 ];
 
@@ -655,22 +746,27 @@ export const bidDetails = [
   {
     props: "currentSort",
     name: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO'
   },
   {
     props: "isTax",
     name: language('BIDDING_HANSHUI', '含税'),
+    key:'BIDDING_HANSHUI'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:"BIDDING_GYSMC"
   },
   {
     props: "serverTime",
     name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
+    key:'BIDDING_BAOJIASHIJIAN'
   },
   {
     props: "caozuo",
     name: language('BIDDING_CAOZUO', "操作"),
+    key:'BIDDING_CAOZUO'
   }
 ];
 
@@ -679,30 +775,38 @@ export const bidDetailsHe = [
   {
     props: "currentSort",
     name: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO'
   },
   {
     props: "isTax",
     name: language('BIDDING_HANSHUI','含税'),
+    key:'BIDDING_HANSHUI'
   },
   {
     props: "supplierName",
     name: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC'
   },
   {
     props: "serverTime",
     name: language('BIDDING_BAOJIASHIJIAN', "报价时间"),
+    key:'BIDDING_BAOJIASHIJIAN'
   },
 ];
 
 export const projectNotes = [
   {
     type: "index",
-    width: 100,
+    width: 150,
     label: language('BIDDING_XUHAO', "序号"),
+    key:'BIDDING_XUHAO',
+    i18n:'BIDDING_XUHAO'
   },
   {
     prop: "supplierName",
     label: language('BIDDING_GYSMC', "供应商名称"),
+    key:'BIDDING_GYSMC',
+    i18n:'BIDDING_GYSMC'
   },
   {
     prop: "updateDate",
@@ -710,6 +814,8 @@ export const projectNotes = [
     customRender: (h, scope) => {
       return <span >{scope.row.updateDate?.replace('T', ' ')}</span>;
     },
+    key:'BIDDING_TICHUSHIJIAN',
+    i18n:'BIDDING_TICHUSHIJIAN',
   },
   {
     prop: "kickoutReasonValue",
@@ -717,6 +823,8 @@ export const projectNotes = [
     customRender: (h, scope) => {
       return <span>{scope.row.kickoutReason === '01' ? language('BIDDING_WMZDYCBJXZ', '未满足第一次报价限制') : language('BIDDING_WMZLXPMXZ', '未满足连续排名限制')}</span>;
     },
+    key:'BIDDING_TICHULIYOU',
+    i18n:'BIDDING_TICHULIYOU',
   }
 ];
 
@@ -725,21 +833,26 @@ export const attachTableTitle = [
     props: "index",
     name: language('BIDDING_XUHAO', "序号"),
     width: 80,
+    key:'BIDDING_XUHAO'
   },
   {
     props: "attachmentName",
     name: language('BIDDING_WENJIANMING',"文件名"),
+    key:'BIDDING_WENJIANMING'
   },
   {
     props: "attachmentSize",
     name: language('BIDDING_WENJIANDAXIAO',"文件大小"),
+    key:'BIDDING_WENJIANDAXIAO'
   },
   {
     props: "uploadName",
     name: language('BIDDING_SHANGCHUANREN',"上传人"),
+    key:'BIDDING_SHANGCHUANREN'
   },
   {
     props: "updateDate",
     name: language('BIDDING_SHANGCHUANRIQI',"上传日期"),
+    key:'BIDDING_SHANGCHUANRIQI'
   },
 ];

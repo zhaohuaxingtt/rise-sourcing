@@ -1,10 +1,10 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-07-06 13:40:04
- * @LastEditTime: 2021-12-10 17:45:39
+ * @LastEditTime: 2021-12-24 14:09:11
  * @LastEditors: caopeng
  * @Description: In User Settings Edit
- * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\reportList\components\specialTools.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\specialTools.vue
 -->
 <!--
  * @author: shujie
@@ -86,6 +86,7 @@ export default {
         ...this.searchCriteria,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
+        isBindingInstance:1,
       }
       reportList(data).then((res) => {
         if (res.data) {

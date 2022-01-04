@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-13 20:02:52
+ * @LastEditTime: 2021-12-29 21:41:24
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -35,7 +35,7 @@
           >
             <template slot-scope="scope">
                 <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
-                <span v-if="scope.row.partNo.includes('Group total')">{{scope.row.partNo}}</span>
+                <span v-if="scope.row.partNo && scope.row.partNo.length && scope.row.partNo.includes('Group total')">{{scope.row.partNo}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -78,7 +78,7 @@
                             </div>
                           </el-tooltip>
                         </li>
-                         <li v-else :key='index'></li>
+                         <li v-else :key='index'>Dept</li>
                       </template>
                       <template v-else>
                         <li :key='index'>{{items}}</li>
@@ -174,9 +174,9 @@
                   <div>一次性：{{scope.row[getPorpsNumber(item.props)+"tooling"]-scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                 </template>
-                <span>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
+                <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
               </el-tooltip>
-              <span v-else>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
+              <span v-else>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
               </template>
               <template v-else>
@@ -238,11 +238,17 @@ export default{
       return this.rowspan(this.tableData,'groupId',null)
     },
     spanArrGroup() {
-      return this.tableData.reduce((accu, item, index) => item.partNo.includes('Group total') ? [...accu, index] : accu,[])
+      return this.tableData.reduce((accu, item, index) => {
+        if(item.partNo && item.partNo.length && item.partNo.includes('Group total')){
+          return [...accu, index]
+        }else{
+          return accu
+        }
+      })
     },
     isPreview(){
         return this.$store.getters.isPreview;
-    },
+    }
   },
   methods:{
     setfixElement(){
@@ -252,7 +258,7 @@ export default{
           needRemovebox.parentNode.removeChild(needRemovebox)
         }
         const box = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper')
-        let str = `<li></li>`
+        let str = `<li>Dept</li>`
         this.ratingList.firstTile.forEach(items=>{
           str+=(`<li>${items?items:''}</li>`)
         })
@@ -272,7 +278,7 @@ export default{
       }
     },
     ebrShow(data) {
-      if(!data || data == 'Budget' || data == 'KM')
+      if(!data || data.indexOf('Budget') > -1 || data == 'KM')
        return data 
       else{
         // eslint-disable-next-line no-undef
@@ -340,7 +346,7 @@ export default{
   },
   spanMethod({row, column, rowIndex, columnIndex}) {
     // grouptotal 合并第一、二格
-    if (this.spanArrGroup.includes(rowIndex)) {
+    if (this.spanArrGroup && this.spanArrGroup.length && this.spanArrGroup.includes(rowIndex)) {
       if (columnIndex === 0) {
         return [1, 2];
       } else if (columnIndex === 1) {
@@ -392,7 +398,7 @@ export default{
       if(rowIndex == this.tableData.length -1 || rowIndex == this.tableData.length -2 ){
         return 'lineBlueClass'
       }
-      if (row.partNo.includes('Group total')) {
+      if (row.partNo && row.partNo.length && row.partNo.includes('Group total')) {
         return 'lineBlueClass groupLineBlueClass'
       }
     },
@@ -563,7 +569,8 @@ export default{
       .cell{
           display: flex;
           justify-content: center;
-
+          white-space: pre;
+          align-items: center;
           .caret-wrapper{
             height: 20px;
             .ascending{
@@ -678,7 +685,7 @@ export default{
                 border-bottom: none;
                 border-top-left-radius: 10px;
                 overflow: hidden;
-                min-width: 100px;
+                min-width: 70px;
                 li{
                     border-bottom: 1px solid #C5CCD6;
                     line-height: 38px;
@@ -692,6 +699,7 @@ export default{
                       background-color:rgba(22, 99, 246, 0.17);
                       height: 60px;
                       padding: 5px 0;
+                      font-weight: bold;
                     }
                   }
               }

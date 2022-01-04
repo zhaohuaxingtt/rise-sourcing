@@ -29,8 +29,8 @@
       background
       :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
-      prev-text="上一页"
-      next-text="下一页"
+      :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+      :next-text="language('BIDDING_XIAYIYE','下一页')"
       :layout="page.layout"
       :current-page="page.currPage"
       :total="tableListData.length"
@@ -43,6 +43,9 @@ import { iCard, iPagination } from "rise";
 import commonTable from "@/components/biddingComponents/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { getCurrencyUnit } from "@/api/mock/mock";
+import {
+  currencyMultipleLib
+} from "./data";
 export default {
   mixins: [pageMixins],
   components: {
@@ -78,6 +81,7 @@ export default {
       pageSize: 10,
       pageNum: 1,
       currencyUnit: {},
+      currencyMultipleLib
     };
   },
   mounted() {
@@ -102,12 +106,13 @@ export default {
       return this.currencyUnit[unit];
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit ) 
     },
     handleCurrentChange(e) {
       this.page.currPage = e;
