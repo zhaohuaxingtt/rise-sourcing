@@ -83,8 +83,7 @@ import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
 import { dataMaintain, delMaintain, addMaintain, exportTemplate } from "@/api/costanalysismanage/costanalysis/costMaintenance"
-import { getKmFileHistory, uploadFiles, deleteFileHistory } from "@/api/costanalysismanage/costanalysis"
-import { downloadFile, downloadUdFile } from "@/api/file"
+import { downloadUdFile } from "@/api/file"
 import dateSelect from "./dateSelect"
 
 export default {
