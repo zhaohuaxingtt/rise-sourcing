@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-11-08 14:34:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-14 10:48:22
+ * @LastEditTime: 2022-01-04 19:25:55
  * @Description: 模具目标价相关接口
  * @FilePath: \front-sourcing\src\api\modelTargetPrice\index.js
  */
@@ -173,9 +173,9 @@ export function exportBatchMaintain(params) {
 }
 
 // 导入批量维护
-export function importBatchMaintain(params) {
+export function importBatchMaintain(params, taskId) {
   return requst({
-    url: '/tooling-target-price-task/import-batch-maintain',
+    url: `/tooling-target-price-task/import-batch-maintain/${taskId}`,
     method: 'POST',
     data: params
   })
