@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2021-12-31 17:25:02
+ * @LastEditTime: 2022-01-04 18:32:03
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -20,7 +20,7 @@
             }"
             class="tishi"
           >
-            <icon symbol :name="name" class="tishi-icon"></icon>
+            <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
             <span>{{ status }}</span>
           </div>
         </div>
@@ -43,10 +43,7 @@
           </template>
           <template v-else>
             <iButton
-              @click="exports"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
-              "
+              @click="openDialog"
               >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
             >
           </template>
@@ -93,6 +90,7 @@ import tablelist from "pages/partsrfq/components/tablelist";
 import { pageMixins } from "@/utils/pageMixins";
 import { getCfPrice } from "@/api/partsrfq/editordetail";
 import { excelExport } from "@/utils/filedowLoad";
+import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data"
 
 export default {
   components: {
@@ -105,14 +103,12 @@ export default {
   mixins: [pageMixins],
   props:{
     todo: Boolean,
-    status: {
-      type: String,
-      default: '未申请'
-    }
   },
   data() {
     return {
+      iconName,
       hidens: false,
+      status:'',
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
@@ -147,24 +143,22 @@ export default {
       ],
     };
   },
-  computed: {
-    name() {
-      let name =
-        this.status == "未申请"
-          ? "iconzhongyaoxinxitishi"
-          : this.status == "未完成"
-          ? "icontishi-cheng"
-          : this.status == "已完成"
-          ? "iconrs-wancheng"
-          : "";
-      return name;
-    },
-  },
   created() {
-    this.hidens = this.status == "已完成" || true;
     this.getTableList();
   },
+  watch:{
+    status(val){
+      if(val=='已完成'){
+        this.hidens = true
+      }else{
+        this.hidens = false
+      }
+    }
+  },
   methods: {
+    openDialog(){
+      this.$emit('openDialog','partsDialogVisible')
+    },
     toggle(type) {
       this[type] = !this[type];
     },
@@ -181,6 +175,7 @@ export default {
           this.tableListData = Array.isArray(res.data) ? res.data : [];
           this.page.totalCount = res.total || 0;
           this.tableLoading = false;
+          this.status = '未申请'
         } finally {
           this.tableLoading = false;
         }

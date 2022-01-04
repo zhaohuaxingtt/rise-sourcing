@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-03-04 15:18:55
- * @LastEditTime: 2021-06-25 14:49:43
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-04 18:00:52
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\data.js
  */
@@ -51,3 +51,23 @@ export const dunsTipsTitle = [
   { props: "supplierDunsCode", name: "DUNS Code", tooltip: true, key: "DUNSCODE" },
   { props: "failReason", name: "失败原因", tooltip: true, key: "SHIBAIYUANYIN" }
 ]
+
+export const applyTableTitle = [
+  {props:'fsnrGsnrNum',name:'零件采购项目号', key: "LINGJIANCAIGOUXIANGMUHAO", tooltip: true},
+  {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
+  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true},
+  {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMINGZHONG", tooltip: true},
+  {props:'partNameDe',name:'零件名(德)', key: "LINGJIANMINGDE", tooltip: true},
+  {props:'cartypeProjectZh',name:'车型/车型项目', key: "CHEXINGHUOCHEXINGXIANGMU", tooltip: true},
+  {props:'originalTargetPrice',name:'原目标价', key: "YUANMUBIAOJIA", tooltip: true},
+  {props:'businessTypeDesc',name:'类型', key: "LEIXING", tooltip: true},
+  {props:'expectedTargetPrice',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true},
+  {props:'targetPrice',name:'目标价', key: "MUBIAOJIA", tooltip: true},
+  {props:'operation',name:'', key: "", tooltip: true}
+]
+
+export const iconName = {
+  '已完成': 'iconrs-wancheng',
+  '未完成': 'icontishi-cheng',
+  '未申请': 'iconzhongyaoxinxitishi',
+}

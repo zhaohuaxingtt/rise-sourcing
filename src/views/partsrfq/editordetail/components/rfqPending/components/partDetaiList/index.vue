@@ -19,7 +19,7 @@
           }"
           class="tishi"
         >
-          <icon symbol :name="name" class="tishi-icon"></icon>
+          <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
           <span>{{ status }}</span>
         </div>
       </div>
@@ -36,11 +36,17 @@
             language('GUANLIANSTARTMONITORJILU','关联StarMonitor记录')
           }}
         </iButton>
-        <iButton @click="showApplyPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
+        <!-- <iButton @click="showApplyPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
           {{ language('LK_XINSHENQINGCAIWUMUBIAOJIA','新申请财务目标价') }}
         </iButton>
         <iButton @click="againApply" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE|再申请财务目标价">
           {{ language('LK_ZAICISHENGQINGCAIWUMUBIAOJIA','再申请财务目标价') }}
+        </iButton> -->
+        <iButton @click="partsDialogVisible=true" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
+          {{ language('LK_SHENQINGLINGJIANMUBIAOJIA','申请零件目标价') }}
+        </iButton>
+        <iButton @click="moduleDialogVisible=true" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE|再申请财务目标价">
+          {{ language('LK_SHENQINGMUJUMUBIAOJIA','申请模具目标价') }}
         </iButton>
         <iButton @click="sendKM" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM|发送KM">{{ language('FASONGKM', '发送KM') }}</iButton>
         <iButton @click="addItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD|添加">{{
@@ -73,7 +79,7 @@
                  :page-size="page.pageSize" :current-page="page.currPage" :layout="page.layout"
                  :total="page.totalCount"></iPagination>
     </div>
-    
+    <!-- 添加 -->
     <iDialog
     class="kmDialog"
     :visible.sync="addvisible"
@@ -98,11 +104,12 @@
     <kmDialog :rfqId="rfqId" :parts="handleSelectArr" :visible.sync="kmDialogVisible" />
     <relationStarMon  ref="relationStarMon" :rfqId="rfqId"  @updateStarMonitor="updateStarMonitor" :startVisible.sync="startVisible" :handleSelectArr="handleSelectArr" />
   </iCard>
-  <parts-target-price class="margin-top20" :todo="todo"></parts-target-price>
-  <mold-target-price class="margin-top20" :todo="todo"></mold-target-price>
+  <parts-target-price @openDialog="openDialog" class="margin-top20" :todo="todo"></parts-target-price>
+  <mold-target-price @openDialog="openDialog" class="margin-top20" :todo="todo"></mold-target-price>
   <mold-budget-application class="margin-top20" :todo="todo"></mold-budget-application>
   <supplier-score v-if="todo" :todo="todo" class="margin-top20" />
-  <toDoDialog />
+  <partsDialog :todo="todo" :visible.sync="partsDialogVisible"/>
+  <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible"/>
 </div>
 </template>
 
@@ -135,7 +142,9 @@ import relationStarMon from './components/relationStarMon';
 import moldBudgetApplication from "../moldBudgetApplication";
 import supplierScore from "../supplierScore/components/supplierScore.vue";
 
-import toDoDialog from "../toDoList/components/index";
+import moduleDialog from "./components/moduleDialog";
+import partsDialog from "./components/partsDialog";
+import { iconName } from "./data"
 
 export default {
   mixins: [pageMixins, rfqCommonFunMixins],
@@ -155,10 +164,10 @@ export default {
     moldTargetPrice,
     partsTargetPrice,
     iDialog,
-    toDoDialog
+    moduleDialog,
+    partsDialog
   },
   async mounted() {
-    this.hidens = this.status=='已完成' || true
     const {id,businessKey} = this.$route.query;
     // this.rfqId = this.$route.query.id
     this.rfqId = id || '';
@@ -170,6 +179,7 @@ export default {
     if(this.baseInfoData.partProjectType[0] !== partProjTypes.GSCOMMONSOURCING && this.baseInfoData.partProjectType[0] != partProjTypes.FSCOMMONSOURCING){
       this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
     } 
+    this.tableTitle = tableTitle.filter(i=> i.ispartsList)
     await this.getTableList()
   },
   watch:{
@@ -180,6 +190,13 @@ export default {
             this.$refs.partsTable && this.$refs.partsTable.getTableList() 
           }
         })
+      }
+    },
+    status(val){
+      if(val=='已完成'){
+        this.hidens = true
+      }else{
+        this.hidens = false
       }
     }
   },
@@ -196,6 +213,11 @@ export default {
   },
   data() {
     return {
+      iconName,
+      status:'',
+      hidens: false,
+      partsDialogVisible:false,
+      moduleDialogVisible:false,
       todo:false, // 是否待办
       hidens: false,
       addvisible:false,
@@ -219,6 +241,10 @@ export default {
     };
   },
   methods: {
+    openDialog(type){
+      console.log(type);
+      this[type] = true
+    },
     toggle(type) {
       this[type] = !this[type];
     },
@@ -294,7 +320,10 @@ export default {
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
           this.page.totalCount = res.total
-          res.data.forEach(val => {val.mtz == true ? val.mtz = '是' : val.mtz = '否'})
+          res.data.forEach(val => {
+            val.mtz == true ? val.mtz = '是' : val.mtz = '否'
+            val.quotationStatus = val.partEffectiveQuotationNumber+'/'+val.partTotalQuotationNumber
+            })
           this.tableListData = Array.isArray(res.data) ? res.data : []
           if (this.tableListData.length) {
             this.queryForm = {

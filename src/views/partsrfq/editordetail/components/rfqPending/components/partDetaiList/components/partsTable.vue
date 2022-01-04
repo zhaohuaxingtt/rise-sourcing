@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2021-11-19 17:58:04
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-01-04 17:18:49
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
 -->
@@ -81,6 +81,7 @@ export default {
       this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
     }
     this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
+    this.tableTitle = tableTitle.filter(i=> i.ispartsAdd)
     this.$store.commit('SET_PART_PROJECT', this.getTableList)
     this.getTableList()
   },

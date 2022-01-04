@@ -1,13 +1,12 @@
 <!--
  * @Author: YoHo
  * @Date: 2022-01-04 09:40:10
- * @LastEditTime: 2022-01-04 10:40:58
+ * @LastEditTime: 2022-01-04 11:00:12
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
   <div>
-    123
     <iDialog
       :visible.sync="tipsVislble"
       width="50%"
@@ -23,8 +22,8 @@
           </p>
         </template>
         <div class="footer">
-          <iButton>跳过</iButton>
-          <iButton>前往任务列表</iButton>
+          <iButton @click="close">跳过</iButton>
+          <iButton @click="goto('4')">前往任务列表</iButton>
         </div>
       </div>
     </iDialog>
@@ -52,11 +51,21 @@ export default {
       ],
     };
   },
+  methods:{
+    close(){
+      this.tipsVislble = false
+    },
+    goto(index){
+      this.$emit('changeActivityTabIndex',index)
+      this.close()
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .footer{
   text-align: right;
+  padding-bottom: 20px;
 }
 </style>

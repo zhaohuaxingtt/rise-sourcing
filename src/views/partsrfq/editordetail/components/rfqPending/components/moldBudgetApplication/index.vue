@@ -18,7 +18,7 @@
             }"
             class="tishi"
           >
-            <icon symbol :name="name" class="tishi-icon"></icon>
+            <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
             <span>{{ status }}</span>
           </div>
         </div>
@@ -111,6 +111,7 @@ import store from "@/store";
 import { rfqCommonFunMixins } from "pages/partsrfq/components/commonFun";
 import tableList from "@/views/partsign/editordetail/components/tableList";
 import { numberProcessor } from "@/utils";
+import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data"
 
 export default {
   components: {
@@ -127,15 +128,25 @@ export default {
   },
   data() {
     return {
+      iconName,
       hidens: false,
+      status: '',
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
       selectTableData: [],
     };
   },
+  watch:{
+    status(val){
+      if(val=='已完成'){
+        this.hidens = true
+      }else{
+        this.hidens = false
+      }
+    }
+  },
   created() {
-    this.hidens = this.status == "已完成" || true;
     this.getTableList();
   },
   inject: ["getDisabled"],

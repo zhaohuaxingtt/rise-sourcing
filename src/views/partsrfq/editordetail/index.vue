@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-04 10:44:14
+ * @LastEditTime: 2022-01-04 10:56:49
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -263,7 +263,7 @@
           ">{{ language('QUXIAO', '取消') }}</iButton>
       </div>
     </iDialog>
-    <intoiDialog />
+    <intoiDialog v-if="navActivtyValue==''||navActivtyValue=='0'" @changeActivityTabIndex="changeActivityTabIndex" />
   </iPage>
 </template>
 <script>
@@ -475,6 +475,9 @@ export default {
     },
     changeNav (target) {
       this.navActivtyValue = target.index;
+    },
+    changeActivityTabIndex(index){
+      this.activityTabIndex = index
     },
     async newRfq () {
       const pendingPartsList = this.$store.state.rfq.pendingPartsList;

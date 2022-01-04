@@ -12,7 +12,7 @@
           }"
           class="tishi"
         >
-          <icon symbol :name="name" class="tishi-icon"></icon>
+          <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
           <span>{{ status }}</span>
         </div>
       </div>
@@ -88,6 +88,7 @@ import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import scoringDeptDialog from './scoringDeptDialog'
 import axios from 'axios'
 import { cloneDeep } from "lodash"
+import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data"
 
 export default {
   components: {
@@ -105,7 +106,9 @@ export default {
   },
   data() {
     return {
+      iconName,
       hidens: false,
+      status: '',
       tableListData: [],
       tableTitle: JSON.parse(JSON.stringify(supplierScoreTitle)),
       tableLoading: false,
@@ -135,6 +138,15 @@ export default {
       return this.getDisabled()
     }
   },
+  watch:{
+    status(val){
+      if(val=='已完成'){
+        this.hidens = true
+      }else{
+        this.hidens = false
+      }
+    }
+  },
   methods: {
     toggle(type) {
       this[type] = !this[type];
@@ -160,7 +172,7 @@ export default {
         this.tableListData = this.trnaslateDataForView(res.data || [], tpb);
         this.page.totalCount = res.total
         this.tableLoading = false;
-
+        this.status='已完成'
         this.supplierProducePlaces = this.tableListData.map(item => {
           if (!item.companyAddressCode && item.companyAddress) {
             item.companyAddressCode = item.companyAddress
