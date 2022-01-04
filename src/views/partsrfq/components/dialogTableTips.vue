@@ -6,11 +6,12 @@
 <template>
     <iDialog
     width="40%"
+    zIndex="2000"
     :visible.sync="dialogVisible"
     class="dialogTableTips"
     :title="language('BIDDING_TISHI','提示')"
     >
-    <div>
+    <div class="padding-left10 padding-right10">
         <p class="margin-bottom20">{{ language(errDialogTips[tableType]['languageKey'],errDialogTips[tableType]['languageTips'])}}</p>
         <tableList
             class="table"
@@ -23,7 +24,7 @@
 
     </div>
     <span slot="footer" class="dialog-footer">
-    <el-button class="margin-top15" type="primary" @click="dialogVisible = false">{{language('QUEDING','确定')}}</el-button>
+    <iButton class="margin-top15" type="primary" @click="dialogVisible = false">{{language('QUEDING','确定')}}</iButton>
   </span>
     </iDialog>
 </template>
@@ -38,6 +39,7 @@ export default {
     components:{
     iDialog,
     tableList,
+    iButton,
   },
   props:{
       tableType:{
