@@ -1,12 +1,24 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
   <iCard>
     <div class="header flex-align-center" v-if="!disabled">
+      <iButton 
+      v-if="baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
+      @click="cancelRelationStarMon" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_QUXIAOGUANLIANSTARTMONIORJILU|取消关联StarMonitor记录">{{
+          language('QUXIAOGUANLIANSTARMONITORJILU','取消关联StarMonitor记录')
+        }}
+      </iButton>    
+      <iButton 
+      v-if="baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
+      @click="relationStarMon" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_GUANLIANSTARTMONIORJILU|关联StarMonitor记录">{{
+          language('GUANLIANSTARTMONITORJILU','关联StarMonitor记录')
+        }}
+      </iButton>
       <iButton @click="deleteItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE|删除">{{
           language('delete','删除')
         }}
@@ -49,6 +61,7 @@
     <applyPrice ref="applyPrice" @refresh="getTableList" :handleSelectArr="handleSelectArr"></applyPrice>
     <!-- 发送KM ---------->
     <kmDialog :rfqId="rfqId" :parts="handleSelectArr" :visible.sync="kmDialogVisible" />
+    <relationStarMon  ref="relationStarMon" :rfqId="rfqId"  @updateStarMonitor="updateStarMonitor" :startVisible.sync="startVisible" :handleSelectArr="handleSelectArr" />
   </iCard>
 </template>
 
@@ -68,7 +81,7 @@ import {
   form
 } from "@/views/partsprocure/home/components/data";
 import {
-  deleteRfqPart
+  deleteRfqPart, cancelRef
 } from '@/api/partsrfq/editordetail';
 import { getTabelData} from "@/api/partsprocure/home";
 import {
@@ -85,6 +98,7 @@ import {
 } from "pages/partsrfq/components/commonFun";
 import kmDialog from "./components/kmDialog";
 import {partProjTypes} from '@/config'
+import relationStarMon from './components/relationStarMon';
 
 export default {
   mixins: [pageMixins, rfqCommonFunMixins],
@@ -97,7 +111,8 @@ export default {
     partsTable,
     kmDialog,
     iInput,
-    icon
+    icon,
+    relationStarMon
   },
   async mounted() {
     const {id,businessKey} = this.$route.query;
@@ -108,6 +123,9 @@ export default {
     if(businessKey == partProjTypes.AEKOLINGJIAN){
       this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
     }
+    if(this.baseInfoData.partProjectType[0] !== partProjTypes.GSCOMMONSOURCING && this.baseInfoData.partProjectType[0] != partProjTypes.FSCOMMONSOURCING){
+      this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
+    } 
     await this.getTableList()
   },
   watch:{
@@ -125,7 +143,12 @@ export default {
   computed: {
     disabled() {
       return this.getDisabled()
+    },
+    baseInfoData() {
+      return this.getbaseInfoData()
     }
+
+    
   },
   data() {
     return {
@@ -144,6 +167,7 @@ export default {
          buyerId:''
       },
       partNumList: "",
+      startVisible:false,//关联StartMonitor
       
     };
   },
@@ -162,7 +186,6 @@ export default {
     },
     // 跳转详情
     openPage(item) {
-      console.log(JSON.stringify(item),item.partProjectType,'-----------================');
       const resolve = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
         query: {
@@ -216,6 +239,7 @@ export default {
         this.parmarsHasRfq['size'] = this.page.pageSize
         this.parmarsHasRfq['current'] = this.page.currPage
         this.parmarsHasRfq['rfqId'] = this.rfqId || ''
+        this.parmarsHasRfq['status'] = ''
         return getTabelData(this.parmarsHasRfq).then(res => {
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
@@ -242,7 +266,6 @@ export default {
     },
     // 新申请财务目标价
     showApplyPrice() {
-      console.log(this.handleSelectArr.length);
       if (this.handleSelectArr.length == 0) {
         iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU','抱歉，您当前还未选择需要申请目标价的采购项目！'));
         return
@@ -292,6 +315,34 @@ export default {
       this.$refs.partsTable.page.currPage = 1
       this.$refs.partsTable.getTableList(this.queryForm)
     },
+    //打开关联starMonitoe弹窗
+    relationStarMon(){
+      if (!this.handleSelectArr.length) return iMessage.warn(this.language("LK_QINGXUANZEZHISHAOYITIAOSHUJU",'请选择至少一条数据'))
+     this.$refs.relationStarMon.showStarMo()
+    //  this.$refs.relationStarMon.$refs.tips.closedunsshow()
+    },
+    //取消关联StarMonitor
+    cancelRelationStarMon() {
+      if (!this.handleSelectArr.length) return iMessage.warn(this.language("LK_QINGXUANZEZHISHAOYITIAOSHUJU",'请选择至少一条数据'))
+      let data = {
+        refRfqId:this.$route.query.id,
+        projectIds:this.handleSelectArr.map(val=>val.id)
+      }
+      cancelRef(data).then(res=>{
+        if(res.code === '200') {
+          iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.getTableList()
+          this.getBaseInfo()
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
+    updateStarMonitor() {
+      console.log('==============================');
+      this.getTableList()
+      this.getBaseInfo()
+    }
   },
 };
 </script>

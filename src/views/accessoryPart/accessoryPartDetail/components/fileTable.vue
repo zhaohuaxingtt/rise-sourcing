@@ -78,8 +78,8 @@ export default {
       getFiles({
         hostId: this.hostId,
         fileType,
-        page: this.page.currPage,
-        currPage: this.page.pageSize
+        page: this.page.pageSize,
+        currPage: this.page.currPage
       })
       .then(res => {
         if (res.code == 200) {

@@ -21,7 +21,7 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
       </iButton>
-      <iButton v-if="isTobeStated" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
+      <iButton v-if="isTobeStated" @click="resetCover">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
       <iFormGroup row='4' class="basic-form">
@@ -139,6 +139,7 @@ import {
   coverCancel,
   checkAekoContentSubmitState,
   getCoverDetail,
+  resetCover,
 } from '@/api/aeko/detail/cover.js'
 import thousandsFilterInput from 'rise/web/aeko/quotationdetail/components/thousandsFilterInput'
 export default {
@@ -162,6 +163,11 @@ export default {
       }
     },
     computed:{
+      //eslint-disable-next-line no-undef
+      ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+        }),
+
       // adeko状态已冻结或者已撤销 禁用操作按钮 || 封面状态不为待表态时禁用
       disabled(){
         const { aekoInfo={} ,basicInfo={}} = this;
@@ -480,6 +486,20 @@ export default {
         console.log(type);
         const { disabled,basicInfo } = this;
         return disabled || (type == 'isReference' && !basicInfo.aekoCoverId)
+      },
+
+      // 重置
+      resetCover(){
+        const {query} = this.$route;
+        const { requirementAekoId =''} = query;
+        const {userInfo={}} = this;
+        const {deptDTO={}} = userInfo;
+        const data = {
+          requirementAekoId,
+          deptNum:deptDTO.deptNum
+        };
+        this.getDetail();
+        resetCover(data);
       },
     }
 }

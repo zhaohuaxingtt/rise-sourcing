@@ -1,14 +1,14 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
- * @LastEditors:  
- * @LastEditTime: 2021-11-11 16:58:30
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-28 17:14:55
  * @Description: 财务目标价-目标价维护
- * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\index.vue
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\maintenance\index.vue
 -->
 
 <template>
-  <iPage v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_PAGE|财务目标价管理-目标价维护-页面">
+  <iPage class="maintenance" v-permission.auto="FINANCIALTARGETPRICE_MAINTENANCE_PAGE|财务目标价管理-目标价维护-页面">
     <headerNav />
     <!----------------------------------------------------------------->
     <!---------------------------搜索区域------------------------------->
@@ -103,7 +103,8 @@
 </template>
 
 <script>
-import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage } from 'rise'
+import { iPage, iCard, iPagination, iButton, iSelect, iDatePicker, iInput, iSearch, iMessage, icon } from 'rise'
+import iLoger from 'rise/web/components/iLoger'
 import headerNav from '../components/headerNav'
 import { tableTitle, searchList } from './data'
 import { pageMixins } from "@/utils/pageMixins"
@@ -118,7 +119,7 @@ import {omit} from 'lodash'
 import moment from 'moment'
 export default {
   mixins: [pageMixins],
-  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog},
+  components: {iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,modificationRecordDialog,attachmentDialog,approvalRecordDialog,iLoger, icon},
   data() {
     return {
       tableTitle: tableTitle,
@@ -210,6 +211,7 @@ export default {
         cfPriceType: '',
         showSelf: true
       }
+      this.sure()
     },
     getCF() {
       getCFList().then(res => {
@@ -489,5 +491,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.maintenance {
+  .control {
+    display: flex;
+    align-items: center;
+  }
+}
 </style>

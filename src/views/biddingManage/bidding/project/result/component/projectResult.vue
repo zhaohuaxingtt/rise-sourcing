@@ -73,8 +73,8 @@
           background
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
-          prev-text="上一页"
-          next-text="下一页"
+          :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+          :next-text="language('BIDDING_XIAYIYE','下一页')"
           :layout="page.layout"
           :current-page="page.currPage"
           :total="page.total"
@@ -208,12 +208,13 @@ export default {
      return val ? Big(val).div(this.beishu).toNumber() : ''
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit ) 
     },
     handleSizeChange(val) {
       this.page.currPage = 1;
@@ -252,7 +253,7 @@ export default {
           this.role === "supplier"
             ? `${process.env.VUE_APP_BIDDING}/biddingQueryService/exportProjectResults`
             : `${process.env.VUE_APP_BIDDING}/biddingService/exportProjectResultForBuyer`,
-        filename: "项目结果",
+        filename: this.language('BIDDING_XIANGMUJIEGUO', "项目结果"),
         type: "application/vnd.ms-excel",
         data: this.role === "supplier" ? this.dataList : prama,
         callback: (e) => {

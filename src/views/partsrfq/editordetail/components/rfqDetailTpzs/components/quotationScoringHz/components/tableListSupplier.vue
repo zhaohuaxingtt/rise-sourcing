@@ -1,557 +1,126 @@
 <!--
- * @Author: yuszhou
- * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-06 14:01:27
+ * @Author: your name
+ * @Date: 2021-11-08 11:48:04
+ * @LastEditTime: 2021-12-29 15:20:00
  * @LastEditors: Please set LastEditors
- * @Description: 特殊表格实现,如果fixed模块需要改动，需要将里面部分提为组件。
- * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
 -->
 <template>
-<div class="supplier">
-  <div class="selsTable mainTable" :style="{paddingTop:paddingTop}">
-    <el-table
-      tooltip-effect="light"
-      :height="height"
-      :data="tableData"
-      v-loading="loading"
-      :cell-class-name='cellClassName'
-      :empty-text="$t('LK_ZANWUSHUJU')"
-      ref='table'
-    >
-      <template v-for='(item,index) in tableTitle'>
-        <!-----------------表格中内容模块------------------------>
-        <el-table-column
-          :key="index"
-          :label="item.i18n ? $t(item.i18n) : item.label"
-          :width="item.width"
-          :prop='item.props'
-          align="center"
-          :resizable="false"
-        >
-          <!----------在表头上方需要显示评分的点，插入表头标签------>
-          <template slot="header" slot-scope="scope">
-            <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
-            <div class="headerContent" v-if='scope.column.label == "Supplier"'>
-              <div class="c" :style="{width:cWidth}">
-                <ul class="ca" :style="{width:(100+50*(tableTitle[1] ? (Array.isArray(tableTitle[1].list) ? tableTitle[1].list.length : 0) : 0)) + 'PX'}">
-                  <li v-for='(items,index) in supplierLeftLit' :key='index'>
-                    {{items.name}}
-                  </li>
-                </ul>
-                <ul class="cb" v-for='(items,index) in centerSupplierData' :key='index'>
-                  <template v-for="(itemss,index) in supplierLeftLit">
-                     <template v-if='itemss.name != "F-Target"'>
-                        <li :key='index' v-if="itemss.props == 'partNo'">{{items[itemss.props] + '-' + items['partName']+(items['partNameDe']!=null ? ('-'+items['partNameDe']):'')}}</li>
-                        <li :key='index' v-else>{{items[itemss.props]}}</li>
-                     </template>
-                      <li :key="index" v-else class="ftaget">
-                        <!-- <span>{{items['cfPartAPrice']}}</span>
-                        <span style="width:99PX"></span>
-                        <span>{{items['cfPartBPrice']}}</span> -->
-                      </li>
-                  </template>
-                </ul>
-                <div class="cc" style="width:60px">
-                  <ul>
-                    <template v-for="(itemss,index) in supplierLeftLit">
-                        <li :key='index' v-if='itemss.name == "KM"'>{{kmAPrice}}</li>
-                        <li :key="index" v-else class=""></li>
-                    </template>
-                  </ul>
-                </div>
-                <div class="cd" style="width:60px">
-                  <ul>
-                    <template v-for="(itemss,index) in supplierLeftLit">
-                        <li :key='index' v-if='itemss.name == "KM"'>{{kmTooling}}</li>
-                        <li :key='index' v-else-if='itemss.name == "Planned Invest"'>{{budget}}</li>
-                        <li :key="index" v-else class=""></li>
-                    </template>
-                  </ul>
-                </div>
-              </div>
-            
-            </div>
-            <span :class="{price:true,pricea:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartAPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcAPrice"'>
-                {{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartAPrice')}}
-            </span>
-          </template>
-          <!----------存在二级表头------>
-          <template v-if='item.list && item.list.length >0'>
-            <template v-for="(levelTowItem,levelTowIndex) in item.list">
-                <el-table-column
-                  :key="levelTowIndex"
-                  :width="levelTowItem.width"
-                  :prop='levelTowItem.props'
-                  align="center"
-                  :resizable="false"
-                >
-                  <template slot="header" slot-scope="scope">
-                    <el-tooltip :content='levelTowItem.label' effect='light'>
-                      <span class="overText" v-html="levelTowItem.renderHeader || levelTowItem.label"></span>
-                    </el-tooltip>
-                    <span :class="{price:true,priceb:true,redPrice:getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPriceStatus') == 2}" v-if='removeKeysNumber(scope.column.property) == "lcBPrice"'>{{getCfPartsAorBprice(centerSupplierData,getPorpsNumber(scope.column.property),'cfPartBPrice')}}</span>
-                  </template>
-                  <template slot-scope="scope">
-                    <template v-if='removeKeysNumber(levelTowItem.props) == "lcBPrice"'>
-                      <span :class="{buleColor:scope.row[getPorpsNumber(levelTowItem.props)+'suggestPartFlag'] == 1}">{{scope.row[levelTowItem.props]}}</span>
-                    </template>
-                    <template v-else>
-                      <span>{{scope.row[levelTowItem.props]}}</span>
-                    </template>
-                  </template>
-                </el-table-column>
-            </template>
-          </template>
-          <!--------------时间格式------------>
-          <template slot-scope="scope">
-            <template v-if ='removeKeysNumber(item.props) == "developmentCost"'>
-              <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>
-                <template slot="content">
-                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"developmentCost"]-scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
-                  <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
-                </template>
-                <span>{{scope.row[item.props]}}</span>
-              </el-tooltip>
-              <span v-else>{{scope.row[item.props]}}</span>
-              <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
-            </template>
-            <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
-              <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>
-                <template slot="content">
-                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"tooling"]-scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
-                  <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
-                </template>
-                <span>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
-              </el-tooltip>
-              <span v-else>{{scope.row[item.props]?parseInt(scope.row[item.props]):scope.row[item.props]}}</span>
-              <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
-              <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM-DD"):''}}</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "ltcStaringDate"'>
-              <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails"'>
-              <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">View</span>
-            </template>     
-            <template v-else-if="removeKeysNumber(item.props) == 'fTarget'">
-              <span :class="{lvse:lvseFn(scope.row,item.props,'fTarget')}">{{scope.row[item.props]}}</span>
-            </template>
-            <template v-else-if='item.props== "partName"'>
-              <span style="color:red;" :class="{lvse:lvseFn(scope.row,item.props,'partName')}">{{scope.row[item.props]}}</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-              <span :class="{buleColor:scope.row[getPorpsNumber(item.props)+'suggestPartFlag'] == 1}">{{scope.row[item.props]}}</span>
-            </template>
-            <template v-else-if='removeKeysNumber(item.props) == "tto"'>
-              <el-tooltip :content='scope.row[item.props]' effect='light'>
-                <span class="textEplies">{{ttoShow(scope.row[item.props])}}</span>
-              </el-tooltip>
-            </template>
-            <template v-if ='removeKeysNumber(item.props) == "supplierName"'>
-              <el-tooltip  effect='light'>
-                <div slot="content">
-                  <div>{{scope.row['supplierNameEn']}}</div>
-                  <div>{{scope.row[item.props]}}</div>
-                </div>
-                <div>
-                  <span class="isEplisSuplier">{{scope.row[getPorpsNumber(item.props)+"supplierNameEn"]}}</span>    
-                  <span class="isEplisSuplier">{{scope.row[item.props]}}</span>    
-                </div>
-              </el-tooltip>
-            </template>
-            <template v-else slot-scope="scope">
-              <span>{{scope.row[item.props]}}</span>
-            </template>
-          </template>
-
-        </el-table-column>
+  <el-table class="table" :data="tabelData"  :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
+    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center">
+      <template slot-scope="scope">
+        <span class="link" @click="openPage(scope.row[i].style.hyperlink)" v-if='scope.row[i].data == "View" && !scope.row[i].isHeader'>View</span>
+        <template v-else-if='scope.row[i] && scope.row[i].data && scope.row[i].data.match(/\n/)'>
+          <div>{{scope.row[i].data.split(/\n/)[0]}}</div>
+          <div>{{scope.row[i].data.split(/\n/)[1]}}</div>
+        </template>
+        <div v-else>{{scope.row[i].data | deleteContent | dateFillter}}</div>
       </template>
-    </el-table>
-  </div>
-</div>
+    </af-table-column>
+  </el-table>  
 </template>
 <script>
-import {supplierTableTop,removeKeysNumber,getPorpsNumber} from './data'
+import afTableColumn from 'af-table-column'
+import {iMessage} from 'rise'
 export default{
   inject:['getbaseInfoData'],
+  components:{afTableColumn},
   props:{
-    kmAPrice:{
-      type:String,
-      default:''
-    },
-    kmTooling:{
-      type:String,
-      default:''
-    },
-    budget:{
-      type:String,
-      default:''
-    },
-    tableData:{
-      type:Array,
-      default:()=>[]
-    },
-    tableTitle:{
-      type:Array,
+    parentsData:{
+      type:Object,
       default:()=>{}
-    },
-    centerSupplierData:{
-      type:Array,
-      default:()=>[{},{}]
-    },
-    supplierLeftLit:{
-      type:Array,
-      default:()=>[]
-    },
-    supplierRightList:{
-      type:Array,
-      default:()=>[]
-    },
-    cWidth:{
-      type:String,
-      default:'0px'
     }
   },
-  created() {
-    this.$nextTick(() => {
-      const domObserver = new MutationObserver(() => {
-        const tableDom = this.$el.querySelector(".el-table")
-        const tableHeaderDom = this.$el.querySelector(".el-table__header")
-
-        const rightFlexDom = this.$el.querySelector(".rightFlex")
-
-        rightFlexDom.style.display = tableHeaderDom.clientWidth < tableDom.clientWidth ? "none" : ""
-
-
-        const mainTableDom = this.$el.querySelector(".mainTable")
-        if (mainTableDom) {
-          const mainTableBodyDom = mainTableDom.querySelector(".el-table")
-          const mainTableClientRect = mainTableDom.getBoundingClientRect()
-          const mainTableBodyClientRect = mainTableBodyDom.getBoundingClientRect()
-
-          const rightFlexBodyDom = rightFlexDom.querySelector(".el-table")
-          rightFlexBodyDom.style.height = rightFlexDom.style.height = `${ mainTableBodyClientRect.height }px`
-          
-          rightFlexDom.style.paddingTop = `${ parseFloat(window.getComputedStyle(mainTableDom).paddingTop) + 1 }px`
-        }
-      })
-
-      domObserver.observe(this.$el, {
-        childList: true,
-        attributes: true,
-        subtree: true
-      })
-    })
+  filters:{
+    dateFillter(val){
+      // eslint-disable-next-line no-undef
+      if(isNaN(val)&&!isNaN(Date.parse(val))) return moment(val).format('YYYY-MM-DD')
+      return val
+    },
+    deleteContent(val){
+      if(val == 'DEL') return ''
+      return val
+    }
   },
-  // updated() {
-  //   this.$nextTick(() => { // 处理right在title未占满宽度时强制浮动的问题
-  //     const tableDom = this.$el.querySelector(".el-table")
-  //     const tableHeaderDom = this.$el.querySelector(".el-table__header")
-  //     const rightFlexDom = this.$el.querySelector(".rightFlex")
-
-  //     rightFlexDom.style.display = tableHeaderDom.clientWidth < tableDom.clientWidth ? "none" : ""
-  //   })
-  // },
-  data(){
-    return {
-      rightFlexId: "",
-      supplierTableTop:supplierTableTop
-  }},
-  methods:{
-    ttoShow(data){
-      if(parseInt(data)){
-        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
-      }else{
-        return data
-      }
-    },
-    getPorpsNumber(props){return getPorpsNumber(props)},
-    getCfPartsAorBprice(arrayList,index,props){
+  computed:{
+    tabelData(){
       try {
-        return arrayList[index || 0][props]
-      } catch (error) { 
-        return ''
+        return this.parentsData.data
+      } catch (error) {
+        console.log(error)
+        return []
       }
     },
-    optionPage(items,index){
+    tabelTitle() {
+      try {
+        return this.parentsData.data[0].map((r,index)=>index)
+      } catch (error) {
+        return []
+      }
+    }
+  },
+  methods:{
+    openPage(items,index){
+      if(!JSON.parse(items)) return iMessage.warn('关键数据为空，请联系管理员')
+      let itemss = JSON.parse(items)
+      if(itemss['hasNoBidOpen']) return iMessage.warn(this.language('AIBIAOSHIJIANWEIDAO','抱歉！开标时间未到，暂时无法查看报价单！'))
       const router = this.$router.resolve({
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
           rfqId:this.$route.query.id,
-          round:items.round,
-          supplierId:items.supplierId,
-          fsNum:items[index+'partPrjCode'],
+          round:itemss.round,
+          supplierId:itemss.supplierId,
+          fsNum:itemss.partPrjCode,
           fix:true,
           sourcing:true
         }
       })
       window.open(router.href,'_blank')
     },
-    moment(date){
-      // eslint-disable-next-line no-undef
-      return moment(date)
+    fixedFn(index){
+      if(index<4) return 'left'
+      if(index>this.tabelTitle.length-4) return 'right'
+      return false
     },
-    removeKeysNumber(key){
-      return removeKeysNumber(key)
+    spanMethod({ row, column, rowIndex, columnIndex }){
+      return row[columnIndex].mergeArray
     },
-    doLayout(){
-      this.$refs.table.doLayout()
-    },
-    lvseFn(row,props,String) {
-      console.log('lvseFn',row,props,String);
+    cellStyleName({row, column, rowIndex, columnIndex}){
       try {
-        return row[getPorpsNumber(props)+String] == 1
+        let style = {
+        'fontWeight':row[columnIndex].style.isBold?'bold':'',
+        'color':row[columnIndex].style.fontColor || '#707070',
+        'backgroundColor':row[columnIndex].style.backgroundColor || 'white'
+        }
+        if(row[columnIndex].style.borderRight) style = {...style,...{borderRight:'none'}}
+        if(row[columnIndex].style.underscore) style = {...style,...{borderBottom:'2px solid #1763F7'}}
+        return style
       } catch (error) {
-        return false
+       return {
+        'fontWeight':'',
+        'color':'#707070',
+        'backgroundColor':'white'
+      } 
       }
-    },
-    isborder(row,props) {
-      row.partInfoList.forEach((val,index,arr) => {
-        let  a = false 
-        Object.keys(val).forEach(value=>  {
-           value ==  props ? a= true: ''
-        })
-        let b  = val.suggestPartFlag == 1  && a == true ? true: false
-        console.log(b,props);
-        if(b==true)
-        return 'priceUnderLinePrice'
-        else
-        return ''        
-      })
-    }
-    // cellClassName({row, column, rowIndex, columnIndex}) {
-      // console.log(column,'columncolumncolumn'); 
-      // console.log(row,'rowrowrowrowrow'); 
-      // row.partInfoList.forEach(val => {
-        // val.suggestPartFlag === 1 ? val.partName
-      // })
-
-      // if(row.partInfoList.suggestPartFlag === 1){
-      //   if(column.label =='LC A Price' ) {
-      //     return 'priceUnderLinePrice'
-      //   }      
-      //   if(column.level === 2 && column.property.indexOf('lcBPrice')>-1) {
-      //     return 'priceUnderLinePrice'
-      //   }      
-      // }
-
-      // 
-    // }
-  }, 
-  computed:{
-    paddingTop:function(){
-      return this.supplierLeftLit.length * 30 + 20 + 'PX'
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-  .redPrice{
-    color:red;
-  }
-  .supplier{
-    position: relative;
-    .leftFlex{
-      position: absolute;
-      height: 100%;
-      bottom: 10PX;
-      padding-top:10PX;
-      left: 0px;
-      z-index: 199;
-      width: 100px;
+  .table{
+    ::v-deep tr:nth-child(even){
       background-color: white;
-      .selsTable{
-        overflow: hidden;
-      }
     }
-    .rightFlex{
-      position: absolute;
-      box-sizing: content-box;
-      // height: 100%;
-      top: 0px;
-      right: 0px;
-      z-index: 199;
-      overflow: hidden;
-      background-color: white;
-      display: flex;
-      flex-direction: row-reverse;
-      .rightWrapper {
-        position: absolute;
-        bottom: 1px;
-      }
-
-      .selsTable{
-        overflow: inherit;
-        width: auto;
-        ::v-deep .el-table{
-           width: auto;
-           max-width: auto;
-          .el-table__header-wrapper{
-            width: auto;
+    ::v-deep td{
+        border-bottom: 1px solid #EBEEF5;
+        .cell{
+          white-space:nowrap;
+          word-break: normal;
+          div{
+            text-align: center;
           }
         }
-      }
     }
   }
-  .overText{
-    overflow: hidden;
-    width: 100%;
-    display: inline-block;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    // height: 15px;
-    line-height: 100%;
-  }
-  
-  .ftaget{
-    text-align: left;
-    span{
-      width: 82PX;
-      display: inline-block;
-      height: 100%;
-      border-right: 1px solid #C5CCD6;
-      text-align: center;
-      float: left;
-    }
-  }
-  .el-table {
-    overflow: visible;
-    ::v-deep.cell{
-      overflow: visible;
-        
-        .price{
-          position: absolute;
-          top: 0px;
-          left: 0px;
-          height: 38px;
-          line-height: 38px;
-          display: inline-block;
-          width: 100%;
-          border-left: 1px solid #C5CCD6;
-          border-right: 1px solid #C5CCD6;
-        }
-        .pricea{
-            top:-70px;
-            border-left: none;
-        }
-        .priceb{
-            top:-96px;
-        }    
-        .buleColor::after{
-          margin: auto;
-          position: absolute;
-          content:"";
-          width: 65PX;
-          height:3px;
-          left: 0px;
-          bottom: 0px;
-          background: blue;
-        }
-        .isEplisSuplier{
-          display: block;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        .textEplies{
-          width: 100% !important;
-          overflow: hidden !important;
-          text-overflow: ellipsis !important;
-          white-space: nowrap;
-          display: inline-block;
-        }
-    }
-    ::v-deep.priceUnderLinePrice{
-      border-bottom:3px solid blue;
-      color:red;
-    }
-    ::v-deep .el-table__header-wrapper{
-      overflow: visible;
-      
-      .labelHader{
-        width: 100%;
-        overflow: hidden;
-        white-space: pre-line;
-        text-overflow: ellipsis;
-        display: inherit;
-      }
-    }
-    ::v-deep.el-table__header{
-      th{
-        overflow: visible;
-      }
-    }
-    ::v-deep.el-table__body-wrapper{
-      overflow:visible;
-      height: auto!important;
-    }
-  }
-  .headerContent{
-    position: relative;
-    .c{
-      position: absolute;
-      height: auto;
-      width: 100px;
-      //background-color: red;
-      z-index: 123;
-      bottom: 49PX;
-      left:-13px;
-      border: 1px solid #C5CCD6;
-      border-bottom: none;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-      overflow:hidden;
-      display: flex;
-      ul{
-        border-right: 1px solid #C5CCD6;
-        li{
-          border-bottom: 1px solid #C5CCD6;
-          height: 38px;
-          line-height: 38px;
-          &:last-child{
-            border-bottom: none;
-          }
-        }
-        &:first-child{
-          background-color:rgba(22, 99, 246, 0.17);
-        }
-      }
-      .cb{
-        flex: 1;
-      }
-      .cc{
-        display: flex;
-        border-right: 1px solid #C5CCD6;
-        align-items: center;
-        justify-content: center;
-        background-color:rgba(22, 99, 246, 0.17);
-        ul{
-          background-color: transparent;
-          border-right: none;
-          li{
-            border-bottom: none;
-          }
-        }
-      }
-      .cd{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        ul{
-          background-color: transparent;
-          border-right: none;
-          li{
-            border-bottom: none;
-          }
-        }
-      }
-    }
-  }
-  .selsTable{
-    width: 100%;
-    overflow-x: scroll;
-  }
-
 </style>

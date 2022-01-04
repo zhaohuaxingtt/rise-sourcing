@@ -277,10 +277,16 @@ export function gsPartsAsRow(rfqId,round){
 }
 
 //报价分析-供应商轴
-export function fsSupplierAsRow(rfqId,round){
+export function fsSupplierAsRow(rfqId='',round='',hideList=[]){
     return nego({
-        url: `/nego-assistant/nego-analysis-summary/fs-supplier-as-row/${rfqId}/${round}`,
-        method: 'GET'
+        url: `/nego-assistant/nego-analysis-summary/analysisSummaryArray`,
+        //url: `https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/nego-assistant/nego-analysis-summary/fs-supplier-as-row`,
+        method: 'post',
+        data:{
+            hideList:hideList,
+            rfqId:rfqId,
+            round:round
+        }
     })
 }
 //分析报价-组合
@@ -451,23 +457,72 @@ export function searchABPageExchangeRate(mimoId) {
     })
 }
 //导出excel
-export function exportFSPartsAsRow(rfqId,round) {
+export function exportFSPartsAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-fs-parts-as-row/${rfqId}/${round}`,
-        method:'GET'
+        method:'POST',
+        data:dataList
     })
 }
+
 //导出excel
-export function exportFsSupplierAsRow(rfqId,round) {
+export function exportFsSupplierAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-fs-supplier-as-row/${rfqId}/${round}`,
-        method:'GET'
+        method:'POST',
+        data:dataList
     })
 }
+
 //导出excel
-export function exportGsPartsAsRow(rfqId,round) {
+export function exportGsPartsAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-gs-parts-as-row/${rfqId}/${round}`,
+        method:'POST',
+        data:dataList
+    })
+}
+
+//关联StarMonitor记录
+export function starMonitorList(data) {
+    return requst({
+        url:'/star-monitor/list',
+        method:'POST',
+        data
+    })
+}
+
+//应用关联记录校验
+export function checkInfo(data) {
+    return requst({
+        url:'star-monitor/check',
+        method:'POST',
+        data
+    })
+}
+
+//取消关联StarMonitor
+export function cancelRef(data) {
+    return requst({
+        url:'/star-monitor/cancel',
+        method:'POST',
+        data
+    })
+}
+
+//取消等待StarMonitor定点更新
+export function cancelWaitStarMonitorUpdate(rfqId) {
+    return requst({
+        url:`star-monitor/cancel-wait/${rfqId}`,
+        method:'GET',
+    })
+}
+
+//等待StarMonitor定点更新
+export function waitStarMonitorUpdate(rfqId) {
+    return requst({
+        url:`star-monitor/wait-update/${rfqId}`,
         method:'GET'
     })
+
 }

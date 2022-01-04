@@ -928,7 +928,8 @@ export default {
                     0,
                     notAekoPriceDetail.baAmount,
                     0,
-                    notAekoPriceDetail.bmAmount]
+                    notAekoPriceDetail.bmAmount
+                  ]
                 },
                 {
                   name: '',
@@ -1330,13 +1331,13 @@ export default {
 }
 
 #chart1 {
-  width: 200px;
+  width: 80px;
   height: 200px;
   align-self: flex-end;
 }
 
 #chart2 {
-  width: 640px;
+  width: 700px;
   height: 180px;
   margin: 0 30px;
   align-self: flex-end;
@@ -1414,7 +1415,8 @@ export default {
     position: relative;
 
     .infoIcard {
-      margin-left: 49px;
+      margin-left: 25px;
+      margin-right: 25px;
       max-width: 200px;
 
       > div {

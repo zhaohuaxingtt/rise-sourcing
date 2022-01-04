@@ -1,21 +1,30 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-11-25 15:46:38
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-30 15:16:24
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
 -->
 <template>
   <iPage class="configscoredept">
     <div class="header clearFloat">
-      <iNavMvp :list="list" :lang="true" :lev="1" routerPage></iNavMvp>
-      <div class="control">
-        <logButton class="margin-left20" />
-        <span class="margin-left20">
-          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
-        </span>
-      </div>
+      <!-- <iNavMvp :list="list" :lang="true" :lev="1" routerPage></iNavMvp> -->
+      <headerNav class="headerNav" type="configscoredept">
+        <div class="control">
+          <iLoger
+            :config="{
+              module_obj_ae: '评分部门', 
+              menuName_obj_ae: ''
+            }"
+            isPage
+            credentials
+            class="margin-left20"/>
+          <span class="margin-left20">
+            <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+          </span>
+        </div>
+      </headerNav>
     </div>
     <iSearch
       class="margin-top25"
@@ -133,8 +142,9 @@
 </template>
 
 <script>
-import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage, iNavMvp } from "rise"
-import logButton from "@/components/logButton"
+import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage } from "rise"
+import headerNav from "@/components/headerNav"
+import iLoger from 'rise/web/components/iLoger'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import deptDialog from "./components/deptDialog"
 import filters from "@/utils/filters"
@@ -153,10 +163,10 @@ export default {
     iCard,
     iButton,
     iInput,
-    logButton,
+    iLoger,
     tableList,
     deptDialog,
-    iNavMvp
+    headerNav
   },
   mixins: [ filters ],
   data() {
@@ -364,6 +374,11 @@ export default {
 
 <style lang="scss" scoped>
 .configscoredept {
+  .headerNav {
+    display: flex;
+    width: 100%;
+  }
+
   .header {
     position: relative;
     margin-bottom: 40px;
@@ -376,10 +391,6 @@ export default {
     }
 
     .control {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translate(0, -50%);
       display: flex;
       align-items: center;
       height: 30px;

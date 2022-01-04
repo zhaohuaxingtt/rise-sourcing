@@ -30,14 +30,15 @@
             <iInput
             style="width: 300px;"
             v-model="infoForm.description"
-            :placeholder="language('QINGSHURUMIAOSHU','请输入描述')"/>
+            :placeholder="language('QINGSHURUMIAOSHU','请输入描述')"
+            @input="handleInputByDescription" />
           </el-form-item>
         </el-form>
       </iCard>
       <iCard class="margin-top20">
         <div slot="header" class="headBox">
           <p class="headTitle">{{language('XIANGQINGLIEBIAO', '详情列表')}}</p>
-          <span class="buttonBox">
+          <span class="buttonBox" v-if="$route.query.mode === 'add'">
             <iButton @click="handleClickChoose">{{language('XUANZE', '选择')}}</iButton>
             <iButton @click="handleRemove">{{language('YICHU', '移除')}}</iButton>
           </span>
@@ -96,7 +97,19 @@ export default {
       selection: []
     }
   },
+  props: {
+    description: {
+      type: String,
+      default: ""
+    }
+  },
+  watch: {
+    description(nv) {
+      this.infoForm.description = nv
+    }
+  },
   created() {
+    this.infoForm.description = this.description
     this.getTableData()
     this.getsignSheetDetails()
   },
@@ -105,13 +118,12 @@ export default {
     getTableData() {
       this.loading = true
       getMTZSignPage({
-        size: -1,
         signId: Number(this.$route.query.id)
         // signId: 69
       }).then(res => {
         this.loading = false
         if (res && res.code == 200) {
-          this.tableListData = res.data
+          this.tableListData = Array.isArray(res.data) ? res.data : []
         } else iMessage.error(res.desZh)
       })
     },
@@ -145,6 +157,11 @@ export default {
     // 提交选择数据
     handleSubmitAdd(val) {
       this.detailParams.visible = false
+      if (val.length) val.map(o => {
+        // 做前端标记
+        o.flagSelect = true
+        return o
+      })
       this.$set(this, 'tableListData', this.tableListData.concat(val))
     },
     // 选中数据
@@ -171,7 +188,7 @@ export default {
         this.getTableData()
       } else {
         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-      }
+      } 
     },
     // 提交
     async handleSubmit() {
@@ -190,36 +207,31 @@ export default {
     },
     // 移除
     async handleRemove() {
-      if(this.selection && this.selection.length == 0) {
+      if (this.selection && this.selection.length == 0) {
         return iMessage.warn(this.language('QZSXZYTSJ', '请至少选中一条数据'))
       }
 
-      var num = 0;
-      try{
-        this.selection.forEach(e=>{
-          // console.log(e.ttNominateAppId)
-          if(e.ttNominateAppId !== null){
-            num++;
-            iMessage.warn(this.language('YGLLJDDSQDMTZSQDBNYC', '已关联零件定点申请的MTZ申请单不能移除！'))
-            throw new Error("EndIterative");
-          }
+      const ids = []
+      try {
+        this.selection.forEach(item => {
+          if (!item.flagSelect) ids.push(item.id)
         })
-      }catch(e){
-        if(e.message != "EndIterative") throw e;
+
+        if (ids.length) throw ids
+      } catch(e) {
+        return iMessage.warn(`${ this.language("SHENQINGDANHAO", "申请单号") }: ${ ids.join("、") } ${ this.language("MTZDONTDELETE", "与零件定点申请相关联，不能移除") }`)
       }
 
-      if(num == 0){
-        const confirmInfo = await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
-        if (confirmInfo !== 'confirm') return
-        const arr = window._.cloneDeep(this.tableListData)
-        window._.remove(arr, (item) => {
-          return this.selection.find(selectItem => selectItem.id == item.id) 
-        })
-        this.selection = []
-        this.$set(this, 'tableListData', arr)
-      }
+      await this.$confirm(this.language('LK_REMOVESURE', '您确定要执行移除操作吗？'))
+      this.tableListData = this.tableListData.filter(item => !this.selection.includes(item))
+      this.selection = []
+    },
+    handleInputByDescription(value) {
+      this.$emit("update:description", value)
+    },
+    forceDelete(ids = []) {
+      this.tableListData = this.tableListData.filter(item => !(ids.map(item => item + "")).includes(item.id + ""))
     }
-
   }
 }
 </script>

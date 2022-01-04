@@ -26,7 +26,7 @@
               <el-option
                 v-for="item in roundTypeLists"
                 :key="item.roundType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.roundType"
               >
               </el-option>
@@ -62,7 +62,7 @@
               <el-option
                 v-for="item in biddingStatus"
                 :key="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
                 :value="item.value"
               >
               </el-option>
@@ -157,6 +157,13 @@ export default {
         this.ruleForm = val;
       },
     },
+    '$i18n.locale':{
+      immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+      }
+    },
     ruleForm(val) {
       this.$emit("input", val);
     },
@@ -172,6 +179,14 @@ export default {
       //   let endTime = new Date(val).getTime() + 60 * 1000;
       //   this.ruleForm.openTenderTime = dayjs(endTime).format("YYYY-MM-DD HH:mm:00");
       // });
+       this.$nextTick(() => {
+        this.$refs["ruleForm"].validateField(["pricingDeadline"]);
+       });
+      if (val == null) {
+        this.$nextTick(() => {
+          this.$refs["ruleForm"].clearValidate(["pricingDeadline"]);
+        });
+      }
     },
     "ruleForm.openTenderTime"(val) {
       this.ruleForm.pricingDeadline = val
@@ -179,7 +194,7 @@ export default {
   },
   data() {
     return {
-      rules: baseRules,
+      rules: baseRules(this),
       ruleForm: {},
       status: "未开标",
       openTenderStatusList,

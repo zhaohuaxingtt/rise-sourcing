@@ -1,14 +1,14 @@
 <template>
   <iPage class="signSheetBox" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE|签字单列表" >
     <!-- 头部 -->
-    <headerNav  />
+    <headerNav />
     <signSheet class="signSheet" :showTitle="false" />
   </iPage>
 </template>
 
 <script>
 import { iPage } from "rise"
-import headerNav from "@/views/designate/home/components/headerNav"
+import headerNav from "@/components/headerNav"
 import signSheet from "./index"
 
 export default {

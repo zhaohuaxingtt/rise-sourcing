@@ -6,7 +6,7 @@
  * @Descripttion: 定点记录
 -->
 <template>
-  <iCard  @handleTitle="addFile($event,9, '定点记录')" :title="$t('TPZS.DDJV')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal='false' collapse>
+  <iCard  @handleTitle="addFile($event,9, '定点记录')" :title="$t('TPZS.DDJV')+`<span class='cursor' style='margin-right: 20px;'><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>` + `<span style='color: #909091'>` +categoryCode + `</span>` +  `<span style='color: #909091'>` +$t('TPZS.DDJLMEMO') + `</span>`" :defalutCollVal='false' collapse>
     <tableList id="card9" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="true" @handleSelectionChange="handleSelectionChange">
 
     </tableList>
@@ -36,6 +36,7 @@ export default {
       tableListData: [],
       tableTitle: fixedRecordTableTitle,
       tableLoading: false,
+      categoryCode: ""
     }
   },
   // 监听属性 类似于data概念
@@ -60,16 +61,15 @@ export default {
           if (resData && resData.length > 0) {
             resData.forEach((header) => {
               if (header.nomiRecordDetailVO && header.nomiRecordDetailVO.length > 0) {
+                this.categoryCode = header.materialCode?header.materialCode+"-"+header.materialName : header.materialName;
                 header.nomiRecordDetailVO.forEach((detail) => {
                   this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,
-                  header.materialCode?header.materialCode+"-"+header.materialName : header.materialName,
-                  header.craftCode?header.craftCode+'-'+header.craftName:header.craftName,header.carTypeProj,
+                  header.liniePrincipal,detail.purchasingFactory,header.carTypeProj,
                   this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
                 })
               } else {
                 this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,
-                  header.materialCode?header.materialCode+"-"+header.materialName : header.materialName,
-                  header.craftCode?header.craftCode+'-'+header.craftName:header.craftName,header.carTypeProj,
+                  header.liniePrincipal,"",header.carTypeProj,
                   "","",""))
               }
             })

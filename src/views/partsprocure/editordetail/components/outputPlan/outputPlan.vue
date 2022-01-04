@@ -49,6 +49,7 @@ import { iCard, iButton, iSelect, iInput, iMessage } from 'rise'
 import { getOutputPlan, updateOutputPlan, bkmOutputForecast } from '@/api/partsprocure/editordetail'
 import { outputPlanTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
+import { partProjTypes } from '@/config'
 
 export default {
   components: { iCard, iButton, iSelect, iInput },
@@ -61,6 +62,7 @@ export default {
   },
   data() {
     return {
+      partProjTypes,
       loading: false,
       saveLoading: false,
       years: [],
@@ -74,7 +76,10 @@ export default {
   },
   computed: {
     disabled() {
-      return typeof this.getDisabled === "function" &&this.getDisabled()
+      return (typeof this.getDisabled === "function" && this.getDisabled()) || this.isOnlyPartNumChange
+    },
+    isOnlyPartNumChange() {
+      return this.params.partProjectType == this.partProjTypes.JINLINGJIANHAOGENGGAI
     }
   },
   created() {

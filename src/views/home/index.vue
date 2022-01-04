@@ -1,14 +1,14 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-19 15:12:20
- * @LastEditTime: 2021-02-19 18:01:14
+ * @LastEditTime: 2021-12-20 15:46:42
  * @LastEditors: Please set LastEditors
  * @Description: 首页
  * @FilePath: \rise\src\views\home\index.vue
 -->
 <template>
 	<div class="welcome">
-		欢迎进入RISE系统，首页正在建设中...
+		欢迎进入RISE系统，首页正在建设中
 	</div>
 </template>
 <script>

@@ -138,7 +138,8 @@ export default {
         const pms = {
           ...this.form,
           categoryCode: this.$route.query.categoryCode || '',
-          modelIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
+          motorIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
+
         }
         const res = await getPartMessage(pms)
         this.tableListData = res.data

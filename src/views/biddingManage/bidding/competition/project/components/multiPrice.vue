@@ -537,7 +537,7 @@ export default {
       factoryPricePercentFlag: true,
       totalPriceFlag: false,
       tableLoading: false,
-      rules: baseRules,
+      rules: [],
       ruleForm: {
         beginMonth: "",
         modelProjects: [],
@@ -605,7 +605,9 @@ export default {
   },
   mounted() {
     this.handleSearchReset();
-    
+    this.$nextTick(() => {
+      this.rules = baseRules(this)
+    })
     // getModels().then((res) => {
     //   this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
     // });
@@ -635,7 +637,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || this.language('BIDDING_YUAN',"元");
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     totalPrices() {
       return this.ruleForm.biddingStatus === '01' ? this.orgTotalPrices : this.ruleForm.totalPrices;
@@ -696,6 +698,25 @@ export default {
     //     }
     //   }
     // },
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'beginMonth',
+          //   'modelProjects',
+          //   'models',
+          //   'totalPrices'
+          // ])
+        })
+      }
+    },
     //监听产品  计算B价 ==出厂价+包装费+运输费+操作费
     biddingProducts: {
       handler(val, oldVal) {
@@ -1375,7 +1396,7 @@ export default {
     async query(e) {
       // 根据ID查询条款信息
       this.tableLoading = true;
-      let o = {...planBaseData,title:'折现率'};
+      let o = {...planBaseData, title: this.language('BIDDING_ZHEXIANLV','折现率')};
       const res = await  getDiscount({});
       if(res?.data != null){
         res?.data?.md_discount_rate.map(item=>{

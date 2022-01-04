@@ -273,7 +273,7 @@ export default {
     };
   },
   mounted() {
-    let o = {...planBaseData,title:'折现率'};
+    let o = {...planBaseData,title:this.language('BIDDING_ZHEXIANLV','折现率')};
     getDiscount({}).then((res) => {
       if(res?.data != null){
         res?.data?.md_discount_rate.map(item=>{
@@ -308,7 +308,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     numberUppercase() {
       return digitUppercase(

@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 11:06:56
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-10-08 10:19:36
+ * @LastEditTime: 2021-12-30 09:58:56
  * @Description: 项目管理概览
- * @FilePath: \front-web\src\views\project\overview\index.vue
+ * @FilePath: \front-sourcing\src\views\project\overview\index.vue
 -->
 
 <template>
@@ -254,10 +254,10 @@ export default {
 <style lang="scss" scoped>
 .projectoverview {
   &-home {
-    padding: 0;
-    padding-top: 10px;
-    height: calc(100% - 55px);
-    overflow: auto;
+    padding: 0 !important;
+    padding-top: 10px !important;
+    height: calc(100% - 55px) !important;
+    overflow: auto !important;
   }
 }
 </style>

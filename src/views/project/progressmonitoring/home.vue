@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-17 10:16:57
+ * @LastEditTime: 2021-12-29 10:07:07
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
@@ -63,13 +63,21 @@
       <!--  -->
       <div class="countView" v-permission.auto="PROJECTMGT_PROGRESSMONITORING_COUNTTIPS|统计信息">
          <iFormGroup row="4" class="form">
-            <iFormItem>
-              <span slot="label">{{language('WEIJINTIPSBIAO', '未进TIPS表')}}:</span>
+            <iFormItem class="largeFromItem">
+              <span slot="label">{{language('WEIJINTIPSBIAOXUNJIAZILIAOYISHIFANG', '未进TIPS表(询价资料已释放)')}}:</span>
               <span class="cursor" @click="toPartList(1)"><iText>{{showTips ? notInTips : 0}}</iText></span>
             </iFormItem>
             <iFormItem>
               <span slot="label">{{language('CKDHTZSBLINGJIANEN', 'CKD/HT/ZSB零件')}}:</span>
               <span class="cursor" @click="toPartList(2)"><iText>{{showTips ? ckdconfirm : 0}}</iText></span>
+            </iFormItem>
+            <iFormItem>
+              <span slot="label">{{language('EMOTSYIWANCHENG', 'EM&OTS已完成')}}:</span>
+              <span class="cursor" @click="toPartList(3)"><iText>{{showTips ? emOtsNum : 0}}</iText></span>
+            </iFormItem>
+            <iFormItem class="smallFromItem">
+              <span slot="label" >1999:</span>
+              <span class="cursor" @click="toPartList(4)"><iText>{{showTips ? csfFgBemerkung : 0}}</iText></span>
             </iFormItem>
          </iFormGroup>
       </div>
@@ -103,9 +111,11 @@ export default {
       data: [],
       notInTips: 0,
       ckdconfirm: 0,
+      emOtsNum: 0,
       tipsSum: 0,
       options: {},
-      loading: false
+      loading: false,
+      csfFgBemerkung: 0
     }
   },
   mounted() {
@@ -281,8 +291,8 @@ export default {
             // 图表id
             o.id = `chart${index}`
             // 图表标题
-            o.title = o.modelStatusName || ''
-            o.title === 'tryout待完成' && (o.title = `<span class="sup">1<sup>st</sup> Tryout待完成</span>`)
+            o.title = o.modelStatusName === 'tryout待完成' ? '1st Tryout待完成' : o.modelStatusName
+            o.i18n = tarConfig.i18n
             // 正常
             o.value1 = o.projectRiskNormal
             // 风险
@@ -301,13 +311,13 @@ export default {
             }
             // 是否隐藏任务进度
             o.hideTaskProcess = ['EM&OTS已完成', '匹配异常', '待释放'].includes(o.modelStatusName)
-            if (index === data.length - 1) {
-              o.type = 2
-              // 超期汇总
-              o.value5 = o.projectRiskDelay
-              // 按期汇总
-              o.value6 = o.projectRiskNormal
-            }
+            // if (index === data.length - 1) {
+            //   o.type = 2
+            //   // 超期汇总
+            //   o.value5 = o.projectRiskDelay
+            //   // 按期汇总
+            //   o.value6 = o.projectRiskNormal
+            // }
             return o
           })
           this.data = [...data]
@@ -315,6 +325,8 @@ export default {
           this.notInTips = res.data && res.data.noTipsNum || 0
           // ckdconfirm
           this.ckdconfirm = res.data && res.data.ckdNum || 0
+          this.emOtsNum = res.data && res.data.emOtsNum || 0
+          this.csfFgBemerkung = res.data && res.data.csfFgBemerkung || 0
           // tipsSum
           this.tipsSum = res.data && res.data.tipsSum || 0
           this.updateTime = res.data && res.data.synDate || ''
@@ -418,6 +430,18 @@ export default {
         background: #F5F6F7;
         color: rgba(22, 96, 241, 1);
         cursor: pointer;
+      }
+    }
+    &.largeFromItem {
+      width: 420px ;
+      .el-form-item__label {
+        width: 260px;
+      }
+    }
+    &.smallFromItem {
+      width: 270px ;
+      .el-form-item__label {
+        width: 100px;
       }
     }
   }

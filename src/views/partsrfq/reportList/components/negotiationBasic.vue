@@ -1,8 +1,8 @@
 <!--
  * @Date: 2021-11-16 11:06:02
  * @LastEditors: caopeng
- * @LastEditTime: 2021-12-10 17:45:53
- * @FilePath: \德勤项目\front-sourcing-new\src\views\partsrfq\reportList\components\negotiationBasic.vue
+ * @LastEditTime: 2021-12-24 14:49:23
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\negotiationBasic.vue
 -->
 <!--
  * @author: shujie
@@ -76,11 +76,13 @@ export default {
         instanceId: 0,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
+         isBindingInstance:0
       }
       reportList(data).then((res) => {
         if (res.data) {
           this.page.currPage = res.pageNum
           this.page.totalCount = res.total
+          
           this.tableLoading = false
           this.tableListData = res.data
         }

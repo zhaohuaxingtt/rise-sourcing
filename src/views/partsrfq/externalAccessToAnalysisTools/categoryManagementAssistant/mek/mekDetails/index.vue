@@ -1,14 +1,15 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-11-11 15:57:58
+ * @LastEditTime: 2021-12-31 12:07:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
 -->
 <template>
   <iPage class="new-MEK">
-    <div id="content" v-loading="onDataLoading">
+    <div id="content"
+         v-loading="onDataLoading">
       <div class="navBox flex-between-center"
            style="margin-bottom:20px">
         <div class="title font-weight flex">
@@ -390,6 +391,7 @@ import carLevelSelect from "../components/carLevelSelect"
 import {
   getMekTable,
   getHistogram,
+  mekInnerTarget,
   category,
   getComparedMotor,
   getTargetMotor,
@@ -557,16 +559,29 @@ export default {
     if (this.entryStatus === 1) {
       params.isBindingRfq = true;
       params.rfq = this.rfqId;
+      let entryParams = _.cloneDeep(params)
+      entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+      mekInnerTarget(entryParams).then(res => {
+        this.firstBarData = res.data[0];
+      })
+      params.info = params.info.filter(item => item.isTargetMotor === false)
+      this.$nextTick(() => {
+        if (this.categoryId && this.chemeId && this.categoryCode) {
+          params.isBindingRfq = this.isBindingRfq
+          this.getHistogram(params);
+        }
+      })
     } else {
       params.isBindingRfq = false;
+      this.onDataLoading = false
+      this.$nextTick(() => {
+        if (this.categoryId && this.chemeId && this.categoryCode) {
+          params.isBindingRfq = this.isBindingRfq
+          this.getHistogram(params);
+        }
+      })
     }
-    this.onDataLoading = false
-    this.$nextTick(() => {
-      if (this.categoryId && this.chemeId && this.categoryCode) {
-        params.isBindingRfq= this.isBindingRfq
-        this.getHistogram(params);
-      }
-    })
+
     // this.getMekTable();
   },
   mounted () { },
@@ -582,7 +597,7 @@ export default {
   },
   methods: {
     async init () {
-      this.rfqId = this.$store.state.rfq.rfqId;
+      this.rfqId = this.$store.state.rfq.rfqId || this.$route.query.rfqId;
       this.entryStatus = this.$store.state.rfq.entryStatus;
       this.chemeId = this.$route.query.chemeId ? this.$route.query.chemeId : this.propSchemeId;
       this.productFactoryNames = this.$route.query.productFactoryNames ? this.$route.query.productFactoryNames : this.propFactoryName;
@@ -597,6 +612,10 @@ export default {
         this.targetMotor = data.targetMotor.toString();
         this.comparedType = data.comparedType;
         this.isBindingRfq = data.isBindingRfq;
+        this.checkedCarLevelOptions = data.selectedOptions
+        if (!this.checkedCarLevelOptions) {
+          this.checkedCarLevelOptions = {}
+        }
         if (data.firstComparedMotor) {
           this.ComparedMotor.push(data.firstComparedMotor.toString());
         }
@@ -802,11 +821,29 @@ export default {
           isBindingRfq: this.isBindingRfq,
           req: this.rfqId,
         };
+        let entryParams = _.cloneDeep(params)
+        entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+        mekInnerTarget(entryParams).then(res => {
+          this.firstBarData = res.data[0];
+        })
+        params.info = params.info.filter(item => item.isTargetMotor === false)
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       } else {
         params = {
           categoryId: this.categoryId,
           isBindingRfq: this.isBindingRfq,
         };
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       }
       getTargetMotor(params).then((res) => {
         this.TargetMotorList = res.data;
@@ -1128,7 +1165,12 @@ export default {
               mekTypeName = item.name;
             }
           });
-          data.config["label#-1"] = mekTypeName;
+          if (data) {
+            if (!data.config) {
+              data.config = {}
+            }
+            data.config["label#-1"] = mekTypeName;
+          }
           this.gridData = data;
         });
       }
@@ -1258,16 +1300,19 @@ export default {
               this.clientHeight = false;
             }
             this.totalWidth = this.totalWidth + 75 + "px";
-            this.maxData = maxList ? _.max(maxList).toString() : "";
+            console.log("error here s")
+            this.maxData = maxList && maxList.length > 0 ? _.max(maxList).toString() : "";
+            console.log("error here e")
             let first = Number(this.maxData.slice(0, 1)) + 1;
             for (let i = 0; i < this.maxData.length - 1; i++) {
               first += "0";
             }
             this.maxData = first;
-            this.firstBarData = data[0];
-            data.shift();
+            if (this.entryStatus !== 1) {
+              this.firstBarData = data[0];
+              data.shift();
+            }
             this.barData = data;
-
             this.carLevelOptions = {};
             this.barData.forEach((item) => {
               item.checkList = [];
@@ -1292,7 +1337,7 @@ export default {
           }
           this.onDataLoading = false;
         });
-      },(res) => {
+      }, (res) => {
         iMessage.error(res.desZh);
         this.onDataLoading = false;
       });
@@ -1343,7 +1388,6 @@ export default {
     save () {
       this.loading = true;
       this.analysisSave = true;
-
       if (this.analysisSave) {
         let params = {
           categoryCode: this.categoryCode,
@@ -1358,6 +1402,7 @@ export default {
           schemeId: this.chemeId,
           targetMotor: this.targetMotor,
           name: this.analysisName,
+          selectedOptions: this.checkedCarLevelOptions
         };
         if (this.barData) {
           if (this.barData[0]) {

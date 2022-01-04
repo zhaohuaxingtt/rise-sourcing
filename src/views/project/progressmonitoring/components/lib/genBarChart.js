@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-12-14 14:50:43
+ * @LastEditTime: 2021-12-16 15:39:16
  * @LastEditors: Luoshuang
  * @Description: 风险图的配置文件
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\lib\genBarChart.js
@@ -127,7 +127,7 @@ export function generateOptions(params = {}, type = 1) {
     }
     
     const seaiesItem = seaiesList[type] || []
-    
+    console.log('seaiesItem',seaiesItem)
     const seaiesValues = []
     const seaiesData = []
     const assistData = []

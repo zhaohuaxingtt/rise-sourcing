@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-12-07 14:43:00
+ * @LastEditTime: 2021-12-23 16:18:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -26,12 +26,22 @@ export const tableTitle = [{
 		isAekoShow:true,
 	},
 	{
+		props: 'sourcingNumber',
+		name: 'SourcingNumber',
+		key: 'SOURCINGNUMBER',
+		tooltip: true,
+		isAekoShow:false,
+		isCommonSourcingShow:true,
+		width:160
+	},
+	{
 		props: 'partNameZh',
 		name: '零件名（中）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
 		tooltip: true,
 		width:100,
 		isAekoShow:true,
+		
 	},
 	{
 		props: 'partNameDe',
@@ -177,5 +187,7 @@ export function getPlanyear(defaultNumberMax=15){
 	}
 	return batchMaintainTableTitle
 }
+
+
 
 

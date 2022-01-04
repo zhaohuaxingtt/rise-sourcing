@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-05 15:40:06
+ * @LastEditTime: 2021-12-30 14:55:53
  * @Description: 监控明细
- * @FilePath: \front-web\src\views\project\progressmonitoring\monitorDetail\index.vue
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
 
 <template>
@@ -12,15 +12,28 @@
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                   ---------------->
     <!---------------------------------------------------------------------->
-    <iCard class="carProgress" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_CARPROGRESS|项目管理-监控明细-车型项目进度状态部分">
+    <iCard class="carProgress" v-show="vm.collapseValue" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_CARPROGRESS|项目管理-监控明细-车型项目进度状态部分">
       <carProject :carProjectId="carProjectId" />
     </iCard>
-    <iCard class="margin-top20 projectCard" :class="{withCollapse:!collapseValue}" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_PARTLIST|项目管理-监控明细-零件列表">
+    <iCard class="projectCard" :class="{withCollapse:!vm.collapseValue, 'margin-top20':vm.collapseValue}" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_PARTLIST|项目管理-监控明细-零件列表">
       <div class="margin-bottom20 searchWrapper">
         <div class="titleSearch">
           <div v-for="(item, index) in searchListByPartStatus" :key="index" class="titleSearch-item" v-permission.auto="item.permission">
             <span class="titleSearch-item-lable">{{language(item.key, item.label)}}</span>
             <iDicoptions @change="handleChange" v-if="item.type === 'selectDict'" class="titleSearch-item-content" :optionAll="item.optionAll" :optionKey="item.selectOption" v-model="searchParams[item.value]" :optionAllText="language('ZONGJI','总计')" />
+            <iSelect v-else-if="item.type === 'select'" v-model="searchParams[item.value]" class="titleSearch-item-content" >
+              <el-option
+                v-if="item.optionAll"
+                value=""
+                :label="language('ZONGJI','总计')"
+              ></el-option>
+              <el-option
+                :value="items.code"
+                :label="items.value"
+                v-for="(items, index) in options"
+                :key="index"
+              ></el-option>
+            </iSelect>
           </div>
         </div>
         <div>
@@ -36,18 +49,19 @@
 </template>
 
 <script>
-import { iPage, iCard, iButton, iMessage } from 'rise'
+import { iPage, iCard, iButton, iMessage, iSelect } from 'rise'
 import carProject from '@/views/project/components/carprojectprogress/components/progress'
 import iDicoptions from 'rise/web/components/iDicoptions'
 import partList from './components/partList'
 import { getProProgressMonitorDetail } from '@/api/project/process'
+import {selectDictByKeyss} from '@/api/dictionary'
 export default {
-  components: { iPage, carProject, iCard, iDicoptions, iButton, partList },
+  components: { iPage, carProject, iCard, iDicoptions, iButton, partList, iSelect },
   data() {
     return {
       collapseValue: true,
       searchList: [
-        {value: 'partStatus', label: '零件状态', key: 'LINGJIANZHUANGTAI', type: 'selectDict', selectOption: 'PART_PERIOD_TYPE', optionAll: false, permission: 'PROJECTMGT_MONITORINGDETAIL_PARTSTATUS|项目管理-监控明细-零件状态'},
+        {value: 'partStatus', label: '零件状态', key: 'LINGJIANZHUANGTAI', type: 'select', selectOption: 'PART_PERIOD_TYPE', optionAll: false, permission: 'PROJECTMGT_MONITORINGDETAIL_PARTSTATUS|项目管理-监控明细-零件状态'},
         {value: 'projectRisk', label: '项目风险', key: 'XIANGMUFENGXIAN', type: 'selectDict', selectOption: 'DELAY_GRADE_CONFIG', optionAll: true, permission: 'PROJECTMGT_MONITORINGDETAIL_PROJECTRISK|项目管理-监控明细-项目风险'},
         {value: 'projectProc', label: '项目进度', key: 'XIANGMUJINDU', type: 'selectDict', selectOption: 'PROJECTDONE', optionAll: true,permission: 'PROJECTMGT_MONITORINGDETAIL_PROJECTDONE|项目管理-监控明细-项目进度'},
         {value: 'partProc', label: '零件进度', key: 'LINGJIANJINDU', type: 'selectDict', selectOption: 'PARTS_PROGRESS', optionAll: true,permission: 'PROJECTMGT_MONITORINGDETAIL_PARTPROC|项目管理-监控明细-零件进度'},
@@ -58,9 +72,11 @@ export default {
       },
       partList: [],
       loading: false,
-      partStatus: 0
+      partStatus: 0,
+      options: []
     }
   },
+  inject:['vm'],
   computed: {
     carProjectId() {
       return this.$route.query.carProjectId
@@ -71,19 +87,19 @@ export default {
     searchListByPartStatus() {
       return this.searchList.reduce((accu, curr) => {
         if (curr.key === 'XIANGMUFENGXIAN') {
-          if (Number(this.searchParams.partStatus) !== 7) {
+          if (Number(this.searchParams.partStatus) !== 9) {
             return [...accu, curr]
           } else {
             return accu
           }
         } else if (curr.key === 'XIANGMUJINDU') {
-          if (this.searchParams.partStatus == 7) {
+          if (this.searchParams.partStatus == 9) {
             return [...accu, curr]
           } else {
             return accu
           }
         } else if (curr.key === 'LINGJIANJINDU') {
-          if (Number(this.searchParams.partStatus) !== 7 && Number(this.searchParams.partStatus) !== 1) {
+          if (Number(this.searchParams.partStatus) !== 9 && Number(this.searchParams.partStatus) !== 1) {
             return [...accu, curr]
           } else {
             return accu
@@ -99,7 +115,20 @@ export default {
     this.searchParams = { projectId: carProjectId, partStatus, projectRisk, projectProc: projectDone, partProc }
     this.handleSure()
   },
+  mounted() {
+    this.getDict()
+  },
   methods: {
+    getDict() {
+      selectDictByKeyss('PART_PERIOD_TYPE').then((res) => {
+        const options = res.data && res.data['PART_PERIOD_TYPE'] || [];
+        this.options = options.filter(item => item.code !== '9').map(o => {
+          o.value = o.value || o.name || o.nameEn
+          if (this.lang) o.value = this.$i18n.locale === 'zh' ? o.value : o.nameEn
+          return o
+        })
+      })
+    },
     handleChange(val) {
       console.log(val)
     },
@@ -115,9 +144,9 @@ export default {
     handleSure() {
       this.searchParams = {
         ...this.searchParams,
-        projectRisk: this.searchParams.partStatus == 7 ? '' : this.searchParams.projectRisk,
-        projectProc: this.searchParams.partStatus == 7 ? this.searchParams.projectProc : '',
-        partProc: this.searchParams.partStatus == 7 && this.searchParams.partStatus == 1 ? '' : this.searchParams.partProc
+        projectRisk: this.searchParams.partStatus == 9 ? '' : this.searchParams.projectRisk,
+        projectProc: this.searchParams.partStatus == 9 ? this.searchParams.projectProc : '',
+        partProc: this.searchParams.partStatus == 9 && this.searchParams.partStatus == 1 ? '' : this.searchParams.partProc
       }
       this.partStatus = this.searchParams.partStatus
       this.loading = true
@@ -152,9 +181,18 @@ export default {
 .monitorDetail {
   padding: 0;
   padding-top: 10px;
-  height: calc(100% - 65px);
+  height: calc(100% - 45px);
   overflow: visible;
   .carProgress {
+    ::v-deep .cardHeader {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    ::v-deep .cardBody {
+      position: relative;
+      top: -20px;
+      padding-bottom: 0;
+    }
     .carProject {
       padding-top: 0;
       padding-bottom: 0;
@@ -186,11 +224,11 @@ export default {
     }
   }
   .projectCard {
-    height: calc(100% - 200px);
+    height: calc(100% - 180px);
     overflow: hidden;
     &.withCollapse {
-      height: calc(100% - 120px);
-      overflow: auto;
+      height: 100%;
+      overflow: hidden;
     }
     &-content {
       height: calc(100% - 40px);

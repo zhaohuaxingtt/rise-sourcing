@@ -198,6 +198,7 @@
             @click="handleHref(scope.row)"
             >{{ scope.row.supplierName }}
           </a>
+          <!-- <supplierBlackIcon/> -->
         </template>
         <!-- 联系人 -->
         <template slot="contactName" slot-scope="scope">
@@ -259,8 +260,8 @@
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
-        prev-text="上一页"
-        next-text="下一页"
+        :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+        :next-text="language('BIDDING_XIAYIYE','下一页')"
         :layout="page.layout"
         :current-page="page.currPage"
         :total="page.total"
@@ -340,7 +341,7 @@
             :show-file-list="false"
             :http-request="httpUpload"
           >
-            <iButton>新增</iButton>
+            <iButton>{{ language('BIDDING_XINZHENG', '新增') }}</iButton>
           </el-upload>
           <iButton @click="delAttachments">{{language('BIDDING_SHANCHU', '删除') }}</iButton>
           <iButton @click="handleSave('attach')">{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
@@ -396,6 +397,8 @@ import {
 } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
 
+import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
+
 export default {
   mixins: [pageMixins],
   components: {
@@ -418,6 +421,7 @@ export default {
     quotationForm,
 
     supplierListDialog,
+    supplierBlackIcon,
   },
   data() {
     return {
@@ -1144,7 +1148,6 @@ export default {
         updateDate: "",
       });
       this.$message.success(this.language('BIDDINGH_SHANGCHUANCHENGGONG', '上传成功'));
-      console.log(this.ruleForm.attachments);
     },
     saveForms(callback) {
       const formData = this.ruleForm;

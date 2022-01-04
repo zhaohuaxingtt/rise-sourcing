@@ -239,7 +239,7 @@ export default {
         this.partList = res.data.partsList.filter(item => {
           return item.isShow;
         });
-        this.currentPartsId =  res.data.partsId ? res.data.partsId : '';
+        this.currentPartsId = res.data.partsId ? res.data.partsId : '';
         this.currentBatchNumber = res.data.batchNumber ? res.data.batchNumber : '';
         this.currentSupplierId = res.data.supplierId;
         const analysisCurveData = Array.isArray(this.dataInfo.analysisCurve) ? this.dataInfo.analysisCurve : [];
@@ -330,7 +330,7 @@ export default {
     async handleSaveAsReport (callback) {
       this.previewDialog = true;
       setTimeout(async () => {
-        const res = await this.$refs.previewDialog.getDownloadFile({
+        const res = await this.$refs.previewDialog.$refs.vpPreview.getDownloadFile({
           callBack: () => {
             this.previewDialog = false;
           },
@@ -347,8 +347,8 @@ export default {
       if (resCheckName) {
         this.saveDialog = false;
         iMessageBox(
-          this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
-          this.$t('LK_WENXINTISHI'),
+          this.language('CIYANGSHIBAOGAOYICUNZAISHIFOUFUGAI', '此样式/报告已存在，是否覆盖？'),
+          this.language('WENXINTISHI', '温馨提示'),
           { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') },
         ).then(async () => {
           await this.handleSaveProcess(reqParams, true);

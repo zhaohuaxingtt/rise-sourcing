@@ -25,32 +25,32 @@
                 
                 <span class="combine" v-if="multiEditControl">
                   <!-- 合并功能 -->
-                <iButton @click="combine" v-if="!hideCombine"   v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_ZUHE${isnomination}|${isnomination}组合`">
+                <iButton @click="combine" v-if="!hideCombine">
                     {{ language("nominationSuggestion_ZuHe",'组合') }}
                   </iButton>
-                  <iButton @click="cancelSummaryGroup" v-if="!hideCombine" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_QUXAIOZUHE${isnomination}|${isnomination}取消组合`">
+                  <iButton @click="cancelSummaryGroup" v-if="!hideCombine">
                     {{ language("nominationSuggestion_QuXiaoZuHe",'取消组合') }}
                   </iButton>
                   <!-- 退出编辑 -->
-                  <iButton @click="exit" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TUICHUBIANJI${isnomination}|${isnomination}退出编辑`">
+                  <iButton @click="exit">
                     {{ language("TUICHUBIANJI",'退出编辑') }}
                   </iButton>
-                  <iButton @click="submit" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BAOCUN${isnomination}|${isnomination}保存`">
+                  <iButton @click="submit">
                     {{ language("LK_BAOCUN",'保存') }}
                   </iButton>
                 </span>
                 <span class="combine"  v-else>
                   <!-- 编辑 -->
-                  <iButton @click="multiEditControl = true" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_BIANJI${isnomination}|${isnomination}编辑`">
+                  <iButton @click="multiEditControl = true">
                     {{ language("LK_BIANJI",'编辑') }}
                   </iButton>
                 </span>
                 <!-- 重置 -->
-                <iButton @click="getFetchData" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_CHONGZHI${isnomination}|${isnomination}重置`">
+                <iButton @click="getFetchData">
                   {{ language("nominationSupplier_Reset",'重置') }}
                 </iButton>
                 <!-- 刷新 -->
-                <iButton @click="refresh" v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_SHAUXIN${isnomination}|${isnomination}刷新`">
+                <iButton @click="refresh">
                   {{ language("nominationSupplier_Refresh",'刷新') }}
                 </iButton>
               </div>
@@ -71,7 +71,6 @@
                 :batchEdit="multiEditControl"
                 :height="530"
                 v-loading="tableLoading"
-                v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_TABLE${isnomination}|${isnomination}业务分配模拟-表格`"
                 ref="monitorTable" />
             </div>
           </div>
@@ -83,7 +82,6 @@
           <buMonitorCharts
             :supplier="supplierList"
             :data="chartData"
-            v-permission.auto="`SOURCING_NOMINATION_SUGGESTION_BUMONITOR_CHART${isnomination}|${isnomination}图表`"
           />
         </div>
       </el-col>
@@ -271,7 +269,13 @@ export default {
       const params = {
         scenarioType: this.scenarioType[this.mode],
         groupName: this.groupForm.groupName,
-        groupInfoList
+      }
+      // 谈判助手模式传参区别
+      if (this.mode === 'nego') {
+        if (this.$route.query.id) params.rfqId = this.$route.query.id
+        params['partPrjCode'] = groupInfoList.map(o => o.partPrjCode)
+      } else {
+        params['groupInfoList'] = groupInfoList
       }
       console.log(params)
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？'))
@@ -305,6 +309,10 @@ export default {
         scenarioType: this.scenarioType[this.mode],
         groupName,
         groupIdList
+      }
+      if (this.mode === 'nego') {
+        if (this.$route.query.id) params.rfqId = this.$route.query.id
+        params['partPrjCode'] = selectedData.map(o => o.partPrjCode)
       }
       const confirmInfo = await this.$confirm(this.language('submitSure','您确定要执行提交操作吗？',''))
       if (confirmInfo !== 'confirm') return
@@ -365,7 +373,11 @@ export default {
               const supplier = (suppDataList && suppDataList.find(o => o.supplierName == suppName)) || {}
               const recommendSupplier = (o.recommendBdlInfoList && o.recommendBdlInfoList.find(o => o.recommendSupplier === suppName)) || {}
               o.TTo.push(supplier.tto || 0)
-              o.percentCalc[index] = Number(recommendSupplier.share).toFixed(2) || 0
+              // o.percentCalc[index] = Number(recommendSupplier.share).toFixed(0) || 0
+              o.percentCalc.push({
+                key: suppName,
+                value: Number(recommendSupplier.share).toFixed(0) || 0
+              })
               // 提取供应商英文
               const supplierObj = suppDataList.find(o => o.supplierName === suppName) || {}
               !this.supplierListEN[index] && (this.supplierListEN[index] = supplierObj.supplierNameEn || '')
@@ -376,7 +388,7 @@ export default {
             // o.percent = []
 
             o.supplierChosen = recommendBdlInfoList.map(o => o.recommendSupplier)
-            o.percent = recommendBdlInfoList.map(o => Number(o.share).toFixed(2))
+            o.percent = recommendBdlInfoList.map(o => Number(o.share).toFixed(0))
             // this.supplierList.forEach((sup, supIndex) => {
             //   const curSupplier = recommendBdlInfoList.find(o => o.recommendSupplier === sup)
             //   o.supplierChosen[supIndex] = curSupplier ? curSupplier.recommendSupplier : ''

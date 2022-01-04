@@ -11,5 +11,7 @@ export const addRfqTitle =[
 	{props:'id',name:'RFQ#',key: 'RFQ#'},
 	{props:'rfqName',name:'RFQ名称',key: 'LK_RFQMINGCHENG',},
 	{props:'currentStatusDesc',name:'RFQ状态',key: 'LK_RFQZHUANGTAI'},
+	{props:'buyerName',name:'Sourcing',key: 'SOURCING'},
+	{props:'linieNameZh',name:'Linie',key: 'LINIELOWERCASE'},
 	{props:'updateDate',name:'操作时间',key: 'LK_UpdateDate'},
 ]

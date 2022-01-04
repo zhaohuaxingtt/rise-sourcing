@@ -2,14 +2,30 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-27 09:39:09
+ * @LastEditTime: 2021-12-28 16:33:38
  * @Description: 目标价详情
- * @FilePath: \front-web\src\views\financialTargetPrice\targetPriceDetail\index.vue
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\targetPriceDetail\index.vue
 -->
 
 <template>
   <iPage class="targetPriceDetail">
-    <div class="font20 font-weight">{{language('LINGJIANHAO','零件号')}}：{{detailData.partNum}}</div>
+    <div class="font20 font-weight targetPriceDetail-title">
+      <div>{{language('LINGJIANHAO','零件号')}}：{{detailData.partNum}}</div>
+      <!-- 日志 -->
+      <div>
+        <iLoger
+					:config="{
+						module_obj_ae: '财务目标价', 
+						bizId_obj_ae: 'partNum', 
+						queryParams:['bizId_obj_ae']}"
+          :partNum="detailData.partNum"
+					credentials
+					isPage
+					class="margin-left20"
+					optionDicKey="LOG_OPERATION_TYPES"
+					optionDicKey2="财务目标价详情页" />
+      </div>
+    </div>
     <!------------------------------------------------------------------------>
     <!--                 基础信息                                          --->
     <!------------------------------------------------------------------------>
@@ -17,7 +33,7 @@
     <!------------------------------------------------------------------------>
     <!--                 修改历史                                          --->
     <!------------------------------------------------------------------------>
-    <history ref="history" :id="applyId" />
+    <history ref="history" :id="fsNum" />
     <!------------------------------------------------------------------------>
     <!--                 定点信息                                          --->
     <!------------------------------------------------------------------------>
@@ -30,8 +46,9 @@ import { iPage } from 'rise'
 import history from './components/history'
 import basic from './components/basic'
 import designateInfo from './components/designateInfo'
+import iLoger from 'rise/web/components/iLoger'
 export default {
-  components: {iPage,history,basic,designateInfo},
+  components: {iPage,history,basic,designateInfo,iLoger},
   data() {
     return {
       detailData: {}
@@ -55,6 +72,9 @@ export default {
     },
     partNum() {
       return this.detailData.partNum || ''
+    },
+    fsNum() {
+      return this.detailData.fsnrGsnrNum || ''
     }
   },
   methods: {
@@ -66,5 +86,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.targetPriceDetail-title {
+  display: flex;
+  justify-content: space-between;
+}
 </style>

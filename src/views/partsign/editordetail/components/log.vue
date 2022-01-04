@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-01 15:52:14
- * @LastEditTime: 2021-07-07 16:17:20
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-28 14:23:22
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\log\index.vue
 -->
@@ -11,7 +11,7 @@
     <div class="header clearFloat">
       <span class="title">{{ language('partsign.log','操作日志') }}</span>
       <div class="control">
-        <iButton v-permission="LOG_HOME_DOWNLOAD">{{ language('LK_DAOCHU','导出') }}</iButton>
+        <iButton v-permission.auto="LOG_HOME_DOWNLOAD|操作日志-导出">{{ language('LK_DAOCHU','导出') }}</iButton>
       </div>
     </div>
     <div class="body margin-top27">

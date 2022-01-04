@@ -1,21 +1,20 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:41:39
+ * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-28 13:44:56
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" v-permission.auto="ACCESSORY_MANAGEMENT_PAGE|附件-附件管理-页面">
+  <iPage class="signForParts">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-        <div class="topMenu">
-          <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
-        </div>
-        <div>
+
+        <headerNav />
+
+
           <!-- <div class="margin-bottom33">
             <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div> -->
@@ -120,13 +119,15 @@ import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
 import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
+import headerNav from '@/components/headerNav'
+
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav},
   data() {
     return {
       // 零件项目类型
@@ -153,7 +154,7 @@ export default {
       selectLinie: '',
       selectLinieDept: '',
       loading: false,
-      options: []
+      options: [],
     }
   },
   created() {
@@ -161,7 +162,7 @@ export default {
     this.updateNavList
   },
   computed: {
-    ...mapState(["navList","navListLeft"]),
+    ...mapState(["navList"]),
     ...mapActions(["updateNavList"])
   },
   methods: {

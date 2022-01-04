@@ -13,8 +13,8 @@
     width="80%"
     class="dialog" 
   >
-    <div class="top">
-      <div class="top-left" v-if="isGs == true">
+    <div class="topCar">
+      <div class="topCar-left" v-if="isGs == true">
           <span class="title">{{language('CHEXING','车型')}}</span>
           <iSelect class="carselect" v-model="carTypeModel" @change="changeTable" multiple  collapse-tags>
             <el-option
@@ -26,11 +26,11 @@
             </el-option>
           </iSelect>
       </div>
-      <div class="top-left" v-if="isGs == false">
+      <div class="topCar-left" v-if="isGs == false">
           <span class="xmtitle">{{language('CHEXINGXIANGMU','车型项目')}}{{params.carTypeProjectZh}}</span>
 
       </div>
-      <div class="top-right">
+      <div class="topCar-right">
         <iButton @click="changeVisible">{{language('QUXIAO','取消')}}</iButton>
         <iButton :loading="saveLoading" @click="addTableCar">{{language('YINGYONG','应用')}}</iButton>
       </div>
@@ -281,11 +281,11 @@ export default {
 
 <style scoped lang="scss">
   .dialog{
-    .top{
+    .topCar{
     display: flex;
     justify-content: space-between;
     margin:0 0 20px 0 ;
-    .top-left{
+    .topCar-left{
       display: flex;
       justify-content: space-between;
       .title{

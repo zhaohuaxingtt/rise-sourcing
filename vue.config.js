@@ -16,8 +16,7 @@ module.exports = {
   publicPath: process.env.VUE_APP_PUBLICPATH,
   outputDir: 'dist',
   assetsDir: 'static',
-  filenameHashing: true,
-  lintOnSave: process.env.NODE_ENV !== 'production',
+  lintOnSave: false,
   productionSourceMap: false,
   parallel: require('os').cpus().length > 1,
   chainWebpack: (config) => {
@@ -25,29 +24,47 @@ module.exports = {
     config.resolve.alias
       .set('@', resolve('src'))
       .set('pages', resolve('src/views'))
-    if (process.env.NODE_ENV !== 'dev') {
-      config.optimization.splitChunks({
-        chunks: 'all',
-        cacheGroups: {
-          vendors: {
-            name: 'vendors',
-            test: /[\\/]node_modules[\\/]/,
-            priority: 10,
+      if(process.env.NODE_ENV == 'dev'){
+        config.optimization.splitChunks({
+          chunks: 'initial',
+          cacheGroups: {
+            vendors: {
+              name: 'vendors',
+              test: /[\\/]node_modules[\\/]/,
+              priority: -10,
+              reuseExistingChunk: true
+            },
+            commons: {
+              name: 'commons',
+              priority: -11,
+              reuseExistingChunk: true,
+            },
           },
-          commons: {
-            name: 'commons',
-            test: resolve('src/components'),
-            minChunks: 3,
-            priority: 5,
-            reuseExistingChunk: true,
+        })
+      }else{
+        config.optimization.splitChunks({
+          chunks: 'all',
+          maxAsyncRequests:5,
+          minChunks:2,
+          minSize:30000,
+          automaticNameDelimiter:'_',
+          maxInitialRequests:3,
+          name:true,
+          cacheGroups: {
+            vendors: {
+              name: 'vendors',
+              test: /[\\/]node_modules[\\/]/,
+              priority: -10,
+              reuseExistingChunk: true
+            },
+            commons: {
+              name: 'commons',
+              priority: -11,
+              reuseExistingChunk: true,
+            },
           },
-        },
-      })
-      config.optimization.runtimeChunk('single')
-      //移除预加载，确保浏览器在刷新url的时候，只存在我当前路由所涉及到的内容。
-      config.plugins.delete('prefetch')
-      config.plugins.delete('preload')
-    }
+        })
+      }
   },
   configureWebpack: (config) => {
     config.plugins.forEach((val) => {
@@ -99,9 +116,8 @@ module.exports = {
   //引入全局css变量
   css: {
     //是否开起css分离
-    extract: false,
-    sourceMap: process.env.NODE_ENV == 'production',
-    requireModuleExtension: true,
+    extract: process.env.NODE_ENV != 'dev',
+    sourceMap: false,
     loaderOptions: {
       sass: {
         implementation: require('sass'),
@@ -117,10 +133,11 @@ module.exports = {
   //本地server配置
   devServer: {
     open: true,
-    host: '0.0.0.0',
+    host: 'localhost',
     port: 8080,
     https: false,
     hot: true,
+    clientLogLevel:'none',
     proxy: {
       '/mtzApi': {
         target: 'http://10.122.17.38:8046/mtz',
