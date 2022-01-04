@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-17 16:49:20
- * @LastEditTime: 2022-01-04 14:08:27
+ * @LastEditTime: 2022-01-04 14:30:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\components\data.js
@@ -47,26 +47,26 @@ export const confirmTableHead = [
 
 export const errTipsTableTitle={
   'RFQ':[
-    { props: "stuffName", name: "工艺组", key: "LK_GONGYIZU" },
-    { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG" },
+    { props: "stuffName", name: "工艺组", key: "LK_GONGYIZU" ,tooltip: true},
+    { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG" ,tooltip: true},
   ],
   'SUGGESTIONSAVE':[
-    { props: "fsNum", name: "零件采购项目号", key: "partsprocure.PARTSPROCUREFSNFGSNFSPNR"},
-    { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO"},
-    { props: "stuffName", name: "工艺组", key: "LK_GONGYIZU"},
-    { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG"},
+    { props: "fsNum", name: "零件采购项目号", key: "partsprocure.PARTSPROCUREFSNFGSNFSPNR",tooltip: true},
+    { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO",tooltip: true},
+    { props: "stuffName", name: "工艺组", key: "LK_GONGYIZU",tooltip: true},
+    { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG",tooltip: true},
   ],
   'SUGGESTIONSUBMIT':[
-    { props: "fsNum", name: "零件采购项目号", key: "partsprocure.PARTSPROCUREFSNFGSNFSPNR"},
-    { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO"},
-    { props: "stuffName", name: "工艺组", key: "LK_GONGYIZU"},
-    { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG" },
+    { props: "fsNum", name: "零件采购项目号", key: "partsprocure.PARTSPROCUREFSNFGSNFSPNR",tooltip: true},
+    { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO",tooltip: true},
+    { props: "stuffName", name: "工艺组", key: "LK_GONGYIZU",tooltip: true},
+    { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG",tooltip: true },
   ],
   'SUGGESTIONFROZEN':[
-    { props: "fsNum", name: "零件采购项目号", key: "partsprocure.PARTSPROCUREFSNFGSNFSPNR"},
-    { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO"},
-    { props: "stuffName", name: "工艺组", key: "LK_GONGYIZU"},
-    { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG"},
+    { props: "fsNum", name: "零件采购项目号", key: "partsprocure.PARTSPROCUREFSNFGSNFSPNR",tooltip: true},
+    { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO",tooltip: true},
+    { props: "stuffName", name: "工艺组", key: "LK_GONGYIZU",tooltip: true},
+    { props: "supplierName", name: "供应商名称", key: "LK_GONGYINGSHANGMINGCHENG",tooltip: true},
   ]
 }
 

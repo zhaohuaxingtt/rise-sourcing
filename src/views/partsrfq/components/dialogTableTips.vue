@@ -6,11 +6,12 @@
 <template>
     <iDialog
     width="40%"
+    zIndex="2000"
     :visible.sync="dialogVisible"
     class="dialogTableTips"
     :title="language('BIDDING_TISHI','提示')"
     >
-    <div>
+    <div class="padding-left10 padding-right10">
         <p class="margin-bottom20">{{ language(errDialogTips[tableType]['languageKey'],errDialogTips[tableType]['languageTips'])}}</p>
         <tableList
             class="table"
