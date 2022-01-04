@@ -23,7 +23,7 @@ export function findCarTypeList(parmars) {
 //  采购工厂列表
 export function getPurchaseFactoryPullDown(parmars) {
     return VUE_APP_APPLY({
-        url: '/getProductionFactoryPullDown',
+        url: '/getPurchaseFactoryPullDown',
         method: 'GET',
         data: parmars
     })
@@ -77,7 +77,7 @@ export function getBaCarPullDown(parmars) {
 // 获取生产工厂下拉列表
 export function getProductionFactoryPullDown() {
     return VUE_APP_CARTYPE({
-        url: '/getProductionFactoryPullDown',
+        url: '/getPurchaseFactoryPullDown',
         method: 'GET',
     })
 }
