@@ -8,7 +8,7 @@
 <template>
   <iPage class="designatehome" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录页面">
     <!-- 头部 -->
-    <headerNav :type="sourceinquirypoint" />
+    <headerNav />
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 查询区 -->
