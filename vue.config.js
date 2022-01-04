@@ -261,11 +261,11 @@ module.exports = {
           '^/risemessage': '',
         },
       },
-      '/fileudApi': {
+      '/fileApi': {
         target: 'http://10.122.17.38:8034/fileud',
         changeOrigin: true,
         pathRewrite: {
-          '^/fileudApi': '',
+          '^/fileApi': '',
         },
       },
       '/biddingApi': {

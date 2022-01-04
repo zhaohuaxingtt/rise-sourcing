@@ -198,6 +198,9 @@
     <revokeDialog :visible.sync="showRevokeDialog" @confirm="handleBatchRevoke(...arguments, false)" ref="revokeForm" />
     <!-- 新建定点申请弹窗 -->
     <rfqDialog :visible.sync="newNomiAppStatus" :nomiAppId="selNominateId" :readOnly="false" />
+
+    <!-- 黑名单校验弹窗提示 -->
+        <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONFROZEN" :tableListData="blackTableListData"/>
   </iPage>
 </template>
 
@@ -240,6 +243,8 @@ import {
   icon
 } from "rise";
 
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
+
 export default {
   mixins: [ filters, pageMixins, roleMixins ],
   data() {
@@ -256,7 +261,8 @@ export default {
       tranformRecallLoading: false,
       showRevokeDialog: false,
       // 新建定点申请单
-      newNomiAppStatus: false
+      newNomiAppStatus: false,
+      blackTableListData:[],
     }
   },
   components: {
@@ -270,7 +276,8 @@ export default {
     selDialog,
     revokeDialog,
     rfqDialog,
-    icon
+    icon,
+    dialogTableTips,
   },
   mounted() {
     this.getFetchData()
@@ -413,6 +420,9 @@ export default {
           if(code == 200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
+          }else if(code == '500'){
+            this.blackTableListData = res.data || [];
+            this.$refs.dialogTableTips.show(); 
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }

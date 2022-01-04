@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-29 16:43:52
+ * @LastEditTime: 2022-01-04 12:04:26
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -22,7 +22,10 @@
                 <icon symbol name="iconzhongyaoxinxitishi" />
               </span>
             </el-tooltip>
-            <!-- <supplierBlackIcon/> -->
+            <supplierBlackIcon
+              :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+              :BlackList="scope.row.blackStuffs || []"
+            />
           </div>
         </template>
         <template #sapCode="scope">
@@ -56,7 +59,7 @@ import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 export default {
   mixins: [pageMixins],
   components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton, icon,
-  // supplierBlackIcon
+  supplierBlackIcon
    },
   data() {
     return {

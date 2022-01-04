@@ -11,10 +11,11 @@
     :title="language('BIDDING_TISHI','提示')"
     >
     <div>
-        <p>{{messageTips}}</p>
+        <p class="margin-bottom20">{{ language(errDialogTips[tableType]['languageKey'],errDialogTips[tableType]['languageTips'])}}</p>
         <tableList
             class="table"
             index
+            :selection="false"
             :lang="true"
             :tableData="tableListData"
             :tableTitle="errTipsTableTitle[tableType]"
@@ -22,7 +23,7 @@
 
     </div>
     <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="dialogVisible = false">{{language('QUEDING','确定')}}</el-button>
+    <el-button class="margin-top15" type="primary" @click="dialogVisible = false">{{language('QUEDING','确定')}}</el-button>
   </span>
     </iDialog>
 </template>
@@ -31,7 +32,7 @@
 
 import {iDialog, iButton} from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
-import { errTipsTableTitle } from './data'
+import { errTipsTableTitle,errDialogTips } from './data'
 export default {
     name:'dialogTableTips',
     components:{
@@ -39,20 +40,20 @@ export default {
     tableList,
   },
   props:{
-      messageTips:{
-          type:String,
-          default:'',
-      },
       tableType:{
           type:String,
-          default:'1',
+          default:'RFQ',
+      },
+      tableListData:{
+          type:Array,
+          default:()=>[],
       }
   },
   data(){
       return{
           dialogVisible:false,
-          tableListData:[],
           errTipsTableTitle,
+          errDialogTips,
       }
   },
   methods:{

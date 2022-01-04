@@ -93,7 +93,7 @@ import commonTable from "@/components/biddingComponents/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { getSupplierInfo } from "@/api/mock/mock";
 import { supplierTableListColumns } from "./data";
-import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
+// import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 export default {
   mixins: [pageMixins],
   components: {
