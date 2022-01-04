@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-04 16:22:57
+ * @LastEditTime: 2022-01-04 16:41:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -818,43 +818,7 @@ export default {
     },
     changeDate (val, index) {
       this.$forceUpdate();
-      let params = {
-        comparedType: this.comparedType,
-        info: [
-          {
-            motorId: this.targetMotor,
-            priceType: "latestPrice",
-            priceDate: "",
-            isTargetMotor: true,
-            engine: "",
-            position: "",
-            transmission: "",
-          },
-        ],
-        categoryId: this.categoryId,
-        categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
-        unselected: this.exceptPart,
-      };
-      if (this.entryStatus === 1) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-      } else {
-        params.isBindingRfq = false;
-      }
-      this.barData.forEach((item) => {
-        let obj = {
-          motorId: item.motorId,
-          priceType: item.priceType,
-          priceDate: item.priceDate,
-          isTargetMotor: false,
-          engine: item.engine || "",
-          position: item.position || "",
-          transmission: item.transmission || "",
-        };
-        params.info.push(obj);
-      });
-      this.getHistogram(params);
+      this.searchChartData()
     },
     changTargetPrice (val) {
       let params = {
@@ -998,43 +962,7 @@ export default {
     },
     //价格类型
     changPriceType (val) {
-      let params = {
-        comparedType: this.comparedType,
-        info: [
-          {
-            motorId: this.targetMotor,
-            priceType: "latestPrice",
-            isTargetMotor: true,
-            priceDate: "",
-            engine: "",
-            position: "",
-            transmission: "",
-          },
-        ],
-        categoryId: this.categoryId,
-        categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
-        unselected: this.exceptPart,
-      };
-      if (this.entryStatus === 1) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-      } else {
-        params.isBindingRfq = false;
-      }
-      this.barData.forEach((item) => {
-        let obj = {
-          motorId: item.motorId,
-          priceType: item.priceType,
-          priceDate: item.priceDate,
-          isTargetMotor: false,
-          engine: item.engine || "",
-          position: item.position || "",
-          transmission: item.transmission || "",
-        };
-        params.info.push(obj);
-      });
-      this.getHistogram(params);
+      this.searchChartData()
     },
     //获取表格
     getMekTable () {
