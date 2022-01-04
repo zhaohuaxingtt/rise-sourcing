@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-04 10:44:14
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-30 17:12:28
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
 -->
@@ -109,47 +109,11 @@
             <iFormItem v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNAME|RFQ名称"
                        :label="language('LK_RFQMINGCHENG', 'RFQ名称') + ':'"
                        name="rfqName">
-              <div class="input-box">
-                <iInput v-if="editStatus" v-model="baseInfo.rfqName"></iInput>
-                <iText v-else>{{ baseInfo.rfqName }}</iText>
-                <div class="btn-box">
-                    <iButton v-if="!editStatus" @click="edit" type="text" icon="el-icon-edit"></iButton>
-                    <template v-else>
-                      <iButton class="save" type="text" @click="save" icon="el-icon-check"></iButton>
-                      <iButton class="cancel" type="text" @click="cancel" icon="el-icon-close"></iButton>
-                    </template>
-                </div>
-              </div>
-            </iFormItem>
-            <iFormItem :label="language('LK_RFQZHUANGTAI', 'RFQ状态') + ':'"
-                       name="statusName"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQSTATUS|RFQ状态">
-              <iText>{{ baseInfo.statusName }}</iText>
-            </iFormItem>
-            <iFormItem :label="language('LK_CHUANGJIANRIQI', '创建日期') + ':'"
-                       name="createDate"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATIONDATE|创建日期">
-              <iText>
-                {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
+              <iInput v-if="editStatus"
+                      v-model="baseInfo.rfqName"></iInput>
+              <iText v-else>
+                {{ baseInfo.rfqName }}
               </iText>
-            </iFormItem>
-            <iFormItem label="材料组"
-                       name="createDate">
-              <iText>
-                {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
-              </iText>
-            </iFormItem>
-          </div>
-          <div class="col">
-            <iFormItem :label="language('LK_XUNJIACAIGOUYUAN', '询价采购员') + ':'"
-                       name="buyerName"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER|询价采购员">
-              <iText>{{ baseInfo.buyerName }}</iText>
-            </iFormItem>
-            <iFormItem label="LINIE："
-                       name="linieNameZh"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_LINE|LINIE">
-              <iText>{{ baseInfo.linieNameZh }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_EP', '技术评分人') + ':'"
                        name="ep"
@@ -157,17 +121,35 @@
               <iText forceTooltip
                      :tooltipContent="baseInfo.ep">{{ nameProcessor(baseInfo.ep) }}</iText>
             </iFormItem>
+            <!---BA确认过这东西不需要--->
+            <!-- <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf"  v-permission.auto="PARTSRFQ_EDITORDETAIL_CF|财务控制员"> -->
+            <!-- <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission.auto="PARTSRFQ_EDITORDETAIL_CF"></iInput> -->
+            <!-- <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
+            </iFormItem> -->
+
+            <iFormItem :label="language('LK_BENLUNBAOJIAJIEZHISHIJIAN', '本轮报价截止时间') + ':'"
+                       name="currentRoundsEndTime"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS|本轮报价截止时间">
+              <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
+            </iFormItem>
+          </div>
+          <div class="col">
+            <iFormItem :label="language('LK_RFQZHUANGTAI', 'RFQ状态') + ':'"
+                       name="statusName"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQSTATUS|RFQ状态">
+              <iText>{{ baseInfo.statusName }}</iText>
+            </iFormItem>
+            <iFormItem :label="language('LK_XUNJIACAIGOUYUAN', '询价采购员') + ':'"
+                       name="buyerName"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER|询价采购员">
+              <iText>{{ baseInfo.buyerName }}</iText>
+            </iFormItem>
             <iFormItem :label="language('LK_MQ', '质量评分人') + ':'"
                        name="mq"
                        v-permission.auto="PARTSRFQ_EDITORDETAIL_MQ|质量评分人">
               <iText forceTooltip
                      :tooltipContent="baseInfo.mq">{{ nameProcessor(baseInfo.mq) }}</iText>
             </iFormItem>
-            <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf">
-              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
-            </iFormItem>
-          </div>
-          <div class="col">
             <iFormItem :label="language('LK_DANGQIANLUNCI', '当前轮次') + ':'"
                        name="currentRounds"
                        v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTROUND|当前轮次">
@@ -180,36 +162,39 @@
                 {{ baseInfo.roundsTypeName }}
               </iText>
             </iFormItem>
+          </div>
+          <div class="col">
+            <iFormItem :label="language('LK_CHUANGJIANRIQI', '创建日期') + ':'"
+                       name="createDate"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATIONDATE|创建日期">
+              <iText>
+                {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
+              </iText>
+            </iFormItem>
+            <iFormItem label="LINIE："
+                       name="linieNameZh"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_LINE|LINIE">
+              <iText>{{ baseInfo.linieNameZh }}</iText>
+            </iFormItem>
+            <iFormItem :label="language('LK_PL', '物流审核人') + ':'"
+                       name="test"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_PL|物流审核人">
+              <!-- <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission.auto="PARTSRFQ_EDITORDETAIL_PL"></iInput> -->
+              <iText forceTooltip
+                     :tooltipContent="baseInfo.pl">{{ nameProcessor(baseInfo.pl) }}</iText>
+            </iFormItem>
             <iFormItem :label="language('LK_BENLUNZHUANGTAI', '本轮状态') + ':'"
                        name="test"
                        v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTSTATE|本轮状态">
               <iText>{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
-            
-            <iFormItem label="本轮开始时间"
-                       name="currentRoundsEndTime">
-              <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
-            </iFormItem>
-            <iFormItem :label="language('LK_BENLUNBAOJIAJIEZHISHIJIAN', '本轮报价截止时间') + ':'"
-                       name="currentRoundsEndTime"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS|本轮报价截止时间">
-              <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
-            </iFormItem>
-          </div>
-          <!-- <div class="col">
-            <iFormItem :label="language('LK_PL', '物流审核人') + ':'"
-                       name="test"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_PL|物流审核人">
-              <iText forceTooltip
-                     :tooltipContent="baseInfo.pl">{{ nameProcessor(baseInfo.pl) }}</iText>
-            </iFormItem>
             <div class="edit-button-row">
-              <i-button v-if="!disabled"
+              <i-button v-if="beforeCreate || !disabled"
                         @click="edit"
                         v-permission.auto="PARTSRFQ_EDITORDETAIL_SAVE|(编辑 / 保存)">{{ !editStatus ? language('LK_BIANJI', '编辑') : language('LK_BAOCUN', '保存') }}
               </i-button>
             </div>
-          </div> -->
+          </div>
         </div>
       </iFormGroup>
     </iCard>
@@ -263,7 +248,6 @@
           ">{{ language('QUXIAO', '取消') }}</iButton>
       </div>
     </iDialog>
-    <intoiDialog />
   </iPage>
 </template>
 <script>
@@ -276,7 +260,6 @@ import { getRfqDataList, addRfq, modification, updateRfqInfo, pageRfqRound, getR
 import store from '@/store';
 import { rfqCommonFunMixins } from 'pages/partsrfq/components/commonFun';
 import { navList } from './components/data';
-import intoiDialog from './components/index';
 import nominateTypeDialog from '@/views/partsrfq/home/components/nominateTypeDialog';
 import maintainSupplier from '@/views/partsrfq/home/components/maintainSupplier';
 import createDesignateTips from '@/views/partsrfq/home/components/createDesignateTips';
@@ -319,7 +302,6 @@ export default {
     createDesignateTips,
     noBnkDialog,
     dialogTableTips,
-    intoiDialog
   },
   mixins: [rfqCommonFunMixins, pageMixins],
   data () {
@@ -360,7 +342,8 @@ export default {
       bnkNotApprovesTable:[],
       bnkNotApprovesShow:false,
       supplierNamesShow:false,
-      projectPartDTOSShow:false
+      projectPartDTOSShow:false,
+      beforeCreate: false
     };
   },
   created () {
@@ -471,6 +454,7 @@ export default {
       } else {
         this.disabled = true;
         this.baseInfoLoading = false;
+        this.beforeCreate = true
       }
     },
     changeNav (target) {
@@ -543,20 +527,17 @@ export default {
       }
     },
     edit () {
-      this.oldrfqName = JSON.parse(JSON.stringify(this.baseInfo.rfqName))
-      this.editStatus = !this.editStatus;
-    },
-    cancel(){
-      this.baseInfo.rfqName = this.oldrfqName;
-      this.editStatus = !this.editStatus;
-    },
-    async save () {
       const rfqName = this.baseInfo.rfqName;
-      if (!rfqName.trim()) {
+      if (!rfqName && this.editStatus) {
         iMessage.warn(this.language('LK_RFQMINGCHNEGBUNENGWEIKONG', 'RFQ名称不能为空'));
         return false;
       }
       this.editStatus = !this.editStatus;
+      if (!this.editStatus && rfqName) {
+        this.save();
+      }
+    },
+    async save () {
       const query = this.$route.query;
       const params = {
         userId: store.state.permission.userInfo.id,
@@ -780,20 +761,6 @@ export default {
     &:last-child {
       margin-right: 0px;
       border-right: none;
-    }
-    .input-box{
-      display: inline-flex;
-      width: 100%;
-      .btn-box{
-        display: inline-flex;
-        padding: 0 10px;
-        .save{
-          color: #66b1ff;
-        }
-        .cancel{
-          color: #f78989;
-        }
-      }
     }
   }
 

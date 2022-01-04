@@ -1,18 +1,18 @@
 /*
 * @author:shujie
 * @Date: 2021-3-5 10:56:22
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
 * @Description: BDL列表JS
  */
 import {permissionTitle} from '@/utils'
 export const tableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_LIST_360VIEWCOLUMN",[
-    {props:'sapCode',name:'供应商号', key:'GONGYINGSHANGHAO', tooltip: true},
+    {props:'sapCode',name:'供应商编号', key:'GONGYINGSHANGBIANHAO', tooltip: true},
     {props:'supplierNameZh',name:'供应商名称', key:'LK_GONGYINGSHANGMINGCHENG', minWidth:80},
+    {props:'i',name:'供应商360°视图', key: 'LK_GONGYINGSHANG360SHITU'},
     // {props:'pupplierProductionPlace',name:'供应商生产场地', key:'LK_GONGYINGSHANGSHENGCHANCHANGDI', tooltip: true}, // sp10去除
     {props:'bdlType',name:'MBDL', key: 'LK_MBDL', tooltip: true},
-    {props:'isCheckCbd',name:'是否验证CBD', key: 'LK_SHIFOUYANZHENGCBD', tooltip: true},
-    {props:'supplierQualityGrade',name:'质量', key: 'LK_ZHILIANG', tooltip: true},
-    {props:'supplierCostGrade',name:'成本', key: 'LK_CHENGBEN', tooltip: true},
-    {props:'supplierDeliverGrade',name:'交付', key: 'LK_JIAOFU', tooltip: true},
-    {props:'i',name:'供应商360°视图', key: 'LK_GONGYINGSHANG360SHITU'}
+    {props:'isCheckCbd',name:'CBD层级', key: 'LK_CBDCENGJI', tooltip: true},
+    {props:'supplierCostGrade',name:'技术评分', key: 'LK_JISHUPINGFEN', tooltip: true},
+    {props:'supplierQualityGrade',name:'质量评分', key: 'LK_ZHILIANGPINGFEN', tooltip: true},
+    {props:'supplierDeliverGrade',name:'物流评分', key: 'LK_WULIUPINGFEN', tooltip: true},
   ])

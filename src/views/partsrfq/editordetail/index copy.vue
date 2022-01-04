@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-04 10:44:14
+ * @LastEditTime: 2021-12-31 14:34:19
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -263,7 +263,6 @@
           ">{{ language('QUXIAO', '取消') }}</iButton>
       </div>
     </iDialog>
-    <intoiDialog />
   </iPage>
 </template>
 <script>
@@ -276,7 +275,6 @@ import { getRfqDataList, addRfq, modification, updateRfqInfo, pageRfqRound, getR
 import store from '@/store';
 import { rfqCommonFunMixins } from 'pages/partsrfq/components/commonFun';
 import { navList } from './components/data';
-import intoiDialog from './components/index';
 import nominateTypeDialog from '@/views/partsrfq/home/components/nominateTypeDialog';
 import maintainSupplier from '@/views/partsrfq/home/components/maintainSupplier';
 import createDesignateTips from '@/views/partsrfq/home/components/createDesignateTips';
@@ -319,7 +317,6 @@ export default {
     createDesignateTips,
     noBnkDialog,
     dialogTableTips,
-    intoiDialog
   },
   mixins: [rfqCommonFunMixins, pageMixins],
   data () {

@@ -1,16 +1,37 @@
 <template>
   <iCard>
-    <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGPINGFEN','供应商评分') }}</span>
-      <div class="floatright" v-if="!disabled">
-        <!-- v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE" -->
-        <iButton v-if="!editStatus" @click="editStatus = true" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_EDIT|供应商评分编辑">{{ language('LK_BIANJI','编辑') }}</iButton>
-        <iButton v-if="editStatus" @click="editStatus = false" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_CANCEL|供应商评分取消">{{ language('LK_QUXIAO','取 消') }}</iButton>
-        <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SAVE|供应商评分保存">{{ language('LK_BAOCUN','保存') }}</iButton>
-        <iButton @click="setScoringDept" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
-        <iButton @click="sendTaskForRating" :loading="pushLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PUSHSCORETASK|供应商评分推送评分任务">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
+    <div class="card-header">
+      <div class="card-title">
+        <span class="title">{{ language('LK_GONGYINGSHANGPINGFEN','供应商评分') }}</span>
+        <div
+          v-if="todo"
+          :class="{
+            danger: status == '未申请',
+            warning: status == '未完成',
+            success: status == '已完成',
+          }"
+          class="tishi"
+        >
+          <icon symbol :name="name" class="tishi-icon"></icon>
+          <span>{{ status }}</span>
+        </div>
+      </div>
+      <div class="button-box">
+        <template v-if="!todo">
+          <iButton v-if="!editStatus" @click="editStatus = true" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_EDIT|供应商评分编辑">{{ language('LK_BIANJI','编辑') }}</iButton>
+          <iButton v-if="editStatus" @click="editStatus = false" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_CANCEL|供应商评分取消">{{ language('LK_QUXIAO','取 消') }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SAVE|供应商评分保存">{{ language('LK_BAOCUN','保存') }}</iButton>
+          <iButton @click="setScoringDept" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
+        </template>
+          <iButton @click="sendTaskForRating" :loading="pushLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PUSHSCORETASK|供应商评分推送评分任务">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
+        <i
+          @click="toggle('hidens')"
+          class="el-icon-arrow-down card-icon cursor"
+          :class="{ rotate: hidens }"
+        ></i>
       </div>
     </div>
+    <div v-show="hidens">
     <tablelist
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -29,7 +50,7 @@
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
-    <!-- <iPagination
+    <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableList)"
         @current-change="handleCurrentChange($event, getTableList)"
@@ -39,7 +60,8 @@
         :layout="page.layout"
         :current-page='page.currPage'
         :total="page.totalCount"
-    /> -->
+    />
+    </div>
     <!------------------------------------------------------------------------>
     <!--                  备注弹框                                          --->
     <!------------------------------------------------------------------------>
@@ -54,7 +76,7 @@
 </template>
 
 <script>
-import {iCard, iPagination, iButton, iMessage} from 'rise';
+import {iCard, iPagination, iButton, iMessage, icon} from 'rise';
 import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle,templateScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
@@ -74,11 +96,16 @@ export default {
     tablelist,
     tpbRemarks,
     iButton,
+    icon,
     scoringDeptDialog
   },
   mixins: [pageMixins, rfqCommonFunMixins],
+  props:{
+    todo: Boolean
+  },
   data() {
     return {
+      hidens: false,
       tableListData: [],
       tableTitle: JSON.parse(JSON.stringify(supplierScoreTitle)),
       tableLoading: false,
@@ -109,6 +136,9 @@ export default {
     }
   },
   methods: {
+    toggle(type) {
+      this[type] = !this[type];
+    },
     async getTableList() {
       const id = this.$route.query.id
 
@@ -128,8 +158,6 @@ export default {
         this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
         const tpb = res.data[0] ? (res.data[0].rateEntity ? res.data[0].rateEntity : []) : []
         this.tableListData = this.trnaslateDataForView(res.data || [], tpb);
-        // this.page.currPage = res.current
-        // this.page.pageSize = res.size
         this.page.totalCount = res.total
         this.tableLoading = false;
 
