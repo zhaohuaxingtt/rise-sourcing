@@ -31,7 +31,12 @@
       <el-table-column :key="index" align='center' :label="language(items.key,items.name)" v-else-if="items.props === 'supplierNameZh'">
         <template slot-scope="scope">
           {{ scope.row.supplierNameZh}}
-          <!-- <supplierBlackIcon/> -->
+          <!-- 供应商黑名单 -->
+          {{typeof(scope.row.isComplete)}}
+          <supplierBlackIcon
+            :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+            :BlackList="scope.row.blackStuffs || []"
+          />
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center'
@@ -77,7 +82,7 @@ export default {
   },
   components: {
     iSelect,
-    // supplierBlackIcon,
+    supplierBlackIcon,
   },
   computed:{
         //eslint-disable-next-line no-undef
@@ -94,6 +99,10 @@ export default {
     },
     //勾选逻辑，如果是谈判轮，不管哪个轮次都可以取消，询价轮必须勾选，不管是那个轮次。（Mbdl）
     selectable(row) {
+      // 优先判断黑名单再判断轮次
+      if(row.isDisabled == true){
+        return false;
+      }else{
       if(this.rfqSelectedProjectParts && (this.rfqSelectedProjectParts[0].partProjectType == partProjTypes.GSLINGJIAN || this.rfqSelectedProjectParts[0].partProjectType ==partProjTypes.ZHANGJIALINGJIAN)){
         return true
       }else{
@@ -107,6 +116,7 @@ export default {
         }
       }
       }
+       }
     },
     handleRowClick(row, column, event) {
       this.$emit("handleRowClick", row, column, event)

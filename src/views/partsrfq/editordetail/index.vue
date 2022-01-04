@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2021-12-30 17:12:28
+ * @LastEditTime: 2022-01-04 11:36:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -227,7 +227,7 @@
     <!-------------------commonsourcing类型以下零件采购项目BNK审核未通过----------------------------------->    
     <noBnkDialog ref="noBnkDialog" :bnkNotApprovesTable="bnkNotApprovesTable" @changeTipsDialog="changeTipsDialog"/>
     <!-- RFQ错误提示框 -->
-    <dialogTableTips ref="dialogTableTips"/>
+    <dialogTableTips ref="dialogTableTips" tableType="RFQ" :tableListData="blackTableListData"/>
     <!-------------------------结束本轮询价的时候，如果当前的轮次类型为开标，并且rfq状态为询价中，当前轮次状态是进行中则需要填写一个结束备注-------->
     <iDialog :visible.sync="showReason"
              :title="language('QINGITANXIEJIESUYUANY', '结束原因')"
@@ -343,7 +343,8 @@ export default {
       bnkNotApprovesShow:false,
       supplierNamesShow:false,
       projectPartDTOSShow:false,
-      beforeCreate: false
+      beforeCreate: false,
+      blackTableListData:[],
     };
   },
   created () {
@@ -503,11 +504,12 @@ export default {
 
       try {
         const res = await modification(req);
-        // if(updateType === '06'){
-        //   this.$refs.dialogTableTips.show() 
-        // }else{
+        if(updateType === '06' && res.code == '500'){
+          this.blackTableListData = res.data || [];
+          this.$refs.dialogTableTips.show(); 
+        }else{
           this.resultMessage(res);
-        // }
+        }
         this.getBaseInfo();
       } finally {
         if (updateType === '06') {
