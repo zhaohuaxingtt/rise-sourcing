@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-02 16:47:16
+ * @LastEditTime: 2022-01-04 19:17:19
  * @Description: 配件详情
  * @FilePath: \front-sourcing\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
@@ -73,11 +73,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.accessoryPartDetail {
-  .el-form-item {
-    ::v-deep .el-form-item__label {
-      width: 150px;
-    }
-  }
-}
+// .accessoryPartDetail {
+//   .el-form-item {
+//     ::v-deep .el-form-item__label {
+//       // width: 150px;
+//     }
+//   }
+// }
 </style>
