@@ -24,7 +24,7 @@
 
     </div>
     <span slot="footer" class="dialog-footer">
-    <el-button class="margin-top15" type="primary" @click="dialogVisible = false">{{language('QUEDING','确定')}}</el-button>
+    <iButton class="margin-top15" type="primary" @click="dialogVisible = false">{{language('QUEDING','确定')}}</iButton>
   </span>
     </iDialog>
 </template>
@@ -39,6 +39,7 @@ export default {
     components:{
     iDialog,
     tableList,
+    iButton,
   },
   props:{
       tableType:{

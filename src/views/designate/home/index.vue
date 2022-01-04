@@ -41,6 +41,7 @@
           <!-- 冻结 -->
           <iButton
             @click="freeze"
+            :loading="btnLoading.freeze"
             v-permission.auto="SOURCING_NOMINATION_DONGJIE|冻结">
             {{language('LK_DONGJIE', '冻结')}}
           </iButton>
@@ -263,6 +264,9 @@ export default {
       // 新建定点申请单
       newNomiAppStatus: false,
       blackTableListData:[],
+      btnLoading:{
+        freeze:false, // 冻结
+      },
     }
   },
   components: {
@@ -414,9 +418,11 @@ export default {
         const data = {
           nominateIdArr,
         };
+        this.btnLoading.freeze = true;
         try {
           const res = type ? await nominateRreeze(data) : await nominateUnRreeze(data)
           const { code } = res;
+          this.btnLoading.freeze = false;
           if(code == 200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
@@ -427,6 +433,7 @@ export default {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         } catch (e) {
+          this.btnLoading.freeze = false;
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         }
       }
