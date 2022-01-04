@@ -100,11 +100,11 @@
           <div class="search">
             {{ $t('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN') }}:
             <iInput v-model="form['search.materialName']" :placeholder="$t('LK_QINGSHURU')">
-              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
+              <i slot="suffix" class="el-input__icon el-icon-search" @click="saveAddCarType"></i>
             </iInput>
             {{ $t('LK_LINJIANLIUWEIHAO') }}:
             <iInput v-model="form['search.partNum']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
-              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
+              <i slot="suffix" class="el-input__icon el-icon-search" @click="saveAddCarType"></i>
             </iInput>
           </div>
           <div>
