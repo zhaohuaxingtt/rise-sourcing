@@ -1,10 +1,10 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-11-10 20:33:42
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-04 18:07:25
+ * @LastEditors: caopeng
  * @Description: 产量总览
- * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
 -->
 <template>
    <iCard class="margin-top20" id="output">
@@ -204,10 +204,24 @@ export default {
          this.selectFilterYear= String(new Date().getFullYear()) 
          this.renderBi()
       },
+       compare(property,desc) {
+            return function (a, b) {
+                var value1 = a[property];
+                var value2 = b[property];
+                if(desc==true){
+                    // 升序排列
+                    return value1 - value2;
+                }else{
+                    // 降序排列
+                    return value2 - value1;
+                }
+            }
+        },
       // 数据字典
       getDict() {
          selectDictByKeys([{ keys: "CATEGORY_MANAGEMENT_LIST" }]).then(res=>{
             this.dictData=res.data
+            this.dictData.CATEGORY_MANAGEMENT_LIST= this.dictData.CATEGORY_MANAGEMENT_LIST.sort(this.compare("id",true))
             this.init()
             this.renderBi()
          })
