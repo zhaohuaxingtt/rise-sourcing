@@ -64,18 +64,34 @@
       </div>
     </iCard>
     <iCard :title="language('JINGLINGJIANAOCARD','上传仅零件号变更单')" class="margin-top20" v-if="$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI">
-        <div class="text-align-right margin-bottom10">
+        <div class="text-align-right margin-bottom20">
           <Upload hideTip @on-success='upLoadsucess' class="margin-right10"></Upload>
           <iButton @click='downloadFile'>下载</iButton>
           <iButton @click='deleteFile' >删除</iButton>
         </div> 
-        <tableList :tableTitle="fileTableTitle" @handleSelectionChange="(r)=>fileTableSelect=r" :tableData="fileTableData"  :activeItems='"fileName"' @openPage="handleOpenPage"></tableList>
+        <tableList :tableTitle="fileTableTitle" 
+        @handleSelectionChange="(r)=>fileTableSelect=r" 
+        :tableData="fileTableData"  
+        :activeItems='"fileName"' 
+        @openPage="handleOpenPage">
+        </tableList>
+       <iPagination 
+        v-update
+        class="margin-top30"
+        @size-change="handleSizeChange($event, getFileList)"
+        @current-change="handleCurrentChange($event, getFileList)"
+        background
+        :current-page="page.currPage"
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :total="page.totalCount" />
     </iCard>
   </div>
 </template>
 
 <script>
-import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage } from 'rise'
+import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
 import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle,fileTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
@@ -83,14 +99,16 @@ import {uploadFiles} from '@/api/costanalysismanage/costanalysis'
 import {partProjTypes,fileType} from '@/config'
 import Upload from '@/components/Upload'
 import {getFile,downloadUdFile,deleteFiles} from '@/api/file'
+import {pageMixins} from '@/utils/pageMixins'
 
 export default {
-  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText ,Upload},
+  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText ,Upload, iPagination},
   props: {
     isPreview: {type:Boolean, default:false},
     nominateId: {type:String},
     // projectType: {type:String}
   },
+  mixins:[pageMixins],
   data() {
     return {
       // 零件项目类型
@@ -183,8 +201,11 @@ export default {
       })
     },
     getFileList(){
-      getFile({hostId:this.$store.getters.nomiAppId,fileType:fileType.JINGLINGHAOBIANG}).then(r=>{
-        this.fileTableData = r.data
+      getFile(
+        {hostId:this.$store.getters.nomiAppId,fileType:fileType.JINGLINGHAOBIANG,pageNo: this.page.pageSize,
+        pageSize: this.page.currPage}).then(res=>{
+        this.fileTableData = res.data
+         this.page.totalCount = res.total || 0
       }).catch(err=>{
         iMessage.error(err.desZh)
       })
