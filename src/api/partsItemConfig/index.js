@@ -11,7 +11,7 @@ const requst = axios(process.env.VUE_APP_SOURCING)
 // 获取配置数据
 export function getPartCheck(params) {
     return requst({
-        url: '/part-check',
+        url: '/part-pro-config',
         method: 'GET',
         params,
     })
@@ -20,7 +20,7 @@ export function getPartCheck(params) {
 // 保存配置
 export function savePartCheck(data) {
     return requst({
-        url: '/part-check',
+        url: '/part-pro-config',
         method: 'POST',
         data,
     })
