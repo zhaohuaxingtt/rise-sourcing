@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-04 20:24:29
+ * @LastEditTime: 2022-01-05 16:59:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -16,7 +16,7 @@
           <label for="">{{ language("CAILIAOZU", "材料组") }}:</label>
           <iSelect @change="changeCategory"
                    v-model="categoryCode"
-                   v-if="entryStatus === '1'">
+                   v-if="isBindingRfq ">
             <el-option v-for="item in categoryList"
                        :key="item.categoryId"
                        :value="item.categoryCode"
@@ -552,7 +552,7 @@ export default {
   methods: {
     async init () {
       this.rfqId = this.$store.state.rfq.rfqId || this.$route.query.rfqId;
-      this.entryStatus = this.$store.state.rfq.entryStatus;
+      // this.entryStatus = this.$store.state.rfq.entryStatus;
       this.chemeId = this.$route.query.chemeId ? this.$route.query.chemeId : this.propSchemeId;
       this.productFactoryNames = this.$route.query.productFactoryNames ? this.$route.query.productFactoryNames : this.propFactoryName;
       await getSchemeInfo({
@@ -590,7 +590,7 @@ export default {
           this.categoryList = res.data;
         });
         let params = {};
-        if (this.entryStatus === 1) {
+        if (this.isBindingRfq) {
           params = {
             categoryId: this.categoryId,
             isBindingRfq: this.isBindingRfq,
@@ -712,7 +712,7 @@ export default {
           });
         });
       }
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
         let entryParams = _.cloneDeep(params)
@@ -839,7 +839,7 @@ export default {
         schemeId: this.chemeId,
         unselected: this.exceptPart,
       };
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
       } else {
@@ -879,7 +879,7 @@ export default {
         schemeId: this.chemeId,
         unselected: this.exceptPart,
       };
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
       } else {
@@ -1050,7 +1050,7 @@ export default {
         params.info[index].position = val[0].position;
         params.info[index].transmission = val[0].transmission;
       }
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
         let entryParams = _.cloneDeep(params)
@@ -1099,7 +1099,7 @@ export default {
           isTargetMotor: false,
         });
       });
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
         let entryParams = _.cloneDeep(params)
@@ -1170,7 +1170,7 @@ export default {
               first += "0";
             }
             this.maxData = first;
-            if (this.entryStatus !== 1) {
+            if (!this.entryStatus) {
               this.firstBarData = data[0];
               data.shift();
             }
