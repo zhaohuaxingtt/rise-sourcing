@@ -2,19 +2,19 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-05 21:18:01
+ * @LastEditTime: 2022-01-05 21:19:39
  * @Description: 配件详情
  * @FilePath: \front-sourcing\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
 
 <template>
-  <iPage v-loading="pageLoading" v-permission.auto="ACCESSORYPART_DETAILINFO_PAGE|配件详情页面">
+  <iPage v-loading="pageLoading" v-permission.auto="ACCESSORYPART_DETAILINFO_PAGE|配件详情页面" :key='renderKey'>
     <topComponents logModuleName="配件需求" logBizIdKey="spNum" optionDicKey2="配件需求详情页">
       <span slot="left" class="floatleft font20 font-weight">
         {{language('PEIJIANBIANHAO','配件编号')}}：{{detailData.partNum}}
       </span>
     </topComponents>
-    <iCard :title="language('JICHUXINXI','基础信息')" :key='renderKey'>
+    <iCard :title="language('JICHUXINXI','基础信息')">
       <iFormGroup row="4" class="accessoryPartDetail">
         <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''" v-permission.dynamic.auto="item.permission">
           <iText>{{detailData[item.value] ? detailData[item.value].desc || detailData[item.value] : ''}}</iText>
