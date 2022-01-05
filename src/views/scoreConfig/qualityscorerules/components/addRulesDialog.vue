@@ -15,8 +15,8 @@
       <li>
           <p>如果满足一下条件:</p>
           <div>
-              <iSelect></iSelect>
-              <iSelect></iSelect>
+              <iSelect :value="language('零件号第4位','LK_LINGJIANHAODISIWEI')" disabled></iSelect>
+              <iSelect value="-" disabled></iSelect>
               <iSelect></iSelect>
           </div>
       </li>
@@ -30,7 +30,7 @@
   </ul>
   <span slot="footer" class="dialog-footer">
     <iButton @click="dialogVisible = false">{{language('QUXIAO','取消')}}</iButton>
-    <iButton type="primary" @click="dialogVisible = false">{{ language("QUEDING", "确定") }}</iButton>
+    <iButton @click="dialogVisible = false">{{ language("QUEDING", "确定") }}</iButton>
   </span>
   </iDialog>
 </template>
