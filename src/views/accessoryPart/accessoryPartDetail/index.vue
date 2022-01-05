@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
- * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-04 19:17:19
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-05 21:07:43
  * @Description: 配件详情
  * @FilePath: \front-sourcing\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
@@ -14,7 +14,7 @@
         {{language('PEIJIANBIANHAO','配件编号')}}：{{detailData.partNum}}
       </span>
     </topComponents>
-    <iCard :title="language('JICHUXINXI','基础信息')">
+    <iCard :title="language('JICHUXINXI','基础信息')" :key='renderKey'>
       <iFormGroup row="4" class="accessoryPartDetail">
         <iFormItem v-for="(item, index) in detailList" :key="index" :label="language(item.key,item.label)" :class="item.row ? 'row'+item.row : ''" v-permission.dynamic.auto="item.permission">
           <iText>{{detailData[item.value] ? detailData[item.value].desc || detailData[item.value] : ''}}</iText>
@@ -55,7 +55,7 @@ export default {
       getAccessoryOneInfo(this.$route.query.spNum).then(res => {
         if (res.result) {
           this.detailData = res.data
-
+          this.renderKey = parseInt(Math.random()*100000000)
           this.$nextTick(() => {
             this.$refs.tec.getFiles()
             this.$refs.package.getFiles()
