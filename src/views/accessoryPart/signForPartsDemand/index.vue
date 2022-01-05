@@ -119,7 +119,7 @@ export default {
       tableLoading: false,
       searchList: searchList,
       searchParams: {
-        partNum: '',
+        partNumFuzzySearch: '',
         carType: '',
         carProject: '',
         state: '',
@@ -394,7 +394,7 @@ export default {
      */    
     reset() {
       this.searchParams = {
-        partNum: '',
+        partNumFuzzySearch: '',
         carType: '',
         carProject: '',
         state: '',
