@@ -339,7 +339,6 @@ export default {
       reason: '',
       roundsType,
       rfqInfo: {},
-      isCommonSourcing:false,
       starMonitorTable:[],
       supplierNamesTable:[],
       bnkNotApprovesTable:[],
@@ -441,7 +440,6 @@ export default {
             if (res.code == 200 && res.data) {
               this.baseInfo = res.data;
               this.rfqInfo = res.data;
-              res.data.partProjectType[0] === '50002000' || res.data.partProjectType[0] === '50002001'? this.isCommonSourcing === true :''
               this.disabled = !!res.data.isFreeze;
               if (dialogPage) {
                 //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
