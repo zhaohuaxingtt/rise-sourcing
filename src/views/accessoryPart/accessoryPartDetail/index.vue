@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-05 21:07:43
+ * @LastEditTime: 2022-01-05 21:18:01
  * @Description: 配件详情
  * @FilePath: \front-sourcing\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
@@ -55,10 +55,10 @@ export default {
       getAccessoryOneInfo(this.$route.query.spNum).then(res => {
         if (res.result) {
           this.detailData = res.data
-          this.renderKey = parseInt(Math.random()*100000000)
           this.$nextTick(() => {
             this.$refs.tec.getFiles()
             this.$refs.package.getFiles()
+            this.renderKey = parseInt(Math.random()*100000000) //强制刷新css
           })
         } else {
           this.detailData = {}
@@ -71,13 +71,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-// .accessoryPartDetail {
-//   .el-form-item {
-//     ::v-deep .el-form-item__label {
-//       // width: 150px;
-//     }
-//   }
-// }
-</style>
