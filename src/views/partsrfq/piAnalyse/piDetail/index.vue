@@ -367,7 +367,7 @@ export default {
       if (resCheckName) {
         this.saveDialog = false;
         iMessageBox(
-          this.language('TPZS.CBGYCZSFFG', '此样式/报告已存在，是否覆盖？'),
+          this.language('CIYANGSHIBAOGAOYICUNZAISHIFOUFUGAI', '此样式/报告已存在，是否覆盖？'),
           this.$t('LK_WENXINTISHI'),
           { confirmButtonText: this.$t('LK_QUEDING'), cancelButtonText: this.$t('LK_QUXIAO') },
         ).then(async () => {
