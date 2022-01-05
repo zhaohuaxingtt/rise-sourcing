@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-05 16:59:37
+ * @LastEditTime: 2022-01-05 17:22:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -13,7 +13,7 @@
       <div class="navBox flex-between-center"
            style="margin-bottom:20px">
         <div class="title font-weight flex">
-          <label for="">{{ language("CAILIAOZU", "材料组") }}:</label>
+          <!-- <label for="">{{ language("CAILIAOZU", "材料组") }}:</label>
           <iSelect @change="changeCategory"
                    v-model="categoryCode"
                    v-if="isBindingRfq ">
@@ -22,8 +22,8 @@
                        :value="item.categoryCode"
                        :label="item.categoryName">
             </el-option>
-          </iSelect>
-          <span v-else>{{ categoryName }}</span>
+          </iSelect> -->
+          <span>{{ categoryName }}</span>
         </div>
         <div class="flex"
              v-show="reportFlag||!propSchemeId">
@@ -1170,7 +1170,7 @@ export default {
               first += "0";
             }
             this.maxData = first;
-            if (!this.entryStatus) {
+            if (!this.isBindingRfq) {
               this.firstBarData = data[0];
               data.shift();
             }
@@ -1230,7 +1230,7 @@ export default {
       this.reportFlag = true;
     },
     handleAnalysis () {
-      if (this.entryStatus) {
+      if (this.isBindingRfq) {
         this.$router.push({
           path: "/sourceinquirypoint/sourcing/partsrfq/assistant",
           query: {
