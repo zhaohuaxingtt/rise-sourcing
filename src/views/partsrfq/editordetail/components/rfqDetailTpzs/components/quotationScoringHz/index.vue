@@ -316,6 +316,7 @@ export default{
         if(this.layout == 1){
           await this.fsPartsAsRow()
         }else if(this.layout == 2){
+
           await this.supplierfsSupplierAsRow()
         }else{
           await this.fsPartsAsRow()
@@ -334,8 +335,11 @@ export default{
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
       return negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
-        if(res.data && res.data.layout){
+        if(res.data && res.data.layout){  
           this.backChoose = JSON.parse(res.data.layout) // 
+        }
+        if(this.backChoose.length == 0 && type == 2){//特殊逻辑处理，如果第一次进来，隐藏项为空。则认为用户没有设置过，需要将默认隐藏项设置好。
+          this.backChoose = ['EBR','Volume','Invest Budget','Prod. Loc.','Dev.\nCost','Supplier \nSOP Date','Total\n Turnover']
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)

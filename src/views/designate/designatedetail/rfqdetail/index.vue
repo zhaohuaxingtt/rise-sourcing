@@ -489,6 +489,8 @@ export default {
     async handleCreateMtz() {
       if (this.mtzApplyId) return iMessage.warn(this.language("BENDINGDIANSHENQINGYIGUANLIANMTZSHENQINGDAN", "本定点申请已关联MTZ申请单，无法创建MTZ申请"))
       if (!this.partsSelectedItems.length) return iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+      if (this.partsSelectedItems.some(item => item.selected == 0)) return iMessage.warn(this.language("XUANZHONGDELINGJIANZHONGBUNENGHANYOUWEICANYUDELINGJIAN", "选中的零件中不能含有未参与的零件"))
+
 
       const notMtzParts = this.partsSelectedItems.filter(item => !item.mtz)
 

@@ -68,8 +68,8 @@
               clearable
           >
             <el-option
-                :value="item.commodity"
-                :label="item.commodityName"
+                :value="item.deptId"
+                :label="item.commodity"
                 v-for="(item, index) in proDeptList"
                 :key="index"
             ></el-option>

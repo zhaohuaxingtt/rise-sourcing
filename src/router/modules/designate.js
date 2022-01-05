@@ -393,4 +393,29 @@ export default [
     },
     component: () => import('@/views/designate/home/signSheet/signPreview'),
   },
+  // rs预览，不嵌公共layout模板，不支持跳转其他决策资料
+  // component: () => import('@/layout/nomination/layout'),
+  {
+    path: '/rspreview',
+    name: 'designateRSPreview',
+    meta: {
+      title: '定点管理-决策资料-RS预览',
+      activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+    },
+    component: () => import('@/layout/nomination/layout'),
+    redirect: '/rspreview/view',
+    children: [
+      {
+        path: 'view',
+        name: 'designateRSPreviewDetail',
+        meta: {
+          title: '定点管理RS预览',
+          hideTabLV3: true,
+          activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+        },
+        component: () => import('@/views/designate/designatedetail/decisionData/rs/home'),
+      }
+    ]
+  },
+  
 ]
