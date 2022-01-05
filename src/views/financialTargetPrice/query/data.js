@@ -1,10 +1,10 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
- * @LastEditors: YoHo
- * @LastEditTime: 2021-12-28 17:31:58
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-01-05 14:50:30
  * @Description: 
- * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\query\data.js
  */
 
 
@@ -15,7 +15,7 @@ export const tableTitle = [
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
   {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
-  {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100},
+  // {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100},
   {props:'priceAnaName',name:'CF', key: "CF", tooltip: true, width: 120},
   {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true},
   {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true},
