@@ -1150,7 +1150,7 @@ export default {
               if (item.detail.length === 1 || item.detail.length === 0) {
                 this.totalWidth = 200 * data.length;
               } else {
-                this.totalWidth += item.detail.length * 75;
+                this.totalWidth += item.detail.length * 100;
               }
               item.detail.forEach((i) => {
                 maxList.push(parseInt(i.value));
@@ -1161,7 +1161,7 @@ export default {
             } else {
               this.clientHeight = false;
             }
-            this.totalWidth = this.totalWidth + 75 + "px";
+            this.totalWidth = this.totalWidth + 100 + "px";
             console.log("error here s")
             this.maxData = maxList && maxList.length > 0 ? _.max(maxList).toString() : "";
             console.log("error here e")

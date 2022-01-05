@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-10-12 21:45:35
- * @LastEditTime: 2021-12-27 16:17:33
+ * @LastEditTime: 2022-01-05 14:32:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\piDetail\components\previewDialog.vue
@@ -25,6 +25,20 @@ import piPreview from './piPreview'
 export default {
   props: {
     value: { type: Boolean },
+    dataInfo: {
+      type: Object
+    },
+    averageData: { type: Array },
+    currentTab: {
+      type: String,
+      default: '',
+    },
+    currentTabData: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
   },
   components: {
     iDialog,
