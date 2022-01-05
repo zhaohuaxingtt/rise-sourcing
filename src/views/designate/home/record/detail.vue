@@ -113,8 +113,10 @@ export default {
       let  designateType =this.$route.query.designateType
       let  partProjType =this.$route.query.partProjType
       const openPageRs = this.$router.resolve({
-        path:'/designate/decisiondata/rs',
+        path:'/rspreview/view',
         query:{
+          route: 'force',
+          isPreview: 1,
           desinateId,
           designateType,
           partProjType,
