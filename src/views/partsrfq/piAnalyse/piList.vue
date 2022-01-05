@@ -1,52 +1,47 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2021-09-18 16:37:42
+ * @LastEditTime: 2022-01-05 15:33:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
 -->
 <template>
   <div class="mainBox">
-    <iSearch @reset="handleSearchReset" @sure="handleSearch" :icon="false">
+    <iSearch @reset="handleSearchReset"
+             @sure="handleSearch"
+             :icon="false">
       <el-form label-position="top">
-        <el-row >
+        <el-row>
           <!--材料组-->
           <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iInput
-              :placeholder="$t('TPZS.QSRCLZBHMC')"
-              v-model="form.group"
-            ></iInput>
+            <iInput :placeholder="$t('TPZS.QSRCLZBHMC')"
+                    v-model="form.group"></iInput>
           </el-form-item>
           <!--零件号-->
           <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-            <iInput
-              :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
-              v-model="form.num"
-            ></iInput>
+            <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
+                    v-model="form.num"></iInput>
           </el-form-item>
           <!--RFQ号-->
           <el-form-item :label="$t('TPZS.RFQHMC')">
-            <iInput
-              v-model="form.rfq"
-              :disabled="rfqStatus"
-              :placeholder="$t('TPZS.QSRRFQH')"
-            ></iInput>
+            <iInput v-model="form.rfq"
+                    :disabled="rfqStatus"
+                    :placeholder="$t('TPZS.QSRRFQH')"></iInput>
           </el-form-item>
           <el-form-item :label="$t('TPZS.CJR')">
-            <iInput
-              :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')"
-              v-model="form.owner"
-            />
+            <iInput :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')"
+                    v-model="form.owner" />
           </el-form-item>
         </el-row>
       </el-form>
     </iSearch>
     <iCard class="margin-top20">
-          <!-- :title="language('PIFENXIKU', 'Price Index分析库')" -->
-        <div  class="margin-bottom20 clearFloat">
-          <span  class="font18 font-weight" >{{language('PIFENXIKU', 'Price Index分析库')}}</span>
-          <div class="floatright" v-if="disabled">
+      <!-- :title="language('PIFENXIKU', 'Price Index分析库')" -->
+      <div class="margin-bottom20 clearFloat">
+        <span class="font18 font-weight">{{language('PIFENXIKU', 'Price Index分析库')}}</span>
+        <div class="floatright"
+             v-if="disabled">
           <div v-if="!editMode">
             <iButton @click="clickRawMaterial">{{
               language("YUANCAILIAOJIAGEZONGLAN", "原材料价格总览")
@@ -59,43 +54,35 @@
             <iButton @click="cancelEdit">{{ $t("LK_QUXIAO") }}</iButton>
             <iButton @click="saveEdit">{{ $t("LK_BAOCUN") }}</iButton>
           </div>
-            </div>
         </div>
+      </div>
 
-      <el-table
-        tooltip-effect="light"
-        ref="multipleTable"
-        :data="tableListData"
-        style="width: 100%; margin-bottom: 20px"
-        row-key="number"
-        :max-height="450"
-        :row-class-name="rowStyle"
-        :tree-props="{ children: 'children' }"
-        @selection-change="handleSelectionChange"
-        @current-change="handleCurrentChange"
-      >
-        <el-table-column
-          align="center"
-          header-align="center"
-          type="selection"
-          width="55"
-        >
+      <el-table tooltip-effect="light"
+                ref="multipleTable"
+                :data="tableListData"
+                style="width: 100%; margin-bottom: 20px"
+                row-key="number"
+                :max-height="450"
+                :row-class-name="rowStyle"
+                :tree-props="{ children: 'children' }"
+                @selection-change="handleSelectionChange"
+                @current-change="handleCurrentChange">
+        <el-table-column align="center"
+                         header-align="center"
+                         type="selection"
+                         width="55">
         </el-table-column>
-        <el-table-column
-          label="#"
-          type="index"
-          :index="indexMethod"
-          align="center"
-          header-align="center"
-          width="50"
-        >
+        <el-table-column label="#"
+                         type="index"
+                         :index="indexMethod"
+                         align="center"
+                         header-align="center"
+                         width="50">
         </el-table-column>
-        <el-table-column
-          align="center"
-          header-align="center"
-          :label="$t('TPZS.FXMC')"
-          width="450"
-        >
+        <el-table-column align="center"
+                         header-align="center"
+                         :label="$t('TPZS.FXMC')"
+                         width="450">
           <template slot-scope="scope">
             <div class="openPage">
               <el-row :gutter="20">
@@ -106,15 +93,15 @@
                                 placement="top"
                                 effect="light">
                       <span class="ellipsis"
-                        v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
-                        @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
+                            v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
+                            @click="clickScheme(scope.row)">{{scope.row.analysisSchemeName}}</span>
                     </el-tooltip>
                     <el-tooltip :content="scope.row.reportName"
                                 placement="top"
                                 effect="light">
                       <span class="ellipsis"
-                        v-if="scope.row.type == $t('TPZS.REPORT_TYPE')"
-                        @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
+                            v-if="scope.row.type == $t('TPZS.REPORT_TYPE')"
+                            @click="clickReport(scope.row)">{{scope.row.reportName}}</span>
                     </el-tooltip>
                   </span>
                   <span v-else>
@@ -141,76 +128,65 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          :label="$t('LK_CAILIAOZU')"
-          prop="materialGroupName"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column :label="$t('LK_CAILIAOZU')"
+                         prop="materialGroupName"
+                         align="center"
+                         header-align="center">
         </el-table-column>
-        <el-table-column
-          :label="$t('RFQ')"
-          prop="rfqId"
-          width="100"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column :label="$t('RFQ')"
+                         prop="rfqId"
+                         width="100"
+                         align="center"
+                         header-align="center">
         </el-table-column>
-        <el-table-column
-          :label="$t('TPZS.MRX')"
-          align="center"
-          header-align="center"
-          width="80"
-        >
+        <el-table-column :label="$t('TPZS.MRX')"
+                         align="center"
+                         header-align="center"
+                         width="80">
           <template slot-scope="scope">
-          <div v-if="!editMode">
-            {{ defaultStatus(scope.row, scope.row.isDefault) }}
-          </div>
-          <div v-else-if="editMode && scope.row.type == $t('TPZS.SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault">
-            <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)"
-                     @change="changeDefault($event, scope.row)">
-              <el-option :value="item.value"
-                         :label="item.label"
-                         v-for="(item, index) in defaultData"
-                         :key="index"></el-option>
-            </iSelect>
-          </div>
+            <div v-if="!editMode">
+              {{ defaultStatus(scope.row, scope.row.isDefault) }}
+            </div>
+            <div v-else-if="editMode && scope.row.type == $t('TPZS.SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault">
+              <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)"
+                       @change="changeDefault($event, scope.row)">
+                <el-option :value="item.value"
+                           :label="item.label"
+                           v-for="(item, index) in defaultData"
+                           :key="index"></el-option>
+              </iSelect>
+            </div>
           </template>
         </el-table-column>
-        <el-table-column
-          :label="$t('TPZS.WJLX')"
-          prop="type"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column :label="$t('TPZS.WJLX')"
+                         prop="type"
+                         align="center"
+                         header-align="center">
         </el-table-column>
-        <el-table-column
-          :label="$t('TPZS.CJR')"
-          prop="createByName"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column :label="$t('TPZS.CJR')"
+                         prop="createByName"
+                         align="center"
+                         header-align="center">
         </el-table-column>
-        <el-table-column
-          :label="$t('LK_CHUANGJIANRIQI')"
-          prop="createDate"
-          show-overflow-tooltip
-          align="center"
-          header-align="center"
-        >
+        <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
+                         prop="createDate"
+                         show-overflow-tooltip
+                         align="center"
+                         header-align="center">
         </el-table-column>
-        <el-table-column
-          :label="$t('TPZS.SCXGRQ')"
-          prop="updateDate"
-          show-overflow-tooltip
-          align="center"
-          header-align="center"
-        >
+        <el-table-column :label="$t('TPZS.SCXGRQ')"
+                         prop="updateDate"
+                         show-overflow-tooltip
+                         align="center"
+                         header-align="center">
         </el-table-column>
-        <el-table-column width="50" align="center" header-align="center">
+        <el-table-column width="50"
+                         align="center"
+                         header-align="center">
           <template slot-scope="scope">
-            <div class="stickIcon" v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
-               @click="handleStick(scope.row)">
+            <div class="stickIcon"
+                 v-if="scope.row.type == $t('TPZS.SCHEME_TYPE')"
+                 @click="handleStick(scope.row)">
               <icon v-if="scope.row.isTop && scope.row.isTop == 1"
                     style="{font-size:24px}"
                     symbol
@@ -224,29 +200,23 @@
           </template>
         </el-table-column>
       </el-table>
-      <iPagination
-        v-update
-        @size-change="handleSizeChange($event, getTableList)"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.totalCount"
-      />
+      <iPagination v-update
+                   @size-change="handleSizeChange($event, getTableList)"
+                   background
+                   :page-sizes="page.pageSizes"
+                   :page-size="page.pageSize"
+                   :layout="page.layout"
+                   :current-page="page.currPage"
+                   :total="page.totalCount" />
 
-      <reportPreview
-        :visible="reportVisible"
-        :reportUrl="reportUrl"
-        :title="reportTitle"
-        :key="reportKey"
-        @handleCloseReport="handleCloseReport"
-      />
-      <addScheme
-        :key="addPiParams.key"
-        v-model="addPiParams.visible"
-        @handleCloseAddModal="handleCloseAddModal"
-      />
+      <reportPreview :visible="reportVisible"
+                     :reportUrl="reportUrl"
+                     :title="reportTitle"
+                     :key="reportKey"
+                     @handleCloseReport="handleCloseReport" />
+      <addScheme :key="addPiParams.key"
+                 v-model="addPiParams.visible"
+                 @handleCloseAddModal="handleCloseAddModal" />
     </iCard>
   </div>
 </template>
@@ -265,7 +235,8 @@ import {
 import { pageMixins } from "@/utils/pageMixins";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addScheme from './components/add'
-import { getAnalysisList, fetchAnalysisStick, fetchAnalysisSave, fetchAnalysisDel} from '@/api/partsrfq/piAnalysis/index'
+import { getFileByFileId } from '@/api/file';
+import { getAnalysisList, fetchAnalysisStick, fetchAnalysisSave, fetchAnalysisDel } from '@/api/partsrfq/piAnalysis/index'
 export default {
   mixins: [pageMixins],
   components: {
@@ -279,7 +250,7 @@ export default {
     reportPreview,
     addScheme
   },
-  data() {
+  data () {
     return {
       form: {}, //检索条件
       editMode: false, //编辑模式
@@ -305,10 +276,10 @@ export default {
       }
     };
   },
-  created() {
+  created () {
     this.initSearchData();
   },
-  mounted() {
+  mounted () {
     this.getTableList();
   },
   inject: ['getDisabled'],
@@ -324,13 +295,13 @@ export default {
         return val.type == this.$t('TPZS.SCHEME_TYPE') ? flag : null;
       };
     },
-    disabled() {
+    disabled () {
       return typeof this.getDisabled === "function" ? this.getDisabled() : false
     }
   },
   methods: {
     //初始化查询数据
-    initSearchData() {
+    initSearchData () {
       if (this.$store.state.rfq.entryStatus == 1) this.rfqStatus = true;
       this.form = {
         ...this.form,
@@ -341,7 +312,7 @@ export default {
       };
     },
     //表格序号函数
-    indexMethod(e) {
+    indexMethod (e) {
       const rows = [];
       this.tableListData.forEach((r) => {
         rows.push(r.number);
@@ -354,18 +325,18 @@ export default {
       return rows[e];
     },
     //初始化测试数据
-    initData() {
-      
+    initData () {
+
     },
     //重置查询事件
-    handleSearchReset() {
+    handleSearchReset () {
       this.page.currPage = 1;
       this.page.pageSize = 10;
       this.initSearchData();
       this.getTableList();
     },
     //检索事件
-    handleSearch() {
+    handleSearch () {
       this.page.currPage = 1;
       this.page.pageSize = 10;
       this.getTableList().then((res) => {
@@ -375,7 +346,7 @@ export default {
       });
     },
     //获取表格数据
-    getTableList() {
+    getTableList () {
       return new Promise((resolve) => {
         const params = {
           pageNo: this.page.currPage,
@@ -383,7 +354,7 @@ export default {
           createByName: this.form.owner || null,
           materialGroupName: this.form.group || null,
           partsNo: this.form.num || null,
-          rfqNo:  this.form.rfq || null
+          rfqNo: this.form.rfq || null
         };
         getAnalysisList(params).then((res) => {
           if (res && res.code == 200) {
@@ -397,7 +368,7 @@ export default {
       });
     },
     //更新表格数据
-    updateTableData() {
+    updateTableData () {
       if (this.updatedDefault) {
         this.tableListData.map((item, index) => {
           let flag =
@@ -417,7 +388,7 @@ export default {
       }
     },
     //递归处理树结构数据的序号
-    handleTableNumber(data, suffix, prefix) {
+    handleTableNumber (data, suffix, prefix) {
       data.forEach((item) => {
         const number = prefix ? prefix + "." + suffix : suffix;
         item["number"] = number;
@@ -429,22 +400,22 @@ export default {
       });
     },
     // 点击原材料按钮
-    clickRawMaterial() {
+    clickRawMaterial () {
       this.$router.push({
         path: this.rawMaterialUrl,
         query: {
           round: this.$route.query.round,
           id: this.$store.state.rfq.rfqId,
-        }  
+        }
       })
     },
     // 点击编辑按钮
-    clickEdit() {
+    clickEdit () {
       this.backUpData = window._.cloneDeep(this.tableListData);
       this.editMode = !this.editMode;
     },
     //取消保存編輯狀態下的數據
-    cancelEdit() {
+    cancelEdit () {
       this.backUpData.map((item, index) => {
         if (item.type == this.$t('TPZS.SCHEME_TYPE'))
           this.$set(this.tableListData[index], 'analysisSchemeName', item.analysisSchemeName)
@@ -454,7 +425,7 @@ export default {
       this.editMode = !this.editMode;
     },
     // 点击新建按钮
-    clickAdd() {
+    clickAdd () {
       this.addPiParams = {
         ...this.addPiParams,
         key: Math.random(),
@@ -462,7 +433,7 @@ export default {
       }
     },
     // 点击删除按钮
-    clickDel() {
+    clickDel () {
       if (!this.selection || this.selection.length == 0) {
         iMessage.error(this.$t("TPZS.QXZXYCZDSJ"));
         return;
@@ -472,7 +443,7 @@ export default {
         reportIds: []
       }
       this.selection.map(item => {
-        if(item.type == this.$t('TPZS.SCHEME_TYPE')) params.ids.push(item.id)
+        if (item.type == this.$t('TPZS.SCHEME_TYPE')) params.ids.push(item.id)
         else params.reportIds.push(item.id)
       })
       fetchAnalysisDel(params).then((res) => {
@@ -483,14 +454,14 @@ export default {
       });
     },
     //编辑时，改变默认项事件
-    changeDefault(val, row) {
+    changeDefault (val, row) {
       this.$set(row, "isDefault", val);
       this.$set(this, "currentDefaultObj", row);
       if (val == "是") this.updatedDefault = true;
       this.updateTableData();
     },
     // 获取发生编辑数据
-    handleGetEditData(data) {
+    handleGetEditData (data) {
       // return window._.cloneDeep(data).map((item, index) => {
       // return data.map((item, index) => {
       //   if(item.piReportVOList && item.piReportVOList.length) {
@@ -505,15 +476,15 @@ export default {
       //   }
       //   return data
       // })
-      for(let index = 0; index < data.length; index++) {
+      for (let index = 0; index < data.length; index++) {
         const item = data[index]
-        if(item.piReportVOList && item.piReportVOList.length) {
+        if (item.piReportVOList && item.piReportVOList.length) {
           // const i = data.findIndex(x => x.number == item.number)
           const arr = this.handleGetEditData(item.piReportVOList)
           this.$set(data[index], 'piReportVOList', arr)
         }
         const isEdit = this.checkIsEdit(item)
-        if(!isEdit && (!item.piReportVOList || (item.piReportVOList && item.piReportVOList.length == 0))) {
+        if (!isEdit && (!item.piReportVOList || (item.piReportVOList && item.piReportVOList.length == 0))) {
           data.splice(index, 1)
           index--
         }
@@ -521,31 +492,31 @@ export default {
       return data
     },
     // 检查数据是否发生了变化
-    checkIsEdit(newVal) {
+    checkIsEdit (newVal) {
       let res = false
       let oldVal = this.getOldValByNumber(window._.cloneDeep(this.backUpData), newVal.number)
-      if(newVal.type == this.$t('TPZS.SCHEME_TYPE') && ((oldVal.analysisSchemeName != newVal.analysisSchemeName) || (oldVal.isDefault != newVal.isDefault))) {
+      if (newVal.type == this.$t('TPZS.SCHEME_TYPE') && ((oldVal.analysisSchemeName != newVal.analysisSchemeName) || (oldVal.isDefault != newVal.isDefault))) {
         res = true
-      } else if(newVal.type == this.$t('TPZS.REPORT_TYPE') && ((oldVal.reportName != newVal.reportName) || (oldVal.isDefault != newVal.isDefault))) {
+      } else if (newVal.type == this.$t('TPZS.REPORT_TYPE') && ((oldVal.reportName != newVal.reportName) || (oldVal.isDefault != newVal.isDefault))) {
         res = true
       }
       return res
     },
     // 获取number相同的备份数据元素
-    getOldValByNumber(data, number) {
-      for(let i = 0; i < data.length; i++) {
+    getOldValByNumber (data, number) {
+      for (let i = 0; i < data.length; i++) {
         const item = data[i]
-        if(item.number == number) {
+        if (item.number == number) {
           return item
         }
-        if(item.piReportVOList && item.piReportVOList.length > 0) {
+        if (item.piReportVOList && item.piReportVOList.length > 0) {
           const res = this.getOldValByNumber(item.piReportVOList, number)
-          if(res) return res
+          if (res) return res
         }
       }
     },
     //保存编辑
-    saveEdit() {
+    saveEdit () {
       this.editMode = false;
       const editTableData = window._.cloneDeep(this.tableListData)
       this.handleGetEditData(editTableData)
@@ -561,12 +532,12 @@ export default {
       });
     },
     // 选中项发生改变
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selection = val;
     },
     // 点击置顶按钮
-    handleStick(val) {
-      fetchAnalysisStick({id: val.id}).then((res) => {
+    handleStick (val) {
+      fetchAnalysisStick({ id: val.id }).then((res) => {
         if (res) {
           if (res.code == 200) {
             iMessage.success(res.desZh);
@@ -585,27 +556,30 @@ export default {
           round: this.round
         }
       })
-      window.open(opneSchemeUrl.href,'_blank')
+      window.open(opneSchemeUrl.href, '_blank')
     },
     //点击报告名称，打开报告预览弹窗
     clickReport (row) {
       this.reportTitle = row.reportName
       this.reportKey = Math.random()
       if (row.downloadUrl) this.reportUrl = row.downloadUrl
+      getFileByFileId(this.reportUrl).then(res => {
+        console.log(res)
+      })
       this.reportVisible = true
     },
     //点击关闭报告预览弹窗
-    handleCloseReport() {
+    handleCloseReport () {
       this.reportVisible = false;
     },
     //给方案数据设置斑马纹样式名
-    rowStyle({ row }) {
+    rowStyle ({ row }) {
       return row.type == this.$t("TPZS.SCHEME_TYPE") && row.number % 2 == 0
         ? "scheme"
         : "report";
     },
     // 关闭新增分析方案弹窗
-    handleCloseAddModal() {
+    handleCloseAddModal () {
       this.addPiParams.visible = false
     }
   },
@@ -635,7 +609,7 @@ export default {
   width: 96%;
 }
 
-::v-deep .el-table .scheme{
+::v-deep .el-table .scheme {
   background-color: #e0eafd;
 }
 ::v-deep .el-table .report {
