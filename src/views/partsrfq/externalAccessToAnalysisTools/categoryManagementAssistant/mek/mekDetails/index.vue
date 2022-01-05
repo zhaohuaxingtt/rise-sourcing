@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-05 17:22:43
+ * @LastEditTime: 2022-01-05 20:25:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -566,7 +566,7 @@ export default {
         this.targetMotor = data.targetMotor.toString();
         this.comparedType = data.comparedType;
         this.isBindingRfq = data.isBindingRfq;
-        this.checkedCarLevelOptions = data.selectedOptions
+        this.checkedCarLevelOptions = data.selectedOptions ? JSON.parse(data.selectedOptions) : ""
         if (!this.checkedCarLevelOptions) {
           this.checkedCarLevelOptions = {}
         }
@@ -1264,7 +1264,7 @@ export default {
           schemeId: this.chemeId,
           targetMotor: this.targetMotor,
           name: this.analysisName,
-          selectedOptions: this.checkedCarLevelOptions
+          selectedOptions: this.checkedCarLevelOptions ? JSON.stringify(this.checkedCarLevelOptions) : ""
         };
         if (this.barData) {
           if (this.barData[0]) {
