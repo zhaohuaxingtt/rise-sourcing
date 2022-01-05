@@ -31,10 +31,10 @@
     >
         <el-form>
             <el-form-item :label="language('QUALITYSCORERULES_PINGFENGU', '评分股')" >
-                <iInput/>
+                <iInput v-model="searchForm.deptNum" :placeholder="language('LK_QINGSHURU','请输入')"/>
             </el-form-item>
             <el-form-item :label="language('UALITYSCORERULES_PINGFENREN', '评分人')">
-                <iInput/>
+                <iInput v-model="searchForm.userName" :placeholder="language('LK_QINGSHURU','请输入')"/>
             </el-form-item>
         </el-form>
     </iSearch>
@@ -75,6 +75,7 @@ import { TAB } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "./components/data"
 import addRulesDialog from './components/addRulesDialog'
+import { getAllMqRules } from "@/api/scoreConfig/qualityscorerules"
 export default {
     name:'qualityscorerules',
     components:{
@@ -94,13 +95,33 @@ export default {
             tableListData:[],
             tableTitle:tableTitle || [],
             addRulesDialogVisible:false,
-
+            searchForm:{
+                deptNum:'',
+                userName:'',
+            }
         }
+    },
+    created(){
+        this.getList();
     },
     methods:{
         changeVisible(type,show){
             this[type] = !!show;
-        }
+        },
+        // 获取列表
+        async getList(){
+            this.loading = true;
+            await getAllMqRules(this.searchForm).then((res)=>{
+                this.loading = false;
+                if(res.code == '200'){
+                    this.tableListData = res.data['ruleNodeList'] || [];
+                }else{
+                    this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch(()=>{
+                this.loading = false;
+            })
+        },
     }
 }
 </script>
