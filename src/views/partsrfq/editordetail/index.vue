@@ -20,10 +20,13 @@
                  @change="changeRouter"></iNavMvp>
       </div>
       <div class="btnList">
-      <!-- <iButton v-if="isCommonSourcing" @click="waitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
-        <iButton  v-if="isCommonSourcing" @click="cancelWaitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN||取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton> -->
-     <iButton v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN|等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
-        <iButton @click="handleApplyModuleTargetPrice"
+        <iButton 
+        v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus !== 1"
+        @click="waitStarmonitor" v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN|等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
+        <iButton  
+        v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus === 1"
+      @click="cancelWaitStarmonitor" v-permission.auto="QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN|取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton>
+          <iButton @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
                  v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
           {{ language('SHENQINGMOJUMUBIAOJIA', '申请模具目标价') }}
