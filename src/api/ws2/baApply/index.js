@@ -81,3 +81,11 @@ export function getProductionFactoryPullDown() {
         method: 'GET',
     })
 }
+
+// 获取生产工厂下拉列表
+export function getProductionFactoryPullDown1() {
+    return VUE_APP_CARTYPE({
+        url: '/getProductionFactoryPullDown',
+        method: 'GET',
+    })
+}
