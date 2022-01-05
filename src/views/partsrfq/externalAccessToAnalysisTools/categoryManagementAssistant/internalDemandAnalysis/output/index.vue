@@ -1,11 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
-<<<<<<< HEAD
- * @LastEditTime: 2022-01-05 11:09:04
-=======
  * @LastEditTime: 2022-01-05 14:38:09
->>>>>>> dev
  * @LastEditors: caopeng
  * @Description: 产量总览
  * @FilePath: \front-sourcing-new\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
