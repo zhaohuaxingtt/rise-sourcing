@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-04 16:41:00
+ * @LastEditTime: 2022-01-04 20:24:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -1033,12 +1033,6 @@ export default {
         schemeId: this.chemeId,
         unselected: this.exceptPart,
       };
-      if (this.entryStatus === 1) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-      } else {
-        params.isBindingRfq = false;
-      }
       this.barData.forEach((item) => {
         let obj = {
           motorId: item.motorId,
@@ -1056,7 +1050,31 @@ export default {
         params.info[index].position = val[0].position;
         params.info[index].transmission = val[0].transmission;
       }
-      this.getHistogram(params);
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true;
+        params.rfq = this.rfqId;
+        let entryParams = _.cloneDeep(params)
+        entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+        mekInnerTarget(entryParams).then(res => {
+          this.firstBarData = res.data[0];
+        })
+        params.info = params.info.filter(item => item.isTargetMotor === false)
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
+      } else {
+        params.isBindingRfq = false;
+        this.onDataLoading = false
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
+      }
     },
     delItem (data) {
       let params = {
@@ -1084,11 +1102,28 @@ export default {
       if (this.entryStatus === 1) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
+        let entryParams = _.cloneDeep(params)
+        entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+        mekInnerTarget(entryParams).then(res => {
+          this.firstBarData = res.data[0];
+        })
+        params.info = params.info.filter(item => item.isTargetMotor === false)
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       } else {
         params.isBindingRfq = false;
+        this.onDataLoading = false
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       }
-      this.delItemFlag = true;
-      this.getHistogram(params);
       // this.getMekTable();
     },
     onCarLevelShow () {
