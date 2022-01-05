@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-05 21:35:34
+ * @LastEditTime: 2022-01-05 21:37:03
  * @Description: 配件详情
  * @FilePath: \front-sourcing\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
@@ -54,7 +54,6 @@ export default {
       getAccessoryOneInfo(this.$route.query.spNum).then(res => {
         if (res.result) {
           this.detailData = res.data
-
           this.$nextTick(() => {
             this.$refs.tec.getFiles()
             this.$refs.package.getFiles()

@@ -116,7 +116,7 @@ module.exports = {
   //引入全局css变量
   css: {
     //是否开起css分离
-    extract: process.env.NODE_ENV != 'dev',
+    extract: false,
     sourceMap: false,
     loaderOptions: {
       sass: {
