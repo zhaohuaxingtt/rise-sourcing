@@ -56,22 +56,22 @@
         </iSelect>
       </el-form-item>
       <!-- 有效期 -->
-      <el-form-item :label="language('LK_YOUXIAOQI','有效期')">
+      <!-- <el-form-item :label="language('LK_YOUXIAOQI','有效期')"> -->
       <!-- <iDatePicker 
         v-model="form.validateDate" 
         format="yyyy-MM-dd" 
         value-format="yyyy-MM-dd"
         :clearable="false"
       /> -->
-      <iDatePicker
+      <!-- <iDatePicker
         v-model='form.checkDate'
         v-permission.auto="MTZ_MODIFY_LIST_SEARCH_VALIDATE|有效期"
         @change="setstartEndDate"
         type="daterange"
         value-format="yyyy-MM-dd"
         clearable>
-      </iDatePicker>
-      </el-form-item>
+      </iDatePicker> -->
+      <!-- </el-form-item> -->
     </el-form>
   </iSearch>
 </template>

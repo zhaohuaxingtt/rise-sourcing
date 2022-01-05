@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2021-12-30 20:05:03
+ * @LastEditTime: 2022-01-04 20:24:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -535,53 +535,7 @@ export default {
   async created () {
     this.onDataLoading = true
     await this.init();
-    let params = {
-      comparedType: this.comparedType,
-      info: [
-        {
-          motorId: this.targetMotor,
-          priceType: "latestPrice",
-          isTargetMotor: true,
-        },
-      ],
-      categoryId: this.categoryId,
-      schemeId: this.chemeId,
-      categoryCode: this.categoryCode,
-      unselected: this.exceptPart,
-    };
-    this.ComparedMotor.forEach((item) => {
-      params.info.push({
-        motorId: item,
-        priceType: "latestPrice",
-        isTargetMotor: false,
-      });
-    });
-    if (this.entryStatus === 1) {
-      params.isBindingRfq = true;
-      params.rfq = this.rfqId;
-      let entryParams = _.cloneDeep(params)
-      entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
-      mekInnerTarget(entryParams).then(res => {
-        this.firstBarData = res.data[0];
-      })
-      params.info = params.info.filter(item => item.isTargetMotor === false)
-      this.$nextTick(() => {
-        if (this.categoryId && this.chemeId && this.categoryCode) {
-          params.isBindingRfq = this.isBindingRfq
-          this.getHistogram(params);
-        }
-      })
-    } else {
-      params.isBindingRfq = false;
-      this.onDataLoading = false
-      this.$nextTick(() => {
-        if (this.categoryId && this.chemeId && this.categoryCode) {
-          params.isBindingRfq = this.isBindingRfq
-          this.getHistogram(params);
-        }
-      })
-    }
-
+    this.searchChartData()
     // this.getMekTable();
   },
   mounted () { },
@@ -761,11 +715,28 @@ export default {
       if (this.entryStatus === 1) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
+        let entryParams = _.cloneDeep(params)
+        entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+        mekInnerTarget(entryParams).then(res => {
+          this.firstBarData = res.data[0];
+        })
+        params.info = params.info.filter(item => item.isTargetMotor === false)
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       } else {
         params.isBindingRfq = false;
+        this.onDataLoading = false
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       }
-      this.getHistogram(params);
-      // this.getMekTable();
     },
 
     async handleSearchReset () {
@@ -774,62 +745,8 @@ export default {
       this.comparedType = "";
       this.exceptPart = "";
       await this.init();
-      let params = {
-        comparedType: this.comparedType,
-        info: [
-          {
-            motorId: this.targetMotor,
-            priceType: "latestPrice",
-            isTargetMotor: true,
-          },
-        ],
-        categoryId: this.categoryId,
-        schemeId: this.chemeId,
-        categoryCode: this.categoryCode,
-        unselected: this.exceptPart,
-      };
-      this.ComparedMotor.forEach((item) => {
-        params.info.push({
-          motorId: item,
-          priceType: "latestPrice",
-          isTargetMotor: false,
-        });
-      });
-      if (this.entryStatus === 1) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-      } else {
-        params.isBindingRfq = false;
-      }
-      if (this.categoryId && this.chemeId && this.categoryCode) {
-        this.getHistogram(params);
-      }
+      this.searchChartData()
       // this.getMekTable();
-    },
-    //选择材料组
-    changeCategory (val) {
-      let obj = {};
-      obj = this.categoryList.find((item) => {
-        return item.categoryCode === val;
-      });
-      this.categoryId = obj.categoryId;
-      this.categoryName = obj.categoryName;
-      let params = {};
-      if (this.entryStatus == 1) {
-        params = {
-          categoryId: this.categoryId,
-          isBindingRfq: this.isBindingRfq,
-          req: this.rfqId,
-        };
-      } else {
-        params = {
-          categoryId: this.categoryId,
-          isBindingRfq: this.isBindingRfq,
-        };
-      }
-      getTargetMotor(params).then((res) => {
-        this.TargetMotorList = res.data;
-      });
     },
     changeComparedMotor (val) {
       this.ComparedMotorList.forEach((item) => {
@@ -901,43 +818,7 @@ export default {
     },
     changeDate (val, index) {
       this.$forceUpdate();
-      let params = {
-        comparedType: this.comparedType,
-        info: [
-          {
-            motorId: this.targetMotor,
-            priceType: "latestPrice",
-            priceDate: "",
-            isTargetMotor: true,
-            engine: "",
-            position: "",
-            transmission: "",
-          },
-        ],
-        categoryId: this.categoryId,
-        categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
-        unselected: this.exceptPart,
-      };
-      if (this.entryStatus === 1) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-      } else {
-        params.isBindingRfq = false;
-      }
-      this.barData.forEach((item) => {
-        let obj = {
-          motorId: item.motorId,
-          priceType: item.priceType,
-          priceDate: item.priceDate,
-          isTargetMotor: false,
-          engine: item.engine || "",
-          position: item.position || "",
-          transmission: item.transmission || "",
-        };
-        params.info.push(obj);
-      });
-      this.getHistogram(params);
+      this.searchChartData()
     },
     changTargetPrice (val) {
       let params = {
@@ -1081,43 +962,7 @@ export default {
     },
     //价格类型
     changPriceType (val) {
-      let params = {
-        comparedType: this.comparedType,
-        info: [
-          {
-            motorId: this.targetMotor,
-            priceType: "latestPrice",
-            isTargetMotor: true,
-            priceDate: "",
-            engine: "",
-            position: "",
-            transmission: "",
-          },
-        ],
-        categoryId: this.categoryId,
-        categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
-        unselected: this.exceptPart,
-      };
-      if (this.entryStatus === 1) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-      } else {
-        params.isBindingRfq = false;
-      }
-      this.barData.forEach((item) => {
-        let obj = {
-          motorId: item.motorId,
-          priceType: item.priceType,
-          priceDate: item.priceDate,
-          isTargetMotor: false,
-          engine: item.engine || "",
-          position: item.position || "",
-          transmission: item.transmission || "",
-        };
-        params.info.push(obj);
-      });
-      this.getHistogram(params);
+      this.searchChartData()
     },
     //获取表格
     getMekTable () {
@@ -1188,12 +1033,6 @@ export default {
         schemeId: this.chemeId,
         unselected: this.exceptPart,
       };
-      if (this.entryStatus === 1) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-      } else {
-        params.isBindingRfq = false;
-      }
       this.barData.forEach((item) => {
         let obj = {
           motorId: item.motorId,
@@ -1211,7 +1050,31 @@ export default {
         params.info[index].position = val[0].position;
         params.info[index].transmission = val[0].transmission;
       }
-      this.getHistogram(params);
+      if (this.entryStatus === 1) {
+        params.isBindingRfq = true;
+        params.rfq = this.rfqId;
+        let entryParams = _.cloneDeep(params)
+        entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+        mekInnerTarget(entryParams).then(res => {
+          this.firstBarData = res.data[0];
+        })
+        params.info = params.info.filter(item => item.isTargetMotor === false)
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
+      } else {
+        params.isBindingRfq = false;
+        this.onDataLoading = false
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
+      }
     },
     delItem (data) {
       let params = {
@@ -1239,11 +1102,28 @@ export default {
       if (this.entryStatus === 1) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
+        let entryParams = _.cloneDeep(params)
+        entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+        mekInnerTarget(entryParams).then(res => {
+          this.firstBarData = res.data[0];
+        })
+        params.info = params.info.filter(item => item.isTargetMotor === false)
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       } else {
         params.isBindingRfq = false;
+        this.onDataLoading = false
+        this.$nextTick(() => {
+          if (this.categoryId && this.chemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       }
-      this.delItemFlag = true;
-      this.getHistogram(params);
       // this.getMekTable();
     },
     onCarLevelShow () {

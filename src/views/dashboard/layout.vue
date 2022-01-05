@@ -7,7 +7,7 @@
 -->
 <template>
   <iPage class="dashboard">
-    <headerNav :type="sourceinquirypoint" />
+    <headerNav />
     <router-view></router-view>
   </iPage>
 </template>

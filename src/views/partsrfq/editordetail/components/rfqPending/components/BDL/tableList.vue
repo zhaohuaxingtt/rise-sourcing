@@ -21,7 +21,10 @@
         			 	 	</span>
         					</el-tooltip>
 							<!-- 供应商黑名单 -->
-							<!-- <supplierBlackIcon/> -->
+							<supplierBlackIcon
+            					:isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+								:BlackList="scope.row.blackStuffs || []"
+							/>
 						</span>
             			<span v-if="scope.row.supplierNameZh" class="icon-gray  cursor "  @click="openPage(scope.row)">
                 			<icon symbol class="show" name="icontiaozhuananniu" />
@@ -100,7 +103,7 @@
 		components: {
 			icon,
 			iInput,
-			// supplierBlackIcon,
+			supplierBlackIcon,
 		},
 		props: {
 			...tablelist.props,

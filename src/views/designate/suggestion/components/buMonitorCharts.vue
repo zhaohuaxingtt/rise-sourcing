@@ -233,7 +233,7 @@ export default {
               params.name === quota[1] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((bestGroupSupplierTotal - wholePackage)/wholePackage*100).toFixed(0)}%</span>
+                  <span class="value">${Number((bestGroupSupplierTotal - wholePackage)/wholePackage*100).toFixed(2)}%</span>
                 </p>
                 ${genSupTPL(bestGroup, bestGroupSupplierTotal)}
               </div>`)
@@ -242,7 +242,7 @@ export default {
               params.name === quota[2] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((minPartSupplierTToTotal - wholePackage)/wholePackage*100).toFixed(0)}%</span>
+                  <span class="value">${Number((minPartSupplierTToTotal - wholePackage)/wholePackage*100).toFixed(2)}%</span>
                 </p>
                 ${genSupTPL(minPartSupplierTToArray, minPartSupplierTToTotal)}
               </div>`)
@@ -251,7 +251,7 @@ export default {
               params.name === quota[3] && (tpl = `
               <div class="toolTipBox-content">
                 <p>Compared to Best TTO <br> for Whole Package: 
-                  <span class="value">${Number((weightSupplierTotal - wholePackage)/wholePackage*100).toFixed(0)}%</span>
+                  <span class="value">${Number((weightSupplierTotal - wholePackage)/wholePackage*100).toFixed(2)}%</span>
                 </p>
                 ${genSupTPL(weightSupplier, weightSupplierTotal)}
               </div>`)

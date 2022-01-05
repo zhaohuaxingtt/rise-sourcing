@@ -489,6 +489,8 @@ export default {
     async handleCreateMtz() {
       if (this.mtzApplyId) return iMessage.warn(this.language("BENDINGDIANSHENQINGYIGUANLIANMTZSHENQINGDAN", "本定点申请已关联MTZ申请单，无法创建MTZ申请"))
       if (!this.partsSelectedItems.length) return iMessage.warn(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+      if (this.partsSelectedItems.some(item => item.selected == 0)) return iMessage.warn(this.language("XUANZHONGDELINGJIANZHONGBUNENGHANYOUWEICANYUDELINGJIAN", "选中的零件中不能含有未参与的零件"))
+
 
       const notMtzParts = this.partsSelectedItems.filter(item => !item.mtz)
 
@@ -511,7 +513,7 @@ export default {
           if (res.code == 200) {
             iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             this.getPartsTableList()
-            window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`, "_blank")
+            window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&flowType=${ this.nominationType }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`, "_blank")
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
@@ -521,7 +523,7 @@ export default {
         }
       }
 
-      window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`, "_blank")
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=${ this.desinateId }&flowType=${ this.nominationType }&item=${ this.partsSelectedItems.reduce((acc, cur) => acc ? `${ acc },${ cur.partNum }` : cur.partNum, "") }`, "_blank")
     },
     // 是否加入申请
     selectedFormat(status) {

@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-07-30 17:31:22
- * @LastEditors: Please set LastEditors
+ * @LastEditors: caopeng
  * @Descripttion: your project
 -->
 <template>
@@ -147,9 +147,23 @@ export default {
         iMessage.warn(this.language('NIANFENGBIXUAN', '年份必选'))
       }
     },
+           compare(property,desc) {
+            return function (a, b) {
+                var value1 = a[property];
+                var value2 = b[property];
+                if(desc==true){
+                    // 升序排列
+                    return value1 - value2;
+                }else{
+                    // 降序排列
+                    return value2 - value1;
+                }
+            }
+        },
     async dictByCode () {
       const res = await dictByCode('CATEGORY_MANAGEMENT_LIST')
       this.formGoup.pageList = res
+                 this.formGoup.pageList = this.formGoup.pageList .sort(this.compare("id",true))
       if (this.form.page === '') {
         this.form.page = this.formGoup.pageList[0].code
       }
