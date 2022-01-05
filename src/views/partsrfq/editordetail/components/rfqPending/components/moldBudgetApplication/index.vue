@@ -10,7 +10,7 @@
         <div class="card-title">
           <span class="title">{{ "模具投资预算" }}</span>
           <div
-            v-if="status"
+            v-if="todo"
             :class="{
               danger: status == '未申请',
               warning: status == '未完成',
@@ -43,7 +43,7 @@
           </template>
           <template v-else>
             <iButton
-              @click="exports"
+              @click="moldBudgetApplicationVisible = true"
               v-permission.auto="
                 PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
               "
@@ -95,11 +95,14 @@
         />
       </div>
     </iCard>
+    <!-- 申请模具预算弹窗 -->
+    <moldBudgetApplicationDialog :visible.sync="moldBudgetApplicationVisible" />
   </div>
 </template>
 
 <script>
 import { iCard, iButton, iPagination, iMessage, iInput, icon } from "rise";
+import moldBudgetApplicationDialog from './components/moldBudgetApplicationDialog'
 import { tableTitle } from "./components/data";
 import { pageMixins } from "@/utils/pageMixins";
 import {
@@ -121,6 +124,7 @@ export default {
     icon,
     tableList,
     iInput,
+    moldBudgetApplicationDialog
   },
   mixins: [pageMixins, rfqCommonFunMixins],
   props: {
@@ -135,6 +139,7 @@ export default {
       tableTitle: tableTitle,
       tableLoading: false,
       selectTableData: [],
+      moldBudgetApplicationVisible: false
     };
   },
   watch:{
@@ -187,6 +192,7 @@ export default {
           // this.page.pageSize = res.size
           this.page.totalCount = res.data.total;
           this.tableLoading = false;
+          this.status = '已完成'
         } catch {
           this.tableLoading = false;
         }
