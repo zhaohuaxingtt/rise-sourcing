@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2022-01-04 14:39:59
+ * @LastEditTime: 2022-01-05 11:35:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\file\index.js
@@ -10,8 +10,8 @@ import axios from '@/utils/axios.download'
 import { serialize } from '@/utils'
 import httpAxios from '@/utils/axios'
 const requst = axios(process.env.VUE_APP_COMMON)
-const fileRequst = axios(process.env.VUE_APP_BASE_UPLOAD_API)
-const file = httpAxios(process.env.VUE_APP_BASE_UPLOAD_API)
+const fileRequst = axios(process.env.VUE_APP_BASE_UPLOAD_API + '/fileud')
+const file = httpAxios(process.env.VUE_APP_BASE_UPLOAD_API + '/fileud')
 const sourcing = httpAxios(process.env.VUE_APP_SOURCING)
 // const fileRequstDown = axios(process.env.VUE_APP_FILEAPI + '/fileud')
 export function downloadFile(parmars) {
@@ -61,7 +61,14 @@ export function downloadUdFileWithName(params, fileName) {
 
 //sourcing 获取文件列表不需要分页。
 export function getFile(params) {
-  let { fileType, hostId, isAsc = true, sortColumn = 'uploadDate' ,pageNo,pageSize} = params
+  let {
+    fileType,
+    hostId,
+    isAsc = true,
+    sortColumn = 'uploadDate',
+    pageNo,
+    pageSize,
+  } = params
   return sourcing({
     url: `/file-histories/page/${hostId}/${sortColumn}/${isAsc}/${fileType}/${pageSize}/${pageNo}`,
     method: 'get',
