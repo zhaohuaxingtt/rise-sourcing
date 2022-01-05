@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-05 21:19:39
+ * @LastEditTime: 2022-01-05 21:20:44
  * @Description: 配件详情
  * @FilePath: \front-sourcing\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
@@ -58,7 +58,9 @@ export default {
           this.$nextTick(() => {
             this.$refs.tec.getFiles()
             this.$refs.package.getFiles()
-            this.renderKey = parseInt(Math.random()*100000000) //强制刷新css
+            setTimeout(() => {
+              this.renderKey = parseInt(Math.random()*100000000) //强制刷新css
+            }, 2000);
           })
         } else {
           this.detailData = {}
