@@ -199,7 +199,7 @@ import {
   findCartypePro
 } from "@/api/ws2/budgetManagement";
 import {findProjectTypeDetailPulldown, getCartypePulldown} from "@/api/ws2/budgetManagement/edit";
-import {getProductionFactoryPullDown} from "@/api/ws2/baApply";
+import {getProductionFactoryPullDown1} from "@/api/ws2/baApply";
 import {mapState} from 'vuex'
 import Moment from 'moment'
 import {tableHeight} from "@/utils/tableHeight";
@@ -490,7 +490,7 @@ export default {
     },
     getProcureGroup() {
       this.loadingiSearch = true
-      Promise.all([getProductionFactoryPullDown(), getCartypePulldown()]).then((res) => {
+      Promise.all([getProductionFactoryPullDown1(), getCartypePulldown()]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         if (res[0].data) {
