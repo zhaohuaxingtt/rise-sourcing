@@ -19,10 +19,13 @@
                 v-model="refferenceSmtNum" 
                 class="margin-top20" 
                 style="width:100%"
-                :placeholder="language('LK_AEKO_DAIXUANZE','待选择')"
+                :filterable="assignType !== 'commodity'"
+                @visible-change="selectVisibleChange($event)"
+                :placeholder="assignType == 'commodity' ? language('LK_AEKO_DAIXUANZE','待选择') : language('LK_QINGSHURU','请输入')"
+                :filter-method="(val)=>{dataFilter(val)}"
             >
                 <el-option
-                    v-for="item in (assignType === 'commodity' ? commoditySelectOptions : linieSelectOptions) || []"
+                    v-for="item in (assignType === 'commodity' ? commoditySelectOptions : linieSelectCopyOptions) || []"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -37,9 +40,17 @@
             <el-radio v-model="radioType" label="2" class="radio-select">
                 {{ assignType === "commodity" ? language('LK_AEKO_SHOUDONGFENPAIKESHI','⼿动分派科室') : language('LK_AEKO_SHOUDONGFENPAICAIGOUYUAN','⼿动分派采购员') }}
                 <br/>
-                <iSelect  v-model="refferenceSmtNum" :disabled="radioType=='1'" :placeholder="language('LK_AEKO_DAIXUANZE','待选择')" class="margin-top20" style="width:100%" >
+                <iSelect  
+                    v-model="refferenceSmtNum" 
+                    :filterable="assignType !== 'commodity'"
+                    :filter-method="(val)=>{dataFilter(val)}"
+                    @visible-change="selectVisibleChange($event)"
+                    :disabled="radioType=='1'" 
+                    :placeholder="assignType == 'commodity' ? language('LK_AEKO_DAIXUANZE','待选择') : language('LK_QINGSHURU','请输入')"
+                    class="margin-top20" style="width:100%" 
+                    >
                     <el-option
-                        v-for="item in (assignType === 'commodity' ? commoditySelectOptions : linieSelectOptions) || []"
+                        v-for="item in (assignType === 'commodity' ? commoditySelectOptions : linieSelectCopyOptions) || []"
                         :key="item.value"
                         :label="item.label"
                         :value="item.value">
@@ -125,6 +136,7 @@ export default {
             isLoading:false,
             commoditySelectOptions:[],
             linieSelectOptions: [],
+            linieSelectCopyOptions: [],
             refferenceSmtNum:'',
             deptId:null,
         }
@@ -370,6 +382,7 @@ export default {
                         item.value = item.id+'';
                         })
                         this.linieSelectOptions = data;
+                        this.linieSelectCopyOptions = data;
                     }else{
                         iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                     }
@@ -383,6 +396,32 @@ export default {
             
             
         },
+
+        // 模糊搜索处理
+        dataFilter(val){
+            // 去除前后空格
+            const trimVal = val.trim();
+            // linieSelectOptions  linieSelectCopyOptions
+            const { linieSelectOptions } = this;
+            if(trimVal){
+                const list = linieSelectOptions.filter((item) => {
+                if (!!~item.nameZh.indexOf(trimVal) || (item.nameEn && !!~item.nameEn.toUpperCase().indexOf(trimVal.toUpperCase()))) {
+                    return true
+                }
+                })
+                this.linieSelectCopyOptions = list;
+            }else{
+                this.linieSelectCopyOptions = linieSelectOptions
+            }
+            
+        },
+
+        selectVisibleChange(visible, key){
+          if(!visible){
+                const { linieSelectOptions } = this;
+                this.linieSelectCopyOptions = linieSelectOptions;
+          }
+      }
     }
 }
 </script>
