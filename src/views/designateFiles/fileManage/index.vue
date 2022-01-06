@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-06 14:32:16
+ * @LastEditTime: 2022-01-06 14:55:01
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -133,7 +133,7 @@ export default {
       // 零件项目类型
       partProjTypes,
       tableData: [],
-      tableTitle: tableTitle,
+      // tableTitle: tableTitle,
       tableLoading: false,
       searchList: searchList,
       searchParams: {
@@ -163,7 +163,13 @@ export default {
   },
   computed: {
     ...mapState(["navList"]),
-    ...mapActions(["updateNavList"])
+    ...mapActions(["updateNavList"]),
+    tableTitle() {
+      if(this.$store.state.permission.userInfo.isDeptLead && this.$store.state.permission.userInfo.deptDTO.level === 'K3'){
+        return tableTitle
+      }
+      return tableTitle.filter(item => item.key !== 'TUIHUIYUANYIN_JINGUZHANGKEJIAN')
+    }
   },
   methods: {
     sure() {
