@@ -93,7 +93,7 @@ import attachmentDialog from '@/views/costanalysismanage/components/home/compone
 import approvalRecordDialog from './components/approvalRecord'
 import assignDialog from '../signin/components/assign'
 import iDicoptions from 'rise/web/components/iDicoptions'
-import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect' 
+import carProjectSelect from '@/views/modelTargetPrice/components/carProjectSelect' 
 import procureFactorySelect from '@/views/modelTargetPrice/components/procureFactorySelect'
 import { getTargetPriceMaintainPage, appoint } from '@/api/modelTargetPrice/index'
 import moment from 'moment'
