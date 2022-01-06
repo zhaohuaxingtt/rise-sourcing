@@ -125,7 +125,8 @@
 import Vue from 'vue'
 import {
   tasksTitle,
-  taskStatus
+  taskStatus,
+  getTaskStatusDesc
 } from './data'
 import { 
   getNominateTaskList,
@@ -202,10 +203,7 @@ export default {
       return val ? dayjs(val).format("YYYY-MM-DD") : ''
     },
     // 取任务状态
-    getTaskStatusDesc(key) {
-      const task = taskStatus.find(o => o.key === key)
-      return (task && task.value) || ''
-    },
+    getTaskStatusDesc,
     addRow() {
       this.data.push({
         isFinishFlag: false,

@@ -11,12 +11,12 @@
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="55" :fixed="fixed" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" v-if='$slots[item.props] && item.editable' :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
+      <el-table-column :key="$index" align="center" v-if='$slots[item.props] && item.editable' :label="showName ? (lang ? language(item.key, item.name) : $t(item.key)) : item.name" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
         <template slot-scope="scope">
           <iInput v-if="item.type === 'input'" v-model="scope.row[item.props]" @click.native.stop></iInput>
         </template>
       </el-table-column>
-      <el-table-column :key="$index" align="center" v-else :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :render-header="item.renderHeader">
+      <el-table-column :key="$index" align="center" v-else :label="showName ? (lang ? language(item.key, item.name) : $t(item.key)) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :render-header="item.renderHeader">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row" :$index="scope.$index"></slot>
         </template>
@@ -66,6 +66,10 @@ export default {
       type: Function
     },
     lang: {
+      type: Boolean,
+      default: false
+    },
+    showName: {
       type: Boolean,
       default: false
     },
