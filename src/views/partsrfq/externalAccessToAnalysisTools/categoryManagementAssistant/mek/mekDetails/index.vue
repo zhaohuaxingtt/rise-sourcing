@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-05 21:11:05
+ * @LastEditTime: 2022-01-06 13:47:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -1305,6 +1305,16 @@ export default {
               formData.append("multipartFile", blob);
               formData.append("applicationName", "rise");
               const res = await uploadFile(formData);
+              console.log(res, "data")
+              // if (Array.isArray(res.data)) {
+              //   return res
+              // } else if (typeof res.data === 'object') {
+              //   return {
+              //     ...res,
+              //     data: [res.data],
+              //   }
+              // }
+              // return res
               const data = res.data[0];
               const req = {
                 mekId: this.chemeId,
