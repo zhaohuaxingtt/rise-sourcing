@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: YoHo
- * @LastEditTime: 2021-12-28 13:43:29
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-01-06 10:19:39
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -391,13 +391,13 @@ export default {
     /**
      * @Description: 退回
      * @Author: Luoshuang
-     * @param {*} reason 退回原因
+     * @param {*} reasonDescription 退回原因
      * @return {*}
      */    
-    handleBack(reason){
+    handleBack(reasonDescription){
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
-        reason
+        reasonDescription
       }
       back(params).then(res => {
         if (res.result) {

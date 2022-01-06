@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-06 13:47:07
+ * @LastEditTime: 2022-01-06 14:13:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -1293,7 +1293,7 @@ export default {
       if (this.reportSave) {
         this.reportFlag = false;
         downloadPDF({
-          idEle: "#content",
+          idEle: "content",
           pdfName: this.reportName,
           callback: async (pdf, pdfName) => {
             try {
