@@ -376,6 +376,30 @@ export function getRfqIdList(data) {
   });
 }
 
+// 获取供应商黑名单
+export function getBlackStuffList(data) {
+  return requst({
+    url: `/proxyService/blackStuffList`,
+    method: "POST",
+    data,
+  });
+}
+
+// 获取供应商财务风险级别
+export function getSupplierFinancialRiskLevel(data) {
+  return requst({
+    url: `/proxyService/getSupplierFinancialRiskLevel?ids=${data}`,
+    method: "POST",
+  });
+}
+
+// 获取年度更新信息任务状态
+export function getIsComplete(data) {
+  return requst({
+    url: `/proxyService/isComplete?supplierIds=${data}`,
+    method: "POST",
+  });
+}
 
 // 根据supplierCode获取供应商层级
 export function cbdLevel(data) {
