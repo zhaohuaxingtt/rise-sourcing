@@ -116,7 +116,7 @@ module.exports = {
   //引入全局css变量
   css: {
     //是否开起css分离
-    extract: process.env.NODE_ENV != 'dev',
+    extract: false,
     sourceMap: false,
     loaderOptions: {
       sass: {
@@ -262,7 +262,7 @@ module.exports = {
         },
       },
       '/fileApi': {
-        target: 'http://10.122.17.38:8034/fileud',
+        target: 'http://10.122.17.38:8034',
         changeOrigin: true,
         pathRewrite: {
           '^/fileApi': '',

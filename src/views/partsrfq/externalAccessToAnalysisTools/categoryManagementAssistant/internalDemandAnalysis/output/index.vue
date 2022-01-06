@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2022-01-04 18:07:25
+ * @LastEditTime: 2022-01-05 14:38:09
  * @LastEditors: caopeng
  * @Description: 产量总览
  * @FilePath: \front-sourcing-new\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
@@ -58,6 +58,7 @@ export default {
    data () {
       return {
          categoryCode:"",
+         saveButtonLoading:false,
           //初始化配置
          config:{
             type: 'report',
@@ -65,6 +66,7 @@ export default {
             accessToken:"",
             embedUrl: "",
             pageName:"",
+            
             settings: {
                panes: {
                   filters: {
@@ -141,14 +143,15 @@ export default {
          this.categoryCode=this.$store.state.rfq.categoryCode
          this.selectFilterYear=''
          this.config.pageName=''
-         this.renderBi()
+         this.getCategoryAnalysis()
       }
    },
-   methods: {
+   methods: {   
       // 保存
       async save(){
          // setWaterMark(this.userInfo.nameZh+this.userInfo.id+'仅供CS内部使用',1000,700)
          let typeName=""
+           this.saveButtonLoading = true;
          this.dictData.CATEGORY_MANAGEMENT_LIST.filter(item=>{
             if(item.code==this.config.pageName){
                typeName=item.name+'_'
@@ -191,6 +194,9 @@ export default {
          categoryAnalysis(params).then(res=>{
             if(res.code=='200'){
                iMessage.success(this.language('BAOCUNCHENGGONG','保存成功'))
+                this.saveButtonLoading = false;
+            }else{
+                 this.saveButtonLoading = false;
             }
          })
       },
@@ -200,31 +206,26 @@ export default {
       },
       // 重置
       reset(){
-         this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
-         this.selectFilterYear= String(new Date().getFullYear()) 
-         this.renderBi()
+        //  this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+        //  this.selectFilterYear= String(new Date().getFullYear()) 
+        //  this.renderBi()
+        this.getCategoryAnalysis()
       },
-       compare(property,desc) {
-            return function (a, b) {
-                var value1 = a[property];
-                var value2 = b[property];
-                if(desc==true){
-                    // 升序排列
-                    return value1 - value2;
-                }else{
-                    // 降序排列
-                    return value2 - value1;
-                }
+    compare(property,desc) {
+        return function (a, b) {
+            var value1 = a[property];
+            var value2 = b[property];
+            if(desc==true){
+                // 升序排列
+                return value1 - value2;
+            }else{
+                // 降序排列
+                return value2 - value1;
             }
-        },
+        }
+    },
       // 数据字典
       getDict() {
-         selectDictByKeys([{ keys: "CATEGORY_MANAGEMENT_LIST" }]).then(res=>{
-            this.dictData=res.data
-            this.dictData.CATEGORY_MANAGEMENT_LIST= this.dictData.CATEGORY_MANAGEMENT_LIST.sort(this.compare("id",true))
-            this.init()
-            this.renderBi()
-         })
       },
       // 获取财报iframeurl
       getPowerBiUrl() {
@@ -232,6 +233,7 @@ export default {
             if (res.data) {
                this.url = res.data
                this.getCategoryAnalysis()
+                this.init()
             }
          })
       },
@@ -241,14 +243,22 @@ export default {
             categoryCode:this.categoryCode,
             schemeType:"CATEGORY_MANAGEMENT_OUTPUT_OVERVIEW"
          }
-         getCategoryAnalysis(parasm).then(res=>{
+        selectDictByKeys([{ keys: "CATEGORY_MANAGEMENT_LIST" }]).then(res=>{
+            // this.dictData=res.data
+            this.dictData.CATEGORY_MANAGEMENT_LIST=res.data.CATEGORY_MANAGEMENT_LIST.sort(this.compare("id",true))
+          getCategoryAnalysis(parasm).then(res=>{
             let operateLog=JSON.parse(res.data.operateLog)
             if(operateLog){
-               this.selectFilterYear=operateLog.selectFilterYear
-               this.config.pageName=operateLog.pageName
+                this.selectFilterYear=operateLog.selectFilterYear
+                this.config.pageName=operateLog.pageName
+            }else{
+                this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+                this.selectFilterYear= String(new Date().getFullYear()) 
             }
-            this.getDict()
+            this.renderBi()
          })
+        })
+       
       },
       // 初始化配置
       init(){

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 18:35:40
- * @LastEditTime: 2021-10-09 18:50:38
+ * @LastEditTime: 2022-01-05 15:11:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar1.vue
@@ -62,7 +62,7 @@ export default {
                 position: "top",
                 color: "#000",
                 formatter: (val) => {
-                
+
                   return this.fmoney(val.value, 2);
                 },
               },
@@ -98,7 +98,7 @@ export default {
         this.$refs.chart.style.width = "230px";
       } else {
         this.$refs.chart.style.width =
-          this.firstBarData.detail.length * 80 + "px";
+          this.firstBarData.detail.length * 100 + "px";
       }
 
       this.myChart = echarts().init(this.$refs.chart);

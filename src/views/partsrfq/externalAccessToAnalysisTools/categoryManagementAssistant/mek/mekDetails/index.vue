@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-04 20:24:29
+ * @LastEditTime: 2022-01-05 20:25:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -13,17 +13,17 @@
       <div class="navBox flex-between-center"
            style="margin-bottom:20px">
         <div class="title font-weight flex">
-          <label for="">{{ language("CAILIAOZU", "材料组") }}:</label>
+          <!-- <label for="">{{ language("CAILIAOZU", "材料组") }}:</label>
           <iSelect @change="changeCategory"
                    v-model="categoryCode"
-                   v-if="entryStatus === '1'">
+                   v-if="isBindingRfq ">
             <el-option v-for="item in categoryList"
                        :key="item.categoryId"
                        :value="item.categoryCode"
                        :label="item.categoryName">
             </el-option>
-          </iSelect>
-          <span v-else>{{ categoryName }}</span>
+          </iSelect> -->
+          <span>{{ categoryName }}</span>
         </div>
         <div class="flex"
              v-show="reportFlag||!propSchemeId">
@@ -552,7 +552,7 @@ export default {
   methods: {
     async init () {
       this.rfqId = this.$store.state.rfq.rfqId || this.$route.query.rfqId;
-      this.entryStatus = this.$store.state.rfq.entryStatus;
+      // this.entryStatus = this.$store.state.rfq.entryStatus;
       this.chemeId = this.$route.query.chemeId ? this.$route.query.chemeId : this.propSchemeId;
       this.productFactoryNames = this.$route.query.productFactoryNames ? this.$route.query.productFactoryNames : this.propFactoryName;
       await getSchemeInfo({
@@ -566,7 +566,7 @@ export default {
         this.targetMotor = data.targetMotor.toString();
         this.comparedType = data.comparedType;
         this.isBindingRfq = data.isBindingRfq;
-        this.checkedCarLevelOptions = data.selectedOptions
+        this.checkedCarLevelOptions = data.selectedOptions ? JSON.parse(data.selectedOptions) : ""
         if (!this.checkedCarLevelOptions) {
           this.checkedCarLevelOptions = {}
         }
@@ -590,7 +590,7 @@ export default {
           this.categoryList = res.data;
         });
         let params = {};
-        if (this.entryStatus === 1) {
+        if (this.isBindingRfq) {
           params = {
             categoryId: this.categoryId,
             isBindingRfq: this.isBindingRfq,
@@ -712,7 +712,7 @@ export default {
           });
         });
       }
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
         let entryParams = _.cloneDeep(params)
@@ -839,7 +839,7 @@ export default {
         schemeId: this.chemeId,
         unselected: this.exceptPart,
       };
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
       } else {
@@ -879,7 +879,7 @@ export default {
         schemeId: this.chemeId,
         unselected: this.exceptPart,
       };
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
       } else {
@@ -1050,7 +1050,7 @@ export default {
         params.info[index].position = val[0].position;
         params.info[index].transmission = val[0].transmission;
       }
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
         let entryParams = _.cloneDeep(params)
@@ -1099,7 +1099,7 @@ export default {
           isTargetMotor: false,
         });
       });
-      if (this.entryStatus === 1) {
+      if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
         let entryParams = _.cloneDeep(params)
@@ -1150,7 +1150,7 @@ export default {
               if (item.detail.length === 1 || item.detail.length === 0) {
                 this.totalWidth = 200 * data.length;
               } else {
-                this.totalWidth += item.detail.length * 75;
+                this.totalWidth += item.detail.length * 100;
               }
               item.detail.forEach((i) => {
                 maxList.push(parseInt(i.value));
@@ -1161,7 +1161,7 @@ export default {
             } else {
               this.clientHeight = false;
             }
-            this.totalWidth = this.totalWidth + 75 + "px";
+            this.totalWidth = this.totalWidth + 100 + "px";
             console.log("error here s")
             this.maxData = maxList && maxList.length > 0 ? _.max(maxList).toString() : "";
             console.log("error here e")
@@ -1170,7 +1170,7 @@ export default {
               first += "0";
             }
             this.maxData = first;
-            if (this.entryStatus !== 1) {
+            if (!this.isBindingRfq) {
               this.firstBarData = data[0];
               data.shift();
             }
@@ -1230,7 +1230,7 @@ export default {
       this.reportFlag = true;
     },
     handleAnalysis () {
-      if (this.entryStatus) {
+      if (this.isBindingRfq) {
         this.$router.push({
           path: "/sourceinquirypoint/sourcing/partsrfq/assistant",
           query: {
@@ -1264,7 +1264,7 @@ export default {
           schemeId: this.chemeId,
           targetMotor: this.targetMotor,
           name: this.analysisName,
-          selectedOptions: this.checkedCarLevelOptions
+          selectedOptions: this.checkedCarLevelOptions ? JSON.stringify(this.checkedCarLevelOptions) : ""
         };
         if (this.barData) {
           if (this.barData[0]) {
