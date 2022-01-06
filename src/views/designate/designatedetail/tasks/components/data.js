@@ -28,7 +28,7 @@ export const tasksTitle = [
   },
   {
     props: 'isFinishFlag',
-    name: 'STATUS',
+    name: 'Status',
     key: 'STATUS',
     tooltip: false
   },
@@ -66,3 +66,9 @@ export const MoketasksData = [
     "status": "Finished"
   },
 ]
+
+// 取任务状态
+export const getTaskStatusDesc = function(key) {
+  const task = taskStatus.find(o => o.key === key)
+  return (task && task.value) || ''
+}
