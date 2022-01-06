@@ -143,7 +143,8 @@ export default {
             ...this.form,
             categoryCode: this.$route.query.categoryCode || '',
             motorIds: motorIds || [],
-            targetMotorId: targetMotorId
+            targetMotorId: targetMotorId,
+            isBindingRfq: this.$route.query.isBindingRfq
           }
           const res = await getPartMessage(pms)
           this.tableListData = res.data
@@ -152,6 +153,7 @@ export default {
             ...this.form,
             categoryCode: this.$route.query.categoryCode || '',
             motorIds: vwModelCodes || [],
+            isBindingRfq: this.$route.query.isBindingRfq
           }
           const res = await getPartMessage(pms)
           this.tableListData = res.data
