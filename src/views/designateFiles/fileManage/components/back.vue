@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:43:37
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-06-25 14:15:09
+ * @LastEditTime: 2022-01-06 14:17:42
  * @Description: 
- * @FilePath: \front-web\src\views\designateFiles\fileManage\components\back.vue
+ * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\components\back.vue
 -->
 
 <template>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { iDialog, iButton, iInput } from 'rise'
+import { iDialog, iButton, iInput, iMessage } from 'rise'
 export default {
   components: { iDialog, iButton, iInput },
   props: {
@@ -45,6 +45,10 @@ export default {
       this.$emit('changeVisible', false)
     },
     handleConfirm() {
+      if (!this.reason || this.reason === '') {
+        iMessage.warn(this.language('QINGSHURUTUIHUIYUANYIN', '请输入退回原因'))
+        return
+      }
       this.loading = true
       this.$emit('handleBack', this.reason)
     },
