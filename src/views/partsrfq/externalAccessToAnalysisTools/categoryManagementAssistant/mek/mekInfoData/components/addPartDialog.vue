@@ -112,7 +112,7 @@ export default {
     async handleAdd () {
       const pms = {
         list: this.selectTableData,
-        mekId: this.$route.query.chemeId
+        mekId: this.$route.query.schemeId
       }
       const res = await infoAdd(pms)
       this.resultMessage(res, () => {
@@ -145,7 +145,7 @@ export default {
             motorIds: motorIds || [],
             targetMotorId: targetMotorId,
             isBindingRfq: this.$route.query.isBindingRfq,
-            chemeId: this.$route.query.chemeId
+            schemeId: this.$route.query.schemeId
           }
           const res = await getPartMessage(pms)
           if (res.code === '200') {
@@ -158,7 +158,8 @@ export default {
             ...this.form,
             categoryCode: this.$route.query.categoryCode || '',
             motorIds: vwModelCodes || [],
-            isBindingRfq: this.$route.query.isBindingRfq
+            isBindingRfq: this.$route.query.isBindingRfq,
+            schemeId: this.$route.query.schemeId
           }
           const res = await getPartMessage(pms)
           if (res.code === '200') {
