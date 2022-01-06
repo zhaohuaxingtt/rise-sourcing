@@ -37,9 +37,6 @@ export default {
       default: require("@/assets/images/tool-tip.svg")
     }
   },
-  created(){
-    console.log(this.imgSrc)
-  }
 };
 </script>
 <style lang="scss" scoped>
