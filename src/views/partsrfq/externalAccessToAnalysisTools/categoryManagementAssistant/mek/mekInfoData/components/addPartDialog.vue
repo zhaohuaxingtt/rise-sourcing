@@ -133,16 +133,29 @@ export default {
       this.getTableList()
     },
     async getTableList () {
+      let vwModelCodes = JSON.parse(this.$route.query.vwModelCodes)
       try {
         this.tableLoading = true
-        const pms = {
-          ...this.form,
-          categoryCode: this.$route.query.categoryCode || '',
-          motorIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
-
+        if (this.form.project === '1') {
+          let targetMotorId = vwModelCodes.shift()
+          let motorIds = vwModelCodes
+          const pms = {
+            ...this.form,
+            categoryCode: this.$route.query.categoryCode || '',
+            motorIds: motorIds || [],
+            targetMotorId: targetMotorId
+          }
+          const res = await getPartMessage(pms)
+          this.tableListData = res.data
+        } else {
+          const pms = {
+            ...this.form,
+            categoryCode: this.$route.query.categoryCode || '',
+            motorIds: vwModelCodes || [],
+          }
+          const res = await getPartMessage(pms)
+          this.tableListData = res.data
         }
-        const res = await getPartMessage(pms)
-        this.tableListData = res.data
         this.tableLoading = false
       } catch (error) {
         this.tableLoading = false
