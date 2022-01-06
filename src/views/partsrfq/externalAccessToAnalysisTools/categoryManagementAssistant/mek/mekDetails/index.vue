@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-06 16:26:05
+ * @LastEditTime: 2022-01-06 19:39:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -23,7 +23,7 @@
                        :label="item.categoryName">
             </el-option>
           </iSelect> -->
-          <span>{{ categoryName }}</span>
+          <span>{{language('CAILIAOZU','材料组')}}:{{ categoryName }}</span>
         </div>
         <div class="flex"
              v-show="reportFlag||!propSchemeId">
