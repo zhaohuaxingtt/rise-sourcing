@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-05 21:11:05
+ * @LastEditTime: 2022-01-06 11:08:26
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -1150,7 +1150,7 @@ export default {
               if (item.detail.length === 1 || item.detail.length === 0) {
                 this.totalWidth = 200 * data.length;
               } else {
-                this.totalWidth += item.detail.length * 100;
+                this.totalWidth += item.detail.length * 120;
               }
               item.detail.forEach((i) => {
                 maxList.push(parseInt(i.value));
@@ -1161,7 +1161,7 @@ export default {
             } else {
               this.clientHeight = false;
             }
-            this.totalWidth = this.totalWidth + 100 + "px";
+            this.totalWidth = this.totalWidth + 120 + "px";
             console.log("error here s")
             this.maxData = maxList && maxList.length > 0 ? _.max(maxList).toString() : "";
             console.log("error here e")
