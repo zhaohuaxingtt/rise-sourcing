@@ -80,7 +80,7 @@ import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,showOrHide,getRowAndcolSpanArray,defaultLayoutTemplate} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRowByNomiId, exportFsSupplierAsRowByNomiId, exportGsPartsAsRowByNomiId } from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
@@ -535,11 +535,11 @@ export default{
     //导出
     exportParts(layout) {
       if(layout === '1') {
-        return exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
-      } else if(layout === '2') {
-        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
+        return exportFSPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
+      } else if (layout === '2') {
+        return exportFsSupplierAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
       } else {
-        return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
+        return exportGsPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
       }
     }
   }

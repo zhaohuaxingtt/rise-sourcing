@@ -113,6 +113,14 @@
       :type="type"
       :title="docTitle"
     />
+
+    <!-- 供应商黑名单发出询价弹出 -->
+    <supplierDisabled
+      v-if="disSupplier"
+      :show="disSupplier"
+      :tableListData="tableListData"
+      @update-show="updataShow"
+    />
   </iPage>
 </template>
 
@@ -126,6 +134,7 @@ import {
   sendEmail,
   getSupplierNotification,
 } from "@/api/bidding/bidding";
+import supplierDisabled from './inquiry/components/supplierDisabled'
 
 export default {
   components: {
@@ -133,6 +142,7 @@ export default {
     iButton,
     bidNoticeDoc,
     // bidNoticeDialog,
+    supplierDisabled,
   },
   data() {
     const cacheRuleForm = window.sessionStorage.getItem(
@@ -152,7 +162,9 @@ export default {
       projectBack: "",
       biddingFinish: false,
       handleReject:false,
-      getSupplierData:{}
+      getSupplierData:{},
+      disSupplier: false,
+      tableListData: []
     };
   },
    async mounted() {
@@ -321,7 +333,10 @@ export default {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
         });
     },
-
+    // 供应商黑名单
+    updataShow(){
+      this.disSupplier = false
+    },
     // 发出本轮RFQ
     handelSend() {
       if (this.ruleForm.suppliers.length === 0) {
@@ -344,7 +359,8 @@ export default {
       }
 
       const { projectCode } = this.ruleForm;
-      const fromdata = { projectCode };
+      const inquiryFlag = this.$route.path.includes('/bidding/project/inquiry')
+      const fromdata = { projectCode, inquiryFlag };
       // this.$refs.child.submitForm(() => {
       //   sendEmail(fromdata)
       //     .then((res) => {
@@ -358,6 +374,14 @@ export default {
       .then((res) => {
         if (res.code == 200) {
           window.location.reload();
+        }
+        // 供应商黑名单
+        if (res.code == 100407) {
+          if (document.getElementsByClassName("el-message").length === 0) {
+             this.$message.error(res.message);
+           }
+          this.tableListData = res.data
+          this.disSupplier = true
         }
       })
       .catch((err) => {

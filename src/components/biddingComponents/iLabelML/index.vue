@@ -17,7 +17,7 @@
       </div>
       <div class="tip" v-if="showTip" slot="reference">
         <div class="image-box">
-          <img src="~@/assets/images/tool-tip.svg" />
+          <img :src="imgSrc" />
         </div>
       </div>
     </el-popover>
@@ -32,6 +32,10 @@ export default {
         return false;
       },
     },
+    imgSrc: {
+      type:String,
+      default: require("@/assets/images/tool-tip.svg")
+    }
   },
 };
 </script>
