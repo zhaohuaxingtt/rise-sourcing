@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2021-07-19 14:07:37
+ * @LastEditTime: 2022-01-06 20:37:28
  * @LastEditors: Please set LastEditors
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -11,6 +11,7 @@ import {iMessage} from 'rise'
 import fsAndSupplierTable from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz'
 import {getRenderTableTile,defaultSort,translateData,translateRating,subtotal,translateDataListSupplier,getRenderTableTileSupplier,getleftTittleList} from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz/components/data'
 import {fsPartsAsRow,fsSupplierAsRow,gsPartsAsRow} from '@/api/partsrfq/editordetail/abprice'
+import {exportFSPartsAsRowByNomiId, exportFsSupplierAsRowByNomiId, exportGsPartsAsRowByNomiId } from '@/api/partsrfq/editordetail'
 export default{
   extends:fsAndSupplierTable,
   data(){
@@ -91,6 +92,16 @@ export default{
         return fsPartsAsRow(this.$route.query.desinateId,this.round)
       }else{
         return gsPartsAsRow(this.$route.query.desinateId,this.round)
+      }
+    },
+        //导出
+    exportParts(layout) {
+      if(layout === '1') {
+        return exportFSPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
+      } else if (layout === '2') {
+        return exportFsSupplierAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
+      } else {
+        return exportGsPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
       }
     }
   }
