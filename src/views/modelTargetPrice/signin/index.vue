@@ -105,7 +105,7 @@ import { getTargetPriceSingPage, noInvestment, taskSign, appoint, existValidTarg
 import iDicoptions from 'rise/web/components/iDicoptions'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import noInvestConfirmDialog from './components/noInvestConfirm'
-import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect' 
+import carProjectSelect from '@/views/modelTargetPrice/components/carProjectSelect' 
 import procureFactorySelect from '@/views/modelTargetPrice/components/procureFactorySelect'
 import moment from 'moment'
 import sendBackDialog from './components/sendBack'
