@@ -244,3 +244,38 @@ export const prototypeTitleList = [
   {i18nName: '单件价格', props: 'sampleUnitPrice', i18nKey: 'DANJIANJIAGE'},
   {i18nName: '样件模具价格', props: 'addionalMouldCost', i18nKey: 'YANGJIANMOKUJIAGE'}
 ]
+
+// 单独处理下年降或年降计划
+export const resetLtcData = function(row=[], type) {
+  // 年降开始时间
+  if(type == 'beginYearReduce'){
+    // 取第一个非0的年份
+    const list = row.filter((item)=> item.ltcRateStr!='0');
+    return list.length ? moment(list[0].ltcDate).format("YYYY-MM") : '-'
+  }else{ // 年降
+   // 从非0开始至非0截至的数据 不包含0
+   let strList = [];
+  //  let strFlag = false;
+
+  //  for(let i =0;i<row.length;i++){
+     
+  //    if(row[i].ltcRateStr !='0' && row[i].ltcRateStr){
+  //       strFlag = true;
+  //      strList.push(row[i].ltcRateStr-0);
+  //    }else if(strFlag && row[i].ltcRateStr == '0'){
+  //      break
+  //    }
+  //  }
+  //  return strList.length ? strList.join('/') : '-'
+    const ltcRateStrArr = row.map(item => item.ltcRateStr)
+
+    let i = 0
+    do {
+      i = ltcRateStrArr.length
+      if (ltcRateStrArr[0] == 0) ltcRateStrArr.shift()
+      if (ltcRateStrArr[ltcRateStrArr.length - 1] == 0) ltcRateStrArr.pop()
+    } while (i !== ltcRateStrArr.length)
+
+    return ltcRateStrArr.length ? ltcRateStrArr.join('/') : '-'
+  }
+}

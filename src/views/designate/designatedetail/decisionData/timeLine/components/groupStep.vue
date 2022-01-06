@@ -7,7 +7,7 @@
   <div class="groupStep">
       <ul>
           <li v-for="(item,index) in stepList" :key="'stepList_'+index">
-                <icon symbol :name="item.icon" class="step-icon"></icon>
+                <icon :symbol="symbol" :name="item.icon" class="step-icon"></icon>
                 <p class="step-title">{{item.title}}</p>
                 <p class="step-tips">
                     <span v-if="isEdit && groupNode[item.key] && groupNode[item.key].isEditable" class="step-tips-edit">
@@ -62,6 +62,10 @@ export default {
         isEdit:{
             type:Boolean,
             default:false,
+        },
+        symbol: {
+            type: Boolean,
+            default: true
         }
     },
     created(){
@@ -111,6 +115,8 @@ export default {
                .step-icon{
                    width: 44px;
                    height: 44px;
+                   color: rgb(22, 96, 241);
+                   font-size: 44px;
                }
                p{
                    &.step-title{

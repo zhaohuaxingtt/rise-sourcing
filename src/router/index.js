@@ -363,6 +363,14 @@ export const staticRouter = [
 			component:()=> import("@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz/preview.vue")
 	},
 	{
+		path: '/sourceinquirypoint/designate/decisiondata/exportPdf',
+		name: '决策资料导出PDF',
+		meta: {
+			title: '决策资料导出PDF'
+		},
+		component: () => import('@/views/designate/designatedetail/decisionData/exportPdf/index.vue')
+	},
+	{
 		path: '*',
 		name: '404',
 		meta: {
