@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { iInput, iButton, iDialog, icon } from 'rise'
+import { iInput, iButton, iDialog, icon, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addPartTableTitle } from "./data.js";
 import { getPartMessage, infoAdd } from "@/api/partsrfq/mek/index.js";
@@ -147,7 +147,11 @@ export default {
             isBindingRfq: this.$route.query.isBindingRfq
           }
           const res = await getPartMessage(pms)
-          this.tableListData = res.data
+          if (res.code === '200') {
+            this.tableListData = res.data
+          } else {
+            iMessage.error(res.desZh)
+          }
         } else {
           const pms = {
             ...this.form,
@@ -156,7 +160,11 @@ export default {
             isBindingRfq: this.$route.query.isBindingRfq
           }
           const res = await getPartMessage(pms)
-          this.tableListData = res.data
+          if (res.code === '200') {
+            this.tableListData = res.data
+          } else {
+            iMessage.error(res.desZh)
+          }
         }
         this.tableLoading = false
       } catch (error) {
