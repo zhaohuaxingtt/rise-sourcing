@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-10 15:23:01
+ * @LastEditTime: 2022-01-06 19:45:28
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\approval\index.vue
 -->
@@ -94,7 +94,7 @@ import approvalRecordDialog from '../maintenance/components/approvalRecord'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
 import approvalDialog from './components/approval'
 import iDicoptions from 'rise/web/components/iDicoptions'
-import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect' 
+import carProjectSelect from '@/views/modelTargetPrice/components/carProjectSelect' 
 import procureFactorySelect from '@/views/modelTargetPrice/components/procureFactorySelect'
 import { getTargetPriceApprovalPage, approve, exportApproval } from '@/api/modelTargetPrice/index'
 export default {
