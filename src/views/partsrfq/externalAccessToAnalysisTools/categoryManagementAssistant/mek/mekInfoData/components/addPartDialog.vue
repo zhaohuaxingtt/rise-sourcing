@@ -144,7 +144,8 @@ export default {
             categoryCode: this.$route.query.categoryCode || '',
             motorIds: motorIds || [],
             targetMotorId: targetMotorId,
-            isBindingRfq: this.$route.query.isBindingRfq
+            isBindingRfq: this.$route.query.isBindingRfq,
+            chemeId: this.$route.query.chemeId
           }
           const res = await getPartMessage(pms)
           if (res.code === '200') {
