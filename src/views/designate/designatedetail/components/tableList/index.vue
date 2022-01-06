@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-11-15 10:29:16
+ * @LastEditTime: 2022-01-06 14:24:08
 -->
 <template>
   <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :cell-class-name="cellClassName">
@@ -193,7 +193,7 @@ export default{
       if (row.fileList?.length < 1) {
         return
       }
-      this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName), row.fileList)
+      this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName), row.fileList, row)
     },
     getFileList(row) {
       return row.fileList?.map(item => item.fileName).join('\n')
