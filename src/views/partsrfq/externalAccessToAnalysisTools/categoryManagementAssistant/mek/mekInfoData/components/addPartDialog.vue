@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { iInput, iButton, iDialog, icon } from 'rise'
+import { iInput, iButton, iDialog, icon, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addPartTableTitle } from "./data.js";
 import { getPartMessage, infoAdd } from "@/api/partsrfq/mek/index.js";
@@ -112,7 +112,7 @@ export default {
     async handleAdd () {
       const pms = {
         list: this.selectTableData,
-        mekId: this.$route.query.chemeId
+        mekId: this.$route.query.schemeId
       }
       const res = await infoAdd(pms)
       this.resultMessage(res, () => {
@@ -133,16 +133,41 @@ export default {
       this.getTableList()
     },
     async getTableList () {
+      let vwModelCodes = JSON.parse(this.$route.query.vwModelCodes)
       try {
         this.tableLoading = true
-        const pms = {
-          ...this.form,
-          categoryCode: this.$route.query.categoryCode || '',
-          motorIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
-
+        if (this.form.project === '1') {
+          let targetMotorId = vwModelCodes.shift()
+          let motorIds = vwModelCodes
+          const pms = {
+            ...this.form,
+            categoryCode: this.$route.query.categoryCode || '',
+            motorIds: motorIds || [],
+            targetMotorId: targetMotorId,
+            isBindingRfq: this.$route.query.isBindingRfq,
+            schemeId: this.$route.query.schemeId
+          }
+          const res = await getPartMessage(pms)
+          if (res.code === '200') {
+            this.tableListData = res.data
+          } else {
+            iMessage.error(res.desZh)
+          }
+        } else {
+          const pms = {
+            ...this.form,
+            categoryCode: this.$route.query.categoryCode || '',
+            motorIds: vwModelCodes || [],
+            isBindingRfq: this.$route.query.isBindingRfq,
+            schemeId: this.$route.query.schemeId
+          }
+          const res = await getPartMessage(pms)
+          if (res.code === '200') {
+            this.tableListData = res.data
+          } else {
+            iMessage.error(res.desZh)
+          }
         }
-        const res = await getPartMessage(pms)
-        this.tableListData = res.data
         this.tableLoading = false
       } catch (error) {
         this.tableLoading = false

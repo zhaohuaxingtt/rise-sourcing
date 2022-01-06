@@ -1337,7 +1337,7 @@ export default {
 }
 
 #chart2 {
-  width: 700px;
+  width: 720px;
   height: 180px;
   margin: 0 30px;
   align-self: flex-end;
