@@ -1,11 +1,10 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight"
-            v-if="pageType === 'PCA'">{{ $t('TPZS.PCAZONGLAN') }}</span>
-      <span class="font18 font-weight"
-            v-else-if="pageType === 'TIA'">{{ $t('TPZS.TIAZONGLAN') }}</span>
-      <div class="floatright">
+      <span class="font18 font-weight" v-if="pageType === 'PCA'">{{ $t('TPZS.PCAZONGLAN') }}</span>
+      <span class="font18 font-weight" v-else-if="pageType === 'TIA'">{{ $t('TPZS.TIAZONGLAN') }}</span>
+      <!-- 需求说不需要这个功能 -->
+      <div class="floatright" v-if="false">
         <template v-if="!tableStatus">
           <!-- &lt;!&ndash;编辑&ndash;&gt; -->
           <iButton @click="handleEdit">{{ $t('LK_BIANJI') }}</iButton>
@@ -18,22 +17,22 @@
         </template>
       </div>
     </div>
-    <tableList :tableData="tableListData"
-               :tableTitle="tableTitle"
-               :tableLoading="tableLoading"
-               :index="true"
-               :tiledTableData="tiledTableListData"
-               :treeTable="true"
-               treeProps="fileList"
-               rowKey="id"
-               @handleSelectionChange="handleSelectionChange">
+    <tableList
+      :tableData="tableListData"
+      :tableTitle="tableTitle"
+      :tableLoading="tableLoading"
+      :index="true"
+      :tiledTableData="tiledTableListData"
+      :treeTable="true"
+      treeProps="fileList"
+      rowKey="id"
+      @handleSelectionChange="handleSelectionChange"
+    >
       <template #fileName="scope">
         <div class="reportContainer">
           <template>
-            <div @click="handleOpenPreviewDialog(scope.row)"
-                 class="openLinkText cursor">{{
-                scope.row.reportName
-              }}
+            <div @click="handleOpenPreviewDialog(scope.row)" class="openLinkText cursor">
+              {{ scope.row.reportName }}
             </div>
           </template>
         </div>
@@ -54,19 +53,19 @@
         </template>
       </template>
     </tableList>
-    <iPagination v-update
-                 @size-change="handleSizeChange($event, getTableList)"
-                 @current-change="handleCurrentChange($event, getTableList)"
-                 background
-                 :page-sizes="page.pageSizes"
-                 :page-size="page.pageSize"
-                 :layout="page.layout"
-                 :current-page='page.currPage'
-                 :total="page.totalCount" />
+    <iPagination
+      v-update
+      @size-change="handleSizeChange($event, getTableList)"
+      @current-change="handleCurrentChange($event, getTableList)"
+      background
+      :page-sizes="page.pageSizes"
+      :page-size="page.pageSize"
+      :layout="page.layout"
+      :current-page="page.currPage"
+      :total="page.totalCount"
+    />
     <!--    预览弹窗-->
-    <previewDialog v-model="previewDialog"
-                   :fileUrl="fileUrl"
-                   :fileName="fileName" />
+    <previewDialog v-model="previewDialog" :fileUrl="fileUrl" :fileName="fileName" />
   </iCard>
 </template>
 
@@ -78,7 +77,6 @@ import resultMessageMixin from '@/utils/resultMessageMixin';
 import previewDialog from './previewDialog';
 import { tableTitle } from './data';
 import { getRfqKmInfo } from '../../../../../api/partsrfq/pcaAndTiaAnalysis';
-
 export default {
   mixins: [pageMixins, resultMessageMixin],
   components: {
@@ -87,7 +85,7 @@ export default {
     iPagination,
     icon,
     previewDialog,
-    iButton
+    iButton,
   },
   props: {
     pageType: {
@@ -95,7 +93,7 @@ export default {
       default: '',
     },
   },
-  data () {
+  data() {
     return {
       tableListData: [],
       tiledTableListData: [],
@@ -108,20 +106,20 @@ export default {
       fileName: '',
     };
   },
-  created () {
+  created() {
     this.getTableList();
   },
   methods: {
-    handleSelectionChange (val) {
+    handleSelectionChange(val) {
       this.selectTableData = val;
     },
-    handleSearch () {
+    handleSearch() {
       this.page.currPage = 1;
       this.getTableList();
     },
-    async getTableList () {
+    async getTableList() {
       this.tableLoading = true;
-      const searchItem = this.$parent.$children.filter(item => {
+      const searchItem = this.$parent.$children.filter((item) => {
         return item.$attrs.name === 'theSearch';
       });
       const searchForm = searchItem[0].form;
@@ -134,9 +132,8 @@ export default {
         };
         const res = await getRfqKmInfo(req);
         if (res.result) {
-          console.log(res)
+          console.log(res);
           this.tableListData = res.data;
-          // this.tableListData = []
           this.page.currPage = res.pageNum;
           this.page.pageSize = res.pageSize;
           this.page.totalCount = res.total || 0;
@@ -150,16 +147,15 @@ export default {
         this.tableListData = [];
         this.tableLoading = false;
       }
-
     },
-    handleEdit () {
+    handleEdit() {
       this.tableStatus = 'edit';
     },
-    handleCancel () {
+    handleCancel() {
       this.tableStatus = '';
     },
-    handleSave () { },
-    getTiledTableListData () {
+    handleSave() {},
+    getTiledTableListData() {
       this.tiledTableListData = [];
       this.tableListData.map((item, index) => {
         item.treeIndex = index + 1;
@@ -171,9 +167,9 @@ export default {
           });
         }
       });
-      console.log(this.tiledTableListData)
+      console.log(this.tiledTableListData);
     },
-    handleOpenPreviewDialog (row) {
+    handleOpenPreviewDialog(row) {
       this.previewDialog = true;
       this.fileUrl = row.reportLink;
       this.fileName = row.reportName.split('.pdf')[0];
@@ -221,9 +217,8 @@ export default {
 
 //有子节点 且未展开
 ::v-deep .el-table .el-icon-arrow-right:before {
-  background: url("../../../../../assets/images/Icon - Arrow Drop Down.png")
-    no-repeat 0 0;
-  content: "";
+  background: url('../../../../../assets/images/Icon - Arrow Drop Down.png') no-repeat 0 0;
+  content: '';
   display: block;
   width: 10px;
   height: 4px;
@@ -234,9 +229,8 @@ export default {
 //有子节点 且已展开
 ::v-deep .el-table .el-table__expand-icon--expanded {
   .el-icon-arrow-right:before {
-    background: url("../../../../../assets/images/Icon - Arrow收起.png")
-      no-repeat 0 0;
-    content: "";
+    background: url('../../../../../assets/images/Icon - Arrow收起.png') no-repeat 0 0;
+    content: '';
     display: block;
     width: 10px;
     height: 4px;
