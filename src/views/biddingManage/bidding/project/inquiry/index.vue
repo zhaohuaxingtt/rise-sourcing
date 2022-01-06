@@ -444,7 +444,7 @@ import {
 } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
 
-import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
+// import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 
 export default {
   mixins: [pageMixins],
@@ -469,7 +469,7 @@ export default {
     quotationForm,
 
     supplierListDialog,
-    supplierBlackIcon,
+    // supplierBlackIcon,
   },
   data() {
     return {

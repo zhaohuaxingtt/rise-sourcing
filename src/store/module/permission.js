@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-12-22 19:58:48
+ * @LastEditTime: 2021-12-30 15:39:20
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -95,6 +95,17 @@ const mutations = {
     state.resourceList = data
   }
 }
+//合并菜单的key到resouce里面去，满足菜单勾选取消后，能将界面上是菜单类型的permissionremove掉
+function mergeMenuToresouce(resouce,menuList){
+  try {
+    menuList.forEach(items=>{
+      if(items.permissionKey) resouce[items.permissionKey] = 'menu'
+      if(items.menuList && items.menuList.length > 0){mergeMenuToresouce(resouce,items.menuList)}
+    })
+  } catch (error) {
+    return []
+  }
+}
 const actions = {
   // 通过异步方式获取菜单。
   getPermissinInfo({ commit }) {
@@ -103,6 +114,8 @@ const actions = {
         .then(res => {
           if (res.code == 200 && res.data) {
             commit('SET_MENU_LIST', initMeun(res.data.menuList))
+            mergeMenuToresouce(res.data.resourceList,res.data.menuList)
+            console.log(res.data.resourceList)
             commit('SET_WIHTEBTN_LIST', res.data.resourceList || [])
             r(res.data.menuList || [])
           } else {

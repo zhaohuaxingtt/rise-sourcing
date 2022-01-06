@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-24 14:53:57
- * @LastEditTime: 2021-11-29 11:14:31
+ * @LastEditTime: 2022-01-05 10:51:54
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\riskAndAlarmConfig\components\data.js
@@ -20,7 +20,13 @@ export const MENU = [
 
 export const riskAndAlarmTitle = [
   {
-    props: 'level',
+    props: 'delayTypeDesc',
+    name: '风险类型',
+    key: 'FENGXIANLEIXING',
+    tooltip: false
+  },
+  {
+    props: 'delayLevelDesc',
     name: '风险等级',
     key: 'FENGXIANDENGJI',
     tooltip: false
@@ -41,8 +47,8 @@ export const riskAndAlarmTitle = [
 
 export const riskAndAlarmData = [
   {
-    level: '延误',
-    key: 'LK_YANWU',
+    level: '高风险',
+    key: 'LK_GAOFENGXIAN',
     delayLevel: 3,
     icon: 'iconbaojiapingfengenzong-jiedian-hong',
     delayWeekRight: '',
@@ -50,8 +56,8 @@ export const riskAndAlarmData = [
     crossOver: [false, true]
   },
   {
-    level: '风险',
-    key: 'LK_FENGXIAN',
+    level: '低风险',
+    key: 'LK_DIFENGXIAN',
     delayLevel: 2,
     icon: 'iconbaojiapingfengenzong-jiedian-huang',
     delayWeekRight: '',
@@ -59,8 +65,8 @@ export const riskAndAlarmData = [
     crossOver: [false, true]
   },
   {
-    level: '正常',
-    key: 'LK_ZHENGCHANG',
+    level: '无风险',
+    key: 'LK_WUZHENGCHANG',
     delayLevel: 1,
     icon: 'iconbaojiapingfengenzong-jiedian-lv',
     delayWeekRight: '',

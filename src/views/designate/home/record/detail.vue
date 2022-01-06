@@ -32,6 +32,7 @@
         v-loading="tableLoading"
         :selection="false"
         @openPage="openPage"
+        v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_DETAIL_TABLE|定点记录详情-表格"
         >
 
         <template #ltc="scope">
@@ -112,8 +113,10 @@ export default {
       let  designateType =this.$route.query.designateType
       let  partProjType =this.$route.query.partProjType
       const openPageRs = this.$router.resolve({
-        path:'/designate/decisiondata/rs',
+        path:'/rspreview/view',
         query:{
+          route: 'force',
+          isPreview: 1,
           desinateId,
           designateType,
           partProjType,

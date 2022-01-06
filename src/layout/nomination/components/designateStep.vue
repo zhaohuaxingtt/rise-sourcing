@@ -40,7 +40,7 @@
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
-                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
+                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
         </div>
@@ -92,6 +92,9 @@
             @resetSubmitting="submitting = false"
             ref="mettingDialog" />
         <meetingConclusionDialog :desinateId="desinateId" :visible.sync="meetingConclusionDialogVisible" @afterConfirm="afterConfirm" />
+
+        <!-- 黑名单校验弹窗提示 -->
+        <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
     </div>
 </template>
 
@@ -130,6 +133,8 @@ import meetingConclusionDialog from "./meetingConclusionDialog"
 import {allitemsList} from '@/config'
 import { cloneDeep } from "lodash"
 
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
+
 export default {
     name:'designateStep',
     components:{
@@ -139,7 +144,8 @@ export default {
         iSelect,
         mettingDialog,
         meetingConclusionDialog,
-        iLoger
+        iLoger,
+        dialogTableTips,
     },
     props:{
         status: {
@@ -209,7 +215,8 @@ export default {
             mettingDialogVisible: false,
             submitting: false,
             meetingConclusionDialogVisible: false,
-            svgList:svgList
+            svgList:svgList,
+            blackTableListData:[],
         }
     },
     methods:{
@@ -630,7 +637,10 @@ export default {
                     nominateAppSsubmit(data).then((res)=>{
                         if (res.code === '200') {
                             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                        } else {
+                        }else if(res.code === '500'){
+                            this.blackTableListData = res.data || [];
+                            this.$refs.dialogTableTips.show(); 
+                        }else {
                             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                         }
                         this.submitting = false

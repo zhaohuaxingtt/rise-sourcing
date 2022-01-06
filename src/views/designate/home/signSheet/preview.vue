@@ -29,6 +29,7 @@
           <tablelist
             height="450"
             index
+            lang
             :selection="false"
             :tableData="tableListData"
             :tableTitle="tableTitle"

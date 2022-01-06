@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-12-23 11:03:50
+ * @LastEditTime: 2021-12-30 17:41:13
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-sourcing\src\router\index.js
@@ -24,6 +24,7 @@ import reportmanage from './modules/reportmanage'
 import sourceInquirypoint from './modules/sourceInquirypoint'
 import biddingRouter from './modules/biddingManage'
 import targetPriceAndScoreRoutes from './modules/targetPriceAndScore'
+import scoreConfig from './modules/scoreConfig'
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
 
@@ -35,7 +36,7 @@ export const staticRouter = [
 		path: '/',
 		name: 'index',
 		component: () => import('@/layout/default'),
-		redirect: '/sourceinquirypoint',
+		redirect: '/sourcing/dashboard',
 		children: [
 			{
 				path: '/index',
@@ -317,6 +318,15 @@ export const staticRouter = [
 				},
 				component: () => import('@/views/AutomaticallyAssignDe'),
 			},
+			{	
+				// 暂时放在souring下 后面会移动到portal
+				path: '/demo/partsconfig',
+				name: 'partsconfig',
+				meta: {
+					title: '零件采购项目类型配置',
+				},
+				component: () => import('@/views/demo/partsItemConfig'),
+			},
 		],
 	},
 	{
@@ -387,6 +397,7 @@ const router = new VueRouter({
 		// bidding 相关
 		...biddingRouter,
 		...targetPriceAndScoreRoutes,
+		...scoreConfig,
 	],
 })
 

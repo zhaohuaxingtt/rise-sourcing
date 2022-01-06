@@ -14,7 +14,7 @@
         <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
       </span>
     </div> -->
-    <iCard class="card margin-top40"
+    <iCard class="card"
            :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
       <template v-slot:header-control>
         <el-upload class="uploadButton"
@@ -83,8 +83,7 @@ import filters from "@/utils/filters"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
 import { dataMaintain, delMaintain, addMaintain, exportTemplate } from "@/api/costanalysismanage/costanalysis/costMaintenance"
-import { getKmFileHistory, uploadFiles, deleteFileHistory } from "@/api/costanalysismanage/costanalysis"
-import { downloadFile, downloadUdFile } from "@/api/file"
+import { downloadUdFile } from "@/api/file"
 import dateSelect from "./dateSelect"
 
 export default {

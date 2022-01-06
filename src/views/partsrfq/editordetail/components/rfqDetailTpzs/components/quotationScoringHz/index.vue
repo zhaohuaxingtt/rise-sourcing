@@ -80,7 +80,7 @@ import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,showOrHide,getRowAndcolSpanArray,defaultLayoutTemplate} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRowByNomiId, exportFsSupplierAsRowByNomiId, exportGsPartsAsRowByNomiId } from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
@@ -316,6 +316,7 @@ export default{
         if(this.layout == 1){
           await this.fsPartsAsRow()
         }else if(this.layout == 2){
+
           await this.supplierfsSupplierAsRow()
         }else{
           await this.fsPartsAsRow()
@@ -334,8 +335,11 @@ export default{
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
       return negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
-        if(res.data && res.data.layout){
+        if(res.data && res.data.layout){  
           this.backChoose = JSON.parse(res.data.layout) // 
+        }
+        if(this.backChoose.length == 0 && type == 2){//特殊逻辑处理，如果第一次进来，隐藏项为空。则认为用户没有设置过，需要将默认隐藏项设置好。
+          this.backChoose = ['EBR','Volume','Invest Budget','Prod. Loc.','Dev.\nCost','Supplier \nSOP Date','Total\n Turnover']
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
@@ -531,11 +535,11 @@ export default{
     //导出
     exportParts(layout) {
       if(layout === '1') {
-        return exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
-      } else if(layout === '2') {
-        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
+        return exportFSPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
+      } else if (layout === '2') {
+        return exportFsSupplierAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
       } else {
-        return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
+        return exportGsPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
       }
     }
   }

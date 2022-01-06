@@ -6,7 +6,7 @@
 <template>
   <iPage class="designateHome" v-permission.auto="SOURCING_NOMINATION_RSREVIEW_PAGE|上会复核页面">
     <!-- 头部 -->
-    <headerNav  />
+    <headerNav />
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 搜索区 -->
@@ -75,6 +75,7 @@
           <!-- 取消MTZ绑定 -->
           <iButton
             @click="ttss"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_QUXIAOMTZBANGDING|取消MTZ绑定"
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
@@ -170,7 +171,7 @@
 <script>
 import { tableTitle, signMenu } from './components/data'
 // import checklistData from './lib/checklist.json'
-import headerNav from '@/views/designate/home/components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import selDialog from '../components/selDialog'

@@ -6,14 +6,14 @@
  * @Description: 决策资料 - 附件
 -->
 <template>
-  <div class="designate-attachment" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT|attachment">
+  <div class="designate-attachment" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT|决策资料-attachment">
       <!-- 附件列表 -->
-      <attachment v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_ATTACHMENT|attachment" />
+      <attachment v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_ATTACHMENT_FIRSTTABLE|attachment" />
       <!-- RS Sheet -->
       <rssheet v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSHEET|rssheet" />
       <!-- v-if="showRsSheet"  -->
       <!-- mtzAttachment -->
-      <mtzAttachment />
+      <mtzAttachment v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_MTZ|mtzAttachment" />
 
   </div>
 </template>

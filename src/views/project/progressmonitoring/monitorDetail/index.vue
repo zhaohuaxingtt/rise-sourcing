@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 11:08:13
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 14:59:20
+ * @LastEditTime: 2021-12-30 14:55:53
  * @Description: 监控明细
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\index.vue
 -->
@@ -12,16 +12,10 @@
     <!---------------------------------------------------------------------->
     <!----------                  车型项目部分                   ---------------->
     <!---------------------------------------------------------------------->
-    <iCard class="carProgress" :class="{titleWithCollapse:!collapseValue}" :collapse="true" @handleCollapse="handleCollapse" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_CARPROGRESS|项目管理-监控明细-车型项目进度状态部分">
-      <div class="clearFloat" slot="header-control">
-        <div class="titleSearch">
-          <!-- <span class="margin-right20 titleSearch-label">{{language('CHEXINGXIANGMU','车型项目')}}</span>
-          <carProjectSelect optionType="2" :filterable="true" v-model="carProjectId" @change="handleCarProjectChange" :disabled="disabled" /> -->
-        </div>
-      </div>
+    <iCard class="carProgress" v-show="vm.collapseValue" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_CARPROGRESS|项目管理-监控明细-车型项目进度状态部分">
       <carProject :carProjectId="carProjectId" />
     </iCard>
-    <iCard class="margin-top20 projectCard" :class="{withCollapse:!collapseValue}" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_PARTLIST|项目管理-监控明细-零件列表">
+    <iCard class="projectCard" :class="{withCollapse:!vm.collapseValue, 'margin-top20':vm.collapseValue}" v-permission.auto="PROJECTMGT_MONITORINGDETAIL_PARTLIST|项目管理-监控明细-零件列表">
       <div class="margin-bottom20 searchWrapper">
         <div class="titleSearch">
           <div v-for="(item, index) in searchListByPartStatus" :key="index" class="titleSearch-item" v-permission.auto="item.permission">
@@ -82,6 +76,7 @@ export default {
       options: []
     }
   },
+  inject:['vm'],
   computed: {
     carProjectId() {
       return this.$route.query.carProjectId
@@ -149,9 +144,9 @@ export default {
     handleSure() {
       this.searchParams = {
         ...this.searchParams,
-        projectRisk: this.searchParams.partStatus == 7 ? '' : this.searchParams.projectRisk,
-        projectProc: this.searchParams.partStatus == 7 ? this.searchParams.projectProc : '',
-        partProc: this.searchParams.partStatus == 7 && this.searchParams.partStatus == 1 ? '' : this.searchParams.partProc
+        projectRisk: this.searchParams.partStatus == 9 ? '' : this.searchParams.projectRisk,
+        projectProc: this.searchParams.partStatus == 9 ? this.searchParams.projectProc : '',
+        partProc: this.searchParams.partStatus == 9 && this.searchParams.partStatus == 1 ? '' : this.searchParams.partProc
       }
       this.partStatus = this.searchParams.partStatus
       this.loading = true
@@ -186,7 +181,7 @@ export default {
 .monitorDetail {
   padding: 0;
   padding-top: 10px;
-  height: calc(100% - 65px);
+  height: calc(100% - 45px);
   overflow: visible;
   .carProgress {
     ::v-deep .cardHeader {
@@ -232,7 +227,7 @@ export default {
     height: calc(100% - 180px);
     overflow: hidden;
     &.withCollapse {
-      height: calc(100% - 50px);
+      height: 100%;
       overflow: hidden;
     }
     &-content {

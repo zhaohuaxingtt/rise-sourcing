@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-29 16:43:52
+ * @LastEditTime: 2022-01-04 12:04:26
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
@@ -13,7 +13,7 @@
       <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_GOTOSUPPLIERMAINTENANCE|跳转供应商维护"  @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
     </div>
     <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
-      <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)">
+      <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_TABLE|决策资料-bdl-表格">
         <template #supplierName="scope">
           <div>
             <span class="factoryDesc">{{scope.row.supplierName }}</span>
@@ -22,7 +22,10 @@
                 <icon symbol name="iconzhongyaoxinxitishi" />
               </span>
             </el-tooltip>
-            <!-- <supplierBlackIcon/> -->
+            <supplierBlackIcon
+              :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+              :BlackList="scope.row.blackStuffs || []"
+            />
           </div>
         </template>
         <template #sapCode="scope">
@@ -56,7 +59,7 @@ import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 export default {
   mixins: [pageMixins],
   components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton, icon,
-  // supplierBlackIcon
+  supplierBlackIcon
    },
   data() {
     return {

@@ -8,7 +8,7 @@
 -->
 <template>
   <div class="datamaintenance">
-    <iCard class="card margin-top40" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
+    <iCard class="card" :title="language('RENGONGCHENGBENSHUJUWEIHU', '人工成本数据维护')">
       <template v-slot:header-control>
         <iButton @click="handleExport" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_EXPORT|导出">{{ language("DAOCHU", "导出") }}</iButton>
         <uploadButton uploadClass="uploadButton" :params="uploadParams" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_DATAMAINTENANCE_COSTDATAMAINTENANCE_BUTTON_UPLOAD|上传">
@@ -201,9 +201,7 @@ export default {
     handleDelete() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOSHANCHUDEWENJIAN", "请选择需要删除的文件"))
       this.deleteLoading = true
-      deleteFileHistory({
-        idList: this.multipleSelection.map(item => item.id)
-      })
+      deleteFileHistory(this.multipleSelection.map(item => item.id))
       .then(res => {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)

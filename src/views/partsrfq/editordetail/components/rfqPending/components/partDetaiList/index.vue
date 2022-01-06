@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -116,17 +116,22 @@ export default {
   },
   async mounted() {
     const {id,businessKey} = this.$route.query;
-    // this.rfqId = this.$route.query.id
-    this.rfqId = id || '';
-
-    // 当类型为AEKO时 表头需要隐藏部分
-    if(businessKey == partProjTypes.AEKOLINGJIAN){
-      this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
+      // this.rfqId = this.$route.query.id
+      this.rfqId = id || '';
+      await this.getTableList()
+      let isCommonSourcing=''
+      this.baseInfoData.partProjectType[0]? isCommonSourcing = this.baseInfoData.partProjectType[0] :''
+      // 当类型为AEKO时 表头需要隐藏部分
+      if(businessKey == partProjTypes.AEKOLINGJIAN){
+        this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
+      }
+  try{
+      if(isCommonSourcing !== partProjTypes.GSCOMMONSOURCING && isCommonSourcing != partProjTypes.FSCOMMONSOURCING){
+        this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
+      } 
+    } catch (err) {
+      console.log(err);
     }
-    if(this.baseInfoData.partProjectType[0] !== partProjTypes.GSCOMMONSOURCING && this.baseInfoData.partProjectType[0] != partProjTypes.FSCOMMONSOURCING){
-      this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
-    } 
-    await this.getTableList()
   },
   watch:{
     disabled(val){
@@ -239,6 +244,7 @@ export default {
         this.parmarsHasRfq['size'] = this.page.pageSize
         this.parmarsHasRfq['current'] = this.page.currPage
         this.parmarsHasRfq['rfqId'] = this.rfqId || ''
+        this.parmarsHasRfq['status'] = ''
         return getTabelData(this.parmarsHasRfq).then(res => {
           this.page.currPage = res.pageNum
           this.page.pageSize = res.pageSize
@@ -338,7 +344,6 @@ export default {
       })
     },
     updateStarMonitor() {
-      console.log('==============================');
       this.getTableList()
       this.getBaseInfo()
     }

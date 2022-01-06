@@ -10,10 +10,7 @@
   <iPage class="partsrfqHome">
     <!-- <el-tabs v-model="tab" class="tab">
       <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-        <div class="topMenu">
-          <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
-        </div>
+        <headerNav />
         <div>
           <!-- <div class="margin-bottom33">
             <iNavMvp lang @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
@@ -218,9 +215,10 @@
 <script>
 import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "rise";
 import { iNavMvp, iSearch } from "rise";
+import headerNav from "@/components/headerNav"
 import tablelist from "pages/partsrfq/components/tablelist";
 import {pageMixins} from "@/utils/pageMixins";
-import {tableTitle, attachmentTableTitle} from "pages/partsrfq/home/components/data";
+import {tableTitle, attachmentTableTitle,partsprocureNavList} from "pages/partsrfq/home/components/data";
 import {findBySearches, getRfqList, getCartypeDict, modification, ratingTranslate, setRfqTop} from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
@@ -255,7 +253,8 @@ export default {
     icon,
     scoringDeptDialog,
     nominateTypeDialog,
-    assignInquiryBuyerDialog
+    assignInquiryBuyerDialog,
+    headerNav
   },
   mixins: [pageMixins, filters, rfqCommonFunMixins],
   data() {
@@ -301,7 +300,8 @@ export default {
       cfApplyStatusOptions: [],
       heavyItemOptions: [],
       inquiryBuyerVisible: false,
-      inquiryBuyerDialogType: '1'
+      inquiryBuyerDialogType: '1',
+      partsprocureNavList:partsprocureNavList,
     };
   },
   created() {
@@ -314,7 +314,7 @@ export default {
     this.updateNavList
   },
   computed: {
-    ...mapState(["navList","navListLeft"]),
+    ...mapState(["navList"]),
     ...mapActions(["updateNavList"])
   },
   methods: {

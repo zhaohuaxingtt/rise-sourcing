@@ -1,10 +1,10 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
- * @LastEditors:  
- * @LastEditTime: 2021-11-11 17:20:06
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-01-05 14:50:30
  * @Description: 
- * @FilePath: \front-web\src\views\financialTargetPrice\query\data.js
+ * @FilePath: \front-sourcing\src\views\financialTargetPrice\query\data.js
  */
 
 
@@ -15,7 +15,7 @@ export const tableTitle = [
   {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
   {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
   {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
-  {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100},
+  // {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100},
   {props:'priceAnaName',name:'CF', key: "CF", tooltip: true, width: 120},
   {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true},
   {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true},
@@ -56,6 +56,6 @@ export const searchList = [
   {value: 'approveStats', label: '审批状态', type: 'selectDict', i18n_label: 'SHENPIZHUANGTAI',selectOption: 'CF_APPROVE_STATUS',permission: 'FINANCIALTARGETPRICE_QUERY_APPROVESTATS|财务目标价管理-目标价查询-审批状态'},
   {value: 'carTypeName', label: '车型项目', type: 'select', i18n_label: 'CHEXINGXIANGMU', selectOption: 'CAR_TYPE_PRO',permission: 'FINANCIALTARGETPRICE_QUERY_CARPROJECT|财务目标价管理-目标价查询-车型项目'},
   {value: 'assignStats', label: '指派状态', type: 'selectDict', i18n_label: 'ZHIPAIZHUANGTAI',selectOption: 'CF_ASSIGN_START',permission: 'FINANCIALTARGETPRICE_QUERY_ASSIGNSTATS|财务目标价管理-目标价查询-指派状态'},
-  {value: 'showSelf', label: '显示自己', type: 'select', i18n_label: 'XIANSHIZHIJI', selectOption: 'IS_SHOW_SELF',permission: 'FINANCIALTARGETPRICE_QUERY_SHOWSELF|财务目标价管理-目标价查询-指派状态'}
+  {value: 'showSelf', label: '显示自己', type: 'select', i18n_label: 'XIANSHIZHIJI', selectOption: 'IS_SHOW_SELF',permission: 'FINANCIALTARGETPRICE_QUERY_SHOWSELF|显示自己'}
 
 ]

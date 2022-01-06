@@ -93,6 +93,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import { getSupplierInfo } from "@/api/mock/mock";
 import { supplierTableListColumns } from "./data";
 import { getBlackStuffList } from "@/api/bidding/bidding";
+// import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 
 export default {
   mixins: [pageMixins],

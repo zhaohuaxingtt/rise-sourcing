@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-24 15:19:33
- * @LastEditTime: 2021-11-29 14:40:56
+ * @LastEditTime: 2022-01-05 10:53:40
  * @LastEditors: Luoshuang
  * @Description: 风险预警配置
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\riskAndAlarmConfig\index.vue
@@ -95,11 +95,11 @@ export default {
               o.icon = tar.icon
               o.level = tar.level
             }
-            finger.push(o.delayWeekLeft)
-            finger.push(o.delayWeekRight)
+            finger.push({ delayType: o.delayType,value:o.delayWeekLeft})
+            finger.push({ delayType: o.delayType,value:o.delayWeekRight})
             return o
           })
-          this.finger = finger.join(',')
+          this.finger = JSON.stringify(finger)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -113,10 +113,10 @@ export default {
       const index = scope.$index
       const value = scope.row[key] || ''
       if (isNaN(Number(value))) return
-      if (key === 'delayWeekLeft' && index !== 0) {
+      if (key === 'delayWeekLeft' && index !== 0 && this.data[index-1].delayType === scope.row.delayType) {
         this.$set(this.data[index-1], 'delayWeekRight', value)
       }
-      if (key === 'delayWeekRight' && index !== (this.data.length-1)) {
+      if (key === 'delayWeekRight' && index !== (this.data.length-1) && this.data[index+1].delayType === scope.row.delayType) {
         this.$set(this.data[index+1], 'delayWeekLeft', value)
       }
     },
@@ -138,12 +138,14 @@ export default {
           console.log(min, max)
           errorInfo = `${this.language('FENGXIANDENGJI','风险等级')}[${this.language(item.key,item.level)}],${this.language('PEIZHIBUHEFAXIUGCHONGSHI','配置不合法，请修改后重试')}`
         }
-        sortArray.push(min)
-        sortArray.push(max)
+        sortArray.push({delayType: item.delayType,value: min})
+        sortArray.push({delayType: item.delayType,value: max})
       })
-      sortArray = sortArray.map(o => Number(o))
-      const unsortString = sortArray.join(',')
-      const sortString = sortArray.sort((a,b) => a-b).join(',')
+      // sortArray = sortArray.map(o => Number(o))
+      const unsortString = JSON.stringify(sortArray)
+      // eslint-disable-next-line no-undef
+      const sortString = JSON.stringify(_.sortBy(sortArray, ['delayType', 'value']))
+      console.log(unsortString, sortString)
       // 顺序有错误
       if (state && sortString !== unsortString) {
         state = false
@@ -213,9 +215,9 @@ export default {
   color: rgba(140, 152, 172, 1);
 }
 .riskAndAlarmConfig {
-  padding: 0;
-  padding-top: 10px;
-  height: calc(100% - 55px);
-  overflow: visible;
+  padding: 0 !important;
+  padding-top: 10px !important;
+  height: calc(100% - 55px) !important;
+  overflow: visible !important;
 }
 </style>
