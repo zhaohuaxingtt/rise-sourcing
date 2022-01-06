@@ -143,6 +143,7 @@ export default {
                 searchParams[i] = '';
             }
             this.searchParams = searchParams;
+            this.sure()
         },
         // 改变弹窗是否显示状态
         changeShowStatus(){
