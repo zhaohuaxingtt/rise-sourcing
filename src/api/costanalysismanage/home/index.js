@@ -50,13 +50,9 @@ export function getCommodityOptions() {
 
 // 根据Commodity查询Linie
 export function getLinieOptionsByCommodity(params, options) {
-  return userCenterRequst({
-    url: '/api/getUserListByTag',
+  return requst({
+    url: `/purchasing-project-parts/linie/${ params.deptNum }`,
     method: 'GET',
-    params: {
-      deptId: params.deptId,
-      tagId: 4
-    },
     ...options
   })
 }
