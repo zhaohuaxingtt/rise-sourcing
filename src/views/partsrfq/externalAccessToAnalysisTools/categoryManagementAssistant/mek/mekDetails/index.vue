@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-06 14:13:20
+ * @LastEditTime: 2022-01-06 14:42:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -1206,8 +1206,8 @@ export default {
     },
     handleMEKInfo () {
       let vwModelCodes = JSON.stringify([
-        ...this.ComparedMotor,
         this.targetMotor,
+        ...this.ComparedMotor
       ]);
       // let vmModelCodes = ['SK461/0CS_K', 'SK260/0CS_K']
       this.$router.push({
@@ -1293,33 +1293,28 @@ export default {
       if (this.reportSave) {
         this.reportFlag = false;
         downloadPDF({
-          idEle: "content",
+          idEle: "#content",
           pdfName: this.reportName,
           callback: async (pdf, pdfName) => {
+            console.log(pdf, pdfName)
             try {
               const time = new Date().getTime();
               const filename = pdfName + time + ".pdf";
               const pdfFile = pdf.output("datauristring");
               const blob = dataURLtoFile(pdfFile, filename);
               const formData = new FormData();
-              formData.append("multipartFile", blob);
-              formData.append("applicationName", "rise");
+              formData.append('applicationName', 'rise') // 桶名，默认固定rise
+              formData.append('businessId', 8025) // 业务id，默认固定8025
+              formData.append('currentUser', this.$store.state.permission.userInfo.id) // 用户id
+              formData.append('type', 1) // 文件类型 1:OBS 2:NFS，默认1
+              formData.append('file', blob)
               const res = await uploadFile(formData);
               console.log(res, "data")
-              // if (Array.isArray(res.data)) {
-              //   return res
-              // } else if (typeof res.data === 'object') {
-              //   return {
-              //     ...res,
-              //     data: [res.data],
-              //   }
-              // }
-              // return res
-              const data = res.data[0];
+              const data = res.data;
               const req = {
                 mekId: this.chemeId,
-                name: data.fileName,
-                path: data.filePath,
+                name: data.name,
+                path: data.path,
                 remark: this.reportName,
               };
               await add(req);
