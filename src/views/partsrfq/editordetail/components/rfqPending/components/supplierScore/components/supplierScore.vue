@@ -12,7 +12,7 @@
           }"
           class="tishi"
         >
-          <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
+          <icon symbol :name="iconName[status] || ''" class="tishi-icon"></icon>
           <span>{{ status }}</span>
         </div>
       </div>
@@ -23,7 +23,8 @@
           <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SAVE|供应商评分保存">{{ language('LK_BAOCUN','保存') }}</iButton>
           <iButton @click="setScoringDept" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
         </template>
-          <iButton @click="sendTaskForRating" :loading="pushLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PUSHSCORETASK|供应商评分推送评分任务">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
+        <!-- <iButton @click="sendTaskForRating" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton> -->
+          <iButton @click="setScoringPush" :loading="pushLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PUSHSCORETASK|供应商评分推送评分任务">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
         <i
           @click="toggle('hidens')"
           class="el-icon-arrow-down card-icon cursor"
@@ -50,7 +51,7 @@
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
-    <iPagination
+    <!-- <iPagination
         v-update
         @size-change="handleSizeChange($event, getTableList)"
         @current-change="handleCurrentChange($event, getTableList)"
@@ -60,7 +61,7 @@
         :layout="page.layout"
         :current-page='page.currPage'
         :total="page.totalCount"
-    />
+    /> -->
     </div>
     <!------------------------------------------------------------------------>
     <!--                  备注弹框                                          --->
@@ -71,7 +72,8 @@
         :memo="memo"
         :disabled="disabled"
     />
-    <scoringDeptDialog :visible.sync="scoringDeptVisible" :ids="[$route.query.id]" @update="updateTable" />
+    <scoringDeptDialog :visible.sync="scoringDeptVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
+    <scoringPushDialog :visible.sync="scoringPushVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
   </iCard>
 </template>
 
@@ -86,6 +88,7 @@ import {serialize} from '@/utils'
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import scoringDeptDialog from './scoringDeptDialog'
+import scoringPushDialog from './scoringPushDialog'
 import axios from 'axios'
 import { cloneDeep } from "lodash"
 import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data"
@@ -98,17 +101,18 @@ export default {
     tpbRemarks,
     iButton,
     icon,
-    scoringDeptDialog
+    scoringDeptDialog,
+    scoringPushDialog
   },
   mixins: [pageMixins, rfqCommonFunMixins],
   props:{
-    todo: Boolean
+    todo: Boolean,
+    status: String
   },
   data() {
     return {
       iconName,
       hidens: false,
-      status: '',
       tableListData: [],
       tableTitle: JSON.parse(JSON.stringify(supplierScoreTitle)),
       tableLoading: false,
@@ -116,6 +120,7 @@ export default {
       dialogRemarks: false,
       selectedRowData: {},
       scoringDeptVisible: false,
+      scoringPushVisible: false,
       pushLoading: false,
       setScoringDeptVisible: false,
       templateScoreTitle:templateScoreTitle,
@@ -139,13 +144,16 @@ export default {
     }
   },
   watch:{
-    status(val){
-      if(val=='已完成'){
-        this.hidens = true
-      }else{
-        this.hidens = false
-      }
-    }
+    status: {
+      handler(val) {
+        if (val == "已完成") {
+          this.hidens = true;
+        } else {
+          this.hidens = false;
+        }
+      },
+      immediate: true
+    },
   },
   methods: {
     toggle(type) {
@@ -172,7 +180,6 @@ export default {
         this.tableListData = this.trnaslateDataForView(res.data || [], tpb);
         this.page.totalCount = res.total
         this.tableLoading = false;
-        this.status='已完成'
         this.supplierProducePlaces = this.tableListData.map(item => {
           if (!item.companyAddressCode && item.companyAddress) {
             item.companyAddressCode = item.companyAddress
@@ -283,6 +290,10 @@ export default {
     // 设置评分部门
     setScoringDept() {
       this.scoringDeptVisible = true
+    },
+    // 推送评分
+    setScoringPush() {
+      this.scoringPushVisible = true
     },
     // 关闭设置部门后是否刷新表格
     updateTable(status) {

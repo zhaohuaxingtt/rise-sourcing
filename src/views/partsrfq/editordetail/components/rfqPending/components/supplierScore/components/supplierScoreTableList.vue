@@ -52,8 +52,8 @@
         <el-table-column :key="index" align='center' fixed="left" v-else-if="items.props == actionProps" :prop="items.props"
                          :label="items.key ? language(items.key,items.name) : items.name">
           <template slot-scope="scope">
-            <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
-            <!-- <span v-else>{{ '-' }}</span> -->
+            <span v-if="scope.row.hasData" class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+            <span v-else>{{ '-' }}</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' v-else :label="items.key ? language(items.key,items.name) : items.name"

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-04 10:56:49
+ * @LastEditTime: 2022-01-06 18:54:36
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -23,11 +23,11 @@
       <!-- <iButton v-if="isCommonSourcing" @click="waitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
         <iButton  v-if="isCommonSourcing" @click="cancelWaitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN||取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton> -->
      <iButton v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN|等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
-        <iButton @click="handleApplyModuleTargetPrice"
+        <!-- <iButton @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
                  v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
           {{ language('SHENQINGMOJUMUBIAOJIA', '申请模具目标价') }}
-        </iButton>
+        </iButton> -->
         <iButton v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && baseInfo.partProjectType[0] === partProjTypes.PEIJIAN && baseInfo.starMonitorStatus !== 1"
                  :loading="endEngotiationlaoding"
                  @click="updateRfqStatus('07')"
@@ -136,7 +136,7 @@
             <iFormItem label="材料组"
                        name="createDate">
               <iText>
-                {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
+                {{ baseInfo.categoryCode +'-'+ baseInfo.categoryName }}
               </iText>
             </iFormItem>
           </div>
@@ -164,7 +164,7 @@
                      :tooltipContent="baseInfo.mq">{{ nameProcessor(baseInfo.mq) }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf">
-              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
+              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf)||baseInfo.cfControllerNames.join(',') }}</iText>
             </iFormItem>
           </div>
           <div class="col">
@@ -188,7 +188,7 @@
             
             <iFormItem label="本轮开始时间"
                        name="currentRoundsEndTime">
-              <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
+              <iText>{{ baseInfo.currentRoundsStartTime }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_BENLUNBAOJIAJIEZHISHIJIAN', '本轮报价截止时间') + ':'"
                        name="currentRoundsEndTime"
@@ -218,7 +218,7 @@
     <!--------------------------------------------------------------->
     <rfqPending ref="rfqPending"
                 v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"
-                :activityTabIndex="activityTabIndex"></rfqPending>
+                :activityTabIndex="activityTabIndex" :todoObj="todoObj"></rfqPending>
     <!--------------------------------------------------------------->
     <!-------------------------RFQ详情信息---------------------------->
     <!--------------------------------------------------------------->
@@ -263,7 +263,7 @@
           ">{{ language('QUXIAO', '取消') }}</iButton>
       </div>
     </iDialog>
-    <intoiDialog v-if="navActivtyValue==''||navActivtyValue=='0'" @changeActivityTabIndex="changeActivityTabIndex" />
+    <intoiDialog :tipsVislble.sync="tipsVislble" v-if="(navActivtyValue === '0' || navActivtyValue === '')" :todoObj="todoObj" @changeActivityTabIndex="changeActivityTabIndex" />
   </iPage>
 </template>
 <script>
@@ -282,7 +282,7 @@ import maintainSupplier from '@/views/partsrfq/home/components/maintainSupplier'
 import createDesignateTips from '@/views/partsrfq/home/components/createDesignateTips';
 import noBnkDialog from '@/views/partsrfq/home/components/noBnkDialog';
 import { selectRfq, starMonitorAutoNomi } from '@/api/designate/designatedetail/addRfq';
-import { getTabelData } from '@/api/partsprocure/home';
+import { getTabelData, waitDealtRfqTaskStatus } from '@/api/partsprocure/home';
 import { pageMixins } from '@/utils/pageMixins';
 import { tableTitle, form } from '@/views/partsprocure/home/components/data';
 import { getRfqInfo } from '@/api/costanalysismanage/rfqdetail';
@@ -324,6 +324,8 @@ export default {
   mixins: [rfqCommonFunMixins, pageMixins],
   data () {
     return {
+      todoObj:{},
+      tipsVislble:false,
       showReason: false,
       navActivtyValue: '',
       navList: navList,
@@ -367,6 +369,7 @@ export default {
     this.getPartTableList = this.$store.state.rfq.partfunc;
     this.getTableList();
     this.getBaseInfo();
+    this.waitDealtRfqTaskStatus()
   },
   provide: function () {
     return {
@@ -377,6 +380,35 @@ export default {
     };
   },
   methods: {
+    waitDealtRfqTaskStatus(){
+      this.todoObj = {}
+      this.tipsVislble = false
+      if(this.$route.query.id){
+        let nameObj = {
+        mouldPriceStatusDesc:'模具目标价',
+        mouldBudgetStatusDesc:'模具投资预算',
+        cfPriceStatusDesc:'零件目标价',
+        pushRateStatusDesc:'供应商评分',
+      }
+        waitDealtRfqTaskStatus(this.$route.query.id).then(res=>{
+          if(res.result){
+            let count = 0
+            Object.keys(res.data).forEach(key=>{
+              if(res.data[key]=='未完成'){
+                count++
+              }
+              this.todoObj[key] = {
+                name: nameObj[key],
+                status: res.data[key]
+              }
+            })
+            if(count){
+              this.tipsVislble = true
+            }
+          }
+        })
+      }
+    },
     goToCesPage () {
       const router = this.$router.resolve({
         path: `/bidding/test/addManual/${this.$route.query.id}`,
@@ -478,6 +510,7 @@ export default {
     },
     changeActivityTabIndex(index){
       this.activityTabIndex = index
+      this.tipsVislble = false
     },
     async newRfq () {
       const pendingPartsList = this.$store.state.rfq.pendingPartsList;

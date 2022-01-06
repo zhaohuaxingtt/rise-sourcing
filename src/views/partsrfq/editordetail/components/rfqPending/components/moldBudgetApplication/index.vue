@@ -129,12 +129,12 @@ export default {
   mixins: [pageMixins, rfqCommonFunMixins],
   props: {
     todo: Boolean,
+    status: String
   },
   data() {
     return {
       iconName,
       hidens: false,
-      status: '',
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
@@ -143,13 +143,16 @@ export default {
     };
   },
   watch:{
-    status(val){
-      if(val=='已完成'){
-        this.hidens = true
-      }else{
-        this.hidens = false
-      }
-    }
+    status: {
+      handler(val) {
+        if (val == "已完成") {
+          this.hidens = true;
+        } else {
+          this.hidens = false;
+        }
+      },
+      immediate: true
+    },
   },
   created() {
     this.getTableList();
@@ -192,7 +195,6 @@ export default {
           // this.page.pageSize = res.size
           this.page.totalCount = res.data.total;
           this.tableLoading = false;
-          this.status = '已完成'
         } catch {
           this.tableLoading = false;
         }

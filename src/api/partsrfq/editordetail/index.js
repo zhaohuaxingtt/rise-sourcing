@@ -249,6 +249,14 @@ export function getSupplierProducePlace(params) {
     })
 }
 
+// 获取供应商工厂名称
+export function getSupplierPlantBySupplierId(supplierId) {
+    return requst({
+        url: `/supplier/getSupplierPlantBySupplierId/${ supplierId }`,
+        method: 'GET'
+    })
+}
+
 //报价分析-保存场景布局
 export function negoAnalysisSummaryLayoutSave(layout,layoutType){
     return nego({

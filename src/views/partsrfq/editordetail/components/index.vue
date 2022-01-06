@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2022-01-04 09:40:10
- * @LastEditTime: 2022-01-04 11:00:12
+ * @LastEditTime: 2022-01-05 17:54:45
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -16,9 +16,9 @@
     >
       <div>
         当前RFQ有一下任务未完成，请及时处理
-        <template v-for="(item, index) in todoList">
-          <p :key="index">
-            <icon symbol name="iconzhongyaoxinxitishi" /> {{ item.name }}
+        <template v-for="item in todoObj">
+          <p :key="item.name" v-if="item.status!='已完成'">
+            <icon symbol :name="iconName[item.status]" /> {{ item.name }}
           </p>
         </template>
         <div class="footer">
@@ -32,32 +32,34 @@
 
 <script>
 import { iDialog, icon, iButton } from "rise";
+import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data";
 export default {
   components: {
     iDialog,
     icon,
     iButton
   },
+  props:{
+    todoObj:{
+      type: Object,
+      default:()=>{return {}}
+    },
+    tipsVislble:{
+      type: Boolean,
+      default: false,
+    }
+  },
   data() {
     return {
-      tipsVislble: true,
-      todoList: [
-        {
-          name: "财务目标价申请",
-        },
-        {
-          name: "模具目标价申请",
-        },
-      ],
-    };
+      iconName
+    }
   },
   methods:{
     close(){
-      this.tipsVislble = false
+      this.$emit("update:tipsVislble", false)
     },
     goto(index){
       this.$emit('changeActivityTabIndex',index)
-      this.close()
     }
   }
 };

@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-04 18:29:16
+ * @LastEditTime: 2022-01-05 18:22:15
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -26,7 +26,7 @@
       </div>
       <div class="button-box">
         <template v-if="!todo">
-          <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{'查看修改记录'}}</iButton>
+          <iButton @click="showDialog" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{'查看修改记录'}}</iButton>
             <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{language('LK_DAOCHU','导出')}}</iButton>
         </template>
           <template v-else>
@@ -72,12 +72,14 @@
       />
       </div>
     </iCard>
+    <moldChangeRecord :visible.sync="visible" :id="$route.query.id" />
   </div>
 </template>
 
 <script>
 import {iCard, iButton, iPagination, iMessage, icon} from "rise";
 import tablelist from 'pages/partsrfq/components/tablelist'
+import moldChangeRecord from "./moldChangeRecord";
 import {pageMixins} from "@/utils/pageMixins";
 import {getCfPrice} from "@/api/partsrfq/editordetail";
 import {excelExport} from "@/utils/filedowLoad";
@@ -89,17 +91,19 @@ export default {
     iButton,
     iPagination,
     tablelist,
-    icon
+    icon,
+    moldChangeRecord
   },
   mixins: [pageMixins],
   props:{
-    todo: Boolean
+    todo: Boolean,
+    status: String
   },
   data() {
     return {
       iconName,
-      status:'',
       hidens: false,
+      visible: false,
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
@@ -108,27 +112,33 @@ export default {
         {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
         {props:'partNameZh',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG'},
         {props:'applyType',name:'申请类型',key: 'LK_SHENQINGLEIXING'},
-        {props:'targetPrice',name:'CF负责人',key:'LK_CFFUZEREN', width: '180'},
+        {props:'cfControllerName',name:'CF负责人',key:'LK_CFFUZEREN', width: '180'},
         {props:'expTargetpri',name:'期望目标价',key: 'LK_QIWANGMUBIAOJIA'},
-        {props:'expTargetpri',name:'目标价',key: 'LK_MUBIAOJIA'},
-        {props:'expTargetpri',name:'申请状态',key: 'LK_SHENQINGZHUANGTAI'},
-        {props:'expTargetpri',name:'审批状态',key: 'LK_SHENPIZHUANGTAI'},
+        {props:'targetPrice',name:'目标价',key: 'LK_MUBIAOJIA'},
+        {props:'applyStatusDesc',name:'申请状态',key: 'LK_SHENQINGZHUANGTAI'},
+        {props:'approveStatusDesc',name:'审批状态',key: 'LK_SHENPIZHUANGTAI'},
     ]
     };
   },
   watch:{
-    status(val){
-      if(val=='已完成'){
-        this.hidens = true
-      }else{
-        this.hidens = false
-      }
-    }
+    status: {
+      handler(val) {
+        if (val == "已完成") {
+          this.hidens = true;
+        } else {
+          this.hidens = false;
+        }
+      },
+      immediate: true
+    },
   },
   created() {
     this.getTableList();
   },
   methods: {
+    showDialog(){
+      this.visible = true
+    },
     openDialog(){
       this.$emit('openDialog','moduleDialogVisible')
     },
@@ -148,7 +158,6 @@ export default {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.page.totalCount = res.total || 0
           this.tableLoading = false;
-          this.status = '未完成'
         } finally {
           this.tableLoading = false;
         }

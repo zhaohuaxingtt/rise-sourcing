@@ -1,96 +1,89 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-04 18:32:03
+ * @LastEditTime: 2022-01-06 18:38:32
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
-  <div>
-    <iCard>
-      <div class="card-header">
-        <div class="card-title">
-          <span class="title">{{ "零件目标价" }}</span>
-          <div
-            v-if="todo"
-            :class="{
-              danger: status == '未申请',
-              warning: status == '未完成',
-              success: status == '已完成',
-            }"
-            class="tishi"
+  <iCard>
+    <div class="card-header">
+      <div class="card-title">
+        <span class="title">{{ "零件目标价" }}</span>
+        <div
+          v-if="todo"
+          :class="{
+            danger: status == '未申请',
+            warning: status == '未完成',
+            success: status == '已完成',
+          }"
+          class="tishi"
+        >
+          <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
+          <span>{{ status }}</span>
+        </div>
+      </div>
+      <div class="button-box">
+        <template v-if="!todo">
+          <iButton
+            @click="showDialog"
+            >{{ "查看修改记录" }}</iButton
           >
-            <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
-            <span>{{ status }}</span>
-          </div>
-        </div>
-        <div class="button-box">
-          <template v-if="!todo">
-            <iButton
-              @click="exports"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
-              "
-              >{{ "查看修改记录" }}</iButton
-            >
-            <iButton
-              @click="exports"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
-              "
-              >{{ language("LK_DAOCHU", "导出") }}</iButton
-            >
-          </template>
-          <template v-else>
-            <iButton
-              @click="openDialog"
-              >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
-            >
-          </template>
-          <i
-            @click="toggle('hidens')"
-            class="el-icon-arrow-down card-icon cursor"
-            :class="{ rotate: hidens }"
-          ></i>
-        </div>
+          <iButton
+            @click="exports"
+            v-permission.auto="
+              PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
+            "
+            >{{ language("LK_DAOCHU", "导出") }}</iButton
+          >
+        </template>
+        <template v-else>
+          <iButton @click="openDialog">{{
+            language("LK_SHENQINGMUBIAOJIA", "申请目标价")
+          }}</iButton>
+        </template>
+        <i
+          @click="toggle('hidens')"
+          class="el-icon-arrow-down card-icon cursor"
+          :class="{ rotate: hidens }"
+        ></i>
       </div>
-      <div v-show="hidens || !todo">
-        <tablelist
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="tableLoading"
-          @handleSelectionChange="handleSelectionChange"
-          :hide-open-page="true"
-          :index="true"
-          :lang="true"
-          v-permission.auto="PARTSRFQ_EDITORDETAIL_TABLE | (财务目标价 - 表格)"
-        ></tablelist>
-        <!------------------------------------------------------------------------>
-        <!--                  表格分页                                          --->
-        <!------------------------------------------------------------------------>
-        <iPagination
-          v-update
-          @size-change="handleSizeChange($event, getTableList)"
-          @current-change="handleCurrentChange($event, getTableList)"
-          background
-          :page-sizes="page.pageSizes"
-          :page-size="page.pageSize"
-          :layout="page.layout"
-          :current-page="page.currPage"
-          :total="page.totalCount"
-        />
-      </div>
-    </iCard>
-  </div>
+    </div>
+    <div v-show="hidens || !todo">
+      <tablelist
+        :tableData="tableListData"
+        :tableTitle="tableTitle"
+        :tableLoading="tableLoading"
+        @handleSelectionChange="handleSelectionChange"
+        :hide-open-page="true"
+        :index="true"
+        :lang="true"
+        v-permission.auto="PARTSRFQ_EDITORDETAIL_TABLE | (财务目标价 - 表格)"
+      ></tablelist>
+      <iPagination
+        v-update
+        @size-change="handleSizeChange($event, getTableList)"
+        @current-change="handleCurrentChange($event, getTableList)"
+        background
+        :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"
+      />
+    </div>
+    <toolingTargetPrice :visible.sync="visible" :rfqId="$route.query.id" />
+  </iCard>
 </template>
 
 <script>
 import { iCard, iButton, iPagination, iMessage, icon } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
+import toolingTargetPrice from "./toolingTargetPrice";
 import { pageMixins } from "@/utils/pageMixins";
 import { getCfPrice } from "@/api/partsrfq/editordetail";
 import { excelExport } from "@/utils/filedowLoad";
-import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data"
+import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data";
 
 export default {
   components: {
@@ -98,66 +91,76 @@ export default {
     iButton,
     iPagination,
     tablelist,
-    icon
+    icon,
+    toolingTargetPrice
   },
   mixins: [pageMixins],
-  props:{
+  props: {
     todo: Boolean,
+    status: String
   },
   data() {
     return {
       iconName,
       hidens: false,
-      status:'',
+      visible:false,
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
       tableTitle: [
-        { props: "fsnrGsnrNum", name: "FS号", key: "LK_FSHAO" },
+        {
+          props: "fsnrGsnrNum",
+          name: "零件采购项目号",
+          key: "LK_LINGJIANCAIGOUXIANGMUHAO",
+        },
         { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO" },
         {
           props: "partNameZh",
           name: "零件名（中）",
           key: "LK_LINGJIANMINGZHONG",
         },
-        // {props:'targetPrice',name:'T-TargetPrice',key:'T-TargetPrice'},
-        {
-          props: "targetPrice",
-          name: "模具目标价",
-          key: "MOJUMUBIAOJIA",
-          width: "180",
-        },
-        { props: "applyType", name: "申请类别", key: "LK_SHENQINGLEIBIE" },
+        { props: "applyType", name: "申请类型", key: "LK_SHENQINGLEIXING" },
         {
           props: "expTargetpri",
           name: "期望目标价",
           key: "LK_QIWANGMUBIAOJIA",
         },
-        { props: "lcAPrice", name: "LC_A", key: "LC_A" },
-        { props: "lcBPrice", name: "LC_B ", key: "LC_B" },
-        { props: "skdAPrice", name: "SKD_A", key: "SKD_A" },
-        { props: "skdBPrice", name: "SKD_B", key: "SKD_B" },
-        { props: "ckdDuty", name: "CKD Duty%", key: "CKD Duty%" },
-        { props: "ckdExwork", name: "CKD EX-Work", key: "CKD EX-Work" },
-        { props: "ckdLanded", name: "CKDLANDED", key: "CKDLANDED" },
+        { props: "APrice", name: "A Price", key: "APrice" },
+        { props: "BPrice", name: "B Price", key: "BPrice" },
+        { props: "applyStatusDesc", name: "申请状态", key: "SHENQINGZHUANGTAI" },
+        { props: "approveStatusDesc", name: "审批状态", key: "SHENPIZHUANGTAI" },
       ],
     };
   },
   created() {
     this.getTableList();
   },
-  watch:{
-    status(val){
-      if(val=='已完成'){
-        this.hidens = true
-      }else{
-        this.hidens = false
-      }
-    }
+  watch: {
+    status: {
+      handler(val) {
+        if (val == "已完成") {
+          this.hidens = true;
+        } else {
+          this.hidens = false;
+        }
+      },
+      immediate: true
+    },
   },
   methods: {
-    openDialog(){
-      this.$emit('openDialog','partsDialogVisible')
+    showDialog(){
+      this.visible = true
+    },
+    openDialog() {
+      if(!this.selectTableData.length){
+        return iMessage.warn(
+          this.language(
+            "LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGLINGJIANMUBIAOJIADECAIGOUXIANGMU",
+            "抱歉，您当前还未选择需要申请零件目标价的采购项目！"
+          )
+        );
+      }
+      this.$emit("openDialog", "partsDialogVisible", JSON.parse(JSON.stringify(this.selectTableData)));
     },
     toggle(type) {
       this[type] = !this[type];
@@ -173,9 +176,20 @@ export default {
             pageSize: this.page.pageSize,
           });
           this.tableListData = Array.isArray(res.data) ? res.data : [];
+          this.tableListData.forEach((i) => {
+            if (i.applyType == "LC") {
+              i.APrice = i["lcAPrice"];
+              i.BPrice = i["lcBPrice"];
+            } else if (i.applyType == "SKD") {
+              i.APrice = i["skdAPrice"];
+              i.BPrice = i["skdBPrice"];
+            } else if (i.applyType == "CKD LANDED") {
+              i.APrice = i["ckdExwork"] + "(" + i["ckdDuty"] + "%)";
+              i.BPrice = i["ckdLanded"];
+            }
+          });
           this.page.totalCount = res.total || 0;
           this.tableLoading = false;
-          this.status = '未申请'
         } finally {
           this.tableLoading = false;
         }

@@ -8,7 +8,7 @@
   <iTabsList type="card" @tab-click="handleTabClick" v-model="activityTabIndex"  class="margin-top20 cardss">
     <template v-for="item of tabs">
       <el-tab-pane :label="language(item.key,item.label)" :key="item.label" :name='item.index' v-if='showTab(item.index)' v-permission.dynamic.auto='item.permissionKey'>
-        <component :ref='item.component' :key='hashCode' :is="item.component" v-if="activityTabIndex === item.index" @jump='jump'/>
+        <component :ref='item.component' :key='hashCode' :is="item.component" v-if="activityTabIndex === item.index" @jump='jump' :todoObj="todoObj"/>
       </el-tab-pane>
     </template>
   </iTabsList>
@@ -40,6 +40,10 @@ export default {
     activityTabIndex:{
       type:String,
       default:'0'
+    },
+    todoObj:{
+      type: Object,
+      default:()=>{return {}}
     },
   },
   inject:['getbaseInfoData','registerFn'],
