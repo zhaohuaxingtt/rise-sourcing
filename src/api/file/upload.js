@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-04-20 19:16:52
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-05 11:36:06
+ * @LastEditTime: 2022-01-06 13:46:04
  * @Description:
  * @FilePath: \front-web\src\api\file\upload.js
  */
@@ -14,8 +14,8 @@ const fileRequst = axios(process.env.VUE_APP_BASE_UPLOAD_API + '/fileud')
 const requstUploads = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 
 export function uploadFile(parmars) {
-  return requst({
-    url: '/upload',
+  return fileRequst({
+    url: '/udSingleFile',
     method: 'POST',
     data: parmars,
   })
@@ -87,7 +87,6 @@ export function uploadUdFile(params) {
         data: [res.data],
       }
     }
-
     return res
   })
 }
