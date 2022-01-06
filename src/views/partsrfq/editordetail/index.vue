@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-06 18:54:36
+ * @LastEditTime: 2022-01-06 19:08:14
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -164,7 +164,7 @@
                      :tooltipContent="baseInfo.mq">{{ nameProcessor(baseInfo.mq) }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf">
-              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf)||baseInfo.cfControllerNames.join(',') }}</iText>
+              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf)||baseInfo.cfControllerNames[0] }}</iText>
             </iFormItem>
           </div>
           <div class="col">
