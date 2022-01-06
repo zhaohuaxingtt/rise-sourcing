@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-06 14:42:09
+ * @LastEditTime: 2022-01-06 15:50:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -1216,6 +1216,7 @@ export default {
           categoryCode: this.categoryCode,
           vwModelCodes,
           chemeId: this.chemeId,
+          isBindingRfq: this.isBindingRfq
         },
       });
     },
