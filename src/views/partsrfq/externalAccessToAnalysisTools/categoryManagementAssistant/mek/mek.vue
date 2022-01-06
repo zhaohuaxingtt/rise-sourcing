@@ -303,7 +303,7 @@ export default {
         this.$router.push({
           path: "/sourcing/mek/mekDetails",
           query: {
-            chemeId: res.data,
+            schemeId: res.data,
             productFactoryNames: params ? params.productFactoryNames || "" : ""
           },
         })
@@ -507,7 +507,7 @@ export default {
         const openUrl = this.$router.resolve({
           path: "/sourcing/mek/mekDetails",
           query: {
-            chemeId: val.id,
+            schemeId: val.id,
             rfqId: val.rfqNo || ''
           },
         });

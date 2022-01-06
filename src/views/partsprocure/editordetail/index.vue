@@ -210,9 +210,9 @@
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
 							<!----------------------------------------------------------------------------------------------->
-							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="datetime"></iDatePicker>
+							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="date"></iDatePicker>
 							<iText v-else >
-								{{ detailData.sopDate }}
+								{{ detailData.sopDate ? formatDate(detailData.sopDate) : detailData.sopDate }}
 							</iText>
 						</iFormItem>
 						<!-- <iFormItem :label="language('LK_ZHIFUTIAOKUAN','支付条款') + ':'" name="test"
@@ -450,6 +450,7 @@
     import purchaseApply from "./components/purchaseApply"
 		import { getEnumValue } from "@/config"
 		import iLoger from 'rise/web/components/iLoger'
+		import dayjs from 'dayjs'
 	export default {
 		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,iLoger,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs, purchaseApply},
 		provide:function(){
@@ -1001,6 +1002,9 @@
 						this.$forceUpdate()
 					}
 				})
+			},
+			formatDate(val, format='YYYY-MM-DD') {
+				return dayjs(val).format(format)
 			}
 		}
 }

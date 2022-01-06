@@ -483,6 +483,33 @@ export function exportGsPartsAsRow(rfqId,round,dataList) {
     })
 }
 
+// 导出定点FS横轴零件
+export function exportFSPartsAsRowByNomiId(nomiId, data) {
+    return downLoad({
+        url:`/nego-assistant/export/nomi-fs-parts-as-row/${ nomiId }`,
+        method: 'POST',
+        data
+    })
+}
+
+// 导出定点GS横轴零件接口
+export function exportFsSupplierAsRowByNomiId(nomiId, data) {
+    return downLoad({
+        url:`/nego-assistant/export/nomi-fs-supplier-as-row/${ nomiId }`,
+        method: 'POST',
+        data
+    })
+}
+
+// 导出定点GS横轴零件接口
+export function exportGsPartsAsRowByNomiId(nomiId, data) {
+    return downLoad({
+        url:`/nego-assistant/export/nomi-gs-parts-as-row/${ nomiId }`,
+        method: 'POST',
+        data
+    })
+}
+
 //关联StarMonitor记录
 export function starMonitorList(data) {
     return requst({

@@ -174,7 +174,7 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          if (!res.data.length) {
+          if (!res.data || !res.data.length) {
             iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             this.getMouldBudget()
           } else {
@@ -209,7 +209,7 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          if (!res.data.length) {
+         if (!res.data || !res.data.length) {
             iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             this.getMouldBudget()
           } else {
