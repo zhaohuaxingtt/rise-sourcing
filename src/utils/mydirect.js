@@ -3,7 +3,7 @@ import store from '../store'
 import router from '@/router'
 import { businessPermission } from '@/utils'
 import { getTousandNum, delcommafy } from '@/utils/tool'
-const openProcess = process.env.NODE_ENV == 'dev'
+const openProcess = process.env.NODE_ENV == 'dev' || process.env.NODE_ENV == 'vmsit'
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
