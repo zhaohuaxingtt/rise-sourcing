@@ -111,7 +111,7 @@
                 <span>{{ language('LK_RUZHANGDANHAO', '入账单号') }}</span>
               </div>
               <div class="disabled">
-                <span @click="jumpDetailsNum()" class="table-link">{{detailsData.enterAccountNum}}</span>
+                <span @click="jumpDetailsNum(detailsData.enterAccountNum)" class="table-link">{{detailsData.enterAccountNum}}</span>
               </div>
             </div>
           </div>
@@ -348,8 +348,9 @@ export default {
     },
 
     //  入账单号
-    jumpDetailsNum(){
-      iMessage.warn('功能开发中...');
+    jumpDetailsNum(objectReqId){
+      // iMessage.warn('功能开发中...');
+      window.open(window.location.origin + `/order/#/ws2/fixedAssetManagement/Recorded/details?objectReqId=${objectReqId}`, '_blank')
     },
 
     //  点击订单详情
