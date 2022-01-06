@@ -414,7 +414,6 @@ export default {
     "ruleForm.biddingProducts":{
       deep:true,
       handler(val){
-        console.log(395,val)
         this.dataProducts = val.reduce((pre,cur) => {
           return {...pre,[cur.id]:
                         {
@@ -473,9 +472,6 @@ export default {
   },
   mounted() {
     this.updateRuleForm(this.initData);
-    this.$nextTick(() => {
-      this.rules = baseRules(this)
-    })
     getModels().then((res) => {
       this.modelsOption = res?.data.filter((item) => item.name?.length > 0);
     });
@@ -904,7 +900,10 @@ export default {
         })
         this.ruleForm.modelProjects = modelProjectsData
       });
-      
+      this.rules = baseRules(this)
+      this.$nextTick(() => {
+        this.$refs["ruleForm"].clearValidate()
+      });
       // if (this.ruleForm.biddingMode === "02") {
       //   //总价
       //   this.ruleForm.totalPrices = Big(this.ruleForm.totalPrices || 0)
