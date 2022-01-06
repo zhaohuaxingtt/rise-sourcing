@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-06 16:42:34
+ * @LastEditTime: 2022-01-06 21:55:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -23,7 +23,7 @@
                        :label="item.categoryName">
             </el-option>
           </iSelect> -->
-          <span>{{ categoryName }}</span>
+          <span>{{language('CAILIAOZU','材料组')}}:{{ categoryName }}</span>
         </div>
         <div class="flex"
              v-show="reportFlag||!propSchemeId">
@@ -842,22 +842,28 @@ export default {
       if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
+        let entryParams = _.cloneDeep(params)
+        entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+        mekInnerTarget(entryParams).then(res => {
+          this.firstBarData = res.data[0];
+        })
+        params.info = params.info.filter(item => item.isTargetMotor === false)
+        this.$nextTick(() => {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       } else {
         params.isBindingRfq = false;
+        this.onDataLoading = false
+        this.$nextTick(() => {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       }
-      this.barData.forEach((item) => {
-        let obj = {
-          motorId: item.motorId,
-          priceType: item.priceType,
-          priceDate: item.priceDate,
-          isTargetMotor: false,
-          engine: item.engine || "",
-          position: item.position || "",
-          transmission: item.transmission || "",
-        };
-        params.info.push(obj);
-      });
-      this.getHistogram(params);
     },
     changeTargetDate (val) {
       this.$forceUpdate();
