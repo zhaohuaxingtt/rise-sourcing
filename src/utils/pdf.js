@@ -355,6 +355,7 @@ export function getCurrentTime() {
 export function transverseDownloadPDF({
     //html横向导出pdf
     idEle: ele,
+    dom,
     pdfName: pdfName,
     callback: callback,
     exportPdf: exportPdf,
@@ -365,7 +366,11 @@ export function transverseDownloadPDF({
         var title = document.querySelector(titleArr.toString()) //获取页面dom节点
         var titleHeight = title.offsetHeight + 1 //页眉高度 ===>70px
     }
-    let el = document.getElementById(ele) //通过getElementById获取要导出的内容
+
+    let el = ""
+    if (ele) el = document.getElementById(ele) //通过getElementById获取要导出的内容
+    else el = dom
+    
     let eleW = el.offsetWidth // 获得该容器的宽
     let eleH = el.offsetHeight // 获得该容器的高
     var canvasFragment = document.createElement('canvas')

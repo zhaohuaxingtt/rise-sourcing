@@ -89,11 +89,12 @@
 <script>
 import { iDialog, iInput, iButton, iPagination,iSelect } from "rise";
 import iTableCustom from "@/components/biddingComponents/iTableCustom";
-import commonTable from "@/components/biddingComponents/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { getSupplierInfo } from "@/api/mock/mock";
 import { supplierTableListColumns } from "./data";
+import { getBlackStuffList } from "@/api/bidding/bidding";
 // import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
+
 export default {
   mixins: [pageMixins],
   components: {
@@ -103,11 +104,11 @@ export default {
     iPagination,
     iTableCustom,
     iButton,
-    // supplierBlackIcon,
   },
   props: {
     show: { type: Boolean, default: false },
     suppliers: { type: Array },
+    binddingRuleForm: {type: Object, default: () => {}}
   },
   watch: {
     show() {
@@ -208,15 +209,20 @@ export default {
     //   // this.query(param);
     // },
     // 表格选中值集
-    handleSelectionChange(val) {
+    async handleSelectionChange(val) {
       console.log(this.suppliers)
       console.log(val)
+      
+      let flag = false
+      const res = await this.handleBlackStuffList(val)
+      flag = !!res?.data?.length
+      console.log(res)
       let isHad = false;
       let selection = this.$refs.multipleTable.$children[0].selection;
       if (this.suppliers.length != 0) {
         for (let i = 0; i < this.suppliers.length; i++) {
           for (let j = 0; j < val.length; j++) {
-            if (this.suppliers[i].supplierId == val[j].subSupplierId) {
+            if (this.suppliers[i].supplierId == val[j].subSupplierId || flag) {
               isHad = true;
               selection.splice(j, 1);
               val.splice(j, 1);
@@ -230,10 +236,32 @@ export default {
       } else {
         this.selectedTableData = val;
       }
+      if (flag) {
+        return this.$message.error(this.language('BIDDING_SKGYSBKXJ','受控供应商不可询价！'));
+      }
       if (isHad) {
-        this.$message.error(this.language('BIDDING_YCZGYS', "已存在供应商"));
+       return this.$message.error(this.language('BIDDING_YCZGYS', "已存在供应商"));
       }
       // this.selectedTableData = val;
+    },
+
+    // 判断是否有供应商黑名单
+    handleBlackStuffList(val){
+      const { products } = this.binddingRuleForm
+      const fsnrGsnrList = products?.map(item => item.fsnrGsnr) || []  
+      const supplierIdList = val?.map(item => Number(item.subSupplierId)) || []
+      const blackData = {fsnr: fsnrGsnrList, spplierIds: supplierIdList}
+      return new Promise((resolve, reject) => {
+        if ( fsnrGsnrList.length && supplierIdList.length) {
+          getBlackStuffList(blackData).then((res) => {
+            resolve(res)
+          }).catch(err => {
+            reject(false)
+          })
+        } else {
+          resolve(false)
+        }
+      })
     },
     // handleSizeChange(val) {
     //   console.log("handleSizeChange", this.page);
