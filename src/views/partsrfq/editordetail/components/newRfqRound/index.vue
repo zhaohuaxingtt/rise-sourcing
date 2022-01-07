@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2022-01-04 09:54:15
+ * @LastEditTime: 2022-01-06 23:35:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
@@ -281,7 +281,7 @@ export default {
       })
     },
     handleRowClick(row, column, event) {
-      if (!this.$refs.multipleTable.selectable(row)) this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(row, true)
+      // if (!this.$refs.multipleTable.selectable(row)) this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(row, true)
     }
   },
   watch: {
