@@ -58,8 +58,8 @@
             <div>{{ getTousandNum(scope.row.entryAmount) }}</div>
           </template>
           <template #info="scope">
-            <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
             <div class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
+            <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
           </template>
           <!-- <template #apply="scope" v-if="isApply">
             <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
@@ -253,6 +253,7 @@ export default {
   }
 }
 .linkStyle {
+  display: inline-block;
   span {
     color: #1663F6;
     border-bottom: 1px solid #1663F6;
@@ -265,6 +266,8 @@ export default {
   }
 }
 .linkStyleNoline{
+  display: inline-block;
+  margin-left: 12px;
   span {
     color: #1663F6;
     cursor: pointer;
