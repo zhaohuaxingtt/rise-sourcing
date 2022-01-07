@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-01-07 14:56:30
+ * @LastEditTime: 2022-01-07 17:21:20
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -242,7 +242,7 @@ export default{
         if(item.partNo && item.partNo.length && item.partNo.includes('Group total')){
           return [...accu, index]
         }else{
-          return accu
+          return [accu]
         }
       })
     },
