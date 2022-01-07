@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-07 15:11:39
+ * @LastEditTime: 2022-01-07 17:39:25
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -393,7 +393,7 @@ export default {
         waitDealtRfqTaskStatus(this.$route.query.id).then(res=>{
           if(res.result){
             let count = 0
-            Object.keys(res.data).forEach(key=>{
+            Object.keys(nameObj).forEach(key=>{
               if(res.data[key]=='未完成'){
                 count++
               }

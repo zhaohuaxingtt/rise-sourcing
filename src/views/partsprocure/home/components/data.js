@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2022-01-04 17:24:19
+ * @LastEditTime: 2022-01-07 16:52:21
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -20,8 +20,6 @@ export const tableTitle = [{
 		tooltip: true,
 		width:120,
 		isAekoShow:true,
-		ispartsList: true,
-		ispartsAdd: true
 	},
 	{
 		props: 'partNum',
@@ -31,7 +29,6 @@ export const tableTitle = [{
 		width:130,
 		ispartsList: true,
 		isAekoShow:true,
-		ispartsAdd: true
 	},
 	{
 		props: 'sourcingNumber',
@@ -49,8 +46,6 @@ export const tableTitle = [{
 		tooltip: true,
 		width:100,
 		isAekoShow:true,
-		ispartsList: true,
-		ispartsAdd: true
 	},
 	{
 		props: 'partNameDe',
@@ -59,8 +54,6 @@ export const tableTitle = [{
 		tooltip: true,
 		width:100,
 		isAekoShow:true,
-		ispartsList: true,
-		ispartsAdd: true
 	},
 	{
 		props: 'mtz',
@@ -98,8 +91,6 @@ export const tableTitle = [{
 		tooltip: true,
 		width:80,
 		isAekoShow:true,
-		ispartsList: true,
-		ispartsAdd: true
 	},
 	{
 		props: 'partProjectTypeDesc',
@@ -124,8 +115,6 @@ export const tableTitle = [{
 		tooltip: true,
 		minWidth:120,
 		isAekoShow:true,
-		ispartsList: true,
-		ispartsAdd: true
 	},
 	{
 		props: 'statusDesc',
@@ -134,8 +123,6 @@ export const tableTitle = [{
 		tooltip: true,
 		minWidth:75,
 		isAekoShow:true,
-		ispartsList: true,
-		ispartsAdd: true
 	},
 	{
 		props: 'buyerName',
@@ -144,7 +131,6 @@ export const tableTitle = [{
 		tooltip: true,
 		width:90,
 		isAekoShow:false,
-		ispartsAdd: true
 	},
 	{
 		props: 'linieName',
@@ -153,7 +139,6 @@ export const tableTitle = [{
 		tooltip: true,
 		width:60,
 		isAekoShow:false,
-		ispartsAdd: true
 	},
 	{
 		props: 'quotationStatus',
@@ -162,7 +147,6 @@ export const tableTitle = [{
 		tooltip: true,
 		width:90,
 		isAekoShow:false,
-		ispartsList: true,
 	},
 ]
 

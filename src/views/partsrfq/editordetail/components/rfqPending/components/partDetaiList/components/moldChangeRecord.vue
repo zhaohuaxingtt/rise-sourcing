@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 14:08:28
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-06 15:40:13
+ * @LastEditTime: 2022-01-07 16:42:20
  * @Description: 修改历史card
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\history.vue
 -->
 
 <template>
-  <iDialog :visible.sync="visible" class="margin-top20">
+  <iDialog :visible.sync="visible" class="margin-top20 moldChangeRecord">
     <template slot="title">
     <div class="el-dialog__title">
       <span class="font18 font-weight">{{language('XIUGAIJILU','修改记录')}}</span>
@@ -17,19 +17,21 @@
         </div>
     </div>
     </template>
-    <!------------------------------------------------------------------------>
-    <!--                  表格                                              --->
-    <!------------------------------------------------------------------------>
-    <tableList :activeItems='"fsNum"' :selection="false" :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
-    <!------------------------------------------------------------------------>
-    <!--                  表格分页                                          --->
-    <!------------------------------------------------------------------------>
-    <iPagination class="pagination" v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-      :page-size="page.pageSize"
-      :layout="page.layout"
-      :current-page="page.currPage"
-      :total="page.totalCount"
-    />
+    <div class="table-box">
+      <!------------------------------------------------------------------------>
+      <!--                  表格                                              --->
+      <!------------------------------------------------------------------------>
+      <tableList :activeItems='"fsNum"' :selection="false" :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage"></tableList>
+      <!------------------------------------------------------------------------>
+      <!--                  表格分页                                          --->
+      <!------------------------------------------------------------------------>
+      <iPagination class="pagination" v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
+        :page-size="page.pageSize"
+        :layout="page.layout"
+        :current-page="page.currPage"
+        :total="page.totalCount"
+      />
+    </div>
   </iDialog>
 </template>
 
@@ -55,20 +57,23 @@ export default {
       immediate: true
      },
      visible(nv) {
+       if(nv){
+         this.getTableList()
+       }
       this.$emit("update:visible", nv)
     },
   },
   data() {
     return {
-      tableTitle: [
-  {props:'fsNum',name:'零件采购项目号', key: "LINGJIANCAIGOUXIANGMUHAO", tooltip: true},
-  {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
-  {props:'targetPrice',name:'投资目标价', key: "TOUZIMUBIAOJIA", tooltip: true},
-  {props:'isValidDesc',name:'状态', key: "ZHUANGTAI", tooltip: true},
-  {props:'updateUserName',name:'修改人', key: "XIUGAIREN", tooltip: true},
-  {props:'updateDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true},
-],
       tableData: [],
+      tableTitle: [
+        {props:'fsNum',name:'零件采购项目号', key: "LINGJIANCAIGOUXIANGMUHAO", tooltip: true},
+        {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
+        {props:'targetPrice',name:'投资目标价', key: "TOUZIMUBIAOJIA", tooltip: true},
+        {props:'isValidDesc',name:'状态', key: "ZHUANGTAI", tooltip: true},
+        {props:'updateUserName',name:'修改人', key: "XIUGAIREN", tooltip: true},
+        {props:'updateDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true},
+      ],
       tableLoading: false,
     }
   },
@@ -119,5 +124,10 @@ export default {
 <style lang="scss" scoped>
 .pagination{
   padding-bottom: 20px;
+}
+.moldChangeRecord{
+  ::v-deep .el-dialog{
+    width: 1200px;
+  }
 }
 </style>

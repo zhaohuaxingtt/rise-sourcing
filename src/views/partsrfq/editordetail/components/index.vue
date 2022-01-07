@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2022-01-04 09:40:10
- * @LastEditTime: 2022-01-05 17:54:45
+ * @LastEditTime: 2022-01-07 17:35:53
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -16,7 +16,7 @@
     >
       <div>
         当前RFQ有一下任务未完成，请及时处理
-        <template v-for="item in todoObj">
+        <template v-for="item in todoList">
           <p :key="item.name" v-if="item.status!='已完成'">
             <icon symbol :name="iconName[item.status]" /> {{ item.name }}
           </p>
@@ -47,6 +47,16 @@ export default {
     tipsVislble:{
       type: Boolean,
       default: false,
+    }
+  },
+  computed:{
+    todoList(){
+      let list = []
+      Object.keys(this.todoObj).forEach(k=>{
+        this.todoObj[k].status!='已完成'
+        list.push(this.todoObj[k])
+      })
+      return list
     }
   },
   data() {

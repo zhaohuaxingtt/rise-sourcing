@@ -1,9 +1,9 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-07 14:32:52
+ * @LastEditTime: 2022-01-07 16:34:38
  * @LastEditors: YoHo
- * @Description: 
+ * @Description: 模具目标价
 -->
 <template>
   <div>
@@ -31,9 +31,7 @@
             <template v-else>
               <iButton
                 @click="openDialog"
-                v-permission.auto="
-                  PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
-                "
+                v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价"
                 >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
               >
             </template>
@@ -102,16 +100,16 @@ export default {
       tableLoading: false,
       selectTableData: [],
       tableTitle: [
-        {props:'fsnrGsnrNum',name:'FS号',key: 'LK_FSHAO'},
+        {props:'fsNum',name:'FS号',key: 'LK_FSHAO'},
         {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
-        {props:'partNameZh',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG'},
+        {props:'partName',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG'},
         {props:'applyType',name:'申请类型',key: 'LK_SHENQINGLEIXING'},
-        {props:'cfControllerName',name:'CF负责人',key:'LK_CFFUZEREN', width: '180'},
-        {props:'expTargetpri',name:'期望目标价',key: 'LK_QIWANGMUBIAOJIA'},
+        {props:'cfName',name:'CF负责人',key:'LK_CFFUZEREN', width: '180'},
+        {props:'expectedTargetPrice',name:'期望目标价',key: 'LK_QIWANGMUBIAOJIA'},
         {props:'targetPrice',name:'目标价',key: 'LK_MUBIAOJIA'},
-        {props:'applyStatusDesc',name:'申请状态',key: 'LK_SHENQINGZHUANGTAI'},
-        {props:'approveStatusDesc',name:'审批状态',key: 'LK_SHENPIZHUANGTAI'},
-    ]
+        {props:'applyStatus',name:'申请状态',key: 'LK_SHENQINGZHUANGTAI'},
+        {props:'approvalStatus',name:'审批状态',key: 'LK_SHENPIZHUANGTAI'},
+      ]
     };
   },
   created() {
@@ -123,9 +121,6 @@ export default {
     },
     openDialog(){
       this.$emit('openDialog','moduleDialogVisible')
-    },
-    toggle(type) {
-      this[type] = !this[type];
     },
     async getTableList() {
       const id = this.$route.query.id

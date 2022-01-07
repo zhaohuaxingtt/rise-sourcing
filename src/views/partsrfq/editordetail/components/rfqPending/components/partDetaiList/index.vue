@@ -81,7 +81,7 @@
               v-if="!disabled && rfqId"
               @click="addItems"
               v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 添加"
-              >{{ language("add", "添加") }}
+              >{{ language("LK_TIANJIA", "添加") }}
             </iButton>
             <iButton
               @click="deleteItems"
@@ -133,29 +133,11 @@
         ></iPagination>
       </div>
       <!-- 添加 -->
-      <iDialog class="kmDialog" :visible.sync="addvisible">
-        <div class="addFs flex-align-center">
-          <div>
-            <iInput
-              class="partInput"
-              v-model="partNumList"
-              :placeholder="
-                language('partsprocure.PARTSPROCURE', '请输入零件号')
-              "
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_PARTNUMSEARCH |
-                  (零件清单 - 零件号搜索)
-              "
-            >
-              <div class="inputSearchIcon" slot="suffix">
-                <icon
-                  symbol
-                  name="iconshaixuankuangsousuo"
-                  @click.native="queryParts"
-                />
-              </div>
-            </iInput>
-          </div>
+      <iDialog :visible.sync="addvisible">
+        <template slot="title">
+          <div class="el-dialog__title header">
+            <span>{{ language("TIANJIALINGJIAN", "添加零件") }}</span>
+            
           <iButton
             @click="start"
             :loading="addLoding"
@@ -163,8 +145,30 @@
               PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 零件清单添加
             "
           >
-            {{ language("LK_TIANJIA", "添加") }}
+            {{ language("XUANZE", "选择") }}
           </iButton>
+          </div>
+        </template>
+        <div class="addFs flex-align-center">
+          <iInput
+            class="partInput"
+            v-model="partNumList"
+            :placeholder="
+              language('partsprocure.PARTSPROCURE', '请输入零件号')
+            "
+            v-permission.auto="
+              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_PARTNUMSEARCH |
+                (零件清单 - 零件号搜索)
+            "
+          >
+            <div class="inputSearchIcon" slot="suffix">
+              <icon
+                symbol
+                name="iconshaixuankuangsousuo"
+                @click.native="queryParts"
+              />
+            </div>
+          </iInput>
         </div>
         <partsTable
           class="partsTable"
@@ -691,20 +695,25 @@ export default {
 
 <style lang="scss" scoped>
 .header {
-  justify-content: flex-end;
-  margin-bottom: 20px;
+  width: 100%;
+  padding-right: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .partsTable {
   padding-bottom: 20px;
 }
 .addFs {
-  height: 85px;
+  margin-bottom: 20px;
   justify-content: space-between;
 }
 .openLinkText {
   color: $color-blue;
 }
-
+::v-deep .el-dialog{
+  min-width: 1250px;
+}
 .partInput {
   width: 260px;
 

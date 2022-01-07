@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-04 15:18:55
- * @LastEditTime: 2022-01-04 18:00:52
+ * @LastEditTime: 2022-01-07 16:54:42
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\data.js
@@ -71,3 +71,70 @@ export const iconName = {
   '未完成': 'icontishi-cheng',
   '未申请': 'iconzhongyaoxinxitishi',
 }
+
+export const partsTableTiTle = [
+  {
+    props: "fsnrGsnrNum",
+    name: "FSNF/GSNF/SPNR",
+    key: "partsprocure.PARTSPROCUREFSNFGSNFSPNR",
+    tooltip: true,
+    width: 120,
+  },
+  {
+    props: "partNum",
+    name: "零件号",
+    key: "partsprocure.PARTSPROCUREPARTNUMBER",
+    tooltip: true,
+    width: 130,
+  },
+  {
+    props: "partNameZh",
+    name: "零件名（中）",
+    key: "partsprocure.PARTSPROCUREPARTNAMEZH",
+    tooltip: true,
+    width: 140,
+  },
+  {
+    props: "partNameDe",
+    name: "零件名（德）",
+    key: "partsprocure.PARTSPROCUREPARTNAMEDE",
+    tooltip: true,
+    width: 140,
+  },
+  {
+    props: "procureFactoryName",
+    name: "采购工厂",
+    key: "partsprocure.PARTSPROCUREPURCHASINGFACTORY",
+    tooltip: true,
+    width: 80,
+  },
+  {
+    props: "carTypeProjectZh",
+    name: "车型项目",
+    key: "partsprocure.PARTSPROCUREMODELPROJECT",
+    tooltip: true,
+    minWidth: 120,
+  },
+  {
+    props: "statusDesc",
+    name: "零件状态",
+    key: "partsprocure.PARTSPROCUREPARTSTATUS",
+    tooltip: true,
+    minWidth: 75,
+    isAekoShow: true,
+  },
+  {
+    props: "buyerName",
+    name: "询价采购员",
+    key: "partsprocure.PARTSPROCUREINQUIRYBUYER",
+    tooltip: true,
+    width: 100,
+  },
+  {
+    props: "linieName",
+    name: "LINIE",
+    key: "partsprocure.PARTSPROCURELINIE",
+    tooltip: true,
+    width: 90,
+  },
+]

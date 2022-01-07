@@ -1,9 +1,9 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2022-01-05 15:09:29
+ * @LastEditTime: 2022-01-07 16:54:22
  * @LastEditors: YoHo
- * @Description: In User Settings Edit
+ * @Description: 零件添加
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
 -->
 <template>
@@ -47,7 +47,8 @@
 
 <script>
 import { iPagination } from "rise";
-import { tableTitle, form } from "@/views/partsprocure/home/components/data";
+import { form } from "@/views/partsprocure/home/components/data";
+import { partsTableTiTle as tableTitle } from "../data";
 import tableList from "@/views/partsign/home/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { getTabelData } from "@/api/partsprocure/home";
@@ -80,11 +81,11 @@ export default {
     const { query = {} } = this.$route;
     const { businessKey } = query;
     // 当类型为AEKO时 表头需要隐藏部分
-    if (businessKey == partProjTypes.AEKOLINGJIAN) {
-      this.tableTitle = tableTitle.filter((item) => item.isAekoShow);
-    }
-    this.tableTitle = tableTitle.filter((item) => !item.isCommonSourcingShow);
-    this.tableTitle = tableTitle.filter((i) => i.ispartsAdd);
+    // if (businessKey == partProjTypes.AEKOLINGJIAN) {
+    //   this.tableTitle = tableTitle.filter((item) => item.isAekoShow);
+    // }
+    // this.tableTitle = tableTitle.filter((item) => !item.isCommonSourcingShow);
+    // this.tableTitle = tableTitle.filter((i) => i.ispartsAdd);
     this.$store.commit("SET_PART_PROJECT", this.getTableList);
     this.getTableList();
   },

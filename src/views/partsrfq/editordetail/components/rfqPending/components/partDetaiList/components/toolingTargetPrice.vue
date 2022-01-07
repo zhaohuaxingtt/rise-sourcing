@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-01-07 15:13:55
+ * @LastEditTime: 2022-01-07 17:30:54
  * @LastEditors: YoHo
 -->
 <template>
@@ -12,12 +12,12 @@
         <span class="font18 font-weight">{{language('XIUGAIJILU','修改记录')}}</span>
       </div>
     </template>
-    <tableList lang :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" v-permission.auto="ARTSPROCURE_EDITORDETAIL_TARGETPRICE_TOOLINGTARGETPRICE_TABLE|申请目标价-投资目标价表格" />
+    <tablelist v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_TABLE|申请财务目标价-表格" :tableData='tableListData' :tableTitle='targeTitle' :tableLoading='loading' :selection="false"></tablelist>
     <iPagination
       class="pagination"
       v-update
-      @size-change="handleSizeChange($event, searchToolingTargetPriceInfo)"
-      @current-change="handleCurrentChange($event, searchToolingTargetPriceInfo)"
+      @size-change="handleSizeChange($event, getTargetPrice)"
+      @current-change="handleCurrentChange($event, getTargetPrice)"
       background
       :current-page="page.currPage"
       :page-sizes="page.pageSizes"
@@ -29,12 +29,12 @@
 
 <script>
 import { iFormGroup, iFormItem, iText, iPagination, iDialog } from "rise"
-import tableList from "@/views/partsign/editordetail/components/tableList"
+import tablelist from "@/views/partsign/editordetail/components/tableList"
 import { getCfTargetApplyHistory } from "@/api/financialTargetPrice/index"
 import { pageMixins } from "@/utils/pageMixins"
 
 export default {
-  components: { iFormGroup, iFormItem, iText, iPagination, tableList, iDialog },
+  components: { iFormGroup, iFormItem, iText, iPagination, tablelist, iDialog },
   mixins: [ pageMixins ],
   props: {
     rfqId: {
@@ -44,12 +44,13 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      tableLoading: false,
       targetPrice: "0.00",
-      tableTitle:[{
+      targeTitle:[{
 	props: 'applyDate',
 	name: '申请日期',
-	key:'LK_SHENQINGRIQI'
+	key:'LK_SHENQINGRIQI',
+  width:200
 },
 {
 	props: 'applyType',
@@ -89,7 +90,7 @@ export default {
      visible(nv) {
       this.$emit("update:visible", nv)
       if(nv){
-        this.searchToolingTargetPriceInfo()
+        this.getTargetPrice()
       }
     },
   },
@@ -98,8 +99,9 @@ export default {
   },
   methods: {
 			getTargetPrice() {
+        this.loading = true
 				getCfTargetApplyHistory({
-					fsNums: [this.fsnrGsnrNum],
+					rfqId: this.$route.query.id,
 					pageNo: this.page.currPage,
 					pageSize: this.page.pageSize
 				})
@@ -115,8 +117,10 @@ export default {
 					} else {
 						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
 					}
+          this.loading = false
 				})
-				.catch(() => {})
+				.catch(() => {
+          this.loading = false})
 			},
   }
 }

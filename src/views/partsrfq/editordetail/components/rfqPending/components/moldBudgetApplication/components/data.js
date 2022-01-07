@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-05 17:40:00
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  */
 export const tableTitle = [
@@ -19,7 +19,7 @@ export const tableTitle = [
 export const tableApplyTitle = [
     { props: 'fsnrGsnrNum', name: '零件采购项目号', key: 'LINGJIANCAIGOUXIANGMUHAO' },
     { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO' },
-    { props: 'partNumZh', name: '零件名(中)', key: 'LINGJIANMINGZHONG' },
+    { props: 'partName', name: '零件名(中)', key: 'LINGJIANMINGZHONG' },
     { props: 'cartypeProjectZh', name: '车型项目', key: 'LK_CHEXINGXIANGMU' },
     { props: 'csfPDiretor', name: 'CSF(P)负责⼈', key: 'LK_CSFPFUZEREN', width: 150 },
     { props: 'budget', name: '投资预算', key: 'LK_TOUZIYUSUAN' },

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-06 18:43:48
+ * @LastEditTime: 2022-01-07 16:27:38
  * @Description: 申请零件目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -85,10 +85,10 @@ export default {
         {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
         {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMINGZHONG", tooltip: true},
         {props:'cfController',name:'财务控制员', key: "CAIWUKONGZHIYUAN", tooltip: true},
-        {props:'applyType',name:'申请类别', key: "SHENQINGLEIBIE", tooltip: true},
+        {props:'applyType',name:'申请类别', key: "LK_SHENQINGLEIBIE", tooltip: true},
         {props:'expectedTargetPrice',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true},
-        {props:'applyReason',name:'申请原因', key: "SHENQINGLEIBIE", tooltip: true},
-        {props:'memo',name:'备注', key: "YUANMUBIAOJIA", tooltip: true},
+        {props:'applyReason',name:'申请原因', key: "LK_SHENQINGYUANYIN", tooltip: true},
+        {props:'memo',name:'申请备注', key: "LK_SHENQINGBEIZHU", tooltip: true},
       ]
     }
   },
