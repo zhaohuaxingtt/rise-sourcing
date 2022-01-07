@@ -23,9 +23,24 @@
           </Autocomplete>
         </el-form-item>
         <el-form-item :label="$t('LK_CHEXINGXIANGMU')">
-          <iInput v-model="form['search.tmCartypeProId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" @keyup.enter.native="getTableListFn">
+          <!-- <iInput v-model="form['search.tmCartypeProId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" @keyup.enter.native="getTableListFn">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
-          </iInput>
+          </iInput> -->
+          <iSelect
+              class="multipleSelect"
+              :placeholder="$t('partsprocure.PLEENTER')"
+              v-model="form['search.tmCartypeProId']"
+              filterable
+              clearable
+              collapse-tags
+          >
+            <el-option
+                :value="item.id"
+                :label="item.cartypeNname"
+                v-for="(item, index) in carTypeList"
+                :key="index"
+            ></el-option>
+          </iSelect>
         </el-form-item>
         <el-form-item :label="$t('零件包')">
           <Autocomplete
@@ -144,6 +159,7 @@ export default {
     iInput,
     Upload,
     Autocomplete,
+    iSelect
   },
   data() {
     return {
@@ -214,9 +230,10 @@ export default {
         this.form[i] = "";
       }
       this.loadingiSearch = true
-      await Promise.all([packageFindByCarType({carType: ''}), packageFindByPart({partName: ''})]).then((res) => {
+      await Promise.all([packageFindByCarType({carType: ''}), packageFindByPart({partName: ''}), getCartypePulldown()]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
+        const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
         if (res[0].data) {
           this.cartypeBagList = res[0].data;
         } else {
@@ -226,6 +243,12 @@ export default {
           this.partBagList = res[1].data;
         } else {
           iMessage.error(result1);
+        }
+
+        if (res[2].data) {
+          this.carTypeList = res[2].data;
+        } else {
+          iMessage.error(result2);
         }
         this.getTableListFn()
         this.loadingiSearch = false

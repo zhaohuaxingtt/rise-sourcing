@@ -58,8 +58,8 @@
             <div>{{ getTousandNum(scope.row.entryAmount) }}</div>
           </template>
           <template #info="scope">
-            <div v-if="isApply" class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
-            <div v-else class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
+            <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
+            <div class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
           </template>
           <!-- <template #apply="scope" v-if="isApply">
             <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
