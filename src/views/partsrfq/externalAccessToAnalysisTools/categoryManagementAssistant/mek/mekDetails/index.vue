@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-06 21:55:23
+ * @LastEditTime: 2022-01-07 10:38:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -720,6 +720,7 @@ export default {
         mekInnerTarget(entryParams).then(res => {
           this.firstBarData = res.data[0];
         })
+        console.log(this.firstBarData, "fisrtBarData")
         params.info = params.info.filter(item => item.isTargetMotor === false)
         this.$nextTick(() => {
           if (this.categoryId && this.schemeId && this.categoryCode) {
@@ -1153,8 +1154,9 @@ export default {
           if (data) {
             data.forEach((item) => {
               maxWidthList.push(item.detail.length);
-              if (item.detail.length === 1 || item.detail.length === 0) {
-                this.totalWidth = 200 * data.length;
+
+              if (_.max(maxWidthList) === 1 || _.max(maxWidthList) === 0) {
+                this.totalWidth = 240 * data.length;
               } else {
                 this.totalWidth += item.detail.length * 120;
               }
@@ -1303,7 +1305,7 @@ export default {
           idEle: "#content",
           pdfName: this.reportName,
           callback: async (pdf, pdfName) => {
-            console.log(pdf, pdfName)
+
             try {
               const time = new Date().getTime();
               const filename = pdfName + time + ".pdf";
@@ -1316,7 +1318,7 @@ export default {
               formData.append('type', 1) // 文件类型 1:OBS 2:NFS，默认1
               formData.append('file', blob)
               const res = await uploadFile(formData);
-              console.log(res, "data")
+
               const data = res.data;
               const req = {
                 mekId: this.schemeId,
