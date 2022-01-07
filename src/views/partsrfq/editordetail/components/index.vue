@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2022-01-04 09:40:10
- * @LastEditTime: 2022-01-07 17:35:53
+ * @LastEditTime: 2022-01-07 18:11:38
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -14,10 +14,10 @@
       append-to-body
       class="dunsTipsDiogog"
     >
-      <div>
+      <div class="text">
         当前RFQ有一下任务未完成，请及时处理
         <template v-for="item in todoList">
-          <p :key="item.name" v-if="item.status!='已完成'">
+          <p class="info" :key="item.name" v-if="item.status!='已完成'">
             <icon symbol :name="iconName[item.status]" /> {{ item.name }}
           </p>
         </template>
@@ -76,6 +76,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.text{
+    font-weight: bold;
+  .info{
+    font-size: 14px;
+    margin: 8px 0;
+    text-indent: 20px;
+  }
+}
 .footer{
   text-align: right;
   padding-bottom: 20px;

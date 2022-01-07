@@ -270,7 +270,7 @@ import supplierScore from "../supplierScore/components/supplierScore.vue";
 import moduleDialog from "./components/moduleDialog";
 import partsDialog from "./components/partsDialog";
 // import technicalSeminar from "../technicalSeminar";
-import { iconName } from "./data";
+import { iconName, partDetaiListTitle as tableTitle } from "./data";
 
 export default {
   mixins: [pageMixins, rfqCommonFunMixins],
@@ -335,80 +335,7 @@ export default {
       moduleDialogVisible: false,
       todo: false, // 是否待办
       addvisible: false,
-      tableTitle: [
-        {
-          props: "fsnrGsnrNum",
-          name: "FSNF/GSNF/SPNR",
-          key: "partsprocure.PARTSPROCUREFSNFGSNFSPNR",
-          tooltip: true,
-          minWidth: 120,
-        },
-        {
-          props: "partNum",
-          name: "零件号",
-          key: "partsprocure.PARTSPROCUREPARTNUMBER",
-          tooltip: true,
-          width: 130,
-        },
-        {
-          props: "partNameZh",
-          name: "零件名（中）",
-          key: "partsprocure.PARTSPROCUREPARTNAMEZH",
-          tooltip: true,
-          width: 140,
-        },
-        {
-          props: "partNameDe",
-          name: "零件名（德）",
-          key: "partsprocure.PARTSPROCUREPARTNAMEDE",
-          tooltip: true,
-          width: 140,
-        },
-        {
-          props: "procureFactoryName",
-          name: "采购工厂",
-          key: "partsprocure.PARTSPROCUREPURCHASINGFACTORY",
-          tooltip: true,
-          width: 100,
-        },
-        {
-          props: "carTypeProjectZh",
-          name: "车型项目",
-          key: "partsprocure.PARTSPROCUREMODELPROJECT",
-          tooltip: true,
-          minWidth: 120,
-        },
-        {
-          props: "statusDesc",
-          name: "零件状态",
-          key: "partsprocure.PARTSPROCUREPARTSTATUS",
-          tooltip: true,
-          minWidth: 75,
-        },
-        {
-          props: "buyerName",
-          name: "询价采购员",
-          key: "partsprocure.PARTSPROCUREINQUIRYBUYER",
-          tooltip: true,
-          width: 120,
-          ispartsAdd: true,
-        },
-        {
-          props: "linieName",
-          name: "LINIE",
-          key: "partsprocure.PARTSPROCURELINIE",
-          tooltip: true,
-          width: 80,
-          ispartsAdd: true,
-        },
-        {
-          props: "quotationStatus",
-          name: "当前轮次报价状态",
-          key: "DANGQIANLUNCIBAOJIAZHUANGTAI",
-          tooltip: true,
-          minWidth: 90,
-        },
-      ],
+      tableTitle,
       tableListData: [],
       confirmTableLoading: false,
       handleSelectArr: [], // 已在RFQ中零件选中数据

@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-07 16:34:38
+ * @LastEditTime: 2022-01-07 18:24:07
  * @LastEditors: YoHo
  * @Description: 模具目标价
 -->
@@ -76,7 +76,7 @@ import moldChangeRecord from "./moldChangeRecord";
 import {pageMixins} from "@/utils/pageMixins";
 import {getMJPriceEffective} from "@/api/partsrfq/editordetail";
 import {excelExport} from "@/utils/filedowLoad";
-import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data"
+import { iconName, moldTargetPriceTitle as tableTitle } from "../data"
 
 export default {
   components: {
@@ -99,18 +99,8 @@ export default {
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
-      tableTitle: [
-        {props:'fsNum',name:'FS号',key: 'LK_FSHAO'},
-        {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
-        {props:'partName',name:'零件名（中）',key: 'LK_LINGJIANMINGZHONG'},
-        {props:'applyType',name:'申请类型',key: 'LK_SHENQINGLEIXING'},
-        {props:'cfName',name:'CF负责人',key:'LK_CFFUZEREN', width: '180'},
-        {props:'expectedTargetPrice',name:'期望目标价',key: 'LK_QIWANGMUBIAOJIA'},
-        {props:'targetPrice',name:'目标价',key: 'LK_MUBIAOJIA'},
-        {props:'applyStatus',name:'申请状态',key: 'LK_SHENQINGZHUANGTAI'},
-        {props:'approvalStatus',name:'审批状态',key: 'LK_SHENPIZHUANGTAI'},
-      ]
-    };
+      tableTitle
+    }
   },
   created() {
     this.getTableList();

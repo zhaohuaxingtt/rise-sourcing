@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-06 11:41:13
+ * @LastEditTime: 2022-01-07 17:53:30
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -31,8 +31,8 @@
       <!-----------目标价--------------------------->
       <template #targetPrice="scope">
         <iInput v-if="applyType === '3'" :value="scope.row.targetPrice" maxlength="8" @input="handleInput($event, scope.row, 'targetPrice')" />
-        <iText v-else-if="applyType !== '2'">{{scope.row.targetPrice}}</iText>
-        <span v-else-if="!scope.row.expectedTargetPrice && !scope.row.isEdit">{{scope.row.targetPrice}}</span>
+        <iText v-else-if="applyType !== '2'">{{thousandsFilter(scope.row.targetPrice)}}</iText>
+        <span v-else-if="!scope.row.expectedTargetPrice && !scope.row.isEdit">{{thousandsFilter(scope.row.targetPrice)}}</span>
         <iInput v-else :value="scope.row.targetPrice" maxlength="8" @input="handleInput($event, scope.row, 'targetPrice')" />
       </template>
     </tableList>
@@ -45,6 +45,7 @@ import { applyTableTitle } from '../data'
 import tableList from 'pages/modelTargetPrice/components/tableList.vue'
 import { getTaskPartList, importBatchMaintain, getTaskPartListRfq, submitApplyTargetPrice, saveMaintain, submitMaintain, exportBatchMaintain } from "@/api/modelTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
+import { thousandsFilter } from "@/utils/filters.js";
 export default {
   props: {
     // rfqId: {type:String},
@@ -89,7 +90,7 @@ export default {
         {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
         {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMINGZHONG", tooltip: true},
         {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, todoHiddel: true},
-        {props:'cartypeProjectZh',name:'车型/车型项目', key: "CHEXINGHUOCHEXINGXIANGMU", tooltip: true, todoHiddel: true, width: 140},
+        {props:'carTypeProjectZh',name:'车型项目', key: "LK_CARPROJECT", tooltip: true, todoHiddel: true, minWidth: 140},
         {props:'originalTargetPrice',name:'原目标价', key: "YUANMUBIAOJIA", tooltip: true},
         {props:'businessTypeDesc',name:'类型', key: "LEIXING", tooltip: true},
         {props:'expectedTargetPrice',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true},

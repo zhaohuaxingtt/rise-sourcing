@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-07 14:28:22
+ * @LastEditTime: 2022-01-07 18:22:42
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -74,7 +74,7 @@ import toolingTargetPrice from "./toolingTargetPrice";
 import { pageMixins } from "@/utils/pageMixins";
 import { getCfPriceEffective } from "@/api/partsrfq/editordetail";
 import { excelExport } from "@/utils/filedowLoad";
-import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data";
+import { iconName, partsTargetPriceTitle as tableTitle } from "../data";
 
 export default {
   components: {
@@ -97,37 +97,7 @@ export default {
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
-      tableTitle: [
-        {
-          props: "fsnrGsnrNum",
-          name: "零件采购项目号",
-          key: "LK_LINGJIANCAIGOUXIANGMUHAO",
-        },
-        { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO" },
-        {
-          props: "partNameZh",
-          name: "零件名（中）",
-          key: "LK_LINGJIANMINGZHONG",
-        },
-        { props: "applyType", name: "申请类型", key: "LK_SHENQINGLEIXING" },
-        {
-          props: "expTargetpri",
-          name: "期望目标价",
-          key: "LK_QIWANGMUBIAOJIA",
-        },
-        { props: "APrice", name: "A Price", key: "APrice" },
-        { props: "BPrice", name: "B Price", key: "BPrice" },
-        {
-          props: "applyStatusDesc",
-          name: "申请状态",
-          key: "SHENQINGZHUANGTAI",
-        },
-        {
-          props: "approveStatusDesc",
-          name: "审批状态",
-          key: "SHENPIZHUANGTAI",
-        },
-      ],
+      tableTitle,
     };
   },
   created() {
