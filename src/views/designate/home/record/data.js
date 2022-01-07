@@ -66,8 +66,8 @@ export const tableTitle = [
   },
   {
     props:'linie',
-    name:'LINIE采购员',
-    key:'RECORDLINIECAIGOUYUAN',
+    name:'Linie采购员',
+    key:'TableLINIECAIGOUYUAN',
     tooltip:true
   },
   {
@@ -114,8 +114,8 @@ export const tableDetailTitle = [
   },
   {
     props:'prodLocation',
-    name:'产地',
-    key:'CHANDI',
+    name:'供应商工厂',
+    key:'GONGYINGSHANGGONGCHANG',
     tooltip:true
   },
   {
