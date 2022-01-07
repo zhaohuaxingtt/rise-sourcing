@@ -232,6 +232,8 @@
             'cailiao':'材料组',
             'gongyingshangmincheng':'供应商名称'
         },
+        'GONGYINGSGONGCHANGTUBIAO': '供应商工厂',
+        'SHANGQIDAZONGGONGCHANGMINGCHEN': '上汽大众工厂',
         'LK_CAIGOUFENEFENPEIDABUDAO': '采购份额分配达不到100%', // 采购份额分配达不到100%
         'LK_CAIGOUGONGCHNEGMINGCHENG': '采购工厂名称', // 采购工厂名称
         'LK_CAOZUOCHENGGONG': '操作成功', // 操作成功
