@@ -25,7 +25,7 @@ Vue.directive('permission', {
         !store.state.permission.whiteBtnList[value] &&
         businessPermission(value, router.currentRoute.query)
       ) {
-        if (openProcess) el.parentNode.removeChild(el)
+        if (openProcess && el.parentNode) el.parentNode.removeChild(el)
       }
     } else if (binding.modifiers.auto) {
       // eslint-disable-next-line no-debugger
@@ -34,10 +34,10 @@ Vue.directive('permission', {
         // store.dispatch('uploadResource', splitValue)
       }
       if (!store.state.permission.whiteBtnList[splitValue[0]]) {
-        if (openProcess) el.parentNode.removeChild(el)
+        if (openProcess && el.parentNode) el.parentNode.removeChild(el)
       } else {
         if (businessPermission(splitValue[0], router.currentRoute.query)) {
-          if (openProcess) el.parentNode.removeChild(el)
+          if (openProcess && el.parentNode) el.parentNode.removeChild(el)
         }
       }
       // force permission
