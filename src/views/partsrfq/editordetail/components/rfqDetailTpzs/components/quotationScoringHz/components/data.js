@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-29 15:47:20
+ * @LastEditTime: 2022-01-07 15:56:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -22,8 +22,8 @@ export const fstitle = [
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'skdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'skdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ftSkdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ftSkdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
@@ -38,8 +38,8 @@ export const gstitle = [
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'lcAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'lcBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'skdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'skdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ftSkdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ftSkdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Tooling</p><p>Target</p>'},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
@@ -351,7 +351,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
             for(let key in element){
                 if(items.props == key){
                   //需要 Lc Aprice . Lc Bprice TTo 
-                  if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == "tto"){
+                  if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice"){ //去掉ttoTotal时候的ebr
                     total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
                     groupArr = groupArr.map(item => {
                       return {

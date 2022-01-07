@@ -15,7 +15,7 @@
       <li>
           <p>如果满足一下条件:</p>
           <div>
-              <iSelect :value="language('零件号第4位','LK_LINGJIANHAODISIWEI')" disabled></iSelect>
+              <iSelect :value="language('LK_LINGJIANHAODISIWEI','零件号第4位')" disabled></iSelect>
               <iSelect value="-" disabled></iSelect>
               <iSelect></iSelect>
           </div>

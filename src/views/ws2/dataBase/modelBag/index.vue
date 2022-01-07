@@ -262,7 +262,7 @@ export default {
       let params = {
         currentPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        categoryNameZh: form['search.tmCartypeProId'],
+        carTypeProId: form['search.tmCartypeProId'],
         packageNameZh: form['search.cartypeBag'],
         partNameZh: form['search.partBag'],
       }

@@ -353,13 +353,17 @@ export default {
       projectPartDTOSShow:false,
       beforeCreate: false,
       blackTableListData:[],
-      createDesignateLoading:false
+      createDesignateLoading:false,
+      isCommonSurcingStar:false
     };
   },
   created () {
     this.getPartTableList = this.$store.state.rfq.partfunc;
+    // this.isCommonSurcingStar
     this.getTableList();
     this.getBaseInfo();
+    // this.baseInfo.partProjectType && this.baseInfo.partProjectType[0] && (this.baseInfo.partProjectType[0] === this.partProjTypes.GSCOMMONSOURCING || this.baseInfo.partProjectType[0] === this.partProjTypes.FSCOMMONSOURCING)&&this.baseInfo.starMonitorStatus !== 1 && this.baseinfo.statusName
+
   },
   provide: function () {
     return {
@@ -452,6 +456,8 @@ export default {
                 //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
                 this.activityTabIndex = '5';
               }
+              // this.isPendingRfqStatus(this.baseInfo.statusName)
+              // console.log( this.isPendingRfqStatus,'1111111111111111111111111111111111111111111111111111111');
               this.childFnList.forEach((i) => i());
               if (typeof this.$store.state.rfq.partfunc === 'function') this.getPartTableList();
             } else {
@@ -727,9 +733,21 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
-    }
-  },
-};
+    },
+    //RFQ是否是待定状态
+    // isPendingRfqStatus(statusName) {
+    //   RFQ_STATE_ENUM={ // RFQ状态
+    //     NO_INQUIRY: "NOT_REQ", // 未询价
+    //     INQUIRY_ING: "IN_REQ", // 询价中
+    //     VEER_ENQUIRY: "TO_REQ", // 转询价
+    //     NEGOTIATE_ING: "IN_NEGO_PROC", // 谈判中
+    //     VEER_NEGOTIATE: "TO_NEGO", // 转谈判
+    //     NEGOTIATE_END: "NEGO_COMPLETE", // 谈判完成
+    //   }
+    //   return RFQ_STATE_ENUM[statusName]
+    // }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .pageTitle {
