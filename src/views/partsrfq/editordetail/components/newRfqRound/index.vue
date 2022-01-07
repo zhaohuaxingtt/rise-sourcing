@@ -1,12 +1,20 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2022-01-04 09:54:15
+ * @LastEditTime: 2022-01-06 23:35:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :title="title || language('LK_XINJIANRFQLUNCI','新建RFQ轮次')" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
+  <iDialog :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
+    <div slot="title" class="el-dialog__title">
+      {{title || language('LK_XINJIANRFQLUNCI','新建RFQ轮次')}}
+      <!-- 黑名单文案 -->
+      <span class="blackuserInfo" v-if="containeBlackUser">
+        <i class="blackIcon"></i>
+        {{language('GONGYINGSHANGHEIMINGDANBUKEXUNJIA','供应商黑名单，不可询价')}}
+      </span>
+    </div>
     <div class="changeContent">
       <div class="clearFloat">
         <div class="floatright title-button-box">
@@ -130,6 +138,10 @@ export default {
     ...Vuex.mapState({
         rfqSelectedProjectParts: state => state.rfq.pendingPartsList,
     }),
+    // 包含黑名单供应商
+    containeBlackUser() {
+      return this.tableListData.filter(o => o.isDisabled).length > 0
+    }
   },
   data() {
     return {
@@ -281,7 +293,7 @@ export default {
       })
     },
     handleRowClick(row, column, event) {
-      if (!this.$refs.multipleTable.selectable(row)) this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(row, true)
+      // if (!this.$refs.multipleTable.selectable(row)) this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(row, true)
     }
   },
   watch: {
@@ -317,6 +329,19 @@ export default {
   .inline-block {
     display: inline-block;
   }
+}
+.blackIcon{
+  display: inline-block;
+  background-image: url("~@/assets/images/if-not-allowed.svg");
+  width: 1rem;
+  height: 1rem;
+  background-size: 1rem 1rem;
+  margin-bottom: -3px;
+}
+.blackuserInfo {
+  font-weight: 100;
+  font-size: 12px;
+  margin-left: 10px;
 }
 </style>
 

@@ -605,9 +605,6 @@ export default {
   },
   mounted() {
     this.handleSearchReset();
-    this.$nextTick(() => {
-      this.rules = baseRules(this)
-    })
     // getModels().then((res) => {
     //   this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
     // });
@@ -1597,7 +1594,9 @@ export default {
           ids:item.id
         }
       })
+      this.rules = baseRules(this)
       this.$nextTick(() => {
+        this.$refs["ruleForm"].clearValidate()
         this.handlerInputBlur();
         // this.ruleForm.biddingProducts.forEach(item => {
         //   this.rfqinfoChange(item)

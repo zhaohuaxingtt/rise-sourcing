@@ -45,10 +45,10 @@
                   <iButton @click="signAccessory" :loading="signLoading" v-permission.auto="APREPART_SIGN_SIGN|配件-配件签收-签收">{{language('QIANSHOU','签收')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
                   <iButton @click="changebackDialogVisible(true)" v-permission.auto="APREPART_SIGN_BACKEPS|配件-配件签收-退回EPS">{{language('TUIHUIEPS','退回EPS')}}</iButton>
-                  <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDDEPT|配件-配件签收-分配询价科室">{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_SIGN_SENDBUYER|配件-配件签收-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
+                  <!--------------------分配Linie按钮----------------------------------->
+                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDDEPT|配件-配件管理-分配Linie" >{{language('FENPEILINIE','分配Linie')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
@@ -69,13 +69,13 @@
                 />
           </iCard>
           <!------------------------------------------------------------------------>
-          <!--                  分配询价科室弹窗                                   --->
+    <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" />
+          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" :hasUpdateStatus='true' @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId" @init="init"/>
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" />
+          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" :idList="selectBuyerPartId" @init="init" />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
@@ -93,8 +93,8 @@ import { pageMixins } from "@/utils/pageMixins"
 import headerNav from '@/components/headerNav'
 import tableList from '../../designate/designatedetail/components/tableList'
 import { tableTitle, searchList, TAB,navManagingDemandList} from '../signForPartsDemand/data'
-import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'
-import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
+import assignInquiryDepartmentDialog from '@/views/accessoryPart/integratedManage/components/distributionLinie'
+import assignInquiryBuyerDialog from '@/views/accessoryPart/integratedManage/components/distributionBuyer'
 import backDialog from '../integratedManage/components/backEps'
 import { getAccessoryOneInfoList, signAccessoryInfo, sendAccessoryInfo, downLoadAccessoryList, backEPS } from '@/api/accessoryPart/index'
 import { uniq } from 'lodash'
@@ -137,7 +137,8 @@ export default {
         yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}],
         cartypeProjectOptions: [],
         cartTypeOptions: [],
-        trueOrFalseOption: [{value: true, label: this.language('YES','是')},{value: false, label: this.language('NO','否')}]
+        trueOrFalseOption: [{value: true, label: this.language('YES','是')},{value: false, label: this.language('NO','否')}],
+        // linieStatusOption:[]
       },
       selectDeptId: '',
       downloadLoading: false,
@@ -208,6 +209,7 @@ export default {
           this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
             return { value: item.code, label: item.name }
           })
+          this.selectOptions.linieStatusOption.unshift({value: '', label: this.language('all','全部')})
         }
       })
     },
@@ -220,6 +222,7 @@ export default {
     getSelectOptions() {
       // 配件状态
       this.getDictionary('accessoryTypeOption', 'ACCESSORY_STATE')
+      this.getDictionary('linieStatusOption', 'LINIE_APPORTION_STATUS')
     },
     /**
      * @Description: 车型项目下拉框
@@ -271,12 +274,14 @@ export default {
       this.downloadLoading = false
     },
     openInquiryDialog() {
-      if (this.selectParts.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
-        return
-      }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
-      // if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
+      // if (this.selectParts.length < 1) {
+      //   iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
+      //   return
+      // }
+      // // eslint-disable-next-line no-undef
+      const selectPartsDept = _.uniq(this.selectParts.map(item => item.csfuserDept))
+      // eslint-disable-next-line no-undef
+      this.selectliniePartId = _.uniq(this.selectParts.map(item => item.id))      // if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
       //   iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
       //   return
       // }
@@ -289,24 +294,29 @@ export default {
      * @return {*}
      */    
     openBuyerDialog() {
-      if (this.selectParts.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
-        return
-      }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
-      const selectPartsUser = uniq(this.selectParts.map(item => item.csfuserId))
-      if (selectPartsDept.length !== 1) {
-        iMessage.warn(this.language('QINGXUANZEXIANGTONGBUMENDEPEIJIAN','请选择相同部门的配件'))
-        return
-      }
-      if (!selectPartsDept[0]) {
-        iMessage.warn(this.language('QINGXUANZEYOUBUMENDEPEIJIAN','请选择有部门的配件'))
-        return
-      }
-      if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
-        iMessage.warn(this.language('QINGXUANZEWEIFENPEICAIGOUYUANDEPEIJIAN','请选择未分配采购员的配件'))
-        return
-      }
+      // if (this.selectParts.length < 1) {
+      //   iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
+      //   return
+      // }
+  // eslint-disable-next-line no-undef
+      const selectPartsDept = _.uniq(this.selectParts.map(item => item.csfuserDept))
+      // eslint-disable-next-line no-undef
+      const selectPartsUser = _.uniq(this.selectParts.map(item => item.csfuserId))
+       // eslint-disable-next-line no-undef
+       this.selectBuyerPartId = _.uniq(this.selectParts.map(item => item.id))
+
+      // if (selectPartsDept.length !== 1) {
+      //   iMessage.warn(this.language('QINGXUANZEXIANGTONGBUMENDEPEIJIAN','请选择相同部门的配件'))
+      //   return
+      // }
+      // if (!selectPartsDept[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEYOUBUMENDEPEIJIAN','请选择有部门的配件'))
+      //   return
+      // }
+      // if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEWEIFENPEICAIGOUYUANDEPEIJIAN','请选择未分配采购员的配件'))
+      //   return
+      // }
       this.selectDeptId = selectPartsDept[0]
       this.changeBuyerDialogVisible(true)
     },

@@ -88,7 +88,6 @@ export default {
     },
     async handleSave() {
       this.saveButtonLoading = true;
-      console.log(document.querySelector("#bulkSupplierPandect"))
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: '#bulkSupplierPandect',
         watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
