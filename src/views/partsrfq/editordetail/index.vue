@@ -21,7 +21,7 @@
       </div>
       <div class="btnList">
         <iButton 
-        v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus !== 1"
+        v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus !== 1&&isCommonSurcingStar"
         @click="waitStarmonitor" v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN|等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
         <iButton  
         v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus === 1"
@@ -354,16 +354,13 @@ export default {
       beforeCreate: false,
       blackTableListData:[],
       createDesignateLoading:false,
-      isCommonSurcingStar:false
+      isCommonSurcingStar:false,
     };
-  },
+  },  
   created () {
     this.getPartTableList = this.$store.state.rfq.partfunc;
-    // this.isCommonSurcingStar
     this.getTableList();
     this.getBaseInfo();
-    // this.baseInfo.partProjectType && this.baseInfo.partProjectType[0] && (this.baseInfo.partProjectType[0] === this.partProjTypes.GSCOMMONSOURCING || this.baseInfo.partProjectType[0] === this.partProjTypes.FSCOMMONSOURCING)&&this.baseInfo.starMonitorStatus !== 1 && this.baseinfo.statusName
-
   },
   provide: function () {
     return {
@@ -371,6 +368,7 @@ export default {
       getbaseInfoData: this.getbaseInfoData, //直接reture当前请求完的数据
       getDisabled: this.getDisabled,
       registerFn: this.registerFn,
+      isRfqStatus:this.isRfqStatus
     };
   },
   methods: {
@@ -398,6 +396,9 @@ export default {
     },
     registerFn (fn) {
       this.childFnList.push(fn);
+    },
+    isRfqStatus() {
+      return  this.isCommonSurcingStar
     },
     getbaseInfoData () {
       return this.baseInfo;
@@ -456,8 +457,7 @@ export default {
                 //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
                 this.activityTabIndex = '5';
               }
-              // this.isPendingRfqStatus(this.baseInfo.statusName)
-              // console.log( this.isPendingRfqStatus,'1111111111111111111111111111111111111111111111111111111');
+              this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
               this.childFnList.forEach((i) => i());
               if (typeof this.$store.state.rfq.partfunc === 'function') this.getPartTableList();
             } else {
@@ -735,17 +735,20 @@ export default {
       })
     },
     //RFQ是否是待定状态
-    // isPendingRfqStatus(statusName) {
-    //   RFQ_STATE_ENUM={ // RFQ状态
-    //     NO_INQUIRY: "NOT_REQ", // 未询价
-    //     INQUIRY_ING: "IN_REQ", // 询价中
-    //     VEER_ENQUIRY: "TO_REQ", // 转询价
-    //     NEGOTIATE_ING: "IN_NEGO_PROC", // 谈判中
-    //     VEER_NEGOTIATE: "TO_NEGO", // 转谈判
-    //     NEGOTIATE_END: "NEGO_COMPLETE", // 谈判完成
-    //   }
-    //   return RFQ_STATE_ENUM[statusName]
-    // }
+    isPendingRfqStatus(statusName) {
+      let RFQ_STATE_ENUM=[ // RFQ状态
+         "未询价", 
+         "询价中", 
+         "转询价", 
+         "谈判中", 
+         "转谈判", 
+         "谈判完成", 
+      ]
+      let flag = true 
+      RFQ_STATE_ENUM.indexOf(statusName) == -1 ? flag = false:''
+      return flag
+    },
+
   }
 }
 </script>
