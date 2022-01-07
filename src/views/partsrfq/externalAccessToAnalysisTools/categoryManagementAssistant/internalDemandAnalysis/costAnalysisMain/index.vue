@@ -1,10 +1,10 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-02 15:24:14
- * @LastEditTime: 2021-09-30 13:23:06
- * @LastEditors: zbin
+ * @LastEditTime: 2022-01-07 14:32:32
+ * @LastEditors: caopeng
  * @Description: In User Settings Edit
- * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\index.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\costAnalysisMain\index.vue
 -->
 <template>
   <div id="content">
@@ -81,6 +81,20 @@ export default {
       
     }
   },
+   watch:{
+    //   '$i18n.locale':{
+    //      handler(newValue){
+    //      this.renderBi()
+    //   }},
+      '$store.state.rfq.categoryCode'(newVal){
+          if (this.$route.query.default) {
+            this.tableListData = JSON.parse(this.$route.query.nomiList)
+            this.getPieData()
+        } else {
+            this.getTableData()
+          }
+      }
+   },
   created () {
     if (this.$route.query.default) {
       this.tableListData = JSON.parse(this.$route.query.nomiList)
