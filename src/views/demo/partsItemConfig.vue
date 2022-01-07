@@ -5,17 +5,17 @@
 -->
 <template>
   <iPage class="partsItemConfig">
-      <iCard title="零件采购项目类型配置">
+      <iCard :title="language('LINGJIANLEIXINGPEIZHI','零件类型配置')">
           <template v-slot:header-control>
               <iButton @click="save()" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
           </template>
           <!-- 表单区域 -->
           <el-table
-            :data="tableData"
+            :data="tablePtData"
             style="width: 100%"
             v-loading="tableLoading"
             >
-            <template v-for="(item, $index) in tableHeader">
+            <template v-for="(item, $index) in tablePtHeader">
                 <el-table-column :key="$index+'_partsItemConfig'" :prop="item.type" :label="item.name" >
                     <template slot-scope="scope">
                         <span  v-if="item.type =='name'">{{scope.row[item.type]}}</span>
@@ -53,11 +53,61 @@
                 </el-table-column>
             </template>
         </el-table>
+        <div class="cardHeaderTitle margin-top20">
+            <span class="title">{{language('LINGJIANCAIGOUXIANGMULEIXINGPEIZHI','零件采购项目类型配置')}}</span>
+        </div>
+        <div class="cardBody">
+            <!-- 表单区域 -->
+            <el-table
+            :data="tableData"
+            style="width: 100%"
+            v-loading="tableLoading"
+            >
+                <template v-for="(item, $index) in tableHeader">
+                    <el-table-column :key="$index+'_partsItemConfig'" :prop="item.type" :label="item.name" >
+                        <template slot-scope="scope">
+                            <span  v-if="item.type =='name'">{{scope.row[item.type]}}</span>
+                            <div v-else>
+                                <!-- 开关 -->
+                                <el-switch
+                                    v-if="scope.row['items'][item.type]['metadata']['type'] == 'SWITCH'"
+                                    active-value="ON"
+                                    inactive-value="OFF"
+                                    v-model="scope.row['items'][item.type]['value']"
+                                />
+                                <!-- 下拉框 -->
+                                <iSelect
+                                    v-else-if="scope.row['items'][item.type]['metadata']['type'] == 'SELECT'"
+                                    v-model="scope.row['items'][item.type]['value']"
+                                >
+                                    <el-option
+                                        v-for="(item,selectIndex) in scope.row['items'][item.type]['metadata']['values'] || []"
+                                        :key="item+'_'+selectIndex"
+                                        :label="item"
+                                        :value="item">
+                                    </el-option>  
+                                </iSelect>
+                                <!-- 输入框 -->
+                                <iInput
+                                    v-else-if="scope.row['items'][item.type]['metadata']['type'] == 'TEXT'"
+                                    v-model="scope.row['items'][item.type]['value']"
+                                />
+                                <!-- Radio -->
+
+                                <!-- 纯文本 -->
+                                <span v-else>{{scope.row['items'][item.type]['value']}}</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </template>
+            </el-table>
+        </div>
+
       </iCard>
       
   </iPage>
 </template>
-s
+
 <script>
 
 import {
@@ -83,7 +133,9 @@ export default {
     data(){
         return{
             tableData:[],
+            tablePtData: [],
             tableHeader:[],
+            tablePtHeader: [],
             tableLoading:false,
             saveLoading:false,
             resData:{
@@ -181,12 +233,20 @@ export default {
                     const headersData = data['headers'] || [];
                     this.tableHeader = [
                         {
-                            "name": "零件项目采购类型",
+                            "name": this.language('LINGJIANXIANGMUCAIGOULEIXING','零件项目采购类型'),
                             "type": "name",
                         },
                         ...headersData
                     ];
-                    this.tableData = data['data'] || [];
+                    this.tablePtHeader = [
+                        {
+                            "name": this.language('LINGJIANLEIX','零件类型'),
+                            "type": "name",
+                        },
+                        ...headersData
+                    ];
+                    this.tableData = data.data && data.data.PPT || []
+                    this.tablePtData = data.data && data.data.PT || []
                 }else{
                     this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
                 }
@@ -203,7 +263,10 @@ export default {
         // 保存
         async save(){
             this.saveLoading = true;
-            await savePartCheck(this.tableData).then((res)=>{
+            await savePartCheck({
+                PT: this.tablePtData,
+                PPT: this.tableData,
+            }).then((res)=>{
                 this.saveLoading = false;
                 if(res.code == 200){
                     this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
@@ -218,5 +281,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.cardHeaderTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.875rem 2.5rem;
+    padding-left: 0px;
+    .title {
+        font-size: 1.125rem;
+        color: #131523;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+}
 </style>

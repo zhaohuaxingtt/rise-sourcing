@@ -13,7 +13,7 @@
     ></el-table-column>
     <!--    <el-table-column v-if='index' type='index' width='50' align='center' :label="$t('LK_BIANHAO')"></el-table-column>-->
     <template v-for="(items,index) in tableTitle">
-      <el-table-column :key="index" align='center' v-if='items.props === openPageProps' :prop="items.props"
+      <el-table-column :key="index" align='center' :width="items.width" v-if='items.props === openPageProps' :prop="items.props"
                        :label="language(items.key,items.name)">
         <template slot-scope="scope">
             <span class="openLinkText cursor"
@@ -22,24 +22,24 @@
               }}</span>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' :label="language(items.key,items.name)" v-else-if="items.props === 'isMbdl'">
+      <el-table-column :key="index" align='center' :width="items.width" :label="language(items.key,items.name)" v-else-if="items.props === 'isMbdl'">
         <template slot-scope="scope">
           {{ scope.row.isMbdl == 2 ? 'M' : '' }}
         </template>
       </el-table-column>
       <!-- 供应商名称 -->
-      <el-table-column :key="index" align='center' :label="language(items.key,items.name)" v-else-if="items.props === 'supplierNameZh'">
+      <el-table-column :key="index" align='center' :width="items.width" :label="language(items.key,items.name)" v-else-if="items.props === 'supplierNameZh'">
         <template slot-scope="scope">
           {{ scope.row.supplierNameZh}}
           <!-- 供应商黑名单 -->
-          {{typeof(scope.row.isComplete)}}
+          <!-- {{typeof(scope.row.isComplete)}} -->
           <supplierBlackIcon
             :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
             :BlackList="scope.row.blackStuffs || []"
           />
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center'
+      <el-table-column :key="index" align='center' :width="items.width"
                        v-else-if='selectProps.includes(items.props)' :prop="items.props"
                        :label="language(items.key,items.name)">
         <template slot-scope="scope">
@@ -49,7 +49,7 @@
           </i-select>
         </template>
       </el-table-column>
-      <el-table-column :key="index" align='center' v-else :label="language(items.key,items.name)" :prop="items.props"></el-table-column>
+      <el-table-column :key="index" align='center' :width="items.width" v-else :label="language(items.key,items.name)" :prop="items.props"></el-table-column>
     </template>
   </el-table>
 </template>
