@@ -1,38 +1,36 @@
 <template>
-  <iCard>
-    <div class="card-header">
-      <div class="card-title">
-        <span class="title">{{ language('LK_GONGYINGSHANGPINGFEN','供应商评分') }}</span>
-        <div
-          v-if="todo"
-          :class="{
-            danger: status == '未申请',
-            warning: status == '未完成',
-            success: status == '已完成',
-          }"
-          class="tishi"
-        >
-          <icon symbol :name="iconName[status] || ''" class="tishi-icon"></icon>
-          <span>{{ status }}</span>
-        </div>
+  <iCard collapse :title="language('LK_GONGYINGSHANGPINGFEN','供应商评分')" :defalutCollVal="status == '已完成' || !todo">
+    <template v-if="todo" slot="subInfo">
+      <div
+        :class="{
+          danger: status == '未申请',
+          warning: status == '未完成',
+          success: status == '已完成',
+        }"
+        class="tishi"
+      >
+        <icon symbol :name="iconName[status] || ''" class="tishi-icon"></icon>
+        <span class="status">{{ status }}</span>
       </div>
+    </template>
+    <template slot="header-control">
       <div class="button-box">
-        <template v-if="!todo">
+        <div v-if="!todo">
           <iButton v-if="!editStatus" @click="editStatus = true" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_EDIT|供应商评分编辑">{{ language('LK_BIANJI','编辑') }}</iButton>
           <iButton v-if="editStatus" @click="editStatus = false" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_CANCEL|供应商评分取消">{{ language('LK_QUXIAO','取 消') }}</iButton>
           <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SAVE|供应商评分保存">{{ language('LK_BAOCUN','保存') }}</iButton>
           <iButton @click="setScoringDept" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
-        </template>
+        </div>
         <!-- <iButton @click="sendTaskForRating" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton> -->
           <iButton @click="setScoringPush" :loading="pushLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PUSHSCORETASK|供应商评分推送评分任务">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
-        <i
-          @click="toggle('hidens')"
-          class="el-icon-arrow-down card-icon cursor"
-          :class="{ rotate: hidens }"
-        ></i>
       </div>
-    </div>
-    <div v-show="hidens">
+    </template>
+    <!-- <div class="card-header">
+      <div class="card-title">
+        <span class="title">{{ language('LK_GONGYINGSHANGPINGFEN','供应商评分') }}</span>
+        
+      </div>
+    </div> -->
     <tablelist
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -62,7 +60,6 @@
         :current-page='page.currPage'
         :total="page.totalCount"
     /> -->
-    </div>
     <!------------------------------------------------------------------------>
     <!--                  备注弹框                                          --->
     <!------------------------------------------------------------------------>
@@ -112,7 +109,6 @@ export default {
   data() {
     return {
       iconName,
-      hidens: false,
       tableListData: [],
       tableTitle: JSON.parse(JSON.stringify(supplierScoreTitle)),
       tableLoading: false,
@@ -142,18 +138,6 @@ export default {
     disabled() {
       return this.getDisabled()
     }
-  },
-  watch:{
-    status: {
-      handler(val) {
-        if (val == "已完成") {
-          this.hidens = true;
-        } else {
-          this.hidens = false;
-        }
-      },
-      immediate: true
-    },
   },
   methods: {
     toggle(type) {

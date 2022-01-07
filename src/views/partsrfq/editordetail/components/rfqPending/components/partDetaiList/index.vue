@@ -6,100 +6,94 @@
  -->
 <template>
   <div class="partDetaiList">
-    <iCard v-show="!todo">
-      <div class="card-header">
-        <div class="card-title">
-          <span class="title">{{ "零件清单" }}</span>
+    <iCard collapse v-show="!todo" :title="language('LK_LINGJIANQINGDAN','零件清单')">
+      <template slot="header-control">
+        <div class="card-header">
+          <div class="button-box">
+            <iButton
+              v-if="
+                baseInfoData.partProjectType &&
+                baseInfoData.partProjectType[0] &&
+                (baseInfoData.partProjectType[0] ===
+                  partProjTypes.GSCOMMONSOURCING ||
+                  baseInfoData.partProjectType[0] ===
+                    partProjTypes.FSCOMMONSOURCING)
+              "
+              @click="cancelRelationStarMon"
+              v-permission.auto="
+                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_QUXIAOGUANLIANSTARTMONIORJILU |
+                  取消关联StarMonitor记录
+              "
+              >{{
+                language(
+                  "QUXIAOGUANLIANSTARMONITORJILU",
+                  "取消关联StarMonitor记录"
+                )
+              }}
+            </iButton>
+            <iButton
+              v-if="
+                baseInfoData.partProjectType &&
+                baseInfoData.partProjectType[0] &&
+                (baseInfoData.partProjectType[0] ===
+                  partProjTypes.GSCOMMONSOURCING ||
+                  baseInfoData.partProjectType[0] ===
+                    partProjTypes.FSCOMMONSOURCING)
+              "
+              @click="relationStarMon"
+              v-permission.auto="
+                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_GUANLIANSTARTMONIORJILU |
+                  关联StarMonitor记录
+              "
+              >{{ language("GUANLIANSTARTMONITORJILU", "关联StarMonitor记录") }}
+            </iButton>
+            <!-- <iButton @click="showApplyPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
+            {{ language('LK_XINSHENQINGCAIWUMUBIAOJIA','新申请财务目标价') }}
+          </iButton>
+          <iButton @click="againApply" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE|再申请财务目标价">
+            {{ language('LK_ZAICISHENGQINGCAIWUMUBIAOJIA','再申请财务目标价') }}
+          </iButton> -->
+            <iButton
+              @click="openPartsDialog"
+              v-permission.auto="
+                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE | 新申请财务目标价
+              "
+            >
+              {{ language("LK_SHENQINGLINGJIANMUBIAOJIA", "申请零件目标价") }}
+            </iButton>
+            <iButton
+              @click="moduleDialogVisible = true"
+              v-permission.auto="
+                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE |
+                  再申请财务目标价
+              "
+            >
+              {{ language("LK_SHENQINGMUJUMUBIAOJIA", "申请模具目标价") }}
+            </iButton>
+            <iButton
+              @click="sendKM"
+              v-permission.auto="
+                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM | 发送KM
+              "
+              >{{ language("FASONGKM", "发送KM") }}</iButton
+            >
+            <iButton
+              v-if="!disabled && rfqId"
+              @click="addItems"
+              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 添加"
+              >{{ language("add", "添加") }}
+            </iButton>
+            <iButton
+              @click="deleteItems"
+              v-permission.auto="
+                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE | 删除
+              "
+              >{{ language("delete", "删除") }}
+            </iButton>
+          </div>
         </div>
-        <div class="button-box">
-          <iButton
-            v-if="
-              baseInfoData.partProjectType &&
-              baseInfoData.partProjectType[0] &&
-              (baseInfoData.partProjectType[0] ===
-                partProjTypes.GSCOMMONSOURCING ||
-                baseInfoData.partProjectType[0] ===
-                  partProjTypes.FSCOMMONSOURCING)
-            "
-            @click="cancelRelationStarMon"
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_QUXIAOGUANLIANSTARTMONIORJILU |
-                取消关联StarMonitor记录
-            "
-            >{{
-              language(
-                "QUXIAOGUANLIANSTARMONITORJILU",
-                "取消关联StarMonitor记录"
-              )
-            }}
-          </iButton>
-          <iButton
-            v-if="
-              baseInfoData.partProjectType &&
-              baseInfoData.partProjectType[0] &&
-              (baseInfoData.partProjectType[0] ===
-                partProjTypes.GSCOMMONSOURCING ||
-                baseInfoData.partProjectType[0] ===
-                  partProjTypes.FSCOMMONSOURCING)
-            "
-            @click="relationStarMon"
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_GUANLIANSTARTMONIORJILU |
-                关联StarMonitor记录
-            "
-            >{{ language("GUANLIANSTARTMONITORJILU", "关联StarMonitor记录") }}
-          </iButton>
-          <!-- <iButton @click="showApplyPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
-          {{ language('LK_XINSHENQINGCAIWUMUBIAOJIA','新申请财务目标价') }}
-        </iButton>
-        <iButton @click="againApply" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE|再申请财务目标价">
-          {{ language('LK_ZAICISHENGQINGCAIWUMUBIAOJIA','再申请财务目标价') }}
-        </iButton> -->
-          <iButton
-            @click="openPartsDialog"
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE | 新申请财务目标价
-            "
-          >
-            {{ language("LK_SHENQINGLINGJIANMUBIAOJIA", "申请零件目标价") }}
-          </iButton>
-          <iButton
-            @click="moduleDialogVisible = true"
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE |
-                再申请财务目标价
-            "
-          >
-            {{ language("LK_SHENQINGMUJUMUBIAOJIA", "申请模具目标价") }}
-          </iButton>
-          <iButton
-            @click="sendKM"
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM | 发送KM
-            "
-            >{{ language("FASONGKM", "发送KM") }}</iButton
-          >
-          <iButton
-            v-if="!disabled && rfqId"
-            @click="addItems"
-            v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 添加"
-            >{{ language("add", "添加") }}
-          </iButton>
-          <iButton
-            @click="deleteItems"
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE | 删除
-            "
-            >{{ language("delete", "删除") }}
-          </iButton>
-          <i
-            @click="toggle('hidens')"
-            class="el-icon-arrow-down card-icon cursor"
-            :class="{ rotate: hidens }"
-          ></i>
-        </div>
-      </div>
-      <div v-show="hidens || !todo">
+      </template>
+      <div>
         <tableList
           :tableData="tableListData"
           :tableTitle="tableTitle"
@@ -236,6 +230,7 @@
       class="margin-top20"
       :status="todoObj.pushRateStatusDesc.status"
     />
+    <!-- <technicalSeminar class="margin-top20" /> -->
   </div>
 </template>
 
@@ -270,6 +265,7 @@ import supplierScore from "../supplierScore/components/supplierScore.vue";
 
 import moduleDialog from "./components/moduleDialog";
 import partsDialog from "./components/partsDialog";
+// import technicalSeminar from "../technicalSeminar";
 import { iconName } from "./data";
 
 export default {
@@ -300,6 +296,7 @@ export default {
     iDialog,
     moduleDialog,
     partsDialog,
+    // technicalSeminar
   },
   async mounted() {
     const { id, businessKey } = this.$route.query;
@@ -316,13 +313,6 @@ export default {
         });
       }
     },
-    status(val) {
-      if (val == "已完成") {
-        this.hidens = true;
-      } else {
-        this.hidens = false;
-      }
-    },
   },
   inject: ["getbaseInfoData", "getDisabled", "getBaseInfo"],
   computed: {
@@ -336,12 +326,10 @@ export default {
   data() {
     return {
       iconName,
-      status: "",
-      hidens: false,
+      hidens: true,
       partsDialogVisible: false,
       moduleDialogVisible: false,
       todo: false, // 是否待办
-      hidens: false,
       addvisible: false,
       tableTitle: [
         {
@@ -702,53 +690,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.partDetaiList {
-  ::v-deep .card-header {
-    width: 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 0 20px 0;
-    .card-title {
-      display: inline-flex;
-      align-items: center;
-      .title {
-        font-size: 18px;
-        font-weight: bold;
-      }
-    }
-    .tishi {
-      display: inline-flex;
-      align-items: center;
-    }
-    .tishi-icon {
-      font-size: 18px;
-      margin: 0 15px;
-    }
-
-    .danger {
-      color: #f5222d;
-    }
-    .warning {
-      color: #fa8c16;
-    }
-    .success {
-      color: #389e0d;
-    }
-    .button-box {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .card-icon {
-      font-size: 18px;
-      margin: 0 20px;
-    }
-    .rotate {
-      transform: rotate(180deg);
-    }
-  }
-}
 .header {
   justify-content: flex-end;
   margin-bottom: 20px;

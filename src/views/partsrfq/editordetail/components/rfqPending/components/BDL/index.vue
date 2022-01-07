@@ -6,57 +6,35 @@
  -->
 <template>
   <div class="BDL">
-  <iCard>
-    <div class="card-header header">
-        <div class="card-title">
-          <span class="title">{{ 'BDL' }}</span>
-          <div class="input">
-        <iInput @keydown.native.enter="query" :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" v-model="supplierName" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERNAMESEARCH|BDL供应商名称查询">
-          <div class="inputSearchIcon" slot="suffix">
-            <icon symbol name="iconshaixuankuangsousuo" @click.native="query" />
-          </div>
-        </iInput>
-      </div>
-          <div
-            v-if="status"
-            :class="{
-              danger: status == '未申请',
-              warning: status == '未完成',
-              success: status == '已完成',
-            }"
-            class="tishi"
-          >
-            <icon symbol :name="name" class="tishi-icon"></icon>
-            <span>{{ status }}</span>
-          </div>
+    <iCard collapse :title="language('BDL','BDL')">
+      <template slot="subInfo">
+        <div class="input">
+          <iInput @keydown.native.enter="query" :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" v-model="supplierName" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERNAMESEARCH|BDL供应商名称查询">
+            <div class="inputSearchIcon" slot="suffix">
+              <icon symbol name="iconshaixuankuangsousuo" @click.native="query" />
+            </div>
+          </iInput>
         </div>
+      </template>
+      <template slot="header-control">
         <div class="button-box">
           <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL|BDL添加" @click="handleAdd">{{ language("TIANJIA", "添加") }}</iButton>
           <iButton @click="handleDelete" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER|BDL删除供应商" :loading="deleteLoading">{{ language('LK_SHANCHU','删除') }}</iButton>
-          <i
-            @click="toggle('hidens')"
-            class="el-icon-arrow-down card-icon cursor"
-            :class="{ rotate: hidens }"
-          ></i>
         </div>
-      </div>
-      <div v-show="hidens">
-    <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"
-               @handleSelectionChange="handleSelectionChange"
-               @openPage="openPage"
-               @log="log" ref="table"
-               @handleSelect="handleSelect"
-               @handleSelectAll="handleSelectAll"
-               v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TABLE|BDL列表"
-    ></tableList>
-    <iPagination v-update @size-change="handleSizeChange($event, getTableList)"
-			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-			:page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount"></iPagination>
-      </div>
-    <logDialog :visible.sync="logVisible"/>
-    <bdlDialog :rfqId="rfqId" :visible.sync="bdlDialogVisible" @confirm="getTableList" />
-  </iCard>
-    <supplier-score class="margin-top20" />
+      </template>
+      <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"
+                @handleSelectionChange="handleSelectionChange"
+                @openPage="openPage"
+                @log="log" ref="table"
+                @handleSelect="handleSelect"
+                @handleSelectAll="handleSelectAll"
+                v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TABLE|BDL列表"
+      ></tableList>
+      <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount"></iPagination>
+      <logDialog :visible.sync="logVisible"/>
+      <bdlDialog :rfqId="rfqId" :visible.sync="bdlDialogVisible" @confirm="getTableList" />
+    </iCard>
+    <supplier-score :todo="false" class="margin-top20" />
   </div>
 </template>
 
@@ -97,7 +75,6 @@ export default {
   },
   data() {
     return {
-      hidens: false,
       tableTitle: cloneDeep(tableTitle),
       tableData: [],
       tableDataCache: [],
@@ -306,12 +283,14 @@ export default {
     }
   }
 }
-.header {
   .input {
+    display: inline-flex;
     width: 250px;
     margin-left: 20px;
-  }
-
+    ::v-deep .el-input{
+      font-size: 14px !important;
+    }
+    
   ::v-deep .el-input__suffix {
     .el-input__suffix-inner {
       height: 100% !important;
@@ -329,6 +308,14 @@ export default {
       }
     }
   }
+  }
+.header {
+  .input {
+    display: inline-flex;
+    width: 250px;
+    margin-left: 20px;
+  }
+
 }
 
 </style>
