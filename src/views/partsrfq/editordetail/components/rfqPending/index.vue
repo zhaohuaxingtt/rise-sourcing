@@ -137,5 +137,46 @@ export default {
         background-color: transparent!important;
       }
     }
+    
+  ::v-deep .cardHeader {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 20px 0;
+    .tishi {
+      display: inline-flex;
+      align-items: center;
+    }
+    .tishi-icon {
+      font-size: 18px;
+      margin: 0 15px;
+    }
+
+    .status{
+      font-size: 14px !important;
+    }
+    .danger {
+      color: #f5222d;
+    }
+    .warning {
+      color: #fa8c16;
+    }
+    .success {
+      color: #389e0d;
+    }
+    .button-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-icon {
+      font-size: 18px;
+      margin: 0 20px;
+    }
+    .rotate {
+      transform: rotate(180deg);
+    }
+  }
   }
 </style>

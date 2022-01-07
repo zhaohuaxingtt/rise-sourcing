@@ -387,6 +387,26 @@ export function getCfPrice(params) {
     })
 }
 
+// 获取零件目标价
+export function getCfPriceEffective(params) {
+    return requst({
+        url:`/cf-price-effective/${params.rfqId}/${params.pageSize}/${params.currPage}`,
+        method: 'GET'
+    })
+}
+
+// 获取模具目标价
+export function getMJPriceEffective(params) {
+    return requst({
+        url:`/tooling-target-price-task/search-valid-target-price-page/${params.rfqId}`,
+        method: 'POST',
+        data:{
+            current:params.currPage,
+            size:params.pageSize,
+        },
+    })
+}
+
 // 移除RFQ下的零件采购项目
 export function deleteRfqPart(params) {
     return requst({

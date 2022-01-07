@@ -1,16 +1,14 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-05 18:22:15
+ * @LastEditTime: 2022-01-07 14:32:52
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
   <div>
-    <iCard>
-      <div class="card-header">
-      <div class="card-title">
-        <span class="title">{{ '模具目标价' }}</span>
+    <iCard collapse :title="language('MOJUMUBIAOJIA','模具目标价')" :defalutCollVal="status == '已完成' || !todo">
+      <template slot="subInfo">
         <div
           v-if="todo"
           :class="{
@@ -21,31 +19,28 @@
           class="tishi"
         >
           <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
-          <span>{{ status }}</span>
+          <span class="status">{{ status }}</span>
         </div>
-      </div>
-      <div class="button-box">
-        <template v-if="!todo">
-          <iButton @click="showDialog" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{'查看修改记录'}}</iButton>
-            <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{language('LK_DAOCHU','导出')}}</iButton>
-        </template>
-          <template v-else>
-            <iButton
-              @click="openDialog"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
-              "
-              >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
-            >
+      </template>
+      <template slot="header-control">
+        <div class="button-box">
+          <template v-if="!todo">
+            <iButton @click="showDialog" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{'查看修改记录'}}</iButton>
+              <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{language('LK_DAOCHU','导出')}}</iButton>
           </template>
-        <i
-          @click="toggle('hidens')"
-          class="el-icon-arrow-down card-icon cursor"
-          :class="{ rotate: hidens }"
-        ></i>
-      </div>
-    </div>
-    <div v-show="hidens || !todo">
+            <template v-else>
+              <iButton
+                @click="openDialog"
+                v-permission.auto="
+                  PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
+                "
+                >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
+              >
+            </template>
+        </div>
+
+      </template>
+    <div>
       <tablelist
           :tableData="tableListData"
           :tableTitle="tableTitle"
@@ -81,7 +76,7 @@ import {iCard, iButton, iPagination, iMessage, icon} from "rise";
 import tablelist from 'pages/partsrfq/components/tablelist'
 import moldChangeRecord from "./moldChangeRecord";
 import {pageMixins} from "@/utils/pageMixins";
-import {getCfPrice} from "@/api/partsrfq/editordetail";
+import {getMJPriceEffective} from "@/api/partsrfq/editordetail";
 import {excelExport} from "@/utils/filedowLoad";
 import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data"
 
@@ -102,7 +97,6 @@ export default {
   data() {
     return {
       iconName,
-      hidens: false,
       visible: false,
       tableListData: [],
       tableLoading: false,
@@ -119,18 +113,6 @@ export default {
         {props:'approveStatusDesc',name:'审批状态',key: 'LK_SHENPIZHUANGTAI'},
     ]
     };
-  },
-  watch:{
-    status: {
-      handler(val) {
-        if (val == "已完成") {
-          this.hidens = true;
-        } else {
-          this.hidens = false;
-        }
-      },
-      immediate: true
-    },
   },
   created() {
     this.getTableList();
@@ -150,7 +132,7 @@ export default {
       if (id) {
         this.tableLoading = true;
         try {
-          const res = await getCfPrice({
+          const res = await getMJPriceEffective({
             rfqId: id,
             currPage: this.page.currPage,
             pageSize: this.page.pageSize,

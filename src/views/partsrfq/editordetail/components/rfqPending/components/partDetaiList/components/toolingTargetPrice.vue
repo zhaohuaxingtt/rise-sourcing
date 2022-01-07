@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-01-06 10:37:25
+ * @LastEditTime: 2022-01-07 15:13:55
  * @LastEditors: YoHo
 -->
 <template>
@@ -30,7 +30,7 @@
 <script>
 import { iFormGroup, iFormItem, iText, iPagination, iDialog } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
-import { searchToolingTargetPriceInfo } from "@/api/financialTargetPrice/index"
+import { getCfTargetApplyHistory } from "@/api/financialTargetPrice/index"
 import { pageMixins } from "@/utils/pageMixins"
 
 export default {
@@ -46,14 +46,41 @@ export default {
     return {
       loading: false,
       targetPrice: "0.00",
-      tableTitle:[
-	{ props: "applicationDate", name: "申请日期", key: "SHENQINGRIQI" },
-	{ props: "applicationType", name: "申请类型", key: "SHENQINGLEIXING" },
-	{ props: "cfName", name: "CF负责人", key: "CFFUZEREN" },
-	{ props: "expectedTargetPrice", name: "期望目标价", key: "QIWANGMUBIAOJIA" },
-	{ props: 'targetPrice', name: '目标价', key: 'MUBIAOJIA' },
-	{ props: "approvalStatus", name: "申请状态", key: "SHENQINGZHUANGTAI" },
-	{ props: "remarks", name: "备注", key: "BEIZHU" },
+      tableTitle:[{
+	props: 'applyDate',
+	name: '申请日期',
+	key:'LK_SHENQINGRIQI'
+},
+{
+	props: 'applyType',
+	name: '申请类型',
+	key:'LK_SHENQINGLEIXING'
+},
+{
+	props: 'priceAnaName',
+	name: 'CF负责人',
+	key:'LK_CFFUZEREN'
+},
+{
+	props: 'applyCategoryDesc',
+	name: '申请类别',
+	key:'LK_SHENQINGLEIBIE'
+},
+{
+	props: 'expTargetpri',
+	name: '期望目标价',
+	key:'LK_QIWANGMUBIAOJIA'
+},
+{
+	props: 'applyStatusDesc',
+	name: '申请状态',
+	key:'LK_SHENQINGZHUANGTAI'
+},
+{
+	props: 'approveStatusDesc',
+	name: '审批状态',
+	key:'SHENPIZHUANGTAI'
+},
 ],
       tableListData: []
     }
@@ -70,29 +97,27 @@ export default {
     
   },
   methods: {
-    searchToolingTargetPriceInfo() {
-      this.loading = true
-
-				searchToolingTargetPriceInfo({
-					current: this.page.currPage,
-					size: this.page.pageSize,
-					rfqId: this.rfqId,
-					// fsNum: this.params.fsnrGsnrNum,
-					// partNum: this.params.partNum
+			getTargetPrice() {
+				getCfTargetApplyHistory({
+					fsNums: [this.fsnrGsnrNum],
+					pageNo: this.page.currPage,
+					pageSize: this.page.pageSize
 				})
 				.then(res => {
 					if (res.code == 200) {
-            this.targetPrice = res.data.targetPrice
-            console.log("res.data.page.records", res.data.page.records)
-
-            this.tableListData = Array.isArray(res.data.page.records) ? res.data.page.records : []
-            this.page.totalCount = res.data.page.total || 0
+						this.page = {
+							...this.page,
+							totalCount: Number(res.total),
+							currPage: Number(res.pageNum),
+							pageSize: Number(res.pageSize)
+						}
+						this.tableListData = res.data || []
 					} else {
 						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
 					}
 				})
-				.finally(() => this.loading = false)
-    }
+				.catch(() => {})
+			},
   }
 }
 </script>

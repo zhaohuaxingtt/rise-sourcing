@@ -1,34 +1,30 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-06 18:38:32
+ * @LastEditTime: 2022-01-07 14:28:22
  * @LastEditors: YoHo
  * @Description: 
 -->
 <template>
-  <iCard>
-    <div class="card-header">
-      <div class="card-title">
-        <span class="title">{{ "零件目标价" }}</span>
-        <div
-          v-if="todo"
-          :class="{
-            danger: status == '未申请',
-            warning: status == '未完成',
-            success: status == '已完成',
-          }"
-          class="tishi"
-        >
-          <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
-          <span>{{ status }}</span>
-        </div>
+  <iCard collapse :title="language('LINGJIANMUBIAOJIA', '零件目标价')" :defalutCollVal="status == '已完成' || !todo">
+    <template slot="subInfo">
+      <div
+        v-if="todo"
+        :class="{
+          danger: status == '未申请',
+          warning: status == '未完成',
+          success: status == '已完成',
+        }"
+        class="tishi"
+      >
+        <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
+        <span class="status">{{ status }}</span>
       </div>
+    </template>
+    <template slot="header-control">
       <div class="button-box">
         <template v-if="!todo">
-          <iButton
-            @click="showDialog"
-            >{{ "查看修改记录" }}</iButton
-          >
+          <iButton @click="showDialog">{{ "查看修改记录" }}</iButton>
           <iButton
             @click="exports"
             v-permission.auto="
@@ -42,14 +38,9 @@
             language("LK_SHENQINGMUBIAOJIA", "申请目标价")
           }}</iButton>
         </template>
-        <i
-          @click="toggle('hidens')"
-          class="el-icon-arrow-down card-icon cursor"
-          :class="{ rotate: hidens }"
-        ></i>
       </div>
-    </div>
-    <div v-show="hidens || !todo">
+    </template>
+    <div>
       <tablelist
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -81,7 +72,7 @@ import { iCard, iButton, iPagination, iMessage, icon } from "rise";
 import tablelist from "pages/partsrfq/components/tablelist";
 import toolingTargetPrice from "./toolingTargetPrice";
 import { pageMixins } from "@/utils/pageMixins";
-import { getCfPrice } from "@/api/partsrfq/editordetail";
+import { getCfPriceEffective } from "@/api/partsrfq/editordetail";
 import { excelExport } from "@/utils/filedowLoad";
 import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data";
 
@@ -92,18 +83,17 @@ export default {
     iPagination,
     tablelist,
     icon,
-    toolingTargetPrice
+    toolingTargetPrice,
   },
   mixins: [pageMixins],
   props: {
     todo: Boolean,
-    status: String
+    status: String,
   },
   data() {
     return {
       iconName,
-      hidens: false,
-      visible:false,
+      visible: false,
       tableListData: [],
       tableLoading: false,
       selectTableData: [],
@@ -127,32 +117,28 @@ export default {
         },
         { props: "APrice", name: "A Price", key: "APrice" },
         { props: "BPrice", name: "B Price", key: "BPrice" },
-        { props: "applyStatusDesc", name: "申请状态", key: "SHENQINGZHUANGTAI" },
-        { props: "approveStatusDesc", name: "审批状态", key: "SHENPIZHUANGTAI" },
+        {
+          props: "applyStatusDesc",
+          name: "申请状态",
+          key: "SHENQINGZHUANGTAI",
+        },
+        {
+          props: "approveStatusDesc",
+          name: "审批状态",
+          key: "SHENPIZHUANGTAI",
+        },
       ],
     };
   },
   created() {
     this.getTableList();
   },
-  watch: {
-    status: {
-      handler(val) {
-        if (val == "已完成") {
-          this.hidens = true;
-        } else {
-          this.hidens = false;
-        }
-      },
-      immediate: true
-    },
-  },
   methods: {
-    showDialog(){
-      this.visible = true
+    showDialog() {
+      this.visible = true;
     },
     openDialog() {
-      if(!this.selectTableData.length){
+      if (!this.selectTableData.length) {
         return iMessage.warn(
           this.language(
             "LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGLINGJIANMUBIAOJIADECAIGOUXIANGMU",
@@ -160,17 +146,18 @@ export default {
           )
         );
       }
-      this.$emit("openDialog", "partsDialogVisible", JSON.parse(JSON.stringify(this.selectTableData)));
-    },
-    toggle(type) {
-      this[type] = !this[type];
+      this.$emit(
+        "openDialog",
+        "partsDialogVisible",
+        JSON.parse(JSON.stringify(this.selectTableData))
+      );
     },
     async getTableList() {
       const id = this.$route.query.id;
       if (id) {
         this.tableLoading = true;
         try {
-          const res = await getCfPrice({
+          const res = await getCfPriceEffective({
             rfqId: id,
             currPage: this.page.currPage,
             pageSize: this.page.pageSize,

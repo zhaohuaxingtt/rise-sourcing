@@ -1,63 +1,59 @@
 <template>
   <div>
     <iCard
+      collapse
       v-permission.auto="
         PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_INDEXPAGE |
           模具预算申请页面
       "
+      :title="language('MOJUTOUZIYUSUAN','模具投资预算')"
+       :defalutCollVal="status == '已完成' || !todo"
     >
-      <div class="card-header">
-        <div class="card-title">
-          <span class="title">{{ "模具投资预算" }}</span>
-          <div
-            v-if="todo"
-            :class="{
-              danger: status == '未申请',
-              warning: status == '未完成',
-              success: status == '已完成',
-            }"
-            class="tishi"
-          >
-            <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
-            <span>{{ status }}</span>
-          </div>
-        </div>
-        <div class="button-box">
-          <template v-if="!todo">
-            <iButton
-              @click="submit"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT |
-                  模具预算申请提交
-              "
-              >{{ language("LK_TIJIAO", "提交") }}</iButton
-            >
-            <iButton
-              @click="recall"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL |
-                  模具预算申请撤回
-              "
-              >{{ language("LK_CHEHUI", "撤回") }}</iButton
-            >
-          </template>
-          <template v-else>
-            <iButton
-              @click="moldBudgetApplicationVisible = true"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
-              "
-              >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
-            >
-          </template>
-          <i
-            @click="toggle('hidens')"
-            class="el-icon-arrow-down card-icon cursor"
-            :class="{ rotate: hidens }"
-          ></i>
-        </div>
+    <template slot="subInfo">
+      <div
+        v-if="todo"
+        :class="{
+          danger: status == '未申请',
+          warning: status == '未完成',
+          success: status == '已完成',
+        }"
+        class="tishi"
+      >
+        <icon symbol :name="iconName[status]" class="tishi-icon"></icon>
+        <span class="status">{{ status }}</span>
       </div>
-      <div v-show="hidens || !todo">
+    </template>
+    <template slot="header-control">
+      <div class="button-box">
+        <template v-if="!todo">
+          <iButton
+            @click="submit"
+            v-permission.auto="
+              PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_SUBMIT |
+                模具预算申请提交
+            "
+            >{{ language("LK_TIJIAO", "提交") }}</iButton
+          >
+          <iButton
+            @click="recall"
+            v-permission.auto="
+              PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_RECALL |
+                模具预算申请撤回
+            "
+            >{{ language("LK_CHEHUI", "撤回") }}</iButton
+          >
+        </template>
+        <template v-else>
+          <iButton
+            @click="moldBudgetApplicationVisible = true"
+            v-permission.auto="
+              PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
+            "
+            >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
+          >
+        </template>
+      </div>
+    </template>
         <tableList
           index
           :tableData="tableListData"
@@ -93,7 +89,6 @@
           :current-page="page.currPage"
           :total="page.totalCount"
         />
-      </div>
     </iCard>
     <!-- 申请模具预算弹窗 -->
     <moldBudgetApplicationDialog :visible.sync="moldBudgetApplicationVisible" />
@@ -134,25 +129,12 @@ export default {
   data() {
     return {
       iconName,
-      hidens: false,
       tableListData: [],
       tableTitle: tableTitle,
       tableLoading: false,
       selectTableData: [],
       moldBudgetApplicationVisible: false
     };
-  },
-  watch:{
-    status: {
-      handler(val) {
-        if (val == "已完成") {
-          this.hidens = true;
-        } else {
-          this.hidens = false;
-        }
-      },
-      immediate: true
-    },
   },
   created() {
     this.getTableList();
