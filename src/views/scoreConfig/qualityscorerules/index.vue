@@ -24,8 +24,8 @@
     <iSearch
       class="margin-top25"
       icon
-      @sure="sure"
-      @reset="reset"
+      @sure="getList"
+      @reset="getList"
       :resetKey="PARTSIGN_RESETBUTTON"
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
@@ -109,12 +109,28 @@ export default {
             this[type] = !!show;
         },
         // 获取列表
-        async getList(){
+        getList(){
             this.loading = true;
-            await getAllMqRules(this.searchForm).then((res)=>{
+            getAllMqRules(this.searchForm).then((res)=>{
                 this.loading = false;
                 if(res.code == '200'){
-                    this.tableListData = res.data['ruleNodeList'] || [];
+                    const tableListData = []
+                    res.data.forEach(item => {
+                        const Sitem = {
+                            ruleName: item.ruleName,
+                            ruleId: item.ruleId,
+                            ruleDes: item.ruleDes,
+                        }
+                        if (item.ruleNodeList && item.ruleNodeList.length) {
+                            item.ruleNodeList.forEach(rule => {
+                                Sitem.num = rule.num
+                                Sitem.deptName = rule.deptName || (rule.dept && rule.dept.deptName) || ''
+                                Sitem.userName = rule.userName || (rule.user && rule.user.userName) || ''
+                            })
+                        }
+                        tableListData.push(Sitem)
+                    })
+                    this.tableListData = tableListData;
                 }else{
                     this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }

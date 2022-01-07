@@ -340,7 +340,7 @@ export default {
           this.commodityOptions = res.data.map(item => ({
             key: item.id,
             label: item.nameZh,
-            value: item.id,
+            value: item.deptNum
           }))
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -348,19 +348,19 @@ export default {
       })
       .catch(() => {})
     },
-    getLinieOptionsByCommodity(deptId) {
+    getLinieOptionsByCommodity(deptNum) {
       this.linieLoading = true
 
       if (this.getLinieOptionsByCommoditySource) this.getLinieOptionsByCommoditySource.cancel()
       this.getLinieOptionsByCommoditySource = axios.CancelToken.source()
 
-      getLinieOptionsByCommodity({ deptId }, { cancelToken: this.getLinieOptionsByCommoditySource.token })
+      getLinieOptionsByCommodity({ deptNum }, { cancelToken: this.getLinieOptionsByCommoditySource.token })
       .then(res => {
         if (res.code == 200) {
           this.linieOptions = res.data.map(item => ({
-            key: item.id,
-            label: item.nameZh,
-            value: item.id,
+            key: item.code,
+            label: item.name,
+            value: item.code,
           }))
         } else {
           this.linieOptions = []

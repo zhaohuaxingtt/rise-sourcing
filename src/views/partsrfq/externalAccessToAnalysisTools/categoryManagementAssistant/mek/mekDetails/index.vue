@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-05 21:11:05
+ * @LastEditTime: 2022-01-07 10:38:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -23,7 +23,7 @@
                        :label="item.categoryName">
             </el-option>
           </iSelect> -->
-          <span>{{ categoryName }}</span>
+          <span>{{language('CAILIAOZU','材料组')}}:{{ categoryName }}</span>
         </div>
         <div class="flex"
              v-show="reportFlag||!propSchemeId">
@@ -553,10 +553,10 @@ export default {
     async init () {
       this.rfqId = this.$store.state.rfq.rfqId || this.$route.query.rfqId;
       // this.entryStatus = this.$store.state.rfq.entryStatus;
-      this.chemeId = this.$route.query.chemeId ? this.$route.query.chemeId : this.propSchemeId;
+      this.schemeId = this.$route.query.schemeId ? this.$route.query.schemeId : this.propSchemeId;
       this.productFactoryNames = this.$route.query.productFactoryNames ? this.$route.query.productFactoryNames : this.propFactoryName;
       await getSchemeInfo({
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
       }).then((res) => {
         let data = res.data;
         this.categoryCode = data.categoryCode;
@@ -595,13 +595,13 @@ export default {
             categoryId: this.categoryId,
             isBindingRfq: this.isBindingRfq,
             req: this.rfqId,
-            schemeId: this.chemeId
+            schemeId: this.schemeId
           };
         } else {
           params = {
             categoryId: this.categoryId,
             isBindingRfq: this.isBindingRfq,
-            schemeId: this.chemeId
+            schemeId: this.schemeId
           };
         }
         //目标车型
@@ -644,7 +644,7 @@ export default {
         let params1 = {
           categoryId: this.categoryId,
           motorIds: [this.targetMotor, ...this.ComparedMotor],
-          schemeId: this.chemeId,
+          schemeId: this.schemeId,
         };
         recursiveRetrieve(params1).then((res) => {
           if (res.code === "200") {
@@ -671,7 +671,7 @@ export default {
         ],
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
         unselected: this.exceptPart,
       };
       let motorIdList = [];
@@ -720,9 +720,10 @@ export default {
         mekInnerTarget(entryParams).then(res => {
           this.firstBarData = res.data[0];
         })
+        console.log(this.firstBarData, "fisrtBarData")
         params.info = params.info.filter(item => item.isTargetMotor === false)
         this.$nextTick(() => {
-          if (this.categoryId && this.chemeId && this.categoryCode) {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
             params.isBindingRfq = this.isBindingRfq
             this.getHistogram(params);
           }
@@ -731,7 +732,7 @@ export default {
         params.isBindingRfq = false;
         this.onDataLoading = false
         this.$nextTick(() => {
-          if (this.categoryId && this.chemeId && this.categoryCode) {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
             params.isBindingRfq = this.isBindingRfq
             this.getHistogram(params);
           }
@@ -757,7 +758,7 @@ export default {
       let params = {
         categoryId: this.categoryId,
         motorIds: [this.targetMotor, ...this.ComparedMotor],
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
       };
       recursiveRetrieve(params).then((res) => {
         this.recursiveRetrieveList = res.data;
@@ -785,7 +786,7 @@ export default {
       this.detailVisible = flag;
       let params = {
         comparedType: this.comparedType,
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
         unselected: this.unselected,
         ...val,
       };
@@ -836,28 +837,34 @@ export default {
         ],
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
         unselected: this.exceptPart,
       };
       if (this.isBindingRfq) {
         params.isBindingRfq = true;
         params.rfq = this.rfqId;
+        let entryParams = _.cloneDeep(params)
+        entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+        mekInnerTarget(entryParams).then(res => {
+          this.firstBarData = res.data[0];
+        })
+        params.info = params.info.filter(item => item.isTargetMotor === false)
+        this.$nextTick(() => {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       } else {
         params.isBindingRfq = false;
+        this.onDataLoading = false
+        this.$nextTick(() => {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
+            params.isBindingRfq = this.isBindingRfq
+            this.getHistogram(params);
+          }
+        })
       }
-      this.barData.forEach((item) => {
-        let obj = {
-          motorId: item.motorId,
-          priceType: item.priceType,
-          priceDate: item.priceDate,
-          isTargetMotor: false,
-          engine: item.engine || "",
-          position: item.position || "",
-          transmission: item.transmission || "",
-        };
-        params.info.push(obj);
-      });
-      this.getHistogram(params);
     },
     changeTargetDate (val) {
       this.$forceUpdate();
@@ -876,7 +883,7 @@ export default {
         ],
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
         unselected: this.exceptPart,
       };
       if (this.isBindingRfq) {
@@ -929,7 +936,7 @@ export default {
         engine: val.detail[0].engine,
         motorId: val.motorId,
         position: val.detail[0].position,
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
         transmission: val.detail[0].transmission,
       };
       queryCal(params).then((res) => {
@@ -969,7 +976,7 @@ export default {
       let params = {
         comparedType: this.comparedType,
         motorIds: this.ComparedMotor,
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
         targetMotorId: this.targetMotor,
         config: {}
       };
@@ -983,7 +990,7 @@ export default {
         })
 
       }
-      if (this.comparedType && this.ComparedMotor && this.chemeId && this.targetMotor) {
+      if (this.comparedType && this.ComparedMotor && this.schemeId && this.targetMotor) {
         getMekTable(params).then((res) => {
           let data = _.cloneDeep(res);
           let mekTypeName = "";
@@ -1030,7 +1037,7 @@ export default {
         ],
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
         unselected: this.exceptPart,
       };
       this.barData.forEach((item) => {
@@ -1060,7 +1067,7 @@ export default {
         })
         params.info = params.info.filter(item => item.isTargetMotor === false)
         this.$nextTick(() => {
-          if (this.categoryId && this.chemeId && this.categoryCode) {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
             params.isBindingRfq = this.isBindingRfq
             this.getHistogram(params);
           }
@@ -1069,7 +1076,7 @@ export default {
         params.isBindingRfq = false;
         this.onDataLoading = false
         this.$nextTick(() => {
-          if (this.categoryId && this.chemeId && this.categoryCode) {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
             params.isBindingRfq = this.isBindingRfq
             this.getHistogram(params);
           }
@@ -1088,7 +1095,7 @@ export default {
         ],
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
-        schemeId: this.chemeId,
+        schemeId: this.schemeId,
         unselected: this.exceptPart,
       };
       this.ComparedMotor = this.ComparedMotor.filter((i) => i !== data.motorId);
@@ -1109,7 +1116,7 @@ export default {
         })
         params.info = params.info.filter(item => item.isTargetMotor === false)
         this.$nextTick(() => {
-          if (this.categoryId && this.chemeId && this.categoryCode) {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
             params.isBindingRfq = this.isBindingRfq
             this.getHistogram(params);
           }
@@ -1118,7 +1125,7 @@ export default {
         params.isBindingRfq = false;
         this.onDataLoading = false
         this.$nextTick(() => {
-          if (this.categoryId && this.chemeId && this.categoryCode) {
+          if (this.categoryId && this.schemeId && this.categoryCode) {
             params.isBindingRfq = this.isBindingRfq
             this.getHistogram(params);
           }
@@ -1147,10 +1154,11 @@ export default {
           if (data) {
             data.forEach((item) => {
               maxWidthList.push(item.detail.length);
-              if (item.detail.length === 1 || item.detail.length === 0) {
-                this.totalWidth = 200 * data.length;
+
+              if (_.max(maxWidthList) === 1 || _.max(maxWidthList) === 0) {
+                this.totalWidth = 240 * data.length;
               } else {
-                this.totalWidth += item.detail.length * 100;
+                this.totalWidth += item.detail.length * 120;
               }
               item.detail.forEach((i) => {
                 maxList.push(parseInt(i.value));
@@ -1161,7 +1169,7 @@ export default {
             } else {
               this.clientHeight = false;
             }
-            this.totalWidth = this.totalWidth + 100 + "px";
+            this.totalWidth = this.totalWidth + 120 + "px";
             console.log("error here s")
             this.maxData = maxList && maxList.length > 0 ? _.max(maxList).toString() : "";
             console.log("error here e")
@@ -1206,8 +1214,8 @@ export default {
     },
     handleMEKInfo () {
       let vwModelCodes = JSON.stringify([
-        ...this.ComparedMotor,
         this.targetMotor,
+        ...this.ComparedMotor
       ]);
       // let vmModelCodes = ['SK461/0CS_K', 'SK260/0CS_K']
       this.$router.push({
@@ -1215,7 +1223,8 @@ export default {
         query: {
           categoryCode: this.categoryCode,
           vwModelCodes,
-          chemeId: this.chemeId,
+          schemeId: this.schemeId,
+          isBindingRfq: this.isBindingRfq,
         },
       });
     },
@@ -1261,7 +1270,7 @@ export default {
           secondComparedConfig: "",
           thirdComparedConfig: "",
           forthComparedConfig: "",
-          schemeId: this.chemeId,
+          schemeId: this.schemeId,
           targetMotor: this.targetMotor,
           name: this.analysisName,
           selectedOptions: this.checkedCarLevelOptions ? JSON.stringify(this.checkedCarLevelOptions) : ""
@@ -1296,20 +1305,25 @@ export default {
           idEle: "#content",
           pdfName: this.reportName,
           callback: async (pdf, pdfName) => {
+
             try {
               const time = new Date().getTime();
               const filename = pdfName + time + ".pdf";
               const pdfFile = pdf.output("datauristring");
               const blob = dataURLtoFile(pdfFile, filename);
               const formData = new FormData();
-              formData.append("multipartFile", blob);
-              formData.append("applicationName", "rise");
+              formData.append('applicationName', 'rise') // 桶名，默认固定rise
+              formData.append('businessId', 8025) // 业务id，默认固定8025
+              formData.append('currentUser', this.$store.state.permission.userInfo.id) // 用户id
+              formData.append('type', 1) // 文件类型 1:OBS 2:NFS，默认1
+              formData.append('file', blob)
               const res = await uploadFile(formData);
-              const data = res.data[0];
+
+              const data = res.data;
               const req = {
-                mekId: this.chemeId,
-                name: data.fileName,
-                path: data.filePath,
+                mekId: this.schemeId,
+                name: data.name,
+                path: data.path,
                 remark: this.reportName,
               };
               await add(req);

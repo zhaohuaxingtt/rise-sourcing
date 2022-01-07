@@ -9,7 +9,7 @@
 <template>
   <iCard class="score" :title="language('LK_GONGYINGSHANGPINGFEN', '供应商评分')">
     <template #header-control>
-      <div v-if="!editStatus">
+      <div key="1" v-if="!editStatus">
         <iButton @click="forwardDialogVisible = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_TRANSFER|转派">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
         <iButton :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
         <iButton @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
@@ -17,7 +17,7 @@
         <iButton :loading="approveLoading" @click="handleApprove" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_APPROVE|批准">{{ language("PIZHUN", "批准") }}</iButton>
         <iButton @click="handleReject" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_REJECT|拒绝">{{ language("JUJUE", "拒绝") }}</iButton>
       </div>
-      <div v-else>
+      <div key="2" v-if="editStatus">
         <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
         <iButton :loading="saveLoading" @click="handleSave" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SAVE|保存">{{ language("BAOCUN", "保存") }}</iButton>
       </div>

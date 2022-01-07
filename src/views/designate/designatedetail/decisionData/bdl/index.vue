@@ -227,6 +227,10 @@ export default {
 .factoryDesc {
   display: inline-block;
   padding-right: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 95%;
+  vertical-align: middle;
 }
 .decision-bdl {
   padding: 0;

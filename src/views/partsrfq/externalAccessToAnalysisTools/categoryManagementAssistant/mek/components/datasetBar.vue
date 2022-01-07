@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2022-01-05 15:11:30
+ * @LastEditTime: 2022-01-07 10:39:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -152,11 +152,12 @@ export default {
       });
     },
     initCharts () {
-      if (this.barDataItem.length <= 3) {
+      if (this.barDataItem.length <= 2) {
         this.$refs.chart.style.width = "240px";
       } else {
-        this.$refs.chart.style.width = this.barDataItem.length * 100 + "px";
+        this.$refs.chart.style.width = this.barDataItem.length * 120 + "px";
       }
+
       // console.log(this.$refs.chart.style.width, 'number')
       // this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);

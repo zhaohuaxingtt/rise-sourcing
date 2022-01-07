@@ -303,7 +303,7 @@ export default {
         this.$router.push({
           path: "/sourcing/mek/mekDetails",
           query: {
-            chemeId: res.data,
+            schemeId: res.data,
             productFactoryNames: params ? params.productFactoryNames || "" : ""
           },
         })
@@ -319,9 +319,9 @@ export default {
           pageSize: this.page.pageSize
         }
         const res = await getList(pms)
-        if (!res.total && (this.form.materialGroup || this.form.createName || this.form.spareParts || this.form.rfqNo)) {
-          iMessage.error(this.language('BQWFCXDJGSRCWHBCZQQRHCXSR', '抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入'))
-        }
+        // if (!res.total && (this.form.materialGroup || this.form.createName || this.form.spareParts || this.form.rfqNo)) {
+        //   iMessage.error(this.language('BQWFCXDJGSRCWHBCZQQRHCXSR', '抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入'))
+        // }
         this.tableListData = res.data
         this.tableLoading = false
         this.page.currPage = res.pageNum
@@ -507,7 +507,7 @@ export default {
         const openUrl = this.$router.resolve({
           path: "/sourcing/mek/mekDetails",
           query: {
-            chemeId: val.id,
+            schemeId: val.id,
             rfqId: val.rfqNo || ''
           },
         });

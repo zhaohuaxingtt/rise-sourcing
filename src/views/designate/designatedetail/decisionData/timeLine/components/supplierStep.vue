@@ -6,7 +6,8 @@
 <template>
     <ul class="supplierStep-list flex">
         <li class="flex-align-center" v-for="(item,index) in supplierData" :key="'supplierStep_'+index">
-            <icon symbol name="iconTimeLine-Today" class="step-icon"></icon>
+            <icon v-if="symbol" symbol name="iconTimeLine-Today" class="step-icon"></icon>
+            <todayIcon v-else size="30" class="step-icon" />
             <div>
                 <p class="title">{{item.durationName}}</p>
                 <p class="tips">{{item.nodeWeek ? ( getNodeYear(item.nodeDate) +'KW'+item.nodeWeek) :''}}</p>
@@ -19,15 +20,21 @@
 import {
   icon,
 } from "rise";
+import todayIcon from "./todayIcon"
 export default {
     name:'supplierStep',
     components:{
         icon,
+        todayIcon
     },
     props:{
         supplierData:{
             type:Array,
              default:()=>[],
+        },
+        symbol: {
+            type: Boolean,
+            default: true
         }
     },
     data(){

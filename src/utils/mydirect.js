@@ -3,12 +3,11 @@ import store from '../store'
 import router from '@/router'
 import { businessPermission } from '@/utils'
 import { getTousandNum, delcommafy } from '@/utils/tool'
-const openProcess = process.env.NODE_ENV == 'dev'
+const openProcess = process.env.NODE_ENV == 'dev' || process.env.NODE_ENV == 'vmsit'
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
   inserted: function(el, binding, vnode) {
-    // return //权限初始化勾选中，切勿打开
     //如果是个变量则使用变量，否则当做字符串处理
     const value = binding.value ? binding.value : binding.expression
     // dynamic、auto共用时处理
@@ -26,7 +25,7 @@ Vue.directive('permission', {
         !store.state.permission.whiteBtnList[value] &&
         businessPermission(value, router.currentRoute.query)
       ) {
-        if (openProcess) el.parentNode.removeChild(el)
+        if (openProcess && el.parentNode) el.parentNode.removeChild(el)
       }
     } else if (binding.modifiers.auto) {
       // eslint-disable-next-line no-debugger
@@ -35,10 +34,10 @@ Vue.directive('permission', {
         // store.dispatch('uploadResource', splitValue)
       }
       if (!store.state.permission.whiteBtnList[splitValue[0]]) {
-        if (openProcess) el.parentNode.removeChild(el)
+        if (openProcess && el.parentNode) el.parentNode.removeChild(el)
       } else {
         if (businessPermission(splitValue[0], router.currentRoute.query)) {
-          if (openProcess) el.parentNode.removeChild(el)
+          if (openProcess && el.parentNode) el.parentNode.removeChild(el)
         }
       }
       // force permission
