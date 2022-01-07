@@ -7,13 +7,19 @@
 -->
 <template>
   <div class="scroll flex">
-    <div class="flex-align-center margin-right50" v-for="(item,index) in mapListData.offerDataList" :key="index">
-      <div :style="'background:'+color[index]" class="circle margin-right4"></div>
-      <div class="margin-left10">{{item.name}}</div>
-    </div>
-    <div class="flex-align-center" v-if="mapListData.purchaseDataList && mapListData.purchaseDataList.length">
+    <!-- <div class="flex-align-center margin-right50" v-for="(item,index) in mapListData.supplierList" :key="index">
+      <template v-for="(plant, plantIndex) in item.plantList">
+        <div :style="'background:'+color[index]" class="circle margin-right4" :key="plantIndex"></div>
+        <div class="margin-left10" :key="plantIndex">{{plant.name}}</div>
+      </template>
+    </div> -->
+    <div class="flex-align-center margin-right50" v-if="mapListData.purchaseFactoryList && mapListData.purchaseFactoryList.length > 0">
       <icon name="iconshangqidazhong" symbol></icon>
       <div class="margin-left10">{{language("SHANGQIDAZONGGONGCHANGMINGCHEN",'上汽大众工厂')}}</div>
+    </div>
+    <div class="flex-align-center" v-if="mapListData.supplierList && mapListData.supplierList.length > 0">
+      <div :style="'background:'+color[0]" class="circle margin-right4"></div>
+      <div class="margin-left10">{{language("GONGYINGSGONGCHANGTUBIAO",'供应商工厂')}}</div>
     </div>
   </div>
 </template>
