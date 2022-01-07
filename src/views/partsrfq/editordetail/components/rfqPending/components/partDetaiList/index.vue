@@ -8,13 +8,13 @@
   <iCard>
     <div class="header flex-align-center" v-if="!disabled">
       <iButton 
-      v-if="baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
+      v-if="getisRfqStatus && baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
       @click="cancelRelationStarMon" v-permission.auto="QUXIAOGUANLIANSTARTMONIORJILU|取消关联StarMonitor记录">{{
           language('QUXIAOGUANLIANSTARMONITORJILU','取消关联StarMonitor记录')
         }}
       </iButton>    
       <iButton 
-      v-if="baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
+      v-if="getisRfqStatus && baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
       @click="relationStarMon" v-permission.auto="GUANLIANSTARTMONIORJILU|关联StarMonitor记录">{{
           language('GUANLIANSTARTMONITORJILU','关联StarMonitor记录')
         }}
@@ -144,15 +144,17 @@ export default {
       }
     }
   },
-  inject: ['getbaseInfoData', 'getDisabled', 'getBaseInfo'],
+  inject: ['getbaseInfoData', 'getDisabled', 'getBaseInfo','isRfqStatus'],
   computed: {
     disabled() {
       return this.getDisabled()
     },
     baseInfoData() {
       return this.getbaseInfoData()
-    }
-
+    },
+    getisRfqStatus() {
+      return this.isRfqStatus()
+    } 
     
   },
   data() {
@@ -173,7 +175,6 @@ export default {
       },
       partNumList: "",
       startVisible:false,//关联StartMonitor
-      
     };
   },
   methods: {
