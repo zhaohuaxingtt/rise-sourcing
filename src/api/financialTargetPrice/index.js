@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-24 15:55:46
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-06 18:53:02
+ * @LastEditTime: 2022-01-07 23:36:57
  * @Description: 财务目标价相关Api
  * @FilePath: \front-web\src\api\financialTargetPrice\index.js
  */
@@ -111,7 +111,7 @@ export function applyCFTarget(params) {
 }
 
 // 申请零件目标价
-export function applyJLTarget(params) {
+export function applyPartTarget(params) {
   return requst({
     url: '/cf-target-price-applies/apply-cf-target-batch',
     method: 'POST',

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-01-07 22:58:17
+ * @LastEditTime: 2022-01-07 23:53:57
  * @LastEditors: YoHo
 -->
 <template>
@@ -12,7 +12,7 @@
         <span class="font18 font-weight">{{language('XIUGAIJILU','修改记录')}}</span>
       </div>
     </template>
-    <tablelist v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_TABLE|申请财务目标价-表格" :tableData='tableListData' :tableTitle='targeTitle' :tableLoading='loading' :selection="false"></tablelist>
+    <tablelist v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_TABLE|申请财务目标价-表格" :tableData='tableListData' :tableTitle='tableTitle' :tableLoading='loading' :selection="false"></tablelist>
     <iPagination
       class="pagination"
       v-update
@@ -32,6 +32,7 @@ import { iFormGroup, iFormItem, iText, iPagination, iDialog } from "rise"
 import tablelist from "@/views/partsign/editordetail/components/tableList"
 import { getCfTargetApplyHistory } from "@/api/financialTargetPrice/index"
 import { pageMixins } from "@/utils/pageMixins"
+import { toolingTargetPriceTitle as tableTitle } from "../data";
 
 export default {
   components: { iFormGroup, iFormItem, iText, iPagination, tablelist, iDialog },
@@ -45,43 +46,7 @@ export default {
   data() {
     return {
       tableLoading: false,
-      targeTitle:[{
-	props: 'applyDate',
-	name: '申请日期',
-	key:'LK_SHENQINGRIQI',
-  width:200
-},
-{
-	props: 'applyType',
-	name: '申请类型',
-	key:'LK_SHENQINGLEIXING'
-},
-{
-	props: 'priceAnaName',
-	name: 'CF负责人',
-	key:'LK_CFFUZEREN'
-},
-{
-	props: 'applyCategoryDesc',
-	name: '申请类别',
-	key:'LK_SHENQINGLEIBIE'
-},
-{
-	props: 'expTargetpri',
-	name: '期望目标价',
-	key:'LK_QIWANGMUBIAOJIA'
-},
-{
-	props: 'applyStatusDesc',
-	name: '申请状态',
-	key:'LK_SHENQINGZHUANGTAI'
-},
-{
-	props: 'approveStatusDesc',
-	name: '审批状态',
-	key:'SHENPIZHUANGTAI'
-},
-],
+      tableTitle,
       tableListData: []
     }
   },

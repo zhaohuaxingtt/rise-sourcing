@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 14:08:28
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-07 16:42:20
+ * @LastEditTime: 2022-01-07 23:55:23
  * @Description: 修改历史card
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\history.vue
 -->
@@ -66,14 +66,7 @@ export default {
   data() {
     return {
       tableData: [],
-      tableTitle: [
-        {props:'fsNum',name:'零件采购项目号', key: "LINGJIANCAIGOUXIANGMUHAO", tooltip: true},
-        {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
-        {props:'targetPrice',name:'投资目标价', key: "TOUZIMUBIAOJIA", tooltip: true},
-        {props:'isValidDesc',name:'状态', key: "ZHUANGTAI", tooltip: true},
-        {props:'updateUserName',name:'修改人', key: "XIUGAIREN", tooltip: true},
-        {props:'updateDate',name:'修改日期', key: "XIUGAIRIQI", tooltip: true},
-      ],
+      tableTitle,
       tableLoading: false,
     }
   },

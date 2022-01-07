@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-07 23:16:30
+ * @LastEditTime: 2022-01-07 23:50:10
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -41,7 +41,7 @@
 
 <script>
 import { iDialog, iMessage, iText, iInput, iButton } from 'rise'
-import { applyTableTitle } from '../data'
+import { moduleDialogTitle } from '../data'
 import tableList from 'pages/modelTargetPrice/components/tableList.vue'
 import { getTaskPartList, importBatchMaintain, getTaskPartListRfq, submitApplyTargetPrice, saveMaintain, submitMaintain, exportBatchMaintain } from "@/api/modelTargetPrice/index"
 import { getDictByCode } from '@/api/dictionary'
@@ -85,20 +85,10 @@ export default {
   },
   computed: {
     tableTitle(){
-      const tableTitle = [
-        {props:'fsnrGsnrNum',name:'零件采购项目号', key: "LINGJIANCAIGOUXIANGMUHAO", tooltip: true, width: 140},
-        {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
-        {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMINGZHONG", tooltip: true},
-        {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, todoHiddel: true},
-        {props:'carTypeProjectZh',name:'车型项目', key: "LK_CARPROJECT", tooltip: true, todoHiddel: true, minWidth: 140},
-        {props:'originalTargetPrice',name:'原目标价', key: "YUANMUBIAOJIA", tooltip: true},
-        {props:'businessTypeDesc',name:'类型', key: "LEIXING", tooltip: true},
-        {props:'expectedTargetPrice',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true},
-      ]
       if(this.todo){
-        return tableTitle.filter(i=> !i.todoHiddel)
+        return moduleDialogTitle.filter(i=> !i.todoHiddel)
       }
-      return tableTitle
+      return moduleDialogTitle
     },
     applyType() {
       return this.$route.query.applyType || '1'
@@ -199,7 +189,6 @@ export default {
       // }
       this.loading = true
       if (this.applyType === '1') {
-        console.log(this.tableData)
         const params = {
           remarks: this.remarks,
           rfqId: this.rfqId,
@@ -211,7 +200,6 @@ export default {
             }
           })
         }
-        console.log('params',params)
         submitApplyTargetPrice(params).then(res => {
           if (res?.result) {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)

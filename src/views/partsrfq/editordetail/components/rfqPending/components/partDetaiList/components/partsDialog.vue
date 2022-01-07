@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-07 23:17:47
+ * @LastEditTime: 2022-01-07 23:39:55
  * @Description: 申请零件目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -25,12 +25,12 @@
         <iText v-else>{{scope.row.expectedTargetPrice}}</iText>
       </template>
       <!-- 财务控制人 -->
-      <template #cfController="scope">
-        <iSelect v-if="scope.row.isEdit||false" v-model="scope.row.cfController">
+      <!-- <template #cfController="scope">
+        <iSelect v-if="scope.row.isEdit && false" v-model="scope.row.cfController">
           <el-option :label="item.name" :value="item.id" v-for="item in fromGroup.CF_CONTROL" :key="item.id"></el-option>
         </iSelect>
         <iText v-else>{{scope.row.cfControllerName}}</iText>
-      </template>
+      </template> -->
       <!-- 申请类别 -->
       <template #applyType="scope">
         <iSelect v-if="scope.row.isEdit" v-model="scope.row.applyType">
@@ -55,8 +55,9 @@
 <script>
 import { iDialog, iMessage, iText, iInput, iSelect, iButton } from 'rise'
 import tableList from '@/views/partsign/home/components/tableList'
-	import { applyJLTarget } from '@/api/financialTargetPrice/index'
+import { applyPartTarget } from '@/api/financialTargetPrice/index'
 import { dictkey } from '@/api/partsprocure/editordetail'
+import { partsDialogTitle as tableTitle } from "../data";
 export default {
   props: {
     visible:{type:Boolean},
@@ -80,16 +81,7 @@ export default {
       remarks: '',
       selectList: [],
       isAgainEdit:false,
-      tableTitle: [
-        {props:'fsnrGsnrNum',name:'零件采购项目号', key: "LINGJIANCAIGOUXIANGMUHAO", tooltip: true},
-        {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true},
-        {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMINGZHONG", tooltip: true},
-        {props:'cfController',name:'财务控制员', key: "CAIWUKONGZHIYUAN", tooltip: true},
-        {props:'applyType',name:'申请类别', key: "LK_SHENQINGLEIBIE", tooltip: true},
-        {props:'expectedTargetPrice',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true},
-        {props:'applyReason',name:'申请原因', key: "LK_SHENQINGYUANYIN", tooltip: true},
-        {props:'memo',name:'申请备注', key: "LK_SHENQINGBEIZHU", tooltip: true},
-      ]
+      tableTitle
     }
   },
   computed: {
@@ -133,7 +125,6 @@ export default {
       }
       this.saveLoading = true
       const params = this.selectList.filter(i=> i.cfController && i.applyType && i.expectedTargetPrice)
-      console.log(params,this.selectList);
       if(params.length!=this.selectList.length){
         iMessage.warn(this.language('QINGWEIHUBITIANXIANG','请维护必填项'))
         this.saveLoading = false
@@ -143,7 +134,7 @@ export default {
         i.expTargetpri = i.expectedTargetPrice
         i.applicantId = i.cfController
       })
-      applyJLTarget(params).then((res) => {
+      applyPartTarget(params).then((res) => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         } else {
