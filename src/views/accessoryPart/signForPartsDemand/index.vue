@@ -45,10 +45,10 @@
                   <iButton @click="signAccessory" :loading="signLoading" v-permission.auto="APREPART_SIGN_SIGN|配件-配件签收-签收">{{language('QIANSHOU','签收')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
                   <iButton @click="changebackDialogVisible(true)" v-permission.auto="APREPART_SIGN_BACKEPS|配件-配件签收-退回EPS">{{language('TUIHUIEPS','退回EPS')}}</iButton>
-                  <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDDEPT|配件-配件签收-分配询价科室">{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_SIGN_SENDBUYER|配件-配件签收-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
+                  <!--------------------分配Linie按钮----------------------------------->
+                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDDEPT|配件-配件管理-分配Linie" >{{language('FENPEILINIE','分配Linie')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
@@ -71,7 +71,7 @@
           <!------------------------------------------------------------------------>
     <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId" @init="init"/>
+          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" :hasUpdateStatus='true' @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId" @init="init"/>
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
