@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-29 21:41:24
+ * @LastEditTime: 2022-01-07 17:21:20
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -114,7 +114,7 @@
             </template>
             <template slot-scope="scope">
               <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
-                  <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+                  <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "ebrCalculatedValue"'>
                 <span>{{ebrShow(scope.row[item.props])}}</span>
@@ -135,13 +135,13 @@
                 <span >{{scope.row['factoryEn']}}</span>
               </template>        
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
-                  <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+                  <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>    
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "tto"'>
                 <el-tooltip :content='ttoShow(scope.row[item.props])' effect='light'>
@@ -163,9 +163,9 @@
                   <div>一次性：{{scope.row[getPorpsNumber(item.props)+"developmentCost"]-scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
                 </template>
-                <span>{{scope.row[item.props]}}</span>
+                <span>{{ttoShow(scope.row[item.props])}}</span>
               </el-tooltip>
-              <span v-else>{{scope.row[item.props]}}</span>
+              <span v-else>{{ttoShow(scope.row[item.props])}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
               </template>
               <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
@@ -242,7 +242,7 @@ export default{
         if(item.partNo && item.partNo.length && item.partNo.includes('Group total')){
           return [...accu, index]
         }else{
-          return accu
+          return [accu]
         }
       })
     },
