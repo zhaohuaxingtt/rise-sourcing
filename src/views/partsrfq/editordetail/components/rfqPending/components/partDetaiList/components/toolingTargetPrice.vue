@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-01-07 17:30:54
+ * @LastEditTime: 2022-01-07 22:58:17
  * @LastEditors: YoHo
 -->
 <template>
@@ -45,7 +45,6 @@ export default {
   data() {
     return {
       tableLoading: false,
-      targetPrice: "0.00",
       targeTitle:[{
 	props: 'applyDate',
 	name: '申请日期',
@@ -107,12 +106,7 @@ export default {
 				})
 				.then(res => {
 					if (res.code == 200) {
-						this.page = {
-							...this.page,
-							totalCount: Number(res.total),
-							currPage: Number(res.pageNum),
-							pageSize: Number(res.pageSize)
-						}
+						this.page.totalCount = Number(res.total),
 						this.tableListData = res.data || []
 					} else {
 						iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

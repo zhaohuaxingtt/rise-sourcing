@@ -2,17 +2,17 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-07 17:53:30
+ * @LastEditTime: 2022-01-07 23:16:30
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
 
 <template>
-  <iDialog :visible.sync="visible" title="申请模具目标价" class="margin-top30 applyModuleTargetPrice" :loading="loading" v-on="$listeners">
+  <iDialog :visible.sync="visible" class="margin-top30 applyModuleTargetPrice" :loading="loading" v-on="$listeners">
     <template slot="title">
       <div class="el-dialog__title header">
-        <span>{{'申请模具目标价'}}</span>
-        <iButton class="btn" @click="handleSubmit">申请</iButton>
+        <span>{{ language('SHENQINGMUJUMUBIAOJIA', '申请模具目标价') }}</span>
+        <iButton class="btn" @click="handleSubmit">{{ language('LK_APPLAY', '申请') }}</iButton>
       </div>
     </template>
     <div class="applyMemo margin-bottom20">

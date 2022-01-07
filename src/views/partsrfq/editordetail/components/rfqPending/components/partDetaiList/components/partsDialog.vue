@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-07 16:27:38
+ * @LastEditTime: 2022-01-07 23:17:47
  * @Description: 申请零件目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -11,8 +11,8 @@
   <iDialog :visible.sync="visible" class="margin-top30 applyModuleTargetPrice" :loading="loading" v-on="$listeners">
     <template slot="title">
       <div class="el-dialog__title header">
-        <span>{{'申请零件目标价'}}</span>
-        <iButton @click="handleSubmit" class="btn">申请</iButton>
+        <span>{{ language("LK_SHENQINGLINGJIANMUBIAOJIA", "申请零件目标价") }}</span>
+        <iButton @click="handleSubmit" class="btn">{{ language('LK_APPLAY', '申请') }}</iButton>
       </div>
     </template>
     <!------------------------------------------------------------------------>
@@ -26,19 +26,19 @@
       </template>
       <!-- 财务控制人 -->
       <template #cfController="scope">
-        <iSelect v-if="scope.row.isEdit" v-model="scope.row.cfController">
+        <iSelect v-if="scope.row.isEdit||false" v-model="scope.row.cfController">
           <el-option :label="item.name" :value="item.id" v-for="item in fromGroup.CF_CONTROL" :key="item.id"></el-option>
         </iSelect>
         <iText v-else>{{scope.row.cfControllerName}}</iText>
       </template>
-      <!-- 申请类型 -->
+      <!-- 申请类别 -->
       <template #applyType="scope">
         <iSelect v-if="scope.row.isEdit" v-model="scope.row.applyType">
           <el-option :label="val" :value="val" v-for="(val,key) in options" :key="key"></el-option>
         </iSelect>
         <iText v-else>{{scope.row.applyType}}</iText>
       </template>
-      <!-- 备注 -->
+      <!-- 申请原因 -->
       <template #applyReason="scope">
         <iInput v-if="scope.row.isEdit" v-model="scope.row.applyReason"></iInput>
         <iText v-else>{{scope.row.applyReason}}</iText>

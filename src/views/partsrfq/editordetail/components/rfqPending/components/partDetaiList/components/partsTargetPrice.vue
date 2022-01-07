@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-07 18:22:42
+ * @LastEditTime: 2022-01-07 23:21:50
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -24,7 +24,7 @@
     <template slot="header-control">
       <div class="button-box">
         <template v-if="!todo">
-          <iButton @click="showDialog">{{ "查看修改记录" }}</iButton>
+          <iButton @click="showDialog">{{ language('CHAKAN','查看') + language('XIUGAIJILU','修改记录') }}</iButton>
           <iButton
             @click="exports"
             v-permission.auto="

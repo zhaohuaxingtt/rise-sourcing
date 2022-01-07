@@ -1,13 +1,13 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-07 18:24:07
+ * @LastEditTime: 2022-01-07 23:22:04
  * @LastEditors: YoHo
  * @Description: 模具目标价
 -->
 <template>
   <div>
-    <iCard collapse :title="language('MOJUMUBIAOJIA','模具目标价')" :defalutCollVal="status == '已完成' || !todo">
+    <iCard collapse :title="language('MUJUMUBIAOJIA','模具目标价')" :defalutCollVal="status == '已完成' || !todo">
       <template slot="subInfo">
         <div
           v-if="todo"
@@ -25,7 +25,7 @@
       <template slot="header-control">
         <div class="button-box">
           <template v-if="!todo">
-            <iButton @click="showDialog" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{'查看修改记录'}}</iButton>
+            <iButton @click="showDialog" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{language('CHAKAN','查看') + language('XIUGAIJILU','修改记录')}}</iButton>
               <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{language('LK_DAOCHU','导出')}}</iButton>
           </template>
             <template v-else>

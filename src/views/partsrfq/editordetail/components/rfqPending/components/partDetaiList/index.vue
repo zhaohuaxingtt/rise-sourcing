@@ -63,12 +63,9 @@
             </iButton>
             <iButton
               @click="moduleDialogVisible = true"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE |
-                  再申请财务目标价
-              "
+              v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价"
             >
-              {{ language("LK_SHENQINGMUJUMUBIAOJIA", "申请模具目标价") }}
+              {{ language('SHENQINGMUJUMUBIAOJIA', '申请模具目标价') }}
             </iButton>
             <iButton
               @click="sendKM"

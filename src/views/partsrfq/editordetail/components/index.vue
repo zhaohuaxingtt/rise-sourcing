@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2022-01-04 09:40:10
- * @LastEditTime: 2022-01-07 18:11:38
+ * @LastEditTime: 2022-01-07 22:48:14
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -15,15 +15,15 @@
       class="dunsTipsDiogog"
     >
       <div class="text">
-        当前RFQ有一下任务未完成，请及时处理
+        {{ language('DAIBANTISHI','当前RFQ有以下任务未完成，请及时处理') }}
         <template v-for="item in todoList">
           <p class="info" :key="item.name" v-if="item.status!='已完成'">
-            <icon symbol :name="iconName[item.status]" /> {{ item.name }}
+            <icon symbol :name="iconName[item.status]" /> {{ language(item.key, item.name) }}
           </p>
         </template>
         <div class="footer">
-          <iButton @click="close">跳过</iButton>
-          <iButton @click="goto('4')">前往任务列表</iButton>
+          <iButton @click="close">{{ language('LK_SKIP','跳过') }}</iButton>
+          <iButton @click="goto('4')">{{ language('QIANWANGRENWULIEBIAO', '前往任务列表') }}</iButton>
         </div>
       </div>
     </iDialog>
@@ -53,8 +53,9 @@ export default {
     todoList(){
       let list = []
       Object.keys(this.todoObj).forEach(k=>{
-        this.todoObj[k].status!='已完成'
-        list.push(this.todoObj[k])
+        if(this.todoObj[k].status!='已完成'){
+          list.push(this.todoObj[k])
+        }
       })
       return list
     }

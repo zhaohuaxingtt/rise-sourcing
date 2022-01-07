@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-07 17:39:25
+ * @LastEditTime: 2022-01-07 23:24:57
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -26,7 +26,7 @@
         <!-- <iButton @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
                  v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
-          {{ language('SHENQINGMOJUMUBIAOJIA', '申请模具目标价') }}
+          {{ language('SHENQINGMUJUMUBIAOJIA', '申请模具目标价') }}
         </iButton> -->
         <iButton v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && baseInfo.partProjectType[0] === partProjTypes.PEIJIAN && baseInfo.starMonitorStatus !== 1"
                  :loading="endEngotiationlaoding"
@@ -385,10 +385,10 @@ export default {
       this.tipsVislble = false
       if(this.$route.query.id){
         let nameObj = {
-        mouldPriceStatusDesc:'模具目标价',
-        mouldBudgetStatusDesc:'模具投资预算',
-        cfPriceStatusDesc:'零件目标价',
-        pushRateStatusDesc:'供应商评分',
+        mouldPriceStatusDesc:{label:'模具目标价',key:'MUJUMUBIAOJIA'},
+        mouldBudgetStatusDesc:{label:'模具投资预算',key:'MOJUTOUZIYUSUAN'},
+        cfPriceStatusDesc:{label:'零件目标价',key:'LINGJIANMUBIAOJIA'},
+        pushRateStatusDesc:{label:'供应商评分',key:'GONGYINGSHANGPINGFEN'},
       }
         waitDealtRfqTaskStatus(this.$route.query.id).then(res=>{
           if(res.result){
@@ -398,7 +398,8 @@ export default {
                 count++
               }
               this.todoObj[key] = {
-                name: nameObj[key],
+                name: nameObj[key].label,
+                key: nameObj[key].key,
                 status: res.data[key]
               }
             })
