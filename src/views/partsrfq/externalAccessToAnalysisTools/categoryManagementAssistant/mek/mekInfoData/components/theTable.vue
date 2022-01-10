@@ -92,8 +92,9 @@
                        :label="language('CAILIAOZU','材料组')"
                        prop="materialGroup">
         <template slot-scope="scope">
+          <div>{{scope.row.materialGroupCode}}</div>
           <div>{{scope.row.materialGroup}}</div>
-          <div>{{scope.row.stuffGroup}}</div>
+
         </template>
       </el-table-column>
       <el-table-column show-overflow-tooltip
