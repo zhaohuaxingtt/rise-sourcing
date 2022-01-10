@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-10 15:50:14
+ * @LastEditTime: 2022-01-10 15:54:41
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -307,7 +307,6 @@ import { mockData } from './mock.js';
 import { linieQueryForm } from '../../aeko/detail/components/partsList/data';
 import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 export default {
-  mixins:[roleMixins],
   components: {
     iButton,
     iPage,
@@ -331,7 +330,7 @@ export default {
     dialogTableTips,
     intoiDialog
   },
-  mixins: [rfqCommonFunMixins, pageMixins],
+  mixins: [rfqCommonFunMixins, pageMixins, roleMixins],
   data () {
     return {
       todoObj:{
@@ -402,11 +401,12 @@ export default {
     // 首次进入
     async firstInit(){
       if(this.$route.query.id){
-        // this.isLinie = this.roleList.includes('LINIE') || this.roleList.includes('ZYCGY'); // 专业采购员
+        console.log(this.roleList);
+        const isLinie = this.roleList.includes('LINIE') || this.roleList.includes('ZYCGY'); // 专业采购员
         let result = await this.waitDealtRfqTaskStatus()
         // 从谈判助手跳过来的不再跳回去
         if(this.$route.query.form!='assistant'){
-          if(!result){
+          if(!result || isLinie){
             this.$router.push({
               path:'/sourceinquirypoint/sourcing/partsrfq/assistant',
               query:this.$route.query
