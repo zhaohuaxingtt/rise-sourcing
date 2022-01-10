@@ -402,11 +402,11 @@ export default {
     // 首次进入
     async firstInit(){
       if(this.$route.query.id){
-        this.isLinie = this.roleList.includes('LINIE') || this.roleList.includes('ZYCGY'); // 专业采购员
+        // this.isLinie = this.roleList.includes('LINIE') || this.roleList.includes('ZYCGY'); // 专业采购员
         let result = await this.waitDealtRfqTaskStatus()
         // 从谈判助手跳过来的不再跳回去
         if(this.$route.query.form!='assistant'){
-          if(!result || isLinie){
+          if(!result){
             this.$router.push({
               path:'/sourceinquirypoint/sourcing/partsrfq/assistant',
               query:this.$route.query
