@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-09 11:21:51
+ * @LastEditTime: 2022-01-07 14:23:46
  * @Description: 周期视图
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -104,7 +104,7 @@ export default {
       targetList: [
         {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget'},
         {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget'},
-        {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'}
+        // {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'}
       ],
       nodeList: [
         {label: '释放', key: 'SHIFANG', const: 'constReleaseToNomiWeek', keyPoint: 'keyReleaseToNomiWeek', history: 'hiReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus'},

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-10 09:54:18
+ * @LastEditTime: 2022-01-10 13:39:24
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -26,7 +26,7 @@
         <iButton  
         v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus === 1"
       @click="cancelWaitStarmonitor" v-permission.auto="QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN|取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton>
-          <iButton 
+          <!-- <iButton 
                 v-if="baseInfo.starMonitorStatus !== 1"
                 @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
@@ -142,8 +142,7 @@
                 {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
               </iText>
             </iFormItem>
-            <iFormItem label="材料组"
-                       name="createDate">
+            <iFormItem label="材料组" name="categoryCode">
               <iText>
                 {{ baseInfo.categoryCode +'-'+ baseInfo.categoryName }}
               </iText>
@@ -173,7 +172,7 @@
                      :tooltipContent="baseInfo.mq">{{ nameProcessor(baseInfo.mq) }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf">
-              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf)||baseInfo.cfControllerNames[0] }}</iText>
+              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf)||getName(baseInfo.cfControllerNames) }}</iText>
             </iFormItem>
           </div>
           <div class="col">
@@ -298,6 +297,7 @@ import { getRfqInfo } from '@/api/costanalysismanage/rfqdetail';
 import { checkApply } from '@/api/modelTargetPrice/index';
 import iLoger from 'rise/web/components/iLoger';
 import { partProjTypes, roundsType } from '@/config';
+import { roleMixins } from "@/utils/roleMixins";
 import {
   waitStarMonitorUpdate,
   cancelWaitStarMonitorUpdate
@@ -307,6 +307,7 @@ import { mockData } from './mock.js';
 import { linieQueryForm } from '../../aeko/detail/components/partsList/data';
 import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 export default {
+  mixins:[roleMixins],
   components: {
     iButton,
     iPage,
@@ -333,7 +334,12 @@ export default {
   mixins: [rfqCommonFunMixins, pageMixins],
   data () {
     return {
-      todoObj:{},
+      todoObj:{
+        mouldPriceStatusDesc:{name:'模具目标价',key:'MUJUMUBIAOJIA'},
+        mouldBudgetStatusDesc:{name:'模具投资预算',key:'MOJUTOUZIYUSUAN'},
+        cfPriceStatusDesc:{name:'零件目标价',key:'LINGJIANMUBIAOJIA'},
+        pushRateStatusDesc:{name:'供应商评分',key:'GONGYINGSHANGPINGFEN'},
+      },
       tipsVislble:false,
       showReason: false,
       navActivtyValue: '',
@@ -377,11 +383,11 @@ export default {
       isCommonSurcingStar:false,
     };
   },  
-  created () {
+  async created () {
+    await this.firstInit()
     this.getPartTableList = this.$store.state.rfq.partfunc;
     this.getTableList();
     this.getBaseInfo();
-    this.waitDealtRfqTaskStatus()
   },
   provide: function () {
     return {
@@ -393,35 +399,50 @@ export default {
     };
   },
   methods: {
-    waitDealtRfqTaskStatus(){
-      this.todoObj = {}
+    // 首次进入
+    async firstInit(){
+      if(this.$route.query.id){
+        this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
+        let result = await this.waitDealtRfqTaskStatus()
+        // 从谈判助手跳过来的不再跳回去
+        if(this.$route.query.form!='assistant'){
+          if(!result || isLinie){
+            this.$router.push({
+              path:'/sourceinquirypoint/sourcing/partsrfq/assistant',
+              query:this.$route.query
+            })
+          }else{
+            this.changeActivityTabIndex('4')
+          }
+          }
+      }
+    },
+    // 
+    async getTodoInfo(){
       this.tipsVislble = false
       if(this.$route.query.id){
-        let nameObj = {
-        mouldPriceStatusDesc:{label:'模具目标价',key:'MUJUMUBIAOJIA'},
-        mouldBudgetStatusDesc:{label:'模具投资预算',key:'MOJUTOUZIYUSUAN'},
-        cfPriceStatusDesc:{label:'零件目标价',key:'LINGJIANMUBIAOJIA'},
-        pushRateStatusDesc:{label:'供应商评分',key:'GONGYINGSHANGPINGFEN'},
+        let result = await this.waitDealtRfqTaskStatus()
+        console.log(result);
+        this.tipsVislble = result
       }
-        waitDealtRfqTaskStatus(this.$route.query.id).then(res=>{
-          if(res.result){
-            let count = 0
-            Object.keys(nameObj).forEach(key=>{
-              if(res.data[key]=='未完成'){
-                count++
+    },
+    // 获取任务状态
+    async waitDealtRfqTaskStatus(){
+      let result = false
+      await waitDealtRfqTaskStatus(this.$route.query.id).then(async(res)=>{
+        if(res.result){
+          for (const key in this.todoObj) {
+            this.todoObj[key].status = ''
+            if (res.data[key]) {
+              this.todoObj[key].status = res.data[key]
+              if(res.data[key]!='已完成'){
+                result = true
               }
-              this.todoObj[key] = {
-                name: nameObj[key].label,
-                key: nameObj[key].key,
-                status: res.data[key]
-              }
-            })
-            if(count){
-              this.tipsVislble = true
             }
           }
-        })
-      }
+        }
+      })
+      return result
     },
     goToCesPage () {
       const router = this.$router.resolve({
@@ -490,6 +511,13 @@ export default {
         return `${arr.splice(0, 3).join(',')}...`;
       } else {
         return val;
+      }
+    },
+    getName(val){
+      if(Array.isArray(val)&&val.length){
+        return val.join(',')
+      }else{
+        return val
       }
     },
     getBaseInfo (dialogPage) {
@@ -577,6 +605,9 @@ export default {
           this.$refs.dialogTableTips.show(); 
         }else{
           this.resultMessage(res);
+          if(res && res.code=='200' && this.baseInfo.properties=='1'){
+            this.getTodoInfo()
+          }
         }
         this.getBaseInfo();
       } finally {
