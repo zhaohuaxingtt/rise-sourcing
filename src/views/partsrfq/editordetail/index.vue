@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-10 11:41:54
+ * @LastEditTime: 2022-01-10 13:39:24
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -142,8 +142,7 @@
                 {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
               </iText>
             </iFormItem>
-            <iFormItem label="材料组"
-                       name="createDate">
+            <iFormItem label="材料组" name="categoryCode">
               <iText>
                 {{ baseInfo.categoryCode +'-'+ baseInfo.categoryName }}
               </iText>
@@ -298,6 +297,7 @@ import { getRfqInfo } from '@/api/costanalysismanage/rfqdetail';
 import { checkApply } from '@/api/modelTargetPrice/index';
 import iLoger from 'rise/web/components/iLoger';
 import { partProjTypes, roundsType } from '@/config';
+import { roleMixins } from "@/utils/roleMixins";
 import {
   waitStarMonitorUpdate,
   cancelWaitStarMonitorUpdate
@@ -307,6 +307,7 @@ import { mockData } from './mock.js';
 import { linieQueryForm } from '../../aeko/detail/components/partsList/data';
 import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 export default {
+  mixins:[roleMixins],
   components: {
     iButton,
     iPage,
@@ -401,18 +402,19 @@ export default {
     // 首次进入
     async firstInit(){
       if(this.$route.query.id){
+        this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
         let result = await this.waitDealtRfqTaskStatus()
-        if(!result){
-          // 从谈判助手跳过来的不再跳回去
-          if(this.$route.query.form!='assistant'){
+        // 从谈判助手跳过来的不再跳回去
+        if(this.$route.query.form!='assistant'){
+          if(!result || isLinie){
             this.$router.push({
               path:'/sourceinquirypoint/sourcing/partsrfq/assistant',
               query:this.$route.query
             })
+          }else{
+            this.changeActivityTabIndex('4')
           }
-        }else{
-          this.changeActivityTabIndex('4')
-        }
+          }
       }
     },
     // 
@@ -603,7 +605,7 @@ export default {
           this.$refs.dialogTableTips.show(); 
         }else{
           this.resultMessage(res);
-          if(res && res.code=='200'){
+          if(res && res.code=='200' && this.baseInfo.properties=='1'){
             this.getTodoInfo()
           }
         }
