@@ -9,26 +9,30 @@
     <div class="body">
       <tableList class="table" :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading">
         <template #rateTag="scope">
-          <iSelect v-model="scope.row.rateTag" :disabled="true">
+          <iText>{{getName(scope.row.rateTag, deptScoringOptions)}}</iText>
+          <!-- <iSelect v-model="scope.row.rateTag" :disabled="true">
             <el-option v-for="item in deptScoringOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </iSelect>
+          </iSelect> -->
         </template>
         <template #rateDepartNum="scope">
-          <iSelect v-if="scope.row.rateTag" v-model="scope.row.rateDepartNum" :disabled="true">
+          <iText v-if="scope.row.rateTag">{{getName(scope.row.rateDepartNum, deptMap[scope.row.rateTag] ? Object.values(deptMap[scope.row.rateTag]) : [])}}</iText>
+          <!-- <iSelect v-if="scope.row.rateTag" v-model="scope.row.rateDepartNum" :disabled="true">
             <el-option v-for="(item, $index) in deptMap[scope.row.rateTag] ? Object.values(deptMap[scope.row.rateTag]) : []" :key="$index" :label="item.label" :value="item.value"></el-option>
-          </iSelect>
+          </iSelect> -->
         </template>
         <!-- right 评分人 -->
         <template #raterId="scope">
-          <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.raterId" :disabled="true">
+          <iText v-if="scope.row.rateDepartNum">{{getName(scope.row.raterId, deptMap[scope.row.rateTag] && deptMap[scope.row.rateTag][scope.row.rateDepartNum] ? deptMap[scope.row.rateTag][scope.row.rateDepartNum].raterList : [])}}</iText>
+          <!-- <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.raterId" :disabled="true">
             <el-option v-for="(item, $index) in deptMap[scope.row.rateTag] && deptMap[scope.row.rateTag][scope.row.rateDepartNum] ? deptMap[scope.row.rateTag][scope.row.rateDepartNum].raterList : []" :key="$index" :label="item.label" :value="item.value"></el-option>
-          </iSelect>
+          </iSelect> -->
         </template>
         <!-- left 评分人 -->
         <template #coordinatorId="scope"> 
-          <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.coordinatorId" :disabled="true">
+          <iText v-if="scope.row.rateDepartNum">{{getName(scope.row.coordinatorId,deptMap[scope.row.rateTag] && deptMap[scope.row.rateTag][scope.row.rateDepartNum] ? deptMap[scope.row.rateTag][scope.row.rateDepartNum].coordinatorList : [])}}</iText>
+          <!-- <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.coordinatorId" :disabled="true">
             <el-option v-for="(item, $index) in deptMap[scope.row.rateTag] && deptMap[scope.row.rateTag][scope.row.rateDepartNum] ? deptMap[scope.row.rateTag][scope.row.rateDepartNum].coordinatorList : []" :key="$index" :label="item.label" :value="item.value"></el-option>
-          </iSelect>
+          </iSelect> -->
         </template>
       </tableList>
       <el-divider class="divider"></el-divider>
@@ -52,7 +56,7 @@
 </template>
 
 <script>
-import { iDialog, iSelect, iButton, iMessage } from 'rise'
+import { iDialog, iSelect, iText, iButton, iMessage } from 'rise'
 import tableList from '@/views/partsign/editordetail/components/tableList'
 import { scoringDeptTitle as tableTitle, supplierSubTitle } from './data'
 import { dictkey } from '@/api/partsprocure/editordetail'
@@ -61,7 +65,7 @@ import { getAllDeptTag, getRfqRateDeparts, getAllRaterAndCoordinator, saveRfqRat
 import { sendTaskForRating, getSupplierPlantBySupplierId } from "@/api/partsrfq/editordetail";
 
 export default {
-  components: { tableList, iDialog, iSelect, iButton },
+  components: { tableList, iDialog, iSelect, iText, iButton },
   mixins: [ pageMixins ],
   props: {
     ...iDialog.props,
@@ -129,19 +133,29 @@ export default {
     }
   },
   methods: {
-			getDict() {
-				dictkey().then(res => {
-					if (res.code == 200) {
-						Object.keys(res.data).forEach(key => {
-							this.fromGroup = {
-								...this.fromGroup,
-								[key]: Array.isArray(res.data[key]) ? res.data[key] : []
-							}
-						})
+    getName(item, data){
+      if(Array.isArray(data)){
+        let result = data.filter(i=>i.value==item)[0]
+        return result && result.label || item
+      }else if(typeof data === 'object' && Object.values(data).length){
+        let result = Object.values(data).filter(i=>i.value==item)[0]
+        return result && result.label || item
+      }
+    },
+    // 获取工厂名称枚举
+    getDict() {
+      dictkey().then(res => {
+        if (res.code == 200) {
+          Object.keys(res.data).forEach(key => {
+            this.fromGroup = {
+              ...this.fromGroup,
+              [key]: Array.isArray(res.data[key]) ? res.data[key] : []
+            }
+          })
 
-					}
-				})
-			},
+        }
+      })
+    },
       
     // 获取供应商生产地
     getSupplierPlantBySupplierId(supplierId) {

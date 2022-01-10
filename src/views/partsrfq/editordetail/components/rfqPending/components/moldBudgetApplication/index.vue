@@ -85,7 +85,7 @@
         />
     </iCard>
     <!-- 申请模具预算弹窗 -->
-    <moldBudgetApplicationDialog :visible.sync="moldBudgetApplicationVisible" />
+    <moldBudgetApplicationDialog :visible.sync="moldBudgetApplicationVisible" @updateTable="getTableList" />
   </div>
 </template>
 
