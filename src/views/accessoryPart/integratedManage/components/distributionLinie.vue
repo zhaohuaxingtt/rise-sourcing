@@ -53,10 +53,7 @@ export default {
     idList:{
       type:String,
     },
-    hasUpdateStatus: {
-      type:Boolean,
-      default:false
-    }
+   
   },
   data() {
     return {
@@ -130,7 +127,6 @@ export default {
       }
       this.loading = true
       this.linieUpdata.accessoryIdList = this.idList
-      this.linieUpdata.hasUpdateStatus = this.hasUpdateStatus
       updateCsfOrLinie(this.linieUpdata).then(res=>{
         if(res.code == '200') {
            iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)

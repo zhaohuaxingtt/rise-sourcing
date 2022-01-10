@@ -54,6 +54,10 @@ export default {
     deptId: { type: String},
     idList:{
       type:String,
+    },
+    hasUpdateStatus: {
+      type:Boolean,
+      default:false
     }
   },
   data() {
@@ -113,7 +117,6 @@ export default {
       this.clearDialog()
     },
     handleConfirm() {
-      console.log(this.purchaseUpdata.csfDept,'1',this.purchaseUpdata.csfuserId,'this.purchaseUpdata.csfuserIdthis.purchaseUpdata.csfuserId');
        if (this.purchaseUpdata.csfDept === '' || this.purchaseUpdata.csfDept == undefined) {
         iMessage.warn(this.language('QINGXUANZEXUNJIACAIGOUKESHI','请选择询价采购科室'))
         return
@@ -123,6 +126,7 @@ export default {
         return
       }
       this.purchaseUpdata.accessoryIdList = this.idList
+      this.purchaseUpdata.hasUpdateStatus = this.hasUpdateStatus
       updateCsfOrLinie(this.purchaseUpdata).then(res=>{
         this.loading = true
         if(res.code == '200') {
