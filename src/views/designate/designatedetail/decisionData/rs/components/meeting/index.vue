@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" maxHeight="600" >
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>

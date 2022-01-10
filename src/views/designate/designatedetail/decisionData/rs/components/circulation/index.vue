@@ -31,6 +31,7 @@
     </iCard>
     <iCard :title="'流转定点推荐 - ' + cardTitle" :class="!isPreview && 'margin-top20'">
       <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+      <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" :maxHeight="600">
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
