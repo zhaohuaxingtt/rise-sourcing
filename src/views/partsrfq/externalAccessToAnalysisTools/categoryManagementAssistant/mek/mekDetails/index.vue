@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-07 10:38:21
+ * @LastEditTime: 2022-01-10 17:51:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -143,7 +143,18 @@
                 <div class="flex chartItem">
                   <div class="operation1">
                     <div style="height:20px"
-                         class="margin-bottom20"></div>
+                         class="margin-bottom20">
+                      <el-tooltip class="item"
+                                  placement="top-start"
+                                  effect="light">
+                        <div slot="content">
+                          <p>{{language('SHUJUFANWEIPILIANGJIAN','数据范围：批量件')}}</p>
+                          <p>{{language('ANCHEXINGPEIZHICHAKANSHIJINTONGJISHIYONGLEDANGQIANCAILIAOZULINGJIANDECHEXINGDENGJI','按车型配置查看时仅统计使用了当前材料组零件的车型等级。')}}</p>
+                        </div>
+                        <i class="el-icon-warning"
+                           style="color:#1763f7;font-size:20px"></i>
+                      </el-tooltip>
+                    </div>
                     <el-select v-model="targetMotor"
                                @change="changeTargetMotor"
                                style="width:150px"
