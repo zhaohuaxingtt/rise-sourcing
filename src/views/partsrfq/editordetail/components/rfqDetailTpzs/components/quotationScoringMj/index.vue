@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-12-29 20:26:47
+ * @LastEditTime: 2022-01-10 17:03:32
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -68,7 +68,6 @@ export default {
         supplierId: this.supplierId
       }).then(res=>{
         if(res.code == 200){
-          this.quotationSupplierState = res.data
           if(this.dgysBj) this.dgysBj = res.data
         }
       }).catch(err=>{

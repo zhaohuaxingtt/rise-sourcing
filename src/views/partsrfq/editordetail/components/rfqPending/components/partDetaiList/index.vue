@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 11:42:11
- * @LastEditors: YoHo
+ * @LastEditors: Please set LastEditors
 * @Description: 待办事项-零件清单
  -->
 <template>
@@ -28,7 +28,7 @@
             </iButton>
             <iButton
               @click="openPartsDialog"
-              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE | 新申请财务目标价">
+              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
               {{ language("LK_SHENQINGLINGJIANMUBIAOJIA", "申请零件目标价") }}
             </iButton>
             <iButton
@@ -56,7 +56,7 @@
           @handleSelectionChange="handleSelectionChange"
           @poenPage="openPage"
           v-permission.auto="
-            PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE | 零件清单列表
+            PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表
           "
         >
           <template #fsnrGsnrNum="scope">
@@ -97,7 +97,7 @@
             @click="start"
             :loading="addLoding"
             v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 零件清单添加
+              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD|零件清单添加
             "
           >
             {{ language("XUANZE", "选择") }}
@@ -112,8 +112,7 @@
               language('partsprocure.PARTSPROCURE', '请输入零件号')
             "
             v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_PARTNUMSEARCH |
-                (零件清单 - 零件号搜索)
+              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_PARTNUMSEARCH|(零件清单 - 零件号搜索)
             "
           >
             <div class="inputSearchIcon" slot="suffix">
@@ -127,9 +126,7 @@
         </div>
         <partsTable
           class="partsTable"
-          v-permission.auto="
-            PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE | 零件清单列表
-          "
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表"
           ref="partsTable"
           :rfqId="rfqId"
           :queryForm="queryForm"
