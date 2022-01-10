@@ -23,3 +23,14 @@ export const deptScoreTableTitle = [
   { props: "confirmCycle", name: "认可周期(周)", key: "RENKEZHOUQIZHOU", tooltip: true },
   { props: "remark", name: "备注", key: "BEIZHU", tooltip: true },
 ]
+
+export const scoreOptions = [
+  { label: "A", value: "A" },
+  { label: "B", value: "B" },
+  { label: "B*", value: "B*" },
+  { label: "B1", value: "B1" },
+  { label: "B2", value: "B2" },
+  { label: "B3", value: "B3" },
+  { label: "C", value: "C" },
+  { label: "NA", value: "NA" },
+]
