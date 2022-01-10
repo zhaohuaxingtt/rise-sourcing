@@ -39,7 +39,7 @@
             <iButton @click="sendKM" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM|发送KM">
               {{ language('FASONGKM', '发送KM') }}
             </iButton>
-            <iButton v-if="!disabled && rfqId" @click="addItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 添加">
+            <iButton v-if="!disabled && rfqId" @click="addItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD|添加">
               {{ language("LK_TIANJIA", "添加") }}
             </iButton>
             <iButton @click="deleteItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE|删除">
@@ -55,9 +55,7 @@
           :tableLoading="confirmTableLoading"
           @handleSelectionChange="handleSelectionChange"
           @poenPage="openPage"
-          v-permission.auto="
-            PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE | 零件清单列表
-          "
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表"
         >
           <template #fsnrGsnrNum="scope">
             <span
@@ -96,9 +94,7 @@
           <iButton
             @click="start"
             :loading="addLoding"
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 零件清单添加
-            "
+            v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD|零件清单添加"
           >
             {{ language("XUANZE", "选择") }}
           </iButton>
@@ -111,10 +107,7 @@
             :placeholder="
               language('partsprocure.PARTSPROCURE', '请输入零件号')
             "
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_PARTNUMSEARCH |
-                (零件清单 - 零件号搜索)
-            "
+            v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_PARTNUMSEARCH|(零件清单 - 零件号搜索)"
           >
             <div class="inputSearchIcon" slot="suffix">
               <icon
@@ -127,9 +120,6 @@
         </div>
         <partsTable
           class="partsTable"
-          v-permission.auto="
-            PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE | 零件清单列表
-          "
           ref="partsTable"
           :rfqId="rfqId"
           :queryForm="queryForm"

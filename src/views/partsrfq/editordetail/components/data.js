@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:32
- * @LastEditTime: 2021-12-31 10:15:56
+ * @LastEditTime: 2022-01-10 17:01:58
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsrfq\editordetail\components\data.js
@@ -14,8 +14,8 @@ export const navList = [{
     url:'/sourceinquirypoint/sourcing/partsrfq/editordetail',
     activePath: "/sourceinquirypoint/sourcing/partsrfq/editordetail",
     key:"LK_XUNJIAZHUSHOU",
-    // permissionKey:'RFQ_DAIBANSHIXIANG',
-    // permissionName:'RFQ详情-待办事项'
+    permissionKey:'RFQ_DAIBANSHIXIANG',
+    permissionName:'RFQ详情-待办事项'
     }, {
     value: 2,
     name: "谈判助手",
