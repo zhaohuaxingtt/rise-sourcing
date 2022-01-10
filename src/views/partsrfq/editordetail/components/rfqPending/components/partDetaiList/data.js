@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-03-04 15:18:55
- * @LastEditTime: 2022-01-07 23:55:27
+ * @LastEditTime: 2022-01-10 17:36:11
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\data.js
@@ -289,7 +289,7 @@ export const toolingTargetPriceTitle = [
 
 // 模具目标价
 export const moldTargetPriceTitle = [
-  { props: 'fsNum', name: 'FS号', key: 'LK_FSHAO' },
+  { props: 'fsNum', name: '零件采购项目号', key: 'LINGJIANCAIGOUXIANGMUHAO' },
   { props: 'partNum', name: '零件号', key: 'LK_LINGJIANHAO' },
   { props: 'partName', name: '零件名（中）', key: 'LK_LINGJIANMINGZHONG' },
   { props: 'applyType', name: '申请类型', key: 'LK_SHENQINGLEIXING' },

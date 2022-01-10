@@ -41,7 +41,9 @@
                 </template>
                 <template v-if="item.props === 'grade'" v-slot="scope">
                   <div v-if="editStatus">
-                    <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.grade" />
+                    <iSelect v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.grade">
+                      <el-option v-for="score in scoreOptions" :key="score.value" :label="score.label" :value="score.value" />
+                    </iSelect>
                     <iSelect v-else v-model="scope.row.grade">
                       <el-option value="合格" :label="language('HEGE', '合格')" />
                       <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
@@ -78,7 +80,7 @@
 import { iPage, iButton, icon, iCard, iInput, iSelect, iMessage, iMessageBox } from "rise"
 import logButton from "@/components/logButton"
 import remarkDialog from "@/views/supplierscore/components/remarkDialog"
-import { tableTitle, deptScoreTableTitle } from "./components/data"
+import { tableTitle, deptScoreTableTitle, scoreOptions } from "./components/data"
 import { cloneDeep, isEqual } from "lodash"
 import { getRfqPartRatingsByCurrentDept, updateRfqPartRatings, updateRfqPartRatingMemo } from "@/api/supplierscore"
 import { afterSaleLeaderIds } from "@/views/supplierscore/components/data"
@@ -104,6 +106,7 @@ export default {
       loading: false,
       tableTitle,
       deptScoreTableTitle,
+      scoreOptions,
       tableListData: [],
       tableListDataCache: [],
       rateTag: "",

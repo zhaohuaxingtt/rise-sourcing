@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-07 23:22:04
+ * @LastEditTime: 2022-01-10 17:48:57
  * @LastEditors: YoHo
  * @Description: 模具目标价
 -->
@@ -25,8 +25,8 @@
       <template slot="header-control">
         <div class="button-box">
           <template v-if="!todo">
-            <iButton @click="showDialog" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{language('CHAKAN','查看') + language('XIUGAIJILU','修改记录')}}</iButton>
-              <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_EXPORT|财务目标价-导出">{{language('LK_DAOCHU','导出')}}</iButton>
+            <iButton @click="showDialog">{{language('CHAKAN','查看') + language('XIUGAIJILU','修改记录')}}</iButton>
+              <iButton @click="exports">{{language('LK_DAOCHU','导出')}}</iButton>
           </template>
             <template v-else>
               <iButton
@@ -47,7 +47,7 @@
           :hide-open-page="true"
           :index="true"
           :lang="true"
-          v-permission.auto="PARTSRFQ_EDITORDETAIL_TABLE|财务目标价-表格"
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
