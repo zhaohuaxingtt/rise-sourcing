@@ -8,7 +8,7 @@
 -->
 <template>
   <div id="app" class="app">
-    <router-view id="appRouterView"></router-view>
+    <router-view id="appRouterView" :key="$route.fullPath"></router-view>
   </div>
 </template>
 <script>
