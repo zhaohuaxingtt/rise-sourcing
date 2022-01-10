@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 14:08:28
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-07 23:55:23
+ * @LastEditTime: 2022-01-09 11:12:05
  * @Description: 修改历史card
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\history.vue
 -->
@@ -40,6 +40,7 @@ import {iCard,iPagination, iMessage, iDialog} from 'rise'
 import tableList from 'pages/modelTargetPrice/components/tableList.vue'
 import { pageMixins } from "@/utils/pageMixins"
 import { getRecordList } from "@/api/modelTargetPrice/index"
+import { moldChangeRecordTitle as tableTitle } from "../data";
 export default {
   mixins: [pageMixins],
   components: {iCard,iPagination,tableList,iDialog},
