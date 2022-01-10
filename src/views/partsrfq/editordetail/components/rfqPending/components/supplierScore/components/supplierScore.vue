@@ -1,4 +1,5 @@
 <template>
+<div>
   <iCard collapse :title="language('LK_GONGYINGSHANGPINGFEN','供应商评分')" :defalutCollVal="status == '已完成' || !todo">
     <template v-if="todo" slot="subInfo">
       <div
@@ -70,8 +71,9 @@
         :disabled="disabled"
     />
     <scoringDeptDialog :visible.sync="scoringDeptVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
-    <scoringPushDialog :visible.sync="scoringPushVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
   </iCard>
+  <scoringPushDialog :visible.sync="scoringPushVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
+</div>
 </template>
 
 <script>

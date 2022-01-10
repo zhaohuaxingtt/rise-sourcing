@@ -17,7 +17,8 @@
       <bdl class="module" />
       <singleSourcing class="module" />
       <timeline class="module" />
-      <awardingScenario class="module" />
+      <!-- <awardingScenario class="module" /> -->
+      <rs class="module" />
     </div>
   </div>
 </div>
@@ -33,6 +34,7 @@ import bdl from "./components/bdl"
 import singleSourcing from "./components/singleSourcing"
 import timeline from "./components/timeline"
 import awardingScenario from "./components/awardingScenario"
+import rs from "./components/rs"
 
 export default {
   components: {
@@ -43,7 +45,8 @@ export default {
     bdl,
     singleSourcing,
     timeline,
-    awardingScenario
+    awardingScenario,
+    rs
   },
   created() {
     this.nominateAppId = this.$route.query.desinateId
@@ -78,6 +81,7 @@ export default {
   width: 1920px; /*no*/
   padding: 30px 40px; /*no*/
   margin: 0 auto;
+  box-sizing: content-box;
 
   .title {
     display: flex;

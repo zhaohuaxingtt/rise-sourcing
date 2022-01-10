@@ -46,9 +46,6 @@
         <template v-else>
           <iButton
             @click="moldBudgetApplicationVisible = true"
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_EXPORT | (财务目标价 - 导出)
-            "
             >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
           >
         </template>
@@ -60,10 +57,7 @@
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
-          v-permission.auto="
-            PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_TABLE |
-              模具预算申请表格
-          "
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_MOLDBUDGETAPPLICATION_TABLE|模具预算申请表格"
         >
           <template #budget="scope">
             <iInput
@@ -91,7 +85,7 @@
         />
     </iCard>
     <!-- 申请模具预算弹窗 -->
-    <moldBudgetApplicationDialog :visible.sync="moldBudgetApplicationVisible" />
+    <moldBudgetApplicationDialog :visible.sync="moldBudgetApplicationVisible" @updateTable="getTableList" />
   </div>
 </template>
 

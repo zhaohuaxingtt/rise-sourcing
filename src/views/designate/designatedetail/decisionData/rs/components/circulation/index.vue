@@ -9,7 +9,15 @@
 
 <template>
   <div :class="isPreview && 'isPreview'">
-    <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN" :title="'CSC推荐表/CSC Recommendation Sheet会外流转'">
+    <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
+       <template #header>
+        <div class="title">
+          <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
+        </div>
+        <div class="btnWrapper">
+          <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+        </div>
+      </template>
       <iFormGroup row="4" class="csc">
         <div class="col">
           <iFormItem v-for="(item,index) in titleData" :key="'titleData'+index"  :label="item.label+':'">
@@ -29,8 +37,16 @@
         </div>
       </iFormGroup>
     </iCard>
-    <iCard :title="'流转定点推荐 - ' + cardTitle" :class="!isPreview && 'margin-top20'">
-      <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+    <iCard :class="!isPreview && 'margin-top20'">
+      <template #header>
+        <div class="title">
+          <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
+        </div>
+        <div v-if="!(projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN)" class="btnWrapper">
+          <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+        </div>
+      </template>
+      <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" :maxHeight="600">
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -87,6 +103,7 @@
         :layout="page.layout"
         :total="page.totalCount" />
     </iCard>
+    <!-- <rsPdf /> -->
   </div>
 </template>
 
@@ -100,9 +117,11 @@ import {partProjTypes,fileType} from '@/config'
 import Upload from '@/components/Upload'
 import {getFile,downloadUdFile,deleteFiles} from '@/api/file'
 import {pageMixins} from '@/utils/pageMixins'
+import { transverseDownloadPDF } from "@/utils/pdf"
+import rsPdf from "./rsPdf"
 
 export default {
-  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText ,Upload, iPagination},
+  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText ,Upload, iPagination, rsPdf},
   props: {
     isPreview: {type:Boolean, default:false},
     nominateId: {type:String},
@@ -293,6 +312,7 @@ export default {
           this.basicData = res.data
           this.tableData = res.data.lines
           this.projectType = res.data.partProjectType || ''
+          // this.projectType = partProjTypes.PEIJIAN
         } else {
           this.basicData = {}
           this.tableData = []
@@ -328,6 +348,10 @@ export default {
      handleOpenPage(row) {
        console.log(row);
       downloadUdFile(row.uploadId)
+    },
+
+    handleExportPdf() {
+      // transverseDownloadPDF()
     }
   }
 }
