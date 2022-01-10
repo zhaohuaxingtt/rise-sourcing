@@ -117,7 +117,8 @@ export default {
                     rfqId:rfqNum,
                     current:page.currPage,
                     size:page.pageSize,
-                    findType:12
+                    findType:12,
+                    isNotPosition: true
             };
             pageInquiryDrawingsByRfqId(data).then((res)=>{
                 this.tableLoading =  false;
