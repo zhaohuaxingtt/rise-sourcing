@@ -28,7 +28,7 @@
             </iButton>
             <iButton
               @click="openPartsDialog"
-              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE | 新申请财务目标价">
+              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
               {{ language("LK_SHENQINGLINGJIANMUBIAOJIA", "申请零件目标价") }}
             </iButton>
             <iButton
