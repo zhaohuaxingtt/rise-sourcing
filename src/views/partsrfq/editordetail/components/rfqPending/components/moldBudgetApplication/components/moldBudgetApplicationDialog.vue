@@ -141,6 +141,7 @@ export default {
       });
       this.resultMessage(res);
       this.getTableList();
+      this.$emit('updateTable')
     },
     async recall() {
       if (this.selectTableData.length == 0) {
