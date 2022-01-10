@@ -92,7 +92,7 @@ import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import { tableTitle } from "./components/data.js";
 import tableList from '@/components/ws3/commonTable';
-import { downloadFile } from '@/api/file'
+import { downloadUdFile } from '@/api/file'
 
 export default {
   mixins: [resultMessageMixin, pageMixins],
@@ -156,16 +156,23 @@ export default {
       this.selectTableData = val
     },
     async handleExampleDownload () {
-      const req = {
-        applicationName: 'rise',
-        fileList: [],
-      }
-      this.selectTableData.forEach(item => {
-        req.fileList.push(item.reportFileName)
-      })
-      if (req.fileList.length) {
+      // const req = {
+      //   applicationName: 'rise',
+      //   fileList: [],
+      // }
+      // this.selectTableData.forEach(item => {
+      //   req.fileList.push(item.reportUrl)
+      // })
+      // if (req.fileList.length) {
+      //   this.downloadLoading = true
+      //   await downloadUdFile(req)
+      //   this.downloadLoading = false
+      // } else {
+      //   iMessage.warn(this.language('BAOQIANQINGXUANZHESHUJU', '抱歉，请选择数据'))
+      // }
+      if (this.selectTableData.length) {
         this.downloadLoading = true
-        await downloadFile(req)
+        await downloadUdFile(this.selectTableData.map(item => item.reportUrl))
         this.downloadLoading = false
       } else {
         iMessage.warn(this.language('BAOQIANQINGXUANZHESHUJU', '抱歉，请选择数据'))

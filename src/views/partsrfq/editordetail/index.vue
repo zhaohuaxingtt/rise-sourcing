@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-07 23:24:57
+ * @LastEditTime: 2022-01-10 09:54:18
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -20,10 +20,15 @@
                  @change="changeRouter"></iNavMvp>
       </div>
       <div class="btnList">
-      <!-- <iButton v-if="isCommonSourcing" @click="waitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_DENGDAISTARTMONITOEDINGDIANGENGXIN||等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
-        <iButton  v-if="isCommonSourcing" @click="cancelWaitStarmonitor" v-permission.auto="PARTSRFQ_EDITORDETAIL_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN||取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton> -->
-     <iButton v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN|等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
-        <!-- <iButton @click="handleApplyModuleTargetPrice"
+        <iButton 
+        v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus !== 1&&isCommonSurcingStar"
+        @click="waitStarmonitor" v-permission.auto="DENGDAISTARTMONITOEDINGDIANGENGXIN|等待StarMonitor定点更新">{{language('LK_DENGDAISTARTMONITOEDINGDIANGENGXIN','等待StarMonitor定点更新')}}</iButton>
+        <iButton  
+        v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && (baseInfo.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfo.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)&&baseInfo.starMonitorStatus === 1"
+      @click="cancelWaitStarmonitor" v-permission.auto="QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN|取消等待StarMonitor定点更新">{{language('LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN','取消等待StarMonitor定点更新')}}</iButton>
+          <iButton 
+                v-if="baseInfo.starMonitorStatus !== 1"
+                @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
                  v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
           {{ language('SHENQINGMUJUMUBIAOJIA', '申请模具目标价') }}
@@ -40,7 +45,9 @@
             language('LK_XINGJIANCESHIXIANM', '新建测试项目')
           }}</iButton>
 
-          <iButton :loading="newRfqOpenValidateLoading"
+          <iButton 
+                  v-if="baseInfo.starMonitorRef != 1 && baseInfo.starMonitorStatus !== 1"
+                  :loading="newRfqOpenValidateLoading"
                    @click="newRfq"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND|新建RFQ轮次">
             {{ language('LK_XINJIANRFQLUNCI', '新建RFQ轮次') }}
@@ -51,9 +58,11 @@
                    @click="updateRfqStatus('06')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_SENDINQUIRY|发出询价">{{ language('LK_FACHUXUNJIA', '发出询价') }}
           </iButton>
-          <iButton :loading="endingloading"
-                   @click="updateRfqStatus('05')"
-                   v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDQUOTATION|结束本轮询价">
+          <iButton 
+            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1" 
+            :loading="endingloading"
+            @click="updateRfqStatus('05')"
+            v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDQUOTATION|结束本轮询价">
             {{ language('LK_JIESHUBENLUNXUNJIA', '结束本轮询价') }}
           </iButton>
           <iButton 
@@ -242,7 +251,7 @@
     <!-------------------commonsourcing类型以下零件采购项目BNK审核未通过----------------------------------->    
     <noBnkDialog ref="noBnkDialog" :bnkNotApprovesTable="bnkNotApprovesTable" @changeTipsDialog="changeTipsDialog"/>
     <!-- RFQ错误提示框 -->
-    <dialogTableTips ref="dialogTableTips"/>
+    <dialogTableTips ref="dialogTableTips" tableType="RFQ" :tableListData="blackTableListData"/>
     <!-------------------------结束本轮询价的时候，如果当前的轮次类型为开标，并且rfq状态为询价中，当前轮次状态是进行中则需要填写一个结束备注-------->
     <iDialog :visible.sync="showReason"
              :title="language('QINGITANXIEJIESUYUANY', '结束原因')"
@@ -356,15 +365,18 @@ export default {
       reason: '',
       roundsType,
       rfqInfo: {},
-      isCommonSourcing:false,
       starMonitorTable:[],
       supplierNamesTable:[],
       bnkNotApprovesTable:[],
       bnkNotApprovesShow:false,
       supplierNamesShow:false,
-      projectPartDTOSShow:false
+      projectPartDTOSShow:false,
+      beforeCreate: false,
+      blackTableListData:[],
+      createDesignateLoading:false,
+      isCommonSurcingStar:false,
     };
-  },
+  },  
   created () {
     this.getPartTableList = this.$store.state.rfq.partfunc;
     this.getTableList();
@@ -377,6 +389,7 @@ export default {
       getbaseInfoData: this.getbaseInfoData, //直接reture当前请求完的数据
       getDisabled: this.getDisabled,
       registerFn: this.registerFn,
+      isRfqStatus:this.isRfqStatus
     };
   },
   methods: {
@@ -435,6 +448,9 @@ export default {
     registerFn (fn) {
       this.childFnList.push(fn);
     },
+    isRfqStatus() {
+      return  this.isCommonSurcingStar
+    },
     getbaseInfoData () {
       return this.baseInfo;
     },
@@ -487,12 +503,12 @@ export default {
             if (res.code == 200 && res.data) {
               this.baseInfo = res.data;
               this.rfqInfo = res.data;
-              res.data.partProjectType[0] === '50002000' || res.data.partProjectType[0] === '50002001'? this.isCommonSourcing === true :''
               this.disabled = !!res.data.isFreeze;
               if (dialogPage) {
                 //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
                 this.activityTabIndex = '5';
               }
+              this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
               this.childFnList.forEach((i) => i());
               if (typeof this.$store.state.rfq.partfunc === 'function') this.getPartTableList();
             } else {
@@ -556,11 +572,12 @@ export default {
 
       try {
         const res = await modification(req);
-        // if(updateType === '06'){
-        //   this.$refs.dialogTableTips.show() 
-        // }else{
+        if(updateType === '06' && res.code == '500'){
+          this.blackTableListData = res.data || [];
+          this.$refs.dialogTableTips.show(); 
+        }else{
           this.resultMessage(res);
-        // }
+        }
         this.getBaseInfo();
       } finally {
         if (updateType === '06') {
@@ -688,7 +705,6 @@ export default {
       if(this.baseInfo && this.baseInfo.partProjectType[0] && this.baseInfo.partProjectType[0] === this.partProjTypes.GSCOMMONSOURCING || this.baseInfo.partProjectType[0] === this.partProjTypes.FSCOMMONSOURCING )
       {
         starMonitorAutoNomi(this.$route.query.id).then(res=>{
-          this.createDesignateLoading = false
           const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
           if(res.code === '200') {
             this.supplierNamesTable = res.data.supplierNames //供应商列表记录  
@@ -719,6 +735,7 @@ export default {
           } else{
             iMessage.error(message);
           }
+          this.createDesignateLoading = false
         })
          .catch(() => (this.createDesignateLoading = false));
       } else {
@@ -773,9 +790,24 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
-    }
-  },
-};
+    },
+    //RFQ是否是待定状态
+    isPendingRfqStatus(statusName) {
+      let RFQ_STATE_ENUM=[ // RFQ状态
+         "未询价", 
+         "询价中", 
+         "转询价", 
+         "谈判中", 
+         "转谈判", 
+         "谈判完成", 
+      ]
+      let flag = true 
+      RFQ_STATE_ENUM.indexOf(statusName) == -1 ? flag = false:''
+      return flag
+    },
+
+  }
+}
 </script>
 <style lang="scss" scoped>
 .pageTitle {

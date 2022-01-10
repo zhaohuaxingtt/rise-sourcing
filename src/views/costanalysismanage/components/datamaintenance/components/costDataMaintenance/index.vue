@@ -201,9 +201,7 @@ export default {
     handleDelete() {
       if (this.multipleSelection.length < 1) return iMessage.warn(this.language("QINGXUANZEXUYAOSHANCHUDEWENJIAN", "请选择需要删除的文件"))
       this.deleteLoading = true
-      deleteFileHistory({
-        idList: this.multipleSelection.map(item => item.id)
-      })
+      deleteFileHistory(this.multipleSelection.map(item => item.id))
       .then(res => {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)

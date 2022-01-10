@@ -28,7 +28,7 @@
                     :tableData="tableListData"
                     :tableTitle="tableTitle"
                     :tableLoading="loading"
-                     v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_TABLE|决策资料-SingleSourcing-表格"
+                    v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_TABLE|决策资料-SingleSourcing-表格"
                 >
                     <template #suppliersName="scope">
                         <div>
@@ -86,6 +86,7 @@ import tableList from '../../components/tableList'
 import {
     getSingleSourcing,
 } from '@/api/designate/decisiondata/singleSourcing'
+import { tableTitle } from './data'
 export default {
     mixins:[pageMixins],
      components:{
@@ -103,15 +104,7 @@ export default {
         return{
             loading: false,
             tableListData:[],
-            tableTitle:[
-                {name:'FS号',enName:'FS No',props:'fsnrGsnrNum'},
-                {name:'零件号',enName:'Part No.',props:'partNum'},
-                {name:'零件名称',enName:'Part Name',props:'partNameCh'},
-                {name:'供应商名称',enName:'Supplier Name',props:'suppliersName'},
-                {name:'供应商号',enName:'Supplier No.',props:'sapCode'},
-                {name:'原因',enName:'Reason',props:'singleReason'},
-                {name:'原因部⻔',enName:'Caused by',props:'department'},
-            ],
+            tableTitle,
             projectName:'',
             nominateId:'',
             fix: false

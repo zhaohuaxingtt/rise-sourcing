@@ -34,9 +34,9 @@
         :cellClassName="cellClass"
         :selectable="selectable"
         @handleSelectionChange="handleSelectionChange">
-        <template #sendKmFlag="scope">
+        <!-- <template #sendKmFlag="scope">
           <span>{{ scope.row.cbdLevelCode == "3" ? scope.row.sendKmFlag : "" }}</span>
-        </template>  
+        </template>   -->
       </tableList>
     </div>
     <template #footer class="footer">

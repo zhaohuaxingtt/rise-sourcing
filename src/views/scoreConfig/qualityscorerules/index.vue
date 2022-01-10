@@ -24,17 +24,17 @@
     <iSearch
       class="margin-top25"
       icon
-      @sure="sure"
-      @reset="reset"
+      @sure="getList"
+      @reset="getList"
       :resetKey="PARTSIGN_RESETBUTTON"
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
         <el-form>
             <el-form-item :label="language('QUALITYSCORERULES_PINGFENGU', '评分股')" >
-                <iInput/>
+                <iInput v-model="searchForm.deptNum" :placeholder="language('LK_QINGSHURU','请输入')"/>
             </el-form-item>
             <el-form-item :label="language('UALITYSCORERULES_PINGFENREN', '评分人')">
-                <iInput/>
+                <iInput v-model="searchForm.userName" :placeholder="language('LK_QINGSHURU','请输入')"/>
             </el-form-item>
         </el-form>
     </iSearch>
@@ -75,6 +75,7 @@ import { TAB } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "./components/data"
 import addRulesDialog from './components/addRulesDialog'
+import { getAllMqRules } from "@/api/scoreConfig/qualityscorerules"
 export default {
     name:'qualityscorerules',
     components:{
@@ -94,13 +95,49 @@ export default {
             tableListData:[],
             tableTitle:tableTitle || [],
             addRulesDialogVisible:false,
-
+            searchForm:{
+                deptNum:'',
+                userName:'',
+            }
         }
+    },
+    created(){
+        this.getList();
     },
     methods:{
         changeVisible(type,show){
             this[type] = !!show;
-        }
+        },
+        // 获取列表
+        getList(){
+            this.loading = true;
+            getAllMqRules(this.searchForm).then((res)=>{
+                this.loading = false;
+                if(res.code == '200'){
+                    const tableListData = []
+                    res.data.forEach(item => {
+                        const Sitem = {
+                            ruleName: item.ruleName,
+                            ruleId: item.ruleId,
+                            ruleDes: item.ruleDes,
+                        }
+                        if (item.ruleNodeList && item.ruleNodeList.length) {
+                            item.ruleNodeList.forEach(rule => {
+                                Sitem.num = rule.num
+                                Sitem.deptName = rule.deptName || (rule.dept && rule.dept.deptName) || ''
+                                Sitem.userName = rule.userName || (rule.user && rule.user.userName) || ''
+                            })
+                        }
+                        tableListData.push(Sitem)
+                    })
+                    this.tableListData = tableListData;
+                }else{
+                    this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch(()=>{
+                this.loading = false;
+            })
+        },
     }
 }
 </script>

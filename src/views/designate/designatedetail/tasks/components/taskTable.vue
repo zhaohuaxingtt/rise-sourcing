@@ -62,7 +62,7 @@
             <iDatePicker v-model='scope.row.taskTime' value-format="yyyy-MM-dd HH:mm:ss">
             </iDatePicker>
           </div>
-          <span v-else>{{scope.row.taskTime}}</span>
+          <span v-else>{{formatDate(scope.row.taskTime)}}</span>
         </template>
         <!-- 任务名称 -->
         <template #taskRemark="scope">
@@ -125,7 +125,8 @@
 import Vue from 'vue'
 import {
   tasksTitle,
-  taskStatus
+  taskStatus,
+  getTaskStatusDesc
 } from './data'
 import { 
   getNominateTaskList,
@@ -136,6 +137,7 @@ import { excelExport } from '@/utils/filedowLoad'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 import tableList from '@/views/designate/supplier/components/tableList'
+import dayjs from "dayjs";
 
 import {
   iCard,
@@ -197,11 +199,11 @@ export default {
     this.getFetchData()
   },
   methods: {
-    // 取任务状态
-    getTaskStatusDesc(key) {
-      const task = taskStatus.find(o => o.key === key)
-      return (task && task.value) || ''
+    formatDate(val) {
+      return val ? dayjs(val).format("YYYY-MM-DD") : ''
     },
+    // 取任务状态
+    getTaskStatusDesc,
     addRow() {
       this.data.push({
         isFinishFlag: false,

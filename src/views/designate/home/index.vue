@@ -41,6 +41,7 @@
           <!-- 冻结 -->
           <iButton
             @click="freeze"
+            :loading="btnLoading.freeze"
             v-permission.auto="SOURCING_NOMINATION_DONGJIE|冻结">
             {{language('LK_DONGJIE', '冻结')}}
           </iButton>
@@ -198,6 +199,9 @@
     <revokeDialog :visible.sync="showRevokeDialog" @confirm="handleBatchRevoke(...arguments, false)" ref="revokeForm" />
     <!-- 新建定点申请弹窗 -->
     <rfqDialog :visible.sync="newNomiAppStatus" :nomiAppId="selNominateId" :readOnly="false" />
+
+    <!-- 黑名单校验弹窗提示 -->
+        <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONFROZEN" :tableListData="blackTableListData"/>
   </iPage>
 </template>
 
@@ -240,6 +244,8 @@ import {
   icon
 } from "rise";
 
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
+
 export default {
   mixins: [ filters, pageMixins, roleMixins ],
   data() {
@@ -256,7 +262,11 @@ export default {
       tranformRecallLoading: false,
       showRevokeDialog: false,
       // 新建定点申请单
-      newNomiAppStatus: false
+      newNomiAppStatus: false,
+      blackTableListData:[],
+      btnLoading:{
+        freeze:false, // 冻结
+      },
     }
   },
   components: {
@@ -270,7 +280,8 @@ export default {
     selDialog,
     revokeDialog,
     rfqDialog,
-    icon
+    icon,
+    dialogTableTips,
   },
   mounted() {
     this.getFetchData()
@@ -407,16 +418,22 @@ export default {
         const data = {
           nominateIdArr,
         };
+        this.btnLoading.freeze = true;
         try {
           const res = type ? await nominateRreeze(data) : await nominateUnRreeze(data)
           const { code } = res;
+          this.btnLoading.freeze = false;
           if(code == 200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
+          }else if(code == '500'){
+            this.blackTableListData = res.data || [];
+            this.$refs.dialogTableTips.show(); 
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         } catch (e) {
+          this.btnLoading.freeze = false;
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         }
       }

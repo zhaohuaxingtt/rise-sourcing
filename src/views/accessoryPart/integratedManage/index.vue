@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: YoHo
- * @LastEditTime: 2021-12-28 13:43:29
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-01-06 10:19:39
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -76,7 +76,7 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId" @init="init"/>
+          <assignInquiryDepartmentDialog ref="sendliniedept" :hasUpdateStatus='false' :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId" @init="init"/>
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
@@ -327,7 +327,7 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STATE')
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_MANAGE_STATE')
       // ID状态
       this.getDictionary('accessoryIdStateOption', 'ACCESSORY_ID_STATE')
       // 定点状态
@@ -391,13 +391,13 @@ export default {
     /**
      * @Description: 退回
      * @Author: Luoshuang
-     * @param {*} reason 退回原因
+     * @param {*} reasonDescription 退回原因
      * @return {*}
      */    
-    handleBack(reason){
+    handleBack(reasonDescription){
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
-        reason
+        reasonDescription
       }
       back(params).then(res => {
         if (res.result) {

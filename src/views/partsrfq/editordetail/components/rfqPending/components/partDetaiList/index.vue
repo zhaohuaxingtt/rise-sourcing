@@ -9,83 +9,41 @@
     <iCard collapse v-show="!todo" :title="language('LK_LINGJIANQINGDAN','零件清单')">
       <template slot="header-control">
         <div class="card-header">
-          <div class="button-box">
-            <iButton
-              v-if="
-                baseInfoData.partProjectType &&
-                baseInfoData.partProjectType[0] &&
-                (baseInfoData.partProjectType[0] ===
-                  partProjTypes.GSCOMMONSOURCING ||
-                  baseInfoData.partProjectType[0] ===
-                    partProjTypes.FSCOMMONSOURCING)
-              "
-              @click="cancelRelationStarMon"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_QUXIAOGUANLIANSTARTMONIORJILU |
-                  取消关联StarMonitor记录
-              "
-              >{{
-                language(
-                  "QUXIAOGUANLIANSTARMONITORJILU",
-                  "取消关联StarMonitor记录"
-                )
-              }}
+      <!-- <iButton @click="showApplyPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
+        {{ language('LK_XINSHENQINGCAIWUMUBIAOJIA','新申请财务目标价') }}
+      </iButton>
+      <iButton @click="againApply" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE|再申请财务目标价">
+        {{ language('LK_ZAICISHENGQINGCAIWUMUBIAOJIA','再申请财务目标价') }}
+      </iButton> -->
+          <div class="button-box" v-if="!disabled">
+            <iButton 
+              v-if="getisRfqStatus && baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
+              @click="cancelRelationStarMon" v-permission.auto="QUXIAOGUANLIANSTARTMONIORJILU|取消关联StarMonitor记录">
+              {{ language('QUXIAOGUANLIANSTARMONITORJILU','取消关联StarMonitor记录') }}
+            </iButton>    
+            <iButton 
+              v-if="getisRfqStatus && baseInfoData.partProjectType && baseInfoData.partProjectType[0] && (baseInfoData.partProjectType[0] === partProjTypes.GSCOMMONSOURCING || baseInfoData.partProjectType[0] === partProjTypes.FSCOMMONSOURCING)"
+              @click="relationStarMon" v-permission.auto="GUANLIANSTARTMONIORJILU|关联StarMonitor记录">
+              {{ language('GUANLIANSTARTMONITORJILU','关联StarMonitor记录') }}
             </iButton>
-            <iButton
-              v-if="
-                baseInfoData.partProjectType &&
-                baseInfoData.partProjectType[0] &&
-                (baseInfoData.partProjectType[0] ===
-                  partProjTypes.GSCOMMONSOURCING ||
-                  baseInfoData.partProjectType[0] ===
-                    partProjTypes.FSCOMMONSOURCING)
-              "
-              @click="relationStarMon"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_GUANLIANSTARTMONIORJILU |
-                  关联StarMonitor记录
-              "
-              >{{ language("GUANLIANSTARTMONITORJILU", "关联StarMonitor记录") }}
-            </iButton>
-            <!-- <iButton @click="showApplyPrice" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
-            {{ language('LK_XINSHENQINGCAIWUMUBIAOJIA','新申请财务目标价') }}
-          </iButton>
-          <iButton @click="againApply" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_REAPPLYPRICE|再申请财务目标价">
-            {{ language('LK_ZAICISHENGQINGCAIWUMUBIAOJIA','再申请财务目标价') }}
-          </iButton> -->
             <iButton
               @click="openPartsDialog"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE | 新申请财务目标价
-              "
-            >
+              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE | 新申请财务目标价">
               {{ language("LK_SHENQINGLINGJIANMUBIAOJIA", "申请零件目标价") }}
             </iButton>
             <iButton
               @click="moduleDialogVisible = true"
-              v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价"
-            >
+              v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
               {{ language('SHENQINGMUJUMUBIAOJIA', '申请模具目标价') }}
             </iButton>
-            <iButton
-              @click="sendKM"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM | 发送KM
-              "
-              >{{ language("FASONGKM", "发送KM") }}</iButton
-            >
-            <iButton
-              v-if="!disabled && rfqId"
-              @click="addItems"
-              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 添加"
-              >{{ language("LK_TIANJIA", "添加") }}
+            <iButton @click="sendKM" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM|发送KM">
+              {{ language('FASONGKM', '发送KM') }}
             </iButton>
-            <iButton
-              @click="deleteItems"
-              v-permission.auto="
-                PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE | 删除
-              "
-              >{{ language("delete", "删除") }}
+            <iButton v-if="!disabled && rfqId" @click="addItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 添加">
+              {{ language("LK_TIANJIA", "添加") }}
+            </iButton>
+            <iButton @click="deleteItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE|删除">
+              {{ language('delete','删除') }}
             </iButton>
           </div>
         </div>
@@ -300,9 +258,23 @@ export default {
     // technicalSeminar
   },
   async mounted() {
-    const { id, businessKey } = this.$route.query;
-    this.rfqId = id || "";
-    await this.getTableList();
+    const {id,businessKey} = this.$route.query;
+      // this.rfqId = this.$route.query.id
+      this.rfqId = id || '';
+      await this.getTableList()
+      let isCommonSourcing=''
+      this.baseInfoData.partProjectType[0]? isCommonSourcing = this.baseInfoData.partProjectType[0] :''
+      // 当类型为AEKO时 表头需要隐藏部分
+      if(businessKey == partProjTypes.AEKOLINGJIAN){
+        this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
+      }
+  try{
+      if(isCommonSourcing !== partProjTypes.GSCOMMONSOURCING && isCommonSourcing != partProjTypes.FSCOMMONSOURCING){
+        this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
+      } 
+    } catch (err) {
+      console.log(err);
+    }
   },
   watch: {
     disabled(val) {
@@ -315,14 +287,18 @@ export default {
       }
     },
   },
-  inject: ["getbaseInfoData", "getDisabled", "getBaseInfo"],
+  inject: ['getbaseInfoData', 'getDisabled', 'getBaseInfo','isRfqStatus'],
   computed: {
     disabled() {
       return this.getDisabled();
     },
     baseInfoData() {
-      return this.getbaseInfoData();
+      return this.getbaseInfoData()
     },
+    getisRfqStatus() {
+      return this.isRfqStatus()
+    } 
+    
   },
   data() {
     return {
@@ -609,10 +585,9 @@ export default {
       });
     },
     updateStarMonitor() {
-      console.log("==============================");
-      this.getTableList();
-      this.getBaseInfo();
-    },
+      this.getTableList()
+      this.getBaseInfo()
+    }
   },
 };
 </script>

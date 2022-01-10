@@ -261,6 +261,32 @@ export const supplierTableListColumns = [
   },
 ];
 
+// 供应商黑名单
+export const supplierDisabledColumns = [
+  {
+    type: "index",
+    width: 80,
+    label: language('BIDDING_XUHAO',"序号"),
+    i18n:'BIDDING_XUHAO'
+  },
+  {
+    prop: "stuffCode",
+    label: language('BIDDING_GYZBH',"工艺组编号"),
+    i18n:'BIDDING_GYZBH'
+  },
+  {
+    prop: "stuffName",
+    label: language('BIDDING_GONGYINGZU',"工艺组"),
+    i18n:'BIDDING_GONGYINGZU'
+  },
+  {
+    prop: "supplierName",
+    label: language('BIDDING_GYSMC',"供应商名称"),
+    i18n:'BIDDING_GYSMC'
+  },
+];
+
+
 export const tableListData = [
   {
     fileName: "车灯采购经理1",

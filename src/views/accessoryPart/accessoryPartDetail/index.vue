@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 15:16:38
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-02 16:47:16
+ * @LastEditTime: 2022-01-05 21:37:03
  * @Description: 配件详情
  * @FilePath: \front-sourcing\src\views\accessoryPart\accessoryPartDetail\index.vue
 -->
 
 <template>
-  <iPage v-loading="pageLoading" v-permission.auto="ACCESSORYPART_DETAILINFO_PAGE|配件详情页面">
+  <iPage v-permission.auto="ACCESSORYPART_DETAILINFO_PAGE|配件详情页面">
     <topComponents logModuleName="配件需求" logBizIdKey="spNum" optionDicKey2="配件需求详情页">
       <span slot="left" class="floatleft font20 font-weight">
         {{language('PEIJIANBIANHAO','配件编号')}}：{{detailData.partNum}}
@@ -51,11 +51,9 @@ export default {
   },
   methods: {
     getDetail() {
-      this.pageLoading = true
       getAccessoryOneInfo(this.$route.query.spNum).then(res => {
         if (res.result) {
           this.detailData = res.data
-
           this.$nextTick(() => {
             this.$refs.tec.getFiles()
             this.$refs.package.getFiles()
@@ -64,20 +62,11 @@ export default {
           this.detailData = {}
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
-      }).finally(() => {
+      }).catch((err) => {
+        console.log(err)
         this.pageLoading = false
       })
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.accessoryPartDetail {
-  .el-form-item {
-    ::v-deep .el-form-item__label {
-      width: 150px;
-    }
-  }
-}
-</style>
