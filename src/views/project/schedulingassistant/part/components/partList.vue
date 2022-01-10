@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 11:21:43
+ * @LastEditTime: 2022-01-10 10:24:23
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -150,7 +150,7 @@ export default {
       targetList: [ 
         {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget'}, 
         {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget'}, 
-        {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'} 
+        // {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'} 
       ], 
       nodeList: [ 
         {label: '释放', key: 'SHIFANG', kw: 'releaseTimeKw', keyPoint: 'keyReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus', status: 'releaseStatus'}, 
@@ -263,7 +263,7 @@ export default {
       // item.type 导出类型 1-风险预警 2-未BF 3-未释放 
       const partScheduleInfoVOList = this.partsTemp.filter(pItem => { 
         if (item.type == 1) { 
-          const targetList = [pItem.pvsTarget, pItem.vffTarget, pItem.zerosTarget] 
+          const targetList = [pItem.pvsTarget, pItem.vffTarget] 
           return targetList.some(item => item == 3) || targetList.some(item => item == 2) 
         }  
         if (item.type == 2) { 
@@ -431,7 +431,7 @@ export default {
         this.loading = true 
         // 筛选出待定点和待kickoff的数据 
         const selectRows = this.partsTemp.filter(item => { 
-          const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget] 
+          const targetList = [item.pvsTarget, item.vffTarget] 
           return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3) && (item.partPeriod == 2 || item.partPeriod == 3) 
         }) 
         if (selectRows.length < 1) { 
@@ -458,7 +458,7 @@ export default {
               return accu 
             } 
           },[]) : []  
-          const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget] 
+          const targetList = [item.pvsTarget, item.vffTarget] 
           const tableItem = {  
             // ...item, 
             cartypeProId: this.cartypeProId, 
@@ -755,7 +755,7 @@ export default {
           result = ['7','8'].includes(partStatus) ? item.partPeriod == partStatus || item.partPeriod == '6'  : item.partPeriod == partStatus
         }
         if (level && result === true) { 
-          const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget] 
+          const targetList = [item.pvsTarget, item.vffTarget] 
           if (level == 1) { 
             result = targetList.every(item => item == 1) 
           } else if (level == 2) { 
