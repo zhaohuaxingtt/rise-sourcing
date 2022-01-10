@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-24 15:55:46
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-06 12:19:05
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-07 23:36:57
  * @Description: 财务目标价相关Api
  * @FilePath: \front-web\src\api\financialTargetPrice\index.js
  */
@@ -105,6 +105,15 @@ export function appoint(params) {
 export function applyCFTarget(params) {
   return requst({
     url: '/cf-target-price-applies/apply-cf-target',
+    method: 'POST',
+    data: params
+  })
+}
+
+// 申请零件目标价
+export function applyPartTarget(params) {
+  return requst({
+    url: '/cf-target-price-applies/apply-cf-target-batch',
     method: 'POST',
     data: params
   })

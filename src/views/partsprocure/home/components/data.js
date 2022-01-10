@@ -1,13 +1,17 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-12-23 16:18:40
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-07 16:52:21
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
  */
 import {permissionTitle} from '@/utils'
 import {partProjTypes} from '@/config'
+
+// rfq 页面调整 
+// isAekoShow
+// ispartsAdd
 export const tableTitle = [{
 		//export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		props: 'fsnrGsnrNum',
@@ -23,6 +27,7 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREPARTNUMBER',
 		tooltip: true,
 		width:130,
+		ispartsList: true,
 		isAekoShow:true,
 	},
 	{
@@ -41,7 +46,6 @@ export const tableTitle = [{
 		tooltip: true,
 		width:100,
 		isAekoShow:true,
-		
 	},
 	{
 		props: 'partNameDe',
@@ -65,14 +69,6 @@ export const tableTitle = [{
 	// 	key: 'partsprocure.PARTSPROCURESTATUS',
 	// 	tooltip:false
 	// },
-	{
-		props: 'linieName',
-		name: 'LINIE',
-		key: 'partsprocure.PARTSPROCURELINIE',
-		tooltip: true,
-		width:60,
-		isAekoShow:false,
-	},
 	{
 		props: 'cfControllerName',
 		name: 'CF',
@@ -132,6 +128,22 @@ export const tableTitle = [{
 		props: 'buyerName',
 		name: '询价采购员',
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
+		tooltip: true,
+		width:90,
+		isAekoShow:false,
+	},
+	{
+		props: 'linieName',
+		name: 'LINIE',
+		key: 'partsprocure.PARTSPROCURELINIE',
+		tooltip: true,
+		width:60,
+		isAekoShow:false,
+	},
+	{
+		props: 'quotationStatus',
+		name: '当前轮次报价状态',
+		key: 'DANGQIANLUNCIBAOJIAZHUANGTAI',
 		tooltip: true,
 		width:90,
 		isAekoShow:false,
