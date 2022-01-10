@@ -113,6 +113,7 @@
         </el-form-item>
         <el-form-item :label="language('CHEXING', '车型')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_MODELNAMEZH|车型">
           <iSelect
+            filterable
             v-model="form.modelNameZh"
             :placeholder="language('QINGXUANZECHEXING', '请选择车型')"
           >
@@ -130,6 +131,7 @@
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_CARTYPEPROJECT|车型项目">
           <iSelect
+            filterable
             v-model="form.carTypeProject"
             :placeholder="language('QINGXUANZECHEXINGXIANGMU', '请选择车型项目')"
           >
@@ -210,9 +212,10 @@ import { pageMixins } from "@/utils/pageMixins"
 import { navList, queryForm, tableTitle } from "./components/data"
 import { cloneDeep } from "lodash"
 import { findDropDownBox, findLinieByName, findInquiryBuyerByName, searchRfqBdlRatings, forward } from "@/api/supplierscore"
-import { getCartypeDict, findBySearches } from "@/api/partsrfq/home"
+import { getCartypeDict } from "@/api/partsrfq/home"
 import axios from "axios"
 import { TAB } from '@/views/financialTargetPrice/components/data'
+import { getCarTypeSop } from "@/api/partsprocure/editordetail"
 
 export default {
   components: {
@@ -258,7 +261,7 @@ export default {
   created() {
     this.findDropDownBox()
     this.getCartypeDict()
-    this.findBySearches()
+    this.getCarTypeSop()
     this.searchRfqBdlRatings()
   },
   methods: {
@@ -351,19 +354,21 @@ export default {
         }
       })
     },
-    // 查询车型项目
-    findBySearches() {
-      findBySearches("01")
+    // 获取车型项目
+    getCarTypeSop() {
+      getCarTypeSop()
       .then(res => {
         if (res.code == 200) {
           this.cartypeProjectOptions = 
             Array.isArray(res.data) ?
             res.data.map(item => ({
-              key: item.code,
-              label: item.name,
-              value: item.name
+              key: item.cartypeProCode,
+              name: item.cartypeProName,
+              value: item.cartypeProCode
             })) :
             []
+
+          this.$forceUpdate()
         }
       })
     },
