@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:14:21
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-09 10:46:46
+ * @LastEditTime: 2022-01-07 14:23:34
  * @Description: 节点视图
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\nodeview\index.vue
 -->
@@ -75,7 +75,7 @@ export default {
       targetList: [
         {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget', props: 'vff', props1: 'vff1'},
         {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget', props: 'pvs', props1: 'pvs1'},
-        {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget', props: 'os', props1: 'os1'}
+        // {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget', props: 'os', props1: 'os1'}
       ],
       nodeList: [
         {label: '释放', key: 'SHIFANG', pvs: 'pvsTargetReleaseWeek', vff: 'vffTargetReleaseWeek', os: 'zerosTargetReleaseWeek', status: 'releaseStatus'},
