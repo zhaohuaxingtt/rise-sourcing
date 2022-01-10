@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-04 11:36:21
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-10 09:54:18
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
 -->
@@ -31,8 +31,8 @@
                 @click="handleApplyModuleTargetPrice"
                  :loading="checkApplyLoading"
                  v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价">
-          {{ language('SHENQINGMOJUMUBIAOJIA', '申请模具目标价') }}
-        </iButton>
+          {{ language('SHENQINGMUJUMUBIAOJIA', '申请模具目标价') }}
+        </iButton> -->
         <iButton v-if="baseInfo.partProjectType && baseInfo.partProjectType[0] && baseInfo.partProjectType[0] === partProjTypes.PEIJIAN && baseInfo.starMonitorStatus !== 1"
                  :loading="endEngotiationlaoding"
                  @click="updateRfqStatus('07')"
@@ -118,11 +118,47 @@
             <iFormItem v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQNAME|RFQ名称"
                        :label="language('LK_RFQMINGCHENG', 'RFQ名称') + ':'"
                        name="rfqName">
-              <iInput v-if="editStatus"
-                      v-model="baseInfo.rfqName"></iInput>
-              <iText v-else>
-                {{ baseInfo.rfqName }}
+              <div class="input-box">
+                <iInput v-if="editStatus" v-model="baseInfo.rfqName"></iInput>
+                <iText v-else>{{ baseInfo.rfqName }}</iText>
+                <div class="btn-box">
+                    <iButton v-if="!editStatus" @click="edit" type="text" icon="el-icon-edit"></iButton>
+                    <template v-else>
+                      <iButton class="save" type="text" @click="save" icon="el-icon-check"></iButton>
+                      <iButton class="cancel" type="text" @click="cancel" icon="el-icon-close"></iButton>
+                    </template>
+                </div>
+              </div>
+            </iFormItem>
+            <iFormItem :label="language('LK_RFQZHUANGTAI', 'RFQ状态') + ':'"
+                       name="statusName"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQSTATUS|RFQ状态">
+              <iText>{{ baseInfo.statusName }}</iText>
+            </iFormItem>
+            <iFormItem :label="language('LK_CHUANGJIANRIQI', '创建日期') + ':'"
+                       name="createDate"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATIONDATE|创建日期">
+              <iText>
+                {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
               </iText>
+            </iFormItem>
+            <iFormItem label="材料组"
+                       name="createDate">
+              <iText>
+                {{ baseInfo.categoryCode +'-'+ baseInfo.categoryName }}
+              </iText>
+            </iFormItem>
+          </div>
+          <div class="col">
+            <iFormItem :label="language('LK_XUNJIACAIGOUYUAN', '询价采购员') + ':'"
+                       name="buyerName"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER|询价采购员">
+              <iText>{{ baseInfo.buyerName }}</iText>
+            </iFormItem>
+            <iFormItem label="LINIE："
+                       name="linieNameZh"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_LINE|LINIE">
+              <iText>{{ baseInfo.linieNameZh }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_EP', '技术评分人') + ':'"
                        name="ep"
@@ -130,35 +166,17 @@
               <iText forceTooltip
                      :tooltipContent="baseInfo.ep">{{ nameProcessor(baseInfo.ep) }}</iText>
             </iFormItem>
-            <!---BA确认过这东西不需要--->
-            <!-- <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf"  v-permission.auto="PARTSRFQ_EDITORDETAIL_CF|财务控制员"> -->
-            <!-- <iInput v-if="editStatus" v-model="baseInfo.cf" v-permission.auto="PARTSRFQ_EDITORDETAIL_CF"></iInput> -->
-            <!-- <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf) }}</iText>
-            </iFormItem> -->
-
-            <iFormItem :label="language('LK_BENLUNBAOJIAJIEZHISHIJIAN', '本轮报价截止时间') + ':'"
-                       name="currentRoundsEndTime"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS|本轮报价截止时间">
-              <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
-            </iFormItem>
-          </div>
-          <div class="col">
-            <iFormItem :label="language('LK_RFQZHUANGTAI', 'RFQ状态') + ':'"
-                       name="statusName"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQSTATUS|RFQ状态">
-              <iText>{{ baseInfo.statusName }}</iText>
-            </iFormItem>
-            <iFormItem :label="language('LK_XUNJIACAIGOUYUAN', '询价采购员') + ':'"
-                       name="buyerName"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_INQUIRYBUYER|询价采购员">
-              <iText>{{ baseInfo.buyerName }}</iText>
-            </iFormItem>
             <iFormItem :label="language('LK_MQ', '质量评分人') + ':'"
                        name="mq"
                        v-permission.auto="PARTSRFQ_EDITORDETAIL_MQ|质量评分人">
               <iText forceTooltip
                      :tooltipContent="baseInfo.mq">{{ nameProcessor(baseInfo.mq) }}</iText>
             </iFormItem>
+            <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf">
+              <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf)||baseInfo.cfControllerNames[0] }}</iText>
+            </iFormItem>
+          </div>
+          <div class="col">
             <iFormItem :label="language('LK_DANGQIANLUNCI', '当前轮次') + ':'"
                        name="currentRounds"
                        v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTROUND|当前轮次">
@@ -171,39 +189,36 @@
                 {{ baseInfo.roundsTypeName }}
               </iText>
             </iFormItem>
-          </div>
-          <div class="col">
-            <iFormItem :label="language('LK_CHUANGJIANRIQI', '创建日期') + ':'"
-                       name="createDate"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATIONDATE|创建日期">
-              <iText>
-                {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
-              </iText>
-            </iFormItem>
-            <iFormItem label="LINIE："
-                       name="linieNameZh"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_LINE|LINIE">
-              <iText>{{ baseInfo.linieNameZh }}</iText>
-            </iFormItem>
-            <iFormItem :label="language('LK_PL', '物流审核人') + ':'"
-                       name="test"
-                       v-permission.auto="PARTSRFQ_EDITORDETAIL_PL|物流审核人">
-              <!-- <iInput v-if="editStatus" v-model="baseInfo.pl" v-permission.auto="PARTSRFQ_EDITORDETAIL_PL"></iInput> -->
-              <iText forceTooltip
-                     :tooltipContent="baseInfo.pl">{{ nameProcessor(baseInfo.pl) }}</iText>
-            </iFormItem>
             <iFormItem :label="language('LK_BENLUNZHUANGTAI', '本轮状态') + ':'"
                        name="test"
                        v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTSTATE|本轮状态">
               <iText>{{ baseInfo.currentRoundsStatus }}</iText>
             </iFormItem>
+            
+            <iFormItem label="本轮开始时间"
+                       name="currentRoundsEndTime">
+              <iText>{{ baseInfo.currentRoundsStartTime }}</iText>
+            </iFormItem>
+            <iFormItem :label="language('LK_BENLUNBAOJIAJIEZHISHIJIAN', '本轮报价截止时间') + ':'"
+                       name="currentRoundsEndTime"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_DEADLINEQUOTATIONS|本轮报价截止时间">
+              <iText>{{ baseInfo.currentRoundsEndTime }}</iText>
+            </iFormItem>
+          </div>
+          <!-- <div class="col">
+            <iFormItem :label="language('LK_PL', '物流审核人') + ':'"
+                       name="test"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_PL|物流审核人">
+              <iText forceTooltip
+                     :tooltipContent="baseInfo.pl">{{ nameProcessor(baseInfo.pl) }}</iText>
+            </iFormItem>
             <div class="edit-button-row">
-              <i-button v-if="beforeCreate || !disabled"
+              <i-button v-if="!disabled"
                         @click="edit"
                         v-permission.auto="PARTSRFQ_EDITORDETAIL_SAVE|(编辑 / 保存)">{{ !editStatus ? language('LK_BIANJI', '编辑') : language('LK_BAOCUN', '保存') }}
               </i-button>
             </div>
-          </div>
+          </div> -->
         </div>
       </iFormGroup>
     </iCard>
@@ -212,7 +227,7 @@
     <!--------------------------------------------------------------->
     <rfqPending ref="rfqPending"
                 v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"
-                :activityTabIndex="activityTabIndex"></rfqPending>
+                :activityTabIndex="activityTabIndex" :todoObj="todoObj"></rfqPending>
     <!--------------------------------------------------------------->
     <!-------------------------RFQ详情信息---------------------------->
     <!--------------------------------------------------------------->
@@ -257,6 +272,7 @@
           ">{{ language('QUXIAO', '取消') }}</iButton>
       </div>
     </iDialog>
+    <intoiDialog :tipsVislble.sync="tipsVislble" v-if="(navActivtyValue === '0' || navActivtyValue === '')" :todoObj="todoObj" @changeActivityTabIndex="changeActivityTabIndex" />
   </iPage>
 </template>
 <script>
@@ -269,12 +285,13 @@ import { getRfqDataList, addRfq, modification, updateRfqInfo, pageRfqRound, getR
 import store from '@/store';
 import { rfqCommonFunMixins } from 'pages/partsrfq/components/commonFun';
 import { navList } from './components/data';
+import intoiDialog from './components/index';
 import nominateTypeDialog from '@/views/partsrfq/home/components/nominateTypeDialog';
 import maintainSupplier from '@/views/partsrfq/home/components/maintainSupplier';
 import createDesignateTips from '@/views/partsrfq/home/components/createDesignateTips';
 import noBnkDialog from '@/views/partsrfq/home/components/noBnkDialog';
 import { selectRfq, starMonitorAutoNomi } from '@/api/designate/designatedetail/addRfq';
-import { getTabelData } from '@/api/partsprocure/home';
+import { getTabelData, waitDealtRfqTaskStatus } from '@/api/partsprocure/home';
 import { pageMixins } from '@/utils/pageMixins';
 import { tableTitle, form } from '@/views/partsprocure/home/components/data';
 import { getRfqInfo } from '@/api/costanalysismanage/rfqdetail';
@@ -311,10 +328,13 @@ export default {
     createDesignateTips,
     noBnkDialog,
     dialogTableTips,
+    intoiDialog
   },
   mixins: [rfqCommonFunMixins, pageMixins],
   data () {
     return {
+      todoObj:{},
+      tipsVislble:false,
       showReason: false,
       navActivtyValue: '',
       navList: navList,
@@ -361,6 +381,7 @@ export default {
     this.getPartTableList = this.$store.state.rfq.partfunc;
     this.getTableList();
     this.getBaseInfo();
+    this.waitDealtRfqTaskStatus()
   },
   provide: function () {
     return {
@@ -372,6 +393,36 @@ export default {
     };
   },
   methods: {
+    waitDealtRfqTaskStatus(){
+      this.todoObj = {}
+      this.tipsVislble = false
+      if(this.$route.query.id){
+        let nameObj = {
+        mouldPriceStatusDesc:{label:'模具目标价',key:'MUJUMUBIAOJIA'},
+        mouldBudgetStatusDesc:{label:'模具投资预算',key:'MOJUTOUZIYUSUAN'},
+        cfPriceStatusDesc:{label:'零件目标价',key:'LINGJIANMUBIAOJIA'},
+        pushRateStatusDesc:{label:'供应商评分',key:'GONGYINGSHANGPINGFEN'},
+      }
+        waitDealtRfqTaskStatus(this.$route.query.id).then(res=>{
+          if(res.result){
+            let count = 0
+            Object.keys(nameObj).forEach(key=>{
+              if(res.data[key]=='未完成'){
+                count++
+              }
+              this.todoObj[key] = {
+                name: nameObj[key].label,
+                key: nameObj[key].key,
+                status: res.data[key]
+              }
+            })
+            if(count){
+              this.tipsVislble = true
+            }
+          }
+        })
+      }
+    },
     goToCesPage () {
       const router = this.$router.resolve({
         path: `/bidding/test/addManual/${this.$route.query.id}`,
@@ -469,11 +520,14 @@ export default {
       } else {
         this.disabled = true;
         this.baseInfoLoading = false;
-        this.beforeCreate = true
       }
     },
     changeNav (target) {
       this.navActivtyValue = target.index;
+    },
+    changeActivityTabIndex(index){
+      this.activityTabIndex = index
+      this.tipsVislble = false
     },
     async newRfq () {
       const pendingPartsList = this.$store.state.rfq.pendingPartsList;
@@ -543,17 +597,20 @@ export default {
       }
     },
     edit () {
+      this.oldrfqName = JSON.parse(JSON.stringify(this.baseInfo.rfqName))
+      this.editStatus = !this.editStatus;
+    },
+    cancel(){
+      this.baseInfo.rfqName = this.oldrfqName;
+      this.editStatus = !this.editStatus;
+    },
+    async save () {
       const rfqName = this.baseInfo.rfqName;
-      if (!rfqName && this.editStatus) {
+      if (!rfqName.trim()) {
         iMessage.warn(this.language('LK_RFQMINGCHNEGBUNENGWEIKONG', 'RFQ名称不能为空'));
         return false;
       }
       this.editStatus = !this.editStatus;
-      if (!this.editStatus && rfqName) {
-        this.save();
-      }
-    },
-    async save () {
       const query = this.$route.query;
       const params = {
         userId: store.state.permission.userInfo.id,
@@ -792,6 +849,20 @@ export default {
     &:last-child {
       margin-right: 0px;
       border-right: none;
+    }
+    .input-box{
+      display: inline-flex;
+      width: 100%;
+      .btn-box{
+        display: inline-flex;
+        padding: 0 10px;
+        .save{
+          color: #66b1ff;
+        }
+        .cancel{
+          color: #f78989;
+        }
+      }
     }
   }
 

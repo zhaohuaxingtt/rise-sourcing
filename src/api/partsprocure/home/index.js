@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 11:07:22
- * @LastEditTime: 2021-11-29 15:07:54
- * @LastEditors:  
+ * @LastEditTime: 2022-01-05 11:13:39
+ * @LastEditors: YoHo
  * @Description: 零件采购项目创建模块API
  * @FilePath: \rise\src\api\partsprocure\home\index.js
  */
@@ -141,6 +141,14 @@ export function searchCarTypeProConfig(data) {
 export function searchCarType(id) {
   return requst({
     url:`/purchasing-project-parts/search-car-type/${id}`,
+    method:'GET'
+  })
+}
+
+//通过rfqId查询待办任务
+export function waitDealtRfqTaskStatus(rfqId) {
+  return requst({
+    url:`/waitDealtRfqTaskStatus/${rfqId}`,
     method:'GET'
   })
 }
