@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-10 16:47:44
+ * @LastEditTime: 2022-01-10 18:19:55
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -526,8 +526,12 @@ export default {
       }
     },
     getName(val){
-      if(Array.isArray(val)&&val.length){
-        return val.join(',')
+      if(Array.isArray(val)){
+        if(val.length){
+          return val.join(',')
+        }else{
+          return ''
+        }
       }else{
         return val
       }
