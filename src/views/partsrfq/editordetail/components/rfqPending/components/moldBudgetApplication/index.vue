@@ -62,7 +62,7 @@
           <template #budget="scope">
             <iInput
               v-model="scope.row.budget"
-              v-if="!disabled"
+              v-if="!scope.row.disabled"
               @input="handleInput($event, scope.row)"
               @blur="handleBlurByBudget(scope.row.budget, scope.row)"
             />
@@ -133,17 +133,13 @@ export default {
   created() {
     this.getTableList();
   },
-  inject: ["getDisabled"],
-  computed: {
-    disabled() {
-      return this.getDisabled();
-    },
-  },
+  // inject: ["getDisabled"],
+  // computed: {
+  //   disabled() {
+  //     return this.getDisabled();
+  //   },
+  // },
   methods: {
-    toggle(type) {
-      console.log(this[type]);
-      this[type] = !this[type];
-    },
     //获取表格数据
     async getTableList() {
       const id = this.$route.query.id;
@@ -165,8 +161,10 @@ export default {
             ? res.data.records.map((item) => ({
                 ...item,
                 budget: math.bignumber(item.budget || 0).toFixed(2),
+                disabled: item.approvalStatus=='已审批'
               }))
             : [];
+            console.log(this.tableListData);
           // this.page.currPage = res.current
           // this.page.pageSize = res.size
           this.page.totalCount = res.data.total;
@@ -249,49 +247,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-header {
-  width: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 0 20px 0;
-  .card-title {
-    display: inline-flex;
-    align-items: center;
-    .title {
-      font-size: 18px;
-      font-weight: bold;
-    }
-  }
-  .tishi {
-    display: inline-flex;
-    align-items: center;
-  }
-  .tishi-icon {
-    font-size: 18px;
-    margin: 0 15px;
-  }
-
-  .danger {
-    color: #f5222d;
-  }
-  .warning {
-    color: #fa8c16;
-  }
-  .success {
-    color: #389e0d;
-  }
-  .button-box {
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .card-icon {
-    font-size: 18px;
-    margin: 0 20px;
-  }
-  .rotate {
-    transform: rotate(180deg);
-  }
-}
 </style>

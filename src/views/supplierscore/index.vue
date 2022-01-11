@@ -387,8 +387,6 @@ export default {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.page.totalCount = res.total || 0
-
-          console.log("test")
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

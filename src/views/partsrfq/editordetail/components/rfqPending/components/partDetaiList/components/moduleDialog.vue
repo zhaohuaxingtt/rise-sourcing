@@ -275,6 +275,8 @@ export default {
     getDetail() {
       this.loading = true
       if (this.applyType === '1') {
+        if (!this.rfqId) return
+
         getTaskPartListRfq(this.rfqId).then(res => {
           if (res?.result) {
             this.tableData = res.data || []
