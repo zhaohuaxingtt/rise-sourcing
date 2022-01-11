@@ -14,3 +14,30 @@ export function getAllMqRules(data) {
         data,
     })
 }
+
+// 获取划定的评分部门信息
+export function getListSysRateDepart(data) {
+    return requst({
+      url: "/rfq-rate-departs/listSysRateDepart",
+      method: "POST",
+      data,
+    })
+}
+
+// 设置质量评分预设规则
+export function setMqRules(data) {
+    return requst({
+        url: "/rfq-rate-departs/setMqRules",
+        method: "POST",
+        data,
+    })
+}
+
+// 删除质量评分预设规则 
+export function deleteMqRulesByIdList(data) {
+    return requst({
+        url: "/rfq-rate-departs/deleteMqRulesByIdList",
+        method: "POST",
+        data,
+    })
+}

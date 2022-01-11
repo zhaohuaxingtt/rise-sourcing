@@ -25,7 +25,7 @@
       class="margin-top25"
       icon
       @sure="getList"
-      @reset="getList"
+      @reset="reset"
       :resetKey="PARTSIGN_RESETBUTTON"
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
@@ -41,22 +41,26 @@
     <iCard class="margin-top20">
         <template v-slot:header-control>
             <iButton @click="changeVisible('addRulesDialogVisible',true)">{{language("TIANJIA", "添加")}}</iButton>
-            <iButton>{{ language('SHANCHU', '删除') }}</iButton>
+            <iButton @click="deletRule" :loading="btnLoading.deletRule">{{ language('SHANCHU', '删除') }}</iButton>
         </template>
-        <tableList
-          class="table"
-          index
-          :lang="true"
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="loading"
-          height="100%"
-          @handleSelectionChange="handleSelectionChange"
-        ></tableList>
+        <div class="body">
+            <tableList
+            class="table"
+            index
+            :lang="true"
+            :tableData="tableListData"
+            :tableTitle="tableTitle"
+            :tableLoading="loading"
+            height="100%"
+            @handleSelectionChange="handleSelectionChange"
+            >
+            </tableList>
+        </div>
+        
     </iCard>
 
     <!-- 新增弹窗 -->
-    <addRulesDialog :dialogVisible="addRulesDialogVisible" @changeVisible="changeVisible"/>
+    <addRulesDialog :dialogVisible="addRulesDialogVisible" @changeVisible="changeVisible" @getList="getList" :requestData="requestData"/>
   </iPage>
 </template>
 
@@ -75,7 +79,7 @@ import { TAB } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "./components/data"
 import addRulesDialog from './components/addRulesDialog'
-import { getAllMqRules } from "@/api/scoreConfig/qualityscorerules"
+import { getAllMqRules,deleteMqRulesByIdList } from "@/api/scoreConfig/qualityscorerules"
 export default {
     name:'qualityscorerules',
     components:{
@@ -98,6 +102,11 @@ export default {
             searchForm:{
                 deptNum:'',
                 userName:'',
+            },
+            requestData:[],
+            selectItems:[],
+            btnLoading:{
+                deletRule:false,
             }
         }
     },
@@ -109,9 +118,9 @@ export default {
             this[type] = !!show;
         },
         // 获取列表
-        getList(){
+        async getList(){
             this.loading = true;
-            getAllMqRules(this.searchForm).then((res)=>{
+            await getAllMqRules(this.searchForm).then((res)=>{
                 this.loading = false;
                 if(res.code == '200'){
                     const tableListData = []
@@ -120,6 +129,7 @@ export default {
                             ruleName: item.ruleName,
                             ruleId: item.ruleId,
                             ruleDes: item.ruleDes,
+                            updateTime:item.updateTime
                         }
                         if (item.ruleNodeList && item.ruleNodeList.length) {
                             item.ruleNodeList.forEach(rule => {
@@ -131,12 +141,55 @@ export default {
                         tableListData.push(Sitem)
                     })
                     this.tableListData = tableListData;
+                    this.requestData = res.data || [];
                 }else{
                     this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
             }).catch(()=>{
                 this.loading = false;
             })
+        },
+
+        reset(){
+            this.searchForm = {deptNum:'',userName:''};
+            this.getList();
+        },
+
+        handleSelectionChange(val) {
+            this.selectItems = val;
+        },
+
+        // 删除
+        async deletRule(){
+            const {selectItems} = this;
+            const tips =  this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据');
+          if(!selectItems.length){
+              this.$message.warning(tips);
+              return false;
+          }else{
+              await this.$confirm(
+          this.language('LK_QINGQUERENSHIFOUSHANCHU','请确认是否删除？'),
+          this.language('LK_SHANCHU','删除'),
+          {
+            confirmButtonText: this.language('nominationLanguage.Yes','是'),
+            cancelButtonText: this.language('nominationLanguage.No','否'),
+          }
+          ).then(()=>{
+            this.btnLoading.deletRule = true;
+            const ids = (selectItems.map((item)=>item.ruleId)).join();
+            // deleteMqRulesByIdList({ids}).then((res)=>{
+                // this.btnLoading.deletRule = false;
+            //   if(res.code ==200){
+            //     this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            //     this.getList();
+            //   }else{
+            //     this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            //   }
+            // })
+          }).catch(()=>{
+            this.btnLoading.deletRule = false;
+          })
+          }
         },
     }
 }
@@ -166,5 +219,12 @@ export default {
         height: 30px;
         }
     }
+    .card {
+    padding-bottom: 20px;
+    .body {
+      height: calc(100vh - 445px);
+      min-height: 430px;
+    }
+  }
     }
 </style>
