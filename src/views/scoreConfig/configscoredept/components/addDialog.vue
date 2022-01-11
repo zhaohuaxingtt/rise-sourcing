@@ -36,9 +36,11 @@
                 >
                 </el-option>
             </iSelect>
+            <iDicoptions v-else-if="item.type === 'dicoption'" :optionAll="false" v-model="form[item.props]" :optionKey="item.optionKey"/>
             <el-switch
                 v-else-if="item.type === 'switch'" 
                 v-model="form[item.props]"
+                @change="changeSwitch($event,item.props)"
             />
             <iInput v-model="form[item.props]" v-else-if="item.type === 'input'" @input="handleNumber($event,form,item.props)"/>
             <iText v-else>{{form[item.props] || '-'}}</iText>
@@ -60,7 +62,10 @@ import {
     iText,
     iInput,
 } from 'rise'
+import iDicoptions from 'rise/web/components/iDicoptions' 
 import { addDialogFrom } from './data'
+import { listDepartByTag,listUserByRoleCode } from "@/api/scoreConfig/configscoredept"
+import { cloneDeep } from "lodash" 
 export default {
     name:'addDialog',
     components:{
@@ -69,6 +74,7 @@ export default {
         iSelect,
         iText,
         iInput,
+        iDicoptions,
     },
     props:{
         dialogVisible:{
@@ -80,14 +86,62 @@ export default {
             default:'add',
         }
     },
+    watch: {
+    dialogVisible(val) {
+      if(val) {
+          this.init();
+      }
+    }
+  },
     data(){
         return{
-            addDialogFrom,
+            addDialogFrom:[],
             form:{},
-            selectOptions:{},
+            selectOptions:{
+                raterList:[],
+            },
         }
     },
     methods:{
+        init(){
+            this.addDialogFrom = cloneDeep(addDialogFrom);
+            // 编辑时根据数据判断 是否需要展示定点审批人
+            if(this.openType == 'edit'){
+                console.log('22222');
+            }else{
+               this.form = {};
+            }
+            // 获取评分股下拉数据
+            // listDepartByTag({tagId:''}).then((res)=>{
+
+            // })
+            const roleList = [
+                {key:'raterList',roleCode:'JZSPFR'},// 评分人
+                {key:'coordinatorList',roleCode:'JSPFXTY'},// 协调人
+                // {key:'nomiApprover',roleCode:'DDSPR'}, // 定点审批人
+            ]
+            roleList.forEach((item)=>{
+                listUserByRoleCode({roleCode:item.roleCode}).then((res)=>{
+                    if(res.code == '200'){
+                        res.data.map((itemUser)=>{
+                            itemUser.value = itemUser.id;
+                            itemUser.label = itemUser.nameZh;
+                        })
+                        this.selectOptions[item.key] = res.data || []
+                    }
+                })
+            })
+        },
+        // 开关状态改变
+        changeSwitch(value,props){
+            if(props == 'isCheck'){
+                let copyAddDialogFrom = cloneDeep(addDialogFrom);
+                copyAddDialogFrom.forEach((item)=>{
+                    if(item.props == 'coordinatorList') item.required = value ;
+                })
+                this.addDialogFrom = copyAddDialogFrom;
+            }
+        },
         clearDialog(){
             this.$emit('changeVisible','addDialogVisible',false);
         },

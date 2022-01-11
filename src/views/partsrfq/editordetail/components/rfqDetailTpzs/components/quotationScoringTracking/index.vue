@@ -87,6 +87,8 @@ export default{
       return number
     },
     negoScoreReport(){
+      if (!this.$route.query.id) return
+
       negoScoreReport(this.$route.query.id).then(res=>{
         if(res.code == 200){
           this.tableTile = buildTitleTabel(res.data)
@@ -102,6 +104,8 @@ export default{
      * @return {*}
      */
     getTimeLine(qutaitonId,rfqId){
+      if (!qutaitonId || !rfqId) return
+
       getTimeLine(qutaitonId,rfqId).then(res=>{
         if(res.data){
           this.daliyTime = res.data.wholeProgressRisk || 0 //整车进度风险
