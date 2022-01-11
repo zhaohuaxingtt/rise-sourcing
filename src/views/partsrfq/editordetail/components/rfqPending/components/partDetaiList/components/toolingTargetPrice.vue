@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-01-07 23:53:57
+ * @LastEditTime: 2022-01-10 17:46:40
  * @LastEditors: YoHo
 -->
 <template>
@@ -12,7 +12,7 @@
         <span class="font18 font-weight">{{language('XIUGAIJILU','修改记录')}}</span>
       </div>
     </template>
-    <tablelist v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_TABLE|申请财务目标价-表格" :tableData='tableListData' :tableTitle='tableTitle' :tableLoading='loading' :selection="false"></tablelist>
+    <tablelist :tableData='tableListData' :tableTitle='tableTitle' :tableLoading='loading' :selection="false"></tablelist>
     <iPagination
       class="pagination"
       v-update

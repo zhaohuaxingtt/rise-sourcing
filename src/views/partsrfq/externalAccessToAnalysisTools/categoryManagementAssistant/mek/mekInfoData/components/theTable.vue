@@ -92,8 +92,9 @@
                        :label="language('CAILIAOZU','材料组')"
                        prop="materialGroup">
         <template slot-scope="scope">
+          <div>{{scope.row.materialGroupCode}}</div>
           <div>{{scope.row.materialGroup}}</div>
-          <div>{{scope.row.stuffGroup}}</div>
+
         </template>
       </el-table-column>
       <el-table-column show-overflow-tooltip
@@ -201,6 +202,13 @@
         <template slot-scope="scope">
           <div>{{scope.row.supplierCode}}</div>
           <div>{{scope.row.supplierName}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column show-overflow-tooltip
+                       :label="language('LINGJIANAEKODINGDIAN','零件/Aeko定点')"
+                       prop="name">
+        <template slot-scope="scope">
+          <div>{{scope.row.supplierCode?"是":'否'}}</div>
         </template>
       </el-table-column>
       <el-table-column show-overflow-tooltip

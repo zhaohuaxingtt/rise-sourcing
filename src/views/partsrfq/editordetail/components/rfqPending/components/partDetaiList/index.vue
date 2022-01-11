@@ -28,7 +28,7 @@
             </iButton>
             <iButton
               @click="openPartsDialog"
-              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE | 新申请财务目标价">
+              v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_NEWPRICE|新申请财务目标价">
               {{ language("LK_SHENQINGLINGJIANMUBIAOJIA", "申请零件目标价") }}
             </iButton>
             <iButton
@@ -39,7 +39,7 @@
             <iButton @click="sendKM" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_SENDKM|发送KM">
               {{ language('FASONGKM', '发送KM') }}
             </iButton>
-            <iButton v-if="!disabled && rfqId" @click="addItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 添加">
+            <iButton v-if="!disabled && rfqId" @click="addItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD|添加">
               {{ language("LK_TIANJIA", "添加") }}
             </iButton>
             <iButton @click="deleteItems" v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_DELETE|删除">
@@ -55,9 +55,7 @@
           :tableLoading="confirmTableLoading"
           @handleSelectionChange="handleSelectionChange"
           @poenPage="openPage"
-          v-permission.auto="
-            PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE | 零件清单列表
-          "
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表"
         >
           <template #fsnrGsnrNum="scope">
             <span
@@ -96,9 +94,7 @@
           <iButton
             @click="start"
             :loading="addLoding"
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD | 零件清单添加
-            "
+            v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_ADD|零件清单添加"
           >
             {{ language("XUANZE", "选择") }}
           </iButton>
@@ -111,10 +107,7 @@
             :placeholder="
               language('partsprocure.PARTSPROCURE', '请输入零件号')
             "
-            v-permission.auto="
-              PARTSRFQ_EDITORDETAIL_PARTDETAILIST_PARTNUMSEARCH |
-                (零件清单 - 零件号搜索)
-            "
+            v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_PARTNUMSEARCH|(零件清单 - 零件号搜索)"
           >
             <div class="inputSearchIcon" slot="suffix">
               <icon
@@ -127,9 +120,6 @@
         </div>
         <partsTable
           class="partsTable"
-          v-permission.auto="
-            PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE | 零件清单列表
-          "
           ref="partsTable"
           :rfqId="rfqId"
           :queryForm="queryForm"
@@ -163,20 +153,26 @@
       :todo="todo"
       :visible.sync="partsDialogVisible"
       :tableList="handleSelectArr"
+      @update='updateData'
     />
     <!-- 申请模具目标价 -->
-    <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" />
-    <parts-target-price
+    <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" @update='updateData' />
+    <template v-for="(item, index) in componentList">
+      <component :ref='item.component' :key="index" :is="item.component" class="margin-top20" @openDialog="openDialog" :todo="todo" v-if="!item.todo||item.todo==todo" :status="todoObj[item.statusCode].status" />
+    </template>
+    <!-- <parts-target-price
       @openDialog="openDialog"
       class="margin-top20"
       :todo="todo"
       :status="todoObj.cfPriceStatusDesc.status"
+      ref="partsTargetPrice"
     ></parts-target-price>
     <mold-target-price
       @openDialog="openDialog"
       class="margin-top20"
       :todo="todo"
       :status="todoObj.mouldPriceStatusDesc.status"
+      ref="moldTargetPrice"
     ></mold-target-price>
     <mold-budget-application
       class="margin-top20"
@@ -188,8 +184,9 @@
       :todo="todo"
       class="margin-top20"
       :status="todoObj.pushRateStatusDesc.status"
-    />
-    <!-- <technicalSeminar class="margin-top20" /> -->
+    /> -->
+    <!-- 技术交底会 -->
+    <technicalSeminar v-if="todo" class="margin-top20" />
   </div>
 </template>
 
@@ -220,11 +217,12 @@ import kmDialog from "./components/kmDialog";
 import { partProjTypes } from "@/config";
 import relationStarMon from "./components/relationStarMon";
 import moldBudgetApplication from "../moldBudgetApplication";
-import supplierScore from "../supplierScore/components/supplierScore.vue";
+// import supplierScore from "../supplierScore/components/supplierScore.vue";
+import supplierScore from "../supplierScore";
 
 import moduleDialog from "./components/moduleDialog";
 import partsDialog from "./components/partsDialog";
-// import technicalSeminar from "../technicalSeminar";
+import technicalSeminar from "../technicalSeminar";
 import { iconName, partDetaiListTitle as tableTitle } from "./data";
 
 export default {
@@ -255,7 +253,7 @@ export default {
     iDialog,
     moduleDialog,
     partsDialog,
-    // technicalSeminar
+    technicalSeminar
   },
   async mounted() {
     const {id,businessKey} = this.$route.query;
@@ -297,11 +295,42 @@ export default {
     },
     getisRfqStatus() {
       return this.isRfqStatus()
-    } 
-    
+    },
+    componentList() {
+      return this.componentArr.map(i=>{
+        i.status = this.todoObj[i.statusCode].status
+        i.order = 0
+        if(this.todo){
+          if(i.status=='未申请') i.order = 1
+          if(i.status=='未完成') i.order = 2
+          if(i.status=='已完成') i.order = 3
+        }
+        return i
+      }).sort((a,b)=>a.order-b.order)
+    }
   },
   data() {
     return {
+      componentArr:[
+          {
+            label: '零件目标价',
+            component: 'partsTargetPrice',
+            statusCode: 'cfPriceStatusDesc'
+          },{
+            label: '模具目标价',
+            component: 'moldTargetPrice',
+            statusCode: 'mouldPriceStatusDesc'
+          },{
+            label: '模具投资预算',
+            component: 'moldBudgetApplication',
+            statusCode: 'mouldBudgetStatusDesc'
+          },{
+            label: '供应商评分',
+            component: 'supplierScore',
+            statusCode: 'pushRateStatusDesc',
+            todo: true
+          },
+      ],
       iconName,
       hidens: true,
       partsDialogVisible: false,
@@ -346,8 +375,9 @@ export default {
       console.log(type);
       this[type] = true;
     },
-    toggle(type) {
-      this[type] = !this[type];
+    updateData(type) {
+      console.log(this.$refs[type]);
+      this.$refs[type].getTableList()
     },
     gotoAccessoryDetail(row) {
       const router = this.$router.resolve({

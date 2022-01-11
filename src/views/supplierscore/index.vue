@@ -375,7 +375,7 @@ export default {
     searchRfqBdlRatings() {
       const form = {}
       Object.keys(this.form).forEach(key => {
-        form[key] = this.form[key] || this.form[key] === 0 ? this.form[key] : undefined
+        form[key] = this.form[key] || this.form[key] === 0 || this.form[key] === false ? this.form[key] : undefined
       })
       form.current = this.page.currPage
       form.size = this.page.pageSize
@@ -387,8 +387,6 @@ export default {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.page.totalCount = res.total || 0
-
-          console.log("test")
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

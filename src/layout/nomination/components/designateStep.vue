@@ -122,7 +122,8 @@ import {
     checkNomiMeetingSubmit3,
     checkNomiMeetingSubmit4,
     updateNominate,
-    rsAttachExport
+    rsAttachExport,
+    fittingNomi
 } from '@/api/designate'
 import { 
     approvalSync
@@ -565,11 +566,26 @@ export default {
                                 dangerouslyUseHTMLString:true
 
                             })
-                            if (confirmNextInfo !== 'confirm') {
+
+                            if (confirmNextInfo == 'confirm') {
+                                fittingNomi({
+                                    nominateId: this.$route.query.desinateId
+                                }).then(res => {
+                                    if (res.code == 200) {
+                                        iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                        this.$emit("updateNomi")
+                                    } else {
+                                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                    }
+
+                                    this.submitting = false
+                                })
+
                                 this.submitting = false
                                 return
                             }
                         } catch (e) {
+                            console.log(e)
                             this.submitting = false
                             return
                         }
@@ -614,8 +630,9 @@ export default {
                             return
                         }
                     }
-                    // 打开上会确认弹窗
+
                     if (nominationType === 'MEETING') {
+                        // 打开上会确认弹窗
                         this.mettingDialogVisible = true
                         this.submitting = false
                         return
