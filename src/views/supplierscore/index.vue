@@ -375,7 +375,7 @@ export default {
     searchRfqBdlRatings() {
       const form = {}
       Object.keys(this.form).forEach(key => {
-        form[key] = this.form[key] || this.form[key] === 0 ? this.form[key] : undefined
+        form[key] = this.form[key] || this.form[key] === 0 || this.form[key] === false ? this.form[key] : undefined
       })
       form.current = this.page.currPage
       form.size = this.page.pageSize

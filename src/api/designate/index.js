@@ -205,3 +205,12 @@ export function findMeetingPage(data) {
     data
   })
 }
+
+// 配件自动定点
+export function fittingNomi(params) {
+  return requst({
+    url: "/nominate-apps/fittingNomi",
+    method: "GET",
+    params,
+  })
+}
