@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
     const token = getToken()
     // eslint-disable-next-line no-debugger
     if (token) {
-        if (to.path === '/login' || to.path === '/sourceinquirypoint/designate/decisiondata/exportPdf') {
+        if (to.path === '/login' || to.path.indexOf('exportPdf') > 0) {
             //有token的时候，如果输入了一个登陆界面。则将其定向到主页
             next('/')
         } else {
