@@ -205,6 +205,13 @@
         </template>
       </el-table-column>
       <el-table-column show-overflow-tooltip
+                       :label="language('LINGJIANAEKODINGDIAN','零件/Aeko定点')"
+                       prop="name">
+        <template slot-scope="scope">
+          <div>{{scope.row.supplierCode?"是":'否'}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column show-overflow-tooltip
                        :label="language('XIANSHIYINGCHANG','显示/隐藏')"
                        prop="isHidden">
         <template slot-scope="scope">
