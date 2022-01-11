@@ -74,7 +74,7 @@ import { iSearch, iSelect, iInput, iButton, iCard, iPagination, iMessage,iDialog
 import { pageMixins } from "@/utils/pageMixins"
 import { searchList, tableTitle,partSortStatus } from './data'
 import tableList from '@/views/project/progressmonitoring/partsTaskList/components/tableList'
-import { getCarTypePro, getPartTaskList,downLoadPartScheduleFile,updatePartInfoList, transferSchedule, downAllFile } from '@/api/project'
+import { getPartTaskList,downLoadPartScheduleFile,updatePartInfoList, transferSchedule, downAllFile } from '@/api/project'
 import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
