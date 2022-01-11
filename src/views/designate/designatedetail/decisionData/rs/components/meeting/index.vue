@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" maxHeight="600" >
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -217,8 +217,6 @@ import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, s
 import {partProjTypes} from '@/config'
 import { findFrontPageSeat } from '@/api/designate'
 import { toThousands } from "@/utils"
-import { jsPDF } from "jspdf"
-import html2canvas from "html2canvas"
 import { transverseDownloadPDF } from "@/utils/pdf"
 import rsPdf from "./rsPdf"
 
@@ -605,17 +603,6 @@ export default {
 
     // 导出pdf
     handleExportPdf() {
-      // const doc = new jsPDF({
-      //   orientation: "l",
-      // })
-
-      // console.log(this.$refs.meeting)
-
-      // doc.html(this.$refs.meeting, {
-      //   callback: function (doc) {
-      //     doc.save();
-      //   }
-      // })
       transverseDownloadPDF({
         dom: this.$refs.rsPdf.$el,
         pdfName: "abcs",

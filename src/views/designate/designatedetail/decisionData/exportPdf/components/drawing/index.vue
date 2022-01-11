@@ -9,7 +9,9 @@
         </div>
       </div>
       <div v-else>
-        
+        <div class="blank">
+          <span>{{ language("ZANWUSHUJU", "暂无数据") }}</span>
+        </div>
       </div>
     </div>
   </iCard>
@@ -71,6 +73,17 @@ export default {
       .img {
         max-width: 60%;
       }
+    }
+
+    .blank {
+      height: 200px; /*no*/
+      border: 1px solid rgb(201, 216, 219); /*no*/
+      box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
+      border-radius: 5px; /*no*/
+      font-size: 18px; /*no*/
+      color: rgb(112, 112, 112);
+      text-align: center;
+      line-height: 200px; /*no*/
     }
   }
 }

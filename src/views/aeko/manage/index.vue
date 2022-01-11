@@ -61,6 +61,12 @@
                     </el-option>  
                   </iSelect> 
                 </template>
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
                 <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                 <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
@@ -176,7 +182,8 @@ import {
   iCard,
   iButton,
   iPagination,
-  icon
+  icon,
+  iMultiLineInput
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -234,7 +241,8 @@ export default {
       tcmList,
       iLog,
       logButton,
-      switchPost
+      switchPost,
+      iMultiLineInput
     },
     data(){
       return{

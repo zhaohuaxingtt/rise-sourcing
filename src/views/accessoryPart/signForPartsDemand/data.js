@@ -37,7 +37,7 @@ export const tableMockData = [
 export const searchList = [
   {value: 'partNumFuzzySearch', label: '配件零件号', type: 'input', key: 'PEIJIANLINGJIANHAO',permission: 'APREPART_SIGN_PARTNUM|配件-配件签收-配件零件号'},
   {value: 'partNameCh', label: '配件零件中文名', type: 'input', key: 'PEIJIANLINGJIANZHONGWENMING',permission: 'APREPART_SIGN_PARTNAMECH|配件-配件签收-配件零件中文名'},
-  {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', key: 'GONGYINGSHANGSAPHAO',permission: 'APREPART_SIGN_SUPPLIERSAPCODE|配件-配件签收-供应商SAP号'},
+  {value: 'supplierSapCode', label: '供应商SAP号', type: 'multiLineInput', key: 'GONGYINGSHANGSAPHAO',permission: 'APREPART_SIGN_SUPPLIERSAPCODE|配件-配件签收-供应商SAP号'},
   {value: 'supplierNameZh', label: '供应商中文名', type: 'input', key: 'GONGYINGSHANGZHONGWENMING',permission: 'APREPART_SIGN_SUPPLIERNAMEZH|配件-配件签收-供应商中文名'},
   {value: 'assemblyPartNumFuzzySearch', label: '批量供货总成号', type: 'input', key: 'PILIANGGONGHUOZONGCHENGHAO',permission: 'APREPART_SIGN_ASSEMBLYPARTNUM|配件-配件签收-批量供货总成号'},
   {value: 'spNumFuzzySearch', label: 'SP号', type: 'input', key: 'SPHAO',permission: 'APREPART_SIGN_SPNUM|配件-配件签收-SP号'},
@@ -48,7 +48,7 @@ export const searchList = [
   {value: 'csfUserDept', label: '是否有询价科室', type: 'select', key: 'SHIFOUYOUXUNJIAKESHI', selectOption: 'yesOrNoOption',permission: 'APREPART_SIGN_HASDEPT|配件-配件签收-是否有询价科室'},
   {value: 'csfUserId', label: '是否有询价采购员', type: 'select', key: 'SHIFOUYOUXUNJIACAIGOUYUAN', selectOption: 'yesOrNoOption',permission: 'APREPART_SIGN_HASBUYER|配件-配件签收-是否有询价采购员'},
   {value: 'sendDate', label: '需求发送起止日期', type: 'date', key: 'XUQIUFASONGQIZHIRIQI',permission: 'APREPART_SIGN_SENDDATE|配件-配件签收-需求发送起止日期'},
-  {value: 'linieApportionStatus', label: 'LINIE分配状态', type: 'select', selectOption: 'linieStatusOption' ,key: 'LINIEFENPEIZHUANGTAI',permission: 'APREPART_SIGN_LINIESTATUS|配件-配件签收-需求发送起止日期'},
+  {value: 'linieApportionStatus', label: 'LINIE分配状态', type: 'select', selectOption: 'linieStatusOption' ,key: 'LINIEFENPEIZHUANGTAI',permission: 'APREPART_SIGN_LINIESTATUS|配件-配件签收-LINIE分配状态'},
   // {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'APREPART_SIGN_ISME|附件-附件管理-是否自己'},
 ]
 

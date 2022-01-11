@@ -249,6 +249,14 @@ export function getSupplierProducePlace(params) {
     })
 }
 
+// 获取供应商工厂名称
+export function getSupplierPlantBySupplierId(supplierId) {
+    return requst({
+        url: `/supplier/getSupplierPlantBySupplierId/${ supplierId }`,
+        method: 'GET'
+    })
+}
+
 //报价分析-保存场景布局
 export function negoAnalysisSummaryLayoutSave(layout,layoutType){
     return nego({
@@ -376,6 +384,26 @@ export function getCfPrice(params) {
     return requst({
         url: `/search-cf-price/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
         method: 'GET'
+    })
+}
+
+// 获取零件目标价
+export function getCfPriceEffective(params) {
+    return requst({
+        url:`/cf-price-effective/${params.rfqId}/${params.pageSize}/${params.currPage}`,
+        method: 'GET'
+    })
+}
+
+// 获取模具目标价
+export function getMJPriceEffective(params) {
+    return requst({
+        url:`/tooling-target-price-task/search-valid-target-price-page/${params.rfqId}`,
+        method: 'POST',
+        data:{
+            current:params.currPage,
+            size:params.pageSize,
+        },
     })
 }
 

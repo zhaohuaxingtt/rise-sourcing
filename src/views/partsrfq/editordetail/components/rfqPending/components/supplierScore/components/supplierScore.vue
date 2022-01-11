@@ -1,16 +1,37 @@
 <template>
-  <iCard>
-    <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{ language('LK_GONGYINGSHANGPINGFEN','供应商评分') }}</span>
-      <div class="floatright" v-if="!disabled">
-        <!-- v-permission="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_DELETE" -->
-        <iButton v-if="!editStatus" @click="editStatus = true" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_EDIT|供应商评分编辑">{{ language('LK_BIANJI','编辑') }}</iButton>
-        <iButton v-if="editStatus" @click="editStatus = false" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_CANCEL|供应商评分取消">{{ language('LK_QUXIAO','取 消') }}</iButton>
-        <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SAVE|供应商评分保存">{{ language('LK_BAOCUN','保存') }}</iButton>
-        <iButton @click="setScoringDept" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
-        <iButton @click="sendTaskForRating" :loading="pushLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PUSHSCORETASK|供应商评分推送评分任务">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
+<div>
+  <iCard collapse :title="language('LK_GONGYINGSHANGPINGFEN','供应商评分')" :defalutCollVal="status == '已完成' || !todo">
+    <template v-if="todo" slot="subInfo">
+      <div
+        :class="{
+          danger: status == '未申请',
+          warning: status == '未完成',
+          success: status == '已完成',
+        }"
+        class="tishi"
+      >
+        <icon symbol :name="iconName[status] || ''" class="tishi-icon"></icon>
+        <span class="status">{{ status }}</span>
       </div>
-    </div>
+    </template>
+    <template slot="header-control">
+      <div class="button-box">
+        <div class="margin-right10" v-if="!todo">
+          <iButton v-if="!editStatus" @click="editStatus = true" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_EDIT|供应商评分编辑">{{ language('LK_BIANJI','编辑') }}</iButton>
+          <iButton v-if="editStatus" @click="editStatus = false" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_CANCEL|供应商评分取消">{{ language('LK_QUXIAO','取 消') }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SAVE|供应商评分保存">{{ language('LK_BAOCUN','保存') }}</iButton>
+          <iButton @click="setScoringDept" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_SHEZHIPINGFENBUMEN','设置评分部门') }}</iButton>
+        </div>
+        <!-- <iButton @click="sendTaskForRating" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_SETSCOREDEPT|供应商评分设置评分部门">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton> -->
+          <iButton @click="setScoringPush" :loading="pushLoading" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PUSHSCORETASK|供应商评分推送评分任务">{{ language('LK_TUISONGPINGFENRENWU','推送评分任务') }}</iButton>
+      </div>
+    </template>
+    <!-- <div class="card-header">
+      <div class="card-title">
+        <span class="title">{{ language('LK_GONGYINGSHANGPINGFEN','供应商评分') }}</span>
+        
+      </div>
+    </div> -->
     <tablelist
         :tableData="tableListData"
         :tableTitle="tableTitle"
@@ -49,12 +70,14 @@
         :memo="memo"
         :disabled="disabled"
     />
-    <scoringDeptDialog :visible.sync="scoringDeptVisible" :ids="[$route.query.id]" @update="updateTable" />
+    <scoringDeptDialog :visible.sync="scoringDeptVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
   </iCard>
+  <scoringPushDialog :visible.sync="scoringPushVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
+</div>
 </template>
 
 <script>
-import {iCard, iPagination, iButton, iMessage} from 'rise';
+import {iCard, iPagination, iButton, iMessage, icon} from 'rise';
 import tablelist from './supplierScoreTableList'
 import {supplierScoreTitle,templateScoreTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
@@ -64,8 +87,10 @@ import {serialize} from '@/utils'
 import store from '@/store'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import scoringDeptDialog from './scoringDeptDialog'
+import scoringPushDialog from './scoringPushDialog'
 import axios from 'axios'
 import { cloneDeep } from "lodash"
+import { iconName } from "@/views/partsrfq/editordetail/components/rfqPending/components/partDetaiList/data"
 
 export default {
   components: {
@@ -74,11 +99,18 @@ export default {
     tablelist,
     tpbRemarks,
     iButton,
-    scoringDeptDialog
+    icon,
+    scoringDeptDialog,
+    scoringPushDialog
   },
   mixins: [pageMixins, rfqCommonFunMixins],
+  props:{
+    todo: Boolean,
+    status: String
+  },
   data() {
     return {
+      iconName,
       tableListData: [],
       tableTitle: JSON.parse(JSON.stringify(supplierScoreTitle)),
       tableLoading: false,
@@ -86,6 +118,7 @@ export default {
       dialogRemarks: false,
       selectedRowData: {},
       scoringDeptVisible: false,
+      scoringPushVisible: false,
       pushLoading: false,
       setScoringDeptVisible: false,
       templateScoreTitle:templateScoreTitle,
@@ -109,6 +142,9 @@ export default {
     }
   },
   methods: {
+    toggle(type) {
+      this[type] = !this[type];
+    },
     async getTableList() {
       const id = this.$route.query.id
 
@@ -128,11 +164,8 @@ export default {
         this.tableTitle = JSON.parse(JSON.stringify(supplierScoreTitle))
         const tpb = res.data[0] ? (res.data[0].rateEntity ? res.data[0].rateEntity : []) : []
         this.tableListData = this.trnaslateDataForView(res.data || [], tpb);
-        // this.page.currPage = res.current
-        // this.page.pageSize = res.size
         this.page.totalCount = res.total
         this.tableLoading = false;
-
         this.supplierProducePlaces = this.tableListData.map(item => {
           if (!item.companyAddressCode && item.companyAddress) {
             item.companyAddressCode = item.companyAddress
@@ -243,6 +276,10 @@ export default {
     // 设置评分部门
     setScoringDept() {
       this.scoringDeptVisible = true
+    },
+    // 推送评分
+    setScoringPush() {
+      this.scoringPushVisible = true
     },
     // 关闭设置部门后是否刷新表格
     updateTable(status) {

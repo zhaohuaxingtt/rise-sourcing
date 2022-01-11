@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-08-05 15:41:21
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
  */
 export const tableTitle = [
@@ -20,6 +20,7 @@ export const addPartTableTitle = [
   { props: 'partNum', name: '零件号', key: 'LINGJIANHAO' },
   { props: 'fsNum', name: 'FS号', key: 'FSHAO' },
   { props: 'partNameZh', name: '零件名称', key: 'LINGJIANMINGCHEN' },
+  { props: 'isFromAeko', name: '零件/Aeko定点', key: 'LINGJIANAEKODINGDIAN' },
   { props: 'rfqId', name: 'RFQ号', key: 'RFQHAO' },
 ]
 export const changeLogTableTitle = [

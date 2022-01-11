@@ -1,7 +1,7 @@
 /*
  * @Author: moxuan
  * @Date: 2021-03-04 17:40:00
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  */
 import {permissionTitle} from '@/utils'
@@ -29,6 +29,14 @@ export const supplierScoreTitle = [
     {props: 'companyAddress', name: '供应商生产场地', key: 'LK_GONGYINGSHANGSHENGCHANCHANGDI'},
     {props: 'action', name: '零件评分', key: 'LK_LINGJIANPINGFEN'},
 ]
+
+export const supplierSubTitle = [
+    {props: 'sapCode', name: '供应商号', key: 'GONGYINGSHANGHAO'},
+    {props: 'shortNameZh', name: '供应商名', key: 'LK_GONGYINGSHANGMING', disabled: true},
+    {props: 'factoryName', name: '供应商工厂名称', key: 'LK_GONGYINGSHANGGONGCHANGMINGCHEN'},
+    {props: 'companyAddress', name: '供应商生产场地', key: 'LK_GONGYINGSHANGSHENGCHANCHANGDI'},
+]
+
 export const templateScoreTitle = {
     name: 'TPB',
     list: [

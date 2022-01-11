@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:33:00
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
  * @Description: RFQ-table组件。
 -->
 <template>
@@ -16,8 +16,10 @@
             <el-table-column :key="index2" align='center' v-if="items2.props.indexOf('memo') > -1" :prop="items2.props"
                              :label="items2.key ? language(items2.key,items2.name) : items2.name">
               <template slot-scope="scope">
-                <span class="openLinkText cursor"
-                      @click="openMultiHeaderPropsPage(scope.row, items2.props)">{{ $t(multiHeaderPropsText) }}</span>
+                <span>{{ scope.row[items2.props] }}</span>
+                <i class="el-icon-edit cursor openLinkText" @click="openMultiHeaderPropsPage(scope.row, items2.props)"></i>
+                <!-- <span class="openLinkText cursor"
+                      @click="openMultiHeaderPropsPage(scope.row, items2.props)">{{ $t(multiHeaderPropsText) }}</span> -->
               </template>
             </el-table-column>
             <el-table-column :key="index2" align='center' v-else :label="items2.key ? language(items2.key,items2.name) : items2.name"
@@ -50,7 +52,8 @@
         <el-table-column :key="index" align='center' fixed="left" v-else-if="items.props == actionProps" :prop="items.props"
                          :label="items.key ? language(items.key,items.name) : items.name">
           <template slot-scope="scope">
-            <span class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+            <span v-if="scope.row.hasData" class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
+            <span v-else>{{ '-' }}</span>
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' v-else :label="items.key ? language(items.key,items.name) : items.name"

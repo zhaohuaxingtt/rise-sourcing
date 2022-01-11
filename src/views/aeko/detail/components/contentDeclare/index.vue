@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2021-12-21 19:06:37
+ * @LastEditTime: 2022-01-11 10:27:43
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -17,10 +17,11 @@
     >
       <el-form>
         <el-form-item :label="language('LINGJIANHAO', '零件号')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_PARTNUM|零件号">
-          <iInput
+          <iMultiLineInput
+            :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+            :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
             v-model="form.partNum"
-            :placeholder="language('QINGSHURULINGJIANHAO', '请输入零件号')"
-          />
+          ></iMultiLineInput>
         </el-form-item>
         <el-form-item :label="language('LK_GONGYINGSHANGSAPHAO', '供应商SAP号')" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_INPUT_SUPPLIERSAPCODE|供应商编号">
           <iInput
@@ -332,7 +333,7 @@
 </template>
 
 <script> 
-import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage } from "rise"
+import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage, iMultiLineInput } from "rise"
 // import tableList from "@/views/partsign/editordetail/components/tableList"
 import tableList from "rise/web/quotationdetail/components/tableList"
 import dosageDialog from "../dosageDialog"
@@ -366,7 +367,7 @@ import qs from 'qs'
 
 
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload },
+  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload, iMultiLineInput },
   mixins: [ pageMixins, combine ],
   props: {
     aekoInfo: {

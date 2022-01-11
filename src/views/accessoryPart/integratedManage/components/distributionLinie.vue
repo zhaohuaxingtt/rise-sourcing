@@ -52,8 +52,8 @@ export default {
     dialogVisible: { type: Boolean, default: false },
     idList:{
       type:String,
-      
-    }
+    },
+   
   },
   data() {
     return {
