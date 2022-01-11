@@ -153,20 +153,23 @@
       :todo="todo"
       :visible.sync="partsDialogVisible"
       :tableList="handleSelectArr"
+      @update='updateData'
     />
     <!-- 申请模具目标价 -->
-    <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" />
+    <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" @update='updateData' />
     <parts-target-price
       @openDialog="openDialog"
       class="margin-top20"
       :todo="todo"
       :status="todoObj.cfPriceStatusDesc.status"
+      ref="partsTargetPrice"
     ></parts-target-price>
     <mold-target-price
       @openDialog="openDialog"
       class="margin-top20"
       :todo="todo"
       :status="todoObj.mouldPriceStatusDesc.status"
+      ref="moldTargetPrice"
     ></mold-target-price>
     <mold-budget-application
       class="margin-top20"
@@ -336,8 +339,9 @@ export default {
       console.log(type);
       this[type] = true;
     },
-    toggle(type) {
-      this[type] = !this[type];
+    updateData(type) {
+      console.log(this.$refs[type]);
+      this.$refs[type].getTableList()
     },
     gotoAccessoryDetail(row) {
       const router = this.$router.resolve({

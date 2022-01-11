@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-26 18:37:44
- * @LastEditTime: 2022-01-07 16:54:22
+ * @LastEditTime: 2022-01-10 19:47:21
  * @LastEditors: YoHo
  * @Description: 零件添加
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqPending\components\partDetaiList\components\partsTable.vue
@@ -48,7 +48,7 @@
 <script>
 import { iPagination } from "rise";
 import { form } from "@/views/partsprocure/home/components/data";
-import { partsTableTiTle as tableTitle } from "../data";
+import { partsTableTitle as tableTitle } from "../data";
 import tableList from "@/views/partsign/home/components/tableList";
 import { pageMixins } from "@/utils/pageMixins";
 import { getTabelData } from "@/api/partsprocure/home";

@@ -86,6 +86,7 @@ export default {
           rfqId: this.rfqId,
           current: this.page.currPage,
           size: this.page.pageSize,
+          isNotPosition: true
       })
       .then(res => {
         if (res.code == 200 && res.data) {
