@@ -160,7 +160,7 @@
               <template v-else-if ='removeKeysNumber(item.props) == "developmentCost"'>
               <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>
                 <template slot="content">
-                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"developmentCost"]-scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
+                  <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"]) }}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
                 </template>
                 <span>{{ttoShow(scope.row[item.props])}}</span>
@@ -171,7 +171,7 @@
               <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
               <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>
                 <template slot="content">
-                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"tooling"]-scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
+                  <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"]) }}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                 </template>
                 <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
@@ -442,7 +442,11 @@ export default{
       } catch (error) { 
         return str 
       }
-    }
+    },
+    // 减法
+    subtract(a, b) {
+      return math.subtract(math.bignumber(a || 0), math.bignumber(b || 0)).toFixed(2)
+    } 
   }
 }
 </script>

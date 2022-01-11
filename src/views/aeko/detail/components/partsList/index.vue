@@ -54,7 +54,12 @@
                         </el-option>
                     </iSelect> 
                 </template>
-                
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
                 <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model.trim="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
@@ -150,6 +155,7 @@ import {
     iButton,
     iPagination,
     iMessage,
+    iMultiLineInput
 } from 'rise';
 import { SearchList, linieSearchList , tableTitle, linieQueryForm, linieTableTitle,commodityTableTitle,checkSearchList } from './data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -197,6 +203,7 @@ export default {
         aekoSelect,
         addPartsDialog,
         iDicoptions,
+        iMultiLineInput
     },
     computed: {
         //eslint-disable-next-line no-undef
