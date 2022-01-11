@@ -566,11 +566,26 @@ export default {
                                 dangerouslyUseHTMLString:true
 
                             })
-                            if (confirmNextInfo !== 'confirm') {
+
+                            if (confirmNextInfo == 'confirm') {
+                                fittingNomi({
+                                    nominateId: this.$route.query.desinateId
+                                }).then(res => {
+                                    if (res.code == 200) {
+                                        iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                        this.$emit("updateNomi")
+                                    } else {
+                                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                    }
+
+                                    this.submitting = false
+                                })
+
                                 this.submitting = false
                                 return
                             }
                         } catch (e) {
+                            console.log(e)
                             this.submitting = false
                             return
                         }
@@ -621,22 +636,6 @@ export default {
                         this.mettingDialogVisible = true
                         this.submitting = false
                         return
-                    } else if (nominationType === 'RECORD') {
-                        if (res.state) {
-                            fittingNomi({
-                                nominateId: this.$router.query.desinateId
-                            }).then(res => {
-                                if (res.code == 200) {
-                                    iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                                } else {
-                                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                                }
-
-                                this.submitting = false
-                            })
-
-                            return
-                        }
                     }
                 }
                 
