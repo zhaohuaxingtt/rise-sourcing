@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-10 18:19:55
+ * @LastEditTime: 2022-01-11 18:07:37
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -350,6 +350,9 @@ export default {
         currentRoundsStatus: '',
         currentRounds: '',
         currentStatus: '',
+        rfqName: '',
+        categoryCode: '',
+        categoryName: ''
       },
       baseInfoLoading: false,
       tabShowStatus: true,
@@ -898,7 +901,7 @@ export default {
       border-right: none;
     }
     .input-box{
-      display: inline-flex;
+      display: flex;
       width: 100%;
       .btn-box{
         display: inline-flex;
