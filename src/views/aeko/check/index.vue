@@ -57,6 +57,12 @@
                   </iSelect> 
                 </template>
                 <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
                 <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
           </el-form>
@@ -123,6 +129,7 @@ import {
     iCard,
     iMessage,
     icon,
+    iMultiLineInput,
 } from 'rise';
 import { SearchList,tableTitle } from './data';
 import { TAB,getLeftTab } from '../data';
@@ -164,7 +171,8 @@ export default {
         iCard,
         icon,
         filesListDialog,
-        switchPost
+        switchPost,
+        iMultiLineInput
     },
     computed: {
         //eslint-disable-next-line no-undef

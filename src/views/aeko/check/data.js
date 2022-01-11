@@ -7,7 +7,7 @@
 
 export const SearchList = [
     {props:'aekoCode',label:'AEKO号',type:'input',labelKey:'LK_AEKOHAO_MANAGE',permissionKey:'AEKO_CHECKLIST_INPUT_AEKOCODE|AEKO号'},
-    {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_CHECKLIST_INPUT_PARTNUM|零件号'},
+    {props:'partNum',label:'零件号',type:'iMultiLineInput',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_CHECKLIST_INPUT_PARTNUM|零件号'},
     {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',permissionKey:'AEKO_CHECKLIST_SELECT_LINIEDEPtNUM|科室',selectOption:'linieDeptNumList',filterable:true,clearable:true,multiple:true,},
     {props:'cartypeCode',label:'车型',type:'select',isNewSelect:true,labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_CHECKLIST_SELECT_CARTYPE|车型',selectOption:'cartypeCode',multiple:true,filterable:true,clearable:true,noShowAll:true,},
     {props:'carTypeCodeList',label:'⻋型项⽬',type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',isNewSelect:true,permissionKey:'AEKO_CHECKLIST_SELECT_CARTYPECODE|⻋型项⽬',selectOption:'carTypeCodeList',filterable:true,noShowAll:true,clearable:true,multiple:true,},
