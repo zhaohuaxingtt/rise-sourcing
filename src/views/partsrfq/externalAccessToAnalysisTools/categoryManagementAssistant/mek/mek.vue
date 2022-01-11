@@ -304,7 +304,8 @@ export default {
           path: "/sourcing/mek/mekDetails",
           query: {
             schemeId: res.data,
-            productFactoryNames: params ? params.productFactoryNames || "" : ""
+            productFactoryNames: params ? params.productFactoryNames || "" : "",
+            add:true
           },
         })
       })
