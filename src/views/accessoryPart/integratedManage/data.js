@@ -40,7 +40,7 @@ export const tableMockData = [
 export const searchList = [
   {value: 'partNumFuzzySearch', label: '配件零件号', type: 'input', key: 'PEIJIANLINGJIANHAO', permission: 'APREPART_MANAGFMENT_PARTNUM|配件-配件管理-配件零件号'},
   {value: 'partNameCh', label: '配件零件中文名', type: 'input', key: 'PEIJIANLINGJIANZHONGWENMING', permission: 'APREPART_MANAGFMENT_PARTNAMECH|配件-配件管理-配件零件中文名'},
-  {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', key: 'GONGYINGSHANGSAPHAO', permission: 'APREPART_MANAGFMENT_SUPPLIERSAPCODE|配件-配件管理-供应商SAP号'},
+  {value: 'supplierSapCode', label: '供应商SAP号', type: 'multiLineInput', key: 'GONGYINGSHANGSAPHAO', permission: 'APREPART_MANAGFMENT_SUPPLIERSAPCODE|配件-配件管理-供应商SAP号'},
   {value: 'supplierNameZh', label: '供应商中文名', type: 'input', key: 'GONGYINGSHANGZHONGWENMING', permission: 'APREPART_MANAGFMENT_SUPPLIERNAMEZH|配件-配件管理-供应商中文名'},
   {value: 'assemblyPartNumFuzzySearch', label: '批量供货总成号', type: 'input', key: 'PILIANGGONGHUOZONGCHENGHAO', permission: 'APREPART_MANAGFMENT_ASSEMBLYPARTNUM|配件-配件管理-批量供货总成号'},
   {value: 'spNuFuzzySearch', label: 'SP号', type: 'input', key: 'SPHAO', permission: 'APREPART_MANAGFMENT_SPNUM|配件-配件管理-SP号'},

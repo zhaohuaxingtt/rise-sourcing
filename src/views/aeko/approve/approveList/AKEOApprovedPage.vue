@@ -16,11 +16,11 @@
         </el-form-item>
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
-          <i-input
-              v-model="queryAkeoForm.partNum"
-              :placeholder="language('LK_QINGSHURU','请输入')"
-              clearable
-          ></i-input>
+          <iMultiLineInput
+            :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+            :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+            v-model="queryAkeoForm.partNum"
+          ></iMultiLineInput>
         </el-form-item>
         <!-- 供应商简称 -->
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG','供应商简称')" prop='supplierName'>
@@ -202,7 +202,7 @@
 </template>
 
 <script>
-import {iSearch, iInput, iCard, iPagination, icon, iSelect, iMessage} from "rise"
+import {iSearch, iInput, iCard, iPagination, icon, iSelect, iMessage, iMultiLineInput} from "rise"
 import {tableAKEOApprovedTitle as approvedHeader,  selectConfig, indexConfig} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
@@ -224,7 +224,8 @@ export default {
     tablelist,
     iPagination,
     icon,
-    iSelect
+    iSelect,
+    iMultiLineInput
   },
   filters: {
     formatDate(value) {
