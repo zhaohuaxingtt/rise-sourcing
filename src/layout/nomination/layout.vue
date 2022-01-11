@@ -8,7 +8,7 @@
   <div class="nomination-wraper" :class="{isPreview: isPreview === '1'}">
     <div class="nomination-layout">
       <!-- 进度条,基本信息 -->
-      <designateStep v-if="isPreview=='0'"/>
+      <designateStep v-if="isPreview=='0'" @updateNomi="updateNomi" />
       <!-- 三级导航栏 -->
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3" />
     </div>
@@ -102,6 +102,10 @@ export default {
         this.loading = false
       }
     },
+    updateNomi() {
+      this.nominateAppSDetail()
+      this.getStepStatus()
+    }
   },
   watch:{$route(to,from){
     console.log(to,from)

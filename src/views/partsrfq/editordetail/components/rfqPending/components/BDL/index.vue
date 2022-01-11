@@ -49,7 +49,8 @@ import {pageMixins} from '@/utils/pageMixins'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import { cloneDeep } from 'lodash'
 import bdlDialog from "../bdlDialog"
-import supplierScore from "../supplierScore/components/supplierScore.vue";
+// import supplierScore from "../supplierScore/components/supplierScore.vue";
+import supplierScore from "../supplierScore";
 
 export default {
   mixins:[pageMixins, rfqCommonFunMixins],

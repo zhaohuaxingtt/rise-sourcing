@@ -7,7 +7,7 @@
       </div>
     </template>
     <div class="body">
-      <tableList class="table" :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading">
+      <tableList class="table" :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :cellClassName="cellClassName" :tableLoading="loading">
         <template #rateTag="scope">
           <iText>{{getName(scope.row.rateTag, deptScoringOptions)}}</iText>
           <!-- <iSelect v-model="scope.row.rateTag" :disabled="true">
@@ -38,7 +38,7 @@
       <el-divider class="divider"></el-divider>
       <tableList :tableData="tableData" :tableTitle="supplierSubTitle" @handleSelectionChange="handleSelectionChange">
         <template #factoryName="scope">
-          <iSelect class="input-center" v-model="scope.row.factoryName" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @visible-change="getSupplierPlantBySupplierId(scope.row.id)">
+          <iSelect class="input-center" v-model="scope.row.factoryName" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @change="selectChange(scope.row.factoryName,scope.row)" @visible-change="getSupplierPlantBySupplierId(scope.row.id)">
               <el-option
                 v-for="item in supplierProduceNames"
                 :key="item.id"
@@ -133,6 +133,9 @@ export default {
     }
   },
   methods: {
+    cellClassName(){
+      return 'no-hover'
+    },
     getName(item, data){
       if(Array.isArray(data)){
         let result = data.filter(i=>i.value==item)[0]
@@ -169,13 +172,19 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.supplierProduceNames = Array.isArray(res.data) ? res.data : []
+          this.addressObj = {}
+          this.supplierProduceNames.forEach(i=>{
+            this.addressObj[i.factoryName] = i.addressInfoVo.province+'-'+i.addressInfoVo.city+'-'+i.addressInfoVo.address
+          })
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        console.log(this.supplierProduceNames);
         this.supplierProduceNamesLoading = false
       })
       .catch(() => this.supplierProduceNamesLoading = false)
+    },
+    selectChange(val,row){
+      row.companyAddress = this.addressObj[val]
     },
     sendTaskForRating() {
       if (!this.selectTableData.length) return iMessage.warn(this.language('NINHAIWEIXUANZEGONGS','您当前还未选择供应商！'))
@@ -364,6 +373,13 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+}
+::v-deep .el-table__body{
+  tr{
+    &:hover>td.no-hover{
+      background: none;
+    }
   }
 }
 </style>
