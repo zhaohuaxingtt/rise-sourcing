@@ -11,13 +11,13 @@ import store from '@/store'
 import {getToken, removeToken} from '@/utils'
 import {MessageBox} from 'element-ui'
 // eslint-disable-next-line no-unused-vars
-const whiteList = ['/login', '/ui', '/superLogin']
+const whiteList = ['/login', '/ui', '/superLogin', '/sourceinquirypoint/designate/decisiondata/exportPdf']
 
 router.beforeEach((to, from, next) => {
     const token = getToken()
     // eslint-disable-next-line no-debugger
     if (token) {
-        if (to.path === '/login' || to.path.indexOf('exportPdf') > 0) {
+        if (to.path === '/login') {
             //有token的时候，如果输入了一个登陆界面。则将其定向到主页
             next('/')
         } else {
