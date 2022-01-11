@@ -206,9 +206,9 @@
       </el-table-column>
       <el-table-column show-overflow-tooltip
                        :label="language('LINGJIANAEKODINGDIAN','零件/Aeko定点')"
-                       prop="name">
+                       prop="isFromAeko">
         <template slot-scope="scope">
-          <div>{{scope.row.supplierCode?"是":'否'}}</div>
+          <div>{{scope.row.isFromAeko?"是":'否'}}</div>
         </template>
       </el-table-column>
       <el-table-column show-overflow-tooltip
@@ -224,7 +224,8 @@
       </el-table-column>
     </el-table>
     <addPartDialog v-model="addPartDialog" />
-    <iLog :show.sync="changeLogDialog" :bizId="bizId"  />
+    <iLog :show.sync="changeLogDialog"
+          :bizId="bizId" />
     <iPagination v-update
                  @size-change="handleSizeChange($event, getTableList)"
                  @current-change="handleCurrentChange($event, getTableList)"
@@ -248,6 +249,7 @@ import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import { tableTitle } from "./data.js";
 import { getName, mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList, infoDelete } from "@/api/partsrfq/mek/index.js";
 import { excelExport } from "@/utils/filedowLoad";
+import { pad } from '@/utils'
 export default {
   // import引入的组件需要注入到对象中才能使用
   mixins: [pageMixins, resultMessageMixin],
@@ -422,6 +424,7 @@ export default {
     this.categoryList()
     this.handleCarType()
     this.getTableList()
+    this.bizId = 'MEK' + pad(this.$route.query.schemeId, 8)
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted () {
