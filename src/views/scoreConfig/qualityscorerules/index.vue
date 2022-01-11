@@ -176,16 +176,16 @@ export default {
           }
           ).then(()=>{
             this.btnLoading.deletRule = true;
-            const ids = (selectItems.map((item)=>item.ruleId)).join();
-            // deleteMqRulesByIdList({ids}).then((res)=>{
-                // this.btnLoading.deletRule = false;
-            //   if(res.code ==200){
-            //     this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-            //     this.getList();
-            //   }else{
-            //     this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-            //   }
-            // })
+            const ids = (selectItems.map((item)=>item.ruleId));
+            deleteMqRulesByIdList(ids).then((res)=>{
+                this.btnLoading.deletRule = false;
+              if(res.code ==200){
+                this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.getList();
+              }else{
+                this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+              }
+            })
           }).catch(()=>{
             this.btnLoading.deletRule = false;
           })
