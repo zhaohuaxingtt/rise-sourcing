@@ -1,8 +1,10 @@
 <template>
   <div class="bdl">
-    <iCard class="bdlCard" v-for="(rfq, $index) in rfqList" :key="$index" :title="`RFQ NO.${ rfq.id },RFQ Name:${ rfq.rfq_name }`">
+    <iCard class="bdlCard" v-for="(rfq, $index) in rfqList" :key="$index"
+           :title="`RFQ NO.${ rfq.id },RFQ Name:${ rfq.rfq_name }`">
       <div v-if="dataGroup[rfq.id]">
-        <el-table class="table" default-expand-all :data="dataGroup[rfq.id].tableListData" :cell-class-name="cellClassName">
+        <el-table class="table" default-expand-all :data="dataGroup[rfq.id].tableListData"
+                  :cell-class-name="cellClassName">
           <el-table-column type="expand">
             <template slot-scope="scope">
               <table class="expandTable">
@@ -17,7 +19,10 @@
                   <td><span class="label">Rating: </span></td>
                   <td>
                     <div class="rateFlex">
-                      <div class="rate" v-for="(rateInfo, $rateIndex) in (Array.isArray(scope.row.departmentRate) ? scope.row.departmentRate : [])" :key="$rateIndex">{{ rateInfo.rateDepartNum }}: {{ rateInfo.rate }}</div>
+                      <div class="rate"
+                           v-for="(rateInfo, $rateIndex) in (Array.isArray(scope.row.departmentRate) ? scope.row.departmentRate : [])"
+                           :key="$rateIndex">{{ rateInfo.rateDepartNum }}: {{ rateInfo.rate }}
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -33,7 +38,9 @@
                 </div>
                 <template v-if="item.props === 'supplierName'" slot-scope="scope">
                   <span>{{ scope.row.supplierName }}</span>
-                  <supplierBlackIcon :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false" :BlackList="scope.row.blackStuffs || []" />
+                  <supplierBlackIcon
+                      :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+                      :BlackList="scope.row.blackStuffs || []"/>
                 </template>
                 <template v-if="item.props === 'sapCode'" slot-scope="scope">
                   <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
@@ -48,13 +55,13 @@
 </template>
 
 <script>
-import { iCard } from "rise"
+import {iCard} from "rise"
 import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
-import { tableTitle } from "@/views/designate/designatedetail/decisionData/bdl/data"
-import { readQuotation, findRfqSupplierQuotationPage } from "@/api/designate/decisiondata/bdl"
+import {tableTitle} from "@/views/designate/designatedetail/decisionData/bdl/data"
+import {findRfqSupplierQuotationPage, readQuotation} from "@/api/designate/decisiondata/bdl"
 
 export default {
-  components: { iCard, supplierBlackIcon },
+  components: {iCard, supplierBlackIcon},
   data() {
     return {
       rfqList: [],
@@ -74,28 +81,28 @@ export default {
     })
   },
   methods: {
-    readQuotation() {
+    readQuotation: function () {
       return readQuotation(this.$route.query.desinateId)
-      .then(res => {
-        if (res.code == 200) {
-          this.rfqList = Array.isArray(res.data) ? res.data : []
-        }
-      })
-    },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-    findRfqSupplierQuotationPage(rfqId) {
+          .then(res => {
+            if (res.code == 200) {
+              this.rfqList = Array.isArray(res.data) ? res.data : []
+            }
+          })
+    },
+    findRfqSupplierQuotationPage: function (rfqId) {
       findRfqSupplierQuotationPage({
         nominateId: this.$route.query.desinateId,
         rfqId,
         current: 1,
         size: 999999,
       })
-      .then(res => {
-        if (res.code == 200) {
-          this.$set(this.dataGroup[rfqId], "tableListData", Array.isArray(res.data) ? res.data : [])
-        }
-      })
+          .then(res => {
+            if (res.code == 200) {
+              this.$set(this.dataGroup[rfqId], "tableListData", Array.isArray(res.data) ? res.data : [])
+            }
+          })
     },
-    cellClassName({ column }) {
+    cellClassName: function ({column}) {
       if (column.type === "expand") return "hideExpand"
       else return ""
     }
