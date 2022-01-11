@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-10 17:51:50
+ * @LastEditTime: 2022-01-11 14:34:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -24,6 +24,8 @@
             </el-option>
           </iSelect> -->
           <span>{{language('CAILIAOZU','材料组')}}:{{ categoryName }}</span>
+          <span style="font-size:16px"
+                class="margin-left10"> {{analysisName}}</span>
         </div>
         <div class="flex"
              v-show="reportFlag||!propSchemeId">
@@ -328,25 +330,25 @@
                @close="close">
         <div>
           <div class="margin-bottom15 flex-between-center">
-            <label for="">保存在分析库</label>
-            <el-checkbox v-model="analysisSave"></el-checkbox>
+            <label for="">{{language('BAOCUNZAIFENXIMINGCHENG','保存在分析名称')}}</label>
+            <!-- <el-checkbox v-model="analysisSave"></el-checkbox> -->
           </div>
           <iInput v-model="analysisName"
-                  placeholder="请输入文件名称" />
+                  :placeholder="language('QINGSHURUWENJIANMINGCHENG','请输入文件名称')" />
         </div>
         <div class="margin-top20">
           <div class="margin-bottom15 flex-between-center">
-            <label for="">保存为报告</label>
+            <label for="">{{language('BAOCUNWEIBAOGAO','保存为报告')}}</label>
             <el-checkbox v-model="reportSave"></el-checkbox>
           </div>
           <iInput v-model="reportName"
-                  placeholder="请输入文件名称" />
+                  :placeholder="language('QINGSHURUWENJIANMINGCHENG','请输入文件名称')" />
         </div>
         <span slot="footer"
               class="dialog-footer">
           <iButton type="primary"
                    @click="save"
-                   v-loading="loading">确 定</iButton>
+                   v-loading="loading">{{language('QUEDING','确定')}}</iButton>
         </span>
       </iDialog>
       <modalDialog :modalVisible="modalVisible"
@@ -454,7 +456,7 @@ export default {
       //查询EBR详情
       detailVisible: false,
       //保存在分析库
-      analysisSave: false,
+      // analysisSave: false,
       //分析库名称
       analysisName: "",
       //保存为报告
@@ -549,7 +551,6 @@ export default {
     this.searchChartData()
     // this.getMekTable();
   },
-  mounted () { },
   props: {
     propSchemeId: {
       type: String,
@@ -577,6 +578,7 @@ export default {
         this.targetMotor = data.targetMotor.toString();
         this.comparedType = data.comparedType;
         this.isBindingRfq = data.isBindingRfq;
+        this.analysisName = data.schemeName
         this.checkedCarLevelOptions = data.selectedOptions ? JSON.parse(data.selectedOptions) : ""
         if (!this.checkedCarLevelOptions) {
           this.checkedCarLevelOptions = {}
@@ -918,7 +920,9 @@ export default {
       this.getHistogram(params);
     },
     saveDialog () {
-      this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
+      if (this.$route.query.add) {
+        this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
+      }
       this.reportName =
         this.categoryCode +
         "_" +
@@ -930,7 +934,7 @@ export default {
         "_" +
         window.moment(new Date()).format("yyyy.MM");
       this.dialogVisible = true;
-      this.analysisSave = true;
+      // this.analysisSave = true;
     },
     //编辑数据
     editData (val) {
@@ -1269,47 +1273,47 @@ export default {
     },
     save () {
       this.loading = true;
-      this.analysisSave = true;
-      if (this.analysisSave) {
-        let params = {
-          categoryCode: this.categoryCode,
-          categoryId: this.categoryId,
-          categoryName: this.categoryName,
-          comparedType: this.comparedType,
-          exceptPart: this.exceptPart ? this.exceptPart.toString() : null,
-          firstComparedConfig: "",
-          secondComparedConfig: "",
-          thirdComparedConfig: "",
-          forthComparedConfig: "",
-          schemeId: this.schemeId,
-          targetMotor: this.targetMotor,
-          name: this.analysisName,
-          selectedOptions: this.checkedCarLevelOptions ? JSON.stringify(this.checkedCarLevelOptions) : ""
-        };
-        if (this.barData) {
-          if (this.barData[0]) {
-            params.firstComparedMotor = this.barData[0].motorId || "";
-            params.firstComparedPrice = this.barData[0].priceType || "";
-          }
-          if (this.barData[1]) {
-            params.secondComparedMotor = this.barData[1].motorId || "";
-            params.secondComparedPrice = this.barData[1].priceType || "";
-          }
-          if (this.barData[2]) {
-            params.thirdComparedMotor = this.barData[2].motorId || "";
-            params.thirdComparedPrice = this.barData[2].priceType || "";
-          }
-          if (this.barData[3]) {
-            params.forthComparedMotor = this.barData[3].motorId || "";
-            params.forthComparedPrice = this.barData[3].priceType || "";
-          }
+
+
+      let params = {
+        categoryCode: this.categoryCode,
+        categoryId: this.categoryId,
+        categoryName: this.categoryName,
+        comparedType: this.comparedType,
+        exceptPart: this.exceptPart ? this.exceptPart.toString() : null,
+        firstComparedConfig: "",
+        secondComparedConfig: "",
+        thirdComparedConfig: "",
+        forthComparedConfig: "",
+        schemeId: this.schemeId,
+        targetMotor: this.targetMotor,
+        name: this.analysisName,
+        selectedOptions: this.checkedCarLevelOptions ? JSON.stringify(this.checkedCarLevelOptions) : ""
+      };
+      if (this.barData) {
+        if (this.barData[0]) {
+          params.firstComparedMotor = this.barData[0].motorId || "";
+          params.firstComparedPrice = this.barData[0].priceType || "";
         }
-        updateScheme(params).then(() => {
-          this.loading = false;
-          this.dialogVisible = false;
-          iMessage.success("保存成功");
-        });
+        if (this.barData[1]) {
+          params.secondComparedMotor = this.barData[1].motorId || "";
+          params.secondComparedPrice = this.barData[1].priceType || "";
+        }
+        if (this.barData[2]) {
+          params.thirdComparedMotor = this.barData[2].motorId || "";
+          params.thirdComparedPrice = this.barData[2].priceType || "";
+        }
+        if (this.barData[3]) {
+          params.forthComparedMotor = this.barData[3].motorId || "";
+          params.forthComparedPrice = this.barData[3].priceType || "";
+        }
       }
+      updateScheme(params).then(() => {
+        this.loading = false;
+        this.dialogVisible = false;
+        iMessage.success("保存成功");
+      });
+
       if (this.reportSave) {
         this.reportFlag = false;
         downloadPDF({
@@ -1329,7 +1333,6 @@ export default {
               formData.append('type', 1) // 文件类型 1:OBS 2:NFS，默认1
               formData.append('file', blob)
               const res = await uploadFile(formData);
-
               const data = res.data;
               const req = {
                 mekId: this.schemeId,
@@ -1419,7 +1422,7 @@ export default {
   font-family: Arial;
   font-size: $font-size20;
   color: black;
-  align-items: center;
+  align-items: end;
   label {
     width: 90px;
   }
@@ -1443,6 +1446,7 @@ export default {
 .chartBox {
   position: relative;
   display: flex;
+
   // overflow-x: auto;
   // overflow-y: hidden;
 }

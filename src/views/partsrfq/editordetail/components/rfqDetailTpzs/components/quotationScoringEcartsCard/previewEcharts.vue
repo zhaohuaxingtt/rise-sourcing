@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-12-29 09:42:34
+ * @LastEditTime: 2022-01-11 16:38:22
  * @LastEditors: caopeng
  * @Description: 供应商维度展示
  * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
@@ -60,7 +60,7 @@
 import {iSelect,iButton,iMessage} from 'rise'
 import echarts from '@/utils/echarts'
 import {chartsOptions,form,translateGetLunci} from './data'
-import { quotations,findRfqInfoList,downLoadExcel,rfqQueryLinkage } from '@/api/rfqManageMent/mouldOffer'
+import { quotations,findRfqInfoList,downLoadExcel,rfqQueryLinkage,downLoadExcelTwo } from '@/api/rfqManageMent/mouldOffer'
 export default{
   components:{iSelect,iButton},
   props:{
@@ -101,7 +101,7 @@ export default{
     },
     exportExcelTwo(v){
         return new Promise (r=>{
-            const res=  downLoadExcel(Object.assign(this.getQuery()))
+            const res= downLoadExcelTwo(Object.assign(this.getQuery()))
             r(res)
         })
     },

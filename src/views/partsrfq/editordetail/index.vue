@@ -144,7 +144,7 @@
             </iFormItem>
             <iFormItem label="材料组" name="categoryCode">
               <iText>
-                {{ baseInfo.categoryCode +'-'+ baseInfo.categoryName }}
+                {{ (baseInfo.categoryCode ? baseInfo.categoryCode : '') +'-'+ (baseInfo.categoryName ? baseInfo.categoryName : '') }}
               </iText>
             </iFormItem>
           </div>
