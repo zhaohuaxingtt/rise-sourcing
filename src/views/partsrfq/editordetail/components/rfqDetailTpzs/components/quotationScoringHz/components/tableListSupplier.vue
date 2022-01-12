@@ -1,14 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 11:48:04
- * @LastEditTime: 2022-01-07 15:13:51
+ * @LastEditTime: 2022-01-12 22:31:54
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
 -->
 <template>
   <el-table class="table" :data="tabelData"  :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
-    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center">
+    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center" :width='tabelTitle.length >= 18?(headerWidth?headerWidth[index]*2*4+"px":""):""'>
       <template slot-scope="scope">
         <span class="link" @click="openPage(scope.row[i].style.hyperlink)" v-if='scope.row[i].data == "View" && !scope.row[i].isHeader'>View</span>
         <template v-else-if='scope.row[i] && scope.row[i].data && scope.row[i].data.match(/\n/)'>
@@ -57,6 +57,13 @@ export default{
         return this.parentsData.data[0].map((r,index)=>index)
       } catch (error) {
         return []
+      }
+    },
+    headerWidth(){
+      try {
+        return this.parentsData.maxWidthList
+      } catch (error) {
+        return null
       }
     }
   },
