@@ -141,12 +141,14 @@ const actions = {
     return new Promise((resole,reject)=>{
       findFrontPageSeat(params).then(res=>{
         const {data={},code} = res;
-        const {phaseType="1",isSingle=false} = data;
+        const _data = { ...data, nodeList: data.nodeList.filter(item => item.tabName !== "BNK Reference") }
+
+        const {phaseType="1",isSingle=false} = _data;
         if(code == 200 && data){
-          commit('SET_NOMINATION_STEP', data);
+          commit('SET_NOMINATION_STEP', _data);
           commit('SET_PHASE_TYPE', phaseType);
           commit('SET_SINGLE_STATUS', isSingle);
-          resole(data);
+          resole(_data);
         }else{
           commit('SET_NOMINATION_STEP', {});
           commit('SET_PHASE_TYPE', phaseType); 
