@@ -136,11 +136,15 @@ export default {
       this.selectData.map((item) => {
         fileIds.push(item.downloadUrl)
       })
-      const req = {
-        fileName: 'rise.zip',
-        fileIds: [fileIds],
+      var fileName=''
+      console.log(fileIds)
+      if(fileIds.length==1){
+        fileName='report.pdf'
+      }else{
+        fileName='rise.zip'
       }
-      downloadUdFileWithName([fileIds], 'rise.zip').then((res) => {
+    
+      downloadUdFileWithName([fileIds], fileName).then((res) => {
         this.btnLoading = false
       })
     },

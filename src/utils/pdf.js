@@ -188,7 +188,6 @@ export const downloadPdfMixins = {
                         if (key == '2') {
                             this.$refs.quotationScoringHZ.exportPartsTwo()
                                 .then((res) => {
-                                    if (res && res.data == 200) {
                                         let blob = new Blob([res], {
                                             type: 'application/vnd.ms-excel',
                                         })
@@ -198,9 +197,6 @@ export const downloadPdfMixins = {
                                             formData.append('multifile', blob)
                                             this.setfile(formData, instanceId, name)
                                         })
-                                    } else {
-                                        iMessage.error(res.desZh)
-                                    }
                                 })
                         } else if (key == '3') {
                             this.$refs.quotationScoringMj.getRfqSupplierList().then((res) => {
@@ -210,7 +206,7 @@ export const downloadPdfMixins = {
                                         .currentRounds,
                                     supplierId: res.data[0].supplierId,
                                 }).then((res) => {
-                                    if (res && res.data == 200) {
+                                        
                                         let blob = new Blob([res], {
                                             type: 'application/vnd.ms-excel',
                                         })
@@ -220,9 +216,6 @@ export const downloadPdfMixins = {
                                             formData.append('multifile', blob)
                                             this.setfile(formData, instanceId, name)
                                         })
-                                    } else {
-                                        iMessage.error(res.desZh)
-                                    }
 
                                 })
                             })
@@ -232,7 +225,7 @@ export const downloadPdfMixins = {
                                 downloadPDF({
                                     idEle: '#card' + key,
                                     pdfName: name,
-                                    exportPdf: false,
+                                    exportPdf: true,
                                     waterMark: true,
                                     callback: async (pdf, pdfName) => {
                                         try {
