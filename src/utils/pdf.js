@@ -232,7 +232,7 @@ export const downloadPdfMixins = {
                                 downloadPDF({
                                     idEle: '#card' + key,
                                     pdfName: name,
-                                    exportPdf: true,
+                                    exportPdf: false,
                                     waterMark: true,
                                     callback: async (pdf, pdfName) => {
                                         try {
