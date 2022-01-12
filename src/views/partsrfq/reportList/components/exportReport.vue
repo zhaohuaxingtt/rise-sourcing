@@ -139,7 +139,8 @@ export default {
       var fileName=''
       console.log(fileIds)
       if(fileIds.length==1){
-        fileName='report.pdf'
+        fileName=this.selectData[0].downloadName
+        console.log(this.selectData)
       }else{
         fileName='rise.zip'
       }
