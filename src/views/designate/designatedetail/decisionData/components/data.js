@@ -14,7 +14,7 @@ export const decisionType = [
     {key:'CostAnalysis',name:'Cost Analysis',path:'/designate/decisiondata/costanalysis'},
     {key:'TimeLine',name:'Time Line',path:'/designate/decisiondata/timeline'},
     {key:'Strategy',name:'Strategy',path:'/designate/decisiondata/strategy'},
-    {key:'BNKReference',name:'BNK Reference',path:'/designate/decisiondata/bnkreference'},
+    // {key:'BNKReference',name:'BNK Reference',path:'/designate/decisiondata/bnkreference'},
     {key:'AwardingScenario',name:'Awarding Scenario',path:'/designate/decisiondata/awardingscenario'},
     {key:'RS',name:'RS',path:'/designate/decisiondata/rs'},
     {key:'MTZ',name:'MTZ',path:'/designate/decisiondata/mtz'},
