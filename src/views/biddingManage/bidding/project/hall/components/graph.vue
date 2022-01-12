@@ -8,7 +8,9 @@
             <span>{{ amplitude }}</span
             >%
           </div>
-          <div class="graph-amplitude__bottom">{{language('BIDDING_FUDU','幅度')}}</div>
+          <div class="graph-amplitude__bottom">
+            {{ language("BIDDING_FUDU", "幅度") }}
+          </div>
         </div>
       </div>
     </iCard>
@@ -30,7 +32,7 @@
     <iCard :title="language('BIDDING_GONGYINGSHAN', '供应商')">
       <commonTable
         ref="tableDataForm"
-        :tableData="suppliers"
+        :tableData="suppliersPage"
         :tableTitle="supplierRankTableTitle"
         :tableLoading="tableLoading"
         :selection="false"
@@ -52,16 +54,16 @@
       </commonTable>
       <iPagination
         v-update
-        @current-change="handleCurrentChange($event)"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
-        prev-text="上一页"
-        next-text="下一页"
+        :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+        :next-text="language('BIDDING_XIAYIYE','下一页')"
         :layout="page.layout"
         :current-page="page.currPage"
         :total="page.total"
-        @size-change="handleSizeChange"
       />
     </iCard>
   </div>
@@ -70,12 +72,16 @@
 <script>
 import { iCard, iPagination } from "rise";
 import commonTable from "@/components/biddingComponents/commonTable";
-import { supplierTableTitle, supplierRankTableTitle, currencyMultipleLib } from "./data";
+import {
+  supplierTableTitle,
+  supplierRankTableTitle,
+  currencyMultipleLib,
+} from "./data";
 import {
   findHallSupplier,
   getCurve,
   getProjectResults,
-  getBiddingDetails
+  getBiddingDetails,
 } from "@/api/bidding/bidding";
 import { pageMixins } from "@/utils/pageMixins";
 import { getCurrencyUnit } from "@/api/mock/mock";
@@ -96,13 +102,13 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    graphId: Number,
   },
   watch: {
     value: {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
-        
       },
     },
   },
@@ -155,7 +161,7 @@ export default {
   },
   computed: {
     suppliersPage() {
-      const { suppliers } = this.ruleForm;
+      const { suppliers } = this;
       const { currPage, pageSize } = this.page;
       return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
     },
@@ -184,7 +190,7 @@ export default {
         ).toFixed(2);
       } else {
         amp = (
-          ((totalPrices - minPrice) / totalPrices).toFixed(4) * 100
+          ((minPrice - totalPrices) / totalPrices).toFixed(4) * 100
         ).toFixed(2);
       }
       return isNaN(amp) ? "" : amp;
@@ -205,19 +211,20 @@ export default {
   },
   methods: {
     handleSearchReset() {
-      let param = this.id;
+      let param = this.id || this.graphId;
       this.query(param);
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit )
     },
-    dividedBeiShu(val){
-     return Big(val).div(this.beishu).toNumber()
+    dividedBeiShu(val) {
+      return Big(val).div(this.beishu).toNumber();
     },
     handleUserChange(row, item) {
       row.contactName = item.nameZh;
@@ -230,6 +237,7 @@ export default {
       row.supplierCode = item.supplierCode;
     },
     handleSizeChange(val) {
+      this.page.currPage = 1;
       this.page.pageSize = val;
     },
     // 表格选中值集
@@ -271,20 +279,23 @@ export default {
       const biddingDetail = await getBiddingDetails({
         id: e,
       }).catch((err) => {
-        console.log(err)
+        console.log(err);
       });
 
       if (biddingDetail || biddingDetail?.length > 0) {
         this.handlePrice(biddingDetail);
       }
-      this.xAxisTitle = `(${this.currencyMultiples(result?.currencyMultiple)})${
-        this.currencyUnit[result?.currencyUnit]
-      }`;
-      result.amplitude = (result.amplitude * 100).toFixed(2)
+      // this.xAxisTitle = `(${this.currencyMultiples(result?.currencyMultiple)})${
+      //   this.currencyUnit[result?.currencyUnit]
+      // }`;
+      this.xAxisTitle = `(${this.language('BIDDING_DANWEI', "单位")}：${this.currencyMultiples(
+        result?.currencyMultiple
+      )}  ${this.currencyUnit[result?.currencyUnit]})`;
+      result.amplitude = (result.amplitude * 100).toFixed(2);
       this.ruleForm = {
         ...result,
       };
-      console.log(287,this.ruleForm)
+      console.log(287, this.ruleForm);
       // const supplierOffer = {
       // ...this.ruleForm.supplierOffer,
       // offerPrice: this.dividedBeiShu(this.ruleForm.supplierOffer.offerPrice)
@@ -296,9 +307,14 @@ export default {
       let beginTime = dayjs(biddingBeginTime).valueOf();
       let endTime = dayjs(biddingEndTime).valueOf();
       const interval = (endTime - beginTime) / 1000 / 60;
-      let split = Math.ceil(interval/2) - 1; 
+      let split = Math.ceil(interval / 2) - 1;
       if (split <= 0) {
-        const interval2 = (Math.ceil(dayjs(biddingBeginTime).valueOf() / 1000 / 60) * 1000 * 60 - beginTime) / (endTime - beginTime) || 0.01;
+        const interval2 =
+          (Math.ceil(dayjs(biddingBeginTime).valueOf() / 1000 / 60) *
+            1000 *
+            60 -
+            beginTime) /
+            (endTime - beginTime) || 0.01;
         this.split = interval < 1 ? 0.01 : interval2;
         // this.split = 0.5
       } else if (split < 15) {
@@ -309,9 +325,11 @@ export default {
 
       this.minDate = dayjs(beginTime).format("YYYY/MM/DD HH:mm:ss");
       this.maxDate = dayjs(endTime).format("YYYY/MM/DD HH:mm:ss");
-      console.log(result)
+      console.log(result);
       if (result.roundType == "05" && result.manualBiddingType == "02") {
-        this.suppliers = res?.filter(item => item?.supplierCode == result?.finalOfferSupplier)
+        this.suppliers = res?.filter(
+          (item) => item?.supplierCode == result?.finalOfferSupplier
+        );
         this.handleHeGraphData(result.supplierOffers);
         this.handleHeLine(result.dutchOfferCurveDTOS);
         this.drawHeLine();
@@ -332,13 +350,14 @@ export default {
       let chartLine = this.$echarts.init(
         document.getElementById("chartLineBox")
       );
+      // 设置 Y轴样式
       let fontOptions = {
         show: true,
         textStyle: {
           color: "black", //更改坐标轴文字颜色
           fontSize: "1rem", //更改坐标轴文字大小
-          width: window.innerWidth/7 - 60,
-          overflow: 'break'
+          width: window.innerWidth / 7 - 60,
+          overflow: "break",
         },
       };
 
@@ -346,11 +365,19 @@ export default {
       let unit = this.ruleForm?.currencyUnit;
 
       let options = {
-        title: {
-          left: "18%",
-          top: "14%",
-          text: this.xAxisTitle,
-        },
+        // 更改曲线图头部货币单位
+        title: [
+          {
+            left: "0%",
+            top: "24%",
+            text: this.xAxisTitle,
+          },
+          {
+            right: "3%",
+            bottom: "0%",
+            text: this.language('BIDDING_JJJSSJ', "竞价结束时间"),
+          },
+        ],
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -363,7 +390,7 @@ export default {
               },
             },
           },
-          formatter:(params) =>{
+          formatter: (params) => {
             let htmlStr = ``;
             let series = params[0];
             htmlStr = `<div style="width: 35rem;background: #fff;padding: 1.875rem 2.5rem;border-radius: 0.375rem;">
@@ -373,16 +400,22 @@ export default {
                     <div class="form">
                         <!-- 时间 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">时间</div>
+                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_SHIJIAN', '时间')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${dayjs(
                           series.axisValue
                         ).format("HH:mm:ss")}</div>
                         </div>
                         <!-- 出价 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">出价</div>
+                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_CHUJIA', '出价')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
-                          unit + " " + series.value[1] + " " + multiple
+                          unit +
+                          " " +
+                          series.value[1]
+                            .toFixed(2)
+                            .replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, "$1,") +
+                          " " +
+                          multiple
                         }</div>
                         </div>
                     </div>
@@ -390,28 +423,39 @@ export default {
             return htmlStr;
           },
         },
+
+        // 更改附件供应商名称排版
         legend: {
           data: this.supplierlist,
-          left: 0,
-          top: "30%",
-          orient: "vertical",
+          type: "scroll",
+          left: "16%",
+          top: "10%",
+          bottom: 2,
+          pageIconSize: 30,
+          pageTextStyle: {
+            fontSize: 20,
+          },
+          // orient: "vertical",
           textStyle: {
             fontSize: "1rem",
             padding: 10,
-            width: window.innerWidth/7 - 60,
-            overflow: 'break'
+            width: window.innerWidth / 12 - 60,
+            overflow: "break",
           },
           itemWidth: 40,
-          itemGap: 20,
+          itemGap: 37,
           itemHeight: 15,
         },
+
+        // 更改曲线总布局
         grid: {
-          left: "20%",
+          left: "5%",
           right: "4%",
-          bottom: "3%",
-          top: "20%",
+          bottom: "8%",
+          top: "30%",
           containLabel: true,
         },
+
         xAxis: {
           min: this.minDate,
           max: this.maxDate,
@@ -421,12 +465,14 @@ export default {
             show: false,
           },
           splitNumber: this.split,
+
+          // 更改 x轴 数据
           axisLabel: {
             textStyle: {
               color: "black", //更改坐标轴文字颜色
               fontSize: ".8rem", //更改坐标轴文字大小
-              width: window.innerWidth/7 - 60,
-              overflow: 'break'
+              width: window.innerWidth / 7 - 60,
+              overflow: "break",
             },
             formatter: {
               hour: "{hour|{HH}:{mm}}",
@@ -491,24 +537,34 @@ export default {
       let chartLine = this.$echarts.init(
         document.getElementById("chartLineBox")
       );
+
+      // 设置 Y轴样式
       let fontOptions = {
         show: true,
         textStyle: {
           color: "black", //更改坐标轴文字颜色
           fontSize: "1rem", //更改坐标轴文字大小
-          width: window.innerWidth/7 - 60,
-          overflow: 'break'
+          width: window.innerWidth / 7 - 60,
+          overflow: "break",
         },
       };
 
       let multiple = this.currencyMultiples(this.ruleForm?.currencyMultiple);
       let unit = this.ruleForm?.currencyUnit;
       let options = {
-        title: {
-          left: "18%",
-          top: "14%",
-          text: this.xAxisTitle,
-        },
+        // 更改曲线图头部货币单位
+        title: [
+          {
+            left: "0%",
+            top: "24%",
+            text: this.xAxisTitle,
+          },
+          {
+            right: "3.5%",
+            bottom: "0%",
+            text: this.language('BIDDING_JJJSSJ', "竞价结束时间"),
+          },
+        ],
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -521,26 +577,34 @@ export default {
               },
             },
           },
-          formatter:(params) => {
+          formatter: (params) => {
             let htmlStr = ``;
             let series = params[0];
-              htmlStr = `<div style="width: 35rem;background: #fff;padding: 1.875rem 2.5rem;border-radius: 0.375rem;">
+            htmlStr = `<div style="width: 35rem;background: #fff;padding: 1.875rem 2.5rem;border-radius: 0.375rem;">
                     <div class="tool-tip-title" style="padding-bottom: 1.875rem;font-size: 1.125rem;color: #131523;font-weight: bold;">${
-                      series.componentSubType == "scatter" ? series.seriesName : this.language('BIDDING_CAIGOUYUAN', '采购员')
+                      series.componentSubType == "scatter"
+                        ? series.seriesName
+                        : this.language("BIDDING_CAIGOUYUAN", "采购员")
                     }</div>
                     <div class="form">
                         <!-- 时间 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">时间</div>
+                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_SHIJIAN', '时间')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${dayjs(
                           series.axisValue
                         ).format("HH:mm:ss")}</div>
                         </div>
                         <!-- 出价 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
-                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">出价</div>
+                        <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_CHUJIA', '出价')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
-                          unit + " " + series.value[1] + " " + multiple
+                          unit +
+                          " " +
+                          series.value[1]
+                            .toFixed(2)
+                            .replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, "$1,") +
+                          " " +
+                          multiple
                         }</div>
                         </div>
                     </div>
@@ -549,27 +613,38 @@ export default {
             return htmlStr;
           },
         },
+
+        // 更改附件供应商名称排版
         legend: {
           data: this.supplierlist,
-          left: 0,
-          top: "30%",
-          orient: "vertical",
+          type: "scroll",
+          left: "16%",
+          top: "10%",
+          bottom: 2,
+          pageIconSize: 30,
+          pageTextStyle: {
+            fontSize: 20,
+          },
+          // orient: "vertical",
           textStyle: {
             fontSize: "1rem",
-            width: window.innerWidth/7 - 60,
-            overflow: 'break'
+            width: window.innerWidth / 12 - 60,
+            overflow: "break",
           },
           itemWidth: 40,
-          itemGap: 20,
+          itemGap: 37,
           itemHeight: 15,
         },
+
+        // 更改曲线总布局
         grid: {
-          left: "20%",
+          left: "5%",
           right: "4%",
-          bottom: "3%",
-          top: "20%",
+          bottom: "8%",
+          top: "30%",
           containLabel: true,
         },
+
         xAxis: {
           // min: this.minDate,
           // max: this.maxDate,
@@ -580,13 +655,14 @@ export default {
           },
           // 3
           splitNumber: this.split,
+          // 更改 x轴 数据
           axisLabel: {
             // interval: 0,
             textStyle: {
               color: "black", //更改坐标轴文字颜色
               fontSize: ".8rem", //更改坐标轴文字大小
-              width: window.innerWidth/7 - 60,
-              overflow: 'break'
+              width: window.innerWidth / 7 - 60,
+              overflow: "break",
             },
             formatter: {
               hour: "{hour|{HH}:{mm}}",
@@ -610,7 +686,7 @@ export default {
           axisTick: {
             show: true,
             length: 15,
-            interval: 'auto',
+            interval: "auto",
             lineStyle: {
               width: 3,
             },
@@ -688,7 +764,7 @@ export default {
           showSymbol: true,
           symbolSize: 20,
         });
-        console.log(681,offerPriceList)
+        console.log(681, offerPriceList);
       }
       this.offerPriceList = [...offerPriceList];
     },
@@ -734,7 +810,7 @@ export default {
           showSymbol: true,
           symbolSize: 20,
         });
-        console.log(726,offerPriceList)
+        console.log(726, offerPriceList);
       }
       offerPriceList.forEach((item) => {
         this.offerPriceList.push(item);

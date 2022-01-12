@@ -10,6 +10,7 @@
         label-position="left"
         :hideRequiredAsterisk="true"
         :validate-on-rule-change="false"
+        disabled
       >
         <div class="item">
           <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType">
@@ -18,7 +19,7 @@
                 v-for="(item, index) in projectType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -41,7 +42,7 @@
                 v-for="(item, index) in biddingType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -67,7 +68,7 @@
                 v-for="(item, index) in currencyMultiple"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -80,7 +81,7 @@
                 v-for="(item, index) in isTax"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -110,7 +111,7 @@
             ></iInput>
           </iFormItem>
 
-          <iFormItem :label="language('BIDDING_BJJZSJ', '报价截止时间')" prop="pricingDeadline">
+          <iFormItem :label="language('BIDDING_BJJZSJ', '报价截止时间')" prop="pricingDeadline" v-if="ruleForm.roundType !== '05'">
             <iLabel :label="language('BIDDING_BJJZSJ', '报价截止时间')" slot="label"></iLabel>
             <iInput
               :value="
@@ -130,7 +131,7 @@
                 v-for="(item, index) in biddingMode"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -143,7 +144,7 @@
                 v-for="(item, index) in biddingResultForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -178,7 +179,7 @@
                 v-for="(item, index) in resultOpenForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -195,7 +196,7 @@
                 v-for="(item, index) in isResultOpen"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -208,7 +209,7 @@
                 v-for="(item, index) in moldFee"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -236,11 +237,12 @@
               </div>
             </iLabelML>
             <iLabel :label="language('BIDDING_MUBIAOJIA', '目标价')" slot="label"></iLabel>
-            <iInput
-              type="number"
-              v-model="ruleForm.targetPrice"
-              disabled
-            ></iInput>
+            <template >
+              <operatorInput
+                v-model="ruleForm.targetPrice"
+              >
+              </operatorInput>
+            </template>
           </iFormItem>
         </div>
 
@@ -262,7 +264,6 @@
                   :rows="4"
                   resize="none"
                   :maxlength="1000"
-                  :placeholder="language('BIDDING_ZSXZW1000Z','字数限制为1000字')"
                   show-word-limit
                   v-model="ruleForm.otherProjectNotice"
                   disabled
@@ -295,6 +296,7 @@ import { getCurrencyUnit, uploadFile } from "@/api/mock/mock";
 import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
 import iLabelML from "@/components/biddingComponents/iLabelML";
 import { pageMixins } from "@/utils/pageMixins";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -305,6 +307,7 @@ export default {
     iCard,
     iLabel,
     iLabelML,
+    operatorInput
   },
   props: {
     value: {
@@ -332,6 +335,8 @@ export default {
       pricingDeadline: "",
       biddingType,
       isMoldFee: false,
+      isInputFlag: false,
+      targetPriceValue: '',
       currencyVlaue: "",
       selectedTableData: [],
       bidOpeningLeft: `<p>本次竞价为项目谈判的中间过程，竞价结果作为选定供应商的参考，最终供应商的选择以最终谈判结果及上汽大众联合采购委员会（CSC）会议决策为准。</p>
@@ -350,6 +355,7 @@ export default {
   mounted() {
     // this.queryUnit();
     // this.handleSearchReset();
+    
   },
   computed: {
     roundType() {
@@ -434,8 +440,20 @@ export default {
         }
       },
     },
+    "ruleForm.targetPrice": {
+      immediate: true,
+      handler(val) {
+        this.targetPriceValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+      }
+    },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     // 重置
     handleSearchReset() {
       let param = { id: this.id };

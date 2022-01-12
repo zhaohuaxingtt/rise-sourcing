@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-11 11:26:48
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-11 10:06:44
  * @Description: 零件列表 AEKO 
 -->
 <template>
@@ -57,6 +57,12 @@
                 </el-option>  
               </iSelect> 
             </template>
+            <iMultiLineInput
+              v-else-if="item.type === 'iMultiLineInput'"
+              :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+              :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+              v-model="searchParams[item.props]"
+            ></iMultiLineInput>
             <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
           </el-form-item>
         </el-form>
@@ -107,6 +113,7 @@ import {
   iPagination,
   iCard,
   iMessage,
+  iMultiLineInput,
 } from 'rise'
 import fullSelect from '../components/fullSelect'
 import { describeTab } from '../data'
@@ -138,6 +145,7 @@ export default {
       iPagination,
       tableList,
       iCard,
+      iMultiLineInput,
     },
     computed: {
 		...Vuex.mapState({
@@ -432,5 +440,12 @@ export default {
       display: flex;
       justify-content: space-between;
     }
+  }
+  .title{
+      font-size: 20px;
+      font-family: Arial;
+      font-weight: bold;
+      align-items: center;
+      color: #000000;
   }
 </style>

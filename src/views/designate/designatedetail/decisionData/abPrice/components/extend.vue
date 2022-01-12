@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2021-07-19 14:07:37
+ * @LastEditTime: 2022-01-07 14:43:57
  * @LastEditors: Please set LastEditors
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -9,8 +9,9 @@
 <script>
 import {iMessage} from 'rise'
 import fsAndSupplierTable from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz'
-import {getRenderTableTile,defaultSort,translateData,translateRating,subtotal,translateDataListSupplier,getRenderTableTileSupplier,getleftTittleList} from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz/components/data'
+import {getRenderTableTile,defaultSort,translateData,translateRating,subtotal,getRowAndcolSpanArray} from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz/components/data'
 import {fsPartsAsRow,fsSupplierAsRow,gsPartsAsRow} from '@/api/partsrfq/editordetail/abprice'
+import {exportFSPartsAsRowByNomiId, exportFsSupplierAsRowByNomiId, exportGsPartsAsRowByNomiId } from '@/api/partsrfq/editordetail'
 export default{
   extends:fsAndSupplierTable,
   data(){
@@ -37,24 +38,21 @@ export default{
      */
     supplierfsSupplierAsRow(){
       return new Promise(r=>{
-        this.supplierTableLoading = true
-        fsSupplierAsRow(this.$route.query.desinateId,this.round).then(res=>{
-          this.supplierTableLoading = false
-          if(res.code == 200 && res.data && res.data.bdlInfoList){
-            const data = translateDataListSupplier(res.data.bdlInfoList)
-            this.supplierData = data.dataList
-            this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
-            this.supplierLeftLit = getleftTittleList(this.backChoose)
-            this.suppliertopList = data.topList
-            this.kmAPrice = res.data.kmAPrice
-            this.kmTooling = res.data.kmTooling
-            this.budget = res.data.budget
-            this.reRenderTable() 
-            r()
-          } 
-        }).catch(err=>{
-          this.supplierTableLoading = false
-          iMessage.error(err.desZh)
+        this.backChooseList = []
+        this.tabelDataSupplier = []
+        return new Promise(r=>{
+          this.supplierTableLoading = true
+          fsSupplierAsRow(this.$route.query.desinateId,this.round,this.backChoose).then(res=>{
+            this.supplierTableLoading = false
+            if(res.code == 200 && res.data){
+              this.tabelDataSupplier = getRowAndcolSpanArray(res.data)
+              this.backChooseLists = res.data.header || []
+              r()
+            } 
+          }).catch(err=>{
+            this.supplierTableLoading = false
+            iMessage.error(err.desZh)
+          })
         })
       })
     },
@@ -91,6 +89,16 @@ export default{
         return fsPartsAsRow(this.$route.query.desinateId,this.round)
       }else{
         return gsPartsAsRow(this.$route.query.desinateId,this.round)
+      }
+    },
+        //导出
+    exportParts(layout) {
+      if(layout === '1') {
+        return exportFSPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
+      } else if (layout === '2') {
+        return exportFsSupplierAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
+      } else {
+        return exportGsPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
       }
     }
   }

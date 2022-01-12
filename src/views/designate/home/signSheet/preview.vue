@@ -7,11 +7,14 @@
  * @FilePath: /front-web/src/views/designate/home/signSheet/signView.vue
 -->
 <template>
-<iPage :class="{ isPortal: source === 'portal' }">
+<!-- <iPage :class="{ isPortal: source === 'portal' }"> -->
   <div class="nomination-wraper">
-    <iCard>
+    <!-- <iCard collapse title="Summary List For Production Purchasing" > -->
+      <!-- <template #header-control>
+        <iButton @click="exportSignSheet">{{ language('LK_DAOCHU', '导出') }}</iButton>
+      </template> -->
       <div class="signPreview">
-        <div class="signPreview-header">
+        <!-- <div class="signPreview-header">
           <div class="font18 font-weight">{{'Summary List For Production Purchasing'}}</div>
           <div class="control">
             <iButton @click="exportSignSheet">
@@ -21,11 +24,12 @@
               <icon symbol name="iconguanbixiaoxiliebiaokapiannei"></icon>
             </span>
           </div>
-        </div>
-        <div class="signPreview-body padding-top30">
+        </div> -->
+        <div class="signPreview-body">
           <tablelist
             height="450"
             index
+            lang
             :selection="false"
             :tableData="tableListData"
             :tableTitle="tableTitle"
@@ -53,9 +57,9 @@
           <div class="time">{{currentDate}}</div>
         </div>
       </div>
-    </iCard>
+    <!-- </iCard> -->
   </div>
-</iPage>
+<!-- </iPage> -->
 </template>
 <script>
 import {signsheetViewTableTitle as tableTitle} from './components/data'
@@ -63,7 +67,7 @@ import tablelist from "@/views/designate/supplier/components/tableList";
 import { toThousands } from "@/utils"
 
 import {
-  iPage,
+  // iPage,
   iCard,
   icon,
   iButton,
@@ -78,7 +82,7 @@ import filters from "@/utils/filters"
 export default {
   mixins: [ filters, pageMixins ],
   components: {
-    iPage,
+    // iPage,
     iCard,
     icon,
     iButton,
@@ -114,17 +118,18 @@ export default {
     close() {
       this.$router.back()
     },
-    exportSignSheet() {
-      const signId = this.$route.query.signId
-      if (!signId) {
-        iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
-        return
-      }
-      const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
-      const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export?signId=${signId}`
-      console.log(fileURL)
-      window.open(fileURL)
-    },
+    // exportSignSheet() {
+    //   const signId = this.$route.query.signId
+    //   if (!signId) {
+    //     iMessage.error(this.language('QIANZIDANHAOBUNENGWEIKONG','签字单号不能为空'))
+    //     return
+    //   }
+    //   const BASEURL = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '')
+    //   // const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export?signId=${signId}`
+    //   const fileURL = `${BASEURL}${process.env.VUE_APP_SOURCING}/nominate/sign/export-sign-single?signId=${signId}`
+    //   console.log(fileURL)
+    //   window.open(fileURL)
+    // },
     // 获取定点管理列表
     async getFetchData(params = {}) {
       this.tableLoading = true
@@ -143,38 +148,47 @@ export default {
         // const res = require('./components/moke.json')
         this.tableLoading = false
           if (res.code === '200') {
-            // const ltcTitlt = res.data.ltcList || []
-            this.tableListData = res.data.nomiList || []
-            // 按年份去取ltc表头
-            const ltcYearObj = {}
-            this.tableListData.forEach(item => {
-              const itemLTC = item.ltcList || []
-              itemLTC.forEach(ltcItem => {
-                const ltcYear = window.moment(ltcItem.yearMonths).format('YYYY')
-                ltcYearObj[ltcYear] = ltcYear
+            if (res.data) {
+              // const ltcTitlt = res.data.ltcList || []
+              this.tableListData = res.data.nomiList || []
+              
+              if (this.tableListData.length) this.$emit("haveData")
+              else this.$emit("noData")
+
+              // 按年份去取ltc表头
+              const ltcYearObj = {}
+              this.tableListData.forEach(item => {
+                const itemLTC = item.ltcList || []
+                itemLTC.forEach(ltcItem => {
+                  const ltcYear = window.moment(ltcItem.yearMonths).format('YYYY')
+                  ltcYearObj[ltcYear] = ltcYear
+                })
               })
-            })
-            // 根据年份做数据格式化
-            this.tableListData.map((o) => {
-              const ltcList = o.ltcList || []
-              Object.keys(ltcYearObj).forEach((ltcYear) => {
-                const ltcArray = ltcList.filter(ltc => window.moment(ltc.yearMonths).format('YYYY') === ltcYear)
-                const ltcValue = ltcArray.map(p => Number(p.priceReduceRate).toFixed((Number(p.priceReduceRate)%1 === 0 ? 0 : 2))).join('/')
-                o[`ltc_${ltcYear}`] = ltcValue
-                o.rsRemark = [o.csfMeetMemo || '', o.linieMeetMemo || '',o.cs1MeetMemo || ''].join('\n')
-                return o
+              // 根据年份做数据格式化
+              this.tableListData.map((o) => {
+                const ltcList = o.ltcList || []
+                Object.keys(ltcYearObj).forEach((ltcYear) => {
+                  const ltcArray = ltcList.filter(ltc => window.moment(ltc.yearMonths).format('YYYY') === ltcYear)
+                  const ltcValue = ltcArray.map(p => Number(p.priceReduceRate).toFixed((Number(p.priceReduceRate)%1 === 0 ? 0 : 2))).join('/')
+                  o[`ltc_${ltcYear}`] = ltcValue
+                  o.rsRemark = [o.csfMeetMemo || '', o.linieMeetMemo || '',o.cs1MeetMemo || ''].join('\n')
+                  return o
+                })
               })
-            })
-            Object.keys(ltcYearObj).forEach((year, index) => {
-              this.ltcTitle.push({
-                props: `ltc_${year}`,
-                name: `LTC ${year}`,
-                key: `LTC ${year}`,
-                width: 200,
-                tooltip: false
+              Object.keys(ltcYearObj).forEach((year, index) => {
+                this.ltcTitle.push({
+                  props: `ltc_${year}`,
+                  name: `LTC ${year}`,
+                  key: `LTC ${year}`,
+                  width: 200,
+                  tooltip: false
+                })
               })
-            })
-            console.log(this.tableListData, ltcYearObj, this.tableTitle)
+              console.log(this.tableListData, ltcYearObj, this.tableTitle)
+            } else {
+              this.$emit("noData")
+            }
+            
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
@@ -248,6 +262,7 @@ export default {
     display: flex;
     align-content: center;
     justify-content: space-between;
+    align-items: flex-end;
     .tit {
       span {
         font-weight: bold;

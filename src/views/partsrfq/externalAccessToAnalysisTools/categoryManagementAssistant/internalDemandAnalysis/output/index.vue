@@ -1,10 +1,10 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-11-10 20:33:42
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-05 14:38:09
+ * @LastEditors: caopeng
  * @Description: 产量总览
- * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\output\index.vue
 -->
 <template>
    <iCard class="margin-top20" id="output">
@@ -58,6 +58,7 @@ export default {
    data () {
       return {
          categoryCode:"",
+         saveButtonLoading:false,
           //初始化配置
          config:{
             type: 'report',
@@ -65,6 +66,7 @@ export default {
             accessToken:"",
             embedUrl: "",
             pageName:"",
+            
             settings: {
                panes: {
                   filters: {
@@ -141,21 +143,22 @@ export default {
          this.categoryCode=this.$store.state.rfq.categoryCode
          this.selectFilterYear=''
          this.config.pageName=''
-         this.renderBi()
+         this.getCategoryAnalysis()
       }
    },
-   methods: {
+   methods: {   
       // 保存
       async save(){
          // setWaterMark(this.userInfo.nameZh+this.userInfo.id+'仅供CS内部使用',1000,700)
          let typeName=""
+           this.saveButtonLoading = true;
          this.dictData.CATEGORY_MANAGEMENT_LIST.filter(item=>{
             if(item.code==this.config.pageName){
                typeName=item.name+'_'
             }
          })
          const resFile = await this.getDownloadFileAndExportPdf({
-            domId: 'output',
+            domId: '#output',
             watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName: '品类管理助手_产量总览_'+ typeName + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
          });
@@ -191,6 +194,9 @@ export default {
          categoryAnalysis(params).then(res=>{
             if(res.code=='200'){
                iMessage.success(this.language('BAOCUNCHENGGONG','保存成功'))
+                this.saveButtonLoading = false;
+            }else{
+                 this.saveButtonLoading = false;
             }
          })
       },
@@ -200,17 +206,26 @@ export default {
       },
       // 重置
       reset(){
-         this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
-         this.selectFilterYear= String(new Date().getFullYear()) 
-         this.renderBi()
+        //  this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+        //  this.selectFilterYear= String(new Date().getFullYear()) 
+        //  this.renderBi()
+        this.getCategoryAnalysis()
       },
+    compare(property,desc) {
+        return function (a, b) {
+            var value1 = a[property];
+            var value2 = b[property];
+            if(desc==true){
+                // 升序排列
+                return value1 - value2;
+            }else{
+                // 降序排列
+                return value2 - value1;
+            }
+        }
+    },
       // 数据字典
       getDict() {
-         selectDictByKeys([{ keys: "CATEGORY_MANAGEMENT_LIST" }]).then(res=>{
-            this.dictData=res.data
-            this.init()
-            this.renderBi()
-         })
       },
       // 获取财报iframeurl
       getPowerBiUrl() {
@@ -218,6 +233,7 @@ export default {
             if (res.data) {
                this.url = res.data
                this.getCategoryAnalysis()
+                this.init()
             }
          })
       },
@@ -227,14 +243,22 @@ export default {
             categoryCode:this.categoryCode,
             schemeType:"CATEGORY_MANAGEMENT_OUTPUT_OVERVIEW"
          }
-         getCategoryAnalysis(parasm).then(res=>{
+        selectDictByKeys([{ keys: "CATEGORY_MANAGEMENT_LIST" }]).then(res=>{
+            // this.dictData=res.data
+            this.dictData.CATEGORY_MANAGEMENT_LIST=res.data.CATEGORY_MANAGEMENT_LIST.sort(this.compare("id",true))
+          getCategoryAnalysis(parasm).then(res=>{
             let operateLog=JSON.parse(res.data.operateLog)
             if(operateLog){
-               this.selectFilterYear=operateLog.selectFilterYear
-               this.config.pageName=operateLog.pageName
+                this.selectFilterYear=operateLog.selectFilterYear
+                this.config.pageName=operateLog.pageName
+            }else{
+                this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_LIST[0].code
+                this.selectFilterYear= String(new Date().getFullYear()) 
             }
-            this.getDict()
+            this.renderBi()
          })
+        })
+       
       },
       // 初始化配置
       init(){

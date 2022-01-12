@@ -9,18 +9,18 @@
         <el-switch
             v-model="onleySelf"
             @change="changeCarTypeOverview"
-            inactive-text="仅看自己">
+            :inactive-text="$t('MODEL-ORDER.LK_JINKANZIJI')">
         </el-switch>
         <el-switch
             v-model="checkHistory"
             @change="changeCheckHistory"
-            inactive-text="查看历史">
+            :inactive-text="$t('MOULDADD.CHAKANLISHI')">
         </el-switch>
         <Popover
-            content="点击进入【生成投资清单】页面"
+            :content="language('LK_DIANJIJINRUSHENGCHENGTOUZIQINGDANYEMIAN', '点击进入【生成投资清单】页面')"
             placement="top-start"
             trigger="hover">
-          <iButton slot="reference" icon="el-icon-circle-plus-outline" type="primary" @click="addCarType">新增车型项目</iButton>
+          <iButton slot="reference" icon="el-icon-circle-plus-outline" type="primary" @click="addCarType">{{language('LK_XINZHENGCHEXIANGXIANGMU', '新增车型项目')}}</iButton>
         </Popover>
       </div>
       <iSearch
@@ -52,7 +52,7 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="$t('生产工厂')">
+          <el-form-item :label="language('LK_SHENGCHANGONGCHANG', '生产工厂')">
             <iSelect
                 :placeholder="$t('partsprocure.CHOOSE')"
                 v-model="localFactoryName"
@@ -67,13 +67,13 @@
               ></el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="$t('SOP时间')">
+          <el-form-item :label="$t('MOULDADD.SOPSHIJIAN')">
             <el-date-picker
                 v-model="timeStarEnd"
                 format="yyyy-MM-dd"
                 class="budgetApprovalDate"
                 type="daterange"
-                range-separator="至"
+                range-separator="-"
                 start-placeholder="YYYY-MM-DD"
                 end-placeholder="YYYY-MM-DD">
             </el-date-picker>
@@ -108,7 +108,7 @@
                @click="toEdit(item.id, item.sourceStatus, item.isBudget)">
             <div class="item_top">
               <Popover
-                  :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
+                  :content="Number(item.isBudget) === 3 ? language('LK_DIANJIJINRUSHENGCHENGTOUZIQINGDANYEMIAN', '点击进入【生成投资清单】页面') : language('LK_DIANJIJINRUSHENGCHENGTOUZIQINGDANYEMIAN2', '点击进入未完成/需要继续编辑的【生成投资清单】页面')"
                   placement="top-start"
                   trigger="hover">
                 <img slot="reference" v-if="item.isBudget == 1" class="editIcon" src="../../../assets/images/editCar.png" alt="">
@@ -124,10 +124,10 @@
                 </Popover>
                 <Popover
                     v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
-                    :content="$t('生产工厂') + ': ' + (item.locationFactory ? item.locationFactory : '')"
+                    :content="language('LK_SHENGCHANGONGCHANG', '生产工厂') + ': ' + (item.locationFactory ? item.locationFactory : '')"
                     placement="top-start"
                     trigger="hover">
-                  <p slot="reference">{{$t("生产工厂")}}: {{ item.locationFactory }}</p>
+                  <p slot="reference">{{language('LK_SHENGCHANGONGCHANG', '生产工厂')}}: {{ item.locationFactory }}</p>
                 </Popover>
                 <Popover
                     v-if="Number(item.sourceStatus) === 1 || Number(item.isBudget) !== 3"
@@ -158,13 +158,13 @@
             <div class="unit">
               <div class="repeatCateGoryCount">
                 <div v-if="item.isCommonSourcing">
-                  {{$t("重复材料组")}}: <span>{{ item.repeatCateGoryCount }}</span>
+                  {{language('LK_CHONGFUAILIAOZU', '重复材料组')}}: <span>{{ item.repeatCateGoryCount }}</span>
                 </div>
               </div>
               <div class="wanyuan">{{$t("LK_DANWEI")}}: {{$t("LK_BAIWANYUAN")}}</div>
             </div>
             <Popover
-                :content="Number(item.isBudget) === 3 ? '点击进入【模具投资清单】页面' : '点击进入未完成/需要继续编辑的【生成投资清单】页面'"
+                :content="Number(item.isBudget) === 3 ? language('LK_DIANJIJINRUSHENGCHENGTOUZIQINGDANYEMIAN', '点击进入【生成投资清单】页面') : language('LK_DIANJIJINRUSHENGCHENGTOUZIQINGDANYEMIAN2', '点击进入未完成/需要继续编辑的【生成投资清单】页面')"
                 placement="top-start"
                 trigger="hover">
               <div slot="reference" class="chart" :id="'chart' + index"></div>
@@ -179,7 +179,7 @@
           </div>
         </div>
         <!--      <p v-if="noMore">没有更多了</p>-->
-        <div class="noData" v-if="contentData.length === 0">暂无数据</div>
+        <div class="noData" v-if="contentData.length === 0">{{$t('LK_ZANWUSHUJU')}}</div>
       </div>
     </div>
   </div>
@@ -199,7 +199,7 @@ import {
   findCartypePro
 } from "@/api/ws2/budgetManagement";
 import {findProjectTypeDetailPulldown, getCartypePulldown} from "@/api/ws2/budgetManagement/edit";
-import {getPurchaseFactoryPullDown} from "@/api/ws2/baApply";
+import {getProductionFactoryPullDown1} from "@/api/ws2/baApply";
 import {mapState} from 'vuex'
 import Moment from 'moment'
 import {tableHeight} from "@/utils/tableHeight";
@@ -490,7 +490,7 @@ export default {
     },
     getProcureGroup() {
       this.loadingiSearch = true
-      Promise.all([getPurchaseFactoryPullDown(), getCartypePulldown()]).then((res) => {
+      Promise.all([getProductionFactoryPullDown1(), getCartypePulldown()]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
         if (res[0].data) {

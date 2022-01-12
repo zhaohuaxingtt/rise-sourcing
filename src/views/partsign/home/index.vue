@@ -1,18 +1,15 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-11-17 15:47:19
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-24 16:23:33
+ * @LastEditors: YoHo
  * @Description: 零件签收列表界面.
- * @FilePath: \rise\src\views\partsign\index.vue
+ * @FilePath: \front-sourcing\src\views\partsign\home\index.vue
 -->
 <template>
   <iPage class="partsignHome">
         <div>
-          <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-            <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div>
+        <headerNav />
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
@@ -153,7 +150,7 @@
                   ></el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSIGN_USAGEVEHICLE|每车用量状态">
+              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSIGN_XIANSHIZIJI|显示自己">
                 <iSelect
                   v-model="form.showSelf"
                   :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"
@@ -198,6 +195,7 @@
               @handleSelectionChange="handleSelectionChange"
               @openPage="openPage"
               :activeItems="'partNum'"
+              v-permission.auto="PARTSIGN_TABLE|表格"
             >
             </tablelist>
             <!------------------------------------------------------------------------>
@@ -258,6 +256,7 @@ import {selectDictByKeyss} from '@/api/dictionary'
 import store from '@/store'
 import { TP_INFO_STATUS } from "./components/data"
 import {setPretreatmentParams} from '@/utils/tool'
+import headerNav from '@/components/headerNav'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -274,6 +273,7 @@ export default {
     iSearch,
     iInput,
     iSelect,
+    headerNav
   },
   mixins: [pageMixins, filters],
   data() {
@@ -309,7 +309,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["navList","navListLeft"]),
+    ...mapState(["navList"]),
     ...mapActions(["updateNavList"])
   },
   methods: {

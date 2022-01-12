@@ -1,13 +1,17 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2021-11-23 10:38:15
- * @LastEditors:  
+ * @LastEditTime: 2022-01-07 16:52:21
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
  */
 import {permissionTitle} from '@/utils'
 import {partProjTypes} from '@/config'
+
+// rfq 页面调整 
+// isAekoShow
+// ispartsAdd
 export const tableTitle = [{
 		//export const tableTitle = permissionTitle("PARTSPROCURE_PARTSPROCURELIST",[{
 		props: 'fsnrGsnrNum',
@@ -23,7 +27,17 @@ export const tableTitle = [{
 		key: 'partsprocure.PARTSPROCUREPARTNUMBER',
 		tooltip: true,
 		width:130,
+		ispartsList: true,
 		isAekoShow:true,
+	},
+	{
+		props: 'sourcingNumber',
+		name: 'SourcingNumber',
+		key: 'SOURCINGNUMBER',
+		tooltip: true,
+		isAekoShow:false,
+		isCommonSourcingShow:true,
+		width:160
 	},
 	{
 		props: 'partNameZh',
@@ -55,15 +69,6 @@ export const tableTitle = [{
 	// 	key: 'partsprocure.PARTSPROCURESTATUS',
 	// 	tooltip:false
 	// },
-	{
-		props: 'linieName',
-		name: 'LINIE',
-		key: 'partsprocure.PARTSPROCURELINIE',
-		tooltip: true,
-		width:60,
-		isAekoShow:false,
-	},
-	
 	{
 		props: 'cfControllerName',
 		name: 'CF',
@@ -127,6 +132,22 @@ export const tableTitle = [{
 		width:90,
 		isAekoShow:false,
 	},
+	{
+		props: 'linieName',
+		name: 'LINIE',
+		key: 'partsprocure.PARTSPROCURELINIE',
+		tooltip: true,
+		width:60,
+		isAekoShow:false,
+	},
+	{
+		props: 'quotationStatus',
+		name: '当前轮次报价状态',
+		key: 'DANGQIANLUNCIBAOJIAZHUANGTAI',
+		tooltip: true,
+		width:90,
+		isAekoShow:false,
+	},
 ]
 
 //零件采购列表入参
@@ -178,5 +199,7 @@ export function getPlanyear(defaultNumberMax=15){
 	}
 	return batchMaintainTableTitle
 }
+
+
 
 

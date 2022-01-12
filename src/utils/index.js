@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-14 23:25:18
+ * @LastEditTime: 2022-01-11 15:17:51
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -13,6 +13,9 @@ import localStoreage from './localstorage'
 import jsencrypt from 'jsencrypt'
 import { sendKey, sendPermissonKey } from '@/api/usercenter'
 import { onlyselfProject, allitemsList, BKMROLETAGID } from '@/config'
+import JSEncrypt from 'jsencrypt'
+const publicKey = `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDtHWBZlZFuWCQmAqWGH5NaYimrmWHI8/BgHcorxAlq+5bCJyVe8VD9Zm4CRksP/yYPAqWB03B0wm1F1ePObs3ddhpk/MJ8GzbXJY0inj2J0n90QEzhebb/GpHt777EmfY/PuA4fGw8WtW6LHwkr+tnluKlR9f5ZgKByf3mBEge0wIDAQAB`
+
 export function setCookie(cookieName, cookieData) {
   // eslint-disable-next-line no-undef
   return Cookies.set(cookieName, cookieData, {
@@ -37,7 +40,25 @@ export function setToken(tokenData) {
 }
 //removeoken
 export function removeToken() {
-  return removeCookie(process.env.VUE_APP_TOKEN_NAME)
+  const keys = document.cookie.match(/[^ =;]+(?==)/g)
+  if (keys) {
+    for (let i = keys.length; i--; ) {
+      document.cookie =
+        keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString() // 清除当前域名下的,例如：m.ratingdog.cn
+      document.cookie =
+        keys[i] +
+        '=0;path=/;domain=' +
+        document.domain +
+        ';expires=' +
+        new Date(0).toUTCString() // 清除当前域名下的，例如 .m.ratingdog.cn
+      document.cookie =
+        keys[i] +
+        '=0;path=/;domain=csvw.com;expires=' +
+        new Date(0).toUTCString() // 清除一级域名下的或指定的，例如 .ratingdog.cn
+    }
+  }
+  return 'ok'
+  // return removeCookie(process.env.VUE_APP_TOKEN_NAME)
 }
 //获取token
 export function getRefreshToken() {
@@ -213,7 +234,18 @@ router.afterEach((to, from) => {
     process.env.NODE_ENV == 'dev' &&
     store.state.permission.resourceList.length > 0
   ) {
-    _permissionKeySendToService(from)
+    console.log(
+      '------------------------------------------------------------------------------------------------------------------------------------------'
+    )
+    store.state.permission.resourceList
+      .filter((item) => item.type != 3)
+      .forEach((item) =>
+        console.log(`name: ${item.name}, permissionKey: ${item.permissionKey}`)
+      )
+    console.log(
+      '------------------------------------------------------------------------------------------------------------------------------------------'
+    )
+    // _permissionKeySendToService(from)
   }
 })
 function _languageSendToService() {
@@ -225,21 +257,54 @@ function _permissionKeySendToService(router) {
   console.log(
     `============The permissions automatically collected in the current interface are ${store.state.permission.resourceList.length}============`
   )
-  console.log(store.state.permission.resourceList)
   const serviceData = router.matched.map((r, i) => {
     return {
       type: 3,
       name: r.meta.title,
       permissionKey: r.path.toUpperCase(),
-      url: r.path,
-      target: r.path,
+      parentPermissionKey: r.meta.parentId,
+      url: (i == 0 ? '/sourcing/#' : '') + r.path,
+      target: (i == 0 ? '/sourcing/#' : '') + r.path,
       resourceList:
         i == router.matched.length - 1
           ? store.state.permission.resourceList
           : [],
     }
   })
-  sendPermissonKey(serviceData)
+  //做一次数据监测，监测的对象为如果是菜单，则监测当前是否存在空的名字菜单。如果是资源则监测名字和key
+  const errorData = (data) =>
+    data.filter((items) => {
+      if (items.type == 3) {
+        if (items.name == '' || items.url == '') {
+          return items
+        }
+        if (items.resourceList.length > 0) {
+          items.resourceList.forEach((itemss) => {
+            if (
+              itemss.permissionKey == 'undefined' ||
+              !itemss.permissionKey ||
+              itemss.name == 'undefined' ||
+              !itemss.name ||
+              itemss.name.indexOf('permissionName') > -1 ||
+              itemss.permissionKey.indexOf('permissionKey') > -1
+            ) {
+              return itemss
+            }
+          })
+        }
+      }
+    })
+  if (errorData(serviceData).length == 0) {
+    sendPermissonKey(serviceData)
+  } else {
+    console.error('您上次权限失败的数据为:')
+    console.log(errorData(serviceData))
+    alert(
+      `权限自动上传中有${
+        errorData(serviceData).length
+      }条错误，请查看控制台中的错误日志，解决后再上传`
+    )
+  }
   store.dispatch('clearResource', [])
 }
 /**********************************************************************************************************************************************
@@ -329,7 +394,10 @@ export function toFixedNumber(number, m) {
 export function toThousands(number, decimalThousands = false) {
   if (!number) return number
   number = number.toString()
-  return number.replace(new RegExp(`\\B(?=(\\d{3})+(?${ decimalThousands ? ':$|' : '=' }\\.))`, 'g'), ',')
+  return number.replace(
+    new RegExp(`\\B(?=(\\d{3})+(?${decimalThousands ? ':$|' : '='}\\.))`, 'g'),
+    ','
+  )
 }
 
 //去除千分位
@@ -511,4 +579,33 @@ export function setLogMenu(menu) {
 // 获取当前页面所在模块
 export function getLogMenu() {
   return store.getters.getLogMenu
+}
+
+/**
+ * Rsa加密
+ * @param {String} str
+ * @returns String
+ */
+export function encryptRsa(str) {
+  const encrypt = new JSEncrypt()
+  encrypt.setPublicKey(publicKey)
+  return encrypt.encrypt(str)
+}
+
+/**
+ * 密码加密
+ * @param {String} str 原始密码
+ * @returns 加密后的密码
+ */
+export function encryptPwd(str) {
+  return encryptRsa(str)
+}
+
+export function pad(num, n) {
+  var len = num.toString().length
+  while (len < n) {
+    num = '0' + num
+    len++
+  }
+  return num
 }

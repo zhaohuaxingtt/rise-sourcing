@@ -35,8 +35,15 @@
                   <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
+                      v-if="flag"
                       class="form--item--number--input__totalprice"
                       :value="startingPrice"
+                      disabled
+                    ></iInput>
+                    <iInput
+                      v-else
+                      class="form--item--number--input__totalprice"
+                      :value="startingPriceString"
                       disabled
                     ></iInput>
                     <div class="form--item--number--lable">{{ unit }}</div>
@@ -50,7 +57,14 @@
                     required
                   ></iLabel>
                   <div class="form--item--number">
-                    <iInput
+                    <operatorInput
+                      class="form--item--number--input__totalprice"
+                      v-model="ruleForm.totalPrices"
+                      @blur="handleInputBlur"
+                      :disabled="biddingStatus"
+                    >
+                    </operatorInput>
+                    <!-- <iInput
                       v-if="flag"
                       class="form--item--number--input__totalprice"
                       type="number"
@@ -66,7 +80,7 @@
                       :value="totalStartingPriceString"
                       @focus="handleInputFocus"
                       :disabled="biddingStatus"
-                    ></iInput>
+                    ></iInput> -->
                     <div class="form--item--number--lable">{{ unit }}</div>
                   </div>
                 </iFormItem>
@@ -108,7 +122,7 @@
                   <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
-                      {{ tag.name }}
+                      {{ tag.model }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -118,7 +132,7 @@
                   <iLabel :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
-                      {{ tag.name }}
+                      {{ tag.project }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -145,19 +159,55 @@
           :type="'0'"
           :tableLoading="tableLoading"
         >
+          <!--采购数量 -->
+          <template slot="purchaseQty" slot-scope="scope">
+            <div>
+              {{
+                  scope.row["purchaseQty"]
+                  ? Number(scope.row["purchaseQty"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+                  : ''
+              }}
+            </div>
+          </template>
           <!-- 起拍价格 -->
           <template slot="upsetPrice" slot-scope="scope">
-            <i-input
+            <operatorInput
               v-if="ruleForm.biddingMode === '01' && !biddingStatus"
               v-model="scope.row['upsetPrice']"
-              type="number"
-              oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-              placeholder="0.00"
-            />
+              @blur="handleInputBlur"
+            >
+            </operatorInput>
             <div v-else-if="ruleForm.biddingMode === '01' && biddingStatus">
-              {{ scope.row["upsetPrice"] }}
-            </div>
+                {{ scope.row["upsetPrice"] ? Number(scope.row["upsetPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}
+              </div>
             <div v-else></div>
+            <!-- <template v-if="flag"> 
+              <i-input
+                v-if="ruleForm.biddingMode === '01' && !biddingStatus"
+                :value="scope.row['upsetPrice']"
+                type="number"
+                @input="value => $set(scope.row, 'upsetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+                placeholder="0.00"
+                @focus="handleInputFocus"
+                @blur="handleInputBlur"
+              />
+              <div v-else-if="ruleForm.biddingMode === '01' && biddingStatus">
+                {{ scope.row["upsetPrice"] ? scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}
+              </div>
+              <div v-else></div>
+            </template>
+            <template v-else>
+              <i-input
+                v-if="ruleForm.biddingMode === '01' && !biddingStatus"
+                :value="multiPriceValue[scope.row['id']].upsetPrice"
+                @focus="handleInputFocus"
+                @blur="handleInputBlur"
+              />
+              <div v-else-if="ruleForm.biddingMode === '01' && biddingStatus">
+                {{ scope.row["upsetPrice"] ? scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : '' }}
+              </div>
+              <div v-else></div>
+            </template> -->
           </template>
           <!-- 目标价 -->
           <template slot="targetPrice" slot-scope="scope">
@@ -165,7 +215,7 @@
               {{
                 ruleForm.biddingMode === "01"
                   ? scope.row["targetPrice"]
-                    ? scope.row["targetPrice"]
+                    ? multiPriceValue[scope.row['id']].targetPrice
                     : "" + currencyMultiple
                   : ""
               }}
@@ -192,6 +242,7 @@ import {
 import { findHallQuotation, saveBiddingQuotation } from "@/api/bidding/bidding";
 import Big from "big.js";
 import dayjs from "dayjs";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -202,6 +253,7 @@ export default {
     iFormItem,
     iLabel,
     tableColumnTemplate,
+    operatorInput
   },
   props: {
     id: String,
@@ -237,6 +289,7 @@ export default {
       modelProjectsOption: [],
       currencyUnit: {},
       supplierOffer: {},
+      multiPriceValue:{},
     };
   },
   watch: {
@@ -245,6 +298,19 @@ export default {
         this.handleSearchReset();
       }
     },
+    'ruleForm.supplierProducts':{
+      immediate:true,
+      handler(val){
+        this.multiPriceValue = val?.reduce((obj, item, index) => {
+          obj[item.id] = {
+            upsetPrice:Number(item?.upsetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+            targetPrice:Number(item?.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          }
+          return obj;
+          },{})
+      },
+      deep:true,
+    }
   },
   created() {
     this.id = this.$route.params.id;
@@ -280,7 +346,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     orgTotalPrices() {
       let supplierProducts = this.ruleForm.supplierProducts;
@@ -313,8 +379,14 @@ export default {
       if (this.ruleForm.totalPrices == null) {
         return 0 + this.currencyMultiple;
       }
-      return this.ruleForm.totalPrices + this.currencyMultiple;
+      return Number(this.ruleForm.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
+    startingPriceString(){
+      if (this.orgTotalPrices == null) {
+        return 0 + this.currencyMultiple;
+      }
+      return Number(this.orgTotalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
+    }
   },
   methods: {
     numberTotal(prices) {
@@ -446,6 +518,11 @@ export default {
       //保存
       saveBiddingQuotation(formData)
         .then((res) => {
+          if(res.kickoutReason) {
+            if (document.getElementsByClassName('el-message').length == 0) {
+              return this.$message.error(res.kickOutMessage)
+            }
+          }
           if (res) {
             this.$message.success(this.language('BIDDING_CHUJIACHENGGONG',"出价成功"));
           }
@@ -474,43 +551,45 @@ export default {
       if(this.ruleForm.totalPrices){
         this.ruleForm.totalPrices= this.dividedBeiShu(this.ruleForm?.totalPrices);
       }
-      getModels().then((res) => {
-        console.log(res);
-        data.models.forEach((item) => {
-          console.log(item);
-          this.modelsOption.push(
-            ...res?.data?.filter((e) => e.code === item.modelCode)
-          );
+      this.modelsOption = data.models
+      this.modelProjectsOption = data.modelProjects
+      // getModels().then((res) => {
+      //   console.log(res);
+      //   data.models.forEach((item) => {
+      //     console.log(item);
+      //     this.modelsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.modelCode)
+      //     );
 
-          let obj = {};
-          this.modelsOption = this.modelsOption.reduce(function (item, next) {
-            obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-            return item;
-          }, []);
-        });
-      });
-      getProjects().then((res) => {
-        data.modelProjects.forEach((item) => {
-          this.modelProjectsOption.push(
-            ...res?.data?.filter((e) => e.code === item.projectCode)
-          );
+      //     let obj = {};
+      //     this.modelsOption = this.modelsOption.reduce(function (item, next) {
+      //       obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+      //       return item;
+      //     }, []);
+      //   });
+      // });
+      // getProjects().then((res) => {
+      //   data.modelProjects.forEach((item) => {
+      //     this.modelProjectsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.projectCode)
+      //     );
 
-          let obj = {};
-          this.modelProjectsOption = this.modelProjectsOption.reduce(function (
-            item,
-            next
-          ) {
-            obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-            return item;
-          },
-          []);
-        });
-      });
+      //     let obj = {};
+      //     this.modelProjectsOption = this.modelProjectsOption.reduce(function (
+      //       item,
+      //       next
+      //     ) {
+      //       obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+      //       return item;
+      //     },
+      //     []);
+      //   });
+      // });
       if (!this.ruleForm.supplierProducts?.length) {
         this.ruleForm.supplierProducts = data.biddingProducts;
-        this.ruleForm.supplierProducts.forEach((item) => {
-          item.id = "";
-        });
+        // this.ruleForm.supplierProducts.forEach((item) => {
+        //   item.id = "";
+        // });
       }
     },
   },
@@ -570,10 +649,14 @@ export default {
                 border-color: transparent;
                 border-radius: 0.25rem;
                 .el-tag {
-                  background-color: #f5f7fa;
+                  /* background-color: #f5f7fa;
                   color: #000;
                   border-radius: 18px;
-                  border-color: #fff;
+                  border-color: #fff; */
+                  background-color: #f7f7f7;
+                  color: #000;
+                  border-radius: 1.25rem;
+                  border-color: #eef6ff;
                   margin-left: 3px;
                   min-width: 15px;
                 }

@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-27 14:29:09
- * @LastEditTime: 2021-11-10 16:17:19
- * @LastEditors:  
+ * @LastEditTime: 2021-12-09 15:48:10
+ * @LastEditors: Please set LastEditors
  * @Description: 定点管理状态管理，缓存定点管理 - 决策资料 - 预览状态，
  * 其他页面统一通过isPreview这个状态，禁用自己页面编辑
  *
@@ -38,7 +38,11 @@ const state = {
   nominationDisabled: false,
   rsDisabled: false,
   applicationStatus: "", // 定点状态
-  mtzApplyId: ''
+  mtzApplyId: '',
+  //定点管理 costType
+  costType:'',
+  // 缓存定点管理数据
+  nominationData: {}
 };
 
 const mutations = {
@@ -78,9 +82,21 @@ const mutations = {
   SET_MTZAPPID_STATUS(state, data) {
     state.mtzApplyId = data
   },
+  SET_COSTTYPE(state,data){
+    state.costType = data
+  },
+  SET_NOMINATEDATA(state,data){
+    state.nominationData = data
+  },
 };
 
 const actions = {
+  setNominateData({commit},data) {
+    commit('SET_NOMINATEDATA',data)
+  },
+  setCostType({commit},data){
+    commit('SET_COSTTYPE',data)
+  },
   setNominationTypeDisable({commit}, state) {
     commit('SET_DISABLE_NOMINATION', state)
   },
@@ -125,12 +141,14 @@ const actions = {
     return new Promise((resole,reject)=>{
       findFrontPageSeat(params).then(res=>{
         const {data={},code} = res;
-        const {phaseType="1",isSingle=false} = data;
+        const _data = { ...data, nodeList: data.nodeList.filter(item => item.tabName !== "BNK Reference") }
+
+        const {phaseType="1",isSingle=false} = _data;
         if(code == 200 && data){
-          commit('SET_NOMINATION_STEP', data);
+          commit('SET_NOMINATION_STEP', _data);
           commit('SET_PHASE_TYPE', phaseType);
           commit('SET_SINGLE_STATUS', isSingle);
-          resole(data);
+          resole(_data);
         }else{
           commit('SET_NOMINATION_STEP', {});
           commit('SET_PHASE_TYPE', phaseType); 
@@ -181,7 +199,8 @@ const getters = {
   isPartListNull: (state) => state.isPartListNull,
   nominationDisabled: (state) => state.nominationDisabled,
   rsDisabled: (state) => state.rsDisabled,
-  applicationStatus: (state) => state.applicationStatus
+  applicationStatus: (state) => state.applicationStatus,
+  nominationData: (state) => state.nominationData
 };
 
 export default {

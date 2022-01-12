@@ -2,16 +2,17 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-16 09:50:02
+ * @LastEditTime: 2021-12-20 10:37:36
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
 
 <template>
-  <div :class="`projectTop`">
-    <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav" />
+  <div class="projectTop">
+    <iNavMvp v-if="navList" :lev="1" :list="navList" :lang="true" routerPage class="nav margin-10" />
     <div style="display:flex;align-items:center">
       <iNavMvp v-if="subMenu" :lev="2" :list="subMenu" :lang="true" routerPage class="nav-sub" />
+      <switchPost />
     </div>
   </div>
 </template>
@@ -19,17 +20,37 @@
 <script>
 import { iNavMvp, icon } from "rise"
 import { TAB,SUBMENU } from "./data"
+import { roleMixins } from '@/utils/roleMixins'
+import switchPost from '@/components/switchPost'
 export default {
+  mixins:[roleMixins],
   components: {
     iNavMvp,
     icon,
+    switchPost
   },
   props: {
-    navList: {type:Array, default: window._.cloneDeep(TAB)},
+    // navList: {type:Array, default: window._.cloneDeep(TAB)},
     subNavList: {type:Array, default: window._.cloneDeep(SUBMENU)},
+    from: {type:Object, default:()=>({})}
   },
-
+  data(){
+    return{
+      TAB
+    }
+  },
   computed: {
+    navList(){
+      let TAB = window._.cloneDeep(this.TAB)
+      let path = this.from.path || JSON.parse(window.localStorage.getItem('fromPath'))
+      if(!path||path=='/'){
+          path = '/aeko/managelist'
+      }else{
+        localStorage.setItem('fromPath',JSON.stringify(path))
+      }
+      TAB[0].url = path
+      return TAB
+    },
     isProgressConfirm() {
       return this.$route.path.includes('progressconfirmsummary') || this.$route.path.includes('proconfirm')
     },
@@ -50,8 +71,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 27px;
   position: relative;
+  padding-bottom: 5px;
   &.withAfter::after {
     content: '';
     width: 100%;

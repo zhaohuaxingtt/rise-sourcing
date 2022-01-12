@@ -26,7 +26,7 @@
               <el-option
                 v-for="item in roundTypeLists"
                 :key="item.roundType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.roundType"
               >
               </el-option>
@@ -100,6 +100,13 @@ export default {
         this.ruleForm = val;
       },
     },
+    '$i18n.locale':{
+      immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+      }
+    },
     ruleForm(val) {
       this.$emit("input", val);
     },
@@ -118,7 +125,7 @@ export default {
   },
   data() {
     return {
-      rules: baseRules,
+      rules: baseRules(this),
       ruleForm: {},
       status: "未开标",
       openTenderStatusList,
@@ -129,9 +136,9 @@ export default {
   computed: {
     openDeadlineTimeOptions() {
       return {
-        // selectableRange: [
-        //   `${dayjs(new Date().getTime()).format("HH:mm:00")} - 23:59:59`,
-        // ],
+        selectableRange: [
+          `${dayjs(new Date().getTime()).format("HH:mm:00")} - 23:59:59`,
+        ],
         disabledDate: (time) => {
           return time.getTime() < Date.now() - 8.64e7;
         },

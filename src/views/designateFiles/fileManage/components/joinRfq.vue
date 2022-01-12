@@ -1,10 +1,10 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-09-13 14:29:07
+ * @LastEditors: Luoshuang
+ * @LastEditTime: 2021-12-06 17:43:13
  * @Description: 加入已有rfq
- * @FilePath: \front-web\src\views\designateFiles\fileManage\components\joinRfq.vue
+ * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
 
 <template>
@@ -22,19 +22,16 @@
               :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
       <el-form>
         <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
-          <iInput :placeholder="language('QINGSHURU','请输入')" v-model="form.searchConditions"
-                  v-permission="PARTSRFQ_SEARCHBOX"></iInput>
+          <iInput :placeholder="language('QINGSHURU','请输入')" v-model="form.searchConditions"></iInput>
         </el-form-item>
         <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
-          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.carType"
-                    v-permission="PARTSRFQ_MODELPROJECT">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.carType">
             <el-option value="" :label="language('ALL','全部') | capitalizeFilter"></el-option>
             <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </iSelect>
         </el-form-item>
         <el-form-item :label="language('RFQZHUANGTAI','RFQ状态')">
-          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.rfqStatus"
-                    v-permission="PARTSRFQ_RFQSTATUS">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.rfqStatus">
             <el-option value="" :label="language('ALL','全部') | capitalizeFilter"></el-option>
             <el-option v-for="items in rfqStatusOptions" :key='items.code' :value='items.code'
                         :label="items.name"/>
@@ -219,9 +216,9 @@ export default {
       try {
         const res = await getRfqList(req)
         this.tableListData = res.data;
-        this.page.currPage = res.data.pageNum
-        this.page.pageSize = res.data.pageSize
-        this.page.totalCount = res.data.total
+        this.page.currPage = res.pageNum
+        this.page.pageSize = res.pageSize
+        this.page.totalCount = res.total
         this.tableLoading = false;
       } catch {
         this.tableLoading = false;

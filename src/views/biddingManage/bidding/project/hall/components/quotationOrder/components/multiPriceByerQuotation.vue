@@ -33,7 +33,7 @@
                       class="form--item--number--input__totalprice"
                       :value="
                         ruleForm.totalPrices
-                          ? ruleForm.totalPrices + currencyMultiple
+                          ? ruleForm.totalPrices.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + currencyMultiple
                           : ''
                       "
                       disabled
@@ -85,7 +85,7 @@
                   ></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
-                      {{ tag.name }}
+                      {{ tag.model }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -100,7 +100,7 @@
                   ></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
-                      {{ tag.name }}
+                      {{ tag.project }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -273,7 +273,7 @@ export default {
     };
   },
   mounted() {
-    let o = {...planBaseData,title:'折现率'};
+    let o = {...planBaseData,title:this.language('BIDDING_ZHEXIANLV','折现率')};
     getDiscount({}).then((res) => {
       if(res?.data != null){
         res?.data?.md_discount_rate.map(item=>{
@@ -308,7 +308,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     numberUppercase() {
       return digitUppercase(
@@ -364,37 +364,38 @@ export default {
       this.ruleForm = {
         ...data,
       };
-      getModels().then((res) => {
-        data.models.forEach((item) => {
-          this.modelsOption.push(
-            ...res?.data?.filter((e) => e.code === item.modelCode)
-          );
+      // getModels().then((res) => {
+      //   data.models.forEach((item) => {
+      //     this.modelsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.modelCode)
+      //     );
 
-          let obj = {};
-          this.modelsOption = this.modelsOption.reduce(function (item, next) {
-            obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-            return item;
-          }, []);
-        });
-      });
+      //     let obj = {};
+      //     this.modelsOption = this.modelsOption.reduce(function (item, next) {
+      //       obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+      //       return item;
+      //     }, []);
+      //   });
+      // });
+      this.modelsOption = data.models
+      this.modelProjectsOption = data.modelProjects
+      // getProjects().then((res) => {
+      //   data.modelProjects.forEach((item) => {
+      //     this.modelProjectsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.projectCode)
+      //     );
 
-      getProjects().then((res) => {
-        data.modelProjects.forEach((item) => {
-          this.modelProjectsOption.push(
-            ...res?.data?.filter((e) => e.code === item.projectCode)
-          );
-
-          let obj = {};
-          this.modelProjectsOption = this.modelProjectsOption.reduce(function (
-            item,
-            next
-          ) {
-            obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-            return item;
-          },
-          []);
-        });
-      });
+      //     let obj = {};
+      //     this.modelProjectsOption = this.modelProjectsOption.reduce(function (
+      //       item,
+      //       next
+      //     ) {
+      //       obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+      //       return item;
+      //     },
+      //     []);
+      //   });
+      // });
       this.ruleForm.biddingProducts.forEach((items) => {
         //this.ruleForm.procurePlans 年降计划
         let o = {};
@@ -439,7 +440,7 @@ export default {
               item.procureYearMonth;
             obj[item.productId].procureYearMonth[`id${item.stage}`] = item.id;
             obj[item.productId].procureNum[`stage${item.stage}`] =
-              item.procureNum;
+              item.procureNum ? Number(item.procureNum).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : null
             obj[item.productId].procureNum[`id${item.stage}`] = item.id;
             return obj;
           }, {});
@@ -455,6 +456,21 @@ export default {
           title: items.productCode,
         });
       });
+      this.ruleForm.biddingProducts = this.ruleForm.biddingProducts.map(item => {
+        return {
+          ...item,
+          factoryPrice:Number(item.factoryPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          packingFee:Number(item.packingFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          transportFee:Number(item.transportFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          operationFee:Number(item.operationFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          moldFee:Number(item.moldFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          developFee:Number(item.developFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          targetPrice:Number(item.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          aveAnnualOutput:Number(item.aveAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          maxAnnualOutput:Number(item.maxAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          bprice:Number(item.bprice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+        }
+      })
     },
   },
 };
@@ -512,11 +528,16 @@ export default {
                 box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
                 border-color: transparent;
                 border-radius: 0.25rem;
+                background-color: #f5f7fa;
                 .el-tag {
-                  background-color: #f5f7fa;
+                  /* background-color: #f5f7fa;
                   color: #000;
                   border-radius: 18px;
-                  border-color: #fff;
+                  border-color: #fff; */
+                  background-color: #f7f7f7;
+                  color: #000;
+                  border-radius: 1.25rem;
+                  border-color: #eef6ff;
                   margin-left: 3px;
                   min-width: 15px;
                 }

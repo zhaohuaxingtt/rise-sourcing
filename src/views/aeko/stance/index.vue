@@ -11,6 +11,7 @@
       <!-- <h2>{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2> -->
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
+        <switchPost />
         <log-button v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
@@ -56,7 +57,12 @@
                       </el-option>  
                   </iSelect>
                 </template>
-                   
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                   <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
               </el-form-item>
@@ -143,10 +149,12 @@ import {
   iCard,
   iPagination,
   icon,
-  iMessage
+  iMessage,
+  iMultiLineInput
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
+import switchPost from '@/components/switchPost'
 import { TAB,filterRole,getLeftTab } from '../data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filesListDialog from '../manage/components/filesListDialog'
@@ -182,7 +190,9 @@ export default {
       filesListDialog,
       aekoSelect,
       iLog,
-      logButton
+      logButton,
+      switchPost,
+      iMultiLineInput
     },
     data(){
       return{

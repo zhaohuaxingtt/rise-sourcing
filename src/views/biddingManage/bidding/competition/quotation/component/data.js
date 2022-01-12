@@ -1,7 +1,7 @@
 import language from "@/utils/language";
 
 const isEmpty = (val) => !val && 0 !== val;
-export const baseRules = ({ ruleForm: form, realTotalPrices }) => ({
+export const baseRules = ( form,vm) => ({
   "biddingQuoteRule.limitValue": [
     { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
     { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
@@ -13,7 +13,7 @@ export const baseRules = ({ ruleForm: form, realTotalPrices }) => ({
             ? callback(new Error(language('BIDDING_BXDY0，BXXYDY100',"必须大于0，并且小于等于100")))
             : callback();
         } else {
-          value === "0" || value >= realTotalPrices
+          value === "0" || value >= vm.realTotalPrices
             ? callback(new Error(language('BIDDING_JCCJBXDY0，BQXYQPJ',"基础差价必须大于0，并且小于起拍价")))
             : callback();
         }
@@ -172,7 +172,7 @@ export const baseRules = ({ ruleForm: form, realTotalPrices }) => ({
       trigger: "blur",
     },
   ],
-  "biddingQuoteRule.targetPrice":[{ required: true, message: "请输入", trigger: "blur" }],
+  "biddingQuoteRule.targetPrice":[{ required: true, message: language('BIDDING_QINGSHURU',"请输入"), trigger: "blur" }],
   "biddingQuoteRule.yellowDeviationValue": [
     { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     { pattern: /^(\d|[1-9]\d|100)$/, message: language('BIDDING_BNDY100',"不能大于100"), trigger: "blur" },
@@ -207,9 +207,9 @@ export const baseRules = ({ ruleForm: form, realTotalPrices }) => ({
   ],
 });
 
-export const baseHeRules = (form) => ({
+export const baseHeRules = (form, vm) => ({
   "biddingQuoteRule.highestOffer": [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { amplitudeValue = '' } = form.biddingQuoteRule
@@ -218,13 +218,13 @@ export const baseHeRules = (form) => ({
           ? callback()
           : callback(new Error(rule.message));
       },
-      message: language('BIDDING_BXDYFDZ',"必须大于幅度值"),
+      message: vm.language('BIDDING_BXDYFDZ',"必须大于幅度值"),
       trigger: "blur",
     },
   ],
   "biddingQuoteRule.amplitudeValue": [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
-    { pattern: /^\+?[0-9]\d*$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { pattern: /^\+?[0-9]\d*$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     {
       validator(rule, value, callback) {
         const { highestOffer = '' } = form.biddingQuoteRule;
@@ -233,7 +233,7 @@ export const baseHeRules = (form) => ({
           : callback();
 
       },
-      message: language('BIDDING_BXXYZGBJ',"必须小于最高报价"),
+      message: vm.language('BIDDING_BXXYZGBJ',"必须小于最高报价"),
       trigger: "blur",
     },
     {
@@ -242,42 +242,42 @@ export const baseHeRules = (form) => ({
           ? callback(new Error(rule.message))
           : callback();
       },
-      message: language('BIDDING_BXWDY0',"必须为大于0"),
+      message: vm.language('BIDDING_BXWDY0',"必须为大于0"),
       trigger: "blur",
     },
   ],
   "biddingQuoteRule.biddingInterval": [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
-    { pattern: /^\+?[0-9]\d*$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { pattern: /^\+?[0-9]\d*$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
     {
       // pattern: /^([1-9]|[0-9][0-9]|600)$/,
       pattern: /^[5-9]{1}$|^[1-9]{1}[0-9]{1}$|^[1-5]{1}[0-9]{1}[0-9]{1}$|^600$/,
-      message: language('BIDDING_ZNSR5-600M',"只能输入5-600秒"),
+      message: vm.language('BIDDING_ZNSR5-600M',"只能输入5-600秒"),
       trigger: "blur",
     },
   ],
   "biddingQuoteRule.autoPriceLimit": [
-    { required: true, message: language('BIDDING_BITIAN','必填'), trigger: "blur" },
-    { pattern: /^\d+$/, message: language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
+    { required: true, message: vm.language('BIDDING_BITIAN','必填'), trigger: "blur" },
+    { pattern: /^\d+$/, message: vm.language('BIDDING_BXWZZS',"必须为正整数"), trigger: "blur" },
   ],
 });
 
 //差价限制
 export const priceDiffLimitSelectList = [
-  { id: "01", name: language('BIDDING_JSCJ',"基数差价") },
-  { id: "02", name: language('BIDDING_BFBCJ',"百分比差价") },
+  { id: "01", name: "基数差价", key:'BIDDING_JSCJ' },
+  { id: "02", name: "百分比差价", key:'BIDDING_BFBCJ' },
 ];
 
 // 排名显示规则
 export const rankDisplayRuleSelectList = [
-  { id: "01", name: language('BIDDING_XSBFPM',"显示本方排名") },
-  { id: "02", name: language('BIDDING_XSHLD(AMC QJDY)',"显示红绿灯(按名次 区间定义)") },
-  { id: "03", name: language('BIDDING_XSHLD(AMBJ PL BL DY)',"显示红绿灯(按目标价 偏离 比例 定义)") },
+  { id: "01", name: "显示本方排名", key:'BIDDING_XSBFPM' },
+  { id: "02", name: "显示红绿灯(按名次 区间定义)", key:'BIDDING_XSHLD(AMC QJDY)' },
+  { id: "03", name: "显示红绿灯(按目标价 偏离 比例 定义)", key:'BIDDING_XSHLD(AMBJ PL BL DY)' },
 ];
 
 //报价对象
 export const priceDiffObjectSelectList = [
-  { id: "01", name: language('BIDDING_ZIJI',"自己") },
+  { id: "01", name: "自己", key:'BIDDING_ZIJI' },
 ];
 
 // 单位
@@ -285,17 +285,21 @@ export const currencyMultipleLib = {
   "01": {
     beishu: 1,
     unit: "元",
+    key:'BIDDING_YUAN'
   },
   "02": {
     beishu: 1000,
     unit: "千",
+    key:'BIDDING_QIAN'
   },
   "03": {
     beishu: 10000,
     unit: "万",
+    key:'BIDDING_WAN'
   },
   "04": {
     beishu: 1000000,
     unit: "百万",
-  },
-};
+    key:'BIDDING_BAIWAN'
+  }
+}

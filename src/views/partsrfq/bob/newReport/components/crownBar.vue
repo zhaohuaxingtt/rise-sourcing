@@ -1,9 +1,56 @@
-
+<style scoped>
+.crown-bar-x-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #7E84A3;
+  font-family: Arial;
+  line-height: 23px;
+  text-align: center;
+  white-space: nowrap;
+}
+</style>
 <template>
-  <div>
-    <div style="height: 540px;width:100%"
+  <div style="width: 100%;">
+    <div style="height: 440px;width:100%"
          ref="chart">
     </div>
+    <template v-if="chartData.length > 0">
+      <div style="width: 100%;display:flex;flex-flow:row nowrap;">
+        <span style="width: 8%;"></span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{getCrownBarName(row)}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')','cursor': 'pointer'}" v-popover:bobTypePopper>
+          {{bobType}}<i class="el-select__caret el-input__icon el-icon- el-icon-caret-bottom"/>
+        </span>
+      </div>
+      <el-popover
+        ref="bobTypePopper"
+        placement="bottom"
+        width="150"
+        trigger="click">
+        <el-radio-group v-model="bobType">
+          <el-radio label="Best of Best">Best of Best</el-radio>
+          <el-radio label="Best of Average">Best of Average</el-radio>
+          <el-radio label="Best of Second">Best of Second</el-radio>
+        </el-radio-group>
+      </el-popover>
+      <div style="width: 100%;display:flex;flex-flow:row nowrap;">
+        <span style="width: 8%;"></span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">
+          {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{row.turn}}</a>/{{row.totalTurn}}{{language('LK_TURN','轮')}}
+        </span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+      </div>
+      <div style="width: 100%;display:flex;flex-flow:row nowrap;margin-top: 10px;">
+        <span style="width: 8%;color: #3C4F74;">{{language('LK_CARPROJECT','车型项目')}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{row.vehicleType}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+      </div>
+      <div style="width: 100%;display:flex;flex-flow:row nowrap;">
+        <span style="width: 8%;color: #3C4F74;">{{language('LK_CARPROJECTRFQ','报价时间')}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{getCrownBarReqTime(row)}}</span>
+        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+      </div>
+    </template>
   </div>
 </template>
 <script >
@@ -16,10 +63,6 @@ export default {
     chartData: {
       type: Array,
       default: () => [],
-    },
-    supplierList: {
-      type: Array,
-      default: () => []
     },
     partList: {
       type: Array,
@@ -48,21 +91,22 @@ export default {
       labelArray: [],
       labelArray1: [],
       legendKeys: {
-        "原材料/散件": "rawMaterialSummary",
-        '制造费': "manufacturingCostSummary",
+        "原材料/散件成本": "rawMaterialSummary",
+        '制造成本': "manufacturingCostSummary",
         '报废成本': "discardCostsSummary",
-        '管理费': "administrationCostsSummary",
+        '管理费用': "administrationCostsSummary",
         '其他费用': "otherCostsSummary",
         '利润': "profit",
       },
       legendArray: [
-        "原材料/散件",
-        "制造费",
+        "原材料/散件成本",
+        "制造成本",
         "报废成本",
-        "管理费",
+        "管理费用",
         "其他费用",
         "利润",
       ],
+      bobType: "",
       dataArray: [],
       subtext: "",
       sum: window._.sum,
@@ -81,6 +125,22 @@ export default {
     };
   },
   methods: {
+    getCrownBarName(row) {
+      let name = row.supplierName
+
+      if (this.chartType === "num") {
+        name = row.spareParts;
+        this.partList.forEach(value => {
+          if (name == value.spareParts) {
+            name = value.shortNameZh
+          }
+        })
+      }
+      return name
+    },
+    getCrownBarReqTime(row) {
+      return window.moment(row.cbdQuotationTime).format("yyyy.MM");
+    },
     bos (arr) {
       const min = this.min(arr);
       let send = this.max(arr);
@@ -157,7 +217,7 @@ export default {
           },
           textStyle: {
             fontSize: 12,
-            color: "#e1e1e2"
+            color: "#7E84A3"
           }
         },
         // legend: {
@@ -173,7 +233,7 @@ export default {
           left: "8%",
           top: '25%',
           right: '0%',
-          bottom: "22%",
+          bottom: "3%",
           // containLabel: true,
         },
         xAxis: [
@@ -220,6 +280,7 @@ export default {
               alignWithLabel: true,
             },
             axisLabel: {
+              // show: false,
               align: 'center',
               fontFamily: "Arial",
               interval: 0,
@@ -237,11 +298,10 @@ export default {
           {
             type: "value",
             offset: 15,
-            name: "\n\n\n\n\n车型项目\n\n报价时间",
             axisLabel: {
               fontSize: 12,
               color: "#3C4F74",
-              fontWeight: 400,
+              fontWeight: 400
             },
             axisTick: {
               show: false,
@@ -254,9 +314,9 @@ export default {
             max: this.maxData
           },
         ],
-        emphasis: {
-          focus: "series",
-        },
+        // emphasis: {
+        //   focus: "series",
+        // },
         color: [
           "#C6DEFF",
           "#9BBEFF",
@@ -295,12 +355,6 @@ export default {
           //todo
           let name = row.supplierName
 
-          // this.supplierList.forEach(value => {
-          //   if (name == value.supplierId) {
-          //     name = value.shortNameZh
-          //   }
-          // })
-
           if (this.by === "num") {
             name = row.spareParts;
             this.partList.forEach(value => {
@@ -309,14 +363,7 @@ export default {
               }
             })
           }
-          const str =
-            name +
-            "\n第{Blue|" +
-            row.turn +
-            "}/" +
-            row.totalTurn +
-            "轮\n\n" +
-            "{font|" + temp + "}";
+          const str = name
           this.labelArray.push({
             value: str,
             textStyle: {
@@ -358,22 +405,30 @@ export default {
            
           });
         });
+
         const minList = [];
         this.legendArray.forEach((row, i) => {
           const dataList0 = this.cloneDeep(tempArr[row]);
+          if (tempArr[row] && tempArr[row].length > 0) {
+            var temp = []
+            tempArr[row].forEach((num) => {
+              temp.push(Number(num))
+            })
+            tempArr[row] = temp;
+          }
           const min = Number(this.min(tempArr[row]))
           let sumList = tempArr[row].map(Number)
           let data = min;
-          if (this.type === "Best of Average") {
+          if (this.bobType === "Best of Average") {
             // data = this.doNumber((this.sum(tempArr[row]) / tempArr[row].length))
-            data = (this.sum(sumList) / tempArr[row].length)
+            data = tempArr[row].length <= 0 ? 0 : (this.sum(sumList) / tempArr[row].length)
 
-          } else if (this.type === "Best of Second") {
+          } else if (this.bobType === "Best of Second") {
             data = this.bos(sumList);
           }
           minList.push(data);
           if (i === 0) {
-            tempArr[this.type] = [];
+            tempArr[this.bobType] = [];
           }
 
           this.dataArray.push({
@@ -382,9 +437,9 @@ export default {
             // stack:"lv",
             barGap: "-100%",
             z: 20 - i,
-            emphasis: {
-              focus: "series",
-            },
+            // emphasis: {
+            //   focus: "series",
+            // },
             label: {
               show: true,
               position: "insideTop",
@@ -394,7 +449,7 @@ export default {
               distance: 15,
               offset: [-2, 0],
               formatter: (params) => {
-                if (params.name === this.type) {
+                if (params.name === this.bobType) {
                   return this.doNumber(data);
                 } else {
                   return this.doNumber(tempArr[row][params.dataIndex]);
@@ -423,9 +478,9 @@ export default {
             name: row + "lv",
             type: "bar",
             stack: "lv",
-            emphasis: {
-              focus: "series",
-            },
+            // emphasis: {
+            //   focus: "series",
+            // },
             label: {
               show: true,
               position: "right",
@@ -433,7 +488,7 @@ export default {
               formatter: (params) => {
                 if (
                   data == params.value &&
-                  params.name !== this.type &&
+                  params.name !== this.bobType &&
                   this.type !== "Best of Average"
                 ) {
                   return "\t\t{lv|}";
@@ -465,7 +520,8 @@ export default {
         });
         // console.log(this.dataArray)
 
-        this.labelArray.push(this.type);
+        this.labelArray.push(this.bobType);
+        
         this.dataArray.push({
           name: "sum",
           type: "bar",
@@ -482,9 +538,8 @@ export default {
               const min = this.min(dataList1["利润"]);
               // const sum=this.sum(tempArr[params.name])
               const index = params.dataIndex;
-              if (params.name === this.type) {
+              if (params.name === this.bobType) {
                 const sum = this.sum(minList);
-                // console.log(sum)
                 return this.doNumber(sum)
                 // return '{bold|'+sum+'}'
               } else if (min) {
@@ -547,7 +602,8 @@ export default {
     },
   },
   mounted () {
-    this.initCharts();
+    this.bobType = this.type;
+    // this.initCharts();
   },
   watch: {
     title: {
@@ -566,6 +622,7 @@ export default {
     },
     type: {
       handler (str) {
+      if (str) this.bobType = str;
         this.initData(this.chartData);
       },
       immediate: true,
@@ -576,6 +633,9 @@ export default {
       },
       immediate: true,
     },
+    bobType(val) {
+      this.$emit("type-changed", val)
+    }
   },
 };
 </script>

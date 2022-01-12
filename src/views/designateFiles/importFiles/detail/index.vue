@@ -143,6 +143,7 @@ export default {
                 searchParams[i] = '';
             }
             this.searchParams = searchParams;
+            this.sure()
         },
         // 改变弹窗是否显示状态
         changeShowStatus(){
@@ -182,7 +183,7 @@ export default {
 
         // 跳转RFQ详情
         goFilesList(rfqId){
-             const router =  this.$router.resolve({path: `/costanalysismanage/rfqdetail?rfqId=${rfqId}`})
+             const router =  this.$router.resolve({path: `/targetpriceandscore/costanalysismanage/rfqdetail?rfqId=${rfqId}`})
              window.open(router.href,'_blank');
             // this.$router.push({
             //     path:'/costanalysismanage/rfqdetail',

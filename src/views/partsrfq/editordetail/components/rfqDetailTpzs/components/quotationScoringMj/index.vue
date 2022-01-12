@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2021-07-17 11:07:26
+ * @LastEditTime: 2022-01-10 17:47:33
  * @LastEditors: Please set LastEditors
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -33,10 +33,10 @@ export default {
   },
   computed:{
     disabled() {
-      return !this.dgysBj || this.getDisabled()
+      return (this.dgysBj || this.getDisabled())
     },
     hastateSupplierBj(){
-      return this.getbaseInfoData().currentRoundsStatus != "已关闭" && this.quotationSupplierState
+      return (this.getbaseInfoData().currentRoundsStatus !== "已关闭" && this.quotationSupplierState)
     }
   },
   watch:{
@@ -68,7 +68,6 @@ export default {
         supplierId: this.supplierId
       }).then(res=>{
         if(res.code == 200){
-          this.quotationSupplierState = res.data
           if(this.dgysBj) this.dgysBj = res.data
         }
       }).catch(err=>{

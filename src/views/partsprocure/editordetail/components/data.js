@@ -1,12 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-02-25 10:10:50
- * @LastEditTime: 2021-11-22 14:02:05
+ * @LastEditTime: 2021-11-26 13:58:41
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\editordetail\components\data.js
  */
 import {partProjTypes} from '@/config'
+
 //零件采购详情数据
 export const detailData = {
 	bmg: "", //Boolean
@@ -14,6 +15,7 @@ export const detailData = {
 	cartypeCategory: "", //车型大类
 	carTypeProjectNum: "", //	车型项目编号
 	carTypeProjectZh: "", //	 车型项目
+	carTypeProjectId:"",//车型项目ID
 	categoryCode: "", //	 材料组编号
 	cfController: "", //	integer($int64) CF控制员
 	isCommonSourcing: "", //	
@@ -53,7 +55,7 @@ export const detailData = {
 	isDB: 0,// 是否DB件
 	oldFsnrGsnrNum:'', //老零件号
 	carTypeModel:[],//车型
-	cartypes:[] //车型数组
+	procureFactoryId:""//采购工厂ID
 }
 // 采购项目拆分表头
 export const splitPurchTitle = [
@@ -93,8 +95,38 @@ export function translateDataForService(data){
 export function getOptionField(value, valueField, options, otherField = "name") {
 	if (!Array.isArray(options)) return value
 
-	const currentOption = options.find(item => item[valueField] === value)
-	if (!currentOption) return value
+	if (Array.isArray(value)) {
+		const map = new Map()
 
-	return currentOption[otherField]
+		value.forEach((v, i) => map.set(v, i)) // 数据为key, 序号为value
+		const result = []
+
+		options.every(item => {
+			if (map.size) {
+				if (map.has(item[valueField])) {
+					result[map.get(item[valueField])] = item[valueField]
+					map.delete(item[valueField])
+				}
+			}
+			
+			return false
+		})
+
+		if (map.size) {
+			map.forEach((value, key) => {
+				result[value] = key
+			})
+		}
+
+		return result.join(",")
+	}
+
+	if (typeof value === "string") {
+		const currentOption = options.find(item => item[valueField] === value)
+		if (!currentOption) return value
+
+		return currentOption[otherField]
+	}
+
+	return value
 }

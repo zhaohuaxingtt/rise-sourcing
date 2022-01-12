@@ -1,14 +1,14 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-09-24 14:43:21
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-03 14:07:45
+ * @LastEditors: Luoshuang
  * @Description: 报价评分跟踪
- * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
+ * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
 -->
 <template>
   <div class="timeline">
-      <div class="topline" v-permission="RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU">
+      <div class="topline" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAYUPINGFENGENZONG_RENWUJINDU|报价与评分跟踪-任务进度">
         <span class="margin-right20">整体任务进度: 
           <!-- <el-tooltip placement="right" effect="light">
           <icon symbol style="font-size:20px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+allJdu].icon"></icon>
@@ -26,7 +26,7 @@
           </el-tooltip>
         </span>
       </div>
-      <timeline v-if='timeListdata.length>0' v-permission="RFQ_DETAIL_TIPS_BAOJIAFENXI_RENWUJINDU" :timeList='timeListdata'></timeline>
+      <timeline v-if='timeListdata.length>0' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAYUPINGFENGENZONG_RENWUJINDU|报价与评分跟踪-任务进度" :timeList='timeListdata'></timeline>
       <div v-else class="noData">当前暂无进度数据</div>
       <tabelData :tableTile='tableTile' :tableData='tableDatas'></tabelData>
   </div>
@@ -87,6 +87,8 @@ export default{
       return number
     },
     negoScoreReport(){
+      if (!this.$route.query.id) return
+
       negoScoreReport(this.$route.query.id).then(res=>{
         if(res.code == 200){
           this.tableTile = buildTitleTabel(res.data)
@@ -102,6 +104,8 @@ export default{
      * @return {*}
      */
     getTimeLine(qutaitonId,rfqId){
+      if (!qutaitonId || !rfqId) return
+
       getTimeLine(qutaitonId,rfqId).then(res=>{
         if(res.data){
           this.daliyTime = res.data.wholeProgressRisk || 0 //整车进度风险

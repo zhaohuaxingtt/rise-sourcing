@@ -2,23 +2,41 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:14:14
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-01 14:06:33
+ * @LastEditTime: 2021-11-25 16:32:17
  * @Description: 财务目标价顶部导航
- * @FilePath: \front-web\src\views\financialTargetPrice\components\headerNav.vue
+ * @FilePath: \front-sourcing\src\views\modelTargetPrice\components\headerNav.vue
 -->
 
 <template>
   <div class="headerNav">
-    <iNavMvp :list="list" @change="change" :lang="true" :lev="1" routerPage></iNavMvp>
-    <iNavMvp @change="change" class="pull-right" :lang="true" right routerPage lev="2" :list="navList" />
+    <headerNav type="financialmanage">
+      <div class="control">
+        <iLoger
+          :config="{
+            module_obj_ae: '模具目标价', 
+            menuName_obj_ae: ''
+          }"
+          isPage
+          credentials
+          optionDicKey="LOG_OPERATION_TYPES"
+          optionDicKey2="模具目标价详情页"
+          class="margin-left20" />
+        <span class="margin-left20">
+          <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
+        </span>
+      </div>
+    </headerNav>
   </div>
 </template>
 
 <script>
-import { iNavMvp } from 'rise'
-import { TAB, MENU } from './data'
+import { iNavMvp, icon } from 'rise'
+import headerNav from "@/components/headerNav"
+import { MENU } from './data'
+import iLoger from 'rise/web/components/iLoger'
+import { TAB } from '@/views/financialTargetPrice/components/data'
 export default {
-  components: {iNavMvp},
+  components: {headerNav, iNavMvp, icon, iLoger},
   data() {
     return {
       list: TAB,
@@ -35,9 +53,27 @@ export default {
 .headerNav {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 40px;
+  width: 100%;
+
+  ::v-deep .headerNav-wraper {
+    width: 100%;
+  }
+  
   .nav div {
     margin-left: 0;
+  }
+  .right-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .control {
+    // position: absolute;
+    // top: 30px;
+    // right: 50px;
+    display: flex;
+    align-items: center;
+    height: 30px;
   }
 }
 </style>

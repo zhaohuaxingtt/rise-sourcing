@@ -10,16 +10,20 @@ export const navList = [
   {
     value: 1,
     name: "成本分析管理",
-    url: "/costanalysismanage/home",
+    url: "/targetpriceandscore/costanalysismanage/home",
     activePath: "/costanalysismanage/home",
-    key: "CHENGBENFENXIGUANLI"
+    key: "CHENGBENFENXIGUANLI",
+    permissionKey: "COSTANALYSISMANAGE_HOME_TAB",
+    permissionName: "成本分析管理"
   },
   {
     value: 2,
     name: "数据维护",
-    url: "/costanalysismanage/datamaintenance/costMaintenance",
-    activePath: "/costanalysismanage/datamaintenance/costMaintenance",
-    key: "SHUJUWEIHU"
+    url: "/targetpriceandscore/datamaintenance/costMaintenance",
+    activePath: "/datamaintenance/costMaintenance",
+    key: "SHUJUWEIHU",
+    permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_TAB",
+    permissionName: "数据维护"
   }
 ]
 

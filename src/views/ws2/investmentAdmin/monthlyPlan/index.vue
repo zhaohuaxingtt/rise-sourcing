@@ -30,11 +30,11 @@
           :buttonText="$t('LK_SHANGCHUANQINGDAN')"
           class="margin-left10 margin-right10"
         />
-        <iButton @click="saveAsList" v-if="versionData.editFlag">{{ $t("LK_BAOCUN") }}</iButton>
+        <iButton @click="saveAsList" v-if="!versionData || versionData.editFlag">{{ $t("LK_BAOCUN") }}</iButton>
         <iButton @click="saveAsNew">{{ $t("LK_BAOCUNWEIXINBANBEN") }}</iButton>
       </div>
       <div v-else>
-        <iButton @click="edit" v-if="versionData.editFlag">{{ $t("LK_BIANJI") }}</iButton>
+        <iButton @click="edit" v-if="!versionData || versionData.editFlag">{{ $t("LK_BIANJI") }}</iButton>
         <iButton @click="downloadList">{{ $t("LK_XIAZAIQINGDAN") }}</iButton>
       </div>
     </div>
@@ -263,7 +263,7 @@ export default {
   },
   data() {
     return {
-      versionData: {},
+      versionData: '',
       versionList: [],
       tabIndex: 0, //柱状图tab
       pageEdit: false,

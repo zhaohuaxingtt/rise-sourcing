@@ -1,21 +1,24 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 15:43:21
- * @LastEditTime: 2021-09-26 14:30:00
- * @LastEditors: zbin
+ * @LastEditTime: 2021-12-10 13:35:40
+ * @LastEditors: Please set LastEditors
  * @Description: 内部需求分析概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\overView\index.vue
 -->
 <template>
   <el-row gutter="20">
-    <el-col :span="8" v-for="(item,index) in list" :key="index">
-      <div @click="onJump(item)" class="cursor cardBox">
+    <el-col :span="8"
+            v-for="(item,index) in list"
+            :key="index">
+      <div @click="onJump(item)"
+           class="cursor cardBox">
         <iCard class="icard">
           <div slot="header">
             <span class="title">{{language(item.key,item.name)}}</span>
           </div>
-          <div class="img">
-            <img :src="item.image">
+          <div class="img"
+               :style="{'background-image': 'url('+item.image+')'}">
           </div>
         </iCard>
       </div>
@@ -29,7 +32,7 @@ export default {
   components: {
     iCard,
   },
-  data() {
+  data () {
     return {
       list: [
         {
@@ -56,7 +59,9 @@ export default {
         }, {
           name: "EKL",
           key: "EKL",
-          image: require("@/assets/images/partRfq/internalDemandAnalysis05.png")
+          image: require("@/assets/images/partRfq/internalDemandAnalysis05.png"),
+          // url: process.env.VUE_APP_PORTAL_URL + "achievement/baseData/list"
+          url: process.env.VUE_APP_PORTAL_URL + "achievement/baseData/mymerit"
         }, {
           name: "SOP进度轴",
           key: "SOPJINDUZHOU",
@@ -89,13 +94,14 @@ export default {
     }
   },
   methods: {
-    onJump(item) {
+    onJump (item) {
       if (this.$store.state.rfq.categoryCode) {
         switch (item.key) {
           // 成本结构
           case 'CHENGBENJIEGOU':
             this.getCostData().then(res => {
               if (res.analysisType == "1") {
+
                 //跳转系统
                 this.$router.push({
                   path: item.url,
@@ -119,6 +125,9 @@ export default {
               }
             })
             break;
+          case 'EKL':
+            window.open(process.env.VUE_APP_PORTAL_URL + "achievement/baseData/list")
+            break;
           default:
             this.$router.push({
               path: item.url,
@@ -131,7 +140,7 @@ export default {
       }
     },
     // 获取成本结构数据，用于判断跳转系统/手工页面
-    getCostData() {
+    getCostData () {
       const params = {
         categoryCode: this.$store.state.rfq.categoryCode
       }
@@ -154,12 +163,10 @@ export default {
   height: 406px;
   margin-bottom: 20px;
   .img {
-    height: 100%;
+    height: 18rem;
+    background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
-    img {
-      width: 100%;
-      height: 18rem;
-    }
   }
 }
 </style>

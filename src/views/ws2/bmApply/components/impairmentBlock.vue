@@ -19,7 +19,7 @@
 
         <!-- RS单号 -->
         <template #rsNum="scope">
-          <div @click="openViewPdf(scope.row)" class="table-txtStyle">{{scope.row.rsNum}}</div>
+          <div @click="openViewPdf(scope.row)" :class="scope.row.rsNum == 'AEKO RS单'? '' :'table-txtStyle' ">{{scope.row.rsNum}}</div>
         </template>
       </iTableList>
 
@@ -103,8 +103,23 @@ export default {
 
     //  预览RSpdf
     openViewPdf(scope){
-      const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
-      window.open(url);
+      if(scope.rsNum == 'AEKO RS单') {
+        return
+      }
+      const first = scope.rsNum.slice(0,1);
+      if(~~first === 5){
+        let routeData = this.$router.resolve({
+          path: '/tooling/investmentReport/rsDetails',
+          query: {
+            rsNum: scope.rsNum,
+            pageType: 0,
+          },
+        })
+        window.open(routeData.href, '_blank')
+      }else{
+        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
+        window.open(url);
+      }
     },
 
     //  确认申请
@@ -194,11 +209,11 @@ export default {
 
     //  下载清单
     downloadList(){
-      if(!this.selectTableList.length){
-        return iMessage.warn(this.$t('LK_QINGXUANZHE'))
-      }
-
-      excelExport(this.selectTableList, this.bmTableHead, 'BM申请单');
+      console.log(this.selectTableList, this.aekoBmTableHead, '1212')
+      // if(!this.selectTableList.length){
+      //   return iMessage.warn(this.$t('LK_QINGXUANZHE'))
+      // }
+      excelExport(this.selectTableList, this.aekoBmTableHead, 'BM申请单');
     },
 
     handleSelectionChange(val){

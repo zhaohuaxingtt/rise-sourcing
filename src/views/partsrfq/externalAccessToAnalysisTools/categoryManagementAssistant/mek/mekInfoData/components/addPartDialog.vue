@@ -46,6 +46,20 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
+          <el-form-item :label="language('LINGJIANAEKODINGDIAN','零件/Aeko定点')">
+            <el-select v-model="form.isFromAeko"
+                       :placeholder="language('QINGXUANZE','请选择')">
+              <el-option label="是"
+                         value="true"></el-option>
+              <el-option label="否"
+                         value="false"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex"
+              justify="end">
+        <el-col :span="4">
           <el-form-item>
             <iButton @click="getTableList">{{$t('LK_QUEREN')}}</iButton>
             <iButton @click="handleSearchReset">{{$t('LK_ZHONGZHI')}}</iButton>
@@ -61,6 +75,9 @@
                :selection='true'
                :index="true"
                @handleSelectionChange="handleSelectionChange">
+      <template #isFromAeko="scope">
+        <div> {{scope.row.isFromAeko?'是':"否"}}</div>
+      </template>
     </tableList>
     <div slot="footer"
          class="dialog-footer">
@@ -70,7 +87,7 @@
 </template>
 
 <script>
-import { iInput, iButton, iDialog, icon } from 'rise'
+import { iInput, iButton, iDialog, icon, iMessage } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addPartTableTitle } from "./data.js";
 import { getPartMessage, infoAdd } from "@/api/partsrfq/mek/index.js";
@@ -94,7 +111,8 @@ export default {
         fsNum: '',
         partNum: '',
         rfq: this.$store.state.rfqId || '',
-        project: '1'
+        project: '1',
+        isFromAeko: ""
       },
       formGoup: {
         materialGroupList: [],
@@ -112,7 +130,7 @@ export default {
     async handleAdd () {
       const pms = {
         list: this.selectTableData,
-        mekId: this.$route.query.chemeId
+        mekId: this.$route.query.schemeId
       }
       const res = await infoAdd(pms)
       this.resultMessage(res, () => {
@@ -133,15 +151,41 @@ export default {
       this.getTableList()
     },
     async getTableList () {
+      let vwModelCodes = JSON.parse(this.$route.query.vwModelCodes)
       try {
         this.tableLoading = true
-        const pms = {
-          ...this.form,
-          categoryCode: this.$route.query.categoryCode || '',
-          modelIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
+        if (this.form.project === '1') {
+          let targetMotorId = vwModelCodes.shift()
+          let motorIds = vwModelCodes
+          const pms = {
+            ...this.form,
+            categoryCode: this.$route.query.categoryCode || '',
+            motorIds: motorIds || [],
+            targetMotorId: targetMotorId,
+            isBindingRfq: this.$route.query.isBindingRfq,
+            schemeId: this.$route.query.schemeId
+          }
+          const res = await getPartMessage(pms)
+          if (res.code === '200') {
+            this.tableListData = res.data
+          } else {
+            iMessage.error(res.desZh)
+          }
+        } else {
+          const pms = {
+            ...this.form,
+            categoryCode: this.$route.query.categoryCode || '',
+            motorIds: vwModelCodes || [],
+            isBindingRfq: this.$route.query.isBindingRfq,
+            schemeId: this.$route.query.schemeId
+          }
+          const res = await getPartMessage(pms)
+          if (res.code === '200') {
+            this.tableListData = res.data
+          } else {
+            iMessage.error(res.desZh)
+          }
         }
-        const res = await getPartMessage(pms)
-        this.tableListData = res.data
         this.tableLoading = false
       } catch (error) {
         this.tableLoading = false

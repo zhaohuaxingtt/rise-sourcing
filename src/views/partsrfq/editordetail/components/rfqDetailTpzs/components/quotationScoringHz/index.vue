@@ -12,9 +12,9 @@
       <!--------------输入框模块-------------->
       <div class='search'>
         <div class="needAddWhi" v-if='!disabel'>
-          <span>Hide/unHide：</span>
+          <span>Fillter：</span>
           <iSelect v-model="backChoose" multiple :collapse-tags='true' @remove-tag='removeTags' @visible-change='visibleChange'>
-            <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label" :value="items.props"></el-option>
+            <el-option v-for='(items,index) in backChooseLists' :key='index' :label="items.label || items.name" :value="items.props || items.name"></el-option>
           </iSelect> 
         </div>
         <div v-if='showRound && !disabel'>
@@ -34,23 +34,29 @@
         </div>            
       </div>
       <div class="btnSearch" v-if='!disabel && !disabled'>
-        <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading">引用报价</iButton>
-        <iButton @click="group"  v-if='layout == "1" && !abPrice'>组合</iButton>
-        <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice'>取消组合</iButton>
+        <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_QUOTEINQUIRYPRICE|报价分析汇总-零件-引用报价按钮">引用报价</iButton>
+        <iButton @click="group"  v-if='layout == "1" && !abPrice' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_GROUPBTN|报价分析汇总-零件-组合按钮">组合</iButton>
+        <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_REMOVEBTN|报价分析汇总-零件-取消组合按钮">取消组合</iButton>
         <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
-        <iButton v-if='isKborJj == 2' @click="options.show = true">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
-        <iButton  @click="exportParts(layout)">{{language('DAOCHU','导出')}}</iButton>
+        <iButton v-if='isKborJj == 2' @click="options.show = true" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_KBOJJBTN|报价分析汇总-零件-开标结果按钮">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
+        <iButton  @click="exportParts(layout)" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_DOWNLOADBTN|报价分析汇总-零件导出按钮">{{language('DAOCHU','导出')}}</iButton>
+        <iButton @click="openView" v-if='!preview'>{{language('SOURCING_RFQDETAIL_FANGDACHAK','预览')}}</iButton>
       </div>
       <!--------------表格模块-------------->
     </div>
-    <tableList v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1" || layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
-    <tableListSupplier ref='tableSupplier' :cWidth='cWidth' :budget='budget' :kmAPrice='kmAPrice' :kmTooling='kmTooling' v-loading='supplierTableLoading' :centerSupplierData='suppliertopList' :supplierLeftLit='supplierLeftLit' :supplierRightList='supplierRightList' :tableTitle='supplierTile'  :tableData='supplierData' v-if='layout == "2" && showTable'></tableListSupplier>
+    <template v-if='!hasNoBidOpen'>
+      <tableList ref="tableList" v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "1" || layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tableList>
+      <tableListSupplier v-loading='supplierTableLoading' ref='tableSupplier' v-if='layout == "2"' :parentsData='tabelDataSupplier'></tableListSupplier>
+    </template>
+    <template v-else>
+      <span class="flex-center-center font18 noData">{{language('BAOQIANDANGQIANWUFACHAKKBXX','抱歉！当前轮次还未开标您无法查看报价汇总信息。')}}</span>
+    </template>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
     <div class="margin-top10 font-size14">
-      <p v-if="exchangeRatesCurrentVersionStr">Exchange rate: {{ exchangeRatesCurrentVersionStr }}</p>
       <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
-        <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate {{ exchangeRate.version }}: {{ exchangeRate.str }}</p>
+        <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
       </div>
+      <p v-if="exchangeRatesCurrentVersionStr">Current Exchange rate: {{ exchangeRatesCurrentVersionStr }}</p>
     </div>
     <!-- <tablelistGSasRow v-loading='fsTableLoading' @sortChangeTabless='sortChange' :round='round' :tableTitle='title' v-if='layout == "3"' :ratingList='ratingList' :tableData='exampelData' @handleSelectionChange='handleSelectionChange'></tablelistGSasRow> -->
     <!--------------弹窗-------------->
@@ -64,7 +70,7 @@
       </template>
     </iDialog>
     <!-------开标结果------->
-    <bidOpenResult :options='options' :round='round'></bidOpenResult>
+    <bidOpenResult :options='options' :round='round' :rundList='rundList'></bidOpenResult>
   </div>
 </template>
 <script>
@@ -73,11 +79,13 @@ import tableList from './components/table'
 import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
-import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,getRenderTableTileSupplier,translateDataListSupplier,getleftTittleList,defaultLayoutTemplate, lastSupplier} from './components/data'
+import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,showOrHide,getRowAndcolSpanArray,defaultLayoutTemplate} from './components/data'
 import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
+    exportTile:[],
+    supplierLoading:false,
     title:getRenderTableTile([],0,1),
     exampelData:exampelData,
     groupSelectData:[],
@@ -86,7 +94,7 @@ export default{
     supplierData:[],
     supplierTile:[],
     //轮次选择
-    round:'',
+    round:'-1',
     rundList:[],
     backChooseLists:[],
     backChoose:[],
@@ -116,8 +124,11 @@ export default{
     quoteInquiryPriceLoading: false,
     options:{show:false},
     roundsType,
+    DataRoundsType:'',
     exchangeRatesCurrentVersionStr: "",
-    exchangeRatesOldVersions: []
+    exchangeRatesOldVersions: [],
+    hasNoBidOpen:false,
+    tabelDataSupplier:{}
   }},
   watch:{
     /**
@@ -144,9 +155,8 @@ export default{
     },
     //判断当前是开标还是竞价，需要对按钮做不同的展示。
     isKborJj(){
-      console.log(this.getbaseInfoData())
-      if(this.getbaseInfoData().roundsType == this.roundsType.zxjjys) return 1
-      if(this.getbaseInfoData().roundsType == this.roundsType.zxkb) return 2
+      if(this.DataRoundsType == this.roundsType.zxjjys) return 1
+      if(this.DataRoundsType == this.roundsType.zxkb) return 2
       return 0
     }
   },
@@ -154,15 +164,14 @@ export default{
     this.layout = this.getLayoutDetaultNumber()
     this.searchABPageExchangeRate()
   },
-  destroyed(){
-    console.log('---------------')
-  },
   mounted(){
-    this.round = this.getbaseInfoData().currentRounds || 1
     this.init()
   },
   provide(){
     return {vm:this}
+  },
+  props:{
+    preview:Boolean
   },
   methods:{
     /**
@@ -170,6 +179,16 @@ export default{
      * @param {*}
      * @return {*}
      */
+    openView(){
+      let routerView = this.$router.resolve({
+        path:'/sourceinquirypoint/sourcing/previewfssugs',
+        query:{
+          id:this.$route.query.id
+        }
+      })
+      window.open(routerView.href,'_blank')
+    },
+
     openjjdt(){
       alert('online-bidding 暂未提供跳转url,稍等片刻...')
     },
@@ -182,18 +201,6 @@ export default{
       } catch (error) {
         return '1'
       }
-    },
-    reRenderTable(){
-      this.showTable = false,
-      setTimeout(() => {
-        this.showTable = true
-      },0)
-      setTimeout(() => {
-        this.getTopWidth()
-      }, 500);
-    },
-    getTopWidth(){
-      this.cWidth = this.$refs.tableSupplier.$el.querySelector('.el-table__body').offsetWidth - 60 + 'px'
     },
     removeTags(){
       this.negoAnalysisSummaryLayoutSave()
@@ -309,6 +316,7 @@ export default{
         if(this.layout == 1){
           await this.fsPartsAsRow()
         }else if(this.layout == 2){
+
           await this.supplierfsSupplierAsRow()
         }else{
           await this.fsPartsAsRow()
@@ -326,9 +334,12 @@ export default{
      */
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
-      negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
-        if(res.data && res.data.layout){
+      return negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
+        if(res.data && res.data.layout){  
           this.backChoose = JSON.parse(res.data.layout) // 
+        }
+        if(this.backChoose.length == 0 && type == 2){//特殊逻辑处理，如果第一次进来，隐藏项为空。则认为用户没有设置过，需要将默认隐藏项设置好。
+          this.backChoose = ['EBR','Volume','Invest Budget','Prod. Loc.','Dev.\nCost','Supplier \nSOP Date','Total\n Turnover']
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
@@ -379,15 +390,18 @@ export default{
      */
     fsPartsAsRow(){
       this.fsTableLoading = true
+      this.clearDataFs()
       // eslint-disable-next-line no-unexpected-multiline
       this.changeFnForGSandFS(this.layout).then(res=>{
         this.fsTableLoading = false
-        this.clearDataFs()
         if(res.data && res.data.partInfoList && res.data.partInfoList){
+          this.DataRoundsType = res.data.roundsType
+          this.hasNoBidOpen = res.data.hasNoBidOpen
           this.partInfoList = res.data.partInfoList
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
           this.title = relTitle.title
+          this.exportTile = relTitle.allExportHiddenOrShow
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
@@ -403,8 +417,10 @@ export default{
             }
             return [...accu, curr]
           },[])
-          console.log('this.exampelData', this.exampelData)
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
+          this.$nextTick(()=>{
+            this.$refs.tableList.setfixElement()
+          })
         }
       }).catch(err=>{
         this.clearDataFs()
@@ -457,21 +473,15 @@ export default{
      * @return {*}
      */
     supplierfsSupplierAsRow(){
+      this.backChooseList = []
+      this.tabelDataSupplier = []
       return new Promise(r=>{
         this.supplierTableLoading = true
-        fsSupplierAsRow(this.$route.query.id,this.round).then(res=>{
+        fsSupplierAsRow(this.$route.query.id,this.round,this.backChoose).then(res=>{
           this.supplierTableLoading = false
-          if(res.code == 200 && res.data && res.data.bdlInfoList){
-            const data = translateDataListSupplier(res.data.bdlInfoList) // 数据模型转化。
-            this.supplierData = data.dataList
-            this.supplierTile = getRenderTableTileSupplier(this.backChoose,res.data.bdlInfoList)
-            this.supplierLeftLit = getleftTittleList(this.backChoose)
-            this.supplierRightList = lastSupplier
-            this.suppliertopList = data.topList
-            this.kmAPrice = res.data.kmAPrice
-            this.kmTooling = res.data.kmTooling
-            this.budget = res.data.budget
-            this.reRenderTable() 
+          if(res.code == 200 && res.data){
+            this.tabelDataSupplier = getRowAndcolSpanArray(res.data)
+            this.backChooseLists = res.data.header || []
             r()
           } 
         }).catch(err=>{
@@ -510,7 +520,8 @@ export default{
           const oldVersions = sourceData.filter(item => !item.isCurrentVersion)
           this.exchangeRatesOldVersions = oldVersions.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length).map(item => ({
             version: item.exchangeRateVos[0].version,
-            str: item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(", ")
+            str: item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(", "),
+            fsNumsStr: Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
           }))
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -519,22 +530,44 @@ export default{
     },
     // 汇率显示处理
     exchangeRateProcess(row) {
-      return `100${ this.$i18n.locale === "zh" ? row.currencyName : row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ this.$i18n.locale === "zh" ? row.originCurrencyName : row.originCurrencyCode }`
+      return `100${ row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ row.originCurrencyCode }`
     },
     //导出
     exportParts(layout) {
       if(layout === '1') {
-        return exportFSPartsAsRow(this.$route.query.id,this.round)
+        return exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       } else if(layout === '2') {
-        return exportFsSupplierAsRow(this.$route.query.id,this.round)
+        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
       } else {
-        return exportGsPartsAsRow(this.$route.query.id,this.round)
+        return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       }
+    },
+        //导出
+    exportPartsTwo(layout) {
+      return new Promise (r=>{
+            if(layout === '1') {
+                    const res1= exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
+                    r(res1)
+            } else if(layout === '2') {
+                const res2= exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
+                r(res2)
+            } else {
+                const res3= exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
+                r(res3)
+            }
+         })
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+  .noData{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid ghostwhite;
+    padding: 20px;
+    text-align: center;
+  }
   .mine_height{
     min-height: 100px;
     display: flex;

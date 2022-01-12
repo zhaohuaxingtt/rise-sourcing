@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 17:57:52
- * @LastEditTime: 2021-10-27 13:26:16
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-02 11:42:48
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\volume\index.vue
 -->
@@ -16,7 +16,11 @@
       </div>
     </div>
     <div class="body margin-top27">
-      <tableList index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange" />
+      <tableList index class="table" :tableData="tableListData" 
+      :tableTitle="tableTitle" :tableLoading="loading" 
+      @handleSelectionChange="handleSelectionChange"
+      v-permission.auto="PARTSIGN_EDITORDETAIL_VOLUME_TABLE|每车用量-表格"
+       />
       <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getVolume)"
@@ -113,6 +117,9 @@ export default {
 
         if(infoRes.data){
           this.tableListData = infoRes.data.tpRecordList
+          this.tableListData.forEach(val=>{
+            this.$set(val,'projectCarType',this.data.projectCarType)
+          })
           this.page.totalCount = infoRes.data.totalCount
         }
       } catch(e) {

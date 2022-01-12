@@ -2,12 +2,14 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-18 11:34:43
- * @LastEditors: zbin
+ * @LastEditors: caopeng
  * @Descripttion: 定点记录
 -->
 <template>
-  <iCard :title="$t('TPZS.DDJV')" :defalutCollVal='false' collapse>
-    <tableList :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="true" @handleSelectionChange="handleSelectionChange" />
+  <iCard  @handleTitle="addFile($event,9, '定点记录')" :title="$t('TPZS.DDJV')+`<span class='cursor' style='margin-right: 20px;'><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>` + `<span style='color: #909091'>` +categoryCode + `</span>` +  `<span style='color: #909091'>` +$t('TPZS.DDJLMEMO') + `</span>`" :defalutCollVal='false' collapse>
+    <tableList id="card9" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="true" @handleSelectionChange="handleSelectionChange">
+
+    </tableList>
   </iCard>
 </template>
 
@@ -18,21 +20,33 @@ import { iFormItem, iText, iFormGroup, iLabel, icon, iCard } from "rise";
 import tableList from '@/components/ws3/commonTable';
 import { listFixedPointHistory } from "@/api/partsrfq/negotiateBasicInfor/negotiateBasicInfor.js";
 import { fixedRecordTableTitle } from "./data";
+import { downloadPdfMixins } from '@/utils/pdf'
+import { icardData } from '../../data'
 export default {
+  mixins: [downloadPdfMixins],
   // import引入的组件需要注入到对象中才能使用
   components: { iFormItem, iText, iFormGroup, iLabel, icon, tableList, iCard },
+  props:{
+          rfqInfoData: { type: Object },
+  },
   data() {
     // 这里存放数据
     return {
+      cardShow: JSON.parse(JSON.stringify(icardData)),
       tableListData: [],
       tableTitle: fixedRecordTableTitle,
       tableLoading: false,
+      categoryCode: ""
     }
   },
   // 监听属性 类似于data概念
   computed: {},
   // 监控data中的数据变化
-  watch: {},
+ watch:{
+      rfqInfoData(val){
+          this.rfqInfoData=val
+      }
+  },
   // 方法集合
   methods: {
     async getTableList() {
@@ -43,13 +57,44 @@ export default {
         }
         const res = await listFixedPointHistory(pms);
         if (res.result) {
-          this.tableListData = res.data;
+          var resData = res.data;
+          if (resData && resData.length > 0) {
+            resData.forEach((header) => {
+              if (header.nomiRecordDetailVO && header.nomiRecordDetailVO.length > 0) {
+                this.categoryCode = header.materialCode?header.materialCode+"-"+header.materialName : header.materialName;
+                header.nomiRecordDetailVO.forEach((detail) => {
+                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,
+                  header.liniePrincipal,detail.purchasingFactory,header.carTypeProj,
+                  this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
+                })
+              } else {
+                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,
+                  header.liniePrincipal,"",header.carTypeProj,
+                  "","",""))
+              }
+            })
+          }
         }
         this.tableLoading = false;
       } catch {
         this.tableListData = [];
         this.tableLoading = false;
       }
+    },
+    createTableRow(fsnrGsnrNum,partNum,rfqId,rfqName,material,stuffName,carTypeProj,supplierNameCn,apriceModel,nominateDate) {
+      var tableRow = {
+        fsnrGsnrNum: fsnrGsnrNum,
+        partNum: partNum,
+        rfqId: rfqId,
+        rfqName: rfqName,
+        material: material,
+        craft: stuffName,
+        carTypeProj: carTypeProj,
+        supplierNameCn: supplierNameCn,
+        apriceModel: apriceModel && String(apriceModel).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+        nominateDate: nominateDate
+      }
+      return tableRow
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

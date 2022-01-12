@@ -41,7 +41,7 @@
                 v-for="(item, index) in projectType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -87,7 +87,7 @@
                 v-for="(item, index) in isTax"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -141,7 +141,7 @@
                 v-for="(item, index) in resultOpenForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -154,11 +154,28 @@
               </div>
             </iLabelML>
             <iLabel :label="language('BIDDING_MUBIAOJIA', '目标价')" slot="label"></iLabel>
-            <iInput
-              type="number"
-              oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
+            <operatorInput
               v-model="ruleForm.targetPrice"
-            ></iInput>
+            >
+            </operatorInput>
+            <!-- <template v-if="isInputFlag">
+              <iInput
+                :value="ruleForm.targetPrice"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+                type="number"
+                @input="value => $set(ruleForm, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+              >
+              </iInput>
+            </template>
+            <template v-else>
+              <iInput
+                :value="targetPriceValue"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+              >
+              </iInput>
+            </template> -->
           </iFormItem>
         </div>
 
@@ -223,8 +240,8 @@
               <div>
                 <iLabelML showTip class="form-item-rankShowRule-icon">
                   <div class="hover-text">
-                    <span>供应商对红绿灯名次区间/偏离比例的</span>
-                    <span class="hover-stick">具体定义不可见</span>
+                    <span>{{language('BIDDING_GYSDHLDMCQJ/PLBLD', '供应商对红绿灯名次区间/偏离比例的')}}</span>
+                    <span class="hover-stick">{{language('BIDDING_JTDYBKJ', '具体定义不可见')}}</span>
                     <span>。</span>
                   </div>
                 </iLabelML>
@@ -235,7 +252,7 @@
                   v-for="(item, index) in rankShowRule"
                   :key="index"
                   :value="item.value"
-                  :label="item.label"
+                  :label="language(item.key, item.label)"
                 >
                 </el-option>
               </iSelect>
@@ -330,13 +347,34 @@
                 <span class="form-item1">{{language('BIDDING_MUBIAOJIA', '目标价')}}</span>
               </div>
               <iFormItem prop="quoteRule.targetPrice">
-                <iInput
-                  v-model="ruleForm.quoteRule.targetPrice"
+                <operatorInput
                   style="width: 10rem"
+                  v-model="ruleForm.targetPrice"
                   @change="handleChangeLightDeviation"
-                  oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-                  type="number"
-                />
+                >
+                </operatorInput>
+                <!-- <template v-if="isInputFlag">
+                  <iInput
+                    :value="ruleForm.quoteRule.targetPrice"
+                    style="width: 10rem"
+                    @focus="handlerInputFocus"
+                    @blur="handlerInputBlur"
+                    @change="handleChangeLightDeviation"
+                    type="number"
+                    @input="value => $set(ruleForm.quoteRule, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+                  >
+                  </iInput>
+                </template>
+                <template v-else>
+                  <iInput
+                    :value="quoteRuleTargetPriceValue"
+                    style="width: 10rem"
+                    @focus="handlerInputFocus"
+                    @change="handleChangeLightDeviation"
+                    @blur="handlerInputBlur"
+                  >
+                  </iInput>
+                </template> -->
               </iFormItem>
               <div class="from-item-clo1">
                 <span class="form-line"></span>
@@ -432,8 +470,8 @@
             background
             :page-sizes="10"
             :page-size="10"
-            prev-text="上一页"
-            next-text="下一页"
+            :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+            :next-text="language('BIDDING_XIAYIYE','下一页')"
             layout="prev, pager, next, jumper"
             :current-page="page.currPage"
             :total="ruleForm.attachments.length"
@@ -469,6 +507,7 @@ import { uploadFile, getCurrencyUnit } from "@/api/mock/mock";
 import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
 import iLabelML from "@/components/biddingComponents/iLabelML";
 import { pageMixins } from "@/utils/pageMixins";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -480,6 +519,7 @@ export default {
     iButton,
     iLabel,
     iLabelML,
+    operatorInput
     // iPagination,
     // iTableCustom,
   },
@@ -495,6 +535,9 @@ export default {
       currencyUnit,
       pricingDeadline: "",
       openTenderTime: "",
+      isInputFlag:false,
+      targetPriceValue:'',
+      quoteRuleTargetPriceValue:'',
       selectedTableData: [],
       quoteRule: {
         greenLightFrom: "",
@@ -550,6 +593,33 @@ export default {
     },
   },
   watch: {
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = infoRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate();
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'currencyUnit',
+          //   'isTax',
+          //   'resultOpenForm',
+          //   'quoteRule.greenLightFrom',
+          //   'quoteRule.greenLightTo',
+          //   'quoteRule.yellowLightFrom',
+          //   'quoteRule.yellowLightTo',
+          //   'quoteRule.redLightFrom',
+          //   'quoteRule.redLightTo',
+          //   'quoteRule.greenDeviationValue',
+          //   'quoteRule.targetPrice',
+          //   'quoteRule.yellowDeviationValue',
+          // ]);
+        })
+      }
+    },
     "ruleForm.quoteRule.greenLightTo"(val) {
       const { greenLightFrom } = this.ruleForm.quoteRule;
       if (!(greenLightFrom || 0 === greenLightFrom) && (val || 0 === val)) {
@@ -618,7 +688,7 @@ export default {
       }
     },
     "ruleForm.quoteRule.targetPrice"(val) {
-      console.log(val);
+      this.quoteRuleTargetPriceValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
       if (val === null || val === "" || val === undefined) {
         this.$refs["ruleForm"].clearValidate([
           "quoteRule.greenDeviationValue",
@@ -626,8 +696,17 @@ export default {
         ]);
       }
     },
+    "ruleForm.targetPrice"(val) {
+      this.targetPriceValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+    },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     // 返回
     handleBack() {
       this.$router.push({
@@ -763,7 +842,7 @@ export default {
         if (valid) {
           this.$confirm(this.language('BIDDING_SFBCGBJXX',"是否保存该报价信息？"), this.language('BIDDING_TISHI',"提示"), {
             confirmButtonText: this.language('BIDDING_SHI',"是"),
-        cancelButtonText: this.language('BIDDING_FOU',"否"),
+            cancelButtonText: this.language('BIDDING_FOU',"否"),
             type: "warning",
           })
             .then(() => {
@@ -823,6 +902,7 @@ export default {
           isTax: res.isTax || "01",
           resultOpenForm: res.resultOpenForm || "01",
           openTenderNature: res.openTenderNature || "01",
+          currencyUnit: res.currencyUnit || 'RMB'
         };
         this.quoteRule = { ...this.quoteRule, ...res.quoteRule };
         this.$emit("change-title", res);
@@ -839,16 +919,13 @@ export default {
           }
         }
         this.$nextTick(() => {
-          this.rules = infoRules(this.ruleForm);
+          this.rules = infoRules(this.ruleForm,this);
         });
       });
     },
     queryUnit() {
       getCurrencyUnit().then((res) => {
         this.currencyUnit = res.data;
-        if (!this.ruleForm.currencyUnit) {
-          this.ruleForm.currencyUnit = this.currencyUnit[0]?.code;
-        }
       });
     },
   },

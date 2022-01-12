@@ -31,7 +31,7 @@
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
-        <el-form-item :label="$t('LK_RFQHAO')">
+        <el-form-item :label="$t('MOULDADD.LK_RFQBIANHAO')">
           <iInput v-model="form['search.rfqId']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
@@ -41,7 +41,7 @@
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getTableListFn"></i>
           </iInput>
         </el-form-item>
-        <el-form-item :label="$t('LK_YUSUANZHUANGTAI')">
+        <el-form-item :label="language('LK_YUSUANZHUANGTAI', '预算状态')">
           <iSelect
               :placeholder="$t('partsprocure.PLEENTER')"
               v-model="form['search.approvalStatus']"
@@ -56,7 +56,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_SHENQINGREN')">
+        <el-form-item :label="$t('MOULDADD.LK_SHENQINGREN')">
           <iSelect
               :placeholder="$t('partsprocure.PLEENTER')"
               v-model="form['search.applyUserId']"
@@ -71,7 +71,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="$t('LK_SHENQINGSHIJIANQIZHI')">
+        <el-form-item :label="language('LK_SHENQINGSHIJIANQIZHI', '申请时间起止')">
           <el-date-picker
               v-model="form['search.timeStarEnd']"
               class="budgetApprovalDate"
@@ -87,7 +87,7 @@
       <div class="icardHeader">
         <div></div>
         <div>
-          <iButton @click="approvalBtn" v-loading="saveLoading">{{ $t('LK_PIZHUAN') }}</iButton>
+          <iButton @click="approvalBtn" v-loading="saveLoading">{{ $t('MOULDADD.LK_PIZHUAN') }}</iButton>
           <iButton @click="rejectShowBtn">{{ $t('LK_JUJUE') }}</iButton>
           <iButton @click="transferBtn">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
@@ -103,8 +103,9 @@
           <div class="linkStyle"><span @click="clickRfqId(scope.row.rfqId)">{{ scope.row.rfqId }}</span></div>
         </template>
         <template #categoryBudget="scope">
-          <div class="linkStyle"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
+          <div class="linkStyle" v-if="+scope.row.isHideColumn === 1"><span @click="clickCategoryBudget(scope.row)">{{ scope.row.categoryBudget }}</span>
           </div>
+          <div v-else>-</div>
         </template>
         <template #budgetApplyAmount="scope">
           <div class="linkStyle" :class="(Number(scope.row.budgetApplyAmount) > Number(scope.row.budgetLeftoverAmount)) && 'red'"><span
@@ -112,7 +113,8 @@
           </div>
         </template>
         <template #budgetLeftoverAmount="scope">
-          <div>{{ getTousandNum(scope.row.budgetLeftoverAmount) }}</div>
+          <div v-if="+scope.row.isHideColumn === 1">{{ getTousandNum(scope.row.budgetLeftoverAmount) }}</div>
+          <div v-else>-</div>
         </template>
         <template #approvalStatus="scope">
           <div>
@@ -162,7 +164,7 @@
     ></alertDialog>
     <referenceCarProject
         v-model="referenceCarProjectShow"
-        :title="参考车型项目"
+        title="参考车型项目"
         :referenceCarProjectParams="referenceCarProjectParams"
         :isApply="false"
         @refresh="getTableListFn"
@@ -343,10 +345,12 @@ export default {
         iMessage.warn('请勾选未审批的项目')
         return
       }
-      if(this.multipleSelection.some(item => item.budgetApplyAmount > item.budgetLeftoverAmount)){
+      const isNext = this.multipleSelection.some(item => item.budgetApplyAmount > item.budgetLeftoverAmount);
+      const filterLenth = this.multipleSelection.filter(item => !['50002001','1000003','50003001'].includes(item.partPurchaseProType));
+      if(isNext && filterLenth.length != 0){
         let redMultipleSelection = []
         this.multipleSelection.map(item => {
-          if(item.budgetApplyAmount > item.budgetLeftoverAmount){
+          if(item.budgetApplyAmount > item.budgetLeftoverAmount && !['50002001','1000003','50003001'].includes(item.partPurchaseProType)){
             redMultipleSelection.push(item)
           }
         })

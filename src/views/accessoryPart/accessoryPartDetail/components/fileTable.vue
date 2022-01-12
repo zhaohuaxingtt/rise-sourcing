@@ -37,7 +37,8 @@ import { iCard, iButton, iPagination, iMessage } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { pageMixins } from "@/utils/pageMixins"
 import { fileTableTitle as tableTitle } from "../data"
-import { getFiles, downloadUdFile } from "@/api/file"
+import { downloadUdFile } from "@/api/file"
+import { getFiles } from '@/api/accessoryPart/index'
 
 export default {
   components: { iCard, iButton, tableList, iPagination },
@@ -77,8 +78,8 @@ export default {
       getFiles({
         hostId: this.hostId,
         fileType,
-        page: this.page.currPage,
-        currPage: this.page.pageSize
+        page: this.page.pageSize,
+        currPage: this.page.currPage
       })
       .then(res => {
         if (res.code == 200) {

@@ -1,4 +1,4 @@
 ./node_modules
 ./public
 ./loadersPlugins
-./src/ws2
+./src/views/ws2

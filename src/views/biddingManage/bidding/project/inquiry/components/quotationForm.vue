@@ -23,7 +23,7 @@
               <el-option
                 v-for="item in roundTypeLists"
                 :key="item.roundType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.roundType"
               >
               </el-option>
@@ -117,6 +117,13 @@ export default {
         this.ruleForm.associatedQuotation = this.ruleForm.associatedQuotation.filter(item => item)
       },
     },
+    '$i18n.locale':{
+      immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+      }
+    },
     ruleForm(val) {
       this.$emit("input", val);
     },
@@ -147,7 +154,7 @@ export default {
   },
   data() {
     return {
-      rules: baseRules,
+      rules: baseRules(this),
       ruleForm: {},
       manualBiddingTypeList,
       procureTypeList,
@@ -161,43 +168,17 @@ export default {
         },
       },
 
-      pricingDeadlineOptions: {
-        disabledDate: (time) => {
-          let year = new Date().getFullYear();
-          let month = new Date().getMonth() + 2;
-          if (month == 13) {
-            month = 1;
-          } else if (month == 14) {
-            month = 2;
-          }
-          let date = new Date().getDate();
-          let nextMonth = new Date(year + "-" + month + "-" + date).getTime();
-
-          let curDate = this.ruleForm.biddingEndTime
-            ? new Date(this.ruleForm.biddingEndTime).getTime()
-            : Date.now() - 8.64e7;
-          let three = 30 * 24 * 3600 * 1000;
-          let threeMonths = curDate + three;
-          return time.getTime() < curDate || time.getTime() > nextMonth;
-        },
-      },
+      
     };
   },
   computed: {
-    pricingEndTimeOptions() {
+    pricingDeadlineOptions() {
       return {
         selectableRange: [
-          `${dayjs(
-            new Date(this.ruleForm.biddingBeginTime).getTime() + 60000
-          ).format("HH:mm:00")} - 23:59:59`,
+          `${dayjs(new Date().getTime()).format("HH:mm:00")} - 23:59:59`,
         ],
         disabledDate: (time) => {
-          return (
-            time.getTime() <
-              dayjs(this.ruleForm.biddingBeginTime).startOf("date").valueOf() ||
-            time.getTime() >
-              dayjs(this.ruleForm.biddingBeginTime).endOf("date").valueOf()
-          );
+           return time.getTime() < Date.now() - 8.64e7;
         },
       };
     },

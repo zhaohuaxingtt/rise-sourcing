@@ -26,7 +26,7 @@
                       class="form--item--number--input__center"
                       :value="
                         ruleForm.supplierOffer.offerPrice
-                          ? ruleForm.supplierOffer.offerPrice + currencyMultiple
+                          ? ruleForm.supplierOffer.offerPrice.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + currencyMultiple
                           : ''
                       "
                       disabled
@@ -65,7 +65,7 @@
                   <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
-                      {{ tag.name }}
+                      {{ tag.model }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -75,7 +75,7 @@
                   <iLabel :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
-                      {{ tag.name }}
+                      {{ tag.project }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -100,7 +100,7 @@
           @handleSelectionChange="handleSelectionChange"
         >
           <!-- 操作 -->
-          <template slot="caozuo" slot-scope="scope">
+          <!-- <template slot="caozuo" slot-scope="scope">
             <span>
               <a
                 href="javascript:void(0)"
@@ -110,7 +110,7 @@
                 <i class="el-icon-edit"> </i>
               </a>
             </span>
-          </template>
+          </template> -->
         </commonTable>
       </div>
     </iCard>
@@ -129,7 +129,7 @@
         >
         </tableColumnTemplate>
     </iCard>
-    <iCard class="card" title="折现率" v-if="ruleForm.biddingMode === '03' && role === 'supplier'">
+    <iCard class="card" :title="language('BIDDING_ZHEXIANLV','折现率')" v-if="ruleForm.biddingMode === '03' && role === 'supplier'">
       <tableColumnTemplate
           ref="annualOutput"
           :tableData="annualOutput1"
@@ -230,7 +230,7 @@ export default {
       outPutColumn,
       yearsPlan: [],
       annualOutput: [{
-        title: "折现率",
+        title: this.language('BIDDING_ZHEXIANLV',"折现率"),
         stage1: 1,
         stage2: 0.9,
         stage3: 0.81,
@@ -249,7 +249,7 @@ export default {
         }
       ],
       annualOutput1: [{
-        title: "折现率",
+        title: this.language('BIDDING_ZHEXIANLV',"折现率"),
         stage1: 1,
         stage2: 0.9,
         stage3: 0.81,
@@ -295,7 +295,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     numberUppercase() {
       return digitUppercase(
@@ -314,7 +314,7 @@ export default {
      return Big(val).div(this.beishu).toNumber()
     },
     async query(e) {
-      let o = {...planBaseData,title:'折现率'};
+      let o = {...planBaseData,title:this.language('BIDDING_ZHEXIANLV',"折现率")};
       const res = await  getDiscount({});
       if(res?.data != null){
         res?.data?.md_discount_rate.map(item=>{
@@ -379,22 +379,23 @@ export default {
       }
       const totalPrices = this.dividedBeiShu(this.ruleForm.totalPrices)
       this.ruleForm = {... this.ruleForm,supplierOffer,totalPrices}
+      this.modelsOption = data.models
+      this.modelProjectsOption = data.modelProjects
+      // getModels().then((res) => {
+      //   data.models.forEach((item) => {
+      //     this.modelsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.modelCode)
+      //     );
+      //   });
+      // });
 
-      getModels().then((res) => {
-        data.models.forEach((item) => {
-          this.modelsOption.push(
-            ...res?.data?.filter((e) => e.code === item.modelCode)
-          );
-        });
-      });
-
-      getProjects().then((res) => {
-        data.modelProjects.forEach((item) => {
-          this.modelProjectsOption.push(
-            ...res?.data?.filter((e) => e.code === item.projectCode)
-          );
-        });
-      });
+      // getProjects().then((res) => {
+      //   data.modelProjects.forEach((item) => {
+      //     this.modelProjectsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.projectCode)
+      //     );
+      //   });
+      // });
       this.ruleForm.supplierProducts?.forEach((items) => {
         let o = items.supplierPlans.reduce((obj, item) => {
           if (!obj[item.supplierProdId]) {
@@ -449,6 +450,21 @@ export default {
             ...output[items.id]?.procureNum,
             title: items.productCode,
           })
+      })
+      this.ruleForm.supplierProducts = this.ruleForm.supplierProducts.map(item => {
+        return {
+          ...item,
+          factoryPrice:Number(item.factoryPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          packingFee:Number(item.packingFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          transportFee:Number(item.transportFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          operationFee:Number(item.operationFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          moldFee:Number(item.moldFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          developFee:Number(item.developFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          targetPrice:Number(item.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          aveAnnualOutput:Number(item.aveAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          maxAnnualOutput:Number(item.maxAnnualOutput)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+          bprice:Number(item.bprice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+        }
       })
     },
   },
@@ -511,11 +527,16 @@ export default {
                 box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
                 border-color: transparent;
                 border-radius: 0.25rem;
+                background-color: #f5f7fa;
                 .el-tag {
-                  background-color: #f5f7fa;
+                  /* background-color: #f5f7fa;
                   color: #000;
                   border-radius: 18px;
-                  border-color: #fff;
+                  border-color: #fff; */
+                  background-color: #f7f7f7;
+                  color: #000;
+                  border-radius: 1.25rem;
+                  border-color: #eef6ff;
                   margin-left: 3px;
                   min-width: 15px;
                 }

@@ -770,6 +770,7 @@ export default {
     },
     blur(index){
       let value = this.tableListData[index].assetPrice
+      // eslint-disable-next-line no-useless-escape
       value = value.replace(/[^\d^\.]+/g,'').replace('.','$#$').replace(/\./g,'').replace('$#$','.')
       this.tableListData[index].assetPrice = this.getTousandNum(Number(value).toFixed(2))
       this.tableListData[index].assetTotal = this.tableListData[index].count * value

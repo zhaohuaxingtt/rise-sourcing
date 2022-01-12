@@ -187,18 +187,60 @@
               inactive-text="N"
               :active-value='true'
               :inactive-value='false'
-              @change="handleChange($event, scope.row)"
               :disabled="ruleForm.biddingStatus !== '01'"
             >
             </el-switch>
         </template>
         <!-- 供应商名称 -->
         <template slot="supplierName" slot-scope="scope">
-          <a
-            style="color: blue;cursor: pointer;"
+          <div class="supplier-item">
+            <a
+            style="color: blue;cursor: pointer; flex:1"
             @click="handleHref(scope.row)"
             >{{ scope.row.supplierName }}
-          </a>
+            </a>
+            <div class="supplier-ico">
+              <template v-if="supplierRiskLevel[scope.row.supplierId][0] ? supplierRiskLevel[scope.row.supplierId][0].resultCode === 'red' : false">
+                <div class="form-item-resultOpenForm-div">
+                  <img :src="require(`@/assets/images/supplier_help.png`)" class="form-item-resultOpenForm-Img" />
+                </div>
+                  <!-- <div >
+                    <span
+                      >{{supplierRiskLevel[scope.row.supplierId][0].tips}}</span
+                    ><br />
+                  </div> -->
+              </template>
+
+              <template v-if="!isCompleteData[scope.row.supplierId][scope.row.supplierId]">
+                <div class="form-item-resultOpenForm-div">
+                  <img :src="require(`@/assets/images/supplier_pending.png`)"  class="form-item-resultOpenForm-Img"/>
+                </div>
+                  <!-- <div>
+                    <span>{{blackStuffList[scope.row.supplierId] ? '任务已完成' : '没有完成任务'}}</span>
+                  </div> -->
+              </template>
+
+              <template v-if="blackStuffList[scope.row.supplierId] ? blackStuffList[scope.row.supplierId].length : false">
+                <div class="form-item-resultOpenForm-dis">
+                  <iLabelML :imgSrc="require(`@/assets/images/supplier_disabled.png`)" showTip class="form-item-resultOpenForm-icon">
+                  <div class="hover-text">
+                    <div>{{language('BIDDING_HEIMINGDAN', '黑名单')}}：</div>
+                    <div>
+                      <span>{{blackStuffList[scope.row.supplierId][0].startTime}} - {{blackStuffList[scope.row.supplierId][0].endTime}}</span>
+                      <br/>
+                      <span>{{blackStuffList[scope.row.supplierId][0].measures == 1 
+                        ? language('BIDDING_BKXJBKDD', '不可询价，不可定点')
+                        : language('BIDDING_KXJBKDD', '可询价，不可定点')
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                </iLabelML>
+                </div>
+              </template>
+            </div>
+          </div>
+          <!-- <supplierBlackIcon/> -->
         </template>
         <!-- 联系人 -->
         <template slot="contactName" slot-scope="scope">
@@ -260,8 +302,8 @@
         background
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
-        prev-text="上一页"
-        next-text="下一页"
+        :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+        :next-text="language('BIDDING_XIAYIYE','下一页')"
         :layout="page.layout"
         :current-page="page.currPage"
         :total="page.total"
@@ -270,9 +312,12 @@
     </iCard>
 
     <supplierListDialog
-      :show.sync="showSupplierDialog"
+      v-if="showSupplierDialog"
+      :show="showSupplierDialog"
       @save-checked="handleSupplierChecked"
       :suppliers="ruleForm.suppliers"
+      :binddingRuleForm="ruleForm"
+      @update-show="supplierClose"
     />
 
     <!-- 汇率 -->
@@ -339,7 +384,7 @@
             :show-file-list="false"
             :http-request="httpUpload"
           >
-            <iButton>新增</iButton>
+            <iButton>{{ language('BIDDING_XINZHENG', '新增') }}</iButton>
           </el-upload>
           <iButton @click="delAttachments">{{language('BIDDING_SHANCHU', '删除') }}</iButton>
           <iButton @click="handleSave('attach')">{{ language('BIDDING_BAOCUN', '保存') }}</iButton>
@@ -371,6 +416,7 @@ import inquiryForm from "./components/inquiryForm";
 import quotationForm from "./components/quotationForm";
 import parities from "./components/parities";
 import attachment from "./components/attachment";
+import iLabelML from "@/components/biddingComponents/iLabelML";
 import {
   tableTitle,
   isAttendList,
@@ -392,8 +438,13 @@ import {
   delayBidding,
   delayOpenTender,
   cbdLevel,
+  getBlackStuffList,
+  getSupplierFinancialRiskLevel,
+  getIsComplete
 } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
+
+// import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 
 export default {
   mixins: [pageMixins],
@@ -404,6 +455,7 @@ export default {
     iSelect,
     iPagination,
     iPage,
+    iLabelML,
 
     commonTable,
 
@@ -417,6 +469,7 @@ export default {
     quotationForm,
 
     supplierListDialog,
+    // supplierBlackIcon,
   },
   data() {
     return {
@@ -433,6 +486,9 @@ export default {
       cbdLevelList: {},
       cbdLevelLib,
       userListCache: {},
+      supplierRiskLevel: {},
+      blackStuffList: {},
+      isCompleteData: {},
       userListData:{},
       tableTitle,
       isAttendList,
@@ -466,7 +522,8 @@ export default {
       dataType:'',
       rfqCode:'',
       time:'',
-      firstSupplierFlag:false
+      firstSupplierFlag:false,
+      exchangeRateList:{}
     };
   },
   computed: {
@@ -630,8 +687,10 @@ export default {
       }
       delayBidding(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          location.reload();
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            location.reload();
+          }
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
@@ -668,15 +727,15 @@ export default {
       console.log(this.ruleForm);
     },
     selectDel(evt) {
-      let { val, id } = evt;
+      let { val,item } = evt;
       if (val) {
-        this.exchangeRateIds.push(id);
+        this.exchangeRateIds.push(item.id);
       } else {
         this.exchangeRateIds = new Set(this.exchangeRateIds);
-        this.exchangeRateIds.delete(id);
+        this.exchangeRateIds.delete(item.id);
       }
       this.exchangeRateIds = [...new Set(this.exchangeRateIds)];
-      console.log(this.exchangeRateIds);
+      this.exchangeRateList = item
     },
     handleCurrencys(e) {
       console.log(this.currencys);
@@ -685,6 +744,12 @@ export default {
     handleDelete() {
       if (this.exchangeRateIds.length === 0) {
         return this.$message.error(this.language('BIDDING_QINGXUANZEHUILV','请选择汇率'));
+      }
+      let flag = this.ruleForm.currencyUnit
+                  ?  this.ruleForm.currencyUnit.includes(this.exchangeRateList?.currency)
+                  : false
+      if (flag) {
+        return this.$message.error(this.language('BIDDING_BJDWWFSC','比价单位无法删除'))
       }
       this.$confirm(this.language('BIDDING_SFSCHLXX',"是否删除汇率信息？"), this.language('BIDDING_TISHI',"提示"), {
         confirmButtonText: this.language('BIDDING_SHI',"是"),
@@ -784,12 +849,15 @@ export default {
         return;
       });
     },
+    // 关闭供应商
+    supplierClose(){
+      this.showSupplierDialog = false
+    },
     handleSupplierChecked(rows) {
-      console.log('gdsagdsgdsg',rows)
       const len = this.ruleForm.suppliers.length;
       const suppliersList = this.ruleForm.suppliers;
       // console.log('点击保存供应商',suppliersList, rows);
-      const suppliers = rows.map((row, index) => {
+      const suppliers = rows?.map((row, index) => {
         this.$set(this.userListCache, row.id, row.purchaserNameZh);
         return {
           sort: Number(len + index) + 1,
@@ -801,7 +869,9 @@ export default {
           // telephone: row.phoneM,
           supplierCode: row.sapCode || row.svwCode || row.svwTempCode || '',
           supplierId: row.subSupplierId,
-          supplierName: row.nameZh,
+          supplierName: row.nameZh,               //供应商全称
+          supplierFullName: row.nameZh,               //供应商全称
+          supplierShortName: row.shortNameZh,     //供应商简称
           mbdl: "",
           isAttend: true,
           // ...(this.ruleForm.roundType == "05"
@@ -822,7 +892,6 @@ export default {
             ...supplier,
           };
       })
-      console.log('gdsagdsgdsg5555555',this.ruleForm.suppliers)
       this.page.total = this.ruleForm.suppliers.length;
     },
     handleUserChange(row, item) {
@@ -948,7 +1017,7 @@ export default {
         biddingBeginTime,
         manualBiddingType,
       } = this.ruleForm;
-      let endTime = new Date(biddingEndTime).getTime() + 3 * 24 * 3600 * 1000;
+      let endTime = new Date(biddingEndTime).getTime();
       endTime = dayjs(endTime).format("YYYY-MM-DD HH:mm:00");
       const deadline = dayjs(pricingDeadline).format("YYYY-MM-DD HH:mm:00");
       const openTime = dayjs(openTenderTime).format("YYYY-MM-DD HH:mm:00");
@@ -968,7 +1037,7 @@ export default {
           return this.$message.error(this.language('BIDDING_JSSJBXYWYKSRQ','结束时间必须要晚于开始日期'));
         } else if (endTime > deadline) {
           console.log(endTime, pricingDeadline);
-          return this.$message.error(this.language('BIDDING_BJJZRQBWYJSSJH3GGZR','报价截止日期不晚于结束时间后3个工作日'));
+          return this.$message.error(this.language('BIDDING_BJJZRQBWYJSSJH3GGZR','报价截止日期不晚于结束时间'));
         }
       }
       const formData = this.ruleForm;
@@ -1130,7 +1199,6 @@ export default {
         updateDate: "",
       });
       this.$message.success(this.language('BIDDINGH_SHANGCHUANCHENGGONG', '上传成功'));
-      console.log(this.ruleForm.attachments);
     },
     saveForms(callback) {
       const formData = this.ruleForm;
@@ -1395,7 +1463,9 @@ export default {
       }
       // CBD
       if (!this.cbdLevelList[supplierCode]) {
-        const res = await cbdLevel(supplierCode);
+        this.$set(this.cbdLevelList, supplierCode, []);
+        // const res = await cbdLevel(supplierCode);
+        const res = ['L1', 'L2', 'L3'];
         this.$set(this.cbdLevelList, supplierCode, res || []);
           this.$nextTick(() => {
             this.cbdLevelList[supplierCode] = cbdArea == "03"
@@ -1414,13 +1484,49 @@ export default {
         
       }
       
+      // 供应商黑名单
+      const { rfqCode, products, roundType } = this.ruleForm
+      let fsnrGsnrList = products?.map(item => item.fsnrGsnr) || []     
+      const blackData = roundType !== '05' 
+                        ? {rfqId: Number(rfqCode),spplierIds:[Number(supplierId)]}
+                        : {fsnr: fsnrGsnrList, spplierIds:[Number(supplierId)]}       // 手工竞价
+
+      if (roundType !== '05' && !this.blackStuffList[supplierId]){
+        this.$set(this.blackStuffList, supplierId, []);
+        getBlackStuffList(blackData).then(res => {
+          this.$set(this.blackStuffList, supplierId, res.data || []);
+        })
+
+      } else if (roundType === '05' && fsnrGsnrList.length && !this.blackStuffList[supplierId]) {
+        this.$set(this.blackStuffList, supplierId, []);
+        getBlackStuffList(blackData).then(res => {
+          this.$set(this.blackStuffList, supplierId, res.data || []);
+        })
+        
+      }
+
+      // 获取年度更新信息任务状态
+      if (!this.isCompleteData[supplierId]){
+        this.$set(this.isCompleteData, supplierId, []);
+        getIsComplete([Number(supplierId)]).then(res => {
+          this.$set(this.isCompleteData, supplierId, res || false);
+        })
+      }
+      
+
+      // 获取供应商财务风险级别
+      if (!this.supplierRiskLevel[supplierId]){
+        this.$set(this.supplierRiskLevel, supplierId, []);
+        getSupplierFinancialRiskLevel([Number(supplierId)]).then(res => {
+          this.$set(this.supplierRiskLevel, supplierId, res || []);
+        })
+      }
 
     },
     handlefirstSupplier(){
       if(!this.ruleForm.firstSaveSupplierFlag) {
         const flag = this.ruleForm.suppliers.every(item => item.contactName && item.email)
         const formData = this.ruleForm;
-        console.log('fsafawf',formData.suppliers)
         if (flag) {
           saveInquiryBidding({
           ...this.orgRuleForm,
@@ -1508,6 +1614,46 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.supplier-item {
+  display: flex;
+  justify-content: flex-end;
+  .supplier-ico {
+    display: flex;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    /* flex:0 0 30%; */
+    
+    .title-header {
+      padding-right: 3px;
+    }
+  }
+}
+.hover-text {
+  display: flex;
+  font-family: "PingFangSC-Regular";
+  font-size: 14px;
+  font-weight: 400;
+}
+.form-item-resultOpenForm-div {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: auto 3px;
+  line-height: 1.5rem;
+  .form-item-resultOpenForm-Img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain
+  }
+}
+::v-deep .title-header .image-box {
+  line-height: 2rem !important;
+  img {
+    position: unset !important;
+  }
+}
+.form-item-resultOpenForm-dis {
+  margin: auto 0;
+}
 .inquiry {
   &__header {
     &-title {
@@ -1617,6 +1763,16 @@ export default {
   .el-switch__label--left.is-active {
     z-index: 1;
     color: #9c9c9c !important;
+  }
+}
+
+::v-deep .el-table {
+  .el-form-item {
+    margin-top: 0;
+    margin-bottom: 0;
+    .el-form-item__content {
+      line-height: revert;
+    }
   }
 }
 </style>

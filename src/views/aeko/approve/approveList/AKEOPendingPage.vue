@@ -15,11 +15,11 @@
         </el-form-item>
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
-          <i-input
-              v-model="queryAkeoForm.partNum"
-              :placeholder="language('LK_QINGSHURU','请输入')"
-              clearable
-          ></i-input>
+          <iMultiLineInput
+            :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+            :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+            v-model="queryAkeoForm.partNum"
+          ></iMultiLineInput>
         </el-form-item>
         <!-- 供应商简称 -->
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG','供应商简称')" prop='supplierName'>
@@ -90,13 +90,13 @@
       <!--表格展示区-->
       <tablelist
           height="400"
+          class="aeko-pending-table"
           index
           :selection="true"
           :tableData="pendingList"
           :tableTitle="pendingHeader"
           :lang="true"
           :selectConfig="selectConfig"
-          :indexConfig="indexConfig"
           v-loading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
       >
@@ -208,7 +208,7 @@
 </template>
 
 <script>
-import {iSearch, iInput, iCard, iButton, iSelect, iPagination, icon, iMessage} from "rise"
+import {iSearch, iInput, iCard, iButton, iSelect, iPagination, icon, iMessage, iMultiLineInput} from "rise"
 import {tableCsfTitle as pendingHeader, selectConfig, indexConfig} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
@@ -234,7 +234,8 @@ export default {
     tablelist,
     iPagination,
     icon,
-    iSelect
+    iSelect,
+    iMultiLineInput
   },
   filters: {
     formatDate(value) {
@@ -733,7 +734,7 @@ export default {
     width: 25px;
     display: inline-block;
     vertical-align: middle;
-    margin-right: 10px;
+    margin-right: 8px;
 
       svg {
         font-size: 24px;
@@ -761,6 +762,42 @@ export default {
     &:hover {
       .iconSuffix {
         color: #ffffff;
+      }
+    }
+  }
+}
+.aeko-pending-table{
+  ::v-deep .el-table__header{
+    .has-gutter{
+      tr{
+        th:nth-child(2){
+          .cell{
+            padding: 0 5px;
+          }
+        }
+        th:nth-child(3){
+          .slotHeader{
+            padding-left: 30px;
+          }
+        }
+        th:nth-child(9){
+          letter-spacing: -0.3px;
+        }
+        th:nth-child(10){
+          letter-spacing: -0.3px;
+        }
+        th:nth-child(11){
+          letter-spacing: -0.3px;
+        }
+      }
+    }
+  }
+  ::v-deep .el-table__body{
+    tr{
+      td:nth-child(2){
+        .cell{
+          padding: 0 5px;
+        }
       }
     }
   }

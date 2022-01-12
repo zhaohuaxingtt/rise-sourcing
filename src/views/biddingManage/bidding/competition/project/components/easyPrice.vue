@@ -220,17 +220,24 @@
           <template slot="purchaseQty" slot-scope="scope">
             <!-- 只读 -->
             <template v-if="ruleForm.biddingStatus !== '01'">
-              <div>{{ scope.row["purchaseQty"] }}</div>
+              <!-- <div>{{ scope.row["purchaseQty"] }}</div> -->
+              <div>{{ dataProducts[scope.row['id']].purchaseQty }}</div>
             </template>
             <template v-else>
-              <i-input
+              
+              <!-- <i-input
                 type="number"
                 oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
                 v-model.number="scope.row['purchaseQty']"
                 placeholder="0"
                 :maxlength="maxlength ? maxlength : 300"
                 :disabled="ruleForm.biddingStatus !== '01'"
-              />
+              /> -->
+              <operatorInput
+                  v-model="scope.row['purchaseQty']"
+                  @blur="handlerInputBlur"
+                >
+              </operatorInput>
             </template>
           </template>
 
@@ -256,10 +263,11 @@
           <template slot="upsetPrice" slot-scope="scope">
             <!-- 只读 -->
             <template v-if="ruleForm.biddingStatus !== '01'">
-              <div>{{ scope.row["upsetPrice"] }}</div>
+              <!-- <div>{{ scope.row["upsetPrice"] }}</div> -->
+              <div>{{ dataProducts[scope.row['id']].upsetPrice }}</div>
             </template>
             <template v-else>
-              <iInput
+              <!-- <iInput
                 v-if="ruleForm.biddingMode === '01'"
                 v-model="scope.row['upsetPrice']"
                 placeholder="0.00"
@@ -269,8 +277,14 @@
                 :disabled="ruleForm.biddingStatus !== '01'"
               >
                 <template slot="suffix">{{ currencyMultiple }}</template>
-              </iInput>
-              <div v-else>-</div>
+              </iInput> -->
+              <!-- <div v-else>-</div> -->
+              <operatorInput
+                v-model="scope.row['upsetPrice']"
+                @blur="handlerInputBlur"
+              >
+              <template slot="suffix">{{ currencyMultiple }}</template>
+              </operatorInput>
             </template>
           </template>
 
@@ -279,10 +293,11 @@
             <!-- 只读 -->
             <template v-if="ruleForm.biddingStatus !== '01'">
               <div v-if="ruleForm.biddingMode === '02'"></div>
-              <div v-else>{{ scope.row["targetPrice"] }}</div>
+              <!-- <div v-else>{{ scope.row["targetPrice"] }}</div> -->
+              <div v-else>{{ dataProducts[scope.row['id']].targetPrice }}</div>
             </template>
             <template v-else>
-              <iInput
+              <!-- <iInput
                 v-if="ruleForm.biddingMode === '01'"
                 v-model="scope.row['targetPrice']"
                 placeholder="0.00"
@@ -292,7 +307,13 @@
               >
                 <template slot="suffix">{{ currencyMultiple }}</template>
               </iInput>
-              <div v-else>-</div>
+              <div v-else>-</div> -->
+              <operatorInput
+                v-model="scope.row['targetPrice']"
+                @blur="handlerInputBlur"
+              >
+              <template slot="suffix">{{ currencyMultiple }}</template>
+              </operatorInput>
             </template>
           </template>
 
@@ -348,6 +369,7 @@ import {
   listQuotationByFs
 } from "@/api/bidding/bidding";
 import Big from "big.js";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -360,6 +382,7 @@ export default {
     iSelect,
     iDatePicker,
     commonTable,
+    operatorInput
   },
   props: {
     id: String,
@@ -368,12 +391,46 @@ export default {
       default: () => ({}),
     },
   },
-  watch: {},
+  watch: {
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'beginMonth',
+          //   'modelProjects',
+          //   'models',
+          //   'totalPrices'
+          // ])
+        })
+      }
+    },
+    "ruleForm.biddingProducts":{
+      deep:true,
+      handler(val){
+        this.dataProducts = val.reduce((pre,cur) => {
+          return {...pre,[cur.id]:
+                        {
+                          purchaseQty:Number(cur.purchaseQty)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          upsetPrice:Number(cur.upsetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          targetPrice:Number(cur.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        }
+          }
+        },{})
+      }
+    }
+  },
   data() {
     return {
       flag: false,
       tableLoading: false,
-      rules: baseRules,
+      rules: [],
       ruleForm: {
         beginMonth: "",
         modelProjects: [],
@@ -381,6 +438,7 @@ export default {
         biddingProducts: [],
         totalPrices: 0,
       },
+      dataProducts:{},
       unitTableTitle,
       totalTableTitle,
       inputProps: ["productName", "productCode"],
@@ -409,6 +467,7 @@ export default {
       rfqinfoProductCopy: [],
       timeout: "",
       quantityUnit: [],
+      isInputFlag:false,
     };
   },
   mounted() {
@@ -454,7 +513,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || this.language('BIDDING_YUAN',"元");
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     orgTotalPrices() {
       let biddingProducts = this.ruleForm.biddingProducts;
@@ -480,16 +539,22 @@ export default {
       );
     },
     startingPrice() {
-      return this.orgTotalPrices + this.currencyMultiple;
+      return  Number(this.orgTotalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
     totalStartingPriceString() {
       if (this.ruleForm.totalPrices == null) {
         return 0 + this.currencyMultiple;
       }
-      return this.ruleForm.totalPrices + this.currencyMultiple;
+      return Number(this.ruleForm.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     loadAll() {
       return [
         { value: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },
@@ -768,42 +833,77 @@ export default {
           purchaseQty:Number(item.purchaseQty)
         }
       })
+
       // 车型
-      const paras = data.models?.map(item => {
-        return {
-          ...item,
-          code:item.modelCode,
-          name:item.model
-        }
-      })
-      this.modelsOption.push(...paras)
-      let optionObj = {}
-      let optionArr = []
-      this.modelsOption.forEach(item => {
-        if(!optionObj[item.name]) {
-          optionObj[item.name] = 1
-          optionArr.push(item)
-        }
-      })
-      this.modelsOption = [...optionArr]
+      getModels().then((res) => {
+        this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
+        const paras = data.models?.map(item => {
+          return {
+            ...item,
+            code:item.modelCode,
+            name:item.model
+          }
+        })
+        this.modelsOption.push(...paras)
+        
+        let optionObj = {}
+        let optionArr = []
+        this.modelsOption.forEach(item => {
+          if(!optionObj[item.name]) {
+            optionObj[item.name] = 1
+            optionArr.push(item)
+          }
+
+        })
+        let modelsData = []
+        this.modelsOption = [...optionArr]
+        this.modelsOption.forEach(item => {
+          data.models.forEach(it => {
+            if (it.model === item.name) {
+              // this.$set(this.ruleForm,'models',[item.code])
+              modelsData.push(item.code)
+            }
+          })
+        })
+        this.ruleForm.models = modelsData
+      });
+      
       // 车型项目
-      const projectParas = data?.modelProjects.map(item => {
-        return {
-          ...item,
-          code:item.projectCode,
-          name:item.project
-        }
-      })
-      this.modelProjectsOption.push(...projectParas)
-      let projectOptionObj = {}
-      let projectOptionArr = []
-      this.modelProjectsOption.forEach(item => {
-        if (!projectOptionObj[item.name]) {
-          projectOptionObj[item.name] = 1
-          projectOptionArr.push(item)
-        }
-      })
-      this.modelProjectsOption = [...projectOptionArr]
+      getProjects().then((res) => {
+        this.modelProjectsOption = res?.data?.filter(
+          (item) => item.name?.length > 0
+        );
+        const projectParas = data?.modelProjects.map(item => {
+          return {
+            ...item,
+            code:item.projectCode,
+            name:item.project
+          }
+        })
+        this.modelProjectsOption.push(...projectParas)
+        let projectOptionObj = {}
+        let projectOptionArr = []
+        this.modelProjectsOption.forEach(item => {
+          if (!projectOptionObj[item.name]) {
+            projectOptionObj[item.name] = 1
+            projectOptionArr.push(item)
+          }
+        })
+        let modelProjectsData = []
+        this.modelProjectsOption = [...projectOptionArr]
+        this.modelProjectsOption.forEach(item => {
+          data.modelProjects.forEach(it => {
+            if (it.project === item.name) {
+              modelProjectsData.push(item.code)
+            }
+          })
+        })
+        this.ruleForm.modelProjects = modelProjectsData
+      });
+      this.rules = baseRules(this)
+      this.$nextTick(() => {
+        this.$refs["ruleForm"].clearValidate()
+      });
       // if (this.ruleForm.biddingMode === "02") {
       //   //总价
       //   this.ruleForm.totalPrices = Big(this.ruleForm.totalPrices || 0)

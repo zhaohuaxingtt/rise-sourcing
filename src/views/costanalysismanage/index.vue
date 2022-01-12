@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 11:30:28
- * @LastEditTime: 2021-08-23 14:27:18
- * @LastEditors: 舒杰
+ * @LastEditTime: 2021-11-25 15:36:05
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\costanalysismanage\index.vue
 -->
@@ -16,8 +16,9 @@
 
 <script>
 import { iPage, iNavMvp } from "rise"
-import { navList } from "./components/data"
+// import { navList } from "./components/data"
 import { cloneDeep } from "lodash"
+import { TAB } from '@/views/financialTargetPrice/components/data'
 
 export default {
   components: {
@@ -26,7 +27,7 @@ export default {
   },
   data() {
     return {
-      navList: cloneDeep(navList)
+      navList: cloneDeep(TAB)
     }
   }
 }

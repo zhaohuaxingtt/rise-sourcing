@@ -1,14 +1,14 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-11-17 13:55:13
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2021-12-28 13:31:50
+ * @LastEditors: YoHo
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
 -->
 <template>
-  <iPage class="dashboard">
-    <headerNav v-permission.auto="DASHBOARD_OVERVIEW_PAGE|寻源概览" />
+  <div class="dashboard">
+    <!-- <headerNav /> -->
     <!-- 功能卡片 -->
     <div class="dashboard-card">
       <el-row :gutter="10">
@@ -155,11 +155,11 @@
         </el-col>
       </el-row>
     </div>
-  </iPage>
+  </div>
 </template>
 
 <script>
-import headerNav from './components/headerNav'
+// import headerNav from './components/headerNav'
 import nomicharts from './components/nomicharts'
 import pieCharts from './components/pieCharts'
 import {sourcingOverview} from '@/api/dashboard'
@@ -178,7 +178,7 @@ export default {
     iPage,
     iCard,
     icon,
-    headerNav,
+    // headerNav,
     nomicharts,
     pieCharts
   },
@@ -340,7 +340,7 @@ export default {
   cursor: pointer;
 }
 .dashboard-card {
-  padding: 10px 0;
+  padding: 0 0 10px 0;
   ::v-deep.card {
     height: 148PX;
     background-image: url(~@/assets/images/bgCar.gif);

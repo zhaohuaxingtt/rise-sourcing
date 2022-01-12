@@ -11,7 +11,7 @@ const requst = axios(process.env.VUE_APP_POWEBI_KPI + '/web/aon')
 
 export function powerBiUrl(parmars) {
   return requst({
-    url: '/batchOverview/getSupplierPbi',
+    url: '/batchOverview/getCmSupplierPbi',
     method: 'GET',
   })
 }
@@ -77,6 +77,20 @@ export function overviewBatchSupplierMap(parmars) {
     url: `/batchOverview/overviewBatchSupplierMap`,
     method: 'POST',
     data: parmars
+  })
+}
+//供应商总览地图
+export function queryRfqSupplierList(params) {
+  return requst({
+    url: `/batchOverview/queryRfqSupplierList/`+params.rfqId,
+    method: 'GET'
+  })
+}
+//供应商总览地图
+export function queryRfqSupplierListByCategory(params) {
+  return requst({
+    url: `/batchOverview/queryRfqSupplierListByCategory/`+params.categoryCode,
+    method: 'GET'
   })
 }
 //定点记录

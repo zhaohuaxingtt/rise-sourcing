@@ -104,7 +104,8 @@ export default {
             this.$set(
               item,
               "exchangeRate",
-              (this.currency * 100).toFixed(2).replace(/[.]?0+$/, "")
+              //  (this.currency * 100).toFixed(2).replace(/[.]?0+$/, "")
+              this.currency ? (this.currency * 100).toString() : 0
             );
             if (val === "RMB") {
               this.$set(item, "exchangeRate", 100);
@@ -114,8 +115,8 @@ export default {
       });
       this.$emit("handle-currencys", val);
     },
-    handelCheck(val, { id }) {
-      this.$emit("selectDel", { val, id });
+    handelCheck(val, item) {
+      this.$emit("selectDel", { val, item });
     },
   },
 };

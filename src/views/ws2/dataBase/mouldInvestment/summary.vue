@@ -177,6 +177,8 @@ export default {
         this.form[i] = "";
       }
       this.form['search.tmCartypeProId'] = []
+      this.categoryName = '';
+      console.log('this.formthis.form', this.form);
       this.getTableListFn()
     },
     handleSelectionChange(list) {

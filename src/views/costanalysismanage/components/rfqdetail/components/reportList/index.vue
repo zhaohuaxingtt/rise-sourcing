@@ -4,7 +4,7 @@
  * @Description: 报告清单列表
 -->
 <template>
-    <iCard :title="language('costanalysismanage.BaoGaoQingDan','报告清单')">
+    <iCard class="reportList" :title="language('costanalysismanage.BaoGaoQingDan','报告清单')">
         <template v-slot:header-control>
             <span class="margin-right10">
                 <!-- <Upload 
@@ -13,12 +13,18 @@
                     accept=".pdf"
                     @on-success="onDraingUploadsucess"
                 /> -->
-                <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError">
+                <!-- <uploadButton uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccess" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD|上传">
                     <iButton :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
+                </uploadButton> -->
+                <uploadButton v-if="isPca" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessPca" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_PCA|上传PCA报告">
+                    <iButton :loading="uploadLoading">{{ language("SHANGCHUANPCABAOGAO", "上传PCA报告") }}</iButton>
+                </uploadButton>
+                <uploadButton v-if="isTia" uploadClass="uploadButton" :beforeUpload="beforeUpload" @success="uploadSuccessTia" @error="uploadError" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_UPLOAD_TIA|上传TIA报告">
+                    <iButton :loading="uploadLoading">{{ language("SHANGCHUANTIABAOGAO", "上传TIA报告") }}</iButton>
                 </uploadButton>
             </span>
-            <iButton @click="downloadList">{{language('LK_XIAZAI','下载')}}</iButton>
-            <iButton @click="deleteItem">{{language('delete','删除')}}</iButton>
+            <iButton @click="downloadList" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_DOWNLOAD|下载">{{language('LK_XIAZAI','下载')}}</iButton>
+            <iButton @click="deleteItem" v-permission.auto="COSTANALYSISMANAGE_RFQDETAIL_REPORTLIST_BUTTON_DELETE|删除">{{language('delete','删除')}}</iButton>
         </template>
         <div class="body">
         <tableList
@@ -87,17 +93,42 @@ export default {
         Upload,
         uploadButton
     },
+    computed: {
+        ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+        }),
+        roleCodeList() {
+            if (Array.isArray(this.userInfo.positionList)) {
+                return this.userInfo.positionList.reduce((acc, cur) => {
+                if (Array.isArray(cur.roleDTOList)) {
+                    return acc.concat(cur.roleDTOList.map(item => item.code))
+                } else {
+                    return acc
+                }
+                }, [])
+            } else {
+                return []
+            }
+        },
+        isPca() { // 零件成本分析员 临时
+            return this.roleCodeList.some(item => item.indexOf("LJCBFXY") > -1)
+        },
+        isTia() { // 模具成本分析员 临时
+            return this.roleCodeList.some(item => item.indexOf("MJCBFXY") > -1)
+        },
+    },
     created(){
         this.getList();
     },
     data() {
         return {
-        loading: false,
-        tableTitle,
-        tableListData: [],
-        selectItems:[],
-        uploadLoading: false,
-        fileList: [],
+            loading: false,
+            tableTitle,
+            tableListData: [],
+            selectItems:[],
+            uploadLoading: false,
+            fileListPCA: [],
+            fileListTIA: [],
         }
     },
     methods:{
@@ -202,20 +233,20 @@ export default {
         beforeUpload() {
             this.uploadLoading = true
         },
-        uploadFiles() {
+        uploadFiles(type) {
             this.loading = true
 
             kmUploadFiles({
-                fileHistoryDTOS: this.fileList.map(item => ({
+                fileHistoryDTOS: this[`fileList${ type }`].map(item => ({
                     fileCode: "0",
                     fileName: item.fileName,
                     filePath: item.filePath,
                     fileSize: item.size,
                     hostId: this.$route.query.rfqId,
                     uploadId: item.id,
-                    source: 0
+                    source: 0,
+                    fileType: type === "PCA" ? 126 : 127 // 126 PCA / 127 TIA
                 })),
-                type: 1
             })
             .then(res => {
                 if (res.code == 200) {
@@ -232,16 +263,22 @@ export default {
                 this.loading = false
             })
         },
-        uploadSuccess(res, file) {
+        uploadSuccessPca(res, file) {
+            this.uploadSuccess(res, file, "PCA")
+        },
+        uploadSuccessTia(res, file) {
+            this.uploadSuccess(res, file, "TIA")
+        },
+        uploadSuccess(res, file, type) {
             if (res.code != 200) {
                 iMessage.error(`${ this.$i18n.locale === "zh" ? res.desZh : res.desEn }`)
             } else {
-                this.fileList = []
+                this[`fileList${ type }`] = []
                 clearTimeout(this.timer)
                 iMessage.success(`${ file.name } ${ this.language("SHANGCHUANCHENGGONG", "上传成功") }`)
-                this.fileList.push({ id: res.data[0].id, fileName: res.data[0].name, filePath: res.data[0].path, size: file.size })
+                this[`fileList${ type }`].push({ id: res.data[0].id, fileName: res.data[0].name, filePath: res.data[0].path, size: file.size })
                 this.timer = setTimeout(() => {
-                    this.uploadFiles()
+                    this.uploadFiles(type)
                     clearTimeout(this.timer)
                 }, 700)
             }
@@ -275,7 +312,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.uploadButton {
-    display: inline;
+.reportList {
+    .uploadButton {
+        display: inline;
+
+        & + .uploadButton {
+            margin-left: 10px;
+        }
+    }
 }
 </style>

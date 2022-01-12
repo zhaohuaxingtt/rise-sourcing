@@ -9,17 +9,17 @@
 <template>
   <iCard class="score" :title="language('LK_GONGYINGSHANGPINGFEN', '供应商评分')">
     <template #header-control>
-      <div v-if="!editStatus">
-        <iButton @click="forwardDialogVisible = true">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
-        <iButton :loading="backLoading" @click="handleBack">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
-        <iButton @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit">{{ language("LK_TIJIAO", "提交") }}</iButton>
-        <iButton :loading="approveLoading" @click="handleApprove">{{ language("PIZHUN", "批准") }}</iButton>
-        <iButton @click="handleReject">{{ language("JUJUE", "拒绝") }}</iButton>
+      <div key="1" v-if="!editStatus">
+        <iButton @click="forwardDialogVisible = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_TRANSFER|转派">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
+        <iButton :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
+        <iButton @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton :loading="submitLoading" @click="handleSubmit" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SUBMIT|提交">{{ language("LK_TIJIAO", "提交") }}</iButton>
+        <iButton :loading="approveLoading" @click="handleApprove" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_APPROVE|批准">{{ language("PIZHUN", "批准") }}</iButton>
+        <iButton @click="handleReject" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_REJECT|拒绝">{{ language("JUJUE", "拒绝") }}</iButton>
       </div>
-      <div v-else>
+      <div key="2" v-if="editStatus">
         <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
-        <iButton :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
+        <iButton :loading="saveLoading" @click="handleSave" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SAVE|保存">{{ language("BAOCUN", "保存") }}</iButton>
       </div>
     </template>
     <div class="body">
@@ -47,7 +47,41 @@
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus">
-                  <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.rate" />
+                  <!-- <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.rate" /> -->
+                  <div v-if="afterSaleLeaderIds.every(id => id != userInfo.id)">
+                    <template v-if="scope.row.rateTag == 'MQ'">
+                      <iSelect  v-model="scope.row.rate">
+                        <el-option
+                          v-for="(item, index) in mqGrage"
+                          :key="index"
+                          :value="item.code"
+                          :label="item.nameEn"
+                        >
+                        </el-option>
+                      </iSelect>
+                    </template>
+                    <template v-if="scope.row.rateTag == 'EP'">
+                      <iSelect  v-model="scope.row.rate">
+                        <el-option
+                          v-for="(item, index) in epGrade"
+                          :key="index"
+                          :value="item.code"
+                          :label="item.nameEn"
+                        >
+                        </el-option>
+                      </iSelect>
+                    </template>
+                      <!-- <iSelect v-if="scope.row.tagName == 'EP'" v-model="scope.row.rate">
+                      <el-option
+                        v-for="(item, index) in epGrade"
+                        :key="index"
+                        :value="item.code"
+                        :label="item.nameEn"
+                      >
+                      </el-option>
+                    </iSelect> -->
+                  </div>
+
                   <iSelect v-else v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
@@ -56,11 +90,11 @@
                 <span v-else>{{ scope.row.rate }}</span>
               </template>
               <template v-else-if="item.props === 'externalFee' || item.props === 'addFee'" v-slot="scope">
-                <iInput v-if="editStatus" v-model="scope.row[item.props]" />
+                <iInput v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
                 <span v-else>{{ scope.row[item.props] }}</span>
               </template>
               <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
-                <iInput v-if="editStatus" v-model="scope.row.confirmCycle" />
+                <iInput v-if="editStatus" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
                 <span v-else>{{ scope.row.confirmCycle }}</span>
               </template>
               <template v-else-if="item.props === 'remark'" v-slot="scope">
@@ -91,7 +125,8 @@ import { scoreTableTitle as tableTitle, deptScoreTableTitle } from "../data"
 import { cloneDeep, isEqual } from "lodash"
 import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo } from "@/api/supplierscore"
 import { afterSaleLeaderIds } from "@/views/supplierscore/components/data"
-
+import { numberProcessor } from "@/utils"
+import { selectDictByKeys } from "@/api/dictionary"
 export default {
   components: {
     iCard,
@@ -119,6 +154,7 @@ export default {
     if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
       this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
     }
+    this.getRate()
   },
   data() {
     return {
@@ -139,19 +175,27 @@ export default {
       rejectDialogVisible: false,
       saveLoading: false,
       afterSaleLeaderIds,
+      mqGrage:[],
+      epGrade:[]
     }
   },
   methods: {
     getRfqBdlRatingsByCurrentDept() {
       this.loading = true
+      selectDictByKeys([{ keys: "MQ_GRADE" }]).then(res=>{
+        this.mqGrage = res?.data.MQ_GRADE
+      })  
+      selectDictByKeys([{ keys: "EP_GRADE" }]).then(res=>{
+        this.epGrade = res?.data.EP_GRADE
+      })
       getRfqBdlRatingsByCurrentDept({
         rfqId: this.rfqId
       })
       .then(res => {
         this.tableListData = []
-
+        
         if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data) ? res.data : []
+          this.tableListData = Array.isArray(res.data) ? res.data : [] 
           this.tableListDataCache = cloneDeep(this.tableListData)
           this.rateTag = this.tableListData[0] && this.tableListData[0].rateTag ? this.tableListData[0].rateTag.desc : ""
         } else {
@@ -353,7 +397,7 @@ export default {
     // 查看零件评分
     viewPartScore(row) {
       const route = this.$router.resolve({
-        path: "/supplierscore/partscore",
+        path: "/targetpriceandscore/supplierscore/partscore",
         query: {
           rfqId: row.rfqId,
           supplierId: row.supplierId
@@ -391,6 +435,16 @@ export default {
       })
       .catch(() => this.$refs.remarkDialog.updateConfirmLoading(false))
     },
+    // 输入金额
+    handleInputByMoney(value, key, row) {
+      this.$set(row, key, numberProcessor(value, 2))
+    },
+    // 输入周期
+    handleInputByWeek(value, key, row) {
+      let week = numberProcessor(value, 0)
+      if (+week > 53) week = "53"
+      this.$set(row, key, week)
+    }
   }
 }
 </script>

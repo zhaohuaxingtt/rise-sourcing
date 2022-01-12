@@ -8,22 +8,22 @@
         <iFormGroup row="4" class="basic-form">
           <template 
             v-for="(item,index) in basicTitle"
-            v-permission.dynamic.auto="item.permissionKey" 
           >
-            <iFormItem :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  :label-width="item.labelWidth || '120px'">
+            <iFormItem v-permission.auto="item.permissionKey"  :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  :label-width="item.labelWidth || '120px'">
                 <iText >{{ item.isObj ? basicInfo[item.props+'Desc'] : basicInfo[item.props]}}</iText>
             </iFormItem>
           </template>
       </iFormGroup>
-      <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
-      <iInput
-        disabled
-        type="textarea"
-        rows="10" 
-        resize="none"
-        v-model="basicInfo.remark"
-        v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TEXT_TIPS|封面表态备注框_预览"
-      />
+      <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TEXT_TIPS|封面表态备注框_预览">
+        <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
+        <iInput
+            disabled
+            type="textarea"
+            rows="10" 
+            resize="none"
+            v-model="basicInfo.remark"
+        />
+      </div>
       <!-- 费用合计table -->
       <div class="margin-top40" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_CARTYPE|封面表态费用表单_预览">
         <tableList
@@ -56,7 +56,8 @@
         <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE|封面表态LINIE表_预览">
             <p class="btn-list margin-bottom20" v-if="!isFromCheck">
                 <iButton v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_QUXIAOTONGGUO|取消通过" v-if="!disabled" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
-                <iButton v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_JIEDONG|解冻" @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
+                <!-- aeko状态为已撤销的时候禁用解冻按钮 -->
+                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_JIEDONG|解冻" @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
             </p>
             <tableList
                 index
@@ -116,6 +117,7 @@ import {
 } from '@/api/aeko/detail/cover.js'
 import unfreezeDialog from './unfreezeDialog'
 import { roleMixins } from "@/utils/roleMixins";
+import { cloneDeep } from "lodash"
 export default {
     name:'previewCover',
     mixins: [pageMixins, roleMixins],
@@ -152,6 +154,17 @@ export default {
 
         }
     },
+    props:{
+        aekoInfo:{
+            type:Object,
+            default:()=>{},
+        }
+    },
+    computed:{
+        btnDisabled(){ // 已撤销的AEKO不允许操作解冻
+            return this.aekoInfo.aekoStatus == 'CANCELED'
+        },
+    },
     created(){
         this.getList();
         this.getLinie();
@@ -167,6 +180,13 @@ export default {
                 )
             }
         }
+
+        // 提示不可见
+        const coverTableTitle = cloneDeep(coverTableTitleCost);
+        coverTableTitle.map((item)=>{
+            if(item.props == 'materialIncrease') item.showTips = false;
+        })
+        this.tableTitleCost = coverTableTitle;
     },
     methods:{
         // 获取详情

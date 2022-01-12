@@ -11,6 +11,7 @@
       <!-- <h2>{{language('LK_AEKOCAOZUO','AEKO操作')}}</h2> -->
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
+        <switchPost />
         <log-button @click="openLog" class="margin-left25"/>
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
@@ -60,6 +61,12 @@
                     </el-option>  
                   </iSelect> 
                 </template>
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
                 <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                 <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
@@ -83,7 +90,7 @@
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_SHANCHUAEKO|删除AEKO" :loading="btnLoading.deleteItem" @click="deleteItem">{{language('LK_SHANCHUAEKO','删除AEKO')}} </iButton>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_CHEXIAOAEKO|撤销AEKO" @click="revoke">{{language('LK_CHEXIAOAEKO','撤销AEKO')}} </iButton>
           
-          <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN|上传文件" class=" margin-left10 margin-right10">
+          <span v-permission.auto="AEKO_MANAGELIST_BUTTON_DAORUFUJIAN|上传文件" class="margin-left10 margin-right10">
             <Upload 
                 hideTip
                 style="display:none;"
@@ -93,7 +100,7 @@
                 @on-success="fileSuccess"
                 :uploadButtonLoading="btnLoading.uploadFiles"
             />
-            <iButton class="margin-left10" :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
+            <iButton :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
 
@@ -175,7 +182,8 @@ import {
   iCard,
   iButton,
   iPagination,
-  icon
+  icon,
+  iMultiLineInput
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
@@ -184,6 +192,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
+import switchPost from '@/components/switchPost'
 import logButton from "@/components/logButton";
 import {user as configUser } from '@/config'
 import aekoSelect from '../components/aekoSelect'
@@ -231,7 +240,9 @@ export default {
       aekoSelect,
       tcmList,
       iLog,
-      logButton
+      logButton,
+      switchPost,
+      iMultiLineInput
     },
     data(){
       return{
@@ -293,6 +304,23 @@ export default {
         }),
     },
     created(){
+      // 进来的时候判断是否有aeko管理页面的权限 如果没有就顺延到下个月权限页面跳转
+      for(var i  = 0; i<TAB.length;i++){
+        if(TAB[i].permissionKey == 'AEKO_MANAGE' && this.permission.whiteBtnList[TAB[i].permissionKey]) break;
+        else if(this.permission.whiteBtnList[TAB[i].permissionKey]){
+          this.$router.push({
+            path:TAB[i].url
+          })
+          break;
+        }
+      }
+      // csf分配人跳转页面需单独处理下 若前面没跳转并且没有aeko管理权限就判断是否有aeko分配 若有就直接跳转到aeko分配去
+      if(this.permission.whiteBtnList['AEKO_ASSIGN_ASSIGNLIST_TABLE'] && !this.permission.whiteBtnList['AEKO_MANAGELIST_TABLE']){ 
+        this.$router.push({
+            path:'/aeko/assign'
+          })
+      }
+
       this.sure();
       this.getSearchList();
 
@@ -301,25 +329,6 @@ export default {
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
       this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
       this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
-
-      // const { isAekoManager,isCommodityCoordinator,isLinie,$route } = this;
-      // const role = {
-      //   isAekoManager,
-      //   isCommodityCoordinator,
-      //   isLinie,
-      // };
-
-      // const filterList = filterRole(role);
-      // this.navList = filterList;
-
-      // 判断当前url是否在可显示列表内 若无则显示列表第一个清单
-      // const {path} = $route;
-      // const filterPath = filterList.filter((item)=>item.url == path);
-      // if(!filterPath.length){
-      //   this.$router.push({
-      //     path:filterList[0].url,
-      //   })
-      // }
 
       this.leftTab = getLeftTab(0);
     },

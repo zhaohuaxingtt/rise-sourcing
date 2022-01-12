@@ -1,8 +1,8 @@
 /*
  * @Author: shujie
  * @Date: 2021-02-24 10:17:53
- * @LastEditTime: 2021-10-15 12:11:23
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-01 15:02:17
+ * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsign\editordetail\components\data.js
  */
@@ -13,7 +13,7 @@ export const partTitle = [
 	{key:'carModelID',name:'车型大类',permissionKey:'PARTSIGN_EDITORDETAIL_VEHICLECATEGORIES', language: 'LK_CHEXINGDALEI'},
 	{key:'projectCarType',name:'车型项目',permissionKey:'PARTSIGN_EDITORDETAIL_MODELPROJECT', language: 'LK_CHEXINGXIANGMU'},
 	{key:'stuffName',name:'询价采购员',permissionKey:'PARTSIGN_EDITORDETAIL_BUYER', language: 'LK_XUNJIACAIGOUYUAN'},
-	{key:'tpPartID',name:'新建信息单流水号',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONSERIALNUMBER', language: 'LK_XINJIANXINXIDANLIUSHUIHAO'},
+	{key:'tpPartID',name:'新件信息单流水号',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONSERIALNUMBER', language: 'XINJIANXINXIDANLIUSHUIHAO'},
 	{key:'tpInfoType',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION', language: 'LK_XINXIDANLEIXING'},
 	{key:'status',name:'信息单状态',permissionKey:'PARTSIGN_DETAIL_INFORMATIONSTATUS', language: 'LK_XINXIDANZHUANGTAI'},
   ]
@@ -121,12 +121,13 @@ export const volumeUnconfirmedTableTitle = [
 ]
 
 export const volumeTableTitle = [
-  { props: 'cartypeCategory', name: '车型大类', key: 'LK_CHEXINGDALEI', tooltip: true },
+  { props: 'projectCarType', name: '车型项目', key: 'LK_CHEXINGXIANGMU', tooltip: true },
   { props: 'engineType', name: '发动机类型', key: 'LK_FADONGJILEIXING', tooltip: true },
   { props: 'batteryCapacity', name: '电池容量', key: 'LK_DIANCHIRONGLIANG', tooltip: true },
   { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING', tooltip: true },
   { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI', tooltip: true },
   { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI', tooltip: true },
+  { props: 'ratio', name: '比例', key: 'LK_BILI', tooltip: true },
   { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG', tooltip: true }
 ]
 
@@ -137,6 +138,7 @@ export const volumeDialogTableTitle = [
   { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING', tooltip: true },
   { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI', tooltip: true },
   { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI', tooltip: true },
+  { props: 'ratio', name: '比例', key: 'LK_BILI', tooltip: true },
   { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG', tooltip: true }
 ]
 

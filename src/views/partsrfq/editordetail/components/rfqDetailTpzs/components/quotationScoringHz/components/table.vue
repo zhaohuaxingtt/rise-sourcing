@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-11-23 18:58:30
- * @LastEditors:  
+ * @LastEditTime: 2022-01-07 17:21:20
+ * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
 -->
@@ -35,7 +35,7 @@
           >
             <template slot-scope="scope">
                 <el-checkbox @change="handleSelectionChange(scope.row,scope.$index)" class="checkBox" v-model="scope.row.active"><span>{{scope.row[item.props]}}</span></el-checkbox>
-                <span v-if="scope.row.partNo.includes('Group total')">{{scope.row.partNo}}</span>
+                <span v-if="scope.row.partNo && scope.row.partNo.length && scope.row.partNo.includes('Group total')">{{scope.row.partNo}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -65,19 +65,20 @@
             <!----------在表头上方需要显示评分的点，插入表头标签------>
             <template slot="header" slot-scope="scope">
               <el-tooltip :content="scope.column.label" effect='light'><p v-if="item.renderHeader" v-html="item.renderHeader"></p><span v-else class="labelHader">{{scope.column.label}}</span></el-tooltip>
-              <div class="headerContent" v-if='scope.column.label == "EBR"'>
+              <div class="headerContent" v-if='scope.column.label == ""'>
                 <div class="c" :style="{width:cWidth}" v-if='ratingList.firstTile.length > 0'>
-                  <ul style="width:99.5px">
+                  <ul style="width:0px">
                     <li></li>
                     <template v-for='(items,index) in ratingList.firstTile'>
                       <template v-if='ratingList.firstTile.length > 1'>
-                        <li :key='index' v-if='!items==""'>
+                        <li :key='index' v-if='items'>
                           <el-tooltip effect="light" :content="items">
                             <div class="titleOverflow">
                               {{items}}
                             </div>
                           </el-tooltip>
                         </li>
+                         <li v-else :key='index'>Dept</li>
                       </template>
                       <template v-else>
                         <li :key='index'>{{items}}</li>
@@ -113,7 +114,7 @@
             </template>
             <template slot-scope="scope">
               <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
-                  <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+                  <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "ebrCalculatedValue"'>
                 <span>{{ebrShow(scope.row[item.props])}}</span>
@@ -134,13 +135,13 @@
                 <span >{{scope.row['factoryEn']}}</span>
               </template>        
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
-                  <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+                  <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>    
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "tto"'>
                 <el-tooltip :content='ttoShow(scope.row[item.props])' effect='light'>
@@ -159,23 +160,23 @@
               <template v-else-if ='removeKeysNumber(item.props) == "developmentCost"'>
               <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>
                 <template slot="content">
-                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"developmentCost"]-scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
+                  <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"]) }}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
                 </template>
-                <span>{{scope.row[item.props]}}</span>
+                <span>{{ttoShow(scope.row[item.props])}}</span>
               </el-tooltip>
-              <span v-else>{{scope.row[item.props]}}</span>
+              <span v-else>{{ttoShow(scope.row[item.props])}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
               </template>
               <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
               <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>
                 <template slot="content">
-                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"tooling"]-scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
+                  <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"]) }}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                 </template>
-                <span>{{scope.row[item.props]}}</span>
+                <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
               </el-tooltip>
-              <span v-else>{{scope.row[item.props]}}</span>
+              <span v-else>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
               </template>
               <template v-else>
@@ -190,9 +191,8 @@
 </template>
 <script>
 import {removeKeysNumber,getPorpsNumber} from './data'
-import {icon} from 'rise'
+import {icon,iMessage} from 'rise'
 import moment from 'moment'
-import {toThousands} from '@/utils'
 export default{
   components:{icon},
   props:{
@@ -225,31 +225,60 @@ export default{
   },
   computed:{
     cWidth(){
-      const index = this.tableTitle.findIndex((item)=>item.label == 'EBR')
-      return (this.tableTitle.length - index) * 100 + 'px'
+      const indexTabs = this.tableTitle.findIndex(i=>i.props == "headerEbr")
+      return this.tableTitle.reduce((a,b,index)=>{
+        if(index > indexTabs) {
+          return a+parseFloat(b.width)
+        }else{
+          return a
+        }
+      },0) + 'px'
     },
     spanArr(){
       return this.rowspan(this.tableData,'groupId',null)
     },
     spanArrGroup() {
-      return this.tableData.reduce((accu, item, index) => item.partNo.includes('Group total') ? [...accu, index] : accu,[])
+      return this.tableData.reduce((accu, item, index) => {
+        if(item.partNo && item.partNo.length && item.partNo.includes('Group total')){
+          return [...accu, index]
+        }else{
+          return [accu]
+        }
+      })
     },
     isPreview(){
         return this.$store.getters.isPreview;
-    },
+    }
   },
   methods:{
+    setfixElement(){
+      try {
+        const needRemovebox = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper .rateList')
+        if(needRemovebox){
+          needRemovebox.parentNode.removeChild(needRemovebox)
+        }
+        const box = document.querySelector('.selsTable .el-table__fixed .el-table__fixed-header-wrapper')
+        let str = `<li>Dept</li>`
+        this.ratingList.firstTile.forEach(items=>{
+          str+=(`<li>${items?items:''}</li>`)
+        })
+        const ulDom = document.createElement('div')
+        ulDom.innerHTML = `<ul>${str}</ul>`
+        ulDom.setAttribute('class','rateList')
+        box.appendChild(ulDom)
+      } catch (error) {
+        console.warn(error)
+      }
+    },
     ttoShow(data){
-      if(parseInt(data)){
-        return toThousands(parseInt(data)) 
+      if(data && parseInt(data)){
+        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }
     },
     ebrShow(data) {
-      console.log(data)
-
-      if(data == undefined || data == 'Budget' || data == 'KM'  )
+      if(!data || data.indexOf('Budget') > -1 || data == 'KM')
        return data 
       else{
         // eslint-disable-next-line no-undef
@@ -272,11 +301,12 @@ export default{
       }
     },
     optionPage(items,index){
+      if(items[index+'hasNoBidOpen']) return iMessage.warn(this.language('AIBIAOSHIJIANWEIDAO','抱歉！开标时间未到，暂时无法查看报价单！'))
       const router = this.$router.resolve({
         path:'/sourceinquirypoint/sourcing/supplier/quotationdetail',
         query:{
           rfqId:this.$route.query.id,
-          round:this.round,
+          round:items.round,
           supplierId:items[index+'supplierId'],
           fsNum:items.partPrjCode,
           fix:true,
@@ -316,7 +346,7 @@ export default{
   },
   spanMethod({row, column, rowIndex, columnIndex}) {
     // grouptotal 合并第一、二格
-    if (this.spanArrGroup.includes(rowIndex)) {
+    if (this.spanArrGroup && this.spanArrGroup.length && this.spanArrGroup.includes(rowIndex)) {
       if (columnIndex === 0) {
         return [1, 2];
       } else if (columnIndex === 1) {
@@ -368,7 +398,7 @@ export default{
       if(rowIndex == this.tableData.length -1 || rowIndex == this.tableData.length -2 ){
         return 'lineBlueClass'
       }
-      if (row.partNo.includes('Group total')) {
+      if (row.partNo && row.partNo.length && row.partNo.includes('Group total')) {
         return 'lineBlueClass groupLineBlueClass'
       }
     },
@@ -407,8 +437,16 @@ export default{
     },
     //去掉空格
     removeSpace(str) {
-      return str.replace(/\s+/g,"")
-    }
+      try {
+        return str.replace(/\s+/g,"")
+      } catch (error) { 
+        return str 
+      }
+    },
+    // 减法
+    subtract(a, b) {
+      return math.subtract(math.bignumber(a || 0), math.bignumber(b || 0)).toFixed(2)
+    } 
   }
 }
 </script>
@@ -448,6 +486,7 @@ export default{
     ::v-deep.cell{
       overflow: visible;
       position: static;
+      padding: 0px;
       span {
         white-space:pre-line!important;
         text-align: center;
@@ -534,7 +573,8 @@ export default{
       .cell{
           display: flex;
           justify-content: center;
-
+          white-space: pre;
+          align-items: center;
           .caret-wrapper{
             height: 20px;
             .ascending{
@@ -550,20 +590,18 @@ export default{
   .headerContent{
     position: absolute;
     top: 0px;
-    right: 0px;
+    left: -1px;
     height: 0px;
     width: 0px;
     .c{
       position: absolute;
       width: 100px;
-      //background-color: red;
       z-index: 123;
       bottom: -1px;
-      left:-98PX;
+      left:0PX;
       border: 1px solid #C5CCD6;
       border-bottom: none;
       border-left:none;
-      border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       overflow:hidden;
       display: flex;
@@ -578,7 +616,6 @@ export default{
         border-right: 1px solid #C5CCD6;
         border-top: 1px solid #C5CCD6;
         &:nth-child(2){
-          border-top-left-radius: 5px;
           overflow: hidden;
         }
         &:first-child{
@@ -586,6 +623,7 @@ export default{
           overflow: hidden;
           border-right: 0px;
           border: none;
+          width: 0px;
           li{
             border-right: 1px solid #C5CCD6;
             &:first-child{
@@ -632,10 +670,44 @@ export default{
           background-color: white;
           z-index: 124;
           top: 0px;
+          left: 1px;
           .el-table__fixed-header-wrapper{
-            position: static;
+            position: relative;
             top: inherit;
             left: inherit;
+            .rateList{
+              position: absolute;
+              right: -1px;
+              height: 0px;
+              width: 0px;
+              top: -1px;
+              ul{
+                position: absolute;
+                bottom: -1.8px;
+                right: 1.6px;
+                border: 1px solid #C5CCD6;
+                border-bottom: none;
+                border-top-left-radius: 10px;
+                overflow: hidden;
+                min-width: 70px;
+                li{
+                    border-bottom: 1px solid #C5CCD6;
+                    line-height: 38px;
+                    height: 38px;
+                    padding: 0px 5px;
+                    text-align: center;
+                    &:last-child{
+                      border-bottom: none;
+                    }
+                    &:first-child{
+                      background-color:rgba(22, 99, 246, 0.17);
+                      height: 60px;
+                      padding: 5px 0;
+                      font-weight: bold;
+                    }
+                  }
+              }
+            }
           }
           .el-table__fixed-body-wrapper{
             position: static;

@@ -26,7 +26,7 @@
               <el-option
                 v-for="item in roundTypeLists"
                 :key="item.roundType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.roundType"
               >
               </el-option>
@@ -62,7 +62,7 @@
               <el-option
                 v-for="item in biddingStatus"
                 :key="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
                 :value="item.value"
               >
               </el-option>
@@ -172,8 +172,14 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
-        console.log(176,val)
       },
+    },
+    '$i18n.locale':{
+      immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+      }
     },
     ruleForm(val) {
       this.$emit("input", val);
@@ -197,8 +203,8 @@ export default {
         this.$refs["ruleForm"].validateField(["pricingDeadline"]);
       });
       if (val == null) {
-        this.$set(this.ruleForm, "biddingEndTime", "");
-        this.$set(this.ruleForm, "pricingDeadline", "");
+        this.$set(this.ruleForm, "biddingEndTime", null);
+        this.$set(this.ruleForm, "pricingDeadline", null);
         this.$nextTick(() => {
           this.$refs["ruleForm"].clearValidate(["biddingEndTime"]);
           this.$refs["ruleForm"].clearValidate(["pricingDeadline"]);
@@ -212,14 +218,16 @@ export default {
       });
     },
     "ruleForm.biddingEndTime"(val) {
-      let three = 3 * 24 * 3600 * 1000;
-       let time = new Date(val).getTime() + three;
-       this.ruleForm.pricingDeadline = dayjs(time).format("YYYY-MM-DD HH:mm:00");
+      if (val) {
+        let three = 3 * 24 * 3600 * 1000;
+        let time = new Date(val).getTime() + three;
+        this.ruleForm.pricingDeadline = dayjs(time).format("YYYY-MM-DD HH:mm:00");
+      }
     }
   },
   data() {
     return {
-      rules: baseRules,
+      rules: baseRules(this),
       roundTypeLists,
       ruleForm: {},
       biddingStatus,
@@ -240,7 +248,35 @@ export default {
       //     return time.getTime() <= curDate || time.getTime() > threeMonths;
       //   },
       // },
-      pricingDeadlineOptions: {
+      // pricingDeadlineOptions: {
+      //   disabledDate: (time) => {
+      //     let year = new Date(this.ruleForm.biddingBeginTime).getFullYear();
+      //     let month = new Date(this.ruleForm.biddingBeginTime).getMonth() + 2;
+      //     if (month == 13) {
+      //       year +=1
+      //       month = 1;
+      //     }
+      //     let date = new Date(this.ruleForm.biddingBeginTime).getDate();
+      //     let nextMonth = new Date(year + "-" + month + "-" + date).getTime();
+
+      //     let curDate = this.ruleForm.biddingEndTime
+      //       ? new Date(this.ruleForm.biddingEndTime).getTime()
+      //       : Date.now() - 8.64e7;
+      //     let three = 30 * 24 * 3600 * 1000;
+      //     let threeMonths = curDate + three;
+      //     return time.getTime() < curDate || time.getTime() > nextMonth;
+      //   },
+      // },
+    };
+  },
+  computed: {
+    pricingDeadlineOptions() {
+      return {
+        selectableRange: [
+          `${dayjs(
+            new Date(this.ruleForm.biddingEndTime).getTime() + 60000
+          ).format("HH:mm:00")} - 23:59:59`,
+        ],
         disabledDate: (time) => {
           let year = new Date(this.ruleForm.biddingBeginTime).getFullYear();
           let month = new Date(this.ruleForm.biddingBeginTime).getMonth() + 2;
@@ -250,18 +286,16 @@ export default {
           }
           let date = new Date(this.ruleForm.biddingBeginTime).getDate();
           let nextMonth = new Date(year + "-" + month + "-" + date).getTime();
-
-          let curDate = this.ruleForm.biddingEndTime
-            ? new Date(this.ruleForm.biddingEndTime).getTime()
-            : Date.now() - 8.64e7;
+          // let curDate = this.ruleForm.biddingBeginTime
+          //   ? new Date(this.ruleForm.biddingBeginTime).getTime()
+          //   : Date.now() - 8.64e7;
+          let curDate = new Date(this.ruleForm.biddingEndTime) - 8.64e7;
           let three = 30 * 24 * 3600 * 1000;
           let threeMonths = curDate + three;
           return time.getTime() < curDate || time.getTime() > nextMonth;
         },
-      },
-    };
-  },
-  computed: {
+      }
+    },
     biddingBeginTimeOptions() {
       let now = dayjs(new Date().getTime()).startOf("date").valueOf();
       let biddingBeginTime = dayjs(this.ruleForm.biddingBeginTime)

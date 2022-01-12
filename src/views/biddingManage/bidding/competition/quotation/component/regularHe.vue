@@ -17,11 +17,10 @@
           prop="biddingQuoteRule.highestOffer"
           :hideRequiredAsterisk="true"
         >
-          <iInput
-            oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
+          <operatorInput
             v-model="ruleForm.biddingQuoteRule.highestOffer"
             class="input-wrap"
-          ></iInput>
+          ></operatorInput>
         </iFormItem>
       </div>
     </div>
@@ -36,11 +35,11 @@
           prop="biddingQuoteRule.amplitudeValue"
           :hideRequiredAsterisk="true"
         >
-          <iInput
+          <operatorInput
             v-model="ruleForm.biddingQuoteRule.amplitudeValue"
             class="input-wrap"
             maxlength="15"
-          ></iInput>
+          ></operatorInput>
         </iFormItem>
       </div>
     </div>
@@ -102,9 +101,11 @@
 import { iInput, iLabel, iFormItem } from "rise";
 import iLabelML from "@/components/biddingComponents/iLabelML";
 import { baseHeRules } from "./data.js";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   components: {
+    operatorInput,
     iInput,
     iLabel,
     iLabelML,
@@ -121,33 +122,75 @@ export default {
       immediate: true,
       handler(val) {
         this.ruleForm = val;
-        this.rules = baseHeRules(this.ruleForm);
       },
+    },
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseHeRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'biddingQuoteRule.highestOffer',
+          //   'biddingQuoteRule.amplitudeValue',
+          //   'biddingQuoteRule.biddingInterval',
+          //   'biddingQuoteRule.autoPriceLimit',
+          // ])
+        })
+      }
     },
     ruleForm(val) {
       this.$emit("input", val);
     },
-    "ruleForm.biddingQuoteRule.amplitudeValue"(val) {
-      if (val < this.ruleForm.biddingQuoteRule.highestOffer) {
-        this.$refs["ruleForm"].clearValidate(["biddingQuoteRule.highestOffer"]);
+    "ruleForm.biddingQuoteRule.amplitudeValue": {
+      immediate: true,
+      handler(val){
+        this.amplitudeValueData = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+        if (val < this.ruleForm.biddingQuoteRule.highestOffer) {
+          this.$refs["ruleForm"]?.clearValidate(["biddingQuoteRule.highestOffer"]);
+        }
       }
     },
-    "ruleForm.biddingQuoteRule.highestOffer"(val) {
-      if (val > this.ruleForm.biddingQuoteRule.amplitudeValue) {
-        this.$refs["ruleForm"].clearValidate([
-          "biddingQuoteRule.amplitudeValue",
-        ]);
+    "ruleForm.biddingQuoteRule.highestOffer": {
+      immediate: true,
+      handler(val){
+          this.highestOfferValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+          if (val > this.ruleForm.biddingQuoteRule.amplitudeValue) {
+            this.$refs["ruleForm"].clearValidate([
+            "biddingQuoteRule.amplitudeValue",
+          ]);
+        }
       }
     },
   },
   data() {
     return {
-      rules: baseHeRules(this.ruleForm),
+      rules: [],
+      isInputFlag:false,
+      highestOfferValue:'',
+      amplitudeValueData:'',
       ruleForm: {
         biddingQuoteRule: {},
       },
     };
   },
+  mounted(){
+    this.$nextTick(() => {
+      this.rules = baseHeRules(this.ruleForm, this)
+    })
+  },
+  methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-19 10:59:33
- * @LastEditTime: 2021-11-12 13:23:03
+ * @LastEditTime: 2021-12-03 10:32:23
  * @LastEditors:  
 -->
 <template>
@@ -19,10 +19,13 @@
       :tableData ="mtzTableData"
       :tableLoading ="tbaleLoading"
       v-loading="tableLoading"
+      :activeItems="'fileName'"
+      @openPage="openPage"
+      v-permission.auto="SOURCING_NOMINATION_ATTATCH_MTZATTACHMENT_TABLE|MTZAttachment-表格"
     >
     <template #uploadDate="scope">
       {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
-    </template>
+    </template>  
     </tablelist>
     <iPagination
     v-update
@@ -46,6 +49,8 @@ import { mtzuploadtableTitle} from './data'
 import { attachMixins } from '@/utils/attachMixins'
 import { pageMixins } from '@/utils/pageMixins'
 import { getMtzAttachmentPageList } from '@/api/designate/designatedetail/attachment'
+import { downloadUdFile } from "@/api/file"
+import { nominateAppSDetail } from '@/api/designate'
 export default {
   mixins: [ attachMixins, pageMixins ],
   components: {
@@ -55,7 +60,7 @@ export default {
   },
   data() {
     return{
-      nomiAppId: this.$route.query.mtzApplyId || '',
+      mtzAppId: '',
       mtzuploadtableTitle,
       tableLoading: false,
       multiEditState: false,
@@ -70,20 +75,35 @@ export default {
     }
   },
   created() {
-    this.getFetchDataList()
+    this.nominateAppSDetail()
+   
   },
   methods: {
+     nominateAppSDetail() {
+      if(this.$route.query.desinateId){
+        nominateAppSDetail({
+          nominateAppId: this.$route.query.desinateId
+        })
+        .then(res => {
+          this.mtzAppId = res.data.mtzApplyId||''
+          this.getFetchDataList()
+        })
+      } 
+    },
     getFetchDataList() {
       let data = {
-        mtzAppId:this.nomiAppId,
+        mtzAppId: this.mtzAppId,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       }
-      if(this.nomiAppId !== '')
+      if(this.mtzAppId !== '')
       getMtzAttachmentPageList(data).then(res => {
         this.mtzTableData = res.data
       })
-    }
+    },
+    async openPage(val) {
+     await  downloadUdFile(val.fileId)
+    },
   }
 }
 </script>

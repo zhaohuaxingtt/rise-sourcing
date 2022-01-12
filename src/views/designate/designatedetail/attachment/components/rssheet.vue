@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-05-27 09:42:07
- * @LastEditTime: 2021-06-26 22:55:56
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-03 10:31:34
+ * @LastEditors:  
  * @Description: 决策资料 - 附件
 -->
 <template>
@@ -13,7 +13,9 @@
       >
       <div class="floatright">
         <!-- 下载 -->
-        <iButton @click="downloadFile" class="btn margin-right10">
+        <iButton @click="downloadFile" class="btn margin-right10"
+        v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSheet_DOWNLOAD|RSSheet-下载"
+        >
           {{ language("strategicdoc_XiaZai",'下载') }}
         </iButton>
         <span>
@@ -23,6 +25,7 @@
             class="btn"
             @click="deleteFile($event, getFetchDataList)"
             v-if="!$store.getters.isPreview && !rsDisabled"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSheet_DELETE|RSSheet-删除"
           >
             {{ language("LK_SHANCHU",'删除') }}
           </iButton>
@@ -40,6 +43,7 @@
             :accept="'.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.pdf,.tif'"
             :buttonText="language('strategicdoc_ShangChuanXianXiaRS','上传线下RS文件')"
             @on-success="onUploadsucess(Object.assign(...arguments, {fileType: '103'}), getFetchDataList)"
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSheet_UPLOAD|RSSheet-上传线下RS文件"
           />
         </span>
         </span>
@@ -52,6 +56,7 @@
       :tableTitle="uploadtableTitle"
       :tableLoading="tableLoading"
       @handleSelectionChange="handleSelectionChange"
+      v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSheet_TABLE|RSSheet-表格"
     >
     <template #uploadDate="scope">
       {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}

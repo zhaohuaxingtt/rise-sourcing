@@ -1,19 +1,21 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 14:36:13
- * @LastEditTime: 2021-11-11 17:26:46
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-06 16:47:00
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\views\supplierscore\components\data.js
+ * @FilePath: \front-sourcing\src\views\supplierscore\components\data.js
  */
 export const navList = [
   {
     value: 1,
     name: "RFQ管理",
     message: 0,
-    url: "/supplierScore/home",
+    url: "/targetpriceandscore/supplierScore/home",
     activePath: "home",
-    key: "LK_RFQGUANLI"
+    key: "LK_RFQGUANLI",
+    permissionKey: 'SUPPLIERSCORE_TAB',
+    permissionName: '评分任务'
   },
 ]
 

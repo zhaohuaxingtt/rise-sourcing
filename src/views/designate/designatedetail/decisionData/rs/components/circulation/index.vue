@@ -1,23 +1,36 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors:  
- * @LastEditTime: 2021-10-25 19:46:44
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-10 19:59:37
  * @Description: 流转RS单
- * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
+ * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
   <div :class="isPreview && 'isPreview'">
-    <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN" :title="'CSC推荐表/CSC Recommendation Sheet会外流转'">
-      <iFormGroup row="4" class="csc">
+    <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
+      <template #header>
+        <div class="title">
+          <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
+        </div>
+        <div class="btnWrapper">
+          <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+        </div>
+      </template>
+      <iFormGroup row="4"
+                  class="csc">
         <div class="col">
-          <iFormItem v-for="(item,index) in titleData" :key="'titleData'+index"  :label="item.label+':'">
+          <iFormItem v-for="(item,index) in titleData"
+                     :key="'titleData'+index"
+                     :label="item.label+':'">
             <iText v-if="item.props === 'currency'">
-              {{ basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : '' }}
+              {{ basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].name : basicData.currency }}
             </iText>
             <iText v-else-if="item.props === 'exchangeRate'">
-              <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+              <span class="exchangeRageCurrency"
+                    v-for="item in exchangeRageCurrency"
+                    :key="item">
                 1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].name : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.name : 'RMB'}}
               </span>
             </iText>
@@ -29,8 +42,21 @@
         </div>
       </iFormGroup>
     </iCard>
-    <iCard :title="'流转定点推荐 - ' + cardTitle" :class="!isPreview && 'margin-top20'">
-      <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+    <iCard :class="!isPreview && 'margin-top20'">
+      <template #header>
+        <div class="title">
+          <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
+        </div>
+        <div v-if="!(projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN)"
+             class="btnWrapper">
+          <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+        </div>
+      </template>
+      <tableList :selection="false"
+                 :tableTitle="tableTitle"
+                 :tableData="tableData"
+                 class="rsTable"
+                 :maxHeight="600">
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -46,69 +72,106 @@
         </template>
       </tableList>
     </iCard>
-    <iCard :title="language('BEIZHU','备注')" :class="!isPreview && 'margin-top20'">
-      <template slot="header-control" v-if="!isPreview">
-        <iButton v-if="!isEdit" @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
+    <iCard :title="language('BEIZHU','备注')"
+           :class="!isPreview && 'margin-top20'">
+      <template slot="header-control"
+                v-if="!isPreview">
+        <iButton v-if="!isEdit"
+                 @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
         <template v-else>
           <iButton @click="handleDeleteRemark">{{language('SHANCHU','删除')}}</iButton>
           <iButton @click="handleAddRemark">{{language('TIANJIA','添加')}}</iButton>
-          <iButton @click="handleSaveRemarks" :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
+          <iButton @click="handleSaveRemarks"
+                   :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
           <iButton @click="cancelEdit">{{language('QUXIAO','取消')}}</iButton>
         </template>
       </template>
       <div class="meetingRemark">
-        <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-          <el-checkbox v-if="!isPreview" v-model="item.checked"></el-checkbox>
-          <iInput v-model="item.value" class="margin-top10" :class="!isPreview && 'margin-left20'" type="textarea" :rows="3" resize="none"></iInput>
+        <div class="meetingRemark-item"
+             v-for="(item, index) in remarkItem"
+             :key="index">
+          <el-checkbox v-if="!isPreview"
+                       v-model="item.checked"></el-checkbox>
+          <iInput v-model="item.value"
+                  class="margin-top10"
+                  :class="!isPreview && 'margin-left20'"
+                  type="textarea"
+                  :rows="3"
+                  resize="none"></iInput>
         </div>
       </div>
     </iCard>
-    <iCard :title="language('JINGLINGJIANAOCARD','上传仅零件号变更单')" class="margin-top20" v-if="$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI">
-        <div class="text-align-right margin-bottom10">
-          <Upload hideTip @on-success='upLoadsucess' class="margin-right10"></Upload>
-          <iButton @click='downloadFile'>下载</iButton>
-          <iButton @click='deleteFile' >删除</iButton>
-        </div> 
-        <tableList :tableTitle="fileTableTitle" @handleSelectionChange="(r)=>fileTableSelect=r" :tableData="fileTableData"  :activeItems='"fileName"' @openPage="handleOpenPage"></tableList>
+    <iCard :title="language('JINGLINGJIANAOCARD','上传仅零件号变更单')"
+           class="margin-top20"
+           v-if="$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI">
+      <div class="text-align-right margin-bottom20">
+        <Upload hideTip
+                @on-success='upLoadsucess'
+                class="margin-right10"></Upload>
+        <iButton @click='downloadFile'>下载</iButton>
+        <iButton @click='deleteFile'>删除</iButton>
+      </div>
+      <tableList :tableTitle="fileTableTitle"
+                 @handleSelectionChange="(r)=>fileTableSelect=r"
+                 :tableData="fileTableData"
+                 :activeItems='"fileName"'
+                 @openPage="handleOpenPage">
+      </tableList>
+      <iPagination v-update
+                   class="margin-top30"
+                   @size-change="handleSizeChange($event, getFileList)"
+                   @current-change="handleCurrentChange($event, getFileList)"
+                   background
+                   :current-page="page.currPage"
+                   :page-sizes="page.pageSizes"
+                   :page-size="page.pageSize"
+                   :layout="page.layout"
+                   :total="page.totalCount" />
     </iCard>
+    <!-- <rsPdf /> -->
   </div>
 </template>
 
 <script>
-import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage } from 'rise'
-import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle,fileTableTitle } from './data'
+import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
-import {uploadFiles} from '@/api/costanalysismanage/costanalysis'
-import {partProjTypes,fileType} from '@/config'
+import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
+import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
-import {getFile,downloadUdFile,deleteFiles} from '@/api/file'
+import { getFile, downloadUdFile, deleteFiles } from '@/api/file'
+import { pageMixins } from '@/utils/pageMixins'
+import { transverseDownloadPDF } from "@/utils/pdf"
+import rsPdf from "./rsPdf"
+
 export default {
-  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText ,Upload},
+  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf },
   props: {
-    isPreview: {type:Boolean, default:false},
-    nominateId: {type:String},
+    isPreview: { type: Boolean, default: false },
+    nominateId: { type: String },
     // projectType: {type:String}
   },
-  data() {
+  mixins: [pageMixins],
+  data () {
     return {
       // 零件项目类型
       partProjTypes,
       fileTableTitle,
-      fileTableData:[],
-      fileTableSelect:[],
-      titleData:[
-        {label:'零件关系',value:'配件', props: 'partProjectType'},
-        {label:'询价采购员',value:'胡伟', props: 'fsBuyer'},
-        {label:'货币单位',value:'RMB', props: 'currency'},
-        {label:'申请单号',value:'', props: 'nominateAppId'},
-        {label:'申请日期',value:'2020-01-01', props: 'nominateAppTime'},
-        {label:'LINIE采购员',value:'胡伟', props: 'buyer'},
-        {label:'Exchange rate',value:'1 RMB=1.00 RMB', props: 'exchangeRate'},
+      fileTableData: [],
+      fileTableSelect: [],
+      titleData: [
+        { label: '零件关系', value: '配件', props: 'partProjectType' },
+        { label: '询价采购员', value: '胡伟', props: 'buyer' },
+        { label: '货币单位', value: 'RMB', props: 'currency' },
+        { label: '申请单号', value: '', props: 'nominateAppId' },
+        { label: '申请日期', value: '2020-01-01', props: 'nominateAppTime' },
+        { label: 'LINIE采购员', value: '胡伟', props: 'linieName' },
+        { label: 'Exchange rate', value: '', props: 'cfExchangeRate' },
       ],
       // tableTitle: cloneDeep(nomalTableTitle),
       tableData: [],
-      remarkItem: [{value: '', checked: false},{value: '', checked: false},{value: '', checked: false}],
+      remarkItem: [{ value: '', checked: false }, { value: '', checked: false }, { value: '', checked: false }],
       checkList: checkList,
       isEdit: false,
       saveLoading: false,
@@ -117,7 +180,7 @@ export default {
     }
   },
   computed: {
-    exchangeRageCurrency() {
+    exchangeRageCurrency () {
       if (this.basicData.currencyRateMap) {
         const exchangeRageCurrency = []
         for (var key in this.basicData.currencyRateMap) {
@@ -129,7 +192,7 @@ export default {
       }
       return []
     },
-    cardTitle() {
+    cardTitle () {
       if (this.projectType === partProjTypes.PEIJIAN) {
         return '配件采购 Nomination Recommendation - Spare Part Purchasing'
       } else if (this.projectType === partProjTypes.FUJIAN) {
@@ -137,7 +200,7 @@ export default {
       }
       return '生产采购 Nomination Recommendation - Production Purchasing'
     },
-    tableTitle() {
+    tableTitle () {
       if (this.projectType === partProjTypes.PEIJIAN) {
         return sparePartTableTitle
       } else if (this.projectType === partProjTypes.FUJIAN) {
@@ -147,13 +210,13 @@ export default {
     }
   },
   methods: {
-    downloadFile(){
-      if(this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN',"您当前还未选择列表文件，请选择后重试！"))
-      downloadUdFile(this.fileTableSelect.map(r=>r.uploadId))
+    downloadFile () {
+      if (this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN', "您当前还未选择列表文件，请选择后重试！"))
+      downloadUdFile(this.fileTableSelect.map(r => r.uploadId))
     },
-    deleteFile(){
-      if(this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN',"您当前还未选择列表文件，请选择后重试！"))
-      deleteFiles(this.fileTableSelect.map(r=>r.id))
+    deleteFile () {
+      if (this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN', "您当前还未选择列表文件，请选择后重试！"))
+      deleteFiles(this.fileTableSelect.map(r => r.id))
       this.getFileList()
     },
     /**
@@ -161,66 +224,71 @@ export default {
      * @param {*} res
      * @return {*}
      */
-    upLoadsucess(res){
+    upLoadsucess (res) {
       const sendMap = {
         hostId: res.data.hostId || this.$store.getters.nomiAppId || '',
-        filePath:res.data.path,
-        uploadId:res.data.id,
-        fileSize:res.file.size,
-        fileName:res.file.name,
-        fileCode:'0',
-        source:'0',
-        fileType:fileType.JINGLINGHAOBIANG
+        filePath: res.data.path,
+        uploadId: res.data.id,
+        fileSize: res.file.size,
+        fileName: res.file.name,
+        fileCode: '0',
+        source: '0',
+        fileType: fileType.JINGLINGHAOBIANG
       }
-      uploadFiles(sendMap).then(res=>{
-        if(res.result){
+      uploadFiles(sendMap).then(res => {
+        if (res.result) {
           this.getFileList()
           iMessage.success('上传成功！')
         }
-      }).catch(err=>{
+      }).catch(err => {
         iMessage.error(err.desZh)
       })
     },
-    getFileList(){
-      getFile({hostId:this.$store.getters.nomiAppId,fileType:fileType.JINGLINGHAOBIANG}).then(r=>{
-        this.fileTableData = r.data
-      }).catch(err=>{
-        iMessage.error(err.desZh)
-      })
+    getFileList () {
+      getFile(
+        {
+          hostId: this.$store.getters.nomiAppId, fileType: fileType.JINGLINGHAOBIANG, pageNo: this.page.pageSize,
+          pageSize: this.page.currPage
+        }).then(res => {
+          this.fileTableData = res.data
+          this.page.totalCount = res.total || 0
+        }).catch(err => {
+          iMessage.error(err.desZh)
+        })
     },
     // 单独处理下年降或年降计划
-    resetLtcData(row=[],type){
+    resetLtcData (row = [], type) {
       // 年降开始时间
-      if(type == 'beginYearReduce'){
+      if (type == 'beginYearReduce') {
         // 取第一个非0的年份
-        const list = row.filter((item)=> item.ltcRate!='0.00');
+        const list = row.filter((item) => item.ltcRate != '0.00');
         return list.length ? list[0].ltcDate : '-'
-      }else{ // 年降
-       // 从非0开始至非0截至的数据 不包含0
-       let strList = [];
-       let strFlag = false;
-       for(let i =0;i<row.length;i++){
-         if(row[i].ltcRate !='0.00'){
+      } else { // 年降
+        // 从非0开始至非0截至的数据 不包含0
+        let strList = [];
+        let strFlag = false;
+        for (let i = 0; i < row.length; i++) {
+          if (row[i].ltcRate != '0.00') {
             strFlag = true;
-           strList.push(row[i].ltcRate);
-         }else if(strFlag && row[i].ltcRate == '0.00'){
-           break
-         }
-       }
-       return strList.length ? strList.join('/') : '-'
+            strList.push(row[i].ltcRate);
+          } else if (strFlag && row[i].ltcRate == '0.00') {
+            break
+          }
+        }
+        return strList.length ? strList.join('/') : '-'
       }
     },
-    handleEdit() {
+    handleEdit () {
       this.isEdit = true
     },
-    cancelEdit() {
+    cancelEdit () {
       this.isEdit = false
       this.getRemark()
     },
-    handleAddRemark() {
-      this.remarkItem.push({value: '', checked: false})
+    handleAddRemark () {
+      this.remarkItem.push({ value: '', checked: false })
     },
-    handleDeleteRemark() {
+    handleDeleteRemark () {
       this.remarkItem = this.remarkItem.filter(item => !item.checked)
     },
     /**
@@ -228,8 +296,8 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
-    handleSaveRemarks() {
+     */
+    handleSaveRemarks () {
       this.saveLoading = true
       const params = {
         // meetRemark: this.remarks[this.resetRemarkType],
@@ -253,8 +321,8 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
-    init() {
+     */
+    init () {
       this.getTopList()
       this.getRemark()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
@@ -264,13 +332,14 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
-    getTopList() {
+     */
+    getTopList () {
       getList(this.nominateId).then(res => {
         if (res?.result) {
           this.basicData = res.data
           this.tableData = res.data.lines
           this.projectType = res.data.partProjectType || ''
+          // this.projectType = partProjTypes.PEIJIAN
         } else {
           this.basicData = {}
           this.tableData = []
@@ -284,8 +353,8 @@ export default {
      * @Author: Luoshuang
      * @param {*}
      * @return {*}
-     */    
-    getRemark() {
+     */
+    getRemark () {
       getRemark(this.nominateId).then(res => {
         if (res?.result) {
           // res.data.forEach(element => {
@@ -295,7 +364,7 @@ export default {
           //   })
           // })
           this.remarkItem = res.data.map(item => {
-            return {value: item, checked: false}
+            return { value: item, checked: false }
           })
         } else {
           this.remarks = {}
@@ -303,9 +372,13 @@ export default {
         }
       })
     },
-     handleOpenPage(row) {
-       console.log(row);
+    handleOpenPage (row) {
+      console.log(row);
       downloadUdFile(row.uploadId)
+    },
+
+    handleExportPdf () {
+      // transverseDownloadPDF()
     }
   }
 }

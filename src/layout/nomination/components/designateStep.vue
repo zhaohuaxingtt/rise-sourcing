@@ -8,9 +8,21 @@
         <!-- 顶部信息栏 -->
         <div class="pageTitle flex-between-center-center">
             <div class="flex flex-between-center-center">
-                <span class="icon-mtz margin-left10" v-if="mtzShow"><icon symbol name="iconMTZ"></icon></span>
-                <span class="title-text margin-left10">{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></span>
-                <span class="select-text margin-left10">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
+                <div class="title-text margin-left10">
+                    <p>{{language('nominationLanguage.DingDianGuanLi','定点管理')}}: <span class="desinateId">{{desinateId}}</span></p>
+                    <p v-if="!!mtzApplyId">
+                        <span class="padding-left5 padding-right5">-</span>
+                        <span class="mtzNum" @click="toMtzDetail">MTZ{{ mtzApplyId }}</span>
+                        <el-popover
+                            placement="right"
+                            width="200"
+                            trigger="hover"
+                            :content="language('BINDMTZTIPS', '此申请单已关联MTZ申请，点击可查看MTZ申请详情')">
+                            <icon slot="reference" class="iconxinxitishi" symbol name="iconxinxitishi" />
+                        </el-popover>
+                    </p>
+                </div>
+                <span class="select-text margin-left14">{{language('nominationLanguage.DINGDIANSHENQINGLEIXING','定点申请类型')}}：</span>
                 <iSelect v-model="designateType" @change="updateNominate" :disabled="disableNominationType || nominationDisabled || rsDisabled" v-permission.auto="NOMINATION_MENU_CHANGENOMINATETYPE|定点申请类型">
                     <el-option
                     :value="item.id"
@@ -23,12 +35,12 @@
             <div class="btnList flex-align-center">
                 <iButton @click="gotoRsMainten" v-if="designateType === 'MEETING'" v-permission.auto="NOMINATION_MENU_RSTYPEMANTAINCE|RS单维护">{{language('LK_RSWEIHUDAN','RS单维护')}}</iButton>
                 <iButton v-if="showExport" @click="rsExport" v-permission.auto="NOMINATION_MENU_EXPORT|导出">{{language('LK_DAOCHU','导出')}}</iButton>
-                <iButton v-if="!nominationDisabled && !rsDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
-                <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton>
+                <iButton v-if="!nominationDisabled && !rsDisabled && !submitDisabled" @click="submit" :loading="submitting" v-permission.auto="NOMINATION_MENU_SUBMIT|提交">{{language('LK_TIJIAO','提交')}}</iButton>
+                <!-- <iButton v-if="!nominationDisabled && !rsDisabled && designateType === 'MEETING'" @click="meetingConclusionDialogVisible = true" v-permission.auto="NOMINATION_MENU_METTINGRESULT|会议结论">{{ language("LK_HUIYIJIELUN", "会议结论") }}</iButton> -->
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
-                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', creator:'creator', queryParams:['bizId_obj_ae','creator']}" :creator="userInfo && userInfo.id" isPage class="margin-left20" v-permission.auto="NOMINATION_MENU_LOG|LOG" />
+                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
         </div>
@@ -80,6 +92,9 @@
             @resetSubmitting="submitting = false"
             ref="mettingDialog" />
         <meetingConclusionDialog :desinateId="desinateId" :visible.sync="meetingConclusionDialogVisible" @afterConfirm="afterConfirm" />
+
+        <!-- 黑名单校验弹窗提示 -->
+        <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
     </div>
 </template>
 
@@ -90,7 +105,7 @@ import {
   iSelect,
   iMessage
 } from "rise";
-import logButton from '@/components/logButton'
+// import logButton from '@/components/logButton'
 import iLoger from '@/components/iLoger'
 import mettingDialog from './mettingDialog'
 import {
@@ -107,12 +122,19 @@ import {
     checkNomiMeetingSubmit3,
     checkNomiMeetingSubmit4,
     updateNominate,
-    rsAttachExport
+    rsAttachExport,
+    fittingNomi
 } from '@/api/designate'
+import { 
+    approvalSync
+} from '@/api/designate/decisiondata/approval'
+
 import { applyStep,svgList } from './data'
 import meetingConclusionDialog from "./meetingConclusionDialog"
 import {allitemsList} from '@/config'
 import { cloneDeep } from "lodash"
+
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 
 export default {
     name:'designateStep',
@@ -123,7 +145,8 @@ export default {
         iSelect,
         mettingDialog,
         meetingConclusionDialog,
-        iLoger
+        iLoger,
+        dialogTableTips,
     },
     props:{
         status: {
@@ -161,7 +184,7 @@ export default {
             userInfo: state => state.permission.userInfo,
             nominationDisabled: state => state.nomination.nominationDisabled,
             rsDisabled: state => state.nomination.rsDisabled,
-            mtzShow: state => state.nomination.mtzApplyId,
+            mtzApplyId: state => state.nomination.mtzApplyId,
         }),
         phaseType(){
             return this.$store.getters.phaseType;
@@ -178,6 +201,10 @@ export default {
             // 是否是RS扩产能
             const isKuochanneng = this.$route.query.partProjType === allitemsList.KUOCHANNENG && this.$route.name === 'designateDecisionRS'
             return this.$route.meta.exportButton || isKuochanneng
+        },
+        // 是否为提交后的状态
+        submitDisabled() {
+            return this.$store.getters.applicationStatus !== "NEW" // 基本就是除了草稿后的状态
         }
     },
     data(){
@@ -189,7 +216,8 @@ export default {
             mettingDialogVisible: false,
             submitting: false,
             meetingConclusionDialogVisible: false,
-            svgList:svgList
+            svgList:svgList,
+            blackTableListData:[],
         }
     },
     methods:{
@@ -245,7 +273,8 @@ export default {
             console.log(this.$store.getters.isPartListNull, item.path)
             // 前4步零件非空校验不通过
             if (this.$store.getters.isPartListNull && item.path !== '/designate/rfqdetail') {
-                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
+                // iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXING','当前零件清单未勾选任何零件，请至少勾选一个零件后再进行操作！'))
+                iMessage.warn(this.language('NOMILINGJIANWEIKONGJINXAIYIBUTIXINGOTHER','当前零件清单没有已加入申请的零件，请至少将一个零件加入申请后再进行操作'))
                 return
             }
              // 合理的跳转到下一步
@@ -280,12 +309,13 @@ export default {
         // 预览
         preview(){
             const {path,query} = this.$route;
-            console.log(path);
+            console.log(path, '当前路径');
             this.$router.push({
               path,
               query: {
                 ...query,
-                isPreview:'1'
+                isPreview:'1',
+                typeSelect:this.$store.state.nomination.costType || ''
               }
             })
         },
@@ -349,6 +379,22 @@ export default {
             }
             return state
         },
+        // 同步审批人
+        async synchronization() {
+            let state = false
+            try {
+                const res = await approvalSync(this.$store.getters.nomiAppId)
+                if (res.code === '200') {
+                    state = true
+                } else {
+                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            } catch (e) {
+                iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+                state = false
+            }
+            return state
+        },
          // 定点建议
         // async onSuggestionSave() {
         //     let state = false
@@ -393,13 +439,15 @@ export default {
                 console.log('step 2', proc)
                 if (!proc) return
             }
-            // 流程有调整，取消这个接口
             // 当前步骤在定点建议
-            // if (step === 3) {
-            //     const proc = await this.onSuggestionSave()
-            //     console.log('step 3', proc)
-            //     if (!proc) return
-            // }
+            if (step === 3) {
+                // 流程有调整，取消这个接口
+                // const proc = await this.onSuggestionSave()
+                // console.log('step 3', proc)
+                // if (!proc) return
+                // 从定点建议跳转到审批人 & 审批记录,先同步一下审批人
+                this.synchronization()
+            }
             updatePresenPageSeat({
                 nominateId: this.$store.getters.nomiAppId,
                 phaseType: this.$store.getters.phaseType,
@@ -518,11 +566,26 @@ export default {
                                 dangerouslyUseHTMLString:true
 
                             })
-                            if (confirmNextInfo !== 'confirm') {
+
+                            if (confirmNextInfo == 'confirm') {
+                                fittingNomi({
+                                    nominateId: this.$route.query.desinateId
+                                }).then(res => {
+                                    if (res.code == 200) {
+                                        iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                        this.$emit("updateNomi")
+                                    } else {
+                                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                    }
+
+                                    this.submitting = false
+                                })
+
                                 this.submitting = false
                                 return
                             }
                         } catch (e) {
+                            console.log(e)
                             this.submitting = false
                             return
                         }
@@ -567,8 +630,9 @@ export default {
                             return
                         }
                     }
-                    // 打开上会确认弹窗
+
                     if (nominationType === 'MEETING') {
+                        // 打开上会确认弹窗
                         this.mettingDialogVisible = true
                         this.submitting = false
                         return
@@ -590,7 +654,10 @@ export default {
                     nominateAppSsubmit(data).then((res)=>{
                         if (res.code === '200') {
                             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                        } else {
+                        }else if(res.code === '500'){
+                            this.blackTableListData = res.data || [];
+                            this.$refs.dialogTableTips.show(); 
+                        }else {
                             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                         }
                         this.submitting = false
@@ -645,7 +712,10 @@ export default {
                 }
             })
         },
-
+        // 跳转MTZ申请详情
+        toMtzDetail() {
+            window.open(`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow?currentStep=1&mtzAppId=${ this.mtzApplyId }`, "_blank")
+        }
     }
 }
 </script>
@@ -661,6 +731,10 @@ export default {
             font-weight: bold;
             white-space: nowrap;
             // margin-bottom: 10px;
+
+            p {
+                display: inline-block;
+            }
         }
         .select-text{
             font-size: 14px;
@@ -671,7 +745,17 @@ export default {
         }
         .desinateId {
             display: inline-block;
-            min-width: 100PX;
+            // min-width: 100PX;
+        }
+
+        .mtzNum {
+            color: $color-blue;
+            cursor: pointer;
+        }
+
+        .iconxinxitishi {
+            width: 14px;
+            margin-left: 5px;
         }
     }
     .step-list{

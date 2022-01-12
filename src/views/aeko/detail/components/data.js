@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-11-23 19:16:53
+ * @LastEditTime: 2021-12-02 15:30:37
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -18,32 +18,34 @@ export const contentDeclareQueryForm = {
 }
 
 export const contentDeclareTableTitle = [
-  { props: "groupName", name: "AEKO组别", key: "AEKOZUBIE", fixed: true, width: "100"},
-  { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, fixed: true, width: "100",isExport:true },
-  { props: "partNameZh", name: "零件名称", key: "LINGJIANMINGCHENG", tooltip: true, fixed: true, width: "100",isExport:true },
-  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true, fixed: true,isExport:true },
-  { props: "statusDesc", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true, fixed:true,tipsLang: true, tipsKey: "AEKO_DETAIL_CONTENTDECLARE_TABLE_HEADER_STATUS_TIPS", tips: "状态为【已提交】的原因：1. 封面表态未提交；2. 封面表态已优先提交，尚在审批过程中。", },
+  { props: "groupName", name: "AEKO组别", key: "AEKOZUBIE", fixed: true, width: "100" },
+  { props: "partNum", name: "零件号", key: "LINGJIANHAO", tooltip: true, fixed: true, width: "100", isExport: true },
+  { props: "partNameZh", name: "零件名称", key: "LINGJIANMINGCHENG", tooltip: true, fixed: true, width: "100", isExport: true },
+  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true, fixed: true, isExport: true },
+  { props: "statusDesc", name: "内容状态", key: "NEIRONGZHUANGTAI", tooltip: true, fixed: true, width: 100, tipsLang: true, tipsKey: "AEKO_DETAIL_CONTENTDECLARE_TABLE_HEADER_STATUS_TIPS", tips: "状态为【已提交】的原因：1. 封面表态未提交；2. 封面表态已优先提交，尚在审批过程中。", },
   { props: "isReferenceDesc", name: "相关表态", key: "XIANGGUANBIAOTAI", tooltip: true },
   { props: "changeType", name: "变更类型", key: "BIANGENGLEIXING", tooltip: true },
-  { props: "cartypeZh", name: "涉及⻋型/⻋型项⽬", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width: 130,isExport:true },
-  { props: "originPartNum", name: "原零件号", key: "AEKO_YUANLINGJIANHAO_1", width: 140,isExport:true },
-  { props: "originPartName", name: "原零件名称", key: "YUANLINGJIANMINGCHENG", tooltip: true},
-  { props: "factoryName", name: "采购⼯⼚", key: "CAIGOUGONGCHANG", tooltip: true ,isExport:true},
-  { props: "supplierSapCode", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true,width:100 ,isExport:true},
-  { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true },
-  { props: "bpriceChange", name: "B价变动(含分摊)", key: "BJIABIANDONGHANFENTAN", tooltip: true, width: 110 },
-  { props: "mouldPriceChange", name: "模具投资变动", key: "MUJUTOUZIBIANDONG", tooltip: true, width: 100 },
+  { props: "cartypeZh", name: "涉及⻋型/⻋型项⽬", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width: 140, isExport: true },
+  { props: "oldPartNumPreset", name: "原零件号", key: "AEKO_YUANLINGJIANHAO_1", width: 140, isExport: true },
+  { props: "oldPartNamePreset", name: "原零件名称", key: "YUANLINGJIANMINGCHENG", tooltip: true, width: 100 },
+  { props: "factoryName", name: "采购⼯⼚", key: "CAIGOUGONGCHANG", tooltip: true, isExport: true },
+  { props: "supplierSapCode", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true, width: 100, isExport: true },
+  { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true, width: 100 },
+  { props: "bpriceChange", name: "B价变动(含分摊)", key: "BJIABIANDONGHANFENTAN", tooltip: true, width: 130 },
+  { props: "mouldPriceChange", name: "模具投资变动", key: "MUJUTOUZIBIANDONG", tooltip: true, width: 110 },
+  { props: "originPriceA", name: "原零件A价", key: "YUANLINGJIANAJIA", tooltip: true, width: 90 },
+  { props: "originPriceB", name: "原零件B价", key: "YUANLINGJIANBJIA", tooltip: true, width: 90 },
   { props: "dosage", name: "装⻋率/每⻋⽤量", key: "ZHUANGCHELVMEICHEYONGLIANG", tooltip: true, width: 120 },
   { props: "quotationId", name: "报价单", key: "BAOJIADAN", tooltip: true },
   { props: "priceAxis", name: "价格轴", key: "JIAGEZHOU", tooltip: true },
   { props: "investCarTypePro", name: "指定投资⻋型项⽬", key: "ZHIDINGTOUZICHEXINGXIANGMU", width: 150 },
   { props: "isMtz", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
-  { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true },
-  { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true },
+  { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true, width: 100 },
+  { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true, width: 100 },
   { props: "tranWayDesc", name: "承运方式", key: "LK_AEKO_CHENGYUNFANGSHI", tooltip: true },
 ]
 
-export const hidenTableTitle=[
+export const hidenTableTitle = [
   { props: "currency", name: "货币", key: "LK_AEKO_SELECT_HUOBI", tooltip: true },
   { props: "sampleCost", name: "样件费", key: "LK_AEKO_SELECT_YANGJIANFEI", tooltip: true },
   { props: "terminationPrice", name: "终止费", key: "LK_AEKO_SELECT_ZHONGZHIFEI", tooltip: true },
@@ -58,10 +60,10 @@ export const mtzOptions = [
 ]
 
 export const dosageDialogForm = [
-  { props: "cartypeProject", name: "⻋型项⽬", key: "CHEXINGXIANGMU", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_SELECT_CARTYPEPROJECT" },
-  { props: "factoryName", name: "工厂", key: "GONGCHANG", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TEXT_FACTORY" },
-  { props: "supplierName", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TEXT_SUPPLIERNAME" },
-  { props: "usePortion", name: "沿⽤原零件份额", key: "YANYONGYUANLINGJIANFENE", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_INPUT_USEPORTION", required: true }
+  { props: "cartypeProject", name: "⻋型项⽬", key: "CHEXINGXIANGMU", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_SELECT_CARTYPEPROJECT|装车率_⻋型项⽬" },
+  { props: "factoryName", name: "工厂", key: "GONGCHANG", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TEXT_FACTORY|装车率_工厂" },
+  { props: "supplierName", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TEXT_SUPPLIERNAME|装车率_供应商简称" },
+  { props: "usePortion", name: "沿⽤原零件份额", key: "YANYONGYUANLINGJIANFENE", permissionKey: "AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_INPUT_USEPORTION|装车率_沿⽤原零件份额", required: true }
 ]
 
 export const dosageDialogTableTitle = [
@@ -85,20 +87,20 @@ export const approveAttachTableTitle = [
 
 // 审批记录表头
 export const approveReCordTableTitle = [
-  { props: "akeoAuditType", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:150 },
-  { props: "startUser", name: "提交人", key: "AEKO_DETAIL_RECORD_TIJIAOREN", tooltip: true,width:150 },
-  { props: "assignedDeptFullCode", name: "科室", key: "LK_AEKOKESHI", tooltip: true,width:80 },
-  { props: "operation", name: "操作", key: "CAOZUO", tooltip: true,width:100 },
-  { props: "assigneeName", name: "操作人", key: "CAOZUOREN", tooltip: true,width:120 },
-  { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true,width:140 },
-  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true,  align: 'left', width: 295},
+  { props: "akeoAuditType", name: "审批类型", key: "SHENPILEIXING", tooltip: true, width: 150 },
+  { props: "startUser", name: "提交人", key: "AEKO_DETAIL_RECORD_TIJIAOREN", tooltip: true, width: 150 },
+  { props: "assignedDeptFullCode", name: "科室", key: "LK_AEKOKESHI", tooltip: true, width: 80 },
+  { props: "operation", name: "操作", key: "CAOZUO", tooltip: true, width: 100 },
+  { props: "assigneeName", name: "操作人", key: "CAOZUOREN", tooltip: true, width: 120 },
+  { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true, width: 140 },
+  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true, align: 'left', width: 295 },
   { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true, width: 295, _headerRequiredRight: true },
-  { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true,},
+  { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true, },
 ]
 
 // aeko 审批类型
 export const aekoApproveTypes = [
-  {id:'1',name:'封面表态+推荐表',key:'LK_FENGMIANBIAOTAITUIJIANBIAO'},
-  {id:'2',name:'封面表态',key:'LK_FENGMIANBIAOTAI'},
-  {id:'3',name:'推荐表',key:'LK_TUIJIANBIAO'},
+  { id: '1', name: '封面表态+推荐表', key: 'LK_FENGMIANBIAOTAITUIJIANBIAO' },
+  { id: '2', name: '封面表态', key: 'LK_FENGMIANBIAOTAI' },
+  { id: '3', name: '推荐表', key: 'LK_TUIJIANBIAO' },
 ]

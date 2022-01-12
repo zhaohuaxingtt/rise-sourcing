@@ -33,7 +33,7 @@
                 v-for="(item, index) in projectType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -46,7 +46,7 @@
                 v-for="(item, index) in quoteType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -59,7 +59,7 @@
                 v-for="(item, index) in biddingType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -106,7 +106,7 @@
                 v-for="(item, index) in biddingStatus"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
               >
               </el-option>
             </iSelect>
@@ -124,7 +124,7 @@
           </div>
           <div class="item-button">
             <iButton @click.enter="getTableList">{{language('BIDDING_CHAXUN','查询')}}</iButton>
-            <iButton @click="handleSearchReset('ruleForm')">{{language('BIDDING_CHONGZHI','重置')}}</iButton>
+            <iButton class="item-button-child2" @click="handleSearchReset('ruleForm')">{{language('BIDDING_CHONGZHI','重置')}}</iButton>
           </div>
         </div>
 
@@ -145,13 +145,82 @@
             >
           </div>
         </div>
-        <iTableCustom
+        <!-- <iTableCustom
           :columns="projectTableTitle"
           :loading="tableLoading"
           :data="tableListData"
           @handle-selection-change="handleSelectionChange"
           @go-detail="handleGoDetail"
-        />
+        /> -->
+        <commonTable
+          ref="tableDataForm"
+          :tableTitle="projectTableTitle"
+          :tableLoading="tableLoading"
+          :tableData="tableListData"
+          @handleSelectionChange="handleSelectionChange"
+        >
+        <!-- 报价类型 -->
+          <template slot="quoteType" slot-scope="scope">
+            <span>
+              {{scope.row['quoteType'] === '01' ? language('BIDDING_KAIBIAO','开标') 
+              : scope.row['quoteType'] === '02' ? language('BIDDING_YINGSHI','英式') 
+              : scope.row['quoteType'] === '03' ? language('BIDDING_HESHI','荷氏') : ''}}
+            </span>
+          </template>
+
+          <!-- 序号 -->
+          <template slot="index" slot-scope="scope">
+            <span>{{ scope.row.index + 1 }}</span>
+          </template>
+
+          <!-- 项目编号 -->
+          <template slot="projectCode" slot-scope="scope">
+            <span style="cursor: pointer; color:blue" @click="handleGoDetail(scope.row)">{{scope.row['projectCode']}}</span>
+          </template>
+
+          <!-- 项目名称 -->
+          <template slot="projectName" slot-scope="scope">
+            <span>{{scope.row['projectName'] || scope.row['rfqName']}}</span>
+          </template>
+
+          <!-- 项目类型 -->
+          <template slot="projectType" slot-scope="scope">
+            <span>
+              {{scope.row['projectType'] === '01' ? language('BIDDING_ZS','正式')
+              : scope.row['projectType'] === '02' ? language('BIDDING_CS','测试') : ''}}
+              </span>
+          </template>
+
+          <!-- 状态 -->
+          <template slot="biddingStatus" slot-scope="scope">
+            <span>{{status(scope.row['biddingStatus'])}}</span>
+          </template>
+
+          <!-- 创建日期 -->
+          <template slot="createDate" slot-scope="scope">
+            <span>{{scope.row['createDate'] ? scope.row['createDate'].substring(0, 10) : ''}}</span>
+          </template>
+
+          <!-- 竞价起止日期 -->
+          <template slot="biddingBeginTime" slot-scope="scope">
+            <span>{{scope.row['quoteType'] === '01' ? '' : (scope.row['biddingBeginTime'] ? scope.row['biddingBeginTime'].substring(0, 16).replace('T', ' ') : '')}}
+              <br />
+              {{(scope.row['roundType'] === '05' && scope.row['quoteType'] === '03') || scope.row['quoteType'] === '01'
+                ? ''
+                : (scope.row['biddingEndTime'] ? scope.row['biddingEndTime'].substring(0, 16).replace('T', ' ') : '')}}
+            </span>
+          </template>
+
+           <!-- 报价截止日期 -->
+          <template slot="pricingDeadline" slot-scope="scope">
+            <span>{{scope.row['pricingDeadline'] ? scope.row['pricingDeadline'].substring(0, 16).replace('T', ' ') : ''}}</span>
+          </template>
+
+           <!-- 开标时间 -->
+          <template slot="openTenderTime" slot-scope="scope">
+            <span>{{scope.row['roundType'] === '03' ? '' : (scope.row['openTenderTime'] ? scope.row['openTenderTime'].substring(0, 16).replace('T', ' ') : '')}}</span>
+          </template>
+        </commonTable>
 
         <iPagination
           v-update
@@ -160,8 +229,8 @@
           background
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
-          prev-text="上一页"
-          next-text="下一页"
+          :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+          :next-text="language('BIDDING_XIAYIYE','下一页')"
           :layout="page.layout"
           :current-page="page.currPage"
           :total="page.total"
@@ -193,6 +262,7 @@ import {
 } from "./data";
 import addManual from "./addManual.vue";
 import { queryProjectByPage, deleteProject } from "@/api/bidding/bidding";
+import commonTable from "@/components/biddingComponents/commonTable";
 import iTableCustom from "@/components/biddingComponents/iTableCustom";
 import { pageMixins } from "@/utils/pageMixins";
 
@@ -206,8 +276,9 @@ export default {
     iButton,
     iLabel,
     iPagination,
-    iTableCustom,
+    // iTableCustom,
     iDatePicker,
+    commonTable,
     addManual,
   },
   data() {
@@ -238,7 +309,9 @@ export default {
     // 销毁enter事件
       this.enterKeyupDestroyed();
   },
-  computed: {},
+  computed: {
+    
+  },
   watch: {
     "ruleForm.createName"(val) {
       if (val == "") this.ruleForm.createName = null;
@@ -265,6 +338,20 @@ export default {
         this.$refs.select.blur();
           this.getTableList();
       }
+    },
+    status(value){
+      return {
+        '01' : this.language('BIDDING_CAOGAO','草稿'),
+        '02' : this.language('BIDDING_DAIJINGJIA','待竞价'),
+        '03' : this.language('BIDDING_WEIKAIBIAO','未开标'),
+        '04' : this.language('BIDDING_JINGJIAZHONG','竞价中'),
+        '05' : this.language('BIDDING_YIKAIBIAO','已开标'),
+        '06' : this.language('BIDDING_YIJIESHU','已结束'),
+        '07' : this.language('BIDDING_YILIUBIAO','已流标'),
+        '08' : this.language('BIDDING_YIZUOFEI','已作废'),
+        '09' : this.language('BIDDING_YIQUXIAO','已取消'),
+        '10' : this.language('BIDDING_YIFACHU','已发出'),
+      }[value]
     },
     enterKeyupDestroyed() {
         document.removeEventListener("keyup", this.enterKey);
@@ -373,7 +460,7 @@ export default {
 }
 .form-top {
   display: flex;
-  margin-top: -1.5rem;
+  margin-top: -0.8rem;
   /* align-items: center;
   justify-content: space-between; */
   /* margin-bottom: 1.5rem; */
@@ -386,22 +473,28 @@ export default {
 }
 .item ::v-deep {
   display: flex;
-  margin-right: -6rem;
+  /* margin-right: -6rem; */
   flex-wrap: wrap;
   .el-form-item {
     /* display: flex; */ //平行解开
-    width: 13rem;
-    margin-right: 5rem;
+    width: 220px;
+    margin-right: 4rem;
     position: relative;
     .el-form-item__label {
       width: 100%;
       .flex-align-center{
-        font-weight: 600;
-        font-size: smaller;
+        /* font-weight: 600; */
+        font-size: 14px;
+        height: 16px;
+        margin-bottom: 12px;
       }
     }
     .el-form-item__content {
       width: 100%;
+      line-height:35px;
+      .el-input{
+        font-size: 14px;
+      }
     }
     /* 禁用样式 */
     .el-input.is- .el-input__inner {
@@ -411,10 +504,15 @@ export default {
     }
   }
 }
-
+::v-deep .el-icon-arrow-up:before {
+  font-weight: bold;
+}
 .item-button{
   flex: none;
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
+  .item-button-child2{
+    margin-left: 20px;
+  }
 }
 
 ::v-deep .el-date-editor {
@@ -441,6 +539,15 @@ export default {
 
   .el-input__inner {
     padding-left: 0.875rem;
+  }
+}
+::v-deep .el-table {
+  .el-form-item {
+    margin-top: 0;
+    margin-bottom: 0;
+    .el-form-item__content {
+      line-height: revert;
+    }
   }
 }
 </style>

@@ -4,25 +4,26 @@
       <div class="font18 font-weight">{{language('FENTANFUJIANLIEBIAO', 'SEL分摊单附件列表')}}</div>
       <div class="control">
         <span v-if="!readOnly">
-          <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
-          <iButton @click="deleteFile([], getFetchData)">{{ language('LK_SHANCHU','删除') }}</iButton>
+          <iButton  v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SEL_DOWNLOAD_NOTREADLONY|SEL分摊单附件-下载" @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
+          <iButton v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SEL_DELETE_NOTREADLONY|SEL分摊单附件-删除"  @click="deleteFile([], getFetchData)">{{ language('LK_SHANCHU','删除') }}</iButton>
           <upload
             class="upload-trigger"
             :hideTip="true"
             :accept="'.jpg,.jpeg,.png,.pdf,.tif'"
             :buttonText="language('strategicdoc_ShangChuanWenJian','上传文件')"
             @on-success="onUploadsucess(Object.assign(...arguments, {fileType, hostId: nomiAppId}), getFetchData)"
+            v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SEL_UPLOAD_NOTREADLONY|SEL分摊单附件-上传文件" 
           />
         </span>
         <span v-if="selStatus">
-          <iButton v-if="selStatus === 'UNCONFIRMED'" @click="selConfirm">{{ language('LK_QUEREN','确认') }}</iButton>
-          <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
+          <iButton  v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SEL_SUBMIT|SEL分摊单附件-确认"  v-if="selStatus === 'UNCONFIRMED'" @click="selConfirm">{{ language('LK_QUEREN','确认') }}</iButton>
+          <iButton  v-permission.auto="SOURCING_NOMINATION_RSREVIEW_SEL_DOWNLOAD_SELSTATUS|SEL分摊单附件-下载-selStatus" @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
         </span>
         <!-- <iButton>{{ language('strategicdoc.ShangChuanWenJian') }}</iButton> -->
       </div>
     </div>
     <div class="body" v-loading="tableLoading">
-      <tableList index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="dataList" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
+      <tableList  index :height="controlHeight ? '91%' : '100%'" v-show="visible" class="table margin-top20" :tableData="dataList" :tableTitle="tableTitle" @handleSelectionChange="handleSelectionChange">
         <template #fileName="scope">
           <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
         </template>

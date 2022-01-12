@@ -1,17 +1,18 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:59:44
- * @LastEditTime: 2021-11-16 10:08:44
+ * @LastEditTime: 2021-12-28 13:53:27
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\router\modules\aeko.js
+ * @FilePath: \front-sourcing\src\router\modules\aeko.js
  */
 export default [
   {
     path: "/aeko",
     name: "aeko",
     meta: {
-      title: 'AEKO'
+      title: 'AEKO技术变更',
+      activeMenu: ['RISE_WORKBENCH', '/AEKO']
     },
     component: () => import("@/layout/default"),
     redirect: "/aeko/managelist",
@@ -21,7 +22,8 @@ export default [
         path: "aekodetailItem",
         name: "aekoManageList",
         meta: {
-          title: 'AEKO申请详情'
+          title: 'AEKO申请详情',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/layout/default"),
         redirect: { name: "aekodetailPage" }, // 之前路由携带参数重定向到新路由
@@ -31,7 +33,8 @@ export default [
         path: "managelist",
         name: "aekoManageList",
         meta: {
-          title: 'AEKO管理'
+          title: 'AEKO管理',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/manage")
       },
@@ -41,6 +44,7 @@ export default [
         name: "aeko-manage-assign",
         meta: {
           title: "AEKO-分配列表",
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/manage/assign"),
       },
@@ -49,7 +53,8 @@ export default [
         path: "stancelist",
         name: "aekoStanceList",
         meta: {
-          title: 'AEKO表态'
+          title: 'AEKO表态',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/stance")
       },
@@ -58,7 +63,8 @@ export default [
         path: "checklist",
         name: "aekoCheckList",
         meta: {
-          title: 'AEKO查看'
+          title: 'AEKO查看',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/check")
       },
@@ -67,7 +73,8 @@ export default [
         path: "aekodetail",
         name: "aekodetail",
         meta: {
-          title: 'AEKO详情'
+          title: 'AEKO详情',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/detail"),
       },
@@ -75,7 +82,8 @@ export default [
         path: "quondampart",
         name: "quondampart",
         meta: {
-          title: 'AEKO-指定原零件'
+          title: 'AEKO-指定原零件',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/quondampart"),
         // redirect: "quondampart/ledger",
@@ -96,7 +104,8 @@ export default [
         path: "describe",
         name: "aekoDescribe",
         meta: {
-          title: 'AEKO描述'
+          title: 'AEKO描述',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/describe"),
       },
@@ -106,7 +115,8 @@ export default [
         path: "partslist",
         name: "aekoPartslist",
         meta: {
-          title: 'AEKO零件清单'
+          title: 'AEKO零件清单',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/partslist/home")
       },
@@ -115,15 +125,27 @@ export default [
         path: "partslist1",
         name: "aekoPartslist1",
         meta: {
-          title: 'AEKO零件清单'
+          title: 'AEKO零件清单',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/partslist/partList")
+      },
+      // AEKO零件清单 iSelect 展示demo
+      {
+        path: "partslist2",
+        name: "aekoPartslist2",
+        meta: {
+          title: 'AEKO零件清单',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
+        },
+        component: () => import("@/views/aeko/partslist/demo")
       },
       {
         path: "quotationdetail",
         name: "aekoQuotationDetail",
         meta: {
-          title: 'AEKO-报价单'
+          title: 'AEKO-报价单',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/quotationdetail"),
       },
@@ -131,7 +153,8 @@ export default [
         path: "approve",
         name: "aekoApprove",
         meta: {
-          title: 'AEKO-审批'
+          title: 'AEKO-审批',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         redirect: "/aeko/approve/approvelistcsf/AKEOPendingPage",
         component: () => import("@/views/aeko/approve"),
@@ -141,6 +164,7 @@ export default [
             name: "aeko-manage-assign",
             meta: {
               title: "AEKO-分配列表",
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             redirect: "/aeko/assign",
           },
@@ -149,6 +173,7 @@ export default [
             name: "aekoApprove-listcsf",
             meta: {
               title: "AEKO-审批列表",
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/approve/approveList/approveList"),
             redirect: "/aeko/approve/approvelistcsf/AKEOPendingPage",
@@ -158,6 +183,7 @@ export default [
                 name: "AKEOPendingPage",
                 meta: {
                   title: "AEKO-待审批列表",
+                  activeMenu: ['RISE_WORKBENCH', '/AEKO']
                 },
                 component: () => import("@/views/aeko/approve/approveList/AKEOPendingPage"),
               },
@@ -166,6 +192,7 @@ export default [
                 name: "AKEOApprovedPage",
                 meta: {
                   title: "AEKO-已审批列表",
+                  activeMenu: ['RISE_WORKBENCH', '/AEKO']
                 },
                 component: () => import("@/views/aeko/approve/approveList/AKEOApprovedPage"),
               }
@@ -178,7 +205,8 @@ export default [
         path: "AEKOApprovalDetails",
         name: "AEKOApprovalDetails",
         meta: {
-          title: 'AEKO-审批详情'
+          title: 'AEKO-审批详情',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/approve/approveDetails"),
         redirect: "/aeko/AEKOApprovalDetails/Approvalform",
@@ -189,6 +217,7 @@ export default [
             prop: true,
             meta: {
               title: "AEKO-审批单",
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/approve/approveDetails/ApprovalFormDetails"),
           },
@@ -197,6 +226,7 @@ export default [
             name: "RecommendationTable",
             meta: {
               title: "AEKO-推荐表",
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/approve/approveDetails/components/RecommendationTablePendingApprovalComponents"),
           },
@@ -205,6 +235,7 @@ export default [
             name: "CBDSummary",
             meta: {
               title: "CBD汇总",
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/approve/approveDetails/components/variationCBDSummaryTable"),
           },
@@ -213,7 +244,8 @@ export default [
             name: "explainattach",
             meta: {
               title: "AEKO-解释附件",
-              subMenuType: 2 // 区分解释附件的子菜单
+              subMenuType: 2, // 区分解释附件的子菜单
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/approve/approveList/explainAttach"),
           },
@@ -223,7 +255,8 @@ export default [
         path: "relatingParts",
         name: "aekoRelatingParts",
         meta: {
-          title: 'AEKO-关联零件'
+          title: 'AEKO-关联零件',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/relatingParts"),
       },
@@ -231,7 +264,8 @@ export default [
         path: "mtz",
         name: "mtz",
         meta: {
-          title: 'mtz'
+          title: 'mtz',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/mtz/index"),
         redirect: "/aeko/mtz/list",
@@ -242,6 +276,7 @@ export default [
             prop: true,
             meta: {
               title: "AEKO-mtz查看",
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/mtz/list"),
           },
@@ -251,6 +286,7 @@ export default [
             prop: true,
             meta: {
               title: "AEKO-mtz变更",
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/mtz/details"),
           },
@@ -261,7 +297,8 @@ export default [
         path: "AKEOPageContent",
         name: "AKEOPageContent",
         meta: {
-          title: 'AEKO-审批'
+          title: 'AEKO-审批',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/approve/pageContent"),
         redirect: "/aeko/AKEOPageContent/approvelistcsf",
@@ -271,6 +308,7 @@ export default [
             name: "aekoApprove-listcsf",
             meta: {
               title: "AEKO-审批列表",
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/approve/approveList/approveList"),
             redirect: "/aeko/AKEOPageContent/approvelistcsf/AKEOPendingPage",
@@ -280,6 +318,7 @@ export default [
                 name: "AKEOPendingPage",
                 meta: {
                   title: "AEKO-待审批列表",
+                  activeMenu: ['RISE_WORKBENCH', '/AEKO']
                 },
                 component: () => import("@/views/aeko/approve/approveList/AKEOPendingPage"),
               },
@@ -288,6 +327,7 @@ export default [
                 name: "AKEOApprovedPage",
                 meta: {
                   title: "AEKO-已审批列表",
+                  activeMenu: ['RISE_WORKBENCH', '/AEKO']
                 },
                 component: () => import("@/views/aeko/approve/approveList/AKEOApprovedPage"),
               }
@@ -297,17 +337,11 @@ export default [
       },
       // 逾期报表
       {
-        path: "bipage",
-        name: "bipage",
-        meta: {
-          title: 'AEKO-逾期报表'
-        },
-        component: () => import("@/views/aeko/BIPage"),
-      }, {
         path: "report",
         name: "report",
         meta: {
-          title: 'AEKO报表'
+          title: 'AEKO报表',
+          activeMenu: ['RISE_WORKBENCH', '/AEKO']
         },
         component: () => import("@/views/aeko/BIPage/reportPage"),
         redirect: "/aeko/report/overdue",
@@ -316,14 +350,16 @@ export default [
             path: "overdue",
             name: "overdue",
             meta: {
-              title: 'AEKO逾期报表'
+              title: 'AEKO逾期报表',
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/BIPage/components/overdue"),
           },{
             path: "statetrack",
             name: "statetrack",
             meta: {
-              title: '状态跟踪报表'
+              title: '状态跟踪报表',
+              activeMenu: ['RISE_WORKBENCH', '/AEKO']
             },
             component: () => import("@/views/aeko/BIPage/components/statetrack"),
           },
@@ -336,7 +372,8 @@ export default [
     path: "/aekodetailPage",
     name: "aekodetailPage",
     meta: {
-      title: 'AEKO详情'
+      title: 'AEKO详情',
+      activeMenu: ['RISE_WORKBENCH', '/AEKO']
     },
     component: () => import("@/views/aeko/detail/aekodetailPage"),
   }

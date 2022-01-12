@@ -3,17 +3,18 @@
       <div class="margin-bottom20 clearFloat" v-if="!onlyTable">
         <div class="floatright">
           <!-- 创建MTZ申请 -->
-          <iButton @click="handlecreatemtz" :disabled="isMtzDisabled || getSelectedMtzFlag">
+          <!-- <iButton @click="handlecreatemtz" :disabled="isMtzDisabled || getSelectedMtzFlag"  v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请">
             {{ language("LK_CREATEMTZREQUEST",'创建MTZ申请') }}
-           </iButton>
+           </iButton> -->
           <span v-if="!nominationDisabled && !rsDisabled" class="margin-left10">
             <!-- 批量编辑 -->
-            <iButton @click="handleBatchEdit">
+            <iButton @click="handleBatchEdit" v-permission.auto="SOURCING_NOMINATION_SUGGESTION_BATCHEDIT|批量编辑">
               {{ language("LK_BATCHEDIT",'批量编辑') }}
             </iButton>
             <!-- 复制 -->
             <iButton
               @click="copyLines"
+              v-permission.auto="SOURCING_NOMINATION_SUGGESTION_COPY|复制"
             >
               {{ language("LK_COPY",'复制') }}
             </iButton>
@@ -21,19 +22,22 @@
             <iButton
               :disabled="checkCanbeDelete"
               @click="handleBatchDelete"
+              v-permission.auto="SOURCING_NOMINATION_SUGGESTION_DELETE|删除"
             >
               {{ language("LK_DELETE",'删除') }}
             </iButton>
             <iButton
               @click="submit"
               :loading="submiting"
+              v-permission.auto="SOURCING_NOMINATION_SUGGESTION_SAVE|保存"
             >
               {{ language("LK_BAOCUN","保存") }}
             </iButton>
           </span>
           <iButton
-            class="margin-left10"
-            @click="showMouldVisibal"
+            class="leftMargin"
+            @click="showMouldVisibal" 
+            v-permission.auto="SOURCING_NOMINATION_SUGGESTION_MOLDBUDGETMANAGEMENT|模具预算管理"
           >
             {{ language("MOJUYUSUANGUANLI","模具预算管理") }}
           </iButton>
@@ -48,6 +52,7 @@
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
         ref="tablelist"
+        v-permission.auto="SOURCING_NOMINATION_SUGGESTION_TABLE|表格"
       >
         <template #rfqNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.rfqNum}}</a>
@@ -107,6 +112,8 @@
     <batchEditDialog :visible.sync="batchEditVisibal" :supplierList="supplierList" @submit="onBatchEdit" />
     <!-- 模具弹窗 -->
     <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" :fsIds="fsIds" :supplierIds="supplierIds" />
+    <!-- 黑名单校验弹窗提示 -->
+    <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSAVE" :tableListData="blackTableListData"/>
   </iCard>
 </template>
 
@@ -120,7 +127,9 @@ import tablelist from "@/views/designate/supplier/components/tableList";
 import batchEditDialog from "./batchEditDialog"
 // import mouldDialog from "./mouldDialog"
 import mouldDialog from "./mouldBudgetManagementDialog"
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 import { pageMixins } from '@/utils/pageMixins'
+
 import {
   getSuggestionList,
   updateSuggestion,
@@ -148,7 +157,8 @@ export default {
     // iPagination,
     tablelist,
     batchEditDialog,
-    mouldDialog
+    mouldDialog,
+    dialogTableTips,
   },
   mixins: [ pageMixins ],
   props: {
@@ -193,7 +203,8 @@ export default {
       supplierIds: [],
       isMtzDisabled: false,
       selectedDataMtz: false,
-      isFrozen:false
+      isFrozen:false,
+      blackTableListData:[],
     }
   },
   mounted() {
@@ -352,7 +363,10 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getDataList()
-        } else {
+        }else if(res.code == '500'){
+          this.blackTableListData = res.data || [];
+          this.$refs.dialogTableTips.show(); 
+        }else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
         this.submiting = false
@@ -462,20 +476,19 @@ export default {
       this.mouldVisibal = true
     },
     // 创建MTZ申请
-    handlecreatemtz() {
-      if(!this.selectData.length) {
-        iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
-        return
-      }else {
-        let nom = this.selectData[0].nominateId || ''
-        let item =[]
-        let supplierId = []
-        item = this.selectData.map(val => val.partNum).join(',') || ''
-        supplierId = this.selectData.map(val => val.supplierId).join(',') || ''
-        window.location.href=`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=`+nom+`&item=`+item+`&supplierId=`+supplierId
-      }
-    },
-  
+    // handlecreatemtz() {
+    //   if(!this.selectData.length) {
+    //     iMessage.error(this.language('nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+    //     return
+    //   }else {
+    //     let nom = this.selectData[0].nominateId || ''
+    //     let item =[]
+    //     let supplierId = []
+    //     item = this.selectData.map(val => val.partNum).join(',') || ''
+    //     supplierId = this.selectData.map(val => val.supplierId).join(',') || ''
+    //     window.location.href=`${ process.env.VUE_APP_PORTAL_URL }mtz/annualGeneralBudget/locationChange/MtzLocationPoint/overflow/applyInfor?appId=`+nom+`&item=`+item+`&supplierId=`+supplierId
+    //   }
+    // },
   },
   created(){
     this.nominateAppSDetail()
@@ -484,5 +497,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .supplierTable {
+  .leftMargin{
+    margin: 0 0 0 10px;
+  }
 }
 </style>

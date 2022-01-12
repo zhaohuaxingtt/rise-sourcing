@@ -21,7 +21,7 @@
         </div>
         <commonTable
           ref="tableDataForm"
-          :tableData="tableListData"
+          :tableData="suppliersPage"
           :key="isTax"
           :tableTitle="tableTitle"
           :tableLoading="tableLoading"
@@ -44,37 +44,37 @@
               {{
                 form.roundType === "05" && form.manualBiddingType === "02"
                   ? 1
-                  : scope.row["currentSort"] || 1
+                  : scope.row["currentSort"]
               }}
             </div>
           </template>
           <template slot="isTax" slot-scope="scope">
             <div>
               {{
-                dividedBeiShu(scope.row["offerPrice"]) +
+                scope.row["offerPrice"] ? (dividedBeiShu(scope.row["offerPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') +
                 currencyMultiples(scope.row["currencyMultiple"]) +
-                "-" + units(scope.row["currencyUnit"])
+                "-" + units(scope.row["currencyUnit"])) : ''
               }}
             </div>
           </template>
           <template slot="serverTime" slot-scope="scope">
             <div>
-              {{ scope.row["serverTime"].replace("T", " ") }}
+              {{ scope.row["serverTime"] ? scope.row["serverTime"].replace("T", " ") : ''}}
             </div>
           </template>
           <template slot="operation" slot-scope="scope">
-            <div class="toView" @click="handleGoDetail(scope)">{{language('BIDDING_CHAKAN','查看')}}</div>
+            <div class="toView" @click="handleGoDetail(scope)">{{scope.row["offerPrice"] ? language('BIDDING_CHAKAN','查看') : ''}}</div>
           </template>
         </commonTable>
         <iPagination
           v-update
-          @current-change="handleCurrentChange($event, query)"
-          @size-change="handleSizeChange($event, query)"
+          @current-change="handleCurrentChange($event)"
+          @size-change="handleSizeChange($event)"
           background
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
-          prev-text="上一页"
-          next-text="下一页"
+          :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+          :next-text="language('BIDDING_XIAYIYE','下一页')"
           :layout="page.layout"
           :current-page="page.currPage"
           :total="page.total"
@@ -96,7 +96,7 @@ import {
   currencyMultipleLib
 } from "./data";
 import { getCurrencyUnit } from "@/api/mock/mock";
-import { getProjectResults } from "@/api/bidding/bidding";
+import { getProjectResults, findHallQuotation } from "@/api/bidding/bidding";
 import Big from "big.js";
 
 export default {
@@ -163,6 +163,11 @@ export default {
     role() {
       return this.$route.meta.role;
     },
+    suppliersPage() {
+      const { tableListData } = this;
+      const { currPage, pageSize } = this.page;
+      return tableListData?.slice((currPage - 1) * pageSize, pageSize * currPage);
+    },
     // lookOver() {
     //   if (
     //     this.form.roundType === "05" &&
@@ -200,22 +205,30 @@ export default {
       return this.currencyUnit[unit];
     },
     dividedBeiShu(val){
-     return Big(val).div(this.beishu).toNumber()
+     return val ? Big(val).div(this.beishu).toNumber() : ''
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit ) 
+    },
+    handleSizeChange(val) {
+      this.page.currPage = 1;
+      this.page.pageSize = val;
+    },
+    handleCurrentChange(e) {
+      this.page.currPage = e;
     },
     // 导出
     handleExport() {
       console.log(this.role);
       const data = this.tableListData;
       for (let i = 0; i < this.tableListData.length; i++) {
-        let currentSort = this.tableListData[i].currentSort || 1;
+        let currentSort = this.tableListData[i].currentSort || '';
         let price = this.tableListData[i].offerPrice;
         let currencyMultiple = this.currencyMultiples(
           this.tableListData[i].currencyMultiple
@@ -223,7 +236,7 @@ export default {
         let currencyUnit = this.units(this.tableListData[i].currencyUnit);
         let offerPrice = this.dividedBeiShu(price) + currencyMultiple + "-" + currencyUnit;
         let supplierName = this.tableListData[i].supplierName;
-        let serverTime = this.tableListData[i].serverTime.replace("T", " ");
+        let serverTime = this.tableListData[i]?.serverTime ? this.tableListData[i]?.serverTime.replace("T", " ") : '';
         let isTax =
           this.tableListData[i].isTax === "01" ? "不含可抵扣税" : "含税";
         this.dataList.push({
@@ -238,9 +251,9 @@ export default {
       downloadAll({
         url:
           this.role === "supplier"
-            ? "/bidding/biddingQueryService/exportProjectResults"
-            : "/bidding/biddingService/exportProjectResultForBuyer",
-        filename: "项目结果",
+            ? `${process.env.VUE_APP_BIDDING}/biddingQueryService/exportProjectResults`
+            : `${process.env.VUE_APP_BIDDING}/biddingService/exportProjectResultForBuyer`,
+        filename: this.language('BIDDING_XIANGMUJIEGUO', "项目结果"),
         type: "application/vnd.ms-excel",
         data: this.role === "supplier" ? this.dataList : prama,
         callback: (e) => {
@@ -283,27 +296,36 @@ export default {
     async query(e) {
       // 分页查询获取项目列表
       this.tableLoading = true;
+      let param
+      if( this.supplierCode === '11135'){
+        param = { biddingId: this.id};
+      } else {
+        param = { biddingId: this.id, supplierCode: this.supplierCode };
+      }
+      const data = await findHallQuotation(param)
       const res = await getProjectResults(e);
       this.tableLoading = false;
+      this.form = data
       this.tableListData.sort(this.compare("currentSort"));
-      this.isTax = res[0].isTax;
-      if (
-        this.form.roundType === "05" &&
-        this.form.manualBiddingType === "02"
-      ) {
-        this.tableListData = res.filter((item) => {
-          return this.supplierCode.includes(item.supplierCode);
-        });
-      } else {
-        this.tableListData = res || [];
-      }
-      this.tableListData = this.tableListData.map(item => {
-        return {
-          ...item,
-          offerPrice : this.dividedBeiShu(item.offerPrice)
+      this.isTax = res[0]?.isTax;
+        if (
+          (this.role === "supplier" && this.form.resultOpenForm === '01' 
+          || (this.role === "supplier" && this.form.resultOpenForm === '02'))
+        ) {
+          this.tableListData = res.filter((item) => {
+            return this.supplierCode.includes(item.supplierCode);
+          });
+        } else {
+          this.tableListData = res || [];
         }
-      })
-      this.page.total = res.length;
+        this.tableListData = this.tableListData.map(item => {
+          return {
+            ...item,
+            offerPrice : this.dividedBeiShu(item.offerPrice)
+          }
+        })
+        this.page.total = res.length;
+        console.log('object',this.tableListData)
     },
   },
 };

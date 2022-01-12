@@ -55,8 +55,8 @@
                     <el-option
                       v-for="item in modelsOption"
                       :key="item.id"
-                      :label="item.name"
-                      :value="item.code"
+                      :label="item.model"
+                      :value="item.modelCode"
                     >
                     </el-option>
                   </iSelect>
@@ -85,8 +85,8 @@
                     <el-option
                       v-for="item in modelProjectsOption"
                       :key="item.id"
-                      :label="item.name"
-                      :value="item.code"
+                      :label="item.project"
+                      :value="item.projectCode"
                     >
                     </el-option>
                   </iSelect>
@@ -209,24 +209,8 @@ export default {
       factoryPricePercent: "",
       multiPleTableTitle,
       priceProps: [
-        "factoryPrice",
-        "packingFee",
-        "packingFee2",
-        "transportFee",
-        "operationFee",
-        "moldFee",
-        "developFee",
-        "targetPrice",
       ],
       inputProps: [
-        "factoryPrice",
-        "packingFee",
-        "packingFee2",
-        "transportFee",
-        "operationFee",
-        "moldFee",
-        "developFee",
-        "targetPrice",
         "lifecycle",
         "aveAnnualOutput",
         "maxAnnualOutput",
@@ -248,6 +232,7 @@ export default {
         "stage14",
         "stage15",
       ],
+      multiPriceValue:{},
       quantityUnit: [],
       selectedTableData: [],
       modelsOption: [],
@@ -282,14 +267,14 @@ export default {
   mounted() {
     this.handleSearchReset();
     
-    getModels().then((res) => {
-      this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
-    });
-    getProjects().then((res) => {
-      this.modelProjectsOption = res?.data?.filter(
-        (item) => item.name?.length > 0
-      );
-    });
+    // getModels().then((res) => {
+    //   this.modelsOption = res?.data?.filter((item) => item.name?.length > 0);
+    // });
+    // getProjects().then((res) => {
+    //   this.modelProjectsOption = res?.data?.filter(
+    //     (item) => item.name?.length > 0
+    //   );
+    // });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
@@ -313,7 +298,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     orgTotalPrices() {
       let biddingProducts = this.ruleForm.biddingProducts;
@@ -333,7 +318,7 @@ export default {
       return digitUppercase(Big(this.orgTotalPrices).toFixed(2));
     },
     startingPrice() {
-      return this.totalPrices + this.currencyMultiple;
+      return Number(this.totalPrices)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + this.currencyMultiple;
     },
     biddingProducts() {
       return this.ruleForm.biddingProducts;
@@ -377,6 +362,19 @@ export default {
     //监听产品  计算B价 ==出厂价+包装费+运输费+操作费
     biddingProducts: {
       handler(val, oldVal) {
+        this.multiPriceValue= this.ruleForm.biddingProducts.reduce((obj, item, index) => {
+        return  obj={...obj,[item.id]:
+                        {
+                          factoryPrice:Number(item.factoryPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          packingFee:Number(item.packingFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          transportFee:Number(item.transportFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          operationFee:Number(item.operationFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          moldFee:Number(item.moldFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          developFee:Number(item.developFee)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                          targetPrice:Number(item.targetPrice)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,'),
+                        }
+                      }
+        },{})
         if (val.length > 0)
           val.forEach((item) => {
             item.bPrice =
@@ -470,7 +468,10 @@ export default {
         }
         //本年产量日期
         let annualYesr = dayjs(dateList[`stage${i}`]).year();
-        let dateArray= Object.values(yearsPlanDate);
+        let dateArray = []
+        for (let j = 1; j < 10; j++) {
+          dateArray.push(yearsPlanDate[`stage${j}`])
+        }
         //产量年度在该零件年降计划出现次数数组count
         let count =dateArray.filter(item=>{
           if(item && item?.toString().includes(annualYesr)){
@@ -749,7 +750,7 @@ export default {
         if (valid || this.ruleForm.biddingProducts.length == 0) {
           this.submitPurchasePlanTableForm(purchasePlanTableForm, callback);
         } else {
-          this.$message.error("年降计划数据有误！");
+          this.$message.error(this.language('BIDDING_NJJHSJYW',"年降计划数据有误！"));
           return;
         }
       });
@@ -959,7 +960,8 @@ export default {
         models: data.models?.map((item) => item.modelCode),
         modelProjects: data.modelProjects?.map((item) => item.projectCode),
       };
-      
+      this.modelProjectsOption = data.modelProjects
+      this.modelsOption = data.models
       //this.ruleForm.procurePlans 年降计划
       let o = {};
       if (this.ruleForm.procurePlans?.length) {
@@ -1169,7 +1171,8 @@ export default {
 }
 ::v-deep .mutiple-form {
   .el-input.is-disabled .el-input__inner {
-    background-color: transparent;
+    /* background-color: transparent; */
+    background-color: #f5f7fa !important;
   }
 }
 </style>

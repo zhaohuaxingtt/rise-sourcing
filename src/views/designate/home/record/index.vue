@@ -2,13 +2,13 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2021-11-01 03:07:23
+ * @LastEditTime: 2021-12-02 10:22:56
  * @LastEditors:  
 -->
 <template>
   <iPage class="designatehome" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录页面">
     <!-- 头部 -->
-    <headerNav/>
+    <headerNav />
     <!-- 筛选框 -->
     <div style="clear: both"></div>
     <!-- 查询区 -->
@@ -27,6 +27,7 @@
         v-loading="tableLoading"
         @openPage="openPage"
         @handleSelectionChange="handleSelectionChange"
+        v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_TABLE|定点记录表格"
        >
        <!-- FS号 -->
       <template #fsnrGsnrNum="scope">
@@ -55,7 +56,7 @@
 </template>
 <script>
 import {iPage, iCard, iPagination, icon, iButton, iMessage} from "rise"
-import headerNav from '@/views/designate/home/components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search.vue'
 import tablelist from "@/views/designate/supplier/components/tableList"
 import {tableTitle} from './data'
@@ -142,7 +143,7 @@ export default {
       this.selectTableData = data
     },
     exportRecord() {
-      let data = Object.assign({...this.$refs.search.formRecord},{size:1})
+      let data = Object.assign({...this.$refs.search.formRecord},{size:this.page.pageSize},{current:this.page.currPage})
       exportNomiRecordExcel(data).then(res=> {
         
       })

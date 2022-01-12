@@ -233,4 +233,10 @@ export default {
     border-bottom: 1px solid #eee;
   }
 }
+.log-table {
+  ::v-deep .el-table__expanded-cell {
+    background-color: unset;
+  }
+}
+
 </style>

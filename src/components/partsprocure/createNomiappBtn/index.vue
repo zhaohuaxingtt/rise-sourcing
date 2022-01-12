@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\createNomiappBtn\index.vue
 -->
 <template>
-<div class="inline margin-right10" v-permission.auto='PARTSPROCURE_EDITORDETAIL_CREATEDDSQD|创建定点申请按钮'>
+<div class="inline margin-right10">
   <iButton @click="handleCreateNomiApplication" :loading='loading'>{{ language('LK_SHENGCHENGDINGDIANSHENQING',"生成定点申请单") }}</iButton>
   <iDialog title="自动定点进度追踪" :visible.sync="messageShow">
     <ul class="ulContent">
@@ -106,7 +106,8 @@ export default{
         query:{
           desinateId:items.nominateId || '',
           designateType:items.nominateProcessType || '',
-          partProjType:items.partProjectType || ''
+          partProjType:items.partProjectType || '',
+          businessKey:items.partProjectType || ''
         }
       })
       window.open(routeData.href, '_blank')

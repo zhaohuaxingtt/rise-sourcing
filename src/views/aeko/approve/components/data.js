@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-11-17 09:59:01
+ * @LastEditTime: 2021-12-01 15:38:55
  * @Description: 
  */
 
@@ -210,46 +210,43 @@ export const tableTitle = [
 
 // 表头
 export const tableCsfTitle = [
-  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:145 },
+  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:120 },
   { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true, width:135  },
-  { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true ,width:60},
-  { props: "assignsheet", name: "更改零件名称", key: "LK_AEKO_GENGGAILINGJIANMINGCHENG", tooltip: true, width:120  },
+  { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true ,width:55},
+  { props: "assignsheet", name: "更改零件名称", key: "LK_AEKO_GENGGAILINGJIANMINGCHENG", tooltip: true, width:115  },
   { props: "carType", name: "涉及车型/车型项目", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width:145 },
-  { props: "supplier", name: "主要供应商", key: "LK_AEKO_ZHUYAOGONGYINGSHANG", tooltip: true,width:100  },
-  { props: "EP1", name: "增加材料成本(RMB/车)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true,width:185},
-  { props: "EP2", name: "增加投资费用", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true,width:100 },
-  { props: "EP3", name: "其他费用", key: "LK_AEKO_QITAFEIYONG", tooltip: true,width:70 },
-  { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true,width:60 },
-  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true },
+  { props: "supplier", name: "主要供应商", key: "LK_AEKO_ZHUYAOGONGYINGSHANG", tooltip: true,width:95  },
+  { props: "EP1", name: "增加材料成本(RMB/车)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true,width:153},
+  { props: "EP2", name: "增加投资费(不含税)", key: "LK_AEKO_ZENGJIATOUZIFEI", tooltip: true,width:140 },
+  { props: "EP3", name: "其他费用(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true,width:125 },
+  { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true,width:55 },
+  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true,minWidth:100 },
   { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true,width:80 },
   { props: "date", name: "AEKO截止日期", key: "LK_AEKO_AEKOJIEZHIRIQI" ,tooltip: true ,width:120},
-  { props: "createDate", name: "创建时间", key: "CHUANGJIANRIQI" ,tooltip: true,width:110 },
+  { props: "createDate", name: "创建时间", key: "CHUANGJIANRIQI" ,tooltip: true,width:105 },
 ]
 
 export const selectConfig = {
-  width:45
+  width:42,
 }
 
-export const indexConfig = {
-  width:40
-}
 export const tableAKEOApprovedTitle = [
-  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:125 },
-  { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:95,},
+  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:120 },
+  { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true,width:80,},
   { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true,width:50  },
-  { props: "assignsheet", name: "更改零件名称", key: "LK_AEKO_GENGGAILINGJIANMINGCHENG", tooltip: true, width:100  },
+  { props: "assignsheet", name: "更改零件名称", key: "LK_AEKO_GENGGAILINGJIANMINGCHENG", tooltip: true, width:103  },
   { props: "carType", name: "涉及车型/车型项目", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width:140 },
-  { props: "supplier", name: "主要供应商", key: "LK_AEKO_ZHUYAOGONGYINGSHANG", tooltip: true,width:85 },
-  { props: "EP1", name: "增加材料成本(RMB/车)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true,width:175 },
-  { props: "EP2", name: "增加投资费用", key: "LK_AEKO_ZENGJIATOUZIFEIYONG", tooltip: true ,width:100 },
-  { props: "EP3", name: "其他费用", key: "LK_AEKO_QITAFEIYONG", tooltip: true ,width:70 },
-  { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true,width:60 },
-  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true },
-  { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true,width:70 },
-  { props: "auditStatus", name: "审批状态", key: "LK_SHENPIZHUANGTAI", tooltip: true,width:70 },
+  { props: "supplier", name: "主要供应商", key: "LK_AEKO_ZHUYAOGONGYINGSHANG", tooltip: true,width:88 },
+  { props: "EP1", name: "增加材料成本(RMB/车)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true,width:150 },
+  { props: "EP2", name: "增加投资费(不含税)", key: "LK_AEKO_ZENGJIATOUZIFEI", tooltip: true ,width:132 },
+  { props: "EP3", name: "其他费用(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true ,width:118 },
+  { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true,width:57 },
+  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true, minWidth: 70 },
+  { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true,width:73 },
+  { props: "auditStatus", name: "审批状态", key: "LK_SHENPIZHUANGTAI", tooltip: true,width:73 },
   { props: "date", name: "AEKO截止日期", key: "LK_AEKO_AEKOJIEZHIRIQI",width:110,},
   { props: "createDate", name: "创建时间", key: "LK_CHUANGJIANRIQI",width:105 },
-  { props: "complatedDate", name: "完成时间", key: "LK_WANCHENGSHIJIAN",width:105 },
+  { props: "complatedDate", name: "审批操作时间", key: "LK_SHENPICAOZUOSHIJIAN",width:105 },
 
 ]
 

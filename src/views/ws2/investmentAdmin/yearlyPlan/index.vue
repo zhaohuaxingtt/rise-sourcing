@@ -95,7 +95,8 @@
             </template>
             <template #linieName="scope">
               <div v-if="scope.row.statType === 'backlog'"></div>
-              <div v-else>{{getTousandNum(NumFormat(scope.row.linieName))}}</div>
+              <!-- <div v-else>{{getTousandNum(NumFormat(scope.row.linieName))}}</div> -->
+              <div v-else>{{scope.row.linieName}}</div>
             </template>
             <template #carTypeProName="scope">
               <div class="backlog" v-if="scope.row.statType === 'backlog'">
@@ -259,7 +260,9 @@ export default {
       saveLoading: false,
       saveNewVersion: false,
       systemTableLoading: false,
-      vereceive: {},
+      vereceive: {
+        editFlag: true
+      },
       planYearCommutity: [],
       isThen: true,
       manualSaveLoading: false,
@@ -601,7 +604,12 @@ export default {
                   },
                 },
                 tooltip: {
-                    
+                  backgroundColor: "#ffffff",
+                        extraCssText:
+                          "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
+                  formatter: function (params) {
+                    return `<div>${params.name}</div><div style="color: #1763F7; font-weight: bold">${params.data}</div>`
+                  },
                 },
                 legend: {
                     data: []
@@ -653,7 +661,12 @@ export default {
                   },
                 },
                 tooltip: {
-                    
+                  backgroundColor: "#ffffff",
+                        extraCssText:
+                          "color: #1B1D21; box-shadow: 0px 0px 20px rgba(27, 29, 33, 0.12);",
+                  formatter: function (params) {
+                    return `<div>${params.name}</div><div style="color: #1763F7; font-weight: bold">${params.data}</div>`
+                  },
                 },
                 legend: {
                     data: []

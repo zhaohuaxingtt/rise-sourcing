@@ -16,8 +16,22 @@ export default {
   },
   data(){
     return {
-      higth:false
+      higth: false,
+      isPreview: false
     }
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationDisabled: state => state.nomination.nominationDisabled,
+      rsDisabled: state => state.nomination.rsDisabled,
+    }),
+    isDisabled() {
+      return this.isPreview || this.nominationDisabled || this.rsDisabled
+    }
+  },
+  created() {
+    this.isPreview = this.$route.query.isPreview == 1
   },
   methods:{
     submit(){
@@ -31,7 +45,10 @@ export default {
       })
     },
     getFetchData(){
-      costAnalysisGet(this.$route.query.desinateId,this.categoryCode).then(r=>{
+      costAnalysisGet({
+        nominateAppId: this.$route.query.desinateId,
+        type: this.categoryCode
+      },).then(r=>{
         this.content = r.data.content
         this.$refs.editor.html(this.content)
       })

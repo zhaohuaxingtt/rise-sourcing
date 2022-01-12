@@ -81,13 +81,13 @@
         </div>
         <div class="project__header-btns">
           <template v-if="actived === 'filing'">
-            <iButton @click="handleHref" v-if="ruleForm.biddingStatus == '06'">{{
+            <iButton @click="handleHref" v-if="ruleForm.roundType !== '05' && ruleForm.biddingStatus == '06'">{{
               language('BIDDING_TXBJMX', '填写报价明细')
             }}</iButton>
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
               language('系统使用条款', '系统使用条款')
             }}</iButton> -->
-            <iButton @click="handleShowNotice('02', '竞价告知书')">{{
+            <iButton v-if="isShowBidding" @click="handleShowNotice('02', language('BIDDING_JINJIAGAOZHISHU','竞价告知书'))">{{
               language('BIDDING_JINJIAGAOZHISHU', '竞价告知书')
             }}</iButton>
           </template>
@@ -113,6 +113,14 @@
       :type="type"
       :title="docTitle"
     />
+
+    <!-- 供应商黑名单发出询价弹出 -->
+    <supplierDisabled
+      v-if="disSupplier"
+      :show="disSupplier"
+      :tableListData="tableListData"
+      @update-show="updataShow"
+    />
   </iPage>
 </template>
 
@@ -126,6 +134,7 @@ import {
   sendEmail,
   getSupplierNotification,
 } from "@/api/bidding/bidding";
+import supplierDisabled from './inquiry/components/supplierDisabled'
 
 export default {
   components: {
@@ -133,6 +142,7 @@ export default {
     iButton,
     bidNoticeDoc,
     // bidNoticeDialog,
+    supplierDisabled,
   },
   data() {
     const cacheRuleForm = window.sessionStorage.getItem(
@@ -152,16 +162,35 @@ export default {
       projectBack: "",
       biddingFinish: false,
       handleReject:false,
+      getSupplierData:{},
+      disSupplier: false,
+      tableListData: []
     };
   },
-   mounted() {
+   async mounted() {
     window.sessionStorage.setItem("BIDDING_SUPPLIER_CODE", this.supplierCode);
     this.projectBack = sessionStorage.getItem("projectBack");
     console.log(this.projectBack);
+    if (this.role === "supplier" && this.ruleForm.projectCode) {
+      const res = await getSupplierNotification({
+          projectCode: this.ruleForm.projectCode,
+          supplerCode: this.supplierCode,
+      });
+      this.getSupplierData = res
+    }
     
   },
 
   computed: {
+    // 没有同意系统使用条款或者告知书的供应商只能看建档页面
+    isShowBidding(){
+      const {biddingStatus} = this.ruleForm
+      if (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09') {
+        return false
+      } else {
+        return true
+      }
+    },
     role() {
       return this.$route.meta.role;
     },
@@ -200,9 +229,10 @@ export default {
       }
     },
     title() {
-      const { rfqCode, projectCode } = this.ruleForm || {};
+      const { rfqCode, projectCode,roundType,isTest } = this.ruleForm || {};
       // return rfqCode ? `RFQ编号：${rfqCode}` : `项目编号：${projectCode}`;
-      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode} ${ isTest ?  `${this.language('BIDDING_CESHI','（测试）')}` : `${this.language('BIDDING_ZHENGSHI','（正式）')}`}` 
+                    : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode} ${ isTest ?  `${this.language('BIDDING_CESHI','（测试）')}`: `${this.language('BIDDING_ZHENGSHI','（正式）')}`}`;
     },
   },
   watch: {
@@ -238,7 +268,7 @@ export default {
       });
       sessionStorage.clear();
     },
-     async handleChangeTitle(data) {
+    async handleChangeTitle(data) {
       if (data.biddingStatus == "01" || data.biddingStatus == null) {
         if (this.role == "buyer") {
           this.$router.push({ name: "biddingProjectInquiry" });
@@ -253,16 +283,18 @@ export default {
       );
       if(data) {
         if (this.actived === 'filing'){
-        const res = await getSupplierNotification({
-            projectCode: this.ruleForm.projectCode,
-            supplerCode: this.supplierCode,
-        });
-        if(!res?.systemUseFlag) {
-          const type = '01'
-          const docTitle = '系统使用条款'
-          this.handleShowNotice(type,docTitle)
+          const res = await getSupplierNotification({
+              projectCode: this.ruleForm.projectCode,
+              supplerCode: this.supplierCode,
+          });
+          this.getSupplierData = res
+        
+          if(!res?.systemUseFlag) {
+            const type = '01'
+            const docTitle = '系统使用条款'
+            this.handleShowNotice(type,docTitle)
+          }
         }
-    }
       }
     },
     // 开标结束本轮RFQ
@@ -271,8 +303,10 @@ export default {
       const fromdata = { projectCode };
       cancelOpenTender(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          location.reload();
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            location.reload();
+          }
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
@@ -284,20 +318,25 @@ export default {
       const fromdata = { projectCode };
       cancelBidding(fromdata)
         .then((res) => {
-          this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
-          if (this.ruleForm.isRfqCompleted === null) {
-            localStorage.setItem("finish", true);
-          } else {
-            localStorage.removeItem("finish");
-            console.log(this.language('BIDDING_YIBEISHANGCHU','已被删除'));
+          if (res) {
+            this.$message.success(this.language('BIDDING_CAOZUOCHENGGONG','操作成功'));
+            if (this.ruleForm.isRfqCompleted === null) {
+              localStorage.setItem("finish", true);
+            } else {
+              localStorage.removeItem("finish");
+              console.log(this.language('BIDDING_YIBEISHANGCHU','已被删除'));
+            }
+            location.reload();
           }
-          location.reload();
         })
         .catch(() => {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
         });
     },
-
+    // 供应商黑名单
+    updataShow(){
+      this.disSupplier = false
+    },
     // 发出本轮RFQ
     handelSend() {
       if (this.ruleForm.suppliers.length === 0) {
@@ -319,22 +358,46 @@ export default {
         return this.$message.error(this.language('BIDDING_WWCXJGLSZWFFQJJ','未完成询价管理设置, 无法发起竞价'));
       }
 
-      this.$refs.child.submitForm(() => {
-        const { projectCode } = this.ruleForm;
-        const fromdata = { projectCode };
-        sendEmail(fromdata)
-          .then((res) => {
-            window.location.reload();
-          })
-          .catch((err) => {
-            this.$message.error(err.message);
-          });
+      const { projectCode } = this.ruleForm;
+      const inquiryFlag = this.$route.path.includes('/bidding/project/inquiry')
+      const fromdata = { projectCode, inquiryFlag };
+      // this.$refs.child.submitForm(() => {
+      //   sendEmail(fromdata)
+      //     .then((res) => {
+      //       window.location.reload();
+      //     })
+      //     .catch((err) => {
+      //       this.$message.error(err.message);
+      //     });
+      // });
+      sendEmail(fromdata)
+      .then((res) => {
+        if (res.code == 200) {
+          window.location.reload();
+        }
+        // 供应商黑名单
+        if (res.code == 100407) {
+          if (document.getElementsByClassName("el-message").length === 0) {
+             this.$message.error(res.message);
+           }
+          this.tableListData = res.data
+          this.disSupplier = true
+        }
+      })
+      .catch((err) => {
+        if (err) {
+           if (document.getElementsByClassName("el-message").length === 0) {
+             this.$message.error(err.message);
+           }
+        }
       });
     },
     handleShowNotice(type, docTitle) {
       this.type = type;
       this.docTitle = docTitle;
-      this.showBidNotice = true;
+      const {biddingStatus} = this.ruleForm
+      // 打开弹窗
+      this.showBidNotice = biddingStatus === '02' || biddingStatus === '04';
       // this.$router.push('/bidding/bidNotice')
       // this.$router.push({
       //   path: `/bidding/bidNotice`,
@@ -365,6 +428,8 @@ export default {
             return false;
           } else if (roundType == "02") {
             return false;
+          } else if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )){
+            return false
           } else {
             return true;
           }
@@ -372,7 +437,9 @@ export default {
       }
 
       if (val == "result") {
-        if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
+        if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )) {
+          return false
+        } else if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
           return true;
         } else {
           return false;

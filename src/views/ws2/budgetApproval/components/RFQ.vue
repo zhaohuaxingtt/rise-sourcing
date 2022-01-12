@@ -75,7 +75,6 @@ export default {
   },
   methods: {
     detail() {
-      console.log([this.RFQID])
       this.tableLoading = true
       detail({
         rfqIds: [this.RFQID],
@@ -91,6 +90,8 @@ export default {
         } else {
           iMessage.error(result);
         }
+        this.tableLoading = false
+      }).catch(() => {
         this.tableLoading = false
       });
     },

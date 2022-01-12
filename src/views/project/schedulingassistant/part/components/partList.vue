@@ -2,9 +2,9 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-05 16:56:24
+ * @LastEditTime: 2022-01-10 10:24:23
  * @Description: 零件排程列表
- * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\partList.vue
+ * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
 
 <template> 
@@ -20,6 +20,7 @@
         <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton> 
         <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton> 
         <el-popover 
+          class="margin-left10"
           placement="bottom" 
           width="156" 
           trigger="click" 
@@ -28,7 +29,7 @@
           <div class="partListView-downloadContent"> 
             <div class="cursor" v-for="item in downloadTypeList" :key="item.key" @click="handleDownload(item)">{{language(item.key, item.label)}}</div> 
           </div> 
-          <iButton class="margin-left10" slot="reference" :loading="downloadLoading"> 
+          <iButton slot="reference" :loading="downloadLoading"> 
             {{language('DAOCHUPAICHENGQINGDAN', '导出排程清单')}} 
             <icon class="margin-left16" v-if="!showDownloadContent" symbol name="icona-Icon-ArrowDropDown"></icon> 
             <icon class="margin-left16" v-else symbol name="icona-Icon-Arrowshouqi"></icon> 
@@ -39,16 +40,18 @@
     <div class="partListView-content" ref="partSchedulPartListViewContent" v-infinite-scroll="load" :infinite-scroll-distance="20"> 
       <div v-for="pro in showParts" :key="pro.label" class="productItem" ref="partSchedulPartListViewItem"> 
         <div class="productItem-top"> 
-          <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
-            <el-popover
-              v-if="pro.zp && pro.zp === 'ZP5'"
-              :content="language('ZP5LINGJIANZHENGXUPAICHENGCONGDINGIDIANJIEDIANKAISHI','ZP5零件，正序排程从定点节点开始')"
-              placement="top-start"
-              trigger="hover">
-              <span slot="reference" >*</span>
-            </el-popover>
-            {{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} 
-          </el-checkbox> 
+          <div class="checkBox-wrapper">
+            <el-checkbox v-model="pro.isChecked" @change="handleCheckboxChange($event, pro)"> 
+              <el-popover
+                v-if="pro.zp && pro.zp === 'ZP5'"
+                :content="language('ZP5LINGJIANZHENGXUPAICHENGCONGDINGIDIANJIEDIANKAISHI','ZP5零件，正序排程从定点节点开始')"
+                placement="top-start"
+                trigger="hover">
+                <span slot="reference" >*</span>
+              </el-popover>
+            </el-checkbox> 
+            <span @click="() => {$set(pro, 'isChecked', !pro.isChecked);handleCheckboxChange()}" class="checkBox-wrapper-text">{{`${pro.partNum || ''} ${pro.partNameZh || ''} ${pro.partNameDe || ''}`}} </span>
+          </div>
           <div class="productItem-top-targetList"> 
             <!---------------------------目标指示灯，1-正常 2-风险 3-延误-------------------------------------------> 
             <div v-for="item in targetList" :key="item.value" class="productItem-top-targetList-item"> 
@@ -61,37 +64,27 @@
         </div> 
         <div class="productItem-bottom"> 
           <div class="productItem-bottom-text"> 
-            <icon @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon>  
+            <el-popover
+              :content="language('TIAOZHUANLISHIJINDUSHUJUKU','跳转历史进度数据库')"
+              placement="top-start"
+              trigger="hover">
+              <icon slot="reference" @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon> 
+            </el-popover>
+             
           </div> 
           <div v-for="(item, index) in nodeList" :key="item.key" class="productItem-bottom-node"> 
             <div class="productItem-bottom-nodeItem">  
               <span class="productItem-bottom-nodeItem-label" v-if="!item.label.includes('1st')">{{item.key ? language(item.key, item.label) : item.label}}</span> 
               <span class="productItem-bottom-nodeItem-label" v-else>1<sup>st</sup>{{item.label.split('1st')[1]}}</span> 
-              <icon v-if="pro[item.status] == 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon> 
+              <icon v-if="index === nodeList.length - 1 ? pro[item.status] == 1 && pro[item.status2] == 1 : pro[item.status] == 1" symbol name="icondingdianguanli-yiwancheng" class="step-icon  click-icon"></icon> 
               <icon v-else symbol name="icondingdianguanlijiedian-jinhangzhong" class="step-icon  click-icon"></icon>  
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------> 
-              <template v-if="index == nodeList.length - 1"> 
-                <iText v-if="pro[item.status] == 1 && pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
-                <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw2]}}</iText> 
-                <!-- <el-cascader 
-                  v-else-if="pro.emIsLarger" 
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` " 
-                  :value="pro[item.kw].split('-KW')" 
-                  :options="yearWeekOptions(pro, item.kw, index)" 
-                  @change="handleChange($event, pro, item.kw, index)" 
-                  separator="-KW" 
-                ></el-cascader> 
-                <el-cascader 
-                  v-else 
-                  :class="`productItem-bottom-stepBetween-input margin-top20 ` "  
-                  :value="pro[item.kw2].split('-KW')" 
-                  :options="yearWeekOptions(pro, item.kw2, index)" 
-                  @change="handleChange($event, pro, item.kw2, index)" 
-                  separator="-KW" 
-                ></el-cascader>   -->
-                <span v-else-if="pro.emIsLarger"  :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
-                <span v-else :class="`productItem-bottom-stepBetween-input input margin-top20 cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>
-              </template>   
+              <div v-if="index == nodeList.length - 1" class="margin-top20 doubleItem"> 
+                <iText v-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro[item.kw]}}</iText> 
+                <span v-else  :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
+                (<iText v-if="pro.bmgFlag === '是' || pro[item.status2] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro.bmgFlag === '是' ? '/' : pro[item.kw2]}}</iText> 
+                <span v-else :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>)
+              </div>   
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
               <!-- <el-cascader 
                   v-else 
@@ -107,8 +100,8 @@
               <div :class="`productItem-bottom-stepBetween-double flex-box margin-bottom5`"> 
                 <!--------------------------节点时长-不可编辑------------------------------------> 
                 <template v-if="index == nodeList.length - 2"> 
-                  <iText v-if="pro.emIsLarger" :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
-                  <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint2]}}W</iText> 
+                  <iText :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
+                  (<iText :class="`productItem-bottom-stepBetween-input text `">{{pro.bmgFlag === '是' ? '/' : pro[item.keyPoint2] + 'W'}}</iText>) 
                 </template> 
                 <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
               </div>  
@@ -157,12 +150,12 @@ export default {
       targetList: [ 
         {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget'}, 
         {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget'}, 
-        {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'} 
+        // {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'} 
       ], 
       nodeList: [ 
         {label: '释放', key: 'SHIFANG', kw: 'releaseTimeKw', keyPoint: 'keyReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus', status: 'releaseStatus'}, 
         {label: '定点', key: 'DINGDIAN', kw: 'nomiTimeKw', keyPoint: 'keyNomiToBffWeek', isChange: 'keyNomiToBffStatus', status: 'nomiStatus'}, 
-        {label: 'BF', kw: 'bfTimeKw', keyPoint: 'keyBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus', status: 'bfStatus'}, 
+        {label: '数据冻结', kw: 'bfTimeKw', keyPoint: 'keyBfToFirstTryoutWeek', isChange: 'keyBfToFirstTryoutStatus', status: 'bfStatus'}, 
         {label: '1st Tryout', kw: 'firstTryoutTimeKw', keyPoint: 'keyFirstTryEmWeek', keyPoint2: 'keyFirstTryOtsWeek', isChange: 'keyFirstTryEmStatus', status: 'firstTryStatus'}, 
         {label: 'EM(OTS)', kw: 'emTimeKw', keyPoint: 'keyFirstTryOtsWeek', kw2: 'otsTimeKw', status: 'emStatus', status2: 'otsStatus' } 
       ], 
@@ -174,7 +167,7 @@ export default {
       downloadTypeList: [ 
         {label: '风险预警零件', key: 'FENGXIANYUJINGLINGJIAN', type: 1}, 
         {label: '未释放零件', key: 'WEISHIFANGLINGJIAN', type: 3}, 
-        {label: '未BF零件', key: 'WEIBFLINGJIAN', type: 2} 
+        {label: '数据待冻结零件', key: 'SHUJUDAIDONGJIELINGJIAN', type: 2} 
       ], 
       downloadLoading: false,
       svgList: {
@@ -270,7 +263,7 @@ export default {
       // item.type 导出类型 1-风险预警 2-未BF 3-未释放 
       const partScheduleInfoVOList = this.partsTemp.filter(pItem => { 
         if (item.type == 1) { 
-          const targetList = [pItem.pvsTarget, pItem.vffTarget, pItem.zerosTarget] 
+          const targetList = [pItem.pvsTarget, pItem.vffTarget] 
           return targetList.some(item => item == 3) || targetList.some(item => item == 2) 
         }  
         if (item.type == 2) { 
@@ -434,10 +427,11 @@ export default {
     async handleSendFs() { 
       await this.autoSave() 
       try { 
+        console.log('3')
         this.loading = true 
         // 筛选出待定点和待kickoff的数据 
         const selectRows = this.partsTemp.filter(item => { 
-          const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget] 
+          const targetList = [item.pvsTarget, item.vffTarget] 
           return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3) && (item.partPeriod == 2 || item.partPeriod == 3) 
         }) 
         if (selectRows.length < 1) { 
@@ -464,7 +458,7 @@ export default {
               return accu 
             } 
           },[]) : []  
-          const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget] 
+          const targetList = [item.pvsTarget, item.vffTarget] 
           const tableItem = {  
             // ...item, 
             cartypeProId: this.cartypeProId, 
@@ -594,23 +588,70 @@ export default {
       } 
       return -this.getWeekBetween(time2, time1) 
     },  
+    /**
+     * @Description: 根据起始kw时间和间隔周数计算下一个kw时间
+     * @Author: Luoshuang
+     * @param {*} start 起始kw时间
+     * @param {*} between 间隔周数
+     * @return {*}
+     */    
+    getKw(start, betweenKW) {
+      if (!start) {
+        return null
+      }
+      const between = betweenKW || 0
+      const startYear = Number(start.split('-KW')[0]) 
+      const startWeek = Number(start.split('-KW')[1]) 
+      const startAllWeek = moment(startYear+'-01-01').weeksInYear()
+      if (startWeek + between > 0 && startWeek + between <= startAllWeek) {
+        return startYear + '-KW' + ((startWeek + between) < 10 ? '0' + (startWeek + between) : (startWeek + between))
+      } else if (startWeek + between > startAllWeek) {
+        let addYearNum = 0
+        let addWeek = startWeek + between - startAllWeek
+        let nextYear = startYear+addYearNum
+        let yearWeek = moment(nextYear+'-01-01').weeksInYear()
+        for (let i = addWeek; i > 0; i -= yearWeek) {
+          addYearNum += 1
+          addWeek = i
+          nextYear = startYear+addYearNum
+          yearWeek = moment(nextYear+'-01-01').weeksInYear()
+        }
+        return (startYear + addYearNum) + '-KW' + (addWeek < 10 ? '0' + addWeek : addWeek)
+      } else {
+        let descYearNum = 0
+        let deWeek = startWeek + between
+        let lastYear = startYear-descYearNum
+        let lasYearWeek = moment(lastYear+'-01-01').weeksInYear()
+        for (let j = deWeek; j < 0; j += lasYearWeek) {
+          descYearNum += 1
+          lastYear = startYear-descYearNum
+          lasYearWeek = moment(lastYear+'-01-01').weeksInYear()
+          deWeek = lasYearWeek+j
+        }
+        return (startYear - descYearNum) + '-KW' + (deWeek < 10 ? '0' + deWeek : deWeek)
+      }
+    },
     /** 
      * @Description: 下拉框更改 
      * @Author: Luoshuang
      * @param {*} val
      * @param {*} item
      * @param {*} props
-     * @param {*} index
+     * @param {*} index nodeList的index
      * @return {*}
      */    
     handleChange(val, item, props, index) { 
       this.$set(item, props, val) 
       // const index = this.nodeList.findIndex(item => item.kw === props || item.kw2 === props) 
       if (this.nodeList[index - 1]) {  
-        this.$set(item, this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
+        this.$set(item, props === 'otsTimeKw' ? this.nodeList[index - 1].keyPoint2 : this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
       } 
       if (this.nodeList[index + 1]) { 
-        this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val, props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw])) 
+        for (let i = index + 1; i < this.nodeList.length; i++) {
+          this.$set(item, this.nodeList[i].kw, this.getKw(item[this.nodeList[i - 1].kw], item[this.nodeList[i - 1].keyPoint]))
+          i === this.nodeList.length - 1 && item.bmgFlag !== '是' && this.$set(item, this.nodeList[i].kw2, this.getKw(item[this.nodeList[i - 1].kw], item[this.nodeList[i - 1].keyPoint2]))
+        }
+        // this.$set(item, props === 'otsTimeKw' ? this.nodeList[index].keyPoint2 : this.nodeList[index].keyPoint, this.getWeekBetween(val, props === 'otsTimeKw' ?  item[this.nodeList[index + 1].kw2] : item[this.nodeList[index + 1].kw])) 
       } 
     }, 
     /**
@@ -619,21 +660,20 @@ export default {
      * @param {*} refresh 
      * @return {*}
      */    
-    handleSave(refresh = true) { 
+    async handleSave(refresh = true) { 
+      console.log('1')
       this.saveloading = true 
-      updatePartSchedule(this.partsTemp.map(item => { 
+      const res = await updatePartSchedule(this.partsTemp.map(item => { 
         const findItem = this.parts.find(pItem => pItem.partNum === item.partNum) 
         return findItem ? findItem : item 
-      })).then(res => { 
-        if (res?.result) { 
-          refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
-          refresh && this.getPartList(this.cartypeProId) 
-        } else { 
-          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)  
-        } 
-      }).finally(() => { 
-        this.saveloading = false 
-      }) 
+      }))
+      if (res?.result) { 
+        refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
+        await this.getPartList(this.cartypeProId) 
+      } else { 
+        iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)  
+      } 
+      this.saveloading = false 
     },
     /**
      * @Description: 算法配置弹窗状态更新 
@@ -668,10 +708,10 @@ export default {
     getFitPartNameZhList(partNameZh) { 
       return this.partsTemp.reduce((accu, curr) => { 
         const filterRes = []
-        if (curr.partNameZh && curr.partNameZh.includes(partNameZh)) { 
+        if (curr.partNameZh && curr.partNameZh.toLocaleLowerCase().includes(partNameZh.toLocaleLowerCase())) { 
           filterRes.push({value:curr.partNameZh})
         } 
-        if (curr.partNameDe && curr.partNameDe.includes(partNameZh)) { 
+        if (curr.partNameDe && curr.partNameDe.toLocaleLowerCase().includes(partNameZh.toLocaleLowerCase())) { 
           filterRes.push({value:curr.partNameDe})
         } 
         return [...accu, ...filterRes] 
@@ -703,19 +743,19 @@ export default {
       this.parts = this.partsTemp.filter(item => { 
         let result = true 
         if (partNum && result === true) { 
-          result = item.partNum.includes(partNum) 
+          result = item.partNum && item.partNum.toLocaleLowerCase().includes(partNum.toLocaleLowerCase()) 
         } 
         if (partNameZh && result === true) { 
-          result = item.partNameZh.includes(partNameZh) || item.partNameDe.includes(partNameZh) 
+          result = item.partNameZh && item.partNameZh.toLocaleLowerCase().includes(partNameZh.toLocaleLowerCase()) || item.partNameDe && item.partNameDe.toLocaleLowerCase().includes(partNameZh.toLocaleLowerCase()) 
         } 
         if (partNameDe && result === true) { 
           result = item.partNameDe.includes(partNameDe) 
         } 
         if (partStatus && result === true) {
-          result = item.partPeriod == partStatus
+          result = ['7','8'].includes(partStatus) ? item.partPeriod == partStatus || item.partPeriod == '6'  : item.partPeriod == partStatus
         }
         if (level && result === true) { 
-          const targetList = [item.pvsTarget, item.vffTarget, item.zerosTarget] 
+          const targetList = [item.pvsTarget, item.vffTarget] 
           if (level == 1) { 
             result = targetList.every(item => item == 1) 
           } else if (level == 2) { 
@@ -768,6 +808,7 @@ export default {
      * @return {*} 
      */    
     getPartList(cartypeProId, selectPartNums = '') {  
+      console.log('2')
       this.loading = true 
       this.$emit('reSetSearchParams')
       getPartSchedule(cartypeProId).then(res => { 
@@ -864,6 +905,15 @@ export default {
       display: flex; 
       align-items: center; 
       justify-content: space-between; 
+      .checkBox-wrapper {
+        display: flex;
+        &-text {
+          font-weight: bold;
+          font-size: 18px;
+          margin-left: 10px;
+          cursor: pointer;
+        }
+      }
       &-targetList { 
         margin-left: 130px; 
         display: flex; 
@@ -928,6 +978,10 @@ export default {
             width: 36px; 
             height: 36px; 
           } 
+          .doubleItem {
+            display: flex;
+            align-items: center;
+          }
         } 
         .productItem-bottom-stepBetween { 
           // position: absolute; 
@@ -994,6 +1048,35 @@ export default {
             }
           } 
         } 
+        &:nth-child(5) {
+          .productItem-bottom-stepBetween {
+            .productItem-bottom-stepBetween-double {
+              font-size: 18px;
+              .productItem-bottom-stepBetween-input {
+                width: 80px;
+                margin-right: 5px;
+                &:last-child {
+                  margin-left: 5px;
+                }
+              }
+            } 
+          }
+        }
+        &:nth-child(6) {
+          .productItem-bottom-nodeItem {
+            div {
+              display: flex;
+              font-size: 18px;
+              .productItem-bottom-stepBetween-input {
+                width: 100px;
+                margin-right: 5px;
+                &:last-child {
+                  margin-left: 5px;
+                }
+              }
+            }
+          }
+        }
       } 
     } 
   } 

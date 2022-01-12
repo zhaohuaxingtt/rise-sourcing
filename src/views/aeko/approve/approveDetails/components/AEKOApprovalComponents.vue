@@ -110,7 +110,7 @@ import {aekoAudit, transferAEKO} from "@/api/aeko/approve";
 import AEKOExplainAttachmentDialog from "./AEKOExplainAttachmentDialog";
 import {lookDetails} from '../../approveList/lib'
 import { setLogMenu } from "@/utils";
-
+import AEKOTransferDialog from '../../approveList/components/AEKOTransferDialog'
 export default {
   name: "AEKOApprovalComponents",
   props: {
@@ -121,6 +121,7 @@ export default {
 
   components: {
     AEKOExplainAttachmentDialog,
+    AEKOTransferDialog,
     iCard,
     iButton,
     icon,
@@ -231,16 +232,20 @@ created(){
     transfer() {
       this.transferDialogVal = true
     },
-    confirmTransfer(selBuyerId) {
+    confirmTransfer(selBuyer) {
       let selectPendingItem = this.transmitObj.aekoApprovalDetails
       if (null != selectPendingItem) {
         let transfers = []
         selectPendingItem.workFlowDTOS.forEach(item => {
           transfers.push({
-            targetUserId: selBuyerId,
+            targetUserId: selBuyer.code,
+            targetUserName:selBuyer.value,
             aekoCode: selectPendingItem.aekoNum,
+            aekoAuditType:selectPendingItem.auditType,
             taskId: item.taskId,
-            userId: this.$store.state.permission.userInfo.id
+            workFlowId:item.workFlowId,
+            userId: this.$store.state.permission.userInfo.id,
+            userName: this.$store.state.permission.userInfo.nameZh
           })
         })
         this.fullscreenLoading = true

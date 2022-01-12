@@ -51,18 +51,6 @@
         <iInput :placeholder="$t('LK_ALL')" v-model="form['sixBa']" ></iInput>
       </el-form-item>
 
-      <!-- 申请日期起止 -->
-      <el-form-item :label="$t('LK_APPLYDATESTARTANDEND')">
-        <el-date-picker
-          @change="dateChange"
-          type="daterange"
-          v-model="pickerDate"
-          range-separator="至"
-          start-placeholder="YYYY-MM-DD"
-          end-placeholder="YYYY-MM-DD">
-        </el-date-picker>
-      </el-form-item>
-
       <!-- 申请人 -->
       <el-form-item :label="$t('LK_SHENQINGREN')">
         <iSelect
@@ -115,6 +103,18 @@
               :key="index"
           ></el-option>
         </iSelect>
+      </el-form-item>
+
+      <!-- 申请日期起止 -->
+      <el-form-item :label="$t('LK_APPLYDATESTARTANDEND')">
+        <el-date-picker
+          @change="dateChange"
+          type="daterange"
+          v-model="pickerDate"
+          range-separator="至"
+          start-placeholder="YYYY-MM-DD"
+          end-placeholder="YYYY-MM-DD">
+        </el-date-picker>
       </el-form-item>
       
     </el-form>

@@ -1,51 +1,64 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:05
- * @LastEditors: Please set LastEditors
+ * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-web\public\index.html
+ * @FilePath: \front-sourcing\public\index.html
 -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="renderer" content="webkit|ie-stand|ie-comp" /> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RISE</title>
-    <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.CDN_HOST %>/favicon.ico" />
-    <link rel="stylesheet" href="<%= BASE_URL %>theme/index.css">
-    <link rel="stylesheet" href="<%= BASE_URL %>theme/fonts/iconfont.css">
-    <link rel="stylesheet" href="<%= BASE_URL %>theme/fontfamily.css">
-    <link rel="stylesheet" href="<%= BASE_URL %>ws3select/VueSelect.css" />
-    <script src="<%= BASE_URL %>coreJs/vue@2.4.2/vue.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/vue-router@2.7.0/vue-router.min.js"></script>
-    <script src="<%= BASE_URL %>theme/fonts/iconfont.js"></script>
-    <script src="<%= BASE_URL %>coreJs/vuex@3.1.0/vuex.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/moment@2.27.0/moment.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/moment@2.27.0/zh-cn.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/element@2.15.0/index.js"></script>
-    <script src="<%= BASE_URL %>coreJs/element@2.15.0/locale/zh-CN.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/element@2.15.0/locale/en.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/axios@0.20.0-0/axios.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/js-cookie@2.2.1/js.cookie.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/echarts@5.1.2/echarts.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/mathjs/math.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/lodash@4.17.20/lodash.core.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/vue-i18n@8.22.1/vue-i18n.min.js"></script>
-    <script src="<%= BASE_URL %>locale/i18n.js"></script>
-    <script src="<%= BASE_URL %>locale/lang/en.js"></script>
-    <script src="<%= BASE_URL %>locale/lang/zh.js"></script>
-    <script src="<%= BASE_URL %>coreJs/ftellipsis@0.2.3/ftellipsis.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/xlsx/dist/xlsx.full.min.js"></script>
-    <script src="<%= BASE_URL %>coreJs/wangEditor@4.7.1/index.js"></script>
-    <script src="<%= BASE_URL %>coreJs/cnChar@3.0.3/index.js"></script>
-    <script src="<%= BASE_URL %>coreJs/amap@2.0/index.js"></script>
-    <script src="<%= BASE_URL %>ws3select/WS3Util.js"></script>
-    <script src="<%= BASE_URL %>ws3select/customSelect.js"></script>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="renderer" content="webkit|ie-stand|ie-comp" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RiSE</title>
+  <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.CDN_HOST %>/favicon.ico" />
+  <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.CDN_HOST %>/theme/loading.css" />
+  <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.CDN_HOST %>/theme/index.css">
+  <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.CDN_HOST %>/theme/fonts/iconfont.css?v=20211215">
+  <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.CDN_HOST %>/theme/fontfamily.css">
+  <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.CDN_HOST %>/ws3select/VueSelect.css" />
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/vue@2.4.2/vue.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/vue-router@2.7.0/vue-router.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/theme/fonts/iconfont.js?v=20211215"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/vuex@3.1.0/vuex.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/moment@2.27.0/moment.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/moment@2.27.0/zh-cn.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/element@2.15.0/index.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/element@2.15.0/locale/zh-CN.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/element@2.15.0/locale/en.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/axios@0.20.0-0/axios.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/js-cookie@2.2.1/js.cookie.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/echarts@5.1.2/echarts.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/mathjs/math.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/lodash@4.17.20/lodash.core.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/vue-i18n@8.22.1/vue-i18n.min.js"></script>
+  <script src="<%= BASE_URL %>locale/i18n.js"></script>
+  <script src="<%= BASE_URL %>locale/lang/en.js"></script>
+  <script src="<%= BASE_URL %>locale/lang/zh.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/ftellipsis@0.2.3/ftellipsis.min.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/coreJs/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="<%= BASE_URL %>coreJs/wangEditor@4.7.1/index.js"></script>
+  <script src="<%= BASE_URL %>coreJs/cnChar@3.0.3/index.js"></script>
+  <script src="<%= BASE_URL %>coreJs/amap@2.0/index.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/ws3select/WS3Util.js"></script>
+  <script src="<%= htmlWebpackPlugin.options.CDN_HOST %>/ws3select/customSelect.js"></script>
+</head>
+
+<body>
+  <div class="loading-wrapper" id="app-loading">
+    <div class="loading-container">
+      <div class="inner-bg"></div>
+      <div class="inner">
+        <div class="rising">Rising</div>
+        <div class="dot"></div>
+      </div>
+    </div>
+  </div>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>

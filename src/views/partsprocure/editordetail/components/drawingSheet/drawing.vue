@@ -24,7 +24,9 @@
         :tableData="tableListData" 
         :tableTitle="tableTitle" 
         :tableLoading="loading"
-        @handleSelectionChange="handleSelectionChange">
+        @handleSelectionChange="handleSelectionChange"
+         v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_table|询价附件-表格"
+        >
         <template #tpPartAttachmentName="scope">
           <span class="flexRow">
             <span class="openLinkText cursor" @click="preview(scope.row)"> {{scope.row.tpPartAttachmentName}}</span>
@@ -143,6 +145,7 @@ export default {
     },
     patchTpInfoByAttachment() {
       patchTpInfoByAttachment({
+        projectId: this.$route.query.projectId,
         partAttachmentList: this.fileList,
         purchasingRequirementId: this.params.purchasingRequirementId
       })
@@ -190,7 +193,7 @@ export default {
 
       // 后端删除
       this.deleteLoading = true
-      deleteFile({ ids: deleteArr.map(item => item.id) })
+      deleteFile({ projectId: this.$route.query.projectId, ids: deleteArr.map(item => item.id) })
         .then(res => {
           iMessage.success(this.language('LK_SHANCHUCHENGGONG','删除成功'))
           this.getInfoAnnexPage()

@@ -22,7 +22,7 @@
               <el-option
                 v-for="item in procureTypeList"
                 :key="item.value"
-                :label="item.label"
+                :label="language(item.key, item.label)"
                 :value="item.value"
               >
               </el-option>
@@ -40,7 +40,7 @@
               <el-option
                 v-for="item in roundTypeList"
                 :key="item.roundType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.roundType"
               >
               </el-option>
@@ -62,7 +62,7 @@
               <el-option
                 v-for="item in manualBiddingTypeList"
                 :key="item.manualBiddingType"
-                :label="item.name"
+                :label="language(item.key, item.name)"
                 :value="item.manualBiddingType"
               >
               </el-option>
@@ -125,7 +125,7 @@
             />
           </iFormItem>
           <!-- 报价截止日期 -->
-          <iFormItem label="报价截止日期" prop="pricingDeadline">
+          <!-- <iFormItem label="报价截止日期" prop="pricingDeadline">
             <iLabel :label="language('BIDDING_BJJZRQ', '报价截止日期')" slot="label" required></iLabel>
             <iDatePicker
               format="yyyy-MM-dd HH:mm"
@@ -146,34 +146,55 @@
               :picker-options="pricingDeadlineOptions"
               v-else
             />
-          </iFormItem>
+          </iFormItem> -->
           <!-- 引用RFQ -->
           <iFormItem
-            v-if="ruleForm.manualBiddingType === '02'"
             label="引用RFQ"
             :hideRequiredAsterisk="true"
           >
             <iLabel :label="language('BIDDING_YYRFQ', '引用RFQ')" slot="label"></iLabel>
             <iInput v-model="ruleForm.rfqCode" disabled></iInput>
           </iFormItem>
+
+          <iFormItem label="关联RFQ" :hideRequiredAsterisk="true" v-if="ruleForm.manualBiddingType === '02'">
+            <iLabel :label="language('BIDDING_GLRFQ', '关联RFQ')" slot="label"></iLabel>
+            <iSelect
+              v-model="ruleForm.rfqs"
+              value-key="rfqCode"
+              :placeholder="language('BIDDING_QINGGUANLIAN', '请关联')"
+              class="rfqs-search"
+              filterable
+              multiple
+              :disabled="ruleForm.biddingStatus !== '01'"
+            >
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+              <el-option
+                v-for="item in rfqNameList"
+                :key="item.rfqCode"
+                :label="item.rfqCode"
+                :value="item"
+              >
+              </el-option>
+            </iSelect>
+          </iFormItem>
         </div>
-        <div class="form-row">
+        <div class="form-row" v-if="ruleForm.manualBiddingType === '01'">
           <!-- 引用RFQ -->
-          <iFormItem
+          <!-- <iFormItem
             v-if="ruleForm.manualBiddingType !== '02'"
             label="引用RFQ"
             :hideRequiredAsterisk="true"
           >
             <iLabel :label="language('BIDDING_YYRFQ', '引用RFQ')" slot="label"></iLabel>
             <iInput v-model="ruleForm.rfqCode" disabled></iInput>
-          </iFormItem>
+          </iFormItem> -->
           <!-- 关联RFQ -->
-          <iFormItem label="关联RFQ" :hideRequiredAsterisk="true">
+          <iFormItem label="关联RFQ" :hideRequiredAsterisk="true" >
             <iLabel :label="language('BIDDING_GLRFQ', '关联RFQ')" slot="label"></iLabel>
             <iSelect
               v-model="ruleForm.rfqs"
               value-key="rfqCode"
-              placeholder="请关联"
+              :placeholder="language('BIDDING_QINGGUANLIAN', '请关联')"
               class="rfqs-search"
               filterable
               multiple
@@ -191,6 +212,8 @@
           </iFormItem>
           <!-- 占位 -->
           <iFormItem v-if="ruleForm.manualBiddingType === '02'"></iFormItem>
+          <!-- 占位 -->
+          <iFormItem></iFormItem>
           <!-- 占位 -->
           <iFormItem></iFormItem>
         </div>
@@ -265,6 +288,13 @@ export default {
         this.ruleForm = val;
       },
     },
+    '$i18n.locale':{
+      immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = baseRules(this)
+      }
+    },
     ruleForm(val) {
       this.$emit("input", val);
     },
@@ -278,29 +308,33 @@ export default {
       this.ruleForm.biddingEndTime = dayjs(endTime).format("YYYY-MM-DD HH:mm:00");
       this.$nextTick(() => {
         this.$refs["ruleForm"].validateField(["biddingEndTime"]);
-        this.$refs["ruleForm"].validateField(["pricingDeadline"]);
+        // this.$refs["ruleForm"].validateField(["pricingDeadline"]);
       });
       if (val == null) {
-        this.$set(this.ruleForm, "biddingEndTime", "");
-        this.$set(this.ruleForm, "pricingDeadline", "");
+        this.$set(this.ruleForm, "biddingEndTime", null);
+        // this.$set(this.ruleForm, "pricingDeadline", "");
         this.$nextTick(() => {
           this.$refs["ruleForm"].clearValidate(["biddingEndTime"]);
-          this.$refs["ruleForm"].clearValidate(["pricingDeadline"]);
+          // this.$refs["ruleForm"].clearValidate(["pricingDeadline"]);
         });
       }
     },
     "ruleForm.manualBiddingType"(val) {
-      console.log(val);
+      this.$nextTick(() => {
+        this.$refs["ruleForm"].clearValidate();
+      });
     },
     "ruleForm.biddingEndTime"(val) {
-      let three = 3 * 24 * 3600 * 1000;
-       let time = new Date(val).getTime() + three;
-       this.ruleForm.pricingDeadline = dayjs(time).format("YYYY-MM-DD HH:mm:00");
+      if (val) {
+        let three = 3 * 24 * 3600 * 1000;
+        let time = new Date(val).getTime() + three;
+        this.ruleForm.pricingDeadline = dayjs(time).format("YYYY-MM-DD HH:mm:00");
+      }
     }
   },
   data() {
     return {
-      rules: baseRules,
+      rules: baseRules(this),
       ruleForm: {},
       manualBiddingTypeList,
       procureTypeList,
@@ -311,7 +345,35 @@ export default {
 
       // },
 
-      pricingDeadlineOptions: {
+      // pricingDeadlineOptions: {
+      //   disabledDate: (time) => {
+      //     let year = new Date(this.ruleForm.biddingBeginTime).getFullYear();
+      //     let month = new Date(this.ruleForm.biddingBeginTime).getMonth() + 2;
+      //     if (month == 13) {
+      //       year +=1
+      //       month = 1;
+      //     }
+      //     let date = new Date(this.ruleForm.biddingBeginTime).getDate();
+      //     let nextMonth = new Date(year + "-" + month + "-" + date).getTime();
+      //     // let curDate = this.ruleForm.biddingBeginTime
+      //     //   ? new Date(this.ruleForm.biddingBeginTime).getTime()
+      //     //   : Date.now() - 8.64e7;
+      //     let curDate = new Date(this.ruleForm.biddingEndTime) - 8.64e7;
+      //     let three = 30 * 24 * 3600 * 1000;
+      //     let threeMonths = curDate + three;
+      //     return time.getTime() < curDate || time.getTime() > nextMonth;
+      //   },
+      // },
+    };
+  },
+  computed: {
+    pricingDeadlineOptions() {
+      return {
+        selectableRange: [
+          `${dayjs(
+            new Date(this.ruleForm.biddingEndTime).getTime() + 60000
+          ).format("HH:mm:00")} - 23:59:59`,
+        ],
         disabledDate: (time) => {
           let year = new Date(this.ruleForm.biddingBeginTime).getFullYear();
           let month = new Date(this.ruleForm.biddingBeginTime).getMonth() + 2;
@@ -321,17 +383,16 @@ export default {
           }
           let date = new Date(this.ruleForm.biddingBeginTime).getDate();
           let nextMonth = new Date(year + "-" + month + "-" + date).getTime();
-          let curDate = this.ruleForm.biddingBeginTime
-            ? new Date(this.ruleForm.biddingBeginTime).getTime()
-            : Date.now() - 8.64e7;
+          // let curDate = this.ruleForm.biddingBeginTime
+          //   ? new Date(this.ruleForm.biddingBeginTime).getTime()
+          //   : Date.now() - 8.64e7;
+          let curDate = new Date(this.ruleForm.biddingEndTime) - 8.64e7;
           let three = 30 * 24 * 3600 * 1000;
           let threeMonths = curDate + three;
           return time.getTime() < curDate || time.getTime() > nextMonth;
         },
-      },
-    };
-  },
-  computed: {
+      }
+    },
     pricingEndTimeOptions() {
       return {
         selectableRange: [

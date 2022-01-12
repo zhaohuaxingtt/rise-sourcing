@@ -38,6 +38,7 @@
           :getRank="getRank"
           v-model="ruleForm"
           @getRank="getRank"
+          :rfqId="ruleForm.rfqCode"
           @ranksData="ranksData"
           :biddingQuoteRule="biddingQuoteRule"
           :rankDatas="rankDatas"
@@ -64,6 +65,8 @@ import itemNumber from "./components/itemNumber.vue";
 import bidDetail from "./components/bidDetail.vue";
 import projectNotes from "./components/projectNotes.vue";
 import attachment from "./components/attachment.vue";
+import inquiryAttachment from '@/views/partsrfq/editordetail/components/rfqDetailInfo/components/inquiryAttachment'
+
 export default {
   components: {
     iPage,
@@ -78,6 +81,7 @@ export default {
     bidDetail,
     projectNotes,
     attachment,
+    inquiryAttachment
   },
   props: {
     isSupplier: { type: Boolean, default: false },
@@ -118,27 +122,30 @@ export default {
         6: itemNumber,
         7: bidDetail,
         8: projectNotes,
+        9: inquiryAttachment,
       }[this.bottomActived];
     },
     tabList() {
       switch (this.role) {
         case "buyer":
           return [
-            { label: "报价单", path: 1, components: "quotationOrder" },
+            { label: this.language('BIDDING_BAOJIADAN',"报价单"), path: 1, components: "quotationOrder" },
             // { label: "出价列表", path: 2, components: "bidList" },
-            { label: "询价附件", path: 3, components: "attachment" },
-            { label: "供应商列表", path: 4, components: "supplierList" },
-            { label: "曲线图", path: 5, components: "graph" },
-            { label: "分项排名", path: 6, components: "itemNumber" },
-            { label: "竞价明细", path: 7, components: "bidDetail" },
-            { label: "项目备注", path: 8, components: "projectNotes" },
+            { label: this.language('BIDDING_XUNJIAFUJIAN',"询价附件"), path: 3, components: "attachment" },
+            { label: this.language('BIDDING_XUNJIAFUJIAN',"询价附件"), path: 9, components: "inquiryAttachment" },
+            { label: this.language('BIDDING_GONGYINGSHANGLIEBIAO',"供应商列表"), path: 4, components: "supplierList" },
+            { label: this.language('BIDDING_QUXIANTU',"曲线图"), path: 5, components: "graph" },
+            { label: this.language('BIDDING_FENXIANGPAIMING',"分项排名"), path: 6, components: "itemNumber" },
+            { label: this.language('BIDDING_JINGJIAMINGXI',"竞价明细"), path: 7, components: "bidDetail" },
+            { label: this.language('BIDDING_XIANGMUBEIZHU',"项目备注"), path: 8, components: "projectNotes" },
           ];
         case "supplier":
           return [
-            { label: "报价单", path: 1, components: "quotationOrder" },
-            { label: "出价列表", path: 2, components: "bidList" },
-            { label: "询价附件", path: 3, components: "" },
-            { label: "供应商排名", path: 4, components: "supplierList" },
+            { label: this.language('BIDDING_BAOJIADAN',"报价单"), path: 1, components: "quotationOrder" },
+            { label: this.language('BIDDING_CHUJIALIEBIAO',"出价列表"), path: 2, components: "bidList" },
+            { label: this.language('BIDDING_XUNJIAFUJIAN',"询价附件"), path: 3, components: "attachment" },
+            { label: this.language('BIDDING_XUNJIAFUJIAN',"询价附件"), path: 9, components: "inquiryAttachment" },
+            { label: this.language('BIDDING_GONGYINGSHANGPAIMING',"供应商排名"), path: 4, components: "supplierList" },
           ];
         default:
           return [];
@@ -324,6 +331,13 @@ export default {
           }
         } else {
           return false;
+        }
+      }
+      if(path == 9){          //引用rfq展示附件
+        if(roundType === '03'){
+          return true
+        } else {
+          return false
         }
       }
       return true;

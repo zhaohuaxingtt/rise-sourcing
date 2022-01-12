@@ -101,6 +101,8 @@ export default {
           iMessage.error(result);
         }
         this.tableLoading = false
+      }).catch(() => {
+        this.tableLoading = false
       });
     },
     clearDiolog() {

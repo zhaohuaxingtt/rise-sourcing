@@ -1,19 +1,19 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-07 16:04:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-04 12:04:26
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
 
 <template>
   <iPage class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
-    <div class="margin-top20" style="text-align:right;" v-if="!isPreview">
-      <iButton @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
+    <div class="margin-top20" style="text-align:right;" >
+      <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_GOTOSUPPLIERMAINTENANCE|跳转供应商维护"  @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
     </div>
     <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
-      <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)">
+      <tableList :tableTitle="item.tableTitle" :selection="false" :tableData="item.tableData" class="doubleHeader" @openDialog="openRateDialog($event, item.rfqNum)" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_TABLE|决策资料-bdl-表格">
         <template #supplierName="scope">
           <div>
             <span class="factoryDesc">{{scope.row.supplierName }}</span>
@@ -22,6 +22,10 @@
                 <icon symbol name="iconzhongyaoxinxitishi" />
               </span>
             </el-tooltip>
+            <supplierBlackIcon
+              :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+              :BlackList="scope.row.blackStuffs || []"
+            />
           </div>
         </template>
         <template #sapCode="scope">
@@ -51,9 +55,12 @@ import partsRatingDialog from './partsRating'
 import { readQuotation, findRfqSupplierQuotationPage} from '@/api/designate/decisiondata/bdl'
 import { pageMixins } from "@/utils/pageMixins"
 import { cloneDeep, uniq } from 'lodash'
+import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 export default {
   mixins: [pageMixins],
-  components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton, icon },
+  components: { iCard, iPage, tableList, iPagination, partsRatingDialog, iButton, icon,
+  supplierBlackIcon
+   },
   data() {
     return {
       rfqList: [],
@@ -220,6 +227,10 @@ export default {
 .factoryDesc {
   display: inline-block;
   padding-right: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 95%;
+  vertical-align: middle;
 }
 .decision-bdl {
   padding: 0;

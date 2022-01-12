@@ -165,7 +165,12 @@
           <template slot-scope="scope">
             <el-form-item
               :prop="'tableData.' + scope.$index + '.' + items.props"
-              :rules="scope.row['index'] %2 === 0?[dateValidator(scope.row, items.props)]:items.rule ? items.rule : ''"
+              :rules="scope.row['index'] %2 === 0 
+              ? [
+                  {required:true,message: language('BIDDING_BITIAN','必填'), trigger: 'blur'},
+                  {validator:dateValidator(scope.row, items.props), trigger: ['blur', 'change'],}
+                ] 
+              : items.rule"
             >
               <iDatePicker
                 v-if="scope.row['index']%2 === 0"
@@ -229,7 +234,7 @@
             >
               <div v-if="scope.row['index'] === 0">{{scope.row[items.props]}}</div>
 
-              <iInput
+              <operatorInput
                 v-else-if="scope.row['index']%2 === 0"
                 v-model="scope.row[items.props]"
                 placeholder="0.00"
@@ -238,7 +243,7 @@
                 @blur="handlerInputBlur($event, scope)"
                 :disabled="items.disabled ? items.disabled : false"
               >
-              </iInput>
+              </operatorInput>
               <iDatePicker
                 v-else-if="scope.row['index']%2 === 1"
                 class="data--picker"
@@ -305,6 +310,7 @@
 </template>
 <script>
 import { iInput, iDatePicker } from "rise";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 import dayjs from "dayjs";
 export default {
   props: {
@@ -356,6 +362,7 @@ export default {
   components: {
     iInput,
     iDatePicker,
+    operatorInput
   },
   data() {
     return {
@@ -410,18 +417,18 @@ export default {
       let num = Number(props.slice(5));
       let afterDate = dayjs(row[`stage${num - 1}`]);
       let firstDate = dayjs(this.annualOutputObj[row.index+1][props]).add(1, "month");
-      return {
-        validator(rule, value, callback) {
+      return function validator(rule, value, callback) {
+        if(value){
           num === 1
             ? dayjs(value).isBefore(firstDate)
-            ? callback(new Error(rule.message)):callback()
-            : dayjs(value).isBefore(afterDate)
-            ? callback(new Error(rule.message))
+            ? callback(new Error('日期错误')):callback()
+            : dayjs(value).isBefore(afterDate) || dayjs(value).isSame(afterDate) || !afterDate
+            ? callback(new Error('日期错误'))
             : callback();
-        },
-        message: "日期错误",
-        trigger: ["blur","change"],
-      };
+        } else {
+          callback();
+        }
+      }
     },
     handleSelectionChange(val) {
       this.$emit("handleSelectionChange", val);

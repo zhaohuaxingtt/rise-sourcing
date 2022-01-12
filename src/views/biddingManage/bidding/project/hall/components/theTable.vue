@@ -14,7 +14,7 @@
             scope.row["upsetPrice"] === "" ||
             scope.row["upsetPrice"] === null
               ? ""
-              : scope.row["upsetPrice"] +
+              : scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') +
                 currencyMultiples(form.currencyMultiple) +
                 "-" +
                 units(form.currencyUnit)
@@ -24,13 +24,14 @@
     </commonTable>
     <iPagination
       v-update
-      @current-change="handleCurrentChange($event)"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
       background
       :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
-      prev-text="上一页"
-      next-text="下一页"
-      layout="prev, pager, next, jumper"
+      :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+      :next-text="language('BIDDING_XIAYIYE','下一页')"
+      :layout="page.layout"
       :current-page="page.currPage"
       :total="tableListData.length"
     />
@@ -42,6 +43,9 @@ import { iCard, iPagination } from "rise";
 import commonTable from "@/components/biddingComponents/commonTable";
 import { pageMixins } from "@/utils/pageMixins";
 import { getCurrencyUnit } from "@/api/mock/mock";
+import {
+  currencyMultipleLib
+} from "./data";
 export default {
   mixins: [pageMixins],
   components: {
@@ -77,6 +81,7 @@ export default {
       pageSize: 10,
       pageNum: 1,
       currencyUnit: {},
+      currencyMultipleLib
     };
   },
   mounted() {
@@ -101,16 +106,21 @@ export default {
       return this.currencyUnit[unit];
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit ) 
     },
     handleCurrentChange(e) {
       this.page.currPage = e;
-      this.pageNum = e;
+      // this.pageNum = e;
+    },
+    handleSizeChange(val) {
+      this.page.currPage = 1;
+      this.page.pageSize = val;
     },
   },
 };

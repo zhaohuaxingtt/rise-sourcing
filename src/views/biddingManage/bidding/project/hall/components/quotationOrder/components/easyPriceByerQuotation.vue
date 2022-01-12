@@ -27,7 +27,7 @@
                       class="form--item--number--input__totalprice"
                       :value="
                         ruleForm.totalPrices
-                          ? ruleForm.totalPrices + currencyMultiple
+                          ? ruleForm.totalPrices.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + currencyMultiple
                           : ''
                       "
                       disabled
@@ -66,7 +66,7 @@
                   <iLabel :label="language('BIDDING_CHEXING', '车型')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelsOption">
-                      {{ tag.name }}
+                      {{ tag.model }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -76,7 +76,7 @@
                   <iLabel :label="language('BIDDING_CHEXINGXIANGMU', '车型项目')" slot="label"></iLabel>
                   <div class="form-item-tag">
                     <el-tag :key="tag" v-for="tag in modelProjectsOption">
-                      {{ tag.name }}
+                      {{ tag.project }}
                     </el-tag>
                   </div>
                 </iFormItem>
@@ -104,10 +104,20 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
         >
+          <!--采购数量 -->
+          <template slot="purchaseQty" slot-scope="scope">
+            <div>
+              {{
+                  scope.row["purchaseQty"]
+                  ? Number(scope.row["purchaseQty"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+                  : ''
+              }}
+            </div>
+          </template>
           <!-- 起拍价格 -->
           <template slot="upsetPrice" slot-scope="scope">
             <div>
-              {{ ruleForm.biddingMode === "01" ? scope.row["upsetPrice"] : "" }}
+              {{ ruleForm.biddingMode === "01" ?  scope.row["upsetPrice"] ? scope.row["upsetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') : "" : '' }}
             </div>
           </template>
           <!-- 目标价 -->
@@ -116,7 +126,7 @@
               {{
                 ruleForm.biddingMode === "01"
                   ? scope.row["targetPrice"]
-                    ? scope.row["targetPrice"]
+                    ? scope.row["targetPrice"].toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
                     : "" + currencyMultiple
                   : ""
               }}
@@ -200,7 +210,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     numberUppercase() {
       return digitUppercase(
@@ -232,45 +242,44 @@ export default {
       this.ruleForm = {
         ...data,
       };
-      console.log(235,this.ruleForm)
       // const supplierOffer = {
       //   ...this.ruleForm?.supplierOffer,
       //   offerPrice: this.dividedBeiShu(this.ruleForm?.supplierOffer?.offerPrice)
       // }
       const totalPrices = this.dividedBeiShu(this.ruleForm.totalPrices)
       this.ruleForm = {... this.ruleForm,totalPrices}
-      console.log(241,this.ruleForm)
+      this.modelsOption = data.models
+      this.modelProjectsOption = data.modelProjects
+      // getModels().then((res) => {
+      //   data.models.forEach((item) => {
+      //     this.modelsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.modelCode)
+      //     );
 
-      getModels().then((res) => {
-        data.models.forEach((item) => {
-          this.modelsOption.push(
-            ...res?.data?.filter((e) => e.code === item.modelCode)
-          );
+      //     let obj = {};
+      //     this.modelsOption = this.modelsOption.reduce(function (item, next) {
+      //       obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+      //       return item;
+      //     }, []);
+      //   });
+      // });
+      // getProjects().then((res) => {
+      //   data.modelProjects.forEach((item) => {
+      //     this.modelProjectsOption.push(
+      //       ...res?.data?.filter((e) => e.code === item.projectCode)
+      //     );
 
-          let obj = {};
-          this.modelsOption = this.modelsOption.reduce(function (item, next) {
-            obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-            return item;
-          }, []);
-        });
-      });
-      getProjects().then((res) => {
-        data.modelProjects.forEach((item) => {
-          this.modelProjectsOption.push(
-            ...res?.data?.filter((e) => e.code === item.projectCode)
-          );
-
-          let obj = {};
-          this.modelProjectsOption = this.modelProjectsOption.reduce(function (
-            item,
-            next
-          ) {
-            obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-            return item;
-          },
-          []);
-        });
-      });
+      //     let obj = {};
+      //     this.modelProjectsOption = this.modelProjectsOption.reduce(function (
+      //       item,
+      //       next
+      //     ) {
+      //       obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+      //       return item;
+      //     },
+      //     []);
+      //   });
+      // });
     },
     // 表格选中值集
     handleSelectionChange(val) {
@@ -332,11 +341,16 @@ export default {
                 box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
                 border-color: transparent;
                 border-radius: 0.25rem;
+                background-color: #f5f7fa;
                 .el-tag {
-                  background-color: #f5f7fa;
+                  /* background-color: #f5f7fa;
                   color: #000;
                   border-radius: 18px;
-                  border-color: #fff;
+                  border-color: #fff; */
+                  background-color: #f7f7f7;
+                  color: #000;
+                  border-radius: 1.25rem;
+                  border-color: #eef6ff;
                   margin-left: 3px;
                   min-width: 15px;
                 }

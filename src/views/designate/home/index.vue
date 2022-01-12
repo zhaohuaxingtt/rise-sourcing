@@ -13,9 +13,9 @@
     <search @search="handSearch" ref="searchForm" />
     <!-- 表格 -->
     <iCard class="designateTable">
-      <div class="margin-bottom20 clearFloat">
+      <div class="clearFloat">
         <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
-        <div class="floatright">
+        <div class="designateEditControl floatright">
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
@@ -41,6 +41,7 @@
           <!-- 冻结 -->
           <iButton
             @click="freeze"
+            :loading="btnLoading.freeze"
             v-permission.auto="SOURCING_NOMINATION_DONGJIE|冻结">
             {{language('LK_DONGJIE', '冻结')}}
           </iButton>
@@ -92,7 +93,14 @@
             v-permission.auto="SOURCING_NOMINATION_TIJIAOYIZHIXINGJIAOYAN|提交一致性校验"
           >
             {{ language("nominationLanguage_TiJiaoYiZhiXingJiaoYan", '提交一致性校验') }}
-          </iButton>        
+          </iButton>
+          <!-- 取消MTZ绑定 -->
+          <iButton
+          v-permission.auto="SOURCING_NOMINATION_QUXIAOMTZBANGDING|取消MTZ绑定"
+            @click="ttss"
+          >
+            {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
+          </iButton>
         </div>
       </div>
       <tablelist
@@ -110,15 +118,20 @@
       
       <!-- 定点单号 -->
       <template #nominateName="scope">
-         <span class="flexRow-link">
-            <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
-              <span class="openLinkText cursor leftRow"  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateName }}</span>
-            </el-tooltip>
-            <span class="icon-gray cursor rightRow"  @click="viewNominationDetail(scope.row)">
-                <icon symbol class="show" name="icontiaozhuananniu" />
-                <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-        </span> 
+        <div class="flexBox">
+          <div class="left">
+            <div class="flexBox">
+              <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
+                <div class="link" @click="viewNominationDetail(scope.row)">{{ scope.row.nominateName }}</div>
+              </el-tooltip>
+              <icon v-if="scope.row.mtzApplyId" class="iconMTZ right" symbol name="iconMTZ" />
+            </div>
+          </div>
+          <div class="rigth icon-gray cursor arrow" @click="viewNominationDetail(scope.row)">
+            <icon symbol class="show" name="icontiaozhuananniu" />
+            <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
+          </div>
+        </div>
       </template>
       <!-- 定点类型 -->
       <!-- <template #nominateProcessType="scope">
@@ -184,13 +197,17 @@
     <selDialog :visible.sync="selDialogVisibal" :nomiAppId="selNominateId" :readOnly="false" />
     <!-- 撤回弹窗 -->
     <revokeDialog :visible.sync="showRevokeDialog" @confirm="handleBatchRevoke(...arguments, false)" ref="revokeForm" />
-    
+    <!-- 新建定点申请弹窗 -->
+    <rfqDialog :visible.sync="newNomiAppStatus" :nomiAppId="selNominateId" :readOnly="false" />
+
+    <!-- 黑名单校验弹窗提示 -->
+        <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONFROZEN" :tableListData="blackTableListData"/>
   </iPage>
 </template>
 
 <script>
 import { tableTitle } from './components/data'
-import headerNav from './components/headerNav'
+import headerNav from '@/components/headerNav'
 import search from './components/search'
 import tablelist from "@/views/designate/supplier/components/tableList";
 import { 
@@ -204,12 +221,15 @@ import {
   rsUnFrozen,
   consistenceCheck,
   nomiApprovalProcess,
-  tranformRecall
+  tranformRecall,
+  unbindMtzCheck,
+  unbindMtz
 } from '@/api/designate/nomination'
 // 前端配置文件里面的定点类型
 // import { applyType } from '@/layout/nomination/components/data'
 import selDialog from './components/selDialog'
 import revokeDialog from './components/revokeDialog'
+import rfqDialog from './components/rfqDialog'
 
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
@@ -223,6 +243,8 @@ import {
   iMessage,
   icon
 } from "rise";
+
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 
 export default {
   mixins: [ filters, pageMixins, roleMixins ],
@@ -238,7 +260,13 @@ export default {
       selNominateId: '',
       selDialogVisibal: false,
       tranformRecallLoading: false,
-      showRevokeDialog: false
+      showRevokeDialog: false,
+      // 新建定点申请单
+      newNomiAppStatus: false,
+      blackTableListData:[],
+      btnLoading:{
+        freeze:false, // 冻结
+      },
     }
   },
   components: {
@@ -251,7 +279,9 @@ export default {
     tablelist,
     selDialog,
     revokeDialog,
-    icon
+    rfqDialog,
+    icon,
+    dialogTableTips,
   },
   mounted() {
     this.getFetchData()
@@ -261,10 +291,12 @@ export default {
     createNomination() {
       // 缓存/更新定点申请类型
       this.$store.dispatch('setNominationTypeDisable', false)
-      this.$nextTick(() => {
-        const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
-        window.open(routeData.href, '_blank')
-      })
+      // this.$nextTick(() => {
+      //   const routeData = this.$router.resolve({path: '/designate/rfqdetail'})
+      //   window.open(routeData.href, '_blank')
+      // })
+      // 修改为弹窗选择rfq创建
+      this.newNomiAppStatus = true
     },
     // 查看详情
     viewNominationDetail(row) {
@@ -274,12 +306,13 @@ export default {
       this.$store.dispatch('setNominationTypeDisable', true)
       this.$nextTick(() => {
         const routeData = this.$router.resolve({
-          path: '/designate/rfqdetail',
+          path: '/designate/details',
           query: {
             desinateId: row.id, 
             mtzApplyId: row.mtzApplyId, 
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
-            partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',
+            partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',  
+            businessKey: (row.partProjType && row.partProjType.code) || row.partProjType || '',
             applicationStatus: (row.applicationStatus && row.applicationStatus.code) || row.applicationStatus || '',
           }
         })
@@ -332,7 +365,7 @@ export default {
         this.$refs['revokeForm'].loading = true
         const res = await batchRevoke({recallReason: revokeReason, nominateIdArr: idList})
         if (res.code === '200') {
-          iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          iMessage.success(res.data && (this.$i18n.locale === "zh" ? res.data.zhMsg : res.data.engMsg) || this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -385,16 +418,22 @@ export default {
         const data = {
           nominateIdArr,
         };
+        this.btnLoading.freeze = true;
         try {
           const res = type ? await nominateRreeze(data) : await nominateUnRreeze(data)
           const { code } = res;
+          this.btnLoading.freeze = false;
           if(code == 200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
+          }else if(code == '500'){
+            this.blackTableListData = res.data || [];
+            this.$refs.dialogTableTips.show(); 
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         } catch (e) {
+          this.btnLoading.freeze = false;
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         }
       }
@@ -546,13 +585,121 @@ export default {
       })
       .finally(() => this.tranformRecallLoading = false)
     },
+    // 取消MTZ绑定
+    async ttss() {
+      // 校验是否支持解绑
+      const state = await this.unbindMtzCheck()
+      if (state) {
+        const data = {
+          nomiId: this.selectTableData[0].id,
+        };
+        try {
+          const confirmInfo = await this.$confirm(this.language('LK_NINGQUEDINGYAOQUXIAOMTZBANGDING', '您确定要取消MTZ绑定吗？'));
+          if (confirmInfo !== 'confirm') return;
+          const res = await unbindMtz(data)
+          const { code } = res;
+          if(code == 200){
+            iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+            this.getFetchData()
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        } catch(e) {
+          iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+        }
+      }
+    },
+    // 取消MTZ绑定校验
+    async unbindMtzCheck() {
+      let state = true
+      if (this.selectTableData.length !== 1) return iMessage.warn(this.language("QINGXUANZEYIGELIE","请选择一条数据！"))
+      const data = {
+        nomiId: this.selectTableData[0].id,
+      };
+      try {
+        const res = await unbindMtzCheck(data)
+        const { code } = res;
+        if(code == 200){
+          state = true
+        }else{
+          state = false
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      } catch(e) {
+        state = false
+        iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+      }
+      return state
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.designateHome {
+  .flexBox {
+    display: flex;
+    align-items: center;
+    text-align: left;
+
+    .left {
+      flex: 1;
+      width: 0;
+    }
+
+    .link {
+      flex: 1;
+      width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .iconMTZ {
+    margin-left: 5px;
+    width: 25px;
+  }
+
+  .icon-gray {
+    .show {
+      display: inline-block;
+    }
+
+    .active {
+      display: none;
+    }
+    
+    &:hover {
+      .show {
+        display: none;
+      }
+
+      .active {
+        display: inline-block;
+      }
+    }
+  }
+
+  .arrow {
+    margin-left: 5px;
+  }
+  .designateEditControl {
+    max-width: 85%;
+    text-align: right;
+    ::v-deep.el-button {
+      margin-bottom: 20px;
+    }
+  }
+}
 .openLinkText {
+  flex: 1;
   color: $color-blue;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+  width: 100vw;
 }
 .designateSearch {
   margin-top: 20px;
@@ -562,9 +709,9 @@ export default {
   text-decoration: underline;
 }
 .aotoTableHeight{
-    ::v-deep .el-table__body-wrapper {
-      min-height: 422px !important;  
-      overflow: auto !important ;
-    }
+  ::v-deep .el-table__body-wrapper {
+    min-height: 422px !important;  
+    overflow: auto !important ;
   }
+}
 </style>

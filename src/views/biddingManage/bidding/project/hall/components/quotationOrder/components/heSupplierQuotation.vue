@@ -7,7 +7,7 @@
             :disabled="yingbiao"
             :class="{ yingbiao: yingbiao, unyingbiao: !yingbiao }"
             @click="handleNext"
-            >{{ language('应标', '应标') }}</iButton
+            >{{ language('BIDDING_YINGBIAO', '应标') }}</iButton
           >
         </div>
         <i
@@ -32,6 +32,7 @@
                   <iLabel :label="language('BIDDING_QISHIZONGJIA', '起始总价')" slot="label"></iLabel>
                   <div class="form--item--number">
                     <iInput
+                      v-if="flag"
                       class="form--item--number--input__totalprice"
                       :value="
                         heRuleForm.currentOffer
@@ -39,6 +40,13 @@
                           : ''
                       "
                       disabled
+                    ></iInput>
+                    <iInput
+                      v-else
+                      class="form--item--number--input__totalprice"
+                      :value="totalStartingPriceString"
+                      @focus="handleInputFocus"
+                      :disabled="biddingStatus"
                     ></iInput>
                     <div class="form--item--number--lable">{{ unit }}</div>
                   </div>
@@ -95,7 +103,7 @@
                   <div class="form--item--number">
                     <iInput
                       class="form--item--number--input"
-                      :value="language('BIDDING_ZIDONGYINGBIAO', '自动应标')"
+                      :value="language('BIDDING_ZIDONGYINGBIAO', '应标')"
                       disabled
                     ></iInput>
                   </div>
@@ -193,27 +201,27 @@ export default {
   mounted() {
     this.ruleForm = { ...this.initData };
     this.handleSearchReset();
-    getModels().then((res) => {
-      this.modelsOption = res?.data;
+    // getModels().then((res) => {
+    //   this.modelsOption = res?.data;
 
-      let obj = {};
-      this.modelsOption = this.modelsOption.reduce(function (item, next) {
-        obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-        return item;
-      }, []);
-    });
-    getProjects().then((res) => {
-      this.modelProjectsOption = res?.data;
-      let obj = {};
-      this.modelProjectsOption = this.modelProjectsOption.reduce(function (
-        item,
-        next
-      ) {
-        obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
-        return item;
-      },
-      []);
-    });
+    //   let obj = {};
+    //   this.modelsOption = this.modelsOption.reduce(function (item, next) {
+    //     obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+    //     return item;
+    //   }, []);
+    // });
+    // getProjects().then((res) => {
+    //   this.modelProjectsOption = res?.data;
+    //   let obj = {};
+    //   this.modelProjectsOption = this.modelProjectsOption.reduce(function (
+    //     item,
+    //     next
+    //   ) {
+    //     obj[next.id] ? "" : (obj[next.id] = true && item.push(next));
+    //     return item;
+    //   },
+    //   []);
+    // });
     getCurrencyUnit().then((res) => {
       this.currencyUnit = res.data?.reduce((obj, item) => {
         return { ...obj, [item.code]: item.name };
@@ -246,7 +254,7 @@ export default {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
     currencyMultiple() {
-      return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
+      return this.language(currencyMultipleLib[this.ruleForm.currencyMultiple]?.key, currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit ) || this.language('BIDDING_YUAN',"元");
     },
     numberUppercase() {
       return digitUppercase(
@@ -255,8 +263,18 @@ export default {
           .toNumber()
       );
     },
+    totalStartingPriceString(){
+      return Number(this.heRuleForm.currentOffer).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+    }
   },
   watch: {
+    // 'heRuleForm.currentOffer':{
+    //   immediate:true,
+    //   deep:true,
+    //   handler(val){
+    //     this.currentOfferData = val.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+    //   }
+    // },
     curTime: function (val) {
       // if (!this.isClick) {
       //   if (val > dayjs(this.heRuleForm.createDate).valueOf()) {
@@ -393,11 +411,16 @@ export default {
                 box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);
                 border-color: transparent;
                 border-radius: 0.25rem;
+                background-color: #f5f7fa;
                 .el-tag {
-                  background-color: #f5f7fa;
+                  /* background-color: #f5f7fa;
                   color: #000;
                   border-radius: 18px;
-                  border-color: #fff;
+                  border-color: #fff; */
+                  background-color: #f7f7f7;
+                  color: #000;
+                  border-radius: 1.25rem;
+                  border-color: #eef6ff;
                   margin-left: 3px;
                   min-width: 15px;
                 }

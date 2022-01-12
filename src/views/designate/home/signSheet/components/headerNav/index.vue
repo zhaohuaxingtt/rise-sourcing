@@ -12,18 +12,18 @@
         >
         <div class="floatright">
           <span v-if="mode === 'add'">
-            <iButton @click="save" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
+            <iButton :loading="updateLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSAVE|签字单详情保存">
               {{ language("BAOCUN",'保存') }}
             </iButton>
-            <iButton @click="submit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
+            <iButton :loading="updateLoading" @click="submit" v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSSUBMIT|签字单详情提交">
               {{ language("LK_TIJIAO",'提交') }}
             </iButton>
-            <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
+            <iButton  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_BACKEDIT|签字单详情编辑返回"  @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
               {{ language("FANHUI",'返回') }}
             </iButton>
           </span>
           <span v-else>
-            <iButton @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
+            <iButton v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_BACK|签字单详情返回"  @click="$router.push({path: '/sourcing/partsnomination/signSheet'})">
               {{ language("LK_FANHUI",'返回') }}
             </iButton>
           </span>
@@ -32,11 +32,13 @@
         <headerNav />
       </div>
       <div class="headerNav-sub margin-top30 margin-bottom30">
-        <iTabsList type="card" v-model="tab" @tab-click="handleTabClick">
-          <el-tab-pane lazy v-for="(item,index) in heaederSubMenu" :key="index" :label="item.name" :name="item.key" v-permission.dynamic.auto="item.permissionKey"></el-tab-pane>
+        <iTabsList type="card" v-model="tab">
+          <el-tab-pane v-for="(tab, $index) in tabs" :key="$index" :label="tab.name" :name="tab.key">
+            <div class="margin-top20"><component :ref="tab.key" :is="tab.component" :description.sync="description" @deleteData="deleteData" /></div>
+          </el-tab-pane>
         </iTabsList>
       </div>
-      <router-view ref="signSheetCom"></router-view>
+      <!-- <router-view ref="signSheetCom"></router-view> -->
     <!-- </div> -->
   </iPage>
 </template>
@@ -46,9 +48,15 @@ import {
   // icon,
   iTabsList,
   iButton,
-  iPage
+  iPage,
+  iMessage
 } from "rise";
 import { clickMessage } from "@/views/partsign/home/components/data"
+import partDesignateOrders from "@/views/designate/home/signSheet/details"
+import MTZDesignateOrders from "@/views/designate/home/signSheet/mtzDetails"
+import { saveSignSheet, submitSignSheet } from '@/api/designate/nomination/signsheet'
+
+
 // eslint-disable-next-line no-undef
 export default {
   data() {
@@ -56,13 +64,30 @@ export default {
       heaederSubMenu,
       tab: 'partDesignateOrders',
       mode: this.$route.query.mode || '',
+      tabs: [
+        {
+          key:'partDesignateOrders',
+          name:'零件定点申请单',
+          component: partDesignateOrders,
+        },
+        {
+          key:'MTZDesignateOrders',
+          name:'MTZ定点申请单',
+          component: MTZDesignateOrders,
+        }
+      ],
+      description: "",
+      updateLoading: false
     }
   },
   components: {
     // icon,
     iTabsList,
     iButton,
-    iPage
+    iPage,
+    iMessage,
+    partDesignateOrders,
+    MTZDesignateOrders
   },
   created() {
     const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)
@@ -82,16 +107,64 @@ export default {
       });
     },
     save() {
-      this.$refs.signSheetCom.handleSave()
+      const params = {
+        signId: this.$route.query.id,
+        description: this.description
+      }
+
+      params.nominateIdArr = Array.isArray(this.$refs.partDesignateOrders[0].tableListData) ? this.$refs.partDesignateOrders[0].tableListData.map(item => item.id) : []
+      params.mtzApplyIdAttr = Array.isArray(this.$refs.MTZDesignateOrders[0].tableListData) ? this.$refs.MTZDesignateOrders[0].tableListData.map(item => item.id) : []
+
+      this.updateLoading = true
+      saveSignSheet(params)
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.$refs.partDesignateOrders[0].getChooseData()
+          this.$refs.partDesignateOrders[0].getSignSheetDetails()
+          this.$refs.MTZDesignateOrders[0].getTableData()
+          this.$refs.MTZDesignateOrders[0].getsignSheetDetails()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => this.updateLoading = false)
+      // this.$refs.signSheetCom.handleSave()
     },
-    submit() {
-      this.$refs.signSheetCom.handleSubmit()
+    async submit() {
+      const params = {
+        signIdArr: [ this.$route.query.id ],
+      }
+
+      const confirmInfo = await this.$confirm(this.language('QINGQUEDINGTIJIAOZHIQIANYIJINGBAOCUNSHUJU', '请确定提交之前已经保存数据？'))
+      if (confirmInfo !== 'confirm') return
+
+      this.updateLoading = true
+      submitSignSheet(params)
+      .then(res => {
+        if (res.code == 200) {
+          iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.$refs.partDesignateOrders[0].getChooseData()
+          this.$refs.partDesignateOrders[0].getSignSheetDetails()
+          this.$refs.MTZDesignateOrders[0].getTableData()
+          this.$refs.MTZDesignateOrders[0].getsignSheetDetails()
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => this.updateLoading = false)
+
+      // this.$refs.signSheetCom.handleSubmit()
     },
     remove() {
       this.$refs.signSheetCom.handleRemove()
     },
     // 通过待办数跳转
     clickMessage,
+    // 关联删除mtz
+    deleteData(data) {
+      if (Array.isArray(data)) this.$refs.MTZDesignateOrders[0].forceDelete(data.map(item => item.mtzApplyId))
+    }
   }
 }
 </script>

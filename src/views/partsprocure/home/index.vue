@@ -1,23 +1,17 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-11-18 16:00:37
- * @LastEditors:  
+ * @LastEditTime: 2021-12-23 16:19:01
+ * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
- * @FilePath: \rise\src\views\partsprocure\home\index.vue
+ * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
 -->
 <template>
   <iPage class="partsprocureHome">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
         <div>
-          <!-- <div class="margin-bottom33">
-            <iNavMvp @change="change" lang right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div> -->
-          <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-            <iNavMvp class="margin-bottom30" lang @change="change"  right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div>
+          <headerNav />          
           <!------------------------------------------------------------------------>
           <!--                  search 搜索模块                                   --->
           <!------------------------------------------------------------------------>
@@ -30,10 +24,11 @@
           >
             <el-form>
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"  v-permission.auto="PARTSPROCURE_PARTNUMBER|零件号">
-                <iInput
+                <iMultiLineInput
                   :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
                   v-model="form['partNum']"
-                ></iInput>
+                ></iMultiLineInput>
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCUREPARTNAMEZH','零件名（中）')" v-permission.auto="PARTSPROCURE_PARTNAMEZH|零件名中文">
                 <iInput
@@ -71,7 +66,7 @@
                 </iInput>
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')"
-              v-permission.atuo="PARTSPROCURE_LINIEINPUT|LINIE"
+              v-permission.auto="PARTSPROCURE_LINIEINPUT|LINIE"
               >
                 <iInput
                   :placeholder="
@@ -107,6 +102,7 @@
                 v-permission.auto="PARTSPROCURE_VEHICLECATEGORIES|车型大类"
               >
                 <iSelect
+                  filterable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREVEHICLECATEGORIES','车型大类')
@@ -131,6 +127,7 @@
                 v-permission.auto="PARTSPROCURE_MODELPROJECT|车型项目"
               >
                 <iSelect
+                  filterable
                   :placeholder="
                     language('partsprocure.CHOOSE','请选择') +
                     language('partsprocure.PARTSPROCUREMODELPROJECT','车型项目')
@@ -152,6 +149,7 @@
               </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')"
+                v-permission.auto="PARTSPROCURE_PARTITEMTYPE|零件项目类型"
               >
                 <iSelect
                   :placeholder="
@@ -159,7 +157,6 @@
                     language('partsprocure.PARTSPROCUREPARTITEMTYPE','零件项目类型')
                   "
                   v-model="form['partProjectType']"
-                  v-permission.auto="PARTSPROCURE_PARTITEMTYPE|零件项目类型"
                 >
                   <el-option
                     value=""
@@ -176,6 +173,7 @@
               </el-form-item>
               <el-form-item
                 :label="language('partsprocure.PARTSPROCUREPURCHASINGFACTORY','采购工厂')"
+                v-permission.auto="PARTSPROCURE_PURCHASINGFACTORY|采购工厂"
               >
                 <iSelect
                   :placeholder="
@@ -183,7 +181,6 @@
                     language('partsprocure.PARTSPROCUREPURCHASINGFACTORY','采购工厂')
                   "
                   v-model="form['procureFactory']"
-                  v-permission.auto="PARTSPROCURE_PURCHASINGFACTORY|采购工厂"
                 >
                   <el-option
                     value=""
@@ -198,7 +195,7 @@
                   </el-option>
                 </iSelect>
               </el-form-item>
-              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSIGN_USAGEVEHICLE|每车用量状态">
+              <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSPROCURE_SHOWSELF|显示自己">
                 <iSelect
                   v-model="form.showSelf"
                   :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"
@@ -220,7 +217,7 @@
               >
               <div class="floatright">
                 <!-- 手工采购项目创建 -->
-                <iButton @click="openCreateParts" v-permission.auto="PARTSPROCURE_TRANSFER|手工采购项目创建">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
+                <iButton @click="openCreateParts" v-permission.auto="PARTSPROCURE_CREATEMANUALPROCUREMENTITEM|手工采购项目创建">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton :loading='zpLoading' @click="openDiologChangeItems" v-permission.auto="PARTSPROCURE_TRANSFER|转派">{{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }} </iButton>
                 <creatFsGsNr :projectItems="selectTableData" @refresh="getTableListFn" v-permission.auto="PARTSPROCURE_GENERATEFSBUTTON|生成零件采购项目号" ></creatFsGsNr>
                 <cancelProject :backItems='selectTableData'  @refresh="getTableListFn" v-permission.auto="PARTSPROCURE_CANCELPROCUREMENTITEMS|取消零件采购项目号"></cancelProject>
@@ -279,11 +276,12 @@ import {
   iSearch,
   iInput,
   iSelect,
-  iNavMvp
+  iMultiLineInput
 } from "rise";
+import headerNav from "@/components/headerNav"
 import { pageMixins } from "@/utils/pageMixins";
 import {cancelProject,creatFsGsNr,startProject} from '@/components'
-import { tableTitle, form,validateProjectConfig } from "./components/data";
+import { tableTitle, form,validateProjectConfig,partsprocureNavList } from "./components/data";
 import tablelist from "../../partsign/home/components/tableList";
 import { getTabelData,changeProcure} from "@/api/partsprocure/home";
 import changeItems from "../../partsign/home/components/changeItems";
@@ -292,8 +290,9 @@ import { clickMessage } from "@/views/partsign/home/components/data"
 import {selectDictByKeyss,procureFactorySelectVo} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 import {setPretreatmentParams} from '@/utils/tool'
+import { getCarTypeSop } from "@/api/partsprocure/editordetail";
 // eslint-disable-next-line no-undef
-const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
+const { mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins, filters],
@@ -304,13 +303,14 @@ export default {
     tablelist,
     changeItems,
     iPagination,
-    iNavMvp,
     iSearch,
     iInput,
     iSelect,
     creatFsGsNr,
     cancelProject,
     startProject,
+    iMultiLineInput,
+    headerNav
   },
   data() {
     return {
@@ -324,20 +324,19 @@ export default {
       diologBack: false, //退回
       tab: "source",
       zpLoading:false,
-      cancelLoading:false
+      cancelLoading:false,
     };
   },
   computed: {
     projectIds() {
       return this.getPurchasePrjectId();
     },
-    ...mapState(["navList","navListLeft"]),
-    ...mapActions(["updateNavList"])
   },
   created() {
+    this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
     this.getTableListFn();
     this.getProcureGroup();
-    this.updateNavList
+    this.getCarTypeSop()
   },
   methods: {
     //获取采购工厂
@@ -350,6 +349,7 @@ export default {
     getCartypeDict() {
       getCartypeDict().then(res => {
         this.fromGroup['CARTYPE_CATEGORY'] = res.data
+        this.$forceUpdate()
       }).catch(err=>{
         console.log(err)  
       })
@@ -387,7 +387,7 @@ export default {
     getProcureGroup() {
       let types = [
         "RFQ_PART_STATUS_CODE_TYPE",
-        "CAR_TYPE_PRO",
+        // "CAR_TYPE_PRO",
         "PPT"
       ];
       selectDictByKeyss(types).then((res) => {
@@ -480,6 +480,7 @@ export default {
           )
         );
       }
+      if (this.selectTableData.find(i=>i.partProjectType == '1000040' || i.partProjectType == '1000030')) return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
       if(!this.selectTableData.every(i=>i.partProjectType == this.selectTableData[0].partProjectType)){
         return iMessage.warn(
           this.language(
@@ -499,13 +500,29 @@ export default {
     },
     openCreateParts() {
       const creatParts = this.$router.resolve({
-        path:'/sourcing/createparts/home'
+        path:'/sourceinquirypoint/sourcing/createparts/home'
       })
       window.open(creatParts.href, '_blank')
     },
     // 通过待办数跳转
-    clickMessage
+    clickMessage,
+    // 获取车型项目
+    getCarTypeSop() {
+      getCarTypeSop()
+      .then(res => {
+        if (res.code == 200) {
+          this.fromGroup.CAR_TYPE_PRO = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              code: item.cartypeProCode,
+              name: item.cartypeProName
+            })) :
+            []
 
+          this.$forceUpdate()
+        }
+      })
+    }
   }
 };
 </script>

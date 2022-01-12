@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-11-18 20:49:57
+ * @LastEditTime: 2021-12-17 17:28:35
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -85,6 +85,7 @@
     </iCard>
     <switchParts
       :workFlowId="workFlowId"
+      :noLinie="noLinie"
       :tableData="switchPartsTable"
       @getCbdDataQuery="getCbdDataQuery"
     />
@@ -113,6 +114,7 @@
             :apriceChange="apriceChangeVal"
             :key="$componentIndex"
             :workFlowId="workFlowId"
+            :noLinie="noLinie"
             :cbdCanEdit="cbdCanEdit"
             :quotationId="partsId"
             :partInfo="partInfo"
@@ -134,7 +136,7 @@ import developmentFee from "./developmentFee";
 import damages from "./damages";
 import sampleFee from "./sampleFee";
 import { SummaryTableTitle, totalRowClass, floatFixNum, list, typeObj } from "../data.js";
-import { alterationCbdSummary, cbdDataQuery, alterationCbdSummaryByLinie } from "@/api/aeko/approve";
+import { alterationCbdSummary, alterationCbdSummaryPOST, cbdDataQuery, alterationCbdSummaryByLinie } from "@/api/aeko/approve";
 import { getQuotationInfo, getAekoQuotationSummary } from "@/api/aeko/quotationdetail"
 export default {
   components: {
@@ -211,7 +213,8 @@ export default {
       partInfo:{},
       basicInfo:{},
       cbdCanEdit:true,
-      currency: 'RMB'
+      currency: 'RMB',
+      noLinie: true,
     };
   },
   computed: {
@@ -224,11 +227,10 @@ export default {
     let str_json = window.atob(this.queryParams.transmitObj);
     let transmitObj = JSON.parse(decodeURIComponent(escape(str_json)));
     this.transmitObj = transmitObj
-    this.workFlowId =
-      transmitObj.aekoApprovalDetails.workFlowId ||
-      transmitObj.aekoApprovalDetails.workFlowDTOS[0]?.workFlowId ||
-      "";
-    this.workFlowId ? this.getTableData() : this.alterationCbdSummaryByLinie();
+    this.noLinie =
+      (transmitObj.aekoApprovalDetails.workFlowId ||
+      transmitObj.aekoApprovalDetails.workFlowDTOS?.length)? true : false;
+    this.noLinie ? this.getTableData() : this.alterationCbdSummaryByLinie();
   },
   methods: {
     totalRowClass,
@@ -292,7 +294,7 @@ export default {
     },
     // 获取汇总表数据
     getTableData() {
-      alterationCbdSummary({ workFlowId: this.workFlowId }).then((res) => {
+      alterationCbdSummaryPOST(this.transmitObj.aekoApprovalDetails.workFlowDTOS.map(item=> item.workFlowId)).then(res=>{
         if (res?.code === "200") {
           let data = res?.data || [];
           let aPriceChangeObj = {};
@@ -341,7 +343,57 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
-      });
+      })
+      // alterationCbdSummary({ workFlowId: this.workFlowId }).then((res) => {
+      //   if (res?.code === "200") {
+      //     let data = res?.data || [];
+      //     let aPriceChangeObj = {};
+      //     data.length &&
+      //       data.forEach((item, index) => {
+      //         item.index = 1 + index;
+      //         if (aPriceChangeObj[item.partNum]) {
+      //           aPriceChangeObj[item.partNum] = {
+      //             total: math.add(
+      //               aPriceChangeObj[item.partNum].total,
+      //               math.bignumber(item.alteration || 0)
+      //             ),
+      //             partNum: item.partNum,
+      //             currency: item.currency || 'RMB'
+      //           };
+      //         } else {
+      //           aPriceChangeObj[item.partNum] = {
+      //             total: math.bignumber(item.alteration || 0),
+      //             partNum: item.partNum,
+      //             currency: item.currency || 'RMB'
+      //           };
+      //         }
+      //       });
+      //     Object.keys(aPriceChangeObj).forEach((key) => {
+      //       let item = {
+      //         index: "",
+      //         partNum: aPriceChangeObj[key].partNum,
+      //         total: +aPriceChangeObj[key].total,
+      //         currency: aPriceChangeObj[key].currency
+      //       };
+      //       data.push(item);
+      //     });
+      //     let arr_group = {};
+      //     data.forEach((i) => {
+      //       if (!arr_group[i.partNum]) {
+      //         arr_group[i.partNum] = [i];
+      //       } else {
+      //         arr_group[i.partNum] = [...arr_group[i.partNum], i];
+      //       }
+      //     });
+      //     this.aPriceChangeObj = aPriceChangeObj;
+      //     let arr = Object.values(arr_group).reduce((arr, i) => {
+      //       return [...arr, ...i];
+      //     }, []);
+      //     this.tableData = arr;
+      //   } else {
+      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+      //   }
+      // });
     },
     // 审批单预览查询
     alterationCbdSummaryByLinie(){
@@ -401,7 +453,8 @@ export default {
       })
     },
     // 获取A价变动其它数据
-    getCbdDataQuery(partsId) {
+    getCbdDataQuery(partsId, workFlowId) {
+      this.workFlowId = workFlowId
       this.partsId = partsId;
       this.loading = true;
       if (!partsId) {
@@ -409,8 +462,8 @@ export default {
         this.loading = false;
         return;
       }
-      if(this.workFlowId){
-        cbdDataQuery({ workFlowId: this.workFlowId, quotationId: partsId }).then(
+      if(this.noLinie){
+        cbdDataQuery({ workFlowId: workFlowId, quotationId: partsId }).then(
           (res) => {
             if (res?.code === "200") {
               let data = res.data;

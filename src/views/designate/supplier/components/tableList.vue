@@ -131,12 +131,17 @@ export default{
     }
   }
   ::v-deep.el-table.moviesTable {
+    .el-table__header-wrapper {
+      .tree {
+        text-align: center;
+      }
+    }
     .tree {
       text-align: right;
       box-sizing: border-box;
-      padding-right: 40px;
+      padding-right: 10px;
       .normal {
-        width: 270px;
+        width: 280px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

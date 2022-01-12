@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-11-22 16:30:29
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-17 16:11:02
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
@@ -11,7 +11,7 @@
     <iCard :title="language('LK_JICHUXINXI','基础信息')">
       <iFormGroup row="4" class="basic-form" label-width="100px">
           <template v-for="(item,index) in basicTitle">
-            <iFormItem v-permission.dynamic="item.permissionKey" :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
+            <iFormItem v-permission.auto="item.permissionKey" :key="'basicInfo_'+index" :label="language(item.labelKey,item.label)+':'"  >
               <iText v-if="item.isObj">{{aekoInfo[item.props] && aekoInfo[item.props]['desc']}}</iText>
               <iText v-else >{{aekoInfo[item.props] || '-'}}</iText>
             </iFormItem>
@@ -74,7 +74,7 @@ export default {
   async created() {
     const roleList = this.roleList;
     this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
-    this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+    this.isCommodityCoordinator = roleList.includes('AEKOKSXTDY'); // Aeko科室协调员
     this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
     // 判断下多角色情况 若多角色时就判断url的跳转来源
@@ -140,11 +140,12 @@ export default {
       this.currentTab ='contentDeclare';
     }
 
-    // 从AEKO管理进来的 TAB过滤调审批记录
+    // 从AEKO管理进来的 TAB过滤调审批记录和审批附件
     if(from == 'manage'){
       let newTabs = cloneDeep(this.tabs);
-      newTabs = newTabs.filter((item)=>item.name!=='record');
+      newTabs = newTabs.filter((item)=>item.name!=='record' && item.name!=='attachment'&item.name!=='contentDeclare');
       this.tabs = newTabs;
+      this.currentTab = 'partsList';
     }
 
     // 从AEKO跳转查看跳转过来的 tab不需要展示审批附件
@@ -175,10 +176,10 @@ export default {
       aekoInfo: {},
       currentTab: "partsList",
       basicTitle:[
-        {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatusDesc',permissionKey: "AEKO_AEKODETAIL_TEXT_STATUS"},
-        {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourseDesc',permissionKey: "AEKO_AEKODETAIL_TEXT_SOURCE"},
-        {label:'创建⽇期',labelKey:'LK_AEKOCHUANGJIANRIQI',props:'createDate',permissionKey: "AEKO_AEKODETAIL_TEXT_CREATE_DATE"},
-        {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine',permissionKey: "AEKO_AEKODETAIL_TEXT_DUE_DATE"},
+        {label:'AEKO状态',labelKey:'LK_AEKOZHUANGTAI',props:'aekoStatusDesc',permissionKey: "AEKO_AEKODETAIL_TEXT_STATUS|AKEO详情-AEKO状态"},
+        {label:'来源',labelKey:'LK_AEKO_LAIYUAN',props:'sourseDesc',permissionKey: "AEKO_AEKODETAIL_TEXT_SOURCE|AKEO详情-来源"},
+        {label:'创建⽇期',labelKey:'LK_AEKOCHUANGJIANRIQI',props:'createDate',permissionKey: "AEKO_AEKODETAIL_TEXT_CREATE_DATE|AKEO详情-创建⽇期"},
+        {label:'截⽌⽇期',labelKey:'LK_AEKOJIEZHIRIQI',props:'deadLine',permissionKey: "AEKO_AEKODETAIL_TEXT_DUE_DATE|AKEO详情-截⽌⽇期"},
       ],
       tabs: [
         { label: "零件清单", name: "partsList", key: "LINGJIANQINGDAN", permissionKey: "AEKO_AEKODETAIL_TAB_PART_LIST", components: ["partsList"],index:3,checkIndex:3, },
@@ -211,7 +212,7 @@ export default {
     // 页签切换
     tabChange() {
       this.$nextTick(() => {
-        const component = this.$refs[this.currentTab][0]
+        const component = this.$refs[this.currentTab]&&this.$refs[this.currentTab][0]
         if (typeof component.init === "function") component.init()
       })
     },

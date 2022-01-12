@@ -29,7 +29,7 @@
                 ref="carTypeProjectRef"
             >
               <div class="addCarTypeProject">
-                <iInput v-model="addCarTypeProject" placeholder="请输入自定义名称"></iInput>
+                <iInput v-model="addCarTypeProject" :placeholder="language('LK_QINGSHURUZIDINGYIMINGCHENG','请输入自定义名称')"></iInput>
                 <iButton @click="handleAddCarTypeProject" v-loading="iDialogAddCarTypeProject">{{ $t('LK_QUEREN') }}</iButton>
               </div>
               <el-option
@@ -47,8 +47,8 @@
                 :disabled="carTypeProjectDisabled"
             >
               <el-option
-                  :value="item.projectTypeId"
-                  :label="item.projectTypeName"
+                  :value="item.relationCarTypeId"
+                  :label="item.relationCarTypeName"
                   v-for="(item, index) in projectTypeList"
                   :key="index"
               >
@@ -70,7 +70,7 @@
               </el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item label="燃料类型">
+          <el-form-item :label="language('LK_RANLIAOLEIXING','燃料类型')">
             <iSelect
                 :placeholder="$t('partsprocure.PLEENTER')"
                 v-model="form['search.modelCategory']"
@@ -89,7 +89,7 @@
         <div class="searchSure">
           <iButton @click="saveAddCarType" :disabled="carTypeProjectObj.isBudget == 3" v-loading="addCarTypeLoading">{{ $t('LK_QUEREN') }}</iButton>
 <!--          <iButton @click="sure">查询</iButton>-->
-<!--          <iButton @click="reset">重置</iButton>-->
+          <iButton @click="reset">重置</iButton>
         </div>
       </iSearch>
       <iCard>
@@ -100,16 +100,16 @@
           <div class="search">
             {{ $t('LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN') }}:
             <iInput v-model="form['search.materialName']" :placeholder="$t('LK_QINGSHURU')">
-              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
+              <i slot="suffix" class="el-input__icon el-icon-search" @click="saveAddCarType"></i>
             </iInput>
             {{ $t('LK_LINJIANLIUWEIHAO') }}:
             <iInput v-model="form['search.partNum']" :placeholder="$t('LK_RFQPLEASEENTERQUERY')" maxlength="6">
-              <i slot="suffix" class="el-input__icon el-icon-search" @click="sure"></i>
+              <i slot="suffix" class="el-input__icon el-icon-search" @click="saveAddCarType"></i>
             </iInput>
           </div>
           <div>
-            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_TIANJIAHANG') }}</iButton>
-            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_SHANCHUHANG') }}</iButton>
+            <iButton @click="addRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('MOULDADD.LK_TIANJIAHANG') }}</iButton>
+            <iButton @click="deleteIRow" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('MOULDADD.LK_SHANCHUHANG') }}</iButton>
             <iButton @click="referenceModelShow = true" :disabled="(form['search.carTypeProject'] == '') || carTypeProjectObj.isBudget == 3">{{ $t('LK_CANKAOCHEXIN') }}</iButton>
             <!--                <iButton @click="saveRow" :disabled="(form['search.carTypeProject'] == '')">保存</iButton>-->
 <!--            <iButton @click="investmentList" :disabled="(form['search.carTypeProject'] == '')">下一步</iButton>-->
@@ -195,6 +195,7 @@ import {
   updateBuildInvestment,
   ConfirmCustomerCarTypeSelect,
   saveInvestBuildBottom,
+  GetOtherCarTypeAlternative
 } from "@/api/ws2/budgetManagement/edit";
 import filters from "@/utils/filters";
 import {Popover} from "element-ui"
@@ -356,7 +357,7 @@ export default {
         return
       }
       this.loadingiSearch = true
-      this.carTypeProjectObj = this.fromGroup.find(item => item.id == val)
+      this.carTypeProjectObj = this.fromGroup.find(item => item.id == val) || {}
       this.$store.commit('SET_budgetManagement', {
         carTypeProject: this.carTypeProjectObj.id,
         sourceStatus: this.carTypeProjectObj.sourceStatus
@@ -369,9 +370,9 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (res.data) {
           if (sourceStatus == 1) {
-            let projectType = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
-            let fixedPointType = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
-            let modelCategory = this.projectTypeList.find(item => item.projectTypeName == res.data.projectTypeName)
+            let projectType = this.projectTypeList.find(item => item.relationCarTypeName == res.data.projectTypeName)
+            let fixedPointType = this.projectTypeList.find(item => item.relationCarTypeName == res.data.projectTypeName)
+            let modelCategory = this.projectTypeList.find(item => item.relationCarTypeName == res.data.projectTypeName)
             this.form['search.projectType'] = res.data.projectTypeName ? (projectType ? projectType.projectTypeId : '') : ''
             this.form['search.fixedPointType'] = res.data.fixedPointName ? (fixedPointType ? fixedPointType.fixedPointId : '') : ''
             this.form['search.modelCategory'] = res.data.carTypeName ? (modelCategory ? modelCategory.carTypeId : '') : ''
@@ -400,11 +401,12 @@ export default {
         carTypeProject: this.params.id,
         sourceStatus: this.params.sourceStatus
       });
-      Promise.all([findProjectTypeDetailPulldown(), getCartypePulldown()]).then((res) => {
+      Promise.all([findProjectTypeDetailPulldown(), getCartypePulldown(), GetOtherCarTypeAlternative()]).then((res) => {
         const result0 = this.$i18n.locale === 'zh' ? res[0].desZh : res[0].desEn
         const result1 = this.$i18n.locale === 'zh' ? res[1].desZh : res[1].desEn
+        const result2 = this.$i18n.locale === 'zh' ? res[2].desZh : res[2].desEn
         if (res[0].data) {
-          this.projectTypeList = res[0].data.projectTypePullDownVOList
+          // this.projectTypeList = res[0].data.projectTypePullDownVOList
           this.fixedPointTypeList = res[0].data.fixedPointPullDownVOList
           this.modelCategoryList = res[0].data.carCategoryPullDownVOList
           this.form['search.projectType'] = ''
@@ -424,6 +426,12 @@ export default {
           }
         } else {
           iMessage.error(result1);
+        }
+
+        if (res[2].data) {
+          this.projectTypeList = res[2].data.carTypes
+        } else {
+          iMessage.error(result2);
         }
         this.loadingiSearch = false
       }).catch(() => {

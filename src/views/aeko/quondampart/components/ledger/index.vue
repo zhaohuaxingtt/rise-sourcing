@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-11-18 15:54:14
- * @LastEditors: YoHo
+ * @LastEditTime: 2021-12-21 17:26:48
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -73,7 +73,6 @@
         <tableList
           class="table"
           index
-          v-permission="AEKO_QUONDAMPARTLEDGER_TABLE"
           :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
@@ -170,26 +169,23 @@ export default {
   },
   async created() {
     this.partNum = this.$route.query.partNum  // 零件号
-    this.isAea = this.$route.query.isAea=='true'?true:false  // 是否是AEA类型
+    this.isAea = this.$route.query.isAea == 'true' ? true : false  // 是否是AEA类型
     this.isDeclare = this.$route.query.isDeclare  // 是否预设零件号，0是，1不是
     this.objectAekoPartId = this.$route.query.objectAekoPartId
     this.requirementAekoId = this.$route.query.requirementAekoId
-    this.oldPartNumPreset = this.$route.query.oldPartNumPreset
+    this.originPartNum = this.$route.query.originPartNum  // 选择的原零件号
+    this.oldPartNumPreset = this.$route.query.oldPartNumPreset  // 预设的原零件号
     await this.getAekoOriginFactory()
-    // 新零件号一定存在，所以不需要else
-    // if (this.oldPartNumPreset || this.partNum) {
-    if(this.isDeclare==0 || this.oldPartNumPreset == this.partNum){ // 优先选择新零件
-      this.form.partNum = this.partNum || this.oldPartNumPreset
-      this.judgeRight('init')  // 初次进入查询新零件
-    }else{  // 优先选择原零件
-      this.form.partNum = this.oldPartNumPreset || this.partNum
+    // 如果选择了原零件,查询原零件
+    if(this.originPartNum && this.originPartNum != this.partNum){
+      this.form.partNum = this.originPartNum
       this.judgeRight()  // 查询原零件
+    }else{ // 没有选择原零件,默认查询新零件
+      this.form.partNum = this.partNum
+      this.judgeRight('init')  // 初次进入查询新零件
     }
     this.procureFactorySelectVo()
     this.initPartNum = this.form.partNum
-    // } else {
-    //   // this.getAekoOriginPartInfo()
-    // }
   },
   methods: {
     getAekoOriginFactory() {
@@ -225,7 +221,6 @@ export default {
       .then(res => {
         if (res.code == 200) {
           if (res.data[0].isView) {
-            // 接口总是判定AEKO的专业采购员 无查看权限:此零件对应材料组未配置专业采购员!，为了跳过阻断所以设置为true
             this.getAekoOriginPartInfo(flag)
           } else {
             iMessage.error(res.data[0].describe)
@@ -264,8 +259,9 @@ export default {
       }
 
       this.loading = true
-
-      this.$refs.aekoList.getList('isRest');
+      if(flag!='init'){ // 使用新零件号查询时，先不获取AEKO库数据，避免table数据闪烁
+        this.$refs.aekoList.getList('isRest');
+      }
 
       getAekoOriginPartInfo({
         ...this.form,
@@ -278,19 +274,29 @@ export default {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
           this.page.totalCount = res.total || 0
-          if(flag=='init'){
-            this.disabled = res.total?true:false
-            if(!this.disabled&&this.oldPartNumPreset){
-              this.form.partNum = this.oldPartNumPreset
-              this.judgeRight()
+          if(flag=='init'){  // 使用新零件查询时，判断是否禁用
+            this.disabled = res.total ? true : false  // 查到数据则禁用零件号输入框，否则不禁用
+            if(!this.disabled){  // 如果零件号输入框未禁用(新零件号未查到数据)
+              if(this.oldPartNumPreset && this.oldPartNumPreset != this.form.partNum){  // 且有预设原零件号,且不等于新零件号，避免重复查询
+                this.form.partNum = this.oldPartNumPreset  // 零件号替换为预设零件号
+                this.getAekoOriginPartInfo()  // 重新查询
+                this.$refs.aekoList.getList('isRest');  // 查询AEKO库
+              }else{ // 没有预设原零件号,查询AEKO库
+                this.$refs.aekoList.getList('isRest');
+              }
+            }else{  // 禁用零件号输入框(有数据)，则直接查询AEKO库
+              this.$refs.aekoList.getList('isRest');
             }
           }
         } else {
-          if(flag=='init'){
+          if(flag=='init'){ // 使用新零件查询失败时
             this.disabled = false
-            if(this.oldPartNumPreset){
+            if(this.oldPartNumPreset && this.oldPartNumPreset != this.form.partNum){  // 如果有预设原零件,且不等于新零件号,则尝试用预设原零件查询
               this.form.partNum = this.oldPartNumPreset
-              this.judgeRight()
+              this.getAekoOriginPartInfo()
+              this.$refs.aekoList.getList('isRest'); // 如果有预设原零件，则用预设原零件查询AEKO库
+            }else{  // 如果没有预设原零件，则用新零件查询AEKO库
+              this.$refs.aekoList.getList('isRest');
             }
           }
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -366,10 +372,10 @@ export default {
           if (sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`)) {
             try {
               const aekoConatentDeclareParams = JSON.parse(sessionStorage.getItem(`aekoConatentDeclareParams_${ this.$route.query.requirementAekoId }`))
-
               this.$router.replace({
                 path: "/aeko/aekodetail",
                 query: {
+                  from:aekoConatentDeclareParams.from || undefined,
                   requirementAekoId: aekoConatentDeclareParams.requirementAekoId
                 }
               })
@@ -403,9 +409,9 @@ export default {
     },
     // 勾选限制
     selectInit(row){
-      const idArr = this.aekomultipleSelection.map((item)=>item.partNum);
+      const idArr = this.aekomultipleSelection.map((item)=>item.partNum.trim());
       // 判断AEKO零件列表是否已存在相同原零件 若存在 则不勾选
-      if(!idArr.includes(row.partNum)){
+      if(!idArr.includes(row.partNum.trim())){
         return true 
       }else{
         return false

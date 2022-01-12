@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:39
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 11:36:55
+ * @LastEditTime: 2021-12-30 14:15:48
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\part\index.vue
 -->
@@ -87,11 +87,11 @@ export default {
         'CHANPINZUBIANHAO',
         'CHANPINZUZHONGWENMINGCHENG',
         'CHANPINZUDEWENMINGCHENG',
-        'BFSOLL1',
-        'BFSOLL2',
-        'BFIST',
-        'BFSHIFOUYANWU',
-        'BFYANWUYUANYIN'
+        'SHUJUDONGJIESOLL1',
+        'SHUJUDONGJIESOLL2',
+        'SHUJUDONGJIEIST',
+        'SHUJUDONGJIESHIFOUYANWU',
+        'SHUJUDONGJIEYANWUYUANYIN'
       ],
       selectRowFit: [],
       selectRowPart: [],
@@ -104,8 +104,8 @@ export default {
         'CAILIAOZUMINGCHENG',
         'CHEXINGXIANGMU',
         'SHIFANGDINGDIANZHOU',
-        'DINGDIANBFZHOU',
-        'BFFIRSTTRYOUTZHOU',
+        'DINGDIANSHUJUDONGJIEZHOU',
+        'SHUJUDONGJIEFIRSTTRYOUTZHOU',
         'FIRSTTRYOUTOTSZHOU',
         'FIRSTTRYOUTEMZHOU',
         'SOURCINGLEIXING',
@@ -168,6 +168,7 @@ export default {
           carTypeProPartConfigDTO: this.logicData,
           partHistoryProgressVO: {
             ...this.selectRowPart[0],
+            partNum: this.$route.query.partNum,
             type: 2 // 历史
           }
         }
@@ -177,6 +178,7 @@ export default {
           carTypeProPartConfigDTO: this.logicData,
           partHistoryProgressVO: {
             ...this.partTableData[0],
+            partNum: this.$route.query.partNum,
             fsdocCscWeekly: selectFit.fsdocCscWeekly,
             cscBfWeekly: selectFit.cscBfWeekly,
             bf1stWeekly: selectFit.bf1stWeekly,
@@ -189,7 +191,7 @@ export default {
       partSchedulePartFitting(params).then(res => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
-          this.$router.push({path: '/projectmgt/projectscheassistant/partscheduling', query: this.$route.query})
+          this.$router.push({path: '/projectmgt/projectscheassistant/partscheduling', query: {...this.$route.query, carProject: this.$route.query.cartypeProId}})
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }

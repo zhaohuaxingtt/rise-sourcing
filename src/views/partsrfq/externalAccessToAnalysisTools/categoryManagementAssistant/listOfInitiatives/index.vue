@@ -1,7 +1,8 @@
 <template>
   <iPage v-loading="pageLoading">
-    <headerNav v-if='extendsIsedit' ref="headerNav"
-               :showCommonButton="!editStatus">
+    <headerNav v-if='extendsIsedit'
+               ref="headerNav"
+               :showCommonButton="!editStatus" :categoryCodeProps="categoryCodeProps" :categoryCodeOptions="categoryCodeOptions">
       <template #extralButton>
         <template v-if="!editStatus">
           <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
@@ -134,14 +135,15 @@ export default {
     };
   },
   props: {
-    categoryCodeProps:String,
+    categoryCodeProps: String,
+    categoryCodeOptions: Array,
     isEdit: {
       type: Boolean,
       default: true
     },
-    extendsIsedit:{
-      type:Boolean,
-      default:true
+    extendsIsedit: {
+      type: Boolean,
+      default: true
     }
   },
   created () {
@@ -175,6 +177,7 @@ export default {
         req.selectList = selectList;
         const res = await saveInfos(req);
         this.resultMessage(res, () => {
+          // this.pageLoading = false;
           this.editStatus = false;
           this.saveFlag = true;
           this.getList();
@@ -259,7 +262,9 @@ export default {
       });
     },
     setName (item) {
-      return this.$i18n.locale === 'zh' ? item.name : item.nameEn;
+      if (item) {
+        return this.$i18n.locale === 'zh' ? item.name : item.nameEn;
+      }
     },
     handleSelect ({ props, value }) {
       if (this.treeDataSelect[props.name].includes(value.name)) {
@@ -294,7 +299,7 @@ export default {
     downloadFile () {
       const pdfName = `品类管理助手-举措清单-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
       downloadPDF({
-        idEle: 'container',
+        idEle: '#container',
         pdfName,
         exportPdf: true,
       });
@@ -306,12 +311,15 @@ export default {
     },
     handleSaveExport () {
       if (this.saveFlag) {
+        let nameEn = this.$store.state.permission.userInfo.deptDTO.nameEn
+        let userNum = this.$store.state.permission.userInfo.userNum
+        let nameZh = this.$store.state.permission.userInfo.nameZh
         this.pageLoading = true;
         this.$nextTick(async () => {
           const pdfName = `品类管理助手-举措清单-${this.categoryName}-${window.moment().format('YYYY-MM-DD')}|`;
           const resFile = await this.getDownloadFileAndExportPdf({
-            domId: 'container',
-            watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
+            domId: '#container',
+            watermark: nameEn + '-' + userNum + '-' + nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
             pdfName: pdfName,
           });
           try {
@@ -340,7 +348,7 @@ export default {
     '$store.state.rfq.categoryName' () {
       this.categoryName = this.$store.state.rfq.categoryName;
     },
-    isEdit(res){
+    isEdit (res) {
       this.editStatus = res
       this.getList();
     }

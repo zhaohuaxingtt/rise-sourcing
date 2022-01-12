@@ -1,17 +1,18 @@
 /*
  * @Author: your name
  * @Date: 2021-08-26 19:56:52
- * @LastEditTime: 2021-11-05 15:24:50
- * @LastEditors:  
+ * @LastEditTime: 2021-12-23 18:35:18
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: \front-web\src\router\modules\sourcing.js
+ * @FilePath: \front-sourcing\src\router\modules\sourcing.js
  */
 export default [
   {
     path: "sourcing",
     name: "询源执行",
     meta:{
-        title:'询源执行'
+        title:'询源执行',
+        activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
     },
     component: () => import("@/layout/default-white"),
     redirect: "/sourceinquirypoint/sourcing/partsign",
@@ -21,15 +22,26 @@ export default [
             path: "partsletter",
             name: "partsletter",
             meta:{
-                title:'定点信'
+                title:'定点信',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () => import ("@/views/letterAndLoi")
+        },
+        {
+            path: "partsletter/loi",
+            name: "loi",
+            meta:{
+                title:'LOI',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+            },
+            component: () => import ("@/views/letterAndLoi/loi")
         },
         {
             path: "partsletter/letterdetail",
             name: "letterdetail",
             meta:{
-                title:'定点信详情'
+                title:'定点信详情',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () => import ("@/views/letterAndLoi/letter/detail")
         },
@@ -37,7 +49,8 @@ export default [
             path: "partsletter/loidetail",
             name: "loidetail",
             meta:{
-                title:'LOi详情'
+                title:'LOi详情',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () => import ("@/views/letterAndLoi/loi/detail")
         },
@@ -45,8 +58,9 @@ export default [
           path: "previewloi",
           name: "previewLoi",
           meta:{
-            title:'预览LOI'
-        },
+            title:'预览LOI',
+            activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+          },
           component: () => import ("@/views/letterAndLoi/previewLoi")
         },
         // 报价详情相关路由
@@ -54,16 +68,18 @@ export default [
             path: "supplier/quotationdetail",
             name: "quotationDetail",
             meta:{
-                title:'代供应商报价详情'
+                title:'代供应商报价详情',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/supplier/quotationdetail")
         },
         {
-            path: "importfiles",
+            path: "partsign/importfiles",
             name: "importFiles",
             meta:{
-                title:'附件导入'
+                title:'附件导入',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/designateFiles/importFiles"),
@@ -72,34 +88,35 @@ export default [
             path: "importfiles/detaillist",
             name: "filesDetailList",
             meta:{
-                title:'附件导入详情'
+                title:'附件导入详情',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/designateFiles/importFiles/detail"),
         } ,
         {
-            path: "filemanage",
+            path: "partsign/filemanage",
             name: "fileManage",
-            meta: { title: "附件综合管理" },
+            meta: { title: "附件综合管理", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/designateFiles/fileManage/index"),
         },   
         // 配件相关路由
         {
-            path: "signforpartsdemand",
+            path: "partsign/signforpartsdemand",
             name: "signForPartsDemand",
-            meta: { title: "配件需求签收" },
+            meta: { title: "配件需求签收", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/accessoryPart/signForPartsDemand/index"),
         },
         {
-            path: "integratedmanage",
+            path: "partsign/integratedmanage",
             name: "integratedManage",
-            meta: { title: "配件综合管理" },
+            meta: { title: "配件综合管理", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/accessoryPart/integratedManage/index"),
         },
         {
             path: "accessorypartdetail",
             name: "配件详情",
-            meta: { title: "配件详情" },
+            meta: { title: "配件详情", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/accessoryPart/accessoryPartDetail/index"),
         },
         // 报价详情相关路由
@@ -107,23 +124,25 @@ export default [
             path: "supplier/quotationdetail",
             name: "报价详情",
             meta:{
-                title:'报价详情'
+                title:'报价详情',
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () => 
                 import ("@/views/supplier/quotationdetail")
         },
         {
             path: "createrfq",
-            name: "创建RFQ",
-            meta: { title: "创建RFQ" },
+            name: "配附件创建RFQ",
+            meta: { title: "配附件创建RFQ", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
             component: () => import("@/views/accessoryPart/createRfq/index"),
         },
         //竞价开标
         {
-            path:"biddingProjectList",  
+            path:"partsrfq/biddingProjectList",  
             name:'biddingProjectList',
             meta: {
-                title:"竞价开标"
+                title:"竞价开标",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () => 
                 import ("@/views/biddingProjectList"),
@@ -134,6 +153,7 @@ export default [
           name: "partsign",
           meta: {
               title: "新建信息单",
+              activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
           },
           component: () =>
               import ("@/views/partsign/home"),
@@ -143,6 +163,7 @@ export default [
             name: "editordetail",
             meta: {
                 title: "新建信息单详情",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsign/editordetail"),
@@ -153,6 +174,7 @@ export default [
             meta: {
                 isPreview: true,
                 title: "新建信息单预览",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsign/editordetail"),
@@ -162,6 +184,7 @@ export default [
             name: "volumeVersion",
             meta: {
                 title: "新建信息单每车用量版本",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsign/version/volume"),
@@ -171,6 +194,7 @@ export default [
             name: "enquiryVersion",
             meta: {
                 title: "新建信息单询价资料版本",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsign/version/enquiry"),
@@ -180,6 +204,7 @@ export default [
             name: "partsprocure",
             meta: {
                 title: "采购项目",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsprocure/home"),
@@ -189,6 +214,7 @@ export default [
             name: "partsprocure",
             meta: {
                 title: "采购项目详情",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsprocure/editordetail"),
@@ -198,6 +224,7 @@ export default [
             name: "partsprocure",
             meta: {
                 title: "价格记录",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsprocure/editordetail/components/currentSupplier/priceRecord"),
@@ -207,6 +234,7 @@ export default [
             name: "batchmiantain",
             meta: {
                 title: "采购项目批量修改",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsprocure/batchmiantain"),
@@ -216,6 +244,7 @@ export default [
             name: "outputplan",
             meta: {
                 title: "采购项目计划",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsprocure/outputplan"),
@@ -225,6 +254,7 @@ export default [
             name: "partsrfq",
             meta: {
                 title: "RFQ管理",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsrfq/home"),
@@ -234,6 +264,7 @@ export default [
             name: "editordetail",
             meta: {
                 title: "RFQ详情待办",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsrfq/editordetail"),
@@ -243,6 +274,7 @@ export default [
             name: "editordetail",
             meta: {
                 title: "RFQ详情",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsrfq/editordetailInfo"),
@@ -251,7 +283,9 @@ export default [
             path: "partsrfq/assistant", //RFQ谈判助手
             name: "editordetail",
             meta: {
-                title: "谈判助手",
+                title: "RFQ详情谈判助手",
+                parentId:"/SOURCEINQUIRYPOINT/SOURCING", //指定需要挂载的ID
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsrfq/assistant"),
@@ -261,9 +295,34 @@ export default [
             name: "editordetailPartScoring",
             meta: {
                 title: "RFQ零件评分",
+                activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
             },
             component: () =>
                 import ("@/views/partsrfq/editordetail/components/rfqPending/components/supplierScore/components/partScoring"),
+        },
+        {
+            path: "createparts/home",
+            name: "createPartsHome",
+            meta: { title: "手工采购项目创建", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
+            component: () => import("@/views/partsprocure/createparts/components/home"),
+        },
+        {
+            path: "createparts/steelbatchpurchase",
+            name: "createPartsSteelBatchPurchase",
+            meta: { title: "钢材批量采购", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
+            component: () => import("@/views/partsprocure/createparts/components/steelbatchpurchase"),
+        },
+        {
+            path: "createparts/steelsinglepurchase",
+            name: "createPartsSteelSinglePurchase",
+            meta: { title: "钢材一次性采购", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
+            component: () => import("@/views/partsprocure/createparts/components/steelsinglepurchase"),
+        },
+        {
+            path: "createparts/factoryrelocate",
+            name: "createPartsFactoryRelocate",
+            meta: { title: "工厂迁移", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT'] },
+            component: () => import("@/views/partsprocure/createparts/components/factoryrelocate"),
         }
       ]
     }

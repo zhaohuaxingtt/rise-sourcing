@@ -10,7 +10,7 @@
     </span>
     <div class="editControl floatright margin-bottom20">
       <upload
-				class="upload-trigger"
+				class="upload-trigger margin-right10"
 				:hideTip="true"
 				:accept="'.jpg,.jpeg,.png,.pdf,.tif'"
 				:buttonText="language('LK_SHANGCHUAN','上传')"
@@ -18,7 +18,7 @@
         v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_UPLOAD|AKEO详情-审批附件上传"
 				@on-success="onUploadsucess"
 			/>
-			<iButton class="margin-left5" @click="deleteFile" :loading="deleting" v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_DELETE|AKEO详情-审批附件删除">
+			<iButton @click="deleteFile" :loading="deleting" v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_DELETE|AKEO详情-审批附件删除">
         {{ language("LK_SHANCHU", "删除") }}
       </iButton>
 
@@ -75,6 +75,7 @@ import {downloadFile} from 'rise/web/components/iFile/lib'
 import {iCard, iButton, iPagination, iInput, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import { setLogMenu } from "@/utils";
+import {recordmMixins} from '../mixin'
 import {
   getAuditFilePage,
   auditFileSave,
@@ -84,7 +85,7 @@ import {
 
 export default {
   name: "aekoDetailRecord",
-  mixins: [pageMixins],
+  mixins: [pageMixins, recordmMixins],
   components: {
     iCard,
     iButton,
@@ -123,6 +124,8 @@ export default {
   },
   mounted() {
     this.getFetchData()
+    // 获取cf审批记录，拿提交状态，用于删除解释附件
+    this.getexplainList()
   },
   methods: {
   /**
@@ -243,6 +246,7 @@ export default {
 				if (confirmInfo === 'confirm') {
           this.deleting = true
 					auditFileDelete({
+            isSubmited: !this.checkFirstRecord, // 从mixin中拿到的计算属性，如果是审批记录的话，是否已提交
             ids: fileList,
             delType: 0
           }).then(res => {

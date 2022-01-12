@@ -42,24 +42,23 @@
           <iFormItem
             :label="language('BIDDING_XIANGMULEIXING', '项目类型')"
             prop="projectType"
-            v-if="onProjectType"
           >
             <iLabel :label="language('BIDDING_XIANGMULEIXING', '项目类型')" slot="label" required></iLabel>
-            <iSelect v-model="ruleForm.projectType">
+            <iSelect v-model="ruleForm.projectType" :disabled="onProjectType">
               <el-option
                 v-for="(item, index) in projectType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
           </iFormItem>
 
-          <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType" v-else>
+          <!-- <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType" v-else>
             <iLabel :label="language('BIDDING_XIANGMULEIXING', '项目类型')" slot="label" required></iLabel>
             <iInput v-model="ruleForm.projectType" disabled></iInput>
-          </iFormItem>
+          </iFormItem> -->
 
           <iFormItem :label="language('BIDDING_RFQMINGCHENG', 'RFQ名称')" prop="rfqName" v-if="onRFQname">
             <iLabel :label="language('BIDDING_RFQMINGCHENG', 'RFQ名称')" slot="label"></iLabel>
@@ -84,7 +83,7 @@
                 v-for="(item, index) in biddingType"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -113,7 +112,7 @@
                 v-for="(item, index) in currencyMultiple"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -125,7 +124,7 @@
                 v-for="(item, index) in isTax"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -156,7 +155,7 @@
               disabled
             ></iInput>
           </iFormItem>
-          <iFormItem :label="language('BIDDING_BJJZSJ', '报价截止时间')" prop="pricingDeadline">
+          <iFormItem :label="language('BIDDING_BJJZSJ', '报价截止时间')" prop="pricingDeadline" v-if="ruleForm.roundType !== '05'">
             <iLabel :label="language('BIDDING_BJJZSJ', '报价截止时间')" slot="label"></iLabel>
             <iInput
               :value="
@@ -183,7 +182,7 @@
                 v-for="(item, index) in biddingMode"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -195,7 +194,7 @@
                 v-for="(item, index) in biddingResultForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -228,7 +227,7 @@
                 v-for="(item, index) in resultOpenForm"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -244,7 +243,7 @@
                 v-for="(item, index) in isResultOpen"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -256,7 +255,7 @@
                 v-for="(item, index) in moldFee"
                 :key="index"
                 :value="item.value"
-                :label="item.label"
+                :label="language(item.key,item.label)"
               >
               </el-option>
             </iSelect>
@@ -278,11 +277,28 @@
               </div>
             </iLabelML>
             <iLabel :label="language('BIDDING_MUBIAOJIA', '目标价')" slot="label"></iLabel>
-            <iInput
-              type="number"
-              oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
+            <operatorInput
               v-model="ruleForm.targetPrice"
-            ></iInput>
+            >
+            </operatorInput>
+            <!-- <template v-if="isInputFlag">
+              <iInput
+                :value="ruleForm.targetPrice"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+                type="number"
+                @input="value => $set(ruleForm, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+              >
+              </iInput>
+            </template>
+            <template v-else>
+              <iInput
+                :value="targetPriceValue"
+                @focus="handlerInputFocus"
+                @blur="handlerInputBlur"
+              >
+              </iInput>
+            </template> -->
           </iFormItem>
         </div>
 
@@ -355,8 +371,8 @@
               <div>
                 <iLabelML showTip class="form-item-rankShowRule-icon">
                   <div class="hover-text">
-                    <span>供应商对红绿灯名次区间/偏离比例的</span>
-                    <span class="hover-stick">具体定义不可见</span>
+                    <span>{{language('BIDDING_GYSDHLDMCQJ/PLBLD', '供应商对红绿灯名次区间/偏离比例的')}}</span>
+                    <span class="hover-stick">{{language('BIDDING_JTDYBKJ', '具体定义不可见')}}</span>
                     <span>。</span>
                   </div>
                 </iLabelML>
@@ -367,7 +383,7 @@
                   v-for="(item, index) in rankShowRule"
                   :key="index"
                   :value="item.value"
-                  :label="item.label"
+                  :label="language(item.key,item.label)"
                 >
                 </el-option>
               </iSelect>
@@ -462,13 +478,34 @@
                 <span class="form-item1">{{language('BIDDING_MUBIAOJIA', '目标价')}}</span>
               </div>
               <iFormItem prop="quoteRule.targetPrice">
-                <iInput
-                  v-model="ruleForm.quoteRule.targetPrice"
+                <operatorInput
                   style="width: 10rem"
+                  v-model="ruleForm.quoteRule.targetPrice"
                   @change="handleChangeLightDeviation"
-                  oninput="value=value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15)"
-                  type="number"
-                />
+                >
+                </operatorInput>
+                <!-- <template v-if="isInputFlag">
+                  <iInput
+                    :value="ruleForm.quoteRule.targetPrice"
+                    style="width: 10rem"
+                    @focus="handlerInputFocus"
+                    @blur="handlerInputBlur"
+                    @change="handleChangeLightDeviation"
+                    type="number"
+                    @input="value => $set(ruleForm.quoteRule, 'targetPrice', value.indexOf('.') > -1?value.slice(0, value.indexOf('.') + 3):value.slice(0,15))"
+                  >
+                  </iInput>
+                </template>
+                <template v-else>
+                  <iInput
+                    :value="quoteRuleTargetPriceValue"
+                    style="width: 10rem"
+                    @focus="handlerInputFocus"
+                    @change="handleChangeLightDeviation"
+                    @blur="handlerInputBlur"
+                  >
+                  </iInput>
+                </template> -->
               </iFormItem>
               <div class="from-item-clo1">
                 <span class="form-line"></span>
@@ -565,8 +602,8 @@
             background
             :page-sizes="page.pageSizes"
             :page-size="page.pageSize"
-            prev-text="上一页"
-            next-text="下一页"
+            :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+            :next-text="language('BIDDING_XIAYIYE','下一页')"
             layout="prev, pager, next, jumper"
             :current-page="page.currPage"
             :total="ruleForm.attachments.length"
@@ -606,6 +643,7 @@ import { getCurrencyUnit, uploadFile } from "@/api/mock/mock";
 import { getBiddingId, biddingInfo } from "@/api/bidding/bidding";
 import iLabelML from "@/components/biddingComponents/iLabelML";
 import { pageMixins } from "@/utils/pageMixins";
+import operatorInput from '@/components/biddingComponents/operatorInput';
 
 export default {
   mixins: [pageMixins],
@@ -617,6 +655,7 @@ export default {
     iButton,
     iLabel,
     iLabelML,
+    operatorInput
     // iTableCustom,
     // iPagination,
   },
@@ -646,6 +685,9 @@ export default {
       pricingDeadline: "",
       biddingType,
       isMoldFee: false,
+      isInputFlag:false,
+      targetPriceValue:'',
+      quoteRuleTargetPriceValue:'',
       currencyVlaue: "",
       selectedTableData: [],
       bidOpeningLeft: `<p>本次竞价为项目谈判的中间过程，竞价结果作为选定供应商的参考，最终供应商的选择以最终谈判结果及上汽大众联合采购委员会（CSC）会议决策为准。</p>
@@ -684,7 +726,7 @@ export default {
       return true;
     },
     onProjectType() {
-      if (this.ruleForm.roundType === "05") {
+      if (this.ruleForm.isTest || this.ruleForm.roundType === "03") {
         return true;
       }
       return false;
@@ -734,6 +776,36 @@ export default {
     },
   },
   watch: {
+    '$i18n.locale':{
+      // immediate:true,
+      deep:true,
+      handler(val){
+        this.rules = infoRules(this.ruleForm, this)
+        this.$refs["ruleForm"].clearValidate()
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate().catch(res => {
+            // console.log('我进来了')
+          })
+          // this.$refs["ruleForm"].validateField([
+          //   'biddingType',
+          //   'projectName',
+          //   'projectType',
+          //   'currencyUnit',
+          //   'currencyMultiple',
+          //   'isTax',
+          //   'resultOpenForm',
+          //   'moldFee',
+          //   'openTenderNature',
+          //   'isResultOpen',
+          //   'biddingMode',
+          //   'quoteRule.greenLightFrom',
+          //   'quoteRule.greenDeviationValue',
+          //   'quoteRule.targetPrice',
+          //   'quoteRule.yellowDeviationValue'
+          // ])
+        })
+      }
+    },
     "ruleForm.quoteRule.greenLightTo"(val) {
       const { greenLightFrom } = this.ruleForm.quoteRule;
       if (!(greenLightFrom || 0 === greenLightFrom) && (val || 0 === val)) {
@@ -812,17 +884,34 @@ export default {
         ]);
       }
     },
-    "ruleForm.quoteRule.targetPrice"(val) {
-      console.log(val);
-      if (val === null || val === "" || val === undefined) {
-        this.$refs["ruleForm"].clearValidate([
-          "quoteRule.greenDeviationValue",
-          "quoteRule.yellowDeviationValue",
-        ]);
+    "ruleForm.quoteRule.targetPrice": {
+      immediate: true,
+      handler(val) {
+        this.quoteRuleTargetPriceValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
+        if (val === null || val === "" || val === undefined) {
+          if (this.ruleForm.resultOpenForm === '02') {
+            this.$refs["ruleForm"].clearValidate([
+              "quoteRule.greenDeviationValue",
+              "quoteRule.yellowDeviationValue",
+            ]);
+          }
+      }
+      }
+    },
+    "ruleForm.targetPrice": {
+      immediate: true,
+      handler(val) {
+        this.targetPriceValue = Number(val)?.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')
       }
     },
   },
   methods: {
+    handlerInputBlur(){
+      this.isInputFlag = false
+    },
+    handlerInputFocus(){
+      this.isInputFlag = true
+    },
     // 返回
     handleBack() {
       this.$router.push({
@@ -949,9 +1038,11 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let formData = this.ruleForm;
-          if (this.ruleForm.projectType === "正式项目") {
-            this.ruleForm.projectType = "01";
-          }
+          // if (this.ruleForm.projectType === "正式项目") {
+          //   this.ruleForm.projectType = "01";
+          // } else if (this.ruleForm.projectType === "测试项目") {
+          //   this.ruleForm.projectType = "02";
+          // }
           const quoteRule = {...formData.quoteRule,biddingId:this.id}
           formData = {...formData,quoteRule}
           biddingInfo(formData)
@@ -1026,14 +1117,15 @@ export default {
         };
         this.$parent.$emit("change-title", res);
         // 项目类型
-        if (res.roundType === "03" || res.roundType === "04") {
-          this.ruleForm.projectType === "01";
+        if (res.isTest) {
+          this.ruleForm.projectType = "02";
         }
-        if (this.ruleForm.projectType === "01") {
-          this.ruleForm.projectType = "正式项目";
+        else if (res.roundType === "03" || res.roundType === "05") {
+          this.ruleForm.projectType = "01";
         }
+        
         // 竞标报价方式
-        if (res.roundType === "03") {
+        if (res.roundType === "03" || (res.roundType === "05" && res.manualBiddingType === "01")) {
           if (!res.biddingMode) {
             this.ruleForm.biddingMode = "03";
           }
@@ -1077,7 +1169,7 @@ export default {
           }
         }
         this.$nextTick(() => {
-          this.rules = infoRules(this.ruleForm);
+          this.rules = infoRules(this.ruleForm, this);
         });
       });
     },
@@ -1119,6 +1211,12 @@ export default {
       color: #000;
       text-align: center;
     }
+    .el-select .el-input.is-disabled {
+    .el-input__suffix {
+      display: none;
+    }
+  }
+    
     .form-item-row1-clo3-right {
       line-height: initial;
       text-align: left;

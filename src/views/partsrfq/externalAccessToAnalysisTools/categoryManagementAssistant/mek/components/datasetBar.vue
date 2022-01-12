@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 15:28:23
- * @LastEditTime: 2021-10-09 18:50:16
+ * @LastEditTime: 2022-01-07 10:39:58
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\datasetBar.vue
@@ -92,10 +92,10 @@ export default {
               str = item.title + "\n\n" + item.ebr || "";
             }
 
-              this.barDataItem.push(itemData);
-              this.barxAxis.push(str);
+            this.barDataItem.push(itemData);
+            this.barxAxis.push(str);
           });
-         
+
           this.$nextTick(() => {
             this.initCharts();
           });
@@ -108,55 +108,56 @@ export default {
   mounted () {
   },
   methods: {
-    resetOptions(val) {
+    resetOptions (val) {
 
-          this.barDataItem = [];
-          this.barxAxis = [];
-          this.barData.detail.forEach((item, index) => {
-            this.legendList.push({
-              name: item.title,
-              icon: 'circle',
-            })
-            const colorList = ["#A1D0FF", "#92B8FF", "#5993FF"];
-            const itemData = {
-              name: item.title,
-              value: item.value,
-              // value: item.value,
-              label: {
-                show: true,
-                position: "top",
-                color: "#000",
-                formatter: (val) => {
-                  return this.fmoney(val.value, 2);
-                },
-              },
-              itemStyle: {
-                color: colorList[index],
-              },
-            };
-            let str = "";
-            if (item.title == "MIX") {
-              str = item.title + "\n\n";
-            } else {
-              str = item.title + "\n\n" + item.ebr || "";
-            }
-            if (!val || val.indexOf(itemData.name) >= 0) {
+      this.barDataItem = [];
+      this.barxAxis = [];
+      this.barData.detail.forEach((item, index) => {
+        this.legendList.push({
+          name: item.title,
+          icon: 'circle',
+        })
+        const colorList = ["#A1D0FF", "#92B8FF", "#5993FF"];
+        const itemData = {
+          name: item.title,
+          value: item.value,
+          // value: item.value,
+          label: {
+            show: true,
+            position: "top",
+            color: "#000",
+            formatter: (val) => {
+              return this.fmoney(val.value, 2);
+            },
+          },
+          itemStyle: {
+            color: colorList[index],
+          },
+        };
+        let str = "";
+        if (item.title == "MIX") {
+          str = item.title + "\n\n";
+        } else {
+          str = item.title + "\n\n" + item.ebr || "";
+        }
+        if (!val || val.indexOf(itemData.name) >= 0) {
 
-              this.barDataItem.push(itemData);
-              this.barxAxis.push(str);
-            }
-          });
-         
-          this.$nextTick(() => {
-            this.initCharts();
-          });
+          this.barDataItem.push(itemData);
+          this.barxAxis.push(str);
+        }
+      });
+
+      this.$nextTick(() => {
+        this.initCharts();
+      });
     },
     initCharts () {
-      if (this.barDataItem.length <= 3) {
+      if (this.barDataItem.length <= 2) {
         this.$refs.chart.style.width = "240px";
       } else {
-        this.$refs.chart.style.width = this.barDataItem.length * 80 + "px";
+        this.$refs.chart.style.width = this.barDataItem.length * 120 + "px";
       }
+
       // console.log(this.$refs.chart.style.width, 'number')
       // this.$refs.chart.style.minWidth = '100%';
       this.myChart = echarts().init(this.$refs.chart);
@@ -230,7 +231,7 @@ export default {
       this.myChart.setOption(this.option);
       this.myChart.off("click");
       this.myChart.on("click", (params) => {
-        
+
         let data = {};
         this.barData.detail.forEach((item) => {
           if (item.value === params.value) {

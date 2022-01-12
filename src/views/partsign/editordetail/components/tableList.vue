@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-11-23 15:31:29
+ * @LastEditTime: 2021-12-05 00:15:17
  * @LastEditors:  
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
@@ -11,14 +11,14 @@
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="55" :fixed="fixed" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center"  v-if='item.editable' :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
+      <el-table-column :key="$index" align="center" v-if='$slots[item.props] && item.editable' :label="showName ? (lang ? language(item.key, item.name) : $t(item.key)) : item.name" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
         <template slot-scope="scope">
-          <iInput v-if="item.type === 'input'" v-model="scope.row[item.props]" @blur="getIndex(scope.$index,scope.row[item.props])" @input="isNum($event,scope.row[item.props],scope.$index)" ></iInput>
+          <iInput v-if="item.type === 'input'" v-model="scope.row[item.props]" @click.native.stop></iInput>
         </template>
       </el-table-column>
-      <el-table-column :key="$index" align="center"  v-else :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
+      <el-table-column :key="$index" align="center" v-else :label="showName ? (lang ? language(item.key, item.name) : $t(item.key)) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :render-header="item.renderHeader">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
-          <slot :name="item.props" :row="scope.row"></slot>
+          <slot :name="item.props" :row="scope.row" :$index="scope.$index"></slot>
         </template>
       </el-table-column>
     </template>
@@ -69,12 +69,16 @@ export default {
       type: Boolean,
       default: false
     },
+    showName: {
+      type: Boolean,
+      default: false
+    },
     fixed: {
       type: Boolean,
       default: false
     },
     selectable: { type: Function },
-    spanMethod: { type: Function },
+    spanMethod: { type: Function }
   },
   components:{
     iInput
@@ -122,12 +126,6 @@ export default {
     },
     handleRowClick(row, column, event) {
       this.$emit("handleRowClick", row, column, event)
-    },
-    getIndex(index,row){
-      this.$emit("getIndex",index,row)
-    },
-    isNum(val,key,index) {
-      this.$emit("isNum",val,key,index)
     }
   }
 }

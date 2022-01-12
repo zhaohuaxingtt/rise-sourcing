@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-07 09:24:10
+ * @LastEditors:  
+ * @LastEditTime: 2021-12-01 18:21:59
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -13,15 +13,15 @@
       <span class="font18 font-weight">{{language('DINGDIANXINXI','定点信息')}}</span>
       <div class="floatright">
         <!--------------------纸质RS单----------------------------------->
-        <iButton @click="changersPaperDialogVisible(true)">{{language('ZHIZHIRSDAN','纸质RS单')}}</iButton>
+        <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_PAPERRSSHEET|定点信息-纸质RS单" @click="changersPaperDialogVisible(true)">{{language('ZHIZHIRSDAN','纸质RS单')}}</iButton>
         <!--------------------电子RS单----------------------------------->
-        <iButton @click="changersEeditionDialogVisible(true)">{{language('DIANZIRSDAN','电子RS单')}}</iButton>
+        <iButton  v-permission.auto="PARTSPROCURE_DESIGNATEINFO_ELECTRONICRSSHEET|定点信息-电子RS单" @click="changersEeditionDialogVisible(true)">{{language('DIANZIRSDAN','电子RS单')}}</iButton>
         <!--------------------SEL分摊单----------------------------------->
-        <iButton @click="changeselDialogVisible(true)">{{language('SELFENTANDAN ','SEL分摊单')}}</iButton>
+        <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_SELALLOCATIONSHEET|定点信息-SEL分摊单" @click="changeselDialogVisible(true)">{{language('SELFENTANDAN ','SEL分摊单')}}</iButton>
         
       </div>
     </div>
-    <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" />
+    <tableList v-permission.auto="PARTSPROCURE_DESIGNATEINFO_TABLE|定点信息-表格"  :selection="false" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" />
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>

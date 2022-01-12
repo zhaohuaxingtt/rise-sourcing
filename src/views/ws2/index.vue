@@ -21,7 +21,7 @@
           :dataBaseInit="dataBaseInit"
           :navList="budgetManagement3rd"
           :isIconShow="isIconShow"
-          hoverText="历史数据库"
+          :hoverText="$t('MOULDADD.LK_LISHISHUJUKU')"
           @nextStep="nextStep"
           @changeDataBase="$refs.iNavMvpRef.activeIndex = 999"
       ></iNavWS2>
@@ -32,7 +32,7 @@
     <!------------------------------------------------------------------------>
     <!--                  内容                                  --->
     <!------------------------------------------------------------------------>
-    <iDialog title="您还没有选择参考车型项目，是否继续?" :visible.sync="nextStepvalue" width="381px" top="0s" @close='clearDiolog'
+    <iDialog :title="$t('MOULDADD.LK_SHIFOUJIXU')" :visible.sync="nextStepvalue" width="381px" top="0s" @close='clearDiolog'
              v-loading="iDialogLoading" class="iDialogNextStep">
       <span slot="footer" class="dialog-footer">
         <iButton @click="nextStepvalue = false">{{ $t('LK_QUXIAO') }}</iButton>
@@ -79,7 +79,8 @@ export default {
           ...item,
           value: index + 1
         }))
-        this.budgetManagement3rd = this.filterRoutePermission(list);
+        // this.budgetManagement3rd = this.filterRoutePermission(list);
+        this.budgetManagement3rd = list;
       },
     },
   },
@@ -99,11 +100,14 @@ export default {
   },
   computed: {
     newTableTitle: () => {
-      const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
-      const ksy2 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_DETAILS'];  //  是否有详情页权限
+      const codes = ['SOURCINGTZGLY', 'KCNTZGLY'];  //  JV和扩产能code
+      const roleList = store.state.permission.roleList;
+      // const ksy1 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_TOTAL'];  //  是否有汇总页面权限
+      // const ksy2 = store.state.permission.whiteBtnList['TOOLING_BUDGET_BAAPPLICATION_DETAILS'];  //  是否有详情页权限
       const list = tabtitle.map(item => {
         if(item.activePath === '/tooling/baApplyIndex'){ //  ba申请
-          const url = ksy1 ? '/tooling/baApplyIndex' : (!ksy1 && !ksy2 ? '/views/404' : '/tooling/modelDetails');
+          const isKey = roleList.some(item => codes.includes(item));
+          const url = isKey ? '/tooling/modelDetails' : '/tooling/baApplyIndex';
           item.activePath = url;
           item.url = url;
         }

@@ -16,9 +16,10 @@
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
           :index="true"
-          open-page-props="ninePartNum"
+          open-page-props="rfqPlanId"
           @openPage="openPage"
           :openPageGetRowData="true"
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TABLE|零件产量表格"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
@@ -100,9 +101,9 @@ export default {
               return item
             })
           }
-          this.page.currPage = res.data.pageNum
-          this.page.pageSize = res.data.pageSize
-          this.page.totalCount = res.data.total
+          // this.page.currPage = res.data.pageNum
+          // this.page.pageSize = res.data.pageSize
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -123,29 +124,21 @@ export default {
         const router =  this.$router.resolve({path: '/sourceinquirypoint/sourcing/accessorypartdetail', query: { spNum: row.rfqPlanId }})
         window.open(router.href,'_blank')
       } else {
-        const rfqId = this.$route.query.id;
-        const rfqPlanId = row.rfqPlanId;
-        const id = row.purchaseProjectId;
-        const purchasingRequirementId = row.purchasingRequirementId
-        const partNum = row.ninePartNum
-        const categoryCode = row.categoryCode
-        const purchasingRequirementObjectId = row.purchasingRequirementObjectId
-        const tab = 'outputPlan'
-
-        const req = {
-          rfqId,
-          rfqPlanId,
-          id,
-          purchasingRequirementId,
-          categoryCode,
-          purchasingRequirementObjectId,
-          partNum,
-          tab
-        }
-        // const params = serialize(req)
-        this.$router.push({
-          path: `/sourceinquirypoint/sourcing/partsprocure/editordetail?item=${JSON.stringify(req)}`
+        const partsPro = this.$router.resolve({
+          path:'/sourceinquirypoint/sourcing/partsprocure/editordetail',
+          query: {
+            rfqId: this.$route.query.id,
+            rfqPlanId: row.rfqPlanId,
+            projectId: row.purchaseProjectId,
+            businessKey: row.partProjectType,
+            purchasingRequirementId: row.purchasingRequirementId,
+            partNum: row.ninePartNum,
+            categoryCode: row.categoryCode,
+            purchasingRequirementObjectId: row.purchasingRequirementObjectId,
+            tab : 'outputPlan'
+          }
         })
+        window.open(partsPro.href,"_blank")
       }
     }
   }

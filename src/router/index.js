@@ -1,10 +1,10 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-11-06 15:05:44
+ * @LastEditTime: 2021-12-30 17:41:13
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
- * @FilePath: \front-web\src\router\index.js
+ * @FilePath: \front-sourcing\src\router\index.js
  *
  */
 /* eslint-disable no-undef */
@@ -13,9 +13,6 @@
 // 定点管理
 import designateRoutes from './modules/designate'
 import createpartsRoutes from './modules/createparts'
-import costanalysismanageRoutes from './modules/costanalysismanage'
-import supplierscoreRoutes from './modules/supplierscore'
-import financialtargetpriceRoutes from './modules/financialtargetprice'
 import negotiationAssistant from './modules/negotiationAssistant'
 import aekoRoutes from './modules/aeko'
 import projectRoutes from './modules/project'
@@ -25,8 +22,9 @@ import mek from './modules/mek'
 import ws2 from './modules/ws2'
 import reportmanage from './modules/reportmanage'
 import sourceInquirypoint from './modules/sourceInquirypoint'
-import modeltargetpriceRoutes from './modules/modeltargetprice'
 import biddingRouter from './modules/biddingManage'
+import targetPriceAndScoreRoutes from './modules/targetPriceAndScore'
+import scoreConfig from './modules/scoreConfig'
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
 
@@ -38,7 +36,7 @@ export const staticRouter = [
 		path: '/',
 		name: 'index',
 		component: () => import('@/layout/default'),
-		redirect: '/sourceinquirypoint',
+		redirect: '/sourcing/dashboard',
 		children: [
 			{
 				path: '/index',
@@ -97,6 +95,7 @@ export const staticRouter = [
 						name: 'investmentAdminPayBlock',
 						meta: {
 							title: '付款看板',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/payBlock`),
 					},
@@ -105,6 +104,7 @@ export const staticRouter = [
 						name: 'investmentAdminYearlyPlan',
 						meta: {
 							title: '年度计划',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/yearlyPlan`),
 					},
@@ -113,6 +113,7 @@ export const staticRouter = [
 						name: 'investmentAdminMonthlyPlan',
 						meta: {
 							title: '月度计划',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentAdmin/monthlyPlan`),
 					},
@@ -126,6 +127,7 @@ export const staticRouter = [
 						name: 'carTypeOverview',
 						meta: {
 							title: '生成投资清单',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/carTypeOverview`),
@@ -135,6 +137,7 @@ export const staticRouter = [
 						name: 'generateInvestmentList',
 						meta: {
 							title: '生成投资清单',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/generateInvestmentList`),
@@ -144,6 +147,7 @@ export const staticRouter = [
 						name: 'investmentListJV',
 						meta: {
 							title: '投资清单JV',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/investmentListJV`),
@@ -153,6 +157,7 @@ export const staticRouter = [
 						name: 'investmentListCommon',
 						meta: {
 							title: '投资清单Common',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/investmentListCommon`),
@@ -162,6 +167,7 @@ export const staticRouter = [
 						name: 'commonSourcing',
 						meta: {
 							title: 'commonSourcing',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () =>
 							import(`@/views/ws2/budgetManagement/commonSourcing/index`),
@@ -171,6 +177,7 @@ export const staticRouter = [
 						name: 'baApplyIndex',
 						meta: {
 							title: 'BA申请',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/baApply`),
 					},
@@ -179,6 +186,7 @@ export const staticRouter = [
 						name: 'baApprovalIndex',
 						meta: {
 							title: 'BA审批',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/baApproval`),
 					},
@@ -188,6 +196,7 @@ export const staticRouter = [
 						name: 'dataBase',
 						meta: {
 							title: '历史数据库',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/dataBase`),
 					},
@@ -197,6 +206,7 @@ export const staticRouter = [
 						name: 'budgetApproval',
 						meta: {
 							title: '预算审批',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/budgetApproval`),
 					},
@@ -205,6 +215,7 @@ export const staticRouter = [
 						name: 'bmApplyIndex',
 						meta: {
 							title: 'BM申请',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/bmApply`),
 					},
@@ -213,6 +224,7 @@ export const staticRouter = [
 						name: 'carTypeProOverview',
 						meta: {
 							title: '车型项目概览',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentReport`),
 					},
@@ -221,11 +233,21 @@ export const staticRouter = [
 						name: 'investmentReport',
 						meta: {
 							title: '投资报告',
+							activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 						},
 						component: () => import(`@/views/ws2/investmentReport`),
 					},
 				],
 			},
+			{
+        path: '/tooling/investmentReport/rsDetails',
+        name: 'investmentReportRsDetails',
+        meta: {
+          title: 'RS单号详情',
+					activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
+        },
+        component: () => import (`@/views/ws2/rsDetails`),
+      },
 			{
 				path: '/ws3-register',
 				name: '/ws3Register',
@@ -235,19 +257,23 @@ export const staticRouter = [
 			{
 				path: '/partsfp/automaticallyassignde', //管理员看到的，手动分配配件任务。
 				name: '/ws3Register',
+				meta: {
+					title: '配件自动分配科室',
+				},
 				component: () => import('@/views/AutomaticallyAssignDe'),
 			},
-			{
-				path: '/configscoredept',
-				name: 'configscoredept',
-				meta: { title: '配置评分部门' },
-				component: () => import('@/views/configscoredept'),
-			},
+			// {
+			// 	path: '/targetpriceandscore/configscoredept',
+			// 	name: 'configscoredept',
+			// 	meta: { title: '配置评分部门' },
+			// 	component: () => import('@/views/configscoredept'),
+			// },
 			{
 				path: '/tooling/budgetManagement/addModelBag',
 				name: 'addModelBag',
 				meta: {
 					title: 'addModelBag',
+					activeMenu: ['RISE_WORKBENCH', 'TOOLSMANAGE_FINDKEY']
 				},
 				component: () =>
 					import(`@/views/ws2/budgetManagement/commonSourcing/addModelBag`),
@@ -287,7 +313,19 @@ export const staticRouter = [
 			{
 				path: '/partsfp/automaticallyassignde', //管理员看到的，手动分配配件任务。
 				name: '/ws3Register',
+				meta: {
+					title: '配件自动分配科室',
+				},
 				component: () => import('@/views/AutomaticallyAssignDe'),
+			},
+			{	
+				// 暂时放在souring下 后面会移动到portal
+				path: '/demo/partsconfig',
+				name: 'partsconfig',
+				meta: {
+					title: '零件采购项目类型配置',
+				},
+				component: () => import('@/views/demo/partsItemConfig'),
 			},
 		],
 	},
@@ -316,6 +354,23 @@ export const staticRouter = [
 		component: () => import('@/views/login'),
 	},
 	{
+			path:'/sourceinquirypoint/sourcing/previewfssugs',
+			name:'谈判助手-预览界面',
+			meta:{
+					title:'谈判助手-预览界面',
+					activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+			},
+			component:()=> import("@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz/preview.vue")
+	},
+	{
+		path: '/sourceinquirypoint/designate/decisiondata/exportPdf',
+		name: '决策资料导出PDF',
+		meta: {
+			title: '决策资料导出PDF'
+		},
+		component: () => import('@/views/designate/designatedetail/decisionData/exportPdf/index.vue')
+	},
+	{
 		path: '*',
 		name: '404',
 		meta: {
@@ -326,15 +381,11 @@ export const staticRouter = [
 ]
 
 // eslint-disable-next-line no-undef
-export default new VueRouter({
+const router = new VueRouter({
 	routes: [
 		...staticRouter,
 		...designateRoutes,
 		...createpartsRoutes,
-		...costanalysismanageRoutes,
-		...supplierscoreRoutes,
-		...financialtargetpriceRoutes,
-		...financialtargetpriceRoutes,
 		//谈判助手
 		...negotiationAssistant,
 		...aekoRoutes,
@@ -351,9 +402,19 @@ export default new VueRouter({
 		...reportmanage,
 		// 询源于定点
 		...sourceInquirypoint,
-		// 模具目标价
-		...modeltargetpriceRoutes,
 		// bidding 相关
 		...biddingRouter,
+		...targetPriceAndScoreRoutes,
+		...scoreConfig,
 	],
 })
+
+router.afterEach(() => {
+	// Remove initial loading
+	const appLoading = document.getElementById('app-loading')
+	if (appLoading) {
+		appLoading.style.display = 'none'
+	}
+})
+
+export default router

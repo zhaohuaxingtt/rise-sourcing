@@ -40,7 +40,7 @@
                 >
               </div>
               <template v-else>
-                <iButton :class="{ active: actived === 1 }">{{language('BIDDING_JIBENXINXI', '基本信息')}}</iButton>
+                <iButton :class="{ active: actived === 1 }">{{language('BIDDING_JICHUXINXI', '基础信息')}}</iButton>
                 <iButton :class="{ active: actived === 2 }">{{language('BIDDING_XIANGMUXINXI', '项目信息')}}</iButton>
                 <iButton :class="{ active: actived === 3 }">{{language('BIDDING_BAOJIAGUIZE', '报价规则')}}</iButton>
               </template>
@@ -99,8 +99,9 @@ export default {
   },
   computed: {
     title() {
-      const { rfqCode, projectCode } = this.ruleForm || {};
-      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode}` : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode}`;
+      const { rfqCode, projectCode,roundType,isTest } = this.ruleForm || {};
+      return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode} ${ isTest ?  `${this.language('BIDDING_CESHI','（测试）')}`: `${this.language('BIDDING_ZHENGSHI','（正式）')}`}` 
+              : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode} ${ isTest ?  `${this.language('BIDDING_CESHI','（测试）')}`: `${this.language('BIDDING_ZHENGSHI','（正式）')}`}`;
     },
     role() {
       return this.$route.meta.role;

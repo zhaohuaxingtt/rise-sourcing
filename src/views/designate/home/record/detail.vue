@@ -2,12 +2,12 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 19:56:57
- * @LastEditTime: 2021-11-05 10:27:30
+ * @LastEditTime: 2021-12-01 16:41:58
  * @LastEditors:  
 -->
 <template>
   <iPage v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_PAGE|定点记录详情">   
-    <topComponents>
+    <topComponents :logModuleName="'定点明细'" :logBizIdKey="'id'" optionDicKey2="定点申请详情页">
       <span slot="left" class="floatleft font20 font-weight">
         {{language('DINGDIANMINGXI','定点明细')}}
       </span>
@@ -32,6 +32,7 @@
         v-loading="tableLoading"
         :selection="false"
         @openPage="openPage"
+        v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_DETAIL_TABLE|定点记录详情-表格"
         >
 
         <template #ltc="scope">
@@ -112,11 +113,14 @@ export default {
       let  designateType =this.$route.query.designateType
       let  partProjType =this.$route.query.partProjType
       const openPageRs = this.$router.resolve({
-        path:'/designate/decisiondata/rs',
+        path:'/rspreview/view',
         query:{
+          route: 'force',
+          isPreview: 1,
           desinateId,
           designateType,
           partProjType,
+          businessKey:partProjType
         }
       })
       window.open(openPageRs.href,'_blank')
@@ -127,7 +131,6 @@ export default {
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
         const list = row.filter((item)=> item.priceReduceRate!='0');
-        console.log(list,'---------------------------');
         return list.length ? list[0].yearMonths : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0

@@ -117,7 +117,7 @@
                       v-for="(item, index) in biddingStatue"
                       :key="index"
                       :value="item.value"
-                      :label="item.name"
+                      :label="language(item.key, item.name)"
                     >
                     </el-option>
                   </iSelect>
@@ -291,7 +291,7 @@
                     v-for="(item, index) in biddingType"
                     :key="index"
                     :value="item.value"
-                    :label="item.label"
+                    :label="language(item.key, item.label)"
                   >
                   </el-option>
                 </iSelect>
@@ -356,7 +356,7 @@
                     v-for="(item, index) in biddingStatue"
                     :key="index"
                     :value="item.value"
-                    :label="item.name"
+                    :label="language(item.key, item.name)"
                   >
                   </el-option>
                 </iSelect>
@@ -612,7 +612,7 @@ export default {
     totalPrices() {
       let totalPrices = this.ruleForm.totalPrices || 0;
       let unit = this.currencyMultiples(this.ruleForm?.currencyMultiple) || "";
-      return totalPrices + "" + unit;
+      return totalPrices.toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + "" + unit;
     },
     startingPrice() {
       return this.totalPrices + this.currencyMultiple;
@@ -706,13 +706,13 @@ export default {
     minPrice() {
       let unit = this.currencyMultiples(this.ruleForm?.currencyMultiple) || "";
       return this.amplitudeList.minPrice
-        ? this.dividedBeiShu(this.amplitudeList?.minPrice) + unit
+        ? this.dividedBeiShu(this.amplitudeList?.minPrice).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + unit
         : "";
     },
     maxPrice() {
       let unit = this.currencyMultiples(this.ruleForm?.currencyMultiple) || "";
       return this.amplitudeList.maxPrice
-        ? this.dividedBeiShu(this.amplitudeList?.maxPrice) + unit
+        ? this.dividedBeiShu(this.amplitudeList?.maxPrice).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,') + unit
         : "";
     },
     // 幅度
@@ -734,7 +734,7 @@ export default {
         ).toFixed(2);
       } else {
         amp = (
-          ((totalPrices - this.dividedBeiShu(minPrice)) / totalPrices).toFixed(4) * 100
+          ((this.dividedBeiShu(minPrice) - totalPrices) / totalPrices).toFixed(4) * 100
         ).toFixed(2);
       }
       return isNaN(amp) ? "" : amp + "%";
@@ -798,8 +798,7 @@ export default {
       return (biddingStatus == "04" ||
         biddingStatus == "06" ||
         biddingStatus == "07" ||
-        biddingStatus == "08") &&
-        manualBiddingType != "01"
+        biddingStatus == "08") 
         ? true
         : false;
     },
@@ -929,12 +928,13 @@ export default {
       this.handleSearchReset();
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit ) 
     },
     // 荷式时间
     async getCurrentDutchOffer(e) {
@@ -1313,13 +1313,13 @@ html {
 }
 
 .invalidReason {
-  background: #f5f7fa;
+  background-color: #f4f5f6;
   padding: 10px 15px 10px 15px;
   margin-right: 70px;
   transform: translateX(30px);
   height: 59.5px;
   min-height: 59.5px;
-  color: #aaaaaa;
+  color: #000;
   border-radius: 6px;
   font-size: 15px;
   line-height: 15px;

@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-08-25 08:57:38
- * @LastEditTime: 2021-10-19 14:20:18
+ * @LastEditTime: 2021-12-16 15:39:16
  * @LastEditors: Luoshuang
  * @Description: 风险图的配置文件
- * @FilePath: \front-web\src\views\project\progressmonitoring\components\lib\genBarChart.js
+ * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\lib\genBarChart.js
  */
 /**
  * @description: 
@@ -20,7 +20,7 @@ export function generateOptions(params = {}, type = 1) {
             // 正常
             {
                 key: 'value1',
-                name: '正常',
+                name: '无风险',
                 index: 0,
                 style: {
                     color: colors[3],
@@ -30,7 +30,7 @@ export function generateOptions(params = {}, type = 1) {
             // 风险
             {
                 key: 'value2',
-                name: '风险',
+                name: '低风险',
                 index: 1,
                 style: {
                     color: colors[2],
@@ -40,7 +40,7 @@ export function generateOptions(params = {}, type = 1) {
             // 延误
             {
                 key: 'value3',
-                name: '延误',
+                name: '高风险',
                 index: 2,
                 style: {
                     color: colors[1],
@@ -127,7 +127,7 @@ export function generateOptions(params = {}, type = 1) {
     }
     
     const seaiesItem = seaiesList[type] || []
-    
+    console.log('seaiesItem',seaiesItem)
     const seaiesValues = []
     const seaiesData = []
     const assistData = []
@@ -170,14 +170,12 @@ export function generateOptions(params = {}, type = 1) {
         seaiesValues.push(value)
         // 辅助柱子的值
         assistValue = NumAll - diffValue
-        // console.log(item.name, value, assistLineValue, assistLineData, assistLineData[index - 1])
         // 辅助柱状图数据
         assistData.push(assistValue)
         // 辅助线数据
         assistLineData.push(assistLineValue)
     })
     
-
     const option = {
         color: ['#4382FA', '#E30D0D','#FFCA53','#00BF87'],
         tooltip: {
@@ -197,7 +195,7 @@ export function generateOptions(params = {}, type = 1) {
             }
         },
         grid: {
-            left: type === 3 ? 55 : 40,
+            left: type === 2 ? 40 : 55,
             right: 10,
             bottom: 10,
             top: 5,
@@ -290,7 +288,7 @@ export function generateOptions(params = {}, type = 1) {
                 },
                 label: {
                     show: true,
-                    position: 'right',
+                    position: 'insideLeft',
                     textStyle: {
                         fontSize: 10,
                         color: '#000'
@@ -299,7 +297,7 @@ export function generateOptions(params = {}, type = 1) {
                         return seaiesData[params.dataIndex].value !== '0' && params.dataIndex !== seaiesData.length - 2 && Number(seaiesData[params.dataIndex].value) < Number(seaiesData[seaiesData.length - 1].value) * (0.1 * (seaiesData[params.dataIndex].value + '').length) ? seaiesData[params.dataIndex].value : ''
                     }
                 },
-                data: seaiesData.map(item => 0)
+                data: seaiesData.map((item, index) => seaiesData[seaiesData.length - 1].value - (item.value + assistData[index]))
             },
             {
                 name: '辅助线',

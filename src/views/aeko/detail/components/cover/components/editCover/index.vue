@@ -21,7 +21,7 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
       </iButton>
-      <iButton v-if="isTobeStated" @click="getDetail">{{language('LK_ZHONGZHI','重置')}}</iButton>
+      <iButton v-if="isTobeStated" @click="resetCover">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
       <iFormGroup row='4' class="basic-form">
@@ -44,7 +44,7 @@
               v-model="basicInfo[item.props]" 
               :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
               @visible-change="selectVisibleChange($event, item.selectOption)"
-              :disabled="disabled" 
+              :disabled="selectDisabled(item.props)" 
               
             >
               <el-option
@@ -80,7 +80,8 @@
         <!-- 增加材料成本(RMB/⻋) -->
         <template #materialIncrease="scope">
           <div class="table-materialIncrease" style="width:120px">
-            <iInput :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
+            <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled"  :inputValue="scope.row['materialIncrease']" style="width:100px" />
+            <iInput v-else :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
             <!-- <span class="icon-tips" v-if="scope.row.isShowTips">
               <el-tooltip v-if="scope.row['expressionList'].length > 1" placement="top" effect="light" >
                 <div slot="content">
@@ -91,18 +92,21 @@
               </el-tooltip>
 
 
-               <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i> -->
-            </span>
+               <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i>
+            </span> -->
           </div>
             
         </template>
         <!-- 增加投资费⽤(不含税) -->
         <template #investmentIncrease="scope">
-          <iInput :disabled="disabled" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
+          <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled" :inputValue="scope.row['investmentIncrease']" style="width:100px"/>
+          <iInput v-else :disabled="disabled" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
+          
         </template>
         <!-- 其他费⽤(不含税) -->
         <template #otherCost="scope">
-          <iInput :disabled="disabled" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
+          <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled" :inputValue="scope.row['otherCost']" style="width:100px"/>
+          <iInput v-else :disabled="disabled" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
         </template>
         </tableList>
         <p class="bottom-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
@@ -120,6 +124,7 @@ import {
   iInput,
   iSelect,
   iText,
+  iMessage,
 } from 'rise';
 import { previewBaicFrom,coverTableTitleCost } from '../../data'
 import tableList from "../tableList"
@@ -134,7 +139,9 @@ import {
   coverCancel,
   checkAekoContentSubmitState,
   getCoverDetail,
+  resetCover,
 } from '@/api/aeko/detail/cover.js'
+import thousandsFilterInput from 'rise/web/aeko/quotationdetail/components/thousandsFilterInput'
 export default {
     name:'editCover',
     mixins: [pageMixins],
@@ -147,6 +154,7 @@ export default {
       iSelect,
       iText,
       tableList,
+      thousandsFilterInput,
     },
     props:{
       aekoInfo:{
@@ -155,6 +163,11 @@ export default {
       }
     },
     computed:{
+      //eslint-disable-next-line no-undef
+      ...Vuex.mapState({
+            userInfo: state => state.permission.userInfo,
+        }),
+
       // adeko状态已冻结或者已撤销 禁用操作按钮 || 封面状态不为待表态时禁用
       disabled(){
         const { aekoInfo={} ,basicInfo={}} = this;
@@ -165,7 +178,8 @@ export default {
       isTobeStated(){
         const { basicInfo={} } = this;
         return basicInfo.coverStatus == 'TOBE_STATED' || basicInfo.coverStatus == '';
-      }
+      },
+
       
     },
     data(){
@@ -208,58 +222,41 @@ export default {
         this.tableLoading = true;
         const {query} = this.$route;
         const { requirementAekoId =''} = query;
-        const {from='', auditType=''} = query;
-        if(!auditType){
-          await getLinieCoverDetail({requirementAekoId}).then((res)=>{
-            this.tableLoading = false;
-            const { code,data={} } = res;
-            if(code == 200){
-              const {fsId='',coverCostsWithCarType=[]} = data;
-  
-              const costData = cloneDeep(coverCostsWithCarType);
-              costData.map((item)=>{
-                item.investmentIncrease = this.fixNumber(item.investmentIncrease,0) || 0;
-                item.otherCost = this.fixNumber(item.otherCost,0) || 0;
-  
-                
-                item.isShowTips = item.materialIncrease == item.calMaterialIncrease;
-                // 提示计算公式的字符串拆分一下
-                item.expressionList = item.expression ? item.expression.split('<br/>') : [];
-  
-                item.materialIncrease = item.materialIncrease || '';
-  
-                
-              })
+        await getLinieCoverDetail({requirementAekoId}).then((res)=>{
+          this.tableLoading = false;
+          const { code,data={} } = res;
+          if(code == 200){
+            const {fsId='',coverCostsWithCarType=[],fsName} = data;
+
+            const costData = cloneDeep(coverCostsWithCarType);
+            costData.map((item)=>{
+              item.investmentIncrease = this.fixNumber(item.investmentIncrease,0) || 0;
+              item.otherCost = this.fixNumber(item.otherCost,0) || 0;
+
               
-              this.basicInfo = {
-                ...data,
-                coverCostsWithCarType:costData,
-                fsName:fsId
-              };
-  
-              this.tableData = costData;
-            }else{
-              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-            }
-          }).catch((err)=>{
-            this.tableLoading = false;
-          })
-        }else{
-          await getCoverDetail({
-                requirementAekoId,
-                isView:from == 'check' ? 1 :undefined,
-                }).then((res)=>{
-                this.tableLoading=false;
-                const {code,data={}} = res;
-                if(code == 200){
-                    this.basicInfo = data;
-                }else{
-                    iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                }
-            }).catch((err)=>{
-                this.tableLoading = false;
+              item.isShowTips = item.materialIncrease == item.calMaterialIncrease;
+              // 提示计算公式的字符串拆分一下
+              item.expressionList = item.expression ? item.expression.split('<br/>') : [];
+
+              item.materialIncrease = item.materialIncrease || '';
+
+              
             })
-        }
+            
+            this.basicInfo = {
+              ...data,
+              coverCostsWithCarType:costData,
+              fsName:fsId,
+              getFsName:fsName,
+            };
+
+            this.tableData = costData;
+          }else{
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }).catch((err)=>{
+          this.tableLoading = false;
+        })
       },
       // 获取前期采购员下拉列表
       async getSearchUserList(){
@@ -306,8 +303,9 @@ export default {
           ...basicInfo,
           coverCosts:basicInfo.coverCostsWithCarType || [],
           fsId:basicInfo.fsName,
-          fsName:fsName.length ? fsName[0].label : '',
+          fsName:fsName.length ? fsName[0].label : basicInfo.getFsName,
           requirementAekoId,
+          getFsName:undefined,
         }
         this.btnLoading = true;
         if(type == 'submit'){ // 提交
@@ -482,6 +480,27 @@ export default {
           default:
         }
       },
+      
+      // 未保存的情况下 是否相关 字段禁用
+      selectDisabled(type){
+        console.log(type);
+        const { disabled,basicInfo } = this;
+        return disabled || (type == 'isReference' && !basicInfo.aekoCoverId)
+      },
+
+      // 重置
+      resetCover(){
+        const {query} = this.$route;
+        const { requirementAekoId =''} = query;
+        const {userInfo={}} = this;
+        const {deptDTO={}} = userInfo;
+        const data = {
+          requirementAekoId,
+          deptNum:deptDTO.deptNum
+        };
+        this.getDetail();
+        resetCover(data);
+      },
     }
 }
 </script>
@@ -536,6 +555,9 @@ export default {
     content: "*";
     color: #f56c6c;
     margin-right: 4px;
+  }
+  .thousandsFilterInput{
+    margin: 0 auto;
   }
 }
 

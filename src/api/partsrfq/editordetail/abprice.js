@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-19 13:57:20
- * @LastEditTime: 2021-07-19 13:58:10
+ * @LastEditTime: 2022-01-07 14:45:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\partsrfq\editordetail\abprice.js
@@ -22,10 +22,17 @@ export function gsPartsAsRow(mimoId){
       method: 'GET'
   })
 }
-//ab价-供应商轴
-export function fsSupplierAsRow(mimoId){
+//报价分析-供应商轴
+export function fsSupplierAsRow(nomiId='',round='',hideList=[]){
   return nego({
-      url: `/nego-assistant/nego-analysis-summary/nomi-fs-supplier-as-row/${mimoId}`,
-      method: 'GET'
+      url: `/nego-assistant/nego-analysis-summary/analysisSummaryArrayNomi`,
+      //url: `https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/nego-assistant/nego-analysis-summary/fs-supplier-as-row`,
+      method: 'post',
+      data:{
+          hideList:hideList,
+          rfqId:'',
+          nomiId:nomiId,
+          round:round
+      }
   })
 }

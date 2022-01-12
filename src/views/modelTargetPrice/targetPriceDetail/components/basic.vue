@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-23 16:57:45
+ * @LastEditTime: 2022-01-04 19:25:21
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -21,23 +21,24 @@
       <!-----------期望目标价--------------------------->
       <template #expectedTargetPrice="scope">
         <iText v-if="applyType !== '1'">{{scope.row.expectedTargetPrice}}</iText>
-        <span v-else-if="scope.row.businessType == '2' && !scope.row.isEdit">{{scope.row.expectedTargetPrice}}</span>
-        <iInput v-else :value="scope.row.expectedTargetPrice" maxlength="10" @input="handleInput($event, scope.row, 'expectedTargetPrice')" />
+        <span v-else-if="scope.row.businessType == '2' && !scope.row.isEdit && !isAgain">{{scope.row.expectedTargetPrice}}</span>
+        <iInput v-else :value="scope.row.expectedTargetPrice" :disabled="isAgain && !isAgainEdit" maxlength="8" @input="handleInput($event, scope.row, 'expectedTargetPrice')" />
       </template>
       <!-----------目标价--------------------------->
       <template #targetPrice="scope">
-        <iText v-if="applyType !== '2'">{{scope.row.targetPrice}}</iText>
+        <iInput v-if="applyType === '3'" :value="scope.row.targetPrice" maxlength="8" @input="handleInput($event, scope.row, 'targetPrice')" />
+        <iText v-else-if="applyType !== '2'">{{scope.row.targetPrice}}</iText>
         <span v-else-if="!scope.row.expectedTargetPrice && !scope.row.isEdit">{{scope.row.targetPrice}}</span>
-        <iInput v-else :value="scope.row.targetPrice" maxlength="10" @input="handleInput($event, scope.row, 'targetPrice')" />
+        <iInput v-else :value="scope.row.targetPrice" maxlength="8" @input="handleInput($event, scope.row, 'targetPrice')" />
       </template>
       <!-----------操作--------------------------->
       <template #operation="scope">
         <template v-if="applyType === '1'">
           <!-----------类型为再申请-------------------------->
-          <span @click.stop="$set(scope.row, 'isEdit', true)" v-if="scope.row.businessType == '2' && !scope.row.isEdit" class="cursor link">{{language('ZAISHENQING','再申请')}}</span>
-          <span @click.stop="handleCancel(scope.row, 'expectedTargetPrice')" v-if="scope.row.businessType == '2' && scope.row.isEdit" class="cursor link">{{language('QUXIAO','取消')}}</span>
+          <!-- <span @click.stop="$set(scope.row, 'isEdit', true)" v-if="scope.row.businessType == '2' && !scope.row.isEdit" class="cursor link">{{language('ZAISHENQING','再申请')}}</span>
+          <span @click.stop="handleCancel(scope.row, 'expectedTargetPrice')" v-if="scope.row.businessType == '2' && scope.row.isEdit" class="cursor link">{{language('QUXIAO','取消')}}</span> -->
           <!-----------类型为新申请-------------------------->
-          <span v-else ></span>
+          <span ></span>
         </template>
         <template v-else-if="applyType === '2'">
           <!-----------已有目标价，不在这次申请列表里-------------------------->
@@ -62,7 +63,9 @@ export default {
   props: {
     rfqId: {type:String},
     taskId: {type:String},
-    applyType: {type:String}
+    applyType: {type:String},
+    isAgainEdit: {type:Boolean},
+    isAgain: {type:Boolean}
   },
   components: {iCard, iText, tableList, iInput},
   watch: {
@@ -95,7 +98,7 @@ export default {
       const formData = new FormData()
       formData.append('file', content.file)
       // formData.append('applicationName', 'procurereq-service')
-      importBatchMaintain(formData)
+      importBatchMaintain(formData, this.taskId)
         .then(res => {
           this.fileSuccess(res)
         })
@@ -175,20 +178,23 @@ export default {
       // }
       this.$emit('changeSubmitLoading', true)
       if (this.applyType === '1') {
+        console.log(this.tableData)
         const params = {
           remarks: this.remarks,
           rfqId: this.rfqId,
           toolingTargetPrices: this.tableData.map(item => {
             return {
               ...item,
-              expectedTargetPrice: item.businessType == 2 ? item.isEdit ? !item.expectedTargetPrice || item.expectedTargetPrice === '' ? 0 : item.expectedTargetPrice : Number(item.originalTargetPrice).toFixed() : !item.expectedTargetPrice || item.expectedTargetPrice === '' ? 0 : item.expectedTargetPrice
+              expectedTargetPrice: item.expectedTargetPrice ? item.expectedTargetPrice : item.businessType == 2 && item.expectedTargetPrice != 0 ? item.originalTargetPrice == '-' ? 0 : item.originalTargetPrice : item.expectedTargetPrice || 0,
+              originalTargetPrice: item.originalTargetPrice === '-' ? -1 : item.originalTargetPrice
             }
           })
         }
+        console.log('params',params)
         submitApplyTargetPrice(params).then(res => {
           if (res?.result) {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-            this.gotoQuery()
+            // this.gotoQuery()
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
@@ -249,7 +255,7 @@ export default {
       window.open(router.href,'_blank')
     },
     gotoQuery() {
-      this.$router.push('/modeltargetprice/query')
+      this.$router.push('/targetpriceandscore/modeltargetprice/query')
     },
     /**
      * @Description: 获取目标价申请列表
@@ -260,6 +266,8 @@ export default {
     getDetail() {
       this.loading = true
       if (this.applyType === '1') {
+        if (!this.rfqId) return
+
         getTaskPartListRfq(this.rfqId).then(res => {
           if (res?.result) {
             this.tableData = res.data || []

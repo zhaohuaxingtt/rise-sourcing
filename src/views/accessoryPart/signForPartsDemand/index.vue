@@ -2,20 +2,17 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:48:29
+ * @LastEditTime: 2021-12-10 15:46:15
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" v-permission.auto="APREPART_SIGN_PAGE|配件-配件签收-页面">
+  <iPage class="signForParts">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('XUNYUANZHIHANG','寻源执行')" name="source"> -->
         <div>
-          <div class="topMenu">
-            <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-            <iNavMvp class="margin-bottom30" @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
-          </div>
+          <headerNav />
           <!----------------------------------------------------------------->
           <!---------------------------搜索区域------------------------------->
           <!----------------------------------------------------------------->
@@ -23,7 +20,7 @@
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
-                  <el-option v-if="item.value == 'showSelf'" value="" :label="language('ALL','全部')"></el-option>
+                  <!-- <el-option v-if="item.value == 'showSelf'" value="" :label="language('ALL','全部')"></el-option> -->
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -32,6 +29,7 @@
                   </el-option>
                 </iSelect> 
                 <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
+                <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
                 <iInput v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
             </el-form>
@@ -47,10 +45,10 @@
                   <iButton @click="signAccessory" :loading="signLoading" v-permission.auto="APREPART_SIGN_SIGN|配件-配件签收-签收">{{language('QIANSHOU','签收')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
                   <iButton @click="changebackDialogVisible(true)" v-permission.auto="APREPART_SIGN_BACKEPS|配件-配件签收-退回EPS">{{language('TUIHUIEPS','退回EPS')}}</iButton>
-                  <!--------------------分配询价科室按钮----------------------------------->
-                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDDEPT|配件-配件签收-分配询价科室">{{language('FENPEIXUNJIAKESHI','分配询价科室')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_SIGN_SENDBUYER|配件-配件签收-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
+                  <!--------------------分配Linie按钮----------------------------------->
+                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDLINIE|配件-配件管理-分配Linie" >{{language('FENPEILINIE','分配Linie')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
@@ -71,13 +69,13 @@
                 />
           </iCard>
           <!------------------------------------------------------------------------>
-          <!--                  分配询价科室弹窗                                   --->
+    <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" />
+          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible"  @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId" @init="init"/>
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" />
+          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" :idList="selectBuyerPartId" @init="init" :hasUpdateStatus='true' />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
@@ -90,12 +88,13 @@
 </template>
 
 <script>
-import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp } from 'rise'
+import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
+import headerNav from '@/components/headerNav'
 import tableList from '../../designate/designatedetail/components/tableList'
-import { tableTitle, searchList, TAB} from '../signForPartsDemand/data'
-import assignInquiryDepartmentDialog from './components/assignInquiryDepartment'
-import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
+import { tableTitle, searchList, TAB,navManagingDemandList} from '../signForPartsDemand/data'
+import assignInquiryDepartmentDialog from '@/views/accessoryPart/integratedManage/components/distributionLinie'
+import assignInquiryBuyerDialog from '@/views/accessoryPart/integratedManage/components/distributionBuyer'
 import backDialog from '../integratedManage/components/backEps'
 import { getAccessoryOneInfoList, signAccessoryInfo, sendAccessoryInfo, downLoadAccessoryList, backEPS } from '@/api/accessoryPart/index'
 import { uniq } from 'lodash'
@@ -112,7 +111,7 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, iMultiLineInput, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp, headerNav },
   data() {
     return {
       tableData: [],
@@ -120,12 +119,14 @@ export default {
       tableLoading: false,
       searchList: searchList,
       searchParams: {
+        partNumFuzzySearch: '',
         carType: '',
         carProject: '',
         state: '',
         csfUserDept: '',
         csfUserId: '',
-        showSelf: true
+        sendDate: null
+        // showSelf: true
       },
       inquiryDialogVisible: false,
       buyerDialogVisible: false,
@@ -136,12 +137,14 @@ export default {
         yesOrNoOption: [{value: '1', label: this.language('YES','是')},{value: '0', label: this.language('NO','否')}],
         cartypeProjectOptions: [],
         cartTypeOptions: [],
-        trueOrFalseOption: [{value: true, label: this.language('YES','是')},{value: false, label: this.language('NO','否')}]
+        trueOrFalseOption: [{value: true, label: this.language('YES','是')},{value: false, label: this.language('NO','否')}],
+        // linieStatusOption:[]
       },
       selectDeptId: '',
       downloadLoading: false,
       signLoading: false,
       list: TAB,
+      navManagingDemandList,
     }
   },
   created() {
@@ -149,7 +152,7 @@ export default {
     this.updateNavList
   },
   computed: {
-    ...mapState(["navList","navListLeft"]),
+    ...mapState(["navList"]),
     ...mapActions(["updateNavList"])
   },
   methods: {
@@ -206,6 +209,7 @@ export default {
           this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
             return { value: item.code, label: item.name }
           })
+          this.selectOptions.linieStatusOption.unshift({value: '', label: this.language('all','全部')})
         }
       })
     },
@@ -217,7 +221,8 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STATE')
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_SIGN_STATE')
+      this.getDictionary('linieStatusOption', 'LINIE_APPORTION_STATUS')
     },
     /**
      * @Description: 车型项目下拉框
@@ -269,15 +274,17 @@ export default {
       this.downloadLoading = false
     },
     openInquiryDialog() {
-      if (this.selectParts.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
-        return
-      }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
-      if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
-        iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
-        return
-      }
+      // if (this.selectParts.length < 1) {
+      //   iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
+      //   return
+      // }
+      // // eslint-disable-next-line no-undef
+      const selectPartsDept = _.uniq(this.selectParts.map(item => item.csfuserDept))
+      // eslint-disable-next-line no-undef
+      this.selectliniePartId = _.uniq(this.selectParts.map(item => item.id))      // if (selectPartsDept.length !== 1 || selectPartsDept[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEWEIFENPEIBUMENDEPEIJIAN','请选择未分配部门的配件'))
+      //   return
+      // }
       this.changeInquiryDialogVisible(true)
     },
     /**
@@ -287,24 +294,29 @@ export default {
      * @return {*}
      */    
     openBuyerDialog() {
-      if (this.selectParts.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
-        return
-      }
-      const selectPartsDept = uniq(this.selectParts.map(item => item.csfuserDept))
-      const selectPartsUser = uniq(this.selectParts.map(item => item.csfuserId))
-      if (selectPartsDept.length !== 1) {
-        iMessage.warn(this.language('QINGXUANZEXIANGTONGBUMENDEPEIJIAN','请选择相同部门的配件'))
-        return
-      }
-      if (!selectPartsDept[0]) {
-        iMessage.warn(this.language('QINGXUANZEYOUBUMENDEPEIJIAN','请选择有部门的配件'))
-        return
-      }
-      if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
-        iMessage.warn(this.language('QINGXUANZEWEIFENPEICAIGOUYUANDEPEIJIAN','请选择未分配采购员的配件'))
-        return
-      }
+      // if (this.selectParts.length < 1) {
+      //   iMessage.warn(this.language('QINGXUANZEPEIJIAN','请选择配件'))
+      //   return
+      // }
+  // eslint-disable-next-line no-undef
+      const selectPartsDept = _.uniq(this.selectParts.map(item => item.csfuserDept))
+      // eslint-disable-next-line no-undef
+      const selectPartsUser = _.uniq(this.selectParts.map(item => item.csfuserId))
+       // eslint-disable-next-line no-undef
+       this.selectBuyerPartId = _.uniq(this.selectParts.map(item => item.id))
+
+      // if (selectPartsDept.length !== 1) {
+      //   iMessage.warn(this.language('QINGXUANZEXIANGTONGBUMENDEPEIJIAN','请选择相同部门的配件'))
+      //   return
+      // }
+      // if (!selectPartsDept[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEYOUBUMENDEPEIJIAN','请选择有部门的配件'))
+      //   return
+      // }
+      // if (selectPartsUser.length !== 1 || selectPartsUser[0]) {
+      //   iMessage.warn(this.language('QINGXUANZEWEIFENPEICAIGOUYUANDEPEIJIAN','请选择未分配采购员的配件'))
+      //   return
+      // }
       this.selectDeptId = selectPartsDept[0]
       this.changeBuyerDialogVisible(true)
     },
@@ -392,12 +404,14 @@ export default {
      */    
     reset() {
       this.searchParams = {
+        partNumFuzzySearch: '',
         carType: '',
         carProject: '',
         state: '',
         csfUserDept: '',
         csfUserId: '',
-        showSelf: true
+        sendDate: null
+        // showSelf: true
       }
       this.sure()
     },
@@ -461,7 +475,7 @@ export default {
     },
     sure() {
       this.page.currPage = 1
-      this.searchParams.sendDate = this.searchParams.sendDate ? moment.utc(this.searchParams.sendDate) : null
+      this.searchParams.sendDate = this.searchParams.sendDate ? moment(this.searchParams.sendDate).format('YYYY-MM-DDT00:00:00'): null
       this.getTableList()
     },
     /**

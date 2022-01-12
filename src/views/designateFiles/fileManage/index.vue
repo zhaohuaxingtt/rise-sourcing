@@ -2,20 +2,19 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:41:39
+ * @LastEditTime: 2022-01-06 14:55:01
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
 
 <template>
-  <iPage class="signForParts" v-permission.auto="ACCESSORY_MANAGEMENT_PAGE|附件-附件管理-页面">
+  <iPage class="signForParts">
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
-        <div class="topMenu">
-          <iNavMvp class="margin-bottom30" :list="navListLeft" lang @change="change" :lev="1" routerPage></iNavMvp>
-          <iNavMvp class="margin-bottom30" right routerPage lev="2" :list="navList" @message="clickMessage" />
-        </div>
-        <div>
+
+        <headerNav />
+
+
           <!-- <div class="margin-bottom33">
             <iNavMvp @change="change" right routerPage lev="2" :list="navList" @message="clickMessage" />
           </div> -->
@@ -75,7 +74,7 @@
                   <iButton @click="handleDelete" v-permission.auto="ACCESSORY_MANAGEMENT_DELETE|附件-附件管理-删除">{{language('SHANCHU','删除')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"rfqId"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight"></tableList>
+            <tableList :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight"></tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -114,25 +113,27 @@ import linieDialog from './components/setLinie'
 import backDialog from './components/back'
 import { cloneDeep, uniq } from 'lodash'
 import { getAffixList, updateAffixList, findBuyer, deleteAffix } from '@/api/designateFiles/index'
-import { downloadFile, downloadUdFile } from '@/api/file'
+import { downloadUdFileWithName, downloadUdFile } from '@/api/file'
 import { insertRfqPart as insertRfq } from '@/api/partsrfq/home/index'
 import joinRfqDialog from '@/views/designateFiles/fileManage/components/joinRfq'
 import { getDictByCode } from '@/api/dictionary'
 import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
+import headerNav from '@/components/headerNav'
+import moment from 'moment'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav},
   data() {
     return {
       // 零件项目类型
       partProjTypes,
       tableData: [],
-      tableTitle: tableTitle,
+      // tableTitle: tableTitle,
       tableLoading: false,
       searchList: searchList,
       searchParams: {
@@ -153,7 +154,7 @@ export default {
       selectLinie: '',
       selectLinieDept: '',
       loading: false,
-      options: []
+      options: [],
     }
   },
   created() {
@@ -161,8 +162,14 @@ export default {
     this.updateNavList
   },
   computed: {
-    ...mapState(["navList","navListLeft"]),
-    ...mapActions(["updateNavList"])
+    ...mapState(["navList"]),
+    ...mapActions(["updateNavList"]),
+    tableTitle() {
+      if(this.$store.state.permission.userInfo.isDeptLead && this.$store.state.permission.userInfo.deptDTO.level === 'K3'){
+        return tableTitle
+      }
+      return tableTitle.filter(item => item.key !== 'TUIHUIYUANYIN_JINGUZHANGKEJIAN')
+    }
   },
   methods: {
     sure() {
@@ -358,7 +365,7 @@ export default {
      * @param {*} fileList
      * @return {*}
      */    
-    async handleFileDownload(fileList, list) {
+    async handleFileDownload(fileList, list, row) {
       if (fileList.length < 1) {
         return
       }
@@ -368,7 +375,7 @@ export default {
       //   fileList: fileList
       // }
       // await downloadFile(params)
-      await downloadUdFile(list.map(item => item.uploadId))
+      await downloadUdFileWithName(list.map(item => item.uploadId), `${row.partNum}-${row.spnrNum}-${moment().format('YYYY-MM-DD HH:mm:ss')}`)
       this.tableLoading = false
     },
     /**

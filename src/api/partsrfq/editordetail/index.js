@@ -249,6 +249,14 @@ export function getSupplierProducePlace(params) {
     })
 }
 
+// 获取供应商工厂名称
+export function getSupplierPlantBySupplierId(supplierId) {
+    return requst({
+        url: `/supplier/getSupplierPlantBySupplierId/${ supplierId }`,
+        method: 'GET'
+    })
+}
+
 //报价分析-保存场景布局
 export function negoAnalysisSummaryLayoutSave(layout,layoutType){
     return nego({
@@ -277,10 +285,16 @@ export function gsPartsAsRow(rfqId,round){
 }
 
 //报价分析-供应商轴
-export function fsSupplierAsRow(rfqId,round){
+export function fsSupplierAsRow(rfqId='',round='',hideList=[]){
     return nego({
-        url: `/nego-assistant/nego-analysis-summary/fs-supplier-as-row/${rfqId}/${round}`,
-        method: 'GET'
+        url: `/nego-assistant/nego-analysis-summary/analysisSummaryArray`,
+        //url: `https://www.fastmock.site/mock/5cd3e97d6126b18b5e16f3e499489335/api/nego-assistant/nego-analysis-summary/fs-supplier-as-row`,
+        method: 'post',
+        data:{
+            hideList:hideList,
+            rfqId:rfqId,
+            round:round
+        }
     })
 }
 //分析报价-组合
@@ -368,8 +382,28 @@ export function findRateDeptInfo(params) {
 // 获取目标价
 export function getCfPrice(params) {
     return requst({
-        url: `/cf-price/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
+        url: `/search-cf-price/${ params.rfqId }/${ params.pageSize }/${ params.currPage }`,
         method: 'GET'
+    })
+}
+
+// 获取零件目标价
+export function getCfPriceEffective(params) {
+    return requst({
+        url:`/cf-price-effective/${params.rfqId}/${params.pageSize}/${params.currPage}`,
+        method: 'GET'
+    })
+}
+
+// 获取模具目标价
+export function getMJPriceEffective(params) {
+    return requst({
+        url:`/tooling-target-price-task/search-valid-target-price-page/${params.rfqId}`,
+        method: 'POST',
+        data:{
+            current:params.currPage,
+            size:params.pageSize,
+        },
     })
 }
 
@@ -451,23 +485,99 @@ export function searchABPageExchangeRate(mimoId) {
     })
 }
 //导出excel
-export function exportFSPartsAsRow(rfqId,round) {
+export function exportFSPartsAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-fs-parts-as-row/${rfqId}/${round}`,
-        method:'GET'
+        method:'POST',
+        data:dataList
     })
 }
+
 //导出excel
-export function exportFsSupplierAsRow(rfqId,round) {
+export function exportFsSupplierAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-fs-supplier-as-row/${rfqId}/${round}`,
-        method:'GET'
+        method:'POST',
+        data:dataList
     })
 }
+
 //导出excel
-export function exportGsPartsAsRow(rfqId,round) {
+export function exportGsPartsAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-gs-parts-as-row/${rfqId}/${round}`,
+        method:'POST',
+        data:dataList
+    })
+}
+
+// 导出定点FS横轴零件
+export function exportFSPartsAsRowByNomiId(nomiId, data) {
+    return downLoad({
+        url:`/nego-assistant/export/nomi-fs-parts-as-row/${ nomiId }`,
+        method: 'POST',
+        data
+    })
+}
+
+// 导出定点GS横轴零件接口
+export function exportFsSupplierAsRowByNomiId(nomiId, data) {
+    return downLoad({
+        url:`/nego-assistant/export/nomi-fs-supplier-as-row/${ nomiId }`,
+        method: 'POST',
+        data
+    })
+}
+
+// 导出定点GS横轴零件接口
+export function exportGsPartsAsRowByNomiId(nomiId, data) {
+    return downLoad({
+        url:`/nego-assistant/export/nomi-gs-parts-as-row/${ nomiId }`,
+        method: 'POST',
+        data
+    })
+}
+
+//关联StarMonitor记录
+export function starMonitorList(data) {
+    return requst({
+        url:'/star-monitor/list',
+        method:'POST',
+        data
+    })
+}
+
+//应用关联记录校验
+export function checkInfo(data) {
+    return requst({
+        url:'star-monitor/check',
+        method:'POST',
+        data
+    })
+}
+
+//取消关联StarMonitor
+export function cancelRef(data) {
+    return requst({
+        url:'/star-monitor/cancel',
+        method:'POST',
+        data
+    })
+}
+
+//取消等待StarMonitor定点更新
+export function cancelWaitStarMonitorUpdate(rfqId) {
+    return requst({
+        url:`star-monitor/cancel-wait/${rfqId}`,
+        method:'GET',
+    })
+}
+
+//等待StarMonitor定点更新
+export function waitStarMonitorUpdate(rfqId) {
+    return requst({
+        url:`star-monitor/wait-update/${rfqId}`,
         method:'GET'
     })
+
 }

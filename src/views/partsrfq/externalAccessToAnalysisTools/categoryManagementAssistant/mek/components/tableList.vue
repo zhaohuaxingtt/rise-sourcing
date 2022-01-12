@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-10-09 18:51:25
+ * @LastEditTime: 2022-01-11 17:31:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -14,14 +14,13 @@
            v-if="!preview"
            v-show="reportFlag">
         <div v-if="!editFlag">
-
-          <iButton @click="edit">编辑</iButton>
+          <iButton @click="edit">{{language('BEIZHU','备注')}}</iButton>
         </div>
         <div v-else>
-          <iButton @click="addRow">新增</iButton>
-          <iButton @click="del">删除</iButton>
-          <iButton @click="saveTable">保存</iButton>
-          <iButton @click="cancel">取消</iButton>
+          <iButton @click="addRow">{{language('XINZENG','新增')}}</iButton>
+          <iButton @click="del">{{language('SHANCHU','删除')}}</iButton>
+          <iButton @click="saveTable">{{language('BAOCUN','保存')}}</iButton>
+          <iButton @click="cancel">{{language('QUXIAO','取消')}}</iButton>
         </div>
       </div>
     </template>
@@ -107,7 +106,6 @@ export default {
     },
     gridData: {
       handler (newVal) {
-        
         if (newVal) {
           if (newVal.data) {
             this.tableData = newVal.data
@@ -192,12 +190,11 @@ export default {
     },
     //表格保存
     saveTable () {
-
       this.editFlag = false
       let params = {
         "comparedType": this.$parent.$parent.comparedType,
         "detail": [],
-        "schemeId": this.$parent.$parent.chemeId
+        "schemeId": this.$parent.$parent.schemeId
       }
       this.gridData1.forEach(item => {
         let obj = {
@@ -233,7 +230,7 @@ export default {
       })
       this.gridData1.push(addRowList)
       this.gridData1 = [...this.gridData1]
-      
+
     },
   },
   mounted () {
@@ -249,6 +246,7 @@ export default {
 .titleBox {
   display: flex;
   width: 100%;
-  justify-content: flex-end;
+  flex-direction: row-reverse;
+  /* justify-content: flex-end; */
 }
 </style>

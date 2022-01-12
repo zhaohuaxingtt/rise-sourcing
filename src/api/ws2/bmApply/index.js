@@ -2,6 +2,24 @@ import axios from '@/utils/axios'
 
 const VUE_APP_BMAPPROVE = axios(process.env.VUE_APP_TOOLING + '/bm');
 
+// 获取aeko表态内容
+export function getAekoDetails(parmars) {
+  return VUE_APP_BMAPPROVE({
+      url: '/getAekoDetails',
+      method: 'POST',
+      data: parmars
+  })
+}
+
+// 判断管理员权限
+export function getIsAdmin(parmars) {
+  return VUE_APP_BMAPPROVE({
+      url: '/getIsAdmin',
+      method: 'GET',
+      params: parmars
+  })
+}
+
 // 确认申请
 export function bmConfirm(parmars) {
   return VUE_APP_BMAPPROVE({

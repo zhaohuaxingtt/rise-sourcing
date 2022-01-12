@@ -14,7 +14,7 @@
             v-show="!item.showCode || (item.showCode && (item.showCode).includes(aekoInfo.aekoType))"
             v-for="(item,index) in SearchList" :key="'Search_aeko_partsList'+index" 
             :label="language(item.labelKey,item.label)"
-            v-permission.dynamic="item.permissionKey"
+            v-permission.auto="item.permissionKey"
             >
                 <template v-if="item.type === 'select'" >
                      <aeko-select 
@@ -54,7 +54,12 @@
                         </el-option>
                     </iSelect> 
                 </template>
-                
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
                 <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model.trim="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
@@ -66,8 +71,10 @@
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
-                <iButton v-if="isShowAddPart" :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件" @click="addParts">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
-                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                <template v-if="isShowAddPart">
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件" @click="addParts">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                </template>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI|科室退回" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
             </div>
         </template>
@@ -103,8 +110,9 @@
                     <span v-else @click="assign(scoped.row,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}}</span>
                 </span>
                
+               <!-- coverIsSubmit:封面提交状态不能分派采购员 -->
                 <span 
-                    v-if="isCommodityCoordinator && !scoped.row.isOperate" 
+                    v-if="isCommodityCoordinator && !scoped.row.isOperate && !scoped.row.coverIsSubmit" 
                     class="link-underline" 
                     @click="assign(scoped.row,'linie')"
                 >
@@ -147,6 +155,7 @@ import {
     iButton,
     iPagination,
     iMessage,
+    iMultiLineInput
 } from 'rise';
 import { SearchList, linieSearchList , tableTitle, linieQueryForm, linieTableTitle,commodityTableTitle,checkSearchList } from './data';
 import tableList from "@/views/partsign/editordetail/components/tableList"
@@ -194,6 +203,7 @@ export default {
         aekoSelect,
         addPartsDialog,
         iDicoptions,
+        iMultiLineInput
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -221,7 +231,7 @@ export default {
     created() {
         const roleList = this.roleList;
         this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
-        this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
+        this.isCommodityCoordinator = roleList.includes('AEKOKSXTDY'); // Aeko科室协调员
         this.isLinie = roleList.includes('LINIE') || roleList.includes('ZYCGY'); // 专业采购员
 
         // 判断下多角色情况 若多角色时就判断url的跳转来源
@@ -248,8 +258,6 @@ export default {
             this.SearchList = linieSearchList
             this.tableTitle = linieTableTitle
             this.searchParams = cloneDeep(linieQueryForm)
-            // this.searchParams.linieDeptNum = this.userInfo.deptDTO.nameEn
-            // this.searchParams.buyerName = this.userInfo.nameZh
         } else if (this.isCommodityCoordinator) {
             this.SearchList = SearchList
             this.tableTitle = commodityTableTitle;
@@ -268,9 +276,27 @@ export default {
             this.isLinie = true;
             this.isAekoManager = false;
             this.isCommodityCoordinator = false;
+            this.searchParams = {
+                ...cloneDeep(linieQueryForm),
+                brand:[''],
+            }
+        }else if(from == 'manage'){
+            if(this.isCommodityCoordinator){
+                this.SearchList = SearchList
+                this.tableTitle = commodityTableTitle;
+            }else{
+                this.SearchList = SearchList
+                this.tableTitle = tableTitle;
+            }
+            
+        }else if(from =='stance'){
+            this.SearchList = linieSearchList
+            this.tableTitle = linieTableTitle
             this.searchParams = cloneDeep(linieQueryForm)
+        }else {
+            this.SearchList = []
+            this.tableTitle = []
         }
-
     },
     data(){
         return{
@@ -344,6 +370,15 @@ export default {
                     cartype:[''],
                     linieDeptNumList:[''],
                 };
+            }
+             const {query} = this.$route;
+            const {from=''} = query;
+            // 若从aeko查看跳转过来
+            if(from == 'check'){
+                 this.searchParams = {
+                ...cloneDeep(linieQueryForm),
+                brand:[''],
+                }
             }
 
             this.init()
@@ -510,12 +545,15 @@ export default {
           if(!selectItems.length){
               iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
           }else{
+            const h = this.$createElement;
             this.$confirm(
             this.language('LK_TIPS_SHIFOUSHANCHUGAILINGJIAN','是否删除该零件？'),
             this.language('LK_AEKO_SHANCHULINGJIAN','删除零件'),
             {
                 confirmButtonText: this.language('nominationLanguage.Yes','是'),
                 cancelButtonText: this.language('nominationLanguage.No','否'),
+                cancelButtonClass:'confirmCancelBtn',
+                customClass:'aekoMessageBoxDeleteParts',
             }
             ).then(()=>{
                 this.btnLoading.deleteParts = true;
@@ -569,7 +607,7 @@ export default {
                                 this.assignVisible = true;
                             }
                         }else{ // 采购员分派 
-                            const arr = selectItems.filter((item)=>item.isOperate);
+                            const arr = selectItems.filter((item)=>item.isOperate || item.coverIsSubmit);
                             if(arr.length){
                                 const tips = arr[0].lineIndex + this.language('LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI','行零件已表态,linie无法修改');
                                 return iMessage.warn(tips);
@@ -589,7 +627,7 @@ export default {
                                 this.assignVisible = true;
                             }
                         }else{ // 采购员分派
-                            const arr = selectItems.filter((item)=>item.isOperate);
+                            const arr = selectItems.filter((item)=>item.isOperate || item.coverIsSubmit);
                             if(arr.length){
                                 const arrIndex = arr.map((item)=>item.lineIndex);
                                 const tips = arrIndex.toString() + this.language('LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI','行零件已表态,linie无法修改');
@@ -637,7 +675,7 @@ export default {
                 partNum,
                 partNameZh,
                 buyerName,
-                brand,
+                brandList:(brand.length == 1 && brand[0] === '') ? [] : brand,
                 current: this.page.currPage,
                 size: this.page.pageSize
             })
@@ -708,7 +746,6 @@ export default {
         handleMultipleChange(value, key,multiple) {
             // 单选不处理
             if(!multiple) {
-                console.log('value',value,'key',key,'multiple',multiple);
                 if(!value){
                     const {selectOptionsCopy={}} = this;
                     this.$set(this.selectOptions,key,selectOptionsCopy[key]);
@@ -855,4 +892,12 @@ export default {
             }
         }
     }
+</style>
+<style lang="scss" >
+.aekoMessageBoxDeleteParts{
+    ::v-deep .confirmCancelBtn{
+        float: right;
+        margin-left: 15px;
+    }
+}
 </style>

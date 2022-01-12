@@ -20,6 +20,11 @@
             					<icon symbol class="cursor margin-left8" name="iconzhongyaoxinxitishi" />
         			 	 	</span>
         					</el-tooltip>
+							<!-- 供应商黑名单 -->
+							<supplierBlackIcon
+            					:isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+								:BlackList="scope.row.blackStuffs || []"
+							/>
 						</span>
             			<span v-if="scope.row.supplierNameZh" class="icon-gray  cursor "  @click="openPage(scope.row)">
                 			<icon symbol class="show" name="icontiaozhuananniu" />
@@ -87,6 +92,7 @@
 </template>
 <script>
 	import tablelist from "@/views/partsign/home/components/tableList";
+	import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 	import {icon} from "rise"
 	import {
 		// icon,
@@ -97,6 +103,7 @@
 		components: {
 			icon,
 			iInput,
+			supplierBlackIcon,
 		},
 		props: {
 			...tablelist.props,

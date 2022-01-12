@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 17:44:03
+ * @LastEditTime: 2021-12-09 10:01:22
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\data.js
  */
@@ -11,8 +11,8 @@ export const tableTitle = [
   {props:'sparePartCode',name:'编号', key: "BIANHAO", tooltip: true, width: 100, fixed: "left"},
   {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, width: 120, fixed: "left"},
   {props:'rfqNum',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100, fixed: "left"},
-  {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 140},
-  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 140},
+  {props:'assemblyPartNum',name:'批量供货总成号', key: "PILIANGGONGHUOZONGCHENGHAO", tooltip: true, width: 120, fixed: "left"},
+  {props:'partNum',name:'配件零件号', key: "PEIJIANLINGJIANHAO", tooltip: true, width: 120, fixed: "left"},
   {props:'partNameCh',name:'配件零件名称', key: "PEIJIANLINGJIANMINGCHENG", tooltip: true, width: 140},
   {props:'supplierSapCode',name:'供应商号', key: "GONGYINGSHANGHAO", tooltip: true, width: 120},
   {props:'supplierNameZh',name:'供应商中文名', key: "GONGYINGSHANGMINGCHENG", tooltip: true, width: 240},
@@ -27,7 +27,7 @@ export const tableTitle = [
   {props:'signDate',name:'需求签收日期', key: "XUQIUQIANSHOURIQI", tooltip: true, width: 120},
   {props:'carType',name:'配件车型', key: "PEIJIANCHEXING", tooltip: true, width: 120},
   {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true, width: 140},
-  {props:'idStateDesc',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
+  {props:'idState',name:'ID状态', key: "IDZHUANGTAI", tooltip: true},
   {props:'priceType',name:'价格类型', key: "JIAGELEIXING", tooltip: true},
   {props:'tcUnitName',name:'单位', key: "DANWEI", tooltip: true},
   {props:'sendDate',name:'需求发送日期', key: "XUQIUFASONGRIQI", tooltip: true, width: 120},
@@ -38,13 +38,13 @@ export const tableMockData = [
 ]
 
 export const searchList = [
-  {value: 'partNum', label: '配件零件号', type: 'input', key: 'PEIJIANLINGJIANHAO', permission: 'APREPART_MANAGFMENT_PARTNUM|配件-配件管理-配件零件号'},
+  {value: 'partNumFuzzySearch', label: '配件零件号', type: 'input', key: 'PEIJIANLINGJIANHAO', permission: 'APREPART_MANAGFMENT_PARTNUM|配件-配件管理-配件零件号'},
   {value: 'partNameCh', label: '配件零件中文名', type: 'input', key: 'PEIJIANLINGJIANZHONGWENMING', permission: 'APREPART_MANAGFMENT_PARTNAMECH|配件-配件管理-配件零件中文名'},
-  {value: 'supplierSapCode', label: '供应商SAP号', type: 'input', key: 'GONGYINGSHANGSAPHAO', permission: 'APREPART_MANAGFMENT_SUPPLIERSAPCODE|配件-配件管理-供应商SAP号'},
+  {value: 'supplierSapCode', label: '供应商SAP号', type: 'multiLineInput', key: 'GONGYINGSHANGSAPHAO', permission: 'APREPART_MANAGFMENT_SUPPLIERSAPCODE|配件-配件管理-供应商SAP号'},
   {value: 'supplierNameZh', label: '供应商中文名', type: 'input', key: 'GONGYINGSHANGZHONGWENMING', permission: 'APREPART_MANAGFMENT_SUPPLIERNAMEZH|配件-配件管理-供应商中文名'},
-  {value: 'assemblyPartNum', label: '批量供货总成号', type: 'input', key: 'PILIANGGONGHUOZONGCHENGHAO', permission: 'APREPART_MANAGFMENT_ASSEMBLYPARTNUM|配件-配件管理-批量供货总成号'},
-  {value: 'spnrNum', label: 'SP号', type: 'input', key: 'SPHAO', permission: 'APREPART_MANAGFMENT_SPNUM|配件-配件管理-SP号'},
-  {value: 'sparePartCode', label: '编号', type: 'input', key: 'BIANHAO', permission: 'APREPART_MANAGFMENT_CODE|配件-配件管理-编号'},
+  {value: 'assemblyPartNumFuzzySearch', label: '批量供货总成号', type: 'input', key: 'PILIANGGONGHUOZONGCHENGHAO', permission: 'APREPART_MANAGFMENT_ASSEMBLYPARTNUM|配件-配件管理-批量供货总成号'},
+  {value: 'spNuFuzzySearch', label: 'SP号', type: 'input', key: 'SPHAO', permission: 'APREPART_MANAGFMENT_SPNUM|配件-配件管理-SP号'},
+  {value: 'sparePartCodeFuzzySearch', label: '编号', type: 'input', key: 'BIANHAO', permission: 'APREPART_MANAGFMENT_CODE|配件-配件管理-编号'},
   {value: 'carType', label: '配件车型', type: 'select', key: 'PEIJIANCHEXING', selectOption: 'carTypeOptions', permission: 'APREPART_MANAGFMENT_CARTYPE|配件-配件管理-配件车型'},
   {value: 'carProject', label: '配件车型项目', type: 'select', key: 'PEIJIANCHEXINGXIANGMU', selectOption: 'cartypeProjectOptions', width: 150, permission: 'APREPART_MANAGFMENT_CARPROJECT|配件-配件管理-配件车型项目'},
   {value: 'state', label: '配件状态', type: 'select', key: 'PEIJIANZHUANGTAI', selectOption: 'accessoryTypeOption', permission: 'APREPART_MANAGFMENT_STATE|配件-配件管理-配件状态'},
@@ -58,7 +58,7 @@ export const searchList = [
   // {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
   {value: 'rfqId', label: 'rfq编号', type: 'input', key: 'RFQBIANHAO', permission: 'APREPART_MANAGFMENT_RFQBIANHAO|配件-配件管理-RFQ编号', inputType: "int"},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption', permission: 'APREPART_MANAGFMENT_IDSTATS|配件-配件管理-ID状态'},
-  {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'ACCESSORY_MANAGEMENT_ISME|附件-附件管理-是否自己'},
+  {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'APREPART_MANAGEMENT_ISME|附件-附件管理-是否自己'},
 ]
 export const TAB = [
   {

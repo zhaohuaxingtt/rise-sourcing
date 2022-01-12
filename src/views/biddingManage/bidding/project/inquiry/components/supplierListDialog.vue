@@ -2,8 +2,7 @@
   <!--转派-->
   <iDialog
     :title="language('BIDDING_YAOQINGGONGYINGSHANG', '邀请供应商')"
-    :visible="show"
-    @update:visible="$emit('update:show', $event)"
+    :visible.sync="show"
     append-to-body="true"
     width="95%"
     top="5vh"
@@ -63,7 +62,12 @@
           :data="tableListData"
           :columns="supplierTableListColumns"
           @handle-selection-change="handleSelectionChange"
-        />
+        >
+          <template #nameZh="scope">
+            {{scope.row.nameZh}}
+            <!-- <supplierBlackIcon/> -->
+          </template>
+        </iTableCustom>
         <iPagination
           v-update
           @current-change="handleCurrentChange($event, query)"
@@ -71,8 +75,8 @@
           background
           :page-sizes="page.pageSizes"
           :page-size="page.pageSize"
-          prev-text="上一页"
-          next-text="下一页"
+          :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+          :next-text="language('BIDDING_XIAYIYE','下一页')"
           :layout="page.layout"
           :current-page="page.currPage"
           :total="page.total"
@@ -88,6 +92,9 @@ import iTableCustom from "@/components/biddingComponents/iTableCustom";
 import { pageMixins } from "@/utils/pageMixins";
 import { getSupplierInfo } from "@/api/mock/mock";
 import { supplierTableListColumns } from "./data";
+import { getBlackStuffList } from "@/api/bidding/bidding";
+// import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
+
 export default {
   mixins: [pageMixins],
   components: {
@@ -101,6 +108,7 @@ export default {
   props: {
     show: { type: Boolean, default: false },
     suppliers: { type: Array },
+    binddingRuleForm: {type: Object, default: () => {}}
   },
   watch: {
     show() {
@@ -140,19 +148,20 @@ export default {
       },
       supplierType:[
         {
-          label:'生产',
+          label: this.language('BIDDING_SHENGCHAN', '生产'),
           value:'PP',
         },
         {
-          label:'一般',
+          label: this.language('BIDDING_YIBAN', '一般'),
           value:'GP',
         },
         {
-          label:'共用',
+          label: this.language('BIDDING_GONGYONG', '共用'),
           value:'PD',
         },
       ],
       selectedTableData: [],
+      tableLoading: false,
     };
   },
   mounted() {
@@ -189,7 +198,7 @@ export default {
       this.query();
     },
     clearDiolog() {
-      this.$emit("update:show", false);
+      this.$emit("update-show");
     },
     // handleChangePage(e) {
     //   this.page.currPage = e;
@@ -200,15 +209,20 @@ export default {
     //   // this.query(param);
     // },
     // 表格选中值集
-    handleSelectionChange(val) {
+    async handleSelectionChange(val) {
       console.log(this.suppliers)
       console.log(val)
+      
+      let flag = false
+      const res = await this.handleBlackStuffList(val)
+      flag = !!res?.data?.length
+      console.log(res)
       let isHad = false;
       let selection = this.$refs.multipleTable.$children[0].selection;
       if (this.suppliers.length != 0) {
         for (let i = 0; i < this.suppliers.length; i++) {
           for (let j = 0; j < val.length; j++) {
-            if (this.suppliers[i].supplierCode == val[j].subSupplierId) {
+            if (this.suppliers[i].supplierId == val[j].subSupplierId || flag) {
               isHad = true;
               selection.splice(j, 1);
               val.splice(j, 1);
@@ -222,10 +236,32 @@ export default {
       } else {
         this.selectedTableData = val;
       }
+      if (flag) {
+        return this.$message.error(this.language('BIDDING_SKGYSBKXJ','受控供应商不可询价！'));
+      }
       if (isHad) {
-        this.$message.error(this.language('BIDDING_YCZGYS', "已存在供应商"));
+       return this.$message.error(this.language('BIDDING_YCZGYS', "已存在供应商"));
       }
       // this.selectedTableData = val;
+    },
+
+    // 判断是否有供应商黑名单
+    handleBlackStuffList(val){
+      const { products } = this.binddingRuleForm
+      const fsnrGsnrList = products?.map(item => item.fsnrGsnr) || []  
+      const supplierIdList = val?.map(item => Number(item.subSupplierId)) || []
+      const blackData = {fsnr: fsnrGsnrList, spplierIds: supplierIdList}
+      return new Promise((resolve, reject) => {
+        if ( fsnrGsnrList.length && supplierIdList.length) {
+          getBlackStuffList(blackData).then((res) => {
+            resolve(res)
+          }).catch(err => {
+            reject(false)
+          })
+        } else {
+          resolve(false)
+        }
+      })
     },
     // handleSizeChange(val) {
     //   console.log("handleSizeChange", this.page);

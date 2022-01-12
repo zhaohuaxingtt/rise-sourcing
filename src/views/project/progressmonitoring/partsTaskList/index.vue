@@ -12,7 +12,7 @@
       </template>
       <el-form>
 
-        <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)" v-permission.dynamic.auto="item.permission">
+        <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)" v-permission.dynamic.auto="item.permission" :class="item.type === 'input'? 'currentWidth' : ''">
           <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
             <el-option
               v-for="item in selectOptions[item.selectOption]"
@@ -34,7 +34,7 @@
           <iButton  @click="updatePartTask" >{{language('BAOCUN','保存')}}</iButton>
           <iButton  @click="handleExport('1')" >{{language('DAOCHUDEIEPQUERENQINGDAN','导出待EP确认清单')}}</iButton>
           <iButton  @click="handleExport('2')" >{{language('DAOCHUDEIMQQUERENQINGDAN','导出待MQ确认清单')}}</iButton>
-
+          <iButton  @click="handleExportAll" :loading="downloadLoading" >{{language('DAOCHUQUANBU','导出全部')}}</iButton>
         </div>
       </div>
       <tableList indexKey :tableTitle="tableTitle" :selectOptions="selectOptions" :tableData="tableData" :tableLoading="tableLoading" @handleSelectChange="handleSelectChange" @handleSelectionChange="handleSelectionChange">
@@ -62,7 +62,7 @@
       </div>
 
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogSure">确 定</el-button>
+        <el-button type="primary" @click="dialogSure">{{language('QUEDING','确 定')}}</el-button>
       </div>
 
     </iDialog>
@@ -74,7 +74,7 @@ import { iSearch, iSelect, iInput, iButton, iCard, iPagination, iMessage,iDialog
 import { pageMixins } from "@/utils/pageMixins"
 import { searchList, tableTitle,partSortStatus } from './data'
 import tableList from '@/views/project/progressmonitoring/partsTaskList/components/tableList'
-import { getCarTypePro, getPartTaskList,downLoadPartScheduleFile,updatePartInfoList, transferSchedule } from '@/api/project'
+import { getPartTaskList,downLoadPartScheduleFile,updatePartInfoList, transferSchedule, downAllFile } from '@/api/project'
 import { getDictByCode } from '@/api/dictionary'
 export default {
   mixins: [pageMixins],
@@ -104,6 +104,7 @@ export default {
       oldTableData:[],
       batchUpdataMap:new Map(),
       dialogPartSort:"",
+      downloadLoading: false
     }
   },
   computed: {
@@ -117,6 +118,11 @@ export default {
     this.getTableList()
   },
   methods: {
+    async handleExportAll() {
+      this.downloadLoading = true
+      await downAllFile({...this.searchParams, partNum: this.searchParams.partNum ? this.searchParams.partNum.split(",") : []})
+      this.downloadLoading = false
+    },
     //返回
     back() {
       this.$router.go(-1);
@@ -246,11 +252,11 @@ export default {
              }
             return { value: item.code, label: item.name }
           })
-          if(optionName == 'partTaskPartSortQuery' ){
-            this.selectOptions[optionName] = this.selectOptions[optionName].filter(item => {
-              return item.value !='5';
-            })
-          }
+          // if(optionName == 'partTaskPartSortQuery' ){
+          //   this.selectOptions[optionName] = this.selectOptions[optionName].filter(item => {
+          //     return item.value !='5';
+          //   })
+          // }
         }
       })
     },
@@ -310,5 +316,8 @@ export default {
   padding: 0;
   height: auto;
   overflow-y: auto;
+}
+.currentWidth{
+  width: 490px!important;
 }
 </style>

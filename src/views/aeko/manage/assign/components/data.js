@@ -34,7 +34,8 @@ export const SUBMENU = [
     url: "/aeko/managelist",
     activePath: "/managelist",
     key: "LK_AEKOGUANLI",
-    permissionKey:'AEKO_MANAGE'
+    permissionKey:'AEKO_MANAGE',
+    permissionName:'AEKO管理'
   },
   {
     value: 2,
@@ -42,7 +43,9 @@ export const SUBMENU = [
     message: 0,
     url: '/aeko/checklist',
     activePath: '/checklist',
-    key: 'AEKO_CHECK'
+    key: 'AEKO_CHECK',
+    permissionKey:'AEKO_CHECK',
+    permissionName:'AEKO查看'
   },
 ]
 // 表头

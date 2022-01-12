@@ -59,10 +59,11 @@
           </template>
           <template #info="scope">
             <div class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
-          </template>
-          <template #apply="scope" v-if="isApply">
             <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
           </template>
+          <!-- <template #apply="scope" v-if="isApply">
+            <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
+          </template> -->
         </iTableList>
         <iTableList
             v-if="tableListData2.length != 0"
@@ -212,7 +213,7 @@ export default {
         refCartypeProId: row.id,
         refMoldAmount : row.nomiAmount,
       }
-      applyRefCarType(this.referenceCarProjectParams.sourceProjectId, parmars).then((res) => {
+      applyRefCarType(this.referenceCarProjectParams.id, parmars).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           iMessage.success(result);
@@ -231,10 +232,10 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        if(!this.isApply){
-          this.tmCartypeProTableTitle = cloneDeep(this.tmCartypeProTableTitle)
-          this.tmCartypeProTableTitle.pop()
-        }
+        // if(!this.isApply){
+        //   this.tmCartypeProTableTitle = cloneDeep(this.tmCartypeProTableTitle)
+        //   this.tmCartypeProTableTitle.pop()
+        // }
         this.noLine = ''
         this.form['search.carTypeProject'] = this.referenceCarProjectParams.carTypeProId
         this.searchRelationCarTypeList()
@@ -252,6 +253,7 @@ export default {
   }
 }
 .linkStyle {
+  display: inline-block;
   span {
     color: #1663F6;
     border-bottom: 1px solid #1663F6;
@@ -264,6 +266,8 @@ export default {
   }
 }
 .linkStyleNoline{
+  display: inline-block;
+  margin-left: 12px;
   span {
     color: #1663F6;
     cursor: pointer;

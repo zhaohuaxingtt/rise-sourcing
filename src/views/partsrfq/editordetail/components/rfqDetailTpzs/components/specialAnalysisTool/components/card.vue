@@ -26,7 +26,7 @@
           <icon slot="reference" :name="labelData.colourType===1?'iconzhuanxiangfenxigongju-landian':labelData.colourType===2?'iconbaojiapingfengenzong-jiedian-cheng':'iconbaojiapingfengenzong-jiedian-hui'" symbol></icon>
         </el-popover>
       </div>
-      <div class="cursor" :style="{background:'url('+labelData.imgUrl+') no-repeat',backgroundSize: '100% 100%'}"></div>
+      <div class="cursor" :style="{background:'url('+labelData.imgUrl+') no-repeat',backgroundSize: '100% 100%',}"></div>
     </iCard>
   </div>
 </template>

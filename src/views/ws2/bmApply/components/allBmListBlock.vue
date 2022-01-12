@@ -24,7 +24,7 @@
 
           <!-- RS单号 -->
           <template #rsNum="scope">
-            <div  @click="openViewPdf(scope.row)" class="table-link">{{scope.row.rsNum}}</div>
+            <div  @click="openViewPdf(scope.row)" :class="scope.row.rsNum == 'AEKO RS单'?'':'table-link'">{{scope.row.rsNum}}</div>
           </template>
         </iTableList>
 
@@ -113,8 +113,24 @@ export default {
 
     //  预览RSpdf
     openViewPdf(scope){
-      const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
-      window.open(url);
+      if(scope.rsNum == 'AEKO RS单') {
+        return
+      }
+      const first = scope.rsNum.slice(0,1);
+      if(~~first === 5){
+        let routeData = this.$router.resolve({
+          path: '/tooling/investmentReport/rsDetails',
+          query: {
+            rsNum: scope.rsNum,
+            pageType: 0,
+          },
+        })
+        window.open(routeData.href, '_blank')
+      }else{
+        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
+        window.open(url);
+      }
+      
     },
 
     //  打开详情
@@ -129,10 +145,6 @@ export default {
       }
 
       excelExport(this.selectTableList, this.allTableHead, 'BM申请单')
-    },
-
-    getTableData(){
-      this.allSerch(bmApplyForm)
     },
 
     handleSelectionChange(val){
@@ -167,6 +179,10 @@ export default {
     },
 
     allSerch(data){
+      this.page = {
+        currPage: 1,
+        pageSize: 10,
+      },
       this.form = data;
       this.getPageData();
     },

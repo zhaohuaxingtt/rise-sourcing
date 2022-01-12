@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-12 14:32:21
+ * @LastEditTime: 2021-11-25 09:53:02
  * @Description: 定点-审批人&审批记录
  * @FilePath: \front-sourcing\src\views\designate\approvalPersonAndRecord\index.vue
 -->
@@ -191,7 +191,7 @@ export default {
         this.parentDeptOptions = res.data.map(item => {
           return {
             ...item,
-            label: item.nameZh,
+            label: item.deptNum || item.fullCode,
             value: item.id
           }
         })

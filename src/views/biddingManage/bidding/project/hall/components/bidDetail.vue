@@ -2,7 +2,7 @@
   <iCard>
     <commonTable
       ref="tableDataForm"
-      :tableData="suppliers"
+      :tableData="suppliersPage"
       :tableTitle="tableTitle"
       :tableLoading="tableLoading"
       :selection="false"
@@ -10,7 +10,7 @@
       <template slot="isTax" slot-scope="scope">
         <div>
           {{
-            dividedBeiShu(scope.row["offerPrice"])  +
+            dividedBeiShu(scope.row["offerPrice"]).toFixed(2).replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g ,'$1,')  +
             currencyMultiples(scope.row["currencyMultiple"]) +
             "-" +
             units(scope.row["currencyUnit"])
@@ -28,13 +28,14 @@
     </commonTable>
     <iPagination
       v-update
-      @current-change="handleCurrentChange($event)"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
       background
       :page-sizes="page.pageSizes"
       :page-size="page.pageSize"
-      prev-text="上一页"
-      next-text="下一页"
-      layout="prev,pager,next,jumper"
+      :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+      :next-text="language('BIDDING_XIAYIYE','下一页')"
+      :layout="page.layout"
       :current-page="page.currPage"
       :total="page.total"
     />
@@ -91,6 +92,11 @@ export default {
     };
   },
   computed: {
+    suppliersPage() {
+      const { suppliers } = this; 
+      const { currPage, pageSize } = this.page;
+      return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
+    },
     beishu() {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
@@ -132,12 +138,13 @@ export default {
      return Big(val).div(this.beishu).toNumber()
     },
     currencyMultiples(currencyMultiple) {
-      return {
-        "01": "元",
-        "02": "千",
-        "03": "万",
-        "04": "百万",
-      }[currencyMultiple];
+      // return {
+      //   "01": "元",
+      //   "02": "千",
+      //   "03": "万",
+      //   "04": "百万",
+      // }[currencyMultiple];
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit )
     },
     handleSearchReset() {
       let param = this.id;
@@ -145,7 +152,11 @@ export default {
     },
     handleCurrentChange(e) {
       this.page.currPage = e;
-      this.pageNum = e;
+      // this.pageNum = e;
+    },
+    handleSizeChange(val) {
+      this.page.currPage = 1;
+      this.page.pageSize = val;
     },
     async query(e) {
       const res = await getBiddingDetails({

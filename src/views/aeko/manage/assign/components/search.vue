@@ -23,12 +23,11 @@
       </el-form-item>
       <!-- 零件号 -->
       <el-form-item :label="language('LINGJIAHAO', '零件号')">
-        <iInput
-          v-model.trim="form.partNum"
-          v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_SEARCH_PARTNUM|零件号"
-          :placeholder="language('LK_QINGSHURU','请输入')"
-          clearable
-        ></iInput>
+        <iMultiLineInput
+          :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+          :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+          v-model="form.partNum"
+        ></iMultiLineInput>
       </el-form-item>
       <!-- 科室 -->
       <el-form-item :label="language('LK_AEKOKESHI','科室')">
@@ -110,7 +109,8 @@ import {
   iSearch,
   iInput,
   iSelect,
-  iMessage
+  iMessage,
+  iMultiLineInput
 } from "rise";
 import {
   searchCommodity,
@@ -151,6 +151,7 @@ export default {
     iSearch,
     iInput,
     iSelect,
+    iMultiLineInput,
   },
   mounted() {
     // 获取下拉数据

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-19 14:29:21
- * @LastEditTime: 2021-10-28 03:21:59
+ * @LastEditTime: 2021-12-20 12:11:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\ui\index.vue
@@ -41,7 +41,7 @@
 						<el-col :span="8">
 							<iCard title="title">
 								<template v-slot:header-control>
-									<el-button size="mini">button1</el-button>
+									<el-button size="mini">button1111</el-button>
 									<el-button size="mini">button2</el-button>
 								</template>
 								<div>body</div>
@@ -86,6 +86,7 @@
 					<iButton slot="components" size="mini">Mini iButton example</iButton>
 					<iButton slot="components" size="mini" loading>Mini iButton example</iButton>
 					<iButton slot="components" size="mini" disabled>iButton disabled</iButton>
+					<iButton slot="components" size="mini" @click="preview">preview all screen</iButton>
 				</icard>
 			</el-col>
 		</el-row>
@@ -280,6 +281,7 @@
 	} from "@/api/ui";
 	import {allResourceTreeList} from '@/api/usercenter'
 	import {excelExport} from '@/utils/filedowLoad'
+	import {downloadPDF} from '@/utils/pdf'
 	export default {
 		components: {
 			icard,
@@ -319,6 +321,12 @@
 			});
 		},
 		methods: {
+			preview(){
+				downloadPDF({
+					idEle:'body',
+					exportPdf:true
+				})
+			},
 			permisstionExcelExport(){
 				const title = ['一级','二级','三级','控件']
 				allResourceTreeList().then(res=>{

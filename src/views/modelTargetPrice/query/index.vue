@@ -91,7 +91,7 @@ import approvalRecordDialog from '../maintenance/components/approvalRecord'
 // import { excelExport } from "@/utils/filedowLoad"
 import iDicoptions from 'rise/web/components/iDicoptions'
 import attachmentDialog from '@/views/costanalysismanage/components/home/components/downloadFiles/index'
-import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect' 
+import carProjectSelect from '@/views/modelTargetPrice/components/carProjectSelect' 
 import procureFactorySelect from '@/views/modelTargetPrice/components/procureFactorySelect'
 import { getTargetPriceSelectPage, exportTargetPrice } from '@/api/modelTargetPrice/index'
 import moment from 'moment'
@@ -136,7 +136,7 @@ export default {
   },
   methods: {
     gotoDetail(row) {
-      const router =  this.$router.resolve({path: '/modeltargetprice/detail', query: { ...row,applyType: '4' }})
+      const router =  this.$router.resolve({path: '/targetpriceandscore/modeltargetprice/detail', query: { ...row,applyType: '4' }})
       window.open(router.href,'_blank')
     },
     handleSelectionChange(val) {

@@ -16,11 +16,11 @@
         </el-form-item>
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
-          <i-input
-              v-model="queryAkeoForm.partNum"
-              :placeholder="language('LK_QINGSHURU','请输入')"
-              clearable
-          ></i-input>
+          <iMultiLineInput
+            :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+            :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+            v-model="queryAkeoForm.partNum"
+          ></iMultiLineInput>
         </el-form-item>
         <!-- 供应商简称 -->
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG','供应商简称')" prop='supplierName'>
@@ -33,7 +33,7 @@
         <!-- 专业采购员 -->
         <el-form-item :label="language('ZHUANYECAIGOUYUAN','专业采购员')" prop='buyerId'>
           <i-select
-              v-model.trim="queryAkeoForm.buyerId"
+              v-model.trim="queryAkeoForm.linieId"
               filterable
               remote
               reserve-keyword
@@ -91,14 +91,13 @@
       <!--表格展示区-->
       <tablelist
           height="400"
-          class="margin-top20"
+          class="margin-top20 aeko-approved-table"
           index
           :selection="true"
           :tableData="approvedList"
           :tableTitle="approvedHeader"
           :lang="true"
           :selectConfig="selectConfig"
-          :indexConfig="indexConfig"
           v-loading="tableLoading"
       >
         <!-- <template #isTop="scope">
@@ -203,7 +202,7 @@
 </template>
 
 <script>
-import {iSearch, iInput, iCard, iPagination, icon, iSelect, iMessage} from "rise"
+import {iSearch, iInput, iCard, iPagination, icon, iSelect, iMessage, iMultiLineInput} from "rise"
 import {tableAKEOApprovedTitle as approvedHeader,  selectConfig, indexConfig} from '../components/data'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {pageMixins} from '@/utils/pageMixins'
@@ -225,7 +224,8 @@ export default {
     tablelist,
     iPagination,
     icon,
-    iSelect
+    iSelect,
+    iMultiLineInput
   },
   filters: {
     formatDate(value) {
@@ -548,5 +548,42 @@ export default {
   height: 0;
   border: 1px solid #000000;
   opacity: 1;
+}
+
+.aeko-approved-table{
+  ::v-deep .el-table__header{
+    .has-gutter{
+      tr{
+        th:nth-child(2){
+          .cell{
+            padding: 0 5px;
+          }
+        }
+        th:nth-child(3){
+          .slotHeader{
+            padding-left: 30px;
+          }
+        }
+        th:nth-child(9){
+          letter-spacing: -0.3px;
+        }
+        th:nth-child(10){
+          letter-spacing: -0.3px;
+        }
+        th:nth-child(11){
+          letter-spacing: -0.3px;
+        }
+      }
+    }
+  }
+  ::v-deep .el-table__body{
+    tr{
+      td:nth-child(2){
+        .cell{
+          padding: 0 5px;
+        }
+      }
+    }
+  }
 }
 </style>
