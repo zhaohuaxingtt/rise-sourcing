@@ -153,8 +153,8 @@ export const downloadPdfMixins = {
                 })
             })
         },
-        addFile(e, key, name) {
-            //e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name
+        addFile(e, key, name,Hierarchy) {
+            //e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name,Hierarchy为当前点击事件的ref层级（因为页面内可能有不同层级的卡片头部绑定的ref层级不同）
             return new Promise((resolve) => {
                 iMessageBox(
                     this.language(
@@ -185,9 +185,14 @@ export const downloadPdfMixins = {
                     }
                     e.collapseValue = true
                     this.$nextTick(() => {
+                        var obj=''
+                        if(Hierarchy==1){
+                            obj=this.$refs.quotationScoringEcartsCard.$refs.previewsCom
+                        }else  if(Hierarchy==2){
+                            obj=this.$refs.previewsCom
+                        }
                         if (key == '4') {
-                            this.$refs.quotationScoringEcartsCard.$refs.previewsCom
-                                .exportExcelTwo()
+                            obj.exportExcelTwo()
                                 .then((res) => {
                                     if (res && res.data == 200) {
                                         let blob = new Blob([res], {

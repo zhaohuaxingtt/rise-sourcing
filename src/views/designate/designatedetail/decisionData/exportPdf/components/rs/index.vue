@@ -1,36 +1,56 @@
 <template>
   <div class="rs">
     <rsPdf
-      :cardTitle="cardTitle"
-      :cardTitleEn="cardTitleEn"
-      :isSingle="isSingle"
-      :leftTitle="leftTitle"
-      :rightTitle="rightTitle"
-      :basicData="basicData"
-      :tableTitle="tableTitle"
-      :tableData="tableData"
-      :remarkItem="remarkItem"
-      :projectType="projectType"
-      :exchangeRageCurrency="exchangeRageCurrency"
-      :exchangeRates="exchangeRates"
-      :showSignatureForm="showSignatureForm"
-      :isAuth="isAuth"
-      :checkList="checkList"
-      :processApplyDate="processApplyDate"
-      :prototypeList="PrototypeList"
-      :prototypeTitleList="prototypeTitleList" />
+        :cardTitle="cardTitle"
+        :cardTitleEn="cardTitleEn"
+        :isSingle="isSingle"
+        :leftTitle="leftTitle"
+        :rightTitle="rightTitle"
+        :basicData="basicData"
+        :tableTitle="tableTitle"
+        :tableData="tableData"
+        :remarkItem="remarkItem"
+        :projectType="projectType"
+        :exchangeRageCurrency="exchangeRageCurrency"
+        :exchangeRates="exchangeRates"
+        :showSignatureForm="showSignatureForm"
+        :isAuth="isAuth"
+        :checkList="checkList"
+        :processApplyDate="processApplyDate"
+        :prototypeList="PrototypeList"
+        :prototypeTitleList="prototypeTitleList"/>
   </div>
 </template>
 
 <script>
 import rsPdf from "@/views/designate/designatedetail/decisionData/rs/components/meeting/rsPdf"
-import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
-import { findFrontPageSeat } from "@/api/designate"
-import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle, resetLtcData } from "@/views/designate/designatedetail/decisionData/rs/components/meeting/data"
-import { partProjTypes } from "@/config"
+import {
+  getDepartApproval,
+  getList,
+  getPrototypeList,
+  getRemark,
+  searchRsPageExchangeRate
+} from "@/api/designate/decisiondata/rs"
+import {findFrontPageSeat} from "@/api/designate"
+import {
+  accessoryTableTitle,
+  checkList,
+  dbTableTitle,
+  gsDetailTitleBlue,
+  gsTableTitle,
+  meetingRemark,
+  nomalDetailTitle,
+  nomalDetailTitleBlue,
+  nomalDetailTitleGS,
+  nomalDetailTitlePF,
+  nomalTableTitle,
+  prototypeTitleList,
+  sparePartTableTitle
+} from "@/views/designate/designatedetail/decisionData/rs/components/meeting/data"
+import {partProjTypes} from "@/config"
 
 export default {
-  components: { rsPdf },
+  components: {rsPdf},
   data() {
     return {
       projectType: "",
@@ -48,7 +68,7 @@ export default {
     }
   },
   computed: {
-    cardTitle() {
+    cardTitle: function () {
       if (this.projectType === partProjTypes.PEIJIAN) {
         return '配件采购'
       } else if (this.projectType === partProjTypes.FUJIAN) {
@@ -56,7 +76,7 @@ export default {
       }
       return '生产采购'
     },
-    cardTitleEn() {
+    cardTitleEn: function () {
       if (this.projectType === partProjTypes.PEIJIAN) {
         return 'CSC Nomination Recommendation - Spare Part Purchasing'
       } else if (this.projectType === partProjTypes.FUJIAN) {
@@ -64,7 +84,7 @@ export default {
       }
       return 'CSC Nomination Recommendation - Production Purchasing'
     },
-    leftTitle() {
+    leftTitle: function () {
       // GS
       if ([partProjTypes.GSLINGJIAN, partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
         return nomalDetailTitleGS
@@ -76,7 +96,7 @@ export default {
       // 其他
       return nomalDetailTitle
     },
-    rightTitle() {
+    rightTitle: function () {
       // GS
       if ([partProjTypes.GSLINGJIAN, partProjTypes.GSCOMMONSOURCING].includes(this.projectType)) {
         return nomalDetailTitleBlue
@@ -84,7 +104,7 @@ export default {
       // 其他
       return gsDetailTitleBlue
     },
-    tableTitle() {
+    tableTitle: function () {
       if (this.projectType === partProjTypes.PEIJIAN) {
         return sparePartTableTitle
       } else if (this.projectType === partProjTypes.FUJIAN) {
@@ -96,7 +116,7 @@ export default {
       }
       return nomalTableTitle
     },
-    exchangeRageCurrency() {
+    exchangeRageCurrency: function () {
       if (this.basicData.currencyRateMap) {
         const exchangeRageCurrency = []
         for (var key in this.basicData.currencyRateMap) {
@@ -117,47 +137,47 @@ export default {
     this.getPrototypeList()
   },
   methods: {
-    findFrontPageSeat() {
-      findFrontPageSeat({ 
+    findFrontPageSeat: function () {
+      findFrontPageSeat({
         nominateId: this.$route.query.desinateId
       })
-      .then(res => {
-        if (res.code == 200) {
-          this.isSingle = res.data.isSingle
-        } else {
-          this.isSingle = false
-        }
-      })
+          .then(res => {
+            if (res.code == 200) {
+              this.isSingle = res.data.isSingle
+            } else {
+              this.isSingle = false
+            }
+          })
     },
-    getList() {
+    getList: function () {
       getList(this.$route.query.desinateId).then(res => {
         if (res.code == 200) {
           let temdata = res.data || {}
           temdata.suppliersNow = temdata.supplierVoList
-          if(temdata.partNameDe){
+          if (temdata.partNameDe) {
             temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
           }
           this.basicData = temdata
           let data = res.data?.lines
-          data.forEach((val,index) => {
-            let suppliersNowCn =[]
-            let suppliersNowEn =[]
-            val.supplierVoList.forEach(val =>{
+          data.forEach((val, index) => {
+            let suppliersNowCn = []
+            let suppliersNowEn = []
+            val.supplierVoList.forEach(val => {
               suppliersNowCn.push(val.shortNameZh)
               suppliersNowEn.push(val.shortNameEn)
             })
-            let supplierData=[]
-            for(let i = 0 ;i <suppliersNowCn.length;i++) {
+            let supplierData = []
+            for (let i = 0; i < suppliersNowCn.length; i++) {
               let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
               supplierData.push(dataSuper)
             }
             supplierData = supplierData.length ? supplierData.join('\n') : '-'
-            val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
-            if(val.supplierNameEn)
-            val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
-              if(val.partNameDe)
-            // val.partName = `${val.partName}/${val.partNameDe}`
-            val.partName = val.partNameDe
+            val.suppliersNow = supplierData.replace(/\n/g, "<br/>");
+            if (val.supplierNameEn)
+              val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
+            if (val.partNameDe)
+                // val.partName = `${val.partName}/${val.partNameDe}`
+              val.partName = val.partNameDe
           })
           this.tableData = data
           this.projectType = res.data.partProjectType || ''
@@ -170,7 +190,7 @@ export default {
         }
       })
     },
-    getRemark() {
+    getRemark: function () {
       getRemark(this.$route.query.desinateId).then(res => {
         if (res.code == 200) {
           const remarks = {}
@@ -183,34 +203,34 @@ export default {
         }
       })
     },
-    searchRsPageExchangeRate() {
+    searchRsPageExchangeRate: function () {
       searchRsPageExchangeRate(this.$route.query.desinateId)
-      .then(res => {
-        if (res.code == 200) {
-          if (this.basicData.currency) {
-            const sourceData = Array.isArray(res.data) ? res.data : []
+          .then(res => {
+            if (res.code == 200) {
+              if (this.basicData.currency) {
+                const sourceData = Array.isArray(res.data) ? res.data : []
 
-            this.exchangeRates = sourceData
-              .filter(item => !item.isCurrentVersion)
-              .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
-              .map(item => {
-                const result = { version: item.exchangeRateVos[0].version }
-                
-                const currentCurrencyExchangeRate = item.exchangeRateVos.find(item => item.originCurrencyCode === this.basicData.currency)
-                result.str = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : "100RMB = 100RMB"
-                result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
+                this.exchangeRates = sourceData
+                    .filter(item => !item.isCurrentVersion)
+                    .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+                    .map(item => {
+                      const result = {version: item.exchangeRateVos[0].version}
 
-                return result
-              })
-          }
-        }
-      })
+                      const currentCurrencyExchangeRate = item.exchangeRateVos.find(item => item.originCurrencyCode === this.basicData.currency)
+                      result.str = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : "100RMB = 100RMB"
+                      result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
+
+                      return result
+                    })
+              }
+            }
+          })
     },
     // 汇率显示处理
-    exchangeRateProcess(row) {
-      return `100${ row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ row.originCurrencyCode }`
+    exchangeRateProcess: function (row) {
+      return `100${row.currencyCode} = ${math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString()}${row.originCurrencyCode}`
     },
-    getDepartApproval() {
+    getDepartApproval: function () {
       getDepartApproval(this.$route.query.desinateId).then(res => {
         if (res.code == 200) {
           this.checkList = res.data.nomiApprovalProcessNodeVOList
@@ -218,11 +238,11 @@ export default {
         }
       })
     },
-    getPrototypeList(){
-      getPrototypeList(this.$route.query.desinateId).then(res=>{
+    getPrototypeList: function () {
+      getPrototypeList(this.$route.query.desinateId).then(res => {
         this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
         // 获取上会备注
-        if(res.data && res.code==200){
+        if (res.data && res.code == 200) {
           this.remarkItem = meetingRemark.map(item => {
             this.remarks[item.type] = res.data[item.remarkType] || ''
             return {...item, value: res.data[item.remarkType] || ''}
@@ -235,5 +255,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.rs {}
+.rs {
+}
 </style>
