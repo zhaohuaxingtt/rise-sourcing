@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2022-01-10 17:46:40
+ * @LastEditTime: 2022-01-12 15:43:54
  * @LastEditors: YoHo
 -->
 <template>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { iFormGroup, iFormItem, iText, iPagination, iDialog } from "rise"
+import { iFormGroup, iFormItem, iText, iPagination, iDialog, iMessage } from "rise"
 import tablelist from "@/views/partsign/editordetail/components/tableList"
 import { getCfTargetApplyHistory } from "@/api/financialTargetPrice/index"
 import { pageMixins } from "@/utils/pageMixins"
@@ -63,6 +63,8 @@ export default {
   },
   methods: {
 			getTargetPrice() {
+        const rfqId = this.$route.query.id
+        if(!rfqId) return
         this.loading = true
 				getCfTargetApplyHistory({
 					rfqId: this.$route.query.id,
