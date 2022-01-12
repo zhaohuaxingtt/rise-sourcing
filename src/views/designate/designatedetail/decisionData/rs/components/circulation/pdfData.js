@@ -1,6 +1,6 @@
 // 生产
 export const nomalTableTitle = [
-  {props:'fsnrGsnrNum',name:'FS No.', key: "", minWidth: 60},
+  {props:'fsnrGsnrNum',name:'FS No.', key: "", minWidth: 50},
   {props:'partNo',name:'Part No.', key: "", minWidth: 64},
   {props:'partNum',name:'Old', enName:'Part No.',key: "", minWidth: 62}, // 12/24 业务说取partNum
   // {props:'oldPartNum',name:'Old Part No.', key: "", minWidth: 95}, // oldPartNo => partNo
@@ -16,7 +16,7 @@ export const nomalTableTitle = [
   {props:'cfTargetAPrice',name:'CF', enName:'A Price', key: "", minWidth: 50},
   {props:'cfTargetBPrice',name:'CF', enName:'B Price', key: "", minWidth: 50},
   {props:'rw',name:'RW', key: "", minWidth: 30},
-  {props:'partProjectTypeDesc',name:'Type', key: "", minWidth: 40},
+  {props:'partProjectTypeDesc',name:'Type', key: "", minWidth: 55},
   {props:'aprice',name:'A Price', key: "", minWidth: 50},
   {props:'bprice',name:'B Price', key: "", minWidth: 50},
   {props:'packPrice',name:'Packing', key: "", minWidth: 60},
