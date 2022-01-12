@@ -1179,7 +1179,8 @@ export default {
       this.referenceCarProjectParams = {
         carTypeProId: row.refCartypeProId,
         categoryId: row.categoryId,
-        sourceProjectId: this.params.id
+        sourceProjectId: this.params.id,
+        id: row.id
       }
     },
     clickMoney(row) {
@@ -1337,9 +1338,9 @@ export default {
 }
 
 #chart2 {
-  width: 720px;
+  min-width: 720px;
   height: 180px;
-  margin: 0 30px;
+  margin: 0 20px;
   align-self: flex-end;
 }
 
