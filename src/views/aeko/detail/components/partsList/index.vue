@@ -281,9 +281,9 @@ export default {
                 brand:[''],
             }
         }else if(from == 'manage'){
-            if(this.this.isCommodityCoordinator){
-                 this.SearchList = SearchList
-            this.tableTitle = commodityTableTitle;
+            if(this.isCommodityCoordinator){
+                this.SearchList = SearchList
+                this.tableTitle = commodityTableTitle;
             }else{
                 this.SearchList = SearchList
                 this.tableTitle = tableTitle;
@@ -297,7 +297,6 @@ export default {
             this.SearchList = []
             this.tableTitle = []
         }
-
     },
     data(){
         return{
