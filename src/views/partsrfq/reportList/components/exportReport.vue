@@ -1,13 +1,13 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-07-06 13:40:04
- * @LastEditTime: 2021-12-24 15:01:40
+ * @LastEditTime: 2022-01-11 16:53:01
  * @LastEditors: caopeng
  * @Description: 导出 报告清单 弹窗
  * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\exportReport.vue
 -->
 <template>
-  <iDialog :visible.sync="value"
+  <iDialog  :visible.sync="value"
            width="90%"
            @close="clearDiolog">
     <div class="flex-between-center margin-right30"
@@ -18,18 +18,21 @@
       <div>
         <iButton @click="remove">{{ language('YICHU','移出' )}}</iButton>
         <!-- 下载 -->
-        <iButton @click="down">{{ $t('LK_XIAZAI') }}</iButton>
+        <iButton v-loading="btnLoading"
+                 @click="down">{{ $t('LK_XIAZAI') }}</iButton>
       </div>
 
     </div>
-    <div class="content">
-      <tableList :tableData="tableListData"
-                 :tableTitle="tableTitle"
-                 :tableLoading="tableLoading"
-                 index
-                 @handleSelectionChange="handleSelectionChange">
-      </tableList>
-    </div>
+    <table-list style="padding-bottom:20px"
+                :tableData="tableListData"
+                :tableTitle="tableTitle"
+                :tableLoading="tableLoading"
+                index
+                @selectBox="selectBox"
+                @handleSelectionAllChange="handleSelectionAllChange"
+                @handleSelectionChange="handleSelectionChange"
+                ref="regTable">
+    </table-list>
   </iDialog>
 </template>
 
@@ -38,12 +41,8 @@ import { iDialog, iButton, iMessage } from 'rise'
 import tableList from './tableList'
 import { specialToolsTitle } from './data'
 import resultMessageMixin from '@/utils/resultMessageMixin'
-import { downloadFile } from '@/api/file'
-import {
-  reportRemove,
-  reportDownList,
-  udDownWithName,
-} from '@/api/partsrfq/reportList'
+import { downloadUdFileWithName } from '@/api/file'
+import { reportRemove } from '@/api/partsrfq/reportList'
 export default {
   mixins: [resultMessageMixin],
   components: {
@@ -63,30 +62,92 @@ export default {
       tableTitle: specialToolsTitle,
       tableLoading: false,
       selectData: [],
+      btnLoading: false,
+      checkNumber: 10,
     }
   },
-  created() {},
+  watch: {
+    value(val) {
+      this.$nextTick(() => {
+        this.tableListData.forEach((e, i) => {
+          if (i < this.checkNumber) {
+            this.$refs.regTable.$refs.table.toggleRowSelection(e, true)
+          }
+        })
+      })
+    },
+  },
+  mounted(){
+          this.$nextTick(() => {
+        this.tableListData.forEach((e, i) => {
+          if (i < this.checkNumber) {
+            this.$refs.regTable.$refs.table.toggleRowSelection(e, true)
+          }
+        })
+      })
+  },
   methods: {
-    handleSelectionChange(list) {
-      this.selectData = list
+    selectBox(val) {
+      if (val.val.length > this.checkNumber) {
+        iMessage.warn(
+          this.language(
+            'ZUIDUOZHINENGXUANZESHITIAOSHUJU',
+            '最多只能选择10条数据'
+          )
+        )
+        this.$refs.regTable.$refs.table.toggleRowSelection(val.row, false)
+      }
+    },
+    handleSelectionAllChange(val) {
+      // 过滤当前表格数据
+      if (this.selectData.length == this.checkNumber) {
+        this.tableListData.forEach((v, index) => {
+          // 大于设置的条数，取消选择
+          this.$refs.regTable.$refs.table.toggleRowSelection(v, false)
+        })
+      } else {
+        this.tableListData.forEach((v, index) => {
+          if (index >= this.checkNumber) {
+            // 大于设置的条数，取消选择
+            this.$refs.regTable.$refs.table.toggleRowSelection(v, false)
+          }
+        })
+      }
+    },
+
+    handleSelectionChange(val) {
+      if (val.length > this.checkNumber) {
+        this.$refs.regTable.$refs.table.toggleRowSelection(val.row, false)
+      } else {
+        this.selectData = val
+      }
     },
     clearDiolog() {
       this.$emit('input', false)
     },
-    down() {
+    async down() {
+      this.btnLoading = true
       if (this.selectData.length == 0) {
         iMessage.error(this.$t('TPZS.CANNOTSELECT'))
+          this.btnLoading = false
         return
       }
       let fileIds = []
       this.selectData.map((item) => {
         fileIds.push(item.downloadUrl)
       })
-      const req = {
-        fileName: 'rise.zip',
-        fileIds: [fileIds],
+      var fileName=''
+      console.log(fileIds)
+      if(fileIds.length==1){
+        fileName=this.selectData[0].downloadName
+        console.log(this.selectData)
+      }else{
+        fileName='rise.zip'
       }
-      udDownWithName(req)
+    
+      downloadUdFileWithName([fileIds], fileName).then((res) => {
+        this.btnLoading = false
+      })
     },
     remove() {
       if (this.selectData.length == 0) {

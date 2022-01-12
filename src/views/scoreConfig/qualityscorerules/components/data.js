@@ -6,7 +6,7 @@
 
 export const tableTitle = [
     { props: "num", name: "零件号第4位", key: "LK_LINGJIANHAODISIWEI", tooltip: true },
-    { props: "userName", name: "预设评分股", key: "LK_SOCRE_YUSHEPINGFENGU", tooltip: true },
-    { props: "deptName", name: "预设评分人", key: "LK_SOCRE_YUSHEPINGFENREN", tooltip: true },
-    { props: "g", name: "修改时间", key: "CONFIGSCOREDEPT_XIUGAISHIJIAN", tooltip: true },
+    { props: "deptName", name: "预设评分股", key: "LK_SOCRE_YUSHEPINGFENGU", tooltip: true },
+    { props: "userName", name: "预设评分人", key: "LK_SOCRE_YUSHEPINGFENREN", tooltip: true },
+    { props: "updateTime", name: "修改时间", key: "CONFIGSCOREDEPT_XIUGAISHIJIAN", tooltip: true },
   ]

@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import { iCard, iFormGroup, iFormItem, iText } from "rise"
-import { titleData } from "@/views/designate/designatedetail/decisionData/title/data"
-import { findLayoutTitleInfo } from "@/api/designate/decisiondata/title"
+import {iCard, iFormGroup, iFormItem, iText} from "rise"
+import {titleData} from "@/views/designate/designatedetail/decisionData/title/data"
+import {findLayoutTitleInfo} from "@/api/designate/decisiondata/title"
 
 export default {
   components: {
@@ -36,39 +36,39 @@ export default {
     this.findLayoutTitleInfo()
   },
   methods: {
-    findLayoutTitleInfo() {
+    findLayoutTitleInfo: function () {
       findLayoutTitleInfo({
         nominateId: this.$route.query.desinateId
       })
-      .then(res => {
-        if (res.code == 200) {
-          this.items.forEach(item => {
-            switch(item.key) {
-              case "PCA/TIA":
-                if (!res.data.isShow) this.$set(item, "hidden", true)
-                else {
-                  this.$set(item, "hidden", false)
-                  this.$set(this.data, item.key, `${ res.data.pacStatus }/${ res.data.tiaStatus }`)
+          .then(res => {
+            if (res.code == 200) {
+              this.items.forEach(item => {
+                switch (item.key) {
+                  case "PCA/TIA":
+                    if (!res.data.isShow) this.$set(item, "hidden", true)
+                    else {
+                      this.$set(item, "hidden", false)
+                      this.$set(this.data, item.key, `${res.data.pacStatus}/${res.data.tiaStatus}`)
+                    }
+
+                    break
+                  case "projects":
+                    this.$set(this.data, item.key, Array.isArray(res.data[item.key]) ? res.data[item.key].join() : "-")
+
+                    break
+                  case "singleSourcing":
+                    if (res.data.singleSourcing) {
+                      this.$set(item, "hidden", false)
+                      this.$set(this.data, item.key, "Y")
+                    } else this.$set(item, "hidden", true)
+
+                    break
+                  default:
+                    this.$set(this.data, item.key, res.data[item.key])
                 }
-
-                break
-              case "projects":
-                this.$set(this.data, item.key, Array.isArray(res.data[item.key]) ? res.data[item.key].join() : "-")
-
-                break
-              case "singleSourcing":
-                if (res.data.singleSourcing) {
-                  this.$set(item, "hidden", false)
-                  this.$set(this.data, item.key, "Y")
-                } else this.$set(item, "hidden", true)
-
-                break
-              default:
-                this.$set(this.data, item.key, res.data[item.key])
+              })
             }
           })
-        }
-      })
     }
   }
 }

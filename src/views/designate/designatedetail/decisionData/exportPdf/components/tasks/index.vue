@@ -7,15 +7,15 @@
     </iCard>
     <iCard title="Tasks" class="task">
       <tableList
-        :selection="false"
-        :tableTitle="tableTitle"
-        :tableData="tableListData">
+          :selection="false"
+          :tableTitle="tableTitle"
+          :tableData="tableListData">
         <template #isFinishFlag="scope">
           <span>{{ getTaskStatusDesc(scope.row.isFinishFlag) }}</span>
         </template>
         <template #show="scope">
-          <icon v-if="!scope.row.isPresent" class="iconyincang" name="iconyincang" />
-          <icon v-else class="iconxianshi" name="iconxianshi" />
+          <icon v-if="!scope.row.isPresent" class="iconyincang" name="iconyincang"/>
+          <icon v-else class="iconxianshi" name="iconxianshi"/>
         </template>
       </tableList>
     </iCard>
@@ -23,14 +23,13 @@
 </template>
 
 <script>
-import { iCard, icon } from "rise"
+import {iCard, icon} from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
-import { getBackgroundAndObjectiveInfo } from "@/api/designate/decisiondata/tasks"
-import { tasksTitle, getTaskStatusDesc } from "@/views/designate/designatedetail/tasks/components/data"
-import { getNominateTaskList } from "@/api/designate/decisiondata/tasks"
+import {getBackgroundAndObjectiveInfo, getNominateTaskList} from "@/api/designate/decisiondata/tasks"
+import {getTaskStatusDesc, tasksTitle} from "@/views/designate/designatedetail/tasks/components/data"
 
 export default {
-  components: { iCard, icon, tableList },
+  components: {iCard, icon, tableList},
   data() {
     return {
       content: "",
@@ -48,24 +47,23 @@ export default {
     this.getNominateTaskList()
   },
   methods: {
-    getBackgroundAndObjectiveInfo() {
+    getBackgroundAndObjectiveInfo: function () {
       getBackgroundAndObjectiveInfo({
         nominateId: this.$route.query.desinateId
       })
-      .then(res => {
-        if (res.code == 200) {
-          this.content = res.data.content || ""
-        }
-      })
+          .then(res => {
+            if (res.code == 200) {
+              this.content = res.data.content || ""
+            }
+          })
     },
-    getNominateTaskList() {
+    getNominateTaskList: function () {
       getNominateTaskList({
         nominateId: this.$route.query.desinateId,
         current: 1,
         size: 999999,
         isPreview: false
-      })
-      .then(res => {
+      }).then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
         }

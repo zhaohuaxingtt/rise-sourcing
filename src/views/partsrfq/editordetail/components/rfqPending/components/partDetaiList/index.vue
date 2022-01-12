@@ -157,7 +157,10 @@
     />
     <!-- 申请模具目标价 -->
     <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" @update='updateData' />
-    <parts-target-price
+    <template v-for="(item, index) in componentList">
+      <component :ref='item.component' :key="index" :is="item.component" class="margin-top20" @openDialog="openDialog" :todo="todo" v-if="!item.todo||item.todo==todo" :status="todoObj[item.statusCode].status" />
+    </template>
+    <!-- <parts-target-price
       @openDialog="openDialog"
       class="margin-top20"
       :todo="todo"
@@ -181,8 +184,9 @@
       :todo="todo"
       class="margin-top20"
       :status="todoObj.pushRateStatusDesc.status"
-    />
-    <!-- <technicalSeminar class="margin-top20" /> -->
+    /> -->
+    <!-- 技术交底会 -->
+    <technicalSeminar v-if="todo" class="margin-top20" />
   </div>
 </template>
 
@@ -213,11 +217,12 @@ import kmDialog from "./components/kmDialog";
 import { partProjTypes } from "@/config";
 import relationStarMon from "./components/relationStarMon";
 import moldBudgetApplication from "../moldBudgetApplication";
-import supplierScore from "../supplierScore/components/supplierScore.vue";
+// import supplierScore from "../supplierScore/components/supplierScore.vue";
+import supplierScore from "../supplierScore";
 
 import moduleDialog from "./components/moduleDialog";
 import partsDialog from "./components/partsDialog";
-// import technicalSeminar from "../technicalSeminar";
+import technicalSeminar from "../technicalSeminar";
 import { iconName, partDetaiListTitle as tableTitle } from "./data";
 
 export default {
@@ -248,7 +253,7 @@ export default {
     iDialog,
     moduleDialog,
     partsDialog,
-    // technicalSeminar
+    technicalSeminar
   },
   async mounted() {
     const {id,businessKey} = this.$route.query;
@@ -290,11 +295,42 @@ export default {
     },
     getisRfqStatus() {
       return this.isRfqStatus()
-    } 
-    
+    },
+    componentList() {
+      return this.componentArr.map(i=>{
+        i.status = this.todoObj[i.statusCode].status
+        i.order = 0
+        if(this.todo){
+          if(i.status=='未申请') i.order = 1
+          if(i.status=='未完成') i.order = 2
+          if(i.status=='已完成') i.order = 3
+        }
+        return i
+      }).sort((a,b)=>a.order-b.order)
+    }
   },
   data() {
     return {
+      componentArr:[
+          {
+            label: '零件目标价',
+            component: 'partsTargetPrice',
+            statusCode: 'cfPriceStatusDesc'
+          },{
+            label: '模具目标价',
+            component: 'moldTargetPrice',
+            statusCode: 'mouldPriceStatusDesc'
+          },{
+            label: '模具投资预算',
+            component: 'moldBudgetApplication',
+            statusCode: 'mouldBudgetStatusDesc'
+          },{
+            label: '供应商评分',
+            component: 'supplierScore',
+            statusCode: 'pushRateStatusDesc',
+            todo: true
+          },
+      ],
       iconName,
       hidens: true,
       partsDialogVisible: false,

@@ -49,7 +49,8 @@ import {pageMixins} from '@/utils/pageMixins'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import { cloneDeep } from 'lodash'
 import bdlDialog from "../bdlDialog"
-import supplierScore from "../supplierScore/components/supplierScore.vue";
+// import supplierScore from "../supplierScore/components/supplierScore.vue";
+import supplierScore from "../supplierScore";
 
 export default {
   mixins:[pageMixins, rfqCommonFunMixins],
@@ -185,7 +186,7 @@ export default {
     },
     // 跳转
     openPage(row) {
-      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${row.supplierSubId}&supplierType=${row.supplierType}&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${row.supplierId}&supplierType=${row.supplierType}&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
     },
     log() {
       // this.logVisible = true

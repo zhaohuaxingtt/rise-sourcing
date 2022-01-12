@@ -145,6 +145,7 @@ export default {
       let newTabs = cloneDeep(this.tabs);
       newTabs = newTabs.filter((item)=>item.name!=='record' && item.name!=='attachment'&item.name!=='contentDeclare');
       this.tabs = newTabs;
+      this.currentTab = 'partsList';
     }
 
     // 从AEKO跳转查看跳转过来的 tab不需要展示审批附件

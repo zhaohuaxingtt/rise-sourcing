@@ -8,7 +8,7 @@
 <template>
   <!-- @handleTitle="addFile(6,'项目概览')"  -->
   <iCard 
-  id="card6"
+
          @handleTitle="addFile($event,6, '项目概览')"
          :title="$t('TPZS.XMGL')+'RFQ'+$route.query.id+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
          :defalutCollVal='false'

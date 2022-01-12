@@ -1,31 +1,33 @@
 <template> <!-- 导出RS单决策资料 -->
-<div class="b">
-  <div class="exportPdf">
-    <div class="title">
-      <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
-      <span class="mtz" v-if="this.nomiData.mtzApplyId">
+  <div class="b">
+    <div class="exportPdf">
+      <div class="title">
+        <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
+        <span class="mtz" v-if="this.nomiData.mtzApplyId">
         <span class="crossbar">-</span>
         <span class="num">MTZ{{ this.nomiData.mtzApplyId }}</span>
       </span>
-      <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
-    </div>
-    <div class="content">
-      <rsTitle class="module" />
-      <partList class="module" />
-      <tasks class="module" />
-      <drawing class="module" />
-      <bdl class="module" />
-      <singleSourcing class="module" />
-      <timeline class="module" />
-      <!-- <awardingScenario class="module" /> -->
-      <rs class="module" />
+        <span class="nomiType">{{
+            language("DINGDIANSHENQINGLEIXING", "定点申请类型")
+          }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
+      </div>
+      <div class="content">
+        <rsTitle class="module"/>
+        <partList class="module"/>
+        <tasks class="module"/>
+        <drawing class="module"/>
+        <bdl class="module"/>
+        <singleSourcing class="module"/>
+        <timeline class="module"/>
+        <!-- <awardingScenario class="module" /> -->
+        <rs class="module" :nomiData="nomiData"/>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
-import { nominateAppSDetail } from "@/api/designate"
+import {nominateAppSDetail} from "@/api/designate"
 import rsTitle from "./components/rsTitle"
 import partList from "./components/partList"
 import tasks from "./components/tasks"
@@ -33,7 +35,6 @@ import drawing from "./components/drawing"
 import bdl from "./components/bdl"
 import singleSourcing from "./components/singleSourcing"
 import timeline from "./components/timeline"
-import awardingScenario from "./components/awardingScenario"
 import rs from "./components/rs"
 
 export default {
@@ -45,12 +46,10 @@ export default {
     bdl,
     singleSourcing,
     timeline,
-    awardingScenario,
     rs
   },
   created() {
     this.nominateAppId = this.$route.query.desinateId
-
     if (!this.nominateAppId) return
 
     this.nominateAppSDetail()
@@ -65,10 +64,10 @@ export default {
     nominateAppSDetail() {
       nominateAppSDetail({
         nominateAppId: this.nominateAppId
-      })
-      .then(res => {
+      }).then(res => {
         if (res.code == 200) {
           this.nomiData = res.data || {}
+          console.log("nmsl", this.nomiData)
         }
       })
     },
@@ -110,7 +109,7 @@ export default {
 
   .content {
     margin-top: 30px; /*no*/
-  
+
     .module {
       & + .module {
         margin-top: 20px; /*no*/

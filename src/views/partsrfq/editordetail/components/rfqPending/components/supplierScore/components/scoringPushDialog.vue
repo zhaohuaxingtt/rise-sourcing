@@ -7,7 +7,7 @@
       </div>
     </template>
     <div class="body">
-      <tableList class="table" :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading">
+      <tableList class="table" :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :cellClassName="cellClassName" :tableLoading="loading">
         <template #rateTag="scope">
           <iText>{{getName(scope.row.rateTag, deptScoringOptions)}}</iText>
           <!-- <iSelect v-model="scope.row.rateTag" :disabled="true">
@@ -38,7 +38,7 @@
       <el-divider class="divider"></el-divider>
       <tableList :tableData="tableData" :tableTitle="supplierSubTitle" @handleSelectionChange="handleSelectionChange">
         <template #factoryName="scope">
-          <iSelect class="input-center" v-model="scope.row.factoryName" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @visible-change="getSupplierPlantBySupplierId(scope.row.id)">
+          <iSelect class="input-center" v-model="scope.row.factoryName" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @change="selectChange(scope.row.factoryName,scope.row)" @visible-change="getSupplierPlantBySupplierId(scope.row.id)">
               <el-option
                 v-for="item in supplierProduceNames"
                 :key="item.id"
@@ -85,7 +85,7 @@ export default {
   },
   watch: {
     visible(nv) {
-      if (nv && this.ids.length) {
+      if (nv && this.ids.length && this.$route.query.id) {
         this.getRfqRateDepartsData()
         this.getAllDeptTag()
       } else {
@@ -104,6 +104,7 @@ export default {
       this.tableTitle = this.tableTitle.filter(title => title.props !== 'coordinatorId')
     } else {
       if (!this.visible) return
+      if(!this.$route.query.id) return
       this.getRfqRateDepartsData()
       this.getAllDeptTag()
       this.getDict()
@@ -133,6 +134,9 @@ export default {
     }
   },
   methods: {
+    cellClassName(){
+      return 'no-hover'
+    },
     getName(item, data){
       if(Array.isArray(data)){
         let result = data.filter(i=>i.value==item)[0]
@@ -169,13 +173,19 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.supplierProduceNames = Array.isArray(res.data) ? res.data : []
+          this.addressObj = {}
+          this.supplierProduceNames.forEach(i=>{
+            this.addressObj[i.factoryName] = i.addressInfoVo.province+'-'+i.addressInfoVo.city+'-'+i.addressInfoVo.address
+          })
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        console.log(this.supplierProduceNames);
         this.supplierProduceNamesLoading = false
       })
       .catch(() => this.supplierProduceNamesLoading = false)
+    },
+    selectChange(val,row){
+      row.companyAddress = this.addressObj[val]
     },
     sendTaskForRating() {
       if (!this.selectTableData.length) return iMessage.warn(this.language('NINHAIWEIXUANZEGONGS','您当前还未选择供应商！'))
@@ -239,7 +249,7 @@ export default {
       .catch(() => {})
     },
     // 获取评分人和协调人列表
-    getAllRaterAndCoordinator(rateTag, rateDepartNum) {
+    getAllRaterAndCoordinator(rateTag, rateDepartNum, data={}) {
       if (this.deptMap[rateTag] && this.deptMap[rateTag][rateDepartNum] && (this.deptMap[rateTag][rateDepartNum].raterList || this.deptMap[rateTag][rateDepartNum].coordinatorList)) return
 
       return getAllRaterAndCoordinator({
@@ -248,19 +258,38 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", res.data.raterList.map(item => ({
+          // 评分人
+          let raterList = res.data.raterList.map(item => ({
             ...item,
             label: item.nameZh,
             value: item.id,
             key: item.id
-          })))
-
-          this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", res.data.coordinatorList.map(item => ({
+          }))
+          if(!raterList.map(i=>i.value).includes(data.raterId)){
+            raterList.push({
+              ...data,
+              label: data.rater,
+              value: data.raterId,
+              key: data.raterId
+            })
+          }
+          // 协调人
+          let coordinatorList = res.data.coordinatorList.map(item => ({
             ...item,
             label: item.nameZh,
             value: item.id,
             key: item.id
-          })))
+          }))
+          if(!coordinatorList.map(i=>i.value).includes(data.coordinatorId)){
+            coordinatorList.push({
+              ...data,
+              label: data.coordinator,
+              value: data.coordinatorId,
+              key: data.coordinatorId
+            })
+          }
+          this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", raterList)
+          this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", coordinatorList)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -364,6 +393,13 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+}
+::v-deep .el-table__body{
+  tr{
+    &:hover>td.no-hover{
+      background: none;
+    }
   }
 }
 </style>

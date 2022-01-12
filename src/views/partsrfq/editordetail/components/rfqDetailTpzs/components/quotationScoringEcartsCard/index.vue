@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2021-12-29 09:33:04
+ * @LastEditTime: 2022-01-12 16:04:27
  * @LastEditors: caopeng
  * @Description: 供应商维度展示
  * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\index.vue
@@ -18,8 +18,14 @@
 import previewsCom from './previewEcharts'
 import {iCard} from 'rise'
 import {  downloadPdfMixins } from '@/utils/pdf'
+import { icardData } from '../data'
 export default {
   mixins: [downloadPdfMixins],
- components:{previewsCom,iCard}
+ components:{previewsCom,iCard},
+ data(){
+     return {
+            cardShow: JSON.parse(JSON.stringify(icardData)),
+     }
+ }
 }
 </script>
