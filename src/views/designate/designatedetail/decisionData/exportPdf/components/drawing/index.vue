@@ -4,7 +4,7 @@
       <div v-if="files.length">
         <div class="wrapper" v-for="(file, $index) in files" :key="$index">
           <div class="file">
-            <img class="img" :src="file.filePath" :alt="file.fileName" />
+            <img class="img" :src="file.filePath" :alt="file.fileName"/>
           </div>
         </div>
       </div>
@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import { iCard } from "rise"
-import { getdDecisiondataList } from "@/api/designate/decisiondata/attach"
+import {iCard} from "rise"
+import {getdDecisiondataList} from "@/api/designate/decisiondata/attach"
 
 export default {
-  components: { iCard },
+  components: {iCard},
   data() {
     return {
       files: []
@@ -32,7 +32,7 @@ export default {
     this.getdDecisiondataList()
   },
   methods: {
-    getdDecisiondataList() {
+    getdDecisiondataList: function () {
       getdDecisiondataList({
         nomiAppId: this.$route.query.desinateId,
         sortColumn: "sort",
@@ -40,8 +40,7 @@ export default {
         fileType: "101",
         pageNo: 1,
         pageSize: 999999
-      })
-      .then(res => {
+      }).then(res => {
         if (res.code == 200) {
           this.files = Array.isArray(res.data) ? res.data : []
         }
@@ -61,6 +60,7 @@ export default {
         margin-bottom: 0;
       }
     }
+
     .file {
       display: flex;
       align-items: center;

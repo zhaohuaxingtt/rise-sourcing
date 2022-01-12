@@ -314,7 +314,12 @@ export default {
           break;
         }
       }
-
+      // csf分配人跳转页面需单独处理下 若前面没跳转并且没有aeko管理权限就判断是否有aeko分配 若有就直接跳转到aeko分配去
+      if(this.permission.whiteBtnList['AEKO_ASSIGN_ASSIGNLIST_TABLE'] && !this.permission.whiteBtnList['AEKO_MANAGELIST_TABLE']){ 
+        this.$router.push({
+            path:'/aeko/assign'
+          })
+      }
 
       this.sure();
       this.getSearchList();

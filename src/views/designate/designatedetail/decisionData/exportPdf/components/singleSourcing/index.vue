@@ -48,7 +48,7 @@ export default {
     this.getSingleSourcing()
   },
   methods: {
-    getSingleSourcing() {
+    getSingleSourcing:function () {
       getSingleSourcing({
         nominateId: this.$route.query.desinateId,
         current: 1,
