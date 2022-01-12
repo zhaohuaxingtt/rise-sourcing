@@ -20,7 +20,7 @@
         <singleSourcing class="module"/>
         <timeline class="module"/>
         <!-- <awardingScenario class="module" /> -->
-        <rs class="module"/>
+        <rs class="module" :nomiData="nomiData"/>
       </div>
     </div>
   </div>
@@ -50,7 +50,6 @@ export default {
   },
   created() {
     this.nominateAppId = this.$route.query.desinateId
-
     if (!this.nominateAppId) return
 
     this.nominateAppSDetail()
@@ -62,12 +61,13 @@ export default {
     }
   },
   methods: {
-    nominateAppSDetail: function () {
+    nominateAppSDetail() {
       nominateAppSDetail({
         nominateAppId: this.nominateAppId
       }).then(res => {
-        if (res.code === 200) {
+        if (res.code == 200) {
           this.nomiData = res.data || {}
+          console.log("nmsl", this.nomiData)
         }
       })
     },
