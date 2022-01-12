@@ -46,21 +46,25 @@
     <el-row v-if="inside">
       <el-col :span="12">
         <!-- 报价分析 -->
-        <quotationAnalysis @joinTable='joinTable'
+        <quotationAnalysis ref="tableQ"
+                           @joinTable='joinTable'
                            @delTable='delTable'
                            :searchCriteria="searchCriteria"
                            class="margin-right20"></quotationAnalysis>
       </el-col>
       <el-col :span="12">
         <!-- 谈判基本信息 -->
-        <negotiationBasic @joinTable='joinTable'
+        <negotiationBasic ref="tableN"
+                          @joinTable='joinTable'
                           @delTable='delTable'
                           :searchCriteria="searchCriteria"
                           class="margin-left20"></negotiationBasic>
       </el-col>
     </el-row>
     <!-- 导出弹窗 -->
-    <exportReport :key="Math.random()" ref="exportFile" v-model="visible"
+    <exportReport :key="Math.random()"
+                  ref="exportFile"
+                  v-model="visible"
                   :tableListData="tableListData"></exportReport>
   </iPage>
 </template>
@@ -125,9 +129,22 @@ export default {
         }
       })
     },
-    delTable(row) {
+    delTable(row, key) {
       reportDelete(row).then((res) => {
         if (res && res.code == 200) {
+          switch (key) {
+            case 1:
+              this.$refs.specialTools.getTableList()
+              break
+            case 2:
+              this.$refs.tableQ.getTableList()
+              break
+            case 3:
+              this.$refs.tableN.getTableList()
+              break
+            default:
+              break
+          }
           iMessage.success(res.desZh)
         } else {
           iMessage.error(res.desZh)
