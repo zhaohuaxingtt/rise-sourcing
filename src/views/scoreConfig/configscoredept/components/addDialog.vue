@@ -36,7 +36,7 @@
                 >
                 </el-option>
             </iSelect>
-            <iDicoptions v-else-if="item.type === 'dicoption'" :optionAll="false" v-model="form[item.props]" :optionKey="item.optionKey"/>
+            <iDicoptions v-else-if="item.type === 'dicoption'" :optionAll="false" v-model="form[item.props]" :optionKey="item.optionKey" @change="selectChange($event,item.props)"/>
             <el-switch
                 v-else-if="item.type === 'switch'" 
                 v-model="form[item.props]"
@@ -84,6 +84,10 @@ export default {
         openType:{ // 弹窗打开方式:新增/编辑
             type:String,
             default:'add',
+        },
+        multipleSelection:{
+            type:Array,
+            default:()=>[],
         }
     },
     watch: {
@@ -98,7 +102,9 @@ export default {
             addDialogFrom:[],
             form:{},
             selectOptions:{
-                raterList:[],
+                raterList:[], // 评分人
+                coordinatorList:[], // 协调人
+                rateDepartNumList:[],// 评分股
             },
         }
     },
@@ -107,14 +113,17 @@ export default {
             this.addDialogFrom = cloneDeep(addDialogFrom);
             // 编辑时根据数据判断 是否需要展示定点审批人
             if(this.openType == 'edit'){
-                console.log('22222');
+                const editForm = this.multipleSelection[0] || {};
+                this.form = {
+                    rateTag:editForm['rateTag'],
+                    isCheck:editForm['isCheck'] == '1',
+                    raterList:editForm['raterList'].map((item)=>item.userId),
+                    coordinatorList:editForm['coordinatorList'].map((item)=>item.userId),
+                };
+                console.log(editForm,this.form);
             }else{
                this.form = {};
             }
-            // 获取评分股下拉数据
-            // listDepartByTag({tagId:''}).then((res)=>{
-
-            // })
             const roleList = [
                 {key:'raterList',roleCode:'JZSPFR'},// 评分人
                 {key:'coordinatorList',roleCode:'JSPFXTY'},// 协调人
@@ -124,7 +133,7 @@ export default {
                 listUserByRoleCode({roleCode:item.roleCode}).then((res)=>{
                     if(res.code == '200'){
                         res.data.map((itemUser)=>{
-                            itemUser.value = itemUser.id;
+                            itemUser.value = itemUser.id+'';
                             itemUser.label = itemUser.nameZh;
                         })
                         this.selectOptions[item.key] = res.data || []
@@ -141,6 +150,18 @@ export default {
                 })
                 this.addDialogFrom = copyAddDialogFrom;
             }
+        },
+        selectChange(value,props){
+            // 选择评分类型的时候动态获取评分股
+            if(props == 'rateTag' && value){
+                // 获取评分股下拉数据  MQ:39 EP:38
+                listDepartByTag({tagId:value=='MQ' ? '39' : '38'}).then((res)=>{
+                    if(res.code == '200'){
+                        this.selectOptions['rateDepartNumList'] = Array.isArray(res.data) ? res.data : [];
+                    }
+                })
+            }
+
         },
         clearDialog(){
             this.$emit('changeVisible','addDialogVisible',false);

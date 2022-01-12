@@ -30,3 +30,12 @@ export function listUserByRoleCode(params) {
     method: "GET",
   })
 }
+
+// 删除部门
+export function departsDelete(data) {
+  return requst({
+    url: '/rfq-rate-departs/delete',
+    method: 'DELETE',
+    data,
+  })
+}
