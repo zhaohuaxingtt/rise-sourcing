@@ -1,7 +1,7 @@
 <!--
  * @Date: 2021-11-16 11:06:02
  * @LastEditors: caopeng
- * @LastEditTime: 2022-01-11 14:49:15
+ * @LastEditTime: 2022-01-12 11:27:54
  * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\quotationAnalysis.vue
 -->
 <!--
@@ -113,7 +113,7 @@ export default {
       const req = {
         ids: [row.id],
       }
-      this.$emit('delTable', req)
+      this.$emit('delTable', req,2)
     },
   },
 }

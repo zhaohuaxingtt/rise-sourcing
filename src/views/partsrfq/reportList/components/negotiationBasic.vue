@@ -1,7 +1,7 @@
 <!--
  * @Date: 2021-11-16 11:06:02
  * @LastEditors: caopeng
- * @LastEditTime: 2022-01-11 14:49:38
+ * @LastEditTime: 2022-01-12 11:26:04
  * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\negotiationBasic.vue
 -->
 <!--
@@ -95,7 +95,6 @@ export default {
         if (res.data) {
           this.page.currPage = res.pageNum
           this.page.totalCount = res.total
-          
           this.tableLoading = false
           this.tableListData = res.data
         }
@@ -111,7 +110,7 @@ export default {
       const req = {
         ids: [row.id],
       }
-      this.$emit('delTable', req)
+      this.$emit('delTable', req,3)
     },
   },
 }

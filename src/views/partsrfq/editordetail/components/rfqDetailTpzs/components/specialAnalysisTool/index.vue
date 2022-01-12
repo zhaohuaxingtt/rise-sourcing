@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     entrance (param) {
+      console.log(param, "data")
       // 默认项
       if (param.isDefault) {
         switch (param.title) {
@@ -65,7 +66,7 @@ export default {
             this.$router.push({ path: '/sourcing/partsrfq/piAnalyseDetail', query: { schemeId: param.reportId, round: this.$route.query.round } });
             break;
           case 'MEK':
-            this.$router.push({ path: '/sourcing/mek/mekDetails', query: { chemeId: param.reportId, round: this.$route.query.round } });
+            this.$router.push({ path: '/sourcing/mek/mekDetails', query: { schemeId: param.reportId, round: this.$route.query.round } });
             break;
           default:
             break;
