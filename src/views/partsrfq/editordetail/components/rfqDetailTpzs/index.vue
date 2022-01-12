@@ -26,7 +26,7 @@
          <iCard  @handleTitle="addFile($event,3,'报价分析汇总-模具')" :title="'报价分析汇总-模具'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" v-else class="margin-top20" @handleCollapse='handleCollapse($event,"3")' collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGMOJU|报价分析汇总-模具"></iCard>
           <!--------------------报价分析汇总-报价趋势----------------------------------------->
          <quotationScoringEcartsCard ref='quotationScoringEcartsCard' v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
-         <iCard @handleTitle="addFile($event,4,'报价趋势')" :title="'报价趋势'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'4')" collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI|报价趋势"></iCard>
+         <iCard @handleTitle="addFile($event,4,'报价趋势',1)" :title="'报价趋势'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" v-else class="margin-top20" @handleCollapse="handleCollapse($event,'4')" collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAQUSHI|报价趋势"></iCard>
           <!--------------------报价分析汇总-业务分配模拟----------------------------------------->
          <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')"  id="card5"  :collapse='true' :hideCombine="false" :readOnly="false" :tableSelection="true" v-if='cardShow.find(items=>items.key == "5").show' class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_YEWYFENPEIMONI|业务分配模拟"></buMonitor>
          <iCard @handleTitle="addFile($event,5,'业务分配模拟')" id="card5" :title="'业务分配模拟'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" v-else class="margin-top20 buMonitor" @handleCollapse="handleCollapse($event,'5')"  collapse :defalutCollVal='false' v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
@@ -50,11 +50,11 @@ import buMonitor from './components/qutaionScoringBusses'
 import { icardData } from './components/data'
 import gather from "@/views/partsrfq/externalAccessToAnalysisTools/negotiationAssistant/gather.vue";
 import negotiateBasicInfor from "./components/negotiateBasicInfor";
-import { downloadPDF, downloadPdfMixins, dataURLtoFile } from '@/utils/pdf'
+import { downloadPdfMixins,  } from '@/utils/pdf'
 import { udMutilfiles,reportAdd } from '@/api/partsrfq/reportList/index'
 export default {
   mixins: [downloadPdfMixins],
-  components: { icon,iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, gather, negotiateBasicInfor ,iButton},
+  components: { iTabsList, iCard, quotationScoringTracking, quotationScoringMj, quotationScoringHZ, quotationScoringEcartsCard, buMonitor, gather, negotiateBasicInfor ,iButton},
   props:{
           rfqInfoData: { type: Object },
   },
