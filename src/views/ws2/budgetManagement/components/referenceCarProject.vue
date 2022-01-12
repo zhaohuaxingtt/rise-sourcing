@@ -213,7 +213,7 @@ export default {
         refCartypeProId: row.id,
         refMoldAmount : row.nomiAmount,
       }
-      applyRefCarType(this.referenceCarProjectParams.sourceProjectId, parmars).then((res) => {
+      applyRefCarType(this.referenceCarProjectParams.id, parmars).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
           iMessage.success(result);

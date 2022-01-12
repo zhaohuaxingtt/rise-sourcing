@@ -1179,7 +1179,8 @@ export default {
       this.referenceCarProjectParams = {
         carTypeProId: row.refCartypeProId,
         categoryId: row.categoryId,
-        sourceProjectId: this.params.id
+        sourceProjectId: this.params.id,
+        id: row.id
       }
     },
     clickMoney(row) {
