@@ -168,12 +168,8 @@ export default {
               return false;
           }else{
               await this.$confirm(
-          this.language('LK_QINGQUERENSHIFOUSHANCHU','请确认是否删除？'),
-          this.language('LK_SHANCHU','删除'),
-          {
-            confirmButtonText: this.language('nominationLanguage.Yes','是'),
-            cancelButtonText: this.language('nominationLanguage.No','否'),
-          }
+                this.language('submitSure','您确定要执行提交操作吗？'),
+                this.language('LK_SHANCHU','删除'),
           ).then(()=>{
             this.btnLoading.deletRule = true;
             const ids = (selectItems.map((item)=>item.ruleId));

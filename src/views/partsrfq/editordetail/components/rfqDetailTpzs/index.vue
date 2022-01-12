@@ -37,7 +37,7 @@
                class="margin-top20"
                :defalutCollVal='cardShow.find(items=>items.key == "2").show'
                v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN|报价分析汇总-零件">
-          <quotationScoringHZ v-if='cardShow.find(items=>items.key == "2").show'></quotationScoringHZ>
+          <quotationScoringHZ ref="quotationScoringHZ" v-if='cardShow.find(items=>items.key == "2").show'></quotationScoringHZ>
         </iCard>
         <!--------------------报价分析汇总-模具----------------------------------------->
         <quotationScoringMj ref='quotationScoringMj'
@@ -54,9 +54,9 @@
                :defalutCollVal='false'
                v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGMOJU|报价分析汇总-模具"></iCard>
         <!--------------------报价分析汇总-报价趋势----------------------------------------->
-        <quotationScoringEcartsCard ref='quotationScoringEcartsCard'
+        <quotationScoringEcartsCard id="card4" ref='quotationScoringEcartsCard'
                                     v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
-        <iCard @handleTitle="addFile($event,4,'报价趋势',1)"
+        <iCard @handleTitle="addFile($event,4,'报价趋势')"
                :title="'报价趋势'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
                v-else
                class="margin-top20"

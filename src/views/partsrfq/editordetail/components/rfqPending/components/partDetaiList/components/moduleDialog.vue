@@ -2,8 +2,8 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-10 19:24:42
- * @Description: 基础信息
+ * @LastEditTime: 2022-01-12 16:09:34
+ * @Description: 申请模具目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
 

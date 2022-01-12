@@ -541,6 +541,21 @@ export default{
       } else {
         return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       }
+    },
+        //导出
+    exportPartsTwo(layout) {
+      return new Promise (r=>{
+            if(layout === '1') {
+                    const res1= exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
+                    r(res1)
+            } else if(layout === '2') {
+                const res2= exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
+                r(res2)
+            } else {
+                const res3= exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
+                r(res3)
+            }
+         })
     }
   }
 }
