@@ -153,8 +153,8 @@ export const downloadPdfMixins = {
                 })
             })
         },
-        addFile(e, key, name,Hierarchy) {
-            //e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name,Hierarchy为当前点击事件的ref层级（因为页面内可能有不同层级的卡片头部绑定的ref层级不同）
+        addFile(e, key, name,) {
+            //e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name,
             return new Promise((resolve) => {
                 iMessageBox(
                     this.language(
@@ -185,14 +185,8 @@ export const downloadPdfMixins = {
                     }
                     e.collapseValue = true
                     this.$nextTick(() => {
-                        var obj=''
-                        if(Hierarchy==1){
-                            obj=this.$refs.quotationScoringEcartsCard.$refs.previewsCom
-                        }else  if(Hierarchy==2){
-                            obj=this.$refs.previewsCom
-                        }
-                        if (key == '4') {
-                            obj.exportExcelTwo()
+                        if (key == '2') {
+                            this.$refs.quotationScoringHZ.exportPartsTwo()
                                 .then((res) => {
                                     if (res && res.data == 200) {
                                         let blob = new Blob([res], {
@@ -200,7 +194,7 @@ export const downloadPdfMixins = {
                                         })
                                         //文件流转换为base64
                                         getBase64(blob).then((resBase64) => {
-                                            blob = dataURLtoFile(resBase64, name + '.zip')
+                                            blob = dataURLtoFile(resBase64, name + '.xlxs')
                                             formData.append('multifile', blob)
                                             this.setfile(formData, instanceId, name)
                                         })
@@ -208,7 +202,6 @@ export const downloadPdfMixins = {
                                         iMessage.error(res.desZh)
                                     }
                                 })
-                            // console.log(this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel())
                         } else if (key == '3') {
                             this.$refs.quotationScoringMj.getRfqSupplierList().then((res) => {
                                 cbdDownloadFileTWO({
@@ -225,7 +218,6 @@ export const downloadPdfMixins = {
                                         getBase64(blob).then((resBase64) => {
                                             blob = dataURLtoFile(resBase64, name + '.xlxs')
                                             formData.append('multifile', blob)
-                                            console.log(blob)
                                             this.setfile(formData, instanceId, name)
                                         })
                                     } else {
@@ -233,17 +225,14 @@ export const downloadPdfMixins = {
                                     }
 
                                 })
-                                // this.$refs.quotationScoringMj.handleDownload('addFile')
                             })
                         } else {
-                            if (key == '8') {
-                                timeout = 2000
-                            }
+                                timeout = 1000
                             setTimeout(() => {
                                 downloadPDF({
                                     idEle: '#card' + key,
                                     pdfName: name,
-                                    exportPdf: false,
+                                    exportPdf: true,
                                     waterMark: true,
                                     callback: async (pdf, pdfName) => {
                                         try {
