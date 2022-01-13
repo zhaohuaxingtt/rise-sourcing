@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-22 11:05:40
- * @LastEditors: zbin
+ * @LastEditors: 水痕
  * @Descripttion: your project
  */
 /*
@@ -16,6 +16,7 @@ export const tabRouterList = [
     url: '/sourcing/categoryManagementAssistant',
     activePath: '/sourcing/categoryManagementAssistant',
     key: 'TPZS.PINLEIGUANLIZHUSHOU',
+    permissionKey: 'CATEGORY_ASSISTANT',
   },
   {
     value: 2,
@@ -23,6 +24,7 @@ export const tabRouterList = [
     url: '/sourcing/partsrfq/externalNegotiationAssistant',
     activePath: '/sourcing/partsrfq/externalNegotiationAssistant',
     key: 'TPZS.TANPANZHUSHOU',
+    permissionKey: 'WORKBENCH_RFQ_TANPANZHUSHOU',
   },
 ];
 
@@ -54,6 +56,5 @@ export const categoryManagementAssistantList = [
     url: '/sourcing/categoryManagementAssistant/listOfInitiatives',
     activePath: '/sourcing/categoryManagementAssistant/listOfInitiatives',
     key: '举措清单',
-  }
+  },
 ];
-

@@ -97,7 +97,7 @@ export default{
     round:'-1',
     rundList:[],
     backChooseLists:[],
-    backChoose:[],
+    backChoose:'',
     ratingList:{
       firstTile:[],
       ratingList:[]
@@ -228,6 +228,7 @@ export default{
       }
     },
     changeRound(){
+      this.backChoose = ''
       this.init()
     },
     /**
@@ -337,8 +338,10 @@ export default{
       return negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
         if(res.data && res.data.layout){  
           this.backChoose = JSON.parse(res.data.layout) // 
+        }else{
+          this.backChoose = ''
         }
-        if(this.backChoose.length == 0 && type == 2){//特殊逻辑处理，如果第一次进来，隐藏项为空。则认为用户没有设置过，需要将默认隐藏项设置好。
+        if(this.backChoose === '' && type == 2){//特殊逻辑处理，如果第一次进来，隐藏项为空。则认为用户没有设置过，需要将默认隐藏项设置好。
           this.backChoose = ['EBR','Volume','Invest Budget','Prod. Loc.','Dev.\nCost','Supplier \nSOP Date','Total\n Turnover']
         }
       }).catch(err=>{
@@ -541,6 +544,21 @@ export default{
       } else {
         return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       }
+    },
+        //导出
+    exportPartsTwo(layout) {
+      return new Promise (r=>{
+            if(layout === '1') {
+                    const res1= exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
+                    r(res1)
+            } else if(layout === '2') {
+                const res2= exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
+                r(res2)
+            } else {
+                const res3= exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
+                r(res3)
+            }
+         })
     }
   }
 }

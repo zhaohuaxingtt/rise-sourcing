@@ -194,7 +194,7 @@ export default {
       }
     },
     onJump360(row) {
-      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${ row.supplierSubId }&supplierType=${ row.supplierType }&nameZh=${ row.supplierNameZh }&nameEn=${ row.supplierNameEn }`, "_blank")
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${ row.supplierId }&supplierType=${ row.supplierType }&nameZh=${ row.supplierNameZh }&nameEn=${ row.supplierNameEn }`, "_blank")
     },
     // 确认
     handleConfirm() {
