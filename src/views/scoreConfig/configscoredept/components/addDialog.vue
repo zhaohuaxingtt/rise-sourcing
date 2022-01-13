@@ -245,6 +245,7 @@ export default {
                             const selectRateDepart = selectOptions['rateDepartNumList'].filter((rateDepartItem)=>rateDepartItem.id == form[item.props]);
                             data[item.props] = selectRateDepart[0].label;
                             data['rateDepartId'] = selectRateDepart[0].id;
+                            data['rateDepartName'] = selectRateDepart[0].nameZh;
                             data['parentRateDepartNum'] = form['parentRateDepartNum'];
                         }
                     }
