@@ -226,7 +226,8 @@ export default{
         'BOB':`sourcing/partsrfq/bobNew?chemeId=${row.bizId}&rfqId=${row.rfqId}&groupId=`,
         'VP':`sourcing/partsrfq/vpAnalyseDetail?type=edit&schemeId=${row.bizId}&round&rfqId=${row.rfqId}`,
         'PI':`sourcing/partsrfq/piAnalyseDetail?schemeId=${row.bizId}&rfqId=${row.rfqId}`,
-        'MEK':`sourcing/mek/mekDetails?chemeId=${row.bizId}&rfqId=${row.rfqId}`
+        'MEK':`sourcing/mek/mekDetails?chemeId=${row.bizId}&rfqId=${row.rfqId}`,
+        'BL':`sourcing/partsrfq/graph/${row.bizId}`
       }
       window.open(process.env.VUE_APP_SOURCING_URL + urlMaps[this.typeSelect],'_blank')
     },
