@@ -124,6 +124,7 @@ export default {
                 userId: this.userInfo.id,
                 current:page.currPage,
                 size:page.pageSize,
+                isNotPosition: true
             };
             getAllAnnex(params).then((res)=>{
                 const {code,data,total} = res;

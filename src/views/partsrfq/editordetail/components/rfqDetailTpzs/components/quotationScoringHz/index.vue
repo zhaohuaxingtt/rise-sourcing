@@ -540,7 +540,7 @@ export default{
       if(layout === '1') {
         return exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       } else if(layout === '2') {
-        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
+        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.backChoose)
       } else {
         return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       }
