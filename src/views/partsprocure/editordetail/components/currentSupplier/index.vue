@@ -148,7 +148,7 @@ export default{
       Object.keys(this.searchForm).forEach(element => {
         this.searchForm[element] = ''
       });
-      this.searchForm.partNum = this.detailData().partNum
+      this.searchForm.partNum = this.detailData().partNum.substring(0,9)
       this.searchForm.fsnrGsnrNum = this.detailData().fsnrGsnrNum
       this.supplierCurentTop()
       this.supplierCurentBottom()
