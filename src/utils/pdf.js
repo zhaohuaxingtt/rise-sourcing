@@ -153,8 +153,8 @@ export const downloadPdfMixins = {
                 })
             })
         },
-        addFile(e, key, name,) {
-            //e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name,
+        addFile(e, key, name, Hierarchy) {
+            //e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name,Hierarchy为当前点击事件的ref层级（因为页面内可能有不同层级的卡片头部绑定的ref层级不同）
             return new Promise((resolve) => {
                 iMessageBox(
                     this.language(
@@ -188,16 +188,12 @@ export const downloadPdfMixins = {
                         if (key == '2') {
                             this.$refs.quotationScoringHZ.exportPartsTwo()
                                 .then((res) => {
-                                        let blob = new Blob([res], {
-                                            type: 'application/vnd.ms-excel',
-                                        })
-                                        //文件流转换为base64
-                                        getBase64(blob).then((resBase64) => {
-                                            blob = dataURLtoFile(resBase64, name + '.xlsx')
-                                            formData.append('multifile', blob)
-                                            this.setfile(formData, instanceId, name)
-                                        })
-                                  
+                                    //文件流转换为base64
+                                    getBase64(res.data).then((resBase64) => {
+                                        let blob = dataURLtoFile(resBase64, name + '.xlsx')
+                                        formData.append('multifile', blob)
+                                        this.setfile(formData, instanceId, name)
+                                    })
                                 })
                         } else if (key == '3') {
                             this.$refs.quotationScoringMj.getRfqSupplierList().then((res) => {
@@ -207,24 +203,38 @@ export const downloadPdfMixins = {
                                         .currentRounds,
                                     supplierId: res.data[0].supplierId,
                                 }).then((res) => {
-                                        let blob = new Blob([res], {
-                                            type: 'application/vnd.ms-excel',
-                                        })
-                                        //文件流转换为base64
-                                        getBase64(blob).then((resBase64) => {
-                                            blob = dataURLtoFile(resBase64, name + '.xlsx')
-                                            formData.append('multifile', blob)
-                                            this.setfile(formData, instanceId, name)
-                                        })
+                                    //文件流转换为base64
+                                    getBase64(res.data).then((resBase64) => {
+                                        let blob = dataURLtoFile(resBase64, name + '.xlsx')
+                                        formData.append('multifile', blob)
+                                        this.setfile(formData, instanceId, name)
+                                    })
                                 })
                             })
+                        } else if (key == '4') {
+                            var obj = ''
+                            if (Hierarchy == 1) {
+                                obj = this.$refs.quotationScoringEcartsCard.$refs.previewsCom
+                            } else if (Hierarchy == 2) {
+                                obj = this.$refs.previewsCom
+                            }
+                            obj.exportExcelTwo()
+                                .then((res) => {
+                                    //文件流转换为base64
+                                    console.log(res)
+                                    getBase64(res.data).then((resBase64) => {
+                                        let blob = dataURLtoFile(resBase64, name + '.xlsx')
+                                        formData.append('multifile', blob)
+                                        this.setfile(formData, instanceId, name)
+                                    })
+                                })
                         } else {
-                                timeout = 1000
+                            timeout = 1000
                             setTimeout(() => {
                                 downloadPDF({
                                     idEle: '#card' + key,
                                     pdfName: name,
-                                    exportPdf: true,
+                                    exportPdf: false,
                                     waterMark: true,
                                     callback: async (pdf, pdfName) => {
                                         try {

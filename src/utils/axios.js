@@ -9,6 +9,10 @@
 import { iMessage } from 'rise'
 import { getToken, removeToken, setToken, setRefreshToken } from '@/utils'
 import store from '@/store'
+import { Loading } from 'element-ui'
+
+let loading = null
+
 export default function httpRequest(baseUrl = '', timeOut = 65000) {
   // eslint-disable-next-line no-undef
   const instance = axios.create({
@@ -41,6 +45,12 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       // 定义请求得数据结构是json
       config.headers['json-wrapper'] = '1'
 
+      loading = Loading.service({
+        lock: true,
+        // text: '拼命加载中...',
+        // background:'rgba(255,255,255,0.5)',
+      })
+
       return config
     },
     function(error) {
@@ -50,6 +60,8 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
 
   instance.interceptors.response.use(
     function(response) {
+      loading.close()
+
       if (response.config.responseType == 'blob') {
         return Promise.resolve(response)
       }
@@ -60,6 +72,8 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       }
     },
     (error) => {
+      loading.close()
+
       switch (error.response.status) {
         //需要定位到登录界面的状态。（401 || 40x || ...）
         case 401:

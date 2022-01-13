@@ -1,11 +1,11 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 15:21:34
- * @LastEditTime: 2021-06-03 17:03:44
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-01-13 13:25:53
+ * @LastEditors: caopeng
  * @Description: 基于axios的下载封装下载工具，以IE和其他浏览器作为区分。部分浏览器通过blob a标签模拟click来下载
  *               IE通过msSaveBlob来下载。
- * @FilePath: \front-web\src\utils\axios.download.js
+ * @FilePath: \front-sourcing-new\src\utils\axios.download.js
  */
 import { iMessage } from 'rise';
 import {getToken,removeToken,setToken,setRefreshToken} from '@/utils'
@@ -56,6 +56,7 @@ export default function httpRequest(baseUrl='',timeOut=15000) {
         reader.readAsText(response.data)
         return
       }
+      console.log(response.data)
       let type = response.headers['content-disposition'] ? response.headers['content-disposition'].split('.')[1] : 'zip'
       let blob = new Blob([response.data], { type: fileType[type] })
 
@@ -73,6 +74,8 @@ export default function httpRequest(baseUrl='',timeOut=15000) {
           return navigator.msSaveBlob(blob, fileName)
       }
       // 如果是谷歌和火狐则用a标签来模拟
+      console.log(blob)
+
       let url = window.URL.createObjectURL(blob)
       let link = document.createElement('a')
       link.style.display = 'none'
