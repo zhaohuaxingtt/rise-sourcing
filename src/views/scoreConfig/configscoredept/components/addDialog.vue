@@ -100,7 +100,9 @@ export default {
     data(){
         return{
             addDialogFrom:[],
-            form:{},
+            form:{
+                rateDepartNum:'',
+            },
             selectOptions:{
                 raterList:[], // 评分人
                 coordinatorList:[], // 协调人
@@ -122,7 +124,9 @@ export default {
                 };
                 console.log(editForm,this.form);
             }else{
-               this.form = {};
+               this.form = {
+                   rateDepartNum:'',
+               };
             }
             const roleList = [
                 {key:'raterList',roleCode:'JZSPFR'},// 评分人
@@ -157,7 +161,13 @@ export default {
                 // 获取评分股下拉数据  MQ:39 EP:38
                 listDepartByTag({tagId:value=='MQ' ? '39' : '38'}).then((res)=>{
                     if(res.code == '200'){
-                        this.selectOptions['rateDepartNumList'] = Array.isArray(res.data) ? res.data : [];
+                        const data = Array.isArray(res.data) ? res.data : [];
+                        data.map((item)=>{
+                            item.value = item.id+'';
+                            item.label = item.nameEn;
+                        })
+                        this.selectOptions['rateDepartNumList'] = data;
+                        this.form['rateDepartNum'] = '';
                     }
                 })
             }
