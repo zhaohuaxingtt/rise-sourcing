@@ -118,7 +118,6 @@ export default {
   mixins: [pageMixins, rfqCommonFunMixins],
   props: {
     todo: Boolean,
-    status: String
   },
   data() {
     return {
@@ -133,12 +132,11 @@ export default {
   created() {
     this.getTableList();
   },
-  // inject: ["getDisabled"],
-  // computed: {
-  //   disabled() {
-  //     return this.getDisabled();
-  //   },
-  // },
+  computed:{
+    status(){
+      return this.$store.state.rfq.todoObj['mouldBudgetStatusDesc'].status
+    }
+  },
   methods: {
     //获取表格数据
     async getTableList() {
@@ -164,7 +162,6 @@ export default {
                 disabled: item.approvalStatus=='已审批'
               }))
             : [];
-            console.log(this.tableListData);
           // this.page.currPage = res.current
           // this.page.pageSize = res.size
           this.page.totalCount = res.data.total;
