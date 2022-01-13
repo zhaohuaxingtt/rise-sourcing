@@ -9,7 +9,7 @@ const requst = axios(process.env.VUE_APP_SOURCING)
 // 获取所有质量评分预设规则
 export function getAllMqRules(data) {
     return requst({
-        url: "/rfq-rate-departs/getAllMqRules",
+        url: "/rfq-rate-departs/listMqRules",
         method: "POST",
         data,
     })
@@ -27,7 +27,7 @@ export function getListSysRateDepart(data) {
 // 设置质量评分预设规则
 export function setMqRules(data) {
     return requst({
-        url: "/rfq-rate-departs/setMqRules",
+        url: "/rfq-rate-departs/setMqRule",
         method: "POST",
         data,
     })
