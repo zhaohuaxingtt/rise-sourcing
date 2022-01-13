@@ -166,6 +166,7 @@ export const downloadPdfMixins = {
                         cancelButtonText: this.language('QUXIAO', '取消'),
                     }
                 ).then(async () => {
+                    console.log(key)
                     this.$set(
                         this.cardShow.find((items) => items.key == key),
                         'show',
@@ -183,7 +184,9 @@ export const downloadPdfMixins = {
                     } else {
                         instanceId = 0
                     }
-                    e.collapseValue = true
+                    // if(key!=3){
+                        e.collapseValue = true
+                    // }
                     this.$nextTick(() => {
                         if (key == '2') {
                             this.$refs.quotationScoringHZ.exportPartsTwo()
@@ -196,10 +199,16 @@ export const downloadPdfMixins = {
                                     })
                                 })
                         } else if (key == '3') {
-                            this.$refs.quotationScoringMj.getRfqSupplierList().then((res) => {
+                            var obj1 = ''
+                            if (Hierarchy == 1) {
+                                obj1 = this.$refs.quotationScoringMj
+                            } else if (Hierarchy == 2) {
+                                obj1 = this
+                            }
+                           obj1.getRfqSupplierList().then((res) => {
                                 cbdDownloadFileTWO({
                                     rfqId: parseInt(this.$route.query.id),
-                                    round: this.$refs.quotationScoringMj.getbaseInfoData()
+                                    round: obj1.getbaseInfoData()
                                         .currentRounds,
                                     supplierId: res.data[0].supplierId,
                                 }).then((res) => {
@@ -294,6 +303,7 @@ export const downloadPdfMixins = {
                     msg: '报价趋势',
                 },
             ]
+            console.log(this.rfqInfoData)
             udMutilfiles(formData).then((res) => {
                 if (res && res.code == 200) {
                     let req = {
