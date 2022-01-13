@@ -1,19 +1,25 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2022-01-10 17:47:33
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-13 18:10:16
+ * @LastEditors: caopeng
  * @Description: 采购员报价与基本分析模具界面
- * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
 -->
 <script>
 import {getRfqSupplierList} from '@/api/designate/supplier'
 import quotationMj from 'rise/web/mouldOffer/components/moduleCost'
 import {hasShowDelegate} from '@/api/partsrfq/editordetail'
 import {iMessageBox,iMessage} from 'rise'
+import { icardData } from '../data'
+import {  downloadPdfMixins } from '@/utils/pdf'
 export default {
+  mixins: [downloadPdfMixins],
   extends:quotationMj,
   inject:['getbaseInfoData', 'getDisabled'],
+  props:{
+         rfqInfoData: { type: Object },
+  },
   provide(){
     return {
       supplierId: this.supplierId
@@ -21,6 +27,7 @@ export default {
   },
   data(){
     return {
+        cardShow: JSON.parse(JSON.stringify(icardData)),
       useCardSlot:false,
       hasSupplierComponets:true,
       supplierId:'',
@@ -59,6 +66,26 @@ export default {
       this.hasShowDelegate()
     })
     this.getAllPartForMould()
+      console.log(this.rfqInfoData)
+
+  },
+  mounted(){
+      let domElement = this.$el;
+      var box =domElement.getElementsByClassName('title_content')[0]
+        var span = document.createElement("span");  
+        span.className = 'cursor ';
+        box.appendChild(span)
+        console.log(span)
+        var i= document.createElement("i");
+        span.appendChild(i)
+        i.className = 'el-icon-shopping-cart-1';
+        i.style.color='#1660f1'
+        i.style.fontSize='18px'
+        i.style.fontWeight='bold'
+        box.addEventListener
+        // box.onclick = this.addFile(true,3,'报价分析汇总-模具',2)
+        // box.addEventListener('click', this.addFile(true,3,'报价分析汇总-模具',2), false)
+        // console.log(this.$parent)
   },
   methods:{
     hasShowDelegate(){
@@ -143,6 +170,6 @@ export default {
         this.$set(row, "mouldId", `${ this.partInfo.rfqId }_${ this.supplierId }_${ fsObj.partNum }_T${ index }`)
       }
     },
-  }
+  } 
 }
 </script>
