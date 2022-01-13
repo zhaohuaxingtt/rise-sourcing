@@ -66,7 +66,6 @@ export default{
         rfqRound:this.round>0?this.round:'' || this.rundList[this.rundList.length-1] || 0
       }
       getPriceRank(sendData).then(r=>{
-        console.log(r)
         if(r.data && r.data.supplierRanks.length){
           this.tabelData = r.data.supplierRanks
         }

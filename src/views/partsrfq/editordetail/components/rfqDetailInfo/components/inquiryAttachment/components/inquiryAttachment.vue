@@ -113,7 +113,8 @@ export default {
         const req = {
           fileType: 2,
           rfqId: id,
-          userId: store.state.permission.userInfo.id
+          userId: store.state.permission.userInfo.id,
+          isNotPosition: false
         }
         try {
           const res = await getAllAnnex(req)

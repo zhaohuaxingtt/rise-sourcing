@@ -87,6 +87,7 @@ export default {
         userId: this.userInfo.id,
         current: this.page.currPage,
         size: this.page.pageSize,
+        isNotPosition: true
       })
       .then(res => {
         if (res.code == 200) {
