@@ -2,7 +2,7 @@
  * @Author: ldh
  * @Date: 2021-04-26 17:27:20
  * @LastEditors: caopeng
- * @LastEditTime: 2021-12-27 09:57:40
+ * @LastEditTime: 2022-01-13 14:10:50
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing-new\src\api\rfqManageMent\quotationdetail\index.js
  */
@@ -120,6 +120,7 @@ export function cbdDownloadFileTWO(params) {
     return requst({
       url: `/part/cbd/downLoadFile/${ params.rfqId }/${ params.round }?supplierId=${params.supplierId}`,
       method: 'GET',
+      responseType:'blob',
       params: {
         partNum: params.partNum
       }

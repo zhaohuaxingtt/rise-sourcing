@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2022-01-12 16:29:50
+ * @LastEditTime: 2022-01-13 11:45:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
@@ -63,24 +63,28 @@
         >
           <!-- 评分人 -->
           <template #raterList="scope">
-            <span>{{scope.row.raterList.map((item)=>item.userName).join('、')}}</span>
+            <span>{{Array.isArray(scope.row.raterList) ? scope.row.raterList.map((item)=>item.userName).join('、') : ''}}</span>
           </template>
           <!-- 是否需要审批 -->
           <template #isCheck="scope">
             <span>{{scope.row.isCheck == '0' ? language('nominationLanguage.No','否'):language('nominationLanguage.Yes','是')}}</span>
           </template>
-          <!-- 定点审批人 -->
-          <template #nomiApprover="scope">
-            <span>{{scope.row.nomiApprover.map((item)=>item.userName).join('、')}}</span>
+          <!-- 上会复核审批人 -->
+          <template #willReviewApproverList="scope">
+            <span>{{ Array.isArray(scope.row.willReviewApproverList) ? scope.row.willReviewApproverList.map((item)=>item.userName).join('、') :''}}</span>
+          </template>
+          <!-- 会外流转定点审批人 -->
+          <template #flowApproverList="scope">
+            <span>{{Array.isArray(scope.row.flowApproverList) ? scope.row.flowApproverList.map((item)=>item.userName).join('、') : ''}}</span>
           </template>
           <!-- 协调人 --> 
           <template #coordinatorList="scope">
-            <span>{{scope.row.coordinatorList.map((item)=>item.userName).join('、')}}</span>
+            <span>{{Array.isArray(scope.row.coordinatorList) ? scope.row.coordinatorList.map((item)=>item.userName).join('、') :''}}</span>
           </template>
         </tableList>
       </div>
     </iCard>
-    <addDialog :dialogVisible="addDialogVisible" @changeVisible="changeVisible" :openType="dialogopenType" :multipleSelection="multipleSelection"/>
+    <addDialog :dialogVisible="addDialogVisible" @changeVisible="changeVisible" :openType="dialogopenType" :multipleSelection="multipleSelection" @getList="getListSysRateDepart"/>
   </iPage>
 </template>
 
@@ -141,6 +145,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          console.log(this.tableListData,'tableListData')
           this.multipleSelection = []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
