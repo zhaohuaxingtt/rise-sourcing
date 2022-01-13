@@ -91,7 +91,7 @@ export default {
       .then(res => {
         if (res.code == 200 && res.data) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          this.page.totalCount = res.data.total || 0
+          this.page.totalCount = res.total || 0
         } else {
           this.tableListData = []
           this.page.totalCount = 0

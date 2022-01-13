@@ -172,9 +172,9 @@ export default {
           if(res.code == '200') {
             this.tableLoading = false
             res.data.forEach(val=>{
-              this.$set(val,'engineType',val.engineVo?.engineName)
-              this.$set(val,'gearboxName',val.gearboxVo?.gearboxName)
-              this.$set(val,'batteryCapacity',val.batteryVo?.capacity)
+              this.$set(val,'engineType',val.engineVo?.remark)
+              this.$set(val,'gearboxName',val.gearboxVo?.remark)
+              this.$set(val,'batteryCapacity',val.batteryVo?.remark)
             })
             this.fscarTableData = res.data || []
             this.page.totalCount = res.total || 0
@@ -236,8 +236,8 @@ export default {
         params = this.selectData.map(item => ({
           purchasingRequirementObjectId: this.params.purchasingRequirementObjectId,
           cartypeLevel: item.cartypeLevel,
-          engineType: item.engineVo?.engineName,
-          gearType: item.gearboxVo?.gearboxName,
+          engineType: item.engineVo?.remark,
+          gearType: item.gearboxVo?.remark,
           otherInfo: item.otherConf,
           cartype: item.carProjectId,
           cartypeConfigId: item.originId,
