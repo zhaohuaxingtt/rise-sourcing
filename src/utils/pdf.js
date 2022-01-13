@@ -193,10 +193,11 @@ export const downloadPdfMixins = {
                                         })
                                         //文件流转换为base64
                                         getBase64(blob).then((resBase64) => {
-                                            blob = dataURLtoFile(resBase64, name + '.xlxs')
+                                            blob = dataURLtoFile(resBase64, name + '.xlsx')
                                             formData.append('multifile', blob)
                                             this.setfile(formData, instanceId, name)
                                         })
+                                  
                                 })
                         } else if (key == '3') {
                             this.$refs.quotationScoringMj.getRfqSupplierList().then((res) => {
@@ -206,17 +207,15 @@ export const downloadPdfMixins = {
                                         .currentRounds,
                                     supplierId: res.data[0].supplierId,
                                 }).then((res) => {
-                                        
                                         let blob = new Blob([res], {
                                             type: 'application/vnd.ms-excel',
                                         })
                                         //文件流转换为base64
                                         getBase64(blob).then((resBase64) => {
-                                            blob = dataURLtoFile(resBase64, name + '.xlxs')
+                                            blob = dataURLtoFile(resBase64, name + '.xlsx')
                                             formData.append('multifile', blob)
                                             this.setfile(formData, instanceId, name)
                                         })
-
                                 })
                             })
                         } else {
@@ -225,7 +224,7 @@ export const downloadPdfMixins = {
                                 downloadPDF({
                                     idEle: '#card' + key,
                                     pdfName: name,
-                                    exportPdf: false,
+                                    exportPdf: true,
                                     waterMark: true,
                                     callback: async (pdf, pdfName) => {
                                         try {

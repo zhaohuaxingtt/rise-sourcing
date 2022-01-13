@@ -32,9 +32,9 @@
       ></tableList>
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount"></iPagination>
       <logDialog :visible.sync="logVisible"/>
-      <bdlDialog :rfqId="rfqId" :visible.sync="bdlDialogVisible" @confirm="getTableList" />
+      <bdlDialog :rfqId="rfqId" :visible.sync="bdlDialogVisible" @confirm="updateTableList" />
     </iCard>
-    <supplier-score :todo="false" class="margin-top20" />
+    <supplier-score ref="supplierScore" :todo="false" class="margin-top20" />
   </div>
 </template>
 
@@ -116,7 +116,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.deleteLoading = false
-          this.getTableList()
+          this.updateTableList()
           this.selectTableDataCache = []
           this.resultMessage(res)
         } else {
@@ -231,6 +231,10 @@ export default {
     },
     handleAdd() {
       this.bdlDialogVisible = true
+    },
+    updateTableList(){
+      this.getTableList()
+      this.$refs.supplierScore.getTableList()
     }
   }
 }
