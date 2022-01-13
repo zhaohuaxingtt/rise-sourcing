@@ -162,10 +162,10 @@ export default {
                     ...this.requestData,
                     data,
                 ])
-                await setMqRules([
-                    ...this.requestData,
-                    data,
-                ]).then((res)=>{
+                await setMqRules(
+                    // [...this.requestData,data,]
+                    data
+                    ).then((res)=>{
                     this.btnLoading = false;
                     if(res.code == '200'){
                         iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
