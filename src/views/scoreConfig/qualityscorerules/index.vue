@@ -31,7 +31,7 @@
     >
         <el-form>
             <el-form-item :label="language('QUALITYSCORERULES_PINGFENGU', '评分股')" >
-                <iInput v-model="searchForm.deptNum" :placeholder="language('LK_QINGSHURU','请输入')"/>
+                <iInput v-model="searchForm.deptName" :placeholder="language('LK_QINGSHURU','请输入')"/>
             </el-form-item>
             <el-form-item :label="language('UALITYSCORERULES_PINGFENREN', '评分人')">
                 <iInput v-model="searchForm.userName" :placeholder="language('LK_QINGSHURU','请输入')"/>
@@ -100,7 +100,7 @@ export default {
             tableTitle:tableTitle || [],
             addRulesDialogVisible:false,
             searchForm:{
-                deptNum:'',
+                deptName:'',
                 userName:'',
             },
             requestData:[],

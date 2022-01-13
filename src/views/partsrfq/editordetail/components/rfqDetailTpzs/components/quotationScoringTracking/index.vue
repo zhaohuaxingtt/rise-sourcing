@@ -1,10 +1,10 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2021-12-03 14:07:45
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-01-12 17:52:33
+ * @LastEditors: caopeng
  * @Description: 报价评分跟踪
- * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
+ * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
 -->
 <template>
   <div class="timeline">
