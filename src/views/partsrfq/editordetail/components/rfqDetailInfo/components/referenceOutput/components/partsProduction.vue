@@ -134,7 +134,7 @@ export default {
             purchasingRequirementId: row.purchasingRequirementId,
             partNum: row.ninePartNum,
             categoryCode: row.categoryCode,
-            purchasingRequirementObjectId: row.purchasingRequirementObjectId,
+            purchasingRequirementId: row.purchasingRequirementId,
             tab : 'outputPlan'
           }
         })
