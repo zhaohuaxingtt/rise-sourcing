@@ -424,6 +424,7 @@ export default {
           width: 40%;
           text-align: right;
           line-height: 28PX;
+          white-space: nowrap;
           strong {
             font-size: 14PX;
           }

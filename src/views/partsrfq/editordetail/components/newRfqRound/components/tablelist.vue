@@ -45,7 +45,7 @@
         <template slot-scope="scope">
           <i-select v-model="scope.row[items.props]">
             <el-option v-for="items in scope.row.roundCbdVOS" :key='items.code' :value='items.code'
-                       :label="$t(items.desc)"/>
+                       :label="items.name"/>
           </i-select>
         </template>
       </el-table-column>
