@@ -485,11 +485,40 @@ export function searchABPageExchangeRate(mimoId) {
     })
 }
 //导出excel
+export function exportFSPartsAsRowTWO(rfqId,round,dataList) {
+    return requst({
+        url:`/nego-assistant/export-fs-parts-as-row/${rfqId}/${round}`,
+        method:'POST',
+        data:dataList
+    })
+}
+
+//导出excel
+export function exportFsSupplierAsRowTWO(rfqId,round,dataList) {
+    return requst({
+        url:`/nego-assistant/export-fs-supplier-as-row/${rfqId}/${round}`,
+        method:'POST',
+        data:dataList,
+        responseType:'blob'
+    })
+}
+
+//导出excel
+export function exportGsPartsAsRowTWO(rfqId,round,dataList) {
+    return requst({
+        url:`/nego-assistant/export-gs-parts-as-row/${rfqId}/${round}`,
+        method:'POST',
+        data:dataList,
+        responseType:'blob'
+    })
+}
+//导出excel
 export function exportFSPartsAsRow(rfqId,round,dataList) {
     return downLoad({
         url:`/nego-assistant/export-fs-parts-as-row/${rfqId}/${round}`,
         method:'POST',
-        data:dataList
+        data:dataList,
+        responseType:'blob'
     })
 }
 
