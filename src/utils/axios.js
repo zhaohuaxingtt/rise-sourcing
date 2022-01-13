@@ -46,9 +46,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       config.headers['json-wrapper'] = '1'
 
       loading = Loading.service({
-        lock: true,
-        // text: '拼命加载中...',
-        // background:'rgba(255,255,255,0.5)',
+        lock: true
       })
 
       return config
