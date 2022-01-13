@@ -85,7 +85,7 @@ export default {
   },
   watch: {
     visible(nv) {
-      if (nv && this.ids.length) {
+      if (nv && this.ids.length && this.$route.query.id) {
         this.getRfqRateDepartsData()
         this.getAllDeptTag()
       } else {
@@ -104,6 +104,7 @@ export default {
       this.tableTitle = this.tableTitle.filter(title => title.props !== 'coordinatorId')
     } else {
       if (!this.visible) return
+      if(!this.$route.query.id) return
       this.getRfqRateDepartsData()
       this.getAllDeptTag()
       this.getDict()
@@ -248,7 +249,7 @@ export default {
       .catch(() => {})
     },
     // 获取评分人和协调人列表
-    getAllRaterAndCoordinator(rateTag, rateDepartNum) {
+    getAllRaterAndCoordinator(rateTag, rateDepartNum, data={}) {
       if (this.deptMap[rateTag] && this.deptMap[rateTag][rateDepartNum] && (this.deptMap[rateTag][rateDepartNum].raterList || this.deptMap[rateTag][rateDepartNum].coordinatorList)) return
 
       return getAllRaterAndCoordinator({
@@ -257,19 +258,38 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", res.data.raterList.map(item => ({
+          // 评分人
+          let raterList = res.data.raterList.map(item => ({
             ...item,
             label: item.nameZh,
             value: item.id,
             key: item.id
-          })))
-
-          this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", res.data.coordinatorList.map(item => ({
+          }))
+          if(!raterList.map(i=>i.value).includes(data.raterId)){
+            raterList.push({
+              ...data,
+              label: data.rater,
+              value: data.raterId,
+              key: data.raterId
+            })
+          }
+          // 协调人
+          let coordinatorList = res.data.coordinatorList.map(item => ({
             ...item,
             label: item.nameZh,
             value: item.id,
             key: item.id
-          })))
+          }))
+          if(!coordinatorList.map(i=>i.value).includes(data.coordinatorId)){
+            coordinatorList.push({
+              ...data,
+              label: data.coordinator,
+              value: data.coordinatorId,
+              key: data.coordinatorId
+            })
+          }
+          this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", raterList)
+          this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", coordinatorList)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
