@@ -39,3 +39,13 @@ export function departsDelete(data) {
     data,
   })
 }
+
+
+// 评分部门划定
+export function setSysRateDepart(data) {
+  return requst({
+    url: '/rfq-rate-departs/setSysRateDepart',
+    method: "POST",
+    data,
+  })
+}

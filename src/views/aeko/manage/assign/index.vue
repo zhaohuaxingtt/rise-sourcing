@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: YoHo
- * @LastEditTime: 2021-11-15 16:45:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-13 12:20:12
  * @Description: 
 -->
 <template>
@@ -106,13 +106,14 @@
 </template>
 <script>
 import search from './components/search'
-import {tableTitle, SUBMENU} from './components/data'
+import {tableTitle} from './components/data'
 import projectHeader from './components/projectHeader'
 import tablelist from 'rise/web/components/iFile/tableList';
 import {iPage, iCard, iSelect, iButton, iPagination, icon, iMessage} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
 import {user as configUser} from '@/config'
 import { setLogMenu } from "@/utils";
+import { TAB as SUBMENU } from '@/views/aeko/data'
 import {
   getApproveDistributionPage,
   approveDistributionSave,

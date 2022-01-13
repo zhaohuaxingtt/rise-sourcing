@@ -80,7 +80,7 @@ import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,showOrHide,getRowAndcolSpanArray,defaultLayoutTemplate} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow,exportFSPartsAsRowTWO, exportFsSupplierAsRowTWO, exportGsPartsAsRowTWO} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
@@ -548,17 +548,17 @@ export default{
         //导出
     exportPartsTwo(layout) {
       return new Promise (r=>{
-            if(layout === '1') {
-                    const res1= exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
-                    r(res1)
-            } else if(layout === '2') {
-                const res2= exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
-                r(res2)
-            } else {
-                const res3= exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
-                r(res3)
-            }
-         })
+        if(layout === '1') {
+            const res1= exportFSPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)
+            r(res1)
+        } else if(layout === '2') {
+            const res2= exportFsSupplierAsRowTWO(this.$route.query.id,this.round,this.exportTile)
+            r(res2)
+        } else {
+            const res3= exportGsPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)
+            r(res3)
+        }
+        })
     }
   }
 }
