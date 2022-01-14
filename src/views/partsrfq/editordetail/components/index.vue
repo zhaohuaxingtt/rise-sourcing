@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2022-01-04 09:40:10
- * @LastEditTime: 2022-01-07 22:48:14
+ * @LastEditTime: 2022-01-13 22:53:08
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -40,10 +40,6 @@ export default {
     iButton
   },
   props:{
-    todoObj:{
-      type: Object,
-      default:()=>{return {}}
-    },
     tipsVislble:{
       type: Boolean,
       default: false,
@@ -52,9 +48,10 @@ export default {
   computed:{
     todoList(){
       let list = []
-      Object.keys(this.todoObj).forEach(k=>{
-        if(this.todoObj[k].status!='已完成'){
-          list.push(this.todoObj[k])
+      let todoObj = this.$store.state.rfq.todoObj
+      Object.keys(todoObj).forEach(k=>{
+        if(todoObj[k].status!='已完成'){
+          list.push(todoObj[k])
         }
       })
       return list

@@ -72,7 +72,7 @@
     />
     <scoringDeptDialog :visible.sync="scoringDeptVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
   </iCard>
-  <scoringPushDialog :visible.sync="scoringPushVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
+  <scoringPushDialog :visible.sync="scoringPushVisible" :ids="[$route.query.id]" @update="getTableList" :tableData="tableListData" />
 </div>
 </template>
 
@@ -106,7 +106,6 @@ export default {
   mixins: [pageMixins, rfqCommonFunMixins],
   props:{
     todo: Boolean,
-    status: String
   },
   data() {
     return {
@@ -139,12 +138,12 @@ export default {
   computed: {
     disabled() {
       return this.getDisabled()
+    },
+    status(){
+      return this.$store.state.rfq.todoObj['pushRateStatusDesc'].status
     }
   },
   methods: {
-    toggle(type) {
-      this[type] = !this[type];
-    },
     async getTableList() {
       const id = this.$route.query.id
 

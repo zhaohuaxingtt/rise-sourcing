@@ -141,6 +141,7 @@ export default {
       });
       this.resultMessage(res);
       this.getTableList();
+      this.$store.dispatch('setTodoObj',this.$route.query.id);
       this.$emit('updateTable')
     },
     async recall() {

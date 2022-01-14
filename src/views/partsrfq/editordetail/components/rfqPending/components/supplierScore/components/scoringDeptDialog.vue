@@ -193,7 +193,20 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
-      .catch(() => {})
+      .catch(() => {
+          this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", [{
+            ...data,
+            label: data.rater,
+            value: data.raterId,
+            key: data.raterId,
+          }]);
+          this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", [{
+            ...data,
+            label: data.coordinator,
+            value: data.coordinatorId,
+            key: data.coordinatorId,
+          }]);
+        })
     },
     // 获取已保存的评分部门
     getRfqRateDepartsData() {
