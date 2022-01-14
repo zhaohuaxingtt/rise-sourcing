@@ -13,29 +13,29 @@
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key,items.name) : items.name">
         <template slot-scope="row">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
-            <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
+            <!-- <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItemsTwo' :prop="items.props" :label="items.key ? language(items.key,items.name) : items.name">
         <template slot-scope="row">
-          <span class="flexRowTwo">
-            <div class="left">
+          <!-- <span class="flexRowTwo"> -->
+            <!-- <div class="left"> -->
               <span class="openLinkText cursor " @click="openPageTwo(row.row)"> {{ row.row[activeItemsTwo] }}</span>
-            </div>
-            <div class="right">
+            <!-- </div> -->
+            <!-- <div class="right">
               <span v-if="row.row[activeItemsTwo]" class="icon-gray  cursor "  @click="openPageTwo(row.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
               </span>
-            </div>
+            </div> -->
 
-          </span>  
+          <!-- </span>   -->
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-else :label="items.key ? language(items.key,items.name) : items.name" :prop="items.props">
