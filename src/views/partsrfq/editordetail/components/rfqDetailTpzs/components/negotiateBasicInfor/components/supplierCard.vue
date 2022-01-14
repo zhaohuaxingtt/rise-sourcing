@@ -11,7 +11,7 @@
       <iCard class="right margin-bottom5" v-for="(item,index) in tableData" :key="index">
         <div class="flex">
           <icon class="icon-s" name="iconpilianggongyingshangzonglan" symbol></icon>
-          <div class="title">{{item.supplierAbbrName}}</div>
+          <div class="title">{{item.supplierAbbrName ? item.supplierAbbrName : item.supplierName}}</div>
         </div>
         <iLabel class="margin-top8 title1" :label="language('CHEXINGXI','车型：')"></iLabel>
         <div class="carBox">

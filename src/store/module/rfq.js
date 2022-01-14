@@ -1,10 +1,11 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 20:16:45
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\store\module\rfq.js
  */
+import { waitDealtRfqTaskStatus } from '@/api/partsprocure/home';
 const state = {
   pendingPartsList: [], //已经加入rfq里面的零件采购项目
   entryStatus: parseInt(window.sessionStorage.getItem('entryStatus')) || 0, //0:外部，1：内部
@@ -25,6 +26,13 @@ const state = {
     seriesArray: [],
     xLabelData: [],
     resChartData: []
+  },
+  // 待办项
+  todoObj:{
+    mouldPriceStatusDesc:{name:'模具目标价',key:'MUJUMUBIAOJIA'},
+    mouldBudgetStatusDesc:{name:'模具投资预算',key:'MOJUTOUZIYUSUAN'},
+    cfPriceStatusDesc:{name:'零件目标价',key:'LINGJIANMUBIAOJIA'},
+    pushRateStatusDesc:{name:'供应商评分',key:'GONGYINGSHANGPINGFEN'},
   },
   partfunc:null
 
@@ -75,6 +83,9 @@ const mutations = {
   },
   SET_PI_CHART_DATA(state, data) {
     state.piIndexChartData = data
+  },
+  SET_TODO_OBJ(state, todoObj) {
+    state.todoObj = todoObj
   }
 }
 
@@ -116,6 +127,32 @@ const actions = {
   setPiIndexChartData({ commit }, data) {
     commit('SET_PI_CHART_DATA', data)
   },
+  // 根据rfqId查询待办任务状态
+  async setTodoObj({ commit }, id){
+    let result = false
+    const todoObj = {
+      mouldPriceStatusDesc:{name:'模具目标价',key:'MUJUMUBIAOJIA'},
+      mouldBudgetStatusDesc:{name:'模具投资预算',key:'MOJUTOUZIYUSUAN'},
+      cfPriceStatusDesc:{name:'零件目标价',key:'LINGJIANMUBIAOJIA'},
+      pushRateStatusDesc:{name:'供应商评分',key:'GONGYINGSHANGPINGFEN'},
+    }
+    await waitDealtRfqTaskStatus(id).then(async(res)=>{
+      if(res.result){
+        let data = res.data
+        for (const key in todoObj) {
+          todoObj[key].status = ''
+          if (data[key]) {
+            todoObj[key].status = data[key]
+            if(data[key]!='已完成'){
+              result = true
+            }
+          }
+        }
+      }
+    })
+    commit('SET_TODO_OBJ', todoObj)
+    return result
+  }
 }
 
 export default {
