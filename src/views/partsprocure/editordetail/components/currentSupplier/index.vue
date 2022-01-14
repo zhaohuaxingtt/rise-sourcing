@@ -222,7 +222,7 @@ export default{
           this.searchForm[element] = ''
         }
       });
-      this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
+      this.searchForm.partNum = this.detailData().partNum.substring(0,9)
       this.page.currPage = 1
       this.supplierCurentBottom()
     },

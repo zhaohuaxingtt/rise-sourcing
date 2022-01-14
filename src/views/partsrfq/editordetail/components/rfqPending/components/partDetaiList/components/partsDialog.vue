@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-10 19:23:35
+ * @LastEditTime: 2022-01-14 15:41:20
  * @Description: 申请零件目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -96,10 +96,20 @@ export default {
           partNameZh:i.partNameZh,
           cfController:i.cfController,
           cfControllerName:i.cfControllerName,
+          isEdit: true
         }
         return obj
       })
     },
+  },
+  watch:{
+    visible(nv){
+      if(nv){
+        this.$nextTick(()=>{
+          this.$refs.tableList.defaultSelectAll()
+        })
+      }
+    }
   },
   created(){
     this.getDict()
@@ -137,6 +147,7 @@ export default {
       applyPartTarget(params).then((res) => {
         if (res?.result) {
           iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+          this.$store.dispatch('setTodoObj',this.$route.query.id);
           this.$emit('update','partsTargetPrice')
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
@@ -146,7 +157,7 @@ export default {
       })
     },
     select(selection){
-      selection.row.isEdit = true
+      selection.row.isEdit = !selection.row.isEdit
     },
     handleSelectionChange(val) {
       this.selectList = val

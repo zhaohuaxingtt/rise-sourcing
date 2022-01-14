@@ -258,7 +258,7 @@ export default{
         this.loadind = true
         const sendData = {
           carTypeProjectZh:this.detailData().carTypeProjectZh,
-          factoryId:this.detailData().procureFactory,
+          factoryId:this.detailData().procureFactoryId,
           partNum:this.detailData().partNum
         }
         nomiAutoPartsAssemblyCheck(sendData).then(res=>{

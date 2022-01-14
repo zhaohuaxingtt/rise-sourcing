@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-10 17:51:54
+ * @LastEditTime: 2022-01-13 22:33:57
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -82,7 +82,6 @@ export default {
   mixins: [pageMixins],
   props: {
     todo: Boolean,
-    status: String,
   },
   data() {
     return {
@@ -93,6 +92,11 @@ export default {
       selectTableData: [],
       tableTitle,
     };
+  },
+  computed:{
+    status(){
+      return this.$store.state.rfq.todoObj['cfPriceStatusDesc'].status
+    }
   },
   created() {
     this.getTableList();

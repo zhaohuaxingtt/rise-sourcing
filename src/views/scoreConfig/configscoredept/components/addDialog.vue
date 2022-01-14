@@ -103,9 +103,14 @@ export default {
         return{
             addDialogFrom:[],
             form:{
+                rateTag:'',
                 rateDepartNum:'',
                 parentRateDepartNum:'',
+                raterList:[],
                 isCheck:false,
+                coordinatorList:[],
+                willReviewApproverList:[],
+                flowApproverList:[],
             },
             selectOptions:{
                 raterList:[], // 评分人
@@ -123,7 +128,8 @@ export default {
             // 编辑时根据数据判断 是否需要展示定点审批人
             if(this.openType == 'edit'){
                 const editForm = this.multipleSelection[0] || {};
-                this.selectChange(editForm['rateTag'],'rateTag',editForm['rateDepartNum'],editForm['parentRateDepartNum']);
+                this.selectChange(editForm['rateTag'],'rateTag',editForm['rateDepartNum']);
+                this.selectChange(editForm['rateDepartId'],'rateDepartNum',null,editForm['parentRateDepartNum']);
                 this.form = {
                     rateTag:editForm['rateTag'],
                     parentRateDepartNum:editForm['parentRateDepartNum'],
@@ -136,9 +142,14 @@ export default {
                 };
             }else{
                this.form = {
+                     rateTag:'',
                     rateDepartNum:'',
                     parentRateDepartNum:'',
+                    raterList:[],
                     isCheck:false,
+                    coordinatorList:[],
+                    willReviewApproverList:[],
+                    flowApproverList:[],
                };
                this.selectOptions = {
                     raterList:[], // 评分人
@@ -243,9 +254,13 @@ export default {
                         // 评分股要单独处理一下
                         if(item.props == 'rateDepartNum'){
                             const selectRateDepart = selectOptions['rateDepartNumList'].filter((rateDepartItem)=>rateDepartItem.id == form[item.props]);
-                            data[item.props] = selectRateDepart[0].label;
-                            data['rateDepartId'] = selectRateDepart[0].id;
-                            data['parentRateDepartNum'] = form['parentRateDepartNum'];
+                            if(selectRateDepart.length){
+                                data[item.props] = selectRateDepart[0].label || '';
+                                data['rateDepartId'] = selectRateDepart[0].id || '';
+                                data['rateDepartName'] = selectRateDepart[0].nameZh || '';
+                                data['parentRateDepartNum'] = form['parentRateDepartNum'] || '';
+                            }
+                            
                         }
                     }
                 }
