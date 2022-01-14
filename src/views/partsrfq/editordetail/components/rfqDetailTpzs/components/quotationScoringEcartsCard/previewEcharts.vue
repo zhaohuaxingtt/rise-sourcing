@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2022-01-12 10:07:50
+ * @LastEditTime: 2022-01-13 14:18:20
  * @LastEditors: caopeng
  * @Description: 供应商维度展示
  * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\previewEcharts.vue
@@ -99,7 +99,7 @@ export default{
    async exportExcel(v){
     const res= await downLoadExcel(Object.assign(this.getQuery()))
     },
-    exportExcelTwo(v){
+      exportExcelTwo(v){
         return new Promise (r=>{
             const res= downLoadExcelTwo(Object.assign(this.getQuery()))
             r(res)

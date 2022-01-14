@@ -32,9 +32,9 @@
       ></tableList>
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount"></iPagination>
       <logDialog :visible.sync="logVisible"/>
-      <bdlDialog :rfqId="rfqId" :visible.sync="bdlDialogVisible" @confirm="getTableList" />
+      <bdlDialog :rfqId="rfqId" :visible.sync="bdlDialogVisible" @confirm="updateTableList" />
     </iCard>
-    <supplier-score :todo="false" class="margin-top20" />
+    <supplier-score ref="supplierScore" :todo="false" class="margin-top20" />
   </div>
 </template>
 
@@ -100,9 +100,6 @@ export default {
     this.getTableList()
   },
   methods: {
-    toggle(type) {
-      this[type] = !this[type];
-    },
     // 删除
     handleDelete() {
       if(!this.selectTableDataCache.length) return iMessage.warn(this.language('LK_NHWXZBDL','您还未选择BDL')) 
@@ -116,7 +113,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.deleteLoading = false
-          this.getTableList()
+          this.updateTableList()
           this.selectTableDataCache = []
           this.resultMessage(res)
         } else {
@@ -186,7 +183,7 @@ export default {
     },
     // 跳转
     openPage(row) {
-      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${row.supplierSubId}&supplierType=${row.supplierType}&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${row.supplierId}&supplierType=${row.supplierType}&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
     },
     log() {
       // this.logVisible = true
@@ -231,6 +228,10 @@ export default {
     },
     handleAdd() {
       this.bdlDialogVisible = true
+    },
+    updateTableList(){
+      this.getTableList()
+      this.$refs.supplierScore.getTableList()
     }
   }
 }

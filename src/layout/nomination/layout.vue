@@ -35,6 +35,20 @@ export default {
     decisionDataHeader,
     iPage
   },
+  beforeRouteEnter(to, from, next) {
+    // 定点管理预览跳转逻辑
+    if (from.meta.layoutPath && !to.meta.layoutPath && to.meta.path) {
+      const path = `${from.meta.layoutPath}/${to.meta.path}`
+      const query = from.query
+      const params = from.params
+      return next({
+        path,
+        params,
+        query
+      })
+    }
+    next()
+  },
   data(){
     return{
       loading: false,

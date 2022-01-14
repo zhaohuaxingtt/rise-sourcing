@@ -128,7 +128,9 @@
                    :layout="page.layout"
                    :total="page.totalCount" />
     </iCard>
-    <!-- <rsPdf /> -->
+    <div class="rsPdfWrapper">
+      <rsPdf ref="rsPdf" />
+    </div>
   </div>
 </template>
 
@@ -377,8 +379,14 @@ export default {
       downloadUdFile(row.uploadId)
     },
 
-    handleExportPdf () {
-      // transverseDownloadPDF()
+    // 导出pdf
+    handleExportPdf() {
+      transverseDownloadPDF({
+        dom: this.$refs.rsPdf.$el,
+        pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+        exportPdf: true,
+        waterMark: true
+      })
     }
   }
 }
@@ -404,5 +412,11 @@ export default {
   .card {
     box-shadow: none;
   }
+}
+
+.rsPdfWrapper {
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 </style>

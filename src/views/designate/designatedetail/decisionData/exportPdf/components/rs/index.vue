@@ -1,29 +1,32 @@
 <template>
   <div class="rs">
-    <rsPdf
-        :cardTitle="cardTitle"
-        :cardTitleEn="cardTitleEn"
-        :isSingle="isSingle"
-        :leftTitle="leftTitle"
-        :rightTitle="rightTitle"
-        :basicData="basicData"
-        :tableTitle="tableTitle"
-        :tableData="tableData"
-        :remarkItem="remarkItem"
-        :projectType="projectType"
-        :exchangeRageCurrency="exchangeRageCurrency"
-        :exchangeRates="exchangeRates"
-        :showSignatureForm="showSignatureForm"
-        :isAuth="isAuth"
-        :checkList="checkList"
-        :processApplyDate="processApplyDate"
-        :prototypeList="PrototypeList"
-        :prototypeTitleList="prototypeTitleList"/>
+    <cRsPdf v-if="isCirculation" />
+    <mRsPdf
+      v-else
+      :cardTitle="cardTitle"
+      :cardTitleEn="cardTitleEn"
+      :isSingle="isSingle"
+      :leftTitle="leftTitle"
+      :rightTitle="rightTitle"
+      :basicData="basicData"
+      :tableTitle="tableTitle"
+      :tableData="tableData"
+      :remarkItem="remarkItem"
+      :projectType="projectType"
+      :exchangeRageCurrency="exchangeRageCurrency"
+      :exchangeRates="exchangeRates"
+      :showSignatureForm="showSignatureForm"
+      :isAuth="isAuth"
+      :checkList="checkList"
+      :processApplyDate="processApplyDate"
+      :prototypeList="PrototypeList"
+      :prototypeTitleList="prototypeTitleList"/>
   </div>
 </template>
 
 <script>
-import rsPdf from "@/views/designate/designatedetail/decisionData/rs/components/meeting/rsPdf"
+import mRsPdf from "@/views/designate/designatedetail/decisionData/rs/components/meeting/rsPdf"
+import cRsPdf from "@/views/designate/designatedetail/decisionData/rs/components/circulation/rsPdf"
 import {
   getDepartApproval,
   getList,
@@ -50,7 +53,13 @@ import {
 import {partProjTypes} from "@/config"
 
 export default {
-  components: {rsPdf},
+  components: {mRsPdf, cRsPdf},
+  props: {
+    nomiData: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data() {
     return {
       projectType: "",
@@ -127,6 +136,9 @@ export default {
         return exchangeRageCurrency
       }
       return []
+    },
+    isCirculation() {
+      return this.nomiData.nominateProcessType === "TRANFORM"
     },
   },
   created() {

@@ -360,27 +360,27 @@ export default {
     },
     // 导出
     async handleExport () {
-
       const res = await mekInfoList({
         pageNo: 1,
         pageSize: this.page.totalCount,
       })
       let excelList = res.data
       excelList.map((item) => {
-        item.partNumber1 = item.partNumber + item.partName
-        item.materialGroup1 = item.materialGroup + item.stuffGroup
-        item.motorNameMotorProject = item.motorName + item.motorProject
-        item.brandPlatform = item.brand + item.platform
-        item.positionType = item.position + item.type
-        item.carInfo = item.carTypeInfo + '      ' + item.ebr
-        item.priceInfo = item.sopDate + item.sopPrice + '      ' + item.data + item.price
-        item.supplierInfo = item.supplierCode + item.supplierName
-        return item.isHidden1 = item.isHidden
+        item.partNumber1 = (item.partNumber || "") + (item.partName || "")
+        item.materialGroup1 = (item.materialGroup || "") + (item.stuffGroup || "")
+        item.motorNameMotorProject = (item.motorName || "") + (item.motorProject || "")
+        item.brandPlatform = (item.brand || "") + (item.platform || "")
+        item.positionType = (item.position || "") + (item.type || "")
+        item.carInfo = (item.carTypeInfo || "") + '      ' + (item.ebr || "")
+        item.priceInfo = (item.sopDate || "") + (item.sopPrice || "") + '      ' + (item.data || "") + (item.price || "")
+        item.supplierInfo = (item.supplierCode || "") + (item.supplierName || "")
+        return item.isHidden1 = item.isHidden || ""
       })
       excelList.unshift({
         carInfo: this.language('PEIZHIXINGXI', '配置信息') + '        ' + 'EBR',
         priceInfo: this.language('SOPXINGXI', 'SOP信息') + '         ' + this.language('DANGQIANJIAGE', '当前价格')
       })
+      console.log(excelList, "list")
       const fileName = await getName(this.$route.query.schemeId)
       await excelExport(excelList, this.tableTitle, fileName.data)
     },

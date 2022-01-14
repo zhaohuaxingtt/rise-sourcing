@@ -16,7 +16,7 @@ export const tableTileList = [
 ]
 
 export const tabelTitleListLast = [
-  {props:'qualtity',name:'现供份额(%)', key: "XIANGONGFENE", tooltip: true, width: ''},
+  {props:'qualtity',name:'现供份额(%)', key: "FENEXAINGONG", tooltip: true, width: ''},
 
 ]
 export const priceTitle = [

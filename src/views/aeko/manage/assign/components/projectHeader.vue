@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-01 15:17:43
+ * @LastEditTime: 2022-01-13 12:19:59
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -21,10 +21,9 @@
 
 <script>
 import { iNavMvp, icon } from "rise"
-import { SUBMENU } from "./data"
 import switchPost from '@/components/switchPost'
 import iLoger from '@/components/iLoger'
-import { getLeftTab } from '@/views/aeko/data'
+import { getLeftTab,TAB as SUBMENU } from '@/views/aeko/data'
 
 export default {
   components: {

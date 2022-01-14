@@ -9,30 +9,18 @@
     <div class="body">
       <tableList class="table" :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :cellClassName="cellClassName" :tableLoading="loading">
         <template #rateTag="scope">
-          <iText>{{getName(scope.row.rateTag, deptScoringOptions)}}</iText>
-          <!-- <iSelect v-model="scope.row.rateTag" :disabled="true">
-            <el-option v-for="item in deptScoringOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </iSelect> -->
+          <iText>{{scope.row.rateTag}}</iText>
         </template>
         <template #rateDepartNum="scope">
-          <iText v-if="scope.row.rateTag">{{getName(scope.row.rateDepartNum, deptMap[scope.row.rateTag] ? Object.values(deptMap[scope.row.rateTag]) : [])}}</iText>
-          <!-- <iSelect v-if="scope.row.rateTag" v-model="scope.row.rateDepartNum" :disabled="true">
-            <el-option v-for="(item, $index) in deptMap[scope.row.rateTag] ? Object.values(deptMap[scope.row.rateTag]) : []" :key="$index" :label="item.label" :value="item.value"></el-option>
-          </iSelect> -->
+          <iText v-if="scope.row.rateTag">{{scope.row.rateDepartNum}}</iText>
         </template>
         <!-- right 评分人 -->
         <template #raterId="scope">
-          <iText v-if="scope.row.rateDepartNum">{{getName(scope.row.raterId, deptMap[scope.row.rateTag] && deptMap[scope.row.rateTag][scope.row.rateDepartNum] ? deptMap[scope.row.rateTag][scope.row.rateDepartNum].raterList : [])}}</iText>
-          <!-- <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.raterId" :disabled="true">
-            <el-option v-for="(item, $index) in deptMap[scope.row.rateTag] && deptMap[scope.row.rateTag][scope.row.rateDepartNum] ? deptMap[scope.row.rateTag][scope.row.rateDepartNum].raterList : []" :key="$index" :label="item.label" :value="item.value"></el-option>
-          </iSelect> -->
+          <iText v-if="scope.row.rateDepartNum">{{scope.row.rater}}</iText>
         </template>
         <!-- left 评分人 -->
         <template #coordinatorId="scope"> 
-          <iText v-if="scope.row.rateDepartNum">{{getName(scope.row.coordinatorId,deptMap[scope.row.rateTag] && deptMap[scope.row.rateTag][scope.row.rateDepartNum] ? deptMap[scope.row.rateTag][scope.row.rateDepartNum].coordinatorList : [])}}</iText>
-          <!-- <iSelect v-if="scope.row.rateDepartNum" v-model="scope.row.coordinatorId" :disabled="true">
-            <el-option v-for="(item, $index) in deptMap[scope.row.rateTag] && deptMap[scope.row.rateTag][scope.row.rateDepartNum] ? deptMap[scope.row.rateTag][scope.row.rateDepartNum].coordinatorList : []" :key="$index" :label="item.label" :value="item.value"></el-option>
-          </iSelect> -->
+          <iText v-if="scope.row.rateDepartNum">{{scope.row.coordinator}}</iText>
         </template>
       </tableList>
       <el-divider class="divider"></el-divider>
@@ -85,7 +73,7 @@ export default {
   },
   watch: {
     visible(nv) {
-      if (nv && this.ids.length) {
+      if (nv && this.ids.length && this.$route.query.id) {
         this.getRfqRateDepartsData()
         this.getAllDeptTag()
       } else {
@@ -104,6 +92,7 @@ export default {
       this.tableTitle = this.tableTitle.filter(title => title.props !== 'coordinatorId')
     } else {
       if (!this.visible) return
+      if(!this.$route.query.id) return
       this.getRfqRateDepartsData()
       this.getAllDeptTag()
       this.getDict()
@@ -135,15 +124,6 @@ export default {
   methods: {
     cellClassName(){
       return 'no-hover'
-    },
-    getName(item, data){
-      if(Array.isArray(data)){
-        let result = data.filter(i=>i.value==item)[0]
-        return result && result.label || item
-      }else if(typeof data === 'object' && Object.values(data).length){
-        let result = Object.values(data).filter(i=>i.value==item)[0]
-        return result && result.label || item
-      }
     },
     // 获取工厂名称枚举
     getDict() {
@@ -193,6 +173,8 @@ export default {
       .then(res => {
         if (res.code == 200) {
           iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          this.$store.dispatch('setTodoObj',this.$route.query.id);
+          this.$emit('update')
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
@@ -248,7 +230,7 @@ export default {
       .catch(() => {})
     },
     // 获取评分人和协调人列表
-    getAllRaterAndCoordinator(rateTag, rateDepartNum) {
+    getAllRaterAndCoordinator(rateTag, rateDepartNum, data={}) {
       if (this.deptMap[rateTag] && this.deptMap[rateTag][rateDepartNum] && (this.deptMap[rateTag][rateDepartNum].raterList || this.deptMap[rateTag][rateDepartNum].coordinatorList)) return
 
       return getAllRaterAndCoordinator({
@@ -257,19 +239,38 @@ export default {
       })
       .then(res => {
         if (res.code == 200) {
-          this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", res.data.raterList.map(item => ({
+          // 评分人
+          let raterList = res.data.raterList.map(item => ({
             ...item,
             label: item.nameZh,
             value: item.id,
             key: item.id
-          })))
-
-          this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", res.data.coordinatorList.map(item => ({
+          }))
+          if(!raterList.map(i=>i.value).includes(data.raterId)){
+            raterList.push({
+              ...data,
+              label: data.rater,
+              value: data.raterId,
+              key: data.raterId
+            })
+          }
+          // 协调人
+          let coordinatorList = res.data.coordinatorList.map(item => ({
             ...item,
             label: item.nameZh,
             value: item.id,
             key: item.id
-          })))
+          }))
+          if(!coordinatorList.map(i=>i.value).includes(data.coordinatorId)){
+            coordinatorList.push({
+              ...data,
+              label: data.coordinator,
+              value: data.coordinatorId,
+              key: data.coordinatorId
+            })
+          }
+          this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", raterList)
+          this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", coordinatorList)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }

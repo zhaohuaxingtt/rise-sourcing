@@ -113,7 +113,7 @@ export default {
 <style lang="scss" scoped>
 .bdl {
   .bdlCard {
-    margin-bottom: 20px;
+    margin-bottom: 20px; /*no*/
 
     &:last-of-type {
       margin-bottom: 0;
@@ -157,7 +157,7 @@ export default {
     .label {
       color: #000;
       font-weight: 700;
-      padding-left: 10px;
+      padding-left: 10px; /*no*/
     }
   }
 }

@@ -167,7 +167,7 @@ export default {
   methods: {
     init(){
       const res = this.dataRes;
-      this.tableListData = res.data;
+      this.tableListData = res.data.map(item => ({ ...item, cbdTemplateId: item.cbdTemplateId + "" }));
       this.roundsPhase = this.tableListData[0].roundsPhase
       // this.page.currPage = res.pageNum
       // this.page.pageSize = res.pageSize
@@ -190,7 +190,7 @@ export default {
         }
         try {
           const res = await pageRfqRound(req)
-          this.tableListData = res.data;
+          this.tableListData = res.data.map(item => ({ ...item, cbdTemplateId: item.cbdTemplateId + "" }))
           this.roundsPhase = this.tableListData[0].roundsPhase
           // this.page.currPage = res.pageNum
           // this.page.pageSize = res.pageSize

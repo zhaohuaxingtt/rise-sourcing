@@ -605,21 +605,10 @@ export default {
     handleExportPdf() {
       transverseDownloadPDF({
         dom: this.$refs.rsPdf.$el,
-        pdfName: "abcs",
+        pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
         exportPdf: true,
-        waterMark: true,
-        // callback: async (pdf, pdfName) => {
-        //   try {
-        //     const filename = pdfName.replaceAll(/\./g, '_') + ".pdf";
-        //     const pdfFile = pdf.output("datauristring");
-        //     const blob = dataURLtoFile(pdfFile, filename);
-        //   } catch(e) {
-        //     console.log(e)
-        //     iMessage.error(this.language('SHENGCHENGSHIBAI', '生成失败'));
-        //   }
-        // },
+        waterMark: true
       })
-      // console.log("transverseDownloadPDF", transverseDownloadPDF)
     }
   }
 }

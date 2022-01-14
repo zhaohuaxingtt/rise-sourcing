@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2022-01-12 10:19:08
+ * @LastEditTime: 2022-01-13 14:18:44
  * @LastEditors: caopeng
  * @Description: 供应商维度展示
  * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\index.vue

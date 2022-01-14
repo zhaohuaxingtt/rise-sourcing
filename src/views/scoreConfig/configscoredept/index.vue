@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2022-01-11 14:46:27
+ * @LastEditTime: 2022-01-13 11:45:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
@@ -46,9 +46,9 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton @click="edit()">{{ language("BIANJI", "编辑") }}</iButton>
-        <iButton @click="add()">{{language("TIANJIA", "添加")}}</iButton>
-        <iButton @click="deleteItem()">{{ language('SHANCHU', '删除') }}</iButton>
+        <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton @click="add">{{language("TIANJIA", "添加")}}</iButton>
+        <iButton @click="deleteItem" :loading="btnLoading.deleteItem">{{ language('SHANCHU', '删除') }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -63,24 +63,28 @@
         >
           <!-- 评分人 -->
           <template #raterList="scope">
-            <span>{{scope.row.raterList.map((item)=>item.userName).join('、')}}</span>
+            <span>{{Array.isArray(scope.row.raterList) ? scope.row.raterList.map((item)=>item.userName).join('、') : ''}}</span>
           </template>
           <!-- 是否需要审批 -->
           <template #isCheck="scope">
             <span>{{scope.row.isCheck == '0' ? language('nominationLanguage.No','否'):language('nominationLanguage.Yes','是')}}</span>
           </template>
-          <!-- 定点审批人 -->
-          <template #nomiApprover="scope">
-            <span>{{scope.row.nomiApprover.map((item)=>item.userName).join('、')}}</span>
+          <!-- 上会复核审批人 -->
+          <template #willReviewApproverList="scope">
+            <span>{{ Array.isArray(scope.row.willReviewApproverList) ? scope.row.willReviewApproverList.map((item)=>item.userName).join('、') :''}}</span>
+          </template>
+          <!-- 会外流转定点审批人 -->
+          <template #flowApproverList="scope">
+            <span>{{Array.isArray(scope.row.flowApproverList) ? scope.row.flowApproverList.map((item)=>item.userName).join('、') : ''}}</span>
           </template>
           <!-- 协调人 --> 
           <template #coordinatorList="scope">
-            <span>{{scope.row.coordinatorList.map((item)=>item.userName).join('、')}}</span>
+            <span>{{Array.isArray(scope.row.coordinatorList) ? scope.row.coordinatorList.map((item)=>item.userName).join('、') :''}}</span>
           </template>
         </tableList>
       </div>
     </iCard>
-    <addDialog :dialogVisible="addDialogVisible" @changeVisible="changeVisible" :openType="dialogopenType"/>
+    <addDialog :dialogVisible="addDialogVisible" @changeVisible="changeVisible" :openType="dialogopenType" :multipleSelection="multipleSelection" @getList="getListSysRateDepart"/>
   </iPage>
 </template>
 
@@ -91,7 +95,7 @@ import tableList from "@/views/partsign/editordetail/components/tableList"
 import addDialog from "./components/addDialog"
 import { queryForm, tableTitle } from "./components/data"
 import { cloneDeep } from "lodash" 
-import { getListSysRateDepart} from "@/api/scoreConfig/configscoredept"
+import { getListSysRateDepart,departsDelete} from "@/api/scoreConfig/configscoredept"
 import { TAB } from '../data'
 import iDicoptions from 'rise/web/components/iDicoptions' 
 
@@ -122,6 +126,9 @@ export default {
       currentRow: null,
       addDialogVisible: false,
       dialogopenType:'add',
+      btnLoading:{
+        deleteItem:false,
+      }
     }
   },
   created() {
@@ -138,6 +145,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          console.log(this.tableListData,'tableListData')
           this.multipleSelection = []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -179,14 +187,28 @@ export default {
       }
     },
     // 删除
-    deleteItem(){
+    async deleteItem(){
       const {multipleSelection} = this;
       if(!multipleSelection.length){
         this.$message.warning(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
       }else{
-        this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(()=>{
-
-        }).catch(()=>{});
+        await this.$confirm(
+          this.language('submitSure','您确定要执行提交操作吗？'),
+          this.language('LK_SHANCHU','删除'),
+        ).then(()=>{
+          this.btnLoading.deleteItem = true;
+          const ids = (multipleSelection.map((item)=>item.id));
+          departsDelete(ids).then((res)=>{
+            this.btnLoading.deleteItem = false;
+            if(res.code ==200){
+              this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+              this.getListSysRateDepart();
+            }else{
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
+          
+        }).catch(()=>{ this.btnLoading.deleteItem = false });
       }
     },
   }
