@@ -50,23 +50,23 @@
         >
             <!-- 定点申请单号 -->
             <template #nominateAppId="scope">
-                <span class="flexRow">
+                <!-- <span class="flexRow"> -->
                     <span class="openLinkText cursor " @click="goToDesignate(scope.row)"> {{ scope.row.nominateAppId }}</span>
-                        <span  v-if="scope.row.nominateAppId" class="icon-gray  cursor "  @click="goToDesignate(scope.row)">
-                        <icon symbol class="show" name="icontiaozhuananniu" />
-                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                    </span>
-                </span>  
+                        <!-- <span  v-if="scope.row.nominateAppId" class="icon-gray  cursor "  @click="goToDesignate(scope.row)"> -->
+                        <!-- <icon symbol class="show" name="icontiaozhuananniu" />
+                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" /> -->
+                    <!-- </span> -->
+                <!-- </span>   -->
             </template>
             <!-- 定点信编号 -->
             <template #letterNum="scope">
-                <span class="flexRow">
+                <!-- <span class="flexRow"> -->
                     <span class="openLinkText cursor " @click="goToDetail(scope.row)"> {{  scope.row.letterNum }}</span>
-                        <span  v-if=" scope.row.letterNum" class="icon-gray  cursor "  @click="goToDetail(scope.row)">
+                        <!-- <span  v-if=" scope.row.letterNum" class="icon-gray  cursor "  @click="goToDetail(scope.row)">
                         <icon symbol class="show" name="icontiaozhuananniu" />
-                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                    </span>
-                </span>  
+                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" /> -->
+                    <!-- </span> -->
+                <!-- </span>   -->
             </template>
             <!-- RFQ编号 -->
             <!-- 后端未处理 直接返回的零件列表 自己取第一个 -->

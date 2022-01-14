@@ -31,13 +31,13 @@
        >
        <!-- FS号 -->
       <template #fsnrGsnrNum="scope">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="openPage(scope.row)"> {{ scope.row.fsnrGsnrNum }}</span>
-            <span v-if="scope.row.fsnrGsnrNum" class="icon-gray  cursor "  @click="openPage(scope.row)">
+            <!-- <span v-if="scope.row.fsnrGsnrNum" class="icon-gray  cursor "  @click="openPage(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
         </template>
       </tablelist>
       <iPagination

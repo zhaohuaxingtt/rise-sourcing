@@ -129,6 +129,10 @@ export default {
      * @return {*}
      */    
     changersEeditionDialogVisible(visible) {
+      if(this.nominateAppId == '') {
+        iMessage.error(this.language('DANGQIANRSDANWUSHUJU','当前RS单无数据'))
+        return
+      }
       this.rsEeditionDialogVisible = visible
     }
   }
