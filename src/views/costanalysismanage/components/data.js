@@ -19,8 +19,8 @@ export const navList = [
   {
     value: 2,
     name: "数据维护",
-    url: "/targetpriceandscore/datamaintenance/costMaintenance",
-    activePath: "/datamaintenance/costMaintenance",
+    url: "/targetpriceandscore/datamaintenance/costDataMaintenance",
+    activePath: "/datamaintenance/costDataMaintenance",
     key: "SHUJUWEIHU",
     permissionKey: "COSTANALYSISMANAGE_DATAMAINTENANCE_TAB",
     permissionName: "数据维护"

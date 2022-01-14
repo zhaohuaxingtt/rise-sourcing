@@ -13,7 +13,7 @@
 			<el-table-column :key="index" align="center" v-if="item.props == 'supplierNameZh'" :prop="item.props" :label="$t(item.key)"  :show-overflow-tooltip="item.tooltip">
 				<template slot-scope="scope">
 					<!-- <span class="openLinkText cursor" @click="openPage">{{scope.row.supplierNameZh}}</span> -->
-					<span class="flexRow">
+					<!-- <span class="flexRow"> -->
             			<span class="openLinkText cursor " @click="openPage(scope.row)"> {{ scope.row.supplierNameZh }}
 							<el-tooltip effect="light" :content="`FRM评级：${scope.row.frm}`" v-if="scope.row.frm">
           					<span v-if="getStatus(scope.row.frm)">
@@ -26,11 +26,11 @@
 								:BlackList="scope.row.blackStuffs || []"
 							/>
 						</span>
-            			<span v-if="scope.row.supplierNameZh" class="icon-gray  cursor "  @click="openPage(scope.row)">
+            			<!-- <span v-if="scope.row.supplierNameZh" class="icon-gray  cursor "  @click="openPage(scope.row)">
                 			<icon symbol class="show" name="icontiaozhuananniu" />
                 			<icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            			</span>
-          			</span> 
+            			</span> -->
+          			<!-- </span>  -->
 					<!-- <span class="openLinkText cursor" @click="openPage(scope.row)">{{ scope.row.supplierNameZh }} -->
 						<!-----------Spring10新增：如果供应商FRM评级为C,则认为有风险被标识出来------------------------------------------------------->
 	
