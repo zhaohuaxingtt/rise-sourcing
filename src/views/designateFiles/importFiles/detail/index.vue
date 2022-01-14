@@ -37,13 +37,13 @@
                 >
                     <!-- RFQ编号 -->
                     <template #rfqId="scope">
-                        <span class="flexRow">
+                        <!-- <span class="flexRow"> -->
                           <span class="openLinkText cursor " @click="goFilesList(scope.row.rfqId)"> {{scope.row.rfqId}}</span>
-                          <span class="icon-gray  cursor  " v-if="scope.row.rfqId"  @click="goFilesList(scope.row.rfqId)">
+                          <!-- <span class="icon-gray  cursor  " v-if="scope.row.rfqId"  @click="goFilesList(scope.row.rfqId)">
                               <icon symbol class="show" name="icontiaozhuananniu" />
                               <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                          </span>
-                        </span>  
+                          </span> -->
+                        <!-- </span>   -->
                     </template>
                     <!-- 状态 -->
                     <template #status="scope">

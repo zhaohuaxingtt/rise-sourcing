@@ -42,7 +42,7 @@
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
         <template #supplierNameZh="scope">
-          <div class="flexRow">
+          <!-- <div class="flexRow"> -->
             <span class="openLinkText cursor " @click="onJump360(scope.row)"> {{ scope.row.supplierNameZh }}
               <el-tooltip effect="light" :content="`FRM评级：${scope.row.frm}`" v-if="scope.row.frm">
                 <span v-if="getStatus(scope.row.frm)">
@@ -50,11 +50,11 @@
                 </span>
               </el-tooltip>
             </span>
-            <span v-if="scope.row.supplierNameZh" class="icon-gray cursor"  @click="onJump360(scope.row)">
+            <!-- <span v-if="scope.row.supplierNameZh" class="icon-gray cursor"  @click="onJump360(scope.row)">
               <icon symbol class="show" name="icontiaozhuananniu" />
               <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </div> 
+            </span> -->
+          <!-- </div>  -->
         </template>
         <template #bdlType="scope">
           <span>{{ scope.row.bdlType == "2" ? "M" : "" }}</span>

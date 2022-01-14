@@ -90,6 +90,11 @@ import { nomalTableTitle, accessoryTableTitle, sparePartTableTitle } from "./pdf
 
 export default {
   components: { iCard, iFormGroup, iFormItem, iText, tableList },
+  props:{
+    nominateId:{
+      type:String,
+    }
+  },
   data() {
     return {
       partProjTypes,
@@ -168,7 +173,7 @@ export default {
      * @return {*}
      */    
     getTopList() {
-      getList(this.$route.query.desinateId).then(res => {
+      getList(this.nominateId).then(res => {
         if (res.code == 200) {
           this.basicData = res.data
           this.tableData = res.data.lines
@@ -181,7 +186,7 @@ export default {
       })
     },
     getRemark() {
-      getRemark(this.$route.query.desinateId).then(res => {
+      getRemark(this.nominateId).then(res => {
         if (res.code == 200) {
           this.remarkItem = res.data.map(item => {
             return {value: item, checked: false}

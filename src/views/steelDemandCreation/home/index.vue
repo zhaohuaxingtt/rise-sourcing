@@ -44,13 +44,13 @@
           {{row[currentProps].desc}}
         </template>
         <template #nominateId="scope">
-          <span class="flexRow-link">
+          <!-- <span class="flexRow-link"> -->
             <span class="openLinkText cursor "  @click="viewNominationDetail(scope.row)"> {{ scope.row.nominateId }}</span>
-            <span class="icon-gray  cursor "  @click="viewNominationDetail(scope.row)">
+            <!-- <span class="icon-gray  cursor "  @click="viewNominationDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span> 
+            </span> -->
+          <!-- </span>  -->
         </template>
       </tablePart>
       <!------------------------------------------------------------------------>
