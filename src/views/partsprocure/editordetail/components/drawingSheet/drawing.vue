@@ -28,13 +28,13 @@
          v-permission.auto="PARTSPROCURE_EDITORDETAIL_DRAWINGSHEET_table|询价附件-表格"
         >
         <template #tpPartAttachmentName="scope">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor" @click="preview(scope.row)"> {{scope.row.tpPartAttachmentName}}</span>
-            <span class="icon-gray  cursor  " v-if="scope.row.tpPartAttachmentName"  @click="preview(scope.row)">
+            <!-- <span class="icon-gray  cursor  " v-if="scope.row.tpPartAttachmentName"  @click="preview(scope.row)">
               <icon symbol class="show" name="icontiaozhuananniu" />
               <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
         </template>
         <template #updateDate="scope">
           <span>{{ scope.row.updateDate | dateFilter }}</span>

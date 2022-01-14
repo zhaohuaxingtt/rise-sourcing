@@ -57,10 +57,10 @@
                          :min-width="items.minWidth"
                          :width="items.width">
           <template slot-scope="row">
-            <span class="flexRow">
+            <!-- <span class="flexRow"> -->
               <span class="openLinkText cursor "
                     @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
-              <span v-if="row.row[activeItems]"
+              <!-- <span v-if="row.row[activeItems]"
                     class="icon-gray  cursor "
                     @click="openPage(row.row)">
                 <icon symbol
@@ -69,8 +69,8 @@
                 <icon symbol
                       class="active"
                       name="icontiaozhuanxuanzhongzhuangtai" />
-              </span>
-            </span>
+              </span> -->
+            <!-- </span> -->
           </template>
         </el-table-column>
         <el-table-column :key="index"

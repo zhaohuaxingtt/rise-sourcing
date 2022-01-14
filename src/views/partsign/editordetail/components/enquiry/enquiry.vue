@@ -18,13 +18,13 @@
     <div class="body margin-top27">
       <tableList v-permission.auto="PARTSIGN_EDITORDETAIL_ENQUIRY_TABLE|询价资料附件列表-表格"  index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #tpPartAttachmentName="scope">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor"   @click="preview(scope.row)" >{{ scope.row.tpPartAttachmentName }}</span>
-            <span v-if=" scope.row.tpPartAttachmentName" class="icon-gray  cursor " @click="preview(scope.row)">
+            <!-- <span v-if=" scope.row.tpPartAttachmentName" class="icon-gray  cursor " @click="preview(scope.row)">
               <icon symbol class="show" name="icontiaozhuananniu" />
               <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
           <!-- <span class="link-underline" @click="preview(scope.row)">{{ scope.row.tpPartAttachmentName }}</span> -->
         </template>
         <template #updateDate="scope">

@@ -15,12 +15,12 @@
         v-permission.auto="PARTSIGN_EDITORDETAIL_ENQUIRY_UNCONFIRMED_TABLE|询价资料待确认版本-表格"
        >
         <template #version="scope">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="enquiry(scope.row)"> {{ scope.row.version }}</span>
-            <span v-if="scope.row.version" class="icon-gray  cursor "  @click="enquiry(scope.row)">
+            <!-- <span v-if="scope.row.version" class="icon-gray  cursor "  @click="enquiry(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
+            </span> -->
           </span>  
         </template>
         <template #createDate="scope">

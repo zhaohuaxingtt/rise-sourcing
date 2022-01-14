@@ -38,13 +38,13 @@
             >
             <!-- 编号 -->
             <template #code="scope">
-            <span class="flexRow">
+            <!-- <span class="flexRow"> -->
                 <span class="openLinkText cursor " @click="goFilesList(scope.row.code)"> {{scope.row.code}}</span>
-                <span class="icon-gray  cursor  " v-if="scope.row.code"  @click="goFilesList(scope.row.code)">
+                <!-- <span class="icon-gray  cursor  " v-if="scope.row.code"  @click="goFilesList(scope.row.code)">
                     <icon symbol class="show" name="icontiaozhuananniu" />
                     <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                </span>
-            </span>  
+                </span> -->
+            <!-- </span>   -->
             </template>
             <!-- 附件 -->
             <template #LK_FUJIAN="scope">

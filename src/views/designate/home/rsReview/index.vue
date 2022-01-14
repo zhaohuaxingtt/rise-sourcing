@@ -98,20 +98,20 @@
       
       <!-- 定点单号 -->
       <template #nominateName="scope">
-        <span class="flexRow">
-          <div class="flexLeft">
+        <!-- <span class="flexRow"> -->
+          <!-- <div class="flexLeft"> -->
             <div class="flexRow">
               <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
                 <span class="openLinkText cursor leftRow"  @click="viewRsSheetDetail(scope.row)"> {{ scope.row.nominateName}}</span>
               </el-tooltip>
               <icon v-if="scope.row.mtzApplyId" class="iconMTZ right" symbol name="iconMTZ" />
             </div>
-          </div>
-            <span class="icon-gray  cursor rightRow" v-if="scope.row.nominateName"  @click="viewRsSheetDetail(scope.row)">
+          <!-- </div> -->
+            <!-- <span class="icon-gray  cursor rightRow" v-if="scope.row.nominateName"  @click="viewRsSheetDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span> 
+            </span> -->
+          <!-- </span>  -->
       </template>
       <!-- rs状态 -->
       <template #rsStatus="scope">

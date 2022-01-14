@@ -1,9 +1,9 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:14:14
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-25 16:32:17
- * @Description: 财务目标价顶部导航
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-14 15:43:41
+ * @Description: 模具目标价顶部导航
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\components\headerNav.vue
 -->
 
@@ -13,8 +13,8 @@
       <div class="control">
         <iLoger
           :config="{
-            module_obj_ae: '模具目标价', 
-            menuName_obj_ae: ''
+            module_obj_ae: '', 
+            menuName_obj_ae: '模具目标价-模具目标价详情页'
           }"
           isPage
           credentials
