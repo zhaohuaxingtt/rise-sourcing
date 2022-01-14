@@ -18,13 +18,13 @@
     <template v-for="(items,index) in tableTitle">
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : $t(items.key)">
         <template slot-scope="row">
-           <span class="flexRow">
+           <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor "  @click="openPage(row.row)"> {{ row.row[activeItems]}}</span>
-            <span class="icon-gray  cursor " v-if="row.row[activeItems]"  @click="openPage(row.row)">
+            <!-- <span class="icon-gray  cursor " v-if="row.row[activeItems]"  @click="openPage(row.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span> 
+            </span> -->
+          <!-- </span>  -->
           </template>
       </el-table-column>
       <el-table-column :key="index" align='center' :show-overflow-tooltip='items.tooltip'  v-else-if='items.props == "tpInfoType"' :label="lang ? language(items.key, items.name) : $t(items.key)" :prop="items.props">
