@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 15:32:38
- * @LastEditTime: 2022-01-12 17:52:33
+ * @LastEditTime: 2022-01-14 09:43:52
  * @LastEditors: caopeng
  * @Description: 报价评分跟踪
  * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\index.vue
@@ -18,7 +18,7 @@
           </el-tooltip> -->
            <icon symbol style="font-size:20px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+allJdu].icon"></icon>
           </span>
-        <span>整车进度风险: <el-tooltip placement="right" effect="light">
+        <span v-on:click="consolo.log(1111)">整车进度风险: <el-tooltip placement="right" effect="light">
           <icon symbol style="font-size:20px;position:relative;top:2px;" :name="iconList_car['a'+daliyTime].icon"></icon>
             <template slot='content'>
               <dalyWeeks :daliyTime='daliyTime'></dalyWeeks>
