@@ -519,7 +519,7 @@ const state = {
     {
       name: "人工成本维护",
       message: 0,
-      url: "/targetpriceandscore/datamaintenance/costMaintenance",
+      url: "/targetpriceandscore/datamaintenance/costDataMaintenance",
       activePath: "costMaintenance",
       key: "RENGONGCHENGBENWEIHU",
       permissionKey: 'COSTANALYSISMANAGE_MENU_DATAMAINTENANCE_SUBMENU_COSTMAINTENANCE',
