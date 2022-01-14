@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-12-31 15:11:17
- * @LastEditTime: 2022-01-10 17:48:57
+ * @LastEditTime: 2022-01-13 22:34:10
  * @LastEditors: YoHo
  * @Description: 模具目标价
 -->
@@ -90,7 +90,6 @@ export default {
   mixins: [pageMixins],
   props:{
     todo: Boolean,
-    status: String
   },
   data() {
     return {
@@ -100,6 +99,11 @@ export default {
       tableLoading: false,
       selectTableData: [],
       tableTitle
+    }
+  },
+  computed:{
+    status(){
+      return this.$store.state.rfq.todoObj['mouldPriceStatusDesc'].status
     }
   },
   created() {
