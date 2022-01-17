@@ -73,9 +73,8 @@ export default {
       isIndeterminate: false,
       fsConfirmDialogVisible: false,
       targetList: [
-        {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget', props: 'vff', props1: 'vff1'},
-        {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget', props: 'pvs', props1: 'pvs1'},
-        // {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget', props: 'os', props1: 'os1'}
+        {label: '1TO目标', key: '1TOMUBIAO', value: 'vffTarget', props: 'vff', props1: 'vff1'},
+        {label: 'EM/OTS目标', key: 'EMOTSMUBIAO', value: 'zerosTarget', props: 'os', props1: 'os1'}
       ],
       nodeList: [
         {label: '释放', key: 'SHIFANG', pvs: 'pvsTargetReleaseWeek', vff: 'vffTargetReleaseWeek', os: 'zerosTargetReleaseWeek', status: 'releaseStatus'},
