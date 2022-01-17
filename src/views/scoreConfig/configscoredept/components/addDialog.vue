@@ -123,13 +123,13 @@ export default {
         }
     },
     methods:{
-        init(){
+        async init(){
             this.addDialogFrom = cloneDeep(addDialogFrom);
             // 编辑时根据数据判断 是否需要展示定点审批人
             if(this.openType == 'edit'){
                 const editForm = this.multipleSelection[0] || {};
-                this.selectChange(editForm['rateTag'],'rateTag',editForm['rateDepartNum']);
-                this.selectChange(editForm['rateDepartId'],'rateDepartNum',null,editForm['parentRateDepartNum']);
+                await this.selectChange(editForm['rateTag'],'rateTag',editForm['rateDepartNum']);
+                await this.selectChange(editForm['rateDepartId'],'rateDepartNum',null,editForm['parentRateDepartNum']);
                 this.form = {
                     rateTag:editForm['rateTag'],
                     parentRateDepartNum:editForm['parentRateDepartNum'],
@@ -202,19 +202,22 @@ export default {
                         })
                         this.selectOptions['rateDepartNumList'] = data;
                         this.form['rateDepartNum'] = rateDepartNum;
-                        this.form['parentRateDepartNum'] = parentRateDepartNum;
                     }
                 })
             }else if(props == 'rateDepartNum' && value){ // 评分股切换查询上级部门展示
                 const rateDepartNumList = this.selectOptions['rateDepartNumList'].filter((item)=>item.id == value);
-                const parentDeptId = Array.isArray(rateDepartNumList) ? rateDepartNumList[0].parentId : null;
+                console.log(rateDepartNumList,'rateDepartNumList');
+                const parentDeptId = Array.isArray(rateDepartNumList) && rateDepartNumList.length ? rateDepartNumList[0].parentId : null;
                 if(parentDeptId){
                     getParentDeptNum({parentDeptId}).then((res)=>{
                         if(res.code == '200') {
                             this.form['parentRateDepartNum'] = res.data || '-';
                         }
                     })
+                }else{
+                    this.form['parentRateDepartNum'] = parentRateDepartNum;
                 }
+                
             }
 
         },
