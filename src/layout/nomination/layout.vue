@@ -10,10 +10,10 @@
       <!-- 进度条,基本信息 -->
       <designateStep v-if="isPreview=='0'" @updateNomi="updateNomi" />
       <!-- 三级导航栏 -->
-      <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3" />
+      <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
     <div class="nomination-content" v-loading="loading">
-      <router-view></router-view>
+      <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
     </div>
   </div>
 </iPage>
@@ -26,7 +26,7 @@ import {
 import designateStep from './components/designateStep.vue'
 import decisionDataHeader from './components/decisionDataHeader'
 import { applyStep } from './components/data'
-import { nominateAppSDetail } from '@/api/designate'
+import { nominateAppSDetail, getNomiPosition } from '@/api/designate'
 import { getNominateDisabled } from "rise/web/common"
 
 export default {
@@ -52,7 +52,8 @@ export default {
   data(){
     return{
       loading: false,
-      isPreview:'0'
+      isPreview:'0',
+      showDecision: false, // 是否显示决策资料
     }
   },
   created(){
@@ -63,7 +64,7 @@ export default {
     this.nominateAppSDetail()
     // 缓存当前步骤
     this.getStepStatus();
-    
+    this.getNomiPosition()
   },
   methods: {
     // 获取步骤状态
@@ -119,6 +120,16 @@ export default {
     updateNomi() {
       this.nominateAppSDetail()
       this.getStepStatus()
+    },
+    getNomiPosition() {
+      getNomiPosition({
+        nomiId: this.$route.query.desinateId || this.$store.getters.nomiAppId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.showDecision = res.data
+        }
+      })
     }
   },
   watch:{$route(to,from){
