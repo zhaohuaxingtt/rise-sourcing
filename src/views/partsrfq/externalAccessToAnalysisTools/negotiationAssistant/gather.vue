@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     async entrance (val) {
-      if (val === 'MEK') {
+      if (val === 'MEK' && this.$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant') {
         const pms = {
           materialGroup: this.$store.state.rfq.materialGroup || '',
           createName: "",
