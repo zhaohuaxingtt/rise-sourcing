@@ -184,9 +184,9 @@ export const downloadPdfMixins = {
                     } else {
                         instanceId = 0
                     }
-                    // if(key!=3){
+                    if(key!=3){//3与5是混入的页面，原生js触发方法
                         e.collapseValue = true
-                    // }
+                    }
                     this.$nextTick(() => {
                         if (key == '2') {
                             this.$refs.quotationScoringHZ.exportPartsTwo()

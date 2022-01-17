@@ -50,23 +50,23 @@
         >
             <!-- 定点申请单号 -->
             <template #nominateAppId="scope">
-                <span class="flexRow">
+                <!-- <span class="flexRow"> -->
                     <span class="openLinkText cursor"   @click="goToDesignate(scope.row)" >{{ scope.row.nominateAppId }}</span>
                     <span v-if=" scope.row.loiNum" class="icon-gray  cursor " @click="goToDesignate(scope.row)">
-                        <icon symbol class="show" name="icontiaozhuananniu" />
-                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                    </span>
+                        <!-- <icon symbol class="show" name="icontiaozhuananniu" />
+                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" /> -->
+                    <!-- </span> -->
                 </span>  
             </template>
             <!-- LOI编号 -->
             <template #loiNum="scope">
-                    <span class="flexRow">
+                    <!-- <span class="flexRow"> -->
                         <span class="openLinkText cursor"   @click="goToDetail(scope.row)">{{ scope.row.loiNum }}</span>
-                        <span v-if=" scope.row.loiNum" class="icon-gray  cursor "  @click="goToDetail(scope.row)">
+                        <!-- <span v-if=" scope.row.loiNum" class="icon-gray  cursor "  @click="goToDetail(scope.row)">
                             <icon symbol class="show" name="icontiaozhuananniu" />
                             <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                        </span>
-                    </span>  
+                        </span> -->
+                    <!-- </span>   -->
             </template>
         </tableList>
         <!-- 分页 -->
