@@ -172,8 +172,8 @@ export const downloadPdfMixins = {
                         'show',
                         true
                     )
+                    console.log(e)
                     var blob = {}
-                    var timeout = 0
                     var instanceId = 0
                     const formData = new FormData()
                     formData.append('businessId', Math.ceil(Math.random() * 100000)) // 业务id，默认固定8025
@@ -184,7 +184,8 @@ export const downloadPdfMixins = {
                     } else {
                         instanceId = 0
                     }
-                    if(key!=3){//3与5是混入的页面，原生js触发方法
+                    console.log(typeof(e))
+                    if(typeof(e)=='object'){//3与5是混入的页面，原生js触发方法
                         e.collapseValue = true
                     }
                     this.$nextTick(() => {
@@ -238,7 +239,6 @@ export const downloadPdfMixins = {
                                     })
                                 })
                         } else {
-                            timeout = 1000
                             setTimeout(() => {
                                 downloadPDF({
                                     idEle: '#card' + key,
@@ -259,7 +259,7 @@ export const downloadPdfMixins = {
                                         }
                                     },
                                 })
-                            }, timeout)
+                            }, 1000)
                         }
                     })
                 })
@@ -357,16 +357,9 @@ export function getBase64(file) {
     })
 }
 export function getCurrentTime() {
-    //获取当前时间并打印
     let yy = new Date().getFullYear()
     let mm = new Date().getMonth() + 1
     let dd = new Date().getDate()
-    // let hh = new Date().getHours();
-    // let mf = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
-    //   let ss =
-    //     new Date().getSeconds() < 10
-    //       ? '0' + new Date().getSeconds()
-    //       : new Date().getSeconds()
     return '_' + yy + mm + dd
 }
 

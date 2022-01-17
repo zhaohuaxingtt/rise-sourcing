@@ -72,6 +72,7 @@
         <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')"
                    id="card5"
                    :collapse='true'
+                   :rfqInfoData="rfqInfoData"
                    :hideCombine="false"
                    :readOnly="false"
                    :tableSelection="true"
