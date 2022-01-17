@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-27 14:55:03
- * @LastEditTime: 2022-01-13 18:10:16
+ * @LastEditTime: 2022-01-17 09:51:13
  * @LastEditors: caopeng
  * @Description: 采购员报价与基本分析模具界面
  * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringMj\index.vue
@@ -67,9 +67,10 @@ export default {
     })
     this.getAllPartForMould()
       console.log(this.rfqInfoData)
-
   },
   mounted(){
+    //   var e = document.createEvent(this.addFile(true,3,'报价分析汇总-模具',2));
+    //                       e.initEvent("click", true, true)
       let domElement = this.$el;
       var box =domElement.getElementsByClassName('title_content')[0]
         var span = document.createElement("span");  
@@ -82,8 +83,10 @@ export default {
         i.style.color='#1660f1'
         i.style.fontSize='18px'
         i.style.fontWeight='bold'
-        box.addEventListener
-        // box.onclick = this.addFile(true,3,'报价分析汇总-模具',2)
+        // this.$nextTick(()=>{
+        // box.setAttribute('@click',this.addFile(true,3,'报价分析汇总-模具',2))
+
+        // })
         // box.addEventListener('click', this.addFile(true,3,'报价分析汇总-模具',2), false)
         // console.log(this.$parent)
   },
