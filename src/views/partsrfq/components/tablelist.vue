@@ -12,13 +12,13 @@
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props === openPageProps' :prop="items.props"
                        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)" :fixed="items.fixed">
         <template slot-scope="scope">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor" @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">{{customOpenPageWord ? customOpenPageWord : scope.row[openPageProps]}}</span>
-              <span class="icon-gray  cursor "  @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">
+              <!-- <span class="icon-gray  cursor "  @click="openPage(openPageGetRowData ?  scope.row : scope.row[items.props])">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-              </span>
-          </span>  
+              </span> -->
+          <!-- </span>   -->
         </template>
       </el-table-column>
       <el-table-column :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else-if='inputProps.includes(items.props)' :prop="items.props"

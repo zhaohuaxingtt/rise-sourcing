@@ -100,9 +100,6 @@ export default {
     this.getTableList()
   },
   methods: {
-    toggle(type) {
-      this[type] = !this[type];
-    },
     // 删除
     handleDelete() {
       if(!this.selectTableDataCache.length) return iMessage.warn(this.language('LK_NHWXZBDL','您还未选择BDL')) 

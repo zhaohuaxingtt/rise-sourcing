@@ -525,9 +525,15 @@ export function exportFSPartsAsRow(rfqId,round,dataList) {
 //导出excel
 export function exportFsSupplierAsRow(rfqId,round,dataList) {
     return downLoad({
-        url:`/nego-assistant/export-fs-supplier-as-row/${rfqId}/${round}`,
+        // url:`/nego-assistant/export-fs-supplier-as-row/${rfqId}/${round}`,
+        url: `/nego-assistant/exportAnalysisSummaryArray`,
         method:'POST',
-        data:dataList
+        // data:dataList
+        data:{
+            hideList:dataList,
+            rfqId:rfqId,
+            round:round
+        }
     })
 }
 

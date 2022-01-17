@@ -27,6 +27,7 @@
                 :multiple="item.multiple" 
                 :filterable="item.filterable"
                 :clearable="item.clearable" 
+                @change="selectChange($event,item.props)"
             >
                 <el-option
                     :value="item.value"
@@ -65,7 +66,7 @@ import {
 } from 'rise'
 import iDicoptions from 'rise/web/components/iDicoptions' 
 import { addDialogFrom } from './data'
-import { listDepartByTag,listUserByRoleCode,setSysRateDepart } from "@/api/scoreConfig/configscoredept"
+import { listDepartByTag,listUserByRoleCode,setSysRateDepart,updateSysRateDepart,getParentDeptNum } from "@/api/scoreConfig/configscoredept"
 import { cloneDeep } from "lodash" 
 export default {
     name:'addDialog',
@@ -102,8 +103,14 @@ export default {
         return{
             addDialogFrom:[],
             form:{
+                rateTag:'',
                 rateDepartNum:'',
+                parentRateDepartNum:'',
+                raterList:[],
                 isCheck:false,
+                coordinatorList:[],
+                willReviewApproverList:[],
+                flowApproverList:[],
             },
             selectOptions:{
                 raterList:[], // 评分人
@@ -116,31 +123,49 @@ export default {
         }
     },
     methods:{
-        init(){
+        async init(){
             this.addDialogFrom = cloneDeep(addDialogFrom);
             // 编辑时根据数据判断 是否需要展示定点审批人
             if(this.openType == 'edit'){
                 const editForm = this.multipleSelection[0] || {};
+                await this.selectChange(editForm['rateTag'],'rateTag',editForm['rateDepartNum']);
+                await this.selectChange(editForm['rateDepartId'],'rateDepartNum',null,editForm['parentRateDepartNum']);
                 this.form = {
                     rateTag:editForm['rateTag'],
+                    parentRateDepartNum:editForm['parentRateDepartNum'],
                     isCheck:editForm['isCheck'] == '1',
                     raterList:editForm['raterList'].map((item)=>item.userId),
                     coordinatorList:editForm['coordinatorList'].map((item)=>item.userId),
+                    rateDepartNum:editForm['rateDepartId'],
+                    willReviewApproverList:Array.isArray(editForm['willReviewApproverList']) ? editForm['willReviewApproverList'].map((item)=>item.userId) : [],
+                    flowApproverList:Array.isArray(editForm['flowApproverList']) ? editForm['flowApproverList'].map((item)=>item.userId) : [],
                 };
-                console.log(editForm,this.form);
             }else{
                this.form = {
+                     rateTag:'',
                     rateDepartNum:'',
+                    parentRateDepartNum:'',
+                    raterList:[],
                     isCheck:false,
+                    coordinatorList:[],
+                    willReviewApproverList:[],
+                    flowApproverList:[],
                };
+               this.selectOptions = {
+                    raterList:[], // 评分人
+                    coordinatorList:[], // 协调人
+                    rateDepartNumList:[],// 评分股
+                    willReviewApproverList:[], // 上会复核审批人
+                    flowApproverList:[], // 会外流转定点审批人
+                };
             }
             const roleList = [
                 {key:'raterList',roleCode:'JZSPFR'},// 评分人
                 {key:'coordinatorList',roleCode:'JSPFXTY'},// 协调人
-                {key:'willReviewApproverList',roleCode:'JSPFXTY'},// 上会复核审批人
-                {key:'flowApproverList',roleCode:'JSPFXTY'},// 会外流转定点审批人
-                // 上会复核审批人  willReviewApproverList
-                // 会外流转定点审批人  flowApproverList
+                {key:'willReviewApproverList',roleCode:'SHFHSPR'},// 上会复核审批人
+                {key:'flowApproverList',roleCode:'HWLZDDSPR'},// 会外流转定点审批人
+                // 上会复核审批人  SHFHSPR
+                // 会外流转定点审批人  HWLZDDSPR
             ]
             roleList.forEach((item)=>{
                 listUserByRoleCode({roleCode:item.roleCode}).then((res)=>{
@@ -164,7 +189,7 @@ export default {
                 this.addDialogFrom = copyAddDialogFrom;
             }
         },
-        selectChange(value,props){
+        selectChange(value,props,rateDepartNum='',parentRateDepartNum=''){
             // 选择评分类型的时候动态获取评分股
             if(props == 'rateTag' && value){
                 // 获取评分股下拉数据  MQ:39 EP:38
@@ -173,20 +198,33 @@ export default {
                         const data = Array.isArray(res.data) ? res.data : [];
                         data.map((item)=>{
                             item.value = item.id+'';
-                            item.label = item.nameEn;
+                            item.label = item.deptNum;
                         })
                         this.selectOptions['rateDepartNumList'] = data;
-                        this.form['rateDepartNum'] = '';
+                        this.form['rateDepartNum'] = rateDepartNum;
                     }
                 })
+            }else if(props == 'rateDepartNum' && value){ // 评分股切换查询上级部门展示
+                const rateDepartNumList = this.selectOptions['rateDepartNumList'].filter((item)=>item.id == value);
+                console.log(rateDepartNumList,'rateDepartNumList');
+                const parentDeptId = Array.isArray(rateDepartNumList) && rateDepartNumList.length ? rateDepartNumList[0].parentId : null;
+                if(parentDeptId){
+                    getParentDeptNum({parentDeptId}).then((res)=>{
+                        if(res.code == '200') {
+                            this.form['parentRateDepartNum'] = res.data || '-';
+                        }
+                    })
+                }else{
+                    this.form['parentRateDepartNum'] = parentRateDepartNum;
+                }
+                
             }
 
         },
         clearDialog(){
             this.$emit('changeVisible','addDialogVisible',false);
         },
-        async submit(){ // 保存
-            console.log(this.form,'form');
+        async submit(){ // 提交
             const { form,selectOptions,addDialogFrom } = this;
             const data = {
                 isCheck:form['isCheck'] ? '1' : '0'
@@ -195,11 +233,7 @@ export default {
                 const item = addDialogFrom[i];
                 if(item.type == 'dicoption'){
                     if(!form[item.props]) return  iMessage.warn(this.language('LK_AEKO_QINGTIANXIEWANZHENGHOUTIJIAO','请填写完整后提交'));
-                    console.log(this.$refs['iDicoptions_'+item.props])
-                    console.log(this.$refs['iDicoptions_'+item.props][0])
-                    console.log(this.$refs['iDicoptions_'+item.props][0].options)
                     const options = this.$refs['iDicoptions_'+item.props][0].options;
-                    console.log(options)
                     data[item.props] = form[item.props];
                     const descOption = options.filter((o)=>form[item.props] == (o.value || o.name || o.nameEn));
                     if(descOption.length == 1){
@@ -220,23 +254,52 @@ export default {
                         data[item.props] = list;
                     }else{
                         if(!form[item.props] && item.required)  return iMessage.warn(this.language('LK_AEKO_QINGTIANXIEWANZHENGHOUTIJIAO','请填写完整后提交'));
-                        data[item.props] = form[item.props];
+                        // 评分股要单独处理一下
+                        if(item.props == 'rateDepartNum'){
+                            const selectRateDepart = selectOptions['rateDepartNumList'].filter((rateDepartItem)=>rateDepartItem.id == form[item.props]);
+                            if(selectRateDepart.length){
+                                data[item.props] = selectRateDepart[0].label || '';
+                                data['rateDepartId'] = selectRateDepart[0].id || '';
+                                data['rateDepartName'] = selectRateDepart[0].nameZh || '';
+                                data['parentRateDepartNum'] = form['parentRateDepartNum'] || '';
+                            }
+                            
+                        }
                     }
                 }
             }
             console.log(data,'data');
             this.btnLoading = true;
-            await setSysRateDepart(data).then((res)=>{
-                this.btnLoading = false;
-                if(res.code == '200'){
-                    iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                    this.$emit('getList');
-                    this.clearDialog();
-                }else{
-                    this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                }
+            if(this.openType == 'edit'){
+                const editForm = this.multipleSelection[0] || {};
+                await updateSysRateDepart({
+                    ...editForm,
+                    ...data,
+                }).then((res)=>{
+                    if(res.code == '200'){
+                        this.btnLoading = false;
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.$emit('getList');
+                        this.clearDialog();
+                    }else{
+                        this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    }
+                }).catch(()=>{this.btnLoading = false;})
+            }else{
+                //新增
+                await setSysRateDepart(data).then((res)=>{
+                    this.btnLoading = false;
+                    if(res.code == '200'){
+                        iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                        this.$emit('getList');
+                        this.clearDialog();
+                    }else{
+                        this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                    }
 
-            }).catch(()=>{this.btnLoading = false;})
+                }).catch(()=>{this.btnLoading = false;})
+            }
+            
         }
     }
 }

@@ -158,7 +158,7 @@
     <!-- 申请模具目标价 -->
     <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" @update='updateData' />
     <template v-for="(item, index) in componentList">
-      <component :ref='item.component' :key="index" :is="item.component" class="margin-top20" @openDialog="openDialog" :todo="todo" v-if="!item.todo||item.todo==todo" :status="todoObj[item.statusCode].status" />
+      <component :ref='item.component' :key="index" :is="item.component" class="margin-top20" @openDialog="openDialog" :todo="todo" v-if="!item.todo||item.todo==todo" />
     </template>
     <!-- <parts-target-price
       @openDialog="openDialog"
@@ -227,14 +227,6 @@ import { iconName, partDetaiListTitle as tableTitle } from "./data";
 
 export default {
   mixins: [pageMixins, rfqCommonFunMixins],
-  props: {
-    todoObj: {
-      type: Object,
-      default: () => {
-        return {};
-      },
-    },
-  },
   components: {
     supplierScore,
     iButton,
@@ -298,7 +290,7 @@ export default {
     },
     componentList() {
       return this.componentArr.map(i=>{
-        i.status = this.todoObj[i.statusCode].status
+        i.status = this.$store.state.rfq.todoObj[i.statusCode].status
         i.order = 0
         if(this.todo){
           if(i.status=='未申请') i.order = 1
@@ -372,11 +364,9 @@ export default {
       if(arr.length){
         this.handleSelectArr = arr
       }
-      console.log(type);
       this[type] = true;
     },
     updateData(type) {
-      console.log(this.$refs[type]);
       this.$refs[type].getTableList()
     },
     gotoAccessoryDetail(row) {

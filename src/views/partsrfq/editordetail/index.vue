@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-11 18:07:37
+ * @LastEditTime: 2022-01-13 22:54:01
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -226,7 +226,7 @@
     <!--------------------------------------------------------------->
     <rfqPending ref="rfqPending"
                 v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"
-                :activityTabIndex="activityTabIndex" :todoObj="todoObj"></rfqPending>
+                :activityTabIndex="activityTabIndex"></rfqPending>
     <!--------------------------------------------------------------->
     <!-------------------------RFQ详情信息---------------------------->
     <!--------------------------------------------------------------->
@@ -271,7 +271,7 @@
           ">{{ language('QUXIAO', '取消') }}</iButton>
       </div>
     </iDialog>
-    <intoiDialog :tipsVislble.sync="tipsVislble" v-if="(navActivtyValue === '0' || navActivtyValue === '')" :todoObj="todoObj" @changeActivityTabIndex="changeActivityTabIndex" />
+    <intoiDialog :tipsVislble.sync="tipsVislble" v-if="(navActivtyValue === '0' || navActivtyValue === '')" @changeActivityTabIndex="changeActivityTabIndex" />
   </iPage>
 </template>
 <script>
@@ -333,12 +333,6 @@ export default {
   mixins: [rfqCommonFunMixins, pageMixins, roleMixins],
   data () {
     return {
-      todoObj:{
-        mouldPriceStatusDesc:{name:'模具目标价',key:'MUJUMUBIAOJIA'},
-        mouldBudgetStatusDesc:{name:'模具投资预算',key:'MOJUTOUZIYUSUAN'},
-        cfPriceStatusDesc:{name:'零件目标价',key:'LINGJIANMUBIAOJIA'},
-        pushRateStatusDesc:{name:'供应商评分',key:'GONGYINGSHANGPINGFEN'},
-      },
       tipsVislble:false,
       showReason: false,
       navActivtyValue: '',
@@ -405,7 +399,7 @@ export default {
     async firstInit(){
       if(this.$route.query.id){
         const isLinie = this.roleList.includes('LINIE') || this.roleList.includes('ZYCGY'); // 专业采购员
-        let result = await this.waitDealtRfqTaskStatus() // true: 有待办
+        let result = await this.$store.dispatch('setTodoObj',this.$route.query.id); //获取任务状态 true: 有待办
         // 从谈判助手跳过来的不再跳回去
         if(this.$route.query.form!='assistant'){
           // Linie 直接跳到谈判助手
@@ -436,28 +430,9 @@ export default {
     async getTodoInfo(){
       this.tipsVislble = false
       if(this.$route.query.id){
-        let result = await this.waitDealtRfqTaskStatus()
-        console.log(result);
+        let result = await this.$store.dispatch('setTodoObj',this.$route.query.id);
         this.tipsVislble = result
       }
-    },
-    // 获取任务状态
-    async waitDealtRfqTaskStatus(){
-      let result = false
-      await waitDealtRfqTaskStatus(this.$route.query.id).then(async(res)=>{
-        if(res.result){
-          for (const key in this.todoObj) {
-            this.todoObj[key].status = ''
-            if (res.data[key]) {
-              this.todoObj[key].status = res.data[key]
-              if(res.data[key]!='已完成'){
-                result = true
-              }
-            }
-          }
-        }
-      })
-      return result
     },
     goToCesPage () {
       const router = this.$router.resolve({

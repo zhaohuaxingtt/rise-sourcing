@@ -40,12 +40,15 @@
           <quotationScoringHZ ref="quotationScoringHZ" v-if='cardShow.find(items=>items.key == "2").show'></quotationScoringHZ>
         </iCard>
         <!--------------------报价分析汇总-模具----------------------------------------->
-        <quotationScoringMj ref='quotationScoringMj'
+        <quotationScoringMj :rfqInfoData="rfqInfoData" ref='quotationScoringMj'
                             v-if='cardShow.find(items=>items.key == "3").show'
-                            class="margin-top20"
+                            class="margin-top20 poerstion"
                             titleKey='LK_BJFXHZMJ'
-                            @handleCollapse='handleCollapse($event,"3")'></quotationScoringMj>
-        <iCard @handleTitle="addFile($event,3,'报价分析汇总-模具')"
+                            @handleCollapse='handleCollapse($event,"3")'>
+                            
+                            </quotationScoringMj>
+                            
+        <iCard @handleTitle="addFile($event,3,'报价分析汇总-模具',1)"
                :title="'报价分析汇总-模具'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
                v-else
                class="margin-top20"
@@ -53,6 +56,7 @@
                collapse
                :defalutCollVal='false'
                v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGMOJU|报价分析汇总-模具"></iCard>
+       
         <!--------------------报价分析汇总-报价趋势----------------------------------------->
         <quotationScoringEcartsCard id="card4" ref='quotationScoringEcartsCard'
                                     v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
@@ -68,6 +72,7 @@
         <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')"
                    id="card5"
                    :collapse='true'
+                   :rfqInfoData="rfqInfoData"
                    :hideCombine="false"
                    :readOnly="false"
                    :tableSelection="true"
@@ -85,7 +90,7 @@
                v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
       </template>
     </el-tab-pane>
-    <el-tab-pane lazy
+    <el-tab-pane 
                  name="two"
                  label="专项分析工具"
                  v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU|专项分析工具">
@@ -134,14 +139,13 @@ export default {
   created () {
     // window.sessionStorage.setItem('entryStatus', 1);
     this.$store.commit('SET_ENTRY_STATUS', 1)
-
     this.$store.dispatch('setRfqId', this.$route.query.id);
     if (this.$route.query.activityTabIndex) {
       this.activityTabIndex = this.$route.query.activityTabIndex
     }
   },
   methods: {
-
+      
     handleTabClick (target) {
       this.activityTabIndex = target.name
     },
@@ -171,6 +175,11 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.MJbox{
+    width: 200px;
+    height: 30px;
+    background: red;
+}
 .clearfix {
   width: 100%;
   display: flex;

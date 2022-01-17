@@ -28,12 +28,12 @@
 
 
         <!-- 关闭预览按钮 -->
-        <span class="tab-icon" v-if="isPreview=='1'" @click="close">
+        <span class="tab-icon" v-if="isPreview=='1' && !$route.meta.hideCloseButton" @click="close">
             <icon symbol name="iconguanbixiaoxiliebiaokapiannei"></icon>
         </span>
         <!-- 设置按钮 -->
         <!-- 临时跳转的时候，当前步骤不在决策资料，不支持排序 -->
-        <span class="tab-icon" @click="sortDialogVisibal = true" v-else-if="!isTemp" v-permission.auto="NOMINATION_NOMINATIONDETAILS_MOUDULES_SORT|定点管理详情菜单排序"><icon symbol name="iconSetting"></icon></span>
+        <span class="tab-icon" @click="sortDialogVisibal = true" v-else-if="!isTemp && isPreview !== '1'" v-permission.auto="NOMINATION_NOMINATIONDETAILS_MOUDULES_SORT|定点管理详情菜单排序"><icon symbol name="iconSetting"></icon></span>
         <!-- 排序弹窗 -->
         <sortDialog :visible.sync="sortDialogVisibal" />
     </div>
@@ -82,8 +82,13 @@ export default {
         // 解决刷新页面时当前tab的高亮条歪了的情况
         setTimeout(()=>{
             // 临时跳转的时候，直接取前端写死的配置
-            if (this.isTemp) this.decisionType = decisionType
+            if (this.isTemp || this.$route.meta.layoutPath) this.decisionType = decisionType
             this.defaultTab = path;
+            // 配置了layoutPath，用于预览，在数据定义中找用于选中的path地址
+            if (this.$route.meta.layoutPath) {
+                const defaulTab = decisionType.find(o => String(o.path).includes(this.$route.meta.path))
+                defaulTab && (this.defaultTab = defaulTab.path)
+            }
         },50)
         
     },

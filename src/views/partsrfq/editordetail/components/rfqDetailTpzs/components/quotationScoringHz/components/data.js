@@ -107,7 +107,18 @@ export const gstableTileXh = function(index){
     {type:'',props:`Quotationdetails`,label:'Quo. \n Details',i18n:'',width:'60',tooltip:false},
   ]
 }
-
+/**
+ * @description: 静态数据在线报价结果表头字段
+ * @param {*}
+ * @return {*}
+ */
+ export const suplierTableDataTitel = [
+  {type:'',props:'currentSort',name:'排名',key:'PAIMINGKEY',width:'100',tooltip:false},
+  {type:'',props:'supplierCode',name:'供应商编号',key:'GONGYINGSMINGC',width:'',tooltip:false},
+  {type:'',props:'supplierName',name:'供应商名称',key:'',width:'GONGYSBIANHAO',width:'220',tooltip:false},
+  {type:'',props:'offerPrice',name:'TTO',key:'',width:'100',tooltip:false},
+  // {type:'',props:'mixPrice',name:'报价进度',key:'BAOJIAJINGDU',width:'100',tooltip:false}
+]
 /**
  * @description: fs 横纵默认展示项的配置项
  * @param {*}
