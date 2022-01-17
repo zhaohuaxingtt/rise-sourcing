@@ -99,8 +99,8 @@
 <script>
 import {cloneDeep} from 'lodash'
 import {icon} from "rise"
-// import iTableHeaderSorter from './iTableHeaderSort'
-import {iTableHeaderSorter} from "rise"
+import iTableHeaderSorter from './iTableHeaderSort'
+// import {iTableHeaderSorter} from "rise"
 export default{
   props:{
     /**
