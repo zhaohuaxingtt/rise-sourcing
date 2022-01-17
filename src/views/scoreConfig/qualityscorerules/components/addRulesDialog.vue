@@ -147,8 +147,8 @@ export default {
                         index:this.form.index,
                         num:this.form.num,
                         dept:{
-                            deptId:deptList[0].deptId,
-                            deptName:deptList[0].rateDepart,
+                            deptId:deptList[0].rateDepartId,
+                            deptName:deptList[0].rateDepartName,
                             deptNum:deptList[0].rateDepartNum,
                         },
                         user:{
