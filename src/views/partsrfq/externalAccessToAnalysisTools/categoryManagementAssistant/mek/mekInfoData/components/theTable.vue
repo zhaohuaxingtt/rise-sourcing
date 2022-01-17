@@ -224,8 +224,12 @@
       </el-table-column>
     </el-table>
     <addPartDialog v-model="addPartDialog" />
-    <iLog :show.sync="changeLogDialog"
-          :bizId="bizId" />
+    <!-- <iLog :show.sync="changeLogDialog"
+          :bizId="bizId" /> -->
+    <iUserLog :show.sync="changeLogDialog"
+              :bizId="bizId"
+              menuId="2"
+              is-page />
     <iPagination v-update
                  @size-change="handleSizeChange($event, getTableList)"
                  @current-change="handleCurrentChange($event, getTableList)"
@@ -241,7 +245,7 @@
 <script>
 // 这里可以导入其他文件（比如：组件，工具js，第三方插件js，json文件，图片文件等等）
 // 例如：import 《组件名称》 from '《组件路径》';
-import { iButton, icon, iSelect, iPagination, iLog, iMessage, iInput } from "rise";
+import { iButton, icon, iSelect, iPagination, iUserLog, iMessage, iInput } from "rise";
 import addPartDialog from "./addPartDialog.vue";
 import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
@@ -253,7 +257,7 @@ import { pad } from '@/utils'
 export default {
   // import引入的组件需要注入到对象中才能使用
   mixins: [pageMixins, resultMessageMixin],
-  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, iLog, iInput },
+  components: { iButton, icon, iSelect, tableList, iPagination, addPartDialog, iUserLog, iInput },
   data () {
     // 这里存放数据
     return {
