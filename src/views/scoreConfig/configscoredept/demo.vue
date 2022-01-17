@@ -95,7 +95,7 @@
 <script>
 import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage, iNavMvp,iPagination } from "rise"
 // import iLoger from 'rise/web/components/iLoger'
-import tableList from "./components/tableList"
+import tableList from "rise/web/components/iFile/tableList"
 import addDialog from "./components/addDialog"
 import { queryForm, tableTitle } from "./components/data"
 import { cloneDeep } from "lodash" 
