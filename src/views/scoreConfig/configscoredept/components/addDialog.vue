@@ -163,9 +163,9 @@ export default {
                 {key:'raterList',roleCode:'JZSPFR'},// 评分人
                 {key:'coordinatorList',roleCode:'JSPFXTY'},// 协调人
                 {key:'willReviewApproverList',roleCode:'SHFHSPR'},// 上会复核审批人
-                {key:'flowApproverList',roleCode:'HWLZDDSPR'},// 会外流转定点审批人
+                {key:'flowApproverList',roleCode:'HYLZSPR'},// 会外流转定点审批人
                 // 上会复核审批人  SHFHSPR
-                // 会外流转定点审批人  HWLZDDSPR
+                // 会外流转定点审批人 HYLZSPR
             ]
             roleList.forEach((item)=>{
                 listUserByRoleCode({roleCode:item.roleCode}).then((res)=>{
