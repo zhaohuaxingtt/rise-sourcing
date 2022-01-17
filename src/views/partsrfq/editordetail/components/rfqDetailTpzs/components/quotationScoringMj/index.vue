@@ -40,7 +40,7 @@ export default {
   },
   computed:{
     disabled() {
-      return (this.dgysBj || this.getDisabled())
+      return this.getDisabled() && !this.dgysBj
     },
     hastateSupplierBj(){
       return (this.getbaseInfoData().currentRoundsStatus !== "已关闭" && this.quotationSupplierState)
