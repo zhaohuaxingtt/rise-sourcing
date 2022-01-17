@@ -214,3 +214,11 @@ export function fittingNomi(params) {
     params,
   })
 }
+
+// 定点管理--决策资料数据权限控制接口
+export function getNomiPosition(params) {
+  return requst({
+    url: `/nominate-apps/getNomiPosition/${ params.nomiId }`,
+    method: "GET"
+  })
+}
