@@ -72,6 +72,7 @@
         <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')"
                    id="card5"
                    :collapse='true'
+                   :rfqInfoData="rfqInfoData"
                    :hideCombine="false"
                    :readOnly="false"
                    :tableSelection="true"
@@ -89,7 +90,7 @@
                v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
       </template>
     </el-tab-pane>
-    <el-tab-pane lazy
+    <el-tab-pane 
                  name="two"
                  label="专项分析工具"
                  v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU|专项分析工具">
@@ -138,7 +139,6 @@ export default {
   created () {
     // window.sessionStorage.setItem('entryStatus', 1);
     this.$store.commit('SET_ENTRY_STATUS', 1)
-
     this.$store.dispatch('setRfqId', this.$route.query.id);
     if (this.$route.query.activityTabIndex) {
       this.activityTabIndex = this.$route.query.activityTabIndex
