@@ -102,9 +102,8 @@ export default {
       isIndeterminate: false,
       fsConfirmDialogVisible: false,
       targetList: [
-        {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget'},
-        {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget'},
-        // {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'}
+        {label: '1TO目标', key: '1TOMUBIAO', value: 'vffTarget'},
+        {label: 'EM/OTS目标', key: 'EMOTSMUBIAO', value: 'zerosTarget'}
       ],
       nodeList: [
         {label: '释放', key: 'SHIFANG', const: 'constReleaseToNomiWeek', keyPoint: 'keyReleaseToNomiWeek', history: 'hiReleaseToNomiWeek', isChange: 'keyReleaseToNomiStatus'},
