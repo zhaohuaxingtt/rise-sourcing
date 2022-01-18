@@ -221,24 +221,30 @@ export const downloadPdfMixins = {
                                     })
                                 })
                             })
-                        } else if (key == '4') {
-                            var obj = ''
-                            if (Hierarchy == 1) {
-                                obj = this.$refs.quotationScoringEcartsCard.$refs.previewsCom
-                            } else if (Hierarchy == 2) {
-                                obj = this.$refs.previewsCom
-                            }
-                            obj.exportExcelTwo()
-                                .then((res) => {
-                                    //文件流转换为base64
-                                    console.log(res)
-                                    getBase64(res.data).then((resBase64) => {
-                                        let blob = dataURLtoFile(resBase64, name + '.xlsx')
-                                        formData.append('multifile', blob)
-                                        this.setfile(formData, instanceId, name)
-                                    })
-                                })
-                        } else {
+                        } 
+                        // else if (key == '4') {
+                        //     var obj = ''
+                        //     if (Hierarchy == 1) {
+                        //         obj = this.$refs.quotationScoringEcartsCard.$refs.previewsCom
+                        //     } else if (Hierarchy == 2) {
+                        //         obj = this.$refs.previewsCom
+                        //     }
+                        //     obj.exportExcelTwo()
+                        //         .then((res) => {
+                        //             //文件流转换为base64
+                        //             console.log(res)
+                        //             if(res)
+                        //             // let blob=   new File([res.data], name + '.zip',{type:'application/zip'})
+                        //             console.log(blob)
+                        //             getBase64(res.data).then((resBase64) => {
+                        //                 console.log(resBase64)
+                        //                 let blob = dataURLtoFile(resBase64, name + '.xlsx')
+                        //                 formData.append('multifile', blob)
+                        //                 this.setfile(formData, instanceId, name)
+                        //             })
+                        //         })
+                        // }
+                         else {
                             setTimeout(() => {
                                 downloadPDF({
                                     idEle: '#card' + key,
