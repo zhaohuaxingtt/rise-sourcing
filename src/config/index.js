@@ -89,9 +89,9 @@ export const fileType = {
 
 export const partsType = {
   PARTSACCS:'A', //总成零件类型
-  NOUMEN:'L', //本体零件
+  NOUMEN:'S', //本体零件
   GENERAL: 'P', //普通零件，
-  PROCESSANDASSEMBLY:'S' //加工装配费
+  PROCESSANDASSEMBLY:'L' //加工装配费
 }
 
 const enums = {

@@ -123,19 +123,19 @@ export default {
         }
     },
     methods:{
-        init(){
+        async init(){
             this.addDialogFrom = cloneDeep(addDialogFrom);
             // 编辑时根据数据判断 是否需要展示定点审批人
             if(this.openType == 'edit'){
                 const editForm = this.multipleSelection[0] || {};
-                this.selectChange(editForm['rateTag'],'rateTag',editForm['rateDepartNum']);
-                this.selectChange(editForm['rateDepartId'],'rateDepartNum',null,editForm['parentRateDepartNum']);
+                await this.selectChange(editForm['rateTag'],'rateTag',editForm['rateDepartNum'],null,editForm['raterList'],editForm['coordinatorList']);
+                await this.selectChange(editForm['rateDepartId'],'rateDepartNum',null,editForm['parentRateDepartNum']);
                 this.form = {
                     rateTag:editForm['rateTag'],
                     parentRateDepartNum:editForm['parentRateDepartNum'],
                     isCheck:editForm['isCheck'] == '1',
-                    raterList:editForm['raterList'].map((item)=>item.userId),
-                    coordinatorList:editForm['coordinatorList'].map((item)=>item.userId),
+                    raterList:Array.isArray(editForm['raterList']) ? editForm['raterList'].map((item)=>item.userId) : [],
+                    coordinatorList:Array.isArray(editForm['coordinatorList']) ? editForm['coordinatorList'].map((item)=>item.userId) : [],
                     rateDepartNum:editForm['rateDepartId'],
                     willReviewApproverList:Array.isArray(editForm['willReviewApproverList']) ? editForm['willReviewApproverList'].map((item)=>item.userId) : [],
                     flowApproverList:Array.isArray(editForm['flowApproverList']) ? editForm['flowApproverList'].map((item)=>item.userId) : [],
@@ -160,12 +160,12 @@ export default {
                 };
             }
             const roleList = [
-                {key:'raterList',roleCode:'JZSPFR'},// 评分人
-                {key:'coordinatorList',roleCode:'JSPFXTY'},// 协调人
+                // {key:'raterList',roleCode:'JZSPFR'},// 评分人
+                // {key:'coordinatorList',roleCode:'JSPFXTY'},// 协调人
                 {key:'willReviewApproverList',roleCode:'SHFHSPR'},// 上会复核审批人
-                {key:'flowApproverList',roleCode:'HWLZDDSPR'},// 会外流转定点审批人
+                {key:'flowApproverList',roleCode:'HYLZSPR'},// 会外流转定点审批人
                 // 上会复核审批人  SHFHSPR
-                // 会外流转定点审批人  HWLZDDSPR
+                // 会外流转定点审批人 HYLZSPR
             ]
             roleList.forEach((item)=>{
                 listUserByRoleCode({roleCode:item.roleCode}).then((res)=>{
@@ -189,7 +189,7 @@ export default {
                 this.addDialogFrom = copyAddDialogFrom;
             }
         },
-        selectChange(value,props,rateDepartNum='',parentRateDepartNum=''){
+        selectChange(value,props,rateDepartNum='',parentRateDepartNum='',raterList=[],coordinatorList=[]){
             // 选择评分类型的时候动态获取评分股
             if(props == 'rateTag' && value){
                 // 获取评分股下拉数据  MQ:39 EP:38
@@ -202,19 +202,49 @@ export default {
                         })
                         this.selectOptions['rateDepartNumList'] = data;
                         this.form['rateDepartNum'] = rateDepartNum;
-                        this.form['parentRateDepartNum'] = parentRateDepartNum;
                     }
                 })
+                // MQ 评分人用ZLPFR，协调员用ZLPFXTY
+                // EP 评分人用JZSPFR，协调员用JSPFXTY
+                const rateTagList = {
+                    '39':[
+                        {key:'raterList',roleCode:'ZLPFR'},// 评分人
+                        {key:'coordinatorList',roleCode:'ZLPFXTY'},// 协调人
+                    ],
+                    '38':[
+                        {key:'raterList',roleCode:'JZSPFR'},// 评分人
+                        {key:'coordinatorList',roleCode:'JSPFXTY'},// 协调人
+                    ]
+                };
+                rateTagList[value=='MQ' ? '39' : '38'].forEach((item)=>{
+                listUserByRoleCode({roleCode:item.roleCode}).then((res)=>{
+                    if(res.code == '200'){
+                        res.data.map((itemUser)=>{
+                            itemUser.value = itemUser.id+'';
+                            itemUser.label = itemUser.nameZh;
+                        })
+                        this.selectOptions[item.key] = res.data || [];
+                        this.form['raterList'] = Array.isArray(raterList) ? raterList.map((item)=>item.userId) : [];
+                        this.form['coordinatorList'] = Array.isArray(coordinatorList) ? coordinatorList.map((item)=>item.userId) : [];
+                    }
+                })
+            })
+                
+                
             }else if(props == 'rateDepartNum' && value){ // 评分股切换查询上级部门展示
                 const rateDepartNumList = this.selectOptions['rateDepartNumList'].filter((item)=>item.id == value);
-                const parentDeptId = Array.isArray(rateDepartNumList) ? rateDepartNumList[0].parentId : null;
+                console.log(rateDepartNumList,'rateDepartNumList');
+                const parentDeptId = Array.isArray(rateDepartNumList) && rateDepartNumList.length ? rateDepartNumList[0].parentId : null;
                 if(parentDeptId){
                     getParentDeptNum({parentDeptId}).then((res)=>{
                         if(res.code == '200') {
                             this.form['parentRateDepartNum'] = res.data || '-';
                         }
                     })
+                }else{
+                    this.form['parentRateDepartNum'] = parentRateDepartNum;
                 }
+                
             }
 
         },

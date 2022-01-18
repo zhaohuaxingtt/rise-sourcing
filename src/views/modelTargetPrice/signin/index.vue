@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:14:02
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-16 14:30:48
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-18 13:09:55
  * @Description: 模具目标价-目标价签收
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\index.vue
 -->
@@ -60,7 +60,9 @@
         @openAttachmentDialog="openAttachmentDialog"
       >
         <template #tuzhi="scope">
-          <span v-if="!$store.state.permission.userInfo.isDeptLead && $store.state.permission.userInfo.deptDTO.level === 'K3' && scope.row.approvalStatus == 0"></span>
+          <!-- <span v-if="!$store.state.permission.userInfo.isDeptLead && $store.state.permission.userInfo.deptDTO.level === 'K3' && scope.row.approvalStatus == 0"></span> -->
+          <!-- 角色是财务模具控制员不展示 -->
+          <span v-if="roleList.includes('CWMJKZY') && scope.row.approvalStatus == 0"></span>
           <span class="openLinkText cursor" v-else @click="openAttachmentDialog(scope.row)">{{language('CHAKAN','查看')}}</span>
         </template>
       </tableList>
@@ -109,8 +111,9 @@ import carProjectSelect from '@/views/modelTargetPrice/components/carProjectSele
 import procureFactorySelect from '@/views/modelTargetPrice/components/procureFactorySelect'
 import moment from 'moment'
 import sendBackDialog from './components/sendBack'
+import { roleMixins } from "@/utils/roleMixins";
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,roleMixins],
   components: {carProjectSelect,procureFactorySelect,iDicoptions,iPage,headerNav,iCard,tableList,iPagination,iButton,iSelect,iDatePicker,iInput,iSearch,attachmentDialog, assignDialog, sendBackDialog, noInvestConfirmDialog},
   data() {
     return {

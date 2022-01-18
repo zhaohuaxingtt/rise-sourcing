@@ -148,8 +148,8 @@ export default {
       isIndeterminate: false,  
       checkedParts: [], 
       targetList: [ 
-        {label: 'VFF目标', key: 'VFFMUBIAO', value: 'vffTarget'}, 
-        {label: 'PVS目标', key: 'PVSMUBIAO', value: 'pvsTarget'}, 
+        {label: '1TO目标', key: '1TOMUBIAO', value: 'vffTarget'},
+        {label: 'EM/OTS目标', key: 'EMOTSMUBIAO', value: 'zerosTarget'},
         // {label: '0S目标', key: '0SMUBIAO', value: 'zerosTarget'} 
       ], 
       nodeList: [ 
@@ -755,7 +755,7 @@ export default {
           result = ['7','8'].includes(partStatus) ? item.partPeriod == partStatus || item.partPeriod == '6'  : item.partPeriod == partStatus
         }
         if (level && result === true) { 
-          const targetList = [item.pvsTarget, item.vffTarget] 
+          const targetList = [item.zerosTarget, item.vffTarget]
           if (level == 1) { 
             result = targetList.every(item => item == 1) 
           } else if (level == 2) { 
