@@ -7,7 +7,7 @@
 -->
 <template>
   <div class="margin-top20">
-    <iCard v-permission.auto="tableTitle.permision">
+    <iCard >
       <div class="cardview">
         <div class="cardview-header">
           <div class="font18 font-weight">{{titleKey ? language(tableTitle.titleKey, tableTitle.titleName) : tableTitle.titleName}}</div>
@@ -113,7 +113,7 @@ export default {
         "4": {
           titleName: '1999',
           title: CKDHTtableTitle,
-          // permision: 'PROJECTMGT-MONITORPARTLIST-1999TABLE|项目管理-监控零件清单-1999表格'
+          permision: 'PROJECTMGT-MONITORPARTLIST-1999TABLE|项目管理-监控零件清单-1999表格'
         }
       }
       const type = this.$route.query.type || 1
