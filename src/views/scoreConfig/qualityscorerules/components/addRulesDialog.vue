@@ -114,7 +114,7 @@ export default {
         },
         // 获取预设评分人下拉数据
         async getDepartList(){ 
-            await getListSysRateDepart({rateTag:'EP'}).then((res)=>{
+            await getListSysRateDepart({rateTag:'MQ'}).then((res)=>{
                 if(res.code == '200'){
                     this.departList = res.data || [];
                 }else{
