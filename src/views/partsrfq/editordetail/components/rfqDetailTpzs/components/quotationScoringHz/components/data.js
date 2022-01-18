@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-12 22:13:21
+ * @LastEditTime: 2022-01-18 14:37:30
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -130,7 +130,7 @@ export const whiteList = ['headerEbr','groupName','partNo','partName','cfPartAPr
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice','releaseCost'] //默认需要显示的数据
+export const whiteListGs = ['currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice','releaseCost'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
