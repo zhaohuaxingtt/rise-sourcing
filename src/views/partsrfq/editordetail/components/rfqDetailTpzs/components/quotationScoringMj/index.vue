@@ -40,7 +40,7 @@ export default {
   },
   computed: {
     disabled() {
-      return this.getDisabled() && !this.dgysBj
+      return this.getDisabled()
     },
     hastateSupplierBj() {
       return (
@@ -87,9 +87,6 @@ export default {
     span.innerHTML = `<i onclick="addFileMj()" style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1''></i>`
   },
   methods: {
-    fun() {
-      console.log(22222)
-    },
     hasShowDelegate() {
       hasShowDelegate({
         round: this.partInfo.currentRounds,
@@ -170,6 +167,13 @@ export default {
     handleChangeByAssembledPartPrjCode(fsNum, row) {
       const fsObj = this.fsNums.filter((item) => item.fsnrGsnrNum === fsNum)[0]
       this.$set(row, 'quotationId', fsObj.quotationId)
+
+      if (fsObj.priceType === "SKDLC") {
+        this.$set(row, "priceType", "LC")
+      } else {
+        this.$set(row, "priceType", fsObj.priceType)
+      }
+
       if (!row.assembledPartCode) {
         this.$set(row, 'assembledPartCode', fsObj.partNum)
         this.$set(row, 'assembledPartName', fsObj.partName)
