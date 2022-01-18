@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2022-01-11 17:31:40
+ * @LastEditTime: 2022-01-17 17:47:57
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -63,7 +63,7 @@
 </template>
  
 <script>
-import { iPage, iCard, iButton } from 'rise';
+import { iPage, iCard, iButton, iMessage } from 'rise';
 import EditableCell from "./editCell";
 import { saveMekTable, deleteMekTable } from '@/api/categoryManagementAssistant/mek'
 export default {
@@ -169,7 +169,12 @@ export default {
         schemeId: this.$parent.$parent.chemeId,
         textTypeId
       }).then(res => {
-        this.$parent.$parent.getMekTable()
+        if (res?.code === '200') {
+          this.$parent.$parent.getMekTable()
+        } else {
+          iMessage.error(res.desZh)
+        }
+
       })
     },
     renderHeader (h, { column }) {
