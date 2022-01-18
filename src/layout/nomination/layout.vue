@@ -12,8 +12,9 @@
       <!-- 三级导航栏 -->
       <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
-    <div class="nomination-content" v-loading="loading">
+    <div v-if="!showDecisionLoading" class="nomination-content" v-loading="loading">
       <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
+      <div v-else class="tip">{{ language("WUQUANXIANCHAKAN", "无查看权限") }}</div>
     </div>
   </div>
 </iPage>
@@ -53,6 +54,7 @@ export default {
     return{
       loading: false,
       isPreview:'0',
+      showDecisionLoading: false,
       showDecision: false, // 是否显示决策资料
     }
   },
@@ -122,6 +124,8 @@ export default {
       this.getStepStatus()
     },
     getNomiPosition() {
+      this.showDecisionLoading = true
+
       getNomiPosition({
         nomiId: this.$route.query.desinateId || this.$store.getters.nomiAppId
       })
@@ -129,6 +133,9 @@ export default {
         if (res.code == 200) {
           this.showDecision = res.data
         }
+      })
+      .finally(() => {
+        this.showDecisionLoading = false
       })
     }
   },
@@ -155,6 +162,14 @@ export default {
         box-shadow: none !important;
       }
     }
+  }
+
+  .tip {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    color: rgb(151, 166, 196);
+    line-height: calc(100vh - 360px);
   }
 }
 </style>

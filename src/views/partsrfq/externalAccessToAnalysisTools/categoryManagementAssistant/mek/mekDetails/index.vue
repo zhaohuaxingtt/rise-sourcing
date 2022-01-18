@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-14 17:59:11
+ * @LastEditTime: 2022-01-17 16:44:31
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -934,8 +934,7 @@ export default {
     },
     saveDialog () {
       if (this.$route.query.add) {
-
-        this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
+        this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM.DD");
       }
       this.reportName =
         this.categoryCode +
@@ -946,7 +945,7 @@ export default {
         "_" +
         "MEK" +
         "_" +
-        window.moment(new Date()).format("yyyy.MM");
+        window.moment(new Date()).format("yyyy.MM.DD");
       this.dialogVisible = true;
       // this.analysisSave = true;
     },
@@ -1287,9 +1286,6 @@ export default {
     },
     save () {
       this.loading = true;
-      // if (this.analysisNameFlag) {
-
-      // }
       let params = {
         categoryCode: this.categoryCode,
         categoryId: this.categoryId,
