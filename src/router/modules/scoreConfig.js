@@ -17,6 +17,15 @@ export default [
             meta: { title: "评分部门设置"},
             component: () => import("@/views/scoreConfig/configscoredept"),
         },
+        // <---demo,后期可以删除
+        {
+          path: "configscoredeptDemo",
+          name: "configscoredept",
+          meta: { title: "评分部门设置"},
+          component: () => import("@/views/scoreConfig/configscoredept/demo"),
+        },
+        // demo,后期可以删除 --->
+
         {
             path: "qualityscorerules",
             name: "qualityscorerules",
