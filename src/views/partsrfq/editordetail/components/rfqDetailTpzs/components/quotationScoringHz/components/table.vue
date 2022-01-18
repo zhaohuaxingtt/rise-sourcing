@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-01-07 17:21:20
+ * @LastEditTime: 2022-01-18 13:51:19
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -270,6 +270,11 @@ export default{
         console.warn(error)
       }
     },
+    //推荐供应商添加下划线
+    tuijianSuplier(currentProps,row){
+      if (['lcAPrice','skdAPrice','lcBPrice','skdBPrice'].includes(this.removeKeysNumber(currentProps)) && row[this.getPorpsNumber(currentProps)+'suggestFlag']) return true
+      return false
+    },
     ttoShow(data){
       if(data && parseInt(data)){
         return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
@@ -363,10 +368,10 @@ export default{
       };
     }
   },  
-    getPorpsNumber(key){
+    getPorpsNumber(key=""){
       return getPorpsNumber(key)
     },
-    removeKeysNumber(data){
+    removeKeysNumber(data=""){
       return removeKeysNumber(data)
     },
     /**
@@ -414,6 +419,10 @@ export default{
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
         return 'rightBorder'
       }
+      //判断是否是推荐供应商
+      if(this.tuijianSuplier(column.property,row)){
+        return 'tuijianSupplier'
+      }
       if(column.label == 'Group' && row.groupId && row.groupId != '-'){
         return 'bgcoor'
       }
@@ -445,12 +454,14 @@ export default{
     },
     // 减法
     subtract(a, b) {
+      // eslint-disable-next-line no-undef
       return math.subtract(math.bignumber(a || 0), math.bignumber(b || 0)).toFixed(2)
     } 
   }
 }
 </script>
 <style lang='scss' scoped>
+
   .checkBox{
     ::v-deep.el-checkbox__label{
       display: block;
@@ -483,6 +494,9 @@ export default{
   .el-table {
     position: initial;
     overflow: visible;
+    ::v-deep.tuijianSupplier{
+      border-bottom: 2px solid blue;
+    }
     ::v-deep.cell{
       overflow: visible;
       position: static;

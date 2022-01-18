@@ -243,7 +243,7 @@ import {
 } from 'rise';
 import tablelist from "./components/tableList";
 import { tableTitle, form, needTranslate, clickMessage} from "./components/data";
-import { getTabelData, getPageGroup, patchRecords } from "@/api/partsign/home"
+import { getTabelData, patchRecords } from "@/api/partsign/home"
 import {purchaseUsers} from '@/api/usercenter'
 import { pageMixins } from "@/utils/pageMixins";
 import backItems from "./components/backItems";
@@ -416,12 +416,6 @@ export default {
       );
       this.$router.push({
         path: "/sourceinquirypoint/sourcing/partsign/editordetail",
-      });
-    },
-    //获取上方group信息
-    getPageGroup() {
-      getPageGroup(this.form.userId).then((res) => {
-        this.fromGroup = res.data.groupStatSenarioResult.groupStatInfoList;
       });
     },
     translateDataToRender(data) {

@@ -19,18 +19,7 @@ export function getTabelData(parmars){
     }
   })
 }
-//获取列表上方Group信息
-export function getPageGroup(userId){
-  return requst({
-    url:'/tp-records/tpInfo',
-    method:'POST',
-    data:{
-      groupStatScenes:{
-        userId:userId
-      }
-    }
-  })
-}
+
 //签收和退回新建信息单
 export function patchRecords(data){
   return requst({

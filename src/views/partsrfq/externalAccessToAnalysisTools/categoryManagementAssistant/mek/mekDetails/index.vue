@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-14 17:59:11
+ * @LastEditTime: 2022-01-17 17:59:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -330,7 +330,7 @@
                @close="close">
         <div>
           <div class="margin-bottom15 flex-between-center">
-            <label for="">{{language('BAOCUNZAIFENXIMINGCHENG','保存在分析名称')}}</label>
+            <label for="">{{language('FENXIMINGCHENG','分析名称')}}</label>
             <!-- <el-checkbox v-model="analysisSave"></el-checkbox> -->
           </div>
           <iInput v-model="analysisName"
@@ -554,8 +554,10 @@ export default {
   },
   watch: {
     analysisName (newVal, oldVal) {
-      if (newVal) {
+      if (!oldVal) {
         this.analysisNameFlag = true
+      } else {
+        this.analysisNameFlag = false
       }
     }
   },
@@ -934,8 +936,7 @@ export default {
     },
     saveDialog () {
       if (this.$route.query.add) {
-
-        this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
+        this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM.DD");
       }
       this.reportName =
         this.categoryCode +
@@ -946,7 +947,7 @@ export default {
         "_" +
         "MEK" +
         "_" +
-        window.moment(new Date()).format("yyyy.MM");
+        window.moment(new Date()).format("yyyy.MM.DD");
       this.dialogVisible = true;
       // this.analysisSave = true;
     },
@@ -1286,10 +1287,6 @@ export default {
       }
     },
     save () {
-      this.loading = true;
-      // if (this.analysisNameFlag) {
-
-      // }
       let params = {
         categoryCode: this.categoryCode,
         categoryId: this.categoryId,
@@ -1304,7 +1301,7 @@ export default {
         targetMotor: this.targetMotor,
         name: this.analysisName,
         selectedOptions: this.checkedCarLevelOptions ? JSON.stringify(this.checkedCarLevelOptions) : ""
-      };
+      }
       if (this.barData) {
         if (this.barData[0]) {
           params.firstComparedMotor = this.barData[0].motorId || "";
@@ -1323,11 +1320,31 @@ export default {
           params.forthComparedPrice = this.barData[3].priceType || "";
         }
       }
-      updateScheme(params).then(() => {
-        this.loading = false;
-        this.dialogVisible = false;
-        iMessage.success("保存成功");
-      });
+      console.log(this.analysisNameFlag, "flag")
+      if (this.analysisNameFlag) {
+        this.$confirm(this.language('BAOGAOMINGCHENGCHONGFUSHIFOUFUGAI', "报告名称重复,是否覆盖？"), this.language('BIDDING_TISHI', "提示"), {
+          confirmButtonText: this.language('BIDDING_SHI', "是"),
+          cancelButtonText: this.language('BIDDING_FOU', "否"),
+          type: "warning",
+        }).then(() => {
+          this.loading = true;
+          updateScheme(params).then(() => {
+            this.loading = false;
+            this.dialogVisible = false;
+            iMessage.success("保存成功");
+          });
+        }).catch((error) => {
+          iMessage.error(error);
+        })
+      } else {
+        this.loading = true;
+        updateScheme(params).then(() => {
+          this.loading = false;
+          this.dialogVisible = false;
+          iMessage.success("保存成功");
+        });
+      }
+
       if (this.reportSave) {
         this.reportFlag = false;
         downloadPDF({
