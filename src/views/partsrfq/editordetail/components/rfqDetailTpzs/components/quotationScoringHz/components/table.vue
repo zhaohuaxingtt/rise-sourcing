@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-01-18 13:51:19
+ * @LastEditTime: 2022-01-18 17:25:48
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -116,6 +116,9 @@
               <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
                   <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
+              <template v-if='removeKeysNumber(item.props) == "ftSkdAPrice"'>
+                  <span :class="{chengse:scope.row['ftSkdAPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>
               <template v-else-if='removeKeysNumber(item.props) == "ebrCalculatedValue"'>
                 <span>{{ebrShow(scope.row[item.props])}}</span>
               </template>       
@@ -136,7 +139,10 @@
               </template>        
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
                   <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
-              </template>    
+              </template>   
+              <template v-else-if='removeKeysNumber(item.props) == "ftSkdBPrice"'>
+                  <span :class="{chengse:scope.row['ftSkdBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>  
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>

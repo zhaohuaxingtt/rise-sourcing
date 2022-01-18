@@ -363,7 +363,7 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getDataList()
-        }else if(res.code == '500'){
+        }else if(res.code == '501'){
           this.blackTableListData = res.data || [];
           this.$refs.dialogTableTips.show(); 
         }else {

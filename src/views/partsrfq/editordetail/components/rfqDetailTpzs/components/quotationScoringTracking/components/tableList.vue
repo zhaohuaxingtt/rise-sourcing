@@ -27,7 +27,7 @@
           <!-- </template>
         </el-table-column> -->
 
-        <el-table-column v-if="item.props == 'supplierName'" fixed :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="200" align="center">
+        <el-table-column v-if="item.props == 'supplierName'" fixed :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="200" align="center"> 
           <template slot-scope="scope">
             {{scope.row[item.props]?scope.row[item.props]:"-"}}
           </template>
@@ -43,6 +43,7 @@
                 <span class="title">{{item.key ? $t(item.key) : item.name}}</span>
                 <icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon>
                 <icon v-if="item.roundHeadDetailVO.roundType === 'biddingRound'" name="iconpaimai" class="iconpaimai margin-left5"></icon>
+                <icon symbol :name="item.roundHeadDetailVO.autoCreate?'icondingdianguanli-yiwancheng':'icondingdianguanlijiedian-jinhangzhong'" />
               </p>
             </el-tooltip>
           </template> 
