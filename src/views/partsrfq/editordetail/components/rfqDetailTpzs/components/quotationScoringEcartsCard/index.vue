@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-04-23 09:16:48
- * @LastEditTime: 2022-01-13 14:18:44
+ * @LastEditTime: 2022-01-18 10:06:48
  * @LastEditors: caopeng
  * @Description: 供应商维度展示
  * @FilePath: \front-sourcing-new\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringEcartsCard\index.vue
@@ -22,6 +22,9 @@ import { icardData } from '../data'
 export default {
   mixins: [downloadPdfMixins],
  components:{previewsCom,iCard},
+   props: {
+    rfqInfoData: { type: Object },
+  },
  data(){
      return {
             cardShow: JSON.parse(JSON.stringify(icardData)),
