@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-13 22:54:01
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-18 20:46:31
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
 -->
@@ -594,7 +594,7 @@ export default {
 
       try {
         const res = await modification(req);
-        if(updateType === '06' && res.code == '500'){
+        if(updateType === '06' && res.code == '501'){
           this.blackTableListData = res.data || [];
           this.$refs.dialogTableTips.show(); 
         }else{
