@@ -830,7 +830,6 @@ export default {
       RFQ_STATE_ENUM.indexOf(statusName) == -1 ? flag = false:''
       return flag
     },
-
   }
 }
 </script>
