@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-12-02 15:30:37
+ * @LastEditTime: 2022-01-19 15:46:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
@@ -28,7 +28,7 @@ export const contentDeclareTableTitle = [
   { props: "cartypeZh", name: "涉及⻋型/⻋型项⽬", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width: 140, isExport: true },
   { props: "oldPartNumPreset", name: "原零件号", key: "AEKO_YUANLINGJIANHAO_1", width: 140, isExport: true },
   { props: "oldPartNamePreset", name: "原零件名称", key: "YUANLINGJIANMINGCHENG", tooltip: true, width: 100 },
-  { props: "factoryName", name: "采购⼯⼚", key: "CAIGOUGONGCHANG", tooltip: true, isExport: true },
+  { props: "factoryName", name: "采购⼯⼚", key: "LKCAIGOUGONGCHANG", tooltip: true, isExport: true },
   { props: "supplierSapCode", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true, width: 100, isExport: true },
   { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true, width: 100 },
   { props: "bpriceChange", name: "B价变动(含分摊)", key: "BJIABIANDONGHANFENTAN", tooltip: true, width: 130 },
