@@ -66,7 +66,12 @@ export default {
     this.nominateAppSDetail()
     // 缓存当前步骤
     this.getStepStatus();
-    this.getNomiPosition()
+
+    if (this.$route.query.sd == 1) {
+      this.getNomiPosition()
+    } else {
+      this.showDecision = true
+    }
   },
   methods: {
     // 获取步骤状态
