@@ -63,6 +63,9 @@ export default {
       data: {}
     }
   },
+  created() {
+    this.data = _.cloneDeep(this.nominationData)
+  },
   methods: {
     reset() {
       this.data.nominateName = this.nominateName
@@ -91,7 +94,7 @@ export default {
   },
   watch: {
     nominationData(data) {
-      this.data = data
+      this.data = _.cloneDeep(data)
       this.nominateName = data.nominateName
     }
   }
