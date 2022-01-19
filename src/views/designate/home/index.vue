@@ -310,6 +310,7 @@ export default {
           query: {
             desinateId: row.id, 
             mtzApplyId: row.mtzApplyId, 
+            sd: 1,
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
             partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',  
             businessKey: (row.partProjType && row.partProjType.code) || row.partProjType || '',
@@ -426,7 +427,7 @@ export default {
           if(code == 200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
-          }else if(code == '500'){
+          }else if(code == '501'){
             this.blackTableListData = res.data || [];
             this.$refs.dialogTableTips.show(); 
           }else{
