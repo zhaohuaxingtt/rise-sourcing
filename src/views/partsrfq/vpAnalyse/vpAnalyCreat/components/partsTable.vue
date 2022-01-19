@@ -47,7 +47,7 @@
                      :selection='true'
                      @handleSelectionChange="handleSelectionChange">
             <template #supplyBeginTime="scope">
-              <span>{{scope.row.supplyBeginTime.slice(0, 7)}}</span>
+              <span>{{supplyTagger(scope.row.supplyBeginTime)}}</span>
             </template>
             <template #currentPlannedPro="scope">
               <span>{{toThousands(scope.row.currentPlannedPro)}}</span>
@@ -79,7 +79,7 @@
                      :selection='true'
                      @handleSelectionChange="handleSelectionChange">
             <template #supplyBeginTime="scope">
-              <span>{{scope.row.supplyBeginTime.slice(0, 7)}}</span>
+              <span>{{supplyTagger(scope.row.supplyBeginTime)}}</span>
             </template>
             <template #currentPlannedPro="scope">
               <span>{{toThousands(scope.row.currentPlannedPro)}}</span>
@@ -155,6 +155,13 @@ export default {
   watch: {},
   // 方法集合
   methods: {
+    supplyTagger(val){
+      if(val == null){
+        return ""
+      }else{
+        return val.slice(0, 7)
+      }
+    },
     toThousands,
     hanleParts () {
       this.partsDialog = true
@@ -200,6 +207,8 @@ export default {
     // 根据分页数据获取指定范围的数据
     setPageTableData () {
       this.tablePageData = []
+      // currPage 1
+      // pageSize 10
       const beginIndex = (this.pageData.currPage - 1) * this.pageData.pageSize
       const endIndex = (this.pageData.currPage * this.pageData.pageSize) - 1
       // console.log('beginIndex', beginIndex);

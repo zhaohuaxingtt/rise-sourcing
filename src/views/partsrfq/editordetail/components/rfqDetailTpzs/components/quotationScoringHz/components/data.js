@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-18 14:37:30
+ * @LastEditTime: 2022-01-19 19:04:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -138,7 +138,7 @@ export const whiteListGs = ['currentSupplier','headerEbr','groupName','partNo','
  * @param {*} title
  * @return {*}
  */
-export const needSubTotal = ['cfPartAPrice','cfPartBPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto']
+export const needSubTotal = ['cfPartAPrice','ftSkdAPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto','developmentCost','releaseCost']
 /**
  * @description:根据不同type获取options列表，这个方法适用于所有模板
  * @param {*} type 想要获取的type类型
@@ -363,21 +363,21 @@ export function subtotal(tableHeader,dataList,priceInfo){
                 if(items.props == key){
                   //需要 Lc Aprice . Lc Bprice TTo 
                   if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice"){ //去掉ttoTotal时候的ebr
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
                         [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0
                       }
                     })
+                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
                   }else{
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupId === item.groupIdTemp && removeKeysNumber(key) !== 'tooling' ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                        [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
                       }
                     })
+                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
                   }
                 }
               }

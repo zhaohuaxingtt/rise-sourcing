@@ -52,6 +52,7 @@
       <span class="flex-center-center font18 noData">{{language('BAOQIANDANGQIANWUFACHAKKBXX','抱歉！当前轮次还未开标您无法查看报价汇总信息。')}}</span>
     </template>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
+    <div class="margin-top10 font-size14">/ means no calculation base for mixed price. </div>
     <div class="margin-top10 font-size14">
       <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
         <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
@@ -251,6 +252,10 @@ export default{
      * @return {*}
      */
     sureClick(){
+      //新增需求，如果零件采购项目不一致，需要提示文案但是不影响这个组合的效果
+      if(!this.groupSelectData.every(items => items.carProType == this.groupSelectData[0].carProType)){
+        iMessage.warn('您的组合项中，存在车型项目不一致的情况，MixPrice将不展示！')
+      }
       this.negoAnalysisSummaryGroups()
       this.groupVisble = false
     },

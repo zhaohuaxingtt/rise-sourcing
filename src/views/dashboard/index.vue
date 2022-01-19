@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2021-12-28 13:31:50
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-19 18:38:06
+ * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
 -->
@@ -29,7 +29,7 @@
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
-              <span>{{language('LK_CAIGOUXIANGMUJIANLI','采购项目建立')}}</span>
+              <span>{{language('LK_CAIGOUXIANGMUJIANLI_XZYC','采购项目建立')}}</span>
             </div>
             <div class="dashboard-card-content">
               <dl>
@@ -103,7 +103,7 @@
           <iCard :tabCard="false">
             <div class="dashboard-card-header" slot="header">
               <icon symbol name="icona-dingdianguanlijiedian-yiwancheng-fuben" class="cardicon"></icon>
-              <span>{{language('LK_DINGDIANGUANLI','定点管理')}}</span>
+              <span>{{language('LK_DINGDIANGUANLI_XGYC','定点管理')}}</span>
             </div>
             <div class="dashboard-card-content">
               <dl>
