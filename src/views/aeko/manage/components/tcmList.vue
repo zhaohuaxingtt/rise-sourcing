@@ -183,7 +183,8 @@ export default {
                       await manualImportAekoFromTCM({importRecordId}).then((res)=>{
                           this.btnLoading = false;
                           if(res.code == 200){
-                            res.data ? iMessage.success(this.language('LK_AEKO_TCM_TIPS_DAORUCHENGGONG','导入成功')) : iMessage.warn(this.language('LK_AEKO_TCM_TIPS_DAORUSHIBAI','导入失败'));
+                            // res.data ? iMessage.success(this.language('LK_AEKO_TCM_TIPS_DAORUCHENGGONG','导入成功')) : iMessage.warn(this.language('LK_AEKO_TCM_TIPS_DAORUSHIBAI','导入失败'));
+                            iMessage.success(this.language('LK_AEKO_TCM_TIPS_DAORUCHENGGONG','导入成功'))
                             this.getList();
                           }else{
                              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn); 
