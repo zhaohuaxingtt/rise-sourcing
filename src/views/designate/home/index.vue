@@ -310,6 +310,7 @@ export default {
           query: {
             desinateId: row.id, 
             mtzApplyId: row.mtzApplyId, 
+            sd: 1,
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
             partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',  
             businessKey: (row.partProjType && row.partProjType.code) || row.partProjType || '',
