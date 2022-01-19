@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-17 17:59:17
+ * @LastEditTime: 2022-01-19 10:57:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -543,7 +543,7 @@ export default {
       checkedCarLevelOptions: {},
       onCarLevelVisible: false,
       onDataLoading: false,
-      analysisNameFlag: false
+      cloneAnalysisName: ""
     };
   },
   async created () {
@@ -552,15 +552,15 @@ export default {
     this.searchChartData()
     // this.getMekTable();
   },
-  watch: {
-    analysisName (newVal, oldVal) {
-      if (!oldVal) {
-        this.analysisNameFlag = true
-      } else {
-        this.analysisNameFlag = false
-      }
-    }
-  },
+  // watch: {
+  //   analysisName (newVal) {
+  //     if (this.cloneAnalysisName === this.analysisName) {
+  //       this.analysisNameFlag = true
+  //     } else {
+  //       this.analysisNameFlag = false
+  //     }
+  //   }
+  // },
   props: {
     propSchemeId: {
       type: String,
@@ -590,6 +590,7 @@ export default {
           this.comparedType = data.comparedType;
           this.isBindingRfq = data.isBindingRfq;
           this.analysisName = data.schemeName
+          this.cloneAnalysisName = _.cloneDeep(this.analysisName)
           this.checkedCarLevelOptions = data.selectedOptions ? JSON.parse(data.selectedOptions) : ""
           if (!this.checkedCarLevelOptions) {
             this.checkedCarLevelOptions = {}
@@ -1320,8 +1321,7 @@ export default {
           params.forthComparedPrice = this.barData[3].priceType || "";
         }
       }
-      console.log(this.analysisNameFlag, "flag")
-      if (this.analysisNameFlag) {
+      if (this.analysisName === this.cloneAnalysisName) {
         this.$confirm(this.language('BAOGAOMINGCHENGCHONGFUSHIFOUFUGAI', "报告名称重复,是否覆盖？"), this.language('BIDDING_TISHI', "提示"), {
           confirmButtonText: this.language('BIDDING_SHI', "是"),
           cancelButtonText: this.language('BIDDING_FOU', "否"),
@@ -1331,6 +1331,7 @@ export default {
           updateScheme(params).then(() => {
             this.loading = false;
             this.dialogVisible = false;
+            this.init()
             iMessage.success("保存成功");
           });
         }).catch((error) => {
@@ -1341,10 +1342,10 @@ export default {
         updateScheme(params).then(() => {
           this.loading = false;
           this.dialogVisible = false;
+          this.init()
           iMessage.success("保存成功");
         });
       }
-
       if (this.reportSave) {
         this.reportFlag = false;
         downloadPDF({
