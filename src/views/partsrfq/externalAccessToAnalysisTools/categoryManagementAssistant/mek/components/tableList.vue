@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2022-01-17 17:47:57
+ * @LastEditTime: 2022-01-19 14:00:09
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -166,7 +166,7 @@ export default {
       })
       deleteMekTable({
         comparedType: this.$parent.$parent.comparedType,
-        schemeId: this.$parent.$parent.chemeId,
+        schemeId: this.$parent.$parent.schemeId,
         textTypeId
       }).then(res => {
         if (res?.code === '200') {
