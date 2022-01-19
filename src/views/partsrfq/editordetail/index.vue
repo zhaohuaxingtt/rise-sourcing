@@ -44,22 +44,21 @@
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWTESTPROG|新建测试项目">{{
             language('LK_XINGJIANCESHIXIANM', '新建测试项目')
           }}</iButton>
-
           <iButton 
-                  v-if="baseInfo.starMonitorRef != 1 && baseInfo.starMonitorStatus !== 1"
+                  v-if="baseInfo.starMonitorRef != 1 && baseInfo.starMonitorStatus !== 1 && isXunJiaTanPanStatus"
                   :loading="newRfqOpenValidateLoading"
                    @click="newRfq"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND|新建RFQ轮次">
             {{ language('LK_XINJIANRFQLUNCI', '新建RFQ轮次') }}
           </iButton>
           <iButton 
-            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1"
+            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1 && isXunJiaTanPanStatus"
             :loading="rfqloading"
                    @click="updateRfqStatus('06')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_SENDINQUIRY|发出询价">{{ language('LK_FACHUXUNJIA', '发出询价') }}
           </iButton>
           <iButton 
-            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1" 
+            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1 && isXunJiaTanPanStatus" 
             :loading="endingloading"
             @click="updateRfqStatus('05')"
             v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDQUOTATION|结束本轮询价">
@@ -377,6 +376,7 @@ export default {
       blackTableListData:[],
       createDesignateLoading:false,
       isCommonSurcingStar:false,
+      isXunJiaTanPanStatus:false,
     };
   },  
   async created () {
@@ -530,7 +530,8 @@ export default {
                 //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
                 this.activityTabIndex = '5';
               }
-              this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
+              this.isPendingRfqStatus('RFQ_STATE_ENUM',this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
+              this.isPendingRfqStatus('RFQ_STATE_ENUM_XUNJIA',this.baseInfo.statusName) === true ? this.isXunJiaTanPanStatus = true: ''             
               this.childFnList.forEach((i) => i());
               if (typeof this.$store.state.rfq.partfunc === 'function') this.getPartTableList();
             } else {
@@ -816,8 +817,8 @@ export default {
         }
       })
     },
-    //RFQ是否是待定状态
-    isPendingRfqStatus(statusName) {
+    //RFQ状态
+    isPendingRfqStatus(status,statusName) {
       let RFQ_STATE_ENUM=[ // RFQ状态
          "未询价", 
          "询价中", 
@@ -826,11 +827,24 @@ export default {
          "转谈判", 
          "谈判完成", 
       ]
+      let RFQ_STATE_ENUM_XUNJIA = [
+         "未询价", 
+         "询价中"
+      ]
+      let RFQ_STATE_ENUM_TANPAN = [
+         "谈判中", 
+         "转谈判"
+      ]
       let flag = true 
-      RFQ_STATE_ENUM.indexOf(statusName) == -1 ? flag = false:''
-      return flag
-    },
+      if(status === 'RFQ_STATE_ENUM' ) {
+        RFQ_STATE_ENUM.indexOf(statusName) == -1 ? flag = false:''
+      }
+      if(status === 'RFQ_STATE_ENUM_XUNJIA' ) {
+        RFQ_STATE_ENUM_XUNJIA.indexOf(statusName) == -1 && RFQ_STATE_ENUM_TANPAN.indexOf(statusName) !== -1 ? flag = false:''
 
+      }
+      return flag
+    }
   }
 }
 </script>
