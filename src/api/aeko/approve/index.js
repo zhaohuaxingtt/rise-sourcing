@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
  * @LastEditors: YoHo
- * @LastEditTime: 2021-12-09 17:44:57
+ * @LastEditTime: 2022-01-19 14:19:42
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
@@ -231,7 +231,7 @@ export function statement(data) {
 // 获取日志
 export function getLogList(data) {
   return requst_log({
-    url: `/operationLog/findOperationLogs`,
+    url: `/operationLog/findRecordLogs`, 	// 接口调整
     method: "POST",
     data
   })

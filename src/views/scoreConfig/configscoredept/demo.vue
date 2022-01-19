@@ -56,7 +56,6 @@
           class="table"
           ref="tableList"
           index
-          :lang="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
           :tableLoading="loading"
@@ -141,11 +140,11 @@ export default {
   methods: {
     handleResetSetting({data, done} = data) {
       console.log('handleResetSetting', data)
-      done()
+      done(data)
     },
     handleSaveSetting({data, done} = data) {
       console.log('handleSaveSetting', data)
-      done()
+      done(data)
     },
     edittableHeader() {
       this.$refs.tableList.settingVisible = true
@@ -160,7 +159,6 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
-          console.log(this.tableListData,'tableListData')
           this.multipleSelection = []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
