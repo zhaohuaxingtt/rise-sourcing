@@ -38,7 +38,7 @@
           <div class="post text-ellipsis" v-if="!item.taskNodeList">
             <div>
               <span>
-                {{ item.approvalUser && item.approvalUser.deptNameZh }}
+                {{ item.approvalUser && item.approvalUser.assignedDeptFullCode }}
               </span>
             </div>
           </div>
@@ -80,7 +80,7 @@
                   </div>
                 </div>
                 <div class="post">
-                  {{ approvalUser.deptNameZh }}
+                  {{ approvalUser.assignedDeptFullCode }}
                   <div 
                     class="agentUserDept" 
                     v-for="(agentUser, agentUsersI) in approvalUser.agentUsers" 
@@ -88,7 +88,7 @@
                   >
                     <span v-if="agentUser">
                       {{
-                        agentUser.deptNameZh
+                        agentUser.assignedDeptFullCode
                       }}
                     </span>
                   </div>
