@@ -176,7 +176,7 @@ export default {
       getLogList(params)
         .then((res) => {
           if(res?.code=='200'){
-            const { data } = res.data
+            const { data } = res
             this.tableData = data.content || [];
             this.page.totalCount = data.total || 0;
           }else{
