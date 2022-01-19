@@ -13,15 +13,15 @@ export const queryForm = {
 }
 
 export const tableTitle = [
-  { props: "rateTag", name: "评分类型", key: "CONFIGSCOREDEPT_PINGFENLEIXING", tooltip: true },
-  { props: "rateDepartNum", name: "评分股", key: "CONFIGSCOREDEPT_PINGFENGU", tooltip: true },
-  { props: "parentRateDepartNum", name: "所属部门/科室", key: "CONFIGSCOREDEPT_SUOSHUBUMENHUOZHEKESHI", tooltip: true },
-  { props: "raterList", name: "评分人", key: "CONFIGSCOREDEPT_PINGFENREN", tooltip: true },
-  { props: "isCheck", name: "是否需要审批", key: "CONFIGSCOREDEPT_SHIFOUXUYAOSHENPI", tooltip: true },
-  { props: "coordinatorList", name: "协调人", key: "CONFIGSCOREDEPT_XIETIAOREN", tooltip: true },
-  { props: "willReviewApproverList", name: "上会复核审批人", key: "CONFIGSCOREDEPT_SHANGHUIFUHESHENPIREN", tooltip: true },
-  { props: "flowApproverList", name: "会外流转定点审批人", key: "CONFIGSCOREDEPT_HUIWAILIUZHUANDINGDIANSHENPIREN", tooltip: true },
-  { props: "updateTime", name: "修改时间", key: "CONFIGSCOREDEPT_XIUGAISHIJIAN", tooltip: true },
+  { props: "rateTag", name: "评分类型", tooltip: true },
+  { props: "rateDepartNum", name: "评分股", tooltip: true },
+  { props: "parentRateDepartNum", name: "所属部门/科室", tooltip: true },
+  { props: "raterList", name: "评分人", tooltip: true },
+  { props: "isCheck", name: "是否需要审批", tooltip: true },
+  { props: "coordinatorList", name: "协调人", tooltip: true },
+  { props: "willReviewApproverList", name: "上会复核审批人", tooltip: true },
+  { props: "flowApproverList", name: "会外流转定点审批人", tooltip: true },
+  { props: "updateTime", name: "修改时间", tooltip: true },
 ]
 
 export const addDialogFrom=[

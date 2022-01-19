@@ -9,6 +9,7 @@
 <div class="iFileTableList">
   <el-table
     fit
+    border
     tooltip-effect='light'
     v-bind="treeProps"
     v-loading='tableLoading'
@@ -36,11 +37,11 @@
 
     <template v-for="(items,index) in header">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : $t(items.key)">
+      <el-table-column :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
         <!-- slot header -->
         <template slot="header">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{lang ? language(items.key, items.name) : $t(items.key)}}
+            {{lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)}}
           </div>
         </template>
         <!-- slot content -->
@@ -62,13 +63,13 @@
         :width="items.width"
         :min-width="items.minWidth ? items.minWidth.toString():''"
         :show-overflow-tooltip='items.tooltip'
-        :label="lang ? language(items.key, items.name) : $t(items.key)"
+        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"
         :prop="items.props"
         :class-name="items.tree ? 'tree' : ''">
         <!-- slot header -->
         <template slot="header">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{lang ? language(items.key, items.name) : $t(items.key)}}
+            {{lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)}}
           </div>
         </template>
         <!-- slot content -->
@@ -182,7 +183,7 @@ export default{
      * @param {*}
      * @return {*}
      */    
-    lang: {type: Boolean},
+    lang: {type: Boolean, type: false},
     /**
      * @description: 表格合并
      * @param {*}
@@ -196,20 +197,12 @@ export default{
   data() {
     return {
       settingVisible: false,
-      header: this.tableTitle,
-      cacheNewHeader: this.tableTitle,
+      header: cloneDeep(this.tableTitle),
+      tableSettingColumns: []
     }
   },
-  computed: {
-    tableSettingColumns() {
-      const tableSettingColumns = cloneDeep(this.header)
-      return tableSettingColumns.map(o => {
-        !o.prop && o.props && (o.prop = o.props)
-        !o.label && o.name && (o.label = o.name)
-        o.i18n = o.i18n || o.key
-        return o
-      })
-    }
+  created() {
+    this.initTableSettingColumns()
   },
   methods:{
     /**
@@ -278,30 +271,36 @@ export default{
       const style = `border-left:2px solid #1660F1;`
       return columnIndex === 0 && row.selectedBorder === true ? style : ''
     },
-    renewTableHeader() {
-      const data = cloneDeep(this.cacheNewHeader)
-      const header = cloneDeep(data).filter(o => !o.isHidden)
-      this.header = header.map(o => {
-        !o.prop && o.props && (o.prop = o.props)
-        !o.label && o.name && (o.label = o.name)
-        o.i18n = o.i18n || o.key
-        return o
-      })
+    renewTableHeader(data) {
+      const header = data.filter(o => !o.isHidden)
+      this.header = header.map(o => ({
+        ...o,
+        prop: o.prop || o.props,
+        label: o.label || o.name,
+        i18n: o.i18n || o.key
+      }))
+    },
+    initTableSettingColumns() {
+      this.tableSettingColumns = this.tableTitle.map(o => ({
+        ...o,
+        prop: o.prop || o.props,
+        label: o.label || o.name,
+        i18n: o.i18n || o.key
+      }))
     },
     handleSaveSetting(data) {
       // console.log('handleSaveSetting',data)
-      this.cacheNewHeader = cloneDeep(data)
       if (this.$attrs.handleSaveSetting && typeof this.$attrs.handleSaveSetting === 'function') {
+        this.tableSettingColumns = data
         this.$attrs.handleSaveSetting({data, done: this.renewTableHeader})
       }
     },
-    handleResetSetting(data) {
-      console.log('handleSaveSetting',data)
-      this.cacheNewHeader = this.tableTitle
+    handleResetSetting() {
       if (this.$attrs.handleResetSetting && typeof this.$attrs.handleResetSetting === 'function') {
-        this.$attrs.handleResetSetting({data: this.cacheNewHeader, done: this.renewTableHeader})
+        this.initTableSettingColumns()
+        this.$attrs.handleResetSetting({data: cloneDeep(this.tableTitle), done: this.renewTableHeader})
       }
-    },
+    }
   }
 }
 </script>

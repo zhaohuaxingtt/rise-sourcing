@@ -39,11 +39,13 @@
                <p>{{`询价开始时间: ${item.roundHeadDetailVO.roundsStartTime || "-"}`}}</p>
                <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
               </template>
-              <p>
+              <p class="logoP">
                 <span class="title">{{item.key ? $t(item.key) : item.name}}</span>
                 <icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon>
                 <icon v-if="item.roundHeadDetailVO.roundType === 'biddingRound'" name="iconpaimai" class="iconpaimai margin-left5"></icon>
-                <icon symbol :name="item.roundHeadDetailVO.autoCreate?'icondingdianguanli-yiwancheng':'icondingdianguanlijiedian-jinhangzhong'" />
+                <el-tooltip :content="language('XITONGZIDONGCHUANGJIAN','系统自动创建')"  placement="top" effect="light">
+                    <img v-if="item.roundHeadDetailVO.autoCreate" class="logo" src="@/assets/images/md-brightness_auto.svg" />
+                </el-tooltip>
               </p>
             </el-tooltip>
           </template> 
@@ -222,6 +224,7 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+
 .quotationScoringTrackingTableList {
   .title {
     vertical-align: top;
@@ -229,6 +232,12 @@ export default{
   .iconjingbiao {
     font-size: 18px;
   }
+ 
+  .logo{
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
 }
   .blue-color{
     color:rgb(23, 99, 247)
@@ -253,5 +262,10 @@ export default{
   }
   .iconpaimai{
     color:red;
+  }
+   .logop{
+    align-items: center;
+    display: flex;
+    justify-content: center;
   }
 </style>
