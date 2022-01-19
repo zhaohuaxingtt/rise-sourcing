@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-01-18 17:25:48
+ * @LastEditTime: 2022-01-19 17:56:49
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -245,7 +245,7 @@ export default{
     },
     spanArrGroup() {
       return this.tableData.reduce((accu, item, index) => {
-        if(item.partNo && item.partNo.length && item.partNo.includes('Group total')){
+        if(item.partNo && item.partNo.length && (item.partNo.includes('Group total') || item.partNo.indexOf('Group')>-1)){
           return [...accu, index]
         }else{
           return [accu]
@@ -282,8 +282,8 @@ export default{
       return false
     },
     ttoShow(data){
-      if(data && parseInt(data)){
-        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
+      if(data && parseFloat(data)){
+        return (parseFloat(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }
