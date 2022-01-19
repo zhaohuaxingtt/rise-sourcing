@@ -82,7 +82,7 @@
               <div v-if="index == nodeList.length - 1" class="margin-top20 doubleItem"> 
                 <iText v-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro[item.kw]}}</iText> 
                 <span v-else  :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
-                (<iText v-if="pro.bmgFlag === '是' || pro[item.status2] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro.bmgFlag === '是' ? '/' : pro[item.kw2]}}</iText> 
+                (<iText v-if="pro.bmgFlag === '是' || pro[item.status2] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro.bmgFlag === '否' ? '/' : pro[item.kw2]}}</iText>
                 <span v-else :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>)
               </div>   
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
@@ -101,7 +101,7 @@
                 <!--------------------------节点时长-不可编辑------------------------------------> 
                 <template v-if="index == nodeList.length - 2"> 
                   <iText :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
-                  (<iText :class="`productItem-bottom-stepBetween-input text `">{{pro.bmgFlag === '是' ? '/' : pro[item.keyPoint2] + 'W'}}</iText>) 
+                  (<iText :class="`productItem-bottom-stepBetween-input text `">{{pro.bmgFlag === '否' ? '/' : pro[item.keyPoint2] + 'W'}}</iText>)
                 </template> 
                 <iText v-else :class="`productItem-bottom-stepBetween-input text `">{{pro[item.keyPoint]}}W</iText> 
               </div>  
