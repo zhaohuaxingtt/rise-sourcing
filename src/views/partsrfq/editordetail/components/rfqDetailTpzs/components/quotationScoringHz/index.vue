@@ -419,7 +419,6 @@ export default{
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
           const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)
           this.exampelData = this.exampelData.reduce((accu, curr, index) => {
-            console.log(accu,curr,index)
             if (index === this.exampelData.length - 1) {
               return [...accu, curr, ...subtotalList]
             }

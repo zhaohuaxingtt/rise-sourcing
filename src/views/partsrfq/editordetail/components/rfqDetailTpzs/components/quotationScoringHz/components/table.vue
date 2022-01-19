@@ -283,7 +283,7 @@ export default{
     },
     ttoShow(data){
       if(data && parseFloat(data)){
-        return (parseFloat(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
+        return (data+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }

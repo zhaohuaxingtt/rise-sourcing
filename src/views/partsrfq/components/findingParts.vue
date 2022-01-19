@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2021-09-09 16:52:49
+ * @LastEditTime: 2022-01-19 19:45:17
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -58,13 +58,23 @@
                  :selectedParts="selectedParts"
                  @handleSelectionChange="handleSelectionChange">
       </tableList>
+      <iPagination v-update
+                   @size-change="handleSizeChange($event, pagePart)"
+                   @current-change="handleCurrentChange($event, pagePart)"
+                   background
+                   :page-sizes="page.pageSizes"
+                   :page-size="page.pageSize"
+                   :layout="page.layout"
+                   :current-page='page.currPage'
+                   :total="page.totalCount" />
     </div>
   </iDialog>
 </template>
 <script>
-import { iButton, iDialog, iSearch, iSelect, iInput, iMessage } from "rise";
+import { iButton, iDialog, iSearch, iSelect, iInput, iMessage, iPagination } from "rise";
 import { confirmTableHead } from "./data";
 import emitter from '@/utils/emitter.js'
+import pageMixins from '@/utils/pageMixins'
 import {
   pagePart,
   category,
@@ -79,8 +89,9 @@ export default {
     iSelect,
     iInput,
     tableList,
+    iPagination
   },
-  mixins: [emitter],
+  mixins: [emitter, pageMixins],
   props: {
     title: { type: String, default: "LK_SHANGCHUAN" },
     value: { type: Boolean },
@@ -129,9 +140,17 @@ export default {
       if (this.status === 1) {
         this.form.status = 'NOMINATED'
       }
+      let params = {
+        pageNo: this.page.currPage,
+        pageSize: this.page.pageSize,
+        ...this.form
+      }
       pagePart(this.form)
         .then((res) => {
           if (res.code === "200") {
+            this.page.currPage = res.pageNum
+            this.page.pageSize = res.pageSize
+            this.page.totalCount = res.total
             this.confirmTableData = res.data;
             this.confirmTableData.forEach((value, index) => {
               value.index = index + 1;
@@ -150,7 +169,7 @@ export default {
                 })
                 if (selectedList.length > 0) {
                   selectedList.forEach((sel) => {
-                    this.$refs.partSelectionTable.$refs.moviesTable.toggleRowSelection(sel,true)
+                    this.$refs.partSelectionTable.$refs.moviesTable.toggleRowSelection(sel, true)
                   })
                 }
               }
