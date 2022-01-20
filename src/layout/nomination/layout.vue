@@ -64,13 +64,12 @@ export default {
     this.isPreview = isPreview;
     this.$store.dispatch('setPreviewState', isPreview)
     this.nominateAppSDetail()
-    // 缓存当前步骤
-    this.getStepStatus();
-
     if (this.$route.query.sd == 1) {
       this.getNomiPosition()
     } else {
       this.showDecision = true
+          // 缓存当前步骤
+      this.getStepStatus(); //只有当前组件被渲染过后，再通过异步修改的数据才会触发内部watch 这里不能放在showDecision=true之前
     }
   },
   methods: {
@@ -137,6 +136,8 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.showDecision = res.data
+          // 缓存当前步骤
+          this.getStepStatus();
         }
       })
       .finally(() => {
