@@ -38,7 +38,7 @@ export default [
     name: "dataMaintenance",
     meta: { title: "数据维护", activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE'] },
     component: () => import("@/views/costanalysismanage/components/datamaintenance"),
-    redirect: "datamaintenance/costMaintenance",
+    redirect: "datamaintenance/costDataMaintenance",
     children: [
       {
         path: "costMaintenance",

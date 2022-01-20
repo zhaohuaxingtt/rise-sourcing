@@ -10,7 +10,7 @@
 	<iCard class="outputPlan" :title="language('LK_LINGJIANCHANLIANGJIHUA','零件产量计划')" tabCard>
 		<!-- 手工采购项目创建 -->
 		<div class="btn-right">
-			<batch-miantain-output-plan :planItems="selectTions" v-permission.auto="PARTSPROCURE_BATCHMANTAINCEPRODUCTPLAN|批量维护产量计划"></batch-miantain-output-plan>
+			<batch-miantain-output-plan :planItems="selectTions" @getData="getData" v-permission.auto="PARTSPROCURE_BATCHMANTAINCEPRODUCTPLAN|批量维护产量计划"></batch-miantain-output-plan>
 		</div>
 		<div class="body">
 			<tablelist ref='tabel' class="table" index :tableData="tableListData" :tableTitle="tableTitle"

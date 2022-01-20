@@ -129,7 +129,7 @@
                    :total="page.totalCount" />
     </iCard>
     <div class="rsPdfWrapper">
-      <rsPdf ref="rsPdf" />
+      <rsPdf ref="rsPdf" :nominateId="nominateId"/>
     </div>
   </div>
 </template>

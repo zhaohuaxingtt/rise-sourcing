@@ -52,6 +52,7 @@
       <span class="flex-center-center font18 noData">{{language('BAOQIANDANGQIANWUFACHAKKBXX','抱歉！当前轮次还未开标您无法查看报价汇总信息。')}}</span>
     </template>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
+    <div class="margin-top10 font-size14">/ means no calculation base for mixed price. </div>
     <div class="margin-top10 font-size14">
       <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
         <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
@@ -251,6 +252,10 @@ export default{
      * @return {*}
      */
     sureClick(){
+      //新增需求，如果零件采购项目不一致，需要提示文案但是不影响这个组合的效果
+      if(!this.groupSelectData.every(items => items.carProType == this.groupSelectData[0].carProType)){
+        iMessage.warn('您的组合项中，存在车型项目不一致的情况，MixPrice将不展示！')
+      }
       this.negoAnalysisSummaryGroups()
       this.groupVisble = false
     },
@@ -317,7 +322,6 @@ export default{
         if(this.layout == 1){
           await this.fsPartsAsRow()
         }else if(this.layout == 2){
-
           await this.supplierfsSupplierAsRow()
         }else{
           await this.fsPartsAsRow()
@@ -341,8 +345,13 @@ export default{
         }else{
           this.backChoose = ''
         }
-        if(this.backChoose === '' && type == 2){//特殊逻辑处理，如果第一次进来，隐藏项为空。则认为用户没有设置过，需要将默认隐藏项设置好。
-          this.backChoose = ['EBR','Volume','Invest Budget','Prod. Loc.','Dev.\nCost','Supplier \nSOP Date','Total\n Turnover']
+        if(this.backChoose === ''){//特殊逻辑处理，如果第一次进来，隐藏项为空。则认为用户没有设置过，需要将默认隐藏项设置好。
+          if(type == 2){
+            this.backChoose = ['EBR','Volume','Invest Budget','Prod. Loc.','Dev.\nCost','Supplier \nSOP Date','Total\n Turnover']
+          }
+          if(type == 3){
+            this.backChoose = ['currentShare','currentLtc','currentTto']
+          }
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
@@ -409,6 +418,7 @@ export default{
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
           const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)
+          console.log('subtotalList',subtotalList)
           this.exampelData = this.exampelData.reduce((accu, curr, index) => {
             if (index === this.exampelData.length - 1) {
               return [...accu, curr, ...subtotalList]
@@ -420,6 +430,7 @@ export default{
             }
             return [...accu, curr]
           },[])
+          console.log(this.exampelData)
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
           this.$nextTick(()=>{
             this.$refs.tableList.setfixElement()

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-12 22:13:21
+ * @LastEditTime: 2022-01-19 22:29:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -130,7 +130,7 @@ export const whiteList = ['headerEbr','groupName','partNo','partName','cfPartAPr
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice','releaseCost'] //默认需要显示的数据
+export const whiteListGs = ['currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice','releaseCost'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -138,7 +138,7 @@ export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSup
  * @param {*} title
  * @return {*}
  */
-export const needSubTotal = ['cfPartAPrice','cfPartBPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto']
+export const needSubTotal = ['cfPartAPrice','ftSkdAPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto','developmentCost','releaseCost','toolingShare']
 /**
  * @description:根据不同type获取options列表，这个方法适用于所有模板
  * @param {*} type 想要获取的type类型
@@ -335,8 +335,9 @@ export function removeKeysNumber(keys){
 export function subtotal(tableHeader,dataList,priceInfo){
   try {
     // eslint-disable-next-line no-undef
-    let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId}] : accu}, []), 'groupId')
+    let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId,toolingHasShare:1}] : accu}, []), 'groupId')
     const total = {}
+    tableHeader = [...tableHeader,...[{props:'toolingShare'}]]
     tableHeader.forEach(items=>{
       if(items.props == 'groupName'){
         total["groupId"] = '-'
@@ -362,22 +363,22 @@ export function subtotal(tableHeader,dataList,priceInfo){
             for(let key in element){
                 if(items.props == key){
                   //需要 Lc Aprice . Lc Bprice TTo 
-                  if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice"){ //去掉ttoTotal时候的ebr
+                  if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == 'skdAPrice' || removeKeysNumber(key) == 'skdBPrice'){ //去掉ttoTotal时候的ebr
+                    groupArr = groupArr.map(item => {
+                      return {
+                        ...item,
+                        [key]: asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):''
+                      }
+                    })
                     total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
-                    groupArr = groupArr.map(item => {
-                      return {
-                        ...item,
-                        [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0
-                      }
-                    })
                   }else{
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupId === item.groupIdTemp && removeKeysNumber(key) !== 'tooling' ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                        [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
                       }
                     })
+                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
                   }
                 }
               }
@@ -391,7 +392,15 @@ export function subtotal(tableHeader,dataList,priceInfo){
     return {partNo:'Subtotal'}
   }
 }
-
+//查看某个groupId里面的车型项目是否相同
+function asSameCartypeInGroupList(groupId='',dataList=[]){
+  try {
+    return dataList.filter(i=>i.groupId == groupId).every(items=>items.carProType == dataList.filter(i=>i.groupId == groupId)[0].carProType)
+  } catch (error) {
+    console.log(error)
+    return true
+  }
+}
 /**
  * @description: 在tto的合并计算中。需要将最低的tto计算出来，将他的颜色表示为绿色。
  * @param {*} totalList

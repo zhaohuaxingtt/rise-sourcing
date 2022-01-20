@@ -132,7 +132,7 @@ export default{
   },
   computed:{
     totalSupplier(){
-      const s = this.ontologyList.find(i=>i.partType == 'S')
+      const s = this.ontologyList.find(i=>i.partType == 'L')
       return s?s.sname:''
     }
   },
@@ -166,7 +166,7 @@ export default{
       this.ontologyList.forEach(r=> this.$refs.tabel.toggleRowSelection(r))
     },
     selectGroup(row){
-      if(this.ontologyList.find(items=>items.partType === 'S') && this.tableList.filter(i=>i.supplierId == row.supplierId).find(t=>t.partType === 'S')) {
+      if(this.ontologyList.find(items=>items.partType === 'L') && this.tableList.filter(i=>i.supplierId == row.supplierId).find(t=>t.partType === 'L')) {
         this.$refs.tabel.clearSelection()
         this.ontologyList.filter(i=>i.itemKey != row.itemKey).forEach(r=>this.$refs.tabel.toggleRowSelection(r))
         iMessage.warn(this.language('DANGQLJHANYOUDUOGEJIAGONG','您已选择过零件类型含有加工装配的供应商，切勿重复选择！'))
@@ -184,10 +184,10 @@ export default{
         this.$refs.tabel.clearSelection()
         select.filter(i=>i.supplierId !== row.supplierId).forEach(t=>this.$refs.tabel.toggleRowSelection(t))
       }
-      if(select.filter(i=>i.partType === 'S').length > 1){
+      if(select.filter(i=>i.partType === 'L').length > 1){
         this.$refs.tabel.clearSelection()
         this.ontologyList = []
-        const selectfilterPartTypeS = (select.filter(i=>i.partType === 'S').map(r=>r.itemKey)).splice(1,1,'')
+        const selectfilterPartTypeS = (select.filter(i=>i.partType === 'L').map(r=>r.itemKey)).splice(1,1,'')
         select.filter(b=>!selectfilterPartTypeS.includes(b.itemKey)).forEach(r=>this.$refs.tabel.toggleRowSelection(r))
         iMessage.warn(this.language('DANGQLJHANYOUDUOGEJIAGONG','您已选择过零件类型含有加工装配的供应商，切勿重复选择！'))
         return
@@ -274,7 +274,7 @@ export default{
             this.diologShow = true
           }else{
             this.ontologyList = this.tableList
-            this.rate = res.data.nomiPartsAssemblySupplierVoList[0].nomiPartsAssemblyRecordVoList.find(r=>r.partType == "S").rate || 0
+            this.rate = res.data.nomiPartsAssemblySupplierVoList[0].nomiPartsAssemblyRecordVoList.find(r=>r.partType == "L").rate || 0
             this.createNomi('1') 
           }
           }else{
@@ -298,7 +298,7 @@ export default{
     },
     createNomi(type = '1'){
       if (type === '1') {
-        const submitValidate = this.ontologyList.filter(items=>items.partType === 'S')
+        const submitValidate = this.ontologyList.filter(items=>items.partType === 'L')
         if(this.rate === '') return iMessage.warn(this.language('DANGQIANFENEBNWEIK','抱歉，您还未填写份额！'))
         if(this.rate === '0%') return iMessage.warn(this.language('QINGSHURUDAYUINGDESHU','抱歉！份额请填写大于0小于等于100的数'))
         if(submitValidate && submitValidate.length > 1) return iMessage.warn(this.language('XUANZEDEBUNENGDAYULIANGT','抱歉！零件类型【加工装配费】只能为一条！'))

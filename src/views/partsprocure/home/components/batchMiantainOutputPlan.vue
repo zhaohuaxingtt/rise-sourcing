@@ -8,7 +8,7 @@
 <template>
   <div class="batchMaintain">
     <iButton @click="openBatchMiantainOutputPlan">{{ language("PILIANGWEIHUCHANLIANGJIHUA", "批量维护产量计划") }}</iButton>
-    <openBatch :dialogVisible ="batchdialogVisible" @changeVisible="batchchangeVisible" :openPlanItemsIds="planItemsIds"></openBatch>
+    <openBatch :dialogVisible ="batchdialogVisible" @changeVisible="batchchangeVisible" :openPlanItemsIds="planItemsIds"  @initTable="initTable"></openBatch>
   </div>
 </template>
 
@@ -30,6 +30,10 @@ export default {
        }
    },
    methods:{  
+      initTable() {
+        this.$emit('getData')
+        this.$emit('getDataList')
+      },
       openBatchMiantainOutputPlan() {
         if( this.planItems.length == 0 ) {
           return iMessage.warn(

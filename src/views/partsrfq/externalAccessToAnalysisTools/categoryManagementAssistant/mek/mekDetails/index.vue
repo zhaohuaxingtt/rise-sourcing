@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-11 14:34:43
+ * @LastEditTime: 2022-01-19 18:53:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -131,6 +131,16 @@
                  ref="chartBox"
                  style="height:670px">
             <div class="chartBox1 ">
+              <el-tooltip class="item"
+                          placement="top-start"
+                          effect="light">
+                <div slot="content">
+                  <p>{{language('SHUJUFANWEIPILIANGJIAN','数据范围：批量件')}}</p>
+                  <p>{{language('ANCHEXINGPEIZHICHAKANSHIJINTONGJISHIYONGLEDANGQIANCAILIAOZULINGJIANDECHEXINGDENGJI','按车型配置查看时仅统计使用了当前材料组零件的车型等级。')}}</p>
+                </div>
+                <i class="el-icon-warning-outline"
+                   style="color:#1763f7;font-size:20px"></i>
+              </el-tooltip>
               <div class="chartBox">
                 <div class="line"
                      :style="{ width: totalWidth }"></div>
@@ -146,16 +156,7 @@
                   <div class="operation1">
                     <div style="height:20px"
                          class="margin-bottom20">
-                      <el-tooltip class="item"
-                                  placement="top-start"
-                                  effect="light">
-                        <div slot="content">
-                          <p>{{language('SHUJUFANWEIPILIANGJIAN','数据范围：批量件')}}</p>
-                          <p>{{language('ANCHEXINGPEIZHICHAKANSHIJINTONGJISHIYONGLEDANGQIANCAILIAOZULINGJIANDECHEXINGDENGJI','按车型配置查看时仅统计使用了当前材料组零件的车型等级。')}}</p>
-                        </div>
-                        <i class="el-icon-warning"
-                           style="color:#1763f7;font-size:20px"></i>
-                      </el-tooltip>
+
                     </div>
                     <el-select v-model="targetMotor"
                                @change="changeTargetMotor"
@@ -330,7 +331,7 @@
                @close="close">
         <div>
           <div class="margin-bottom15 flex-between-center">
-            <label for="">{{language('BAOCUNZAIFENXIMINGCHENG','保存在分析名称')}}</label>
+            <label for="">{{language('FENXIMINGCHENG','分析名称')}}</label>
             <!-- <el-checkbox v-model="analysisSave"></el-checkbox> -->
           </div>
           <iInput v-model="analysisName"
@@ -542,7 +543,8 @@ export default {
       carLevelOptions: {},
       checkedCarLevelOptions: {},
       onCarLevelVisible: false,
-      onDataLoading: false
+      onDataLoading: false,
+      cloneAnalysisName: ""
     };
   },
   async created () {
@@ -551,6 +553,15 @@ export default {
     this.searchChartData()
     // this.getMekTable();
   },
+  // watch: {
+  //   analysisName (newVal) {
+  //     if (this.cloneAnalysisName === this.analysisName) {
+  //       this.analysisNameFlag = true
+  //     } else {
+  //       this.analysisNameFlag = false
+  //     }
+  //   }
+  // },
   props: {
     propSchemeId: {
       type: String,
@@ -570,105 +581,111 @@ export default {
       await getSchemeInfo({
         schemeId: this.schemeId,
       }).then((res) => {
-        let data = res.data;
-        this.categoryCode = data.categoryCode;
-        this.categoryId = data.categoryId;
-        this.categoryName = data.categoryName;
-        this.exceptPart = data.exceptPart;
-        this.targetMotor = data.targetMotor.toString();
-        this.comparedType = data.comparedType;
-        this.isBindingRfq = data.isBindingRfq;
-        this.analysisName = data.schemeName
-        this.checkedCarLevelOptions = data.selectedOptions ? JSON.parse(data.selectedOptions) : ""
-        if (!this.checkedCarLevelOptions) {
-          this.checkedCarLevelOptions = {}
-        }
-        if (data.firstComparedMotor) {
-          this.ComparedMotor.push(data.firstComparedMotor.toString());
-        }
-        if (data.secondComparedMotor) {
-          this.ComparedMotor.push(data.secondComparedMotor.toString());
-        }
-        if (data.thirdComparedMotor) {
-          this.ComparedMotor.push(data.thirdComparedMotor.toString());
-        }
-        if (data.forthComparedMotor) {
-          this.ComparedMotor.push(data.forthComparedMotor.toString());
-        }
-        if (data.fifthComparedMotor) {
-          this.ComparedMotor.push(data.fifthComparedMotor.toString());
-        }
-        //材料组
-        category({}).then((res) => {
-          this.categoryList = res.data;
-        });
-        let params = {};
-        if (this.isBindingRfq) {
-          params = {
-            categoryId: this.categoryId,
-            isBindingRfq: this.isBindingRfq,
-            req: this.rfqId,
-            schemeId: this.schemeId
-          };
-        } else {
-          params = {
-            categoryId: this.categoryId,
-            isBindingRfq: this.isBindingRfq,
-            schemeId: this.schemeId
-          };
-        }
-        //目标车型
-        getTargetMotor(params).then((res) => {
-          this.TargetMotorList = res.data;
-          this.TargetMotorList.forEach((item) => {
-            if (item.motorId === this.targetMotor) {
-              this.targetMotorCode = item.motorCode;
-              this.targetMotorName = item.motorName;
-            }
+        if (res?.code === '200') {
+          let data = res.data;
+          this.categoryCode = data.categoryCode;
+          this.categoryId = data.categoryId;
+          this.categoryName = data.categoryName;
+          this.exceptPart = data.exceptPart || "";
+          this.targetMotor = data.targetMotor.toString();
+          this.comparedType = data.comparedType;
+          this.isBindingRfq = data.isBindingRfq;
+          this.analysisName = data.schemeName
+          this.cloneAnalysisName = _.cloneDeep(this.analysisName)
+          this.checkedCarLevelOptions = data.selectedOptions ? JSON.parse(data.selectedOptions) : ""
+          if (!this.checkedCarLevelOptions) {
+            this.checkedCarLevelOptions = {}
+          }
+          if (data.firstComparedMotor) {
+            this.ComparedMotor.push(data.firstComparedMotor.toString());
+          }
+          if (data.secondComparedMotor) {
+            this.ComparedMotor.push(data.secondComparedMotor.toString());
+          }
+          if (data.thirdComparedMotor) {
+            this.ComparedMotor.push(data.thirdComparedMotor.toString());
+          }
+          if (data.forthComparedMotor) {
+            this.ComparedMotor.push(data.forthComparedMotor.toString());
+          }
+          if (data.fifthComparedMotor) {
+            this.ComparedMotor.push(data.fifthComparedMotor.toString());
+          }
+          //材料组
+          category({}).then((res) => {
+            this.categoryList = res.data;
           });
-        });
-        getDictByCode("mekType").then((res) => {
-          this.mekTypeList = res.data[0].subDictResultVo;
-          this.mekTypeList.forEach((item) => {
-            if (item.code === this.comparedType) {
-              this.mekTypeName = item.name;
-            }
-          });
-        });
-        getDictByCode("mekpriceType").then((res) => {
-          this.mekpriceTypeList = res.data[0].subDictResultVo;
-        });
-        getComparedMotor({
-          categoryId: this.categoryId,
-          isTarget: true,
-          targetMotorId: this.targetMotor,
-          isBindingRfq: this.isBindingRfq
-        }).then((res) => {
-          this.ComparedMotorList = res.data;
-          this.ComparedMotorList.forEach((item) => {
-            this.ComparedMotor.forEach((i) => {
-              if (item.motorId === i) {
-                this.ComparedMotorCode.push(item.motorCode);
-                this.ComparedMotorName.push(item.motorName);
+          let params = {};
+          if (this.isBindingRfq) {
+            params = {
+              categoryId: this.categoryId,
+              isBindingRfq: this.isBindingRfq,
+              req: this.rfqId,
+              schemeId: this.schemeId
+            };
+          } else {
+            params = {
+              categoryId: this.categoryId,
+              isBindingRfq: this.isBindingRfq,
+              schemeId: this.schemeId
+            };
+          }
+          //目标车型
+          getTargetMotor(params).then((res) => {
+            this.TargetMotorList = res.data;
+            this.TargetMotorList.forEach((item) => {
+              if (item.motorId === this.targetMotor) {
+                this.targetMotorCode = item.motorCode;
+                this.targetMotorName = item.motorName;
               }
             });
           });
-        });
-        let params1 = {
-          categoryId: this.categoryId,
-          motorIds: [this.targetMotor, ...this.ComparedMotor],
-          schemeId: this.schemeId,
-        };
-        recursiveRetrieve(params1).then((res) => {
-          if (res.code === "200") {
-            let partNumber = [];
-            res.data.forEach((item) => {
-              partNumber.push(item.partNumber);
+          getDictByCode("mekType").then((res) => {
+            this.mekTypeList = res.data[0].subDictResultVo;
+            this.mekTypeList.forEach((item) => {
+              if (item.code === this.comparedType) {
+                this.mekTypeName = item.name;
+              }
             });
-            this.recursiveRetrieveList = res.data;
-            this.partNumber = _.difference(partNumber, this.exceptPart);
-          }
-        });
+          });
+          getDictByCode("mekpriceType").then((res) => {
+            this.mekpriceTypeList = res.data[0].subDictResultVo;
+          });
+          getComparedMotor({
+            categoryId: this.categoryId,
+            isTarget: true,
+            targetMotorId: this.targetMotor,
+            isBindingRfq: this.isBindingRfq
+          }).then((res) => {
+            this.ComparedMotorList = res.data;
+            this.ComparedMotorList.forEach((item) => {
+              this.ComparedMotor.forEach((i) => {
+                if (item.motorId === i) {
+                  this.ComparedMotorCode.push(item.motorCode);
+                  this.ComparedMotorName.push(item.motorName);
+                }
+              });
+            });
+          });
+          let params1 = {
+            categoryId: this.categoryId,
+            motorIds: [this.targetMotor, ...this.ComparedMotor],
+            schemeId: this.schemeId,
+          };
+          recursiveRetrieve(params1).then((res) => {
+            if (res.code === "200") {
+              let partNumber = [];
+              res.data.forEach((item) => {
+                partNumber.push(item.partNumber);
+              });
+              this.recursiveRetrieveList = res.data;
+              this.partNumber = _.difference(partNumber, this.exceptPart);
+            }
+          });
+        } else {
+          iMessage.error(res.desZh)
+          return
+        }
       });
     },
     //查询
@@ -685,7 +702,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart,
+        unselected: this.exceptPart ? [this.exceptPart] : [],
       };
       let motorIdList = [];
       if (this.barData) {
@@ -757,7 +774,7 @@ export default {
       this.targetMotor = [];
       this.ComparedMotor = [];
       this.comparedType = "";
-      this.exceptPart = "";
+      this.exceptPart = [];
       await this.init();
       this.searchChartData()
       // this.getMekTable();
@@ -851,7 +868,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart,
+        unselected: this.exceptPart ? [this.exceptPart] : [],
       };
       if (this.isBindingRfq) {
         params.isBindingRfq = true;
@@ -897,7 +914,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart,
+        unselected: this.exceptPart ? [this.exceptPart] : [],
       };
       if (this.isBindingRfq) {
         params.isBindingRfq = true;
@@ -921,7 +938,7 @@ export default {
     },
     saveDialog () {
       if (this.$route.query.add) {
-        this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM");
+        this.analysisName = this.categoryCode + "_" + this.categoryName + "_" + this.targetMotorName + "_" + "MEK" + "_" + window.moment(new Date()).format("yyyy.MM.DD");
       }
       this.reportName =
         this.categoryCode +
@@ -932,7 +949,7 @@ export default {
         "_" +
         "MEK" +
         "_" +
-        window.moment(new Date()).format("yyyy.MM");
+        window.moment(new Date()).format("yyyy.MM.DD");
       this.dialogVisible = true;
       // this.analysisSave = true;
     },
@@ -974,7 +991,7 @@ export default {
       this.detailVisible = val;
     },
     changePartNumber (val) {
-      if (!this.exceptPart) {
+      if (this.exceptPart.length === 0) {
         this.exceptPart = [];
       }
       let recursiveRetrieveList = this.recursiveRetrieveList.map(
@@ -1053,7 +1070,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart,
+        unselected: this.exceptPart ? [this.exceptPart] : [],
       };
       this.barData.forEach((item) => {
         let obj = {
@@ -1111,7 +1128,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart,
+        unselected: this.exceptPart ? [this.exceptPart] : [],
       };
       this.ComparedMotor = this.ComparedMotor.filter((i) => i !== data.motorId);
       this.ComparedMotor.forEach((item) => {
@@ -1254,7 +1271,7 @@ export default {
       this.reportFlag = true;
     },
     handleAnalysis () {
-      if (this.isBindingRfq) {
+      if (this.$store.state.rfq.entryStatus === 1) {
         this.$router.push({
           path: "/sourceinquirypoint/sourcing/partsrfq/assistant",
           query: {
@@ -1272,9 +1289,6 @@ export default {
       }
     },
     save () {
-      this.loading = true;
-
-
       let params = {
         categoryCode: this.categoryCode,
         categoryId: this.categoryId,
@@ -1289,7 +1303,7 @@ export default {
         targetMotor: this.targetMotor,
         name: this.analysisName,
         selectedOptions: this.checkedCarLevelOptions ? JSON.stringify(this.checkedCarLevelOptions) : ""
-      };
+      }
       if (this.barData) {
         if (this.barData[0]) {
           params.firstComparedMotor = this.barData[0].motorId || "";
@@ -1308,19 +1322,37 @@ export default {
           params.forthComparedPrice = this.barData[3].priceType || "";
         }
       }
-      updateScheme(params).then(() => {
-        this.loading = false;
-        this.dialogVisible = false;
-        iMessage.success("保存成功");
-      });
-
+      if (this.analysisName === this.cloneAnalysisName) {
+        this.$confirm(this.language('BAOGAOMINGCHENGCHONGFUSHIFOUFUGAI', "报告名称重复,是否覆盖？"), this.language('BIDDING_TISHI', "提示"), {
+          confirmButtonText: this.language('BIDDING_SHI', "是"),
+          cancelButtonText: this.language('BIDDING_FOU', "否"),
+          type: "warning",
+        }).then(() => {
+          this.loading = true;
+          updateScheme(params).then(() => {
+            this.loading = false;
+            this.dialogVisible = false;
+            this.init()
+            iMessage.success("保存成功");
+          });
+        }).catch((error) => {
+          iMessage.error(error);
+        })
+      } else {
+        this.loading = true;
+        updateScheme(params).then(() => {
+          this.loading = false;
+          this.dialogVisible = false;
+          this.init()
+          iMessage.success("保存成功");
+        });
+      }
       if (this.reportSave) {
         this.reportFlag = false;
         downloadPDF({
           idEle: "#content",
           pdfName: this.reportName,
           callback: async (pdf, pdfName) => {
-
             try {
               const time = new Date().getTime();
               const filename = pdfName + time + ".pdf";

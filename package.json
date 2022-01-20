@@ -22,7 +22,9 @@
     "@vue/babel-preset-jsx": "^1.2.4",
     "core-js": "^3.6.5",
     "dayjs": "^1.10.7",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "rise": "^3.2.5",
+    "sortablejs": "^1.14.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
@@ -46,7 +48,6 @@
     "postcss-px2rem": "0.3.0",
     "powerbi-client": "^2.17.2",
     "px2rem-loader": "0.1.9",
-    "rise": "^3.0.6",
     "sass": "^1.26.10",
     "sass-loader": "9.0.2",
     "uglifyjs-webpack-plugin": "^2.2.0",

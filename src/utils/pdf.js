@@ -172,8 +172,8 @@ export const downloadPdfMixins = {
                         'show',
                         true
                     )
+                    console.log(e)
                     var blob = {}
-                    var timeout = 0
                     var instanceId = 0
                     const formData = new FormData()
                     formData.append('businessId', Math.ceil(Math.random() * 100000)) // 业务id，默认固定8025
@@ -184,9 +184,10 @@ export const downloadPdfMixins = {
                     } else {
                         instanceId = 0
                     }
-                    // if(key!=3){
+                    console.log(typeof(e))
+                    if(typeof(e)=='object'){//3与5是混入的页面，原生js触发方法
                         e.collapseValue = true
-                    // }
+                    }
                     this.$nextTick(() => {
                         if (key == '2') {
                             this.$refs.quotationScoringHZ.exportPartsTwo()
@@ -220,25 +221,30 @@ export const downloadPdfMixins = {
                                     })
                                 })
                             })
-                        } else if (key == '4') {
-                            var obj = ''
-                            if (Hierarchy == 1) {
-                                obj = this.$refs.quotationScoringEcartsCard.$refs.previewsCom
-                            } else if (Hierarchy == 2) {
-                                obj = this.$refs.previewsCom
-                            }
-                            obj.exportExcelTwo()
-                                .then((res) => {
-                                    //文件流转换为base64
-                                    console.log(res)
-                                    getBase64(res.data).then((resBase64) => {
-                                        let blob = dataURLtoFile(resBase64, name + '.xlsx')
-                                        formData.append('multifile', blob)
-                                        this.setfile(formData, instanceId, name)
-                                    })
-                                })
-                        } else {
-                            timeout = 1000
+                        } 
+                        // else if (key == '4') {
+                        //     var obj = ''
+                        //     if (Hierarchy == 1) {
+                        //         obj = this.$refs.quotationScoringEcartsCard.$refs.previewsCom
+                        //     } else if (Hierarchy == 2) {
+                        //         obj = this.$refs.previewsCom
+                        //     }
+                        //     obj.exportExcelTwo()
+                        //         .then((res) => {
+                        //             //文件流转换为base64
+                        //             console.log(res)
+                        //             if(res)
+                        //             // let blob=   new File([res.data], name + '.zip',{type:'application/zip'})
+                        //             console.log(blob)
+                        //             getBase64(res.data).then((resBase64) => {
+                        //                 console.log(resBase64)
+                        //                 let blob = dataURLtoFile(resBase64, name + '.xlsx')
+                        //                 formData.append('multifile', blob)
+                        //                 this.setfile(formData, instanceId, name)
+                        //             })
+                        //         })
+                        // }
+                         else {
                             setTimeout(() => {
                                 downloadPDF({
                                     idEle: '#card' + key,
@@ -259,7 +265,7 @@ export const downloadPdfMixins = {
                                         }
                                     },
                                 })
-                            }, timeout)
+                            }, 1000)
                         }
                     })
                 })
@@ -357,16 +363,9 @@ export function getBase64(file) {
     })
 }
 export function getCurrentTime() {
-    //获取当前时间并打印
     let yy = new Date().getFullYear()
     let mm = new Date().getMonth() + 1
     let dd = new Date().getDate()
-    // let hh = new Date().getHours();
-    // let mf = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
-    //   let ss =
-    //     new Date().getSeconds() < 10
-    //       ? '0' + new Date().getSeconds()
-    //       : new Date().getSeconds()
     return '_' + yy + mm + dd
 }
 

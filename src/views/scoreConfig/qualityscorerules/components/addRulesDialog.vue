@@ -89,6 +89,7 @@ export default {
     dialogVisible(val) {
       if(val) {
         this.form = {num:'',index:'4',compare:'=',rateDepartNum:''},
+        this.userList = [];
         this.getDepartList();
       }
     }
@@ -112,12 +113,10 @@ export default {
             this.$emit('changeVisible','addRulesDialogVisible',false);
         },
         // 获取预设评分人下拉数据
-        async getDepartList(){
-            await getListSysRateDepart({}).then((res)=>{
+        async getDepartList(){ 
+            await getListSysRateDepart({rateTag:'MQ'}).then((res)=>{
                 if(res.code == '200'){
-                    // 过滤一下rateTag为EP的
-                    const filterData = (res.data || []).filter((item)=>item.rateTag == 'EP');
-                    this.departList = filterData;
+                    this.departList = res.data || [];
                 }else{
                     this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                 }
@@ -147,8 +146,8 @@ export default {
                         index:this.form.index,
                         num:this.form.num,
                         dept:{
-                            deptId:deptList[0].deptId,
-                            deptName:deptList[0].rateDepart,
+                            deptId:deptList[0].rateDepartId,
+                            deptName:deptList[0].rateDepartName,
                             deptNum:deptList[0].rateDepartNum,
                         },
                         user:{

@@ -173,6 +173,7 @@ export default {
             path: "/designate/details", 
             query: {
               desinateId: res.data.nominateId, 
+              sd: 1,
               designateType: res.data.nominateProcessType,
               partProjType: res.data.partProjectType
             }

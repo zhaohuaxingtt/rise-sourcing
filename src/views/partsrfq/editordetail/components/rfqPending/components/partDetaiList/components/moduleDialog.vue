@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-12 16:24:06
+ * @LastEditTime: 2022-01-13 22:56:37
  * @Description: 申请模具目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -100,7 +100,6 @@ export default {
       return this.$route.query.taskId || ''
     },
     isAgain() {
-      console.log(this.$route.query.isAgain, this.$route.query.isAgain || false)
       return this.$route.query.isAgain == 'false' ? false : true
     }
   },
@@ -203,6 +202,7 @@ export default {
         submitApplyTargetPrice(params).then(res => {
           if (res?.result) {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.$store.dispatch('setTodoObj',this.$route.query.id);
             this.$emit('update','moldTargetPrice')
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)

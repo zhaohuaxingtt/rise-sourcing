@@ -118,20 +118,20 @@
       
       <!-- 定点单号 -->
       <template #nominateName="scope">
-        <div class="flexBox">
-          <div class="left">
+        <!-- <div class="flexBox"> -->
+          <!-- <div class="left"> -->
             <div class="flexBox">
               <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
                 <div class="link" @click="viewNominationDetail(scope.row)">{{ scope.row.nominateName }}</div>
               </el-tooltip>
               <icon v-if="scope.row.mtzApplyId" class="iconMTZ right" symbol name="iconMTZ" />
             </div>
-          </div>
-          <div class="rigth icon-gray cursor arrow" @click="viewNominationDetail(scope.row)">
+          <!-- </div> -->
+          <!-- <div class="rigth icon-gray cursor arrow" @click="viewNominationDetail(scope.row)">
             <icon symbol class="show" name="icontiaozhuananniu" />
             <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-          </div>
-        </div>
+          </div> -->
+        <!-- </div> -->
       </template>
       <!-- 定点类型 -->
       <!-- <template #nominateProcessType="scope">
@@ -310,6 +310,7 @@ export default {
           query: {
             desinateId: row.id, 
             mtzApplyId: row.mtzApplyId, 
+            sd: 1,
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
             partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',  
             businessKey: (row.partProjType && row.partProjType.code) || row.partProjType || '',
@@ -426,7 +427,7 @@ export default {
           if(code == 200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
-          }else if(code == '500'){
+          }else if(code == '501'){
             this.blackTableListData = res.data || [];
             this.$refs.dialogTableTips.show(); 
           }else{

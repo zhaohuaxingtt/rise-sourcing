@@ -95,7 +95,7 @@ export default {
       
       this.downLoading = true
       const infoRes = await getAttachment({
-        version: data.version,
+        version: (data.version + "").replace(/(^0+)|\D/g, "") || "1",
         currPage: 1,
         pageSize: 999999,
         status: "1",

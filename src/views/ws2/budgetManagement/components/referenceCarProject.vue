@@ -210,7 +210,7 @@ export default {
     applyRefCarType(row) {
       this.tableLoading = true
       let parmars = {
-        refCartypeProId: row.id,
+        refCartypeProId: row.tmCartypeProId,
         refMoldAmount : row.nomiAmount,
       }
       applyRefCarType(this.referenceCarProjectParams.id, parmars).then((res) => {

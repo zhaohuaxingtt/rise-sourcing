@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-22 11:05:40
- * @LastEditors: 水痕
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
  */
 /*
@@ -26,7 +26,7 @@ export const tabRouterList = [
     key: 'TPZS.TANPANZHUSHOU',
     permissionKey: 'WORKBENCH_RFQ_TANPANZHUSHOU',
   },
-];
+]
 
 export const categoryManagementAssistantList = [
   {
@@ -40,14 +40,16 @@ export const categoryManagementAssistantList = [
     value: 2,
     name: '外部供应市场分析',
     url: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis',
-    activePath: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis',
+    activePath:
+      '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis',
     key: '外部供应市场分析',
   },
   {
     value: 3,
     name: '材料组定位',
     url: '/sourcing/categoryManagementAssistant/materialGroupPositioning',
-    activePath: '/sourcing/categoryManagementAssistant/materialGroupPositioning',
+    activePath:
+      '/sourcing/categoryManagementAssistant/materialGroupPositioning',
     key: '材料组定位',
   },
   {
@@ -57,4 +59,4 @@ export const categoryManagementAssistantList = [
     activePath: '/sourcing/categoryManagementAssistant/listOfInitiatives',
     key: '举措清单',
   },
-];
+]

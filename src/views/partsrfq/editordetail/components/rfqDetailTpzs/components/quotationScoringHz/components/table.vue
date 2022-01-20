@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-01-07 17:21:20
+ * @LastEditTime: 2022-01-19 22:46:13
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -116,6 +116,9 @@
               <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
                   <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
+              <template v-if='removeKeysNumber(item.props) == "ftSkdAPrice"'>
+                  <span :class="{chengse:scope.row['ftSkdAPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>
               <template v-else-if='removeKeysNumber(item.props) == "ebrCalculatedValue"'>
                 <span>{{ebrShow(scope.row[item.props])}}</span>
               </template>       
@@ -136,7 +139,10 @@
               </template>        
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
                   <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
-              </template>    
+              </template>   
+              <template v-else-if='removeKeysNumber(item.props) == "ftSkdBPrice"'>
+                  <span :class="{chengse:scope.row['ftSkdBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>  
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
@@ -237,15 +243,6 @@ export default{
     spanArr(){
       return this.rowspan(this.tableData,'groupId',null)
     },
-    spanArrGroup() {
-      return this.tableData.reduce((accu, item, index) => {
-        if(item.partNo && item.partNo.length && item.partNo.includes('Group total')){
-          return [...accu, index]
-        }else{
-          return [accu]
-        }
-      })
-    },
     isPreview(){
         return this.$store.getters.isPreview;
     }
@@ -270,9 +267,14 @@ export default{
         console.warn(error)
       }
     },
+    //推荐供应商添加下划线
+    tuijianSuplier(currentProps,row){
+      if (['lcAPrice','skdAPrice','lcBPrice','skdBPrice'].includes(this.removeKeysNumber(currentProps)) && row[this.getPorpsNumber(currentProps)+'suggestFlag']) return true
+      return false
+    },
     ttoShow(data){
-      if(data && parseInt(data)){
-        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
+      if(data && parseFloat(data)){
+        return (data+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }
@@ -346,7 +348,7 @@ export default{
   },
   spanMethod({row, column, rowIndex, columnIndex}) {
     // grouptotal 合并第一、二格
-    if (this.spanArrGroup && this.spanArrGroup.length && this.spanArrGroup.includes(rowIndex)) {
+    if (row.partNo.indexOf('Group total')>-1) {
       if (columnIndex === 0) {
         return [1, 2];
       } else if (columnIndex === 1) {
@@ -363,10 +365,10 @@ export default{
       };
     }
   },  
-    getPorpsNumber(key){
+    getPorpsNumber(key=""){
       return getPorpsNumber(key)
     },
-    removeKeysNumber(data){
+    removeKeysNumber(data=""){
       return removeKeysNumber(data)
     },
     /**
@@ -414,6 +416,10 @@ export default{
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
         return 'rightBorder'
       }
+      //判断是否是推荐供应商
+      if(this.tuijianSuplier(column.property,row)){
+        return 'tuijianSupplier'
+      }
       if(column.label == 'Group' && row.groupId && row.groupId != '-'){
         return 'bgcoor'
       }
@@ -445,12 +451,14 @@ export default{
     },
     // 减法
     subtract(a, b) {
+      // eslint-disable-next-line no-undef
       return math.subtract(math.bignumber(a || 0), math.bignumber(b || 0)).toFixed(2)
     } 
   }
 }
 </script>
 <style lang='scss' scoped>
+
   .checkBox{
     ::v-deep.el-checkbox__label{
       display: block;
@@ -483,6 +491,9 @@ export default{
   .el-table {
     position: initial;
     overflow: visible;
+    ::v-deep.tuijianSupplier{
+      border-bottom: 2px solid blue;
+    }
     ::v-deep.cell{
       overflow: visible;
       position: static;

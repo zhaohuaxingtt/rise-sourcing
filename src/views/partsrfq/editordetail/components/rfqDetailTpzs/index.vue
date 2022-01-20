@@ -58,9 +58,9 @@
                v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGMOJU|报价分析汇总-模具"></iCard>
        
         <!--------------------报价分析汇总-报价趋势----------------------------------------->
-        <quotationScoringEcartsCard id="card4" ref='quotationScoringEcartsCard'
+        <quotationScoringEcartsCard :rfqInfoData="rfqInfoData" id="card4" ref='quotationScoringEcartsCard'
                                     v-if='cardShow.find(items=>items.key == "4").show'></quotationScoringEcartsCard>
-        <iCard @handleTitle="addFile($event,4,'报价趋势',1)"
+        <iCard  @handleTitle="addFile($event,4,'报价趋势',1)"
                :title="'报价趋势'+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
                v-else
                class="margin-top20"
@@ -72,6 +72,7 @@
         <buMonitor @handleCollapse="handleCollapse($event,'5','业务分配模拟')"
                    id="card5"
                    :collapse='true'
+                   :rfqInfoData="rfqInfoData"
                    :hideCombine="false"
                    :readOnly="false"
                    :tableSelection="true"
@@ -89,7 +90,7 @@
                v-permission.auto="RFQ_DETAIL_TIPS_YEWUFENPEIMONI|业务分配模拟"></iCard>
       </template>
     </el-tab-pane>
-    <el-tab-pane lazy
+    <el-tab-pane 
                  name="two"
                  label="专项分析工具"
                  v-permission.auto="RFQ_DETAIL_TIPS_ZHUANYEFENXIGONGJU|专项分析工具">
@@ -138,7 +139,6 @@ export default {
   created () {
     // window.sessionStorage.setItem('entryStatus', 1);
     this.$store.commit('SET_ENTRY_STATUS', 1)
-
     this.$store.dispatch('setRfqId', this.$route.query.id);
     if (this.$route.query.activityTabIndex) {
       this.activityTabIndex = this.$route.query.activityTabIndex

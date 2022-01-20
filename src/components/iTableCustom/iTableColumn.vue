@@ -66,14 +66,6 @@ export default {
           {customRender
             ? customRender(h, scope, column, extraData)
             : scope.row[prop]}
-          <div class="showIcon">
-            <Icon symbol class="show " name="icontiaozhuananniu" />
-            <Icon
-              symbol
-              class="active"
-              name="icontiaozhuanxuanzhongzhuangtai"
-            />
-          </div>
         </div>
       )
     }
