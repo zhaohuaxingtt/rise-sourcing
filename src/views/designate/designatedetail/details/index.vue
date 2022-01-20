@@ -11,7 +11,7 @@
   <iCard class="desinate-detail" v-permission.auto="SOURCING_NOMINATION_DETAIL|定点申请详情页面">
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language( 'DINGDIANSHENGQINGXINAGQING', '定点申请详情' ) }}</span>
-      <div class="floatright" >
+      <div class="floatright" v-if="nominationData && nominationData.applicationStatus === 'NEW'" > <!-- 草稿状态才可编辑 -->
         <iButton :loading="isLoading" @click="updateNominate()" v-permission.auto="SOURCING_NOMINATION_DETAIL_BAOCUN|定点申请详情页面-保存">{{
           language("LK_BAOCUN", "保存")
         }}</iButton>
