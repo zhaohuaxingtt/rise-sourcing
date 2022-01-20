@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-27 17:44:43
+ * @LastEditTime: 2022-01-20 11:56:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -10,12 +10,22 @@
   <iCard class="score" :title="language('LK_GONGYINGSHANGPINGFEN', '供应商评分')">
     <template #header-control>
       <div key="1" v-if="!editStatus">
-        <iButton @click="forwardDialogVisible = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_TRANSFER|转派">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
-        <iButton :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
-        <iButton @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SUBMIT|提交">{{ language("LK_TIJIAO", "提交") }}</iButton>
-        <iButton :loading="approveLoading" @click="handleApprove" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_APPROVE|批准">{{ language("PIZHUN", "批准") }}</iButton>
-        <iButton @click="handleReject" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_REJECT|拒绝">{{ language("JUJUE", "拒绝") }}</iButton>
+        <!-- 转派--该评分任务的协调人 -->
+        <iButton v-if="rfqInfo.coordinatorId == userInfo.id" @click="forwardDialogVisible = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_TRANSFER|转派">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
+        <!-- 退回至采购员 编辑 提交---该评分任务的评分人 -->
+        <template v-if="rfqInfo.raterId == userInfo.id">
+          <iButton :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
+          <!-- 状态为待评分/待提交 -->
+          <template> 
+            <iButton @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
+            <iButton :loading="submitLoading" @click="handleSubmit" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SUBMIT|提交">{{ language("LK_TIJIAO", "提交") }}</iButton>
+          </template>
+        </template>
+        <!-- 批准 驳回 该评分任务的协调人 待审批 -->
+        <template v-if="rfqInfo.coordinatorId == userInfo.id">
+          <iButton :loading="approveLoading" @click="handleApprove" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_APPROVE|批准">{{ language("PIZHUN", "批准") }}</iButton>
+          <iButton @click="handleReject" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_REJECT|拒绝">{{ language("JUJUE", "拒绝") }}</iButton>
+        </template>
       </div>
       <div key="2" v-if="editStatus">
         <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
@@ -100,6 +110,8 @@
               <template v-else-if="item.props === 'remark'" v-slot="scope">
                 <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
                 <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
+                <!-- <iInput v-if="editStatus" v-model="scope.row.memo"/>
+                <span v-else>{{ scope.row.memo }}</span> -->
               </template>
               <template v-else v-slot="scope">
                 <span>{{ scope.row[item.props] }}</span>
@@ -142,6 +154,10 @@ export default {
     rfqId: {
       type: String,
       require: true
+    },
+    rfqInfo:{
+      type:Object,
+      default:()=>{},
     }
   },
   computed: {
@@ -151,10 +167,14 @@ export default {
     })
   },
   created() {
+    console.log(this.rfqInfo,'rfqInfo');
+    
     if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
       this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
     }
     this.getRate()
+
+    
   },
   data() {
     return {
@@ -376,7 +396,8 @@ export default {
           externalFee: item.externalFee,
           id: item.id,
           rate: item.rate,
-          rfqId: this.rfqId
+          rfqId: this.rfqId,
+          // memo:item.memo,
         }))
       )
       .then(res => {
