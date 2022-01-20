@@ -59,7 +59,7 @@
               <li
                 v-for="(approvalUser, i) of item.taskNodeList"
                 :key="i"
-                :class="{ active: approvalUser.endTime || ['有异议', '无异议'].includes(item.status) }"
+                :class="{ active: approvalUser.endTime || ['已审批', '有异议', '无异议'].includes(item.status) }"
               >
                 <div class="item-name">
                   <span v-if="approvalUser">
@@ -71,7 +71,7 @@
                     class="agentUser" 
                     v-for="(agentUser, agentUsersI) in approvalUser.agentUsers" 
                     :key="agentUsersI"
-                    :class="{ active: agentUser.endTime || ['有异议', '无异议'].includes(agentUser.operation) }"
+                    :class="{ active: agentUser.endTime || ['已审批', '有异议', '无异议'].includes(agentUser.operation) }"
                   >
                     <span v-if="agentUser">
                       {{
