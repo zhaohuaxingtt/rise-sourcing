@@ -143,7 +143,7 @@ const actions = {
           todoObj[key].status = ''
           if (data[key]) {
             todoObj[key].status = data[key]
-            if(data[key]!='已完成'){
+            if(data[key]=='未申请'){
               result = true
             }
           }

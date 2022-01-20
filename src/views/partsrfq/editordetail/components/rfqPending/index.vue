@@ -92,7 +92,7 @@ export default {
   computed:{
     showTab: function(){
       return index => {
-        if(index <= 4) {
+        if(index != 2) {
           return true
         }else{
           if(this.getbaseInfoData().currentRounds > 0){
