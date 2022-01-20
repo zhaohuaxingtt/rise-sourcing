@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2021-12-14 10:48:42
+ * @LastEditTime: 2022-01-20 11:11:30
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -188,7 +188,7 @@ export default {
         });
     },
     getCbdDataQuery() {
-      let workFlowId = this.partsObj[this.partsId].workFlowId
+      let workFlowId = this.partsObj[this.partsId]&&this.partsObj[this.partsId].workFlowId || ''
       this.$emit("getCbdDataQuery", this.partsId, workFlowId);
     },
   },
