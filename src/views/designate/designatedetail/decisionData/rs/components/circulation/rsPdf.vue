@@ -201,7 +201,6 @@ export default {
 <style lang="scss" scoped>
 .rsPdf {
   width: 1920px; /*no*/
-  height: 900px;
 
   .rsCard {
     & + .rsCard {
