@@ -14,7 +14,6 @@
   >
     <designateSign :mode="'sign'"
       @choose="handleChoose"
-      v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAIL_UNCHOSENTABLE|签字单详情未选择表格"
       :refresh.sync="designateSignRefresh" />
   </iDialog>
 </template>
