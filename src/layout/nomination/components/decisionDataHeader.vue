@@ -8,7 +8,7 @@
     <div :class="isPreview=='1' ? 'decision-header preview-header' : 'decision-header'">
         <p v-if="isPreview=='1'" class="preview-title margin-top20 margin-bottom20">CSC Nomination Recommendation</p>
         <div  class="tab-list">
-            <iTabsList v-if="isPreview=='1'"  v-model=defaultTab @tab-click="handleClick">
+            <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick">
                 <template  v-for="(item,index) in decisionType">
                     <template v-if="item.key =='MTZ'">
                         <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
@@ -16,7 +16,7 @@
                     <el-tab-pane  v-else :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
                 </template>
             </iTabsList>
-             <iTabsList v-else type="card"  v-model=defaultTab @tab-click="handleClick">
+             <iTabsList v-else type="card"  v-model='defaultTab' @tab-click="handleClick">
                  <template v-for="(item,index) in decisionType">
                     <template v-if="item.key =='MTZ'">
                         <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
@@ -71,7 +71,7 @@ export default {
     },
     data(){
         return{
-            decisionType: [],
+            decisionType: JSON.parse(JSON.stringify(decisionType)),
             defaultTab:'Title',
             sortDialogVisibal: false
         }
