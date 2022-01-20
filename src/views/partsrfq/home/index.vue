@@ -505,24 +505,12 @@ export default {
       window.open(newRfqUrl.href,'_blank')
     },
     async editRfq(updateType) {
-      if (this.selectTableData.length === 0) {
-        return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZE','抱歉！您当前还未选择！'));
-      }
-      let a = true
-      this.selectTableData.forEach(val=>{
-        val.partProjectType.find(o=>
-          o == '1000040' || o == '1000030'
-        ) != undefined ? a = false :''       
-      })
-      if (!a) {
-         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
-      }
-      const idList = this.selectTableData.map(item => {
-        return item.id
-      })
+      if (!this.selectTableData.length) return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZE','抱歉！您当前还未选择！'));
+      if (this.selectTableData.some(item => Array.isArray(item.partProjectType) ? item.partProjectType.find(o => o == "1000040" || o == "1000030") : false)) return iMessage.warn(this.language("LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO", "抱歉，钢材类型不能进行操作"))
+
       const req = {
           updateType,
-          tmRfqIdList: idList,
+          tmRfqIdList: this.selectTableData.map(item => item.id),
           userId: store.state.permission.userInfo.id
       }
       this.setOperationButtonLoading(updateType, true)
@@ -533,20 +521,12 @@ export default {
     },
     //d点击打开转派评分任务列表
     async assignmentOfScoringTasks() {
-      if (this.selectTableData.length > 0) {
+      if (this.selectTableData.length) {
         this.rfqIds = this.selectTableData.map(item => item.id)
       } else {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU','抱歉，您当前还未选择您需要转派的评分任务！'));
       }
-      let a = true
-      this.selectTableData.forEach(val=>{
-        val.partProjectType.find(o=>
-          o == '1000040' || o == '1000030'
-        ) != undefined ? a = false :''       
-      })
-      if (!a) {
-         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
-      }
+      if (this.selectTableData.some(item => Array.isArray(item.partProjectType) ? item.partProjectType.find(o => o == "1000040" || o == "1000030") : false)) return iMessage.warn(this.language("LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO", "抱歉，钢材类型不能进行操作"))
       this.scoringDeptVisible = true
       // if (this.selectTableData.length == 0)
       //   return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU'));
@@ -683,16 +663,8 @@ export default {
       })
     },
     openNominateTypeDialog() {
-      if (this.selectTableData.length !== 1) return iMessage.warn(this.language("LK_QINGXUANZEYITIAORFQ","请选择一条RFQ"))
-      let a = true
-      this.selectTableData.forEach(val=>{
-        val.partProjectType.find(o=>
-          o == '1000040' || o == '1000030'
-        ) != undefined ? a = false :''       
-      })
-      if (!a) {
-         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
-      }
+      if (!this.selectTableData.length) return iMessage.warn(this.language("LK_QINGXUANZEZHISHAOYITIAORFQ","请至少选择一条RFQ"))
+      if (this.selectTableData.some(item => Array.isArray(item.partProjectType) ? item.partProjectType.find(o => o == "1000040" || o == "1000030") : false)) return iMessage.warn(this.language("LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO", "抱歉，钢材类型不能进行操作"))
       // this.nominateTypeDialogVisible = true
       this.createDesignate()
     },
@@ -702,7 +674,7 @@ export default {
       this.createDesignateLoading = true
 
       selectRfq({
-        rfqIdArr: [ this.selectTableData[0].id ]
+        rfqIdArr: this.selectTableData.map(item => item.id)
       })
       .then(res => {
         const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
