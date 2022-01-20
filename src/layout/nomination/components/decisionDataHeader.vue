@@ -71,7 +71,7 @@ export default {
     },
     data(){
         return{
-            decisionType: JSON.parse(JSON.stringify(decisionType)),
+            decisionType: [],
             defaultTab:'Title',
             sortDialogVisibal: false
         }
@@ -106,10 +106,11 @@ export default {
     },
     methods:{
         init() {
-            // 临时跳转不更新步骤
+        try {
+                      // 临时跳转不更新步骤
             if (this.isTemp) return
             const nominationStep = this.nominationStep
-            let tableListData = nominationStep.nodeList || []
+            let tableListData = nominationStep.nodeList || JSON.parse(JSON.stringify(decisionType))
             tableListData = tableListData.filter(o => !o.flag)
             this.decisionType = tableListData.map(o => {
                 const tabName = o.tabName
@@ -121,6 +122,9 @@ export default {
                 }
                 return o
             })
+            } catch (error) {
+                console.log(error)
+            }
         },
         // tab切换
         handleClick(tab){
