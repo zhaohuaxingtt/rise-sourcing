@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2022-01-05 10:20:16
+ * @LastEditTime: 2022-01-20 16:15:16
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\axios.js
@@ -32,6 +32,9 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       }
       // IE上的同一个url请求会走cache
       if (config.method === 'post' || config.method === 'POST') {
+        loading = Loading.service({
+          lock: true
+        })
         config.url =
           config.url.indexOf('?') > -1
             ? config.url + '&t=' + parseInt(Math.random() * 10000000000)
@@ -44,11 +47,6 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       }
       // 定义请求得数据结构是json
       config.headers['json-wrapper'] = '1'
-
-      loading = Loading.service({
-        lock: true
-      })
-
       return config
     },
     function(error) {
@@ -58,7 +56,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
 
   instance.interceptors.response.use(
     function(response) {
-      loading.close()
+      loading?loading.close():''
 
       if (response.config.responseType == 'blob') {
         return Promise.resolve(response)
@@ -70,7 +68,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       }
     },
     (error) => {
-      loading.close()
+      loading?loading.close():''
 
       switch (error.response.status) {
         //需要定位到登录界面的状态。（401 || 40x || ...）

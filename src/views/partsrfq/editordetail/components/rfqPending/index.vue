@@ -92,7 +92,7 @@ export default {
   computed:{
     showTab: function(){
       return index => {
-        if(index <= 4) {
+        if(index != 2) {
           return true
         }else{
           if(this.getbaseInfoData().currentRounds > 0){
@@ -121,7 +121,7 @@ export default {
       window.open(process.env.VUE_APP_ONLINEBIDDING + (r.roundType == "02"?`bidding/open/${r.id}`:`bidding/competition/base/${r.id}`),'_blank')
     },
     handleTabClick(target) {
-      this.activityTabIndex = target.index
+      this.activityTabIndex = target.name
     },
     updateTabs(){
       this.hashCode = Math.random() * 10000000000
