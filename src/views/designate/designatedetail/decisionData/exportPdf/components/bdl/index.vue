@@ -37,10 +37,13 @@
                   <p>{{ item.enName }}</p>
                 </div>
                 <template v-if="item.props === 'supplierName'" slot-scope="scope">
-                  <span>{{ scope.row.supplierName }}</span>
-                  <supplierBlackIcon
-                      :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
-                      :BlackList="scope.row.blackStuffs || []"/>
+                  <div>
+                    <span>{{ scope.row.supplierName }}</span>
+                    <supplierBlackIcon
+                        :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
+                        :BlackList="scope.row.blackStuffs || []"/>
+                  </div>
+                  <div>{{ scope.row.supplierNameEn }}</div>
                 </template>
                 <template v-if="item.props === 'sapCode'" slot-scope="scope">
                   <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>

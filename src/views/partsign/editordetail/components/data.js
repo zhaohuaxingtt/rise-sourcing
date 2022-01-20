@@ -14,7 +14,7 @@ export const partTitle = [
 	{key:'projectCarType',name:'车型项目',permissionKey:'PARTSIGN_EDITORDETAIL_MODELPROJECT', language: 'LK_CHEXINGXIANGMU'},
 	{key:'stuffName',name:'询价采购员',permissionKey:'PARTSIGN_EDITORDETAIL_BUYER', language: 'LK_XUNJIACAIGOUYUAN'},
 	{key:'tpPartID',name:'新件信息单流水号',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONSERIALNUMBER', language: 'XINJIANXINXIDANLIUSHUIHAO'},
-	{key:'tpInfoType',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION', language: 'LK_XINXIDANLEIXING'},
+	{key:'partTypeName',name:'信息单类型',permissionKey:'PARTSIGN_EDITORDETAIL_INFORMATIONCLASSIFICATION', language: 'LK_XINXIDANLEIXING'},
 	{key:'status',name:'信息单状态',permissionKey:'PARTSIGN_DETAIL_INFORMATIONSTATUS', language: 'LK_XINXIDANZHUANGTAI'},
   ]
 export const partDetailTitle=[
