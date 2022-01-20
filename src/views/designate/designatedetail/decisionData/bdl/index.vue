@@ -26,6 +26,7 @@
               :isShowStatus="typeof(scope.row.isComplete) ==='boolean' ? !scope.row.isComplete : false"
               :BlackList="scope.row.blackStuffs || []"
             />
+            <div>{{ scope.row.supplierNameEn }}</div>
           </div>
         </template>
         <template #sapCode="scope">
