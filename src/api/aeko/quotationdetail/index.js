@@ -77,10 +77,11 @@ export function saveAPirce(data) {
 }
 
 // 导出AEKO报价
-export function exportQuotation(params) {
+export function exportQuotation(data) {
     return requstFile({
-        url: `/aeko/get/exportQuotation/${params.quotationId}`,
-        method: 'GET'
+        url: '/aeko/get/exportQuotation',
+        method: 'POST',
+        data,
     })
 }
 
