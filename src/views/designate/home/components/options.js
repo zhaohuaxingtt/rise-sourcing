@@ -19,6 +19,7 @@ export const nomiApplicationStatus = [
   {id:'CHECK_FAIL',name:'复核未通过',key:'LK_FUHEWEITONGGUO'},
   {id:'FREERE',name:'冻结',key:'LK_DONGJIE'},
   {id:'M_CHECK_INPROCESS',name:'M审批中',key:'LK_MSHENPIZHONG'},
+  {id:'M_CHECK_PASS',name:'M审批通过',key:'LK_MSHENPITONGGUO'},
   {id:'M_CHECK_FAIL',name:'M退回',key:'LK_NOMIMTUIHUI'},
   {id:'ONFLOW',name:'流转中',key:'LK_SHENPILIUZHUAN'},
   {id:'FINISHFLOW',name:'流转完成',key:'LK_LIUZHUANWANCHENG'},
@@ -26,7 +27,7 @@ export const nomiApplicationStatus = [
 ]
 // 申请状态与定点类型之间的联动
 export const nomiApplicationObject = {
-  MEETING: ['NEW', 'SUBMIT', 'NOTPASS', 'PASS', 'CHECK_INPROCESS', 'CHECK_PASS', 'CHECK_FAIL', 'FREERE', 'M_CHECK_INPROCESS', 'M_CHECK_FAIL', 'NOMINATE'],
+  MEETING: ['NEW', 'SUBMIT', 'NOTPASS', 'PASS', 'CHECK_INPROCESS', 'CHECK_PASS', 'CHECK_FAIL', 'FREERE', 'M_CHECK_INPROCESS', 'M_CHECK_PASS', 'M_CHECK_FAIL', 'NOMINATE'],
   TRANFORM: ['NEW', 'FLOWED_FAIL', 'SUBMIT', 'FREERE', 'ONFLOW', 'FINISHFLOW', 'NOMINATE'],
   RECORD: ['NEW', 'SUBMIT', 'FREERE', 'NOMINATE']
 }
@@ -46,6 +47,7 @@ export const applicationStatus = [
   {id:'CHECK_PASS',name:'复核通过',key:'LK_FUHETONGGUO'},
   {id:'CSC_PASS',name:'CSC会议通过',key:'LK_CSCHUIYITONGGUO'},
   {id:'M_CHECK_FAIL',name:'M审批退回',key:'LK_MSHENPITUIHUI'},
+  {id:'M_CHECK_PASS',name:'M审批通过',key:'LK_MSHENPITONGGUO'},
   {id:'M_CHECK_INPROCESS',name:'M审批中',key:'LK_MSHENPIZHONG'},
   {id:'FLOWED',name:'流转完成',key:'LK_LIUZHUANWANCHENG'},
 ]
@@ -61,6 +63,7 @@ export const RSReviewApplicationStatus = [
   {id:'CHECK_PASS',name:'复核通过',key:'LK_FUHETONGGUO'},
   {id:'CHECK_FAIL',name:'复核未通过',key:'FUHEWEITONGGUO'},
   {id:'M_CHECK_INPROCESS',name:'M审核中',key:'MSHENHEZHONG'},
+  {id:'M_CHECK_PASS',name:'M审批通过',key:'LK_MSHENPITONGGUO'},
   {id:'M_CHECK_FAIL',name:'M退回',key:'MTUIHUI'},
   {id:'NOMINATE',name:'定点',key:'DINGDIAN'},
 ]
