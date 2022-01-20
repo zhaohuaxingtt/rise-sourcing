@@ -109,6 +109,7 @@ export default {
                   'LK_CAOZUOCHENGGONG','操作成功'
                 )
               )
+              this.$emit('initTable')
               this.clearDiolog()
             } else {
               iMessage.error(res.desZh)

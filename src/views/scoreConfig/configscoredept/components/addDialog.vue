@@ -172,7 +172,7 @@ export default {
                     if(res.code == '200'){
                         res.data.map((itemUser)=>{
                             itemUser.value = itemUser.id+'';
-                            itemUser.label = itemUser.nameZh;
+                            itemUser.label = itemUser.nameZh+(itemUser.deptDTO&&itemUser.deptDTO['deptNum'] ? '-'+itemUser.deptDTO['deptNum'] : '');
                         })
                         this.selectOptions[item.key] = res.data || []
                     }
@@ -221,7 +221,7 @@ export default {
                     if(res.code == '200'){
                         res.data.map((itemUser)=>{
                             itemUser.value = itemUser.id+'';
-                            itemUser.label = itemUser.nameZh;
+                            itemUser.label = itemUser.nameZh+(itemUser.deptDTO&&itemUser.deptDTO['deptNum'] ? '-'+itemUser.deptDTO['deptNum'] : '');
                         })
                         this.selectOptions[item.key] = res.data || [];
                         this.form['raterList'] = Array.isArray(raterList) ? raterList.map((item)=>item.userId) : [];
