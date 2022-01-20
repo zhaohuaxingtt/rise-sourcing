@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 11:32:16
- * @LastEditTime: 2021-12-17 17:28:35
+ * @LastEditTime: 2022-01-20 11:14:17
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -101,7 +101,7 @@
         :key="$tabIndex"
         :label="language(tab.key, tab.label)"
         :name="tab.name"
-        v-permission.dynamic.auto="tab.permissionKey"
+        v-permission.auto="tab.permissionKey"
       >
         <template v-if="tab.name == currentTab">
           <component
@@ -344,56 +344,6 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
         }
       })
-      // alterationCbdSummary({ workFlowId: this.workFlowId }).then((res) => {
-      //   if (res?.code === "200") {
-      //     let data = res?.data || [];
-      //     let aPriceChangeObj = {};
-      //     data.length &&
-      //       data.forEach((item, index) => {
-      //         item.index = 1 + index;
-      //         if (aPriceChangeObj[item.partNum]) {
-      //           aPriceChangeObj[item.partNum] = {
-      //             total: math.add(
-      //               aPriceChangeObj[item.partNum].total,
-      //               math.bignumber(item.alteration || 0)
-      //             ),
-      //             partNum: item.partNum,
-      //             currency: item.currency || 'RMB'
-      //           };
-      //         } else {
-      //           aPriceChangeObj[item.partNum] = {
-      //             total: math.bignumber(item.alteration || 0),
-      //             partNum: item.partNum,
-      //             currency: item.currency || 'RMB'
-      //           };
-      //         }
-      //       });
-      //     Object.keys(aPriceChangeObj).forEach((key) => {
-      //       let item = {
-      //         index: "",
-      //         partNum: aPriceChangeObj[key].partNum,
-      //         total: +aPriceChangeObj[key].total,
-      //         currency: aPriceChangeObj[key].currency
-      //       };
-      //       data.push(item);
-      //     });
-      //     let arr_group = {};
-      //     data.forEach((i) => {
-      //       if (!arr_group[i.partNum]) {
-      //         arr_group[i.partNum] = [i];
-      //       } else {
-      //         arr_group[i.partNum] = [...arr_group[i.partNum], i];
-      //       }
-      //     });
-      //     this.aPriceChangeObj = aPriceChangeObj;
-      //     let arr = Object.values(arr_group).reduce((arr, i) => {
-      //       return [...arr, ...i];
-      //     }, []);
-      //     this.tableData = arr;
-      //   } else {
-      //     iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
-      //   }
-      // });
     },
     // 审批单预览查询
     alterationCbdSummaryByLinie(){
