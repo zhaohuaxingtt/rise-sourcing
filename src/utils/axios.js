@@ -47,6 +47,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       }
       // 定义请求得数据结构是json
       config.headers['json-wrapper'] = '1'
+      config.headers['language'] = window.localStorage.getItem('lang') || 'zh'
       return config
     },
     function(error) {
