@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-27 14:29:09
- * @LastEditTime: 2021-12-09 15:48:10
+ * @LastEditTime: 2022-01-20 21:21:40
  * @LastEditors: Please set LastEditors
  * @Description: 定点管理状态管理，缓存定点管理 - 决策资料 - 预览状态，
  * 其他页面统一通过isPreview这个状态，禁用自己页面编辑
@@ -155,6 +155,7 @@ const actions = {
           reject({})
         }
       }).catch((err)=>{
+        console.log(err)
         reject(err);
       })
 

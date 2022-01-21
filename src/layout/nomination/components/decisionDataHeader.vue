@@ -8,7 +8,7 @@
     <div :class="isPreview=='1' ? 'decision-header preview-header' : 'decision-header'">
         <p v-if="isPreview=='1'" class="preview-title margin-top20 margin-bottom20">CSC Nomination Recommendation</p>
         <div  class="tab-list">
-            <iTabsList v-if="isPreview=='1'"  v-model=defaultTab @tab-click="handleClick">
+            <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick">
                 <template  v-for="(item,index) in decisionType">
                     <template v-if="item.key =='MTZ'">
                         <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
@@ -16,7 +16,7 @@
                     <el-tab-pane  v-else :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
                 </template>
             </iTabsList>
-             <iTabsList v-else type="card"  v-model=defaultTab @tab-click="handleClick">
+             <iTabsList v-else type="card"  v-model='defaultTab' @tab-click="handleClick">
                  <template v-for="(item,index) in decisionType">
                     <template v-if="item.key =='MTZ'">
                         <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
@@ -106,10 +106,11 @@ export default {
     },
     methods:{
         init() {
-            // 临时跳转不更新步骤
+        try {
+                      // 临时跳转不更新步骤
             if (this.isTemp) return
             const nominationStep = this.nominationStep
-            let tableListData = nominationStep.nodeList || []
+            let tableListData = nominationStep.nodeList || JSON.parse(JSON.stringify(decisionType))
             tableListData = tableListData.filter(o => !o.flag)
             this.decisionType = tableListData.map(o => {
                 const tabName = o.tabName
@@ -121,6 +122,9 @@ export default {
                 }
                 return o
             })
+            } catch (error) {
+                console.log(error)
+            }
         },
         // tab切换
         handleClick(tab){

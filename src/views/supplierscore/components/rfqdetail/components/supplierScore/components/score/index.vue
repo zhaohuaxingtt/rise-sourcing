@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-27 17:44:43
+ * @LastEditTime: 2022-01-21 10:59:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -10,12 +10,16 @@
   <iCard class="score" :title="language('LK_GONGYINGSHANGPINGFEN', '供应商评分')">
     <template #header-control>
       <div key="1" v-if="!editStatus">
-        <iButton @click="forwardDialogVisible = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_TRANSFER|转派">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
-        <iButton :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
-        <iButton @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SUBMIT|提交">{{ language("LK_TIJIAO", "提交") }}</iButton>
-        <iButton :loading="approveLoading" @click="handleApprove" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_APPROVE|批准">{{ language("PIZHUN", "批准") }}</iButton>
-        <iButton @click="handleReject" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_REJECT|拒绝">{{ language("JUJUE", "拒绝") }}</iButton>
+        <!-- 转派--该评分任务的协调人 -->
+        <iButton v-if="rfqInfo.coordinatorId == userInfo.id" @click="forwardDialogVisible = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_TRANSFER|转派">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
+        <!-- 退回至采购员 编辑 提交---该评分任务的评分人 -->
+        <iButton v-if="rfqInfo.hasShowBack" :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
+        <!-- 编辑/提交  状态为待评分/待提交 该评分任务的评分 -->
+        <iButton v-if="rfqInfo.hasShowEdit"  @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton v-if="rfqInfo.hasShowSubmit" :loading="submitLoading" @click="handleSubmit" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SUBMIT|提交">{{ language("LK_TIJIAO", "提交") }}</iButton>
+        <!-- 批准 驳回 该评分任务的协调人 待审批 -->
+        <iButton v-if="rfqInfo.hasShowApprove" :loading="approveLoading" @click="handleApprove" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_APPROVE|批准">{{ language("PIZHUN", "批准") }}</iButton>
+        <iButton v-if="rfqInfo.hasShowReject" @click="handleReject" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_REJECT|拒绝">{{ language("JUJUE", "拒绝") }}</iButton>
       </div>
       <div key="2" v-if="editStatus">
         <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
@@ -40,7 +44,7 @@
           </template>
         </el-table-column>
         <template>
-          <el-table-column align="center" :label="rateTag">
+          <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
             <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
               <template v-if="item.props === 'rate'" #header="scope">
                 <span>{{ scope.column.label }}<i class="required">*</i></span>
@@ -48,7 +52,8 @@
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus">
                   <!-- <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.rate" /> -->
-                  <div v-if="afterSaleLeaderIds.every(id => id != userInfo.id)">
+                  <!-- <div v-if="afterSaleLeaderIds.every(id => id != userInfo.id)"> -->
+                  <div v-if="!isFileRfqType">
                     <template v-if="scope.row.rateTag == 'MQ'">
                       <iSelect  v-model="scope.row.rate">
                         <el-option
@@ -81,11 +86,19 @@
                       </el-option>
                     </iSelect> -->
                   </div>
-
                   <iSelect v-else v-model="scope.row.rate">
+                    <el-option
+                      v-for="(item, index) in affixGrade"
+                      :key="index"
+                      :value="item.code"
+                      :label="$i18n.locale === 'zh' ? item.name : item.nameEn"
+                    >
+                    </el-option>
+                  </iSelect>
+                  <!-- <iSelect v-else v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                  </iSelect>
+                  </iSelect> -->
                 </div>
                 <span v-else>{{ scope.row.rate }}</span>
               </template>
@@ -98,8 +111,10 @@
                 <span v-else>{{ scope.row.confirmCycle }}</span>
               </template>
               <template v-else-if="item.props === 'remark'" v-slot="scope">
-                <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
-                <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
+                <!-- <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
+                <iInput v-if="editStatus" v-model="scope.row.memo"/>
+                <span v-else>{{ scope.row.memo }}</span>
               </template>
               <template v-else v-slot="scope">
                 <span>{{ scope.row[item.props] }}</span>
@@ -142,26 +157,44 @@ export default {
     rfqId: {
       type: String,
       require: true
+    },
+    rfqInfo:{
+      type:Object,
+      default:()=>{},
     }
   },
   computed: {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
-    })
+    }),
+    isFileRfqType(){
+      const { rfqInfo={} } = this;
+      return rfqInfo.rfqType == 'ANNEX';
+    },
+    deptScoreTableTitle(){
+      if(this.isFileRfqType){
+        return deptScoreTableTitle.filter((item)=>!item.isFileHidden);
+      }else{
+        return deptScoreTableTitle
+      } 
+      
+    }
   },
   created() {
-    if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
-      this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
-    }
+    // if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
+    //   this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
+    // }
     this.getRate()
+
+    
   },
   data() {
     return {
       editStatus: false,
       loading: false,
       tableTitle: tableTitle,
-      deptScoreTableTitle,
+      // deptScoreTableTitle,
       tableListData: [],
       tableListDataCache: [],
       multipleSelection: [],
@@ -176,7 +209,8 @@ export default {
       saveLoading: false,
       afterSaleLeaderIds,
       mqGrage:[],
-      epGrade:[]
+      epGrade:[],
+      affixGrade:[],
     }
   },
   methods: {
@@ -188,6 +222,9 @@ export default {
       selectDictByKeys([{ keys: "EP_GRADE" }]).then(res=>{
         this.epGrade = res?.data.EP_GRADE
       })
+      selectDictByKeys([{ keys: "AFFIX_GRADE" }]).then(res=>{
+        this.affixGrade = res?.data.AFFIX_GRADE
+      })
       getRfqBdlRatingsByCurrentDept({
         rfqId: this.rfqId
       })
@@ -197,7 +234,7 @@ export default {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : [] 
           this.tableListDataCache = cloneDeep(this.tableListData)
-          this.rateTag = this.tableListData[0] && this.tableListData[0].rateTag ? this.tableListData[0].rateTag.desc : ""
+          // this.rateTag = this.tableListData[0] && this.tableListData[0].rateTag ? this.tableListData[0].rateTag.desc : ""
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -376,7 +413,8 @@ export default {
           externalFee: item.externalFee,
           id: item.id,
           rate: item.rate,
-          rfqId: this.rfqId
+          rfqId: this.rfqId,
+          memo:item.memo,
         }))
       )
       .then(res => {

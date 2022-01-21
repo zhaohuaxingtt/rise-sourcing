@@ -290,7 +290,7 @@ export default {
       form: cloneDeep(form),
       fromGroup: {},
       tab: "source",
-      needTranslate: needTranslate
+      needTranslate
     };
   },
   created() {

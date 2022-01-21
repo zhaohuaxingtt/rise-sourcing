@@ -28,7 +28,6 @@
       </div>
       <div class="topCar-left" v-if="isGs == false">
           <span class="xmtitle">{{language('CHEXINGXIANGMU','车型项目')}}{{params.carTypeProjectZh}}</span>
-
       </div>
       <div class="topCar-right">
         <iButton @click="changeVisible">{{language('QUXIAO','取消')}}</iButton>
@@ -63,7 +62,6 @@
       />
       <tableList
         v-if="isGs == false"
-        
         lang
         :tableTitle="fscarTableTitle"
         :tableData="fscarTableData"
@@ -78,8 +76,8 @@
         class="bottom-table"
         v-if="isGs == false"
         v-update
-        @size-change="handleSizeChange($event, searchCarTypeConfig)"
-        @current-change="handleCurrentChange($event, searchCarTypeConfig)"
+        @size-change="handleSizeChange($event, getNotGsTableList)"
+        @current-change="handleCurrentChange($event, getNotGsTableList)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -133,7 +131,8 @@ export default {
       isGs:true,
       fscarTableTitle:[...fscarTitle],
       saveLoading: false,
-      carIds:[]
+      carIds:[],
+      cartypeIds:[]
     }
   },
   created() {
@@ -160,8 +159,35 @@ export default {
           }
         })
       } else {
-        if (!this.params.carTypeProjectId) return iMessage.warn(this.language("DANGQIANSHUJUMEIYOUCHEXINGXIANGMUID", "当前数据没有车型项目ID，请选择车型项目后保存重试"))
-
+        this.getNotGsTableList()
+      }
+    },
+    changeTable(data) {
+      data.length == 0 ? this.cartypeIds = this.carIds :this.cartypeIds = data
+      this.getTableList()
+    },
+    getTableList() {
+      this.tableLoading = true
+      let data ={
+        "cartypeIds":this.cartypeIds,
+        "current": this.page.currPage,
+        "size": this.page.pageSize
+      }
+      searchCarTypeConfig(data).then(res=>{
+        if(res.code == '200' ) {
+          this.tableLoading = false
+          this.carTableData = res.data || []
+          this.page.totalCount = res.total || 0
+        } else {
+          iMessage.error(res.desZh)
+        }
+      }).catch(()=>{
+        this.tableLoading = false
+      })
+    },
+    //非GS的table数据获取
+    getNotGsTableList() {
+          if (!this.params.carTypeProjectId) return iMessage.warn(this.language("DANGQIANSHUJUMEIYOUCHEXINGXIANGMUID", "当前数据没有车型项目ID，请选择车型项目后保存重试"))
         this.tableLoading = true
         let data ={
           "cartypeProId":this.params.carTypeProjectId,
@@ -182,33 +208,6 @@ export default {
             iMessage.error(res.desZh)
         }
         })
-      }
-    },
-    changeTable(data) {
-      if(data.length == 0) {
-        this.getTableList(this.carIds)
-      } else {
-        this.getTableList(data)
-      }
-    },
-    getTableList(value) {
-      this.tableLoading = true
-      let data ={
-        "cartypeIds":value,
-        "current": this.page.currPage,
-        "size": this.page.pageSize
-      }
-      searchCarTypeConfig(data).then(res=>{
-        if(res.code == '200' ) {
-          this.tableLoading = false
-          this.carTableData = res.data || []
-          this.page.totalCount = res.total || 0
-        } else {
-          iMessage.error(res.desZh)
-        }
-      }).catch(()=>{
-        this.tableLoading = false
-      })
     },
     handleSelectionChange(val) {
       this.selectData = val

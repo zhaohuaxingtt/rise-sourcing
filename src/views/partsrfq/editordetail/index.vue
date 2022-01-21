@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-13 22:54:01
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-20 18:27:37
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
 -->
@@ -380,7 +380,9 @@ export default {
     };
   },  
   async created () {
-    await this.firstInit()
+    if(this.navActivtyValue==0||this.navActivtyValue==''){
+      await this.firstInit()
+    }
     this.getPartTableList = this.$store.state.rfq.partfunc;
     this.getTableList();
     this.getBaseInfo();
@@ -399,7 +401,7 @@ export default {
     async firstInit(){
       if(this.$route.query.id){
         const isLinie = this.roleList.includes('LINIE') || this.roleList.includes('ZYCGY'); // 专业采购员
-        let result = await this.$store.dispatch('setTodoObj',this.$route.query.id); //获取任务状态 true: 有待办
+        let result = await this.$store.dispatch('setTodoObj',this.$route.query.id); //获取任务状态 true: 有未申请的任务
         // 从谈判助手跳过来的不再跳回去
         if(this.$route.query.form!='assistant'){
           // Linie 直接跳到谈判助手
@@ -410,7 +412,7 @@ export default {
             })
             return
           }
-          // 没有待办就跳到谈判助手
+          // 没有未申请就跳到谈判助手
           if(!result){
             this.$router.push({
               path:'/sourceinquirypoint/sourcing/partsrfq/assistant',
@@ -420,7 +422,7 @@ export default {
             this.changeActivityTabIndex('4')
           }
         }
-        // 有待办就跳到待办
+        // 有未申请就跳到待办
         if(result){
           this.changeActivityTabIndex('4')
         }
@@ -430,8 +432,9 @@ export default {
     async getTodoInfo(){
       this.tipsVislble = false
       if(this.$route.query.id){
-        let result = await this.$store.dispatch('setTodoObj',this.$route.query.id);
-        this.tipsVislble = result
+        let todoObj = this.$store.state.rfq.todoObj
+        let arr = Object.values(todoObj).filter(i=>i.status!='已完成')
+        this.tipsVislble = arr.length ? true : false
       }
     },
     goToCesPage () {
@@ -599,7 +602,8 @@ export default {
           this.$refs.dialogTableTips.show(); 
         }else{
           this.resultMessage(res);
-          if(res && res.code=='200' && this.baseInfo.properties=='1'){
+          // 发出首轮询价时触发
+          if(res && res.code=='200' && updateType === '06' && this.baseInfo.properties=='1'){
             this.getTodoInfo()
           }
         }
