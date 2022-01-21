@@ -18,7 +18,7 @@ export function exportPlanCommutityList(params) {
     return requestFile({
       url: `/exportPlanCommutityList/${params.versionId}`,
       method: 'GET',
-    //   params: params,
+      params: params,
     })
 }
 
@@ -54,7 +54,7 @@ export function downloadExport(params) {
     return requestFile({
       url: `/exportPlanSystemList/${params.versionId}`,
       method: 'GET',
-    //   data: params,
+      data: params,
     })
 }
 

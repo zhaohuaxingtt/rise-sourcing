@@ -418,8 +418,8 @@ export default{
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
           const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)
+          console.log('subtotalList',subtotalList)
           this.exampelData = this.exampelData.reduce((accu, curr, index) => {
-            console.log(accu,curr,index)
             if (index === this.exampelData.length - 1) {
               return [...accu, curr, ...subtotalList]
             }
@@ -430,6 +430,7 @@ export default{
             }
             return [...accu, curr]
           },[])
+          console.log(this.exampelData)
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
           this.$nextTick(()=>{
             this.$refs.tableList.setfixElement()

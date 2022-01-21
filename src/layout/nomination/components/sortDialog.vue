@@ -167,6 +167,7 @@ export default {
         }
         this.submiting = false
       }).catch(e => {
+        console.log(e)
         this.submiting = false
         iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
       })
