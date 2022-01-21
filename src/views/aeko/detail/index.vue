@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2021-12-01 10:29:16
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-21 18:49:45
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
 -->
@@ -15,8 +15,9 @@
         <iButton v-permission.auto="AEKO_DETAIL_BUTTON_AEKOXIANGQING|AEKO详情" @click="goToDetail">{{language('LK_AEKO_BUTTON_DETAIL','AEKO详情')}}</iButton>
         <template v-if="!fromCheck">
           <switchPost />
-          <logButton @click="openLog" class="margin-left20" />
-          <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
+          <!-- <logButton @click="openLog" class="margin-left20" />
+          <iLog :show.sync="showDialog" :bizId="bizId"></iLog> -->
+          <iLoger ref="log" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{module_obj_ae: module, bizId_obj_ae: aekoInfo.requirementAekoId, menuName_obj_ae:$store.getters.getLogMenu, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
         </template>
         
       </div>
@@ -36,6 +37,7 @@ import switchPost from '@/components/switchPost'
 import pageContent from "./components"
 import { roleMixins } from "@/utils/roleMixins";
 import iLog from "../log";
+import iLoger from 'rise/web/components/iLoger'
 
 export default {
   mixins:[roleMixins],
@@ -45,7 +47,8 @@ export default {
     logButton,
     pageContent,
     iLog,
-    switchPost
+    switchPost,
+    iLoger
   },
   created() {
     const roleList = this.roleList;
