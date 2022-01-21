@@ -148,7 +148,7 @@ module.exports = {
         },
       },
       '/tpInfoApi': {
-        target: 'http://10.122.17.38:8023',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/tpInfoApi': '',
