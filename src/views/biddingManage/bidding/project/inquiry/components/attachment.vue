@@ -4,7 +4,7 @@
     :rules="rules"
     ref="ruleForm"
     :hideRequiredAsterisk="true"
-    :disabled="ruleForm.biddingStatus !== '01'"
+    :disabled="!isUser || ruleForm.biddingStatus !== '01'"
   >
     <!-- 附件 -->
     <commonTable
@@ -67,6 +67,10 @@ export default {
       default: () => ({}),
     },
     tableLoading: {
+      type: Boolean,
+      default: false,
+    },
+    isUser: {
       type: Boolean,
       default: false,
     },
