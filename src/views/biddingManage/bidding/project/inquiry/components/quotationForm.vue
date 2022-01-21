@@ -5,6 +5,7 @@
     :rules="rules"
     ref="ruleForm"
     :hideRequiredAsterisk="true"
+    :disabled="!isUser"
   >
     <!-- 手工竞价-报价单回填 -->
     <div class="form">
@@ -107,6 +108,10 @@ export default {
     isBiddingDelay: {
       type: Boolean,
       default: true,
+    },
+    isUser: {
+      type: Boolean,
+      default: false,
     },
   },
   watch: {
