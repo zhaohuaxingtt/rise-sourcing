@@ -104,6 +104,10 @@ export default {
          if(res.code === '200'){
            this.detailData = res.data.baseInfo
            this.page.totalCount = res.data.dtoList.total
+           const dtoList = res.data?.dtoList ?? {}
+           Array.isArray(dtoList.records) && dtoList.records.forEach(val=>{
+             val.isModeApportion === true ? val.isModeApportion = '是' : val.isModeApportion = '否'
+           })
            this.tableListData = res.data.dtoList.records || []
          } 
       })
