@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2022-01-21 10:59:52
+ * @LastEditTime: 2022-01-21 14:19:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -45,7 +45,7 @@
         </el-table-column>
         <template>
           <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
-            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
+            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)" :show-overflow-tooltip="true">
               <template v-if="item.props === 'rate'" #header="scope">
                 <span>{{ scope.column.label }}<i class="required">*</i></span>
               </template>
