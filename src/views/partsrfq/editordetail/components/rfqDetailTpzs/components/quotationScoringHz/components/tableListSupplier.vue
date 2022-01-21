@@ -16,10 +16,10 @@
           <div>{{scope.row[i].data.split(/\n/)[1]}}</div>
         </template>
         <template v-else-if='scope.row[i] && scope.row[i].style.tips'>
-          <el-tooltip light >
-            <span slot='content' v-html='scope.row[i].style.tips'></span>
-            {{scope.row[i].data | deleteContent}}
-          </el-tooltip>
+            <el-tooltip effect='light'>
+              <span v-html="scope.row[i].style.tips" slot="content"></span>
+              <div>{{scope.row[i].data | deleteContent}}</div>
+            </el-tooltip>
         </template>
         <div v-else>{{scope.row[i].data | deleteContent}}</div>
       </template>
