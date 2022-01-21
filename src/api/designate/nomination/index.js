@@ -138,7 +138,7 @@ export function tranformRecall(data) {
 // 检查是否可以解绑
 export function unbindMtzCheck(params) {
   return requst({
-    url: `/nominate-apps/unbindMtzCheck/${params.nomiId}`,
+    url: `/nominate-apps/unbindMtzCheck/${params.nomiId}/${params.isCheck}`,
     method: "GET",
     params,
   })
