@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2022-01-21 14:19:55
+ * @LastEditTime: 2022-01-21 14:58:25
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -100,7 +100,7 @@
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
                   </iSelect> -->
                 </div>
-                <span v-else>{{ scope.row.rate }}</span>
+                <span v-else>{{ isFileRfqType ? showaffixName(scope.row.rate) : scope.row.rate }}</span>
               </template>
               <template v-else-if="item.props === 'externalFee' || item.props === 'addFee'" v-slot="scope">
                 <iInput v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
@@ -482,7 +482,19 @@ export default {
       let week = numberProcessor(value, 0)
       if (+week > 53) week = "53"
       this.$set(row, key, week)
-    }
+    },
+
+    // 附件评分的文本展示
+    showaffixName(rate){
+      const { affixGrade=[] } = this;
+      const affix = affixGrade.filter((item)=>item.code == rate);
+      if(Array.isArray(affix) && affix.length){
+        return this.$i18n.locale === "zh" ? affix[0].name : affix[0].nameEn;
+      }else{
+        return rate;
+      }
+      
+    },
   }
 }
 </script>
