@@ -297,6 +297,13 @@ module.exports = {
           ['^' + process.env.VUE_APP_BIZLOG]: '',
         },
       },
+      '/prApi': {
+        target: 'http://10.122.17.38:8023',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/prApi': '',
+        },
+      },
     },
   },
 }
