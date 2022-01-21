@@ -25,7 +25,7 @@ import {permissionTitle} from '@/utils'
   {props:'partDosageStatus',name:'每车用量状态',key: 'LK_MEICHEYONGLIANGZHUANGTAI',tooltip:true,minWidth:100}
 ]
 export const needTranslate = [
-  {name:'tpInfoType',key:'tp_info_type',option: 'TP_INFO_TYPE'}
+  // {name:'tpInfoType',key:'tp_info_type',option: 'TP_INFO_TYPE'}
 ]
 //form
 export const form = {
