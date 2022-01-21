@@ -59,7 +59,7 @@
               <li
                 v-for="(approvalUser, i) of item.taskNodeList"
                 :key="i"
-                :class="{ active: approvalUser.endTime || ['已审批', '有异议', '无异议'].includes(item.status) }"
+                :class="{ active: approvalUser.endTime || ['已审批', '有异议', '无异议'].includes(approvalUser.operation) }"
               >
                 <div class="item-name">
                   <span v-if="approvalUser">
