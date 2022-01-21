@@ -66,11 +66,18 @@
             {{ language('LK_JIESHUBENLUNXUNJIA', '结束本轮询价') }}
           </iButton>
           <iButton 
-            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1"
+            v-if=" isInquiryUser && isInquiryRfqStatus"
             :loading="transferlaoding"
                    @click="updateRfqStatus('03')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION|转谈判">
             {{ language('LK_ZHUANTANPAN', '转谈判') }}
+          </iButton>      
+          <iButton 
+            v-if=" isLinieUser && isLiniefqStatus"
+            :loading="transferlaoding"
+                   @click="updateRfqStatus('04')"
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_REINQUIRY|转询价">
+            {{ language('LK_ZHUANXUNJIAS','转询价') }}
           </iButton>
           <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION|创建定点申请"
                    :loading="createDesignateLoading"
@@ -377,15 +384,33 @@ export default {
       blackTableListData:[],
       createDesignateLoading:false,
       isCommonSurcingStar:false,
+      isLinieUser:false,
+      isInquiryUser:false,
+      isInquiryRfqStatus:false,
+      isLiniefqStatus:false,
     };
   },  
   async created () {
+    //是否是linie 如果不是linie 无法看见 【转询价】按钮
+    let linieTypeCode = ["ZYCGGZ","ZYCGKZ","LINIE"]
+    //是否是询价采购员 如果不是 无法看见【转谈判】按钮
+    let inquiryTypeCode = ["PJCGY","FJCGY","PJCGGZ","FJCGGZ",'QQCGGZ',"QQCGKZ","FJCGKZ","PJCGKZ","QQCGY"]
+    this.$store.state.permission.userInfo.roleList.forEach(val=>{
+      linieTypeCode.includes(val.code) ? this.isLinieUser = true:''
+      inquiryTypeCode.includes(val.code) ? this.isInquiryUser = true:''
+    })
     if(this.navActivtyValue==0||this.navActivtyValue==''){
       await this.firstInit()
     }
     this.getPartTableList = this.$store.state.rfq.partfunc;
     this.getTableList();
-    this.getBaseInfo();
+    await this.getBaseInfo()
+    //linie
+    let efqLinieStatus = ["谈判完成",'谈判中',"转谈判"]
+    //询价
+    let efqinquiryStatus = ["未询价",'询价中',"转询价"]
+    efqLinieStatus.includes(this.baseInfo.statusName) ? this.isLiniefqStatus = true :this.isLiniefqStatus = false    
+    efqinquiryStatus.includes(this.baseInfo.statusName) ? this.isInquiryRfqStatus = true :this.isInquiryRfqStatus = false    
   },
   provide: function () {
     return {
@@ -518,34 +543,40 @@ export default {
       }
     },
     getBaseInfo (dialogPage) {
-      this.baseInfoLoading = true;
-      if (this.$route.query.id) {
-        getRfqInfo({
-          rfqId: this.$route.query.id,
-        })
-          .then((res) => {
-            // const res = mockData;
-            if (res.code == 200 && res.data) {
-              this.baseInfo = res.data;
-              this.rfqInfo = res.data;
-              this.disabled = !!res.data.isFreeze;
-              if (dialogPage) {
-                //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
-                this.activityTabIndex = '5';
-              }
-              this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
-              this.childFnList.forEach((i) => i());
-              if (typeof this.$store.state.rfq.partfunc === 'function') this.getPartTableList();
-            } else {
-              iMessage.error(this.language('HUOQURFQDINGDIANXINXISHIBAI', '获取RFQ定点信息失败'));
-              this.baseInfo = '';
-            }
+      return new Promise(resolve => {
+        this.baseInfoLoading = true;
+        if (this.$route.query.id) {
+          getRfqInfo({
+            rfqId: this.$route.query.id,
           })
-          .finally(() => (this.baseInfoLoading = false));
-      } else {
-        this.disabled = true;
-        this.baseInfoLoading = false;
-      }
+            .then((res) => {
+              // const res = mockData;
+              if (res.code == 200 && res.data) {
+                this.baseInfo = res.data;
+                this.rfqInfo = res.data;
+                this.disabled = !!res.data.isFreeze;
+                if (dialogPage) {
+                  //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
+                  this.activityTabIndex = '5';
+                }
+                this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
+                this.childFnList.forEach((i) => i());
+                if (typeof this.$store.state.rfq.partfunc === 'function') this.getPartTableList();
+              } else {
+                iMessage.error(this.language('HUOQURFQDINGDIANXINXISHIBAI', '获取RFQ定点信息失败'));
+                this.baseInfo = '';
+              }
+            })
+            .finally(() => {
+              this.baseInfoLoading = false
+              resolve()
+            });
+        } else {
+          this.disabled = true;
+          this.baseInfoLoading = false;
+          resolve()
+        }
+      })
     },
     changeNav (target) {
       this.navActivtyValue = target.index;
