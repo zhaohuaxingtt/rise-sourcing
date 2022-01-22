@@ -51,11 +51,11 @@
                 >{{ language('BIDDING_JSBLRFQ', '结束本轮RFQ') }}</iButton
               >
             </div>
-            <div v-if="ruleForm.roundType === '05'">
+            <template v-if="isUser">
+              <div v-if="ruleForm.roundType === '05'">
               <iButton
                 v-if="ruleForm.biddingStatus === '01'"
                 @click="handelSend"
-                :disabled="!isUser"
                 >{{ language('BIDDING_FACHUJINGJIA', '发出竞价') }}</iButton
               >
               <iButton
@@ -66,10 +66,10 @@
                     ruleForm.biddingStatus === '02')
                 "
                 @click="onBiddingCancel"
-                :disabled="!isUser"
                 >{{ language('BIDDING_JIESHUXIANGMU', '结束项目') }}</iButton
               >
             </div>
+            </template>
           </template>
         </div>
       </div>
@@ -85,16 +85,18 @@
           </div>
         </div>
         <div class="project__header-btns">
-          <template v-if="actived === 'filing'">
-            <iButton :disabled="!isUser" @click="handleHref" v-if="ruleForm.roundType !== '05' && ruleForm.biddingStatus == '06'">{{
+          <template v-if="isUser">
+            <template v-if="actived === 'filing'">
+            <iButton @click="handleHref" v-if="ruleForm.roundType !== '05' && ruleForm.biddingStatus == '06'">{{
               language('BIDDING_TXBJMX', '填写报价明细')
             }}</iButton>
             <!-- <iButton @click="handleShowNotice('01', '系统使用条款')">{{
               language('系统使用条款', '系统使用条款')
             }}</iButton> -->
-            <iButton :disabled="!isUser" v-if="isShowBidding" @click="handleShowNotice('02', language('BIDDING_JINJIAGAOZHISHU','竞价告知书'))">{{
+            <iButton v-if="isShowBidding" @click="handleShowNotice('02', language('BIDDING_JINJIAGAOZHISHU','竞价告知书'))">{{
               language('BIDDING_JINJIAGAOZHISHU', '竞价告知书')
             }}</iButton>
+          </template>
           </template>
         </div>
       </div>
@@ -448,10 +450,10 @@ export default {
             return false;
           } else if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )){
             return false
-          } else if ((this.isUser || this.isLinieId) && biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08"){
-            return true;
+          } else if (!this.isUser || !this.isLinieId){
+            return false;
           } else {
-            return false
+            return true
           }
         }
       }

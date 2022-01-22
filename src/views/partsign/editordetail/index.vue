@@ -105,7 +105,7 @@ export default {
     // 日志组件bizId
     logBizId() {
       const logType = ['拒绝每车用量','确认每车用量','拒绝询价资料','确认询价资料']
-      return logType.includes(this.logFiltType) ? this.partDetails.purchasingRequirementTargetId : this.partDetails.tpPartID
+      return logType.includes(this.logFiltType) ? this.partDetails.purchasingRequirementId : this.partDetails.tpPartID
     }
   },
   created() {
@@ -126,6 +126,7 @@ export default {
     },
     getPartInfo() {
       this.partDetails = JSON.parse(localStorage.getItem('tpPartInfoVO')) || {};
+      console.log(this.partDetails, '***********');
     },
     //签收
     save() {

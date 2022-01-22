@@ -97,7 +97,7 @@ export default {
           currPage: 1,
           pageSize: 10,
           status: 1,
-          purchasingRequirementObjectId: this.data.purchasingRequirementTargetId
+          purchasingRequirementId: this.data.purchasingRequirementId
         })
         this.version = 'V1'
 
@@ -114,7 +114,7 @@ export default {
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
           status: "1",
-          purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
+          purchasingRequirementId: this.data.purchasingRequirementId
         })
 
         if (infoRes.code != 200) {
@@ -132,11 +132,11 @@ export default {
       }
     },
     jump() {
-      // window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementTargetId=${ this.data.purchasingRequirementTargetId }`, '_blank')
+      // window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementId=${ this.data.purchasingRequirementId }`, '_blank')
       const route = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsign/enquiryVersion",
         query: {
-          purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
+          purchasingRequirementId: this.data.purchasingRequirementId
         }
       })
       window.open(route.href, "_blank")

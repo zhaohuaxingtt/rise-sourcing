@@ -8,8 +8,8 @@
 import axios from '@/utils/axios'
 import download from '@/utils/axios.download'
 
-const requst = axios(process.env.VUE_APP_PARTS)
-const fileRequst = download(process.env.VUE_APP_PARTS)
+const requst = axios(process.env.VUE_APP_PR)
+const fileRequst = download(process.env.VUE_APP_PR)
 
 // 列表查询
 export function getManageList(data) {

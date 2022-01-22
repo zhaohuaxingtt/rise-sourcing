@@ -83,7 +83,7 @@ export default {
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
         status: this.params.status,
-        purchasingRequirementTargetId: this.params.purchasingRequirementTargetId
+        purchasingRequirementId: this.params.purchasingRequirementId
       })
         .then(res => {
           if (res.code == 200) {

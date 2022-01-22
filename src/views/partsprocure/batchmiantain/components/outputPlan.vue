@@ -79,7 +79,7 @@
 						id:item.purchaseProjectId,
 						purchasingRequirementId:item.purchasingRequirementId,
 						partNum:item.partNum,
-						purchasingRequirementObjectId:item.purchasingRequirementObjectId
+						purchasingRequirementId:item.purchasingRequirementId
 					}
 				})
 				window.open(openParts.href,'_blank')
