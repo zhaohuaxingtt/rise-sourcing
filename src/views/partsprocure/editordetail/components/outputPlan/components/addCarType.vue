@@ -218,7 +218,7 @@ export default {
       let params = null
       if(this.isGs) {
         params = this.selectData.map(item => ({
-          purchasingRequirementObjectId: this.params.purchasingRequirementObjectId,
+          purchasingRequirementId: this.params.purchasingRequirementId,
           cartypeLevel: item.cartypeLevel,
           engineType: item.engineType,
           gearType: item.gearboxName,
@@ -233,7 +233,7 @@ export default {
         }))
       } else {
         params = this.selectData.map(item => ({
-          purchasingRequirementObjectId: this.params.purchasingRequirementObjectId,
+          purchasingRequirementId: this.params.purchasingRequirementId,
           cartypeLevel: item.cartypeLevel,
           engineType: item.engineVo?.remark,
           gearType: item.gearboxVo?.remark,

@@ -6,7 +6,7 @@
 
 
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_PARTS)
+const requst = axios(process.env.VUE_APP_PR)
 
 // 零件清单分页查询  
 export function getPartPage(data) {
