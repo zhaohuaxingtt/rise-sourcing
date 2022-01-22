@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-12-01 15:17:43
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-21 18:08:40
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -13,9 +13,10 @@
     <div style="display:flex;align-items:center">
       <iNavMvp v-if="subMenu" :lev="2" :list="subMenu" :lang="true" routerPage class="nav-sub" />
       <switchPost />
-      <log-button v-if="$route.name !== 'explainattach'" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
+      <!-- <log-button v-if="$route.name !== 'explainattach'" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
+      <iLog :show.sync="showDialog" :bizId="bizId" :module="module"></iLog> -->
+      <iLoger v-if="$route.name !== 'explainattach'" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{module_obj_ae: module, bizId_obj_ae: bizId, menuName_obj_ae:$store.getters.getLogMenu, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
-      <iLog :show.sync="showDialog" :bizId="bizId" :module="module"></iLog>
     </div>
   </div>
 </template>
@@ -29,13 +30,15 @@ import iLog from "../../log";
 import logButton from "../../../../components/logButton";
 import switchPost from '@/components/switchPost'
 import { getLeftTab } from '../../data'
+import iLoger from 'rise/web/components/iLoger'
 export default {
   components: {
     iNavMvp,
     icon,
     logButton,
     iLog,
-    switchPost
+    switchPost,
+    iLoger
   },
   props: {
     navList: {type:Array, 

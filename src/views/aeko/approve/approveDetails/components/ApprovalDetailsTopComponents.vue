@@ -6,10 +6,11 @@
       <i-button v-if="!disabled && show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_VIEW_APPROVED|查看已审批" @click="goViewApproved"  class="margin-left25">{{language('LK_CHAKANYISHENPI','查看已审批')}}</i-button>
       <i-button v-if="show" @click="lookAEKODetails"  v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_AEKO_DETAILS|AEKO详情"   class="margin-left25">{{language('LK_AEKO详情','AEKO详情')}}</i-button>
       <switchPost />
-      <log-button v-if="show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
+      <iLoger v-if="show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{ bizId_obj_ae: transmitObj.aekoApprovalDetails.requirementAekoId, menuName_obj_ae:$store.getters.getLogMenu, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
+      <!-- <log-button v-if="show" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
+      <iLog :show.sync="showDialog" :bizId="bizId"></iLog> -->
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
             class="log-icon margin-left20 cursor myLogIcon"></icon>
-      <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
     </div>
   </div>
 </template>
@@ -19,6 +20,7 @@ import {iNavMvp, icon, iButton, iMessage} from "rise"
 import LogButton from "./LogButton";
 import switchPost from '@/components/switchPost'
 import iLog from "../../../log";
+import iLoger from 'rise/web/components/iLoger'
 
 export default {
   name: "ApprovalDetailsComponents",
@@ -28,7 +30,8 @@ export default {
     icon,
     iButton,
     iLog,
-    switchPost
+    switchPost,
+    iLoger
   },
   created() {
     this.queryParams = this.$route.query

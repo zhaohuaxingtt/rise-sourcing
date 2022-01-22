@@ -8,7 +8,7 @@
       collapse
       ref="headerCollapse"
     >
-      <template slot="header-control">
+      <template slot="header-control" v-if="isUser">
         <i class="el-icon-success icon-success" v-show="headerCollapseVal"></i>
         <div v-show="headerCollapseVal">
           <iButton @click="handleCheck('header')">{{ language('BIDDING_CHAKAN', '查看') }}</iButton>
@@ -127,6 +127,7 @@
         v-model="ruleForm"
         :isOpenDelay="isOpenDelay"
         :isBiddingDelay="isBiddingDelay"
+        :isUser="isUser"
       ></component>
     </iCard>
 
@@ -138,7 +139,8 @@
       collapse
       ref="contentCollapse"
     >
-      <template
+      <template  v-if="isUser">
+        <template
         slot="header-control"
         v-if="ruleForm.biddingStatus !== '01' ? false : true"
       >
@@ -157,6 +159,7 @@
             language('BIDDING_WANCHENG', '完成')
           }}</iButton>
         </div>
+      </template>
       </template>
       <commonTable
         ref="tableDataForm"
@@ -187,7 +190,7 @@
               inactive-text="N"
               :active-value='true'
               :inactive-value='false'
-              :disabled="ruleForm.biddingStatus !== '01'"
+              :disabled="!isUser || ruleForm.biddingStatus !== '01'"
             >
             </el-switch>
         </template>
@@ -244,7 +247,7 @@
         </template>
         <!-- 联系人 -->
         <template slot="contactName" slot-scope="scope">
-          <div v-if="ruleForm.biddingStatus !== '01'">
+          <div v-if="!isUser || ruleForm.biddingStatus !== '01'">
             {{ scope.row["contactName"] }}
           </div>
           <iFormItem v-else :label="language('BIDDING_LIANGXIREN', '联系人')" >
@@ -269,14 +272,14 @@
         </template>
         <!-- 邮箱 -->
         <template slot="email" slot-scope="scope">
-          <div v-if="ruleForm.biddingStatus !== '01'">
+          <div v-if="!isUser || ruleForm.biddingStatus !== '01'">
             {{ scope.row["email"] }}
           </div>
           <iInput v-else v-model="scope.row['email']" required></iInput>
         </template>
         <!-- CBD选择 -->
         <template slot="cbdLevel" slot-scope="scope">
-          <div v-if="ruleForm.biddingStatus !== '01'">
+          <div v-if="!isUser || ruleForm.biddingStatus !== '01'">
             {{ cbdLevelLib[scope.row["cbdLevel"]] || scope.row["cbdLevel"]}}
           </div>
           <div v-else>
@@ -329,7 +332,8 @@
       collapse
       ref="reatCollapse"
     >
-      <template
+      <template v-if="isUser">
+        <template
         slot="header-control"
         v-if="ruleForm.biddingStatus !== '01' ? false : true"
       >
@@ -346,6 +350,7 @@
           }}</iButton>
         </div>
       </template>
+      </template>
       <template>
         <parities
           ref="reatForm"
@@ -353,6 +358,7 @@
           v-model="ruleForm"
           @selectDel="selectDel"
           @handle-currencys="handleCurrencys"
+          :isUser="isUser"
         />
       </template>
     </iCard>
@@ -367,7 +373,8 @@
       ref="attachCollapse"
       v-show="ruleForm.roundType === '05'"
     >
-      <template
+      <template v-if="isUser">
+        <template
         slot="header-control"
         v-if="ruleForm.biddingStatus !== '01' ? false : true"
       >
@@ -393,12 +400,14 @@
           }}</iButton>
         </div>
       </template>
+      </template>
       <template>
         <attachment
           ref="attachForm"
           v-model="ruleForm"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
+          :isUser="isUser"
         />
       </template>
     </iCard>
@@ -443,6 +452,7 @@ import {
   getIsComplete
 } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
+import store from '@/store'
 
 // import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 
@@ -523,7 +533,9 @@ export default {
       rfqCode:'',
       time:'',
       firstSupplierFlag:false,
-      exchangeRateList:{}
+      exchangeRateList:{},
+      isUser:false,
+      isLinieId:false
     };
   },
   computed: {
@@ -554,6 +566,9 @@ export default {
       const { suppliers } = this.ruleForm;
       const { currPage, pageSize } = this.page;
       return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
+    },
+    userId(){
+      return store.state.permission.userInfo.id
     },
   },
   async created() {
@@ -1248,6 +1263,13 @@ export default {
         const rfqCode = {rfqCode:this.rfqCode}
        await findRfqInquiry(rfqCode)
         .then((res) => {
+          // 是否当前用户是否是采购员
+          const userId = String(this.userId)
+          this.isUser = userId === res.linieId
+
+          // 判断采购员是否是当前登录者的下属员工
+          this.isLinieId = !!res?.userIds?.some(item => userId !== res.linieId || res.linieId.includes(item))
+
           console.log(res);
           if (res.inquiryIsCompleted == true) {
             this.$refs.headerCollapse.collapseValue = false;
@@ -1342,6 +1364,13 @@ export default {
       } else {
        await findInquiry(e)
         .then((res) => {
+          // 是否当前用户是否是采购员
+          const userId = String(this.userId)
+          this.isUser = userId === res.linieId
+
+          // 判断采购员是否是当前登录者的下属员工
+          this.isLinieId = !!res?.userIds?.some(item => userId !== res.linieId || res.linieId.includes(item))
+
           console.log(res);
           if (res.inquiryIsCompleted == true) {
             this.$refs.headerCollapse.collapseValue = false;
