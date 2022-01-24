@@ -5,7 +5,7 @@
  */
 
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_PARTS)
+const requst = axios(process.env.VUE_APP_PR)
 
 // aeko查看分页查询
 export function getCheckList(data) {

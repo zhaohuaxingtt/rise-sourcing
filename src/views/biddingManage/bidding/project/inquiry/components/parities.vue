@@ -4,7 +4,7 @@
     :rules="rules"
     ref="ruleForm"
     :hideRequiredAsterisk="true"
-    :disabled="ruleForm.biddingStatus !== '01'"
+    :disabled="!isUser || ruleForm.biddingStatus !== '01'"
   >
     <!-- 汇率 -->
     <div
@@ -68,6 +68,10 @@ export default {
     paritiesList: {
       type: Array,
       default: () => [],
+    },
+    isUser: {
+      type: Boolean,
+      default: false,
     },
   },
   watch: {

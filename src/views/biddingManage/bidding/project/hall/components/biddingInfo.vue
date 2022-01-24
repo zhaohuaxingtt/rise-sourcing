@@ -164,7 +164,7 @@
           <iButton
             @click="handleInvalid"
             class="invalid-button"
-            v-if="showInvalid && role != 'supplier'"
+            v-if="isUser && showInvalid && role != 'supplier'"
             >{{language('BIDDING_ZUOFEI', '作废')}}</iButton
           >
         </div>
@@ -455,6 +455,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import invalidDialog from "./invalidDialog.vue";
 import Big from "big.js";
 import dayjs from "dayjs";
+import store from '@/store'
 
 export default {
   mixins: [pageMixins],
@@ -528,6 +529,7 @@ export default {
       },
       quoteRule: {},
       rankTimer: null,
+      isUser:false
     };
   },
   created() {
@@ -570,6 +572,9 @@ export default {
     this.handleIntervalRank();
   },
   computed: {
+    userId(){
+      return store.state.permission.userInfo.id
+    },
     role() {
       return this.$route.meta.role;
     },
@@ -1053,6 +1058,8 @@ export default {
         console.log(err)
       });
       this.ruleForm = { ...res };
+      const userId = String(this.userId)
+      this.isUser = userId === this.ruleForm?.linieId
     },
     async getBiddingDetails(e) {
       const biddingDetail = await getBiddingDetails({
