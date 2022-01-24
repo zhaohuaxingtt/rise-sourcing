@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-20 18:27:37
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-24 23:51:28
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
 -->
@@ -245,6 +245,7 @@
                      v-if="navActivtyValue == 2"></rfq-detail-tpzs>
     <new-rfq-round v-model="newRfqRoundDialog"
                    @refreshBaseInfo="getBaseInfo(true)"
+                   @showTodo="showTodo"
                    :dataRes="newRfqRoundDialogRes"
                    v-if="tabShowStatus" />
 
@@ -455,6 +456,11 @@ export default {
       }
     },
     // 
+    showTodo(){
+      if(this.baseInfo.currentRounds=='1'){
+        this.getTodoInfo()
+      }
+    },
     async getTodoInfo(){
       this.tipsVislble = false
       if(this.$route.query.id){
@@ -630,13 +636,13 @@ export default {
 
       try {
         const res = await modification(req);
-        if(updateType === '06' && res.code == '500'){
+        if(updateType === '06' && res.code == '501'){
           this.blackTableListData = res.data || [];
           this.$refs.dialogTableTips.show(); 
         }else{
           this.resultMessage(res);
           // 发出首轮询价时触发
-          if(res && res.code=='200' && updateType === '06' && this.baseInfo.properties=='1'){
+          if(res?.code=='200' && updateType === '06' && this.baseInfo.currentRounds=='1'){
             this.getTodoInfo()
           }
         }
