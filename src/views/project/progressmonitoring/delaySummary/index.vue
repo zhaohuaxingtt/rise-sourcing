@@ -30,6 +30,7 @@
     <iCard :ref="'comFirmCard'" class="margin-top20" :title="language('YANWUYUANYINQUEREN', '延误原因确认')" :collapse="collapse" @handleCollapse="handleCollapse">
       <!-- <template slot="header-control"> -->
       <div class="floatright" slot="header-control">
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <!--------------------发送按钮----------------------------------->
         <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
         <iButton v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
@@ -45,7 +46,16 @@
         </template>
       </div>
       <!-- 表格 -->
-      <tableList indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList indexKey
+                 ref="tableList"
+                 :lang="true"
+                 :tableTitle="tableTitle"
+                 :tableData="tableData"
+                 :tableLoading="tableLoading"
+                 @handleSelectionChange="handleSelectionChange"
+                 :handleSaveSetting="handleSaveSetting"
+                 :handleResetSetting="handleResetSetting"
+      >
         <template #newPlanDate="scope">
           <span v-if="!isFS || (isFS && !withAllBtn)">{{scope.row.newPlanDate}}</span>
           <template v-else>
@@ -92,7 +102,8 @@ import fsSelect from '@/views/project/components/commonSelect/fsSelect'
 import productPurchaserSelect from '@/views/project/components/commonSelect/productPurchaserSelect'
 import carProjectSelect from '@/views/project/components/commonSelect/carProjectSelect'
 import iDicoptions from 'rise/web/components/iDicoptions'
-import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import moment from 'moment'
 import confirmBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/confirmBtn'
 import saveBtn from '@/views/project/schedulingassistant/progressconfirm/components/commonBtn/saveBtn'
@@ -103,7 +114,7 @@ import delayReasonDialog from '../monitorDetail/components/delayReson'
 import { selectDictByKeyss } from '@/api/dictionary'
 import selectKwDialog from '@/views/project/schedulingassistant/part/components/selectKw'
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,tableSortMixins],
   components: { selectKwDialog, iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog },
   data() {
     return {
