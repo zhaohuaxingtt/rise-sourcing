@@ -192,11 +192,11 @@
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPE|车型" :label="language('LK_CHEXING','车型') + ':'" name="test" v-if="isCarType">
 							<iSelect ref="carTypeModelSelect" v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled ">
 								<!-- :disabled='carTypeCanselect()'  -->
-								<el-option :value="item.code" :label="item.name"
-									v-for="(item) in fromGroup.CAR_TYPE" :key="item.code">
+								<el-option :value="item.id" :label="item.name"
+									v-for="(item) in fromGroup.CAR_TYPE" :key="item.id">
 								</el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.carTypeModel, "code", fromGroup.CAR_TYPE) }}</iText>
+							<iText v-else>{{ getName(detailData.carTypeModel, "id", fromGroup.CAR_TYPE) }}</iText>
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
@@ -701,7 +701,7 @@
 					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
 					this.checkFactoryString = res.data.procureFactory
 					if(this.detailData.cartypes) {
-						this.$set(this.detailData,'carTypeModel',this.detailData.cartypes.map(val=> val.code))
+						this.$set(this.detailData,'carTypeModel',this.detailData.cartypes.map(val=> val.id))
 					}
 					this.infoItem = res.data
 					this.purchaseProjectId = this.infoItem.id;
@@ -862,7 +862,7 @@
 				detailData['oldProjectRelations'] = [{...translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
 				if(detailData.carTypeModel !=undefined) {
 					let temData=this.fromGroup['CAR_TYPE'].filter((item)=>{
-						return detailData.carTypeModel.indexOf(item.code) > -1
+						return detailData.carTypeModel.indexOf(item.id) > -1
 					})
 				detailData['cartypes'] = temData
 				}
