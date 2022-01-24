@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2022-01-24 14:17:31
+ * @LastEditTime: 2022-01-24 14:25:14
  * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \front-sourcing\src\views\partsign\home\index.vue
@@ -199,8 +199,6 @@
               @openPage="openPage"
               :activeItems="'partNum'"
               v-permission.auto="PARTSIGN_TABLE|表格"
-              :handleSaveSetting="handleSaveSetting"
-              :handleResetSetting="handleResetSetting"
             >
             </tablelist>
             <!------------------------------------------------------------------------>

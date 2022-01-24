@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-10 15:46:15
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-24 14:24:35
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -41,6 +41,7 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANXUQIUQIANSHOU','配件需求签收')}}</span>
                 <div class="floatright">
+                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!--------------------签收按钮----------------------------------->
                   <iButton @click="signAccessory" :loading="signLoading" v-permission.auto="APREPART_SIGN_SIGN|配件-配件签收-签收">{{language('QIANSHOU','签收')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
@@ -53,7 +54,10 @@
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" class="aotoTableHeight">
+            <tableList
+              ref="tableList"
+              :lang="true" 
+            :activeItems='"spnrNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" class="aotoTableHeight">
               <template #supplierSapCode="scope">
                 <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>
               </template>
@@ -91,7 +95,8 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iDatePicker, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import headerNav from '@/components/headerNav'
-import tableList from '../../designate/designatedetail/components/tableList'
+// import tableList from '../../designate/designatedetail/components/tableList'
+import tableList from "@/components/iTableSort";
 import { tableTitle, searchList, TAB,navManagingDemandList} from '../signForPartsDemand/data'
 import assignInquiryDepartmentDialog from '@/views/accessoryPart/integratedManage/components/distributionLinie'
 import assignInquiryBuyerDialog from '@/views/accessoryPart/integratedManage/components/distributionBuyer'
@@ -106,11 +111,13 @@ import {
 import { clickMessage } from "@/views/partsign/home/components/data"
 import moment from 'moment'
 
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,tableSortMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, iDatePicker, iMultiLineInput, assignInquiryDepartmentDialog, assignInquiryBuyerDialog, backDialog, iNavMvp, headerNav },
   data() {
     return {
