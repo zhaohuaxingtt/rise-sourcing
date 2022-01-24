@@ -71,7 +71,8 @@ export default {
   },
   methods: {
     handleSave() {
-      const elements = document.querySelectorAll('.drop-item')
+      // const elements =  document.querySelectorAll('.drop-item')
+      const elements =  this.$refs['header-wrapper'].childNodes
       const newData = []
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i]
@@ -105,7 +106,8 @@ export default {
       this.originalData = this.deepClone(dataSource)
       this.newData = this.deepClone(dataSource)
       this.$nextTick(() => {
-        const el = document.getElementsByClassName('header-wrapper')[0]
+        // const el = document.getElementsByClassName('header-wrapper')[0]
+        const el = this.$refs['header-wrapper']
         new Sortable(el, {
           animation: 250,
           draggable: '.draggable'
