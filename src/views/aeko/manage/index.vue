@@ -12,7 +12,8 @@
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
-        <log-button @click="openLog" class="margin-left25"/>
+        <!-- <log-button @click="openLog" class="margin-left25"/> -->
+        <iLoger ref="log" :config="{module_obj_ae: module, menuName_obj_ae:$store.getters.getLogMenu, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
@@ -167,7 +168,7 @@
       <!-- TCM导入清单 -->
       <tcmList v-permission.auto="AEKO_TCMLIST_TABLE|AEKO管理TCM导入清单TABLE"/>
     </div>
-    <iLog :show.sync="showDialog" :bizId="bizId" :module="module" :hasId="hasId"></iLog>
+    <!-- <iLog :show.sync="showDialog" :bizId="bizId" :module="module" :hasId="hasId"></iLog> -->
   </iPage>
 </template>
 
@@ -198,6 +199,7 @@ import {user as configUser } from '@/config'
 import aekoSelect from '../components/aekoSelect'
 import tcmList from './components/tcmList'
 import iLog from '../log'
+import iLoger from 'rise/web/components/iLoger'
 import {
   getManageList,
   searchAekoStatus,
@@ -240,6 +242,7 @@ export default {
       aekoSelect,
       tcmList,
       iLog,
+      iLoger,
       logButton,
       switchPost,
       iMultiLineInput
@@ -536,6 +539,10 @@ export default {
         this.module = ''
         this.bizId = row.requirementAekoId
         this.showDialog = true
+        this.$refs.log.open()
+        this.$nextTick(()=>{  // 清空bizId,便于触发顶部日志按钮
+          this.bizId = ''
+        })
       },
 
       // 查看描述
