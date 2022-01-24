@@ -69,10 +69,14 @@
           </el-form>
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
+        <template v-slot:header-control>
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        </template>
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_STANCELIST_TABLE|AEKO表态TABLE">
         <tableList
           class="table"
+          ref="tableList"
           index
           :lang="true"
           :tableData="tableListData"
@@ -80,6 +84,8 @@
           :tableLoading="loading"
           :selection="false"
           @handleSelectionChange="handleSelectionChange"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
         >
         <!-- AEKO号  -->
         <template #aekoCode="scope">
@@ -150,13 +156,16 @@ import {
   iPagination,
   icon,
   iMessage,
-  iMultiLineInput
+  iMultiLineInput,
+  iButton
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
 import switchPost from '@/components/switchPost'
 import { TAB,filterRole,getLeftTab } from '../data';
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import filesListDialog from '../manage/components/filesListDialog'
 import logButton from "../../../components/logButton";
 import iLog from '../log'
@@ -175,7 +184,7 @@ import { roleMixins } from "@/utils/roleMixins";
 import { setLogMenu } from "@/utils";
 export default {
     name:'aekoStanceList',
-    mixins: [pageMixins,roleMixins],
+    mixins: [pageMixins,roleMixins,tableSortMixins],
     components:{
       iPage,
       iNavMvp,
@@ -192,7 +201,8 @@ export default {
       iLog,
       logButton,
       switchPost,
-      iMultiLineInput
+      iMultiLineInput,
+      iButton
     },
     data(){
       return{
