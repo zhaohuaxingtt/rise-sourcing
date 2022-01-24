@@ -388,6 +388,7 @@ export default {
       isInquiryUser:false,
       isInquiryRfqStatus:false,
       isLiniefqStatus:false,
+      notAllow:false
     };
   },  
   async created () {
@@ -590,7 +591,8 @@ export default {
       this.newRfqOpenValidateLoading = true;
 
       try {
-        await this.getNewRoundList();
+        await this.getNewRoundList()
+        if(this.notAllow) return
         if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
           iMessage.warn(this.language('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG', 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次'));
           return false;
@@ -729,9 +731,11 @@ export default {
             this.newRfqRoundDialogRes = res;
             this.newRfqRoundList = res.data;
           } else {
-            // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.notAllow = true
           }
         } finally {
+
           this.newRfqOpenValidateLoading = false;
         }
       }
