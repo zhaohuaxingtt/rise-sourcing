@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2021-12-09 15:50:00
+ * @LastEditTime: 2022-01-24 16:21:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -223,10 +223,10 @@ export default{
       }
 
       const urlMaps = {
-        'BOB':`sourcing/partsrfq/bobNew?chemeId=${row.bizId}&rfqId=${row.rfqId}&groupId=`,
+        'BOB':`sourcing/partsrfq/bobNew?schemeId=${row.bizId}&rfqId=${row.rfqId}&groupId=`,
         'VP':`sourcing/partsrfq/vpAnalyseDetail?type=edit&schemeId=${row.bizId}&round&rfqId=${row.rfqId}`,
         'PI':`sourcing/partsrfq/piAnalyseDetail?schemeId=${row.bizId}&rfqId=${row.rfqId}`,
-        'MEK':`sourcing/mek/mekDetails?chemeId=${row.bizId}&rfqId=${row.rfqId}`,
+        'MEK':`sourcing/mek/mekDetails?schemeId=${row.bizId}&rfqId=${row.rfqId}`,
         'BL':`sourcing/partsrfq/graph/${row.bizId}`
       }
       window.open(process.env.VUE_APP_SOURCING_URL + urlMaps[this.typeSelect],'_blank')
