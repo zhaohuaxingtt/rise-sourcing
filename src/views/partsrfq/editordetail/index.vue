@@ -66,18 +66,18 @@
             {{ language('LK_JIESHUBENLUNXUNJIA', '结束本轮询价') }}
           </iButton>
           <iButton 
-            v-if=" isInquiryUser && isInquiryRfqStatus"
+            v-if=" baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1 && isInquiryUser && isInquiryRfqStatus"
             :loading="transferlaoding"
                    @click="updateRfqStatus('03')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION|转谈判">
             {{ language('LK_ZHUANTANPAN', '转谈判') }}
-          </iButton>      
+          </iButton>     
           <iButton 
-            v-if=" isLinieUser && isLiniefqStatus"
+            v-if=" baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1 && isLinieUser && isLiniefqStatus"
             :loading="transferlaoding"
                    @click="updateRfqStatus('04')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_REINQUIRY|转询价">
-            {{ language('LK_ZHUANXUNJIAS','转询价') }}
+            {{ language('LK_ZHUANXUNJIAS','转询价')}}
           </iButton>
           <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION|创建定点申请"
                    :loading="createDesignateLoading"
