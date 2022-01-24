@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2022-01-13 11:45:28
+ * @LastEditTime: 2022-01-24 11:57:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
@@ -94,7 +94,7 @@
 <script>
 import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage, iNavMvp,iPagination } from "rise"
 // import iLoger from 'rise/web/components/iLoger'
-import tableList from "./components/tableList"
+import tableList from "@/components/iTableSort"
 import addDialog from "./components/addDialog"
 import { queryForm, tableTitle } from "./components/data"
 import { cloneDeep } from "lodash" 
