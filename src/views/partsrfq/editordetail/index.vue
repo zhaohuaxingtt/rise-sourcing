@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-24 19:30:25
+ * @LastEditTime: 2022-01-24 19:31:50
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -66,18 +66,18 @@
             {{ language('LK_JIESHUBENLUNXUNJIA', '结束本轮询价') }}
           </iButton>
           <iButton 
-            v-if=" isInquiryUser && isInquiryRfqStatus"
+            v-if=" baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1 && isInquiryUser && isInquiryRfqStatus"
             :loading="transferlaoding"
                    @click="updateRfqStatus('03')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION|转谈判">
             {{ language('LK_ZHUANTANPAN', '转谈判') }}
-          </iButton>      
+          </iButton>     
           <iButton 
-            v-if=" isLinieUser && isLiniefqStatus"
+            v-if=" baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1 && isLinieUser && isLiniefqStatus"
             :loading="transferlaoding"
                    @click="updateRfqStatus('04')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_REINQUIRY|转询价">
-            {{ language('LK_ZHUANXUNJIAS','转询价') }}
+            {{ language('LK_ZHUANXUNJIAS','转询价')}}
           </iButton>
           <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION|创建定点申请"
                    :loading="createDesignateLoading"
@@ -388,6 +388,7 @@ export default {
       isInquiryUser:false,
       isInquiryRfqStatus:false,
       isLiniefqStatus:false,
+      notAllow:false
     };
   },  
   async created () {
@@ -590,7 +591,8 @@ export default {
       this.newRfqOpenValidateLoading = true;
 
       try {
-        await this.getNewRoundList();
+        await this.getNewRoundList()
+        if(this.notAllow) return
         if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
           iMessage.warn(this.language('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG', 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次'));
           return false;
@@ -628,7 +630,7 @@ export default {
 
       try {
         const res = await modification(req);
-        if(updateType === '06' && res.code == '500'){
+        if(updateType === '06' && res.code == '501'){
           this.blackTableListData = res.data || [];
           this.$refs.dialogTableTips.show(); 
         }else{
@@ -729,9 +731,11 @@ export default {
             this.newRfqRoundDialogRes = res;
             this.newRfqRoundList = res.data;
           } else {
-            // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.notAllow = true
           }
         } finally {
+
           this.newRfqOpenValidateLoading = false;
         }
       }
