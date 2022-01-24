@@ -124,9 +124,9 @@
       <el-table-column width="300"
                        :label="language('CHEXINGXINGXI','车型信息')">
         <template slot="header">
-          <div>{{language('CHEXINGXINGXI','车型信息')}}</div>
+          <div>{{language('CHEXINGPEIZHI','车型配置')}}</div>
           <div class="flex-between-center-center margin-top10">
-            <div>{{language('PEIZHIXINGXI','配置信息')}}</div>
+            <div>{{language('PEIZHIXINGXI','配置信息')}}+{{}}</div>
             <icon name="iconMEK-xuxian"
                   symbol />
             <div class="flex-between-center-center">
@@ -228,7 +228,7 @@
           :bizId="bizId" /> -->
     <iUserLog :show.sync="changeLogDialog"
               :bizId="bizId"
-              menuId="2"
+              menuId="WS3214"
               is-page />
     <iPagination v-update
                  @size-change="handleSizeChange($event, getTableList)"

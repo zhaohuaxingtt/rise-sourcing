@@ -176,7 +176,8 @@
 				this.$emit("openPage", row);
 			},
 			onJump360(row) {
-				window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${row.supplierId}&supplierType=${row.supplierType}&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
+				// 与3组确认 supplierType默认为PP
+				window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${row.supplierId}&supplierType=PP&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
 			},
 			// 添加自定义项目
 			addCustom() {

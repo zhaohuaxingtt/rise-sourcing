@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-13 12:19:59
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-21 17:35:28
  * @Description: 
  * @FilePath: \front-web\src\views\project\components\projectHeader.vue
 -->
@@ -13,7 +13,7 @@
     <div style="display:flex;align-items:center">
       <iNavMvp v-if="subNavList" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
       <switchPost />
-      <iLoger :config="{module_obj_ae: 'AEKO管理', menuName_obj_ae: 'AEKO管理-AEKO分配', queryParams:[]}" isPage class="margin-left25" />
+      <iLoger :config="{module_obj_ae: 'AEKO管理', menuName_obj_ae: 'AEKO管理-AEKO分配', queryParams:[]}" isPage :isUser="true" class="margin-left25" />
       <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
     </div>
   </div>
@@ -22,7 +22,8 @@
 <script>
 import { iNavMvp, icon } from "rise"
 import switchPost from '@/components/switchPost'
-import iLoger from '@/components/iLoger'
+// import iLoger from '@/components/iLoger'
+import iLoger from 'rise/web/components/iLoger'
 import { getLeftTab,TAB as SUBMENU } from '@/views/aeko/data'
 
 export default {
