@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-20 18:27:37
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-24 19:30:25
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
 -->
@@ -634,7 +634,7 @@ export default {
         }else{
           this.resultMessage(res);
           // 发出首轮询价时触发
-          if(res && res.code=='200' && updateType === '06' && this.baseInfo.properties=='1'){
+          if(res?.code=='200' && updateType === '06' && this.baseInfo.currentRounds=='1'){
             this.getTodoInfo()
           }
         }
