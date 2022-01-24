@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:54:24
- * @LastEditTime: 2021-09-01 20:01:28
+ * @LastEditTime: 2022-01-24 14:43:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\bdlDialog\index.vue
@@ -194,7 +194,8 @@ export default {
       }
     },
     onJump360(row) {
-      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${ row.supplierId }&supplierType=${ row.supplierType }&nameZh=${ row.supplierNameZh }&nameEn=${ row.supplierNameEn }`, "_blank")
+      // 与3组确认 supplierType默认为PP
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${ row.supplierId }&supplierType=PP&nameZh=${ row.supplierNameZh }&nameEn=${ row.supplierNameEn }`, "_blank")
     },
     // 确认
     handleConfirm() {
