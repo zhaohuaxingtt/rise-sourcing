@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-12-24 09:42:45
- * @LastEditors: caopeng
+ * @LastEditTime: 2022-01-24 16:12:17
+ * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
 -->
@@ -97,6 +97,7 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{ language('LK_RFQZONGHEGUANLI','RFQ综合管理') }}</span>
               <div class="floatright">
+                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission.auto="PARTSRFQ_ACTIVATERFQ|激活RFQ">
                   {{ language('LK_JIHUORFQS','激活RFQ') }}
@@ -141,11 +142,14 @@
                 @handleSelectionChange="handleSelectionChange"
                 openPageGetRowData
                 @openPage='openPage'
-                open-page-props="id"
+                :activeItems="'id'"
                 :index="true"
                 icon-props="recordId"
                 :lang="true"
                 class="aotoTableHeight"
+                :handleSaveSetting="handleSaveSetting"
+                :handleResetSetting="handleResetSetting"
+                ref="tableList"
             >
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
@@ -216,7 +220,9 @@
 import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "rise";
 import { iNavMvp, iSearch } from "rise";
 import headerNav from "@/components/headerNav"
-import tablelist from "pages/partsrfq/components/tablelist";
+// import tablelist from "pages/partsrfq/components/tablelist";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, attachmentTableTitle,partsprocureNavList} from "pages/partsrfq/home/components/data";
 import {findBySearches, getRfqList, getCartypeDict, modification, ratingTranslate, setRfqTop} from "@/api/partsrfq/home";
@@ -256,7 +262,7 @@ export default {
     assignInquiryBuyerDialog,
     headerNav
   },
-  mixins: [pageMixins, filters, rfqCommonFunMixins],
+  mixins: [pageMixins, filters, rfqCommonFunMixins,tableSortMixins],
   data() {
     return {
       tableListData: [],
