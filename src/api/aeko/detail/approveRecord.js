@@ -6,7 +6,7 @@
  * @Description: 审批记录
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_PARTS)
+const requst = axios(process.env.VUE_APP_PR)
 const approve = axios(process.env.VUE_APP_APPROVAL)
 
 // 是否有拒绝或补充材料状态的记录  

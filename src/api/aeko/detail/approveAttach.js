@@ -6,7 +6,7 @@
  * @Description: 审批附件
  */
 import axios from '@/utils/axios'
-const requst = axios(process.env.VUE_APP_PARTS)
+const requst = axios(process.env.VUE_APP_PR)
 
 // 分页查询审批附件
 export function getAuditFilePage(data) {
