@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2021-12-24 16:23:33
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-24 14:17:31
+ * @LastEditors: Please set LastEditors
  * @Description: 零件签收列表界面.
  * @FilePath: \front-sourcing\src\views\partsign\home\index.vue
 -->
@@ -172,6 +172,7 @@
                 language("LK_XINJIANXINXIDANQIANSHOU",'新件信息单签收')
               }}</span>
               <div class="floatright">
+                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                 <iButton @click="save" v-permission.auto="PARTSIGN_SIGNBUTTON|签收">{{
                   language("partsignLanguage.QianShou",'签收')
                 }}</iButton>
@@ -189,6 +190,8 @@
             </div>
             <tablelist
               class="aotoTableHeight"
+              ref="tableList"
+              :lang="true"
               :tableData="tableListData"
               :tableTitle="tableTitle"
               :tableLoading="tableLoading"
@@ -196,6 +199,8 @@
               @openPage="openPage"
               :activeItems="'partNum'"
               v-permission.auto="PARTSIGN_TABLE|表格"
+              :handleSaveSetting="handleSaveSetting"
+              :handleResetSetting="handleResetSetting"
             >
             </tablelist>
             <!------------------------------------------------------------------------>
@@ -241,7 +246,9 @@ import {
   iInput,
   iSelect,
 } from 'rise';
-import tablelist from "./components/tableList";
+// import tablelist from "./components/tableList";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { tableTitle, form, needTranslate, clickMessage} from "./components/data";
 import { getTabelData, patchRecords } from "@/api/partsign/home"
 import {purchaseUsers} from '@/api/usercenter'
@@ -273,9 +280,9 @@ export default {
     iSearch,
     iInput,
     iSelect,
-    headerNav
+    headerNav,
   },
-  mixins: [pageMixins, filters],
+  mixins: [pageMixins, filters,tableSortMixins],
   data() {
     return {
       tableListData: [],
