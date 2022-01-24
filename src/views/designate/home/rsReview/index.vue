@@ -16,6 +16,7 @@
       <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language( 'SHANGHUIRSDANFUHE', '上会RS单复核' ) }}</span>
         <div class="floatright">
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!-- 发起复核 -->
           <iButton
             @click="initRsReview"
@@ -91,6 +92,10 @@
         v-loading="tableLoading"
         v-permission.auto="SOURCING_NOMINATION_RSREVIEW_TABLE|表格"
         @handleSelectionChange="handleSelectionChange"
+        ref="tableList"
+        :lang="true"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
       <!-- <template #LK_CAOZUO="scope">
         <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>
@@ -173,7 +178,9 @@ import { tableTitle, signMenu } from './components/data'
 // import checklistData from './lib/checklist.json'
 import headerNav from '@/components/headerNav'
 import search from './components/search'
-import tablelist from "@/views/designate/supplier/components/tableList";
+// import tablelist from "@/views/designate/supplier/components/tableList";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import selDialog from '../components/selDialog'
 import {
   nominateConfirm,
@@ -212,7 +219,7 @@ import {
 } from "rise";
 
 export default {
-  mixins: [ filters, pageMixins, roleMixins ],
+  mixins: [ filters, pageMixins, roleMixins,tableSortMixins ],
   data() {
     return {
       tableListData: [],
