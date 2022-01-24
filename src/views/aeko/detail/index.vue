@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:45:48
- * @LastEditTime: 2022-01-21 18:49:45
+ * @LastEditTime: 2022-01-24 12:36:33
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\index.vue
@@ -17,7 +17,7 @@
           <switchPost />
           <!-- <logButton @click="openLog" class="margin-left20" />
           <iLog :show.sync="showDialog" :bizId="bizId"></iLog> -->
-          <iLoger ref="log" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{module_obj_ae: module, bizId_obj_ae: aekoInfo.requirementAekoId, menuName_obj_ae:$store.getters.getLogMenu, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
+          <iLoger ref="log" :config="{module_obj_ae: module, bizId_obj_ae: aekoInfo.requirementAekoId, menuName_obj_ae:$store.getters.getLogMenu, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
         </template>
         
       </div>
