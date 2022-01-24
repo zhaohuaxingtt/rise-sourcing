@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2022-01-24 19:11:19
+ * @LastEditTime: 2022-01-24 23:51:11
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
 -->
@@ -241,9 +241,11 @@ export default {
         }
         const res = await rfqRoundCreated(req)
         //保存的时候，如果保存成功！自动将窗口关闭，并且刷新详情数据，和询价管理(包含普通询价)
-        if(res.result){
-          this.clearDiolog()
+        if(res?.code=='200'){ // 更新数据
           this.$emit('refreshBaseInfo',true)
+        }
+        if(res.data){
+          this.clearDiolog()
         }
         this.resultMessage(res, () => {
           this.saveStaus = true
@@ -259,7 +261,10 @@ export default {
       }
       const res = await modification(req)
       this.resultMessage(res)
-      this.$emit('refreshBaseInfo',true)
+      if(res?.code=='200'){
+        this.clearDiolog()
+        this.$emit('showTodo')
+      }
     },
     initTimeData() {
       if (this.roundType === 'commonRound') {
