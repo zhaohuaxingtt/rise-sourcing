@@ -334,7 +334,7 @@ export default {
         if (v[element.name]) {
           try {
             const options = element.option ? (this.fromGroup[element.option] || []) : []
-            const result = options.find((i) => i.code == v[element.name]);
+            const result = options.find((i) => i.code === v[element.name]);
             v[element.name] = result ? result.name : "";
           } catch (error) {
             v[element.name] = "";
@@ -410,6 +410,7 @@ export default {
       });
     },
     openPage(val) {
+      console.log(val);
       local.set(
         "tpPartInfoVO",
         JSON.stringify(this.translateDataForDetail(val))

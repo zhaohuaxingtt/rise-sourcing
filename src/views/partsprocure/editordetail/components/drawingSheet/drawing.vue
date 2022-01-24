@@ -165,7 +165,7 @@ export default {
       getInfoAnnexPage({
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
-        purchasingRequirementTargetId: this.params.purchasingRequirementObjectId ? this.params.purchasingRequirementObjectId + "" : undefined
+        purchasingRequirementId: this.params.purchasingRequirementId ? this.params.purchasingRequirementId + "" : undefined
       })
         .then(res => { 
           this.tableListData = res.data.tpRecordList

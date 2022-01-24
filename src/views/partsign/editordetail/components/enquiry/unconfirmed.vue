@@ -96,7 +96,7 @@ export default {
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
         status: 0,
-        purchasingRequirementObjectId: this.data.purchasingRequirementTargetId
+        purchasingRequirementId: this.data.purchasingRequirementId
       })
         .then(res => {
           if (res.code != 200) return iMessage.error(`${ this.$i18n.locale === 'zh' ? res.desZh : res.desEn }`)
@@ -125,7 +125,7 @@ export default {
       const data = this.multipleSelection[0]
       this.confirmLoading = true
       patchAttachmentVersion({
-        purchasingRequirementObjectId: data.purchasingRequirementTargetId,
+        purchasingRequirementId: data.purchasingRequirementId,
         version: data.version,
         status: "1"
       })
@@ -153,7 +153,7 @@ export default {
 
       this.rejectLoading = true
       patchAttachmentVersion({
-        purchasingRequirementObjectId: data.purchasingRequirementTargetId,
+        purchasingRequirementId: data.purchasingRequirementId,
         version: data.version,
         refuseReason: reason,
         status: "2"
@@ -181,7 +181,7 @@ export default {
         currPage: 1,
         pageSize: 999999,
         status: "0",
-        purchasingRequirementTargetId: data.purchasingRequirementTargetId
+        purchasingRequirementId: data.purchasingRequirementId
       })
 
       if (infoRes.code != 200) {
@@ -210,7 +210,7 @@ export default {
     },
     enquiry(data) {
       this.enquiryVisible = true
-      this.params = { ...data, purchasingRequirementTargetId: this.data.purchasingRequirementTargetId, stauts: "0" }
+      this.params = { ...data, purchasingRequirementId: this.data.purchasingRequirementId, stauts: "0" }
     },
   }
 }

@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2022-01-06 23:35:06
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-24 19:11:19
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
 -->
 <template>
@@ -241,7 +241,7 @@ export default {
         }
         const res = await rfqRoundCreated(req)
         //保存的时候，如果保存成功！自动将窗口关闭，并且刷新详情数据，和询价管理(包含普通询价)
-        if(res.data){
+        if(res.result){
           this.clearDiolog()
           this.$emit('refreshBaseInfo',true)
         }

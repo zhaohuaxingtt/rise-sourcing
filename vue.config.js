@@ -148,7 +148,7 @@ module.exports = {
         },
       },
       '/tpInfoApi': {
-        target: 'http://10.122.17.38:8023',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/tpInfoApi': '',
@@ -295,6 +295,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BIZLOG]: '',
+        },
+      },
+      '/prApi': {
+        target: 'http://10.122.17.38:8023',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/prApi': '',
         },
       },
     },
