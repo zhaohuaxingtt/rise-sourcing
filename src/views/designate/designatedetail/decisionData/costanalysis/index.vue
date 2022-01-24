@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-02 15:22:44
- * @LastEditTime: 2022-01-24 16:21:27
+ * @LastEditTime: 2022-01-24 22:50:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\costanalysis\index.vue
@@ -71,6 +71,9 @@
     <template v-else-if='typeSelect == "QT"'>
         <echartsComponents v-if='previewItems' :rfqId='JSON.parse(previewItems).rfqId' :key='keysRender'></echartsComponents>
     </template>
+    <template v-else-if='typeSelect == "BL"'>
+        <bdLink v-if='previewItems' :graphId='JSON.parse(previewItems).bizId' :key='keysRender'></bdLink>
+    </template>
     <template v-else>
       <mek class="mek" v-if='previewItems' :propSchemeId='JSON.parse(previewItems).bizId' :key='keysRender'></mek>
     </template>
@@ -87,8 +90,9 @@ import vp from '@/views/partsrfq/vpAnalyse/vpAnalyseDetail'
 import pi from '@/views/partsrfq/piAnalyse/piDetail'
 import mek from '@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/mek/mekDetails'
 import echartsComponents from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringEcartsCard/previewEcharts'
+import bdLink from '@/views/biddingManage/bidding/project/hall/components/graph'
 export default{
-  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog,bob,vp,pi,mek,echartsComponents,icon},
+  components:{iCard,iFormGroup,iFormItem,iSelect,tabel,iDialog,bob,vp,pi,mek,echartsComponents,icon,bdLink},
   data(){
     return {
       typesOfData:'',
