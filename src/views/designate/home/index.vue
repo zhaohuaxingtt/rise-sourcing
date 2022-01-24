@@ -16,6 +16,7 @@
       <div class="clearFloat">
         <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
         <div class="designateEditControl floatright">
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
@@ -111,6 +112,9 @@
         :lang="true"
         v-permission.auto="SOURCING_NOMINATION_NOMINATETABLE|表格"
         @handleSelectionChange="handleSelectionChange"
+        ref="tableList"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
       <!-- <template #LK_CAOZUO="scope">
         <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>
@@ -209,7 +213,9 @@
 import { tableTitle } from './components/data'
 import headerNav from '@/components/headerNav'
 import search from './components/search'
-import tablelist from "@/views/designate/supplier/components/tableList";
+// import tablelist from "@/views/designate/supplier/components/tableList";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { 
   getNominationList,
   batchRevoke,
@@ -247,7 +253,7 @@ import {
 import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 
 export default {
-  mixins: [ filters, pageMixins, roleMixins ],
+  mixins: [ filters, pageMixins, roleMixins,tableSortMixins ],
   data() {
     return {
       tableListData: [],
