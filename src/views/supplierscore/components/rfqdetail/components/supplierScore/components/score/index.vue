@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2022-01-21 14:58:25
+ * @LastEditTime: 2022-01-24 11:30:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -438,7 +438,8 @@ export default {
         path: "/targetpriceandscore/supplierscore/partscore",
         query: {
           rfqId: row.rfqId,
-          supplierId: row.supplierId
+          supplierId: row.supplierId,
+          rfqType:this.rfqInfo.rfqType || '',
         }
       })
       window.open(route.href, "_blank")

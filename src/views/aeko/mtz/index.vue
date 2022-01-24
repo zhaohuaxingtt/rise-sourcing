@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:34:01
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-24 16:39:25
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-24 12:34:53
  * @Description: 
 -->
 <template>
@@ -11,7 +11,7 @@
       <span class="akeoTitle">{{language('LK_MTZBIANGENG', 'MTZ变更')}}:{{ $route.query.aekoNum }}</span>
       <div style="aeko-mtz-submenu">
         <!-- <logButton class="margin-left20" @click="toLogPage" v-if="showLogButton" /> -->
-        <iLoger v-if="showLogButton" :config="{module_obj_ae: 'AEKO表态-详情页-内容表态', menuName_obj_ae: 'MTZ变更维护', bizId_obj_ae: 'requirementAekoId', queryParams:['bizId_obj_ae']}" isPage class="margin-left20" />
+        <iLoger v-if="showLogButton" :config="{module_obj_ae: 'AEKO表态-详情页-内容表态', menuName_obj_ae: 'MTZ变更维护', bizId_obj_ae: 'requirementAekoId', queryParams:['bizId_obj_ae']}" isPage  :isUser="true" class="margin-left20" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
       </div>
     </div>
