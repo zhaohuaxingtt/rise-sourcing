@@ -450,10 +450,12 @@ export default {
             return false;
           } else if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )){
             return false
-          } else if (!this.isUser || !this.isLinieId){
+          } else if (!this.isUser){
             return false;
+          } else if (!this.isLinieId){
+            return false
           } else {
-            return true
+            true
           }
         }
       }
@@ -461,7 +463,11 @@ export default {
       if (val == "result") {
         if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )) {
           return false
-        } else if ((this.isUser || this.isLinieId) && biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
+        } else if (!this.isUser){
+          return false
+        } else if (!this.isLinieId) {
+          return false
+        } else if ( biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
           return true;
         } else {
           return false;
