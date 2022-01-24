@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-24 19:31:50
+ * @LastEditTime: 2022-01-24 23:51:28
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -245,6 +245,7 @@
                      v-if="navActivtyValue == 2"></rfq-detail-tpzs>
     <new-rfq-round v-model="newRfqRoundDialog"
                    @refreshBaseInfo="getBaseInfo(true)"
+                   @showTodo="showTodo"
                    :dataRes="newRfqRoundDialogRes"
                    v-if="tabShowStatus" />
 
@@ -455,6 +456,11 @@ export default {
       }
     },
     // 
+    showTodo(){
+      if(this.baseInfo.currentRounds=='1'){
+        this.getTodoInfo()
+      }
+    },
     async getTodoInfo(){
       this.tipsVislble = false
       if(this.$route.query.id){
