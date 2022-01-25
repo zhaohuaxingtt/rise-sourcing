@@ -45,8 +45,13 @@
             </el-select>
           </el-form-item>
         </el-col>
+
+      </el-row>
+      <el-row type="flex"
+              justify="space-between	">
         <el-col :span="4">
-          <el-form-item :label="language('LINGJIANAEKODINGDIAN','零件/Aeko定点')">
+          <el-checkbox v-model="form.isFromAeko">{{language('LINGJIANAEKODINGDIAN','零件/Aeko定点')}}</el-checkbox>
+          <!-- <el-form-item :label="language('LINGJIANAEKODINGDIAN','零件/Aeko定点')">
             <el-select v-model="form.isFromAeko"
                        :placeholder="language('QINGXUANZE','请选择')">
               <el-option label="是"
@@ -54,11 +59,8 @@
               <el-option label="否"
                          value="false"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
         </el-col>
-      </el-row>
-      <el-row type="flex"
-              justify="end">
         <el-col :span="4">
           <el-form-item>
             <iButton @click="getTableList">{{$t('LK_QUEREN')}}</iButton>
@@ -112,7 +114,7 @@ export default {
         partNum: '',
         rfq: this.$store.state.rfqId || '',
         project: '1',
-        isFromAeko: ""
+        isFromAeko: true
       },
       formGoup: {
         materialGroupList: [],

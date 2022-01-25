@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2022-01-25 10:37:08
+ * @LastEditTime: 2022-01-25 11:23:23
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -9,7 +9,7 @@
 
 <template>
   <iDialog :title="$t('TPZS.CZLJ')"
-           :visible="true"
+           :visible="dialogFind"
            width="90%"
            @close="clearDiolog">
     <div class="search">
@@ -44,7 +44,7 @@
         </el-form>
       </iSearch>
     </div>
-    <div class="searchContent">
+    <!-- <div class="searchContent">
       <div class="title">
         <span>搜索结果</span>
         <iButton @click="add">{{ $t("LK_TIANJIA") }}</iButton>
@@ -67,12 +67,12 @@
                    :layout="page.layout"
                    :current-page='page.currPage'
                    :total="page.totalCount" />
-    </div>
+    </div> -->
   </iDialog>
 </template>
 <script>
 import { iButton, iDialog, iSearch, iSelect, iInput, iMessage, iPagination } from "rise";
-import { confirmTableHead } from "./data";
+import { confirmTableHead } from "@/views/partsrfq/components/data";
 import emitter from '@/utils/emitter.js'
 import pageMixins from '@/utils/pageMixins'
 import {
@@ -92,23 +92,23 @@ export default {
     iPagination
   },
   mixins: [emitter, pageMixins],
-  // props: {
-  //   title: { type: String, default: "LK_SHANGCHUAN" },
-  //   value: { type: Boolean },
-  //   repeatClick: Boolean,
-  //   fileList: {
-  //     type: Array,
-  //     default: () => {
-  //       return [];
-  //     },
-  //   },
-  //   selectedParts: {
-  //     type: Array,
-  //     default: () => {
-  //       return [];
-  //     },
-  //   }
-  // },
+  props: {
+    title: { type: String, default: "LK_SHANGCHUAN" },
+    dialogFind: { type: Boolean, default: false },
+    repeatClick: Boolean,
+    fileList: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    selectedParts: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    }
+  },
   data () {
     return {
       optionList: [],
