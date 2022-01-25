@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-01-25 11:39:54
+ * @LastEditTime: 2022-01-25 21:36:31
  * @LastEditors: YoHo
  * @Description: table组件
 -->
@@ -37,11 +37,11 @@
 
     <template v-for="(items,index) in header">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)">
+      <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))">
         <!-- slot header -->
         <template slot="header">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)}}
+            {{showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))}}
           </div>
         </template>
         <!-- slot content -->
@@ -63,13 +63,14 @@
         :width="items.width"
         :min-width="items.minWidth ? items.minWidth.toString():''"
         :show-overflow-tooltip='items.tooltip'
-        :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"
+        :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))"
         :prop="items.props"
-        :class-name="items.tree ? 'tree' : ''">
+        :class-name="items.tree ? 'tree' : ''"
+        :fixed="items.fixed">
         <!-- slot header -->
         <template slot="header">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)}}
+            {{showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))}}
           </div>
         </template>
         <!-- slot content -->
@@ -183,7 +184,7 @@ export default{
      * @param {*}
      * @return {*}
      */    
-    lang: {type: Boolean, type: false},
+    lang: {type: Boolean, default: false},
     /**
      * @description: 表格合并
      * @param {*}
@@ -191,6 +192,7 @@ export default{
      */    
     spanMethod: { type: Function },
     enabletableHeadersetting: {type: Boolean, default: true},
+    showTitleName:{type:Boolean,default:false}, // 直接展示name字段
   },
   inject:['vm'],
   components:{iTableHeaderSorter, icon},
