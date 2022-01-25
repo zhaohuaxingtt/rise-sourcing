@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2022-01-19 19:45:17
+ * @LastEditTime: 2022-01-25 11:23:23
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -9,7 +9,7 @@
 
 <template>
   <iDialog :title="$t('TPZS.CZLJ')"
-           :visible.sync="value"
+           :visible="dialogFind"
            width="90%"
            @close="clearDiolog">
     <div class="search">
@@ -44,7 +44,7 @@
         </el-form>
       </iSearch>
     </div>
-    <div class="searchContent">
+    <!-- <div class="searchContent">
       <div class="title">
         <span>搜索结果</span>
         <iButton @click="add">{{ $t("LK_TIANJIA") }}</iButton>
@@ -67,13 +67,14 @@
                    :layout="page.layout"
                    :current-page='page.currPage'
                    :total="page.totalCount" />
-    </div>
+    </div> -->
   </iDialog>
 </template>
 <script>
 import { iButton, iDialog, iSearch, iSelect, iInput, iMessage, iPagination } from "rise";
-import { confirmTableHead } from "./data";
-import emitter from '@/utils/emitter.js';
+import { confirmTableHead } from "@/views/partsrfq/components/data";
+import emitter from '@/utils/emitter.js'
+import pageMixins from '@/utils/pageMixins'
 import {
   pagePart,
   category,
@@ -90,10 +91,10 @@ export default {
     tableList,
     iPagination
   },
-  mixins: [emitter],
+  mixins: [emitter, pageMixins],
   props: {
     title: { type: String, default: "LK_SHANGCHUAN" },
-    value: { type: Boolean },
+    dialogFind: { type: Boolean, default: false },
     repeatClick: Boolean,
     fileList: {
       type: Array,
@@ -122,45 +123,16 @@ export default {
       },
       status: 0,
       colData: {},
-      loading: false,
-      page: {
-        totalCount: 0, //总条数
-        pageSize: 10, //每页多少条
-        pageSizes: [10, 20, 50, 100], //每页条数切换
-        currPage: 1, //当前页
-        layout: 'sizes, prev, pager, next, jumper',
-      },
+      loading: false
     };
   },
   created () {
     this.status = this.$store.state.rfq.entryStatus
     this.form.categoryCode = this.$store.state.rfq.materialGroup
-    this.pagePart();
+    // this.pagePart();
     // this.category();
   },
   methods: {
-    handleSizeChange(val, callback) {
-      if (typeof callback != 'function')
-        return console.warn(
-          'function handleSizeChange parmars must be a function!'
-        )
-      this.page.pageSize = val
-      callback()
-    },
-    handleCurrentChange(val, callback) {
-      if (typeof callback != 'function')
-        return console.warn(
-          'function handleCurrentChange parmars must be a function!'
-        )
-      this.page.currPage = val
-      callback()
-    },
-    pageParmars() {
-      return {
-        pageSize: this.page.pageSize,
-        currPage: this.page.currPage,
-      }
-    },
     async pagePart () {
       this.loading = true
       let res = await category({});
@@ -214,11 +186,9 @@ export default {
     },
 
     clearDiolog () {
-
-      this.$emit("close", false);
+      this.$emit('closeDialog', false);
     },
     submit () {
-
       this.$emit("submit");
     },
     sure () {
