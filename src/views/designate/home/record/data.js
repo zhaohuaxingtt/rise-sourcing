@@ -131,27 +131,51 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'apriceNoModel',
-    name:'A价',
-    key:'AJIA',
+    props:'skdAPrice',
+    name:'SKD A价',
+    key:'SKDAJIA',
     tooltip:true
   },
   {
-    props:'bpriceNoModel',
-    name:'B价',
-    key:'BJIA',
+    props:'skdBPrice',
+    name:'SKD B价',
+    key:'SKDBJIA',
     tooltip:true
   },
   {
-    props:'apriceModel',
-    name:'含模A价',
-    key:'HANMOAJIA',
+    props:'aPrice',
+    name:'LC A价',
+    key:'LCAJIA',
     tooltip:true
   },
   {
-    props:'bpriceModel',
-    name:'含模B价',
-    key:'HANMOBJIA',
+    props:'bPrice',
+    name:'LC B价',
+    key:'LCBJIA',
+    tooltip:true
+  },
+  {
+    props:'skdANoSharePrice',
+    name:'SKD A价（不含分摊）',
+    key:'SKDAJIABUHANFENTAN',
+    tooltip:true
+  },
+  {
+    props:'skdBNoSharePrice',
+    name:'SKD B价（不含分摊）',
+    key:'SKDBJIABUHANFENTAN',
+    tooltip:true
+  },
+  {
+    props:'aNoSharePrice',
+    name:'LC A价（不含分摊）',
+    key:'LCAJIABUHANFENTAN',
+    tooltip:true
+  },
+  {
+    props:'bNoSharePrice',
+    name:'LC B价（不含分摊）',
+    key:'LCBJJIABUHANFENTAN',
     tooltip:true
   },
   {
