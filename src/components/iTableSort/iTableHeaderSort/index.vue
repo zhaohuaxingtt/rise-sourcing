@@ -76,12 +76,12 @@ export default {
       const newData = []
       for (let i = 0; i < elements.length; i++) {
         const element = elements[i]
-        console.log(element.getAttribute('data-id'))
         const item = this.dataSource.find((e) => {
-          const itemName = e.i18n ? this.language(e.i18n) : e.label
-          return itemName === element.getAttribute('data-id')
+          // const itemName = e.i18n ? this.language(e.i18n) : e.label;
+          // return itemName === element.getAttribute('data-id')
+          return e.prop == element.getAttribute('id')
         })
-        newData.push(item)
+        item && newData.push(item)
       }
       this.isShow = false
       this.$emit('callback', newData)
