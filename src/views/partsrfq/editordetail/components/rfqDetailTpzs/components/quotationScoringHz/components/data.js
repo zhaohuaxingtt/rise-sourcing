@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-19 22:29:06
+ * @LastEditTime: 2022-01-25 20:17:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -290,7 +290,7 @@ export function translateRating(supplierList,ratingList) {
      titleList.forEach(itemsbb=>{
        const map = c.find(it=>it.rateType == itemsbb)
        if(map){
-        maps.push({rate:map.rateList,isAllPartRateConsistent:map.isAllPartRateConsistent} || '') 
+        maps.push({rate:map.rate,isAllPartRateConsistent:map.isAllPartRateConsistent} || '') 
        }
      })
      ratingListPrivate.push(maps)
@@ -350,7 +350,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
         })
       }
       if(items.props == 'partNo'){
-        total[items.props] = 'Subtotal'
+        total[items.props] = 'Total'
         groupArr = groupArr.map(item => {
           return {
             ...item,
@@ -375,7 +375,14 @@ export function subtotal(tableHeader,dataList,priceInfo){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                        [key]: (()=>{
+                          if(key == 'cfPartAPrice' || key == 'ftSkdAPrice'){
+                            return asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]):''
+                          }else{
+                            return element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                          }
+
+                        })()
                       }
                     })
                     total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)

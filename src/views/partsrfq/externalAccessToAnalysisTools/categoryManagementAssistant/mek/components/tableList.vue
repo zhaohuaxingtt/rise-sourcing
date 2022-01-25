@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2022-01-19 14:00:09
+ * @LastEditTime: 2022-01-25 17:11:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -39,17 +39,15 @@
                        :label="item.motorTypeName"
                        min-width="180"
                        show-overflow-tooltip>
-        <el-table-column :label="gridData.config[item.label]"
-                         :prop="item.label"
-                         show-overflow-tooltip
-                         :render-header="renderHeader">
+        <el-table-column :prop="item.label"
+                         show-overflow-tooltip>
           <editable-cell slot-scope="{row}"
                          :show-input="row.editMode"
                          v-model="row[item.label]">
             <span slot="content">{{row[item.label]}}</span>
           </editable-cell>
           <template slot="header">
-            <el-tooltip effect="dark"
+            <el-tooltip effect="light"
                         :content="gridData.config[item.label]"
                         placement="top">
               <span>{{ gridData.config[item.label] }}</span>
@@ -160,6 +158,9 @@ export default {
       this.editFlag = false
     },
     del () {
+      if (this.multipleSelection.length === 0) {
+        return iMessage.error(this.language('QINGXUANZESHUJU', '请选择数据'))
+      }
       let textTypeId = []
       this.multipleSelection.forEach(item => {
         textTypeId.push(item.textTypeId)
@@ -186,11 +187,46 @@ export default {
           whiteSpace: 'nowrap'
         },
       }, [
-        h('p', {}, header[0]),
-        h('p', {}, header[1]),
-        h('p', {}, header[2]),
-        h('p', {}, header[3]),
-        h('p', {}, header[4])
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          },
+          on: {
+            hover: () => {
+
+            }
+          },
+        }, header[0]),
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }
+        }, header[1]),
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }
+        }, header[2]),
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }
+        }, header[3]),
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }
+        }, header[4])
       ])];
     },
     //表格保存

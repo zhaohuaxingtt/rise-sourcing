@@ -26,27 +26,27 @@
                 <iInput  :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"></iInput>
               </el-form-item> -->
                <el-form-item  :label="language('LK_LINGJIANHAO','零件号')"
-                  v-permission.auto="PARTSRFQ_LINGJIANHAO|零件号">
+                  >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
               </el-form-item>
               <el-form-item  :label="language('LK_FSNR','零件采购项目号')"
-                  v-permission.auto="PARTSRFQ_FSNR|零件采购项目号">
+                  >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsNum"></iInput>
               </el-form-item>
               <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')"
-                  v-permission.auto="PARTSRFQ_RFQBIANHAO|RFQ编号">
+                  >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.rfqIdVague"></iInput>
               </el-form-item>    
               <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')"
-                  v-permission.auto="PARTSRFQ_XUNJIACAIGOUYUAN|询价采购员名称">
+                >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
               </el-form-item>         
               <el-form-item  :label="language('LK_SAP','供应商SAP号')"
-                  v-permission.auto="PARTSRFQ_SAP|供应商SAP号">
+                 >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>
               </el-form-item>
               <el-form-item  :label="language('LK_SUPPLIERNAME','供应商名称')"
-                  v-permission.auto="PARTSRFQ_SUPPLIERNAME|供应商名称">
+                 >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierName"></iInput>
               </el-form-item>
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSRFQ_MODELPROJECT|车型项目">
