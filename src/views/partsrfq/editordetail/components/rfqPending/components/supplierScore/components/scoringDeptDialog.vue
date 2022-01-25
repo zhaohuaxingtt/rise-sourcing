@@ -126,7 +126,7 @@ export default {
       if (this.deptMap[rateTag] && Object.keys(this.deptMap[rateTag]).length) return
 
       return getRfqRateDeparts({
-        rfqIds: type === "all" ? undefined : this.ids,
+        // rfqIds: type === "all" ? undefined : this.ids,
         rateTag
       })
       .then(res => {
@@ -194,13 +194,13 @@ export default {
         }
       })
       .catch(() => {
-          this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", [{
+          this.deptMap[rateTag] && this.deptMap[rateTag][rateDepartNum] && this.$set(this.deptMap[rateTag][rateDepartNum], "raterList", [{
             ...data,
             label: data.rater,
             value: data.raterId,
             key: data.raterId,
           }]);
-          this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", [{
+          this.deptMap[rateTag] && this.deptMap[rateTag][rateDepartNum] && this.$set(this.deptMap[rateTag][rateDepartNum], "coordinatorList", [{
             ...data,
             label: data.coordinator,
             value: data.coordinatorId,
