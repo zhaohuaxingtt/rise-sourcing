@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-25 11:31:56
+ * @LastEditTime: 2022-01-25 20:17:48
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -350,7 +350,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
         })
       }
       if(items.props == 'partNo'){
-        total[items.props] = 'Subtotal'
+        total[items.props] = 'Total'
         groupArr = groupArr.map(item => {
           return {
             ...item,
@@ -375,7 +375,14 @@ export function subtotal(tableHeader,dataList,priceInfo){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                        [key]: (()=>{
+                          if(key == 'cfPartAPrice' || key == 'ftSkdAPrice'){
+                            return asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]):''
+                          }else{
+                            return element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                          }
+
+                        })()
                       }
                     })
                     total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
