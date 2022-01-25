@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-25 20:17:48
+ * @LastEditTime: 2022-01-25 21:18:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -138,7 +138,7 @@ export const whiteListGs = ['currentSupplier','headerEbr','groupName','partNo','
  * @param {*} title
  * @return {*}
  */
-export const needSubTotal = ['cfPartAPrice','ftSkdAPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto','developmentCost','releaseCost','toolingShare']
+export const needSubTotal = ['cfPartAPrice','cfPartBPrice','ftSkdAPrice','ftSkdBPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto','developmentCost','releaseCost','toolingShare']
 /**
  * @description:根据不同type获取options列表，这个方法适用于所有模板
  * @param {*} type 想要获取的type类型
@@ -367,25 +367,28 @@ export function subtotal(tableHeader,dataList,priceInfo){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):''
+                        [key]: asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):'\\'
                       }
                     })
                     total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
                   }else{
-                    groupArr = groupArr.map(item => {
-                      return {
-                        ...item,
-                        [key]: (()=>{
-                          if(key == 'cfPartAPrice' || key == 'ftSkdAPrice'){
-                            return asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]):''
-                          }else{
-                            return element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
-                          }
-
-                        })()
-                      }
-                    })
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
+                    if(key == 'cfPartAPrice' || key == 'ftSkdAPrice' || key == 'cfPartBPrice' || key == 'ftSkdBPrice'){
+                      groupArr = groupArr.map(item => {
+                        return {
+                          ...item,
+                          [key]: asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]):'\\'
+                        }
+                      })
+                      total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
+                    }else{
+                      groupArr = groupArr.map(item => {
+                        return {
+                          ...item,
+                          [key]: element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                        }
+                      })
+                      total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`))
+                    }
                   }
                 }
               }
