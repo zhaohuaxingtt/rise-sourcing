@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-01-25 11:19:12
+ * @LastEditTime: 2022-01-25 11:39:54
  * @LastEditors: YoHo
  * @Description: table组件
 -->
@@ -198,13 +198,8 @@ export default{
     return {
       settingVisible: false,
       header: cloneDeep(this.tableTitle),
+      // header: cloneDeep(this.tableTitle).filter(i=> !i.isHidden),
       tableSettingColumns: []
-    }
-  },
-  watch:{
-    tableTitle(newVal){
-      this.header = cloneDeep(newVal)
-      this.initTableSettingColumns()
     }
   },
   created() {
