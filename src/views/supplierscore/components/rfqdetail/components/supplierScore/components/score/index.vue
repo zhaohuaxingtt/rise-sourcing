@@ -189,6 +189,7 @@ export default {
 
     
   },
+  inject: ["getRfqDetailByCurrentDept"],
   data() {
     return {
       editStatus: false,
@@ -266,6 +267,7 @@ export default {
           iMessage.success(message)
           this.forwardDialogVisible = false
           this.getRfqBdlRatingsByCurrentDept()
+          this.getRfqDetailByCurrentDept()
         } else {
           iMessage.error(message)
         }
@@ -288,6 +290,7 @@ export default {
           iMessage.success(message)
           // this.$emit("updateRfq")
           this.getRfqBdlRatingsByCurrentDept()
+          this.getRfqDetailByCurrentDept()
         } else {
           iMessage.error(message)
         }
