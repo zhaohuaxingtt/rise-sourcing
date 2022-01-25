@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-01-25 13:48:49
+ * @LastEditTime: 2022-01-25 14:32:39
  * @LastEditors: Please set LastEditors
  * @Description: table组件
 -->
@@ -201,6 +201,12 @@ export default{
       settingVisible: false,
       header: cloneDeep(this.tableTitle),
       tableSettingColumns: []
+    }
+  },
+  watch:{
+    tableTitle(newVal){
+      this.header = cloneDeep(newVal)
+      this.initTableSettingColumns()
     }
   },
   created() {
