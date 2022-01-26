@@ -89,6 +89,14 @@ export const partDetaiListTitle = [
     width: 130,
   },
   {
+		props: 'sourcingNumber',
+		name: 'SourcingNumber',
+		key: 'SOURCINGNUMBER',
+		tooltip: true,
+		isCommonSourcingShow:true,
+		width:160
+	},
+  {
     props: "partNameZh",
     name: "零件名（中）",
     key: "partsprocure.PARTSPROCUREPARTNAMEZH",
