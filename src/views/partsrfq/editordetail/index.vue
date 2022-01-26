@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-24 23:51:28
+ * @LastEditTime: 2022-01-26 18:12:47
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -564,7 +564,7 @@ export default {
                 this.disabled = !!res.data.isFreeze;
                 if (dialogPage) {
                   //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
-                  this.activityTabIndex = '5';
+                  this.activityTabIndex = '2';
                 }
                 this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
                 this.childFnList.forEach((i) => i());
