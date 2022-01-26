@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-12-24 09:42:45
- * @LastEditors: caopeng
+ * @LastEditTime: 2022-01-26 18:27:55
+ * @LastEditors: YoHo
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
 -->
@@ -35,7 +35,7 @@
               </el-form-item>
               <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')"
                   >
-                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.rfqIdVague"></iInput>
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model.number="form.rfqIdVague"></iInput>
               </el-form-item>    
               <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')"
                 >
