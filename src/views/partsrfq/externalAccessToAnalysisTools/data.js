@@ -35,6 +35,7 @@ export const categoryManagementAssistantList = [
     url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis',
     activePath: '/sourcing/categoryManagementAssistant/internalDemandAnalysis',
     key: '内部需求分析',
+    permissionKey:"CATEGORY_ASSISTANT_NEIBUXUQIUFENXI"
   },
   {
     value: 2,
@@ -43,6 +44,7 @@ export const categoryManagementAssistantList = [
     activePath:
       '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis',
     key: '外部供应市场分析',
+    permissionKey:"CATEGORY_ASSISTANT_WBGYSCFX"
   },
   {
     value: 3,
@@ -51,6 +53,7 @@ export const categoryManagementAssistantList = [
     activePath:
       '/sourcing/categoryManagementAssistant/materialGroupPositioning',
     key: '材料组定位',
+    permissionKey:"CATEGORY_ASSISTANT_CAILIAOZUDINGWEI"
   },
   {
     value: 4,
@@ -58,5 +61,6 @@ export const categoryManagementAssistantList = [
     url: '/sourcing/categoryManagementAssistant/listOfInitiatives',
     activePath: '/sourcing/categoryManagementAssistant/listOfInitiatives',
     key: '举措清单',
+    permissionKey:"CATEGORY_ASSISTANT_JUCUOQINGDAN"
   },
 ]

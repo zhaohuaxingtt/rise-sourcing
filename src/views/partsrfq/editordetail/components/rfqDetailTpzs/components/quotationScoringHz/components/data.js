@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-25 11:31:56
+ * @LastEditTime: 2022-01-26 12:55:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -138,7 +138,7 @@ export const whiteListGs = ['currentSupplier','headerEbr','groupName','partNo','
  * @param {*} title
  * @return {*}
  */
-export const needSubTotal = ['cfPartAPrice','ftSkdAPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto','developmentCost','releaseCost','toolingShare']
+export const needSubTotal = ['cfPartAPrice','cfPartBPrice','ftSkdAPrice','ftSkdBPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto','developmentCost','releaseCost','toolingShare']
 /**
  * @description:根据不同type获取options列表，这个方法适用于所有模板
  * @param {*} type 想要获取的type类型
@@ -350,11 +350,11 @@ export function subtotal(tableHeader,dataList,priceInfo){
         })
       }
       if(items.props == 'partNo'){
-        total[items.props] = 'Subtotal'
+        total[items.props] = 'Total'
         groupArr = groupArr.map(item => {
           return {
             ...item,
-            [items.props]: 'Group total: '+item.groupName
+            [items.props]: 'Group total: ' + item.groupName
           }
         })
       }else{
@@ -363,22 +363,22 @@ export function subtotal(tableHeader,dataList,priceInfo){
             for(let key in element){
                 if(items.props == key){
                   //需要 Lc Aprice . Lc Bprice TTo 
-                  if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == 'skdAPrice' || removeKeysNumber(key) == 'skdBPrice'){ //去掉ttoTotal时候的ebr
+                  if(['lcAPrice','lcBPrice','skdAPrice','skdBPrice','cfPartAPrice','ftSkdAPrice','cfPartBPrice','ftSkdBPrice'].includes(removeKeysNumber(key))){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):''
+                        [key]: asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):'/'
                       }
                     })
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
+                    total[key] = (!element[key] || total[key] == "/")?"/":parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
                   }else{
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                        [key]: element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)) : item[key]
                       }
                     })
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
+                    total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`))
                   }
                 }
               }

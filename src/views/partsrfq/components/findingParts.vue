@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2022-01-25 10:37:08
+ * @LastEditTime: 2022-01-19 19:45:17
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -9,7 +9,7 @@
 
 <template>
   <iDialog :title="$t('TPZS.CZLJ')"
-           :visible="true"
+           :visible.sync="value"
            width="90%"
            @close="clearDiolog">
     <div class="search">
@@ -73,8 +73,7 @@
 <script>
 import { iButton, iDialog, iSearch, iSelect, iInput, iMessage, iPagination } from "rise";
 import { confirmTableHead } from "./data";
-import emitter from '@/utils/emitter.js'
-import pageMixins from '@/utils/pageMixins'
+import emitter from '@/utils/emitter.js';
 import {
   pagePart,
   category,
@@ -91,24 +90,24 @@ export default {
     tableList,
     iPagination
   },
-  mixins: [emitter, pageMixins],
-  // props: {
-  //   title: { type: String, default: "LK_SHANGCHUAN" },
-  //   value: { type: Boolean },
-  //   repeatClick: Boolean,
-  //   fileList: {
-  //     type: Array,
-  //     default: () => {
-  //       return [];
-  //     },
-  //   },
-  //   selectedParts: {
-  //     type: Array,
-  //     default: () => {
-  //       return [];
-  //     },
-  //   }
-  // },
+  mixins: [emitter],
+  props: {
+    title: { type: String, default: "LK_SHANGCHUAN" },
+    value: { type: Boolean },
+    repeatClick: Boolean,
+    fileList: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    selectedParts: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    }
+  },
   data () {
     return {
       optionList: [],
@@ -123,16 +122,45 @@ export default {
       },
       status: 0,
       colData: {},
-      loading: false
+      loading: false,
+      page: {
+        totalCount: 0, //总条数
+        pageSize: 10, //每页多少条
+        pageSizes: [10, 20, 50, 100], //每页条数切换
+        currPage: 1, //当前页
+        layout: 'sizes, prev, pager, next, jumper',
+      },
     };
   },
   created () {
     this.status = this.$store.state.rfq.entryStatus
     this.form.categoryCode = this.$store.state.rfq.materialGroup
-    // this.pagePart();
+    this.pagePart();
     // this.category();
   },
   methods: {
+    handleSizeChange(val, callback) {
+      if (typeof callback != 'function')
+        return console.warn(
+          'function handleSizeChange parmars must be a function!'
+        )
+      this.page.pageSize = val
+      callback()
+    },
+    handleCurrentChange(val, callback) {
+      if (typeof callback != 'function')
+        return console.warn(
+          'function handleCurrentChange parmars must be a function!'
+        )
+      this.page.currPage = val
+      callback()
+    },
+    pageParmars() {
+      return {
+        pageSize: this.page.pageSize,
+        currPage: this.page.currPage,
+      }
+    },
     async pagePart () {
       this.loading = true
       let res = await category({});
@@ -186,9 +214,11 @@ export default {
     },
 
     clearDiolog () {
-      this.$emit('closeDialog', false);
+
+      this.$emit("close", false);
     },
     submit () {
+
       this.$emit("submit");
     },
     sure () {

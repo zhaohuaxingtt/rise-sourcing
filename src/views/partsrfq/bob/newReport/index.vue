@@ -1,58 +1,39 @@
 <template>
-  <iPage class="new-bob"
-         v-loading="onDataLoading">
+  <iPage class="new-bob" v-loading="onDataLoading">
     <div>
       <div class="navBox flex-between-center">
-        <span class="title font-weight">BOB{{ $t('TPZS.FENXI') }} <span v-if="inside">-RFQ {{ rfq }}</span></span>
-        <div class="flex-align-center"
-             v-if="!isComponent">
+        <span class="title font-weight"
+          >BOB{{ $t('TPZS.FENXI') }} <span v-if="inside">-RFQ {{ rfq }}</span></span
+        >
+        <div class="flex-align-center" v-if="!isComponent">
           <!--预览-->
-          <iButton class="margin-left30"
-                   @click="handlePreview">{{ $t('LK_YULAN') }}</iButton>
+          <iButton class="margin-left30" @click="handlePreview">{{ $t('LK_YULAN') }}</iButton>
           <!--保存-->
-          <iButton class="margin-left30"
-                   @click="saveDialog">{{ $t('LK_BAOCUN') }}</iButton>
+          <iButton class="margin-left30" @click="saveDialog">{{ $t('LK_BAOCUN') }}</iButton>
           <!--BoB分析库-->
           <iButton @click="goToBob">BoB{{ $t('分析库') }}</iButton>
           <!--查找零件-->
-          <iButton class="margin-left30"
-                   @click="findPart"
-                   v-if="!inside">{{ $t('查找零件') }}</iButton>
+          <iButton class="margin-left30" @click="findPart" v-if="!inside">{{ $t('查找零件') }}</iButton>
         </div>
       </div>
-      <el-row :gutter="20"
-              class="margin-top20">
-        <el-col span="4"
-                v-if="!isComponent">
-          <iCard :collapse="false"
-                 style="height: 620px">
-            <el-form label-position="top"
-                     :model="form">
+      <el-row :gutter="20" class="margin-top20">
+        <el-col span="4" v-if="!isComponent">
+          <iCard :collapse="false" style="height: 620px">
+            <el-form label-position="top" :model="form">
               <el-row class="margin-bottom20">
                 <div v-if="inside">
                   <!--比较类型-->
                   <el-form-item :label="$t('比较类型')">
-                    <iSelect v-model="chartType"
-                             @change="changeBy">
-                      <el-option value="supplier"
-                                 :label="$t('按供应商比较')"> </el-option>
-                      <el-option value="turn"
-                                 :label="$t('按轮次比较')"></el-option>
-                      <el-option value="spareParts"
-                                 :label="$t('按零件号比较')"></el-option>
+                    <iSelect v-model="chartType" @change="changeBy">
+                      <el-option value="supplier" :label="$t('按供应商比较')"> </el-option>
+                      <el-option value="turn" :label="$t('按轮次比较')"></el-option>
+                      <el-option value="spareParts" :label="$t('按零件号比较')"></el-option>
                     </iSelect>
                   </el-form-item>
                   <!--供应商-->
                   <el-form-item :label="$t('TPZS.GONGYINGSHANG')">
-                    <el-select multiple
-                               clearable
-                               value-key
-                               :multiple-limit="chartType === 'supplier' ? 5 : 1"
-                               v-model="form.supplier">
-                      <el-option v-for="i in supplierList"
-                                 :key="i.supplierId"
-                                 :value="i.supplierId"
-                                 :label="i.shortNameZh">
+                    <el-select multiple clearable value-key :multiple-limit="chartType === 'supplier' ? 5 : 1" v-model="form.supplier">
+                      <el-option v-for="i in supplierList" :key="i.supplierId" :value="i.supplierId" :label="i.shortNameZh">
                         <span style="float: left">{{ i.shortNameZh }}</span>
                         <span style="float: right; color: #8492a6; font-size: 13px"><i class="el-icon-error"></i> </span>
                       </el-option>
@@ -60,63 +41,45 @@
                   </el-form-item>
                   <!--轮次-->
                   <el-form-item :label="$t('轮次')">
-                    <el-select multiple
-                               clearable
-                               value-key
-                               :multiple-limit="chartType === 'turn' ? 5 : 1"
-                               v-model="form.turn">
-                      <el-option :value="Number(-1)"
-                                 label="最新"
-                                 v-if="chartType !== 'turn'"></el-option>
-                      <el-option v-for="i in turnList"
-                                 :key="i.turn"
-                                 :value="i.turn"
-                                 :label="'第' + i.turn + '轮'"></el-option>
+                    <el-select multiple clearable value-key :multiple-limit="chartType === 'turn' ? 5 : 1" v-model="form.turn">
+                      <el-option :value="Number(-1)" label="最新" v-if="chartType !== 'turn'"></el-option>
+                      <el-option v-for="i in turnList" :key="i.turn" :value="i.turn" :label="'第' + i.turn + '轮'"></el-option>
                     </el-select>
                   </el-form-item>
                   <!--零件号-->
                   <el-form-item :label="$t('LK_SPAREPARTSNUMBER') + '/' + $t('LK_FSHAO')">
-                    <i-select multiple
-                              clearable
-                              value-key
-                              :multiple-limit="chartType === 'spareParts' ? 5 : 1"
-                              v-model="form.spareParts">
-                      <el-option v-for="i in partList"
-                                 :key="i.fsNo"
-                                 :value="i.fsNo"
-                                 :label="i.fsNo + '/' + i.spareParts"></el-option>
+                    <i-select multiple clearable value-key :multiple-limit="chartType === 'spareParts' ? 5 : 1" v-model="form.spareParts">
+                      <el-option v-for="i in partList" :key="i.fsNo" :value="i.fsNo" :label="i.fsNo + '/' + i.spareParts"></el-option>
                     </i-select>
                   </el-form-item>
                 </div>
                 <div v-else>
                   <el-form-item :label="$t('比较类型')">
-                    <iSelect v-model="chartType"
-                             @change="changeBy">
-                      <el-option value="combination"
-                                 :label="$t('混合比较')"> </el-option>
+                    <iSelect v-model="chartType" @change="changeBy">
+                      <el-option value="combination" :label="$t('混合比较')"> </el-option>
                     </iSelect>
                   </el-form-item>
                   <el-form-item :label="$t('FS号-零件号-供应商')">
-                    <custom-select :data="options"
-                                   label="nameZh"
-                                   value="key"
-                                   secordLabel="value"
-                                   :multiple="true"
-                                   @change="handleMultiChange"
-                                   v-model="form.combination"
-                                   :disabled="false"
-                                   :search-method="handleMultiSearch"
-                                   :multiple-limit="chartType === 'combination' ? 6 : 1"
-                                   :popoverClass="'popover-class'" />
+                    <custom-select
+                      :data="options"
+                      label="nameZh"
+                      value="key"
+                      secordLabel="value"
+                      :multiple="true"
+                      @change="handleMultiChange"
+                      v-model="form.combination"
+                      :disabled="false"
+                      :search-method="handleMultiSearch"
+                      :multiple-limit="chartType === 'combination' ? 6 : 1"
+                      :popoverClass="'popover-class'"
+                    />
                   </el-form-item>
                 </div>
               </el-row>
             </el-form>
             <div class="end">
-              <iButton type="primary"
-                       @click="searchChartData">{{ $t('LK_QUEDING') }}</iButton>
-              <iButton type="primary"
-                       @click="handleSearchReset">{{ $t('LK_ZHONGZHI') }}</iButton>
+              <iButton type="primary" @click="searchChartData">{{ $t('LK_QUEDING') }}</iButton>
+              <iButton type="primary" @click="handleSearchReset">{{ $t('LK_ZHONGZHI') }}</iButton>
             </div>
           </iCard>
         </el-col>
@@ -125,19 +88,13 @@
             <div style="width: 100%; height: 30px;display: flex;flex-flow: row nowrap;justify-content: space-between;">
               <div>
                 <span class="chartTitle">{{ chartTitle }}</span>
-                <el-button type="primary"
-                           icon="el-icon-refresh"
-                           size="mini"
-                           circle
-                           @click="refresh"> </el-button>
+                <el-button type="primary" icon="el-icon-refresh" size="mini" circle @click="refresh"> </el-button>
               </div>
 
               <div class="legend">
                 <ul>
-                  <li v-for="(item, index) in anchorList"
-                      :key="index">
-                    <i class="circle"
-                       :style="color(item)"></i>
+                  <li v-for="(item, index) in anchorList" :key="index">
+                    <i class="circle" :style="color(item)"></i>
                     <span style="vertical-align: baseline">{{ item }}</span>
                   </li>
                 </ul>
@@ -145,101 +102,101 @@
             </div>
             <div style="display: flex;flex-flow: row nowrap;">
               <div :style="{ width: groupIds ? '100%' : inside ? '75%' : '100%' }">
-                <crown-bar :chartData="chartData"
-                           :partList="partList"
-                           :title="chartTitle"
-                           :maxData="maxData"
-                           :type="bobType"
-                           :by="chartType"
-                           @select="showSelect"
-                           @type-changed="bobTypeChanged" />
+                <crown-bar
+                  :chartData="chartData"
+                  :partList="partList"
+                  :title="chartTitle"
+                  :maxData="maxData"
+                  :type="bobType"
+                  :by="chartType"
+                  @select="showSelect"
+                  @type-changed="bobTypeChanged"
+                />
               </div>
-              <out-bar :chartData="chartData1"
-                       :maxData="maxData"
-                       :isPreview="isPreview"
-                       preview
-                       @del="delOut"
-                       @change="changeOut"
-                       @find-part="findPart"
-                       style="flex: 1;"
-                       v-if="inside"></out-bar>
+              <out-bar
+                :chartData="chartData1"
+                :maxData="maxData"
+                :isPreview="isPreview"
+                preview
+                @del="delOut"
+                @change="changeOut"
+                @find-part="findPart"
+                style="flex: 1;"
+                v-if="inside"
+              ></out-bar>
             </div>
           </iCard>
         </el-col>
       </el-row>
-      <el-row :gutter="20"
-              class="margin-top20">
-        <el-col span="4"
-                v-if="!isComponent">
+      <el-row :gutter="20" class="margin-top20">
+        <el-col span="4" v-if="!isComponent">
           <bob-pin :offset-top="80">
             <iCard :collapse="false">
               <ul class="anchorList flex">
-                <li v-for="(i, index) in anchorList"
-                    :key="index"
-                    @click="doActive(i, index)"
-                    :class="{ active: index == current }">{{ i }}</li>
+                <li v-for="(i, index) in anchorList" :key="index" @click="doActive(i, index)" :class="{ active: index == current }">{{ i }}</li>
               </ul>
             </iCard>
           </bob-pin>
         </el-col>
-        <el-col span="4"
-                v-if="!isComponent"
-                style="border:1px solid #F8F9FA;"></el-col>
+        <el-col span="4" v-if="!isComponent" style="border:1px solid #F8F9FA;"></el-col>
         <el-col :span="isComponent ? 24 : 20">
-          <bobAnalysis ref="bobAnalysis"
-                       :label="label"
-                       :formUpdata="formUpdata"
-                       :propSchemeId="analysisSchemeId"
-                       :propGroupId="groupId"
-                       :isPreview="isPreview"></bobAnalysis>
+          <bobAnalysis
+            ref="bobAnalysis"
+            :label="label"
+            :formUpdata="formUpdata"
+            :propSchemeId="analysisSchemeId"
+            :propGroupId="groupId"
+            :isPreview="isPreview"
+          ></bobAnalysis>
         </el-col>
       </el-row>
-      <findingParts :dialogFind="dialogFind"
-                    :selectedParts="chartData1"
-                    @sure="sure"
-                    @closeDialog="closeDialog"
-                    @add="add"></findingParts>
+      <!-- <div class="margin-top20"
+           style="display:flex;flex-flow:row nowrap;justify-content:flex-end;">
+        <div style="width: calc(100% / 6);padding-right: 20px; border:1px solid #f00;" v-if="!isComponent" >
+          
+        </div>
+        <div style="width: calc(100% / 6 * 5);border:1px solid #f90;">
+          
+        </div>
+      </div> -->
+      <!-- </el-row> -->
     </div>
-    <preview ref="preview"
-             v-if="pre"
-             :value="pre"
-             :crownBarChartData="chartData"
-             :outBarChartData="chartData1"
-             :partList="partList"
-             :title="chartTitle"
-             :type="bobType"
-             :by="chartType"
-             :maxData="maxData"
-             :label="label"
-             :formUpdata="formUpdata"
-             :propSchemeId="analysisSchemeId"
-             :propGroupId="groupId"
-             :reportName="reportName"
-             @closeDialog="closePreView"></preview>
-    <iDialog title="保存"
-             :visible.sync="dialogVisible"
-             width="20%"
-             @close="close">
+    <findingParts v-if="value" v-show="value" :value="value" :selectedParts="chartData1" @sure="sure" @close="closeDialog" @add="add"></findingParts>
+    <preview
+      ref="preview"
+      v-if="pre"
+      :value="pre"
+      :crownBarChartData="chartData"
+      :outBarChartData="chartData1"
+      :partList="partList"
+      :title="chartTitle"
+      :type="bobType"
+      :by="chartType"
+      :maxData="maxData"
+      :label="label"
+      :formUpdata="formUpdata"
+      :propSchemeId="analysisSchemeId"
+      :propGroupId="groupId"
+      :reportName="reportName"
+      @closeDialog="closePreView"
+    ></preview>
+    <iDialog title="保存" :visible.sync="dialogVisible" width="20%" @close="close">
       <div>
         <div class="margin-bottom15 flex-between-center">
           <label for="">保存在分析库</label>
           <el-checkbox v-model="analysisSave"></el-checkbox>
         </div>
-        <iInput v-model="analysisName"
-                placeholder="请输入文件名称" />
+        <iInput v-model="analysisName" placeholder="请输入文件名称" />
       </div>
       <div class="margin-top20">
         <div class="margin-bottom15 flex-between-center">
           <label for="">保存为报告</label>
           <el-checkbox v-model="reportSave"></el-checkbox>
         </div>
-        <iInput v-model="reportName"
-                placeholder="请输入文件名称" />
+        <iInput v-model="reportName" placeholder="请输入文件名称" />
       </div>
-      <span slot="footer"
-            class="dialog-footer">
-        <iButton type="primary"
-                 @click="save">确 定</iButton>
+      <span slot="footer" class="dialog-footer">
+        <iButton type="primary" @click="save">确 定</iButton>
       </span>
     </iDialog>
   </iPage>
@@ -250,10 +207,11 @@ import { iPage, iButton, iCard, iSelect, icon, iDialog, iInput, iMessage } from 
 import CrownBar from './components/crownBar.vue';
 import BobPin from './components/pin.vue';
 import bobAnalysis from '@/views/partsrfq/bob/bobAnalysis/index.vue';
-import findingParts from './components/findingParts.vue'
+import findingParts from '@/views/partsrfq/components/findingParts.vue';
 import { getBobLevelOne, removeBobOut, addBobOut } from '@/api/partsrfq/bob';
 import { part, supplier, turn, update, add, initOut, querySupplierTurnPartList, generateGroupId } from '@/api/partsrfq/bob/analysisList';
 import customSelect from '@/views/demo';
+import { downloadPDF, dataURLtoFile } from '@/utils/pdf';
 import preview from './preview.vue';
 import OutBar from './components/outBar.vue';
 
@@ -275,7 +233,7 @@ export default {
     customSelect,
     BobPin,
   },
-  data () {
+  data() {
     return {
       onDataLoading: false,
       rfq: '',
@@ -292,7 +250,7 @@ export default {
       },
       showSelectDiv: false,
       analysisSchemeId: '',
-      dialogFind: false,
+      value: false,
       pre: false,
       partList: [],
       supplierList: [],
@@ -336,7 +294,7 @@ export default {
       default: false,
     },
   },
-  async created () {
+  async created() {
     // 当组件使用的时候隐藏侧边及顶部按钮
     if (this.propSchemeId || this.propGroupId) {
       this.isComponent = true;
@@ -391,7 +349,7 @@ export default {
   },
   watch: {
     analysisName: {
-      handler (val, newval) {
+      handler(val, newval) {
         if (newval && !this.newBuild) {
           this.isCover = false;
         }
@@ -407,7 +365,7 @@ export default {
     //   immediate: true
     // },
     chartType: {
-      handler (newval) {
+      handler(newval) {
         if (!this.inside) {
           this.chartType = 'combination';
         }
@@ -415,11 +373,11 @@ export default {
       },
     },
   },
-  mounted () {
+  mounted() {
     // window.addEventListener('scroll', this.handleScroll, true)
   },
   methods: {
-    getSelectedParts () {
+    getSelectedParts() {
       if (this.chartData1 && this.chartData1.length > 0) {
         var results = [];
         this.chartData1.forEach((item) => {
@@ -430,7 +388,7 @@ export default {
         return [];
       }
     },
-    handlePreview () {
+    handlePreview() {
       this.pre = true;
       setTimeout(() => {
         if (!this.bobType) {
@@ -439,10 +397,10 @@ export default {
         this.$refs.preview.open();
       }, 200);
     },
-    bobTypeChanged (type) {
+    bobTypeChanged(type) {
       this.bobType = type;
     },
-    getOptions () {
+    getOptions() {
       part({
         analysisSchemeId: this.analysisSchemeId,
         data: {},
@@ -456,7 +414,7 @@ export default {
         data: {},
       }).then((res) => (this.turnList = res.data));
     },
-    querySupplierTurnPartList () {
+    querySupplierTurnPartList() {
       querySupplierTurnPartList({
         data: {},
         analysisSchemeId: this.analysisSchemeId,
@@ -464,7 +422,7 @@ export default {
         this.options = res.data;
       });
     },
-    selectChange (e) {
+    selectChange(e) {
       this.$nextTick(() => {
         let html = '';
         this.options.forEach((value, index) => {
@@ -483,18 +441,18 @@ export default {
         this.$el.querySelector('.el-select__tags').innerHTML = `<div>${html}</div>`;
       });
     },
-    closeTag (e) { },
-    findPart () {
-      this.dialogFind = true;
+    closeTag(e) {},
+    findPart() {
+      this.value = true;
     },
-    closeDialog (val) {
-      this.dialogFind = val;
+    closeDialog(val) {
+      this.value = val;
     },
-    closePreView (val) {
+    closePreView(val) {
       this.pre = val;
     },
-    sure () { },
-    changeBy (e) {
+    sure() {},
+    changeBy(e) {
       this.chartType = e;
       if (this.chartType === 'combination') {
         this.form = {
@@ -508,7 +466,7 @@ export default {
         spareParts: [],
       };
     },
-    changeType (e) {
+    changeType(e) {
       this.bobType = e;
       this.closeDiv();
       this.$refs.bobAnalysis.chargeRetrieve({
@@ -518,16 +476,16 @@ export default {
         groupId: this.groupId,
       });
     },
-    goToBob () {
+    goToBob() {
       this.$router.push('bob');
     },
-    closeDiv () {
+    closeDiv() {
       this.showSelectDiv = false;
     },
-    close () {
+    close() {
       this.reportSave = false;
     },
-    showSelect (e) {
+    showSelect(e) {
       const position = e.event.target.position;
 
       this.showSelectDiv = true;
@@ -535,11 +493,11 @@ export default {
       this.$refs.toolTipDiv.style.top = position[1] + 15 + 'px';
       this.$refs.toolTipSelect.focus();
     },
-    initChartData () {
+    initChartData() {
       // const data=require('./data.json')
       // this.chartData = data
     },
-    handleSearchReset () {
+    handleSearchReset() {
       if (this.inside) {
         this.form = {
           supplier: [],
@@ -553,7 +511,7 @@ export default {
       }
       this.getChartData();
     },
-    add (val) {
+    add(val) {
       if (val.constructor === Object) {
         iMessage.error('请选择数据');
         return;
@@ -610,7 +568,7 @@ export default {
         });
       }
     },
-    doAddBobOut (val) {
+    doAddBobOut(val) {
       addBobOut({
         analysisSchemeId: this.analysisSchemeId,
         fs: val[0].fsNum,
@@ -640,12 +598,12 @@ export default {
           this.closeDialog();
         });
     },
-    async refresh () {
+    async refresh() {
       // let res = await generateGroupId()
       // this.groupId = res.data
       this.searchChartData();
     },
-    async searchChartData () {
+    async searchChartData() {
       this.onDataLoading = true;
       if (this.inside) {
         await this.getOptions();
@@ -774,7 +732,7 @@ export default {
       );
     },
 
-    async getChartData () {
+    async getChartData() {
       this.onDataLoading = true;
       if (this.inside) {
         await this.getOptions();
@@ -870,7 +828,7 @@ export default {
         }
       );
     },
-    filterNumber (value) {
+    filterNumber(value) {
       let num = '';
       num = value / 100;
       if (num.toString().split(',').length == 1) {
@@ -888,7 +846,7 @@ export default {
         }
       }
     },
-    delOut () {
+    delOut() {
       this.onDataLoading = true;
       removeBobOut({
         id: this.chartData1[0].id,
@@ -907,19 +865,19 @@ export default {
         }
       });
     },
-    changeOut () {
+    changeOut() {
       // removeBobOut({
       //   id: this.chartData1[0].id
       // });
       this.findPart();
     },
-    handleMultiChange (val) {
+    handleMultiChange(val) {
       console.log(val);
     },
-    saveDialog () {
+    saveDialog() {
       this.dialogVisible = true;
     },
-    save () {
+    save() {
       let that = this;
       if (this.analysisSave) {
         this.dialogVisible = false;
@@ -969,16 +927,9 @@ export default {
       }
       if (this.reportSave) {
         this.pre = true;
-        setTimeout(() => {
-          console.log("save report")
-          if (!this.bobType) {
-            this.bobType = 'Best of Best';
-          }
-          this.$refs.preview.open();
-        }, 200);
       }
     },
-    doActive (i, index) {
+    doActive(i, index) {
       this.label = i;
       /*  this.$nextTick(() => {
          //页面滚动了的距离
@@ -994,7 +945,7 @@ export default {
     },
   },
   computed: {
-    chartTitle () {
+    chartTitle() {
       if (this.chartType === 'supplier') {
         return this.form.spareParts.toString();
       } else if (this.chartType === 'turn') {
@@ -1023,8 +974,8 @@ export default {
         return '';
       }
     },
-    color () {
-      return function (item) {
+    color() {
+      return function(item) {
         if (item === '原材料/散件成本') {
           return 'background: #C6DEFF';
         } else if (item === '制造成本') {
@@ -1055,7 +1006,7 @@ export default {
     min-width: 164px;
     max-width: 224px;
     z-index: 6;
-    background: "#fff";
+    background: '#fff';
     opacity: 1;
     border-radius: 5px;
     position: absolute;
@@ -1117,7 +1068,7 @@ export default {
   & .active {
     font-weight: bold;
     color: #1660f1 !important;
-    list-style: url("../../../../assets/images/circle.png") outside circle !important;
+    list-style: url('../../../../assets/images/circle.png') outside circle !important;
   }
   li {
     width: 100%;
@@ -1125,7 +1076,7 @@ export default {
     cursor: pointer;
     padding: 10px 0;
     color: #7e84a3;
-    list-style: url("../../../../assets/images/circle1.png") outside circle;
+    list-style: url('../../../../assets/images/circle1.png') outside circle;
   }
 }
 .refresh {
@@ -1157,16 +1108,16 @@ export default {
 }
 .chartTitle {
   font-size: 18px;
-  font-family: "Arial";
+  font-family: 'Arial';
   line-height: 16px;
-  font-weight: "bold";
+  font-weight: 'bold';
   margin-right: 20px;
 }
 .legend {
   // position: absolute;
   // right: 95px;
   // top: 26px;
-  font-family: "Arial";
+  font-family: 'Arial';
   font-size: 16px;
   color: #0d2451;
   ul {
