@@ -562,7 +562,7 @@ export default{
             const res1= exportFSPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)
             r(res1)
         } else if(layout === '2') {
-            const res2= exportFsSupplierAsRowTWO(this.$route.query.id,this.round,this.exportTile)
+            const res2= exportFsSupplierAsRowTWO(this.$route.query.id,this.round,this.backChoose)
             r(res2)
         } else {
             const res3= exportGsPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)
