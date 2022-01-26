@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-26 12:55:56
+ * @LastEditTime: 2022-01-26 18:56:43
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -375,10 +375,10 @@ export function subtotal(tableHeader,dataList,priceInfo){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)) : item[key]
+                        [key]: element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`)) : item[key]
                       }
                     })
-                    total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`))
+                    total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`))
                   }
                 }
               }
@@ -389,7 +389,15 @@ export function subtotal(tableHeader,dataList,priceInfo){
     })
     return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Invest \n Budget',priceInfo,dataList[0])]
   } catch (error) {
+    console.log(error)
     return {partNo:'Subtotal'}
+  }
+}
+function translateNumber(number){
+  if(number) {
+    return number.replace(/,/g,'')
+  }else{
+    return 0
   }
 }
 //查看某个groupId里面的车型项目是否相同
