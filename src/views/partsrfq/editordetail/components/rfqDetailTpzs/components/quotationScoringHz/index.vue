@@ -417,6 +417,7 @@ export default{
           this.exportTile = relTitle.allExportHiddenOrShow
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
+          console.log('console.log(this.exampelData)',this.exampelData)
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
           const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)
           console.log('subtotalList',subtotalList)
@@ -431,7 +432,7 @@ export default{
             }
             return [...accu, curr]
           },[])
-          console.log(this.exampelData)
+          console.log('this.exampelData',this.exampelData)
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
           this.$nextTick(()=>{
             this.$refs.tableList.setfixElement()
@@ -440,7 +441,7 @@ export default{
       }).catch(err=>{
         this.clearDataFs()
         this.fsTableLoading = false
-        iMessage.warn(err.desZh)
+        console.error(err)
       })
     },
     group(){
