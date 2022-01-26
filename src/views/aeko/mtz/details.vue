@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-04 09:48:12
+ * @LastEditTime: 2022-01-26 16:57:27
  * @Description: 
 -->
 <template>
@@ -35,9 +35,11 @@
         >
           {{ language('BAOCUN', '保存') }}
         </iButton>
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
       </div>
-      <tablelist
+      <tableList
         height="400"
+        ref="tableList"
         index
         :selection="true"
         :tableData="tableListData"
@@ -47,6 +49,8 @@
         v-permission.auto="MTZ_MODIFY_DETAILS_TABLE|MTZ变更表格"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
       <template #dosageChange="scope">
         <span :class="{validateDosageChangeError: scope.row.validateDosageChangeError}" v-if="!disable">
@@ -89,7 +93,7 @@
         </span>
         <span v-else>{{scope.row.newEndDate}}</span>
       </template>
-      </tablelist>
+      </tableList>
       <div class="pagination">
         <iPagination v-update
           class="pagination"
@@ -108,7 +112,9 @@
 
 <script>
 import {tableTitle} from './components/data'
-import tablelist from 'rise/web/components/iFile/tableList'; 
+// import tablelist from 'rise/web/components/iFile/tableList'; 
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import {iCard, iButton, iPagination, iInput, iDatePicker, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 // 解释附件、审批附件查询，审批附件带taskId
@@ -120,14 +126,14 @@ import {
 } from '@/api/aeko/mtz'
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableSortMixins],
   components: {
     iCard,
     iButton,
     iInput,
     iDatePicker,
     iPagination,
-    tablelist
+    tableList
   },
   inject: ['vm'],
   computed: {
