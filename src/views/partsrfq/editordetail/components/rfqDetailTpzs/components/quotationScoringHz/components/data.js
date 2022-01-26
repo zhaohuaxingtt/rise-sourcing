@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-26 18:56:43
+ * @LastEditTime: 2022-01-26 19:18:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -332,7 +332,7 @@ export function removeKeysNumber(keys){
  * @param {*} dataList
  * @return {*}
  */
-export function subtotal(tableHeader,dataList,priceInfo){
+export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
   try {
     // eslint-disable-next-line no-undef
     let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId,toolingHasShare:1}] : accu}, []), 'groupId')
@@ -367,10 +367,10 @@ export function subtotal(tableHeader,dataList,priceInfo){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):'/'
+                        [key]: fsTemplate?(asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):'/'):''
                       }
                     })
-                    total[key] = (!element[key] || total[key] == "/")?"/":parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
+                    total[key] = fsTemplate?((!element[key] || total[key] == "/")?"/":parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)):''
                   }else{
                     groupArr = groupArr.map(item => {
                       return {
@@ -390,7 +390,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
     return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Invest \n Budget',priceInfo,dataList[0])]
   } catch (error) {
     console.log(error)
-    return {partNo:'Subtotal'}
+    return [{partNo:'Subtotal'}]
   }
 }
 function translateNumber(number){
