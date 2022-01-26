@@ -334,9 +334,9 @@ export default{
 </script>
 <style lang='scss' scoped>
 .iFileTableList {
-  ::v-deep.el-table__body-wrapper {
-    height: auto!important;
-  }
+  // ::v-deep.el-table__body-wrapper {
+  //   height: auto!important;
+  // }
   ::v-deep.el-table__fixed{
     height: auto!important;
     bottom: 14px;
