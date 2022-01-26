@@ -58,6 +58,11 @@ export default {
       rfqInfo: {}
     }
   },
+  provide() {
+    return {
+      getRfqDetailByCurrentDept: this.getRfqDetailByCurrentDept,
+    };
+  },
   created() {
     this.rfqId = this.$route.query.rfqId
     this.currentTab = this.$route.query.currentTab
