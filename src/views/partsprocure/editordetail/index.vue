@@ -35,7 +35,7 @@
 			<div class="floatright">
 				<span v-if="!disabled">
 					<!-- 供应商创建定点申请单 -->
-					<createNomiappBtn v-permission.auto="PARTSPROCURE_EDITORDETAIL_CREATENOMIAPPLICATION|生成定点申请单" :datalist='[detailData]'></createNomiappBtn>
+					<createNomiappBtn v-permission.auto="PARTSPROCURE_EDITORDETAIL_CREATENOMIAPPLICATION|生成定点申请单" :datalist='[detailData]' v-if="createdNomiOnlyPartShow"></createNomiappBtn>
 					<!-------------------零件总成件的自动生成定点申请单--------------------->
 					<createNomiappBtnAccs v-permission.auto="PARTSPROCURE_EDITORDETAIL_ZC_CREATENOMIAPPLICATION|总成件-生成定点申请按钮" v-if='createdNomiappAsscShow'></createNomiappBtnAccs>
 					<!-------------------------------------------------------------------------------->
@@ -469,6 +469,9 @@
 			currentSupplierButton:function(){
 				return (this.detailData.partProjectType == partProjTypes.GSLINGJIAN || this.detailData.partProjectType == partProjTypes.GSCOMMONSOURCING) && this.detailData.fsnrGsnrNum
 			},
+			createdNomiOnlyPartShow(){
+				return this.detailData.partProjectType == partProjTypes.JINLINGJIANHAOGENGGAI
+			},
 			// 根据角色控制零件项目类型下拉值
 			partProjectTypeArray() {
 				return this.fromGroup.PART_PROJECT_TYPE || []
@@ -496,6 +499,7 @@
 			createdNomiappAsscShow(){
 				return this.detailData.partType == partsType.PARTSACCS
 			},
+			
 			linieDept: {
 				get() {
 					// if (Array.isArray(this.fromGroup.LINIE_DEPT) && !this.fromGroup.LINIE_DEPT.find(item => item.deptNum === this.detailData.linieDept)) {

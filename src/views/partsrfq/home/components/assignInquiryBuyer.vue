@@ -20,7 +20,7 @@
     </template>
     <el-form>
       <el-form-item :label="type === '1' ? language('MUBIAOXUNJIACAIGOUYUAN','目标询价采购员') : language('MUBIAOLINIE','目标LINIE')">
-        <iSelect v-model="userId">
+        <iSelect v-model="userId" :filterable="isLinieGZ">
           <el-option
             v-for="item in userOptions"
             :key="item.value"
@@ -40,7 +40,8 @@ export default {
   components: { iDialog, iButton, iSelect },
   props: {
     dialogVisible: { type: Boolean, default: false },
-    type: { type: String, default: '1'}
+    type: { type: String, default: '1'},
+    isLinieGZ:{type:Boolean,default:false}
   },
   data() {
     return {

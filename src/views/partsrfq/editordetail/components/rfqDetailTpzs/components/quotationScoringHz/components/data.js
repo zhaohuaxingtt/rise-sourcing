@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-25 21:18:05
+ * @LastEditTime: 2022-01-26 19:18:53
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -332,7 +332,7 @@ export function removeKeysNumber(keys){
  * @param {*} dataList
  * @return {*}
  */
-export function subtotal(tableHeader,dataList,priceInfo){
+export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
   try {
     // eslint-disable-next-line no-undef
     let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId,toolingHasShare:1}] : accu}, []), 'groupId')
@@ -354,7 +354,7 @@ export function subtotal(tableHeader,dataList,priceInfo){
         groupArr = groupArr.map(item => {
           return {
             ...item,
-            [items.props]: 'Group total: '+item.groupName
+            [items.props]: 'Group total: ' + item.groupName
           }
         })
       }else{
@@ -363,32 +363,22 @@ export function subtotal(tableHeader,dataList,priceInfo){
             for(let key in element){
                 if(items.props == key){
                   //需要 Lc Aprice . Lc Bprice TTo 
-                  if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == 'skdAPrice' || removeKeysNumber(key) == 'skdBPrice'){ //去掉ttoTotal时候的ebr
+                  if(['lcAPrice','lcBPrice','skdAPrice','skdBPrice','cfPartAPrice','ftSkdAPrice','cfPartBPrice','ftSkdBPrice'].includes(removeKeysNumber(key))){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):'\\'
+                        [key]: fsTemplate?(asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):'/'):''
                       }
                     })
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
+                    total[key] = fsTemplate?((!element[key] || total[key] == "/")?"/":parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)):''
                   }else{
-                    if(key == 'cfPartAPrice' || key == 'ftSkdAPrice' || key == 'cfPartBPrice' || key == 'ftSkdBPrice'){
-                      groupArr = groupArr.map(item => {
-                        return {
-                          ...item,
-                          [key]: asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]):'\\'
-                        }
-                      })
-                      total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
-                    }else{
-                      groupArr = groupArr.map(item => {
-                        return {
-                          ...item,
-                          [key]: element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
-                        }
-                      })
-                      total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`))
-                    }
+                    groupArr = groupArr.map(item => {
+                      return {
+                        ...item,
+                        [key]: element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`)) : item[key]
+                      }
+                    })
+                    total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`))
                   }
                 }
               }
@@ -399,7 +389,15 @@ export function subtotal(tableHeader,dataList,priceInfo){
     })
     return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Invest \n Budget',priceInfo,dataList[0])]
   } catch (error) {
-    return {partNo:'Subtotal'}
+    console.log(error)
+    return [{partNo:'Subtotal'}]
+  }
+}
+function translateNumber(number){
+  if(number) {
+    return number.replace(/,/g,'')
+  }else{
+    return 0
   }
 }
 //查看某个groupId里面的车型项目是否相同
