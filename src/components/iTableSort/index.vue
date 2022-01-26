@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-01-26 14:14:27
+ * @LastEditTime: 2022-01-26 15:24:54
  * @LastEditors: YoHo
  * @Description: table组件
 -->
@@ -28,7 +28,7 @@
     <!----------------------复选框------------------------------------->
     <el-table-column v-if="selection" type='selection' :width="selectConfig.width || 40" :align="selectConfig.align || 'center'" :header-align="selectConfig.headerAlign || 'center'" :selectable="selectConfig.selectable || selectable"></el-table-column>
     <!----------------------支持自定义的index插槽------------------------>
-    <el-table-column :fixed="indexFixed" v-if='index' type='index' :width='indexConfig.width || 40' :align="indexConfig.align || 'center'" :header-align="indexConfig['header-align'] || 'center'" :label="indexConfig.label || indexLabel">
+    <el-table-column :fixed="indexFixed" v-if='index' type='index' :width='indexConfig.width || 40' :align="indexConfig.align || 'center'" :header-align="indexConfig.headerAlign || 'center'" :label="indexConfig.label || indexLabel">
       <template slot-scope="scope">
         <slot :name="`_index`" :row="scope.row" :$index="scope.$index">
           {{scope.$index+1}}
@@ -42,7 +42,7 @@
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            <span>{{ scope.column.label }}</span>
+            {{ scope.column.label }}
             <i v-if="items.require" class="label-require margin-left3 margin-right3">*</i>
             <el-popover
               placement="top"
@@ -83,7 +83,7 @@
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            <span>{{ scope.column.label }}</span>
+            {{ scope.column.label }}
             <i v-if="items.require" class="label-require margin-left3 margin-right3">*</i>
             <el-popover
               placement="top"
@@ -382,9 +382,16 @@ export default{
         }
       }
     }
-    th>.cell .label-require{
-      color: #f56c6c;
-      font-style:normal;
+    th>.cell{
+      .slotHeader{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .label-require{
+        color: #f56c6c;
+        font-style:normal;
+      }
     }
   }
   .icon-gray{

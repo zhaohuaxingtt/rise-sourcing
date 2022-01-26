@@ -21,10 +21,11 @@
 			<iButton @click="deleteFile" :loading="deleting" v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_BUTTON_DELETE|AKEO详情-审批附件删除">
         {{ language("LK_SHANCHU", "删除") }}
       </iButton>
-
+      <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
     </div>
-    <tablelist
+    <tableList
       height="400"
+      ref="tableList"
       index
       :selection="true"
       :tableData="tableListData"
@@ -32,6 +33,8 @@
       :tableLoading="tableLoading"
       :lang="true"
 			@handleSelectionChange="handleSelectionChange"
+      :handleSaveSetting="handleSaveSetting"
+      :handleResetSetting="handleResetSetting"
       v-permission.auto="AEKO_AEKODETAIL_APPROVE_ATTACHMENT_TABLE|AKEO详情-审批附件列表"
     >
       <template #fileName="scope">
@@ -48,7 +51,7 @@
         <iInput v-if="!scope.row.taskId" v-model="scope.row.remark" @blur="updateApproveAttach(scope.row, 1)" :placeholder="language('LK_QINGSHURU','请输入')" clearable />
         <span v-else>{{language('JIESHIFUJIAN', '解释附件')}}</span>
       </template>
-    </tablelist>
+    </tableList>
     <div class="pagination">
       <iPagination
         v-update
@@ -70,7 +73,9 @@
 import Vuex from 'vuex'
 import {approveAttachTableTitle as tableTitle} from '../data'
 import upload from 'rise/web/components/iFile/upload'
-import tablelist from 'rise/web/components/iFile/tableList';
+// import tablelist from 'rise/web/components/iFile/tableList';
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import {downloadFile} from 'rise/web/components/iFile/lib'
 import {iCard, iButton, iPagination, iInput, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
@@ -85,13 +90,13 @@ import {
 
 export default {
   name: "aekoDetailRecord",
-  mixins: [pageMixins, recordmMixins],
+  mixins: [pageMixins, recordmMixins, tableSortMixins],
   components: {
     iCard,
     iButton,
     iPagination,
 		iInput,
-    tablelist,
+    tableList,
 		upload
     // iFileDialog
   },

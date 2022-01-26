@@ -28,11 +28,12 @@
       <div class="margin-top40" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_CARTYPE|封面表态费用表单_预览">
         <tableList
             class="summaryTable"
+            :indexConfig="{width:60}"
             :selection="false"
             index
             :show-summary="true"
             :lang="true"
-            :getSummaries="getSummaries"
+            :summary-method="getSummaries"
             :tableData="tableTDataCost"
             :tableTitle="tableTitleCost"
             :tableLoading="tableLoading.cost"
@@ -54,18 +55,24 @@
 
         <!-- 科室linie费用table -->
         <div v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE|封面表态LINIE表_预览">
-            <p class="btn-list margin-bottom20" v-if="!isFromCheck">
-                <iButton v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_QUXIAOTONGGUO|取消通过" v-if="!disabled" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
-                <!-- aeko状态为已撤销的时候禁用解冻按钮 -->
-                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_JIEDONG|解冻" @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
+            <p class="btn-list margin-bottom20">
+                <template v-if="!isFromCheck">
+                    <iButton v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_QUXIAOTONGGUO|取消通过" v-if="!disabled" @click="cancelPass" :loading="canceling">{{language('LK_QUXIAOTONGGUO','取消通过')}}</iButton>
+                    <!-- aeko状态为已撤销的时候禁用解冻按钮 -->
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_JIEDONG|解冻" @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
+                </template>
+                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
             </p>
             <tableList
                 index
+                ref="tableList"
                 :lang="true"
                 :tableData="tableListData"
                 :tableTitle="tableTitle"
                 :tableLoading="tableLoading.depart"
                 @handleSelectionChange="handleSelectionChange"
+                :handleSaveSetting="handleSaveSetting"
+                :handleResetSetting="handleResetSetting"
             >
                 <template #materialIncrease="scope">
                     {{fixNumber(scope.row.materialIncrease,2) || ''}}
@@ -107,7 +114,9 @@ import {
     iMessage,
 } from 'rise'
 import { previewBaicFrom,coverTableTitleCost,coverTableTitleDepart } from '../../data'
-import tableList from "../tableList"
+// import tableList from "../tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import { getTousandNum } from "@/utils/tool";
 import { pageMixins } from "@/utils/pageMixins";
 import {
@@ -120,7 +129,7 @@ import { roleMixins } from "@/utils/roleMixins";
 import { cloneDeep } from "lodash"
 export default {
     name:'previewCover',
-    mixins: [pageMixins, roleMixins],
+    mixins: [pageMixins, roleMixins, tableSortMixins],
     components:{
         iCard,
         iFormGroup,

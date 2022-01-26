@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-01-25 11:40:57
+ * @LastEditTime: 2022-01-26 11:17:45
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -343,7 +343,7 @@ import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage, 
 import tableList from "@/components/iTableSort"
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import dosageDialog from "../dosageDialog"
-import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle,hidenTableTitle } from "../data"
+import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
 import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject,searchInvestCar,importItemExcel } from "@/api/aeko/detail"
