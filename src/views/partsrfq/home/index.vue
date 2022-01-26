@@ -132,7 +132,7 @@
                   {{ language('LK_ZHUANPAIPINGFENRENWUS','转派任务评分') }}
                 </iButton>
                 <!--转派前期采购员：选中RFQ之后，可以手动转派前期采购员-->
-                <iButton @click="openInquiryBuyerDialog('1')" v-permission.auto="PARTSRFQ_ASSIGNMENTBUYER|转派前期采购员">
+                <iButton @click="openInquiryBuyerDialog('1')" v-permission.auto="PARTSRFQ_ASSIGNMENTBUYER|转派前期采购员"  v-if="!isLinieGZ">
                   {{ language('ZHUANPAIQIANQICAIGOUYUAN','转派前期采购员') }}
                 </iButton>
                 <!--转派LINIE：选中RFQ之后，可以手动转派转派LINIE-->
@@ -222,7 +222,7 @@
              <!------------------------------------------------------------------------>
             <!--                  转派询价采购员/LINIE弹窗                           --->
             <!------------------------------------------------------------------------>
-            <assignInquiryBuyerDialog ref="assignInquiryBuyerDialog" :dialogVisible="inquiryBuyerVisible" :type="inquiryBuyerDialogType" @changeVisible="changeInquiryBuyerDialogVisible" @handleConfirm="handleTransferConfirm" />
+            <assignInquiryBuyerDialog ref="assignInquiryBuyerDialog" :dialogVisible="inquiryBuyerVisible" :type="inquiryBuyerDialogType" @changeVisible="changeInquiryBuyerDialogVisible" @handleConfirm="handleTransferConfirm" :isLinieGZ="isLinieGZ"/>
           </iCard>
           <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
         </div>
@@ -322,6 +322,7 @@ export default {
       inquiryBuyerVisible: false,
       inquiryBuyerDialogType: '1',
       partsprocureNavList:partsprocureNavList,
+      flagIsLinieGZ:false
     };
   },
   created() {
@@ -335,7 +336,18 @@ export default {
   },
   computed: {
     ...mapState(["navList"]),
-    ...mapActions(["updateNavList"])
+    ...mapActions(["updateNavList"]),
+    isLinieGZ(){
+      let data = ["ZYCGKZ","ZYCGGZ","LINIE"]
+      let flag = false
+      this.$store.state.permission.userInfo.roleList.forEach(val=>{
+        if(data.includes(val.code)) {
+          flag = true 
+          return
+        }
+      })
+      return flag
+    }
   },
   methods: {
     handleTransferConfirm(userId, userName) {
