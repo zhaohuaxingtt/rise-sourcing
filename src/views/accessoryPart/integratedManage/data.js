@@ -59,7 +59,7 @@ export const searchList = [
   {value: 'rfqId', label: 'rfq编号', type: 'input', key: 'RFQBIANHAO', permission: 'APREPART_MANAGFMENT_RFQBIANHAO|配件-配件管理-RFQ编号', inputType: "int"},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption', permission: 'APREPART_MANAGFMENT_IDSTATS|配件-配件管理-ID状态'},
   {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'APREPART_MANAGEMENT_ISME|附件-附件管理-是否自己'},
-  {value: 'linieApportionStatus', label: 'LINIE分配状态', type: 'select', selectOption: 'linieStatusOption' ,key: 'LINIEFENPEIZHUANGTAI'},
+  {value: 'linieApportionStatus', label: 'LINIE分配状态', type: 'select', selectOption: 'linieStatusOption' ,key: 'LINIEFENPEIZHUANGTAI',permission: 'APREPART_MANAGFMENT_LINIESTATUS|配件-配件管理-LINIE分配状态'},
 ]
 export const TAB = [
   {
