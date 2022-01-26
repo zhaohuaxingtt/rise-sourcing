@@ -126,7 +126,7 @@ export default {
             })
             break;
           case 'EKL':
-            window.open(process.env.VUE_APP_PORTAL_URL + "achievement/baseData/list")
+            window.open(process.env.VUE_APP_PORTAL_URL + "achievement/baseData/mymerit?materialCode="+this.$store.state.rfq.categoryCode+"&materialName="+this.$store.state.rfq.categoryName)
             break;
           default:
             this.$router.push({
