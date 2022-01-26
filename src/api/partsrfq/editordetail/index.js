@@ -558,9 +558,12 @@ export function exportFSPartsAsRowByNomiId(nomiId, data) {
 // 导出定点GS横轴零件接口
 export function exportFsSupplierAsRowByNomiId(nomiId, data) {
     return downLoad({
-        url:`/nego-assistant/export/nomi-fs-supplier-as-row/${ nomiId }`,
+        url:`/nego-assistant/export/nomi-fs-supplier-as-row`,
         method: 'POST',
-        data
+        data:{
+            hideList:data,
+            nomiId:nomiId
+        }
     })
 }
 
