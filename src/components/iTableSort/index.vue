@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-01-25 21:36:31
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-26 11:21:28
+ * @LastEditors: Please set LastEditors
  * @Description: table组件
 -->
 <template>
@@ -27,7 +27,7 @@
     <!----------------------复选框------------------------------------->
     <el-table-column v-if="selection" type='selection' :width="selectConfig.width || 40" :align="selectConfig.align || 'center'" :header-align="selectConfig.headerAlign || 'center'" :selectable="selectConfig.selectable || selectable"></el-table-column>
     <!----------------------支持自定义的index插槽------------------------>
-    <el-table-column v-if='index' type='index' :width='indexConfig.width || 40' :align="indexConfig.width || 'center'" :header-align="indexConfig.width || 'center'" :label="indexConfig.label || indexLabel">
+    <el-table-column :fixed="indexFixed" v-if='index' type='index' :width='indexConfig.width || 40' :align="indexConfig.width || 'center'" :header-align="indexConfig.width || 'center'" :label="indexConfig.label || indexLabel">
       <template slot-scope="scope">
         <slot :name="`_index`" :row="scope.row" :$index="scope.$index">
           {{scope.$index+1}}
@@ -39,11 +39,11 @@
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
       <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))">
         <!-- slot header -->
-        <template slot="header">
+        <!-- <template slot="header">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
             {{showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))}}
           </div>
-        </template>
+        </template> -->
         <!-- slot content -->
         <template slot-scope="row">
            <span class="flexRow">
@@ -68,11 +68,11 @@
         :class-name="items.tree ? 'tree' : ''"
         :fixed="items.fixed">
         <!-- slot header -->
-        <template slot="header">
+        <!-- <template slot="header">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
             {{showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))}}
           </div>
-        </template>
+        </template> -->
         <!-- slot content -->
         <template slot-scope="scope">
           <span :class="{normal: true, child: scope.row.children}">
@@ -193,6 +193,7 @@ export default{
     spanMethod: { type: Function },
     enabletableHeadersetting: {type: Boolean, default: true},
     showTitleName:{type:Boolean,default:false}, // 直接展示name字段
+    indexFixed:{type:Boolean,default:false}, // 序列号是否固定
   },
   inject:['vm'],
   components:{iTableHeaderSorter, icon},
@@ -311,6 +312,12 @@ export default{
 .iFileTableList {
   ::v-deep.el-table__body-wrapper {
     height: auto!important;
+  }
+  ::v-deep.el-table__fixed{
+    height: auto!important;
+    bottom: 14px;
+    position: absolute;
+    top: 0;
   }
 }
   .openLinkText{
