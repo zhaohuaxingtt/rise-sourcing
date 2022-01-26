@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-01-26 11:21:28
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-26 14:14:27
+ * @LastEditors: YoHo
  * @Description: table组件
 -->
 <template>
@@ -11,14 +11,15 @@
     fit
     border
     tooltip-effect='light'
-    v-bind="treeProps"
+    v-bind="$attrs"
+    v-on="$listeners"
+    :tree-props="treeProps"
     v-loading='tableLoading'
     :height="height"
     :data='tableData'
     :empty-text="language('ZANWUSHUJU', '暂无数据')"
     :class="{'moviesTable': true, 'radio': radio}"
     :cell-style="borderLeft"
-    :span-method="spanMethod"
     @selection-change="handleSelectionChange"
     @select="handleSelect"
     @select-all="handleSelectAll"
@@ -27,7 +28,7 @@
     <!----------------------复选框------------------------------------->
     <el-table-column v-if="selection" type='selection' :width="selectConfig.width || 40" :align="selectConfig.align || 'center'" :header-align="selectConfig.headerAlign || 'center'" :selectable="selectConfig.selectable || selectable"></el-table-column>
     <!----------------------支持自定义的index插槽------------------------>
-    <el-table-column :fixed="indexFixed" v-if='index' type='index' :width='indexConfig.width || 40' :align="indexConfig.width || 'center'" :header-align="indexConfig.width || 'center'" :label="indexConfig.label || indexLabel">
+    <el-table-column :fixed="indexFixed" v-if='index' type='index' :width='indexConfig.width || 40' :align="indexConfig.align || 'center'" :header-align="indexConfig['header-align'] || 'center'" :label="indexConfig.label || indexLabel">
       <template slot-scope="scope">
         <slot :name="`_index`" :row="scope.row" :$index="scope.$index">
           {{scope.$index+1}}
@@ -39,11 +40,23 @@
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
       <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))">
         <!-- slot header -->
-        <!-- <template slot="header">
+        <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))}}
+            <span>{{ scope.column.label }}</span>
+            <i v-if="items.require" class="label-require margin-left3 margin-right3">*</i>
+            <el-popover
+              placement="top"
+              trigger="hover"
+              popper-class="tableTitleTip"
+              :visible-arrow="false"
+              :disabled="!items.showTips">
+              <p v-html="items.showTips ? item.tips() : ''"></p>
+              <span slot="reference">
+                <icon v-if="items.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
+              </span>
+            </el-popover>
           </div>
-        </template> -->
+        </template>
         <!-- slot content -->
         <template slot-scope="row">
            <span class="flexRow">
@@ -68,11 +81,23 @@
         :class-name="items.tree ? 'tree' : ''"
         :fixed="items.fixed">
         <!-- slot header -->
-        <!-- <template slot="header">
+        <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))}}
+            <span>{{ scope.column.label }}</span>
+            <i v-if="items.require" class="label-require margin-left3 margin-right3">*</i>
+            <el-popover
+              placement="top"
+              trigger="hover"
+              popper-class="tableTitleTip"
+              :visible-arrow="false"
+              :disabled="!items.showTips">
+              <p v-html="items.showTips ? item.tips() : ''"></p>
+              <span slot="reference">
+                <icon v-if="items.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
+              </span>
+            </el-popover>
           </div>
-        </template> -->
+        </template>
         <!-- slot content -->
         <template slot-scope="scope">
           <span :class="{normal: true, child: scope.row.children}">
@@ -190,7 +215,6 @@ export default{
      * @param {*}
      * @return {*}
      */    
-    spanMethod: { type: Function },
     enabletableHeadersetting: {type: Boolean, default: true},
     showTitleName:{type:Boolean,default:false}, // 直接展示name字段
     indexFixed:{type:Boolean,default:false}, // 序列号是否固定
@@ -310,9 +334,9 @@ export default{
 </script>
 <style lang='scss' scoped>
 .iFileTableList {
-  ::v-deep.el-table__body-wrapper {
-    height: auto!important;
-  }
+  // ::v-deep.el-table__body-wrapper {
+  //   height: auto!important;
+  // }
   ::v-deep.el-table__fixed{
     height: auto!important;
     bottom: 14px;
@@ -357,6 +381,10 @@ export default{
           content: '\e78f';
         }
       }
+    }
+    th>.cell .label-require{
+      color: #f56c6c;
+      font-style:normal;
     }
   }
   .icon-gray{
