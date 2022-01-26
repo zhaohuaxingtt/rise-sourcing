@@ -4,6 +4,7 @@
     :visible.sync="isShow"
     width="30%"
     class="table-header-modal"
+    append-to-body
   >
     <div class="header-wrapper" ref="header-wrapper">
       <div
