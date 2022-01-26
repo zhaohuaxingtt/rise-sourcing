@@ -73,6 +73,7 @@
         <template #beginYearReduce="scope">
           <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
+        
         <template #status="scope">
           <div v-if="scope.row.status === 'SKDLC'">
             <p>SKD</p>
