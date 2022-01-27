@@ -52,6 +52,7 @@
       </div>
     </template>
         <tableList
+          :isminHeight="true"
           index
           :tableData="tableListData"
           :tableTitle="tableTitle"
@@ -129,6 +130,7 @@ export default {
       tableLoading: false,
       selectTableData: [],
       moldBudgetApplicationVisible: false
+      
     };
   },
   created() {
