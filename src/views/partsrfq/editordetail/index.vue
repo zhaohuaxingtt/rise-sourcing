@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-26 18:12:47
+ * @LastEditTime: 2022-01-27 23:28:59
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -599,12 +599,12 @@ export default {
       try {
         await this.getNewRoundList()
         if(this.notAllow) return
-        if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
-          iMessage.warn(this.language('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG', 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次'));
-          return false;
-        } else {
+        // if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
+        //   iMessage.warn(this.language('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG', 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次'));
+        //   return false;
+        // } else {
           this.newRfqRoundDialog = true;
-        }
+        // }
       } finally {
         this.newRfqOpenValidateLoading = false;
       }
