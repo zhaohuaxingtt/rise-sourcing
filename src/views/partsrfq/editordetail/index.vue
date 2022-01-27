@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-27 23:28:59
+ * @LastEditTime: 2022-01-27 23:38:01
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -736,6 +736,7 @@ export default {
           if (res.code == 200) {
             this.newRfqRoundDialogRes = res;
             this.newRfqRoundList = res.data;
+            this.notAllow = false
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             this.notAllow = true
