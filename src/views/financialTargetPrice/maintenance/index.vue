@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 17:14:55
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-27 21:25:48
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -427,6 +427,7 @@ export default {
             isEdit: !['APPROVED', 'APPROVAL_K2'].includes(item.approveStatus) && item.applyType === 'LC'
           }
         })
+        this.saveSelectItems = []
       }
       if (!this.tableData.some(item => item.isEdit)) {
         iMessage.warn(this.language('MEIYOUKEYIBIANJIDESHUJU','没有可以编辑的数据'))
