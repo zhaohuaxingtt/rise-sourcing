@@ -60,6 +60,18 @@ export default [{
           component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/carPrice'),
         },
         {
+          path: 'list',
+          name: 'list',
+          meta: { title: "业绩基础" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/list'),
+        },
+        {
+          path: 'ekl',
+          name: 'ekl',
+          meta: { title: "我的业绩" },
+          component: () => import('@/views/partsrfq/externalAccessToAnalysisTools/categoryManagementAssistant/internalDemandAnalysis/ekl'),
+        },
+        {
           path: 'technology',
           name: 'technology',
           meta: { title: "技术路线" },
