@@ -1,50 +1,41 @@
 <template>
-    <iPage class="navPage" id="batchSupplier">
-        <div class="navBox">
-          <div class="navBox_sal">
-            <iNavMvp :list="tabRouterList" class="margin-bottom20" routerPage :lev="1"/>
-            <div class="btnRow">
-                <el-tooltip effect="light"
-                            placement="right"
-                            v-if="applyNumber!==''">
-                  <div slot="content">
-                    <p>{{language('CSQDYYGLLDDDSQDJCLJKCKXQHQXGL','此申请单已有关联零点定点申请，点击超链接可查看详情，或取消关联')}}</p>
-                  </div>
-                  <i class="el-icon-warning-outline margin-left10"
-                    style="color:blue;font-size:25px;margin-top:-5px;"></i>
-                </el-tooltip>
-                <div class="dw" :class="btnsgroup1.length?'mr40':''"><span v-text="!show?'单位：百万元':'Unit：Mio'"></span></div>
-                <!-- <div class="btnList flex-align-center margin-bottom20">
-                    <ul class="btngroup">
-                        <li v-for="(items, index) in btnsgroup1"
-                            :class="indexBtn == index ? 'active' : ''"
-                            :key="index"
-                            @click="exchangeSelectState(items,index)">
-                            <span>{{ $t(items) }}</span>
-                        </li>
-                    </ul>
-                </div> -->
-            </div>
+    <iCard id="batchSupplier">
+      <template slot="header">
+        <div class="flex-between-center title">
+          <div class="flex-align-center">
+            <span class="margin-right10">{{language("WODEYEJI", "我的业绩")}}</span>
+            <el-tooltip effect="light"
+                        placement="right">
+              <div slot="content">
+                <!-- <p>{{language('','')}}</p> -->
+              </div>
+              <!-- <icon slot="reference"
+                name="iconxinxitishi"
+                symbol
+                class="cursor"></icon> -->
+              <i class="el-icon-warning-outline margin-left10 tishi"></i>
+            </el-tooltip>
+            <!-- <div class="dw" :class="btnsgroup1.length?'mr40':''"></div> -->
+            <span class="dw" :class="btnsgroup1.length?'mr40':''" v-text="!show?'单位：百万元':'Unit：Mio'"></span>
           </div>
-          <div style="margin-right:50px;">
+          <div class="flex">
             <iButton @click="save" :loading="saveLoading">{{language("BAOCUN","保存")}}</iButton>
             <iButton @click="goback">{{language("FANHUI","返回")}}</iButton>
           </div>
         </div>
-
-        <div style="height: 100%">
-            <keep-live
-                    :include="['zfgsj', 'zfkssj','zfcgysj','zfbmsj','wfbmsj','wfkssj','pfjwfbmsj','pfjwfkssj','pfjzfbmsj','pfjzfcgysj','pfjzfgsj','pfjzfkssj']">
-                <component :is="currentView" @getData="getData" :username="username"/>
-            </keep-live>
-        </div>
-
-    </iPage>
+      </template>  
+      <div>
+          <keep-live :include="['zfgsj', 'zfkssj','zfcgysj','zfbmsj','wfbmsj','wfkssj','pfjwfbmsj','pfjwfkssj','pfjzfbmsj','pfjzfcgysj','pfjzfgsj','pfjzfkssj']"
+            >
+              <component :is="currentView" @getData="getData" :username="username"/>
+          </keep-live>
+      </div>
+    </iCard>
 
 </template>
 
 <script>
-  import {iPage, iNavMvp, iButton} from 'rise';
+  import {iPage, iNavMvp, iButton,iCard,icon} from 'rise';
   import {tabRouterList} from '../data';
   import {getEklPbi} from '@/api/achievement'
   import * as pbi from 'powerbi-client';
@@ -69,7 +60,9 @@
 
   export default {
     components: {
+      icon,
       iPage,
+      iCard,
       iNavMvp,
       iButton,
       zfbmsj,
@@ -126,6 +119,7 @@
     watch:{
       '$store.state.rfq.categoryCode': {
         handler (val) {
+          console.log(val)
           this.renderBi();
         },
         deep: true,
@@ -532,84 +526,44 @@
 </script>
 
 <style scoped lang="scss">
+.mr40 {
+    margin-right: 40px;
+}
 
-    .navBox {
-        display: flex;
-        justify-content: space-between;
-        .navBox_sal{
-          position: relative;
-          height: 60px;
-          display: flex;
-        }
-        .btnRow {
-            // position: absolute;
-            // right: 0;
-            // top: 0px;
-            display: flex;
-            align-items: center;
-            margin-top: -10px;
-            margin-left:-30px;
-            .btnList {
-                display: inline-block;
-                .btngroup {
-                    display: flex;
-                    flex-direction: row;
-                    cursor: pointer;
-                    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.08);
-                    opacity: 1;
-                    border-radius: 10px;
-                    > li {
-                        font-size: 16px;
-                        width: 104px;
-                        height: 35px;
-                        line-height: 35px;
-                        background: #F5F6F7;
-                        text-align: center;
-                        color: #727272;
-                        &:first-child {
-                            border-radius: 10px 0px 0px 10px;
-                        }
-                        &:last-child {
-                            border-radius: 0px 10px 10px 0px;
-                        }
+#powerBi {
+    width: 100%;
+    height: calc(100vh - 19rem);
+}
 
-                    }
-                    > li.active {
-                        color: #1660F1;
-                        font-weight: bold;
-                        background: #FFFFFF;
-                    }
-                }
-            }
-            .dw {
-                display: inline-block;
-                width: 104px;
-                height: 20px;
-                font-size: 14px;
-                text-align: right;
-                font-family: Arial;
-                font-weight: 400;
-                line-height: 16px;
-                color: #6D7B96;
-                letter-spacing: 2px;
-            }
-        }
-    }
-
-    .mr40 {
-        margin-right: 40px;
-    }
-
-    #powerBi {
-        width: 100%;
-        height: 100%;
-    }
-
-    ::v-deep #powerBi iframe {
-        border: solid 1px #eee !important;
-    }
-
+::v-deep #powerBi iframe {
+    border: solid 1px #eee !important;
+}
+.dw {
+  display: inline-block;
+  width: 104px;
+  height: 20px;
+  font-size: 14px!important;
+  text-align: right;
+  font-family: Arial;
+  font-weight: 400;
+  line-height: 23px;
+  color: #6D7B96;
+  letter-spacing: 2px;
+}
 .navPage{
   padding:20px 0!important;
+}
+.title {
+  width: 100%;
+}
+#batchSupplier{
+  margin-top:20px;
+  height:calc(100vh - 11.25rem);
+}
+.tishi{
+  color:#a5a5fe;
+  font-size:23px;
+  margin-top:0px;
+  margin-left:0;
 }
 </style>
