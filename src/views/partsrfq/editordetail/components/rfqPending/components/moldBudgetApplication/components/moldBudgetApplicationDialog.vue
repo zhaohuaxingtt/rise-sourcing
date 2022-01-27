@@ -17,6 +17,7 @@
     </div>
     <div class="body">
      <tableList
+        :isminHeight="true"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="tableLoading"
