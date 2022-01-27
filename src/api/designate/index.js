@@ -14,10 +14,17 @@ const requst = axios(process.env.VUE_APP_SOURCING)
 const fileRequst = download(process.env.VUE_APP_SOURCING)
 
 // 获取模具预算管理列表
-export function getMouldBudget(params) {
+// export function getMouldBudget(params) {
+//   return requst({
+//       url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(params.fsIds, Array) }&${ serialize(params.supplierIds, Array) }`,
+//       method: "GET"
+//   })
+// }
+export function getMouldBudget(data) {
   return requst({
-      url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(params.fsIds, Array) }&${ serialize(params.supplierIds, Array) }`,
-      method: "GET"
+      url: 'mould-budget/listByFsList',
+      method: "POST",
+      data
   })
 }
 
