@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <iPage>
     <iCard>
       <div class="graph">
-        <div id="chartLineBox" style="width: 100%; height: 40rem"></div>
+        <div id="chartLineBox"
+             style="width: 100%; height: 40rem"></div>
         <div class="graph-amplitude">
           <div class="graph-amplitude__top">
-            <span>{{ amplitude }}</span
-            >%
+            <span>{{ amplitude }}</span>%
           </div>
           <div class="graph-amplitude__bottom">
             {{ language("BIDDING_FUDU", "幅度") }}
@@ -30,15 +30,14 @@
     </div> -->
 
     <iCard :title="language('BIDDING_GONGYINGSHAN', '供应商')">
-      <commonTable
-        ref="tableDataForm"
-        :tableData="suppliersPage"
-        :tableTitle="supplierRankTableTitle"
-        :tableLoading="tableLoading"
-        :selection="false"
-        @handleSelectionChange="handleSelectionChange"
-      >
-        <template slot="currentSort" slot-scope="scope">
+      <commonTable ref="tableDataForm"
+                   :tableData="suppliersPage"
+                   :tableTitle="supplierRankTableTitle"
+                   :tableLoading="tableLoading"
+                   :selection="false"
+                   @handleSelectionChange="handleSelectionChange">
+        <template slot="currentSort"
+                  slot-scope="scope">
           <div>
             {{
               ruleForm.manualBiddingType == "02"
@@ -48,29 +47,28 @@
           </div>
         </template>
         <!-- 是否参与本轮RFQ -->
-        <template slot="isAttend" slot-scope="scope">
+        <template slot="isAttend"
+                  slot-scope="scope">
           <div>{{ scope.row["isAttend"] == "0" ? "否" : "是" }}</div>
         </template>
       </commonTable>
-      <iPagination
-        v-update
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-        background
-        :page-sizes="page.pageSizes"
-        :page-size="page.pageSize"
-        :prev-text="language('BIDDING_SHANGYIYE','上一页')"
-        :next-text="language('BIDDING_XIAYIYE','下一页')"
-        :layout="page.layout"
-        :current-page="page.currPage"
-        :total="page.total"
-      />
+      <iPagination v-update
+                   @current-change="handleCurrentChange"
+                   @size-change="handleSizeChange"
+                   background
+                   :page-sizes="page.pageSizes"
+                   :page-size="page.pageSize"
+                   :prev-text="language('BIDDING_SHANGYIYE','上一页')"
+                   :next-text="language('BIDDING_XIAYIYE','下一页')"
+                   :layout="page.layout"
+                   :current-page="page.currPage"
+                   :total="page.total" />
     </iCard>
-  </div>
+  </iPage>
 </template>
 
 <script>
-import { iCard, iPagination } from "rise";
+import { iCard, iPagination, iPage } from "rise";
 import commonTable from "@/components/biddingComponents/commonTable";
 import {
   supplierTableTitle,
@@ -94,7 +92,7 @@ export default {
   components: {
     iCard,
     iPagination,
-
+    iPage,
     commonTable,
   },
   props: {
@@ -107,12 +105,12 @@ export default {
   watch: {
     value: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         this.ruleForm = val;
       },
     },
   },
-  data() {
+  data () {
     return {
       // 测试数据
       showAddRFQ: false,
@@ -160,19 +158,19 @@ export default {
     };
   },
   computed: {
-    suppliersPage() {
+    suppliersPage () {
       const { suppliers } = this;
       const { currPage, pageSize } = this.page;
       return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
     },
-    beishu() {
+    beishu () {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.beishu || 1;
     },
-    currencyMultiple() {
+    currencyMultiple () {
       return currencyMultipleLib[this.ruleForm.currencyMultiple]?.unit || "元";
     },
     // 幅度
-    amplitude() {
+    amplitude () {
       let { manualBiddingType, totalPrices, biddingType, roundType } =
         this.ruleForm;
       let { maxPrice, minPrice, finPrice } = this.amplitudeList;
@@ -196,11 +194,11 @@ export default {
       return isNaN(amp) ? "" : amp;
     },
   },
-  async created() {
+  async created () {
     this.id = this.$route.params.id;
     // this.cbdLevelList = await getSuppliers();
   },
-  mounted() {
+  mounted () {
     this.handleSearchReset();
     // this.drawLine();
     getCurrencyUnit().then((res) => {
@@ -210,41 +208,41 @@ export default {
     });
   },
   methods: {
-    handleSearchReset() {
+    handleSearchReset () {
       let param = this.id || this.graphId;
       this.query(param);
     },
-    currencyMultiples(currencyMultiple) {
+    currencyMultiples (currencyMultiple) {
       // return {
       //   "01": "元",
       //   "02": "千",
       //   "03": "万",
       //   "04": "百万",
       // }[currencyMultiple];
-      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit )
+      return this.language(currencyMultipleLib[currencyMultiple]?.key, currencyMultipleLib[currencyMultiple]?.unit)
     },
-    dividedBeiShu(val) {
+    dividedBeiShu (val) {
       return Big(val).div(this.beishu).toNumber();
     },
-    handleUserChange(row, item) {
+    handleUserChange (row, item) {
       row.contactName = item.nameZh;
       row.contactId = item.id;
       row.email = item.email;
       row.telephone = item.phoneM;
     },
-    handleCbdChange(row, item) {
+    handleCbdChange (row, item) {
       row.cbdLevel = item.cbdLevel;
       row.supplierCode = item.supplierCode;
     },
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.page.currPage = 1;
       this.page.pageSize = val;
     },
     // 表格选中值集
-    handleCurrentChange(e) {
+    handleCurrentChange (e) {
       this.page.currPage = e;
     },
-    handlePrice(list) {
+    handlePrice (list) {
       let max = list[0]?.offerPrice;
       let min = list[0]?.offerPrice;
       let time = dayjs(list[0]?.clientTime).valueOf();
@@ -265,7 +263,7 @@ export default {
       this.amplitudeList.minPrice = min;
       this.amplitudeList.finPrice = list[index]?.offerPrice;
     },
-    async query(e) {
+    async query (e) {
       const res = await getProjectResults({
         id: e,
       });
@@ -314,7 +312,7 @@ export default {
             1000 *
             60 -
             beginTime) /
-            (endTime - beginTime) || 0.01;
+          (endTime - beginTime) || 0.01;
         this.split = interval < 1 ? 0.01 : interval2;
         // this.split = 0.5
       } else if (split < 15) {
@@ -339,14 +337,14 @@ export default {
         this.suppliers = res;
       }
     },
-    handleShowBidNotice() {
+    handleShowBidNotice () {
       this.showBidNotice = true;
     },
-    handleBottom(e) {
+    handleBottom (e) {
       this.bottomActived = e;
     },
     // 英式曲线图
-    drawLine() {
+    drawLine () {
       let chartLine = this.$echarts.init(
         document.getElementById("chartLineBox")
       );
@@ -394,29 +392,27 @@ export default {
             let htmlStr = ``;
             let series = params[0];
             htmlStr = `<div style="width: 35rem;background: #fff;padding: 1.875rem 2.5rem;border-radius: 0.375rem;">
-                    <div class="tool-tip-title" style="padding-bottom: 1.875rem;font-size: 1.125rem;color: #131523;font-weight: bold;">${
-                      series.seriesName
-                    }</div>
+                    <div class="tool-tip-title" style="padding-bottom: 1.875rem;font-size: 1.125rem;color: #131523;font-weight: bold;">${series.seriesName
+              }</div>
                     <div class="form">
                         <!-- 时间 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_SHIJIAN', '时间')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${dayjs(
-                          series.axisValue
-                        ).format("HH:mm:ss")}</div>
+                series.axisValue
+              ).format("HH:mm:ss")}</div>
                         </div>
                         <!-- 出价 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_CHUJIA', '出价')}</div>
-                        <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
-                          unit +
-                          " " +
-                          series.value[1]
-                            .toFixed(2)
-                            .replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, "$1,") +
-                          " " +
-                          multiple
-                        }</div>
+                        <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${unit +
+              " " +
+              series.value[1]
+                .toFixed(2)
+                .replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, "$1,") +
+              " " +
+              multiple
+              }</div>
                         </div>
                     </div>
                     </div>`;
@@ -533,7 +529,7 @@ export default {
       chartLine.setOption(options);
     },
     // 荷氏曲线图
-    drawHeLine() {
+    drawHeLine () {
       let chartLine = this.$echarts.init(
         document.getElementById("chartLineBox")
       );
@@ -581,31 +577,29 @@ export default {
             let htmlStr = ``;
             let series = params[0];
             htmlStr = `<div style="width: 35rem;background: #fff;padding: 1.875rem 2.5rem;border-radius: 0.375rem;">
-                    <div class="tool-tip-title" style="padding-bottom: 1.875rem;font-size: 1.125rem;color: #131523;font-weight: bold;">${
-                      series.componentSubType == "scatter"
-                        ? series.seriesName
-                        : this.language("BIDDING_CAIGOUYUAN", "采购员")
-                    }</div>
+                    <div class="tool-tip-title" style="padding-bottom: 1.875rem;font-size: 1.125rem;color: #131523;font-weight: bold;">${series.componentSubType == "scatter"
+                ? series.seriesName
+                : this.language("BIDDING_CAIGOUYUAN", "采购员")
+              }</div>
                     <div class="form">
                         <!-- 时间 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_SHIJIAN', '时间')}</div>
                         <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${dayjs(
-                          series.axisValue
-                        ).format("HH:mm:ss")}</div>
+                series.axisValue
+              ).format("HH:mm:ss")}</div>
                         </div>
                         <!-- 出价 -->
                         <div class="el-form-item" style="width: 30rem;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
                         <div class="el-form-label" style="width: 10rem;font-size: 0.875rem;color: #4d4f5c;">${this.language('BIDDING_CHUJIA', '出价')}</div>
-                        <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${
-                          unit +
-                          " " +
-                          series.value[1]
-                            .toFixed(2)
-                            .replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, "$1,") +
-                          " " +
-                          multiple
-                        }</div>
+                        <div class="el-form-content" style="background-color: #f4f5f6;display: flex;justify-content: center;align-items: center;font-size: 1rem;color: #000;width: 100%;height: 2.1875rem;box-shadow: 0 0 0.1875rem rgb(0 38 98 / 15%);">${unit +
+              " " +
+              series.value[1]
+                .toFixed(2)
+                .replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, "$1,") +
+              " " +
+              multiple
+              }</div>
                         </div>
                     </div>
                     </div>`;
@@ -725,7 +719,7 @@ export default {
       };
       chartLine.setOption(options);
     },
-    handleGraphData(list) {
+    handleGraphData (list) {
       let supplierlist = [];
       for (let key in list) {
         supplierlist.push(key);
@@ -769,7 +763,7 @@ export default {
       this.offerPriceList = [...offerPriceList];
     },
     // 荷氏点
-    handleHeGraphData(list) {
+    handleHeGraphData (list) {
       let supplierlist = [];
       for (let key in list) {
         supplierlist.push(key);
@@ -817,7 +811,7 @@ export default {
       });
     },
     // 荷氏线
-    handleHeLine(list) {
+    handleHeLine (list) {
       let supplierlist = [];
       for (let key in list) {
         supplierlist.push(key);
