@@ -11,7 +11,7 @@ export const tableTitle = permissionTitle("PARTSRFQ_EDITORDETAIL_RFQPENDING_LIST
     {props:'i',name:'供应商360°视图', key: 'LK_GONGYINGSHANG360SHITU'},
     // {props:'pupplierProductionPlace',name:'供应商生产场地', key:'LK_GONGYINGSHANGSHENGCHANCHANGDI', tooltip: true}, // sp10去除
     {props:'bdlType',name:'MBDL', key: 'LK_MBDL', tooltip: true},
-    {props:'cbdLevel',name:'CBD层级', key: 'CBDCENGJI', tooltip: true},
+    {props:'cbdTempplateName',name:'CBD层级', key: 'CBDCENGJI', tooltip: true},
     {props:'epGrade',name:'技术评分', key: 'LK_JISHUPINGFEN', tooltip: true},
     {props:'mqGrade',name:'质量评分', key: 'LK_ZHILIANGPINGFEN', tooltip: true},
     {props:'plGrade',name:'物流评分', key: 'LK_WULIUPINGFEN', tooltip: true},

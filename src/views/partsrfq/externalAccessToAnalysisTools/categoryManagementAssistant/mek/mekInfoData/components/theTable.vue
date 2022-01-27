@@ -20,7 +20,7 @@
                      :placeholder="language('QXZCLZ','请选择材料组')"
                      v-model="form.materialGroupCode">
               <el-option :value="item.categoryCode"
-                         :label="item.categoryCode+'-'+item.categoryName"
+                         :label="item.categoryCode+'-'+item.categoryNameZh"
                          v-for="item of formGoup.materialGroupList"
                          :key="item.categoryCode"></el-option>
             </iSelect>
@@ -177,7 +177,7 @@
           <template slot="header">
             <!-- <div>{{language('JIAGEXINGXI  ','价格信息')}}</div> -->
             <div class="flex-between-center-center margin-top10">
-              <div>{{language('SOPXINGXI','SOP信息')}}</div>
+              <div>{{language('SOPJIAGE','SOP价格')}}</div>
               <icon name="iconMEK-xuxian"
                     symbol />
               <div>{{language('DANGQIANJIAGE','当前价格')}}</div>
@@ -253,7 +253,7 @@ import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import { tableTitle } from "./data.js";
-import { getName, mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList, infoDelete } from "@/api/partsrfq/mek/index.js";
+import { getName, mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList, infoDelete, getMaterialCategory } from "@/api/partsrfq/mek/index.js";
 import { excelExport } from "@/utils/filedowLoad";
 import { pad } from '@/utils'
 export default {
@@ -300,7 +300,7 @@ export default {
     // 获取材料组
     async categoryList () {
       try {
-        const res = await categoryList({})
+        const res = await getMaterialCategory(this.$route.query.schemeId)
         this.formGoup.materialGroupList = res.data
         this.form.materialGroupCode = this.$route.query.categoryCode
       } catch (error) {
@@ -331,7 +331,8 @@ export default {
     async getCarTypeMessage (val) {
       this.formGoup.carTypeInfoList = []
       this.carTypeInfoLoading = true
-      const res = await getCarTypeMessage({ motorSvwCode: val })
+      let res = await getCarTypeMessage({ motorSvwCode: val })
+      res = res.data.filter(item => item)
       res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
       this.formGoup.carTypeInfoList = res.data
       this.carTypeInfoLoading = false

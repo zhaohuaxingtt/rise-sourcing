@@ -262,7 +262,7 @@ export const mouldBudgetManagementDialogTableTitle = [
   { props: "cartypeProjectZh", name: "车型项目", tooltip: true, key: "CHEXINGXIANGMU" },
   { props: "budget", name: "投资预算(RMB)", tooltip: true, key: "TOUZIYUSUANRMB" },
   { props: "csfPDiretor", name: "CSF(P)负责人", tooltip: true, key: "CSFPFUZEREN" },
-  { props: "approvalStatus", name: "审批状态", tooltip: true, key: "SHENPIZHUANGTAI" },
+  { props: "approvalStatusDesc", name: "审批状态", tooltip: true, key: "SHENPIZHUANGTAI" },
   { props: "approvalComments", name: "审批意见", tooltip: true, key: "SHENPIYIJIAN" },
 ]
 
