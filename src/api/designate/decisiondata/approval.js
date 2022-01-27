@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-28 13:41:56
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-12 14:31:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-27 18:03:37
  * @Description: 审批流相关接口
  * @FilePath: \front-sourcing\src\api\designate\decisiondata\approval.js
  */
@@ -77,7 +77,8 @@ export function getDeptListByParam(data) {
 }
 export function getSubDeptListByParam(data, grade) {
   return requstRfq({
-    url: `/nominate/nomi-approval-process/getSubDeptListByParam/${ data }/${ grade }`,
+    // url: `/nominate/nomi-approval-process/getSubDeptListByParam/${ data }/${ grade }`,
+    url: '/nominate/nomi-approval-process/getSubDeptListByParam',
     method: 'GET',
   })
 }

@@ -111,7 +111,7 @@ export default {
             res.data.map(item => ({
               ...item,
               key: item.rateTag,
-              label: item.rateTag,
+              label: item.rateTagDesc,
               value: item.rateTag
             })) :
             []

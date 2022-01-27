@@ -418,8 +418,7 @@ export default{
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
-          const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)
-          console.log('subtotalList',subtotalList)
+          const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList,this.layout == 1)
           this.exampelData = this.exampelData.reduce((accu, curr, index) => {
             if (index === this.exampelData.length - 1) {
               return [...accu, curr, ...subtotalList]
@@ -431,7 +430,6 @@ export default{
             }
             return [...accu, curr]
           },[])
-          console.log(this.exampelData)
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
           this.$nextTick(()=>{
             this.$refs.tableList.setfixElement()
@@ -440,7 +438,7 @@ export default{
       }).catch(err=>{
         this.clearDataFs()
         this.fsTableLoading = false
-        iMessage.warn(err.desZh)
+        console.error(err)
       })
     },
     group(){
@@ -564,7 +562,7 @@ export default{
             const res1= exportFSPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)
             r(res1)
         } else if(layout === '2') {
-            const res2= exportFsSupplierAsRowTWO(this.$route.query.id,this.round,this.exportTile)
+            const res2= exportFsSupplierAsRowTWO(this.$route.query.id,this.round,this.backChoose)
             r(res2)
         } else {
             const res3= exportGsPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)
