@@ -23,7 +23,7 @@
     "core-js": "^3.6.5",
     "dayjs": "^1.10.7",
     "lodash": "^4.17.21",
-    "rise": "^3.2.5",
+    "rise": "^3.4.4",
     "sortablejs": "^1.14.0"
   },
   "devDependencies": {
