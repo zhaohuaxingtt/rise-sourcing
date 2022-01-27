@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-01-19 22:46:13
+ * @LastEditTime: 2022-01-28 01:41:30
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -135,7 +135,7 @@
                 </el-tooltip>
               </template> 
               <template v-else-if='removeKeysNumber(item.props) == "factory"'>
-                <span >{{scope.row['factoryEn']}}</span>
+                <span >{{scope.row['factoryEn']? scope.row['factoryEn'] : scope.row['factory']}}</span>
               </template>        
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
                   <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
