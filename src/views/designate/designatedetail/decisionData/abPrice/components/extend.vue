@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-09 15:26:57
- * @LastEditTime: 2022-01-07 14:43:57
+ * @LastEditTime: 2022-01-26 22:17:12
  * @LastEditors: Please set LastEditors
  * @Description: fs 供应商 横轴纵轴界面。基于报价分析界面组件。
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\abPrice\index.vue
@@ -96,7 +96,7 @@ export default{
       if(layout === '1') {
         return exportFSPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
       } else if (layout === '2') {
-        return exportFsSupplierAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
+        return exportFsSupplierAsRowByNomiId(this.$route.query.desinateId, this.backChoose)
       } else {
         return exportGsPartsAsRowByNomiId(this.$route.query.desinateId, this.exportTile)
       }

@@ -2,22 +2,38 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 16:28:01
- * @LastEditors: caopeng
+ * @LastEditors: Please set LastEditors
  * @Descripttion: 总览
 -->
 <template>
-  <iCard id="bulkSupplierPandect" @handleTitle="addFile($event,8, '批量供应商工厂总览')"  :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true" collapse>
-    <div class="center" id="card8" v-loading="onDataLoading">
+  <iCard id="bulkSupplierPandect"
+         @handleTitle="addFile($event,8, '批量供应商工厂总览')"
+         :title="language('PILIANGGONGYINGSHANGGONGCHANGZONGLAN','批量供应商工厂总览')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+         :defalutCollVal="$route.path==='/sourceinquirypoint/sourcing/partsrfq/assistant'?false:true"
+         collapse>
+    <div class="center"
+         id="card8"
+         v-loading="onDataLoading">
       <div class="tip">
-        <el-popover trigger="hover" placement="top-start" width="400" :content="language('TLJJGLJCLGYSGHBLCXCL','Turnover=零件价格*零件产量*供应商供货比例*车型产量')">
-          <icon slot="reference" style="font-size:1.375rem" name="iconxinxitishi" tip="" symbol></icon>
+        <el-popover trigger="hover"
+                    placement="top-start"
+                    width="400"
+                    :content="language('TLJJGLJCLGYSGHBLCXCL','Turnover=零件价格*零件产量*供应商供货比例*车型产量')">
+          <icon slot="reference"
+                style="font-size:1.375rem"
+                name="iconxinxitishi"
+                tip=""
+                symbol></icon>
         </el-popover>
       </div>
-      <div class="title-btn" v-if="$route.path==='/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'">
-        <iButton :loading="saveButtonLoading" @click="handleSave">{{language("BAOCUN","保存")}}</iButton>
+      <div class="title-btn"
+           v-if="$route.path==='/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'">
+        <iButton :loading="saveButtonLoading"
+                 @click="handleSave">{{language("BAOCUN","保存")}}</iButton>
         <iButton @click="handleBack">{{language("FANHUI","返回")}}</iButton>
       </div>
-      <supplierCard :supplierDataList="supplierDataList" class="card-right" />
+      <supplierCard :supplierDataList="supplierDataList"
+                    class="card-right" />
       <map1 :mapListData="mapListData" />
       <theMapIcon :mapListData="mapListData" />
     </div>
@@ -39,12 +55,12 @@ export default {
   props: {
     paramCategoryCode: String,
     paramCategoryName: String,
-     rfqInfoData: { type: Object },
+    rfqInfoData: { type: Object },
   },
 
-  data() {
+  data () {
     return {
-     cardShow: JSON.parse(JSON.stringify(icardData)),
+      cardShow: JSON.parse(JSON.stringify(icardData)),
       saveButtonLoading: false,
       mapListData: {},
       supplierDataList: [],
@@ -54,11 +70,13 @@ export default {
     }
   },
   watch: {
-    '$store.state.rfq.categoryName'(data) {
+    '$store.state.rfq.categoryCode' (data) {
+      this.categoryCode = data
       this.getMapList()
     },
     paramCategoryCode: {
-      handler(val) {
+      handler (val) {
+        console.log(val)
         if (val) {
           this.categoryCode = this.paramCategoryCode
           this.categoryName = this.paramCategoryName
@@ -66,11 +84,11 @@ export default {
       },
       immediate: true
     },
-        rfqInfoData(val){
-          this.rfqInfoData=val
-      }
+    rfqInfoData (val) {
+      this.rfqInfoData = val
+    }
   },
-  created() {
+  created () {
     if (this.paramCategoryCode) {
       this.categoryCode = this.paramCategoryCode
       this.categoryName = this.paramCategoryName
@@ -80,13 +98,13 @@ export default {
     }
     this.getMapList()
   },
-  mounted() {
+  mounted () {
   },
   methods: {
-    handleBack() {
+    handleBack () {
       this.$router.go(-1)
     },
-    async handleSave() {
+    async handleSave () {
       this.saveButtonLoading = true;
       const resFile = await this.getDownloadFileAndExportPdf({
         domId: '#bulkSupplierPandect',
@@ -103,7 +121,7 @@ export default {
       this.resultMessage(res);
       this.saveButtonLoading = false;
     },
-    async getMapList() {
+    async getMapList () {
       this.onDataLoading = true
       const pms = {
         rfqId: '',

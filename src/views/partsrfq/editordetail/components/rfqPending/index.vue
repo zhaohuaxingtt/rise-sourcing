@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 10:58:09
- * @LastEditors: YoHo
+ * @LastEditors: Please set LastEditors
 * @Description: RFQ待办事项
  -->
 <template>
@@ -107,7 +107,7 @@ export default {
       return this.getbaseInfoData()
     },
     tabs() {
-      if (Array.isArray(this.baseInfo.partProjectType) && (this.baseInfo.partProjectType[0] === partProjTypes.PEIJIAN)) return this.tabList.filter(item => item.index != 3)
+      // if (Array.isArray(this.baseInfo.partProjectType) && (this.baseInfo.partProjectType[0] === partProjTypes.PEIJIAN)) return this.tabList.filter(item => item.index != 3)
       return this.tabList
     }
   },

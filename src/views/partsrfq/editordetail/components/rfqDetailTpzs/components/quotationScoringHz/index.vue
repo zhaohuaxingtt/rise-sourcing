@@ -53,6 +53,7 @@
     </template>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
     <div class="margin-top10 font-size14">/ means no calculation base for mixed price. </div>
+    <div class="margin-top10 font-size14">Exchange Rate：1.00 EUR = 6.66RMB</div>
     <div class="margin-top10 font-size14">
       <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
         <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
@@ -417,8 +418,7 @@ export default{
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
-          const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)
-          console.log('subtotalList',subtotalList)
+          const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList,this.layout == 1)
           this.exampelData = this.exampelData.reduce((accu, curr, index) => {
             if (index === this.exampelData.length - 1) {
               return [...accu, curr, ...subtotalList]
@@ -430,7 +430,6 @@ export default{
             }
             return [...accu, curr]
           },[])
-          console.log(this.exampelData)
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
           this.$nextTick(()=>{
             this.$refs.tableList.setfixElement()
@@ -439,7 +438,7 @@ export default{
       }).catch(err=>{
         this.clearDataFs()
         this.fsTableLoading = false
-        iMessage.warn(err.desZh)
+        console.error(err)
       })
     },
     group(){
@@ -563,7 +562,7 @@ export default{
             const res1= exportFSPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)
             r(res1)
         } else if(layout === '2') {
-            const res2= exportFsSupplierAsRowTWO(this.$route.query.id,this.round,this.exportTile)
+            const res2= exportFsSupplierAsRowTWO(this.$route.query.id,this.round,this.backChoose)
             r(res2)
         } else {
             const res3= exportGsPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)

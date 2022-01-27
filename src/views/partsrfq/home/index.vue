@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-12-24 09:42:45
- * @LastEditors: caopeng
+ * @LastEditTime: 2022-01-26 18:27:55
+ * @LastEditors: YoHo
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
 -->
@@ -26,27 +26,27 @@
                 <iInput  :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"></iInput>
               </el-form-item> -->
                <el-form-item  :label="language('LK_LINGJIANHAO','零件号')"
-                  v-permission.auto="PARTSRFQ_LINGJIANHAO|零件号">
+                  >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
               </el-form-item>
               <el-form-item  :label="language('LK_FSNR','零件采购项目号')"
-                  v-permission.auto="PARTSRFQ_FSNR|零件采购项目号">
+                  >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsNum"></iInput>
               </el-form-item>
               <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')"
-                  v-permission.auto="PARTSRFQ_RFQBIANHAO|RFQ编号">
-                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.rfqIdVague"></iInput>
+                  >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model.number="form.rfqIdVague"></iInput>
               </el-form-item>    
               <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')"
-                  v-permission.auto="PARTSRFQ_XUNJIACAIGOUYUAN|询价采购员名称">
+                >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
               </el-form-item>         
               <el-form-item  :label="language('LK_SAP','供应商SAP号')"
-                  v-permission.auto="PARTSRFQ_SAP|供应商SAP号">
+                 >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>
               </el-form-item>
               <el-form-item  :label="language('LK_SUPPLIERNAME','供应商名称')"
-                  v-permission.auto="PARTSRFQ_SUPPLIERNAME|供应商名称">
+                 >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierName"></iInput>
               </el-form-item>
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSRFQ_MODELPROJECT|车型项目">
@@ -132,7 +132,7 @@
                   {{ language('LK_ZHUANPAIPINGFENRENWUS','转派任务评分') }}
                 </iButton>
                 <!--转派前期采购员：选中RFQ之后，可以手动转派前期采购员-->
-                <iButton @click="openInquiryBuyerDialog('1')" v-permission.auto="PARTSRFQ_ASSIGNMENTBUYER|转派前期采购员">
+                <iButton @click="openInquiryBuyerDialog('1')" v-permission.auto="PARTSRFQ_ASSIGNMENTBUYER|转派前期采购员"  v-if="!isLinieGZ">
                   {{ language('ZHUANPAIQIANQICAIGOUYUAN','转派前期采购员') }}
                 </iButton>
                 <!--转派LINIE：选中RFQ之后，可以手动转派转派LINIE-->
@@ -222,7 +222,7 @@
              <!------------------------------------------------------------------------>
             <!--                  转派询价采购员/LINIE弹窗                           --->
             <!------------------------------------------------------------------------>
-            <assignInquiryBuyerDialog ref="assignInquiryBuyerDialog" :dialogVisible="inquiryBuyerVisible" :type="inquiryBuyerDialogType" @changeVisible="changeInquiryBuyerDialogVisible" @handleConfirm="handleTransferConfirm" />
+            <assignInquiryBuyerDialog ref="assignInquiryBuyerDialog" :dialogVisible="inquiryBuyerVisible" :type="inquiryBuyerDialogType" @changeVisible="changeInquiryBuyerDialogVisible" @handleConfirm="handleTransferConfirm" :isLinieGZ="isLinieGZ"/>
           </iCard>
           <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
         </div>
@@ -322,6 +322,7 @@ export default {
       inquiryBuyerVisible: false,
       inquiryBuyerDialogType: '1',
       partsprocureNavList:partsprocureNavList,
+      flagIsLinieGZ:false
     };
   },
   created() {
@@ -335,7 +336,18 @@ export default {
   },
   computed: {
     ...mapState(["navList"]),
-    ...mapActions(["updateNavList"])
+    ...mapActions(["updateNavList"]),
+    isLinieGZ(){
+      let data = ["ZYCGKZ","ZYCGGZ","LINIE"]
+      let flag = false
+      this.$store.state.permission.userInfo.roleList.forEach(val=>{
+        if(data.includes(val.code)) {
+          flag = true 
+          return
+        }
+      })
+      return flag
+    }
   },
   methods: {
     handleTransferConfirm(userId, userName) {
