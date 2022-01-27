@@ -11,7 +11,7 @@
     "build:win:uat": "npm install rise@latest && vue-cli-service build --mode uat",
     "build:win:prod": "npm install rise@latest && vue-cli-service build --mode prod",
     "lint": "vue-cli-service lint",
-    "report": "vue-cli-service build --mode sit --report",
+    "report": "vue-cli-service build --mode uat --report",
     "macdev": "npm run start:win:dev",
     "build:win:dev:publish": "vue-cli-service build --mode dev && node ./loadersPlugins/publishDevCode.js",
     "conect": "node ./loadersPlugins/publishDevCode.js",
