@@ -1,5 +1,5 @@
 <template>
-    <iPage class="navPage carPrice">
+    <iPage class="navPage" id="batchSupplier">
         <div class="navBox">
           <div class="navBox_sal">
             <iNavMvp :list="tabRouterList" class="margin-bottom20" routerPage :lev="1"/>
@@ -28,7 +28,7 @@
           </div>
           <div style="margin-right:50px;">
             <iButton @click="save" :loading="saveLoading">{{language("BAOCUN","保存")}}</iButton>
-            <iButton @click="returnNav">{{language("FANHUI","返回")}}</iButton>
+            <iButton @click="goback">{{language("FANHUI","返回")}}</iButton>
           </div>
         </div>
 
@@ -284,55 +284,39 @@
       console.log('this.currentView', this.currentView, this.role);
     },
     methods: {
-
+      goback(){
+        this.$router.go(-1)
+      },
       // 保存
       async save() {
-        console.log(11111)
-        try {
-          console.log(22222)
-          this.saveLoading = true
-          const resFile = await this.getDownloadFileAndExportPdf({
-            domId: '#carPrice',
-            watermark:
-              this.$store.state.permission.userInfo.deptDTO.nameEn +
-              '-' +
-              this.$store.state.permission.userInfo.userNum +
-              '-' +
-              this.$store.state.permission.userInfo.nameZh +
-              '^' +
-              window.moment().format('YYYY-MM-DD HH:mm:ss'),
-            pdfName:
-              '品类管理助手_车型价格对比_' +
-              this.$store.state.rfq.categoryName +
-              '_' +
-              window.moment().format('YYYY-MM-DD') +
-              '_',
-          })
-          console.log(33333)
-
-          let params = {
-            categoryCode: this.$store.state.rfq.categoryCode,
-            fileType: 'PDF',
-            schemeType: 'CATEGORY_MANAGEMENT_CAR_TYPE',
+        this.saveLoading = true;
+        const resFile = await this.getDownloadFileAndExportPdf({
+            domId: '#batchSupplier',
+            watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
+            pdfName:'品类管理助手_我的业绩_' + this.$store.state.rfq.categoryName + '_' + window.moment().format('YYYY-MM-DD') +'_',
+        });
+         let params={
+            categoryCode:this.$store.state.rfq.categoryCode,
+            fileType:"PDF",
+            schemeType:"MY_PERFORMANCE",
             reportFileName: resFile.downloadName,
             reportName: resFile.downloadName,
-            schemeName: '',
+            schemeName:"",
             reportUrl: resFile.downloadUrl,
-            operateLog: JSON.stringify({}),
-          }
-
-          // console.log(params)
-          categoryAnalysis(params).then((res) => {
-            console.log(444444)
-            this.saveLoading = false
-            if (res.code == '200') {
-              iMessage.success(this.language('BAOCUNCHENGGONG', '保存成功'))
+            operateLog:JSON.stringify({}),
+         }
+         categoryAnalysis(params).then(res=>{
+            if(res.code=='200'){
+                this.saveLoading = false;
+               iMessage.success(this.language('BAOCUNCHENGGONG','保存成功'))
+            }else{
+              iMessage.error(this.language('BAOCUNCHENGGONG','保存失败'))
+              this.saveLoading = false;
             }
-          })
-        } catch (error) {
-            console.log(55555)
-          this.saveLoading = false
-        }
+         }).catch(res=>{
+            iMessage.error(this.language('BAOCUNCHENGGONG','保存失败'))
+            this.saveLoading = false;
+         })
       },
 
 
