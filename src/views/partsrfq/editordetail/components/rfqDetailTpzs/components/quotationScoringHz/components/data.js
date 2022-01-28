@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-28 13:44:40
+ * @LastEditTime: 2022-01-28 14:48:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -318,6 +318,23 @@ export function translateData(list){
   })
   return list
 }
+function keepTwoDecimalFull(num) {
+  var result = parseFloat(num);
+  if (isNaN(result)) {
+    return num
+  }
+  result = Math.round(num * 100) / 100;
+  var s_x = result.toString();
+  var pos_decimal = s_x.indexOf('.');
+  if (pos_decimal < 0) {
+  pos_decimal = s_x.length;
+  s_x += '.';
+  }
+  while (s_x.length <= pos_decimal + 2) {
+  s_x += '0';
+  }
+  return s_x;
+ }
 /**
  * @description: 将props上的数字去掉
  * @param {*} keys
@@ -367,10 +384,10 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: fsTemplate?(asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': Math.round((_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`) * 100) / 100)  : item[key] || 0):'/'):''
+                        [key]: fsTemplate?(asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': keepTwoDecimalFull(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))  : item[key] || 0):'/'):''
                       }
                     })
-                    total[key] = fsTemplate?((!element[key] || total[key] == "/")?"/":Math.round((_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)) * 100) / 100):''
+                    total[key] = fsTemplate?((!element[key] || total[key] == "/")?"/":keepTwoDecimalFull(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))):''
                   }else{
                     groupArr = groupArr.map(item => {
                       return {
