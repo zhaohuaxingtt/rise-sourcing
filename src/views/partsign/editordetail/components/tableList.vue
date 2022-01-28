@@ -7,7 +7,7 @@
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
 <template>
-  <el-table ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" @row-click="handleRowClick" :cell-style="borderLeft" :span-method="spanMethod" >
+  <el-table ref="table" class="table" :class="(singleSelect ? 'singleSelectTable' : '' )||(isminHeight?'aotoTableHeight':'')" :height="height" :min-height="minHeight" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" @row-click="handleRowClick" :cell-style="borderLeft" :span-method="spanMethod" >
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="55" :fixed="fixed" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
@@ -50,7 +50,12 @@ export default {
     singleSelect: {
       type: Boolean,
       default: false
+    },  
+    isminHeight: {
+      type: Boolean,
+      default: false
     },
+    
     index: {
       type: Boolean,
       default: false
@@ -141,7 +146,12 @@ export default {
     z-index: 0
   }
 }
-
+.aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      max-height: 422px !important;  
+      overflow: auto !important ;
+    }
+  }
 .singleSelectTable {
   ::v-deep .el-table__header-wrapper .el-checkbox {
     display: none;

@@ -52,6 +52,7 @@
       </div>
     </template>
         <tableList
+          :isminHeight="true"
           index
           :tableData="tableListData"
           :tableTitle="tableTitle"
@@ -72,7 +73,7 @@
         <!------------------------------------------------------------------------>
         <!--                  表格分页                                          --->
         <!------------------------------------------------------------------------>
-        <iPagination
+        <!-- <iPagination
           v-update
           @size-change="handleSizeChange($event, getTableList)"
           @current-change="handleCurrentChange($event, getTableList)"
@@ -82,7 +83,7 @@
           :layout="page.layout"
           :current-page="page.currPage"
           :total="page.totalCount"
-        />
+        /> -->
     </iCard>
     <!-- 申请模具预算弹窗 -->
     <moldBudgetApplicationDialog :visible.sync="moldBudgetApplicationVisible" @updateTable="getTableList" />
@@ -98,6 +99,8 @@ import {
   getModelBudgetList,
   patchMouldBudget,
   cancelMoldBudget,
+  patchMouldBudgetSubmit,
+  patchMouldBudgetWithdrawal
 } from "@/api/partsrfq/editordetail";
 import store from "@/store";
 import { rfqCommonFunMixins } from "pages/partsrfq/components/commonFun";
@@ -127,6 +130,7 @@ export default {
       tableLoading: false,
       selectTableData: [],
       moldBudgetApplicationVisible: false
+      
     };
   },
   created() {
@@ -140,31 +144,28 @@ export default {
   methods: {
     //获取表格数据
     async getTableList() {
-      const id = this.$route.query.id;
-      if (id) {
+      const rfqId = this.$route.query.id;
+      if (rfqId) {
         this.tableLoading = true;
         try {
-          const req = {
-            rfqId: id,
-            userId: store.state.permission.userInfo.id,
-          };
           const res = await getModelBudgetList(
-            {
-              currPage: this.page.currPage,
-              pageSize: this.page.pageSize,
-            },
-            [{ rfqIds: id }]
-          );
-          this.tableListData = Array.isArray(res.data.records)
-            ? res.data.records.map((item) => ({
-                ...item,
-                budget: math.bignumber(item.budget || 0).toFixed(2),
-                disabled: item.approvalStatus=='已审批'
-              }))
-            : [];
+            rfqId
+          )
+          console.log(Array.isArray(res.data),res.data,'1111111111');
+          if(res && res.code === '200') {
+            this.tableListData = Array.isArray(res.data)
+              ? res.data.map((item) => ({
+                  ...item,
+                  budget: math.bignumber(item.budget || 0).toFixed(2),
+                  disabled: item.approvalStatus=='已审批'
+                }))
+              : [];
+          } else{
+            iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
+          }
           // this.page.currPage = res.current
           // this.page.pageSize = res.size
-          this.page.totalCount = res.data.total;
+          // this.page.totalCount = res.data.total;
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -181,7 +182,7 @@ export default {
         this.selectTableData.some(
           (item) =>
             item.approvalStatus === "已提交" ||
-            item.approvalStatus === "submitted"
+            item.approvalStatus === "SUBMITTED"
         )
       )
         return iMessage.warn(
@@ -192,11 +193,10 @@ export default {
       //item.approvalStatus = 'submitted' //后台晓伟指出不转换
       //return item
       //})
-      const req = this.selectTableData;
-      const res = await patchMouldBudget({
-        updateType: 1,
-        mouldBudgetDTOS: req,
-      });
+      const mouldBudgets = this.selectTableData
+      const res = await patchMouldBudgetSubmit(
+        mouldBudgets
+      );
       this.resultMessage(res);
       this.getTableList();
     },
@@ -205,27 +205,27 @@ export default {
         iMessage.warn(this.language("partsignLanguage.QingXuanZe", "请选择"));
         return false;
       }
-
-      if (
-        this.selectTableData.some(
-          (item) =>
-            item.approvalStatus === "已撤销" ||
-            item.approvalStatus === "revoked"
-        )
-      )
+      const status = ["AGREE","DISAGREE","REVOKED","已审批","已驳回","已撤销"]
+      let statusFlag = false
+      this.selectTableData.forEach(val=>{
+        status.includes(val.approvalStatus) || status.includes(val.approvalStatusDesc) ? statusFlag = true : ''
+      })
+       if (statusFlag)
         return iMessage.warn(
-          this.language("QINGWUXUANZEYICHEXIAODESHUJU", "请勿选择已撤销的数据")
+          this.language("ZHIYOUYITIJIAOZHUANGTAICAIKEYICHEHUI", "只有【已提交】状态才可以撤回")
         );
-
       // this.selectTableData = this.selectTableData.map(item => {
       // item.approvalStatus = 'revoked' 晓伟说不用转换
       // return item
       // })
-      const req = this.selectTableData;
-      const res = await patchMouldBudget({
-        updateType: 0,
-        mouldBudgetDTOS: req,
-      });
+     const ids = this.selectTableData.map(val=>{
+        if(val.id!==null){
+          return val.id
+        }
+      })
+      const res = await patchMouldBudgetWithdrawal(
+        ids
+      );
       this.resultMessage(res);
       this.getTableList();
     },
