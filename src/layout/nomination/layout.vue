@@ -14,7 +14,7 @@
     </div>
     <div v-if="!showDecisionLoading" class="nomination-content" v-loading="loading">
       <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
-      <div v-else class="tip">{{ language("WUQUANXIANCHAKAN", "无查看权限") }}</div>
+      <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
     </div>
   </div>
 </iPage>

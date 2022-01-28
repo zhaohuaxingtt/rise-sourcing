@@ -216,7 +216,8 @@ export default {
       applyRefCarType(this.referenceCarProjectParams.id, parmars).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          iMessage.success(result);
+          // iMessage.success(result);
+          iMessage.success('应用成功！');
         } else {
           iMessage.error(result);
         }
