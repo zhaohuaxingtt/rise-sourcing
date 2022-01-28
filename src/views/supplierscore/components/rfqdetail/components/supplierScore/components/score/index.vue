@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2022-01-24 11:30:28
+ * @LastEditTime: 2022-01-28 17:31:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -32,7 +32,7 @@
         :data="tableListData"
         :empty-text="language('ZANWUSHUJU', '暂无数据')">
         <el-table-column type="index" align="center" label="#"></el-table-column>
-        <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :show-overflow-tooltip="true">
+        <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip">
           <template v-if="item.props === 'sapCode'" v-slot="scope">
             <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
           </template>
@@ -45,7 +45,7 @@
         </el-table-column>
         <template>
           <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
-            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)" :show-overflow-tooltip="true">
+            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip" :width="item.width">
               <template v-if="item.props === 'rate'" #header="scope">
                 <span>{{ scope.column.label }}<i class="required">*</i></span>
               </template>
@@ -103,7 +103,7 @@
                 <span v-else>{{ isFileRfqType ? showaffixName(scope.row.rate) : scope.row.rate }}</span>
               </template>
               <template v-else-if="item.props === 'externalFee' || item.props === 'addFee'" v-slot="scope">
-                <iInput v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
+                <iInput style="width:90%" v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
                 <span v-else>{{ scope.row[item.props] }}</span>
               </template>
               <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
@@ -113,8 +113,13 @@
               <template v-else-if="item.props === 'remark'" v-slot="scope">
                 <!-- <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
                 <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
-                <iInput v-if="editStatus" v-model="scope.row.memo"/>
-                <span v-else>{{ scope.row.memo }}</span>
+                <el-tooltip placement="top" :disabled="!scope.row.memo">
+                  <div style="maxWidth:200px" slot="content">{{scope.row.memo}}</div>
+                  <div>
+                    <iInput v-if="editStatus" v-model="scope.row.memo"/>
+                    <span class="text-overflow" v-else>{{ scope.row.memo }}</span>
+                  </div>
+                </el-tooltip>
               </template>
               <template v-else v-slot="scope">
                 <span>{{ scope.row[item.props] }}</span>
@@ -510,6 +515,13 @@ export default {
     font-style: normal;
     margin-left: 2px;
     font-size: 14px;
+  }
+  .text-overflow{
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>
