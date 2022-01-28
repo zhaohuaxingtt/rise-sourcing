@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-26 19:18:53
+ * @LastEditTime: 2022-01-28 13:44:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -367,10 +367,10 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: fsTemplate?(asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0):'/'):''
+                        [key]: fsTemplate?(asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': Math.round((_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`) * 100) / 100)  : item[key] || 0):'/'):''
                       }
                     })
-                    total[key] = fsTemplate?((!element[key] || total[key] == "/")?"/":parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)):''
+                    total[key] = fsTemplate?((!element[key] || total[key] == "/")?"/":Math.round((_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)) * 100) / 100):''
                   }else{
                     groupArr = groupArr.map(item => {
                       return {
