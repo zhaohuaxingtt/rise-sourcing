@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-22 16:28:54
- * @LastEditTime: 2022-01-21 10:07:15
+ * @LastEditTime: 2022-01-28 17:16:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\data.js
@@ -18,7 +18,7 @@ export const deptScoreTableTitle = [
   { props: "externalFee", name: "外部开发费(元)", key: "WAIBUKAIFAFEIYUAN", tooltip: true,isFileHidden:true },
   { props: "addFee", name: "增加的认可费(元)", key: "ZNEGJIADERENKEFEIYUAN", tooltip: true,isFileHidden:true },
   { props: "confirmCycle", name: "认可周期(周)", key: "RENKEZHOUQIZHOU", tooltip: true,isFileHidden:true },
-  { props: "remark", name: "备注", key: "BEIZHU", tooltip: true },
+  { props: "remark", name: "备注", key: "BEIZHU",width:200, },
   { props: "rateStatus", name: "评分状态", key: "PINGFENZHUANGTAI", tooltip: true },
 ]
 

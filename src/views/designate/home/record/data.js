@@ -143,13 +143,13 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'aPrice',
+    props:'lcAPrice',
     name:'LC A价',
     key:'LCAJIA',
     tooltip:true
   },
   {
-    props:'bPrice',
+    props:'lcBPrice',
     name:'LC B价',
     key:'LCBJIA',
     tooltip:true
@@ -167,13 +167,13 @@ export const tableDetailTitle = [
     tooltip:true
   },
   {
-    props:'aNoSharePrice',
+    props:'lcANoSharePrice',
     name:'LC A价（不含分摊）',
     key:'LCAJIABUHANFENTAN',
     tooltip:true
   },
   {
-    props:'bNoSharePrice',
+    props:'lcBNoSharePrice',
     name:'LC B价（不含分摊）',
     key:'LCBJJIABUHANFENTAN',
     tooltip:true

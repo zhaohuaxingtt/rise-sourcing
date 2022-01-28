@@ -349,7 +349,10 @@ export default {
         })
         window.open(routeData.href, '_blank')
       }else{
-        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
+        const roleList = this.$store.state.permission.userInfo.roleList;
+        const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.some));
+        console.log('roleListroleListroleList', roleList, isFlag);
+        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum + '?flag=' + !isFlag;
         window.open(url);
       }
     },
