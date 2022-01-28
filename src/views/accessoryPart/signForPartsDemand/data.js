@@ -22,7 +22,7 @@ export const tableTitle = [
   {props:'csfuserDeptName',name:'询价科室', key: "XUJIAKESHI", tooltip: true},
   {props:'csfuserName',name:'询价采购员', key: "XUJIACAIGOUYUAN", tooltip: true, width: 100},
   {props:'respDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, width: 100},
-  {props:'respLinieName',name:'LINIE', key: "LINIE", tooltip:true, width: 180},
+  {props:'respLinieName',name:'LINIE', key: "LINIE", tooltip:true, width: 100},
   {props:'partNameDe',name:'配件零件德文名', key: "PEIJIANLINGJIANDEWENMING", tooltip: true, width: 220},
   {props:'supplierSvwTempCode',name:'供应商临时号', key: "GONGYINGSHANGLINGSHIHAO", tooltip: true, width: 120},
   {props:'carProject',name:'配件车型项目', key: "PEIJIANCHEXINGXIANGMU", tooltip: true, width: 160},
