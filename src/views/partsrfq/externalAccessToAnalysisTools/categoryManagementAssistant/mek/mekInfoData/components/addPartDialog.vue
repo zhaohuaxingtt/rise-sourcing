@@ -11,10 +11,30 @@
            width="70%"
            @close="clearDiolog">
     <el-form label-width="60px"
-             label-position="top">
+             label-position="top"
+             model="form">
       <el-row type="flex"
               align='bottom'
               justify="space-between">
+        <el-col :span="6">
+          <el-form-item :label="language('CAILIAOZU','材料组')"
+                        prop="project">
+            <iSelect v-model="form.categoryCodes"
+                     clearable
+                     filterable
+                     multiple
+                     collapse-tags
+                     :multiple-limit="5"
+                     style="width:260px"
+                     popper-append-to-body
+                     :placeholder="language('QINGXUANZE','请选择')">
+              <el-option v-for="item in categoryList"
+                         :key="item.categoryId"
+                         :label="item.categoryCode+'-'+item.categoryName"
+                         :value="item.categoryCode"></el-option>
+            </iSelect>
+          </el-form-item>
+        </el-col>
         <el-col :span="4">
           <el-form-item :label="language('LINGJIANHAO','零件号')">
             <iInput :placeholder="$t('LK_QINGXUANZE')"
@@ -89,16 +109,16 @@
 </template>
 
 <script>
-import { iInput, iButton, iDialog, icon, iMessage } from 'rise'
+import { iInput, iButton, iDialog, iMessage, iSelect } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addPartTableTitle } from "./data.js";
-import { getPartMessage, infoAdd } from "@/api/partsrfq/mek/index.js";
+import { getPartMessage, infoAdd, categoryList } from "@/api/partsrfq/mek/index.js";
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 
 export default {
   mixins: [resultMessageMixin],
   components: {
-    iInput, iButton, iDialog, icon, tableList
+    iInput, iButton, iDialog, tableList, iSelect
   },
   props: {
     value: { type: Boolean },
@@ -113,23 +133,38 @@ export default {
         fsNum: '',
         partNum: '',
         rfq: this.$store.state.rfqId || '',
-        project: '1',
-        isFromAeko: true
+        categoryCodes: '',
+        isFromAeko: true,
+        project: '1'
       },
       formGoup: {
         materialGroupList: [],
       },
-      fieldList: []
+      fieldList: [],
+      categoryList: []
     }
   },
   created () {
-    this.getTableList()
+    // this.getTableList()
+    this.getCategoryList()
   },
   methods: {
+    getCategoryList () {
+      categoryList({}).then(res => {
+        if (res?.code === '200') {
+          this.categoryList = res.data
+          this.categoryList = this.categoryList.filter(item => item.categoryCode !== this.$route.query.categoryCode)
+        }
+      })
+    },
     handleSelectionChange (val) {
       this.selectTableData = val
     },
     async handleAdd () {
+      if (this.form.categoryCodes.length === 0) {
+        iMessage.error(this.language('QINGXUANZECAILIAOZUS', '请选择材料组'))
+        return
+      }
       const pms = {
         list: this.selectTableData,
         mekId: this.$route.query.schemeId
@@ -163,6 +198,7 @@ export default {
             ...this.form,
             categoryCode: this.$route.query.categoryCode || '',
             motorIds: motorIds || [],
+            isNominated: this.form.isFromAeko,
             targetMotorId: targetMotorId,
             isBindingRfq: this.$route.query.isBindingRfq,
             schemeId: this.$route.query.schemeId
