@@ -2,7 +2,7 @@
 
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{language('LK_XUNJIATUZHI','询价图纸')}}</span>
+      <span class="font18 font-weight">{{language('LK_XIANGHUFUJIAN','相互附件')}}</span>
       <div class="floatright">
         <iButton @click="download"
                  :loading="downloadLoading"
