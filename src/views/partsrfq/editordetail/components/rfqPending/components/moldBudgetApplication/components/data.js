@@ -12,7 +12,7 @@ export const tableTitle = [
     { props: 'cartypeProjectZh', name: '车型项目', key: 'LK_CHEXINGXIANGMU' },
     { props: 'budget', name: '投资预算（RMB）', key: 'LK_TOUZIYUSUAN' },
     { props: 'csfPDiretor', name: 'CSF(P)负责⼈', key: 'LK_CSFPFUZEREN' },
-    { props: 'approvalStatus', name: '审批状态', key: 'LK_SHENPIZHUANGTAI' },
+    { props: 'approvalStatusDesc', name: '审批状态', key: 'LK_SHENPIZHUANGTAI' },
     { props: 'approvalComments', name: '审批意见', key: 'LK_SHENPIYIJIAN' }
 ]
 
