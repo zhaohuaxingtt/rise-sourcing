@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-28 18:27:56
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-27 19:07:23
+ * @LastEditTime: 2022-01-28 11:31:05
  * @Description: 
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\tableList.vue
 -->
@@ -108,16 +108,12 @@ export default{
       console.log('val',val,'row',row,'item',item);
       this.$set(row, item.props, val)
       if (item.props === 'approveParentDeptNum') {
-        // this.$set(row, 'deptSubOptions', [])
-        // const dept = row.deptOptions.find(item => item.value === val)
-        // this.getDeptSubOptions(val, row, dept.grade)
-        // if (dept) {
-        //   this.getDeptLeader(dept.deptNum, dept.grade, row)
-        // }
-        // 不请求接口直接清空后面的数据
-        this.$set(row, 'approveDeptNum', "")
-        this.$set(row, 'deptManager', "")
-        this.$set(row, 'deptManagerName', "")
+        this.$set(row, 'deptSubOptions', [])
+        const dept = row.deptOptions.find(item => item.value === val)
+        this.getDeptSubOptions(val, row, dept.grade)
+        if (dept) {
+          this.getDeptLeader(dept.deptNum, dept.grade, row)
+        }
       } else {
         const dept = row.deptSubOptions.find(item => item.value === val)
         if (dept) {
