@@ -2,7 +2,7 @@
 
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight">{{language('LK_XUNJIATUZHI','询价图纸')}}</span>
+      <span class="font18 font-weight">{{cardTitle}}</span>
       <div class="floatright">
         <iButton @click="download"
                  :loading="downloadLoading"
@@ -46,17 +46,29 @@ import {inquiryDrawingTableTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
 import {pageInquiryDrawingsByRfqId} from "@/api/partsrfq/home";
 import {downloadFile, downloadUdFile} from "@/api/file";
+import { partProjTypes } from '@/config';
 
 
 export default {
   props:{
-    rfqId:String
+    rfqId:String,
+    baseInfo:{
+      type:Object,
+      default:()=>{},
+    }
   },
   components: {
     iCard,
     iButton,
     iPagination,
     tablelist
+  },
+  computed:{
+    cardTitle(){
+      // 配件或者附件显示相关附件 其他的叫询价图纸
+      if (Array.isArray(this.baseInfo.partProjectType) && ((this.baseInfo.partProjectType[0] === partProjTypes.PEIJIAN) || this.baseInfo.partProjectType[0] === partProjTypes.FUJIAN)) return this.language('LK_XIANGGUANFUJIAN','相关附件')
+      return this.language('LK_XUNJIATUZHI','询价图纸')
+    }
   },
   mixins: [pageMixins],
   data() {
