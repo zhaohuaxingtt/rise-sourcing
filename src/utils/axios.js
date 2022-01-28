@@ -31,7 +31,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
         config.headers['token'] = getToken() || ''
       }
       // IE上的同一个url请求会走cache
-      if (config.method === 'post' || config.method === 'POST') {
+      if (config.method === 'post' || config.method === 'POST' || config.method === 'patch' || config.method === 'PATCH') {
         loading = Loading.service({
           lock: true
         })
