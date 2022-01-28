@@ -142,6 +142,7 @@ export default {
             },
             xAxis: {
               type: 'category',
+              // boundaryGap: false,
               // data: ['2018-03-15', '2019-04-15', '2019-05-15', '2019-06-15', '2019-07-15', '2019-08-15', '2019-09-15']
               data:priceList.date || []
             },
@@ -152,7 +153,7 @@ export default {
               {
                 name: '新零件价格',
                 type: 'line',
-                step: 'middle',
+                step: 'end',
                 // data: [120, 132, 101, 134, 90, 230, 210],
                 data: priceList.newPirce||[],
                 itemStyle : {  
@@ -167,7 +168,7 @@ export default {
               {
                 name: '原零件价格',
                 type: 'line',
-                step: 'start',
+                step: 'end',
                 // data: [220, 282, 201, 234, 290, 430, 410],
                 data: priceList.oldPrice||[],
                 itemStyle : {  
