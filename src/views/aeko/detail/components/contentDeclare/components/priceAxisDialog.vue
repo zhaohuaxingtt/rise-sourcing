@@ -110,14 +110,14 @@ export default {
               axisData.bPrice = this.resetData(data.bnewPrice,data.boldPrice);
               axisData.bnkPrice = this.resetData(data.bnkNewPrice,data.bnkOldPrice);
               this.priceAxisList = axisData;
-              this.initEcharts(axisData.aPrice);
+              this.initEcharts(axisData.aPrice,data.oldPartNum);
             }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
           }).catch(()=>this.loading = false)
         },
         // 初始化echart
-        initEcharts(priceList={}){
+        initEcharts(priceList={},oldPartNum=null){
 
           console.log(priceList,'priceList');
           
@@ -127,7 +127,7 @@ export default {
 
           let option = {
             tooltip: {
-              trigger: 'axis'
+              trigger: 'axis',
             },
             legend: {
               data: ['新零件价格', '原零件价格'],
@@ -169,10 +169,22 @@ export default {
                 name: '原零件价格',
                 type: 'line',
                 step: 'end',
+                label: {
+                  normal: {
+                    show: true,
+                    position: 'top',
+                    formatter: function(params){
+                      const {oldPrice =[]} = priceList
+                      if((oldPrice.length == (params.dataIndex+1)) && oldPartNum){
+                        return oldPartNum
+                      }else  return ''
+                    }
+                  }
+                },
                 // data: [220, 282, 201, 234, 290, 430, 410],
                 data: priceList.oldPrice||[],
                 itemStyle : {  
-                    normal : {  
+                    normal : {
                         color:'#9FA4AE',  
                         lineStyle:{  
                             color:'#9FA4AE'  
