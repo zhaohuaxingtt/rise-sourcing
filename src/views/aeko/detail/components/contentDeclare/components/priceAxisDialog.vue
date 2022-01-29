@@ -226,7 +226,26 @@ export default {
             newPirce:[],
             oldPrice:[],
           };
+
+
+          // 将最后一个结束时间插入至最尾显示
+          if(oldData.length){
+            const lastItem = oldData[oldData.length -1];
+            oldData.push({
+              ...lastItem,
+              startTime:lastItem['endTime']
+            })
+          }
+          if(newData.length){
+            const lastItem = newData[newData.length -1];
+            newData.push({
+              ...lastItem,
+              startTime:lastItem['endTime']
+            })
+          }
+
           data.date = newData.map((item)=>item.startTime).concat(oldData.map((item)=>item.startTime));
+
           // 去重
           data.date = Array.from(new Set(data.date));
           // 排序
@@ -247,7 +266,7 @@ export default {
               data.oldPrice.push(null);
             }
           })
-
+          
           return data;
         },
         showPrice(key){
