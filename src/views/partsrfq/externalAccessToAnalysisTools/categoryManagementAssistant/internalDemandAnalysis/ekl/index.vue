@@ -315,6 +315,7 @@
 
 
       getData(data) {
+        // console.log(data);
         this.getReportData(data)
       },
       getReportData(data) {
