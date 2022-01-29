@@ -2,6 +2,7 @@
   <div>
     <iCard>
       <div class="margin-bottom20 clearFloat">
+        <span class="font18 font-weight">{{language('LK_WULIUYAOQIU','物流要求')}}</span>
         <div class="floatright">
           <iButton @click="exports" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_LOGISTICSREQUIREMENTS_EXPORT|物流要求-导出">{{ language('LK_DAOCHU','导出') }}</iButton>
         </div>
