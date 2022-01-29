@@ -47,7 +47,11 @@ export const tableTitle = [
     key: 'PI.XITONGPIPEIXINXI',
     props: 'systemMatch',
     width: 550,
-    children: [{}],
+    children: [
+      {
+        
+      }
+    ],
   },
 ]
 
