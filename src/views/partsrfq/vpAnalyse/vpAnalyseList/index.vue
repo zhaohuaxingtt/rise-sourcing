@@ -96,7 +96,9 @@ export default {
       this.$refs.analysisTable.page.pageSize = 10
       this.$nextTick(() => {
         this.$refs.analysisTable.getTableData().then(res => {
-          if(!res.data || res.data.length == 0) {
+          if(res.code == "200" && res.result){
+
+          }else{
             iMessage.error(this.$t('TPZS.BQWFCXDJGSRCWHBCZQQRHCXSR'))
           }
         })
