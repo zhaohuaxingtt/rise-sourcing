@@ -29,9 +29,9 @@
         <p class="title">{{language('AEKO_PRICE_GAIXINLINGJIANDEJIAGEBIANHUAQUSHI','该新零件的价格变化趋势，仅供参考。')}}</p>
         <p class="tips">{{language('AEKO_PRICE_AEKOSHISHISHIYUANLINGJIANJIAGEFASHENGBIANHUA','Aeko实施时，原零件价格发生变化，或者原零件的生效时间，都会引起该新零件的价格变化。')}}</p>
         <ul class="price-list">
-          <li><span>{{language('AEKO_PRICE_BIAOTAISHIDEYUANLINGJIANJIAGE','表态时的原零件价格')}}：</span><span>{{priceType =='bnkPrice' ? '-' : priceAxisInfo.contentOldPrice}}RMB,</span></li>
-          <li><span>{{language('AEKO_PRICE_BIANDONGCHENGBEN','成本变动')}}：</span><span>{{priceType =='bnkPrice' ? '-' : priceAxisInfo.changPrice}} RMB,</span></li>
-          <li><span>{{language('AEKO_PRICE_XINLINGJIANJIAGE','新零件价格')}}：</span><span>{{priceType =='bnkPrice' ? '-' : priceAxisInfo.currentPrice}} RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_BIAOTAISHIDEYUANLINGJIANJIAGE','表态时的原零件价格')}}：</span><span>{{showPrice('OldPrice')}} RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_BIANDONGCHENGBEN','成本变动')}}：</span><span>{{showPrice('changPrice')}} RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_XINLINGJIANJIAGE','新零件价格')}}：</span><span>{{showPrice('currentPrice')}} RMB,</span></li>
         </ul>
         <div class="footer-price">
           <p>{{language('AEKO_PRICE_DANGQIANYUGUDEXINLINGJIANSHENGXIAOJIAGE','当前预估的新零件⽣效价格')}}： {{priceType =='bnkPrice' ? '-' : priceAxisInfo.effectPrice}}RMB </p>
@@ -110,14 +110,14 @@ export default {
               axisData.bPrice = this.resetData(data.bnewPrice,data.boldPrice);
               axisData.bnkPrice = this.resetData(data.bnkNewPrice,data.bnkOldPrice);
               this.priceAxisList = axisData;
-              this.initEcharts(axisData.aPrice);
+              this.initEcharts(axisData.aPrice,data.oldPartNum);
             }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
           }).catch(()=>this.loading = false)
         },
         // 初始化echart
-        initEcharts(priceList={}){
+        initEcharts(priceList={},oldPartNum=null){
 
           console.log(priceList,'priceList');
           
@@ -127,7 +127,7 @@ export default {
 
           let option = {
             tooltip: {
-              trigger: 'axis'
+              trigger: 'axis',
             },
             legend: {
               data: ['新零件价格', '原零件价格'],
@@ -169,10 +169,22 @@ export default {
                 name: '原零件价格',
                 type: 'line',
                 step: 'end',
+                label: {
+                  normal: {
+                    show: true,
+                    position: 'top',
+                    formatter: function(params){
+                      const {oldPrice =[]} = priceList
+                      if((oldPrice.length == (params.dataIndex+1)) && oldPartNum){
+                        return oldPartNum
+                      }else  return ''
+                    }
+                  }
+                },
                 // data: [220, 282, 201, 234, 290, 430, 410],
                 data: priceList.oldPrice||[],
                 itemStyle : {  
-                    normal : {  
+                    normal : {
                         color:'#9FA4AE',  
                         lineStyle:{  
                             color:'#9FA4AE'  
@@ -237,6 +249,20 @@ export default {
           })
 
           return data;
+        },
+        showPrice(key){
+          const { priceType } = this;
+          if(priceType == 'aPrice'){
+            if(key == 'OldPrice') return this.priceAxisInfo.contentOldPrice
+            else if(key == 'changPrice') return this.priceAxisInfo.changPrice
+            else if(key == 'currentPrice') return this.priceAxisInfo.currentPrice
+          }else if(priceType == 'bPrice'){
+            if(key == 'OldPrice') return this.priceAxisInfo.contentOldBPrice
+            else if(key == 'changPrice') return this.priceAxisInfo.changBPrice
+            else if(key == 'currentPrice') return this.priceAxisInfo.effectBPrice
+          }else{
+            return '-'
+          }
         },
     },
 }
