@@ -161,13 +161,10 @@ export default {
       this.selectTableData = val
     },
     async handleAdd () {
-      if (this.form.categoryCodes.length === 0) {
-        iMessage.error(this.language('QINGXUANZECAILIAOZUS', '请选择材料组'))
-        return
-      }
       const pms = {
         list: this.selectTableData,
-        mekId: this.$route.query.schemeId
+        mekId: this.$route.query.schemeId,
+        project: this.form.project
       }
       const res = await infoAdd(pms)
       this.resultMessage(res, () => {
@@ -188,6 +185,10 @@ export default {
       this.getTableList()
     },
     async getTableList () {
+      if (this.form.categoryCodes.length === 0) {
+        iMessage.error(this.language('QINGXUANZECAILIAOZUS', '请选择材料组'))
+        return
+      }
       let vwModelCodes = JSON.parse(this.$route.query.vwModelCodes)
       try {
         this.tableLoading = true
@@ -196,9 +197,9 @@ export default {
           let motorIds = vwModelCodes
           const pms = {
             ...this.form,
-            categoryCode: this.$route.query.categoryCode || '',
+            // categoryCode: this.$route.query.categoryCode || '',
             motorIds: motorIds || [],
-            isNominated: this.form.isFromAeko,
+            // isNominated: this.form.isFromAeko,
             targetMotorId: targetMotorId,
             isBindingRfq: this.$route.query.isBindingRfq,
             schemeId: this.$route.query.schemeId
