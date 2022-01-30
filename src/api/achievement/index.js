@@ -12,6 +12,15 @@ if(process.env.NODE_ENV=='dev') {
     qsAjax = $qsAjax()
 }
 
+// 报表接口
+export function getPowerBiVal(data) {
+    return requst({
+        url: `/piEklreportEntity/getPowerBiVal`,
+        method: 'POST',
+        data
+    })
+}
+
 //aon报表接口-获取eklPbi对应的的信息
 export function getEklPbi(){
     return requstAon({

@@ -123,7 +123,17 @@ export default {
           
           vm = echarts().init(document.getElementById("priceAxisEcharts"));
 
-          
+          // 为重置y轴的最大值 最小值 整理下所有data数据
+          let allDataList = (priceList.newPirce || []).concat(priceList.oldPrice||[]);
+          // 去除空值
+          allDataList = allDataList.filter((item)=>!!item);
+          // 去重
+          allDataList = Array.from(new Set(allDataList));
+          // 排序
+          allDataList = allDataList.sort((a,b)=>{
+            return a > b ? 1:-1
+          })
+           console.log(allDataList,'allDataList');
 
           let option = {
             tooltip: {
@@ -147,7 +157,9 @@ export default {
               data:priceList.date || []
             },
             yAxis: {
-              type: 'value'
+              type: 'value',
+              min: Number(allDataList[0]) > 15 ? (Number(allDataList[0]) - 10).toFixed(0) : 0,
+              max: Number(allDataList[allDataList.length - 1]) > 10 ? Number(allDataList[allDataList.length - 1]) + 10 : Number(allDataList[allDataList.length - 1]) + 1,
             },
             series: [
               {

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import * as pbi from 'powerbi-client';
+    // import * as pbi from 'powerbi-client';
 
     export default {
         props:['username'],
