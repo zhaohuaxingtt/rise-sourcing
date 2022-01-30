@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2022-01-28 14:48:14
+ * @LastEditTime: 2022-01-30 13:27:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
@@ -138,7 +138,7 @@ export const whiteListGs = ['currentSupplier','headerEbr','groupName','partNo','
  * @param {*} title
  * @return {*}
  */
-export const needSubTotal = ['cfPartAPrice','cfPartBPrice','ftSkdAPrice','ftSkdBPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto','developmentCost','releaseCost','toolingShare']
+export const needSubTotal = ['cfPartAPrice','cfPartBPrice','ftSkdAPrice','ftSkdBPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto','developmentCost','releaseCost','toolingShare','developmentCostShare']
 /**
  * @description:根据不同type获取options列表，这个方法适用于所有模板
  * @param {*} type 想要获取的type类型
@@ -352,9 +352,12 @@ export function removeKeysNumber(keys){
 export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
   try {
     // eslint-disable-next-line no-undef
-    let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId,toolingHasShare:1}] : accu}, []), 'groupId')
-    const total = {}
-    tableHeader = [...tableHeader,...[{props:'toolingShare'}]]
+    let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId,toolingHasShare:1,developmentCostHasShare:1}] : accu}, []), 'groupId')
+    const total = {
+      toolingHasShare:1,
+      developmentCostHasShare:1
+    }
+    tableHeader = [...tableHeader,...[{props:'toolingShare'},{props:'developmentCostShare'}]]
     tableHeader.forEach(items=>{
       if(items.props == 'groupName'){
         total["groupId"] = '-'
