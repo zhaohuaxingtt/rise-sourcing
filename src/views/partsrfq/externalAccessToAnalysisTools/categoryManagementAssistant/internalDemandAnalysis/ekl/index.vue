@@ -15,21 +15,23 @@
                 class="cursor"></icon> -->
               <i class="el-icon-warning-outline margin-left10 tishi"></i>
             </el-tooltip>
-            <!-- <div class="dw" :class="btnsgroup1.length?'mr40':''"></div> -->
-            <span class="dw" :class="btnsgroup1.length?'mr40':''" v-text="!show?'单位：百万元':'Unit：Mio'"></span>
+            <!-- <span class="dw" :class="btnsgroup1.length?'mr40':''" v-text="!show?'单位：百万元':'Unit：Mio'"></span> -->
+            <span class="dw" :class="btnsgroup1.length?'mr40':''">{{language("Unit：Mio","单位：百万元")}}</span>
           </div>
           <div class="flex">
             <iButton @click="save" :loading="saveLoading">{{language("BAOCUN","保存")}}</iButton>
             <iButton @click="goback">{{language("FANHUI","返回")}}</iButton>
           </div>
         </div>
-      </template>  
-      <div>
+      </template>
+      <!-- powerBi -->
+      <div id="powerBi"></div>
+      <!-- <div v-if="choise">
           <keep-live :include="['zfgsj', 'zfkssj','zfcgysj','zfbmsj','wfbmsj','wfkssj','pfjwfbmsj','pfjwfkssj','pfjzfbmsj','pfjzfcgysj','pfjzfgsj','pfjzfkssj']"
             >
               <component :is="currentView" @getData="getData" :username="username"/>
           </keep-live>
-      </div>
+      </div> -->
     </iCard>
 
 </template>
@@ -83,7 +85,7 @@
       return {
         tabRouterList,
         btnsgroup1: [],
-        indexBtn: 0,
+        // indexBtn: 0,
         currentView: '',
         username: '8',
         url: {
@@ -105,10 +107,15 @@
           requireSingleSelection: true
         },
         values: [],
-        show: false,
+        // show: false,
         state: false, // 控制科室采购员
         roleList: this.$store.state.permission.userInfo.roleList,
         saveLoading:false,
+
+        choise:true,
+        powerbi:null,
+        reportContainer: null,
+        config:{},
       };
     },
     created(){
@@ -119,7 +126,8 @@
     watch:{
       '$store.state.rfq.categoryCode': {
         handler (val) {
-          console.log(val)
+          this.choise = false;
+          this.choise = true;
           this.renderBi();
         },
         deep: true,
@@ -134,148 +142,11 @@
       pfjgly() {
         return this.roleList.some(item => item.code == 'PFJYJGLY')
       },
-      // 角色判断
-      role() {
-        let role = '';
-        const deptName = this.$store.state.permission.userInfo.deptDTO.deptNum
-        if (this.roleList.length == 1) {
-          const Linie = this.roleList.some(item => item.code == 'LINIE')
-          const zycgkzORkzzl = this.roleList.some(item => item.code == 'ZYCGKZ' || item.code == 'WS2ZYCGKZ' || item.code == 'ZYCGKSXTY')
-          const zycgkz = this.roleList.some(item => item.code == 'ZYCGKZ' || item.code == 'WS2ZYCGKZ')
-          const kzzl = this.roleList.some(item => item.code == 'ZYCGKSXTY' || item.code == 'ZYCGKSXTDY')
-          const zycgbzORbzzl = this.roleList.some(item => item.code == 'BZZL' || item.code == 'CGBZ')
-          const zycgbz = this.roleList.some(item => item.code == 'CGBZ')
-          const bzzl = this.roleList.some(item => item.code == 'BZZL')
-          const zycggz = this.roleList.some(item => item.code == 'WS2ZYCGGZ' || item.code == 'ZYCGGZ')
-          const CGBZ_WF = this.roleList.some(item => item.code == 'CGBZ_WF')
-          const ZYCGKZ_WF = this.roleList.some(item => item.code == 'ZYCGKZ_WF')
-          const PFJYJGLY = this.roleList.some(item => item.code == 'PFJYJGLY')
-          if(PFJYJGLY) {
-//            this.btnsgroup1 = ['CS(Spare)', 'CSM(Spare)', 'CSEN(Spare)', 'Linie(Spare)']
-//            this.btnsgroup1 = ['CS(Spare)']
-          }else if (Linie) {        // 采购员 采购员视觉
-            this.username = '8'
-            this.btnsgroup1 = ['Linie', 'Linie(Spare)']
-            role = 'Linie'
-          } else if (zycgkzORkzzl) { // 采购科长||科长助理 科室视觉
-            if (zycgkz) {
-              this.username = '3'
-              this.btnsgroup1 = ['CSM', 'CSM(Spare)']
-              role = 'KZ'
-
-            }
-            if (kzzl) {
-              this.username = '4'
-              this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
-              role = deptName
-            }
-          } else if (zycgbzORbzzl) { // 采购部长||部长助理 部门视觉
-            this.username = ''
-            this.btnsgroup1 = ['CS', 'CS(Spare)']
-            role = 'CS'
-          } else if (zycggz) {       // 采购股长 股视觉
-            this.username = '7'
-            this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
-            role = deptName
-          } else if (CGBZ_WF) {
-            this.btnsgroup1 = ['CS', 'CS(Spare)']
-            role = 'CGBZ_WF'
-          } else if (ZYCGKZ_WF) {
-            this.btnsgroup1 = ['CSM', 'CSM(Spare)']
-            role = 'ZYCGKZ_WF'
-          }
-        } else {
-          const Linie = this.roleList.some(item => item.code == 'LINIE') // 采购员
-          const KZ = this.roleList.some(item => item.code == 'ZYCGKZ' || item.code == 'WS2ZYCGKZ') // 科长
-          const KZZL = this.roleList.some(item => item.code == 'ZYCGKSXTY' || item.code == 'ZYCGKSXTDY') // 科长助理
-          const BZ = this.roleList.some(item => item.code == 'CGBZ')      // 部长
-          const BZZL = this.roleList.some(item => item.code == 'BZZL')    // 部长助理
-          const GZ = this.roleList.some(item => item.code == 'WS2ZYCGGZ' || item.code == 'ZYCGGZ') // 股长
-          const PFJYJGLY = this.roleList.some(item => item.code == 'PFJYJGLY')
-          if(PFJYJGLY) {
-//            this.btnsgroup1 = ['CS(Spare)', 'CSM(Spare)', 'CSEN(Spare)', 'Linie(Spare)']
-//            this.btnsgroup1 = ['CS(Spare)']
-          }else if (KZ && Linie) {
-            this.username = '3'
-            this.btnsgroup1 = ['CSM', 'CSM(Spare)']
-            role = 'KZ&&linie'
-          } else if (KZ && !Linie) {
-            this.username = '3'
-            this.btnsgroup1 = ['CSM', 'CSM(Spare)']
-            role = 'KZ'
-          } else if (KZZL && Linie) {
-            this.username = '4'
-            this.btnsgroup1 = [deptName, `${deptName}(Spare)`, 'Linie', 'Linie(Spare)']
-            role = `${deptName}&&Linie`
-          } else if (KZZL && !Linie) {
-            this.username = '4'
-            this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
-            role = deptName
-          } else if ((BZ && Linie) || (BZ && !Linie) || (BZZL && !Linie)) {
-            this.btnsgroup1 = ['CS', 'CS(Spare)']
-            if (BZZL && !Linie) {
-              role = 'CS'
-            } else {
-              role = 'BZ'
-            }
-
-          } else if (BZZL && Linie) {
-            this.username = '2'
-            this.btnsgroup1 = ['CS', 'CS(Spare)', 'Linie', 'Linie(Spare)']
-            role = 'CS&&Linie'
-          } else if (GZ && Linie) {
-            this.username = '7'
-            this.btnsgroup1 = [deptName, `${deptName}(Spare)`, 'Linie', 'Linie(Spare)']
-            role = `${deptName}&&Linie`
-          } else if (GZ && !Linie) {
-            this.username = '7'
-            this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
-            role = deptName
-          }
-        }
-
-        return role;
-      },
     },
 
     mounted() {
-        // getEklPbil().then(res=>{
-            
-        // })
-        // console.log(this.role)
-      if(this.pfjgly) {
-        this.currentView = 'pfjzfbmsj'
-      }else if (this.role == 'CS' || this.role == 'BZ') { // 部门 部长助理||部长
-        this.currentView = 'zfbmsj'
-      } else if (this.role == 'KZ&&linie' || this.role == 'KZ') { // 科长
-        this.currentView = 'zfkssj'
-      } else if (this.role == this.dept) { // 股长
-        this.currentView = 'zfgsj'
-      } else if (this.role == `${this.dept}&&Linie`) { // 股长&&采购员
-        this.currentView = 'zfgsj'
-      } else if (this.role == 'CSM' || this.role == this.dept) { // 科室
-        this.currentView = 'zfkssj'
-      } else if (this.role == `${this.dept}&&Linie`) { // 科室&&采购员
-        this.currentView = 'zfkssj'
-      } else if (this.role == 'Linie') { // 采购员
-        this.currentView = 'zfcgysj'
-      } else if (this.role == 'CGBZ_WF' || this.role == 'ZYCGKZ_WF') { // 外方部门视图
-        if(this.role == 'CGBZ_WF') {
-          this.currentView = 'wfbmsj'
-        } else {
-          this.currentView = 'wfkssj'
-        }
-        this.show = true
-        this.tabRouterList = [{
-          value: 1,
-          name: '我的业绩',
-          url: '/achievement/baseData/mymerit',
-          activePath: '/achievement/baseData/mymerit',
-          permissionKey: 'ACHIEVEMENT',
-          key: 'LK_WDYJ'
-        }]
-      }
-      console.log('this.currentView', this.currentView, this.role);
+      this.currentView = 'zfkssj';
+      this.getReportData();
     },
     methods: {
       goback(){
@@ -314,98 +185,8 @@
       },
 
 
-      getData(data) {
-        this.getReportData(data)
-      },
-      getReportData(data) {
-        getEklPbi().then(res => {
-          // console.log(res)
-          if (res.result) {
-            this.url = res.data
-            this.renderBi(data)
-          }
-        })
-      },
-      exchangeSelectState(item, index) {
-        if (item == 'CS') { // 部门
-          if (this.role == 'CGBZ_WF') {
-            this.currentView = 'wfbmsj'
-          } else {
-            this.currentView = 'zfbmsj'
-          }
-        } else if (item == 'CS(Spare)') {
-          if (this.role == 'CGBZ_WF') {
-            this.currentView = 'pfjwfbmsj'
-          } else if (this.role == 'BZ') { // 部长
-            this.username = '1'
-            this.currentView = 'pfjzfbmsj'
-          } else if (this.role == 'CS') { //部长助理
-            this.username = '2'
-            this.currentView = 'pfjzfbmsj'
-          }
-        } else if (item == 'CSM') { // 科室
-          if (this.role == 'ZYCGKZ_WF') {
-            this.currentView = 'wfkssj'
-          } else if (this.role == 'KZ') {
-            this.username = '3'
-            this.currentView = 'zfkssj'
-          } else if (this.role == `${this.dept}&&Linie` || this.role == 'CSM') {
-            this.username = '4'
-            this.currentView = 'zfkssj'
-          }
-        } else if (item == 'CSM(Spare)') {
-          if (this.role == 'ZYCGKZ_WF') {
-            this.currentView = 'pfjwfkssj'
-          } else {
-            this.username = '5'
-            if (this.role == `${this.dept}&&Linie` || this.role == 'CSM') {
-              this.username = '6'
-            }
-            this.currentView = 'pfjzfkssj'
-          }
-        } else if (item == 'CSEN(Spare)') { // 股长
-          this.username = '9'
-          if (this.role == 'CSEN&&Linie') {
-            this.username = '10'
-          }
-          this.currentView = 'pfjzfgsj'
-        } else if (item == 'CSEN') { // 股长
-          this.username = '7'
-          this.currentView = 'zfgsj'
-        } else if (item == 'Linie') { // 采购员视觉
-          if (this.role == 'Linie') { // 采购员
-            this.username = 8
-          } else if (this.role == 'CSEN&&Linie' || this.role == 'CSEN') { // 股长&&采购员 || 股长
-            this.username = '7'
-          } else if (this.role == 'CS&&Linie') { // 部长助理&&采购员
-            this.username = '2'
-          } else if (this.role == `${this.dept}&&Linie`) { // 科长助理&&采购员
-            this.username = '4'
-          }
-          this.currentView = 'zfcgysj'
-        } else if (item == 'Linie(Spare)') { // 采购员附件视觉
-          this.username = '6'
-          if (this.role == 'CSEN&&Linie') { // 股长&&采购员
-            this.username = '10'
-          } else if (this.role == 'Linie') { // 采购员
-            this.username = '12'
-          }
-          this.currentView = 'pfjzfcgysj'
-        } else if (item == `${this.dept}(Spare)` || item == this.dept) {
-          if(item == this.dept) {
-            this.username = '4'
-            this.currentView = 'zfkssj'
-          } else {
-            this.username = '6'
-            this.currentView = 'pfjzfkssj'
-          }
-        }
-        this.indexBtn = index
-      },
-      // 初始化页面
-      renderBi(data) {
-        var permissions = pbi.models.Permissions.All
-        var config = {
+      getData() {
+        this.config = {
           type: 'report',
           tokenType: pbi.models.TokenType.Embed,
           accessToken: this.url.accessToken,
@@ -421,9 +202,25 @@
             }
           }
         };
-        let powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
-        var reportContainer = document.getElementById('powerBi');
-        var report = powerbi.embed(reportContainer, config);
+        this.reportContainer = document.getElementById('powerBi');
+        this.powerbi = new pbi.service.Service(
+          pbi.factories.hpmFactory,
+          pbi.factories.wpmpFactory,
+          pbi.factories.routerFactory
+        )
+        this.renderBi()
+      },
+      getReportData() {
+        getEklPbi().then(res => {
+          if (res.result) {
+            this.url = res.data
+            this.getData()
+          }
+        })
+      },
+      // 初始化页面
+      renderBi() {
+        var report = this.powerbi.embed(this.reportContainer, this.config);
         // 主题颜色
         var themeJsonObject = {
           "name": "Customer_Color",
@@ -520,6 +317,7 @@
           });
         });
         this.report = report
+        document.getElementsByTagName('iframe')[0].style.border = 'none'
       },
     },
   };
