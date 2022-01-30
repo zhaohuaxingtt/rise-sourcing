@@ -25,21 +25,21 @@
         </div>
       </template>
       <!-- powerBi -->
-      <div id="powerBi"></div>
-      <!-- <div v-if="choise">
+      <!-- <div id="powerBi" v-if="rollPer"></div> -->
+      <div>
           <keep-live :include="['zfgsj', 'zfkssj','zfcgysj','zfbmsj','wfbmsj','wfkssj','pfjwfbmsj','pfjwfkssj','pfjzfbmsj','pfjzfcgysj','pfjzfgsj','pfjzfkssj']"
             >
               <component :is="currentView" @getData="getData" :username="username"/>
           </keep-live>
-      </div> -->
+      </div>
     </iCard>
 
 </template>
 
 <script>
   import {iPage, iNavMvp, iButton,iCard,icon} from 'rise';
-  import {tabRouterList} from '../data';
-  import {getEklPbi} from '@/api/achievement'
+  // import {tabRouterList} from '../data';
+  import {getEklPbi,getPowerBiVal} from '@/api/achievement'
   import * as pbi from 'powerbi-client';
   import zfbmsj from './components/zfbmsj.vue'
   import zfkssj from './components/zfkssj.vue'
@@ -83,7 +83,7 @@
     mixins: [downloadPdfMixins],
     data() {
       return {
-        tabRouterList,
+        // tabRouterList,
         btnsgroup1: [],
         // indexBtn: 0,
         currentView: '',
@@ -110,15 +110,17 @@
         // show: false,
         state: false, // 控制科室采购员
         roleList: this.$store.state.permission.userInfo.roleList,
-        saveLoading:false,
+        // rollPer:true,
 
-        choise:true,
-        powerbi:null,
-        reportContainer: null,
-        config:{},
+        // saveLoading:false,
+        // choise:true,
+        // powerbi:null,
+        // reportContainer: null,
+        // config:{},
       };
     },
     created(){
+      console.log(this.roleList)
       // console.log(this.$store.state)
       // console.log(this.$store.state.rfq)
       // console.log(this.$store.state.rfq.categoryCode)
@@ -126,8 +128,6 @@
     watch:{
       '$store.state.rfq.categoryCode': {
         handler (val) {
-          this.choise = false;
-          this.choise = true;
           this.renderBi();
         },
         deep: true,
@@ -142,11 +142,142 @@
       pfjgly() {
         return this.roleList.some(item => item.code == 'PFJYJGLY')
       },
+      // 角色判断
+      role() {
+        const deptName = this.$store.state.permission.userInfo.deptDTO.deptNum
+        if (this.roleList.length == 1) {
+          const Linie = this.roleList.some(item => item.code == 'LINIE')
+          const zycgkzORkzzl = this.roleList.some(item => item.code == 'ZYCGKZ' || item.code == 'WS2ZYCGKZ' || item.code == 'ZYCGKSXTY')
+          const zycgkz = this.roleList.some(item => item.code == 'ZYCGKZ' || item.code == 'WS2ZYCGKZ')
+          const kzzl = this.roleList.some(item => item.code == 'ZYCGKSXTY' || item.code == 'ZYCGKSXTDY')
+          const zycgbzORbzzl = this.roleList.some(item => item.code == 'BZZL' || item.code == 'CGBZ')
+          const zycgbz = this.roleList.some(item => item.code == 'CGBZ')
+          const bzzl = this.roleList.some(item => item.code == 'BZZL')
+          const zycggz = this.roleList.some(item => item.code == 'WS2ZYCGGZ' || item.code == 'ZYCGGZ')
+          const CGBZ_WF = this.roleList.some(item => item.code == 'CGBZ_WF')
+          const ZYCGKZ_WF = this.roleList.some(item => item.code == 'ZYCGKZ_WF')
+          const PFJYJGLY = this.roleList.some(item => item.code == 'PFJYJGLY')
+          if(PFJYJGLY) {
+//            this.btnsgroup1 = ['CS(Spare)', 'CSM(Spare)', 'CSEN(Spare)', 'Linie(Spare)']
+//            this.btnsgroup1 = ['CS(Spare)']
+          }else if (Linie) {        // 采购员 采购员视觉
+            this.username = '8'
+            this.btnsgroup1 = ['Linie', 'Linie(Spare)']
+            return 'Linie'
+          } else if (zycgkzORkzzl) { // 采购科长||科长助理 科室视觉
+            if (zycgkz) {
+              this.username = '3'
+              this.btnsgroup1 = ['CSM', 'CSM(Spare)']
+              return 'KZ'
+
+            }
+            if (kzzl) {
+              this.username = '4'
+              this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
+              return deptName
+            }
+          } else if (zycgbzORbzzl) { // 采购部长||部长助理 部门视觉
+            this.username = ''
+            this.btnsgroup1 = ['CS', 'CS(Spare)']
+            return 'CS'
+          } else if (zycggz) {       // 采购股长 股视觉
+            this.username = '7'
+            this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
+            return deptName
+          } else if (CGBZ_WF) {
+            this.btnsgroup1 = ['CS', 'CS(Spare)']
+            return 'CGBZ_WF'
+          } else if (ZYCGKZ_WF) {
+            this.btnsgroup1 = ['CSM', 'CSM(Spare)']
+            return 'ZYCGKZ_WF'
+          }
+        } else {
+          const Linie = this.roleList.some(item => item.code == 'LINIE') // 采购员
+          const KZ = this.roleList.some(item => item.code == 'ZYCGKZ' || item.code == 'WS2ZYCGKZ') // 科长
+          const KZZL = this.roleList.some(item => item.code == 'ZYCGKSXTY' || item.code == 'ZYCGKSXTDY') // 科长助理
+          const BZ = this.roleList.some(item => item.code == 'CGBZ')      // 部长
+          const BZZL = this.roleList.some(item => item.code == 'BZZL')    // 部长助理
+          const GZ = this.roleList.some(item => item.code == 'WS2ZYCGGZ' || item.code == 'ZYCGGZ') // 股长
+          const PFJYJGLY = this.roleList.some(item => item.code == 'PFJYJGLY')
+          if(PFJYJGLY) {
+//            this.btnsgroup1 = ['CS(Spare)', 'CSM(Spare)', 'CSEN(Spare)', 'Linie(Spare)']
+//            this.btnsgroup1 = ['CS(Spare)']
+          }else if (KZ && Linie) {
+            this.username = '3'
+            this.btnsgroup1 = ['CSM', 'CSM(Spare)']
+            return 'KZ&&linie'
+          } else if (KZ && !Linie) {
+            this.username = '3'
+            this.btnsgroup1 = ['CSM', 'CSM(Spare)']
+            return 'KZ'
+          } else if (KZZL && Linie) {
+            this.username = '4'
+            this.btnsgroup1 = [deptName, `${deptName}(Spare)`, 'Linie', 'Linie(Spare)']
+            return `${deptName}&&Linie`
+          } else if (KZZL && !Linie) {
+            this.username = '4'
+            this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
+            return deptName
+          } else if ((BZ && Linie) || (BZ && !Linie) || (BZZL && !Linie)) {
+            this.btnsgroup1 = ['CS', 'CS(Spare)']
+            if (BZZL && !Linie) {
+              return 'CS'
+            } else {
+              return 'BZ'
+            }
+
+          } else if (BZZL && Linie) {
+            this.username = '2'
+            this.btnsgroup1 = ['CS', 'CS(Spare)', 'Linie', 'Linie(Spare)']
+            return 'CS&&Linie'
+          } else if (GZ && Linie) {
+            this.username = '7'
+            this.btnsgroup1 = [deptName, `${deptName}(Spare)`, 'Linie', 'Linie(Spare)']
+            return `${deptName}&&Linie`
+          } else if (GZ && !Linie) {
+            this.username = '7'
+            this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
+            return deptName
+          }
+        }
+      },
     },
 
     mounted() {
-      this.currentView = 'zfkssj';
-      this.getReportData();
+      if(this.pfjgly) {
+        this.currentView = 'pfjzfbmsj'
+      }else if (this.role == 'CS' || this.role == 'BZ') { // 部门 部长助理||部长
+        this.currentView = 'zfbmsj'
+      } else if (this.role == 'KZ&&linie' || this.role == 'KZ') { // 科长
+        this.currentView = 'zfkssj'
+      } else if (this.role == this.dept) { // 股长
+        this.currentView = 'zfgsj'
+      } else if (this.role == `${this.dept}&&Linie`) { // 股长&&采购员
+        this.currentView = 'zfgsj'
+      } else if (this.role == 'CSM' || this.role == this.dept) { // 科室
+        this.currentView = 'zfkssj'
+      } else if (this.role == `${this.dept}&&Linie`) { // 科室&&采购员
+        this.currentView = 'zfkssj'
+      } else if (this.role == 'Linie') { // 采购员
+        this.currentView = 'zfcgysj'
+      } else if (this.role == 'CGBZ_WF' || this.role == 'ZYCGKZ_WF') { // 外方部门视图
+        if(this.role == 'CGBZ_WF') {
+          this.currentView = 'wfbmsj'
+        } else {
+          this.currentView = 'wfkssj'
+        }
+        // this.rollPer = false;
+        // this.show = true
+        // this.tabRouterList = [{
+        //   value: 1,
+        //   name: '我的业绩',
+        //   url: '/achievement/baseData/mymerit',
+        //   activePath: '/achievement/baseData/mymerit',
+        //   permissionKey: 'ACHIEVEMENT',
+        //   key: 'LK_WDYJ'
+        // }]
+      }
+      // this.getReportData();
     },
     methods: {
       goback(){
@@ -184,42 +315,79 @@
          })
       },
 
-
-      getData() {
-        this.config = {
-          type: 'report',
-          tokenType: pbi.models.TokenType.Embed,
-          accessToken: this.url.accessToken,
-          embedUrl: this.url.embedUrl,
-          settings: {
-            panes: {
-              filters: {
-                visible: false
-              },
-              pageNavigation: {
-                visible: false
-              }
-            }
-          }
-        };
-        this.reportContainer = document.getElementById('powerBi');
-        this.powerbi = new pbi.service.Service(
-          pbi.factories.hpmFactory,
-          pbi.factories.wpmpFactory,
-          pbi.factories.routerFactory
-        )
-        this.renderBi()
+      getData(data) {
+        this.getReportData(data)
       },
-      getReportData() {
-        getEklPbi().then(res => {
+      getReportData(data) {
+        console.log(data,22222222222222222);
+        getPowerBiVal(data).then(res => {
           if (res.result) {
             this.url = res.data
-            this.getData()
+
+            this.config = {
+              type: 'report',
+              tokenType: pbi.models.TokenType.Embed,
+              accessToken: this.url.accessToken,
+              embedUrl: this.url.embedUrl,
+              settings: {
+                panes: {
+                  filters: {
+                    visible: false
+                  },
+                  pageNavigation: {
+                    visible: false
+                  }
+                }
+              }
+            };
+            this.reportContainer = document.getElementById('powerBi');
+            this.powerbi = new pbi.service.Service(
+              pbi.factories.hpmFactory,
+              pbi.factories.wpmpFactory,
+              pbi.factories.routerFactory
+            )
+            this.renderBi()
           }
         })
       },
+      // getReportData(data) {
+      //   this.config = {
+      //     type: 'report',
+      //     tokenType: pbi.models.TokenType.Embed,
+      //     accessToken: this.url.accessToken,
+      //     embedUrl: this.url.embedUrl,
+      //     settings: {
+      //       panes: {
+      //         filters: {
+      //           visible: false
+      //         },
+      //         pageNavigation: {
+      //           visible: false
+      //         }
+      //       }
+      //     }
+      //   };
+      //   this.reportContainer = document.getElementById('powerBi');
+      //   this.powerbi = new pbi.service.Service(
+      //     pbi.factories.hpmFactory,
+      //     pbi.factories.wpmpFactory,
+      //     pbi.factories.routerFactory
+      //   )
+      //   this.renderBi()
+      // },
+      // getData() {
+      //   getEklPbi().then(res => {
+      //     if (res.result) {
+      //       this.url = res.data
+      //       this.getData()
+      //     }
+      //   })
+      // },
       // 初始化页面
       renderBi() {
+        // if(!this.powerbi){
+        //   return false;
+        // }
         var report = this.powerbi.embed(this.reportContainer, this.config);
         // 主题颜色
         var themeJsonObject = {
@@ -254,6 +422,8 @@
           materialCode = this.$store.state.rfq.categoryCode;
           materialName = this.$store.state.rfq.categoryName;
         }
+        console.log(materialCode,1111111111111111111111111111)
+        console.log(materialName)
         if (date < 10) {
           month = month - 1
         }
@@ -266,7 +436,7 @@
               column: "data_version"
             },
             operator: "In",
-            values: [year+""+month],
+            // values: [year+""+month],
             filterType: pbi.models.FilterType.BasicFilter
           };
           var year_parameter = {
