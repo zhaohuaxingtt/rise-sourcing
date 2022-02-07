@@ -177,7 +177,8 @@
           <template slot="header">
             <!-- <div>{{language('JIAGEXINGXI  ','价格信息')}}</div> -->
             <div class="flex-between-center-center margin-top10">
-              <div>{{language('SOPJIAGE','SOP价格')}}</div>
+              <!-- <div>{{language('SOPJG','SOP价格')}}</div> -->
+              <div>{{$t('SOPJIAGE')}}</div>
               <icon name="iconMEK-xuxian"
                     symbol />
               <div>{{language('DANGQIANJIAGE','当前价格')}}</div>

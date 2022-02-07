@@ -186,7 +186,7 @@ export default {
     },
     async getTableList () {
       if (this.form.categoryCodes.length === 0) {
-        iMessage.error(this.language('QINGXUANZECAILIAOZUS', '请选择材料组'))
+        iMessage.error(this.$t('QINGXUANZECHAILIAOZU'))
         return
       }
       let vwModelCodes = JSON.parse(this.$route.query.vwModelCodes)
