@@ -228,7 +228,6 @@ export default {
           let allDataList = this.getAllYAxisData(priceAxisList[value].newPirce,priceAxisList[value].oldPrice);
 
           var option = vm.getOption();
-          option.xAxis.data = priceAxisList[value].date;
           option.xAxis = {
             type: 'category',
             data:priceAxisList[value].date,
