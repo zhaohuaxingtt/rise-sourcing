@@ -323,14 +323,14 @@ export default {
             }
           })
           // 因为最后一个时间点是通过endTime拼接上的，若某条线的最后一条数据的startime与endtime中间还有一个时间点 需手动将该时间点填充一下数据
-          const oldLen = data['oldPrice'].length;
-          const newLen = data['newPirce'].length;
-          if(data['oldPrice'] && oldLen > 2 && data['oldPrice'][oldLen-2]===null){
-            data['oldPrice'][oldLen-2] = data['oldPrice'][oldLen-1];
-          }
-          if(data['newPirce'] && newLen > 2 && data['newPirce'][newLen-2]===null){
-            data['newPirce'][newLen-2] = data['newPirce'][newLen-1];
-          }
+          // const oldLen = data['oldPrice'].length;
+          // const newLen = data['newPirce'].length;
+          // if(data['oldPrice'] && oldLen > 2 && data['oldPrice'][oldLen-2]===null){
+          //   data['oldPrice'][oldLen-2] = data['oldPrice'][oldLen-1];
+          // }
+          // if(data['newPirce'] && newLen > 2 && data['newPirce'][newLen-2]===null){
+          //   data['newPirce'][newLen-2] = data['newPirce'][newLen-1];
+          // }
 
 
           console.log(data,'data');
