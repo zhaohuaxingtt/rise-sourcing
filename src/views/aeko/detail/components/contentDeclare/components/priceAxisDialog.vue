@@ -314,25 +314,20 @@ export default {
             if(filterNew.length){
               data.newPirce.push(filterNew[0].price);
             }else{
-              data.newPirce.push(null);
+              // 未对应数据的时候查询区间是否包含
+              let newRangePrice = this.getRangePrice(item,newData)
+              data.newPirce.push(newRangePrice);
             }
             if(filterOld.length){
               data.oldPrice.push(filterOld[0].price);
             }else{
-              data.oldPrice.push(null);
+              // 未对应数据的时候查询区间是否包含
+              let oldRangePrice = this.getRangePrice(item,oldData)
+              data.oldPrice.push(oldRangePrice);
             }
           })
-          // 因为最后一个时间点是通过endTime拼接上的，若某条线的最后一条数据的startime与endtime中间还有一个时间点 需手动将该时间点填充一下数据
-          // const oldLen = data['oldPrice'].length;
-          // const newLen = data['newPirce'].length;
-          // if(data['oldPrice'] && oldLen > 2 && data['oldPrice'][oldLen-2]===null){
-          //   data['oldPrice'][oldLen-2] = data['oldPrice'][oldLen-1];
-          // }
-          // if(data['newPirce'] && newLen > 2 && data['newPirce'][newLen-2]===null){
-          //   data['newPirce'][newLen-2] = data['newPirce'][newLen-1];
-          // }
 
-
+ 
           console.log(data,'data');
           
           return data;
@@ -350,6 +345,17 @@ export default {
           }else{
             return '-'
           }
+        },
+
+        // 获取区间值
+        getRangePrice(currentTime,list=[]){
+          let price = null;
+          list.map((item)=>{
+            if((item.startTime < currentTime) && (currentTime < item.endTime) ) price = item.price;
+          })
+          console.log(currentTime,list,price,'getRangePrice')
+          return price
+
         },
     },
 }
