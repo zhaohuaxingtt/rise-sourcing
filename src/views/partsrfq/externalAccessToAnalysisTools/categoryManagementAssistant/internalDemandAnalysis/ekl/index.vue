@@ -114,9 +114,10 @@
 
         // saveLoading:false,
         // choise:true,
-        // powerbi:null,
+        powerbi:null,
         // reportContainer: null,
         // config:{},
+        numberChange:0,
       };
     },
     created(){
@@ -128,7 +129,9 @@
     watch:{
       '$store.state.rfq.categoryCode': {
         handler (val) {
-          this.renderBi();
+          if(this.numberChange !== 0){
+            this.renderBi();
+          }
         },
         deep: true,
         immediate: true
@@ -316,10 +319,10 @@
       },
 
       getData(data) {
+        this.numberChange++;
         this.getReportData(data)
       },
       getReportData(data) {
-        console.log(data,22222222222222222);
         getPowerBiVal(data).then(res => {
           if (res.result) {
             this.url = res.data
@@ -422,8 +425,6 @@
           materialCode = this.$store.state.rfq.categoryCode;
           materialName = this.$store.state.rfq.categoryName;
         }
-        console.log(materialCode,1111111111111111111111111111)
-        console.log(materialName)
         if (date < 10) {
           month = month - 1
         }
