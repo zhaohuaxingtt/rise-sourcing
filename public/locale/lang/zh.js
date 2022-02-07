@@ -6018,5 +6018,21 @@
         "LK_XIANGGUANFUJIAN": "相关附件",
         "Unit：Mio": "单位：百万元"
     }
-    i18n.setLocaleMessage('zh', oldLanguage)
+    var xmlHttp = ''
+    if(window.XMLHttpRequest){
+        xmlHttp = new XMLHttpRequest();
+    }else{
+        // eslint-disable-next-line no-undef
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+            const data = JSON.parse(xmlHttp.responseText)
+            i18n.setLocaleMessage('zh', Object.assign(oldLanguage,data.data.zh))
+        }
+    }
+    xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
+    xmlHttp.setRequestHeader("Content-type","application/json");
+    xmlHttp.setRequestHeader("Accept","*/*");
+    xmlHttp.send()
 }))

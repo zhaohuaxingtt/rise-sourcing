@@ -5944,5 +5944,21 @@
         "BIDDING_BJDWWFSC": "Comparison unit cannot be deleted",
         "YUANCAILIAOXIANGQING": "Raw Material Price Overview"
     }
-    i18n.setLocaleMessage('en', oldLanguage)
+    var xmlHttp = ''
+    if(window.XMLHttpRequest){
+        xmlHttp = new XMLHttpRequest();
+    }else{
+        // eslint-disable-next-line no-undef
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState==4 && xmlHttp.status==200){
+            const data = JSON.parse(xmlHttp.responseText)
+            i18n.setLocaleMessage('en', Object.assign(oldLanguage,data.data.cn))
+        }
+    }
+    xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
+    xmlHttp.setRequestHeader("Content-type","application/json");
+    xmlHttp.setRequestHeader("Accept","*/*");
+    xmlHttp.send()
 }))
