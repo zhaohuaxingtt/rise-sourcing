@@ -15,15 +15,17 @@
                 class="cursor"></icon> -->
               <i class="el-icon-warning-outline margin-left10 tishi"></i>
             </el-tooltip>
-            <!-- <div class="dw" :class="btnsgroup1.length?'mr40':''"></div> -->
-            <span class="dw" :class="btnsgroup1.length?'mr40':''" v-text="!show?'单位：百万元':'Unit：Mio'"></span>
+            <!-- <span class="dw" :class="btnsgroup1.length?'mr40':''" v-text="!show?'单位：百万元':'Unit：Mio'"></span> -->
+            <span class="dw" :class="btnsgroup1.length?'mr40':''">{{language("Unit：Mio","单位：百万元")}}</span>
           </div>
           <div class="flex">
             <iButton @click="save" :loading="saveLoading">{{language("BAOCUN","保存")}}</iButton>
             <iButton @click="goback">{{language("FANHUI","返回")}}</iButton>
           </div>
         </div>
-      </template>  
+      </template>
+      <!-- powerBi -->
+      <!-- <div id="powerBi" v-if="rollPer"></div> -->
       <div>
           <keep-live :include="['zfgsj', 'zfkssj','zfcgysj','zfbmsj','wfbmsj','wfkssj','pfjwfbmsj','pfjwfkssj','pfjzfbmsj','pfjzfcgysj','pfjzfgsj','pfjzfkssj']"
             >
@@ -36,8 +38,8 @@
 
 <script>
   import {iPage, iNavMvp, iButton,iCard,icon} from 'rise';
-  import {tabRouterList} from '../data';
-  import {getEklPbi} from '@/api/achievement'
+  // import {tabRouterList} from '../data';
+  import {getEklPbi,getPowerBiVal} from '@/api/achievement'
   import * as pbi from 'powerbi-client';
   import zfbmsj from './components/zfbmsj.vue'
   import zfkssj from './components/zfkssj.vue'
@@ -81,9 +83,9 @@
     mixins: [downloadPdfMixins],
     data() {
       return {
-        tabRouterList,
+        // tabRouterList,
         btnsgroup1: [],
-        indexBtn: 0,
+        // indexBtn: 0,
         currentView: '',
         username: '8',
         url: {
@@ -105,13 +107,20 @@
           requireSingleSelection: true
         },
         values: [],
-        show: false,
+        // show: false,
         state: false, // 控制科室采购员
         roleList: this.$store.state.permission.userInfo.roleList,
-        saveLoading:false,
+        // rollPer:true,
+
+        // saveLoading:false,
+        // choise:true,
+        // powerbi:null,
+        // reportContainer: null,
+        // config:{},
       };
     },
     created(){
+      console.log(this.roleList)
       // console.log(this.$store.state)
       // console.log(this.$store.state.rfq)
       // console.log(this.$store.state.rfq.categoryCode)
@@ -119,7 +128,6 @@
     watch:{
       '$store.state.rfq.categoryCode': {
         handler (val) {
-          console.log(val)
           this.renderBi();
         },
         deep: true,
@@ -136,7 +144,6 @@
       },
       // 角色判断
       role() {
-        let role = '';
         const deptName = this.$store.state.permission.userInfo.deptDTO.deptNum
         if (this.roleList.length == 1) {
           const Linie = this.roleList.some(item => item.code == 'LINIE')
@@ -156,33 +163,33 @@
           }else if (Linie) {        // 采购员 采购员视觉
             this.username = '8'
             this.btnsgroup1 = ['Linie', 'Linie(Spare)']
-            role = 'Linie'
+            return 'Linie'
           } else if (zycgkzORkzzl) { // 采购科长||科长助理 科室视觉
             if (zycgkz) {
               this.username = '3'
               this.btnsgroup1 = ['CSM', 'CSM(Spare)']
-              role = 'KZ'
+              return 'KZ'
 
             }
             if (kzzl) {
               this.username = '4'
               this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
-              role = deptName
+              return deptName
             }
           } else if (zycgbzORbzzl) { // 采购部长||部长助理 部门视觉
             this.username = ''
             this.btnsgroup1 = ['CS', 'CS(Spare)']
-            role = 'CS'
+            return 'CS'
           } else if (zycggz) {       // 采购股长 股视觉
             this.username = '7'
             this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
-            role = deptName
+            return deptName
           } else if (CGBZ_WF) {
             this.btnsgroup1 = ['CS', 'CS(Spare)']
-            role = 'CGBZ_WF'
+            return 'CGBZ_WF'
           } else if (ZYCGKZ_WF) {
             this.btnsgroup1 = ['CSM', 'CSM(Spare)']
-            role = 'ZYCGKZ_WF'
+            return 'ZYCGKZ_WF'
           }
         } else {
           const Linie = this.roleList.some(item => item.code == 'LINIE') // 采购员
@@ -198,51 +205,45 @@
           }else if (KZ && Linie) {
             this.username = '3'
             this.btnsgroup1 = ['CSM', 'CSM(Spare)']
-            role = 'KZ&&linie'
+            return 'KZ&&linie'
           } else if (KZ && !Linie) {
             this.username = '3'
             this.btnsgroup1 = ['CSM', 'CSM(Spare)']
-            role = 'KZ'
+            return 'KZ'
           } else if (KZZL && Linie) {
             this.username = '4'
             this.btnsgroup1 = [deptName, `${deptName}(Spare)`, 'Linie', 'Linie(Spare)']
-            role = `${deptName}&&Linie`
+            return `${deptName}&&Linie`
           } else if (KZZL && !Linie) {
             this.username = '4'
             this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
-            role = deptName
+            return deptName
           } else if ((BZ && Linie) || (BZ && !Linie) || (BZZL && !Linie)) {
             this.btnsgroup1 = ['CS', 'CS(Spare)']
             if (BZZL && !Linie) {
-              role = 'CS'
+              return 'CS'
             } else {
-              role = 'BZ'
+              return 'BZ'
             }
 
           } else if (BZZL && Linie) {
             this.username = '2'
             this.btnsgroup1 = ['CS', 'CS(Spare)', 'Linie', 'Linie(Spare)']
-            role = 'CS&&Linie'
+            return 'CS&&Linie'
           } else if (GZ && Linie) {
             this.username = '7'
             this.btnsgroup1 = [deptName, `${deptName}(Spare)`, 'Linie', 'Linie(Spare)']
-            role = `${deptName}&&Linie`
+            return `${deptName}&&Linie`
           } else if (GZ && !Linie) {
             this.username = '7'
             this.btnsgroup1 = [deptName, `${deptName}(Spare)`]
-            role = deptName
+            return deptName
           }
         }
-
-        return role;
       },
     },
 
     mounted() {
-        // getEklPbil().then(res=>{
-            
-        // })
-        // console.log(this.role)
       if(this.pfjgly) {
         this.currentView = 'pfjzfbmsj'
       }else if (this.role == 'CS' || this.role == 'BZ') { // 部门 部长助理||部长
@@ -265,17 +266,18 @@
         } else {
           this.currentView = 'wfkssj'
         }
-        this.show = true
-        this.tabRouterList = [{
-          value: 1,
-          name: '我的业绩',
-          url: '/achievement/baseData/mymerit',
-          activePath: '/achievement/baseData/mymerit',
-          permissionKey: 'ACHIEVEMENT',
-          key: 'LK_WDYJ'
-        }]
+        // this.rollPer = false;
+        // this.show = true
+        // this.tabRouterList = [{
+        //   value: 1,
+        //   name: '我的业绩',
+        //   url: '/achievement/baseData/mymerit',
+        //   activePath: '/achievement/baseData/mymerit',
+        //   permissionKey: 'ACHIEVEMENT',
+        //   key: 'LK_WDYJ'
+        // }]
       }
-      console.log('this.currentView', this.currentView, this.role);
+      // this.getReportData();
     },
     methods: {
       goback(){
@@ -313,117 +315,80 @@
          })
       },
 
-
       getData(data) {
         this.getReportData(data)
       },
       getReportData(data) {
-        getEklPbi().then(res => {
-          // console.log(res)
+        console.log(data,22222222222222222);
+        getPowerBiVal(data).then(res => {
           if (res.result) {
             this.url = res.data
-            this.renderBi(data)
+
+            this.config = {
+              type: 'report',
+              tokenType: pbi.models.TokenType.Embed,
+              accessToken: this.url.accessToken,
+              embedUrl: this.url.embedUrl,
+              settings: {
+                panes: {
+                  filters: {
+                    visible: false
+                  },
+                  pageNavigation: {
+                    visible: false
+                  }
+                }
+              }
+            };
+            this.reportContainer = document.getElementById('powerBi');
+            this.powerbi = new pbi.service.Service(
+              pbi.factories.hpmFactory,
+              pbi.factories.wpmpFactory,
+              pbi.factories.routerFactory
+            )
+            this.renderBi()
           }
         })
       },
-      exchangeSelectState(item, index) {
-        if (item == 'CS') { // 部门
-          if (this.role == 'CGBZ_WF') {
-            this.currentView = 'wfbmsj'
-          } else {
-            this.currentView = 'zfbmsj'
-          }
-        } else if (item == 'CS(Spare)') {
-          if (this.role == 'CGBZ_WF') {
-            this.currentView = 'pfjwfbmsj'
-          } else if (this.role == 'BZ') { // 部长
-            this.username = '1'
-            this.currentView = 'pfjzfbmsj'
-          } else if (this.role == 'CS') { //部长助理
-            this.username = '2'
-            this.currentView = 'pfjzfbmsj'
-          }
-        } else if (item == 'CSM') { // 科室
-          if (this.role == 'ZYCGKZ_WF') {
-            this.currentView = 'wfkssj'
-          } else if (this.role == 'KZ') {
-            this.username = '3'
-            this.currentView = 'zfkssj'
-          } else if (this.role == `${this.dept}&&Linie` || this.role == 'CSM') {
-            this.username = '4'
-            this.currentView = 'zfkssj'
-          }
-        } else if (item == 'CSM(Spare)') {
-          if (this.role == 'ZYCGKZ_WF') {
-            this.currentView = 'pfjwfkssj'
-          } else {
-            this.username = '5'
-            if (this.role == `${this.dept}&&Linie` || this.role == 'CSM') {
-              this.username = '6'
-            }
-            this.currentView = 'pfjzfkssj'
-          }
-        } else if (item == 'CSEN(Spare)') { // 股长
-          this.username = '9'
-          if (this.role == 'CSEN&&Linie') {
-            this.username = '10'
-          }
-          this.currentView = 'pfjzfgsj'
-        } else if (item == 'CSEN') { // 股长
-          this.username = '7'
-          this.currentView = 'zfgsj'
-        } else if (item == 'Linie') { // 采购员视觉
-          if (this.role == 'Linie') { // 采购员
-            this.username = 8
-          } else if (this.role == 'CSEN&&Linie' || this.role == 'CSEN') { // 股长&&采购员 || 股长
-            this.username = '7'
-          } else if (this.role == 'CS&&Linie') { // 部长助理&&采购员
-            this.username = '2'
-          } else if (this.role == `${this.dept}&&Linie`) { // 科长助理&&采购员
-            this.username = '4'
-          }
-          this.currentView = 'zfcgysj'
-        } else if (item == 'Linie(Spare)') { // 采购员附件视觉
-          this.username = '6'
-          if (this.role == 'CSEN&&Linie') { // 股长&&采购员
-            this.username = '10'
-          } else if (this.role == 'Linie') { // 采购员
-            this.username = '12'
-          }
-          this.currentView = 'pfjzfcgysj'
-        } else if (item == `${this.dept}(Spare)` || item == this.dept) {
-          if(item == this.dept) {
-            this.username = '4'
-            this.currentView = 'zfkssj'
-          } else {
-            this.username = '6'
-            this.currentView = 'pfjzfkssj'
-          }
-        }
-        this.indexBtn = index
-      },
+      // getReportData(data) {
+      //   this.config = {
+      //     type: 'report',
+      //     tokenType: pbi.models.TokenType.Embed,
+      //     accessToken: this.url.accessToken,
+      //     embedUrl: this.url.embedUrl,
+      //     settings: {
+      //       panes: {
+      //         filters: {
+      //           visible: false
+      //         },
+      //         pageNavigation: {
+      //           visible: false
+      //         }
+      //       }
+      //     }
+      //   };
+      //   this.reportContainer = document.getElementById('powerBi');
+      //   this.powerbi = new pbi.service.Service(
+      //     pbi.factories.hpmFactory,
+      //     pbi.factories.wpmpFactory,
+      //     pbi.factories.routerFactory
+      //   )
+      //   this.renderBi()
+      // },
+      // getData() {
+      //   getEklPbi().then(res => {
+      //     if (res.result) {
+      //       this.url = res.data
+      //       this.getData()
+      //     }
+      //   })
+      // },
       // 初始化页面
-      renderBi(data) {
-        var permissions = pbi.models.Permissions.All
-        var config = {
-          type: 'report',
-          tokenType: pbi.models.TokenType.Embed,
-          accessToken: this.url.accessToken,
-          embedUrl: this.url.embedUrl,
-          settings: {
-            panes: {
-              filters: {
-                visible: false
-              },
-              pageNavigation: {
-                visible: false
-              }
-            }
-          }
-        };
-        let powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
-        var reportContainer = document.getElementById('powerBi');
-        var report = powerbi.embed(reportContainer, config);
+      renderBi() {
+        // if(!this.powerbi){
+        //   return false;
+        // }
+        var report = this.powerbi.embed(this.reportContainer, this.config);
         // 主题颜色
         var themeJsonObject = {
           "name": "Customer_Color",
@@ -457,6 +422,8 @@
           materialCode = this.$store.state.rfq.categoryCode;
           materialName = this.$store.state.rfq.categoryName;
         }
+        console.log(materialCode,1111111111111111111111111111)
+        console.log(materialName)
         if (date < 10) {
           month = month - 1
         }
@@ -469,7 +436,7 @@
               column: "data_version"
             },
             operator: "In",
-            values: [year+""+month],
+            // values: [year+""+month],
             filterType: pbi.models.FilterType.BasicFilter
           };
           var year_parameter = {
@@ -520,6 +487,7 @@
           });
         });
         this.report = report
+        document.getElementsByTagName('iframe')[0].style.border = 'none'
       },
     },
   };

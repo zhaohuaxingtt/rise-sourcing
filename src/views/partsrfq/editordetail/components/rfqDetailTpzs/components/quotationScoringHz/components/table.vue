@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2022-01-28 01:41:30
+ * @LastEditTime: 2022-01-30 13:31:57
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -148,6 +148,12 @@
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
                   <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "skdAPrice"'>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'skdAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "skdBPrice"'>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'skdBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "tto"'>
                 <el-tooltip :content='ttoShow(scope.row[item.props])' effect='light'>
