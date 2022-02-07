@@ -109,6 +109,8 @@ export default {
               axisData.aPrice = this.resetData(data.anewPrice,data.aoldPrice);
               axisData.bPrice = this.resetData(data.bnewPrice,data.boldPrice);
               axisData.bnkPrice = this.resetData(data.bnkNewPrice,data.bnkOldPrice);
+
+              console.log(axisData,'axisData');
               this.priceAxisList = axisData;
               this.initEcharts(axisData.aPrice,data.oldPartNum);
             }else{
@@ -225,11 +227,12 @@ export default {
 
           let allDataList = this.getAllYAxisData(priceAxisList[value].newPirce,priceAxisList[value].oldPrice);
 
-          console.log(allDataList,'allDataListallDataList',(Number(allDataList[allDataList.length - 1]).toFixed(0))+1);
-
-
           var option = vm.getOption();
           option.xAxis.data = priceAxisList[value].date;
+          option.xAxis = {
+            type: 'category',
+            data:priceAxisList[value].date,
+          };
           option.yAxis = {
             type: 'value',
             min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 10) : 0,
