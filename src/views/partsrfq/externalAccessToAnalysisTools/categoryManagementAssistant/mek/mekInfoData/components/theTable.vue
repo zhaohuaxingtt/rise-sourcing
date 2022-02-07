@@ -333,8 +333,9 @@ export default {
       this.carTypeInfoLoading = true
       let res = await getCarTypeMessage({ motorSvwCode: val })
       res = res.data.filter(item => item)
+      console.log(res)
       res.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
-      this.formGoup.carTypeInfoList = res.data
+      this.formGoup.carTypeInfoList = res
       this.carTypeInfoLoading = false
     },
     handleAdded () {

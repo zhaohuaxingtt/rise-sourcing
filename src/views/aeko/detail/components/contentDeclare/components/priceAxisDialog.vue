@@ -109,6 +109,8 @@ export default {
               axisData.aPrice = this.resetData(data.anewPrice,data.aoldPrice);
               axisData.bPrice = this.resetData(data.bnewPrice,data.boldPrice);
               axisData.bnkPrice = this.resetData(data.bnkNewPrice,data.bnkOldPrice);
+
+              console.log(axisData,'axisData');
               this.priceAxisList = axisData;
               this.initEcharts(axisData.aPrice,data.oldPartNum);
             }else{
@@ -118,21 +120,11 @@ export default {
         },
         // 初始化echart
         initEcharts(priceList={},oldPartNum=null){
-
-          console.log(priceList,'priceList');
           
           vm = echarts().init(document.getElementById("priceAxisEcharts"));
 
-          // 为重置y轴的最大值 最小值 整理下所有data数据
-          let allDataList = (priceList.newPirce || []).concat(priceList.oldPrice||[]);
-          // 去除空值
-          allDataList = allDataList.filter((item)=>!!item);
-          // 去重
-          allDataList = Array.from(new Set(allDataList));
-          // 排序
-          allDataList = allDataList.sort((a,b)=>{
-            return a > b ? 1:-1
-          })
+          let allDataList =  this.getAllYAxisData(priceList.newPirce,priceList.oldPrice);
+
            console.log(allDataList,'allDataList');
 
           let option = {
@@ -158,8 +150,8 @@ export default {
             },
             yAxis: {
               type: 'value',
-              min: Number(allDataList[0]) > 15 ? (Number(allDataList[0]) - 10).toFixed(0) : 0,
-              max: Number(allDataList[allDataList.length - 1]) > 10 ? Number(allDataList[allDataList.length - 1]) + 10 : Number(allDataList[allDataList.length - 1]) + 1,
+              min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 10): 0,
+              max: Number(allDataList[allDataList.length - 1]) > 10 ? Number(allDataList[allDataList.length - 1]) + 10 : parseInt(allDataList[allDataList.length - 1]) + 1,
             },
             series: [
               {
@@ -213,11 +205,39 @@ export default {
           
         },
 
+        // 获取所有y轴数据
+        getAllYAxisData(newPirce=[],oldPrice=[]){
+            // 为重置y轴的最大值 最小值 整理下所有data数据
+            let allDataList = newPirce.concat(oldPrice);
+            // 去除空值
+            allDataList = allDataList.filter((item)=>!!item);
+            // 去重
+            allDataList = Array.from(new Set(allDataList));
+            // 排序
+            allDataList = allDataList.sort((a,b)=>{
+              return a > b ? 1:-1
+            })
+
+            return allDataList || []
+        },
+
         // 更新价格轴
         refreshData(value){
           const {priceAxisList} = this;
+
+          let allDataList = this.getAllYAxisData(priceAxisList[value].newPirce,priceAxisList[value].oldPrice);
+
           var option = vm.getOption();
           option.xAxis.data = priceAxisList[value].date;
+          option.xAxis = {
+            type: 'category',
+            data:priceAxisList[value].date,
+          };
+          option.yAxis = {
+            type: 'value',
+            min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 10) : 0,
+            max: Number(allDataList[allDataList.length - 1]) > 10 ? Number(allDataList[allDataList.length - 1]) + 10 : parseInt(allDataList[allDataList.length - 1]) + 1,
+          };
           option.series[0].data = priceAxisList[value].newPirce;
           option.series[1].data = priceAxisList[value].oldPrice;
           vm.setOption(option);  
