@@ -177,7 +177,8 @@
           <template slot="header">
             <!-- <div>{{language('JIAGEXINGXI  ','价格信息')}}</div> -->
             <div class="flex-between-center-center margin-top10">
-              <div>{{language('SOPJIAGE','SOP价格')}}</div>
+              <!-- <div>{{language('SOPJG','SOP价格')}}</div> -->
+              <div>{{$t('SOPJIAGE')}}</div>
               <icon name="iconMEK-xuxian"
                     symbol />
               <div>{{language('DANGQIANJIAGE','当前价格')}}</div>
@@ -333,8 +334,9 @@ export default {
       this.carTypeInfoLoading = true
       let res = await getCarTypeMessage({ motorSvwCode: val })
       res = res.data.filter(item => item)
+      console.log(res)
       res.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
-      this.formGoup.carTypeInfoList = res.data
+      this.formGoup.carTypeInfoList = res
       this.carTypeInfoLoading = false
     },
     handleAdded () {
