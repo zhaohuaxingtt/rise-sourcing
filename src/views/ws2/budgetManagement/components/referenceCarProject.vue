@@ -218,6 +218,7 @@ export default {
         if (Number(res.code) === 0) {
           // iMessage.success(result);
           iMessage.success('应用成功！');
+          this.$emit('refreshList');
         } else {
           iMessage.error(result);
         }
