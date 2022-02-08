@@ -83,6 +83,7 @@ export default {
             bPrice:{},
             bnkPrice:{},
           },
+          oldPartNum:null,
         }
     },
     mounted(){
@@ -101,7 +102,7 @@ export default {
           const {objectAekoPartId=''} = priceAxisRow;
           await getPriceAxis(objectAekoPartId).then((res)=>{
             this.loading = false;
-            const {code,data={}} = res;
+            const {data={}} = res;
             if(res.code == 200){
               this.priceAxisInfo = data;
               // 将A,B,BNK价格拆分
@@ -110,8 +111,8 @@ export default {
               axisData.bPrice = this.resetData(data.bnewPrice,data.boldPrice);
               axisData.bnkPrice = this.resetData(data.bnkNewPrice,data.bnkOldPrice);
 
-              console.log(axisData,'axisData');
               this.priceAxisList = axisData;
+              this.oldPartNum = data.oldPartNum || null;
               this.initEcharts(axisData.aPrice,data.oldPartNum);
             }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
@@ -124,8 +125,6 @@ export default {
           vm = echarts().init(document.getElementById("priceAxisEcharts"));
 
           let allDataList =  this.getAllYAxisData(priceList.newPirce,priceList.oldPrice);
-
-           console.log(allDataList,'allDataList');
 
           let option = {
             tooltip: {
@@ -178,7 +177,7 @@ export default {
                     show: true,
                     position: 'top',
                     formatter: function(params){
-                      const {oldPrice =[]} = priceList
+                      const {oldPrice =[]} = priceList;
                       if((oldPrice.length == (params.dataIndex+1)) && oldPartNum){
                         return oldPartNum
                       }else  return ''
@@ -223,7 +222,7 @@ export default {
 
         // 更新价格轴
         refreshData(value){
-          const {priceAxisList} = this;
+          const {priceAxisList,oldPartNum} = this;
 
           let allDataList = this.getAllYAxisData(priceAxisList[value].newPirce,priceAxisList[value].oldPrice);
 
@@ -238,7 +237,33 @@ export default {
             max: Number(allDataList[allDataList.length - 1]) > 10 ? Number(allDataList[allDataList.length - 1]) + 10 : parseInt(allDataList[allDataList.length - 1]) + 1,
           };
           option.series[0].data = priceAxisList[value].newPirce;
-          option.series[1].data = priceAxisList[value].oldPrice;
+          // option.series[1].data = priceAxisList[value].oldPrice;
+          option.series[1] = {
+            name: '原零件价格',
+            type: 'line',
+            step: 'end',
+            label: {
+              normal: {
+                show: true,
+                position: 'top',
+                formatter: function(params){
+                  let showOldData = priceAxisList[value].oldPrice|| [];
+                  if((showOldData.length == (params.dataIndex+1)) && oldPartNum){
+                    return oldPartNum
+                  }else  return ''
+                }
+              }
+            },
+            data: priceAxisList[value].oldPrice || [],
+                itemStyle : {  
+                    normal : {
+                        color:'#9FA4AE',  
+                        lineStyle:{  
+                            color:'#9FA4AE'  
+                        }  
+                    }  
+                },
+          };
           vm.setOption(option);  
           this.loading = false;
         },
@@ -289,14 +314,21 @@ export default {
             if(filterNew.length){
               data.newPirce.push(filterNew[0].price);
             }else{
-              data.newPirce.push(null);
+              // 未对应数据的时候查询区间是否包含
+              let newRangePrice = this.getRangePrice(item,newData)
+              data.newPirce.push(newRangePrice);
             }
             if(filterOld.length){
               data.oldPrice.push(filterOld[0].price);
             }else{
-              data.oldPrice.push(null);
+              // 未对应数据的时候查询区间是否包含
+              let oldRangePrice = this.getRangePrice(item,oldData)
+              data.oldPrice.push(oldRangePrice);
             }
           })
+
+ 
+          console.log(data,'data');
           
           return data;
         },
@@ -313,6 +345,17 @@ export default {
           }else{
             return '-'
           }
+        },
+
+        // 获取区间值
+        getRangePrice(currentTime,list=[]){
+          let price = null;
+          list.map((item)=>{
+            if((item.startTime < currentTime) && (currentTime < item.endTime) ) price = item.price;
+          })
+          console.log(currentTime,list,price,'getRangePrice')
+          return price
+
         },
     },
 }
