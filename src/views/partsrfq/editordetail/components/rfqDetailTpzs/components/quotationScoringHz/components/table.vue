@@ -290,7 +290,7 @@ export default{
        return data 
       else{
         // eslint-disable-next-line no-undef
-        const result = math.multiply(math.bignumber(data), 100).toString() + '%'
+        const result = math.multiply(math.bignumber(data || 0), 100).toString() + '%'
         return result
       }
 
@@ -457,8 +457,11 @@ export default{
     },
     // 减法
     subtract(a, b) {
+      const _a = (a + "").replace(/,/g, "")
+      const _b = (b + "").replace(/,/g, "")
+
       // eslint-disable-next-line no-undef
-      return math.subtract(math.bignumber(a || 0), math.bignumber(b || 0)).toFixed(2)
+      return math.subtract(math.bignumber(+_a || 0), math.bignumber(+_b || 0)).toFixed(2)
     } 
   }
 }
