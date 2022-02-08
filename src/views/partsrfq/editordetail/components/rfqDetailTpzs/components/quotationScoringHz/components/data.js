@@ -8,6 +8,7 @@
  */
 import {_getMathNumber} from '@/utils'
 import {partProjTypes} from '@/config'
+import { clone, cloneDeep } from 'lodash'
 //表格全集。
 export const depNumData = {
   'PL':'L',
@@ -358,6 +359,13 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
       developmentCostHasShare:1
     }
     tableHeader = [...tableHeader,...[{props:'toolingShare'},{props:'developmentCostShare'}]]
+
+    tableHeader.forEach(items => {
+      if (/^\d+tooling$/.test(items.props) || /^\d+developmentCost$/.test(items.props)) {
+        tableHeader.push({ props: `${ items.props }Share` })
+      }
+    })
+
     tableHeader.forEach(items=>{
       if(items.props == 'groupName'){
         total["groupId"] = '-'
@@ -390,6 +398,7 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
                         [key]: fsTemplate?(asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': keepTwoDecimalFull(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))  : item[key] || 0):'/'):''
                       }
                     })
+
                     total[key] = fsTemplate?((!element[key] || total[key] == "/")?"/":keepTwoDecimalFull(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))):''
                   }else{
                     groupArr = groupArr.map(item => {
@@ -405,9 +414,20 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
           });
         }
       }
-      
     })
-    return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Invest \n Budget',priceInfo,dataList[0])]
+
+    let result = [...groupArr, getLowNumber(total)]
+    result.forEach(group => {
+      Object.keys(group).forEach(key => {
+        if (/^\d+tooling$/.test(key) || /^\d+developmentCost$/.test(key)) {
+          group[`${ key }HasShare`] = 1
+        }
+      })
+    })
+
+    result = [...result, kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Invest \n Budget',priceInfo,dataList[0])]
+
+    return result
   } catch (error) {
     console.log(error)
     return [{partNo:'Subtotal'}]

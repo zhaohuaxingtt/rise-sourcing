@@ -85,8 +85,7 @@
           </div>
         </div>
         <div class="project__header-btns">
-          <template v-if="isUser">
-            <template v-if="actived === 'filing'">
+          <template v-if="actived === 'filing'">
             <iButton @click="handleHref" v-if="ruleForm.roundType !== '05' && ruleForm.biddingStatus == '06'">{{
               language('BIDDING_TXBJMX', '填写报价明细')
             }}</iButton>
@@ -96,7 +95,6 @@
             <iButton v-if="isShowBidding" @click="handleShowNotice('02', language('BIDDING_JINJIAGAOZHISHU','竞价告知书'))">{{
               language('BIDDING_JINJIAGAOZHISHU', '竞价告知书')
             }}</iButton>
-          </template>
           </template>
         </div>
       </div>
@@ -450,12 +448,14 @@ export default {
             return false;
           } else if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )){
             return false
-          } else if (this.isUser){
+          } else if (this.role === "buyer" && this.isUser){
             return true;
-          } else if (this.isLinieId){
+          } else if (this.role === "buyer" && this.isLinieId){
             return true;
-          } else {
-            false
+          } else if (this.role === "supplier" ){
+            return true;
+          }else {
+            return false
           }
         }
       }
@@ -463,11 +463,13 @@ export default {
       if (val == "result") {
         if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )) {
           return false
-        } else if (this.isUser && (biddingStatus == "06" || biddingStatus == "07" || biddingStatus == "08")) {
+        } else if (this.role === "buyer" && this.isUser && (biddingStatus == "06" || biddingStatus == "07" || biddingStatus == "08")) {
           return true;
-        } else if (this.isLinieId && (biddingStatus == "06" || biddingStatus == "07" || biddingStatus == "08")) {
+        } else if (this.role === "buyer" && this.isLinieId && (biddingStatus == "06" || biddingStatus == "07" || biddingStatus == "08")) {
           return true;
-        }else {
+        } else if (this.role === "supplier" && (biddingStatus == "06" || biddingStatus == "07" || biddingStatus == "08" && (this.getSupplierData?.biddingNtfFlag && this.getSupplierData?.systemUseFlag ))) {
+          return true;
+        } else {
           return false;
         }
       }
