@@ -7,8 +7,7 @@
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<iPage class="partsprocureEditordetail" v-permission.auto="PARTSPROCURE_EDITORDETAIL_INDEXPAGE|零件采购项目管理详情页">
-		 <!-- v-loading="loading" -->
+	<iPage class="partsprocureEditordetail" v-permission.auto="PARTSPROCURE_EDITORDETAIL_INDEXPAGE|零件采购项目管理详情页" v-loading="loading">
 		<!-- 零件状态：
 			1：无采购项目编号 
 			2：未加入RFQ
