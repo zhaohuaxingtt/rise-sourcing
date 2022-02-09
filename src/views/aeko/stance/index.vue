@@ -13,7 +13,7 @@
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
         <!-- <log-button v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/> -->
-        <iLoger ref="log" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{module_obj_ae: module, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
+        <iLoger ref="log" @close="closeLog" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{module_obj_ae: module, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
@@ -442,11 +442,13 @@ export default {
         this.bizId = row.requirementAekoId
         this.showDialog = true
         this.$refs.log.open()
-        this.$nextTick(()=>{  // 清空bizId,便于触发顶部日志按钮
-          this.bizId = ''
-        })
       },
 
+      // 清空bizId,便于触发顶部日志按钮
+      closeLog(){
+        setLogMenu('')
+        this.bizId = ''
+      },
       // 查看描述
       checkDescribe(row){
         const { requirementAekoId,aekoCode } = row;
