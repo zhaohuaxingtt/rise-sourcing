@@ -13,7 +13,7 @@
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
         <!-- <log-button @click="openLog" class="margin-left25"/> -->
-        <iLoger ref="log" :config="{module_obj_ae: module, menuName_obj_ae:$store.getters.getLogMenu, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
+        <iLoger ref="log" @close="closeLog" :config="{module_obj_ae: module, menuName_obj_ae:$store.getters.getLogMenu, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
@@ -523,28 +523,30 @@ export default {
         window.open(routeData.href, '_blank')
       },
       // 顶部日志查询
-      openLog(){
-        setLogMenu('AEKO管理-列表')
-        this.bizId = ''
-        this.hasId = true
-        this.module = 'AEKO管理'
-        this.showDialog = true
-      },
+      // openLog(){
+      //   setLogMenu('AEKO管理-列表')
+      //   this.bizId = ''
+      //   this.hasId = true
+      //   this.module = 'AEKO管理'
+      //   this.showDialog = true
+      // },
       gotoDBhistory() {},
       // 查看日志
       checkLog(row){
         setLogMenu('')
-        // setLogMenu('AEKO管理-列表')
         this.hasId = false
         this.module = ''
         this.bizId = row.requirementAekoId
         this.showDialog = true
         this.$refs.log.open()
-        this.$nextTick(()=>{  // 清空bizId,便于触发顶部日志按钮
-          this.bizId = ''
-        })
       },
-
+      // 清空bizId,便于触发顶部日志按钮
+      closeLog(){
+        setLogMenu('AEKO管理-列表')
+        this.bizId = ''
+        this.hasId = true
+        this.module = 'AEKO管理'
+      },
       // 查看描述
       checkDescribe(row){
         const { requirementAekoId,aekoCode } = row;
