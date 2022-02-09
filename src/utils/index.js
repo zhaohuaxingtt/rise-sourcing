@@ -173,7 +173,7 @@ export const numberProcessor = function(val, precision = 4, negative) {
     if (negative) {
       result = (val + '')
         .replace(/[^\d.-]/g, '')
-        .replace(/(?<=(-|[^-]+))-/, '')
+        .replace(/(?!^-)-/g, '')
         .replace(/^(-?)\.*/g, '$1')
         .replace('.', '$#$')
         .replace(/\./g, '')
@@ -194,7 +194,7 @@ export const numberProcessor = function(val, precision = 4, negative) {
     if (negative) {
       result = (val + '')
         .replace(/[^\d-]/g, '')
-        .replace(/(?<=(-|[^-]+))-/, '')
+        .replace(/(?!^-)-/g, '')
         .replace(/^(-?)0+([0-9])/, '$1$2')
     } else {
       result = (val + '').replace(/\D/g, '').replace(/^0+([0-9])/, '$1')
