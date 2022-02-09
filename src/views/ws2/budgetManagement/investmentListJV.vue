@@ -339,6 +339,7 @@
         v-model="referenceCarProjectShow"
         :referenceCarProjectParams="referenceCarProjectParams"
         @refresh="getInvestmentVerisionList"
+        @refreshList="refreshList"
     ></referenceCarProject>
     <moneyComponent
         v-model="moneyComponentShow"
@@ -516,6 +517,11 @@ export default {
   mounted() {
   },
   methods: {
+
+    refreshList(){
+      this.findInvestmentList();
+    },
+
     // saveReference() {
     //   this.tableListData = this.tableListData.map(item => {
     //     item.refCartypeName = '钢材'

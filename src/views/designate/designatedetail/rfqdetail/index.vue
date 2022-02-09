@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
- * @LastEditors:  
- * @LastEditTime: 2021-12-02 16:22:36
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-25 11:54:53
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -14,13 +14,16 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('RFQQINGDAN','RFQ清单')}}</span>
         <div class="floatright">
-          <iInput :placeholder="language('QINGSHURULINGJIANHAORFQLINIE','请输入零件号/RFQ编号/RFQ名称/LINIE')" v-model="searchParam" class="margin-right20 input" @blur="searchRfqTableList" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_SEARCHPARAM|RFQ零件清单搜索" >
+          <iButton @click="()=>{ edittableHeader('rfqTable') }">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <iInput :placeholder="language('QINGSHURULINGJIANHAORFQLINIE','请输入零件号/RFQ编号/RFQ名称/LINIE')" v-model="searchParam" class="margin-right20 margin-left20 input" @blur="searchRfqTableList" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_SEARCHPARAM|RFQ零件清单搜索" >
             <icon symble slot="suffix" name="iconshaixuankuangsousuo" />
           </iInput>
           <!--------------------新增按钮----------------------------------->
           <iButton v-if="!nominationDisabled && !rsDisabled" @click="addRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_ADDRFQ|新增RFQ">{{language('XINZENG','新增')}}</iButton>
           <!--------------------删除按钮----------------------------------->
           <iButton v-if="!nominationDisabled && !rsDisabled" @click="deleteRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_DELETERFQ|删除RFQ">{{language('SHANCHU','删除')}}</iButton>
+        
+          
         </div>
       </div>
       <tableList
@@ -35,6 +38,10 @@
         @updateSlot='rfqToTop'
         v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_TABLE|表格"
         ref="rfqTable"
+        index
+        lang
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
         <template #kmAnalysis="scope">
           <el-popover
@@ -58,6 +65,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
+          <iButton @click="()=>{ edittableHeader('partTable') }">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <iButton 
             v-if="!isDisabled && createMtzDisabled"
             v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请"
@@ -96,6 +104,10 @@
         :disabled="isDisabled"
         :cellClassName="partsCellClass"
         :selectable="partsSelectable"
+        index
+        lang
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
         <template #selected="scope">
           <span>{{ selectedFormat(scope.row.selected) }}</span>
@@ -113,7 +125,8 @@
 
 <script>
 import { iCard, iMessage, iButton, iInput, icon, iMessageBox } from "rise"
-import tableList from '../components/tableList'
+// import tableList from '../components/tableList'
+import tableList from "@/components/iTableSort";
 import { rfqListTitle, partsListTitle } from './data'
 import { pageMixins } from "@/utils/pageMixins";
 import { getRfqList, getPartList, updatePart, deleteRfq, addPartNominate, cancelPartNominate, sortPartNominate } from '@/api/designate/designatedetail/rfqdetail/index'
@@ -574,7 +587,16 @@ export default {
         }
       })
       .finally(() => this.partsTableLoading = false)
-    }
+    },
+    edittableHeader(type) {
+        this.$refs[type].settingVisible = true
+      },
+      handleResetSetting({data, done} = data) {
+        done(data)
+      },
+      handleSaveSetting({data, done} = data) {
+        done(data)
+      },
   }
 }
 </script>

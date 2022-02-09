@@ -9,13 +9,36 @@
        <div class="decision-data-partList-content">
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
-              <div v-if="isPreview!='1' && !nominationDisabled && !rsDisabled">
-                  <iButton @click="goToRfq" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TOPARTLIST|跳转至零件清单添加">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
-                  <iButton :loading="saveLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
+              <div>
+                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+                  <!-- <template v-if="isPreview!='1' && !nominationDisabled && !rsDisabled"> -->
+                     <iButton @click="goToRfq" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TOPARTLIST|跳转至零件清单添加">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
+                     <iButton :loading="saveLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
+                  <!-- </template> -->
               </div>
           </h1>
           <!-- table区域 -->
-          <el-table
+          <tablelist
+            ref="tableList"
+            showTitleName
+            v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TABLE|表格"
+            :tableData="tableListData"
+            :tableTitle="tableTitle"
+            :tableLoading="loading"
+            :handleSaveSetting="handleSaveSetting"
+            :handleResetSetting="handleResetSetting"
+          >
+            <!-- 系统计算EBR值 -->
+            <template #ebrCalculatedValue="scope">
+               <span>{{ percent(scope.row.ebrCalculatedValue || 0) }}</span>
+            </template>
+            <!-- 手工输入EBR值 -->
+            <template #ebrConfirmValue="scope">
+               <span v-if="isPreview=='1' || nominationDisabled || rsDisabled">{{ percent(scope.row.ebrConfirmValue || 0) }}</span>
+               <iInput v-else v-model="scope.row.ebrConfirmValue" @input="handleInputLimit($event, scope.row)" @focus="handleFocus(scope.row.ebrConfirmValue, scope.row)" @blur="handleBlur(scope.row.ebrConfirmValue, scope.row)"/>
+            </template>
+          </tablelist>
+          <!-- <el-table
            :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
            :data="tableListData"
             v-loading="loading"
@@ -28,9 +51,9 @@
                   :prop="item.props"
                   :label="item.name">
                   <template slot-scope="scope">
-                     <!-- 系统计算EBR值 -->
+                     系统计算EBR值
                      <span v-if="item.props === 'ebrCalculatedValue'">{{ percent(scope.row.ebrCalculatedValue || 0) }}</span>
-                     <!-- 手工输入EBR值 -->
+                     手工输入EBR值
                      <span v-else-if="item.props === 'ebrConfirmValue'">
                         <span v-if="isPreview=='1' || nominationDisabled || rsDisabled">{{ percent(scope.row.ebrConfirmValue || 0) }}</span>
                         <iInput v-else v-model="scope.row.ebrConfirmValue" @input="handleInputLimit($event, scope.row)" @focus="handleFocus(scope.row.ebrConfirmValue, scope.row)" @blur="handleBlur(scope.row.ebrConfirmValue, scope.row)"/>
@@ -40,7 +63,7 @@
                   
                </el-table-column>
             </template>
-         </el-table>
+         </el-table> -->
           <iPagination
             class="margin-bottom20"
             @size-change="handleSizeChange($event, getListData)"
@@ -72,14 +95,17 @@ import {
  } from '@/api/designate/designatedetail/decisionData/partlist'
 import { numberProcessor } from "@/utils"
 import { tableTitle } from "./data"
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 
 export default {
-  mixins:[pageMixins],
+  mixins:[pageMixins,tableSortMixins],
      components:{
         iCard,
         iButton,
         iPagination,
         iInput,
+        tablelist,
     },
     created(){
        this.getListData();

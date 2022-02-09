@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-01-11 10:27:43
+ * @LastEditTime: 2022-01-26 11:17:45
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -202,10 +202,11 @@
             <i class="el-icon-warning-outline font18 tipsIcon"></i>
           </el-tooltip>
           </iButton>
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
       </template>
       <div class="body">
         <!-- 列隐藏显示 -->
-        <p class="flex-align-center margin-bottom20">
+        <!-- <p class="flex-align-center margin-bottom20">
           <span class="margin-right10">{{language('LK_AEKO_CONTENTDECLARE_LIEYINCANGXIANSHI','列隐藏/显示')}}:</span>
           <iSelect
             style="width: 200px;"
@@ -224,9 +225,10 @@
                 >
               </el-option> 
           </iSelect>
-        </p>
+        </p> -->
         <tableList
           class="table"
+          ref="tableList"
           index
           fixed
           v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_TABLE|内容表态表单"
@@ -237,6 +239,8 @@
           :tableLoading="loading"
           :span-method="spanMethod"
           @handleSelectionChange="handleSelectionChange"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
         >
           <template #groupName="scope">
             <div class="aeko-combine-input" v-if="scope.row.groupCode">
@@ -335,9 +339,11 @@
 <script> 
 import { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, iMessage, iMultiLineInput } from "rise"
 // import tableList from "@/views/partsign/editordetail/components/tableList"
-import tableList from "rise/web/quotationdetail/components/tableList"
+// import tableList from "rise/web/quotationdetail/components/tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import dosageDialog from "../dosageDialog"
-import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle,hidenTableTitle } from "../data"
+import { contentDeclareQueryForm, mtzOptions, contentDeclareTableTitle as tableTitle } from "../data"
 import { pageMixins } from "@/utils/pageMixins"
 // import { excelExport } from "@/utils/filedowLoad"
 import { getAekoLiniePartInfo, patchAekoReference, patchAekoReset, patchAekoContent,sendSupplier,liniePartExport,sendSupplierCheck,cancelContent,updateInvestCarProject,searchInvestCar,importItemExcel } from "@/api/aeko/detail"
@@ -368,7 +374,7 @@ import qs from 'qs'
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload, iMultiLineInput },
-  mixins: [ pageMixins, combine ],
+  mixins: [ pageMixins, combine, tableSortMixins ],
   props: {
     aekoInfo: {
       type: Object,
@@ -429,7 +435,7 @@ export default {
       debouncer: null,
       declareSendSupplier:false,
       cancelLoading:false,
-      showLineList:hidenTableTitle,
+      // showLineList:hidenTableTitle,
       addTableTitle:[],
       importItemExcel:importItemExcel,
     };
@@ -1140,14 +1146,17 @@ export default {
     },
 
     // 显示隐藏表头
-    handleChangeTable(value=[]){
-      const arr = [];
-      value.map((item)=>{
-        const filterItem = hidenTableTitle.filter((item2)=> item2.props == item);
-        if(filterItem.length) arr.push(filterItem[0]);
-      })
-      this.tableTitle = tableTitle.concat(arr);
-    },
+    // handleChangeTable(value=[]){
+    //   const arr = [];
+    //   value.map((item)=>{
+    //     const filterItem = hidenTableTitle.filter((item2)=> item2.props == item);
+    //     if(filterItem.length) arr.push(filterItem[0]);
+    //   })
+    //   this.tableTitle = tableTitle.concat(arr);
+    //   this.$nextTick(()=>{
+    //     this.$refs.tableList.$refs.moviesTable.doLayout()
+    //   })
+    // },
 
     // 变更投资车型项目
     async handleChangeCarInvestProjects(value,row){

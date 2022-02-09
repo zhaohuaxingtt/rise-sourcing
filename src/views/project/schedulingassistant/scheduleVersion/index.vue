@@ -14,6 +14,7 @@
     <iCard class="margin-top20" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_TABLE|排程版本表格">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!-- 批量下载排程版本 -->
           <iButton
             :loading="batchUploading"
@@ -23,7 +24,16 @@
           </iButton>
         </div>
       </div>
-      <tableList indexKey :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange">
+      <tableList indexKey
+                 ref="tableList"
+                 :lang="true"
+                 :tableTitle="tableTitle"
+                 :tableData="tableData"
+                 :tableLoading="tableLoading"
+                 @handleSelectionChange="handleSelectionChange"
+                 :handleSaveSetting="handleSaveSetting"
+                 :handleResetSetting="handleResetSetting"
+      >
         <template #versionName="scope">
          <span class="flexRow-link">
             <span class="openLinkText underline cursor"  @click="download(scope.row)"> {{ scope.row.versionName }}</span>
@@ -45,7 +55,8 @@
 import {iCard, iPagination, iButton, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
-import tableList from '@/views/project/schedulingassistant/progroup/components/tableList'
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import search from './components/search'
 import {tableTitle} from './components/data'
 import {
@@ -56,7 +67,7 @@ import {
 import {downloadFile} from 'rise/web/components/iFile/lib'
 
 export default {
-  mixins: [ filters, pageMixins ],
+  mixins: [ filters, pageMixins, tableSortMixins ],
   components: { iCard, iPagination, iButton, search, tableList },
   data() {
     return {

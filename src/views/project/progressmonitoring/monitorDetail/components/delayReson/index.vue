@@ -16,12 +16,25 @@
   > 
     <template slot="title"> 
       <div class="chosseProGroup"> 
-        <span class="chosseProGroup-title">{{language('FASONGYANWUYUANYINQUEREN','发送延误原因确认')}}</span> 
-        <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton> 
+        <span class="chosseProGroup-title">{{language('FASONGYANWUYUANYINQUEREN','发送延误原因确认')}}</span>
+        <span>
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton>
+        </span>
       </div> 
     </template> 
     <div class="tableWrapper" > 
-      <tableList indexKey :tableTitle="tableTitle" :tableData="tableList" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @handleSelectChange="handleSelectChange">
+      <tableList indexKey
+                 ref="tableList"
+                 :lang="true"
+                 :tableTitle="tableTitle"
+                 :tableData="tableList"
+                 :tableLoading="tableLoading"
+                 @handleSelectionChange="handleSelectionChange"
+                 @handleSelectChange="handleSelectChange"
+                 :handleSaveSetting="handleSaveSetting"
+                 :handleResetSetting="handleResetSetting"
+      >
       </tableList> 
     </div> 
   </iDialog> 
@@ -29,12 +42,14 @@
 
 <script> 
 import { iDialog, iButton, iMessage } from 'rise' 
-import { tableTitle } from './data' 
-import tableList from '@/views/project/schedulingassistant/progroup/components/tableList' 
+import { tableTitle } from './data'
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { getDelayReasonConfirmList, sendDelayReason } from '@/api/project/process'
 import { getFsUserListPart, getAllFS } from '@/api/project'
 import moment from 'moment'
-export default { 
+export default {
+  mixins: [tableSortMixins],
   components: { iDialog, iButton, tableList }, 
   props: { 
     dialogVisible: { type: Boolean, default: false }, 

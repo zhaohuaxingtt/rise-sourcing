@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2021-12-23 16:19:01
+ * @LastEditTime: 2022-01-24 15:56:43
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
@@ -216,6 +216,7 @@
                 {{ language("partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT",'零件采购项目管理') }}</span
               >
               <div class="floatright">
+                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                 <!-- 手工采购项目创建 -->
                 <iButton @click="openCreateParts" v-permission.auto="PARTSPROCURE_CREATEMANUALPROCUREMENTITEM|手工采购项目创建">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton :loading='zpLoading' @click="openDiologChangeItems" v-permission.auto="PARTSPROCURE_TRANSFER|转派">{{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }} </iButton>
@@ -235,6 +236,10 @@
               @openPageTwo="openPageTwo"
               :activeItems="'partNum'"
               :activeItemsTwo="'code'"
+              ref="tableList"
+              :lang="true"
+              :handleSaveSetting="handleSaveSetting"
+              :handleResetSetting="handleResetSetting"
             >
             </tablelist>
             <!------------------------------------------------------------------------>
@@ -282,7 +287,9 @@ import headerNav from "@/components/headerNav"
 import { pageMixins } from "@/utils/pageMixins";
 import {cancelProject,creatFsGsNr,startProject} from '@/components'
 import { tableTitle, form,validateProjectConfig,partsprocureNavList } from "./components/data";
-import tablelist from "../../partsign/home/components/tableList";
+// import tablelist from "../../partsign/home/components/tableList";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { getTabelData,changeProcure} from "@/api/partsprocure/home";
 import changeItems from "../../partsign/home/components/changeItems";
 import filters from "@/utils/filters";
@@ -295,7 +302,7 @@ import { getCarTypeSop } from "@/api/partsprocure/editordetail";
 const { mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
-  mixins: [pageMixins, filters],
+  mixins: [pageMixins, filters,tableSortMixins],
   components: {
     iPage,
     iButton,

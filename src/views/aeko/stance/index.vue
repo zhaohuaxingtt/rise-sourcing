@@ -13,7 +13,7 @@
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
         <!-- <log-button v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/> -->
-        <iLoger ref="log" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{module_obj_ae: module, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
+        <iLoger ref="log" @close="closeLog" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{module_obj_ae: module, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
@@ -70,10 +70,14 @@
           </el-form>
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
+        <template v-slot:header-control>
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        </template>
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_STANCELIST_TABLE|AEKO表态TABLE">
         <tableList
           class="table"
+          ref="tableList"
           index
           :lang="true"
           :tableData="tableListData"
@@ -81,6 +85,8 @@
           :tableLoading="loading"
           :selection="false"
           @handleSelectionChange="handleSelectionChange"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
         >
         <!-- AEKO号  -->
         <template #aekoCode="scope">
@@ -151,13 +157,16 @@ import {
   iPagination,
   icon,
   iMessage,
-  iMultiLineInput
+  iMultiLineInput,
+  iButton
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
 import switchPost from '@/components/switchPost'
 import { TAB,filterRole,getLeftTab } from '../data';
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import filesListDialog from '../manage/components/filesListDialog'
 import logButton from "../../../components/logButton";
 import iLog from '../log'
@@ -177,7 +186,7 @@ import { roleMixins } from "@/utils/roleMixins";
 import { setLogMenu } from "@/utils";
 export default {
     name:'aekoStanceList',
-    mixins: [pageMixins,roleMixins],
+    mixins: [pageMixins,roleMixins,tableSortMixins],
     components:{
       iPage,
       iNavMvp,
@@ -195,6 +204,7 @@ export default {
       logButton,
       switchPost,
       iMultiLineInput,
+      iButton,
       iLoger
     },
     data(){
@@ -442,11 +452,13 @@ export default {
         this.bizId = row.requirementAekoId
         this.showDialog = true
         this.$refs.log.open()
-        this.$nextTick(()=>{  // 清空bizId,便于触发顶部日志按钮
-          this.bizId = ''
-        })
       },
 
+      // 清空bizId,便于触发顶部日志按钮
+      closeLog(){
+        setLogMenu('')
+        this.bizId = ''
+      },
       // 查看描述
       checkDescribe(row){
         const { requirementAekoId,aekoCode } = row;

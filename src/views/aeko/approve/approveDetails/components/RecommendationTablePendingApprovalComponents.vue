@@ -4,17 +4,21 @@
       <div class="margin-bottom15">
         <span class="card-title"
           >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatus }}</span>
-        <span class="floatright" v-if="show && isMtz">
-          <iButton @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
+        <span class="floatright">
+          <iButton v-if="show && isMtz" @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         </span>
       </div>
       
-      <i-table-custom
+      <tableList
         class="margin-top24"
-        :columns="recommendationFormPendingApprovalTitle"
-        :data="recommendationFormPendingApprovalList"
+        ref="tableList"
+        :tableTitle="recommendationFormPendingApprovalTitle"
+        :tableData="recommendationFormPendingApprovalList"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
-      </i-table-custom>
+      </tableList>
       <div class="margin-top20 card-bottom-tip">
         Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder
         Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder
@@ -38,7 +42,9 @@
 
 <script>
 import { iCard, iPagination, iButton, iMessage } from "rise";
-import iTableCustom from "@/components/iTableCustom";
+// import iTableCustom from "@/components/iTableCustom";
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import { pageMixins } from "@/utils/pageMixins";
 import filters from "@/utils/filters";
 import {searchApproved} from "@/api/aeko/detail";
@@ -46,10 +52,10 @@ import { formatTableData, recommendationList } from "../data.js";
 
 export default {
   name: "RecommendationTablePendingApprovalComponents",
-  mixins: [pageMixins, filters],
+  mixins: [pageMixins, filters, tableSortMixins],
   components: {
     iCard,
-    iTableCustom,
+    tableList,
     iPagination,
     iButton
   },
@@ -78,32 +84,27 @@ export default {
       recommendationFormPendingApprovalList: [],
       recommendationFormPendingApprovalTitle: [
         {
-          type: "index",
-          align: "center",
-          label: "#",
-          minWidth:50
-        },
-        {
-          prop: "partNum",
-          label: "零件号",
-          i18n: "LK_LINGJIANHAO",
+          props: "partNum",
+          name: "零件号",
+          key: "LK_LINGJIANHAO",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:128
         },
         {
-          prop: "partNameZh",
-          label: "零件名称",
-          i18n: "LK_LINGJIANMINGCHENG",
+          props: "partNameZh",
+          name: "零件名称",
+          key: "LK_LINGJIANMINGCHENG",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:100
         },
         {
-          prop: "cartypeZh",
-          label: "车型项目/车型",
+          props: "cartypeZh",
+          name: "车型项目/车型",
+          key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING",
           headerAlign: "center",
           align: "center",
           tooltip: true,
@@ -111,72 +112,72 @@ export default {
           width:100,
         },
         {
-          prop: "originPartNum",
-          label: "原零件号",
-          i18n: "LK_YUANLINGJIANHAO",
+          props: "originPartNum",
+          name: "原零件号",
+          key: "LK_YUANLINGJIANHAO",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:128
         },
         {
-          prop: "linieDeptNum",
-          label: "科室",
-          i18n: "LK_KESHI",
+          props: "linieDeptNum",
+          name: "科室",
+          key: "LK_KESHI",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:72
         },
         {
-          prop: "linieName",
-          label: "采购员",
-          i18n: "MODEL-ORDER.LK_CAIGOUYUAN",
+          props: "linieName",
+          name: "采购员",
+          key: "MODEL-ORDER.LK_CAIGOUYUAN",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:85
         },
         {
-          prop: "newAPrice",
-          label: "新A价",
-          i18n: "LK_XIANAJIA",
+          props: "newAPrice",
+          name: "新A价",
+          key: "LK_XIANAJIA",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:82
         },
         {
-          prop: "apriceChange",
-          label: "A价变动",
-          i18n: "LK_AJIABIANDONG",
+          props: "apriceChange",
+          name: "A价变动",
+          key: "LK_AJIABIANDONG",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:96
         },
         {
-          prop: "bnkChange",
-          label: "BNK变动",
-          i18n: "LK_BNKBIANDONG",
+          props: "bnkChange",
+          name: "BNK变动",
+          key: "LK_BNKBIANDONG",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:100
         },
         {
-          prop: "newBPrice",
-          label: "新B价",
-          i18n: "LK_XINBJIA",
+          props: "newBPrice",
+          name: "新B价",
+          key: "LK_XINBJIA",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:82
         },
         {
-          prop: "incInvestmentCost",
-          label: "增加投资费(不含税)",
-          i18n: "LK_ZENGJIATOUZIFEIBUHANSUI",
+          props: "incInvestmentCost",
+          name: "增加投资费(不含税)",
+          key: "LK_ZENGJIATOUZIFEIBUHANSUI",
           headerAlign: "center",
           align: "center",
           tooltip: true,
@@ -184,36 +185,36 @@ export default {
           width:150,
         },
         {
-          prop: "developmentCost",
-          label: "开发费",
-          i18n: "KAIFAFEI",
+          props: "developmentCost",
+          name: "开发费",
+          key: "KAIFAFEI",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:86
         },
         {
-          prop: "procureFactory",
-          label: "采购工厂",
-          i18n: "nominationSupplier.CaiGouGongChang",
+          props: "procureFactory",
+          name: "采购工厂",
+          key: "nominationSupplier.CaiGouGongChang",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           minWidth:100
         },
         {
-          prop: "supplierSapCode",
-          label: "供应商编号",
-          i18n: "LK_GONGYINGSHANGBIANHAO",
+          props: "supplierSapCode",
+          name: "供应商编号",
+          key: "LK_GONGYINGSHANGBIANHAO",
           headerAlign: "center",
           align: "center",
           tooltip: true,
           width:100,
         },
         {
-          prop: "supplierNameZh",
-          label: "供应商名称",
-          i18n: "LK_GONGYINGSHANGMINGCHENG",
+          props: "supplierNameZh",
+          name: "供应商名称",
+          key: "LK_GONGYINGSHANGMINGCHENG",
           headerAlign: "center",
           align: "center",
           tooltip: true,
@@ -298,9 +299,9 @@ export default {
     },
     addStatusColumn(){
       let stausColumn={
-          prop: "status",
-          label: "内容状态",
-          i18n: "LK_LEIRONGZHUANGTAI",
+          props: "status",
+          name: "内容状态",
+          key: "LK_LEIRONGZHUANGTAI",
           headerAlign: "center",
           align: "center",
           tooltip: true,

@@ -15,7 +15,7 @@ if(process.env.NODE_ENV=='dev') {
 // 报表接口
 export function getPowerBiVal(data) {
     return requst({
-        url: `/piEklreportEntity/getPowerBiVal`,
+        url: `/eklApi/piEklreportEntity/getPowerBiVal`,
         method: 'POST',
         data
     })
@@ -24,7 +24,7 @@ export function getPowerBiVal(data) {
 //aon报表接口-获取eklPbi对应的的信息
 export function getEklPbi(){
     return requstAon({
-        url: `/batchOverview/getEklPbi`,
+        url: `/eklApi/batchOverview/getEklPbi`,
         method: 'GET',
     })
 }
@@ -32,7 +32,7 @@ export function getEklPbi(){
 // 获取状态列表
 export function getStatus(data) {
     return requst({
-        url: `/seriesbaseEntity/getStatus`,
+        url: `/eklApi/seriesbaseEntity/getStatus`,
         method: 'POST',
         data
     })
@@ -41,7 +41,7 @@ export function getStatus(data) {
 // 版本号下拉数据
 export function versionList(data) {
     return requst({
-        url: `/seriesbaseEntity/versionList`,
+        url: `/eklApi/seriesbaseEntity/versionList`,
         method: 'POST',
         data
     })
@@ -50,7 +50,7 @@ export function versionList(data) {
 // 年度添头-保存接口
 export function aveEklAdjust(data) {
     return requst({
-        url: `/eklAdjustKeEntity/saveEklAdjust`,
+        url: `/eklApi/eklAdjustKeEntity/saveEklAdjust`,
         method: 'POST',
         data
     })
@@ -59,7 +59,7 @@ export function aveEklAdjust(data) {
 // 年度添头-产品家族查询
 export function getProductFamily(data) {
     return requst({
-        url: `/eklAdjustCartypeEntity/listEklAdjustKe`,
+        url: `/eklApi/eklAdjustCartypeEntity/listEklAdjustKe`,
         method: 'POST',
         data
     })
@@ -68,7 +68,7 @@ export function getProductFamily(data) {
 // 年度添头-科室查询接口
 export function getDepartment(data) {
     return requst({
-        url: `/eklAdjustKeEntity/listEklAdjustKe`,
+        url: `/eklApi/eklAdjustKeEntity/listEklAdjustKe`,
         method: 'POST',
         data
     })
@@ -77,7 +77,7 @@ export function getDepartment(data) {
 // 初始化数据保存
 export function querySavaTarget(data) {
     return qsAjax({
-        url: `/yearTargetDetailEntity/querySavaTarget`,
+        url: `/eklApi/yearTargetDetailEntity/querySavaTarget`,
         method: 'POST',
         data
     })
@@ -86,7 +86,7 @@ export function querySavaTarget(data) {
 // 获取科室数据
 export function queryYearTargetDetail(data) {
     return qsAjax({
-        url: `/yearTargetDetailEntity/queryYearTargetDetail`,
+        url: `/eklApi/yearTargetDetailEntity/queryYearTargetDetail`,
         method: 'POST',
         data
     })
@@ -95,7 +95,7 @@ export function queryYearTargetDetail(data) {
 // 获取品牌内容
 export function querybrandTarget(data) {
     return qsAjax({
-        url: `/brandTargetEntity/querybrandTarget`,
+        url: `/eklApi/brandTargetEntity/querybrandTarget`,
         method: 'POST',
         data
     })
@@ -104,7 +104,7 @@ export function querybrandTarget(data) {
 // 修改科室数据
 export function upYearTargetDetail(data) {
     return requst({
-        url: `/yearTargetDetailEntity/upYearTargetDetail`,
+        url: `/eklApi/yearTargetDetailEntity/upYearTargetDetail`,
         method: 'POST',
         data
     })
@@ -113,7 +113,7 @@ export function upYearTargetDetail(data) {
 //  新增修改年度头数据
 export function saveOrUpYearTarget(data) {
     return requst({
-        url: `/yearTargetEntity/saveOrUpYearTarget`,
+        url: `/eklApi/yearTargetEntity/saveOrUpYearTarget`,
         method: 'POST',
         data
     })
@@ -122,7 +122,7 @@ export function saveOrUpYearTarget(data) {
 //  修改品牌数据
 export function upBrandTarget(data) {
     return requst({
-        url: `/brandTargetEntity/upBrandTarget`,
+        url: `/eklApi/brandTargetEntity/upBrandTarget`,
         method: 'POST',
         data
     })
@@ -131,7 +131,7 @@ export function upBrandTarget(data) {
 //  发送站内信
 export function sendLetter(data) {
     return qsAjax({
-        url: `/yearTargetDetailEntity/sendLetter`,
+        url: `/eklApi/yearTargetDetailEntity/sendLetter`,
         method: 'POST',
         data
     })
@@ -140,7 +140,7 @@ export function sendLetter(data) {
 // 修改配附件年度业绩科室数据
 export function updateSpYearTargetDetail(data) {
     return requst({
-        url: `/spYearTargetDetailEntity/updateSpYearTargetDetail`,
+        url: `/eklApi/spYearTargetDetailEntity/updateSpYearTargetDetail`,
         method: 'POST',
         data
     })
@@ -149,7 +149,7 @@ export function updateSpYearTargetDetail(data) {
 // 修改年度头数据
 export function saveSpYearTarget(data) {
     return requst({
-        url: `/spYearTargetEntity/saveOrUpYearTarget`,
+        url: `/eklApi/spYearTargetEntity/saveOrUpYearTarget`,
         method: 'POST',
         data
     })
@@ -158,7 +158,7 @@ export function saveSpYearTarget(data) {
 // 获取配附件年度业绩明细数据接口
 export function querySpYearTargetDetail(data) {
     return qsAjax({
-        url: `/spYearTargetDetailEntity/querySpYearTargetDetail`,
+        url: `/eklApi/spYearTargetDetailEntity/querySpYearTargetDetail`,
         method: 'POST',
         data
     })
@@ -167,7 +167,7 @@ export function querySpYearTargetDetail(data) {
 // 获取配附件年度业绩
 export function querySpYearTarget(data) {
     return qsAjax({
-        url: `/spYearTargetEntity/querySpYearTarget`,
+        url: `/eklApi/spYearTargetEntity/querySpYearTarget`,
         method: 'POST',
         data
     })
@@ -176,7 +176,7 @@ export function querySpYearTarget(data) {
 // 批量件-导入接口
 export function batchImport(data) {
     return requst({
-        url: `/seriesbaseEntity/import`,
+        url: `/eklApi/seriesbaseEntity/import`,
         method: 'POST',
         data
     })
@@ -185,7 +185,7 @@ export function batchImport(data) {
 // 业绩基础主表-发起确认接口
 export function baseAchievementConfirm(data) {
     return requst({
-        url: `/seriesbaseEntity/confirm`,
+        url: `/eklApi/seriesbaseEntity/confirm`,
         method: 'POST',
         data
     })
@@ -194,7 +194,7 @@ export function baseAchievementConfirm(data) {
 // 业绩基础list
 export function getAchievementList(data) {
     return requst({
-        url: `/seriesbaseEntity/page`,
+        url: `/eklApi/seriesbaseEntity/page`,
         method: 'POST',
         data
     })
@@ -203,7 +203,7 @@ export function getAchievementList(data) {
 // 获取年份
 export function getYear(data) {
     return requst({
-        url: `/yearTargetEntity/getMonth`,
+        url: `/eklApi/yearTargetEntity/getMonth`,
         method: 'POST',
         data
     })
@@ -212,7 +212,7 @@ export function getYear(data) {
 // 业绩基础主表-失效接口
 export function invalid(data) {
     return requst({
-        url: `/seriesbaseEntity/invalid`,
+        url: `/eklApi/seriesbaseEntity/invalid`,
         method: 'POST',
         data
     })
@@ -221,7 +221,7 @@ export function invalid(data) {
 // EKL车型产量主表-列表查询接口
 export function cartypeOutputList(data) {
     return requst({
-        url: `/eklCartypeOutputEntity/page`,
+        url: `/eklApi/eklCartypeOutputEntity/page`,
         method: 'POST',
         data
     })
@@ -230,7 +230,7 @@ export function cartypeOutputList(data) {
 // 刷新
 export function saveTask(data) {
     return requst({
-        url: `/monthPartlistTaskEntity/saveTask`,
+        url: `/eklApi/monthPartlistTaskEntity/saveTask`,
         method: 'POST',
         data
     })
@@ -239,7 +239,7 @@ export function saveTask(data) {
 // 下载上传模板
 export function downloadSptemplate(data) {
     return requst({
-        url: `/seriesbaseEntity/downloadExampleExcel`,
+        url: `/eklApi/seriesbaseEntity/downloadExampleExcel`,
         method: 'GET',
         data,
         responseType: "blob"
