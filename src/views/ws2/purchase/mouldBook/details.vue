@@ -34,9 +34,9 @@
           <div class="c-line">
             <div class="item">
               <div class="txt">
-                <span>{{ language('LK_BMDANLIUSHUIHAO', 'BM单流水号') }}</span>
+                <span>{{ language('LK_BMDANHAO', 'BM单号') }}</span>
               </div>
-              <div class="disabled">{{detailsData.bmSerial}}</div>
+              <div class="disabled">{{detailsData.bmNum}}</div>
             </div>
             <div class="item">
               <div class="txt">

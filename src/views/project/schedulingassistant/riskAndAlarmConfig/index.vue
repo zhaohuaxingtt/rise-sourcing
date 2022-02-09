@@ -12,6 +12,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language("FENGXIANYUJINGPEIZHI",'风险预警配置')}}</span>
         <div class="floatright">
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <iButton :loading="submitting" @click="save">
             {{ language("LK_BAOCUNBINGYINGYONG",'保存并应用') }}
           </iButton>
@@ -20,10 +21,13 @@
       <div class="table">
         <tableList
           index
+          ref="tableList"
           :tableData="data"
           :tableTitle="riskAndAlarmTitle"
           :tableLoading="tableLoading"
           :lang="true"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
           style="min-height: 400px"
         >
           <!-- 风险状态 -->
@@ -55,13 +59,16 @@
 <script>
 import { iPage, iCard, iButton, icon, iInput, iMessage} from 'rise'
 import {riskAndAlarmTitle, riskAndAlarmData} from './components/data'
-import tableList from './components/tableList'
+
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { 
   getDelayGradeConfig,
   saveDelayGradeConfig
 } from '@/api/project/process'
 
 export default {
+  mixins: [ tableSortMixins ],
   components: { iPage, iCard, iButton, icon, iInput, tableList },
   data() {
     return {

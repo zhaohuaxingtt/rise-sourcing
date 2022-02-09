@@ -104,7 +104,7 @@
             <iButton :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
-
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!-- 暂时添加的按钮 -->
           <!-- <template v-if="isAekoManager">
             <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
@@ -115,6 +115,7 @@
       <div v-permission.auto="AEKO_MANAGELIST_TABLE|AEKO管理TABLE">
         <tableList
           class="table"
+          ref="tableList"
           index
           :lang="true"
           :tableData="tableListData"
@@ -122,6 +123,8 @@
           :tableLoading="loading"
           :selection="isAekoManager"
           @handleSelectionChange="handleSelectionChange"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
         >
         <!-- AEKO号 -->
         <template #aekoCode="scope">
@@ -189,7 +192,9 @@ import {
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
 import { TAB,filterRole,getLeftTab } from '../data';
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
@@ -223,7 +228,7 @@ import { roleMixins } from "@/utils/roleMixins";
 import { setLogMenu } from "@/utils";
 export default {
     name:'aekoManageList',
-    mixins: [pageMixins,roleMixins],
+    mixins: [pageMixins,roleMixins,tableSortMixins],
     components:{
       iPage,
       iNavMvp,

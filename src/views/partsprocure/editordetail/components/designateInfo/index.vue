@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
- * @LastEditors:  
- * @LastEditTime: 2021-12-01 18:21:59
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-25 12:49:07
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -12,6 +12,7 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{language('DINGDIANXINXI','定点信息')}}</span>
       <div class="floatright">
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <!--------------------纸质RS单----------------------------------->
         <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_PAPERRSSHEET|定点信息-纸质RS单" @click="changersPaperDialogVisible(true)">{{language('ZHIZHIRSDAN','纸质RS单')}}</iButton>
         <!--------------------电子RS单----------------------------------->
@@ -21,7 +22,12 @@
         
       </div>
     </div>
-    <tableList v-permission.auto="PARTSPROCURE_DESIGNATEINFO_TABLE|定点信息-表格"  :selection="false" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" />
+    <tableList 
+      ref="tableList"
+      :lang="true"
+      :handleSaveSetting="handleSaveSetting"
+      :handleResetSetting="handleResetSetting"
+      v-permission.auto="PARTSPROCURE_DESIGNATEINFO_TABLE|定点信息-表格"  :selection="false" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" />
     <!------------------------------------------------------------------------>
     <!--                  表格分页                                          --->
     <!------------------------------------------------------------------------>
@@ -49,14 +55,16 @@
 <script>
 import { iCard, iButton, iMessage } from 'rise'
 import { tableTitle } from './data'
-import tableList from '@/views/designate/designatedetail/components/tableList'
+// import tableList from '@/views/designate/designatedetail/components/tableList'
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { pageMixins } from "@/utils/pageMixins"
 import rsPaperDialog from './components/rsPaper'
 import selDialog from './components/sel'
 import rsEEditionDialog from './components/rsEEdition'
 import { findNominateInfo } from "@/api/partsprocure/editordetail"
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,tableSortMixins],
   components: { tableList, iCard, iButton, rsPaperDialog, selDialog, rsEEditionDialog },
   data() {
     return {

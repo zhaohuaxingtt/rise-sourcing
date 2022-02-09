@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-17 11:22:08
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-26 16:55:07
  * @Description: 
 -->
 <template>
@@ -11,8 +11,12 @@
     <search ref="search" @search="onSearch" />
     <!-- 表格 -->
     <iCard class="aeko-mtz-table">
-      <tablelist
+      <template v-slot:header-control>
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+      </template>
+      <tableList
         height="400"
+        ref="tableList"
         index
         :selection="false"
         :tableData="tableListData"
@@ -22,8 +26,10 @@
         v-permission.auto="MTZ_MODIFY_LIST_PAGE_TABLE|查看MTZ变更表格"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
-      </tablelist>
+      </tableList>
       <div class="pagination">
         <iPagination v-update
           class="pagination"
@@ -43,7 +49,9 @@
 <script>
 import {mtzListtableTitle as tableTitle} from './components/data'
 import search from './components/search'
-import tablelist from 'rise/web/components/iFile/tableList'; 
+// import tablelist from 'rise/web/components/iFile/tableList'; 
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import {iCard, iButton, iPagination, iInput, iDatePicker, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 // 解释附件、审批附件查询，审批附件带taskId
@@ -53,11 +61,12 @@ import {
 } from '@/api/aeko/mtz'
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableSortMixins],
   components: {
     iCard,
     iPagination,
-    tablelist,
+    tableList,
+    iButton,
     search
   },
   data() {

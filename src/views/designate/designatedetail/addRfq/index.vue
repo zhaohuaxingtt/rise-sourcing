@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-10 16:26:09
+ * @LastEditTime: 2022-01-25 12:58:12
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -42,6 +42,7 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
+            <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
             <!--------------------返回按钮----------------------------------->
             <iButton @click="goBack">{{language('FANHUI','返回')}}</iButton>
             <!--------------------选择按钮----------------------------------->
@@ -51,7 +52,12 @@
         <!------------------------------------------------------------------------>
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
-        <tableList :activeItems='"id"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop'>
+        <tableList
+          ref="tableList" 
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
+          lang
+          :activeItems='"id"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop'>
           <template #kmAnalysis="scope">
             <el-popover
               v-if="scope.row.kmAnalysis"
@@ -85,14 +91,16 @@
 <script>
 import { iPage, iCard, iPagination, iButton, iSearch, iSelect, iInput, iMessage, icon } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
-import tableList from '../components/tableList'
+// import tableList from '../components/tableList'
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { rfqListTitle } from '../rfqdetail/data'
 import { getRfqList, getSelectOptions, selectRfq } from '@/api/designate/designatedetail/addRfq/index'
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { attachmentTableTitle} from "@/views/partsrfq/home/components/data";
 import { downloadFile, downloadUdFile } from "@/api/file"
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,tableSortMixins],
   components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iSelect, iInput, icon },
   data() {
     return {

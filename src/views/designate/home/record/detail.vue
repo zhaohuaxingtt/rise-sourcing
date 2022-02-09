@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 19:56:57
- * @LastEditTime: 2021-12-01 16:41:58
- * @LastEditors:  
+ * @LastEditTime: 2022-01-25 14:27:06
+ * @LastEditors: Please set LastEditors
 -->
 <template>
   <iPage v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_PAGE|定点记录详情">   
@@ -21,6 +21,7 @@
     </iCard>
     <iCard class="margin-top20">
       <div class="btnRight">
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton @click='gotoRs' v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_TORS|RS单">RS单</iButton>
       </div>
       <tablelist
@@ -33,6 +34,9 @@
         :selection="false"
         @openPage="openPage"
         v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_DETAIL_TABLE|定点记录详情-表格"
+        ref="tableList"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
         >
 
         <template #ltc="scope">
@@ -61,13 +65,15 @@
 </template>
 <script>
 import {iPage, iCard, iFormGroup, iFormItem, iText, iPagination, iButton} from 'rise'
-import tablelist from "@/views/designate/supplier/components/tableList"
+// import tablelist from "@/views/designate/supplier/components/tableList"
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import topComponents from '@/views/designate/designatedetail/components/topComponents'
 import {detailList, tableDetailTitle} from "./data"
 import { pageMixins } from '@/utils/pageMixins'
 import {getNomiRecordDetailPageList} from '@/api/designate/nomination/record'
 export default {
-  mixins: [ pageMixins ],
+  mixins: [ pageMixins,tableSortMixins ],
   components: {
     iPage,
     topComponents,

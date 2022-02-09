@@ -4,44 +4,47 @@
         <span class="font18 font-weight">
           {{ language("LK_DANYIGONGYINGSHANG",'单一供应商') }}</span
         >
-        <div class="floatright" v-if="singleEditControl">
-          <!-- 批量编辑 -->
-          <iButton @click="handleBatchEdit" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_BATCHEDIT|批量编辑">
-            {{ language("nominationSupplier_BatchEdit",'批量编辑') }}
-          </iButton>
-          <iButton
-            @click="partDialogVisibal = !partDialogVisibal"
-            v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_ADD|单一供应商新增按钮"
-          >
-            {{ language("LK_XINZENG",'新增') }}
-          </iButton>
-          <iButton
-            @click="submit"
-            :loading="submiting"
-            v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_SAVE|单一供应商保存按钮"
-          >
-            {{ language("LK_BAOCUN",'保存') }}
-          </iButton>
-          <iButton
-            @click="singleEditControl = false"
-            v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_CANCEL|单一供应商取消按钮"
-          >
-            {{ language("LK_QUXIAO",'取消') }}
-          </iButton>
-          <iButton
-            @click="deleteRow"
-            v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_DELETE|单一供应商删除按钮"
-          >
-            {{ language("LK_SHANCHU",'删除') }}
-          </iButton>
-        </div>
-        <div class="floatright" v-else>
-          <iButton @click="handlEdit" v-if="!nominationDisabled && !rsDisabled" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_EDIT|单一供应商编辑按钮">
-            {{ language("nominationSupplier_Edit",'编辑') }}
-          </iButton>
-          <iButton @click="exportSupplier" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_EXPORT|单一供应商导出按钮">
-            {{ language("nominationSupplier_Export",'导出') }}
-          </iButton>
+        <div class="floatright">
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <template  v-if="singleEditControl">
+            <!-- 批量编辑 -->
+            <iButton @click="handleBatchEdit" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_BATCHEDIT|批量编辑">
+              {{ language("nominationSupplier_BatchEdit",'批量编辑') }}
+            </iButton>
+            <iButton
+              @click="partDialogVisibal = !partDialogVisibal"
+              v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_ADD|单一供应商新增按钮"
+            >
+              {{ language("LK_XINZENG",'新增') }}
+            </iButton>
+            <iButton
+              @click="submit"
+              :loading="submiting"
+              v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_SAVE|单一供应商保存按钮"
+            >
+              {{ language("LK_BAOCUN",'保存') }}
+            </iButton>
+            <iButton
+              @click="singleEditControl = false"
+              v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_CANCEL|单一供应商取消按钮"
+            >
+              {{ language("LK_QUXIAO",'取消') }}
+            </iButton>
+            <iButton
+              @click="deleteRow"
+              v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_DELETE|单一供应商删除按钮"
+            >
+              {{ language("LK_SHANCHU",'删除') }}
+            </iButton>
+          </template>
+          <template v-else>
+            <iButton @click="handlEdit" v-if="!nominationDisabled && !rsDisabled" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_EDIT|单一供应商编辑按钮">
+              {{ language("nominationSupplier_Edit",'编辑') }}
+            </iButton>
+            <iButton @click="exportSupplier" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_EXPORT|单一供应商导出按钮">
+              {{ language("nominationSupplier_Export",'导出') }}
+            </iButton>
+          </template>
         </div>
       </div>
       <tablelist
@@ -53,6 +56,9 @@
         @handleSelectionChange="handleSingleSelectionChange"
         @openPage="openPage"
         v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_TABLE|单一供应商表格"
+        ref="tableList"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
         <!-- <template #partNum="scope">
           <a class="link-underline" href="javascript:;">{{scope.row.partNum}}</a>
@@ -129,7 +135,9 @@ import {
   singleSupplierTitle,
   // mokeSingleSupplierData
 } from './data'
-import tablelist from "./tableList";
+// import tablelist from "./tableList";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import partDialog from './partDialog'
 import batchEditDialog from './batchEditDialog'
 import _ from 'lodash'
@@ -153,7 +161,7 @@ import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 
 export default {
-  mixins: [ filters, pageMixins ],
+  mixins: [ filters, pageMixins,tableSortMixins ],
   components: {
     iCard,
     iButton,
