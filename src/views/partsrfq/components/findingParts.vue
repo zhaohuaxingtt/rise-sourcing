@@ -73,8 +73,7 @@
 <script>
 import { iButton, iDialog, iSearch, iSelect, iInput, iMessage, iPagination } from "rise";
 import { confirmTableHead } from "./data";
-import emitter from '@/utils/emitter.js'
-import pageMixins from '@/utils/pageMixins'
+import emitter from '@/utils/emitter.js';
 import {
   pagePart,
   category,
@@ -91,7 +90,7 @@ export default {
     tableList,
     iPagination
   },
-  mixins: [emitter, pageMixins],
+  mixins: [emitter],
   props: {
     title: { type: String, default: "LK_SHANGCHUAN" },
     value: { type: Boolean },
@@ -123,7 +122,14 @@ export default {
       },
       status: 0,
       colData: {},
-      loading: false
+      loading: false,
+      page: {
+        totalCount: 0, //总条数
+        pageSize: 10, //每页多少条
+        pageSizes: [10, 20, 50, 100], //每页条数切换
+        currPage: 1, //当前页
+        layout: 'sizes, prev, pager, next, jumper',
+      },
     };
   },
   created () {
@@ -133,6 +139,28 @@ export default {
     // this.category();
   },
   methods: {
+    handleSizeChange(val, callback) {
+      if (typeof callback != 'function')
+        return console.warn(
+          'function handleSizeChange parmars must be a function!'
+        )
+      this.page.pageSize = val
+      callback()
+    },
+    handleCurrentChange(val, callback) {
+      if (typeof callback != 'function')
+        return console.warn(
+          'function handleCurrentChange parmars must be a function!'
+        )
+      this.page.currPage = val
+      callback()
+    },
+    pageParmars() {
+      return {
+        pageSize: this.page.pageSize,
+        currPage: this.page.currPage,
+      }
+    },
     async pagePart () {
       this.loading = true
       let res = await category({});

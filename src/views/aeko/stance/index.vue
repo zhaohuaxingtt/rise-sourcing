@@ -12,7 +12,8 @@
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
-        <log-button v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
+        <!-- <log-button v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/> -->
+        <iLoger ref="log" @close="closeLog" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{module_obj_ae: module, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
@@ -140,7 +141,7 @@
       <!-- 附件列表查看 -->
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     </div>
-    <iLog :show.sync="showDialog" :bizId="bizId" :module="module" />
+    <!-- <iLog :show.sync="showDialog" :bizId="bizId" :module="module" /> -->
   </iPage>
 </template>
 
@@ -169,6 +170,7 @@ import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import filesListDialog from '../manage/components/filesListDialog'
 import logButton from "../../../components/logButton";
 import iLog from '../log'
+import iLoger from 'rise/web/components/iLoger'
 import {
   getLiniePage,
 } from '@/api/aeko/stance'
@@ -202,7 +204,8 @@ export default {
       logButton,
       switchPost,
       iMultiLineInput,
-      iButton
+      iButton,
+      iLoger
     },
     data(){
       return{
@@ -448,8 +451,14 @@ export default {
         setLogMenu('')
         this.bizId = row.requirementAekoId
         this.showDialog = true
+        this.$refs.log.open()
       },
 
+      // 清空bizId,便于触发顶部日志按钮
+      closeLog(){
+        setLogMenu('')
+        this.bizId = ''
+      },
       // 查看描述
       checkDescribe(row){
         const { requirementAekoId,aekoCode } = row;

@@ -143,7 +143,7 @@ export default {
       this.loading = true;
       if (this.params.partProjectSource == 1) {
         try {
-          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementObjectId) {
+          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementId) {
             const versionRes = await getPerCarDosageVersion({
               currPage: 1,
               pageSize: 10,
@@ -203,7 +203,7 @@ export default {
         manualInfoTable({
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
-          purchasingRequirementId: this.params.purchasingRequirementObjectId,
+          purchasingRequirementId: this.params.purchasingRequirementId,
         }).then(res=>{
           if(res.code == '200') 
           {
@@ -373,7 +373,7 @@ export default {
     //   if(this.isGs == true) {
     //     copyData.forEach(value=> {
     //       let dataItem = {}
-    //       dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
+    //       dataItem.purchasingRequirementId = this.params.purchasingRequirementId
     //       dataItem.cartypeLevel = value.cartypeLevel
     //       dataItem.engineType = value.engineType
     //       dataItem.gearType = value.gearboxName
@@ -389,7 +389,7 @@ export default {
     //   } else {
     //     copyData.forEach(value=> {
     //       let dataItem = {}
-    //       dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
+    //       dataItem.purchasingRequirementId = this.params.purchasingRequirementId
     //       dataItem.cartypeLevel = value.cartypeLevel
     //       dataItem.engineType = value.engineVo?.engineName
     //       dataItem.gearType = value.gearboxVo?.gearboxName

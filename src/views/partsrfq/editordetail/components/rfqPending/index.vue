@@ -1,14 +1,14 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 10:58:09
- * @LastEditors: YoHo
+ * @LastEditors: Please set LastEditors
 * @Description: RFQ待办事项
  -->
 <template>
   <iTabsList type="card" @tab-click="handleTabClick" v-model="activityTabIndex"  class="margin-top20 cardss">
     <template v-for="item of tabs">
       <el-tab-pane :label="language(item.key,item.label)" :key="item.label" :name='item.index' v-if='showTab(item.index)' v-permission.dynamic.auto='item.permissionKey'>
-        <component :ref='item.component' :key='hashCode' :is="item.component" v-if="activityTabIndex === item.index" @jump='jump' :todoObj="todoObj"/>
+        <component :ref='item.component' :key='hashCode'  :is="item.component" v-if="activityTabIndex === item.index" @jump='jump' :todoObj="todoObj" :baseInfo="baseInfo"/>
       </el-tab-pane>
     </template>
   </iTabsList>
@@ -107,7 +107,7 @@ export default {
       return this.getbaseInfoData()
     },
     tabs() {
-      if (Array.isArray(this.baseInfo.partProjectType) && (this.baseInfo.partProjectType[0] === partProjTypes.PEIJIAN)) return this.tabList.filter(item => item.index != 3)
+      // if (Array.isArray(this.baseInfo.partProjectType) && (this.baseInfo.partProjectType[0] === partProjTypes.PEIJIAN)) return this.tabList.filter(item => item.index != 3)
       return this.tabList
     }
   },

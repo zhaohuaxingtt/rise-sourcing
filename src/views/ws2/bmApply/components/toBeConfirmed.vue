@@ -197,6 +197,11 @@ export default {
       if(!this.selectTableList.length){
         return iMessage.warn(this.$t('LK_QINGXUANZHE'))
       }
+
+      const isBmAmount = this.selectTableList.filter(item => Number(item.bmAmount) > 999999000);
+      if(isBmAmount.length){
+        return iMessage.warn(`BM金额已超过999999000`)
+      }
       
       this.confirmApplyLoading = true;
       bmConfirm({

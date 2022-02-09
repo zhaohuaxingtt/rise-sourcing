@@ -233,6 +233,10 @@ export default{
 }
 </script>
 <style lang='scss' scoped>
+.openLinkText {
+  color: $color-blue;
+}
+
   .topMenu{
     display: flex;
     justify-content: space-between;

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:31
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 17:14:55
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-01-27 21:25:48
  * @Description: 财务目标价-目标价维护
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\maintenance\index.vue
 -->
@@ -149,6 +149,7 @@ export default {
       rfqId: '',
       fsNum: '',
       selectItems: [],
+      saveSelectItems:[],
       uploadLoading: false,
       exportLoading: false
     }
@@ -267,6 +268,7 @@ export default {
       if (!this.isEdit) {
         this.selectItems = val
       } else {
+        this.saveSelectItems = val
         // this.$refs.tableList.toggleSelection(val.filter(item => item.props !== val.props), false)
         // this.$refs.tableList.toggleSelection(this.selectItems)
       }
@@ -425,6 +427,7 @@ export default {
             isEdit: !['APPROVED', 'APPROVAL_K2'].includes(item.approveStatus) && item.applyType === 'LC'
           }
         })
+        this.saveSelectItems = []
       }
       if (!this.tableData.some(item => item.isEdit)) {
         iMessage.warn(this.language('MEIYOUKEYIBIANJIDESHUJU','没有可以编辑的数据'))
@@ -457,8 +460,11 @@ export default {
      * @return {*}
      */    
     handleSave() {
+      if(!this.saveSelectItems.length) {
+        return iMessage.warn(this.language("BAOQIANNIHAIWEIXUANZEXUYAOBAOCUNDESHUJU","抱歉你还未选择需要保存的数据"))
+      }
       this.tableLoading = true
-      const params = this.tableData.filter(item => item.isEdit).map(item => {
+      const params = this.saveSelectItems.filter(item => item.isEdit).map(item => {
         return {
           ...item,
           partPrjCode: item.fsnrGsnrNum

@@ -70,9 +70,15 @@ export function uploadRfqAnnex(parmars) {
 //     })
 // }
 // 模具预算申请
-export function getModelBudgetList(params, rfqIds) {
+// export function getModelBudgetList(params, rfqIds) {
+//     return requst({
+//         url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(rfqIds, Array) }`,
+//         method: 'GET'
+//     })
+// }
+export function getModelBudgetList(rfqId) {
     return requst({
-        url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(rfqIds, Array) }`,
+        url: `/mould-budget/list/${rfqId}`,
         method: 'GET'
     })
 }
@@ -89,6 +95,22 @@ export function submitMoldBudget(parmars) {
 export function patchMouldBudget(params) {
     return requst({
         url: "/mould-budget",
+        method: "PATCH",
+        data: params
+    })
+}
+//提交 模具预算
+export function patchMouldBudgetSubmit(params) {
+    return requst({
+        url: "/mould-budget/submit",
+        method: "PATCH",
+        data: params
+    })
+}
+//撤回 模具预算
+export function patchMouldBudgetWithdrawal(params) {
+    return requst({
+        url: "mould-budget/withdrawal",
         method: "PATCH",
         data: params
     })
@@ -555,12 +577,15 @@ export function exportFSPartsAsRowByNomiId(nomiId, data) {
     })
 }
 
-// 导出定点GS横轴零件接口
+// 导出定点SUPPLIER横轴零件接口
 export function exportFsSupplierAsRowByNomiId(nomiId, data) {
     return downLoad({
-        url:`/nego-assistant/export/nomi-fs-supplier-as-row/${ nomiId }`,
+        url:`/nego-assistant/export/nomi-fs-supplier-as-row`,
         method: 'POST',
-        data
+        data:{
+            hideList:data,
+            nomiId:nomiId
+        }
     })
 }
 

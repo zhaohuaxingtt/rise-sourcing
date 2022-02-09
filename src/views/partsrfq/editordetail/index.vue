@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-20 18:27:37
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-27 23:38:01
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
 -->
@@ -66,11 +66,18 @@
             {{ language('LK_JIESHUBENLUNXUNJIA', '结束本轮询价') }}
           </iButton>
           <iButton 
-            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1"
+            v-if=" baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1 && isInquiryUser && isInquiryRfqStatus"
             :loading="transferlaoding"
                    @click="updateRfqStatus('03')"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_TRANSFERNEGOTIATION|转谈判">
             {{ language('LK_ZHUANTANPAN', '转谈判') }}
+          </iButton>     
+          <iButton 
+            v-if=" baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1 && isLinieUser && isLiniefqStatus"
+            :loading="transferlaoding"
+                   @click="updateRfqStatus('04')"
+                   v-permission.auto="PARTSRFQ_EDITORDETAIL_REINQUIRY|转询价">
+            {{ language('LK_ZHUANXUNJIAS','转询价')}}
           </iButton>
           <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_CREATEAPPLICATION|创建定点申请"
                    :loading="createDesignateLoading"
@@ -238,6 +245,7 @@
                      v-if="navActivtyValue == 2"></rfq-detail-tpzs>
     <new-rfq-round v-model="newRfqRoundDialog"
                    @refreshBaseInfo="getBaseInfo(true)"
+                   @showTodo="showTodo"
                    :dataRes="newRfqRoundDialogRes"
                    v-if="tabShowStatus" />
 
@@ -377,15 +385,34 @@ export default {
       blackTableListData:[],
       createDesignateLoading:false,
       isCommonSurcingStar:false,
+      isLinieUser:false,
+      isInquiryUser:false,
+      isInquiryRfqStatus:false,
+      isLiniefqStatus:false,
+      notAllow:false
     };
   },  
   async created () {
+    //是否是linie 如果不是linie 无法看见 【转询价】按钮
+    let linieTypeCode = ["ZYCGGZ","ZYCGKZ","LINIE"]
+    //是否是询价采购员 如果不是 无法看见【转谈判】按钮
+    let inquiryTypeCode = ["PJCGY","FJCGY","PJCGGZ","FJCGGZ",'QQCGGZ',"QQCGKZ","FJCGKZ","PJCGKZ","QQCGY"]
+    this.$store.state.permission.userInfo.roleList.forEach(val=>{
+      linieTypeCode.includes(val.code) ? this.isLinieUser = true:''
+      inquiryTypeCode.includes(val.code) ? this.isInquiryUser = true:''
+    })
     if(this.navActivtyValue==0||this.navActivtyValue==''){
       await this.firstInit()
     }
     this.getPartTableList = this.$store.state.rfq.partfunc;
     this.getTableList();
-    this.getBaseInfo();
+    await this.getBaseInfo()
+    //linie
+    let efqLinieStatus = ["谈判完成",'谈判中',"转谈判"]
+    //询价
+    let efqinquiryStatus = ["未询价",'询价中',"转询价"]
+    efqLinieStatus.includes(this.baseInfo.statusName) ? this.isLiniefqStatus = true :this.isLiniefqStatus = false    
+    efqinquiryStatus.includes(this.baseInfo.statusName) ? this.isInquiryRfqStatus = true :this.isInquiryRfqStatus = false    
   },
   provide: function () {
     return {
@@ -429,6 +456,11 @@ export default {
       }
     },
     // 
+    showTodo(){
+      if(this.baseInfo.currentRounds=='1'){
+        this.getTodoInfo()
+      }
+    },
     async getTodoInfo(){
       this.tipsVislble = false
       if(this.$route.query.id){
@@ -518,34 +550,40 @@ export default {
       }
     },
     getBaseInfo (dialogPage) {
-      this.baseInfoLoading = true;
-      if (this.$route.query.id) {
-        getRfqInfo({
-          rfqId: this.$route.query.id,
-        })
-          .then((res) => {
-            // const res = mockData;
-            if (res.code == 200 && res.data) {
-              this.baseInfo = res.data;
-              this.rfqInfo = res.data;
-              this.disabled = !!res.data.isFreeze;
-              if (dialogPage) {
-                //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
-                this.activityTabIndex = '5';
-              }
-              this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
-              this.childFnList.forEach((i) => i());
-              if (typeof this.$store.state.rfq.partfunc === 'function') this.getPartTableList();
-            } else {
-              iMessage.error(this.language('HUOQURFQDINGDIANXINXISHIBAI', '获取RFQ定点信息失败'));
-              this.baseInfo = '';
-            }
+      return new Promise(resolve => {
+        this.baseInfoLoading = true;
+        if (this.$route.query.id) {
+          getRfqInfo({
+            rfqId: this.$route.query.id,
           })
-          .finally(() => (this.baseInfoLoading = false));
-      } else {
-        this.disabled = true;
-        this.baseInfoLoading = false;
-      }
+            .then((res) => {
+              // const res = mockData;
+              if (res.code == 200 && res.data) {
+                this.baseInfo = res.data;
+                this.rfqInfo = res.data;
+                this.disabled = !!res.data.isFreeze;
+                if (dialogPage) {
+                  //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
+                  this.activityTabIndex = '2';
+                }
+                this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
+                this.childFnList.forEach((i) => i());
+                if (typeof this.$store.state.rfq.partfunc === 'function') this.getPartTableList();
+              } else {
+                iMessage.error(this.language('HUOQURFQDINGDIANXINXISHIBAI', '获取RFQ定点信息失败'));
+                this.baseInfo = '';
+              }
+            })
+            .finally(() => {
+              this.baseInfoLoading = false
+              resolve()
+            });
+        } else {
+          this.disabled = true;
+          this.baseInfoLoading = false;
+          resolve()
+        }
+      })
     },
     changeNav (target) {
       this.navActivtyValue = target.index;
@@ -559,13 +597,14 @@ export default {
       this.newRfqOpenValidateLoading = true;
 
       try {
-        await this.getNewRoundList();
-        if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
-          iMessage.warn(this.language('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG', 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次'));
-          return false;
-        } else {
+        await this.getNewRoundList()
+        if(this.notAllow) return
+        // if (pendingPartsList.length === 0 || this.newRfqRoundList.length === 0) {
+        //   iMessage.warn(this.language('LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG', 'RFQ零件或者RFQ供应商为空，不能创建RFQ轮次'));
+        //   return false;
+        // } else {
           this.newRfqRoundDialog = true;
-        }
+        // }
       } finally {
         this.newRfqOpenValidateLoading = false;
       }
@@ -597,13 +636,13 @@ export default {
 
       try {
         const res = await modification(req);
-        if(updateType === '06' && res.code == '500'){
+        if(updateType === '06' && res.code == '501'){
           this.blackTableListData = res.data || [];
           this.$refs.dialogTableTips.show(); 
         }else{
           this.resultMessage(res);
           // 发出首轮询价时触发
-          if(res && res.code=='200' && updateType === '06' && this.baseInfo.properties=='1'){
+          if(res?.code=='200' && updateType === '06' && this.baseInfo.currentRounds=='1'){
             this.getTodoInfo()
           }
         }
@@ -697,10 +736,13 @@ export default {
           if (res.code == 200) {
             this.newRfqRoundDialogRes = res;
             this.newRfqRoundList = res.data;
+            this.notAllow = false
           } else {
-            // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            this.notAllow = true
           }
         } finally {
+
           this.newRfqOpenValidateLoading = false;
         }
       }

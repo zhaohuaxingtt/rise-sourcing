@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-08 11:48:04
- * @LastEditTime: 2022-01-20 17:59:21
+ * @LastEditTime: 2022-01-28 13:17:55
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\tableListSupplier.vue
@@ -16,10 +16,10 @@
           <div>{{scope.row[i].data.split(/\n/)[1]}}</div>
         </template>
         <template v-else-if='scope.row[i] && scope.row[i].style.tips'>
-          <el-tooltip light >
-            <span slot='content' v-html='scope.row[i].style.tips'></span>
-            {{scope.row[i].data | deleteContent}}
-          </el-tooltip>
+            <el-tooltip effect='light'>
+              <span slot="content" style='white-space: pre;'>{{scope.row[i].style.tips}}</span>
+              <div>{{scope.row[i].data | deleteContent}}<span style="color:red;">*</span></div>
+            </el-tooltip>
         </template>
         <div v-else>{{scope.row[i].data | deleteContent}}</div>
       </template>

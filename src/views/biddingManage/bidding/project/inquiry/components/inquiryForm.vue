@@ -5,6 +5,7 @@
     :rules="rules"
     ref="ruleForm"
     :hideRequiredAsterisk="true"
+    :disabled="!isUser"
   >
     <!-- 询价 -->
     <div class="form">
@@ -91,6 +92,10 @@ export default {
     isOpenDelay: {
       type: Boolean,
       default: true,
+    },
+    isUser: {
+      type: Boolean,
+      default: false,
     },
   },
   watch: {

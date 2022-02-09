@@ -32,7 +32,7 @@
             <iButton v-permission.auto="LK_LETTER_LIST_QUERENBINGTIJIAO|定点信-确认并提交" :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_LINIEQUEREN|定点信-LINIE确认" :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_LINIETUIHUI|定点信-LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
-            <iButton v-permission.auto="LK_LETTER_LIST_CHEHUI|定点信-撤回" :loading="btnLoading.back" @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
+            <iButton v-permission.auto="LK_LETTER_LIST_CHEHUI|定点信-撤回" :loading="btnLoading.back" @click="back">{{language("CHEHUI", "撤回")}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_ZHUANPAI|定点信-转派" @click="turnSend">{{language('partsprocure.PARTSPROCURETRANSFER','转派')}} </iButton> 
             <iButton v-permission.auto="LK_LETTER_LIST_GUANBI|定点信-关闭" @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_JIHUO|定点信-激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>

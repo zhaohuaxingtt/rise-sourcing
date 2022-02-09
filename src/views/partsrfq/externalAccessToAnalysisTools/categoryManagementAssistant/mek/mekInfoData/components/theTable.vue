@@ -20,7 +20,7 @@
                      :placeholder="language('QXZCLZ','请选择材料组')"
                      v-model="form.materialGroupCode">
               <el-option :value="item.categoryCode"
-                         :label="item.categoryName"
+                         :label="item.categoryCode+'-'+item.categoryNameZh"
                          v-for="item of formGoup.materialGroupList"
                          :key="item.categoryCode"></el-option>
             </iSelect>
@@ -121,80 +121,83 @@
           <div>{{scope.row.type}}</div>
         </template>
       </el-table-column>
-      <el-table-column width="300"
-                       :label="language('CHEXINGXINGXI','车型信息')">
-        <template slot="header">
-          <div>{{language('CHEXINGXINGXI','车型信息')}}</div>
-          <div class="flex-between-center-center margin-top10">
-            <div>{{language('PEIZHIXINGXI','配置信息')}}</div>
-            <icon name="iconMEK-xuxian"
-                  symbol />
+      <el-table-column :label="language('CHEXINGPEIZHI','车型配置')">
+        <el-table-column width="300">
+          <template slot="header">
+            <!-- <div>{{language('CHEXINGPEIZHI','车型配置')}}</div> -->
+            <div class="flex-between-center-center margin-top10">
+              <div>{{language('DONGLI','动力 ')}}+{{language('CHUANDONG','传动')}}+{{language('PEIZHI','配置')}}</div>
+              <icon name="iconMEK-xuxian"
+                    symbol />
+              <div class="flex-between-center-center">
+                <span>{{language('CHUANDONG','EBR')}}</span>
+                <el-popover trigger="hover"
+                            placement="top-start"
+                            :content="language('SBXTZEBRSZSJFCZSCGLJSZDCXPZ','鼠标悬停在EBR数值上将浮窗展示出该零件所在的车型配置')">
+                  <icon slot="reference"
+                        symbol
+                        name="iconxinxitishi"
+                        class="font-size16 margin-left5" />
+                </el-popover>
+              </div>
+            </div>
+          </template>
+          <template slot-scope="scope">
             <div class="flex-between-center-center">
-              <span>{{language('CHUANDONG','EBR')}}</span>
+              <div v-if="isEdit">{{scope.row.carTypeInfo}}</div>
+              <div v-else>
+                <iSelect :loading="carTypeInfoLoading"
+                         @focus="getCarTypeMessage(scope.row.motorSvwCode)"
+                         :placeholder="language('QINGXUANZHE','请选择')"
+                         v-model="scope.row.carTypeInfo">
+                  <el-option :value="item.carTypeInfo"
+                             :label="item.carTypeInfo"
+                             v-for="(item,index) of formGoup.carTypeInfoList"
+                             :key="index"></el-option>
+                </iSelect>
+              </div>
               <el-popover trigger="hover"
-                          placement="top-start"
-                          :content="language('SBXTZEBRSZSJFCZSCGLJSZDCXPZ','鼠标悬停在EBR数值上将浮窗展示出该零件所在的车型配置')">
-                <icon slot="reference"
-                      symbol
-                      name="iconxinxitishi"
-                      class="font-size16 margin-left5" />
+                          placement="top-start">
+                <div class="tip-box">
+                  <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
+                  <div v-for="(item,index) in scope.row.configurationList"
+                       :key="index"
+                       :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
+                </div>
+                <div slot="reference">{{scope.row.ebr}}</div>
               </el-popover>
             </div>
-          </div>
-        </template>
-        <template slot-scope="scope">
-          <div class="flex-between-center-center">
-            <div v-if="isEdit">{{scope.row.carTypeInfo}}</div>
-            <div v-else>
-              <iSelect :loading="carTypeInfoLoading"
-                       @focus="getCarTypeMessage(scope.row.motorSvwCode)"
-                       :placeholder="language('QINGXUANZHE','请选择')"
-                       v-model="scope.row.carTypeInfo">
-                <el-option :value="item.carTypeInfo"
-                           :label="item.carTypeInfo"
-                           v-for="(item,index) of formGoup.carTypeInfoList"
-                           :key="index"></el-option>
-              </iSelect>
-            </div>
-            <el-popover trigger="hover"
-                        placement="top-start">
-              <div class="tip-box">
-                <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
-                <div v-for="(item,index) in scope.row.configurationList"
-                     :key="index"
-                     :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
-              </div>
-              <div slot="reference">{{scope.row.ebr}}</div>
-            </el-popover>
-          </div>
-        </template>
+          </template>
+        </el-table-column>
       </el-table-column>
-      <el-table-column show-overflow-tooltip
-                       width="250"
-                       :label="language('JIAGEXINGXI','价格信息')"
-                       prop="name">
-        <template slot="header">
-          <div>{{language('JIAGEXINGXI  ','价格信息')}}</div>
-          <div class="flex-between-center-center margin-top10">
-            <div>{{language('SOPXINGXI','SOP信息')}}</div>
-            <icon name="iconMEK-xuxian"
-                  symbol />
-            <div>{{language('DANGQIANJIAGE','当前价格')}}</div>
-          </div>
-        </template>
-        <template slot-scope="scope">
-          <div class="flex-between-center-center">
-            <div class="car-type">
-              <div>{{scope.row.sopDate}}</div>
-              <div>{{scope.row.sopPrice}}</div>
+      <el-table-column :label="language('JIAGEXINGXI','价格信息')">
+        <el-table-column width="250"
+                         show-overflow-tooltip
+                         prop="name">
+          <template slot="header">
+            <!-- <div>{{language('JIAGEXINGXI  ','价格信息')}}</div> -->
+            <div class="flex-between-center-center margin-top10">
+              <!-- <div>{{language('SOPJG','SOP价格')}}</div> -->
+              <div>{{$t('SOPJIAGE')}}</div>
+              <icon name="iconMEK-xuxian"
+                    symbol />
+              <div>{{language('DANGQIANJIAGE','当前价格')}}</div>
             </div>
-            <div class="car-type"></div>
-            <div class="car-type3">
-              <div>{{scope.row.date}}</div>
-              <div>{{scope.row.price}}</div>
+          </template>
+          <template slot-scope="scope">
+            <div class="flex-between-center-center">
+              <div class="car-type">
+                <div>{{scope.row.sopDate}}</div>
+                <div>{{scope.row.sopPrice}}</div>
+              </div>
+              <div class="car-type"></div>
+              <div class="car-type3">
+                <div>{{scope.row.date}}</div>
+                <div>{{scope.row.price}}</div>
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
+        </el-table-column>
       </el-table-column>
       <el-table-column show-overflow-tooltip
                        :label="language('GONGYINGSHANGXINGXI','供应商信息')"
@@ -228,7 +231,7 @@
           :bizId="bizId" /> -->
     <iUserLog :show.sync="changeLogDialog"
               :bizId="bizId"
-              menuId="2"
+              menuId="WS3214"
               is-page />
     <iPagination v-update
                  @size-change="handleSizeChange($event, getTableList)"
@@ -251,7 +254,7 @@ import tableList from '@/components/ws3/commonTable';
 import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 import { tableTitle } from "./data.js";
-import { getName, mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList, infoDelete } from "@/api/partsrfq/mek/index.js";
+import { getName, mekInfoList, infoUpdate, getCarTypeMessage, categoryList, carTypeList, infoDelete, getMaterialCategory } from "@/api/partsrfq/mek/index.js";
 import { excelExport } from "@/utils/filedowLoad";
 import { pad } from '@/utils'
 export default {
@@ -298,7 +301,7 @@ export default {
     // 获取材料组
     async categoryList () {
       try {
-        const res = await categoryList({})
+        const res = await getMaterialCategory(this.$route.query.schemeId)
         this.formGoup.materialGroupList = res.data
         this.form.materialGroupCode = this.$route.query.categoryCode
       } catch (error) {
@@ -329,9 +332,11 @@ export default {
     async getCarTypeMessage (val) {
       this.formGoup.carTypeInfoList = []
       this.carTypeInfoLoading = true
-      const res = await getCarTypeMessage({ motorSvwCode: val })
-      res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
-      this.formGoup.carTypeInfoList = res.data
+      let res = await getCarTypeMessage({ motorSvwCode: val })
+      res = res.data.filter(item => item)
+      console.log(res)
+      res.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
+      this.formGoup.carTypeInfoList = res
       this.carTypeInfoLoading = false
     },
     handleAdded () {

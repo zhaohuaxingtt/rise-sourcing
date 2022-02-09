@@ -139,6 +139,14 @@ module.exports = {
     hot: true,
     clientLogLevel: 'none',
     proxy: {
+      '/eklApi': {
+        target: 'http://10.122.17.38:8043/riseekl',
+        // target: 'http://10.122.18.166:8046/mtz',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/eklApi': '',
+        },
+      },
       '/mtzApi': {
         target: 'http://10.122.17.38:8046/mtz',
         // target: 'http://10.122.18.166:8046/mtz',
@@ -148,7 +156,7 @@ module.exports = {
         },
       },
       '/tpInfoApi': {
-        target: 'http://10.122.17.38:8023',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/tpInfoApi': '',
@@ -295,6 +303,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BIZLOG]: '',
+        },
+      },
+      '/prApi': {
+        target: 'http://10.122.17.38:8023',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/prApi': '',
         },
       },
     },

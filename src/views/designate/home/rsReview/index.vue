@@ -520,6 +520,7 @@ export default {
       if (this.selectTableData.length !== 1) return iMessage.warn(this.language("QINGXUANZEYIGELIE","请选择一条数据！"))
       const data = {
         nomiId: this.selectTableData[0].id,
+        isCheck: true
       };
       try {
         const res = await unbindMtzCheck(data)

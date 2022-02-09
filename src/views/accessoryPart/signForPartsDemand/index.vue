@@ -20,7 +20,7 @@
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
-                  <!-- <el-option v-if="item.value == 'showSelf'" value="" :label="language('ALL','全部')"></el-option> -->
+                  <el-option v-if="item.value == 'linieApportionStatus'" value="" :label="language('ALL','全部')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -49,7 +49,7 @@
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_SIGN_SENDBUYER|配件-配件签收-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------分配Linie按钮----------------------------------->
-                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDLINIE|配件-配件管理-分配Linie" >{{language('FENPEILINIE','分配Linie')}}</iButton>
+                  <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDLINIE|配件-配件签收-分配Linie" >{{language('FENPEILINIE','分配Linie')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
@@ -218,7 +218,7 @@ export default {
           this.selectOptions[optionName] = res.data[0].subDictResultVo.map(item => {
             return { value: item.code, label: item.name }
           })
-          this.selectOptions.linieStatusOption.unshift({value: '', label: this.language('all','全部')})
+          // this.selectOptions.linieStatusOption.unshift({value: '', label: this.language('all','全部')})
         }
       })
     },
@@ -231,6 +231,7 @@ export default {
     getSelectOptions() {
       // 配件状态
       this.getDictionary('accessoryTypeOption', 'ACCESSORY_SIGN_STATE')
+      //LINIE分配状态
       this.getDictionary('linieStatusOption', 'LINIE_APPORTION_STATUS')
     },
     /**

@@ -20,7 +20,7 @@
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
-                  <el-option v-if="item.value == 'showSelf'" value="" :label="language('ALL','全部')"></el-option>
+                  <el-option v-if="item.value == 'showSelf'|| item.value == 'linieApportionStatus'" value="" :label="language('ALL','全部')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -344,6 +344,8 @@ export default {
       this.getDictionary('contactStateOption', 'CONTRACT_STATE')
       // 零件状态
       this.getDictionary('partStateOption', 'RFQ_PART_STATUS_CODE_TYPE')
+      // LINIE分配状态
+      this.getDictionary('linieStatusOption', 'LINIE_APPORTION_STATUS')
     },
     /**
      * @Description: 搜索条件重置

@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2022-01-20 16:15:16
+ * @LastEditTime: 2022-01-26 17:36:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\axios.js
@@ -31,7 +31,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
         config.headers['token'] = getToken() || ''
       }
       // IE上的同一个url请求会走cache
-      if (config.method === 'post' || config.method === 'POST') {
+      if (config.method === 'post' || config.method === 'POST' || config.method === 'patch' || config.method === 'PATCH') {
         loading = Loading.service({
           lock: true
         })
@@ -47,6 +47,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       }
       // 定义请求得数据结构是json
       config.headers['json-wrapper'] = '1'
+      config.headers['language'] = window.localStorage.getItem('lang') || 'zh'
       return config
     },
     function(error) {
@@ -56,6 +57,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
 
   instance.interceptors.response.use(
     function(response) {
+      console.log(response)
       loading?loading.close():''
 
       if (response.config.responseType == 'blob') {
@@ -68,6 +70,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       }
     },
     (error) => {
+      console.log(error)
       loading?loading.close():''
 
       switch (error.response.status) {

@@ -60,8 +60,8 @@ export default {
           name: "EKL",
           key: "EKL",
           image: require("@/assets/images/partRfq/internalDemandAnalysis05.png"),
-          // url: process.env.VUE_APP_PORTAL_URL + "achievement/baseData/list"
-          url: process.env.VUE_APP_PORTAL_URL + "achievement/baseData/mymerit"
+          // url: process.env.VUE_APP_PORTAL_URL + "achievement/baseData/mymerit",
+          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/ekl"
         }, {
           name: "SOP进度轴",
           key: "SOPJINDUZHOU",
@@ -126,7 +126,14 @@ export default {
             })
             break;
           case 'EKL':
-            window.open(process.env.VUE_APP_PORTAL_URL + "achievement/baseData/list")
+            this.$router.push({
+              path: item.url,
+              query: {
+                // materialCode:this.$store.state.rfq.categoryCode,
+                // materialName:this.$store.state.rfq.categoryName,
+              }
+            })
+            // window.open(process.env.VUE_APP_PORTAL_URL + "achievement/baseData/mymerit?materialCode="+this.$store.state.rfq.categoryCode+"&materialName="+this.$store.state.rfq.categoryName)
             break;
           default:
             this.$router.push({

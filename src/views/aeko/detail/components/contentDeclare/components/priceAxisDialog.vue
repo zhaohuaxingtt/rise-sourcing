@@ -29,9 +29,9 @@
         <p class="title">{{language('AEKO_PRICE_GAIXINLINGJIANDEJIAGEBIANHUAQUSHI','该新零件的价格变化趋势，仅供参考。')}}</p>
         <p class="tips">{{language('AEKO_PRICE_AEKOSHISHISHIYUANLINGJIANJIAGEFASHENGBIANHUA','Aeko实施时，原零件价格发生变化，或者原零件的生效时间，都会引起该新零件的价格变化。')}}</p>
         <ul class="price-list">
-          <li><span>{{language('AEKO_PRICE_BIAOTAISHIDEYUANLINGJIANJIAGE','表态时的原零件价格')}}：</span><span>{{priceType =='bnkPrice' ? '-' : priceAxisInfo.contentOldPrice}}RMB,</span></li>
-          <li><span>{{language('AEKO_PRICE_BIANDONGCHENGBEN','成本变动')}}：</span><span>{{priceType =='bnkPrice' ? '-' : priceAxisInfo.changPrice}} RMB,</span></li>
-          <li><span>{{language('AEKO_PRICE_XINLINGJIANJIAGE','新零件价格')}}：</span><span>{{priceType =='bnkPrice' ? '-' : priceAxisInfo.currentPrice}} RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_BIAOTAISHIDEYUANLINGJIANJIAGE','表态时的原零件价格')}}：</span><span>{{showPrice('OldPrice')}} RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_BIANDONGCHENGBEN','成本变动')}}：</span><span>{{showPrice('changPrice')}} RMB,</span></li>
+          <li><span>{{language('AEKO_PRICE_XINLINGJIANJIAGE','新零件价格')}}：</span><span>{{showPrice('currentPrice')}} RMB,</span></li>
         </ul>
         <div class="footer-price">
           <p>{{language('AEKO_PRICE_DANGQIANYUGUDEXINLINGJIANSHENGXIAOJIAGE','当前预估的新零件⽣效价格')}}： {{priceType =='bnkPrice' ? '-' : priceAxisInfo.effectPrice}}RMB </p>
@@ -83,6 +83,7 @@ export default {
             bPrice:{},
             bnkPrice:{},
           },
+          oldPartNum:null,
         }
     },
     mounted(){
@@ -101,7 +102,7 @@ export default {
           const {objectAekoPartId=''} = priceAxisRow;
           await getPriceAxis(objectAekoPartId).then((res)=>{
             this.loading = false;
-            const {code,data={}} = res;
+            const {data={}} = res;
             if(res.code == 200){
               this.priceAxisInfo = data;
               // 将A,B,BNK价格拆分
@@ -109,25 +110,25 @@ export default {
               axisData.aPrice = this.resetData(data.anewPrice,data.aoldPrice);
               axisData.bPrice = this.resetData(data.bnewPrice,data.boldPrice);
               axisData.bnkPrice = this.resetData(data.bnkNewPrice,data.bnkOldPrice);
+
               this.priceAxisList = axisData;
-              this.initEcharts(axisData.aPrice);
+              this.oldPartNum = data.oldPartNum || null;
+              this.initEcharts(axisData.aPrice,data.oldPartNum);
             }else{
               iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
             }
           }).catch(()=>this.loading = false)
         },
         // 初始化echart
-        initEcharts(priceList={}){
-
-          console.log(priceList,'priceList');
+        initEcharts(priceList={},oldPartNum=null){
           
           vm = echarts().init(document.getElementById("priceAxisEcharts"));
 
-          
+          let allDataList =  this.getAllYAxisData(priceList.newPirce,priceList.oldPrice);
 
           let option = {
             tooltip: {
-              trigger: 'axis'
+              trigger: 'axis',
             },
             legend: {
               data: ['新零件价格', '原零件价格'],
@@ -142,17 +143,20 @@ export default {
             },
             xAxis: {
               type: 'category',
+              // boundaryGap: false,
               // data: ['2018-03-15', '2019-04-15', '2019-05-15', '2019-06-15', '2019-07-15', '2019-08-15', '2019-09-15']
               data:priceList.date || []
             },
             yAxis: {
-              type: 'value'
+              type: 'value',
+              min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 10): 0,
+              max: Number(allDataList[allDataList.length - 1]) > 10 ? Number(allDataList[allDataList.length - 1]) + 10 : parseInt(allDataList[allDataList.length - 1]) + 1,
             },
             series: [
               {
                 name: '新零件价格',
                 type: 'line',
-                step: 'middle',
+                step: 'end',
                 // data: [120, 132, 101, 134, 90, 230, 210],
                 data: priceList.newPirce||[],
                 itemStyle : {  
@@ -167,11 +171,23 @@ export default {
               {
                 name: '原零件价格',
                 type: 'line',
-                step: 'start',
+                step: 'end',
+                label: {
+                  normal: {
+                    show: true,
+                    position: 'top',
+                    formatter: function(params){
+                      const {oldPrice =[]} = priceList;
+                      if((oldPrice.length == (params.dataIndex+1)) && oldPartNum){
+                        return oldPartNum
+                      }else  return ''
+                    }
+                  }
+                },
                 // data: [220, 282, 201, 234, 290, 430, 410],
                 data: priceList.oldPrice||[],
                 itemStyle : {  
-                    normal : {  
+                    normal : {
                         color:'#9FA4AE',  
                         lineStyle:{  
                             color:'#9FA4AE'  
@@ -188,13 +204,66 @@ export default {
           
         },
 
+        // 获取所有y轴数据
+        getAllYAxisData(newPirce=[],oldPrice=[]){
+            // 为重置y轴的最大值 最小值 整理下所有data数据
+            let allDataList = newPirce.concat(oldPrice);
+            // 去除空值
+            allDataList = allDataList.filter((item)=>!!item);
+            // 去重
+            allDataList = Array.from(new Set(allDataList));
+            // 排序
+            allDataList = allDataList.sort((a,b)=>{
+              return a > b ? 1:-1
+            })
+
+            return allDataList || []
+        },
+
         // 更新价格轴
         refreshData(value){
-          const {priceAxisList} = this;
+          const {priceAxisList,oldPartNum} = this;
+
+          let allDataList = this.getAllYAxisData(priceAxisList[value].newPirce,priceAxisList[value].oldPrice);
+
           var option = vm.getOption();
-          option.xAxis.data = priceAxisList[value].date;
+          option.xAxis = {
+            type: 'category',
+            data:priceAxisList[value].date,
+          };
+          option.yAxis = {
+            type: 'value',
+            min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 10) : 0,
+            max: Number(allDataList[allDataList.length - 1]) > 10 ? Number(allDataList[allDataList.length - 1]) + 10 : parseInt(allDataList[allDataList.length - 1]) + 1,
+          };
           option.series[0].data = priceAxisList[value].newPirce;
-          option.series[1].data = priceAxisList[value].oldPrice;
+          // option.series[1].data = priceAxisList[value].oldPrice;
+          option.series[1] = {
+            name: '原零件价格',
+            type: 'line',
+            step: 'end',
+            label: {
+              normal: {
+                show: true,
+                position: 'top',
+                formatter: function(params){
+                  let showOldData = priceAxisList[value].oldPrice|| [];
+                  if((showOldData.length == (params.dataIndex+1)) && oldPartNum){
+                    return oldPartNum
+                  }else  return ''
+                }
+              }
+            },
+            data: priceAxisList[value].oldPrice || [],
+                itemStyle : {  
+                    normal : {
+                        color:'#9FA4AE',  
+                        lineStyle:{  
+                            color:'#9FA4AE'  
+                        }  
+                    }  
+                },
+          };
           vm.setOption(option);  
           this.loading = false;
         },
@@ -213,7 +282,26 @@ export default {
             newPirce:[],
             oldPrice:[],
           };
+
+
+          // 将最后一个结束时间插入至最尾显示
+          if(oldData.length){
+            const lastItem = oldData[oldData.length -1];
+            oldData.push({
+              ...lastItem,
+              startTime:lastItem['endTime']
+            })
+          }
+          if(newData.length){
+            const lastItem = newData[newData.length -1];
+            newData.push({
+              ...lastItem,
+              startTime:lastItem['endTime']
+            })
+          }
+
           data.date = newData.map((item)=>item.startTime).concat(oldData.map((item)=>item.startTime));
+
           // 去重
           data.date = Array.from(new Set(data.date));
           // 排序
@@ -226,16 +314,48 @@ export default {
             if(filterNew.length){
               data.newPirce.push(filterNew[0].price);
             }else{
-              data.newPirce.push(null);
+              // 未对应数据的时候查询区间是否包含
+              let newRangePrice = this.getRangePrice(item,newData)
+              data.newPirce.push(newRangePrice);
             }
             if(filterOld.length){
               data.oldPrice.push(filterOld[0].price);
             }else{
-              data.oldPrice.push(null);
+              // 未对应数据的时候查询区间是否包含
+              let oldRangePrice = this.getRangePrice(item,oldData)
+              data.oldPrice.push(oldRangePrice);
             }
           })
 
+ 
+          console.log(data,'data');
+          
           return data;
+        },
+        showPrice(key){
+          const { priceType } = this;
+          if(priceType == 'aPrice'){
+            if(key == 'OldPrice') return this.priceAxisInfo.contentOldPrice
+            else if(key == 'changPrice') return this.priceAxisInfo.changPrice
+            else if(key == 'currentPrice') return this.priceAxisInfo.currentPrice
+          }else if(priceType == 'bPrice'){
+            if(key == 'OldPrice') return this.priceAxisInfo.contentOldBPrice
+            else if(key == 'changPrice') return this.priceAxisInfo.changBPrice
+            else if(key == 'currentPrice') return this.priceAxisInfo.effectBPrice
+          }else{
+            return '-'
+          }
+        },
+
+        // 获取区间值
+        getRangePrice(currentTime,list=[]){
+          let price = null;
+          list.map((item)=>{
+            if((item.startTime < currentTime) && (currentTime < item.endTime) ) price = item.price;
+          })
+          console.log(currentTime,list,price,'getRangePrice')
+          return price
+
         },
     },
 }
