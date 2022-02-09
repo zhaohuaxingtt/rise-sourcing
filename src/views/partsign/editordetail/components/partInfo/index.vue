@@ -9,10 +9,15 @@
 		<iFormItem name="test" :class="item.isBlock && 'block'" v-for="(item,index) in title"
 			:key="index" :label="language(item.language,item.name)">
 			<iText v-if="item.key=='createDate' || item.key=='drawingDate'">
-				{{data[item.key] | dateFilter}}
+				{{(data[item.key] | dateFilter) || data[item.key] }}
 			</iText>
 			<iText v-else>
-				{{data[item.key]}}
+				<template v-if="typeof data[item.key] == 'boolean'">
+					{{data[item.key] ? language('nominationLanguage.Yes','是') : language('nominationLanguage.No','否')}}
+				</template>
+				<template v-else>
+					{{data[item.key]}}
+				</template>
 			</iText>
 		</iFormItem>
 	</iFormGroup>
