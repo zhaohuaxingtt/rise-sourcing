@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-06 14:55:01
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-24 15:24:36
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -62,6 +62,7 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('FUJIANZONGHECHAXUN','附件综合查询')}}</span>
                 <div class="floatright">
+                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!--------------------分配LINIE/CSS----------------------------------->
                   <iButton @click="handleSendLinie" v-permission.auto="ACCESSORY_MANAGEMENT_SENDLINIE|附件-附件管理-分配LINIE/CSS">{{language('FENPEILINIECSS','分配LINIE/CSS')}}</iButton>
                   <!--------------------退回按钮----------------------------------->
@@ -74,7 +75,12 @@
                   <iButton @click="handleDelete" v-permission.auto="ACCESSORY_MANAGEMENT_DELETE|附件-附件管理-删除">{{language('SHANCHU','删除')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight"></tableList>
+            <tableList
+            ref="tableList"
+            :lang="true"
+            :handleSaveSetting="handleSaveSetting"
+            :handleResetSetting="handleResetSetting"
+            :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight"></tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
@@ -107,7 +113,9 @@
 <script>
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iDatePicker } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
-import tableList from '@/views/designate/designatedetail/components/tableList'
+// import tableList from '@/views/designate/designatedetail/components/tableList'
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { tableTitle, searchList } from './data'
 import linieDialog from './components/setLinie'
 import backDialog from './components/back'
@@ -126,7 +134,7 @@ import moment from 'moment'
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,tableSortMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav},
   data() {
     return {

@@ -68,10 +68,14 @@
           </el-form>
         </iSearch>
         <iCard class="margin-top20" :title="language('LK_AEKOCHAKAN','AEKO查看')">
+          <template v-slot:header-control>
+            <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          </template>
             <!-- 表单区域 -->
             <div v-permission.auto="AEKO_CHECKLIST_TABLE|AEKO查看TABLE" >
                 <tableList
                 class="table"
+                ref="tableList"
                 index
                 :selection="false"
                 :lang="true"
@@ -79,6 +83,8 @@
                 :tableTitle="tableTitle"
                 :tableLoading="loading"
                 @handleSelectionChange="handleSelectionChange"
+                :handleSaveSetting="handleSaveSetting"
+                :handleResetSetting="handleResetSetting"
                 >
                   <!-- AEKO号 -->
                   <template #aekoCode="scope">
@@ -130,12 +136,15 @@ import {
     iMessage,
     icon,
     iMultiLineInput,
+    iButton
 } from 'rise';
 import { SearchList,tableTitle } from './data';
 import { TAB,getLeftTab } from '../data';
 import aekoSelect from '../components/aekoSelect'
 import switchPost from '@/components/switchPost'
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import { pageMixins } from "@/utils/pageMixins";
 import filesListDialog from '../manage/components/filesListDialog'
 import {
@@ -157,7 +166,7 @@ import logButton from "@/components/logButton"
 
 export default {
     name:'aekoCheck',
-    mixins: [pageMixins],
+    mixins: [pageMixins, tableSortMixins],
     components:{
         iPage,
         iNavMvp,
@@ -172,7 +181,8 @@ export default {
         icon,
         filesListDialog,
         switchPost,
-        iMultiLineInput
+        iMultiLineInput,
+        iButton
     },
     computed: {
         //eslint-disable-next-line no-undef

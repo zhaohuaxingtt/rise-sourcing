@@ -1,8 +1,8 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2021-12-02 20:14:37
- * @LastEditors:  
+ * @LastEditTime: 2022-01-25 14:14:26
+ * @LastEditors: Please set LastEditors
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
@@ -43,15 +43,18 @@
     <iCard class="margin-top20">
       <div class="margin-bottom20 clearFloat">
        <span class="font18 font-weight">{{language('XIANGQINGLIEBIAO', '详情列表')}}</span>
-      <div class="floatright" v-if="mode === 'add'">
-        <iButton @click="chooseSignsheet()">
-          {{ language("XUANZE", '选择') }}
-        </iButton>
-        <iButton @click="handleRemove"
-                  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
-          {{ language("YICHU",'移除') }}
-        </iButton>
-      </div>     
+        <div class="floatright">
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <template  v-if="mode === 'add'">
+            <iButton @click="chooseSignsheet()">
+              {{ language("XUANZE", '选择') }}
+            </iButton>
+            <iButton @click="handleRemove"
+                      v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
+              {{ language("YICHU",'移除') }}
+            </iButton>
+          </template>  
+        </div>   
       </div>
       <!-- 表格 -->
       <tablelist class="margin-top20"
@@ -59,7 +62,12 @@
                  :tableTitle="tableTitle"
                  :tableLoading="tableLoading"
                  v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAIL_CHOSENTABLE|签字单详情已选择表格"
-                 @handleSelectionChange="handleSelectionChange">
+                 @handleSelectionChange="handleSelectionChange"
+                  ref="tableList"
+                  :lang="true"
+                  :handleSaveSetting="handleSaveSetting"
+                  :handleResetSetting="handleResetSetting"
+                 >
         <!-- 定点单号 -->
         <template #nominateName="scope">
           <span class="nominateId">
@@ -132,7 +140,9 @@
 <script>
 import { detailsTableTitle as tableTitle, } from './components/data'
 import filters from "@/utils/filters"
-import tablelist from "@/views/designate/supplier/components/tableList";
+// import tablelist from "@/views/designate/supplier/components/tableList";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import designateSign from "@/views/designate/home/designateSign/index";
 import addSignsheet from "./components/addSignsheet";
 import {
@@ -153,7 +163,7 @@ import {
 } from "rise";
 
 export default {
-  mixins: [filters],
+  mixins: [filters,tableSortMixins],
   data () {
     return {
       mode: this.$route.query.mode || '',

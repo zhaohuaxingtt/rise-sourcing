@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2022-01-20 11:11:30
+ * @LastEditTime: 2022-01-26 16:37:49
  * @LastEditors: YoHo
  * @Description: 
 -->
@@ -27,17 +27,23 @@
           ></el-option>
         </iSelect>
       </div>
+      <span class="floatright">
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+      </span>
     </template>
     <tableList
       v-loading="loading"
       lang
       class="table"
+      ref="tableList"
       :selection="false"
       :tableTitle="tableTitle"
       :tableData="tableData"
       v-permission.auto="
         AEKO_APPROVAL_DETAIL_CBDSUMMARY_LINGJIANLIEBIAO | 零件列表
       "
+      :handleSaveSetting="handleSaveSetting"
+      :handleResetSetting="handleResetSetting"
     >
       <template #originAPrice="scope">
         <el-popover placement="top" trigger="hover">
@@ -79,18 +85,22 @@
 
 <script>
 import { switchPartsTableTitle, floatFixNum } from "../data.js";
-import { iCard, iSelect, iMessage } from "rise";
-import tableList from "rise/web/quotationdetail/components/tableList";
+import { iCard, iSelect, iMessage, iButton } from "rise";
+// import tableList from "rise/web/quotationdetail/components/tableList";
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import {
   getSwitchParts,
   getSwitchPartsPOST,
   getSwitchPartsByParams,
 } from "@/api/aeko/approve";
 export default {
+  mixins:[tableSortMixins],
   components: {
     iCard,
     iSelect,
     tableList,
+    iButton
   },
   props: {
     noLinie: {

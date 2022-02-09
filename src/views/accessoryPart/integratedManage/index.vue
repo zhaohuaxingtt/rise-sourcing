@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-06 10:19:39
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-24 15:11:18
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -40,6 +40,7 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANZONGHECHAXUN','配件综合查询')}}</span>
                 <div class="floatright">
+                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_MANAGFMENT_SENDBUYPER|配件-配件管理-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------分配Linie按钮----------------------------------->
@@ -58,7 +59,12 @@
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_MANAGFMENT_EXPORT|配件-配件管理-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight">
+            <tableList
+              ref="tableList"
+              :lang="true" 
+              :handleSaveSetting="handleSaveSetting"
+              :handleResetSetting="handleResetSetting"
+              :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight">
               <template #supplierSapCode="scope">
                 <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>
               </template>
@@ -104,7 +110,9 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import headerNav from '@/components/headerNav'
-import tableList from '@/views/designate/designatedetail/components/tableList'
+// import tableList from '@/views/designate/designatedetail/components/tableList'
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { tableTitle, searchList, TAB } from './data'
 import assignInquiryDepartmentDialog from './components/distributionLinie'
 import assignInquiryBuyerDialog from './components/distributionBuyer'
@@ -126,7 +134,7 @@ import { numberProcessor } from '@/utils'
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,tableSortMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMultiLineInput, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog, headerNav },
   data() {
     return {

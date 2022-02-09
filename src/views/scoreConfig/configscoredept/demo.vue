@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2022-01-13 11:45:28
+ * @LastEditTime: 2022-01-24 14:23:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
@@ -46,7 +46,7 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton @click="edittableHeader">{{ '设置头部' }}</iButton>
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
         <iButton @click="add">{{language("TIANJIA", "添加")}}</iButton>
         <iButton @click="deleteItem" :loading="btnLoading.deleteItem">{{ language('SHANCHU', '删除') }}</iButton>
@@ -94,7 +94,7 @@
 <script>
 import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage, iNavMvp,iPagination } from "rise"
 // import iLoger from 'rise/web/components/iLoger'
-import tableList from "./components/tableList"
+import tableList from "@/components/iTableSort"
 import addDialog from "./components/addDialog"
 import { queryForm, tableTitle } from "./components/data"
 import { cloneDeep } from "lodash" 
