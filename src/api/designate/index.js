@@ -14,10 +14,17 @@ const requst = axios(process.env.VUE_APP_SOURCING)
 const fileRequst = download(process.env.VUE_APP_SOURCING)
 
 // 获取模具预算管理列表
-export function getMouldBudget(params) {
+// export function getMouldBudget(params) {
+//   return requst({
+//       url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(params.fsIds, Array) }&${ serialize(params.supplierIds, Array) }`,
+//       method: "GET"
+//   })
+// }
+export function getMouldBudget(data) {
   return requst({
-      url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(params.fsIds, Array) }&${ serialize(params.supplierIds, Array) }`,
-      method: "GET"
+      url: 'mould-budget/listByFsList',
+      method: "POST",
+      data
   })
 }
 
@@ -203,5 +210,22 @@ export function findMeetingPage(data) {
     url: "/nominate-apps/findMeetingPage",
     method: "POST",
     data
+  })
+}
+
+// 配件自动定点
+export function fittingNomi(params) {
+  return requst({
+    url: "/nominate-apps/fittingNomi",
+    method: "GET",
+    params,
+  })
+}
+
+// 定点管理--决策资料数据权限控制接口
+export function getNomiPosition(params) {
+  return requst({
+    url: `/nominate-apps/getNomiPosition/${ params.nomiId }`,
+    method: "GET"
   })
 }

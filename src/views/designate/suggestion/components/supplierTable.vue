@@ -112,6 +112,8 @@
     <batchEditDialog :visible.sync="batchEditVisibal" :supplierList="supplierList" @submit="onBatchEdit" />
     <!-- 模具弹窗 -->
     <mouldDialog :visible.sync="mouldVisibal" :rfqIds="rfqIds" :fsIds="fsIds" :supplierIds="supplierIds" />
+    <!-- 黑名单校验弹窗提示 -->
+    <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSAVE" :tableListData="blackTableListData"/>
   </iCard>
 </template>
 
@@ -125,7 +127,9 @@ import tablelist from "@/views/designate/supplier/components/tableList";
 import batchEditDialog from "./batchEditDialog"
 // import mouldDialog from "./mouldDialog"
 import mouldDialog from "./mouldBudgetManagementDialog"
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
 import { pageMixins } from '@/utils/pageMixins'
+
 import {
   getSuggestionList,
   updateSuggestion,
@@ -153,7 +157,8 @@ export default {
     // iPagination,
     tablelist,
     batchEditDialog,
-    mouldDialog
+    mouldDialog,
+    dialogTableTips,
   },
   mixins: [ pageMixins ],
   props: {
@@ -198,7 +203,8 @@ export default {
       supplierIds: [],
       isMtzDisabled: false,
       selectedDataMtz: false,
-      isFrozen:false
+      isFrozen:false,
+      blackTableListData:[],
     }
   },
   mounted() {
@@ -357,7 +363,10 @@ export default {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
           this.getDataList()
-        } else {
+        }else if(res.code == '501'){
+          this.blackTableListData = res.data || [];
+          this.$refs.dialogTableTips.show(); 
+        }else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
         this.submiting = false

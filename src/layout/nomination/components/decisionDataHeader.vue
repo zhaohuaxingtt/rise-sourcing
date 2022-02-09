@@ -8,7 +8,7 @@
     <div :class="isPreview=='1' ? 'decision-header preview-header' : 'decision-header'">
         <p v-if="isPreview=='1'" class="preview-title margin-top20 margin-bottom20">CSC Nomination Recommendation</p>
         <div  class="tab-list">
-            <iTabsList v-if="isPreview=='1'"  v-model=defaultTab @tab-click="handleClick">
+            <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick">
                 <template  v-for="(item,index) in decisionType">
                     <template v-if="item.key =='MTZ'">
                         <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
@@ -16,7 +16,7 @@
                     <el-tab-pane  v-else :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
                 </template>
             </iTabsList>
-             <iTabsList v-else type="card"  v-model=defaultTab @tab-click="handleClick">
+             <iTabsList v-else type="card"  v-model='defaultTab' @tab-click="handleClick">
                  <template v-for="(item,index) in decisionType">
                     <template v-if="item.key =='MTZ'">
                         <el-tab-pane v-if='mtzShow' :key="'decisionType'+index" :label="item.name" :name="item.path"></el-tab-pane>
@@ -28,12 +28,12 @@
 
 
         <!-- 关闭预览按钮 -->
-        <span class="tab-icon" v-if="isPreview=='1'" @click="close">
+        <span class="tab-icon" v-if="isPreview=='1' && !$route.meta.hideCloseButton" @click="close">
             <icon symbol name="iconguanbixiaoxiliebiaokapiannei"></icon>
         </span>
         <!-- 设置按钮 -->
         <!-- 临时跳转的时候，当前步骤不在决策资料，不支持排序 -->
-        <span class="tab-icon" @click="sortDialogVisibal = true" v-else-if="!isTemp" v-permission.auto="NOMINATION_NOMINATIONDETAILS_MOUDULES_SORT|定点管理详情菜单排序"><icon symbol name="iconSetting"></icon></span>
+        <span class="tab-icon" @click="sortDialogVisibal = true" v-else-if="!isTemp && isPreview !== '1'" v-permission.auto="NOMINATION_NOMINATIONDETAILS_MOUDULES_SORT|定点管理详情菜单排序"><icon symbol name="iconSetting"></icon></span>
         <!-- 排序弹窗 -->
         <sortDialog :visible.sync="sortDialogVisibal" />
     </div>
@@ -82,8 +82,13 @@ export default {
         // 解决刷新页面时当前tab的高亮条歪了的情况
         setTimeout(()=>{
             // 临时跳转的时候，直接取前端写死的配置
-            if (this.isTemp) this.decisionType = decisionType
+            if (this.isTemp || this.$route.meta.layoutPath) this.decisionType = decisionType
             this.defaultTab = path;
+            // 配置了layoutPath，用于预览，在数据定义中找用于选中的path地址
+            if (this.$route.meta.layoutPath) {
+                const defaulTab = decisionType.find(o => String(o.path).includes(this.$route.meta.path))
+                defaulTab && (this.defaultTab = defaulTab.path)
+            }
         },50)
         
     },
@@ -101,10 +106,11 @@ export default {
     },
     methods:{
         init() {
-            // 临时跳转不更新步骤
+        try {
+                      // 临时跳转不更新步骤
             if (this.isTemp) return
             const nominationStep = this.nominationStep
-            let tableListData = nominationStep.nodeList || []
+            let tableListData = nominationStep.nodeList || JSON.parse(JSON.stringify(decisionType))
             tableListData = tableListData.filter(o => !o.flag)
             this.decisionType = tableListData.map(o => {
                 const tabName = o.tabName
@@ -116,6 +122,9 @@ export default {
                 }
                 return o
             })
+            } catch (error) {
+                console.log(error)
+            }
         },
         // tab切换
         handleClick(tab){

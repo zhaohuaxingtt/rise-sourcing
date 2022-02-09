@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-06-03 11:12:59
+ * @LastEditTime: 2022-01-19 15:40:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -49,7 +49,7 @@ export function addsingleSuppliersInfo(data) {
 // 根据rfq号查询零件的供应商列表
 export function getRfqSupplierList(params) {
   return requst({
-      url: `/exclusiveSupplier/rfqSupplierList`,
+      url: `/nego-assistant/supplierListOrderByTTo`,
       method: "GET",
       params
   })

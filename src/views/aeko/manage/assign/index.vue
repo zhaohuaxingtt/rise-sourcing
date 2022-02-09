@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: YoHo
- * @LastEditTime: 2021-11-15 16:45:56
+ * @LastEditTime: 2022-01-26 15:57:46
  * @Description: 
 -->
 <template>
@@ -14,17 +14,20 @@
     <iCard class="aeko-assign-table">
       <div class="editControl margin-bottom20">
         <span class="font18 font-weight">{{ language( 'AEKOFENPEI', 'AEKO分配' ) }}</span>
-        <iButton
-            class="floatright"
-            :loading="assigning"
-            v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_PAGE_ASSIGN|分配"
-            @click="assign"
-        >
-          {{ language('LK_FENPAI', '分派') }}
-        </iButton>
+        <span class="floatright">
+          <iButton
+              :loading="assigning"
+              v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_PAGE_ASSIGN|分配"
+              @click="assign"
+          >
+            {{ language('LK_FENPAI', '分派') }}
+          </iButton>
+          <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        </span>
       </div>
-      <tablelist
+      <tableList
           index
+          ref="tableList"
           :selection="true"
           :tableData="tableListData"
           :tableTitle="tableTitle"
@@ -44,6 +47,8 @@
           v-loading="tableLoading"
           v-permission.auto="AEKO_ASSIGN_ASSIGNLIST_TABLE|表格"
           @handleSelectionChange="handleSelectionChange"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
       >
         <template #isTop="scope">
           <div>
@@ -88,7 +93,7 @@
           </iSelect>
           <span v-else>{{ scope.row.chiefName }}</span>
         </template>
-      </tablelist>
+      </tableList>
       <div class="pagination">
         <iPagination v-update
           class="pagination"
@@ -106,13 +111,16 @@
 </template>
 <script>
 import search from './components/search'
-import {tableTitle, SUBMENU} from './components/data'
+import {tableTitle} from './components/data'
 import projectHeader from './components/projectHeader'
-import tablelist from 'rise/web/components/iFile/tableList';
+// import tablelist from 'rise/web/components/iFile/tableList';
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import {iPage, iCard, iSelect, iButton, iPagination, icon, iMessage} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
 import {user as configUser} from '@/config'
 import { setLogMenu } from "@/utils";
+import { TAB as SUBMENU } from '@/views/aeko/data'
 import {
   getApproveDistributionPage,
   approveDistributionSave,
@@ -122,7 +130,7 @@ import {
 } from '@/api/aeko/approve'
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableSortMixins],
   components: {
     iPage,
     iCard,
@@ -131,7 +139,7 @@ export default {
     iPagination,
     icon,
     search,
-    tablelist,
+    tableList,
     projectHeader
   },
   data() {

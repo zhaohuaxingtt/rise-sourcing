@@ -2,7 +2,7 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-07-30 17:31:22
- * @LastEditors: Please set LastEditors
+ * @LastEditors: caopeng
  * @Descripttion: your project
 -->
 <template>
@@ -77,7 +77,7 @@ export default {
   data () {
     // 这里存放数据
     return {
-      powerbi: '',
+    //   powerbi: '',
       saveButtonLoading: false,
       url: {
         accessToken: "", //验证token
@@ -129,7 +129,21 @@ export default {
   // 监听属性 类似于data概念
   computed: {},
   // 监控data中的数据变化
-  watch: {},
+    watch:{
+      '$i18n.locale':{
+         handler(newValue){
+         this.renderBi()
+      }},
+      '$store.state.rfq.categoryCode'(newVal){
+         this.categoryCode=this.$store.state.rfq.categoryCode
+          this.form = {
+            page: '',
+            year: '',
+            categoryCode: this.$store.state.rfq.categoryCode
+        }
+         this.getCategoryAnalysis()
+      }
+   },
   // 方法集合
   methods: {
     handleConfirm () {
@@ -147,25 +161,46 @@ export default {
         iMessage.warn(this.language('NIANFENGBIXUAN', '年份必选'))
       }
     },
+           compare(property,desc) {
+            return function (a, b) {
+                var value1 = a[property];
+                var value2 = b[property];
+                if(desc==true){
+                    // 升序排列
+                    return value1 - value2;
+                }else{
+                    // 降序排列
+                    return value2 - value1;
+                }
+            }
+        },
     async dictByCode () {
-      const res = await dictByCode('CATEGORY_MANAGEMENT_LIST')
-      this.formGoup.pageList = res
-      if (this.form.page === '') {
-        this.form.page = this.formGoup.pageList[0].code
-      }
-      this.init()
-      this.renderBi()
+    // //   this.formGoup.pageList = res
+    // //   if (this.form.page === '') {
+    // //     this.form.page = this.formGoup.pageList[0].code
+    // //   }
+      
+    //   this.init()
+    //   this.renderBi()
     },
     async getCategoryAnalysis () {
       const pms = {
         categoryCode: this.form.categoryCode,
         schemeType: 'CATEGORY_MANAGEMENT_PURCHASE_AMOUNT'
       }
+      const res = await dictByCode('CATEGORY_MANAGEMENT_LIST')
+      this.formGoup.pageList = res.sort(this.compare("id",true))
       const res1 = await getCategoryAnalysis(pms)
       if (res1.data.categoryCode && res1.data.operateLog) {
         this.form = JSON.parse(res1.data.operateLog)
+      }else{
+        this.form = {
+            page: this.formGoup.pageList[0].code,
+            year: String(new Date().getFullYear()) ,
+            categoryCode: this.$store.state.rfq.categoryCode
+        }
       }
-      this.dictByCode()
+     this.renderBi()()
     },
     async handleSave () {
       let page = ''
@@ -216,6 +251,7 @@ export default {
       if (res.data) {
         this.url = res.data
         this.getCategoryAnalysis()
+        this.init()
       }
     },
     init () {
@@ -333,10 +369,11 @@ export default {
     },
     // 重置
     handleSearchReset () {
-      this.form = {
-        year: '',
-        page: ''
-      }
+        this.getCategoryAnalysis()
+    //   this.form = {
+    //     year: '',
+    //     page: ''
+    //   }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

@@ -1,12 +1,20 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-03-05 17:24:15
- * @LastEditTime: 2021-12-01 20:22:40
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-24 23:51:11
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :title="title || language('LK_XINJIANRFQLUNCI','新建RFQ轮次')" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
+  <iDialog :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
+    <div slot="title" class="el-dialog__title">
+      {{title || language('LK_XINJIANRFQLUNCI','新建RFQ轮次')}}
+      <!-- 黑名单文案 -->
+      <span class="blackuserInfo" v-if="containeBlackUser">
+        <i class="blackIcon"></i>
+        {{language('GONGYINGSHANGHEIMINGDANBUKEXUNJIA','供应商黑名单，不可询价')}}
+      </span>
+    </div>
     <div class="changeContent">
       <div class="clearFloat">
         <div class="floatright title-button-box">
@@ -130,6 +138,10 @@ export default {
     ...Vuex.mapState({
         rfqSelectedProjectParts: state => state.rfq.pendingPartsList,
     }),
+    // 包含黑名单供应商
+    containeBlackUser() {
+      return this.tableListData.filter(o => o.isDisabled).length > 0
+    }
   },
   data() {
     return {
@@ -155,7 +167,7 @@ export default {
   methods: {
     init(){
       const res = this.dataRes;
-      this.tableListData = res.data;
+      this.tableListData = res.data.map(item => ({ ...item, cbdTemplateId: item.cbdTemplateId + "" }));
       this.roundsPhase = this.tableListData[0].roundsPhase
       // this.page.currPage = res.pageNum
       // this.page.pageSize = res.pageSize
@@ -178,7 +190,7 @@ export default {
         }
         try {
           const res = await pageRfqRound(req)
-          this.tableListData = res.data;
+          this.tableListData = res.data.map(item => ({ ...item, cbdTemplateId: item.cbdTemplateId + "" }))
           this.roundsPhase = this.tableListData[0].roundsPhase
           // this.page.currPage = res.pageNum
           // this.page.pageSize = res.pageSize
@@ -229,9 +241,11 @@ export default {
         }
         const res = await rfqRoundCreated(req)
         //保存的时候，如果保存成功！自动将窗口关闭，并且刷新详情数据，和询价管理(包含普通询价)
+        if(res?.code=='200'){ // 更新数据
+          this.$emit('refreshBaseInfo',true)
+        }
         if(res.data){
           this.clearDiolog()
-          this.$emit('refreshBaseInfo',true)
         }
         this.resultMessage(res, () => {
           this.saveStaus = true
@@ -247,7 +261,10 @@ export default {
       }
       const res = await modification(req)
       this.resultMessage(res)
-      this.$emit('refreshBaseInfo',true)
+      if(res?.code=='200'){
+        this.clearDiolog()
+        this.$emit('showTodo')
+      }
     },
     initTimeData() {
       if (this.roundType === 'commonRound') {
@@ -273,14 +290,15 @@ export default {
     setTableRowSelected() {
       this.$nextTick(() => {
         this.tableListData.map(item => {
-          if (item.isMbdl === '2') { //这个地方的勾选逻辑为：只要是Mbdl，都默认勾选上。但是在组件内部中，会判断当前是否是普通轮次，并且当前是否是第一轮（如果满足当前要求，则将出现默认勾选并且不让取消）
+          if (item.isMbdl === '2' && (typeof(item.isDisabled) ==='boolean' && item.isDisabled!==true)) { //这个地方的勾选逻辑为：只要是Mbdl，都默认勾选上。但是在组件内部中，会判断当前是否是普通轮次，并且当前是否是第一轮（如果满足当前要求，则将出现默认勾选并且不让取消）
+          // 加个黑名单的判断 当isDisabled为true的时候默认不勾选不可操作
             this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(item, true)
           }
         })
       })
     },
     handleRowClick(row, column, event) {
-      if (!this.$refs.multipleTable.selectable(row)) this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(row, true)
+      // if (!this.$refs.multipleTable.selectable(row)) this.$refs.multipleTable.$refs.newRoundTable.toggleRowSelection(row, true)
     }
   },
   watch: {
@@ -316,6 +334,19 @@ export default {
   .inline-block {
     display: inline-block;
   }
+}
+.blackIcon{
+  display: inline-block;
+  background-image: url("~@/assets/images/if-not-allowed.svg");
+  width: 1rem;
+  height: 1rem;
+  background-size: 1rem 1rem;
+  margin-bottom: -3px;
+}
+.blackuserInfo {
+  font-weight: 100;
+  font-size: 12px;
+  margin-left: 10px;
 }
 </style>
 

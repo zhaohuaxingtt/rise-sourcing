@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2021-04-13 17:30:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-11 15:23:02
+ * @LastEditors: caopeng
  * @Description: 通用表格
 -->
 <template>
@@ -12,6 +12,8 @@
               :data='tableData'
               :empty-text="language('LK_ZANWUSHUJU', '暂无数据')"
               v-loading='tableLoading'
+              @row-click="rowClick"
+              @select-all="handleSelectionAllChange"
               @selection-change="handleSelectionChange"
               :row-class-name="handleTableRow">
       <el-table-column v-if="selection" type='selection' width="55" align='center'></el-table-column>
@@ -150,6 +152,17 @@ export default {
   methods: {
     handleSelectionChange(val) {
       this.$emit('handleSelectionChange', val)
+    },
+    handleSelectionAllChange(val) {
+      this.$emit('handleSelectionAllChange', val)
+    },
+    rowClick(row, column, event) {
+      const res = {
+        row,
+        column,
+        event
+      }
+      this.$emit('rowClick', res)
     },
     handleSelectChange(type, val, time) {
       const res = {

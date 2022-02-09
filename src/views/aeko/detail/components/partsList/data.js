@@ -4,12 +4,12 @@
  * @Description: ；零件清单相关data
  */
 export const SearchList = [
-  {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_PARTNUM|零件号'},
+  {props:'partNum',label:'零件号',type:'iMultiLineInput',labelKey:'LK_LINGJIANHAO',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_PARTNUM|零件号'},
   {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_PARTNAME|零件名称'},
-  {props:'cartypeCode',label:'⻋型项⽬',isNewSelect:true,type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_CARTYPECODE|⻋型项⽬',selectOption:'cartypeCode',showCode:['Aeko','MP'],multiple:true,filterable:true},
   {props:'linieDeptNumList',label:'科室',type:'select',labelKey:'LK_AEKOKESHI',selectOption:'linieDeptNumList',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_LINIEDEP|科室',filterable:true,multiple:true,},
   {props:'buyerName',label:'Linie',type:'select',labelKey:'LK_AEKOLINIE',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BUYERNAME|Linie',selectOption:'buyerName',noShowAll:true,filterable:true,clearable:true},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_BRAND|品牌',selectOption:'brand'},
+  {props:'cartypeCode',label:'⻋型项⽬',isNewSelect:true,type:'select',labelKey:'LK_AEKOCHEXINGXIANGMU',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_SELECT_CARTYPECODE|⻋型项⽬',selectOption:'cartypeCode',showCode:['Aeko','MP'],multiple:true,filterable:true},
   {props:'cartype',label:'车型',isNewSelect:true,type:'select',labelKey:'LK_AEKO_CHEXING',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_CARTYPE|车型',selectOption:'cartype',multiple:true,showCode:['AeA'],filterable:true},
   {props:'sendStatus',label:'分派状态',type:'select',labelKey:'LK_AEKO_FENPAIZHUANGTAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_FENPAIZHUANGTAI|分派状态',selectOption:'sendStatus',clearable:true,isDicoptions:true,dicoptionKey:'AEKO_SEND_STATUS'}
 ]
@@ -42,18 +42,18 @@ export const commodityTableTitle = [
 ]
 
 export const linieSearchList = [
-  {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNUM|零件号-LINIE"},
+  {props:'partNum',label:'零件号',type:'iMultiLineInput',labelKey:'LK_LINGJIANHAO',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNUM|零件号-LINIE"},
   {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNAMEZH|零件名称-LINIE"},
-  {props:'cartypeCode',label:'⻋型项⽬',type:'select',selectOption:'cartypeCode',multiple:true,labelKey:'LK_AEKOCHEXINGXIANGMU',showCode:['Aeko','MP'],permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_CARTYPECODE|⻋型项⽬-LINIE"},
   {props:'linieDeptNumList',label:'科室',selectOption:'linieDeptNumList',type:'select',labelKey:'LK_AEKOKESHI', disabled:false,filterable:true,multiple:true,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIEDEPTNUM|科室-LINIE"},
-  {props:'buyerName',label:'Linie',selectOption:'buyerName',type:'select',noShowAll:true,clearable:true,labelKey:'LK_AEKOLINIE',disabled:false,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIE|Linie-LINIE"},
+  {props:'buyerName',label:'Linie',selectOption:'buyerName',type:'select',noShowAll:true,clearable:true,filterable:true,labelKey:'LK_AEKOLINIE',disabled:false,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_LINIE|Linie-LINIE"},
   {props:'brand',label:'品牌',type:'select',labelKey:'LK_AEKOPINGPAI',selectOption:'brand',permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_BRAND|品牌-LINIE"},
+  {props:'cartypeCode',label:'⻋型项⽬',type:'select',selectOption:'cartypeCode',multiple:true,labelKey:'LK_AEKOCHEXINGXIANGMU',showCode:['Aeko','MP'],permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_CARTYPECODE|⻋型项⽬-LINIE"},
   {props:'cartype',label:'车型',type:'select',multiple:true,labelKey:'LK_AEKO_CHEXING',selectOption:'cartypeCode',showCode:['AeA'],permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_CARTYPECODE|车型-LINIE"},
   {props:'sendStatus',label:'分派状态',type:'select',labelKey:'LK_AEKO_FENPAIZHUANGTAI',permissionKey:'AEKO_DETAIL_TAB_LINGJIANQINGDAN_INPUT_FENPAIZHUANGTAI|分派状态',selectOption:'sendStatus',clearable:true,isDicoptions:true,dicoptionKey:'AEKO_SEND_STATUS'}
 ]
 
 export const checkSearchList=[
-  {props:'partNum',label:'零件号',type:'input',labelKey:'LK_LINGJIANHAO',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNUM|零件号-LINIE"},
+  {props:'partNum',label:'零件号',type:'iMultiLineInput',labelKey:'LK_LINGJIANHAO',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNUM|零件号-LINIE"},
   {props:'partNameZh',label:'零件名称',type:'input',labelKey:'LK_LINGJIANMINGCHENG',permissionKey: "AEKO_AEKODETAIL_PARTLIST_INPUT_PARTNAMEZH|零件名称-LINIE"},
   // 内容状态
   {props:'contentStatusList',label:'内容状态',type:'select',clearable:true,labelKey:'LK_AEKO_NEIRONGZHUANGTAI',selectOption:'contentStatusList',disabled:false,filterable:true,multiple:true,permissionKey: "AEKO_AEKODETAIL_PARTLIST_SELECT_NEIRONGZHUANGTAI|内容状态-搜索栏"},

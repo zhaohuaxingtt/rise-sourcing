@@ -13,13 +13,13 @@
         >
           <!-- BM单流⽔号 -->
           <template #bmSerial="scope">
-            <span class="flexRow">
+            <!-- <span class="flexRow"> -->
               <span class="openLinkText cursor " @click="openBMDetail(scope.row)"> {{ scope.row.bmSerial }}</span>
-              <span v-if="scope.row.bmSerial" class="icon-gray  cursor "  @click="openBMDetail(scope.row)">
+              <!-- <span v-if="scope.row.bmSerial" class="icon-gray  cursor "  @click="openBMDetail(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
               </span>
-            </span>  
+            </span>   -->
           </template>
 
           <!-- RS单号 -->

@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-24 15:19:33
- * @LastEditTime: 2021-12-29 10:49:34
+ * @LastEditTime: 2022-01-05 10:53:40
  * @LastEditors: Luoshuang
  * @Description: 风险预警配置
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\riskAndAlarmConfig\index.vue
@@ -12,6 +12,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language("FENGXIANYUJINGPEIZHI",'风险预警配置')}}</span>
         <div class="floatright">
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <iButton :loading="submitting" @click="save">
             {{ language("LK_BAOCUNBINGYINGYONG",'保存并应用') }}
           </iButton>
@@ -20,10 +21,13 @@
       <div class="table">
         <tableList
           index
+          ref="tableList"
           :tableData="data"
           :tableTitle="riskAndAlarmTitle"
           :tableLoading="tableLoading"
           :lang="true"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
           style="min-height: 400px"
         >
           <!-- 风险状态 -->
@@ -55,13 +59,16 @@
 <script>
 import { iPage, iCard, iButton, icon, iInput, iMessage} from 'rise'
 import {riskAndAlarmTitle, riskAndAlarmData} from './components/data'
-import tableList from './components/tableList'
+
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { 
   getDelayGradeConfig,
   saveDelayGradeConfig
 } from '@/api/project/process'
 
 export default {
+  mixins: [ tableSortMixins ],
   components: { iPage, iCard, iButton, icon, iInput, tableList },
   data() {
     return {
@@ -95,11 +102,11 @@ export default {
               o.icon = tar.icon
               o.level = tar.level
             }
-            finger.push(o.delayWeekLeft)
-            finger.push(o.delayWeekRight)
+            finger.push({ delayType: o.delayType,value:o.delayWeekLeft})
+            finger.push({ delayType: o.delayType,value:o.delayWeekRight})
             return o
           })
-          this.finger = finger.join(',')
+          this.finger = JSON.stringify(finger)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -138,12 +145,14 @@ export default {
           console.log(min, max)
           errorInfo = `${this.language('FENGXIANDENGJI','风险等级')}[${this.language(item.key,item.level)}],${this.language('PEIZHIBUHEFAXIUGCHONGSHI','配置不合法，请修改后重试')}`
         }
-        sortArray.push(min)
-        sortArray.push(max)
+        sortArray.push({delayType: item.delayType,value: min})
+        sortArray.push({delayType: item.delayType,value: max})
       })
-      sortArray = sortArray.map(o => Number(o))
-      const unsortString = sortArray.join(',')
-      const sortString = sortArray.sort((a,b) => a-b).join(',')
+      // sortArray = sortArray.map(o => Number(o))
+      const unsortString = JSON.stringify(sortArray)
+      // eslint-disable-next-line no-undef
+      const sortString = JSON.stringify(_.sortBy(sortArray, ['delayType', 'value']))
+      console.log(unsortString, sortString)
       // 顺序有错误
       if (state && sortString !== unsortString) {
         state = false
@@ -213,9 +222,9 @@ export default {
   color: rgba(140, 152, 172, 1);
 }
 .riskAndAlarmConfig {
-  padding: 0;
-  padding-top: 10px;
-  height: calc(100% - 55px);
-  overflow: visible;
+  padding: 0 !important;
+  padding-top: 10px !important;
+  height: calc(100% - 55px) !important;
+  overflow: visible !important;
 }
 </style>

@@ -2,10 +2,10 @@
  * @Descripttion: 
  * @Author: Luoshuang
  * @Date: 2021-05-21 14:30:41
- * @LastEditTime: 2021-11-15 10:29:16
+ * @LastEditTime: 2022-01-06 14:24:08
 -->
 <template>
-  <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :cell-class-name="cellClassName">
+  <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :height="height" :max-height="maxHeight" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :cell-class-name="cellClassName">
     <el-table-column v-if="selection" type='selection' width="34" align='center' :selectable="selectable"></el-table-column>
     <el-table-column v-if='indexKey' :class-name="indexKey ? 'tableIndex': ''" type='index' width='36' align='center' label='#' :fixed="isFixedIndex">
       <template slot-scope="scope">
@@ -16,24 +16,24 @@
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot-scope="row">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
-            <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
+            <!-- <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
         </template>
       </el-table-column>
       <el-table-column :key="index" align='center' :width="items.width" :min-width="items.minWidth" :show-overflow-tooltip='items.tooltip' v-else-if='items.props == activeItems2' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name" :fixed="items.fixed">
         <template slot-scope="row">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="openPage2(row.row)"> {{ row.row[activeItems2] }}</span>
-            <span v-if="row.row[activeItems2]" class="icon-gray  cursor "  @click="openPage2(row.row)">
+            <!-- <span v-if="row.row[activeItems2]" class="icon-gray  cursor "  @click="openPage2(row.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
         </template>
       </el-table-column>
       <!----------------------需要进行排序的列------------------------>
@@ -165,6 +165,7 @@ export default{
       default: ""
     },
     selectable: { type: Function },
+    maxHeight: {type:Number||String},
   },
   inject:['vm'],
   watch: {
@@ -193,7 +194,7 @@ export default{
       if (row.fileList?.length < 1) {
         return
       }
-      this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName), row.fileList)
+      this.$emit('handleFileDownload', row.fileList?.map(item => item.fileName), row.fileList, row)
     },
     getFileList(row) {
       return row.fileList?.map(item => item.fileName).join('\n')

@@ -14,9 +14,11 @@
       >
         {{ language("TIJIAO", "提交") }}
       </iButton>
+      <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
     </div>
-    <tablelist
+    <tableList
         class="margin-top15"
+        ref="tableList"
         height="400"
         index
         :selection="alowSubmit"
@@ -26,6 +28,8 @@
         :tableLoading="tableLoading"
         :lang="true"
         @handleSelectionChange="handleSelectionChange"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
         v-loading="tableLoading"
         v-permission.auto="AEKO_AEKODETAIL_APPROVE_RECORD_BUTTON_TABLE|AKEO详情-审批记录列表"
     >
@@ -63,7 +67,7 @@
           {{ language("CHAKAN", "查看") }}
         </a>
       </template>
-    </tablelist>
+    </tableList>
     <div class="pagination">
       <iPagination
           v-update
@@ -100,7 +104,9 @@ import Vuex from 'vuex'
 import {approveReCordTableTitle as tableTitle, aekoApproveTypes} from '../data'
 import {attachTableTitle} from './components/data'
 import iFileDialog from 'rise/web/components/iFile/dialog'
-import tablelist from 'rise/web/components/iFile/tableList';
+// import tablelist from 'rise/web/components/iFile/tableList';
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import {iCard, iButton, iPagination, iInput} from 'rise'
 import {pageMixins} from '@/utils/pageMixins'
 import { setLogMenu } from "@/utils";
@@ -119,13 +125,13 @@ import { cloneDeep } from "lodash"
 
 export default {
   name: "aekoDetailRecord",
-  mixins: [pageMixins],
+  mixins: [pageMixins,tableSortMixins],
   components: {
     iCard,
     iButton,
     iInput,
     iPagination,
-    tablelist,
+    tableList,
     iFileDialog
   },
   filters:{
@@ -274,7 +280,7 @@ export default {
         findHistoryByAeko(parmas).then(res => {
           this.tableLoading = false
           let resDatas = res.data.records
-          resDatas= resDatas.filter(item=>item.comment!='AutoCompleted')
+          resDatas= resDatas.filter(item=>item.comment!='AutoCompleted' && item.comment!='AutoSkip')
           this.tableListData = resDatas.map(item => {
             item.disabled = item.activityName != '【补充材料通知】补充材料'
             return item

@@ -19,13 +19,13 @@
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
       <el-table-column :key="index" align='center' :width="items.width * detectZoom " :min-width="items.minWidth* detectZoom " :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="items.key ? language(items.key, items.name) : items.name">
         <template slot-scope="row">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="openPage(row.row)"> {{ row.row[activeItems] }}</span>
-            <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
+            <!-- <span v-if="row.row[activeItems]" class="icon-gray  cursor "  @click="openPage(row.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
         </template>
       </el-table-column>
       <!---------------------------可编辑列---------------------------------->

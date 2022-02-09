@@ -101,9 +101,9 @@ export default {
               return item
             })
           }
-          this.page.currPage = res.data.pageNum
-          this.page.pageSize = res.data.pageSize
-          this.page.totalCount = res.data.total
+          // this.page.currPage = res.data.pageNum
+          // this.page.pageSize = res.data.pageSize
+          this.page.totalCount = res.total
           this.tableLoading = false;
         } catch {
           this.tableLoading = false;
@@ -134,7 +134,7 @@ export default {
             purchasingRequirementId: row.purchasingRequirementId,
             partNum: row.ninePartNum,
             categoryCode: row.categoryCode,
-            purchasingRequirementObjectId: row.purchasingRequirementObjectId,
+            purchasingRequirementId: row.purchasingRequirementId,
             tab : 'outputPlan'
           }
         })

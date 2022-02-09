@@ -6,7 +6,7 @@
 
 import axios from '@/utils/axios'
 
-const requst = axios(process.env.VUE_APP_PARTS)
+const requst = axios(process.env.VUE_APP_PR)
 
 // 获取封面表态详情
 export function getCoverDetail(params) {

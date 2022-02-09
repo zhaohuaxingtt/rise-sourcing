@@ -54,28 +54,37 @@
                         </el-option>
                     </iSelect> 
                 </template>
-                
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
                 <iInput :placeholder="item.disabled ? '' : language('LK_QINGSHURU','请输入')" v-else :disabled="item.disabled" v-model.trim="searchParams[item.props]"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>
       <iCard :title="language('LK_AEKO_PARTSLIST','零件清单')" class="margin-top20">
         <!-- 按钮区域 -->
-        <template v-slot:header-control v-if="!isLinie && queryFrom != 'check'">
+        <template v-slot:header-control>
             <div>
-                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
-                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
-                <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
-                <template v-if="isShowAddPart">
-                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件" @click="addParts">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
-                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                <template v-if="!isLinie && queryFrom != 'check'">
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
+                    <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
+                    <template v-if="isShowAddPart">
+                        <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件" @click="addParts">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
+                        <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
+                    </template>
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI|科室退回" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
                 </template>
-                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI|科室退回" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
+                <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
             </div>
         </template>
         <!-- 表单区域 -->
             <tableList
                 class="table"
+                ref="tableList"
                 index
                 :lang="true"
                  v-permissionArr="['AEKO_AEKODETAIL_PARTLIST_TABLE','AEKO_DETAIL_TAB_LINGJIANQINGDAN_TABLE']"
@@ -84,6 +93,8 @@
                 :tableTitle="tableTitle"
                 :tableLoading="loading"
                 @handleSelectionChange="handleSelectionChange"
+                :handleSaveSetting="handleSaveSetting"
+                :handleResetSetting="handleResetSetting"
             >
             <!-- 科室 -->
             <!-- 实际分配科室有就显示实际科室，否则就显示预设科室  表示科室是预设的 -->
@@ -150,9 +161,12 @@ import {
     iButton,
     iPagination,
     iMessage,
+    iMultiLineInput
 } from 'rise';
 import { SearchList, linieSearchList , tableTitle, linieQueryForm, linieTableTitle,commodityTableTitle,checkSearchList } from './data';
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
 import departBackDialog from './components/departBackDialog'
@@ -183,7 +197,7 @@ import { roleMixins } from "@/utils/roleMixins";
 import { setLogMenu } from "@/utils";
 export default {
     name:'partsList',
-    mixins: [pageMixins,roleMixins],
+    mixins: [pageMixins,roleMixins,tableSortMixins],
     components:{
         iSearch,
         iCard,
@@ -197,6 +211,7 @@ export default {
         aekoSelect,
         addPartsDialog,
         iDicoptions,
+        iMultiLineInput
     },
     computed: {
         //eslint-disable-next-line no-undef
@@ -274,9 +289,9 @@ export default {
                 brand:[''],
             }
         }else if(from == 'manage'){
-            if(this.this.isCommodityCoordinator){
-                 this.SearchList = SearchList
-            this.tableTitle = commodityTableTitle;
+            if(this.isCommodityCoordinator){
+                this.SearchList = SearchList
+                this.tableTitle = commodityTableTitle;
             }else{
                 this.SearchList = SearchList
                 this.tableTitle = tableTitle;
@@ -290,7 +305,6 @@ export default {
             this.SearchList = []
             this.tableTitle = []
         }
-
     },
     data(){
         return{
@@ -740,7 +754,6 @@ export default {
         handleMultipleChange(value, key,multiple) {
             // 单选不处理
             if(!multiple) {
-                console.log('value',value,'key',key,'multiple',multiple);
                 if(!value){
                     const {selectOptionsCopy={}} = this;
                     this.$set(this.selectOptions,key,selectOptionsCopy[key]);

@@ -92,6 +92,9 @@
             @resetSubmitting="submitting = false"
             ref="mettingDialog" />
         <meetingConclusionDialog :desinateId="desinateId" :visible.sync="meetingConclusionDialogVisible" @afterConfirm="afterConfirm" />
+
+        <!-- 黑名单校验弹窗提示 -->
+        <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONSUBMIT" :tableListData="blackTableListData"/>
     </div>
 </template>
 
@@ -119,7 +122,8 @@ import {
     checkNomiMeetingSubmit3,
     checkNomiMeetingSubmit4,
     updateNominate,
-    rsAttachExport
+    rsAttachExport,
+    fittingNomi
 } from '@/api/designate'
 import { 
     approvalSync
@@ -130,6 +134,8 @@ import meetingConclusionDialog from "./meetingConclusionDialog"
 import {allitemsList} from '@/config'
 import { cloneDeep } from "lodash"
 
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
+
 export default {
     name:'designateStep',
     components:{
@@ -139,7 +145,8 @@ export default {
         iSelect,
         mettingDialog,
         meetingConclusionDialog,
-        iLoger
+        iLoger,
+        dialogTableTips,
     },
     props:{
         status: {
@@ -209,7 +216,8 @@ export default {
             mettingDialogVisible: false,
             submitting: false,
             meetingConclusionDialogVisible: false,
-            svgList:svgList
+            svgList:svgList,
+            blackTableListData:[],
         }
     },
     methods:{
@@ -249,7 +257,7 @@ export default {
         },
         // 临时跳转到决策资料，不更新当前步骤
         gotoNomiAttach() {
-            this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId, route: 'temp'})})
+            this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId})})
         },
         // 跳转到任何已完成的定点步骤
         async toAnyNomiStep(item) {
@@ -558,11 +566,26 @@ export default {
                                 dangerouslyUseHTMLString:true
 
                             })
-                            if (confirmNextInfo !== 'confirm') {
+
+                            if (confirmNextInfo == 'confirm') {
+                                fittingNomi({
+                                    nominateId: this.$route.query.desinateId
+                                }).then(res => {
+                                    if (res.code == 200) {
+                                        iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                        this.$emit("updateNomi")
+                                    } else {
+                                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                    }
+
+                                    this.submitting = false
+                                })
+
                                 this.submitting = false
                                 return
                             }
                         } catch (e) {
+                            console.log(e)
                             this.submitting = false
                             return
                         }
@@ -607,8 +630,9 @@ export default {
                             return
                         }
                     }
-                    // 打开上会确认弹窗
+
                     if (nominationType === 'MEETING') {
+                        // 打开上会确认弹窗
                         this.mettingDialogVisible = true
                         this.submitting = false
                         return
@@ -630,7 +654,10 @@ export default {
                     nominateAppSsubmit(data).then((res)=>{
                         if (res.code === '200') {
                             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
-                        } else {
+                        }else if(res.code === '501'){
+                            this.blackTableListData = res.data || [];
+                            this.$refs.dialogTableTips.show(); 
+                        }else {
                             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
                         }
                         this.submitting = false

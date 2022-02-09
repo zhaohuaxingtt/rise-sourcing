@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-06 17:43:13
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-26 13:55:35
  * @Description: 加入已有rfq
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
@@ -53,6 +53,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language('RFQZONGHEGUANLI','RFQ综合管理') }}</span>
         <div class="floatright">
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!--加入该键-->
           <iButton @click="joinRfq" :loading="activateButtonLoading">
             {{language('JIARU','加入')}}
@@ -68,6 +69,10 @@
         open-page-props="id"
         :index="true"
         icon-props="recordId"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
+        ref="tableList"
+        lang
       >
       </tablelist>
       <!------------------------------------------------------------------------>
@@ -90,12 +95,14 @@
 
 <script>
 import { iDialog, iButton, iInput, iPagination, iSelect, iMessage, iSearch } from 'rise'
-import tablelist from "@/views/partsrfq/components/tablelist";
+// import tablelist from "@/views/partsrfq/components/tablelist";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "@/views/partsrfq/home/components/data";
 import {getRfqList, findBySearches, getCartypeDict} from "@/api/partsrfq/home";
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,tableSortMixins],
   components: { iDialog, iButton, iInput, iPagination, tablelist, iSelect, iSearch },
   props: {
     dialogVisible: { type: Boolean, default: false },

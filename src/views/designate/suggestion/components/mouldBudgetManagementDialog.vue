@@ -45,7 +45,7 @@
       </tableList>
     </div>
     <template #footer class="footer">
-      <iPagination v-update
+      <!-- <iPagination v-update
         class="pagination"
         @size-change="handleSizeChange($event, getMouldBudget)"
         @current-change="handleCurrentChange($event, getMouldBudget)"
@@ -54,7 +54,7 @@
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
-        :total="page.totalCount" />
+        :total="page.totalCount" /> -->
     </template>
   </iDialog>
 </template>
@@ -67,10 +67,14 @@ import filters from "@/utils/filters"
 import { numberProcessor } from "@/utils"
 import { pageMixins } from "@/utils/pageMixins"
 import { getMouldBudget, patchMouldBudget } from "@/api/designate"
-
+import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
+import {
+  patchMouldBudgetSubmit,
+  patchMouldBudgetWithdrawal
+} from "@/api/partsrfq/editordetail";
 export default {
   components: { iDialog, iButton, iInput, iPagination, tableList },
-  mixins: [ filters, pageMixins ],
+  mixins: [ filters, pageMixins, rfqCommonFunMixins ],
   props: {
     ...iDialog.props,
     visible: {
@@ -128,19 +132,17 @@ export default {
     getMouldBudget() {
       this.loading = true
 
-      const form = {
-        currPage: this.page.currPage,
-        pageSize: this.page.pageSize,
+      // const form = {
+        // currPage: this.page.currPage,
+        // pageSize: this.page.pageSize,
         // rfqIds: this.rfqIds.map(item => ({ rfqIds: item })),
-        fsIds: this.fsIds.map(item => ({ fsIds: item })),
-        supplierIds: this.supplierIds.map(item => ({ supplierIds: item })),
-      }
-
-      getMouldBudget(form)
+        const fsList = this.fsIds
+        // supplierIds: this.supplierIds.map(item => ({ supplierIds: item })),
+      // }
+      getMouldBudget(fsList)
       .then(res => {
-        if (res.code == 200) {
-          this.tableListData = Array.isArray(res.data.records) ? res.data.records.map(item => ({ ...item, budget: math.bignumber(item.budget || 0).toFixed(2) })) : []
-          this.page.totalCount = res.data.total || 0
+       if (res.code == 200) {
+          this.tableListData = Array.isArray(res.data) ? res.data.map(item => ({ ...item, budget: math.bignumber(item.budget || 0).toFixed(2) })) : []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -166,26 +168,22 @@ export default {
       if (this.multipleSelection.length < 1) {
         return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
       }
-
+      //   if (
+      //   this.multipleSelection.some(
+      //     (item) =>
+      //       item.approvalStatus === "已提交" ||
+      //       item.approvalStatusDesc === "SUBMITTED"
+      //   )
+      // )
+      //   return iMessage.warn(
+      //     this.language("QINGWUXUANZEYITIJIAODESHUJU", "请勿选择已提交的数据")
+      //   );
       this.submitLoading = true
-      patchMouldBudget({
-        updateType: 1,
-        mouldBudgetDTOS: this.multipleSelection
-      })
+      const mouldBudgets = this.multipleSelection
+      patchMouldBudgetSubmit(mouldBudgets)
       .then(res => {
         if (res.code == 200) {
-          if (!res.data.length) {
-            iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-            this.getMouldBudget()
-          } else {
-            if (this.multipleSelection.length === res.data.length) {
-              iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUTIJIAO", "重复提交") }`)
-            } else {
-              iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUTIJIAO", "重复提交") }, ${ this.language("QIYUSHUJUZHENGCHANGTIJIAO", "其余数据正常提交") }`)
-              this.getMouldBudget()
-            }
-          }
-
+          this.getMouldBudget()
           this.$emit("submit", this.multipleSelection.filter(item => !res.data.includes(item)))
           // this.$emit("update:visible", false)
         } else {
@@ -201,25 +199,36 @@ export default {
       if (this.multipleSelection.length < 1) {
         return iMessage.warn(this.language("QINGXUANZEZHISHAOYITIAOSHUJU", "请选择至少一条数据"))
       }
-
-      this.recallLoading = true
-      patchMouldBudget({
-        updateType: 0,
-        mouldBudgetDTOS: this.multipleSelection
+      const status = ["AGREE","DISAGREE","REVOKED","已审批","已驳回","已撤销"]
+      let statusFlag = false
+      this.multipleSelection.forEach(val=>{
+        status.includes(val.approvalStatus) || status.includes(val.approvalStatusDesc) ? statusFlag = true : ''
       })
+       if (statusFlag)
+        return iMessage.warn(
+          this.language("ZHIYOUYITIJIAOZHUANGTAICAIKEYICHEHUI", "只有【已提交】状态才可以撤回")
+        );
+        const ids = this.multipleSelection.map(val=>{
+        if(val.id!==null){
+          return val.id
+        }
+      })
+      this.recallLoading = true
+      patchMouldBudgetWithdrawal(ids)
       .then(res => {
         if (res.code == 200) {
-          if (!res.data.length) {
+        //  if (!res.data || !res.data.length) {
             iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
             this.getMouldBudget()
-          } else {
-            if (this.multipleSelection.length === res.data.length) {
-              iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUCHEHUI", "重复撤回") }`)
-            } else {
-              iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUCHEHUI", "重复撤回") }, ${ this.language("QIYUSHUJUZHENGCHANGCHEHUI", "其余数据正常撤回") }`)
-              this.getMouldBudget()
-            }
-          }
+          // } else {
+            // iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+            // if (this.multipleSelection.length === res.data.length) {
+              // iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUCHEHUI", "重复撤回") }`)
+            // } else {
+              // iMessage.warn(`${ this.language("RFQBIANHAO", "RFQ编号") }: ${ res.data.join(", ") } ${ this.language("CHONGFUCHEHUI", "重复撤回") }, ${ this.language("QIYUSHUJUZHENGCHANGCHEHUI", "其余数据正常撤回") }`)
+              // this.getMouldBudget()
+            // }
+          // }
 
           this.$emit("recall", this.multipleSelection.filter(item => !res.data.includes(item)))
           // this.$emit("update:visible", false)
@@ -270,6 +279,7 @@ export default {
 
     .body {
       height: 580px;
+      margin: 0 0 20px 0
     }
 
     .el-dialog__header {

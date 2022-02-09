@@ -7,27 +7,31 @@
 -->
 <template>
   <div class="margin-top20">
-    <iCard v-permission.auto="tableTitle.permision">
+    <iCard >
       <div class="cardview">
         <div class="cardview-header">
           <div class="font18 font-weight">{{titleKey ? language(tableTitle.titleKey, tableTitle.titleName) : tableTitle.titleName}}</div>
           <div class="control">
+            <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
             <iButton @click="exportfile">
               {{ language('LK_DAOCHU', '导出') }}
             </iButton>
           </div>
         </div>
         <div class="cardview-body padding-top30">
-          <tablelist
+          <tableList
             height="450"
             index
+            ref="tableList"
+            :lang="true"
             :selection="true"
             :tableData="tableListData"
             :tableTitle="tableTitle.title"
             :tableLoading="tableLoading"
-            :lang="true"
             v-loading="tableLoading"
             @handleSelectionChange="handleSelectionChange"
+            :handleSaveSetting="handleSaveSetting"
+            :handleResetSetting="handleResetSetting"
           >
           <template #cartypeProject="">
             <span>{{carProjectName}}</span>
@@ -36,7 +40,7 @@
             <span v-if="$i18n.locale === 'zh'">{{scope.row.productGroupZh}}</span>
             <span v-else>{{scope.row.productGroupDe}}</span>
           </template>
-          </tablelist>
+          </tableList>
         </div>
       </div>
       <div class="pagination">
@@ -56,7 +60,6 @@
 </template>
 <script>
 import {TIPStableTitle,CKDHTtableTitle, OTSEMtableTitle} from './components/data'
-import tablelist from "@/views/project/schedulingassistant/progroup/components/tableList";
 import {
   iCard,
   iButton,
@@ -66,14 +69,16 @@ import {
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
 import {pageProProgressMonitorData,proProgressMonitorFile} from '@/api/project/process'
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 
 export default {
-  mixins: [ filters, pageMixins ],
+  mixins: [ filters, pageMixins,tableSortMixins ],
   components: {
+    tableList,
     iCard,
     iButton,
-    iPagination,
-    tablelist
+    iPagination
   },
   data() {
     return {
@@ -113,7 +118,7 @@ export default {
         "4": {
           titleName: '1999',
           title: CKDHTtableTitle,
-          // permision: 'PROJECTMGT-MONITORPARTLIST-1999TABLE|项目管理-监控零件清单-1999表格'
+          permision: 'PROJECTMGT-MONITORPARTLIST-1999TABLE|项目管理-监控零件清单-1999表格'
         }
       }
       const type = this.$route.query.type || 1

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 21:04:49
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-25 09:53:02
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-28 13:08:23
  * @Description: 定点-审批人&审批记录
  * @FilePath: \front-sourcing\src\views\designate\approvalPersonAndRecord\index.vue
 -->
@@ -228,13 +228,23 @@ export default {
 
          if (res.code == 200) {
           for(var i = 0; i < (res.data.nomiApprovalProcessNodeVOList || []).length; i++) {
-            const grade = this.parentDeptOptions.find(item => item.id === res.data.nomiApprovalProcessNodeVOList[i].approveParentDeptNum)?.grade
-            res.data.nomiApprovalProcessNodeVOList[i].deptOptions = this.parentDeptOptions
+          //   const grade = this.parentDeptOptions.find(item => item.id === res.data.nomiApprovalProcessNodeVOList[i].approveParentDeptNum)?.grade
+          //   res.data.nomiApprovalProcessNodeVOList[i].deptOptions = this.parentDeptOptions
 
-            if (grade) {
-              const deptSubOptions = await this.getDeptSubOptions(res.data.nomiApprovalProcessNodeVOList[i], grade)
-              res.data.nomiApprovalProcessNodeVOList[i].deptSubOptions = deptSubOptions || []
-            }
+          //   if (grade) {
+          //     const deptSubOptions = await this.getDeptSubOptions(res.data.nomiApprovalProcessNodeVOList[i], grade)
+          //     res.data.nomiApprovalProcessNodeVOList[i].deptSubOptions = deptSubOptions || []
+          //   }
+
+            // 不单独请求接口了 直接从列表里面拿 
+            res.data.nomiApprovalProcessNodeVOList[i].deptOptions = this.parentDeptOptions;
+            const listItem = res.data.nomiApprovalProcessNodeVOList[i] || {};
+            const { deptDTOList =[]} = listItem ;
+            deptDTOList.map((item)=>{
+                item.label = item.deptNum;
+                item.value = item.id;
+            });
+            res.data.nomiApprovalProcessNodeVOList[i].deptSubOptions = deptDTOList || []
           }
           
           this.tableDataTemp = cloneDeep(res.data.nomiApprovalProcessNodeVOList)

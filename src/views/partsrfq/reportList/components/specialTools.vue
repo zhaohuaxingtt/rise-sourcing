@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-07-06 13:40:04
- * @LastEditTime: 2021-12-24 14:09:11
+ * @LastEditTime: 2022-01-12 11:27:46
  * @LastEditors: caopeng
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\specialTools.vue
@@ -107,7 +107,7 @@ export default {
       const req = {
         ids: [row.id],
       }
-      this.$emit('delTable', req)
+      this.$emit('delTable', req,1)
     },
     // 搜索
     search() {

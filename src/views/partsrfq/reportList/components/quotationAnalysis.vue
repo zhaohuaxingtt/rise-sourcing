@@ -1,7 +1,7 @@
 <!--
  * @Date: 2021-11-16 11:06:02
  * @LastEditors: caopeng
- * @LastEditTime: 2021-12-29 14:04:11
+ * @LastEditTime: 2022-01-12 11:27:54
  * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\quotationAnalysis.vue
 -->
 <!--
@@ -13,6 +13,16 @@
   <iCard :title="$t('TPZS.BJFX')"
          collapse
          class="margin-top20">
+    <div class="searchBox">
+      <div>
+
+        {{language('BAOGAOMINGCHENG','报告名称')}}： <iInput v-model="searchName"
+                :placeholder="language('QINGSHURU','请输入')"></iInput>
+      </div>
+
+      <iButton @click="getTableList">{{language('CHAXUN','查询')}}</iButton>
+
+    </div>
     <tableList :tableData="tableListData"
                :tableTitle="tableTitle"
                :selection="false"
@@ -22,8 +32,10 @@
         <span class="openPage">{{scope.row.version}}</span>
       </template>
       <template #btnList="scope">
-        <iButton type="text" @click="join(scope.row)">{{language('JIARU','加入')}}</iButton>
-        <iButton type="text" @click="del(scope.row)">{{language('SHANCHU','删除')}}</iButton>
+        <iButton type="text"
+                 @click="join(scope.row)">{{language('JIARU','加入')}}</iButton>
+        <iButton type="text"
+                 @click="del(scope.row)">{{language('SHANCHU','删除')}}</iButton>
       </template>
     </tableList>
     <iPagination v-update
@@ -39,7 +51,7 @@
 </template>
 
 <script>
-import { iCard, iButton,iPagination } from 'rise'
+import { iCard, iButton, iPagination, iInput } from 'rise'
 import tableList from './tableList'
 import { quotationAnalysisTitle } from './data'
 import { pageMixins } from '@/utils/pageMixins'
@@ -50,7 +62,8 @@ export default {
     iCard,
     tableList,
     iPagination,
-    iButton
+    iButton,
+    iInput,
   },
   props: {
     searchCriteria: {
@@ -63,6 +76,7 @@ export default {
       tableListData: [],
       tableTitle: quotationAnalysisTitle,
       tableLoading: false,
+      searchName:''
     }
   },
   created() {
@@ -73,8 +87,9 @@ export default {
       this.tableLoading = true
       let data = {
         ...this.searchCriteria,
+        name:this.searchName,
         instanceId: -1,
-         isBindingInstance:0,
+        isBindingInstance: 0,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
       }
@@ -87,8 +102,8 @@ export default {
         }
       })
     },
-      join(row) {
-          console.log(row)
+    join(row) {
+      console.log(row)
       const req = {
         ids: [row.id],
       }
@@ -98,11 +113,21 @@ export default {
       const req = {
         ids: [row.id],
       }
-      this.$emit('delTable', req)
+      this.$emit('delTable', req,2)
     },
   },
 }
 </script>
 
 <style lang="scss">
+.searchBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .el-input {
+    width: 300px;
+    // margin-right: 200px;
+  }
+  margin-bottom: 20px;
+}
 </style>

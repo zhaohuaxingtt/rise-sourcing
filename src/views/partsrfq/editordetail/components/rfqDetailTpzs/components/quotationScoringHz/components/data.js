@@ -1,13 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 14:32:26
- * @LastEditTime: 2021-12-29 15:47:20
+ * @LastEditTime: 2022-01-30 13:27:41
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\data.js
  */
 import {_getMathNumber} from '@/utils'
 import {partProjTypes} from '@/config'
+import { clone, cloneDeep } from 'lodash'
 //表格全集。
 export const depNumData = {
   'PL':'L',
@@ -22,8 +23,8 @@ export const fstitle = [
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'skdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'skdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ftSkdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ftSkdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
@@ -36,10 +37,10 @@ export const gstitle = [
   {type:'',props:'partName',label:'Part Name',i18n:'',width:'90',tooltip:false,fixed:true},
   {type:'',props:'partPrjCode',label:'FS/GS/SP No.',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>FS/GS/SP</p><p>No.</p>'},
   {type:'',props:'factory',label:'Factory',i18n:'',width:'80',tooltip:false,fixed:true},
-  {type:'',props:'lcAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'lcBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'skdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
-  {type:'',props:'skdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartAPrice',label:'F-T(A) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'cfPartBPrice',label:'F-T(B) \n (LC)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ftSkdAPrice',label:'F-T(A) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
+  {type:'',props:'ftSkdBPrice',label:'F-T(B) \n (SKD)',i18n:'',width:'60',tooltip:false,fixed:true},
   {type:'',props:'mouldPrice',label:'Tooling \n Target',i18n:'',width:'80',tooltip:false,fixed:true,renderHeader: '<p>Tooling</p><p>Target</p>'},
   {type:'',props:'pca',label:'PCA',i18n:'',width:'80',tooltip:false,fixed:true},
   {type:'',props:'tia',label:'TIA',i18n:'',width:'80',tooltip:false,fixed:true},
@@ -107,7 +108,18 @@ export const gstableTileXh = function(index){
     {type:'',props:`Quotationdetails`,label:'Quo. \n Details',i18n:'',width:'60',tooltip:false},
   ]
 }
-
+/**
+ * @description: 静态数据在线报价结果表头字段
+ * @param {*}
+ * @return {*}
+ */
+ export const suplierTableDataTitel = [
+  {type:'',props:'currentSort',name:'排名',key:'PAIMINGKEY',width:'100',tooltip:false},
+  {type:'',props:'supplierCode',name:'供应商编号',key:'GONGYINGSMINGC',width:'',tooltip:false},
+  {type:'',props:'supplierName',name:'供应商名称',key:'',width:'GONGYSBIANHAO',width:'220',tooltip:false},
+  {type:'',props:'offerPrice',name:'TTO',key:'',width:'100',tooltip:false},
+  // {type:'',props:'mixPrice',name:'报价进度',key:'BAOJIAJINGDU',width:'100',tooltip:false}
+]
 /**
  * @description: fs 横纵默认展示项的配置项
  * @param {*}
@@ -119,7 +131,7 @@ export const whiteList = ['headerEbr','groupName','partNo','partName','cfPartAPr
  * @param {*}
  * @return {*}
  */
-export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice','releaseCost'] //默认需要显示的数据
+export const whiteListGs = ['currentSupplier','headerEbr','groupName','partNo','partName','currentAPrice','currentBPrice','mouldPrice','ebrCalculatedValue','lcAPrice','lcBPrice','tooling','ltc','ltcStaringDate','tto','saving','cfPartAPrice','cfPartBPrice','releaseCost'] //默认需要显示的数据
 /**
  * @description：通过需要循环的表格和基础表格，在通过白名单将需要所有的百名单删选出来
  * @param {*} whiteList
@@ -127,7 +139,7 @@ export const whiteListGs = ['currentTto','currentLtc','currentShare','currentSup
  * @param {*} title
  * @return {*}
  */
-export const needSubTotal = ['cfPartAPrice','cfPartBPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto']
+export const needSubTotal = ['cfPartAPrice','cfPartBPrice','ftSkdAPrice','ftSkdBPrice','lcAPrice','skdAPrice','lcBPrice','skdBPrice','tooling','tto','developmentCost','releaseCost','toolingShare','developmentCostShare']
 /**
  * @description:根据不同type获取options列表，这个方法适用于所有模板
  * @param {*} type 想要获取的type类型
@@ -279,7 +291,7 @@ export function translateRating(supplierList,ratingList) {
      titleList.forEach(itemsbb=>{
        const map = c.find(it=>it.rateType == itemsbb)
        if(map){
-        maps.push({rate:map.rateList,isAllPartRateConsistent:map.isAllPartRateConsistent} || '') 
+        maps.push({rate:map.rate,isAllPartRateConsistent:map.isAllPartRateConsistent} || '') 
        }
      })
      ratingListPrivate.push(maps)
@@ -307,6 +319,23 @@ export function translateData(list){
   })
   return list
 }
+function keepTwoDecimalFull(num) {
+  var result = parseFloat(num);
+  if (isNaN(result)) {
+    return num
+  }
+  result = Math.round(num * 100) / 100;
+  var s_x = result.toString();
+  var pos_decimal = s_x.indexOf('.');
+  if (pos_decimal < 0) {
+  pos_decimal = s_x.length;
+  s_x += '.';
+  }
+  while (s_x.length <= pos_decimal + 2) {
+  s_x += '0';
+  }
+  return s_x;
+ }
 /**
  * @description: 将props上的数字去掉
  * @param {*} keys
@@ -321,11 +350,22 @@ export function removeKeysNumber(keys){
  * @param {*} dataList
  * @return {*}
  */
-export function subtotal(tableHeader,dataList,priceInfo){
+export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
   try {
     // eslint-disable-next-line no-undef
-    let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId}] : accu}, []), 'groupId')
-    const total = {}
+    let groupArr = _.uniqBy(dataList.reduce((accu, item) => {return item.groupId ? [...accu, {groupName: item.groupName, groupId: item.groupId,toolingHasShare:1,developmentCostHasShare:1}] : accu}, []), 'groupId')
+    const total = {
+      toolingHasShare:1,
+      developmentCostHasShare:1
+    }
+    tableHeader = [...tableHeader,...[{props:'toolingShare'},{props:'developmentCostShare'}]]
+
+    tableHeader.forEach(items => {
+      if (/^\d+tooling$/.test(items.props) || /^\d+developmentCost$/.test(items.props)) {
+        tableHeader.push({ props: `${ items.props }Share` })
+      }
+    })
+
     tableHeader.forEach(items=>{
       if(items.props == 'groupName'){
         total["groupId"] = '-'
@@ -338,11 +378,11 @@ export function subtotal(tableHeader,dataList,priceInfo){
         })
       }
       if(items.props == 'partNo'){
-        total[items.props] = 'Subtotal'
+        total[items.props] = 'Total'
         groupArr = groupArr.map(item => {
           return {
             ...item,
-            [items.props]: 'Group total: '+item.groupName
+            [items.props]: 'Group total: ' + item.groupName
           }
         })
       }else{
@@ -351,36 +391,64 @@ export function subtotal(tableHeader,dataList,priceInfo){
             for(let key in element){
                 if(items.props == key){
                   //需要 Lc Aprice . Lc Bprice TTo 
-                  if(removeKeysNumber(key) == "lcAPrice" || removeKeysNumber(key) == "lcBPrice" || removeKeysNumber(key) == "tto"){
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2)
+                  if(['lcAPrice','lcBPrice','skdAPrice','skdBPrice','cfPartAPrice','ftSkdAPrice','cfPartBPrice','ftSkdBPrice'].includes(removeKeysNumber(key))){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupId === item.groupIdTemp ? parseFloat(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toFixed(2) : item[key] || 0
+                        [key]: fsTemplate?(asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': keepTwoDecimalFull(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))  : item[key] || 0):'/'):''
                       }
                     })
+
+                    total[key] = fsTemplate?((!element[key] || total[key] == "/")?"/":keepTwoDecimalFull(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))):''
                   }else{
-                    total[key] = parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2)
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: element.groupId === item.groupIdTemp && removeKeysNumber(key) !== 'tooling' ? parseFloat(_getMathNumber(`${total[key] || 0}+${element[key] || 0}`)).toFixed(2) : item[key]
+                        [key]: element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`)) : item[key]
                       }
                     })
+                    total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`))
                   }
                 }
               }
           });
         }
       }
-      
     })
-    return [...groupArr, getLowNumber(total),kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Invest \n Budget',priceInfo,dataList[0])]
+
+    let result = [...groupArr, getLowNumber(total)]
+    result.forEach(group => {
+      Object.keys(group).forEach(key => {
+        if (/^\d+tooling$/.test(key) || /^\d+developmentCost$/.test(key)) {
+          group[`${ key }HasShare`] = 1
+        }
+      })
+    })
+
+    result = [...result, kmOrbukeage('KM',priceInfo,dataList[0]),kmOrbukeage('Invest \n Budget',priceInfo,dataList[0])]
+
+    return result
   } catch (error) {
-    return {partNo:'Subtotal'}
+    console.log(error)
+    return [{partNo:'Subtotal'}]
   }
 }
-
+function translateNumber(number){
+  if(number) {
+    return number.replace(/,/g,'')
+  }else{
+    return 0
+  }
+}
+//查看某个groupId里面的车型项目是否相同
+function asSameCartypeInGroupList(groupId='',dataList=[]){
+  try {
+    return dataList.filter(i=>i.groupId == groupId).every(items=>items.carProType == dataList.filter(i=>i.groupId == groupId)[0].carProType)
+  } catch (error) {
+    console.log(error)
+    return true
+  }
+}
 /**
  * @description: 在tto的合并计算中。需要将最低的tto计算出来，将他的颜色表示为绿色。
  * @param {*} totalList

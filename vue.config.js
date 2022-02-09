@@ -24,47 +24,47 @@ module.exports = {
     config.resolve.alias
       .set('@', resolve('src'))
       .set('pages', resolve('src/views'))
-      if(process.env.NODE_ENV == 'dev'){
-        config.optimization.splitChunks({
-          chunks: 'initial',
-          cacheGroups: {
-            vendors: {
-              name: 'vendors',
-              test: /[\\/]node_modules[\\/]/,
-              priority: -10,
-              reuseExistingChunk: true
-            },
-            commons: {
-              name: 'commons',
-              priority: -11,
-              reuseExistingChunk: true,
-            },
+    if (process.env.NODE_ENV == 'dev') {
+      config.optimization.splitChunks({
+        chunks: 'initial',
+        cacheGroups: {
+          vendors: {
+            name: 'vendors',
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            reuseExistingChunk: true,
           },
-        })
-      }else{
-        config.optimization.splitChunks({
-          chunks: 'all',
-          maxAsyncRequests:5,
-          minChunks:2,
-          minSize:30000,
-          automaticNameDelimiter:'_',
-          maxInitialRequests:3,
-          name:true,
-          cacheGroups: {
-            vendors: {
-              name: 'vendors',
-              test: /[\\/]node_modules[\\/]/,
-              priority: -10,
-              reuseExistingChunk: true
-            },
-            commons: {
-              name: 'commons',
-              priority: -11,
-              reuseExistingChunk: true,
-            },
+          commons: {
+            name: 'commons',
+            priority: -11,
+            reuseExistingChunk: true,
           },
-        })
-      }
+        },
+      })
+    } else {
+      config.optimization.splitChunks({
+        chunks: 'all',
+        maxAsyncRequests: 5,
+        minChunks: 2,
+        minSize: 30000,
+        automaticNameDelimiter: '_',
+        maxInitialRequests: 3,
+        name: true,
+        cacheGroups: {
+          vendors: {
+            name: 'vendors',
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            reuseExistingChunk: true,
+          },
+          commons: {
+            name: 'commons',
+            priority: -11,
+            reuseExistingChunk: true,
+          },
+        },
+      })
+    }
   },
   configureWebpack: (config) => {
     config.plugins.forEach((val) => {
@@ -116,7 +116,7 @@ module.exports = {
   //引入全局css变量
   css: {
     //是否开起css分离
-    extract: process.env.NODE_ENV != 'dev',
+    extract: false,
     sourceMap: false,
     loaderOptions: {
       sass: {
@@ -137,8 +137,16 @@ module.exports = {
     port: 8080,
     https: false,
     hot: true,
-    clientLogLevel:'none',
+    clientLogLevel: 'none',
     proxy: {
+      '/eklApi': {
+        target: 'http://10.122.17.38:8043/riseekl',
+        // target: 'http://10.122.18.166:8046/mtz',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/eklApi': '',
+        },
+      },
       '/mtzApi': {
         target: 'http://10.122.17.38:8046/mtz',
         // target: 'http://10.122.18.166:8046/mtz',
@@ -148,7 +156,7 @@ module.exports = {
         },
       },
       '/tpInfoApi': {
-        target: 'http://10.122.17.38:8023',
+        target: 'http://10.122.17.38:8025',
         changeOrigin: true,
         pathRewrite: {
           '^/tpInfoApi': '',
@@ -172,7 +180,7 @@ module.exports = {
       '/usercenterApi': {
         target: 'http://10.122.17.38:8015/usercenter',
         changeOrigin: true,
-        logLevel:'info',
+        logLevel: 'info',
         pathRewrite: {
           '^/usercenterApi': '',
         },
@@ -261,11 +269,11 @@ module.exports = {
           '^/risemessage': '',
         },
       },
-      '/fileudApi': {
-        target: 'http://10.122.17.38:8034/fileud',
+      '/fileApi': {
+        target: 'http://10.122.17.38:8034',
         changeOrigin: true,
         pathRewrite: {
-          '^/fileudApi': '',
+          '^/fileApi': '',
         },
       },
       '/biddingApi': {
@@ -296,7 +304,14 @@ module.exports = {
         pathRewrite: {
           ['^' + process.env.VUE_APP_BIZLOG]: '',
         },
-      }
+      },
+      '/prApi': {
+        target: 'http://10.122.17.38:8023',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/prApi': '',
+        },
+      },
     },
   },
 }

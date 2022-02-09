@@ -12,7 +12,8 @@
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
-        <log-button v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/>
+        <!-- <log-button v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志" @click="openLog" class="margin-left25"/> -->
+        <iLoger ref="log" @close="closeLog" v-permission.auto="AEKO_APPROVAL_DETAILS_PAGE_BTN_LOG|日志"  :config="{module_obj_ae: module, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
@@ -57,17 +58,26 @@
                       </el-option>  
                   </iSelect>
                 </template>
-                   
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
                   <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                   <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]"></iInput> 
               </el-form-item>
           </el-form>
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
+        <template v-slot:header-control>
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        </template>
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_STANCELIST_TABLE|AEKO表态TABLE">
         <tableList
           class="table"
+          ref="tableList"
           index
           :lang="true"
           :tableData="tableListData"
@@ -75,6 +85,8 @@
           :tableLoading="loading"
           :selection="false"
           @handleSelectionChange="handleSelectionChange"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
         >
         <!-- AEKO号  -->
         <template #aekoCode="scope">
@@ -129,7 +141,7 @@
       <!-- 附件列表查看 -->
       <filesListDialog v-if="filesVisible" :dialogVisible="filesVisible" @changeVisible="changeVisible" :itemFile="itemFileData" @getTableList="getList"/>
     </div>
-    <iLog :show.sync="showDialog" :bizId="bizId" :module="module" />
+    <!-- <iLog :show.sync="showDialog" :bizId="bizId" :module="module" /> -->
   </iPage>
 </template>
 
@@ -144,16 +156,21 @@ import {
   iCard,
   iPagination,
   icon,
-  iMessage
+  iMessage,
+  iMultiLineInput,
+  iButton
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
 import switchPost from '@/components/switchPost'
 import { TAB,filterRole,getLeftTab } from '../data';
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import filesListDialog from '../manage/components/filesListDialog'
 import logButton from "../../../components/logButton";
 import iLog from '../log'
+import iLoger from 'rise/web/components/iLoger'
 import {
   getLiniePage,
 } from '@/api/aeko/stance'
@@ -169,7 +186,7 @@ import { roleMixins } from "@/utils/roleMixins";
 import { setLogMenu } from "@/utils";
 export default {
     name:'aekoStanceList',
-    mixins: [pageMixins,roleMixins],
+    mixins: [pageMixins,roleMixins,tableSortMixins],
     components:{
       iPage,
       iNavMvp,
@@ -185,7 +202,10 @@ export default {
       aekoSelect,
       iLog,
       logButton,
-      switchPost
+      switchPost,
+      iMultiLineInput,
+      iButton,
+      iLoger
     },
     data(){
       return{
@@ -431,8 +451,14 @@ export default {
         setLogMenu('')
         this.bizId = row.requirementAekoId
         this.showDialog = true
+        this.$refs.log.open()
       },
 
+      // 清空bizId,便于触发顶部日志按钮
+      closeLog(){
+        setLogMenu('')
+        this.bizId = ''
+      },
       // 查看描述
       checkDescribe(row){
         const { requirementAekoId,aekoCode } = row;

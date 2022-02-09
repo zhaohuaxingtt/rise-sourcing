@@ -1,7 +1,7 @@
 <!--
  * @Date: 2021-11-16 11:06:02
  * @LastEditors: caopeng
- * @LastEditTime: 2021-12-24 14:49:23
+ * @LastEditTime: 2022-01-12 11:26:04
  * @FilePath: \front-sourcing-new\src\views\partsrfq\reportList\components\negotiationBasic.vue
 -->
 <!--
@@ -13,6 +13,16 @@
   <iCard :title="$t('TPZS.TPJBXX')"
          collapse
          class="margin-top20">
+         <div class="searchBox">
+             <div>
+
+          {{language('BAOGAOMINGCHENG','报告名称')}}：  <iInput v-model="searchName" :placeholder="language('QINGSHURU','请输入')"></iInput>
+             </div>
+
+         <iButton @click="getTableList">{{language('CHAXUN','查询')}}</iButton>
+
+         </div>
+
     <tableList :tableData="tableListData"
                :tableTitle="tableTitle"
                :tableLoading="tableLoading"
@@ -39,7 +49,7 @@
 </template>
 
 <script>
-import { iCard, iPagination,iButton } from 'rise'
+import { iCard, iPagination,iButton ,iInput} from 'rise'
 import tableList from './tableList'
 import { negotiationBasicTitle } from './data'
 import { pageMixins } from '@/utils/pageMixins'
@@ -50,7 +60,8 @@ export default {
     iCard,
     tableList,
     iPagination,
-    iButton
+    iButton,
+    iInput
   },
   props: {
     searchCriteria: {
@@ -63,6 +74,7 @@ export default {
       tableListData: [],
       tableTitle: negotiationBasicTitle,
       tableLoading: false,
+      searchName:""
     }
   },
   created() {
@@ -73,6 +85,7 @@ export default {
       this.tableLoading = true
       let data = {
         ...this.searchCriteria,
+        name:this.searchName,
         instanceId: 0,
         pageNo: this.page.currPage,
         pageSize: this.page.pageSize,
@@ -82,7 +95,6 @@ export default {
         if (res.data) {
           this.page.currPage = res.pageNum
           this.page.totalCount = res.total
-          
           this.tableLoading = false
           this.tableListData = res.data
         }
@@ -98,11 +110,21 @@ export default {
       const req = {
         ids: [row.id],
       }
-      this.$emit('delTable', req)
+      this.$emit('delTable', req,3)
     },
   },
 }
 </script>
 
 <style lang="scss">
+.searchBox{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .el-input{
+        width:300px;
+        // margin-right: 200px;
+    }
+    margin-bottom: 20px;
+}
 </style>

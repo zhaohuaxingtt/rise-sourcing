@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-12-31 12:39:00
+ * @LastEditTime: 2022-01-13 11:45:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
@@ -37,18 +37,18 @@
           <iDicoptions v-model="form.rateTag" optionKey="score_dept"/>
         </el-form-item>
         <el-form-item :label="language('CONFIGSCOREDEPT_PINGFENGU', '评分股')">
-          <iInput :placeholder="language('LK_QINGSHURU','请输入')" />
+          <iInput v-model="form.deptNum" :placeholder="language('LK_QINGSHURU','请输入')" />
         </el-form-item>
         <el-form-item :label="language('CONFIGSCOREDEPT_PINGFENREN', '评分人')">
-          <iInput :placeholder="language('LK_QINGSHURU','请输入')" />
+          <iInput v-model="form.userName" :placeholder="language('LK_QINGSHURU','请输入')" />
         </el-form-item>
       </el-form>
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton @click="edit()">{{ language("BIANJI", "编辑") }}</iButton>
-        <iButton @click="add()">{{language("TIANJIA", "添加")}}</iButton>
-        <iButton @click="deleteItem()">{{ language('SHANCHU', '删除') }}</iButton>
+        <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton @click="add">{{language("TIANJIA", "添加")}}</iButton>
+        <iButton @click="deleteItem" :loading="btnLoading.deleteItem">{{ language('SHANCHU', '删除') }}</iButton>
       </template>
       <div class="body">
         <tableList
@@ -61,35 +61,42 @@
           height="100%"
           @handleSelectionChange="handleSelectionChange"
         >
+          <!-- 评分人 -->
+          <template #raterList="scope">
+            <span>{{Array.isArray(scope.row.raterList) ? scope.row.raterList.map((item)=>item.userName).join('、') : ''}}</span>
+          </template>
+          <!-- 是否需要审批 -->
+          <template #isCheck="scope">
+            <span>{{scope.row.isCheck == '0' ? language('nominationLanguage.No','否'):language('nominationLanguage.Yes','是')}}</span>
+          </template>
+          <!-- 上会复核审批人 -->
+          <template #willReviewApproverList="scope">
+            <span>{{ Array.isArray(scope.row.willReviewApproverList) ? scope.row.willReviewApproverList.map((item)=>item.userName).join('、') :''}}</span>
+          </template>
+          <!-- 会外流转定点审批人 -->
+          <template #flowApproverList="scope">
+            <span>{{Array.isArray(scope.row.flowApproverList) ? scope.row.flowApproverList.map((item)=>item.userName).join('、') : ''}}</span>
+          </template>
+          <!-- 协调人 --> 
+          <template #coordinatorList="scope">
+            <span>{{Array.isArray(scope.row.coordinatorList) ? scope.row.coordinatorList.map((item)=>item.userName).join('、') :''}}</span>
+          </template>
         </tableList>
-        <!-- 分页 -->
-          <iPagination
-            v-update
-            @size-change="handleSizeChange($event, getList)"
-            @current-change="handleCurrentChange($event, getList)"
-            background
-            :current-page="page.currPage"
-            :page-sizes="page.pageSizes"
-            :page-size="page.pageSize"
-            :layout="page.layout"
-            :total="page.totalCount"
-          />
       </div>
     </iCard>
-    <addDialog :dialogVisible="addDialogVisible" @changeVisible="changeVisible" :openType="dialogopenType"/>
+    <addDialog :dialogVisible="addDialogVisible" @changeVisible="changeVisible" :openType="dialogopenType" :multipleSelection="multipleSelection" @getList="getListSysRateDepart"/>
   </iPage>
 </template>
 
 <script>
 import { iPage, icon, iSearch, iSelect, iCard, iButton, iInput, iMessage, iNavMvp,iPagination } from "rise"
-import iLoger from 'rise/web/components/iLoger'
+// import iLoger from 'rise/web/components/iLoger'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import addDialog from "./components/addDialog"
 import { queryForm, tableTitle } from "./components/data"
-import { cloneDeep, isEqual } from "lodash"
-import { getRfqRateDeparts} from "@/api/scoreConfig/configscoredept"
+import { cloneDeep } from "lodash" 
+import { getListSysRateDepart,departsDelete} from "@/api/scoreConfig/configscoredept"
 import { TAB } from '../data'
-import { pageMixins } from "@/utils/pageMixins";
 import iDicoptions from 'rise/web/components/iDicoptions' 
 
 export default {
@@ -100,14 +107,12 @@ export default {
     iCard,
     iButton,
     iInput,
-    iLoger,
+    // iLoger,
     tableList,
     addDialog,
     iNavMvp,
-    iPagination,
     iDicoptions,
   },
-  mixins: [ pageMixins ],
   data() {
     return {
       list: TAB,
@@ -121,22 +126,26 @@ export default {
       currentRow: null,
       addDialogVisible: false,
       dialogopenType:'add',
+      btnLoading:{
+        deleteItem:false,
+      }
     }
   },
   created() {
-    this.getRfqRateDeparts()
+    this.getListSysRateDepart()
   },
   methods: {
-    getRfqRateDeparts() {
+    getListSysRateDepart() {
       this.loading = true
 
       const form = {}
       Object.keys(this.form).forEach(key => form[key] = this.form[key] || undefined)
 
-      getRfqRateDeparts(form)
+      getListSysRateDepart(form)
       .then(res => {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : []
+          console.log(this.tableListData,'tableListData')
           this.multipleSelection = []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -151,16 +160,14 @@ export default {
     },
     // 查询
     async sure() {
-      await this.handleCloseEdit()
 
-      this.getRfqRateDeparts()
+      this.getListSysRateDepart()
     },
     // 重置
     async reset() {
-      await this.handleCloseEdit() 
 
       this.form = cloneDeep(queryForm)
-      this.getRfqRateDeparts()
+      this.getListSysRateDepart()
     },
     changeVisible(type,show){
         this[type] = !!show;
@@ -180,14 +187,28 @@ export default {
       }
     },
     // 删除
-    deleteItem(){
+    async deleteItem(){
       const {multipleSelection} = this;
       if(!multipleSelection.length){
         this.$message.warning(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'));
       }else{
-        this.$confirm(this.language('submitSure','您确定要执行提交操作吗？')).then(()=>{
-
-        }).catch(()=>{});
+        await this.$confirm(
+          this.language('submitSure','您确定要执行提交操作吗？'),
+          this.language('LK_SHANCHU','删除'),
+        ).then(()=>{
+          this.btnLoading.deleteItem = true;
+          const ids = (multipleSelection.map((item)=>item.id));
+          departsDelete(ids).then((res)=>{
+            this.btnLoading.deleteItem = false;
+            if(res.code ==200){
+              this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+              this.getListSysRateDepart();
+            }else{
+              this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+            }
+          })
+          
+        }).catch(()=>{ this.btnLoading.deleteItem = false });
       }
     },
   }

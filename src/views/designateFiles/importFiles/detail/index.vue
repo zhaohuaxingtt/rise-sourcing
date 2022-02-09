@@ -25,6 +25,9 @@
                     </el-form>
                 </iSearch>
             <iCard class="margin-top20">
+                <div class="floatright margin-bottom20">
+                    <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+                </div>
                 <!-- 表格区域 -->
                 <tableList
                     class="table"
@@ -34,16 +37,19 @@
                     :tableTitle="tableTitle"
                     :tableLoading="loading"
                     @handleSelectionChange="handleSelectionChange"
+                    ref="tableList"
+                    :handleSaveSetting="handleSaveSetting"
+                    :handleResetSetting="handleResetSetting"
                 >
                     <!-- RFQ编号 -->
                     <template #rfqId="scope">
-                        <span class="flexRow">
+                        <!-- <span class="flexRow"> -->
                           <span class="openLinkText cursor " @click="goFilesList(scope.row.rfqId)"> {{scope.row.rfqId}}</span>
-                          <span class="icon-gray  cursor  " v-if="scope.row.rfqId"  @click="goFilesList(scope.row.rfqId)">
+                          <!-- <span class="icon-gray  cursor  " v-if="scope.row.rfqId"  @click="goFilesList(scope.row.rfqId)">
                               <icon symbol class="show" name="icontiaozhuananniu" />
                               <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                          </span>
-                        </span>  
+                          </span> -->
+                        <!-- </span>   -->
                     </template>
                     <!-- 状态 -->
                     <template #status="scope">
@@ -86,18 +92,21 @@ import {
     iInput,
     iDatePicker,
     iPagination,
+    iButton,
 } from 'rise'
 import { tableTitle } from './data'
 import {pageMixins} from '@/utils/pageMixins'
 import uploadList from './components/uploadList'
-import tableList from "@/views/partsign/editordetail/components/tableList";
+// import tableList from "@/views/partsign/editordetail/components/tableList";
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {
     postAffixList
 } from '@/api/designateFiles/importFiles'
 
 export default {
     name:'filesDetailList',
-    mixins:[pageMixins],
+    mixins:[pageMixins,tableSortMixins],
     components:{
         uploadList,
         iPage,
@@ -107,6 +116,7 @@ export default {
         iDatePicker,
         iPagination,
         tableList,
+        iButton,
     },
     data(){
         return{
@@ -143,6 +153,7 @@ export default {
                 searchParams[i] = '';
             }
             this.searchParams = searchParams;
+            this.sure()
         },
         // 改变弹窗是否显示状态
         changeShowStatus(){

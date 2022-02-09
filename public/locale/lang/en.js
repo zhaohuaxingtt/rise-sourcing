@@ -1,1456 +1,6380 @@
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('i18n')) :
-        typeof define === 'function' && define.amd ? define(['i18n'], factory) :
-            (global = global || self, factory(window.i18n))
-}(this, function (i18n) {
-    'use strict'
-    var oldLanguage = {
-        'delete': "delete",
-        "deleteSure":'are you sureAre you sure you want to do this?',
-        'all': 'all',
-        'search': 'search',
-        'setting': 'setting',
-        'pagination': {
-            'prev': 'prev',
-            'next': 'next',
-            'goto': 'go to',
-        },
-        'topLayout': {
-            'message': {
-                'notice': 'notice',
-                'message': 'message'
-            }
-        },
-        'partsign': {
-            'enquiry': 'enquiry',
-            'volume': 'volume',
-            'log': 'log'
-        },
-        'rfq': {
-            'RFQINQUIRE': 'Search',
-            'RFQRESET': 'Reset',
-        },
-        'partsprocure': {
-            'PARTSPROCURENEWPROCUREMENTPROJECT': 'New Procurement Project',
-            'PARTSPROCUREGENERATEFSGSNR': 'Generate FSNR/GSNR/SPNR',
-            'PARTSPROCURECANCELPARTSPURCHASE': 'Cancel Parts Purchase',
-            'PARTSPROCUREBATCHMAINTENANCE': 'Batch Maintenance',
-            'PARTSPROCURESTARTINQUIRY': 'Start Inquiry',
-            'PARTSPROCURETRANSFER': 'Transfer',
-            'PARTSPROCUREFSNFGSNFSPNR': 'FSNR/GSNR/SPNR',
-            'PARTSPROCUREPARTNUMBER': 'Number',
-            'PARTSPROCUREPARTNAMEZH': 'Name (ZH)',
-            'PARTSPROCUREPARTNAMEDE': 'Name (DE)',
-            'PARTSPROCUREPURCHASINGFACTORY': 'Purchasing Factory',
-            'PARTSPROCUREPARTITEMTYPE': 'Item Type',
-            'PARTSPROCUREVEHICLECATEGORIES': 'Vehicle Categories',
-            'PARTSPROCUREMODELPROJECT': 'Model Project',
-            'PARTSPROCUREPARTSTATUS': 'Part Status',
-            'PARTSPROCURESTATUS': 'Status',
-            'PARTSPROCUREINQUIRYBUYER': 'Inquiry Buyer',
-            'PARTSPROCURELINIE': 'Linie',
-            'PARTSPROCURECF': 'Cf',
-            'PARTSPROCURE': 'Please Enter The Number, Separated By Multiple Commas',
-            'PLEENTER': 'Please Enter',
-            'CHOOSE': 'Please Choose',
-            "CF": 'CF',
-            'PARTSPROCUREPARTSTATUSNAME': 'Project Status',
-            'SHOUGONGCAIGOUXIANGMUCHUANGJIAN': '', // 手工采购项目创建
-            'FaSong': '发送', // 发送
-            'CheHui': '撤回', // 撤回
-            'LingJianHao': '零件号', // 零件号
-            'FsnrGsnr': 'FSNR/GSNR', // FSNR/GSNR
-            'GongYingShangMingCheng': '供应商名称', // 供应商名称
-            'CbdCengJi': 'CBD层级', // CBD层级
-            'ShiFouYiBaoCbd': '是否已报CBD', // 是否已报CBD
-            'FaSongZhuangTai': '发送状态', // 发送状态
-        },
-        'partsignLanguage': {
-            'XunYuanZhiXing': 'Sourcing Operation', //寻源执行
-            'JinDuJianKong': 'Progress Monitor', //进度监控
-            'LingJianQianShou': 'Part sheet sign in', //零件签收
-            'CaiGouXiangMuJianLi': 'Create Sourcing Project', //采购项目建立
-            'RfqguanLi': 'Rfq Management', //RFQ管理
-            'DingDianGuanLi': 'Nomination Management', //定点管理
-            'RiZhi': 'Log', //日志
-            'LingJianHao': 'Part No.', //零件号
-            'LingJianMingChengZH': 'Name (zh)', //零件名称（中）
-            'SheJiKeShi': 'TP dept.', //设计科室
-            'GongChengShi': 'TP owner', //工程师
-            'CheXingXiangMu': 'Car Model', //车型项目
-            'XinXiDanFenLei': 'Sheet type', //信息单分类
-            'XinXiDanZhuangTai': 'Sheet Status', //信息单状态
-            'XinXiDanLiuShuiHao': 'TP sequence ID', //信息单流水号
-            'XunJiaZiLiaoZhuangTai': 'Inquiry Document Status', //询价资料状态
-            'MeiCheYongLiangZhuangTai': 'Quantity per car status', //每车用量状态
-            'QingShuRu': 'Please Enter', //请输入
-            'QingXuanZe': 'Please Choose', //请选择
-            'QueRen': 'Confirm', //确认
-            'ZhongZhi': 'Reset', //重置
-            'XinJianXinXiDanQianShou': 'Receipt Of New Information Sheet', //新件信息单签收
-            'ZhuanPai': 'Reassigned', //转派
-            'QianShou': 'Sign in', //签收
-            'TuiHui': 'Return', //退回
-            'LingJianMingZH': 'Part Name (Cn)', //零件名（中）
-            'LingJianMingDE': 'Part Name (Ger)', //零件名（德）
-            'ismtz': 'ISMTZ', //ISMTZ
-            'XinXiDanLeiXing': 'Information Sheet Type', //信息单类型
-            'XianShiDiTiaoDaoTiaoJiLuGongTiaoJiLu': 'Display Records From Records To Records In Total', //显示第    条到    条记录，共    条记录
-            'ShangYiYe': 'Previous Page', //上一页
-            'XiaYiYe': 'Next Page', //下一页
-            'QianWangYe': 'Go To Page' //前往    页
-        },
-        // 成本分析管理
-        'costanalysismanage': {
-            'ChengBenFenXiGuanLi': '', // 成本分析管理
-            'ShuJuWeiHu': '', // 数据维护
-
-            // 成本分析管理
-            'RfqBianHao': '', // RFQ编号
-            'QingShuRuRfqBianHao': '', // 请输入RFQ编号
-            'RfqZhuangTai': '', // RFQ状态
-            'QingXuanZeRfqZhuangTai': '', // 请选择RFQ状态
-            'LingJianHao': '', // 零件号
-            'LingJianMing': '', // 零件名
-            'QingShuRuLingJianMing': '', // 请输入零件名
-            'CheXingXiangMu': '', // 车型项目
-            'QingXuanZeCheXingXiangMu': '', // 请选择车型项目
-            'Pca': 'PCA', // PCA
-            'QingShuRuPca': '', // 请输入PCA
-            'Tia': 'TIA', // TIA
-            'QingShuRuTia': '', // 请输入TIA
-            'HeavyItem': 'Heavy Item', // Heavy Item
-            'QingXuanZeHeavyItem': '', // 请选择Heavy Item
-            'Commodity': 'COMMODITY', // COMMODITY
-            'QingXuanZeCommodity': '', // 请选择COMMODITY
-            'Linie': 'LINIE', // LINIE
-            'QingXuanZeLinie': '', // 请选择LINIE
-            'RfqLieBiao': '', // RFQ列表
-            'RfqMingCheng': '', // RFQ名称
-            'RfqLeiXing': '', // RFQ类型
-            'ChuangJianRiQi': '', // 创建日期
-            'DangQianLunCi': '', // 当前轮次
-            'BaoJiaJieZhiRiQi': '', // 报价截止日期
-            'XunJiaCaiGouYuan': '', // 询价采购员
-            'JiShuZiLiao': '', // 技术资料
-            'Cbd': '', // CBD
-            'FenXiBaoGao': '', // 分析报告
-            'FaSongShiJian':'发送时间', // 发送时间
-            'XiaZai': '', // 下载
-
-            // 数据维护
-            'RenGongChengBenShuJuWeiHu': '', // 人工成本数据维护
-            'DaoChu': '', // 导出
-            'ShangChuan': '', // 上传
-            'ShanChu': '', // 删除
-            'ShangChuanWenJianMingCheng': '', // 上传文件名称
-            'DaXiao': '', // 大小
-            'ShiJian': '', // 时间
-            'ShangChuanRen': '', // 上传人
-            'BeiZhu': '', // 备注
-
-            // rfq详情
-            'BenLunZhuangTai': '', // 本轮状态
-            'BenLunBaoJiaJieZhiRi': '', // 本轮报价截止日
-            'LunCiLeiXing': '', // 轮次类型
-
-            // 零件清单
-            'LingJianQingDan': '', // 零件清单
-            'BaoCun': '', // 保存
-            'XiaZaiJiShuZiLiao': '', // 下载技术资料
-            'XiaZaiCbd': '', // 下载CBD
-            'FsnfGsnfSpnr': 'FSNF/GSNF/SPNR', // FSNF/GSNF/SPNR
-            'LingJianMingZhong': '', // 零件名(中)
-            'LingJianMingDe': '', // 零件名(德)
-            'CaiGouGongChang': '', // 采购工厂
-            'LingJianXiangMuLeiXing': '', // 零件项目类型
-            'CheXingDaLei': '', // 车型大类
-            'RfqLunCi': '', // RFQ轮次
-            'GongYingShang': '供应商', // 供应商
-            'PcaFenXiJieGuo': '', // PCA分析结果
-            'TiaFenXiJieGuo': '', // TIA分析结果
-            'QingXuanZeXuYaoBaoCunDeShuJu': '', // 请选择需要保存的数据
-            'SavePcaResAndTiaResTips': '', // 请填写完整PCA分析结果和TIA分析结果
-
-            'BaoGaoQingDan':'报告清单',// 报告清单
-
-            // 成本分析
-            'ChengBenFenXi': '', // 成本分析
-            'FanHui': '', // 返回
-            'WenJianMingCheng': '', // 文件名称
-            'ShangChuanRiQi': '', // 上传日期
-            'QingXuanZeXuYaoXiaZaiDeWenJian': '', // 请选择需要下载的文件
-            'QingXuanZeXuYaoShanChuDeWenJian': '', // 请选择需要删除的文件
-        },
-        /*
-        <!------------------------------------------------------------------------>
-        <!--                                                                   --->
-        <!------------------------------------------------------------------------>
-        */
-
-        'LK_CAIGOUFENEFENPEIDABUDAO': 'Procurement share allocation cannot reach 100%',// 采购份额分配达不到100%
-        'LK_CAIGOUGONGCHNEGMINGCHENG': 'Name of Purchasing Factory',// 采购工厂名称
-        'LK_CAOZUOCHENGGONG': 'Operation is successful',// 操作成功
-        'LK_CHANLIANGZHANBI': 'Output ratio (%)',// 产量占比（%）
-        'LK_CAIGOUFENEFENPEIWEIDADAO': 'The current allocation has not reached 100%, please reallocate!',// 当前分配未达到100%，请重新分配！
-        'LK_CAIGOUFENEFENPEIWEIDADAODANGQIAN': 'The current allocation does not reach 100%. There is a 0 condition in the current allocation factory. Please reassign it!',// 当前分配未达到100%，请重新分配！
-        'LK_CAIGOUFENEFENPEICHAOGUO': 'The current allocation has exceeded 100%, please reallocate!',// 当前分配已超过100%，请重新分配！
-        'LK_DENGLU': 'Login',// 登录
-        'LK_GONG': 'total',// 共
-        'LK_MEIYOUKEYIXIAZHAIDEXINXI': 'There is no information available for download',// 没有可以下载的信息
-        'LK_MIMA': 'PassWord',// 密码
-        'LK_HAIWEIXUANZHEGONGCHANG': 'You have not selected a factory yet!',// 您还未选择工厂！
-        'LK_QINGCHU': 'Remove',// 清除
-        'LK_QINGTIANXIELIYOUSHURUKUANGBITIAN': 'Please fill in the reason. This input box is required',// 请填写理由，该输入框为必填
-        'LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI': 'Please select the quantity per car status',// 请选择每车用量状态
-        'LK_QINGXUANZHEXIANCAILIAOZU': 'Please Select',// 请选择先材料组
-        'LK_QINGXUANZHEXINXIDANZHUANGTAI': 'Please select the part sheet status',// 请选择信息单状态
-        'LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG': 'Please select the amount per vehicle to be exported',// 请选择需要导出的每车用量
-        'LK_QINGXUANZHEXUYAODAOCHURIZHI': 'Please select the logs that you want to export',// 请选择需要导出的日志
-        'LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN': 'Please select the attachment you want to delete',// 请选择需要删除的附件
-        'LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN': 'Please select the attachment you want to download',// 请选择需要下载的附件
-        'LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN': 'Please select the file you want to download',// 请选择需要下载文件
-        'LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU': 'Please select the part purchase item to be modified',// 请选择需要修改的零件采购项目
-        'LK_QINGXUANZHEXUNJIACAIGOUYUAN': 'Please select the forward buyer',// 请选择询价采购员
-        'LK_QINGXUANZHEXUNJIAZILIAOZHUANGTAI': 'Please select inquiry data status',// 请选择询价资料状态
-        'LK_QINGXUANZHEYITIAOJIHUAGENGXIN': 'Please select a plan to update to RFQ',// 请选择一条计划更新至询价产量
-        'LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN': 'Please select a version that you want to confirm',// 请选择一条需要确认的版本
-        'LK_QUESHICAILIAOZUBIANHAOETC': 'The category group number is missing. Please first set the category group corresponding to the part',// 缺失材料组编号，请先设置零件对应的材料组
-        'LK_QUESHIYOUXIAODEGONGYIZUID': 'A valid process group ID is missing',// 缺失有效的工艺组id
-        'LK_QUESHIYOUXIAODELINGJIANBIANHAO': 'A valid part number is missing',// 缺失有效的零件编号
-        'LK_SHANCHUCHENGGONG': 'Delete the success',// 删除成功
-        'LK_SHANGCHUAN': 'upload',// 上传
-        'LK_SHANGCHUANCHENGGONG': 'Uploaded successfully',// 上传成功
-        'LK_SHANGCHUANSHIBAI': 'Upload failed',// 上传失败
-        'LK_TIAODI': 'to',// 条到第
-        'LK_TIAOJILU': 'records',// 条记录
-        'LK_XIANSHI': 'Displays',// 显示
-        'LK_XINJIANXINXIDANTUIHUI': 'New piece of information sheet returned',// 新件信息单退回
-        'LK_YIQIANSHOU': 'Have been signed',// 新件信息单退回
-        'LK_XINJIANXINXIDANZHUANPAI': 'Delivery of new pieces of information',// 新件信息单转派
-        'LK_XIUGAICHENGGONG': 'Modify the success',// 修改成功
-        'LK_YITUIHUI': 'Returned',// 以退回
-        'LK_YONGHUMING': 'UserName',// 用户名
-        'LK_ZHUANPAICHENGGONG': 'Turn sent successfully',// 转派成功
-        'LK_AEKOHAO': 'AEKO No.',//Aeko号
-        'LK_XINDEAEKOHAO': 'AEKO No',    //  AEKO号
-        'LK_BDLLIEBIAO': 'BDL List',//BDL列表
-        'LK_BMG': 'BMG',//BMG
-        'LK_BOMDANXINXI': 'BOM information',//BOM单信息
-        'LK_CBDSHEZHI': 'CBD Setting',//CBD设置
-        'LK_CBDXUANZE': 'CBD choice',//CBD选择
-        'LK_CFFUZEREN': 'CF Owner',//CF负责人
-        'LK_CFKONGZHIYUAN': 'CF Controller',//CF控制员
-        'LK_CS_1BEIZHU': 'CS*1 Remark',//CS*1备注
-        'LK_CS_1SHANGHUIBEIZHU': 'CS*1 meeting remark',//CS*1上会备注
-        'LK_CSFPFUZEREN': 'CSF（P）Owner',//CSF（P）负责人
-        'LK_FS_GSHAO': 'FS/GS No.',//FS/GS号
-        'LK_FSHAO': 'FS No.',//FS号
-        'LK_INBOUNDWULIUFANGSHI': 'INBOUND Logistics Mode',//INBOUND物流方式
-        'LK_XINDELINIE': 'Linie',
-        'LK_LINIE': 'Linie',//Linie
-        'LK_LINIEBEIZHU': 'Linie Remark',//Linie备注
-        'LK_LINIEBUMEN': 'Linie Department',//LINIE部门
-        'LK_LINIESHANGHUIBEIZHU': 'Linie meeting remark',//Linie上会备注
-        'LK_MBDL': 'MBDL',//MBDL
-        'LK_MQPINGFENZHUANGTAI': 'MQ Rating Status',//MQ评分状态
-        'LK_MTZLINGJIAN': 'MTZ Parts',//MTZ零件
-        'LK_RFQBIANHAO': 'RFQ number ',//RFQ编号
-        'LK_RFQGUANLI': 'RFQ Management',//RFQ管理
-        'LK_RFQLEIXING': 'RFQ type',//RFQ类型
-        'LK_RFQLIST': 'RFQ List',//RFQ列表
-        'LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG': 'The RFQ part or RFQ supplier is empty and cannot create RFQ rounds',//RFQ零件或者RFQ供应商为空，不能创建RFQ轮次
-        'LK_RFQMINGCHENG': 'RFQ name',//RFQ名称
-        'LK_RFQMINGCHNEGBUNENGWEIKONG': 'The RFQ name cannot be empty',//RFQ名称不能为空
-        'LK_RFQZHUANGTAI': 'RFQ status',//RFQ状态
-        'LK_RFQZONGHEGUANLI': 'RFQ comprehensive management',//RFQ综合管理
-        'LK_RWJIA': 'RW Price',//RW价
-        'LK_SAICVOLKSWAGENKONGXIANGCAOZUO_XIAOSHI': 'SVW Empty Container_Hour',//SAIC VOLKSWAGEN空箱操作_小时
-        'LK_SAICVOLKSWAGENKUCUN_XIAOSHI': 'SVW Stock_Hour',//SAIC VOLKSWAGEN库存_小时
-        'LK_SOPRIQI': 'SOP Date',//SOP日期
-        'LK_SUM': 'SUM',//SUM
-        'LK_SVWYAOQIUEMZHOU': 'SVW required EM (week)',//SVW要求EM（周）
-        'LK_SVWSHIMO': 'SVW requires the first trial',//SVW要求EM（周）
-        'LK_SVWYAOQIUOTSZHOU': 'SVW required OTS (week)',//SVW要求OTS（周）
-        'LK_SVWYAOQIUSHOUCISHIMO': 'SVW require First tryout',//SVW要求首次试模
-        'LK_SWHAO': 'sw No.',//sw号
-        'LK_TPPINGFENZHUANGTAI': 'TP Rating Status',//TP评分状态
-        'LK_BANBENHAO': 'Version No.',//版本号
-        'LK_BANBENZHUANGTAI': 'Version Status',//版本状态
-        'LK_BAOZHUANGFUZEREN': 'Package Authority',//包装负责人
-        'LK_BAOCUN': 'Save',//保存
-        'LK_BAOCUNBINGCHUANGJIAN': 'Save and Create',//保存并创建
-        'LK_BAOJIAJIEZHIRIQI': 'Quotation deadline',//报价截止日期
-        'LK_RFQQUOTATIONDEADLINE': 'Deadline',//报价截至日期
-        'LK_NINDANGQIANHAIWEIXUANZE': 'Sorry, you have not selected yet!',//抱歉！您当前还未选择！
-        'LK_NINDANGQIANHAIWEIXUANZEXUNJIACAIGOUYUAN': 'Sorry, Forward Buyer not selected!',//抱歉！您当前还未选择询价采购员！
-        'LK_BEIZHUBUNENGWEIKONG': 'Sorry, notes cannot be empty!',//抱歉，备注不能为空！
-        'LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU': 'Sorry, Please select a craft group data here!',//抱歉，此处必须选择一条工艺组数据
-        'LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA': 'Sorry, this Project has ungenerated FSNR, unable to start inquiry',//抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您启动询价！
-        'LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININTIANJIA': 'Sorry, this Project has ungenerated FSNR, unable to add',//抱歉，当前采购项目中存在还未生成FSNR的数据，无法为您添加！
-        'LK_LIYOUBUNENGWEIKONG': 'Sorry, reason cannot be empty',//抱歉，理由不能为空！
-        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN': 'Sorry, no TP records to be signed is selected',//抱歉，您当前还未选择您需要签收的信息单！
-        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU': 'Sorry, no TP records to be cancelled is selected',//抱歉，您当前还未选择您需要取消的零件采购项目！
-        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU': 'Sorry, no Project is selected to generate FS number!',//抱歉，您当前还未选择您需要生成FS号的零件采购项目！
-        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU': 'Sorry, no project to batch maintain is selected!',//抱歉，您当前还未选择您需要生批量维护的项目！
-        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN': 'Sorry, no TP records to be rejected is selected!',//抱歉，您当前还未选择您需要退回的信息单！
-        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU': 'Sorry, no project to be reassign is selected!',//抱歉，您当前还未选择您需要转派的零件采购项目！
-        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU': 'Sorry, no rating task to be reassign is selected!',//抱歉，您当前还未选择您需要转派的评分任务！
-        'LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN': 'Sorry, no TP records to be reassign is selected!',//抱歉，您当前还未选择您需要转派的信息单！
-        'LK_NINDANGQIANHAIWEIXUANZERENWU': 'Sorry, you have not selected a task yet!',//抱歉，您当前还未选择任务！
-        'LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU': 'Sorry, no project to initiate inquiry is selected!',//抱歉，您当前还未选择需要启动询价的采购项目！
-        "LK_NOTCHOUSEDELETEPROJECT":"抱歉！您还未选择您需要删除的采购项目。", //抱歉您还未选择您需要删除的采购项目
-        'LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU': 'Sorry, no projects to apply for target price is selected!',//抱歉，您当前还未选择需要申请目标价的采购项目！
-        'LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU': 'Sorry, no project to be added is selected!',//抱歉，您当前还未选择需要添加的采购项目！
-        'LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU': 'Selections contain signed records, unable to batch sign in!',//抱歉，您选中的单据中存在已签收的信息单，不能批量签收！
-        'LK_YONGHUMINGHUOMIMABUNENGWEIKONG': 'User name or password cannot be empty!',//抱歉，用户名或密码不能为空！
-        'LK_BEIZHU': 'Notes',//备注
-        'LK_BEIZHUXINXI': 'Remarks Info.',//备注信息
-        'LK_BEIDAITILINGJIAN': 'Replaced Part',//被代替零件
-        'LK_BEITIDAILINGJIAN': 'Replaced Parts',//被替代零件
-        'LK_BENLUNBAOJIAJIEZHISHIJIAN': 'Round Quotation deadline',//本轮报价截止时间
-        'LK_BENLUNBAOJIAQIZHISHIJIAN': 'Starting and ending date of the current quotation',//本轮报价起止时间
-        'LK_BENLUNZHUANGTAI': 'Current Round Status',//本轮状态
-        'LK_BIANHAO': 'No.',//编号
-        'LK_BIANJI': 'Edit',//编辑
-        'LK_BIANSUXIANGLEIXING': 'Transmission Type',//变速箱类型
-        'LK_BIANSUXIANGPEIZHI': 'Gearbox Configuration',//变速箱配置
-        'LK_BUNENGSHANCHUZHISHAOBAOLIUYITIAO': 'Can not delete, at least keep one!',//不能删除，至少保留一条!
-        'LK_BUMENBIANHAO': 'Department No.',//部门编号
-        'LK_BUMENPINGFENLEIXING': 'Department Rating Type',//部门评分类型
-        'LK_CAILIAO': 'Material',//材料
-        'LK_CAILIAOGONGYIZUMINGCHENGDE': 'Craft(De)',//材料工艺组名称（德）
-        'LK_CAILIAOGONGYIZUMINGCHENGZHONG': 'Craft(Cn)',//材料工艺组名称（中）
-        'LK_CAILIAOZU': 'Stuff Gategory',//材料组
-        'LK_CAILIAOZULINEBUMEN': 'Dept. of the owner of the part\'s material group',//材料组LINE部门
-        'LK_CAILIAOZUBIANHAO': 'Material Group Code',//材料组编号
-        'LK_CAILIAOZUGONGYIBIANHAO': 'Stuff Gategory Stuffcode',//材料组工艺编号
-        'LK_CAILIAOZUGONGYISHEZHI': 'Stuff Gategory Setting',//材料组工艺设置
-        'LK_CAILIAOZUMINGCHENGDE': 'Stuff Name (De)',//材料组名称（德）
-        'LK_CAILIAOZUMINGCHENGZHONG': 'Stuff Name (Zh)',//材料组名称（中）
-        'LK_CAILIAOZUXINXI': 'Material Group Information',//材料组信息
-        'LK_CF': 'CF',//财务控制员
-        'LK_CAIWUMUBIAOJIA': 'CF Target Price',//财务目标价
-        'LK_CAIGOUGONGCHANG': 'Plant',//采购工厂
-        'LK_CAIGOUTIAOKUAN': 'Purchasing Terms',//采购条款
-        'LK_CAIGOUXIANGMUJIANLI': 'Create Sourcing Project',//采购项目建立
-        'LK_CAIGOUXIANGMUXINXI': 'Project Information',//采购项目信息
-        'LK_CAIGOUYUAN': 'Buyer',//采购员
-        'LK_CAIGOUYUANGONGHAO': 'Buyer\'s job number',//采购员工号
-        'LK_CANKAOBAOZHUANG': 'Reference Packaging',//参考包装
-        'LK_CANKAOBAOZHUANGDANJIAYUAN': 'Reference Unit Packaging Price (Yuan)',//参考包装单价（元）
-        'LK_CANKAOBAOZHUANGGAOMM': 'Reference packaging height (mm)',//参考包装高（mm）
-        'LK_CANKAOBAOZHUANGKUANMM': 'Reference Packaging - Width (mm)',//参考包装宽（mm）
-        'LK_CANKAOBAOZHUANGQIJULEIXING': 'Reference Packaging Equipment Type',//参考包装器具类型
-        'LK_CANKAOBAOZHUANGZHANGMM': 'Reference Packaging - Length (mm)',//参考包装长(mm)
-        'LK_CANKAOCHANLIANGJISHIJIANJIHUA': 'Volume reference and Time Schedule',//参考产量及时间计划
-        'LK_CANKAOCHEXING': 'Reference Model',//参考车型
-        'LK_CANKAOLINGJIANHAO': 'Reference Parts No.',//参考零件号
-        'LK_CANKAOLINGJIANMING': 'Reference Part Name',//参考零件名
-        'LK_CAOZUO': 'Operation',//操作
-        'LK_CAOZUOREN': 'Operator',//操作人
-        'LK_UpdateDate': 'Operating time',//操作时间
-        'LK_CHAKAN': 'To view',//查看!
-        'LK_CHAKANQUANBUBANBEN': 'View All Versions',//查看全部版本
-        'LK_INQUIRE': 'Query',//查询
-        'LK_CHAZHAOGONGYIZUGONGYINGSHANG': 'Find Craft Group Supplier',//查找工艺组供应商
-        'LK_CHAIFENCAIGOUGONGCHANG': 'Split Procurement Factory',//拆分采购工厂
-        'LK_CHANLIANGPC': 'Volume(PC)',//产量（PC）
-        'LK_CHANGJIANGMINGCHNEG': 'Task Name',//场景名称/任务名称
-        'LK_CHANGJINGMINGCHENGRENWUMINGCHENG': 'Task Name',//场景名称/任务名称
-        'LK_CHEXING': 'Car Type',//车型
-        'LK_CHEXINGDALEI': 'Model',//车型大类
-        'LK_CHEXINGDENGJI': 'Car Level',//车型等级
-        'LK_CHEXINGSHENGCHANNIANXIAN': 'Car Production Life',//车型生产年限
-        'LK_CHEXINGXIANGMU': 'Project',//车型项目
-        'LK_CHEXINGXIANGMU0S': 'Project 0S',//车型项目0S
-        'LK_CHEXINGXIANGMUPVS': 'Project PVS',//车型项目PVS
-        'LK_CHEXINGXIANGMUSOP': 'Project SOP',//车型项目SOP
-        'LK_CHEXINGXIANGMUMINGCHENG': 'Project Name',//车型项目名称
-        'LK_CHEHUI': 'Withdraw',//撤回
-        'LK_CHENGBEN': 'Cost',//成本
-        'LK_CHICUN': 'Dimension',//尺寸
-        'LK_CHUANGJIANRENGONGHAO': 'Creator Employee No.',//创建人工号
-        'LK_CHUANGJIANRENXINGMING': 'Creator Name',//创建人姓名
-        'LK_CHUANGJIANRIQI': 'Creation date',//创建日期
-        'LK_CHUANGJIANSHIJIAN': 'Creation Time',//创建时间
-        'LK_CONGLINGJIANPAISHENG': 'Created from part',//从零件派生
-        'LK_DAXIAOMB': 'Size(MB)',//大小（MB）
-        'LK_DAIBANSHIXIANG': 'To-Do List',//待办事项
-        'LK_DAIQUERENBANBEN': 'Unconfirmed Version',//待确认版本
-        'LK_DANWEI': 'Unit',//单位
-        'LK_DANGQIANBANBEN': 'Current Version',//当前版本
-        'LK_DANGQIANLUNCI': 'Current round',//当前轮次
-        'LK_DAORUSHIJIAN': 'Import time',//导入时间
-        'LK_DENGJIPEIZHI': 'Level Configuration',//等级配置
-        'LK_DIANJISHANGCHUAN': 'Click to Upload',//点击上传
-        'LK_DIANCHIRONGLIANG': 'Battery Capacity',//电池容量
-        'LK_DIANCHIYONGLIANG': 'Battery Usage',//电池用量
-        'LK_DINGDIANGUANLI': 'Nomination Management',//定点管理
-        'LK_DUQUYOUXIAODOM': 'Load Valid BOM',//读取有效BOM
-        'LK_DUQUYOUXIAOBOM': 'Load Valid BOM',//读取有效BOM
-        'LK_FACHUXUNJIA': 'RFQ send out',//发出询价
-        'LK_FADONGJILEIXING': 'Engine Type',//发动机类型
-        'LK_FADONGJIPEIZHI': 'Engine Configuration',//发动机配置
-        'LK_FASHENGSHIJIAN': 'Happening time',//发生时间
-        'LK_FASONGXUNJIA': 'Send Inquiry',//发送询价
-        'LK_FASONGZHIWODEYOUXIANG': 'Send to my mailbox',//发送至我的邮箱
-        'LK_FANXIANGQIANBAOZHUANGMAOZHONGKG': 'Package Gross Weight before repacking(KG)',//翻箱前包装毛重（KG）
-        'LK_FANXIANGQIANJICHUNIANWEIXIULÜ': 'Equipment Annual Repair Base Rate',//翻箱前基础年维修率
-        'LK_FANXIANGQIANQIJUFANCHENGSHEDIEBI': 'Equipment Return Fold Ratio before repacking',//翻箱前器具返程折叠比
-        'LK_FANXIANGQIANQIJUGAOMM': 'Equipment Height before repacking',//翻箱前器具高（mm）
-        'LK_FANXIANGQIANQIJUHAO': 'Equipment No. before repacking',//翻箱前器具号
-        'LK_FANXIANGQIANQIJUKUANMM': 'Equipment Width before repacking',//翻箱前器具宽（mm）
-        'LK_FANXIANGQIANQIJULEIXING': 'Equipment Type before repacking',//翻箱前器具类型
-        'LK_FANXIANGQIANQIJUSHOUMING': 'Equipment Life before repacking',//翻箱前器具寿命
-        'LK_FANXIANGQIANQIJUSHU': 'Equipment Price before repacking(RMB)',//翻箱前器具数
-        'LK_FANXIANGQIANQIJUZHANGMM': 'Equipment Length before repacking',//翻箱前器具长（mm）
-        'LK_FANXIANGQIANQIJUZONGHEDANJIARMB': 'Equipment Price before repacking(RMB)First',//翻箱前器具综合单价（RMB）
-        'LK_FANXIANGQIANQIJUZUJINRMBDAY': 'Equipment Rent before repacking(RMB/DAY)',//翻箱前器具租金（RMB/DAY）
-        'LK_FANHUI': 'Back',//返回
-        'LK_FUZEREN': 'Person in Charge',//负责人
-        'LK_FUZERENDIANHUA': 'Person in Charge‘s telephone',//负责人电话
-        'LK_FUZERENYOUXIANG': 'Person in Charge‘s email',//负责人邮箱
-        'LK_FUJIANLIEBIAO': 'Attachment List ',//附件列表
-        'LK_GENGXINYUANYIN': 'Update Reason',//更新原因
-        'LK_GENGXINZHIXUNJIACHANLIANG': 'Update to Enquiry Volume',//更新至询价产量
-        'LK_GONGCHENGSHI': 'TP owner',//工程师
-        'LK_GONGYI': 'Craft',//工艺
-        'LK_GONGYIHAO': 'Craft Number',//工艺号
-        'LK_SHENGMINGJISHUBANBEN': 'Display Public UI Components, Based on second seal of element, current element version',//公共UI组件展示界面，基于element的二次封装，当前element版本
-        'LK_GONGGONGUIZUJIANZHANSHIJIEMIANJIYUELEMENTDEERCIFENGZHUANGDANGQIANELEMENTBANBEN': 'Display Public UI Components, Based on second seal of element, current element version',//公共UI组件展示界面，基于element的二次封装，当前element版本
-        'LK_GONGHUOFANGSHI': 'Supply Style',//供货方式
-        'LK_GONGYINGSHANG360SHITU': 'Supplier 360° View',//供应商360°视图
-        'LK_GONGYINGSHANGSAPHAO': 'Supplier SAP ID',//供应商SAP号
-        'LK_GONGYINGSHANGTIMELINE': 'Supplier timeline',//供应商timeline!
-        'LK_GONGYINGSHANGCAILIAOZHUNBEI': 'Supplier\'s material preparation',//供应商材料准备
-        'LK_GONGYINGSHANGCHANPINGAIYAO': 'Supplier Product Profile',//供应商产品概要!
-        'LK_GONGYINGSHANGGONGSIJIESHAO': 'Supplier Company Introduction',//供应商公司介绍!
-        'LK_GONGYINGSHANGMING': 'Supplier',//供应商名
-        'LK_SAPHAO': 'SAP ID', // SAP号
-        'LK_GONGYINGSHANGMINGCHENG': 'Supplier',//供应商名称
-        'LK_GONGYINGSHANGPINGFEN': 'Supplier Rating',//供应商评分
-        'LK_GONGYINGSHANGPINGFENFUJIAN': 'Supplier Rating Attachment',//供应商评分附件
-        'LK_GONGYINGSHANGSHENGCHANCHANGDI': 'Supplier Manufacturing Spot',//供应商生产场地
-        'LK_HUIYIDIDIAN': 'Meeting place',//会议地点
-        'LK_HUIYIJIBENXINXI': 'Basic information about the meeting',//会议基本信息
-        'LK_HUIYIQITAXINXI': 'other information for the meeting',//会议其它信息
-        'LK_HUIYISHIJIAN': 'Meeting time',//会议时间
-        'LK_HUOBI': 'Currency',//货币
-        'LK_JICHUXINXI': 'Basic information',//基础信息
-        'LK_JISHUJIAOLIUHUI': 'Techonology Meeting',//技术交底会
-        'LK_EP': 'EP',//技术评分人
-        'LK_JIAGEMINGXI': 'Price Details',//价格明细
-        'LK_JIAOFU': 'Delivery',//交付
-        'LK_JIESHUBENLUNXUNJIA': 'Finish RFQ round',//结束本轮询价
-        'LK_JIESHUXIANGMU': 'Terminate',//结束项目
-        'LK_JINRIDAIBAN': 'Due Today',//今日待办
-        'LK_JINDUJIANKONG': 'Progress Monitor',//进度监控
-        'LK_JUJUE': 'Reject',//拒绝
-        'LK_KAISHINIANFEN': 'Start Year',//开始年份
-        'LK_LISHISHIYONGGAILÜ': 'Historical Applicable Rate',//历史适用概率
-        'LK_LIRUMENJING': 'For example, the procedures for the application of baggage ban, other remarks information, etc',//例如：⻔禁申请步骤，其他备注信息等
-        'LK_LINGJIANCAIGOUXIANGMU': 'Parts Project',//零件采购项目
-        'LK_LINGJIANCAIGOUXIANGMUGUANLI': 'Parts Project Management',//零件采购项目管理
-        'LK_LINGJIANCAIGOUXIANGMULEIXING': 'Parts Project Type',//零件采购项目类型
-        'LK_LINGJIANCAIGOUXIANGMUZHUANPAI': 'Parts procurement project transfer',//零件采购项目转派
-        'LK_LINGJIANCHANLIANG': 'Parts Yield',//零件产量
-        'LK_LINGJIANCHANLIANGJIHUA': 'Parts Volume Plan',//零件产量计划
-        'LK_LINGJIANCHANLIANGJILU': 'Parts Production Record',//零件产量记录
-        'LK_LINGJIANHAO': 'Part No.',//零件号
-        'LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN': 'Parts No./FSNR/RFQ No./Buyer',//零件号/FSNR/RFQ编号/采购员
-        'LK_LINGJIANHAODIERBUFEN': '2nd part of part no.',//零件号第二部分
-        'LK_LINGJIANHAODISANBUFEN': '3rd part of part no.',//零件号第三部分
-        'LK_LINGJIANHAODISIBUFEN': '4th part of part no.',//零件号第四部分
-        'LK_LINGJIANHAODIWUBUFEN': '5th part of part no.',//零件号第五部分
-        'LK_LINGJIANHAODIYIBUFEN': '1st part of part no.',//零件号第一部分
-        'LK_LINGJIANJIAGONGCHENGDUDE': 'Part processing status desc.(De)',//零件加工程度(德)
-        'LK_LINGJIANJIAGONGCHENGDUYING': 'Part processing status desc.(En)',//零件加工程度(英)
-        'LK_LINGJIANJIAGONGCHENGDUZHONG': 'Part processing status desc.(Cn)',//零件加工程度(中)
-        'LK_LINGJIANJIAGONGCHENGDUDAIMA': 'Part processing status Code',//零件加工程度代码
-        'LK_LINGJIANLEIXING': 'Type Maintenance',//零件类型
-        'LK_LINGJIANLEIXINGDAIMA': 'Part Type Code',//零件类型代码
-        'LK_LINGJIANMAOYISHUXINGDAIMA': 'Part Trade Property Code',//零件贸易属性代码
-        'LK_LINGJIANMAOYISHUXINGMIAOSHUDE': 'Parts Trade Property Desc.(De)',//零件贸易属性描述(德)
-        'LK_LINGJIANMAOYISHUXINGMIAOSHUYING': 'Parts Trade Property Desc.(En)',//零件贸易属性描述(英)
-        'LK_LINGJIANMAOYISHUXINGMIAOSHUZHONG': 'Parts Trade Property Desc.(Cn)',//零件贸易属性描述(中)
-        'LK_LINGJIANMEICHEYONGLIANG': 'Parts quantity per car status',//零件每车用量
-        'LK_LINGJIANMINGDE': 'Part Name(Ger)',//零件名（德）
-        'LK_LINGJIANMINGYING': 'Part Name(En)',//零件名（英）
-        'LK_LINGJIANMINGZHONG': 'Part Name (Cn)',//零件名（中）
-        'LK_LINGJIANMINGCHENG': 'Part Name',//零件名称
-        'LK_LINGJIANMINGCHENGDE': 'Part Name (De)',//零件名称（德）
-        'LK_LINGJIANMINGCHENGZHONG': 'Part Name (Cn)',//零件名称（中）
-        'LK_LINGJIANPINGTAIXINGZHIDAIMA': 'Part platform property code',//零件平台性质代码
-        'LK_LINGJIANPINGTAIXINGZHIMIAOSHUDE': 'Part platform property desc.(De)',//零件平台性质描述(德)
-        'LK_LINGJIANPINGTAIXINGZHIMIAOSHUYING': 'Part platform property desc.(En)',//零件平台性质描述(英)
-        'LK_LINGJIANPINGTAIXINGZHIMIAOSHUZHONG': 'Part platform property desc.(Cn)',//零件平台性质描述(中)
-        'LK_LINGJIANPINGFEN': 'Parts rating',//零件评分
-        'LK_LINGJIANQIANSHOU': 'Part sheet sign in',//零件签收
-        'LK_LINGJIANQINGDAN': 'Parts List',//零件清单
-        'LK_LINGJIANSUOSHUCAILIAOZULINIEBUMEN': 'Part\'s Material Group\'s Linie Department',//零件所属材料组LINIE部门
-        'LK_LINGJIANSUOSHUCAILIAOZUDEWENMINGCHENG': 'Part\'s Material Group Name(De)',//零件所属材料组德文名称
-        'LK_LINGJIANSUOSHUCAILIAOZUZHONGWENMINGCHENG': 'Part\'s Material Group Name(Zh)',//零件所属材料组中文名称
-        'LK_LINGJIANSUOSHUGONGYIBIANHAO': 'No. of the part\'s craft',//零件所属工艺编号
-        'LK_LINGJIANXIANGMULEIXING': 'Parts project type',//零件项目类型
-        'LK_LINGJIANYANYONGXINGZHIDAIMA': 'Part COP property code',//零件沿用性质代码
-        'LK_LINGJIANYANYONGXINGZHIMIAOSHUDE': 'Part COP property desc.(De)',//零件沿用性质描述(德)
-        'LK_LINGJIANYANYONGXINGZHIMIAOSHUYING': 'Part COP property desc.(En)',//零件沿用性质描述(英)
-        'LK_LINGJIANYANYONGXINGZHIMIAOSHUZHONG': 'Part COP property desc.(Cn)',//零件沿用性质描述(中)
-        'LK_LINGJIANZHUANGTAI': 'Parts Status',//零件状态
-        'LK_LUNCILEIXING': 'Round type',//轮次类型
-        'LK_MAOZHONGKG': 'Gross Weight (KG)',//毛重（KG）
-        'LK_MEICHEYONGLIANG': 'per car dosage',//每车用量
-        'LK_MEICHEYONGLIANGZHUANGTAI': 'Dosage state',//每车用量状态
-        'LK_MOJUYUSUANSHENQING': 'Model Budget Application',//模具预算申请
-        'LK_MUBIAOJIA': 'Target Price',//目标价
-        'LK_MUBIAOJIAZHUANGTAI': 'CF Target price status',//目标价状态
-        'LK_NIANFEN': 'Year',//年份
-        'LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU': 'Confirm to sign the new record?',//您是否确认对新件信息单进行签收？
-        'LK_PEIZHIBILI': 'Configure Ratio',//配置比例
-        'LK_PEIZHIBIANMA': 'Configuration ID',//配置编码
-        'LK_PILIANGWEIHU': 'Batch maintenance',//批量维护
-        'LK_PILIANGWEIHULINGJIANCAIGOUXIANGMU': 'Batch maintenance',//批量维护零件采购项目
-        'LK_PINGFEN': 'Grade',//评分
-        'LK_PINGFENREN': 'Grader',//评分人
-        'LK_PUTONGLUNCI': 'Common Round',//普通轮次
-        'LK_QIWANGMUBIAOJIA': 'Expected Price',//期望目标价
-        'LK_QITAPEIZHI': 'Other Configuration',//其他配置
-        'LK_QITAXINXI': 'Other Information',//其他信息
-        'LK_QIDONGXIANGMU': 'Resume',//启动项目
-        'LK_QIDONGXUNJIA': 'Start inquiry',//启动询价
-        'LK_QIANSHOU': 'Sign in',//签收
-        'LK_QIANSHOUQUEREN': 'Confirm sign in',//签收确认
-        'LK_QIANSHOURIQI': 'Sign in Date',//签收日期
-        'LK_QIANDUANBAOZHUANGMINGCHENG': 'Equipment Height before repacking',//前段包装名称
-        'LK_QINGSHURU': 'Please Enter',//请输入
-        'LK_QINGSHURUBEIZHU': 'Please enter remarks',//请输入备注
-        'LK_RFQPLEASEENTERQUERY': 'Please Enter Query',//请输入查询
-        'LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG': 'Please enter to search for supplier name, factory…',//请输入查询供应商名称
-        'LK_QINGSHURUCHAXUNGONGYINGSHANGMINGCHENGCHANGSHANG': 'Please enter to search for supplier name, factory…',//请输入查询供应商名称,厂商...
-        'LK_QINGSHURULINGJIANHAO': 'Please Enter',//请输入零件号
-        'LK_QINGSHURULINGJIANMING': 'Please Enter',//请输入零件名（中）
-        'LK_QINGTIANJIAGONGYINGSHANG': 'Please add supplier!',//请添加供应商!
-        'LK_QINGTIANXIEGONGCHENGSHI': 'Please Enter',//请填写工程师
-        'LK_QINGTIANXIESHEJIKESHI': 'Please Enter',//请填写设计科室
-        'LK_QINGTIANXIEXINXIDANLIUSHUIHAO': 'Please Enter',//请填写信息单流水号
-        'LK_QINGXUANZE': 'Please Select',//请选择
-        "LK_QINGXUANZHECHEXINGXIANGMU": 'Please select vehicle type item',//请选择车型项目
-        "LK_QINGXUANZHEXINXIFENLEI": 'Please select the information category',//请选择信息分类
-        'LK_QINGXUANZHEXUYAODAOCHUBANBEN': 'Select the version you want to export',//请选择需要导出的版本
-        'LK_QINGXUANZHEXUYAODAOCHUSHUJU': 'Select the data you want to export',//请选择需要导出的数据
-        'LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN': '',//请选择一个需要下载的版本
-        'LK_QUXIAO': 'Cancel',//取消
-        'LK_QUXIAOLINGJIANCAIGOUXIANGMU': 'Cancel Parts Purchase',//取消零件采购项目
-        'LK_QUXIAOYUANYIN': 'Terminate reason',//取消原因
-        'LK_QUANBUBANBEN': 'All Versions',//全部版本
-        'LK_QUEDING': 'Confirm',//确定
-        'LK_QUEREN': 'Confirm',//确认
-        'LK_RENKEZHOUQIZHOU': 'Authentication Period (Week) ',//认可周期（周）
-        'LK_RENWUZHONGXIN': 'Task Center',//任务中心
-        'LK_RIZHI': 'Log',//日志
-        'LK_RIHZICHAKAN': 'Show Log',//日志查看
-        'LK_RIZHICHAKAN': 'Show Log',//日志查看
-        'LK_RUCHANGBAOZHUANGMINGCHENG': 'Entry Packaging Name',//入场包装名称
-        'LK_RUKUBAOZHUANGMAOZHONG': 'Inbound Packaging Gross Weight (Kg)',//入库包装毛重（KG）
-        'LK_RUKUBAOZHUANGMAOZHONGKG': 'Inbound Packaging Gross Weight (Kg)',//入库包装毛重（KG）
-        'LK_RUKUJICHUNIANWEIXIUFEILV': 'Inbound Annual Repair Base Rate',//入库基础年维修费率
-        'LK_RUKUJICHUNIANWEIXIUFEILÜ': 'Inbound Annual Repair Base Rate',//入库基础年维修费率
-        'LK_RUKUQIJUFANCHENGSHEDIEBI': 'Inbound Equipment Return Fold Ratio',//入库器具返程折叠比
-        'LK_RUKUQIJUKUAN': 'Inbound Equipment Width (mm) ',//入库器具宽（mm）
-        'LK_RUKUQIJUKUANMM': 'Inbound Equipment Width (mm)',//入库器具宽（mm）
-        'LK_RUKUQIJULEIXING': 'Inbound Equipment Type',//入库器具类型
-        'LK_RUKUQIJUSHOUMING': 'Inbound Equipment Useful Life',//入库器具寿命
-        'LK_RUKUQIJUXINGHAO': 'Inbound Equipment ID',//入库器具型号
-        'LK_RUKUQIJUCHANG': 'nbound Equipment Length (mm)',//入库器具长（mm）
-        'LK_RUKUQIJUZHANGMM': 'Inbound Equipment Length (mm)',//入库器具长（mm）
-        'LK_RUKUQIJUZHUANGXIANGSHU': 'Inbound Equipment Load Number',//入库器具装箱数
-        'LK_RUKUQIJUZHONGHEDANJIA': 'Inbound Equipment Net Unit Price',//入库器具综合单价
-        'LK_RUKUQIJUZHONGHEDANJIARMB': 'Inbound Equipment Net Unit Price (RMB)',//入库器具综合单价
-        'LK_RUKUQIJUZUJINRMBDAY': 'Inbound Equipment Rent (RMB/Day)',//入库器具综合单价
-        'LK_RUKUQIJUZONGHEDANJIA': 'Inbound Equipment Net Unit Price',//入库器具综合单价
-        'LK_SEBIAOHAO': 'Color code',//色标号
-        'LK_SHANCHU': 'Delete',//删除
-        'LK_SHANCHUGONGYINGSHANG': 'Delete Supplier',//删除供应商
-        'LK_SHANGCHUANREN': 'Uploader',//上传人
-        'LK_SHANGCHUANRIQI': 'Upload date',//上传日期
-        'LK_SHANGQIDAZHONGYUANQU': 'Room 303, Shanghai Volkswagen Park',//上汽⼤众园区303室!
-        'LK_SHANGYIYE': 'Prevoius',//上一页
-        'LK_SHEJIGONGCHENGSHIGONGHAO': 'TP owner No.',//设计工程师工号
-        'LK_SHEJIGONGCHENGSHIHAO': 'TP owner No.',//设计工程师号
-        'LK_SHEJIGONGCHENGSHIXINGMING': 'TP Name',//设计工程师姓名
-        'LK_SHEJIKESHI': 'TP dept.',//设计科室
-        'LK_SHEZHIGONGYIZU': 'Set Craft Group',//设置工艺组
-        'LK_SHENQING': 'Apply',//申请
-        'LK_SHENQINGRWJIA': 'Apply RW Price',//申请RW价
-        'LK_SHENQINGBEIZHU': 'Application Remarks',//申请备注
-        'LK_SHENQINGCAIWUMUBIAOJIA': 'Apply CF target price',//申请财务目标价
-        'LK_SHENQINGLEIBIE': 'Application Type',//申请类别
-        'LK_SHENQINGLEIXING': 'Application Type',//申请类型
-        'LK_SHENQINGMUBIAOJIA': 'Apply Target Price',//申请目标价
-        'LK_SHENQINGRIQI': 'Application Date ',//申请日期
-        'LK_SHENQINGYUANYIN': 'Reason of Application',//申请原因
-        'LK_SHENQINGZHUANGTAI': 'Application Status',//申请状态
-        'LK_SHENDUGUOCHANHUABEIZHU': 'Deep localize remark',//深度国产化备注
-        'LK_SHENDUGUOCHANHUADAIMA': 'Deep localize code',//深度国产化代码
-        'LK_SHENPIYIJIAN': 'Approval Opinion',//审批意见
-        'LK_SHENPIZHUANGTAI': 'Approval Status',//审批状态
-        'LK_SHENGCHENGFS_GSNR': 'Generate FSNR/GSNR/SPNR',//生成FS/GSNR
-        'LK_SHENGCHENGFSHAO': 'Generate FS',//生成FS号
-        'LK_SHIJIANJIHUA': 'Time Schedule',//时间计划
-        'LK_SHIFOUERCIJIAN': 'Tier-2 or not',//是否二次件
-        'LK_SHIFOUJIARUYIYOURFQ': 'Confirm to add existing RFQ',//是否加入已有RFQ
-        'LK_CONFIRM_SIGN_RECORD_TIPS': 'Confirm to sign the new record?',//是否确认对新件信息单进行签收？
-        'LK_SHIFOUQUERENSHANCHU': 'Are you sure to delete?',//是否确认删除?
-        'LK_SHIFOUSHENDUGUOCHANHUA': 'Deep localize or not',//是否深度国产化
-        'LK_SHIFOUYANZHENGCBD': 'CBD verified or not',//是否验证CBD
-        'LK_SHIFOUZUHEXINJIANRFQ': 'Confirm to group new RFQ',//是否组合新建RFQ
-        'LK_ENTER_SEARCH_SUPPLIER_NAME_FACOTRY': 'Enter to Search for Supplier Name, Facotry Type…',//输入查询供应商名称、厂商类型...
-        'LK_SUOXUANBANBENWUFUJIAN': '',//所选版本无附件
-        'LK_TANPANZHUSHOU': 'Negotiation Assistant',//谈判助手
-        'LK_TESHULINGJIANLEIXING': 'Special Parts Type',//特殊零件类型
-        'LK_TESHUYAOQIU': 'Special Requirements',//特殊要求
-        'LK_TIJIAO': 'Submit',//提交
-        'LK_TIANJIA': 'Insert',//添加
-        'LK_TIANJIAGONGYINGSHANG': 'Add supplier',//添加供应商
-        'LK_TIANJIAZIDINGYIPINGFENXIANG': 'Add defined column',//添加自定义评分项
-        'LK_TONGZHIQUANBUGONGYINGSHANG': 'Inform all suppliers',//通知全部供应商
-        'LK_TONGZHIYIBAOJIAGONGYINGSHANG': 'Inform suppliers with quotation',//通知已报价供应商
-        'LK_TOUZIYUSUAN': 'Investment Budget',//投资预算
-        'LK_TUZHI': 'Blueprint',//图纸
-        'LK_TUZHIHETPXIANGQINGYE': 'Blueprint and TP Information',//图纸和TP详情页
-        'LK_TUZHIHETPDANXIANGQING': 'Blueprint and TP Order',//图纸和信息单详情
-        'LK_TUZHIRIQI': 'Spec. date',//图纸日期
-        'LK_TUISONGSHIJIAN': 'Forwarded time',//推送时间
-        'LK_TUICHUDENGLU': 'Log out',//退出登录!
-        'LK_TUIHUI': 'Return',//退回
-        'LK_TUIHUIYUANYIN': 'Return reason',//退回原因
-        'LK_WAIBUKAIFAFEIYUAN': 'External Developer Cost (Yuan)',//外部开发费（元）
-        'LK_WEIHU': 'Maintain',//维护
-        'LK_WEIHUREN': 'Maintainer',//维护人
-        'LK_WENXINTISHI': 'Tips',//温馨提示
-        'LK_WENJIANDAXIAOMB': 'File Size (MB)',//文件大小（MB）
-        'LK_WENJIANMING': 'File Name',//文件名
-        'LK_WENJIANMINGCHENG': 'File Name',//文件名称
-        'LK_WULIUBIAOZHUN': 'Logistics Standard',//物流标准
-        'LK_PL': 'PL',//物流审核人
-        'LK_WULIUYAOQIU': 'Logistics requirement',//物流要求
-        'LK_XIAYIYE': 'Next',//下一页
-        'LK_XIAZAI': 'Download',//下载
-        'LK_XIANGGUANCHEXING': 'Relevent car type',//相关车型
-        'LK_XIANGNEIZHOUZHUANCAILIAOZONGHEJIAGE': 'Inbox turnover material price',//箱内周转材料综合价格
-        'LK_XIANGNEIZHOUZHUANCAILIAOZONGHESHOUMING': 'Inbox turnover material life',//箱内周转材料综合寿命
-        'LK_XIANGQINGXINXI': 'Detail',//详情信息
-        "LK_TANPANZS":'谈判助手',
-        'LK_XIANGMUCHEXING': 'Project Car Type',//项目车型
-        'LK_XINJIANXINXIDANQIANSHOU': 'TP Apps Sign in',//新件信息单签收
-        'LK_XINJIANXINXILIUSHUIDANHAO': 'New Tp Sequence No.',//新件信息流水单号
-        'LK_XINJIANRFQLUNCI': 'Create New RFQ Round',//新建RFQ轮次
-        'LK_XINJIANXINXIDANBEIZHU': 'Create new part info. remark',//新建信息单备注
-        'XINJIANXINXIDANLIUSHUIHAO': 'Part info. Sheet No.',//新建信息单流水号
-        'LK_XINSHENQINGCAIWUMUBIAOJIA': 'Apply New CF Target Price',//新申请财务目标价
-        'LK_XINXIDANFENLEI': 'Sheet type',//信息单分类
-        'LK_XINXIDANLEIXING': 'Sheet type',//信息单类型
-        'LK_XINXIDANLIUSHUIHAO': 'TP sequence ID',//信息单流水号
-        'LK_XINXIDANSHENGCHENGSHIJIAN': 'Part Sheet creation time',//信息单生成时间
-        'LK_XINXIDANXIANGQING': 'Part Sheet detailed info.',//信息单详情
-        'LK_XINXIDANZHUANGTAI': 'Sheet Status',//信息单状态
-        'LK_XINXILIUSHUIDANHAO': 'Part Sheet ID',//信息流水单号
-        'LK_XUANZHUANGJIAN': 'Optional',//选装件
-        'LK_XUNYUANZHIHANG': 'Sourcing Operation',//寻源执行
-        'LK_XUNJIACAIGOUYUAN': 'Forward Buyer',//询价采购员
-        'LK_XUNJIACAIGOUYUANBEIZHU': 'Forward Buyer remark',//询价采购员备注
-        'LK_XUNJIACHANLIANGJIHUA': 'Enquiry Volume Plan',//询价产量计划
-        'LK_XUNJIAFUJIAN': 'Inquiry attachments',//询价附件
-        'LK_XUNJIATUZHI': 'Inquiry Blueprint',//询价图纸
-        'LK_XUNJIAZILIAO': 'Drawing for inquiry',//询价资料
-        'LK_XUNJIAZILIAOZHUANGTAI': 'Inquiry Documents Status',//询价资料状态
-        'LK_YANYONGCHEXINGDALEIDAIMA': 'COP Model code',//沿用车型大类代码
-        'LK_YAOQIUCSCHUIYIRIQI': 'Request CSC Meeting Date',//要求CSC会议日期
-        'LK_YIBAOCUN': 'The saved',//已保存!
-        'LK_YIBAOJIAGONGYINGSHANG': 'Supplier with quotation',//已报价供应商
-        'LK_YITIANJIADAOSHANGXIAN': 'Added to the upper limit',//已添加到上限!
-        'LK_YIXUNJIACAIGOUYUANSHANGHUIBEIZHU': 'Forward Buyer meeting remark',//已询价采购员上会备注
-        'LK_YIXUNJIAGONGYINGSHANG': 'Supplier with inquiry',//已询价供应商
-        'LK_YONGLIANG': 'Usage',//用量
-        'LK_YUQIDAIBAN': 'Overdue',//逾期待办
-        'LK_YUANPEICHANG': 'Old factory',//原配厂
-        'LK_ZAISHENQINGCAIWUMUBIAOJIA': 'Reapply CF Target Price',//再申请财务目标价
-        'LK_ZAICISHENGQINGCAIWUMUBIAOJIA': 'Reapply CF Target Price',//再新申请财务目标价
-        'LK_ZAIXINSHENQINGCAIWUMUBIAOJIA': 'Reapply CF Target Price',//再新申请财务目标价
-        'LK_ZAIXIANJINGJIA': 'Online Bidding',//在线竞价
-        'LK_ZANWUSHUJU': 'No Data',//暂无数据
-        'LK_ZENGJIADERENKEFEIYUAN': 'Addtional approval fee (Yuan)',//增加的认可费（元）
-        'LK_ZHIFUTIAOKUAN': 'Payment Terms',//支付条款
-        "LK_ZHINENGSHANGCHUANWENJIAN": 'Upload .xlsx file only',//只能上传.xlsx文件
-        'LK_ZHILIANG': 'Quality',//质量
-        'LK_MQ': 'MQ',//质量评分人
-        'LK_ZHONGLIANG': 'Weight',//重量
-        'LK_ZHONGXINSHENQING': 'Reapply',//重新申请
-        'LK_ZHONGZHI': 'Reset',//重置
-        'LK_ZHUANPAI': 'Handover',//转派
-        'LK_ZHUANGXIANGSHU': 'Number of Containers',//装箱数
-        'LK_ZHUANGTAI': 'Status',//状态
-        'LK_ZUIXINRWJIA': 'Latest RW Price',//最新RW价
-        'LK_ZUIXINFANHUIRIQI': 'Latest Response Date',//最新返回日期
-        'LK_ZUIXINSHENQINGRIQI': 'Latest Application Date',//最新申请日期
-        'LK_ZUIXINSHENQINGZHUANGTAI': 'Latest Application Status',//最新申请状态
-        'LK_SHEZHIPINGFENBUMEN': 'Set up a scoring department', //设置评分部门
-        'LK_TUISONGPINGFENRENWU': 'Push scoring task', //推送评分任务
-        'LK_GONGYIZU': 'Craft Group', //工艺组
-        'LK_GONGYISHEZHI': '', //工艺设置
-        'LK_CAILIAOZUSHAIXUAN': '', //材料组筛选
-        'LK_GONGYIZUXUANDING': '', //工艺组选定
-        "LK_CHAIFENFACTORY": '选中的工厂中,存在未分配的份额，请填写后重试！',
-        "LK_FACTORYNOTSAME": '您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改',
-        "LK_AREYOUSPLITE": '该车型项目主数据中对应多个采购工厂，是否拆分？',
-        "LK_NHWXZBDL":"您还未选择BDL",
-        'LK_XIETIAOREN': '', //协调人
-        'LK_XINZENG': 'Add', //新增
-        'LK_HUIFU': 'Recover', //恢复
-        'LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN': '', //请选择需要删除的评分部门
-        'LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN': '', //请选择需要恢复的评分部门
-        'LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN': '', //请选择完数据再做保存
-        'LK_WEIBUXITONGWENJIANWUFASHANCHU': '', // xxx 为外部系统文件, 无法删除
-        'LK_DINGDIANXINXI': '定点信息', // 定点信息
-        'LK_SHANGHUI': '上会', // 上会
-        'LK_LIUZHUAN': '流转', // 流转
-        'LK_BEIAN': '备案', // 备案
-
-        //摸具预算
-        // 'LK_CAIGOUGONGCHANG': 'Plant',//采购⼯⼚
-        // 'LK_DANWEI': 'Unit',//单位
-        'LK_BAIWANYUAN': 'Mio.',//百万元
-        'LK_ZONGYUSUAN': 'Total Budget',//总预算
-        'LK_DINGDIANJINE': 'Nomi. Price',//定点⾦额
-        'LK_ZUIXINGENGXINREN': 'Updated by',//最新更新人
-        'LK_ZUIXINGENGXINSHIJIAN': 'Updated time',//最新更新时间
-        'LK_BMDAN': 'BM sheet',//BM单
-        'LK_FUKUAN': 'Payment',//付款
-        'LK_CHEXINXIANGMU': 'Project',//⻋型项⽬
-        'LK_XIANGMULEIXIN': 'Project Type',//项⽬类型
-        'LK_DINGDIANLEIXIN': 'Nomi. Type',//定点类型
-        'LK_CHEXINLEIBIE': 'Category',//⻋型类别
-        // 'LK_QUEREN': 'Confirm',//确认
-        // 'LK_CAILIAOZU': 'MG',//材料组
-        'LK_LINJIANLIUWEIHAO': '6-digital No',//零件六位号
-        'LK_TIANJIAHANG': 'Add',//添加⾏
-        'LK_SHANCHUHANG': 'Delete',//删除⾏
-        'LK_CANKAOCHEXIN': 'Refer Carline',//参考⻋型
-        'LK_CAILIAOZUBIANHAO2': 'MG No',//材料组编号
-        'LK_CAILIAOZUMINGCENGZHONG': 'MG Name_CN',//材料组名称（中）
-        'LK_CAILIAOZUMINGCENGDE': 'MG Name_GE',//材料组名称（德）
-        'LK_ZHUANYEKESHI': 'Commodity',//专业科室
-        'LK_SHIFOUZUOGUOCOMMONSOURING': 'Common Sourcing',//是否做过Common Sourcing
-        'LK_CommonSourcing': 'Common Sourcing',
-        'LK_MOJUSHUXIN': 'Mold Property',//模具属性
-        'LK_ZP': 'ZP',//ZP
-        'LK_CANKAOCHEXINXIANGMU': 'Refer Project',//参考⻋型项⽬
-        'LK_CANKAOCHEXINXIANGMUYI': '1st Refer',//参考⻋型项⽬⼀
-        'LK_CANKAOCHEXINXIANGMUER': '2nd Refer ',//参考⻋型项⽬⼆
-        'LK_CANKAOCHEXINXIANGMUSAN': '3rd Refer',//参考⻋型项⽬三
-        'LK_QITACHEXINXIANGMUBEIXUAN': 'Others',//其它⻋型项⽬备选
-        'LK_CHEXINXIANGMULEIXIN': 'Project Type',//⻋型项⽬类型
-        'LK_CHEXINXIANGMUQIZHINIANFEN': 'Project SOP',//⻋型项⽬起⽌年份
-        'LK_CHONGZHI': 'Reset',//重置
-        'LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN': 'MG',//材料组编号/中⽂名/德⽂名
-        'LK_CHAXUN': 'Search',//查询
-        // 'LK_TIANJIA': 'Add',//添加
-        'LK_BANBENHAO2': 'Version',//版本号
-        'LK_CHEXINMINGCENG': 'Carline',//⻋型名称
-        'LK_PIZHUNTOUZHI': 'Approved Invest',//批准投资
-        'LK_FEIAEKO': 'Not AEKO',//⾮AEKO
-        'LK_WEISHENQING': 'Not Apply',//未申请
-        'LK_YISHENQING': 'Applied',//已申请
-        'LK_WEIDINGDIAN': 'Not Nomi.',//未定点
-        'LK_YIDINGDIAN': 'Nomi.',//已定点
-        'LK_WUBA': 'Not BA',//⽆BA
-        'LK_YOUBA': 'BA',//有BA
-        'LK_WUBM': 'Not BM',//⽆BM
-        'LK_YOUBM': 'BM',//有BM
-        // 'LK_BIANJI': 'Edit',//编辑
-        'LK_XIAZHAITOUZHIQINDAN': 'Download Invest List',//下载投资清单
-        'LK_YUSUANJINEPSK': 'Budget Amount PSK(Mio.RMB)',//预算⾦额PSK
-        'LK_SOURCINGLEIXIN': 'Sourcing Type',//Sourcing类型
-        'LK_CANKAOXIANGMU': 'Refer Project',//参考项⽬
-        'LK_CANKAOXINGMUMOJUJINE': 'Refer Project Nomi Amount(Mio.RMB)',//参考项⽬模具⾦额
-        'LK_YUSUANBEIZHU': 'Budget Remark',//预算备注
-        'LK_AEKOJINE': 'AEKO Amount',//AEKO⾦额
-        'LK_ZONGHEPIANCHA': 'Comp. Deviation',//综合偏差
-        'LK_ZHONGHEPIANCHAJINE': 'Comp. Deviation Amount',//综合偏差⾦额
-        'LK_GUANLIANCHEXIN': 'Associated Carline',//关联⻋型
-        // 'LK_BAOCUN': 'Save',//保存
-        'LK_BAOCUNWEIXINBANBEN': 'Save New',//保存为新版本
-        'LK_ANBILIZHESUAN': 'Convert By Proportion',//按⽐例折算
-        'LK_ZHESUANBILI': 'Proportion',//折算⽐例
-        'LK_CHEXINGXIANGMULEIXING': '车型项目类型',//车型项目类型
-        'LK_BUDGETAMOUNTTOTAL': '总预算金额',   //  总预算金额
-        'LK_APPLYINVESTAMOUNTTOTAL': '总申请投资金额',  //  总申请投资金额
-        'LK_FIXEDINVESTAMOUNTTOTAL': '总定点投资金额',  //  总定点投资金额
-        'LK_MOULDBUDGETSTATUS': '模具预算状态', //  模具预算状态
-        'LK_APPLYDATESTARTANDEND': '申请⽇期起⽌',  //  申请⽇期起⽌
-        'LK_RFQHAO': 'RFQ号',//RFQ号
-        'LK_YUSUANZHUANGTAI': '预算状态',//预算状态
-        'LK_SHENQINGREN': '申请人',//申请人
-        'LK_SHENQINGSHIJIANQIZHI': '申请时间起止',//申请时间起止
-        'LK_PIZHUAN': '批准',//批准
-        'LK_SHENQINGSHIJIANQI': '申请时间起',
-        'LK_SHENQINGSHIJIANZHI': '申请时间止',
-
-        'LK_CHEXINGXIANGMUGAILAN': 'Project Overview',//车型项目概览
-        'LK_YUSUANGUANLI': 'Budget Mgmt',//预算管理
-        'LK_YUSUANSHENPI': 'Budget Approval',//预算审批
-        'LK_BASHENQING': 'BA Application',//BA申请
-        'LK_BMSHENQING': 'BM Application',//BM申请
-        'LK_TOUZIBAOGAO': 'Investment Report',//投资报告
-
-        'LK_BANMUBER': 'BA号',  //  BA号
-        'LK_FIXEDPOINTSUPPLIER': 'Designated supplier', // 定点供应商
-        'LK_MODULFIXEDPOINTMONEY': '模具定点金额',  //  模具定点金额
-        'LK_REGINOCONTROLLER': '区域控制员',    //  区域控制员
-        'LK_RSODDNUMBERS': 'RS单号',    //  RS单号
-        'LK_SPAREPARTSNUMBER': '零件号',    //  零件号
-        'LK_BADETAILSPOPUPTXT1': '您将要申请',  //  您将要申请
-        'LK_BADETAILSPOPUPTXT2': '的BA账户，请确认金额：',   //  的BAzzh账户，请确认金额：
-        'LK_BANUMBERDISTRIBUTION': 'BA号分配',  //  BA号分配
-        'LK_AMOUNTMONEYRMB': '金额（RMB）', //  金额（RMB）
-        'LK_FIXEDINVESTTOTAL': '总定点投资金额',    //  总定点投资金额
-
-        'LK_XIAYIBU': 'Next step',    //  下一步
-
-        'LK_BAAPPROVAL': 'BA Approve',  //  BA审批
-        'LK_BADANSTATUS': 'BA单状态', // BA单状态
-        'LK_ALL': '全部',   //  全部
-        'LK_BAODDNUMBERS': 'BA单号',    //  BA单号
-        'LK_BAACCOUNTTYPE': 'BA账户类型',   //  BA账户类型
-        'LK_CURRENTAMOUNT': '当前金额', //  当前金额
-        'LK_APPLYAMOUNT': '申请金额',   //  申请金额
-        'LK_APPLYAMOUNTTHEN': '申请后金额', //  申请后金额
-        'LK_MODIFYANUMBER': '修改A号',  //  修改A号
-        'LK_CANCELAPPLY': '退回申请',   //  退回申请
-        'LK_MODIFIABLE': '可修改',  //  可修改
-        'LK_DEPNAME': '科室名称',   //  科室名称
-        'LK_ALLBAAPPLY': '所有BA申请',  //  所有BA申请
-        'LK_TOBECONFIRMEDBAAPPLY': '待确认BA申请',  //  待确认BA申请
-        'LK_TOBECONFIRMEDMONEY': '待确认追加金额',  //  待确认追加金额
-        'LK_DETAILEDTXT': '明细',   //  明细
-        'LK_MODIFYANUMBERTXTTIPS': '确定后，所有同⼀⻋型项⽬、同⼀⼯⼚的BA申请相关记录将⼀并更改',  //  确定后，所有同⼀⻋型项⽬、同⼀⼯⼚·BA申请相关记录将⼀并更改
-        'LK_PRIMARYAMBER': '原A号',     //  原A号
-        'LK_NEWAMBER': '新A号', //  新A号
-        'LK_CONFIRMANUMBER': '确认A号', //  确认A号
-        'LK_CONFIRMMONEY': '确认金额',  //  确认金额
-        'LK_INPUTNUMBERORMORE': '请输入5位或8位A号',    //  请输入5位或8位A号
-        'LK_PLEASEINPUTTIPS1': '请选择需要修改的数据',  //  请选择需要修改的数据
-        'LK_PLEASEINPUTTIPS2': '最多只能同时修改一条数据',  //  最多只能同时修改一条数据
-        'LK_PLEASEINPUTTIPS3': '需要先确认A号',  //  需要先确认A号
-        'LK_PLEASEINPUTTIPS4': '退回状态不能修改A号',  //  退回状态不能修改A号
-        'LK_PLEASEINPUTTIPS5': '车型项目尚未确认A号，请先前往',  //  车型项目尚未确认A号，请先前往
-        'LK_PLEASEINPUTTIPS6': '待确认BA申请',  //  待确认BA申请
-        'LK_PLEASEINPUTTIPS7': '页面中进行A号确认',  //  页面中进行A号确认
-        'LK_APPLYBANUMBER': '申请BA单',  //  申请BA单
-        'LK_OF': '的', //  的
-        'LK_HEAVYITEM': 'Heavy Item', // Heavy Item
-        'LK_FENXIBAOGAO': '', // 分析报告
-        'LK_LINGJIANCHENGBENFENXIYUAN': '', // 零件成本分析员
-        'LK_MUJUCHENGBENFENXIYUAN': '', // 模具成本分析员
-        'LK_FUJIANXUQIUDAORU':'附件需求导入', // 附件需求导入
-        'LK_PEIJIANXUQIUQIANSHOU': '配件需求签收', // 配件需求签收
-        'LK_PEIJIANZONGHEGUANLI': '配件综合管理', // 配件综合管理
-        'LK_FUJIANZONGHEGUANLI': '附件综合管理', // 附件综合管理
-
-        'LK_FUJIANLINGJIANHAO':'附件零件号', // 附件零件号
-        'LK_SPHAO':'SP号', // SP号
-        'LK_DAORUXIANGCI':'导⼊项次', // 导⼊项次
-        'LK_CSFKESHI':'CSF科室', // CSF科室
-        'LK_KESHI':'科室', // 科室
-        'LK_FUJIANLINGJIANMINGCHENG':'附件零件名称', // 附件零件名称
-        'LK_SHIYONGCHEXING':'使⽤⻋型', // 使⽤⻋型
-        'LK_FUJIAN':'附件', // 附件
-        'LK_FUJIANSHANGSHISHIJIAN':'附件上市时间', // 附件上市时间
-        'LK_FUJIANQINGDAN':'附件清单', // 附件清单
-        'LK_SHANGCHUANWENJIAN':'上传文件', // 上传文件
-        'LK_DAORU':'导入', // 导入
-        'LK_FUJIANMUBANXIAZAI':'附件模板下载', // 附件模板下载
-        'LK_DAORUYUAN':'导⼊员', // 导⼊员
-        'LK_YULAN':'预览', // 预览
-        'LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA':'跳转⾄零件清单添加', // 跳转⾄零件清单添加
-        'LK_ZHANSHI':'展示', // 展示
-        'LK_KAISHISHIJIAN':'开始日期', // 开始日期
-        'LK_JIESHUSHIJIAN':'结束日期', // 结束日期
-        'LK_WENJIANQINGXUANZHUANZHIZHENGCHANG':'上传附件:文件请旋转至正常方向后上传', // 上传附件:文件请旋转至正常方向后上传
-        'LK_FASONGKM': '发送KM', // 发送KM
-        'LK_DONGJIE':'冻结', // 冻结
-        'LK_NINQUERENZHIXINGDONGJIECAOZUOMA':'您确定要执行冻结操作吗？', // 您确定要执行冻结操作吗？
-        'LK_DIYINIANXUQIULIANG':'第1年需求量', // 第1年需求量
-        'LK_DIERNIANXUQIULIANG':'第2年需求量', // 第2年需求量
-        'LK_DISANNIANXUQIULIANG':'第3年需求量', // 第3年需求量
-        'LK_DISINIANXUQIULIANG':'第4年需求量', // 第4年需求量
-        'LK_DIWUNIANXUQIULIANG':'第5年需求量', // 第5年需求量
-        'LK_DILIUNIANXUQIULIANG':'第6年需求量', // 第6年需求量
-        'LK_DIQINIANXUQIULIANG':'第7年需求量', // 第7年需求量
-        'LK_DIBANIANXUQIULIANG':'第8年需求量', // 第8年需求量
-        'LK_DIJIUNIANXUQIULIANG':'第9年需求量', // 第9年需求量
-        'LK_DISHINIANXUQIULIANG':'第10年需求量', // 第10年需求量
-        'LK_QINGXUANZEZHISHAOYITIAOSHUJU': '请选择至少一条数据', // 请选择至少一条数据
-
-        'LK_BAAPPLYTISP1': '请先勾选',  //  请先选择车型项目
-        'LK_INPUTNUMBERORMORE1': '不能输入特殊字符',    //  不能输入特俗字符
-
-        'LK_ALLBMAPPLY': '所有BM申请',    //  所有BM申请
-        'LK_DAIQUERENBMDAN': '待确认BM单',    //  待确认BM单
-        'LK_AEKOZENGZHIBMDAN': 'AEKO增值BM单',  //  Aeko增值BM单
-        'LK_AEKOJIANZHIBMDAN': 'AEKO减值BM单',  //  Aeko减值BM单
-        'LK_BMDANZHUANGTAI': 'BM单状态',    //  BM单状态
-        'LK_AEKOLEIXING': 'AEKO类型',   //  AEKO类型
-        'LK_BMDANLIUSHUIHAO': 'BM单流⽔号',   //  BM单流⽔号
-        'LK_BMDANHAO': 'BM No',    //  BM单号
-        'LK_WBSBIANHAO': 'WBS编号',   //  WBS编号
-        'LK_DAIBIAOLINGJIAN': '代表零件',  //  代表零件
-        'LK_BMDANJINE':  'BM单金额', //  BM单金额
-        'LK_BMZHUANGTAI': 'BM单状态',   //  BM单状态
-        'LK_DINGDIANLEIXING': '定点类型',   //  定点类型
-        'LK_AEKOZENGZHIJINE': 'AEKO增值金额',  //  Aeko增值金额
-        'LK_XIAZAIQINGDAN': 'Download', //  下载清单
-        'LK_QUERENSHENQING': '确认申请',    //  确认申请
-        'LK_ZUOFEI': '作废', // 作废
-        'LK_DAIBIAOLINGJIANHAO': '代表零件号',  //  代表零件号
-        'LK_CAIGOUSHENQINGHAO': '采购申请号',   //  采购申请号
-        'LK_KEMU': '科目',  //  科目
-        'LK_CHENGBENZHONGXIN': '成本中心',  //  成本中心
-        'LK_CHENGBENKONGZHIYU': '成本控制域',   //  成本控制域
-        'LK_ZONGZHANGKEMU': '总账科目', //  总账科目
-        'LK_TONGJIDINGDAN': '统计订单', //  统计订单
-        'LK_WULIAOZHU': '物料组',   //  物料组
-        'LK_JIAOHUORIQI': '交货日期',   //  交货日期
-        'LK_CAIGOUZU': '采购组',    //  采购组
-        'LK_BUHANSUICHENGBEN':  '不含税成本',   //  不含税成本
-        'LK_HANSUICHENGBEN': '含税成本',    //  含税成本
-        'LK_DUANWENBEN': '短文本',  //  短文本
-        'LK_LINGJIANMINGCHENZHONG': '零件名称（中）',   //  零件名称（中）
-        'LK_LINGJIANMINGCHENDE': '零件名称（德）',  //  零件名称（德）
-        'LK_CSF': 'CSF',    //  CSF
-        'LK_BAOCUNWEIZUIXINBANBEN': 'Save New',  //
-        'LK_SHUAXIN': 'Refresh',   //  刷新
-        'LK_SHUAXINRIQI': 'Refresh Date',   //  刷新日期
-        'LK_SHANGBANNIANSOPFUKUANDUIBI': 'SOP in 1~6 Month Payment',   //  上半年SOP付款⽐
-        'LK_XIABANNIANSOPFUKUANDUIBI': 'SOP in 7-12 Month Payment',   //  下半年SOP付款⽐
-        'LK_SOPSHIJIAN': 'SOP时间', //  SOP时间
-        'LK_YUSUANJINE': 'Budget',    //  预算⾦额
-        'LK_BMJINE': 'BM Amount',  //  BM金额
-        'LK_YIFUKUANJINEWANGNIAN': 'Finished-Past Year',   //  已付款⾦额-往年
-        'LK_YIFUKUAIJINEDANGNIAN': 'Finished-This Year',   //  已付款⾦额-当年
-        'LK_JIHUAFUKUANDANGNIAN': 'Payment Plan-This Year', // 计划付款-当年
-        'LK_JIHUAFUKUANCINIAN': 'Payment Plan-Next Year', // 计划付款-次年
-        'LK_SOPFUKUANBI': 'SOP Payment Percentage',  //  SOP付款比
-        'LK_XIANGMUCAIGOUYUAN': '项目采购员',   //  项目采购员
-        'LK_XITONGJISUAN': 'Project Payment Detail',  //  系统计算
-        'LK_RENMINBI': '人民币',    //  人民币
-        'LK_BUHANSUI': '不含税',    //  不含税
-        'LK_QINGXUANZHE': '请先选择',   //  请先选择
-        'LK_XUQIUGENZHONGHAO': '需求跟踪号',    //  需求跟踪号
-        'LK_JILIANGDANWEI': '计量单位', //  计量单位
-        'LK_SHULIANG': '数量',  //  数量
-        'LK_LIZI': '例',    //  例
-        'LK_LIZISHUOMING': '代表零件号的车型项目/零件号/零件名称/供应商简称',  //  代表零件号的车型项目/零件号/零件名称/供应商简称
-        'LK_BMAPPLYBAOCUNMSG': '你有必填字段未填',  //  你有必填字段未填
-        'LK_FUKUANJIHUADINGZHIYUCHAKAN':  'CS tooling Payment plan',   //  付款计划制定与查看
-        'LK_YUAN': '元',    //  元
-        'LK_HUOBIRENMINBI':'Mio. RMB | excl.VAT', // 货币：人民币 | 单位：百万元 | 不含税
-
-        'SPR_FRM_DEP_FINANA': '财报分析', //财报分析
-        'SPR_FRM_DEP_CXWHDX': '维护呈现对象', //维护呈现对象
-        'SPR_FRM_DEP_JRHYJZ': '加入行业均值', //加入行业均值
-        'SPR_FRM_DEP_WHHYJZ': '维护行业均值', //维护行业均值
-        'SPR_FRM_DEP_OBJPLACE': '请选择呈现对象', // 请选择呈现对象
-        'SPR_FRM_DEP_AVGPLACE': '请选择行业均值', // 请选择行业均值
-
-        'LK_FUKUANKANBAN': 'Payment Dashboard',  //  付款看板
-        'LK_NIANDUJIHUA': 'Annual Plan',   //  年度计划
-        'LK_XITONGJIHUASHANGBANNIAN': 'First half year',   //  年度计划
-        'LK_XITONGJIHUAXIABANNIAN': 'Second half year',   //  年度计划
-        'LK_XITONGJISUANBACKLOG': 'Backlog',   //  年度计划
-        'LK_SHOUGONGTIAOZHENG': 'Manual',   //  年度计划
-        'LK_SHOUGONGTIAOZHENGRISK': 'Risk',   //  年度计划
-        'LK_CHEXINGXIANGMUXIANGQ': '车型项目详情',
-
-        'DAXIAO': 'Size', // 大小
-        'WENJIANDAXIAO': 'File Size(MB)', // 文件大小
-
-        'LK_MUJUTOUZIJINE': '模具投资金额', //  模具投资金额
-        'LK_MUJUTOUZIQINGDANZHUANGTAI': '模具投资清单状态', //  模具投资清单状态
-        'LK_TOUZIQINGDANZHUANGTAI': '投资清单状态', //  投资清单状态
-        'LK_YEWUCHULIZHUANGTAI': '业务处理状态',    //  业务处理状态
-        'LK_XUHAO': '序号', //  序号
-        'LK_MUJUID': '模具ID',  //  模具ID
-        'LK_GUZIBIANHAO': '固资编号',   //  固资编号
-        'LK_MUJUZHIZHAOSHANG': '模具制造商',    //  模具制造商
-        'LK_GONGYILEIXING': '工艺类型', //  工艺类型
-        'LK_GONGMUJUZHONGLEI': '工模具种类',    //  工模具种类
-        'LK_ZICHANFENLEIBIANHAO': '资产分类编号',   //  资产分类编号
-        'LK_LINGJIANZONGCHENMINGCHEN': '零件总成名称',  //  零件总成名称
-        'LK_ZONGCHENLINGJIANHAO': '总成零件号', //  总成零件号
-        'LK_GONGXIANGLINGJIANHAO': '共享零件号',    //  共享零件号
-        'LK_LINGBUJIANMINGCHEN': '零部件名称',  //  零部件名称
-        'LK_ZICHANDANJIA': '资产单价',   //  资产单价
-        'LK_FASONGGONGYIUNGSHANGQUEREN': '发送供应商确认',   //  资产单
-        'LK_FAQIBIANGENG': '发起变更',   //  资产单
-        'LK_ZHUANPAIZIJI': '转派自己',   //  转派自己
-        'LK_BIANGENDANHAO': '变更单号', //  变更单号
-        'LK_BIANGENHOUBANBEN': '变更后版本',    //  变更后版本
-        'LK_BIANGENLEIXING': '变更类型',    //  变更类型
-        'LK_FAQIREN': '发起人', //  发起人
-        'LK_BIANGENRIQI': '变更日期',   //  变更日期
-        'LK_ZICHANZONGE': '资产总额',   //  资产总额
-        'LK_TIAOZHENGSHUOMING': '调整说明', //  调整说明
-        'LK_ZHAOPIAN': '照片',  //  照片
-        'LK_GUZIMINGCHEN': '固资名称',  //  固资名称
-        'LK_DUIBUQIMEIYOUQUANXIAN': 'Sorry, your position does not have the permission of this material group', //  对不起，您所在得岗位没有该材料组权限
-        
-        'LK_GONGYINGSCAIWUZHUNGKUANG': '供应商财务状况',
-        'LK_SVWCAIGOUJINEZHANBI': 'SVW采购金额占比',
-        'LK_GONGYINGSHANGZHUYAOKEHU': '供应商主要客户',
-        'LK_CARPROJECT': 'Car Project',
-        'LK_CARPROJECTRFQ': '报价时间',
-        'LK_NUMBERPREFIX': 'No. ',
-        'LK_TURN': ' Turn',
-        'LK_NONGROUPEDBREAKTIPS': '以下为 {msg} 未分组数据',
-        'LK_CAIGOULEIXING': '采购类型', //  采购类型
-
-        // 定点管理
-        'nominationLanguage': {
-            'DingDianGuanLi': '定点管理',
-            'LingJianHao': '零件号',
-            'ShenQingDanHao': '申请单号',
-            'RFQBianHao': 'RFQ编号',
-            'LiuChengLeiXing': '流程类型',
-            'ShenQingZhuangTai': '申请状态',
-            'LingJianMing': '零件名',
-            'LingJianMingCN': '零件名(中)',
-            'LingJianMingDE': '零件名(德)',
-            'XunJiaCaiGouYuan': '询价采购员',
-            'CheXingXiangMu': '车型项目',
-            'BaoJiaYiZhiXingJiaoYan': '报价一致性校验',
-            'ShiFouDnaYiGongYingShang': '是否单一供应商',
-            'XianShiZiJi': '显示自己',
-            'Yes': '是',
-            'No': '否',
-            'DingDianShenQingZongHeGuanLi': '定点申请综合管理',
-            'XinJianLingJIanDingDianShengQIng': '新建零件定点申请',
-            'CheHui': '撤回',
-            'ShanChu': '删除',
-            'TiJiaoYiZhiXingJiaoYan': '提交一致性校验',
-            'ShenQingDanMing': '申请单名',
-            'LeiXing': '类型',
-            'XingMuLeiXing': '项目类型',
-            'HuiYi': '会议',
-            'RSZhuangTai': 'RS单状态',
-            'RSDongJieRiQi':'RS冻结日期',
-            'BaoJiaYiZhiXingZhuangTai':'报价一致性校验状态',
-            'SELDanJuQUeRenZH': 'SEL单据确认状态',
-            'DingDianRiQi': '定点日期',
-            'DINGDIANSHENQINGLEIXING':'定点申请类型', // 定点申请类型
-            'RFQANDLINGJIANQINGDAN':'RFQ & 零件清单', // RFQ & 零件清单
-            'GONGYINGSHANGANDDANYIGONGYINGSHANG':'供应商 & 单⼀供应商', // 供应商 & 单⼀供应商
-            'DINGDIANJIANYI':'定点建议', // 定点建议
-            'SHENPIRENANDSHENPIJILU':'审批人 & 审批记录', // 审批⼈ & 审批记录
-            'JUECEZILIAO':'决策资料', // 决策资料
-            'DINGDIAN':'定点', // 定点
-            'LK_QINGXUANZEYITIAORFQ': '请选择一条RFQ', // 请选择一条RFQ
-            'LK_QINGXUANZEDINGDIANSHENQINGLEIXING': '请选择定点申请类型', // 请选择定点申请类型
-            'LK_DINGDIANSHENQINGLEIXING': '定点申请类型', // 定点申请类型
-            'LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG': '该定点申请中有单一供应商', // 该定点申请中有单一供应商
-            'LK_DINGDIANXINLOI':'定点信 / LOI', // 定点信 / LOI
-            'LK_DINGDIANXIN':'定点信', // 定点信
-            'LK_LOI':'LOI', // LOI
-            'LK_DINGDIANXINBIANHAO':'定点信编号', // 定点信编号
-            'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
-            'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
-            'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
-            'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
-            'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
-            'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
-            'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
-            'LK_LOIBIANHAO':'LOI编号', // LOI编号
-            'LK_LOIZHUANGTAI':'LOI状态', // LOI状态
-            'LK_LOISHENGCHENGSHIJIAN':'LOI⽣成时间', // LOI⽣成时间
-            'LK_QUERENBINGTIJIAO':'确认并提交', // 确认并提交
-            'LK_LINEQUEREN':'LINIE确认', // LINIE确认
-            'LK_LINETUIHUI':'LINIE退回', // LINIE退回
-            'LK_GUANBI':'关闭', // 关闭
-            'LK_JIHUO':'激活', // 激活
-            'LK_GUANBIDINGDIANXIN':'关闭定点信' , // 关闭定点信
-            'LK_QINGSHURUGUANBIYUANYIN':'请输⼊关闭原因', // 请输⼊关闭原因
-            'LK_MUBIAOXUNJIACAIGOUYUAN':'目标询价采购员', // 目标询价采购员
-            'LK_MUBIAOLINE':'⽬标LINIE', // ⽬标LINIE
-            'LK_GAILAN':'概览', // 概览
-            'LK_BAOBIAOGUANLI':'报表管理', // 报表管理
-            'LK_WANCHENGDINGDIANXIN':'完成定点信', // 完成定点信
-            'LK_DAOCHUBIAOZHUNDINGDIANXIN':'导出标准定点信', // 导出标准定点信
-            'LK_LISHIDINGDIANXIN':'历史定点信', // 历史定点信
-            'LK_BIAOZHUNDINGDIANXIN':'标准定点信', // 标准定点信
-            'LK_FEIBIAOZHUNDINGDIANXIN':'⾮标准定点信',  // ⾮标准定点信
-            'LK_GONGYINGSHANGLIANXIR':'供应商联系⼈', // 供应商联系⼈
-            'LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN':'上传时文件请旋转至正常方向后上传', // 上传时文件请旋转至正常方向后上传
-            'LK_BIANJIBEIZHU':'编辑备注', // 编辑备注
-            'LK_GUANBILOI':'关闭LOI', // 关闭LOI
-            'LK_WANCHENGLOI':'完成LOI', // 完成LOI
-            'LK_DAOCHUBIAOZHUNLOI':'导出标准LOI', // 导出标准LOI
-            'LK_LISHILOI':'历史LOI', // 历史LOI
-            'LK_BIAOZHUNLOI':'标准LOI', // 标准LOI
-            'LK_FEIBIAOZHUNLOI':'⾮标准LOI', // ⾮标准LOI
-            'LK_PILIANGLOI':'批量LOI', // 批量LOI
-            'LK_KAIFALOI':'开发LOI', // 开发LOI
-            'LK_KAIFAPILIANGLOI':'开发+批量LOI' , // 开发+批量LOI
-            'LK_FRMPINGJI':'FRM评级', // FRM评级
-            'LK_CBDSTATUS':'CBD状态', // CBD状态
-        },
-        'LK_BANBENJIHUANIANFEN': 'Version Year',    //  退出编辑
-        'LK_TUICHUBIANJI1': 'Exit',    //  退出编辑
-        'LK_SHANGCHUANQINGDAN': 'Upload',    //  上传清单
-        'LK_YUEDUJIHUA': 'Monthly Plan',    //  月度计划
-        'LK_DANGNIANFUKUANJIHUA': 'Payment Plan-This Year',    //  当年付款计划
-        'LK_CINIANFUKUANJIHUA': 'Payment Plan-Next Year',    //  次年付款计划
-        'LK_YIYUE': 'Jan',    //  一月
-        'LK_ERYUE': 'Feb',    //  二月
-        'LK_SANYUE': 'Mar',    //  三月
-        'LK_SIYUE': 'Apr',    //  四月
-        'LK_WUYUE': 'May',    //  五月
-        'LK_LIUYUE': 'Jun',    //  六月
-        'LK_QIYUE': 'Jul',    //  七月
-        'LK_BAYUE': 'Aug',    //  八月
-        'LK_JIUYUE': 'Sep',    //  九月
-        'LK_SHIYUE': 'Oct',    //  十月
-        'LK_SHIYIYUE': 'Nov',    //  十一月
-        'LK_SHIERYUE': 'Dec',    //  十二月
-        "BJZS":{
-            "LK_BAOJIAZUSHOU_MJ":"报价分析汇总-模具",
-            "LK_BAOJIAZUSHOU_MJDANWEIYUAN":"报价分析汇总-模具（单元：元）"
-        },
-        'TPZS': {
-          'FENXI': 'Analysis', //分析  
-          'YULAN': 'Preview', //预览  
-          'GONGYINGSHANG': 'Supplier', // 
-          'CHEXINGXIANGMU': 'Car Model Project', //车型项目
-          'CHEXING': 'Car Model', //车型 
-          'GONGCHANG': 'Factory', //工厂 
-          'ZONGDANJIA': 'Unit Price', //总单价 
-          'GUDINGCHENGBENZHANBI': 'Percentage of Fixed Cost', //固定成本占比 
-          'FEIYONGLEIXING': 'Cost Type', //费用类型 
-          'FEIYONGZONGE': 'Total Cost', //费用总额 
-          'FENTANSHULIANG': 'Part Quantity', //分摊数量 
-          'YINGXIANGDANJIA': 'Fixed Cost(Per Part) ', //影响单价 
-          'YINGXIANGCHENGBENZHANBI': 'Percentage of Fixed Cost', //影响成本占比 
-          'XIANSHIYINGCANG': 'Show/Hide', //显示/隐藏 
-          'WANCHENG': 'Done', //完成 
-          'QINGSHURUBIANHAOMINGCHENG': 'Please enter the Code/Name', //请输入编号/名称 
-          'QINGSHURUCHUANGJIANRENMINGCHENG': 'Please enter the Creator', //请输入创建人名称 
-          'PCAZONGLAN': 'PCA Overview', //PCA总览 
-          'PINLEIGUANLIZHUSHOU': 'Material Group Management Assitant', //品类管理助手 
-          'TANPANZHUSHOU': 'Negotiation Assistant', //谈判助手 
-          'BAOGAOMINGCHENG': 'Report', //报告名称 
-          'TIAZONGLAN': 'TIA Overview', //报告名称 
-          // ---------------------------------舒杰报告清单start-----------------------------------------------
-          'BGQD': 'Report List', //报告清单 
-          'ZXFXGJ': 'Analysis Tool', //专项分析工具 
-          'BJFX': 'Quotation Analysis', //报价分析 
-          'TPJBXX': 'Negotiation Basic Information', //谈判基本信息 
-          'BGMC': 'Report', //报告名称 
-          'FXGJLX': 'Analysis Tool Type', //分析工具类型 
-          'RFQHMC': 'Report List', //报告清单 
-          'MRX': 'Default', //默认项 
-          'WJLX': 'Document Type', //文件类型 
-          'CJR': 'Creator', //创建人 
-          'SCXGRQ': 'Last-Modified Date', //上次修改日期 
-          'RFQ': 'RFQ', //RFQ RFQ
-          'FX': "Analysis:", //分析 
-          'QSRBGMC': 'Please enter Report Name...',//请输入报告名称... 
-          'QSRCLZ': 'Please enter Material group...',//请输入材料组... 
-          'QSRLJH': 'Please enter Part No...',//请输入零件号... Please enter Part No.
-          'QSRRFQMC': 'Please enter RFQ/Name...',//请输入RFQ/名称... .
-          'ZDDCBG': 'The maximum number of exported reports is 10',//最多导出10条报告 .
-          'CANNOTSELECT': 'Report not selected',//未选择需要导出的报告  .
-    
-          // ---------------------------------舒杰报告清单end-------------------------------------------------
-          // 张兵
-          'BG': "Report:", //报告						
-          'SCGXSJ': "Last Updated Time:", //上次更新时间						
-          'SCDCSJ': "Last Exported Time:", //上次导出时间						
-          'PLGYSGL': "Batch Supplier Overview", //批量供应商概览
-          'PLGYSZL': "Batch Supplier Overview", //批量供应商总览						
-          'GYS360': "Supplier 360", //供应商360						
-          'DW': "Unit", //单位					
-          'XMGL': "Project Overview:", //项目概览						
-          'XMXX': "Project Info", //项目信息
-          'FSCSS': 'Sourcing Buyer',
-          'FOP' : "FOP",					
-          'MQXTY': "MQ Coordinator", //MQ协调员						
-          'PLXTY': "PL Coordinator", //PL协调员						
-          'CFXTY': "CF Coordinator", //CF协调员						
-          'FOPQK': "FOP Status", //FOP情况						
-          'MQQK': "MQ Status", //MQ情况						
-          'PLQK': "PL Status", //PL情况						
-          'CFQK': "CF Status", //CF情况						
-          'CXLC': "Car Model Yield", //车型量产						
-          'SOPRQ': "SOP", //SOP日期						 
-          'LCHTIPS': "Green: submitted, ontime / Yellow: not submitted, due in 2 weeks / Orange: not submitted , due in 2-4 weeks / Red: not submitted, overdue ",				
-          'LJLBXX': "Part List", //零件列表信息						
-          'LJH': "Part No./part ID", //零件号						
-          'LJM': "Part ", //零件名						
-          'GC': "Plant", //工厂						
-          'SOP': "SOP", //SOP					
-          'EBR': "EBR%", //EBR%						
-          'XMMC': "Project", //项目名称						
-          'QSMZQCL': "Full Lifecycle Yield", //全生命周期产量						
-          'FZNCL': "Peak Annual Yield", //峰值年产量						
-          'GYSXX': "Supplier Info.", //供应商信息						
-          'SZD': "Location", //所在地						
-          'SFMBDL': "MBDL or Not", //是否MBDL						
-          'BJZT': "Quote Status", //报价状态						
-          'MQDF': "MQ Rating", //MQ打分						
-          'PLDF': "PL Rating", //PL打分						
-          'EPDF': "EP Rating", //EP打分						
-          'CLZMC': "Material Group", //材料组名称						
-          'GYZMC': "Process Group", //工艺组名称						
-          'DDJE': "Nominated Price", //定点金额						
-          'DDSJ': "Nominated Time", //定点时间						
-          'SQDZDZ': "SVW Address", //上汽大众地址：						
-          'ZXSE': "Total Sales:", //总销售额：						
-          'DDJV': "Nominated Record", //定点记录	
-          'DDJLMEMO': "  Recent 12 month nominated record", //定点记录					
-          'VPFX': "Volume Pricing Analysis",//Volume Pricing分析						
-          'VPFXK': "Volume Pricing Analysis Database",//Volume Pricing分析库						
-          'CXJHCLYXSLJCLFX': "Analysis of the planned yield and the actual cumulative yield",//车型计划产量与现实累计产量分析（截止2021-02）						
-          'DWL': "Unit:per vehicle",//单位：辆						
-          'ZF': "Gains",//涨幅						
-          'SMZQ': "Lifecycle",//生命周期						
-          'PLGLZS': "Category Management Assistant",//品类管理助手						
-          'JRZXFXGJ': "Analysis Tool",//进入专项分析工具						
-          'CLZRFQLJH': "Material Group, RFQ, Part Number",//材料组，RFQ，零件号…						
-          'JHCL': "Planned Yield",//计划产量						
-          'SJCL': "Actual Cumulative Yield",//实际产量						
-          'LJLB': "Parts List",//零件列表						
-          'QLLJ': "All Parts",//全量零件						
-          'YXLJ': "Selected Parts",//已选零件						
-          'CZLJ': "Search Parts",//查找零件						
-          'GYS': "Supplier",//供应商						
-          'DQJHCL': "Current Planned Yield",//当前计划产量						
-          'DQSJCL': "Current Actual Cumulative Yield",//当前实际产量						
-          'SOPSH': "SOP",//SOP时间						
-          'JRFX': "Analyze",//进入分析						
-          'CLZ': "Material Group",//材料组						
-          'SSJG': "Search Result",//搜索结果						
-          'JHCLDQSJCLSOP': "The time starting point of all information presented here is the corresponding part's last nominated time.",//计划产量、当前实际产量、SOP时间所展示信息均为该零件号在该⻋型最近⼀次定点的批量供货时间起点所对应的信息。						
-          'QXZYTSJ': "Please select a record",//请选择一条数据						
-                
-          'BQYXLJMYSJQZQLLJZTJZYXLJ': "Sorry, there is no selected data, please selected part and add to the list.",//抱歉，已选零件没有数据，请在全量零件中添加至已选零件						
-          'QUXIAN': 'Curve', //曲线						
-          'GHQSSJ': 'Start of Delivery', //供货起始时间						
-          'LCSJ': 'SOP', //量产时间						
-          'JHLCDCL': 'Production Progress', //计划量产达成率						
-          'GHJSSJ': 'EOP', //供货结束时间					
-          'JHCLJZSYM': 'Planned Yield (as of the end of last month)', //计划产量（截至上月末）						
-          'SJLJCL': 'Actual Cumulative Yield (as of the end of last month)', //实际累计产量（截至上月末）						
-          'VPJFQL': "Volume Pricing's Decline Potential", //Volume Pricing降幅潜力						
-          'JBDJ': 'Reduce the Unit Price', //降本单价						
-          'YUAN': 'CNY', //元						
-          'JHZCL': 'Total Planned Yield', //计划总产量						
-          'YJZCL': 'Expected Total Yield', //预计总产量					
-          'YSXEWJJ': 'JPV', //已实现额外降价						
-          'SCHEME_TYPE': 'Solution',  //方案类型						
-          'REPORT_TYPE': 'Report type',  //报告类型						
-          'LK_CREATE': 'Create',    //新建						
-          'LK_CUSTOM_TITLE': 'Custom', //自定义						
-          'SHOWORHIDE': 'Show/Hide',  //显示/隐藏						
-          'SORT': 'Sort',   //排序						
-          'SEARCH_PART': 'Search Parts', //请搜索零件号						
-          'PART_REQUIRE_MESSAGE': 'Part number required',//零件号不能为空						
-          'PART_UNIQUE_MESSAGE': 'Unique part number required', //零件号不能重复						
-          'YXLJZDZNTJYBT': 'Maximium 100 selected parts', //已选零件最多只能添加100条						
-          'ZUIXINDINGDIANDANJIA': 'Nominated Unit Price', //最新定点单价						
-          'MUBIAODANJIA': 'Taget Price', //目标单价						
-          'CHANLIANGLIANG': 'Yield(Per Part)', //产量（辆）						
-          'DANJIA': 'Unit Price', //单价						
-          'YUANJIAN': '（CNY/PC）', //（元/件）						
-          'BAOGAO': 'Report', //报告						
-          'JIHUAZHONGCHANLIANG': 'Planned Total Yield', //计划总产量
-          'YUJIZONGCHANLIANG': 'Expected Total Yield', //预计总产量
-          'GUDINGCHENGBEN': 'Fixed Costs', //固定成本
-          'ZONGJIANGJIA': 'Total Price Reduction', //总降价
-          'JIANGJIA': 'Price Reduction', //降价
-          'ZXFXGJNHYGLFXBG': 'There is related analysis report', //专项分析工具内有关联分析报告
-          'ZXFXGJNMYGLFXBGDHHILJ': 'There is no analysis report, include Heavy Item.', //专项分析工具内没有关联分析报告，但含heavy item零件
-          'ZXFXGJNMYGLFXBGQBHHILJ': 'There is no analysis report, and not include Heavy Item.', //专项分析工具内没有关联分析报告，且不含heavy item零件
-          'FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG': 'Total cost and Unit Price can not be empty.', //费用总额和影响单价不能为空
-    
-          'QSRCLZBHMC': 'Please enter material group code / name',//请输入材料组编号/名称
-          'QSRRFQH': 'Please enter RFQ No.',//请输入RFQ号
-          'BOBFXK': 'BoB Analysis Lib.',//BoB分析库
-          'FXMC': 'Analysis Name',//分析名称
-          'BQWFCXDJGSRCWHBCZQQRHCXSR': 'Sorry, no data found, please confirm and re-enter.',//抱歉，无法查询到结果（输入错误或不存在），请确认后重新输入
-          'QXZXYCZDSJ': 'Please select data for operate', //请选择需要操作的数据
-          'ZJSCSH': 'Last upload time:', //最近上传时间
-        },
-        'MEK': {
-          'QIEHUANCAILIAOZU': "Switch Material Group"
-        },
-        'MODEL-ORDER':{
-            'LK_RISEDINGDANHAO': 'RiSE PO No', // RiSE订单号
-            'LK_SAPDINGDANHAO': 'SAP PO no', // SAP订单号
-            'LK_GONGYINSHANG': 'Supplier', //供应商
-            'LK_CAIGOUGONGCHANG': 'Plant', //采购⼯⼚
-            'LK_LINGJIANHAO': 'Part No.', //零件号
-            'LK_CAIGOUZU': 'Purch. Group', //采购组
-            'LK_CAIGOUYUAN': 'Linie', //采购员
-            'LK_DINGDANZHUANGTAI': 'PO Status',
-            'LK_SAPFASONGZHUANGTAI': 'SAP Status', //SAP发送状态
-            'LK_HETONGZHUANGTAI': '合同状态', //合同状态
-            'LK_JINKANZIJI': 'My data', //仅看自己
-            'LK_XINJIAN': 'New', //新建
-            'LK_SHANCHU': 'Delete', //删除项次
-            'LK_ZHUANPAI': 'Handover', //转派
-            'LK_CHUANGJIANRUZHANGDAN':'创建入账单',//创建入账单
-            'LK_BAOXIAOSHENQING':'报销申请',//报销申请
-            'LK_DAOCHU': 'Export', //导出
-            'LK_QUANBUSHOUQI': 'Collapse All', //全部收起
-            'LK_QUANBUZHANKAI': 'Collapse All', //全部展开
-            'LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN': '{day} day(s) to valid date\n', //距离有效起始日期还有*天
-            'LK_CAIGOUZUCAIGOUYUAN': 'Purch. Group-Buyer', //采购组-采购员
-            'LK_DINGDANRIQI': 'PO Date',
-            'LK_DINGDAN': '订单',
-            'LK_HETONG': '合同', //合同
-            'LK_QINGKONG': 'Clear All', //清空
-            'LK_BANBENSHNGJI': 'Version update', // 版本升级
-            'LK_DINGDANLEIXING': 'PO Type',
-            'LK_QINGSHURUGONGYINGSHANGBIANMA': 'Please enter supplier code',
-            'LK_QINGSHURUCAIGOUZU': 'Please enter purch.group',
-            'LK_QINGXUANZECAIGOUGONGCHANG': 'Please select plant',
-            'LK_SUOSHUBUMEN': 'Dept', //所属部门
-            'LK_BANBEN': 'Version', //版本
-            'LK_GONGSHIDAIMA': 'Company Code', //公司代码
-            'LK_CAIGOUZUZHI': 'Purch. Orga', //采购组织
-            'LK_FUKUANTIAOJIAN': 'Pay Terms', //付款条件
-            'LK_CANZHAOCAIGOUSHENQING': 'Refer to PR',
-            'LK_SHANCHUXIANGCI': 'Delete', //删除项次
-            'LK_HUIFUXIANGCI': 'Restore', //恢复项次
-            'LK_DUQUJIAGE': 'Read price', //读取价格
-            'LK_MIAOSHU': 'Description', //描述
-            'LI_MOJUTAIZHANG':'模具台账',//模具台账
-            'LK_JIAGE':'price',//价格
-            'LK_GR/IR': 'GR/IR', //GR/IR
-            'LK_KUCUNDIDIAN': 'Inventory Location', //库存地点
-            'LK_YUANGUZIBIANHAO':'原固资编号',//原固资编号
-            'LK_FASONGSAP': 'Send SAP', //发送SAP
-            'LK_ZHUANYECAIGOUYUAN': 'Linie', //专业采购员
-            'LK_BUMEN': 'Dept', //部⻔
-            'LK_SAPBIANHAO': 'SAP no', // SAP编号
-            'LK_QIWANGGONGYINGSHANG': 'Expected suppliers', // 期望供应商
-            'LK_CAIGOUSHENQINGLEIXING': 'PR type', // 采购申请类型
-            'LK_YUPILIANGCAIGOUSHENQING': 'Pre-series PR', // 预批量采购申请
-            'LK_BIAOZHUNCAIGOUSHENQING': 'Standard PR', // 标准采购申请
-            'LK_GONGXUWEIWAI': '工序委外',
-            'LK_MOJUCAIGOUSHENQING':'模具采购申请',//模具采购申请
-            'LK_RISEBIANHAO': 'RiSE No', // RiSE编号
-            'LK_XUQIUGENZONGHAO': 'Demand tracking no', // 需求跟踪号
-            'LK_XIANGCI': 'Item', //项次
-            'LK_LINGJIANMINGCENG': 'Part Name', //零件名称
-            'LK_SHENQINGSHIJIAN': 'Create time', // 生成时间
-            'LK_WULIAOZU': 'Material Group(SAP)', //物料组
-            'LK_WBSYUANSU': 'WBS element', // WBS元素
-            'LK_LAIYUANRISEBIANHAO': 'Source PR Rise Num',
-            'LK_LAIYUANXIANGCI': 'Source PR Item',
-            'LK_RISEXIEYIHAO': 'RISE PO', //RISE协议号
-            'LK_SAPXIEYIHAO': 'SAP PO', //SAP协议号
-            'LK_GUOZHANGQIZHIRIQI': 'Posting Period', //过账起止日期
-            'LK_ZHI': 'To', //至
-            'LK_LEIXING': 'Type', //类型
-            'LK_WULIAOPINGZHENG': 'Material Voucher', //物料凭证
-            'LK_XIANGMU': 'Project', //项目
-            'LK_GUOZHANGRIQI': 'Posting Date', //过账日期
-            'LK_JINE': 'Amount', //金额
-            'LK_SAPDAORU': 'SAP import', // SAP导入
-            'LK_CSCBIANHAO': 'CSC PR no', // CSC编号
-            'LK_XIANGCILAIYUAN': 'Item Source', //项次来源
-            'LK_YICIXINGDINGDIANZHUANGTAI': 'One-time nomi. state', // 一次性定点状态
-            'LK_RIQIFANWEI': 'Period', // 日期范围
-            'LK_KAISHIRIQI': 'Start Date', //开始日期
-            'LK_JIESHURIQI': 'End Date', //结束日期
-
-        },
-
-        //  ------------------------模具相关（张入圆）------------------------------
-        'MOULDADD':{
-            'CHAKANLISHI': 'View history',  //  查看历史
-            'SOPSHIJIAN': 'SOP Date',    //  SOP时间
-            'LK_RFQBIANHAO': 'RFQ No',   //  RFQ号
-            'LK_SHENQINGREN': 'applicant',//申请人
-            'LK_PIZHUAN': 'approval',//批准
-            'LK_QINGSHURUJUJUEYUANYIN': 'Please enter the rejection reason',   //  请输入拒绝原因
-            'LK_TIANJIAHANG': 'Add', //  添加行
-            'LK_SHANCHUHANG': 'Delete',//删除⾏
-            'LK_CAILIAOZUBIANHAO2': 'MG No',//材料组编号
-            'LK_CAILIAOZUMINGCENGZHONG': 'MG Name_CN',//材料组名称（中）
-            'LK_CAILIAOZUMINGCENGDE': 'MG Name_GE',//材料组名称（德）
-            'LK_ZHUANYEKESHI': 'Commodity',//专业科室
-            'LK_CommonSourcing': 'Common Sourcing',
-            'LK_MOJUSHUXIN': 'Mold Property',//模具属性
-            'LK_LINIE': 'Linie',//Linie
-            'LK_ZP': 'ZP',//ZP
-            'LK_CANKAOCHEXINXIANGMUYI': '1st Refer',//参考⻋型项⽬⼀
-            'LK_CANKAOCHEXINXIANGMUER': '2nd Refer ',//参考⻋型项⽬⼆
-            'LK_CANKAOCHEXINXIANGMUSAN': '3rd Refer',//参考⻋型项⽬三
-            'LK_QITACHEXINXIANGMUBEIXUAN': 'Others',//其它⻋型项⽬备选
-            'LK_CHEXINXIANGMULEIXIN': 'Project Type',//⻋型项⽬类型
-            'LK_CHEXINXIANGMUQIZHINIANFEN': 'Project SOP',//⻋型项⽬起⽌年份
-            'LK_YUSUANGUANLITIPS1': 'The function of this window is to select the reference model items, and the model items without SOP are not used as reference data',    //本窗口的功能为选择参考车型项目，未SOP的车型项目不作为参考数据
-            'LK_YUSUANGUANLITIPS2': 'The referenced amount is the fixed-point amount of the mold',   //  参考的金额是模具的定点金额
-            'LK_YUSUANGUANLITIPS3': 'After selecting all conditions, the system will first calculate the historical investment amount of each material group of the first ranking vehicle type project according to your selection;',   //  选择好所有条件后，系统会根据你的选择，首先计算第一顺位车型项目的各个材料组的历史投资金额；
-            'LK_YUSUANGUANLITIPS4': 'If the calculation result of a material group is 0, calculate the historical investment amount of each material group of the second sequential vehicle project to supplement;',    //  若某个材料组的计算结果为0，则计算第二顺位车型项目的各个材料组的历史投资金额进行补充；
-            'LK_YUSUANGUANLITIPS5': 'If the calculation result of a material group is 0 again, calculate the historical investment amount of each material group of the third sequential vehicle project to supplement;',    //  若某个材料组的计算结果再次为0，则计算第三顺位车型项目的各个材料组的历史投资金额进行补充；
-            'LK_YUSUANGUANLITIPS6': 'If the calculation result of a material group is still 0, the system will select multiple model items according to [other reference] [model item type] [project year], and call the item with the largest mold investment amount as the mold investment amount of the reference item, which will be displayed on the [mold investment list page]',    //  若某个材料组的计算结果依旧为0，系统根据【其他参考】【车型项目类型】【项目年份】筛选出多个车型项目，并调用模具投资金额最大的项目作为参考项目的模具投资金额，显示在【模具投资清单页面】
-            'LK_SHIFOUJIXU': 'You have not selected the reference model item, do you want to continue?', //  您还没有选择参考车型项目，是否继续?
-            'LK_SHENGCHANGONGCHANG': 'Production plant',    //  生产工厂
-            'LK_YUSUANJINEPSK': 'Budget amount PSK(Mio.RMB)', //  预算金额PSK(Mio.RMB)
-            'LK_SOURCINGLEIXIN': 'Sourcing type',   //  Sourcing类型
-            'LK_CANKAOXIANGMU': 'Reference items', //  参考项目
-            'LK_CANKAOXINGMUMOJUJINE': 'Refer Project Nomi Amount(Mio.RMB)',//参考项⽬模具⾦额
-            'LK_YUSUANBEIZHU': 'Budget Remark',//预算备注
-            'LK_YISHENQINGJINE': 'Applied amount',  //  已申请金额
-            'LK_YIDINGDNIANJINE': 'Fixed amount', //  已定点金额
-            'LK_YIBAJINE': 'Ba amount paid',  //  已BA金额
-            'LK_YIBMJINE': 'BM amount paid',  //  已BM金额
-            'LK_LISHISHUJUKU': 'Historical database',    //  历史数据库
-            'LK_XINBANBENMINGMING': 'Naming of new edition', //  新版本命名
-            'LK_CAILIAOZU': 'Material group',   //  材料组
-            'LK_LINGJIANHAO': 'Part No',    //  零件号
-            'LK_SHENGQINGBAJINE': 'BA amount applied', //  申请BA金额
-            'LK_AHAO': 'A No',   //  A号
-            'LK_RENMINGBI': 'RMB',  //  人民币
-            'LK_DANWEI': 'Unit',    //  单位
-            'LK_BUHANSUI': 'Tax excluded',    //  不含税
-            'LK_BMDANJINE': 'BM doc amount', //  BM单金额
-            'LK_BMDANHAO': 'BM No',    //  BM单号
-            'LK_APPLYAMOUNT': 'Application amount',   //  申请金额
-            'LK_FIXEDPOINTSUPPLIER': 'Designated supplier', // 定点供应商
-            'LK_DINGDIANRIQI': 'Fixed date',  //  定点日期
-            'LK_QIANQICAIGOUYUAN': 'Preliminary purchaser',    //  前期采购员
-            'LK_SCFPFUZHEREN': 'CSF(P)person in charge',  //  CSF(P)负责人
-        },
-    }
-    var xmlHttp = ''
-    if(window.XMLHttpRequest){
-        xmlHttp = new XMLHttpRequest();
-    }else{
-        // eslint-disable-next-line no-undef
-        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState==4 && xmlHttp.status==200){
-            const data = JSON.parse(xmlHttp.responseText)
-            i18n.setLocaleMessage('en', Object.assign(oldLanguage,data.data.cn))
-        }
-    }
-    xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
-    xmlHttp.setRequestHeader("Content-type","application/json");
-    xmlHttp.setRequestHeader("Accept","*/*");
-    xmlHttp.send()
-}))
+(function(global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined'
+    ? (module.exports = factory(require('i18n')))
+    : typeof define === 'function' && define.amd
+    ? define(['i18n'], factory)
+    : ((global = global || self), factory(window.i18n))
+})(this, function(i18n) {
+  'use strict'
+  var oldLanguage = {
+    '0': '',
+    '1': 'FS/GS/SP No.',
+    '2003': '2003',
+    '2004': '2004',
+    '2005': '2005',
+    '2006': '2006',
+    '2007': '2007',
+    '2008': '2008',
+    '2009': '2009',
+    '2010': '2010',
+    '2011': '2011',
+    '2012': '2012',
+    '2013': '2013',
+    '2014': '2014',
+    '2015': '2015',
+    '2016': '2016',
+    '2017': '2017',
+    '2018': '2018',
+    '2019': '2018',
+    '2020': '2020',
+    '2021': '2021',
+    '2022': '2022',
+    '2023': '2023',
+    '2024': '2024',
+    '2025': '2025',
+    '2026': '2026',
+    '2027': '2027',
+    '2028': '2028',
+    '2029': '2029',
+    '2030': '2030',
+    '2031': '2031',
+    '2032': '2032',
+    '2033': '2033',
+    '2034': '2034',
+    '2035': '2035',
+    '2036': '2036',
+    '2037': '2037',
+    '2038': '2037',
+    '2039': '2039',
+    '2040': '2040',
+    '2041': '2041',
+    '2042': '2042',
+    '2043': '2043',
+    '2044': '2044',
+    '2045': '2045',
+    '2046': '2046',
+    '2047': '2047',
+    '2048': '2048',
+    '2049': '2049',
+    '2050': '2050',
+    '2051': '2051',
+    '2052': '2052',
+    '2053': '2053',
+    '2054': '2054',
+    '2055': '2055',
+    '2056': '2056',
+    '2057': '2057',
+    '2058': '2058',
+    '2059': '2059',
+    '2060': '2060',
+    '2061': '2061',
+    delete: 'Delete',
+    deleteSure: 'Are you sure to delete?',
+    all: 'All',
+    search: 'search',
+    setting: 'setting',
+    pagination: {
+      prev: 'prev',
+      next: 'next',
+      goto: 'go to',
+    },
+    topLayout: {
+      message: {
+        notice: 'notice',
+        message: 'message',
+      },
+    },
+    partsign: {
+      enquiry: 'enquiry',
+      volume: 'volume',
+      log: 'log',
+    },
+    rfq: {
+      RFQINQUIRE: 'Search',
+      RFQRESET: 'Reset',
+    },
+    partsprocure: {
+      PARTSPROCURENEWPROCUREMENTPROJECT: 'New Procurement Project',
+      PARTSPROCUREGENERATEFSGSNR: 'Generate FSNR/GSNR/SPNR',
+      PARTSPROCURECANCELPARTSPURCHASE: 'Cancel Parts Purchase',
+      PARTSPROCUREBATCHMAINTENANCE: 'Batch Maintenance',
+      PARTSPROCURESTARTINQUIRY: 'Start Inquiry',
+      PARTSPROCURETRANSFER: 'Transfer',
+      PARTSPROCUREFSNFGSNFSPNR: 'FSNR/GSNR/SPNR',
+      PARTSPROCUREPARTNUMBER: 'Number',
+      PARTSPROCUREPARTNAMEZH: 'Name (ZH)',
+      PARTSPROCUREPARTNAMEDE: 'Name (DE)',
+      PARTSPROCUREPURCHASINGFACTORY: 'Purchasing Factory',
+      PARTSPROCUREPARTITEMTYPE: 'Item Type',
+      PARTSPROCUREVEHICLECATEGORIES: 'Vehicle Categories',
+      PARTSPROCUREMODELPROJECT: 'Model Project',
+      PARTSPROCUREPARTSTATUS: 'Part Status',
+      PARTSPROCURESTATUS: 'Status',
+      PARTSPROCUREINQUIRYBUYER: 'Inquiry Buyer',
+      PARTSPROCURELINIE: 'Linie',
+      PARTSPROCURECF: 'Cf',
+      PARTSPROCURE: 'Please Enter The Number, Separated By Multiple Commas',
+      PLEENTER: 'Please Enter',
+      CHOOSE: 'Please Choose',
+      CF: 'CF',
+      PARTSPROCUREPARTSTATUSNAME: 'Project Status',
+      SHOUGONGCAIGOUXIANGMUCHUANGJIAN: '',
+      FaSong: '发送',
+      CheHui: '撤回',
+      LingJianHao: '零件号',
+      FsnrGsnr: 'FSNR/GSNR',
+      GongYingShangMingCheng: '供应商名称',
+      CbdCengJi: 'CBD层级',
+      ShiFouYiBaoCbd: '是否已报CBD',
+      FaSongZhuangTai: '发送状态',
+    },
+    partsignLanguage: {
+      XunYuanZhiXing: 'Sourcing Operation',
+      JinDuJianKong: 'Progress Monitor',
+      LingJianQianShou: 'Part sheet sign in',
+      CaiGouXiangMuJianLi: 'Create Sourcing Project',
+      RfqguanLi: 'Rfq Management',
+      DingDianGuanLi: 'Nomination Management',
+      RiZhi: 'Log',
+      LingJianHao: 'Part No.',
+      LingJianMingChengZH: 'Name (zh)',
+      SheJiKeShi: 'TP dept.',
+      GongChengShi: 'TP owner',
+      CheXingXiangMu: 'Car Model',
+      XinXiDanFenLei: 'Sheet type',
+      XinXiDanZhuangTai: 'Sheet Status',
+      XinXiDanLiuShuiHao: 'TP sequence ID',
+      XunJiaZiLiaoZhuangTai: 'Inquiry Document Status',
+      MeiCheYongLiangZhuangTai: 'Quantity per car status',
+      QingShuRu: 'Please Enter',
+      QingXuanZe: 'Please Choose',
+      QueRen: 'Confirm',
+      ZhongZhi: 'Reset',
+      XinJianXinXiDanQianShou: 'Receipt Of New Information Sheet',
+      ZhuanPai: 'Reassigned',
+      QianShou: 'Sign in',
+      TuiHui: 'Return',
+      LingJianMingZH: 'Part Name (Cn)',
+      LingJianMingDE: 'Part Name (Ger)',
+      ismtz: 'ISMTZ',
+      XinXiDanLeiXing: 'Information Sheet Type',
+      XianShiDiTiaoDaoTiaoJiLuGongTiaoJiLu:
+        'Display Records From Records To Records In Total',
+      ShangYiYe: 'Previous Page',
+      XiaYiYe: 'Next Page',
+      QianWangYe: 'Go To Page',
+    },
+    costanalysismanage: {
+      ChengBenFenXiGuanLi: '',
+      ShuJuWeiHu: '',
+      RfqBianHao: '',
+      QingShuRuRfqBianHao: '',
+      RfqZhuangTai: '',
+      QingXuanZeRfqZhuangTai: '',
+      LingJianHao: '',
+      LingJianMing: '',
+      QingShuRuLingJianMing: '',
+      CheXingXiangMu: '',
+      QingXuanZeCheXingXiangMu: '',
+      Pca: 'PCA',
+      QingShuRuPca: '',
+      Tia: 'TIA',
+      QingShuRuTia: '',
+      HeavyItem: 'Heavy Item',
+      QingXuanZeHeavyItem: '',
+      Commodity: 'COMMODITY',
+      QingXuanZeCommodity: '',
+      Linie: 'LINIE',
+      QingXuanZeLinie: '',
+      RfqLieBiao: '',
+      RfqMingCheng: '',
+      RfqLeiXing: '',
+      ChuangJianRiQi: '',
+      DangQianLunCi: '',
+      BaoJiaJieZhiRiQi: '',
+      XunJiaCaiGouYuan: '',
+      JiShuZiLiao: '',
+      Cbd: '',
+      FenXiBaoGao: '',
+      FaSongShiJian: '发送时间',
+      XiaZai: '',
+      RenGongChengBenShuJuWeiHu: '',
+      DaoChu: '',
+      ShangChuan: '',
+      ShanChu: '',
+      ShangChuanWenJianMingCheng: '',
+      DaXiao: '',
+      ShiJian: '',
+      ShangChuanRen: '',
+      BeiZhu: '',
+      BenLunZhuangTai: '',
+      BenLunBaoJiaJieZhiRi: '',
+      LunCiLeiXing: '',
+      LingJianQingDan: '',
+      BaoCun: '',
+      XiaZaiJiShuZiLiao: '',
+      XiaZaiCbd: '',
+      FsnfGsnfSpnr: 'FSNF/GSNF/SPNR',
+      LingJianMingZhong: '',
+      LingJianMingDe: '',
+      CaiGouGongChang: '',
+      LingJianXiangMuLeiXing: '',
+      CheXingDaLei: '',
+      RfqLunCi: '',
+      GongYingShang: '供应商',
+      PcaFenXiJieGuo: '',
+      TiaFenXiJieGuo: '',
+      QingXuanZeXuYaoBaoCunDeShuJu: '',
+      SavePcaResAndTiaResTips: '',
+      BaoGaoQingDan: '报告清单',
+      ChengBenFenXi: '',
+      FanHui: '',
+      WenJianMingCheng: '',
+      ShangChuanRiQi: '',
+      QingXuanZeXuYaoXiaZaiDeWenJian: '',
+      QingXuanZeXuYaoShanChuDeWenJian: '',
+    },
+    GONGYINGSGONGCHANGTUBIAO: '供应商工厂',
+    SHANGQIDAZONGGONGCHANGMINGCHEN: 'SVW Factory',
+    LK_CAIGOUFENEFENPEIDABUDAO:
+      'Procurement share allocation cannot reach 100%',
+    LK_CAIGOUGONGCHNEGMINGCHENG: 'Purchasing Factory',
+    LK_CAOZUOCHENGGONG: 'Operate Successfully',
+    LK_CHANLIANGZHANBI: 'Quota (%)',
+    LK_CAIGOUFENEFENPEIWEIDADAO:
+      'The current allocation has not reached 100%, please reallocate!',
+    LK_CAIGOUFENEFENPEIWEIDADAODANGQIAN:
+      'The current allocation does not reach 100%. There is a 0 condition in the current allocation factory. Please reassign it!',
+    LK_CAIGOUFENEFENPEICHAOGUO:
+      'The current allocation has exceeded 100%, please reallocate!',
+    LK_DENGLU: 'Login',
+    LK_GONG: 'a total of',
+    LK_MEIYOUKEYIXIAZHAIDEXINXI:
+      'There is no information available for download',
+    LK_MIMA: 'Password',
+    LK_HAIWEIXUANZHEGONGCHANG: 'You have not selected the factory yet',
+    LK_QINGCHU: 'Remove',
+    LK_QINGTIANXIELIYOUSHURUKUANGBITIAN:
+      'Please fill in the reason, the input box is mandatory',
+    LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI: 'Display Only Me Related',
+    LK_QINGXUANZHEXIANCAILIAOZU: 'Please select material group first',
+    LK_QINGXUANZHEXINXIDANZHUANGTAI: 'Please select info. Sheet status',
+    LK_QINGXUANZHEXUYAODAOCHUDEMEINIANYONGCHELIANG:
+      'Please select quantity per car data to export',
+    LK_QINGXUANZHEXUYAODAOCHURIZHI:
+      'Please select the logs that you want to export',
+    LK_QINGXUANZHEXUYAOSHANCHUYOUJIAN:
+      'Please select the attachment you want to delete',
+    LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN: 'please select attachment to download',
+    LK_QINGXUANZHEXUYAOXIAZHAIWENJIAN: 'Please select file to download',
+    LK_QINGXUANZHEXUYAOXIUGAIDELINGJIANCAIGOUXIANGMU:
+      'Please select Part Proj. to be modified',
+    LK_QINGXUANZHEXUNJIACAIGOUYUAN: 'Please Select Sourcing Buyer ',
+    LK_QINGXUANZHEXUNJIAZILIAOZHUANGTAI: 'Please select inquiry data status',
+    LK_QINGXUANZHEYITIAOJIHUAGENGXIN:
+      'Please select a plan to update to Sourcing Capacity',
+    LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN:
+      'Please select a version to confirm',
+    LK_QUESHICAILIAOZUBIANHAOETC:
+      'The category group number is missing. Please first set the category group corresponding to the part',
+    LK_QUESHIYOUXIAODEGONGYIZUID: 'A valid process group ID is missing',
+    LK_QUESHIYOUXIAODELINGJIANBIANHAO: 'A valid part number is missing',
+    LK_SHANCHUCHENGGONG: 'Delete Successfully',
+    LK_SHANGCHUAN: 'Upload',
+    LK_SHANGCHUANCHENGGONG: 'Upload Successfully',
+    LK_SHANGCHUANSHIBAI: 'Upload Failed',
+    LK_TIAODI: 'record to',
+    LK_TIAOJILU: 'record',
+    LK_XIANSHI: 'Display',
+    LK_XINJIANXINXIDANTUIHUI: 'Info. Sheet Return',
+    LK_YIQIANSHOU: 'Signed',
+    LK_XINJIANXINXIDANZHUANPAI: 'Info. Sheet Transfer',
+    LK_XIUGAICHENGGONG: 'Modify Successfully',
+    LK_YITUIHUI: 'Returned',
+    LK_YONGHUMING: 'Username',
+    LK_ZHUANPAICHENGGONG: 'Transfer Successfully',
+    LK_AEKOHAO: 'AEKO No.',
+    LK_XINDEAEKOHAO: 'AEKO No.',
+    LK_BDLLIEBIAO: 'BDL List',
+    LK_BMG: 'BMG',
+    LK_BOMDANXINXI: 'BOM information',
+    LK_CBDSHEZHI: 'CBD Setting',
+    LK_CBDXUANZE: 'CBD Selection',
+    LK_CFFUZEREN: 'CF Owner',
+    LK_CFKONGZHIYUAN: 'CF Controller',
+    LK_CS_1BEIZHU: 'CS*1 Remark',
+    LK_CS_1SHANGHUIBEIZHU: 'CS*1 meeting remark',
+    LK_CSFPFUZEREN: 'CSF（P）Owner',
+    LK_FS_GSHAO: 'FS/GS No.',
+    LK_FSHAO: 'FS No.',
+    LK_INBOUNDWULIUFANGSHI: 'INBOUND Logistics Method',
+    LK_XINDELINIE: 'Linie',
+    LK_LINIE: 'LINIE',
+    LK_LINIEBEIZHU: 'Linie Remark',
+    LK_LINIEBUMEN: 'LINIE Dept.',
+    LK_LINIESHANGHUIBEIZHU: 'Linie meeting remark',
+    LK_MBDL: 'MBDL',
+    LK_MQPINGFENZHUANGTAI: 'MQ Rating Status',
+    LK_MTZLINGJIAN: 'MTZ',
+    LK_RFQBIANHAO: 'RFQ No.',
+    LK_RFQGUANLI: 'RFQ Mgmt.',
+    LK_RFQLEIXING: 'RFQ type',
+    LK_RFQLIST: 'RFQ List',
+    LK_RFQLINGJIANHUOZHERFQGONGYINGSHANGWEIKONG:
+      'RFQ part or RFQ supplier is blank, RFQ round cannot be created',
+    LK_RFQMINGCHENG: 'RFQ Name',
+    LK_RFQMINGCHNEGBUNENGWEIKONG: 'RFQ Name cannot be blank',
+    LK_RFQZHUANGTAI: 'RFQ Status',
+    LK_RFQZONGHEGUANLI: 'RFQ Comprehensive. Mgmt.',
+    LK_RWJIA: 'RW Price',
+    LK_SAICVOLKSWAGENKONGXIANGCAOZUO_XIAOSHI: 'SVW Empty Container_Hour',
+    LK_SAICVOLKSWAGENKUCUN_XIAOSHI: 'SVW Stock_Hour',
+    LK_SOPRIQI: 'SOP Date',
+    LK_SUM: 'SUM',
+    LK_SVWYAOQIUEMZHOU: 'SVW required EM (week)',
+    LK_SVWSHIMO: 'SVW requires the first trial',
+    LK_SVWYAOQIUOTSZHOU: 'SVW required OTS (week)',
+    LK_SVWYAOQIUSHOUCISHIMO: 'SVW require First tryout',
+    LK_SWHAO: 'SVW No.',
+    LK_TPPINGFENZHUANGTAI: 'TP Rating Status',
+    LK_BANBENHAO: 'Version No.',
+    LK_BANBENZHUANGTAI: 'Version Status',
+    LK_BAOZHUANGFUZEREN: 'Pkg. Owner',
+    LK_BAOCUN: 'Save',
+    LK_BAOCUNBINGCHUANGJIAN: 'Save and Create',
+    LK_BAOJIAJIEZHIRIQI: 'Quotation deadline',
+    LK_RFQQUOTATIONDEADLINE: 'Deadline',
+    LK_NINDANGQIANHAIWEIXUANZE: "Sorry! you haven't select any data!",
+    LK_NINDANGQIANHAIWEIXUANZEXUNJIACAIGOUYUAN:
+      'Sorry! You have not selected the sourcing buyer yet!',
+    LK_BEIZHUBUNENGWEIKONG: '',
+    LK_CICHUBIXUXUANZEYITIAOGONGYIZUSHUJU:
+      'Sorry, only one process group data can be selected here',
+    LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININQIDONGXUNJIA:
+      'Sorry, this Project has ungenerated FSNR, unable to start inquiry',
+    LK_DANGQIANCAIGOUXIANGMUZHONGCUNZAIHAIWEISHENGCHENGFSNRDESHUJUWUFAWEININTIANJIA:
+      'Sorry, this Project has ungenerated FSNR, unable to add',
+    LK_LIYOUBUNENGWEIKONG: 'Sorry, reason cannot be blank',
+    LK_NINDANGQIANHAIWEIXUANZENINXUYAOQIANSHOUDEXINXIDAN:
+      'Sorry, you have not selected info sheet to sign-in',
+    LK_NINDANGQIANHAIWEIXUANZENINXUYAOQUXIAODELINGJIANCAIGOUXIANGMU:
+      'Sorry,, you have not selected part procurement project to terminate!',
+    LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGCHENGFSHAODELINGJIANCAIGOUXIANGMU:
+      'Sorry, you have not selected the part procurement project  to generate FS No.!',
+    LK_NINDANGQIANHAIWEIXUANZENINXUYAOSHENGPILIANGWEIHUDEXIANGMU:
+      'Sorry, you have not selected production plan to maintain',
+    LK_NINDANGQIANHAIWEIXUANZENINXUYAOTUIHUIDEXINXIDAN:
+      'Sorry, you have not selected info sheet to return',
+    LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDELINGJIANCAIGOUXIANGMU:
+      'Sorry,, you have not selected part procurement project to transfer!',
+    LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU:
+      "Sorry, you haven't select rating task to assign",
+    LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEXINXIDAN:
+      'Sorry, you have not selected info sheet to transfer',
+    LK_NINDANGQIANHAIWEIXUANZERENWU: 'Sorry, you have not select any task!',
+    LK_NINDANGQIANHAIWEIXUANZEXUYAOQIDONGXUNJIADECAIGOUXIANGMU:
+      'Sorry, you have not selected procurement project to inquiry! ',
+    LK_NOTCHOUSEDELETEPROJECT: '抱歉！您还未选择您需要删除的采购项目。',
+    LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGMUBIAOJIADECAIGOUXIANGMU:
+      'Sorry, you have not select any procurement project to apply for target price!',
+    LK_NINDANGQIANHAIWEIXUANZEXUYAOTIANJIADECAIGOUXIANGMU:
+      'Sorry, you have not select any procurement project to add',
+    LK_NINXUANZHONGDEDANJUZHONGCUNZAIYIQIANSHOUDEXINXIDANBUNENGPILIANGQIANSHOU:
+      'Selections contain signed records, unable to batch sign in!',
+    LK_YONGHUMINGHUOMIMABUNENGWEIKONG:
+      'Sorry, user or password cannot be blank!',
+    LK_BEIZHU: 'Remark',
+    LK_BEIZHUXINXI: 'Remark',
+    LK_BEIDAITILINGJIAN: 'Part',
+    LK_BEITIDAILINGJIAN: 'Substituted Part',
+    LK_BENLUNBAOJIAJIEZHISHIJIAN: 'Cur. Round Quotation Closing Time',
+    LK_BENLUNBAOJIAQIZHISHIJIAN: 'Cur. Round Quotation Period ',
+    LK_BENLUNZHUANGTAI: 'Cur. Status',
+    LK_BIANHAO: 'No.',
+    LK_BIANJI: 'Edit',
+    LK_BIANSUXIANGLEIXING: '',
+    LK_BIANSUXIANGPEIZHI: 'Transmission',
+    LK_BUNENGSHANCHUZHISHAOBAOLIUYITIAO: 'Can not delete, at least keep one!',
+    LK_BUMENBIANHAO: 'Department No.',
+    LK_BUMENPINGFENLEIXING: 'Department Rating Type',
+    LK_CAILIAO: 'Material',
+    LK_CAILIAOGONGYIZUMINGCHENGDE: 'Craft(De)',
+    LK_CAILIAOGONGYIZUMINGCHENGZHONG: 'Craft(Cn)',
+    LK_CAILIAOZU: 'Material Group',
+    LK_CAILIAOZULINEBUMEN: 'Material Group Linie Dept.',
+    LK_CAILIAOZUBIANHAO: 'Material Group No.',
+    LK_CAILIAOZUGONGYIBIANHAO: 'Stuff Gategory Stuffcode',
+    LK_CAILIAOZUGONGYISHEZHI: 'Stuff Gategory Setting',
+    LK_CAILIAOZUMINGCHENGDE: 'Material Group Name (DE)',
+    LK_CAILIAOZUMINGCHENGZHONG: 'Material Group Name (CN)',
+    LK_CAILIAOZUXINXI: 'Material Group Info',
+    LK_CF: 'Fin. Controller',
+    LK_CAIWUMUBIAOJIA: 'F-Target',
+    LK_CAIGOUGONGCHANG: 'Purchasing Factory',
+    LK_CAIGOUTIAOKUAN: 'Procurement Policy',
+    LK_CAIGOUXIANGMUJIANLI: 'Part Proj.',
+    LK_CAIGOUXIANGMUXINXI: 'Proc. Proj. Info.',
+    LK_CAIGOUYUAN: 'Forward Buyer',
+    LK_CAIGOUYUANGONGHAO: 'Buyer Empl. No.',
+    LK_CANKAOBAOZHUANG: 'Ref. Pkg.',
+    LK_CANKAOBAOZHUANGDANJIAYUAN: 'Reference Unit Packaging Price (Yuan)',
+    LK_CANKAOBAOZHUANGGAOMM: 'Reference packaging height (mm)',
+    LK_CANKAOBAOZHUANGKUANMM: 'Inbound Equip. Width (mm)',
+    LK_CANKAOBAOZHUANGQIJULEIXING: 'Reference Packaging Equipment Type',
+    LK_CANKAOBAOZHUANGZHANGMM: 'Reference Packaging - Length (mm)',
+    LK_CANKAOCHANLIANGJISHIJIANJIHUA: 'Ref. Capacity and Time Schedule',
+    LK_CANKAOCHEXING: 'Reference Model',
+    LK_CANKAOLINGJIANHAO: 'Reference Parts No.',
+    LK_CANKAOLINGJIANMING: 'Reference Part Name',
+    LK_CAOZUO: 'Action',
+    LK_CAOZUOREN: 'Operator',
+    LK_UpdateDate: 'Operation Time',
+    LK_CHAKAN: 'view',
+    LK_CHAKANQUANBUBANBEN: 'View All Version',
+    LK_INQUIRE: 'Search',
+    LK_CHAZHAOGONGYIZUGONGYINGSHANG: 'Query for Process Group Supplier',
+    LK_CHAIFENCAIGOUGONGCHANG: 'Split Purchasing Factory',
+    LK_CHANLIANGPC: 'Capacity (Pc)',
+    LK_CHANGJIANGMINGCHNEG: 'Scenario/Task Name',
+    LK_CHANGJINGMINGCHENGRENWUMINGCHENG: 'Task Name',
+    LK_CHEXING: 'Model',
+    LK_CHEXINGDALEI: 'Carline',
+    LK_CHEXINGDENGJI: '',
+    LK_CHEXINGSHENGCHANNIANXIAN: 'Car Production Life',
+    LK_CHEXINGXIANGMU: 'Project',
+    LK_CHEXINGXIANGMU0S: 'Project 0S',
+    LK_CHEXINGXIANGMUPVS: 'Project PVS',
+    LK_CHEXINGXIANGMUSOP: 'Project SOP',
+    LK_CHEXINGXIANGMUMINGCHENG: 'Car Proj. Name.',
+    LK_CHEHUI: 'Withdraw',
+    LK_CHENGBEN: 'Cost',
+    LK_CHICUN: 'Dimension',
+    LK_CHUANGJIANRENGONGHAO: 'Creator Empl. No.',
+    LK_CHUANGJIANRENXINGMING: 'Creator Empl. No.',
+    LK_CHUANGJIANRIQI: 'Creation Date',
+    LK_CHUANGJIANSHIJIAN: 'Creation Time',
+    LK_CONGLINGJIANPAISHENG: 'Derivative Part',
+    LK_DAXIAOMB: 'Size (MB)',
+    LK_DAIBANSHIXIANG: 'Scheduled Event',
+    LK_DAIQUERENBANBEN: 'To-be Confirmed Version',
+    LK_DANWEI: 'Pricing Unit',
+    LK_DANGQIANBANBEN: 'Cur. Version',
+    LK_DANGQIANLUNCI: 'Cur. Round',
+    LK_DAORUSHIJIAN: 'Import Date',
+    LK_DENGJIPEIZHI: 'Config. Lvl.',
+    LK_DIANJISHANGCHUAN: 'Upload Attachments',
+    LK_DIANCHIRONGLIANG: '',
+    LK_DIANCHIYONGLIANG: 'Battery Usage',
+    LK_DINGDIANGUANLI: 'Nomi. Mgmt.',
+    LK_DUQUYOUXIAODOM: 'Load Valid BOM',
+    LK_DUQUYOUXIAOBOM: 'Load Valid BOM',
+    LK_FACHUXUNJIA: 'Inquire',
+    LK_FADONGJILEIXING: '',
+    LK_FADONGJIPEIZHI: 'Config.',
+    LK_FASHENGSHIJIAN: 'Happening time',
+    LK_FASONGXUNJIA: 'Send Inquiry',
+    LK_FASONGZHIWODEYOUXIANG: 'Sent to my mailbox',
+    LK_FANXIANGQIANBAOZHUANGMAOZHONGKG: '',
+    LK_FANXIANGQIANJICHUNIANWEIXIULÜ: '',
+    LK_FANXIANGQIANQIJUFANCHENGSHEDIEBI: '',
+    LK_FANXIANGQIANQIJUGAOMM: '',
+    LK_FANXIANGQIANQIJUHAO: '',
+    LK_FANXIANGQIANQIJUKUANMM: '',
+    LK_FANXIANGQIANQIJULEIXING: '',
+    LK_FANXIANGQIANQIJUSHOUMING: '',
+    LK_FANXIANGQIANQIJUSHU: '',
+    LK_FANXIANGQIANQIJUZHANGMM: 'Pre-repackage Equip. Length ()',
+    LK_FANXIANGQIANQIJUZONGHEDANJIARMB: '',
+    LK_FANXIANGQIANQIJUZUJINRMBDAY: '',
+    LK_FANHUI: 'Return',
+    LK_FUZEREN: 'Owner',
+    LK_FUZERENDIANHUA: 'Person in Charge‘s telephone',
+    LK_FUZERENYOUXIANG: 'Person in Charge‘s email',
+    LK_FUJIANLIEBIAO: 'Attachments List',
+    LK_GENGXINYUANYIN: 'Update Reason',
+    LK_GENGXINZHIXUNJIACHANLIANG: 'Volume',
+    LK_GONGCHENGSHI: 'Engineer',
+    LK_GONGYI: 'Craft',
+    LK_GONGYIHAO: 'Process No.',
+    LK_SHENGMINGJISHUBANBEN:
+      'Display Public UI Components, Based on second seal of element, current element version',
+    LK_GONGGONGUIZUJIANZHANSHIJIEMIANJIYUELEMENTDEERCIFENGZHUANGDANGQIANELEMENTBANBEN:
+      'Display Public UI Components, Based on second seal of element, current element version',
+    LK_GONGHUOFANGSHI: 'Supply Style',
+    LK_GONGYINGSHANG360SHITU: 'Supplier 360°',
+    LK_GONGYINGSHANGSAPHAO: 'Supplier SAP No.',
+    LK_GONGYINGSHANGTIMELINE: 'Supplier Timeline',
+    LK_GONGYINGSHANGCAILIAOZHUNBEI: 'Supplier Material Prep.',
+    LK_GONGYINGSHANGCHANPINGAIYAO: 'Product Overview',
+    LK_GONGYINGSHANGGONGSIJIESHAO: 'Supplier Desc.',
+    LK_GONGYINGSHANGMING: 'Supplier Name',
+    LK_SAPHAO: 'SAP No.',
+    LK_GONGYINGSHANGMINGCHENG: 'Supplier Name',
+    LK_GONGYINGSHANGPINGFEN: 'Supplier Rating',
+    LK_GONGYINGSHANGPINGFENFUJIAN: 'Supplier Rating Attachments',
+    LK_GONGYINGSHANGSHENGCHANCHANGDI: 'Supplier Plant',
+    LK_HUIYIDIDIAN: 'Meeting Location',
+    LK_HUIYIJIBENXINXI: 'Meeting Info.',
+    LK_HUIYIQITAXINXI: 'Other Meeting Info.',
+    LK_HUIYISHIJIAN: 'Meeting Time',
+    LK_HUOBI: 'Currency',
+    LK_JICHUXINXI: 'Basic Info.',
+    LK_JISHUJIAOLIUHUI: 'Technology Disclosure Meeting',
+    LK_EP: 'EP',
+    LK_JIAGEMINGXI: 'Price Detail',
+    LK_JIAOFU: 'Delivery',
+    LK_JIESHUBENLUNXUNJIA: 'Close Cur. Round',
+    LK_JIESHUXIANGMU: 'Terminate',
+    LK_JINRIDAIBAN: 'Due Today',
+    LK_JINDUJIANKONG: 'null',
+    LK_JUJUE: 'Reject',
+    LK_KAISHINIANFEN: 'Year',
+    LK_LISHISHIYONGGAILÜ: 'Historical Applicable Rate',
+    LK_LIRUMENJING:
+      'For example, access control application procedures and other remark',
+    LK_LINGJIANCAIGOUXIANGMU: 'Part Proj.',
+    LK_LINGJIANCAIGOUXIANGMUGUANLI: 'Parts Project Management',
+    LK_LINGJIANCAIGOUXIANGMULEIXING: 'Part Proj. Type',
+    LK_LINGJIANCAIGOUXIANGMUZHUANPAI: 'Transfer Part Proj.',
+    LK_LINGJIANCHANLIANG: 'Capacity',
+    LK_LINGJIANCHANLIANGJIHUA: 'Production Plan',
+    LK_LINGJIANCHANLIANGJILU: 'Part Capacity Record',
+    LK_LINGJIANHAO: 'Part No.',
+    LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN: 'Part No./FSNR/RFQ No./Linie',
+    LK_LINGJIANHAODIERBUFEN: '2nd Subsection ',
+    LK_LINGJIANHAODISANBUFEN: '3rd  Subsection ',
+    LK_LINGJIANHAODISIBUFEN: '4th Subsection ',
+    LK_LINGJIANHAODIWUBUFEN: '5th  Subsection ',
+    LK_LINGJIANHAODIYIBUFEN: '1st Subsection ',
+    LK_LINGJIANJIAGONGCHENGDUDE: 'Processing Degree Desc. (DE)',
+    LK_LINGJIANJIAGONGCHENGDUYING: 'Processing Degree Desc. (EN)',
+    LK_LINGJIANJIAGONGCHENGDUZHONG: 'Processing Degree Desc. (CN)',
+    LK_LINGJIANJIAGONGCHENGDUDAIMA: 'Processing Degree Code',
+    LK_LINGJIANLEIXING: 'Part Type',
+    LK_LINGJIANLEIXINGDAIMA: 'Part Type Code',
+    LK_LINGJIANMAOYISHUXINGDAIMA: 'Trade Attribute Code',
+    LK_LINGJIANMAOYISHUXINGMIAOSHUDE: 'Trade Attribute Desc. (DE)',
+    LK_LINGJIANMAOYISHUXINGMIAOSHUYING: 'Trade Attribute Desc. (EN)',
+    LK_LINGJIANMAOYISHUXINGMIAOSHUZHONG: 'Trade Attribute Desc. (CN)',
+    LK_LINGJIANMEICHEYONGLIANG: 'Qty. per Car',
+    LK_LINGJIANMINGDE: 'Part Name (DE)',
+    LK_LINGJIANMINGYING: 'Part Name (EN)',
+    LK_LINGJIANMINGZHONG: 'Part Name (CN)',
+    LK_LINGJIANMINGCHENG: 'Part Name',
+    LK_LINGJIANMINGCHENGDE: 'Part Name (DE)',
+    LK_LINGJIANMINGCHENGZHONG: 'Pat Name (CN)',
+    LK_LINGJIANPINGTAIXINGZHIDAIMA: 'Platform Attribute Code',
+    LK_LINGJIANPINGTAIXINGZHIMIAOSHUDE: 'Platform Attribute Desc. (DE)',
+    LK_LINGJIANPINGTAIXINGZHIMIAOSHUYING: 'Platform Attribute Desc. (EN)',
+    LK_LINGJIANPINGTAIXINGZHIMIAOSHUZHONG: 'Platform Attribute Desc. (CN)',
+    LK_LINGJIANPINGFEN: 'Part Rating',
+    LK_LINGJIANQIANSHOU: 'Part Sign-in',
+    LK_LINGJIANQINGDAN: 'Part List',
+    LK_LINGJIANSUOSHUCAILIAOZULINIEBUMEN:
+      "Part's Material Group's Linie Department",
+    LK_LINGJIANSUOSHUCAILIAOZUDEWENMINGCHENG: "Part's Material Group Name(De)",
+    LK_LINGJIANSUOSHUCAILIAOZUZHONGWENMINGCHENG:
+      "Part's Material Group Name(Zh)",
+    LK_LINGJIANSUOSHUGONGYIBIANHAO: "No. of the part's craft",
+    LK_LINGJIANXIANGMULEIXING: 'Procure. Type',
+    LK_LINGJIANYANYONGXINGZHIDAIMA: 'COP Attribute Code',
+    LK_LINGJIANYANYONGXINGZHIMIAOSHUDE: 'COP Attribute Desc. (DE)',
+    LK_LINGJIANYANYONGXINGZHIMIAOSHUYING: 'COP Attribute Desc. (EN)',
+    LK_LINGJIANYANYONGXINGZHIMIAOSHUZHONG: 'COP Attribute Desc. (CN)',
+    LK_LINGJIANZHUANGTAI: 'Parts Status',
+    LK_LUNCILEIXING: 'Round Type',
+    LK_MAOZHONGKG: 'Gross Weight (KG)',
+    LK_MEICHEYONGLIANG: 'Qty per Car',
+    LK_MEICHEYONGLIANGZHUANGTAI: 'Qty. per Car',
+    LK_MOJUYUSUANSHENQING: 'Tooling Budget App.',
+    LK_MUBIAOJIA: 'Target Price',
+    LK_MUBIAOJIAZHUANGTAI: 'CF Target price status',
+    LK_NIANFEN: 'Year',
+    LK_NINSHIFOUQUERENDUIXINJIANXINXIDANJINHANGQIANSHOU:
+      'Are you sure to sign the info sheet',
+    LK_PEIZHIBILI: 'EBR',
+    LK_PEIZHIBIANMA: 'Configuration ID',
+    LK_PILIANGWEIHU: 'Batch Maintanence',
+    LK_PILIANGWEIHULINGJIANCAIGOUXIANGMU: 'Batch Maintain Part Proj.',
+    LK_PINGFEN: 'Rating',
+    LK_PINGFENREN: 'Grader',
+    LK_PUTONGLUNCI: 'Common Round',
+    LK_QIWANGMUBIAOJIA: 'Expected Price',
+    LK_QITAPEIZHI: 'Other Config.',
+    LK_QITAXINXI: '',
+    LK_QIDONGXIANGMU: 'Project Initiation',
+    LK_QIDONGXUNJIA: 'Inquiry',
+    LK_QIANSHOU: 'Sign-in',
+    LK_QIANSHOUQUEREN: 'Confirm sign in',
+    LK_QIANSHOURIQI: 'Acceptance Date',
+    LK_QIANDUANBAOZHUANGMINGCHENG: 'Early Stage Pkg. Name',
+    LK_QINGSHURU: 'Please Input',
+    LK_QINGSHURUBEIZHU: 'Please enter remark',
+    LK_RFQPLEASEENTERQUERY: 'Please enter for query',
+    LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG:
+      'Please enter supplier name for query',
+    LK_QINGSHURUCHAXUNGONGYINGSHANGMINGCHENGCHANGSHANG:
+      'Please enter to search for supplier name, factory…',
+    LK_QINGSHURULINGJIANHAO: 'Please enter part No.',
+    LK_QINGSHURULINGJIANMING: 'Please enter part name (CN)',
+    LK_QINGTIANJIAGONGYINGSHANG: 'Please add supplier!',
+    LK_QINGTIANXIEGONGCHENGSHI: 'Please enter engineer',
+    LK_QINGTIANXIESHEJIKESHI: 'Please enter engineering department',
+    LK_QINGTIANXIEXINXIDANLIUSHUIHAO: 'Please enter info sheet no.',
+    LK_QINGXUANZE: 'Select',
+    LK_QINGXUANZHECHEXINGXIANGMU: 'Please select car project',
+    LK_QINGXUANZHEXINXIFENLEI: 'Please select info. sheet type',
+    LK_QINGXUANZHEXUYAODAOCHUBANBEN: 'Please select version to export',
+    LK_QINGXUANZHEXUYAODAOCHUSHUJU: 'Please select data to export',
+    LK_QINGXUANZHEYIGEXUYAOXIAZAIBANBEN: 'Please select a version to download',
+    LK_QUXIAO: 'Cancel',
+    LK_QUXIAOLINGJIANCAIGOUXIANGMU: 'Terminate Part Proj.',
+    LK_QUXIAOYUANYIN: 'Cancel Reason',
+    LK_QUANBUBANBEN: 'All Version',
+    LK_QUEDING: 'Confirm',
+    LK_QUEREN: 'Confirm',
+    LK_RENKEZHOUQIZHOU: 'Recog. Period (Week)',
+    LK_RENWUZHONGXIN: 'Task Center',
+    LK_RIZHI: 'Log',
+    LK_RIHZICHAKAN: 'View Log',
+    LK_RIZHICHAKAN: 'Show Log',
+    LK_RUCHANGBAOZHUANGMINGCHENG: 'Inbound Pkg. Name',
+    LK_RUKUBAOZHUANGMAOZHONG: 'Inbound Pkg. Gross Weight (KG)',
+    LK_RUKUBAOZHUANGMAOZHONGKG: 'Inbound Packaging Gross Weight (Kg)',
+    LK_RUKUJICHUNIANWEIXIUFEILV: 'Inbound Annual Repair Rate',
+    LK_RUKUJICHUNIANWEIXIUFEILÜ: 'Inbound Annual Repair Base Rate',
+    LK_RUKUQIJUFANCHENGSHEDIEBI: 'Inbound Equip. Return Fold Ratio',
+    LK_RUKUQIJUKUAN: 'Inbound Equip. Width (mm)',
+    LK_RUKUQIJUKUANMM: 'Inbound Equipment Width (mm)',
+    LK_RUKUQIJULEIXING: 'Inbound Equip. Type',
+    LK_RUKUQIJUSHOUMING: 'Inbound Equip. Material Lifespan',
+    LK_RUKUQIJUXINGHAO: 'Inbound Equip. ID',
+    LK_RUKUQIJUCHANG: 'Inbound Equip. Length (mm)',
+    LK_RUKUQIJUZHANGMM: 'Inbound Equipment Length (mm)',
+    LK_RUKUQIJUZHUANGXIANGSHU: 'Inbound Equip. Load Ct.',
+    LK_RUKUQIJUZHONGHEDANJIA: 'Inbound Equipment Net Unit Price',
+    LK_RUKUQIJUZHONGHEDANJIARMB: 'Inbound Equip. Net Price (RMB)',
+    LK_RUKUQIJUZUJINRMBDAY: 'Inbound Equip. Rent (RMB/DAY)',
+    LK_RUKUQIJUZONGHEDANJIA: 'Inbound Equipment Net Unit Price',
+    LK_SEBIAOHAO: 'Color Tag',
+    LK_SHANCHU: 'Delete',
+    LK_SHANCHUGONGYINGSHANG: 'Delete supplier',
+    LK_SHANGCHUANREN: 'Uploader',
+    LK_SHANGCHUANRIQI: 'Upload Date',
+    LK_SHANGQIDAZHONGYUANQU: 'Room 303, Shanghai Volkswagen Park',
+    LK_SHANGYIYE: 'Prevoius',
+    LK_SHEJIGONGCHENGSHIGONGHAO: 'TP owner No.',
+    LK_SHEJIGONGCHENGSHIHAO: 'Engine Empl. No.',
+    LK_SHEJIGONGCHENGSHIXINGMING: 'Engineering',
+    LK_SHEJIKESHI: 'Engineering Dept.',
+    LK_SHEZHIGONGYIZU: 'Process Group Setting',
+    LK_SHENQING: 'App.',
+    LK_SHENQINGRWJIA: 'App. RW Price',
+    LK_SHENQINGBEIZHU: 'App. Remark',
+    LK_SHENQINGCAIWUMUBIAOJIA: 'App. F-Target',
+    LK_SHENQINGLEIBIE: 'App. Type',
+    LK_SHENQINGLEIXING: 'App. Type',
+    LK_SHENQINGMUBIAOJIA: 'Target Price App.',
+    LK_SHENQINGRIQI: 'App. Date',
+    LK_SHENQINGYUANYIN: 'App. Reason',
+    LK_SHENQINGZHUANGTAI: 'App. Status',
+    LK_SHENDUGUOCHANHUABEIZHU: 'Deep localization Remark',
+    LK_SHENDUGUOCHANHUADAIMA: 'Deep localization Code',
+    LK_SHENPIYIJIAN: 'Approval Opinion',
+    LK_SHENPIZHUANGTAI: 'Approval Status',
+    LK_SHENGCHENGFS_GSNR: 'Generate FS/GS/SP No.',
+    LK_SHENGCHENGFSHAO: 'Generate FS',
+    LK_SHIJIANJIHUA: 'Time Schedule',
+    LK_SHIFOUERCIJIAN: 'Tier-2 Part (Y/N)',
+    LK_SHIFOUJIARUYIYOURFQ: 'whether to add to existing RFQ?',
+    LK_CONFIRM_SIGN_RECORD_TIPS: 'Confirm to sign the new record?',
+    LK_SHIFOUQUERENSHANCHU: '',
+    LK_SHIFOUSHENDUGUOCHANHUA: 'Is Deeply localized',
+    LK_SHIFOUYANZHENGCBD: 'Checked CBD (Y/N)',
+    LK_SHIFOUZUHEXINJIANRFQ: 'Combine New RFQ (Y/N)',
+    LK_ENTER_SEARCH_SUPPLIER_NAME_FACOTRY:
+      'Enter to Search for Supplier Name, Facotry Type…',
+    LK_SUOXUANBANBENWUFUJIAN: '',
+    LK_TANPANZHUSHOU: 'Negotiation Assistant',
+    LK_TESHULINGJIANLEIXING: 'Special Part Type',
+    LK_TESHUYAOQIU: 'Special Req.',
+    LK_TIJIAO: 'Submit',
+    LK_TIANJIA: 'Add',
+    LK_TIANJIAGONGYINGSHANG: 'Add Supplier',
+    LK_TIANJIAZIDINGYIPINGFENXIANG: 'Add Custom Rating',
+    LK_TONGZHIQUANBUGONGYINGSHANG: 'Notify All Suppliers',
+    LK_TONGZHIYIBAOJIAGONGYINGSHANG: 'Inform suppliers with quotation',
+    LK_TOUZIYUSUAN: 'Inv. Budget',
+    LK_TUZHI: 'Blueprint',
+    LK_TUZHIHETPXIANGQINGYE: 'Blueprint and TP Information',
+    LK_TUZHIHETPDANXIANGQING: 'Drawing and LAH',
+    LK_TUZHIRIQI: 'Drawing Date',
+    LK_TUISONGSHIJIAN: 'Forwarded time',
+    LK_TUICHUDENGLU: 'Log out',
+    LK_TUIHUI: 'Return',
+    LK_TUIHUIYUANYIN: 'Return Reason',
+    LK_WAIBUKAIFAFEIYUAN: 'Ext. Dev. Fee (RMB)',
+    LK_WEIHU: 'Maintain',
+    LK_WEIHUREN: 'Maintainer',
+    LK_WENXINTISHI: 'Tips',
+    LK_WENJIANDAXIAOMB: 'File Size (MB)',
+    LK_WENJIANMING: 'File ',
+    LK_WENJIANMINGCHENG: 'File',
+    LK_WULIUBIAOZHUN: 'Logistics Std.',
+    LK_PL: 'PL',
+    LK_WULIUYAOQIU: 'Logistics Req.',
+    LK_XIAYIYE: 'Next',
+    LK_XIAZAI: 'Download',
+    LK_XIANGGUANCHEXING: 'Relevant Model',
+    LK_XIANGNEIZHOUZHUANCAILIAOZONGHEJIAGE: 'Inbox TO Material Price',
+    LK_XIANGNEIZHOUZHUANCAILIAOZONGHESHOUMING: 'Inbox TO Material Lifespan',
+    LK_XIANGQINGXINXI: 'Detailed Info',
+    LK_TANPANZS: 'Negotiation Assistant',
+    LK_XIANGMUCHEXING: 'Model',
+    LK_XINJIANXINXIDANQIANSHOU: 'Info. Sheet Sign-in',
+    LK_XINJIANXINXILIUSHUIDANHAO: 'New Part Sheet No.',
+    LK_XINJIANRFQLUNCI: 'New RFQ Round',
+    LK_XINJIANXINXIDANBEIZHU: 'Info. Sheet Remark',
+    XINJIANXINXIDANLIUSHUIHAO: 'Info Sheet No.',
+    LK_XINSHENQINGCAIWUMUBIAOJIA: 'New App. F-Target',
+    LK_XINXIDANFENLEI: 'Info. Sheet Type',
+    LK_XINXIDANLEIXING: 'Info. Sheet Type',
+    LK_XINXIDANLIUSHUIHAO: 'Info Sheet No.',
+    LK_XINXIDANSHENGCHENGSHIJIAN: 'Info. Sheet Generated Time',
+    LK_XINXIDANXIANGQING: 'Info. Sheet Detail',
+    LK_XINXIDANZHUANGTAI: 'Info. Sheet Status',
+    LK_XINXILIUSHUIDANHAO: 'Part Sheet ID',
+    LK_XUANZHUANGJIAN: 'Selected Part',
+    LK_XUNYUANZHIHANG: 'Sourcing',
+    LK_XUNJIACAIGOUYUAN: 'Sourcing Buyer',
+    LK_XUNJIACAIGOUYUANBEIZHU: 'Sourcing Buyer Remark',
+    LK_XUNJIACHANLIANGJIHUA: 'Inquiry Production Plan',
+    LK_XUNJIAFUJIAN: 'Inquiry Attachments',
+    LK_XUNJIATUZHI: 'Drawing',
+    LK_XUNJIAZILIAO: 'Inquiry Data',
+    LK_XUNJIAZILIAOZHUANGTAI: 'Inquiry Data Status',
+    LK_YANYONGCHEXINGDALEIDAIMA: 'Continue to use carline code',
+    LK_YAOQIUCSCHUIYIRIQI: 'Req. CSC Meeting Date ',
+    LK_YIBAOCUN: 'Saved',
+    LK_YIBAOJIAGONGYINGSHANG: 'Supplier with quotation',
+    LK_YITIANJIADAOSHANGXIAN: 'Added to the upper limit',
+    LK_YIXUNJIACAIGOUYUANSHANGHUIBEIZHU: 'Forward Buyer meeting remark',
+    LK_YIXUNJIAGONGYINGSHANG: 'Supplier with inquiry',
+    LK_YONGLIANG: 'Qty.',
+    LK_YUQIDAIBAN: 'Overdue',
+    LK_YUANPEICHANG: 'Plant of Origin',
+    LK_ZAISHENQINGCAIWUMUBIAOJIA: 'Reapply CF Target Price',
+    LK_ZAICISHENGQINGCAIWUMUBIAOJIA: 'Re-App. F-Target',
+    LK_ZAIXINSHENQINGCAIWUMUBIAOJIA: 'Reapply CF Target Price',
+    LK_ZAIXIANJINGJIA: 'Online Bidding',
+    LK_ZANWUSHUJU: 'No Data',
+    LK_ZENGJIADERENKEFEIYUAN: 'Additional Recog. Fee (RMB)',
+    LK_ZHIFUTIAOKUAN: 'Payment Policy',
+    LK_ZHINENGSHANGCHUANWENJIAN: 'Upload .xlsx file only',
+    LK_ZHILIANG: 'Quality',
+    LK_MQ: 'MQ',
+    LK_ZHONGLIANG: 'Weight',
+    LK_ZHONGXINSHENQING: 'Re Apply',
+    LK_ZHONGZHI: 'Reset',
+    LK_ZHUANPAI: 'Transfer',
+    LK_ZHUANGXIANGSHU: 'Number of Containers',
+    LK_ZHUANGTAI: 'Status',
+    LK_ZUIXINRWJIA: 'New RW Price',
+    LK_ZUIXINFANHUIRIQI: 'Latest Return Date',
+    LK_ZUIXINSHENQINGRIQI: 'Latest App. Date',
+    LK_ZUIXINSHENQINGZHUANGTAI: 'Latest App. Status',
+    LK_SHEZHIPINGFENBUMEN: 'Rating Dept. Setting',
+    LK_TUISONGPINGFENRENWU: 'Assign Rating Task',
+    LK_GONGYIZU: 'Process Group',
+    LK_GONGYISHEZHI: 'Process Setting',
+    LK_CAILIAOZUSHAIXUAN: 'Material Group Screening',
+    LK_GONGYIZUXUANDING: 'Process Group Selected',
+    LK_CHAIFENFACTORY: '选中的工厂中,存在未分配的份额，请填写后重试！',
+    LK_FACTORYNOTSAME:
+      'The purchasing factory you selected is inconsistent with the purchasing factory corresponding to this model project in the master data, please confirm whether to modify it',
+    LK_AREYOUSPLITE: '该车型项目主数据中对应多个采购工厂，是否拆分？',
+    LK_NHWXZBDL: 'BDL has not been selected yet.',
+    LK_XIETIAOREN: '',
+    LK_XINZENG: 'Add',
+    LK_HUIFU: 'Resume',
+    LK_QINGXUANZEXUYAOSHANCHUDEPINGFENBUMEN: '',
+    LK_QINGXUANZEXUYAOHUIFUDEPINGFENBUMEN: '',
+    LK_QINGXUANZEWANSHUJUZAIZUOBAOCUN: 'Please select data first then save',
+    LK_WEIBUXITONGWENJIANWUFASHANCHU: 'external system file, cannot be deleted',
+    LK_DINGDIANXINXI: 'Nomi. Info.',
+    LK_SHANGHUI: 'Meeting',
+    LK_LIUZHUAN: 'Circulation',
+    LK_BEIAN: 'Record',
+    LK_BAIWANYUAN: 'Mio.',
+    LK_ZONGYUSUAN: 'Total Budget',
+    LK_DINGDIANJINE: 'Nomi. Price',
+    LK_ZUIXINGENGXINREN: 'Updated by',
+    LK_ZUIXINGENGXINSHIJIAN: 'Updated time',
+    LK_BMDAN: 'BM sheet',
+    LK_FUKUAN: 'Payment',
+    LK_CHEXINXIANGMU: 'Car Project',
+    LK_XIANGMULEIXIN: 'Project Type',
+    LK_DINGDIANLEIXIN: 'Nomi. Type',
+    LK_CHEXINLEIBIE: 'Category',
+    LK_LINJIANLIUWEIHAO: '6-digital No',
+    LK_TIANJIAHANG: 'Add Row',
+    LK_SHANCHUHANG: 'Delete Row',
+    LK_CANKAOCHEXIN: 'Refer Carline',
+    LK_CAILIAOZUBIANHAO2: 'Material Group No.',
+    LK_CAILIAOZUMINGCENGZHONG: 'Supplier Name (CN)',
+    LK_CAILIAOZUMINGCENGDE: 'Supplier Name (DE)',
+    LK_ZHUANYEKESHI: 'Prof. Dept.',
+    LK_SHIFOUZUOGUOCOMMONSOURING: 'Common Sourcing',
+    LK_CommonSourcing: 'Common Sourcing',
+    LK_MOJUSHUXIN: 'Tooling Attribute',
+    LK_ZP: 'ZP',
+    LK_CANKAOCHEXINXIANGMU: 'Refer Project',
+    LK_CANKAOCHEXINXIANGMUYI: 'Ref. Proj.1',
+    LK_CANKAOCHEXINXIANGMUER: 'Ref. Proj.2',
+    LK_CANKAOCHEXINXIANGMUSAN: 'Ref. Proj.3',
+    LK_QITACHEXINXIANGMUBEIXUAN: 'Other Ref. Proj.',
+    LK_CHEXINXIANGMULEIXIN: 'Proj. Type',
+    LK_CHEXINXIANGMUQIZHINIANFEN: 'Proj. Starting Year',
+    LK_CHONGZHI: 'Reset',
+    LK_CAILIAOZUBIANHAOZHONGWENMINGDEWEN: 'MG',
+    LK_CHAXUN: 'Search',
+    LK_BANBENHAO2: 'Version',
+    LK_CHEXINMINGCENG: 'Carline',
+    LK_PIZHUNTOUZHI: 'Approved Invest',
+    LK_FEIAEKO: 'Not AEKO',
+    LK_WEISHENQING: 'Not Apply',
+    LK_YISHENQING: 'Applied',
+    LK_WEIDINGDIAN: 'Not Nomi.',
+    LK_YIDINGDIAN: 'Nominated',
+    LK_WUBA: 'Not BA',
+    LK_YOUBA: 'BA',
+    LK_WUBM: 'Not BM',
+    LK_YOUBM: 'BM',
+    LK_XIAZHAITOUZHIQINDAN: 'Download Invest List',
+    LK_YUSUANJINEPSK: 'Budget PSK (Mio. RMB)',
+    LK_SOURCINGLEIXIN: 'Sourcing Type',
+    LK_CANKAOXIANGMU: 'Ref. Proj.',
+    LK_CANKAOXINGMUMOJUJINE: 'Ref. Proj. Tooling Amount (Mio. RMB)',
+    LK_YUSUANBEIZHU: 'Budget Remark',
+    LK_AEKOJINE: 'AEKO Amount',
+    LK_ZONGHEPIANCHA: 'Comp. Deviation',
+    LK_ZHONGHEPIANCHAJINE: 'Comp. Deviation Amount',
+    LK_GUANLIANCHEXIN: 'Associated Carline',
+    LK_BAOCUNWEIXINBANBEN: 'Save New',
+    LK_ANBILIZHESUAN: 'Convert By Proportion',
+    LK_ZHESUANBILI: 'Proportion',
+    LK_CHEXINGXIANGMULEIXING: '车型项目类型',
+    LK_BUDGETAMOUNTTOTAL: 'Total Budget Amount',
+    LK_APPLYINVESTAMOUNTTOTAL: 'Total App. Inv. Amount',
+    LK_FIXEDINVESTAMOUNTTOTAL: '总定点投资金额',
+    LK_MOULDBUDGETSTATUS: 'Tooling Budget Status',
+    LK_APPLYDATESTARTANDEND: '申请⽇期起⽌',
+    LK_RFQHAO: 'RFQ No.',
+    LK_YUSUANZHUANGTAI: 'Budget status',
+    LK_SHENQINGREN: 'Applicant',
+    LK_SHENQINGSHIJIANQIZHI: 'Start and end of application time',
+    LK_PIZHUAN: '批准',
+    LK_SHENQINGSHIJIANQI: '申请时间起',
+    LK_SHENQINGSHIJIANZHI: '申请时间止',
+    LK_CHEXINGXIANGMUGAILAN: 'Project Overview',
+    LK_YUSUANGUANLI: 'Budget Mgmt',
+    LK_YUSUANSHENPI: 'Budget Approval',
+    LK_BASHENQING: 'BA Application',
+    LK_BMSHENQING: 'BM Application',
+    LK_TOUZIBAOGAO: 'Investment Report',
+    LK_BANMUBER: 'BA No.',
+    LK_FIXEDPOINTSUPPLIER: 'Nomi. Supplier',
+    LK_MODULFIXEDPOINTMONEY: 'Tooling Nomi. Price',
+    LK_REGINOCONTROLLER: 'Region Controller',
+    LK_RSODDNUMBERS: 'RS Sheet No.',
+    LK_SPAREPARTSNUMBER: 'Part No.',
+    LK_BADETAILSPOPUPTXT1: '您将要申请',
+    LK_BADETAILSPOPUPTXT2: '的BA账户，请确认金额：',
+    LK_BANUMBERDISTRIBUTION: 'Assign BA No.',
+    LK_AMOUNTMONEYRMB: 'Amount  (RMB)',
+    LK_FIXEDINVESTTOTAL: 'Total Nomi. Inv. Amount',
+    LK_XIAYIBU: '/bidding/competition/quotation/1753',
+    LK_BAAPPROVAL: 'BA Approve',
+    LK_BADANSTATUS: 'BA Sheet Status',
+    LK_ALL: '全部',
+    LK_BAODDNUMBERS: 'BA Sheet No.',
+    LK_BAACCOUNTTYPE: 'BA Account Type',
+    LK_CURRENTAMOUNT: 'Cur. Amount',
+    LK_APPLYAMOUNT: 'App. Amount',
+    LK_APPLYAMOUNTTHEN: 'Post-App.Amount',
+    LK_MODIFYANUMBER: '修改A号',
+    LK_CANCELAPPLY: '退回申请',
+    LK_MODIFIABLE: '可修改',
+    LK_DEPNAME: 'Dept. Name',
+    LK_ALLBAAPPLY: '所有BA申请',
+    LK_TOBECONFIRMEDBAAPPLY: '待确认BA申请',
+    LK_TOBECONFIRMEDMONEY: '待确认追加金额',
+    LK_DETAILEDTXT: '明细',
+    LK_MODIFYANUMBERTXTTIPS:
+      '确定后，所有同⼀⻋型项⽬、同⼀⼯⼚的BA申请相关记录将⼀并更改',
+    LK_PRIMARYAMBER: '原A号',
+    LK_NEWAMBER: '新A号',
+    LK_CONFIRMANUMBER: '确认A号',
+    LK_CONFIRMMONEY: '确认金额',
+    LK_INPUTNUMBERORMORE: '请输入5位或8位A号',
+    LK_PLEASEINPUTTIPS1: '请选择需要修改的数据',
+    LK_PLEASEINPUTTIPS2: '最多只能同时修改一条数据',
+    LK_PLEASEINPUTTIPS3: '需要先确认A号',
+    LK_PLEASEINPUTTIPS4: '退回状态不能修改A号',
+    LK_PLEASEINPUTTIPS5: '车型项目尚未确认A号，请先前往',
+    LK_PLEASEINPUTTIPS6: '待确认BA申请',
+    LK_PLEASEINPUTTIPS7: '页面中进行A号确认',
+    LK_APPLYBANUMBER: '申请BA单',
+    LK_OF: '的',
+    LK_HEAVYITEM: 'heavy item',
+    LK_FENXIBAOGAO: '',
+    LK_LINGJIANCHENGBENFENXIYUAN: '',
+    LK_MUJUCHENGBENFENXIYUAN: '',
+    LK_FUJIANXUQIUDAORU: 'Acc. Import',
+    LK_PEIJIANXUQIUQIANSHOU: 'Spare Part Sign-in',
+    LK_PEIJIANZONGHEGUANLI: 'Spare Part Mgmt.',
+    LK_FUJIANZONGHEGUANLI: 'Acc. Mgmt.',
+    LK_FUJIANLINGJIANHAO: 'Acc. Part No.',
+    LK_SPHAO: 'SP No.',
+    LK_DAORUXIANGCI: 'Import Item',
+    LK_CSFKESHI: 'CSF Dept.',
+    LK_KESHI: 'Commodity',
+    LK_FUJIANLINGJIANMINGCHENG: 'Acc. Name',
+    LK_SHIYONGCHEXING: 'Model ',
+    LK_FUJIAN: 'Attachments',
+    LK_FUJIANSHANGSHISHIJIAN: 'Time to Market',
+    LK_FUJIANQINGDAN: 'Attachment List',
+    LK_SHANGCHUANWENJIAN: 'Upload File',
+    LK_DAORU: 'Import',
+    LK_FUJIANMUBANXIAZAI: 'Download',
+    LK_DAORUYUAN: 'Importer',
+    LK_YULAN: 'Preview',
+    LK_TIAOZHUANZHILINGJIANQINGDANTIANJIA: '跳转⾄零件清单添加',
+    LK_ZHANSHI: 'Display',
+    LK_KAISHISHIJIAN: 'Starting Time',
+    LK_JIESHUSHIJIAN: 'Ending Time',
+    LK_WENJIANQINGXUANZHUANZHIZHENGCHANG:
+      'Upload attachment: Please rotate the file to the normal direction before uploading',
+    LK_FASONGKM: '发送KM',
+    LK_DONGJIE: 'Suepend',
+    LK_NINQUERENZHIXINGDONGJIECAOZUOMA: 'Are you sure to freeze？',
+    LK_DIYINIANXUQIULIANG: 'SOP+1 Demand',
+    LK_DIERNIANXUQIULIANG: 'SOP+2 Demand',
+    LK_DISANNIANXUQIULIANG: 'SOP+3 Demand',
+    LK_DISINIANXUQIULIANG: 'SOP+4 Demand',
+    LK_DIWUNIANXUQIULIANG: 'SOP+5 Demand',
+    LK_DILIUNIANXUQIULIANG: 'SOP+6 Demand',
+    LK_DIQINIANXUQIULIANG: 'SOP+7 Demand',
+    LK_DIBANIANXUQIULIANG: 'SOP+8 Demand',
+    LK_DIJIUNIANXUQIULIANG: 'SOP+9 Demand',
+    LK_DISHINIANXUQIULIANG: 'SOP+10 Demand',
+    LK_QINGXUANZEZHISHAOYITIAOSHUJU: 'Please select at least one data',
+    LK_BAAPPLYTISP1: 'Please select',
+    LK_INPUTNUMBERORMORE1: '不能输入特殊字符',
+    LK_ALLBMAPPLY: '所有BM申请',
+    LK_DAIQUERENBMDAN: '待确认BM单',
+    LK_AEKOZENGZHIBMDAN: 'AEKO增值BM单',
+    LK_AEKOJIANZHIBMDAN: 'AEKO减值BM单',
+    LK_BMDANZHUANGTAI: 'BM单状态',
+    LK_AEKOLEIXING: 'AEKO Type',
+    LK_BMDANLIUSHUIHAO: 'BM Sheet Info',
+    LK_BMDANHAO: 'BM Sheet Info',
+    LK_WBSBIANHAO: 'WBS Code',
+    LK_DAIBIAOLINGJIAN: '代表零件',
+    LK_BMDANJINE: 'BM Sheet Amount',
+    LK_BMZHUANGTAI: 'BM Sheet Status',
+    LK_DINGDIANLEIXING: 'Nomi. Type',
+    LK_AEKOZENGZHIJINE: 'AEKO Value Added',
+    LK_XIAZAIQINGDAN: 'Download',
+    LK_QUERENSHENQING: '确认申请',
+    LK_ZUOFEI: '作废',
+    LK_DAIBIAOLINGJIANHAO: 'Represent Part No.',
+    LK_CAIGOUSHENQINGHAO: '采购申请号',
+    LK_KEMU: '科目',
+    LK_CHENGBENZHONGXIN: '成本中心',
+    LK_CHENGBENKONGZHIYU: '成本控制域',
+    LK_ZONGZHANGKEMU: '总账科目',
+    LK_TONGJIDINGDAN: '统计订单',
+    LK_WULIAOZHU: '物料组',
+    LK_JIAOHUORIQI: '交货日期',
+    LK_CAIGOUZU: 'Proc. Group',
+    LK_BUHANSUICHENGBEN: 'Cost (excl. Tax)',
+    LK_HANSUICHENGBEN: '含税成本',
+    LK_DUANWENBEN: '短文本',
+    LK_LINGJIANMINGCHENZHONG: 'Part Name (CN)',
+    LK_LINGJIANMINGCHENDE: 'Part Name (DE)',
+    LK_CSF: 'CSF',
+    LK_BAOCUNWEIZUIXINBANBEN: 'Save New',
+    LK_SHUAXIN: 'Refresh',
+    LK_SHUAXINRIQI: 'Refresh Date',
+    LK_SHANGBANNIANSOPFUKUANDUIBI: 'SOP in 1~6 Month Payment',
+    LK_XIABANNIANSOPFUKUANDUIBI: 'SOP in 7-12 Month Payment',
+    LK_SOPSHIJIAN: 'SOP Time',
+    LK_YUSUANJINE: 'Budget',
+    LK_BMJINE: 'BM Price',
+    LK_YIFUKUANJINEWANGNIAN: 'Paid Amount-Prev. Year',
+    LK_YIFUKUAIJINEDANGNIAN: 'Paid Amount-Cur. Year',
+    LK_JIHUAFUKUANDANGNIAN: 'Payment Plan-Cur. Year',
+    LK_JIHUAFUKUANCINIAN: 'Payment Plan-Next Year',
+    LK_SOPFUKUANBI: 'SOP Paid Ratio',
+    LK_XIANGMUCAIGOUYUAN: 'Proj. Buyer',
+    LK_XITONGJISUAN: 'Project Payment Detail',
+    LK_RENMINBI: '人民币',
+    LK_BUHANSUI: '不含税',
+    LK_QINGXUANZHE: 'Please select',
+    LK_XUQIUGENZHONGHAO: '需求跟踪号',
+    LK_JILIANGDANWEI: '计量单位',
+    LK_SHULIANG: 'Qty.',
+    LK_LIZI: '例',
+    LK_LIZISHUOMING: '代表零件号的车型项目/零件号/零件名称/供应商简称',
+    LK_BMAPPLYBAOCUNMSG: '你有必填字段未填',
+    LK_FUKUANJIHUADINGZHIYUCHAKAN: 'CS tooling Payment plan',
+    LK_YUAN: 'RMB',
+    LK_HUOBIRENMINBI: 'Mio. RMB | excl.VAT',
+    SPR_FRM_DEP_FINANA: '财报分析',
+    SPR_FRM_DEP_CXWHDX: '维护呈现对象',
+    SPR_FRM_DEP_JRHYJZ: '加入行业均值',
+    SPR_FRM_DEP_WHHYJZ: '维护行业均值',
+    SPR_FRM_DEP_OBJPLACE: '请选择呈现对象',
+    SPR_FRM_DEP_AVGPLACE: '请选择行业均值',
+    LK_FUKUANKANBAN: 'Payment Dashboard',
+    LK_NIANDUJIHUA: 'Annual Plan',
+    LK_XITONGJIHUASHANGBANNIAN: 'First half year',
+    LK_XITONGJIHUAXIABANNIAN: 'Second half year',
+    LK_XITONGJISUANBACKLOG: 'Backlog',
+    LK_SHOUGONGTIAOZHENG: 'Manual',
+    LK_SHOUGONGTIAOZHENGRISK: 'Risk',
+    LK_CHEXINGXIANGMUXIANGQ: '车型项目详情',
+    DAXIAO: 'Size',
+    WENJIANDAXIAO: 'File Size(MB)',
+    LK_MUJUTOUZIJINE: 'Tooling Inv. Amount',
+    LK_MUJUTOUZIQINGDANZHUANGTAI: 'Tooling Inv. List Status',
+    LK_TOUZIQINGDANZHUANGTAI: 'Inv. List Status',
+    LK_YEWUCHULIZHUANGTAI: 'Processing Status',
+    LK_XUHAO: 'Order',
+    LK_MUJUID: 'Tooling ID',
+    LK_GUZIBIANHAO: 'Fix Asset Code',
+    LK_MUJUZHIZHAOSHANG: 'Tooling Manufacture',
+    LK_GONGYILEIXING: 'Process Type',
+    LK_GONGMUJUZHONGLEI: 'Tooling Type',
+    LK_ZICHANFENLEIBIANHAO: 'Asset Code',
+    LK_LINGJIANZONGCHENMINGCHEN: 'Assy. Part Name',
+    LK_ZONGCHENLINGJIANHAO: 'Assembly part number',
+    LK_GONGXIANGLINGJIANHAO: 'Shared Part No.',
+    LK_LINGBUJIANMINGCHEN: 'Part Name',
+    LK_ZICHANDANJIA: 'Asset Price',
+    LK_FASONGGONGYIUNGSHANGQUEREN: 'Send Supplier Confirmation',
+    LK_FAQIBIANGENG: 'Initiate Alteration',
+    LK_ZHUANPAIZIJI: 'Transfer to me',
+    LK_BIANGENDANHAO: 'Alteration Sheet No.',
+    LK_BIANGENHOUBANBEN: 'Updated Version',
+    LK_BIANGENLEIXING: 'Alteration Type',
+    LK_FAQIREN: 'Initiator',
+    LK_BIANGENRIQI: 'Update Date',
+    LK_ZICHANZONGE: 'Total Asset',
+    LK_TIAOZHENGSHUOMING: 'Adjust Exp.',
+    LK_ZHAOPIAN: 'Photo',
+    LK_GUZIMINGCHEN: 'Fix Asset',
+    LK_DUIBUQIMEIYOUQUANXIAN:
+      'Sorry, your position does not have the permission of this material group',
+    LK_GONGYINGSCAIWUZHUNGKUANG: 'Supplier Financial Condition',
+    LK_SVWCAIGOUJINEZHANBI: 'SVW ',
+    LK_GONGYINGSHANGZHUYAOKEHU: 'Main Client',
+    LK_CARPROJECT: 'Project',
+    LK_CARPROJECTRFQ: 'Quote Time',
+    LK_NUMBERPREFIX: 'The',
+    LK_TURN: 'Round',
+    LK_NONGROUPEDBREAKTIPS: '以下为 {msg} 未分组数据',
+    LK_CAIGOULEIXING: '采购类型',
+    nominationLanguage: {
+      DingDianGuanLi: '定点管理',
+      LingJianHao: '零件号',
+      ShenQingDanHao: '申请单号',
+      RFQBianHao: 'RFQ编号',
+      LiuChengLeiXing: '流程类型',
+      ShenQingZhuangTai: '申请状态',
+      LingJianMing: '零件名',
+      LingJianMingCN: '零件名(中)',
+      LingJianMingDE: '零件名(德)',
+      XunJiaCaiGouYuan: '询价采购员',
+      CheXingXiangMu: '车型项目',
+      BaoJiaYiZhiXingJiaoYan: '报价一致性校验',
+      ShiFouDnaYiGongYingShang: '是否单一供应商',
+      XianShiZiJi: '显示自己',
+      Yes: '是',
+      No: '否',
+      DingDianShenQingZongHeGuanLi: '定点申请综合管理',
+      XinJianLingJIanDingDianShengQIng: '新建零件定点申请',
+      CheHui: '撤回',
+      ShanChu: '删除',
+      TiJiaoYiZhiXingJiaoYan: '提交一致性校验',
+      ShenQingDanMing: '申请单名',
+      LeiXing: '类型',
+      XingMuLeiXing: '项目类型',
+      HuiYi: '会议',
+      RSZhuangTai: 'RS单状态',
+      RSDongJieRiQi: 'RS冻结日期',
+      BaoJiaYiZhiXingZhuangTai: '报价一致性校验状态',
+      SELDanJuQUeRenZH: 'SEL单据确认状态',
+      DingDianRiQi: '定点日期',
+      DINGDIANSHENQINGLEIXING: '定点申请类型',
+      RFQANDLINGJIANQINGDAN: 'RFQ & 零件清单',
+      GONGYINGSHANGANDDANYIGONGYINGSHANG: '供应商 & 单⼀供应商',
+      DINGDIANJIANYI: '定点建议',
+      SHENPIRENANDSHENPIJILU: '审批人 & 审批记录',
+      JUECEZILIAO: '决策资料',
+      DINGDIAN: '定点',
+      LK_QINGXUANZEYITIAORFQ: '请选择一条RFQ',
+      LK_QINGXUANZEDINGDIANSHENQINGLEIXING: '请选择定点申请类型',
+      LK_DINGDIANSHENQINGLEIXING: '定点申请类型',
+      LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG:
+        '该定点申请中有单一供应商',
+      LK_DINGDIANXINLOI: '定点信 / LOI',
+      LK_DINGDIANXIN: '定点信',
+      LK_LOI: 'LOI',
+      LK_DINGDIANXINBIANHAO: '定点信编号',
+      LK_DINGDIANXINZHUANGTAI: '定点信状态',
+      LK_DINGDIANXINDANHAO: '定点申请单号',
+      LK_DINGDIANSHIJIANQIZHI: '定点时间起⽌',
+      LK_SHIFOUXIANSHIZIJI: '是否显⽰⾃⼰',
+      LK_GONGYINGSHANGFANKUI: '供应商反馈',
+      LK_SHIFOUQIANSHUXIEYI: '是否签署协议',
+      LK_DINGDIANRIQI: '定点⽇期',
+      LK_LOIBIANHAO: 'LOI编号',
+      LK_LOIZHUANGTAI: 'LOI状态',
+      LK_LOISHENGCHENGSHIJIAN: 'LOI⽣成时间',
+      LK_QUERENBINGTIJIAO: '确认并提交',
+      LK_LINEQUEREN: 'LINIE确认',
+      LK_LINETUIHUI: 'LINIE退回',
+      LK_GUANBI: '关闭',
+      LK_JIHUO: '激活',
+      LK_GUANBIDINGDIANXIN: '关闭定点信',
+      LK_QINGSHURUGUANBIYUANYIN: '请输⼊关闭原因',
+      LK_MUBIAOXUNJIACAIGOUYUAN: '目标询价采购员',
+      LK_MUBIAOLINE: '⽬标LINIE',
+      LK_GAILAN: '概览',
+      LK_BAOBIAOGUANLI: '报表管理',
+      LK_WANCHENGDINGDIANXIN: '完成定点信',
+      LK_DAOCHUBIAOZHUNDINGDIANXIN: '导出标准定点信',
+      LK_LISHIDINGDIANXIN: '历史定点信',
+      LK_BIAOZHUNDINGDIANXIN: '标准定点信',
+      LK_FEIBIAOZHUNDINGDIANXIN: '⾮标准定点信',
+      LK_GONGYINGSHANGLIANXIR: '供应商联系⼈',
+      LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN:
+        '上传时文件请旋转至正常方向后上传',
+      LK_BIANJIBEIZHU: '编辑备注',
+      LK_GUANBILOI: '关闭LOI',
+      LK_WANCHENGLOI: '完成LOI',
+      LK_DAOCHUBIAOZHUNLOI: '导出标准LOI',
+      LK_LISHILOI: '历史LOI',
+      LK_BIAOZHUNLOI: '标准LOI',
+      LK_FEIBIAOZHUNLOI: '⾮标准LOI',
+      LK_PILIANGLOI: '批量LOI',
+      LK_KAIFALOI: '开发LOI',
+      LK_KAIFAPILIANGLOI: '开发+批量LOI',
+      LK_FRMPINGJI: 'FRM评级',
+      LK_CBDSTATUS: 'CBD状态',
+    },
+    LK_BANBENJIHUANIANFEN: 'Version Year',
+    LK_TUICHUBIANJI1: 'Exit',
+    LK_SHANGCHUANQINGDAN: 'Upload',
+    LK_YUEDUJIHUA: 'Monthly Plan',
+    LK_DANGNIANFUKUANJIHUA: 'Payment Plan-This Year',
+    LK_CINIANFUKUANJIHUA: 'Payment Plan-Next Year',
+    LK_YIYUE: 'Jan',
+    LK_ERYUE: 'Feb',
+    LK_SANYUE: 'Mar',
+    LK_SIYUE: 'Apr',
+    LK_WUYUE: 'May',
+    LK_LIUYUE: 'June',
+    LK_QIYUE: 'July',
+    LK_BAYUE: 'Aug',
+    LK_JIUYUE: 'Sept',
+    LK_SHIYUE: 'Oct',
+    LK_SHIYIYUE: 'Nov',
+    LK_SHIERYUE: 'Dec',
+    BJZS: {
+      LK_BAOJIAZUSHOU_MJ: '报价分析汇总-模具',
+      LK_BAOJIAZUSHOU_MJDANWEIYUAN: '报价分析汇总-模具（单元：元）',
+    },
+    TPZS: {
+      FENXI: 'Analysis',
+      YULAN: 'Preview',
+      GONGYINGSHANG: 'Supplier',
+      CHEXINGXIANGMU: 'Car Model Project',
+      CHEXING: 'Car Model',
+      GONGCHANG: 'Factory',
+      ZONGDANJIA: 'Unit Price',
+      GUDINGCHENGBENZHANBI: 'Percentage of Fixed Cost',
+      FEIYONGLEIXING: 'Cost Type',
+      FEIYONGZONGE: 'Total Cost',
+      FENTANSHULIANG: 'Part Quantity',
+      YINGXIANGDANJIA: 'Fixed Cost(Per Part) ',
+      YINGXIANGCHENGBENZHANBI: 'Percentage of Fixed Cost',
+      XIANSHIYINGCANG: 'Show/Hide',
+      WANCHENG: 'Done',
+      QINGSHURUBIANHAOMINGCHENG: 'Please enter the Code/Name',
+      QINGSHURUCHUANGJIANRENMINGCHENG: 'Please enter the Creator',
+      PCAZONGLAN: 'PCA Overview',
+      PINLEIGUANLIZHUSHOU: 'Material Group Management Assitant',
+      TANPANZHUSHOU: 'Negotiation Assistant',
+      BAOGAOMINGCHENG: 'Report',
+      TIAZONGLAN: 'TIA Overview',
+      BGQD: 'Report List',
+      ZXFXGJ: 'Analysis Tool',
+      BJFX: 'Quotation Analysis',
+      TPJBXX: 'Negotiation Basic Information',
+      BGMC: 'Report',
+      FXGJLX: 'Analysis Tool Type',
+      RFQHMC: 'Report List',
+      MRX: 'Default',
+      WJLX: 'Document Type',
+      CJR: 'Creator',
+      SCXGRQ: 'Last-Modified Date',
+      RFQ: 'RFQ',
+      FX: 'Analysis:',
+      QSRBGMC: 'Please enter Report Name...',
+      QSRCLZ: 'Please enter Material group...',
+      QSRLJH: 'Please enter Part No...',
+      QSRRFQMC: 'Please enter RFQ/Name...',
+      ZDDCBG: 'The maximum number of exported reports is 10',
+      CANNOTSELECT: 'Report not selected',
+      BG: 'Report:',
+      SCGXSJ: 'Last Updated Time:',
+      SCDCSJ: 'Last Exported Time:',
+      PLGYSGL: 'Batch Supplier Overview',
+      PLGYSZL: 'Batch Supplier Overview',
+      GYS360: 'Supplier 360',
+      DW: 'Unit',
+      XMGL: 'Project Overview:',
+      XMXX: 'Project Info',
+      FSCSS: 'Sourcing Buyer',
+      FOP: 'FOP',
+      MQXTY: 'MQ Coordinator',
+      PLXTY: 'PL Coordinator',
+      CFXTY: 'CF Coordinator',
+      FOPQK: 'FOP Status',
+      MQQK: 'MQ Status',
+      PLQK: 'PL Status',
+      CFQK: 'CF Status',
+      CXLC: 'Car Model Yield',
+      SOPRQ: 'SOP',
+      LCHTIPS:
+        'Green: submitted, ontime / Yellow: not submitted, due in 2 weeks / Orange: not submitted , due in 2-4 weeks / Red: not submitted, overdue ',
+      LJLBXX: 'Part List',
+      LJH: 'Part No./part ID',
+      LJM: 'Part ',
+      GC: 'Plant',
+      SOP: 'SOP',
+      EBR: 'EBR%',
+      XMMC: 'Project',
+      QSMZQCL: 'Full Lifecycle Yield',
+      FZNCL: 'Peak Annual Yield',
+      GYSXX: 'Supplier Info.',
+      SZD: 'Location',
+      SFMBDL: 'MBDL or Not',
+      BJZT: 'Quote Status',
+      MQDF: 'MQ Rating',
+      PLDF: 'PL Rating',
+      EPDF: 'EP Rating',
+      CLZMC: 'Material Group',
+      GYZMC: 'Process Group',
+      DDJE: 'Nominated Price',
+      DDSJ: 'Nominated Time',
+      SQDZDZ: 'SVW Address',
+      ZXSE: 'Total Sales:',
+      DDJV: 'Nominated Record',
+      DDJLMEMO: '  Recent 12 month nominated record',
+      VPFX: 'Volume Pricing Analysis',
+      VPFXK: 'Volume Pricing Analysis Database',
+      CXJHCLYXSLJCLFX:
+        'Analysis of the planned yield and the actual cumulative yield',
+      DWL: 'Unit:per vehicle',
+      ZF: 'Gains',
+      SMZQ: 'Lifecycle',
+      PLGLZS: 'Category Management Assistant',
+      JRZXFXGJ: 'Analysis Tool',
+      CLZRFQLJH: 'Material Group, RFQ, Part Number',
+      JHCL: 'Planned Yield',
+      SJCL: 'Actual Cumulative Yield',
+      LJLB: 'Parts List',
+      QLLJ: 'All Parts',
+      YXLJ: 'Selected Parts',
+      CZLJ: 'Search Parts',
+      GYS: 'Supplier',
+      DQJHCL: 'Current Planned Yield',
+      DQSJCL: 'Current Actual Cumulative Yield',
+      SOPSH: 'SOP',
+      JRFX: 'Analyze',
+      CLZ: 'Material Group',
+      SSJG: 'Search Result',
+      JHCLDQSJCLSOP:
+        "The time starting point of all information presented here is the corresponding part's last nominated time.",
+      QXZYTSJ: 'Please select a record',
+      BQYXLJMYSJQZQLLJZTJZYXLJ:
+        'Sorry, there is no selected data, please selected part and add to the list.',
+      QUXIAN: 'Curve',
+      GHQSSJ: 'Start of Delivery',
+      LCSJ: 'SOP',
+      JHLCDCL: 'Production Progress',
+      GHJSSJ: 'EOP',
+      JHCLJZSYM: 'Planned Yield (as of the end of last month)',
+      SJLJCL: 'Actual Cumulative Yield (as of the end of last month)',
+      VPJFQL: "Volume Pricing's Decline Potential",
+      JBDJ: 'Reduce the Unit Price',
+      YUAN: 'CNY',
+      JHZCL: 'Total Planned Yield',
+      YJZCL: 'Expected Total Yield',
+      YSXEWJJ: 'JPV',
+      SCHEME_TYPE: 'Solution',
+      REPORT_TYPE: 'Report type',
+      LK_CREATE: 'Create',
+      LK_CUSTOM_TITLE: 'Custom',
+      SHOWORHIDE: 'Show/Hide',
+      SORT: 'Sort',
+      SEARCH_PART: 'Search Parts',
+      PART_REQUIRE_MESSAGE: 'Part number required',
+      PART_UNIQUE_MESSAGE: 'Unique part number required',
+      YXLJZDZNTJYBT: 'Maximium 100 selected parts',
+      ZUIXINDINGDIANDANJIA: 'Nominated Unit Price',
+      MUBIAODANJIA: 'Taget Price',
+      CHANLIANGLIANG: 'Yield(Per Part)',
+      DANJIA: 'Unit Price',
+      YUANJIAN: '（CNY/PC）',
+      BAOGAO: 'Report',
+      JIHUAZHONGCHANLIANG: 'Planned Total Yield',
+      YUJIZONGCHANLIANG: 'Expected Total Yield',
+      GUDINGCHENGBEN: 'Fixed Costs',
+      ZONGJIANGJIA: 'Total Price Reduction',
+      JIANGJIA: 'Price Reduction',
+      ZXFXGJNHYGLFXBG: 'There is related analysis report',
+      ZXFXGJNMYGLFXBGDHHILJ: 'There is no analysis report, include Heavy Item.',
+      ZXFXGJNMYGLFXBGQBHHILJ:
+        'There is no analysis report, and not include Heavy Item.',
+      FEIYONGZONGEHEYINGXIANGDANJIABUENGWEIKONG:
+        'Total cost and Unit Price can not be empty.',
+      QSRCLZBHMC: 'Please enter material group code / name',
+      QSRRFQH: 'Please enter RFQ No.',
+      BOBFXK: 'BoB Analysis Lib.',
+      FXMC: 'Analysis Name',
+      BQWFCXDJGSRCWHBCZQQRHCXSR:
+        'Sorry, no data found, please confirm and re-enter.',
+      QXZXYCZDSJ: 'Please select data for operate',
+      ZJSCSH: 'Last upload time:',
+    },
+    MEK: {
+      QIEHUANCAILIAOZU: 'Switch Material Group',
+    },
+    'MODEL-ORDER': {
+      LK_RISEDINGDANHAO: 'RiSE PO No',
+      LK_SAPDINGDANHAO: 'SAP PO no',
+      LK_GONGYINSHANG: 'Supplier',
+      LK_CAIGOUGONGCHANG: 'Plant',
+      LK_LINGJIANHAO: 'Part No.',
+      LK_CAIGOUZU: 'Purch. Group',
+      LK_CAIGOUYUAN: 'Linie',
+      LK_DINGDANZHUANGTAI: 'PO Status',
+      LK_SAPFASONGZHUANGTAI: 'SAP Status',
+      LK_HETONGZHUANGTAI: '合同状态',
+      LK_JINKANZIJI: 'My data',
+      LK_XINJIAN: 'New',
+      LK_SHANCHU: 'Delete',
+      LK_ZHUANPAI: 'Handover',
+      LK_CHUANGJIANRUZHANGDAN: '创建入账单',
+      LK_BAOXIAOSHENQING: '报销申请',
+      LK_DAOCHU: 'Export',
+      LK_QUANBUSHOUQI: 'Collapse All',
+      LK_QUANBUZHANKAI: 'Collapse All',
+      LK_JULIYOUXIAOQISHIRIQIHAIYOUNTIAN: '{day} day(s) to valid date\n',
+      LK_CAIGOUZUCAIGOUYUAN: 'Purch. Group-Buyer',
+      LK_DINGDANRIQI: 'PO Date',
+      LK_DINGDAN: '订单',
+      LK_HETONG: '合同',
+      LK_QINGKONG: 'Clear All',
+      LK_BANBENSHNGJI: 'Version update',
+      LK_DINGDANLEIXING: 'PO Type',
+      LK_QINGSHURUGONGYINGSHANGBIANMA: 'Please enter supplier code',
+      LK_QINGSHURUCAIGOUZU: 'Please enter purch.group',
+      LK_QINGXUANZECAIGOUGONGCHANG: 'Please select plant',
+      LK_SUOSHUBUMEN: 'Dept',
+      LK_BANBEN: 'Version',
+      LK_GONGSHIDAIMA: 'Company Code',
+      LK_CAIGOUZUZHI: 'Purch. Orga',
+      LK_FUKUANTIAOJIAN: 'Pay Terms',
+      LK_CANZHAOCAIGOUSHENQING: 'Refer to PR',
+      LK_SHANCHUXIANGCI: 'Delete',
+      LK_HUIFUXIANGCI: 'Restore',
+      LK_DUQUJIAGE: 'Read price',
+      LK_MIAOSHU: 'Description',
+      LI_MOJUTAIZHANG: '模具台账',
+      LK_JIAGE: 'price',
+      'LK_GR/IR': 'GR/IR',
+      LK_KUCUNDIDIAN: 'Inventory Location',
+      LK_YUANGUZIBIANHAO: '原固资编号',
+      LK_FASONGSAP: 'Send SAP',
+      LK_ZHUANYECAIGOUYUAN: 'Linie',
+      LK_BUMEN: 'Dept',
+      LK_SAPBIANHAO: 'SAP no',
+      LK_QIWANGGONGYINGSHANG: 'Expected suppliers',
+      LK_CAIGOUSHENQINGLEIXING: 'PR type',
+      LK_YUPILIANGCAIGOUSHENQING: 'Pre-series PR',
+      LK_BIAOZHUNCAIGOUSHENQING: 'Standard PR',
+      LK_GONGXUWEIWAI: '工序委外',
+      LK_MOJUCAIGOUSHENQING: '模具采购申请',
+      LK_RISEBIANHAO: 'RiSE No',
+      LK_XUQIUGENZONGHAO: 'Demand tracking no',
+      LK_XIANGCI: 'Item',
+      LK_LINGJIANMINGCENG: 'Part Name',
+      LK_SHENQINGSHIJIAN: 'Create time',
+      LK_WULIAOZU: 'Material Group(SAP)',
+      LK_WBSYUANSU: 'WBS element',
+      LK_LAIYUANRISEBIANHAO: 'Source PR Rise Num',
+      LK_LAIYUANXIANGCI: 'Source PR Item',
+      LK_RISEXIEYIHAO: 'RISE PO',
+      LK_SAPXIEYIHAO: 'SAP PO',
+      LK_GUOZHANGQIZHIRIQI: 'Posting Period',
+      LK_ZHI: 'To',
+      LK_LEIXING: 'Type',
+      LK_WULIAOPINGZHENG: 'Material Voucher',
+      LK_XIANGMU: 'Project',
+      LK_GUOZHANGRIQI: 'Posting Date',
+      LK_JINE: 'Amount',
+      LK_SAPDAORU: 'SAP import',
+      LK_CSCBIANHAO: 'CSC PR no',
+      LK_XIANGCILAIYUAN: 'Item Source',
+      LK_YICIXINGDINGDIANZHUANGTAI: 'One-time nomi. state',
+      LK_RIQIFANWEI: 'Period',
+      LK_KAISHIRIQI: 'Start Date',
+      LK_JIESHURIQI: 'End Date',
+    },
+    MOULDADD: {
+      CHAKANLISHI: 'View history',
+      SOPSHIJIAN: 'SOP Date',
+      LK_RFQBIANHAO: 'RFQ No',
+      LK_SHENQINGREN: 'applicant',
+      LK_PIZHUAN: 'approval',
+      LK_QINGSHURUJUJUEYUANYIN: 'Please enter the rejection reason',
+      LK_TIANJIAHANG: 'Add',
+      LK_SHANCHUHANG: 'Delete',
+      LK_CAILIAOZUBIANHAO2: 'MG No',
+      LK_CAILIAOZUMINGCENGZHONG: 'MG Name_CN',
+      LK_CAILIAOZUMINGCENGDE: 'MG Name_GE',
+      LK_ZHUANYEKESHI: 'Commodity',
+      LK_CommonSourcing: 'Common Sourcing',
+      LK_MOJUSHUXIN: 'Mold Property',
+      LK_LINIE: 'Linie',
+      LK_ZP: 'ZP',
+      LK_CANKAOCHEXINXIANGMUYI: '1st Refer',
+      LK_CANKAOCHEXINXIANGMUER: '2nd Refer ',
+      LK_CANKAOCHEXINXIANGMUSAN: '3rd Refer',
+      LK_QITACHEXINXIANGMUBEIXUAN: 'Others',
+      LK_CHEXINXIANGMULEIXIN: 'Project Type',
+      LK_CHEXINXIANGMUQIZHINIANFEN: 'Project SOP',
+      LK_YUSUANGUANLITIPS1:
+        'The function of this window is to select the reference model items, and the model items without SOP are not used as reference data',
+      LK_YUSUANGUANLITIPS2:
+        'The referenced amount is the fixed-point amount of the mold',
+      LK_YUSUANGUANLITIPS3:
+        'After selecting all conditions, the system will first calculate the historical investment amount of each material group of the first ranking vehicle type project according to your selection;',
+      LK_YUSUANGUANLITIPS4:
+        'If the calculation result of a material group is 0, calculate the historical investment amount of each material group of the second sequential vehicle project to supplement;',
+      LK_YUSUANGUANLITIPS5:
+        'If the calculation result of a material group is 0 again, calculate the historical investment amount of each material group of the third sequential vehicle project to supplement;',
+      LK_YUSUANGUANLITIPS6:
+        'If the calculation result of a material group is still 0, the system will select multiple model items according to [other reference] [model item type] [project year], and call the item with the largest mold investment amount as the mold investment amount of the reference item, which will be displayed on the [mold investment list page]',
+      LK_SHIFOUJIXU:
+        'You have not selected the reference model item, do you want to continue?',
+      LK_SHENGCHANGONGCHANG: 'Production plant',
+      LK_YUSUANJINEPSK: 'Budget amount PSK(Mio.RMB)',
+      LK_SOURCINGLEIXIN: 'Sourcing type',
+      LK_CANKAOXIANGMU: 'Reference items',
+      LK_CANKAOXINGMUMOJUJINE: 'Refer Project Nomi Amount(Mio.RMB)',
+      LK_YUSUANBEIZHU: 'Budget Remark',
+      LK_YISHENQINGJINE: 'Applied amount',
+      LK_YIDINGDNIANJINE: 'Fixed amount',
+      LK_YIBAJINE: 'Ba amount paid',
+      LK_YIBMJINE: 'BM amount paid',
+      LK_LISHISHUJUKU: 'Historical database',
+      LK_XINBANBENMINGMING: 'Naming of new edition',
+      LK_CAILIAOZU: 'Material group',
+      LK_LINGJIANHAO: 'Part No',
+      LK_SHENGQINGBAJINE: 'BA amount applied',
+      LK_AHAO: 'A No',
+      LK_RENMINGBI: 'RMB',
+      LK_DANWEI: 'Unit',
+      LK_BUHANSUI: 'Tax excluded',
+      LK_BMDANJINE: 'BM doc amount',
+      LK_BMDANHAO: 'BM No',
+      LK_APPLYAMOUNT: 'Application amount',
+      LK_FIXEDPOINTSUPPLIER: 'Designated supplier',
+      LK_DINGDIANRIQI: 'Fixed date',
+      LK_QIANQICAIGOUYUAN: 'Preliminary purchaser',
+      LK_SCFPFUZHEREN: 'CSF(P)person in charge',
+    },
+    QISHINIANYUE: 'SOP',
+    BUCHAXIANGQING: 'Compensation Detail',
+    nominationSupplier_DanYiGongYingShang: '',
+    'FS No': '',
+    'Part No.': '',
+    'Part Name': '',
+    'Supplier Name': '',
+    'Supplier No.': '',
+    Reason: '',
+    'Caused by': '',
+    切换材料组: 'Material Group',
+    MAPINGFEN: 'Annual Reduction Starting Time',
+    SHICHANGJIAXIANGQING: 'Market Price Info.',
+    LK_BIANGENGSHENPIFUJIAN: 'Approval Attachments',
+    LK_AEKOSHENPIDAN: 'Approval Sheet',
+    '当前零件采购项目类型与commonSourcing为[否]不统一，是否继续？': '',
+    DUIYINGYUANCAILIAOSANJIANREFID: 'Corresponding Raw Material/Component',
+    NEWS_GONGYINGSHANGHFANWEI: 'Supplier Range',
+    QUEREN: 'Confirm',
+    JIESHURIQI: 'Ending Date',
+    LANGRUIGEKEY2: 'Event Name 12',
+    LANGRUIGEKEY3: '4',
+    计划付款金额: 'Payment Plan Amount',
+    SOP时间: 'SOP Time',
+    车型项目类型: 'Proj. Type',
+    专业科室: 'Prof. Dept.',
+    模具属性: 'Tooling Attribute',
+    定点金额: 'Nomi. Amount',
+    BM单金额: 'BM Sheet Amount',
+    入账金额: 'Recorded Amount',
+    车型包: 'Model Pkg.',
+    零件包名称: 'Part Pkg.Name',
+    '定点金额-TOTAL': 'Nomi. Amount-Total',
+    '定点金额-SVW': 'Nomi. Amount-SVW',
+    车型项目1名称: 'Project 1 Name',
+    车型项目1金额: 'Project 1 Amount',
+    车型项目2名称: 'Project 2 Name',
+    车型项目2金额: 'Project 2 Amount',
+    车型项目3名称: 'Project 3 Name',
+    车型项目3金额: 'Project 3 Amount',
+    车型项目4名称: 'Project 4 Name',
+    车型项目4金额: 'Project 4 Amount',
+    车型项目5名称: 'Project 5 Name',
+    车型项目5金额: 'Project 5 Amount',
+    车型项目6名称: 'Project 6 Name',
+    车型项目6金额: 'Project 6 Amount',
+    车型项目7名称: 'Project 7 Name',
+    车型项目7金额: 'Project 7 Amount',
+    车型项目8名称: 'Project 8 Name',
+    车型项目8金额: 'Project 8 Amount',
+    车型项目9名称: 'Project 9 Name',
+    车型项目9金额: 'Project 9 Amount',
+    车型项目10名称: 'Project 10 Name',
+    车型项目10金额: 'Project 10 Amount',
+    六位号: '',
+    零件名称: '',
+    定点类型: '',
+    已申请金额: 'Applied Amount',
+    已定点金额: 'Nomi. Amount',
+    已BA金额: 'BA  Amount',
+    已BM金额: 'BM Amount',
+    参考项目模具定点金额: 'Ref. Proj. Tooling Amount (Mio. RMB)',
+    LK_CHAKANCOMMONYUSUAN: 'View common budget',
+    'MOULDADD.LK_CAILIAOZUBIANHAO2': 'Material Group No.',
+    'MOULDADD.LK_CAILIAOZUMINGCENGZHONG': 'Material Group Name (CN)',
+    'MOULDADD.LK_CAILIAOZUMINGCENGDE': 'Material Group Name (DE)',
+    'MOULDADD.LK_ZHUANYEKESHI': 'Prof. Dept.',
+    'MOULDADD.LK_MOJUSHUXIN': 'Tooling Attribute',
+    'MOULDADD.LK_LINIE': 'LINIE',
+    'MOULDADD.LK_ZP': 'ZP',
+    'MOULDADD.LK_YUSUANJINEPSK': 'Budget PSK (Mio. RMB)',
+    'MOULDADD.LK_SOURCINGLEIXIN': 'Sourcing Type',
+    'MOULDADD.LK_CANKAOXIANGMU': 'Ref. Proj.',
+    'MOULDADD.LK_CANKAOXINGMUMOJUJINE': 'Ref. Proj. Tooling Amount (Mio. RMB)',
+    'MOULDADD.LK_YUSUANBEIZHU': 'Budget Remark',
+    'MOULDADD.LK_YISHENQINGJINE': 'Applied Amount',
+    'MOULDADD.LK_YIDINGDNIANJINE': 'Nomi. Amount',
+    'MOULDADD.LK_YIBAJINE': 'BA Amount',
+    'MOULDADD.LK_YIBMJINE': 'BM Amount',
+    车型类型: 'Carline',
+    'JV/Common': 'JV/Common',
+    'MOULDADD.LK_CAILIAOZU': 'Material Type',
+    模具入账金额: 'Tooling Billing Amount',
+    'MOULDADD.LK_FIXEDPOINTSUPPLIER': '',
+    'MOULDADD.LK_DINGDIANRIQI': '',
+    '零件包-CN': 'Part Pkg.-CN',
+    '零件包-DE': 'Part Pkg.-DE',
+    预算金额: 'Budget Amount',
+    数据来源: 'Data Source',
+    参考项目: 'Ref. Proj.',
+    LK_QINGSHURUZIDINGYIMINGCHENG: 'Please enter a custom name',
+    LK_RANLIAOLEIXING: 'Fuel Type',
+    'MOULDADD.LK_CommonSourcing': 'Common Sourcing',
+    LK_DIANJIJINRUSHENGCHENGTOUZIQINGDANYEMIAN:
+      'Click to enter “Generate investment list” page',
+    LK_XINZHENGCHEXIANGXIANGMU: 'New model items',
+    LK_SHENGCHANGONGCHANG: 'Production plant',
+    LK_DIANJIJINRUSHENGCHENGTOUZIQINGDANYEMIAN2:
+      'Click to go to the "Generate Investment List" page',
+    LK_CHONGFUAILIAOZU: 'Duplicate Material Group',
+    '零件包名称（中）': 'Part Pkg. Name (CN)',
+    '零件包名称（德）': 'Part Pkg. Name (DE)',
+    目标预算: 'Target Budget',
+    科室: 'Commodity',
+    定点预分配: 'Nomi. Pre. Quota',
+    发送日期: 'Send Date',
+    'costanalysismanage.Linie': 'Linie',
+    RFQ号: 'RFQ No.',
+    前期采购员: 'Forward Buyer',
+    材料组: 'Material Group',
+    材料组预算: 'Material Group Budget',
+    材料组预算剩余: 'Material Group Budget Remains',
+    申请金额: 'App. Amount',
+    预算状态: 'Budget status',
+    'MOULDADD.LK_RFQBIANHAO': 'RFQ No.',
+    'MOULDADD.LK_QIANQICAIGOUYUAN': 'Forward Buyer',
+    'MOULDADD.LK_LINGJIANHAO': 'Part No.',
+    'MOULDADD.LK_CAIGOUGONGCHANG': 'Purchasing Factory',
+    'FSNR / GSNR': 'FS/GS',
+    'MOULDADD.LK_SCFPFUZHEREN': 'CSF(P) Owner',
+    模具定点金额: 'Tooling Nomi. Amount',
+    JUJUEYUANYIN: 'Reject Reason',
+    JIESHUBIANJI: 'Quit Edit',
+    WAIBUKAIFAFEIYUAN: 'Ext. Dev. Fee (RMB)',
+    ZNEGJIADERENKEFEIYUAN: 'Additional Recog. Fee (RMB)',
+    RENKEZHOUQIZHOU: 'Recog. Period (week)',
+    XIETIAOREN: 'Coordinator',
+    GONGYINGSHANGSHENGCHANCHANGDI: 'Supplier Factory',
+    TUIHUIZHICAIGOUYUAN: 'Return to Linie',
+    SHIFOUJUJUE: 'Do you want to reject?',
+    GONGYINGSHANGPINGFENFUJIAN: 'Rating Attachments',
+    GONGYINGSHANGMING: 'Supplier Name',
+    HEGE: 'Qualified',
+    BUHEGE: 'Disqualified',
+    LK_FUJIANPINGFEN: '',
+    QINGXUANZECHEXING: 'Please select model',
+    QINGSHURURFQMINGCHENG: 'Please enter RFQ name',
+    QINGSHURULINIE: 'Please enter LINIE',
+    QINGSHURUXUNJIACAIGOUYUAN: 'Please enter sourcing buyer',
+    QINGSHURULINGJIANMINGCHENG: 'Please enter part name',
+    GONGYINGSHANGSVWHAO: 'Supplier SVW No.',
+    QINGSHURUGONGYINGSHANGSVWHAO: 'Please enter supplier SVW No.',
+    QINGSHURUGONGYINGSHANGSAPHAO: 'Please enter supplier SAP No.',
+    QINGSHURUGONGYINGSHANGMINGCHENG: 'Please enter supplier name',
+    GONGYINGSHANGPINGFENGUANLI: 'Supplier Rating Mgmt.',
+    ZHUANPAIPINGFENRENWU: 'Rating Task',
+    PINGFENREN: 'Grader',
+    QINGXUANZEXUYAOZHUANPAIDEPINGFENRENWU:
+      'Please select rating task to be transfered',
+    MORENPINGFENZHUANGTAI: 'Default Rating Status',
+    LK_AEKO_FENPAI: 'Dist.',
+    MUBIAOJIAQIANSHOU: 'Target Price Acceptance',
+    MOJUKONGZHIYUAN: 'Tooling Controller',
+    WUTOUZI: 'No Inv.',
+    FENPEIMOJUKONGZHIYUAN: 'Tooling Dist. Controller',
+    WUTOUZIQUEREN: 'No Inv. Conformation',
+    RFQHASVALIDTARGETPRICECONFIRMNOINVESTMENT:
+      'There is target price return from RFQ, are you sure there is no investment? ',
+    TUIHUIQUEREN: 'Return Conformation',
+    WUTOUZIQUERENLK: 'No Inv. Conformation',
+    SHIFOUYOUCAIWUMUBIAOJIA: 'Target Price',
+    LINGJIANMINGCHENGDE: 'Part Name (DE)',
+    ZHISHAOXUANZEYITIAOJILU: 'Please select at least one record',
+    SHENPIKAISHIRIQI: 'Approval Start Date',
+    SHENPIJIEGUO: 'Approval Result',
+    ZAISHENQING: 'Reapply',
+    PIZHUN: 'Approve',
+    SHENPIYIJIAN: 'Approval Comment',
+    MOJUFEIWEIODERFQ: 'RFQ with 0 Tooling Fee',
+    PIZHUNQUEREN: 'Approval Conformation',
+    RWJIA: 'RW Price',
+    SETSHUXING: 'SET Attribute',
+    ZHIPAIZHUANGTAI: 'Assign Status',
+    QIWANGMUBIAOJIA: 'Expected Price',
+    QINGXUANZEZHIPAIREN: 'Please select appointer',
+    YOUXIAOZHUANGTAI: 'Valid',
+    LCHUOBILEIXING: 'LC Currency Type',
+    SKDHUOBILEIXING: 'SKD Currency Type',
+    SKDHUILV: 'SKD Exch. Rate',
+    CKDHUOBILEIXING: 'CKD Currency Type',
+    CKDHUILV: 'CKD Exch. Rate',
+    LK_ZHIPAI: 'Assign',
+    LK_FANHUIRIQI: 'Return Date',
+    SHENQINGRIQI: 'App. Date',
+    MUBIAOJIAFENLEI: 'Target Price Category',
+    CSFCSS: 'CSF/CSS',
+    XIUGAIREN: 'Modifier',
+    MUBIAOJIAWEIHU: 'Maintain',
+    MUBIAOJIASHENPI: 'Approval',
+    MUBIAOJIACHAXUN: 'Query',
+    SHENQINGRIQIQIZHI: 'App. Period',
+    FANHUIRIQIQIZHI: 'Return Period',
+    DAOCHUPILIANGWEIHU: 'Batch Export',
+    DAORUPILIANGWEIHU: 'Batch Import',
+    LC_A: 'LC_A',
+    LC_B: 'LC_B',
+    MEIYOUKEYIBIANJIDESHUJU: 'There is no data to edit',
+    SHENQINGMOJUMUBIAOJIA: 'App. Tooling Target Price',
+    XIANSHIZHIJI: 'Filter by Me',
+    WEIHU: 'Maintain',
+    LCABIANHUA: 'LC_A Alteration',
+    SKDABIANHUA: 'SKD_A Alteration',
+    OLDCFLCBTARGET: 'Old CF LC_B Target',
+    NEWCFLCBTARGET_RMB: 'New CF LC_B Target(RMB)',
+    OLDCFLCATARGET: 'Old CF LC_A Target',
+    NEWCFLCATARGET_RMB: 'New CF LC_A Target(RMB)',
+    OLDCFSKDBTARGET: 'Old CF SKD_B Target',
+    NEWCFSKDBTARGET_RMB: 'New CF SKD_B Target(RMB)',
+    OLDCFSKDATARGET: 'Old CF SKD_A Target',
+    NEWCFSKDATARGET_RMB: 'New CF SKD_A Target(RMB)',
+    OLDCFCKDLANDED: 'Old CF CKD Landed',
+    NEWCFCKDLANDED_RMB: 'New CF CKD Landed(RMB)',
+    OLDCFCKDDUTY: 'Old CF CKD Duty(%)',
+    NEWCFCKDDUTY: 'New CF CKD Duty(%)',
+    OLDCFCKDEXWORK: 'Old CF CKD Ex-work',
+    NEWCFCKDEXWORK: 'New CF CKD Ex-work(RMB)',
+    XIUGAIYUANYIN: 'Modify Reason',
+    QINGSHURUJUJUEYUANYIN: 'Please enter Reject Reason ',
+    SHENPIREN: 'Approver',
+    SHENPIRIQI: 'Approval Date',
+    XIUGAIRIQI: 'Update Date',
+    LCBBIANHUA: 'LC_B Alteration',
+    SKDBBIANHUA: 'SKD_B Alteration',
+    CKDLANDEDBIANHUA: 'CKD Landed Alteration',
+    CKDDUTYBIANHUA: 'CKD Duty Alteration',
+    CKDEXWORKBIANHUA: 'CKD Ex-work Alteration',
+    RGCBSJWH: 'Data Maintenance',
+    HEAVYITEMQDWH: 'Heavy Item Maintenance',
+    DAOCHUMUBAN: 'Export Template',
+    XIAZAIWENJIAN: 'Download File',
+    QXZJYSCDRGCBSSNF:
+      'Please select year which labor cost being uploaded belongs to.',
+    RENGONGCHENGBENSHUJUWEIHU: 'Data Maintenance',
+    SHANGCHUANWENJIANMINGCHENG: 'File Name',
+    RENGONGCHENGBENWEIHU: 'Cost Maintenance',
+    BENLUNBAOJIAJIEZHIRI: 'Round Closing Date',
+    XIAZAIJISHUZILIAO: 'Download Tech Doc.',
+    XIAZAICBD: 'Download CBD',
+    PCAFENXIJIEGUO: 'PCA Analysis',
+    TIAFENXIJIEGUO: 'TIA Analysis',
+    'costanalysismanage.BaoGaoQingDan': 'Report List',
+    QINGXUANZEXUYAOBAOCUNDESHUJU: 'Please select data to save',
+    SHANGCHUANPCABAOGAO: 'Upload PCA Report',
+    SHANGCHUANSHIBAI: 'Upload Faild',
+    GREENFIELDMEASURES: 'Green Field Measures',
+    OPENGAP: 'Open GAP',
+    OPENPOTENTIA: 'Open Potential',
+    OPENPOTENTIAL: 'Open Potential',
+    KGF: '',
+    TIA: '',
+    SAVEPCARESANDTIARESTIPS: '',
+    QINGXUANZECHEXINGXIANGMU: 'Please select model',
+    LK_SHIFOUXIANSHIZIJI: 'Filter by Me',
+    QINGSHURURFQBIANHAO: 'Please enter RFQ No.',
+    QINGXUANZERFQZHUANGTAI: 'Please select RFQ Status ',
+    QINGSHURUPCA: 'Please enter PCA',
+    QINGSHURUTIA: 'Please enter TIA',
+    QINGXUANZEHEAVYITEM: 'Please select Heavy Item',
+    QINGXUANZECOMMODITY: 'Please select commodity',
+    RFQLIEBIAO: 'RFQ List',
+    'costanalysismanage.RfqLeiXing': 'RFQ Type',
+    'costanalysismanage.ChuangJianRiQi': 'Creation Type',
+    'costanalysismanage.DangQianLunCi': 'Cur. Round',
+    'costanalysismanage.RfqZhuangTai': 'RFQ Status',
+    'costanalysismanage.BaoJiaJieZhiRiQi': 'Quotation DDL',
+    'costanalysismanage.Pca': 'PCA',
+    'costanalysismanage.Tia': 'TIA',
+    'costanalysismanage.HeavyItem': 'Heavy Item',
+    'costanalysismanage.JiShuZiLiao': 'Tech Doc.',
+    'costanalysismanage.Cbd': 'CBD',
+    'costanalysismanage.FenXiBaoGao': 'Analysis Report',
+    QINGSHURULINGJIANMING: 'Please enter part name',
+    CHENGBENFENXIGUANLI: 'Cost Analysis Mgmt.',
+    LK_CBDSTATUS: 'CBD Status',
+    'partsignLanguage.CheXingXiangMu': 'Car Project',
+    'costanalysismanage.FaSongShiJian': 'Sending Time',
+    'costanalysismanage.RfqLunCi': 'RFQ Round',
+    FOU: 'No',
+    JICHUSHUJUWEIHU: '',
+    CHENGBENFENXI: 'Cost Analysis',
+    'costanalysismanage.WenJianMingCheng': 'File Name',
+    'costanalysismanage.DaXiao': 'Size',
+    'costanalysismanage.ShangChuanRiQi': 'Upload Date',
+    'costanalysismanage.ShangChuanRen': 'Uploader',
+    SHANGCHUANTIABAOGAO: 'Upload TIA Report',
+    BAOGAOLEIXING: 'Report Type',
+    CAIWUMUBIAOJIAGUANLI: 'F-Target Mgmt.',
+    BUMENBIANHAO: 'Dept. Code',
+    QINGXUANZEBUMENBIANHAO: 'Please select Dept. code',
+    BUMENPINGFENLEIXING: 'Rating Dept. Type',
+    QINGXUANZEBUMENPINGFENLEIXING: 'Please select ',
+    BUMENZHONGWENMING: 'Dept. Name (CN)',
+    BUMENYINGWENMING: 'Dept. Name (EN)',
+    NOSAVEISQUIT:
+      'You have data changes that have not been saved, please confirm whether you need to exit edit mode',
+    SHUJUWEIHU: 'Data Maintenance',
+    QINGSHURUBUMENBIANHAO: 'Please enter Dept. Code',
+    QINGSHURUBUMENZHONGWENMING: 'Please enter dept. Chinese name ',
+    QINGSHURUBUMENYINGWENMING: 'Please enter dept. English name',
+    MUJUMUBIAOJIAGUANLI: 'Tooling Target Price Mgmt.',
+    LINGJIANQINGDAN: 'Part List',
+    WENJIANMINGCHENG: 'File Name',
+    SHANGCHUANRIQI: 'Upload Date',
+    SHANGCHUANREN: 'Uploader',
+    XUNJIAFUJIAN: 'Inquiry Attachment',
+    XUNJIATUZHI: 'Inquiry Drawing',
+    QINGXUANZEXUYAOXIAZAIDEWENJIAN: 'Please select file to download',
+    DISCARDCHANGE:
+      'The content has changed. Are you sure you want to abandon the modification?',
+    PINGFENLIEWEIBITIANXIANG: 'Rating Col. is Mandatory',
+    NOCHANGEDONTSAVE: 'No changes were found and no saving is required.',
+    GONGYINGSHANGPINGFEN: 'Supplier Rating',
+    PINGFEN: 'Rating',
+    ZHUANPAI: 'Transfer',
+    JINRUBIANJI: 'To Edit',
+    LINGJIANMINGCHENGZHONG: 'Part Name (CN)',
+    TISHI: 'Notification',
+    RFQBIANHAO: 'RFQ No.',
+    RFQMINGCHENG: 'RFQ Name',
+    ALL: 'All',
+    QINGXUANZEXUNJIACAIGOUYUAN: 'Please select sourcing buyer',
+    QINGXUANZEPINGFENZHUANGTAI: 'Please select rating status',
+    GONGYINGSHANGSAPHAO: 'SAP No.',
+    GONGYINGSHANGMINGCHENG: 'Supplier Name',
+    XUNYUANZHIXING: 'Sourcing',
+    PINGFENZHUANGTAI: 'Rating Status',
+    GONGYINGSHANG: 'Supplier',
+    SHURUCHAXUNGONGYINGSHANGMINGCHENG: 'Please enter supplier name for query ',
+    KUOCHANNENGJIHUA: 'Capacity Expansion Plan',
+    CAP_EATCHANNENGTIAN: 'E./AT Capa./Day',
+    CAP_CHANNENGZHOU: 'E./AT Capa./Year',
+    XIANGMULEIXING: 'Proj. Type',
+    CANKAOBAOZHUANG: 'Ref. Pkg.',
+    SHI: 'Yes',
+    LK_BITIANXIANGBUNENGWEIKONG: 'Please fill-in mandatory',
+    SUOSHUBUMEN: 'Belonging Dept.',
+    暂无数据: '',
+    HUIYI: 'Meeting',
+    XUNYUANZHIHANG: 'Sourcing',
+    YES: 'Yes',
+    NO: 'No',
+    PEIJIANLINGJIANHAO: 'Spare Part No.',
+    PEIJIANLINGJIANZHONGWENMING: 'Part Name (CN)',
+    GONGYINGSHANGZHONGWENMING: 'Supplier Name (CN)',
+    PILIANGGONGHUOZONGCHENGHAO: 'Serial Assembly. Part No.',
+    SPHAO: 'SP No.',
+    BIANHAO: 'Serial No.',
+    PEIJIANCHEXING: 'Model',
+    PEIJIANCHEXINGXIANGMU: 'Car Project',
+    PEIJIANZHUANGTAI: 'Acc. Status',
+    SHIFOUYOUXUNJIACAIGOUYUAN: 'Sourcing Buyer',
+    PEIJIANXUQIUQIANSHOU: 'Sign-in',
+    QIANSHOU: 'Demand',
+    TUIHUIEPS: 'Return to EPS',
+    FENPEIXUNJIAKESHI: 'Assign Sourcing Dept.',
+    FENPEIXUNJIACAIGOUYUAN: 'Assign Sourcing Buyer',
+    DAOCHU: 'Export',
+    ZANWUSHUJU: 'No Data',
+    SONGHUOCANGKU: 'Delivery Warehouse',
+    XUQIUFASONGRIQI: 'Req. sent Date',
+    LINIEKESHI: 'Commodity',
+    LINIE: 'LINIE',
+    PINPAI: 'Brand',
+    QUXIAO: 'Cancel',
+    QINGXUANZEXUNJIAKESHI: 'Select Sourcing Dept.',
+    TUIHUIYUANYIN: 'Return Reason',
+    BAOCUN: 'Save',
+    TUIHUILIYOULEIXING: 'Type',
+    TUIHUILIYOUMIAOSHU: 'Desc.',
+    QINGSHURUCHEXIAOYUANYIN: 'Please enter return reason',
+    LK_ZHENGCHEJINGDUFENGXIAN: 'Progress Risk',
+    SHOUCIPRECSCTIJIAOLIUZHUAN: 'Init. Pre-CSC/Circulation Submission',
+    ANRENWUZHUANGTAI: 'By Task Status',
+    RENWUJINDU: 'Task Progress',
+    CAIGOUYUAN: 'Buyer',
+    FSNO: 'FS No.',
+    'TPZS.YUANKUAHAO': '(RMB)',
+    'TPZS.MYFXFAQGXBCZFXK': 'Please save to the data analysis library first.',
+    'TPZS.FEIYONGLEIXING': 'Cost Type',
+    'TPZS.FEIYONGZONGE': 'Total Cost',
+    'TPZS.FENTANSHULIANG': 'Number of Allocation',
+    'TPZS.YINGXIANGCHENGBENZHANBI': 'Cost  Affecting Ratio',
+    'TPZS.XIANSHIYINGCANG': 'Show/Hide',
+    FS: 'FS No.',
+    'TPZS.SHOWORHIDE': 'Show/Hide',
+    'TPZS.SORT': 'Sort',
+    CQLJ: 'Search',
+    FH: 'Back',
+    TJ: 'Add',
+    LJH: 'Part Num',
+    RFQ: 'RFQ No.',
+    GC: 'Factory',
+    ZT: 'Status',
+    CLZ: 'Material Group',
+    GYSMC: 'Supplier Name',
+    CARPROJECTNAME: 'Car Project',
+    CARTYPE: 'Model',
+    FACTORY: 'Factory',
+    SUPPLIER: 'Supplier',
+    SHOWORHIDDEN: 'Show/Hide',
+    SORT: 'Sort',
+    MATERIALGROUP: 'Material Group',
+    RFQNO: 'RFQ No.',
+    STATUS: 'Status',
+    SUPPLIERNAME: 'Supplier Name',
+    YDD: 'Nominated',
+    'TPZS.CHANLIANG': 'Volume',
+    'TPZS.DANJIA': 'Unit Price',
+    CIYANGSHIBAOGAOYICUNZAISHIFOUFUGAI: '',
+    WENXINTISHI: '',
+    'TPZS.CLZ': 'Material Group',
+    'TPZS.DWL': 'Per car',
+    'TPZS.ZF': 'Gains',
+    'TPZS.SMZQ': 'Life Cycle',
+    'TPZS.GYS': 'Supplier',
+    'TPZS.DQJHCL': 'Cur. Capacity Plan',
+    'TPZS.DQSJCL': 'Actual Prod. Plan ',
+    'TPZS.CHEXINGXIANGMU': 'Car Project',
+    'TPZS.SOPSH': 'SOP Date',
+    YICHU: 'Remove',
+    BAOGAOMINGCHENG: 'Report Name',
+    ZUIDUOZHINENGXUANZESHITIAOSHUJU: '',
+    YUANCAILIAOLEIBIEBIANHAO: 'Raw Material/Type/Code',
+    SHIFOUEOP: 'EOP (Y/N)',
+    BAOJIADANJIA: 'Quote Price',
+    YUANCAILIAOMINGCHENG: 'Raw Material Name',
+    LEIBIE: 'Type',
+    PAIHAOGUIGE: 'Brand/Spec.',
+    JIAGEBIANDONGBILV: 'Price Alteration Ratio',
+    SEARCHCHECKOUT: 'Please enter to query',
+    YUANCAILIAOXIANGQINGTITLE: 'Raw Material Pricing Overview',
+    YUANCAILIAOPAIHAOGUIGE: 'Raw Material/Brand/Spec.',
+    ZHENGFU: 'Amptitude',
+    'PI.SHUJULAIYUANTISHI':
+      'Since CBD fails to match with market data, the corresponding index change percentage cannot be generated for this item, and system matching module information can be manually supplemented.',
+    'TPZS.BCZFXK': 'Save to Analysis Database',
+    'TPZS.BCWBK': 'Save as Report',
+    'TPZS.QSRWJMC': 'Please enter file name',
+    'PI.PIFENXI': 'Price Index Analysis',
+    'PI.PIFENXIKU': 'Price Index Analysis Database',
+    'PI.YULAN': 'Preview',
+    'PI.BAOCUN': 'Save',
+    'PI.FSHAO': 'FS No.',
+    'PI.GONGYINGSHANG': 'Supplier',
+    'PI.CHEXINGXIANGMU': 'Car Project',
+    'PI.GONGCHANG': 'Plant',
+    'PI.DANGQIANSHIDIAN': 'Cur. Timing',
+    'PI.PINGJUN': 'Avg.',
+    'PI.SHIJIANDAN': 'Period',
+    'PI.ZONGHEJIAGEYINGXIANG': 'Comp. Price Effect',
+    'PI.LEIBIE': 'Type',
+    'PI.JIAGEYINGXIANGXISHU': 'Cost Affecting Ratio %',
+    'PI.JIAGEBIANDONGBILV': 'Price Alteration Ratio %',
+    'PI.XITONGPIPEIXINXI': 'System Mapping Info',
+    'PI.XINZENG': 'Create',
+    'PI.XIANSHIYINGCANG': 'Display/Hide',
+    'PI.LINGJIANCHENGBENGOUCHENG': 'Part Cost Consistency',
+    'PI.PIJIAGEFENXI': 'Price Index Analysis',
+    'PI.PIINDEXTISHI':
+      'All the fluctuations in the figure are weighted average fluctuations',
+    'PI.JIAGEWEIDU': 'Pricing Dimension',
+    'PI.SHIJIANKELIDU': 'Time Scale',
+    'PI.PIJIAGEDANWEI': 'Unit: %',
+    ZIDINGYI: 'Custom',
+    XIANSHIYINCANG: 'Display/Hide',
+    'PI.PIINDEXBAOGAO': 'Price Index Report',
+    'PI.GUIGEPAIHAO': 'Brand/Spec.',
+    'PI.SHENGSHI': 'Province',
+    'PI.SHUJULAIYUAN': 'Data Source',
+    'PI.GONGZHONG': 'Prof.',
+    'PI.GUOJIA': 'Country',
+    'PI.HUILVDANWEI': 'Exch. Rate',
+    'PIDETAIL.FUDU': 'Amplitude',
+    'PIDETAIL.ZHI': 'Value',
+    PIBIAOGEJIANYAN: 'Complete the system matching information selection',
+    XINAGQING: 'Detail info',
+    QUYU: 'Region',
+    SHUJULAIYUAN: 'Data Source',
+    'PI.LINGJIANJIAGEBODONG': 'Component Price Fluctuation',
+    RFQHAO: 'RFQ No.',
+    FANHUI: 'Back',
+    FSHAO: 'FS No.',
+    'TPGLZS.LAODONGLI': 'Labor',
+    MEKJCSJK: 'MEK Database',
+    QXZCLZ: 'Please select',
+    QXZCX: 'Please select',
+    'Change Log': 'Change Log',
+    CHEXINGXINGXI: 'Model Info',
+    PINGPAIPINGTAI: 'Brand/Platform',
+    JIAGEXINGXI: 'Pricing Info.',
+    YGONGYINGSHANGXINGXI: 'Supplier Info.',
+    XIANSHIYINGCHANG: 'Display/Hide',
+    GAICHEXINGPEIZHI: 'model config.',
+    LINGJIANMINGCHEN: 'Part Name',
+    DONGLI: 'Powertrain',
+    CHUANDONG: 'EBR',
+    PETZHI: 'Configuration',
+    ZENGSHANLINGJIANHAO: 'Deleted Part No.',
+    CAOZUOQIAN: 'Pre-Operation',
+    CAOZUOHOU: 'Post-Operation',
+    ZAOZUORIQI: 'Operation Date',
+    'PI.DANGQIANJIAGE': 'Cur. Price',
+    JIEBIELEIXING: 'Lvl./Type',
+    GONGYINGSHANGXINGXI: 'Supplier Info.',
+    SOPXINGXI: 'SOP Info.',
+    DANGQIANJIAGE: 'Cur. Price',
+    'JIAGEXINGXI ': 'Price Info',
+    PEIZHIXINGXI: 'Config Info.',
+    RSHAO: 'FS No.',
+    SBXTZBFBSCXFCGLGLJSZCX:
+      'Hover over the percentage to display a floating window, in which model of the part is highlighted',
+    QXZLINGJIANHAO: 'Please select part no.',
+    QSRLINGJIANHAO: 'Please enter part no.',
+    SBXTZEBRSZSJFCZSCGLJSZDCXPZ:
+      'Hover over the EBR value to display a floating window, in which configuration of the car is displayed',
+    LINGJIANAEKODINGDIAN: '',
+    CHUANDONG1: '',
+    'TPZS.SCXGRQ': 'Updated Time',
+    BQBCZQCXSR: 'Sorry, data not existing, please re-enter ',
+    CFXGJJZCDDZTLJ: 'The analysis tool only support nominated part',
+    QINGXUANZHECAILIAOZU: 'Please select material group',
+    QINGXUANZHECIAOZUMINGCHENG: 'Please select material group/name',
+    QINGXUANZHEMUBIAOCHEXING: 'Please select target model',
+    QINGSHURUMUBIAOCHEXINGGONGCHANGXINGXI:
+      'Please enter target model/factory info.',
+    BQWFCXDJGQQRHCXSR: 'Sorry, no data found, please re-enter ',
+    RFQID: 'RFQ',
+    FANAN: 'Solution',
+    XIANGMULIEBIAO: 'Proj. List',
+    BAOJIALEIXING: 'Quote Type',
+    XIANGMUBIANHAO: 'Proj. Code',
+    XIANGMUMINGCHENG: 'Proj. Name',
+    CHUANGJIANBUMEN: 'Creation Dapt.',
+    JINGJIALEIXING: 'Bidding Type',
+    BENLUNRFQGUANBISHIJIAN: 'Cur. RFQ Closing time',
+    KAISHISHIJIAN: 'Starting Time',
+    XINJIAN: 'Create',
+    QINGXUANZEXUYAOBIANJIDELIE: 'Please select row to edit',
+    SAP号: 'SAP No,',
+    QINGXUANZEXUYAOTIANJIADEBDL: 'Please select BDL to add',
+    'TPZS.GONGCHANG': 'Factory',
+    FEIYONGXIANGQING: 'Expense Detail',
+    SHIFOUYINYONGXUNJIALUNCIBAOJIA: 'Quote 2nd round quotation',
+    YINYONGXUNJIALUNCIBAOJIA: 'Quote 2nd round quotation',
+    RFQLEIXING: 'Type',
+    CHEXINGXIANGMU: 'Project',
+    CHUANGJIANRIQI: 'Create Date',
+    DANGQIANLUNCI: 'Cur. Round',
+    RFQZHUANGTAI: 'RFQ Status',
+    BAOJIAJIEZHIRIQI: 'Quotation DDL',
+    XUNJIACAIGOUYUAN: 'Sourcing Buyer',
+    TPPINGFENZHUANGTAI: 'Tech Rating Status',
+    MQPINGFENZHUANGTAI: 'Quality Rating Status',
+    CFMUBIAOJIAZHUANGTAI: 'CF Target Status',
+    HEAVYITEM: 'Heavy Item',
+    FENXIBAOGAO: 'Analysis Report ',
+    '': '',
+    'YIXUNJIAGONGYINGSHANG/YIBAOJIAGONGYINGSHANG': 'Quoted/Inquired Supplier',
+    CHAOZUOCHENGGONG: 'Operation Successfully!',
+    NIHAWEIXUNAZXIAFANGGYS: 'Please add supplier first!',
+    HUOBILEIXING: 'Currency Type',
+    SPIRNT11COMMONSS:
+      'Current part project type is not consistent with common sourcing, do you want to continue?',
+    LK_QINGXUANZESHENQINGDECAIWUMUBIAOJIALEIXING:
+      'Please select F-Target  Type',
+    QINGXUANZEQITAXINXI: 'Please select other data!',
+    BILI: 'Ratio (%)',
+    HUOBI: 'Currency',
+    DINGDIAN: 'Nomi.',
+    NINDANGQIANWEIXUANZE:
+      'You have not selected the procurement factory yet, please try again later! ',
+    LK_QUERENJINGLINGJHAO: 'Save',
+    QINGXIANBAOCDANGQIAN: 'Please save the current changes and try again!',
+    LINGJIANCAIGXMYDJ:
+      'There are frozen parts in the selected parts procurement project, which cannot be maintained in batches for you',
+    nominationLanguage_ShenQingDanHao: 'App. No.',
+    LK_CAOGAO: 'Draft',
+    nominationLanguage_LingJianHao: 'Part No.',
+    QIANZIDANHAO: 'Signing Sheet No.',
+    CSF: 'CSF',
+    QIANZIDANZHUANGTAI: 'Signing Sheet No.',
+    FUHESHIFOUJIEZHI: 'Check Terminated (Y/N)',
+    HUIYIMINGCHENG: 'Meeting No.',
+    JIEZHIQIZHIRIQI: 'Closing Period',
+    TIJIAORIQI: 'Creation Time',
+    LK_XINJIANNEW: 'Create',
+    HUIYITONGGUO: 'Approved',
+    LK_YIJUJUE: 'Rejected',
+    LK_SHENPIZHONG: 'Approving',
+    'TPZS.CJR': 'Creator',
+    LK_MIAOSHU: 'Desc.',
+    SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE: 'Nomi. Record',
+    SOURCING_NOMINATION_SIGNSHEET_SIGNSHEETPAGE_1: 'M Signing Sheet',
+    SHANGHUIRSFUHE: 'Meeting RS Sheet Check',
+    QIANZIDANHAOBUNENGWEIKONG: 'Signing Sheet No. can not be blank',
+    GONGYINGSHANGTTO: 'Supplier TTO',
+    expectedTargetPrice: 'Expected Price',
+    'Year CW': '',
+    'Nomination No.': '',
+    'Part_No.': '',
+    Part_Name: '',
+    Supplier: '',
+    Material: '',
+    'Material Code': '',
+    Usage: '',
+    'Usage Unit': '',
+    Currency: '',
+    'Exchange Rate': '',
+    'Price Market': '',
+    Period: '',
+    'Valid From': '',
+    'Valid To': '',
+    'Rule No.': '',
+    'MTZ Materiral Group': '',
+    Carline: '',
+    Price: '',
+    'Price Unit': '',
+    'Part  No.': '',
+    'Part  Name': '',
+    YEARCW: 'Year CW',
+    'NOMINATIONNO.': 'Nomination No.',
+    'RULENO.': 'Rule No.',
+    CARLINE: 'Carline',
+    MATERIAL: 'Material',
+    PRICE: 'Price',
+    CURRENCY: 'Currency',
+    PERIOD: 'Period',
+    VALIDFROM: 'Valid From',
+    VALIDTO: 'Valid To',
+    'PARTNO.': 'Part No.',
+    PARTNAME: 'Part Name',
+    USAGE: 'Usage',
+    SUPPLIEREN: 'Supplier',
+    PARTNAMECN: '',
+    PARTNAMEDE: '',
+    SVWPARTNO: '',
+    Share: '',
+    TTO: '',
+    Remark: '',
+    'LTC 2021': '',
+    'LTC 2022': '',
+    'LTC 2023': '',
+    'LTC 2024': '',
+    'LTC 2025': '',
+    'LTC 2026': '',
+    'LTC 2027': '',
+    'LTC 2028': '',
+    SHARE: '',
+    REMARK: '',
+    CAOGAO: 'Draft',
+    MIAOSHU: 'Desc.',
+    QZSXZYTSJ:
+      'MTZ application sheet cannot be removed if relevant part nomination applications exist',
+    SHENQINGDANMINGCHENG: 'App. Sheet Name',
+    YGLLJDDSQDMTZSQDBNYC:
+      'MTZ application sheet cannot be removed if relevant part nomination applications exist',
+    LK_YIDONGJIE: 'Frozen',
+    LK_SHENPILIUZHUANWANCHENG: 'Approved',
+    nominationLanguage_ShenQingDanMing: 'App. List',
+    PROJECT: 'Project',
+    nominationLanguage_DongJieRiQi: 'Suspended Date',
+    nominationLanguage_XingMuLeiXing: 'Proj. Type',
+    nominationLanguage_HuiYi: 'Meeting',
+    'nominationLanguage.DINGDIANSHENQINGLEIXING': 'App. Type',
+    XINJIANQIANZIDAN: 'Create new signing sheet',
+    FUHEJIEZHIQIZHIRIQI: 'Check Period',
+    LK_QIANZIDAN: 'Signing Sheet',
+    LK_SAVESURE: 'Are you sure to save?',
+    XUANZEHUIYI: 'Meeting',
+    LK_REMOVESURE: 'Are you sure to remove?',
+    LK_FUHESHIBAI: 'Check Failed',
+    LK_CSCHUIYITONGGUO: 'CSC Meeting Approved',
+    LK_MSHENPITUIHUI: 'M Approval Returned',
+    SHENQINGDANHAO: 'App. Sheet No.',
+    QINGXAUNZEDINGDIANSHENQINGDAN:
+      'Please select nomination application sheet no.',
+    QINGSHURUMIAOSHU: 'Please fill-in description',
+    XIANGQINGLIEBIAO: 'Detail List',
+    MTZSHENQINGDANMINGCHENG: 'App. Sheet Name',
+    MTZDINGDIANSHENQINGDAN: 'MTZ Nomi. App. Date',
+    LIUCHENGLEIXING: 'Work Flow Type',
+    GUANLIANDANHAO: 'Relevant Sheet No.',
+    DINGDIANSHENQINGLIEBIAO: 'Nomi. App. List',
+    GUANLIANSHENQINGDANHAO: 'Relevant App. No.',
+    MTZSHENQINGDANMING: 'MTZ App. Sheet Name',
+    QINGCHU: 'Remove All',
+    QINQUEDING: 'Please confirm that you have saved the data before submitting',
+    QINGQUEDINGTIJIAOZHIQIANYIJINGBAOCUNSHUJU:
+      'Please confirm that you have saved the data before submitting',
+    MTZDONTDELETE:
+      'The part is associated with nomination application, cannot be removed',
+    LINE: 'LINE',
+    JIEZHIRIQI: 'DDL',
+    nominationLanguage_MIAOSHU: 'Desc.',
+    CJR: 'Creator',
+    MQIANZIDAN: 'M Signing Sheet',
+    TONGGUO: 'Approved',
+    nominationLanguage_DINGDIAN: 'Nomi.',
+    'nominationLanguage.RFQBianHao': 'RFQ No.',
+    nominationLanguage_LingJianMing: 'Part Name',
+    nominationLanguage_XunJiaCaiGouYuan: 'Sourcing Buyer',
+    nominationLanguage_BaoJiaYiZhiXingJiaoYan: 'Quote Consistency Check',
+    nominationLanguage_ShiFouDnaYiGongYingShang: 'Single Supplier (Y/N)',
+    nominationLanguage_XianShiZiJi: 'Filter by me',
+    nominationLanguage_RSZhuangTai: 'RS Sheet Status',
+    nominationLanguage_RSDongJieRiQi: 'RS Sheet Suspen',
+    nominationLanguage_BaoJiaYiZhiXingZhuangTai:
+      'Quote Consistency Check Status',
+    nominationLanguage_SELDanJuQUeRenZH: 'SEL Sheet Conformation Status',
+    nominationLanguage_DingDianRiQi: 'Nomi Date',
+    LINGJIANXIANGMULEIXING: 'Procure. Type',
+    nominationSuggestion_QingXuanZeZhiShaoYiTiaoShuJu:
+      'Please Choose at least One Record!',
+    SELDANJUQUERENZHUANGTAI: 'SEL Sheet Conformation Status',
+    SHENGQINGDANHAO: 'App. Sheet No.',
+    寻源执行: '',
+    FAQIFUHE: 'Check Initiation',
+    TUIHUIZHITONGGUOZHUANGTAI: 'Return to Approved Status',
+    MQIANZIDANLIEBIAO: 'M Signing Sheet List',
+    LK_SELDANJUQUEREN: 'SEL Sheet Conformation',
+    LK_EXCUTESURE: 'Are you sure to execute operation?',
+    LK_NINQUERENZHIXINGDINGDIANCAOZUOMA: 'Are you sure to nominate',
+    FENTANFUJIANLIEBIAO: 'SEL Apportion Sheet Attachments LIst',
+    LK_SHANCHUWENJIAN: 'Upload File',
+    SHENGQINGZHUANGTAI: 'App. Status',
+    RSDONGJIERIQI: 'RS Frozen Date',
+    NINGQUEDINGYAOFAQIFUHEMA: 'Are you sure to initiate check',
+    FsnrGsnr: 'FS/GS',
+    FUHEJIEZHIRIQI: 'Check DDL',
+    LK_YITIJIAO: 'Submitted',
+    LK_WEITONGGUO: 'Disapproved',
+    LK_FUHEZHONG: 'Checking',
+    LK_FUHETONGGUO: 'Checked',
+    LK_SELWEIQUEREN: 'To-be Checked',
+    LK_SELYIQUEREN: 'Checked',
+    LK_SELWEIFENTAN: 'To-be Apportioned',
+    LK_YIPIZHUN: 'Approved',
+    LK_FUHEWEITONGGUO: 'Check failed',
+    LK_NOMIMTUIHUI: 'M returned',
+    'FSNR/GSNR': 'FSNR/GSNR',
+    DANYIYUANYIN: 'Single Reason',
+    YUANYINBUMEN: 'Caused by',
+    基础信息: '',
+    SHANGHUIRSDANFUHE: 'RS Sheet (meeting) Check',
+    YITONGGUO: 'Approved',
+    FUHEWEITONGGUO: 'Check Failed',
+    MSHENHEZHONG: 'M Approving',
+    MTUIHUI: 'M Returned',
+    LK_HUIYITONGGUO: 'Meeting Aproved',
+    DONGJIE: 'Freeze ',
+    REVOKESURE: 'Are you sure to withdraw?',
+    QUXIAOMTZBANGDING: 'Unbound MTZ',
+    LK_MSHENPITONGGUO: '',
+    'nominationLanguage.FuHeJieZhiRiQi': '',
+    'nominationLanguage.QianZiDanHao': '',
+    'nominationLanguage.QianZiDanZhuangTai': '',
+    AJIA: 'A Price',
+    BJIA: 'B Price',
+    XIANGONGFENE: 'Spot Supply Quota (%)',
+    HANMOAJIA: 'A Price (incl.Tooling) ',
+    HANMOBJIA: 'B Price (incl.Tooling) ',
+    BAOZHUANGFEI: 'Pkg. Fee',
+    YUNSHUFEI: 'Shipping Fee',
+    CAOZUOFEI: 'Operation Fee',
+    SHIFOUMOJUFENTAN: 'Tooling Apportion (Y/N)',
+    MOJUHUOBI: 'Tooling Currency',
+    JISHUPINGFEN: 'TP Rating',
+    ZHILIANGPINGFEN: 'MQ Rating',
+    WULIUPINGFEN: 'PL Rating',
+    LK_AEKO_DINGDIANSHIJIAN: 'Nomi. Time',
+    XIAOSHOUJIA: 'Euro Price',
+    DINGDIANMINGXI: 'Nomi. Detail',
+    GONGYIZU: 'Process Group',
+    LINIEBUMEN: 'LINIE Dept.',
+    OUJIA: 'Euro Price',
+    CHANDI: 'Place of Origin',
+    HUILU: 'Exch. Rate',
+    MOJIJIAGEBUHANSHUI: 'Tooling Price (excl. Tax)',
+    MOJUFENTAN: 'Tooling Apportion',
+    KAIFAFEIBUHANSHUI: 'Dev. Expense (excl.Tax)',
+    KAIFAFEIFENTAN: 'Dev. Expense Apportion',
+    TPPINGFEN: 'TP Rating',
+    CHANGSHANG: 'Manufacture',
+    'HANMOA JIA': 'B price (incl. Tooling) ',
+    NIANJIANG: 'Annual Reduction',
+    NIANJIANGKAISHISHIJIAN: 'Annual Reduction Starting Time',
+    GONGYINGSHANGGONGCHANG: '',
+    SKDAJIA: '',
+    SKDBJIA: '',
+    LCAJIA: '',
+    LCBJIA: '',
+    SKDAJIABUHANFENTAN: '',
+    SKDBJIABUHANFENTAN: '',
+    LCAJIABUHANFENTAN: '',
+    LCBJJIABUHANFENTAN: '',
+    FSGSSPNO: 'Part Proc.Proj. No.',
+    JIAGEZHUANGTAI: 'Price Status',
+    'FS/GS/SP No.': 'FS/GS/SP No.',
+    nominationLanguage_LingJianMingCheng: 'Part Name',
+    DINGDIANGONGYINGSHANG: 'Nomi. Supplier',
+    DINGDIANSHENQINGLEIXING: 'Nomi. App. Type',
+    DINGDIANSHIJIAN: 'Nomi. Time',
+    TableLINIECAIGOUYUAN: '',
+    nominationLanguage_XinJianLingJIanDingDianShengQIng: 'Create Nomi. App.',
+    nominationLanguage_DongJieRS: 'Suspend RS Sheet',
+    nominationLanguage_JieDongRS: 'Unfreeze RS Sheet',
+    nominationLanguage_CheHui: 'Recall',
+    nominationLanguage_ShanChu: 'Delete',
+    nominationLanguage_TiJiaoYiZhiXingJiaoYan: 'Consistency Check',
+    nominationLanguage_LiuChengLeiXing: 'Category',
+    nominationLanguage_ShenQingZhuangTai: 'App. Status',
+    LK_SHENPILIUZHUAN: 'Circulation',
+    nominationLanguage_CheXingXiangMu: 'Project',
+    nominationLanguage_LeiXing: 'Type',
+    nominationLanguage_HuiYiZhuangTai: 'Meeting Status',
+    QINGXUANZERFQ: 'Please ',
+    strategicdoc_ShangChuanWenJian: 'Upload File',
+    nominationLanguage_RFQBianHao: 'RFQ No.',
+    LK_QINGXUANZEYITIAORFQ: 'Please select one rfq!',
+    'Sourcing Operation': '',
+    nominationLanguage_Yes: 'Yes',
+    nominationLanguage_No: 'No',
+    'partsignLanguage.XunYuanZhiXing': '',
+    XUANYUANCAIDAN: 'Sourcing',
+    revokeSure: 'Are you sure to withdraw?  ',
+    SAVE: 'Save',
+    LK_NINQUEDINGZHIXINGYIZHIXINGJIAOYANMA:
+      'Are you sure to execute consistency check ',
+    LK_TONGGUO: 'Approved',
+    LK_MSHENPIZHONG: 'M Approving',
+    LK_LIUZHUANWANCHENG: 'Circulation Complete',
+    LK_NINQUERENZHIXINGJIEDONGCAOZUOMA: 'Are you sure to unfreeze？',
+    LK_NOMIDINGDIANTITLE: 'Nomi.',
+    HUIWAILIUZHUAN: 'Circulation',
+    LK_NINQUERENZHIXINGLIUZHUANCAOZUOMA:
+      'Are you sure you want to perform the circulation operation?',
+    LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME: 'Mixed Search',
+    DINGDIANSHENQINGZONGHEGUANLI: 'Nomi. App. Mgmt.',
+    LIUZHUANTUIHUI: 'Circulation return',
+    QINGXUANZEXUYAOLIUZHUANTUIHUIDEDINGDIANSHENQINGDAN:
+      'Please select Nomi. App. Sheet to be returned',
+    QINGXUANZELIUCHENGLEIXINGWEILIUZHUANDEDINGDIANSHENQINGDAN:
+      'Please select circulation type Nomi. App.',
+    QINGSHURUCHEHUIYUANYIN: 'Please enter withdraw reason',
+    CHEHUIYUANYIN: 'Withdraw Reason',
+    LK_NINGQUEDINGYAOQUXIAOMTZBANGDING: 'Are you sure you want to unbind MTZ?',
+    SOURCING_NOMINATION_PAGE: 'Nomi. App. Mgmt.',
+    SOURCING_NOMINATION_RSREVIEW_PAGE: 'Meeting RS Sheet Check',
+    DINGDIANSHENQING: 'Nomi. App.',
+    LK_TIPS_YIXIALINGJIANCAIGOUXIANGMUWUFADONGJIE: '',
+    LK_WANCHENGLOI: 'Completed LOI',
+    LK_LETTER_XINZENGLOI: 'New LOI',
+    LK_LETTER_XINZENGDINGDIANXIN: 'New NL',
+    LK_WANCHENGDINGDIANXIN: 'Completed NL',
+    LK_LINEQUEREN: 'LINIE Comformation',
+    LK_LINETUIHUI: 'LINIE Return',
+    LK_MUBIAOLINE: 'Target LINIE',
+    LK_GUANBIDINGDIANXIN: 'Close NL',
+    QINGSHURULINGJIANHAO: 'Please enter Part No.',
+    BEIZHU: 'Remark',
+    FENXIMINGCHENG: 'Analysis Report Status',
+    QIEHUANCAILIAOZU: 'Switch Material Group',
+    XUANZEJISUANCHEXING: 'Please select model to calculate',
+    '#': '#',
+    MEK_YINQINGSHENGSHU: 'Engine-Liter',
+    YINQINGGONGLV: 'Engine-Power',
+    BIANSUXIANG: 'Transmission',
+    JISUANCHEXING: 'Calc. Model',
+    MEIYUEYONGLIANG: 'Qty. pre Car',
+    JIAGE: 'Price (A price)',
+    EBR: 'EBR%',
+    JIAGEAJIA: 'Price (A price)',
+    'EBR%': 'EBR%',
+    CHEXINGDENGJI: 'Trim',
+    QINGXUANZESHUJU: 'Please select data!',
+    SHUJUFANWEIPILIANGJIAN: '',
+    ANCHEXINGPEIZHICHAKANSHIJINTONGJISHIYONGLEDANGQIANCAILIAOZULINGJIANDECHEXINGDENGJI:
+      '',
+    BAOCUNZAIFENXIKU: '',
+    QINGSHURUWENJIANMINGCHENG: '',
+    BAOCUNWEIBAOGAO: '',
+    BAOCUNZAIFENXIMINGCHENG: '',
+    BAOGAOMINGCHENGCHONGFUSHIFOUFUGAI: '',
+    HETONGZHUANGTAI: 'Contract Status',
+    DINGDIANZHUANGTAI: 'Nomi. Status',
+    XUNJIAKESHI: 'Sourcing Dept.',
+    LINGJIANZHUANGTAI: 'Part Status',
+    LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN: 'Mixed Search',
+    QINGSHURU: 'Please Input',
+    QINGXUANZE: 'Please select',
+    CHEXING: 'Model',
+    QINGXUANZEXIANGTONGGONGYIZUDEPEIJIAN:
+      'Please select  accessories that belong to the same process group',
+    QINGXUANZEYIFENPEIGONGYIZUDEPEIJIAN:
+      'Select the spare part that has been assigned to the process  group',
+    QINGXUANZEWEIFENPEIRFQDEPEIJIAN: 'Please select ',
+    LK_IMPORTFILES_DETAIL_CSF: 'CSF',
+    JIARUYIYOURFQ: 'Add to RFQ',
+    RFQZONGHEGUANLI: 'RFQ Mgmt.',
+    JIARU: 'Add',
+    KESHI: 'Dept.',
+    ZHUANGTAI: 'Status',
+    TUIHUI: 'Return',
+    CHUANGJIANRFQ: 'New RFQ',
+    SHANCHU: 'Delete',
+    QINGXUANZEFENPEIDEFUZEREN: 'Please select owner',
+    QINGXUANZEXUYAOSHANCHUDEFUJIAN: 'Please select attachments to delete',
+    LK_QINGXUANZEWEIFENPEIRFQDEFUJIAN:
+      'Please select attachments unassigned to RFQ',
+    QINGXUANZEWEIFENPEIRFQDEFUJIAN:
+      'Please select attachments unassigned to RFQ',
+    ZHINENGXUANZEYITIAORFQ: 'Only one RFQ can be selected at a time',
+    GONGYINGSHANGBIANHAO: 'Supplier No.',
+    RSDANWEIHU: 'RS Sheet Maintanence',
+    LINGJIANCAIGOUXIANGMUBIANHAO: 'Part Proj. No.',
+    XIAZAIMOBAN: 'Download Template',
+    RSDANYULAN: 'RS Sheet Preview',
+    CHANGSHANGMING: 'Manufacture Name',
+    LAIYUAN: 'Source',
+    TOUZIFEI_BUHANSHUI: 'Inv. Expense (excl. Tax)',
+    SHIFOUFENTAN: 'Apportioned (Y/N)',
+    NIANJIANGKAISHI: 'Annual Reduction Starting Time',
+    QINGXUANZEXUYAODUQUDEBAOJIADAN: 'Please select quotation sheet to read ',
+    QINGXUANZEXUYAOYULANDERSDAN: 'Please select RS sheet to preview',
+    RENKEFEI: 'Acceptance Fee',
+    GUSUANJIEYUEZHI: 'Approx. Saved',
+    XIANGONGJIAGE: 'Cur. Price',
+    XUANZE: 'Select',
+    RFQMINGCHEN: 'RFQ Name',
+    YIXUNJIAGONGYINGSHANG_SHULIANG: 'Inquired Supplier(No.)',
+    YIBAOJIAGONGYINGSHANG_SHULINAG: 'Quoted Supplier(No.) ',
+    LK_DINGDIANSHENQINGYUSHELUOJI: 'Nomi. App. Default Logic',
+    LK_TIANJIAGUIZE: 'Add Rule',
+    LK_TIANJIATIAOJIAN: 'Add Condition',
+    LK_YUSHEDINGDIANLEIXING: 'Nomi. Type Pre-set',
+    LK_TIAOJIAN: 'Condition',
+    LK_QINGXUANZEYUSHEDINGDIANLEIXING: 'Please select nomination type pre-set',
+    LK_QINGJIANGGUIZETIANXIEWANZHENG: 'Please complete the rule',
+    LK_GAILAN: 'Overview',
+    CHUANGJIANCAIGOUXIANGMU: 'Create Proc. Proj.',
+    LK_DINGDIANXINLOI: 'NL/LOI',
+    LK_LIUZHUANZHONG: 'Circulating',
+    'PLGLZS.CAIGOUXUQIUGUANLI': 'Proc. Demand Mgmt.',
+    XUANYUANGAILAN: 'Sourcing Overview',
+    LK_DAIQIANSHOU: 'To-be Sign-in',
+    WEICHUANGJIANCAIGOUXIANGMU: 'No Proc. Proj.',
+    WEIJIARURFQ: 'No RFQ',
+    WEIZHUANTANPAN: 'No Negotiation',
+    DAISHANGHUIORLIUZHUAN: 'Meeting/Circulation Reserved',
+    EPPINGFEN: 'EP Rating',
+    MQPINGFEN: 'MQ Rating',
+    LK_DAIQUERENDINGDIANXIN: ' To-be Confirmed NL',
+    LK_DAIQUERENLOI: 'To-Be Confirmed LOI',
+    SHUJUJIEZHIZHI: 'Data Up to',
+    CAILIAOZUDINGDIANJISHILVDINGDIANZHOUQI:
+      'Material Group Nomi. Timely Rate and Avg. Nomi. Period',
+    LINGJIANJITONGJISHUJUJIEZHI: 'At the part level, the data is up to',
+    LIUZHUANZHUANGTAIGENZHONG: 'Circulation Status Tracking',
+    LIUZHUAN4ZHOUNEI: 'within 4 weeks',
+    LIUZHUANCHAO4ZHOU: 'over 4 weeks',
+    LK_ZHUANGTAIGENZHONGBAOBIAO: 'Status Tracking Report',
+    LK_ZHUANGTAIGENZHONGXIANGQING: 'Status Tracking List',
+    TONGJIANWEI1NIANNEI: 'Statistical range: within 1 year',
+    LK_SHANGHUIZHONG: 'In session',
+    LINGJIANCAIGOUXIANGMUZONGSHU: 'The Total Number of Part Proj.',
+    LK_JINGJIAKAIBIAO: 'Bidding',
+    RFQUPPERCASE: '',
+    LK_CAIGOUXIANGMUJIANLI_XZYC: 'Sourcing Project',
+    LK_DINGDIANGUANLI_XGYC: 'Nomi. Management',
+    LK_ANRENWUZHUANGTAI: 'Task Status',
+    JINXINGZHONGDERFQ: 'Ongoing RFQ',
+    YANWUDERFQ: 'Delayed RFQ',
+    ZHENGCHEJINDUFENGXIAN: 'Progress Risk',
+    DIYILUNXUNJIA: 'First round of inquiry',
+    LK_BNKSHENGHE: 'BNK Audit',
+    CSCTONGGUOLIUZHUANWANCHENG: 'CSC Approved/Circulation Complete',
+    TIJIAOPRECSCTIJIAOLIUZHUAN: 'Submit Pre-CSC/Submit Circulation',
+    ANZHENGCHEFENGXIAN: 'Filter by Progress Risk',
+    MOREN: 'Default',
+    DAISHANGHUI: 'Meeting reserved',
+    DAILIUZHUAN: 'Circulation Reserved',
+    TIANJIA: 'Add',
+    QINGXUANZELINIEHEBUMEN: 'Please select commodity and LINIE',
+    QINGXUANZEXUYAOSHANCHUDEHANG: 'Please select row to delete',
+    QINGXUANZEXUYAOGENGXINDEHANGXIANGMU: 'Please select row data to update',
+    XIUGAICHENGGONG: 'Update Successfully',
+    GANGCAIPILIANGCAIGOU: 'Steel Batch Proc.',
+    GANGCAIYICIXINGCAIGOU: 'Steel Proc. (One-time)',
+    LEIX: 'Type',
+    DONGJIERIQI: 'Frozen Date',
+    DINGDIANRIQI: 'Nomi. Date',
+    CAILIAOZUDINGWEI: 'Material Group Pos.',
+    GONGYINGSHANGDINGWEI: 'Supplier Pos.',
+    ZLFXCGCL: 'Proc. Strategy',
+    RHKZGYSZY: '1.How to control the optimal number of suppliers',
+    RHGLJGCBSMZQCB: '2.How to manage price cost/life cycle cost',
+    RHQDHZFSYHZSJ: '3.How to determine the cooperation mode and duration',
+    RHQDWLGL: '4.How to affect logistics management',
+    RHGKPZ: '5.How to control quality',
+    CLZZBQK: 'Material Group Proportion',
+    YWYXDTZFBQK: 'Distribution of service impact characteristics',
+    YSFZDTZFBQK: 'Supply complexity characteristic distribution',
+    ZHIBIAOMINGCHENG: 'Index Name',
+    ZHIBIAOZHI: 'Index',
+    DEFEN: 'Rating',
+    DEFENPAIMING: 'Ranking',
+    'PLGLZS.CAIGOUCELUE': 'Proc. Strategy',
+    'PLGLZS.BIANJI': 'Edit',
+    'PLGLZS.DAOCHU': 'Export',
+    'PLGLZS.ZONGCHENGBENGUANLI': 'Total Cost Mgmt.',
+    'PLGLZS.QUXIAO': 'Cancel',
+    'PLGLZS.BAOCUN': 'Save',
+    SHUANGCHUAN: 'Upload',
+    QRSCXZWJ: 'Are you sure to delete selected file?',
+    MUBANXIAZAI: 'Template Download',
+    QINGZHISHAOGOUXUANYITIAOSHANCHUSHUJU: '',
+    JIBIELEIXING: 'Tier',
+    SAPHAO: 'SAP No.',
+    GONGYINGSHANGDIZHI: 'Supplier Address',
+    PROJECTPM: 'PM',
+    QINGXUANZHEMNIANFENG: 'Please select year',
+    CAIGOUJINGEZONGLAN: 'Proc. Amount Overview',
+    NIANFENGBIXUAN: 'Year is Mandatory',
+    PINGLEIGUANLIZUSHOU: 'Material Group Mgmt. Assistant',
+    PINLEIGUANLIZHUSHOU: 'Material Group Mgmt. Assistant',
+    PVPSJLYYTZJGAJLJGYSCGGCLSYYWL:
+      'Turnover=Price*Volume Price: Data sourcing from ledger A price (part + supplier + the only price) Volume: Historical part capacity data sourcing from Pbom, furtue part capacity data sourcing from BKM',
+    PLJLYYTZJGAJLJGYSCGGC:
+      'Price: Data sourcing from ledger A price (part + supplier + the only price)',
+    VLSLJCLSJLYYPWLLJCLSJLYYBKM:
+      'Volume: Historical part capacity data sourcing from Pbom, furtue part capacity data sourcing from BKM',
+    TGGWSNZWLLNDCLZCGJEZL:
+      'Provides an overview of material group purchases from the past three years to the next two years',
+    JGSJLYYLJTZJG: 'Price: Data sourcing from ledger price',
+    CLSHLSLJCLSJLYYFISCXSCJLYJPBOM:
+      'Volume: Historical part capacity data sourcing from Pbom, furtue part capacity data sourcing from BKM',
+    'PLGLZS.CAILIAOZU': 'Material Group ',
+    'PLGLZS.BAOGAOQINGDAN': 'Report List',
+    JISHULUXIAN: 'Technical Route',
+    CAIGOUJINEZONGLAN: 'Proc. Amount Overview',
+    CAILIANGZONGLAN: 'Capacity Overview',
+    PLGYSGL: 'Bulk Supplier Overview',
+    CHEXINGJIAGEDUIBI: 'Model Pricing Comparison',
+    EKL: 'EKL',
+    SOPJINDUZHOU: 'SOP Progress',
+    CHENGBENZUCHENG: 'Cost Consistency',
+    PLGYJZL: 'Bulk Supplier Overview',
+    DINGDIANLISHIJILU: 'Nomi. History Record',
+    BAOGAOQINGDAN: 'Report List',
+    CHAKANLISHI: 'View history',
+    QXZCAILIAOZU: 'Please select material group',
+    NEIBUXUQIUFENGXI: 'Int. Demand Analysis',
+    CHUANGJIANSHIJIAN: 'Creator',
+    BAOQIANQINGXUANZHESHUJU: 'Sorry, please select data',
+    PLGYSZL: 'Bulk Supplier Overview',
+    KAISHINIANFENG: 'Starting Year',
+    JIESHUNIANFENG: 'Ending Year',
+    QTQBCFXJGZZCCJXCZ:
+      'Please save  analysis result first, then execute export',
+    CHENGBENJIEGOU: 'Cost Structure',
+    BQNMYXZSJ: 'Sorry, no data selected ',
+    CHANLIANGZONGLAN: 'Capacity Overview',
+    QXZNF: 'Please select year',
+    'TPZS.CLZMC': 'Material Type',
+    'TPZS.GYZMC': 'Process Group No.',
+    CXXMMC: 'Car Project',
+    DINGDIANLISHIJILV: 'Nomi. History Record',
+    LJHLJMC: 'Part No. Name',
+    FSHLJCGXMLX: 'Part Proj.Type',
+    CLZMCGYZMC: 'Material Group Name Process Group Name',
+    RFQBH: 'RFQ No.',
+    LJCGXM: 'Part Proj.',
+    DDGYS: 'Nomi. Supplier',
+    DDJE: 'Nomi. Amount',
+    DDSJ: 'Nomi. Time',
+    ADDJLCK: 'Filter by Nomi Record',
+    AGYSCK: 'Filter by Supplier',
+    FSCODE: 'FS No.',
+    CLZMC: 'Material Group Name',
+    LJMC: 'Part No. Name',
+    LJCGXMLX: 'Part Proj. Type',
+    GYZMC: 'Supplier type Name',
+    CHUANGJANRIQI: 'Creation Time',
+    QXZDDSJ: 'Please select nominated time',
+    QXZGYSMC: 'Please select suppler name',
+    FSNRGSNRCODE: 'FSNR/GSNR',
+    FENXIKU: 'Analysis Database',
+    CHENGBENJIEGOUFENXITUXITONGSHAIXUAN: 'Cost Structure Diagram',
+    BAOCUNZHIFENXIKU: 'Save to Analysis Database',
+    CHUANGJIANPDFSHIBAI: 'PDF create failed',
+    LINIEXIAOXIE: 'Linie',
+    SHENGCHENG: 'Generate',
+    SHOUGONGSHURUSHUZHI: 'Manually Input Value',
+    COVERCONFIRM:
+      'the analysis/report name has already existed, do you want to overwrite it? ',
+    CHENGBENJIEGOUFENXITUSHOUGONG: 'Cost Structure Diagram',
+    CHENGBENJIEGOUFENXITUSHOUGONGSHURU: 'Manually Input',
+    FANHUIFENXIKU: 'Return to Analysis Database',
+    ZUIJINNCIDINGDIANSHU: 'Latest Nomi. Ct. (n≤50)',
+    SHAIXUANJIEGUO: 'Screening Results',
+    INPUTCHECK: 'The total does not equal 100',
+    QINGXUANZHONGZHISHAOYITIAOSHUJU: 'please select at least one data.',
+    ZUIDASHAIXUANFANWEI: 'Maximum screening range: 50 times',
+    CHAILIAOZU: 'Material Group',
+    CHENGBENJIEGOUFENXIKU: 'Cost Analysis Database',
+    QINGXUANZECHAILIAOZU: 'Please select material group',
+    WENJIANLEIXING: 'File Type',
+    QINGXUANZEWENJIANLEIXING: 'Please select file type',
+    QINGSHURUCHUANGJIANRENMINGCHENG: 'Please enter creator',
+    SHANGCIXIUGAIRIQI: 'Last updated Date',
+    QINGXUANZEYAOSHANCHUDESHUJU: 'Please select data to delete',
+    DUIBIAOCHEXING: 'Rival Model',
+    CHEXINGPEIZHI: 'Model Config.',
+    NIANFENFANWEI: 'Period',
+    KAISHIRIQI: 'Starting Date',
+    XIANSHILEIXING: 'Display Type',
+    BAOCUNCHENGGONG: 'Save Successfully',
+    SHANGQIDAZHANGGONGCHANGDIZHI: 'Factory Address',
+    GONGCHANGZONGXIAOSHOUE: 'Factory Total Sale',
+    CHEXINGXI: 'Model',
+    GONGYINGSHANGSUOGONGSVWGONGCHANGDIZHI: 'SVW Factory Address',
+    GONGCHANGDIZHI: 'Factory Address',
+    QSRBZ: 'Please enter remark',
+    备注: 'Remark',
+    GONGYINGSHANG360: 'Supplier 360°',
+    GYLGL: 'N-tier Supply Chain Mgmt.',
+    'PLGLZS.SHICHANGSHUJU': 'Market Data',
+    HANGYEBAOGAO: 'Industrial Report',
+    SVWGONGYINGSHANGSHICHANGZONGLAN: 'SVW Supplier Overview',
+    GONGYINGLIANGAILAN: 'Supplier Chain Overview (N-tier Supplier Mgmt.)',
+    CAILIAOZUBIANHAOCAILIAOZUMINCHEN:
+      'Material Group No.-Material Group Name：',
+    'TPGLZS.NENGYUAN': 'Energy',
+    'PLGLZS.LEIBIE': 'Type',
+    'PLGLZS.GUIGEPAIHAO': 'Brand/Spec.',
+    'PLGLZS.SHIJIANFANWEI': 'Time Duration',
+    'PLGLZS.SHUJULAIYUAN': 'Data Source',
+    'PLGLZS.GONGZHONG': 'Profession',
+    'PLGLZS.CHANPINMINGCHENG': 'Product Name',
+    'PLGLZS.SHICHANGMINGCHENG': 'Market Name',
+    'PLGLZS.JIAGELEIXING': 'Price Type',
+    'PLGLZS.DANWEI': 'Unit',
+    'PLGLZS.TISHI': 'Notification',
+    DANWEIYUAN: '（Unit：RMB）',
+    'PLGLZS.LEIBIEPAIHAOQUYU': 'Type-Brand-Region',
+    ZAIXIANWANGZHAN: 'Website',
+    QSRBGMC: 'Please enter report name',
+    YULAN: 'Preview',
+    SHICHANGSHUJU: 'Market Data',
+    SHUZHI: 'Value',
+    SHOUGONGSHURU: 'Manually Input',
+    QITAFEIYONG: 'Other ',
+    SHOUHOUJISHURENYUANMING: 'After-sale Technician',
+    BAOJIAFENXI: 'Quotation Analysis',
+    HAIYUN: 'Sea Trans.',
+    KONGYUN: 'Air Trans.',
+    CAOKAOLEIXING: 'Ref. Type',
+    CANKAOBAOZHUANGCHANG_MM: 'Ref. Pkg. Length (mm)',
+    CANKAOBAOZHUANGKUAN_MM: 'Ref. Pkg. Width (mm)',
+    CANKAOBAOZHUANGGAO_MM: 'Ref. Pkg. Height (mm)',
+    LS_PC: 'LS(PC)',
+    STACK: 'Stack',
+    BAOZHUANGYAOQIU: 'Pkg. Req.',
+    LK_SONGYANGJINDU: 'Sampling Progress',
+    LK_YISHANGSONGYANGZHOUQIYIDINGDINASHIJIANWEIQISHIRI:
+      'Remark: The above sample delivery cycle starts from the Nomi. date',
+    LK_JUTIJINDU: 'Progress detail',
+    LK_SAICVOLKSWGENZHOU: 'SAIC VOLKSWGEN Req.(week)',
+    LK_GONGYINGSHANGZHOUQIZHOU: 'Supplier Cycle (week)',
+    LK_BAOZHUANGFEI: 'Pkg. Fee',
+    LK_YUNSHUFEI: 'Shipping Fee',
+    LK_CAOZUOFEI: 'Operation Fee',
+    LK_BNKSHENMHEZHUANGTAI: 'BNK Audit Status',
+    LK_DAXIAO: 'Size',
+    GUANLIFEI: 'Mgmt. Fee',
+    LIRUN: 'Profit',
+    LK_AJIA: 'A Price',
+    LK_BJIA: 'B Price',
+    QIBUSHENGCHANSHIJIANXUANZE: 'Select SOP Date',
+    QINGXUANZEQIBUSHENGCHANSHIJIAN: 'Please select SOP date',
+    LK_LINGJIANDANWEI: 'Part Unit',
+    LK_FENTANSHULIANG: 'Apportion Qty',
+    JIANGJIAJISUANYIJINGWAICHUCHANGJIAWEIZHUN:
+      'Impairment Calc. refer to international factory price ',
+    BITIAN: 'Mandatory',
+    FUZHIBAOJIAZHI: 'Copy Quote to',
+    QINGXUANZELINGJIAN: 'Please select part',
+    SKDQIBUSHENGCHANRIQI: 'SKD SOP Date',
+    JINGWAICHUCHANGJIA: 'Factory Price',
+    JINGWAIBAOZHUANGFEIYUNSHUFEIBAOXIANFEI:
+      'International Pkg. Fee, Shipping Fee, Insurance Fee',
+    GUANSHUI: 'Tariff',
+    JINGNEIYUNFEIRMB: 'Domestic Shipping Fee (RMB)',
+    CHUCHANGJIA: 'Factory Price',
+    JINGWAIBAOZHUANGFEIYUNSHUFEIBAOXIANFEIGUANSHUI:
+      'International Pkg. Fee, Shipping Fee, Insurance Fee, Tariff',
+    ZIDONGJISUANQIBUSHENGCHANRIQI: 'Auto Calc. SOP Date',
+    HUOQUZIDONGJISUANQIBUSHENGCHANRIQI: 'Obtain auto calc. SOP date',
+    HUOQUCHENGGONG: 'Obtain Successfully',
+    CHENGNUOSHU: 'Letter of Commitment',
+    WOYIYUEDUBINGJIESHOUYISHANGTIAOKUAN:
+      'I have read and accept the above terms',
+    JIESHOU: 'Accept',
+    SHIFOUZIDONGJISUAN: 'Auto Calc. (Y/N)',
+    XUNJIACHENGNUOSHU: 'Letter of Inquiry Commitment',
+    GONGYINGSHANGWEIQIANSHUXUNJIACHENGNUOSHU:
+      'If the supplier has not signed the Letter of Inquiry commitment, cannot quote on behalf of the supplier',
+    LK_KAIFAFEIYONG: 'Dev. Expense',
+    JINGWAICHUCHANGJIAFIX: 'International Factory Price',
+    QINGXUANZESKDQIBUSHENGCHANRIQI: 'Please select SKD SOP date',
+    SKDBAOJIA: 'SKD Price',
+    LCBAOJIA: 'LC Price',
+    LCQIBUSHENGCHANRIQI: 'LC SOP Date',
+    SKDBUFENYIJINGWAICHUCHANGJIAWEIZHUN:
+      'SKD refers to international factory price',
+    LCBUFENYIAJIAWEIZHUN: 'LC refers to A price',
+    LCQIBUSHENGCHANRIQIWEIKONG: 'LC SOP date is blank',
+    AJIABUCUNZAIHUOWEILING: 'A price not exist or equal to 0',
+    SKDAFTERLCNOTMONTH: 'LC SOP date must be later than SDK SOP Month.',
+    NINQUEDINGYAOJIANGBAOJIADANFUZHIDAOXUANZHONGDELINGJIANZHONGMA:
+      'Are you sure you want to copy the quote to the selected part?',
+    JIANGJIAJIHUABIXUXUANZEQIBUSHENGCHANRIQI:
+      'Are you sure you want to copy the quote to the selected part?',
+    LCQIBUSHENGCHANRIQIBUNENGXIAOYUSKDQIBUSHENGCHANRIQI:
+      'LC SOP date must be later than SDK SOP',
+    LK_QIEHUANLINGJIAN: 'Switch Part',
+    LK_RFQGONGYINGSHANG: 'RFQ Supplier',
+    LK_BAOJIALUNCI: 'Quote Round',
+    LK_BAOJIAJIEZHISHIJIAN: 'Quote Closing Time',
+    LK_CANKAOHUILV: 'Ref. Exch. Rate',
+    LK_BJZT: 'Quote Status',
+    LK_BAOJIARIQI: 'Quote Date',
+    LK_LIANXIREN: 'Contact',
+    LK_JUJUELIYOU: 'Reject Reason',
+    LK_XUNJIABEIZHU: 'Inquiry Remark',
+    LK_XINXIYUYAOQIU: 'Info. and Req.',
+    LK_BAOJIACHENGBENHUIZONG: 'Quotation Cost Summary',
+    LK_GONGYINGSHANGSHENGCHANDIJISHENGCHANNENGLI:
+      'Production Plant and Capacity',
+    LK_MUJUHEKAIFAFEIYONG: 'Tooling and Development Expense',
+    LK_BAOZHUANGYUNSHU: 'Pkg. and Shipping',
+    LK_JIANGJIAJIHUA: 'Price Reduction Plan',
+    LK_GONGZHUANGYANGJIAN: 'Tooling Sample',
+    LK_BAOJIABEIZHUYUFUJIAN: 'Quote Remark and Attachments',
+    LK_LINGJIANJIBENXINXI: 'Part Basic Info.',
+    LK_SHIFOUYANYONGJIAN: 'COP (Y/N)',
+    LK_SHIFOUGENGGAIJIAN: 'Changing Part (Y/N) ',
+    LK_CHANLIANGJIHUA: 'Production Plan',
+    LK_CHANLIANGJIHUATIPS:
+      'The supplier guarantees to meet the demand of SAIC Volkswagen with a 15% fluctuation of production capacity',
+    LK_SHENGMINGZHOUQIZHOU: 'Life Cycle (week)',
+    LK_PINGJUNNIANCHANLIANG: 'Avg. Annual Capacity',
+    LK_ZUIDANIANCHANLIANG: 'Max Annual Capacity',
+    LK_SHANGQIDAZHONGLIANXIREN: 'SVW Contact',
+    LK_BUMEN: 'Dept.',
+    LK_JUESE: 'Role',
+    LK_XINGMING: 'Name',
+    LK_DIANHUA: 'Tel',
+    LK_YOUXINAG: 'Email',
+    LK_XIANGMUJINDU: 'Project Progress',
+    LK_SHENGMINGZHOUQI: 'Life Cycle',
+    LK_VFF: 'VFF',
+    LK_PVS: 'PVS',
+    LK_OS: 'OS',
+    LK_SOP: 'SOP',
+    LK_BNKLINGJIANCAIGOUXIANGMUFUJIAN: 'BNK Proc. Proj. Attachment',
+    LK_WULIUXIANGGUANBNKFUJIAN: 'Logistics Related BNK',
+    LK_YUANCLSJ: 'Raw Material/Component',
+    LK_ZHIZHAOCB: 'Manufacturing Cost',
+    LK_BAOFEICHENGBEN: 'Scrap Cost',
+    LK_GUANLIFEI: 'Mgmt. Fee',
+    LK_QITAFEIYONG: 'Other Expense',
+    LK_LIRUN: 'Profit',
+    LK_STARTTIME: 'SOP Date',
+    LK_CBDLINEKEY: 'CBD Tier',
+    LK_XIAZAICBD: 'Download CBD',
+    LK_ZHIZAOGONGXU: 'Manufacturing Process',
+    LK_DUIYINGYUANCAILIAOSANJIAN:
+      'Corresponding Raw Material/Component(Ref.-ID)',
+    LK_SHEBEIMINGCHENGXINGHAO: 'Equip. Name/Model (Ref.-Name)',
+    LK_SHANGQIDAZHONGZHUANYONGSHEBEIFEI: 'SVW Dedicated Equip. Fee (RMB)',
+    LK_SHENGCHANJIEPAISEC: 'Prod. Pace (Sec.)',
+    LK_JIANSHUSHENGCHANJIEPAI: 'PC/Prod. Pace (1..n)',
+    LK_RENGONGCHENGBEN: 'Labor Cost',
+    LK_ZHIJIERENGONGFEILV: 'Direct Labor Cost (RMB/Hour)',
+    LK_ZHIJIERENGONGSHULIANG: 'Direct Labor Qty. (0..n)',
+    LK_SHEBEIFEI: 'Equip. Fee',
+    LK_SHEBEIFEILV: 'Equip. Expense Rate (RMB/Hour)',
+    LK_JIANJIEZHIZAOCHENGBEN: 'Indirect Manufacturing Cost',
+    LK_RENGONGCHENGBENRMB: 'Labor Cost (RMB/Pc.)',
+    LK_SHEBEICHENGBENRMB: 'Equip. Cost (RMB/Pc.)',
+    LK_BAOFEILV: 'Scrap Rate (%)',
+    LK_JINERMB: 'Amount (RMB/Pc.)',
+    LK_JINGEE: 'Amount',
+    LK_FTSULIANG: 'Apportioned Amount (1..n)',
+    LK_FENTANJINE: 'Apportioned Price (RMB/Pc.)',
+    LK_MUKUAIJINERMBBLOCK: 'Block Amount (RMB/block)',
+    LK_WENJIANDAXIAO: 'Size',
+    LK_GONGYINGSHANGSHENGCHANDI: 'Place of Prod.',
+    LK_GONGCHANGBIANHAO: 'Factory Code',
+    LK_GONGCHANGMINGCHENG: 'Factory Name',
+    LK_GONGCHANGJIANCHENG: 'Factory Abbr.',
+    LK_GONGJIA: 'Country',
+    LK_SHENGFEN: 'Province',
+    LK_CHENGSHI: 'City',
+    LK_DIZHI: 'Region',
+    LK_YOUBIAN: 'Postal Code',
+    LK_SHIFOUDINGDIAN: 'Nomi. (Y/N)',
+    LK_SHIFOUSHENGXIAO: 'Activated (Y/N)',
+    LK_XUANZESHENGCHANGONGCHANG: 'Select Proc. Factory',
+    LK_CAPACITYTIPS_1:
+      'Advance preparation period: in weeks, it is the time (including material preparation, personnel preparation, etc.) required by the current capacity level of the processing plant to increase to the weekly maximum capacity. If the capacity can be reached immediately at any time, fill in 0;',
+    LK_CAPACITYTIPS_2:
+      'Working days per week: refers to the working days per week under normal production capacity, generally 5 days;',
+    LK_CAPACITYTIPS_3:
+      'Weekly shifts: refers to the number of shifts per day based on the number of working days per week under normal production capacity.',
+    LK_CAPACITYTIPS_4:
+      'Weekly normal capacity: the number of parts produced per week under the conditions of normal working shifts and normal working days, in units, please do not fill in daily capacity or annual capacity. It is required that the normal production capacity of 50 weeks should not be less than the peak annual output of inquiry;',
+    LK_CAPACITYTIPS_5:
+      'Weekly maximum capacity: by increasing the number of shifts or the number of working days per week, the maximum number of parts to be produced per week is in units. Please do not fill in daily capacity or annual capacity. The weekly maximum capacity is required to reach at least +15% of weekly normal capacity.',
+    LK_CAPACITYTIPS_6:
+      'Maximum working days per year: refers to the maximum working days per year under the condition of maximum production capacity, in unit of days.',
+    LK_CAPACITYTIPS_7:
+      'Starting week: you can fill in multiple capacity data according to the actual situation, but the time of each capacity data must be continuous. The input time format must be "YYYYWW" with six characters, such as "201101".',
+    LK_CAPACITYTIPS_8:
+      'Ending week: by year and week the capacity specified is available. The end week of the last capacity data must be empty. The time format must be YYYYww, for example, 201101.',
+    LK_SHENGCHANNENGLI: 'Capacity',
+    LK_SHENGCHANNENGLITIPS:
+      'Capacity information of SAIC Volkswagen: The capacity promised by the supplier to SAIC Volkswagen for this inquiry model',
+    LK_TIQIANZHUNBEIQIZHOU: 'Adv. Preparation Period (week)',
+    LK_MEIZHOUGONGZUOTIANSHU: 'Working days per week',
+    LK_MEITIANBANSHU: 'Daily Shift',
+    LK_ZHOUZHENGCHANGCHANNENG: 'Weekly Normal Capacity',
+    LK_ZHOUZUIDACHANNENG: 'Weekly Maximum Capacity',
+    LK_NIANZUIDAGONGZUOTIANSHU: 'Maximum Working Days per Year',
+    LK_QISHIZHOU: 'Staring Week',
+    LK_JIEZHIZHOU: 'Ending Week',
+    LK_ZONGTOUZICHENGBEN: 'Total Inv. Cost',
+    LK_FENTANTOUZICHENGBEN: 'Apportioned Inv. Cost',
+    LK_DANJIANTOUZICHENGBEN: 'Single Part Inv. Cost',
+    LK_MUJUFEIYONG: 'Tooling Expense',
+    LK_RFQMUJUFEIYONGZONGJI: 'Total RFQ Tooling Expense',
+    LK_SANJIANMINGCHENG: 'Component Name',
+    LK_SANJIANLINGJIANHAO: 'Component No.',
+    LK_FENTANKAIFAFEIYONG: 'Apportioned Dev. Fee',
+    LK_DANJIANKAIFACHENGBEN: 'Single Part Dev. Cost',
+    LK_RFQKAIFAFEIYONGZONGJI: 'Total RFQ Dev. Expense',
+    LK_KAIFAFEIXIANGMU: 'Dev. Cost Proj.',
+    LK_DANJIA: 'Unit Price',
+    LK_ZONGJINE: 'Total Amount',
+    LK_DANWEIYUAN: '(RMB)',
+    LK_YANGJIAN: 'Sample',
+    LK_XUYAORIQIZHOU: 'Req. Date (week)',
+    LK_XUYAOSHULIANGJIAN: 'Req. Qty. (Pc)',
+    LK_GONGZHUANGYANGJIANDANJIANFEIYONGRMB: 'Tooling Sample Expense(RMB)',
+    LK_FUJIAGONGZHUANGYANGJIANMUJUJIAGERMB:
+      'Additional Tooling Sample Price (RMB)',
+    LK_FUJIAGONGZHUANGYANGJIANMUJUSHOUMINGGESHU:
+      'Additional Tooling Sample Lifespan (Pc)',
+    LK_BAOJIABEIZHU: 'Quote Remark',
+    LK_BAOJIAFUJIAN: 'Quote Attachments',
+    LK_SHANGCHUANSHIXUANZHUANZHIZHENGCHANGFANGXIANG:
+      'Before uploading, rotate the file to the normal direction',
+    LK_SANJIANMINGCHENGTIPS: 'Tier-1 Assy. Part No.',
+    LK_SANJIANLINGJIANHAOTIPS: '',
+    LK_LEIXING: 'Type',
+    LK_YUANCLSJMS: 'Raw Material/Component Desc.',
+    LK_YUANCHANDI: 'Country of Origin',
+    LK_SHIFOUSVWZHIDINGJIAGE: 'SVW Nomi. Spare Part (Y/N)',
+    LK_SHULIANGDANWEI: 'UoM',
+    LK_DANJIARMB: 'RMB/UoM',
+    LK_ZHIJIEYUANCAILIAOSANJIANCHENGBEN:
+      'Direct Raw Material/Component Cost (RMB/Pc.) ',
+    LK_WULAOGLF: 'Storage Fee',
+    LK_YUANCRMBPC: 'Raw Material/Component Cost (RMB/Pc.) ',
+    JIESHOUBAOJIA: 'Accept Quote',
+    JUJUEBAOJIA: 'Reject Quote',
+    LK_SHEBEIMINGCHENGXINGHAOOTHER: 'Equip. Name/Model',
+    LK_SHEBEITOUZIANZHUANGRMB: 'Equip. Inv.+ installing (RMB)',
+    LK_SHIFOUSHANGQIDAZHONGZHUANYONGSHEBEIFEI: 'SVW Dedicated Equip. Fee (Y/N)',
+    LK_MEIJIANSHNEGCHANSHIJIAN: 'Part Prod.Time (sec.)',
+    LK_MEIMUSHENGCHANLINGJIANSHU: 'Parts per Tooling',
+    LK_ZHIJIEZHIZAOCHENGBENRMBPC: 'Direct Manufacturing Cost (RMB/Pc.)',
+    LK_FEISUN: 'Scrap',
+    LK_SHENGCHANQIEHUANCHENGBEN: 'Prod. Switch Cost (RMB/Pc.)',
+    LK_ZONGZHIZAOCHENGBENRMBPC: 'Total manufacturing Cost (RMB/Pc.)',
+    LK_YUANCAILIAOPAIHAO: 'Raw Material Brand',
+    LK_MAOZHONG: 'Gross Weight',
+    LK_JINGZHONG: 'Net Weight',
+    LK_HUISHOUDANJIARMBUOM: 'Recycle Price (RMB/UoM)',
+    LK_ZHIJIEYUANCAILIAOSANJIANCHENGBENRMBPC:
+      'Direct Raw Material/Component Cost (RMB/Pc.) ',
+    LK_QIANQIWULIUFEIYONGRMBPC: 'Pre-logistics Expense (RMB/PC.)',
+    LK_JIANJIEYUANCAILIAOSANJIANCHENGBEN:
+      'Indirect Raw Material/Component Cost',
+    LK_YUANCRMBPCUP: 'Raw Material/Component Cost (RMB/Pc.) ',
+    LK_DAIGONGYINGSHANGBAOJIA: 'Supplier Conformation Delegate',
+    SKDQIBUSHENGCHANSHIJIANBUKEWANYULCQIBUSHENGCHANSHIJIAN:
+      'SKD SOP should not be later than LC start production time, please re-enter',
+    LK_COPE_BAOJIA: 'Copy Quote to',
+    LK_SHOUDONGSHURU: 'Manually Input',
+    LK_UPLOADBJ: 'Upload CBD',
+    DELETE: 'Delete',
+    LK_SHANGCHUANBAOJIA: 'Upload Quote',
+    QINGXUANZEXUYAOSHANCHUDEHANGSHUJU: 'Please select row data to delete',
+    JIANGJIAJISUANYICHUCHANGJIAWEIZHUN: '',
+    SKDBUFENYICHUCHANGJIAWEIZHUN: '',
+    QINGXUANZEWEIFENPEIBUMENDEPEIJIAN:
+      'Please select spare part without relevant department',
+    QINGXUANZEXUYAOQIANSHOUDEPEIJIAN: 'Please select spare part to sign-in',
+    QINGXUANZEXUNJIABUMEN: 'please select sourcing department',
+    LK_BAOBIAOGUANLI: 'Report Mgmt.',
+    CKDLANDED: '',
+    MOJUMUBIAOJIA: 'Tooling Target Price',
+    SKD_A: 'SKD_A',
+    SKD_B: 'SKD_B',
+    'CKD Duty%': 'CKD Duty%',
+    'CKD EX-Work': 'CKD EX-Work',
+    PINGFENBUMENBIANHAO: 'Rating Dept. No.',
+    LK_DAOCHU: 'Export',
+    FASONGKM: 'Send KM',
+    LK_QINGXUANZEDINGDIANSHENQINGLEIXING: 'Please Select App. Type',
+    LK_DINGDIANSHENQINGLEIXING: 'App. Type',
+    SURE: 'Confirm',
+    REMOVE: 'Cancel',
+    SELECT: 'Select',
+    LK_ZHUANXUNJIAS: 'To Inquiry',
+    SHENQINGZHUANGTAI: 'App. Type',
+    SHENPIZHUANGTAI: 'Approval Status',
+    XIUGAIJILU: 'Updated Record',
+    'partsprocure.PARTSPROCUREFSNFGSNFSPNR': 'FS/GS/SP No.',
+    'partsprocure.PARTSPROCUREPARTNAMEZH': 'Part Name (CN)',
+    'partsprocure.PARTSPROCUREPARTNAMEDE': 'Part Name (DE)',
+    'partsprocure.PARTSPROCUREPURCHASINGFACTORY': 'Purchasing Factory',
+    'partsprocure.PARTSPROCUREMODELPROJECT': 'Project',
+    'partsprocure.PARTSPROCUREPARTSTATUS': 'Status',
+    CBDCENGJI: 'CBD Tier',
+    SHIFOUYIBAOCBD: 'CBD Reported (Y/N)',
+    FASONGZHUANGTAI: 'Sending Status',
+    FASONG: 'Send',
+    LK_ZHUANTANPAN: 'To Negotiation',
+    LK_CHUANGJIANDINGDIANSHENQING: 'Create Nomi. App.',
+    LK_XINJIANRFQ: 'New RFQ',
+    'partsignLanguage.QingXuanZe': 'Please select',
+    TIANJIALINGJIAN: 'Add part',
+    LK_AEKO_LINGJIANWUYUSHEKESHIQINGCHONGXINXUANZE:
+      'Part has no preset department, please reselect!',
+    TIANJIABDL: 'Add BDL',
+    NINHAIWEIXUANZEGONGS: 'You have not select any supplier yet',
+    LK_BAOCUNBINGYINGYONG: 'Save and Apply',
+    QINGXUANZEMUBIAOJIALEIXING: 'Please select target price type',
+    NINGDANGQIANHAWEIXUANZESHUJU: 'You have not select any data yet',
+    QINGWUXUANZEYITIJIAODESHUJU: "Please don't select submitted data",
+    QINGWUXUANZEYICHEXIAODESHUJU: "Please don't select withdrawn data",
+    XUNJIAGUANLI: 'Inquiry Mgmt.',
+    'partsprocure.PARTSPROCUREPUECHASEAPPLYNUMBER': 'Proc. App. No.',
+    'partsprocure.PARTSPROCUREPITEM': 'Item No.',
+    LINGJIANCAIGOUXIANGMUHAO: 'Part Proc. Proj. No',
+    YUANMUBIAOJIA: 'Prev. Target Price',
+    TOUZIMUBIAOJIA: 'Inv. Target Price',
+    QINGXUANZEHUIYISHIJIAN: 'Please select meeting time',
+    QINGSHURUHUIYIDIDIAN: 'Please enter meeting location',
+    QINGXUANZEZHISHAOLINGJIAN: 'Please select at least one part',
+    QINGTIANXIEWANZHENGGONGYINGSHANGCAILIAO:
+      'Please complete the supplier materials',
+    BIDDING_JJKSSJ: 'Bidding Start',
+    BIDDING_JJJSSJ: 'Bidding End',
+    BIDDING_TISHI: 'Notification',
+    BIDDING_RENMINGBI: 'RMB',
+    BIDDING_GONGYINGSHANG: 'Supplier',
+    BIDDING_CHAKAN: 'View',
+    BIDDING_BJJZRQ: 'Quotation DDL',
+    BIDDING_ZAIXIANKAIBIAO: 'Online Bidding',
+    BIDDING_PUTONGXUNJIA: 'Normal Inquiry',
+    BIDDING_SGJJ_BJDHT: 'Manual Bidding-Quotation Backfill',
+    BIDDING_BUNENGWEIKONG: 'Cannot be blank',
+    BIDDING_BAOJIA: 'Quote',
+    BIDDING_JINJIASHEZHI: 'Bidding Status',
+    BIDDING_WANCHENG: 'Complete',
+    BIDDING_LIANGXIREN: 'Contact',
+    BIDDING_HUILV: 'Exch. Rate',
+    BIDDING_XINZHENG: 'Create',
+    BIDDING_XUNJIAFUJIAN: 'Inquiry Attachment',
+    'BIDDING-CHAKAN': 'View',
+    'BIDDING-WANCHENG': 'Complete',
+    LK_XINGJIANCESHIXIANM: 'New Testing Project',
+    TANPANWANCHENG: 'Negotiation Complete',
+    LK_SKIP: 'Skip',
+    QINGITANXIEJIESUYUANY: 'Termination Reason',
+    CHEXINGHUOCHEXINGXIANGMU: 'Model/Project',
+    LK_DENGDAISTARTMONITOEDINGDIANGENGXIN: '',
+    QUXIAOGUANLIANSTARTMONIORJILU: '',
+    GUANLIANSTARTMONIORJILU: '',
+    STARMONITORDINGDIANJILUCHAXUN: '',
+    QUERY: '',
+    RESET: '',
+    QINZHISHAOXUANZEYITIAOSHUJU: '',
+    QUXIAOGUANLIANSTARTMONIORJILUa: '',
+    QUXIAOGUANLIANSTARJILU: '',
+    CHONGXINXUANZE: '',
+    LK_QUXIAODENGDAISTARTMONITOEDINGDIANGENGXIN: '',
+    LINGJIANMUBIAOJIA: 'Part Target Price',
+    SOURCINGNUMBER: '',
+    QINWEIYIXIAGONGYINGSHANGWEIHUGONGCHANGDIZHI: '',
+    XUYAOGUANLIANDELINGJIANCAIGOUXIANGMUHEXUANZEDESTARTMONITORJILUSHULIANGBUPIPEI:
+      '',
+    YIXIALINGJIANCAIGOUXIANGMUWEIGUANLIANSTARTMONITORJILUQINGWANCHENGGUANLIANHOUYICHUGAILINGJIANCAIGOUXIANGMUHOUZAICHUANGIANDINGDIANSHENQING:
+      '',
+    YIXIALINGJIANCAIGOUXIANGMUBKNSHENHEWEITONGGUOWUFACHUANGJIANDINGDIANSHENQING:
+      '',
+    QUXIAOGUANLIANSTARMONITORJILU: '',
+    GUANLIANSTARTMONITORJILU: '',
+    XUANZEDELINGJIANCAIGOXIANGMUSHULIANGBUNENGXIAOYUXUANZEDESTARTMONITORJILUSHULIANG:
+      '',
+    LK_LUNCIGUANLI: 'Round Management',
+    LK_XUNJIAXINXI: 'Sourcing Materials',
+    LK_XUNJIAZHUSHOU: 'Sourcing Assistant',
+    LK_DAIBANRENWU: 'To Do List',
+    add: '',
+    LK_JISHUPINGFEN: '',
+    LK_ZHILIANGPINGFEN: '',
+    LK_WULIUPINGFEN: '',
+    LK_SUPPLIER_WEIWANCHENGNIANDUGONGYINGSHANGXINXIQUEREN: '',
+    LK_TIPS_YIXIAGONGYINGSHANGXUNJIASHOUKONGWUFAFASONGXUNJIA: '',
+    LK_SHENQINGLINGJIANMUBIAOJIA: '',
+    LK_SHENQINGMUJUMUBIAOJIA: 'Tooling Target Price',
+    SHENQINGMUJUYUSUAN: '',
+    LK_APPLAY: '',
+    DANGQIANLUNCIBAOJIAZHUANGTAI: '',
+    CAIWUKONGZHIYUAN: '',
+    SHENQINGLEIBIE: '',
+    LK_LINGJIANCAIGOUXIANGMUHAO: '',
+    APrice: '',
+    BPrice: '',
+    GONGYINGSHANGHEIMINGDANBUKEXUNJIA: '',
+    MUJUMUBIAOJIA: 'Tooling Target Price',
+    MOJUTOUZIYUSUAN: 'Tooling Invest Budget',
+    MOJUTOUZHIYUSUAN: 'Tooling Invest Budget',
+    BDL: '',
+    LK_NINDANGQIANHAIWEIXUANZEXUYAOSHENQINGLINGJIANMUBIAOJIADECAIGOUXIANGMU: '',
+    DAIBANTISHI: '',
+    QIANWANGRENWULIEBIAO: '',
+    SHENQINGMUJUMUBIAOJIA: '',
+    LK_GONGYINGSHANGGONGCHANGMINGCHEN: '',
+    QINGWEIHUBITIANXIANG: '',
+    'BIDDING_PM（JDZD）': 'Auction (the lowest price gets)',
+    'BIDDING_PM（JGZD）': 'Auction (the highest price wins)',
+    BIDDING_ZHENGSHIXIANGMU: 'Formal Project',
+    BIDDING_CESHIXIANGMU: 'Testing Project',
+    BIDDING_CHONGZHI: 'Reset',
+    BIDDING_XIANGMULEIXING: 'Proj. Type',
+    BIDDING_QINGXUANZE: 'Please select',
+    BIDDING_SHANCHU: 'Delete',
+    BIDDING_CAOGAO: 'Draft',
+    BIDDING_DAIJINGJIA: 'To-be Bid',
+    BIDDING_WEIKAIBIAO: 'Bid not opening',
+    BIDDING_JINGJIAZHONG: 'Bidding',
+    BIDDING_YIKAIBIAO: 'Bid Opened',
+    BIDDING_YIJIESHU: 'Finished',
+    BIDDING_YILIUBIAO: '',
+    BIDDING_YIZUOFEI: 'Scraped',
+    BIDDING_YIQUXIAO: 'Cancelled',
+    BIDDING_KAISHISHIJIAN: 'Starting Time',
+    BIDDING_JIESHUSHIJIAN: 'Ending Time',
+    BIDDING_LUNCILEIXING: 'Round Type',
+    BIDDING_ZHUANGTAI: 'Status',
+    BIDDING_ZAIXIANJINGJIA_YINGSHI: 'Online bidding-English',
+    BIDDING_SHENGCHANCAIGOU: 'Production Procurement',
+    BIDDING_YIBANCAIGOU: 'General Purchase',
+    BIDDING_ZAIXIANJINGJIA_HESHI: 'Online bidding-Dutch',
+    BIDDING_SHOUGONGJINGJIA: 'Manual Bidding',
+    BIDDING_CAIGOULEIXING: 'Proc. Type',
+    BIDDING_SGJJLX: 'Manual Bidding Type',
+    BIDDING_YYRFQ: 'Quote RFQ',
+    BIDDING_QINGSHURU: 'Please enter',
+    BIDDING_BAOCUN: 'Save',
+    BIDDING_XINJIANXIANGMU: 'New Project',
+    BIDDING_QXZCGLX: 'Please select procurement type',
+    BIDDING_QXZSGJJLX: 'Please select manual bidding type',
+    BIDDING_QXZYYRFQ: 'Please select quote RFQ',
+    BIDDING_BAOJIALEIXING: 'Quote Type',
+    BIDDING_KAIBIAO: 'Bid Opening',
+    BIDDING_YINGSHI: 'English',
+    BIDDING_HESHI: 'Dutch',
+    BIDDING_CHUANGJIANREN: 'Creator',
+    BIDDING_CHAXUN: 'Search',
+    'BIDDING_RFQ/XIANGMUBIANHAO': 'RFQ/Proj. No.',
+    'BIDDING_RFQ/XIANGMUMINGCHENG': 'RFQ/ Proj. Name',
+    BIDDING_JINGJIALEIXING: 'Bidding Type',
+    BIDDING_BENLUNRFQGUANBISHIJIAN: 'Cur. RFQ Closing Time',
+    BIDDING_XIANGMULIEBIAO: 'Project List',
+    BIDDING_XIANGMUCHAXUN: 'Proj.Query',
+    BIDDING_YIFACHU: 'Sent',
+    BIDDING_ZS: 'Formal',
+    BIDDING_CS: 'Testing',
+    BIDDING_SHANGYIYE: 'Prev. Page',
+    BIDDING_XIAYIYE: 'Next Page',
+    'nominationSupplier.SAPHao': 'SAP No.',
+    LINGJIANPINGFEN: 'Part Rating',
+    'costanalysismanage.RfqBianHao': 'RFQ No.',
+    'costanalysismanage.RfqMingCheng': 'RFQ Name',
+    NINGSHURUDEBILIBUHEFA: 'The proportion you entered is illegal',
+    XIANGGUANCHEXING: 'Relevant Model',
+    LK_BAOJIAQS: 'Trend',
+    Lk_LINGJIAN: 'Part',
+    'rfq.RFQINQUIRE': 'Search',
+    'rfq.RFQRESET': 'Reset',
+    WAIBUKAIFAFEI_YUAN: 'Ext. Dev. Fee (RMB)',
+    ZENGJIARENKEFEI_YUAN: 'Additional Recog. Fee (RMB)',
+    RENKEZHOUQI_ZHOU: 'Recog. Period (week)',
+    'TPZS.BGMC': 'Report Name',
+    'TPZS.LJH': 'Part No.',
+    'TPZS.LJM': 'Part Name',
+    'TPZS.GC': 'Plant',
+    'TPZS.EBR': 'EBR%',
+    'TPZS.QSMZQCL': 'Full Life Cycle Capacity',
+    'TPZS.FZNCL': 'Max Annual Capacity',
+    'TPZS.XMMC': 'Proj. Name',
+    'costanalysismanage.GongYingShang': 'Supplier',
+    'TPZS.SZD': 'Location',
+    'TPZS.SFMBDL': 'MDBL(Y/N)',
+    'TPZS.BJZT': 'Quote Status',
+    'TPZS.MQDF': 'Quality Rating',
+    'TPZS.PLDF': 'BNK Rating',
+    'TPZS.EPDF': 'EP Rating',
+    'TPZS.DDJE': 'Nomi. Amount',
+    'TPZS.DDSJ': 'Nomi. Time',
+    QR: 'Confirm',
+    CZ: 'Reset',
+    CHUANGJIANREN: 'Creator',
+    PIFENXIKU: 'Price Index Database',
+    YUANCAILIAOJIAGEZONGLAN: 'Raw Material Price Overview ',
+    XINZENGFENXIFANGAN: 'New Analysis Solution ',
+    RFQHAOMINGCHENG: 'RFQ No.-Name',
+    JINRUFENXI: 'Analyze',
+    QINGXUANZHONGSHUJU: 'Please select date',
+    BQWFCXDJGSRCWHBCZQQRHCXSR:
+      'Sorry, the query result cannot be found (input error or non-existent), please confirm and enter again',
+    PILIANGGONGYINGSHANGGONGCHANGZONGLAN: 'Bulk Supplier Factory Overview',
+    TLJJGLJCLGYSGHBLCXCL: 'Factory Total Sale',
+    GONGYINGSHANGGONGCHANGDIZHI: 'Supplier Factory',
+    CHEXINGXIANGMUMAOHAO: 'Model',
+    GONGYINGSHANGGONGCHANGDIZI: 'Supplier Factory Address',
+    ZICHANBIANDONGDANJIATIPS: '',
+    LK_BENLUNBAOJIAQIZHISHIJIAN竞价: 'Bidding Duration',
+    KAIBIASHIJIANXUANZE: 'Bid Opening',
+    KAIBIAOJIEGUOANNIU: 'Opening Result',
+    PAIMING: '',
+    BAOJIAJINGDU: 'Quotation Progress',
+    PAIMINGKEY: 'Ranking',
+    DANGQIANLUNCIWEIKAIBIAO:
+      'Current round has not been opened, please try after bid opening.',
+    LK_XIANGMULIEBIAO: 'Proj. List',
+    HUOQURFQDINGDIANXINXISHIBAI: 'Fail to obtain RFQ nomination info.',
+    JINJIAQIZHISHIJIAN: 'Bidding ',
+    RFQXIANGMUBIANHAO: 'RFQ/Proj. Code',
+    RFQXIANGMUMINGCHENG: 'RFQ/Proj. Name',
+    LK_SHIFOUXINJIAN: 'Create',
+    LK_XIAZAIMUJUCBD: 'Download Tooling CBD',
+    LK_GUDINGZICHANMINGCHENG: 'Fix Asset Name',
+    LK_GONGZHUANGSHOUMING: 'Tooling Lifespan',
+    LK_FSNO: 'FS No.',
+    LK_SHIFOUFENTAN: 'Apportioned (Y/N)',
+    LK_CHAKANGUANLIANLINGJIAN: 'View Relevant Part',
+    LK_GUDINGZICHANMINGCHENGTIPS: '',
+    LK_GONGYILEIXINGTIPS:
+      'Such as injection molding, stamping, and electroplating etc.',
+    LK_GONGMUJUZHONGLEITIPS: 'Ex: Manifold Injection Tooling',
+    LK_ZICHANFENLEIBIANHAOTIPS: '',
+    LK_SHULIANGTIPS: '',
+    LK_ZICHANDANJIATIPS2: '',
+    LK_GUANLIANLINGJIAN: 'Relevant Part',
+    LK_LINGJIANZONGCHENGMINGCHENG: 'Assy. Part Name',
+    LK_LINGJIANZONGCHENGLINGJIANHAO: 'Assy. Part No.',
+    LK_LINGBUJIANMINGCHENG: 'Part Name',
+    LK_LINGBUJIANLINGJIANHAO: 'Part No.',
+    LK_LINGJIANZONGCHENGMINGCHENGTIPS: '',
+    LK_LINGJIANZONGCHENGLINGJIANHAOTIPS: '',
+    LK_LINGBUJIANLINGJIANHAOTIPS: '',
+    AIBIAOSHIJIANWEIDAO: 'Sorry! Bid is not opened, cannot view quote sheet.',
+    SHIFOUTUISONGKUAIZHAOZHIBAOGAOQINGDAN:
+      'Do you want to push snapshots to the report list?',
+    TUISONG: 'Push',
+    'costanalysismanage.CaiGouGongChang': '',
+    FENEBUCHAOGUOHUNDRENDPERCENT: '',
+    PILIANGWEIHUGONGYINGSHANG: '',
+    SOURCING_RFQDETAIL_FANGDACHAK: '',
+    BAOQIANDANGQIANWUFACHAKKBXX: '',
+    XITONGZIDONGCHUANGJIAN: '',
+    YIXUNJIAGONGYINGSHANG: 'Inquired Supplier(No.) ',
+    YIBAOJIAGONGYINGSHANG: 'Quoted Supplier(No.) ',
+    LK_MUBIAOXUNJIACAIGOUYUAN: 'Target Sourcing Buyer',
+    LK_JIHUORFQS: 'Activate RFQ',
+    LK_XINJIANRFQS: 'New RFQ',
+    LK_GUANBIRFQS: 'Close RFQ',
+    LK_ZHUANPAIPINGFENRENWUS: 'Transfer Rating Task',
+    LK_ZHUANTANPANS: 'To Negotiation',
+    LK_CHUANGJIANDINGDIANSHENQINGS: 'Create Nomi. App.',
+    LK_DAOCHUS: 'Export',
+    YIBAOJIA_YIXUNJIA_GONGYINGSHANG: 'Quoted/Inquired Suppier',
+    LK_CFMUBIAOJIAZHUANGTAI: 'F-Target Status',
+    LK_HEAVYITEMWEIHUZHUANGTAI: 'Heavy Item Status',
+    LK_JISHUPINGFENZHUANGTAI: 'TP Rating Status',
+    LK_ZHILIANGPINGFENZHUANGTAI: 'MQ Rating Status',
+    LK_CAIWUMUBIAOJIAZHUANGTAI: 'F-Target Status',
+    JISHUPINGFENZHUANGTAI: 'TP Rating Status',
+    ZHILIANGPINGFENZHUANGTAI: 'MQ Rating Status',
+    CAIWUMUBIAOJIAZHUANGTAI: 'F-Target Status',
+    BIDDING_XIANGMUMINGCHENG: 'Proj. Name',
+    BIDDING_RFQBIANHAO: 'RFQ No.',
+    BIDDING_XIANGMUBIANHAO: 'Project No.',
+    BIDDING_KAIBIAOSHIJIAN: 'Bid Opening',
+    BIDDING_DANGQIANLUNCI: 'Cur. Round',
+    BIDDING_CHUANGJIANRIQI: 'Creation Time',
+    BIDDING_CHUANGJIANBUMEN: 'Creation Dept.',
+    BIDDING_JINGJIAQIZHIRIQI: 'Bidding Period',
+    BIDDING_BAOJIAJIEZHIRIQI: 'Quotation DDL',
+    ZHUANPAIQIANQICAIGOUYUAN: 'Transfer to Forward buyer',
+    ZHUANPAILINIE: 'Transfer to LINIE',
+    ZHUANPAIXUNJIACAIGOUYUAN: 'Transfer to Sourcing Buyer',
+    MUBIAOXUNJIACAIGOUYUAN: 'Target Sourcing Buyer',
+    BAOQIANNINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDERENWU:
+      "Sorry, you haven't select rating task to assign",
+    MUBIAOLINIE: 'Target LINIE',
+    LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO:
+      'Sorry, Steel type cannot be operated',
+    THISISTESTKEY: 'this is test key',
+    LK_QINGXUANZEZHISHAOYITIAORFQ: '',
+    LK_FSNR: '',
+    LK_SAP: '',
+    LK_SUPPLIERNAME: '',
+    KAIFAFEI_BUHANSHUI: 'Dev. Expense (excl.Tax)',
+    LINGJIANCHENGBENFENXIYUAN: 'PCA',
+    MUJUCHENGBENFENXIYUAN: 'TIA',
+    WEIHUXGGYX: 'Maintain Spot Supplier',
+    EDITBTN: 'Edit',
+    XGONGGYS: 'Spot Supplier Name',
+    GONGYINGSNO: 'SAP No.',
+    PARTNUMBER: 'Part No.',
+    APRICE: 'A Price',
+    BPRICE: 'B Price',
+    FIND: 'Search',
+    ADD: 'Add',
+    GONGYSSAPNUMBER: 'SAP No.',
+    GONGYINGHSANGNAME: 'Supplier Name',
+    PART1NUMBER: 'Part No.',
+    WEIHUXIANGGYS: 'Maintain Spot Supplier',
+    XUANZHE: 'Select',
+    DELETEHANG: 'Delete Row',
+    LCHUILV: 'Exch. Rate',
+    DINGDIANXINXI: 'Nomi. Info.',
+    SHOUDONGCHUANGJIAN: 'Manually Create',
+    CAIGOUGONGC1: 'Purchasing Factory',
+    ZHIFUTIAOKUAN: 'Payment Policy',
+    CAIGOUTIAOKUAN: 'Procurement Policy',
+    SHIFOUDBJIAN: 'DB Part (Y/N) ',
+    GONGYINGSHANGMING_ZH: 'Supplier Name (CN)',
+    'partsprocure.PARTSPROCUREPARTSTATUSNAME': 'Part Prof. Type',
+    LK_SHANGCHUANFUJIAN: 'Upload Attachments',
+    QINGXUANZEYIGELIE: 'Please select data!',
+    ZHIZHIRSDAN: 'Paper RS Sheet',
+    DIANZIRSDAN: 'Electronic RS Sheet ',
+    'SELFENTANDAN ': 'SEL Apportion Sheet',
+    CHANGSHANGHAO: 'Brand',
+    MOJUJIAGE_BUHANSHUI: 'Tooling Price (excl.Tax)',
+    MOJUHUILV: 'Tooling Exch. Rate',
+    QIBUSHENGCHANSHIJIAN: 'SOP Date',
+    KAIFAFEISHIFOUFENTAN: 'Dev. Expense Apportion (Y/N)',
+    KAIFAFEIFENTANSHULIANG: 'Dev. Expense Apportion Qty.',
+    KAIFAFEIFENTANJINE: 'Dev. Expense Apportion Amount',
+    SELFENTANDAN: 'SEL Apportion Sheet',
+    XUANZHEYUANFSHAO: 'Select Prev. FS No.',
+    'FSNR/OSNR/SPNR': 'FSNR/GSNR/SPNR',
+    GONGYSSAPHAO: 'Supplier SAP No.',
+    GONGYSMINGC: 'Supplier Name',
+    CAIGOUGONGC: 'Purchasing Factory',
+    LINGJIANIXANGMULEIX: 'Proc. Type',
+    XUANJIACAIGOUYUAN: 'Sourcing Buyer',
+    LK_LINGJIANLEIX: 'Part Type',
+    ZUIZHONGYONGHU: 'Final User',
+    CAILIAOGONGYINGSHANG: 'Material Supplier',
+    YOUXIAOQISHIQI: 'Initial period of validity',
+    NINGHAIWEIGUANLYUANLJ:
+      'You have not associated with the original part, please associate and try again!',
+    LK_AEKO_GUANLIYUANBEIZHU: 'AEKO Controller Remark',
+    SHENGCDINGIDANSHENGQACC: 'Generate Nomi. App. Sheet',
+    ZONGCHNEGGONGYS: 'Assy. Supplier',
+    ZHONGCHENGGYS: 'Assy. Supplier',
+    FENE: 'Quota',
+    SHENGCHENGDINGDSQD: 'Generate Nomi. App. Sheet',
+    LK_FSNRGSNRNUMBER: 'FS No.',
+    LK_SAPNUMBER: 'Supplier SAP No.',
+    LK_CAIGOUGONGC: 'Purchasing Factory',
+    LK_FENE: 'Quota',
+    DANGQIANFENEBNWEIK: "Sorry, you haven't filled in the quota yet!",
+    XUANZEDEBUNENGDAYULIANGT:
+      "I'm sorry! Part type [processing and assembly fee] can only be one!",
+    DANGQLJHANYOUDUOGEJIAGONG:
+      'You have already selected the supplier whose part type contains the processing assembly, do not choose again!',
+    DANGQIANCHEXINGXIANGMU:
+      'The current model project is empty, please maintain the model project first!',
+    DANGQIANCAIGGCWEIK:
+      'The current purchasing factory is empty, please maintain the purchasing factory first!',
+    LK_CAILIAOZULINIEBUMEN: 'Material Group LINIE Dept.',
+    QINGSHURUDAYUINGDESHU: 'Sorry! Quota value should range from 0 to 100',
+    YUANFSGSHAO: 'Prev. FS/GS No.',
+    FSNRGSNRNUMBER: 'FS No.',
+    LK_LCAIGOUSHENQING: 'Proc. App.',
+    JIAGEJILU: 'Price Record',
+    SHENQINGTOUZIMUBIAOJIA: 'Inv. Target Price',
+    applicationDate: 'App. Date',
+    applicationType: 'App. Type',
+    cfName: 'CF Controller',
+    approvalStatus: 'App. Status',
+    remarks: 'Remark',
+    YUPILIANGCAIGOUSHENQING: 'Pre-Series Proc. App.',
+    BIAOZHUNCAIGOUSHENQING: 'Std. Proc. App.',
+    GONGXUWEIWAIYAOHUO: 'Process Outsourcing',
+    SAP: 'SAP',
+    SHOUDONGTONGBU: 'Manually Sync.',
+    RENGONGCHUANGJIAN: 'Manually Create',
+    LK_XIANGXIATIANCHONG: 'Down filled',
+    LK_JISUANCHANLIANG: 'Calc. Capacity',
+    YINGYONG: 'Apps',
+    PEIZHIID: 'Config, ID',
+    CHEXINGBIANHAO: 'Model Code',
+    FADONGJILEIXING: 'Engine',
+    BIANSUXIANGXINGHAO: 'Transmission',
+    DAINCHIRONGLIANG: 'Battery',
+    QITAPEIZHI: 'Other Config.',
+    ' PEIZHIBILI': 'EBR',
+    ' WEITIANXIEMEICHEYONGLIANGDEJILU,BUKEBAOCUN':
+      "Qty. per car records haven't been fill-in completely , cannot be saved",
+    LK_SHUAXINBKMCHANLIANGYUCE: 'Refresh BKM Capacity Forecast',
+    GONGZHUANGYANGJIAN: 'Tooling Sample',
+    QINGXIANBAOCUNMEICHEYONGLIANG: 'Please save quantity per car first',
+    CFFUZEREN: 'CF Owner',
+    QINGSHURUMEICHEYONGLIANG: 'please enter quantity per car',
+    QINGXUANZEYITIANXIEYONGLIANGDESHUJUJINXIANGXIANGXIATIANCHONG:
+      'Please select a data for downward filling',
+    QINGXUANZEYITIAOMEICHEYONGLIANGSHUJUJINXINGXIANGXIATIANCHONG:
+      'Please select a quantity per car data for downward filling',
+    DANGQIANSHUJUMEIYOUCHEXINGXIANGMUID:
+      'There is no project ID in the current data. Please select project and save it and try again',
+    CHEXINGORCHEXINGXIANGMU: 'Model/Project',
+    LK_BUCHONGTIANXIEGONGZHUANGYANGJIANFEI:
+      'Do you need to fill in the tooling sample fee?',
+    LK_TIANXIE: 'Fill in',
+    SOURCING: '',
+    LINIELOWERCASE: '',
+    XIANGONGFENEa: '',
+    FENEXAINGONG: '',
+    'DANGQIANRSDANWUSHUJU,WUFADAOCHU': '',
+    DANGQIANRSDANWUSHUJU: '',
+    LK_SHENGCHENGDINGDIANSHENQING: 'Generate Nomi. App. Sheet',
+    LK_LINGJIANHAOHZONG: 'Part Name (CN)',
+    LK_LINGJIANHAODE: 'Part Name (DE)',
+    LK_LINEBUMEN: 'LINIE Dept.',
+    LK_LINE: 'LINIE',
+    LK_YUANFSHAO: 'Prev. FS No.',
+    LK_QUERENJINGLINGJHAOJLJHBG: 'Save',
+    LK_QINGXIANXUANZELINIEBUMEN: 'Please select LINIE department first',
+    PILIANGWEIHUCHANLIANGJIHUA: 'Batch Maintain Production Plan',
+    LK_NINSHANGWEISHURUKAISHINIANFEN: 'Sorry, you have not enter starting year',
+    LK_SHURUDEKAISHINIANFENGESHIYOUWU:
+      'Sorry, the format of the entered starting year is incorrect',
+    SHOUGONGCAIGOUXIANGMUCHUANGJIAN: 'New Procurement Proj.',
+    'partsprocure.PARTSPROCUREINQUIRYBUYER': 'Sourcing Buyer',
+    'partsprocure.PARTSPROCURELINIE': 'LINIE',
+    'partsprocure.PARTSPROCURETRANSFER': 'Transfer',
+    'partsprocure.PARTSPROCUREPARTITEMTYPE': 'Part Type',
+    'partsprocure.PARTSPROCUREVEHICLECATEGORIES': 'Carline',
+    'partsprocure.CF': 'CF',
+    'partsprocure.PLEENTER': 'Please Input',
+    'partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT': 'Procurement Mgmt.',
+    'partsprocure.PARTSPROCURECANCELPARTSPURCHASE': 'Terminate Proj.',
+    'partsprocure.PARTSPROCUREBATCHMAINTENANCE': 'Batch Maintain',
+    'partsprocure.PARTSPROCURESTARTINQUIRY': 'Inquire',
+    'partsprocure.PARTSPROCUREGENERATEFSGSNR': 'Generate FS/GS/NP',
+    BAOQIANNINXUANZHEDELINGJIANCAIGXIANGMUZHONGB:
+      'Sorry, the part procurement projects you have selected are not the same type, cannot batch maintain ',
+    'partsprocure.mtz': 'MTZ',
+    code: 'code',
+    LK_XIANSHIZIJI: 'Filter by Me',
+    LK_GANGCAILEIXINGBUNENGSHENGCHENGFAHAODELINGJIANCAIGOUXIANGMU:
+      'Sorry, steel type cannot generate FS no. part procurement project',
+    LK_GANGCAILEIXINGBUNENGZUOCICAOZUO:
+      'Sorry, steel type cannot perform sub operation',
+    LK_DAOCHUBIAOZHUNLOI: 'Export Std. LOI',
+    LK_LISHILOI: 'History LOI',
+    LK_BIAOZHUNLOI: 'Std. LOI',
+    LK_FEIBIAOZHUNLOI: 'Non-std. LOI',
+    LK_PILIANGLOI: 'Series LOI',
+    LK_KAIFALOI: 'Dev. LOI',
+    LK_KAIFAPILIANGLOI: 'Dev.+ Series LOI',
+    LK_GONGYINGSHANGLIANXIR: 'Supplier Contact',
+    LK_LOIBIANHAO: 'LOI No.',
+    LK_LOIZHUANGTAI: 'LOI Status',
+    LK_LOISHENGCHENGSHIJIAN: 'LOI Generated Time',
+    LK_BIANJIBEIZHU: 'Edit Remark',
+    'createparts.QingXuanZeZhiShaoYiTiaoShuJu':
+      'Please select at least one data',
+    LK_LOI_YUDINGDIANTONGZHISHULOI: 'LOI',
+    LK_SHANGCHUANSHIWENJIANQINGXUANZHUANZHIZHENGCHANGFANGXIANGHOUSHANGCHUAN:
+      'Before uploading, rotate the file to the normal direction',
+    LK_DAOCHUBIAOZHUNDINGDIANXIN: 'Export Std. NL',
+    LK_LISHIDINGDIANXIN: 'History NL',
+    LK_BIAOZHUNDINGDIANXIN: 'Std. NL',
+    LK_FEIBIAOZHUNDINGDIANXIN: 'Non-std.NL',
+    'nominationLanguage.Yes': 'Yes',
+    'nominationLanguage.No': 'No',
+    LK_DINGDIANXIN: 'NL',
+    LK_LOI: 'LOI',
+    'partsprocure.FsnrGsnr': 'FSNR/SNR',
+    LK_DINGDIANXINDANHAO: 'Nomi. App. Sheet No.',
+    LK_QUERENBINGTIJIAO: 'Confirm and Submit',
+    'partsprocure.CheHui': 'Withdraw',
+    LK_GUANBI: 'Close',
+    LK_DINGDIANXINBIANHAO: 'NL No.',
+    LK_DINGDIANXINZHUANGTAI: 'NL Status',
+    LK_GONGYINGSHANGFANKUI: 'Supplier Feedback',
+    'costanalysismanage.XunJiaCaiGouYuan': 'Sourcing Buyer',
+    LK_SHIFOUQIANSHUXIEYI: 'Agreement Signed (Y/N)',
+    LK_QINGSHURUGUANBIYUANYIN: 'Please enter closing reason',
+    LK_DINGDIANSHIJIANQIZHI_1: 'Nomi. Period',
+    LK_SHIFOUXIANSHIZIJI_1: 'Filter by Me',
+    LK_LINIEQUEREN: 'LINIE Conformation',
+    LK_LINIETUIHUI: 'LINIE Returned',
+    LK_GUANBILOI: 'Close LOI',
+    LK_LETTER_JIHUO: 'Activate',
+    DINGDIANXIN: 'NL',
+    LK_SVWHAO: 'SVW No.',
+    LK_DINGDIANXINLOI_TITLE: 'NL',
+    LK_DINGDIANXINLOI_LOI: 'LOI',
+    QINGITANXIE: 'Please enter',
+    LINGJIANCAIGOUXIANGMULEIX: 'Part Proj. Type',
+    DAYINGZHUANGTAI: 'Printing Status',
+    LINGJIANMINGCZH: 'Part Name (CN)',
+    FSNRGSNR: 'FSNR/GSNR',
+    LIUCHENGLEIX: 'Process Type',
+    HUIYILEIXING: 'Meeting Type',
+    XIAZAIPILIANGMOBAN: 'Download Batch Template',
+    SHANGCHUANWENJIANYICIX: 'Upload File (one-time)',
+    SHANGCHUANWENJJIANPILIANG: 'Upload File (series)',
+    DAYINGDINGDANLIUZHUANDAN: 'Print Nomi. Circulation Sheet (one-time)',
+    DAYINGDINGDANLIUZDPILIANG: 'Print Nomi. Circulation Sheet (series)',
+    GANGCAIPROJECT: 'Project',
+    GANGCAICHUANGJIAN: 'Steel App. Mgmt.',
+    XIXANSHIZIJI: 'Filter by Me',
+    SHIFOUYOUXUNJIAKESHI: 'Sourcing Dept. (Y/N)',
+    XUQIUFASONGQIZHIRIQI: 'Demand Sending Period',
+    NIANXUQIULIANG: 'Annual Demend',
+    XUJIAKESHI: 'Sourcing Dept.',
+    XUJIACAIGOUYUAN: 'Sourcing Buyer',
+    PEIJIANLINGJIANDEWENMING: 'Spare Part Name (DE)',
+    GONGYINGSHANGLINGSHIHAO: 'Temp. Supplier No.',
+    SHOUHOUJISHURENYUANMINGCHENG: 'After-sale Technician',
+    QINGXUANZEYOUBUMENDEPEIJIAN:
+      'Please select spare part with related department',
+    IDZHUANGTAI: 'ID Status',
+    PEIJIANZONGHECHAXUN: 'Spare Part Comp. Query',
+    XIAZAIBAOBIAO: 'Download Post',
+    SHIFOUZIJI: 'Filter by Me',
+    PEIJIANLINGJIANMINGCHENG: 'Spare Part Name',
+    XUQIUQIANSHOURIQI: 'Demand Signed Date',
+    JIAGELEIXING: 'Price Type',
+    QINGXUANZELINIE: 'Please Select LINIE',
+    QINGXUANZEPEIJIAN: 'Please select spare part',
+    LK_QINGXUANZEWEIFENPEIRFQDEPEIJIAN:
+      'Please select spare part without assigned RFQ',
+    GONGYINGSHANGHAO: 'Supplier No.',
+    FENPEILINIE: 'Assign Linie',
+    QINGXUANZEXUNJIACAIGOUKESHI: 'Please select sourcing department',
+    QINGXUANZELINIEKESHI: 'Please select linie department',
+    FENPEILinie: 'Assign linie',
+    QINGXUANZEYIFENPEIXUNJIAKESHIHEXUNJIACAIGOUYUANDEPEIJIAN:
+      'Please select spare part with assigned sourcing department and sourcing buyer',
+    LINIEFENPEIZHUANGTAI: '',
+    SHIYONGCHEXING: 'Model',
+    FUJIANSHANGSHISHIJIAN: 'Time to Market',
+    PEIJIANXUHAO: 'Spare Part No.',
+    FUJIANZONGHECHAXUN: 'Acc. Comp. Query',
+    FENPEILINIECSS: 'Assign LINIE/CSS',
+    FUJIANLINGJIANHAO: 'Spare Part No.',
+    DAORUXIANGCI: 'Import Item',
+    CSFKESHI: 'CSF Dept.',
+    DIYINIANXUQIULIANG: 'SOP+1 Demand',
+    DIERNIANXUQIULIANG: 'SOP+2 Demand',
+    DISANNIANXUQIULIANG: 'SOP+3 Demand',
+    DISINIANXUQIULIANG: 'SOP+4 Demand',
+    DIWUNIANXUQIULIANG: 'SOP+5 Demand',
+    DILIUNIANXUQIULIANG: 'SOP+6 Demand',
+    DIQINIANXUQIULIANG: 'SOP+7 Demand',
+    DIBANIANXUQIULIANG: ' SOP+8 Demand',
+    DIJIUNIANXUQIULIANG: 'SOP+9 Demand',
+    DISHINIANXUQIULIANG: 'SOP+10 Demand',
+    JIANYICAIGOUJIA_BUHANSHUI: 'Suggested Proc. Price (excl.Tax)',
+    JIANYIXIAOSHOUJIA_BUHANSHUI: 'Suggested Retail Price (excl.Tax)',
+    SHICHANGLINGSHOUJIA_BUHANSHUI: 'Market Price (excl.Tax)',
+    FUJIANKEZHUGUANREN: 'Acc. Controller',
+    TUIHUIYUANYIN_JINGUZHANGKEJIAN: 'Return Reason',
+    FUJIAN: 'Acc.',
+    QINGXUANZEFUJIAN: 'Please select accessory',
+    QINGXUANZEWEIFENPEILINIEDEFUJIAN:
+      'Please select accessory without assigned LINIE',
+    RFQBANHAO: 'RFQ No.',
+    ZANWUNEIRONG: 'No Data',
+    QINGSHURUTUIHUIYUANYIN: '',
+    LK_XINJIANXINXIDANLIUSHUIHAO: 'Info. Sheet No.',
+    BMG: 'BMG',
+    LK_BILI: 'Ratio (%)',
+    GANGCAIXUQIUCHUANGJIAN: 'Steel App. Mgmt.',
+    'partsignLanguage.LingJianHao': 'Part No.',
+    'partsignLanguage.LingJianMingChengZH': 'Part Name (CN)',
+    'partsignLanguage.SheJiKeShi': 'Engineering Dept.',
+    'partsignLanguage.QianShou': 'Sign-in',
+    'partsignLanguage.TuiHui': 'Return',
+    'partsignLanguage.ZhuanPai': 'Transfer',
+    LK_CAIGOUYUANNEW: 'Sourcing Buyer',
+    LK_QINGTIANXIEXUNJIACAIGOUYUAN: 'Please enter souring buyer',
+    显示: '',
+    条记录: '',
+    XUQIUGUANLI: 'Demand Mgmt.',
+    CAIGOUXIANGMU: 'Proc. Project',
+    RFQGUANLI: 'RFQ Mgmt.',
+    DINGDIANGUANLI: 'Nomi. Mgmt.',
+    DINGDIANXINLOI: 'NL/LOI',
+    PILIANGJIANQIANSHOU: '',
+    GANGCAIDAORU: '',
+    QINGXUANZEWEIFENPEICAIGOUYUANDEPEIJIAN:
+      'Please select spare part without assigned buyer',
+    GAIGONGYINGSHANGBUZAIGONGYIZUBDLNEI:
+      'The Suppler does not belong to process group BDL, please check with EPS',
+    QINGXUANZEYIFENPEILINIEKESHIHELINIEDEPEIJIAN:
+      'Please select spare part with assigned linie department and linie',
+    QINGXUANZEYIFENPEILINIEDEFUJIAN:
+      'Please select accessory with assigned LINIE',
+    WUNEIRONG: 'No Data',
+    FUJIANLINGJIANBIANHAO: 'Acc. No.',
+    RFQMIAOSHU: 'RFQ Desc.',
+    RFQCHUANGJIANRIQI: 'RFQ Creation Date',
+    XUNJIACAIGOUYUANFUZEREN: 'Sourcing Buyer Owner',
+    PILIANGGENGXINCAIGOUGONGCHANG: 'Batch Update Purchasing Factory',
+    TIANJIAPEIJIAN: 'Add Spare Part',
+    TIANJIAFUJIAN: 'Add Acc.',
+    CHANNENGJIHUA: 'Production Plan',
+    CHANLIANG_PC: 'Capacity (Pc)',
+    NIAN_YUE: 'Year/Month',
+    QINGXUANZEXIANGTONGLINIEDEFUJIAN:
+      'Please select spare parts with the same assigned LINIE',
+    QINGXUANZEXIANGTONGLINIEKESHIHELINIEDEPEIJIAN:
+      'Please select spare parts with the same assigned LINIE department and LINIE',
+    QINGXUANZEXIANGTONGXUNJIAKESHIHEXUNJIACAIGOUYUANDEPEIJIAN:
+      'Please select spare parts with the same assigned souring department and sourcing buyer',
+    QINGXUANZEXIANGTONGGONGYINGSHANGDEPEIJIAN:
+      'Please select spare parts under one supplier',
+    LINGJIANMINGZHONG: 'Part Name (CN)',
+    QINGSHURULINGJIANMINGZHONG: 'Please enter part name (CN)',
+    LINGJIANMINGDE: 'Part Name (DE)',
+    QINGSHURULINGJIANMINGDE: 'Please enter part name (DE)',
+    QINGXUANZELINGJIANZHUANGTAI: 'Please select part Status',
+    LINGJIANLAIYUAN: 'Part Source',
+    QINGXUANZELINGJIANLAIYUAN: 'Please select part source',
+    JIHUOSHIJIAN: 'Activation Time',
+    CAOZUORIZHI: 'Log',
+    GONGCHANGQIANYI: 'Factory Migration',
+    QINGXUANZEZHISHAOYITIAOSHUJU: 'Please select at least one data',
+    条到第: '',
+    共: '',
+    LINGJIANLEIX: 'Part Type',
+    LK_DINGDIANRIQI: 'Nomi.Date',
+    DUNLOADTEMPATE: 'Download Template',
+    UPLOADFILE: 'Upload File',
+    SHENGQINGDANMING: 'App. Sheet Name',
+    PROJECTNAME: 'PROJECT',
+    XIANGMULEIX: 'Proj. Type',
+    XUNGJIACAIGOUYUAN: 'Sourcing Buyer',
+    RSDANZHUANGTAI: 'RS Sheet Status',
+    RFDONGJIERIQI: 'Frozen Date',
+    BAOJIAYIZHIXINGJIANYANZHANGTAI: 'Quote Consistency Status Check Status',
+    BIDDING_XIANGMUCHAXUE: 'Proj. Query',
+    PEIJIANBIANHAO: 'Spare Part No.',
+    PEIJIANLINGJIANMING_ZH: 'Spare Part Name (CN)',
+    PEIJIANLINGJIANMING_DE: 'Spare Part Name (DE)',
+    GONGYINGSHANGMINGLINSHIHAO: 'Supplier Temp. No.',
+    XUQIUHUIFURIQI: 'Demand Resumed Date',
+    UUID: 'UUID',
+    SHOUHOUJISHURENYUANGONGHAO: 'After-sale Technician Empl. No.',
+    LIYOU: 'Reason',
+    BEIZHUSHUOMING: 'Remark',
+    LK_SHOUHOUJISHURENYUANMING: 'After-sale Technician',
+    JISHUXUNJIAZILIAO: 'Tech. Inquiry Data',
+    BAOZHUANGXUNJIAZILIAO: 'Pkg. Inquiry Data',
+    SHIFOUSHENHE: 'Audited (Y/N)',
+    LK_AEKO_QINGTIANXIEWANZHENGHOUTIJIAO: 'Please complete and submit',
+    QUALITYSCORERULES_PINGFENGU: '',
+    UALITYSCORERULES_PINGFENREN: '',
+    QUALITYSCORERULES_TIANJIAGUIZE: '',
+    LK_LINGJIANHAODISIWEI: '',
+    LK_SOCRE_YUSHEPINGFENGU: '',
+    LK_SOCRE_YUSHEPINGFENREN: '',
+    零件号第4位: '',
+    LK_RUGUOMANZUYIXIATIAOJIAN: '',
+    LK_ZEYUSHEPINGFENWEI: '',
+    LK_QINGQUERENSHIFOUSHANCHU: '',
+    PINGFENBUMENSHEZHI: 'Rating Dept. Setting',
+    ZHILIANGPINGFENYUSHEGUIZE: '',
+    CONFIGSCOREDEPT_PINGFENLEIXING: '',
+    CONFIGSCOREDEPT_PINGFENGU: '',
+    CONFIGSCOREDEPT_PINGFENREN: '',
+    CONFIGSCOREDEPT_XIUGAISHIJIAN: '',
+    HUIFU: 'Resume',
+    XINZENGHANG: 'New Row',
+    SHANCHUHANG: 'Delete Row',
+    CONFIGSCOREDEPT_QINGXUANZEBUMENPINGFENLEIXING: '',
+    CONFIGSCOREDEPT_SUOSHUBUMENHUOZHEKESHI: '',
+    CONFIGSCOREDEPT_SHIFOUXUYAOSHENPI: '',
+    CONFIGSCOREDEPT_XIETIAOREN: '',
+    CONFIGSCOREDEPT_DINGDIANSHENPIREN: '',
+    CONFIGSCOREDEPT_QINGJINGOUXUANYITIAOSHUJUHOUBIANJI: '',
+    CONFIGSCOREDEPT_SHANGHUIFUHESHENPIREN: '',
+    CONFIGSCOREDEPT_HUIWAILIUZHUANDINGDIANSHENPIREN: '',
+    CONFIGSCOREDEPT_DIALOG_PINGFENLEIXING: '',
+    CONFIGSCOREDEPT_DIALOG_PINGFENGU: '',
+    CONFIGSCOREDEPT_DIALOG_SUOSHUBUMENHUOZHEKESHI: '',
+    CONFIGSCOREDEPT_DIALOG_PINGFENREN: '',
+    CONFIGSCOREDEPT_DIALOG_SHIFOUXUYAOSHENPI: '',
+    CONFIGSCOREDEPT_DIALOG_XIETIAOREN: '',
+    CONFIGSCOREDEPT_DIALOG_SHANGHUIFUHESHENPIREN: '',
+    CONFIGSCOREDEPT_DIALOG_HUIWAILIUZHUANDINGDIANSHENPIREN: '',
+    LK_ZHAOPIANCHAKAN: 'Photo',
+    LK_ZICHANDAN: 'Asset Price',
+    任务接收日期: 'Task Received Date',
+    任务处理日期: 'Task Process Date',
+    BM单流水号: 'BM Sheet No.',
+    变更后金额: 'Updated Amount',
+    变更单状态: 'Alteration Sheet Status',
+    LK_QINGSHURUTUIHUIYUANYIN: 'Please enter return reason',
+    LK_SAPDINGDANHAO: 'SAP PO No.',
+    LK_RUZHANGDANHAO: 'Bill No.',
+    LK_GONGYINGSHANG: 'Supplier ',
+    LK_TOUZIQINGDANLAIYUAN: 'Inv. List Source',
+    LK_LAIYUANBIANHAO: 'Source Code',
+    LK_SHIFOUHIL: 'HIL (Y/N)',
+    LK_RUZHANGRIQI: 'Billing date',
+    LK_DINGDANHAO: 'Order No.',
+    LK_TOUZIZONGJINE: 'Total Inv. Amount',
+    LK_BIANGENDANJIALIEBIAO: 'Alteration List',
+    LK_DUIBUQIMEIYOUQUANXIAN2: "Sorry, you don't have permission",
+    LK_QINGSHURUGONGYINGSHANG: '',
+    LK_LINLE: 'Linie',
+    LK_QINGSHURUGONGYINGSHANGHUOBIANHAO: '',
+    'MODEL-ORDER.LK_RISEDINGDANHAO': 'RiSE PO No.',
+    'MODEL-ORDER.LK_DINGDANZHUANGTAI': 'PO status',
+    'MODEL-ORDER.LK_GONGYINSHANG': 'Supplier',
+    'MODEL-ORDER.LK_CAIGOUZUCAIGOUYUAN': 'Commodity-Linie',
+    'MODEL-ORDER.LK_SAPFASONGZHUANGTAI': 'SAP Sending Status',
+    'MODEL-ORDER.LK_HETONGZHUANGTAI': 'Contract Type',
+    'MODEL-ORDER.LK_DINGDANRIQI': 'PO Date',
+    'TPZS.GONGYINGSHANG': 'Supplier',
+    BM单类型: 'BM Sheet Type',
+    模具投资金额: 'Tooling Inv. Amount',
+    代表零件号: 'Represent Part No.',
+    LK_MUJUTOUZIQINGDANBIANGENGXIANGQING: 'Tooling Inv. List Alteration Detail',
+    LK_BIANGENGHOUJINE: 'Updated Amount',
+    LK_BIANGENGDANZHUANGTAI: 'Alteration Sheet Status',
+    LK_TIJIAOSHENPI: 'Submit for Approval',
+    LK_TUICHUBIANJI: 'Quit Edit',
+    LK_YULANBIANGENGDAN: 'Alteration Sheet Preview',
+    LK_XINZENGBIANGENG: 'Create Alteration',
+    LK_CAIGOUYUANQUEREN: 'Buyer Confirmation',
+    模具ID: 'Tooling ID',
+    固资名称: 'Fix Asset',
+    工艺类型: 'Process Type',
+    工模具种类: 'Tooling Type',
+    资产分类编号: 'Asset Code',
+    零件总成名称: 'Assy. Part Name',
+    总成零件号: 'Assembly part number',
+    共享零件号: 'Shared Part',
+    FS号: 'FS No.',
+    零部件名称: 'Part Name',
+    零件号: 'Part No.',
+    数量: 'Quantity',
+    资产单价: 'Asset Price',
+    资产总额: 'Total Asset',
+    照片: 'Photo',
+    固资编号: 'Fix Asset Code',
+    模具制造商: 'Tooling Manufacture',
+    资产单: 'Asset List',
+    车型项目: 'Car Project',
+    供应商: 'Supplier',
+    零件采购项目类型: 'Part Proj. Type',
+    定点申请单号: 'Nomi. App. Sheet',
+    Linie: 'Linie',
+    模具投资清单状态: 'Tooling Inv. List Status',
+    文件名称: 'File Name',
+    上传日期: 'Upload Time',
+    上传人: 'Uploader',
+    变更单号: 'Alteration Sheet',
+    BM单号: 'BN Sheet No.',
+    业务处理状态: 'Business Processing Status',
+    LK_CHUYUBIANGENGLIUCHENGZHONG:
+      'Do not initiate changes repeatedly when you are in the change process',
+    GAILAN: 'Overview',
+    SUANFAPEIZHI: 'Algorithm config.',
+    XIANGMUCAIGOUYUAN: 'Project Buyer',
+    BF: 'BF',
+    '1st Tryout': '1st Tryout',
+    'EM(OTS)': 'EM(OTS)',
+    QINGGOUXUANXUYAOBAOCUNDESHUJU: 'Please select data to save',
+    GOUXUANCHANPINZUDOUYIFASONGJINDUQUERENRENWU:
+      'Selected product groups have sent progress confirmation tasks. To view progress confirmation tasks, go to the progress confirmation summary page',
+    LINGJIAN: 'Part',
+    QUERENZHUANGTAI: 'Conformation Status',
+    JINDUQUEREN: 'Progress Conformation',
+    QINGXUANZEXUYAOTUIHUIDESHUJU: 'Please select data to return',
+    QINGXUANZEXUYAOZHUANPAIDESHUJU: 'Please select data to transfer',
+    QINGXUANZEXUYAOQUERENBINGFASONGDESHUJU:
+      'Please select data to confirm and send',
+    MORENSUANFAPEIZHI: 'Default scheduling algorithm config.',
+    DAIDINGDIAN: 'To-be Nomi.',
+    CAILIAOZUBIANHAO: 'Material Group No.',
+    BFSHIFOUYANWU: 'Is BF Delayed',
+    EP: 'EP',
+    LIUWEIHAO: '6-digit No.',
+    BUNENGWEIKONG: 'Cannot be blank',
+    QINGXUANZEXUYAODAOCHUDESHUJU: 'Please select data to export',
+    NIANFEN: 'Year',
+    CAILIAOZU: 'Material Group',
+    CHANGZHOUQICHANPINZUPAICHENGSUANFAPEIZHI:
+      'Long cycle product group scheduling algorithm config.',
+    CHANGZHOUQIDUANFAPEIZHI:
+      'Long cycle product group scheduling algorithm config.',
+    CHULIZHUANGTAI: 'Processing Status',
+    home: 'Project Progress Monitor',
+    partstask: 'Part Task List',
+    CHANLIANG: 'Capacity',
+    CAOZUO: 'Action',
+    BAOCUNSHIJIAN: 'Save Time',
+    CAOZUOZHEDONGZUO: 'Operator Action',
+    PAICHENGWEIDU: 'Scheduled by',
+    BANBENMINGCHENG: 'Version Name',
+    LK_XAIZAI: 'Download',
+    LK_YANSE: 'Color',
+    YANWYSHIJIANZHOU: 'Delay Duration (week)',
+    PEIZHIBUHEFAXIUGCHONGSHI:
+      'The configuration is invalid. Please modify it and try again',
+    LK_ZHENGCHANG: 'Normal',
+    LK_FENGXIAN: 'Risk',
+    LK_YANWU: 'Delay',
+    UNCHANGEDCONFIGWARNING:
+      'The configuration is not changed and does not need to be saved',
+    RISKCONFIGNOTICE:
+      'Exp. :"()"means that the date is excluded, "[]"means that the date is included ',
+    FENGXIANLEIXING: '',
+    LK_DIFENGXIAN: '',
+    LK_WUZHENGCHANG: '',
+    LK_GAOFENGXIAN: '',
+    PAICHENGZHUSHOU: 'Scheduling Assistant',
+    CHANPINZUPAICHENG: 'Product group scheduling',
+    LINGJIANPAICHENG: 'Parts Scheduling',
+    JINDUQUERENHUIZONG: 'Schedule Confirmation Summary',
+    PAICHENGBANBENCHAXUN: 'Scheduling Version Search',
+    LISHIJINDUSHUJUKU: 'Historical progress database',
+    MORENPAICHENGSUANFAPEIZHI: 'Algorithm config.',
+    QUZHICHULI: 'Evaluation',
+    JISUANFANGSHI: 'Calc. Method',
+    CHANPINZU: 'Product Group',
+    YINGYONGPEIZHI: 'Apply Config.',
+    XUANZECHANPINZU: 'Select Product Group',
+    WEIXUANZECHANPINZU: 'Product Group Not Selected ',
+    YIXUANZECHANPINZU: 'Product Group Selected ',
+    QIEHUANJIEDIANSHITU: 'Switch to Node View',
+    FASONGFSQUEREN: 'Send FS Confirmation',
+    DAOCHUFASONGPVPKQINGDAN: 'Export and Send PV/PK List',
+    DANWEIZHOU: 'Unit: week',
+    CHANGZHOUQICHANPINZUJINDUQUEREN:
+      'Long-cycle product group progress confirmation',
+    BF1STTRYOUTZHOU: 'BF-1st tryout (Week)',
+    QUERENSHICHANGJIEZHIRIQI: 'Deadline for confirmation',
+    '0SMUBIAO': '0S Target',
+    SHIFANG: 'Release',
+    JINGYANCHANGZHI: 'Experience Constant',
+    LISHICANKAOZHI: 'Historical Ref. Values',
+    QIEHUANZHOUQISHITU: 'Switch to Period View',
+    QINGXUANZECHANPINZU: 'Please choose',
+    QINGGOUXUANXUYAOFASONGDESHUJU: 'Please select data to send',
+    QUANXUAN: 'Select all',
+    XIANGMUJINDUJIANKONG: 'Project Progress Monitor',
+    XIANGMUJINDUBAOGAO: 'Project Progress Report',
+    FENGXIANYUJINGPEIZHI: 'Risk Prewarning Config.',
+    SHUJUDONJIE1STTRYOUTZHOU: '',
+    '1TOMUBIAO': '',
+    EMOTSMUBIAO: '',
+    '1STTRYOUTEMZHOU': '1st tryout-EM (Week)',
+    '1STTRYOUTOTSZHOU': '1st tryout-OTS (Week)',
+    CHANPINZUJINDUQUERENHUIZONG: 'Product group progress confirmation summary',
+    QUERENJIEZHIRIQI: 'Conformation DDL',
+    QUERENSHIJIAN: 'Conformation Time',
+    KICKOFFSOLL2: 'Kickoff soll2',
+    '1STTRYOUTPROGNOSE': '1st tryout prognose',
+    OTSPROGNOSE: 'OTS prognose',
+    EMPROGNOSE: 'EM prognose',
+    YUJIYINGXIANGZHOUSHU: 'Est. Impact Week ',
+    KICKOFFSOLL1: 'Kickoff soll1',
+    FENGXIANLINGJIANJINDUQUERENDAIDINGDIAN:
+      'Risk Progress Conformation-To-be Nomi.',
+    FENGXIANLINGJIANJINDUQUERENDAIKICKOFF:
+      'Risk Progress Conformation-To-be Kickoff',
+    SHUJUDONGJIE1STTRYOUTZHOU: '',
+    QUERENBINGFASONG: 'Confirm and Send',
+    QINGXUANZEZHUANPAIREN: 'Please select person to transfer',
+    VFFMUBIAO: 'VFF Target',
+    PVSMUBIAO: 'PVS Target',
+    SHENGCHENGPAICHENGBANBEN: 'Generate Scheduling Version',
+    DAOCHUPAICHENGQINGDAN: 'Export Scheduling List',
+    XUNJIACAIGOUYUANBUNENGWEIKONG: 'Sourcing Buyer cannot be blank',
+    FENGXIANYUJINGLINGJIAN: 'Risk Prewarning Part',
+    WEISHIFANGLINGJIAN: 'Unreleased Part',
+    WEIBFLINGJIAN: 'Un-BF Part',
+    ZP5LINGJIANZHENGXUPAICHENGCONGDINGIDIANJIEDIANKAISHI:
+      'ZP5 Part, Schedule starting from nomination time',
+    MEIYOUXUYAODAOCHUDESHUJU: 'There is no data to export',
+    SHUJUDAIDONGJIELINGJIAN: 'Data to be frozen',
+    TIAOZHUANLISHIJINDUSHUJUKU: 'To Historical Progress Database',
+    LINGJIANCAIGOUXIANGMULEIXING: 'Part Proj. Type',
+    CHANPINZUZHONGWENMINGCHENG: 'Product group name in Chinese',
+    CHANPINZUDEWENMINGCHENG: 'Product group name in German',
+    CHEXINGXIANGMULEIXING: 'Proj.Type',
+    CHAKANWEIDU: 'View by',
+    SHURUCHANPINZUSOUSUO: 'Please enter product group for query',
+    SHURULINGJIANHAOSOUSUO: 'Please enter part no. for query ',
+    SHURUCAILIAOZUSOUSUO: 'Please enter',
+    NIHEJINDU: 'Fitting Progress',
+    PEIZHIXIANSHIZIDUAN: 'Configure display fields',
+    PIPEILINGJIANHAOLISHIJINDU: 'Matching part number history progress',
+    SHIFANGDINGDIANZHOU: 'Release-Nomi.(Week)',
+    DINGDIANBFZHOU: 'Nomi.-BF(Week)',
+    BFFIRSTTRYOUTZHOU: 'BF-1st Tryout(Week)',
+    FIRSTTRYOUTOTSZHOU: '1st Tryout-OTS(Week)',
+    FIRSTTRYOUTEMZHOU: '1st Tryout-EM(Week)',
+    DAIBIAOLIUWEIHAO: '6-digit No.',
+    CHANPINZUBIANHAO: 'Product group number',
+    CAILIAOZUMINGCHENG: 'Material Group Name',
+    CHEXINGXIANGMUSOPNIANFEN: 'Proj. SOP Year',
+    LINGJIANSHIFANGSHIJIAN: 'Parts release date',
+    SHIFANGSHIFOUYANWU: 'Is release delayed',
+    DINGDIANSOLL1: 'Nomi. soll1',
+    DINGDIANSOLL2: 'Nomi. soll2',
+    DINGDIANIST: 'Nomi. ist',
+    DINGDIANSHIFOUYANWU: 'Is Nomi Delayed',
+    DINGDIANYANWUYUANYIN: 'Nomi. Delay Reason ',
+    BFSOLL1: 'BF soll1',
+    BFSOLL2: 'BF soll2',
+    BFIST: 'BF ist',
+    BFYANWUYUANYIN: 'BF Delay Reason ',
+    '1STTRYOUTSOLL1': '1st tryout soll1',
+    '1STTRYOUTSOLL2': '1st tryout soll2',
+    '1STTRYOUTIST': '1st tryout ist',
+    '1STTRYOUTSHIFOUYANWU': 'Is 1st Tryout Delayed',
+    '1STTRYOUTYANWUYUANYIN': '1st Tryout Delayed Reason',
+    EMSOLL1: 'EM soll1',
+    EMSOLL2: 'EM soll2',
+    EMIST: 'EM ist',
+    EMSHIFOUYANWU: 'Is EM Delayed',
+    EMYANWUYUANYIN: 'Delayed Reason',
+    OTSSOLL1: 'OTS soll1',
+    OTSSOLL2: 'OTS soll2',
+    OTSIST: 'OTS ist',
+    OTSSHIFOUYANWU: 'Is OTS Delayed',
+    OTSYANWUYUANYIN: 'OTS Delayed Reason',
+    Q1SOLL1: 'Q1 soll1',
+    Q2SOLL2: 'Q1 soll2',
+    Q1IST: 'Q1 ist',
+    Q1SHIFOUYANWU: 'Is Q1 Delayed',
+    Q1YANWUYUANYIN: 'Q1 Delayed Reason',
+    Q3SOLL1: 'Q3 soll1',
+    Q3SOLL2: 'Q3 soll2',
+    Q3IST: 'Q3 ist',
+    Q3SHIFOUYANWU: 'Is Q3 Delay',
+    Q3YANWUYUANYIN: 'Q3 Delayed Reason',
+    BMGSOLL1: 'BMG soll1',
+    BMGSOLL2: 'BMG soll2',
+    BMGIST: 'BMG ist',
+    BMGSHIFOUYANWU: 'Is BMG Delayed',
+    BMGYANWUYUANYIN: 'BMG Delayed Reason',
+    LINGJIANKICKOFFSHIJIAN: 'Part Kickoff Time',
+    SHIFOUSEL: 'SEL (Y/N)',
+    SOURCINGLEIXING: 'Sourcing Type',
+    YUANFSHAO: 'Prev. FS No.',
+    YUANLINGJIANSHIFANGIST: 'Prev. Part Release ist',
+    YUANLINGJAINDINGDIANIST: 'Prev. Part Nomi.ist',
+    YUANLINGJIANBFIST: 'Prev. Part BF ist',
+    YUANLINGJIANKICKOFFIST: 'Prev. Part Kickoff ist',
+    YUANLINGJIANOTSIST: 'Prev. Part OST ist',
+    YUANLINGJIANEMIST: 'Prev. Part EM ist',
+    SHURULIUWEIHAOSOUSUO: 'please enter 6-digit no. for query',
+    LK_CHANPINZU: 'Product group',
+    HUICHUANJINDU: 'Backhaul progress',
+    QINGXUANZEXUYAOHUICHUANDESHUJU: 'Please select data for backhaul',
+    ZHINENGXUANZEYITIAOSHUJUJINXINGHUICHUAN:
+      'Only one data can be selected for backhaul at a time',
+    DINGDIANSHUJUDONGJIEZHOU: '',
+    SHUJUDONGJIEFIRSTTRYOUTZHOU: '',
+    SHUJUDONGJIESOLL1: '',
+    SHUJUDONGJIESOLL2: '',
+    SHUJUDONGJIEIST: '',
+    SHUJUDONGJIEYANWUYUANYIN: '',
+    YUANLINGJIANSHUJUDONGJIEIST: '',
+    YINGYONGMORENPEIZHI: 'Apply default config.',
+    LINGJIANSUANFAPEIZHI: 'Part Algorithm Config.',
+    LKCHANGZHOUQICHANPINZUPAICHENGSUANFAPEIZHI:
+      'Long cycle product group scheduling algorithm config.',
+    LKJISUANFANGSHI: 'Calc. Method',
+    LINGJIANJINDUBAOGAO: 'Part Progress Report',
+    CAILIAOCHENGBENBAOGAO: 'Material Cost Report',
+    XIANGMUGUANLIJIXIAOFENXI: 'Proj. Mgmt. Performance Analysis',
+    DAOCHUBAOGAO: 'Export Report',
+    FGZU: 'FG Group',
+    PILIANGXIUGAIZHUANGTAI: 'Batch Status Modification',
+    DAOCHUDEIEPQUERENQINGDAN: 'Export EP To-be Confirmed List',
+    DAOCHUDEIMQQUERENQINGDAN: 'Export MQ To-be Confirmed List',
+    TIPSLINGJIANHAO: 'TIPS Part No.',
+    'LINGJIANMINGCHENG-CN': 'Part Name (CN)',
+    'LINGJIANMINGCHENG-DE': 'Part Name (DE)',
+    RISELINGJIANFENLEIMIAOSHU: 'RiSE Part Matching Desc.',
+    LINGJIANFENLEI: 'Part Type',
+    LINGJIANFENLEIPARTPORTSTATUSEP:
+      'Part in [EP To-be Confirmed] type can only turn to [To-be Released] or [To-be Deleted] type ',
+    LINGJIANFENLEIPARTPORTSTATUSMQ:
+      'Part in [MQ To-be Confirmed] type can only turn to [Normal Part] or [To-be Deleted] type',
+    QINGXUANZHELINGJIANFENGLEI: 'Please select data with the same part type',
+    QINGXUANZHEPILIANGGENGXINGSHUJU: 'Please select data to batch maintain',
+    Back: 'back',
+    YICHANGYUANYING: 'Error Reason',
+    YICHANGDAIMA: 'Error Code',
+    QINGXUANZHELINGJIANJILUHOUPILIANGCAOZUO:
+      'Please select data record for batch operation',
+    QINGSHURUDUOGELINGJIANHAO:
+      'Please enter multiple part no., separated by commas',
+    XUANZHELINGJIANFENLEI: 'Please select part type',
+    LINGJIANRENWUQINGDANGENGXIN: 'Part Task List Update',
+    EPGONCHENGSHI: 'EP Engineer',
+    BAOCUNCHENGGONJINRUHOUXUJIANKONMOKUAI:
+      'Save successfully, [Normal Part] has entered monitor module',
+    DAOCHUQUANBU: 'Export All',
+    LINGJIANMINGCHEN_ZH: 'Part Name (CN)',
+    LINGJIANMINGCHEN_DE: 'Part Name (DE)',
+    WEIJINTIPSBIAOYISHIFANGLINGJIAN: 'Released Parts were not in TIPS Table',
+    CKDHTLINGJIAN: 'CKD/HT Part',
+    BEZUGBIAOQIAN: 'bezug Tag',
+    LK_PARTEPCRRSPONDING: 'Corresponding EP',
+    LINGJIANDUIYINGEP: 'Corresponding EP',
+    EMOTSYIWANCHENGLINGJIAN: 'EM&OTS Completed',
+    SEHJIKESHI: 'Engineering Dept.',
+    CHONGZHI: 'Reset',
+    QINGXUANZEXUYAOFASONGDESHUJU: 'Please select data to send',
+    FENGXIANDENGJI: 'Risk Lvl.',
+    MEIYOUFUHETIAOJIANDELINGJIAN: 'There are no parts eligible for dispatch',
+    BUFUHEFASONGTIAOJIANWUFAFASONG: 'Not eligible, cannot dispatch ',
+    XIANGMUJINDU: 'Proj. Progress',
+    LINGJIANJINDU: 'Part Progress',
+    JIHUASHIJIAN: 'Scheduling Time',
+    SHIJISHIJIAN: 'Actual Time',
+    CHAKANYANWUYUANYIN: 'View Delay Reason',
+    CHAKANPAICHENGJIHUA: 'View Scheduling Plan',
+    FASONGJINDUQUEREN: 'Send Progress Conformation',
+    DAOCHUQINGDAN: 'Export List',
+    RENWUTIAOZHENG: 'Task Adjust',
+    QINGXUANZEYUJINGDENGYANSE: 'Color',
+    QINGTIANXIEACTIONPLAN: 'Please complete Action Plan',
+    LVDENG: 'Green',
+    HUANGDENG: 'Yellow',
+    HONGDENG: 'Red',
+    YUJINGDENGYANSE: 'Color',
+    TIAOZHENGBEIZHU: 'Adjustment Remark',
+    QINGSHURUTIAOZHENGBEIZHU: 'Please enter adjustment remark',
+    FENGXIANDENGJITIAOZHENG: 'Risk Lvl. Adj.',
+    FENGXIANLINGJIANJINDUQUEREN: 'Risk Part Progress Confirmation',
+    ZONGJI: 'Total',
+    LKQINGXUANZEYUJINGDENGYANSE: 'Please select prewarning light color',
+    WUFENGXIANLVDENG: '',
+    DIFENGXIANHUANGDENG: '',
+    GAOFENGXIANHONGDENG: '',
+    LK_DAIDINGDIAN: 'To-be Nominated',
+    ZHENGTIRENWUJINDU: 'Task Progress',
+    CHEXINGZHUANGTAI: 'Model Status',
+    WEIJINTIPSBIAO: 'Not in TIPS Table',
+    DAIQUERENDECKDLINGJIAN: 'To-be Confirmed CKD Part',
+    DAIKICKOFF: 'To-be Kickoff',
+    XIANGMUFENGXIAN: 'Proj. Risk',
+    LINGJIANRENWUQINGDAN: 'Part Task List',
+    sureopentips: 'Are you sure to switch-on TIPS?',
+    sureclosetips: 'Are you sure to switch-off TIPS?',
+    TIPSBIAO: 'TIPS Table',
+    TIPSBIAOCONTENTDESC:
+      'This number indicates the count of part number of matching error with EM&OTS completion and CKD/HT part ',
+    TIPSBIAOZONGJI: 'Total',
+    NOCARPROJECTTYPEERROR: 'No Car Project was Obtained',
+    TIPSTONGBU: 'TIPS Sync',
+    CKDHTZSBLINGJIAN: 'EM&OTS Completed',
+    EMOTSYIWANCHENG: 'EM&OTS Completed',
+    CKDHTZSBLINGJIANEN: 'CKD/HT/ZSB Part',
+    PIPEIYICHANG: 'Matching Error',
+    DAISHIFANG: 'To-be Released',
+    SHUJUDAIDONGJIE: 'Data to-be frozen',
+    OTSDAIWANCHENG: 'OTS to-be finished ',
+    EMDAIWANCHENG: 'EM to-be finished ',
+    TRYOUTDAIWANCHENG: '1st Tryout to-be finished ',
+    XUNJIAZILIAOYISHIFANG: 'Inquiry Data Released ',
+    WEIJINTIPSBIAOXUNJIAZILIAOYISHIFANG: '',
+    'TPZS.CBGYCZSFFG': 'the Form/Report is existing, do you to overwrite it?',
+    CHEXINGXINAGMU: 'Car Project',
+    LINGJIANZHONGWENMINGCHENG: 'Part Name (CN)',
+    LINGJIANDEWENMINGCHENG: 'Part Name (DE)',
+    SHIFANGYANWUYUANYIN: 'Delay reason',
+    SHIFOUBMG: 'BMG (Y/N)',
+    FASONGSHIJIAN: 'Sending time',
+    YANWUYUANYINQUEREN: 'Delay Reason Conformation',
+    YANWUYUANYINHUIZONG: 'Delay Reason Summary',
+    FASONGYANWUYUANYINQUEREN: 'Send Delay Reason Conformation',
+    YUANJIHUASHIJIAN: 'Prev. Planned Time',
+    YIYANWUZHOUSHU: 'Delayed Weeks',
+    HUIFUJIEZHIRIQI: 'Reply DDL',
+    YANWUYUANYIN: 'Delay Reason',
+    XINJIAHUASHIJIAN: 'New Planned Time',
+    SHIJIHUIFURIQI: 'Actual Replied date',
+    HUIFUZHUANGTAI: 'Reply Status',
+    JIHUASHIJIANXIUGAI: 'Schedule modification',
+    ZAICIFASONG: 'Send Again',
+    FOP: 'FOP',
+    ZP: 'ZP',
+    FG: 'FG',
+    XIANGMUFENGXIANZHUANGTAI: '',
+    XUANZEXIANSHICHEXINGXIANGMU: 'Select to show Carlines',
+    SOPSHIJIAN: 'SOP Time',
+    TIAOZHUANPAICHENG: 'Scheduling',
+    TIAOZHUANJIANKONG: 'monitoring',
+    CHEXINGXIANGMUZHONGWENMINGCHENG: 'Carline Name',
+    LK_FENPEIKESHI: 'Assign Dept.',
+    SHENQINGLEIXING: 'App. Type',
+    QIANSHOUZHUANGTAI: 'Sign-in Status',
+    FENPAI: 'Assign',
+    XUANZEFENPEIDEFUZEREN: 'Select assigned owner',
+    MUBIAOJIA: 'Target Price',
+    RENWUZHUANGTAI: 'Task Status',
+    FANHUIRIQI: 'Return Date',
+    ZHIPAI: 'Assign',
+    SHENQINGMUBIAOJIA: 'App. Target Price',
+    SHENQINGBEIZHU: 'App. Remark',
+    BOHUIQUEREN: 'Reject Conformation',
+    XINSHENGQINGMUBIAOJIADELINGJIANQIWANGMUBIAOJIABUNENGWEIKONG:
+      'The expected target price of newly applied parts should not be blank',
+    XIUGAI: 'Modify',
+    '抱歉，用户名或密码不能为空！': '',
+    登录失败: '',
+    登录: '',
+    'BIDDING_XSHLD(AMC QJDY)': 'Display Light (Filter by ranking)',
+    'BIDDING_XSHLD(AMBJ PL BL DY)':
+      'Display Light (Filter by Target price deviation )',
+    CFLCBTARGET: 'CF LC_B Target',
+    CFLCATARGET: 'CF LC_A Target',
+    SKDBTARGET: 'SKD_B Target',
+    SKDATARGET: 'SKD_A Target',
+    CKDDUTY: 'CKD Duty(%)',
+    CKDEXWORK: 'CKD Ex-work',
+    BIANJI: 'Edit',
+    TUZHI: 'Drawing',
+    SHENPIJILU: 'Approval Records',
+    QINGXUANZEYITIAOJILU: 'Please select a record',
+    QINGXUANZHEXUYAOXIAZHAIDEFUJIAN: 'Please select attachment to download',
+    CF: 'CF',
+    ZHINENGXUANZEYITIAOJILU: 'Only one record can be selected at a time',
+    SHIFOUZANSHIZHIJI: 'Filter by Me',
+    MUBIAOJIALEIXING: 'Target Price Type',
+    CFSKDBTARGET: 'CF SKD_B Target',
+    CFCKDLANDED: 'CF CKD Landed',
+    CFCKDDUTY: 'CF CKD Duty(%)',
+    CFSKDATARGET: 'CF SKD_A Target',
+    CFCKDEXWORK: 'CF CKD Ex-work',
+    HUILV: 'Exch. Rate',
+    XIUGAILISHI: 'Modification History',
+    LINGJIANMINCHENG: 'Part Name',
+    SVWHAO: 'SVW No.',
+    LINSHIHAO: 'Temp. No.',
+    DINGDIANRIQIQIZHI: 'Nomi. Period',
+    LK_SKDHUOBI: 'SKD Currency',
+    LK_CKDHUOBI: 'CKD Currency',
+    LINGJIANMINGCHENG: 'Part Name',
+    财务目标价管理: '',
+    目标价维护: 'Target Price Maintenance',
+    目标价审批: 'Target Price Approval',
+    目标价查询: 'Target Price Query',
+    LCBIANHUA: 'LC Alteration',
+    SKDBIANHUA: 'SKD Alteration',
+    JUJUE: 'Reject',
+    LKCAIWUMUBIAOJIAGUANLI: '',
+    SHIFOUZHANSHIZIJI: 'Filter by Me',
+    'PLGLZS.QINGSHURU': 'Please Input',
+    nominationSupplier_GongYingShangLieBiao: 'Supplier List',
+    nominationSupplier_ChangShangMing: 'Supplier Name',
+    nominationSupplier_ChangShangMingEN: 'Supplier Name(EN)',
+    nominationSupplier_ShiFouZhanShi: 'Show or not ',
+    nominationSupplier_Edit: 'Edit',
+    nominationSupplier_Export: 'Export',
+    nominationSupplier_DanYiYuanYin: 'Single Sourcing Reason',
+    nominationSupplier_BuMen: 'Dept.',
+    nominationSupplier_GengXinShiJian: 'Update Time ',
+    nominationSupplier_JiaRuZhanShi: 'Add to Display',
+    nominationSupplier_QuXiaoZhanShi: 'Cancel Display',
+    nominationSupplier_BatchEdit: 'Batch Edit',
+    nominationLanguage_LingJianMingCN: 'Part Name(CN)  ',
+    nominationLanguage_LingJianMingDE: 'Part Name(DE)',
+    LK_DANYIGONGYINGSHANG: 'Single Supplier',
+    DANYIGONGYINGSHANG: 'Single Supplier',
+    LK_YES: 'Yes',
+    nominationSupplier_CaiGouGongChang: 'Purchasing Factory',
+    nominationSupplier_LingJianXiangMuLeiXing: 'Part Proj. Type',
+    nominationSupplier_CheXingDaLei: 'Carline',
+    nominationSupplier_CheXingXiangMu: 'Car Project',
+    nominationSupplier_LingJianZhuangTai: 'Part Status',
+    nominationSupplier_XunJiaCaiGouYuan: 'Sourcing Buyer',
+    nominationSupplier_CFMuBiaoJia: 'CF Target Price',
+    QINGXIANBAOCUNRFQXINXI: 'Please save RFQ data',
+    LK_NO: 'No',
+    'FS/GS/SP NO.': 'FS/GS/SP NO.',
+    DANYIGONGYINGSHANGXINXISHURUBUWANZHENG:
+      'Single supplier information is incomplete',
+    nominationSupplier_SAPHao: 'SAP No.',
+    RFQXINXI: '',
+    'nominationLanguage.LingJianHao': 'Part No.',
+    MUJUYUSUANGUANLI: 'Tooling Budget Mgmt.',
+    'nominationLanguage.LingJianMingCN': 'Part Name (CN)',
+    'nominationLanguage.LingJianMingDE': 'Part Name (DE)',
+    'nominationSupplier.GongYingShangMing': 'Supplier Name',
+    LK_BATCHEDIT: 'Batch Edit',
+    LK_COPY: 'Duplicate',
+    LK_DELETE: 'Delete',
+    nominationSuggestion_MoJuYuSuanGuanLi: 'Tooling Budget Mgmt.',
+    nominationSuggestion_ShuaXinShiJian: 'Refresh Time',
+    nominationSupplier_Reset: 'Reset',
+    nominationSupplier_Refresh: 'Refresh',
+    nominationSuggestion_FenZuMingChen: 'Group Name',
+    'nominationSupplier.CaiGouGongChang': 'Purchasing Factory',
+    'nominationSupplier.GongYingShangHao': 'Supplier No.',
+    'nominationSuggestion.BiLi': '',
+    nominationSuggestion_BiLi: 'Ratio',
+    nominationSupplier_GongYingShangMing: 'Supplier Name',
+    ZHENGTIZUIJIA: 'BOB',
+    FENZUZUIJIA: 'BOG',
+    DANYILINGJIANZUIJIA: 'BOP',
+    SHOUDONGFENPEI: 'Manually Assign',
+    nominationSuggestion_FanAnXuanZhe: 'Solution selection',
+    TUICHUBIANJI: 'Quit Edit',
+    BATCHEDIT: 'Batch Edit',
+    nominationSuggestion_YeWuFenPeiMoNi: 'Business Allocation Simulation',
+    submitSure: 'Are you sure to submit?',
+    nominationLanguage_DingDianIDNotNull: 'Nomi. App. Sheet ID Cannot be Blank',
+    FENPEIBILIBUHEFA: 'The quota is illegal',
+    exitEditSure:
+      'Your data is not saved. Are you sure you want to exit editing?',
+    TOUZIYUSUANRMB: 'Inv. Budget (RMB)',
+    CSFPFUZEREN: 'CSF Owner',
+    MOJUYUSUANGUANLI: 'Tooling Budget Mgmt.',
+    TIJIAO: 'Submit',
+    copyChosenSure: 'Are you sure to copy selected data?',
+    CHONGFUTIJIAO: 'Re-submit',
+    QINGZHISHAOXUANZELIANGXIANGZUHE: 'Please select at least two combinations',
+    'nominationLanguage.mtz': 'MTZ',
+    'nominationLanguage.ismtz': 'MTZ (Y/N)',
+    nominationSuggestion_DANGQIANDEDINGDIANSHENQINGDANYIJINGGUANLIANGUOMTZSHENQINGDAN:
+      'the nomination application sheet has already associated with MTZ application sheet',
+    nominationSuggestion_XUANZEDEDANGQIANDEDINGDIANSHENQINGZHUANGTAIBIXUZAISHENQINGDONGJIEZHUANGTAIZHIQIAN:
+      '',
+    LK_TIPS_YIXIALINGJIANCAIGOUXIANGMUDETUIJIANGONGYINGSHANGSHOUKONG: '',
+    LK_RSWEIHUDAN: 'RS Maintain',
+    RFQQINGDAN: 'RFQ List',
+    QINGSHURULINGJIANHAORFQLINIE:
+      'Please Input Part No./RFQ No./RFQ Name/LINIE',
+    XINZENG: 'Add',
+    FSGSSP: 'FS/GS/SP No.',
+    LINGJIANMING_ZH: 'Part Name(CN) ',
+    LINGJIANMING_DE: 'Part Name(DE) ',
+    CHEXINGDALEI: 'Carline',
+    LK_GAIDINGDIANSHENQINGZHONGYOUDANYIGONGYINGSHANG:
+      'Single Sourcing in this Nomi. App.',
+    'nominationLanguage.RFQANDLINGJIANQINGDAN': 'RFQ & Part List',
+    LINGJIANHAO: 'Part No.',
+    CFMUBIAOJIA: 'CF Target',
+    LK_DENGDAI: 'Pending',
+    SENDLOI: 'Send LOI',
+    TERORTOTER: 'To TER',
+    CSC: 'CSC',
+    PRECSC: 'PRECSC',
+    QINGXUANZEYAOSHANCHUDEHANG: 'Please select role data to delete',
+    NOMILINGJIANWEIKONGTIXING:
+      'The current part list does not check any parts, please check at least one part before operating!',
+    LK_HUIYIJIELUN: 'Meeting conclusion',
+    LK_CREATEMTZREQUEST: 'Create MTZ App.',
+    BINDMTZTIPS:
+      'This application form has been associated with the MTZ application. Click to view the detail of the MTZ application ',
+    CHUANGJIANMTZSHENQIGN: 'Create MTZ App.',
+    QUXIAOSHENQING: 'Cancel App.',
+    JIARUSHENQING: 'Add to App.',
+    SHIFOUJIARUSHENQING: 'Add to App. (Y/N)',
+    QINGXUANZEXUYAOQUXIAOCANYUDELINGJIAN: 'Please select parts to quit',
+    SUOXUAN: 'Selected',
+    FEIMTZLINGJIAN: 'Non-MTZ Part',
+    SHIFOUGENGXINWEIMTZBINGJIXUCHUANGJIANMTZSHENQING:
+      'Whether to update to MTZ, and continue to create MTZ applications',
+    BUKEJIARU: 'Cannot Join',
+    BENDINGDIANSHENQINGYIGUANLIANMTZSHENQINGDAN:
+      'An MTZ application cannot be created because an MTZ application has been associated with the specified application',
+    NOMILINGJIANWEIKONGJINXAIYIBUTIXINGOTHER:
+      'There is no part in the current part list, please add at least one part to the application before operation',
+    XUANZHONGDELINGJIANZHONGBUNENGHANYOUWEICANYUDELINGJIAN: '',
+    XUANZHONGDELINGJIANZHONGBUNENGHANYOUYICANYUDELINGJIAN: '',
+    XUANZHONGDELINGJIANZHONGBUNENGHANYOUYIQUXIAOCANYUDELINGJIAN: '',
+    NOMI_KAISHISHIJIAN: 'Starting Time',
+    NOMI_METTINGADDRESS: 'Meeting Location',
+    LK_NOTICE: 'Notification',
+    LK_JIXU: 'Continue',
+    RECORDLINIECAIGOUYUAN: 'LINIE Buyer',
+    LK_CAIGOUXIANGMULEIXING: 'Proc. Proj. Type',
+    DINGDIANSHENQINGMINGCHENG: 'Nomi. App. Name',
+    QINGSHURUDINGDIANSHENQINGDANMINGCHENG:
+      'Please enter nomination application name',
+    LK_JIJIA: 'Base',
+    LK_JIJIAJILIANGDANWEI: 'Base Measurement Unit',
+    LK_XINYOUXIAOQIQI: 'Valid from',
+    LK_XINYOUXIAOQIZHI: 'Valid to',
+    MEI: 'per',
+    LINGJIANSHULIANGDANWEI: 'Part Qty Unit',
+    YUANCAILIAO: 'Raw Material',
+    LINGJIANDINGDIANSHENQING: 'Part Nomi. App.',
+    GUIZEQINGDAN: 'Rule List',
+    LJQD: 'Part List',
+    XINJIANMTZDINGDIANSHENQING: 'MTZ Nomi. App.',
+    MTZDINGDIANSHENQING: 'MTZ Nomi. App.',
+    MTZGANGCAILIAOZU: 'MTZ-Material Group',
+    YUANCAILIAOBIANHAO: 'Raw Material No.',
+    ZHONGLEIMINGCHENG: 'Sub-Dividion',
+    MTZHUILV: 'Exch. Rate',
+    YONGLIANGJILIANGDANWEI: 'UoM',
+    QINGXUANZEHUIYILEIBIE: 'Please select meeting type',
+    LK_QINGXUANZEHUIYI: 'Please select meeting',
+    NOMILINGJIANWEIKONGJINXAIYIBUTIXING:
+      'The current part list does not check any parts, please check at least one part before operating!',
+    NINGQUEDINGYAOGENGGAIDINGDIANSHENQING:
+      'Are you sure to change nomination application type?',
+    QINGXUANZEHUIYIJIEGUO: 'Please select meeting conclusion',
+    WUQUANXIANCHAKAN: '',
+    'Background & Objective': 'Background & Objective',
+    strategicdoc_ShangChuanTuPian: 'Upload Image',
+    strategicdoc_JieSuBianJi: 'Quit Edit',
+    Tasks: 'Tasks',
+    strategicdoc_XinZengHang: 'Add Row',
+    strategicdoc_ShanChuHang: 'Delete Row',
+    saveSure: 'Are you sure to save?',
+    SHANGCHUAN: 'Upload',
+    PAIXU: 'Ranking',
+    Highlights: 'Highlights',
+    OVERVIEWS: 'Overviews',
+    KEYINITIATIVE: 'Key Initiatives',
+    WENJIANGUANLI: 'File Mgmt.',
+    ZHUYI: 'Caution',
+    WENJIANGUANLITIPS:
+      'After the file is uploaded, the page will not display the content of the BI tool, but the content of the uploaded file',
+    SHIFOUZHANSHI: 'Display (Y/N)',
+    QINGXUANZEXUYAOSHANCHUDEWENJIAN: 'Please select file to delete',
+    'SupplierNo.': ' Supplier No.',
+    SupplierName: 'Supplier Name',
+    singleReason: 'Reason',
+    Causedby: 'Caused by',
+    TIAOZHUANGONGYINGSHANGWEIHU: 'To Supplier Maintenance',
+    TOUZIHOUCHANNENG: 'Post Inv. Capacity',
+    LINSHICHUOSHICHANNENG: 'Temp. Measure Capacity',
+    SHANGHUIBEIZHU: 'Meeting Remark',
+    BUMEN: 'Dept.',
+    RIQI: 'Date',
+    XUNJIACAIGOUYUANSHANGHUIBEIZHU: 'Sourcing Buyer Remark ',
+    LINIESHANGHUIBEIZHU: 'LINIE Remark',
+    CS1SHANGHUIBEIZHU: 'CS*1 Remark',
+    FSNUMBER: 'FS No.',
+    GONGYINGSMINGC: 'Supplier Name',
+    GONGZHUANGYANGJIANZHUANGTAI: 'Tooling Sample Status',
+    DANJIANJIAGE: 'Unit Price',
+    YANGJIANMOKUJIAGE: 'Tooling Sample Price',
+    TOTALINVESTMENTVAT: 'Total Inv.(excl. VAT)',
+    TOTALINVESTMENTVATINFO:
+      'Amount less than a million for CS signing, amount more than a million for M signing',
+    DEVELOPINGPERIODINFO: 'Development Cycle has nothing to do with the system',
+    NINGHAIWEIXUANZESHUJU:
+      'You have not selected the list file, please select and try again!',
+    JINGLINGJIANAOCARD: 'Upload part no. alteration sheet only',
+    WENJIANMING: 'File Name',
+    SHANGCHUANFUJIJAN: 'Upload Attachments',
+    NINGHAIWEIXUANZESHUJUWENJIAN:
+      'You have not selected the list file, please select and try again!',
+    DAOCHUPDF: 'Export PDF',
+    DAOCHURSDAN: '',
+    PARTNO: 'Part No.',
+    PartName: 'Part Name',
+    FSNo: 'FS No',
+    LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN: 'To Part List Addition',
+    MTZ: 'MTZ',
+    MaterialGroup: '',
+    Factory: '',
+    SOP: '',
+    'EBR% (input)': '',
+    'Volume (lifetime)': '',
+    'Volume (p.a.)': '',
+    Drawing: 'Drawing',
+    strategicdoc_PaiXu: 'Sort by',
+    strategicdoc_QuanBuXiaZai: 'Download All',
+    strategicdoc_ShangChuan: 'Upload Window',
+    strategicdoc_ShangChuanFaShengCuoWu:
+      'Upload failed, please try again later',
+    JIAZAIZHONG: 'Loading',
+    LK_FENXIMINGC: 'Analysis Name',
+    LK_SHIFOUZHANSHI: 'Display (Y/N)',
+    LK_PAIXU: 'Sort',
+    FENXILEIX: 'Analysis Type',
+    DANGQIANZANWUCHAKAN:
+      'No PDF/ image can be viewed for the current analysis type',
+    LK_CAILIAOZUBIANHAOALLSY: 'Material Group',
+    SUOZAIDI: 'Location',
+    MBDL: 'MBDL (Y/N)',
+    BUFENBAOJIA: 'Partial Quote',
+    BEIJUJUE: 'Reject',
+    MEIYOUBAOJIA: 'No Quotation',
+    LK_FRMPINGJI: 'FRM Rating',
+    YIBAOJIA: 'Quoted',
+    ER: 'ER',
+    Attachment: 'Attachment',
+    strategicdoc_XiaZai: 'Download',
+    'RS Sheet': 'RS Sheet',
+    strategicdoc_ShangChuanXianXiaRS: 'Upload Off-line RS Doc.',
+    LK_QUANBUXIAZAI: 'Download All',
+    'MTZ Attachment': 'MTZ Attachment',
+    XIACIPRECSC: 'CSC',
+    KAIBIAOJIEGUO: 'Bidding result',
+    BIDDING_SUODING: 'Locked',
+    BIDDING_FEISUODING: 'Unlocked',
+    BIDDING_BHKDKS: 'Exclude Deductible Price',
+    BIDDING_HANSHUI: 'Include tax',
+    BIDDING_PAIMING: 'Ranking',
+    BIDDING_MOJUFEI: 'Tooling Fee',
+    BIDDING_MUBIAOJIA: 'Target Price',
+    BIDDING_CHANPINMINGCHENG: 'Product Name',
+    BIDDING_SHULIANGDANWEI: 'UoM',
+    BIDDING_LINGJIANHAO: 'Part No.',
+    BIDDING_CHUCHANJIA: 'Factory Price',
+    BIDDING_YUNSHUFEI: 'Shipping Fee',
+    BIDDING_CAOZUOFEI: 'Operation Fee',
+    BIDDING_BJIA: 'B Price',
+    BIDDING_KAIFAFEI: 'Dev. Fee',
+    BIDDING_SHENGMINGZHOUQIZHOU: 'Life Cycle (week)',
+    BIDDING_PINGJUNNIANCHANLIANG: 'Normal Annual Capacity',
+    BIDDING_ZUIDANIANCHANLIANG: 'Maximal Annual Capacity',
+    BIDDING_CAOZUO: 'Operation',
+    'BIDDING_QSZJFWS0~9999999999.999999':
+      'Starting Price Range from 0~9999999999.999999',
+    BIDDING_HUOBIDANWEI: 'Currency Unit',
+    BIDDING_BAOJIASHIJIAN: 'Quote Time',
+    BIDDING_GYSLXR: 'Contact',
+    BIDDING_GYSLXDH: 'Contact Tel',
+    BIDDING_GYSYX: 'Email',
+    BIDDING_FSYJR: 'Entered (Y/N)',
+    BIDDING_CPGYS: 'Product Supplier',
+    BIDDING_BHKDKSDJ: 'Unit Price (excl. deductible tax)',
+    BIDDING_TICHUSHIJIAN: 'Kickout Time',
+    BIDDING_TICHULIYOU: 'Kickout Reason',
+    BIDDING_FSGSSPNO: 'FS/GS/SP No.',
+    BIDDING_BAOZHUANGFEI: 'Pkg. Fee',
+    'nominationLanguage.DingDianGuanLi': 'Nomi. Mgmt.',
+    'nominationLanguage.GONGYINGSHANGANDDANYIGONGYINGSHANG':
+      'Supplier & Single Sourcing',
+    'nominationLanguage.DINGDIANJIANYI': 'Nomi. Recommendation',
+    'nominationLanguage.SHENPIRENANDSHENPIJILU': 'Approver & Approval Record',
+    'nominationLanguage.JUECEZILIAO': 'Recommendation Material',
+    nextSure:
+      'Are you sure you want to take the next step? Make sure the data is fully saved',
+    XUANZEHUIYIJIEGUO: 'Please select meeting conclusion',
+    LK_SHENPIRENANDSHENPIJILU: 'Approver & Approval Record',
+    LK_TONGBU: 'Sync',
+    LK_JIESHUBIANJI: 'Quit Edit',
+    SHENPILIU: 'Approval Work Flow',
+    MEETING: 'Meeting',
+    TRANFORM: 'Circulation',
+    RECORD: 'Record',
+    LK_QINGXUANZEXUYAOSHANCHUDEHANG: 'Please select row to delete',
+    NETWORKERROR: 'Network Error, please try again later',
+    XUANPRECSCZEHUIYI: 'Select Pre CSC Meeting',
+    DINGDIANSHENGQINGXINAGQING: 'Nomi. App. Detail',
+    LK_TIPS_YIXIALINGJIANCAIGOUXIANGMUDETUIJIANGONGYINGSHANGSHOUKONGWUFATIJIAO:
+      '',
+    LINGJIANXIANGMUCAIGOULEIXING: '',
+    LINGJIANLEIXINGPEIZHI: '',
+    LINGJIANCAIGOUXIANGMULEIXINGPEIZHI: '',
+    BENLUNZHUANGTAI: 'Round Status',
+    LUNCILEIXING: 'Round Type',
+    FSNFGSNFSPNR: 'FSNF/GSNF/SPNR',
+    RFQLUNCI: 'RFQ Round',
+    DAXIAOMB: 'Size (MB)',
+    CBD: 'CBD',
+    PCA: 'PCA',
+    JISHUZILIAO: 'Technical Data',
+    LINGJIANMING: 'Part Name',
+    XIAZAISHIBAI: 'Download Failed',
+    QINGXUANZEXUYAOXIAZAIDESHUJU: 'Please select data to download',
+    XIANSHIZIJI: 'Filter by Me',
+    PINGFENRENWU: 'Rating Task',
+    SHANGCHUANCHENGGONG: 'Upload Successfully',
+    QINGXUANZHESHIJIAN: 'Please select Time',
+    SHIJIAN: 'Time',
+    XIAZAI: 'Download',
+    PEIZHIPINGFENBUMEN: 'Rating Dept. Config.',
+    XUANZEBUMENBIANHAO: 'Select department code',
+    QINGXUANZEBUMENZHONGWENMING: 'Please select department name (CN)',
+    QINGXUANZEBUMENYINGWENMING: 'Please select department (EN)',
+    QUEDING: 'Confirm',
+    QINGXUANZEYIGEBUMENBIANHAO: 'Please select one department code',
+    QINGJIANGSHUJUTIANXIEWANZHENG: 'Please complete the data',
+    NOSAVEISRECOVER:
+      'You still have data changes that have not been saved, please confirm whether you want to restore the original data',
+    QINGXUANZEXUYAOSHANCHUDESHUJU: 'Please select ',
+    SHANCHUCHENGGONG: 'Delete Successfully',
+    ISBASEDATA: 'The current data is the original data',
+    BIDDING_BAOCUNCHENGGONG: 'Save Successfully',
+    BIDDING_SFQDXJGXM: 'Are you sure to create this project?',
+    BIDDING_DAOCHUSHIBAI: 'Export Failed',
+    'BIDDING_DANJIA&ZONGJIA': 'Unit Price & Total Price',
+    BIDDING_DI: 'Ranking',
+    BIDDING_MING: '',
+    BIDDING_DANGQIANPAIMING: 'Cur. Ranking',
+    BIDDING_CHUJIALIEBIAO: 'Bid List',
+    BIDDING_GONGYINGSHANGPAIMING: 'Supplier Ranking',
+    BIDDING_QUEDING: 'Confirm',
+    BIDDING_CHUJIALEIXING: 'Bid Type',
+    BIDDING_ZIDONGYINGBIAO: 'Respond',
+    BIDDING_JINGJIAYIJIESHU: 'Bidding Closed！',
+    BIDDING_CHUJIACHENGGONG: 'Bid Successfully',
+    BIDDING_ZJW0BNCJ: 'Cannot bid for a total price of 0',
+    BIDDING_BLSYSJ: 'Time Remaining',
+    应标: 'Respond',
+    BIDDING_YINGBIAOCHENGGONG: 'Respond Successfully',
+    BIDDING_WYYDBJSYXTK: 'I have read and accept the following terms',
+    BIDDING_JUJUE: 'Reject',
+    BIDDING_TONGYI: 'Agree',
+    BIDDING_WYYDYSTK: 'I have read the above terms',
+    BIDDING_XTSYTK: 'Term of use',
+    BIDDING_JIBENXINXI: 'Basic Info.',
+    BIDDING_JIANGJIAJIHUA: 'Price Reduction Plan',
+    BIDDING_GQJJZBXQYTX: 'Each range must be filled in by one of the deadlines',
+    BIDDING_SUOYOU: 'All',
+    BIDDING_TXBJMX: 'please fill in quotation detail',
+    BIDDING_JINGDANGXINXI: 'Archive Info.',
+    BIDDING_JINJIAGAOZHISHU: 'Bidding Notice',
+    BIDDING_QTYJJGZS: 'Please agree to the bidding notice',
+    BIDDING_QTYJJGZSHXTSYTK:
+      'Please agree to the bidding notice and terms of use of the system',
+    BIDDING_YJXSLD: 'show green light',
+    BIDDING_YJXSHD: 'show yellow light',
+    BIDDING_PMQJDLQJ: 'Ranking range, green light range',
+    BIDDING_SHANCHUCHENGGONG: 'Delete successfully',
+    'BIDDING_ZKXZSGCJQZTW【CG】DXM':
+      'You can select only manually created items in the draft state',
+    BIDDING_SFSCXZDXM: '9/5000  Whether to delete the selected item.',
+    BIDDING_XUNJIAGUANLI: 'Inquiry Mgmt.',
+    BIDDING_JINGJIADATING: 'Bidding Hall',
+    BIDDING_XIANGMUJIEGUO: 'Project Result',
+    BIDDING_DAOCHU: 'Export',
+    BIDDING_ZHENGSHI: '(formal)',
+    BIDDING_DAOCHUCHENGGONG: 'Export Successfully',
+    BIDDING_FANHUI: 'Back',
+    BIDDING_BXWZZS: 'Must be a positive integer',
+    BIDDING_CAIGOUSHULIANG: 'Proc. Qty',
+    BIDDING_QIPAIJIAGE: 'Asking Price',
+    BIDDING_CHANPINCANSHU: 'Product Spec.',
+    BIDDING_BNDY100: 'Cannot be greater than 100',
+    BIDDING_DI一DUAN: 'Section 1',
+    BIDDING_DI二DUAN: 'Section 2',
+    BIDDING_DI三DUAN: 'Section 3',
+    BIDDING_DI四DUAN: 'Section 4',
+    BIDDING_DI五DUAN: 'Section 5',
+    BIDDING_DI六DUAN: 'Section 6',
+    BIDDING_DI七DUAN: 'Section 7',
+    BIDDING_DI八DUAN: 'Section 8',
+    BIDDING_DI九DUAN: 'Section 9',
+    BIDDING_DI十DUAN: 'Section 10 ',
+    BIDDING_DI十一DUAN: 'Section 11',
+    BIDDING_DI十二DUAN: 'Section 12',
+    BIDDING_DI十三DUAN: 'Section 13',
+    BIDDING_DI十四DUAN: 'Section 14',
+    BIDDING_DI十五DUAN: 'Section 15',
+    BIDDING_GLRFQ: 'Associate RFQ',
+    BIDDING_JIANGJIADATING: 'Bidding Hall',
+    BIDDING_DI一NIAN: 'SOP+1 Year',
+    BIDDING_DI二NIAN: 'SOP+2 Year',
+    BIDDING_DI三NIAN: 'SOP+3 Year',
+    BIDDING_DI四NIAN: 'SOP+4 Year',
+    BIDDING_DI五NIAN: 'SOP+5 Year',
+    BIDDING_DI六NIAN: 'SOP+6 Year',
+    BIDDING_DI七NIAN: 'SOP+7 Year',
+    BIDDING_DI八NIAN: 'SOP+8 Year',
+    BIDDING_DI九NIAN: 'SOP+10 Year',
+    BIDDING_DI十一NIAN: 'SOP+11 Year',
+    BIDDING_DI十二NIAN: 'SOP+12 Year',
+    BIDDING_DI十三NIAN: 'SOP+13 Year',
+    BIDDING_DI十四NIAN: 'SOP+14 Year',
+    BIDDING_DI十五NIAN: 'SOP+15 Year',
+    BIDDING_QINGGUANLIAN: 'Please associate...',
+    BIDDING_FACHUJINGJIA: 'Start Bidding',
+    BIDDING_JIESHUXIANGMU: 'Terminate Project',
+    BIDDING_FCBLRFQ: 'Send Cur. Round RFQ',
+    'BIDDING-JSBLRFQ': 'Close Cur. Round RFQ',
+    BIDDING_KAIBIAOSHEZHI: 'Bidding Opening Setting',
+    BIDDING_BKXJBKDD: '',
+    BIDDING_HEIMINGDAN: '',
+    BIDDING_WMZBNJXCK: 'Requirements not met, cannot view the info',
+    BIDDING_CESHI: '(Testing)',
+    BIDDING_KXJBKDD: '',
+    BIDDING_JJKSSJYGQ: 'The bidding start time has expired',
+    BIDDING_YAOQINGGONGYINGSHANG: 'Invite',
+    BIDDING_GONGSIMINGCHENG: 'Enterprise Name',
+    BIDDING_TIANJIA: 'Add',
+    BIDDING_SHENGCHAN: '',
+    BIDDING_YIBAN: '',
+    BIDDING_GONGYONG: '',
+    BIDDING_SKGYSBKXJ: '',
+    BIDDING_XJFSSB: '',
+    BIDDING_YXGYSXJSKWFFSXJQQXXZ: '',
+    BIDDING_YYGYS: 'Invite',
+    BIDDING_JSBLRFQ: 'End Cur. Round RFQ',
+    BIDDING_KAIBIAOYANQI: 'Opening Delayed',
+    BIDDING_ZUOFEIYUANYIN: 'Scrap Reason',
+    BIDDING_YCZGYS: 'Existed Supplier',
+    BIDDING_JINGJIAYANQI: 'Bidding Delayed',
+    BIDDING_SGJJXMBH: 'Manual Bidding Proj. Code',
+    BIDDING_WWCXJGLSZWFFQJJ:
+      "You haven't set up inquiry management setting yet, can not initiate bidding",
+    BIDDING_YUAN: 'RMB',
+    BIDDING_RFQMINGCHENG: 'RFQ Name',
+    BIDDING_JINGPAILEIXING: 'Bidding Type',
+    BIDDING_CAIGOUYUAN: 'Buyer',
+    BIDDING_CAIGOUYUANDIANHUA: 'Buyer Tel.',
+    BIDDING_QUXIAO: 'Cancel',
+    BIDDING_XIANGMUXINXI: 'Project Info.',
+    BIDDING_QISHINIANYUE: 'SOP',
+    BIDDING_CHEXING: 'Model',
+    BIDDING_CHEXINGXIANGMU: 'Project',
+    BIDDING_QISHIZONGJIA: 'Total Price',
+    BIDDING_DAXIE: 'CN Numerical',
+    BIDDING_CHANPINXINXI: 'Product Info.',
+    BIDDING_PLGXCCJ: 'Batch Maintain Factory Price',
+    BIDDING_ZHEXIANLV: 'Discount Rate',
+    BIDDING_JINGJIAXINXI: 'Bidding Info.',
+    BIDDING_CHIXUSHIJIAN: 'Duration',
+    BIDDING_QIPAIJIA: 'Opening bid',
+    BIDDING_JINGBIAOZHUANGTAI: 'Bidding Status',
+    BIDDING_JINGJIAZHUANGTAI: 'Bid Status',
+    BIDDING_ZUIDIJIAGE: 'Lowest Price',
+    BIDDING_ZUIGAOJIAGE: 'Highest Price',
+    BIDDING_FUDU: 'Range',
+    BIDDING_ZUOFEIYUANYING: 'Scrap Reason',
+    BIDDING_QUEREN: 'Confirm',
+    BIDDING_QTXZFYY: 'Please enter scrap reason',
+    BIDDING_NIANJIANGJIHUA: 'Annual Price Reduction Plan',
+    BIDDING_NIANCHANLIANG: 'Annual Capacity',
+    BIDDING_BAOJIADAN: 'Quote',
+    BIDDING_GONGYINGSHANGLIEBIAO: 'Supplier List',
+    BIDDING_QUXIANTU: 'Curve',
+    BIDDING_FENXIANGPAIMING: '',
+    BIDDING_JINGJIAMINGXI: 'Bid Detail',
+    BIDDING_XIANGMUBEIZHU: 'Proj. Desc.',
+    BIDDING_ZUOFEI: 'Scrap',
+    BIDDING_WMZDYCBJXZ: 'The first quotation limit was not met',
+    BIDDING_WMZLXPMXZ: 'The continuous ranking limit is not met',
+    BIDDING_CHUJIA: 'Bid',
+    BIDDING_GONGYINGSHAN: 'Supplier',
+    BIDDING_SHIJIAN: 'Time',
+    BIDDING_DANWEI: 'Unit',
+    BIDDING_XITONGSHIJIAN: 'System Time',
+    BIDDING_JLJSSJ: 'to end time',
+    BIDDING_ZUOFEICHENGGONG: 'Scarp Successfully',
+    BIDDING_JLKSSJ: 'to start time',
+    BIDDING_RFQBH: 'RFQ No.',
+    BIDDING_KAIBIAOXINZHI: 'Opening Attribute',
+    'BIDDING_BXDY0，QLWXS': 'Must greater than 0, reserve two decimal numbers',
+    'BIDDING_BXDY0，XYDY2000，QLWXS':
+      'Must greater than 0 and less than or equal to 2000 , reserve two decimal numbers',
+    BIDDING_JSCJ: 'Base Price Difference',
+    BIDDING_BFBCJ: 'Percentage Difference',
+    BIDDING_ZIJI: 'Me',
+    BIDDING_YI: 'Using',
+    BIDDING_CHANPINZONGJIA: 'Total Price',
+    BIDDING_WJSGYSMCGXBJJCDZDZDYJDZJSHZBFBDXZ:
+      'as base; There is an absolute value (base) or percentage limit on the lowest price difference between each updated quotation from the supplier',
+    BIDDING_CHAJIAXIANZHI: 'Difference Limit',
+    BIDDING_YONGYU: 'For ',
+    BIDDING_DYCBJ: '1st Quote',
+    BIDDING_BAOJIAFEIWEI: 'Range Pref.',
+    BIDDING_TANGEBAOJIA: 'Strict',
+    'BIDDING_（≦QICHUJIAGE）': '（≦opening bid）',
+    BIDDING_DAZHIBAOJIA: 'Approx. (≦',
+    BIDDING_xQICHUBAOJIA: 'x1st Quote)',
+    BIDDING_BAOJIADUIXIANG: 'Target',
+    BIDDING_GSYSRD: "When Supplier's ",
+    BIDDING_BJZJDYJJZSDDTZFDSX:
+      'quotation (total price) is greater than the Threshold adjustment range',
+    BIDDING_SXTHTXGYSSFQRGBJ:
+      ', the system will remind the supplier whether to confirm the quotation.',
+    BIDDING_JINGJIEZHI: 'Threshold',
+    BIDDING_TIAOZHENGFUDU: 'Adjust',
+    'BIDDING_%SHIJIZHI': '%, Which equals to',
+    BIDDING_DYCBJXZ: '1st Quote Rule',
+    BIDDING_ZJJKSH: 'Supplier not taking actions for',
+    BIDDING_ZHENGSHU: 'Int.',
+    'BIDDING_FZBXBJ，FZZQQCL。':
+      'minutes after the Bidding starts will automatically quit bidding  ',
+    BIDDING_LXMPXZ: 'Elimination Rule ',
+    BIDDING_GYSBJ: 'Supper ranked last for ',
+    'BIDDING_C，PMJWZHYM，ZZDZWQQCL。':
+      'rounds will automatically quit bidding ',
+    BIDDING_PAIMINGGUIZE: 'Ranking Pref.',
+    BIDDING_DIJIACIWEI: 'Price Preference',
+    BIDDING_BKLBJSJJGXTJPMXGRGLGGYSBJZDZXSDEM:
+      '(Supplier with lowest price comes first, ignoring submission time)',
+    BIDDING_SHIJIANYOUXIAN: 'Time Preference',
+    BIDDING_JGXTZABJSJPX:
+      '(Supplier with Earlier submission time ranked higher, when Quotation prices are the same)',
+    BIDDING_BUKEJIAN: 'Do not display',
+    BIDDING_PMXSXZ: 'Display Pref.',
+    BIDDING_JIAGEDADAO:
+      'Display Ranking Info. Only after bidding Price Reaches ',
+    BIDDING_HPAIMINGZAI: 'Display Ranking Info. Only before rank  ',
+    BIDDING_HHCNXSJJPM: '',
+    BIDDING_MYQHCNXSJJPM: '',
+    BIDDING_BXDYFDZ: 'Must be greater than the amplitude value',
+    BIDDING_BXXYZGBJ: 'Must be less than the highest quotation',
+    BIDDING_BXWDY0: 'Must greater than 0',
+    'BIDDING_ZNSR5-600M': 'Only 5-600 seconds can be entered',
+    BIDDING_ZUIGAOBAOJIA: 'Highest Quotation',
+    BIDDING_FUDUZHI: 'Amplitude Value',
+    BIDDING_YBJGSM: 'Respond interval (s)',
+    BIDDING_ZDBJSZ: 'Auto Pricing Config.',
+    BIDDING_ZDBJKSZZ: 'if no supplier responds for',
+    BIDDING_ZCHWGYSYBXMZDJS:
+      'rounds after auto pricing initiated, the project will be automatically terminated',
+    BIDDING_WANCHENGSHEZHI: 'Complete Setting',
+    BIDDING_HCNXSJJPM: '',
+    BIDDING_MYQCNXSJJPM: '',
+    'BIDDING_JCCJBXDY0，BQXYQPJ':
+      'The base spread must be greater than 0 and less than the starting price',
+    BIDDING_BAOCUNSHIBAI: 'Save Failed',
+    BIDDING_SFBCGBJXX: 'Are you sure to save the quotation info?',
+    BIDDING_JICHUXINXI: 'Basic Info.',
+    BIDDING_BAOJIAGUIZE: 'Quotation Rules',
+    'BIDDING_QSZJFWS0~999999999999999.99':
+      'The range is 0 to 999999999999999.99',
+    BIDDING_PLGXNJ: 'Batch Update Annual Reduction',
+    BIDDING_XIAYIBU: 'Next Step',
+    BIDDING_SHANGYIBU: 'Prev. Step',
+    BIDDING_TIANJIACHANPIN: 'Add Product',
+    BIDDING_LINGYUANZHENG: '0 RMB',
+    BIDDING_XMXXSJYW: 'Display Light (Filter by ranking)',
+    BIDDING_CPXISJYW: 'Product information data error!',
+    BIDDING_DYLJNCLBNQWK: "Single part's annual capacity cannot be all blank ",
+    BIDDING_SFBCGXMXX: 'Are you sure to save the project data',
+    demoData1: 'demoData1',
+    demoData2: 'demoData2',
+    demoData3: 'demoData3',
+    BIDDING_NJJHSJYW: 'Annual price reduction plan data error！',
+    BIDDING_CPBHBNCF: 'Product number cannot be repeated!',
+    BIDDING_FSNRGSNRBUNENGCHONGFU: 'FS/GS/SP No. Cannot be repeated!',
+    BIDDING_DANJIA: 'Unit Price ',
+    BIDDING_ZONGJIA: 'Total Price',
+    BIDDING_DUOJIAGE: 'Multi Price',
+    BIDDING_HONGLVDENG: 'Lignt',
+    BIDDING_SUOYOUPAIMING: 'All Ranking',
+    BIDDING_QIAN: 'thousand',
+    BIDDING_WAN: '10 thousand',
+    BIDDING_BAIWAN: 'Milo',
+    BIDDING_BIJIADANWEI: 'Comparison Unit',
+    BIDDING_HBDWBS: 'Unit Switch',
+    BIDDING_BJSFHS: 'Is Tax Included',
+    BIDDING_BJJZSJ: 'Quote Closing Date',
+    BIDDING_JBBJFS: 'quotation type',
+    BIDDING_JBJGHZXS: 'Summary form of bidding results',
+    BIDDING_KBJGGKXS: 'Result disclosure form',
+    BIDDING_PMZGYSZDZSDJTPMGYSBZDJTYGYDSGYSCYLBJ:
+      'Ranking: suppliers know their own specific ranking (suppliers do not know the specific number of suppliers involved in the quotation',
+    BIDDING_HLDZGYSZNTGHHLDPDGYSBJDJZL:
+      "Light: refers to the supplier can only judge the competitiveness of the supplier's quotation by the red and yellow green light, but can not know the specific ranking, and can not judge whether they win the bid",
+    BIDDING_SYPMZGYSBJNKDZJDPMHKYKDQTCJBJDGYSDPM:
+      'All rankings: suppliers can see not only their own rankings, but also the rankings of other suppliers participating in the offer',
+    BIDDING_TXHGYSKYKDDYDMBJ:
+      'After filling in, the supplier can see the corresponding target price',
+    BIDDING_JINGJIAXINGZHI: 'Bidding Attibute',
+    BIDDING_ZHONGJIANGUOCHENG: 'In Progress',
+    BIDDING_ZUIZHONGJIEGUO: 'Finial Result',
+    BIDDING_QTXMGGXX: 'Other Project Announcements',
+    BIDDING_ZSXZW1000Z: 'The word limit is 1000 words',
+    BIDDING_CHANPINBIANHAO: 'Product Code',
+    BIDDING_PMQJPZCW: 'Ranking Range Config. Error',
+    BIDDING_QTXPLMBJ: 'Please enter deviation target price',
+    BIDDING_BNXYDYLD: 'Cannot ≤ Green Light',
+    BIDDING_XSBFPM: 'Display own ranking',
+    'BIDDING_GYSDHLDMCQJ/PLBLD':
+      'For supplier, ranking light range/Target price deviation',
+    BIDDING_JTDYBKJ: 'detailed definition is not visible',
+    BIDDING_PMXSGZ: 'Ranking Display Rule',
+    BIDDING_PIANLIMUBIAOJIA: 'Target Price Deviation',
+    BIDDING_FZXSHD: 'the rests show red light',
+    BIDDING_YINEIXIANSHILVDENG: 'show green light',
+    BIDDING_YINEIXIANSHIHUANGDENG: 'show yellow light',
+    BIDDING_HUANGDENGQUJIAN: 'Yellow Light Range',
+    BIDDING_HONGDENGQUJIAN: 'Red Light Range',
+    BIDDING_PMQJLDQJ: 'Ranking range, green light range',
+    BIDDING_GONGKAI: 'Published',
+    BIDDING_BUGONGKAI: 'Private',
+    BIDDING_JJJGSFGK: 'whether to publish bidding result?',
+    DAORU: 'Import',
+    BAOJIADAN: 'Quotation Sheet',
+    'partsprocure.CHOOSE': 'Select',
+    LK_AEKOCHEXINGXIANGMU: 'Project',
+    LK_AEKOZHUANGTAI: 'AEKO Status',
+    LK_AEKOFENGMIANZHUANGTAI: 'Cover Status',
+    LK_AEKOJIEZHIRIQI: 'DDL',
+    LK_AEKOHAO_MANAGE: 'AEKO No.',
+    LK_AEKO_FUJIANCHAKAN: 'View attachment',
+    LK_AEKO_CHEXING: 'Model',
+    LK_AEKOFENPAIRIQI: 'Dispatch date',
+    LK_AEKO_CHAKAN: 'view',
+    ZHUANGTAIGENZONGBAOBIAO: 'Status Tacking Report',
+    AEKOYUQIBAOBIAO: 'AEKO Overdue Report',
+    ZHUANGTAIGENZONGBAOBIAO2: 'Status Tacking Report2',
+    BIYUQIBAOBIAO: 'BI Overdue Report',
+    CHAKANGUANLIANLINGJIAN: 'view relevant part',
+    XINZENGLINGJIAN: 'New Part',
+    SHANCHULINGJIAN: 'Delete Part',
+    SHIFOUSHANCHUXUANZHONGNEIRONG: 'Are you sure to delete selected content',
+    LK_AEKO_WEIGUANLIANLINGJIANWUFABAOCUN: 'No part relevant, cannot be saved ',
+    FUJIANLINGJIANMINGCHENG: 'Acc. Name',
+    MEICHEYONGLIANG: 'Qty. per Car',
+    CAIGOUGONGCHANG: 'Purchasing Factory',
+    DANWEI: 'Unit',
+    LK_JIHUO: 'or',
+    XUANZEHUIYILEIBIE: 'Type',
+    JICHUXINXI: 'Basic Info.',
+    LK_LCHUOBI: 'Currency',
+    GONGYINGSHANGJIANCHENG: 'Supplier Appr.',
+    YUANLINGJIANHAO: 'Prev. Part No.',
+    MUJUTOUZIBIANDONG: 'Tooling Inv. Alteration',
+    ZHIDINGYUANLINGJIAN: 'Prev. PArt',
+    JILIANGDANWEI: 'Measurement Unit',
+    'TPZS.YINGXIANGDANJIA': 'Affecting Unit Price',
+    LK_AEKO_QITAFEIYONG: 'Other Expense',
+    ZHIZAOCHENGBEN: 'Manufacture Cost',
+    BAOFEICHENGBEN: 'Scrap Cost',
+    GUANLIANLINGJIAN: 'Relevant Part',
+    AEKOHAO: 'AEKO No.',
+    BAOJIAZHUANGTAI: 'Quote Status',
+    DAIBAOJIA: 'Quote Delegate',
+    YUANAJIA: 'Prev. A Price',
+    AJIABIANDONGHANFENTAN: 'A Price Alteration(Incl. apportionment )',
+    XINAJIA: 'New A Price',
+    YUANBNKJIA: 'Prev. BNK Price',
+    XINBNKJIA: 'New BNK Price',
+    KAIFAFEI: 'Dev. Fee',
+    ZHONGZHIFEI: 'Termination Fee',
+    YANGJIANFEI: 'Sample Fee',
+    YUANCHENGYUNFANGSHI: 'Prev. Trans. Method',
+    ZIYUN: 'Self-Trans.',
+    HUO: 'or',
+    CHENGYUN: 'Carriage',
+    XINCHENGYUNFANGSHI: 'New Trans. Method',
+    HUOZHE: 'or',
+    BIANDONGZHICBD: 'CBD Alteration',
+    SHOUDONGSHURU: 'Manually Input',
+    CBDXUTIAOZHENGBUFEN: 'CBD Req. Adj.',
+    YUANCAILIAOSANJIANCHENGBENBIANDONG:
+      'Raw Material/Component Cost Alteration',
+    ZHIZAOCHENGBENBIANDONG: 'Manufacturing Cost Alteration',
+    BAOFEICHENGBENBIANDONG: 'Scrap Cost Alteration',
+    GUANLIFEIBIANDONG: 'Mgmt. Fee Alteration',
+    LIRUNBIANDONG: 'Profit Alteration',
+    AJIABIANDONG: 'A Price Alteration',
+    LK_DAMAGES_SAMPLEFEE_YANGJIAN: 'Sample',
+    LK_DAMAGES_GONGZHUANGYANGJIANDANJIANFEIYONG: 'Tooling Sample Unit Price',
+    LK_DAMAGES_FUJIAGONGZHUANGYANGJIANMOJUJIAGE:
+      'Additional Tooling Sample Price',
+    LK_DAMAGES_FUJIAGONGZHUANGYANGJIANMOJUSHOUMING:
+      'Additional Tooling Sample Lifespan',
+    LK_DAMAGES_REMAKE: 'Remark',
+    TIANJIAYUANLINGJIANCBD: 'Add Prev. Part CBD',
+    TIANJIAXINLINGJIANCBD: 'Add New Part CBD',
+    LEIXING: 'Type',
+    SHULIANGDANWEIUOM: 'UoM',
+    SHULIANGINT: 'Qty',
+    ZHIJIEYUANCAILIAOSANJIANCHENGBENRMBPC: 'Raw Material/Component Cost.',
+    YUANCAILIAOSANJIANCHENGBENRMBPC: 'Raw Material/Component Cost(RMB/Pc.)',
+    ZHIZAOGONGXU: 'Manufacturing Process',
+    SHEBEIMINGCHENGXINGHAOREFNAME: 'Equip. Name/Model',
+    SHANGQIDAZHONGZHUANYONGSHEBEIFEI: 'SVW Dedicated Equip. Fee',
+    SHENGCHANJIEPAI: 'Prod. Pace',
+    JIANSHUSHENGCHANJIEPAIINT: 'Pc./Prod. Pace',
+    RENGONGCHENGBEN: 'Labor Cost',
+    ZHIJIERENGONGFEILVRMBHOUR: 'Direct Labor Cost Rate',
+    ZHIJIERENGONGSHULIANGINT: 'Direct Labor Quantity',
+    SHEBEIFEI: 'Equip. Fee',
+    SHEBEIFEILVRMBHOUR: 'Equip. Expense Rate',
+    JIANJIEZHIZAOCHENGBEN: 'Indirect Manufacturing Cost',
+    RENGONGCHENGBENRMBPC: 'Labor Cost',
+    SHEBEICHENGBENRMBPC: 'Equip. Cost',
+    SHULIANG: 'Qty',
+    DUIYINGYUANCAILIAOSANJIAN: 'Corresponding Raw Material/Component',
+    SHEBEIMINGCHENGXINGHAO: 'Equip. Name/Model',
+    JIANSHUSHENGCHANJIEPAI: 'Pc./Prod. Pace',
+    SHEBEICHENGBEN: 'Equip. Cost',
+    ZHIJIERENGONGFEILV: 'Direct Labor Cost Rate',
+    ZHIJIERENGONGSHULIANG: 'Direct Labor Quantity',
+    SHEBEIFEILV: 'Equip. Expense Rate',
+    YUANBAOFEILV: 'Prev. Scrap Rate',
+    XIANBAOFEILV: 'Cur. Scrap Rate',
+    BIANDONGJINE: 'Alteration Amount',
+    YUANBILI: 'Prev. Ratio',
+    XIANBILI: 'Cur. Ratio',
+    FENTANSHULIANG: 'Apportioned Qty',
+    FENTANJINE: 'Apportioned Amount',
+    LK_KAIFAFEIYONGCUNZAIFENTANSHUJUQINGTIANXIEDAYU:
+      'Development expense has apportioned data, please fill in an apportioned quantity greater than 0',
+    LK_TIPS_SHIFOUSHANCHUBEIXUANZHONGDEHANGXIANGMU:
+      'Do you want to delete the selected row data?',
+    WUFASHANCHUYUANYOUYUANLINGJIANHANGXIANGMU:
+      'Unable to delete previous original parts row data!',
+    HASCHANGEDELETE:
+      'The value has been maintained. Please confirm whether to delete it.',
+    QINGXUANZEZHISHAOYITIAOYUANLINGJIANSHUJUZUOWEITIANJIAYANGBAN:
+      'Please select at least one prev. part data as template',
+    HASNEWDATADELETE:
+      'All "New Part“ data corresponding to the selected ”Prev. Parts“ data will also be deleted, please confirm whether to delete?',
+    LK_AEKO_TAB_DAMAGES_TIPS: 'Please fill in and submit',
+    ZHENGTIBAOFEICHENGBENBIANDONG: 'Overall Scrap Cost Alteration',
+    YUANCAILIAOYUSANJIANBUHANSVWZHIDINGSANJIANGUANLIFEI:
+      'Raw Material and Spare Part(excl.SVW Nomi. Spare Part) Mgmt. Fee',
+    ZHIZAOGUANLIFEI: 'Manufacturing Mgmt. Fee',
+    LIRUNBUHANSVWZHIDINGSANJIAN: 'Profit (excl. SVW Nomi. Component)',
+    QINGXUANZETIANXIEWANZHENGDEYUANLINGJIANSHUJUZUOWEITIANJIAYANGBAN:
+      'Please select the complete prev. part data as template',
+    AEKO_SHEBEIFEIBIANDONG: 'Equip. Fee Alteration',
+    AEKO_RENGONGCHENGBENBIANDONG: 'Labor Cost Alteration',
+    AEKO_SHEBEICHENGBENBIANDONG: 'Equip. Cost Alteration',
+    AEKO_JIANJIEZHIZAOCHENGBENBIANDONG:
+      'Indirect Manufacturing Cost Alteration',
+    CANCELCBDADJUSTTIPS:
+      'Some CBD adjustments that have been maintained are cancelled. Do you want to save the Settings?',
+    XUANZEDESHUJUZHONGCUNZAIWEITIANXIEWANZHENGDEYUANLINGJIANSHUJU:
+      'There are incomplete original part data in the selected data',
+    BIANDONGZHI: 'Change Value',
+    HUIZONGBIAO: 'Summary Sheet',
+    WUBIANDONGZHI: 'No Change Value',
+    TIANJIAHANG: 'Add Row',
+    YUANLINGJIAN: 'Prev. Part',
+    DANJIA: 'Unit Price',
+    XIAOJI: 'Subtotal',
+    XINLINGJIAN: 'New Part',
+    XINLINGJIANHAO: 'New Part No.',
+    NEIRONG: 'Content',
+    QINGQUERENSHIFOUSHANCHU: 'Please confirm whether to delete?',
+    BITIANXIANGWEITIANXIEWANZHENG: 'Mandatory not filled',
+    QINGWEIHUHAOBIANTIANXIANGHOUZAIBAOCUN:
+      'Please maintain the mandatory info. before saving.',
+    YOUXIAO: 'valid',
+    QINGXIANSHANCHUHUIZONGBIAOHANGXIANGMU:
+      'Please delete the summary table row data first.',
+    YUANLINGJIANMUJUCBD: 'Prev. Part Mold CBD',
+    YUAN: 'RMB',
+    YINYONG: 'Quote',
+    SOURCEPARTCBDQUOTE:
+      'If "Tooling Repair" or "Impairment" is requested, please refer to the following CBD data and reserve two decimal fractions',
+    BMDANHAO: 'BM Sheet',
+    MUJUID: 'Tooling ID',
+    GUDINGZICHANMINGCHENG: 'Fix Asset Name',
+    GONGYILEIXING: 'Process Type',
+    GONGMUJUZHONGLEI: 'Tooling Type',
+    ZICHANFENLEIBIANHAO: 'Asset Code',
+    SANJIANMINGCHENG: 'Component',
+    SANJIANLINGJIANHAO: 'Component No.',
+    ZICHANDANJIA: 'Asset Price',
+    ZICHANZONGE: 'Total Asset ',
+    BMDANLIUSHUIHAO: 'BM Sheet No.',
+    MUJUCBD: 'Tooling CBD',
+    BIANJILAN: 'Formula Bar',
+    AEKOQUOTATIONMODULETIP:
+      'When the tooling cost is not divided into the unit price, then "Tooling Repair" or "Impairment" must refer to "Prev. Part Tooling CBD"; Whereas the tooling cost is divided into the unit price,  "Tooling Repair" or "Impairment" may not refer to "Prev. Part Tooling CBD"',
+    GUDINGZICHANMINGCHENGTIPS:
+      'Consist of "Assy. Part Name", "Component Name", and "Tooling Type"',
+    ZICHANBIANDONGDANJIA: 'Asset Alteration',
+    ZICHANBIANDONGZONGE: 'Overall Asset Alteration',
+    YUANLINGJIANZICHANZONGE: 'Prev. Part Total Asset',
+    XINLINGJIANZICHANZONGE: 'New Part Total Asset',
+    GONGYILEIXINGTIPS:
+      'Such as injection Tooling, stamping, and electroplating etc.',
+    GONGMUJUZHONGLEITIPS: 'Ex: Manifold Injection Tooling',
+    ZICHANFENLEIBIANHAOTIPS: '',
+    SANJIANMINGCHENGTIPS: '',
+    SANJIANLINGJIANHAOTIPS: '',
+    XIUMU: 'Tooling Repair',
+    JIANZHI: 'Impairment',
+    SHULIANGTIPS: '',
+    ZONGTOUZIBIANDONGCHENGBEN: 'Total Inv. Alteration',
+    FENTANTOUZIBIANDONGCHENGBEN: 'Apportioned Inv. Cost Alteration',
+    DANJIANTOUZICHENGBENBIANDONG: 'Single Part Alteration',
+    QINGQUERENSHIFOUSHANCHUSUOXUANZHONGDEMUJUHANGXIANGMU:
+      'Please confirm whether to delete the selected row of tooling data',
+    LK_AEKO_QINGWEIHUZHENGHANGSHUJUHOUZAIBAOCUN:
+      'Please maintain row data, then save',
+    AEKOCBDTOTALADJUSTTIPS:
+      'Change value is greater than the value of "change value - summary table/change value -CBD", please modify and save again.',
+    AEKOQUOTATIONMODULETIP_1:
+      'When the tooling cost is not divided into the unit price, then "Tooling Repair" or "Impairment" must refer to "Prev. Part Tooling CBD"; Whereas the tooling cost is divided into the unit price,  "Tooling Repair" or "Impairment" may not  refer to "Prev. Part Tooling CBD".',
+    LK_HANDLEADDNEWDATA_TIPS:
+      'Please select a row of the previous part CBD data first',
+    LK_HANDLEADDNEWDATA_TIPS_CHECK:
+      'Please select a row of the previous part CBD data first',
+    '原材料/散件': 'Raw Material/Component',
+    AEKO_TIPS_QINGTIANXIEHAOFENTANSHULIANGHOUZAIBAOCUN:
+      'Please enter the apportioned quantity, then save',
+    NEIRONGSHENPIZHUANGTAI: 'Content Approval Status',
+    BNKSHENPIZHUANGTAI: 'BNK Approval Status',
+    LINGJIANLEIXING: 'Part Type',
+    JIESHUSHIJIAN: 'Ending Time',
+    QINGXUANZEYIGEAJIASHUJU: 'Please select a A price data ',
+    ZHIDINGTAIZHANGKUYUANLINGJIAN: 'Specified origin part of the ledger',
+    DANGQIANAJIA: 'Cur. A Price',
+    ZHIDINGAEKOKUYUANLINGJIAN: 'Specified origin part of the AEKO',
+    QISHISHIJIAN: 'Stating Time',
+    JIAGEDANWEI: 'Pricing Unit',
+    QINGXUANZEXUYAOBAOCUNDEYUANLINGJIAN: 'Please select origin part to save',
+    LK_BIAOTAIAJIA: 'Stmt. A Price',
+    LK_AEKO_FENE: 'Quota',
+    LK_AEKO_HUOBI: 'Currency',
+    LK_QINGSHURUGONGYINGSHANGSAPHAO: 'Please enter supplier SAP No.',
+    LK_AEKO_QUONDAMPART_SEARCH_TIPS: 'Part No. cannot be blank',
+    LK_AEKO_XUANZE: 'select',
+    LK_LINGJIANMING: 'Part Name',
+    LK_XINJIANXINXIDAN: 'Info Sheet',
+    LK_AEKOPR: 'PR',
+    LK_AEKOSHEJICHEXINGXIANGMU: 'Model Involved',
+    WEIZHAODAOXINJIANXINXIDAN: 'No info. sheet found',
+    SHENPILIUCHENG: 'Approval Process',
+    SHENPILISHI: 'Approval History',
+    'TPGLZS.YUANCHAOLIAO': 'Raw Material',
+    GONGYINGSHANGBIANMA: 'Supplier No.',
+    YUANCAILIAOPAIHAO: 'Raw Material Brand',
+    LK_YUANYONGLIANG: 'Prev. Consumption',
+    LK_YONGLIANGBIANHUA: 'Consumption Alteration',
+    LK_XINYONGLIANG: 'New Consumption',
+    LK_YONGLIANGJILIANGDANWEI: 'Consumption Measurement Unit',
+    LK_SHICHANGJIALAIYUAN: 'Market Price Source',
+    LK_BUCHAXISHU: 'Compensation Coefficient',
+    LK_YUZHI: 'Threshold Value',
+    LK_YUZHIBUCHALUOJI: 'Threshold Offset Logic',
+    LK_BUCHAZHOUQI: 'Compensation Period',
+    LK_GUIZEBIANHAO: 'Rule Code',
+    LK_MTZBIANGENG: 'MTZ Alteration',
+    LK_YOUXIAOQIQI: 'Valid to',
+    LK_YOUXIAOQIZHI: 'End of Validity',
+    LK_YOUXIAOQI: 'Validity Period',
+    REST: 'Reset',
+    LK_OBJECTAEKOPARTIDBUNENGWEIKONG: 'objectAekoPartId cannot be blank',
+    LINGJIANSHIJIANDUANCONGDIECUOWU:
+      'Time overlap existed, please reselect row data',
+    XINYOUXIAOQIKAISHISHIJIANBITIAN: 'Start of validity cannot be blank',
+    XINYOUXIAOQIJIESHUJIANBITIAN: 'End of validity cannot be blank',
+    XINYOUXIAOQIKAISHIWANYUJIESU:
+      'Start of validity should not later than end of validity',
+    resetSure: 'Are you sure to reset?',
+    YONGLIANGBIANHUABUNENGWEIKONG: 'Consumption changing value cannot be blank',
+    DUMPLIDATEDPARDWARNING:
+      'The new part number is the same as the original part number and cannot be deleted/added. Please edit it on the existing project',
+    QINGGOUXUANXUYAOFUZHIDEHANGXIANGMU: 'Please select row data to copy',
+    QINGGOUXUANXUYAOSHANCHCUDEHANGXIANGMU: 'Please select row data ro',
+    YUANCHAOLIAO: 'Raw Material',
+    LK_AEKOKESHI: 'Dept.',
+    LK_AEKODONGJIERIQI: 'Frozen Date',
+    LK_AEKOPINGPAI: 'Brand',
+    LK_AEKOLINIE: 'Linie',
+    LK_YUQIBIBAOBIAO: 'Overdue BI Report',
+    LK_AEKOHUIYITONGGUO: 'Meeting Aproved',
+    LK_XIAZAIMOBAN: 'Download Template',
+    LK_DAORUAEKO: 'Import AEKO',
+    LK_SHANCHUAEKO: 'Delete AEKO',
+    LK_CHEXIAOAEKO: 'Withdraw AEKO',
+    LK_DAORUFUJIAN: 'Import Attachment',
+    LK_AEKODAOCHU: 'Export',
+    LK_AEKOLANGBAOJUEYI: 'Wolfsburg Resolution',
+    LK_AEKOCHUANGJIANRIQI: 'Creation Date',
+    LK_AEKOCHEXIAOYUANYIN: 'Withdraw Reason',
+    LK_QINGSHURUCHEXIAOYUANYIN: 'Please select withdraw reason',
+    LK_TIPS_IMPORFILES_AEKO:
+      'the attachment will be quoted by multiple AEKO, please confirm whether to upload?',
+    LK_AEKO_DAORUFUJIAN: 'Import Attachment',
+    LK_WEITIANXIECHEXIAOYUANYINWUFABAOCUN:
+      'Withdraw reason is blank, cannot be saved',
+    LK_WEITIANXIECHEXIAOYUANYIN: 'Withdraw reason is blank, cannot be saved',
+    LK_AEKO_YICIZHINENGCHEXIAOYIGEAEKO:
+      'Only one AEKO can be withdrawn at a time, please correct!',
+    LK_AEKO_FILES_LAIYUAN: 'Source',
+    LK_QINGQUERENSHIFOUSHANCHUAEKO:
+      'Please confirm whether to delete this AEKO.',
+    LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI:
+      'The part number is insufficient, please add it to 9 digits or more',
+    LK_AEKO_DANGQIANAEKOBUNENGJINXINGCAOZUO: 'Current AEKO cannot be withdrawn',
+    LK_AEKO_QINGXUANZEYAODAOCHUDEHANGXIANGMU:
+      'Please select row data to export',
+    LK_AEKO_GOUXUANXIANGBAOHANYICHEXIAOAEKOWUFACAOZUO:
+      'The selected items contain withdrawn AKEO, and the operation cannot be executed',
+    LK_AEKO_TIPS_SHIFOUQUEDINGHUIYITONGGUO: 'Are you sure to meeting approval?',
+    LK_AEKO_TCMDAORUQINGDAN: 'TCM Import List',
+    LK_AEKO_SHOUDAORIQI: 'Reception Date',
+    LK_TCMLIST_TABLE_TITLE: 'Title',
+    LK_TCMLIST_TABLE_SHOUDAORIQI: 'Reception Date',
+    LK_TCMLIST_TABLE_STATUS: 'Status',
+    LK_AEKO_TCM_SHOUDONGDAORU: 'Manual Import',
+    LK_AEKO_TCM_DAORUCHENGGONG: 'Import failed',
+    LK_AEKO_TCM_DAORUSHIBAI: 'Import successfully',
+    LK_AEKO_TCM_TIPS_YICIZHINENGDAORUYITIAOSHUJU:
+      'Only one data can be imported at a time',
+    LK_AEKO_TCM_TIPS_DAORUSHIBAI: 'Import failed',
+    LK_AEKO_TCM_TIPS_DAORUCHENGGONG: 'Import successfully',
+    LK_AEKO_TCM_DAORUCHENGGONG_1: 'Import Successfully',
+    LK_AEKO_TCM_DAORUSHIBAI_1: 'Import failed',
+    我的申请: 'My Application',
+    确认: '',
+    QIEHUANGANGWEI: 'Switch Pos.',
+    YEWURIZHI: 'Business Log',
+    MOKUAI: 'Module',
+    QINGQIUSHIJIAN: 'Req. Time',
+    XIANGYINGSHIJIAN: 'Response Time',
+    JIEGUO: 'Result',
+    LK_AEKOFUJIAN: 'AEKO Attachment',
+    LK_AEKOFUJIANMIAOSHU: 'AEKO Desc.',
+    LK_ZHONGWENFANYIJINGONGCANKAOYIDEWENWEIZHUN:
+      'Chinese translation is for reference only, German shall prevail:',
+    LK_ZHONGWENFANYIYUANZITCM: 'Chinese translation (from TCM)',
+    LK_AEKO_PARTS_ZHUANYECAIGOUYUAN: 'LINIE',
+    LANGRUIGEKEY1: 'Im English',
+    CSFGUZHANG: 'CSF Section Chief',
+    COMMODITYKESHI: 'Commodity',
+    LK_FENPAI: 'Assign',
+    AEKO_CHECK: 'AEKO View',
+    AEKOFENPEI: 'AEKO Assign',
+    开始日期: '',
+    结束日期: '',
+    WODESHENQING: 'My Application',
+    DANJUBIANHAO: 'Sheet No.',
+    DANJULEIXING: 'Sheet Type',
+    RENWUQIZHIRIQI: 'Task Duration',
+    SHENPIJINDU: 'Approval Progress',
+    SHENQINGSHIJIAN: 'App. Date',
+    SHENPISHIXIANG: 'Approval Event',
+    LK_CBDHUIZONG: 'CBD Summary',
+    'partsprocure.PARTSPROCUREPARTNUMBER': 'Part No.',
+    LINGJIAHAO: 'Part No.',
+    CHAKAN: 'View',
+    ZHUANYECAIGOUYUAN: 'LINIE',
+    SHENPI: '',
+    SHENPILEIXING: '',
+    LK_DAISHENPI: 'To-be Approved',
+    'partsprocure.PARTSPROCURE': 'Please enter part no.',
+    LK_AEKOGUANLI: 'AEKO Mgmt.',
+    LK_AEKOCHAKAN: 'AEKO View',
+    LK_AEKOCAOZUO: 'AEKO Operation',
+    SHEJICHEXINGCHEXINGXIANGMU: 'Model/Project Involved',
+    LK_AEKOMIAOSHU: 'Desc.',
+    LK_AEKOBIAOTAI: 'AEKO Stmt.',
+    LK_AEKO_GENGGAILINGJIANMINGCHENG: 'Change Part Name',
+    LK_AEKO_ZHUYAOGONGYINGSHANG: 'Main Supplier',
+    LK_AEKO_ZENGJIACAILIAOCHENGBEN: 'Increased Material Cost (RMB/Car)',
+    LK_AEKO_DAIXUANZE: 'To-be Selected',
+    LK_AEKOBAOBIAO: 'AEKO Report',
+    LK_AEKOSHENPI: 'AEKO Approval',
+    LK_YISHENPI: 'Approved',
+    LK_CHENGBENBIANHUAZHI: 'Cost Alteration Δ Value',
+    LK_AEKO_QITAFEIYONGBUHANSHUI: 'Other Expense (excl.Tax)',
+    LK_AEKO_SHENPIFUJIAN: 'Approval Attachments',
+    LK_AEKO_AEKOJIEZHIRIQI: 'AEKO DDL',
+    LK_QINGSHURUZHENGQUESHUZHI: 'Please enter sufficient value',
+    LK_QINGSHURUZHENGQUESHUZHIXIAODIANHOUBAONIUSIWEIXIAOSHU:
+      'Please enter sufficient value, and reserve dour decimal fractions',
+    GOUXUANDUOGEXIANGMUSHENPI:
+      'Multiple project can be select for batch maintenance',
+    AEKO_PENDING_APPROVAL_BUTTON_PILIANGPIZHUN: 'Batch Approval',
+    LK_AEKO_ZENGJIATOUZIFEI: 'Increased Inv. Expense (excl. Tax)',
+    QINGXUANZEYAOSHENPIDESHUJU: 'Please select data to be approved',
+    LK_WANCHENGSHIJIAN: 'Completion time',
+    LK_SHENPICAOZUOSHIJIAN: 'Operation Time',
+    LK_PILIANGSHENPI: 'Batch Approval',
+    NINQUEDINGYAOZHIXINGFENPAI: 'Are you sure to assign?',
+    QINGXUANZHECSFGUZHANG: 'Please select CSF section chief',
+    LK_JIEDONG: 'Unfreeze',
+    CHEHUI: 'Withdraw',
+    DUQUBAOJIADAN: 'Quotation Sheet',
+    nominationSuggestion_ZuHe: 'Combination',
+    nominationSuggestion_QuXiaoZuHe: 'Ungroup',
+    QINGXUANZECAIGOUGONGCHANG: 'Please select purchasing factory',
+    QINGSHURUGONGYINGSHANGBIANHAO: 'Please enter Supplier',
+    NEIRONGZHUANGTAI: 'Content Status',
+    QINGXUANZENEIRONGZHUANGTAI: 'Please select content Status',
+    MTZXIANGGUAN: 'MTZ relevant ',
+    QINGXUANZEMTZXIANGGUAN: 'Please select MTZ relevent',
+    QINGSHURUGONGYINGSHANGJIANCHENG: 'Please enter supplier abbreviation',
+    ZHIDINGTOUZICHEXINGXIANGMU: 'Specify Inv. Model Proj.',
+    QINGXUANZEZHIDINGTOUZICHEXINGXIANGMU:
+      'Please select specify Inv. model project',
+    NEIRONGBIAOTAI: 'Content Stmt.',
+    WUGUANXIANGGUANQIEHUAN: 'Irrelevant/relevant Switch',
+    BIAOTAICHONGZHI: 'Stmt. Reset',
+    FAFANGGONGYINGSHANGBAOJIA: 'Dispatch Supplier Quotation',
+    XIANGGUANBIAOTAI: 'Relevant Stmt.',
+    BIANGENGLEIXING: 'Alteration Type',
+    YUANLINGJIANMINGCHENG: 'Prev. Part Name',
+    GONGYINGSHANGBIAOHAO: 'Supplier No.',
+    BJIABIANDONGHANFENTAN: 'B Price Alteration (incl. apportion)',
+    ZHUANGCHELVMEICHEYONGLIANG: 'Loading Rate/Qty per Car',
+    JIAGEZHOU: 'Price Axis',
+    MTZBIANGENG: 'MTZ Alteration',
+    YUANBNKZHUANGTAI: 'Prev. BNK Status',
+    XINBNKZHUANGTAI: 'New BNK Status',
+    QINGXUANZEXUYAOQIEHUANBIAOTAIDELINGJIAN:
+      'Please select the part for statement switching',
+    QINGXUANZEXUYAOCHONGZHIBIAOTAIDELINGJIAN:
+      'Please select the part for statement resetting',
+    LK_AEKO_LAIYUAN: 'Source',
+    LK_AEKO_PARTSLIST: 'Part List',
+    LK_AEKO_FENPAIKESHI: 'Assign Dept.',
+    LK_AEKO_XINZENGLINGJIAN: 'New Part',
+    LK_AEKO_SHANCHULINGJIAN: 'Delete Part',
+    LK_AEKOBIANGENGLEIXING: 'Alteration Type',
+    LK_AEKOPRHAO: 'PR No.',
+    LK_AEKOSHEJICHEXINGXIANGMUCHEXING: 'Model/Project Involved',
+    LK_AEKO_LINIE: 'Linie',
+    LK_TIPS_SHIFOUSHANCHUGAILINGJIAN: 'Are you sure to delete part?',
+    LK_AEKO_FENPAIGEIYUSHEKESHI: 'Assign to Preset Dept.',
+    LK_AEKO_SHOUDONGFENPAIKESHI: 'Manually Assign Dept.',
+    LK_AEKO_KESHITUIHUI: 'Dept. Return',
+    LK_AEKO_FENGMIANBIAOTAI: 'Cover Stmt.',
+    LK_AEKO_SHIFOUTOP: 'TOP (Y/N)',
+    LK_AEKO_SHIFOUXIANGGUAN: 'Relevance (Y/N)',
+    LK_AEKO_XINSHOUPISONGYANGZHOUQI: 'New Sampling Cycle (Week)',
+    LK_AEKO_YINGXIANGJINDU: 'Impact Progress',
+    LK_AEKO_ZHIDINGQIANQICAIGOU: 'Specify Forward Sourcing',
+    LK_AEKO_ZENGJIATOUZIFEIYONG: 'Increased Inv. Expense (excl. Tax)',
+    LK_AEKO_TOTAL: 'TOTAL',
+    LK_AEKO_TIJIAOSHIJIAN: 'Submitted Time',
+    LK_AEKO_CHEHUI: 'Withdraw',
+    GONGCHANG: 'Plant',
+    YANYONGYUANLINGJIANFENE: 'COP Quota',
+    PEIZHI: 'Configration',
+    FADONGJIDIANCHI: 'Engine/Battery',
+    BIANSUXIANGLICHENG: 'Transmission/Millage',
+    ZHUANGCHELV: 'Loading Rate',
+    YONGLIANG: 'Consumption',
+    QINGXUANZENEIRONGZHUANGTAIWEIDAIBIAOTAIDELINGJIANJINXINGQIEHUAN:
+      'Please select part whose content status is "to-be statement"  to switch',
+    QINGXUANZEXUYAODAOCHUDEYUANLINGJIAN:
+      'Please select previous data to export',
+    FENPAICAIGOUYUAN: 'Assign Buyer',
+    LK_AEKO_FENPAIGEIYUSHECAIGOUYUAN: 'Assign to Preset Buyer',
+    LK_AEKO_SHOUDONGFENPAICAIGOUYUAN: 'Manually Assign Buyer',
+    LK_AEKO_NEIRONGZHUANGTAI: 'Content Sattus',
+    XUANZEFENPAICAIGOUYUAN: 'Select buyer to assign',
+    QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGCHONGZHI:
+      'Please part whose content status is "to-be statement", "Quoting" or "Quoted" to reset',
+    CAOZUOREN: 'Operator',
+    QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGQIEHUAN:
+      'Please select part whose content status is "to-be statement"  to switch',
+    YANYONGYUANLINGJIANFENEBUNENGDAYUBAIFENZHIBAI:
+      'COP Quota should not greater than 100%',
+    QINGXUANZEYISHOUDONGSHEZHIAJIADELINGJIANJINXINGTIJIAO:
+      'Please select part with manually set A price to submit',
+    LK_AEKO_FENPAICAIGOUYUAN_LINE: 'Assign Buyer',
+    XUANZEFENPAIKESHI: 'Assign Dept.',
+    LK_AEKO_TUIHUIYUANYIN: 'Return Reason',
+    LK_WEITIANXIETUIHUIYUANYIN:
+      'The reason for return is not filled in and cannot be saved',
+    LK_AEKO_BUTTON_DETAIL: 'AEKO Detail',
+    LK_AEKO_LINGJIANWUYUSHECAIGOUYUANQINGCHONGXINXUANZE:
+      'Part has no present buyer, please reselect!',
+    LK_AEKO_FENPAICAIGOUYUAN: 'Assign buyer',
+    LK_AEKO_GAILINGJIANYIFENPEI: 'the part is assigned',
+    LK_AEKO_BUNENGWEIKONG: 'Cannot be blank',
+    LK_AEKO_BIAODANNEIFEIYONG: 'In-form Expenses',
+    LK_AEKO_HANGYIFENPAIKESHIWUFAJINXINGCHONGXINFENPAI:
+      'Row data have been assigned to department, cannot be reassigned',
+    LK_AEKO_QINGXUANZEHOUTIJIAO: 'please select and submit',
+    LK_AEK0_BIAOTAIZHUANGTAI: 'Stmt. Status',
+    QINGXUANZENEIRONGZHUANGTAIWEIDBYDELINGJIANJINXINGTIJIAO:
+      'Please part whose content status is "to-be statement", "Quoting", "Quoted" or "Rejected" to submit',
+    LK_AEKO_HANGYIFENPAICAIGOUYUANQINGQUERENSHIFOUCHONGXINFENPAI:
+      'Row data have been assigned to buyer, please confirm whether to reassign',
+    LK_AEKO_HANGLINGJIANYIBIAOTAILINIEWUFAXIUGAI: 'Modify',
+    DECLARERESETTIPS:
+      'the statement content of row data will be reset, please confirm executiion',
+    LK_AEKO_YUANCHENGYUNFANGSHI: 'Prev. Trans. Method',
+    LK_AEKO_XINCHENGYUNFANGSHI: 'New Trans. Method',
+    LK_AEKO_NEIRONGBIAOTAIDAOCHUTISHI:
+      'Select part row data-->Export-->Batch maintain previous part data-->Import',
+    QINGXUANZEXUYAODAOCHUDEYUANLINGJIANXIANGMU:
+      'Please select previous row data to export',
+    AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU:
+      'Please select previous row data to operate',
+    LK_TIPS_AKEO_LINGJIANCUNZAIYIPINDUODIAN:
+      'Selected part have multiple suppliers, quotation will send to all relevant supplier, are you sure to send quotation?',
+    LK_AEKO_NEIRONGBIAOTAI_CAOZUO: 'Operation',
+    AEKO_QINGXUANZEYAODAOCHUDELINGJIANHANGXIANGMU:
+      'Please enter part Row data to',
+    AEKO_DIALOG_TITLE_XINZENGLINGJIAN: 'New Part',
+    LK_AEKO_SHEJIPID: 'PID Involved',
+    LK_AEKO_ADDPARTS_MEICHEYONGLIANG: 'Qty per Car',
+    LK_AEKO_FENPAIZHUANGTAI: 'Assign Status',
+    LK_AEKO_DIALOG_DONGJIE: 'Unfreeze',
+    XUANZEYAODONGJIEDEZHUANYECAIGOUYUAN: 'Please select Linie to freeze',
+    AEKO_YUANLINGJIANHAO: 'Prev. Part No.',
+    AEKO_YUANLINGJIANHAO_1: 'Prev. Part No.',
+    LK_AEKO_FENGMIANBIAOTAIHENEIRONGBIAOTAIJIANGYIBINGCHEHUI:
+      'Cover statement and content statement will be withdrawn',
+    LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI: 'For content withdrawn, ',
+    LK_AEKO_ZHIDINGTOUZICHEXINGXIANGMU: 'Specify Inv. Model Proj.',
+    LK_AEKO_QINGSHURULINGJIANHAOHOUCHAXUN: 'Please enter part no. for query',
+    LK_AEKO_COVER_TIPS_QINGXUANZELINIEHOUTIJIAO:
+      'Please select LINIE then submit',
+    QINGXUANZEXUYAOCHEHUIBIAOTAIDELINGJIAN:
+      'Please select part to withdraw statment',
+    LK_AEKO_CONTENTDECLARE_LIEYINCANGXIANSHI: 'Col. display/Hide',
+    LK_AEKO_COVER_TIPS_FENGMIANBIAOTAIHENEIRONGBIAOTAIJIANGYIBINGCHEHUI:
+      'Prior to approval, the documents submitted may be withdrawn. The cover statement and the content statement will be withdrawn.',
+    LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO:
+      'Prior to approval, the documents submitted may be withdrawn. This is only for content withdrawal. If you need to withdraw the cover statement, please operate in the cover statement [Withdrawal].',
+    LK_AEKO_PRICEAXIS: 'Price axis',
+    LK_AEKO_PRICEAXIS_PRICETYPE: 'Price Type',
+    LK_AEKO_SELECT_HUOBI: 'Currency',
+    LK_AEKO_SELECT_YANGJIANFEI: 'Sampling Fee',
+    LK_AEKO_SELECT_ZHONGZHIFEI: 'Termination Fee',
+    LK_AEKO_SELECT_JIAGEDANWEI: 'Pricing Unit',
+    LK_AEKO_SELECT_JILIANGDANWEI: 'Measurement Unit',
+    LK_AEKO_SELECT_SHIFOUDAIBAOJIA: 'Quote Delegate (Y/N)',
+    SHENQINGRENJIESHI: 'Applicant Exp.',
+    JIESHIFUJIAN: 'Exp. Attachment',
+    SHENPIFUJIAN: 'Approval Attachment',
+    LK_SHENPIFUJIAN: 'Approval Attachment',
+    JIESHIFUJIANCHAKAN: 'View Exp. Attachment',
+    SHENPIYIJIANANDJIESHI: 'Approval Comment/Applicant Exp.',
+    AEKO_CONTENT_BAOJIA: 'Quotation',
+    AEKO_YUANLINGJIANHAOCHONGZHI: 'Part No. Reset',
+    SHENPIYIJIANANDJIESHIBUNENGWEIKONG:
+      'Approval Comment/Applicant Exp. should not be blank',
+    TASKIDBUNENGWEIKONG: 'TASK ID should not be blank',
+    WENJIANMIAOSHUBUNENGWEIKONG: 'File description should not be blank',
+    AEKO_PRICE_GAIXINLINGJIANDEJIAGEBIANHUAQUSHI:
+      'The price trend of this new part is for reference only.',
+    AEKO_PRICE_AEKOSHISHISHIYUANLINGJIANJIAGEFASHENGBIANHUA:
+      'When Aeko is implemented, the price of the original part changes or the effective time of the original part will cause the price of the new part to change.',
+    AEKO_PRICE_BIAOTAISHIDEYUANLINGJIANJIAGE:
+      'The original part price at the time of statement',
+    AEKO_PRICE_BIANDONGCHENGBEN: 'Cost Alteration',
+    AEKO_PRICE_XINLINGJIANJIAGE: 'New Part Price',
+    AEKO_PRICE_DANGQIANYUGUDEXINLINGJIANSHENGXIAOJIAGE:
+      'Estimated effective price of new parts',
+    AEKO_PRICE_ZUIZHONGDEXINLINGJIANSHENGXIAOJIAGE:
+      'Actual effective price of new parts',
+    LK_AEKO_TIPS_WEICHAXUNDAOGAILINGJIAN:
+      'The part is not found, click Add to create new part',
+    QINGXUANZEXUYAOTIJIAOBIAOTAIDELINGJIAN:
+      'Please select the parts to submit statment',
+    LK_TIPS_AKEO_COVER_DANGQIANFENGMIANXIAYOUDAISHENPIDENEIRONGBIAOTAI:
+      'The content that has been submitted for approval under the current cover will be submitted for approval together with the cover',
+    LK_TIPS_AKEO_LINGJIANCUNZAIYIPINDUODIAN_1:
+      'Selected part have multiple suppliers, quotation will send to all relevant supplier, are you sure to send quotation?',
+    YUANLINGJIANYONGLIANG: 'Original Part Consumption',
+    XINLINGJIANYONGLIANG: 'New Part Consumption',
+    LK_AEKO_DONGJIESHIJIAN: 'Frozen Time',
+    SHENPIDANYUANLIAN: 'Approval Sheet Preview',
+    ZHISHAOYOUYIGE: 'There should be at least one row.',
+    QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO:
+      'Please part whose content status is "to-be statement", "Quoting", "Quoted" or "Rejected" to submit',
+    LK_AEKO_CHENGYUNFANGSHI: 'Trans. Method',
+    LK_AEKOZUHECOMMENTS:
+      'Multi to one or Multi to Multi operation is used to calculate the per car cost change of the cover statement.',
+    LK_QUXIAOTONGGUO: 'Cancel Approved',
+    LK_AEKONEIRONGZUHECOMMENTS:
+      'Changyi or changyi multi-combination operation is used to calculate the cost change of the bicycle cover position systematically.',
+    GOUXUANDUOLINGJIANZUHE: 'Please select multiple part row data to combine',
+    AEKOZUBIE: 'AEKO Group',
+    NINQUEDINGYAOZHIXINGZUHE: 'Are you sure to execute combination?',
+    XUXUANZHONGMEIBEIFENZUDELINGJIAN:
+      'Please select the parts row data that are not grouped',
+    ZHISHAOYAOYOUYIHANG: 'here should be at least one row.',
+    SHIFOUQUXAIODANGQIANGOUXUANZUHE:
+      'Do you want to uncheck the current combination?',
+    LKCAIGOUGONGCHANG: 'Purchasing Factory',
+    cancelPassSure: 'Please confirm again whether to cancel the cover?',
+    GOUXUANBAOHANDUOGEFENZUCUOWU: 'The checked item contains multiple groups',
+    XITONGZIDONGZUHEQUXAIOSHIBAI:
+      'The current combination project is automatically combined by the system. [Cancel combination] failed',
+    LK_AEKO_ALERT_TISHI: 'Notification',
+    AEKO_DETAIL_RECORD_TIJIAOREN: 'Submitter',
+    QINGSHURUGONGYINGSHANGSAP号: 'Please enter supplier SAP No.',
+    LK_QINGXUANZEBUCHONGCAILIAOJILUJINXINGTIJIAO:
+      'Please select the supplementary material record to submit',
+    GOUXUANXUZUHEDEHANGXIANGMU: 'Please select row data to conbine',
+    AEKO_DETAIL_CONTENTDECLARE_TABLE_HEADER_STATUS_TIPS:
+      'Reasons for the status of [submitted] : 1. The cover has not been submitted; 2. 2. The cover statement has been submitted as a priority and is still in the approval process.',
+    LK_AEKO_SHENPIKESHI: 'Approval Dept.',
+    LK_CURRENTPARTNUMBER: 'For Cur. Part No.',
+    SINGLEGROUPSENDFIRSTONE:
+      'Only one quotation can be sent in a single combination, and the system will send the first one by default. Please confirm',
+    AEKOSENTSUPPLIERPRICENOTALLOWED:
+      'Quotation sent, not allowed to send again',
+    LIUCHNEGIDBUENNGWEIKONG: 'Process cannot be blank',
+    GUANLIANYUANLINGJIANZAIZUHE:
+      'Please select the original parts first, and then carry out the [combination] operation, so that the system can identify the variable many, one change many',
+    YUANLINGJIANAJIA: 'Prev. Part A Price',
+    YUANLINGJIANBJIA: 'Prev. Part B Price',
+    查看已审批: 'View Approved',
+    SHANGCHUANSHIJIAN: 'Upload Time',
+    LK_WENJIANMIOASHU: 'File Desc.',
+    AEKOMANAGEIDBUNENGWEIKONG: 'Aeko Manage Id should not be blank ',
+    LK_CHAKANYISHENPI: 'View Approved',
+    LINIEIDBUENNGWEIKONG: 'Linie id cannot be blank',
+    AEKOIDBUENNGWEIKONG: 'Aeko ID cannot be blank',
+    SHIFOUSVWZHIDINGJIAGESANJIAN: 'SVW Nomi. Spare Part (Y/N)',
+    'RFQ#': '#',
+    JINE: 'Amount',
+    MOJUFENTANSHULIANG: 'Tooling Fee Apportioned Qty',
+    MOJUFENTANJINE: 'Tooling Fee Apportioned Amount',
+    YUANCAILIAOSANJIANCHENGBEN: 'Raw Material/Component Cost',
+    YUANCAILIAOSANJIAN: 'Raw Material/Component',
+    LK_DAMAGES_ZHONGZHIFEI: 'Termination Fee',
+    LK_DAMAGES_SAMPLEFEE_YANGJIANFEI: 'Sampling Fee',
+    YUANCAILIAOSANJIANMIAOSHU: 'Raw Material/Component Desc.',
+    YUANCHANGUO: 'Country of Origin',
+    DANJIARMBUOM: 'Unit Price',
+    WULIAOGUANLIFEI: 'Storage Fee',
+    SHULIANGDANWEI: 'UoM',
+    ZHIJIEYUANCAILIAOSANJIANCHENGBEN: 'Direct Raw Material/Component Cost',
+    FENTANMUJUFEI: 'Apportioned Tooling Fee',
+    FENTANKAIFAFEI: 'Apportioned Dev. Fee',
+    LK_AEKO_KAIFAFEIHEJI: 'Total Dev. Fee',
+    审批单: 'Approval Sheet',
+    AEKOLINGJIANHAO: 'AEKO Part No,',
+    QIEHUANLINGJIAN: 'Switch Part',
+    '(%)': '(%)',
+    '(RMB/Pc.)': '(RMB/Pc.)',
+    是否: 'Whether',
+    LK_YUANLINGJIANHAO: 'Prev. Part No.',
+    CBD汇总: 'CBD Summary',
+    LK_AEKO_QUERENSHENPI: 'Confirm Approval',
+    QUERENSHENPIGUANBICHUANGKOU:
+      'Confirm the approval and the window will close automatically',
+    AEKOQUERENSHENPITIAOZHUANXAIYIYE:
+      'Confirmation of approval will jump to the next page',
+    LK_AEKO详情: 'AEKO Detail.',
+    LK_CHAKANMTZBIANGENG: 'View MTZ Alteration',
+    LK_AEKOHAO_APPROVEDETAILS: 'AEKO No.',
+    'MODEL-ORDER.LK_CAIGOUYUAN': 'Buyer',
+    LK_XIANAJIA: 'New A Price',
+    LK_AJIABIANDONG: 'A Price Alteration',
+    LK_BNKBIANDONG: 'BNK Alteration',
+    LK_XINBJIA: 'New B Price',
+    LK_ZENGJIATOUZIFEIBUHANSUI: 'Increased Inv. Expense (excl. Tax)',
+    LK_GONGYINGSHANGBIANHAO: 'Supplier No.',
+    LK_SHEZHIBIAOTOU: '',
+    审批附件: 'Approval Attachment',
+    BIDDING_BIXUAN: 'Mandatory',
+    BIDDING_BITIAN: 'Mandatory',
+    BIDDING_XUHAO: 'Serial No.',
+    BIDDING_WENJIANMING: 'File Name',
+    BIDDING_WENJIANDAXIAO: 'File Size',
+    BIDDING_SHANGCHUANREN: 'Uploader',
+    BIDDING_SHANGCHUANRIQI: 'Upload Date',
+    BIDDING_BXDY0: 'Must greater than 0',
+    BIDDING_SHI: 'Yes',
+    BIDDING_FOU: 'No',
+    BIDDING_GYSZWM: 'Supplier Name (CN)',
+    BIDDING_GYSYWM: 'Supplier Name (EN)',
+    BIDDING_LINSHIHAO: 'Temp. No.',
+    BIDDING_SAPHAO: 'SAO No.',
+    BIDDING_GYSMC: 'Supplier Name',
+    BIDDING_SFCYBLRFQ: 'Cur. Round RFQ (Y/N)',
+    BIDDING_GYSBH: 'Supplier No.',
+    BIDDING_LIANXIREN: 'Contact',
+    BIDDING_DIANHUA: 'Tel',
+    BIDDING_QSRZQDYXDZ: 'Please enter valid email address',
+    BIDDING_youxiang: 'Email',
+    BIDDING_MBDL: 'MBDL',
+    BIDDING_CBDXZ: 'CBD Selection',
+    BIDDING_SVWZSH: 'SVW Formal No.',
+    BIDDING_DI十NIAN: '',
+    BIDDING_GYZBH: '',
+    BIDDING_GONGYINGZU: '',
+    LK_TIJIAOZHONG: 'Red',
+    LK_DINGDIANSHIJIANQIZHI: 'Duration',
+    MUQIANCHANNENG: 'Capacity',
+    QINGXUANZEYITIAOSHUJU: 'Please select a data',
+    'PLGLZS.QUYU': 'Region',
+    GYLGLNJGYLGL: 'N-tier Supply Chain Mgmt.',
+    DIQU: 'District',
+    CHANGELOG: 'Change Log',
+    CAOZUOLEIXING: 'Operation Type',
+    GONGYINGSHANGMINGCHEN: 'Supplier Name',
+    BANNIANBAOTISHI:
+      'The data shown below is the data from the last three semi-year',
+    LK_CHAKANBIANGENGDAN: 'MTZ Alteration Sheet',
+    YIWEIHUDEYOUZHIQINGQUERENSHIFOUSHANCHU: 'Confirm to Delete?',
+    NJIGONGYINGLIANGUANLI: 'N-tier Supply Chain Mgmt.',
+    CAOZUOSHIBAI: 'Operation Failed',
+    RENWUMINGCHENG: 'Task',
+    其他项目公告信息: 'Other Project Announcements',
+    BIDDINGH_SHANGCHUANCHENGGONG: 'Upload Successfully',
+    BIDDING_SHANGCHUANSHIBAI: 'Upload Failed',
+    BIDDING_WJDXZDXZ15M: 'File must not exceed 15M',
+    BIDDING_SFSCXZXJFJ: 'Are you sure to delete inquiry attachment',
+    'BIDDING_FSNR/GSNR': 'FSNR/GSNR',
+    BIDDING_QIANDUANBAOZHUANGFEI: 'Early Pkg. Fee',
+    BIDDING_HOUDUANBAOZHUANGFEI: 'Later Pkg. Fee',
+    BIDDING_CPXXBNWK: 'Product info cannot be blank',
+    BIDDING_QSZJBNDY17W:
+      'The starting price must not be more than 17 digits (including two decimal places)',
+    添加产品: 'Add Product',
+    BIDDING_NIANJINGJIHUAANDZHEXIANLV:
+      'Annual Price Reduction Plan & Discount Rate',
+    BIDDING_NJJJMX: 'Annual Price Reduction Plan Detail',
+    BIDDING_CGJHSJYW: 'Procurement project data error!',
+    BIDDING_CPLJHBNCF: 'Product part number cannot be repeated!',
+    BIDDING_BNQKCPXXLBZSBLYH:
+      ' The product information list cannot be blank, please remain at least one row!',
+    BIDDINGH_PMQJPZCW: 'Ranking Range Config. Error',
+    'BIDDING_BXDY0，BXXYDY100':
+      'Must be greater than 0 and less than or equal to 100',
+    排名显示规则: 'Ranking Display Rule',
+    开标告知书: 'Notification of Bidding Rseult',
+    采购员: 'Buyer',
+    BIDDING_JINGJIAGAOZHISHU: 'Bidding Notice',
+    BIDDING_QXWCTKYDBGXWYYDYSTK:
+      'Please read the terms first and check "I have read the above terms".',
+    产品信息: 'Product Info.',
+    总价: 'Total Price',
+    起始总价: 'The starting price',
+    大写: 'CN Numerical',
+    起始年月: 'SOP',
+    车型: 'Model',
+    BIDDING_NJJHZXL: 'Annual Price Reduction Plan & Discount Rate',
+    报价规则: 'Quotation Rule',
+    上一步: 'Prev. Step',
+    重置: 'Reset',
+    完成设置: 'Complete Config.',
+    BIDDING_XIAZAICHENGGONG: 'Download Successfully',
+    BIDDING_XIAZAISHIBAI: 'Download Failed',
+    距离结束时间: 'to end time',
+    时间: 'Time',
+    BIDDING_ZUOFEISHIBAI: 'Scrap Failed',
+    BIDDING_BCBJXYGZSDDJJZSFJX:
+      'This quotation is less than the warning value set by the rules. Do you want to continue?',
+    BIDDING_BCBJDYGZSDDJJZSFJX:
+      'This quotation is greater than the warning value set by the rules. Do you want to continue?',
+    系统使用条款: 'Terms of Use',
+    BIDDING_CAOZUOCHENGGONG: 'Operate Successfully',
+    BIDDING_CAOZUOSHIBAI: 'Operation Failed',
+    BIDDING_YIBEISHANGCHU: 'Delete',
+    BIDDING_BXYYYGGYS: 'A supplier is required',
+    BIDDING_GYSBXYYGCYBLRFQCNFQJJ:
+      'In order to bid, one supplier must participate in the RFQ',
+    BIDDING_QTYXTSYTK: 'Please agree to the terms of use',
+    BIDDING_FASONG: 'Send',
+    BIDDING_QXZXJFJ: 'Please select inquiry attachment',
+    BIDDING_BNXYDYDQSJ: 'Cannot be less than or equal to the current time',
+    BIDDING_BNXYDYZQDSJ: 'Cannot be less than or equal to the previous time',
+    BIDDING_QINGXUANZEHUILV: 'Please select exchange rate',
+    BIDDING_SFSCHLXX: 'Are you sure to delete exchange rate info?',
+    BIDDING_SHANCHUSHIBAI: 'Delete Failed',
+    BIDDING_KBSJBXYWYBJJZRQ:
+      'Bid opening time must be later than the closing date of quotation',
+    BIDDING_JSSJBXYWYKSRQ: 'The end time must be later than the start date',
+    BIDDING_BJJZRQBWYJSSJH3GGZR:
+      'The deadline for quotation shall be no later than 3 business days after the closing time',
+    BIDDING_HLBNCF: 'Exch. rate cannot be repeated',
+    BIDDING_QXZLCLX: 'Please select round type',
+    BIDDING_SFQDXJGRFQLC: 'Are you sure to create the new RFQ round?',
+    BIDDING_GYSCODE: 'Supplier Code',
+    BIDDING_QSRGYSCODE: 'Please enter supplier code',
+    NEWS_ZANWUSHUJU: 'No Data',
+    NEWS_TOUTIAOXINWEN: 'Head News',
+    NEWS_GONGYINGJIANXUN: 'Supply Newsletter',
+    NEWS_GONGYINGSHANGXINWEN: 'Supplier News',
+    NEWS_YINGXIANGZHUANQU: 'Image Zone',
+    NEWS_TUJIXINWEN: 'Photo Collection News',
+    NEWS_SHIPINXINWEN: ' Videos',
+    NEWS_TUWENXINWEN: 'News',
+    NEWS_BITIAN: 'Mandatory',
+    NEWS_ZUIDASHURUCHANGDU80: 'Maximum input Length is 80',
+    NEWS_ZUIDASHURUCHANGDU100: 'Maximum input Length is 100',
+    NEWS_JICHUXINXI: 'Basic Info.',
+    NEWS_XINWENFENLEI: 'News Category',
+    NEWS_XINWENBIAOTI: 'News Title',
+    NEWS_XINWENLAIYUAN: 'News Source',
+    NEWS_FABURIQI: 'Publish Date',
+    NEWS_XINWENBIAOQIAN: 'News Tag',
+    NEWS_FABUFANWEI: 'Post Range',
+    NEWS_SHIFOUZHIDING: 'Topped (Y/N)',
+    NEWS_XINWENGAIYAO: 'Brief News',
+    NEWS_TOUTIAOLIANJIE: 'Head News Link',
+    NEWS_GONGYINGSHANGMINGCHENG: 'Supplier Name',
+    NEWS_GUONEIGUOWAI: 'Domestic/International',
+    NEWS_SCXWFM: 'Upload News Cover',
+    NEWS_JYSYBLTP:
+      ' A 16:9 image file is preferred, with a maximum size of 10MB',
+    NEWS_ZDYYHZXZ: 'Custom - Select a user group',
+    NEWS_SOSUOYONGHUZU: 'Search for user group...',
+    NEWS_QUXIAO: 'Cancel',
+    NEWS_QUEDING: 'Confirm',
+    TERMS_SHI: 'Yes',
+    TERMS_FOU: 'No',
+    NEWS_GUOWAI: 'International',
+    NEWS_GUONEI: 'Domestic',
+    NEWS_QINGXUANZEXINWENFENLEI: 'Please select news category',
+    NEWS_SCTPZNSJPGHZPNGGS:
+      'Upload failed, upload images in JPG or PNG format only!',
+    NEWS_SCTPDXBNCG10MB:
+      'Upload failed, the size of uploaded image cannot exceed 10MB!',
+    NEWS_SHANGCHUANCHENGGONG: 'Upload Successfully',
+    NEWS_SHANGCHUANSHIBAI: 'Upload Failed',
+    NEWS_QDQHHBXWDZWNRJQBQK:
+      'After the switch is confirmed, the main content of this news will be cleared.',
+    NEWS_SHIFOUQUEDINGQIEHUAN: 'Are you sure about switching?',
+    NEWS_ZHENGWEN: 'Main Content',
+    NEWS_NEIRONGFENLEI: 'Content Category',
+    NEWS_TUJI: 'Photo Coll.',
+    NEWS_FUJIAN: 'Attachment',
+    NEWS_PLSCTJ: 'Batch Upload Image',
+    NEWS_TIANJIAFUJIAN: 'Add Attachments',
+    NEWS_ZNSCBCG20MDWJ: 'A maximum of 20 MB files can be uploaded',
+    NEWS_QDQHNRFLHXWNRJQBQK:
+      'After deciding to switch content categories, all news content will be cleared.',
+    NEWS_SFQDQH: 'Are you sure about switching?',
+    NEWS_XINJIANXINWEN: 'Create News',
+    NEWS_BAOCUN: 'Save',
+    NEWS_FANHUI: 'Back',
+    NEWS_BIANJI: 'Edit',
+    NEWS_YULAN: 'Preview',
+    NEWS_XWFMWSC: 'News cover not uploaded!',
+    NEWS_TTLJHZWNRBNTSWK:
+      'Headline links and body content cannot be empty at the same time!',
+    NEWS_ZWNRBNWK: 'The body content cannot be empty!',
+    NEWS_TJZSSCYZ: 'Upload at least one photo!',
+    NEWS_SHBNWK: 'Video cannot be empty!',
+    NEWS_SFQDFBCXW: 'Are you sure to publish this news?',
+    NEWS_TISHI: 'Notification',
+    NEWS_GENGXINCHENGGONG: 'Update Successfully',
+    NEWS_XINZENGCHENGGONG: 'Create Successfully',
+    NEWS_QDFHHBXWXGNRBHBC:
+      'Confirm that this news modification will not be saved after returning.',
+    NEWS_SFQDFH: 'Are you sure to return?',
+    NEWS_XIAJIA: 'Revoke',
+    NEWS_SHANGJIA: 'Post',
+    NEWS_XINWENLEIXING: 'News Type',
+    NEWS_ZHUANGTAI: 'Status',
+    NEWS_FABUQIZHIRIQI: 'Publish date',
+    NEWS_LAIYUAN: 'Source',
+    NEWS_SUOSHUZHUANTI: 'Topic',
+    NEWS_SHANGYIYE: 'Prev. Page',
+    NEWS_XIAYIYE: 'Next Page',
+    NEWS_GXWFLWQXCZ: 'This news category has no permission to operate!',
+    NEWS_SFQRSJCXW: 'Are you sure to post this news?',
+    NEWS_SHANGJIACHENGGONG: 'Posted Successfully!',
+    NEWS_XIAJIACHENGGONG: 'Revoked Successfully',
+    NEWS_SJDXWBKSC: 'Posted news cannot be deleted!',
+    NEWS_SFQDSCXW: 'Are you sure to delete the news?',
+    NEWS_SHANCHUCHENGGONG: 'Delete Successfully',
+    NEWS_XINWENGUANLI: 'News Mgmt.',
+    NEWS_XWNRGL: 'News Content Mgmt.',
+    NEWS_XWBQGL: 'News Tag Mgmt.',
+    NEWS_ZTXWGL: 'Features News Mgmt.',
+    NEWS_KVTGL: 'KV Map Mgmt.',
+    NEWS_YNFXYTXW: 'Share a piece of news with you',
+    NEWS_XIANGGUANFUJIN: 'Relevant Attachment',
+    NEWS_NKNTYXH: 'You may also like',
+    NEWS_ZUIRE: 'Hottest',
+    NEWS_RENYUEDU: 'people read',
+    NEWS_ZUIXIN: 'Newest',
+    NEWS_DIANZANCHENGGONG: 'Liked',
+    NEWS_QUXIAODIANZAN: 'Unlike',
+    NEWS_XINWEN: 'News',
+    NEWS_GONGGAO: 'Post',
+    NEWS_DIAOCHAWENJUAN: 'Questionnaire',
+    NEWS_MORE: 'MORE',
+    NEWS_ZHUANTI: 'Topic',
+    NEWS_CAOGAO: 'Draft',
+    NEWS_YIFABU: 'Published',
+    NEWS_CAIGOUGONGGAO: 'Proc. Post',
+    NEWS_WULIUGONGGAO: 'Logistics Post',
+    NEWS_ZHIBAOGONGGAO: 'Quality Assurance Post',
+    NEWS_SOUSUOBIAOTI: 'Topic Search',
+    NEWS_GONGGAOBIAOTI: 'Post Title',
+    NEWS_GONGGAONEIRONG: 'Post Content',
+    NEWS_FABUREN: 'Publisher',
+    NEWS_FABUSHIJIAN: 'Publish Time',
+    MORE: 'MORE',
+    NEWS_XINJIANKVTU: 'New KV Map',
+    NEWS_PLSCKVT: 'Batch Upload KV Map',
+    NEWS_JYSY1390280BLTPBCG10M:
+      'A 1390*280PX image file is preferred, with a maximum size of 10MB',
+    NEWS_BAOCUNCHENGGONG: 'Save Successfully',
+    NEWS_QSCTP: 'Please upload pictures!',
+    NEWS_QRFHHSCTPBHBC:
+      'Confirm that the uploaded image will not be saved after returning!',
+    NEWS_SFQRFH: 'Are you sure to return?',
+    NEWS_TUPIANYULAN: 'Graph Preview',
+    NEWS_SHANGCHUANRIQI: 'Upload Date',
+    NEWS_BOFANGSHUNXU: 'Play Order',
+    NEWS_KVTZTWSJSBKSC:
+      'When the KV map is in posted status, it cannot be deleted!',
+    NEWS_SFSCKVT: 'Do you want to delete the KV map?',
+    NEWS_SHANCHUSHIBAI: 'Delete Failed',
+    NEWS_TIAOZHENGCHENGGONG: 'Adjust Successfully',
+    NEWS_XINJIANBIAOQIAN: 'New Tag',
+    NEWS_BIAOQIANNEIRONG: 'Tag Content',
+    NEWS_SUOSHUFENLEI: 'Category',
+    NEWS_TUICHU: 'Exit',
+    NEWS_TIANJIAREN: 'Operater',
+    NEWS_TIANJIARIQI: 'Add Date',
+    NEWS_WQXSCGBQZNSCZJDXWBQ: 'You can only delete your own news tags',
+    NEWS_SFQDSCBQNR: 'Are you sure to delete tag content?',
+    NEWS_XWBQCJCG: 'News tag created successfully!',
+    NEWS_XWBQCJSB: 'News tag create failed!',
+    NEWS_MOKUAIGUANLI: 'Module Mgmt.',
+    NEWS_YONGHUZUSHEZHI: 'User Group Setting',
+    NEWS_TTXWGLY: 'Head News Admin',
+    NEWS_GYJXGLY: 'Supply Newsletter Admin',
+    NEWS_GYSXWGLY: 'Supplier News Admin',
+    NEWS_YXZQGLY: 'Image Zone Admin',
+    NEWS_CGGGGLY: 'Proc. Post Admin',
+    NEWS_WLGGGLY: 'Logistics Post Admin',
+    NEWS_ZBGGGLY: 'Quality Assurance Post Admin',
+    NEWS_CGWJGLY: 'Proc. Questionnaire Admin',
+    NEWS_WLWJGLY: 'Logistics Questionnaire Admin',
+    NEWS_ZBWJGLY: 'Quality Assurance Questionnaire Admin',
+    NEWS_SFQDBCGNR: 'Are you sure you want to save this content?',
+    NEWS_BAOCUNSHIBAI: 'Save Failed',
+    NEWS_YONGHUZUMING: 'User Group Name',
+    NEWS_CAOZUO: 'Action',
+    NEWS_XINZENG: 'Add',
+    SFQDSCNR: 'Are you sure to delete content?',
+    NEWS_DAOCHUCHENGGONG: 'Export Successfully',
+    NEWS_DAOCHUSHIBAI: 'Export Failed',
+    NEWS_XUHAO: 'Serial No.',
+    NEWS_GYSZWM: 'Supplier Name (CN)',
+    NEWS_GYSYWM: 'Supplier Name (EN)',
+    NEWS_LINSHIHAO: 'Temp. No.',
+    NEWS_GONGYINGSHANGLEIXING: 'Supplier Type',
+    NEWS_SHENGCHANGONGYINGSHANG: 'Prod. Supplier',
+    NEWS_YIBANGONGYINGSHANG: 'General Supplier',
+    NEWS_NTIERGYINGSHANG: 'N-tier Supplier',
+    NEWS_BIANHAO: 'No.',
+    NEWS_YUANGONGHAO: 'Empl. No.',
+    NEWS_XINGMING: 'Name',
+    NEWS_SUOSHUBUMEN: 'Dept.',
+    NEWS_YOUXIANG: 'Email',
+    NEWS_SHOUJI: 'Mobile',
+    NEWS_DIANHUA: 'Tel.',
+    NEWS_YUANGONGXUANZE: 'Select Empl.',
+    NEWS_GONGHAO: 'Empl. No,',
+    NEWS_QUEREN: 'Confirm',
+    NEWS_GONGYINGSHANGXUANZE: 'Select Supplier',
+    NEWS_GONGYINGSHANGZHONGWENMING: 'Supplier Name (CN)',
+    供应商范围: 'Supplier Range',
+    NEWS_DIANZIYOUXIANG: 'Email',
+    NEWS_GONGYINGSHANGYONGHU: 'Supplier User',
+    NEWS_YUANGONGYONGHU: 'Internal User',
+    NEWS_CAIGOUWENJUAN: 'Proc. Questionnaire',
+    NEWS_WULIUWENJUAN: 'Logistics Questionnaire',
+    NEWS_ZHIBAOWENJUAN: 'Quality Assurance Questionnaire',
+    NEWS_YONGHUZUXINZENG: 'Create User Group',
+    NEWS_ZUMING: 'Group Name',
+    NEWS_FENLEI: 'Category',
+    NEWS_YONGHULEIXING: 'User Type',
+    NEWS_YONGHU: 'User',
+    NEWS_TIANJIA: 'Add',
+    NEWS_QDQHHBLBNRJQBQK:
+      'After the switch is confirmed, all content of this list will be cleared.',
+    NEWS_QINGGOUXUANXINXI: 'Please select message',
+    NEWS_SFQDSCNR: 'Are you sure to delete content?',
+    NEWS_BXTJYTXX: 'A message must be added',
+    NEWS_QDQXHXGNRBHBC:
+      'The modified content will not be saved after being cancelled.',
+    NEWS_SFQDQX: 'Are you sure to cancel?',
+    NEWS_QDFHHXGNRBHBC: 'Make sure the changes are not saved after you return.',
+    NEWS_QINGXUANZEYONGHULEIXING: 'Please select user type',
+    NEWS_XINJIANGONGGAO: 'New Post',
+    NEWS_FABU: 'Publish',
+    NEWS_GONGGAOLEIXING: 'Post Type',
+    NEWS_QXZGGLX: 'Please select post type!',
+    NEWS_SCWJDXBNCG20MB: 'The size of the uploaded file cannot exceed 20MB!',
+    NEWS_ZWBNWK: 'Main body cannot be blank!',
+    NEWS_FABUCHENGGONG: 'Publish Successfully!',
+    NEWS_QRFHHBGGNRBHBC:
+      'The content will not be saved after you confirm the return',
+    NEWS_GONGGAOZHUANGTAI: 'Post Status',
+    NEWS_DIANJILIANG: 'Hits',
+    NEWS_QQRSFSCXZGG: 'Please confirm whether to delete the selected post?',
+    NEWS_CHAKANGONGGAO: 'View Post',
+    NEWS_GONGGAOGUANLI: 'Post Mgmt.',
+    NEWS_XINWENXUANZE: 'News select',
+    NEWS_SOSUOXINWENBIAOTI: 'Search for news headlines',
+    NEWS_ZHUANTIFENLEI: 'Topic Category',
+    NEWS_ZHUANTIMINGCHENG: 'Topic Name',
+    NEWS_ZHUANTILAIYUAN: 'Topic Source',
+    NEWS_ZHUANTIBIAOQIAN: 'Topic Tag',
+    NEWS_ZHUANTIGAIYAO: 'Topic Desc.',
+    NEWS_XJZTXW: 'New Topic',
+    NEWS_ZTWZSL: 'Topic Article Ct.',
+    NEWS_SJDZTBKSC: 'Posted topic cannot be deleted',
+    NEWS_SFQDSCZTXW: 'Are you sure to delete the topic news?',
+    补充材料: 'Supplementary Material',
+    有异议: 'Objection',
+    QINGXUANZESHURU: 'Please select/enter',
+    XIANGGUANKESHI: 'Relevant Dept.',
+    FUZECAIGOUYUAN: 'Linie',
+    SHIFOUCRATING: '是否C-Rating',
+    JIARUCRATINGYUANYIN: 'C-Rating Join Reason',
+    YICHUCRATINGYUANYIN: 'C-Rating Removal Reason',
+    GONGYINGSHANGZHUANGTAI: 'Supplier Status',
+    LINGJIANXINXI: 'Part Info.',
+    BAOJIACHEXING: 'Quote Model',
+    YICHUCRATING: 'C-Rating Removal ',
+    WEIBAOJIA: 'Unquoted',
+    XUNJIAZHONG: 'Inquiring',
+    YICHUYUANYIN: 'Removal Reason',
+    QUANBU: 'All',
+    QINGSHURUYICHUYUANYINS: 'Please enter removal reason',
+    SHENGCAHNGONGYINGSHANG: 'Prod. Supplier',
+    YIBANGONGYINGSHANG: 'General Supplier',
+    GERENYINGSIZHENCE: 'Privacy Policy',
+    HUANYINGSHIYONGSHANGQIDAZONGCAIGOUXITONG_QINGZIXIYUEDUBINGQUEREN:
+      'Welcome to RiSE, please read it carefully and confirm',
+    GERENYINGSIZHENGCE: 'Privacy Policy',
+    TONGYI: 'Agree',
+    YINGYONGZHONGWENMING: 'Application Name (CN)',
+    YINGYONGYINGWENMING: 'Application Name (EN)',
+    YINGYONGLEIXING: 'Application Type',
+    CHAXUN: 'Search',
+    KETIANJIAYINGYONGQUANXIAN: 'Application Authorization',
+    YIYOUYINGYONGQUANXIAN: 'Authorized Application',
+    XITONG: 'System',
+    WBZAQXRGYHLZHZGZGWDDXYDGYSGLYLJSCYHZHRY:
+      'To ensure security, if a user happen to dismission or job transfer, the corresponding supplier administrator should immediately delete this user account. If the account is not deleted in time, the corresponding loss must be borne by the corresponding supplier.',
+    QUERENG: 'Confirm',
+    CSYSZJEBWMH: 'Init. Total Budget (Mio. RMB)',
+    TZHYSZJEBWMH: 'Post-Adj. Total Budget (Mio. RMB)',
+    XISHUMAOHAO: 'Coefficient',
+    ZZYSZJEBWMH: 'Final Total Budget (Mio. RMB)',
+    MTZCAILIAOZU: 'MTZ-Material Group',
+    CAILIAOZHONGLEI: 'Material Sub-division',
+    CX: 'Search',
+    WEITONGZHI: 'Fail to notify',
+    DAIQUEREN: 'To-be Confirmed',
+    YIQUEREN: 'Confirmed',
+    REVIEW: 'review',
+    TONGZHILINIE: 'Notify Linie',
+    DAOCHUDANGYE: 'Export Page',
+    QINGXUANZHONGYAOCAOZUODESHUJU: 'Please select the data to manipulate',
+    KONG: 'null',
+    YUSUANJINE: 'Budget',
+    PINGPAI: 'Brand',
+    ZONGYUSUANJINEMAOHAO: 'Total Budget',
+    DANWEIBAIWANRENMINBI: '(unit: Mio. RMB)',
+    JISUANNIANDUYUSUANCHUSHIBANBEN:
+      'Calculate the initial version of the annual budget',
+    YUSUANNIANFEN: 'Budget Year',
+    YONGLIANGBANBEN: 'Consumption Version',
+    QTXYLBBJYSNF: 'Please fill-in consumption version and budget year',
+    QINGXUANZEYIHOUNIANFEN:
+      'Please select the year data after the current year',
+    GENGGAIYONGLIANGBANBEN: 'Change Consumption Version',
+    QINGXUANZEBANBEN: 'Please select version',
+    CHANGLOG: 'Change Log',
+    RXTZQLXNDYSFZR:
+      'For adjustments, please contact the annual budget Controller',
+    TONGZHILINIEQUEREN: 'Notify Linie to confirm',
+    QINGXUANZEQUERENSHIJIAN: 'Please select a confirmation time',
+    CAIGOUYUANYUSUANZONGLAN: 'Budget Overview',
+    JINETISHI: 'Cursor over the amount will show the specified number',
+    REVIEWDAXIE: 'Review',
+    YUSUANZONGLAN: 'Budget Overview',
+    DAOCHUYUSUANMINGXI: 'Export Budget Detail',
+    FABU: 'Publish',
+    ZNSCCGJSSBZTDYSBB:
+      'You can only delete drafts and calculate failed versions of the budget',
+    QRSCGBBNDYS: 'Confirm deleting the annual budget?',
+    YCZXTYLBBYSSJSFCXJS:
+      'The budget data of the same version already exists. Do you want to recalculate it',
+    QXZCGZSZTSJJXTZCZ:
+      'Please select Draft/Official status data for notification operation',
+    YFBGZSYSBBSFZCFB:
+      'The official budget version has been released. Do you want to release it again?',
+    NDYSJSWWCWFFB:
+      'Annual budget calculations are incomplete and cannot be published',
+    NDYSZZBFBCG:
+      'The final version of the annual budget has been released successfully!',
+    WEIHULINGJIANYUANCAILIAOYONGLIANG: 'Maintain Raw Material Consumption',
+    YONGLIANGXIANGQING: 'Consumption Detail',
+    SHANGCHUANYUANCAILIAOYONGLIANGBIANGENG:
+      'Upload Raw Material Consumption Alteration',
+    XIAZAIMUBAN: 'Download Template',
+    SHENPIXIANGQING: 'Approval Detail',
+    JIESHI: 'Explanation',
+    JIESHIYUANYIN: 'Explanation',
+    QINGSHURUNEIRONG: 'Please enter',
+    BIANGENGDAN: 'MTZ Alteration Sheet',
+    SHENGQINGDANXINXI: 'App. Sheet No.',
+    QINGXUANZESHIJIAN: 'Please select Time',
+    LIEBIAOXIANGQING: 'List Detail',
+    XINJIANMTZBIANGENGSHENQING: 'New MTZ Alteration App.',
+    CAOGAOZHUANGTAICAINENGSHANCHU: 'only in draft state can be deleted',
+    GUIZEBIANHAO: 'Rule No.',
+    GONGYINGSHANGBIANHAOMINGCHENG: 'Supplier No./Name',
+    YONGLIANGJILIANGDANEWI: 'Consumption Measurement Unit',
+    YOUXIAOQIQI: 'Valid to',
+    YOUXIAOQIZHI: 'End of Validity',
+    JIJIA: 'Base Price',
+    JIJIAJILIANGDANWEI: 'Base Measurement Unit',
+    BOJIJIA: 'Pt Base Price',
+    BOYONGLIANG: 'Pt Consumption',
+    BAJIJIA: 'Pd Base Price',
+    BAYONGLIANG: 'Pd Consumption',
+    LAOJIJIA: 'Kr Base Price',
+    SHICHANGJIALAIYUAN: 'Market Price Source',
+    BUCHAXISHU: 'Compensation Coefficient',
+    BUCHAZHOUQI: 'Compensation Cycle',
+    YUZHI: 'Threshold Value',
+    YUZHIBUCHALUOJI: 'Threshold Offset Logic',
+    XUANZELINGJIANHAO: 'Please select part no.',
+    SHIFOUSHENGXIAO: 'Activated (Y/N)',
+    LAOYONGLIANG: 'Kr Consumption',
+    CZXTZJBNJXXZCZ:
+      'If the primary key is the same, all time periods cannot overlap',
+    GUIZEXIANGQING: 'Rule Detail',
+    YANYONG: 'COP',
+    QXZYTSJJXGL: 'Please select data for association',
+    YAUNCAILIAOPAIHAO: 'Raw Material Brand',
+    ZHIKANZIJI: 'Filter by Me',
+    SHENQINGDANXINXI: 'App. Sheet Info',
+    CSQDYYGLLDDDSQDJCLJKCKXQHQXGL:
+      'This application form has been associated with the zero-point nomination application, click the hyperlink to view the details, or cancel the association',
+    GLLJDDSQ: 'Corresponding Nomi. App.',
+    QUXIAOGUANLIAN: 'Disassociation',
+    LINIEBEIAN: 'Linie Remark',
+    QINGSHURUBEIAN: 'Please enter remark',
+    QUERENBAOCUN: 'Confirm to save?',
+    GLSQDHQZTBLJDDSQLXHSPRXXRLJSQDYSHHCSTJTYGHY:
+      'The associated application form will force the synchronization of the parts designated application type and approver information! If the parts requisition has been approved, please try to submit it to the ',
+    QDYQXGL: 'Are you sure you want to disassociate?',
+    BAOJIAYIZHIXINGJIAOYAN: 'Quote Consistency Check',
+    SHIFOUDANYIGONGYINGSHANG: 'Single Supplier (Y/N)',
+    DDSQZHGL: 'Nomi. App. Mgmt.',
+    QUERENGUANLIAN: 'Correspondence Confirmed',
+    LINGJIANZHONGXINLIEBIAO: 'Part Center List',
+    QXZYTLJHSJ: 'Please select Part No. data!',
+    WHMTZLLZSJ: 'MTZ Master Data Maintenance',
+    YYRFQZLJ: 'Quote RFQ Part',
+    YYDDSQDLJ: 'Quote Nomi. Part',
+    ZJLSMTZLJZSJ: 'MTZ Master Data (history)',
+    YINYONGRFQZHONGLINGJIAN: 'Quote RFQ Part',
+    XINZENGMTZLINGJIANZHUSHUJU: 'Create MTZ Master Data',
+    YINGYONGDINGDIANSHENQINGDANLINGJIAN: 'Quote Nomi. Part',
+    LSMTZLJZSJ: 'MTZ Master Data (history)',
+    SHIFOUBAOCUN: 'Do you want to save?',
+    QINGBUQUANBITIANXIANG: 'Please fill-in all mandatory',
+    SHIFOUQUXIAOBIANJI: 'Do you want to withdraw the edit?',
+    SHIFOUSHANCHU: 'Confirm to Delete?',
+    CCZJSCNYWHDSYLJZSJBGJDDSQDZDYMTZSXDLJDYDGYSJCGYSSYXGGZTJZMTZYCLGZLB: '',
+    WHMTZYCLGZ: 'MTZ Raw Material Maintenance Rule',
+    xxxxxxxx: 'xxxxxxxx',
+    ZUIDUOSHURUXIAOSHUDIANHOUSIWEI: 'A maximum of four decimal can be entered',
+    SHUJUYANYONG: 'Continue to Use',
+    XINZENGMTZYUANCAILIAOGUIZE: 'Rule of MTZ Raw Material Addition ',
+    MTZYCLGZZBHXDGZBHSQLXBNWLZBAJXTJHCZSQDLXBQXYGLDLJDDSQDSFQRTJ:
+      'When MTZ raw material rule is added, the application form type cannot be circulation/record. Further addition will reset the application form type and cancel the associated nomination application form for parts. Are you sure to add?',
+    KAIFAZHONG: 'Developing',
+    BUCHAXISHUBUNENGWEIFUSHU: 'Compensation coefficient cannot be negative',
+    SHENPIRENLIEBIAO: 'Approver List',
+    TONGBU: 'Sync',
+    FUJIANXIANGQING: 'Attachment Detail',
+    DAOCHUHUIWAILIUZHUANDAN: '导出会外流转单',
+    LIUZHUANBEIZHU: 'Circulation Remark',
+    LINEIESHANGHUIBEIZHU: 'LINIE Meeting Remark',
+    LINEIELIUZHUANBEIZHU: 'LINIE Circulation Remark',
+    SHENGCHENGSHIBAI: 'Generate Failed',
+    CAOZUOCHENGGONG: 'Operate Successfully ',
+    DAOCHURS: 'Export RS',
+    MTZXINZENG: 'Create MTZ',
+    MTZSHENGQINGDAN: 'MTZ App. ',
+    MTZGZBNWK: 'MTZ rule cannot be blank',
+    SHIROUQUERENTIJIAO: 'Confirm to Submit',
+    QQDSJYJWQBC: 'Please make sure the data is fully saved?',
+    JIEDONG: 'Unfreeze',
+    QUXIAODINGDIAN: 'Nomi. Cancelation',
+    SHLXZYHHTGZTCKYDJ: 'Only reviewed meeting type can be frozen',
+    LZBALXZYTJZTCKYDJ:
+      'A circulation/record type can only be frozen only if is in submitted status',
+    ZYZTWDJDCKYJD: 'Only frozen status can be unlocked',
+    BALXQZTWDJCKYDD: 'Only record type and in frozen status can be nominated',
+    LZLXQZTWLZWCCKYDD:
+      'A circulation type can be nominated if it completes circulation',
+    SHLXBNJXDD: 'A meeting type cannot be nominated',
+    SHIFOUQUERENQUXIAODINGDIAN: 'Confirm to cancel nomination?',
+    ZYDDZTCKYQXDD:
+      'Canceled nomination can be proceed only of it was nominated ',
+    ZYLZLXQZTWDJCKYHWLZ:
+      'A circulation type can be circulating only if it was frozen',
+    SHLXQZTWTJHWTGCKYCH:
+      'A meeting type can be withdraw if it was in submitted or to-be approved status',
+    LZBALXZYTJZTCKYCH:
+      'Only Circulation/Record type can be withdrawn only if it is committed',
+    ZYCGZTCKYSC: 'Only draft state can be deleted',
+    MTZDINGDIAN: 'MTZ Nomi.',
+    SHANGCHUANFUJIAN: 'Upload Attachments',
+    PINGZHENGDAOCHU: 'Export Credential',
+    BAOCUNBEIZHU: 'Save Remark',
+    GONGYINGSHANGQUEREN: 'Supplier Conformation Delegate',
+    BUCHONGCAILIAO: 'Supplementary Material',
+    BUCHADIANHUIZONG: 'Compensation Sheet Summary',
+    BUCHADANMINGXI: 'Compensation Sheet Detail',
+    BUCHADANMINGXIGUIJINSHU: 'Compensation Detail (Precious Metal)',
+    CHUANGJIANBUCHADAN: 'Create Compensation Sheet',
+    BIANJIBUCHADAN: 'Edit Compensation Sheet',
+    JISUAN: 'Calc.',
+    DAIFAQIPINZHENG: 'Credentials to be issued',
+    SHIJIBUCHAJINE: 'Compensation',
+    CHEHUIHOUJIANGCONGBUCHASHENQINGZHONGQUXIAORENKEZAIBUCHAZONGLANZHONGCAOZUO:
+      'If withdrawn, it will be cancelled from the application for make-up and can still be operated in the make-up overview',
+    CHONGXIAOHOUJIANGCONGBUCHASHENQINGZHONGQUXIAOBUNENGZHIJIEZAIBUCHAZONGLANZHONGCAOZUOXUSHOUGONGCHUANGJIANBUCHAXINXI:
+      'After write-off, it will be cancelled from the application for make-up. It cannot be operated in the summary of make-up directly, but needs to manually create the make-up information',
+    CHONGXIAO: 'Write-off',
+    QINGXUANZEBUCHASHIJIANDUAN: 'Compensation Duration',
+    QINGSHURUYICILINGJIANHAO: 'Please select material sub-division',
+    QINGXUANESHUJU: 'Please select data',
+    YICIJIANLINGJIANHAO: 'Tier-1 Part No.',
+    QINGSHURUXUANZE: 'Please enter/select',
+    ERCIJIANLINGJIANHAO: 'Tier-2 Part No.',
+    ERCIJIANGONGYINGSHANG: 'Tier-2 Supplier',
+    BUCHASHIJIANDUAN: 'Compensation Duration',
+    ZHUANGPAI: 'Transfer',
+    QINGXUANZECAIGOUYUAN: 'Please select buyer',
+    ZHUANPAIZIJI: 'Transfer to me',
+    YICIJIANGONGYINGSHANG: 'Tier-1 Part Supplier',
+    FAQIBUCHA: 'Compensate',
+    BUCHAJINE: 'Compensation',
+    BUCHASHIJIANDUANNEIGENGJUGUIZELINGJIANSHOUHUOSHULIANGJISUANDEBUCHAJIEGUO:
+      'Calculated compensation based on compensation rule and part acceptance quantity within compensation period',
+    SHOUHUOSHULIANGJISUANJIEGUO: '(calculation result of received Quantity)',
+    BUCHASHIJIANDUANNEISHOUHUOSHULIANGDUIYINGDEJIESUANSHULIANGBUCHAJISUANJIEGUO:
+      'Calculated compensation based on compensation rule and part acceptance quantity within compensation period',
+    JIESUANSHULIANGJISUANJIEGUO: '(calculation result of settlement quantity)',
+    BUCHAJINEJIESUANZHONGSHANGWEIFAQIPINZHENGDEJINE:
+      'Total amount listed on the to-be initiated credential',
+    DAIBUCHAJINE: '(amount to be compensated）',
+    YIFAQIPINZHENG: 'Credential Issued',
+    BUCHAJINEJIESUANZHONGYIFAQIDEPINZHENGJINEZONGHE:
+      'Total amount listed on the initiated credential',
+    YIFAQIPINGZHENGZHONGSHIJIXIANGGONGYINGSHANGBUCHADEJINE:
+      'Actual compensation amount listed on initiated credential;',
+    SHIJIBUCHAJINEDAIQUERENJINEYIQUERENJINEYIPIZHUNJINEYIZHIFUJINE:
+      'Paid Amount',
+    DAIQUERENJINE: 'To-be confirmed Amount ',
+    CAIGONGYUANFAQIBUCHAPINZHENGZHONGGONGYINGSHANGSHANGWEIQUERENDEJINE:
+      'To-be confirmed amount listed on initiated credential',
+    CAOGAOGONGYINGSHANGQUERENZHONGJINE:
+      '(draft + amount confirmed by supplier)',
+    DENGDAIGONGYINGSHANGQUERENJINE: '(amount supplier confirmed)',
+    YIQUERENJINE: 'Confirmed Amount',
+    GONGYINGSHANGYIQUERENDEBUCHAPINZHENG:
+      'Supplier confirmed compensation credential',
+    JINEZONGHESHENPIZHONGJINE: 'Total Amount (approving amount)',
+    GONGYINGSHANGQUERENJINE: '(amount supplier confirmed)',
+    YIPIZHENGJINE: 'Approved Amount',
+    BUCHAPINZHENGSHENPITONGUOJINESHENPITONGGUOJINE:
+      'Approved amount on compensation credential',
+    BUCHAPINZHENGSHENPITONGUOJINE:
+      '(approved amount on compensation credential)',
+    YIZHIFUJINE: 'Paid Amount',
+    BUCHAPINZHENGYIZHIFUJINE:
+      '(paid amount on approved compensation credential )',
+    CAIGOUKUANGJIA: 'Proc. Frame',
+    ECJGYS: 'Tier-2 Part Supplier',
+    SHIFOUGUIJINSHUYUANCAILIAO: 'Precious Metal (Y/N)',
+    SHIFOUDAOCHU: 'Do you like to Export？',
+    FASONGGONGYINGSHANG: 'Send Supplier',
+    'CHEHUI ': 'Withdraw',
+    'DAOCHU ': 'Export',
+    BUCHADANHAO: 'Compensation Sheet',
+    PINGZHENGID: 'Credential ID',
+    SHENQINGREN: 'Applicant',
+    SHIJIBUCHAJINEPINGZHENGJINE: 'Actual Compensation (Credential Listed)',
+    DANJUZHUANGTAI: 'Sheet Status',
+    JUPEILIYOU: 'Claim Rejection Reason',
+    FUJIANQINGDAN: 'Attachment List',
+    补差详情: 'Compensation Detail',
+    下载模板: 'Download Template',
+    上传: 'Upload',
+    CAIGOUPINGZHENG: 'Proc. Credential',
+    请输入: 'Please enter',
+    ERCILINGJIANHAO: 'Tier-2 Part No.',
+    ZCGYSSAPH: 'Assy. Supplier SAP No.',
+    ERCIJIANSHOUHUORIQI: 'Tier-2 Part Acceptance Date',
+    QXZCGZTSJJXTZCZ: 'Select draft status data for notification operation',
+    SHENGXIAOQUJIAN: 'Effective Range',
+    YUEDUQI: 'Starting Month',
+    YUEDUZHI: 'Ending Month',
+    SHICHANGJIALEIBIE: 'Market Price Type',
+    XIANSHIYINCANGCAILIAO: 'Display/Hide Material',
+    上传市场价: 'Upload Market Price',
+    SHANGCHUANGSHICHANGJIA: 'Upload Market Price',
+    CUOWUXINXI: 'Error Message',
+    MINGXILIEBIAO: 'Detail List',
+    QINGXUANZEYITIAOSHUJUXIAZAI: 'Please select data to download',
+    SHENGXIAO: 'Activate',
+    SHIXIAO: 'Deactivate',
+    SHIXIAOMSG:
+      'The invalid status cannot be clicked "Deactivate" button, please select it again',
+    SHENGXIAOMSG:
+      'The valid status cannot be clicked "Activate" button, please select it again',
+    SHANGCHUANYIERCIJIANGUANXI: 'Upload Tier-1/Tier-2 Relationship',
+    YECJGXYXXQR: 'Tier Relationship Validation',
+    市场价详情: 'Market Price Info.',
+    上传附件: 'Upload Attachments',
+    删除附件: 'Delete Attachment',
+    上传点价单: 'Upload Nomi. Sheet',
+    编辑: 'Edit',
+    导出: 'Export',
+    取消: 'Cancel',
+    保存: 'Save',
+    QINGXUANZEXUYAOSHANCHUFUJIANDEPICI:
+      'Please select attachments for batch deletion',
+    WEIZHAODAODAISHANCHUFUJIAN: 'The attachment to be deleted was not found',
+    SHIFOUSHANCHUSUOXUANPICIDEFUJIAN:
+      'whether to perform batch deletion for selected attachments?',
+    QINGXUANZEDANGEPICIJINXINGFUJIANSHANGCHUAN:
+      'Please select a single batch for attachment upload',
+    GUIZHEXIANGQING: 'Rule Detail',
+    QINGZHISHAOXUANZHONGYITIAOSHUJU: 'Please select at least one data',
+    SHICHANGJIALAIYUANXIANGQING: 'Market Price Source Info.',
+    SHOUGONGTONGBUSHUJU: 'Manual Data Synchronization',
+    SHOUGONGSHANGCHUAN: 'Manual Upload',
+    XITONGZIDONG: 'System Automatic',
+    QXZWBSCJLY: 'Please select ext. market price source',
+    NEWS_QSCZQDSPGS: 'Upload failed. Please upload the correct video format',
+    NEWS_SCSPDXBNCG100M:
+      'Upload failed, upload video size cannot exceed 100MB!',
+    LK_XINJIANBIAOQIAN: 'New Tag',
+    LK_BIAOQIANMINGCHENG: 'Tag Name',
+    LK_RENLINGLINGJIAN: 'Claim Part',
+    LK_ZHUANYECAIGOUYUAN: 'LINIE',
+    LK_GANGWEI: 'Position',
+    LK_SHOUCANGJIA: 'Favorites',
+    LK_JIARUBIAOQIAN: 'Add to Tag',
+    LK_YIYOUBIAOQIAN: 'Existed Tag',
+    LK_SHI: 'Yes',
+    LK_FOU: 'No',
+    LK_EOPZHUANGTAI: 'EOP Status',
+    LK_DINGDIANZHUANGTAI: 'Nomi. Status',
+    LK_DINGDIANRIQIQI: 'Nomi. Starting Date',
+    LK_DINGDIANRIQIZHI: 'Nomi. Ending Date',
+    LK_SAPHETONGHAO: 'SAP Contract No.',
+    LK_RISEHETONGHAO: 'RiSE Contract No.',
+    LK_PINGPAI: 'Brand',
+    LK_DANGNIANZAIGONG: 'Supply Quantity',
+    LK_WODESHOUCANG: 'My favorites',
+    LK_SOUSUOJIEGUO: 'Search Result',
+    LK_TUICHU: 'Exit',
+    LK_QUERENRENLING: 'Claim Conformation',
+    LK_TOUCHANZHOUQI: 'Prod. Cycle',
+    LK_XIANGGUANLINGJIAN: 'Relevant Part',
+    LK_LINGJIANQUANSHENGMINGZHOUQI: 'Part Full Life Cycle',
+    LK_QINGGOUXUANHOUZAIQUERENRENLING:
+      'Please select part before confirming your claim',
+    CHONGZHISUOYOU: 'Reset All',
+    CHAKANXIANGQING: 'View Detail',
+    SANJIANGUOJIHUAFENXI: 'Spare Part Globalization Analysis',
+    SANJIANGONGYINGSHANGGONGYINGJIZHONGDU:
+      'N-tier Supplier Supply Concentration',
+    GONGYINGSHANGGONGHUOJINGQUEBAOJINGXINXIBIAO:
+      'Supplier Shortage Warning Letter Info. Sheet',
+    ZANCUN: 'TS',
+    SHANGCHUANBAOJINGXIN: 'Upload Warning Letter',
+    XIAZAIBAOJINGXIN: 'Download Warning Letter',
+    BAOJINGFABUDUIXIANG: 'Warning Post Object',
+    TIANJIACAIGOUYUAN: 'Add Buyer',
+    QITASOUJIANREN: 'Other recipients:',
+    QINGSHURUSHANGQIDAZONGNEIBUYOUXIANGCOM:
+      'Please enter SVW internal Email address @csvw.com',
+    GONGYINGSHANGJIBENXINGXI: 'Supplier Basic Info',
+    TIANBIAORIQI: 'Filling Date:',
+    JINGQUEXINGXI: 'Shortage Info.',
+    YINGDUICUOSHI: 'Measure',
+    BENCIJINGQUEJIANCHULIFUZHERENHELIANXIFANGSHI:
+      'The person in charge and contact information of this shortage',
+    ZONGJINGLI_QIANMING: 'General Manager (Signature) :',
+    GONGYINGSHANGGAIZHANG: "Supplier's Seal:",
+    BAOJINGRIQI: 'Warning Date:',
+    XUANZHEFABUDUIXIANG: 'Select Publish Object:',
+    QINGXUANZHE: 'Please select',
+    QINGTIANXIEDAZONGNEIBUYOUXIANG: 'Please enter SVW internal email',
+    SHIFOUTIJIAOBAOJINGXING: 'Warning Letter',
+    QINGTIJIAOBAOJINGXING: 'Please submit warning letter',
+    ZANCUNCHENGGONG: 'TS Successfully',
+    FUZHERENXINGMING: 'Owner',
+    ZHIWU: 'Position',
+    LIANXIDIANHUA: 'Contact Tel',
+    DIANZHIYOUXIANG: 'Email',
+    CUOSHIMIANSHU: 'Measure Detail',
+    WANCHENGSHIJIAN: 'Completion Time',
+    FUZHEREN: 'Owner',
+    FUJIANMINGCHEN: 'Attachment Name',
+    DAXIAO_B: 'Size (B)',
+    KAISHISOUSUOBA: 'Search...',
+    YIXUANZHE: 'Selected',
+    QINGXUANZHEJINGQUEJIBIEDUANDIANSHIJIANJUJIN:
+      'Please select: Emer. Lvl. (Breakpoint till now)',
+    XIAOYUYIZHOU: '≦1 week',
+    YIZHIERZHOU: '1~2 weeks',
+    ERZHISIZHOU: '2~4 weeks',
+    DAYUSIZHOU: '>4 weeks',
+    QINGXUANZHEJINGQUEYUANYING: 'Please select: Emer. Reason',
+    SHANJIANYUANCAILIAO: 'Component Raw Material',
+    CHANNENG: 'Capacity',
+    ZHILIANG: 'Quality',
+    SHEBEIGUZHANG: 'Equip. Failure',
+    TUFASHIJIAN: 'Emer. Event',
+    SHANGWUJIUFEN: 'Business Disputes',
+    YUNSHUSOUZHU: 'Trans. Blocked',
+    QITA: 'Other',
+    QITAYUANYING: 'Other Reason',
+    JINGQUELINGJIAN: 'Shortage Part',
+    SANJIANGONGYINGSHANGXINXIHOUXUZAICISHUAXINJIKE:
+      'Please maintain N-tier Supplier info on N-tier supply chain maintenance page',
+    DUANDIANRIQI: 'Breakpoint Date',
+    CHIXUTIANSHU: 'Duration',
+    QUEKOUSHULIANG: 'Shortage Quantity',
+    SHEJISVWCAIGOUGONGCHANG: 'Relevant SVW Factory',
+    SHEJICHEXING: 'Affecting Model',
+    ZONGCHENGJIANDAZONGLINGJIANHAO: 'Assy. Part VW No.',
+    SHANJIANGONGYINGSHANGMINGCHEN: 'N-tier Supplier Name',
+    SHANJIANGONGYINGSHANGTONGYISHEHUIXINGYONGDAIMA:
+      'Unified Social Credit Code',
+    SHANJIANGONGYINGSHANGSHENGCHANDI: 'N-tier Supplier Location',
+    SANJIANGONGYINGSHANGGONGCHANGMINGCHENG: 'N-tier Supplier Name',
+    SHANJIANGONGYINGSHANGGONGCHANGDIZHI: 'N-tier Supplier Location',
+    YITAOJIJIAN: 'Pc per Set',
+    SHANJIANJINGQUEYUANYING: 'Shortage Reason',
+    GONGYINGSHANGDAIMA: 'Supplier No.',
+    TIANBIAOREN: 'Contact',
+    DIANHUA: 'Tel.',
+    DIANZIYOUXIANG: 'Email',
+    SHIFOUZAISHANGQIDAZONGZOUBIANJIANLIZHONGZHUANKU:
+      'Transfer warehouses around SAIC Volkswagen (Y/N)',
+    GONGYINGSHANGSHENGCHANDIZHI: 'Proc. Plant Address',
+    GONGCHANGMINGCHEN: 'Plant Name',
+    SUOZAIDIQU: 'Location',
+    XIANGXIDIZHI: 'Detailed Adress',
+    CHUANGJIANTUFASHIJIAN1: 'New Emer. Event',
+    XIANSHIGONGYINGLIANLU: 'Display Supply Chain',
+    ZHANKAI: 'Expand',
+    DAOCHUBAOJINGXING: 'Export Alert Letter',
+    DAOCHUFANKUIBIAO: 'Export Feedback Form',
+    FASONGFANKUIBIAO: 'Send Feedback Form',
+    LINGJIANSHULIANGLINGJIANHAO: 'Part Ct. (Part No.)',
+    ZIDONGCHUANGJIAN: 'Auto Create',
+    SOUYINGXIANGCHENGDU: 'Influence Degree',
+    FANKUIZHUANGTAI1: 'Feedback Status',
+    WEISHOUDAOFANKUI: 'No Feedback',
+    YOUYONGYINGFENXIAN: 'Supply Risk',
+    WUGONGYINGFENGXIAN: 'No Supply Risk',
+    WEIFASONGFANKUIBIAO: 'The feedback form is not sent',
+    BAOJINGXING: 'Warning Letter',
+    GONGYINGSHANGYITIJIAOBAOJINGXING: 'Supplier has submitted warning letter',
+    BAOQIANQINGXUANZHEYITIAOSHUJU: 'Please select a data',
+    SHOUQI: 'Fold',
+    TUFASHIJIANZONGLAN: 'Emer. Event Overview',
+    GONGHUOGUANXI: 'Biz Relationship',
+    SFDCGHLJHXQ: 'Whether to export supply part no. details',
+    GONGYINGSHANGMINGCHENGQUANCHENG: 'Supplier Name (full)',
+    HUANG: 'Yellow',
+    HONG: 'Red',
+    LV: 'Green',
+    HUISE: 'Grey',
+    CHUANGJIANTUFASHIJIAN: 'New Emer. Event',
+    SHIJIANLEIXING: 'Event Type',
+    SHIJIANXIANGQING: 'Event Detail',
+    FASHENGSHIJIAN: 'Occurrence Time',
+    ZHONGXINGWEIZHI: 'Central Location',
+    BOJIBANJING: 'Effect Radius',
+    XIAOXIYUAN: 'Info. Source(Link)',
+    SHIJIANQIZHI: 'Duration',
+    CHUANGJIANFANGSHI: 'Creation Method',
+    CJTFSJ: 'New Emer. Event',
+    GONGYINGSHANGFANKUIBIAO: 'Supplier Feedback Form',
+    SHIFOUXUYAOTIANXIEBAOJINGXING: 'Do you want to fill in the warning letter',
+    YINGXIANGKAISHISHIJIAN: 'Influence Starting Time',
+    YINGXIANGJIESHUSHIJIAN: 'Influence Ending Time',
+    YINGXIANGXIANGQING: 'Influence Detail',
+    QINGSHURUYINGXIANGXIANGQING: 'Please enter influence detail',
+    QUERENTIJIAO: 'Confirm to submit',
+    TIANJIASHANGYOUGONGYINGSHANG: 'Add Upstream Supplier',
+    SHANGCHU: 'Delete',
+    GUOJIA_SHENGFEN_DIQU: 'Country-Province-Region',
+    GONGYINGSHANGMINGCHEN_SAPHAO: 'Supplier Name/SAP No.',
+    GONGCHANGMINGCHENG: 'Plant Name',
+    CHUANGJIANXINGONGYINGSHANG: 'New Supplier',
+    QUERENTIANJIA: 'Confirm Addition',
+    QINGXUANZHEYITIAOSHUJU: 'Please select a data',
+    ZHINENGXUANZHEYITIAOSHUJU: 'You can only select one data',
+    QINGXUANZELINGJIANLEIXING: 'Please select part type',
+    FZGYLLQXZSGLDXYGYS:
+      'Supply Chain Replicate-Please select related downstream supplier',
+    QINGSHURU_XUANZE: 'Please enter/select',
+    'LINGJIANHAO/MINGCHEN': 'Part No./Name',
+    QUERENFUZHI: 'Confirm to Replicate',
+    LINGJIANHAO_MINGCHEN: 'Part No-Name',
+    CHONGZHICENGJI: 'Reset Page',
+    FUZHIGONGYINGLIANLU: 'Supply Chain Replicate',
+    BJGYS: 'Edit Supplier Info',
+    CHUANGJIANGONGYINGSHANG: 'New Supplier',
+    GONGYINGSHANGXINXI: 'Supplier Info.',
+    GONGYINGSHANGZh: 'Supplier Name (CN)',
+    GONGYINGSHANGEn: 'Supplier Name (EN)',
+    TONGYISHEHUIXINGYONGDAIMA: 'Unified Social Credit Code',
+    GSZCHTYSHXYDMSZDSYZGGYSDBTX:
+      'The industrial and commercial registration number/unified social credit code is a mandatory item (15 or 18 digits) for all Chinese suppliers. It can be found on the unified social credit code public inquiry platform of national organizations',
+    ZHONGCHAXUN: 'Query within',
+    DUNS: 'DUNS',
+    GSZCHZDHWGTSXYZXMDQYTRDBSDUNSMDBSDUNSMKYZ:
+      'For overseas suppliers, please fill in the DUNS code in the following area. The DUNS code is available at',
+    WANGYEZHONGCHAXUN: 'Query in Page',
+    ZHENDUIHAIWAIYONGYINGSHANGXUYAOZAIXIAMIANDEQUYUTIANRUDENGBAISHIDUNSMADENGBAISHIDUNSMAKEYIZAI:
+      'For overseas suppliers. DUNS code needs to be filled. DUNS code is available at',
+    GUOJIA_SHENGFEN_CHENSHI: 'Country-Province-City',
+    YOUBIANHAO: 'Postal Code',
+    GONGSIXINGZHI: 'Attribute',
+    GONGSIGUIMO: 'Scale',
+    ZHUCEZIJING: 'Registered Capital',
+    ZIZHIYURENZHENG: 'Qualification and Certification',
+    LIANXIYOUXIANG: 'Contact Email',
+    SHENGCHANGONGCHANGXINGXI: 'Prod. Factory Info.',
+    GONGCHANGZHANDIMIANJI: 'Factory Area ',
+    QUERENCHUANGJIAN: 'Confirm to create',
+    QUERENXIUGAI: 'Modification Confirmed',
+    QINGXUANZHEYITIAOYITIAOSHUJU: 'Please select a data',
+    QINGTIANXIEBITIANXIANG: 'Please fill in the mandatory',
+    SHENGCHANGONGCHAN: 'Production plant',
+    SHANCHUGONGYINGLIANLU: 'Delete Supply Chain',
+    SHANCHUDANGQIANJISHANGYOUJIEDIAN:
+      'Delete the selected supplier and all upstream supply chain relationships',
+    SHANCHUDANGQIANJIEDIAN: 'Delete the selected supplier',
+    QUEDINGSHANCHU: 'Confirm Delete',
+    FUZHISUOXUANGONGYINGSHANGJIQISHANGYOUSUOCENGJIGONGYINGLIANGUANXI:
+      'Copy the selected supplier and all upstream supply chain relationships',
+    JINGFUZHISUOXUANGONGYINGSHANG: 'Copy the selected supplier',
+    QUEDINGFUZHI: 'Confirm Copy',
+    ZONGCHENLINGJIAN: 'Assy. Part',
+    HETONGDINGDAN: 'Contract Order',
+    EKLPEIFUJIAN: 'EKL- SP/Acc.',
+    EKLPILIANGJIAN: 'EKL- Assy.Part',
+    CAIWUYUJING: 'Financial Prewarning',
+    CRATINGLAIYUAN: 'C-Rating Source',
+    GENXINSHIJIAN: 'Update Time',
+    CHANNENGYUJING: 'Capacity Prewarning',
+    SHISHICRATINGGONGYINGSHANGQINGDAN: 'Real-time C-rating Supplier List',
+    CRATINGGONGYINGSHANGXUNJIADINGDIANQINGKUANG:
+      'Real Time C-Rating Nomi. Status ',
+    YUQINGJIANCE: 'Public Opinion Monitoring',
+    MINGAN: 'Sensitive',
+    FEIMINGAN: 'Non-sensitive',
+    GAIGONGYINGSHANGZANWUYUQINGXINWEN:
+      'This Supplier does not have public opinion news',
+    SONGYANG: 'Sampling',
+    XUNYUAN: 'Sourcing',
+    GONGYINGSHANGDEFEN: 'Supplier Rating',
+    KEZAISHENGNENGYUANQIANSHU: 'Sign Renewable Energy Policy',
+    WURANWEIGUI: 'Pollution Violations',
+    ZHIJIN: 'Till now',
+    PEIFUJIANGONGHUOLV: 'SP Acc. Supply Rate',
+    GONGYINGSHANGHEIMINGDANZHUANGTAI: 'Supplier Blacklist Status',
+    GONGYINGSHANGHEIMINGDANJILU: 'Supplier Blacklist Record',
+    SHOUKONGYEWULEIXING: 'Controlled Service type',
+    SHOUKONGKAISHISHIJIAN: 'Controlled Starting Date',
+    SHOUKONGJIESHUJIAN: 'Controlled Ending Time',
+    SHOUKONGZHUANGTAI: 'Controlled Status',
+    SHOUKONGCUOSHI: 'Controlled Measure',
+    ZHENGCHANG: 'Normal',
+    SHOUKONG: 'Controlled',
+    LK_BUKEXUNJIABUKEDINGDIAN: 'No Inquiry, No Nomi.',
+    LK_KEXUNJIABUKEDINGDIAN: 'Inquiry but not Nomi.',
+    JIARUHEIMINGDANYIBANCAIGOU: 'Join Black List-GS',
+    SHOUKONGQIZHISHIJIAN: 'Controlled Duration',
+    JIARUYUANYINA: 'Join Reason',
+    QINGSHURUCHULIXIANGQING: 'Process Detail',
+    QINGSHURUBITIANXIANG: 'Please fill-in the mandatory',
+    JIARUHEIMINGDANSHENGCHANCAIGOU: 'Join Black List-FS',
+    QINGSHURUBIANHAOHUOMINGCHENG: 'Please Enter No. or Name',
+    QIANQICAIGOUYUAN: 'Forward Buyer',
+    LINIECAIGOUYUAN: 'LINIE',
+    'SHIFOUQUERENYICHUHEIMINGDAN?': 'Remove the supplier from black list',
+    GONGYINGSHANGBIAOQIAN: 'Supplier Tag',
+    BIAOQIANMINGCHENG: 'Tag Name',
+    QINGWANCHENGXUANZE: 'Please complete selection',
+    BIAOQIANLEIXING: 'Tag Type',
+    XIANSHIYINCNAG: 'Display/Hide',
+    XITONGPANDING: 'System Determination',
+    SHOUGONG: 'Manual',
+    BIAOQIANSHEZHI: 'Tag Cfg.',
+    ZHIBIAOXIAJIANGTISHI:
+      'The index showed a downward trend for three consecutive semi-year',
+    SHIFOUCAIQUCUOSHI: 'Measure Taken',
+    GENJINREN: 'Follow-up',
+    JIARUYUANYIN: 'Join Reason',
+    CAIQUCUOSHI: 'Measure Taken',
+    ZANBUCAIQUCUOSHI: 'No measure taken',
+    CHULIXIANGQING: 'Process Detail',
+    ZHANPAI: 'Transfer',
+    SOPJIAGE: 'SOPprice',
+    QINGSHURUXIANGQINGNEIRONG: 'Please enter detail content',
+    'SHIFOUQUERENTIJIAO?': 'Confirm to submit',
+    TIJIAOCHENGGONGLE: 'Submited Successfully',
+    'SHIFOUQINGKONGNEIRONG?': 'Are you sure to empty all input?',
+    RENWUGUANLI: 'Task Mgmt.',
+    RENWUQIZHISHIJIAN: 'Task Period',
+    SHENGCHANGONGYINGSHANG: 'Prod. Supplier',
+    SAPORGONGYINGSHANGMINGCHENG: 'SAP No./Supplier Name',
+    SHIFOUCAIQUCUOSHU: 'Measure Taken (Y/N)',
+    GONGYINGSHANGBIAOQIANGUANLI: 'Supplier Tag Mgmt.',
+    QINGSHURUBIAOQIANMINGCHENG: 'Please enter tag name',
+    BIDDING_BJDWWFSC: 'Comparison unit cannot be deleted',
+    YUANCAILIAOXIANGQING: 'Raw Material Price Overview',
+  }
+  var xmlHttp = ''
+  if(window.XMLHttpRequest){
+      xmlHttp = new XMLHttpRequest();
+  }else{
+      // eslint-disable-next-line no-undef
+      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState==4 && xmlHttp.status==200){
+          const data = JSON.parse(xmlHttp.responseText)
+          i18n.setLocaleMessage('en', Object.assign(oldLanguage,data.data.cn))
+      }
+  }
+  xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
+  xmlHttp.setRequestHeader("Content-type","application/json");
+  xmlHttp.setRequestHeader("Accept","*/*");
+  xmlHttp.send()
+//   i18n.setLocaleMessage('en', oldLanguage)
+})

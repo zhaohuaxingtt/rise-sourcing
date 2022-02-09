@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-28 15:03:47
- * @LastEditTime: 2021-12-29 21:41:24
+ * @LastEditTime: 2022-01-30 13:31:57
  * @LastEditors: Please set LastEditors
  * @Description: 特殊表格实现
  * @FilePath: \front-sourcing\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringHz\components\table.vue
@@ -114,7 +114,10 @@
             </template>
             <template slot-scope="scope">
               <template v-if='removeKeysNumber(item.props) == "cfPartAPrice"'>
-                  <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
+                  <span :class="{chengse:scope.row['cfPartAPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>
+              <template v-if='removeKeysNumber(item.props) == "ftSkdAPrice"'>
+                  <span :class="{chengse:scope.row['ftSkdAPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "ebrCalculatedValue"'>
                 <span>{{ebrShow(scope.row[item.props])}}</span>
@@ -132,16 +135,25 @@
                 </el-tooltip>
               </template> 
               <template v-else-if='removeKeysNumber(item.props) == "factory"'>
-                <span >{{scope.row['factoryEn']}}</span>
+                <span >{{scope.row['factoryEn']? scope.row['factoryEn'] : scope.row['factory']}}</span>
               </template>        
               <template v-else-if='removeKeysNumber(item.props) == "cfPartBPrice"'>
-                  <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{scope.row[item.props]}}</span>
-              </template>    
+                  <span :class="{chengse:scope.row['cfPartBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>   
+              <template v-else-if='removeKeysNumber(item.props) == "ftSkdBPrice"'>
+                  <span :class="{chengse:scope.row['ftSkdBPriceStatus'] == 2}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>  
               <template v-else-if='removeKeysNumber(item.props) == "lcAPrice"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{scope.row[item.props]}}</span>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "lcBPrice"'>
-                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{scope.row[item.props]}}</span>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'lcBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "skdAPrice"'>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'skdAPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
+              </template>
+              <template v-else-if='removeKeysNumber(item.props) == "skdBPrice"'>
+                  <span :class="{lvse:lvseFn(scope.row,item.props,'skdBPriceStatus')}">{{ttoShow(scope.row[item.props])}}</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "tto"'>
                 <el-tooltip :content='ttoShow(scope.row[item.props])' effect='light'>
@@ -160,18 +172,18 @@
               <template v-else-if ='removeKeysNumber(item.props) == "developmentCost"'>
               <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>
                 <template slot="content">
-                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"developmentCost"]-scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
+                  <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"]) }}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
                 </template>
-                <span>{{scope.row[item.props]}}</span>
+                <span>{{ttoShow(scope.row[item.props])}}</span>
               </el-tooltip>
-              <span v-else>{{scope.row[item.props]}}</span>
+              <span v-else>{{ttoShow(scope.row[item.props])}}</span>
                 <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
               </template>
               <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
               <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>
                 <template slot="content">
-                  <div>一次性：{{scope.row[getPorpsNumber(item.props)+"tooling"]-scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
+                  <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"]) }}RMB</div>
                   <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
                 </template>
                 <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
@@ -237,15 +249,6 @@ export default{
     spanArr(){
       return this.rowspan(this.tableData,'groupId',null)
     },
-    spanArrGroup() {
-      return this.tableData.reduce((accu, item, index) => {
-        if(item.partNo && item.partNo.length && item.partNo.includes('Group total')){
-          return [...accu, index]
-        }else{
-          return accu
-        }
-      })
-    },
     isPreview(){
         return this.$store.getters.isPreview;
     }
@@ -270,9 +273,14 @@ export default{
         console.warn(error)
       }
     },
+    //推荐供应商添加下划线
+    tuijianSuplier(currentProps,row){
+      if (['lcAPrice','skdAPrice','lcBPrice','skdBPrice'].includes(this.removeKeysNumber(currentProps)) && row[this.getPorpsNumber(currentProps)+'suggestFlag']) return true
+      return false
+    },
     ttoShow(data){
-      if(data && parseInt(data)){
-        return (parseInt(data)+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
+      if(data && parseFloat(data)){
+        return (data+'').replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,') 
       }else{
         return data
       }
@@ -282,7 +290,7 @@ export default{
        return data 
       else{
         // eslint-disable-next-line no-undef
-        const result = math.multiply(math.bignumber(data), 100).toString() + '%'
+        const result = math.multiply(math.bignumber(data || 0), 100).toString() + '%'
         return result
       }
 
@@ -346,7 +354,7 @@ export default{
   },
   spanMethod({row, column, rowIndex, columnIndex}) {
     // grouptotal 合并第一、二格
-    if (this.spanArrGroup && this.spanArrGroup.length && this.spanArrGroup.includes(rowIndex)) {
+    if (row.partNo.indexOf('Group total')>-1) {
       if (columnIndex === 0) {
         return [1, 2];
       } else if (columnIndex === 1) {
@@ -363,10 +371,10 @@ export default{
       };
     }
   },  
-    getPorpsNumber(key){
+    getPorpsNumber(key=""){
       return getPorpsNumber(key)
     },
-    removeKeysNumber(data){
+    removeKeysNumber(data=""){
       return removeKeysNumber(data)
     },
     /**
@@ -414,6 +422,10 @@ export default{
       if(column.label == 'EBR' && rowIndex <= this.tableData.length - 4){
         return 'rightBorder'
       }
+      //判断是否是推荐供应商
+      if(this.tuijianSuplier(column.property,row)){
+        return 'tuijianSupplier'
+      }
       if(column.label == 'Group' && row.groupId && row.groupId != '-'){
         return 'bgcoor'
       }
@@ -442,11 +454,20 @@ export default{
       } catch (error) { 
         return str 
       }
-    }
+    },
+    // 减法
+    subtract(a, b) {
+      const _a = (a + "").replace(/,/g, "")
+      const _b = (b + "").replace(/,/g, "")
+
+      // eslint-disable-next-line no-undef
+      return math.subtract(math.bignumber(+_a || 0), math.bignumber(+_b || 0)).toFixed(2)
+    } 
   }
 }
 </script>
 <style lang='scss' scoped>
+
   .checkBox{
     ::v-deep.el-checkbox__label{
       display: block;
@@ -479,6 +500,9 @@ export default{
   .el-table {
     position: initial;
     overflow: visible;
+    ::v-deep.tuijianSupplier{
+      border-bottom: 2px solid blue;
+    }
     ::v-deep.cell{
       overflow: visible;
       position: static;

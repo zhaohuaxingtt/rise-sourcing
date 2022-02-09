@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
- * @LastEditors: YoHo
- * @LastEditTime: 2021-12-28 13:43:29
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-24 15:11:18
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -20,7 +20,7 @@
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
-                  <el-option v-if="item.value == 'showSelf'" value="" :label="language('ALL','全部')"></el-option>
+                  <el-option v-if="item.value == 'showSelf'|| item.value == 'linieApportionStatus'" value="" :label="language('ALL','全部')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
                     :key="item.value"
@@ -40,6 +40,7 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANZONGHECHAXUN','配件综合查询')}}</span>
                 <div class="floatright">
+                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_MANAGFMENT_SENDBUYPER|配件-配件管理-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------分配Linie按钮----------------------------------->
@@ -58,7 +59,12 @@
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_MANAGFMENT_EXPORT|配件-配件管理-导出">{{language('DAOCHU','导出')}}</iButton>
                 </div>
             </div>
-            <tableList :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight">
+            <tableList
+              ref="tableList"
+              :lang="true" 
+              :handleSaveSetting="handleSaveSetting"
+              :handleResetSetting="handleResetSetting"
+              :activeItems='"spnrNum"' :activeItems2='"rfqNum"' selection indexKey :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @openPage2="openPage2" class="aotoTableHeight">
               <template #supplierSapCode="scope">
                 <span>{{ scope.row.supplierSapCode || scope.row.supplierSvwTempCode }}</span>
               </template>
@@ -76,11 +82,11 @@
           <!------------------------------------------------------------------------>
           <!--                  分配询价科室弹窗                                   --->
           <!------------------------------------------------------------------------>
-          <assignInquiryDepartmentDialog ref="sendliniedept" :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId" @init="init"/>
+          <assignInquiryDepartmentDialog ref="sendliniedept"  :dialogVisible="inquiryDialogVisible" @changeVisible="changeInquiryDialogVisible" @sendAccessory="sendAccessoryDept" :idList="selectliniePartId" @init="init"/>
           <!------------------------------------------------------------------------>
           <!--                  分配询价采购员弹窗                                 --->
           <!------------------------------------------------------------------------>
-          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" :idList="selectBuyerPartId" @init="init" />
+          <assignInquiryBuyerDialog ref="sendlinie" :dialogVisible="buyerDialogVisible" @changeVisible="changeBuyerDialogVisible" @sendAccessory="sendAccessoryLINIE" :deptId="selectDeptId" :idList="selectBuyerPartId" @init="init" :hasUpdateStatus='false' />
           <!------------------------------------------------------------------------>
           <!--                  退回EPS弹窗                                       --->
           <!------------------------------------------------------------------------>
@@ -104,7 +110,9 @@
 import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import headerNav from '@/components/headerNav'
-import tableList from '@/views/designate/designatedetail/components/tableList'
+// import tableList from '@/views/designate/designatedetail/components/tableList'
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { tableTitle, searchList, TAB } from './data'
 import assignInquiryDepartmentDialog from './components/distributionLinie'
 import assignInquiryBuyerDialog from './components/distributionBuyer'
@@ -126,7 +134,7 @@ import { numberProcessor } from '@/utils'
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins,tableSortMixins],
   components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMultiLineInput, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog, headerNav },
   data() {
     return {
@@ -327,7 +335,7 @@ export default {
      */    
     getSelectOptions() {
       // 配件状态
-      this.getDictionary('accessoryTypeOption', 'ACCESSORY_STATE')
+      this.getDictionary('accessoryTypeOption', 'ACCESSORY_MANAGE_STATE')
       // ID状态
       this.getDictionary('accessoryIdStateOption', 'ACCESSORY_ID_STATE')
       // 定点状态
@@ -336,6 +344,8 @@ export default {
       this.getDictionary('contactStateOption', 'CONTRACT_STATE')
       // 零件状态
       this.getDictionary('partStateOption', 'RFQ_PART_STATUS_CODE_TYPE')
+      // LINIE分配状态
+      this.getDictionary('linieStatusOption', 'LINIE_APPORTION_STATUS')
     },
     /**
      * @Description: 搜索条件重置
@@ -391,13 +401,13 @@ export default {
     /**
      * @Description: 退回
      * @Author: Luoshuang
-     * @param {*} reason 退回原因
+     * @param {*} reasonDescription 退回原因
      * @return {*}
      */    
-    handleBack(reason){
+    handleBack(reasonDescription){
       const params = {
         accessoryIdList: this.selectParts.map(item => item.id),
-        reason
+        reasonDescription
       }
       back(params).then(res => {
         if (res.result) {

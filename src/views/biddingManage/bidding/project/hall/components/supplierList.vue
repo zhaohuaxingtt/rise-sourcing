@@ -151,13 +151,15 @@ export default {
   },
   async mounted() {
     this.tableLoading = true;
-    if (
+    if (this.role === "supplier"){
+      if (
       this.ruleForm.biddingStatus == "04" ||
       this.ruleForm.biddingStatus == "05"
-    ) {
-      this.timer = setInterval(() => {
-        this.handleSearchReset();
-      }, 1000);
+      ) {
+        this.timer = setInterval(() => {
+          this.handleSearchReset();
+        }, 1000);
+      }
     }
     let param = { biddingId: this.id, supplierCode: this.supplierCode };
     const r = await getSupplierRank(param).catch(err => {

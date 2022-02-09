@@ -38,7 +38,7 @@
           <div class="post text-ellipsis" v-if="!item.taskNodeList">
             <div>
               <span>
-                {{ item.approvalUser && item.approvalUser.deptNameZh }}
+                {{ item.approvalUser && item.approvalUser.assignedDeptFullCode }}
               </span>
             </div>
           </div>
@@ -59,7 +59,7 @@
               <li
                 v-for="(approvalUser, i) of item.taskNodeList"
                 :key="i"
-                :class="{ active: approvalUser.endTime || ['已审批'].includes(item.status) }"
+                :class="{ active: approvalUser.endTime || ['已审批', '有异议', '无异议'].includes(approvalUser.operation) }"
               >
                 <div class="item-name">
                   <span v-if="approvalUser">
@@ -71,6 +71,7 @@
                     class="agentUser" 
                     v-for="(agentUser, agentUsersI) in approvalUser.agentUsers" 
                     :key="agentUsersI"
+                    :class="{ active: agentUser.endTime || ['已审批', '有异议', '无异议'].includes(agentUser.operation) }"
                   >
                     <span v-if="agentUser">
                       {{
@@ -80,7 +81,7 @@
                   </div>
                 </div>
                 <div class="post">
-                  {{ approvalUser.deptNameZh }}
+                  {{ approvalUser.assignedDeptFullCode }}
                   <div 
                     class="agentUserDept" 
                     v-for="(agentUser, agentUsersI) in approvalUser.agentUsers" 
@@ -88,7 +89,7 @@
                   >
                     <span v-if="agentUser">
                       {{
-                        agentUser.deptNameZh
+                        agentUser.assignedDeptFullCode
                       }}
                     </span>
                   </div>
@@ -408,6 +409,13 @@ $borderColor: #cbcbcb;
     margin-right: 8px;
     position: relative;
     top: 5px;
+  }
+  
+  &.active {
+    &::before {
+      border: solid 1px $primaryColor;
+      background: $primaryColor;
+    }
   }
 }
 .agentUserDept {

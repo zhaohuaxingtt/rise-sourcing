@@ -11,10 +11,30 @@
            width="70%"
            @close="clearDiolog">
     <el-form label-width="60px"
-             label-position="top">
+             label-position="top"
+             model="form">
       <el-row type="flex"
               align='bottom'
               justify="space-between">
+        <el-col :span="6">
+          <el-form-item :label="language('CAILIAOZU','材料组')"
+                        prop="project">
+            <iSelect v-model="form.categoryCodes"
+                     clearable
+                     filterable
+                     multiple
+                     collapse-tags
+                     :multiple-limit="5"
+                     style="width:260px"
+                     popper-append-to-body
+                     :placeholder="language('QINGXUANZE','请选择')">
+              <el-option v-for="item in categoryList"
+                         :key="item.categoryId"
+                         :label="item.categoryCode+'-'+item.categoryName"
+                         :value="item.categoryCode"></el-option>
+            </iSelect>
+          </el-form-item>
+        </el-col>
         <el-col :span="4">
           <el-form-item :label="language('LINGJIANHAO','零件号')">
             <iInput :placeholder="$t('LK_QINGXUANZE')"
@@ -45,6 +65,22 @@
             </el-select>
           </el-form-item>
         </el-col>
+
+      </el-row>
+      <el-row type="flex"
+              justify="space-between	">
+        <el-col :span="4">
+          <el-checkbox v-model="form.isFromAeko">{{language('LINGJIANAEKODINGDIAN','零件/Aeko定点')}}</el-checkbox>
+          <!-- <el-form-item :label="language('LINGJIANAEKODINGDIAN','零件/Aeko定点')">
+            <el-select v-model="form.isFromAeko"
+                       :placeholder="language('QINGXUANZE','请选择')">
+              <el-option label="是"
+                         value="true"></el-option>
+              <el-option label="否"
+                         value="false"></el-option>
+            </el-select>
+          </el-form-item> -->
+        </el-col>
         <el-col :span="4">
           <el-form-item>
             <iButton @click="getTableList">{{$t('LK_QUEREN')}}</iButton>
@@ -61,6 +97,9 @@
                :selection='true'
                :index="true"
                @handleSelectionChange="handleSelectionChange">
+      <template #isFromAeko="scope">
+        <div> {{scope.row.isFromAeko?'是':"否"}}</div>
+      </template>
     </tableList>
     <div slot="footer"
          class="dialog-footer">
@@ -70,16 +109,16 @@
 </template>
 
 <script>
-import { iInput, iButton, iDialog, icon } from 'rise'
+import { iInput, iButton, iDialog, iMessage, iSelect } from 'rise'
 import tableList from '@/components/ws3/commonTable';
 import { addPartTableTitle } from "./data.js";
-import { getPartMessage, infoAdd } from "@/api/partsrfq/mek/index.js";
+import { getPartMessage, infoAdd, categoryList } from "@/api/partsrfq/mek/index.js";
 import resultMessageMixin from '@/utils/resultMessageMixin.js';
 
 export default {
   mixins: [resultMessageMixin],
   components: {
-    iInput, iButton, iDialog, icon, tableList
+    iInput, iButton, iDialog, tableList, iSelect
   },
   props: {
     value: { type: Boolean },
@@ -94,25 +133,38 @@ export default {
         fsNum: '',
         partNum: '',
         rfq: this.$store.state.rfqId || '',
+        categoryCodes: '',
+        isFromAeko: true,
         project: '1'
       },
       formGoup: {
         materialGroupList: [],
       },
-      fieldList: []
+      fieldList: [],
+      categoryList: []
     }
   },
   created () {
-    this.getTableList()
+    // this.getTableList()
+    this.getCategoryList()
   },
   methods: {
+    getCategoryList () {
+      categoryList({}).then(res => {
+        if (res?.code === '200') {
+          this.categoryList = res.data
+          this.categoryList = this.categoryList.filter(item => item.categoryCode !== this.$route.query.categoryCode)
+        }
+      })
+    },
     handleSelectionChange (val) {
       this.selectTableData = val
     },
     async handleAdd () {
       const pms = {
         list: this.selectTableData,
-        mekId: this.$route.query.chemeId
+        mekId: this.$route.query.schemeId,
+        project: this.form.project
       }
       const res = await infoAdd(pms)
       this.resultMessage(res, () => {
@@ -133,16 +185,46 @@ export default {
       this.getTableList()
     },
     async getTableList () {
+      if (this.form.categoryCodes.length === 0) {
+        iMessage.error(this.$t('QINGXUANZECHAILIAOZU'))
+        return
+      }
+      let vwModelCodes = JSON.parse(this.$route.query.vwModelCodes)
       try {
         this.tableLoading = true
-        const pms = {
-          ...this.form,
-          categoryCode: this.$route.query.categoryCode || '',
-          motorIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || []
-
+        if (this.form.project === '1') {
+          let targetMotorId = vwModelCodes.shift()
+          let motorIds = vwModelCodes
+          const pms = {
+            ...this.form,
+            // categoryCode: this.$route.query.categoryCode || '',
+            motorIds: motorIds || [],
+            // isNominated: this.form.isFromAeko,
+            targetMotorId: targetMotorId,
+            isBindingRfq: this.$route.query.isBindingRfq,
+            schemeId: this.$route.query.schemeId
+          }
+          const res = await getPartMessage(pms)
+          if (res.code === '200') {
+            this.tableListData = res.data
+          } else {
+            iMessage.error(res.desZh)
+          }
+        } else {
+          const pms = {
+            ...this.form,
+            categoryCode: this.$route.query.categoryCode || '',
+            motorIds: vwModelCodes || [],
+            isBindingRfq: this.$route.query.isBindingRfq,
+            schemeId: this.$route.query.schemeId
+          }
+          const res = await getPartMessage(pms)
+          if (res.code === '200') {
+            this.tableListData = res.data
+          } else {
+            iMessage.error(res.desZh)
+          }
         }
-        const res = await getPartMessage(pms)
-        this.tableListData = res.data
         this.tableLoading = false
       } catch (error) {
         this.tableLoading = false

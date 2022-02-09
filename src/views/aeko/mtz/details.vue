@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
  * @LastEditors: YoHo
- * @LastEditTime: 2021-12-31 09:47:47
+ * @LastEditTime: 2022-01-26 16:57:27
  * @Description: 
 -->
 <template>
@@ -35,9 +35,11 @@
         >
           {{ language('BAOCUN', '保存') }}
         </iButton>
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
       </div>
-      <tablelist
+      <tableList
         height="400"
+        ref="tableList"
         index
         :selection="true"
         :tableData="tableListData"
@@ -47,6 +49,8 @@
         v-permission.auto="MTZ_MODIFY_DETAILS_TABLE|MTZ变更表格"
         v-loading="tableLoading"
         @handleSelectionChange="handleSelectionChange"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
       <template #dosageChange="scope">
         <span :class="{validateDosageChangeError: scope.row.validateDosageChangeError}" v-if="!disable">
@@ -89,7 +93,7 @@
         </span>
         <span v-else>{{scope.row.newEndDate}}</span>
       </template>
-      </tablelist>
+      </tableList>
       <div class="pagination">
         <iPagination v-update
           class="pagination"
@@ -108,7 +112,9 @@
 
 <script>
 import {tableTitle} from './components/data'
-import tablelist from 'rise/web/components/iFile/tableList'; 
+// import tablelist from 'rise/web/components/iFile/tableList'; 
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import {iCard, iButton, iPagination, iInput, iDatePicker, iMessage} from 'rise'
 import { pageMixins } from '@/utils/pageMixins'
 // 解释附件、审批附件查询，审批附件带taskId
@@ -120,14 +126,14 @@ import {
 } from '@/api/aeko/mtz'
 
 export default {
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableSortMixins],
   components: {
     iCard,
     iButton,
     iInput,
     iDatePicker,
     iPagination,
-    tablelist
+    tableList
   },
   inject: ['vm'],
   computed: {
@@ -192,74 +198,74 @@ export default {
         errorInfo = this.language('YONGLIANGBIANHUABUNENGWEIKONG', '用量变化不能为空')
          this.$set(row, 'validateDosageChangeError', true)
       }
-      if (state && !row.newStartDate && priority.includes(3)) {
-        state = false
-        errorInfo = this.language('XINYOUXIAOQIKAISHISHIJIANBITIAN', '有效期开始时间不能为空')
-        this.$set(row, 'validateStartError', true)
-      }
-      if (state && !row.newEndDate && priority.includes(2)) {
-        state = false
-        errorInfo = this.language('XINYOUXIAOQIJIESHUJIANBITIAN', '有效期结束时间不能为空')
-        this.$set(row, 'validateEndError', true)
-      }
-      if (state && row.newEndDate && row.newEndDate < row.newStartDate && priority.includes(2)) {
-        state = false
-        errorInfo = this.language('XINYOUXIAOQIKAISHIWANYUJIESU', '有效期结束时间不能早于开始时间')
-        this.$set(row, 'validateStartError', true)
-        this.$set(row, 'validateEndError', true)
-      }
-      if (state && row.newStartDate && row.newStartDate > row.newEndDate && priority.includes(3)) {
-        state = false
-        errorInfo = this.language('XINYOUXIAOQIKAISHIWANYUJIESU', '有效期开始时间不能晚于结束时间')
-        this.$set(row, 'validateStartError', true)
-        this.$set(row, 'validateEndError', true)
-      }
+      // if (state && !row.newStartDate && priority.includes(3)) {
+      //   state = false
+      //   errorInfo = this.language('XINYOUXIAOQIKAISHISHIJIANBITIAN', '有效期开始时间不能为空')
+      //   this.$set(row, 'validateStartError', true)
+      // }
+      // if (state && !row.newEndDate && priority.includes(2)) {
+      //   state = false
+      //   errorInfo = this.language('XINYOUXIAOQIJIESHUJIANBITIAN', '有效期结束时间不能为空')
+      //   this.$set(row, 'validateEndError', true)
+      // }
+      // if (state && row.newEndDate && row.newEndDate < row.newStartDate && priority.includes(2)) {
+      //   state = false
+      //   errorInfo = this.language('XINYOUXIAOQIKAISHIWANYUJIESU', '有效期结束时间不能早于开始时间')
+      //   this.$set(row, 'validateStartError', true)
+      //   this.$set(row, 'validateEndError', true)
+      // }
+      // if (state && row.newStartDate && row.newStartDate > row.newEndDate && priority.includes(3)) {
+      //   state = false
+      //   errorInfo = this.language('XINYOUXIAOQIKAISHIWANYUJIESU', '有效期开始时间不能晚于结束时间')
+      //   this.$set(row, 'validateStartError', true)
+      //   this.$set(row, 'validateEndError', true)
+      // }
 
-      // 校验是否有相同的开始时间或者结束时间
-      let theSameNewStartDate = ''
-      let theSameNewEndDate = ''
-      // ***检查时间交叉****
-      // 根据开始日期排序
-      const dataList = window._.sortBy(this.tableListData, 'newStartDate')
-      // 上一次结束时间
-      const parRuleNo = dataList.length && dataList[0] && dataList[0].ruleNo
-      let parEndId = dataList.length && dataList[0] && dataList[0].id
-      let parEndDate = dataList.length && dataList[0] && dataList[0].newEndDate
-      // 根据日期从小到大排序，校验是否出现每一行数据开始时间小于上一行结束时间的记录
-      dataList.forEach((item) => {
-        console.log(item.id, item.newStartDate, parEndId, parEndDate)
-        // 时间段重叠
-        if (state && item.newStartDate && parEndDate && parEndId !== item.id && item.ruleNo === parRuleNo && item.newStartDate < parEndDate && window._.intersection(priority, [2,3]).length) {
-          state = false
-          errorInfo = this.language('LINGJIANSHIJIANDUANCONGDIECUOWU','所填零件行项目有时间段重叠,请修改')
-          const parItem = this.tableListData.find(o => o.id === parEndId)
-          const curItem = this.tableListData.find(o => o.id === item.id)
-          this.$set(parItem, 'validateEndError', true)
-          this.$set(curItem, 'validateStartError', true)
-        }
+      // // 校验是否有相同的开始时间或者结束时间
+      // let theSameNewStartDate = ''
+      // let theSameNewEndDate = ''
+      // // ***检查时间交叉****
+      // // 根据开始日期排序
+      // const dataList = window._.sortBy(this.tableListData, 'newStartDate')
+      // // 上一次结束时间
+      // const parRuleNo = dataList.length && dataList[0] && dataList[0].ruleNo
+      // let parEndId = dataList.length && dataList[0] && dataList[0].id
+      // let parEndDate = dataList.length && dataList[0] && dataList[0].newEndDate
+      // // 根据日期从小到大排序，校验是否出现每一行数据开始时间小于上一行结束时间的记录
+      // dataList.forEach((item) => {
+      //   console.log(item.id, item.newStartDate, parEndId, parEndDate)
+      //   // 时间段重叠
+      //   if (state && item.newStartDate && parEndDate && parEndId !== item.id && item.ruleNo === parRuleNo && item.newStartDate < parEndDate && window._.intersection(priority, [2,3]).length) {
+      //     state = false
+      //     errorInfo = this.language('LINGJIANSHIJIANDUANCONGDIECUOWU','所填零件行项目有时间段重叠,请修改')
+      //     const parItem = this.tableListData.find(o => o.id === parEndId)
+      //     const curItem = this.tableListData.find(o => o.id === item.id)
+      //     this.$set(parItem, 'validateEndError', true)
+      //     this.$set(curItem, 'validateStartError', true)
+      //   }
 
-        // 校验是否有相同的开始时间或者结束时间 只针对相同的ruleId
-        const theSameStartDateLength = this.tableListData.filter(o => o.newStartDate === item.newStartDate && o.ruleNo === item.ruleNo).length
-        const theSameEndDateLength = this.tableListData.filter(o => o.newEndDate === item.newEndDate && o.ruleNo === item.ruleNo).length
-        if (theSameStartDateLength > 1 && !theSameNewStartDate) theSameNewStartDate = item.newStartDate
-        if (theSameEndDateLength > 1 && !theSameNewEndDate) theSameNewEndDate = item.newEndDate
-        theSameNewStartDate === item.newStartDate && (this.$set(item, 'validateStartError', true))
-        theSameNewEndDate === item.newEndDate && (this.$set(item, 'validateEndError', true))
-        if (state && item.newStartDate && item.newEndDate && (theSameStartDateLength > 1 || theSameEndDateLength > 1) && window._.intersection(priority, [2,3]).length) {
-          state = false
-          errorInfo = this.language('LINGJIANSHIJIANDUANCONGDIECUOWU','所填零件行项目有时间段重叠,请修改')
-        }
+      //   // 校验是否有相同的开始时间或者结束时间 只针对相同的ruleId
+      //   const theSameStartDateLength = this.tableListData.filter(o => o.newStartDate === item.newStartDate && o.ruleNo === item.ruleNo).length
+      //   const theSameEndDateLength = this.tableListData.filter(o => o.newEndDate === item.newEndDate && o.ruleNo === item.ruleNo).length
+      //   if (theSameStartDateLength > 1 && !theSameNewStartDate) theSameNewStartDate = item.newStartDate
+      //   if (theSameEndDateLength > 1 && !theSameNewEndDate) theSameNewEndDate = item.newEndDate
+      //   theSameNewStartDate === item.newStartDate && (this.$set(item, 'validateStartError', true))
+      //   theSameNewEndDate === item.newEndDate && (this.$set(item, 'validateEndError', true))
+      //   if (state && item.newStartDate && item.newEndDate && (theSameStartDateLength > 1 || theSameEndDateLength > 1) && window._.intersection(priority, [2,3]).length) {
+      //     state = false
+      //     errorInfo = this.language('LINGJIANSHIJIANDUANCONGDIECUOWU','所填零件行项目有时间段重叠,请修改')
+      //   }
         
-        // 记录上一次
-        parEndId = item.id
-        parEndDate = item.newEndDate
+      //   // 记录上一次
+      //   parEndId = item.id
+      //   parEndDate = item.newEndDate
         
-      })
+      // })
       if (!state) {
         console.log(errorInfo)
         iMessage.error(errorInfo)
       }
-      console.log(this.tableListData, dataList, row)
+      // console.log(this.tableListData, dataList, row)
       return {
         state,
         errorInfo

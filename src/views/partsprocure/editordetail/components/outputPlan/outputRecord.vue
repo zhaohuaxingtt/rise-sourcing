@@ -13,6 +13,7 @@
         :tableLoading="loading"
         @handleSelectionChange="handleSelectionChange" />
       <iPagination
+        v-update
         class="pagination margin-top30"
         @size-change="handleSizeChange($event, getData)"
         @current-change="handleCurrentChange($event, getData)"
@@ -21,7 +22,7 @@
         :page-sizes="page.pageSizes"
         :page-size="page.pageSize"
         :layout="page.layout"
-        :total="page.totalCount" v-update />
+        :total="page.totalCount" />
     </div>
   </iCard>
 </template>
@@ -70,11 +71,13 @@ export default {
     getData() {
       this.loading = true
       getOutputPlanMarks({
+        current: this.page.currPage,
+        size: this.page.pageSize,
         'purchaseProjectId': this.params.id,
         'year': this.startYear
       }).
         then(res => {
-          if (res.data) {
+          if (res.code == 200) {
             if (Array.isArray(res.data) && res.data && Array.isArray(res.data[0].outputPlanList)) {
               this.tableTitle = cloneDeep(tableTitle)
               

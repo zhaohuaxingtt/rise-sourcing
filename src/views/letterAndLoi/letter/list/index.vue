@@ -28,10 +28,11 @@
 
         <span class="font18 font-weight">{{ language( 'DINGDIANXIN', '定点信' ) }}</span>
         <div class="floatright">
+            <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_QUERENBINGTIJIAO|定点信-确认并提交" :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_LINIEQUEREN|定点信-LINIE确认" :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_LINIETUIHUI|定点信-LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
-            <iButton v-permission.auto="LK_LETTER_LIST_CHEHUI|定点信-撤回" :loading="btnLoading.back" @click="back">{{language('partsprocure.CheHui','撤回')}}</iButton>
+            <iButton v-permission.auto="LK_LETTER_LIST_CHEHUI|定点信-撤回" :loading="btnLoading.back" @click="back">{{language("CHEHUI", "撤回")}}</iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_ZHUANPAI|定点信-转派" @click="turnSend">{{language('partsprocure.PARTSPROCURETRANSFER','转派')}} </iButton> 
             <iButton v-permission.auto="LK_LETTER_LIST_GUANBI|定点信-关闭" @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_JIHUO|定点信-激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
@@ -47,26 +48,29 @@
             :tableLoading="loading"
             @handleSelectionChange="handleSelectionChange"
             v-permission.auto="LK_LETTER_LIST_TABLE|定点信-表格"
+            ref="tableList"
+            :handleSaveSetting="handleSaveSetting"
+            :handleResetSetting="handleResetSetting"
         >
             <!-- 定点申请单号 -->
             <template #nominateAppId="scope">
-                <span class="flexRow">
+                <!-- <span class="flexRow"> -->
                     <span class="openLinkText cursor " @click="goToDesignate(scope.row)"> {{ scope.row.nominateAppId }}</span>
-                        <span  v-if="scope.row.nominateAppId" class="icon-gray  cursor "  @click="goToDesignate(scope.row)">
-                        <icon symbol class="show" name="icontiaozhuananniu" />
-                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                    </span>
-                </span>  
+                        <!-- <span  v-if="scope.row.nominateAppId" class="icon-gray  cursor "  @click="goToDesignate(scope.row)"> -->
+                        <!-- <icon symbol class="show" name="icontiaozhuananniu" />
+                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" /> -->
+                    <!-- </span> -->
+                <!-- </span>   -->
             </template>
             <!-- 定点信编号 -->
             <template #letterNum="scope">
-                <span class="flexRow">
+                <!-- <span class="flexRow"> -->
                     <span class="openLinkText cursor " @click="goToDetail(scope.row)"> {{  scope.row.letterNum }}</span>
-                        <span  v-if=" scope.row.letterNum" class="icon-gray  cursor "  @click="goToDetail(scope.row)">
+                        <!-- <span  v-if=" scope.row.letterNum" class="icon-gray  cursor "  @click="goToDetail(scope.row)">
                         <icon symbol class="show" name="icontiaozhuananniu" />
-                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                    </span>
-                </span>  
+                        <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" /> -->
+                    <!-- </span> -->
+                <!-- </span>   -->
             </template>
             <!-- RFQ编号 -->
             <!-- 后端未处理 直接返回的零件列表 自己取第一个 -->
@@ -120,7 +124,9 @@ import {
     letterListTitle,
 } from '../../data';
 import { pageMixins } from "@/utils/pageMixins";
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import turnSendDialog from './components/turnSendDialog'
 import closeLetterDialog from './components/closeLetterDialog'
 import {
@@ -137,7 +143,7 @@ import { numberProcessor } from '@/utils'
 import {setPretreatmentParams} from '@/utils/tool'
 export default {
     name:'letterList',
-    mixins: [pageMixins],
+    mixins: [pageMixins,tableSortMixins],
     components:{
         iSearch,
         iInput,

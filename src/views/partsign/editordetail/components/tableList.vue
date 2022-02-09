@@ -1,22 +1,22 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2021-12-05 00:15:17
- * @LastEditors:  
+ * @LastEditTime: 2022-01-26 10:08:55
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
 <template>
-  <el-table ref="table" class="table" :class="singleSelect ? 'singleSelectTable' : ''" :height="height" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" @row-click="handleRowClick" :cell-style="borderLeft" :span-method="spanMethod" >
+  <el-table ref="table" class="table" :class="(singleSelect ? 'singleSelectTable' : '' )||(isminHeight?'aotoTableHeight':'')" :height="height" :min-height="minHeight" :data="tableData" :cell-class-name="cellClassName" v-loading="tableLoading" @selection-change="handleSelectionChange" @select="handleSelect" :empty-text="language('LK_ZANWUSHUJU','暂无数据')" @select-all="handleSelectAll" @row-click="handleRowClick" :cell-style="borderLeft" :span-method="spanMethod" >
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="55" :fixed="fixed" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" v-if='$slots[item.props] && item.editable' :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
+      <el-table-column :key="$index" align="center" v-if='$slots[item.props] && item.editable' :label="lang ? (showName ? item.name : language(item.key, item.name)) : (showName ? item.name : $t(item.key))" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
         <template slot-scope="scope">
           <iInput v-if="item.type === 'input'" v-model="scope.row[item.props]" @click.native.stop></iInput>
         </template>
       </el-table-column>
-      <el-table-column :key="$index" align="center" v-else :label="lang ? language(item.key, item.name) : $t(item.key)" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :render-header="item.renderHeader">
+      <el-table-column :key="$index" align="center" v-else :label="lang ? (showName ? item.name : language(item.key, item.name)) : (showName ? item.name : $t(item.key))" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :render-header="item.renderHeader">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row" :$index="scope.$index"></slot>
         </template>
@@ -50,7 +50,12 @@ export default {
     singleSelect: {
       type: Boolean,
       default: false
+    },  
+    isminHeight: {
+      type: Boolean,
+      default: false
     },
+    
     index: {
       type: Boolean,
       default: false
@@ -66,6 +71,10 @@ export default {
       type: Function
     },
     lang: {
+      type: Boolean,
+      default: false
+    },
+    showName: {
       type: Boolean,
       default: false
     },
@@ -137,7 +146,12 @@ export default {
     z-index: 0
   }
 }
-
+.aotoTableHeight{
+    ::v-deep .el-table__body-wrapper {
+      max-height: 422px !important;  
+      overflow: auto !important ;
+    }
+  }
 .singleSelectTable {
   ::v-deep .el-table__header-wrapper .el-checkbox {
     display: none;

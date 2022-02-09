@@ -22,8 +22,8 @@
         <div class="money">{{$t('LK_HUOBI')}}：{{$t('MOULDADD.LK_RENMINGBI')}}  |  {{$t('MOULDADD.LK_DANWEI')}}：{{$t('TPZS.YUAN')}}  |  {{$t('MOULDADD.LK_BUHANSUI')}} </div>
         <iPagination
             v-update
-            @size-change="handleSizeChange($event, findAddColumnInvestmentBuild)"
-            @current-change="handleCurrentChange($event, findAddColumnInvestmentBuild)"
+            @size-change="handleSizeChange($event, detail)"
+            @current-change="handleCurrentChange($event, detail)"
             background
             :current-page="page.currPage"
             :page-sizes="page.pageSizes"

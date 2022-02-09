@@ -3,14 +3,15 @@ import store from '../store'
 import router from '@/router'
 import { businessPermission } from '@/utils'
 import { getTousandNum, delcommafy } from '@/utils/tool'
-const openProcess = process.env.NODE_ENV == 'dev'
+
+const openProcess = true
+// process.env.NODE_ENV == 'dev' || process.env.NODE_ENV == 'vmsit' || process.env.NODE_ENV == 'sit'
 // 按钮权限
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
   inserted: function(el, binding, vnode) {
-    return //权限初始化勾选中，切勿打开
     //如果是个变量则使用变量，否则当做字符串处理
-    const value = binding.value ? binding.value : binding.expression
+    const value = binding.value ? binding.value : binding.expression.trim()
     // dynamic、auto共用时处理
     if (binding.modifiers.dynamic && binding.modifiers.auto) {
       binding.modifiers.dynamic = false
@@ -26,25 +27,27 @@ Vue.directive('permission', {
         !store.state.permission.whiteBtnList[value] &&
         businessPermission(value, router.currentRoute.query)
       ) {
-        if (openProcess) el.parentNode.removeChild(el)
+        if (openProcess && el.parentNode) el.parentNode.removeChild(el)
       }
     } else if (binding.modifiers.auto) {
       // eslint-disable-next-line no-debugger
       const splitValue = value.split('|')
+      //去除控件传参中存在换行空格等情况
+      const pagePermission = splitValue[0]?splitValue[0].trim():splitValue[0]
       if (splitValue.length > 1) {
         // store.dispatch('uploadResource', splitValue)
       }
-      if (!store.state.permission.whiteBtnList[splitValue[0]]) {
-        if (openProcess) el.parentNode.removeChild(el)
+      if (!store.state.permission.whiteBtnList[pagePermission]) {
+        if (openProcess && el.parentNode) el.parentNode.removeChild(el)
       } else {
-        if (businessPermission(splitValue[0], router.currentRoute.query)) {
-          if (openProcess) el.parentNode.removeChild(el)
+        if (businessPermission(pagePermission, router.currentRoute.query)) {
+          if (openProcess && el.parentNode) el.parentNode.removeChild(el)
         }
       }
       // force permission
       if (
         binding.modifiers.force &&
-        !store.state.permission.whiteBtnList[splitValue[0]]
+        !store.state.permission.whiteBtnList[pagePermission]
       ) {
         if (openProcess) el.parentNode.removeChild(el)
       }

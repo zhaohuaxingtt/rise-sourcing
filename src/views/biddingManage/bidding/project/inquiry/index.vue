@@ -8,7 +8,7 @@
       collapse
       ref="headerCollapse"
     >
-      <template slot="header-control">
+      <template slot="header-control" v-if="isUser">
         <i class="el-icon-success icon-success" v-show="headerCollapseVal"></i>
         <div v-show="headerCollapseVal">
           <iButton @click="handleCheck('header')">{{ language('BIDDING_CHAKAN', '查看') }}</iButton>
@@ -127,6 +127,7 @@
         v-model="ruleForm"
         :isOpenDelay="isOpenDelay"
         :isBiddingDelay="isBiddingDelay"
+        :isUser="isUser"
       ></component>
     </iCard>
 
@@ -138,7 +139,8 @@
       collapse
       ref="contentCollapse"
     >
-      <template
+      <template  v-if="isUser">
+        <template
         slot="header-control"
         v-if="ruleForm.biddingStatus !== '01' ? false : true"
       >
@@ -157,6 +159,7 @@
             language('BIDDING_WANCHENG', '完成')
           }}</iButton>
         </div>
+      </template>
       </template>
       <commonTable
         ref="tableDataForm"
@@ -187,22 +190,64 @@
               inactive-text="N"
               :active-value='true'
               :inactive-value='false'
-              :disabled="ruleForm.biddingStatus !== '01'"
+              :disabled="!isUser || ruleForm.biddingStatus !== '01'"
             >
             </el-switch>
         </template>
         <!-- 供应商名称 -->
         <template slot="supplierName" slot-scope="scope">
-          <a
-            style="color: blue;cursor: pointer;"
+          <div class="supplier-item">
+            <a
+            style="color: blue;cursor: pointer; flex:1"
             @click="handleHref(scope.row)"
             >{{ scope.row.supplierName }}
-          </a>
+            </a>
+            <div class="supplier-ico">
+              <template v-if="supplierRiskLevel[scope.row.supplierId][0] ? supplierRiskLevel[scope.row.supplierId][0].resultCode === 'red' : false">
+                <div class="form-item-resultOpenForm-div">
+                  <img :src="require(`@/assets/images/supplier_help.png`)" class="form-item-resultOpenForm-Img" />
+                </div>
+                  <!-- <div >
+                    <span
+                      >{{supplierRiskLevel[scope.row.supplierId][0].tips}}</span
+                    ><br />
+                  </div> -->
+              </template>
+
+              <template v-if="!isCompleteData[scope.row.supplierId][scope.row.supplierId]">
+                <div class="form-item-resultOpenForm-div">
+                  <img :src="require(`@/assets/images/supplier_pending.png`)"  class="form-item-resultOpenForm-Img"/>
+                </div>
+                  <!-- <div>
+                    <span>{{blackStuffList[scope.row.supplierId] ? '任务已完成' : '没有完成任务'}}</span>
+                  </div> -->
+              </template>
+
+              <template v-if="blackStuffList[scope.row.supplierId] ? blackStuffList[scope.row.supplierId].length : false">
+                <div class="form-item-resultOpenForm-dis">
+                  <iLabelML :imgSrc="require(`@/assets/images/supplier_disabled.png`)" showTip class="form-item-resultOpenForm-icon">
+                  <div class="hover-text">
+                    <div>{{language('BIDDING_HEIMINGDAN', '黑名单')}}：</div>
+                    <div>
+                      <span>{{blackStuffList[scope.row.supplierId][0].startTime}} - {{blackStuffList[scope.row.supplierId][0].endTime}}</span>
+                      <br/>
+                      <span>{{blackStuffList[scope.row.supplierId][0].measures == 1 
+                        ? language('BIDDING_BKXJBKDD', '不可询价，不可定点')
+                        : language('BIDDING_KXJBKDD', '可询价，不可定点')
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                </iLabelML>
+                </div>
+              </template>
+            </div>
+          </div>
           <!-- <supplierBlackIcon/> -->
         </template>
         <!-- 联系人 -->
         <template slot="contactName" slot-scope="scope">
-          <div v-if="ruleForm.biddingStatus !== '01'">
+          <div v-if="!isUser || ruleForm.biddingStatus !== '01'">
             {{ scope.row["contactName"] }}
           </div>
           <iFormItem v-else :label="language('BIDDING_LIANGXIREN', '联系人')" >
@@ -227,14 +272,14 @@
         </template>
         <!-- 邮箱 -->
         <template slot="email" slot-scope="scope">
-          <div v-if="ruleForm.biddingStatus !== '01'">
+          <div v-if="!isUser || ruleForm.biddingStatus !== '01'">
             {{ scope.row["email"] }}
           </div>
           <iInput v-else v-model="scope.row['email']" required></iInput>
         </template>
         <!-- CBD选择 -->
         <template slot="cbdLevel" slot-scope="scope">
-          <div v-if="ruleForm.biddingStatus !== '01'">
+          <div v-if="!isUser || ruleForm.biddingStatus !== '01'">
             {{ cbdLevelLib[scope.row["cbdLevel"]] || scope.row["cbdLevel"]}}
           </div>
           <div v-else>
@@ -274,6 +319,7 @@
       :show="showSupplierDialog"
       @save-checked="handleSupplierChecked"
       :suppliers="ruleForm.suppliers"
+      :binddingRuleForm="ruleForm"
       @update-show="supplierClose"
     />
 
@@ -286,7 +332,8 @@
       collapse
       ref="reatCollapse"
     >
-      <template
+      <template v-if="isUser">
+        <template
         slot="header-control"
         v-if="ruleForm.biddingStatus !== '01' ? false : true"
       >
@@ -303,6 +350,7 @@
           }}</iButton>
         </div>
       </template>
+      </template>
       <template>
         <parities
           ref="reatForm"
@@ -310,6 +358,7 @@
           v-model="ruleForm"
           @selectDel="selectDel"
           @handle-currencys="handleCurrencys"
+          :isUser="isUser"
         />
       </template>
     </iCard>
@@ -324,7 +373,8 @@
       ref="attachCollapse"
       v-show="ruleForm.roundType === '05'"
     >
-      <template
+      <template v-if="isUser">
+        <template
         slot="header-control"
         v-if="ruleForm.biddingStatus !== '01' ? false : true"
       >
@@ -350,12 +400,14 @@
           }}</iButton>
         </div>
       </template>
+      </template>
       <template>
         <attachment
           ref="attachForm"
           v-model="ruleForm"
           :tableLoading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
+          :isUser="isUser"
         />
       </template>
     </iCard>
@@ -373,6 +425,7 @@ import inquiryForm from "./components/inquiryForm";
 import quotationForm from "./components/quotationForm";
 import parities from "./components/parities";
 import attachment from "./components/attachment";
+import iLabelML from "@/components/biddingComponents/iLabelML";
 import {
   tableTitle,
   isAttendList,
@@ -394,10 +447,14 @@ import {
   delayBidding,
   delayOpenTender,
   cbdLevel,
+  getBlackStuffList,
+  getSupplierFinancialRiskLevel,
+  getIsComplete
 } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
+import store from '@/store'
 
-import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
+// import supplierBlackIcon from "@/views/partsrfq/components/supplierBlackIcon"
 
 export default {
   mixins: [pageMixins],
@@ -408,6 +465,7 @@ export default {
     iSelect,
     iPagination,
     iPage,
+    iLabelML,
 
     commonTable,
 
@@ -421,7 +479,7 @@ export default {
     quotationForm,
 
     supplierListDialog,
-    supplierBlackIcon,
+    // supplierBlackIcon,
   },
   data() {
     return {
@@ -438,6 +496,9 @@ export default {
       cbdLevelList: {},
       cbdLevelLib,
       userListCache: {},
+      supplierRiskLevel: {},
+      blackStuffList: {},
+      isCompleteData: {},
       userListData:{},
       tableTitle,
       isAttendList,
@@ -472,7 +533,9 @@ export default {
       rfqCode:'',
       time:'',
       firstSupplierFlag:false,
-      exchangeRateList:{}
+      exchangeRateList:{},
+      isUser:false,
+      isLinieId:false
     };
   },
   computed: {
@@ -503,6 +566,9 @@ export default {
       const { suppliers } = this.ruleForm;
       const { currPage, pageSize } = this.page;
       return suppliers?.slice((currPage - 1) * pageSize, pageSize * currPage);
+    },
+    userId(){
+      return store.state.permission.userInfo.id
     },
   },
   async created() {
@@ -1197,6 +1263,13 @@ export default {
         const rfqCode = {rfqCode:this.rfqCode}
        await findRfqInquiry(rfqCode)
         .then((res) => {
+          // 是否当前用户是否是采购员
+          const userId = String(this.userId)
+          this.isUser = userId === res.linieId
+
+          // 判断采购员是否是当前登录者的下属员工
+          this.isLinieId = !!res?.userIds?.some(item => userId !== res.linieId || res.linieId.includes(item))
+
           console.log(res);
           if (res.inquiryIsCompleted == true) {
             this.$refs.headerCollapse.collapseValue = false;
@@ -1291,6 +1364,13 @@ export default {
       } else {
        await findInquiry(e)
         .then((res) => {
+          // 是否当前用户是否是采购员
+          const userId = String(this.userId)
+          this.isUser = userId === res.linieId
+
+          // 判断采购员是否是当前登录者的下属员工
+          this.isLinieId = !!res?.userIds?.some(item => userId !== res.linieId || res.linieId.includes(item))
+
           console.log(res);
           if (res.inquiryIsCompleted == true) {
             this.$refs.headerCollapse.collapseValue = false;
@@ -1412,7 +1492,9 @@ export default {
       }
       // CBD
       if (!this.cbdLevelList[supplierCode]) {
-        const res = await cbdLevel(supplierCode);
+        this.$set(this.cbdLevelList, supplierCode, []);
+        // const res = await cbdLevel(supplierCode);
+        const res = ['L1', 'L2', 'L3'];
         this.$set(this.cbdLevelList, supplierCode, res || []);
           this.$nextTick(() => {
             this.cbdLevelList[supplierCode] = cbdArea == "03"
@@ -1431,6 +1513,43 @@ export default {
         
       }
       
+      // 供应商黑名单
+      const { rfqCode, products, roundType } = this.ruleForm
+      let fsnrGsnrList = products?.map(item => item.fsnrGsnr) || []     
+      const blackData = roundType !== '05' 
+                        ? {rfqId: Number(rfqCode),spplierIds:[Number(supplierId)]}
+                        : {fsnr: fsnrGsnrList, spplierIds:[Number(supplierId)]}       // 手工竞价
+
+      if (roundType !== '05' && !this.blackStuffList[supplierId]){
+        this.$set(this.blackStuffList, supplierId, []);
+        getBlackStuffList(blackData).then(res => {
+          this.$set(this.blackStuffList, supplierId, res.data || []);
+        })
+
+      } else if (roundType === '05' && fsnrGsnrList.length && !this.blackStuffList[supplierId]) {
+        this.$set(this.blackStuffList, supplierId, []);
+        getBlackStuffList(blackData).then(res => {
+          this.$set(this.blackStuffList, supplierId, res.data || []);
+        })
+        
+      }
+
+      // 获取年度更新信息任务状态
+      if (!this.isCompleteData[supplierId]){
+        this.$set(this.isCompleteData, supplierId, []);
+        getIsComplete([Number(supplierId)]).then(res => {
+          this.$set(this.isCompleteData, supplierId, res || false);
+        })
+      }
+      
+
+      // 获取供应商财务风险级别
+      if (!this.supplierRiskLevel[supplierId]){
+        this.$set(this.supplierRiskLevel, supplierId, []);
+        getSupplierFinancialRiskLevel([Number(supplierId)]).then(res => {
+          this.$set(this.supplierRiskLevel, supplierId, res || []);
+        })
+      }
 
     },
     handlefirstSupplier(){
@@ -1524,6 +1643,46 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.supplier-item {
+  display: flex;
+  justify-content: flex-end;
+  .supplier-ico {
+    display: flex;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    /* flex:0 0 30%; */
+    
+    .title-header {
+      padding-right: 3px;
+    }
+  }
+}
+.hover-text {
+  display: flex;
+  font-family: "PingFangSC-Regular";
+  font-size: 14px;
+  font-weight: 400;
+}
+.form-item-resultOpenForm-div {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: auto 3px;
+  line-height: 1.5rem;
+  .form-item-resultOpenForm-Img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain
+  }
+}
+::v-deep .title-header .image-box {
+  line-height: 2rem !important;
+  img {
+    position: unset !important;
+  }
+}
+.form-item-resultOpenForm-dis {
+  margin: auto 0;
+}
 .inquiry {
   &__header {
     &-title {
@@ -1633,6 +1792,16 @@ export default {
   .el-switch__label--left.is-active {
     z-index: 1;
     color: #9c9c9c !important;
+  }
+}
+
+::v-deep .el-table {
+  .el-form-item {
+    margin-top: 0;
+    margin-bottom: 0;
+    .el-form-item__content {
+      line-height: revert;
+    }
   }
 }
 </style>

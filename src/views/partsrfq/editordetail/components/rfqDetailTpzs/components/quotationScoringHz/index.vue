@@ -52,6 +52,8 @@
       <span class="flex-center-center font18 noData">{{language('BAOQIANDANGQIANWUFACHAKKBXX','抱歉！当前轮次还未开标您无法查看报价汇总信息。')}}</span>
     </template>
     <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
+    <div class="margin-top10 font-size14">/ means no calculation base for mixed price. </div>
+    <div class="margin-top10 font-size14">Exchange Rate：1.00 EUR = 6.66RMB</div>
     <div class="margin-top10 font-size14">
       <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
         <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
@@ -80,7 +82,7 @@ import {roundsType} from '@/config'
 import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,showOrHide,getRowAndcolSpanArray,defaultLayoutTemplate} from './components/data'
-import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow} from '@/api/partsrfq/editordetail'
+import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow,exportFSPartsAsRowTWO, exportFsSupplierAsRowTWO, exportGsPartsAsRowTWO} from '@/api/partsrfq/editordetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
@@ -97,7 +99,7 @@ export default{
     round:'-1',
     rundList:[],
     backChooseLists:[],
-    backChoose:[],
+    backChoose:'',
     ratingList:{
       firstTile:[],
       ratingList:[]
@@ -228,6 +230,7 @@ export default{
       }
     },
     changeRound(){
+      this.backChoose = ''
       this.init()
     },
     /**
@@ -250,6 +253,10 @@ export default{
      * @return {*}
      */
     sureClick(){
+      //新增需求，如果零件采购项目不一致，需要提示文案但是不影响这个组合的效果
+      if(!this.groupSelectData.every(items => items.carProType == this.groupSelectData[0].carProType)){
+        iMessage.warn('您的组合项中，存在车型项目不一致的情况，MixPrice将不展示！')
+      }
       this.negoAnalysisSummaryGroups()
       this.groupVisble = false
     },
@@ -334,8 +341,18 @@ export default{
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
       return negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
-        if(res.data && res.data.layout){
+        if(res.data && res.data.layout){  
           this.backChoose = JSON.parse(res.data.layout) // 
+        }else{
+          this.backChoose = ''
+        }
+        if(this.backChoose === ''){//特殊逻辑处理，如果第一次进来，隐藏项为空。则认为用户没有设置过，需要将默认隐藏项设置好。
+          if(type == 2){
+            this.backChoose = ['EBR','Volume','Invest Budget','Prod. Loc.','Dev.\nCost','Supplier \nSOP Date','Total\n Turnover']
+          }
+          if(type == 3){
+            this.backChoose = ['currentShare','currentLtc','currentTto']
+          }
         }
       }).catch(err=>{
         iMessage.warn(err.desZh)
@@ -401,7 +418,7 @@ export default{
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
-          const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)
+          const subtotalList = subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList,this.layout == 1)
           this.exampelData = this.exampelData.reduce((accu, curr, index) => {
             if (index === this.exampelData.length - 1) {
               return [...accu, curr, ...subtotalList]
@@ -421,7 +438,7 @@ export default{
       }).catch(err=>{
         this.clearDataFs()
         this.fsTableLoading = false
-        iMessage.warn(err.desZh)
+        console.error(err)
       })
     },
     group(){
@@ -533,10 +550,25 @@ export default{
       if(layout === '1') {
         return exportFSPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       } else if(layout === '2') {
-        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.exportTile)
+        return exportFsSupplierAsRow(this.$route.query.id,this.round,this.backChoose)
       } else {
         return exportGsPartsAsRow(this.$route.query.id,this.round,this.exportTile)
       }
+    },
+        //导出
+    exportPartsTwo(layout) {
+      return new Promise (r=>{
+        if(layout === '1') {
+            const res1= exportFSPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)
+            r(res1)
+        } else if(layout === '2') {
+            const res2= exportFsSupplierAsRowTWO(this.$route.query.id,this.round,this.backChoose)
+            r(res2)
+        } else {
+            const res3= exportGsPartsAsRowTWO(this.$route.query.id,this.round,this.exportTile)
+            r(res3)
+        }
+        })
     }
   }
 }

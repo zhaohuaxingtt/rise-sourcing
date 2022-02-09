@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2021-12-02 10:22:56
- * @LastEditors:  
+ * @LastEditTime: 2022-01-24 17:13:01
+ * @LastEditors: Please set LastEditors
 -->
 <template>
   <iPage class="designatehome" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录页面">
@@ -16,6 +16,7 @@
     <!-- 表格区 -->
     <iCard class="cardMargin">
       <div class="btnright margin-bottom20">
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
       </div>
       <tablelist
@@ -28,16 +29,19 @@
         @openPage="openPage"
         @handleSelectionChange="handleSelectionChange"
         v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_TABLE|定点记录表格"
+        ref="tableList"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
        >
        <!-- FS号 -->
       <template #fsnrGsnrNum="scope">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="openPage(scope.row)"> {{ scope.row.fsnrGsnrNum }}</span>
-            <span v-if="scope.row.fsnrGsnrNum" class="icon-gray  cursor "  @click="openPage(scope.row)">
+            <!-- <span v-if="scope.row.fsnrGsnrNum" class="icon-gray  cursor "  @click="openPage(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
         </template>
       </tablelist>
       <iPagination
@@ -58,12 +62,14 @@
 import {iPage, iCard, iPagination, icon, iButton, iMessage} from "rise"
 import headerNav from '@/components/headerNav'
 import search from './components/search.vue'
-import tablelist from "@/views/designate/supplier/components/tableList"
+// import tablelist from "@/views/designate/supplier/components/tableList"
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {tableTitle} from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import {getNomiApplicationPageList, exportNomiRecordExcel} from '@/api/designate/nomination/record'
 export default {
-  mixins: [ pageMixins ],
+  mixins: [ pageMixins,tableSortMixins ],
   components: {
     iPage,
     headerNav,

@@ -9,8 +9,11 @@
 
 <template>
   <div class="meeting" :class="isPreview && 'isPreview'">
-    <iCard>
+    <iCard class="rsCard">
       <template #header>
+        <div class="btnWrapper">
+          <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+        </div>
         <div class="title">
           <p>CSC定点推荐 - {{ cardTitle }}</p>
           <p>{{ cardTitleEn }}</p>
@@ -60,7 +63,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" maxHeight="600" >
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -70,7 +73,7 @@
         <template #beginYearReduce="scope">
           <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
-
+        
         <template #status="scope">
           <div v-if="scope.row.status === 'SKDLC'">
             <p>SKD</p>
@@ -114,10 +117,29 @@
           <span v-else>{{ scope.row.bprice | toThousands }}</span>
         </template>
         <template #investFee="scope">
-          <span>{{ scope.row.investFee | toThousands }}</span>
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdDevFee | toThousands }}</p>
+            <p>{{ scope.row.investFee | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">
+            <p>{{ scope.row.skdDevFee | toThousands }}</p>
+          </span>
+          <span v-else>
+            <p>{{ scope.row.investFee | toThousands }}</p>
+          </span>
+      
         </template>
         <template #devFee="scope">
-          <span>{{ scope.row.devFee | toThousands }}</span>
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdDevFee | toThousands }}</p>
+            <p>{{ scope.row.devFee | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">
+            <p>{{ scope.row.skdDevFee | toThousands }}</p>
+          </span>
+          <span v-else>
+            <p>{{ scope.row.devFee | toThousands }}</p>
+          </span>
         </template>
         <template #addFee="scope">
           <span>{{ scope.row.addFee | toThousands }}</span>
@@ -181,17 +203,41 @@
         </template>
       </el-table>
     </iCard>
+    <div class="rsPdfWrapper">
+      <rsPdf
+        ref="rsPdf"
+        :cardTitle="cardTitle"
+        :cardTitleEn="cardTitleEn"
+        :isSingle="isSingle"
+        :leftTitle="leftTitle"
+        :rightTitle="rightTitle"
+        :basicData="basicData"
+        :tableTitle="tableTitle"
+        :tableData="tableData"
+        :remarkItem="remarkItem"
+        :projectType="projectType"
+        :exchangeRageCurrency="exchangeRageCurrency"
+        :exchangeRates="exchangeRates"
+        :showSignatureForm="showSignatureForm"
+        :isAuth="isAuth"
+        :checkList="checkList"
+        :processApplyDate="processApplyDate"
+        :prototypeList="PrototypeList"
+        :prototypeTitleList="prototypeTitleList" />
+    </div>
   </div>
 </template>
 
 <script>
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
-import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle } from './data'
+import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle, resetLtcData } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, searchRsPageExchangeRate, reviewListRs } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
 import { findFrontPageSeat } from '@/api/designate'
 import { toThousands } from "@/utils"
+import { transverseDownloadPDF } from "@/utils/pdf"
+import rsPdf from "./rsPdf"
 
 export default {
   props: {
@@ -200,7 +246,7 @@ export default {
     // projectType: {type:String},
     showSignatureForm: {type:Boolean, default:false}
   },
-  components: { iCard, tableList, iButton, iInput, icon },
+  components: { iCard, tableList, iButton, iInput, icon, rsPdf },
   data() {
     return {
       // 零件项目类型
@@ -223,6 +269,7 @@ export default {
       suppliers: '',
       exchangeRates: [],
       isAuth: false,
+      pdfData: {}
     }
   },
   filters: {
@@ -485,40 +532,7 @@ export default {
       })
     },
 
-    // 单独处理下年降或年降计划
-    resetLtcData(row=[],type){
-      // 年降开始时间
-      if(type == 'beginYearReduce'){
-        // 取第一个非0的年份
-        const list = row.filter((item)=> item.ltcRateStr!='0');
-        return list.length ? moment(list[0].ltcDate).format("YYYY-MM") : '-'
-      }else{ // 年降
-       // 从非0开始至非0截至的数据 不包含0
-       let strList = [];
-      //  let strFlag = false;
-
-      //  for(let i =0;i<row.length;i++){
-         
-      //    if(row[i].ltcRateStr !='0' && row[i].ltcRateStr){
-      //       strFlag = true;
-      //      strList.push(row[i].ltcRateStr-0);
-      //    }else if(strFlag && row[i].ltcRateStr == '0'){
-      //      break
-      //    }
-      //  }
-      //  return strList.length ? strList.join('/') : '-'
-        const ltcRateStrArr = row.map(item => item.ltcRateStr)
-
-        let i = 0
-        do {
-          i = ltcRateStrArr.length
-          if (ltcRateStrArr[0] == 0) ltcRateStrArr.shift()
-          if (ltcRateStrArr[ltcRateStrArr.length - 1] == 0) ltcRateStrArr.pop()
-        } while (i !== ltcRateStrArr.length)
-
-        return ltcRateStrArr.length ? ltcRateStrArr.join('/') : '-'
-      }
-    },
+    resetLtcData,
 
     // 获取汇率
     searchRsPageExchangeRate() {
@@ -604,12 +618,36 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
+    },
+
+    // 导出pdf
+    handleExportPdf() {
+      transverseDownloadPDF({
+        dom: this.$refs.rsPdf.$el,
+        pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+        exportPdf: true,
+        waterMark: true
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.meeting {
+  .rsCard {
+    ::v-deep .cardHeader {
+      flex-wrap: wrap;
+
+      .btnWrapper {
+        width: 100%;
+        text-align: right;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
 .exchangeRageCurrency + .exchangeRageCurrency {
   margin-left: 20px;
 }
@@ -802,5 +840,11 @@ export default {
   .card {
     box-shadow: none;
   }
+}
+
+.rsPdfWrapper {
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 </style>

@@ -11,13 +11,13 @@
     <div class="body margin-top27">
       <tableList ref="table" class="table" index :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #version="scope">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor " @click="volume(scope.row)"> {{ scope.row.version }}</span>
-            <span v-if="scope.row.version" class="icon-gray  cursor "  @click="volume(scope.row)">
+            <!-- <span v-if="scope.row.version" class="icon-gray  cursor "  @click="volume(scope.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
         </template>
         <template #publishDate="scope">
           <span>{{ scope.row.publishDate | dateFilter }}</span>
@@ -120,7 +120,7 @@ export default {
       putPerCarDosage({
         updateConfirmScenes: {
           carTypeConfigId: data.carTypeConfigId,
-          purchasingRequirementTargetId: data.purchasingRequirementTargetId  + '',
+          purchasingRequirementId: data.purchasingRequirementId  + '',
           version: data.version,
           status: "1"
         }
@@ -150,7 +150,7 @@ export default {
       putPerCarDosage({
         updateConfirmScenes: {
           carTypeConfigId: data.carTypeConfigId,
-          purchasingRequirementTargetId: data.purchasingRequirementTargetId  + '',
+          purchasingRequirementId: data.purchasingRequirementId  + '',
           version: data.version,
           refuseReason: reason,
           status: "2"

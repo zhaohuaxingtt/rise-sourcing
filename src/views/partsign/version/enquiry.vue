@@ -53,12 +53,12 @@ export default {
       tableListData: [],
       enquiryVisible: false,
       enquiryParams: {},
-      purchasingRequirementTargetId: "",
+      purchasingRequirementId: "",
       multipleSelection: []
     }
   },
   created() {
-    this.purchasingRequirementTargetId = this.$route.query.purchasingRequirementTargetId
+    this.purchasingRequirementId = this.$route.query.purchasingRequirementId
     this.getAttachmentVersion()
   },
   methods: {
@@ -68,7 +68,7 @@ export default {
         currPage: this.page.currPage,
         pageSize: this.page.pageSize,
         status: "1",
-        purchasingRequirementObjectId: this.purchasingRequirementTargetId
+        purchasingRequirementId: this.purchasingRequirementId
       })
         .then(res => {
           if (res.data.attachmentVersionVOS) {
@@ -84,7 +84,7 @@ export default {
     },
     volume(data) {
       this.enquiryVisible = true
-      this.enquiryParams = { ...data, purchasingRequirementTargetId: this.purchasingRequirementTargetId, status: "1" }
+      this.enquiryParams = { ...data, purchasingRequirementId: this.purchasingRequirementId, status: "1" }
     },
     handleSelectionChange(list) {
       this.multipleSelection = list
@@ -95,11 +95,11 @@ export default {
       
       this.downLoading = true
       const infoRes = await getAttachment({
-        version: data.version,
+        version: (data.version + "").replace(/(^0+)|\D/g, "") || "1",
         currPage: 1,
         pageSize: 999999,
         status: "1",
-        purchasingRequirementTargetId: data.purchasingRequirementTargetId
+        purchasingRequirementId: data.purchasingRequirementId
       })
 
       if (infoRes.code != 200) {

@@ -53,6 +53,12 @@
                 </el-option>  
               </iSelect> 
             </template>
+            <iMultiLineInput
+              v-else-if="item.type === 'iMultiLineInput'"
+              :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+              :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+              v-model="searchParams[item.props]"
+            ></iMultiLineInput>
             <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
           </el-form-item>
         </el-form>
@@ -98,6 +104,7 @@ import {
   iPagination,
   iCard,
   iMessage,
+  iMultiLineInput,
 } from 'rise'
 import fullSelect from '../components/fullSelect'
 import { describeTab } from '../data'
@@ -124,6 +131,7 @@ export default {
       iPagination,
       tableList,
       iCard,
+      iMultiLineInput,
     },
     data(){
       return{

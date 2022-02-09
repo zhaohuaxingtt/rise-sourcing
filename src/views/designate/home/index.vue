@@ -16,6 +16,7 @@
       <div class="clearFloat">
         <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
         <div class="designateEditControl floatright">
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
@@ -41,6 +42,7 @@
           <!-- 冻结 -->
           <iButton
             @click="freeze"
+            :loading="btnLoading.freeze"
             v-permission.auto="SOURCING_NOMINATION_DONGJIE|冻结">
             {{language('LK_DONGJIE', '冻结')}}
           </iButton>
@@ -110,6 +112,9 @@
         :lang="true"
         v-permission.auto="SOURCING_NOMINATION_NOMINATETABLE|表格"
         @handleSelectionChange="handleSelectionChange"
+        ref="tableList"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
       <!-- <template #LK_CAOZUO="scope">
         <span><a href="javascript:;" @click="detail(scope.row)">{{'定点详情'}}</a></span>
@@ -117,20 +122,20 @@
       
       <!-- 定点单号 -->
       <template #nominateName="scope">
-        <div class="flexBox">
-          <div class="left">
+        <!-- <div class="flexBox"> -->
+          <!-- <div class="left"> -->
             <div class="flexBox">
               <el-tooltip :content="scope.row.nominateName" placement="top" effect="light">
                 <div class="link" @click="viewNominationDetail(scope.row)">{{ scope.row.nominateName }}</div>
               </el-tooltip>
               <icon v-if="scope.row.mtzApplyId" class="iconMTZ right" symbol name="iconMTZ" />
             </div>
-          </div>
-          <div class="rigth icon-gray cursor arrow" @click="viewNominationDetail(scope.row)">
+          <!-- </div> -->
+          <!-- <div class="rigth icon-gray cursor arrow" @click="viewNominationDetail(scope.row)">
             <icon symbol class="show" name="icontiaozhuananniu" />
             <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-          </div>
-        </div>
+          </div> -->
+        <!-- </div> -->
       </template>
       <!-- 定点类型 -->
       <!-- <template #nominateProcessType="scope">
@@ -198,6 +203,9 @@
     <revokeDialog :visible.sync="showRevokeDialog" @confirm="handleBatchRevoke(...arguments, false)" ref="revokeForm" />
     <!-- 新建定点申请弹窗 -->
     <rfqDialog :visible.sync="newNomiAppStatus" :nomiAppId="selNominateId" :readOnly="false" />
+
+    <!-- 黑名单校验弹窗提示 -->
+        <dialogTableTips ref="dialogTableTips" tableType="SUGGESTIONFROZEN" :tableListData="blackTableListData"/>
   </iPage>
 </template>
 
@@ -205,7 +213,9 @@
 import { tableTitle } from './components/data'
 import headerNav from '@/components/headerNav'
 import search from './components/search'
-import tablelist from "@/views/designate/supplier/components/tableList";
+// import tablelist from "@/views/designate/supplier/components/tableList";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { 
   getNominationList,
   batchRevoke,
@@ -240,8 +250,10 @@ import {
   icon
 } from "rise";
 
+import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
+
 export default {
-  mixins: [ filters, pageMixins, roleMixins ],
+  mixins: [ filters, pageMixins, roleMixins,tableSortMixins ],
   data() {
     return {
       tableListData: [],
@@ -256,7 +268,11 @@ export default {
       tranformRecallLoading: false,
       showRevokeDialog: false,
       // 新建定点申请单
-      newNomiAppStatus: false
+      newNomiAppStatus: false,
+      blackTableListData:[],
+      btnLoading:{
+        freeze:false, // 冻结
+      },
     }
   },
   components: {
@@ -270,7 +286,8 @@ export default {
     selDialog,
     revokeDialog,
     rfqDialog,
-    icon
+    icon,
+    dialogTableTips,
   },
   mounted() {
     this.getFetchData()
@@ -299,6 +316,7 @@ export default {
           query: {
             desinateId: row.id, 
             mtzApplyId: row.mtzApplyId, 
+            sd: 1,
             designateType: (row.nominateProcessType && row.nominateProcessType.code) || row.nominateProcessType || '',
             partProjType: (row.partProjType && row.partProjType.code) || row.partProjType || '',  
             businessKey: (row.partProjType && row.partProjType.code) || row.partProjType || '',
@@ -407,16 +425,22 @@ export default {
         const data = {
           nominateIdArr,
         };
+        this.btnLoading.freeze = true;
         try {
           const res = type ? await nominateRreeze(data) : await nominateUnRreeze(data)
           const { code } = res;
+          this.btnLoading.freeze = false;
           if(code == 200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
             this.getFetchData()
+          }else if(code == '501'){
+            this.blackTableListData = res.data || [];
+            this.$refs.dialogTableTips.show(); 
           }else{
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
         } catch (e) {
+          this.btnLoading.freeze = false;
           iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
         }
       }
@@ -598,6 +622,7 @@ export default {
       if (this.selectTableData.length !== 1) return iMessage.warn(this.language("QINGXUANZEYIGELIE","请选择一条数据！"))
       const data = {
         nomiId: this.selectTableData[0].id,
+        isCheck: false
       };
       try {
         const res = await unbindMtzCheck(data)

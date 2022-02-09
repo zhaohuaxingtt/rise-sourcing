@@ -10,13 +10,13 @@
       <div>
         <div class="control">
           <div v-if="!disabled" class="btn-left">
-            <iButton v-if="isEdit" @click="addCar">{{ language("LK_TIANJIA",'添加') }}</iButton>
-            <iButton v-if="isEdit" @click="saveData" :loading="saveLoading">{{ language("LK_BAOCUN",'保存') }}</iButton>
-            <iButton v-if="isEdit" @click="calculation()">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
-            <iButton v-if="isEdit" @click="deleteData()">{{ language("LK_SHANCHU",'删除') }}</iButton>
-            <iButton v-if="isEdit" @click="fillDown()">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
-            <iButton v-if="!isEdit && ispartProjectSource" @click="edit()">{{ language("LK_BIANJI",'编辑') }}</iButton>
-            <iButton v-if="isEdit" @click="cancelEdit">{{ language("QUXIAO",'取消') }}</iButton>
+            <iButton v-if="isEdit" @click="addCar" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_VOLUME_ADD|添加">{{ language("LK_TIANJIA",'添加') }}</iButton>
+            <iButton v-if="isEdit" @click="saveData" :loading="saveLoading" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_VOLUME_SAVE|保存">{{ language("LK_BAOCUN",'保存') }}</iButton>
+            <iButton v-if="isEdit" @click="calculation()" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_VOLUME_CALCULATION|计算产量">{{ language("LK_JISUANCHANLIANG",'计算产量') }}</iButton>
+            <iButton v-if="isEdit" @click="deleteData()" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_VOLUME_DELETE|删除">{{ language("LK_SHANCHU",'删除') }}</iButton>
+            <iButton v-if="isEdit" @click="fillDown()" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_VOLUME_FILLDOWN|向下填充">{{ language("LK_XIANGXIATIANCHONG",'向下填充') }}</iButton>
+            <iButton v-if="!isEdit && ispartProjectSource" @click="edit()" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_VOLUME_EDIT|编辑/取消">{{ language("LK_BIANJI",'编辑') }}</iButton>
+            <iButton v-if="isEdit" @click="cancelEdit" v-permission.auto="PARTSPROCURE_OUTPUTPLAN_VOLUME_EDIT|编辑/取消">{{ language("QUXIAO",'取消') }}</iButton>
           </div>
         </div>
       </div>
@@ -143,7 +143,7 @@ export default {
       this.loading = true;
       if (this.params.partProjectSource == 1) {
         try {
-          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementObjectId) {
+          if ((!this.version || !this.carTypeConfigId) && this.params.purchasingRequirementId) {
             const versionRes = await getPerCarDosageVersion({
               currPage: 1,
               pageSize: 10,
@@ -203,7 +203,7 @@ export default {
         manualInfoTable({
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
-          purchasingRequirementId: this.params.purchasingRequirementObjectId,
+          purchasingRequirementId: this.params.purchasingRequirementId,
         }).then(res=>{
           if(res.code == '200') 
           {
@@ -373,7 +373,7 @@ export default {
     //   if(this.isGs == true) {
     //     copyData.forEach(value=> {
     //       let dataItem = {}
-    //       dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
+    //       dataItem.purchasingRequirementId = this.params.purchasingRequirementId
     //       dataItem.cartypeLevel = value.cartypeLevel
     //       dataItem.engineType = value.engineType
     //       dataItem.gearType = value.gearboxName
@@ -389,7 +389,7 @@ export default {
     //   } else {
     //     copyData.forEach(value=> {
     //       let dataItem = {}
-    //       dataItem.purchasingRequirementObjectId = this.params.purchasingRequirementObjectId
+    //       dataItem.purchasingRequirementId = this.params.purchasingRequirementId
     //       dataItem.cartypeLevel = value.cartypeLevel
     //       dataItem.engineType = value.engineVo?.engineName
     //       dataItem.gearType = value.gearboxVo?.gearboxName

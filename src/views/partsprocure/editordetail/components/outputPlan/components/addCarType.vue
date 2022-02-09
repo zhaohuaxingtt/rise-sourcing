@@ -28,7 +28,6 @@
       </div>
       <div class="topCar-left" v-if="isGs == false">
           <span class="xmtitle">{{language('CHEXINGXIANGMU','车型项目')}}{{params.carTypeProjectZh}}</span>
-
       </div>
       <div class="topCar-right">
         <iButton @click="changeVisible">{{language('QUXIAO','取消')}}</iButton>
@@ -63,7 +62,6 @@
       />
       <tableList
         v-if="isGs == false"
-        
         lang
         :tableTitle="fscarTableTitle"
         :tableData="fscarTableData"
@@ -78,8 +76,8 @@
         class="bottom-table"
         v-if="isGs == false"
         v-update
-        @size-change="handleSizeChange($event, searchCarTypeConfig)"
-        @current-change="handleCurrentChange($event, searchCarTypeConfig)"
+        @size-change="handleSizeChange($event, getNotGsTableList)"
+        @current-change="handleCurrentChange($event, getNotGsTableList)"
         background
         :current-page="page.currPage"
         :page-sizes="page.pageSizes"
@@ -133,7 +131,8 @@ export default {
       isGs:true,
       fscarTableTitle:[...fscarTitle],
       saveLoading: false,
-      carIds:[]
+      carIds:[],
+      cartypeIds:[]
     }
   },
   created() {
@@ -160,41 +159,17 @@ export default {
           }
         })
       } else {
-        if (!this.params.carTypeProjectId) return iMessage.warn(this.language("DANGQIANSHUJUMEIYOUCHEXINGXIANGMUID", "当前数据没有车型项目ID，请选择车型项目后保存重试"))
-
-        this.tableLoading = true
-        let data ={
-          "cartypeProId":this.params.carTypeProjectId,
-          "current": this.page.currPage,
-          "size": this.page.pageSize
-        }
-        searchCarTypeProConfig(data).then(res => {
-          if(res.code == '200') {
-            this.tableLoading = false
-            res.data.forEach(val=>{
-              this.$set(val,'engineType',val.engineVo?.engineName)
-              this.$set(val,'gearboxName',val.gearboxVo?.gearboxName)
-              this.$set(val,'batteryCapacity',val.batteryVo?.capacity)
-            })
-            this.fscarTableData = res.data || []
-            this.page.totalCount = res.total || 0
-          } else {
-            iMessage.error(res.desZh)
-        }
-        })
+        this.getNotGsTableList()
       }
     },
     changeTable(data) {
-      if(data.length == 0) {
-        this.getTableList(this.carIds)
-      } else {
-        this.getTableList(data)
-      }
+      data.length == 0 ? this.cartypeIds = this.carIds :this.cartypeIds = data
+      this.getTableList()
     },
-    getTableList(value) {
+    getTableList() {
       this.tableLoading = true
       let data ={
-        "cartypeIds":value,
+        "cartypeIds":this.cartypeIds,
         "current": this.page.currPage,
         "size": this.page.pageSize
       }
@@ -210,6 +185,30 @@ export default {
         this.tableLoading = false
       })
     },
+    //非GS的table数据获取
+    getNotGsTableList() {
+          if (!this.params.carTypeProjectId) return iMessage.warn(this.language("DANGQIANSHUJUMEIYOUCHEXINGXIANGMUID", "当前数据没有车型项目ID，请选择车型项目后保存重试"))
+        this.tableLoading = true
+        let data ={
+          "cartypeProId":this.params.carTypeProjectId,
+          "current": this.page.currPage,
+          "size": this.page.pageSize
+        }
+        searchCarTypeProConfig(data).then(res => {
+          if(res.code == '200') {
+            this.tableLoading = false
+            res.data.forEach(val=>{
+              this.$set(val,'engineType',val.engineVo?.remark)
+              this.$set(val,'gearboxName',val.gearboxVo?.remark)
+              this.$set(val,'batteryCapacity',val.batteryVo?.remark)
+            })
+            this.fscarTableData = res.data || []
+            this.page.totalCount = res.total || 0
+          } else {
+            iMessage.error(res.desZh)
+        }
+        })
+    },
     handleSelectionChange(val) {
       this.selectData = val
     },
@@ -219,7 +218,7 @@ export default {
       let params = null
       if(this.isGs) {
         params = this.selectData.map(item => ({
-          purchasingRequirementObjectId: this.params.purchasingRequirementObjectId,
+          purchasingRequirementId: this.params.purchasingRequirementId,
           cartypeLevel: item.cartypeLevel,
           engineType: item.engineType,
           gearType: item.gearboxName,
@@ -234,10 +233,10 @@ export default {
         }))
       } else {
         params = this.selectData.map(item => ({
-          purchasingRequirementObjectId: this.params.purchasingRequirementObjectId,
+          purchasingRequirementId: this.params.purchasingRequirementId,
           cartypeLevel: item.cartypeLevel,
-          engineType: item.engineVo?.engineName,
-          gearType: item.gearboxVo?.gearboxName,
+          engineType: item.engineVo?.remark,
+          gearType: item.gearboxVo?.remark,
           otherInfo: item.otherConf,
           cartype: item.carProjectId,
           cartypeConfigId: item.originId,

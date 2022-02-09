@@ -70,9 +70,15 @@ export function uploadRfqAnnex(parmars) {
 //     })
 // }
 // 模具预算申请
-export function getModelBudgetList(params, rfqIds) {
+// export function getModelBudgetList(params, rfqIds) {
+//     return requst({
+//         url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(rfqIds, Array) }`,
+//         method: 'GET'
+//     })
+// }
+export function getModelBudgetList(rfqId) {
     return requst({
-        url: `/mould-budget/${ params.currPage }/${ params.pageSize }?${ serialize(rfqIds, Array) }`,
+        url: `/mould-budget/list/${rfqId}`,
         method: 'GET'
     })
 }
@@ -89,6 +95,22 @@ export function submitMoldBudget(parmars) {
 export function patchMouldBudget(params) {
     return requst({
         url: "/mould-budget",
+        method: "PATCH",
+        data: params
+    })
+}
+//提交 模具预算
+export function patchMouldBudgetSubmit(params) {
+    return requst({
+        url: "/mould-budget/submit",
+        method: "PATCH",
+        data: params
+    })
+}
+//撤回 模具预算
+export function patchMouldBudgetWithdrawal(params) {
+    return requst({
+        url: "mould-budget/withdrawal",
         method: "PATCH",
         data: params
     })
@@ -249,6 +271,14 @@ export function getSupplierProducePlace(params) {
     })
 }
 
+// 获取供应商工厂名称
+export function getSupplierPlantBySupplierId(supplierId) {
+    return requst({
+        url: `/supplier/getSupplierPlantBySupplierId/${ supplierId }`,
+        method: 'GET'
+    })
+}
+
 //报价分析-保存场景布局
 export function negoAnalysisSummaryLayoutSave(layout,layoutType){
     return nego({
@@ -379,6 +409,26 @@ export function getCfPrice(params) {
     })
 }
 
+// 获取零件目标价
+export function getCfPriceEffective(params) {
+    return requst({
+        url:`/cf-price-effective/${params.rfqId}/${params.pageSize}/${params.currPage}`,
+        method: 'GET'
+    })
+}
+
+// 获取模具目标价
+export function getMJPriceEffective(params) {
+    return requst({
+        url:`/tooling-target-price-task/search-valid-target-price-page/${params.rfqId}`,
+        method: 'POST',
+        data:{
+            current:params.currPage,
+            size:params.pageSize,
+        },
+    })
+}
+
 // 移除RFQ下的零件采购项目
 export function deleteRfqPart(params) {
     return requst({
@@ -457,8 +507,8 @@ export function searchABPageExchangeRate(mimoId) {
     })
 }
 //导出excel
-export function exportFSPartsAsRow(rfqId,round,dataList) {
-    return downLoad({
+export function exportFSPartsAsRowTWO(rfqId,round,dataList) {
+    return requst({
         url:`/nego-assistant/export-fs-parts-as-row/${rfqId}/${round}`,
         method:'POST',
         data:dataList
@@ -466,11 +516,46 @@ export function exportFSPartsAsRow(rfqId,round,dataList) {
 }
 
 //导出excel
-export function exportFsSupplierAsRow(rfqId,round,dataList) {
-    return downLoad({
+export function exportFsSupplierAsRowTWO(rfqId,round,dataList) {
+    return requst({
         url:`/nego-assistant/export-fs-supplier-as-row/${rfqId}/${round}`,
         method:'POST',
-        data:dataList
+        data:dataList,
+        responseType:'blob'
+    })
+}
+
+//导出excel
+export function exportGsPartsAsRowTWO(rfqId,round,dataList) {
+    return requst({
+        url:`/nego-assistant/export-gs-parts-as-row/${rfqId}/${round}`,
+        method:'POST',
+        data:dataList,
+        responseType:'blob'
+    })
+}
+//导出excel
+export function exportFSPartsAsRow(rfqId,round,dataList) {
+    return downLoad({
+        url:`/nego-assistant/export-fs-parts-as-row/${rfqId}/${round}`,
+        method:'POST',
+        data:dataList,
+        responseType:'blob'
+    })
+}
+
+//导出excel
+export function exportFsSupplierAsRow(rfqId,round,dataList) {
+    return downLoad({
+        // url:`/nego-assistant/export-fs-supplier-as-row/${rfqId}/${round}`,
+        url: `/nego-assistant/exportAnalysisSummaryArray`,
+        method:'POST',
+        // data:dataList
+        data:{
+            hideList:dataList,
+            rfqId:rfqId,
+            round:round
+        }
     })
 }
 
@@ -480,6 +565,36 @@ export function exportGsPartsAsRow(rfqId,round,dataList) {
         url:`/nego-assistant/export-gs-parts-as-row/${rfqId}/${round}`,
         method:'POST',
         data:dataList
+    })
+}
+
+// 导出定点FS横轴零件
+export function exportFSPartsAsRowByNomiId(nomiId, data) {
+    return downLoad({
+        url:`/nego-assistant/export/nomi-fs-parts-as-row/${ nomiId }`,
+        method: 'POST',
+        data
+    })
+}
+
+// 导出定点SUPPLIER横轴零件接口
+export function exportFsSupplierAsRowByNomiId(nomiId, data) {
+    return downLoad({
+        url:`/nego-assistant/export/nomi-fs-supplier-as-row`,
+        method: 'POST',
+        data:{
+            hideList:data,
+            nomiId:nomiId
+        }
+    })
+}
+
+// 导出定点GS横轴零件接口
+export function exportGsPartsAsRowByNomiId(nomiId, data) {
+    return downLoad({
+        url:`/nego-assistant/export/nomi-gs-parts-as-row/${ nomiId }`,
+        method: 'POST',
+        data
     })
 }
 

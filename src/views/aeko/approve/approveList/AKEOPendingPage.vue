@@ -15,11 +15,11 @@
         </el-form-item>
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
-          <i-input
-              v-model="queryAkeoForm.partNum"
-              :placeholder="language('LK_QINGSHURU','请输入')"
-              clearable
-          ></i-input>
+          <iMultiLineInput
+            :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+            :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+            v-model="queryAkeoForm.partNum"
+          ></iMultiLineInput>
         </el-form-item>
         <!-- 供应商简称 -->
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG','供应商简称')" prop='supplierName'>
@@ -85,11 +85,12 @@
           </el-tooltip>
 				</i-button>
         <i-button @click="transfer" v-if="transferButtonDisplay"  v-permission.auto="AEKO_PENDING_APPROVAL_TRANSFER|待审批页面按钮_转派"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
-
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
       </div>
       <!--表格展示区-->
-      <tablelist
+      <tableList
           height="400"
+          ref="tableList"
           class="aeko-pending-table"
           index
           :selection="true"
@@ -99,6 +100,8 @@
           :selectConfig="selectConfig"
           v-loading="tableLoading"
           @handleSelectionChange="handleSelectionChange"
+        :handleSaveSetting="handleSaveSetting"
+        :handleResetSetting="handleResetSetting"
       >
         <!-- <template #isTop="scope">
           <div>
@@ -189,7 +192,7 @@
         <template #createDate="scope">
           <span>{{ scope.row.createDate|formatDate }}</span>
         </template>
-      </tablelist>
+      </tableList>
       <div class="pagination">
         <iPagination v-update class="pagination"
                      @size-change="handleSizeChange($event, loadPendingAKEOList)"
@@ -208,9 +211,11 @@
 </template>
 
 <script>
-import {iSearch, iInput, iCard, iButton, iSelect, iPagination, icon, iMessage} from "rise"
+import {iSearch, iInput, iCard, iButton, iSelect, iPagination, icon, iMessage, iMultiLineInput} from "rise"
 import {tableCsfTitle as pendingHeader, selectConfig, indexConfig} from '../components/data'
-import tablelist from 'rise/web/components/iFile/tableList';
+// import tablelist from 'rise/web/components/iFile/tableList';
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import {pageMixins} from '@/utils/pageMixins'
 import {pendingApprovalList, aekoAudit, transferAEKO} from "@/api/aeko/approve";
 import {searchLinie, getLogCount} from "@/api/aeko/manage";
@@ -224,17 +229,18 @@ import { setLogCount, setLogMenu } from "@/utils";
 
 export default {
   name: "AKEOPendingPage",
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableSortMixins],
   components: {
     AEKOTransferDialog,
     iSearch,
     iInput,
     iCard,
     iButton,
-    tablelist,
+    tableList,
     iPagination,
     icon,
-    iSelect
+    iSelect,
+    iMultiLineInput
   },
   filters: {
     formatDate(value) {

@@ -18,13 +18,13 @@
     <div class="body margin-top27">
       <tableList v-permission.auto="PARTSIGN_EDITORDETAIL_ENQUIRY_TABLE|询价资料附件列表-表格"  index class="table" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" @handleSelectionChange="handleSelectionChange">
         <template #tpPartAttachmentName="scope">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor"   @click="preview(scope.row)" >{{ scope.row.tpPartAttachmentName }}</span>
-            <span v-if=" scope.row.tpPartAttachmentName" class="icon-gray  cursor " @click="preview(scope.row)">
+            <!-- <span v-if=" scope.row.tpPartAttachmentName" class="icon-gray  cursor " @click="preview(scope.row)">
               <icon symbol class="show" name="icontiaozhuananniu" />
               <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span>  
+            </span> -->
+          <!-- </span>   -->
           <!-- <span class="link-underline" @click="preview(scope.row)">{{ scope.row.tpPartAttachmentName }}</span> -->
         </template>
         <template #updateDate="scope">
@@ -97,7 +97,7 @@ export default {
           currPage: 1,
           pageSize: 10,
           status: 1,
-          purchasingRequirementObjectId: this.data.purchasingRequirementTargetId
+          purchasingRequirementId: this.data.purchasingRequirementId
         })
         this.version = 'V1'
 
@@ -114,7 +114,7 @@ export default {
           currPage: this.page.currPage,
           pageSize: this.page.pageSize,
           status: "1",
-          purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
+          purchasingRequirementId: this.data.purchasingRequirementId
         })
 
         if (infoRes.code != 200) {
@@ -132,11 +132,11 @@ export default {
       }
     },
     jump() {
-      // window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementTargetId=${ this.data.purchasingRequirementTargetId }`, '_blank')
+      // window.open(`/#/sourcing/partsign/enquiryVersion?purchasingRequirementId=${ this.data.purchasingRequirementId }`, '_blank')
       const route = this.$router.resolve({
         path: "/sourceinquirypoint/sourcing/partsign/enquiryVersion",
         query: {
-          purchasingRequirementTargetId: this.data.purchasingRequirementTargetId
+          purchasingRequirementId: this.data.purchasingRequirementId
         }
       })
       window.open(route.href, "_blank")

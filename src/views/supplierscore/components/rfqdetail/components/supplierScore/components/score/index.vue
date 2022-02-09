@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2021-07-27 17:44:43
+ * @LastEditTime: 2022-01-28 17:31:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -9,15 +9,19 @@
 <template>
   <iCard class="score" :title="language('LK_GONGYINGSHANGPINGFEN', '供应商评分')">
     <template #header-control>
-      <div v-if="!editStatus">
-        <iButton @click="forwardDialogVisible = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_TRANSFER|转派">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
-        <iButton :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
-        <iButton @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
-        <iButton :loading="submitLoading" @click="handleSubmit" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SUBMIT|提交">{{ language("LK_TIJIAO", "提交") }}</iButton>
-        <iButton :loading="approveLoading" @click="handleApprove" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_APPROVE|批准">{{ language("PIZHUN", "批准") }}</iButton>
-        <iButton @click="handleReject" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_REJECT|拒绝">{{ language("JUJUE", "拒绝") }}</iButton>
+      <div key="1" v-if="!editStatus">
+        <!-- 转派--该评分任务的协调人 -->
+        <iButton v-if="rfqInfo.coordinatorId == userInfo.id" @click="forwardDialogVisible = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_TRANSFER|转派">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
+        <!-- 退回至采购员 编辑 提交---该评分任务的评分人 -->
+        <iButton v-if="rfqInfo.hasShowBack" :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
+        <!-- 编辑/提交  状态为待评分/待提交 该评分任务的评分 -->
+        <iButton v-if="rfqInfo.hasShowEdit"  @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton v-if="rfqInfo.hasShowSubmit" :loading="submitLoading" @click="handleSubmit" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SUBMIT|提交">{{ language("LK_TIJIAO", "提交") }}</iButton>
+        <!-- 批准 驳回 该评分任务的协调人 待审批 -->
+        <iButton v-if="rfqInfo.hasShowApprove" :loading="approveLoading" @click="handleApprove" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_APPROVE|批准">{{ language("PIZHUN", "批准") }}</iButton>
+        <iButton v-if="rfqInfo.hasShowReject" @click="handleReject" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_REJECT|拒绝">{{ language("JUJUE", "拒绝") }}</iButton>
       </div>
-      <div v-else>
+      <div key="2" v-if="editStatus">
         <iButton @click="handleCloseEdit">{{ language("JIESHUBIANJI", "结束编辑") }}</iButton>
         <iButton :loading="saveLoading" @click="handleSave" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SAVE|保存">{{ language("BAOCUN", "保存") }}</iButton>
       </div>
@@ -28,7 +32,7 @@
         :data="tableListData"
         :empty-text="language('ZANWUSHUJU', '暂无数据')">
         <el-table-column type="index" align="center" label="#"></el-table-column>
-        <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :show-overflow-tooltip="true">
+        <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip">
           <template v-if="item.props === 'sapCode'" v-slot="scope">
             <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
           </template>
@@ -40,15 +44,16 @@
           </template>
         </el-table-column>
         <template>
-          <el-table-column align="center" :label="rateTag">
-            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
+          <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
+            <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip" :width="item.width">
               <template v-if="item.props === 'rate'" #header="scope">
                 <span>{{ scope.column.label }}<i class="required">*</i></span>
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
                 <div v-if="editStatus">
                   <!-- <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.rate" /> -->
-                  <div v-if="afterSaleLeaderIds.every(id => id != userInfo.id)">
+                  <!-- <div v-if="afterSaleLeaderIds.every(id => id != userInfo.id)"> -->
+                  <div v-if="!isFileRfqType">
                     <template v-if="scope.row.rateTag == 'MQ'">
                       <iSelect  v-model="scope.row.rate">
                         <el-option
@@ -81,16 +86,24 @@
                       </el-option>
                     </iSelect> -->
                   </div>
-
                   <iSelect v-else v-model="scope.row.rate">
+                    <el-option
+                      v-for="(item, index) in affixGrade"
+                      :key="index"
+                      :value="item.code"
+                      :label="$i18n.locale === 'zh' ? item.name : item.nameEn"
+                    >
+                    </el-option>
+                  </iSelect>
+                  <!-- <iSelect v-else v-model="scope.row.rate">
                     <el-option value="合格" :label="language('HEGE', '合格')" />
                     <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
-                  </iSelect>
+                  </iSelect> -->
                 </div>
-                <span v-else>{{ scope.row.rate }}</span>
+                <span v-else>{{ isFileRfqType ? showaffixName(scope.row.rate) : scope.row.rate }}</span>
               </template>
               <template v-else-if="item.props === 'externalFee' || item.props === 'addFee'" v-slot="scope">
-                <iInput v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
+                <iInput style="width:90%" v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
                 <span v-else>{{ scope.row[item.props] }}</span>
               </template>
               <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
@@ -98,8 +111,15 @@
                 <span v-else>{{ scope.row.confirmCycle }}</span>
               </template>
               <template v-else-if="item.props === 'remark'" v-slot="scope">
-                <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
-                <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
+                <!-- <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
+                <el-tooltip placement="top" :disabled="!scope.row.memo">
+                  <div style="maxWidth:200px" slot="content">{{scope.row.memo}}</div>
+                  <div>
+                    <iInput v-if="editStatus" v-model="scope.row.memo"/>
+                    <span class="text-overflow" v-else>{{ scope.row.memo }}</span>
+                  </div>
+                </el-tooltip>
               </template>
               <template v-else v-slot="scope">
                 <span>{{ scope.row[item.props] }}</span>
@@ -142,26 +162,45 @@ export default {
     rfqId: {
       type: String,
       require: true
+    },
+    rfqInfo:{
+      type:Object,
+      default:()=>{},
     }
   },
   computed: {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
-    })
+    }),
+    isFileRfqType(){
+      const { rfqInfo={} } = this;
+      return rfqInfo.rfqType == 'ANNEX';
+    },
+    deptScoreTableTitle(){
+      if(this.isFileRfqType){
+        return deptScoreTableTitle.filter((item)=>!item.isFileHidden);
+      }else{
+        return deptScoreTableTitle
+      } 
+      
+    }
   },
   created() {
-    if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
-      this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
-    }
+    // if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
+    //   this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "rate" || item.props === "remark" || item.props === "rateStatus")
+    // }
     this.getRate()
+
+    
   },
+  inject: ["getRfqDetailByCurrentDept"],
   data() {
     return {
       editStatus: false,
       loading: false,
       tableTitle: tableTitle,
-      deptScoreTableTitle,
+      // deptScoreTableTitle,
       tableListData: [],
       tableListDataCache: [],
       multipleSelection: [],
@@ -176,7 +215,8 @@ export default {
       saveLoading: false,
       afterSaleLeaderIds,
       mqGrage:[],
-      epGrade:[]
+      epGrade:[],
+      affixGrade:[],
     }
   },
   methods: {
@@ -188,6 +228,9 @@ export default {
       selectDictByKeys([{ keys: "EP_GRADE" }]).then(res=>{
         this.epGrade = res?.data.EP_GRADE
       })
+      selectDictByKeys([{ keys: "AFFIX_GRADE" }]).then(res=>{
+        this.affixGrade = res?.data.AFFIX_GRADE
+      })
       getRfqBdlRatingsByCurrentDept({
         rfqId: this.rfqId
       })
@@ -197,7 +240,7 @@ export default {
         if (res.code == 200) {
           this.tableListData = Array.isArray(res.data) ? res.data : [] 
           this.tableListDataCache = cloneDeep(this.tableListData)
-          this.rateTag = this.tableListData[0] && this.tableListData[0].rateTag ? this.tableListData[0].rateTag.desc : ""
+          // this.rateTag = this.tableListData[0] && this.tableListData[0].rateTag ? this.tableListData[0].rateTag.desc : ""
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -229,6 +272,7 @@ export default {
           iMessage.success(message)
           this.forwardDialogVisible = false
           this.getRfqBdlRatingsByCurrentDept()
+          this.getRfqDetailByCurrentDept()
         } else {
           iMessage.error(message)
         }
@@ -251,6 +295,7 @@ export default {
           iMessage.success(message)
           // this.$emit("updateRfq")
           this.getRfqBdlRatingsByCurrentDept()
+          this.getRfqDetailByCurrentDept()
         } else {
           iMessage.error(message)
         }
@@ -376,7 +421,8 @@ export default {
           externalFee: item.externalFee,
           id: item.id,
           rate: item.rate,
-          rfqId: this.rfqId
+          rfqId: this.rfqId,
+          memo:item.memo,
         }))
       )
       .then(res => {
@@ -400,7 +446,8 @@ export default {
         path: "/targetpriceandscore/supplierscore/partscore",
         query: {
           rfqId: row.rfqId,
-          supplierId: row.supplierId
+          supplierId: row.supplierId,
+          rfqType:this.rfqInfo.rfqType || '',
         }
       })
       window.open(route.href, "_blank")
@@ -444,7 +491,19 @@ export default {
       let week = numberProcessor(value, 0)
       if (+week > 53) week = "53"
       this.$set(row, key, week)
-    }
+    },
+
+    // 附件评分的文本展示
+    showaffixName(rate){
+      const { affixGrade=[] } = this;
+      const affix = affixGrade.filter((item)=>item.code == rate);
+      if(Array.isArray(affix) && affix.length){
+        return this.$i18n.locale === "zh" ? affix[0].name : affix[0].nameEn;
+      }else{
+        return rate;
+      }
+      
+    },
   }
 }
 </script>
@@ -456,6 +515,13 @@ export default {
     font-style: normal;
     margin-left: 2px;
     font-size: 14px;
+  }
+  .text-overflow{
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>

@@ -339,6 +339,7 @@
         v-model="referenceCarProjectShow"
         :referenceCarProjectParams="referenceCarProjectParams"
         @refresh="getInvestmentVerisionList"
+        @refreshList="refreshList"
     ></referenceCarProject>
     <moneyComponent
         v-model="moneyComponentShow"
@@ -516,6 +517,11 @@ export default {
   mounted() {
   },
   methods: {
+
+    refreshList(){
+      this.findInvestmentList();
+    },
+
     // saveReference() {
     //   this.tableListData = this.tableListData.map(item => {
     //     item.refCartypeName = '钢材'
@@ -1179,7 +1185,8 @@ export default {
       this.referenceCarProjectParams = {
         carTypeProId: row.refCartypeProId,
         categoryId: row.categoryId,
-        sourceProjectId: this.params.id
+        sourceProjectId: this.params.id,
+        id: row.id
       }
     },
     clickMoney(row) {
@@ -1337,9 +1344,9 @@ export default {
 }
 
 #chart2 {
-  width: 700px;
+  min-width: 720px;
   height: 180px;
-  margin: 0 30px;
+  margin: 0 20px;
   align-self: flex-end;
 }
 

@@ -58,8 +58,8 @@
             <div>{{ getTousandNum(scope.row.entryAmount) }}</div>
           </template>
           <template #info="scope">
-            <div v-if="isApply" class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
-            <div v-else class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
+            <div class="linkStyle" :class="{noLine: scope.row.tmCartypeProId == noLine}"><span @click="relationCarTypePartsList(scope.row.tmCartypeProId)">{{ $t('详情') }}</span></div>
+            <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
           </template>
           <!-- <template #apply="scope" v-if="isApply">
             <div class="linkStyleNoline"><span @click="applyRefCarType(scope.row)">{{ $t('应用') }}</span></div>
@@ -210,13 +210,15 @@ export default {
     applyRefCarType(row) {
       this.tableLoading = true
       let parmars = {
-        refCartypeProId: row.id,
+        refCartypeProId: row.tmCartypeProId,
         refMoldAmount : row.nomiAmount,
       }
-      applyRefCarType(this.referenceCarProjectParams.sourceProjectId, parmars).then((res) => {
+      applyRefCarType(this.referenceCarProjectParams.id, parmars).then((res) => {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
         if (Number(res.code) === 0) {
-          iMessage.success(result);
+          // iMessage.success(result);
+          iMessage.success('应用成功！');
+          this.$emit('refreshList');
         } else {
           iMessage.error(result);
         }
@@ -253,6 +255,7 @@ export default {
   }
 }
 .linkStyle {
+  display: inline-block;
   span {
     color: #1663F6;
     border-bottom: 1px solid #1663F6;
@@ -265,6 +268,8 @@ export default {
   }
 }
 .linkStyleNoline{
+  display: inline-block;
+  margin-left: 12px;
   span {
     color: #1663F6;
     cursor: pointer;

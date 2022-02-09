@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-12-30 17:41:13
+ * @LastEditTime: 2022-01-26 19:35:59
  * @LastEditors: Please set LastEditors
  * @Description: 系统静态路由.
  * @FilePath: \front-sourcing\src\router\index.js
@@ -24,7 +24,6 @@ import reportmanage from './modules/reportmanage'
 import sourceInquirypoint from './modules/sourceInquirypoint'
 import biddingRouter from './modules/biddingManage'
 import targetPriceAndScoreRoutes from './modules/targetPriceAndScore'
-import scoreConfig from './modules/scoreConfig'
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
 
@@ -363,6 +362,14 @@ export const staticRouter = [
 			component:()=> import("@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz/preview.vue")
 	},
 	{
+		path: '/sourceinquirypoint/designate/decisiondata/exportPdf',
+		name: '决策资料导出PDF',
+		meta: {
+			title: '决策资料导出PDF'
+		},
+		component: () => import('@/views/designate/designatedetail/decisionData/exportPdf/index.vue')
+	},
+	{
 		path: '*',
 		name: '404',
 		meta: {
@@ -397,7 +404,6 @@ const router = new VueRouter({
 		// bidding 相关
 		...biddingRouter,
 		...targetPriceAndScoreRoutes,
-		...scoreConfig,
 	],
 })
 

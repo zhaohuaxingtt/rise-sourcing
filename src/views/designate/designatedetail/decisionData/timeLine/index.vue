@@ -268,5 +268,8 @@ export default {
             flex: 1;
         }
     }
+    .step-icon {
+        color: rgb(112, 112, 112);
+    }
 }
 </style>

@@ -7,6 +7,8 @@
 //  MEETING("MEETING","上会"),
 //  CIRCULATE("CIRCULATE","流转"),
 //  RECORD("RECORD","备案");
+import { getNominateDisabled } from "rise/web/common"
+
 export const applyType = [
     {id:'MEETING',name:'上会',key:'LK_SHANGHUI'},
     {id:'TRANFORM',name:'流转',key:'LK_LIUZHUAN'},
@@ -33,7 +35,7 @@ export const decisionType = [
     {key:'CostAnalysis',name:'Cost Analysis',path:'/designate/decisiondata/costanalysis'},
     {key:'TimeLine',name:'Timeline',path:'/designate/decisiondata/timeline'},
     {key:'Strategy',name:'Strategy',path:'/designate/decisiondata/strategy'},
-    {key:'BNKReference',name:'BNK Reference',path:'/designate/decisiondata/bnkreference'},
+    // {key:'BNKReference',name:'BNK Reference',path:'/designate/decisiondata/bnkreference'},
     {key:'AwardingScenario',name:'Awarding Scenario',path:'/designate/decisiondata/awardingscenario'},
     {key:'RS',name:'RS',path:'/designate/decisiondata/rs'},
     {key:'MTZ',name:'MTZ',path:'/designate/decisiondata/mtz',isMtz:true},
@@ -58,7 +60,7 @@ export const sortTableData = [
     {key:'CostAnalysis',name:'Cost Analysis',visible: false, sort: 7},
     {key:'TimeLine',name:'Timeline',visible: true, sort: 8},
     {key:'Strategy',name:'Strategy',visible: true, sort: 9},
-    {key:'BNKReference',name:'BNK Reference',visible: true, sort: 10},
+    // {key:'BNKReference',name:'BNK Reference',visible: true, sort: 10},
     {key:'AwardingScenario',name:'Awarding Scenario',visible: true, sort: 11},
     {key:'RS',name:'RS',visible: true, sort: 12},
     {key:'MTZ',name:'MTZ',visible: true, sort: 13},
@@ -98,22 +100,4 @@ export const svgList = {
     'icondingdianguanlizhou-weiwancheng':'<svg t="1631702090376" class="icon" viewBox="0 0 128000 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="78717" width="124" height="100"><path d="M124426.24 1024a512 512 0 0 1 0-1024H127488a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 0 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.152a512 512 0 0 1 0 1024z m-4589.056 0a512 512 0 0 1 0-1024h2545.664a512 512 0 0 1 0 1024zM101478.4 1024a512 512 0 0 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2546.176a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2546.176a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2546.176a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024zM50995.2 1024a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024zM37227.52 1024a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.056 0a512 512 0 1 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024h2545.664a512 512 0 1 1 0 1024z m-4589.568 0a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024z m-4589.568 0a512 512 0 0 1 0-1024H12236.8a512 512 0 1 1 0 1024zM5101.568 1024a512 512 0 1 1 0-1024h2545.664a512 512 0 0 1 0 1024zM512 1024a512 512 0 1 1 0-1024h2545.152a512 512 0 1 1 0 1024z" fill="#CED4E1" p-id="78718"></path></svg>'
 }
 
-export const setDisabled = function(data) {
-    const isPriceConsistent = data.isPriceConsistent // 一次性校验
-    const applicationStatus = data.applicationStatus // 定点申请状态
-    if (!applicationStatus) return true
-
-    switch(data.designateType) {
-    case "MEETING": // 上会
-        const disabledCodes = ["FREERE", "M_CHECK_INPROCESS", "M_CHECK_FAIL", "NOMINATE"] // 冻结, M审批中, M退回, 定点
-        if (isPriceConsistent) return disabledCodes.concat(["PASS", "CHECK_INPROCESS", "CHECK_PASS", "CHECK_FAIL"]).includes(applicationStatus) // 通过一致性校验 已通过, 复核中, 复核通过, 复核未通过
-
-        return disabledCodes.includes(applicationStatus)
-    case "TRANFORM": // 流转
-        return ["FREERE", "ONFLOW", "FINISHFLOW", "NOMINATE"].includes(applicationStatus) // 冻结, 流转中, 流转完成, 定点
-    case "RECORD": // 备案
-        return ["FREERE", "NOMINATE"].includes(applicationStatus) // 冻结, 定点
-    default:
-        return true
-    }
-}
+export const setDisabled = getNominateDisabled

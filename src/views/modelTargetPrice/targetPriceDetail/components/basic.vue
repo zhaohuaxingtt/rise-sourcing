@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-21 15:19:43
+ * @LastEditTime: 2022-01-04 19:25:21
  * @Description: 基础信息
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -98,7 +98,7 @@ export default {
       const formData = new FormData()
       formData.append('file', content.file)
       // formData.append('applicationName', 'procurereq-service')
-      importBatchMaintain(formData)
+      importBatchMaintain(formData, this.taskId)
         .then(res => {
           this.fileSuccess(res)
         })
@@ -266,6 +266,8 @@ export default {
     getDetail() {
       this.loading = true
       if (this.applyType === '1') {
+        if (!this.rfqId) return
+
         getTaskPartListRfq(this.rfqId).then(res => {
           if (res?.result) {
             this.tableData = res.data || []

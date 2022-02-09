@@ -46,17 +46,25 @@
     <el-row v-if="inside">
       <el-col :span="12">
         <!-- 报价分析 -->
-        <quotationAnalysis @joinTable='joinTable'  @delTable='delTable' :searchCriteria="searchCriteria"
+        <quotationAnalysis ref="tableQ"
+                           @joinTable='joinTable'
+                           @delTable='delTable'
+                           :searchCriteria="searchCriteria"
                            class="margin-right20"></quotationAnalysis>
       </el-col>
       <el-col :span="12">
         <!-- 谈判基本信息 -->
-        <negotiationBasic @joinTable='joinTable'  @delTable='delTable'  :searchCriteria="searchCriteria"
+        <negotiationBasic ref="tableN"
+                          @joinTable='joinTable'
+                          @delTable='delTable'
+                          :searchCriteria="searchCriteria"
                           class="margin-left20"></negotiationBasic>
       </el-col>
     </el-row>
     <!-- 导出弹窗 -->
-    <exportReport v-model="visible"
+    <exportReport :key="Math.random()"
+                  ref="exportFile"
+                  v-model="visible"
                   :tableListData="tableListData"></exportReport>
   </iPage>
 </template>
@@ -70,7 +78,11 @@ import quotationAnalysis from './components/quotationAnalysis'
 import negotiationBasic from './components/negotiationBasic'
 import exportReport from './components/exportReport'
 import store from '@/store'
-import { reportUserDownload, reportDelete,reportDownList } from '@/api/partsrfq/reportList'
+import {
+  reportUserDownload,
+  reportDelete,
+  reportDownList,
+} from '@/api/partsrfq/reportList'
 export default {
   components: {
     iPage,
@@ -89,19 +101,18 @@ export default {
       fromGroup: {}, //下拉框数据
       visible: false,
       searchCriteria: {
-        name: '',
         toolType: '',
         materialGroup: '',
         partsNo: '',
         rfq: '',
       },
-      tableListData:[],
+      tableListData: [],
       selectAllData: [], //所有选择的数据
       inside: true, //是否内部进入
     }
   },
   created() {
-    this.searchCriteria.rfq=this.$store.state.rfq.rfqId
+    this.searchCriteria.rfq = this.$store.state.rfq.rfqId
     // this.searchCriteria.rfq = '1139'
     this.inside = this.$store.state.rfq.entryStatus === 1 ? true : false
     this.getAllSelect()
@@ -118,16 +129,29 @@ export default {
         }
       })
     },
-    delTable(row) {
+    delTable(row, key) {
       reportDelete(row).then((res) => {
-           if (res && res.code == 200) {
+        if (res && res.code == 200) {
+          switch (key) {
+            case 1:
+              this.$refs.specialTools.getTableList()
+              break
+            case 2:
+              this.$refs.tableQ.getTableList()
+              break
+            case 3:
+              this.$refs.tableN.getTableList()
+              break
+            default:
+              break
+          }
           iMessage.success(res.desZh)
         } else {
           iMessage.error(res.desZh)
         }
       })
     },
-       getDownTable() {
+    getDownTable() {
       reportDownList().then((res) => {
         if (res && res.code == 200) {
           this.tableListData = res.data

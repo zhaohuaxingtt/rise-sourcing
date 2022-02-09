@@ -2,11 +2,13 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 16:28:01
- * @LastEditors: zbin
+ * @LastEditors: Please set LastEditors
  * @Descripttion: 总览
 -->
 <template>
-  <div ref="charMap" id="container" class="amap-wrapper" />
+  <div ref="charMap"
+       id="container"
+       class="amap-wrapper" />
 </template>
 
 <script>
@@ -25,7 +27,7 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       lg: lg,
       highlight: highlight,
@@ -36,11 +38,11 @@ export default {
     }
   },
   watch: {
-    '$i18n.locale'(newValue) {
+    '$i18n.locale' (newValue) {
       this.handleMap();
     },
     mapListData: {
-      handler(objects) {
+      handler (objects) {
         const data = cloneDeep(objects)
         var sum = 0
 
@@ -78,13 +80,13 @@ export default {
       deep: true,
     }
   },
-  created() {
+  created () {
   },
-  mounted() {
+  mounted () {
     this.handleMap()
   },
   methods: {
-    handleMap() {
+    handleMap () {
       // 初始化地图
       var map = new AMap.Map('container', {
         WebGLParams: {
@@ -166,9 +168,11 @@ export default {
       // svw图标
       this.svwData && this.svwData.map(item => {
         let carTypeList = ''
-        item.carType.forEach((val, index) => {
-          carTypeList += item.carType.length - 1 > index ? val + ' | ' : val
-        })
+        if (item.carType) {
+          item.carType.forEach((val, index) => {
+            carTypeList += item.carType.length - 1 > index ? val + ' | ' : val
+          })
+        }
         // 图标
         var svwImg = new AMap.Icon({
           size: new AMap.Size(40, 40),

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-11 14:54:24
- * @LastEditTime: 2021-09-01 20:01:28
+ * @LastEditTime: 2022-01-24 14:43:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqPending\components\bdlDialog\index.vue
@@ -42,7 +42,7 @@
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
         <template #supplierNameZh="scope">
-          <div class="flexRow">
+          <!-- <div class="flexRow"> -->
             <span class="openLinkText cursor " @click="onJump360(scope.row)"> {{ scope.row.supplierNameZh }}
               <el-tooltip effect="light" :content="`FRM评级：${scope.row.frm}`" v-if="scope.row.frm">
                 <span v-if="getStatus(scope.row.frm)">
@@ -50,11 +50,11 @@
                 </span>
               </el-tooltip>
             </span>
-            <span v-if="scope.row.supplierNameZh" class="icon-gray cursor"  @click="onJump360(scope.row)">
+            <!-- <span v-if="scope.row.supplierNameZh" class="icon-gray cursor"  @click="onJump360(scope.row)">
               <icon symbol class="show" name="icontiaozhuananniu" />
               <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </div> 
+            </span> -->
+          <!-- </div>  -->
         </template>
         <template #bdlType="scope">
           <span>{{ scope.row.bdlType == "2" ? "M" : "" }}</span>
@@ -194,7 +194,8 @@ export default {
       }
     },
     onJump360(row) {
-      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${ row.supplierSubId }&supplierType=${ row.supplierType }&nameZh=${ row.supplierNameZh }&nameEn=${ row.supplierNameEn }`, "_blank")
+      // 与3组确认 supplierType默认为PP
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${ row.supplierId }&supplierType=PP&nameZh=${ row.supplierNameZh }&nameEn=${ row.supplierNameEn }`, "_blank")
     },
     // 确认
     handleConfirm() {

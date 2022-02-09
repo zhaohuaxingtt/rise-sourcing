@@ -28,13 +28,13 @@
                   <iInput type='number' v-else v-model="scope.row[items.props]"></iInput>
               </template>         
               <template v-else-if='items.props == "priceRecord"' >
-                <span class="flexRow">
+                <!-- <span class="flexRow"> -->
                   <span class="openLinkText cursor "  @click="openPage(row.row)"> {{ row.row[activeItems]}}</span>
-                  <span class="icon-gray  cursor " v-if="row.row[activeItems]"  @click="openPage(row.row)">
+                  <!-- <span class="icon-gray  cursor " v-if="row.row[activeItems]"  @click="openPage(row.row)">
                       <icon symbol class="show" name="icontiaozhuananniu" />
                       <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-                  </span>
-                </span>
+                  </span> -->
+                <!-- </span> -->
               </template>
               <template v-else>
                 {{scope.row[items.props]}}
@@ -44,13 +44,13 @@
       </template>
        <el-table-column label="价格记录">
         <template slot-scope="row">
-          <span class="flexRow">
+          <!-- <span class="flexRow"> -->
             <span class="openLinkText cursor "  @click="openPage(row.row)">查看</span>
-            <span class="icon-gray  cursor "   @click="openPage(row.row)">
+            <!-- <span class="icon-gray  cursor "   @click="openPage(row.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span> 
+            </span> -->
+          <!-- </span>  -->
         </template>
     </el-table-column>
     </el-table>
@@ -148,7 +148,7 @@ export default{
       Object.keys(this.searchForm).forEach(element => {
         this.searchForm[element] = ''
       });
-      this.searchForm.partNum = this.detailData().partNum
+      this.searchForm.partNum = this.detailData().partNum.substring(0,9)
       this.searchForm.fsnrGsnrNum = this.detailData().fsnrGsnrNum
       this.supplierCurentTop()
       this.supplierCurentBottom()
@@ -222,7 +222,7 @@ export default{
           this.searchForm[element] = ''
         }
       });
-      this.searchForm.partNum = JSON.parse(this.$route.query.item).partNum
+      this.searchForm.partNum = this.detailData().partNum.substring(0,9)
       this.page.currPage = 1
       this.supplierCurentBottom()
     },

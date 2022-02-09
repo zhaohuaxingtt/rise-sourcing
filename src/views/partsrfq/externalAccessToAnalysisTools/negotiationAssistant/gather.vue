@@ -2,34 +2,50 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-22 11:05:40
- * @LastEditors: YoHo
+ * @LastEditors: Please set LastEditors
  * @Descripttion: your project
 -->
 <template>
   <div>
-    <div class="margin-bottom15 flex-between-center-center" v-if="$route.path === '/sourcing/partsrfq/externalNegotiationAssistant'">
+    <div class="margin-bottom15 flex-between-center-center"
+         v-if="$route.path === '/sourcing/partsrfq/externalNegotiationAssistant'">
       <div class="flex-between-center-center">
-        <iNavMvp :list="tabRouterList" class="margin-bottom20" routerPage :lev="1" :query="$route.query" @change="changeRouter" />
+        <iNavMvp :list="tabRouterList"
+                 class="margin-bottom20"
+                 routerPage
+                 :lev="1"
+                 :query="$route.query"
+                 @change="changeRouter" />
       </div>
       <div class="floatright">
-        <iButton v-if="pageType !== 'card'" @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
-        <iButton v-if="pageType === 'card'" @click="handleSearch">{{ $t('search') }}</iButton>
+        <iButton v-if="pageType !== 'card'"
+                 @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
+        <iButton v-if="pageType === 'card'"
+                 @click="handleSearch">{{ $t('search') }}</iButton>
         <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
         <!-- <icon class="icondatabaseweixuanzhong" name="icondatabaseweixuanzhong" symbol></icon> -->
       </div>
     </div>
-    <div v-if="$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant'" class="right-btn">
-      <iButton v-if="pageType !== 'card'" @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
+    <div v-if="$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant'"
+         class="right-btn">
+      <iButton v-if="pageType !== 'card'"
+               @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
       <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
     </div>
     <!-- 图表 -->
-    <specialAnalysisTool v-if="pageType === 'card'" @entrance="entrance" ref="specialAnalysisTool" />
+    <specialAnalysisTool v-if="pageType === 'card'"
+                         @entrance="entrance"
+                         ref="specialAnalysisTool" />
     <!-- 点击图表详情 -->
-    <pcaOverview v-else-if="pageType === 'PCA'" pageType="PCA" />
-    <pcaOverview v-else-if="pageType === 'TIA'" pageType="TIA" />
-    <bobOverview v-else-if="pageType === 'BoB'" pageType="BoB" />
+    <pcaOverview v-else-if="pageType === 'PCA'"
+                 pageType="PCA" />
+    <pcaOverview v-else-if="pageType === 'TIA'"
+                 pageType="TIA" />
+    <bobOverview v-else-if="pageType === 'BoB'"
+                 pageType="BoB" />
     <mekOverview v-else-if="pageType === 'MEK'"></mekOverview>
-    <piOverView v-else-if="pageType === 'PI'" pageType="PI" />
+    <piOverView v-else-if="pageType === 'PI'"
+                pageType="PI" />
     <vpAnalyseList v-else-if="pageType === 'VP'" />
     <bid-link v-else-if="pageType === 'BL'" />
   </div>
@@ -44,6 +60,7 @@ import mekOverview from '@/views/partsrfq/externalAccessToAnalysisTools/category
 import specialAnalysisTool from '@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/specialAnalysisTool/index.vue';
 import piOverView from '@/views/partsrfq/piAnalyse/piList';
 import bidLink from '@/views/partsrfq/bidLink/index.vue';
+import { getList } from "@/api/partsrfq/mek/index.js";
 import { icon, iButton, iNavMvp } from 'rise';
 
 export default {
@@ -59,13 +76,13 @@ export default {
     iNavMvp,
     iButton,
   },
-  data() {
+  data () {
     return {
       tabRouterList,
       pageType: 'card',
     };
   },
-  mounted() {
+  mounted () {
     if (this.$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant') {
       this.$store.dispatch('setRfqId', this.$route.query.id);
       this.$store.dispatch('setEntryStatus', 1);
@@ -78,19 +95,37 @@ export default {
       window.sessionStorage.setItem('rfqId', '');
     }
   },
-  created() {
+  created () {
     if (this.$route.query.pageType) {
       this.pageType = this.$route.query.pageType;
     }
   },
   methods: {
-    entrance(val) {
-      this.pageType = val;
+    async entrance (val) {
+      if (val === 'MEK' && this.$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant') {
+        const pms = {
+          materialGroup: this.$store.state.rfq.materialGroup || '',
+          createName: "",
+          spareParts: this.$store.state.rfq.spareParts || "",
+          rfqNo: this.$store.state.rfq.rfqId || "",
+          pageNo: 1,
+          pageSize: 10
+        }
+        const res = await getList(pms)
+        if (res.data.length !== 0) {
+          this.$router.push({ path: '/sourcing/mek/mekDetails', query: { schemeId: res.data[0].id, round: this.$route.query.round } })
+        } else {
+          this.pageType = val;
+        }
+      } else {
+        this.pageType = val;
+      }
+
     },
-    handleSearch() {
+    handleSearch () {
       this.$refs.specialAnalysisTool.handleSearch();
     },
-    handleReport() {
+    handleReport () {
       this.$router.push({ path: '/sourcing/partsrfq/reportList' });
     },
   },

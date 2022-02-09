@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-12-15 20:00:32
+ * @LastEditTime: 2022-01-11 15:17:51
  * @LastEditTime: 2021-07-21 17:57:58
  * @LastEditors: Please set LastEditors
  * @Description: 公共utils部分
@@ -173,7 +173,7 @@ export const numberProcessor = function(val, precision = 4, negative) {
     if (negative) {
       result = (val + '')
         .replace(/[^\d.-]/g, '')
-        .replace(/(?<=(-|[^-]+))-/, '')
+        .replace(/(?!^-)-/g, '')
         .replace(/^(-?)\.*/g, '$1')
         .replace('.', '$#$')
         .replace(/\./g, '')
@@ -194,7 +194,7 @@ export const numberProcessor = function(val, precision = 4, negative) {
     if (negative) {
       result = (val + '')
         .replace(/[^\d-]/g, '')
-        .replace(/(?<=(-|[^-]+))-/, '')
+        .replace(/(?!^-)-/g, '')
         .replace(/^(-?)0+([0-9])/, '$1$2')
     } else {
       result = (val + '').replace(/\D/g, '').replace(/^0+([0-9])/, '$1')
@@ -234,9 +234,17 @@ router.afterEach((to, from) => {
     process.env.NODE_ENV == 'dev' &&
     store.state.permission.resourceList.length > 0
   ) {
-    console.log("------------------------------------------------------------------------------------------------------------------------------------------")
-    store.state.permission.resourceList.filter(item => item.type != 3).forEach(item => console.log(`name: ${item.name}, permissionKey: ${item.permissionKey}`))
-    console.log("------------------------------------------------------------------------------------------------------------------------------------------")
+    console.log(
+      '------------------------------------------------------------------------------------------------------------------------------------------'
+    )
+    store.state.permission.resourceList
+      .filter((item) => item.type != 3)
+      .forEach((item) =>
+        console.log(`name: ${item.name}, permissionKey: ${item.permissionKey}`)
+      )
+    console.log(
+      '------------------------------------------------------------------------------------------------------------------------------------------'
+    )
     // _permissionKeySendToService(from)
   }
 })
@@ -591,4 +599,13 @@ export function encryptRsa(str) {
  */
 export function encryptPwd(str) {
   return encryptRsa(str)
+}
+
+export function pad(num, n) {
+  var len = num.toString().length
+  while (len < n) {
+    num = '0' + num
+    len++
+  }
+  return num
 }

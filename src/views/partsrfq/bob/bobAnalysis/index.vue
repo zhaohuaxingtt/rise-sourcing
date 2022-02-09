@@ -112,7 +112,7 @@
                     v-if="item.groupKey && item['label#' + titleIdx]"
                     style="margin-right: 10px;"
                     v-model="item['checked#' + titleIdx]"
-                    @change="onGroupItemSelected(checked, item, titleIdx)"
+                    @change="onGroupItemSelected(item['checked#' + titleIdx], item, titleIdx)"
                   ></el-checkbox>
                   {{
                     item['label#' + titleIdx] == 'false'

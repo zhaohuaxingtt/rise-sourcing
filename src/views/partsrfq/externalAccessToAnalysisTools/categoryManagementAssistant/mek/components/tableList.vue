@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-06 11:07:05
- * @LastEditTime: 2021-12-28 14:27:45
+ * @LastEditTime: 2022-01-25 17:11:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\components\tableList.vue
@@ -14,14 +14,13 @@
            v-if="!preview"
            v-show="reportFlag">
         <div v-if="!editFlag">
-
-          <iButton @click="edit">编辑</iButton>
+          <iButton @click="edit">{{language('BEIZHU','备注')}}</iButton>
         </div>
         <div v-else>
-          <iButton @click="addRow">新增</iButton>
-          <iButton @click="del">删除</iButton>
-          <iButton @click="saveTable">保存</iButton>
-          <iButton @click="cancel">取消</iButton>
+          <iButton @click="addRow">{{language('XINZENG','新增')}}</iButton>
+          <iButton @click="del">{{language('SHANCHU','删除')}}</iButton>
+          <iButton @click="saveTable">{{language('BAOCUN','保存')}}</iButton>
+          <iButton @click="cancel">{{language('QUXIAO','取消')}}</iButton>
         </div>
       </div>
     </template>
@@ -40,17 +39,15 @@
                        :label="item.motorTypeName"
                        min-width="180"
                        show-overflow-tooltip>
-        <el-table-column :label="gridData.config[item.label]"
-                         :prop="item.label"
-                         show-overflow-tooltip
-                         :render-header="renderHeader">
+        <el-table-column :prop="item.label"
+                         show-overflow-tooltip>
           <editable-cell slot-scope="{row}"
                          :show-input="row.editMode"
                          v-model="row[item.label]">
             <span slot="content">{{row[item.label]}}</span>
           </editable-cell>
           <template slot="header">
-            <el-tooltip effect="dark"
+            <el-tooltip effect="light"
                         :content="gridData.config[item.label]"
                         placement="top">
               <span>{{ gridData.config[item.label] }}</span>
@@ -64,7 +61,7 @@
 </template>
  
 <script>
-import { iPage, iCard, iButton } from 'rise';
+import { iPage, iCard, iButton, iMessage } from 'rise';
 import EditableCell from "./editCell";
 import { saveMekTable, deleteMekTable } from '@/api/categoryManagementAssistant/mek'
 export default {
@@ -107,7 +104,6 @@ export default {
     },
     gridData: {
       handler (newVal) {
-
         if (newVal) {
           if (newVal.data) {
             this.tableData = newVal.data
@@ -162,16 +158,24 @@ export default {
       this.editFlag = false
     },
     del () {
+      if (this.multipleSelection.length === 0) {
+        return iMessage.error(this.language('QINGXUANZESHUJU', '请选择数据'))
+      }
       let textTypeId = []
       this.multipleSelection.forEach(item => {
         textTypeId.push(item.textTypeId)
       })
       deleteMekTable({
         comparedType: this.$parent.$parent.comparedType,
-        schemeId: this.$parent.$parent.chemeId,
+        schemeId: this.$parent.$parent.schemeId,
         textTypeId
       }).then(res => {
-        this.$parent.$parent.getMekTable()
+        if (res?.code === '200') {
+          this.$parent.$parent.getMekTable()
+        } else {
+          iMessage.error(res.desZh)
+        }
+
       })
     },
     renderHeader (h, { column }) {
@@ -183,21 +187,55 @@ export default {
           whiteSpace: 'nowrap'
         },
       }, [
-        h('p', {}, header[0]),
-        h('p', {}, header[1]),
-        h('p', {}, header[2]),
-        h('p', {}, header[3]),
-        h('p', {}, header[4])
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          },
+          on: {
+            hover: () => {
+
+            }
+          },
+        }, header[0]),
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }
+        }, header[1]),
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }
+        }, header[2]),
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }
+        }, header[3]),
+        h('p', {
+          style: {
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }
+        }, header[4])
       ])];
     },
     //表格保存
     saveTable () {
-
       this.editFlag = false
       let params = {
         "comparedType": this.$parent.$parent.comparedType,
         "detail": [],
-        "schemeId": this.$parent.$parent.chemeId
+        "schemeId": this.$parent.$parent.schemeId
       }
       this.gridData1.forEach(item => {
         let obj = {
@@ -249,6 +287,7 @@ export default {
 .titleBox {
   display: flex;
   width: 100%;
+  flex-direction: row-reverse;
   /* justify-content: flex-end; */
 }
 </style>

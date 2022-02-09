@@ -153,8 +153,8 @@ export const downloadPdfMixins = {
                 })
             })
         },
-        addFile(e, key, name) {
-            //e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name
+        addFile(e, key, name, Hierarchy) {
+            //e为icard回调，key为当前点击的cardkey，name为当前点击的卡片name,Hierarchy为当前点击事件的ref层级（因为页面内可能有不同层级的卡片头部绑定的ref层级不同）
             return new Promise((resolve) => {
                 iMessageBox(
                     this.language(
@@ -166,13 +166,14 @@ export const downloadPdfMixins = {
                         cancelButtonText: this.language('QUXIAO', '取消'),
                     }
                 ).then(async () => {
+                    console.log(key)
                     this.$set(
                         this.cardShow.find((items) => items.key == key),
                         'show',
                         true
                     )
+                    console.log(e)
                     var blob = {}
-                    var timeout = 0
                     var instanceId = 0
                     const formData = new FormData()
                     formData.append('businessId', Math.ceil(Math.random() * 100000)) // 业务id，默认固定8025
@@ -183,45 +184,67 @@ export const downloadPdfMixins = {
                     } else {
                         instanceId = 0
                     }
-                    e.collapseValue = true
+                    console.log(typeof(e))
+                    if(typeof(e)=='object'){//3与5是混入的页面，原生js触发方法
+                        e.collapseValue = true
+                    }
                     this.$nextTick(() => {
-                        if (key == '4') {
-                            this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcelTwo().then(res => {
-                                let blob = new Blob([res], {
-                                    type: 'application/vnd.ms-excel'
-                                })
-                                //文件流转换为base64
-                                getBase64(blob).then(resBase64 => {
-                                    blob = dataURLtoFile(resBase64, name + '.xlxs')
-                                    formData.append('multifile', blob)
-                                    this.setfile(formData, instanceId, name)
-                                })
-                            })
-                            // console.log(this.$refs.quotationScoringEcartsCard.$refs.previewsCom.exportExcel())
-                        } else if (key == '3') {
-                            this.$refs.quotationScoringMj.getRfqSupplierList().then((res) => {
-                                cbdDownloadFileTWO({
-                                    rfqId: parseInt(this.$route.query.id),
-                                    round: this.$refs.quotationScoringMj.getbaseInfoData().currentRounds,
-                                    supplierId: res.data[0].supplierId,
-                                }).then((res) => {
-                                    let blob = new Blob([res], {
-                                        type: 'application/vnd.ms-excel',
-                                    })
+                        if (key == '2') {
+                            this.$refs.quotationScoringHZ.exportPartsTwo()
+                                .then((res) => {
                                     //文件流转换为base64
-                                    getBase64(blob).then((resBase64) => {
-                                        blob = dataURLtoFile(resBase64, name + '.xlxs')
+                                    getBase64(res.data).then((resBase64) => {
+                                        let blob = dataURLtoFile(resBase64, name + '.xlsx')
                                         formData.append('multifile', blob)
-                                        console.log(blob)
                                         this.setfile(formData, instanceId, name)
                                     })
                                 })
-                                // this.$refs.quotationScoringMj.handleDownload('addFile')
-                            })
-                        } else {
-                            if (key == '8') {
-                                timeout = 2000
+                        } else if (key == '3') {
+                            var obj1 = ''
+                            if (Hierarchy == 1) {
+                                obj1 = this.$refs.quotationScoringMj
+                            } else if (Hierarchy == 2) {
+                                obj1 = this
                             }
+                           obj1.getRfqSupplierList().then((res) => {
+                                cbdDownloadFileTWO({
+                                    rfqId: parseInt(this.$route.query.id),
+                                    round: obj1.getbaseInfoData()
+                                        .currentRounds,
+                                    supplierId: res.data[0].supplierId,
+                                }).then((res) => {
+                                    //文件流转换为base64
+                                    getBase64(res.data).then((resBase64) => {
+                                        let blob = dataURLtoFile(resBase64, name + '.xlsx')
+                                        formData.append('multifile', blob)
+                                        this.setfile(formData, instanceId, name)
+                                    })
+                                })
+                            })
+                        } 
+                        // else if (key == '4') {
+                        //     var obj = ''
+                        //     if (Hierarchy == 1) {
+                        //         obj = this.$refs.quotationScoringEcartsCard.$refs.previewsCom
+                        //     } else if (Hierarchy == 2) {
+                        //         obj = this.$refs.previewsCom
+                        //     }
+                        //     obj.exportExcelTwo()
+                        //         .then((res) => {
+                        //             //文件流转换为base64
+                        //             console.log(res)
+                        //             if(res)
+                        //             // let blob=   new File([res.data], name + '.zip',{type:'application/zip'})
+                        //             console.log(blob)
+                        //             getBase64(res.data).then((resBase64) => {
+                        //                 console.log(resBase64)
+                        //                 let blob = dataURLtoFile(resBase64, name + '.xlsx')
+                        //                 formData.append('multifile', blob)
+                        //                 this.setfile(formData, instanceId, name)
+                        //             })
+                        //         })
+                        // }
+                         else {
                             setTimeout(() => {
                                 downloadPDF({
                                     idEle: '#card' + key,
@@ -242,7 +265,7 @@ export const downloadPdfMixins = {
                                         }
                                     },
                                 })
-                            }, timeout)
+                            }, 1000)
                         }
                     })
                 })
@@ -286,6 +309,7 @@ export const downloadPdfMixins = {
                     msg: '报价趋势',
                 },
             ]
+            console.log(this.rfqInfoData)
             udMutilfiles(formData).then((res) => {
                 if (res && res.code == 200) {
                     let req = {
@@ -339,22 +363,16 @@ export function getBase64(file) {
     })
 }
 export function getCurrentTime() {
-    //获取当前时间并打印
     let yy = new Date().getFullYear()
     let mm = new Date().getMonth() + 1
     let dd = new Date().getDate()
-    // let hh = new Date().getHours();
-    // let mf = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
-    let ss =
-        new Date().getSeconds() < 10 ?
-        '0' + new Date().getSeconds() :
-        new Date().getSeconds()
-    return '_' + yy + mm + dd + ss
+    return '_' + yy + mm + dd
 }
 
 export function transverseDownloadPDF({
     //html横向导出pdf
     idEle: ele,
+    dom,
     pdfName: pdfName,
     callback: callback,
     exportPdf: exportPdf,
@@ -365,7 +383,12 @@ export function transverseDownloadPDF({
         var title = document.querySelector(titleArr.toString()) //获取页面dom节点
         var titleHeight = title.offsetHeight + 1 //页眉高度 ===>70px
     }
-    let el = document.getElementById(ele) //通过getElementById获取要导出的内容
+
+    let el = ''
+    if (ele) el = document.getElementById(ele)
+    //通过getElementById获取要导出的内容
+    else el = dom
+
     let eleW = el.offsetWidth // 获得该容器的宽
     let eleH = el.offsetHeight // 获得该容器的高
     var canvasFragment = document.createElement('canvas')

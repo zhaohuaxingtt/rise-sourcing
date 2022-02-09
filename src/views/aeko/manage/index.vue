@@ -12,7 +12,8 @@
       <div class="right-nav">
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
-        <log-button @click="openLog" class="margin-left25"/>
+        <!-- <log-button @click="openLog" class="margin-left25"/> -->
+        <iLoger ref="log" @close="closeLog" :config="{module_obj_ae: module, menuName_obj_ae:$store.getters.getLogMenu, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
@@ -61,6 +62,12 @@
                     </el-option>  
                   </iSelect> 
                 </template>
+                <iMultiLineInput
+                  v-else-if="item.type === 'iMultiLineInput'"
+                  :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+                  :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+                  v-model="searchParams[item.props]"
+                ></iMultiLineInput>
                 <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                 <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model.trim="searchParams[item.props]"></iInput> 
               </el-form-item>
@@ -97,7 +104,7 @@
             <iButton :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
-
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!-- 暂时添加的按钮 -->
           <!-- <template v-if="isAekoManager">
             <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
@@ -108,6 +115,7 @@
       <div v-permission.auto="AEKO_MANAGELIST_TABLE|AEKO管理TABLE">
         <tableList
           class="table"
+          ref="tableList"
           index
           :lang="true"
           :tableData="tableListData"
@@ -115,6 +123,8 @@
           :tableLoading="loading"
           :selection="isAekoManager"
           @handleSelectionChange="handleSelectionChange"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
         >
         <!-- AEKO号 -->
         <template #aekoCode="scope">
@@ -161,7 +171,7 @@
       <!-- TCM导入清单 -->
       <tcmList v-permission.auto="AEKO_TCMLIST_TABLE|AEKO管理TCM导入清单TABLE"/>
     </div>
-    <iLog :show.sync="showDialog" :bizId="bizId" :module="module" :hasId="hasId"></iLog>
+    <!-- <iLog :show.sync="showDialog" :bizId="bizId" :module="module" :hasId="hasId"></iLog> -->
   </iPage>
 </template>
 
@@ -176,12 +186,15 @@ import {
   iCard,
   iButton,
   iPagination,
-  icon
+  icon,
+  iMultiLineInput
 } from 'rise';
 import { searchList,tableTitle } from './data';
 import { pageMixins } from "@/utils/pageMixins";
 import { TAB,filterRole,getLeftTab } from '../data';
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
@@ -191,6 +204,7 @@ import {user as configUser } from '@/config'
 import aekoSelect from '../components/aekoSelect'
 import tcmList from './components/tcmList'
 import iLog from '../log'
+import iLoger from 'rise/web/components/iLoger'
 import {
   getManageList,
   searchAekoStatus,
@@ -214,7 +228,7 @@ import { roleMixins } from "@/utils/roleMixins";
 import { setLogMenu } from "@/utils";
 export default {
     name:'aekoManageList',
-    mixins: [pageMixins,roleMixins],
+    mixins: [pageMixins,roleMixins,tableSortMixins],
     components:{
       iPage,
       iNavMvp,
@@ -233,8 +247,10 @@ export default {
       aekoSelect,
       tcmList,
       iLog,
+      iLoger,
       logButton,
-      switchPost
+      switchPost,
+      iMultiLineInput
     },
     data(){
       return{
@@ -306,7 +322,12 @@ export default {
           break;
         }
       }
-
+      // csf分配人跳转页面需单独处理下 若前面没跳转并且没有aeko管理权限就判断是否有aeko分配 若有就直接跳转到aeko分配去
+      if(this.permission.whiteBtnList['AEKO_ASSIGN_ASSIGNLIST_TABLE'] && !this.permission.whiteBtnList['AEKO_MANAGELIST_TABLE']){ 
+        this.$router.push({
+            path:'/aeko/assign'
+          })
+      }
 
       this.sure();
       this.getSearchList();
@@ -507,24 +528,30 @@ export default {
         window.open(routeData.href, '_blank')
       },
       // 顶部日志查询
-      openLog(){
-        setLogMenu('AEKO管理-列表')
-        this.bizId = ''
-        this.hasId = true
-        this.module = 'AEKO管理'
-        this.showDialog = true
-      },
+      // openLog(){
+      //   setLogMenu('AEKO管理-列表')
+      //   this.bizId = ''
+      //   this.hasId = true
+      //   this.module = 'AEKO管理'
+      //   this.showDialog = true
+      // },
       gotoDBhistory() {},
       // 查看日志
       checkLog(row){
         setLogMenu('')
-        // setLogMenu('AEKO管理-列表')
         this.hasId = false
         this.module = ''
         this.bizId = row.requirementAekoId
         this.showDialog = true
+        this.$refs.log.open()
       },
-
+      // 清空bizId,便于触发顶部日志按钮
+      closeLog(){
+        setLogMenu('AEKO管理-列表')
+        this.bizId = ''
+        this.hasId = true
+        this.module = 'AEKO管理'
+      },
       // 查看描述
       checkDescribe(row){
         const { requirementAekoId,aekoCode } = row;

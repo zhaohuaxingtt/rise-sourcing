@@ -13,7 +13,7 @@ export const tableTitle = [
   { props: "source", name: "零件来源", key: "LINGJIANLAIYUAN", tooltip: true },
   { props: "partStatusDesc", name: "零件状态", key: "LINGJIANZHUANGTAI", tooltip: true },
   { props: "activeTime", name: "激活时间", key: "JIHUOSHIJIAN", tooltip: true },
-  { props: "log", name: "操作日志", key: "CAOZUORIZHI", tooltip: true },
+  // { props: "log", name: "操作日志", key: "CAOZUORIZHI", tooltip: true },
 ]
 
 export const queryForm = {

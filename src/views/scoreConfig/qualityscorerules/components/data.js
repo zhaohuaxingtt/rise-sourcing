@@ -5,7 +5,8 @@
  */
 
 export const tableTitle = [
-    { props: "rateTag", name: "部门评分类型", key: "BUMENPINGFENLEIXING", tooltip: true },
-    { props: "rateDepartNum", name: "部门编号", key: "BUMENBIANHAO", tooltip: true },
-    { props: "isCheck", name: "是否审核", key: "SHIFOUSHENHE", tooltip: true },
+    { props: "num", name: "零件号第4位", key: "LK_LINGJIANHAODISIWEI", tooltip: true },
+    { props: "deptName", name: "预设评分股", key: "LK_SOCRE_YUSHEPINGFENGU", tooltip: true },
+    { props: "userName", name: "预设评分人", key: "LK_SOCRE_YUSHEPINGFENREN", tooltip: true },
+    { props: "updateTime", name: "修改时间", key: "CONFIGSCOREDEPT_XIUGAISHIJIAN", tooltip: true },
   ]

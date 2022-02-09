@@ -16,11 +16,11 @@
         </el-form-item>
         <!-- 零件号 -->
         <el-form-item :label="language('LINGJIAHAO', '零件号')" prop='partNum'>
-          <i-input
-              v-model="queryAkeoForm.partNum"
-              :placeholder="language('LK_QINGSHURU','请输入')"
-              clearable
-          ></i-input>
+          <iMultiLineInput
+            :placeholder="language('partsprocure.PARTSPROCURE','请输入零件号，多个逗号分隔')"
+            :title="language('partsprocure.PARTSPROCUREPARTNUMBER','零件号')"
+            v-model="queryAkeoForm.partNum"
+          ></iMultiLineInput>
         </el-form-item>
         <!-- 供应商简称 -->
         <el-form-item :label="language('GONGYINGSHANGJIANCHENG','供应商简称')" prop='supplierName'>
@@ -88,9 +88,13 @@
     <!--表格展示区--->
     <i-card v-permission.auto="AEKO_APPROVED_PAGE_DATA_DISPLAY_AREA|AEKO已审批数据展示区">
       <span class="font18 font-weight">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
+      <div class="floatright">
+        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+      </div>
       <!--表格展示区-->
-      <tablelist
+      <tableList
           height="400"
+          ref="tableList"
           class="margin-top20 aeko-approved-table"
           index
           :selection="true"
@@ -99,6 +103,8 @@
           :lang="true"
           :selectConfig="selectConfig"
           v-loading="tableLoading"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
       >
         <!-- <template #isTop="scope">
           <div>
@@ -184,7 +190,7 @@
         <template #complatedDate="scope">
           <span>{{ scope.row.complatedDate|formatDate }}</span>
         </template>
-      </tablelist>
+      </tableList>
       <div class="pagination">
         <iPagination v-update class="pagination"
                      @size-change="handleSizeChange($event, loadApprovedList)"
@@ -202,9 +208,11 @@
 </template>
 
 <script>
-import {iSearch, iInput, iCard, iPagination, icon, iSelect, iMessage} from "rise"
+import {iSearch, iInput, iCard, iButton, iPagination, icon, iSelect, iMessage, iMultiLineInput} from "rise"
 import {tableAKEOApprovedTitle as approvedHeader,  selectConfig, indexConfig} from '../components/data'
-import tablelist from 'rise/web/components/iFile/tableList';
+// import tablelist from 'rise/web/components/iFile/tableList';
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import {pageMixins} from '@/utils/pageMixins'
 import {queryApproved} from "@/api/aeko/approve";
 import {searchLinie, getLogCount} from "@/api/aeko/manage";
@@ -216,15 +224,17 @@ import { setLogCount, setLogMenu } from "@/utils";
 
 export default {
   name: "AKEOApprovedPage",
-  mixins: [pageMixins],
+  mixins: [pageMixins, tableSortMixins],
   components: {
     iSearch,
     iInput,
     iCard,
-    tablelist,
+    iButton,
+    tableList,
     iPagination,
     icon,
-    iSelect
+    iSelect,
+    iMultiLineInput
   },
   filters: {
     formatDate(value) {

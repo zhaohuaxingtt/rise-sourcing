@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2021-12-24 09:42:45
- * @LastEditors: caopeng
+ * @LastEditTime: 2022-01-27 21:01:57
+ * @LastEditors: YoHo
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
 -->
@@ -21,13 +21,33 @@
           <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="sure"
                    :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
             <el-form>
-              <!-- <el-form-item :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
-                <iInput :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"
-                        v-permission="PARTSRFQ_SEARCHBOX"></iInput>
-              </el-form-item> -->
-              <el-form-item class="currentWidth" :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')"
+              <!-- <el-form-item class="currentWidth" :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')"
               v-permission.auto="PARTSRFQ_SEARCHBOX|零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称">
                 <iInput  :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.searchConditions"></iInput>
+              </el-form-item> -->
+               <el-form-item  :label="language('LK_LINGJIANHAO','零件号')"
+                  >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
+              </el-form-item>
+              <el-form-item  :label="language('LK_FSNR','零件采购项目号')"
+                  >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsNum"></iInput>
+              </el-form-item>
+              <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')"
+                  >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-Int v-model="form.rfqIdVague"></iInput>
+              </el-form-item>    
+              <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')"
+                >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
+              </el-form-item>         
+              <el-form-item  :label="language('LK_SAP','供应商SAP号')"
+                 >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>
+              </el-form-item>
+              <el-form-item  :label="language('LK_SUPPLIERNAME','供应商名称')"
+                 >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierName"></iInput>
               </el-form-item>
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSRFQ_MODELPROJECT|车型项目">
                 <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.carType">
@@ -97,6 +117,7 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{ language('LK_RFQZONGHEGUANLI','RFQ综合管理') }}</span>
               <div class="floatright">
+                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission.auto="PARTSRFQ_ACTIVATERFQ|激活RFQ">
                   {{ language('LK_JIHUORFQS','激活RFQ') }}
@@ -112,7 +133,7 @@
                   {{ language('LK_ZHUANPAIPINGFENRENWUS','转派任务评分') }}
                 </iButton>
                 <!--转派前期采购员：选中RFQ之后，可以手动转派前期采购员-->
-                <iButton @click="openInquiryBuyerDialog('1')" v-permission.auto="PARTSRFQ_ASSIGNMENTBUYER|转派前期采购员">
+                <iButton @click="openInquiryBuyerDialog('1')" v-permission.auto="PARTSRFQ_ASSIGNMENTBUYER|转派前期采购员"  v-if="!isLinieGZ">
                   {{ language('ZHUANPAIQIANQICAIGOUYUAN','转派前期采购员') }}
                 </iButton>
                 <!--转派LINIE：选中RFQ之后，可以手动转派转派LINIE-->
@@ -141,11 +162,14 @@
                 @handleSelectionChange="handleSelectionChange"
                 openPageGetRowData
                 @openPage='openPage'
-                open-page-props="id"
+                :activeItems="'id'"
                 :index="true"
                 icon-props="recordId"
                 :lang="true"
                 class="aotoTableHeight"
+                :handleSaveSetting="handleSaveSetting"
+                :handleResetSetting="handleResetSetting"
+                ref="tableList"
             >
               <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
@@ -202,7 +226,7 @@
              <!------------------------------------------------------------------------>
             <!--                  转派询价采购员/LINIE弹窗                           --->
             <!------------------------------------------------------------------------>
-            <assignInquiryBuyerDialog ref="assignInquiryBuyerDialog" :dialogVisible="inquiryBuyerVisible" :type="inquiryBuyerDialogType" @changeVisible="changeInquiryBuyerDialogVisible" @handleConfirm="handleTransferConfirm" />
+            <assignInquiryBuyerDialog ref="assignInquiryBuyerDialog" :dialogVisible="inquiryBuyerVisible" :type="inquiryBuyerDialogType" @changeVisible="changeInquiryBuyerDialogVisible" @handleConfirm="handleTransferConfirm" :isLinieGZ="isLinieGZ"/>
           </iCard>
           <nominateTypeDialog :visible.sync="nominateTypeDialogVisible" @confirm="createDesignate" />
         </div>
@@ -216,7 +240,9 @@
 import {iPage, iButton, iCard, iMessage, iPagination, iInput, iSelect, icon} from "rise";
 import { iNavMvp, iSearch } from "rise";
 import headerNav from "@/components/headerNav"
-import tablelist from "pages/partsrfq/components/tablelist";
+// import tablelist from "pages/partsrfq/components/tablelist";
+import tablelist from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, attachmentTableTitle,partsprocureNavList} from "pages/partsrfq/home/components/data";
 import {findBySearches, getRfqList, getCartypeDict, modification, ratingTranslate, setRfqTop} from "@/api/partsrfq/home";
@@ -256,7 +282,7 @@ export default {
     assignInquiryBuyerDialog,
     headerNav
   },
-  mixins: [pageMixins, filters, rfqCommonFunMixins],
+  mixins: [pageMixins, filters, rfqCommonFunMixins,tableSortMixins],
   data() {
     return {
       tableListData: [],
@@ -302,6 +328,7 @@ export default {
       inquiryBuyerVisible: false,
       inquiryBuyerDialogType: '1',
       partsprocureNavList:partsprocureNavList,
+      flagIsLinieGZ:false
     };
   },
   created() {
@@ -315,7 +342,18 @@ export default {
   },
   computed: {
     ...mapState(["navList"]),
-    ...mapActions(["updateNavList"])
+    ...mapActions(["updateNavList"]),
+    isLinieGZ(){
+      let data = ["ZYCGKZ","ZYCGGZ","LINIE"]
+      let flag = false
+      this.$store.state.permission.userInfo.roleList.forEach(val=>{
+        if(data.includes(val.code)) {
+          flag = true 
+          return
+        }
+      })
+      return flag
+    }
   },
   methods: {
     handleTransferConfirm(userId, userName) {
@@ -505,24 +543,12 @@ export default {
       window.open(newRfqUrl.href,'_blank')
     },
     async editRfq(updateType) {
-      if (this.selectTableData.length === 0) {
-        return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZE','抱歉！您当前还未选择！'));
-      }
-      let a = true
-      this.selectTableData.forEach(val=>{
-        val.partProjectType.find(o=>
-          o == '1000040' || o == '1000030'
-        ) != undefined ? a = false :''       
-      })
-      if (!a) {
-         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
-      }
-      const idList = this.selectTableData.map(item => {
-        return item.id
-      })
+      if (!this.selectTableData.length) return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZE','抱歉！您当前还未选择！'));
+      if (this.selectTableData.some(item => Array.isArray(item.partProjectType) ? item.partProjectType.find(o => o == "1000040" || o == "1000030") : false)) return iMessage.warn(this.language("LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO", "抱歉，钢材类型不能进行操作"))
+
       const req = {
           updateType,
-          tmRfqIdList: idList,
+          tmRfqIdList: this.selectTableData.map(item => item.id),
           userId: store.state.permission.userInfo.id
       }
       this.setOperationButtonLoading(updateType, true)
@@ -533,20 +559,12 @@ export default {
     },
     //d点击打开转派评分任务列表
     async assignmentOfScoringTasks() {
-      if (this.selectTableData.length > 0) {
+      if (this.selectTableData.length) {
         this.rfqIds = this.selectTableData.map(item => item.id)
       } else {
         return iMessage.warn(this.language('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU','抱歉，您当前还未选择您需要转派的评分任务！'));
       }
-      let a = true
-      this.selectTableData.forEach(val=>{
-        val.partProjectType.find(o=>
-          o == '1000040' || o == '1000030'
-        ) != undefined ? a = false :''       
-      })
-      if (!a) {
-         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
-      }
+      if (this.selectTableData.some(item => Array.isArray(item.partProjectType) ? item.partProjectType.find(o => o == "1000040" || o == "1000030") : false)) return iMessage.warn(this.language("LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO", "抱歉，钢材类型不能进行操作"))
       this.scoringDeptVisible = true
       // if (this.selectTableData.length == 0)
       //   return iMessage.warn(this.$t('LK_NINDANGQIANHAIWEIXUANZENINXUYAOZHUANPAIDEPINGFENRENWU'));
@@ -683,16 +701,8 @@ export default {
       })
     },
     openNominateTypeDialog() {
-      if (this.selectTableData.length !== 1) return iMessage.warn(this.language("LK_QINGXUANZEYITIAORFQ","请选择一条RFQ"))
-      let a = true
-      this.selectTableData.forEach(val=>{
-        val.partProjectType.find(o=>
-          o == '1000040' || o == '1000030'
-        ) != undefined ? a = false :''       
-      })
-      if (!a) {
-         return iMessage.warn(this.language('LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO','抱歉，钢材类型不能进行操作'));
-      }
+      if (!this.selectTableData.length) return iMessage.warn(this.language("LK_QINGXUANZEZHISHAOYITIAORFQ","请至少选择一条RFQ"))
+      if (this.selectTableData.some(item => Array.isArray(item.partProjectType) ? item.partProjectType.find(o => o == "1000040" || o == "1000030") : false)) return iMessage.warn(this.language("LK_GANGCAILEIXINGBUNENGJINGXINGCAOZUO", "抱歉，钢材类型不能进行操作"))
       // this.nominateTypeDialogVisible = true
       this.createDesignate()
     },
@@ -702,7 +712,7 @@ export default {
       this.createDesignateLoading = true
 
       selectRfq({
-        rfqIdArr: [ this.selectTableData[0].id ]
+        rfqIdArr: this.selectTableData.map(item => item.id)
       })
       .then(res => {
         const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
@@ -713,6 +723,7 @@ export default {
             path: "/designate/details", 
             query: {
               desinateId: res.data.nominateId, 
+              sd: 1,
               designateType: res.data.nominateProcessType,
               partProjType: res.data.partProjectType
             }

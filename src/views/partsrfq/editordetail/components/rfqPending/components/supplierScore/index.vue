@@ -5,8 +5,8 @@
 -->
 <template>
   <div v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE|供应商评分页面">
-    <supplier-score/>
-    <supplier-rating-attachment class="margin-top20"/>
+    <supplier-score ref="supplierScore" :todo="todo"/>
+    <supplier-rating-attachment v-if="!todo" class="margin-top20"/>
   </div>
 </template>
 
@@ -19,10 +19,17 @@ export default {
     supplierScore,
     supplierRatingAttachment,
   },
+  props:{
+    todo: Boolean,
+  },
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    getTableList(){
+      this.$refs.supplierScore.getTableList()
+    }
+  }
 }
 </script>
 

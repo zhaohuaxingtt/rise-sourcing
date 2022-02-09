@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 14:31:57
- * @LastEditTime: 2021-07-12 16:46:52
+ * @LastEditTime: 2022-01-24 12:26:15
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\partscore\components\data.js
@@ -18,8 +18,19 @@ export const tableTitle = [
 
 export const deptScoreTableTitle = [
   { props: "grade", name: "评分", key: "LK_PINGFEN", tooltip: true },
-  { props: "externaFee", name: "外部开发费(元)", key: "WAIBUKAIFAFEIYUAN", tooltip: true },
-  { props: "addFee", name: "增加的认可费(元)", key: "ZNEGJIADERENKEFEIYUAN", tooltip: true },
-  { props: "confirmCycle", name: "认可周期(周)", key: "RENKEZHOUQIZHOU", tooltip: true },
+  { props: "externaFee", name: "外部开发费(元)", key: "WAIBUKAIFAFEIYUAN", tooltip: true,isFileHidden:true},
+  { props: "addFee", name: "增加的认可费(元)", key: "ZNEGJIADERENKEFEIYUAN", tooltip: true,isFileHidden:true },
+  { props: "confirmCycle", name: "认可周期(周)", key: "RENKEZHOUQIZHOU", tooltip: true,isFileHidden:true },
   { props: "remark", name: "备注", key: "BEIZHU", tooltip: true },
+]
+
+export const scoreOptions = [
+  { label: "A", value: "A" },
+  { label: "B", value: "B" },
+  { label: "B*", value: "B*" },
+  { label: "B1", value: "B1" },
+  { label: "B2", value: "B2" },
+  { label: "B3", value: "B3" },
+  { label: "C", value: "C" },
+  { label: "NA", value: "NA" },
 ]

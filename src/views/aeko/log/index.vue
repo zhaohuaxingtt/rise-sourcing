@@ -175,9 +175,14 @@ export default {
       this.loading = true;
       getLogList(params)
         .then((res) => {
+          if(res?.code=='200'){
+            const { data } = res
+            this.tableData = data.content || [];
+            this.page.totalCount = data.total || 0;
+          }else{
+            iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
           this.loading = false;
-          this.tableData = res?.content || [];
-          this.page.totalCount = res?.total || 0;
         })
         .catch(() => {
           this.loading = false;

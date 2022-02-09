@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-28 18:27:56
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-07-10 13:09:37
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-28 11:31:05
  * @Description: 
  * @FilePath: \front-web\src\views\designate\approvalPersonAndRecord\tableList.vue
 -->

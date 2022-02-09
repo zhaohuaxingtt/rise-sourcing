@@ -1,13 +1,13 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2021-12-05 15:20:48
- * @LastEditors:  
+ * @LastEditTime: 2022-01-18 16:03:51
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<iPage class="partsprocureEditordetail" v-permission.auto="PARTSPROCURE_EDITORDETAIL_INDEXPAGE|零件采购项目管理详情页">
+	<iPage class="partsprocureEditordetail" v-permission.auto="PARTSPROCURE_EDITORDETAIL_INDEXPAGE|零件采购项目管理详情页" v-loading="loading">
 		<!-- 零件状态：
 			1：无采购项目编号 
 			2：未加入RFQ
@@ -35,7 +35,7 @@
 			<div class="floatright">
 				<span v-if="!disabled">
 					<!-- 供应商创建定点申请单 -->
-					<createNomiappBtn v-permission.auto="PARTSPROCURE_EDITORDETAIL_CREATENOMIAPPLICATION|生成定点申请单" :datalist='[detailData]'></createNomiappBtn>
+					<createNomiappBtn v-permission.auto="PARTSPROCURE_EDITORDETAIL_CREATENOMIAPPLICATION|生成定点申请单" :datalist='[detailData]' v-if="createdNomiOnlyPartShow"></createNomiappBtn>
 					<!-------------------零件总成件的自动生成定点申请单--------------------->
 					<createNomiappBtnAccs v-permission.auto="PARTSPROCURE_EDITORDETAIL_ZC_CREATENOMIAPPLICATION|总成件-生成定点申请按钮" v-if='createdNomiappAsscShow'></createNomiappBtnAccs>
 					<!-------------------------------------------------------------------------------->
@@ -51,7 +51,7 @@
 					</iButton> -->
 					<iButton @click="openDiologClose" v-permission.auto="PARTSPROCURE_EDITORDETAIL_ENDPROJECT|结束项目"
 						v-if="detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.END')">{{ language("LK_JIESHUXIANGMU",'结束项目') }}</iButton>
-					<iButton :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
+					<iButton :disabled="dictLoading || carTypeSopListLoading" :loading='saveLoading' @click="saveFn" v-permission.auto="PARTSPROCURE_EDITORDETAIL_BASICINFOSAVE|保存零件采购项目按钮">{{ language("LK_BAOCUN",'保存') }}
 					</iButton>
 					<!-- <iButton @click="back">{{ language("LK_FANHUI",'返回') }}</iButton> -->
 				</span>
@@ -59,10 +59,11 @@
 				<iLoger
 					:config="{
 						module_obj_ae: '零件采购项目', 
-						bizId_obj_ae: 'projectId', 
+						_obj_ae: 'projectId', 
 						queryParams:['bizId_obj_ae']}"
 					credentials
 					isPage
+					isUser
 					class="margin-left20"
 					optionDicKey="LOG_OPERATION_TYPES"
 					optionDicKey2="零件采购项目详情页"
@@ -191,11 +192,11 @@
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPE|车型" :label="language('LK_CHEXING','车型') + ':'" name="test" v-if="isCarType">
 							<iSelect ref="carTypeModelSelect" v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled ">
 								<!-- :disabled='carTypeCanselect()'  -->
-								<el-option :value="item.code" :label="item.name"
-									v-for="(item) in fromGroup.CAR_TYPE" :key="item.code">
+								<el-option :value="item.id" :label="item.name"
+									v-for="(item) in fromGroup.CAR_TYPE" :key="item.id">
 								</el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.carTypeModel, "code", fromGroup.CAR_TYPE) }}</iText>
+							<iText v-else>{{ getName(detailData.carTypeModel, "id", fromGroup.CAR_TYPE) }}</iText>
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
@@ -210,9 +211,9 @@
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
 							<!----------------------------------------------------------------------------------------------->
-							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="datetime"></iDatePicker>
+							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="date"></iDatePicker>
 							<iText v-else >
-								{{ detailData.sopDate }}
+								{{ detailData.sopDate ? formatDate(detailData.sopDate) : detailData.sopDate }}
 							</iText>
 						</iFormItem>
 						<!-- <iFormItem :label="language('LK_ZHIFUTIAOKUAN','支付条款') + ':'" name="test"
@@ -450,6 +451,7 @@
     import purchaseApply from "./components/purchaseApply"
 		import { getEnumValue } from "@/config"
 		import iLoger from 'rise/web/components/iLoger'
+		import dayjs from 'dayjs'
 	export default {
 		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,iLoger,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs, purchaseApply},
 		provide:function(){
@@ -466,6 +468,9 @@
 				*/
 			currentSupplierButton:function(){
 				return (this.detailData.partProjectType == partProjTypes.GSLINGJIAN || this.detailData.partProjectType == partProjTypes.GSCOMMONSOURCING) && this.detailData.fsnrGsnrNum
+			},
+			createdNomiOnlyPartShow(){
+				return this.detailData.partProjectType == partProjTypes.JINLINGJIANHAOGENGGAI
 			},
 			// 根据角色控制零件项目类型下拉值
 			partProjectTypeArray() {
@@ -494,6 +499,7 @@
 			createdNomiappAsscShow(){
 				return this.detailData.partType == partsType.PARTSACCS
 			},
+			
 			linieDept: {
 				get() {
 					// if (Array.isArray(this.fromGroup.LINIE_DEPT) && !this.fromGroup.LINIE_DEPT.find(item => item.deptNum === this.detailData.linieDept)) {
@@ -542,6 +548,9 @@
 			// 采购项目类型为钢材一次性、批量采购
 			isSteelPurchase() {
 				return this.detailData.partProjectType == this.partProjTypes.GANGCAIYICIXINGCAIGOU || this.detailData.partProjectType == this.partProjTypes.GANGCAIPILIANGCAIGOU
+			},
+			loading() {
+				return this.purchasingDeptLoading || this.getCartypeDictLoading || this.getProcureGroupLoading || this.getDictLoading || this.getLinieLoading || this.getCarTypeSopListLoading
 			}
 		},
 		watch:{
@@ -579,6 +588,12 @@
 				isCarType:false,
 				bakCarTypeSopTime: '',
 				sourcePartProjectType: '', // 后端返回的partProjectType
+				purchasingDeptLoading: false,
+				getCartypeDictLoading: false,
+				getProcureGroupLoading: false,
+				getDictLoading: false,
+				getLinieLoading: false,
+				getCarTypeSopListLoading: false,
 			};
 		},
 		created() {
@@ -601,9 +616,11 @@
 			},
 			getLinie(id){
 				if (!id) return
+
+				this.getLinieLoading = true
 				purchasingLiline(id).then(r=>{
 					this.fromGroup['LINIE'] = r.data || []
-				})
+				}).finally(() => this.getLinieLoading = false)
 			},
 			openDiologOldParts(){
 				if(this.detailData.procureFactory == '') return  iMessage.warn(this.language('NINDANGQIANWEIXUANZE','您当前还未选择采购工厂，请选择后重试！'))
@@ -627,6 +644,8 @@
 				return this.detailData
 			},
 			getDict() {
+				this.getDictLoading = true
+
 				selectDictByRootKeys([
 					{ keys: "TERMS_PAYMENT" },
 					{ keys: "TERMS_PURCHASE" },
@@ -635,7 +654,7 @@
 				])
 				.then(res => {
 					if (res.code == 200) {
-						Object.keys(res.data).forEach(key => {
+						Object.keys(res.data || {}).forEach(key => {
 							this.fromGroup = {
 								...this.fromGroup,
 								[key]: Array.isArray(res.data[key]) ? res.data[key] : []
@@ -644,6 +663,7 @@
 
 					}
 				})
+				.finally(() => this.getDictLoading = false)
 			},
 			getDicts() {
 				this.getDict()
@@ -699,7 +719,7 @@
 					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
 					this.checkFactoryString = res.data.procureFactory
 					if(this.detailData.cartypes) {
-						this.$set(this.detailData,'carTypeModel',this.detailData.cartypes.map(val=> val.code))
+						this.$set(this.detailData,'carTypeModel',this.detailData.cartypes.map(val=> val.id))
 					}
 					this.infoItem = res.data
 					this.purchaseProjectId = this.infoItem.id;
@@ -733,25 +753,31 @@
 			//获取liline部门
 			
 			purchasingDept(){
+				this.purchasingDeptLoading = true
+
 				purchasingDept().then(r=>{
 					if (r.code == 200) {
 						this.fromGroup["LINIE_DEPT"] = Array.isArray(r.data) ? r.data : []
 					}
-				})
+				}).finally(() => this.purchasingDeptLoading = false)
 			},
 			// 获取车型字典
 			getCartypeDict() {
+				this.getCartypeDictLoading = true
+
 				getCartypeDict().then(res => {
 					this.fromGroup['CAR_TYPE'] = res.data || []
 				}).catch(err=>{
 					console.log(err)  
-				})
+				}).finally(() => this.getCartypeDictLoading = false)
 			},
 			getProcureGroup() {
+				this.getProcureGroupLoading = true
+
 				dictkey().then((res) => {
 					if (res.code == 200 && res.data) {
 						const map = {}
-						Object.keys(res.data).forEach(key => { // 容错
+						Object.keys(res.data || {}).forEach(key => { // 容错
 							if (key !== "CAR_TYPE_PRO") {
 								map[key] = Array.isArray(res.data[key]) ? res.data[key] : []
 							}
@@ -766,7 +792,7 @@
 					}
 				}).catch(err=>{
 					iMessage.error(err.desZh)
-				});
+				}).finally(() => this.getProcureGroupLoading = false);
 			},
 			// 查询fliter数据
 			getGroupList(key) {
@@ -848,24 +874,25 @@
 						detailData[i] = this.detailData[i];
 					}
 				}
-				const factoryItems = this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.detailData.procureFactory)
+
+				const factoryItems = this.fromGroup.PURCHASE_FACTORY && Array.isArray(this.fromGroup.PURCHASE_FACTORY) && this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.detailData.procureFactory) || {}
 				detailData['cfController'] = this.detailData.cfController
-				const cfController = this.fromGroup.CF_CONTROL.find(items=>items.code == this.detailData.cfController)
+				const cfController = this.fromGroup.CF_CONTROL && Array.isArray(this.fromGroup.CF_CONTROL) && this.fromGroup.CF_CONTROL.find(items=>items.code == this.detailData.cfController)
 				detailData['cfControllerName'] = cfController ? cfController.name : ""
 				detailData['linieId'] = this.detailData.linieId
-				const linie = this.fromGroup.LINIE.find(items=>items.code == this.detailData.linieId)
+				const linie = this.fromGroup.LINIE && Array.isArray(this.fromGroup.LINIE) && this.fromGroup.LINIE.find(items=>items.code == this.detailData.linieId)
 				detailData['linieName'] = linie ? linie.name : ""
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
 				detailData['oldProjectRelations'] = [{...translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
 				if(detailData.carTypeModel !=undefined) {
-					let temData=this.fromGroup['CAR_TYPE'].filter((item)=>{
-						return detailData.carTypeModel.indexOf(item.code) > -1
-					})
+					let temData= this.fromGroup.CAR_TYPE && Array.isArray(this.fromGroup.CAR_TYPE) && this.fromGroup['CAR_TYPE'].filter((item)=>{
+						return detailData.carTypeModel.indexOf(item.id) > -1
+					}) || []
 				detailData['cartypes'] = temData
 				}
 				detailData["procureFactoryId"] = factoryItems ? factoryItems.id : ''
-				let carTypeProject = this.fromGroup.CAR_TYPE_PRO.find(items=>items.code == detailData.carTypeProjectZh)
+				let carTypeProject = this.fromGroup.CAR_TYPE_PRO && Array.isArray(this.fromGroup.CAR_TYPE_PRO) && this.fromGroup.CAR_TYPE_PRO.find(items=>items.code == detailData.carTypeProjectZh)
 				detailData["carTypeProjectId"] = carTypeProject ? carTypeProject.id :''
 				return new Promise((resolve, reject) => {
 					updateProcure(detailData).then((res) => {
@@ -914,8 +941,7 @@
     * @return {*}
     */
 			setYearNull(){
-				this.$refs.outputPlan.clearTime()
-				this.$refs.outputPlan.clearTime()
+				this.$refs.outputPlan && typeof this.$refs.outputPlan.clearTime === "function" && this.$refs.outputPlan.clearTime()
 			},
 			// 下拉框逻辑提示
 			tips() {},
@@ -986,6 +1012,8 @@
 			},
 			// 获取车型项目sop
 			getCarTypeSopList() {
+				this.getCarTypeSopListLoading = true
+
 				getCarTypeSop().then(res => {
 					if (res && res.code === '200') {
 						this.fromGroup.CAR_TYPE_PRO = 
@@ -1000,7 +1028,10 @@
 
 						this.$forceUpdate()
 					}
-				})
+				}).finally(() => this.getCarTypeSopListLoading = false)
+			},
+			formatDate(val, format='YYYY-MM-DD') {
+				return dayjs(val).format(format)
 			}
 		}
 }

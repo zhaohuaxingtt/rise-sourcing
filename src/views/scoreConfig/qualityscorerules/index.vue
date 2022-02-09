@@ -24,39 +24,43 @@
     <iSearch
       class="margin-top25"
       icon
-      @sure="sure"
+      @sure="getList"
       @reset="reset"
       :resetKey="PARTSIGN_RESETBUTTON"
       :searchKey="PARTSIGN_CONFIRMBUTTON"
     >
         <el-form>
             <el-form-item :label="language('QUALITYSCORERULES_PINGFENGU', '评分股')" >
-                <iInput/>
+                <iInput v-model="searchForm.deptName" :placeholder="language('LK_QINGSHURU','请输入')"/>
             </el-form-item>
             <el-form-item :label="language('UALITYSCORERULES_PINGFENREN', '评分人')">
-                <iInput/>
+                <iInput v-model="searchForm.userName" :placeholder="language('LK_QINGSHURU','请输入')"/>
             </el-form-item>
         </el-form>
     </iSearch>
     <iCard class="margin-top20">
         <template v-slot:header-control>
             <iButton @click="changeVisible('addRulesDialogVisible',true)">{{language("TIANJIA", "添加")}}</iButton>
-            <iButton>{{ language('SHANCHU', '删除') }}</iButton>
+            <iButton @click="deletRule" :loading="btnLoading.deletRule">{{ language('SHANCHU', '删除') }}</iButton>
         </template>
-        <tableList
-          class="table"
-          index
-          :lang="true"
-          :tableData="tableListData"
-          :tableTitle="tableTitle"
-          :tableLoading="loading"
-          height="100%"
-          @handleSelectionChange="handleSelectionChange"
-        ></tableList>
+        <div class="body">
+            <tableList
+            class="table"
+            index
+            :lang="true"
+            :tableData="tableListData"
+            :tableTitle="tableTitle"
+            :tableLoading="loading"
+            height="100%"
+            @handleSelectionChange="handleSelectionChange"
+            >
+            </tableList>
+        </div>
+        
     </iCard>
 
     <!-- 新增弹窗 -->
-    <addRulesDialog :dialogVisible="addRulesDialogVisible" @changeVisible="changeVisible"/>
+    <addRulesDialog :dialogVisible="addRulesDialogVisible" @changeVisible="changeVisible" @getList="getList" :requestData="requestData"/>
   </iPage>
 </template>
 
@@ -75,6 +79,7 @@ import { TAB } from '../data'
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { tableTitle } from "./components/data"
 import addRulesDialog from './components/addRulesDialog'
+import { getAllMqRules,deleteMqRulesByIdList } from "@/api/scoreConfig/qualityscorerules"
 export default {
     name:'qualityscorerules',
     components:{
@@ -94,13 +99,94 @@ export default {
             tableListData:[],
             tableTitle:tableTitle || [],
             addRulesDialogVisible:false,
-
+            searchForm:{
+                deptName:'',
+                userName:'',
+            },
+            requestData:[],
+            selectItems:[],
+            btnLoading:{
+                deletRule:false,
+            }
         }
+    },
+    created(){
+        this.getList();
     },
     methods:{
         changeVisible(type,show){
             this[type] = !!show;
-        }
+        },
+        // 获取列表
+        async getList(){
+            this.loading = true;
+            await getAllMqRules(this.searchForm).then((res)=>{
+                this.loading = false;
+                if(res.code == '200'){
+                    const tableListData = []
+                    res.data.forEach(item => {
+                        const Sitem = {
+                            ruleName: item.ruleName,
+                            ruleId: item.ruleId,
+                            ruleDes: item.ruleDes,
+                            updateTime:item.updateTime
+                        }
+                        if (item.ruleNodeList && item.ruleNodeList.length) {
+                            item.ruleNodeList.forEach(rule => {
+                                Sitem.num = rule.num
+                                Sitem.deptName = rule.deptName || (rule.dept && rule.dept.deptName) || ''
+                                Sitem.userName = rule.userName || (rule.user && rule.user.userName) || ''
+                            })
+                        }
+                        tableListData.push(Sitem)
+                    })
+                    this.tableListData = tableListData;
+                    this.requestData = res.data || [];
+                }else{
+                    this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                }
+            }).catch(()=>{
+                this.loading = false;
+            })
+        },
+
+        reset(){
+            this.searchForm = {deptNum:'',userName:''};
+            this.getList();
+        },
+
+        handleSelectionChange(val) {
+            this.selectItems = val;
+        },
+
+        // 删除
+        async deletRule(){
+            const {selectItems} = this;
+            const tips =  this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据');
+          if(!selectItems.length){
+              this.$message.warning(tips);
+              return false;
+          }else{
+              await this.$confirm(
+                this.language('submitSure','您确定要执行提交操作吗？'),
+                this.language('LK_SHANCHU','删除'),
+          ).then(()=>{
+            this.btnLoading.deletRule = true;
+            const ids = (selectItems.map((item)=>item.ruleId));
+            deleteMqRulesByIdList(ids).then((res)=>{
+                this.btnLoading.deletRule = false;
+              if(res.code ==200){
+                this.$message.success(this.language('LK_CAOZUOCHENGGONG','操作成功'));
+                this.getList();
+              }else{
+                this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn);
+              }
+            })
+          }).catch(()=>{
+            this.btnLoading.deletRule = false;
+          })
+          }
+        },
     }
 }
 </script>
@@ -129,5 +215,12 @@ export default {
         height: 30px;
         }
     }
+    .card {
+    padding-bottom: 20px;
+    .body {
+      height: calc(100vh - 445px);
+      min-height: 430px;
+    }
+  }
     }
 </style>

@@ -8,12 +8,13 @@
   <div class="nomination-wraper" :class="{isPreview: isPreview === '1'}">
     <div class="nomination-layout">
       <!-- 进度条,基本信息 -->
-      <designateStep v-if="isPreview=='0'"/>
+      <designateStep v-if="isPreview=='0'" @updateNomi="updateNomi" />
       <!-- 三级导航栏 -->
-      <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3" />
+      <decisionDataHeader :isPreview="isPreview" v-if="!$route.meta.hideTabLV3 && showDecision" />
     </div>
-    <div class="nomination-content" v-loading="loading">
-      <router-view></router-view>
+    <div v-if="!showDecisionLoading" class="nomination-content" v-loading="loading">
+      <router-view v-if="$route.meta.hideTabLV3 ? true : showDecision"></router-view>
+      <div v-else class="tip">{{ this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限')}}</div>
     </div>
   </div>
 </iPage>
@@ -26,7 +27,7 @@ import {
 import designateStep from './components/designateStep.vue'
 import decisionDataHeader from './components/decisionDataHeader'
 import { applyStep } from './components/data'
-import { nominateAppSDetail } from '@/api/designate'
+import { nominateAppSDetail, getNomiPosition } from '@/api/designate'
 import { getNominateDisabled } from "rise/web/common"
 
 export default {
@@ -35,10 +36,26 @@ export default {
     decisionDataHeader,
     iPage
   },
+  beforeRouteEnter(to, from, next) {
+    // 定点管理预览跳转逻辑
+    if (from.meta.layoutPath && !to.meta.layoutPath && to.meta.path) {
+      const path = `${from.meta.layoutPath}/${to.meta.path}`
+      const query = from.query
+      const params = from.params
+      return next({
+        path,
+        params,
+        query
+      })
+    }
+    next()
+  },
   data(){
     return{
       loading: false,
-      isPreview:'0'
+      isPreview:'0',
+      showDecisionLoading: false,
+      showDecision: false, // 是否显示决策资料
     }
   },
   created(){
@@ -47,9 +64,13 @@ export default {
     this.isPreview = isPreview;
     this.$store.dispatch('setPreviewState', isPreview)
     this.nominateAppSDetail()
-    // 缓存当前步骤
-    this.getStepStatus();
-    
+    if (this.$route.query.sd == 1) {
+      this.getNomiPosition()
+    } else {
+      this.showDecision = true
+          // 缓存当前步骤
+      this.getStepStatus(); //只有当前组件被渲染过后，再通过异步修改的数据才会触发内部watch 这里不能放在showDecision=true之前
+    }
   },
   methods: {
     // 获取步骤状态
@@ -102,6 +123,27 @@ export default {
         this.loading = false
       }
     },
+    updateNomi() {
+      this.nominateAppSDetail()
+      this.getStepStatus()
+    },
+    getNomiPosition() {
+      this.showDecisionLoading = true
+
+      getNomiPosition({
+        nomiId: this.$route.query.desinateId || this.$store.getters.nomiAppId
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.showDecision = res.data
+          // 缓存当前步骤
+          this.getStepStatus();
+        }
+      })
+      .finally(() => {
+        this.showDecisionLoading = false
+      })
+    }
   },
   watch:{$route(to,from){
     console.log(to,from)
@@ -126,6 +168,14 @@ export default {
         box-shadow: none !important;
       }
     }
+  }
+
+  .tip {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    color: rgb(151, 166, 196);
+    line-height: calc(100vh - 360px);
   }
 }
 </style>

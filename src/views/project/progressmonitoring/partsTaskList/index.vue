@@ -30,6 +30,7 @@
         <span class="font18 font-weight">{{language('LINGJIANRENWUQINGDANGENGXIN', '零件任务清单更新')}}</span>
         <div class="floatright">
           <!--------------------处理按钮----------------------------------->
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <iButton  @click="handleBatchUpdate" >{{language('PILIANGXIUGAIZHUANGTAI','批量修改状态')}}</iButton>
           <iButton  @click="updatePartTask" >{{language('BAOCUN','保存')}}</iButton>
           <iButton  @click="handleExport('1')" >{{language('DAOCHUDEIEPQUERENQINGDAN','导出待EP确认清单')}}</iButton>
@@ -37,7 +38,18 @@
           <iButton  @click="handleExportAll" :loading="downloadLoading" >{{language('DAOCHUQUANBU','导出全部')}}</iButton>
         </div>
       </div>
-      <tableList indexKey :tableTitle="tableTitle" :selectOptions="selectOptions" :tableData="tableData" :tableLoading="tableLoading" @handleSelectChange="handleSelectChange" @handleSelectionChange="handleSelectionChange">
+      <tableList indexKey
+                 ref="tableList"
+                 :lang="true"
+                 :tableTitle="tableTitle"
+                 :selectOptions="selectOptions"
+                 :tableData="tableData"
+                 :tableLoading="tableLoading"
+                 @handleSelectChange="handleSelectChange"
+                 @handleSelectionChange="handleSelectionChange"
+                 :handleSaveSetting="handleSaveSetting"
+                 :handleResetSetting="handleResetSetting"
+      >
 
       </tableList>
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
@@ -73,12 +85,15 @@
 import { iSearch, iSelect, iInput, iButton, iCard, iPagination, iMessage,iDialog, iPage } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import { searchList, tableTitle,partSortStatus } from './data'
-import tableList from '@/views/project/progressmonitoring/partsTaskList/components/tableList'
-import { getCarTypePro, getPartTaskList,downLoadPartScheduleFile,updatePartInfoList, transferSchedule, downAllFile } from '@/api/project'
+import { getPartTaskList,downLoadPartScheduleFile,updatePartInfoList, transferSchedule, downAllFile } from '@/api/project'
 import { getDictByCode } from '@/api/dictionary'
+//import tableList  from '@/views/project/progressmonitoring/partsTaskList/components/tableList'
+
+import tableList from "@/components/iTableSort";
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 export default {
-  mixins: [pageMixins],
-  components: { iSearch, iSelect, iInput, iButton, iCard, tableList, iPagination,iDialog, iPage },
+  mixins: [pageMixins,tableSortMixins],
+  components: { iSearch, iSelect, iInput, iButton, iCard, iPagination,iDialog, tableList,iPage },
   data() {
     return {
       searchList,

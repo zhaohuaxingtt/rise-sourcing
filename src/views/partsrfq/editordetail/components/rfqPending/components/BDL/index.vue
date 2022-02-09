@@ -1,47 +1,41 @@
 <!--
 * @author:shujie
 * @Date: 2021-3-5 10:56:32
- * @LastEditors: Luoshuang
+ * @LastEditors: Please set LastEditors
 * @Description: BDL列表
  -->
 <template>
-  <iCard>
-    <div class="header flex-between-center">
-      <div class="input">
-        <!-- <iInput :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" suffix-icon="iconfont iconshaixuankuangsousuo" v-model="searchKey" @input="handleInputBySearchKey"></iInput> -->
-        <iInput :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" v-model="supplierName" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERNAMESEARCH|BDL供应商名称查询">
-          <div class="inputSearchIcon" slot="suffix">
-            <icon symbol name="iconshaixuankuangsousuo" @click.native="query" />
-          </div>
-        </iInput>
-      </div>
-      <div v-if="!disabled">
-        <div v-if="!addCustomStatus">
+  <div class="BDL">
+    <iCard collapse :title="language('BDL','BDL')">
+      <template slot="subInfo">
+        <div class="input">
+          <iInput @keydown.native.enter="query" :placeholder="language('LK_QINGSHURUCHANXUANGONGYINGSHANGMINGCHENG','请输入查询供应商名称')" v-model="supplierName" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERNAMESEARCH|BDL供应商名称查询">
+            <div class="inputSearchIcon" slot="suffix">
+              <icon symbol name="iconshaixuankuangsousuo" @click.native="query" />
+            </div>
+          </iInput>
+        </div>
+      </template>
+      <template slot="header-control">
+        <div class="button-box">
           <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL|BDL添加" @click="handleAdd">{{ language("TIANJIA", "添加") }}</iButton>
-          <!-- <iButton v-if="editSelectTableDataCache.length" @click="handleSave" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL|确认" :loading="saveLoading">{{ language('LK_QUEREN','确认') }}</iButton> -->
-          <iButton v-if="selectTableDataCache.length" @click="handleDelete" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER|BDL删除供应商" :loading="deleteLoading">{{ language('LK_SHANCHUGONGYINGSHANG','删除供应商') }}</iButton>
-          <iButton @click="addCustom" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_ADDCUSTOM|添加自定义评分项">{{ language('LK_TIANJIAZIDINGYIPINGFENXIANG','添加自定义评分项') }}</iButton>
+          <iButton @click="handleDelete" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER|BDL删除供应商" :loading="deleteLoading">{{ language('LK_SHANCHU','删除') }}</iButton>
         </div>
-        <div v-else>
-          <iButton @click="handleSaveCustom" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SAVECUSTOM|BDL保存">{{ language('LK_BAOCUN','保存') }}</iButton>
-          <iButton @click="handleBack" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_BACKCUSTOM|返回">{{ language('LK_FANHUI','返回') }}</iButton>
-        </div>
-      </div>
-    </div>
-    <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"
-               @handleSelectionChange="handleSelectionChange"
-               @openPage="openPage"
-               @log="log" ref="table"
-               @handleSelect="handleSelect"
-               @handleSelectAll="handleSelectAll"
-               v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TABLE|BDL列表"
-    ></tableList>
-    <iPagination v-update @size-change="handleSizeChange($event, getTableList)"
-			@current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
-			:page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount"></iPagination>
-    <logDialog :visible.sync="logVisible"/>
-    <bdlDialog :rfqId="rfqId" :visible.sync="bdlDialogVisible" @confirm="getTableList" />
-  </iCard>
+      </template>
+      <tableList :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading"
+                @handleSelectionChange="handleSelectionChange"
+                @openPage="openPage"
+                @log="log" ref="table"
+                @handleSelect="handleSelect"
+                @handleSelectAll="handleSelectAll"
+                v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_TABLE|BDL列表"
+      ></tableList>
+      <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes" :page-size="page.pageSize" :layout="page.layout" :current-page="page.currPage" :total="page.totalCount"></iPagination>
+      <logDialog :visible.sync="logVisible"/>
+      <bdlDialog :rfqId="rfqId" :visible.sync="bdlDialogVisible" @confirm="updateTableList" />
+    </iCard>
+    <supplier-score ref="supplierScore" :todo="false" class="margin-top20" />
+  </div>
 </template>
 
 <script>
@@ -55,6 +49,8 @@ import {pageMixins} from '@/utils/pageMixins'
 import {rfqCommonFunMixins} from "pages/partsrfq/components/commonFun";
 import { cloneDeep } from 'lodash'
 import bdlDialog from "../bdlDialog"
+// import supplierScore from "../supplierScore/components/supplierScore.vue";
+import supplierScore from "../supplierScore";
 
 export default {
   mixins:[pageMixins, rfqCommonFunMixins],
@@ -66,7 +62,8 @@ export default {
     icon,
     logDialog,
     iPagination,
-    bdlDialog
+    bdlDialog,
+    supplierScore
   },
   computed: {
     // eslint-disable-next-line no-undef
@@ -103,63 +100,11 @@ export default {
     this.getTableList()
   },
   methods: {
-    /**************************
-     * 获取bdl列表
-     * 需求：
-     **************************/
-    // 保存
-    // handleSave() {
-    //   if(this.editSelectTableDataCache.length == 0) return iMessage.warn(this.language('LK_NHWXZBDL','您还未选择BDL')) 
-    //   this.saveLoading = true
-    //   updateRfq({
-    //     updateRfqBdlPackage: {
-    //       rfqId: this.rfqId,
-    //       updateType: "2",
-    //       userId: this.userInfo.id,
-    //       bdlInfoList: this.editSelectTableDataCache.map(item => ({
-    //         ...item,
-    //         userDefinedGradeField: this.$refs.table.addTitle || undefined,
-    //         userDefinedGrader: item.userDefinedGrader
-    //       }))
-    //     }
-    //   })
-    //     .then(res => {
-    //       if (res.code == 200) {
-    //         this.getTableList()
-    //         this.editSelectTableDataCache = []
-    //         this.resultMessage(res)
-    //       } else {
-    //         this.resultMessage(res)
-    //       }
-
-    //       this.saveLoading = false
-    //     })
-    //     .catch(() => this.saveLoading = false)
-    // },
     // 删除
     handleDelete() {
       if(!this.selectTableDataCache.length) return iMessage.warn(this.language('LK_NHWXZBDL','您还未选择BDL')) 
       iMessageBox(this.language('deleteSure','您确定要执行删除操作吗？'),this.language('LK_WENXINTISHI','温馨提示')).then(()=>{
         this.deleteLoading = true
-      //   updateRfq({
-      //     deleteBdlPackage: {
-      //       userId: this.userInfo.id,
-      //       ids: this.noEditSelectTableDataCache.map(item => item.id)
-      //     }
-      //   })
-      //     .then(res => {
-      //       if (res.code == 200) {
-      //         this.getTableList()
-      //         this.noEditSelectTableDataCache = []
-      //         this.resultMessage(res)
-      //       } else {
-      //         this.resultMessage(res)
-      //       }
-
-      //       this.deleteLoading = false
-      //     })
-      //     .catch(() => this.deleteLoading = false)
-      // })
       deleteRfqBdl({
         userId: this.userInfo.id,
         ids: this.selectTableDataCache.map(item => item.id),
@@ -168,7 +113,7 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.deleteLoading = false
-          this.getTableList()
+          this.updateTableList()
           this.selectTableDataCache = []
           this.resultMessage(res)
         } else {
@@ -210,15 +155,6 @@ export default {
         this.tableData.forEach(item => {
           if (this.selectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
         })
-
-        // this.tableData.forEach(item => {
-        //   if (item.isEdit) {
-        //     if (this.editSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
-        //   } else {
-        //     if (this.noEditSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
-        //   }
-        // })
-        
         this.tableLoading = false;
       }).catch(err=>{
         this.tableLoading = false;
@@ -230,54 +166,16 @@ export default {
     },
     //修改表格改动列
     handleSelectionChange(val) {
-      // this.selectTableData = val
-      // const editSelectTableData = [] // 没有保存过的bdl
-      // const noEditSelectTableData = [] // 保存过的bdl
-      // for (let i = 0, item; (item = val[i++]); ) {
-      //   item.isEdit ?
-      //     editSelectTableData.push(item) :
-      //     noEditSelectTableData.push(item)
-      // }
-
-      // // 用于保存操作的cache列表
-      // this.editSelectTableDataCache = this.editSelectTableDataCache.concat(
-      //   editSelectTableData.filter(item => !this.editSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId))
-      // )
-
-      // // 用于删除操作的cache列表
-      // this.noEditSelectTableDataCache = this.noEditSelectTableDataCache.concat(
-      //   noEditSelectTableData.filter(item => !this.noEditSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId))
-      // )
       this.selectTableDataCache = this.selectTableDataCache.concat(
         val.filter(item => !this.selectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId))
       )
     },
     handleSelect(selection, row) {
-    //   if (!selection.includes(row)) { // 从cache中删除
-    //     row.isEdit ?
-    //       this.editSelectTableDataCache = this.editSelectTableDataCache.filter(item => item.supplierId !== row.supplierId) :
-    //       this.noEditSelectTableDataCache = this.noEditSelectTableDataCache.filter(item => item.supplierId !== row.supplierId)
-    //   }
       if (!selection.includes(row)) { // 从cache中删除
         this.selectTableDataCache = this.selectTableDataCache.filter(item => item.supplierId !== row.supplierId)
       }
     },
     handleSelectAll(selection) {
-    //   if (!selection.length) { // 当前页取消选中操作
-    //     const editNoSelectTableData = [] // 没有保存过的bdl
-    //     const noEditNoSelectTableData = [] // 保存过的bdl
-    //     for (let i = 0, item; (item = this.tableData[i++]); ) {
-    //       item.isEdit ?
-    //         editNoSelectTableData.push(item) :
-    //         noEditNoSelectTableData.push(item)
-    //     }
-
-    //     // 用于保存操作的cache列表
-    //     this.editSelectTableDataCache = this.editSelectTableDataCache.filter(cacheItem => !editNoSelectTableData.some(item => item.supplierId === cacheItem.supplierId))
-
-    //     // 用于删除操作的cache列表
-    //     this.noEditSelectTableDataCache = this.noEditSelectTableDataCache.filter(cacheItem => !noEditNoSelectTableData.some(item => item.supplierId === cacheItem.supplierId))
-    //   }
       if (!selection.length) { // 当前页取消选中操作
         // 用于删除操作的cache列表
         this.selectTableDataCache = this.selectTableDataCache.filter(cacheItem => !this.tableData.some(item => item.supplierId === cacheItem.supplierId))
@@ -285,14 +183,14 @@ export default {
     },
     // 跳转
     openPage(row) {
-      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${row.supplierSubId}&supplierType=${row.supplierType}&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
+      // 与3组确认 supplierType默认为PP
+      window.open(`${ process.env.VUE_APP_PORTAL_URL }supplier/supplierList/details?subSupplierId=${row.supplierId}&supplierType=PP&nameZh=${row.supplierNameZh}&nameEn=${row.supplierNameEn}`, '_blank')
     },
     log() {
       // this.logVisible = true
       window.open(`/#/log?recordId=${ this.partDetails.tpPartID }`, '_blank')
     },
     handleSaveCustom() {
-      // if(this.editSelectTableDataCache.length == 0) return iMessage.error(this.$t('LK_NHWXZBDL')) 
       this.saveLoading = true
       updateRfqBdl({
           rfqId: this.rfqId,
@@ -329,40 +227,73 @@ export default {
         this.$refs.table.addCustom()
       }
     },
-
-    // handleInputBySearchKey(value) {
-    //   if (value) {
-    //     this.tableData = this.tableDataCache.filter(item => !value || (item.supplierNameZh && item.supplierNameZh.toLowerCase().includes(value.trim().toLowerCase())))
-    //   } else {
-    //     this.tableData = this.tableDataCache
-    //   }
-
-    //   this.tableData.forEach(item => {
-    //     if (item.isEdit) {
-    //       if (this.editSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
-    //     } else {
-    //       if (this.noEditSelectTableDataCache.some(cacheItem => cacheItem.supplierId === item.supplierId)) this.$nextTick(() => this.$refs.table.$refs.multipleTable.toggleRowSelection(item, true))
-    //     }
-    //   })
-    // },
     handleAdd() {
       this.bdlDialogVisible = true
+    },
+    updateTableList(){
+      this.getTableList()
+      this.$refs.supplierScore.getTableList()
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.header {
-  margin-bottom: 20px;
+.BDL{
+  ::v-deep .card-header {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 20px 0;
+    .card-title {
+      display: inline-flex;
+      align-items: center;
+      .title{
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+    .tishi {
+      display: inline-flex;
+      align-items: center;
+    }
+    .tishi-icon {
+      font-size: 18px;
+      margin: 0 15px;
+    }
 
-  .input {
-    width: 250px;
-    // ::v-deep .iconshaixuankuangsousuo {
-    //   font-size: 12px;
-    // }
+    .danger {
+      color: #f5222d;
+    }
+    .warning {
+      color: #fa8c16;
+    }
+    .success {
+      color: #389e0d;
+    }
+    .button-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-icon {
+      font-size: 18px;
+      margin: 0 20px;
+    }
+    .rotate {
+      transform: rotate(180deg);
+    }
   }
-
+}
+  .input {
+    display: inline-flex;
+    width: 250px;
+    margin-left: 20px;
+    ::v-deep .el-input{
+      font-size: 14px !important;
+    }
+    
   ::v-deep .el-input__suffix {
     .el-input__suffix-inner {
       height: 100% !important;
@@ -380,6 +311,14 @@ export default {
       }
     }
   }
+  }
+.header {
+  .input {
+    display: inline-flex;
+    width: 250px;
+    margin-left: 20px;
+  }
+
 }
 
 </style>

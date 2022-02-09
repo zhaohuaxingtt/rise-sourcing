@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:38:09
- * @LastEditTime: 2021-07-27 19:16:27
+ * @LastEditTime: 2022-01-24 12:24:21
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\partscore\index.vue
@@ -34,20 +34,55 @@
           <el-table-column type="index" align="center" label="#"></el-table-column>
           <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :prop="item.props" :show-overflow-tooltip="true"></el-table-column>
           <template>
-            <el-table-column align="center" :label="rateTag">
+            <el-table-column align="center" :label="isFileRfqType ? language('LK_FUJIANPINGFEN','附件评分') : language('JISHUPINGFEN','技术评分')">
               <el-table-column align="center" v-for="item in deptScoreTableTitle" :key="item.props" :label="language(item.key, item.name)">
                 <template v-if="item.props === 'grade'" #header="scope">
                   <span>{{ scope.column.label }}<i class="required">*</i></span>
                 </template>
                 <template v-if="item.props === 'grade'" v-slot="scope">
                   <div v-if="editStatus">
-                    <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.grade" />
+                    <!-- <iSelect v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.grade">
+                      <el-option v-for="score in scoreOptions" :key="score.value" :label="score.label" :value="score.value" />
+                    </iSelect>
                     <iSelect v-else v-model="scope.row.grade">
                       <el-option value="合格" :label="language('HEGE', '合格')" />
                       <el-option value="不合格" :label="language('BUHEGE', '不合格')" />
+                    </iSelect> -->
+                    <div v-if="!isFileRfqType">
+                      <template v-if="scope.row.rateTag == 'MQ'">
+                        <iSelect  v-model="scope.row.grade">
+                          <el-option
+                            v-for="(item, index) in mqGrage"
+                            :key="index"
+                            :value="item.code"
+                            :label="item.nameEn"
+                          >
+                          </el-option>
+                        </iSelect>
+                      </template>
+                      <template v-if="scope.row.rateTag == 'EP'">
+                        <iSelect  v-model="scope.row.grade">
+                          <el-option
+                            v-for="(item, index) in epGrade"
+                            :key="index"
+                            :value="item.code"
+                            :label="item.nameEn"
+                          >
+                          </el-option>
+                        </iSelect>
+                      </template>
+                    </div>
+                    <iSelect v-else v-model="scope.row.grade">
+                      <el-option
+                        v-for="(item, index) in affixGrade"
+                        :key="index"
+                        :value="item.code"
+                        :label="$i18n.locale === 'zh' ? item.name : item.nameEn"
+                      >
+                      </el-option>
                     </iSelect>
                   </div>
-                  <span v-else>{{ scope.row.grade }}</span>
+                  <span v-else>{{ isFileRfqType ? showaffixName(scope.row.grade) : scope.row.grade }}</span>
                 </template>
                 <template v-else-if="item.props === 'externaFee' || item.props === 'addFee'" v-slot="scope">
                   <iInput v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
@@ -58,8 +93,10 @@
                   <span v-else>{{ scope.row.confirmCycle }}</span>
                 </template>
                 <template v-else-if="item.props === 'remark'" v-slot="scope">
-                  <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
-                  <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span>
+                  <!-- <span v-if="scope.row.memo" class="link-underline" @click="editRemark(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+                  <span v-else class="link-underline" @click="editRemark(scope.row)">{{ language("BIANJI", "编辑") }}</span> -->
+                  <iInput v-if="editStatus" v-model="scope.row.memo"/>
+                  <span v-else>{{ scope.row.memo }}</span>
                 </template>
                 <template v-else v-slot="scope">
                   <span>{{ scope.row[item.props] }}</span>
@@ -78,11 +115,12 @@
 import { iPage, iButton, icon, iCard, iInput, iSelect, iMessage, iMessageBox } from "rise"
 import logButton from "@/components/logButton"
 import remarkDialog from "@/views/supplierscore/components/remarkDialog"
-import { tableTitle, deptScoreTableTitle } from "./components/data"
+import { tableTitle, deptScoreTableTitle, scoreOptions } from "./components/data"
 import { cloneDeep, isEqual } from "lodash"
 import { getRfqPartRatingsByCurrentDept, updateRfqPartRatings, updateRfqPartRatingMemo } from "@/api/supplierscore"
 import { afterSaleLeaderIds } from "@/views/supplierscore/components/data"
 import { numberProcessor } from "@/utils"
+import { selectDictByKeys } from "@/api/dictionary"
 
 export default {
   components: {
@@ -103,33 +141,60 @@ export default {
       saveLoading: false,
       loading: false,
       tableTitle,
-      deptScoreTableTitle,
+      // deptScoreTableTitle,
+      scoreOptions,
       tableListData: [],
       tableListDataCache: [],
       rateTag: "",
       remarkDialogVisible: false,
       currentRow: {},
       afterSaleLeaderIds,
+      rfqType:'',
+      mqGrage:[],
+      epGrade:[],
+      affixGrade:[],
     }
   },
   computed: {
     // eslint-disable-next-line no-undef
     ...Vuex.mapState({
       userInfo: state => state.permission.userInfo,
-    })
+    }),
+    isFileRfqType(){
+      return this.rfqType == 'ANNEX';
+    },
+    deptScoreTableTitle(){
+      const {rfqType} =  this.$route.query;
+      if(rfqType == 'ANNEX'){
+        return deptScoreTableTitle.filter((item)=>!item.isFileHidden);
+      }else{
+        return deptScoreTableTitle || []
+      } 
+      
+    }
   },
   created() {
     this.rfqId = this.$route.query.rfqId
-    this.supplierId = this.$route.query.supplierId
+    this.supplierId = this.$route.query.supplierId,
+    this.rfqType =  this.$route.query.rfqType,
     this.getRfqPartRatingsByCurrentDept()
 
-    if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
-      this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "grade" || item.props === "remark")
-    }
+    // if (this.afterSaleLeaderIds.some(id => id == this.userInfo.id)) {
+    //   this.deptScoreTableTitle = this.deptScoreTableTitle.filter(item => item.props === "grade" || item.props === "remark")
+    // }
   },
   methods: {
     getRfqPartRatingsByCurrentDept() {
       this.loading = true
+      selectDictByKeys([{ keys: "MQ_GRADE" }]).then(res=>{
+        this.mqGrage = res?.data.MQ_GRADE
+      })  
+      selectDictByKeys([{ keys: "EP_GRADE" }]).then(res=>{
+        this.epGrade = res?.data.EP_GRADE
+      })
+      selectDictByKeys([{ keys: "AFFIX_GRADE" }]).then(res=>{
+        this.affixGrade = res?.data.AFFIX_GRADE
+      })
 
       getRfqPartRatingsByCurrentDept({
         rfqId: this.rfqId,
@@ -192,7 +257,8 @@ export default {
           confirmCycle: item.confirmCycle,
           externalFee: item.externaFee,
           id: item.id,
-          rate: item.grade
+          rate: item.grade,
+          memo:item.memo,
         }))
       )
       .then(res => {
@@ -249,7 +315,18 @@ export default {
       let week = numberProcessor(value, 0)
       if (+week > 53) week = "53"
       this.$set(row, key, week)
-    }
+    },
+    // 附件评分的文本展示
+    showaffixName(rate){
+      const { affixGrade=[] } = this;
+      const affix = affixGrade.filter((item)=>item.code == rate);
+      if(Array.isArray(affix) && affix.length){
+        return this.$i18n.locale === "zh" ? affix[0].name : affix[0].nameEn;
+      }else{
+        return rate;
+      }
+      
+    },
   }
 }
 </script>

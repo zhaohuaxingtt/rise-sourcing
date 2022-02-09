@@ -23,6 +23,7 @@
               <iButton
                 v-if="ruleForm.biddingStatus === '01'"
                 @click="handelSend"
+                :disabled="!isUser"
                 >{{ language('BIDDING_FCBLRFQ', '发出本轮RFQ') }}</iButton
               >
               <!-- 竞价 -->
@@ -35,6 +36,7 @@
                     ruleForm.biddingStatus === '02')
                 "
                 @click="onBiddingCancel"
+                :disabled="!isUser"
                 >{{ language('BIDDING-JSBLRFQ', '结束本轮RFQ') }}</iButton
               >
               <!-- 开标 -->
@@ -45,10 +47,12 @@
                     ruleForm.biddingStatus === '03')
                 "
                 @click="onOpenCancel"
+                :disabled="!isUser"
                 >{{ language('BIDDING_JSBLRFQ', '结束本轮RFQ') }}</iButton
               >
             </div>
-            <div v-if="ruleForm.roundType === '05'">
+            <template v-if="isUser">
+              <div v-if="ruleForm.roundType === '05'">
               <iButton
                 v-if="ruleForm.biddingStatus === '01'"
                 @click="handelSend"
@@ -65,6 +69,7 @@
                 >{{ language('BIDDING_JIESHUXIANGMU', '结束项目') }}</iButton
               >
             </div>
+            </template>
           </template>
         </div>
       </div>
@@ -113,6 +118,15 @@
       :type="type"
       :title="docTitle"
     />
+
+    <!-- 供应商黑名单发出询价弹出 -->
+    <supplierDisabled
+      v-if="disSupplier"
+      :show="disSupplier"
+      :tableListData="tableListData"
+      @update-show="updataShow"
+    />
+
   </iPage>
 </template>
 
@@ -126,6 +140,9 @@ import {
   sendEmail,
   getSupplierNotification,
 } from "@/api/bidding/bidding";
+import supplierDisabled from './inquiry/components/supplierDisabled'
+import store from '@/store'
+
 
 export default {
   components: {
@@ -133,6 +150,7 @@ export default {
     iButton,
     bidNoticeDoc,
     // bidNoticeDialog,
+    supplierDisabled,
   },
   data() {
     const cacheRuleForm = window.sessionStorage.getItem(
@@ -152,7 +170,11 @@ export default {
       projectBack: "",
       biddingFinish: false,
       handleReject:false,
-      getSupplierData:{}
+      getSupplierData:{},
+      disSupplier: false,
+      tableListData: [],
+      isUser:false,
+      isLinieId:false
     };
   },
    async mounted() {
@@ -166,7 +188,6 @@ export default {
       });
       this.getSupplierData = res
     }
-    
   },
 
   computed: {
@@ -222,6 +243,9 @@ export default {
       return rfqCode ? `${this.language('BIDDING_RFQBIANHAO','RFQ编号')}：${rfqCode} ${ isTest ?  `${this.language('BIDDING_CESHI','（测试）')}` : `${this.language('BIDDING_ZHENGSHI','（正式）')}`}` 
                     : `${this.language('BIDDING_XIANGMUBIANHAO','项目编号')}：${projectCode} ${ isTest ?  `${this.language('BIDDING_CESHI','（测试）')}`: `${this.language('BIDDING_ZHENGSHI','（正式）')}`}`;
     },
+    userId(){
+      return store.state.permission.userInfo.id
+    },
   },
   watch: {
     $route: {
@@ -257,6 +281,12 @@ export default {
       sessionStorage.clear();
     },
     async handleChangeTitle(data) {
+      // 是否当前用户是否是采购员
+      const userId = String(this.userId)
+      this.isUser = userId === data.linieId
+      // 判断采购员是否是当前登录者的下属员工
+      this.isLinieId = !!data?.userIds?.some(item => data.linieId.includes(item))
+
       if (data.biddingStatus == "01" || data.biddingStatus == null) {
         if (this.role == "buyer") {
           this.$router.push({ name: "biddingProjectInquiry" });
@@ -321,7 +351,10 @@ export default {
           this.$message.error(this.language('BIDDING_CAOZUOSHIBAI','操作失败'));
         });
     },
-
+    // 供应商黑名单
+    updataShow(){
+      this.disSupplier = false
+    },
     // 发出本轮RFQ
     handelSend() {
       if (this.ruleForm.suppliers.length === 0) {
@@ -344,7 +377,8 @@ export default {
       }
 
       const { projectCode } = this.ruleForm;
-      const fromdata = { projectCode };
+      const inquiryFlag = this.$route.path.includes('/bidding/project/inquiry')
+      const fromdata = { projectCode, inquiryFlag };
       // this.$refs.child.submitForm(() => {
       //   sendEmail(fromdata)
       //     .then((res) => {
@@ -358,6 +392,14 @@ export default {
       .then((res) => {
         if (res.code == 200) {
           window.location.reload();
+        }
+        // 供应商黑名单
+        if (res.code == 100407) {
+          if (document.getElementsByClassName("el-message").length === 0) {
+             this.$message.error(res.message);
+           }
+          this.tableListData = res.data
+          this.disSupplier = true
         }
       })
       .catch((err) => {
@@ -406,8 +448,14 @@ export default {
             return false;
           } else if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )){
             return false
-          } else {
+          } else if (this.role === "buyer" && this.isUser){
             return true;
+          } else if (this.role === "buyer" && this.isLinieId){
+            return true;
+          } else if (this.role === "supplier" ){
+            return true;
+          }else {
+            return false
           }
         }
       }
@@ -415,13 +463,18 @@ export default {
       if (val == "result") {
         if (this.role === "supplier" && (biddingStatus == '06' || biddingStatus == '07' || biddingStatus == '08' || biddingStatus == '09')  && (!this.getSupplierData?.biddingNtfFlag && !this.getSupplierData?.systemUseFlag )) {
           return false
-        } else if (biddingStatus == "06"|| biddingStatus == "07" || biddingStatus == "08") {
+        } else if (this.role === "buyer" && this.isUser && (biddingStatus == "06" || biddingStatus == "07" || biddingStatus == "08")) {
+          return true;
+        } else if (this.role === "buyer" && this.isLinieId && (biddingStatus == "06" || biddingStatus == "07" || biddingStatus == "08")) {
+          return true;
+        } else if (this.role === "supplier" && (biddingStatus == "06" || biddingStatus == "07" || biddingStatus == "08" && (this.getSupplierData?.biddingNtfFlag && this.getSupplierData?.systemUseFlag ))) {
           return true;
         } else {
           return false;
         }
       }
-      return true;
+
+      if (val == 'inquiry' || val == 'filing') return true;
     },
     async handleBottom(item) {
       if (item.value == "hall" && this.role === "supplier") {

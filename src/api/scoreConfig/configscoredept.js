@@ -7,62 +7,62 @@ import axios from "@/utils/axios"
 const requst = axios(process.env.VUE_APP_SOURCING)
 
 // 获取评分部门列表
-export function getRfqRateDeparts(params) {
+export function getListSysRateDepart(data) {
   return requst({
-    url: "/rfq-rate-departs/search",
+    url: "/rfq-rate-departs/listSysRateDepart",
     method: "POST",
-    data: params
+    data,
   })
 }
 
-// 保存评分部门列表
-export function saveRfqRateDeparts(data) {
+// 根据标签获取所有的部门  
+export function listDepartByTag(data) {
   return requst({
-    url: `/rfq-rate-departs/batch-update${ data.rfqId ? '?rfqId=' + data.rfqId : '' }`,
-    method: "PATCH",
-    data: data.data
-  })
-}
-
-// 删除评分部门列表
-export function deleteRfqRateDeparts(params) {
-  return requst({
-    url: "/rfq-rate-departs/delete",
-    method: "DELETE",
-    data: params
-  })
-}
-
-// 获取所有部门列表
-export function getAllDept(params) {
-  return requst({
-    url: "/rfq-rate-departs/getAllDept",
+    url: `/rfq-rate-departs/listDepartByTag/${data.tagId}`,
     method: "POST",
-    data: params
   })
 }
 
-// 分页获取所有部门列表
-export function getAllDeptByPage(data) {
+// 根据角色code获取相关用户数据  
+export function listUserByRoleCode(params) {
   return requst({
-    url: "/rfq-rate-departs/getDept",
+    url: `/rfq-rate-departs/listUserByRoleCode/${params.roleCode}`,
+    method: "GET",
+  })
+}
+
+// 删除部门
+export function departsDelete(data) {
+  return requst({
+    url: '/rfq-rate-departs/deleteSysRateDepart',
+    method: 'DELETE',
+    data,
+  })
+}
+
+
+// 评分部门划定-新增
+export function setSysRateDepart(data) {
+  return requst({
+    url: '/rfq-rate-departs/setSysRateDepart',
     method: "POST",
-    data
+    data,
   })
 }
 
-// 获取评分部门类型
-export function getAllDeptTag() {
+// 编辑评分部门 
+export function updateSysRateDepart(data) {
   return requst({
-    url: "/rfq-rate-departs/getAllDeptTag",
-    method: "GET"
+    url: '/rfq-rate-departs/updateSysRateDepart',
+    method: 'PUT',
+    data,
   })
 }
 
-// 获取评分人和协调人列表
-export function getAllRaterAndCoordinator(params) {
+// 根据部门id查询上级部门   
+export function getParentDeptNum(params) {
   return requst({
-    url: `/rfq-rate-departs/getAllRaterAndCoordinator/${ params.rateTag }/${ params.rateDepartNum }`,
-    method: "GET"
+    url: `/rfq-rate-departs/getParentsDepNum/${params.parentDeptId}`,
+    method: "GET",
   })
 }

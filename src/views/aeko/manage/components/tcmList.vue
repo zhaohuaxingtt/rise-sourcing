@@ -37,10 +37,12 @@
       <!-- 操作按钮 -->
       <p class="text-align-right padding-top15 padding-bottom15">
           <iButton v-permission.auto="AEKO_TCMLIST_BUTTON_SHOUDONGDAORU|手动导入" :loading="btnLoading" @click="exportTCM">{{language('LK_AEKO_TCM_SHOUDONGDAORU','⼿动导⼊')}}</iButton>
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
       </p>
       <!-- 表单区域 -->
       <tableList
           class="table"
+          ref="tableList"
           index
           :lang="true"
           :tableData="tableListData"
@@ -48,6 +50,8 @@
           :tableLoading="loading"
           :selection="true"
           @handleSelectionChange="handleSelectionChange"
+          :handleSaveSetting="handleSaveSetting"
+          :handleResetSetting="handleResetSetting"
         ></tableList>
         <!-- 分页 -->
           <iPagination
@@ -75,7 +79,9 @@ import {
     iPagination,
     iMessage,
 } from 'rise';
-import tableList from "@/views/partsign/editordetail/components/tableList"
+// import tableList from "@/views/partsign/editordetail/components/tableList"
+import tableList from "@/components/iTableSort"
+import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
 import { pageMixins } from "@/utils/pageMixins";
 import {
     tcmSearchList,
@@ -87,7 +93,7 @@ import {
 } from '@/api/aeko/manage'
 export default {
     name:'tcmList',
-    mixins: [pageMixins],
+    mixins: [pageMixins,tableSortMixins],
     components:{
         iCard,
         iSearch,
@@ -183,7 +189,8 @@ export default {
                       await manualImportAekoFromTCM({importRecordId}).then((res)=>{
                           this.btnLoading = false;
                           if(res.code == 200){
-                            res.data ? iMessage.success(this.language('LK_AEKO_TCM_TIPS_DAORUCHENGGONG','导入成功')) : iMessage.warn(this.language('LK_AEKO_TCM_TIPS_DAORUSHIBAI','导入失败'));
+                            // res.data ? iMessage.success(this.language('LK_AEKO_TCM_TIPS_DAORUCHENGGONG','导入成功')) : iMessage.warn(this.language('LK_AEKO_TCM_TIPS_DAORUSHIBAI','导入失败'));
+                            iMessage.success(this.language('LK_AEKO_TCM_TIPS_DAORUCHENGGONG','导入成功'))
                             this.getList();
                           }else{
                              iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn); 

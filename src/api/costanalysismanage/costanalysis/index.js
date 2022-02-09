@@ -38,11 +38,11 @@ export function kmUploadFiles(data) {
 }
 
 // 删除关联附件记录
-export function deleteFileHistory(params) {
+export function deleteFileHistory(data) {
   return requst({
-    url: '/file-history',
-    method: 'POST',
-    data: params
+    url: '/file-histories/delete-files',
+    method: 'DELETE',
+    data
   })
 }
 

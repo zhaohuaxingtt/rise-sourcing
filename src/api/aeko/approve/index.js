@@ -1,17 +1,17 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-27 11:38:20
- * @LastEditors: YoHo
- * @LastEditTime: 2021-12-09 17:44:57
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-21 15:35:27
  * @Description: aeko 审批
  */
 import axios from '@/utils/axios'
 import download from '@/utils/axios.download'
 
 const requst_sourcing = axios(process.env.VUE_APP_SOURCING)
-const requst = axios(process.env.VUE_APP_PARTS)
+const requst = axios(process.env.VUE_APP_PR)
 const requst_log = axios(process.env.VUE_APP_BIZLOG)
-const fileRequst = download(process.env.VUE_APP_PARTS)
+const fileRequst = download(process.env.VUE_APP_PR)
 
 // 列表查询
 export function getApproveDistributionPage(data) {
@@ -231,7 +231,7 @@ export function statement(data) {
 // 获取日志
 export function getLogList(data) {
   return requst_log({
-    url: `/operationLog/findOperationLogs`,
+    url: `/operationLog/findRecordLogs`, 	// 接口调整
     method: "POST",
     data
   })

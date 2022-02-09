@@ -16,16 +16,16 @@
   > 
     <template slot="title"> 
       <div class="chosseProGroup"> 
-        <span class="chosseProGroup-title">{{language('FENGXIANLINGJIANJINDUQUEREN','风险零件进度确认')}}</span> 
-        <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton> 
+        <span class="chosseProGroup-title">{{language('FENGXIANLINGJIANJINDUQUEREN','风险零件进度确认')}}</span>
+        <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton>
       </div> 
     </template> 
     <div class="tableWrapper" v-if="tableListNomi && tableListNomi.length > 0"> 
-      <span class="tableTitle">{{language('DAIDINGDIAN','待定点')}}</span> 
+      <span class="tableTitle">{{language('DAIDINGDIAN','待定点')}}</span>
       <tableList height="300" border indexKey :tableTitle="tableTitleNomi" :tableData="tableListNomi" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeNomi" @handleSelectChange="handleSelectChange"></tableList> 
     </div> 
     <div class="tableWrapper borderTop" v-if="tableListKickoff && tableListKickoff.length > 0"> 
-      <span class="tableTitle">{{language('DAIKICKOFF','待Kickoff')}}</span> 
+      <span class="tableTitle">{{language('DAIKICKOFF','待Kickoff')}}</span>
       <tableList height="300" border indexKey :tableTitle="tableTitleKickoff" :tableData="tableListKickoff" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChangeKickoff" @handleSelectChange="handleSelectChange"></tableList> 
     </div> 
   </iDialog> 

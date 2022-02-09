@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2021-12-02 15:30:37
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-01-25 11:41:36
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
@@ -28,7 +28,7 @@ export const contentDeclareTableTitle = [
   { props: "cartypeZh", name: "涉及⻋型/⻋型项⽬", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width: 140, isExport: true },
   { props: "oldPartNumPreset", name: "原零件号", key: "AEKO_YUANLINGJIANHAO_1", width: 140, isExport: true },
   { props: "oldPartNamePreset", name: "原零件名称", key: "YUANLINGJIANMINGCHENG", tooltip: true, width: 100 },
-  { props: "factoryName", name: "采购⼯⼚", key: "CAIGOUGONGCHANG", tooltip: true, isExport: true },
+  { props: "factoryName", name: "采购⼯⼚", key: "LKCAIGOUGONGCHANG", tooltip: true, isExport: true },
   { props: "supplierSapCode", name: "供应商SAP号", key: "LK_GONGYINGSHANGSAPHAO", tooltip: true, width: 100, isExport: true },
   { props: "supplierNameZh", name: "供应商简称", key: "GONGYINGSHANGJIANCHENG", tooltip: true, width: 100 },
   { props: "bpriceChange", name: "B价变动(含分摊)", key: "BJIABIANDONGHANFENTAN", tooltip: true, width: 130 },
@@ -43,6 +43,12 @@ export const contentDeclareTableTitle = [
   { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true, width: 100 },
   { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true, width: 100 },
   { props: "tranWayDesc", name: "承运方式", key: "LK_AEKO_CHENGYUNFANGSHI", tooltip: true },
+  { props: "currency", name: "货币", key: "LK_AEKO_SELECT_HUOBI", tooltip: true, isHidden: true },
+  { props: "sampleCost", name: "样件费", key: "LK_AEKO_SELECT_YANGJIANFEI", tooltip: true, isHidden: true },
+  { props: "terminationPrice", name: "终止费", key: "LK_AEKO_SELECT_ZHONGZHIFEI", tooltip: true, isHidden: true },
+  { props: "priceUnit", name: "价格单位", key: "LK_AEKO_SELECT_JIAGEDANWEI", tooltip: true, isHidden: true },
+  { props: "measureUnit", name: "计量单位", key: "LK_AEKO_SELECT_JILIANGDANWEI", tooltip: true, isHidden: true },
+  { props: "isReplace", name: "是否代报价", key: "LK_AEKO_SELECT_SHIFOUDAIBAOJIA", tooltip: true, width: 100, isHidden: true },
 ]
 
 export const hidenTableTitle = [
