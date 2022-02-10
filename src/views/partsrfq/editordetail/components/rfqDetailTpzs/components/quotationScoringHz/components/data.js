@@ -395,19 +395,28 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: fsTemplate?(asSameCartypeInGroupList(item.groupIdTemp,dataList)?(element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': keepTwoDecimalFull(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))  : item[key] || 0):'/'):''
+                        [key]: fsTemplate ? (asSameCartypeInGroupList(item.groupIdTemp,dataList) ? (element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': keepTwoDecimalFull(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))  : item[key] || 0):'/'):''
                       }
                     })
 
-                    total[key] = fsTemplate?((!element[key] || total[key] == "/")?"/":keepTwoDecimalFull(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))):''
+                    total[key] = fsTemplate ? ((!element[key] || total[key] == "/")?"/":keepTwoDecimalFull(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))):''
                   }else{
                     groupArr = groupArr.map(item => {
+                      console.log(`key: ${ key }`, /^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key))
                       return {
                         ...item,
-                        [key]: element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`)) : item[key]
+                        [key]: 
+                          (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) ? 
+                          element.groupId === item.groupIdTemp ? math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toString() : item[key]:
+                          element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`)) : item[key]
                       }
                     })
-                    total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`))
+
+                    if (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) {
+                      total[key] = math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toString()
+                    } else {
+                      total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`))
+                    }
                   }
                 }
               }
@@ -435,7 +444,7 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
 }
 function translateNumber(number){
   if(number) {
-    return number.replace(/,/g,'')
+    return typeof number === "string" ? number.replace(/,/g,'') : number
   }else{
     return 0
   }

@@ -1,7 +1,7 @@
 <!--
 * @author:shujie
 * @Date: 2021-2-25 10:58:09
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
 * @Description: RFQ待办事项
  -->
 <template>
@@ -23,7 +23,7 @@ import Inquiry from "./components/Inquiry";
 import moldBudgetApplication from "./components/moldBudgetApplication";
 import technicalSeminar from "./components/technicalSeminar";
 import inquiryManagement from '@/views/biddingManage/bidding/project/inquiry';
-import { partProjTypes } from "@/config"
+// import { partProjTypes } from "@/config"
 
 export default {
   components: {
@@ -37,6 +37,10 @@ export default {
     toDoList
   },
   props:{
+    canRegiste:{
+      type: Boolean,
+      default: false
+    },
     activityTabIndex:{
       type:String,
       default:'0'
@@ -111,11 +115,19 @@ export default {
       return this.tabList
     }
   },
-  created(){
-    setTimeout(() => {
-      this.registerFn(this.updateTabs)
-    }, 1000);
+  // 推迟事件注册时间(首次获取数据之后再注册)，
+  watch:{
+    canRegiste(val){
+      if(val){
+        this.registerFn(this.updateTabs)
+      }
+    }
   },
+  // create(){
+  //   setTimeout(() => {
+  //     this.registerFn(this.updateTabs)
+  //   }, 1000);
+  // },
   methods: {
     jump(r){
       window.open(process.env.VUE_APP_ONLINEBIDDING + (r.roundType == "02"?`bidding/open/${r.id}`:`bidding/competition/base/${r.id}`),'_blank')

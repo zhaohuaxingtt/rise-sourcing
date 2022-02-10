@@ -214,7 +214,7 @@ export default {
             allDataList = Array.from(new Set(allDataList));
             // 排序
             allDataList = allDataList.sort((a,b)=>{
-              return a > b ? 1:-1
+              return Number(a) > Number(b) ? 1:-1
             })
 
             return allDataList || []
@@ -276,7 +276,6 @@ export default {
 
         // 数据转换
         resetData(newData=[],oldData=[]){
-          console.log(newData,oldData)
           let data = {
             date:[],
             newPirce:[],
@@ -306,7 +305,7 @@ export default {
           data.date = Array.from(new Set(data.date));
           // 排序
           data.date = data.date.sort((a,b)=>{
-            return a > b ? 1:-1
+            return Number(a) > Number(b) ? 1:-1
           })
           data.date.map((item)=>{
             let filterNew = newData.filter((itemData)=>itemData.startTime == item);
@@ -326,9 +325,6 @@ export default {
               data.oldPrice.push(oldRangePrice);
             }
           })
-
- 
-          console.log(data,'data');
           
           return data;
         },

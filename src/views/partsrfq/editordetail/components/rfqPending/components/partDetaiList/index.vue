@@ -157,34 +157,10 @@
     />
     <!-- 申请模具目标价 -->
     <moduleDialog :todo="todo" :visible.sync="moduleDialogVisible" @update='updateData' />
+    <!-- 组件componentList -->
     <template v-for="(item, index) in componentList">
       <component :ref='item.component' :key="index" :is="item.component" class="margin-top20" @openDialog="openDialog" :todo="todo" v-if="!item.todo||item.todo==todo" />
     </template>
-    <!-- <parts-target-price
-      @openDialog="openDialog"
-      class="margin-top20"
-      :todo="todo"
-      :status="todoObj.cfPriceStatusDesc.status"
-      ref="partsTargetPrice"
-    ></parts-target-price>
-    <mold-target-price
-      @openDialog="openDialog"
-      class="margin-top20"
-      :todo="todo"
-      :status="todoObj.mouldPriceStatusDesc.status"
-      ref="moldTargetPrice"
-    ></mold-target-price>
-    <mold-budget-application
-      class="margin-top20"
-      :todo="todo"
-      :status="todoObj.mouldBudgetStatusDesc.status"
-    ></mold-budget-application>
-    <supplier-score
-      v-if="todo"
-      :todo="todo"
-      class="margin-top20"
-      :status="todoObj.pushRateStatusDesc.status"
-    /> -->
     <!-- 技术交底会 -->
     <technicalSeminar v-if="todo" class="margin-top20" />
   </div>

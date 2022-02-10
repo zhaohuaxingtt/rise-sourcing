@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-01-27 23:38:01
+ * @LastEditTime: 2022-02-10 17:37:31
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -231,7 +231,7 @@
     <!--------------------------------------------------------------->
     <!-------------------------RFQ待办信息---------------------------->
     <!--------------------------------------------------------------->
-    <rfqPending ref="rfqPending"
+    <rfqPending ref="rfqPending" :canRegiste="canRegiste"
                 v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"
                 :activityTabIndex="activityTabIndex"></rfqPending>
     <!--------------------------------------------------------------->
@@ -367,6 +367,7 @@ export default {
       endingloading: false,
       transferlaoding: false,
       disabled: true,
+      canRegiste: false,
       linieUserId: '',
       childFnList: [],
       checkApplyLoading: false,
@@ -576,6 +577,7 @@ export default {
             })
             .finally(() => {
               this.baseInfoLoading = false
+              this.canRegiste = true
               resolve()
             });
         } else {
