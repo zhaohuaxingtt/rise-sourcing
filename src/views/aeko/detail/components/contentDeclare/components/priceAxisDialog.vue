@@ -149,8 +149,8 @@ export default {
             },
             yAxis: {
               type: 'value',
-              min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 10): 0,
-              max: Number(allDataList[allDataList.length - 1]) > 10 ? parseInt(allDataList[allDataList.length - 1]) + 10 : parseInt(allDataList[allDataList.length - 1]) + 1,
+              min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 11): 0,
+              max: Number(allDataList[allDataList.length - 1]) > 10 ? parseInt(allDataList[allDataList.length - 1]) + 11 : parseInt(allDataList[allDataList.length - 1]) + 1,
             },
             series: [
               {
@@ -233,8 +233,8 @@ export default {
           };
           option.yAxis = {
             type: 'value',
-              min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 10): 0,
-              max: Number(allDataList[allDataList.length - 1]) > 10 ? parseInt(allDataList[allDataList.length - 1]) + 10 : parseInt(allDataList[allDataList.length - 1]) + 1,
+              min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 11): 0,
+              max: Number(allDataList[allDataList.length - 1]) > 10 ? parseInt(allDataList[allDataList.length - 1]) + 11 : parseInt(allDataList[allDataList.length - 1]) + 1,
           };
           option.series[0].data = priceAxisList[value].newPirce;
           // option.series[1].data = priceAxisList[value].oldPrice;
