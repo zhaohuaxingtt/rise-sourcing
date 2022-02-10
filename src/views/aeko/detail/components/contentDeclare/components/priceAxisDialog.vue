@@ -34,7 +34,7 @@
           <li><span>{{language('AEKO_PRICE_XINLINGJIANJIAGE','新零件价格')}}：</span><span>{{showPrice('currentPrice')}} RMB,</span></li>
         </ul>
         <div class="footer-price">
-          <p>{{language('AEKO_PRICE_DANGQIANYUGUDEXINLINGJIANSHENGXIAOJIAGE','当前预估的新零件⽣效价格')}}： {{priceType =='bnkPrice' ? '-' : priceAxisInfo.effectPrice}}RMB </p>
+          <p>{{language('AEKO_PRICE_DANGQIANYUGUDEXINLINGJIANSHENGXIAOJIAGE','当前预估的新零件⽣效价格')}}： {{showPrice('effectPrice')}}RMB </p>
           <p>{{language('AEKO_PRICE_ZUIZHONGDEXINLINGJIANSHENGXIAOJIAGE','最终的新零件⽣效价格')}}： {{priceType =='bnkPrice' ? '-' : priceAxisInfo.newPartPrice}}RMB </p>
         </div>
       </div>
@@ -149,8 +149,8 @@ export default {
             },
             yAxis: {
               type: 'value',
-              min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 10): 0,
-              max: Number(allDataList[allDataList.length - 1]) > 10 ? Number(allDataList[allDataList.length - 1]) + 10 : parseInt(allDataList[allDataList.length - 1]) + 1,
+              min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 11): 0,
+              max: Number(allDataList[allDataList.length - 1]) > 10 ? parseInt(allDataList[allDataList.length - 1]) + 11 : parseInt(allDataList[allDataList.length - 1]) + 1,
             },
             series: [
               {
@@ -233,8 +233,8 @@ export default {
           };
           option.yAxis = {
             type: 'value',
-            min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 10) : 0,
-            max: Number(allDataList[allDataList.length - 1]) > 10 ? Number(allDataList[allDataList.length - 1]) + 10 : parseInt(allDataList[allDataList.length - 1]) + 1,
+              min: Number(allDataList[0]) > 15 ? (parseInt(allDataList[0]) - 11): 0,
+              max: Number(allDataList[allDataList.length - 1]) > 10 ? parseInt(allDataList[allDataList.length - 1]) + 11 : parseInt(allDataList[allDataList.length - 1]) + 1,
           };
           option.series[0].data = priceAxisList[value].newPirce;
           // option.series[1].data = priceAxisList[value].oldPrice;
@@ -338,11 +338,14 @@ export default {
             if(key == 'OldPrice') return this.priceAxisInfo.contentOldPrice
             else if(key == 'changPrice') return this.priceAxisInfo.changPrice
             else if(key == 'currentPrice') return this.priceAxisInfo.currentPrice
+            else if(key == 'effectPrice') return this.priceAxisInfo.effectPrice
           }else if(priceType == 'bPrice'){
             if(key == 'OldPrice') return this.priceAxisInfo.contentOldBPrice
             else if(key == 'changPrice') return this.priceAxisInfo.changBPrice
             else if(key == 'currentPrice') return this.priceAxisInfo.effectBPrice
-          }else{
+            else if(key == 'effectPrice') return this.priceAxisInfo.currentBPrice
+          }
+          else{
             return '-'
           }
         },
@@ -353,7 +356,6 @@ export default {
           list.map((item)=>{
             if((item.startTime < currentTime) && (currentTime < item.endTime) ) price = item.price;
           })
-          console.log(currentTime,list,price,'getRangePrice')
           return price
 
         },
