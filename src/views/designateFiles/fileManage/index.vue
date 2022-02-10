@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-24 15:24:36
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-10 14:31:26
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -24,7 +24,7 @@
           <iSearch @sure="sure" @reset="reset">
             <el-form>
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
-                <iSelect v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
+                <iSelect clearable v-if="item.type === 'select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
                   <el-option v-if="item.value == 'showSelf'" value="" :label="language('ALL','全部')"></el-option>
                   <el-option
                     v-for="item in getOptions(item)"
@@ -103,7 +103,7 @@
           <!--                    加入已有RFQ弹窗                                  --->
           <!------------------------------------------------------------------------>
           <joinRfqDialog ref="joinRfq" :dialogVisible="joinRfqDialogVisible" @changeVisible="changeJoinRfqDialogVisible" @joinRfq="joinRfq" :partType="partProjTypes.FUJIAN" />
-        </div>
+        <!-- </div> -->
       <!-- </el-tab-pane> -->
       <!-- <el-tab-pane lazy label="进度监控" name="progress"></el-tab-pane> -->
     <!-- </el-tabs> -->

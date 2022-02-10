@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2022-01-24 15:50:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-10 14:26:25
+ * @LastEditors: YoHo
  * @Description: 零件签收列表界面.
  * @FilePath: \front-sourcing\src\views\partsign\home\index.vue
 -->
@@ -60,6 +60,7 @@
               </el-form-item> -->
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSIGN_MODELPROJECT|车型项目">
                 <iSelect
+                  clearable
                   v-model="form.projectCarType"
                   :placeholder="language('LK_QINGXUANZHECHEXINGXIANGMU','请选择车型项目')"
                 >
@@ -77,6 +78,7 @@
               </el-form-item>
               <el-form-item :label="language('LK_XINXIDANFENLEI','信息单分类')" v-permission.auto="PARTSIGN_INFORMATIONCLASSIFICATION|信息单分类">
                 <iSelect
+                  clearable
                   v-model="form.tpInfoType"
                   :placeholder="language('LK_QINGXUANZHEXINXIFENLEI','请选择信息分类')"
                 >
@@ -94,6 +96,7 @@
               </el-form-item>
               <el-form-item :label="language('LK_XINXIDANZHUANGTAI','信息单状态')" v-permission.auto="PARTSIGN_INFORMATIONSTATUS|信息单状态">
                 <iSelect
+                  clearable
                   v-model="form.status"
                   :placeholder="language('LK_QINGXUANZHEXINXIDANZHUANGTAI','请选择信息单状态')"
                 >
@@ -118,6 +121,7 @@
               </el-form-item> -->
               <el-form-item :label="language('LK_XUNJIAZILIAOZHUANGTAI','询价资料状态')" v-permission.auto="PARTSIGN_INQUIRYSTATUS|询价资料状态">
                 <iSelect
+                  clearable
                   v-model="form.attachmentStatus"
                   :placeholder="language('LK_QINGXUANZHEXUNJIAZILIAOZHUANGTAI','请选择询价资料状态')"
                 >
@@ -135,6 +139,7 @@
               </el-form-item>
               <el-form-item :label="language('LK_MEICHEYONGLIANGZHUANGTAI','每车用量状态')"  v-permission.auto="PARTSIGN_USAGEVEHICLE|每车用量状态">
                 <iSelect
+                  clearable
                   v-model="form.partDosageStatus"
                   :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','请选择每车用量状态')"
                 >
@@ -152,6 +157,7 @@
               </el-form-item>
               <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')"  v-permission.auto="PARTSIGN_XIANSHIZIJI|显示自己">
                 <iSelect
+                  clearable
                   v-model="form.showSelf"
                   :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"
                 >
