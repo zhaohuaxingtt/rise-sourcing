@@ -7,7 +7,7 @@
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<div v-loading="loading">
+	<div>
 	<iPage class="partsprocureEditordetail" v-permission.auto="PARTSPROCURE_EDITORDETAIL_INDEXPAGE|零件采购项目管理详情页">
 		<!-- 零件状态：
 			1：无采购项目编号 
@@ -551,9 +551,6 @@
 			isSteelPurchase() {
 				return this.detailData.partProjectType == this.partProjTypes.GANGCAIYICIXINGCAIGOU || this.detailData.partProjectType == this.partProjTypes.GANGCAIPILIANGCAIGOU
 			},
-			loading() {
-				return this.purchasingDeptLoading || this.getCartypeDictLoading || this.getProcureGroupLoading || this.getDictLoading || this.getLinieLoading || this.getCarTypeSopListLoading
-			}
 		},
 		watch:{
 			'selectOldParts.selectData':function(res){
@@ -590,12 +587,6 @@
 				isCarType:false,
 				bakCarTypeSopTime: '',
 				sourcePartProjectType: '', // 后端返回的partProjectType
-				purchasingDeptLoading: false,
-				getCartypeDictLoading: false,
-				getProcureGroupLoading: false,
-				getDictLoading: false,
-				getLinieLoading: false,
-				getCarTypeSopListLoading: false,
 			};
 		},
 		created() {
@@ -619,10 +610,11 @@
 			getLinie(id){
 				if (!id) return
 
-				this.getLinieLoading = true
 				purchasingLiline(id).then(r=>{
-					this.fromGroup['LINIE'] = r.data || []
-				}).finally(() => this.getLinieLoading = false)
+					if (r.code == 200) {
+						this.fromGroup['LINIE'] = Array.isArray(r.data) ? r.data : []
+					}
+				})
 			},
 			openDiologOldParts(){
 				if(this.detailData.procureFactory == '') return  iMessage.warn(this.language('NINDANGQIANWEIXUANZE','您当前还未选择采购工厂，请选择后重试！'))
@@ -646,8 +638,6 @@
 				return this.detailData
 			},
 			getDict() {
-				this.getDictLoading = true
-
 				selectDictByRootKeys([
 					{ keys: "TERMS_PAYMENT" },
 					{ keys: "TERMS_PURCHASE" },
@@ -665,7 +655,6 @@
 
 					}
 				})
-				.finally(() => this.getDictLoading = false)
 			},
 			getDicts() {
 				this.getDict()
@@ -755,27 +744,21 @@
 			//获取liline部门
 			
 			purchasingDept(){
-				this.purchasingDeptLoading = true
-
 				purchasingDept().then(r=>{
 					if (r.code == 200) {
 						this.fromGroup["LINIE_DEPT"] = Array.isArray(r.data) ? r.data : []
 					}
-				}).finally(() => this.purchasingDeptLoading = false)
+				})
 			},
 			// 获取车型字典
 			getCartypeDict() {
-				this.getCartypeDictLoading = true
-
 				getCartypeDict().then(res => {
 					this.fromGroup['CAR_TYPE'] = res.data || []
 				}).catch(err=>{
 					console.log(err)  
-				}).finally(() => this.getCartypeDictLoading = false)
+				})
 			},
 			getProcureGroup() {
-				this.getProcureGroupLoading = true
-
 				dictkey().then((res) => {
 					if (res.code == 200 && res.data) {
 						const map = {}
@@ -794,7 +777,7 @@
 					}
 				}).catch(err=>{
 					iMessage.error(err.desZh)
-				}).finally(() => this.getProcureGroupLoading = false);
+				})
 			},
 			// 查询fliter数据
 			getGroupList(key) {
@@ -1014,8 +997,6 @@
 			},
 			// 获取车型项目sop
 			getCarTypeSopList() {
-				this.getCarTypeSopListLoading = true
-
 				getCarTypeSop().then(res => {
 					if (res && res.code === '200') {
 						this.fromGroup.CAR_TYPE_PRO = 
@@ -1030,7 +1011,7 @@
 
 						this.$forceUpdate()
 					}
-				}).finally(() => this.getCarTypeSopListLoading = false)
+				})
 			},
 			formatDate(val, format='YYYY-MM-DD') {
 				return dayjs(val).format(format)
