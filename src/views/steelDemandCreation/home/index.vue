@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2022-01-24 15:51:44
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-10 14:33:20
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\steelDemandCreation\home\index.vue
 -->
@@ -18,7 +18,7 @@
               <iInput v-model="form[items.moduleKey]" v-else :placeholder='language("QINGITANXIE","请填写")' :maxlength='18'></iInput>
             </template>
             <template v-else>
-              <iSelect v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>
+              <iSelect clearable v-model="form[items.moduleKey]" :placeholder='language("QINGXUANZE","请选择")'>
                 <el-option v-for="(item,i) in items.List" :key='i' :label="item.name" :value="item.code"></el-option>
               </iSelect>
             </template>
