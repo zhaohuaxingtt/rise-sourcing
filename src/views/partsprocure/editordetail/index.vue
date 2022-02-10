@@ -566,7 +566,7 @@
 				infoItem: {id:null},
 				detailData: detailData, //顶部详情数据
 				targetprice: {}, //申请目标价数据
-				fromGroup: [], //上方筛选列表
+				fromGroup: {}, //上方筛选列表
 				diologClose: false, //结束项目
 				splitPurch: {
 					splitPurchBoolean: false,
@@ -647,10 +647,11 @@
 				.then(res => {
 					if (res.code == 200) {
 						Object.keys(res.data || {}).forEach(key => {
-							this.fromGroup = {
-								...this.fromGroup,
-								[key]: Array.isArray(res.data[key]) ? res.data[key] : []
-							}
+							this.fromGroup = Object.assign(
+								{},
+								this.fromGroup,
+								{ [key]: Array.isArray(res.data[key]) ? res.data[key] : [] }
+							)
 						})
 
 					}
@@ -768,10 +769,7 @@
 							}
 						})
 
-						this.fromGroup = {
-							...this.fromGroup,
-							...map
-						}
+						this.fromGroup = Object.assign({}, this.fromGroup, map)
 						this.purchasingDept()
 						this.getLinie(this.detailData.linieDept)
 					}
@@ -869,7 +867,7 @@
 				detailData['linieName'] = linie ? linie.name : ""
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
-				detailData['oldProjectRelations'] = [{...translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
+				detailData['oldProjectRelations'] = [ Object.assign({}, translateDataForService(this.selectOldParts.selectData), {purchasingProjectId:this.detailData.id})]
 				if(detailData.carTypeModel !=undefined) {
 					let temData= this.fromGroup.CAR_TYPE && Array.isArray(this.fromGroup.CAR_TYPE) && this.fromGroup['CAR_TYPE'].filter((item)=>{
 						return detailData.carTypeModel.indexOf(item.id) > -1
