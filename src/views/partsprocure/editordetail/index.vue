@@ -7,7 +7,7 @@
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<div v-loading="loading">
+	<div>
 	<iPage class="partsprocureEditordetail" v-permission.auto="PARTSPROCURE_EDITORDETAIL_INDEXPAGE|零件采购项目管理详情页">
 		<!-- 零件状态：
 			1：无采购项目编号 
@@ -551,9 +551,6 @@
 			isSteelPurchase() {
 				return this.detailData.partProjectType == this.partProjTypes.GANGCAIYICIXINGCAIGOU || this.detailData.partProjectType == this.partProjTypes.GANGCAIPILIANGCAIGOU
 			},
-			loading() {
-				return this.purchasingDeptLoading || this.getCartypeDictLoading || this.getProcureGroupLoading || this.getDictLoading || this.getLinieLoading || this.getCarTypeSopListLoading
-			}
 		},
 		watch:{
 			'selectOldParts.selectData':function(res){
@@ -569,7 +566,7 @@
 				infoItem: {id:null},
 				detailData: detailData, //顶部详情数据
 				targetprice: {}, //申请目标价数据
-				fromGroup: [], //上方筛选列表
+				fromGroup: {}, //上方筛选列表
 				diologClose: false, //结束项目
 				splitPurch: {
 					splitPurchBoolean: false,
@@ -590,12 +587,6 @@
 				isCarType:false,
 				bakCarTypeSopTime: '',
 				sourcePartProjectType: '', // 后端返回的partProjectType
-				purchasingDeptLoading: false,
-				getCartypeDictLoading: false,
-				getProcureGroupLoading: false,
-				getDictLoading: false,
-				getLinieLoading: false,
-				getCarTypeSopListLoading: false,
 			};
 		},
 		created() {
@@ -619,10 +610,11 @@
 			getLinie(id){
 				if (!id) return
 
-				this.getLinieLoading = true
 				purchasingLiline(id).then(r=>{
-					this.fromGroup['LINIE'] = r.data || []
-				}).finally(() => this.getLinieLoading = false)
+					if (r.code == 200) {
+						this.fromGroup['LINIE'] = Array.isArray(r.data) ? r.data : []
+					}
+				})
 			},
 			openDiologOldParts(){
 				if(this.detailData.procureFactory == '') return  iMessage.warn(this.language('NINDANGQIANWEIXUANZE','您当前还未选择采购工厂，请选择后重试！'))
@@ -646,8 +638,6 @@
 				return this.detailData
 			},
 			getDict() {
-				this.getDictLoading = true
-
 				selectDictByRootKeys([
 					{ keys: "TERMS_PAYMENT" },
 					{ keys: "TERMS_PURCHASE" },
@@ -657,15 +647,15 @@
 				.then(res => {
 					if (res.code == 200) {
 						Object.keys(res.data || {}).forEach(key => {
-							this.fromGroup = {
-								...this.fromGroup,
-								[key]: Array.isArray(res.data[key]) ? res.data[key] : []
-							}
+							this.fromGroup = Object.assign(
+								{},
+								this.fromGroup,
+								{ [key]: Array.isArray(res.data[key]) ? res.data[key] : [] }
+							)
 						})
 
 					}
 				})
-				.finally(() => this.getDictLoading = false)
 			},
 			getDicts() {
 				this.getDict()
@@ -755,27 +745,21 @@
 			//获取liline部门
 			
 			purchasingDept(){
-				this.purchasingDeptLoading = true
-
 				purchasingDept().then(r=>{
 					if (r.code == 200) {
 						this.fromGroup["LINIE_DEPT"] = Array.isArray(r.data) ? r.data : []
 					}
-				}).finally(() => this.purchasingDeptLoading = false)
+				})
 			},
 			// 获取车型字典
 			getCartypeDict() {
-				this.getCartypeDictLoading = true
-
 				getCartypeDict().then(res => {
 					this.fromGroup['CAR_TYPE'] = res.data || []
 				}).catch(err=>{
 					console.log(err)  
-				}).finally(() => this.getCartypeDictLoading = false)
+				})
 			},
 			getProcureGroup() {
-				this.getProcureGroupLoading = true
-
 				dictkey().then((res) => {
 					if (res.code == 200 && res.data) {
 						const map = {}
@@ -785,16 +769,13 @@
 							}
 						})
 
-						this.fromGroup = {
-							...this.fromGroup,
-							...map
-						}
+						this.fromGroup = Object.assign({}, this.fromGroup, map)
 						this.purchasingDept()
 						this.getLinie(this.detailData.linieDept)
 					}
 				}).catch(err=>{
 					iMessage.error(err.desZh)
-				}).finally(() => this.getProcureGroupLoading = false);
+				})
 			},
 			// 查询fliter数据
 			getGroupList(key) {
@@ -886,7 +867,7 @@
 				detailData['linieName'] = linie ? linie.name : ""
 				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
 				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
-				detailData['oldProjectRelations'] = [{...translateDataForService(this.selectOldParts.selectData),...{purchasingProjectId:this.detailData.id}}]
+				detailData['oldProjectRelations'] = [ Object.assign({}, translateDataForService(this.selectOldParts.selectData), {purchasingProjectId:this.detailData.id})]
 				if(detailData.carTypeModel !=undefined) {
 					let temData= this.fromGroup.CAR_TYPE && Array.isArray(this.fromGroup.CAR_TYPE) && this.fromGroup['CAR_TYPE'].filter((item)=>{
 						return detailData.carTypeModel.indexOf(item.id) > -1
@@ -1014,8 +995,6 @@
 			},
 			// 获取车型项目sop
 			getCarTypeSopList() {
-				this.getCarTypeSopListLoading = true
-
 				getCarTypeSop().then(res => {
 					if (res && res.code === '200') {
 						this.fromGroup.CAR_TYPE_PRO = 
@@ -1030,7 +1009,7 @@
 
 						this.$forceUpdate()
 					}
-				}).finally(() => this.getCarTypeSopListLoading = false)
+				})
 			},
 			formatDate(val, format='YYYY-MM-DD') {
 				return dayjs(val).format(format)
