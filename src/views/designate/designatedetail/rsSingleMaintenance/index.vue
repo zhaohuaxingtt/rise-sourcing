@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <iPage v-permission.auto="RSSINGLEMAINTENANCE_PAGE|RS单维护页面">
+  <iPage>
     <!------------------------------------------------------------------------>
     <!--                     界面标题模块                                   --->
     <!------------------------------------------------------------------------>
@@ -22,19 +22,19 @@
     <!------------------------------------------------------------------------>
     <iSearch class="margin-bottom20 margin-top20" icon @reset="handleSearchReset" @sure="filterTableData">
       <el-form>
-        <el-form-item :label="language('LINGJIANCAIGOUXIANGMUBIANHAO','零件采购项目编号')" v-permission.auto="RSSINGLEMAINTENANCE_FSNRGSNRNUM|RS单维护-零件采购项目编号">
+        <el-form-item :label="language('LINGJIANCAIGOUXIANGMUBIANHAO','零件采购项目编号')">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.fsnrGsnrNum"></iInput>
         </el-form-item>
-        <el-form-item :label="language('LINGJIANHAO','零件号')" v-permission.auto="RSSINGLEMAINTENANCE_PARTNUM|RS单维护-零件号">
+        <el-form-item :label="language('LINGJIANHAO','零件号')">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.partNo"></iInput>
         </el-form-item>
-        <el-form-item :label="language('LINGJIANMINGCHENG','零件名称')" v-permission.auto="RSSINGLEMAINTENANCE_PARTNAME|RS单维护-零件名称">
+        <el-form-item :label="language('LINGJIANMINGCHENG','零件名称')">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.partName"></iInput>
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGBIANHAO','供应商编号')" v-permission.auto="RSSINGLEMAINTENANCE_SUPPLIERNO|RS单维护-供应商编号">
+        <el-form-item :label="language('GONGYINGSHANGBIANHAO','供应商编号')">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.supplierNo"></iInput>
         </el-form-item>
-        <el-form-item :label="language('GONGYINGSHANGMINGCHENG','供应商名称')" v-permission.auto="RSSINGLEMAINTENANCE_SUPPLIERNAME|RS单维护-供应商名称">
+        <el-form-item :label="language('GONGYINGSHANGMINGCHENG','供应商名称')">
           <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.supplierName"></iInput>
         </el-form-item>
       </el-form>
@@ -65,13 +65,13 @@
             <!--------------------选择按钮----------------------------------->
             <iButton v-if="!nominationDisabled && !rsDisabled" @click="handleReadQuotation" :loading="readQuotationLoading" v-permission.auto="RSSINGLEMAINTENANCE_READQUOTATIONBTN|RS单维护-读取报价单按钮">{{language('DUQUBAOJIADAN','读取报价单')}}</iButton>
             <!--------------------RS单预览按钮----------------------------------->
-            <iButton @click="handlePreviewRS" v-permission.auto="RSSINGLEMAINTENANCE_RSPREVIEWBTN|RS单维护-RS单预览按钮">{{language('RSDANYULAN','RS单预览')}}</iButton>
+            <iButton @click="handlePreviewRS" >{{language('RSDANYULAN','RS单预览')}}</iButton>
           </div>
       </div>
         <!------------------------------------------------------------------------>
         <!--                  表格模块                                          --->
         <!------------------------------------------------------------------------>
-        <tableList v-permission.auto="RSSINGLEMAINTENANCE_TABLEVIEW|RS单维护-表格" :disabled="nominationDisabled || rsDisabled" :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue">
+        <tableList :disabled="nominationDisabled || rsDisabled" :activeItems='"rfqId"' selection indexKey :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @updateSlot='toTop' @changeTableValue="changeTableValue">
           <!-- 年降开始时间 -->
           <!-- <template #beginYearReduce="scope">
             <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
