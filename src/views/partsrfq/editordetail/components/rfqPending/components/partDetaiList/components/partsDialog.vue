@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-14 15:41:20
+ * @LastEditTime: 2022-02-10 16:59:15
  * @Description: 申请零件目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -58,6 +58,7 @@ import tableList from '@/views/partsign/home/components/tableList'
 import { applyPartTarget } from '@/api/financialTargetPrice/index'
 import { dictkey } from '@/api/partsprocure/editordetail'
 import { partsDialogTitle as tableTitle } from "../data";
+import { partProjTypes } from "@/config";
 export default {
   props: {
     visible:{type:Boolean},
@@ -87,10 +88,11 @@ export default {
   computed: {
     tableData(){
       let tableList = JSON.parse(JSON.stringify(this.tableList))
+      const {businessKey} = this.$route.query;
       return tableList.map(i=>{
         let obj = {
           purchasingProjectId: [i.id],
-          applyType: i.applyType || 'LC',
+          applyType: businessKey==partProjTypes.DBLINGJIAN ? 'SKD' : 'LC',
           fsnrGsnrNum:i.fsnrGsnrNum,
           partNum:i.partNum,
           partNameZh:i.partNameZh,
