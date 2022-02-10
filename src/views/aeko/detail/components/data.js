@@ -39,7 +39,7 @@ export const contentDeclareTableTitle = [
   { props: "quotationId", name: "报价单", key: "BAOJIADAN", tooltip: true },
   { props: "priceAxis", name: "价格轴", key: "JIAGEZHOU", tooltip: true },
   { props: "investCarTypePro", name: "指定投资⻋型项⽬", key: "ZHIDINGTOUZICHEXINGXIANGMU", width: 150 },
-  { props: "isMtz", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
+  { props: "isMtzDesc", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
   { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true, width: 100 },
   { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true, width: 100 },
   { props: "tranWayDesc", name: "承运方式", key: "LK_AEKO_CHENGYUNFANGSHI", tooltip: true },

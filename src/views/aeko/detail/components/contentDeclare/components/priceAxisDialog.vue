@@ -305,7 +305,7 @@ export default {
           data.date = Array.from(new Set(data.date));
           // 排序
           data.date = data.date.sort((a,b)=>{
-            return Number(a) > Number(b) ? 1:-1
+            return a > b ? 1:-1
           })
           data.date.map((item)=>{
             let filterNew = newData.filter((itemData)=>itemData.startTime == item);
@@ -325,6 +325,7 @@ export default {
               data.oldPrice.push(oldRangePrice);
             }
           })
+
           
           return data;
         },
