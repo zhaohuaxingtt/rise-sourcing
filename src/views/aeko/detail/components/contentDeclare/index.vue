@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-01-26 11:17:45
+ * @LastEditTime: 2022-02-10 11:25:56
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -233,6 +233,7 @@
           fixed
           v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_TABLE|内容表态表单"
           :lang="true"
+          :indexFixed="true"
           :selection="isSelection"
           :tableData="tableListData"
           :tableTitle="tableTitle"
