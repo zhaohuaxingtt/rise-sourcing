@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2021-12-30 15:16:24
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-11 16:54:42
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
 -->
@@ -18,6 +18,7 @@
               menuName_obj_ae: ''
             }"
             isPage
+            isUser
             credentials
             class="margin-left20"/>
           <span class="margin-left20">
