@@ -1,8 +1,8 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-11-02 11:12:44
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-11-26 12:20:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-11 11:37:00
  * @Description: 内容表态组合相关功能
  */
 
@@ -202,8 +202,23 @@ export const combine = {
       return spanArr
     },
     spanMethod({row, column, rowIndex, columnIndex}) {
+      let groupNameIndex = 2;
+      const {query} = this.$route;
+      const {from=''} = query;
+      if(this.$refs['tableList']){
+        const list = this.$refs['tableList'].getHeader() || [];
+        list.map((item,index)=>{
+          if(item.props == 'groupName') groupNameIndex = index+2;
+        })
+        // 获取固定列的数量
+        const fixNum = (list.filter((item)=>item.fixed)).length;
+        if(groupNameIndex > fixNum+1) groupNameIndex = fixNum+1;
+      }
+      // 若是aeko查看进来没有勾选框需要减去一列
+      if(from == 'check') --groupNameIndex ;
       // 只做第2列合并操作
-      if (columnIndex === 2) {
+      // if (columnIndex === 2) {
+      if (columnIndex === groupNameIndex) {
         const _row = this.spanArr[rowIndex];
         const _col = _row > 0 ? 1 : 0;
         return {
