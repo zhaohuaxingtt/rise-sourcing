@@ -7,7 +7,6 @@
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
 <template>
-	<div>
 	<iPage class="partsprocureEditordetail" v-permission.auto="PARTSPROCURE_EDITORDETAIL_INDEXPAGE|零件采购项目管理详情页">
 		<!-- 零件状态：
 			1：无采购项目编号 
@@ -421,7 +420,6 @@
     <!---------------------- 采购申请弹框 -------------------------------->
       <purchaseApply :visibleDiolog.sync="dialogVisibleCode" :item="itemPurchase"></purchaseApply>	
 	</iPage>
-	</div>
 </template>
 <script>
 	import Vuex from 'vuex'
