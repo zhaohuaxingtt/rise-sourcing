@@ -6369,7 +6369,7 @@
   xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState==4 && xmlHttp.status==200){
           const data = JSON.parse(xmlHttp.responseText)
-          i18n.setLocaleMessage('en', Object.assign(oldLanguage,data.data.cn))
+          i18n.setLocaleMessage('en', Object.assign(data.data.cn,oldLanguage))
       }
   }
   xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
