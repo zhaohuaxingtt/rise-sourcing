@@ -435,6 +435,7 @@ export default {
         this.parmarsHasRfq["rfqId"] = this.rfqId || "";
         this.parmarsHasRfq["status"] = "";
         this.parmarsHasRfq["isRfqPartList"] = true;
+        this.parmarsHasRfq["positionCtrl"] = false;
         return getTabelData(this.parmarsHasRfq)
           .then((res) => {
             this.page.currPage = res.pageNum;
