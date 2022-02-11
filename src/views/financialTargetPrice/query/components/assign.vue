@@ -10,7 +10,7 @@
 <template>
   <iDialog 
     :title="language('LK_ZHIPAI','指派')"
-    :visible.sync="dialogVisible"
+    :visible.sync="status"
     @close="clearDialog"
     width="381px"
   >
@@ -44,23 +44,38 @@ export default {
     return {
       assign: '',
       assignOption: [],
-      loading: false
+      loading: false,
+      status: false
     }
   },
-  created() {
-    this.getCF()
+  watch: {
+    dialogVisible(nv) {
+      if (nv) {
+        this.getCF()
+      } else {
+        this.status = false
+      }
+    }
   },
   methods: {
     getCF() {
       getCFList().then(res => {
-        if (res?.result) {
+        if (res.code == 200) {
           this.assignOption = res.data.map(item => {
             return {
               code: item.id,
               name: item.nameZh
             }
           })
+
+          this.status = true
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          this.status = false
+          this.$emit("update:dialogVisible", false)
         }
+      }).finally(() => {
+        if (!this.status) this.$emit("update:dialogVisible", false)
       })
     },
     clearDialog() {

@@ -33,7 +33,9 @@ Vue.directive('permission', {
       // eslint-disable-next-line no-debugger
       const splitValue = value.split('|')
       //去除控件传参中存在换行空格等情况
-      const pagePermission = splitValue[0]?splitValue[0].trim():splitValue[0]
+      const pagePermission = splitValue[0]
+        ? splitValue[0].trim()
+        : splitValue[0]
       if (splitValue.length > 1) {
         // store.dispatch('uploadResource', splitValue)
       }
@@ -57,7 +59,7 @@ Vue.directive('permission', {
         if (openProcess) el.parentNode.removeChild(el)
       } else {
         if (businessPermission(value, router.currentRoute.query)) {
-          if (openProcess) el.parentNode.removeChild(el)
+          // if (openProcess) el.parentNode.removeChild(el)
         }
       }
     }

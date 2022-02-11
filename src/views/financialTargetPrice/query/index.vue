@@ -39,7 +39,7 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" >{{language('LK_ZHIPAI','指派')}}</iButton>
+          <iButton @click="openAssignDialog" :loading="assignDialogVisible">{{language('LK_ZHIPAI','指派')}}</iButton>
           <!--------------------导出按钮----------------------------------->
           <iButton @click="handleExport" >{{language('DAOCHU','导出')}}</iButton>
         </div>
@@ -79,7 +79,7 @@
     <!------------------------------------------------------------------------>
     <!--                  指派弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <assignDialog ref="assign" :dialogVisible="assignDialogVisible" @changeVisible="changeAssignDialogVisible" @sendAccessory="targetAppoint" />
+    <assignDialog ref="assign" :dialogVisible.sync="assignDialogVisible" @changeVisible="changeAssignDialogVisible" @sendAccessory="targetAppoint" />
   </iPage>
 </template>
 

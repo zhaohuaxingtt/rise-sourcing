@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2022-01-26 17:36:17
+ * @LastEditTime: 2022-02-11 11:09:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\axios.js
@@ -31,9 +31,14 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
         config.headers['token'] = getToken() || ''
       }
       // IE上的同一个url请求会走cache
-      if (config.method === 'post' || config.method === 'POST' || config.method === 'patch' || config.method === 'PATCH') {
+      if (
+        config.method === 'post' ||
+        config.method === 'POST' ||
+        config.method === 'patch' ||
+        config.method === 'PATCH'
+      ) {
         loading = Loading.service({
-          lock: true
+          lock: true,
         })
         config.url =
           config.url.indexOf('?') > -1
@@ -57,8 +62,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
 
   instance.interceptors.response.use(
     function(response) {
-      console.log(response)
-      loading?loading.close():''
+      loading ? loading.close() : ''
 
       if (response.config.responseType == 'blob') {
         return Promise.resolve(response)
@@ -70,8 +74,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       }
     },
     (error) => {
-      console.log(error)
-      loading?loading.close():''
+      loading ? loading.close() : ''
 
       switch (error.response.status) {
         //需要定位到登录界面的状态。（401 || 40x || ...）

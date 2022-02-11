@@ -67,6 +67,9 @@
 						<icon symbol name="icongongyingshangshituliebiao" />
 					</span>
         </template>
+        <template #cbdLevel="scope">
+          <span>{{ cbdLevelFormat(scope.row.cbdLevel) }}</span>
+        </template>
       </tableList>
     </div>
     <template #footer class="footer">
@@ -223,6 +226,11 @@ export default {
       })
       .catch(() => this.confirmLoading = false)
     },
+    cbdLevelFormat(val) {
+      const str = (val + "").replace(/D/g, "")
+
+      return str ? `L${ str }` : ""
+    }
   }
 };
 </script>

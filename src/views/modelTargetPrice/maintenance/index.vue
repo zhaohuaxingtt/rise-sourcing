@@ -41,7 +41,7 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" v-permission.auto='MODELTARGETPRICE_MAINTENANCE_ASSIGN|模具目标价管理-目标价维护-指派'>{{language('ZHIPAI','指派')}}</iButton>
+          <iButton @click="openAssignDialog" :loading="assignDialogVisible" v-permission.auto='MODELTARGETPRICE_MAINTENANCE_ASSIGN|模具目标价管理-目标价维护-指派'>{{language('ZHIPAI','指派')}}</iButton>
         </div>
       </div>
       <tableList 
@@ -79,7 +79,7 @@
     <!------------------------------------------------------------------------>
     <!--                  指派弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <assignDialog ref="assignDialog" :dialogVisible="assignDialogVisible" @changeVisible="changeAssignDialogVisible" @sendAccessory="targetAppoint" />
+    <assignDialog ref="assignDialog" :dialogVisible.sync="assignDialogVisible" @changeVisible="changeAssignDialogVisible" @sendAccessory="targetAppoint" />
   </iPage>
 </template>
 

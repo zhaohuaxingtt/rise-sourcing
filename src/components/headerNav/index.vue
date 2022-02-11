@@ -6,24 +6,20 @@
 <template>
   <div class="headerNav-wraper margin-bottom10">
     <div class="headerNav">
-      <iNavMvp
-        :list="navListLeft"
-        lang
-        @change="change"
-        :lev="1"
-        routerPage
-      ></iNavMvp>
+      <iNavMvp :list="navListLeft"
+               lang
+               @change="change"
+               :lev="1"
+               routerPage></iNavMvp>
       <div class="flexRight">
-        <iNavMvp
-          @change="change"
-          lang
-          class="pull-right"
-          right
-          :routerPage="true"
-          lev="2"
-          reversePosit
-          :list="heaederSubMenu"
-        />
+        <iNavMvp @change="change"
+                 lang
+                 class="pull-right"
+                 right
+                 :routerPage="true"
+                 lev="2"
+                 reversePosit
+                 :list="heaederSubMenu" />
         <slot></slot>
       </div>
     </div>
@@ -36,7 +32,7 @@ import { iNavMvp, iTabsList } from "rise";
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing");
 
 export default {
-  data() {
+  data () {
     return {
       group: null,
     };
@@ -51,14 +47,16 @@ export default {
     iNavMvp,
     iTabsList,
   },
-  created() {
-    this.group = this[`${ this.type }ThirdMenu`].filter((i) => i.url == this.$route.path)[0]?.group ?? ''
-    
+  created () {
+    console.log(this.type, "type")
+    console.log(this.$route.path)
+    this.group = this[`${this.type}ThirdMenu`].filter((i) => i.url == this.$route.path)[0]?.group ?? ''
+    console.log(this.group, "group")
     this.updateNavList
   },
   computed: {
     ...mapState([
-      "sourceinquirypointNavListLeft", 
+      "sourceinquirypointNavListLeft",
       "sourceinquirypointThirdMenu",
       "financialmanageNavListLeft",
       "financialmanageThirdMenu",
@@ -70,11 +68,11 @@ export default {
       "configscoredeptThirdMenu"
     ]),
     ...mapActions(["updateNavList"]),
-    navListLeft() {
-      return this[`${ this.type }NavListLeft`] || []
+    navListLeft () {
+      return this[`${this.type}NavListLeft`] || []
     },
-    heaederSubMenu() {
-      return this[`${ this.type }ThirdMenu`]
+    heaederSubMenu () {
+      return this[`${this.type}ThirdMenu`]
         .filter((i) => i.group == this.group)
         .map((item, index) => {
           item.value = 1 + index
@@ -83,7 +81,8 @@ export default {
     },
   },
   methods: {
-    change(pramas) {
+    change (pramas) {
+      console.log(pramas, this.type)
       this.group = pramas.group
     },
   },

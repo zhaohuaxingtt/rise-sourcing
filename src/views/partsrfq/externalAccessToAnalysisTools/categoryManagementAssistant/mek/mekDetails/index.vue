@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-01-19 18:53:00
+ * @LastEditTime: 2022-02-11 15:10:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -806,6 +806,8 @@ export default {
       params = {
         categoryId: this.categoryId,
         targetMotorId: val,
+        isTarget: true,
+        isBindingRfq: true
       };
       getComparedMotor(params).then((res) => {
         this.ComparedMotorList = res.data;
