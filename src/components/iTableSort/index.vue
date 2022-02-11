@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-01-26 15:24:54
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-11 11:41:06
+ * @LastEditors: Please set LastEditors
  * @Description: table组件
 -->
 <template>
@@ -28,7 +28,7 @@
     <!----------------------复选框------------------------------------->
     <el-table-column v-if="selection" type='selection' :width="selectConfig.width || 40" :align="selectConfig.align || 'center'" :header-align="selectConfig.headerAlign || 'center'" :selectable="selectConfig.selectable || selectable"></el-table-column>
     <!----------------------支持自定义的index插槽------------------------>
-    <el-table-column :fixed="indexFixed" v-if='index' type='index' :width='indexConfig.width || 40' :align="indexConfig.align || 'center'" :header-align="indexConfig.headerAlign || 'center'" :label="indexConfig.label || indexLabel">
+    <el-table-column :fixed="indexFixed" v-if='index' type='index' :width='indexConfig.width || 50' :align="indexConfig.align || 'center'" :header-align="indexConfig.headerAlign || 'center'" :label="indexConfig.label || indexLabel">
       <template slot-scope="scope">
         <slot :name="`_index`" :row="scope.row" :$index="scope.$index">
           {{scope.$index+1}}
@@ -328,6 +328,9 @@ export default{
         this.initTableSettingColumns()
         this.$attrs.handleResetSetting({data: cloneDeep(this.tableTitle), done: this.renewTableHeader})
       }
+    },
+    getHeader(){
+      return cloneDeep(this.header);
     }
   }
 }
