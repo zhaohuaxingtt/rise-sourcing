@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:47:09
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 16:33:38
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-11 16:47:13
  * @Description: 目标价详情
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\targetPriceDetail\index.vue
 -->
@@ -21,6 +21,7 @@
           :partNum="detailData.partNum"
 					credentials
 					isPage
+          isUser
 					class="margin-left20"
 					optionDicKey="LOG_OPERATION_TYPES"
 					optionDicKey2="财务目标价详情页" />

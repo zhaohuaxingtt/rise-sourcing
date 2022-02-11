@@ -34,6 +34,7 @@
                 optionDicKey="LOG_OPERATION_TYPES"
 				optionDicKey2="LOI详情页"
                 isPage
+                isUser
                 :config="{
                     module_obj_ae: 'LOI', // 模块
                     menuName_obj_ae: '', // 菜单
