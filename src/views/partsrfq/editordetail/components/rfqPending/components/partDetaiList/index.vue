@@ -228,14 +228,12 @@ export default {
       // this.rfqId = this.$route.query.id
       this.rfqId = id || '';
       await this.getTableList()
-      let isCommonSourcing=''
-      this.baseInfoData.partProjectType[0]? isCommonSourcing = this.baseInfoData.partProjectType[0] :''
       // 当类型为AEKO时 表头需要隐藏部分
       if(businessKey == partProjTypes.AEKOLINGJIAN){
         this.tableTitle = tableTitle.filter((item)=>item.isAekoShow);
       }
   try{
-      if(isCommonSourcing !== partProjTypes.GSCOMMONSOURCING && isCommonSourcing != partProjTypes.FSCOMMONSOURCING){
+      if(businessKey != partProjTypes.GSCOMMONSOURCING && businessKey != partProjTypes.FSCOMMONSOURCING){
         this.tableTitle = tableTitle.filter((item)=>!item.isCommonSourcingShow);
       } 
     } catch (err) {
