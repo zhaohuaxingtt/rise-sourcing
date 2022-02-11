@@ -6,14 +6,14 @@
  * @Descripttion: 谈判基本信息
 -->
 <template>
-  <div>
+  <div class="negotiateBasicInfor">
     <div class="right-btn">
       <iButton @click="handleReport" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_BUTTON_BAOGAOQINGDAN|报告清单">{{ $t('TPZS.BGQD') }}</iButton>
     </div>
     <projectOverview :rfqInfoData="rfqInfoData" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_PROJECTOVERVIEW|项目概览" @rfqInfo="emitRfq"/>
     <bulkSupplierOverview :rfqInfoData="rfqInfoData"  class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_SUPPLIEROVERVIEW|批量供应商概览" :categoryCode="rfqInfo.categoryCode"/>
     <bulkSupplierPandect   :rfqInfoData="rfqInfoData" class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_FACTORYOVERVIEW|批量供应商工厂总览" :paramCategoryCode="rfqInfo.categoryCode" :paramCategoryName="rfqInfo.categoryName"/>
-    <fixedRecord  :rfqInfoData="rfqInfoData" class="margin-top20" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_NOMINATERECORD|定点记录" />
+    <fixedRecord  :rfqInfoData="rfqInfoData" class="margin-top20 fixedRecord" v-permission.auto="RFQ_DETAIL_TIPS_NEGOTIATEBASIC_MOUDULES_NOMINATERECORD|定点记录" />
   </div>
 </template>
 
@@ -56,10 +56,16 @@ export default {
 }
 </script>
 
-<style>
-.right-btn {
-  position: absolute;
-  top: -3.5rem;
-  right: 0;
+<style lang="scss" scoped>
+.negotiateBasicInfor {
+  .right-btn {
+    position: absolute;
+    top: -3.5rem;
+    right: 0;
+  }
+
+  .fixedRecord {
+    margin-bottom: 70px;
+  }
 }
 </style>
