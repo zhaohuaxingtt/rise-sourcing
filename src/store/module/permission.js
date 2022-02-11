@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2021-12-30 15:39:20
+ * @LastEditTime: 2022-02-11 11:09:29
  * @LastEditors: Please set LastEditors
  * @Description: 用户信息保存。
  * @FilePath: \rise\src\store\module\permission.js
@@ -11,13 +11,13 @@ import { getUserInfoByToken, getSystemMeun } from '@/api/usercenter'
 const routerLayout = () => import('@/layout/default.vue')
 const getVuerouter = function(router) {
   const res = []
-  router.forEach(element => {
+  router.forEach((element) => {
     const data = {
       meta: {
-        title: element.title
+        title: element.title,
       },
       path: element.path,
-      children: element.children ? getVuerouter(element.children) : []
+      children: element.children ? getVuerouter(element.children) : [],
     }
     if (!element.children && element.filePath) {
       data.component = () => import(`@/views${element.filePath}`)
@@ -49,15 +49,13 @@ function initMeun(data) {
  * @return {*}
  */
 function translateUserRole(userInfo) {
-  console.log(userInfo)
   try {
     const roleList = []
-    userInfo.roleList.forEach(i => {
+    userInfo.roleList.forEach((i) => {
       roleList.push(i.code)
     })
     return roleList
   } catch (error) {
-    console.log(error)
     return []
   }
 }
@@ -69,7 +67,7 @@ const state = {
   userInfo: {},
   whiteBtnList: [],
   language: 'zh',
-  resourceList: [] //前端上传的resource列表
+  resourceList: [], //前端上传的resource列表
 }
 const mutations = {
   SET_LANGUAGE(state, data) {
@@ -93,14 +91,16 @@ const mutations = {
   },
   SET_RESOURCE(state, data) {
     state.resourceList = data
-  }
+  },
 }
 //合并菜单的key到resouce里面去，满足菜单勾选取消后，能将界面上是菜单类型的permissionremove掉
-function mergeMenuToresouce(resouce,menuList){
+function mergeMenuToresouce(resouce, menuList) {
   try {
-    menuList.forEach(items=>{
-      if(items.permissionKey) resouce[items.permissionKey] = 'menu'
-      if(items.menuList && items.menuList.length > 0){mergeMenuToresouce(resouce,items.menuList)}
+    menuList.forEach((items) => {
+      if (items.permissionKey) resouce[items.permissionKey] = 'menu'
+      if (items.menuList && items.menuList.length > 0) {
+        mergeMenuToresouce(resouce, items.menuList)
+      }
     })
   } catch (error) {
     return []
@@ -111,10 +111,10 @@ const actions = {
   getPermissinInfo({ commit }) {
     return new Promise((r, j) => {
       getSystemMeun()
-        .then(res => {
+        .then((res) => {
           if (res.code == 200 && res.data) {
             commit('SET_MENU_LIST', initMeun(res.data.menuList))
-            mergeMenuToresouce(res.data.resourceList,res.data.menuList)
+            mergeMenuToresouce(res.data.resourceList, res.data.menuList)
             console.log(res.data.resourceList)
             commit('SET_WIHTEBTN_LIST', res.data.resourceList || [])
             r(res.data.menuList || [])
@@ -124,7 +124,7 @@ const actions = {
             j()
           }
         })
-        .catch(err => {
+        .catch((err) => {
           commit('SET_MENU_LIST', [])
           commit('SET_WIHTEBTN_LIST', [])
           j()
@@ -136,7 +136,7 @@ const actions = {
     // eslint-disable-next-line no-debugger
     return new Promise((resole, reject) => {
       getUserInfoByToken()
-        .then(res => {
+        .then((res) => {
           // eslint-disable-next-line no-debugger
           if (res.code == 200 && res.data) {
             commit('SET_USER_INFO', res.data)
@@ -148,7 +148,7 @@ const actions = {
             reject({})
           }
         })
-        .catch(err => {
+        .catch((err) => {
           commit('SET_USER_INFO', {})
           commit('SET_ROLE_INFO', [])
           reject(err)
@@ -162,16 +162,19 @@ const actions = {
   refreshToken() {},
   uploadResource({ commit, state }, resource) {
     const template = JSON.parse(JSON.stringify(state.resourceList))
-    commit('SET_RESOURCE', [...template, ...[{ name: resource[1], permissionKey: resource[0], type: 2 }]])
+    commit('SET_RESOURCE', [
+      ...template,
+      ...[{ name: resource[1], permissionKey: resource[0], type: 2 }],
+    ])
   },
   clearResource({ commit }) {
     commit('SET_RESOURCE', [])
-  }
+  },
 }
 const getters = {}
 export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 }

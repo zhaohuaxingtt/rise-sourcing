@@ -41,7 +41,7 @@
         <span class="font18 font-weight"></span>
         <div class="floatright">
           <!--------------------指派按钮----------------------------------->
-          <iButton @click="openAssignDialog" v-permission.auto='MODELTARGETPRICE_SIGNIN_ASSIGNBTN|模具目标价管理-目标价签收-指派按钮'>{{language('LK_ZHIPAI','指派')}}</iButton>
+          <iButton @click="openAssignDialog" :loading="assignDialogVisible" v-permission.auto='MODELTARGETPRICE_SIGNIN_ASSIGNBTN|模具目标价管理-目标价签收-指派按钮'>{{language('LK_ZHIPAI','指派')}}</iButton>
           <!--------------------退回按钮----------------------------------->
           <iButton @click="openSendBack" v-permission.auto='MODELTARGETPRICE_SIGNIN_BACK|模具目标价管理-目标价签收-退回按钮'>{{language('TUIHUI','退回')}}</iButton>
           <!--------------------无投资按钮----------------------------------->
@@ -83,7 +83,7 @@
     <!------------------------------------------------------------------------>
     <!--                  指派弹窗                                      --->
     <!------------------------------------------------------------------------>
-    <assignDialog ref="assign" :dialogVisible="assignDialogVisible" @changeVisible="changeAssignDialogVisible" @sendAccessory="targetAppoint" />
+    <assignDialog ref="assign" :dialogVisible.sync="assignDialogVisible" @changeVisible="changeAssignDialogVisible" @sendAccessory="targetAppoint" />
      <!------------------------------------------------------------------------>
     <!--                  无投资确认弹窗                                      --->
     <!------------------------------------------------------------------------>

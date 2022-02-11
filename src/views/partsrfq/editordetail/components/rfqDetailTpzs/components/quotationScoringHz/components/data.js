@@ -401,19 +401,20 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
 
                     total[key] = fsTemplate ? ((!element[key] || total[key] == "/")?"/":keepTwoDecimalFull(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))):''
                   }else{
+                    //mathjs版本问题，floor函数不可用，故使用tofixed(3).slice(0, -1)截取
                     groupArr = groupArr.map(item => {
                       console.log(`key: ${ key }`, /^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key))
                       return {
                         ...item,
                         [key]: 
                           (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) ? 
-                          element.groupId === item.groupIdTemp ? math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toString() : item[key]:
-                          element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`)) : item[key]
+                          (element.groupId === item.groupIdTemp ? math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toFixed(3).slice(0,-1) : item[key]):
+                          (element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`)) : item[key])
                       }
                     })
 
                     if (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) {
-                      total[key] = math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toString()
+                      total[key] = math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toFixed(3).slice(0,-1)
                     } else {
                       total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`))
                     }
