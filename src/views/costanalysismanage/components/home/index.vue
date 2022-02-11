@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:32:54
- * @LastEditTime: 2021-11-25 16:11:07
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-02-11 16:44:18
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\home\index.vue
 -->
@@ -18,6 +18,7 @@
               menuName_obj_ae: ''
             }"
             isPage
+            isUser
             credentials
             class="margin-left20" />
           <span class="margin-left20">
