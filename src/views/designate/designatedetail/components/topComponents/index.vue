@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-04-22 12:17:27
- * @LastEditTime: 2021-11-23 22:48:11
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2022-02-11 16:55:09
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\designate\designatedetail\components\topComponents\index.vue
 -->
@@ -21,6 +21,7 @@
           queryParams:['bizId_obj_ae']}"
         credentials
         isPage
+        isUser
         optionDicKey="LOG_OPERATION_TYPES"
 				:optionDicKey2="optionDicKey2"
         class="margin-left20 margin-right10 " />
