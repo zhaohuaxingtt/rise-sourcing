@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:14:14
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-14 15:43:41
+ * @LastEditTime: 2022-02-11 16:47:29
  * @Description: 模具目标价顶部导航
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\components\headerNav.vue
 -->
@@ -17,6 +17,7 @@
             menuName_obj_ae: '模具目标价-模具目标价详情页'
           }"
           isPage
+          isUser
           credentials
           optionDicKey="LOG_OPERATION_TYPES"
           optionDicKey2="模具目标价详情页"
