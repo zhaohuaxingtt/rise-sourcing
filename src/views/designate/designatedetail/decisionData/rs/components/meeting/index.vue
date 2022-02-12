@@ -118,11 +118,11 @@
         </template>
         <template #investFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdDevFee | toThousands }}</p>
+            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
             <p>{{ scope.row.investFee | toThousands }}</p>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdDevFee | toThousands }}</p>
+            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
           </span>
           <span v-else>
             <p>{{ scope.row.investFee | toThousands }}</p>
