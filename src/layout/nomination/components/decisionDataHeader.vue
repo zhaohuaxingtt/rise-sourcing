@@ -129,8 +129,14 @@ export default {
         // tab切换
         handleClick(tab){
             const { query } =  this.$route;
-            const { name='Title' } = tab;
+            let { name='Title' } = tab;
             this.updateSteps()
+
+            if (this.$route.meta.layoutPath ==='/desinatepreview') {
+                name = name.replace(/.*\/(.+)$/, '/desinatepreview/$1')
+            }
+
+            console.log(name)
             this.$router.push({
                 path: name,
                 query,

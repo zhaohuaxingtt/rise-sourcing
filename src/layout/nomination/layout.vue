@@ -38,17 +38,9 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     // 定点管理预览跳转逻辑
-    if (from.meta.layoutPath && !to.meta.layoutPath && to.meta.path) {
-      const path = `${from.meta.layoutPath}/${to.meta.path}`
-      const query = from.query
-      const params = from.params
-      return next({
-        path,
-        params,
-        query
-      })
+    if (!(from.meta.layoutPath && !to.meta.layoutPath && to.meta.path)) {
+      next()
     }
-    next()
   },
   data(){
     return{
