@@ -257,7 +257,7 @@ export default {
         },
         // 临时跳转到决策资料，不更新当前步骤
         gotoNomiAttach() {
-            this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId})})
+            // this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId})})
         },
         // 跳转到任何已完成的定点步骤
         async toAnyNomiStep(item) {
@@ -310,14 +310,16 @@ export default {
         preview(){
             const {path,query} = this.$route;
             console.log(path, '当前路径');
-            this.$router.push({
-              path,
-              query: {
-                ...query,
-                isPreview:'1',
-                typeSelect:this.$store.state.nomination.costType || ''
-              }
+
+            const routeData = this.$router.resolve({
+                path: `/desinatepreview/${ path.replace(/.*\/(.+)$/, '$1') }`,
+                query:{
+                    ...query,
+                    isPreview:'1',
+                    typeSelect:this.$store.state.nomination.costType || ''
+                }
             })
+            window.open(routeData.href, '_blank')
         },
         onDesignateTypeChange(data) {
             // 缓存/更新定点申请类型
