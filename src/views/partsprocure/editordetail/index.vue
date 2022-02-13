@@ -589,6 +589,7 @@
 		},
 		created() {
 			this.getDatailFn();
+			this.getProcureGroup();
 			this.getDicts()
 			this.getCarTypeSopList()
 		},
@@ -737,7 +738,6 @@
 							console.warn('at first times the components will be to go mounted...')
 						}
 					}
-					this.getProcureGroup()
 				});
 			},
 			//获取liline部门
@@ -885,7 +885,7 @@
 								//所以需要刷新一下零件产量页签
 								this.updateTabs()
 								//更新每车用量
-								this.$refs.volume.getData()
+								this.$refs.volume && this.$refs.volume.getData()
 							resolve(res)
 						} else {
 							iMessage.error(res.desZh);
@@ -913,8 +913,8 @@
     * @return {*}
     */
 			updateTabs() {
-				this.$refs.outputPlan.getData();
-				this.$refs.outputRecord.getData();
+				this.$refs.outputPlan && this.$refs.outputPlan.getData();
+				this.$refs.outputRecord && this.$refs.outputRecord.getData();
 			},
    /**
     * @description: 清空当前时间，更改sop时间过后。需要置空产量计划的开始时间。将默认开始时间同步为sop时间（默认的动作后台已经判断）
