@@ -135,7 +135,7 @@ export default {
         carTypeName: '',
         procureFactoryId: '',
         cfPriceType: '',
-        showSelf: true
+        // showSelf: true
       },
       isEdit: false,
       tableLoading: false,
@@ -210,7 +210,7 @@ export default {
         carTypeName: '',
         procureFactoryId: '',
         cfPriceType: '',
-        showSelf: true
+        // showSelf: true
       }
       this.sure()
     },

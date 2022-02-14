@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import {iPage, iNavMvp, iButton,iCard,icon} from 'rise';
+  import {iPage, iNavMvp, iButton,iCard,icon,iMessage} from 'rise';
   // import {tabRouterList} from '../data';
   import {getEklPbi,getPowerBiVal} from '@/api/achievement'
   import * as pbi from 'powerbi-client';
