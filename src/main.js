@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:06
- * @LastEditTime: 2021-12-29 14:58:58
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-11 17:38:43
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\main.js
  */
@@ -21,6 +21,7 @@ import './utils/mydirect'
 
 require('./auto').init()
 Vue.config.productionTip = false
+window.sessionStorage.setItem('env', process.env.NODE_ENV)
 Promise.all([
   import('rise/web/lang/zh.js'),
   import('rise/web/lang/en.js'),
