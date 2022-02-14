@@ -32,6 +32,7 @@
         class="table margin-top20"
         lang
         ref="table"
+        height="65vh"
         :tableData="tableListData"
         :tableTitle="tableTitle"
         :tableLoading="loading"

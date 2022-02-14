@@ -715,6 +715,7 @@ export default {
               } else {
                 iMessage.success(result)
               }
+              this.getCommonSourcingView();
             } else {
               iMessage.error(result)
             }
