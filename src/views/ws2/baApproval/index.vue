@@ -459,10 +459,14 @@ export default {
         const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
         if(res.data){
           if(this.tableIndex === 1){
-            this.confirmTableData = res.data.map(item => ({
-              ...item,
-              baNumber: item.carTypeName === 'Total' ? '' : (sixBa ? `A-${sixBa}-${int.length === 0 ? 'INT' : int}` : sixBa),
-            }));
+            this.confirmTableData = res.data.map(item => {
+              const baList = item.baNum ? item.baNum.split('-') : []
+              const suffix = baList && baList.length ? `-${baList[baList.length - 1]}` : ''
+              return {
+                ...item,
+                baNumber: item.carTypeName === 'Total' ? '' : (sixBa ? `A-${sixBa}-${int.length === 0 ? 'INT' : int}${suffix}` : sixBa),
+              }
+            });
           }else if(this.tableIndex === 3){
             this.confirmTableData = res.data.map(item => ({
               ...item,

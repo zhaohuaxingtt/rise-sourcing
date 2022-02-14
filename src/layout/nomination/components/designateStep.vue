@@ -40,7 +40,7 @@
                 <!-- <iButton @click="toNextStep">{{language('LK_XIAYIBU','下一步')}}</iButton> -->
                 <iButton v-if="isDecision" @click="preview" v-permission.auto="NOMINATION_MENU_PREVIEW|预览">{{language('LK_YULAN','预览')}}</iButton>
                 <!-- <logButton class="margin-left20" @click="log" v-permission.auto="NOMINATION_MENU_LOG|LOG" /> -->
-                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" />
+                <iLoger :config="{module_obj_ae: '定点申请', bizId_obj_ae: 'desinateId', queryParams:['bizId_obj_ae']}" credentials isPage isUser class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" optionDicKey2="定点申请详情页" />
                 <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
             </div>
         </div>
@@ -106,7 +106,8 @@ import {
   iMessage
 } from "rise";
 // import logButton from '@/components/logButton'
-import iLoger from '@/components/iLoger'
+// import iLoger from '@/components/iLoger'
+import iLoger from 'rise/web/components/iLoger'
 import mettingDialog from './mettingDialog'
 import {
     nominateAppSExport,
