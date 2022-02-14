@@ -12,7 +12,7 @@
             v-for="(item,index) in list"
             :key="index">
       <div @click="onJump(item)"
-            :v-permission="item.permissionKey"
+            v-permission="item.permissionKey"
            class="cursor cardBox">
         <iCard class="icard">
           <div slot="header">
