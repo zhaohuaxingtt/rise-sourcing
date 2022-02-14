@@ -12,6 +12,7 @@
             v-for="(item,index) in list"
             :key="index">
       <div @click="onJump(item)"
+            :v-permission="item.permissionKey"
            class="cursor cardBox">
         <iCard class="icard">
           <div slot="header">
@@ -39,54 +40,55 @@ export default {
           name: "采购金额总览",
           key: "CAIGOUJINEZONGLAN",
           image: require("@/assets/images/partRfq/internalDemandAnalysis01.png"),
-          url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/purchaseAmountOverall'
+          url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/purchaseAmountOverall',
         },
         {
           name: "产量总览",
           key: "CAILIANGZONGLAN",
           image: require("@/assets/images/partRfq/internalDemandAnalysis02.png"),
-          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/output"
+          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/output",
         }, {
           name: "批量供应商概览",
           key: "PLGYSGL",
           image: require("@/assets/images/partRfq/internalDemandAnalysis03.png"),
-          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/batchSupplier"
+          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/batchSupplier",
         }, {
           name: "车型价格对比",
           key: "CHEXINGJIAGEDUIBI",
           image: require("@/assets/images/partRfq/internalDemandAnalysis04.png"),
-          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/carPrice"
+          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/carPrice",
         }, {
           name: "EKL",
           key: "EKL",
           image: require("@/assets/images/partRfq/internalDemandAnalysis05.png"),
           // url: process.env.VUE_APP_PORTAL_URL + "achievement/baseData/mymerit",
-          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/ekl"
+          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/ekl",
+          permissionKey:"CATEGORY_ASSISTANT_EKL"
         }, {
           name: "SOP进度轴",
           key: "SOPJINDUZHOU",
           image: require("@/assets/images/partRfq/internalDemandAnalysis06.png"),
-          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/sop"
+          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/sop",
         }, {
           name: "成本结构",
           key: "CHENGBENJIEGOU",
           image: require("@/assets/images/partRfq/internalDemandAnalysis07.png"),
-          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain"
+          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/costAnalysisMain",
         }, {
           name: "技术路线",
           key: "JISHULUXIAN",
           image: require("@/assets/images/partRfq/internalDemandAnalysis08.png"),
-          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/technology"
+          url: "/sourcing/categoryManagementAssistant/internalDemandAnalysis/technology",
         }, {
           name: "批量供应商总览",
           key: "PLGYSZL",
           image: require("@/assets/images/partRfq/internalDemandAnalysis09.png"),
-          url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'
+          url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect',
         }, {
           name: "定点历史记录",
           key: "DINGDIANLISHIJILU",
           image: require("@/assets/images/partRfq/internalDemandAnalysis10.png"),
-          url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/historyPoint'
+          url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/historyPoint',
         }
       ],
       // 成本组成-手工输入
