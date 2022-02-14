@@ -6225,6 +6225,10 @@
     LK_XIANGHUFUJIAN: '相互附件',
     LK_XIANGGUANFUJIAN: '相关附件',
     'Unit：Mio': '单位：百万元',
+    COMMODITYKESHI: "commodity科室",
+    CSFGUZHANG: "CSF股长",
+    SOPJG: "SOP价格",
+    SOPJIAGE1: "SOP价格",
   }
   var xmlHttp = ''
   if(window.XMLHttpRequest){
@@ -6236,6 +6240,37 @@
   xmlHttp.onreadystatechange = function() {
       if (xmlHttp.readyState==4 && xmlHttp.status==200){
           const data = JSON.parse(xmlHttp.responseText)
+          // let item = Object.assign(data.data.zh)
+          // let obj = {}
+          // let obj_undefined = {}
+          // let count = 0
+          // Object.keys(item).forEach(key=>{
+          //   if(typeof item[key] != 'object'){
+          //     if(!oldLanguage.hasOwnProperty(key)){
+          //       if(item[key]!="undefined"){
+          //         obj[key] = item[key]
+          //       }else{
+          //         obj_undefined[key] = item[key]
+          //         count++
+          //       }
+          //     }
+          //   }else{
+          //     Object.keys(item[key]).forEach(child=>{
+          //       if(!oldLanguage[key].hasOwnProperty(child)){
+          //         if(item[key][child]!="undefined"){
+          //           obj[key][child] = item[key][child]
+          //         }else{
+          //           obj_undefined[key][child] = item[key][child]
+          //           count++
+          //         }
+          //       }
+          //     })
+          //   }
+          // })
+          // console.log(obj_undefined);
+          // console.log(JSON.stringify(obj_undefined));
+          // console.log(count);
+          // console.log(obj);
           i18n.setLocaleMessage('zh', Object.assign(data.data.zh,oldLanguage))
       }
   }
