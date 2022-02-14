@@ -59,13 +59,13 @@
         </template>
         <!-- slot content -->
         <template slot-scope="row">
-           <span class="flexRow">
+           <!-- <span class="flexRow"> -->
             <span :class="`openLinkText cursor ${activeItemsLink}`"  @click="openPage(row.row)"> {{ row.row[activeItems]}}</span>
-            <span class="icon-gray  cursor " v-if="row.row[activeItems] && !activeItemsLink"  @click="openPage(row.row)">
+            <!-- <span class="icon-gray  cursor " v-if="row.row[activeItems] && !activeItemsLink"  @click="openPage(row.row)">
                 <icon symbol class="show" name="icontiaozhuananniu" />
                 <icon symbol class="active" name="icontiaozhuanxuanzhongzhuangtai" />
-            </span>
-          </span> 
+            </span> -->
+          <!-- </span>  -->
           </template>
       </el-table-column>
       <!----------------------普通表格展示---------------------------------------->
