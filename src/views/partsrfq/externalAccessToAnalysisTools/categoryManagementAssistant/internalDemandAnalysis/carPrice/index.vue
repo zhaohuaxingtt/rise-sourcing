@@ -1,8 +1,8 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:21
- * @LastEditTime: 2021-09-30 13:22:51
- * @LastEditors: zbin
+ * @LastEditTime: 2022-02-15 16:51:56
+ * @LastEditors: Please set LastEditors
  * @Description: 车型价格对比
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\carPrice\index.vue
 -->
@@ -146,7 +146,7 @@ export default {
     icon,
     iSelectCustom,
   },
-  data() {
+  data () {
     return {
       config: {
         type: 'report',
@@ -230,7 +230,7 @@ export default {
       filterCarValue: [], //对标车型
       filterCarValueName: [], //对标车型
       pickerOptions: {
-        disabledDate(time) {
+        disabledDate (time) {
           //  let currentYear = new Date().getTime()
           let currentYear = new Date().setMonth(new Date().getMonth() - 1)
           return time.getTime() > currentYear
@@ -239,10 +239,10 @@ export default {
       saveLoading: false, //保存loading
     }
   },
-  created() {
+  created () {
     this.categoryCode = this.$store.state.rfq.categoryCode
   },
-  async mounted() {
+  async mounted () {
     await this.carTypeByCategoryCode()
     await this.getPowerBiUrl()
     await this.getDict()
@@ -252,11 +252,11 @@ export default {
   },
   watch: {
     '$i18n.locale': {
-      handler(newValue) {
+      handler (newValue) {
         this.renderBi()
       },
     },
-    async '$store.state.rfq.categoryCode'() {
+    async '$store.state.rfq.categoryCode' () {
       this.categoryCode = this.$store.state.rfq.categoryCode
       this.mark = ''
       this.selectDate = []
@@ -268,7 +268,7 @@ export default {
     },
   },
   methods: {
-    getLastMonth() {
+    getLastMonth () {
       var date = new Date()
       var year = date.getFullYear() //当前年：四位数字
       var month = date.getMonth() //当前月：0-11
@@ -282,7 +282,7 @@ export default {
       let lastYearMonth = year + '-' + month
       return lastYearMonth
     },
-    getFirstMonth() {
+    getFirstMonth () {
       var date = new Date()
       var year = date.getFullYear() //当前年：四位数字
       var month = date.getMonth() //当前月：0-11
@@ -295,12 +295,12 @@ export default {
     },
 
     // 选中对标车型
-    handleChangeCarVal(val) {
+    handleChangeCarVal (val) {
       this.filterCarValueName = val.map((item) => item.modelNameZh)
       this.filterCarValueName = window._.slice(this.filterCarValueName, 0, 5)
     },
     // 获取近期操作数据
-    async getCategoryAnalysis() {
+    async getCategoryAnalysis () {
       let params = {
         categoryCode: this.categoryCode,
         schemeType: 'CATEGORY_MANAGEMENT_CAR_TYPE',
@@ -335,8 +335,7 @@ export default {
             //         }
             //       })
             //     })
-            this.config.pageName =
-              this.dictData.CATEGORY_MANAGEMENT_CAR_TYPE[2].code
+            this.config.pageName = this.dictData.CATEGORY_MANAGEMENT_CAR_TYPE[2].code
             this.selectDate = [this.getFirstMonth(), this.getLastMonth()]
           }
           console.log(this.operateLogClon)
@@ -355,12 +354,12 @@ export default {
       })
     },
     // 保存备注
-    saveMark(mark) {
+    saveMark (mark) {
       this.mark = mark
       this.markShow = false
     },
     // 保存
-    async save() {
+    async save () {
       try {
         this.saveLoading = true
         const resFile = await this.getDownloadFileAndExportPdf({
@@ -407,12 +406,12 @@ export default {
       }
     },
     // 打开备注弹窗
-    openMark() {
+    openMark () {
       this.markShow = true
       this.$refs.marks.getMarkdefalut(this.mark)
     },
     // 获取财报iframeurl
-    async getPowerBiUrl() {
+    async getPowerBiUrl () {
       await getCmCarTypePricePbi().then((res) => {
         if (res.data) {
           this.url = res.data
@@ -420,7 +419,7 @@ export default {
       })
     },
     // 数据字典
-    getDict() {
+    getDict () {
       selectDictByKeys([{ keys: 'CATEGORY_MANAGEMENT_CAR_TYPE' }]).then(
         (res) => {
           this.dictData = res.data
@@ -428,7 +427,7 @@ export default {
       )
     },
     // 获取车型数据
-    async carTypeByCategoryCode() {
+    async carTypeByCategoryCode () {
       let params = {
         categoryCode: this.categoryCode,
       }
@@ -447,7 +446,7 @@ export default {
       })
     },
     // 重置
-    async reset() {
+    async reset () {
       this.filterCarValue = []
       //   await  this.carTypeByCategoryCode()
       //    console.log(this.operateLogClon);
@@ -474,7 +473,7 @@ export default {
       this.renderBi()
     },
     // 初始化配置
-    init() {
+    init () {
       this.config.embedUrl = this.url.embedUrl
       this.config.accessToken = this.url.accessToken
       // this.config.pageName=this.dictData.CATEGORY_MANAGEMENT_CAR_TYPE[0].code
@@ -485,7 +484,7 @@ export default {
         pbi.factories.routerFactory
       )
     },
-    renderBi(val) {
+    renderBi (val) {
       let filterArr = []
       this.filter.values = [this.categoryCode]
       filterArr.push(this.filter)
@@ -580,7 +579,7 @@ export default {
       document.getElementsByTagName('iframe')[0].style.border = 'none'
     },
     // 返回
-    back() {
+    back () {
       this.$router.go(-1)
     },
   },
