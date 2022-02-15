@@ -6229,6 +6229,15 @@
     CSFGUZHANG: "CSF股长",
     SOPJG: "SOP价格",
     SOPJIAGE1: "SOP价格",
+    "FSNo": "FS号",
+    "PARTNO": "Part NO.",
+    "EBR% (input)": "EBR% (input)",
+    "Volume (lifetime)": "Volume (lifetime)",
+    "Volume (p.a.)": "Volume (p.a.)",
+    "BEZUGBIAOQIAN": "bezug标签",
+    "LK_LINGJIANMING": "零件名",
+    "SEHJIKESHI": "设计科室",
+    "CONFIGSCOREDEPT_XIUGAISHIJIAN": "修改时间",
   }
   var xmlHttp = ''
   if(window.XMLHttpRequest){
