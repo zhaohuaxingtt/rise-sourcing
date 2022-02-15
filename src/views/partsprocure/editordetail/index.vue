@@ -210,8 +210,9 @@
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_SOPDATE|SOP日期" :label="language('LK_SOPRIQI','SOP日期') + ':'" name="test">
 							<!----------------------------------------------------------------------------------------------->
 							<!---------------sop时间如果是GS零件的时候，是可以手动选择的------------------------------------------>
-							<!----------------------------------------------------------------------------------------------->
-							<iDatePicker v-if='detailData.partProjectSource == 2 && !disabled' v-model='detailData.sopDate' type="date"></iDatePicker>
+							<!---------------2022/02/15 取消零件来源为手工(code: 2)的才能编辑的限制----------------------------------------->
+							<!---------------有自带sop日期的车型项目，不可编辑，没有则可以----------------------------------------->
+							<iDatePicker v-if='!getSopDateDisabled() && !disabled' v-model='detailData.sopDate' type="date"></iDatePicker>
 							<iText v-else >
 								{{ detailData.sopDate ? formatDate(detailData.sopDate) : detailData.sopDate }}
 							</iText>
@@ -548,7 +549,7 @@
 			// 采购项目类型为钢材一次性、批量采购
 			isSteelPurchase() {
 				return this.detailData.partProjectType == this.partProjTypes.GANGCAIYICIXINGCAIGOU || this.detailData.partProjectType == this.partProjTypes.GANGCAIPILIANGCAIGOU
-			},
+			}
 		},
 		watch:{
 			'selectOldParts.selectData':function(res){
@@ -874,7 +875,7 @@
 				}
 				detailData["procureFactoryId"] = factoryItems ? factoryItems.id : ''
 				let carTypeProject = this.fromGroup.CAR_TYPE_PRO && Array.isArray(this.fromGroup.CAR_TYPE_PRO) && this.fromGroup.CAR_TYPE_PRO.find(items=>items.code == detailData.carTypeProjectZh)
-				detailData["carTypeProjectId"] = carTypeProject ? carTypeProject.id :''
+				detailData["carTypeProjectId"] = carTypeProject ? carTypeProject.id : (this.detailData.carTypeProjectId ? this.detailData.carTypeProjectId : '')
 				return new Promise((resolve, reject) => {
 					updateProcure(detailData).then((res) => {
 						this.saveLoading = false
@@ -984,11 +985,13 @@
 			// 选择车型项目的时候，需要带出对应车型的SOP时间
 			getCarTypeSopTime(carType) {
 				// 原来有SOP时间不需要联动
-				if(this.bakCarTypeSopTime) return
+				// if(this.bakCarTypeSopTime) return
 				const carTypeItem = this.fromGroup.CAR_TYPE_PRO.find(o => o.code === carType)
 				if (carTypeItem && carTypeItem.sopDate) {
 					this.detailData.sopDate = carTypeItem.sopDate
 					// polo gp
+				} else {
+					this.detailData.sopDate = ""
 				}
 			},
 			// 获取车型项目sop
@@ -1011,6 +1014,15 @@
 			},
 			formatDate(val, format='YYYY-MM-DD') {
 				return dayjs(val).format(format)
+			},
+			// 获取sop日期禁止编辑状态
+			getSopDateDisabled() {
+				if (Array.isArray(this.fromGroup.CAR_TYPE_PRO)) {
+					const currentCarTypeProject = this.fromGroup.CAR_TYPE_PRO.find(item => item.code === this.detailData.carTypeProjectZh) || {}
+					return currentCarTypeProject.sopDate ? true : false
+				} else {
+					return true
+				}
 			}
 		}
 }
