@@ -378,7 +378,7 @@
 		</iCard>
 		<iTabsList class="margin-top20" type='card' v-if='infoItem.id'>
 			<!-------------------------已定点时显示定点信息tab-  ----------------------------------------->
-			<el-tab-pane v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.DESIGNATED') && !isSteelPurchase" v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')">
+			<el-tab-pane v-if="detailData.status == getEnumValue('PURCHASE_PROJECT_STATE_ENUM.DESIGNATED')" v-permission.auto="PARTSPROCURE_EDITORDETAIL_DINGDIANXINXI|定点信息" lazy :label="language('LK_DINGDIANXINXI','定点信息')">
 				<designateInfo :params="infoItem" />
 			</el-tab-pane>
 			<el-tab-pane v-if="!isSteelPurchase" lazy :label="language('LK_CAILIAOZUXINXI','材料组信息')"
