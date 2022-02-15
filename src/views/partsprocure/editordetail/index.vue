@@ -456,7 +456,7 @@
 	export default {
 		components: {cancelProject,creatFsGsNr,createNomiappBtn,selectOldpartsNumber,iInput,iPage,iFormGroup,iFormItem,iCard,iText,iSelect,iButton,iTabsList,logistics,targePrice,materialGroupInfo,outputPlan,outputRecord,volume,drawing,sheet,remarks,iLoger,backItems,splitFactory,designateInfo,currentSupplier,iDatePicker,icon, createNomiappBtnAccs, purchaseApply},
 		provide:function(){
-			return {detailData:this.getDetailData, getDisabled: this.getDisabled}
+			return {detailData:this.getDetailData, getDisabled: this.getDisabled, getDatailFn: this.getDatailFn}
 		},
 		computed: {
 			...Vuex.mapState({
