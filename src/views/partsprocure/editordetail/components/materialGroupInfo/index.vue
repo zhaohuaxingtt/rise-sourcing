@@ -76,7 +76,7 @@ import { cloneDeep } from "lodash"
 export default {
   components: { iButton, iCard, iPagination, tableList, infos },
   mixins: [ pageMixins ],
-  inject: ['getDisabled'],
+  inject: ['getDisabled', 'getDatailFn'],
   props: {
     params: {
       type: Object,
@@ -210,6 +210,7 @@ export default {
             const resData = res.data && res.data.length && res.data[0] || {}
             // 刷新材料组数据
             this.getMaterialGroup(resData.categoryCode, resData.stuffCode)
+            this.getDatailFn()
             this.back()
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
