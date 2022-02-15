@@ -131,7 +131,7 @@ export function buildTitleTabel(params) {
      const temlateData = JSON.parse(JSON.stringify(tableTile))
      temlateData.props = 'round' + element.round
      temlateData['round'] = element.round
-     temlateData.name = '第'+element.round+`轮(${element.roundHeadDetailVO.inquiryType})`
+     temlateData.name = '第'+element.round+`轮<br/>(${element.roundHeadDetailVO.inquiryType})`
      temlateData.roundHeadDetailVO = element.roundHeadDetailVO
      supplierTitle.push(temlateData)
    });

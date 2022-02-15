@@ -20,7 +20,7 @@
     </template>
     <el-form>
       <el-form-item :label="type === '1' ? language('MUBIAOXUNJIACAIGOUYUAN','目标询价采购员') : language('MUBIAOLINIE','目标LINIE')">
-        <iSelect v-model="userId" :filterable="isLinieGZ">
+        <iSelect v-model="userId" filterable>
           <el-option
             v-for="item in userOptions"
             :key="item.value"
