@@ -199,11 +199,12 @@ export default {
             ...this.form,
             // categoryCode: this.$route.query.categoryCode || '',
             motorIds: motorIds || [],
-            // isNominated: this.form.isFromAeko,
+            isNominated: this.form.isFromAeko,
             targetMotorId: targetMotorId,
             isBindingRfq: this.$route.query.isBindingRfq,
             schemeId: this.$route.query.schemeId
           }
+          delete pms.isFromAeko
           const res = await getPartMessage(pms)
           if (res.code === '200') {
             this.tableListData = res.data
@@ -218,6 +219,7 @@ export default {
             isBindingRfq: this.$route.query.isBindingRfq,
             schemeId: this.$route.query.schemeId
           }
+          delete pms.isFromAeko
           const res = await getPartMessage(pms)
           if (res.code === '200') {
             this.tableListData = res.data
