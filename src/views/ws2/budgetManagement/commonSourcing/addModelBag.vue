@@ -437,6 +437,8 @@ export default {
               ])
             }
           }
+          const d1 = document.getElementById("chart1");
+          d1.style.height = `${carTypeBudgetDetailVOS.length * 150}px`
           const chart1 = echarts().init(document.getElementById("chart1"));
           let option1 = {
             tooltip: {

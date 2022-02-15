@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-11 15:10:27
+ * @LastEditTime: 2022-02-15 10:09:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -1050,7 +1050,7 @@ export default {
           mekTypeName = item.name;
         }
       });
-
+      this.getMekTable()
       if (this.gridData) {
         this.gridData.config["label#-1"] = mekTypeName;
       }
