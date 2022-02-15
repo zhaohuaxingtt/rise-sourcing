@@ -32,7 +32,7 @@
             {{scope.row[item.props]?scope.row[item.props]:"-"}}
           </template>
         </el-table-column>
-        <el-table-column v-else-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="160">
+        <el-table-column v-else-if="(item.props+'').indexOf('round') > -1" :key="index" align="center" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="100">
           <template slot="header">
             <el-tooltip effect="light">
               <template slot="content">
@@ -40,7 +40,7 @@
                <p>{{`询价结束时间: ${item.roundHeadDetailVO.roundsEndTime || "-"}`}}</p>
               </template>
               <p class="logoP">
-                <span class="title">{{item.key ? $t(item.key) : item.name}}</span>
+                <span class="title" v-html="item.key ? $t(item.key) : item.name"></span>
                 <icon v-if='item.roundHeadDetailVO.isNoBidOpen' name='iconweikaibiao' symbol class="margin-left5"></icon>
                 <icon v-if="item.roundHeadDetailVO.roundType === 'biddingRound'" name="iconpaimai" class="iconpaimai margin-left5"></icon>
                 <el-tooltip :content="language('XITONGZIDONGCHUANGJIAN','系统自动创建')"  placement="top" effect="light">
