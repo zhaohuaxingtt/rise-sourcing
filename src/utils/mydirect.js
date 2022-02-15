@@ -131,22 +131,15 @@ export function Hash() {
 // Input 整数输入
 // eslint-disable-next-line no-undef
 Vue.directive('Int', {
-  bind: function(el) {
+  bind: function(el, binding, vnode) {
     const input = el.getElementsByTagName('input')[0]
-    input.onkeyup = function(e) {
-      if (input.value.length === 1) {
-        input.value = input.value.replace(/[^1-9]/g, '')
-      } else {
-        input.value = input.value.replace(/[^\d]/g, '')
-      }
-    }
-    input.onblur = function(e) {
-      if (input.value.length === 1) {
-        input.value = input.value.replace(/[^1-9]/g, '')
-      } else {
-        input.value = input.value.replace(/[^\d]/g, '')
-      }
-    }
+    
+    input.addEventListener("input", () => {
+      const _v = input.value
+      input.value = (input.value + "").replace(/\D/g, "")
+      if (_v === input.value) return
+      input.dispatchEvent(new Event("input")) // 强制触发input事件
+    })
   },
 })
 
