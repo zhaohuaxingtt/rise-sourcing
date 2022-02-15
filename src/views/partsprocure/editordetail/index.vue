@@ -875,7 +875,7 @@
 				}
 				detailData["procureFactoryId"] = factoryItems ? factoryItems.id : ''
 				let carTypeProject = this.fromGroup.CAR_TYPE_PRO && Array.isArray(this.fromGroup.CAR_TYPE_PRO) && this.fromGroup.CAR_TYPE_PRO.find(items=>items.code == detailData.carTypeProjectZh)
-				detailData["carTypeProjectId"] = carTypeProject ? carTypeProject.id :''
+				detailData["carTypeProjectId"] = carTypeProject ? carTypeProject.id : (this.detailData.carTypeProjectId ? this.detailData.carTypeProjectId : '')
 				return new Promise((resolve, reject) => {
 					updateProcure(detailData).then((res) => {
 						this.saveLoading = false
