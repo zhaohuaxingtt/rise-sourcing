@@ -15,7 +15,7 @@
           <div class="search">
             <Popover
                 :content="$t('LK_CHUANGJIANSHIJIAN') + ':' + createDate"
-                placement="top-start"
+                placement="left"
                 trigger="hover">
               <label slot="reference">{{ $t('LK_BANBENHAO2') }}:</label>
             </Popover>
@@ -40,7 +40,7 @@
             <Popover
                 class="infoIcardValue"
                 :content="form['search.carTypeName']"
-                placement="top-start"
+                placement="left"
                 trigger="hover">
               <span slot="reference">{{ form['search.carTypeName'] }}</span>
             </Popover>
@@ -64,7 +64,7 @@
           </div>
           <div v-show="params.sourceStatus == 1">
             <Popover
-                placement="top-start"
+                placement="left"
                 trigger="hover">
               <div class="popoverDiv">
                 <p>{{ $t('MOULDADD.LK_SHENGCHANGONGCHANG') }}</p>
@@ -80,7 +80,7 @@
           </div>
           <div class="search">
             <Popover
-                placement="top-start"
+                placement="left"
                 trigger="hover">
               <div class="popoverDiv">
                 <p>{{ $t('LK_PIZHUNTOUZHI') }}</p>
@@ -218,7 +218,7 @@
               </iSelect>
               <Popover
                   v-if="!pageEdit"
-                  placement="top-start"
+                  placement="left"
                   :content="scope.row.linieName"
                   trigger="hover">
                 <div slot="reference" class="ellipsisDiv">{{ scope.row.linieName }}</div>
