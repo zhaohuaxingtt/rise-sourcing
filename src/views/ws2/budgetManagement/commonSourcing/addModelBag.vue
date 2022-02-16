@@ -715,6 +715,7 @@ export default {
               } else {
                 iMessage.success(result)
               }
+              this.getCommonSourcingView();
             } else {
               iMessage.error(result)
             }
@@ -732,6 +733,8 @@ export default {
             const result = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
             const message = this.$i18n.locale === 'zh' ? res.data.messageZh : res.data.messageEn
             if (Number(res.code) === 0) {
+              // CRW-3830
+              this.getCommonSourcingView();
               if(message){
                 iMessage.success(message)
               } else {
