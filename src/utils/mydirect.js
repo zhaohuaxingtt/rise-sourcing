@@ -56,6 +56,8 @@ Vue.directive('permission', {
     } else {
       //remove
       if (!store.state.permission.whiteBtnList[binding.expression]) {
+        // console.log(el)
+        // console.log(el.parentNode)
         if (openProcess) el.parentNode.removeChild(el)
       } else {
         if (businessPermission(value, router.currentRoute.query)) {
