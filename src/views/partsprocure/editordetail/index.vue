@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-01-18 16:03:51
+ * @LastEditTime: 2022-02-16 11:24:23
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -59,7 +59,7 @@
 				<iLoger
 					:config="{
 						module_obj_ae: '零件采购项目', 
-						_obj_ae: 'projectId', 
+						bizId_obj_ae: 'projectId', 
 						queryParams:['bizId_obj_ae']}"
 					credentials
 					isPage
