@@ -10,9 +10,9 @@
   <el-row gutter="20">
     <el-col :span="8"
             v-for="(item,index) in list"
+            v-permission="item.permissionKey"
             :key="index">
       <div @click="onJump(item)"
-          v-permission:auto="item.permissionKey|item.name"
            class="cursor cardBox">
         <iCard class="icard">
           <div slot="header">
