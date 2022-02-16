@@ -350,7 +350,7 @@ export default {
         window.open(routeData.href, '_blank')
       }else{
         const roleList = this.$store.state.permission.userInfo.roleList;
-        const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.some));
+        const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.code));
         console.log('roleListroleListroleList', roleList, isFlag);
         const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum + '?flag=' + !isFlag;
         window.open(url);
