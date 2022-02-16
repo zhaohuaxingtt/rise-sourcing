@@ -172,7 +172,6 @@
               this.username = '3'
               this.btnsgroup1 = ['CSM', 'CSM(Spare)']
               return 'KZ'
-
             }
             if (kzzl) {
               this.username = '4'
@@ -247,6 +246,7 @@
     },
 
     mounted() {
+      console.log(this.role);
       if(this.pfjgly) {
         this.currentView = 'pfjzfbmsj'
       }else if (this.role == 'CS' || this.role == 'BZ') { // 部门 部长助理||部长
@@ -279,7 +279,11 @@
         //   permissionKey: 'ACHIEVEMENT',
         //   key: 'LK_WDYJ'
         // }]
+      } else if(this.role == 'CS&&Linie') {
+        //  CRW-4185
+        this.currentView = 'zfbmsj'
       }
+      console.log('this.currentView', this.currentView, this.role);
       // this.getReportData();
     },
     methods: {
