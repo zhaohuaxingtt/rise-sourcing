@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2021-12-27 17:10:21
+ * @LastEditTime: 2022-02-16 16:24:23
  * @LastEditors: Please set LastEditors
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
@@ -43,7 +43,7 @@
         <iInput v-model="scope.row.onlineWeb"
                 v-if="isEdit"></iInput>
         <span class="openPage"
-              @click="openPdf(scope.row.onlineWeb)"
+              @click="openWeb(scope.row.onlineWeb)"
               v-else>{{scope.row.onlineWeb}}</span>
       </template>
       <template #openFile="scope">
@@ -124,6 +124,9 @@ export default {
     edit () {
       this.cloneTableListData = window._.cloneDeep(this.tableListData)
       this.isEdit = true
+    },
+    openWeb (val) {
+      window.open(val)
     },
     // 取消编辑
     unEdit () {
