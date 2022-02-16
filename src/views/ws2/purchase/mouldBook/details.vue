@@ -227,7 +227,7 @@
 
         <!-- 照片 -->
         <template #picture="scope">
-          <div v-if="scope.row.picture" class="table-link" @click="openPhotoList(scope.row.picture.split(','))">查看</div>
+          <div v-if="scope.row.assetNum" class="table-link" @click="openPhotoList(scope.row)">查看</div>
           <div v-else></div>
         </template>
       </iTableList>
@@ -274,7 +274,8 @@ import {
   assetTypes,
   craftTypes,
   getOrderNumPermission,
-  versionCombo
+  versionCombo,
+  getPictureListByFixedAssetCode
 } from "@/api/ws2/purchase/mouldBook";
 import { getTousandNum, NumFormat } from "@/utils/tool";
 import {Switch, Popover} from "element-ui"
@@ -437,9 +438,15 @@ export default {
     },
 
     //  照片
-    openPhotoList(imgList){
-      this.visible = true;
-      this.imgList = imgList;
+    openPhotoList(scope){
+      // this.visible = true;
+      // this.imgList = imgList;
+      getPictureListByFixedAssetCode({
+        fixedAssetCode: scope.assetNum
+      }).then(res => {
+        this.imgList = res.data.map(item => item.filePath);
+        this.visible = true;
+      })
     },
 
     changeSerch(type){

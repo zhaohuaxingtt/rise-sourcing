@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-04-12 23:48:38
- * @LastEditTime: 2022-01-05 11:35:19
+ * @LastEditTime: 2022-02-16 16:23:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\file\index.js
@@ -133,7 +133,7 @@ export function delFiles(params) {
 
 // 文件删除
 export function getFileByFileId(params) {
-  return file({
+  return fileRequst({
     url: `/getFileByFileId`,
     method: 'GET',
     params: {
