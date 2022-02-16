@@ -184,7 +184,18 @@ export default {
     // 保存
     handleSave() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOBAOCUNDESHUJU", "请选择需要保存的数据"))
-      if (this.multipleSelection.some(item => item.sendKmFlag == 1 && (!item.pcaResult || !item.tiaResult))) return iMessage.warn(this.language("SAVEPCARESANDTIARESTIPS", "请填写完整PCA分析结果和TIA分析结果"))
+
+      if (this.isPca && !this.isTia) {
+        if (this.multipleSelection.some(item => item.sendKmFlag == 1 && !item.pcaResult)) return iMessage.warn(this.language("SAVEPCARESTIPS", "请填写完整PCA分析结果"))
+      }
+
+      if (this.isTia && !this.isPca) {
+        if (this.multipleSelection.some(item => item.sendKmFlag == 1 && !item.tiaResult)) return iMessage.warn(this.language("SAVETIARESTIPS", "请填写完整TIA分析结果"))
+      }
+
+      if (this.isPca && this.isTia) {
+        if (this.multipleSelection.some(item => item.sendKmFlag == 1 && (!item.pcaResult || !item.tiaResult))) return iMessage.warn(this.language("SAVEPCARESANDTIARESTIPS", "请填写完整PCA分析结果和TIA分析结果"))
+      }
 
       this.saveLoading = true
       savePcaAndTia({
