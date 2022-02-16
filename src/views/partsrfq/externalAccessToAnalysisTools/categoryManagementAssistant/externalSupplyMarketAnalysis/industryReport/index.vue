@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-02 10:13:24
- * @LastEditTime: 2022-02-16 16:24:23
+ * @LastEditTime: 2022-02-16 16:30:50
  * @LastEditors: Please set LastEditors
  * @Description: 行业报告
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\industryReport\index.vue
@@ -48,7 +48,7 @@
       </template>
       <template #openFile="scope">
         <span class="openPage"
-              @click="openPdf(scope.row.fileId)">{{ language("YULAN","预览") }}</span>
+              @click="openPdf(scope.row.fileUrl)">{{ language("YULAN","预览") }}</span>
       </template>
     </tableList>
     <iPagination v-update
@@ -134,8 +134,8 @@ export default {
       this.tableListData = this.cloneTableListData
     },
     openPdf (url) {
-      // window.open(url)
-      getFileByFileId(url)
+      window.open(url)
+      // getFileByFileId(url)
     },
     // 文件下载
     async down () {
