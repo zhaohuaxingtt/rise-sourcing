@@ -181,13 +181,13 @@
 						</iFormItem>
 						
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
-							<iSelect v-model="detailData.carTypeProjectZh" filterable v-if="!disabled" @change="getCarTypeSopTime">
+							<iSelect v-model="detailData.carTypeProjectNum" filterable v-if="!disabled" @change="handleChangeByCarTypeProject">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
 								</el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.carTypeProjectZh, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
+							<iText v-else>{{ getName(detailData.carTypeProjectNum, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPE|车型" :label="language('LK_CHEXING','车型') + ':'" name="test" v-if="isCarType">
 							<iSelect ref="carTypeModelSelect" v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled ">
@@ -200,7 +200,7 @@
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
-							<iSelect v-model="detailData.procureFactory" :disabled='procureFactoryCanselect()' @change="checkFactory()" v-if="!disabled">
+							<iSelect v-model="detailData.procureFactory" :disabled='procureFactoryCanselect()' @change="handleChangeByProcureFactory" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
@@ -253,7 +253,7 @@
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINE|LINIE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门' v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))">
+							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门' v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))" @change="handleChangeByLinie">
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
@@ -517,14 +517,15 @@
 			cfController: {
 				get() {
 					if (Array.isArray(this.fromGroup.CF_CONTROL) && !this.fromGroup.CF_CONTROL.find(item => item.id === this.detailData.cfController)) {
-						return this.detailData.cfControllerName
+						return this.detailData.cfController
 					}
 
-					return this.detailData.cfController
+					return this.detailData.cfControllerName
 				},
 				set(nv) {
 					this.detailData.cfController = nv
-					this.detailData.cfControllerName = this.fromGroup.CF_CONTROL.find(item => item.id === nv).name
+					this.detailData.cfControllerName = this.fromGroup.CF_CONTROL.find(item => item.id === nv).name || ''
+					this.detailData.cfControllerPositionId = ''
 				}
 			},
 			originPartIsDb() { // 采购项目类型为仅零件号变更，且原零件号的采购项目类型为DB
@@ -561,9 +562,9 @@
 				// 零件项目类型
 				partProjTypes,
 				firstId:'',
-				checkFactoryString:'',
 				infoItem: {id:null},
 				detailData: detailData, //顶部详情数据
+				sourceDetailData: {}, // 后端保存的详情数据
 				targetprice: {}, //申请目标价数据
 				fromGroup: {}, //上方筛选列表
 				diologClose: false, //结束项目
@@ -596,13 +597,13 @@
 		},
 		methods: {
 			getEnumValue,
-   /**
-    * @description: 改变部门的时候，拿到最新的line
-    * @param {*}
-    * @return {*}
-    */
+   		/**
+				* @description: 改变部门的时候，拿到最新的linie列表
+				* @param {*}
+				* @return {*}
+				*/
 			changeUserDept(){
-				this.detailData.linieId = ''
+				this.clearLinie()
 				const currentLinieDept = this.fromGroup["LINIE_DEPT"].find(item => item.deptNum === this.detailData.linieDept)
 
 				this.getLinie(currentLinieDept.deptNum)
@@ -668,23 +669,6 @@
 					return '否'
 				}
 			},
-			checkFactory(){
-				const parmars = {
-					id:this.detailData.id,
-					factoryId:this.detailData.procureFactory
-				}
-				checkFactory(parmars).then(res=>{
-					if(res.code == 200 && !res.data){
-						iMessageBox(this.language('LK_FACTORYNOTSAME','您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改'),this.language('LK_WENXINTISHI','温馨提示')).then(res=>{
-							this.checkFactoryString = this.detailData.procureFactory
-						}).catch(err=>{
-							this.detailData.procureFactory = this.checkFactoryString
-						})
-					}
-				}).catch(err=>{
-					iMessage.error(err.desZh);
-				})
-			},
 			//判断采购项目来源，查看是否能选择车型项目
 			// carTypeCanselect(){
 			// 	if(this.detailData.partProjectSource == 1){
@@ -706,10 +690,10 @@
 				this.detailLoading = true
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
-					this.detailData = res.data ||[];
+					this.detailData = res.data || {};
+					this.sourceDetailData = Object.freeze(_.cloneDeep(this.detailData)) // 用于数据还原操作，调用获取详情接口才更新
 					this.sourcePartProjectType = res.data.partProjectType
 					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
-					this.checkFactoryString = res.data.procureFactory
 					if(this.detailData.cartypes) {
 						this.$set(this.detailData,'carTypeModel',this.detailData.cartypes.map(val=> val.id))
 					}
@@ -833,6 +817,65 @@
 					callBack()
 				}
 			},
+			// 选择车型项目的时候，需要带出对应车型的SOP时间
+			handleChangeByCarTypeProject(code) {
+				const currentCarTypeProject = Array.isArray(this.fromGroup.CAR_TYPE_PRO) && this.fromGroup.CAR_TYPE_PRO.find(item => item.code === code) || {}
+				this.$set(this.detailData, "carTypeProjectNum", code)
+				this.$set(this.detailData, "carTypeProjectId", currentCarTypeProject.id || '')
+				this.$set(this.detailData, "carTypeProjectZh", currentCarTypeProject.name || '')
+				this.$set(this.detailData, "sopDate", currentCarTypeProject.sopDate || '')
+			},
+			// 清除采购项目
+			clearCarTypeProject() {
+				this.$set(this.detailData, "carTypeProjectNum", "")
+				this.$set(this.detailData, "carTypeProjectId", "")
+				this.$set(this.detailData, "carTypeProjectZh", "")
+			},
+			// 修改采购工厂
+			handleChangeByProcureFactory(code) {
+				checkFactory({
+					id: this.detailData.id,
+					factoryId: code // 该字段是code
+				})
+				.then(res => {
+					if(res.code == 200) {
+						if (res.data) { // 一致
+							this.setProcureFactory(code)
+						} else {
+							iMessageBox( // 不一致
+								this.language('LK_FACTORYNOTSAME', '您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改'),
+								this.language('LK_WENXINTISHI', '温馨提示')
+							).then(() => {
+								this.setProcureFactory(code)
+							}).catch(() => {
+								this.$set(this.detailData, "procureFactory", this.sourceDetailData.procureFactory)
+								this.$set(this.detailData, "procureFactoryId", this.sourceDetailData.procureFactoryId)
+								this.$set(this.detailData, "procureFactoryName", this.sourceDetailData.procureFactoryName)
+							})
+						}
+					}
+				})
+				.catch(err => iMessage.error(err.desZh))
+			},
+			// 设置采购工厂
+			setProcureFactory(code) {
+				const currentProcureFactory = Array.isArray(this.fromGroup.PURCHASE_FACTORY) && this.fromGroup.PURCHASE_FACTORY.find(item => item.code == code) || {}
+				this.$set(this.detailData, "procureFactory", code)
+				this.$set(this.detailData, "procureFactoryId", currentProcureFactory.id || '')
+				this.$set(this.detailData, "procureFactoryName", currentProcureFactory.name || '')
+			},
+			// 修改Linie
+			handleChangeByLinie(code) {
+				const currentLinie = Array.isArray(this.fromGroup.LINIE) && this.fromGroup.LINIE.find(item => item.code == code) || {}
+				this.$set(this.detailData, "linieId", code) // 该字段是code
+				this.$set(this.detailData, "linieName", currentLinie.name || '')
+			},
+			// 清除Linie
+			clearLinie() {
+				this.$set(this.detailData, "linieId", '')
+				this.$set(this.detailData, "linieName", '')
+			},
+			
 			saveFn(){
 				this.fsProjectTypeAnIscommonSroucing(this.save)
 				//刷新产量计划时间之前。得清空一下选择时间。
@@ -857,15 +900,6 @@
 					}
 				}
 
-				const factoryItems = this.fromGroup.PURCHASE_FACTORY && Array.isArray(this.fromGroup.PURCHASE_FACTORY) && this.fromGroup.PURCHASE_FACTORY.find(items=>items.code == this.detailData.procureFactory) || {}
-				detailData['cfController'] = this.detailData.cfController
-				const cfController = this.fromGroup.CF_CONTROL && Array.isArray(this.fromGroup.CF_CONTROL) && this.fromGroup.CF_CONTROL.find(items=>items.code == this.detailData.cfController)
-				detailData['cfControllerName'] = cfController ? cfController.name : ""
-				detailData['linieId'] = this.detailData.linieId
-				const linie = this.fromGroup.LINIE && Array.isArray(this.fromGroup.LINIE) && this.fromGroup.LINIE.find(items=>items.code == this.detailData.linieId)
-				detailData['linieName'] = linie ? linie.name : ""
-				detailData['carTypeProjectNum'] = detailData.carTypeProjectZh?detailData.carTypeProjectZh:''
-				detailData['procureFactoryName'] = factoryItems ? factoryItems.name:''
 				detailData['oldProjectRelations'] = [ Object.assign({}, translateDataForService(this.selectOldParts.selectData), {purchasingProjectId:this.detailData.id})]
 				if(detailData.carTypeModel !=undefined) {
 					let temData= this.fromGroup.CAR_TYPE && Array.isArray(this.fromGroup.CAR_TYPE) && this.fromGroup['CAR_TYPE'].filter((item)=>{
@@ -873,11 +907,10 @@
 					}) || []
 				detailData['cartypes'] = temData
 				}
-				detailData["procureFactoryId"] = factoryItems ? factoryItems.id : ''
-				let carTypeProject = this.fromGroup.CAR_TYPE_PRO && Array.isArray(this.fromGroup.CAR_TYPE_PRO) && this.fromGroup.CAR_TYPE_PRO.find(items=>items.code == detailData.carTypeProjectZh)
-				detailData["carTypeProjectId"] = carTypeProject ? carTypeProject.id : (this.detailData.carTypeProjectId ? this.detailData.carTypeProjectId : '')
+				
 				return new Promise((resolve, reject) => {
-					updateProcure(detailData).then((res) => {
+					updateProcure(detailData)
+					.then(res => {
 						this.saveLoading = false
 						if (res.data) {
 								iMessage.success(this.language('LK_YIBAOCUN','已保存'));
@@ -892,9 +925,8 @@
 							iMessage.error(res.desZh);
 							reject(res)
 						}
-					}).catch(err=>{
-						this.saveLoading = false
-					});
+					})
+					.finally(() => this.saveLoading = false);
 				})
 			},
 			// 返回
@@ -948,8 +980,7 @@
 			* @return {*}
 			*/
 			onPartProjectTypeChange(data) {
-				this.$set(this.detailData, "carTypeProjectZh", "")
-				this.$set(this.detailData, "carTypeProjectId", "")
+				this.clearCarTypeProject()
 				this.$set(this.detailData, "carTypeModel", [])
 
 				this.$nextTick(() => {
@@ -982,18 +1013,6 @@
 				this.itemPurchase.riseCode = this.infoItem.code
 				this.itemPurchase.sapItem = this.infoItem.item
 			},
-			// 选择车型项目的时候，需要带出对应车型的SOP时间
-			getCarTypeSopTime(carType) {
-				// 原来有SOP时间不需要联动
-				// if(this.bakCarTypeSopTime) return
-				const carTypeItem = this.fromGroup.CAR_TYPE_PRO.find(o => o.code === carType)
-				if (carTypeItem && carTypeItem.sopDate) {
-					this.detailData.sopDate = carTypeItem.sopDate
-					// polo gp
-				} else {
-					this.detailData.sopDate = ""
-				}
-			},
 			// 获取车型项目sop
 			getCarTypeSopList() {
 				getCarTypeSop().then(res => {
@@ -1018,7 +1037,7 @@
 			// 获取sop日期禁止编辑状态
 			getSopDateDisabled() {
 				if (Array.isArray(this.fromGroup.CAR_TYPE_PRO)) {
-					const currentCarTypeProject = this.fromGroup.CAR_TYPE_PRO.find(item => item.code === this.detailData.carTypeProjectZh) || {}
+					const currentCarTypeProject = this.fromGroup.CAR_TYPE_PRO.find(item => item.code === this.detailData.carTypeProjectNum) || {}
 					return currentCarTypeProject.sopDate ? true : false
 				} else {
 					return true
