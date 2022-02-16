@@ -37,7 +37,6 @@ export default {
   watch: {
     "$store.state.rfq.categoryCode": {
       handler (val) {
-
         this.url = window.location.origin + '/portal/#/NTierMap?categoryCode=' + val
       }
     }
