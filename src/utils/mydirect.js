@@ -10,8 +10,26 @@ const openProcess = true
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
   inserted: function(el, binding, vnode) {
+    console.log(binding)
+
+
     //如果是个变量则使用变量，否则当做字符串处理
-    const value = binding.value ? binding.value : binding.expression.trim()
+    // const value = binding.value ? binding.value : binding.expression.trim()
+
+    // 修改-----------------------------------
+    var value = ''
+    if (binding.value == 0) {
+      value = binding.expression.trim()
+    } else if (binding.value == undefined) {
+      value = binding.expression
+    } else {
+      value = binding.value
+    }
+    const splitValue = value.split('|')
+    //去除控件传参中存在换行空格等情况
+    const pagePermission = splitValue[0] ? splitValue[0].trim() : splitValue[0]
+    // 修改-----------------------------------
+
     // dynamic、auto共用时处理
     if (binding.modifiers.dynamic && binding.modifiers.auto) {
       binding.modifiers.dynamic = false
@@ -31,11 +49,7 @@ Vue.directive('permission', {
       }
     } else if (binding.modifiers.auto) {
       // eslint-disable-next-line no-debugger
-      const splitValue = value.split('|')
-      //去除控件传参中存在换行空格等情况
-      const pagePermission = splitValue[0]
-        ? splitValue[0].trim()
-        : splitValue[0]
+      
       if (splitValue.length > 1) {
         // store.dispatch('uploadResource', splitValue)
       }
@@ -55,8 +69,9 @@ Vue.directive('permission', {
       }
     } else {
       //remove
-      if (!store.state.permission.whiteBtnList[binding.expression]) {
-        if (openProcess) el.parentNode.removeChild(el)
+      let menuBtn = binding.value && binding.value.indexOf('ACHIEVEMENT') > -1
+      if (!store.state.permission.whiteBtnList[binding.expression] && !menuBtn) {
+        if (openProcess && !store.state.permission.whiteBtnList[pagePermission]) el.parentNode.removeChild(el)
       } else {
         if (businessPermission(value, router.currentRoute.query)) {
           // if (openProcess) el.parentNode.removeChild(el)

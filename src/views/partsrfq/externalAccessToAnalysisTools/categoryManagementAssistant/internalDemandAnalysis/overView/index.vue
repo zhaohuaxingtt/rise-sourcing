@@ -10,8 +10,8 @@
   <el-row gutter="20">
     <el-col :span="8"
             v-for="(item,index) in list"
-            :key="index" v-permission="item.permissionKey">
-      <!-- v-permission="item.permissionKey" -->
+            v-permission="item.permissionKey"
+            :key="index">
       <div @click="onJump(item)"
            class="cursor cardBox">
         <iCard class="icard">
@@ -41,7 +41,7 @@ export default {
           key: "CAIGOUJINEZONGLAN",
           image: require("@/assets/images/partRfq/internalDemandAnalysis01.png"),
           url: '/sourcing/categoryManagementAssistant/internalDemandAnalysis/purchaseAmountOverall',
-          permissionKey:"CATEGORY_ASSISTANT_CGJEZL"
+          permissionKey:"CATEGORY_ASSISTANT_CGJEZL",
         },{
           name: "产量总览",
           key: "CAILIANGZONGLAN",

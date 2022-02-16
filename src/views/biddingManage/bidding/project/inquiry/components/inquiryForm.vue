@@ -1,7 +1,7 @@
 <template>
   <el-form
     :model="ruleForm"
-    label-width="9.6rem"
+    label-width="130px"
     :rules="rules"
     ref="ruleForm"
     :hideRequiredAsterisk="true"
