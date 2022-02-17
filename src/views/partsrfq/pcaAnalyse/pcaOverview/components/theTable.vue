@@ -1,10 +1,13 @@
 <template>
   <iCard>
     <div class="margin-bottom20 clearFloat">
-      <span class="font18 font-weight" v-if="pageType === 'PCA'">{{ $t('TPZS.PCAZONGLAN') }}</span>
-      <span class="font18 font-weight" v-else-if="pageType === 'TIA'">{{ $t('TPZS.TIAZONGLAN') }}</span>
+      <span class="font18 font-weight"
+            v-if="pageType === 'PCA'">{{ $t('TPZS.PCAZONGLAN') }}</span>
+      <span class="font18 font-weight"
+            v-else-if="pageType === 'TIA'">{{ $t('TPZS.TIAZONGLAN') }}</span>
       <!-- 需求说不需要这个功能 -->
-      <div class="floatright" v-if="false">
+      <div class="floatright"
+           v-if="false">
         <template v-if="!tableStatus">
           <!-- &lt;!&ndash;编辑&ndash;&gt; -->
           <iButton @click="handleEdit">{{ $t('LK_BIANJI') }}</iButton>
@@ -17,21 +20,20 @@
         </template>
       </div>
     </div>
-    <tableList
-      :tableData="tableListData"
-      :tableTitle="tableTitle"
-      :tableLoading="tableLoading"
-      :index="true"
-      :tiledTableData="tiledTableListData"
-      :treeTable="true"
-      treeProps="fileList"
-      rowKey="id"
-      @handleSelectionChange="handleSelectionChange"
-    >
+    <tableList :tableData="tableListData"
+               :tableTitle="tableTitle"
+               :tableLoading="tableLoading"
+               :index="true"
+               :tiledTableData="tiledTableListData"
+               :treeTable="true"
+               treeProps="fileList"
+               rowKey="id"
+               @handleSelectionChange="handleSelectionChange">
       <template #fileName="scope">
         <div class="reportContainer">
           <template>
-            <div @click="handleOpenPreviewDialog(scope.row)" class="openLinkText cursor">
+            <div @click="handleOpenPreviewDialog(scope.row)"
+                 class="openLinkText cursor">
               {{ scope.row.reportName }}
             </div>
           </template>
@@ -53,25 +55,26 @@
         </template>
       </template>
     </tableList>
-    <iPagination
-      v-update
-      @size-change="handleSizeChange($event, getTableList)"
-      @current-change="handleCurrentChange($event, getTableList)"
-      background
-      :page-sizes="page.pageSizes"
-      :page-size="page.pageSize"
-      :layout="page.layout"
-      :current-page="page.currPage"
-      :total="page.totalCount"
-    />
+    <iPagination v-update
+                 @size-change="handleSizeChange($event, getTableList)"
+                 @current-change="handleCurrentChange($event, getTableList)"
+                 background
+                 :page-sizes="page.pageSizes"
+                 :page-size="page.pageSize"
+                 :layout="page.layout"
+                 :current-page="page.currPage"
+                 :total="page.totalCount" />
     <!--    预览弹窗-->
-    <previewDialog v-model="previewDialog" :fileUrl="fileUrl" :fileName="fileName" />
+    <previewDialog v-model="previewDialog"
+                   :fileUrl="fileUrl"
+                   :fileName="fileName" />
   </iCard>
 </template>
 
 <script>
 import { iCard, iPagination, icon, iButton } from 'rise';
 import tableList from '@/components/ws3/commonTable';
+// import tableList from '@/components/iTableCustom'
 import { pageMixins } from '@/utils/pageMixins';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 import previewDialog from './previewDialog';
@@ -83,7 +86,7 @@ export default {
     iCard,
     tableList,
     iPagination,
-    icon,
+    // icon,
     previewDialog,
     iButton,
   },
@@ -93,7 +96,7 @@ export default {
       default: '',
     },
   },
-  data() {
+  data () {
     return {
       tableListData: [],
       tiledTableListData: [],
@@ -106,18 +109,18 @@ export default {
       fileName: '',
     };
   },
-  created() {
+  created () {
     this.getTableList();
   },
   methods: {
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.selectTableData = val;
     },
-    handleSearch() {
+    handleSearch () {
       this.page.currPage = 1;
       this.getTableList();
     },
-    async getTableList() {
+    async getTableList () {
       this.tableLoading = true;
       const searchItem = this.$parent.$children.filter((item) => {
         return item.$attrs.name === 'theSearch';
@@ -148,14 +151,14 @@ export default {
         this.tableLoading = false;
       }
     },
-    handleEdit() {
+    handleEdit () {
       this.tableStatus = 'edit';
     },
-    handleCancel() {
+    handleCancel () {
       this.tableStatus = '';
     },
-    handleSave() {},
-    getTiledTableListData() {
+    handleSave () { },
+    getTiledTableListData () {
       this.tiledTableListData = [];
       this.tableListData.map((item, index) => {
         item.treeIndex = index + 1;
@@ -169,7 +172,7 @@ export default {
       });
       console.log(this.tiledTableListData);
     },
-    handleOpenPreviewDialog(row) {
+    handleOpenPreviewDialog (row) {
       this.previewDialog = true;
       this.fileUrl = row.reportLink;
       this.fileName = row.reportName.split('.pdf')[0];
@@ -217,8 +220,9 @@ export default {
 
 //有子节点 且未展开
 ::v-deep .el-table .el-icon-arrow-right:before {
-  background: url('../../../../../assets/images/Icon - Arrow Drop Down.png') no-repeat 0 0;
-  content: '';
+  background: url("../../../../../assets/images/Icon - Arrow Drop Down.png")
+    no-repeat 0 0;
+  content: "";
   display: block;
   width: 10px;
   height: 4px;
@@ -229,8 +233,9 @@ export default {
 //有子节点 且已展开
 ::v-deep .el-table .el-table__expand-icon--expanded {
   .el-icon-arrow-right:before {
-    background: url('../../../../../assets/images/Icon - Arrow收起.png') no-repeat 0 0;
-    content: '';
+    background: url("../../../../../assets/images/Icon - Arrow收起.png")
+      no-repeat 0 0;
+    content: "";
     display: block;
     width: 10px;
     height: 4px;
