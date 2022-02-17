@@ -199,7 +199,7 @@ export default {
 
       this.saveLoading = true
       savePcaAndTia({
-        savePcaTiaDTOS: this.tableListData.map(item => ({
+        savePcaTiaDTOS: this.multipleSelection.map(item => ({
           fsnrGsnrNum: item.fsnrGsnrNum,
           partNum: item.partNum,
           pcaResult: item.pcaResult,
