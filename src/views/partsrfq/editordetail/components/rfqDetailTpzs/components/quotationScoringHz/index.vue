@@ -51,9 +51,10 @@
     <template v-else>
       <span class="flex-center-center font18 noData">{{language('BAOQIANDANGQIANWUFACHAKKBXX','抱歉！当前轮次还未开标您无法查看报价汇总信息。')}}</span>
     </template>
-    <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
+    <div v-html="tipsHtmlStr"></div>
+    <!-- <div class="margin-top10 font-size14"><span style='color:red;font-size14px;'>*</span> means Invest or Develop Cost is amortized into piece price. </div>
     <div class="margin-top10 font-size14">/ means no calculation base for mixed price. </div>
-    <div class="margin-top10 font-size14">Exchange Rate：1.00 EUR = 6.66RMB</div>
+    <div class="margin-top10 font-size14">Exchange Rate：1.00 EUR = 6.66RMB</div> -->
     <div class="margin-top10 font-size14">
       <div v-if="exchangeRatesOldVersions.length" class="margin-top10">
         <p v-for="(exchangeRate, index) in exchangeRatesOldVersions" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
@@ -130,7 +131,8 @@ export default{
     exchangeRatesCurrentVersionStr: "",
     exchangeRatesOldVersions: [],
     hasNoBidOpen:false,
-    tabelDataSupplier:{}
+    tabelDataSupplier:{},
+    tipsHtmlStr: '',
   }},
   watch:{
     /**
@@ -435,6 +437,19 @@ export default{
             this.$refs.tableList.setfixElement()
           })
         }
+
+        if (res.data) {
+          const tips = Array.isArray(res.data.tips) ? res.data.tips : []
+          this.tipsHtmlStr = tips.map(item => {
+            let str = typeof item === "string" ? item : ''
+
+            return /^\*.*/.test(str) ?
+              item.replace(/^\*(.*)/, '<div class="margin-top10 font-size14"><span style="color:red;font-size14px;">*</span>$1</div>') :
+              (str ? `<div class="margin-top10 font-size14">${ str }</div>` : '')
+          }).join('')
+        } else {
+          this.tipsHtmlStr = ''
+        }
       }).catch(err=>{
         this.clearDataFs()
         this.fsTableLoading = false
@@ -495,8 +510,20 @@ export default{
           if(res.code == 200 && res.data){
             this.tabelDataSupplier = getRowAndcolSpanArray(res.data)
             this.backChooseLists = res.data.header || []
+
+            const tips = Array.isArray(res.data.tips) ? res.data.tips : []
+            this.tipsHtmlStr = tips.map(item => {
+              let str = typeof item === "string" ? item : ''
+
+              return /^\*.*/.test(str) ?
+                item.replace(/^\*(.*)/, '<div class="margin-top10 font-size14"><span style="color:red;font-size14px;">*</span>$1</div>') :
+                (str ? `<div class="margin-top10 font-size14">${ str }</div>` : '')
+            }).join('')
             r()
-          } 
+          } else {
+            this.tipsHtmlStr = ''
+            r()
+          }
         }).catch(err=>{
           this.supplierTableLoading = false
           iMessage.error(err.desZh)
