@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-02-16 11:24:23
+ * @LastEditTime: 2022-02-17 15:08:22
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -253,7 +253,7 @@
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINE|LINIE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieId" placeholder='请先选择LINIE部门' v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))" @change="handleChangeByLinie">
+							<iSelect v-model="detailData.linieId" filterable placeholder='请先选择LINIE部门' v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))" @change="handleChangeByLinie">
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
