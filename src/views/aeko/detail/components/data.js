@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2022-01-25 11:41:36
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-17 17:14:19
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
@@ -39,7 +39,7 @@ export const contentDeclareTableTitle = [
   { props: "quotationId", name: "报价单", key: "BAOJIADAN", tooltip: true },
   { props: "priceAxis", name: "价格轴", key: "JIAGEZHOU", tooltip: true },
   { props: "investCarTypePro", name: "指定投资⻋型项⽬", key: "ZHIDINGTOUZICHEXINGXIANGMU", width: 150 },
-  { props: "isMtzDesc", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
+  { props: "isMtz", name: "MTZ变更", key: "MTZBIANGENG", tooltip: true },
   { props: "originBnkTranWayDesc", name: "原承运方式", key: "LK_AEKO_YUANCHENGYUNFANGSHI", tooltip: true, width: 100 },
   { props: "newBnkTranWayDesc", name: "新承运方式", key: "LK_AEKO_XINCHENGYUNFANGSHI", tooltip: true, width: 100 },
   { props: "tranWayDesc", name: "承运方式", key: "LK_AEKO_CHENGYUNFANGSHI", tooltip: true },
