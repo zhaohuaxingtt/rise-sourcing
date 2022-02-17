@@ -14,9 +14,9 @@
           :selection="false"
       ></tablelist>
     </div>
-    <span slot="footer" class="dialog-footer">
+    <!-- <span slot="footer" class="dialog-footer">
        <iButton @click="clearDiolog">{{ language('LK_QUXIAO','取 消') }}</iButton>
-    </span>
+    </span> -->
   </iDialog>
 </template>
 <script>
