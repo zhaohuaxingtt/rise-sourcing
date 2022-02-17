@@ -21,6 +21,8 @@ export const addPartTableTitle = [
   { props: 'fsNum', name: 'FS号', key: 'FSHAO' },
   { props: 'partNameZh', name: '零件名称', key: 'LINGJIANMINGCHEN' },
   { props: 'isFromAeko', name: '零件/Aeko定点', key: 'LINGJIANAEKODINGDIAN' },
+  { props: 'sopPrice', name: 'sop价格', key: 'SOPJIAGE' },
+  { props: 'price', name: '当前价格', key: 'DANGQIANJIAGE' },
   { props: 'rfqId', name: 'RFQ号', key: 'RFQHAO' },
 ]
 export const changeLogTableTitle = [
