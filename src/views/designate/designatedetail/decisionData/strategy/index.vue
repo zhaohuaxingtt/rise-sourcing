@@ -128,6 +128,7 @@ export default{
 </script>
 <style lang='scss' scoped>
 .strategy {
+  margin-bottom: 70px;
   .control {
     // width: 360px;
     height: 40px;
