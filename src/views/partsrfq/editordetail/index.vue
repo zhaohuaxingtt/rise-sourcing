@@ -387,8 +387,8 @@ export default {
       blackTableListData:[],
       createDesignateLoading:false,
       isCommonSurcingStar:false,
-      isLinieUser:false,
-      isInquiryUser:false,
+      isLinieUser:true,
+      isInquiryUser:true,
       isInquiryRfqStatus:false,
       isLiniefqStatus:false,
       notAllow:false
@@ -396,13 +396,13 @@ export default {
   },  
   async created () {
     //是否是linie 如果不是linie 无法看见 【转询价】按钮
-    let linieTypeCode = ["ZYCGGZ","ZYCGKZ","LINIE"]
+    // let linieTypeCode = ["ZYCGGZ","ZYCGKZ","LINIE"]
     //是否是询价采购员 如果不是 无法看见【转谈判】按钮
-    let inquiryTypeCode = ["PJCGY","FJCGY","PJCGGZ","FJCGGZ",'QQCGGZ',"QQCGKZ","FJCGKZ","PJCGKZ","QQCGY"]
-    this.$store.state.permission.userInfo.roleList.forEach(val=>{
-      linieTypeCode.includes(val.code) ? this.isLinieUser = true:''
-      inquiryTypeCode.includes(val.code) ? this.isInquiryUser = true:''
-    })
+    // let inquiryTypeCode = ["PJCGY","FJCGY","PJCGGZ","FJCGGZ",'QQCGGZ',"QQCGKZ","FJCGKZ","PJCGKZ","QQCGY"]
+    // this.$store.state.permission.userInfo.roleList.forEach(val=>{
+      // linieTypeCode.includes(val.code) ? this.isLinieUser = true:''
+      // inquiryTypeCode.includes(val.code) ? this.isInquiryUser = true:''
+    // })
     if(this.navActivtyValue==0||this.navActivtyValue==''){
       await this.firstInit()
     }
