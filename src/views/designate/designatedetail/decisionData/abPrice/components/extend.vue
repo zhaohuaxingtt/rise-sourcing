@@ -47,8 +47,22 @@ export default{
             if(res.code == 200 && res.data){
               this.tabelDataSupplier = getRowAndcolSpanArray(res.data)
               this.backChooseLists = res.data.header || []
+              
+              const tips = Array.isArray(res.data.tips) ? res.data.tips : []
+              this.tipsHtmlStr = tips.map(item => {
+                let str = typeof item === "string" ? item : ''
+
+                return /^\*.*/.test(str) ?
+                  item.replace(/^\*(.*)/, '<div class="margin-top10 font-size14"><span style="color:red;font-size14px;">*</span>$1</div>') :
+                  (str ? `<div class="margin-top10 font-size14">${ str }</div>` : '')
+              }).join('')
+
               r()
-            } 
+            } else {
+              this.tipsHtmlStr = ''
+              
+              r()
+            }
           }).catch(err=>{
             this.supplierTableLoading = false
             iMessage.error(err.desZh)
@@ -77,6 +91,19 @@ export default{
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
           this.exampelData = [...this.exampelData,...subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)]
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
+        }
+
+        if (res.data) {
+          const tips = Array.isArray(res.data.tips) ? res.data.tips : []
+          this.tipsHtmlStr = tips.map(item => {
+            let str = typeof item === "string" ? item : ''
+
+            return /^\*.*/.test(str) ?
+              item.replace(/^\*(.*)/, '<div class="margin-top10 font-size14"><span style="color:red;font-size14px;">*</span>$1</div>') :
+              (str ? `<div class="margin-top10 font-size14">${ str }</div>` : '')
+          }).join('')
+        } else {
+          this.tipsHtmlStr = ''
         }
       }).catch(err=>{
         this.clearDataFs()

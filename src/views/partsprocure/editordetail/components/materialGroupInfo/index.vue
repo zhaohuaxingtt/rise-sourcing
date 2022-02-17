@@ -138,26 +138,26 @@ export default {
     },
     // 设置特定材料组数据，目前只有附件类型
     async setAttachMaterialGroup(categoryCode=null, stuffCode=null) {
-      if (this.isAttach) {
-        materialTitle.forEach(mitem => {
-          const detailDataLength = Object.keys(this.detailData).length
-          this.info[mitem.props] = detailDataLength ? this.detailData[mitem.props] : ''
-        })
+      // if (this.isAttach) {
+        // materialTitle.forEach(mitem => {
+        //   const detailDataLength = Object.keys(this.detailData).length
+        //   this.info[mitem.props] = detailDataLength ? this.detailData[mitem.props] : ''
+        // })
 
         // 获取附件材料工艺组数据
-        if (!this.tableListData.length) {
-          await this.getAttachMeterialStuff()
-        }
+        // if (!this.tableListData.length) {
+        //   await this.getAttachMeterialStuff()
+        // }
         
         // 根据材料组编号，工艺号在附件类型的材料工艺列表中找到 该工艺组，补全数据
-        categoryCode = categoryCode || this.detailData.categoryCode || ''
-        stuffCode = stuffCode || this.detailData.stuffCode || ''
-        const tarAttachMaterialItem = this.tableListData.find(o => o.categoryCode === String(categoryCode) && o.stuffCode === String(stuffCode))
-        materialTitle.forEach(mitem => {
-          this.info[mitem.props] = tarAttachMaterialItem ? tarAttachMaterialItem[mitem.props] : ''
-        })
+        // categoryCode = categoryCode || this.detailData.categoryCode || ''
+        // stuffCode = stuffCode || this.detailData.stuffCode || ''
+        // const tarAttachMaterialItem = this.tableListData.find(o => o.categoryCode === String(categoryCode) && o.stuffCode === String(stuffCode))
+        // materialTitle.forEach(mitem => {
+        //   this.info[mitem.props] = tarAttachMaterialItem ? tarAttachMaterialItem[mitem.props] : ''
+        // })
         
-      }
+      // }
     },
     // 获取材料组数据
     getMaterialGroup(categoryCode=null, stuffCode=null) {
