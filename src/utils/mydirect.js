@@ -10,7 +10,7 @@ const openProcess = true
 // eslint-disable-next-line no-undef
 Vue.directive('permission', {
   inserted: function(el, binding, vnode) {
-    console.log(binding)
+    // console.log(binding)
 
 
     //如果是个变量则使用变量，否则当做字符串处理
