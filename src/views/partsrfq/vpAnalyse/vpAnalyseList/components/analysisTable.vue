@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-06-16 20:44:29
- * @LastEditTime: 2022-02-16 17:13:34
+ * @LastEditTime: 2022-02-17 19:11:02
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\vpAnalyse\vpAnalyseList\components\analysisTable.vue
@@ -393,9 +393,6 @@ export default {
         if (res.request.responseURL) this.reportUrl = res.request.responseURL
         this.reportVisible = true
       })
-
-
-
     },
     rowSelect (selection, row) {
       if (row.fileList) { //只对有子节点的行响应

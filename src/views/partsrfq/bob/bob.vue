@@ -197,6 +197,7 @@ import { iCard, iInput, iSearch, iButton, iPagination, iSelect, icon, iMessage }
 import { getBobAnalysisDataList, fetchStaick, fetchEdit, fetchDel, initIn, generateGroupId } from '@/api/partsrfq/bob/analysisList';
 import { pageMixins } from '@/utils/pageMixins';
 import reportPreview from '@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview';
+import { getFileByFileId } from '@/api/file'
 export default {
   mixins: [pageMixins],
   components: {
@@ -596,10 +597,17 @@ export default {
         });
         window.open(analysisName.href, '_blank');
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
-        this.reportTitle = val.name;
+        // this.reportTitle = val.name;
+        // this.reportVisible = true;
+        // this.reportKey = Math.random();
+        // if (val.path) this.reportUrl = val.path;
+        this.reportTitle = val.name
+        this.reportKey = Math.random()
         this.reportVisible = true;
-        this.reportKey = Math.random();
-        if (val.path) this.reportUrl = val.path;
+        getFileByFileId(val.downloadUrl).then(res => {
+          if (res.request.responseURL) this.reportUrl = res.request.responseURL
+          this.reportVisible = true
+        })
       }
     },
     //点击关闭报告预览弹窗
