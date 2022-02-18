@@ -848,6 +848,7 @@ export default {
       }
     },
     getDisabled () {
+      // console.log(this.disabled)
       return this.disabled;
     },
     //等待StarMonitor定点更新
