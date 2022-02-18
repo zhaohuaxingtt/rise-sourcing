@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-13 22:56:37
+ * @LastEditTime: 2022-02-18 15:49:10
  * @Description: 申请模具目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -182,10 +182,10 @@ export default {
      * @return {*}
      */    
     handleSubmit() {
-      // if (this.applyType === '1' && this.tableData.some(item => item.businessType == '1' && (!item.expectedTargetPrice || item.expectedTargetPrice === ''))) {
-      //   iMessage.warn(this.language('XINSHENGQINGMUBIAOJIADELINGJIANQIWANGMUBIAOJIABUNENGWEIKONG', '新申请目标价的零件期望目标价不能为空'))
-      //   return
-      // }
+      if (this.applyType === '1' && this.tableData.some(item => !item.expectedTargetPrice || item.expectedTargetPrice === '')) {
+        iMessage.warn(this.language('XINSHENGQINGMUBIAOJIADELINGJIANQIWANGMUBIAOJIABUNENGWEIKONG', '新申请目标价的零件期望目标价不能为空'))
+        return
+      }
       this.loading = true
       if (this.applyType === '1') {
         const params = {
@@ -204,6 +204,7 @@ export default {
             iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
             this.$store.dispatch('setTodoObj',this.$route.query.id);
             this.$emit('update','moldTargetPrice')
+            this.$emit("update:visible", false)
           } else {
             iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
           }
