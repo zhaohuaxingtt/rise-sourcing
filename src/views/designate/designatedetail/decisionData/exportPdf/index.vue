@@ -3,7 +3,7 @@
     <div class="btnControl">
       <iButton :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
     </div>
-    <div class="main" ref="contentPage">
+    <div id="bbbbb" class="main" ref="contentPage">
       <div class="title">
         <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
         <span class="mtz" v-if="this.nomiData.mtzApplyId">
@@ -13,14 +13,90 @@
         <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
       </div>
       <div class="content">
+        <div  class="tab-list">
+          <iTabsList value="/designate/decisiondata/title">
+            <template v-for="(item,index) in decisionType">
+              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
+            </template>
+          </iTabsList>
+        </div>
         <rsTitle class="module"/>
+        <!-- [ { "key": "Title", "name": "Title", "path": "/designate/decisiondata/title" }, 
+        { "key": "PartList", "name": "Part List", "path": "/designate/decisiondata/partlist" },
+         { "key": "Tasks", "name": "Tasks", "path": "/designate/decisiondata/tasks" },
+          { "key": "Drawing", "name": "Drawing", "path": "/designate/decisiondata/drawing" },
+           { "key": "BDL", "name": "BDL", "path": "/designate/decisiondata/bdl" }, 
+           { "key": "SingleSourcing", "name": "Single Sourcing", "path": "/designate/decisiondata/singlesourcing" }, 
+           { "key": "ABPrice", "name": "A-B Price", "path": "/designate/decisiondata/abprice" }, 
+           { "key": "CostAnalysis", "name": "Cost Analysis", "path": "/designate/decisiondata/costanalysis" }, \
+           { "key": "TimeLine", "name": "Timeline", "path": "/designate/decisiondata/timeline" },
+            { "key": "Strategy", "name": "Strategy", "path": "/designate/decisiondata/strategy" },
+             { "key": "AwardingScenario", "name": "Awarding Scenario", "path": "/designate/decisiondata/awardingscenario" },
+              { "key": "RS", "name": "RS", "path": "/designate/decisiondata/rs" },
+               { "key": "MTZ", "name": "MTZ", "path": "/designate/decisiondata/mtz", "isMtz": true }, 
+               { "key": "Attachment", "name": "Attachment", "path": "/designate/decisiondata/attachment" } ] -->
+        <div  class="tab-list">
+          <iTabsList value="/designate/decisiondata/partlist">
+            <template v-for="(item,index) in decisionType">
+              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
+            </template>
+          </iTabsList>
+        </div>
         <partList class="module"/>
+
+        <div  class="tab-list">
+          <iTabsList value="/designate/decisiondata/tasks">
+            <template v-for="(item,index) in decisionType">
+              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
+            </template>
+          </iTabsList>
+        </div>
         <tasks class="module"/>
+
+        <div  class="tab-list">
+          <iTabsList value="/designate/decisiondata/drawing">
+            <template v-for="(item,index) in decisionType">
+              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
+            </template>
+          </iTabsList>
+        </div>
         <drawing class="module"/>
+
+        <div  class="tab-list">
+          <iTabsList value="/designate/decisiondata/bdl">
+            <template v-for="(item,index) in decisionType">
+              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
+            </template>
+          </iTabsList>
+        </div>
         <bdl class="module"/>
+
+        <div  class="tab-list">
+          <iTabsList value="/designate/decisiondata/singlesourcing">
+            <template v-for="(item,index) in decisionType">
+              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
+            </template>
+          </iTabsList>
+        </div>
         <singleSourcing class="module"/>
+
+        <div  class="tab-list">
+          <iTabsList value="/designate/decisiondata/timeline">
+            <template v-for="(item,index) in decisionType">
+              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
+            </template>
+          </iTabsList>
+        </div>
         <timeline class="module"/>
         <!-- <awardingScenario class="module" /> -->
+
+        <div  class="tab-list">
+          <iTabsList value="/designate/decisiondata/rs">
+            <template v-for="(item,index) in decisionType">
+              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
+            </template>
+          </iTabsList>
+        </div>
         <rs class="module" :nomiData="nomiData"/>
       </div>
     </div>
@@ -28,7 +104,7 @@
 </template>
 
 <script>
-import { iButton } from "rise"
+import { iButton, iTabsList } from "rise"
 import {nominateAppSDetail} from "@/api/designate"
 import rsTitle from "./components/rsTitle"
 import partList from "./components/partList"
@@ -40,6 +116,8 @@ import timeline from "./components/timeline"
 import rs from "./components/rs"
 import { transverseDownloadPDF } from "@/utils/pdf"
 
+import { decisionType } from '@/layout/nomination/components/data'
+
 export default {
   components: {
     iButton,
@@ -50,7 +128,8 @@ export default {
     bdl,
     singleSourcing,
     timeline,
-    rs
+    rs,
+    iTabsList
   },
   created() {
     this.nominateAppId = this.$route.query.desinateId
@@ -63,6 +142,7 @@ export default {
       exportLoading: false,
       nominateAppId: "", // 定点申请id
       nomiData: {}, // 定点申请数据
+      decisionType
     }
   },
   methods: {
@@ -77,16 +157,24 @@ export default {
       })
     },
     exportPdf() {
-      this.exportLoading = true
-      transverseDownloadPDF({
-        dom: this.$refs.contentPage,
-        pdfName: `定点申请_${ this.$route.query.desinateId }_决策资料`,
-        exportPdf: true,
-        waterMark: true,
-        callback: () => {
-          this.exportLoading = false
-        }
-      })
+      // this.exportLoading = true
+      // transverseDownloadPDF({
+      //   dom: this.$refs.contentPage,
+      //   pdfName: `定点申请_${ this.$route.query.desinateId }_决策资料`,
+      //   exportPdf: true,
+      //   waterMark: true,
+      //   callback: () => {
+      //     this.exportLoading = false
+      //   }
+      // })
+      html2canvas(this.$el.querySelector("#bbbbb")).then(canvas => {
+        const url = canvas.toDataURL("image/png")
+
+        const a = document.createElement('a');
+                    a.href = url;
+                    a.setAttribute('download', 'chart-download');
+                    a.click();
+      });
     }
   }
 }
@@ -98,6 +186,10 @@ export default {
   height: 100vh;
   overflow-y: auto;
   position: relative;
+
+  .tab-list {
+    margin-top:40px
+  }
 
   .btnControl {
     width: 1920px; /*no*/
