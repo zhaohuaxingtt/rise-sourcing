@@ -24,7 +24,7 @@
     <template slot="header-control">
       <div class="button-box">
         <template v-if="!todo">
-          <iButton @click="showDialog">{{ language('CHAKAN','查看') + language('XIUGAIJILU','修改记录') }}</iButton>
+          <iButton  v-permission.auto="PARTSRFQ_PARTDETAILLIST_LINGJIANMUBIAOJIA_CHAKANXIUGAIJILU|零件目标价-查看修改记录"  @click="showDialog">{{ language('CHAKAN','查看') + language('XIUGAIJILU','修改记录') }}</iButton>
           <iButton @click="exports">{{ language("LK_DAOCHU", "导出") }}</iButton>
         </template>
         <template v-else>

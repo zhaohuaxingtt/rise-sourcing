@@ -472,6 +472,8 @@ export default {
     },
     //处理单独表格保存
     async handlePriceTableFinish (value, tab) {
+      console.log(value)
+      console.log(tab)
       try {
         this.tableLoading = true;
         const req = {

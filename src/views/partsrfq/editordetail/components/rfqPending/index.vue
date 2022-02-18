@@ -59,35 +59,35 @@ export default {
           index: '0',
           label: '零件清单',
           component: 'partDetailList',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_INDEXPAGE|零件清单',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_PARTDETAILIST_INDEXPAGE',
           key: 'LK_LINGJIANQINGDAN'
         },
         {
           index: '1',
           label: 'BDL',
           component: 'BDL',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_INDEXPAGE|BDL列表',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_INDEXPAGE',
           key: 'LK_BDLLIEBIAO'
         },
         {
           index: '2',
           label: '轮次管理',  // 询价管理更名为轮次管理
           component: 'inquiryManagement',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_INQUIRYMANAGEMENT_INDEXPAGE|轮次管理',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_INQUIRYMANAGEMENT_INDEXPAGE',
           key: 'LK_LUNCIGUANLI'
         },
         {
           index: '3',
           label: '询价信息',
           component: 'Inquiry',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_INQUIRY|询价信息',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_INQUIRY',
           key: 'LK_XUNJIAXINXI'
         },
         {
           index: '4',
           label: '待办任务',
           component: 'toDoList',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TODOLIST|待办任务',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TODOLIST',
           key: 'LK_DAIBANRENWU'
         }
       ]
@@ -110,9 +110,13 @@ export default {
     baseInfo() {
       return this.getbaseInfoData()
     },
+    whiteBtnList() {
+      return this.$store.state.permission.whiteBtnList || {}
+    },
     tabs() {
+      return this.tabList.filter(e=> this.whiteBtnList[e.permissionKey])
       // if (Array.isArray(this.baseInfo.partProjectType) && (this.baseInfo.partProjectType[0] === partProjTypes.PEIJIAN)) return this.tabList.filter(item => item.index != 3)
-      return this.tabList
+      // return this.tabList
     }
   },
   // 推迟事件注册时间(首次获取数据之后再注册)，
@@ -120,6 +124,14 @@ export default {
     canRegiste(val){
       if(val){
         this.registerFn(this.updateTabs)
+      }
+    },
+    activityTabIndex(val) {
+      const item = this.tabs.find(e=>e.index === val)
+      if(!item) {
+        if(this.tabs && this.tabs.length) {
+        this.activityTabIndex = this.tabs[0].index
+        }
       }
     }
   },
