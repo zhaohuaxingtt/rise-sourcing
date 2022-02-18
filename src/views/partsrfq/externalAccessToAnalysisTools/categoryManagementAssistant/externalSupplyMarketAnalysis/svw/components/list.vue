@@ -16,14 +16,17 @@
         <iSelect v-model="interestsStatus"
                  :disabled="isEdite"
                  @change="handleChange"
-                 style="width: 132px;margin-left:-40px;" v-if="!isEdite">
+                 style="width: 132px;margin-left:-40px;"
+                 v-if="!isEdite">
           <el-option v-for="(x,index) in iSelectOption"
                      :value="x.value"
                      :label="x.name"
                      :key="index"></el-option>
         </iSelect>
-        <div v-else style="width: 92px">利润</div>
-        <div v-if="!isEdite" style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
+        <div v-else
+             style="width: 92px">利润</div>
+        <div v-if="!isEdite"
+             style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
           <iInput v-model="year1"
                   style="width: calc(100% / 3);"></iInput>
           <iInput v-model="year2"
@@ -31,7 +34,8 @@
           <iInput v-model="year3"
                   style="width: calc(100% / 3);"></iInput>
         </div>
-        <div v-else style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
+        <div v-else
+             style="flex: 1;display:flex;flex-flow: row nowrap;justify-content: space-between;padding-right:92px;">
           <div style="width: 50px;text-align:center;">{{profit1+'%'}}</div>
           <div style="width: 50px;text-align:center;">{{profit2+'%'}}</div>
           <div style="width: 50px;text-align:center;">{{profit3+'%'}}</div>
@@ -66,7 +70,9 @@
         <div class="border last">
           <span v-if="isEdite">{{x.totalSalesPro+'%'}}</span>
           <iInput v-else
-                  v-model="x.totalSalesPro" :disabled="index == (MarketOverviewObj.mainCustomerDTOList.length - 1)"></iInput>
+                  @blur="changInput"
+                  v-model="x.totalSalesPro"
+                  :disabled="index == (MarketOverviewObj.mainCustomerDTOList.length - 1)"></iInput>
         </div>
       </div>
     </div>
@@ -204,7 +210,7 @@ export default {
             },
             data: [{
               value: 20,
-             
+
               label: {
                 normal: {
                   show: true,
@@ -213,7 +219,7 @@ export default {
               }
             }, {
               value: 50,
-             
+
               label: {
                 normal: {
                   show: true,
@@ -222,7 +228,7 @@ export default {
               }
             }, {
               value: 47,
-             
+
               label: {
                 normal: {
                   show: true,
@@ -254,7 +260,7 @@ export default {
 
             }, {
               value: 50,
-             
+
               label: {
                 normal: {
                   show: true,
@@ -263,7 +269,7 @@ export default {
               }
             }, {
               value: 60,
-             
+
               label: {
                 normal: {
                   show: true,
@@ -471,6 +477,7 @@ export default {
     edite (val) {
       this.isEdite = val
       if (!val) {
+        this.MarketOverviewObj.mainCustomerDTOList = this.MarketOverviewObj.mainCustomerDTOList.filter(item => item.customerName !== '其他')
         if (!this.MarketOverviewObj.mainCustomerDTOList) {
           this.MarketOverviewObj.mainCustomerDTOList = []
           for (let i = 0; i < 5; i++) {
@@ -500,6 +507,24 @@ export default {
             }
           }
         }
+        let total = new Number()
+        if (this.MarketOverviewObj.mainCustomerDTOList && this.MarketOverviewObj.mainCustomerDTOList.length > 0) {
+          this.MarketOverviewObj.mainCustomerDTOList.forEach((item, index) => {
+            if (index < this.MarketOverviewObj.mainCustomerDTOList.length - 1) {
+              total += Number(item.totalSalesPro)
+            }
+          })
+          console.log(total)
+          if (total > 100) {
+            iMessage.error('份额总和不能超过100%')
+            return
+          } else {
+            if (total > 0) {
+              this.MarketOverviewObj.mainCustomerDTOList[this.MarketOverviewObj.mainCustomerDTOList.length - 1].customerName = "其他"
+              this.MarketOverviewObj.mainCustomerDTOList[this.MarketOverviewObj.mainCustomerDTOList.length - 1].totalSalesPro = 100 - total
+            }
+          }
+        }
       } else {
         this.$nextTick(() => {
           this.initCharts()
@@ -510,6 +535,7 @@ export default {
     },
     MarketOverviewObj: {
       handler (val) {
+        console.log(val, "val")
         this.MarketOverviewObj1 = _.cloneDeep(val)
         let date = new Date().getFullYear();
         this.option.series.push({
@@ -609,26 +635,7 @@ export default {
           //   this.turnover.series[0].data = data
           //   this.turnover.legend.data = legend
           // }
-          let total = new Number()
-          if (val.mainCustomerDTOList && val.mainCustomerDTOList.length > 0) {
-            val.mainCustomerDTOList.forEach((item,index) => {
-              if (index < val.mainCustomerDTOList.length - 1) {
-                total += Number(item.totalSalesPro)
-              }
-            })
 
-            console.log(total)
-
-            if (total > 100) {
-              iMessage.error('份额总和不能超过100%')
-              return
-            } else {
-              if (total > 0) {
-                val.mainCustomerDTOList[val.mainCustomerDTOList.length - 1].customerName = "其他"
-                val.mainCustomerDTOList[val.mainCustomerDTOList.length - 1].totalSalesPro = 100-total
-              }
-            }
-          }
           this.$nextTick(() => {
             this.initCharts()
             // this.initturnover()
@@ -726,6 +733,26 @@ export default {
       // this.year1 = ""
       // this.year2 = ""
       // this.year3 = ""
+    },
+    changInput () {
+      let total = new Number()
+      if (this.MarketOverviewObj.mainCustomerDTOList && this.MarketOverviewObj.mainCustomerDTOList.length > 0) {
+        this.MarketOverviewObj.mainCustomerDTOList.forEach((item, index) => {
+          if (index < this.MarketOverviewObj.mainCustomerDTOList.length - 1) {
+            total += Number(item.totalSalesPro)
+          }
+        })
+        console.log(total)
+        if (total > 100) {
+          iMessage.error('份额总和不能超过100%')
+          return
+        } else {
+          if (total > 0) {
+            this.MarketOverviewObj.mainCustomerDTOList[this.MarketOverviewObj.mainCustomerDTOList.length - 1].customerName = "其他"
+            this.MarketOverviewObj.mainCustomerDTOList[this.MarketOverviewObj.mainCustomerDTOList.length - 1].totalSalesPro = 100 - total
+          }
+        }
+      }
     },
     initturnover () {
       const myChart = echarts().init(this.$refs.turnover);
