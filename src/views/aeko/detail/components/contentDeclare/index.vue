@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-02-10 11:25:56
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-18 11:57:48
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -306,6 +306,7 @@
           </template>
           <template #isMtz="scope">
             <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-else>{{scope.row.isMtzDesc}}</span>
           </template>
           <!-- 是否待报价 -->
           <template #isReplace="scope">
