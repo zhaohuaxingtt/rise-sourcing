@@ -14,7 +14,7 @@ const quotationRequst = download(process.env.VUE_APP_SOURCING)
 // 获取KM的RFQ列表
 export function getKmFileHistory(params) {
   return requst({
-    url: `/km/file-histories/${ params.hostId }/${ params.type }/${ params.pageSize }/${ params.currPage }`,
+    url: `/km/file-histories/${ params.hostId }/${ params.type }/${ params.pageSize }/${ params.currPage }${ params.rfqFlag ? '/false' : '' }`,
     method: 'GET'
   })
 }

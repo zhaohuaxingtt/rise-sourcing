@@ -1,7 +1,7 @@
 <!--
  * @Author: youyuan
  * @Date: 2021-08-04 19:51:49
- * @LastEditTime: 2022-01-05 15:33:47
+ * @LastEditTime: 2022-02-17 19:11:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\index.vue
@@ -562,11 +562,10 @@ export default {
     clickReport (row) {
       this.reportTitle = row.reportName
       this.reportKey = Math.random()
-      if (row.downloadUrl) this.reportUrl = row.downloadUrl
-      getFileByFileId(this.reportUrl).then(res => {
-        console.log(res)
+      getFileByFileId(row.downloadUrl).then(res => {
+        if (res.request.responseURL) this.reportUrl = res.request.responseURL
+        this.reportVisible = true
       })
-      this.reportVisible = true
     },
     //点击关闭报告预览弹窗
     handleCloseReport () {
