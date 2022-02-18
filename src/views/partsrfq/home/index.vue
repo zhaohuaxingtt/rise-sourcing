@@ -670,7 +670,8 @@ export default {
         hostId: rfqId,
         type: 1,
         currPage: 1,
-        pageSize: 99999999
+        pageSize: 99999999,
+        rfqFlag: true // 对应url中的false
       })
       .then(res => {
         if (res.code == 200) {
