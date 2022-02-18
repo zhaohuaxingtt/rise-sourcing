@@ -38,6 +38,7 @@
           :hide-open-page="true"
           :input-props="inputProps"
           input-type="number"
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQDETAILINFO_TIMEPLAN_TABLE|时间计划表格"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->
