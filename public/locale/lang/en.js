@@ -1965,6 +1965,7 @@
     'PI.JIAGEYINGXIANGXISHU': 'Cost Affecting Ratio %',
     'PI.JIAGEBIANDONGBILV': 'Price Alteration Ratio %',
     'PI.XITONGPIPEIXINXI': 'System Mapping Info',
+    'PI.XIANGQING': 'Info',
     'PI.XINZENG': 'Create',
     'PI.XIANSHIYINGCANG': 'Display/Hide',
     'PI.LINGJIANCHENGBENGOUCHENG': 'Part Cost Consistency',
