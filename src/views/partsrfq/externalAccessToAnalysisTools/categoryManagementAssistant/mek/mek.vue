@@ -229,6 +229,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import resultMessageMixin from "@/utils/resultMessageMixin";
 import reportPreview from "@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview";
 import addDialog from "./components/addDialog.vue";
+import { getFileByFileId } from '@/api/file'
 export default {
   mixins: [pageMixins, resultMessageMixin],
   components: {
@@ -305,7 +306,7 @@ export default {
           query: {
             schemeId: res.data,
             productFactoryNames: params ? params.productFactoryNames || "" : "",
-            add:true
+            add: true
           },
         })
       })
@@ -515,9 +516,16 @@ export default {
         window.open(openUrl.href, '_blank')
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
         this.reportTitle = val.name
-        this.reportVisible = true;
         this.reportKey = Math.random()
-        if (val.path) this.reportUrl = val.path;
+        this.reportVisible = true;
+        getFileByFileId(val.downloadUrl).then(res => {
+          if (res.request.responseURL) this.reportUrl = res.request.responseURL
+          this.reportVisible = true
+        })
+        // this.reportTitle = val.name
+        // this.reportVisible = true;
+        // this.reportKey = Math.random()
+        // if (val.path) this.reportUrl = val.path;
       }
     },
     //点击关闭报告预览弹窗
