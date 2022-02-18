@@ -3,7 +3,7 @@
     <div class="btnControl">
       <iButton :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
     </div>
-    <div id="bbbbb" class="main" ref="contentPage">
+    <div class="main" ref="contentPage" id="allMoudles">
       <div class="title">
         <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
         <span class="mtz" v-if="this.nomiData.mtzApplyId">
@@ -13,14 +13,11 @@
         <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
       </div>
       <div class="content">
-        <div  class="tab-list">
-          <iTabsList value="/designate/decisiondata/title">
-            <template v-for="(item,index) in decisionType">
-              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
-            </template>
-          </iTabsList>
-        </div>
-        <rsTitle class="module"/>
+        <!-- title -->
+        <div id="html2canvasTitle">
+          <headerTab value="/designate/decisiondata/title"/>
+          <rsTitle class="module"/>
+         </div>
         <!-- [ { "key": "Title", "name": "Title", "path": "/designate/decisiondata/title" }, 
         { "key": "PartList", "name": "Part List", "path": "/designate/decisiondata/partlist" },
          { "key": "Tasks", "name": "Tasks", "path": "/designate/decisiondata/tasks" },
@@ -35,69 +32,54 @@
               { "key": "RS", "name": "RS", "path": "/designate/decisiondata/rs" },
                { "key": "MTZ", "name": "MTZ", "path": "/designate/decisiondata/mtz", "isMtz": true }, 
                { "key": "Attachment", "name": "Attachment", "path": "/designate/decisiondata/attachment" } ] -->
-        <div  class="tab-list">
-          <iTabsList value="/designate/decisiondata/partlist">
-            <template v-for="(item,index) in decisionType">
-              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
-            </template>
-          </iTabsList>
+        <!-- PartList -->
+        <div id="html2canvasPartList">
+          <headerTab value="/designate/decisiondata/partlist"/>
+          <partList class="module"/>
         </div>
-        <partList class="module"/>
 
-        <div  class="tab-list">
-          <iTabsList value="/designate/decisiondata/tasks">
-            <template v-for="(item,index) in decisionType">
-              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
-            </template>
-          </iTabsList>
+        <!-- Tasks -->
+        <div id="html2canvasTasks">
+          <headerTab value="/designate/decisiondata/tasks"/>
+          <tasks class="module"/>
         </div>
-        <tasks class="module"/>
 
-        <div  class="tab-list">
-          <iTabsList value="/designate/decisiondata/drawing">
-            <template v-for="(item,index) in decisionType">
-              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
-            </template>
-          </iTabsList>
+        <!-- drawing -->
+        <div id="html2canvasDrawing">
+          <headerTab value="/designate/decisiondata/drawing"/>
+          <drawing class="module"/>
         </div>
-        <drawing class="module"/>
 
-        <div  class="tab-list">
-          <iTabsList value="/designate/decisiondata/bdl">
-            <template v-for="(item,index) in decisionType">
-              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
-            </template>
-          </iTabsList>
+        <!-- bdl -->
+        <div id="html2canvasBDl">
+          <headerTab value="/designate/decisiondata/bdl"/>
+          <bdl class="module"/>
         </div>
-        <bdl class="module"/>
 
-        <div  class="tab-list">
-          <iTabsList value="/designate/decisiondata/singlesourcing">
-            <template v-for="(item,index) in decisionType">
-              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
-            </template>
-          </iTabsList>
+        <!-- singleSourcing -->
+        <div id="html2canvasSingleSourcing">
+          <headerTab value="/designate/decisiondata/singlesourcing"/>
+          <singleSourcing class="module"/>
         </div>
-        <singleSourcing class="module"/>
 
-        <div  class="tab-list">
-          <iTabsList value="/designate/decisiondata/timeline">
-            <template v-for="(item,index) in decisionType">
-              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
-            </template>
-          </iTabsList>
+        <!-- timeline -->
+        <div id="html2canvasTimeline">
+          <headerTab value="/designate/decisiondata/timeline"/>
+          <timeline class="module"/>
         </div>
-        <timeline class="module"/>
-        <!-- <awardingScenario class="module" /> -->
+        <!-- awardingScenario -->
+        <div id="html2canvasAwardingScenario">
+          <div  class="tab-list">
+            <headerTab value="/designate/decisiondata/awardingscenario"/>
+          </div>
+          <awardingScenario class="module" />
+        </div>
+        
 
-        <div  class="tab-list">
-          <iTabsList value="/designate/decisiondata/rs">
-            <template v-for="(item,index) in decisionType">
-              <el-tab-pane :key="'decisionType' + index" :label="item.name" :name="item.path"></el-tab-pane>
-            </template>
-          </iTabsList>
+        <div id="html2canvasRs">
+            <headerTab value="/designate/decisiondata/rs"/>
+          <rs class="module" :nomiData="nomiData"/>
         </div>
-        <rs class="module" :nomiData="nomiData"/>
       </div>
     </div>
   </div>
@@ -114,9 +96,11 @@ import bdl from "./components/bdl"
 import singleSourcing from "./components/singleSourcing"
 import timeline from "./components/timeline"
 import rs from "./components/rs"
+import awardingScenario from '../../awardingscenario'
 import { transverseDownloadPDF } from "@/utils/pdf"
 
 import { decisionType } from '@/layout/nomination/components/data'
+import headerTab from './headerTab'
 
 export default {
   components: {
@@ -129,7 +113,9 @@ export default {
     singleSourcing,
     timeline,
     rs,
-    iTabsList
+    iTabsList,
+    awardingScenario,
+    headerTab,
   },
   created() {
     this.nominateAppId = this.$route.query.desinateId
@@ -142,7 +128,18 @@ export default {
       exportLoading: false,
       nominateAppId: "", // 定点申请id
       nomiData: {}, // 定点申请数据
-      decisionType
+      decisionType,
+      transferDom:[
+        {DomId:'html2canvasTitle',key:'title'},
+        {DomId:'html2canvasPartList',key:'partList'},
+        {DomId:'html2canvasTasks',key:'tasks'},
+        {DomId:'html2canvasDrawing',key:'drawing'},
+        {DomId:'html2canvasBDl',key:'bdl'},
+        {DomId:'html2canvasSingleSourcing',key:'singleSourcing'},
+        {DomId:'html2canvasTimeline',key:'timeline'},
+        {DomId:'html2canvasAwardingScenario',key:'awardingScenario'},
+        {DomId:'html2canvasRs',key:'rs'},
+      ]
     }
   },
   methods: {
@@ -167,14 +164,32 @@ export default {
       //     this.exportLoading = false
       //   }
       // })
-      html2canvas(this.$el.querySelector("#bbbbb")).then(canvas => {
-        const url = canvas.toDataURL("image/png")
+      // this.transferDom.map((item)=>{
+        // html2canvas(that.$el.querySelector('#'+item.DomId)).then(canvas=>{
+        html2canvas(this.$el.querySelector('#html2canvasAwardingScenario')).then(canvas=>{
+            var imgurl = canvas.toBlob((blob)=>{
+            //以时间戳作为文件名 实时区分不同文件
+              let filename = `${new Date().getTime()}.png`;
+              //转换canvas图片数据格式为formData
+              let file2 = new File([blob], filename, {type: 'image/png'});
+              let formData = new FormData();
+              formData.append('file', file2);
 
-        const a = document.createElement('a');
-                    a.href = url;
-                    a.setAttribute('download', 'chart-download');
-                    a.click();
-      });
+              //将转换为formData的canvas图片 上传到服务器
+              // uploadFile(formData).then((res)=>{
+
+              // })
+            })
+            
+            const url = canvas.toDataURL("image/png")
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.setAttribute('download', 'chart-download');
+            a.click();
+        });
+      // })
+
     }
   }
 }
@@ -199,6 +214,7 @@ export default {
     top: 30px; /*no*/
     left: 50%;
     transform: translate(-50%, 0);
+    z-index: 9999;
   }
 
   .main {
@@ -245,6 +261,18 @@ export default {
       .module {
         & + .module {
           margin-top: 20px; /*no*/
+        }
+        
+        ::v-deep.el-select .el-input__inner{
+          box-shadow: none;
+          border: 1px solid rgba(0,38,98,.15);
+        }
+        ::v-deep.el-select {
+          overflow: hidden;
+          .el-select__tags {
+            overflow: visible;
+            z-index: 20;
+          }
         }
       }
     }
