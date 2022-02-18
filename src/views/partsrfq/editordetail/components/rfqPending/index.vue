@@ -80,14 +80,14 @@ export default {
           index: '3',
           label: '询价信息',
           component: 'Inquiry',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE|供应商评分',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_INQUIRY|询价信息',
           key: 'LK_XUNJIAXINXI'
         },
         {
           index: '4',
           label: '待办任务',
           component: 'toDoList',
-          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_INDEXPAGE|待办任务',
+          permissionKey: 'PARTSRFQ_EDITORDETAIL_RFQPENDING_TODOLIST|待办任务',
           key: 'LK_DAIBANRENWU'
         }
       ]
