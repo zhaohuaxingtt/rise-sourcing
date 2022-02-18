@@ -15,13 +15,13 @@
           uploadClass="uploadButton" 
           accept=".jpg,.jpeg,.png,.bmp,.webp" 
           v-if="!isDisabled"
-          v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_UPLOAD|上传"  
+          v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_UPLOAD|文件管理-上传"  
           :beforeUpload="beforeUpload" 
           @success="uploadSuccess" @error="uploadError">
           <iButton :disabled="loading" :loading="uploadLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
         </uploadButton>
-        <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_DOWNLOAD|下载" :disabled="loading" :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
-        <iButton v-if="!isDisabled" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_DELETE|删除" :disabled="loading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
+        <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_DOWNLOAD|文件管理-下载" :disabled="loading" :loading="downloadLoading" @click="handleDownload">{{ language("XIAZAI", "下载") }}</iButton>
+        <iButton v-if="!isDisabled" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_DIALOG_FILEMANAGE_BUTTON_DELETE|文件管理-删除" :disabled="loading" @click="handleDelete">{{ language("SHANCHU", "删除") }}</iButton>
       </div>
       <tableList
         index
