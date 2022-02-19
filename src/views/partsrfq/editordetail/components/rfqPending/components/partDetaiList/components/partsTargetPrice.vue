@@ -139,7 +139,12 @@ export default {
               i.APrice = i["skdAPrice"];
               i.BPrice = i["skdBPrice"];
             } else if (i.applyType == "CKD LANDED") {
-              i.APrice = i["ckdExwork"] + "(" + i["ckdDuty"] + "%)";
+              if (i["ckdExwork"] && i["ckdDuty"]) {
+                i.APrice = i["ckdExwork"] + "(" + i["ckdDuty"] + "%)";
+              } else {
+                i.APrice = ""
+              }
+              
               i.BPrice = i["ckdLanded"];
             }
           });
