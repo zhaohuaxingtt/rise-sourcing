@@ -2281,7 +2281,7 @@
     ZHILIANGPINGFEN: 'MQ Rating',
     WULIUPINGFEN: 'PL Rating',
     LK_AEKO_DINGDIANSHIJIAN: 'Nomi. Time',
-    XIAOSHOUJIA: 'Euro Price',
+    XIAOSHOUJIA: 'Retail Price',
     DINGDIANMINGXI: 'Nomi. Detail',
     GONGYIZU: 'Process Group',
     LINIEBUMEN: 'LINIE Dept.',
