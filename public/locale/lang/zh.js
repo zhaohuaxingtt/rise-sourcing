@@ -3914,7 +3914,7 @@
     GUANSHUI: '关税',
     JINGNEIYUNFEIRMB: '境内运费（RMB）',
     CHUCHANGJIA: '出厂价',
-    XIAOSHOUJIA: '欧价',
+    XIAOSHOUJIA: '销售价',
     LK_CBDHUIZONG: 'CBD汇总',
     PILIANGWEIHUCHANLIANGJIHUA: '批量维护产量计划',
     是否: '是否',
