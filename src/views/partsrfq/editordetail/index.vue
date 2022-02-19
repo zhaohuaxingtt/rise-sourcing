@@ -150,7 +150,9 @@
                 {{ $route.query.id ? baseInfo.createDate : moment().format('YYYY-MM-DD') }}
               </iText>
             </iFormItem>
-            <iFormItem label="材料组" name="categoryCode">
+            <iFormItem label="材料组" name="categoryCode"
+                      v-permission.auto="PARTSRFQ_EDITORDETAIL_CATEGORYCODE|材料组"
+            >
               <iText>
                 {{ (baseInfo.categoryCode ? baseInfo.categoryCode : '') +'-'+ (baseInfo.categoryName ? baseInfo.categoryName : '') }}
               </iText>
@@ -179,7 +181,11 @@
               <iText forceTooltip
                      :tooltipContent="baseInfo.mq">{{ nameProcessor(baseInfo.mq) }}</iText>
             </iFormItem>
-            <iFormItem :label="language('LK_CF','财务控制员')+':'" name="cf">
+            <iFormItem 
+                      :label="language('LK_CF','财务控制员')+':'" 
+                      name="cf"
+                      v-permission.auto="PARTSRFQ_EDITORDETAIL_CF|财务控制员"
+                      >
               <iText forceTooltip :tooltipContent="baseInfo.cf">{{ nameProcessor(baseInfo.cf)||getName(baseInfo.cfControllerNames) }}</iText>
             </iFormItem>
           </div>
@@ -203,7 +209,9 @@
             </iFormItem>
             
             <iFormItem label="本轮开始时间"
-                       name="currentRoundsEndTime">
+                       name="currentRoundsEndTime"
+                       v-permission.auto="PARTSRFQ_EDITORDETAIL_CURRENTROUNDSENDTIME|本轮开始时间"
+                       >
               <iText>{{ baseInfo.currentRoundsStartTime }}</iText>
             </iFormItem>
             <iFormItem :label="language('LK_BENLUNBAOJIAJIEZHISHIJIAN', '本轮报价截止时间') + ':'"
@@ -840,6 +848,7 @@ export default {
       }
     },
     getDisabled () {
+      // console.log(this.disabled)
       return this.disabled;
     },
     //等待StarMonitor定点更新

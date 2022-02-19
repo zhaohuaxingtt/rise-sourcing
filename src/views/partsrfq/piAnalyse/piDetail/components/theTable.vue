@@ -255,8 +255,20 @@ export default {
       const resTableData = this.handleSystemMatchData({ tableListData: this.tableListData });
       const hideTableData = this.handleSystemMatchData({ tableListData: this.hideTableData });
       const res = this.handleValidateTableFinish();
+
       if (res) {
         const tableList = resTableData.concat(hideTableData);
+        
+        console.log(
+          {
+            tableList,
+            nowPriceRatio: this.nowPriceRatio,
+            totalPriceRatio: this.totalPriceRatio,
+            beginTime: this.beginTime,
+            endTime: this.endTime,
+          }
+        )
+
         return {
           tableList,
           nowPriceRatio: this.nowPriceRatio,
@@ -267,10 +279,19 @@ export default {
       }
     },
     handleValidateTableFinish () {
+
       const resTableData = this.handleSystemMatchData({ tableListData: this.tableListData });
+
+      console.log(resTableData)
+
+
+      
       const hideTableData = this.handleSystemMatchData({ tableListData: this.hideTableData });
       const resTableValidate = this.validateFinish(resTableData);
       const hideTableValidate = this.validateFinish(hideTableData, true);
+
+      console.log(resTableValidate)
+      console.log(hideTableValidate)
       return resTableValidate && hideTableValidate;
     },
     validateFinish (resTableData, isHideTable = false) {
@@ -279,7 +300,7 @@ export default {
         const newIndex = !isHideTable ? (index + 1) : this.tableListData.length + index + 1;
         switch (item.dataType) {
           case classType.rawMaterial:
-            if (!item.partType || !item.partNumber || !item.partRegion) {
+            if (!item.partType || !item.partNumber) {
               validateStatus = false;
               iMessage.warn(`#${newIndex}：${this.language('PIBIAOGEJIANYAN', '请完成系统匹配信息的选择。')}`);
             }

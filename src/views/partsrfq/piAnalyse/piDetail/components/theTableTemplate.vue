@@ -103,13 +103,128 @@
                        :label="items.key ? language(items.key, items.name) : items.name"
                        :prop="items.props"
                        :fixed="items.fixed">
-        <el-table-column :width="items.width"
-                         :show-overflow-tooltip='items.tooltip'
-                         align='center'>
-          <template slot-scope="scope">
-            <div class="systemMatchBox">
+        <template v-if="items.children.length>0">
+          <el-table-column v-for="(itemSmall,num) in items.children"
+                        :key="num"
+                        :width="itemSmall.width"
+                        :show-overflow-tooltip='itemSmall.tooltip'
+                        align='center'
+                        :label="itemSmall.key ? $t(itemSmall.key) : itemSmall.name"
+                        :prop="itemSmall.props"
+                        :fixed="itemSmall.fixed"
+                        >
+            <template slot-scope="scope">
               <template v-if="isTableEdit">
-                <!--第一个下拉框-->
+                <template v-if="itemSmall.props === 'systemMatch1'">
+                  <iSelect v-model="scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})]"
+                          @focus="handleGetSelectList({props: '',row: scope.row})"
+                          @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
+                          style="width: 120px;margin-right: 10px;"
+                          value-key="id"
+                          :loading="selectLoading">
+                    <template v-if="scope.row.newRow">
+                      <el-option v-for="item of selectOptionsObject[scope.row.time][FIRSTSELECT]"
+                                :key='item.id'
+                                :value='item'
+                                :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})" />
+                    </template>
+                    <template v-else>
+                      <el-option v-for="item of selectOptionsObject[scope.row.id || scope.row.time][FIRSTSELECT]"
+                                :key='item.id'
+                                :value='item'
+                                :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})" />
+                    </template>
+                  </iSelect>
+                </template>
+
+                <template v-if="itemSmall.props === 'systemMatch2'">
+                  <iSelect v-model="scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})]"
+                          @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
+                          style="width: 120px;margin-right: 10px;"
+                          value-key="id"
+                          :loading="selectLoading">
+                    <template v-if="scope.row.newRow">
+                      <el-option v-for="item of selectOptionsObject[scope.row.time][SECONDSELECT]"
+                                :key='item.id'
+                                :value='item'
+                                :label="getSelectLabel({props: SECONDSELECT, row:scope.row, itemData: item})" />
+                    </template>
+                    <template v-else>
+                      <el-option v-for="item of selectOptionsObject[scope.row.id || scope.row.time][SECONDSELECT]"
+                                :key='item.id'
+                                :value='item'
+                                :label="getSelectLabel({props: SECONDSELECT, row:scope.row, itemData: item})" />
+                    </template>
+                  </iSelect>
+                </template>
+
+                <template v-if="itemSmall.props === 'systemMatch3'">
+                  <div class="systemMatchText" style="width: auto;">
+                    <template>
+                      {{ language('PI.SHUJULAIYUAN', '数据来源') }}（{{ scope.row.partSource ? scope.row.partSource : '' }}）
+                    </template>
+                    <iconTips v-if="!scope.row.isMatch"
+                              iconName="iconzhongyaoxinxitishi"
+                              :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成对应的指数变动百分比，可手动补充系统匹配模块信息。')"
+                              class="margin-left6"
+                              :iconStyle="{'fontSize': '12px'}" />
+                  </div>
+                </template>
+              </template>
+          
+              <template v-else>
+                <template v-if="itemSmall.props === 'systemMatch1'">
+                  <el-popover placement="top-start"
+                              width="200"
+                              trigger="hover"
+                              :content="getMatchTextLabel({props: FIRSTSELECT, row: scope.row })">
+                    <div class="systemMatchText"
+                        slot="reference">
+                      <span>{{ getMatchTextLabel({props: FIRSTSELECT, row: scope.row}) }}</span>
+                    </div>
+                  </el-popover>
+                </template>
+                <template v-if="itemSmall.props === 'systemMatch2'">
+                  <el-popover placement="top-start"
+                              width="200"
+                              trigger="hover"
+                              :content="getMatchTextLabel({props: SECONDSELECT, row: scope.row })">
+                    <div class="systemMatchText"
+                        slot="reference">
+                      <span>{{ getMatchTextLabel({props: SECONDSELECT, row: scope.row}) }}</span>
+                    </div>
+                  </el-popover>
+                </template>
+                <template v-if="itemSmall.props === 'systemMatch3'">
+                  <div class="systemMatchText" style="width: auto;">
+                    <template>
+                      <el-popover placement="top-start"
+                                  width="200"
+                                  trigger="hover"
+                                  :content="language('PI.SHUJULAIYUAN', '数据来源') + '：' + scope.row.partSource ? scope.row.partSource : ''">
+                        <span slot="reference">
+                          {{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.partSource ? scope.row.partSource : '' }}
+                        </span>
+                      </el-popover>
+                    </template>
+                    <iconTips v-if="!scope.row.isMatch"
+                              iconName="iconzhongyaoxinxitishi"
+                              :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成对应的指数变动百分比，可手动补充系统匹配模块信息。')"
+                              class="margin-left6"
+                              :iconStyle="{'fontSize': '12px'}" />
+                  </div>
+                </template>
+              </template>
+            </template>
+          </el-table-column>
+        </template>
+        
+          
+          <!-- <template slot-scope="scope"> -->
+
+            <!-- <div class="systemMatchBox">
+              <template v-if="isTableEdit">
+
                 <iSelect v-model="scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})]"
                          @focus="handleGetSelectList({props: '',row: scope.row})"
                          @change="handleSelectChange({props:FIRSTSELECT , event: $event, row:scope.row})"
@@ -129,7 +244,7 @@
                                :label="getSelectLabel({props: FIRSTSELECT, row:scope.row, itemData: item})" />
                   </template>
                 </iSelect>
-                <!--第二个下拉框-->
+
                 <iSelect v-model="scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})]"
                          @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
                          style="width: 120px;margin-right: 10px;"
@@ -148,7 +263,7 @@
                                :label="getSelectLabel({props: SECONDSELECT, row:scope.row, itemData: item})" />
                   </template>
                 </iSelect>
-                <!--第三个下拉框-->
+
                 <iSelect v-if="scope.row.dataType === classType['rawMaterial']"
                          v-model="scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})]"
                          @change="handleSelectChange({props:THIRDSELECT , event: $event, row:scope.row})"
@@ -221,9 +336,9 @@
                           class="margin-left6"
                           :iconStyle="{'fontSize': '12px'}" />
               </div>
-            </div>
-          </template>
-        </el-table-column>
+            </div> -->
+          <!-- </template> -->
+        <!-- </el-table-column> -->
 
       </el-table-column>
       <!--显示隐藏-->
@@ -319,11 +434,12 @@ export default {
       switch (row.dataType) {
         case this.classType['rawMaterial']:
           if (props === this.FIRSTSELECT) {
-            req.classType = event.classType;
-          } else if (props === this.SECONDSELECT) {
-            req.classType = event.classType;
-            req.specs = event.specs;
+            req.rawMaterialDetails = event.rawMaterialDetails;
           }
+          //  else if (props === this.SECONDSELECT) {
+            // req.classType = event.classType;
+            // req.specs = event.specs;
+          // }
           break;
         case this.classType['manpower']:
           if (props === this.FIRSTSELECT) {
@@ -371,6 +487,9 @@ export default {
     },
     // 获取下拉
     async handleGetSelectList ({ props, row, req = {} }) {
+      // console.log(props)
+      // console.log(row)
+      // console.log(req)
       this.selectLoading = true;
       let selectList = '';
       switch (row.dataType) {
@@ -393,15 +512,20 @@ export default {
     },
     // 获取select Label
     getSelectLabel ({ props, row, itemData }) {
+      // console.log(props)
+      // console.log(row)
+      // console.log(itemData)
       switch (row.dataType) {
         case this.classType['rawMaterial']:
           if (props === this.FIRSTSELECT) {
-            return itemData.classType;
-          } else if (props === this.SECONDSELECT) {
-            return itemData.specs;
-          } else if (props === this.THIRDSELECT) {
-            return itemData.area;
+            return itemData.rawMaterialDetails;
           }
+          else if (props === this.SECONDSELECT) {
+            return itemData.area;
+          } 
+          // else if (props === this.THIRDSELECT) {
+          //   return itemData.area;
+          // }
           break;
         case this.classType['manpower']:
           if (props === this.FIRSTSELECT) {
