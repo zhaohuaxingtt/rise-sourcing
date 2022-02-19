@@ -356,7 +356,7 @@ export default {
           pageSize: this.page.pageSize,
         }
         const res = await mekInfoList(pms)
-        res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
+        res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.position)
         this.page.currPage = res.pageNum
         this.page.pageSize = res.pageSize
         this.page.totalCount = res.total
@@ -401,6 +401,10 @@ export default {
         item.engine = strs[0]
         item.transmission = strs[1]
         item.position = strs[2]
+        // 车型等级数据存在comfortline+ 的数据，因此需要对最后一位进行补充“+”号
+        if (item.carTypeInfo.endsWith("+")) {
+          item.position = item.position + "+"
+        }
         return item.effectFlag = 1
       })
       const res = await infoUpdate(pms)
