@@ -98,7 +98,7 @@
                :index="true"
                @handleSelectionChange="handleSelectionChange">
       <template #isFromAeko="scope">
-        <div> {{scope.row.isFromAeko?'是':"否"}}</div>
+        <div> {{scope.row.isFromAeko?'否':"是"}}</div>
       </template>
     </tableList>
     <div slot="footer"
