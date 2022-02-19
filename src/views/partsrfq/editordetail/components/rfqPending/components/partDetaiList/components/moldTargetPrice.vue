@@ -25,7 +25,7 @@
       <template slot="header-control">
         <div class="button-box">
           <template v-if="!todo">
-            <iButton @click="showDialog">{{language('CHAKAN','查看') + language('XIUGAIJILU','修改记录')}}</iButton>
+            <iButton v-permission.auto="PARTSRFQ_PARTDETAILLIST_MUJUMUBIAOJIA_CHAKANXIUGAIJILU|申请模具目标价-查看修改记录" @click="showDialog">{{language('CHAKAN','查看') + language('XIUGAIJILU','修改记录')}}</iButton>
               <iButton @click="exports">{{language('LK_DAOCHU','导出')}}</iButton>
           </template>
             <template v-else>
@@ -47,7 +47,7 @@
           :hide-open-page="true"
           :index="true"
           :lang="true"
-          v-permission.auto="PARTSRFQ_EDITORDETAIL_PARTDETAILIST_TABLE|零件清单列表"
+          v-permission.auto="PARTSRFQ_EDITORDETAIL_MUJUMUBIAOJIA_TABLE|模具目标价列表"
       ></tablelist>
       <!------------------------------------------------------------------------>
       <!--                  表格分页                                          --->

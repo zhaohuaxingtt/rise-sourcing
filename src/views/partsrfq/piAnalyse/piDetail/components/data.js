@@ -49,7 +49,17 @@ export const tableTitle = [
     width: 550,
     children: [
       {
-        
+        name: '详情',
+        key: 'PI.XIANGQING',
+        props: 'systemMatch1',
+      },{
+        name: '区域',
+        key: 'PLGLZS.QUYU',
+        props: 'systemMatch2',
+      },{
+        name: '数据来源',
+        key: '数据来源',
+        props: 'systemMatch3',
       }
     ],
   },
