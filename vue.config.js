@@ -178,8 +178,8 @@ module.exports = {
         },
       },
       '/usercenterApi': {
-        // target: 'http://10.122.17.38:8015/usercenter',
-        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
+        target: 'http://10.122.17.38:8015/usercenter',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
         changeOrigin: true,
         logLevel: 'info',
         pathRewrite: {
@@ -215,8 +215,8 @@ module.exports = {
         },
       },
       '/aonApi': {
-        // target: 'http://10.122.17.38:8036',
-        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
+        target: 'http://10.122.17.38:8036',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': '',
@@ -224,7 +224,8 @@ module.exports = {
       },
       '/partsProcureApi': {
         // target: 'http://10.122.17.38:8018',
-        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/procurementrequirement/',
+        target:
+          'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/procurementrequirement/',
         changeOrigin: true,
         pathRewrite: {
           '^/partsProcureApi': '',
