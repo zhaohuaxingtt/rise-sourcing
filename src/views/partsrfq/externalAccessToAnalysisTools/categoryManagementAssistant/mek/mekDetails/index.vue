@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-15 10:09:51
+ * @LastEditTime: 2022-02-18 19:19:49
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -748,7 +748,12 @@ export default {
         let entryParams = _.cloneDeep(params)
         entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
         mekInnerTarget(entryParams).then(res => {
-          this.firstBarData = res.data[0];
+          if (res?.code === "200") {
+            this.firstBarData = res.data[0];
+          } else {
+            iMessage.error(res.desZh)
+          }
+
         })
         console.log(this.firstBarData, "fisrtBarData")
         params.info = params.info.filter(item => item.isTargetMotor === false)
@@ -1015,6 +1020,8 @@ export default {
         config: {}
       };
       if (this.comparedType === 'mekMotorType') {
+        console.log(this.totalData)
+        console.log(this.firstBarData)
         this.totalData.forEach(item => {
           params.config[item.motorId] = {
             engine: item.detail[0].engine,
@@ -1022,6 +1029,15 @@ export default {
             transmission: item.detail[0].transmission
           }
         })
+        if (this.firstBarData.detail.length !== 0) {
+          params.config[this.firstBarData.motorId] = {
+            engine: this.firstBarData.detail[0].engine || "",
+            position: this.firstBarData.detail[0].position || "",
+            transmission: this.firstBarData.detail[0].transmission || ""
+          }
+        } else {
+          return iMessage.error(this.language('MUBIAOCHEXINGWUPEIZHIXINXI', '目标车型无配置信息'))
+        }
 
       }
       if (this.comparedType && this.ComparedMotor && this.schemeId && this.targetMotor) {
@@ -1179,68 +1195,72 @@ export default {
           this.onDataLoading = false;
           return;
         }
-        this.$nextTick(() => {
-          let data = res.data;
-          this.totalData = _.cloneDeep(res.data);
-          let maxWidthList = [];
-          let maxList = [];
-          this.totalWidth = 0;
-          if (data) {
-            data.forEach((item) => {
-              maxWidthList.push(item.detail.length);
+        if (res.code === '200') {
+          this.$nextTick(() => {
+            let data = res.data;
+            this.totalData = _.cloneDeep(res.data);
+            let maxWidthList = [];
+            let maxList = [];
+            this.totalWidth = 0;
+            if (data) {
+              data.forEach((item) => {
+                maxWidthList.push(item.detail.length);
 
-              if (_.max(maxWidthList) === 1 || _.max(maxWidthList) === 0) {
-                this.totalWidth = 240 * data.length;
+                if (_.max(maxWidthList) === 1 || _.max(maxWidthList) === 0) {
+                  this.totalWidth = 240 * data.length;
+                } else {
+                  this.totalWidth += item.detail.length * 120;
+                }
+                item.detail.forEach((i) => {
+                  maxList.push(parseInt(i.value));
+                });
+              });
+              if (this.totalWidth <= this.$refs.chartBox.$el.clientWidth) {
+                this.clientHeight = true;
               } else {
-                this.totalWidth += item.detail.length * 120;
+                this.clientHeight = false;
               }
-              item.detail.forEach((i) => {
-                maxList.push(parseInt(i.value));
+              this.totalWidth = this.totalWidth + 120 + "px";
+              console.log("error here s")
+              this.maxData = maxList && maxList.length > 0 ? _.max(maxList).toString() : "";
+              console.log("error here e")
+              let first = Number(this.maxData.slice(0, 1)) + 1;
+              for (let i = 0; i < this.maxData.length - 1; i++) {
+                first += "0";
+              }
+              this.maxData = first;
+              if (!this.isBindingRfq) {
+                this.firstBarData = data[0];
+                data.shift();
+              }
+              this.barData = data;
+              this.carLevelOptions = {};
+              this.barData.forEach((item) => {
+                item.checkList = [];
+                this.carLevelOptions[item.motorId] = [];
+                this.checkedCarLevelOptions[item.motorId] = [];
               });
-            });
-            if (this.totalWidth <= this.$refs.chartBox.$el.clientWidth) {
-              this.clientHeight = true;
-            } else {
-              this.clientHeight = false;
-            }
-            this.totalWidth = this.totalWidth + 120 + "px";
-            console.log("error here s")
-            this.maxData = maxList && maxList.length > 0 ? _.max(maxList).toString() : "";
-            console.log("error here e")
-            let first = Number(this.maxData.slice(0, 1)) + 1;
-            for (let i = 0; i < this.maxData.length - 1; i++) {
-              first += "0";
-            }
-            this.maxData = first;
-            if (!this.isBindingRfq) {
-              this.firstBarData = data[0];
-              data.shift();
-            }
-            this.barData = data;
-            this.carLevelOptions = {};
-            this.barData.forEach((item) => {
-              item.checkList = [];
-              this.carLevelOptions[item.motorId] = [];
-              this.checkedCarLevelOptions[item.motorId] = [];
-            });
-            this.barData.forEach((item) => {
-              item.detail.forEach((i) => {
-                item.checkList.push(i.title);
-                this.carLevelOptions[item.motorId].push(i.title);
-                this.checkedCarLevelOptions[item.motorId].push(i.title);
+              this.barData.forEach((item) => {
+                item.detail.forEach((i) => {
+                  item.checkList.push(i.title);
+                  this.carLevelOptions[item.motorId].push(i.title);
+                  this.checkedCarLevelOptions[item.motorId].push(i.title);
+                });
               });
-            });
-            if (this.comparedType === "mekMotorType") {
-              this.mekMotorTypeFlag = true;
+              if (this.comparedType === "mekMotorType") {
+                this.mekMotorTypeFlag = true;
+              } else {
+                this.mekMotorTypeFlag = false;
+              }
+              this.getMekTable();
             } else {
-              this.mekMotorTypeFlag = false;
+              iMessage.error(res.desZh);
             }
-            this.getMekTable();
-          } else {
-            iMessage.error(res.desZh);
-          }
-          this.onDataLoading = false;
-        });
+            this.onDataLoading = false;
+          });
+        } else {
+          iMessage.error(res.desZh)
+        }
       }, (res) => {
         iMessage.error(res.desZh);
         this.onDataLoading = false;

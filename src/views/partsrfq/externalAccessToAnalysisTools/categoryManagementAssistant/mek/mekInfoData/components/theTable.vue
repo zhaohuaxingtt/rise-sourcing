@@ -147,7 +147,7 @@
               <div v-if="isEdit">{{scope.row.carTypeInfo}}</div>
               <div v-else>
                 <iSelect :loading="carTypeInfoLoading"
-                         @focus="getCarTypeMessage(scope.row.motorSvwCode)"
+                         @focus="getCarTypeMessage(scope.row)"
                          :placeholder="language('QINGXUANZHE','请选择')"
                          v-model="scope.row.carTypeInfo">
                   <el-option :value="item.carTypeInfo"
@@ -330,12 +330,19 @@ export default {
     },
     // 获取车型信息集合
     async getCarTypeMessage (val) {
+      console.log(val)
       this.formGoup.carTypeInfoList = []
       this.carTypeInfoLoading = true
-      let res = await getCarTypeMessage({ motorSvwCode: val })
+      let res = await getCarTypeMessage({
+        schemeId: this.$route.query.schemeId,
+        isBindingRfq: this.$route.query.isBindingRfq,
+        targetMotorId: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes).shift() || [],
+        motorId: val.motorId,
+        motorSvwCode: val.motorSvwCode
+      })
       res = res.data.filter(item => item)
       console.log(res)
-      res.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
+      res.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.position)
       this.formGoup.carTypeInfoList = res
       this.carTypeInfoLoading = false
     },
@@ -356,7 +363,7 @@ export default {
           pageSize: this.page.pageSize,
         }
         const res = await mekInfoList(pms)
-        res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.configuration)
+        res.data.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.position)
         this.page.currPage = res.pageNum
         this.page.pageSize = res.pageSize
         this.page.totalCount = res.total
@@ -401,6 +408,10 @@ export default {
         item.engine = strs[0]
         item.transmission = strs[1]
         item.position = strs[2]
+        // 车型等级数据存在comfortline+ 的数据，因此需要对最后一位进行补充“+”号
+        if (item.carTypeInfo.endsWith("+")) {
+          item.position = item.position + "+"
+        }
         return item.effectFlag = 1
       })
       const res = await infoUpdate(pms)
