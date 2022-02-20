@@ -138,7 +138,28 @@
                 </template>
 
                 <template v-if="itemSmall.props === 'systemMatch2'">
-                  <iSelect v-model="scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})]"
+                  <iSelect v-if="scope.row.dataType === classType['rawMaterial']"
+                          v-model="scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})]"
+                          @change="handleSelectChange({props:THIRDSELECT , event: $event, row:scope.row})"
+                          style="width: 120px;margin-right: 10px;"
+                          value-key="id"
+                          :loading="selectLoading">
+                    <template v-if="scope.row.newRow">
+                      <el-option v-for="item of selectOptionsObject[scope.row.time][THIRDSELECT]"
+                                :key='item.id'
+                                :value='item'
+                                :label="getSelectLabel({props: THIRDSELECT, row:scope.row, itemData: item})" />
+                    </template>
+                    <template v-else>
+                      <el-option v-for="item of selectOptionsObject[scope.row.id || scope.row.time][THIRDSELECT]"
+                                :key='item.id'
+                                :value='item'
+                                :label="getSelectLabel({props: THIRDSELECT, row:scope.row, itemData: item})" />
+                    </template>
+                  </iSelect>
+
+                  <iSelect v-else
+                          v-model="scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})]"
                           @change="handleSelectChange({props:SECONDSELECT , event: $event, row:scope.row})"
                           style="width: 120px;margin-right: 10px;"
                           value-key="id"
@@ -184,14 +205,26 @@
                     </div>
                   </el-popover>
                 </template>
+
                 <template v-if="itemSmall.props === 'systemMatch2'">
-                  <el-popover placement="top-start"
+                  <el-popover v-if="scope.row.dataType === classType['rawMaterial']"
+                              placement="top-start"
+                              width="200"
+                              trigger="hover"
+                              :content="getMatchTextLabel({props: THIRDSELECT, row: scope.row })">
+                    <div class="systemMatchText"
+                        slot="reference">
+                        <span>{{ getMatchTextLabel({props: THIRDSELECT, row: scope.row}) }}</span>
+                    </div>
+                  </el-popover>
+                  <el-popover v-else
+                              placement="top-start"
                               width="200"
                               trigger="hover"
                               :content="getMatchTextLabel({props: SECONDSELECT, row: scope.row })">
                     <div class="systemMatchText"
                         slot="reference">
-                      <span>{{ getMatchTextLabel({props: SECONDSELECT, row: scope.row}) }}</span>
+                        <span>{{ getMatchTextLabel({props: SECONDSELECT, row: scope.row}) }}</span>
                     </div>
                   </el-popover>
                 </template>
@@ -426,15 +459,20 @@ export default {
     };
   },
   methods: {
+    aababba(data){
+      console.log(data)
+    },
     handleSelectionChange (val) {
       this.$emit('handleSelectionChange', val);
     },
     async handleSelectChange ({ props, event, row }) {
+
       let req = {};
       switch (row.dataType) {
         case this.classType['rawMaterial']:
           if (props === this.FIRSTSELECT) {
             req.rawMaterialDetails = event.rawMaterialDetails;
+            row.rawMaterialDetails = event.rawMaterialDetails;
           }
           //  else if (props === this.SECONDSELECT) {
             // req.classType = event.classType;
@@ -487,6 +525,7 @@ export default {
     },
     // 获取下拉
     async handleGetSelectList ({ props, row, req = {} }) {
+
       // console.log(props)
       // console.log(row)
       // console.log(req)
@@ -512,9 +551,6 @@ export default {
     },
     // 获取select Label
     getSelectLabel ({ props, row, itemData }) {
-      // console.log(props)
-      // console.log(row)
-      // console.log(itemData)
       switch (row.dataType) {
         case this.classType['rawMaterial']:
           if (props === this.FIRSTSELECT) {
@@ -523,9 +559,9 @@ export default {
           else if (props === this.SECONDSELECT) {
             return itemData.area;
           } 
-          // else if (props === this.THIRDSELECT) {
-          //   return itemData.area;
-          // }
+          else if (props === this.THIRDSELECT) {
+            return itemData.area;
+          }
           break;
         case this.classType['manpower']:
           if (props === this.FIRSTSELECT) {
@@ -552,10 +588,12 @@ export default {
       switch (row.dataType) {
         case this.classType['rawMaterial']:
           if (props === this.FIRSTSELECT) {
-            return 'partType';
-          } else if (props === this.SECONDSELECT) {
+            return 'rawMaterialDetails';
+          }
+           else if (props === this.SECONDSELECT) {
             return 'partNumber';
-          } else if (props === this.THIRDSELECT) {
+          } 
+          else if (props === this.THIRDSELECT) {
             return 'partRegion';
           }
           break;
@@ -578,13 +616,15 @@ export default {
     // 系统匹配展示LABEL
     getMatchTextLabel ({ props, row }) {
       const value = row[this.getMatchProps({ props, row })] ? `（${row[this.getMatchProps({ props, row })]}）` : '（）';
+      // console.log(value)
       switch (row.dataType) {
         case this.classType['rawMaterial']:
           if (props === this.FIRSTSELECT) {
             return this.language('PI.LEIBIE', '类别') + value;
           } else if (props === this.SECONDSELECT) {
             return this.language('PI.GUIGEPAIHAO', '规格/牌号') + value;
-          } else if (props === this.THIRDSELECT) {
+          } 
+          else if (props === this.THIRDSELECT) {
             return this.language('PI.SHENGSHI', '省市') + value;
           }
           break;
@@ -645,7 +685,8 @@ export default {
     text-overflow: ellipsis;
 
     & span {
-      width: 120px;
+      width: 80%;
+      text-align: left;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

@@ -255,13 +255,10 @@ export default {
       const resTableData = this.handleSystemMatchData({ tableListData: this.tableListData });
       const hideTableData = this.handleSystemMatchData({ tableListData: this.hideTableData });
       const res = this.handleValidateTableFinish();
-
       
-
       if (res) {
         const tableList = resTableData.concat(hideTableData);
-        // console.log(tableList)
-        
+
         console.log(
           {
             tableList,
@@ -282,19 +279,12 @@ export default {
       }
     },
     handleValidateTableFinish () {
-
       const resTableData = this.handleSystemMatchData({ tableListData: this.tableListData });
 
-      console.log(resTableData)
-
-
-      
       const hideTableData = this.handleSystemMatchData({ tableListData: this.hideTableData });
       const resTableValidate = this.validateFinish(resTableData);
       const hideTableValidate = this.validateFinish(hideTableData, true);
 
-      console.log(resTableValidate)
-      console.log(hideTableValidate)
       return resTableValidate && hideTableValidate;
     },
     validateFinish (resTableData, isHideTable = false) {
@@ -303,7 +293,7 @@ export default {
         const newIndex = !isHideTable ? (index + 1) : this.tableListData.length + index + 1;
         switch (item.dataType) {
           case classType.rawMaterial:
-            if (!item.partType || !item.partNumber) {
+            if (!item.partType || !item.partRegion) {
               validateStatus = false;
               iMessage.warn(`#${newIndex}：${this.language('PIBIAOGEJIANYAN', '请完成系统匹配信息的选择。')}`);
             }
@@ -330,19 +320,31 @@ export default {
       newList.map(item => {
         const copyItem = _.cloneDeep(item);
         if (item.dataType === classType['rawMaterial']) {
+          item.work = null;
+          item.workProvince = null;
+          item.productionCountry = null;
+          item.currency = null;
+
           if (item.partType) {
             item.partType = copyItem.partType.classType || copyItem.partType;
             item.matchId = copyItem.partType.id || copyItem.matchId;
           }
-          if (item.partNumber) {
-            item.partNumber = copyItem.partNumber.specs || copyItem.partNumber;
-            item.matchId = copyItem.partNumber.id || copyItem.matchId;
-          }
+          // if (item.partNumber) {
+            item.partNumber = copyItem.rawMaterialDetails.split("-")[1] || copyItem.partNumber;
+            // item.partNumber = copyItem.partNumber.specs || copyItem.partNumber;
+            // item.matchId = copyItem.partNumber.id || copyItem.matchId;
+          // }
           if (item.partRegion) {
             item.partRegion = copyItem.partRegion.area || copyItem.partRegion;
             item.matchId = copyItem.partRegion.id || copyItem.matchId;
           }
         } else if (item.dataType === classType['manpower']) {
+          item.partType = null;
+          item.partNumber = null;
+          item.partRegion = null;
+
+          item.productionCountry = null;
+          item.currency = null;
           if (item.work) {
             item.work = copyItem.work.profession || copyItem.work;
             item.matchId = copyItem.work.id || copyItem.matchId;
@@ -352,6 +354,12 @@ export default {
             item.matchId = copyItem.workProvince.id || copyItem.matchId;
           }
         } else if (item.dataType === classType['exchangeRate']) {
+          item.partType = null;
+          item.partNumber = null;
+          item.partRegion = null;
+
+          item.work = null;
+          item.workProvince = null;
           if (item.productionCountry) {
             item.productionCountry = copyItem.productionCountry.countryOrigin || copyItem.productionCountry;
             item.matchId = copyItem.productionCountry.id || copyItem.matchId;
@@ -444,12 +452,17 @@ export default {
           if (props === '') {
             copyObj[id][FIRSTSELECT] = selectList;
           } else if (props === FIRSTSELECT) {
-            copyObj[id][SECONDSELECT] = selectList;
+            if (row.dataType === classType['rawMaterial']) {
+              copyObj[id][THIRDSELECT] = selectList;
+            }else{
+              copyObj[id][SECONDSELECT] = selectList;
+            }
           } else if (props === SECONDSELECT) {
             copyObj[id][THIRDSELECT] = selectList;
           }
         }
       });
+
       this.selectOptionsObject = copyObj;
     },
     handleSelectReset ({ props, row, tableListData }) {
