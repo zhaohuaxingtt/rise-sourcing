@@ -15,7 +15,7 @@
           <div>{{ $t('TPZS.BG')+labelData.reportTotal}}</div>
         </div>
         <div>
-          <div>{{labelData.title==='PCA'||labelData.title==='TIA'?$t('TPZS.ZJSCSH'):$t('TPZS.SCGXSJ')+labelData.analysisLastUpdateDate}}</div>
+          <div>{{ (labelData.title==='PCA'||labelData.title==='TIA'?$t('TPZS.ZJSCSH'):$t('TPZS.SCGXSJ'))+labelData.analysisLastUpdateDate}}</div>
           <div v-if="labelData.title!=='PCA'&&labelData.title!=='TIA'&&labelData.title!=='Bid-Link'">{{$t('TPZS.SCDCSJ')+labelData.reportLastUpdateDate}}</div>
         </div>
       </div>
@@ -46,6 +46,7 @@ export default {
     cardData: {
       handler(data) {
         this.labelData = data
+        console.log(this.labelData);
       },
       deep: true,
       immediate: true,
