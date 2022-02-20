@@ -258,7 +258,7 @@ export default {
         },
         // 临时跳转到决策资料，不更新当前步骤
         gotoNomiAttach() {
-            // this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId})})
+            this.$router.push({path: '/designate/decisiondata/title', query: Object.assign(this.$route.query, {desinateId:this.$route.query.desinateId})})
         },
         // 跳转到任何已完成的定点步骤
         async toAnyNomiStep(item) {

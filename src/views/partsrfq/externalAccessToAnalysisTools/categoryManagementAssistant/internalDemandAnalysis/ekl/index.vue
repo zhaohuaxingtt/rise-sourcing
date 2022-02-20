@@ -327,7 +327,10 @@
         this.getReportData(data)
       },
       getReportData(data) {
-        getPowerBiVal(data).then(res => {
+        getPowerBiVal({
+          ...data
+          // username:213123159
+        }).then(res => {
           if (res.result) {
             this.url = res.data
 
@@ -441,7 +444,7 @@
               column: "data_version"
             },
             operator: "In",
-            // values: [year+""+month],
+            // values: ["202201"],
             filterType: pbi.models.FilterType.BasicFilter
           };
           var year_parameter = {
@@ -472,7 +475,7 @@
           })[0];
           const visuals = await page.getVisuals();
           visuals.filter(function (visual) {
-            //设置多个默认条件
+            // 设置多个默认条件
             if ((visual.title == "data_version") && page.isActive == true) {
               visual.setSlicerState({
                 filters: [version_parameter]
@@ -483,8 +486,8 @@
                 filters: [year_parameter]
               });
             }
-
-            if(visual.title == "material_group" && page.isActive==true){
+            // visual.title == "material_group_code_name" && 
+            if(page.isActive==true){
               visual.setSlicerState({
                 filters: [material_group_parameter]
               });				    							    						    		

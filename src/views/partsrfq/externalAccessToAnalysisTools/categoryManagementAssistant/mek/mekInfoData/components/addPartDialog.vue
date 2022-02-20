@@ -98,7 +98,7 @@
                :index="true"
                @handleSelectionChange="handleSelectionChange">
       <template #isFromAeko="scope">
-        <div> {{scope.row.isFromAeko?'是':"否"}}</div>
+        <div> {{scope.row.isFromAeko?'否':"是"}}</div>
       </template>
     </tableList>
     <div slot="footer"
@@ -212,10 +212,13 @@ export default {
             iMessage.error(res.desZh)
           }
         } else {
+          let targetMotorId = vwModelCodes.shift()
+          let motorIds = vwModelCodes
           const pms = {
             ...this.form,
             categoryCode: this.$route.query.categoryCode || '',
-            motorIds: vwModelCodes || [],
+            motorIds: motorIds || [],
+            targetMotorId: targetMotorId,
             isBindingRfq: this.$route.query.isBindingRfq,
             schemeId: this.$route.query.schemeId
           }

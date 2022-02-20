@@ -81,6 +81,10 @@ export default {
 
     handleSearchSure(data){
       this.form = data;
+      this.page = {
+        currPage: 1,
+        pageSize: 10,
+      },
       this.handleSure();
     },
 

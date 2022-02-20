@@ -9,6 +9,16 @@ const VUE_APP_BMMOLD_FILE = axiosFile(process.env.VUE_APP_TOOLING + '/bmMold')
 
 const VUE_APP_MOLDVIEW = axios(process.env.VUE_APP_MOLDVIEW)
 const VUE_APP_MOLDVIEW_FILE = axiosFile(process.env.VUE_APP_MOLDVIEW)
+const requst = axios(process.env.VUE_APP_FIXEDASSETS);
+
+// 获取固资照片列表
+export function getPictureListByFixedAssetCode(data){
+	return requst({
+		url: `/assets/billing/getPictureListByFixedAssetCode`,
+		method: 'GET',
+		params: data
+	})
+}
 
 //模具视图-导出
 export function moldViewExport(parmars) {

@@ -8,9 +8,15 @@
 -->
 
 <template>
-  <div v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs">
-    <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation" />
-    <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting" />
+  <div>
+    <div v-if="isApproval">
+      <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" />
+      <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" />
+    </div>
+    <div v-else v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS|决策资料-rs">
+      <circulation ref="circulation" v-if="isCirculation" :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_CIRCULATION|circulation" />
+      <meeting ref="meeting" v-else :isPreview="isPreview || nominationDisabled || rsDisabled" :nominateId="nominateId" :projectType="projectType" :showSignatureForm="showSignatureForm" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_METTING|meeting" />
+    </div>
   </div>
 </template>
 
@@ -109,6 +115,9 @@ export default {
      */    
     projectType() {
       return this.otherPartProjectType
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
     }
   },
   methods: {

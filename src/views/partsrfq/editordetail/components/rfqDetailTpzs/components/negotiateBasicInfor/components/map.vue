@@ -45,31 +45,74 @@ export default {
       handler (objects) {
         const data = cloneDeep(objects)
         var sum = 0
-
+        let list = []
+        let max, min, section, section1, section2, section3, section4, section5
         this.svwData = data.purchaseFactoryList
         this.tableData = data.supplierList
         this.tableData && this.tableData.forEach(item => {
-          sum = sum + parseFloat(item.amount)
+          if (item.plantList && item.plantList.length > 0) {
+            item.plantList.forEach((plant) => {
+              list.push(parseInt(plant.amount))
+            })
+          }
         })
+        max = _.max(list)
+        min = _.min(list)
+        section = (max - min) / 5
+        section1 = section
+        section2 = section * 2
+        section3 = section * 3
+        section4 = section * 4
+        section5 = section * 5
+        console.log(max, min)
+        console.log(section1, section2, section3, section4, section5)
         this.tableData && this.tableData.map(item => {
           if (item.plantList && item.plantList.length > 0) {
             item.plantList.forEach((plant) => {
               if (plant.amount) {
-                var ratio = parseFloat(plant.amount) / sum * 100 / 5
-                if (ratio > 64) {
-                  ratio = 64
-                } else if (ratio < 5) {
-                  ratio = 5
+                var ratio = plant.amount
+                if (ratio < section1) {
+                  plant.symbolSize = 5
+                } else if (ratio >= section1 && ratio < section2) {
+                  plant.symbolSize = 10
+                } else if (ratio >= section2 && ratio < section3) {
+                  plant.symbolSize = 15
+                } else if (ratio >= section3 && ratio < section4) {
+                  plant.symbolSize = 20
+                } else if (ratio >= section4 && ratio < section5) {
+                  plant.symbolSize = 25
+                } else if (ratio >= section5) {
+                  plant.symbolSize = 30
                 }
-                plant.symbolSize = ratio
-              } else {
-                plant.symbolSize = 10
+                // plant.symbolSize = ratio
               }
+              // else {
+              //   plant.symbolSize = 10
+              // }
               plant.amount = String(plant.amount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'
               plant.value = [plant.lon, plant.lat]
             })
           }
         })
+        // this.tableData && this.tableData.map(item => {
+        //   if (item.plantList && item.plantList.length > 0) {
+        //     item.plantList.forEach((plant) => {
+        //       if (plant.amount) {
+        //         var ratio = parseFloat(plant.amount) / sum * 100 / 5
+        //         if (ratio > 64) {
+        //           ratio = 64
+        //         } else if (ratio < 5) {
+        //           ratio = 5
+        //         }
+        //         plant.symbolSize = ratio
+        //       } else {
+        //         plant.symbolSize = 10
+        //       }
+        //       plant.amount = String(plant.amount).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'RMB'
+        //       plant.value = [plant.lon, plant.lat]
+        //     })
+        //   }
+        // })
         this.svwData && this.svwData.map(item => {
           return item.value = [item.longitude, item.latitude]
         })

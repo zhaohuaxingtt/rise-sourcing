@@ -161,14 +161,17 @@ export default {
       if (this.multipleSelection.length === 0) {
         return iMessage.error(this.language('QINGXUANZESHUJU', '请选择数据'))
       }
-      let textTypeId = []
+      let textTypeId = [];
+      let index = [];
       this.multipleSelection.forEach(item => {
         textTypeId.push(item.textTypeId)
+        index.push(item.index)
       })
       deleteMekTable({
         comparedType: this.$parent.$parent.comparedType,
         schemeId: this.$parent.$parent.schemeId,
-        textTypeId
+        textTypeId,
+        index
       }).then(res => {
         if (res?.code === '200') {
           this.$parent.$parent.getMekTable()

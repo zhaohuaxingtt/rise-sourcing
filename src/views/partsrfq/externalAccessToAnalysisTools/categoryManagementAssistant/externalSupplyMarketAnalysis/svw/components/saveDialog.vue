@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-02 10:00:24
- * @LastEditTime: 2021-09-08 10:12:00
+ * @LastEditTime: 2022-02-18 17:44:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\externalSupplyMarketAnalysis\svw\components\saveDialog.vue
@@ -103,7 +103,7 @@ export default {
         background: 'rgba(0, 0, 0, 0.7)'
       });
       downloadPDF({
-        idEle: "content",
+        idEle: "#content",
         pdfName: "SVW供应商市场总览" + this.categoryCode + '-' + this.categoryName,
         exportPdf: true,
         callback: async (pdf, pdfName) => {

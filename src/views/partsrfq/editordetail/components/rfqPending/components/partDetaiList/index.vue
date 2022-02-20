@@ -341,7 +341,11 @@ export default {
       this[type] = true;
     },
     updateData(type) {
-      this.$refs[type].getTableList()
+      if(typeof this.$refs[type].getTableList == 'function'){
+        this.$refs[type].getTableList()
+      }else if(typeof this.$refs[type][0].getTableList == 'function'){
+        this.$refs[type][0].getTableList()
+      }
     },
     gotoAccessoryDetail(row) {
       const router = this.$router.resolve({

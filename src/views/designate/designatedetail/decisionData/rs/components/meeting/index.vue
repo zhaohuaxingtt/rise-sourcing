@@ -173,9 +173,17 @@
     <iCard v-if="!isPreview && !showSignatureForm && !isAuth" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
       <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE|保存">{{language('BAOCUN','保存')}}</iButton>
       <div class="meetingRemark">
-        <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
-          <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
-          <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
+        <div v-if="isApproval">
+          <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+            <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+            <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
+          </div>
+        </div>
+        <div v-else>
+          <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
+            <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+            <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
+          </div>
         </div>
       </div>
     </iCard>
@@ -351,6 +359,9 @@ export default {
     },
     getRemarkAll() {
       return this.remarkItem.map(item => item.value).join('\n')
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
     }
   },
   created(){
