@@ -256,8 +256,11 @@ export default {
       const hideTableData = this.handleSystemMatchData({ tableListData: this.hideTableData });
       const res = this.handleValidateTableFinish();
 
+      
+
       if (res) {
         const tableList = resTableData.concat(hideTableData);
+        // console.log(tableList)
         
         console.log(
           {
