@@ -62,6 +62,12 @@
           <singleSourcing class="module"/>
         </div>
 
+        <!-- abprice -->
+        <div id="html2canvasAbprice">
+          <headerTab value="/designate/decisiondata/abprice"/>
+          <abPrice class="module"/>
+        </div>
+
         <!-- timeline -->
         <div id="html2canvasTimeline">
           <headerTab value="/designate/decisiondata/timeline"/>
@@ -97,6 +103,7 @@ import singleSourcing from "./components/singleSourcing"
 import timeline from "./components/timeline"
 import rs from "./components/rs"
 import awardingScenario from '../../awardingscenario'
+import abPrice from '../abPrice'
 import { transverseDownloadPDF } from "@/utils/pdf"
 
 import { decisionType } from '@/layout/nomination/components/data'
@@ -116,6 +123,7 @@ export default {
     iTabsList,
     awardingScenario,
     headerTab,
+    abPrice,
   },
   created() {
     this.nominateAppId = this.$route.query.desinateId
@@ -136,10 +144,12 @@ export default {
         {DomId:'html2canvasDrawing',key:'drawing'},
         {DomId:'html2canvasBDl',key:'bdl'},
         {DomId:'html2canvasSingleSourcing',key:'singleSourcing'},
+        {DomId:'html2canvasAbprice',key:'abPrice'},
         {DomId:'html2canvasTimeline',key:'timeline'},
         {DomId:'html2canvasAwardingScenario',key:'awardingScenario'},
         {DomId:'html2canvasRs',key:'rs'},
-      ]
+      ],
+      clickIndex:0,
     }
   },
   methods: {
@@ -165,8 +175,11 @@ export default {
       //   }
       // })
       // this.transferDom.map((item)=>{
-        // html2canvas(that.$el.querySelector('#'+item.DomId)).then(canvas=>{
-        html2canvas(this.$el.querySelector('#html2canvasAwardingScenario')).then(canvas=>{
+      //   html2canvas(this.$el.querySelector('#'+item.DomId)).then(canvas=>{
+        // const {clickIndex,transferDom} = this;
+        // const domId = '#'+transferDom[clickIndex]['DomId'];
+        // html2canvas(this.$el.querySelector(domId)).then(canvas=>{
+        html2canvas(this.$el.querySelector('#allMoudles')).then(canvas=>{
             var imgurl = canvas.toBlob((blob)=>{
             //以时间戳作为文件名 实时区分不同文件
               let filename = `${new Date().getTime()}.png`;
@@ -175,11 +188,12 @@ export default {
               let formData = new FormData();
               formData.append('file', file2);
 
+
               //将转换为formData的canvas图片 上传到服务器
               // uploadFile(formData).then((res)=>{
 
-              // })
-            })
+              })
+            // })
             
             const url = canvas.toDataURL("image/png")
 
@@ -187,6 +201,7 @@ export default {
             a.href = url;
             a.setAttribute('download', 'chart-download');
             a.click();
+            // this.clickIndex++;
         });
       // })
 
@@ -252,6 +267,9 @@ export default {
 
     .content {
       margin-top: 30px; /*no*/
+      >div{
+        padding: 0 20px;
+      }
 
       ::v-deep .card {
         box-shadow: none;
@@ -273,8 +291,16 @@ export default {
             overflow: visible;
             z-index: 20;
           }
+          .el-input__inner{
+            padding:8px 5px;
+        }
         }
       }
+    }
+  }
+  #html2canvasAbprice{
+    ::v-deep.btnSearch{
+      display: none;
     }
   }
 }
