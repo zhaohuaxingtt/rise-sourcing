@@ -103,7 +103,8 @@ export default {
         downloadLine(row){
             // const {tpPartAttachmentName} = row;
             // this.download([tpPartAttachmentName]);
-            downloadUdFile(row.uploadId)
+            // downloadUdFile(row.uploadId)
+            window.open(row.tpPartAttachmentPath,'_blank')
         },
         // 获取列表
         async getList(){

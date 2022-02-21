@@ -208,8 +208,8 @@ export default {
       //   applicationName: 'procurereq-service',
       //   fileList: row.tpPartAttachmentName
       // })
-
-      downloadUdFile(row.uploadId)
+      window.open(row.tpPartAttachmentPath,'_blank')
+      // downloadUdFile(row.uploadId)
     },
     async handleDownload() {
       if (!this.multipleSelection.length) return iMessage.warn(this.language('LK_QINGXUANZHEXUYAOXIAZHAIDEFUJIAN','请选择需要下载的附件'))

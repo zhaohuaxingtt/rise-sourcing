@@ -144,7 +144,8 @@ export default {
         downloadLine(row){
             // const {tpPartAttachmentName} = row;
             // this.download([tpPartAttachmentName]);
-            downloadUdFile(row.uploadId)
+            // downloadUdFile(row.uploadId)
+            window.open(row.filePath,'_blank')
         },
         // 批量下载附件
         downloadList(){

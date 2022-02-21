@@ -123,7 +123,8 @@ export default {
       //   applicationName: "rise",
       //   fileList: row.tpPartAttachmentName
       // })
-      downloadUdFile(row.uploadId)
+      // downloadUdFile(row.uploadId)
+      window.open(row.tpPartAttachmentPath,'_blank')
     },
   },
 }

@@ -170,6 +170,7 @@ export default {
       this.resultMessage(res, () => {
         this.clearDiolog()
         this.$parent.handleAdded()
+        this.$parent.categoryList()
       })
     },
     clearDiolog () {
