@@ -108,8 +108,9 @@ export default {
         downloadLine(row){
             // const {fileName} = row;
             // this.download([fileName]);
-            downloadUdFile(row.uploadId)
-        },
+            // downloadUdFile(row.uploadId)
+            window.open(row.tpPartAttachmentPath,'_blank')
+    },
         // 获取列表
         async getList(){
             if (!this.rfqNum) {

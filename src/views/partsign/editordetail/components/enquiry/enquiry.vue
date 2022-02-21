@@ -164,7 +164,8 @@ export default {
       //   applicationName: 'rise-procurereq-service',
       //   fileList: row.tpPartAttachmentName
       // })
-      downloadUdFile(row.uploadId)
+      // downloadUdFile(row.uploadId)
+      window.open(row.tpPartAttachmentPath,'_blank')
     },
   }
 }

@@ -124,7 +124,8 @@ export default {
       //   applicationName: "rise",
       //   fileList: row.fileName
       // })
-      downloadUdFile(row.uploadId)
+      // downloadUdFile(row.uploadId)
+      window.open(row.filePath,'_blank')
     },
   },
 }
