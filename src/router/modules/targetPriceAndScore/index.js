@@ -15,7 +15,7 @@ import costanalysismanageRoutes from "./costanalysismanage" // KM成本分析
 export default [
   {
     path: "/targetpriceandscore",
-    meta: { title: "目标价及评分管理", activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE'] },
+    meta: { title: "目标价及评分管理", activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'] },
     component: () => import("@/layout/default"),
     redirect: "/targetpriceandscore/financialtargetprice/maintenance",
     children: [
