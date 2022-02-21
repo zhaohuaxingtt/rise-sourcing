@@ -357,7 +357,7 @@ export const staticRouter = [
 			name:'谈判助手-预览界面',
 			meta:{
 					title:'谈判助手-预览界面',
-					activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+					activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
 			},
 			component:()=> import("@/views/partsrfq/editordetail/components/rfqDetailTpzs/components/quotationScoringHz/preview.vue")
 	},
