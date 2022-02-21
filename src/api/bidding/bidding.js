@@ -99,6 +99,16 @@ export function saveBiddingQuoteRule(data) {
 }
 
 // 保存询价管理信息
+export function oldSaveInquiryBidding(data) {
+  return requst({
+    url: `/biddingService/saveInquiryBidding`,
+    method: "POST",
+    data,
+  });
+}
+
+
+// 保存询价管理信息
 export function saveInquiryBidding(data) {
   // return requst({
   //   url: `/biddingService/saveInquiryBidding`,

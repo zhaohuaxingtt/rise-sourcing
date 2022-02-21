@@ -449,7 +449,8 @@ import {
   cbdLevel,
   getBlackStuffList,
   getSupplierFinancialRiskLevel,
-  getIsComplete
+  getIsComplete,
+  oldSaveInquiryBidding
 } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
 import store from '@/store'
@@ -1177,7 +1178,7 @@ export default {
       // })
       //   .then(() => {})
       const formData = this.ruleForm;
-      return saveInquiryBidding({
+      return oldSaveInquiryBidding({
         // ...formData,
         ...this.orgRuleForm,
         attachments: formData.attachments,
