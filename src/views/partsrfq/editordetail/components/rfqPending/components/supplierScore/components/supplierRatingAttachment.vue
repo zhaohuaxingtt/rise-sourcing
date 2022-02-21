@@ -150,7 +150,8 @@ export default {
       //   fileList: [row.fileName]
       // }
       // await downloadFile(req)
-      await downloadUdFile(row.uploadId)
+      // await downloadUdFile(row.uploadId)
+      window.open(row.filePath,'_blank')
     }
   }
 }

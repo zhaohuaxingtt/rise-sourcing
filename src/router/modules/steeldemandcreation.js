@@ -17,7 +17,7 @@ export default [
       {
         path: "partsign/steeldemandcreation",
         name: "designateHome",
-        meta: {title: "钢材管理", activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']},
+        meta: {title: "钢材管理", activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']},
         component:()=> import("@/views/steelDemandCreation/home/index.vue"),
       }
     ]
