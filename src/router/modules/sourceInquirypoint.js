@@ -14,7 +14,7 @@ export default [
     name: "寻源与定点",
     meta:{
         title:'寻源与定点',
-        activeMenu: ['RISE_WORKBENCH', '/SOURCEINQUIRYPOINT']
+        activeMenu: ['RISE_WORKBENCH', 'SOURCEINQUIRYPOINT']
     },
     component: () => import("@/layout/default"),
     redirect: "/sourcing/dashboard",

@@ -315,7 +315,9 @@ export default {
     },
     // 编辑
     edit () {
+      this.getTableList()
       this.isEdit = !this.isEdit
+
     },
     // 是否隐藏
     async handleIsHidden (item) {
