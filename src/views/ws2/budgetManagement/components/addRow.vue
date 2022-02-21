@@ -160,6 +160,7 @@ export default {
   mounted() {
     this.getSelected()
     this.findAddColumnInvestmentBuild()
+    this.page.pageSizes = [10,20,50,100] //CRW-3446 每页条数切换
   },
   methods: {
     getSelected() {
