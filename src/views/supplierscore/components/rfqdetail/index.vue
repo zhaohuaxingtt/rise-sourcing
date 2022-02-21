@@ -1,21 +1,26 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 10:45:39
- * @LastEditTime: 2022-01-20 11:35:05
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-21 11:36:15
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\index.vue
 -->
 <template>
   <iPage class="rfqdetail">
-    <div class="header clearFloat">
+    <div class="header">
       <div class="title">{{ language("RFQBIANHAO", "RFQ编号") }}: {{ rfqId }}</div>
-      <div class="control">
+      <div>
+        <iLoger :config="{ bizId_obj_ae: 'rfqId', module_obj_ae:'供应商评分', queryParams:['bizId_obj_ae']}" isPage :isUser="true" class="margin-left25" />
+        <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
+            class="log-icon margin-left20 cursor myLogIcon"></icon>
+      </div>
+      <!-- <div class="control">
         <logButton class="margin-left20" />
         <span class="margin-left20">
           <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
         </span>
-      </div>
+      </div> -->
     </div>
     <infos class="margin-top30" :rfqInfo="rfqInfo" />
     <iTabsList class="margin-top20" type="card" v-model="currentTab" @tab-click="tabChange">
@@ -35,6 +40,8 @@ import supplierScore from "./components/supplierScore"
 import inquiryAttachment from "./components/inquiryAttachment"
 import { getRfqDetailByCurrentDept } from "@/api/supplierscore"
 
+import iLoger from 'rise/web/components/iLoger'
+
 export default {
   components: {
     iPage,
@@ -44,7 +51,8 @@ export default {
     infos,
     partList,
     supplierScore,
-    inquiryAttachment
+    inquiryAttachment,
+    iLoger
   },
   data() {
     return {
@@ -105,6 +113,9 @@ export default {
     updateRfq() {
       this.getRfqDetailByCurrentDept("update")
     },
+    
+    gotoDBhistory() {
+    }
   }
 }
 </script>
@@ -113,6 +124,9 @@ export default {
 .rfqdetail {
   .header {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     .title {
       font-size: 20px;
@@ -121,7 +135,12 @@ export default {
       height: 28px;
       line-height: 28px;
     }
-
+    
+  ::v-deep .myLogIcon {
+    width: 21px;
+    height: 21px;
+    vertical-align: middle;
+  }
     .control {
       position: absolute;
       top: 50%;
