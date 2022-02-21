@@ -37,7 +37,7 @@ Vue.directive('permission', {
     }
 
     if (binding.modifiers.disabled) {
-      if (store.state.permission.whiteBtnList[value]) {
+      if (!store.state.permission.whiteBtnList[value]) {
         el.classList.add('is-disabled')
       }
     } else if (binding.modifiers.dynamic) {
