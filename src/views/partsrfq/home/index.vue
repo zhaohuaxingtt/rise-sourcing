@@ -193,6 +193,7 @@
                   </tablelist>
                   <icon class="tick icon-style" symbol name="iconbaojiazhuangtailiebiao_yibaojia" slot="reference"/>
                 </el-popover>
+                <span v-else></span>
               </template>
 
               <!-- 已报价&已询价 合并显示 -->
