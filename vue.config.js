@@ -140,8 +140,8 @@ module.exports = {
     clientLogLevel: 'none',
     proxy: {
       '/eklApi': {
-        // target: 'http://10.122.17.38:8043/riseekl',
-        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/riseekl/',
+        target: 'http://10.122.17.38:8043/riseekl',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/riseekl/',
         changeOrigin: true,
         pathRewrite: {
           '^/eklApi': '',
@@ -179,6 +179,7 @@ module.exports = {
       },
       '/usercenterApi': {
         target: 'http://10.122.17.38:8015/usercenter',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
         changeOrigin: true,
         logLevel: 'info',
         pathRewrite: {
@@ -214,16 +215,16 @@ module.exports = {
         },
       },
       '/aonApi': {
-        // target: 'http://10.122.17.38:8036',
-        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
+        target: 'http://10.122.17.38:8036',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': '',
         },
       },
       '/partsProcureApi': {
-        // target: 'http://10.122.17.38:8018',
-        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/procurementrequirement/',
+        target: 'http://10.122.17.38:8018',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/procurementrequirement/',
         changeOrigin: true,
         pathRewrite: {
           '^/partsProcureApi': '',
@@ -244,8 +245,8 @@ module.exports = {
         },
       },
       '/partApi': {
-        // target: 'http://10.122.17.38:8788',
-        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/parts/',
+        target: 'http://10.122.17.38:8788',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/parts/',
         changeOrigin: true,
         pathRewrite: {
           '^/partApi': '',
