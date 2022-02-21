@@ -127,7 +127,7 @@
             <!-- <div>{{language('CHEXINGPEIZHI','车型配置')}}</div> -->
             <div class="flex-between-center-center margin-top10">
               <div>{{language('DONGLI','动力 ')}}+{{language('CHUANDONG','传动')}}+{{language('PEIZHI','配置')}}</div>
-              <icon name="iconMEK-xuxian"
+              <!-- <icon name="iconMEK-xuxian"
                     symbol />
               <div class="flex-between-center-center">
                 <span>{{language('CHUANDONG','EBR')}}</span>
@@ -139,7 +139,7 @@
                         name="iconxinxitishi"
                         class="font-size16 margin-left5" />
                 </el-popover>
-              </div>
+              </div> -->
             </div>
           </template>
           <template slot-scope="scope">
@@ -148,6 +148,7 @@
               <div v-else>
                 <iSelect :loading="carTypeInfoLoading"
                          @focus="getCarTypeMessage(scope.row)"
+                         @change="changCarType(scope.row)"
                          :placeholder="language('QINGXUANZHE','请选择')"
                          v-model="scope.row.carTypeInfo">
                   <el-option :value="item.carTypeInfo"
@@ -156,7 +157,7 @@
                              :key="index"></el-option>
                 </iSelect>
               </div>
-              <el-popover trigger="hover"
+              <!-- <el-popover trigger="hover"
                           placement="top-start">
                 <div class="tip-box">
                   <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
@@ -165,8 +166,36 @@
                        :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
                 </div>
                 <div slot="reference">{{scope.row.ebr}}</div>
+              </el-popover> -->
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column show-overflow-tooltip
+                         :label="language('EBR','EBR')">
+          <template slot="header">
+            <div class="flex-between-center-center">
+              <span>{{language('CHUANDONG','EBR')}}</span>
+              <el-popover trigger="hover"
+                          placement="top-start"
+                          :content="language('SBXTZEBRSZSJFCZSCGLJSZDCXPZ','鼠标悬停在EBR数值上将浮窗展示出该零件所在的车型配置')">
+                <icon slot="reference"
+                      symbol
+                      name="iconxinxitishi"
+                      class="font-size16 margin-left5" />
               </el-popover>
             </div>
+          </template>
+          <template slot-scope="scope">
+            <el-popover trigger="hover"
+                        placement="top-start">
+              <div class="tip-box">
+                <div class="tip-title">{{language("GAICHEXINGPEIZHI",'该车型配置:')}}</div>
+                <div v-for="(item,index) in scope.row.configurationList"
+                     :key="index"
+                     :class="item.isHighlight?'highlight':'black'">{{item.configuration}}</div>
+              </div>
+              <div slot="reference">{{scope.row.ebrPercent}}</div>
+            </el-popover>
           </template>
         </el-table-column>
       </el-table-column>
@@ -282,7 +311,8 @@ export default {
       tableTitle: tableTitle,
       tableLoading: false,
       carTypeInfoLoading: false,
-      isEdit: true
+      isEdit: true,
+      carTypeMessage: []
     }
   },
   // 监听属性 类似于data概念
@@ -344,9 +374,19 @@ export default {
       })
       res = res.data.filter(item => item)
       console.log(res)
-      res.map(item => item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.position)
+      res.map(item => { item.carTypeInfo = item.engine + '+' + item.transmission + '+' + item.position })
+      this.carTypeMessage = res
       this.formGoup.carTypeInfoList = res
       this.carTypeInfoLoading = false
+    },
+    async changCarType (val) {
+      this.carTypeMessage.forEach(item => {
+        if ((item.engine + '+' + item.transmission + '+' + item.position) === val.carTypeInfo) {
+          val.ebr = item.ebr
+          val.ebrPercent = item.ebrPercent
+        }
+      })
+      console.log(val)
     },
     handleAdded () {
       this.page.currPage = 1
