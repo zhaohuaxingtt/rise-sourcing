@@ -146,14 +146,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-::v-deep .el-table {
-  tr{
-    background-color: white;
-  }
+// ::v-deep .el-table {
+//   tr{
+//     background-color: white;
+//   }
 
-  th {
-    background-color: rgb(231,239,254);
-  }
-}
+//   th {
+//     background-color: rgb(231,239,254);
+//   }
+// }
 
 </style>
