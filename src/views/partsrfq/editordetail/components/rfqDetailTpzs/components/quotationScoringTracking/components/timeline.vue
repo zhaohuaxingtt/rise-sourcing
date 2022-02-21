@@ -1,26 +1,26 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-25 16:11:34
- * @LastEditTime: 2021-09-24 14:48:04
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-21 14:25:57
+ * @LastEditors: YoHo
  * @Description: timeline
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\timeline.vue
 -->
 <template>
   <div class="timeLine" :style="{paddingTop:paddingTop,paddingBottom:paddingBottom}">
-    <div v-for='(items,index) in timeList' :key='index' class="lineitems" :style="{width:'60px'}">
+    <div v-for='(items,index) in timeList' :key='index' class="lineitems" :style="{width:5*fontSize+'px'}">
       <p class="itemsa">
         <span v-if='items.planPeriod % 2 != 0'>
           <p>{{items.planYear}}CW{{items.planPeriod}}</p>
         </span>
         <span v-else style="display:inline-block;height:13px;"></span>
       </p>
-      <p :class="{itemsb:true,active:items.active}" :style="{width:'60px'}"></p>
+      <p :class="{itemsb:true,active:items.active}" :style="{width:5*fontSize+'px'}"></p>
       <template v-if='items.rfqTimeAxisProgressVOList.length == 0'>
       </template>
       <template v-else>
         <template v-for="(itemss,indexs) in items.rfqTimeAxisProgressVOList">
-          <p class="itemsc" :style='{top:`${(index%2==0?"":"-")+(50)*(indexs+1)}px`,left:((itemss.doneDay || 1)-1) * 8.8 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
+          <p class="itemsc" :style='{top:`${(index%2==0?"":"-")+4.5 * fontSize *(indexs+1)}px`,left:((itemss.doneDay || 1)-1) * 8.8 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
             <span><icon symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
             <span v-if='itemss.planYear'>计划:{{itemss.planYear}}CW{{itemss.planPeriod}}</span>
             <span v-if='itemss.doneYear' :class="'color'+itemss.taskStatus">完成:{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
@@ -48,6 +48,11 @@ export default{
       paddingBottom:'0px'
     }
   },
+  computed:{
+    fontSize(){
+      return parseInt(document.getElementsByTagName('html')[0].style.fontSize)
+    }
+  },
   mounted(){
     this.renderTopBottom()
   },
@@ -59,8 +64,8 @@ export default{
      */
     renderTopBottom(){
      try {
-        this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.rfqTimeAxisProgressVOList.length - a.rfqTimeAxisProgressVOList.length)[0].rfqTimeAxisProgressVOList.length * 80 + 'px'
-        this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.rfqTimeAxisProgressVOList.length - a.rfqTimeAxisProgressVOList.length)[0].rfqTimeAxisProgressVOList.length * 58 + 'px'
+        this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.rfqTimeAxisProgressVOList.length - a.rfqTimeAxisProgressVOList.length)[0].rfqTimeAxisProgressVOList.length * 5 * this.fontSize + 'px'
+        this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.rfqTimeAxisProgressVOList.length - a.rfqTimeAxisProgressVOList.length)[0].rfqTimeAxisProgressVOList.length * 4.5 * this.fontSize + 'px'
      } catch (error) {
        this.paddingBottom = '80px';
        this.paddingTop = '0px';
