@@ -330,7 +330,7 @@ export function filterProjectList(oldProjectList, currentProjectType) {
       onlyselfProject.DBYICHIXINGCAIGOU,
       onlyselfProject.YICIXINGCAIGOU,
     ]
-    if (currentProjectType == '') {
+    if (!currentProjectType) {
       newProjectLists = oldProjectList
     }
     if (onlyselfList.includes(currentProjectType)) {
