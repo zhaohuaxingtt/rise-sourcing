@@ -473,6 +473,7 @@ export default {
           if (props === this.FIRSTSELECT) {
             req.rawMaterialDetails = event.rawMaterialDetails;
             row.rawMaterialDetails = event.rawMaterialDetails;
+            row.partType = event.rawMaterialDetails.split("-")[0];
           }
           //  else if (props === this.SECONDSELECT) {
             // req.classType = event.classType;
