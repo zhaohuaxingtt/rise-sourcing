@@ -11,7 +11,7 @@ export default [
     path: 'costanalysismanage',
     meta: {
       title: '成本分析管理',
-      activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE'],
+      activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'],
     },
     component: () => import('@/views/routerView'),
     redirect: 'costanalysismanage/home',
@@ -21,7 +21,7 @@ export default [
         name: 'costAnalysisManageHome',
         meta: {
           title: '成本分析管理-成本分析',
-          activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE'],
+          activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'],
         },
         component: () => import('@/views/costanalysismanage/components/home'),
       },
@@ -30,7 +30,7 @@ export default [
         name: 'costAnalysisManageRfqDetail',
         meta: {
           title: '成本分析管理-RFQ详情',
-          activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE'],
+          activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'],
         },
         component: () =>
           import('@/views/costanalysismanage/components/rfqdetail'),
@@ -40,7 +40,7 @@ export default [
         name: 'costAnalysisManageCostAnalysis',
         meta: {
           title: '成本分析管理-成本分析',
-          activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE'],
+          activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'],
         },
         component: () =>
           import('@/views/costanalysismanage/components/costanalysis'),
@@ -52,7 +52,7 @@ export default [
     name: 'dataMaintenance',
     meta: {
       title: '数据维护',
-      activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE'],
+      activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'],
     },
     component: () =>
       import('@/views/costanalysismanage/components/datamaintenance'),
@@ -63,7 +63,7 @@ export default [
         name: 'laborCostMaintenance',
         meta: {
           title: '数据维护-人工成本维护',
-          activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE'],
+          activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'],
         },
         component: () =>
           import(
@@ -75,7 +75,7 @@ export default [
         name: 'laborCostDataMaintenance',
         meta: {
           title: '数据维护-人工成本数据维护',
-          activeMenu: ['RISE_WORKBENCH', '/TARGETPRICEANDSCORE'],
+          activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE'],
         },
         component: () =>
           import(
