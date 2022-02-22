@@ -25,18 +25,18 @@
       </tableList>
       <el-divider class="divider"></el-divider>
       <tableList :tableData="tableData" :tableTitle="supplierSubTitle" @handleSelectionChange="handleSelectionChange">
-        <template #factoryName="scope">
-          <iSelect class="input-center" v-model="scope.row.factoryName" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @change="selectChange(scope.row.factoryName,scope.row)" @visible-change="getSupplierPlantBySupplierId(scope.row.id)">
-              <el-option
-                v-for="item in supplierProduceNames"
-                :key="item.id"
-                :label="item.factoryName"
-                :value="item.factoryName">
-                  <el-tooltip class="item" effect="light" :open-delay="200" :content="item.factoryName" placement="right">
-                    <div class="item">{{ item.factoryName }}</div>
-                  </el-tooltip>
-              </el-option>
-            </iSelect>
+        <template #factory="scope">
+          <iSelect class="input-center" value-key="id" v-model="scope.row.factory" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @change="selectChange($event, scope.row)" @visible-change="getSupplierPlantBySupplierId(scope.row.id)">
+            <el-option
+              v-for="item in supplierProduceNames"
+              :key="item.id"
+              :label="item.factoryName"
+              :value="item">
+                <el-tooltip class="item" effect="light" :open-delay="200" :content="item.factoryName" placement="right">
+                  <div class="item">{{ item.factoryName }}</div>
+                </el-tooltip>
+            </el-option>
+          </iSelect>
         </template>
       </tableList>
     </div>
@@ -67,12 +67,17 @@ export default {
     customAction: {
       type: Boolean
     },
-    tableData:{
-      type: Array
+    factoryTableData:{
+      type: Array,
+      default: () => ([])
     }
   },
   watch: {
     visible(nv) {
+      if (nv) {
+        this.tableData = _.cloneDeep(this.factoryTableData)
+      }
+
       if (nv && this.ids.length && this.$route.query.id) {
         this.getRfqRateDepartsData()
         this.getAllDeptTag()
@@ -118,7 +123,8 @@ export default {
       deptMap: {
         EP: null,
         MQ: null
-      }
+      },
+      tableData: []
     }
   },
   methods: {
@@ -151,11 +157,10 @@ export default {
       getSupplierPlantBySupplierId(supplierId)
       .then(res => {
         if (res.code == 200) {
-          this.supplierProduceNames = Array.isArray(res.data) ? res.data : []
-          this.addressObj = {}
-          this.supplierProduceNames.forEach(i=>{
-            this.addressObj[i.factoryName] = i.addressInfoVo.province+'-'+i.addressInfoVo.city+'-'+i.addressInfoVo.address
-          })
+          this.supplierProduceNames = Array.isArray(res.data) ? res.data.map(item => ({
+            ...item,
+            companyAddress: `${ item.addressInfoVo.province || '' }_${ item.addressInfoVo.city || '' }_${ item.addressInfoVo.address || '' }`
+          })) : []
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
@@ -163,10 +168,9 @@ export default {
       })
       .catch(() => this.supplierProduceNamesLoading = false)
     },
-    selectChange(val,row){
-      const current = this.supplierProduceNames.find(item => item.value === value)
-      this.$set(row, "companyAddressCode", current.id)
-      row.companyAddress = this.addressObj[val]
+    selectChange(factory, row) {
+      this.$set(row, "companyAddressCode", factory.id)
+      this.$set(row, "companyAddress", factory.companyAddress)
     },
     sendTaskForRating() {
       if (!this.selectTableData.length) return iMessage.warn(this.language('NINHAIWEIXUANZEGONGS','您当前还未选择供应商！'))
