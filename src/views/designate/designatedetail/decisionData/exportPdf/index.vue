@@ -185,7 +185,7 @@ export default {
     },
     getPdfImage(){
         const ops = {
-          scale:(0.6,0.6),
+          scale:(2,2),
         };
         const {clickIndex,transferDom} = this;
         const domId = '#'+transferDom[clickIndex]['DomId'];
