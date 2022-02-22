@@ -395,26 +395,45 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        [key]: fsTemplate ? (asSameCartypeInGroupList(item.groupIdTemp,dataList) ? (element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': keepTwoDecimalFull(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))  : item[key] || 0):'/'):''
+                        // [key]: fsTemplate ? (asSameCartypeInGroupList(item.groupIdTemp,dataList) ? (element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': keepTwoDecimalFull(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))  : item[key] || 0):'/'):''
+                        // math.divide(
+                        //   math.floor(
+                        //     math.multiply(
+                        //       math.bignumber(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)), 
+                        //       100
+                        //     )
+                        //   ),
+                        //   100
+                        // ).toFixed(2)
+                        [key]: fsTemplate ? (asSameCartypeInGroupList(item.groupIdTemp,dataList) ? (element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': math.divide(math.floor(math.multiply(math.bignumber(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)), 100)), 100).toFixed(2)  : item[key] || 0):'/'):''
                       }
                     })
 
-                    total[key] = fsTemplate ? ((!element[key] || total[key] == "/")?"/":keepTwoDecimalFull(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))):''
+                    // total[key] = fsTemplate ? ((!element[key] || total[key] == "/")?"/":keepTwoDecimalFull(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))):''
+                    // math.divide(
+                    //   math.floor(
+                    //     math.multiply(
+                    //       math.bignumber(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)), 
+                    //       100
+                    //     )
+                    //   ), 
+                    //   100
+                    // ).toFixed(2)
+                    total[key] = fsTemplate ? ((!element[key] || total[key] == "/")?"/": math.divide(math.floor(math.multiply(math.bignumber(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)), 100)), 100).toFixed(2)):''
                   }else{
-                    //mathjs版本问题，floor函数不可用，故使用tofixed(3).slice(0, -1)截取
+                    //mathjs版本问题，带精度参数的floor函数不可用
                     groupArr = groupArr.map(item => {
-                      console.log(`key: ${ key }`, /^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key))
                       return {
                         ...item,
                         [key]: 
                           (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) ? 
-                          (element.groupId === item.groupIdTemp ? math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toFixed(3).slice(0,-1) : item[key]):
+                          (element.groupId === item.groupIdTemp ? math.divide(math.floor(math.multiply(math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)), 100)), 100).toFixed(2) : item[key]):
                           (element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`)) : item[key])
                       }
                     })
 
                     if (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) {
-                      total[key] = math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toFixed(3).slice(0,-1)
+                      total[key] = math.divide(math.floor(math.multiply(math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)), 100)), 100).toFixed(2)
                     } else {
                       total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`))
                     }
