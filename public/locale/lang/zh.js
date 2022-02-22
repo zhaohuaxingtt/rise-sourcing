@@ -3149,6 +3149,7 @@
     'PI.JIAGEYINGXIANGXISHU': '价格影响系数%',
     'PI.JIAGEBIANDONGBILV': '价格变动比率%',
     'PI.XITONGPIPEIXINXI': '系统匹配信息',
+    'PI.SHICHANGSHUJUPIPEI':"市场数据匹配",
     'PI.XIANGQING': '详情',
     'PI.DANGQIANJIAGE': '当前价格',
     LK_AEKO_BUTTON_DETAIL: 'AEKO详情',

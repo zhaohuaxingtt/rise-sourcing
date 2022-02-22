@@ -153,7 +153,7 @@ export default {
       roundTypeOptions: [],
       // eslint-disable-next-line no-undef
       startTime: moment().format('YYYY-MM-DD'),
-      endTime: '',
+      endTime: null,
       tableTitle,
       tableTitle2,
       saveStaus: false,
