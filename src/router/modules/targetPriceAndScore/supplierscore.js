@@ -11,7 +11,7 @@ export default [
     path: "supplierscore",
     meta: {
       title: "评分任务",
-      activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE']
+      activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE']
     },
     component: () => import("@/views/routerView"),
     redirect: "supplierscore/home",
@@ -21,7 +21,7 @@ export default [
         name: "supplierscoreHome",
         meta: {
           title: "评分任务-首页",
-          activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE']
+          activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE']
         },
         component: () => import("@/views/supplierscore"),
       }, 
@@ -30,7 +30,7 @@ export default [
         name: "supplierscoreRfqDetail",
         meta: {
           title: "评分任务-RFQ详情",
-          activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE']
+          activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE']
         },
         component: () => import("@/views/supplierscore/components/rfqdetail"),
       },
@@ -39,7 +39,7 @@ export default [
         name: "supplierscorePartscore partscore",
         meta: {
           title: "评分任务-零件评分",
-          activeMenu: ['RISE_WORKBENCH', 'TARGETPRICEANDSCORE']
+          activeMenu: ['RISE_WORKBENCH', 'CSCSCOREMANAGE']
         },
         component: () => import("@/views/supplierscore/components/partscore"),
       }
