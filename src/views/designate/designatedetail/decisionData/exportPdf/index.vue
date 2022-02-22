@@ -93,7 +93,7 @@
 
 <script>
 import { iButton, iTabsList } from "rise"
-import {nominateAppSDetail} from "@/api/designate"
+import {nominateAppSDetail,decisionDownloadPdf} from "@/api/designate"
 import rsTitle from "./components/rsTitle"
 import partList from "./components/partList"
 import tasks from "./components/tasks"
@@ -108,6 +108,9 @@ import { transverseDownloadPDF } from "@/utils/pdf"
 
 import { decisionType } from '@/layout/nomination/components/data'
 import headerTab from './headerTab'
+import {
+    uploadUdFile
+} from '@/api/file/upload'
 
 export default {
   components: {
@@ -133,23 +136,29 @@ export default {
   },
   data() {
     return {
-      exportLoading: false,
+      // exportLoading: false,
       nominateAppId: "", // 定点申请id
       nomiData: {}, // 定点申请数据
       decisionType,
       transferDom:[
-        {DomId:'html2canvasTitle',key:'title'},
-        {DomId:'html2canvasPartList',key:'partList'},
-        {DomId:'html2canvasTasks',key:'tasks'},
-        {DomId:'html2canvasDrawing',key:'drawing'},
-        {DomId:'html2canvasBDl',key:'bdl'},
-        {DomId:'html2canvasSingleSourcing',key:'singleSourcing'},
-        {DomId:'html2canvasAbprice',key:'abPrice'},
-        {DomId:'html2canvasTimeline',key:'timeline'},
-        {DomId:'html2canvasAwardingScenario',key:'awardingScenario'},
-        {DomId:'html2canvasRs',key:'rs'},
+        {DomId:'html2canvasTitle',key:'title',imageUrl:null},
+        // {DomId:'html2canvasPartList',key:'partList'},
+        // {DomId:'html2canvasTasks',key:'tasks'},
+        // {DomId:'html2canvasDrawing',key:'drawing'},
+        // {DomId:'html2canvasBDl',key:'bdl'},
+        // {DomId:'html2canvasSingleSourcing',key:'singleSourcing'},
+        // {DomId:'html2canvasAbprice',key:'abPrice'},
+        // {DomId:'html2canvasTimeline',key:'timeline'},
+        // {DomId:'html2canvasAwardingScenario',key:'awardingScenario'},
+        // {DomId:'html2canvasRs',key:'rs'},
       ],
       clickIndex:0,
+    }
+  },
+  props:{
+    exportLoading:{
+      type:Boolean,
+      default:false,
     }
   },
   methods: {
@@ -177,8 +186,6 @@ export default {
       
       // this.transferDom.map((item)=>{
       //   html2canvas(this.$el.querySelector('#'+item.DomId)).then(canvas=>{
-       
-       this.exportLoading = true;
         this.getPdfImage();
       // })
 
@@ -190,34 +197,53 @@ export default {
         const {clickIndex,transferDom} = this;
         const domId = '#'+transferDom[clickIndex]['DomId'];
         html2canvas(this.$el.querySelector(domId),ops).then(canvas=>{
-
-          
-        // html2canvas(this.$el.querySelector('#html2canvasTitle'),ops).then(canvas=>{
             var imgurl = canvas.toBlob((blob)=>{
             //以时间戳作为文件名 实时区分不同文件
               let filename = `${new Date().getTime()}.png`;
               //转换canvas图片数据格式为formData
-              let file2 = new File([blob], filename, {type: 'image/png'});
-              let formData = new FormData();
-              formData.append('file', file2);
-
+              let pdfFile = new File([blob], filename, {type: 'image/png'});
+              // let formData = new FormData();
+              // formData.append('file', pdfFile);
 
               //将转换为formData的canvas图片 上传到服务器
-              // uploadFile(formData).then((res)=>{
+                uploadUdFile({
+                  multifile: pdfFile
+                }).then((res=>{
+                  if(res.code == 200){
+                    console.log(res.data,'res.data.pathres.data.pathres.data.path')
+                    this.transferDom[clickIndex]['imageUrl'] = res.data[0].path || '';
+                    this.checkAllImageUpload();
+                  }else{
+                    this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                  }
+                }));
 
               })
-            // })
             
-            const url = canvas.toDataURL("image/png")
+            // const url = canvas.toDataURL("image/png")
 
-            const a = document.createElement('a');
-            a.href = url;
-            a.setAttribute('download', 'chart-download');
-            a.click();
+            // const a = document.createElement('a');
+            // a.href = url;
+            // a.setAttribute('download', 'chart-download');
+            // a.click();
             this.clickIndex++;
             if(this.clickIndex < transferDom.length) this.getPdfImage();
-            else this.exportLoading = false;
+            // else this.exportLoading = false;
         });
+    },
+
+    // 查看所有图片是否上传完毕
+    async checkAllImageUpload(){
+      const { transferDom=[] } = this;
+      const filter = transferDom.filter((item)=>item.imageUrl);
+      if(filter.length == transferDom.length){ // 上传完毕
+        const list = transferDom.map((item)=>item.imageUrl);
+        await decisionDownloadPdf(list).then((res)=>{
+          this.$emit('changeStatus','exportLoading',false)
+        }).catch((err)=>{
+          this.$emit('changeStatus','exportLoading',false)
+        })
+      }
     },
   }
 }

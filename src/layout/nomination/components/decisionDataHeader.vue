@@ -30,7 +30,7 @@
         </div>
 
         <div v-if="isPreview=='1' && showExportPdf">
-            <exportPdf class="exportPdf" ref="exportPdf"/>
+            <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
         </div>
 
 
@@ -53,7 +53,7 @@ import {
   iButton,
 } from "rise";
 import {
-    updatePresenPageSeat
+    updatePresenPageSeat,
 } from '@/api/designate'
 import { decisionType } from './data'
 import sortDialog from './sortDialog'
@@ -79,9 +79,12 @@ export default {
         nominationStep() {
             this.init()
         },
-        allRequestUrl(val){
-            console.log(val,'allRequestUrl')
-        }
+        pendingRequestNum(val){
+            if(val == 0 && this.exportLoading && this.showExportPdf){
+                console.log(this.$refs['exportPdf']);
+                this.$refs['exportPdf'].exportPdf();
+            }
+        },
     },
     data(){
         return{
@@ -89,7 +92,7 @@ export default {
             defaultTab:'Title',
             sortDialogVisibal: false,
             showExportPdf:false,
-            axiosLoading:false,
+            exportLoading:false,
         }
     },
     mounted(){
@@ -111,7 +114,7 @@ export default {
     computed: {
         ...mapState({
             mtzShow: state => state.nomination.mtzApplyId,
-            allRequestUrl: state => state.sourcing.allRequestUrl,
+            pendingRequestNum: state => state.sourcing.pendingRequestNum,
         }),
         ...mapGetters({
             'nominationStep': 'nominationStep'
@@ -192,12 +195,11 @@ export default {
         },
         exportPdf(){
             this.showExportPdf = true;
-            setTimeout(() => {
-                console.log(this.allRequestUrl,'allRequestUrlallRequestUrl')
-            }, 500);
-            this.$nextTick(()=>{
-                console.log('666666');
-            })
+            this.exportLoading = true;
+        },
+        
+        changeStatus(type,status){
+            this[type] = status;
         },
     }
 }
@@ -240,8 +242,8 @@ export default {
             font-weight: bold;
         }
         .exportPdf{
-            // height: 0px;
-            // overflow: hidden;
+            height: 0px;
+            overflow: hidden;
         }
         .previewHeader{
             display: flex;
