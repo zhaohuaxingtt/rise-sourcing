@@ -109,7 +109,7 @@ export default {
             // const {fileName} = row;
             // this.download([fileName]);
             // downloadUdFile(row.uploadId)
-            window.open(row.tpPartAttachmentPath,'_blank')
+            window.open(row.filePath,'_blank')
     },
         // 获取列表
         async getList(){

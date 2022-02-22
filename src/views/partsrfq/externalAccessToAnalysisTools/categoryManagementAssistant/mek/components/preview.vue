@@ -1,44 +1,41 @@
 <template>
-  <iDialog
-    :title="reportName"
-    :visible.sync="value"
-    width="95%"
-    @close="closeDialog"
-    @opened="open"
-  >
-    <div class="new-MEK" id="downloadRef">
+  <iDialog :title="reportName"
+           :visible.sync="value"
+           width="95%"
+           @close="closeDialog"
+           @opened="open">
+    <div class="new-MEK"
+         id="downloadRef">
       <div class=" bodyBox clearFloat">
         <el-col :span="4">
           <iCard style="width:100%;height:610px">
-            <div class="cardBox" style="width:100%;">
-              <div class=" searchForm" style="margin-right:20px">
+            <div class="cardBox"
+                 style="width:100%;">
+              <div class=" searchForm"
+                   style="margin-right:20px">
                 <div class="searchFormItem">
-                  <label for="" style="font-weight:600;font-size:14px"
-                    >对标车型</label
-                  >
+                  <label for=""
+                         style="font-weight:600;font-size:14px">对标车型</label>
                   <div class="flexBox">
-                    <el-tag
-                      v-for="(item, index) in ComparedMotorName"
-                      :key="index"
-                    >
+                    <el-tag v-for="(item, index) in ComparedMotorName"
+                            :key="index">
                       {{ item }}
                     </el-tag>
                   </div>
                 </div>
                 <div class="searchFormItem">
-                  <label for="" style="font-weight:600;font-size:14px"
-                    >类型选择</label
-                  >
+                  <label for=""
+                         style="font-weight:600;font-size:14px">类型选择</label>
                   <div class="flexBox">
                     <el-tag>{{ mekTypeName }}</el-tag>
                   </div>
                 </div>
                 <div class="searchFormItem">
-                  <label for="" style="font-weight:600;font-size:14px"
-                    >六位零件号</label
-                  >
+                  <label for=""
+                         style="font-weight:600;font-size:14px">六位零件号</label>
                   <div class="flexBox">
-                    <el-tag v-for="(item, index) in partNumber" :key="index">
+                    <el-tag v-for="(item, index) in partNumber"
+                            :key="index">
                       {{ item }}
                     </el-tag>
                   </div>
@@ -48,84 +45,69 @@
           </iCard>
         </el-col>
         <el-col :span="20">
-          <iCard class="margin-left20" ref="chartBox" style="height:610px">
+          <iCard class="margin-left20"
+                 ref="chartBox"
+                 style="height:610px">
             <div class="chartBox1 ">
               <div class="chartBox">
-                <div class="line" :style="{ width: totalWidth }"></div>
-                <div class="line1" :style="{ width: totalWidth }"></div>
-                <div class="line2" :style="{ width: totalWidth }"></div>
-                <div class="line3" :style="{ width: totalWidth }"></div>
-                <div class="line4" :style="{ width: totalWidth }"></div>
+                <div class="line"
+                     :style="{ width: totalWidth }"></div>
+                <div class="line1"
+                     :style="{ width: totalWidth }"></div>
+                <div class="line2"
+                     :style="{ width: totalWidth }"></div>
+                <div class="line3"
+                     :style="{ width: totalWidth }"></div>
+                <div class="line4"
+                     :style="{ width: totalWidth }"></div>
                 <div class="flex chartItem">
                   <div class="operation1">
                     <p class="motorName">{{targetMotorName}}</p>
-                    <span class="margin-bottom20 productFactoryNames">{{
-                      productFactoryNames
-                    }}</span>
-                    <span class="yield">{{
-                      toThousand(parseInt(firstBarData.output))
-                    }}</span>
+                    <span class="margin-bottom20 productFactoryNames">{{ productFactoryNames }}</span>
+                    <span class="yield">{{ toThousand(parseInt(firstBarData.output)) }}</span>
                   </div>
-                  <datasetBar1
-                    ref="datasetBar1"
-                    :typeSelection="mekMotorTypeFlag"
-                    :firstBarData="firstBarData"
-                    :maxWidth="maxWidth"
-                    :maxData="maxData"
-                    :clientHeight="clientHeight"
-                    @detailDialog="detailDialog"
-                  ></datasetBar1>
+                  <datasetBar1 ref="datasetBar1"
+                               :typeSelection="mekMotorTypeFlag"
+                               :firstBarData="firstBarData"
+                               :maxWidth="maxWidth"
+                               :maxData="maxData"
+                               :clientHeight="clientHeight"
+                               @detailDialog="detailDialog"></datasetBar1>
                 </div>
-                <div
-                  class="flex chartItem"
-                  v-for="(item, ind) in barData"
-                  :key="item.motorId"
-                >
+                <div class="flex chartItem"
+                     v-for="(item, ind) in barData"
+                     :key="item.motorId">
                   <div class="operation">
-                      <P class="motorName">
-                        {{ item.motorName }}
-                      </P>
-                    <span
-                      class="margin-bottom20 motorName"
-                      style="line-height:16px;height:16px"
-                      >{{ item.factory }}</span
-                    >
-                    <span class="yield margin-bottom15">{{
-                      toThousand(parseInt(item.output))
-                    }}</span>
+                    <p class="motorName">{{ item.motorName }}</p>
+                    <span class="margin-bottom20 motorName"
+                          style="line-height:16px;height:16px">{{ item.factory }}</span>
+                    <span class="yield margin-bottom15">{{toThousand(parseInt(item.output))}}</span>
                     <div class="flex">
-                      <el-select
-                        v-model="item.priceType"
-                        @change="changPriceType"
-                        style="width:150px;z-index:1000"
-                      >
-                        <el-option
-                          v-for="i in mekpriceTypeList"
-                          :key="i.id"
-                          :value="i.code"
-                          :label="i.name"
-                        >
+                      <el-select v-model="item.priceType"
+                                 @change="changPriceType"
+                                 :disabled="true"
+                                 style="width:150px;z-index:1000">
+                        <el-option v-for="i in mekpriceTypeList"
+                                   :key="i.id"
+                                   :value="i.code"
+                                   :label="i.name">
                         </el-option>
                       </el-select>
-                      <el-date-picker
-                        v-model="item.priceDate"
-                        type="date"
-                        placeholder="选择日期"
-                        @input="changeDate(item.priceDate, ind)"
-                        value-format="yyyy-MM-dd"
-                        style="width:150px;z-index:1000;margin-left:20px"
-                        v-if="item.priceType === 'monthPrice'"
-                      >
+                      <el-date-picker v-model="item.priceDate"
+                                      type="date"
+                                      placeholder="选择日期"
+                                      @input="changeDate(item.priceDate, ind)"
+                                      value-format="yyyy-MM-dd"
+                                      style="width:150px;z-index:1000;margin-left:20px"
+                                      v-if="item.priceType === 'monthPrice'">
                       </el-date-picker>
                     </div>
                   </div>
-                  <datasetBar
-                    :barData="item"
-                    :maxWidth="maxWidth"
-                    :typeSelection="mekMotorTypeFlag"
-                    :maxData="maxData"
-                    :clientHeight="clientHeight"
-                  ></datasetBar>
+                  <datasetBar :barData="item"
+                              :maxWidth="maxWidth"
+                              :typeSelection="mekMotorTypeFlag"
+                              :maxData="maxData"
+                              :clientHeight="clientHeight"></datasetBar>
                 </div>
               </div>
             </div>
@@ -133,14 +115,12 @@
           </iCard>
         </el-col>
       </div>
-      <tableList
-        v-bind="$attr"
-        :gridData="gridData"
-        :editFlag="editFlag"
-        :addRowList="addRowList"
-        @editData="editData"
-        @addData="addData"
-      ></tableList>
+      <tableList v-bind="$attr"
+                 :gridData="gridData"
+                 :editFlag="editFlag"
+                 :addRowList="addRowList"
+                 @editData="editData"
+                 @addData="addData"></tableList>
     </div>
   </iDialog>
 </template>
@@ -187,10 +167,7 @@ export default {
         return [];
       },
     },
-    preview: {
-      type: Boolean,
-      default: false,
-    },
+
     partNumber: {
       type: Array,
       default: () => {
@@ -214,40 +191,48 @@ export default {
     ComparedMotorName: {
       type: Array,
     },
-    totalWidth:{
-      type:String
+    totalWidth: {
+      type: String
     },
-    productFactoryNames:{
-      type:String
+    productFactoryNames: {
+      type: String
     },
-    maxData:{
-      tyep:String
+    maxData: {
+      tyep: String
     },
-    clientHeight:{
-      type:String
+    clientHeight: {
+      type: String
+    },
+    mekpriceTypeList: {
+      type: String,
+      default: () => {
+        return []
+      }
     }
   },
   watch: {
-    value(val) {
+    value (val) {
       console.log(val);
     },
     firstBarData: {
-      handler(val) {
+      handler (val) {
         console.log(val);
       },
       deep: true,
       immediate: true,
     },
   },
-  data() {
+  data () {
     return {
       toThousand,
       fmoney,
     };
   },
-  mounted() {},
+  mounted () {
+    console.log(this.barData, "bardata")
+  },
   methods: {
-    closeDialog() {
+    closeDialog () {
       this.$emit("closeDialog", false);
       // this.value = val;
     },
