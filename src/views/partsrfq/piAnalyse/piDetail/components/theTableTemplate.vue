@@ -509,14 +509,14 @@ export default {
       switch (column.property) {
         case 'systemMatch':
         case 'isShow':
-          return 'border-left: 3px solid white';
+          return 'border-left: 3px solid white;text-align:center;';
       }
     },
     headerBorderStyle ({ column }) {
       switch (column.property) {
         case 'systemMatch':
         case 'isShow':
-          return 'border-left: 3px solid white';
+          return 'border-left: 3px solid white;text-align:center;';
       }
     },
     rowStyle ({ row }) {
@@ -652,6 +652,9 @@ export default {
 };
 </script>
 <style lang='scss'>
+::v-deep .has-gutter{
+  text-align: center;
+}
 .tableBox {
   .el-select {
     margin: 2px 0;

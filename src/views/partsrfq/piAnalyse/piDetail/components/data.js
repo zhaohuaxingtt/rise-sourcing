@@ -43,8 +43,10 @@ export const tableTitle = [
   { name: '价格变动比率%', key: 'PI.JIAGEBIANDONGBILV', props: 'priceChange' },
   { name: 'CBD', key: '', props: 'attributeValue' },
   {
-    name: '系统匹配信息',
-    key: 'PI.XITONGPIPEIXINXI',
+    // name: '系统匹配信息',
+    name: '市场数据匹配',
+    key: 'PI.SHICHANGSHUJUPIPEI',
+    // key: 'PI.XITONGPIPEIXINXI',
     props: 'systemMatch',
     width: 550,
     children: [
@@ -58,7 +60,7 @@ export const tableTitle = [
         props: 'systemMatch2',
       },{
         name: '数据来源',
-        key: '数据来源',
+        key: 'PLGLZS.SHUJULAIYUAN',
         props: 'systemMatch3',
       }
     ],
