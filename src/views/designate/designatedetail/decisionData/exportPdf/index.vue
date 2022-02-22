@@ -174,12 +174,25 @@ export default {
       //     this.exportLoading = false
       //   }
       // })
+      
       // this.transferDom.map((item)=>{
       //   html2canvas(this.$el.querySelector('#'+item.DomId)).then(canvas=>{
-        // const {clickIndex,transferDom} = this;
-        // const domId = '#'+transferDom[clickIndex]['DomId'];
-        // html2canvas(this.$el.querySelector(domId)).then(canvas=>{
-        html2canvas(this.$el.querySelector('#allMoudles')).then(canvas=>{
+       
+       this.exportLoading = true;
+        this.getPdfImage();
+      // })
+
+    },
+    getPdfImage(){
+        const ops = {
+          scale:(0.6,0.6),
+        };
+        const {clickIndex,transferDom} = this;
+        const domId = '#'+transferDom[clickIndex]['DomId'];
+        html2canvas(this.$el.querySelector(domId),ops).then(canvas=>{
+
+          
+        // html2canvas(this.$el.querySelector('#html2canvasTitle'),ops).then(canvas=>{
             var imgurl = canvas.toBlob((blob)=>{
             //以时间戳作为文件名 实时区分不同文件
               let filename = `${new Date().getTime()}.png`;
@@ -201,11 +214,11 @@ export default {
             a.href = url;
             a.setAttribute('download', 'chart-download');
             a.click();
-            // this.clickIndex++;
+            this.clickIndex++;
+            if(this.clickIndex < transferDom.length) this.getPdfImage();
+            else this.exportLoading = false;
         });
-      // })
-
-    }
+    },
   }
 }
 </script>
@@ -238,7 +251,7 @@ export default {
     margin: 0 auto;
     box-sizing: content-box;
 
-    .title {
+    .title {  
       display: flex;
       align-items: center;
       font-size: 20px; /*no*/
@@ -294,6 +307,10 @@ export default {
           .el-input__inner{
             padding:8px 5px;
         }
+        }
+        ::v-deep.rsPdf{
+          width:100%;
+          max-width: 1920px;
         }
       }
     }
