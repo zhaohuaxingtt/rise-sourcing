@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-22 14:25:22
+ * @LastEditTime: 2022-02-22 16:52:34
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -750,8 +750,8 @@ export default {
             this.firstBarData = res.data[0];
           } else {
             iMessage.error(res.desZh)
+            this.onDataLoading = false;
           }
-
         })
         console.log(this.firstBarData, "fisrtBarData")
         params.info = params.info.filter(item => item.isTargetMotor === false)
@@ -881,7 +881,13 @@ export default {
         let entryParams = _.cloneDeep(params)
         entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
         mekInnerTarget(entryParams).then(res => {
-          this.firstBarData = res.data[0];
+          if (res?.code === "200") {
+            this.firstBarData = res.data[0];
+          } else {
+            iMessage.error(res.desZh)
+            this.onDataLoading = false;
+          }
+
         })
         params.info = params.info.filter(item => item.isTargetMotor === false)
         this.$nextTick(() => {
@@ -1111,7 +1117,12 @@ export default {
         let entryParams = _.cloneDeep(params)
         entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
         mekInnerTarget(entryParams).then(res => {
-          this.firstBarData = res.data[0];
+          if (res?.code === '200') {
+            this.firstBarData = res.data[0];
+          } else {
+            iMessage.error(res.desZh)
+            this.onDataLoading = false;
+          }
         })
         params.info = params.info.filter(item => item.isTargetMotor === false)
         this.$nextTick(() => {
@@ -1160,7 +1171,12 @@ export default {
         let entryParams = _.cloneDeep(params)
         entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
         mekInnerTarget(entryParams).then(res => {
-          this.firstBarData = res.data[0];
+          if (res?.code === '200') {
+            this.firstBarData = res.data[0];
+          } else {
+            iMessage.error(res.desZh)
+            this.onDataLoading = false;
+          }
         })
         params.info = params.info.filter(item => item.isTargetMotor === false)
         this.$nextTick(() => {
@@ -1258,6 +1274,7 @@ export default {
           });
         } else {
           iMessage.error(res.desZh)
+          this.onDataLoading = false;
         }
       }, (res) => {
         iMessage.error(res.desZh);
