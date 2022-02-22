@@ -733,6 +733,10 @@ export default {
     },
     // 新增汇率信息
     handleAdd() {
+      if (!Array.isArray(this.ruleForm.exchangeRates)) {
+        this.$set(this.ruleForm, "exchangeRates", [])
+      }
+
       this.ruleForm.exchangeRates.push({
         id: new Date().getTime(),
         biddingId: this.ruleForm.id,
