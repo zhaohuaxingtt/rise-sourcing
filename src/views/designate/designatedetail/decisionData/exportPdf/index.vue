@@ -142,15 +142,15 @@ export default {
       decisionType,
       transferDom:[
         {DomId:'html2canvasTitle',key:'title',imageUrl:null},
-        // {DomId:'html2canvasPartList',key:'partList'},
-        // {DomId:'html2canvasTasks',key:'tasks'},
-        // {DomId:'html2canvasDrawing',key:'drawing'},
-        // {DomId:'html2canvasBDl',key:'bdl'},
-        // {DomId:'html2canvasSingleSourcing',key:'singleSourcing'},
-        // {DomId:'html2canvasAbprice',key:'abPrice'},
-        // {DomId:'html2canvasTimeline',key:'timeline'},
-        // {DomId:'html2canvasAwardingScenario',key:'awardingScenario'},
-        // {DomId:'html2canvasRs',key:'rs'},
+        {DomId:'html2canvasPartList',key:'partList'},
+        {DomId:'html2canvasTasks',key:'tasks'},
+        {DomId:'html2canvasDrawing',key:'drawing'},
+        {DomId:'html2canvasBDl',key:'bdl'},
+        {DomId:'html2canvasSingleSourcing',key:'singleSourcing'},
+        {DomId:'html2canvasAbprice',key:'abPrice'},
+        {DomId:'html2canvasTimeline',key:'timeline'},
+        {DomId:'html2canvasAwardingScenario',key:'awardingScenario'},
+        {DomId:'html2canvasRs',key:'rs'},
       ],
       clickIndex:0,
     }
@@ -192,7 +192,7 @@ export default {
     },
     getPdfImage(){
         const ops = {
-          scale:(2,2),
+          scale:(1,1),
         };
         const {clickIndex,transferDom} = this;
         const domId = '#'+transferDom[clickIndex]['DomId'];
