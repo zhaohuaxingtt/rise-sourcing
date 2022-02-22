@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-18 19:19:49
+ * @LastEditTime: 2022-02-22 14:25:22
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -259,9 +259,7 @@
                     </el-popover>
                     <span class="margin-bottom20 motorName"
                           style="line-height:16px;height:16px">{{ item.factory }}</span>
-                    <span class="yield margin-bottom15">{{
-                      toThousand(parseInt(item.output))
-                    }}</span>
+                    <span class="yield margin-bottom15">{{toThousand(parseInt(item.output))}}</span>
                     <div class="flex">
                       <el-select v-model="item.priceType"
                                  @change="changPriceType"
@@ -374,12 +372,12 @@
                :totalWidth="totalWidth"
                :mekTypeName="mekTypeName"
                :ComparedMotorName="ComparedMotorName"
+               :mekpriceTypeList="mekpriceTypeList"
                :partNumber="partNumber"
                @closeDialog="closeDialog"
                :maxWidth="maxWidth"
                :targetMotorName="targetMotorName"
-               :mekpriceType="mekpriceType"
-               :preview="true"></preview>
+               :mekpriceType="mekpriceType"></preview>
     </div>
   </iPage>
 </template>
