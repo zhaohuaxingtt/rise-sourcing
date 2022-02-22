@@ -6,7 +6,10 @@
 
 <template>
     <div :class="isPreview=='1' ? 'decision-header preview-header' : 'decision-header'">
-        <p v-if="isPreview=='1'" class="preview-title margin-top20 margin-bottom20">CSC Nomination Recommendation</p>
+        <div v-if="isPreview=='1'" class="previewHeader">
+            <p class="preview-title margin-top20 margin-bottom20">CSC Nomination Recommendation</p>
+            <iButton class="export-btn" :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
+        </div>
         <div  class="tab-list">
             <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick">
                 <template  v-for="(item,index) in decisionType">
@@ -26,6 +29,10 @@
             </iTabsList>
         </div>
 
+        <div v-if="isPreview=='1' && showExportPdf">
+            <exportPdf class="exportPdf" ref="exportPdf"/>
+        </div>
+
 
         <!-- 关闭预览按钮 -->
         <span class="tab-icon" v-if="isPreview=='1' && !$route.meta.hideCloseButton" @click="close">
@@ -43,6 +50,7 @@
 import {
   iTabsList,
   icon,
+  iButton,
 } from "rise";
 import {
     updatePresenPageSeat
@@ -50,13 +58,16 @@ import {
 import { decisionType } from './data'
 import sortDialog from './sortDialog'
 import {mapGetters,mapState} from 'vuex'
+import exportPdf from '@/views/designate/designatedetail/decisionData/exportPdf'
 
 export default {
     name:'decisionDataHeader',
     components:{
         iTabsList,
         icon,
-        sortDialog
+        sortDialog,
+        exportPdf,
+        iButton,
     },
     props:{
         isPreview:{
@@ -67,13 +78,18 @@ export default {
     watch: {
         nominationStep() {
             this.init()
+        },
+        allRequestUrl(val){
+            console.log(val,'allRequestUrl')
         }
     },
     data(){
         return{
             decisionType: [],
             defaultTab:'Title',
-            sortDialogVisibal: false
+            sortDialogVisibal: false,
+            showExportPdf:false,
+            axiosLoading:false,
         }
     },
     mounted(){
@@ -95,6 +111,7 @@ export default {
     computed: {
         ...mapState({
             mtzShow: state => state.nomination.mtzApplyId,
+            allRequestUrl: state => state.sourcing.allRequestUrl,
         }),
         ...mapGetters({
             'nominationStep': 'nominationStep'
@@ -102,7 +119,7 @@ export default {
         // 临时跳转，不更新步骤
         isTemp() {
             return this.$route.query.route === 'temp'
-        }
+        },
     },
     methods:{
         init() {
@@ -172,7 +189,16 @@ export default {
                 currentNode: node,
                 node
             })
-        }
+        },
+        exportPdf(){
+            this.showExportPdf = true;
+            setTimeout(() => {
+                console.log(this.allRequestUrl,'allRequestUrlallRequestUrl')
+            }, 500);
+            this.$nextTick(()=>{
+                console.log('666666');
+            })
+        },
     }
 }
 </script>
@@ -212,6 +238,15 @@ export default {
         .preview-title{
             font-size: 20px;
             font-weight: bold;
+        }
+        .exportPdf{
+            // height: 0px;
+            // overflow: hidden;
+        }
+        .previewHeader{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     }
 

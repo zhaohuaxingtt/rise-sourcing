@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-16 15:25:24
- * @LastEditTime: 2022-02-11 14:08:07
+ * @LastEditTime: 2022-02-22 14:36:36
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\store\module\sourcing.js
@@ -564,6 +564,7 @@ const state = {
     },
   ],
   configscoredeptThirdMenu: [],
+  allRequestUrl:[],
 }
 
 const mutations = {
@@ -576,6 +577,9 @@ const mutations = {
   SET_SOURCEINQUIRYPOINT_THIRD_MENU(state, data) {
     state.sourceinquirypointThirdMenu = data
   },
+  SET_ALLREQUESTURL(state,data){
+    state.allRequestUrl = data
+  }
 }
 
 let source = null
@@ -634,10 +638,21 @@ const actions = {
         .catch((err) => reject(err))
     })
   },
+  updateAllRequestUrl({commit,state},type='add',url){
+    console.log(type,url,'urlurlurl')
+    const list =  state.allRequestUrl || [];
+    if(type == 'add'){
+      commit('allRequestUrl', [...list,url])
+    }else{
+      let newList = list.filter((item)=>item!=url);
+      commit('allRequestUrl',newList);
+    }
+  }
 }
 
 const getters = {
   navList: (state) => state.navList,
+  allRequestUrl: (state) => state.allRequestUrl,
 }
 
 export default {

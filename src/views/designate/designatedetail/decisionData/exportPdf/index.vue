@@ -243,11 +243,12 @@ export default {
     left: 50%;
     transform: translate(-50%, 0);
     z-index: 9999;
+    padding-right: 20px;
   }
 
   .main {
     width: 1920px; /*no*/
-    padding: 30px 40px; /*no*/
+    padding: 30px 0; /*no*/
     margin: 0 auto;
     box-sizing: content-box;
 
@@ -259,6 +260,7 @@ export default {
       white-space: nowrap;
       height: 30px; /*no*/
       line-height: 30px; /*no*/
+      padding: 0 20px;
 
       .mtz {
         .num {
