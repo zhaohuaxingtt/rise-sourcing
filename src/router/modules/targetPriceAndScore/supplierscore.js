@@ -4,7 +4,7 @@
  * @LastEditTime: 2021-12-08 10:00:05
  * @LastEditors: Luoshuang
  * @Description: In User Settings Edit
- * @FilePath: \front-sourcing\src\router\modules\CSCSCOREMANAGE\supplierscore.js
+ * @FilePath: \front-sourcing\src\router\modules\targetPriceAndScore\supplierscore.js
  */
 export default [
   {
