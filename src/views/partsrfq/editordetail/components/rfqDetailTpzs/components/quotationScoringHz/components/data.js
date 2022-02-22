@@ -395,31 +395,11 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
                     groupArr = groupArr.map(item => {
                       return {
                         ...item,
-                        // [key]: fsTemplate ? (asSameCartypeInGroupList(item.groupIdTemp,dataList) ? (element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': keepTwoDecimalFull(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))  : item[key] || 0):'/'):''
-                        // math.divide(
-                        //   math.floor(
-                        //     math.multiply(
-                        //       math.bignumber(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)), 
-                        //       100
-                        //     )
-                        //   ),
-                        //   100
-                        // ).toFixed(2)
-                        [key]: fsTemplate ? (asSameCartypeInGroupList(item.groupIdTemp,dataList) ? (element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': math.divide(math.floor(math.multiply(math.bignumber(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)), 100)), 100).toFixed(2)  : item[key] || 0):'/'):''
+                        [key]: fsTemplate ? (asSameCartypeInGroupList(item.groupIdTemp,dataList) ? (element.groupId === item.groupIdTemp ? (!element[key] || item[key] == "/")?'/': math.bignumber(_getMathNumber(`${item[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toString()  : item[key] || 0):'/'):''
                       }
                     })
 
-                    // total[key] = fsTemplate ? ((!element[key] || total[key] == "/")?"/":keepTwoDecimalFull(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`))):''
-                    // math.divide(
-                    //   math.floor(
-                    //     math.multiply(
-                    //       math.bignumber(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)), 
-                    //       100
-                    //     )
-                    //   ), 
-                    //   100
-                    // ).toFixed(2)
-                    total[key] = fsTemplate ? ((!element[key] || total[key] == "/")?"/": math.divide(math.floor(math.multiply(math.bignumber(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)), 100)), 100).toFixed(2)):''
+                    total[key] = fsTemplate ? ((!element[key] || total[key] == "/")?"/": math.bignumber(_getMathNumber(`${total[key] || 0}+${element[key] || 0}*${element['ebrCalculatedValue'] || 1}`)).toString()):''
                   }else{
                     //mathjs版本问题，带精度参数的floor函数不可用
                     groupArr = groupArr.map(item => {
@@ -427,13 +407,13 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
                         ...item,
                         [key]: 
                           (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) ? 
-                          (element.groupId === item.groupIdTemp ? math.divide(math.floor(math.multiply(math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)), 100)), 100).toFixed(2) : item[key]):
+                          (element.groupId === item.groupIdTemp ? math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toString() : item[key]):
                           (element.groupId === item.groupIdTemp ? parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`)) : item[key])
                       }
                     })
 
                     if (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) {
-                      total[key] = math.divide(math.floor(math.multiply(math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)), 100)), 100).toFixed(2)
+                      total[key] = math.add(math.bignumber(translateNumber(total[key]) || 0), math.bignumber(translateNumber(element[key]) || 0)).toString()
                     } else {
                       total[key] = parseInt(_getMathNumber(`${total[key] || 0}+${translateNumber(element[key])}`))
                     }
@@ -444,6 +424,35 @@ export function subtotal(tableHeader,dataList,priceInfo,fsTemplate){
         }
       }
     })
+
+    // 合计处理
+    const columnKeys = tableHeader.map(item => item.props)
+    groupArr.forEach(item => {
+      columnKeys.forEach(key => {
+        if (needSubTotal.find(s => s == removeKeysNumber(key))) {
+          if (['lcAPrice','lcBPrice','skdAPrice','skdBPrice','cfPartAPrice','ftSkdAPrice','cfPartBPrice','ftSkdBPrice'].includes(removeKeysNumber(key))) {
+            item[key] = fsTemplate ? (item[key] == "/" ? "/" : math.chain(math.bignumber(item[key] || 0)).multiply(100).floor().divide(100).done().toFixed(2)) : ""
+          } else {
+            item[key] = (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) ? 
+            math.chain(math.bignumber(item[key] || 0)).multiply(100).floor().divide(100).done().toFixed(2) :
+            item[key]
+          }
+        }
+      })
+    })
+
+    columnKeys.forEach(key => {
+      if (needSubTotal.find(s => s == removeKeysNumber(key))) {
+        if (['lcAPrice','lcBPrice','skdAPrice','skdBPrice','cfPartAPrice','ftSkdAPrice','cfPartBPrice','ftSkdBPrice'].includes(removeKeysNumber(key))) {
+          total[key] = fsTemplate ? (total[key] == "/" ? "/" : math.chain(math.bignumber(total[key] || 0)).multiply(100).floor().divide(100).done().toFixed(2)) : ""
+        } else {
+          total[key] = (/^\d*toolingShare$/.test(key) || /^\d*developmentCostShare$/.test(key)) ? 
+          math.chain(math.bignumber(total[key] || 0)).multiply(100).floor().divide(100).done().toFixed(2) :
+          total[key]
+        }
+      }
+    })
+    
 
     let result = [...groupArr, getLowNumber(total)]
     result.forEach(group => {
