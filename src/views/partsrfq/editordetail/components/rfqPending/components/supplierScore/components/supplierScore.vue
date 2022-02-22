@@ -72,7 +72,7 @@
     />
     <scoringDeptDialog :visible.sync="scoringDeptVisible" :ids="[$route.query.id]" @update="updateTable" :tableData="tableListData" />
   </iCard>
-  <scoringPushDialog :visible.sync="scoringPushVisible" :ids="[$route.query.id]" @update="getTableList" :tableData="tableListData" />
+  <scoringPushDialog :visible.sync="scoringPushVisible" :ids="[$route.query.id]" @update="getTableList" :factoryTableData="tableListData" />
 </div>
 </template>
 

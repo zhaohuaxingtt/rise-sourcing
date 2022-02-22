@@ -418,10 +418,14 @@ export default {
     },
     // 导出
     async handleExport () {
-      const res = await mekInfoList({
-        pageNo: 1,
-        pageSize: this.page.totalCount,
-      })
+      const pms = {
+        ...this.form,
+        mekId: this.$route.query.schemeId,
+        motorIds: this.$route.query.vwModelCodes && JSON.parse(this.$route.query.vwModelCodes) || [],
+        pageNo: this.page.currPage,
+        pageSize: this.page.totalCount
+      }
+      const res = await mekInfoList(pms)
       let excelList = res.data
       excelList.map((item) => {
         item.partNumber1 = (item.partNumber || "") + (item.partName || "")
