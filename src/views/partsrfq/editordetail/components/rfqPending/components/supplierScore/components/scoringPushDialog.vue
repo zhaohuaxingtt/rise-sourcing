@@ -164,7 +164,7 @@ export default {
       .catch(() => this.supplierProduceNamesLoading = false)
     },
     selectChange(val,row){
-      const current = this.supplierProduceNames.find(item => item.value === value)
+      const current = this.supplierProduceNames.find(item => item.factoryName === val)
       this.$set(row, "companyAddressCode", current.id)
       row.companyAddress = this.addressObj[val]
     },
