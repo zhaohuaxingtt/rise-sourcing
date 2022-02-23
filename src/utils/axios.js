@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2022-02-11 11:09:28
+ * @LastEditTime: 2022-02-22 16:09:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\axios.js
@@ -12,6 +12,8 @@ import store from '@/store'
 import { Loading } from 'element-ui'
 
 let loading = null
+
+let requestNum = 0;
 
 export default function httpRequest(baseUrl = '', timeOut = 65000) {
   // eslint-disable-next-line no-undef
@@ -53,6 +55,9 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
       // 定义请求得数据结构是json
       config.headers['json-wrapper'] = '1'
       config.headers['language'] = window.localStorage.getItem('lang') || 'zh'
+      
+      ++requestNum;
+
       return config
     },
     function(error) {
@@ -63,6 +68,10 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
   instance.interceptors.response.use(
     function(response) {
       loading ? loading.close() : ''
+
+      
+      --requestNum;
+      store.dispatch('sourcing/updatePendingRequestNum',requestNum)
 
       if (response.config.responseType == 'blob') {
         return Promise.resolve(response)
@@ -75,6 +84,9 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
     },
     (error) => {
       loading ? loading.close() : ''
+      
+      --requestNum;
+      store.dispatch('sourcing/updatePendingRequestNum',requestNum)
 
       switch (error.response.status) {
         //需要定位到登录界面的状态。（401 || 40x || ...）
