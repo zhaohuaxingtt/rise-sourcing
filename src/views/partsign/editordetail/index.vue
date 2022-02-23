@@ -105,7 +105,8 @@ export default {
     // 日志组件bizId
     logBizId() {
       const logType = ['拒绝每车用量','确认每车用量','拒绝询价资料','确认询价资料']
-      return logType.includes(this.logFiltType) ? this.partDetails.purchasingRequirementId : this.partDetails.tpPartID
+      // return logType.includes(this.logFiltType) ? this.partDetails.purchasingRequirementId : this.partDetails.tpPartID
+      return this.partDetails.purchasingRequirementId
     }
   },
   created() {
