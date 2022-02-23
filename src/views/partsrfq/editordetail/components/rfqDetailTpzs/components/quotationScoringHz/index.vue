@@ -220,11 +220,12 @@ export default{
         const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-' || items.groupIdTemp)
         const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
         const totalData = this.oldExampelData.filter((items)=> items.groupId == '-' && (!items.groupIdTemp))
-        if(props == "ascending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b[prop].toString().localeCompare(a[prop].toString())),...totalData]
-        }else if(props == "descending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a[prop].toString().localeCompare(b[prop].toString())),...totalData]
-        }else{
+
+        if (props == "ascending") {
+          this.exampelData = [...notSortData, ..._.orderBy(sortData, [prop === "partNo" ? prop : (item) => +item[prop]], ['asc']), ...totalData]
+        } else if (props == "descending") {
+          this.exampelData = [...notSortData, ..._.orderBy(sortData, [prop === "partNo" ? prop : (item) => +item[prop]], ['desc']),...totalData]
+        } else {
           this.exampelData = this.oldExampelData
         }
       } catch (error) {
@@ -432,7 +433,8 @@ export default{
             }
             return [...accu, curr]
           },[])
-          this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
+          this.oldExampelData = _.cloneDeep(this.exampelData)
+          // this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
           this.$nextTick(()=>{
             this.$refs.tableList.setfixElement()
           })
