@@ -110,6 +110,7 @@ module.exports = {
       'vue-i18n': 'VueI18n',
       i18n: 'i18n',
       Ellipsis: 'Ellipsis',
+      html2canvas: 'html2canvas'
     }
     //开启gizp压缩
   },
@@ -171,7 +172,8 @@ module.exports = {
       },
       '/sourcingApi': {
         //   供应商
-        target: 'http://10.160.138.81:18025',
+        target: 'http://10.122.17.38:8025',
+        // target: 'http://10.160.138.58:18025',
         changeOrigin: true,
         pathRewrite: {
           '^/sourcingApi': '',
