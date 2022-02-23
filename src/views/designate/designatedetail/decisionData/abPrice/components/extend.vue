@@ -86,6 +86,7 @@ export default{
           this.bdlPriceTotalInfoList = res.data.bdlPriceTotalInfoList
           const relTitle = getRenderTableTile(this.backChoose,res.data.partInfoList[0].bdlInfoList.length,this.layout)
           this.title = relTitle.title
+          this.exportTile = relTitle.allExportHiddenOrShow
           this.reRenderLastChild = relTitle.xhLastChildProps
           this.exampelData = defaultSort(translateData(res.data.partInfoList),'groupId')
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
