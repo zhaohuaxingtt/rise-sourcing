@@ -7,6 +7,7 @@
          {{ language('LK_SHANCHU','删除') }}
         </iButton>
         <upload-button
+            v-if="isPosition"
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
             class="margin-left8" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_PARTSCORING_UPLOAD|供应商评分附件-上传附件"/>
@@ -71,11 +72,14 @@ export default {
       uploadAttachmentsButtonLoading: false
     };
   },
-  inject: ["getDisabled"],
+  inject: ["getDisabled","isPos"],
   computed: {
     disabled() {
       return this.getDisabled()
-    }
+    }, 
+    isPosition() {
+      return this.isPos()
+    },
   },
   created() {
     this.getTableList();

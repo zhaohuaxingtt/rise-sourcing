@@ -25,7 +25,7 @@
       <template slot="header-control">
         <div class="button-box">
           <template v-if="!todo">
-            <iButton v-permission.auto="PARTSRFQ_PARTDETAILLIST_MUJUMUBIAOJIA_CHAKANXIUGAIJILU|申请模具目标价-查看修改记录" @click="showDialog">{{language('CHAKAN','查看') + language('XIUGAIJILU','修改记录')}}</iButton>
+            <iButton v-if="isPostion" v-permission.auto="PARTSRFQ_PARTDETAILLIST_MUJUMUBIAOJIA_CHAKANXIUGAIJILU|申请模具目标价-查看修改记录" @click="showDialog">{{language('CHAKAN','查看') + language('XIUGAIJILU','修改记录')}}</iButton>
               <iButton @click="exports">{{language('LK_DAOCHU','导出')}}</iButton>
           </template>
             <template v-else>
@@ -101,9 +101,13 @@ export default {
       tableTitle
     }
   },
+  inject:["isPos"],
   computed:{
     status(){
       return this.$store.state.rfq.todoObj['mouldPriceStatusDesc'].status
+    },
+    isPostion() {
+      return this.isPos()
     }
   },
   created() {

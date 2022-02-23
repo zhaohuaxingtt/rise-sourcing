@@ -240,7 +240,8 @@
     <!--------------------------------------------------------------->
     <!-------------------------RFQ待办信息---------------------------->
     <!--------------------------------------------------------------->
-    <rfqPending ref="rfqPending" :canRegiste="canRegiste"
+    <rfqPending ref="rfqPending" :canRegiste="canRegiste" 
+                :isPosition="isPosition"
                 v-if="(navActivtyValue === '0' || navActivtyValue === '') && tabShowStatus"
                 :activityTabIndex="activityTabIndex"></rfqPending>
     <!--------------------------------------------------------------->
@@ -399,7 +400,8 @@ export default {
       isInquiryUser:true,
       isInquiryRfqStatus:false,
       isLiniefqStatus:false,
-      notAllow:false
+      notAllow:false,
+      isPosition:false
     };
   },  
   async created () {
@@ -430,7 +432,8 @@ export default {
       getbaseInfoData: this.getbaseInfoData, //直接reture当前请求完的数据
       getDisabled: this.getDisabled,
       registerFn: this.registerFn,
-      isRfqStatus:this.isRfqStatus
+      isRfqStatus:this.isRfqStatus,
+      isPos:this.isPos
     };
   },
   methods: {
@@ -506,6 +509,9 @@ export default {
     },
     isRfqStatus() {
       return  this.isCommonSurcingStar
+    },  
+    isPos() {
+      return  this.isPosition
     },
     getbaseInfoData () {
       return this.baseInfo;
@@ -570,6 +576,7 @@ export default {
               // const res = mockData;
               if (res.code == 200 && res.data) {
                 this.baseInfo = res.data;
+                this.isPosition = res.data.isPosition;
                 this.rfqInfo = res.data;
                 this.disabled = !!res.data.isFreeze;
                 if (dialogPage) {
