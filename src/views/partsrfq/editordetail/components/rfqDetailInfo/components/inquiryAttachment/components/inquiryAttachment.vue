@@ -187,7 +187,8 @@ export default {
       // }
       // await downloadFile(req)
 
-      await downloadUdFile(row.uploadId)
+      await window.open(row.filePath,'_blank')
+      // downloadUdFile(row.uploadId)
     },
     async download() {
       if (this.selectTableData.length == 0)
