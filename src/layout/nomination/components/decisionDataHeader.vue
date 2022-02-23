@@ -6,7 +6,10 @@
 
 <template>
     <div :class="isPreview=='1' ? 'decision-header preview-header' : 'decision-header'">
-        <p v-if="isPreview=='1'" class="preview-title margin-top20 margin-bottom20">CSC Nomination Recommendation</p>
+        <div v-if="isPreview=='1'" class="previewHeader">
+            <p class="preview-title margin-top20 margin-bottom20">CSC Nomination Recommendation</p>
+            <iButton class="export-btn" :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
+        </div>
         <div  class="tab-list">
             <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick">
                 <template  v-for="(item,index) in decisionType">
@@ -26,6 +29,10 @@
             </iTabsList>
         </div>
 
+        <div v-if="isPreview=='1' && showExportPdf">
+            <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
+        </div>
+
 
         <!-- 关闭预览按钮 -->
         <span class="tab-icon" v-if="isPreview=='1' && !$route.meta.hideCloseButton" @click="close">
@@ -43,20 +50,27 @@
 import {
   iTabsList,
   icon,
+  iButton,
 } from "rise";
 import {
-    updatePresenPageSeat
+    updatePresenPageSeat,
 } from '@/api/designate'
 import { decisionType } from './data'
 import sortDialog from './sortDialog'
 import {mapGetters,mapState} from 'vuex'
+import exportPdf from '@/views/designate/designatedetail/decisionData/exportPdf'
+
+
+let fullscreenLoading  = null;
 
 export default {
     name:'decisionDataHeader',
     components:{
         iTabsList,
         icon,
-        sortDialog
+        sortDialog,
+        exportPdf,
+        iButton,
     },
     props:{
         isPreview:{
@@ -67,13 +81,32 @@ export default {
     watch: {
         nominationStep() {
             this.init()
+        },
+        pendingRequestNum(val){
+            if(val == 0 && this.exportLoading && this.showExportPdf){
+                console.log(this.$refs['exportPdf']);
+                this.$refs['exportPdf'].exportPdf();
+            }
+        },
+        exportLoading(val){
+            if(val){
+                fullscreenLoading = this.$loading({
+                    lock: true,
+                    text: 'PFD导出中',
+                    background: 'rgba(255, 255, 255, 0.5)'
+                })
+            }else{
+                fullscreenLoading && fullscreenLoading.close();
+            }
         }
     },
     data(){
         return{
             decisionType: [],
             defaultTab:'Title',
-            sortDialogVisibal: false
+            sortDialogVisibal: false,
+            showExportPdf:false,
+            exportLoading:false,
         }
     },
     mounted(){
@@ -95,6 +128,7 @@ export default {
     computed: {
         ...mapState({
             mtzShow: state => state.nomination.mtzApplyId,
+            pendingRequestNum: state => state.sourcing.pendingRequestNum,
         }),
         ...mapGetters({
             'nominationStep': 'nominationStep'
@@ -102,7 +136,7 @@ export default {
         // 临时跳转，不更新步骤
         isTemp() {
             return this.$route.query.route === 'temp'
-        }
+        },
     },
     methods:{
         init() {
@@ -172,7 +206,15 @@ export default {
                 currentNode: node,
                 node
             })
-        }
+        },
+        exportPdf(){
+            this.showExportPdf = true;
+            this.exportLoading = true;
+        },
+        
+        changeStatus(type,status){
+            this[type] = status;
+        },
     }
 }
 </script>
@@ -212,6 +254,15 @@ export default {
         .preview-title{
             font-size: 20px;
             font-weight: bold;
+        }
+        .exportPdf{
+            height: 0px;
+            overflow: hidden;
+        }
+        .previewHeader{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     }
 
