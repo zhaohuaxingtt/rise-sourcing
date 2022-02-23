@@ -33,7 +33,7 @@ export const supplierScoreTitle = [
 export const supplierSubTitle = [
     {props: 'sapCode', name: '供应商号', key: 'GONGYINGSHANGHAO'},
     {props: 'shortNameZh', name: '供应商名', key: 'LK_GONGYINGSHANGMING', disabled: true},
-    {props: 'factoryName', name: '供应商工厂名称', key: 'LK_GONGYINGSHANGGONGCHANGMINGCHEN'},
+    {props: 'factory', name: '供应商工厂名称', key: 'LK_GONGYINGSHANGGONGCHANGMINGCHEN'},
     {props: 'companyAddress', name: '供应商生产场地', key: 'LK_GONGYINGSHANGSHENGCHANCHANGDI'},
 ]
 
