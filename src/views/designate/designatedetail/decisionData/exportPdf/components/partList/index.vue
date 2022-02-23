@@ -1,6 +1,12 @@
+<!--
+ * @Author: wentliao
+ * @Date: 2022-01-06 22:44:18
+ * @Description: 
+-->
 <template>
   <iCard class="partList" title="Part List">
     <tableList
+        showName
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableListData">
@@ -49,7 +55,7 @@ export default {
         size: 999999
       })
           .then(res => {
-            if (res.code === 200 && res.data) {
+            if (res.code == 200 && res.data) {
               this.tableListData = Array.isArray(res.data.records) ? res.data.records : []
             }
           })
