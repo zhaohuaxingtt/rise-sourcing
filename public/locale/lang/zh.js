@@ -730,6 +730,7 @@
     LK_ENTER_SEARCH_SUPPLIER_NAME_FACOTRY: '输入查询供应商名称、厂商类型...',
     LK_SUOXUANBANBENWUFUJIAN: '所选版本无附件',
     LK_TANPANZHUSHOU: '谈判助手',
+    LK_GCLZDPLGYSGCDCGJEYJFBQK: '该材料组的批量供应商工厂的采购金额以及分布情况（过去一年）',
     LK_TESHULINGJIANLEIXING: '特殊零件类型',
     LK_TESHUYAOQIU: '特殊要求',
     LK_TIJIAO: '提交',

@@ -18,7 +18,7 @@
         <el-popover trigger="hover"
                     placement="top-start"
                     width="400"
-                    :content="language('TLJJGLJCLGYSGHBLCXCL','Turnover=零件价格*零件产量*供应商供货比例*车型产量')">
+                    :content="$t('LK_GCLZDPLGYSGCDCGJEYJFBQK')">
           <icon slot="reference"
                 style="font-size:1.375rem"
                 name="iconxinxitishi"

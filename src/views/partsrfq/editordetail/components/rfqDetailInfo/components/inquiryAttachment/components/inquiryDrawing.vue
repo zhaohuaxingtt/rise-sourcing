@@ -132,7 +132,8 @@ export default {
       // }
       this.downloadLoading = true
       // await downloadFile(req)
-      await downloadUdFile(row.uploadId)
+      await window.open(row.tpPartAttachmentPath,'_blank')
+      // downloadUdFile(row.uploadId)
       this.downloadLoading = false
     }
   }
