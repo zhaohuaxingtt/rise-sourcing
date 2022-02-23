@@ -80,7 +80,7 @@ export default {
   .bo {
     .content {
       border: 1px solid rgb(201, 216, 219); /*no*/
-      box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
+      // box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
       border-radius: 5px; /*no*/
       padding: 5px 10px; /*no*/
       min-height: 120px; /*no*/

@@ -1,3 +1,8 @@
+<!--
+ * @Author: wentliao
+ * @Date: 2022-01-06 22:44:18
+ * @Description: 
+-->
 <template>
   <iCard class="drawing" title="Drawing">
     <div class="content">
@@ -66,7 +71,7 @@ export default {
       align-items: center;
       justify-content: center;
       border: 1px solid rgb(201, 216, 219); /*no*/
-      box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
+      // box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
       border-radius: 5px; /*no*/
       min-height: 300px; /*no*/
 
@@ -78,7 +83,7 @@ export default {
     .blank {
       height: 200px; /*no*/
       border: 1px solid rgb(201, 216, 219); /*no*/
-      box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
+      // box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
       border-radius: 5px; /*no*/
       font-size: 18px; /*no*/
       color: rgb(112, 112, 112);
