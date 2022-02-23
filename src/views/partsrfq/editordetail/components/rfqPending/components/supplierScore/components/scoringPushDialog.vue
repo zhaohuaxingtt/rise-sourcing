@@ -26,12 +26,12 @@
       <el-divider class="divider"></el-divider>
       <tableList :tableData="tableData" :tableTitle="supplierSubTitle" @handleSelectionChange="handleSelectionChange">
         <template #factory="scope">
-          <iSelect class="input-center" value-key="id" v-model="scope.row.factory" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @change="selectChange($event, scope.row)" @visible-change="getSupplierPlantBySupplierId(scope.row.id)">
+          <iSelect :ref="`factorySelect_${ scope.$index }`" class="input-center" v-model="scope.row.companyAddressCode" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @change="selectChange($event, scope.row)" @visible-change="getSupplierPlantBySupplierId(scope.row.id)">
             <el-option
               v-for="item in supplierProduceNames"
               :key="item.id"
               :label="item.factoryName"
-              :value="item">
+              :value="item.id">
                 <el-tooltip class="item" effect="light" :open-delay="200" :content="item.factoryName" placement="right">
                   <div class="item">{{ item.factoryName }}</div>
                 </el-tooltip>
@@ -51,6 +51,7 @@ import { dictkey } from '@/api/partsprocure/editordetail'
 import { pageMixins } from '@/utils/pageMixins'
 import { getAllDeptTag, getRfqRateDeparts, getAllRaterAndCoordinator, saveRfqRateDeparts } from "@/api/configscoredept"
 import { sendTaskForRating, getSupplierPlantBySupplierId } from "@/api/partsrfq/editordetail";
+import axios from 'axios'
 
 export default {
   components: { tableList, iDialog, iSelect, iText, iButton },
@@ -76,6 +77,12 @@ export default {
     visible(nv) {
       if (nv) {
         this.tableData = _.cloneDeep(this.factoryTableData)
+
+        this.$nextTick(() => {
+          this.tableData.forEach((item, index) => {
+            this.$refs[`factorySelect_${ index }`].$el.querySelector("input").value = item.factoryName || ""
+          })
+        })
       }
 
       if (nv && this.ids.length && this.$route.query.id) {
@@ -149,12 +156,13 @@ export default {
     // 获取供应商生产地
     getSupplierPlantBySupplierId(supplierId) {
       if (!supplierId) return
+      this.supplierProduceNames = []
 
       if (this.getSupplierProducePlaceSource) this.getSupplierProducePlaceSource.cancel()
       this.getSupplierProducePlaceSource = axios.CancelToken.source()
 
       this.supplierProduceNamesLoading = true
-      getSupplierPlantBySupplierId(supplierId)
+      getSupplierPlantBySupplierId(supplierId, { cancelToken: this.getSupplierProducePlaceSource.token })
       .then(res => {
         if (res.code == 200) {
           this.supplierProduceNames = Array.isArray(res.data) ? res.data.map(item => ({
@@ -164,13 +172,13 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
-        this.supplierProduceNamesLoading = false
       })
-      .catch(() => this.supplierProduceNamesLoading = false)
+      .finally(() => this.supplierProduceNamesLoading = false)
     },
-    selectChange(factory, row) {
-      this.$set(row, "companyAddressCode", factory.id)
+    selectChange(companyAddressCode, row) {
+      const factory = this.supplierProduceNames.find(item => item.id === companyAddressCode)
       this.$set(row, "companyAddress", factory.companyAddress)
+      this.$set(row, "factoryName", factory.factoryName)
     },
     sendTaskForRating() {
       if (!this.selectTableData.length) return iMessage.warn(this.language('NINHAIWEIXUANZEGONGS','您当前还未选择供应商！'))

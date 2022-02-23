@@ -696,6 +696,7 @@
       'Enter to Search for Supplier Name, Facotry Type…',
     LK_SUOXUANBANBENWUFUJIAN: '',
     LK_TANPANZHUSHOU: 'Negotiation Assistant',
+    LK_GCLZDPLGYSGCDCGJEYJFBQK: '该材料组的批量供应商工厂的采购金额以及分布情况（过去一年）',
     LK_TESHULINGJIANLEIXING: 'Special Part Type',
     LK_TESHUYAOQIU: 'Special Req.',
     LK_TIJIAO: 'Submit',

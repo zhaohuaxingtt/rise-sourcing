@@ -95,7 +95,7 @@ export default {
 
   .supplierWrapper {
     border: 1px solid rgb(201, 216, 219); /*no*/
-    box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
+    // box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
     border-radius: 5px; /*no*/
     margin-top: 30px; /*no*/
     padding: 20px 30px; /*no*/
