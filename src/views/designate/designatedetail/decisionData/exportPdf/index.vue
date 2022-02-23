@@ -141,7 +141,7 @@ export default {
       nomiData: {}, // 定点申请数据
       decisionType,
       transferDom:[
-        {DomId:'html2canvasTitle',key:'title',imageUrl:null},
+        {DomId:'html2canvasTitle',key:'title'},
         {DomId:'html2canvasPartList',key:'partList'},
         {DomId:'html2canvasTasks',key:'tasks'},
         {DomId:'html2canvasDrawing',key:'drawing'},

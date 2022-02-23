@@ -60,6 +60,9 @@ import sortDialog from './sortDialog'
 import {mapGetters,mapState} from 'vuex'
 import exportPdf from '@/views/designate/designatedetail/decisionData/exportPdf'
 
+
+let fullscreenLoading  = null;
+
 export default {
     name:'decisionDataHeader',
     components:{
@@ -85,6 +88,17 @@ export default {
                 this.$refs['exportPdf'].exportPdf();
             }
         },
+        exportLoading(val){
+            if(val){
+                fullscreenLoading = this.$loading({
+                    lock: true,
+                    text: 'PFD导出中',
+                    background: 'rgba(255, 255, 255, 0.5)'
+                })
+            }else{
+                fullscreenLoading && fullscreenLoading.close();
+            }
+        }
     },
     data(){
         return{
