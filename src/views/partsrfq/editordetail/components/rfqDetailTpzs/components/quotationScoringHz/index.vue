@@ -306,7 +306,7 @@ export default{
     negoAnalysisSummaryGroups(){
       const sendata = {
           groupName: this.groupName,
-          partPrjCode: this.getPartNumber(this.groupSelectData),
+          partPrjCode: this.getPartNumber(this.groupSelectData.filter(item => !item.groupId)),
           rfqId: this.$route.query.id,
           scenarioType:this.templateSummary
         }
