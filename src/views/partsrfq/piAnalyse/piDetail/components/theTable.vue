@@ -320,10 +320,10 @@ export default {
       newList.map(item => {
         const copyItem = _.cloneDeep(item);
         if (item.dataType === classType['rawMaterial']) {
-          item.work = null;
-          item.workProvince = null;
-          item.productionCountry = null;
-          item.currency = null;
+          // item.work = null;
+          // item.workProvince = null;
+          // item.productionCountry = null;
+          // item.currency = "31313232";
 
           if (item.partType) {
             item.partType = copyItem.partType.classType || copyItem.partType;
@@ -339,12 +339,13 @@ export default {
             item.matchId = copyItem.partRegion.id || copyItem.matchId;
           }
         } else if (item.dataType === classType['manpower']) {
-          item.partType = null;
-          item.partNumber = null;
-          item.partRegion = null;
+          // item.partType = null;
+          // item.partNumber = null;
+          // item.partRegion = null;
 
-          item.productionCountry = null;
-          item.currency = null;
+          // item.productionCountry = null;
+          // item.currency = "dsdsdsa";
+
           if (item.work) {
             item.work = copyItem.work.profession || copyItem.work;
             item.matchId = copyItem.work.id || copyItem.matchId;
@@ -354,12 +355,12 @@ export default {
             item.matchId = copyItem.workProvince.id || copyItem.matchId;
           }
         } else if (item.dataType === classType['exchangeRate']) {
-          item.partType = null;
-          item.partNumber = null;
-          item.partRegion = null;
+          // item.partType = null;
+          // item.partNumber = null;
+          // item.partRegion = null;
 
-          item.work = null;
-          item.workProvince = null;
+          // item.work = null;
+          // item.workProvince = null;
           if (item.productionCountry) {
             item.productionCountry = copyItem.productionCountry.countryOrigin || copyItem.productionCountry;
             item.matchId = copyItem.productionCountry.id || copyItem.matchId;
