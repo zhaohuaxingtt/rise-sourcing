@@ -171,7 +171,7 @@ module.exports = {
       },
       '/sourcingApi': {
         //   供应商
-        target: 'http://10.122.17.38:8025',
+        target: 'http://10.160.138.81:18025',
         changeOrigin: true,
         pathRewrite: {
           '^/sourcingApi': '',
