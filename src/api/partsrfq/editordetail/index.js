@@ -272,10 +272,11 @@ export function getSupplierProducePlace(params) {
 }
 
 // 获取供应商工厂名称
-export function getSupplierPlantBySupplierId(supplierId) {
+export function getSupplierPlantBySupplierId(supplierId, options) {
     return requst({
         url: `/supplier/getSupplierPlantBySupplierId/${ supplierId }`,
-        method: 'GET'
+        method: 'GET',
+        ...options
     })
 }
 

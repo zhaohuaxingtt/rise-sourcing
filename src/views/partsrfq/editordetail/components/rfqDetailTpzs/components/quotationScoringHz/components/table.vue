@@ -160,7 +160,7 @@
                   <span class="tooEplis" :class="{lvse:lvseFn(scope.row,item.props,'ttoStatus')}" >{{ttoShow(scope.row[item.props])}}</span>
                 </el-tooltip>
               </template>
-              <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3'>
+              <template v-else-if='removeKeysNumber(item.props) == "Quotationdetails" && scope.$index < tableData.length -3 && (scope.row.partNo && scope.row.partNo.indexOf("Group total") === -1)'>
                 <span class="link" @click="optionPage(scope.row,getPorpsNumber(item.props))">View</span>
               </template>
               <template v-else-if='removeKeysNumber(item.props) == "supplierSopDate"'>
