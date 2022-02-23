@@ -581,6 +581,28 @@ export default {
       }
     },
     handleNewRowClassTypeSelectChange ({ event, row }) {
+      if(event == "1"){
+        row.work = null;
+        row.workProvince = null;
+
+        row.productionCountry = null;
+        row.currency = null;
+      }else if(event == "2"){
+        row.partType = null;
+        row.partNumber = null;
+        row.partRegion = null;
+
+        row.productionCountry = null;
+        row.currency = null;
+      }else if(event == "3"){
+        row.partType = null;
+        row.partNumber = null;
+        row.partRegion = null;
+
+        row.work = null;
+        row.workProvince = null;
+      }
+      
       row.dataType = event;
       this.handleGetSelectList({ props: '', row });
     },
