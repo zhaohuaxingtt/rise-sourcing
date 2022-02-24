@@ -101,10 +101,11 @@ import drawing from "./components/drawing"
 // import bdl from "./components/bdl"
 import singleSourcing from "./components/singleSourcing"
 import timeline from "./components/timeline"
-import rs from "./components/rs"
+// import rs from "./components/rs"
 import awardingScenario from '../../awardingscenario'
 import abPrice from '../abPrice'
 import bdl from "../bdl"
+import rs from "../rs"
 import { transverseDownloadPDF } from "@/utils/pdf"
 
 import { decisionType } from '@/layout/nomination/components/data'
@@ -187,7 +188,12 @@ export default {
       
       // this.transferDom.map((item)=>{
       //   html2canvas(this.$el.querySelector('#'+item.DomId)).then(canvas=>{
-        this.getPdfImage();
+        if(this.clickIndex >= this.transferDom.length){
+          this.checkAllImageUpload();
+        }else{
+          this.getPdfImage();
+        }
+        
       // })
 
     },
@@ -374,6 +380,21 @@ export default {
   #html2canvasAbprice{
     ::v-deep.btnSearch{
       display: none;
+    }
+  }
+  #html2canvasRs{
+    ::v-deep.meeting{
+      overflow: visible;
+      height: auto;
+      .card{
+        // border-color: transparent;
+        &.checkDate{
+          margin-top: 20px;
+        }
+        .btnWrapper button{
+          display: none;
+        }
+      }
     }
   }
 }
