@@ -66,8 +66,8 @@ export const tableTitle = [
   },
   {
     props:'linie',
-    name:'Linie采购员',
-    key:'TableLINIECAIGOUYUAN',
+    name:'LINIE',
+    key:'LINIE',
     tooltip:true
   },
   {
