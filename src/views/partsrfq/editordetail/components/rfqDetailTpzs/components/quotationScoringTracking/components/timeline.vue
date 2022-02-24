@@ -22,7 +22,7 @@
         <template v-for="(itemss,indexs) in items.rfqTimeAxisProgressVOList">
           <p class="itemsc" :style='{top:`${(index%2==0?"":"-")+4.5 * fontSize *(indexs+1)}px`,left:((itemss.doneDay || 1)-1) * 8.8 + "px"}' v-if='itemss.progressTypeDesc' :key="indexs">
             <span><icon symbol :name='iconList_all_times["a"+itemss.taskStatus].icon' class="margin-right5"></icon>{{itemss.progressTypeDesc}}</span>
-            <span v-if='itemss.planYear'>计划:{{itemss.planYear}}CW{{itemss.planPeriod}}</span>
+            <span v-if='itemss.planYear && itemss.progressTypeDesc !== "第一轮询价"'>计划:{{itemss.planYear}}CW{{itemss.planPeriod}}</span>
             <span v-if='itemss.doneYear' :class="'color'+itemss.taskStatus">完成:{{itemss.doneYear}}CW{{itemss.donePeriod}}</span>
           </p>
         </template>
@@ -64,7 +64,7 @@ export default{
      */
     renderTopBottom(){
      try {
-        this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.rfqTimeAxisProgressVOList.length - a.rfqTimeAxisProgressVOList.length)[0].rfqTimeAxisProgressVOList.length * 5 * this.fontSize + 'px'
+        this.paddingBottom = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>d%2==0).sort((a,b)=>b.rfqTimeAxisProgressVOList.length - a.rfqTimeAxisProgressVOList.length)[0].rfqTimeAxisProgressVOList.length * 5 * (+this.fontSize + 3) + 'px'
         this.paddingTop = JSON.parse(JSON.stringify(this.timeList)).filter((i,d)=>!(d%2==0)).sort((a,b)=>b.rfqTimeAxisProgressVOList.length - a.rfqTimeAxisProgressVOList.length)[0].rfqTimeAxisProgressVOList.length * 4.5 * this.fontSize + 'px'
      } catch (error) {
        this.paddingBottom = '80px';
