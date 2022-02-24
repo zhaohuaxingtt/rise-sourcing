@@ -81,7 +81,7 @@
           </template>
           </template>
         </el-table-column>
-        <el-table-column v-else :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" align="center">
+        <el-table-column v-else :key="index" :label="item.key ? $t(item.key) : item.name" :prop="item.props" :show-overflow-tooltip="item.tooltip" align="center" width="100">
           <template slot-scope="scope">
             <template v-if="scope.row && scope.row[item.props]">
                <span>{{scope.row[item.props].rate}} <span @click="optionLog(scope.row)" class="cursor"><icon v-if='scope.row[item.props].rate == "C"' name='iconzhongyaoxinxitishi' symbol></icon></span></span>

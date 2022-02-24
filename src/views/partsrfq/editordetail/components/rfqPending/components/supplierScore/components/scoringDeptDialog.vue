@@ -60,7 +60,7 @@ export default {
   },
   watch: {
     visible(nv) {
-      if (nv && this.ids.length && this.$route.query.id) {
+      if (nv && this.ids.length) {
         this.getRfqRateDepartsData()
         this.getAllDeptTag()
       } else {
@@ -124,7 +124,7 @@ export default {
     // 获取下拉列表值
     getRfqRateDeparts(rateTag, type) {
       if (this.deptMap[rateTag] && Object.keys(this.deptMap[rateTag]).length) return
-
+      console.log('000000000');
       return getRfqRateDeparts({
         // rfqIds: type === "all" ? undefined : this.ids,
         rateTag
