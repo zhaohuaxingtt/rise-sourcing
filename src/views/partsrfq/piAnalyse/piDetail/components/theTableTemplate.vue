@@ -470,19 +470,30 @@ export default {
       let req = {};
       switch (row.dataType) {
         case this.classType['rawMaterial']:
+
           if (props === this.FIRSTSELECT) {
             req.rawMaterialDetails = event.rawMaterialDetails;
             row.rawMaterialDetails = event.rawMaterialDetails;
             row.partType = event.rawMaterialDetails.split("-")[0];
+
+            row.partSource = null;
           }
-          //  else if (props === this.SECONDSELECT) {
+           else if (props === this.THIRDSELECT) {
             // req.classType = event.classType;
             // req.specs = event.specs;
-          // }
+            req.areaName = event.area;
+            req.rawMaterialDetails = row.rawMaterialDetails;
+          }
           break;
         case this.classType['manpower']:
           if (props === this.FIRSTSELECT) {
             req.profession = event.profession;
+            row.profession = event.profession;
+            row.partSource = null;
+          }
+          else if (props === this.SECONDSELECT) {
+            req.area = event.city;
+            req.profession = row.profession;
           }
           break;
         case this.classType['exchangeRate']:
@@ -525,19 +536,29 @@ export default {
       }
     },
     // 获取下拉
-    async handleGetSelectList ({ props, row, req = {} }) {
-
-      // console.log(props)
-      // console.log(row)
-      // console.log(req)
+    async handleGetSelectList ({ props, row, req = {} }) {//---------------------------------------
       this.selectLoading = true;
       let selectList = '';
       switch (row.dataType) {
         case this.classType['rawMaterial']:
           selectList = (await getSelectMateria(req)).data;
+          
+          if (props === this.THIRDSELECT) {
+            if(selectList.length>0){
+              row.partSource = selectList[0].dataSource;
+            }
+          }
+
           break;
         case this.classType['manpower']:
           selectList = (await getSelectManpower(req)).data;
+
+          if (props === this.SECONDSELECT) {
+            if(selectList.length>0){
+              row.partSource = selectList[0].dataSource;
+            }
+          }
+
           break;
         case this.classType['exchangeRate']:
           if (props === '') {
@@ -585,6 +606,8 @@ export default {
         row.work = null;
         row.workProvince = null;
 
+        row.partSource = null;
+
         row.productionCountry = null;
         row.currency = null;
       }else if(event == "2"){
@@ -592,12 +615,16 @@ export default {
         row.partNumber = null;
         row.partRegion = null;
 
+        row.partSource = null;
+
         row.productionCountry = null;
         row.currency = null;
       }else if(event == "3"){
         row.partType = null;
         row.partNumber = null;
         row.partRegion = null;
+
+        row.partSource = null;
 
         row.work = null;
         row.workProvince = null;
