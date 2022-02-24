@@ -583,7 +583,6 @@ export default {
                   //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
                   this.activityTabIndex = dialogPage;
                 }
-                console.log(dialogPage,'111111111111111111111111111111111111111111111111111');
                 this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
                 this.childFnList.forEach((i) => i());
                 if (typeof this.$store.state.rfq.partfunc === 'function') this.getPartTableList();
