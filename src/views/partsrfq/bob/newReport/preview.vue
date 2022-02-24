@@ -2,9 +2,9 @@
   <iDialog :title="reportName"
            :visible.sync="value"
            width="95%"
+           v-loading="onDataLoading"
            @close="closeDialog">
     <div id="content"
-         v-loading="onDataLoading"
          :class="[!reportSave?'on-preview-padding':'']">
       <div style="width: 75%; height: 30px;display: flex;flex-flow: row nowrap;justify-content: space-between;">
         <div> <span class="chartTitle">{{title}}</span></div>
