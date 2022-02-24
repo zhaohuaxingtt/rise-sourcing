@@ -8,7 +8,7 @@
           {{ language('LK_SHANCHU','删除') }}
         </iButton>
         <upload-button
-            v-if="!disabled"
+            v-if="!disabled && isPosition"
             @uploadedCallback="uploadAttachments"
             :upload-button-loading="uploadAttachmentsButtonLoading"
             class="margin-left8 margin-right8"
@@ -95,7 +95,7 @@ export default {
   created() {
     this.getTableList();
   },
-  inject: ["getDisabled"],
+  inject: ["getDisabled","isPos"],
   computed: {
     disabled() {
       try {
@@ -103,6 +103,9 @@ export default {
       } catch (error) {
         return true
       }
+    },
+    isPosition() {
+      return this.isPos()
     }
   },
   methods: {
@@ -184,7 +187,8 @@ export default {
       // }
       // await downloadFile(req)
 
-      await downloadUdFile(row.uploadId)
+      await window.open(row.filePath,'_blank')
+      // downloadUdFile(row.uploadId)
     },
     async download() {
       if (this.selectTableData.length == 0)

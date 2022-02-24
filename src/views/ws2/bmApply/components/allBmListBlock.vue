@@ -24,7 +24,7 @@
 
           <!-- RS单号 -->
           <template #rsNum="scope">
-            <div  @click="openViewPdf(scope.row)" :class="scope.row.rsNum == 'AEKO RS单'?'':'table-link'">{{scope.row.rsNum}}</div>
+            <div  @click="openViewPdf(scope.row)" :class="scope.row.rsNum == 'AEKO RS单'?'':'table-link'" v-if="scope.row.rsNum !== '0'">{{scope.row.rsNum}}</div>
           </template>
         </iTableList>
 
@@ -127,7 +127,10 @@ export default {
         })
         window.open(routeData.href, '_blank')
       }else{
-        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum;
+        const roleList = this.$store.state.permission.userInfo.roleList;
+        const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.code));
+        console.log('roleListroleListroleList', roleList, isFlag);
+        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum + '?flag=' + !isFlag;
         window.open(url);
       }
       

@@ -184,7 +184,7 @@
                     <template>
                       {{ language('PI.SHUJULAIYUAN', '数据来源') }}（{{ scope.row.partSource ? scope.row.partSource : '' }}）
                     </template>
-                    <iconTips v-if="!scope.row.isMatch"
+                    <iconTips v-if="!scope.row.partSource"
                               iconName="iconzhongyaoxinxitishi"
                               :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成对应的指数变动百分比，可手动补充系统匹配模块信息。')"
                               class="margin-left6"
@@ -240,7 +240,7 @@
                         </span>
                       </el-popover>
                     </template>
-                    <iconTips v-if="!scope.row.isMatch"
+                    <iconTips v-if="!scope.row.partSource"
                               iconName="iconzhongyaoxinxitishi"
                               :tipContent="language('PI.SHUJULAIYUANTISHI', '由于CBD与市场数据匹配失败，此项无法生成对应的指数变动百分比，可手动补充系统匹配模块信息。')"
                               class="margin-left6"
@@ -581,6 +581,28 @@ export default {
       }
     },
     handleNewRowClassTypeSelectChange ({ event, row }) {
+      if(event == "1"){
+        row.work = null;
+        row.workProvince = null;
+
+        row.productionCountry = null;
+        row.currency = null;
+      }else if(event == "2"){
+        row.partType = null;
+        row.partNumber = null;
+        row.partRegion = null;
+
+        row.productionCountry = null;
+        row.currency = null;
+      }else if(event == "3"){
+        row.partType = null;
+        row.partNumber = null;
+        row.partRegion = null;
+
+        row.work = null;
+        row.workProvince = null;
+      }
+      
       row.dataType = event;
       this.handleGetSelectList({ props: '', row });
     },

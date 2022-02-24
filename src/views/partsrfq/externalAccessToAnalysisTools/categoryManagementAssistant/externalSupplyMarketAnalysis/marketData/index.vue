@@ -1,33 +1,39 @@
 <template>
-  <iCard id="allContainer" class="margin-top30">
+  <iCard id="allContainer"
+         class="margin-top30">
     <div class="margin-bottom20 clearFloat">
       <span class="font22 font-weight">{{ language('PLGLZS.SHICHANGSHUJU', '市场数据') }}</span>
-      <div class="floatright" v-if="!isExporting">
+      <div class="floatright"
+           v-if="!isExporting">
         <iButton @click="handleSearch">{{ language('LK_QUEREN', '确认') }}</iButton>
-        <iButton @click="handleSave" :loading="saveButtonLoading">{{ language('LK_BAOCUN', '保存') }}</iButton>
+        <iButton @click="handleSave"
+                 :loading="saveButtonLoading">{{ language('LK_BAOCUN', '保存') }}</iButton>
         <iButton @click="handleBack">{{ language('LK_FANHUI', '返回') }}</iButton>
       </div>
     </div>
     <!--    导航条-->
-    <theTabs @handleClick="handleTabsClick"/>
+    <theTabs @handleClick="handleTabsClick" />
     <!--    搜索栏-->
-    <theSearch
-        v-if="showStatus"
-        ref="theSearch"
-        :list="searchProps"
-        @handleSelectSearch="handleSelectSearch"
-    />
-    <div v-loading="chartBoxLoading" style="padding-top: 20px">
+    <theSearch v-if="showStatus"
+               ref="theSearch"
+               :list="searchProps"
+               @handleSelectSearch="handleSelectSearch" />
+    <div v-loading="chartBoxLoading"
+         style="padding-top: 20px">
       <!--    数据页签栏-->
-      <theDataTab :list="dataTabArray" v-if="showStatus" @handleDelete="handleDataTabDelete"/>
+      <theDataTab :list="dataTabArray"
+                  v-if="showStatus"
+                  @handleDelete="handleDataTabDelete" />
       <!--    echarts图表-->
-      <theChart :chartData="chartData" v-if="showStatus && showChart" ref="theChart"/>
+      <theChart :chartData="chartData"
+                v-if="showStatus && showChart"
+                ref="theChart" />
     </div>
   </iCard>
 </template>
 
 <script>
-import {iCard, iButton, iMessageBox} from 'rise';
+import { iCard, iButton, iMessageBox } from 'rise';
 import theTabs from './components/theTabs';
 import theSearch from './components/theSearch';
 import theDataTab from './components/theDataTab';
@@ -56,8 +62,8 @@ import {
   getRecentEnergyScheme,
   saveEnergyScheme,
 } from '../../../../../../api/categoryManagementAssistant/marketData';
-import {cloneDeep} from 'lodash';
-import {downloadPdfMixins} from '@/utils/pdf';
+import { cloneDeep } from 'lodash';
+import { downloadPdfMixins } from '@/utils/pdf';
 import resultMessageMixin from '@/utils/resultMessageMixin';
 
 export default {
@@ -70,7 +76,7 @@ export default {
     theDataTab,
     theChart,
   },
-  data() {
+  data () {
     return {
       current: RAWMATERIAL,
       searchProps: rawMaterialSearch,
@@ -86,13 +92,13 @@ export default {
       categoryName: this.$store.state.rfq.categoryName,
     };
   },
-  async created() {
+  async created () {
     this.setCascaderProps();
-    await this.getSearchProps({type: RAWMATERIAL});
-    await this.getChartGroupData({type: RAWMATERIAL});
+    await this.getSearchProps({ type: RAWMATERIAL });
+    await this.getChartGroupData({ type: RAWMATERIAL });
   },
   methods: {
-    handleTabsClick(val) {
+    handleTabsClick (val) {
       this.current = val;
       this.setCascaderProps();
       this.showStatus = false;
@@ -101,47 +107,55 @@ export default {
         this.handleTabsChange(val);
       });
     },
-    async handleTabsChange(val) {
+    async handleTabsChange (val) {
       this.chartBoxLoading = true;
       switch (val) {
         case RAWMATERIAL:
           this.searchProps = rawMaterialSearch;
-          await this.getSearchProps({type: RAWMATERIAL});
-          await this.getChartGroupData({type: RAWMATERIAL});
+          await this.getSearchProps({ type: RAWMATERIAL });
+          await this.getChartGroupData({ type: RAWMATERIAL });
           break;
         case LABOUR:
           this.searchProps = manpowerSearch;
-          await this.getSearchProps({type: LABOUR});
-          await this.getChartGroupData({type: LABOUR});
+          await this.getSearchProps({ type: LABOUR });
+          await this.getChartGroupData({ type: LABOUR });
           break;
         case ENERGY:
           this.searchProps = rawMaterialSearch;
-          await this.getSearchProps({type: ENERGY});
-          await this.getChartGroupData({type: ENERGY});
+          await this.getSearchProps({ type: ENERGY });
+          await this.getChartGroupData({ type: ENERGY });
           break;
       }
       this.chartBoxLoading = false;
     },
     // 搜索
-    handleSearch() {
+    handleSearch () {
       switch (this.current) {
         case RAWMATERIAL:
-          this.getChartGroupData({type: RAWMATERIAL});
+          this.getChartGroupData({ type: RAWMATERIAL });
           break;
         case LABOUR:
-          this.getChartGroupData({type: LABOUR});
+          this.getChartGroupData({ type: LABOUR });
           break;
         case ENERGY:
-          this.getChartGroupData({type: ENERGY});
+          this.getChartGroupData({ type: ENERGY });
           break;
       }
     },
     // 设置搜索框
-    setSearchProps(data) {
+    setSearchProps (data) {
+      console.log(data, "data")
+      console.log(this.searchProps, "props")
       this.searchProps = this.searchProps.map(item => {
         switch (item.props) {
           case 'classTypeSpecsArea':
-            item.options = data.classTypeList.map(item => {
+            // item.options = data.classTypeList.map(item => {
+            //   return {
+            //     label: item,
+            //     value: item,
+            //   };
+            // });
+            item.options = data.nameList.map(item => {
               return {
                 label: item,
                 value: item,
@@ -170,12 +184,13 @@ export default {
       });
     },
     // 获取搜索框参数
-    getSearchForm() {
+    getSearchForm () {
       const form = cloneDeep(this.$refs.theSearch.form);
+      console.log(form, "form")
       if (form.classTypeSpecsArea && Array.isArray(form.classTypeSpecsArea)) {
         form.classTypeSpecsAreaList = form.classTypeSpecsArea.map(item => {
           return {
-            classType: item?.[0],
+            name: item?.[0],
             specs: item?.[1],
             area: item?.[2],
           };
@@ -196,10 +211,11 @@ export default {
         form['endDate'] = form.rangeDate[1];
         delete form.rangeDate;
       }
+      delete form.classTypeSpecsArea;
       return form;
     },
     // 获取数据页签
-    getDataTabArray(data) {
+    getDataTabArray (data) {
       if (data.resultList) {
         this.dataTabArray = data.resultList.map(item => {
           return item.dataType;
@@ -207,7 +223,7 @@ export default {
       }
     },
     // 删除数据页签
-    handleDataTabDelete(val) {
+    handleDataTabDelete (val) {
       this.chartData.resultList = this.chartData.resultList.filter(item => {
         return item['dataType'] !== val;
       });
@@ -220,7 +236,7 @@ export default {
       });
     },
     // 通过接口获取搜索下拉
-    async getSearchProps({type}) {
+    async getSearchProps ({ type }) {
       let res = '';
       let req = {};
       switch (type) {
@@ -241,7 +257,7 @@ export default {
       this.setRecentSearchData(resRecent);
     },
     // 获取图表数据
-    async getChartGroupData({type}) {
+    async getChartGroupData ({ type }) {
       try {
         let res = '';
         this.chartData = {};
@@ -252,28 +268,28 @@ export default {
           case RAWMATERIAL:
             res = await getrawMaterialGroupData(form);
             if (res.result) {
-              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeSpecsArea'});
+              this.setDataTypeDefault({ resultList: res.data.resultList, formProps: 'classTypeSpecsArea' });
             }
             break;
           case LABOUR:
             res = await getLabourGroupData(form);
             if (res.result) {
-              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'professionList'});
+              this.setDataTypeDefault({ resultList: res.data.resultList, formProps: 'professionList' });
             }
             break;
           case ENERGY:
             res = await getEnergyGroupData(form);
             if (res.result) {
-              this.setDataTypeDefault({resultList: res.data.resultList, formProps: 'classTypeSpecsArea'});
+              this.setDataTypeDefault({ resultList: res.data.resultList, formProps: 'classTypeSpecsArea' });
             }
             break;
         }
         if (!res.result) {
           const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn;
           iMessageBox(
-              message,
-              this.language('PLGLZS.TISHI', '提示'),
-              {confirmButtonText: this.$t('LK_QUEDING'), showCancelButton: false},
+            message,
+            this.language('PLGLZS.TISHI', '提示'),
+            { confirmButtonText: this.$t('LK_QUEDING'), showCancelButton: false },
           );
         }
         this.$nextTick(() => {
@@ -288,11 +304,11 @@ export default {
         this.chartBoxLoading = false;
       }
     },
-    setDataTypeDefault({resultList, formProps}) {
+    setDataTypeDefault ({ resultList, formProps }) {
       if (this.current === LABOUR) {
         if (Array.isArray(resultList) && resultList.length > 0) {
           this.$refs.theSearch.form[formProps] = resultList.map(item => {
-            return {name: item.dataType};
+            return { name: item.dataType };
           });
         }
       } else {
@@ -305,7 +321,7 @@ export default {
       }
     },
     // 处理保存
-    async handleSave() {
+    async handleSave () {
       this.saveButtonLoading = true;
       this.isExporting = true;
       this.$nextTick(async () => {
@@ -314,7 +330,7 @@ export default {
           domId: '#allContainer',
           watermark: this.$store.state.permission.userInfo.deptDTO.nameEn + '-' + this.$store.state.permission.userInfo.userNum + '-' + this.$store.state.permission.userInfo.nameZh + "^" + window.moment().format('YYYY-MM-DD HH:mm:ss'),
           pdfName,
-          exportPdf: true,
+          // exportPdf: true,
           callBack: () => {
             this.isExporting = false;
           },
@@ -345,7 +361,7 @@ export default {
       });
     },
     // 获取最近搜索参数
-    async getRecentSearchData() {
+    async getRecentSearchData () {
       let res = '';
       const req = {
         categoryCode: this.categoryCode,
@@ -363,7 +379,7 @@ export default {
       }
     },
     // 设置最近搜索参数
-    setRecentSearchData(data) {
+    setRecentSearchData (data) {
       const copyData = cloneDeep(data);
       if (data) {
         if (copyData.classTypeSpecsAreaList && Array.isArray(copyData.classTypeSpecsAreaList)) {
@@ -373,12 +389,12 @@ export default {
         }
         if (copyData.areaList && Array.isArray(copyData.areaList)) {
           copyData.areaList = copyData.areaList.map(item => {
-            return {name: item};
+            return { name: item };
           });
         }
         if (copyData.professionList && Array.isArray(copyData.professionList)) {
           copyData.professionList = copyData.professionList.map(item => {
-            return {name: item};
+            return { name: item };
           });
         }
         if (copyData.startDate && copyData.endDate) {
@@ -389,12 +405,12 @@ export default {
         this.$refs.theSearch.form = copyData;
       }
     },
-    handleBack() {
+    handleBack () {
       this.$router.push({
         path: '/sourcing/categoryManagementAssistant/externalSupplyMarketAnalysis/overView',
       });
     },
-    handleSelectSearch({value, props}) {
+    handleSelectSearch ({ value, props }) {
       let list = [];
       const copyTwiceSearchProps = window._.cloneDeep(this.copySearchProps);
       list = copyTwiceSearchProps[props].filter(item => {
@@ -404,7 +420,7 @@ export default {
       this.setSearchProps(copyTwiceSearchProps);
     },
     // 设置级联props
-    setCascaderProps() {
+    setCascaderProps () {
       const _this = this;
       switch (this.current) {
         case RAWMATERIAL:
@@ -413,7 +429,8 @@ export default {
               item.cascaderProps = {
                 multiple: true,
                 lazy: true,
-                lazyLoad(node, resolve) {
+                lazyLoad (node, resolve) {
+                  console.log(node, resolve)
                   _this.classTypeSpecsAreaLoad(node, resolve, getRawMaterialGroupSelectList);
                 },
               };
@@ -427,7 +444,7 @@ export default {
               item.cascaderProps = {
                 multiple: true,
                 lazy: true,
-                lazyLoad(node, resolve) {
+                lazyLoad (node, resolve) {
                   _this.classTypeSpecsAreaLoad(node, resolve, getEnergyGroupSelectList);
                 },
               };
@@ -437,11 +454,11 @@ export default {
           break;
       }
     },
-    async classTypeSpecsAreaLoad(node, resolve, func) {
-      const {level} = node;
+    async classTypeSpecsAreaLoad (node, resolve, func) {
+      const { level } = node;
       if (level === 1) {
         const req = {
-          classTypeList: [node.value],
+          nameList: [node.value],
         };
         const res = await func(req);
         const nodes = res.data.specsList.map(val => ({
@@ -452,7 +469,7 @@ export default {
         resolve(nodes);
       } else if (level === 2) {
         const req = {
-          classTypeList: [node.parent.value],
+          nameList: [node.parent.value],
           specsList: [node.value],
         };
         const res = await func(req);
@@ -466,7 +483,7 @@ export default {
         resolve([]);
       }
     },
-    getCurrentName() {
+    getCurrentName () {
       switch (this.current) {
         case RAWMATERIAL:
           return '原材料';
@@ -480,7 +497,7 @@ export default {
     },
   },
   watch: {
-    '$store.state.rfq.categoryName'() {
+    '$store.state.rfq.categoryName' () {
       this.categoryName = this.$store.state.rfq.categoryName;
     },
   },
@@ -488,6 +505,5 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
 

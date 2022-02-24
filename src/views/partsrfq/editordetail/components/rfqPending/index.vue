@@ -49,6 +49,10 @@ export default {
       type: Object,
       default:()=>{return {}}
     },
+    isPosition:{
+      type:Boolean,
+      default:false
+    }
   },
   inject:['getbaseInfoData','registerFn'],
   data() {
@@ -114,7 +118,15 @@ export default {
       return this.$store.state.permission.whiteBtnList || {}
     },
     tabs() {
-      return this.tabList.filter(e=> this.whiteBtnList[e.permissionKey])
+      let newTable = []
+       newTable = this.tabList.filter(e=> this.whiteBtnList[e.permissionKey])
+      if(this.isPosition == false) {
+        newTable = this.tabList.filter(e=>{
+          return (e.index != '2' && e.index != '4')
+          }
+        )
+      }
+      return newTable
       // if (Array.isArray(this.baseInfo.partProjectType) && (this.baseInfo.partProjectType[0] === partProjTypes.PEIJIAN)) return this.tabList.filter(item => item.index != 3)
       // return this.tabList
     }

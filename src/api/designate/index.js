@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2021-11-06 12:09:53
+ * @LastEditTime: 2022-02-22 17:17:28
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
@@ -227,5 +227,15 @@ export function getNomiPosition(params) {
   return requst({
     url: `/nominate-apps/getNomiPosition/${ params.nomiId }`,
     method: "GET"
+  })
+}
+
+
+// 下载导出的pdf
+export function decisionDownloadPdf(data) {
+  return fileRequst({
+      url: '/decision/downloadPdf',
+      method: "POST",
+      data
   })
 }

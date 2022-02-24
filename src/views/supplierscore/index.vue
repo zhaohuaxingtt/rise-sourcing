@@ -12,17 +12,6 @@
       <headerNav class="headerNav" type="scoremanage">
         <div class="right-control">
           <div class="control">
-            <iLoger
-            :config="{
-              module_obj_ae: '评分任务', 
-              menuName_obj_ae: ''
-            }"
-            isPage
-            isUser
-            credentials
-            class="margin-left20"
-            optionDicKey="LOG_OPERATION_TYPES"
-            optionDicKey2="供应商评分任务详情"/>
             <span class="margin-left20">
               <icon symbol name="icondatabaseweixuanzhong" class="font24"></icon>
             </span>
@@ -205,7 +194,6 @@
 <script>
 import { iPage, icon, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage } from "rise"
 import headerNav from '@/components/headerNav'
-import iLoger from 'rise/web/components/iLoger'
 import forwardDialog from "@/views/supplierscore/components/forwardDialog"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import filters from "@/utils/filters"
@@ -228,7 +216,6 @@ export default {
     iCard,
     iButton,
     iPagination,
-    iLoger,
     forwardDialog,
     tableList,
     headerNav

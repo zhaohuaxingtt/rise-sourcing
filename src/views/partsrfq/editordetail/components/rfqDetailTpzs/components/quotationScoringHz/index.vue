@@ -220,11 +220,12 @@ export default{
         const notSortData = this.oldExampelData.filter(items=> items.groupId != null && items.groupId != '-' || items.groupIdTemp)
         const sortData = this.oldExampelData.filter(items=> items.groupId == null && items.groupId != '-')
         const totalData = this.oldExampelData.filter((items)=> items.groupId == '-' && (!items.groupIdTemp))
-        if(props == "ascending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>b[prop].toString().localeCompare(a[prop].toString())),...totalData]
-        }else if(props == "descending"){
-          this.exampelData = [...notSortData,...sortData.sort((a,b)=>a[prop].toString().localeCompare(b[prop].toString())),...totalData]
-        }else{
+
+        if (props == "ascending") {
+          this.exampelData = [...notSortData, ..._.orderBy(sortData, [prop === "partNo" ? item => (item[prop] ? item[prop].substring(3, 9) : "") : item => +item[prop]], ['asc']), ...totalData]
+        } else if (props == "descending") {
+          this.exampelData = [...notSortData, ..._.orderBy(sortData, [prop === "partNo" ? item => (item[prop] ? item[prop].substring(3, 9) : "") : item => +item[prop]], ['desc']),...totalData]
+        } else {
           this.exampelData = this.oldExampelData
         }
       } catch (error) {
@@ -432,7 +433,8 @@ export default{
             }
             return [...accu, curr]
           },[])
-          this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
+          this.oldExampelData = _.cloneDeep(this.exampelData)
+          // this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
           this.$nextTick(()=>{
             this.$refs.tableList.setfixElement()
           })
@@ -457,14 +459,10 @@ export default{
       })
     },
     group(){
-      if(this.groupSelectData.length == 0){
-        iMessage.warn('请选择您要组合的项');
-        return
-      }
-      if(this.groupSelectData.length == 1){
-        iMessage.warn('请至少选择两项组合');
-        return 
-      }
+      if (this.groupSelectData.length == 0) return iMessage.warn(this.language('QINGXUANZENINYAOZUHEDEXIANG', '请选择您要组合的项'))
+      if (this.groupSelectData.length == 1) return iMessage.warn(this.language('QINGZHISHAOXUANZENIANGXIANGZUHE', '请至少选择两项组合'))
+      if (this.groupSelectData.filter(item => !item.groupId).length == 1) return iMessage.warn(this.language('QINGZHISHAOXUANZENIANGXIANGFEIYIZUHEDESHUJU', '请至少选择两项非已组合的数据'))
+
       this.groupVisble = !this.groupVisble
     },
     async quote() {
