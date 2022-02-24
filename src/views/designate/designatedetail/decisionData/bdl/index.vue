@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 17:00:48
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-04 12:04:26
+ * @LastEditTime: 2022-02-23 16:18:55
  * @Description: 定点管理-决策资料-BDL
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\bdl\index.vue
 -->
 
 <template>
-  <iPage class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
-    <div class="margin-top20" style="text-align:right;" >
+  <div class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
+    <div class="margin-top20" style="text-align:right;" v-if="!isExportPdf && isPreview!='1'">
       <iButton v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL_GOTOSUPPLIERMAINTENANCE|跳转供应商维护"  @click="gotoSupplier">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
     </div>
     <iCard v-for="(item, index) in rfqList" :key="index" :title="'RFQ NO.'+item.rfqNum+',RFQ Name:'+item.rfqName" class="margin-top20">
@@ -42,10 +42,11 @@
         :layout="item.page.layout"
         :current-page="item.page.currPage"
         :total="item.page.totalCount"
+        v-if="!isExportPdf"
       />
     </iCard>
     <partsRatingDialog :dialogVisible="dialogVisible" @changeVisible="changeDialogVisible" :rfqId="rfqId" :supplierId="supplierId" />
-  </iPage>
+  </div>
 </template>
 
 <script>
@@ -68,6 +69,12 @@ export default {
       tableTitle: [],
       dialogVisible: false,
       rateTableData: []
+    }
+  },
+  props:{
+    isExportPdf:{
+      type:Boolean,
+      default:false,
     }
   },
   computed: {
@@ -153,8 +160,10 @@ export default {
      * @return {*}
      */    
     async getTableList(element, index) {
+      const {isExportPdf = false } = this;
       const params = {
-        nominateId:this.$route.query.desinateId,rfqId:element.id, current:this.rfqList[index].page.currPage || 1, size:this.rfqList[index].page.pageSize || 10
+        nominateId:this.$route.query.desinateId,rfqId:element.id, current:this.rfqList[index].page.currPage || 1, 
+        size:(isExportPdf ? 999999 : this.rfqList[index].page.pageSize) || 10
       }
       const res = await findRfqSupplierQuotationPage(params)
       if (res?.result) {
@@ -234,7 +243,7 @@ export default {
   vertical-align: middle;
 }
 .decision-bdl {
-  padding: 0;
+  // padding: 0;
 }
 .doubleHeader {
   border: none;

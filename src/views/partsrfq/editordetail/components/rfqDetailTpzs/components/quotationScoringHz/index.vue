@@ -222,9 +222,9 @@ export default{
         const totalData = this.oldExampelData.filter((items)=> items.groupId == '-' && (!items.groupIdTemp))
 
         if (props == "ascending") {
-          this.exampelData = [...notSortData, ..._.orderBy(sortData, [prop === "partNo" ? prop : (item) => +item[prop]], ['asc']), ...totalData]
+          this.exampelData = [...notSortData, ..._.orderBy(sortData, [prop === "partNo" ? item => (item[prop] ? item[prop].substring(3, 9) : "") : item => +item[prop]], ['asc']), ...totalData]
         } else if (props == "descending") {
-          this.exampelData = [...notSortData, ..._.orderBy(sortData, [prop === "partNo" ? prop : (item) => +item[prop]], ['desc']),...totalData]
+          this.exampelData = [...notSortData, ..._.orderBy(sortData, [prop === "partNo" ? item => (item[prop] ? item[prop].substring(3, 9) : "") : item => +item[prop]], ['desc']),...totalData]
         } else {
           this.exampelData = this.oldExampelData
         }
@@ -306,7 +306,7 @@ export default{
     negoAnalysisSummaryGroups(){
       const sendata = {
           groupName: this.groupName,
-          partPrjCode: this.getPartNumber(this.groupSelectData),
+          partPrjCode: this.getPartNumber(this.groupSelectData.filter(item => !item.groupId)),
           rfqId: this.$route.query.id,
           scenarioType:this.templateSummary
         }
@@ -459,14 +459,10 @@ export default{
       })
     },
     group(){
-      if(this.groupSelectData.length == 0){
-        iMessage.warn('请选择您要组合的项');
-        return
-      }
-      if(this.groupSelectData.length == 1){
-        iMessage.warn('请至少选择两项组合');
-        return 
-      }
+      if (this.groupSelectData.length == 0) return iMessage.warn(this.language('QINGXUANZENINYAOZUHEDEXIANG', '请选择您要组合的项'))
+      if (this.groupSelectData.length == 1) return iMessage.warn(this.language('QINGZHISHAOXUANZENIANGXIANGZUHE', '请至少选择两项组合'))
+      if (this.groupSelectData.filter(item => !item.groupId).length == 1) return iMessage.warn(this.language('QINGZHISHAOXUANZENIANGXIANGFEIYIZUHEDESHUJU', '请至少选择两项非已组合的数据'))
+
       this.groupVisble = !this.groupVisble
     },
     async quote() {

@@ -59,7 +59,7 @@
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_SENDINQUIRY|发出询价">{{ language('LK_FACHUXUNJIA', '发出询价') }}
           </iButton>
           <iButton 
-            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1" 
+            v-if="baseInfo.starMonitorRef !== 1 && baseInfo.starMonitorStatus !== 1 && isPosition" 
             :loading="endingloading"
             @click="updateRfqStatus('05')"
             v-permission.auto="PARTSRFQ_EDITORDETAIL_ENDQUOTATION|结束本轮询价">

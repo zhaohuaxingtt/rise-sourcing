@@ -53,7 +53,7 @@
         <!-- bdl -->
         <div id="html2canvasBDl">
           <headerTab value="/designate/decisiondata/bdl"/>
-          <bdl class="module"/>
+          <bdl isExportPdf class="module"/>
         </div>
 
         <!-- singleSourcing -->
@@ -98,12 +98,13 @@ import rsTitle from "./components/rsTitle"
 import partList from "./components/partList"
 import tasks from "./components/tasks"
 import drawing from "./components/drawing"
-import bdl from "./components/bdl"
+// import bdl from "./components/bdl"
 import singleSourcing from "./components/singleSourcing"
 import timeline from "./components/timeline"
 import rs from "./components/rs"
 import awardingScenario from '../../awardingscenario'
 import abPrice from '../abPrice'
+import bdl from "../bdl"
 import { transverseDownloadPDF } from "@/utils/pdf"
 
 import { decisionType } from '@/layout/nomination/components/data'
@@ -204,19 +205,23 @@ export default {
               let pdfFile = new File([blob], filename, {type: 'image/png'});
               // let formData = new FormData();
               // formData.append('file', pdfFile);
+              
+              this.transferDom[clickIndex]['pdfFile'] = pdfFile;
+
+              this.checkAllFilesDone();
 
               //将转换为formData的canvas图片 上传到服务器
-                uploadUdFile({
-                  multifile: pdfFile
-                }).then((res=>{
-                  if(res.code == 200){
-                    console.log(res.data,'res.data.pathres.data.pathres.data.path')
-                    this.transferDom[clickIndex]['imageUrl'] = res.data[0].path || '';
-                    this.checkAllImageUpload();
-                  }else{
-                    this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                  }
-                }));
+                // uploadUdFile({
+                //   multifile: pdfFile
+                // }).then((res=>{
+                //   if(res.code == 200){
+                //     console.log(res.data,'res.data.pathres.data.pathres.data.path')
+                //     this.transferDom[clickIndex]['imageUrl'] = res.data[0].path || '';
+                //     this.checkAllImageUpload();
+                //   }else{
+                //     this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                //   }
+                // }));
 
               })
             
@@ -244,6 +249,29 @@ export default {
           this.$emit('changeStatus','exportLoading',false)
         })
       }
+    },
+
+    // 查看所有图片是否生成完毕
+    async checkAllFilesDone(){
+      const { transferDom=[] } = this;
+      const filter = transferDom.filter((item)=>item.pdfFile);
+       if(filter.length == transferDom.length){ // 生成完毕
+        //将转换为formData的canvas图片 上传到服务器
+        transferDom.map((item)=>{
+          uploadUdFile({
+          multifile: item.pdfFile
+        }).then((res=>{
+          if(res.code == 200){
+            console.log(res.data,'res.data.pathres.data.pathres.data.path')
+            item['imageUrl'] = res.data[0].path || '';
+            this.checkAllImageUpload();
+          }else{
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        }));
+        })
+        
+       }
     },
   }
 }
