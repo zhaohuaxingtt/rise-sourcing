@@ -2,12 +2,21 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-18 11:34:43
- * @LastEditors: caopeng
+ * @LastEditors: Please set LastEditors
  * @Descripttion: 定点记录
 -->
 <template>
-  <iCard  @handleTitle="addFile($event,9, '定点记录')" :title="$t('TPZS.DDJV')+`<span class='cursor' style='margin-right: 20px;'><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>` + `<span style='color: #909091'>` +categoryCode + `</span>` +  `<span style='color: #909091'>` +$t('TPZS.DDJLMEMO') + `</span>`" :defalutCollVal='false' collapse>
-    <tableList id="card9" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="tableLoading" :selection='false' :index="true" @handleSelectionChange="handleSelectionChange">
+  <iCard @handleTitle="addFile($event,9, '定点记录')"
+         :title="$t('TPZS.DDJV')+`<span class='cursor' style='margin-right: 20px;'><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>` + `<span style='color: #909091'>` +categoryCode + `</span>` +  `<span style='color: #909091'>` +$t('TPZS.DDJLMEMO') + `</span>`"
+         :defalutCollVal='false'
+         collapse>
+    <tableList id="card9"
+               :tableData="tableListData"
+               :tableTitle="tableTitle"
+               :tableLoading="tableLoading"
+               :selection='false'
+               :index="true"
+               @handleSelectionChange="handleSelectionChange">
 
     </tableList>
   </iCard>
@@ -26,10 +35,10 @@ export default {
   mixins: [downloadPdfMixins],
   // import引入的组件需要注入到对象中才能使用
   components: { iFormItem, iText, iFormGroup, iLabel, icon, tableList, iCard },
-  props:{
-          rfqInfoData: { type: Object },
+  props: {
+    rfqInfoData: { type: Object },
   },
-  data() {
+  data () {
     // 这里存放数据
     return {
       cardShow: JSON.parse(JSON.stringify(icardData)),
@@ -42,14 +51,14 @@ export default {
   // 监听属性 类似于data概念
   computed: {},
   // 监控data中的数据变化
- watch:{
-      rfqInfoData(val){
-          this.rfqInfoData=val
-      }
+  watch: {
+    rfqInfoData (val) {
+      this.rfqInfoData = val
+    }
   },
   // 方法集合
   methods: {
-    async getTableList() {
+    async getTableList () {
       this.tableLoading = true;
       try {
         const pms = {
@@ -61,16 +70,16 @@ export default {
           if (resData && resData.length > 0) {
             resData.forEach((header) => {
               if (header.nomiRecordDetailVO && header.nomiRecordDetailVO.length > 0) {
-                this.categoryCode = header.materialCode?header.materialCode+"-"+header.materialName : header.materialName;
+                this.categoryCode = header.materialCode ? header.materialCode + "-" + header.materialName : header.materialName;
                 header.nomiRecordDetailVO.forEach((detail) => {
-                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,
-                  header.liniePrincipal,detail.purchasingFactory,header.carTypeProj,
-                  this.$i18n.locale == 'zh' ?detail.supplierNameCn : detail.supplierNameEn,detail.tto,header.nominateTime))
+                  this.tableListData.push(this.createTableRow(header.fsnrGsnrNum, header.partNum, header.rfqId, header.rfqName,
+                    header.liniePrincipal, detail.purchasingFactory, header.carTypeProj,
+                    this.$i18n.locale == 'zh' ? detail.supplierNameCn : detail.supplierNameEn, detail.tto, header.nominateTime))
                 })
               } else {
-                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum,header.partNum,header.rfqId,header.rfqName,
-                  header.liniePrincipal,"",header.carTypeProj,
-                  "","",""))
+                this.tableListData.push(this.createTableRow(header.fsnrGsnrNum, header.partNum, header.rfqId, header.rfqName,
+                  header.liniePrincipal, "", header.carTypeProj,
+                  "", "", header.nominateTime))
               }
             })
           }
@@ -81,7 +90,7 @@ export default {
         this.tableLoading = false;
       }
     },
-    createTableRow(fsnrGsnrNum,partNum,rfqId,rfqName,material,stuffName,carTypeProj,supplierNameCn,apriceModel,nominateDate) {
+    createTableRow (fsnrGsnrNum, partNum, rfqId, rfqName, material, stuffName, carTypeProj, supplierNameCn, apriceModel, nominateDate) {
       var tableRow = {
         fsnrGsnrNum: fsnrGsnrNum,
         partNum: partNum,
@@ -92,17 +101,18 @@ export default {
         carTypeProj: carTypeProj,
         supplierNameCn: supplierNameCn,
         apriceModel: apriceModel && String(apriceModel).replace(/\B(?=(\d{3})+(?!\d))/g, ','),
-        nominateDate: nominateDate
+        nominateDate: nominateDate.split(' ')[0]
       }
       return tableRow
+
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
-  created() {
+  created () {
     this.getTableList()
   },
   // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {
+  mounted () {
 
   },
 }

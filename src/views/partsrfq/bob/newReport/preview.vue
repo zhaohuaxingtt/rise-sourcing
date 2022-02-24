@@ -3,7 +3,9 @@
            :visible.sync="value"
            width="95%"
            @close="closeDialog">
-    <div id="content" v-loading="onDataLoading" :class="[!reportSave?'on-preview-padding':'']">
+    <div id="content"
+         v-loading="onDataLoading"
+         :class="[!reportSave?'on-preview-padding':'']">
       <div style="width: 75%; height: 30px;display: flex;flex-flow: row nowrap;justify-content: space-between;">
         <div> <span class="chartTitle">{{title}}</span></div>
         <div class="legend">
@@ -11,7 +13,7 @@
             <li v-for="(item,index) in anchorList"
                 :key="index">
               <i class="circle"
-                :style="color(item)"></i>
+                 :style="color(item)"></i>
               <span style="vertical-align: baseline">{{item}}</span>
             </li>
           </ul>
@@ -19,22 +21,24 @@
       </div>
       <div class="clearfix">
         <iButton class="margin-left10 "
-                style="float: right"
-                v-show="reportSave"
-                @click="handleDownload">生成报告</iButton>
+                 style="float: right"
+                 v-show="reportSave"
+                 @click="handleDownload">生成报告</iButton>
       </div>
       <div style="display: flex;flex-flow: row nowrap;width: 100%;">
-          <crown-bar ref="crownBarChartData"
-                    :chartData="crownBarChartData"
-                    :partList="partList"
-                    :title="title"
-                    :maxData="maxData"
-                    :type="bobType"
-                    :by="by" style="width: 75%"/>
+        <crown-bar ref="crownBarChartData"
+                   :chartData="crownBarChartData"
+                   :partList="partList"
+                   :title="title"
+                   :maxData="maxData"
+                   :type="bobType"
+                   :by="by"
+                   style="width: 75%" />
         <out-bar ref="outBarChartData"
-                :chartData="outBarChartData"
-                :maxData="maxData"
-                :preview="false" style="flex: 1;"></out-bar>
+                 :chartData="outBarChartData"
+                 :maxData="maxData"
+                 :preview="false"
+                 style="flex: 1;"></out-bar>
       </div>
       <div style="margin-top:20px;">
         <span style="font-weight:bold;font-size:14px">
@@ -42,11 +46,11 @@
         </span>
       </div>
       <bobAnalysis ref="bobAnalysis"
-                    :label="label"
-                    :formUpdata="formUpdata"
-                    :propSchemeId="propSchemeId"
-                    :propGroupId="propGroupId"
-                    :onPreview="true"></bobAnalysis>
+                   :label="label"
+                   :formUpdata="formUpdata"
+                   :propSchemeId="propSchemeId"
+                   :propGroupId="propGroupId"
+                   :onPreview="true"></bobAnalysis>
       <!-- <table1 :tableList="tableList"
               style="margin-top:20px"
               v-bind="$attr"></table1> -->
@@ -163,7 +167,8 @@ export default {
     }
   },
   methods: {
-    open() {
+    open () {
+      console.log(this.crownBarChartData)
       this.$refs.bobAnalysis.chargeRetrieve({
         viewType: 'all',
         isDefault: true,
