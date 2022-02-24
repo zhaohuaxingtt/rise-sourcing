@@ -29,11 +29,6 @@
             </iTabsList>
         </div>
 
-        <div v-if="isPreview=='1' && showExportPdf">
-            <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
-        </div>
-
-
         <!-- 关闭预览按钮 -->
         <span class="tab-icon" v-if="isPreview=='1' && !$route.meta.hideCloseButton" @click="close">
             <icon symbol name="iconguanbixiaoxiliebiaokapiannei"></icon>
@@ -43,6 +38,10 @@
         <span class="tab-icon" @click="sortDialogVisibal = true" v-else-if="!isTemp && isPreview !== '1'" v-permission.auto="NOMINATION_NOMINATIONDETAILS_MOUDULES_SORT|定点管理详情菜单排序"><icon symbol name="iconSetting"></icon></span>
         <!-- 排序弹窗 -->
         <sortDialog :visible.sync="sortDialogVisibal" />
+
+        <div v-if="isPreview=='1' && showExportPdf">
+            <exportPdf :exportLoading="exportLoading" class="exportPdf" ref="exportPdf" @changeStatus="changeStatus"/>
+        </div>
     </div>
 </template>
 
