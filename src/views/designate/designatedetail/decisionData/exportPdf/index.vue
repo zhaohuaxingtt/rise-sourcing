@@ -3,7 +3,7 @@
     <div class="btnControl">
       <iButton :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
     </div>
-    <div class="main" ref="contentPage" id="allMoudles">
+    <div class="main" ref="contentPage">
       <div class="title">
         <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
         <span class="mtz" v-if="this.nomiData.mtzApplyId">
@@ -12,7 +12,7 @@
         </span>
         <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
       </div>
-      <div class="content">
+      <div class="content" id="allMoudles">
         <!-- title -->
         <div id="html2canvasTitle">
           <headerTab value="/designate/decisiondata/title"/>
@@ -88,6 +88,9 @@
         </div>
       </div>
     </div>
+
+    
+    <canvas id="myCanvas"></canvas>
   </div>
 </template>
 
@@ -186,15 +189,15 @@ export default {
       //   }
       // })
       
-      // this.transferDom.map((item)=>{
-      //   html2canvas(this.$el.querySelector('#'+item.DomId)).then(canvas=>{
+      
         if(this.clickIndex >= this.transferDom.length){
           this.checkAllImageUpload();
         }else{
-          this.getPdfImage();
+          // a-b价渲染有延迟
+          setTimeout(()=>{
+            this.getPdfImage();
+          },100)
         }
-        
-      // })
 
     },
     getPdfImage(){
@@ -202,44 +205,60 @@ export default {
           scale:(1,1),
         };
         const {clickIndex,transferDom} = this;
-        const domId = '#'+transferDom[clickIndex]['DomId'];
-        html2canvas(this.$el.querySelector(domId),ops).then(canvas=>{
-            var imgurl = canvas.toBlob((blob)=>{
-            //以时间戳作为文件名 实时区分不同文件
-              let filename = `${new Date().getTime()}.png`;
-              //转换canvas图片数据格式为formData
-              let pdfFile = new File([blob], filename, {type: 'image/png'});
-              // let formData = new FormData();
-              // formData.append('file', pdfFile);
+
+        // const domId = '#'+transferDom[clickIndex]['DomId'];
+        html2canvas(this.$el.querySelector('#allMoudles'),ops).then(canvas=>{
+
+
+          // 为了处理分别截图延迟问题 现将整块截图后裁取
+          transferDom.map((item,index)=>{
+              let outOffsetTop = document.getElementById("allMoudles").offsetTop;
+              let innerOffsetTop = document.getElementById(item.DomId).offsetTop
               
-              this.transferDom[clickIndex]['pdfFile'] = pdfFile;
+              let offsetTop = innerOffsetTop - outOffsetTop;
+              let offsetHeight = document.getElementById(item.DomId).offsetHeight;
 
-              this.checkAllFilesDone();
+              console.log(item.DomId+':','offsetTop:'+offsetTop,'offsetHeight:'+offsetHeight);
 
-              //将转换为formData的canvas图片 上传到服务器
-                // uploadUdFile({
-                //   multifile: pdfFile
-                // }).then((res=>{
-                //   if(res.code == 200){
-                //     console.log(res.data,'res.data.pathres.data.pathres.data.path')
-                //     this.transferDom[clickIndex]['imageUrl'] = res.data[0].path || '';
-                //     this.checkAllImageUpload();
-                //   }else{
-                //     this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                //   }
-                // }));
+           
+              var ctx=canvas.getContext("2d");
+              var imgData=ctx.getImageData(0,offsetTop,1920,offsetHeight);
 
-              })
-            
-            // const url = canvas.toDataURL("image/png")
+              
+              var copyCanvas = document.getElementById("myCanvas");
+              copyCanvas.width = '1920';
+              copyCanvas.height = offsetHeight;
+              
+              var ctxs = copyCanvas.getContext("2d");
+              ctxs.putImageData(imgData,0,0);
 
-            // const a = document.createElement('a');
-            // a.href = url;
-            // a.setAttribute('download', 'chart-download');
-            // a.click();
-            this.clickIndex++;
-            if(this.clickIndex < transferDom.length) this.getPdfImage();
-            // else this.exportLoading = false;
+              // const url = copyCanvas.toDataURL("image/png")
+              // const a = document.createElement('a');
+              // a.href = url;
+              // a.setAttribute('download', 'chart-download');
+              // a.click();
+
+              
+                this.clickIndex++;
+
+
+                var imgurl = copyCanvas.toBlob((blob)=>{
+                  //以时间戳作为文件名 实时区分不同文件
+                  let filename = `${new Date().getTime()}.png`;
+
+                  console.log(blob,'copyCanvas')
+                  //转换canvas图片数据格式为formData
+                  let pdfFile = new File([blob], filename, {type: 'image/png'});
+                  // let formData = new FormData();
+                  // formData.append('file', pdfFile);
+                  
+                  this.transferDom[index]['pdfFile'] = pdfFile;
+                  this.checkAllFilesDone();
+                })
+              // if(this.clickIndex < transferDom.length) this.getPdfImage();
+              // else this.exportLoading = false;
+            })
+             
         });
     },
 
@@ -261,8 +280,10 @@ export default {
     async checkAllFilesDone(){
       const { transferDom=[] } = this;
       const filter = transferDom.filter((item)=>item.pdfFile);
+      console.log(this.transferDom,'transferDom','1',filter.length,transferDom.length);
        if(filter.length == transferDom.length){ // 生成完毕
         //将转换为formData的canvas图片 上传到服务器
+        console.log(this.transferDom,'transferDom','2');
         transferDom.map((item)=>{
           uploadUdFile({
           multifile: item.pdfFile
@@ -378,9 +399,13 @@ export default {
     }
   }
   #html2canvasAbprice{
+    padding-bottom: 10px;
     ::v-deep.btnSearch{
       display: none;
     }
+  }
+  #html2canvasTasks{
+    padding-bottom: 10px;
   }
   #html2canvasRs{
     ::v-deep.meeting{
