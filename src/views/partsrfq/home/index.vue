@@ -171,13 +171,20 @@
                 :handleResetSetting="handleResetSetting"
                 ref="tableList"
             >
-              <template v-slot:icon="scope">
+              <template #recordId="scope">
+                <div @click="toTop(scope.row)" class="icon-style">
+                  <icon symbol class="icon icon-color-active" name="iconliebiaoyizhiding"
+                        v-if="+scope.row.recordId > 0"></icon>
+                  <icon symbol class="icon" name="iconliebiaoweizhiding" v-else></icon>
+                </div>
+              </template>
+              <!-- <template v-slot:icon="scope">
                 <div @click="toTop(scope.data)" class="icon-style">
                   <icon symbol class="icon icon-color-active" name="iconliebiaoyizhiding"
                         v-if="+scope.data.recordId > 0"></icon>
                   <icon symbol class="icon" name="iconliebiaoweizhiding" v-else></icon>
                 </div>
-              </template>
+              </template> -->
               <template #kmAnalysis="scope">
                 <el-popover
                   v-if="scope.row.kmAnalysis"

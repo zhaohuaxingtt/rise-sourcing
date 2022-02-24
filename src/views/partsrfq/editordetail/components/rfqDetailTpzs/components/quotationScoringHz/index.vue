@@ -256,10 +256,10 @@ export default{
      * @return {*}
      */
     sureClick(){
+      const realGroupSelectData = this.groupSelectData.filter(item => !item.groupId)
       //新增需求，如果零件采购项目不一致，需要提示文案但是不影响这个组合的效果
-      if(!this.groupSelectData.every(items => items.carProType == this.groupSelectData[0].carProType)){
-        iMessage.warn('您的组合项中，存在车型项目不一致的情况，MixPrice将不展示！')
-      }
+      if (realGroupSelectData.some(item => item.carProType != realGroupSelectData[0].carProType)) iMessage.warn('您的组合项中，存在车型项目不一致的情况，MixPrice将不展示！')
+
       this.negoAnalysisSummaryGroups()
       this.groupVisble = false
     },
@@ -306,7 +306,7 @@ export default{
     negoAnalysisSummaryGroups(){
       const sendata = {
           groupName: this.groupName,
-          partPrjCode: this.getPartNumber(this.groupSelectData),
+          partPrjCode: this.getPartNumber(this.groupSelectData.filter(item => !item.groupId)),
           rfqId: this.$route.query.id,
           scenarioType:this.templateSummary
         }
