@@ -27,7 +27,7 @@
         </span>
       </div>
       <timeline v-if='timeListdata.length>0' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAYUPINGFENGENZONG_RENWUJINDU|报价与评分跟踪-任务进度" :timeList='timeListdata'></timeline>
-      <div v-else class="noData">当前暂无进度数据</div>
+      <div v-else class="noData">{{ language("SANGWEIFACHUDIYILUNXUNJIA", "尚未发出第一轮询价") }}</div>
       <tabelData :tableTile='tableTile' :tableData='tableDatas'></tabelData>
   </div>
 </template>

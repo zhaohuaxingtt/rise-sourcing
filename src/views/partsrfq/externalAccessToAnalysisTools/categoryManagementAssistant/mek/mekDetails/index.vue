@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-22 16:52:34
+ * @LastEditTime: 2022-02-24 20:48:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -67,7 +67,8 @@
                                 label-width="180px">
                     <el-select v-model="ComparedMotor"
                                @change="changeComparedMotor"
-                               multiple>
+                               multiple
+                               :multiple-limit="4">
                       <el-option v-for="item in ComparedMotorList"
                                  :key="item.motorId"
                                  :value="item.motorId"
@@ -700,7 +701,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : [],
       };
       let motorIdList = [];
       if (this.barData) {
@@ -873,7 +874,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : [],
       };
       if (this.isBindingRfq) {
         params.isBindingRfq = true;
@@ -925,7 +926,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : [],
       };
       if (this.isBindingRfq) {
         params.isBindingRfq = true;
@@ -1092,7 +1093,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : [],
       };
       this.barData.forEach((item) => {
         let obj = {
@@ -1155,7 +1156,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : [],
       };
       this.ComparedMotor = this.ComparedMotor.filter((i) => i !== data.motorId);
       this.ComparedMotor.forEach((item) => {

@@ -159,6 +159,7 @@
 					<div class="col">
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_EVENTITEMTYPE|零件项目类型" :label="language('LK_LINGJIANXIANGMULEIXING','零件项目类型') + ':'" name="test">
 							<iSelect
+								ref="partProjectTypeSelect"
 								v-if="!disabled"
 								v-model="detailData.partProjectType"
 								@change="onPartProjectTypeChange">
@@ -253,7 +254,7 @@
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_LINE|LINIE" label="LINIE：" name="test">
 							<!-- :disabled="!detailData.categoryCode" -->
-							<iSelect v-model="detailData.linieId" filterable placeholder='请先选择LINIE部门' v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))" @change="handleChangeByLinie">
+							<iSelect ref="linieSelect" v-model="detailData.linieId" filterable placeholder='请先选择LINIE部门' v-if="!disabled && (detailData.status != getEnumValue('PURCHASE_PROJECT_STATE_ENUM.HAS_RFQ'))" @change="handleChangeByLinie">
 								<el-option :value="item.code" :label="item.name" v-for="item in fromGroup.LINIE"
 									:key="item.name"></el-option>
 							</iSelect>
@@ -550,11 +551,45 @@
 			// 采购项目类型为钢材一次性、批量采购
 			isSteelPurchase() {
 				return this.detailData.partProjectType == this.partProjTypes.GANGCAIYICIXINGCAIGOU || this.detailData.partProjectType == this.partProjTypes.GANGCAIPILIANGCAIGOU
+			},
+			// 组合零件项目类型框的数据(code + options) 用于监控
+			partProjectTypePack() {
+				return { partProjectTypeCode: this.detailData.partProjectType, partProjectTypeOptions: this.filterProjectList(this.partProjectTypeArray, this.detailData.partProjectType) || [] || [] }
+			},
+			// 组合Linie框的数据(code + options) 用于监控
+			liniePack() {
+				return { linieCode: this.detailData.linieId || "", linieOptions: this.fromGroup.LINIE || [] }
 			}
 		},
 		watch:{
 			'selectOldParts.selectData':function(res){
 				this.detailData.oldFsnrGsnrNum = res.fsnrGsnrNum
+			},
+			partProjectTypePack(data) {
+				if (this.$refs.partProjectTypeSelect && this.$refs.partProjectTypeSelect.$el && this.$refs.partProjectTypeSelect.$el.querySelector("input")) {
+					const inputDom = this.$refs.partProjectTypeSelect.$el.querySelector("input")
+
+					if (data.partProjectTypeCode) {
+						inputDom.value = this.detailData.partProjectTypeDesc || ""
+						const current = data.partProjectTypeOptions.find(option => option.code === data.partProjectTypeCode)
+						if (current) inputDom.value = current.name
+					} else {
+						inputDom.value = ""
+					}
+				}
+			},
+			liniePack(data) {
+				if (this.$refs.linieSelect && this.$refs.linieSelect.$el && this.$refs.linieSelect.$el.querySelector("input")) {
+					const inputDom = this.$refs.linieSelect.$el.querySelector("input")
+
+					if (data.linieCode) {
+						inputDom.value = this.detailData.linieName || ""
+						const current = data.linieOptions.find(option => option.code === data.linieCode)
+						if (current) inputDom.value = current.name
+					} else {
+						inputDom.value = ""
+					}
+				}
 			}
 		},
 		data() {
