@@ -283,7 +283,8 @@ export default {
     // 关闭设置部门后是否刷新表格
     updateTable(status) {
       if (status) {
-        this.getBaseInfo()
+        let dialogPage = '1'
+        this.getBaseInfo(dialogPage)
         this.getTableList()
       }
     },

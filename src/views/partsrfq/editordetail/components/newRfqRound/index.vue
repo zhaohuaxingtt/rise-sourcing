@@ -242,7 +242,7 @@ export default {
         const res = await rfqRoundCreated(req)
         //保存的时候，如果保存成功！自动将窗口关闭，并且刷新详情数据，和询价管理(包含普通询价)
         if(res?.code=='200'){ // 更新数据
-          this.$emit('refreshBaseInfo',true)
+          this.$emit('refreshBaseInfo','2')
         }
         if(res.data){
           this.clearDiolog()
