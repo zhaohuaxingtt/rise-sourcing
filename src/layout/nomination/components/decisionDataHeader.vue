@@ -83,7 +83,6 @@ export default {
         },
         pendingRequestNum(val){
             if(val == 0 && this.exportLoading && this.showExportPdf){
-                console.log(this.$refs['exportPdf']);
                 this.$refs['exportPdf'].exportPdf();
             }
         },
@@ -207,8 +206,14 @@ export default {
             })
         },
         exportPdf(){
-            this.showExportPdf = true;
-            this.exportLoading = true;
+            if(this.showExportPdf){
+                this.exportLoading = true;
+                this.$refs['exportPdf'].exportPdf();
+            }else{
+                this.showExportPdf = true;
+                this.exportLoading = true;
+            }
+            
         },
         
         changeStatus(type,status){
