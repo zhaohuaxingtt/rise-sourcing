@@ -437,7 +437,7 @@ export default {
           item.carInfo = (item.carTypeInfo || "") + '      ' + (item.ebr || "")
           item.priceInfo = (item.sopDate || "") + (item.sopPrice || "") + '      ' + (item.data || "") + (item.price || "")
           item.supplierInfo = (item.supplierCode || "") + (item.supplierName || "")
-          return item.isHidden1 = item.isHidden || ""
+          item.isHidden1 = item.isHidden ? '是' : "否" || ""
         })
         excelList.unshift({
           carInfo: this.language('PEIZHIXINGXI', '配置信息') + '        ' + 'EBR',
