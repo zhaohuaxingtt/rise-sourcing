@@ -571,6 +571,9 @@ export default {
     userId(){
       return store.state.permission.userInfo.id
     },
+    isManual() {
+      return this.ruleForm.roundType == "05"
+    }
   },
   async created() {
     console.log('process.env.VUE_APP_HREFSUPPLIER',process.env)
@@ -1061,7 +1064,9 @@ export default {
         }
       }
       const formData = this.ruleForm;
-      return saveInquiryBidding({
+
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
+      return fetch({
         ...this.orgRuleForm,
         ...formData,
         suppliers: this.orgRuleForm.suppliers,
@@ -1095,7 +1100,9 @@ export default {
       //保存
       const formData = this.ruleForm;
       console.log('formDatasafsafsa',formData)
-      return saveInquiryBidding({
+
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
+      return fetch({
         ...this.orgRuleForm,
         suppliers: formData.suppliers.map((item) => {
           const { index, userList, ...obj } = item;
@@ -1149,7 +1156,9 @@ export default {
       // })
       //   .then(() => {})
       const formData = this.ruleForm;
-      return saveInquiryBidding({
+
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
+      return fetch({
         // ...formData,
         ...this.orgRuleForm,
         exchangeRates: formData.exchangeRates,
@@ -1223,7 +1232,9 @@ export default {
     },
     saveForms(callback) {
       const formData = this.ruleForm;
-      saveInquiryBidding({
+
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
+      fetch({
         ...this.orgRuleForm,
         ...{
           header: {
@@ -1568,8 +1579,9 @@ export default {
       if(!this.ruleForm.firstSaveSupplierFlag) {
         const flag = this.ruleForm.suppliers.every(item => item.contactName && item.email)
         const formData = this.ruleForm;
+        const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
         if (flag) {
-          saveInquiryBidding({
+          fetch({
           ...this.orgRuleForm,
           suppliers: formData.suppliers,
           saveArea: 2
