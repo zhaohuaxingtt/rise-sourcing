@@ -254,7 +254,7 @@
     <rfq-detail-tpzs :rfqInfoData="rfqInfo"
                      v-if="navActivtyValue == 2"></rfq-detail-tpzs>
     <new-rfq-round v-model="newRfqRoundDialog"
-                   @refreshBaseInfo="getBaseInfo(true)"
+                   @refreshBaseInfo="getBaseInfo('2')"
                    @showTodo="showTodo"
                    :dataRes="newRfqRoundDialogRes"
                    v-if="tabShowStatus" />
@@ -581,7 +581,7 @@ export default {
                 this.disabled = !!res.data.isFreeze;
                 if (dialogPage) {
                   //如果是由保存和创建的地方点击过来的。并且当前如果是开标和竞价，则需要自动定位的询价管理页签。
-                  this.activityTabIndex = '2';
+                  this.activityTabIndex = dialogPage;
                 }
                 this.isPendingRfqStatus(this.baseInfo.statusName) === true ? this.isCommonSurcingStar = true: ''             
                 this.childFnList.forEach((i) => i());

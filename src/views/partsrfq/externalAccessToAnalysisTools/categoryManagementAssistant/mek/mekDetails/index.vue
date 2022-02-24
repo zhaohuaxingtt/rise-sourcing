@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-22 16:52:34
+ * @LastEditTime: 2022-02-24 17:01:33
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -67,7 +67,8 @@
                                 label-width="180px">
                     <el-select v-model="ComparedMotor"
                                @change="changeComparedMotor"
-                               multiple>
+                               multiple
+                               :multiple-limit="4">
                       <el-option v-for="item in ComparedMotorList"
                                  :key="item.motorId"
                                  :value="item.motorId"
