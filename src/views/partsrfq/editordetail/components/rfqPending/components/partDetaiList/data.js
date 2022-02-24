@@ -79,14 +79,14 @@ export const partDetaiListTitle = [
     name: "FSNF/GSNF/SPNR",
     key: "partsprocure.PARTSPROCUREFSNFGSNFSPNR",
     tooltip: true,
-    width: 140,
+    minWidth: 140,
   },
   {
     props: "partNum",
     name: "零件号",
     key: "partsprocure.PARTSPROCUREPARTNUMBER",
     tooltip: true,
-    width: 130,
+    minWidth: 130,
   },
   {
 		props: 'sourcingNumber',
@@ -94,14 +94,14 @@ export const partDetaiListTitle = [
 		key: 'SOURCINGNUMBER',
 		tooltip: true,
 		isCommonSourcingShow:true,
-		width:160
+		minWidth:160
 	},
   {
     props: "partNameZh",
     name: "零件名（中）",
     key: "partsprocure.PARTSPROCUREPARTNAMEZH",
     tooltip: true,
-    width: 140,
+    minWidth: 140,
   },
   {
     props: "partNameDe",
@@ -115,7 +115,7 @@ export const partDetaiListTitle = [
     name: "采购工厂",
     key: "partsprocure.PARTSPROCUREPURCHASINGFACTORY",
     tooltip: true,
-    width: 100,
+    minWidth: 100,
   },
   {
     props: "carTypeProjectZh",
