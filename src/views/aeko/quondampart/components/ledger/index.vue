@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2021-12-21 17:26:48
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-24 14:34:26
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -316,8 +316,8 @@ export default {
         this.objectAekoPartId = ""
       }
       
-      // this.judgeRight()
-      this.getAekoOriginPartInfo()
+      this.judgeRight()
+      // this.getAekoOriginPartInfo()
     },
     reset() {
       this.page.currPage = 1
