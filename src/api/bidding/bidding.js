@@ -2,6 +2,8 @@ import axios from "@/utils/axios";
 import store from '@/store'
 
 const requst = axios(process.env.VUE_APP_BIDDING);
+const sourcingRequest = axios(process.env.VUE_APP_SOURCING)
+
 requst.interceptors.request.use(function (config) {
   config.params = {
     userId: store.state.permission.userInfo.id,
@@ -97,9 +99,25 @@ export function saveBiddingQuoteRule(data) {
 }
 
 // 保存询价管理信息
-export function saveInquiryBidding(data) {
+export function oldSaveInquiryBidding(data) {
   return requst({
     url: `/biddingService/saveInquiryBidding`,
+    method: "POST",
+    data,
+  });
+}
+
+
+// 保存询价管理信息
+export function saveInquiryBidding(data) {
+  // return requst({
+  //   url: `/biddingService/saveInquiryBidding`,
+  //   method: "POST",
+  //   data,
+  // });
+
+  return sourcingRequest({
+    url: `/online-bidding/saveInquiryBidding`,
     method: "POST",
     data,
   });
@@ -169,11 +187,16 @@ export function deleteProject(data) {
 
 // 删除汇率
 export function deleteExchangeRate(data) {
-  return requst({
-    url: `/biddingService/deleteExchangeRate`,
+  return sourcingRequest({
+    url: `/online-bidding/deleteExchangeRate`,
     method: "POST",
     data,
-  });
+  })
+  // return requst({
+  //   url: `/biddingService/deleteExchangeRate`,
+  //   method: "POST",
+  //   data,
+  // });
 }
 
 // 根据 ID 获取竞价大厅供应商列表数据
@@ -360,8 +383,14 @@ export function getQuotation(data) {
 
 // 根据 RfqCode 获取询价管理数据
 export function findRfqInquiry(data) {
-  return requst({
-    url: `/biddingQueryService/findRfqInquiry`,
+  // return requst({
+  //   url: `/biddingQueryService/findRfqInquiry`,
+  //   method: "POST",
+  //   data,
+  // });
+
+  return sourcingRequest({
+    url: `/online-bidding/findRfqInquiry`,
     method: "POST",
     data,
   });
