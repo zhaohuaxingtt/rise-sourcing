@@ -35,7 +35,8 @@
       <el-table-column
         width="56"
         label='Group'
-        align='center'>
+        align='center'
+        fixed>
         <template slot-scope="scope">
           <el-checkbox
             v-model="scope.row.selected"
@@ -55,7 +56,8 @@
         align='center'
         prop="partNo"
         label="Part"
-        width="95">
+        width="95"
+        fixed>
       <template slot-scope="scope">
         <p class="partName">{{scope.row.partNo || ''}}</p>
         <p class="partDeName" :title="scope.row.partNameDe || ''">{{scope.row.partNameDe || ''}}</p>
@@ -65,12 +67,14 @@
         align='center'
         prop="partPrjCode"
         label="FS/GS/SP No."
-        width="90">
+        width="90"
+        fixed>
       </el-table-column>
       <el-table-column
         align='center'
         prop="factoryEn"
-        label="Factory">
+        label="Factory"
+        fixed>
       </el-table-column>
 
       <!-- 循环取出厂商以及TTO -->
@@ -664,6 +668,12 @@ export default {
     }
     .el-table__header {
       border-bottom: 1px solid #fff;
+    }
+
+    .el-table__fixed,
+    .el-table__fixed-right {
+      height: auto !important;
+      bottom: 10px !important;
     }
   }
   ::v-deep .el-table--border {
