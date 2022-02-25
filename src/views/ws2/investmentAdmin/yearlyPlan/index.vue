@@ -285,7 +285,11 @@ export default {
         versionId: this.vereceive.id,
         planType: this.isThen ? 'current_year' : 'next_year',
       }).then(res => {
-
+        if(res.code === '0'){
+          iMessage.success('操作成功');
+        }else{
+          iMessage.error('操作失败');
+        }
       })
     },
 
@@ -327,7 +331,11 @@ export default {
       downloadExport({
         versionId: this.vereceive.id
       }).then(res => {
-        
+        if(res.code === '0'){
+          iMessage.success('操作成功');
+        }else{
+          iMessage.error('操作失败');
+        }
       })
     },
 
