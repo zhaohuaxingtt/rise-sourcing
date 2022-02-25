@@ -1077,12 +1077,13 @@ export default {
         saveArea: 1 // 报价
       })
         .then((res) => {
-          if (res.code == 200) {
+          if (this.isManual ? res : (res.code == 200)) {
+            const _r = this.isManual ? res : res.data
             this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
             // this.handleSearchReset();
             this.initList = {
-              ...res,
-              openTenderStatus: res.openTenderStatus || "01", // 默认未开标
+              ..._r,
+              openTenderStatus: _r.openTenderStatus || "01", // 默认未开标
             };
             callback && callback();
           } else {
@@ -1113,9 +1114,10 @@ export default {
         saveArea: 2 // 供应商
       })
         .then((res) => {
-          if (res.code == 200) {
+          if (this.isManual ? res : (res.code == 200)) {
+            const _r = this.isManual ? res : res.data
             this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
-            this.initSuppliers = res.suppliers?.map((supplier) => {
+            this.initSuppliers = _r.suppliers?.map((supplier) => {
               this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
               
               if (supplier.isAttend === null || supplier.isAttend === "")
@@ -1133,7 +1135,7 @@ export default {
             });
             this.orgRuleForm = {
               ...this.orgRuleForm,
-              suppliers: res.suppliers,
+              suppliers: _r.suppliers,
             };
             callback && callback();
           } else {
@@ -1167,12 +1169,13 @@ export default {
         saveArea: 3 // 汇率
       })
         .then((res) => {
-          if (res.code == 200) {
+          if (this.isManual ? res : (res.code == 200)) {
+            const _r = this.isManual ? res : res.data
             this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
-            this.initRate = [...res.exchangeRates];
+            this.initRate = [..._r.exchangeRates];
             this.orgRuleForm = {
               ...this.orgRuleForm,
-              exchangeRates: res.exchangeRates,
+              exchangeRates: _r.exchangeRates,
             };
 
             callback && callback();
@@ -1199,7 +1202,7 @@ export default {
         quotationAreaFlag: false
       })
         .then((res) => {
-          if (res.code == 200) {
+          if (res) {
             this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
             this.initAttachments = [...res.attachments];
             this.orgRuleForm = {
@@ -1263,7 +1266,7 @@ export default {
         }[this.place],
         saveArea: saveAreaMap[this.place]
       }).then((res) => {
-        if (res.code == 200) {
+        if (this.isManual ? res : (res.code == 200)) {
           this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
           // this.handleSearchReset();
           callback && callback();
