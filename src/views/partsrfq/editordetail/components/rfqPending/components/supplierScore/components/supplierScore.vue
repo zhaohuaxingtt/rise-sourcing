@@ -15,7 +15,7 @@
       </div>
     </template>
     <template slot="header-control">
-      <div class="button-box">
+      <div class="button-box" v-if="!disabled">
         <div class="margin-right10" v-if="!todo">
           <iButton v-if="!editStatus" @click="editStatus = true" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_EDIT|供应商评分编辑">{{ language('LK_BIANJI','编辑') }}</iButton>
           <iButton v-if="editStatus" @click="editStatus = false" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_SUPPLIERSCORE_CANCEL|供应商评分取消">{{ language('LK_QUXIAO','取 消') }}</iButton>

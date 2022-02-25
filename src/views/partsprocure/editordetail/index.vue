@@ -201,7 +201,7 @@
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
-							<iSelect v-model="detailData.procureFactory" :disabled='procureFactoryCanselect()' @change="handleChangeByProcureFactory" v-if="!disabled">
+							<iSelect ref="procureFactorySelect" v-model="detailData.procureFactory" :disabled='procureFactoryCanselect()' @change="handleChangeByProcureFactory" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
@@ -552,6 +552,10 @@
 			isSteelPurchase() {
 				return this.detailData.partProjectType == this.partProjTypes.GANGCAIYICIXINGCAIGOU || this.detailData.partProjectType == this.partProjTypes.GANGCAIPILIANGCAIGOU
 			},
+			// 组合采购工厂类型框的数据(code + options) 用于监控
+			procureFactoryPack() {
+				return { procureFactoryCode: this.detailData.procureFactory || "", procureFactoryOptions: this.fromGroup.PURCHASE_FACTORY || [] }
+			},
 			// 组合零件项目类型框的数据(code + options) 用于监控
 			partProjectTypePack() {
 				return { partProjectTypeCode: this.detailData.partProjectType, partProjectTypeOptions: this.filterProjectList(this.partProjectTypeArray, this.detailData.partProjectType) || [] || [] }
@@ -564,6 +568,19 @@
 		watch:{
 			'selectOldParts.selectData':function(res){
 				this.detailData.oldFsnrGsnrNum = res.fsnrGsnrNum
+			},
+			procureFactoryPack(data) {
+				if (this.$refs.procureFactorySelect && this.$refs.procureFactorySelect.$el && this.$refs.procureFactorySelect.$el.querySelector("input")) {
+					const inputDom = this.$refs.procureFactorySelect.$el.querySelector("input")
+
+					if (data.procureFactoryCode) {
+						inputDom.value = this.detailData.procureFactoryName || ""
+						const current = data.procureFactoryOptions.find(option => option.code === data.procureFactoryCode)
+						if (current) inputDom.value = current.name
+					} else {
+						inputDom.value = ""
+					}
+				}
 			},
 			partProjectTypePack(data) {
 				if (this.$refs.partProjectTypeSelect && this.$refs.partProjectTypeSelect.$el && this.$refs.partProjectTypeSelect.$el.querySelector("input")) {
@@ -740,9 +757,9 @@
 					//-------------修改零件采购项目逻辑endding
 					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {
 						this.disabled = getNominateDisabled({
-							applicationStatus: res.data.applicationStatus,
-							designateType: res.data.nominateProcessType,
-							isPriceConsistent: res.data.isPriceConsistent,
+							applicationStatus: res.data.applicationStatus, // FREEZE
+							designateType: res.data.nominateProcessType, // RECORD
+							isPriceConsistent: res.data.isPriceConsistent, // null
 						})
 					} else {
 						this.disabled = false
