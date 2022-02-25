@@ -3,7 +3,7 @@
   <div v-permission.auto="AEKO_APPROVAL_FORM_DETAILS_PAGE|AEKO审批单详情">
     <AEKOApprovalComponents v-if="[1,2].includes(transmitObj.option)" :audit-items="auditItems" :transmit-obj="transmitObj" @refreshForm="refreshForm($event)"/>
     <CoverStatementComponents class="margin-top20" :audit-cover-status="auditCoverStatus" :audit-cover="auditCover"/>
-    <RecommendationTablePendingApprovalComponents v-permission.auto="AEKO_APPROVAL_RECOMMENDATION_Table|AEKO审批单推荐表" v-show="Array.isArray(auditContents)&&auditContents.length>0" :audit-contents="auditContents" :audit-content-status="auditContentStatus" class="margin-top20"/>
+    <RecommendationTablePendingApprovalComponents v-permission.auto="AEKO_APPROVAL_RECOMMENDATION_Table|AEKO审批单推荐表" v-show="Array.isArray(auditContents)&&auditContents.length>0" :audit-contents="auditContents" :audit-content-status="auditContentStatus" :auditContentStatusDesc="auditContentStatusDesc" class="margin-top20"/>
   </div>
 </template>
 
@@ -24,6 +24,7 @@ export default {
       auditCover: [],//封面数据集合
       auditContents: [],//推荐表集合
       auditContentStatus: '',//推荐表状态
+      auditContentStatusDesc: '',//推荐表状态
       transmitObj: {},
       aekoApprovalDetails: {},
       queryParams: {},
@@ -78,7 +79,8 @@ export default {
           this.auditContents = res.data.auditContents
           sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`)
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`,JSON.stringify(res.data.auditContents))
-          this.auditContentStatus = res.data.auditContentStatusDesc
+          this.auditContentStatus = res.data.auditContentStatus
+          this.auditContentStatusDesc = res.data.auditContentStatusDesc
           sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`)
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`,res.data.auditContentStatusDesc || '')
           //获取到审批数据
@@ -104,7 +106,8 @@ export default {
           this.auditContents = res.data.auditContents
           sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`)
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`,JSON.stringify(res.data.auditContents))
-          this.auditContentStatus = res.data.auditContentStatusDesc
+          this.auditContentStatus = res.data.auditContentStatus
+          this.auditContentStatusDesc = res.data.auditContentStatusDesc
           sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`)
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`,res.data.auditContentStatusDesc || '')
         }
@@ -122,7 +125,8 @@ export default {
           this.auditContents = res.data.auditContents
           sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`)
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`,JSON.stringify(res.data.auditContents))
-          this.auditContentStatus = res.data.auditContentStatusDesc
+          this.auditContentStatus = res.data.auditContentStatus
+          this.auditContentStatusDesc = res.data.auditContentStatusDesc
           sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`)
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`,res.data.auditContentStatusDesc || '')
         }else{
@@ -145,7 +149,8 @@ export default {
           this.auditContents = res.data.auditContents
           sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`)
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContents`,JSON.stringify(res.data.auditContents))
-          this.auditContentStatus = res.data.auditContentStatusDesc
+          this.auditContentStatus = res.data.auditContentStatus
+          this.auditContentStatusDesc = res.data.auditContentStatusDesc
           sessionStorage.removeItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`)
           sessionStorage.setItem(`${this.transmitObj?.aekoApprovalDetails?.aekoNum}-auditContentStatusDesc`,res.data.auditContentStatusDesc || '')
         }else{

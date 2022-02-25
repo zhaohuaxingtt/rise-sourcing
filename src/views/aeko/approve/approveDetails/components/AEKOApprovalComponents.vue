@@ -17,13 +17,13 @@
         <el-table-column
             label="专业科室"
             align="center"
-            width="150"
+            width="90"
             prop="linieDeptNum">
         </el-table-column>
         <el-table-column
             label="采购员"
             align="center"
-            width="150"
+            width="90"
             prop="linieName">
         </el-table-column>
         <el-table-column
@@ -32,10 +32,17 @@
             align="center"
         >
           <template slot-scope="scope">
-            <icon v-if="calculateSelected(scope.row,1)" @click.native="changeStatus(scope.row,1)" symbol
+            <span class="clickIcon cursor" v-if="calculateSelected(scope.row,1)" @click="changeStatus(scope.row,1)">
+              <icon symbol name="iconguanlianlingjian-xuanzhong" class="font20"></icon>
+            </span>
+            <span class="clickIcon cursor" v-else @click="changeStatus(scope.row,1)">
+              <icon symbol name="iconguanlianlingjian-moren" class="font20"></icon>
+            </span>
+
+            <!-- <icon v-if="calculateSelected(scope.row,1)" @click.native="changeStatus(scope.row,1)" symbol
                   name="iconguanlianlingjian-xuanzhong" class="font20 cursor"></icon>
             <icon v-else symbol name="iconguanlianlingjian-moren" @click.native="changeStatus(scope.row,1)"
-                  class="font20 cursor"></icon>
+                  class="font20 cursor"></icon> -->
 
           </template>
         </el-table-column>
@@ -45,10 +52,16 @@
             width="150"
         >
           <template slot-scope="scope">
-            <icon v-if="calculateSelected(scope.row,3)" @click.native="changeStatus(scope.row,3)" symbol
+            <span class="clickIcon cursor" v-if="calculateSelected(scope.row,3)" @click="changeStatus(scope.row,3)">
+              <icon symbol name="iconguanlianlingjian-xuanzhong" class="font20"></icon>
+            </span>
+            <span class="clickIcon cursor" v-else @click="changeStatus(scope.row,3)">
+              <icon symbol name="iconguanlianlingjian-moren" class="font20"></icon>
+            </span>
+            <!-- <icon v-if="calculateSelected(scope.row,3)" @click.native="changeStatus(scope.row,3)" symbol
                   name="iconguanlianlingjian-xuanzhong" class="font20 cursor"></icon>
             <icon v-else symbol name="iconguanlianlingjian-moren" @click.native="changeStatus(scope.row,3)"
-                  class="font20 cursor"></icon>
+                  class="font20 cursor"></icon> -->
           </template>
         </el-table-column>
         <el-table-column
@@ -56,10 +69,16 @@
             align="center"
             width="150">
           <template slot-scope="scope">
-            <icon v-if="calculateSelected(scope.row,2)" @click.native="changeStatus(scope.row,2)" symbol
+            <span class="clickIcon cursor" v-if="calculateSelected(scope.row,2)" @click="changeStatus(scope.row,2)">
+              <icon symbol name="iconguanlianlingjian-xuanzhong" class="font20 cursor"></icon>
+            </span>
+            <span class="clickIcon" v-else @click="changeStatus(scope.row,2)">
+              <icon symbol name="iconguanlianlingjian-moren" class="font20 cursor"></icon>
+            </span>
+             <!-- <icon v-if="calculateSelected(scope.row,2)" @click.native="changeStatus(scope.row,2)" symbol
                   name="iconguanlianlingjian-xuanzhong" class="font20 cursor"></icon>
             <icon v-else symbol name="iconguanlianlingjian-moren" @click.native="changeStatus(scope.row,2)"
-                  class="font20 cursor"></icon>
+                  class="font20 cursor"></icon> -->
           </template>
         </el-table-column>
 
@@ -353,4 +372,7 @@ created(){
     margin-left: 8px;
   }
 }
+  .clickIcon{
+    padding: 10px 15px;
+  }
 </style>

@@ -1,4 +1,4 @@
-;(function(global, factory) {
+(function(global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined'
     ? (module.exports = factory(require('i18n')))
     : typeof define === 'function' && define.amd
@@ -6241,6 +6241,9 @@
     "LK_LINGJIANMING": "零件名",
     "SEHJIKESHI": "设计科室",
     "CONFIGSCOREDEPT_XIUGAISHIJIAN": "修改时间",
+    "AEKO_ZENGJIATOUZIFEI":"增加投资费",
+    "AEKO_BUHANSHUI":'(不含税)',
+    "AEKO_HANFENTAN":'(含分摊)',
   }
   var xmlHttp = ''
   if(window.XMLHttpRequest){

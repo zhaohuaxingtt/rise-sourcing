@@ -1,8 +1,8 @@
 /*
  * @Author: YoHo
  * @Date: 2021-10-11 17:18:47
- * @LastEditTime: 2021-11-16 17:42:40
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-25 14:31:45
+ * @LastEditors: Please set LastEditors
  * @Description: 
  */
 
@@ -48,25 +48,25 @@ export const typeObj = {
 // CBD-汇总表
 export const SummaryTableTitle = [
   { prop: 'index', label: '#', labelKey: '#', width: '70', children: [] },
-  { prop: 'partNum', label: 'AEKO零件号', width: '140', labelKey: 'AEKOLINGJIANHAO', children: [] },
-  { prop: 'typeName', label: '类别', width: '140', labelKey: 'LEIBIE', children: [] },
+  { prop: 'partNum', label: 'AEKO零件号', width: '200', labelKey: 'AEKOLINGJIANHAO', children: [] },
+  { prop: 'typeName', label: '类别', width: '170', labelKey: 'LEIBIE', children: [] },
   { prop: 'newContent', label: '内容', width: '140', labelKey: 'NEIRONG', children: [] },
   {
     label: '原零件', labelKey: 'YUANLINGJIAN', children: [
       { prop: 'originPartNum', label: '原零件号', width: '120', labelKey: 'YUANLINGJIANHAO', children: [] },
-      { prop: 'originUnitPrice', label: '单价', width: '100', labelKey: 'DANJIA', children: [] },
-      { prop: 'originUnit', label: '单位', width: '100', labelKey: 'DANWEI', children: [] },
-      { prop: 'originUseage', label: '用量', width: '100', labelKey: 'YONGLIANG', children: [] },
-      { prop: 'originTotalPrice', label: '小计', width: '100', labelKey: 'XIAOJI', children: [] },
+      { prop: 'originUnitPrice', label: '单价', width: '90', labelKey: 'DANJIA', children: [] },
+      { prop: 'originUnit', label: '单位', width: '80', labelKey: 'DANWEI', children: [] },
+      { prop: 'originUseage', label: '用量', width: '90', labelKey: 'YONGLIANG', children: [] },
+      { prop: 'originTotalPrice', label: '小计', width: '90', labelKey: 'XIAOJI', children: [] },
     ]
   },
   {
     label: '新零件', labelKey: 'XINLINGJIAN', children: [
       { prop: 'newPartNum', label: '新零件号', width: '120', labelKey: 'XINLINGJIANHAO', children: [] },
-      { prop: 'newUnitPrice', label: '单价', width: '100', labelKey: 'DANJIA', children: [] },
-      { prop: 'newUnit', label: '单位', width: '100', labelKey: 'DANWEI', children: [] },
-      { prop: 'newUseage', label: '用量', width: '100', labelKey: 'YONGLIANG', children: [] },
-      { prop: 'newTotalPrice', label: '小计', width: '100', labelKey: 'XIAOJI', children: [] },
+      { prop: 'newUnitPrice', label: '单价', width: '90', labelKey: 'DANJIA', children: [] },
+      { prop: 'newUnit', label: '单位', width: '80', labelKey: 'DANWEI', children: [] },
+      { prop: 'newUseage', label: '用量', width: '90', labelKey: 'YONGLIANG', children: [] },
+      { prop: 'newTotalPrice', label: '小计', width: '90', labelKey: 'XIAOJI', children: [] },
     ]
   },
   { prop: 'alteration', label: '变动值', width: '100', labelKey: 'BIANDONGZHI', children: [] },
