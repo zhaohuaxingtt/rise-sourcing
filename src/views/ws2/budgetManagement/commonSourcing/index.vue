@@ -103,9 +103,9 @@ export default {
             carTypePackageId: res.data.carTypePackageId
           }
         })
-        iMessage.success(result);
+        iMessage.success('操作成功');
       } else {
-        iMessage.error(result);
+        iMessage.error('操作失败');
       }
       this.mainLoading = false
     },
