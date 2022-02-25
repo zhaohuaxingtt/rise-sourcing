@@ -28,7 +28,7 @@
           <iButton @click="exports">{{ language("LK_DAOCHU", "导出") }}</iButton>
         </template>
         <template v-else>
-          <iButton @click="openDialog">{{
+          <iButton v-if="!disabled" @click="openDialog">{{
             language("LK_SHENQINGMUBIAOJIA", "申请目标价")
           }}</iButton>
         </template>
@@ -93,13 +93,16 @@ export default {
       tableTitle,
     };
   },
-  inject:["isPos"],
+  inject:["isPos", "getDisabled"],
   computed:{
     status(){
       return this.$store.state.rfq.todoObj['cfPriceStatusDesc'].status
     },
     isPosition() {
       return this.isPos()
+    },
+    disabled() {
+      return this.getDisabled()
     }
   },
   created() {
