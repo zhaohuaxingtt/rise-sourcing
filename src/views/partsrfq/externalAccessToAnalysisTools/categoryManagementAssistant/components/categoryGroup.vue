@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-03 10:42:23
- * @LastEditTime: 2021-12-08 12:02:49
+ * @LastEditTime: 2022-02-25 11:39:46
  * @LastEditors: Please set LastEditors
  * @Description: 材料组定位
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\categoryGroup.vue
@@ -61,12 +61,13 @@ export default {
     if (this.$route.query.groupList) {
       this.groupList = JSON.parse(this.$route.query.groupList)
     }
+    this.category.categoryName = this.$store.state.rfq.categoryName
+    this.category.categoryCode = this.$store.state.rfq.categoryCode
     this.getDefaultCostStructure()
   },
   watch: {
     "value" () {
-      this.category.categoryName = this.$store.state.rfq.categoryName
-      this.category.categoryCode = this.$store.state.rfq.categoryCode
+
     }
   },
   methods: {
@@ -101,7 +102,7 @@ export default {
       }
       this.$store.dispatch('setCategoryCode', this.category.categoryCode)
       this.$store.dispatch('setCategoryName', this.category.categoryName)
-      this.$emit('clearDiolog')
+      this.clearDiolog()
     },
     // 重新定位材料组
     openCategoryCode () {
