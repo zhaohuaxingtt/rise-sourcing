@@ -344,7 +344,11 @@ export default {
         planType: this.tabIndex === 0 ? "current_year" : "next_year",
       };
       exportPlanCommutityList(param).then(res => {
-        
+        if(res.code === '0'){
+          iMessage.success('操作成功');
+        }else{
+          iMessage.error('操作失败');
+        }
       });
     },
     tabClick(index) {
