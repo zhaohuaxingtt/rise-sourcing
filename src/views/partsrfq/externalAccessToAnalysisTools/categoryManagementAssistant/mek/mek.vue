@@ -337,13 +337,19 @@ export default {
     },
     //重置查询事件
     handleSearchReset () {
+      console.log(this.$store.state.rfq.entryStatus)
       this.page.currPage = 1
       this.page.pageSize = 10
       this.form = {
         materialGroup: '',
         createName: "",
         spareParts: "",
-        rfqNo: '',
+        // rfqNo: '',
+      }
+      if (!this.$store.state.rfq.entryStatus) {
+        this.form.rfqNo = ""
+      } else {
+        this.form.rfqNo = this.$store.state.rfq.rfqId
       }
       this.initData();
     },
@@ -515,17 +521,17 @@ export default {
         });
         window.open(openUrl.href, '_blank')
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
-        this.reportTitle = val.name
-        this.reportKey = Math.random()
-        this.reportVisible = true;
-        getFileByFileId(val.downloadUrl).then(res => {
-          if (res.request.responseURL) this.reportUrl = res.request.responseURL
-          this.reportVisible = true
-        })
         // this.reportTitle = val.name
-        // this.reportVisible = true;
         // this.reportKey = Math.random()
-        // if (val.path) this.reportUrl = val.path;
+        // this.reportVisible = true;
+        // getFileByFileId(val.downloadUrl).then(res => {
+        //   if (res.request.responseURL) this.reportUrl = res.request.responseURL
+        //   this.reportVisible = true
+        // })
+        this.reportTitle = val.name
+        this.reportVisible = true;
+        this.reportKey = Math.random()
+        if (val.path) this.reportUrl = val.path;
       }
     },
     //点击关闭报告预览弹窗
