@@ -740,9 +740,9 @@
 					//-------------修改零件采购项目逻辑endding
 					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {
 						this.disabled = getNominateDisabled({
-							applicationStatus: res.data.applicationStatus,
-							designateType: res.data.nominateProcessType,
-							isPriceConsistent: res.data.isPriceConsistent,
+							applicationStatus: res.data.applicationStatus, // FREEZE
+							designateType: res.data.nominateProcessType, // RECORD
+							isPriceConsistent: res.data.isPriceConsistent, // null
 						})
 					} else {
 						this.disabled = false
