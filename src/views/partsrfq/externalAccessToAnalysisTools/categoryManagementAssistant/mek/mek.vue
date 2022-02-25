@@ -528,6 +528,7 @@ export default {
         //   if (res.request.responseURL) this.reportUrl = res.request.responseURL
         //   this.reportVisible = true
         // })
+
         this.reportTitle = val.name
         this.reportVisible = true;
         this.reportKey = Math.random()
