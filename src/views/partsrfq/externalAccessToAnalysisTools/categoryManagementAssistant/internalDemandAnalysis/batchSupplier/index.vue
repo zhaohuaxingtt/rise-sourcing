@@ -1,7 +1,7 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-05 16:27:57
- * @LastEditTime: 2022-02-24 20:05:44
+ * @LastEditTime: 2022-02-25 21:38:30
  * @LastEditors: Please set LastEditors
  * @Description: 批量供应商概览
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\internalDemandAnalysis\batchSupplier\index.vue
@@ -60,7 +60,7 @@
 </template>
 <script>
 import { iCard, iButton, iMessage, icon } from "rise";
-import { getCmSupplierPbi } from "@/api/categoryManagementAssistant/internalDemandAnalysis/batchSupplier";
+import { getCmSupplierPbi, powerBiUrlNew } from "@/api/categoryManagementAssistant/internalDemandAnalysis/batchSupplier";
 import * as pbi from 'powerbi-client';
 import { getCategoryAnalysis, categoryAnalysis } from "@/api/categoryManagementAssistant/internalDemandAnalysis";
 import marks from "./marks";
@@ -221,13 +221,24 @@ export default {
     },
     // 获取财报iframeurl
     getPowerBiUrl () {
-      getCmSupplierPbi().then(res => {
-        if (res.data) {
-          this.url = res.data
-          this.init()
-          this.renderBi()
-        }
-      })
+      if (this.$route.path === '/sourceinquirypoint/sourcing/partsrfq/assistant') {
+        powerBiUrlNew().then(res => {
+          if (res.data) {
+            this.url = res.data
+            this.init()
+            this.renderBi()
+          }
+        })
+      } else {
+        getCmSupplierPbi().then(res => {
+          if (res.data) {
+            this.url = res.data
+            this.init()
+            this.renderBi()
+          }
+        })
+      }
+
     },
     // 初始化配置
     init () {

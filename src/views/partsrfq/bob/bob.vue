@@ -605,6 +605,7 @@ export default {
         this.reportVisible = true;
         this.reportKey = Math.random();
         if (val.path) this.reportUrl = val.path;
+
         // this.reportTitle = val.name
         // this.reportKey = Math.random()
         // this.reportVisible = true;
