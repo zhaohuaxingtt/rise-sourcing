@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-25 20:21:48
+ * @LastEditTime: 2022-02-25 20:12:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -678,7 +678,6 @@ export default {
                 partNumber.push(item.partNumber);
               });
               this.recursiveRetrieveList = res.data;
-
               this.partNumber = _.differenceBy(partNumber, this.exceptPart.split(','));
 
             }
