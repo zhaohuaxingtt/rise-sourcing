@@ -326,35 +326,36 @@ export default {
 
       if (this.customAction) {
         this.$emit('handleSave', list)
-      }
-      this.saveLoading = true
-
-      saveRfqRateDeparts({
-        rfqId: this.ids[0],
-        data: list.map(item => ({
-          id: item.id,
-          rateTag: item.rateTag,
-          rateTagDesc: item.rateTagDesc,
-          deptId: item.deptId,
-          isCheck: item.isCheck,
-          coordinator: item.coordinator,
-          coordinatorId: item.coordinatorId,
-          rateDepartNum: item.rateDepartNum,
-          rater: item.rater,
-          raterId: item.raterId,
+      }else{
+        this.saveLoading = true
+        saveRfqRateDeparts({
           rfqId: this.ids[0],
-        })) 
-      })
-      .then(res => {
-        if (res.code == 200) {
-          iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-          this.getRfqRateDepartsData()
-          this.isUpdate = true // 用于判断是否有数据更新
-        } else {
-          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-        }
-      })
-      .finally(() => this.saveLoading = false)
+          data: list.map(item => ({
+            id: item.id,
+            rateTag: item.rateTag,
+            rateTagDesc: item.rateTagDesc,
+            deptId: item.deptId,
+            isCheck: item.isCheck,
+            coordinator: item.coordinator,
+            coordinatorId: item.coordinatorId,
+            rateDepartNum: item.rateDepartNum,
+            rater: item.rater,
+            raterId: item.raterId,
+            rfqId: this.ids[0],
+          })) 
+        })
+        .then(res => {
+          if (res.code == 200) {
+            iMessage.success(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+            this.getRfqRateDepartsData()
+            this.isUpdate = true // 用于判断是否有数据更新
+          } else {
+            iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+          }
+        })
+        .finally(() => this.saveLoading = false)
+
+      }
     },
     setSaveLoading(val) {
       this.saveLoading = val
