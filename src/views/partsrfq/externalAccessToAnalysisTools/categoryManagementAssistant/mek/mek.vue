@@ -515,17 +515,17 @@ export default {
         });
         window.open(openUrl.href, '_blank')
       } else if (val.fileType == this.$t('TPZS.REPORT_TYPE')) {
-        this.reportTitle = val.name
-        this.reportKey = Math.random()
-        this.reportVisible = true;
-        getFileByFileId(val.downloadUrl).then(res => {
-          if (res.request.responseURL) this.reportUrl = res.request.responseURL
-          this.reportVisible = true
-        })
         // this.reportTitle = val.name
-        // this.reportVisible = true;
         // this.reportKey = Math.random()
-        // if (val.path) this.reportUrl = val.path;
+        // this.reportVisible = true;
+        // getFileByFileId(val.downloadUrl).then(res => {
+        //   if (res.request.responseURL) this.reportUrl = res.request.responseURL
+        //   this.reportVisible = true
+        // })
+        this.reportTitle = val.name
+        this.reportVisible = true;
+        this.reportKey = Math.random()
+        if (val.path) this.reportUrl = val.path;
       }
     },
     //点击关闭报告预览弹窗
