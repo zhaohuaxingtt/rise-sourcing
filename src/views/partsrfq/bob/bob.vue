@@ -5,195 +5,198 @@
  * @FilePath: \front-web\src\views\partsrfq\bob\bob.vue
 -->
 <template>
-  <div class="bob-main">
-    <iSearch @reset="handleSearchReset"
-             @sure="handleSearch"
-             :icon="false">
-      <el-form label-position="top">
-        <el-row>
-          <!--材料组-->
-          <el-form-item :label="$t('LK_CAILIAOZU')">
-            <iInput :placeholder="$t('TPZS.QSRCLZBHMC')"
-                    v-model="form.group"></iInput>
-          </el-form-item>
-          <!--零件号-->
-          <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
-            <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
-                    v-model="form.num"></iInput>
-          </el-form-item>
-          <!--供应商状态-->
-          <el-form-item :label="$t('TPZS.RFQHMC')">
-            <iInput v-model="form.rfq"
-                    :disabled="rfqStatus"
-                    :placeholder="$t('TPZS.QSRRFQH')"></iInput>
-          </el-form-item>
-          <el-form-item :label="$t('TPZS.CJR')">
-            <iInput :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')"
-                    v-model="form.owner" />
-          </el-form-item>
-        </el-row>
-      </el-form>
-    </iSearch>
-    <iCard class="margin-top20">
-      <div class="margin-bottom20 clearFloat">
-        <span class="font18 font-weight">{{ $t('TPZS.BOBFXK') }}</span>
-        <!-- 是否显示新建按钮 -->
-        <div class="floatright">
-          <!-- v-if="disabled"-->
-          <div v-if="!edit">
-            <iButton @click="newBob">{{ language('XINJIAN', '新建') }}</iButton>
-            <iButton @click="editBob">{{ language('BIANJI', '编辑') }}</iButton>
-            <iButton @click="deleteBob">{{ language('SHANCHU', '删除') }}</iButton>
-          </div>
-          <div v-else>
-            <iButton @click="cancelEditBob">{{ language('QUXIAO', '取消') }}</iButton>
-            <iButton @click="saveEdit">{{ language('BAOCUN', '保存') }}</iButton>
-          </div>
-        </div>
-        <!-- <template v-slot:header-control> -->
-      </div>
-      <!-- </template> -->
-      <el-table tooltip-effect="light"
-                ref="multipleTable"
-                :data="tableListData"
-                style="width: 100%; margin-bottom: 20px"
-                row-key="id"
-                :max-height="450"
-                :row-class-name="rowStyle"
-                :tree-props="{ children: 'children' }"
-                @selection-change="handleSelectionChange"
-                @select-all="selectAll">
-        <el-table-column align="center"
-                         header-align="center"
-                         type="selection"
-                         width="55"> </el-table-column>
-        <el-table-column label="#"
-                         type="index"
-                         :index="indexMethod"
-                         align="center"
-                         header-align="center"
-                         width="50"> </el-table-column>
-        <el-table-column align="center"
-                         header-align="center"
-                         :label="language('FENXIMINGCHENG', '分析名称')"
-                         width="450">
-          <template slot-scope="scope">
-            <div class="openPage">
-              <el-row :gutter="20">
-                <el-col :span="20"
-                        style="textalgin: center">
-                  <el-tooltip v-if="!edit"
-                              :content="scope.row.name"
-                              placement="top"
-                              effect="light">
-                    <p v-if="!edit"
-                       class="ellipsis"
-                       @click="clickName(scope.row)">{{ scope.row.name }}</p>
-                  </el-tooltip>
-                  <iInput v-else
-                          class="nameInput"
-                          v-model="scope.row.name"></iInput>
-                </el-col>
-                <el-col :span="4">
-                  <span v-if="scope.row.fileType == '方案'">
-                    <span class="number">
-                      <p>{{ scope.row.reportList.length }}</p>
-                    </span>
-                    <icon class="numberIcon"
-                          style="{font-size: 24px;}"
-                          symbol
-                          name="iconwenjianshuliangbeijing"></icon>
-                  </span>
-                </el-col>
-              </el-row>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('LK_CAILIAOZU')"
-                         prop="materialGroup"
-                         align="center"
-                         header-align="center"> </el-table-column>
-        <el-table-column :label="$t('RFQ')"
-                         prop="rfqNo"
-                         width="100"
-                         align="center"
-                         header-align="center"> </el-table-column>
-        <el-table-column :label="$t('TPZS.MRX')"
-                         align="center"
-                         header-align="center"
-                         width="80">
-          <template slot-scope="scope">
+  <iPage>
+    <div class="bob-main">
+      <iSearch @reset="handleSearchReset"
+               @sure="handleSearch"
+               :icon="false">
+        <el-form label-position="top">
+          <el-row>
+            <!--材料组-->
+            <el-form-item :label="$t('LK_CAILIAOZU')">
+              <iInput :placeholder="$t('TPZS.QSRCLZBHMC')"
+                      v-model="form.group"></iInput>
+            </el-form-item>
+            <!--零件号-->
+            <el-form-item :label="$t('LK_SPAREPARTSNUMBER')">
+              <iInput :placeholder="$t('LK_QINGSHURULINGJIANHAO')"
+                      v-model="form.num"></iInput>
+            </el-form-item>
+            <!--供应商状态-->
+            <el-form-item :label="$t('TPZS.RFQHMC')">
+              <iInput v-model="form.rfq"
+                      :disabled="rfqStatus"
+                      :placeholder="$t('TPZS.QSRRFQH')"></iInput>
+            </el-form-item>
+            <el-form-item :label="$t('TPZS.CJR')">
+              <iInput :placeholder="$t('TPZS.QINGSHURUCHUANGJIANRENMINGCHENG')"
+                      v-model="form.owner" />
+            </el-form-item>
+          </el-row>
+        </el-form>
+      </iSearch>
+      <iCard class="margin-top20">
+        <div class="margin-bottom20 clearFloat">
+          <span class="font18 font-weight">{{ $t('TPZS.BOBFXK') }}</span>
+          <!-- 是否显示新建按钮 -->
+          <div class="floatright">
+            <!-- v-if="disabled"-->
             <div v-if="!edit">
-              {{ defaultStatus(scope.row, scope.row.isDefault) }}
+              <iButton @click="newBob">{{ language('XINJIAN', '新建') }}</iButton>
+              <iButton @click="editBob">{{ language('BIANJI', '编辑') }}</iButton>
+              <iButton @click="deleteBob">{{ language('SHANCHU', '删除') }}</iButton>
             </div>
-            <div v-else-if="edit && scope.row.fileType == $t('TPZS.SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault">
-              <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)"
-                       @change="changeDefault($event, scope.row)">
-                <el-option :value="item.value"
-                           :label="item.label"
-                           v-for="(item, index) in defaultData"
-                           :key="index"></el-option>
-              </iSelect>
+            <div v-else>
+              <iButton @click="cancelEditBob">{{ language('QUXIAO', '取消') }}</iButton>
+              <iButton @click="saveEdit">{{ language('BAOCUN', '保存') }}</iButton>
             </div>
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('TPZS.WJLX')"
-                         prop="fileType"
-                         align="center"
-                         header-align="center"> </el-table-column>
-        <el-table-column :label="$t('TPZS.CJR')"
-                         prop="createNameZh"
-                         align="center"
-                         header-align="center"> </el-table-column>
-        <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
-                         prop="createDate"
-                         show-overflow-tooltip
-                         align="center"
-                         header-align="center"> </el-table-column>
-        <el-table-column :label="$t('TPZS.SCXGRQ')"
-                         prop="updateDate"
-                         show-overflow-tooltip
-                         align="center"
-                         header-align="center"> </el-table-column>
-        <el-table-column width="50"
-                         align="center"
-                         header-align="center">
-          <template slot-scope="scope">
-            <div @click="handleStick(scope.row)"
-                 class="stickIcon">
-              <icon v-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && scope.row.isTop"
-                    name="iconliebiaoyizhiding"
-                    class="iconliebiaoyizhiding"
-                    symbol />
-              <icon v-else-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && !scope.row.isTop"
-                    name="iconliebiaoweizhiding"
-                    class="iconliebiaoweizhiding"
-                    symbol />
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-      <iPagination v-update
-                   @size-change="handleSizeChange($event, getTableList)"
-                   @current-change="handleCurrentChange($event, getTableList)"
-                   background
-                   :page-sizes="page.pageSizes"
-                   :page-size="page.pageSize"
-                   :layout="page.layout"
-                   :current-page="page.currPage"
-                   :total="page.totalCount" />
+          </div>
+          <!-- <template v-slot:header-control> -->
+        </div>
+        <!-- </template> -->
+        <el-table tooltip-effect="light"
+                  ref="multipleTable"
+                  :data="tableListData"
+                  style="width: 100%; margin-bottom: 20px"
+                  row-key="id"
+                  :max-height="450"
+                  :row-class-name="rowStyle"
+                  :tree-props="{ children: 'children' }"
+                  @selection-change="handleSelectionChange"
+                  @select-all="selectAll">
+          <el-table-column align="center"
+                           header-align="center"
+                           type="selection"
+                           width="55"> </el-table-column>
+          <el-table-column label="#"
+                           type="index"
+                           :index="indexMethod"
+                           align="center"
+                           header-align="center"
+                           width="50"> </el-table-column>
+          <el-table-column align="center"
+                           header-align="center"
+                           :label="language('FENXIMINGCHENG', '分析名称')"
+                           width="450">
+            <template slot-scope="scope">
+              <div class="openPage">
+                <el-row :gutter="20">
+                  <el-col :span="20"
+                          style="textalgin: center">
+                    <el-tooltip v-if="!edit"
+                                :content="scope.row.name"
+                                placement="top"
+                                effect="light">
+                      <p v-if="!edit"
+                         class="ellipsis"
+                         @click="clickName(scope.row)">{{ scope.row.name }}</p>
+                    </el-tooltip>
+                    <iInput v-else
+                            class="nameInput"
+                            v-model="scope.row.name"></iInput>
+                  </el-col>
+                  <el-col :span="4">
+                    <span v-if="scope.row.fileType == '方案'">
+                      <span class="number">
+                        <p>{{ scope.row.reportList.length }}</p>
+                      </span>
+                      <icon class="numberIcon"
+                            style="{font-size: 24px;}"
+                            symbol
+                            name="iconwenjianshuliangbeijing"></icon>
+                    </span>
+                  </el-col>
+                </el-row>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('LK_CAILIAOZU')"
+                           prop="materialGroup"
+                           align="center"
+                           header-align="center"> </el-table-column>
+          <el-table-column :label="$t('RFQ')"
+                           prop="rfqNo"
+                           width="100"
+                           align="center"
+                           header-align="center"> </el-table-column>
+          <el-table-column :label="$t('TPZS.MRX')"
+                           align="center"
+                           header-align="center"
+                           width="80">
+            <template slot-scope="scope">
+              <div v-if="!edit">
+                {{ defaultStatus(scope.row, scope.row.isDefault) }}
+              </div>
+              <div v-else-if="edit && scope.row.fileType == $t('TPZS.SCHEME_TYPE') && scope.row.isDefault != '空' && scope.row.isDefault">
+                <iSelect :value="defaultStatus(scope.row, scope.row.isDefault)"
+                         @change="changeDefault($event, scope.row)">
+                  <el-option :value="item.value"
+                             :label="item.label"
+                             v-for="(item, index) in defaultData"
+                             :key="index"></el-option>
+                </iSelect>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column :label="$t('TPZS.WJLX')"
+                           prop="fileType"
+                           align="center"
+                           header-align="center"> </el-table-column>
+          <el-table-column :label="$t('TPZS.CJR')"
+                           prop="createNameZh"
+                           align="center"
+                           header-align="center"> </el-table-column>
+          <el-table-column :label="$t('LK_CHUANGJIANRIQI')"
+                           prop="createDate"
+                           show-overflow-tooltip
+                           align="center"
+                           header-align="center"> </el-table-column>
+          <el-table-column :label="$t('TPZS.SCXGRQ')"
+                           prop="updateDate"
+                           show-overflow-tooltip
+                           align="center"
+                           header-align="center"> </el-table-column>
+          <el-table-column width="50"
+                           align="center"
+                           header-align="center">
+            <template slot-scope="scope">
+              <div @click="handleStick(scope.row)"
+                   class="stickIcon">
+                <icon v-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && scope.row.isTop"
+                      name="iconliebiaoyizhiding"
+                      class="iconliebiaoyizhiding"
+                      symbol />
+                <icon v-else-if="scope.row.fileType === $t('TPZS.SCHEME_TYPE') && !scope.row.isTop"
+                      name="iconliebiaoweizhiding"
+                      class="iconliebiaoweizhiding"
+                      symbol />
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <iPagination v-update
+                     @size-change="handleSizeChange($event, getTableList)"
+                     @current-change="handleCurrentChange($event, getTableList)"
+                     background
+                     :page-sizes="page.pageSizes"
+                     :page-size="page.pageSize"
+                     :layout="page.layout"
+                     :current-page="page.currPage"
+                     :total="page.totalCount" />
 
-      <reportPreview :visible="reportVisible"
-                     :reportUrl="reportUrl"
-                     :title="reportTitle"
-                     :key="reportKey"
-                     @handleCloseReport="handleCloseReport" />
-    </iCard>
-  </div>
+        <reportPreview :visible="reportVisible"
+                       :reportUrl="reportUrl"
+                       :title="reportTitle"
+                       :key="reportKey"
+                       @handleCloseReport="handleCloseReport" />
+      </iCard>
+    </div>
+  </iPage>
+
 </template>
 
 <script>
-import { iCard, iInput, iSearch, iButton, iPagination, iSelect, icon, iMessage } from 'rise';
+import { iCard, iInput, iSearch, iButton, iPagination, iSelect, icon, iMessage, iPage } from 'rise';
 import { getBobAnalysisDataList, fetchStaick, fetchEdit, fetchDel, initIn, generateGroupId } from '@/api/partsrfq/bob/analysisList';
 import { pageMixins } from '@/utils/pageMixins';
 import reportPreview from '@/views/partsrfq/vpAnalyse/vpAnalyseList/components/reportPreview';
@@ -209,6 +212,7 @@ export default {
     iSelect,
     icon,
     reportPreview,
+    iPage
   },
   inject: ['getDisabled'],
   data () {
