@@ -129,7 +129,7 @@
               <div class="input-box">
                 <iInput v-if="editStatus" v-model="baseInfo.rfqName"></iInput>
                 <iText v-else>{{ baseInfo.rfqName }}</iText>
-                <div class="btn-box">
+                <div class="btn-box" v-if="!disabled">
                     <iButton v-if="!editStatus" @click="edit" type="text" icon="el-icon-edit"></iButton>
                     <template v-else>
                       <iButton class="save" type="text" @click="save" icon="el-icon-check"></iButton>

@@ -205,7 +205,7 @@ export default {
         },
         // 是否为提交后的状态
         submitDisabled() {
-            return this.$store.getters.applicationStatus !== "NEW" // 基本就是除了草稿后的状态
+            return this.$store.getters.applicationStatus !== "NEW" && this.$store.getters.applicationStatus !== "NOTPASS" // 基本就是除了草稿后的状态
         }
     },
     data(){
