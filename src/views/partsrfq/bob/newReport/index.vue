@@ -532,7 +532,23 @@ export default {
       });
     },
     goToBob () {
-      this.$router.push('bob');
+      // this.$router.push('bob');
+      if (this.$store.state.rfq.entryStatus === 1) {
+        this.$router.push({
+          path: "/sourceinquirypoint/sourcing/partsrfq/assistant",
+          query: {
+            id: this.rfqId,
+            // round: this.$route.query.round,
+            pageType: "BOB",
+            activityTabIndex: "one",
+          },
+        });
+      } else {
+        this.$router.push({
+          path: "/sourcing/partsrfq/externalNegotiationAssistant",
+          query: { pageType: "MEK" },
+        });
+      }
     },
     closeDiv () {
       this.showSelectDiv = false;
