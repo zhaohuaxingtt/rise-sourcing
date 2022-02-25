@@ -1,18 +1,25 @@
 <!--
  * @Author: 舒杰
  * @Date: 2021-08-12 09:58:51
- * @LastEditTime: 2021-09-27 10:34:10
- * @LastEditors: zbin
+ * @LastEditTime: 2022-02-25 11:35:45
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\components\headerNav.vue
 -->
 <template>
   <div>
     <div class="navBox">
-      <iNavMvp class=" margin-bottom20" :list="tabRouterList" routerPage :lev="1" />
+      <iNavMvp class=" margin-bottom20"
+               :list="tabRouterList"
+               routerPage
+               :lev="1" />
       <div class="flex-align-center rightNav">
         <div class="margin-right20 category">{{$store.state.rfq.categoryCode+'-'+$store.state.rfq.categoryName}}</div>
-        <iNavMvp :list="categoryManagementAssistantList" :lev='2' right routerPage class="margin-right20" />
+        <iNavMvp :list="categoryManagementAssistantList"
+                 :lev='2'
+                 right
+                 routerPage
+                 class="margin-right20" />
         <template v-if="showCommonButton">
           <iButton @click="openCatecory">{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton>
           <iButton @click="openReportInventoryDialog">{{ language('PLGLZS.BAOGAOQINGDAN', '报告清单') }}</iButton>
@@ -22,7 +29,9 @@
       <logButton class="logButton" />
       <!--      报告清单-->
       <reportInventory v-model="reportInventoryDialog" />
-      <categoryGroup v-model="openCatecoryDialog" @clearDiolog="clearDiolog" :categoryCodeProps="categoryCodeProps" :categoryCodeOptions="categoryCodeOptions"></categoryGroup>
+      <categoryGroup v-model="openCatecoryDialog"
+                     :categoryCodeProps="categoryCodeProps"
+                     :categoryCodeOptions="categoryCodeOptions"></categoryGroup>
     </div>
   </div>
 </template>
@@ -50,7 +59,7 @@ export default {
     categoryCodeProps: String,
     categoryCodeOptions: Array
   },
-  data() {
+  data () {
     return {
       tabRouterList,
       categoryManagementAssistantList,
@@ -58,24 +67,24 @@ export default {
       openCatecoryDialog: false,
     };
   },
-  mounted() {
+  mounted () {
     if (!this.$store.state.rfq.categoryCode) {
       this.openCatecory()
     }
   },
   methods: {
-    openReportInventoryDialog() {
+    openReportInventoryDialog () {
       if (this.$store.state.rfq.categoryCode) {
         this.reportInventoryDialog = true;
       } else {
         this.openCatecoryDialog = true;
       }
     },
-    openCatecory() {
+    openCatecory () {
       this.openCatecoryDialog = true;
     },
-    clearDiolog(){
-      this.openCatecoryDialog=false
+    clearDiolog () {
+      // this.openCatecoryDialog=false
     }
   },
 };
@@ -98,7 +107,7 @@ export default {
     right: 0;
   }
 }
-.category{
+.category {
   font-size: 1.125rem;
   font-weight: 400;
   color: #909091;
