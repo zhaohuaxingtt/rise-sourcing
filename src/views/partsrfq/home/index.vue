@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2022-01-27 21:01:57
+ * @LastEditTime: 2022-02-25 18:34:13
  * @LastEditors: YoHo
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
@@ -584,19 +584,25 @@ export default {
     },
     async scoringDeptSave(list) {
       // if (this.selectTableData.length == "") return iMessage.warn(this.$t("LK_NINDANGQIANHAIWEIXUANZE"));
-      const rateDepartMap = {
-        "质量部门": "MQ",
-        "技术部门": "EP"
-      }
+      // const rateDepartMap = {
+      //   "质量部门": "MQ",
+      //   "技术部门": "EP"
+      // }
+      let refs = this.selectTableData.map(item=>{
+        return item.id
+      })
       const req = list.map(item => ({
             deptNum: item.rateDepartNum,
-            deptType: rateDepartMap[item.rateDepart], 
+            // deptType: rateDepartMap[item.rateDepart], 
+            deptType: item.rateTag, 
             graderId: item.raterId,
-            graderName: item.rater
+            graderName: item.rater,
+            coordinator: item.coordinator,
+            coordinatorId: item.coordinatorId,
       }))
       this.$refs.scoringDeptDialog.setSaveLoading(true)
       try {
-        const res = await ratingTranslate({rfqId:this.rfqId,ratingInfoList:req});
+        const res = await ratingTranslate({rfqId:refs,ratingInfoList:req});
         if (res.code == 200) {
           iMessage.success(this.language('LK_ZHUANPAICHENGGONG','转派成功'))
         } else {

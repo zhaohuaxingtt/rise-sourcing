@@ -15,7 +15,7 @@ const VUE_APP_PLANYEAR = axios(process.env.VUE_APP_TOOLING + '/planYear');
 
 //  手工调整清单下载
 export function exportPlanCommutityList(params) {
-    return requestFile({
+    return VUE_APP_PLANYEAR({
       url: `/exportPlanCommutityList/${params.versionId}`,
       method: 'GET',
       params: params,
@@ -51,7 +51,7 @@ export function queryPlanPercentage(params) {
 
 //  系统计算清单下载
 export function downloadExport(params) {
-    return requestFile({
+    return VUE_APP_PLANYEAR({
       url: `/exportPlanSystemList/${params.versionId}`,
       method: 'GET',
       data: params,

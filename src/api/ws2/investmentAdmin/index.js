@@ -31,7 +31,7 @@ export function saveNewVersion(params) {
   
 //下载月度计划
 export function exportPlanCommutityList(params) {
-    return requestFile({  
+    return VUE_APP_TOOLING({  
         url: `/planMonth/exportPlanCommutityList/${params.versionId}?planType=${params.planType}`,
         method: 'POST',
     })

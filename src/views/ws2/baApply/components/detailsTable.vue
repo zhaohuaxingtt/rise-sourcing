@@ -140,7 +140,11 @@ export default {
         aekoAmount: amount,
         body: this.selectTableData
       }).then(res => {
-        
+        if(res.code === '0'){
+          iMessage.success('操作成功');
+        }else{
+          iMessage.error('操作失败');
+        }
       })
     },
 
