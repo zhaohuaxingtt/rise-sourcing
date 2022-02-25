@@ -184,7 +184,7 @@ export default {
     },
     createMtzDisabled() {
       if (this.nominationType === "TRANFORM") {
-        if (this.applicationStatus === "NEW" || this.applicationStatus === "FLOWED_FAIL") return true
+        if (this.applicationStatus === "NEW" || this.applicationStatus === "NOTPASS") return true
         return false
       } 
 

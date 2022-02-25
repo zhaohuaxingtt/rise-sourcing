@@ -24,7 +24,7 @@
       </div>
     </template>
     <template slot="header-control">
-      <div class="button-box">
+      <div class="button-box" v-if="!disabled">
         <template v-if="!todo">
           <iButton
             @click="submit"
@@ -63,7 +63,7 @@
           <template #budget="scope">
             <iInput
               v-model="scope.row.budget"
-              v-if="!scope.row.disabled"
+              v-if="!scope.row.disabled && !disabled"
               @input="handleInput($event, scope.row)"
               @blur="handleBlurByBudget(scope.row.budget, scope.row)"
             />
@@ -122,6 +122,7 @@ export default {
   props: {
     todo: Boolean,
   },
+  inject: ["getDisabled"],
   data() {
     return {
       iconName,
@@ -139,6 +140,9 @@ export default {
   computed:{
     status(){
       return this.$store.state.rfq.todoObj['mouldBudgetStatusDesc'].status
+    },
+    disabled() {
+      return this.getDisabled()
     }
   },
   methods: {

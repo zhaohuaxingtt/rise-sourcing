@@ -10,14 +10,14 @@
 // 定点管理申请状态
 export const nomiApplicationStatus = [
   {id:'NEW',name:'草稿',key:'LK_CAOGAO'},
-  {id:'FLOWED_FAIL',name:'未通过',key:'LK_WEITONGGUO'},
+  {id:'NOTPASS',name:'未通过',key:'LK_WEITONGGUO'},
   {id:'SUBMIT',name:'已提交',key:'LK_TIJIAO'},
   // {id:'NOTPASS',name:'未通过',key:'LK_WEITONGGUO'},
   {id:'PASS',name:'会议通过',key:'LK_HUIYITONGGUO'},
   {id:'CHECK_INPROCESS',name:'复核中',key:'LK_FUHEZHONG'},
   {id:'CHECK_PASS',name:'复核通过',key:'LK_FUHETONGGUO'},
   {id:'CHECK_FAIL',name:'复核未通过',key:'LK_FUHEWEITONGGUO'},
-  {id:'FREERE',name:'冻结',key:'LK_DONGJIE'},
+  {id:'FREEZE',name:'冻结',key:'LK_DONGJIE'},
   {id:'M_CHECK_INPROCESS',name:'M审批中',key:'LK_MSHENPIZHONG'},
   {id:'M_CHECK_PASS',name:'M审批通过',key:'LK_MSHENPITONGGUO'},
   {id:'M_CHECK_FAIL',name:'M退回',key:'LK_NOMIMTUIHUI'},
@@ -27,16 +27,16 @@ export const nomiApplicationStatus = [
 ]
 // 申请状态与定点类型之间的联动
 export const nomiApplicationObject = {
-  MEETING: ['NEW', 'SUBMIT', 'NOTPASS', 'PASS', 'CHECK_INPROCESS', 'CHECK_PASS', 'CHECK_FAIL', 'FREERE', 'M_CHECK_INPROCESS', 'M_CHECK_PASS', 'M_CHECK_FAIL', 'NOMINATE'],
-  TRANFORM: ['NEW', 'FLOWED_FAIL', 'SUBMIT', 'FREERE', 'ONFLOW', 'FINISHFLOW', 'NOMINATE'],
-  RECORD: ['NEW', 'SUBMIT', 'FREERE', 'NOMINATE']
+  MEETING: ['NEW', 'SUBMIT', 'NOTPASS', 'PASS', 'CHECK_INPROCESS', 'CHECK_PASS', 'CHECK_FAIL', 'FREEZE', 'M_CHECK_INPROCESS', 'M_CHECK_PASS', 'M_CHECK_FAIL', 'NOMINATE'],
+  TRANFORM: ['NEW', 'NOTPASS', 'SUBMIT', 'FREEZE', 'ONFLOW', 'FINISHFLOW', 'NOMINATE'],
+  RECORD: ['NEW', 'SUBMIT', 'FREEZE', 'NOMINATE']
 }
 
 // 签字单详情，定点申请单 申请状态
 export const applicationStatus = [
   {id:'NEW',name:'草稿',key:'LK_CAOGAO'},
   {id:'SUBMIT',name:'已提交',key:'LK_YITIJIAO'},
-  {id:'FREERE',name:'已冻结',key:'LK_YIDONGJIE'},
+  {id:'FREEZE',name:'已冻结',key:'LK_YIDONGJIE'},
   {id:'ONFLOW',name:'流转中',key:'LK_LIUZHUANZHONG'},
   {id:'FINISHFLOW',name:'审批完成/流转完成',key:'LK_SHENPILIUZHUANWANCHENG'},
   {id:'NOMINATE',name:'已定点',key:'LK_YIDINGDIAN'},
@@ -56,7 +56,7 @@ export const applicationStatus = [
 export const RSReviewApplicationStatus = [
   {id:'NEW',name:'草稿',key:'LK_CAOGAO'},
   {id:'SUBMIT',name:'已提交',key:'LK_YITIJIAO'},
-  {id:'FREERE',name:'冻结',key:'DONGJIE'},
+  {id:'FREEZE',name:'冻结',key:'DONGJIE'},
   // {id:'NOTPASS',name:'未通过',key:'LK_WEITONGGUO'},
   {id:'PASS',name:'会议通过',key:'LK_HUIYITONGGUO'},
   {id:'CHECK_INPROCESS',name:'复核中',key:'LK_FUHEZHONG'},

@@ -30,6 +30,7 @@
           </template>
             <template v-else>
               <iButton
+                v-if="!disabled"
                 @click="openDialog"
                 v-permission.auto="PARTSRFQ_EDITORDETAIL_APPLYMODULETARGETPRICE|申请模具目标价"
                 >{{ language("LK_SHENQINGMUBIAOJIA", "申请目标价") }}</iButton
@@ -101,13 +102,16 @@ export default {
       tableTitle
     }
   },
-  inject:["isPos"],
+  inject:["isPos", "getDisabled"],
   computed:{
     status(){
       return this.$store.state.rfq.todoObj['mouldPriceStatusDesc'].status
     },
     isPostion() {
       return this.isPos()
+    },
+    disabled() {
+      return this.getDisabled()
     }
   },
   created() {
