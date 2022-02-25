@@ -93,7 +93,6 @@
             >
           </div>
           <!-- 竞价 -->
-
           <iButton
             v-if="ruleForm.roundType !== '02' && !isBiddingDelay"
             @click="onBiddingSend"
@@ -415,7 +414,7 @@
 </template>
 
 <script>
-import { iCard, iButton, iInput, iSelect, iPagination, iPage } from "rise";
+import { iCard, iButton, iInput, iSelect, iPagination, iPage, iMessage } from "rise";
 import commonTable from "@/components/biddingComponents/commonTable";
 import supplierListDialog from "./components/supplierListDialog";
 import manualForm from "./components/manualForm";
@@ -431,6 +430,7 @@ import {
   isAttendList,
   cbdLevelLib,
   manualTableTitle,
+  saveAreaMap
 } from "./components/data";
 import { pageMixins } from "@/utils/pageMixins";
 import {
@@ -449,7 +449,8 @@ import {
   cbdLevel,
   getBlackStuffList,
   getSupplierFinancialRiskLevel,
-  getIsComplete
+  getIsComplete,
+  oldSaveInquiryBidding
 } from "@/api/bidding/bidding";
 import dayjs from "dayjs";
 import store from '@/store'
@@ -570,6 +571,9 @@ export default {
     userId(){
       return store.state.permission.userInfo.id
     },
+    isManual() {
+      return this.ruleForm.roundType == "05"
+    }
   },
   async created() {
     console.log('process.env.VUE_APP_HREFSUPPLIER',process.env)
@@ -732,6 +736,10 @@ export default {
     },
     // 新增汇率信息
     handleAdd() {
+      if (!Array.isArray(this.ruleForm.exchangeRates)) {
+        this.$set(this.ruleForm, "exchangeRates", [])
+      }
+
       this.ruleForm.exchangeRates.push({
         id: new Date().getTime(),
         biddingId: this.ruleForm.id,
@@ -1056,30 +1064,31 @@ export default {
         }
       }
       const formData = this.ruleForm;
-      return saveInquiryBidding({
+
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
+      return fetch({
         ...this.orgRuleForm,
         ...formData,
         suppliers: this.orgRuleForm.suppliers,
         exchangeRates: this.orgRuleForm.exchangeRates,
         inquiryIsCompleted: this.clickType == "save" ? 1 : 0,
         quotationAreaFlag: roundType !== "05",
-        associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null
+        associatedQuotation: formData.associatedQuotation && formData.associatedQuotation.length ? formData.associatedQuotation.toString().split(',') : null,
+        saveArea: 1 // 报价
       })
         .then((res) => {
-          if (res) {
+          if (this.isManual ? res : (res.code == 200)) {
+            const _r = this.isManual ? res : res.data
             this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
             // this.handleSearchReset();
             this.initList = {
-              ...res,
-              openTenderStatus: res.openTenderStatus || "01", // 默认未开标
+              ..._r,
+              openTenderStatus: _r.openTenderStatus || "01", // 默认未开标
             };
             callback && callback();
           } else {
             this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
           }
-        })
-        .catch((err) => {
-          console.log(err);
         });
     },
     saveFormContent(callback) {
@@ -1092,19 +1101,23 @@ export default {
       //保存
       const formData = this.ruleForm;
       console.log('formDatasafsafsa',formData)
-      return saveInquiryBidding({
+
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
+      return fetch({
         ...this.orgRuleForm,
         suppliers: formData.suppliers.map((item) => {
           const { index, userList, ...obj } = item;
           return obj;
         }),
         supplierIsCompleted: this.clickType == "save" ? 1 : 0,
-        quotationAreaFlag: false
+        quotationAreaFlag: false,
+        saveArea: 2 // 供应商
       })
         .then((res) => {
-          if (res) {
+          if (this.isManual ? res : (res.code == 200)) {
+            const _r = this.isManual ? res : res.data
             this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
-            this.initSuppliers = res.suppliers?.map((supplier) => {
+            this.initSuppliers = _r.suppliers?.map((supplier) => {
               this.querySuppliers(supplier.supplierCode,supplier.supplierId,supplier.cbdArea);
               
               if (supplier.isAttend === null || supplier.isAttend === "")
@@ -1122,16 +1135,13 @@ export default {
             });
             this.orgRuleForm = {
               ...this.orgRuleForm,
-              suppliers: res.suppliers,
+              suppliers: _r.suppliers,
             };
             callback && callback();
           } else {
             this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     // 保存汇率信息
     handleSaveRate(callback) {
@@ -1148,24 +1158,31 @@ export default {
       // })
       //   .then(() => {})
       const formData = this.ruleForm;
-      return saveInquiryBidding({
+
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
+      return fetch({
         // ...formData,
         ...this.orgRuleForm,
         exchangeRates: formData.exchangeRates,
         exchangeIsCompleted: this.clickType == "save" ? 1 : 0,
-        quotationAreaFlag: false
+        quotationAreaFlag: false,
+        saveArea: 3 // 汇率
       })
         .then((res) => {
-          this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
-          this.initRate = [...res.exchangeRates];
-          this.orgRuleForm = {
-            ...this.orgRuleForm,
-            exchangeRates: res.exchangeRates,
-          };
-          callback && callback();
-        })
-        .catch(() => {
-          this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
+          if (this.isManual ? res : (res.code == 200)) {
+            const _r = this.isManual ? res : res.data
+            this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
+            this.initRate = [..._r.exchangeRates];
+            this.orgRuleForm = {
+              ...this.orgRuleForm,
+              exchangeRates: _r.exchangeRates,
+            };
+
+            callback && callback();
+          }
+          else {
+            this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
+          }
         });
     },
     // 保存附件
@@ -1177,7 +1194,7 @@ export default {
       // })
       //   .then(() => {})
       const formData = this.ruleForm;
-      return saveInquiryBidding({
+      return oldSaveInquiryBidding({
         // ...formData,
         ...this.orgRuleForm,
         attachments: formData.attachments,
@@ -1185,18 +1202,19 @@ export default {
         quotationAreaFlag: false
       })
         .then((res) => {
-          this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
-          this.initAttachments = [...res.attachments];
-          this.orgRuleForm = {
-            ...this.orgRuleForm,
-            attachments: res.attachments,
-          };
-          this.handleSearchReset();
-          callback && callback();
+          if (res) {
+            this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
+            this.initAttachments = [...res.attachments];
+            this.orgRuleForm = {
+              ...this.orgRuleForm,
+              attachments: res.attachments,
+            };
+            this.handleSearchReset();
+            callback && callback();
+          } else {
+            this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
+          }
         })
-        .catch(() => {
-          this.$message.error(this.language('BIDDING_BAOCUNSHIBAI',"保存失败"));
-        });
     },
     // 附件
     async httpUpload(content) {
@@ -1217,7 +1235,9 @@ export default {
     },
     saveForms(callback) {
       const formData = this.ruleForm;
-      saveInquiryBidding({
+
+      const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
+      fetch({
         ...this.orgRuleForm,
         ...{
           header: {
@@ -1244,8 +1264,9 @@ export default {
             attachmentIsCompleted: this.clickType == "save" ? 1 : 0,
           },
         }[this.place],
+        saveArea: saveAreaMap[this.place]
       }).then((res) => {
-        if (res) {
+        if (this.isManual ? res : (res.code == 200)) {
           this.$message.success(this.language('BIDDING_BAOCUNCHENGGONG',"保存成功"));
           // this.handleSearchReset();
           callback && callback();
@@ -1262,7 +1283,12 @@ export default {
       {
         const rfqCode = {rfqCode:this.rfqCode}
        await findRfqInquiry(rfqCode)
-        .then((res) => {
+        .then(r => {
+          if (r.code != 200) {
+            return iMessage.error(this.$i18n.locale === "zh" ? r.desZh : r.desEn)
+          }
+
+          const res = r.data || {}
           // 是否当前用户是否是采购员
           const userId = String(this.userId)
           this.isUser = userId === res.linieId
@@ -1556,10 +1582,12 @@ export default {
       if(!this.ruleForm.firstSaveSupplierFlag) {
         const flag = this.ruleForm.suppliers.every(item => item.contactName && item.email)
         const formData = this.ruleForm;
+        const fetch = this.isManual ? oldSaveInquiryBidding : saveInquiryBidding
         if (flag) {
-          saveInquiryBidding({
+          fetch({
           ...this.orgRuleForm,
-          suppliers: formData.suppliers
+          suppliers: formData.suppliers,
+          saveArea: 2
           }).then(res => {
             console.log('object成功了')
           })

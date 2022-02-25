@@ -506,3 +506,9 @@ export const attachTableTitle = [
     key:'BIDDING_SHANGCHUANRIQI'
   },
 ];
+
+export const saveAreaMap = {
+  header: 1,
+  content: 2,
+  reat: 3
+}
