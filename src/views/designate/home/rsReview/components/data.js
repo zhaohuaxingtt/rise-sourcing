@@ -53,7 +53,8 @@ export const tableTitle = [{
   props: 'meetingName',
   name: '会议',
   key: 'nominationLanguage_HuiYi',
-  tooltip: true
+  tooltip: true,
+  width:180
 },
 {
   props: 'nominateUserName',
@@ -78,7 +79,7 @@ export const tableTitle = [{
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
-  width: 150,
+  width: 100,
   key: 'nominationLanguage_RSDongJieRiQi',
   tooltip: true
 },
@@ -99,7 +100,7 @@ export const tableTitle = [{
 {
 	props: 'checkDueDate',
 	name: '复核截止日期',
-  width: 150,
+  width: 100,
 	key: 'nominationLanguage.FuHeJieZhiRiQi',
 	tooltip:true
 },
@@ -120,7 +121,7 @@ export const tableTitle = [{
 {
   props: 'freezeDate',
   name: '冻结日期',
-  width: 150,
+  width: 100,
   key: 'nominationLanguage_DongJieRiQi',
   tooltip: true
 },

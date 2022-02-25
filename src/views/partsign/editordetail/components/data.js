@@ -127,8 +127,8 @@ export const volumeTableTitle = [
   { props: 'gearType', name: '变速箱类型', key: 'LK_BIANSUXIANGLEIXING', tooltip: true },
   { props: 'cartypeLevel', name: '车型等级', key: 'LK_CHEXINGDENGJI', tooltip: true },
   { props: 'otherInfo', name: '其他信息', key: 'LK_QITAXINXI', tooltip: true },
-  { props: 'ratio', name: '比例', key: 'LK_BILI', tooltip: true },
-  { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG', tooltip: true }
+  { props: 'ratio', name: '比例', key: 'LK_BILI', tooltip: true,width:90},
+  { props: 'perCarDosage', name: '每车用量', key: 'LK_MEICHEYONGLIANG', tooltip: true,width:90 }
 ]
 
 export const volumeDialogTableTitle = [

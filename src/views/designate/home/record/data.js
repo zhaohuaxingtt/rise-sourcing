@@ -62,13 +62,16 @@ export const tableTitle = [
     props:'buyerName',
     name:'询价采购员',
     key:'XUNJIACAIGOUYUAN',
-    tooltip:true
+    tooltip:true,
+    width:90
   },
   {
     props:'linie',
     name:'Linie采购员',
     key:'TableLINIECAIGOUYUAN',
-    tooltip:true
+    tooltip:true,
+    width:90
+    
   },
   {
     props:'nominateTime',

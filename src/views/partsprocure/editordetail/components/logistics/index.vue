@@ -14,7 +14,7 @@
 				<span class="title">{{ language('LK_WULIUBIAOZHUN','物流标准') }}</span>
 			</div>
 			<iFormGroup :row="4" inline icon>
-				<iFormItem :label="language('LK_INBOUNDWULIUFANGSHI','INBOUND物流方式')" name="test">
+				<iFormItem :label="language('LK_INBOUNDWULIUFANGSHI','INBOUND物流方式')+':'" name="test">
 					<i-text>{{dataInfo.supplyType}}</i-text>
 				</iFormItem>
 				<iFormItem :label="language('LK_FUZEREN','负责人')" name="test">
@@ -25,7 +25,7 @@
 
 					<i-text>{{dataInfo.zp}}</i-text>
 				</iFormItem>
-				<iFormItem :label="language('LK_TESHULINGJIANLEIXING','特殊零件类型')" name="test">
+				<iFormItem :label="language('LK_TESHULINGJIANLEIXING','特殊零件类型')+':'" name="test">
 
 					<i-text>{{dataInfo.specialPartType}}</i-text>
 				</iFormItem>
@@ -36,13 +36,12 @@
 				<span class="title">{{ language('LK_CANKAOBAOZHUANG','参考包装') }}</span>
 			</div>
 			<iFormGroup :row="4" inline icon>
-				<iFormItem :label="language('LK_BAOZHUANGFUZEREN','包装负责人')" name="test">
-
+				<iFormItem :label="language('LK_BAOZHUANGFUZEREN','包装负责人')+':'" name="test">
 					<i-text>{{dataInfo.partPackgeRequirements.direcorName}}</i-text>
 				</iFormItem>
 			</iFormGroup>
 			<iFormGroup :row="4" inline icon>
-				<iFormItem :label="language('LK_RUCHANGBAOZHUANGMINGCHENG','入场包装名称')" name="test">
+				<iFormItem :label="language('LK_RUCHANGBAOZHUANGMINGCHENG','入场包装名称')+':'" name="test">
 					<i-text>{{dataInfo.partPackgeRequirements.admissionPackgeName}}</i-text>
 				</iFormItem>
 			</iFormGroup>
