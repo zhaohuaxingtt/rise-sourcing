@@ -324,6 +324,7 @@
 
     <!-- 汇率 -->
     <iCard
+      v-if="!['01', '06'].includes(this.ruleForm.roundType)"
       :title="language('BIDDING_HUILV', '汇率')"
       :class="{
         'can-pointer': ruleForm.biddingStatus !== '01' || !reatCollapseVal,
