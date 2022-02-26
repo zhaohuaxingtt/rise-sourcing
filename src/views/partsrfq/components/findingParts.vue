@@ -173,7 +173,7 @@ export default {
         pageSize: this.page.pageSize,
         ...this.form
       }
-      pagePart(this.form)
+      pagePart(params)
         .then((res) => {
           if (res.code === "200") {
             this.page.currPage = res.pageNum
