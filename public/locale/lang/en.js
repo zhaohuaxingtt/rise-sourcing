@@ -6361,6 +6361,9 @@
     QINGSHURUBIAOQIANMINGCHENG: 'Please enter tag name',
     BIDDING_BJDWWFSC: 'Comparison unit cannot be deleted',
     YUANCAILIAOXIANGQING: 'Raw Material Price Overview',
+    "AEKO_ZENGJIATOUZIFEI":'',
+    "AEKO_BUHANSHUI":'',
+    "AEKO_HANFENTAN":'',
   }
   var xmlHttp = ''
   if(window.XMLHttpRequest){

@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-02-11 11:41:06
+ * @LastEditTime: 2022-02-25 16:42:08
  * @LastEditors: Please set LastEditors
  * @Description: table组件
 -->
@@ -42,7 +42,16 @@
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{ scope.column.label }}
+            <template>
+              <span v-if="items.isHeaderSetting" class="isHeaderSetting">
+                <template v-for="(setting,index) in items.HeaderSettingList">
+                  <span :key="index+'_setting'">{{language(setting.key, setting.name)}}</span>
+                  <br  :key="index+'_setting_br'" v-if="index+1 < items.HeaderSettingList.length"/>
+                </template>
+              </span>
+              <span v-else class="noisHeaderSetting">{{scope.column.label }}</span>
+            </template>
+            
             <i v-if="items.require" class="label-require margin-left3 margin-right3">*</i>
             <el-popover
               placement="top"
@@ -83,7 +92,15 @@
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{ scope.column.label }}
+            <template>
+              <span v-if="items.isHeaderSetting" class="isHeaderSetting">
+                <template v-for="(setting,index) in items.HeaderSettingList">
+                  <span :key="index+'_setting'">{{language(setting.key, setting.name)}}</span>
+                  <br  :key="index+'_setting_br'" v-if="index+1 < items.HeaderSettingList.length"/>
+                </template>
+              </span>
+              <span v-else class="noisHeaderSetting">{{scope.column.label }}</span>
+            </template>
             <i v-if="items.require" class="label-require margin-left3 margin-right3">*</i>
             <el-popover
               placement="top"
