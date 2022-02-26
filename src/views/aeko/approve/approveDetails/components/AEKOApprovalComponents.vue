@@ -88,8 +88,8 @@
           </template>
           <template slot-scope="scope">
             <i-input v-if="approvalComments(scope.row)" v-model="scope.row.auditOpinion"></i-input>
-            <span v-else>{{ scope.row.auditOpinion }}</span>
-          </template>
+              <span v-else>{{ scope.row.auditOpinion }}</span>
+            </template>
 
         </el-table-column>
         <el-table-column
@@ -103,9 +103,11 @@
         <el-table-column
             label="解释附件"
             align="center"
-            prop="explainFile">
+            prop="explainFile"
+            width="90"
+            >
           <template slot-scope="scope">
-            <a class="link-underline" v-if="scope.row.explainFileIds!=null" @click="lookExplainFile(scope.row)">
+            <a class="link" v-if="scope.row.explainFileIds!=null" @click="lookExplainFile(scope.row)">
               {{ language('CHAKAN', '查看') }}
             </a>
           </template>
@@ -374,5 +376,8 @@ created(){
 }
   .clickIcon{
     padding: 10px 15px;
+  }
+  .table-text{
+    white-space: nowrap;
   }
 </style>
