@@ -86,3 +86,12 @@ export function patchAttachmentVersion(params) {
     }
   })
 }
+
+// 获取新件信息单询价采购员信息
+export function searchBuyerInfo(params) {
+  return requst({
+    url: `/tp-records/tpInfo/search-buyer-info/${ params.tpPartID }`,
+    method: 'GET',
+    params: params
+  })
+}

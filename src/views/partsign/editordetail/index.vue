@@ -68,6 +68,7 @@ import {patchRecords} from "@/api/partsign/home";
 import local from "@/utils/localstorage";
 import { TP_INFO_STATUS } from "@/views/partsign/home/components/data"
 import iLoger from 'rise/web/components/iLoger'
+import { searchBuyerInfo } from "@/api/partsign/editordetail"
 
 export default {
   components: {
@@ -111,6 +112,7 @@ export default {
   },
   created() {
     this.getPartInfo();
+    this.searchBuyerInfo()
   },
   methods: {
     onTypeChange(type) {
@@ -190,6 +192,7 @@ export default {
       }}).then(res=>{
         if(res.code == 200){
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
+          this.searchBuyerInfo()
         }else{
           iMessage.error(res.desZh)
         }
@@ -205,6 +208,20 @@ export default {
     updateEnquiryVersion() {
       this.$refs.enquiryUnconfirmed.getAttachmentVersion()
       this.$refs.enquiry.getEnquiry()
+    },
+    // 更新询价采购员
+    searchBuyerInfo() {
+      searchBuyerInfo({
+        tpPartID: this.partDetails.tpPartID
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.$set(this.partDetails, "stuffName", res.data.nameZh)
+          localStorage.setItem("tpPartInfoVO", JSON.stringify(this.partDetails))
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
     }
   },
 };
