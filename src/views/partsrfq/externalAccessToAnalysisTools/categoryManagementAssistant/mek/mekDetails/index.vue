@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-25 20:12:19
+ * @LastEditTime: 2022-02-26 10:48:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -585,7 +585,7 @@ export default {
           this.categoryCode = data.categoryCode;
           this.categoryId = data.categoryId;
           this.categoryName = data.categoryName;
-          this.exceptPart = data.exceptPart || "";
+          this.exceptPart = data.exceptPart ? data.exceptPart.split(',') : "";
           this.targetMotor = data.targetMotor.toString();
           this.comparedType = data.comparedType;
           this.isBindingRfq = data.isBindingRfq;
@@ -678,8 +678,7 @@ export default {
                 partNumber.push(item.partNumber);
               });
               this.recursiveRetrieveList = res.data;
-              this.partNumber = _.differenceBy(partNumber, this.exceptPart.split(','));
-
+              this.partNumber = _.differenceBy(partNumber, this.exceptPart ? this.exceptPart : []);
             }
           });
         } else {
@@ -702,7 +701,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
       let motorIdList = [];
       if (this.barData) {
@@ -796,7 +795,12 @@ export default {
         schemeId: this.schemeId,
       };
       recursiveRetrieve(params).then((res) => {
+        let partNumber = [];
+        res.data.forEach((item) => {
+          partNumber.push(item.partNumber);
+        });
         this.recursiveRetrieveList = res.data;
+        this.partNumber = _.differenceBy(partNumber, this.exceptPart ? this.exceptPart : []);
       });
     },
     //选择目标车型
@@ -824,7 +828,7 @@ export default {
       let params = {
         comparedType: this.comparedType,
         schemeId: this.schemeId,
-        unselected: [this.unselected],
+        unselected: this.unselected,
         ...val,
       };
       delete params.motorName;
@@ -875,7 +879,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
       if (this.isBindingRfq) {
         params.isBindingRfq = true;
@@ -927,7 +931,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
       if (this.isBindingRfq) {
         params.isBindingRfq = true;
@@ -1094,7 +1098,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
       this.barData.forEach((item) => {
         let obj = {
@@ -1157,7 +1161,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? [this.exceptPart] : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
       this.ComparedMotor = this.ComparedMotor.filter((i) => i !== data.motorId);
       this.ComparedMotor.forEach((item) => {
