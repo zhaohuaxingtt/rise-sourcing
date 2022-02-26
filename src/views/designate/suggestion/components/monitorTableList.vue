@@ -55,7 +55,7 @@
         align='center'
         prop="partNo"
         label="Part"
-        width="95">
+        width="110">
       <template slot-scope="scope">
         <p class="partName">{{scope.row.partNo || ''}}</p>
         <p class="partDeName" :title="scope.row.partNameDe || ''">{{scope.row.partNameDe || ''}}</p>
@@ -65,7 +65,7 @@
         align='center'
         prop="partPrjCode"
         label="FS/GS/SP No."
-        width="90">
+        width="110">
       </el-table-column>
       <el-table-column
         align='center'
