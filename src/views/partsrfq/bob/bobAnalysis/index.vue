@@ -46,9 +46,9 @@
             v-for="(item, index) in tableTitle"
             :key="index"
             class="table-cell"
-            :style="{ 'font-weight': 'bold', width: 'calc(80% / ' + tableTitle.length + ')' }"
+            :style="{ 'font-weight': 'bold', width: 'calc(120% / ' + tableTitle.length + ')' }"
+            v-html="item.title"
           >
-            {{ item.title }}
           </div>
         </div>
         <div class="flex tabeleList" ref="cbdDetailTable">
@@ -105,7 +105,7 @@
                   :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
                   v-for="(title, titleIdx) in tableTitle"
                   :key="titleIdx"
-                  :style="{ width: 'calc(80% / ' + tableTitle.length + ')' }"
+                  :style="{ width: 'calc(120% / ' + tableTitle.length + ')' }"
                 >
                   <el-checkbox
                     v-show="onGroupingModel"
