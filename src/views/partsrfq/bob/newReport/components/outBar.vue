@@ -2,7 +2,7 @@
 .crown-bar-x-label {
   font-size: 12px;
   font-weight: 400;
-  color: #7E84A3;
+  color: #7e84a3;
   font-family: Arial;
   line-height: 23px;
   text-align: center;
@@ -11,33 +11,41 @@
 </style>
 <template>
   <div style="width: 100%;">
-    <div style="height:440px;width: 100%;" ref="chart" v-show="chartData.length > 0"></div>
+    <div style="height:440px;width: 100%;"
+         ref="chart"
+         v-show="chartData.length > 0"></div>
     <template v-if="chartData.length > 0">
       <div style="display:flex;flex-flow:row nowrap;">
         <span style="width: 14%;"></span>
-        <span class="crown-bar-x-label" style="width: 86%">{{getCrownBarName(chartData[0])}}</span>
+        <span class="crown-bar-x-label"
+              style="width: 86%">{{getCrownBarName(chartData[0])}}</span>
       </div>
       <div style="display:flex;flex-flow:row nowrap;">
         <span style="width: 14%;"></span>
-        <span class="crown-bar-x-label" style="width: 86%">
+        <span class="crown-bar-x-label"
+              style="width: 86%">
           {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{chartData[0].turn}}</a>/{{chartData[0].totalTurn}}{{language('LK_TURN','轮')}}
         </span>
       </div>
       <div style="display:flex;flex-flow:row nowrap;margin-top: 10px;">
         <span style="width: 14%;"></span>
-        <span class="crown-bar-x-label" style="width: 86%">{{chartData[0].vehicleType}}</span>
+        <span class="crown-bar-x-label"
+              style="width: 86%">{{chartData[0].vehicleType}}</span>
       </div>
       <div style="display:flex;flex-flow:row nowrap;">
         <span style="width: 14%;"></span>
-        <span class="crown-bar-x-label" style="width: 86%">{{getCrownBarReqTime(chartData[0])}}</span>
+        <span class="crown-bar-x-label"
+              style="width: 86%">{{getCrownBarReqTime(chartData[0])}}</span>
       </div>
     </template>
     <template v-else>
       <div style="padding: 32% 0% 3% 14%;display: flex;flex-flow:column nowrap;height: 100%;">
         <img src="@/assets/images/newZhu.png"
-              alt=""
-              style="width:220px;height: calc(440px - 28%);cursor: pointer;" @click="findPart">
-        <div style="width:220px;text-align: center;color:#7E84A3;margin-top:3%;cursor: pointer;" @click="findPart">{{ $t("待添加") }}</div>
+             alt=""
+             style="width:220px;height: calc(440px - 28%);cursor: pointer;"
+             @click="findPart">
+        <div style="width:220px;text-align: center;color:#7E84A3;margin-top:3%;cursor: pointer;"
+             @click="findPart">{{ $t("待添加") }}</div>
       </div>
     </template>
   </div>
@@ -97,7 +105,7 @@ export default {
     }
   },
   methods: {
-    getCrownBarName(row) {
+    getCrownBarName (row) {
       let name = row.supplierName
 
       if (this.chartType === "num") {
@@ -110,10 +118,10 @@ export default {
       }
       return name
     },
-    getCrownBarReqTime(row) {
+    getCrownBarReqTime (row) {
       return window.moment(row.cbdQuotationTime).format("yyyy.MM");
     },
-    findPart() {
+    findPart () {
       this.$emit('find-part')
     },
     bos (arr) {
@@ -158,7 +166,7 @@ export default {
                 right: 0,
                 align: 'right',
                 backgroundColor: {
-                  image: this.isPreview ? '' :this.del
+                  image: this.isPreview ? '' : this.del
                 }
               },
             }
@@ -288,7 +296,7 @@ export default {
           that.$emit('del')
         }
         if (params.componentType === 'xAxis') {
-          console.log('点击了',that.isPreview);
+          console.log('点击了', that.isPreview);
           if (!that.isPreview) {
             that.$emit('change')
           }
@@ -381,7 +389,7 @@ export default {
               barBorderRadius: [5, 5, 0, 0]
             },
             barWidth: 50,
-            data: [...tempArr[row]],
+            data: [...dataList1[row]],
           })
         })
         this.dataArray.push({
