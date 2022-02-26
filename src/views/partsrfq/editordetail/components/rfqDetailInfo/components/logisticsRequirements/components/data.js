@@ -6,7 +6,7 @@
  */
 export const tableTitle = [
     {props:'partNum',name:'零件号',key: 'LK_LINGJIANHAO'},
-    {props:'fsGsNum',name:'FS / GS号',key: 'LK_FS_GSHAO', width:240},
+    {props:'fsGsNum',name:'FS / GS号',key: 'LK_FS_GSHAO', width:150},
     {props:'partNameZh',name:'零件名称',key: 'LK_LINGJIANMINGCHENG', minWidth:160},
     {props:'direcorName',name:'负责人',key: 'LK_FUZEREN'},
     {props:'direcorEmail',name:'负责⼈邮箱',key: 'LK_FUZERENYOUXIANG', minWidth:160},

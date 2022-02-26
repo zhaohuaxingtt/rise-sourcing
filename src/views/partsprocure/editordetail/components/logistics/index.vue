@@ -13,7 +13,7 @@
 			<div class="header">
 				<span class="title">{{ language('LK_WULIUBIAOZHUN','物流标准') }}</span>
 			</div>
-			<iFormGroup :row="4" inline icon>
+			<iFormGroup :row="4" inline icon class="logisticsStandard">
 				<iFormItem :label="language('LK_INBOUNDWULIUFANGSHI','INBOUND物流方式')+':'" name="test">
 					<i-text>{{dataInfo.supplyType}}</i-text>
 				</iFormItem>
@@ -270,6 +270,14 @@
 			font-size: 18px;
 			font-weight: bold;
 			color: #001847;
+		}
+	}
+	.logistics{
+		.logisticsStandard {
+				::v-deep.el-form-item__label{
+					width: 160px;
+				}
+			
 		}
 	}
 </style>
