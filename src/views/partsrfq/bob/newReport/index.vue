@@ -785,10 +785,13 @@ export default {
               defaultBobOptions: this.bobType,
               id: this.analysisSchemeId,
               name: this.analysisName,
-              combination: this.form.combination.join(','),
               isCover: this.isCover,
+              combination:''
               // remark: this.$refs.bobAnalysis.remark
             };
+            this.form.combination.forEach((item) => {
+              this.formUpdata.combination = this.formUpdata.combination + item.key +",";
+            });
           }
           this.$nextTick(() => {
             this.onDataLoading = false;
@@ -877,10 +880,13 @@ export default {
               defaultBobOptions: this.bobType,
               id: this.analysisSchemeId,
               name: this.analysisName,
-              combination: this.form.combination ? this.form.combination.join(',') : '',
               isCover: this.isCover,
+              combination:[]
               // remark: this.$refs.bobAnalysis.remark
             };
+            this.form.combination.forEach((item) => {
+              this.formUpdata.combination = this.formUpdata.combination + item.key +",";
+            });
           }
           this.$nextTick(() => {
             this.onDataLoading = false;
@@ -943,7 +949,7 @@ export default {
       this.findPart();
     },
     handleMultiChange (val) {
-      console.log(val);
+      console.log("选择过后的数据"+val);
     },
     saveDialog () {
       this.dialogVisible = true;
@@ -981,8 +987,10 @@ export default {
               });
             });
         } else {
+          console.log(this.formUpdata.combination);
           this.formUpdata.remark = this.$refs.bobAnalysis.remark;
           this.formUpdata.name = this.analysisName;
+
           update(this.formUpdata)
             .then((res) => {
               iMessage.success('保存成功');
