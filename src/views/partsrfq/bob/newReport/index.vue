@@ -537,10 +537,10 @@ export default {
         this.$router.push({
           path: "/sourceinquirypoint/sourcing/partsrfq/assistant",
           query: {
-            id: this.rfqId,
-            // round: this.$route.query.round,
-            pageType: "BOB",
-            activityTabIndex: "one",
+            id: this.$store.state.rfq.rfqId,
+            round: this.$route.query.round,
+            pageType: "BoB",
+            activityTabIndex: "two",
           },
         });
       } else {
