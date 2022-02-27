@@ -312,6 +312,8 @@ export default {
         const tempArr = []
         const dataList1 = []
         newVal.forEach((row, i) => {
+          console.log(row)
+          console.log(this.legendKeys)
           const str = "";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
@@ -345,17 +347,17 @@ export default {
           });
           this.legendArray.map((v, i) => {
             if (!tempArr[v]) {
-              tempArr[v] = []
-              dataList1[v] = []
+              tempArr[v] = [];
+              dataList1[v] = [];
             }
-            tempArr[v].push(row[this.legendKeys[v]])
-            const sum = this.sumBy(this.take(this.legendArray, i), (k) => {
-              return Number(row[this.legendKeys[k]])
-            })
+            tempArr[v].push(row[this.legendKeys[v]]);
+            const sum = this.sumBy(this.take(this.legendArray, i + 1), (k) => {
 
-            dataList1[v].push(sum)
-
-          })
+              return Number(row[this.legendKeys[k]]);
+            });
+            // console.log(sum)
+            dataList1[v].push(sum);
+          });
         })
         const minList = []
 
@@ -378,8 +380,7 @@ export default {
               position: 'insideTop',
               color: 'white',
               formatter: (params) => {
-
-                return (tempArr[row][0])
+                return this.doNumber(tempArr[row][params.dataIndex])
               },
             },
             labelLine: {
