@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2021-12-10 10:33:57
+ * @LastEditTime: 2022-02-27 14:06:22
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -9,25 +9,31 @@
 <template>
   <div v-loading="onDataLoading">
     <iCard :class="[onPreview ? 'preview-card' : '']">
-      <template v-slot:header v-if="!onPreview">
+      <template v-slot:header
+                v-if="!onPreview">
         <div class="flex titleBox">
           <div class="flex-between-center">
             <span class="title">{{ language('FEIYONGXIANGQING', '费用详情') }}</span>
             <div class="wrap">
-              <div v-if="remark" class="margin-left40 remark">
+              <div v-if="remark"
+                   class="margin-left40 remark">
                 <span style="font-size:12px">{{ remark }}</span>
               </div>
-              <div v-if="remark" class="margin-left40 remark2">备注：{{ remark }}</div>
+              <div v-if="remark"
+                   class="margin-left40 remark2">备注：{{ remark }}</div>
             </div>
           </div>
           <div>
             <template v-if="!isPreview">
-              <iButton v-show="!allExpand" @click="handleAllCollapse(true)">全部展开</iButton>
-              <iButton v-show="allExpand" @click="handleAllCollapse(false)">全部收回</iButton>
+              <iButton v-show="!allExpand"
+                       @click="handleAllCollapse(true)">全部展开</iButton>
+              <iButton v-show="allExpand"
+                       @click="handleAllCollapse(false)">全部收回</iButton>
               <template v-if="!onGroupingModel">
                 <iButton @click="remarks">备注</iButton>
                 <iButton @click="reduction">还原</iButton>
-                <iButton @click="onGroupingModel = true" v-if="!onGroupingModel">数据分组</iButton>
+                <iButton @click="onGroupingModel = true"
+                         v-if="!onGroupingModel">数据分组</iButton>
                 <iButton @click="down">导出</iButton>
               </template>
               <template v-else>
@@ -41,105 +47,131 @@
       </template>
       <div>
         <div style="display: flex;flex-flow: row nowrap;width: 100%;">
-          <div class="table-cell" style="justify-content: flex-start;width: 20%"></div>
-          <div
-            v-for="(item, index) in tableTitle"
-            :key="index"
-            class="table-cell"
-            :style="{ 'font-weight': 'bold', width: 'calc(120% / ' + tableTitle.length + ')' }"
-            v-html="item.title"
-          >
+          <div class="table-cell"
+               style="justify-content: flex-start;width: 20%"></div>
+          <div v-for="(item, index) in tableTitle"
+               :key="index"
+               class="table-cell"
+               :style="{ 'font-weight': 'bold', width: 'calc(80% / ' + tableTitle.length + ')' }">
+            <p class="table-cell">{{ spiltStr(item.title)?spiltStr(item.title)[0]:'' }}</p>
+            <el-tooltip placement="top">
+              <p slot="content"
+                 effect="light">{{ spiltStr(item.title)?spiltStr(item.title)[1]:'' }}</p>
+              <p class="partCell">{{ spiltStr(item.title)?spiltStr(item.title)[1]:'' }}</p>
+            </el-tooltip>
+
           </div>
         </div>
-        <div class="flex tabeleList" ref="cbdDetailTable">
+        <div class="flex tabeleList"
+             ref="cbdDetailTable">
           <div style="display:flex;flex-flow:column nowrap;">
-            <div
-              v-for="(item, index) in tableListData"
-              :key="index"
-              style="display: flex;flex-flow: row nowrap;width: 100%;"
-              :class="decideRowClass(item, index)"
-              v-if="collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'"
-              :id="item.id"
-              :root-id="item.rootId"
-              :parent-id="item.parentId"
-              :ref="!item.parentId ? item.id : ''"
-            >
+            <div v-for="(item, index) in tableListData"
+                 :key="index"
+                 style="display: flex;flex-flow: row nowrap;width: 100%;"
+                 :class="decideRowClass(item, index)"
+                 v-if="collapseItems.indexOf(item.id) < 0 && item.code != 'detailId'"
+                 :id="item.id"
+                 :root-id="item.rootId"
+                 :parent-id="item.parentId"
+                 :ref="!item.parentId ? item.id : ''">
               <template v-if="item.isBreakLine">
-                <span class="table-cell" style="width: 100%;text-align:center;font-weight: bold;background-color: #1763F7;color: #fff;">
+                <span class="table-cell"
+                      style="width: 100%;text-align:center;font-weight: bold;background-color: #1763F7;color: #fff;">
                   {{ $t('LK_NONGROUPEDBREAKTIPS', { msg: item.title }) }}
                 </span>
               </template>
               <template v-else>
-                <div
-                  :class="['table-cell', showCollapseOutLine(item)]"
-                  :style="{ 'padding-left': 20 * item.level + 'px', 'justify-content': 'flex-start', width: '20%' }"
-                >
-                  <i
-                    v-if="item.hasChild"
-                    :class="item.expanded ? 'el-icon-arrow-down' : 'el-icon-arrow-right'"
-                    style="cursor: pointer;padding-right: 4px;"
-                    @click="handleCollapse(item, item.expanded)"
-                  ></i>
+                <div :class="['table-cell', showCollapseOutLine(item)]"
+                     :style="{ 'padding-left': 20 * item.level + 'px', 'justify-content': 'flex-start', width: '20%' }">
+                  <i v-if="item.hasChild"
+                     :class="item.expanded ? 'el-icon-arrow-down' : 'el-icon-arrow-right'"
+                     style="cursor: pointer;padding-right: 4px;"
+                     @click="handleCollapse(item, item.expanded)"></i>
                   <template v-if="item.matchId > 0 && !onPreview">
                     <template v-if="onEditLabels.indexOf(item.id) < 0">
                       <span :style="{ 'font-weight': item.matchId > 0 ? 'bold' : '' }">{{ item.title }}</span>
-                      <i class="el-icon-edit" style="cursor: pointer;margin-left: 10px;" @click.stop="changeToEditMode(item.id)"></i>
+                      <i class="el-icon-edit"
+                         style="cursor: pointer;margin-left: 10px;"
+                         @click.stop="changeToEditMode(item.id)"></i>
                     </template>
-                    <el-input v-else v-model="item.title">
+                    <el-input v-else
+                              v-model="item.title">
                       <template slot="append">
-                        <i class="el-icon-check" @click.stop="updateGroupedLabel(item)" style="cursor: pointer;"></i>
+                        <i class="el-icon-check"
+                           @click.stop="updateGroupedLabel(item)"
+                           style="cursor: pointer;"></i>
                       </template>
                     </el-input>
                   </template>
                   <template v-else>
-                    <span
-                      :title="item.title"
-                      class="title-cell"
-                      :style="{ 'font-weight': (item.matchId < 0 && item.level == 1) || item.level == 0 ? 'bold' : '' }"
-                    >
+                    <span :title="item.title"
+                          class="title-cell"
+                          :style="{ 'font-weight': (item.matchId < 0 && item.level == 1) || item.level == 0 ? 'bold' : '' }">
                       {{ item.title }}
                     </span>
                   </template>
                 </div>
-                <div
-                  :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
-                  v-for="(title, titleIdx) in tableTitle"
-                  :key="titleIdx"
-                  :style="{ width: 'calc(120% / ' + tableTitle.length + ')' }"
-                >
-                  <el-checkbox
-                    v-show="onGroupingModel"
-                    v-if="item.groupKey && item['label#' + titleIdx]"
-                    style="margin-right: 10px;"
-                    v-model="item['checked#' + titleIdx]"
-                    @change="onGroupItemSelected(item['checked#' + titleIdx], item, titleIdx)"
-                  ></el-checkbox>
-                  {{
+                <<<<<<< Updated
+                        upstream
+                        <div
+                        :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
+                        v-for="(title, titleIdx) in tableTitle"
+                        :key="titleIdx"
+                        :style="{ width: 'calc(120% / ' + tableTitle.length + ')' }">
+                  <el-checkbox v-show="onGroupingModel"
+                               v-if="item.groupKey && item['label#' + titleIdx]"
+                               style="margin-right: 10px;"
+                               v-model="item['checked#' + titleIdx]"
+                               @change="onGroupItemSelected(item['checked#' + titleIdx], item, titleIdx)"></el-checkbox>
+                  =======
+                  <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
+                       v-for="(title, titleIdx) in tableTitle"
+                       :key="titleIdx"
+                       :style="{ width: 'calc(80% / ' + tableTitle.length + ')' }">
+                    <el-checkbox v-show="onGroupingModel"
+                                 v-if="item.groupKey && item['label#' + titleIdx]"
+                                 style="margin-right: 10px;"
+                                 v-model="item['checked#' + titleIdx]"
+                                 @change="onGroupItemSelected(item['checked#' + titleIdx], item, titleIdx)"></el-checkbox>
+                    >>>>>>> Stashed changes
+                    {{
                     item['label#' + titleIdx] == 'false'
                       ? $t('nominationLanguage.No')
                       : item['label#' + titleIdx] == 'true'
                       ? $t('nominationLanguage.Yes')
                       : formatIfNumber(item['label#' + titleIdx])
                   }}
-                </div>
+                  </div>
               </template>
             </div>
           </div>
         </div>
       </div>
-      <iDialog :visible.sync="groupToDialogVisible" title="分组至" width="20%">
+      <iDialog :visible.sync="groupToDialogVisible"
+               title="分组至"
+               width="20%">
         <el-form>
           <el-form-item label="分组至">
-            <el-select v-model="selectGroupName" clearable placeholder="请选择" value-key="matchId">
-              <el-option v-for="item in groupNameOptions" :key="item.matchId" :label="item.groupName" :value="item"> </el-option>
+            <el-select v-model="selectGroupName"
+                       clearable
+                       placeholder="请选择"
+                       value-key="matchId">
+              <el-option v-for="item in groupNameOptions"
+                         :key="item.matchId"
+                         :label="item.groupName"
+                         :value="item"> </el-option>
             </el-select>
           </el-form-item>
         </el-form>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="groupToList">确 定</el-button>
+        <span slot="footer"
+              class="dialog-footer">
+          <el-button type="primary"
+                     @click="groupToList">确 定</el-button>
         </span>
       </iDialog>
-      <remarkDialog :visible="remarkDialogVisible" @remake="sure" @cancel="cancel"></remarkDialog>
+      <remarkDialog :visible="remarkDialogVisible"
+                    @remake="sure"
+                    @cancel="cancel"></remarkDialog>
     </iCard>
   </div>
 </template>
@@ -207,7 +239,7 @@ export default {
       default: false,
     },
   },
-  data() {
+  data () {
     return {
       onDataLoading: false,
       editGroupedLabel: [],
@@ -248,7 +280,18 @@ export default {
       removeCbdIds: [],
     };
   },
-  created() {
+  computed: {
+    spiltStr () {
+      return function (val) {
+        if (val.indexOf('<br/>') > -1) {
+          return val.split('<br/>')
+        } else {
+          return val
+        }
+      }
+    }
+  },
+  created () {
     if (this.$route.query.groupId) {
       this.groupId = this.$route.query.groupId;
     } else {
@@ -264,13 +307,13 @@ export default {
   },
   watch: {
     activeName: {
-      handler(val) {
+      handler (val) {
         console.log(val, 'acitve');
       },
     },
     label: {
-      handler(val) {
-        this.$nextTick(function() {
+      handler (val) {
+        this.$nextTick(function () {
           this.tableListData.forEach((item) => {
             if (item.title == val) {
               this.$refs[item.id][0].scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -281,36 +324,36 @@ export default {
     },
   },
   methods: {
-    formatIfNumber(val) {
+    formatIfNumber (val) {
       if (!val) {
         return val;
       }
       if (this.isNumber(val.toString())) {
-        return val.toString().replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g,'$1,');
+        return val.toString().replace(/(\d{1,3})(?=(\d{3})+(?:$|\.))/g, '$1,');
       } else {
         return val;
       }
     },
-    isNumber(val) {
+    isNumber (val) {
       var regPos = /^\d+(\.\d+)?$/; //非负浮点数
       var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-      if(regPos.test(val) || regNeg.test(val)) {
+      if (regPos.test(val) || regNeg.test(val)) {
         return true;
       } else {
         return false;
       }
     },
-    showCollapseOutLine(item) {
+    showCollapseOutLine (item) {
       // if (item.level == 0) {
       //   return 'collapse-root'
       // } else {
       return item.level == 1 && typeof item.matchId != 'undefined' ? 'collapse-group' : '';
       // }
     },
-    changeToEditMode(id) {
+    changeToEditMode (id) {
       this.onEditLabels.push(id);
     },
-    onPreviewStyle() {
+    onPreviewStyle () {
       if (this.onPreview) {
         return {
           boxShadow: 'none',
@@ -318,7 +361,7 @@ export default {
       }
       return {};
     },
-    decideRowClass(row, idx) {
+    decideRowClass (row, idx) {
       var displayed = this.tableListData.filter((item) => {
         return this.collapseItems.indexOf(item.id) < 0 && item.code != 'detailId';
       });
@@ -332,7 +375,7 @@ export default {
 
       return realIndex % 2 == 0 ? 'table-odd' : 'table-even';
     },
-    handleAllCollapse(expandAll) {
+    handleAllCollapse (expandAll) {
       this.allExpand = !this.allExpand;
       // if (!expandAll) this.collapseItems = [];
       this.tableListData.forEach((item) => {
@@ -342,11 +385,11 @@ export default {
         item.expanded = expandAll;
       });
     },
-    handleCollapse(item, isExpand) {
+    handleCollapse (item, isExpand) {
       this.collapseItem(item.id, isExpand);
       item.expanded = !isExpand;
     },
-    collapseItem(parentId, isCollapse) {
+    collapseItem (parentId, isCollapse) {
       this.tableListData.forEach((item) => {
         if (isCollapse) {
           if (item.parentId && item.parentId == parentId) {
@@ -371,11 +414,11 @@ export default {
         }
       });
     },
-    cancelGroupMode() {
+    cancelGroupMode () {
       this.clearGrouped();
       this.onGroupingModel = false;
     },
-    clearGrouped() {
+    clearGrouped () {
       this.tableListData.forEach((item) => {
         for (var key in item) {
           if (key.indexOf('checked#') >= 0) {
@@ -387,7 +430,7 @@ export default {
       this.cbdSelectedList = [];
       // this.onGroupingModel = false;
     },
-    onGroupItemSelected(checked, item, idx) {
+    onGroupItemSelected (checked, item, idx) {
       var parent = this.tableListData.filter((line) => {
         return line.id == item.parentId;
       });
@@ -458,7 +501,7 @@ export default {
         });
       }
     },
-    iterateChilds(checked, item, idx, groupId) {
+    iterateChilds (checked, item, idx, groupId) {
       if (checked) {
         this.tableListData.forEach((obj) => {
           if (obj.parentId == item.id) {
@@ -489,12 +532,12 @@ export default {
         });
       }
     },
-    hasSelected(item, idx) {
+    hasSelected (item, idx) {
       return this.groupSelectedItems.some((obj) => {
         return obj.id == item.id && idx == obj.idx;
       });
     },
-    getRfqToRemark() {
+    getRfqToRemark () {
       getRfqToRemark({
         rfqCode: this.rfqCode,
       }).then((res) => {
@@ -505,7 +548,7 @@ export default {
         }
       });
     },
-    chargeRetrieve(params) {
+    chargeRetrieve (params) {
       this.onDataLoading = true;
       chargeRetrieve(params)
         .then((allDatas) => {
@@ -525,15 +568,15 @@ export default {
           iMessage.error(err.desZh);
         });
     },
-    createUuid() {
-      var s4 = function() {
+    createUuid () {
+      var s4 = function () {
         return Math.floor((1 + Math.random()) * 0x10000)
           .toString(16)
           .substring(1);
       };
       return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
     },
-    reContructData() {
+    reContructData () {
       var a = new Date().getTime();
       this.tableListData = [];
       this.suppliers = [];
@@ -551,7 +594,7 @@ export default {
 
       var b = new Date().getTime();
     },
-    reBuild(code, prop) {
+    reBuild (code, prop) {
       this.subCbdDetails = {};
       this.subCbdDetailShowPositions = [];
       var elements = this.tableList.element;
@@ -570,7 +613,7 @@ export default {
       this.insertUnGroupedArr(prop);
       this.addToTable(rootTitle);
     },
-    processGroupDatas(cbdLvlZero, rootId) {
+    processGroupDatas (cbdLvlZero, rootId) {
       if (!cbdLvlZero.child || cbdLvlZero.child.length <= 0) {
         return;
       }
@@ -599,7 +642,7 @@ export default {
         });
       });
     },
-    findCbdId(cbdLvlZeroHead, supplier) {
+    findCbdId (cbdLvlZeroHead, supplier) {
       if (!cbdLvlZeroHead.child || cbdLvlZeroHead.child.length < 0) {
         return;
       }
@@ -610,7 +653,7 @@ export default {
       }
       return;
     },
-    createDetail(cbdHead, cbdId, supplier, index, rootId, parentId, level) {
+    createDetail (cbdHead, cbdId, supplier, index, rootId, parentId, level) {
       var nextLevel = level + 1;
       cbdHead.child.forEach((child) => {
         var temp = this.createNewCbdDetailLine(child.code, child.title, rootId, parentId);
@@ -629,14 +672,14 @@ export default {
         }
       });
     },
-    createDetailHead(cbdHead, supplier, index, rootId, parentId, level) {
+    createDetailHead (cbdHead, supplier, index, rootId, parentId, level) {
       var cbdDetailHead = this.createNewCbdDetailLine(cbdHead.code, cbdHead.title, rootId, parentId);
       cbdDetailHead[supplier] = index >= 0 ? cbdHead[supplier][index] : cbdHead[supplier];
       cbdDetailHead.matchId = cbdHead.matchId;
       cbdDetailHead.level = level;
       return cbdDetailHead;
     },
-    createNewCbdDetailLine(code, title, rootId, parentId) {
+    createNewCbdDetailLine (code, title, rootId, parentId) {
       var temp = {
         code: code,
         title: title,
@@ -647,7 +690,7 @@ export default {
 
       return temp;
     },
-    addOrigin() {
+    addOrigin () {
       var elements = this.tableList.element;
       elements.forEach((cbdLvlZero) => {
         if (cbdLvlZero.code < '3') {
@@ -657,7 +700,7 @@ export default {
         this.addSub(cbdLvlZero, rootId, rootId, 1);
       });
     },
-    addSub(parent, rootId, parentId, level) {
+    addSub (parent, rootId, parentId, level) {
       if (!parent.child || parent.child.length <= 0) {
         return;
       }
@@ -676,13 +719,13 @@ export default {
         this.addSub(cbdDetail, rootId, lvlItem.id, nextLevel);
       });
     },
-    setCollapse(ref, item) {
+    setCollapse (ref, item) {
       if (ref.child && ref.child.length > 0) {
         item.hasChild = true;
         item.expanded = true;
       }
     },
-    addCategory(cbdLvlZero) {
+    addCategory (cbdLvlZero) {
       var lvlZero = JSON.parse(JSON.stringify(cbdLvlZero));
       lvlZero.id = this.createUuid();
       lvlZero.level = 0;
@@ -691,7 +734,7 @@ export default {
       this.tableListData.push(lvlZero);
       return lvlZero.id;
     },
-    addToTable(rootTitle) {
+    addToTable (rootTitle) {
       this.subCbdDetailShowPositions.forEach((line) => {
         var lineDatas;
         line.forEach((cbdId) => {
@@ -739,7 +782,7 @@ export default {
               tempData.push(item);
             }
           });
-          for (var i=tempData.length-1;i>=0;i--) {
+          for (var i = tempData.length - 1; i >= 0; i--) {
             if (tempData[i].hasChild) {
               var filtered = tempData.filter((child) => {
                 return child.parentId == tempData[i].id
@@ -753,7 +796,7 @@ export default {
                   }
                 }
                 if (allEmpty) {
-                  tempData.splice(i,1)
+                  tempData.splice(i, 1)
                 }
               }
             }
@@ -764,7 +807,7 @@ export default {
         }
       });
     },
-    insertGroupedArr() {
+    insertGroupedArr () {
       var cbdMatchArr = {};
       for (var cbdId in this.subCbdDetails) {
         var matchItem = this.subCbdDetails[cbdId].filter((item) => {
@@ -797,7 +840,7 @@ export default {
         this.subCbdDetailShowPositions.push(cbdMatchArr[matchId]);
       });
     },
-    insertUnGroupedArr(prop) {
+    insertUnGroupedArr (prop) {
       var max = 0;
       var titles = this.tableList.title;
 
@@ -823,13 +866,13 @@ export default {
         this.subCbdDetailShowPositions.push(temp);
       }
     },
-    handleChange(val) {
+    handleChange (val) {
       console.log(val, 'val');
     },
-    cancel(flag) {
+    cancel (flag) {
       this.remarkDialogVisible = flag;
     },
-    reduction() {
+    reduction () {
       const loading = this.$loading({
         lock: true,
         text: 'Loading',
@@ -868,12 +911,12 @@ export default {
           });
         });
     },
-    sure(val, flag) {
+    sure (val, flag) {
       this.remarkDialogVisible = flag;
       this.remark = val;
     },
     // 递归获取checked属性方法
-    getTreeExpandKeys(obj) {
+    getTreeExpandKeys (obj) {
       // obj是传入的array
       if (obj && obj.length !== 0) {
         obj.forEach((item) => {
@@ -885,10 +928,10 @@ export default {
         });
       }
     },
-    remarks() {
+    remarks () {
       this.remarkDialogVisible = true;
     },
-    saveGroup() {
+    saveGroup () {
       if (this.groupSelectedItems.length === 0 || !this.schemaId) {
         this.$message.error('请选择数据');
         return;
@@ -914,7 +957,7 @@ export default {
         this.groupNameOptions = res.data;
       });
     },
-    groupToList() {
+    groupToList () {
       if (!this.selectGroupName) {
         this.$message.error('请选择分组');
         return;
@@ -940,14 +983,14 @@ export default {
       });
       return;
     },
-    refreshGroupedId(groupedDatas, key, index) {
+    refreshGroupedId (groupedDatas, key, index) {
       var newId = this.createUuid();
       if (groupedDatas[key][index].hasChild) {
         this.refreshChildGroupid(groupedDatas, key, groupedDatas[key][index].id, newId);
       }
       groupedDatas[key][index].id = newId;
     },
-    refreshChildGroupid(groupedDatas, key, parentId, newParentId) {
+    refreshChildGroupid (groupedDatas, key, parentId, newParentId) {
       groupedDatas[key].forEach((item) => {
         if (item.parentId == parentId) {
           var newId = this.createUuid();
@@ -960,7 +1003,7 @@ export default {
       });
     },
 
-    clear() {
+    clear () {
       this.onDataLoading = true;
       removeComponentFromGroup({
         schemeId: this.schemaId,
@@ -977,7 +1020,7 @@ export default {
       });
     },
 
-    finish() {
+    finish () {
       groupedSubmit({
         schemaId: this.schemaId,
         groupId: this.groupId,
@@ -985,7 +1028,7 @@ export default {
         this.finishGroup();
       });
     },
-    off() {
+    off () {
       groupedCancel({
         schemaId: this.schemaId,
         groupId: this.groupId,
@@ -993,7 +1036,7 @@ export default {
         this.finishGroup();
       });
     },
-    finishGroup() {
+    finishGroup () {
       this.totalTable = true;
       this.groupby = false;
       this.checkFLag = true;
@@ -1004,7 +1047,7 @@ export default {
         groupId: this.groupId,
       });
     },
-    down() {
+    down () {
       this.formUpdata.remark = this.remark;
       // this.formUpdata.defaultBobOptions.replaceAll("▼","")
       this.$confirm('此次导出将默认保存当前”费用详情“界面数据。', {
@@ -1016,12 +1059,12 @@ export default {
           iMessage.success('保存成功');
           down({
             schemaId: this.schemaId,
-          }).then((res) => {});
+          }).then((res) => { });
         });
       });
     },
 
-    updateGroupedLabel(item) {
+    updateGroupedLabel (item) {
       this.onDataLoading = true;
       renameComponentGroup({
         groupId: item.matchId,
@@ -1119,12 +1162,23 @@ export default {
 .table-cell {
   height: 41px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: $font-size16;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.partCell {
+  height: 41px;
+  display: flex;
+  align-items: center;
+  font-size: $font-size16;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 120px;
 }
 .table-odd {
   background-color: #ffffff;

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-26 20:02:55
+ * @LastEditTime: 2022-02-27 14:02:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -881,6 +881,18 @@ export default {
         schemeId: this.schemeId,
         unselected: this.exceptPart ? this.exceptPart : []
       };
+      this.barData.forEach((item) => {
+        let obj = {
+          motorId: item.motorId,
+          priceType: item.priceType,
+          priceDate: item.priceDate,
+          isTargetMotor: false,
+          engine: item.engine || "",
+          position: item.position || "",
+          transmission: item.transmission || "",
+        };
+        params.info.push(obj);
+      });
       if (val !== 'monthPrice') {
         if (this.isBindingRfq) {
           params.isBindingRfq = true;
