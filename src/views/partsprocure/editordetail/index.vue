@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-02-17 15:08:22
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-27 19:43:16
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
@@ -958,6 +958,13 @@
 						detailData[i] = this.detailData[i];
 					}
 				}
+
+				// 手动加一下cf控制员cfControllerName缺失问题
+				if(detailData['cfController'] && !detailData['cfControllerName']){
+					const currentCfController = Array.isArray(this.fromGroup.CF_CONTROL) && this.fromGroup.CF_CONTROL.find(item => item.id == detailData['cfController']) || {}
+					detailData['cfControllerName'] = currentCfController.name;
+				}
+
 
 				detailData['oldProjectRelations'] = [ Object.assign({}, translateDataForService(this.selectOldParts.selectData), {purchasingProjectId:this.detailData.id})]
 				if(detailData.carTypeModel !=undefined) {
