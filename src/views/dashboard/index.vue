@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-05 10:36:11
- * @LastEditTime: 2022-01-19 18:38:06
+ * @LastEditTime: 2022-02-27 13:07:45
  * @LastEditors: Please set LastEditors
  * @Description: 寻源概览
  * @FilePath: /front-web/src/views/dashboard/index.vue
@@ -247,7 +247,8 @@ export default {
       // }
       const types = {
         1 : `/sourceinquirypoint/sourcing/partsletter?showSelf=true&currentUser=true&isDelay=false`,
-        2 : `/sourceinquirypoint/sourcing/partsletter?showSelf=true&cardType=LOI&currentUser=true&isDelay=false`
+        // 2 : `/sourceinquirypoint/sourcing/partsletter?showSelf=true&cardType=LOI&currentUser=true&isDelay=false`
+        2 : `/sourceinquirypoint/sourcing/partsletter/loi?showSelf=true&cardType=LOI&currentUser=true&isDelay=false`
       }
       return types[type]
     },
