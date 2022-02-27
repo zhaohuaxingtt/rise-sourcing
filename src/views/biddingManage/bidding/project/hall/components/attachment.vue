@@ -107,12 +107,8 @@ export default {
       console.log(scope);
       const fileId = scope.row.attachmentId;
       const name = scope.row.attachmentName;
-      
-      const route = this.$router.resolve({
-        path: `${ process.env.VUE_APP_BASE_UPLOAD_API }/fileud/getFileByFileId?fileId=${ fileId }`
-      })
 
-      window.open(route.href, "_blank")
+      window.open(`${ window.location.origin }${ process.env.VUE_APP_BASE_UPLOAD_API }/fileud/getFileByFileId?fileId=${ fileId }`, "_blank")
     },
     handleCurrentChange(e) {
       this.page.currPage = e;
