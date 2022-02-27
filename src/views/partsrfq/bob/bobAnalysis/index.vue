@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2022-02-27 17:53:04
+ * @LastEditTime: 2022-02-27 17:58:47
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -1002,6 +1002,7 @@ export default {
             groupId: this.groupId,
           });
         } else {
+
           iMessage.error(res.desZh)
         }
         this.onDataLoading = false;
