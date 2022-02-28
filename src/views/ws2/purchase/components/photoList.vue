@@ -8,11 +8,11 @@
     >
       <div class="content">
         <div class="card-div">
-          <icon v-show="imgList.length > 1" @click.native="turnPages('-')" symbol name="iconzhaopianchakanzuo" class="card-icon"></icon>
+          <icon v-show="isSwitch" @click.native="turnPages('-')" symbol name="iconzhaopianchakanzuo" class="card-icon"></icon>
         </div>
         <img class="img" :src="imgList[index]" alt="">
         <div class="card-div">
-          <icon v-show="imgList.length > 1" @click.native="turnPages('+')" symbol name="iconzhaopianchakanyou" class="card-icon"></icon>
+          <icon v-show="isSwitch" @click.native="turnPages('+')" symbol name="iconzhaopianchakanyou" class="card-icon"></icon>
         </div>
       </div>
 
@@ -26,10 +26,8 @@ import {
   iDialog,
   iMessage,
   iButton,
+  icon
 } from 'rise'
-import {
-  icon,
-} from "@/components";
 export default {
   props: {
     visible: {type: Boolean, default: false},
@@ -39,6 +37,8 @@ export default {
   watch: {
     imgList(){
       this.index = 0;
+      this.isSwitch = this.imgList.length !== 0;
+      console.log('this.imgListthis.imgList', this.imgList, this.isSwitch, icon);
     }
   },
 
@@ -50,6 +50,7 @@ export default {
   data(){
     return{
       index: 0,
+      isSwitch: false,
     }
   },
 
