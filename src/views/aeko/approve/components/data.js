@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-02-25 17:49:34
+ * @LastEditTime: 2022-02-28 14:21:22
  * @Description: 
  */
 
@@ -216,9 +216,21 @@ export const tableCsfTitle = [
   { props: "assignsheet", name: "更改零件名称", key: "LK_AEKO_GENGGAILINGJIANMINGCHENG", tooltip: true, width:115  },
   { props: "carType", name: "涉及车型/车型项目", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width:145 },
   { props: "supplier", name: "主要供应商", key: "LK_AEKO_ZHUYAOGONGYINGSHANG", tooltip: true,width:95  },
-  { props: "EP1", name: "增加材料成本(RMB/车)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true,width:153},
-  { props: "EP2", name: "增加投资费(不含税)", key: "LK_AEKO_ZENGJIATOUZIFEI", tooltip: true,width:140 },
-  { props: "EP3", name: "其他费用(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true,width:125 },
+  { props: "EP1", name: "增加材料成本(RMB/车)", 
+    isHeaderSetting:true,
+    HeaderSettingList:[
+      {key:'AEKO_ZENGJIACAILIAOCHENGBEN',name:'增加材料成本'},
+      {key:'AEKO_RMB_CHE',name:'(RMB/车)'}
+    ],
+  key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true,width:110},
+  { props: "EP2", name: "增加投资费(不含税)", 
+    isHeaderSetting:true,
+    HeaderSettingList:[
+      {key:'AEKO_ZENGJIATOUZIFEI',name:'增加投资费'},
+      {key:'AEKO_BUHANSHUI',name:'(不含税)'}
+    ],
+  key: "LK_AEKO_ZENGJIATOUZIFEI", tooltip: true,width:110 },
+  { props: "EP3", name: "其他费用(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true,width:90 },
   { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true,width:55 },
   { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true,minWidth:100 },
   { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true,width:80 },

@@ -87,9 +87,14 @@
             <span class="custom-title">审批意见</span>
           </template>
           <template slot-scope="scope">
-            <i-input v-if="approvalComments(scope.row)" v-model="scope.row.auditOpinion"></i-input>
-              <span v-else>{{ scope.row.auditOpinion }}</span>
-            </template>
+              <el-tooltip class="item" :disabled="showTooltip(scope.row.auditOpinion)" :content="scope.row.auditOpinion" placement="top">
+                <div>
+                  <i-input v-if="approvalComments(scope.row)" v-model="scope.row.auditOpinion"></i-input>
+                  <span v-else>{{ scope.row.auditOpinion }}</span>
+                </div>
+              </el-tooltip>
+              
+          </template>
 
         </el-table-column>
         <el-table-column
@@ -351,7 +356,11 @@ created(){
         taskId: row.workFlowDTOS.filter((i) => i.taskId).map((i) => i.taskId),
       }
       this.explainAttachmentDialogVal = true
-    }
+    },
+    showTooltip(text){
+      if(text==null || !text.trim().length) return true
+      else return false;
+    },
 
   }
 }

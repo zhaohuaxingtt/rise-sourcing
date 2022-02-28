@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-07-26 16:46:49
- * @LastEditTime: 2022-02-25 17:39:57
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-28 15:58:42
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\data.js
  */
@@ -94,15 +94,15 @@ export const approveAttachTableTitle = [
 
 // 审批记录表头
 export const approveReCordTableTitle = [
-  { props: "akeoAuditType", name: "审批类型", key: "SHENPILEIXING", tooltip: true, width: 150 },
-  { props: "startUser", name: "提交人", key: "AEKO_DETAIL_RECORD_TIJIAOREN", tooltip: true, width: 150 },
+  { props: "akeoAuditType", name: "审批类型", key: "SHENPILEIXING", tooltip: true, width: 120 },
+  { props: "startUser", name: "提交人", key: "AEKO_DETAIL_RECORD_TIJIAOREN", tooltip: true, width: 120 },
   { props: "assignedDeptFullCode", name: "科室", key: "LK_AEKOKESHI", tooltip: true, width: 80 },
-  { props: "operation", name: "操作", key: "CAOZUO", tooltip: true, width: 100 },
+  { props: "operation", name: "操作", key: "CAOZUO", tooltip: true, width: 80 },
   { props: "assigneeName", name: "操作人", key: "CAOZUOREN", tooltip: true, width: 120 },
   { props: "endTime", name: "操作时间", key: "LK_UpdateDate", tooltip: true, width: 140 },
-  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true, align: 'left', width: 295 },
-  { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true, width: 295, _headerRequiredRight: true },
-  { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true, },
+  { props: "comment", name: "审批意见", key: "SHENPIYIJIAN", tooltip: true, align: 'left',minWidth:180, },
+  { props: "explainReason", name: "申请人解释", key: "SHENQINGRENJIESHI", tooltip: true,minWidth:180, _headerRequiredRight: true },
+  { props: "attach", name: "解释附件", key: "JIESHIFUJIAN", tooltip: true,width: 80 },
 ]
 
 // aeko 审批类型
