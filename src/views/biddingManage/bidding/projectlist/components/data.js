@@ -4,16 +4,18 @@ export const projectTableTitle = [
   {
     props: "index",
     name: language('BIDDING_XUHAO','序号'),
-    key:'BIDDING_XUHAO'
+    key:'BIDDING_XUHAO',
+    width:50,
   },
   {
     props: "quoteType",
     name: language('BIDDING_BAOJIALEIXING','报价类型'),
     key:'BIDDING_BAOJIALEIXING',
+    width:80,
   },
   {
     props: "projectCode",
-    width: 140,
+    width: 150,
     name: language('BIDDING_XIANGMUBIANHAO','项目编号'),
     key:'BIDDING_XIANGMUBIANHAO'
   },
@@ -26,56 +28,61 @@ export const projectTableTitle = [
   {
     props: "projectName",
     name: language('BIDDING_XIANGMUMINGCHENG','项目名称'),
-    width: 130,
+    width: 250,
     key:'BIDDING_XIANGMUMINGCHENG'
   },
   {
     props: "projectType",
     name: language('BIDDING_XIANGMULEIXING','项目类型'),
-    key:'BIDDING_XIANGMULEIXING'
+    key:'BIDDING_XIANGMULEIXING',
+    width: 80,
   },
   {
     props: "biddingStatus",
     name: language('BIDDING_ZHUANGTAI','状态'),
-    key:'BIDDING_ZHUANGTAI'
+    key:'BIDDING_ZHUANGTAI',
+    width: 80,
   },
   {
     props: "rfqRound",
     name: language('BIDDING_DANGQIANLUNCI','当前轮次'),
-    key:'BIDDING_DANGQIANLUNCI'
+    key:'BIDDING_DANGQIANLUNCI',
+    width: 100,
   },
   {
     props: "createDate",
     name: language('BIDDING_CHUANGJIANRIQI','创建日期'),
-    width: 150,
+    width: 100,
     key:"BIDDING_CHUANGJIANRIQI"
   },
   {
     props: "createName",
     name: language('BIDDING_CHUANGJIANREN','创建人'),
-    key:'BIDDING_CHUANGJIANREN'
+    key:'BIDDING_CHUANGJIANREN',
+    width: 120,
   },
   {
     props: "createDept",
     name: language('BIDDING_CHUANGJIANBUMEN','创建部门'),
-    key:'BIDDING_CHUANGJIANBUMEN'
+    key:'BIDDING_CHUANGJIANBUMEN',
+    width: 100,
   },
   {
     props: "biddingBeginTime",
     name: language('BIDDING_JINGJIAQIZHIRIQI','竞价起止日期'),
-    width: 170,
+    width: 120,
     key:'BIDDING_JINGJIAQIZHIRIQI'
   },
   {
     props: "pricingDeadline",
     name: language('BIDDING_BAOJIAJIEZHIRIQI','报价截止日期'),
-    width: 170,
+    width: 120,
     key:'BIDDING_BAOJIAJIEZHIRIQI'
   },
   {
     props: "openTenderTime",
     name: language('BIDDING_KAIBIAOSHIJIAN','开标时间'),
-    width: 170,
+    width: 120,
     key:'BIDDING_KAIBIAOSHIJIAN'
   },
 ]
