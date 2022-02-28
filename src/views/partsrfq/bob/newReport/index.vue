@@ -407,6 +407,7 @@ export default {
       handler (val, newval) {
         if (newval && !this.newBuild) {
           this.isCover = false;
+          console.log(this.isCover)
         }
       },
       immediate: true,
@@ -546,7 +547,7 @@ export default {
       } else {
         this.$router.push({
           path: "/sourcing/partsrfq/externalNegotiationAssistant",
-          query: { pageType: "MEK" },
+          query: { pageType: "BoB" },
         });
       }
     },
@@ -675,12 +676,14 @@ export default {
       this.searchChartData();
     },
     async searchChartData () {
+      if (this.form.combination && this.form.combination.length === 0) return iMessage.error(this.language('QINGXUANZEFSLINGJIANHAOGONGYINGSHANG', '请选择FS号-零件号-供应商'))
       this.onDataLoading = true;
       if (this.inside) {
         await this.getOptions();
       } else {
-        await this.querySupplierTurnPartList();
+        if (this.form.combination.length !== 0) await this.querySupplierTurnPartList();
       }
+
       let res = await generateGroupId();
       this.groupId = res.data;
       let params = {};
@@ -707,6 +710,7 @@ export default {
         };
       } else {
         let selectedList = [];
+
         this.form.combination.map((item) => {
           selectedList.push(item.key);
         });
@@ -786,11 +790,11 @@ export default {
               id: this.analysisSchemeId,
               name: this.analysisName,
               isCover: this.isCover,
-              combination:''
+              combination: ''
               // remark: this.$refs.bobAnalysis.remark
             };
             this.form.combination.forEach((item) => {
-              this.formUpdata.combination = this.formUpdata.combination + item.key +",";
+              this.formUpdata.combination = this.formUpdata.combination + item.key + ",";
             });
           }
           this.$nextTick(() => {
@@ -881,11 +885,11 @@ export default {
               id: this.analysisSchemeId,
               name: this.analysisName,
               isCover: this.isCover,
-              combination:[]
+              combination: []
               // remark: this.$refs.bobAnalysis.remark
             };
             this.form.combination.forEach((item) => {
-              this.formUpdata.combination = this.formUpdata.combination + item.key +",";
+              this.formUpdata.combination = this.formUpdata.combination + item.key + ",";
             });
           }
           this.$nextTick(() => {
@@ -949,7 +953,7 @@ export default {
       this.findPart();
     },
     handleMultiChange (val) {
-      console.log("选择过后的数据"+val);
+      console.log("选择过后的数据" + val);
     },
     saveDialog () {
       this.dialogVisible = true;
@@ -958,6 +962,7 @@ export default {
       let that = this;
       if (this.analysisSave) {
         this.dialogVisible = false;
+        console.log(this.isCover, "22222222222")
         if (this.isCover && !this.newBuild) {
           this.$confirm('此样式/报告已存在, 是否覆盖?', '提示', {
             confirmButtonText: '确定',
@@ -967,6 +972,7 @@ export default {
             .then(() => {
               this.formUpdata.remark = this.$refs.bobAnalysis.remark;
               this.formUpdata.name = this.analysisName;
+              this.formUpdata.isCover = this.isCover;
               // this.formUpdata.defaultBobOptions = this.formUpdata.defaultBobOptions.replaceAll("▼","")
               update(this.formUpdata)
                 .then((res) => {
@@ -990,7 +996,7 @@ export default {
           console.log(this.formUpdata.combination);
           this.formUpdata.remark = this.$refs.bobAnalysis.remark;
           this.formUpdata.name = this.analysisName;
-
+          this.formUpdata.isCover = this.isCover;
           update(this.formUpdata)
             .then((res) => {
               iMessage.success('保存成功');
