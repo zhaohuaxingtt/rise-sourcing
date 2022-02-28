@@ -130,7 +130,7 @@ export function cbdDownloadFileTWO(params) {
 // 上传报价
 export function uploadModuleCbd(params) {
   return requst({
-    url: `/part/cbd/uploadModuleCbd?supplierId=${supplierId()}`,
+    url: `/part/cbd/uploadModuleCbd`,
     method: 'POST',
     data: params
   })
