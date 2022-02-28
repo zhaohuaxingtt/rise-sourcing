@@ -18,7 +18,7 @@
           <iInput type="textarea" :disabled="disabled" :rows="4" resize="none" :placeholder="language(item.placeholderkey,item.placeholder)" v-model="item.value"
                   maxlength="100" show-word-limit></iInput>
           <div @click="deleteItems(index+ 1)"
-               v-if="(index+1)%3 === 0">
+               v-if="(index+1)%3 === 0 && !disabled">
             <icon symbol name="iconguanbixiaoxiliebiaokapiannei" class="delete-icon">
             </icon>
           </div>

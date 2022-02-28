@@ -496,7 +496,8 @@ export default {
           )
         );
       }
-      if(this.selectTableData.find(i=>i.status == 14)) return iMessage.warn(this.language('LINGJIANCAIGXMYDJ','选择的零件采购项目中存在零件已冻结状态，无法为您批量维护！'))
+      // if(this.selectTableData.find(i=>i.status == 14)) return iMessage.warn(this.language('LINGJIANCAIGXMYDJ','选择的零件采购项目中存在零件已冻结状态，无法为您批量维护！'))
+      if (this.selectTableData.find(i => ["FROZEN_NOM", "NOMINATED"].includes(i.status))) return iMessage.warn(this.language('LINGJIANCAIGXMYDJ2','选择的零件采购项目中存在零件已冻结、已定点状态，无法为您批量维护！'))
       this.$router.push({
         path: "/sourceinquirypoint/sourcing/partsprocure/batchmiantain",
         query: {

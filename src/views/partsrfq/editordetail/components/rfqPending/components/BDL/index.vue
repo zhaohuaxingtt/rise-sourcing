@@ -17,7 +17,7 @@
         </div>
       </template>
       <template slot="header-control">
-        <div class="button-box">
+        <div class="button-box" v-if="!disabled">
           <iButton v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_BDLSAVEBDL|BDL添加" @click="handleAdd">{{ language("TIANJIA", "添加") }}</iButton>
           <iButton @click="handleDelete" v-permission.auto="PARTSRFQ_EDITORDETAIL_RFQPENDING_DELETESUPPLIER|BDL删除供应商" :loading="deleteLoading">{{ language('LK_SHANCHU','删除') }}</iButton>
         </div>
