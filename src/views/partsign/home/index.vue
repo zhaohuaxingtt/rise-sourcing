@@ -328,7 +328,7 @@ export default {
   methods: {
     //获取询价采购员数据。
     getInquiryBuyerListFn(){
-      purchaseUsers({userId:store.state.permission.userInfo.id}).then(res=> {
+      purchaseUsers({roleCode:'QQCGY'}).then(res=> {
         let userInfoId = store.state.permission.userInfo.id
         this.inquiryBuyerList = res.data || []
         let data = this.inquiryBuyerList

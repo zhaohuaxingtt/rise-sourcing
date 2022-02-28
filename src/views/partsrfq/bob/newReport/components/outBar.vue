@@ -102,6 +102,7 @@ export default {
       take: window._.take,
       bobChange: bobChange,
       del: del,
+      tempArr: []
     }
   },
   methods: {
@@ -150,7 +151,7 @@ export default {
       return s;
     },
     initCharts () {
-      const myChart = echarts().init(this.$refs.chart);
+      this.myChart = echarts().init(this.$refs.chart);
       // 绘制图表
       const option = {
         title: {
@@ -241,13 +242,13 @@ export default {
           formatter: (params) => {
             let result = ''
             let domHtml = ''
-
             params.forEach(item => {
               if (item.seriesName == "sum") {
                 return false;
               }
+
               domHtml = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:' + item.color + '"></span>'
-              result += domHtml + item.seriesName + ":" + this.doNumber(item.value) + '<br/>'
+              result += domHtml + item.seriesName + ":" + this.doNumber(this.tempArr[item.seriesName]) + '<br/>'
             })
             return result
           },
@@ -286,24 +287,13 @@ export default {
         ],
         series: this.dataArray
       };
-      myChart.setOption(option);
+      this.myChart.setOption(option, true);
       this.$nextTick(() => {
-        myChart.resize()
+        this.myChart.resize()
       })
-      const that = this
-      myChart.on('click', function (params) {
-        if (params.componentType === 'title') {
-          that.$emit('del')
-        }
-        if (params.componentType === 'xAxis') {
-          console.log('点击了', that.isPreview);
-          if (!that.isPreview) {
-            that.$emit('change')
-          }
-        }
-      });
+
     },
-    initData (newVal) {
+    async initData (newVal) {
       if (newVal) {
         this.chartArray = newVal
         this.labelArray = []
@@ -312,6 +302,8 @@ export default {
         const tempArr = []
         const dataList1 = []
         newVal.forEach((row, i) => {
+          console.log(row)
+          console.log(this.legendKeys)
           const str = "";
           const subtext = row.spareParts + '\n' + row.fs
           this.labelArray.push({
@@ -345,26 +337,23 @@ export default {
           });
           this.legendArray.map((v, i) => {
             if (!tempArr[v]) {
-              tempArr[v] = []
-              dataList1[v] = []
+              tempArr[v] = [];
+              dataList1[v] = [];
             }
-            tempArr[v].push(row[this.legendKeys[v]])
-            const sum = this.sumBy(this.take(this.legendArray, i), (k) => {
-              return Number(row[this.legendKeys[k]])
-            })
-
-            dataList1[v].push(sum)
-
-          })
+            tempArr[v].push(row[this.legendKeys[v]]);
+            this.tempArr = tempArr
+            const sum = this.sumBy(this.take(this.legendArray, i + 1), (k) => {
+              return Number(row[this.legendKeys[k]]);
+            });
+            dataList1[v].push(sum);
+          });
+          console.log(tempArr)
         })
         const minList = []
-
         this.legendArray.forEach((row, i) => {
-
           const min = this.min(tempArr[row])
           let data = min
           minList.push(data)
-
           this.dataArray.push({
             name: row,
             type: 'bar',
@@ -378,8 +367,7 @@ export default {
               position: 'insideTop',
               color: 'white',
               formatter: (params) => {
-
-                return (tempArr[row][0])
+                return this.doNumber(tempArr[row][0])
               },
             },
             labelLine: {
@@ -419,9 +407,21 @@ export default {
           barWidth: 50,
           data: [dataList1['利润'][0]]
         })
-
         if (this.$refs.chart && this.chartArray.length > 0) {
-          this.initCharts();
+          echarts().init(this.$refs.chart).dispose();
+          await this.initCharts();
+          const that = this
+          this.myChart.on('click', function (params) {
+            if (params.componentType === 'title') {
+              that.$emit('del')
+            }
+            if (params.componentType === 'xAxis') {
+              console.log('点击了', that.isPreview);
+              if (!that.isPreview) {
+                that.$emit('change')
+              }
+            }
+          });
         }
       }
     }
@@ -430,11 +430,11 @@ export default {
     chartData: {
       handler (newVal) {
         if (newVal && newVal.length > 0) {
+
           this.initData(newVal)
         }
       },
       deep: true,
-      immediate: true
     }
   }
 };
