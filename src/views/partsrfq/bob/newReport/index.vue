@@ -681,7 +681,7 @@ export default {
       if (this.inside) {
         await this.getOptions();
       } else {
-        if (this.form.combination.length !== 0) await this.querySupplierTurnPartList();
+        await this.querySupplierTurnPartList();
       }
 
       let res = await generateGroupId();

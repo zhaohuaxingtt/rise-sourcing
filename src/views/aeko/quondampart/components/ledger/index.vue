@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2022-02-24 14:34:26
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-28 12:05:50
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -212,12 +212,27 @@ export default {
       .catch(() => {})
     },
     judgeRight(flag='') {
-      judgeRight([
-        {
-          partNum: this.form.partNum,
-          userId: this.userInfo.id
-        }
-      ])
+      // 零件号拆分一下
+      let partNumList = [];
+      if(this.form.partNum){
+        partNumList = this.form.partNum.split(',');
+      }
+      let data  = [];
+      if(partNumList.length){
+        partNumList.map((item)=>{
+          data.push({
+             partNum: item,
+            userId: this.userInfo.id
+          })
+        })
+      }else{
+        data = [{
+            partNum: this.form.partNum,
+            userId: this.userInfo.id
+          }]
+      }
+      
+      judgeRight(data)
       .then(res => {
         if (res.code == 200) {
           if (res.data[0].isView) {
