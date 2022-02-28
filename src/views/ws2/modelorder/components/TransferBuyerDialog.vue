@@ -81,7 +81,7 @@ export default {
   methods: {
     //获取询价采购员数据。
     getInquiryBuyerListFn() {
-      purchaseUsers({userId: store.state.permission.userInfo.id}).then(
+      purchaseUsers({roleCode:'QQCGY'}).then(
           (res) => (this.inquiryBuyerList = res.data || [])
       );
     },
