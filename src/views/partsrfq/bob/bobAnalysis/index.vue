@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2022-02-27 14:06:22
+ * @LastEditTime: 2022-02-27 11:52:22
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -111,37 +111,23 @@
                     </span>
                   </template>
                 </div>
-                <<<<<<< Updated
-                        upstream
-                        <div
-                        :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
-                        v-for="(title, titleIdx) in tableTitle"
-                        :key="titleIdx"
-                        :style="{ width: 'calc(120% / ' + tableTitle.length + ')' }">
+                <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
+                     v-for="(title, titleIdx) in tableTitle"
+                     :key="titleIdx"
+                     :style="{ width: 'calc(80% / ' + tableTitle.length + ')' }">
                   <el-checkbox v-show="onGroupingModel"
                                v-if="item.groupKey && item['label#' + titleIdx]"
                                style="margin-right: 10px;"
                                v-model="item['checked#' + titleIdx]"
                                @change="onGroupItemSelected(item['checked#' + titleIdx], item, titleIdx)"></el-checkbox>
-                  =======
-                  <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
-                       v-for="(title, titleIdx) in tableTitle"
-                       :key="titleIdx"
-                       :style="{ width: 'calc(80% / ' + tableTitle.length + ')' }">
-                    <el-checkbox v-show="onGroupingModel"
-                                 v-if="item.groupKey && item['label#' + titleIdx]"
-                                 style="margin-right: 10px;"
-                                 v-model="item['checked#' + titleIdx]"
-                                 @change="onGroupItemSelected(item['checked#' + titleIdx], item, titleIdx)"></el-checkbox>
-                    >>>>>>> Stashed changes
-                    {{
+                  {{
                     item['label#' + titleIdx] == 'false'
                       ? $t('nominationLanguage.No')
                       : item['label#' + titleIdx] == 'true'
                       ? $t('nominationLanguage.Yes')
                       : formatIfNumber(item['label#' + titleIdx])
                   }}
-                  </div>
+                </div>
               </template>
             </div>
           </div>

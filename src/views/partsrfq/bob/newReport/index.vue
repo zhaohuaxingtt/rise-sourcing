@@ -970,9 +970,15 @@ export default {
               // this.formUpdata.defaultBobOptions = this.formUpdata.defaultBobOptions.replaceAll("▼","")
               update(this.formUpdata)
                 .then((res) => {
-                  iMessage.success('保存成功');
-                  this.dialogVisible = false;
-                  this.reportSave = false;
+                  if (res?.code === '200') {
+                    iMessage.success('保存成功');
+                    this.dialogVisible = false;
+                    this.reportSave = false;
+                  } else {
+                    iMessage.error(res.desZh)
+                    this.dialogVisible = false;
+                    this.reportSave = false;
+                  }
                 })
                 .catch((err) => {
                   iMessage.err('保存失败');
@@ -993,9 +999,15 @@ export default {
 
           update(this.formUpdata)
             .then((res) => {
-              iMessage.success('保存成功');
-              this.dialogVisible = false;
-              this.reportSave = false;
+              if (res?.code === '200') {
+                iMessage.success('保存成功');
+                this.dialogVisible = false;
+                this.reportSave = false;
+              } else {
+                iMessage.error(res.desZh)
+                this.dialogVisible = false;
+                this.reportSave = false;
+              }
             })
             .catch((err) => {
               iMessage.err('保存失败');
