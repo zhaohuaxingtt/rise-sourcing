@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2022-02-27 14:06:22
+ * @LastEditTime: 2022-02-27 17:58:47
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -51,15 +51,14 @@
                style="justify-content: flex-start;width: 20%"></div>
           <div v-for="(item, index) in tableTitle"
                :key="index"
-               class="table-cell"
+               class="partCell"
                :style="{ 'font-weight': 'bold', width: 'calc(80% / ' + tableTitle.length + ')' }">
-            <p class="table-cell">{{ spiltStr(item.title)?spiltStr(item.title)[0]:'' }}</p>
+            <p style="margin:0 auto">{{ spiltStr(item.title)?spiltStr(item.title)[0]:item.title}}</p>
             <el-tooltip placement="top">
               <p slot="content"
-                 effect="light">{{ spiltStr(item.title)?spiltStr(item.title)[1]:'' }}</p>
-              <p class="partCell">{{ spiltStr(item.title)?spiltStr(item.title)[1]:'' }}</p>
+                 effect="light">{{ spiltStr(item.title)?spiltStr(item.title)[1]:item.title }}</p>
+              <p class="partCell">{{ spiltStr(item.title)?spiltStr(item.title)[1]:''}}</p>
             </el-tooltip>
-
           </div>
         </div>
         <div class="flex tabeleList"
@@ -87,7 +86,7 @@
                      :class="item.expanded ? 'el-icon-arrow-down' : 'el-icon-arrow-right'"
                      style="cursor: pointer;padding-right: 4px;"
                      @click="handleCollapse(item, item.expanded)"></i>
-                  <template v-if="item.matchId > 0 && !onPreview">
+                  <template v-if="item.matchId > 0 && !onPreview&& onGroupingModel">
                     <template v-if="onEditLabels.indexOf(item.id) < 0">
                       <span :style="{ 'font-weight': item.matchId > 0 ? 'bold' : '' }">{{ item.title }}</span>
                       <i class="el-icon-edit"
@@ -111,37 +110,23 @@
                     </span>
                   </template>
                 </div>
-                <<<<<<< Updated
-                        upstream
-                        <div
-                        :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
-                        v-for="(title, titleIdx) in tableTitle"
-                        :key="titleIdx"
-                        :style="{ width: 'calc(120% / ' + tableTitle.length + ')' }">
+                <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
+                     v-for="(title, titleIdx) in tableTitle"
+                     :key="titleIdx"
+                     :style="{ width: 'calc(80% / ' + tableTitle.length + ')' }">
                   <el-checkbox v-show="onGroupingModel"
                                v-if="item.groupKey && item['label#' + titleIdx]"
                                style="margin-right: 10px;"
                                v-model="item['checked#' + titleIdx]"
-                               @change="onGroupItemSelected(item['checked#' + titleIdx], item, titleIdx)"></el-checkbox>
-                  =======
-                  <div :class="['table-cell', hasSelected(item, titleIdx) ? 'cell-selected' : '', showCollapseOutLine(item)]"
-                       v-for="(title, titleIdx) in tableTitle"
-                       :key="titleIdx"
-                       :style="{ width: 'calc(80% / ' + tableTitle.length + ')' }">
-                    <el-checkbox v-show="onGroupingModel"
-                                 v-if="item.groupKey && item['label#' + titleIdx]"
-                                 style="margin-right: 10px;"
-                                 v-model="item['checked#' + titleIdx]"
-                                 @change="onGroupItemSelected(item['checked#' + titleIdx], item, titleIdx)"></el-checkbox>
-                    >>>>>>> Stashed changes
-                    {{
+                               @change="onGroupItemSelected(checked, item, titleIdx)"></el-checkbox>
+                  {{
                     item['label#' + titleIdx] == 'false'
                       ? $t('nominationLanguage.No')
                       : item['label#' + titleIdx] == 'true'
                       ? $t('nominationLanguage.Yes')
                       : formatIfNumber(item['label#' + titleIdx])
                   }}
-                  </div>
+                </div>
               </template>
             </div>
           </div>
@@ -285,8 +270,6 @@ export default {
       return function (val) {
         if (val.indexOf('<br/>') > -1) {
           return val.split('<br/>')
-        } else {
-          return val
         }
       }
     }
@@ -431,6 +414,7 @@ export default {
       // this.onGroupingModel = false;
     },
     onGroupItemSelected (checked, item, idx) {
+      console.log(checked, item, idx)
       var parent = this.tableListData.filter((line) => {
         return line.id == item.parentId;
       });
@@ -1009,13 +993,18 @@ export default {
         schemeId: this.schemaId,
         roundDetailIdList: this.removeCbdIds,
       }).then((res) => {
-        this.removeCbdIds = [];
-        this.chargeRetrieve({
-          isDefault: true,
-          viewType: 'all',
-          schemaId: this.schemaId,
-          groupId: this.groupId,
-        });
+        if (res?.code === '200') {
+          this.removeCbdIds = [];
+          this.chargeRetrieve({
+            isDefault: true,
+            viewType: 'all',
+            schemaId: this.schemaId,
+            groupId: this.groupId,
+          });
+        } else {
+
+          iMessage.error(res.desZh)
+        }
         this.onDataLoading = false;
       });
     },
@@ -1082,7 +1071,7 @@ export default {
               groupId: this.groupId,
             });
           } else {
-            iMessage.error('修改失败');
+            iMessage.error(res.desZh);
           }
           this.onDataLoading = false;
         })
@@ -1162,7 +1151,6 @@ export default {
 .table-cell {
   height: 41px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: $font-size16;
@@ -1173,12 +1161,13 @@ export default {
 .partCell {
   height: 41px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
   font-size: $font-size16;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 120px;
+  width: 140px;
 }
 .table-odd {
   background-color: #ffffff;
