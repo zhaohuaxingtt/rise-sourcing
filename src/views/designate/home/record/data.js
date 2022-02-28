@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2021-11-04 11:51:33
- * @LastEditors:  
+ * @LastEditTime: 2022-02-28 14:20:48
+ * @LastEditors: YoHo
  */
 export const form = {
   fsnrGsnrNum:'',
@@ -67,11 +67,9 @@ export const tableTitle = [
   },
   {
     props:'linie',
-    name:'Linie采购员',
-    key:'TableLINIECAIGOUYUAN',
-    tooltip:true,
-    width:90
-    
+    name:'LINIE',
+    key:'LINIE',
+    tooltip:true
   },
   {
     props:'nominateTime',

@@ -23,7 +23,17 @@
               </template>
             </el-table-column>
             <el-table-column :key="index2" align='center' v-else :label="items2.key ? language(items2.key,items2.name) : items2.name"
-                             :prop="items2.props"></el-table-column>
+                             :prop="items2.props">
+              <template slot="header" slot-scope="scope">
+                <el-popover
+                  placement="top"
+                  trigger="hover"
+                  :content="scope.column.label">
+                  <div style="text-align: center;">{{ scope.column.label }}</div>
+                  <span slot="reference">{{ scope.column.label }}</span>
+                </el-popover>
+              </template>                 
+            </el-table-column>
           </template>
         </el-table-column>
       </template>
