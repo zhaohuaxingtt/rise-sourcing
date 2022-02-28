@@ -144,7 +144,7 @@ export function renameComponentGroup(parmars) {
 // 重命名分组
 export function restore(parmars) {
   return requst({
-    url: '/web/aon/bobRoundDetail/restore/' + parmars,
+    url: '/bobRoundDetail/restore/' + parmars,
     method: 'GET',
   })
 }
