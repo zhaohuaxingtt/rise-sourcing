@@ -18,9 +18,9 @@ export const SearchList = [
 export const tableTitle = [
     { props: "partNum", name: "零件号 ", key: "LK_LINGJIANHAO", tooltip: true },
     { props: "partNameZh", name: "零件名称", key: "LK_LINGJIANMINGCHENG", tooltip: true },
-    { props: "changeType", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
+    { props: "changeType", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true,width:80, },
     { props: "prNumber", name: "PR号", key: "LK_AEKOPRHAO", tooltip: true },
-    { props: "brand", name: "品牌", key: "LK_AEKOPINGPAI", tooltip: true },
+    { props: "brand", name: "品牌", key: "LK_AEKOPINGPAI", tooltip: true,width:80, },
     { props: "cartypeZh", name: "涉及⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true,width:130 },
     { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
     { props: "operate", name: "操作", key: "LK_CAOZUO" },
@@ -79,9 +79,9 @@ export const linieQueryForm = {
 export const linieTableTitle = [
   { props: "partNum", name: "零件号 ", key: "LK_LINGJIANHAO", tooltip: true },
   { props: "partNameZh", name: "零件名称", key: "LK_LINGJIANMINGCHENG", tooltip: true },
-  { props: "changeType", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true },
+  { props: "changeType", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", tooltip: true,width:80, },
   { props: "prNumber", name: "PR号", key: "LK_AEKOPRHAO", tooltip: true },
-  { props: "brand", name: "品牌", key: "LK_AEKOPINGPAI", tooltip: true },
+  { props: "brand", name: "品牌", key: "LK_AEKOPINGPAI", tooltip: true,width:80, },
   { props: "carTypeZh", name: "涉及⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true,width:130 },
   { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", tooltip: true },
   { props: "buyerName", name: "Linie", key: "LK_AEKO_LINIE", tooltip: true },

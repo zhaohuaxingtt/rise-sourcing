@@ -123,7 +123,7 @@
         </template>
         <!--描述-->
         <template #describe="scope">
-          <a class="link-underline" @click="lookAEKODesc(scope.row)">
+          <a class="link" @click="lookAEKODesc(scope.row)">
             {{ language('CHAKAN', '查看') }}
           </a>
         </template>
@@ -180,7 +180,7 @@
         </template>
         <!--审批附件-->
         <template #attach="scope">
-          <a class="link-underline" @click="openApprovalAttachment(scope.row)">
+          <a class="link" @click="openApprovalAttachment(scope.row)">
             {{ language('CHAKAN', '查看') }}
           </a>
         </template>

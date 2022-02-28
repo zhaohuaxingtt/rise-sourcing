@@ -1,12 +1,12 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-27 19:30:16
- * @LastEditTime: 2021-12-17 16:11:02
+ * @LastEditTime: 2022-02-28 14:52:10
  * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
-  <div>
+  <div class="aekodetail">
     <!-- 基础信息 -->
     <iCard :title="language('LK_JICHUXINXI','基础信息')">
       <iFormGroup row="4" class="basic-form" label-width="100px">
