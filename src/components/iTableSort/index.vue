@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-02-25 16:42:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-28 17:31:34
+ * @LastEditors: YoHo
  * @Description: table组件
 -->
 <template>
@@ -107,10 +107,10 @@
               trigger="hover"
               popper-class="tableTitleTip"
               :visible-arrow="false"
-              :disabled="!items.showTips">
+              :disabled="!(items.showTips || items.tipsLang)">
               <p v-html="items.showTips ? item.tips() : ''"></p>
               <span slot="reference">
-                <icon v-if="items.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
+                <icon v-if="items.showTips || items.tipsLang" class="require margin-left4" symbol name="iconxinxitishi" />
               </span>
             </el-popover>
           </div>

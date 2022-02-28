@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2021-12-02 14:14:10
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-02-28 15:49:16
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
 -->
@@ -28,12 +28,13 @@
       </div>
     </template>
     <div class="body" v-loading="loading">
-      <iFormGroup class="form" :row="4" inline>
-        <iFormItem
+      <el-form class="form" label-position="left">
+        <el-form-item
           class="item"
           v-for="(item, $index) in form"
           :required="item.required"
           :key="$index"
+          :label-width="item.labelWidth"
           :label="`${language(item.key, item.name)}`"
           v-permission.auto="item.permissionKey"
         >
@@ -69,8 +70,8 @@
               ><span style="color: #000">%</span></template
             >
           </iInput>
-        </iFormItem>
-      </iFormGroup>
+        </el-form-item>
+      </el-form>
       <el-table
         v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TABLE|装车率_表格"
         class="table margin-top30"
@@ -505,13 +506,16 @@ export default {
     ::v-deep .el-form-item {
       margin-right: 60px;
       margin-bottom: 0;
+      display: inline-block;
+      width: 300px;
+      vertical-align: middle;
 
       &:last-of-type {
         margin-right: 0;
       }
 
       .el-form-item__label {
-        width: 160px;
+        // width: 120px;
         font-size: 16px;
       }
     }
@@ -547,6 +551,7 @@ export default {
   }
 
   .percentInput {
+    width: 140px;
     ::v-deep input {
       text-align: center;
     }

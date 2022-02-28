@@ -67,7 +67,7 @@
       </iSearch>
     </div>
 
-    <iCard class="margin-top20" :title="language('LK_AEKO_PARTSLIST','零件清单')">
+    <iCard class="margin-top20">
       <div>
         <tableList
           class="table"
