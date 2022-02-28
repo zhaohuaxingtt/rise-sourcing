@@ -12,11 +12,11 @@ const requst = axios(process.env.VUE_APP_USER_CENTER)
 const requst1 = axios(process.env.VUE_APP_USER_CENTER_API)
 
 
-export function purchaseUsers(parmars) {
+export function purchaseUsers(data) {
     return requst({
-        url: '/purchaseUsers',
-        method: 'GET',
-        params: parmars
+        url: '/sapUser/getListByParam',
+        method: 'POST',
+        data
     })
 }
 
