@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
 -->
 <template>
-  <iDialog :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
+  <iDialog class="newRfqRound" :visible.sync="value" width="90%" @close='clearDiolog' z-index="1000">
     <div slot="title" class="el-dialog__title">
       {{title || language('LK_XINJIANRFQLUNCI','新建RFQ轮次')}}
       <!-- 黑名单文案 -->
@@ -31,7 +31,7 @@
           </template> -->
         </div>
       </div>
-      <iFormGroup inline icon label-width='120px'>
+      <iFormGroup class="fromGroup" inline icon >
         <iFormItem :label="language('LK_LUNCILEIXING','轮次类型')" name="test"
                    v-permission.auto="PARTSRFQ_EDITORDETAIL_NEWRFQROUND_ROUNDTYPE|新建rfq轮次弹窗-轮次类型">
           <i-select v-model="roundType" @change="handleSelectChange">
@@ -347,6 +347,24 @@ export default {
   font-weight: 100;
   font-size: 12px;
   margin-left: 10px;
+}
+
+.newRfqRound {
+  .fromGroup {
+    ::v-deep .el-form-item {
+      width: calc((100% - 2*100px) / 2.8) !important;
+
+      .el-form-item__label {
+        width: auto;
+        min-width: 50px;
+        max-width: 200px;
+      }
+
+      .el-select {
+        width: 300px;
+      }
+    }
+  }
 }
 </style>
 
