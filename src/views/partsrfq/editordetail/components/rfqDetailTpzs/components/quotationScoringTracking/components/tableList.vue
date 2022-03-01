@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-05-26 19:14:39
- * @LastEditTime: 2021-12-23 16:10:24
+ * @LastEditTime: 2022-03-01 17:51:03
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\editordetail\components\rfqDetailTpzs\components\quotationScoringTracking\components\tableList.vue
@@ -9,7 +9,7 @@
 
 <template>
   <div class="quotationScoringTrackingTableList">
-    <el-table class="table" tooltip-effect="light" height="400px"  :data="tableData" v-loading="tableLoading" :empty-text="$t('LK_ZANWUSHUJU')">
+    <el-table class="table quotationTable" tooltip-effect="light" height="400px"  :data="tableData" v-loading="tableLoading" :empty-text="$t('LK_ZANWUSHUJU')">
       <template v-for="(item,index) in tableTile">
         <!--------------------------------------------------------->
         <!------------------------ep模块---------------------------->
@@ -237,6 +237,13 @@ export default{
       width: 18px;
       height: 18px;
       cursor: pointer;
+    }
+    .quotationTable{
+      ::v-deep.has-gutter{
+        .gutter{
+          background-color: #fff;
+        }
+      }
     }
 }
   .blue-color{
