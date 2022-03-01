@@ -83,11 +83,19 @@ export default function httpRequest(baseUrl = '', timeOut = 15000) {
 
 			let fileName = `${new Date().toLocaleDateString()}.zip`
 
-			if (response.headers['content-disposition']) {
-				fileName = decodeURIComponent(
-					response.headers['content-disposition'].split('=')[1]
-				)
-			}
+      if (response.headers["fname"]) {
+        fileName = decodeURIComponent(response.headers["fname"])
+      }
+
+      if (response.config && response.config.meta && response.config.meta.fileName) {
+        fileName = response.config.meta.fileName
+      }
+     // 如果是ie则按照saveBlob的方式来下载数据
+      if (navigator.msSaveBlob) {
+          return navigator.msSaveBlob(blob, fileName)
+      }
+      // 如果是谷歌和火狐则用a标签来模拟
+      console.log(blob)
 
 			if (response.headers['fname']) {
 				fileName = decodeURIComponent(response.headers['fname'])
