@@ -962,7 +962,6 @@ export default {
       let that = this;
       if (this.analysisSave) {
         this.dialogVisible = false;
-        console.log(this.isCover, "22222222222")
         if (this.isCover && !this.newBuild) {
           this.$confirm('此样式/报告已存在, 是否覆盖?', '提示', {
             confirmButtonText: '确定',
@@ -976,9 +975,13 @@ export default {
               // this.formUpdata.defaultBobOptions = this.formUpdata.defaultBobOptions.replaceAll("▼","")
               update(this.formUpdata)
                 .then((res) => {
-                  iMessage.success('保存成功');
-                  this.dialogVisible = false;
-                  this.reportSave = false;
+                  if (res?.code === '200') {
+                    iMessage.success('保存成功');
+                    this.dialogVisible = false;
+                    this.reportSave = false;
+                  } else {
+                    iMessage.eroor(res.desZh)
+                  }
                 })
                 .catch((err) => {
                   iMessage.err('保存失败');
@@ -999,9 +1002,13 @@ export default {
           this.formUpdata.isCover = this.isCover;
           update(this.formUpdata)
             .then((res) => {
-              iMessage.success('保存成功');
-              this.dialogVisible = false;
-              this.reportSave = false;
+              if (res?.code === '200') {
+                iMessage.success('保存成功');
+                this.dialogVisible = false;
+                this.reportSave = false;
+              }else{
+                iMessage.error(res.desZh)
+              }
             })
             .catch((err) => {
               iMessage.err('保存失败');
