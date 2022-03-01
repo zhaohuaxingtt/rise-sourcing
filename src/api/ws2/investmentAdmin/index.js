@@ -36,6 +36,13 @@ export function exportPlanCommutityList(params) {
         method: 'POST',
     })
 }
+//下载月度计划
+export function exportPlanCommutityList1(params) {
+    return requestFile({  
+        url: `/planMonth/exportPlanCommutityList/${params.versionId}?planType=${params.planType}`,
+        method: 'POST',
+    })
+}
 
 //查询月度计划列表数据
 export function queryPlanMonthList(params) {
