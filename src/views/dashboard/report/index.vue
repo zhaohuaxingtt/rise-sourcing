@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-06 15:21:13
- * @LastEditTime: 2021-12-28 13:55:24
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-28 14:58:17
+ * @LastEditors: Please set LastEditors
  * @Description: 状态跟踪详情
  * @FilePath: /front-web/src/views/dashboard/report/index.vue
 -->
@@ -192,7 +192,7 @@ export default {
       width: 50%;
       padding-top: 25px;
       strong {
-        font-size: 40px;
+        font-size: 50px;
         color: #000000;
         &.note {
           color: #E30D0D

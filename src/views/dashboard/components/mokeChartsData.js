@@ -4,7 +4,7 @@ const rich = {
     n: {
       fontSize: 10,
       lineHeight: 12,
-      color: '#a2a5aa'
+      color: '#485465'
     }
 }
 const symbolImg = require('@/assets/images/symbal.png')
@@ -176,7 +176,7 @@ export function generateOptions(params, vm=null) {
                     nameGap: 60,
                     nameLocation: 'middle',
                     nameTextStyle: {
-                        color: '#abacb2',
+                        color: '#485465',
                         align: 'center'
                     },
                     min: 0,
@@ -194,7 +194,7 @@ export function generateOptions(params, vm=null) {
                     },
                     axisTick: {show: false,},
                     axisLabel: {
-                        color: '#abacb2',
+                        color: '#485465',
                         formatter: '{value}%'
                     }
                 },
@@ -205,7 +205,7 @@ export function generateOptions(params, vm=null) {
                     nameGap: 50,
                     nameLocation: 'middle',
                     nameTextStyle: {
-                        color: '#abacb2',
+                        color: '#485465',
                         align: 'center'
                     },
                     min: 0,
@@ -220,7 +220,7 @@ export function generateOptions(params, vm=null) {
                         show: false
                     },
                     axisLabel: {
-                        color: '#abacb2',
+                        color: '#485465',
                         formatter: '{value}'
                     }
                 }

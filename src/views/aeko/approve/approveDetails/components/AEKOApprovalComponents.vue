@@ -17,13 +17,13 @@
         <el-table-column
             label="专业科室"
             align="center"
-            width="150"
+            width="120"
             prop="linieDeptNum">
         </el-table-column>
         <el-table-column
             label="采购员"
             align="center"
-            width="150"
+            width="120"
             prop="linieName">
         </el-table-column>
         <el-table-column
@@ -32,10 +32,17 @@
             align="center"
         >
           <template slot-scope="scope">
-            <icon v-if="calculateSelected(scope.row,1)" @click.native="changeStatus(scope.row,1)" symbol
+            <span class="clickIcon cursor" v-if="calculateSelected(scope.row,1)" @click="changeStatus(scope.row,1)">
+              <icon symbol name="iconguanlianlingjian-xuanzhong" class="font20"></icon>
+            </span>
+            <span class="clickIcon cursor" v-else @click="changeStatus(scope.row,1)">
+              <icon symbol name="iconguanlianlingjian-moren" class="font20"></icon>
+            </span>
+
+            <!-- <icon v-if="calculateSelected(scope.row,1)" @click.native="changeStatus(scope.row,1)" symbol
                   name="iconguanlianlingjian-xuanzhong" class="font20 cursor"></icon>
             <icon v-else symbol name="iconguanlianlingjian-moren" @click.native="changeStatus(scope.row,1)"
-                  class="font20 cursor"></icon>
+                  class="font20 cursor"></icon> -->
 
           </template>
         </el-table-column>
@@ -45,10 +52,16 @@
             width="150"
         >
           <template slot-scope="scope">
-            <icon v-if="calculateSelected(scope.row,3)" @click.native="changeStatus(scope.row,3)" symbol
+            <span class="clickIcon cursor" v-if="calculateSelected(scope.row,3)" @click="changeStatus(scope.row,3)">
+              <icon symbol name="iconguanlianlingjian-xuanzhong" class="font20"></icon>
+            </span>
+            <span class="clickIcon cursor" v-else @click="changeStatus(scope.row,3)">
+              <icon symbol name="iconguanlianlingjian-moren" class="font20"></icon>
+            </span>
+            <!-- <icon v-if="calculateSelected(scope.row,3)" @click.native="changeStatus(scope.row,3)" symbol
                   name="iconguanlianlingjian-xuanzhong" class="font20 cursor"></icon>
             <icon v-else symbol name="iconguanlianlingjian-moren" @click.native="changeStatus(scope.row,3)"
-                  class="font20 cursor"></icon>
+                  class="font20 cursor"></icon> -->
           </template>
         </el-table-column>
         <el-table-column
@@ -56,10 +69,16 @@
             align="center"
             width="150">
           <template slot-scope="scope">
-            <icon v-if="calculateSelected(scope.row,2)" @click.native="changeStatus(scope.row,2)" symbol
+            <span class="clickIcon cursor" v-if="calculateSelected(scope.row,2)" @click="changeStatus(scope.row,2)">
+              <icon symbol name="iconguanlianlingjian-xuanzhong" class="font20 cursor"></icon>
+            </span>
+            <span class="clickIcon cursor" v-else @click="changeStatus(scope.row,2)">
+              <icon symbol name="iconguanlianlingjian-moren" class="font20 cursor"></icon>
+            </span>
+             <!-- <icon v-if="calculateSelected(scope.row,2)" @click.native="changeStatus(scope.row,2)" symbol
                   name="iconguanlianlingjian-xuanzhong" class="font20 cursor"></icon>
             <icon v-else symbol name="iconguanlianlingjian-moren" @click.native="changeStatus(scope.row,2)"
-                  class="font20 cursor"></icon>
+                  class="font20 cursor"></icon> -->
           </template>
         </el-table-column>
 
@@ -68,8 +87,13 @@
             <span class="custom-title">审批意见</span>
           </template>
           <template slot-scope="scope">
-            <i-input v-if="approvalComments(scope.row)" v-model="scope.row.auditOpinion"></i-input>
-            <span v-else>{{ scope.row.auditOpinion }}</span>
+              <el-tooltip class="item" :disabled="showTooltip(scope.row.auditOpinion)" :content="scope.row.auditOpinion" placement="top">
+                <div>
+                  <i-input v-if="approvalComments(scope.row)" v-model="scope.row.auditOpinion"></i-input>
+                  <span v-else>{{ scope.row.auditOpinion }}</span>
+                </div>
+              </el-tooltip>
+              
           </template>
 
         </el-table-column>
@@ -84,9 +108,11 @@
         <el-table-column
             label="解释附件"
             align="center"
-            prop="explainFile">
+            prop="explainFile"
+            width="90"
+            >
           <template slot-scope="scope">
-            <a class="link-underline" v-if="scope.row.explainFileIds!=null" @click="lookExplainFile(scope.row)">
+            <a class="link" v-if="scope.row.explainFileIds!=null" @click="lookExplainFile(scope.row)">
               {{ language('CHAKAN', '查看') }}
             </a>
           </template>
@@ -330,7 +356,11 @@ created(){
         taskId: row.workFlowDTOS.filter((i) => i.taskId).map((i) => i.taskId),
       }
       this.explainAttachmentDialogVal = true
-    }
+    },
+    showTooltip(text){
+      if(text==null || !text.trim().length) return true
+      else return false;
+    },
 
   }
 }
@@ -353,4 +383,10 @@ created(){
     margin-left: 8px;
   }
 }
+  .clickIcon{
+    padding: 10px 15px;
+  }
+  .table-text{
+    white-space: nowrap;
+  }
 </style>

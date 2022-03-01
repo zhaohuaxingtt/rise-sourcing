@@ -67,18 +67,20 @@ export const tableTitle = [{
   props: 'meetingName',
   name: '会议',
   key: 'nominationLanguage_HuiYi',
-  tooltip: true
+  tooltip: true,
+  
 },
 {
   props: 'meetingStatusDesc',
   name: '会议状态',
   key: 'nominationLanguage_HuiYiZhuangTai',
-  tooltip: true
+  tooltip: true,
+  width:150
 },
 {
   props: 'nominateUserName',
   name: '询价采购员',
-  width: 150,
+  width: 90,
   key: 'nominationLanguage_XunJiaCaiGouYuan',
   tooltip: true
 },
@@ -87,7 +89,7 @@ export const tableTitle = [{
   name: 'LINIE',
   key: 'LINIE',
   tooltip: true,
-  width:100
+  width:90
 },
 {
   props: 'rsStatusDesc',

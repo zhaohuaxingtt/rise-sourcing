@@ -6364,6 +6364,11 @@
     QINGSHURUBIAOQIANMINGCHENG: 'Please enter tag name',
     BIDDING_BJDWWFSC: 'Comparison unit cannot be deleted',
     YUANCAILIAOXIANGQING: 'Raw Material Price Overview',
+    "AEKO_ZENGJIATOUZIFEI":'增加投资费',
+    "AEKO_BUHANSHUI":'(不含税)',
+    "AEKO_HANFENTAN":'(含分摊)',
+    "AEKO_ZENGJIACAILIAOCHENGBEN":'增加材料成本',
+    "AEKO_RMB_CHE":'(RMB/车)',
   }
   var xmlHttp = ''
   if (window.XMLHttpRequest) {

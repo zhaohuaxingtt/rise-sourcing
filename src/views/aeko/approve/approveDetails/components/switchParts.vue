@@ -1,8 +1,8 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2022-01-26 16:37:49
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-25 13:50:00
+ * @LastEditors: Please set LastEditors
  * @Description: 
 -->
 <template>
@@ -27,9 +27,9 @@
           ></el-option>
         </iSelect>
       </div>
-      <span class="floatright">
+      <!-- <span class="floatright">
         <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
-      </span>
+      </span> -->
     </template>
     <tableList
       v-loading="loading"

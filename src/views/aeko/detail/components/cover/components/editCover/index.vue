@@ -29,7 +29,7 @@
           v-for="(item, index) in basicTitle" :key="index" 
           :required="item.required" :label="language(item.labelKey, item.label)+':'" 
           v-permission.dynamic.auto="item.editPermissionKey" 
-          :label-width="item.labelWidth || '140px'"
+          :label-width="item.labelWidth || '10rem'"
         >
           <template v-if="item.editable && isEdit">
             <template v-if="item.type === 'input'">
@@ -62,7 +62,6 @@
       <iInput
         type="textarea"
         rows="10" 
-        resize="none"
         v-model="basicInfo.remark"
         :disabled="disabled"
         v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS|封面表态备注框_编辑"
