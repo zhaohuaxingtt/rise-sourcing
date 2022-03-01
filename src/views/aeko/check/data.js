@@ -20,8 +20,8 @@ export const SearchList = [
 
 // 表头
 export const tableTitle = [
-    { props: "aekoCode", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true,width:140 },
-    { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true },
+    { props: "aekoCode", name: "AEKO号", key: "LK_AEKOHAO_MANAGE", tooltip: true,width:200 },
+    { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true,width:80 },
     { props: "aekoStatusDesc", name: "AEKO状态", key: "LK_AEKOZHUANGTAI", tooltip: true },
     { props: "coverStatusDesc", name: "封⾯状态", key: "LK_AEKOFENGMIANZHUANGTAI", tooltip: true },
     // 这里需要插入一个内容状态

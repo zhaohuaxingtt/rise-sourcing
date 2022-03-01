@@ -231,7 +231,7 @@ export function partsQuotations(rfqId,lv,supplierId) {
 // 获取关联零件列表
 export function getMouldPartList(params) {
   return requst({
-    url: `/quotation/mould-parts-list?supplierId=${supplierId()}`,
+    url: `/quotation/mould-parts-list`,
     method: 'POST',
     data: params
   })

@@ -56,12 +56,12 @@
         <!--第三行行-->
         <el-row :gutter='20'>
           <div class="margin-left10">备注:</div>
-          <i-input class="margin-top10 margin-left10" type="textarea" v-model="auditCover.remark" :rows="8" disabled>
+          <i-input class="margin-top10 margin-left10 text-disabled" type="textarea" v-model="auditCover.remark" :rows="8" disabled>
           </i-input>
         </el-row>
       </i-form-group>
 
-      <el-table :data="costsWithCarType" border class="margin-top30" :summary-method="getSummaries" show-summary
+      <el-table :data="costsWithCarType" border class="margin-top30 total" :summary-method="getSummaries" show-summary
                 :row-class-name="rowClassName">
         <el-table-column
             type="index"
@@ -279,7 +279,16 @@ export default {
     color: #E30D0D;
   }
 }
-
+::v-deep .el-textarea{
+  &.text-disabled.is-disabled .el-textarea__inner{
+    color: #505050;
+  }
+}
+.total{
+  ::v-deep .el-table__footer-wrapper{
+    font-weight: bolder;
+  }
+}
 .lastCelStyle {
   font-size: 14px;
   font-family: Arial;

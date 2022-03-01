@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-30 11:39:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-01-11 10:06:44
+ * @LastEditTime: 2022-02-28 14:13:27
  * @Description: 零件列表 AEKO 
 -->
 <template>
@@ -72,7 +72,7 @@
     <iCard class="margin-top20" :title="language('LK_AEKO_PARTSLIST','零件清单')" v-permission.auto="AEKO_PARTLIST_CSFAEKOPARTLIST_TABLE|表格">
       <div>
         <tableList
-          class="table"
+          class="table margin-top20"
           index
           :selection="false"
           :lang="true"

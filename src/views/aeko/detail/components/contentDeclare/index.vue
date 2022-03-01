@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-02-18 11:57:48
+ * @LastEditTime: 2022-02-28 16:34:24
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -179,19 +179,20 @@
             popper-class="custom-card-tooltip"
             :content="`${language('LK_AEKO_NEIRONGBIAOTAIDAOCHUTISHI','勾选零件行项目-->导出->批量维护原零件信息-->导入')}`"
             placement="top">
-            <i class="el-icon-warning-outline font18 tipsIcon"></i>
+            <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
         </iButton>
-        <span class="margin-left5 margin-right5" v-if="!disabled" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入">
-          <Upload 
-            hideTip
-            :buttonText="language('DAORU','导⼊')"
-            :request="importItemExcel"
-            :onHttpUploaded="onHttpUploaded"
-            :accept="'.xlsx,.xls'"
-          />
-        </span>
-        <iButton v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT|提交">{{ language("TIJIAO", "提交") }}</iButton>
+        <Upload
+          class="margin-left10" 
+          v-if="!disabled" 
+          v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_IMPORT|导入"
+          hideTip
+          :buttonText="language('DAORU','导⼊')"
+          :request="importItemExcel"
+          :onHttpUploaded="onHttpUploaded"
+          :accept="'.xlsx,.xls'"
+        />
+        <iButton class="btn-margin-left10" v-if="!disabled" :loading="submitLoading" @click="handleSubmit" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_SUBMIT|提交">{{ language("TIJIAO", "提交") }}</iButton>
         <iButton v-if="!disabled" :loading="cancelLoading" @click="cancelContent" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_BUTTON_RECALL|撤回">
           {{ language("CHEHUI", "撤回") }}
           <el-tooltip 
@@ -199,7 +200,7 @@
             popper-class="custom-card-tooltip"
             :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO','审批前，可对已提交的单据进行撤回。此处只针对内容撤回，如需撤回封面表态，请在封面表态中操作【撤回】')}`"
             placement="top">
-            <i class="el-icon-warning-outline font18 tipsIcon"></i>
+            <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
           </iButton>
           <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
@@ -250,6 +251,9 @@
               <span v-else>{{scope.row.groupName}}</span>
             </div>
           </template>
+          <template #supplierNameZh="scope">
+            <span>{{scope.row.supplierSapCode + '-' + scope.row.supplierNameZh}}</span>
+          </template>
           <template #oldPartNumPreset="scope">
             <iInput v-if="scope.row.status === 'EMPTY'||scope.row.status === 'TOBE_STATED' && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.showPartNumPreset" readonly>
               <div class="inputSearchIcon" slot="suffix">
@@ -263,10 +267,10 @@
             <span v-else>{{scope.row.originPartName}}</span>
           </template>
           <template #dosage="scope">
-            <span v-if="scope.row.status !='EMPTY'" class="link-underline" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.status !='EMPTY'" class="link" @click="viewDosage(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #quotationId="scope">
-            <span v-if="scope.row.quotationId" class="link-underline" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
+            <span v-if="scope.row.quotationId" class="link" @click="jumpQuotation(scope.row)">{{ language("AEKO_CONTENT_BAOJIA", "报价") }}</span>
           </template>
           <!-- 模具投资变动 -->
           <template #mouldPriceChange="scope">
@@ -283,7 +287,7 @@
           <!-- 价格轴 -->
           <template #priceAxis="scope">
             <!-- -disabled -->
-            <span v-if="scope.row.quotationId" class="link-underline" @click="showPriceAxis(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.quotationId" class="blue-text" @click="showPriceAxis(scope.row)">{{ language("CHAKAN", "查看") }}</span>
           </template>
           <template #investCarTypePro="scope">
             <iSelect
@@ -305,7 +309,7 @@
             <span>{{floatFixNum(scope.row.bpriceChange)}}</span>
           </template>
           <template #isMtz="scope">
-            <span v-if="scope.row.isMtz == 1" class="link-underline" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
+            <span v-if="scope.row.isMtz == 1" class="blue-text" @click="view(scope.row)">{{ language("CHAKAN", "查看") }}</span>
             <span v-else>{{scope.row.isMtzDesc}}</span>
           </template>
           <!-- 是否待报价 -->
@@ -1305,8 +1309,14 @@ export default {
   .tipsIcon{
     transform: rotate(180deg);
   }
+  .blue-text{
+    color: #1763F7;
+  }
 }
 ::v-deep.el-button {
+  &.btn-margin-left10{
+    margin-left: 10px;
+  }
   &:hover {
     .iconSuffix {
       color: #ffffff;
@@ -1337,7 +1347,12 @@ export default {
 ::v-deep.table {
   td,th {
     .cell {
-      width: 100% !important
+      width: 100% !important;
+      .is-disabled{
+        .el-input__inner{
+          color: #505050;
+        }
+      }
     }
   }
 }
