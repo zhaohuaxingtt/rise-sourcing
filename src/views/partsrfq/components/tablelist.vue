@@ -62,6 +62,20 @@
           {{ scope.row[items.props] }}
         </template>
       </el-table-column>
+      <el-table-column :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip===true' :key="index" align='center' 
+      v-else-if="items.titleTips" :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"
+                       :prop="items.props" :fixed="items.fixed">
+        <template slot="header">
+          <el-tooltip effect="light"
+              :content="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"
+              placement="top">
+            <span>{{lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)}}</span>
+          </el-tooltip>
+        </template>
+        <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">
+          <slot :name="items.props" :row="scope.row"></slot>
+        </template>
+      </el-table-column>  
       <el-table-column :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else :label="lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name)"
                        :prop="items.props" :fixed="items.fixed">
         <template v-if="$scopedSlots[items.props] || $slots[items.props]" v-slot="scope">

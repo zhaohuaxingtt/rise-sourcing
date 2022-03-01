@@ -19,7 +19,7 @@
 		<div class="header flex-between-center-center">
 			<span class="title">{{ language('XIUGAIJILU','修改记录') }}</span>
 		</div>
-    <tableList lang :selection="false" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" v-permission.auto="ARTSPROCURE_EDITORDETAIL_TARGETPRICE_TOOLINGTARGETPRICE_TABLE|申请目标价-投资目标价表格" />
+    <tableList lang :selection="true" :index="true" :tableData="tableListData" :tableTitle="tableTitle" :tableLoading="loading" v-permission.auto="ARTSPROCURE_EDITORDETAIL_TARGETPRICE_TOOLINGTARGETPRICE_TABLE|申请目标价-投资目标价表格" />
     <iPagination
       class="pagination margin-top30"
       v-update

@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-02-11 11:41:06
+ * @LastEditTime: 2022-03-01 11:19:32
  * @LastEditors: Please set LastEditors
  * @Description: table组件
 -->
@@ -26,7 +26,7 @@
     default-expand-all
     ref="moviesTable">
     <!----------------------复选框------------------------------------->
-    <el-table-column v-if="selection" type='selection' :width="selectConfig.width || 40" :align="selectConfig.align || 'center'" :header-align="selectConfig.headerAlign || 'center'" :selectable="selectConfig.selectable || selectable"></el-table-column>
+    <el-table-column v-if="selection" type='selection' :width="selectConfig.width || 45" :align="selectConfig.align || 'center'" :header-align="selectConfig.headerAlign || 'center'" :selectable="selectConfig.selectable || selectable"></el-table-column>
     <!----------------------支持自定义的index插槽------------------------>
     <el-table-column :fixed="indexFixed" v-if='index' type='index' :width='indexConfig.width || 50' :align="indexConfig.align || 'center'" :header-align="indexConfig.headerAlign || 'center'" :label="indexConfig.label || indexLabel">
       <template slot-scope="scope">
@@ -42,7 +42,16 @@
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{ scope.column.label }}
+            <template>
+              <span v-if="items.isHeaderSetting" class="isHeaderSetting">
+                <template v-for="(setting,index) in items.HeaderSettingList">
+                  <span :key="index+'_setting'">{{language(setting.key, setting.name)}}</span>
+                  <br  :key="index+'_setting_br'" v-if="index+1 < items.HeaderSettingList.length"/>
+                </template>
+              </span>
+              <span v-else class="noisHeaderSetting">{{scope.column.label }}</span>
+            </template>
+            
             <i v-if="items.require" class="label-require margin-left3 margin-right3">*</i>
             <el-popover
               placement="top"
@@ -83,17 +92,25 @@
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
-            {{ scope.column.label }}
+            <template>
+              <span v-if="items.isHeaderSetting" class="isHeaderSetting">
+                <template v-for="(setting,index) in items.HeaderSettingList">
+                  <span :key="index+'_setting'">{{language(setting.key, setting.name)}}</span>
+                  <br  :key="index+'_setting_br'" v-if="index+1 < items.HeaderSettingList.length"/>
+                </template>
+              </span>
+              <span v-else class="noisHeaderSetting">{{scope.column.label }}</span>
+            </template>
             <i v-if="items.require" class="label-require margin-left3 margin-right3">*</i>
             <el-popover
               placement="top"
               trigger="hover"
               popper-class="tableTitleTip"
               :visible-arrow="false"
-              :disabled="!items.showTips">
+              :disabled="!(items.showTips || items.tipsLang)">
               <p v-html="items.showTips ? item.tips() : ''"></p>
               <span slot="reference">
-                <icon v-if="items.showTips" class="require margin-left4" symbol name="iconxinxitishi" />
+                <icon v-if="items.showTips || items.tipsLang" class="require margin-left4" symbol name="iconxinxitishi" />
               </span>
             </el-popover>
           </div>

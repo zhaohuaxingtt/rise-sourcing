@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2021-04-13 17:30:36
+ * @LastEditTime: 2022-02-28 16:48:13
  * @LastEditors: Please set LastEditors
  * @Description: 通用表格
 -->
@@ -14,7 +14,7 @@
               v-loading='tableLoading'
               @selection-change="handleSelectionChange"
               :row-class-name="handleTableRow">
-      <el-table-column v-if="selection" type='selection' width="55" align='center'></el-table-column>
+      <el-table-column v-if="selection" type='selection' width="40" align='center'></el-table-column>
       <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
       <template v-for="(items,index) in tableTitle">
         <!-- 点击事件-->

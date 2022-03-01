@@ -3,7 +3,10 @@
     <i-card v-permission.auto="AEKO_APPROVED_RECOMMENDATION_TABLE|AEKO推荐表列表">
       <div class="margin-bottom15">
         <span class="card-title"
-          >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatus }}</span>
+            >AEKO Recommendation Sheet/AEKO 推荐表 - {{ auditContentStatusDesc }}
+            <!-- 待审批的时候显示一个icon -->
+            <icon v-if=" auditContentStatus == 'TO_BE_APPROVAL'" class="icon font22" symbol name="iconjinridaiban" />
+          </span>
         <span class="floatright">
           <iButton v-if="show && isMtz" @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
           <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
@@ -17,13 +20,17 @@
         :tableData="recommendationFormPendingApprovalList"
         :handleSaveSetting="handleSaveSetting"
         :handleResetSetting="handleResetSetting"
+        :titlePopover="false"
       >
+        <template #supplier="scope">
+          <span>{{scope.row.supplierSapCode + '-' +scope.row.supplierNameZh}}</span>
+        </template>
       </tableList>
-      <div class="margin-top20 card-bottom-tip">
+      <!-- <div class="margin-top20 card-bottom-tip">
         Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder
         Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder
         Invest≥10,000,000 RMB
-      </div>
+      </div> -->
       <!--分页区-->
       <i-pagination
         v-update
@@ -41,7 +48,7 @@
 </template>
 
 <script>
-import { iCard, iPagination, iButton, iMessage } from "rise";
+import { iCard, iPagination, iButton, iMessage,icon } from "rise";
 // import iTableCustom from "@/components/iTableCustom";
 import tableList from "@/components/iTableSort"
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
@@ -57,11 +64,13 @@ export default {
     iCard,
     tableList,
     iPagination,
-    iButton
+    iButton,
+    icon,
   },
   props: {
     auditContents: { type: Object, require: true, default: () => [] },
     auditContentStatus: { type: String, default: () => "" },
+    auditContentStatusDesc: { type: String, default: () => "" },
   },
   computed:{
     // 推荐表是否含有mtz零件
@@ -90,7 +99,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
-          minWidth:128
+          minWidth:180
         },
         {
           props: "partNameZh",
@@ -109,7 +118,6 @@ export default {
           align: "center",
           tooltip: true,
           minWidth:140,
-          width:100,
         },
         {
           props: "originPartNum",
@@ -118,7 +126,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
-          minWidth:128
+          minWidth:180
         },
         {
           props: "linieDeptNum",
@@ -149,12 +157,17 @@ export default {
         },
         {
           props: "apriceChange",
-          name: "A价变动",
-          key: "LK_AJIABIANDONG",
+          name: "A价变动(含分摊)",
+          key: "AJIABIANDONGHANFENTAN",
           headerAlign: "center",
           align: "center",
           tooltip: true,
-          minWidth:96
+          minWidth:96,
+          isHeaderSetting:true,
+          HeaderSettingList:[
+            {key:'AJIABIANDONG',name:'A价变动'},
+            {key:'AEKO_HANFENTAN',name:'(含分摊)'}
+          ],
         },
         {
           props: "bnkChange",
@@ -182,7 +195,12 @@ export default {
           align: "center",
           tooltip: true,
           minWidth:162,
-          width:150,
+          width:100,
+          isHeaderSetting:true,
+          HeaderSettingList:[
+            {key:'AEKO_ZENGJIATOUZIFEI',name:'增加投资费'},
+            {key:'AEKO_BUHANSHUI',name:'(不含税)'}
+          ],
         },
         {
           props: "developmentCost",
@@ -200,26 +218,35 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
-          minWidth:100
+          minWidth:75
         },
         {
-          props: "supplierSapCode",
-          name: "供应商编号",
-          key: "LK_GONGYINGSHANGBIANHAO",
+          props: "supplier",
+          name:'供应商',
+          key:'TPZS.GONGYINGSHANG',
           headerAlign: "center",
           align: "center",
           tooltip: true,
-          width:100,
-        },
-        {
-          props: "supplierNameZh",
-          name: "供应商名称",
-          key: "LK_GONGYINGSHANGMINGCHENG",
-          headerAlign: "center",
-          align: "center",
-          tooltip: true,
-          minWidth:114
-        },
+          width:200,
+        }
+        // {
+        //   props: "supplierSapCode",
+        //   name: "供应商编号",
+        //   key: "LK_GONGYINGSHANGBIANHAO",
+        //   headerAlign: "center",
+        //   align: "center",
+        //   tooltip: true,
+        //   width:100,
+        // },
+        // {
+        //   props: "supplierNameZh",
+        //   name: "供应商名称",
+        //   key: "LK_GONGYINGSHANGMINGCHENG",
+        //   headerAlign: "center",
+        //   align: "center",
+        //   tooltip: true,
+        //   minWidth:114
+        // },
       ],
       transmitObj: {},
       show:true,
@@ -249,7 +276,7 @@ export default {
     if(this.queryParams?.goto){
       this.addStatusColumn()
       this.searchApproved(this.queryParams.requirementAekoId)
-      this.auditContentStatus = '已审批'
+      this.auditContentStatusDesc = '已审批'
       this.show = false
     }
   },
@@ -321,6 +348,9 @@ export default {
   font-size: 18px;
   font-family: Arial;
   font-weight: bold;
+  .icon{
+    margin-bottom: -2px;
+  }
 }
 
 .card-bottom-tip {
