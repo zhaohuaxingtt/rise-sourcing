@@ -6,7 +6,7 @@
 <template>
   <iCard class="aekoDetailRecord">
     <span class="font18 font-weight">
-      {{ language("SHENPIJILU", "审批记录") }}
+      <!-- {{ language("SHENPIJILU", "审批记录") }} -->
     </span>
     <div class="editControl floatright margin-bottom20">
       <iButton class="" @click="submit" v-if="checkFirstRecord"
@@ -14,7 +14,7 @@
       >
         {{ language("TIJIAO", "提交") }}
       </iButton>
-      <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+      <!-- <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton> -->
     </div>
     <tableList
         class="margin-top15"
@@ -63,7 +63,7 @@
            v-if="!itemIsCanReply(scope.row, scope.$index)">
           {{ language("LK_SHANGCHUAN", "上传") }}
         </a>
-        <a class="link-underline" href="javascript:;" @click="openUploadDialog(scope.row, true)" v-else>
+        <a class="link" href="javascript:;" @click="openUploadDialog(scope.row, true)" v-else>
           {{ language("CHAKAN", "查看") }}
         </a>
       </template>

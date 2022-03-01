@@ -12,7 +12,7 @@
   font-family: 'VWTEXTOFFICE-REGULAR','VWHEADOFFICE-REGULAR','VWAGTHESANS-BOLD','VWHEADOFFICE-BOLD','VWHEADOFFICE-BOLDITALIC','VWHEADOFFICE-REGULARITALIC','VWTEXTOFFICE-BOLD','VWTEXTOFFICE-BOLDITALIC','VWTEXTOFFICE-REGULARITALIC',"Microsoft YaHei";
   &::-webkit-scrollbar {
         width:12px;
-        height:12px;
+        height:16px;
     }
     &::-webkit-scrollbar-track {
         width: 8px;
@@ -22,7 +22,7 @@
         border-radius:2em;
     }
       &::-webkit-scrollbar-thumb {
-      background-color:#d0d2d3;
+      background-color:#b0b2b3;
       background-clip:padding-box;
       min-height:28px;
       -webkit-border-radius: 2em;
