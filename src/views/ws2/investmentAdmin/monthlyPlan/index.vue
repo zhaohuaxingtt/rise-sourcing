@@ -244,7 +244,8 @@ import {
   queryPlanMonthList, 
   saveMonthData,
   importMonthData,
-  refreshVersion
+  refreshVersion,
+  exportPlanCommutityList1
 } from "@/api/ws2/investmentAdmin";
 import store from '@/store';
 import { getTousandNum, delcommafy } from "@/utils/tool";
@@ -343,12 +344,12 @@ export default {
         // versionId: "1407690871637319681",
         planType: this.tabIndex === 0 ? "current_year" : "next_year",
       };
-      exportPlanCommutityList(param).then(res => {
-        if(res.code === '0'){
-          iMessage.success('操作成功');
-        }else{
-          iMessage.error('操作失败');
-        }
+      exportPlanCommutityList1(param).then(res => {
+        // if(res.code === '0'){
+        //   iMessage.success('操作成功');
+        // }else{
+        //   iMessage.error('操作失败');
+        // }
       });
     },
     tabClick(index) {

@@ -89,7 +89,7 @@
         <div>
           <iButton @click="approvalBtn" v-loading="saveLoading">{{ $t('MOULDADD.LK_PIZHUAN') }}</iButton>
           <iButton @click="rejectShowBtn">{{ $t('LK_JUJUE') }}</iButton>
-          <iButton @click="transferBtn">{{ $t('LK_ZHUANPAI') }}</iButton>
+          <iButton @click="transferBtn" v-loading="transferBtnLoading">{{ $t('LK_ZHUANPAI') }}</iButton>
         </div>
       </div>
 <!--      570-->
@@ -152,7 +152,7 @@
     ></reject>
     <transfer
         v-model="transferShow"
-        :applyUserIdList="applyUserIdList"
+        :applyUserIdList="transferList"
         :multipleSelection="multipleSelection"
         @refresh="getTableListFn"
     ></transfer>
@@ -180,7 +180,7 @@ import {
   pageApproval,
   carCombo,
   statusCombo,
-  applyUserCombo, ratify,
+  applyUserCombo, ratify, UserCombo,
 } from "@/api/ws2/budgetApproval";
 import {
   iTableList
@@ -240,7 +240,9 @@ export default {
       redMultipleSelection: [],
       referenceCarProjectParams: {},
       tableTitle: budgetApprovalData,
-      getTousandNum: getTousandNum
+      getTousandNum: getTousandNum,
+      transferList: [],
+      transferBtnLoading: false,
     }
   },
   created() {
@@ -377,7 +379,15 @@ export default {
       if (this.multipleSelection.length == 0) {
         iMessage.warn('请先勾选')
       } else if (this.multipleSelection.length >= 0) {
-        this.transferShow = true
+        this.transferBtnLoading = true;
+        UserCombo().then(res => {
+          if(res.data){
+            this.transferList = res.data;
+            this.transferShow = true;
+          }
+
+          this.transferBtnLoading = false;
+        })
       }
     },
     rejectShowBtn() {
