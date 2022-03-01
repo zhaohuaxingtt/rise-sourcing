@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2022-02-28 22:05:45
+ * @LastEditTime: 2022-03-01 11:30:51
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -537,13 +537,14 @@ export default {
       chargeRetrieve(params)
         .then((allDatas) => {
           try {
-            // var datas = allDatas;
+            if (allDatas.code && allDatas.code !== '200') return iMessage.error(allDatas.desZh)
             this.tableList = allDatas;
             this.tableTitle = this.tableList.title.filter((item) => item.title);
             this.reContructData();
             this.$nextTick(() => {
               this.onDataLoading = false;
             });
+
           } catch (err) {
             console.log(err);
           }
