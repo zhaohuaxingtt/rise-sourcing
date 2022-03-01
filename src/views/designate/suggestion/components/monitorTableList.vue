@@ -1,13 +1,14 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-03-01 14:27:09
+ * @LastEditTime: 2022-03-01 17:13:46
  * @LastEditors: Please set LastEditors
 -->
 
 <template>
   <div class="monitorTable">
     <el-table
+      :key="'tableKey_'+tableKey"
       fit
       border
       tooltip-effect='light'
@@ -174,7 +175,8 @@ export default {
       spanArr: [],
       selectedData: [],
       chartData: [],
-      combineVisible: false
+      combineVisible: false,
+      tableKey:0,
     }
   },
   watch: {
@@ -384,6 +386,7 @@ export default {
       }
     },
     init() {
+      ++this.tableKey;
       this.data = this.tableData
       this.spanArr = this.rowspan(this.data, 'gid', (data = []) => {
         // 格式化数据
