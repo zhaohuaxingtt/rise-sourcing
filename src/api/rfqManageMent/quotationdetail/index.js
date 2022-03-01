@@ -111,7 +111,8 @@ export function cbdDownloadFile(params) {
     url: `/part/cbd/downLoadFile/${ params.rfqId }/${ params.round }?supplierId=${params.supplierId}`,
     method: 'GET',
     params: {
-      partNum: params.partNum
+      partNum: params.partNum,
+      priceType: params.priceType
     }
   })
 }
