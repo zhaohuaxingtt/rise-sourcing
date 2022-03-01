@@ -28,7 +28,7 @@ export const projectTableTitle = [
   {
     props: "projectName",
     name: language('BIDDING_XIANGMUMINGCHENG','项目名称'),
-    width: 250,
+    width: 500,
     key:'BIDDING_XIANGMUMINGCHENG'
   },
   {
@@ -52,14 +52,14 @@ export const projectTableTitle = [
   {
     props: "createDate",
     name: language('BIDDING_CHUANGJIANRIQI','创建日期'),
-    width: 100,
+    width: 120,
     key:"BIDDING_CHUANGJIANRIQI"
   },
   {
     props: "createName",
     name: language('BIDDING_CHUANGJIANREN','创建人'),
     key:'BIDDING_CHUANGJIANREN',
-    width: 120,
+    width: 200,
   },
   {
     props: "createDept",
@@ -70,19 +70,19 @@ export const projectTableTitle = [
   {
     props: "biddingBeginTime",
     name: language('BIDDING_JINGJIAQIZHIRIQI','竞价起止日期'),
-    width: 120,
+    width: 150,
     key:'BIDDING_JINGJIAQIZHIRIQI'
   },
   {
     props: "pricingDeadline",
     name: language('BIDDING_BAOJIAJIEZHIRIQI','报价截止日期'),
-    width: 120,
+    width: 150,
     key:'BIDDING_BAOJIAJIEZHIRIQI'
   },
   {
     props: "openTenderTime",
     name: language('BIDDING_KAIBIAOSHIJIAN','开标时间'),
-    width: 120,
+    width: 150,
     key:'BIDDING_KAIBIAOSHIJIAN'
   },
 ]
