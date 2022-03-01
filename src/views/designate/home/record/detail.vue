@@ -40,12 +40,12 @@
         >
 
         <template #ltc="scope">
-          <span>{{resetLtcData (scope.row.ltcs,'ltc')}}</span>
+          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
         </template>
 
         <!-- 年降开始时间 -->
         <template #beginYearReduce="scope">
-          <span>{{resetLtcData (scope.row.ltcs,'beginYearReduce')}}</span>
+          <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
 
       </tablelist>
@@ -136,16 +136,17 @@ export default {
       window.open(openPageRs.href,'_blank')
     },
        // 单独处理下年降或年降计划
-    resetLtcData (row=[],type) {
+    resetLtcData (row,type) {
+      const _row = Array.isArray(row) ? row : []
       // 年降开始时间
       if(type == 'beginYearReduce'){
         // 取第一个非0的年份
-        const list = row.filter((item)=> item.priceReduceRate!='0');
+        const list = _row.filter((item)=> item.priceReduceRate!='0');
         return list.length ? list[0].yearMonths : '-'
       }else{ // 年降
        // 从非0开始至非0截至的数据 不包含0
        let strList = [];
-        const priceReduceRateArr = row.map(item => item.priceReduceRate)
+        const priceReduceRateArr = _row.map(item => item.priceReduceRate)
 
         let i = 0
         do {
