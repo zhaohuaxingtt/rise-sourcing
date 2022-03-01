@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-02-25 16:42:08
+ * @LastEditTime: 2022-03-01 11:02:30
  * @LastEditors: Please set LastEditors
  * @Description: table组件
 -->
@@ -26,7 +26,7 @@
     default-expand-all
     ref="moviesTable">
     <!----------------------复选框------------------------------------->
-    <el-table-column v-if="selection" type='selection' :width="selectConfig.width || 40" :align="selectConfig.align || 'center'" :header-align="selectConfig.headerAlign || 'center'" :selectable="selectConfig.selectable || selectable"></el-table-column>
+    <el-table-column v-if="selection" type='selection' :width="selectConfig.width || 45" :align="selectConfig.align || 'center'" :header-align="selectConfig.headerAlign || 'center'" :selectable="selectConfig.selectable || selectable"></el-table-column>
     <!----------------------支持自定义的index插槽------------------------>
     <el-table-column :fixed="indexFixed" v-if='index' type='index' :width='indexConfig.width || 50' :align="indexConfig.align || 'center'" :header-align="indexConfig.headerAlign || 'center'" :label="indexConfig.label || indexLabel">
       <template slot-scope="scope">

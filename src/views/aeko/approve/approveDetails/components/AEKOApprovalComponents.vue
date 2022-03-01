@@ -17,13 +17,13 @@
         <el-table-column
             label="专业科室"
             align="center"
-            width="90"
+            width="120"
             prop="linieDeptNum">
         </el-table-column>
         <el-table-column
             label="采购员"
             align="center"
-            width="90"
+            width="120"
             prop="linieName">
         </el-table-column>
         <el-table-column
@@ -72,7 +72,7 @@
             <span class="clickIcon cursor" v-if="calculateSelected(scope.row,2)" @click="changeStatus(scope.row,2)">
               <icon symbol name="iconguanlianlingjian-xuanzhong" class="font20 cursor"></icon>
             </span>
-            <span class="clickIcon" v-else @click="changeStatus(scope.row,2)">
+            <span class="clickIcon cursor" v-else @click="changeStatus(scope.row,2)">
               <icon symbol name="iconguanlianlingjian-moren" class="font20 cursor"></icon>
             </span>
              <!-- <icon v-if="calculateSelected(scope.row,2)" @click.native="changeStatus(scope.row,2)" symbol

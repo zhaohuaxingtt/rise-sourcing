@@ -99,7 +99,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
-          minWidth:160
+          minWidth:180
         },
         {
           props: "partNameZh",
@@ -118,7 +118,6 @@ export default {
           align: "center",
           tooltip: true,
           minWidth:140,
-          width:100,
         },
         {
           props: "originPartNum",
@@ -127,7 +126,7 @@ export default {
           headerAlign: "center",
           align: "center",
           tooltip: true,
-          minWidth:160
+          minWidth:180
         },
         {
           props: "linieDeptNum",

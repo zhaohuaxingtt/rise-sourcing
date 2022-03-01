@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 14:37:05
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-02-28 14:21:22
+ * @LastEditTime: 2022-03-01 10:45:50
  * @Description: 
  */
 
@@ -210,12 +210,12 @@ export const tableTitle = [
 
 // 表头
 export const tableCsfTitle = [
-  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:120 },
+  { props: "aekoNum", name: "AEKO号", key: "LK_AEKOHAO", tooltip: true,width:150 },
   { props: "auditTypeName", name: "审批类型", key: "SHENPILEIXING", tooltip: true, width:135  },
   { props: "describe", name: "描述", key: "LK_AEKOMIAOSHU", tooltip: true ,width:55},
   { props: "assignsheet", name: "更改零件名称", key: "LK_AEKO_GENGGAILINGJIANMINGCHENG", tooltip: true, width:115  },
-  { props: "carType", name: "涉及车型/车型项目", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width:145 },
-  { props: "supplier", name: "主要供应商", key: "LK_AEKO_ZHUYAOGONGYINGSHANG", tooltip: true,width:95  },
+  { props: "carType", name: "涉及车型/车型项目", key: "SHEJICHEXINGCHEXINGXIANGMU", tooltip: true, width:150 },
+  { props: "supplier", name: "主要供应商", key: "LK_AEKO_ZHUYAOGONGYINGSHANG", tooltip: true,width:100  },
   { props: "EP1", name: "增加材料成本(RMB/车)", 
     isHeaderSetting:true,
     HeaderSettingList:[
@@ -231,9 +231,9 @@ export const tableCsfTitle = [
     ],
   key: "LK_AEKO_ZENGJIATOUZIFEI", tooltip: true,width:110 },
   { props: "EP3", name: "其他费用(不含税)", key: "LK_AEKO_QITAFEIYONG", tooltip: true,width:90 },
-  { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true,width:55 },
-  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true,minWidth:100 },
-  { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true,width:80 },
+  { props: "DepartmentName", name: "科室", key: "LK_KESHI", tooltip: true,width:70 },
+  { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", tooltip: true,minWidth:80 },
+  { props: "attach", name: "审批附件", key: "LK_AEKO_SHENPIFUJIAN", tooltip: true,width:100 },
   { props: "date", name: "AEKO截止日期", key: "LK_AEKO_AEKOJIEZHIRIQI" ,tooltip: true ,width:120},
   { props: "createDate", name: "创建时间", key: "CHUANGJIANRIQI" ,tooltip: true,width:105 },
 ]
