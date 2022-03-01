@@ -54,13 +54,13 @@
             <span v-else>{{ scope.row.companyAddress }}</span>
           </template>
         </el-table-column>
-        <el-table-column :key="index" align="center" fixed="left" :label="items.key ? language(items.key,items.name) : items.name" v-else-if="items.props == 'svwCode'">
+        <el-table-column :key="index" align="center" fixed="left" :label="items.key ? language(items.key,items.name) : items.name" v-else-if="items.props == 'svwCode'" :width="100">
           <template v-slot="scope">
             {{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}
           </template>
         </el-table-column>
         <el-table-column :key="index" align='center' fixed="left" v-else-if="items.props == actionProps" :prop="items.props"
-                         :label="items.key ? language(items.key,items.name) : items.name">
+                         :label="items.key ? language(items.key,items.name) : items.name" :width="100">
           <template slot-scope="scope">
             <span v-if="scope.row.hasData" class="openLinkText cursor" @click="openActionPropsPage(scope.row)">{{language('LK_CHAKAN','查看')}}</span>
             <span v-else>{{ '-' }}</span>

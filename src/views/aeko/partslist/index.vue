@@ -5,10 +5,12 @@
 -->
 <template>
   <div  class="aekoPartslist"  v-permission.auto="AEKO_SHENPI_PARTLIST_PAGE|AEKO审批-详情-零件清单">
-    <h2 class="title">
-      {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
-    </h2>
-    <iNavMvp :list="describeTab" lang  :lev="2" :query="$route.query || {}" routerPage right></iNavMvp>
+    <div class="page-header">
+      <h2 class="title">
+        {{language('LK_AEKOHAO_MANAGE','AEKO号')}}：{{aekoCode}}
+      </h2>
+      <iNavMvp :list="describeTab" lang  :lev="2" :query="$route.query || {}" routerPage right></iNavMvp>
+    </div>
     <div class="contain margin-top20">
       <!-- 搜索区域 -->
       <iSearch @sure="sure" @reset="reset">
@@ -65,7 +67,7 @@
       </iSearch>
     </div>
 
-    <iCard class="margin-top20" :title="language('LK_AEKO_PARTSLIST','零件清单')">
+    <iCard class="margin-top20">
       <div>
         <tableList
           class="table"
@@ -346,7 +348,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .aekoPartslist{
-
-  }
+.page-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 </style>

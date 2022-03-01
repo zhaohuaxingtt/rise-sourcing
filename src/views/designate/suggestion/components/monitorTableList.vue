@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-11-09 18:01:41
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2022-03-01 14:27:09
+ * @LastEditors: Please set LastEditors
 -->
 
 <template>
@@ -56,8 +56,9 @@
         align='center'
         prop="partNo"
         label="Part"
-        width="95"
-        fixed>
+        width="110"
+        fixed
+        >
       <template slot-scope="scope">
         <p class="partName">{{scope.row.partNo || ''}}</p>
         <p class="partDeName" :title="scope.row.partNameDe || ''">{{scope.row.partNameDe || ''}}</p>
@@ -67,8 +68,9 @@
         align='center'
         prop="partPrjCode"
         label="FS/GS/SP No."
-        width="90"
-        fixed>
+        width="110"
+        fixed
+        >
       </el-table-column>
       <el-table-column
         align='center'

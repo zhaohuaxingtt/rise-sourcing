@@ -64,23 +64,19 @@
             </el-form-item>
         </el-form>
     </iSearch>
-      <iCard :title="language('LK_AEKO_PARTSLIST','零件清单')" class="margin-top20">
+      <iCard class="margin-top20">
         <!-- 按钮区域 -->
-        <template v-slot:header-control>
-            <div>
-                <template v-if="!isLinie && queryFrom != 'check'">
-                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
-                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
-                    <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
-                    <template v-if="isShowAddPart">
-                        <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件" @click="addParts">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
-                        <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
-                    </template>
-                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI|科室退回" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
+        <div v-if="!isLinie && queryFrom != 'check'" class="floatright margin-bottom20">
+                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
+                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
+                <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
+                <template v-if="isShowAddPart">
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_XINZENGLINGJIAN|新增零件" @click="addParts">{{language('LK_AEKO_XINZENGLINGJIAN','新增零件')}} </iButton>
+                    <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
                 </template>
-                <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
-            </div>
-        </template>
+                <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI|科室退回" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
+            <!-- <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton> -->
+        </div>
         <!-- 表单区域 -->
             <tableList
                 class="table"
@@ -860,7 +856,7 @@ export default {
             }
         }
         .table-tips{
-            color: #747F9D;
+            color: #485465;
             margin-top: 10px;
         }
         .isPreset{
