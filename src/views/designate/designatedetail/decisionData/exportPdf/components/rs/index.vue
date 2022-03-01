@@ -223,17 +223,16 @@ export default {
                 const sourceData = Array.isArray(res.data) ? res.data : []
 
                 this.exchangeRates = sourceData
-                    .filter(item => !item.isCurrentVersion)
-                    .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
-                    .map(item => {
-                      const result = {version: item.exchangeRateVos[0].version}
+                  .filter(item => !item.isCurrentVersion)
+                  .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+                  .map(item => {
+                    const result = { version: item.exchangeRateVos[0].version }
+                    
+                    result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
+                    result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
 
-                      const currentCurrencyExchangeRate = item.exchangeRateVos.find(item => item.originCurrencyCode === this.basicData.currency)
-                      result.str = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : "100RMB = 100RMB"
-                      result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
-
-                      return result
-                    })
+                    return result
+                  })
               }
             }
           })
