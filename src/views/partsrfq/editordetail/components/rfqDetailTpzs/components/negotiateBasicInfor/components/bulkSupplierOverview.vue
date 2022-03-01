@@ -2,12 +2,19 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 16:28:01
- * @LastEditors: caopeng
+ * @LastEditors: Please set LastEditors
  * @Descripttion: 概览
 -->
 <template>
-  <iCard  @handleTitle="addFile($event,7, '批量供应商概览')" class="supplier-item" :title="$t('TPZS.PLGYSGL')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`" :defalutCollVal='false' collapse>
-    <batch-supplier id="card7" :paramCategoryCode="paramCategoryCode" class="card-change" :isInside="true"/>
+  <iCard @handleTitle="addFile($event,7, '批量供应商概览')"
+         class="supplier-item"
+         :title="$t('TPZS.PLGYSGL')+`<span class='cursor' ><i style='color:#1660f1; font-weight: bold;font-size: 18px;' class='el-icon-shopping-cart-1'></i></span>`"
+         :defalutCollVal='false'
+         collapse>
+    <batch-supplier id="card7"
+                    :paramCategoryCode="paramCategoryCode"
+                    class="card-change"
+                    :isInside="true" />
     <!-- <div class="header-title">{{remark}}</div>
     <div class="title-btn">
       <iButton @click="handleHerf">{{$t('TPZS.GYS360')}}</iButton>
@@ -17,7 +24,7 @@
     <div id='powerBi'>
     </div> -->
   </iCard>
-  
+
 </template>
 
 <script>
@@ -34,11 +41,11 @@ export default {
   components: { iCard, iButton, remarkDialog, batchSupplier },
   props: {
     categoryCode: String,
-     rfqInfoData: { type: Object },
+    rfqInfoData: { type: Object },
   },
-  data() {
+  data () {
     return {
-    cardShow: JSON.parse(JSON.stringify(icardData)),
+      cardShow: JSON.parse(JSON.stringify(icardData)),
       paramCategoryCode: "",
       remark: '',
       remarkDialog: false,
@@ -64,36 +71,36 @@ export default {
   },
   watch: {
     categoryCode: {
-      handler(val) {
+      handler (val) {
         this.paramCategoryCode = val
       },
       immediate: true
     },
-        rfqInfoData(val){
-          this.rfqInfoData=val
-      }
+    rfqInfoData (val) {
+      this.rfqInfoData = val
+    }
   },
-  created() {
-    this.powerBiUrl()
+  created () {
+    // this.powerBiUrl()
   },
   methods: {
     // go供应商360
-    handleHerf() {
+    handleHerf () {
       window.location.href = 'http://10.122.17.38/portal/#/supplier/supplierList'
     },
     // 获取备注
-    async getRemark() {
+    async getRemark () {
       const res = await getRfqToRemark(this.$route.query.id)
       if (res.result) {
         this.remark = res.data && res.data.remark
       }
     },
     // 激活弹窗
-    handleRemark() {
+    handleRemark () {
       this.remarkDialog = true
     },
     // 获取财报iframeurl
-    async powerBiUrl() {
+    async powerBiUrl () {
       const pms = {
         rfqId: this.$route.query.id
       }
@@ -110,7 +117,7 @@ export default {
 
     },
     // 初始化页面
-    renderBi(partNumList) {
+    renderBi (partNumList) {
       var config = {
         type: 'report',
         tokenType: pbi.models.TokenType.Embed,
@@ -152,7 +159,7 @@ export default {
       // Report.off removes a given event handler if it exists.
       report.off("loaded");
       // Report.on will add an event handler which prints to Log window.
-      report.on("loaded", function() {
+      report.on("loaded", function () {
         // 零件集合：
         var partNumListFilter = {
           $schema: "http://powerbi.com/product/schema#basic",
@@ -179,21 +186,21 @@ export default {
       report.off("rendered");
 
       // Report.on will add an event handler which prints to Log window.
-      report.on("rendered", function() {
+      report.on("rendered", function () {
       });
       report.off("filtersApplied")
 
-      report.on("filtersApplied", function() {
+      report.on("filtersApplied", function () {
       });
 
-      report.on("error", function(event) {
+      report.on("error", function (event) {
         report.off("error");
       });
 
       report.off("saved");
-      report.on("saved", function(event) {
+      report.on("saved", function (event) {
         if (event.detail.saveAs) {
-          
+
         }
       });
 

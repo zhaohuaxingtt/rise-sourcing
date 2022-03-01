@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-02-17 15:08:22
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-02-27 19:43:16
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
 -->
@@ -262,10 +262,10 @@
 							<iText v-else>{{ detailData.linieName }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CFCONTROLLER|CF控制员" :label="language('LK_CFKONGZHIYUAN','CF控制员') + ':'" name='cfczy'>
-							<iSelect v-model="cfController" v-if="!disabled">
+							<iSelect ref="cfControllerSelect" v-model="detailData.cfController" v-if="!disabled" @change="handleChangeByCfController">
 								<el-option :value="item.id" :label="item.name" v-for="item in fromGroup.CF_CONTROL" :key="item.name"></el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.cfController, "id", fromGroup.CF_CONTROL) }}</iText>
+							<iText v-else>{{ detailData.cfControllerName }}</iText>
 						</iFormItem>
 						<iFormItem name="test" v-permission.auto="PARTSPROCURE_EDITORDETAIL_COMMINSOURCING|CommonSourcing">
 							<template slot="label">
@@ -515,20 +515,6 @@
 					this.detailData.linieDeptName = this.fromGroup.LINIE_DEPT.find(item => item.deptNum === nv).name
 				}
 			},
-			cfController: {
-				get() {
-					if (Array.isArray(this.fromGroup.CF_CONTROL) && !this.fromGroup.CF_CONTROL.find(item => item.id === this.detailData.cfController)) {
-						return this.detailData.cfController
-					}
-
-					return this.detailData.cfControllerName
-				},
-				set(nv) {
-					this.detailData.cfController = nv
-					this.detailData.cfControllerName = this.fromGroup.CF_CONTROL.find(item => item.id === nv).name || ''
-					this.detailData.cfControllerPositionId = ''
-				}
-			},
 			originPartIsDb() { // 采购项目类型为仅零件号变更，且原零件号的采购项目类型为DB
 				return [this.partProjTypes.JINLINGJIANHAOGENGGAI].includes(this.detailData.partProjectType) && this.detailData.oldPartProjectType === this.partProjTypes.DBLINGJIAN
 			},
@@ -563,6 +549,10 @@
 			// 组合Linie框的数据(code + options) 用于监控
 			liniePack() {
 				return { linieCode: this.detailData.linieId || "", linieOptions: this.fromGroup.LINIE || [] }
+			},
+			// 组合CF控制员框的数据(id + options) 用于监控
+			cfControllerPack() {
+				return { cfControllerId: this.detailData.cfController || "", cfControllerOptions: this.fromGroup.CF_CONTROL || [] }
 			}
 		},
 		watch:{
@@ -602,6 +592,19 @@
 					if (data.linieCode) {
 						inputDom.value = this.detailData.linieName || ""
 						const current = data.linieOptions.find(option => option.code === data.linieCode)
+						if (current) inputDom.value = current.name
+					} else {
+						inputDom.value = ""
+					}
+				}
+			},
+			cfControllerPack(data) {
+				if (this.$refs.cfControllerSelect && this.$refs.cfControllerSelect.$el && this.$refs.cfControllerSelect.$el.querySelector("input")) {
+					const inputDom = this.$refs.cfControllerSelect.$el.querySelector("input")
+
+					if (data.cfControllerId) {
+						inputDom.value = this.detailData.cfControllerName || ""
+						const current = data.linieOptions.find(option => option.id === data.cfControllerId)
 						if (current) inputDom.value = current.name
 					} else {
 						inputDom.value = ""
@@ -706,7 +709,6 @@
 								{ [key]: Array.isArray(res.data[key]) ? res.data[key] : [] }
 							)
 						})
-
 					}
 				})
 			},
@@ -927,7 +929,12 @@
 				this.$set(this.detailData, "linieId", '')
 				this.$set(this.detailData, "linieName", '')
 			},
-			
+			// 修改CF控制员
+			handleChangeByCfController(id) {
+				const currentCfController = Array.isArray(this.fromGroup.CF_CONTROL) && this.fromGroup.CF_CONTROL.find(item => item.id == id) || {}
+				this.$set(this.detailData, "cfControllerName", currentCfController.name)
+				this.$set(this.detailData, "cfControllerPositionId", "")
+			},
 			saveFn(){
 				this.fsProjectTypeAnIscommonSroucing(this.save)
 				//刷新产量计划时间之前。得清空一下选择时间。
@@ -951,6 +958,13 @@
 						detailData[i] = this.detailData[i];
 					}
 				}
+
+				// 手动加一下cf控制员cfControllerName缺失问题
+				if(detailData['cfController'] && !detailData['cfControllerName']){
+					const currentCfController = Array.isArray(this.fromGroup.CF_CONTROL) && this.fromGroup.CF_CONTROL.find(item => item.id == detailData['cfController']) || {}
+					detailData['cfControllerName'] = currentCfController.name;
+				}
+
 
 				detailData['oldProjectRelations'] = [ Object.assign({}, translateDataForService(this.selectOldParts.selectData), {purchasingProjectId:this.detailData.id})]
 				if(detailData.carTypeModel !=undefined) {

@@ -1,4 +1,4 @@
-(function(global, factory) {
+;(function(global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined'
     ? (module.exports = factory(require('i18n')))
     : typeof define === 'function' && define.amd
@@ -73,6 +73,8 @@
     all: 'All',
     search: 'search',
     setting: 'setting',
+    QINGXUANZEFSLINGJIANHAOGONGYINGSHANG:
+      'Please select FS No. - Part No. - Supplier',
     pagination: {
       prev: 'prev',
       next: 'next',
@@ -696,7 +698,8 @@
       'Enter to Search for Supplier Name, Facotry Type…',
     LK_SUOXUANBANBENWUFUJIAN: '',
     LK_TANPANZHUSHOU: 'Negotiation Assistant',
-    LK_GCLZDPLGYSGCDCGJEYJFBQK: '该材料组的批量供应商工厂的采购金额以及分布情况（过去一年）',
+    LK_GCLZDPLGYSGCDCGJEYJFBQK:
+      '该材料组的批量供应商工厂的采购金额以及分布情况（过去一年）',
     LK_TESHULINGJIANLEIXING: 'Special Part Type',
     LK_TESHUYAOQIU: 'Special Req.',
     LK_TIJIAO: 'Submit',
@@ -1966,7 +1969,7 @@
     'PI.JIAGEYINGXIANGXISHU': 'Cost Affecting Ratio %',
     'PI.JIAGEBIANDONGBILV': 'Price Alteration Ratio %',
     'PI.XITONGPIPEIXINXI': 'System Mapping Info',
-    'PI.SHICHANGSHUJUPIPEI':"Market Data Matching",
+    'PI.SHICHANGSHUJUPIPEI': 'Market Data Matching',
     'PI.XIANGQING': 'Info',
     'PI.XINZENG': 'Create',
     'PI.XIANSHIYINGCANG': 'Display/Hide',
@@ -6368,21 +6371,25 @@
     "AEKO_RMB_CHE":'(RMB/车)',
   }
   var xmlHttp = ''
-  if(window.XMLHttpRequest){
-      xmlHttp = new XMLHttpRequest();
-  }else{
-      // eslint-disable-next-line no-undef
-      xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+  if (window.XMLHttpRequest) {
+    xmlHttp = new XMLHttpRequest()
+  } else {
+    // eslint-disable-next-line no-undef
+    xmlHttp = new ActiveXObject('Microsoft.XMLHTTP')
   }
   xmlHttp.onreadystatechange = function() {
-      if (xmlHttp.readyState==4 && xmlHttp.status==200){
-          const data = JSON.parse(xmlHttp.responseText)
-          i18n.setLocaleMessage('en', Object.assign(data.data.cn,oldLanguage))
-      }
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+      const data = JSON.parse(xmlHttp.responseText)
+      i18n.setLocaleMessage('en', Object.assign(data.data.cn, oldLanguage))
+    }
   }
-  xmlHttp.open("GET", "http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing",false);
-  xmlHttp.setRequestHeader("Content-type","application/json");
-  xmlHttp.setRequestHeader("Accept","*/*");
+  xmlHttp.open(
+    'GET',
+    'http://10.122.18.136:8088/i18n/getTranslationMap?from=sourcing',
+    false
+  )
+  xmlHttp.setRequestHeader('Content-type', 'application/json')
+  xmlHttp.setRequestHeader('Accept', '*/*')
   xmlHttp.send()
-//   i18n.setLocaleMessage('en', oldLanguage)
+  //   i18n.setLocaleMessage('en', oldLanguage)
 })

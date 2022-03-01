@@ -114,22 +114,8 @@ export default {
       console.log(scope);
       const fileId = scope.row.attachmentId;
       const name = scope.row.attachmentName;
-      
-      getFileId(fileId)
-        .then((res) => {
-          console.log(res)
-          this.$message.success(this.language('BIDDING_XIAZAICHENGGONG','下载成功'));
-          let a = document.createElement("a");
-          a.href = res.config.url;
-          a.download = name;
-          a.style.display = "none";
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-        })
-        .catch((err) => {
-          this.$message.error(this.language('BIDDING_XIAZAISHIBAI','下载失败'));
-        });
+
+      window.open(`${ window.location.origin }${ process.env.VUE_APP_BASE_UPLOAD_API }/fileud/getFileByFileId?fileId=${ fileId }`, "_blank")
     },
     handleCurrentChange(e) {
       this.page.currPage = e;

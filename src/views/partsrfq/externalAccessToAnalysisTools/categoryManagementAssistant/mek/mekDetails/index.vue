@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-05 06:53:42
- * @LastEditTime: 2022-02-24 20:48:20
+ * @LastEditTime: 2022-02-27 14:02:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\externalAccessToAnalysisTools\categoryManagementAssistant\mek\mekDetails\index.vue
@@ -579,13 +579,13 @@ export default {
       this.productFactoryNames = this.$route.query.productFactoryNames ? this.$route.query.productFactoryNames : this.propFactoryName;
       await getSchemeInfo({
         schemeId: this.schemeId,
-      }).then((res) => {
+      }).then(async (res) => {
         if (res?.code === '200') {
           let data = res.data;
           this.categoryCode = data.categoryCode;
           this.categoryId = data.categoryId;
           this.categoryName = data.categoryName;
-          this.exceptPart = data.exceptPart || "";
+          this.exceptPart = data.exceptPart ? data.exceptPart.split(',') : "";
           this.targetMotor = data.targetMotor.toString();
           this.comparedType = data.comparedType;
           this.isBindingRfq = data.isBindingRfq;
@@ -671,14 +671,14 @@ export default {
             motorIds: [this.targetMotor, ...this.ComparedMotor],
             schemeId: this.schemeId,
           };
-          recursiveRetrieve(params1).then((res) => {
+          await recursiveRetrieve(params1).then((res) => {
             if (res.code === "200") {
               let partNumber = [];
               res.data.forEach((item) => {
                 partNumber.push(item.partNumber);
               });
               this.recursiveRetrieveList = res.data;
-              this.partNumber = _.difference(partNumber, this.exceptPart);
+              this.partNumber = _.differenceBy(partNumber, this.exceptPart ? this.exceptPart : []);
             }
           });
         } else {
@@ -701,7 +701,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? this.exceptPart : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
       let motorIdList = [];
       if (this.barData) {
@@ -795,7 +795,12 @@ export default {
         schemeId: this.schemeId,
       };
       recursiveRetrieve(params).then((res) => {
+        let partNumber = [];
+        res.data.forEach((item) => {
+          partNumber.push(item.partNumber);
+        });
         this.recursiveRetrieveList = res.data;
+        this.partNumber = _.differenceBy(partNumber, this.exceptPart ? this.exceptPart : []);
       });
     },
     //选择目标车型
@@ -874,41 +879,56 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? this.exceptPart : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
-      if (this.isBindingRfq) {
-        params.isBindingRfq = true;
-        params.rfq = this.rfqId;
-        let entryParams = _.cloneDeep(params)
-        entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
-        mekInnerTarget(entryParams).then(res => {
-          if (res?.code === "200") {
-            this.firstBarData = res.data[0];
-          } else {
-            iMessage.error(res.desZh)
-            this.onDataLoading = false;
-          }
+      this.barData.forEach((item) => {
+        let obj = {
+          motorId: item.motorId,
+          priceType: item.priceType,
+          priceDate: item.priceDate,
+          isTargetMotor: false,
+          engine: item.engine || "",
+          position: item.position || "",
+          transmission: item.transmission || "",
+        };
+        params.info.push(obj);
+      });
+      if (val !== 'monthPrice') {
+        if (this.isBindingRfq) {
+          params.isBindingRfq = true;
+          params.rfq = this.rfqId;
+          let entryParams = _.cloneDeep(params)
+          entryParams.info = entryParams.info.filter(item => item.isTargetMotor === true)
+          mekInnerTarget(entryParams).then(res => {
+            if (res?.code === "200") {
+              this.firstBarData = res.data[0];
+            } else {
+              iMessage.error(res.desZh)
+              this.onDataLoading = false;
+            }
 
-        })
-        params.info = params.info.filter(item => item.isTargetMotor === false)
-        this.$nextTick(() => {
-          if (this.categoryId && this.schemeId && this.categoryCode) {
-            params.isBindingRfq = this.isBindingRfq
-            this.getHistogram(params);
-          }
-        })
-      } else {
-        params.isBindingRfq = false;
-        this.onDataLoading = false
-        this.$nextTick(() => {
-          if (this.categoryId && this.schemeId && this.categoryCode) {
-            params.isBindingRfq = this.isBindingRfq
-            this.getHistogram(params);
-          }
-        })
+          })
+          params.info = params.info.filter(item => item.isTargetMotor === false)
+          this.$nextTick(() => {
+            if (this.categoryId && this.schemeId && this.categoryCode) {
+              params.isBindingRfq = this.isBindingRfq
+              this.getHistogram(params);
+            }
+          })
+        } else {
+          params.isBindingRfq = false;
+          this.onDataLoading = false
+          this.$nextTick(() => {
+            if (this.categoryId && this.schemeId && this.categoryCode) {
+              params.isBindingRfq = this.isBindingRfq
+              this.getHistogram(params);
+            }
+          })
+        }
       }
+
     },
-    changeTargetDate (val) {
+    async changeTargetDate (val) {
       this.$forceUpdate();
       let params = {
         comparedType: this.comparedType,
@@ -926,7 +946,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? this.exceptPart : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
       if (this.isBindingRfq) {
         params.isBindingRfq = true;
@@ -934,6 +954,14 @@ export default {
       } else {
         params.isBindingRfq = false;
       }
+      await mekInnerTarget(params).then(res => {
+        if (res?.code === '200') {
+          this.firstBarData = res.data[0];
+        } else {
+          iMessage.error(res.desZh)
+          this.onDataLoading = false;
+        }
+      })
       this.barData.forEach((item) => {
         let obj = {
           motorId: item.motorId,
@@ -946,6 +974,7 @@ export default {
         };
         params.info.push(obj);
       });
+      params.info.shift()
       this.getHistogram(params);
     },
     saveDialog () {
@@ -1093,7 +1122,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? this.exceptPart : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
       this.barData.forEach((item) => {
         let obj = {
@@ -1156,7 +1185,7 @@ export default {
         categoryId: this.categoryId,
         categoryCode: this.categoryCode,
         schemeId: this.schemeId,
-        unselected: this.exceptPart ? this.exceptPart : [],
+        unselected: this.exceptPart ? this.exceptPart : []
       };
       this.ComparedMotor = this.ComparedMotor.filter((i) => i !== data.motorId);
       this.ComparedMotor.forEach((item) => {

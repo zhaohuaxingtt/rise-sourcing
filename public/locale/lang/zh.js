@@ -78,6 +78,7 @@
     copyChosenSure: '您确定要复制选中的数据吗？',
     exitEditSure: '您的数据没保存，确定要退出编辑吗？',
     resetSure: '您确定要重置吗？',
+    QINGXUANZEFSLINGJIANHAOGONGYINGSHANG:'请选择FS号-零件号-供应商',
     all: '全部',
     search: '搜索',
     setting: '设置',

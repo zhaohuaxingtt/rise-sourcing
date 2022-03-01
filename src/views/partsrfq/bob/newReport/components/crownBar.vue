@@ -2,7 +2,7 @@
 .crown-bar-x-label {
   font-size: 12px;
   font-weight: 400;
-  color: #7E84A3;
+  color: #7e84a3;
   font-family: Arial;
   line-height: 23px;
   text-align: center;
@@ -17,16 +17,20 @@
     <template v-if="chartData.length > 0">
       <div style="width: 100%;display:flex;flex-flow:row nowrap;">
         <span style="width: 8%;"></span>
-        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{getCrownBarName(row)}}</span>
-        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')','cursor': 'pointer'}" v-popover:bobTypePopper>
-          {{bobType}}<i class="el-select__caret el-input__icon el-icon- el-icon-caret-bottom"/>
+        <span class="crown-bar-x-label"
+              :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"
+              v-for="(row, idx) in chartData"
+              :key="idx">{{getCrownBarName(row)}}</span>
+        <span class="crown-bar-x-label"
+              :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')','cursor': 'pointer'}"
+              v-popover:bobTypePopper>
+          {{bobType}}<i class="el-select__caret el-input__icon el-icon- el-icon-caret-bottom" />
         </span>
       </div>
-      <el-popover
-        ref="bobTypePopper"
-        placement="bottom"
-        width="150"
-        trigger="click">
+      <el-popover ref="bobTypePopper"
+                  placement="bottom"
+                  width="150"
+                  trigger="click">
         <el-radio-group v-model="bobType">
           <el-radio label="Best of Best">Best of Best</el-radio>
           <el-radio label="Best of Average">Best of Average</el-radio>
@@ -35,20 +39,32 @@
       </el-popover>
       <div style="width: 100%;display:flex;flex-flow:row nowrap;">
         <span style="width: 8%;"></span>
-        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">
+        <span class="crown-bar-x-label"
+              :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"
+              v-for="(row, idx) in chartData"
+              :key="idx">
           {{language('LK_NUMBERPREFIX','第')}}<a style="color: #1763F7; font-weight: 500;font-size: 16px;font-family: Arial;">{{row.turn}}</a>/{{row.totalTurn}}{{language('LK_TURN','轮')}}
         </span>
-        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+        <span class="crown-bar-x-label"
+              :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
       </div>
       <div style="width: 100%;display:flex;flex-flow:row nowrap;margin-top: 10px;">
         <span style="width: 8%;color: #3C4F74;">{{language('LK_CARPROJECT','车型项目')}}</span>
-        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{row.vehicleType}}</span>
-        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+        <span class="crown-bar-x-label"
+              :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"
+              v-for="(row, idx) in chartData"
+              :key="idx">{{row.vehicleType}}</span>
+        <span class="crown-bar-x-label"
+              :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
       </div>
       <div style="width: 100%;display:flex;flex-flow:row nowrap;">
         <span style="width: 8%;color: #3C4F74;">{{language('LK_CARPROJECTRFQ','报价时间')}}</span>
-        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}" v-for="(row, idx) in chartData" :key="idx">{{getCrownBarReqTime(row)}}</span>
-        <span class="crown-bar-x-label" :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
+        <span class="crown-bar-x-label"
+              :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"
+              v-for="(row, idx) in chartData"
+              :key="idx">{{getCrownBarReqTime(row)}}</span>
+        <span class="crown-bar-x-label"
+              :style="{'width': 'calc(92% / ' + (chartData.length + 1) + ')'}"></span>
       </div>
     </template>
   </div>
@@ -125,7 +141,7 @@ export default {
     };
   },
   methods: {
-    getCrownBarName(row) {
+    getCrownBarName (row) {
       let name = row.supplierName
 
       if (this.chartType === "num") {
@@ -138,7 +154,7 @@ export default {
       }
       return name
     },
-    getCrownBarReqTime(row) {
+    getCrownBarReqTime (row) {
       return window.moment(row.cbdQuotationTime).format("yyyy.MM");
     },
     bos (arr) {
@@ -402,7 +418,7 @@ export default {
             });
             // console.log(sum)
             dataList1[v].push(sum);
-           
+
           });
         });
 
@@ -430,7 +446,6 @@ export default {
           if (i === 0) {
             tempArr[this.bobType] = [];
           }
-
           this.dataArray.push({
             name: row,
             type: "bar",
@@ -521,7 +536,7 @@ export default {
         // console.log(this.dataArray)
 
         this.labelArray.push(this.bobType);
-        
+
         this.dataArray.push({
           name: "sum",
           type: "bar",
@@ -622,7 +637,7 @@ export default {
     },
     type: {
       handler (str) {
-      if (str) this.bobType = str;
+        if (str) this.bobType = str;
         this.initData(this.chartData);
       },
       immediate: true,
@@ -633,7 +648,7 @@ export default {
       },
       immediate: true,
     },
-    bobType(val) {
+    bobType (val) {
       this.$emit("type-changed", val)
     }
   },

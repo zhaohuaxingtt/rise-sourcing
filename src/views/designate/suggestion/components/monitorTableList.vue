@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2021-11-09 18:01:41
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2022-03-01 14:27:09
+ * @LastEditors: Please set LastEditors
 -->
 
 <template>
@@ -35,7 +35,8 @@
       <el-table-column
         width="56"
         label='Group'
-        align='center'>
+        align='center'
+        fixed>
         <template slot-scope="scope">
           <el-checkbox
             v-model="scope.row.selected"
@@ -55,7 +56,9 @@
         align='center'
         prop="partNo"
         label="Part"
-        width="110">
+        width="110"
+        fixed
+        >
       <template slot-scope="scope">
         <p class="partName">{{scope.row.partNo || ''}}</p>
         <p class="partDeName" :title="scope.row.partNameDe || ''">{{scope.row.partNameDe || ''}}</p>
@@ -65,12 +68,15 @@
         align='center'
         prop="partPrjCode"
         label="FS/GS/SP No."
-        width="110">
+        width="110"
+        fixed
+        >
       </el-table-column>
       <el-table-column
         align='center'
         prop="factoryEn"
-        label="Factory">
+        label="Factory"
+        fixed>
       </el-table-column>
 
       <!-- 循环取出厂商以及TTO -->
@@ -664,6 +670,12 @@ export default {
     }
     .el-table__header {
       border-bottom: 1px solid #fff;
+    }
+
+    .el-table__fixed,
+    .el-table__fixed-right {
+      height: auto !important;
+      bottom: 10px !important;
     }
   }
   ::v-deep .el-table--border {

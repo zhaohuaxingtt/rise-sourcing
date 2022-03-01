@@ -444,7 +444,9 @@ export default {
       getPictureListByFixedAssetCode({
         fixedAssetCode: scope.assetNum
       }).then(res => {
-        this.imgList = res.data.map(item => item.filePath);
+        const origin = window.location.origin;
+        this.imgList = res.data.map(item => `${origin}/fileApi/fileud/getFileByFileId?fileId=${item.attachmentId}`);
+        // this.imgList = res.data.map(item => item.filePath);
         this.visible = true;
       })
     },

@@ -561,8 +561,7 @@ export default {
               .map(item => {
                 const result = { version: item.exchangeRateVos[0].version }
                 
-                const currentCurrencyExchangeRate = item.exchangeRateVos.find(item => item.originCurrencyCode === this.basicData.currency)
-                result.str = currentCurrencyExchangeRate ? this.exchangeRateProcess(currentCurrencyExchangeRate) : "100RMB = 100RMB"
+                result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
                 result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
 
                 return result
@@ -577,7 +576,7 @@ export default {
     },
     // 汇率显示处理
     exchangeRateProcess(row) {
-      return `100${ row.currencyCode } = ${ math.multiply(math.bignumber(row.exchangeRate || 0), 100).toString() }${ row.originCurrencyCode }`
+      return `1${ row.currencyCode }=${ row.exchangeRate }${ row.originCurrencyCode }`
     },
 
     // 权限获取数据
