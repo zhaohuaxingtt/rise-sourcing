@@ -11,10 +11,35 @@
     <div>
       <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="sure" :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
         <el-form>
-          <el-form-item style="width:50%" :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')"
+          <!-- <el-form-item style="width:50%" :label="language('LK_LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN_SAP_SUPPLIERNAME','零件号/零件采购项目号/RFQ编号/采购员/供应商SAP号/供应商名称')"
           >
             <iInput :placeholder="language('LK_QINGSHURU','请输入')" v-model="form.searchConditions"></iInput>
-          </el-form-item>
+          </el-form-item> -->
+          
+               <el-form-item  :label="language('LK_LINGJIANHAO','零件号')"
+                  >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
+              </el-form-item>
+              <el-form-item  :label="language('LK_FSNR','零件采购项目号')"
+                  >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsNum"></iInput>
+              </el-form-item>
+              <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')"
+                  >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-Int v-model="form.rfqIdVague"></iInput>
+              </el-form-item>    
+              <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')"
+                >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
+              </el-form-item>         
+              <el-form-item  :label="language('LK_SAP','供应商SAP号')"
+                 >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>
+              </el-form-item>
+              <el-form-item  :label="language('LK_SUPPLIERNAME','供应商名称')"
+                 >
+                <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierName"></iInput>
+              </el-form-item>
         </el-form>
       </iSearch>
     </div>
