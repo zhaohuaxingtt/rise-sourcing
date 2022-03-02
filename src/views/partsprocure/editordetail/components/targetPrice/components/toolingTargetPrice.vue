@@ -2,13 +2,14 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-15 19:58:57
- * @LastEditTime: 2021-12-02 15:12:51
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-03-02 16:42:08
+ * @LastEditors: YoHo
 -->
 <template>
   <div class="toolingTargetPrice">
     <div class="header flex-between-center-center">
-			<span class="title">{{ language('SHENQINGTOUZIMUBIAOJIA','投资目标价') }}</span>
+			<!-- <span class="title">{{ language('SHENQINGTOUZIMUBIAOJIA','投资目标价') }}</span> -->
+			<span class="title">{{ language('MUJUMUBIAOJIA','模具目标价') }}</span>
 		</div>
 		<iFormGroup row="3" icon inline>
      

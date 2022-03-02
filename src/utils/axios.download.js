@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 15:21:34
- * @LastEditTime: 2022-01-13 13:25:53
- * @LastEditors: caopeng
+ * @LastEditTime: 2022-03-02 15:38:06
+ * @LastEditors: Please set LastEditors
  * @Description: 基于axios的下载封装下载工具，以IE和其他浏览器作为区分。部分浏览器通过blob a标签模拟click来下载
  *               IE通过msSaveBlob来下载。
  * @FilePath: \front-sourcing-new\src\utils\axios.download.js
@@ -85,6 +85,10 @@ export default function httpRequest(baseUrl = '', timeOut = 15000) {
 
       if (response.headers["fname"]) {
         fileName = decodeURIComponent(response.headers["fname"])
+      }
+
+      if (response.headers["content-disposition"]) {
+        fileName = decodeURIComponent(response.headers["content-disposition"].split("=")[1]);
       }
 
       if (response.config && response.config.meta && response.config.meta.fileName) {

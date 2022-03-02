@@ -33,12 +33,12 @@
           </iSelect> 
         </div>            
       </div>
-      <div class="btnSearch" v-if='!disabel && !disabled'>
-        <iButton @click="quote" v-if='quoteShow' :loading="quoteInquiryPriceLoading" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_QUOTEINQUIRYPRICE|报价分析汇总-零件-引用报价按钮">引用报价</iButton>
-        <iButton @click="group"  v-if='layout == "1" && !abPrice' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_GROUPBTN|报价分析汇总-零件-组合按钮">组合</iButton>
-        <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_REMOVEBTN|报价分析汇总-零件-取消组合按钮">取消组合</iButton>
+      <div class="btnSearch" v-if='!disabel'>
+        <iButton @click="quote" v-if='quoteShow && !disabled && !rfqDisabled' :loading="quoteInquiryPriceLoading" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_QUOTEINQUIRYPRICE|报价分析汇总-零件-引用报价按钮">引用报价</iButton>
+        <iButton @click="group"  v-if='layout == "1" && !abPrice && !disabled && !rfqDisabled' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_GROUPBTN|报价分析汇总-零件-组合按钮">组合</iButton>
+        <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice && !disabled && !rfqDisabled' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_REMOVEBTN|报价分析汇总-零件-取消组合按钮">取消组合</iButton>
         <!-- <iButton v-if='isKborJj == 1' @click="openjjdt">{{language('KAIBIAOJIEGUOANNIUJJYS','竞价结果')}}</iButton> -->
-        <iButton v-if='isKborJj == 2' @click="options.show = true" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_KBOJJBTN|报价分析汇总-零件-开标结果按钮">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
+        <iButton v-if='isKborJj == 2 && !disabled && !rfqDisabled' @click="options.show = true" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_KBOJJBTN|报价分析汇总-零件-开标结果按钮">{{language('KAIBIAOJIEGUOANNIU','开标结果')}}</iButton>
         <iButton  @click="exportParts(layout)" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_DOWNLOADBTN|报价分析汇总-零件导出按钮">{{language('DAOCHU','导出')}}</iButton>
         <iButton @click="openView" v-if='!preview'>{{language('SOURCING_RFQDETAIL_FANGDACHAK','预览')}}</iButton>
       </div>
@@ -84,6 +84,7 @@ import tableListSupplier from './components/tableListSupplier'
 import bidOpenResult from './components/bidOpenResult'
 import {exampelData,backChooseList,getRenderTableTile,translateData,translateRating,subtotal,defaultSort,showOrHide,getRowAndcolSpanArray,defaultLayoutTemplate} from './components/data'
 import {negoAnalysisSummaryLayout,negoAnalysisSummaryLayoutSave,negoAnalysisSummaryRound,fsPartsAsRow,gsPartsAsRow,negoAnalysisSummaryGroup,negoAnalysisSummaryGroupDelete,fsSupplierAsRow, quoteInquiryPrice, searchABPageExchangeRate, exportFSPartsAsRow, exportFsSupplierAsRow, exportGsPartsAsRow,exportFSPartsAsRowTWO, exportFsSupplierAsRowTWO, exportGsPartsAsRowTWO} from '@/api/partsrfq/editordetail'
+import { getRfqInfo } from '@/api/costanalysismanage/rfqdetail'
 export default{
   components:{iButton,iSelect,tableList,iDialog,iInput,tableListSupplier,bidOpenResult},
   data(){return {
@@ -133,6 +134,7 @@ export default{
     hasNoBidOpen:false,
     tabelDataSupplier:{},
     tipsHtmlStr: '',
+    rfqDisabled: false
   }},
   watch:{
     /**
@@ -155,7 +157,7 @@ export default{
   inject:['getbaseInfoData', 'getDisabled'],
   computed: {
     disabled() {
-      return typeof this.getDisabled === "function" ? this.getDisabled() : false
+      return typeof this.getDisabled === "function" ? this.getDisabled() : this.getRfqInfo()
     },
     //判断当前是开标还是竞价，需要对按钮做不同的展示。
     isKborJj(){
@@ -594,7 +596,19 @@ export default{
             r(res3)
         }
         })
-    }
+    },
+    getRfqInfo() {
+      getRfqInfo({
+        rfqId: this.$route.query.id,
+      })
+      .then(res => {
+        if (res.code == 200) {
+          this.rfqDisabled = !!res.data.isFreeze;
+        }
+      })
+    
+      return false
+    },
   }
 }
 </script>
