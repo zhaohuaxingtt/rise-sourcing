@@ -581,7 +581,7 @@ export default {
           combination: [],
         };
       }
-      this.getChartData();
+      this.querySupplierTurnPartList()
     },
     add (val) {
       if (val.constructor === Object) {
@@ -1006,7 +1006,7 @@ export default {
                 iMessage.success('保存成功');
                 this.dialogVisible = false;
                 this.reportSave = false;
-              }else{
+              } else {
                 iMessage.error(res.desZh)
               }
             })
