@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-25 11:54:53
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-02 15:47:51
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -58,6 +58,7 @@
             </tableList>
             <icon class="tick icon-style" symbol name="iconbaojiazhuangtailiebiao_yibaojia" slot="reference"/>
           </el-popover>
+          <span v-else></span>
         </template>
       </tableList>
     </iCard>
