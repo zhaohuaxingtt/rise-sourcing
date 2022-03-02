@@ -10,6 +10,7 @@
 import { iMessage } from 'rise'
 import { getToken, removeToken, setToken, setRefreshToken } from '@/utils'
 import store from '@/store'
+import getPermissionKey from '@/utils/permissionKey'
 const fileType = {
 	docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 	xls: 'application/x-xls',
@@ -34,12 +35,7 @@ export default function httpRequest(baseUrl = '', timeOut = 15000) {
 			) {
 				config.headers['token'] = getToken() || ''
 			}
-			const seconedPerminssionKey = window.sessionStorage.getItem(
-				'seconedPerminssionKey'
-			)
-			if (seconedPerminssionKey) {
-				config.headers['resCode'] = seconedPerminssionKey
-			}
+			config.headers['resCode'] = getPermissionKey()
 			// IE上的同一个url请求会走cache
 			if (config.method === 'post' || config.method === 'POST') {
 				config.url =
@@ -83,17 +79,23 @@ export default function httpRequest(baseUrl = '', timeOut = 15000) {
 
 			let fileName = `${new Date().toLocaleDateString()}.zip`
 
-      if (response.headers["fname"]) {
-        fileName = decodeURIComponent(response.headers["fname"])
-      }
+			if (response.headers['fname']) {
+				fileName = decodeURIComponent(response.headers['fname'])
+			}
 
-      if (response.headers["content-disposition"]) {
-        fileName = decodeURIComponent(response.headers["content-disposition"].split("=")[1]);
-      }
+			if (response.headers['content-disposition']) {
+				fileName = decodeURIComponent(
+					response.headers['content-disposition'].split('=')[1]
+				)
+			}
 
-      if (response.config && response.config.meta && response.config.meta.fileName) {
-        fileName = response.config.meta.fileName
-      }
+			if (
+				response.config &&
+				response.config.meta &&
+				response.config.meta.fileName
+			) {
+				fileName = response.config.meta.fileName
+			}
 
 			// 如果是ie则按照saveBlob的方式来下载数据
 			if (navigator.msSaveBlob) {
