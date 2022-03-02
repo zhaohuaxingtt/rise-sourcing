@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 14:14:49
- * @LastEditTime: 2022-02-11 16:49:05
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-02 13:50:47
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\supplierscore\index.vue
 -->
@@ -36,6 +36,7 @@
           <iSelect
             filterable
             remote
+            clearable
             v-model="form.linieUserId"
             :remote-method="findLinieByName"
             :loading="linieLoading"
@@ -54,6 +55,7 @@
           <iSelect
             filterable
             remote
+            clearable
             v-model="form.buyerId"
             :remote-method="findInquiryBuyerByName"
             :loading="buyerLoading"

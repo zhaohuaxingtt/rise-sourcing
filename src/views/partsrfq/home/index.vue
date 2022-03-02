@@ -50,7 +50,7 @@
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierName"></iInput>
               </el-form-item>
               <el-form-item :label="language('LK_CHEXINGXIANGMU','车型项目')" v-permission.auto="PARTSRFQ_MODELPROJECT|车型项目">
-                <iSelect :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.carType">
+                <iSelect filterable :placeholder="language('LK_QINGXUANZE','请选择')" v-model="form.carType">
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
                 </iSelect>
@@ -253,7 +253,7 @@ import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle, attachmentTableTitle,partsprocureNavList} from "pages/partsrfq/home/components/data";
-import {findBySearches, getRfqList, getCartypeDict, modification, ratingTranslate, setRfqTop} from "@/api/partsrfq/home";
+import { getRfqList, getCartypeDict, modification, ratingTranslate, setRfqTop } from "@/api/partsrfq/home";
 import {excelExport} from "@/utils/filedowLoad";
 import store from '@/store'
 import filters from "@/utils/filters";
@@ -269,6 +269,7 @@ import { clickMessage} from "@/views/partsign/home/components/data"
 import { selectDictByRootKeys } from '@/api/dictionary'
 import {setPretreatmentParams} from '@/utils/tool'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
+import { getCarTypeSop } from "@/api/partsprocure/editordetail";
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
@@ -650,8 +651,18 @@ export default {
       }
     },
     async getCarTypeOptions() {
-      const res = await findBySearches('01')
-      this.carTypeOptions = res.data
+      getCarTypeSop()
+      .then(res => {
+        if (res.code == 200) {
+          this.carTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              code: item.cartypeProCode,
+              name: item.cartypeProName
+            })) :
+            []
+        }
+      })
     },
     // async getPartTypeOptions() {
     //   const res = await findBySearches('02')
