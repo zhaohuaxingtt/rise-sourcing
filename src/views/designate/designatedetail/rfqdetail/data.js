@@ -41,7 +41,7 @@ export const partsListTitle = [
   // {props:'statusDesc',name:'零件状态', key: "LINGJIANZHUANGTAI", tooltip: true},
   // {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   // {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true},
-  {props:'n',name:'CF目标价', key: "CFMUBIAOJIA", tooltip: true},
+  {props:'cfPrice',name:'CF目标价', key: "CFMUBIAOJIA", tooltip: true},
   // {props:'q',name:'',key: '',tooltip:false,width:'50'}
   { props: 'sort', showAllSortBtn: true }
 ]
