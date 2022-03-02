@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-03-01 17:07:50
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-02 16:43:30
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -252,7 +252,7 @@
             </div>
           </template>
           <template #supplierNameZh="scope">
-            <span>{{scope.row.supplierSapCode + '-' + scope.row.supplierNameZh}}</span>
+            <span>{{showSupplierNameZh(scope.row.supplierSapCode,scope.row.supplierNameZh)}}</span>
           </template>
           <template #oldPartNumPreset="scope">
             <iInput v-if="(scope.row.status === 'EMPTY'||scope.row.status === 'TOBE_STATED') && !isDeclareBlackListPart(scope.row) && !disabled" class="oldPartNumPresetQuery" :class="{ oldPartNumPreset: !scope.row.isDeclare }" :placeholder="language('QINGXUANZE', '请选择')" v-model="scope.row.showPartNumPreset" readonly>
@@ -1223,6 +1223,12 @@ export default {
       const statusDisabled = row.status=='QUOTING' || row.status=='QUOTED' || row.status=='REJECT';
       return !row.mouldPriceChange || !statusDisabled || this.disabled
 
+    },
+    showSupplierNameZh(code=null,name=null){
+      if(!code && !name) return ''
+      else{
+        return (code || '') + '-' + (name || '')
+      }
     },
 
   },
