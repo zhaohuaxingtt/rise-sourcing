@@ -48,7 +48,8 @@
 		<div class="line"></div>
 		<!-- 申请财务目标价 -->
 		<div class="header flex-between-center-center">
-			<span class="title">{{ language('LK_SHENQINGCAIWUMUBIAOJIA','申请财务目标价') }}</span>
+			<!-- <span class="title">{{ language('LK_SHENQINGCAIWUMUBIAOJIA','申请财务目标价') }}</span> -->
+			<span class="title">{{ language('LINGJIANMUBIAOJIA', '零件目标价') }}</span>
 			<div class="control">
 				<iButton v-if="!disabled" @click="saveApply" :loading="applyLoading" v-permission.auto="PARTSPROCURE_EDITORDETAIL_TARGETPRICE_APPLY|申请">{{ language('LK_SHENQING','申请') }}</iButton>
 			</div>

@@ -23,7 +23,7 @@
         :titlePopover="false"
       >
         <template #supplier="scope">
-          <span>{{scope.row.supplierSapCode + '-' +scope.row.supplierNameZh}}</span>
+          <span>{{showSupplierNameZh(scope.row.supplierSapCode,scope.row.supplierNameZh)}}</span>
         </template>
       </tableList>
       <!-- <div class="margin-top20 card-bottom-tip">
@@ -338,7 +338,14 @@ export default {
         }
       }
       this.recommendationFormPendingApprovalTitle.splice(5,0,stausColumn)
-    }
+    },
+
+    showSupplierNameZh(code=null,name=null){
+      if(!code && !name) return ''
+      else{
+        return (code || '') + '-' + (name || '')
+      }
+    },
   },
 };
 </script>
