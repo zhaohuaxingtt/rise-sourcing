@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-25 12:58:12
+ * @LastEditTime: 2022-03-02 22:59:55
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -14,9 +14,21 @@
     <!------------------------------------------------------------------------>
     <iSearch class="margin-bottom20" icon @reset="handleSearchReset" @sure="sure">
       <el-form>
-        <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
+        <!-- <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
           <iInput :placeholder="language('QINGXUANZE','请选择')" v-model="form.fsnrGsnrNum" ></iInput>
-        </el-form-item>
+        </el-form-item> -->
+         <el-form-item  :label="language('LK_LINGJIANHAO','零件号')">
+            <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
+          </el-form-item>
+          <el-form-item  :label="language('LK_FSNR','零件采购项目号')">
+            <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsnrGsnrNum"></iInput>
+          </el-form-item>
+          <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')">
+            <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-Int v-model="form.rfqId"></iInput>
+          </el-form-item> 
+          <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')">
+            <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
+          </el-form-item> 
         <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
           <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.cartypeProjectZh">
             <el-option value="" :label="language('ALL', '全部')"></el-option>
