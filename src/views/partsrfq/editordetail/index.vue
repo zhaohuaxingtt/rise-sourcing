@@ -254,6 +254,7 @@
     <rfq-detail-tpzs :rfqInfoData="rfqInfo"
                      v-if="navActivtyValue == 2"></rfq-detail-tpzs>
     <new-rfq-round v-model="newRfqRoundDialog"
+                  :rfqInfo="baseInfo"
                    @refreshBaseInfo="getBaseInfo('2')"
                    @showTodo="showTodo"
                    :dataRes="newRfqRoundDialogRes"
