@@ -10,7 +10,7 @@ import { iMessage } from 'rise'
 import { getToken, removeToken, setToken, setRefreshToken } from '@/utils'
 import store from '@/store'
 import { Loading } from 'element-ui'
-import getPermissionKey from '@/utils/permissionKey'
+import getResCode from './resCode'
 let loading = null
 
 let requestNum = 0
@@ -32,7 +32,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
 			) {
 				config.headers['token'] = getToken() || ''
 			}
-			config.headers['resCode'] = getPermissionKey()
+			config.headers['resCode'] = getResCode()
 			// IE上的同一个url请求会走cache
 			if (
 				config.method === 'post' ||
