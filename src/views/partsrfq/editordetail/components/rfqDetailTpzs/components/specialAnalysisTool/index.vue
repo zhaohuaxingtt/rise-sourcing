@@ -2,11 +2,11 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 13:46:18
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
  * @Descripttion: 专项分析工具
 -->
 <template>
-  <div>
+  <div class="specialAnalysisTool" v-loading="loading">
     <enterSpecificAnalysisToolsDialog :keyword="keyword"
                                       @getDataList="getDataList"
                                       v-model="viewModelDialog" />
@@ -44,6 +44,7 @@ export default {
       viewModelDialog: false,
       cardData: [],
       keyword: '',
+      loading:true,
     };
   },
   created () {
@@ -170,8 +171,11 @@ export default {
               }
             });
           }
+          this.loading = false
         })
-        .catch((error) => { });
+        .catch((error) => { 
+          this.loading = false
+        });
     },
     handleSearch () {
       this.viewModelDialog = true;
@@ -181,6 +185,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.specialAnalysisTool{
+  height: calc(100% - 67px);
+}
 ::v-deep .el-col-12 {
   margin-bottom: 20px;
 }
