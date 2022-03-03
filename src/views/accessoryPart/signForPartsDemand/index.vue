@@ -278,7 +278,9 @@ export default {
     async donwloadList() {
       this.downloadLoading = true
       const params = {
-        ...this.searchParams
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
       }
       await downLoadAccessoryList(params)
       this.downloadLoading = false
@@ -423,6 +425,7 @@ export default {
         sendDate: null
         // showSelf: true
       }
+
       this.sure()
     },
     /**
