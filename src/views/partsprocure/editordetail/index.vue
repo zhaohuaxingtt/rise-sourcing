@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-03-03 14:22:29
+ * @LastEditTime: 2022-03-03 20:40:56
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -962,10 +962,7 @@
 				}
 
 				// 手动加一下cf控制员cfControllerName缺失问题
-				if(detailData['cfController'] && !detailData['cfControllerName']){
-					const currentCfController = Array.isArray(this.fromGroup.CF_CONTROL) && this.fromGroup.CF_CONTROL.find(item => item.id == detailData['cfController']) || {}
-					detailData['cfControllerName'] = currentCfController.name;
-				}
+				this.checkCfController();
 
 
 				detailData['oldProjectRelations'] = [ Object.assign({}, translateDataForService(this.selectOldParts.selectData), {purchasingProjectId:this.detailData.id})]
@@ -1050,6 +1047,8 @@
 			onPartProjectTypeChange(data) {
 				this.clearCarTypeProject()
 				this.$set(this.detailData, "carTypeModel", [])
+				// 手动加一下cf控制员cfControllerName缺失问题
+				this.checkCfController();
 
 				this.$nextTick(() => {
 					if (this.$refs.carTypeModelSelect) this.$refs.carTypeModelSelect.$el.querySelector("input").value = ""
@@ -1109,6 +1108,13 @@
 					return currentCarTypeProject.sopDate ? true : false
 				} else {
 					return true
+				}
+			},
+			checkCfController(){
+				const { detailData={} } = this;
+				if(detailData['cfController'] && !detailData['cfControllerName']){
+					const currentCfController = Array.isArray(this.fromGroup.CF_CONTROL) && this.fromGroup.CF_CONTROL.find(item => item.id == detailData['cfController']) || {}
+					detailData['cfControllerName'] = currentCfController.name;
 				}
 			}
 		}
