@@ -78,7 +78,8 @@ export default {
     },
     customOpenPageWord: {type: String, default: ''},
     openPageGetRowData: {type: Boolean, default: false},
-    roundType: {type: String, default: ''}
+    roundType: {type: String, default: ''},
+    rfqInfo: {type: Object, default: () => {}},
   },
   components: {
     iSelect,
@@ -109,6 +110,14 @@ export default {
       if(row.isNego) { //谈判轮
         return true
       } else { //询价轮
+        if (this.rfqInfo.currentRounds == 0 && this.rfqInfo.partProjectType[0] == partProjTypes.COPLINGJIAN) {
+          this.$nextTick(() => {
+            this.$refs.newRoundTable.toggleRowSelection(item, false)
+          })
+
+          return true
+        }
+
         if(row.isMbdl == '2'){
           return false
         }else{
