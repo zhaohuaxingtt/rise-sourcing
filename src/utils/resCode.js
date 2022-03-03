@@ -1,11 +1,10 @@
 import router from '@/router'
 import store from '@/store'
-export default function getResCode() {
-	const url = getUrl()
-
+export default function getResCode(requestUrl) {
+	const url = getUrl(requestUrl)
 	let userName = store?.state?.permission?.userInfo?.userName || ''
 	if (!userName) {
-		const userInfo = window.sessionStorage.getItem('config.url') || {}
+		const userInfo = window.sessionStorage.getItem('userInfo') || {}
 		userName = userInfo?.userName || ''
 	}
 	const route = router?.app?.$route
@@ -15,7 +14,6 @@ export default function getResCode() {
 			? activeMenu[1]
 			: ''
 	if (userName && url) {
-		console.log(toBase64([userName, url, the2PerminssionKey].join('@@@')))
 		return toBase64([userName, url, the2PerminssionKey].join('@@@'))
 	}
 	return ''
@@ -44,8 +42,9 @@ function getActiveMenu(route) {
 	return []
 }
 
-function getUrl() {
-	return router?.app?.$route?.path || ''
+function getUrl(requestUrl) {
+	const urlArr = requestUrl.split('?')
+	return urlArr.length ? urlArr[0] : ''
 }
 
 function toBase64(str) {

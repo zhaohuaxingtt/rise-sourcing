@@ -32,7 +32,7 @@ export default function httpRequest(baseUrl = '', timeOut = 65000) {
 			) {
 				config.headers['token'] = getToken() || ''
 			}
-			config.headers['resCode'] = getResCode()
+			config.headers['resCode'] = getResCode(config.url)
 			// IE上的同一个url请求会走cache
 			if (
 				config.method === 'post' ||
