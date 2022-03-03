@@ -2,11 +2,11 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-22 11:05:40
- * @LastEditors: Please set LastEditors
+ * @LastEditors: YoHo
  * @Descripttion: your project
 -->
 <template>
-  <div>
+  <div class="gather">
     <div class="margin-bottom15 flex-between-center-center"
          v-if="$route.path === '/sourcing/partsrfq/externalNegotiationAssistant'">
       <div class="flex-between-center-center">
@@ -133,6 +133,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.gather{
+  height: 100%;
+}
 .icondatabaseweixuanzhong {
   font-size: 21px;
   margin-left: 1.875rem;
