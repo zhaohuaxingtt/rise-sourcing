@@ -54,6 +54,7 @@
       <!-- </template> -->
       <el-table v-loading="tableLoading"
                 tooltip-effect='light'
+                border
                 ref="multipleTable"
                 :data="tableListData"
                 style="width: 100%; margin-bottom: 20px"
