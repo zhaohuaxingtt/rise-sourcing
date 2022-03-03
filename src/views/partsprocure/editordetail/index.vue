@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-02-27 19:43:16
+ * @LastEditTime: 2022-03-03 14:22:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -896,8 +896,10 @@
 						if (res.data) { // 一致
 							this.setProcureFactory(code)
 						} else {
+							const tips = this.$i18n.locale === "zh" ? res.desZh : res.desEn;
 							iMessageBox( // 不一致
-								this.language('LK_FACTORYNOTSAME', '您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改'),
+								// this.language('LK_FACTORYNOTSAME', '您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改'),
+								tips,
 								this.language('LK_WENXINTISHI', '温馨提示')
 							).then(() => {
 								this.setProcureFactory(code)
