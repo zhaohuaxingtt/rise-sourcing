@@ -459,7 +459,7 @@ export default {
                   []
                 break
               case "RFQ_STATE":
-                this.rfqStatusOptions = this.partTypeOptions = Array.isArray(res.data["RFQ_STATE"]) ? 
+                this.rfqStatusOptions = Array.isArray(res.data["RFQ_STATE"]) ? 
                   res.data["RFQ_STATE"].map(item => ({
                     ...item,
                     key: item.code,
