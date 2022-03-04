@@ -173,11 +173,11 @@ export function dictkey(params) {
 	})
 }
 // 检测当前值是不是在范围里面。
-export function checkFactory(params) {
+export function checkFactory(data) {
 	return sourcing({
 		url: '/purchasing-project-parts/is-exist-cartype-project-factory',
-		method: 'GET',
-		params
+		method: 'POST',
+		data
 	})
 }
 
