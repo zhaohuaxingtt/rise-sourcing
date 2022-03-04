@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 13:54:01
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-29 14:40:14
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-04 21:02:03
  * @Description: 创建RFQ界面
        配件：选择的配件需要是分配了询价采购员的且是同一个询价采购员, 创建时能选择LINIE
        附件：选择的附件需要时分配了LINIE且为同一个LINIE, 创建时不能再选择LINIE
@@ -367,8 +367,9 @@ export default {
       const params = this.tableData.map(item => {
         return {
               buyerName: item.buyerName, // 询价采购员
+              buyerId:item.buyerId,
               linieName: item.linieName, // linie
-              linieUserId: item.linieUserId, // linie
+              linieId: item.linieUserId, // linie
               partNum: item.partNum, // 零件号
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID，还没有
