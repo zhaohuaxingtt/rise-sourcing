@@ -20,15 +20,6 @@ export function getRfqList(params) {
   })
 }
 
-// 获取下拉框数据
-// type: 01-车型项目 02-零件项目类型  03-RFQ状态  04-轮次类型
-export function getSelectOptions(type) {
-  return requst({
-    url: `/rfqs/findBySearches/${type}`,
-    method: "GET"
-  })
-}
-
 export function selectRfq(params) {
   return requst({
     url: '/nominate-create/create-nominate',
