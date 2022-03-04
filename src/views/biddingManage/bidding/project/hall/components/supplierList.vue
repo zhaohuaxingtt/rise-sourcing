@@ -158,7 +158,7 @@ export default {
       ) {
         this.timer = setInterval(() => {
           this.handleSearchReset();
-        }, 1000);
+        }, 10000);
       }
     }
     let param = { biddingId: this.id, supplierCode: this.supplierCode };

@@ -914,7 +914,7 @@ export default {
           this.ruleForm.biddingStatus == "04" ||
           this.ruleForm.biddingStatus == "05"
         ) {
-          this.rankTimer = setInterval(fn, 1000);
+          this.rankTimer = setInterval(fn, 10000);
         }
         fn();
       }
