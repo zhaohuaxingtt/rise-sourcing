@@ -4,8 +4,15 @@ export default function getResCode(requestUrl) {
 	const url = getUrl(requestUrl)
 	let userName = store?.state?.permission?.userInfo?.userName || ''
 	if (!userName) {
-		const userInfo = window.sessionStorage.getItem('userInfo') || {}
-		userName = userInfo?.userName || ''
+		const useInfo = window.sessionStorage.getItem('userInfo') || ''
+		if (useInfo) {
+			try {
+				const userInfo = JSON.parse(useInfo) || {}
+				userName = userInfo?.userName || ''
+			} catch (err) {
+				console.log(err)
+			}
+		}
 	}
 	const route = router?.app?.$route
 	const activeMenu = getActiveMenu(route)
