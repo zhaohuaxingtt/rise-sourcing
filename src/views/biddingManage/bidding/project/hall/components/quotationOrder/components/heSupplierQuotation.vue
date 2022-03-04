@@ -350,7 +350,7 @@ export default {
       this.timer = setInterval(() => {
         //当前时间
         this.curTime = Date.now();
-      }, 1000);
+      }, 10000);
     },
     reset() {
       this.query({ id: Number(this.id), supplierCode: this.supplierCode });

@@ -30,7 +30,7 @@
             <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
           </el-form-item> 
         <el-form-item :label="language('CHEXINGXIANGMU', '车型项目')">
-          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.cartypeProjectZh">
+          <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.cartypeProjectZh" filterable>
             <el-option value="" :label="language('ALL', '全部')"></el-option>
             <el-option v-for="items in carTypeOptions" :key='items.code' :value='items.code' :label="items.name"/>
           </iSelect>
@@ -107,10 +107,12 @@ import { pageMixins } from "@/utils/pageMixins"
 import tableList from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { rfqListTitle } from '../rfqdetail/data'
-import { getRfqList, getSelectOptions, selectRfq } from '@/api/designate/designatedetail/addRfq/index'
+import { getRfqList, selectRfq } from '@/api/designate/designatedetail/addRfq/index'
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { attachmentTableTitle} from "@/views/partsrfq/home/components/data";
 import { downloadFile, downloadUdFile } from "@/api/file"
+import { getCarTypeSop } from "@/api/partsprocure/editordetail"
+import { selectDictByRootKeys } from "@/api/dictionary"
 export default {
   mixins: [pageMixins,tableSortMixins],
   components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iSelect, iInput, icon },
@@ -135,9 +137,8 @@ export default {
     }
   },
   created() {
-    this.getRfqStatusOptions()
+    this.selectDictByRootKeys()
     this.getCarTypeOptions()
-    this.getPartTypeOptions()
     this.getTableList()
   },
   methods: {
@@ -188,24 +189,56 @@ export default {
 
       this.sure()
     },
-    getRfqStatusOptions() {
-      getSelectOptions('03').then(res => {
-        if(res.result) {
-          this.rfqStatusOptions = res.data
+    selectDictByRootKeys() {
+      selectDictByRootKeys([
+        { keys: "PPT" },
+        { keys: "RFQ_STATE" },
+      ])
+      .then(res => {
+        if (res.code == 200) {
+          Object.keys(res.data).forEach(key => {
+            switch(key) {
+              case "PPT":
+                this.partTypeOptions = Array.isArray(res.data["PPT"]) ? 
+                  res.data["PPT"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
+                break
+              case "RFQ_STATE":
+                this.rfqStatusOptions = Array.isArray(res.data["RFQ_STATE"]) ? 
+                  res.data["RFQ_STATE"].map(item => ({
+                    ...item,
+                    key: item.code,
+                    value: item.code,
+                    zh: item.name,
+                    en: item.nameEn,
+                    de: item.nameDe
+                  })) :
+                  []
+                break
+              default:
+            }
+          })
         }
       })
     },
     getCarTypeOptions() {
-      getSelectOptions('01').then(res => {
-        if(res.result) {
-          this.carTypeOptions = res.data
-        }
-      })
-    },
-    getPartTypeOptions() {
-      getSelectOptions('02').then(res => {
-        if(res.result) {
-          this.partTypeOptions = res.data
+      getCarTypeSop()
+      .then(res => {
+        if (res.code == 200) {
+          this.carTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              code: item.cartypeProCode,
+              name: item.cartypeProName
+            })) :
+            []
         }
       })
     },
