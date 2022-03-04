@@ -4,15 +4,10 @@
       <div class="flex nav-box">
         <span>{{ language('LK_LINGJIANPINGFEN','零件评分') }}</span>
       </div>
-      <div class="btnList">
+      <div>
         <iButton @click="backPage">{{ language('LK_FANHUI','返回') }}</iButton>
-        <iButton type="text" @click="log">
-          <icon symbol name="iconrizhiwuzi" class="log-icon"/>
-          <span class="log-word">{{ language('LK_RIZHI','日志') }}</span>
-        </iButton>
-        <span>
-					<icon symbol name="icondatabaseweixuanzhong"></icon>
-				</span>
+        <iLoger :config="{ bizId_obj_ae: 'rfqId', queryParams:['bizId_obj_ae']}" credentials isPage isUser class="margin-left20" optionDicKey="LOG_OPERATION_TYPES" />
+        <span class="title-font margin-left20"><icon symbol name="icondatabaseweixuanzhong"></icon></span>
       </div>
     </div>
     <iCard class="margin-top20">
@@ -56,6 +51,7 @@
 
 <script>
 import {iCard, iPagination, iPage, icon, iButton} from 'rise';
+import iLoger from 'rise/web/components/iLoger'
 import tablelist from './supplierScoreTableList'
 import {partScroingTitle} from "./data";
 import {pageMixins} from "@/utils/pageMixins";
@@ -72,7 +68,8 @@ export default {
     iButton,
     icon,
     tablelist,
-    tpbRemarks
+    tpbRemarks,
+    iLoger
   },
   mixins: [pageMixins],
   data() {
@@ -165,11 +162,8 @@ export default {
     }
   }
 
-  .btnList {
-    > span {
-      font-size: 20px;
-      margin-left: 30px;
-    }
+  .title-font {
+    font-size: 20px;
   }
 }
 
