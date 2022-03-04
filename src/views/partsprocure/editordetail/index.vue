@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 10:09:36
- * @LastEditTime: 2022-03-03 20:40:56
+ * @LastEditTime: 2022-03-04 12:04:38
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\editordetail\index.vue
@@ -887,10 +887,22 @@
 			},
 			// 修改采购工厂
 			handleChangeByProcureFactory(code) {
-				checkFactory({
-					id: this.detailData.id,
-					factoryId: code // 该字段是code
-				})
+				const { detailData={} } = this;
+				console.log(detailData,'detailDatadetailDatadetailData');
+				// 必传参数：partProjectTypeCode、factoryId
+				//其他参数：当partProjectTypeCode是GS零件或者GS common sourcing时，传carTypeIds参数；当是partProjectTypeCode是其他类型时，传carTypeProjectNum
+				const data = {
+					// id: this.detailData.id,
+					factoryId: code, // 该字段是code
+					partProjectTypeCode:detailData.partProjectType,
+				}
+				if(detailData.partProjectType == partProjTypes['GSCOMMONSOURCING'] || detailData.partProjectType == partProjTypes['GSLINGJIAN']){
+					data['carTypeIds'] = detailData.carTypeModel;
+				}else{
+					data['carTypeProjectNum'] = detailData.carTypeProjectNum;
+				}
+				// 
+				checkFactory(data)
 				.then(res => {
 					if(res.code == 200) {
 						if (res.data) { // 一致
