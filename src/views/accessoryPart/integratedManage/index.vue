@@ -571,7 +571,9 @@ export default {
     async donwloadList() {
       this.downloadLoading = true
       const params = {
-        ...this.searchParams
+        ...this.searchParams,
+        current: this.page.currPage,
+        size: this.page.pageSize
       }
       await downloadManageList(params)
       this.downloadLoading = false
