@@ -142,7 +142,7 @@ export function getFilesList(params) {
     fileType=1000,
   } = params;
   return requst({
-    url: `/file-histories/file-history//${hostId}/${sortColumn}/${isAsc}/${fileType}`,
+    url: `/file-histories/file-history/${hostId}/${sortColumn}/${isAsc}/${fileType}`,
     method: 'GET',
     params,
   })
