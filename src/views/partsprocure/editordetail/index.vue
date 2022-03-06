@@ -201,7 +201,7 @@
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
-							<iSelect ref="procureFactorySelect" v-model="detailData.procureFactory" :disabled='procureFactoryCanselect()' @change="handleChangeByProcureFactory" v-if="!disabled">
+							<iSelect ref="procureFactorySelect" v-model="detailData.procureFactory" :disabled='procureFactoryCanselect() || detailData.partProjectSource == 5' @change="handleChangeByProcureFactory" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
