@@ -21,9 +21,21 @@
     <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="sure"
               :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
       <el-form>
-        <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
+        <!-- <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
           <iInput :placeholder="language('QINGSHURU','请输入')" v-model="form.searchConditions"></iInput>
+        </el-form-item> -->
+        <el-form-item  :label="language('LK_LINGJIANHAO','零件号')">
+          <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
         </el-form-item>
+        <el-form-item  :label="language('LK_FSNR','零件采购项目号')">
+          <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsnrGsnrNum"></iInput>
+        </el-form-item>
+        <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')">
+          <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-Int v-model="form.rfqId"></iInput>
+        </el-form-item> 
+        <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')">
+          <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
+        </el-form-item> 
         <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
           <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.carType">
             <el-option value="" :label="language('ALL','全部') | capitalizeFilter"></el-option>
@@ -193,7 +205,7 @@ export default {
     },
     joinRfq() {
       if (this.selectTableData.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEYITIAORFQ','请选择一条RFQ'))
+        iMessage.warn(this.language('LK_QINGXUANZEYITIAORFQ','请选择一条RFQ'))
         return
       }
       if (this.selectTableData.length > 1) {
