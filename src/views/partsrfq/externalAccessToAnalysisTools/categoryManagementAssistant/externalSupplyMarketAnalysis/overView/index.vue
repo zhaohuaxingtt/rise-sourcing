@@ -9,7 +9,7 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="8">
+      <el-col :span="8" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_SVW">
         <el-card class="cardBox">
           <div @click="clickCard(card1Param)">
             <p class="cardTitle">{{ language('SVWGONGYINGSHANGSHICHANGZONGLAN', 'SVW供应商市场总览') }}</p>
@@ -19,7 +19,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="8" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_HANGYEBAOGAO">
         <el-card class="cardBox">
           <div @click="clickCard(card2Param)">
             <p class="cardTitle">{{ language('HANGYEBAOGAO', '行业报告') }}</p>
@@ -29,7 +29,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="8" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_SHICHANGSHUJU">
         <el-card class="cardBox">
           <div @click="clickCard(card3Param)">
             <p class="cardTitle">{{ language('SHICHANGSHUJU', '市场数据') }}</p>
@@ -39,7 +39,7 @@
           </div>
         </el-card>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="8" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_GONGYINGLIANGAILAN">
         <el-card class="cardBox">
           <div @click="clickCard(card4Param)">
             <p class="cardTitle">{{ language('GONGYINGLIANGAILAN', '供应链概览（N级供应链管理）') }}</p>

@@ -23,6 +23,7 @@
         <iButton class="margin-left10 "
                  style="float: right"
                  v-show="reportSave"
+                 v-premission="WORKBENCH_RFQ_TPZS_CARD_BOB_INFOR_YULAN_SHENGCHENGBAOGAO"
                  @click="handleDownload">生成报告</iButton>
       </div>
       <div style="display: flex;flex-flow: row nowrap;width: 100%;">

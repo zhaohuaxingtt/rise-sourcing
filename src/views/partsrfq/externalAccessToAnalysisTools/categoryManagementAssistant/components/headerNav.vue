@@ -21,7 +21,7 @@
                  routerPage
                  class="margin-right20" />
         <template v-if="showCommonButton">
-          <iButton @click="openCatecory">{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton>
+          <iButton @click="openCatecory">{{ language('PLGLZS.CAILIAOZU', '材料组') }}</iButton> 
           <iButton @click="openReportInventoryDialog" v-permission="CATEGORY_ASSISTANT_BAOGAOQINGDANLIST">{{ language('PLGLZS.BAOGAOQINGDAN', '报告清单') }}</iButton>
         </template>
         <slot name="extralButton"></slot>
