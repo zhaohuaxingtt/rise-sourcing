@@ -137,7 +137,7 @@ export default {
       })
     },
     // 零件号选择-重写父方法供应商Id
-    handleChangeByAssembledPartCode(partNum, fsNum, row) {
+    handleChangeByAssembledPartCode(partNum, row) {
       this.$set(row, 'assembledPartPrjCode', '')
       const fsObj = this.partNumMap[partNum][0]
       if (fsObj) {
@@ -145,7 +145,9 @@ export default {
         this.handleInputByAssembledPartName(fsObj.partName, row)
       }
 
-      const mouldIdIndexes = this.tableListData.map((item) => {
+      this.$set(row, "mouldId", "")
+
+      const mouldIdIndexes = this.tableListData.filter(item => item.priceType === row.priceType).map((item) => {
         const list = item.mouldId.split('_')
         return +list[list.length - 1].replace(/\D/g, '') || 0
       })
@@ -157,11 +159,11 @@ export default {
           : '0' + (mouldIdIndexes[0] + 1)
         : '01'
 
-      if (fsNum) {
+      if (row.assembledPartPrjCode && row.priceType) {
         this.$set(
           row,
           'mouldId',
-          `${this.partInfo.rfqId}_${this.supplierId}_${fsNum}_T${index}`
+          `${this.partInfo.rfqId}_${this.supplierId}_${row.assembledPartPrjCode}_${ row.priceType === "LC" ? "TL" : "TS" }${index}`
         )
       }
     },
@@ -181,7 +183,9 @@ export default {
         this.$set(row, 'assembledPartName', fsObj.partName)
         this.handleInputByAssembledPartName(fsObj.partName, row)
 
-        const mouldIdIndexes = this.tableListData.map((item) => {
+        this.$set(row, "mouldId", "")
+
+        const mouldIdIndexes = this.tableListData.filter(item => item.priceType === row.priceType).map((item) => {
           const list = item.mouldId.split('_')
           return +list[list.length - 1].replace(/\D/g, '') || 0
         })
@@ -193,11 +197,11 @@ export default {
             : '0' + (mouldIdIndexes[0] + 1)
           : '01'
 
-        if (fsNum) {
+        if (fsNum && row.priceType) {
           this.$set(
             row,
             'mouldId',
-            `${this.partInfo.rfqId}_${this.supplierId}_${fsNum}_T${index}`
+            `${this.partInfo.rfqId}_${this.supplierId}_${fsNum}_${ row.priceType === "LC" ? "TL" : "TS" }${index}`
           )
         }
       }
