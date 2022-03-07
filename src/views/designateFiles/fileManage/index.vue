@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: YoHo
- * @LastEditTime: 2022-02-10 14:31:26
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-07 14:58:43
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -80,7 +80,25 @@
             :lang="true"
             :handleSaveSetting="handleSaveSetting"
             :handleResetSetting="handleResetSetting"
-            :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight"></tableList>
+            :activeItems='"rfqId"' selection  :tableData="tableData" :tableTitle="tableTitle" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange" @openPage="openPage" @handleFileDownload="handleFileDownload" class="aotoTableHeight">
+              <template #fujian="scope">
+                <el-popover
+                  placement="right"
+                  trigger="hover"
+                  popper-class="tableTitleTip"
+                  :visible-arrow="false">
+                  <template slot="">
+                    <div v-if="Array.isArray(scope.row.fileList) && scope.row.fileList.length">
+                      <p v v-for="(item, index) in (scope.row.fileList || [])" :key="index">{{item.fileName}}</p>
+                    </div>
+                    <div v-else style="text-align: center">
+                      {{ language("WUNEIRONG", "无内容") }}
+                    </div>
+                  </template>
+                  <span slot="reference" @click="handleAttachmentDonwload(scope.row)" class="openLinkText cursor">{{language("XIAZAI", "下载")}}</span>
+                </el-popover>
+              </template>
+            </tableList>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
             <!------------------------------------------------------------------------>
