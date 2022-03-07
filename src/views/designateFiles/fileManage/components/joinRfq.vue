@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-26 13:55:35
+ * @LastEditTime: 2022-03-07 11:40:05
  * @Description: 加入已有rfq
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
@@ -101,6 +101,7 @@ import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "@/views/partsrfq/home/components/data";
 import {getRfqList, findBySearches, getCartypeDict} from "@/api/partsrfq/home";
+import { getCarTypeSop } from "@/api/partsprocure/editordetail";
 export default {
   mixins: [pageMixins,tableSortMixins],
   components: { iDialog, iButton, iInput, iPagination, tablelist, iSelect, iSearch },
@@ -166,8 +167,19 @@ export default {
      * @return {*}
      */    
     async getCarTypeOptions() {
-      const res = await findBySearches('01')
-      this.carTypeOptions = res.data
+      // const res = await findBySearches('01')
+      getCarTypeSop()
+      .then(res => {
+        if (res.code == 200) {
+          this.carTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              code: item.cartypeProCode,
+              name: item.cartypeProName
+            })) :
+            []
+        }
+      })
     },
     /**
      * @Description: rfq状态下拉
