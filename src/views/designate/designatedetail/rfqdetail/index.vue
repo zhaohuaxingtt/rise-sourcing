@@ -227,7 +227,8 @@ export default {
         hostId: rfqId,
         type: 1,
         currPage: 1,
-        pageSize: 99999999
+        pageSize: 99999999,
+        rfqFlag: true
       })
       .then(res => {
         if (res.code == 200) {

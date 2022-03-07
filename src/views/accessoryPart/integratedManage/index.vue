@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-07 11:03:45
+ * @LastEditTime: 2022-03-07 21:54:12
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -232,7 +232,7 @@ export default {
               buyerName: item.csfuserName, // 询价采购员
               buyerId:item.csfuserId,
               linieName: item.respLinieName, // linie
-              linieUserId: item.respLinie, // linie
+              linieId: item.respLinie, // linie
               partNum: item.partNum, // 零件号
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID
