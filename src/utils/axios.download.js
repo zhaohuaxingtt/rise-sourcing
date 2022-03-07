@@ -85,7 +85,7 @@ export default function httpRequest(baseUrl = '', timeOut = 15000) {
 
 			if (response.headers['content-disposition']) {
 				fileName = decodeURIComponent(
-					response.headers['content-disposition'].split('=')[1]
+					response.headers['content-disposition'].split('=')[1] || response.headers['fname']
 				)
 			}
 
