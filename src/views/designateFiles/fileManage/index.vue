@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-07 15:15:41
+ * @LastEditTime: 2022-03-07 21:57:14
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -351,9 +351,10 @@ export default {
       const params = this.selectParts.map(item => {
             return {
               rfqId: rfq.id,
+              buyerId:item.csfuserId,
               buyerName: item.csfUser, // 询价采购员
               linieName: item.csfUser, // linie
-              linieUserId: item.csfuserId, // linie
+              linieId: item.csfuserId, // linie
               partNum: item.partNum, // 零件号
               fsnrGsnrNum: item.spnrNum, // fs号
               stuffId: item.stuffId, // 工艺组ID
