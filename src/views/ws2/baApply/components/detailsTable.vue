@@ -137,7 +137,7 @@ export default {
 
     downloadExport(amount){
       downloadExport({
-        aekoAmount: amount,
+        aekoAmount: amount ? amount : 0,
         body: this.selectTableData
       }).then(res => {
         if(res.code === '0'){

@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-11 13:22:05
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-07 15:11:44
  * @Description: 
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\data.js
  */
@@ -12,7 +12,7 @@ export const tableTitle = [
   {props:'spnrNum',name:'SP号', key: "SPHAO", tooltip: true, minWidth: 120},
   {props:'code',name:'编号', key: "BIANHAO", tooltip: true, minWidth: 100},
   {props:'item',name:'导入项次', key: "DAORUXIANGCI", tooltip: true, minWidth: 100},
-  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 70},
+  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, minWidth: 100},
   {props:'csfuserDeptName',name:'CSF科室', key: "CSFKESHI", tooltip: true, minWidth: 140},
   {props:'csfUser',name:'CSF', key: "CSF", tooltip: true, minWidth: 100},
   {props:'linieDeptName',name:'LINIE科室', key: "LINIEKESHI", tooltip: true, minWidth: 120},
