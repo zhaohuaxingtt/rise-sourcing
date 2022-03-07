@@ -137,7 +137,7 @@ export default {
       })
     },
     // 零件号选择-重写父方法供应商Id
-    handleChangeByAssembledPartCode(partNum, row) {
+    handleChangeByAssembledPartCode(partNum, fsNum, row) {
       this.$set(row, 'assembledPartPrjCode', '')
       const fsObj = this.partNumMap[partNum][0]
       if (fsObj) {
@@ -157,11 +157,13 @@ export default {
           : '0' + (mouldIdIndexes[0] + 1)
         : '01'
 
-      this.$set(
-        row,
-        'mouldId',
-        `${this.partInfo.rfqId}_${this.supplierId}_${partNum}_T${index}`
-      )
+      if (fsNum) {
+        this.$set(
+          row,
+          'mouldId',
+          `${this.partInfo.rfqId}_${this.supplierId}_${fsNum}_T${index}`
+        )
+      }
     },
     // fs号选择--重写父方法。供应商ID
     handleChangeByAssembledPartPrjCode(fsNum, row) {
@@ -191,11 +193,13 @@ export default {
             : '0' + (mouldIdIndexes[0] + 1)
           : '01'
 
-        this.$set(
-          row,
-          'mouldId',
-          `${this.partInfo.rfqId}_${this.supplierId}_${fsObj.partNum}_T${index}`
-        )
+        if (fsNum) {
+          this.$set(
+            row,
+            'mouldId',
+            `${this.partInfo.rfqId}_${this.supplierId}_${fsNum}_T${index}`
+          )
+        }
       }
     },
   },
