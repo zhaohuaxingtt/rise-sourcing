@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-07 14:58:43
+ * @LastEditTime: 2022-03-07 15:15:41
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -578,6 +578,13 @@ export default {
     },
     // 通过待办数跳转
     clickMessage,
+    
+    handleAttachmentDonwload(row) {
+      if (row.fileList?.length < 1) {
+        return
+      }
+      this.handleFileDownload(row.fileList?.map(item => item.fileName), row.fileList, row);
+    },
   }
 }
 </script>
