@@ -370,6 +370,7 @@ export default {
       fromGroupName: '',
       // isCarTypeList: true,
       isAdmin: false,
+      thisScope: null,
     }
   },
 
@@ -386,19 +387,40 @@ export default {
     },
 
     jumpDetails(scope){
-      const query = {
-        ...scope.row,
-        partNum: scope.row.partsNum,
-        // purchasingRequirementId: '279830436628008960',
+      const thisScope = this.thisScope;
+      if(thisScope.rsNum == 'AEKO RS单') {
+        return
       }
-      console.log('跳转的参数：', query);
-      this.$router.push({
-        path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
-        query: {
-          item: JSON.stringify(query),
-          projectId: scope.row.projectId
-        },
-      });
+      const first = thisScope.rsNum.slice(0,1);
+      if(~~first === 5){
+        let routeData = this.$router.resolve({
+          path: '/tooling/investmentReport/rsDetails',
+          query: {
+            rsNum: thisScope.rsNum,
+            pageType: 0,
+          },
+        })
+        window.open(routeData.href, '_blank')
+      }else{
+        const roleList = this.$store.state.permission.userInfo.roleList;
+        const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.code));
+        console.log('roleListroleListroleList', roleList, isFlag);
+        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + thisScope.rsNum + '?flag=' + !isFlag;
+        window.open(url);
+      }
+      // const query = {
+      //   ...scope.row,
+      //   partNum: scope.row.partsNum,
+      //   // purchasingRequirementId: '279830436628008960',
+      // }
+      // console.log('跳转的参数：', query);
+      // this.$router.push({
+      //   path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
+      //   query: {
+      //     item: JSON.stringify(query),
+      //     projectId: scope.row.projectId
+      //   },
+      // });
     },
 
 
@@ -432,6 +454,7 @@ export default {
     openBMDetail(scope){
       this.allTableLoading = true;
       this.bmVisible = true;
+      this.thisScope = scope;
 
       //  BM详情、零件号列表、采购工厂、专业科室、车型项目、判断管理员权限
       Promise.all([
