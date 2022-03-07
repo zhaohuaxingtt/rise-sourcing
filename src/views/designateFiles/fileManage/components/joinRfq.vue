@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-26 13:55:35
+ * @LastEditTime: 2022-03-07 11:40:05
  * @Description: 加入已有rfq
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
@@ -21,9 +21,21 @@
     <iSearch class="margin-bottom20" :icon="false" @reset="handleSearchReset" @sure="sure"
               :resetKey="PARTSRFQ_RESET" :searchKey="PARTSRFQ_SEARCH">
       <el-form>
-        <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
+        <!-- <el-form-item :label="language('LINGJIANHAO_FSNR_RFQBIANHAO_CAIGOUYUAN','零件号/FSNR/RFQ编号/采购员')" style="width: 340px">
           <iInput :placeholder="language('QINGSHURU','请输入')" v-model="form.searchConditions"></iInput>
+        </el-form-item> -->
+        <el-form-item  :label="language('LK_LINGJIANHAO','零件号')">
+          <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.partNum"></iInput>
         </el-form-item>
+        <el-form-item  :label="language('LK_FSNR','零件采购项目号')">
+          <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.fsnrGsnrNum"></iInput>
+        </el-form-item>
+        <el-form-item  :label="language('LK_RFQBIANHAO','RFQ编号')">
+          <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-Int v-model="form.rfqId"></iInput>
+        </el-form-item> 
+        <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')">
+          <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
+        </el-form-item> 
         <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
           <iSelect :placeholder="language('QINGXUANZE','请选择')" v-model="form.carType">
             <el-option value="" :label="language('ALL','全部') | capitalizeFilter"></el-option>
@@ -101,6 +113,7 @@ import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "@/views/partsrfq/home/components/data";
 import {getRfqList, findBySearches, getCartypeDict} from "@/api/partsrfq/home";
+import { getCarTypeSop } from "@/api/partsprocure/editordetail";
 export default {
   mixins: [pageMixins,tableSortMixins],
   components: { iDialog, iButton, iInput, iPagination, tablelist, iSelect, iSearch },
@@ -166,8 +179,19 @@ export default {
      * @return {*}
      */    
     async getCarTypeOptions() {
-      const res = await findBySearches('01')
-      this.carTypeOptions = res.data
+      // const res = await findBySearches('01')
+      getCarTypeSop()
+      .then(res => {
+        if (res.code == 200) {
+          this.carTypeOptions = 
+            Array.isArray(res.data) ?
+            res.data.map(item => ({
+              code: item.cartypeProCode,
+              name: item.cartypeProName
+            })) :
+            []
+        }
+      })
     },
     /**
      * @Description: rfq状态下拉
@@ -181,7 +205,7 @@ export default {
     },
     joinRfq() {
       if (this.selectTableData.length < 1) {
-        iMessage.warn(this.language('QINGXUANZEYITIAORFQ','请选择一条RFQ'))
+        iMessage.warn(this.language('LK_QINGXUANZEYITIAORFQ','请选择一条RFQ'))
         return
       }
       if (this.selectTableData.length > 1) {
