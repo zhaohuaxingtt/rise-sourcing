@@ -359,7 +359,8 @@ export default {
       getOrderNumPermission().then(res => {
         if(res.data){
           //  ...
-          iMessage.warn('功能开发中...');
+          // iMessage.warn('功能开发中...');
+          window.open(window.location.origin + `/order/#/purchase/investmentList/mouldBook/details?bmSerial=${this.bmSerial}&id=${this.$route.query.id}`, '_blank')
         }else{
           iMessage.warn(this.language('LK_DUIBUQIMEIYOUQUANXIAN2', '对不起，您没有查看权限'));
         }
