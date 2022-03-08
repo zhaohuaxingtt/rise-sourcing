@@ -7,15 +7,15 @@
         <div class="flex-align-center"
              v-if="!isComponent">
           <!--预览-->
-          <iButton class="margin-left30"
+          <iButton class="margin-left30" v-premission="WORKBENCH_RFQ_TPZS_CARD_BOB_INFOR_YULAN"
                    @click="handlePreview">{{ $t('LK_YULAN') }}</iButton>
           <!--保存-->
-          <iButton class="margin-left30"
+          <iButton class="margin-left30" v-premission="WORKBENCH_RFQ_TPZS_CARD_BOB_INFOR_SAVE"
                    @click="saveDialog">{{ $t('LK_BAOCUN') }}</iButton>
           <!--BoB分析库-->
-          <iButton @click="goToBob">BoB{{ $t('分析库') }}</iButton>
+          <iButton @click="goToBob" v-premission="WORKBENCH_RFQ_TPZS_CARD_BOB_INFOR_FENXIKU">BoB{{ $t('分析库') }}</iButton>
           <!--查找零件-->
-          <iButton class="margin-left30"
+          <iButton class="margin-left30" v-premission="WORKBENCH_RFQ_TPZS_CARD_BOB_INFOR_CHAZHAOLINGJIAN"
                    @click="findPart"
                    v-if="!inside">{{ $t('查找零件') }}</iButton>
         </div>

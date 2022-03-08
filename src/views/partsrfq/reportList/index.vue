@@ -10,7 +10,7 @@
       <span class="pageTitle">{{$t('TPZS.BGQD')}}</span>
       <div>
         <!-- 导出 -->
-        <iButton @click="openExport">{{$t('LK_DAOCHU')}}{{tableListData.length==0?'':'+'+tableListData.length}}</iButton>
+        <iButton @click="openExport" v-permission="WORKBENCH_RFQ_TPZS_BGQD_DAOCHU">{{$t('LK_DAOCHU')}}{{tableListData.length==0?'':'+'+tableListData.length}}</iButton>
         <!-- 返回 -->
         <iButton @click="back">{{$t('LK_FANHUI')}}</iButton>
       </div>

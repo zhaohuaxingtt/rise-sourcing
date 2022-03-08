@@ -21,7 +21,7 @@
         </div>
         <div class="flex">
           <iButton @click="save"
-                   :loading="saveLoading">{{language("BAOCUN","保存")}}</iButton>
+                   :loading="saveLoading" v-permission="CATEGORY_ASSISTANT_EKL_BAOCUN">{{language("BAOCUN","保存")}}</iButton>
           <iButton @click="goback">{{language("FANHUI","返回")}}</iButton>
         </div>
       </div>

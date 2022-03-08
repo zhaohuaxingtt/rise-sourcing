@@ -18,10 +18,10 @@
       <div slot="header" class="headBox">
         <p class="headTitle">{{ language("FENXIMINGCHENG", "分析名称") }}</p>
         <span class="buttonBox">
-          <iButton @click="clickHandleInput">{{
+          <iButton @click="clickHandleInput" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_EDIT_SHOUGONGSHURU">{{
             language("SHOUGONGSHURU", "手工输入")
           }}</iButton>
-          <iButton @click="clickBack">{{
+          <iButton @click="clickBack" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_EDIT_FHFXK">{{
             language("FANHUIFENXIKU", "返回分析库")
           }}</iButton>
         </span>
@@ -85,7 +85,7 @@
       <div class="mainContent">
         <div class="tableOptionBox">
           <p class="tableTitle">{{ language("SHAIXUANJIEGUO", "筛选结果") }}</p>
-          <iButton @click="clickCreate">{{
+          <iButton @click="clickCreate" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_EDIT_SHENGCHENG">{{
             language("SHENGCHENG", "生成")
           }}</iButton>
         </div>

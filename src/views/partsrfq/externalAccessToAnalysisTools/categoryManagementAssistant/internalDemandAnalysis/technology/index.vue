@@ -12,9 +12,10 @@
       <span class="font18 font-weight">{{ language("JISHULUXIAN","技术路线") }}</span>
       <div class="floatright">
         <iButton @click="down"
-                 :disabled="downType">{{ language("MUBANXIAZAI", "模版下载") }}</iButton>
+                 :disabled="downType" v-permission="CATEGORY_ASSISTANT_JISHULUXIAN_MOBANXIAZAI">{{ language("MUBANXIAZAI", "模版下载") }}</iButton>
         <el-upload class="upload"
                    :show-file-list="false"
+                    v-permission="CATEGORY_ASSISTANT_JISHULUXIAN_SHANGCHUAN"
                    name="multipartFile"
                    with-credentials
                    :on-success="handleAvatarSuccess"
@@ -22,7 +23,7 @@
                    accept=".pdf">
           <iButton :loading="uploadButtonLoading">{{ language("SHUANGCHUAN", "上传") }}</iButton>
         </el-upload>
-        <iButton @click="deleted">{{ language("SHANCHU", "删除") }}</iButton>
+        <iButton @click="deleted" v-permission="CATEGORY_ASSISTANT_JISHULUXIAN_SHANCHU">{{ language("SHANCHU", "删除") }}</iButton>
         <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
       </div>
     </div>

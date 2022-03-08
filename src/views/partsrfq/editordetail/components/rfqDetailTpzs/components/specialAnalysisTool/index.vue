@@ -12,12 +12,14 @@
                                       v-model="viewModelDialog" />
     <!-- 渲染图表 -->
     <el-row :gutter="16">
-      <el-col v-for="(item, index) in cardData"
-              :key="index"
-              :span="12">
-        <card @click.native="entrance(item)"
-              :cardData="item" />
-      </el-col>
+      <template v-for="(item, index) in cardData">
+        <el-col v-if="whiteBtnList[item.permission]"
+                :key="index"
+                :span="12">
+          <card @click.native="entrance(item)"
+                :cardData="item" />
+        </el-col>
+      </template>
     </el-row>
   </div>
 </template>
@@ -49,6 +51,12 @@ export default {
   },
   created () {
     this.getDataList('', '', '', '', '');
+    console.log(this.whiteBtnList);
+  },
+  computed:{
+    whiteBtnList() {
+      return this.$store.state.permission.whiteBtnList
+    }
   },
   methods: {
     entrance (param) {
@@ -146,30 +154,40 @@ export default {
               }
               switch (item.title) {
                 case 'BoB(Best of Best)':
+                  item.permission="WORKBENCH_RFQ_TPZS_CARD_BOB";
                   item.imgUrl = BoB;
                   break;
                 case 'Volume Pricing':
+                  item.permission="WORKBENCH_RFQ_TPZS_CARD_VP";
                   item.imgUrl = VP;
                   break;
                 case 'Pricing Index':
+                  item.permission="WORKBENCH_RFQ_TPZS_CARD_PI";
                   item.imgUrl = PI;
                   break;
                 case 'MEK':
+                  item.permission="WORKBENCH_RFQ_TPZS_CARD_MEK";
                   item.imgUrl = MEK;
                   break;
                 case 'TIA':
+                  item.permission="WORKBENCH_RFQ_TPZS_CARD_TIA";
                   item.imgUrl = TIA;
                   break;
                 case 'PCA':
+                  item.permission="WORKBENCH_RFQ_TPZS_CARD_PCA";
                   item.imgUrl = PCA;
                   break;
                 case 'Bid-Link':
+                  item.permission="WORKBENCH_RFQ_TPZS_CARD_BL";
                   item.imgUrl = BL;
                   break;
                 default:
                   break;
               }
             });
+
+
+            console.log(this.cardData)
           }
           this.loading = false
         })

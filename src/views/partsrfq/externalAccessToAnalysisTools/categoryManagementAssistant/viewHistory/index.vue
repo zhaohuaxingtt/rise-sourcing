@@ -61,7 +61,7 @@
         <span class="title">搜索结果</span>
         <div class="operation">
           <iButton :loading="downloadLoading"
-                   @click="handleExampleDownload">{{ $t("LK_XIAZAI") }} </iButton>
+                   @click="handleExampleDownload" v-permission="CATEGORY_ASSISTANT_LISHI_XIAZAI">{{ $t("LK_XIAZAI") }} </iButton>
         </div>
       </div>
       <tableList class="margin-top20"

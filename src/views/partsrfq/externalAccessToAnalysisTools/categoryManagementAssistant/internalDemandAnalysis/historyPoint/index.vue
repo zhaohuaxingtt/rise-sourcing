@@ -39,8 +39,8 @@
         </iSelect>
         <iButton @click="search">{{ language("QUEREN", "确认") }}</iButton>
         <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
-        <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
-        <iButton @click="exportTemplate">{{ language("DAOCHU", "导出") }}</iButton>
+        <iButton @click="save" v-permission="CATEGORY_ASSISTANT_DDLSJL_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
+        <iButton @click="exportTemplate" v-permission="CATEGORY_ASSISTANT_DDLSJL_DAOCHU">{{ language("DAOCHU", "导出") }}</iButton>
         <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
       </div>
     </div>
