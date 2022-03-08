@@ -9,6 +9,7 @@
 <template>
   <div>
     <iButton class="downloadButton"
+              v-permission="WORKBENCH_RFQ_TPZS_CARD_VP_ADD_JRFX_YULAN_XIAZAI"
              @click="getDownloadFile({exportPdf: true})"
              :loading="downloadButtonLoading">{{
         $t('LK_XIAZAI')

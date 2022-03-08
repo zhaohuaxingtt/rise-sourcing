@@ -5,9 +5,9 @@
       <span class="font18 font-weight">{{ language('PI.PIFENXI', 'Price Index分析') }}</span>
       <div class="floatright"
            v-if="!propSchemeId">
-        <iButton @click="handleBack">{{ language('PI.PIFENXIKU', 'Price Index分析库') }}</iButton>
-        <iButton @click="handlePreview">{{ language('PI.YULAN', '预览') }}</iButton>
-        <iButton @click="handleSaveButtonClick">{{ language('PI.BAOCUN', '保存') }}</iButton>
+        <iButton @click="handleBack" v-permission="WORKBENCH_RFQ_TPZS_CARD_INFOR_PIFXK">{{ language('PI.PIFENXIKU', 'Price Index分析库') }}</iButton>
+        <iButton @click="handlePreview" v-permission="WORKBENCH_RFQ_TPZS_CARD_INFOR_YULAN">{{ language('PI.YULAN', '预览') }}</iButton>
+        <iButton @click="handleSaveButtonClick" v-permission="WORKBENCH_RFQ_TPZS_CARD_INFOR_SAVE">{{ language('PI.BAOCUN', '保存') }}</iButton>
       </div>
     </div>
     <!--     零件列表-->

@@ -46,7 +46,7 @@
       </div>
       <div class="flooterBox">
         <iButton @click="clickAdd">{{language('TIANJIA', '添加')}}</iButton>
-        <iButton @click="clickAnalysis">{{language('JINRUFENXI', '进入分析')}}</iButton>
+        <iButton @click="clickAnalysis" v-permission="WORKBENCH_RFQ_TPZS_CARD_PI_ADD_JRFX">{{language('JINRUFENXI', '进入分析')}}</iButton>
       </div>
     </iDialog>
   </div>

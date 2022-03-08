@@ -43,12 +43,12 @@
         <div class="floatright"
              v-if="disabled">
           <div v-if="!editMode">
-            <iButton @click="clickRawMaterial">{{
+            <iButton @click="clickRawMaterial" v-permission="WORKBENCH_RFQ_TPZS_CARD_PI_YCLJGZL">{{
               language("YUANCAILIAOJIAGEZONGLAN", "原材料价格总览")
             }}</iButton>
-            <iButton @click="clickEdit">{{ $t("LK_BIANJI") }}</iButton>
-            <iButton @click="clickAdd">{{ $t("TPZS.LK_CREATE") }}</iButton>
-            <iButton @click="clickDel">{{ $t("delete") }}</iButton>
+            <iButton @click="clickEdit" v-permission="WORKBENCH_RFQ_TPZS_CARD_PI_EDIT">{{ $t("LK_BIANJI") }}</iButton>
+            <iButton @click="clickAdd" v-permission="WORKBENCH_RFQ_TPZS_CARD_PI_ADD">{{ $t("TPZS.LK_CREATE") }}</iButton>
+            <iButton @click="clickDel" v-permission="WORKBENCH_RFQ_TPZS_CARD_PI_DEL">{{ $t("delete") }}</iButton>
           </div>
           <div v-else>
             <iButton @click="cancelEdit">{{ $t("LK_QUXIAO") }}</iButton>
