@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 11:40:10
- * @LastEditTime: 2022-01-19 19:45:17
+ * @LastEditTime: 2022-03-08 10:53:02
  * @LastEditors: Please set LastEditors
  * @Description: 查找零件弹窗
  * @FilePath: \front-web\src\views\partsrfq\components\findingPart.vue
@@ -139,7 +139,7 @@ export default {
     // this.category();
   },
   methods: {
-    handleSizeChange(val, callback) {
+    handleSizeChange (val, callback) {
       if (typeof callback != 'function')
         return console.warn(
           'function handleSizeChange parmars must be a function!'
@@ -147,7 +147,7 @@ export default {
       this.page.pageSize = val
       callback()
     },
-    handleCurrentChange(val, callback) {
+    handleCurrentChange (val, callback) {
       if (typeof callback != 'function')
         return console.warn(
           'function handleCurrentChange parmars must be a function!'
@@ -155,7 +155,7 @@ export default {
       this.page.currPage = val
       callback()
     },
-    pageParmars() {
+    pageParmars () {
       return {
         pageSize: this.page.pageSize,
         currPage: this.page.currPage,
@@ -234,6 +234,7 @@ export default {
         fsNum: "",
         partNum: "",
       };
+      this.page.currPage = 1
       this.pagePart();
     },
     add () {
