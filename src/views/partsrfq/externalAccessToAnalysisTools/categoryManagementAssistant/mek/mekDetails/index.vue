@@ -30,22 +30,22 @@
         <div class="flex"
              v-show="reportFlag||!propSchemeId">
           <!--预览-->
-          <iButton class="margin-left30"
+          <iButton class="margin-left30" v-permission="WORKBENCH_RFQ_TPZS_CARD_MEK_INFOR_MEKFXK"
                    @click="handleAnalysis">{{
             $t("MEK分析库")
           }}</iButton>
           <!--保存-->
-          <iButton @click="handleMEKInfo"
+          <iButton @click="handleMEKInfo" v-permission="WORKBENCH_RFQ_TPZS_CARD_MEK_INFOR_MEKJCSJK"
                    class="margin-left30">{{
             $t("MEK基础数据库")
           }}</iButton>
           <!--BoB分析库-->
-          <iButton class="margin-left30"
+          <iButton class="margin-left30" v-permission="WORKBENCH_RFQ_TPZS_CARD_MEK_INFOR_YULAN"
                    @click="preview">{{
             $t("预览")
           }}</iButton>
           <!--查找零件-->
-          <iButton class="margin-left30"
+          <iButton class="margin-left30" v-permission="WORKBENCH_RFQ_TPZS_CARD_MEK_INFOR_SAVE"
                    @click="saveDialog">{{
             $t("保存")
           }}</iButton>

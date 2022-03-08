@@ -12,9 +12,9 @@
         <!--返回-->
         <iButton @click="handleBack">{{ $t('LK_FANHUI') }}</iButton>
         <!--预览-->
-        <iButton @click="handlePreview">{{ $t('TPZS.YULAN') }}</iButton>
+        <iButton @click="handlePreview" v-permission="WORKBENCH_RFQ_TPZS_CARD_VP_ADD_JRFX_YULAN">{{ $t('TPZS.YULAN') }}</iButton>
         <!--保存-->
-        <iButton @click="() => saveDialog = true">{{ $t('LK_BAOCUN') }}</iButton>
+        <iButton @click="() => saveDialog = true" v-permission="WORKBENCH_RFQ_TPZS_CARD_VP_ADD_JRFX_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
       </div>
     </div>
     <div class="partBox margin-bottom20">
@@ -76,7 +76,7 @@
           <div class="floatright"
                v-if="!propSchemeId">
             <!--保存-->
-            <iButton @click="saveOrUpdateScheme('analyze')">{{ $t('LK_BAOCUN') }}</iButton>
+            <iButton @click="saveOrUpdateScheme('analyze')" v-permission="WORKBENCH_RFQ_TPZS_CARD_VP_ADD_JRFX_VP_SAVE">{{ $t('LK_BAOCUN') }}</iButton>
           </div>
         </div>
         <analyzeChart ref="analyzeChart"

@@ -14,7 +14,7 @@
            v-if="!preview"
            v-show="reportFlag">
         <div v-if="!editFlag">
-          <iButton @click="edit">{{language('BEIZHU','备注')}}</iButton>
+          <iButton @click="edit" v-permission="WORKBENCH_RFQ_TPZS_CARD_MEK_INFOR_EDIT">{{$t("LK_BIANJI")}}</iButton>
         </div>
         <div v-else>
           <iButton @click="addRow">{{language('XINZENG','新增')}}</iButton>
