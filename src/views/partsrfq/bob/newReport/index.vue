@@ -191,6 +191,7 @@
                        :formUpdata="formUpdata"
                        :propSchemeId="analysisSchemeId"
                        :propGroupId="groupId"
+                       @groupToList="groupToList"
                        :isPreview="isPreview"></bobAnalysis>
         </el-col>
       </el-row>
@@ -673,7 +674,40 @@ export default {
     async refresh () {
       // let res = await generateGroupId()
       // this.groupId = res.data
+
+
       this.searchChartData();
+    },
+    groupToList (val) {
+      if (val) {
+        let selectedList = [];
+        let tableParams
+        if (this.inside) {
+          tableParams = {
+            schemaId: this.analysisSchemeId,
+            analysisDimension: this.chartType,
+            spareParts: this.form.spareParts.join(','),
+            supplier: this.form.supplier.join(','),
+            turn: this.form.turn.join(','),
+            groupId: this.groupId,
+            isDefault: false,
+            viewType: 'all',
+          }
+        } else {
+          this.form.combination.map((item) => {
+            selectedList.push(item.key);
+          });
+          tableParams = {
+            schemaId: this.analysisSchemeId,
+            analysisDimension: this.chartType,
+            combination: selectedList.join(','),
+            groupId: this.groupId,
+            isDefault: false,
+            viewType: 'all',
+          };
+        }
+        this.$refs.bobAnalysis.chargeRetrieve(tableParams);
+      }
     },
     async searchChartData () {
       if (this.form.combination && this.form.combination.length === 0) return iMessage.error(this.language('QINGXUANZEFSLINGJIANHAOGONGYINGSHANG', '请选择FS号-零件号-供应商'))
