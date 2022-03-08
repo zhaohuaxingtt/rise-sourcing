@@ -7,7 +7,7 @@
            v-if="!isExporting">
         <iButton @click="handleSearch">{{ language('LK_QUEREN', '确认') }}</iButton>
         <iButton @click="handleSave"
-                 :loading="saveButtonLoading">{{ language('LK_BAOCUN', '保存') }}</iButton>
+                 :loading="saveButtonLoading" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_SHICHANGSHUJU_SAVE">{{ language('LK_BAOCUN', '保存') }}</iButton>
         <iButton @click="handleBack">{{ language('LK_FANHUI', '返回') }}</iButton>
       </div>
     </div>

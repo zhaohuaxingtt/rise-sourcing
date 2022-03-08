@@ -13,9 +13,10 @@
            class="headBox">
         <p class="headTitle">{{ language('CHENGBENJIEGOUFENXITUXITONGSHAIXUAN', '成本结构分析图-系统筛选') }}</p>
         <span class="buttonBox">
-          <iButton @click="clickEdit">{{ language('BIANJI', '编辑') }}</iButton>
-          <iButton @click="clickAnalysis">{{ language('FENXIKU', '分析库') }}</iButton>
+          <iButton @click="clickEdit" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_EDIT">{{ language('BIANJI', '编辑') }}</iButton>
+          <iButton @click="clickAnalysis" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU">{{ language('FENXIKU', '分析库') }}</iButton>
           <iButton @click="clickSave"
+                    v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_BAOCUN"
                    :loading="downloadButtonLoading">{{ language('BAOCUN', '保存') }}</iButton>
           <iButton @click="clickBack">{{ language('FANHUI', '返回') }}</iButton>
         </span>

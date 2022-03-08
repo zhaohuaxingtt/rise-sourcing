@@ -29,7 +29,7 @@
       <div class="title-btn"
            v-if="$route.path==='/sourcing/categoryManagementAssistant/internalDemandAnalysis/bulkSupplierPandect'">
         <iButton :loading="saveButtonLoading"
-                 @click="handleSave">{{language("BAOCUN","保存")}}</iButton>
+                 @click="handleSave" v-permission="CATEGORY_ASSISTANT_PLGYSZL_SAVE">{{language("BAOCUN","保存")}}</iButton>
         <iButton @click="handleBack">{{language("FANHUI","返回")}}</iButton>
       </div>
       <supplierCard :supplierDataList="supplierDataList"

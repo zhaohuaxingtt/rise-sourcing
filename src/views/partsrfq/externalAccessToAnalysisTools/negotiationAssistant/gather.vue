@@ -21,8 +21,8 @@
         <iButton v-if="pageType !== 'card'"
                  @click="entrance('card')">{{ $t('LK_FANHUI') }}</iButton>
         <iButton v-if="pageType === 'card'"
-                 @click="handleSearch">{{ $t('search') }}</iButton>
-        <iButton @click="handleReport">{{ $t('TPZS.BGQD') }}</iButton>
+                 @click="handleSearch" v-permission="WORKBENCH_RFQ_TPZS_SEARCH">{{ $t('search') }}</iButton>
+        <iButton @click="handleReport" v-permission="WORKBENCH_RFQ_TPZS_BAOGAOQINGDAN">{{ $t('TPZS.BGQD') }}</iButton>
         <!-- <icon class="icondatabaseweixuanzhong" name="icondatabaseweixuanzhong" symbol></icon> -->
       </div>
     </div>

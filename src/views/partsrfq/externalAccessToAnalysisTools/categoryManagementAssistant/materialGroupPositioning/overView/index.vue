@@ -8,15 +8,14 @@
 -->
 <template>
    <el-row gutter="20">
-      <el-col :span="8" v-for="(item,index) in list" :key="index">
-      <div class="cursor cardBox" >
-
-         <iCard class="icard" :title='language(item.key,item.name)' >
-            <div @click="onJump(item.url)" class="img">
-               <img :src="item.image">
-            </div>     
-         </iCard> 
-      </div>
+      <el-col :span="8" v-for="(item,index) in list" :key="index" v-permission="item.permissionKey">
+         <div class="cursor cardBox" >
+            <iCard class="icard" :title='language(item.key,item.name)' >
+               <div @click="onJump(item.url)" class="img">
+                  <img :src="item.image">
+               </div> 
+            </iCard> 
+         </div>
       </el-col>
    </el-row>
 </template>
@@ -34,7 +33,8 @@ export default {
               name:"材料组定位",
               key:"CAILIAOZUDINGWEI",
               image:require("@/assets/images/partRfq/materialGroup01.png"),
-              url:"/sourcing/categoryManagementAssistant/materialGroupPositioning/materialGroup"
+              url:"/sourcing/categoryManagementAssistant/materialGroupPositioning/materialGroup",
+              permissionKey:'CATEGORY_ASSISTANT_CLZDW_CLZDW'
            },
          //   {
          //      name:"供应商定位",

@@ -15,9 +15,10 @@
         <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
       </div>
       <div v-else>
-        <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton @click="edit" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_HANGYEBAOGAO_EDIT">{{ language("BIANJI", "编辑") }}</iButton>
         <el-upload class="upload"
                    :show-file-list="false"
+                    v-permission="CATEGORY_ASSISTANT_WBGYSCFX_HANGYEBAOGAO_SHANGCHUAN"
                    name="multipartFile"
                    with-credentials
                    :on-success="handleAvatarSuccess"
@@ -25,7 +26,7 @@
                    accept=".pdf">
           <iButton :loading="uploadButtonLoading">{{ language("SHANGCHUAN", "上传") }}</iButton>
         </el-upload>
-        <iButton @click="down">{{ language("XIAZAI", "下载") }}</iButton>
+        <iButton @click="down" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_HANGYEBAOGAO_XIAZAI">{{ language("XIAZAI", "下载") }}</iButton>
         <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
       </div>
     </template>
