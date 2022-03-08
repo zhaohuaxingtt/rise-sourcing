@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-21 10:50:38
- * @LastEditTime: 2022-03-01 11:30:51
+ * @LastEditTime: 2022-03-08 11:26:41
  * @LastEditors: Please set LastEditors
  * @Description: 费用详情
  * @FilePath: \front-web\src\views\partsrfq\bobAnalysis\components\feeDetails.vue
@@ -957,12 +957,13 @@ export default {
         this.groupby = false;
         this.clearGrouped();
         this.groupToDialogVisible = false;
-        this.chargeRetrieve({
-          isDefault: true,
-          viewType: 'all',
-          schemaId: this.schemaId,
-          groupId: this.groupId,
-        });
+        this.$emit("groupToList", true)
+        // this.chargeRetrieve({
+        //   isDefault: true,
+        //   viewType: 'all',
+        //   schemaId: this.schemaId,
+        //   groupId: this.groupId,
+        // });
         // this.onGroupingModel = false;
         this.onDataLoading = false;
       });
