@@ -33,14 +33,14 @@
    <div>
      <iSearch :icon="true" >
         <template slot="button">
-          <iButton @click="openSelectCar" v-permission.auto='PROJECTMGT_OVERVIEW_SELECTVISIBLECARPROJECT|项目管理-概览-选择显示车型项目'>{{language('XUANZEXIANSHICHEXINGXIANGMU', '选择显示车型项目')}}</iButton>
+          <iButton @click="openSelectCar" v-permission='CATEGORY_ASSISTANT_SOP_XZXSCXXM'>{{language('XUANZEXIANSHICHEXINGXIANGMU', '选择显示车型项目')}}</iButton>
           <iButton @click="handleSure">{{language('QUEREN', '确认')}}</iButton>
           <iButton @click="handleReset">{{language('LK_CHONGZHI', '重置')}}</iButton>
-          <iButton @click="save" :loading="onSave">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton @click="save" :loading="onSave" v-permission='CATEGORY_ASSISTANT_SOP_SAVE'>{{ language("BAOCUN", "保存") }}</iButton>
           <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
         </template>
         <el-form>
-          <el-form-item :label="language('CHEXINGXIANGMU','车型项目')" v-permission.auto='PROJECTMGT_OVERVIEW_CARPROJECT|项目管理-概览-车型项目'>
+          <el-form-item :label="language('CHEXINGXIANGMU','车型项目')">
             <iSelect filterable v-model="searchParams.carProject" :placeholder="language('QINGXUANZE','请选择')">
               <el-option
                 v-for="item in carProjectOptions"
@@ -50,10 +50,10 @@
               </el-option>
             </iSelect>
           </el-form-item>
-          <el-form-item :label="language('SOPSHIJIAN','SOP时间')" v-permission.auto='PROJECTMGT_OVERVIEW_SOPDATE|项目管理-概览-SOP时间'>
+          <el-form-item :label="language('SOPSHIJIAN','SOP时间')">
             <iDatePicker v-model="searchParams.sopDate" type="daterange"></iDatePicker>
           </el-form-item>
-          <el-form-item :label="language('XIANGMUCAIGOUYUAN','项目采购员')" v-permission.auto='PROJECTMGT_OVERVIEW_PROJECTPURCHASER|项目管理-概览-项目采购员'>
+          <el-form-item :label="language('XIANGMUCAIGOUYUAN','项目采购员')">
             <productPurchaserSelect filterable v-model="searchParams.buyerName" />
           </el-form-item>
         </el-form>

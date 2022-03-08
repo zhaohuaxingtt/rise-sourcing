@@ -46,7 +46,7 @@
       </div>
       <div>
         <iButton @click="handleSave"
-                 :loading="saveButtonLoading">{{$t('LK_BAOCUN')}}</iButton>
+                 :loading="saveButtonLoading" v-permission="CATEGORY_ASSISTANT_CGJEZL_DAOCHU">{{$t('LK_BAOCUN')}}</iButton>
         <iButton @click="handleBack">{{$t('LK_FANHUI')}}</iButton>
         <div class="margin-top30">
           <iButton @click="handleConfirm">{{$t('LK_QUEREN')}}</iButton>

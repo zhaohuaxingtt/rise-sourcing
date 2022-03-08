@@ -5,13 +5,13 @@
                :showCommonButton="!editStatus" :categoryCodeProps="categoryCodeProps" :categoryCodeOptions="categoryCodeOptions">
       <template #extralButton>
         <template v-if="!editStatus">
-          <iButton @click="handleEdit">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
+          <iButton @click="handleEdit" v-permission="CATEGORY_ASSISTANT_JCQD_EDIT">{{ language('PLGLZS.BIANJI', '编辑') }}</iButton>
           <iButton @click="handleExport"
-                   :loading="exportButtonLoading">{{ language('PLGLZS.DAOCHU', '导出') }}</iButton>
+                   :loading="exportButtonLoading" v-permission="CATEGORY_ASSISTANT_JCQD_DAOCHU">{{ language('PLGLZS.DAOCHU', '导出') }}</iButton>
         </template>
         <template v-else>
           <iButton @click="handleCancel">{{ language('PLGLZS.QUXIAO', '取消') }}</iButton>
-          <iButton @click="handleSave">{{ language('PLGLZS.BAOCUN', '保存') }}</iButton>
+          <iButton @click="handleSave" v-permission="CATEGORY_ASSISTANT_JCQD_SAVE">{{ language('PLGLZS.BAOCUN', '保存') }}</iButton>
         </template>
       </template>
     </headerNav>

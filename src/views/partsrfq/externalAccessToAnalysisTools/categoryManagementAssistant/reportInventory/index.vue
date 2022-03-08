@@ -13,7 +13,7 @@
       </div>
       <div class="operation">
         <iButton @click="handleAll">{{ $t("全选") }} </iButton>
-        <iButton :loading="exportLoading" @click="handleExport">{{ $t("LK_DAOCHU") }} </iButton>
+        <iButton :loading="exportLoading" @click="handleExport" v-permission="CATEGORY_ASSISTANT_BAOGAOLIST_DAOCHU">{{ $t("LK_DAOCHU") }} </iButton>
       </div>
     </div>
     <div class="content">

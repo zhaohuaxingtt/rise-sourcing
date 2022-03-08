@@ -16,9 +16,9 @@
       <span class="pageTitle">{{language('DAOCHU','导出')}}</span>
 
       <div>
-        <iButton @click="remove">{{ language('YICHU','移出' )}}</iButton>
+        <iButton @click="remove" v-permission="WORKBENCH_RFQ_TPZS_BGQD_DAOCHU_YICHU">{{ language('YICHU','移出' )}}</iButton>
         <!-- 下载 -->
-        <iButton v-loading="btnLoading"
+        <iButton v-loading="btnLoading" v-permission="WORKBENCH_RFQ_TPZS_BGQD_DAOCHU_XIAZAI"
                  @click="down">{{ $t('LK_XIAZAI') }}</iButton>
       </div>
 
