@@ -58,4 +58,5 @@ export default {
 	'新闻&公告模块管理': 'News & Announcements Module Mgt',
 	设置: 'Setting',
 	退出登录: 'Logout',
+	确认:'Sure'
 }
