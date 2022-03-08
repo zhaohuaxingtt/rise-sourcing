@@ -39,9 +39,9 @@
         <span class="font18 font-weight">{{$t('MEK分析库')}}</span>
         <div class="floatright">
           <div v-if="!edit">
-            <iButton @click="editBob">{{ $t("LK_BIANJI") }}</iButton>
-            <iButton @click="handleAdd">{{ $t("LK_XINZENG") }}</iButton>
-            <iButton @click="deleteBob">{{ $t("delete") }}</iButton>
+            <iButton @click="editBob" v-permission="WORKBENCH_RFQ_TPZS_CARD_MEK_EDIT">{{ $t("LK_BIANJI") }}</iButton>
+            <iButton @click="handleAdd" v-permission="WORKBENCH_RFQ_TPZS_CARD_MEK_ADD">{{ $t("LK_XINZENG") }}</iButton>
+            <iButton @click="deleteBob" v-permission="WORKBENCH_RFQ_TPZS_CARD_MEK_DEL">{{ $t("delete") }}</iButton>
           </div>
           <div v-else>
             <iButton @click="cancelEditBob">{{ $t("LK_QUXIAO") }}</iButton>

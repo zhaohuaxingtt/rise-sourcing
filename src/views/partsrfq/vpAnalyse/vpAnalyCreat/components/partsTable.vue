@@ -24,11 +24,11 @@
       </div>
     </template>
     <div class="btn">
-      <iButton v-if="activityTabIndex==='unSelect'"
+      <iButton v-if="activityTabIndex==='unSelect'" v-permission="WORKBENCH_RFQ_TPZS_CARD_VP_ADD_CZLJ"
                @click="hanleParts">{{$t('TPZS.CZLJ')}}</iButton>
       <iButton @click="handleAffirm"
                v-if="activityTabIndex==='unSelect'">{{$t('LK_QUEREN')}}</iButton>
-      <iButton @click="handleAnalyse"
+      <iButton @click="handleAnalyse" v-permission="WORKBENCH_RFQ_TPZS_CARD_VP_ADD_JRFX"
                v-if="activityTabIndex==='selected'">{{$t('TPZS.JRFX')}}</iButton>
     </div>
     <div class="circle">{{middleListData.length}}</div>
