@@ -34,7 +34,7 @@
     </iSearch>
     <div class="tableBox padding-bottom40">
       <div class="tableBox-btn">
-        <iButton @click="handleSave">{{language('BAOCUN', '保存')}}</iButton>
+        <iButton @click="handleSave" v-permission="CATEGORY_ASSISTANT_SOP_XZXSCXXM_BAOCUN">{{language('BAOCUN', '保存')}}</iButton>
       </div>
       <tableList ref="table" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange"></tableList>
     </div>

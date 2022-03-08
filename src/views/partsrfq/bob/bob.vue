@@ -42,9 +42,9 @@
           <div class="floatright">
             <!-- v-if="disabled"-->
             <div v-if="!edit">
-              <iButton @click="newBob">{{ language('XINJIAN', '新建') }}</iButton>
-              <iButton @click="editBob">{{ language('BIANJI', '编辑') }}</iButton>
-              <iButton @click="deleteBob">{{ language('SHANCHU', '删除') }}</iButton>
+              <iButton @click="newBob" v-permission="WORKBENCH_RFQ_TPZS_CARD_BOB_TABLE_ADD">{{ language('XINJIAN', '新建') }}</iButton>
+              <iButton @click="editBob" v-permission="WORKBENCH_RFQ_TPZS_CARD_BOB_TABLE_EDIT">{{ language('BIANJI', '编辑') }}</iButton>
+              <iButton @click="deleteBob" v-permission="WORKBENCH_RFQ_TPZS_CARD_BOB_TABLE_REMOVE">{{ language('SHANCHU', '删除') }}</iButton>
             </div>
             <div v-else>
               <iButton @click="cancelEditBob">{{ language('QUXIAO', '取消') }}</iButton>

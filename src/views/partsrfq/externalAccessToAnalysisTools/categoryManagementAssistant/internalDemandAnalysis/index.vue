@@ -9,7 +9,7 @@
 <template>
   <iPage>
     <headerNav ref="headerNav">
-      <iButton slot="extralButton" @click="handleView">{{ language("CHAKANLISHI", "查看历史") }}</iButton>
+      <iButton slot="extralButton" @click="handleView" v-permission="CATEGORY_ASSISTANT_CHAKANLISHIDATA">{{ language("CHAKANLISHI", "查看历史") }}</iButton>
     </headerNav>
     <router-view></router-view>
     <viewHistory v-model="viewHistory" />

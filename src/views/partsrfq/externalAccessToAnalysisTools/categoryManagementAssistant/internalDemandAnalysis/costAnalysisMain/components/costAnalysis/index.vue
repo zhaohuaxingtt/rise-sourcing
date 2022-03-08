@@ -42,9 +42,9 @@
       <div class="mainContent">
         <div class="tableOptionBox">
           <p class="tableTitle">分析库列表</p>
-          <iButton v-if="!editMode" @click="clickDel">{{language('SHANCHU', '删除')}}</iButton>
-          <iButton v-if="!editMode" @click="clickAdd">{{language('XINZENG', '新增')}}</iButton>
-          <iButton v-if="!editMode" @click="clickEdit">{{language('BIANJI', '编辑')}}</iButton>
+          <iButton v-if="!editMode" @click="clickDel" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU_SHANCHU">{{language('SHANCHU', '删除')}}</iButton>
+          <iButton v-if="!editMode" @click="clickAdd" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU_ADD">{{language('XINZENG', '新增')}}</iButton>
+          <iButton v-if="!editMode" @click="clickEdit" v-permission="CATEGORY_ASSISTANT_CHENGBENJIEGOU_FENXIKU_EDIT">{{language('BIANJI', '编辑')}}</iButton>
           <iButton v-if="editMode" @click="clickSave">{{language('BAOCUN', '保存')}}</iButton>
           <iButton v-if="editMode" @click="clickEdit">{{language('QUXIAO', '取消')}}</iButton>
         </div>
