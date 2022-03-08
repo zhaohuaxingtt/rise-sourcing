@@ -20,7 +20,7 @@
         </template>
         <template v-else>
           <!--编辑-->
-          <iButton @click="handleEdit" v-if="tableStatus !== 'edit' && showEditButton">{{ $t('LK_BIANJI') }}</iButton>
+          <iButton @click="handleEdit" v-if="tableStatus !== 'edit' && showEditButton" v-permission="WORKBENCH_RFQ_TPZS_CARD_VP_ADD_JRFX_EDIT">{{ $t('LK_BIANJI') }}</iButton>
         </template>
       </div>
     </div>
