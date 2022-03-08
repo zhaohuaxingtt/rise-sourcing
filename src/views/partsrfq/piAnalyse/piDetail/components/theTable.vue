@@ -29,7 +29,7 @@
           </template>
           <template v-else>
             <!--编辑-->
-            <iButton @click="handleEdit"
+            <iButton @click="handleEdit" v-permission="WORKBENCH_RFQ_TPZS_CARD_INFOR_EDIT"
                      v-if="tableStatus !== 'edit' && showEditButton">{{ $t('LK_BIANJI') }}</iButton>
           </template>
         </template>
