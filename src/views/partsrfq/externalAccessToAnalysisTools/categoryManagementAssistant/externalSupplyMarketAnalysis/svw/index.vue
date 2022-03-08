@@ -12,13 +12,13 @@
             <span>{{categoryName}}</span>
           </div>
           <div class="right">
-            <iButton @click="edite=!edite">{{edite?'编辑':'取消'}}</iButton>
+            <iButton @click="edite=!edite" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_SVW_EDIT">{{edite?'编辑':'取消'}}</iButton>
             <iButton @click="$router.go(-1)"
                      v-show="edite">返回</iButton>
             <iButton @click="saveMarket"
                      v-show="!edite">保存</iButton>
             <iButton v-show="edite"
-                     @click="pdf">生成报告</iButton>
+                     @click="pdf" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_SVW_SCBG">生成报告</iButton>
           </div>
         </div>
         <!-- tittle -->

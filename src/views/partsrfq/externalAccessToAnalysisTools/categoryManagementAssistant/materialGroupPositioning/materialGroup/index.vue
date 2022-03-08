@@ -15,7 +15,7 @@
   >
     <template slot="header-control">
       <template v-if="isEdit">
-        <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton @click="edit" v-permission="CATEGORY_ASSISTANT_CLZDW_CLZDW_EDIT">{{ language("BIANJI", "编辑") }}</iButton>
       </template>
       <template v-else>
         <iButton @click="edit">{{ language("QUXIAO", "取消") }}</iButton>

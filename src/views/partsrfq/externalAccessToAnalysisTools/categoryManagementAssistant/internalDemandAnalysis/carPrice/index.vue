@@ -48,9 +48,9 @@
           </el-popover>
         </div>
         <div class="flex">
-          <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
+          <iButton @click="openMark" v-permission="CATEGORY_ASSISTANT_CAR_BEIZHU">{{ language("BEIZHU", "备注") }}</iButton>
           <iButton @click="save"
-                   :loading="saveLoading">{{
+                   :loading="saveLoading" v-permission="CATEGORY_ASSISTANT_CAR_BAOCUN">{{
             language("BAOCUN", "保存")
           }}</iButton>
           <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>

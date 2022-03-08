@@ -42,9 +42,9 @@
         <div class="flex"
              :style="getStyle()">
           <template v-if="!isInside">
-            <iButton @click="onJump360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
-            <iButton @click="openMark">{{ language("BEIZHU", "备注") }}</iButton>
-            <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+            <iButton @click="onJump360" v-permission="CATEGORY_ASSISTANT_PLGYSGL_GYS360">{{ language("GONGYINGSHANG360", "供应商360") }}</iButton>
+            <iButton @click="openMark" v-permission="CATEGORY_ASSISTANT_PLGYSGL_MARK">{{ language("BEIZHU", "备注") }}</iButton>
+            <iButton @click="save" v-permission="CATEGORY_ASSISTANT_PLGYSGL_SAVE">{{ language("BAOCUN", "保存") }}</iButton>
             <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
           </template>
         </div>

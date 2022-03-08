@@ -22,7 +22,7 @@
                </el-popover>
             </div>
             <div class="flex">
-               <iButton @click="save">{{ language("BAOCUN", "保存") }}</iButton>
+               <iButton @click="save" v-permission="CATEGORY_ASSISTANT_CHANLIANGZONGLAN_DAOCHU">{{ language("BAOCUN", "保存") }}</iButton>
 			      <iButton @click="back">{{ language("FANHUI", "返回") }}</iButton>
             </div>
          </div>
