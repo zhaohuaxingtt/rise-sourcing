@@ -4,7 +4,7 @@
  * @Description: 决策资料-SingleSourcing
 -->
 <template>
-    <iCard title="⽣产采购单⼀供应商说明 Single Sourcing for Production Purchasing" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING|决策资料-SingleSourcing">
+    <iCard title="生产采购单⼀供应商说明 Single Sourcing for Production Purchasing" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING|决策资料-SingleSourcing">
         <template slot="header-control">
              <iButton @click="gotoSupplier" v-if="!fix" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_GOTOSUPPLIERMAINTENANCE|跳转供应商维护">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
         </template>
