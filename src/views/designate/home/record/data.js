@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 16:06:26
- * @LastEditTime: 2022-02-28 14:20:48
+ * @LastEditTime: 2022-03-09 11:18:41
  * @LastEditors: YoHo
  */
 export const form = {
@@ -63,13 +63,14 @@ export const tableTitle = [
     name:'询价采购员',
     key:'XUNJIACAIGOUYUAN',
     tooltip:true,
-    width:90
+    width:120
   },
   {
     props:'linie',
     name:'LINIE',
     key:'LINIE',
-    tooltip:true
+    tooltip:true,
+    width:90
   },
   {
     props:'nominateTime',
