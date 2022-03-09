@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-02-18 15:15:37
+ * @LastEditTime: 2022-03-09 16:53:30
  * @Description: 申请零件目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -136,7 +136,7 @@ export default {
         return
       }
       this.saveLoading = true
-      const params = this.selectList.filter(i=> i.cfController && i.applyType && (i.expectedTargetPrice!=undefined && i.expectedTargetPrice.trim()!=''))
+      const params = this.selectList.filter(i=> i.cfController && i.applyType)
       if(params.length!=this.selectList.length){
         iMessage.warn(this.language('QINGWEIHUBITIANXIANG','请维护必填项'))
         this.saveLoading = false
