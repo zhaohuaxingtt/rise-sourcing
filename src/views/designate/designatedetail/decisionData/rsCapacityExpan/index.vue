@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-07-06 22:11:41
- * @LastEditTime: 2021-10-19 16:37:59
- * @LastEditors: Hao,Jiang
+ * @LastEditTime: 2022-03-09 18:00:08
+ * @LastEditors: YoHo
  * @Description: 决策资料 - 扩产能
  * @FilePath: /front-web/src/views/designate/designatedetail/decisionData/rsCapacityExpan/index.vue
 -->
@@ -114,7 +114,7 @@ export default {
       try {
         // const res = require('./components/moke.json')
         const res = await getCapacityExtPlan({
-          nominateId: this.$store.getters.nomiAppId,
+          nominateId: this.$route.query.desinateId,
         })
         if (res.code === '200') {
           // 基础信息
