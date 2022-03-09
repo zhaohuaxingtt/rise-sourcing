@@ -27,7 +27,7 @@
               <span v-else>{{ scope.row[startYear] }}</span>
             </template>
           </el-table-column>
-          <el-table-column :width="90" v-if="$index == 0" :key="$index" align="center" :label="language(items.key,items.name)">
+          <el-table-column :width="100" v-if="$index == 0" :key="$index" align="center" :label="language(items.key,items.name)">
             <template v-slot>
               <span>{{ language('LK_CHANLIANGPC','产量（PC）') }}</span>
             </template>

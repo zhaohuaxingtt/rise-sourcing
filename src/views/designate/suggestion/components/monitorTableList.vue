@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-03-01 17:13:46
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-09 14:17:36
+ * @LastEditors: YoHo
 -->
 
 <template>
@@ -34,7 +34,7 @@
         </template>
       </el-table-column> -->
       <el-table-column
-        width="56"
+        width="66"
         label='Group'
         align='center'
         fixed>
@@ -69,7 +69,7 @@
         align='center'
         prop="partPrjCode"
         label="FS/GS/SP No."
-        width="110"
+        width="120"
         fixed
         >
       </el-table-column>
@@ -746,7 +746,7 @@ export default {
   // 滚动条
   ::v-deep.el-table__body-wrapper {
     &::-webkit-scrollbar {
-      width: 89px !important;
+      width: 8px !important;
     }
     &::-webkit-scrollbar-thumb {
       background-color: #c9d2e6;
