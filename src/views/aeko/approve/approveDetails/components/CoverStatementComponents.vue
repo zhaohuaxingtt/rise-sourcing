@@ -229,39 +229,77 @@ export default {
       }
       return ''
     },
-    getSummaries(param) {
-      const {columns, data} = param;
-      const sums = [];
-      columns.forEach((column, index) => {
-        if (index == 0) {
-          sums[index] = '';
-          return;
-        }
-        if (index === 1) {
-          sums[index] = 'TOTAL';
-          return;
-        }
-        const values = data.map(item => Number(item[column.property]));
-        if (column.property == 'materialIncrease') {
-          let maxNum6 = Math.max(...values);
-          sums[index] = numberToCurrencyNo2(maxNum6)
-          return;
-        }
-        if (!values.every(value => isNaN(value))) {
-          let mValue = values.reduce((prev, curr) => {
-            const value = Number(curr);
-            if (!isNaN(value)) {
-              return prev + curr;
-            } else {
-              return prev;
+    // total 不用前端计算 后端计算后返回
+    getSummaries(param){
+        const { columns, data } = param;
+        const { auditCover } = this;
+        const total = this.language('LK_AEKO_TOTAL','TOTAL');
+        const sums = [];
+        columns.forEach((column, index) => {
+            if (index === 1) {
+                sums[index] = total;
+                return;
             }
-          }, 0);
-          sums[index] = numberToCurrencyNo(mValue)
-        }
 
-      });
-      return sums;
-    }
+            const keyArr = ['investmentIncrease', 'materialIncrease', 'otherCost'];
+            if(keyArr.includes(column.property)){
+                if(column.property == 'investmentIncrease') sums[index] = this.fixNumber(auditCover.investmentIncreaseTotal,0) || '';
+                else if(column.property == 'materialIncrease') sums[index] = this.fixNumber(auditCover.materialIncreaseTotal)  || '';
+                else if(column.property == 'otherCost') sums[index] = this.fixNumber(auditCover.otherCostTotal,0)  || '';
+                else sums[index] = ''
+            }else{
+                sums[index] = '';
+            }
+        })
+        return sums;
+    },
+    // 费用千分位处理
+    fixNumber(str,precision=2){
+        if(!str) return null;
+        var re=/(?=(?!(\b))(\d{3})+$)/g;
+        var fixstr = (str || 0).toString().split(".");
+        fixstr[0] =  fixstr[0].replace(re,",");
+        if(precision == 0){ // 若小数点后两位是 .00 去除小数点后两位
+            if( fixstr[1] && fixstr[1] == '00') return fixstr[0];
+        }
+        
+        return fixstr.join('.');
+    },
+    // getSummaries(param) {
+    //   const {columns, data} = param;
+    //   const sums = [];
+    //   columns.forEach((column, index) => {
+    //     if (index == 0) {
+    //       sums[index] = '';
+    //       return;
+    //     }
+    //     if (index === 1) {
+    //       sums[index] = 'TOTAL';
+    //       return;
+    //     }
+    //     const values = data.map(item => Number(item[column.property]));
+    //     if (column.property == 'materialIncrease') {
+    //       let maxNum6 = Math.max(...values);
+    //       sums[index] = numberToCurrencyNo2(maxNum6)
+    //       return;
+    //     }
+    //     if (!values.every(value => isNaN(value))) {
+    //       let mValue = values.reduce((prev, curr) => {
+    //         const value = Number(curr);
+    //         console.log(value,'valuevalue')
+    //         console.log(prev + curr,'prev + curr')
+    //         if (!isNaN(value)) {
+    //           return prev + curr;
+    //         } else {
+    //           return prev;
+    //         }
+    //       }, 0);
+    //       sums[index] = numberToCurrencyNo(mValue)
+    //     }
+
+    //   });
+    //   return sums;
+    // }
   }
 }
 </script>
