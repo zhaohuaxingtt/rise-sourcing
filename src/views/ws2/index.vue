@@ -84,6 +84,9 @@ export default {
       },
     },
   },
+  created() {
+    this.getInitRoute()
+  },
   data() {
     return {
       tabtitle: tabtitle,
@@ -217,6 +220,25 @@ export default {
       this.$store.commit('SET_nextStep', false);
       this.nextStepvalue = false
     },
+    // 获取初始路由 （解决无权限情况默认进入预算管理）
+    getInitRoute() {
+      if (this.$route.path == '/tooling') {
+        for (let index = 0; index < this.newTableTitle.length; index++) {
+          const item = this.newTableTitle[index];
+          if (this.$store.state.permission.whiteBtnList[item.permissionKey]) {
+            this.$router.push({
+              path: item.url,
+            })
+            return
+          }
+          if (index == this.newTableTitle.length) {
+            this.$router.push({
+              path: this.newTableTitle[0].url,
+            })
+          }
+        }
+      }
+    }
   },
 };
 </script>

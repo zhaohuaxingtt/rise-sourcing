@@ -136,6 +136,8 @@ export default {
     },
 
     downloadExport(amount){
+      let carTypeName = this.selectTableData[0].carTypeName;
+      this.selectTableData[0].carTypeName = carTypeName.replace(/\//g, '%2F');
       downloadExport({
         aekoAmount: amount ? amount : 0,
         body: this.selectTableData

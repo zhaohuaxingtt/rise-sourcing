@@ -110,7 +110,7 @@ module.exports = {
       'vue-i18n': 'VueI18n',
       i18n: 'i18n',
       Ellipsis: 'Ellipsis',
-      html2canvas: 'html2canvas'
+      html2canvas: 'html2canvas',
     }
     //开启gizp压缩
   },
@@ -173,7 +173,7 @@ module.exports = {
       '/sourcingApi': {
         //   供应商
         target: 'http://10.122.17.38:8025',
-        // target: 'http://10.160.138.58:18025',
+        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/sourcing/',
         changeOrigin: true,
         pathRewrite: {
           '^/sourcingApi': '',
@@ -217,8 +217,8 @@ module.exports = {
         },
       },
       '/aonApi': {
-        target: 'http://10.122.17.38:8036',
-        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
+        // target: 'http://10.122.17.38:8036',
+        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': '',
