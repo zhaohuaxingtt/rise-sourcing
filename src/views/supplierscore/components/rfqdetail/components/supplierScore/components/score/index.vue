@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-22 16:16:26
- * @LastEditTime: 2022-01-28 17:31:21
+ * @LastEditTime: 2022-03-09 17:45:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\rfqdetail\components\supplierScore\components\score\index.vue
@@ -15,7 +15,7 @@
         <!-- 退回至采购员 编辑 提交---该评分任务的评分人 -->
         <iButton v-if="rfqInfo.hasShowBack" :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
         <!-- 编辑/提交  状态为待评分/待提交 该评分任务的评分 -->
-        <iButton v-if="rfqInfo.hasShowEdit"  @click="editStatus = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
+        <iButton v-if="rfqInfo.hasShowEdit"  @click="handleEdit" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_EDIT|编辑">{{ language("BIANJI", "编辑") }}</iButton>
         <iButton v-if="rfqInfo.hasShowSubmit" :loading="submitLoading" @click="handleSubmit" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_SUBMIT|提交">{{ language("LK_TIJIAO", "提交") }}</iButton>
         <!-- 批准 驳回 该评分任务的协调人 待审批 -->
         <iButton v-if="rfqInfo.hasShowApprove" :loading="approveLoading" @click="handleApprove" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_APPROVE|批准">{{ language("PIZHUN", "批准") }}</iButton>
@@ -30,7 +30,9 @@
       <el-table
         v-loading="loading"
         :data="tableListData"
+        @selection-change="handleSelectionChange"
         :empty-text="language('ZANWUSHUJU', '暂无数据')">
+        <el-table-column type="selection" width="55" :selectable="selectInit"></el-table-column>
         <el-table-column type="index" align="center" label="#"></el-table-column>
         <el-table-column align="center" v-for="(item, $index) in tableTitle" :key="$index" :label="language(item.key, item.name)" :show-overflow-tooltip="item.tooltip">
           <template v-if="item.props === 'sapCode'" v-slot="scope">
@@ -50,7 +52,7 @@
                 <span>{{ scope.column.label }}<i class="required">*</i></span>
               </template>
               <template v-if="item.props === 'rate'" v-slot="scope">
-                <div v-if="editStatus">
+                <div v-if="editStatus && hasEditLine(scope.row.id)">
                   <!-- <iInput v-if="afterSaleLeaderIds.every(id => id != userInfo.id)" v-model="scope.row.rate" /> -->
                   <!-- <div v-if="afterSaleLeaderIds.every(id => id != userInfo.id)"> -->
                   <div v-if="!isFileRfqType">
@@ -103,11 +105,11 @@
                 <span v-else>{{ isFileRfqType ? showaffixName(scope.row.rate) : scope.row.rate }}</span>
               </template>
               <template v-else-if="item.props === 'externalFee' || item.props === 'addFee'" v-slot="scope">
-                <iInput style="width:90%" v-if="editStatus" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
+                <iInput style="width:90%" v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row[item.props]" @input="handleInputByMoney($event, item.props, scope.row)" />
                 <span v-else>{{ scope.row[item.props] }}</span>
               </template>
               <template v-else-if="item.props === 'confirmCycle'" v-slot="scope">
-                <iInput v-if="editStatus" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
+                <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.confirmCycle" @input="handleInputByWeek($event, item.props, scope.row)" />
                 <span v-else>{{ scope.row.confirmCycle }}</span>
               </template>
               <template v-else-if="item.props === 'remark'" v-slot="scope">
@@ -116,7 +118,7 @@
                 <el-tooltip placement="top" :disabled="!scope.row.memo">
                   <div style="maxWidth:200px" slot="content">{{scope.row.memo}}</div>
                   <div>
-                    <iInput v-if="editStatus" v-model="scope.row.memo"/>
+                    <iInput v-if="editStatus && hasEditLine(scope.row.id)" v-model="scope.row.memo"/>
                     <span class="text-overflow" v-else>{{ scope.row.memo }}</span>
                   </div>
                 </el-tooltip>
@@ -254,7 +256,9 @@ export default {
       })
     },
     handleSelectionChange(list) {
-      this.multipleSelection = list
+      if(!this.editStatus){
+        this.multipleSelection = list
+      }
     },
     // 确认转派
     confirmForward(userInfo) {
@@ -305,10 +309,16 @@ export default {
       .catch(() => this.backLoading = false)
     },
     // 提交
-    handleSubmit() {
+    async handleSubmit() {
+      const isNext  = await this.isSelectItem();
+      if(!isNext) return;
+      const { multipleSelection } = this;
+      const rfqBdlRateIds = multipleSelection.map((item)=>item.id);
+      
       this.submitLoading = true
 
       submitRfqBdlRatings({
+        rfqBdlRateIds,
         rfqId: this.rfqId
       })
       .then(res => {
@@ -327,11 +337,17 @@ export default {
       .catch(() => this.submitLoading = false)
     },
     // 批准
-    handleApprove() {
+    async handleApprove() {
+      
+      const isNext  = await this.isSelectItem();
+      if(!isNext) return;
+      const { multipleSelection } = this;
+      const rfqBdlRateIds = multipleSelection.map((item)=>item.id);
       this.approveLoading = true
 
       approveRfqBdlRatings({
-        rfqId: this.rfqId
+        rfqId: this.rfqId,
+        rfqBdlRateIds,
       })
       .then(res => {
         const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
@@ -349,14 +365,21 @@ export default {
       .catch(() => this.approveLoading = false)
     },
     // 拒绝
-    handleReject() {
+    async handleReject() {
+      const isNext  = await this.isSelectItem();
+      if(!isNext) return;
+      
       this.rejectDialogVisible = true
     },
     // 确认拒绝
     confirmReject(reason) {
       this.$refs.rejectDialog.updateConfirmLoading(true)
+      
+      const { multipleSelection } = this;
+      const rfqBdlRateIds = multipleSelection.map((item)=>item.id);
 
       rejectRfqBdlRatings({
+        rfqBdlRateIds,
         rfqId: this.rfqId,
         reason
       })
@@ -408,14 +431,19 @@ export default {
         )
       }
 
-      if (this.tableListData.some(item => !item.rate && item.rate !== 0)) {
+      const { multipleSelection } = this;
+      const rfqBdlRateIds = multipleSelection.map((item)=>item.id);
+      // 过滤一下勾选项的变更
+      const filterTableData = this.tableListData.filter((item)=>rfqBdlRateIds.includes(item.id))
+
+      if (filterTableData.some(item => !item.rate && item.rate !== 0)) {
         return iMessage.warn(this.language("PINGFENLIEWEIBITIANXIANG", "评分列为必填项"))
       }
 
       this.saveLoading = true
 
       updateRfqBdlRatings(
-        this.tableListData.map(item => ({
+        filterTableData.map(item => ({
           addFee: item.addFee,
           confirmCycle: item.confirmCycle,
           externalFee: item.externalFee,
@@ -504,6 +532,36 @@ export default {
       }
       
     },
+    // 判断是否勾选项
+    async isSelectItem(tips=null){
+        const {multipleSelection} = this;
+        tips = tips || this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据');
+        if(!multipleSelection.length){
+            this.$message.warning(tips);
+            return false;
+        }else{
+            return true;
+        }
+    },
+    
+    // 编辑
+    async handleEdit(){
+      const isNext  = await this.isSelectItem();
+      if(!isNext) return;
+      this.editStatus = true
+    },
+    // 判断该行是否可编辑
+    hasEditLine(id){
+      const { multipleSelection } = this;
+      const rfqBdlRateIds = multipleSelection.map((item)=>item.id);
+      if(rfqBdlRateIds.includes(id)) return true
+      else false
+    },
+    // 列表是否可勾选
+    selectInit(){
+      if(this.editStatus) return false
+      else return true
+    }
   }
 }
 </script>

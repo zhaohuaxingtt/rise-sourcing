@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-09-07 16:58:50
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-09 10:59:58
+ * @LastEditors: YoHo
  * @Description: 定点表格信息
  *
  */
@@ -80,7 +80,7 @@ export const tableTitle = [{
 {
   props: 'nominateUserName',
   name: '询价采购员',
-  width: 90,
+  width: 120,
   key: 'nominationLanguage_XunJiaCaiGouYuan',
   tooltip: true
 },
@@ -95,7 +95,8 @@ export const tableTitle = [{
   props: 'rsStatusDesc',
   name: 'RS单状态',
   key: 'nominationLanguage_RSZhuangTai',
-  tooltip: true
+  tooltip: true,
+  width:90
 },
 {
   props: 'rsFreezeDate',

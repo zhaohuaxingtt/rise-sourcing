@@ -1,8 +1,8 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2021-11-08 19:10:13
- * @LastEditors:  
+ * @LastEditTime: 2022-03-09 11:14:41
+ * @LastEditors: YoHo
  * @Description: sel上会复核
  *
  */
@@ -17,7 +17,7 @@ export const tableTitle = [{
   //export const tableTitle = permissionTitle("nominationLanguage_nominationLanguageLIST",[{
   props: 'id',
   name: '申请单号',
-  width: 80,
+  width: 100,
   key: 'nominationLanguage_ShenQingDanHao',
   tooltip: true
 },
@@ -74,19 +74,20 @@ export const tableTitle = [{
   props: 'rsStatusDesc',
   name: 'RS单状态',
   key: 'nominationLanguage_RSZhuangTai',
-  tooltip: true
+  tooltip: true,
+  width:100
 },
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
-  width: 100,
+  width: 110,
   key: 'nominationLanguage_RSDongJieRiQi',
   tooltip: true
 },
 {
   props: 'isPriceConsistent',
   name: '报价一致性校验状态',
-  width: 150,
+  width: 160,
   key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
   tooltip: true
 },
@@ -100,7 +101,7 @@ export const tableTitle = [{
 {
 	props: 'checkDueDate',
 	name: '复核截止日期',
-  width: 100,
+  width: 120,
 	key: 'nominationLanguage.FuHeJieZhiRiQi',
 	tooltip:true
 },
@@ -121,7 +122,7 @@ export const tableTitle = [{
 {
   props: 'freezeDate',
   name: '冻结日期',
-  width: 100,
+  width: 110,
   key: 'nominationLanguage_DongJieRiQi',
   tooltip: true
 },
