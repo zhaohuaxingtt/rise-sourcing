@@ -170,26 +170,30 @@
                 <span>{{scope.row[item.props]?moment(scope.row[item.props]).format("YYYY-MM"):''}}</span>
               </template>
               <template v-else-if ='removeKeysNumber(item.props) == "developmentCost"'>
-              <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>
-                <template slot="content">
-                  <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"]) }}RMB</div>
-                  <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
-                </template>
-                <span>{{ttoShow(scope.row[item.props])}}</span>
-              </el-tooltip>
-              <span v-else>{{ttoShow(scope.row[item.props])}}</span>
-                <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span>
+                <!-- <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'> -->
+                <el-tooltip  effect='light' v-if='+scope.row[getPorpsNumber(item.props)+"developmentCostShare"]'>
+                  <template slot="content">
+                    <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"developmentCost"], scope.row[getPorpsNumber(item.props)+"developmentCostShare"]) }}RMB</div>
+                    <div>分摊：{{scope.row[getPorpsNumber(item.props)+"developmentCostShare"]}}RMB</div>
+                  </template>
+                  <span>{{ttoShow(scope.row[item.props])}}</span>
+                </el-tooltip>
+                <span v-else>{{ttoShow(scope.row[item.props])}}</span>
+                <!-- <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"developmentCostHasShare"]'>*</span> -->
+                <span style="color:red;" v-if='+scope.row[getPorpsNumber(item.props)+"developmentCostShare"]'>*</span>
               </template>
               <template v-else-if ='removeKeysNumber(item.props) == "tooling"'>
-              <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>
-                <template slot="content">
-                  <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"]) }}RMB</div>
-                  <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
-                </template>
-                <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
-              </el-tooltip>
-              <span v-else>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
-                <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span>
+                <!-- <el-tooltip  effect='light' v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'> -->
+                <el-tooltip  effect='light' v-if='+scope.row[getPorpsNumber(item.props)+"toolingShare"]'>
+                  <template slot="content">
+                    <div>一次性：{{ subtract(scope.row[getPorpsNumber(item.props)+"tooling"], scope.row[getPorpsNumber(item.props)+"toolingShare"]) }}RMB</div>
+                    <div>分摊：{{scope.row[getPorpsNumber(item.props)+"toolingShare"]}}RMB</div>
+                  </template>
+                  <span>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
+                </el-tooltip>
+                <span v-else>{{scope.row[item.props]?scope.row[item.props]:scope.row[item.props]}}</span>
+                <!-- <span style="color:red;" v-if='scope.row[getPorpsNumber(item.props)+"toolingHasShare"]'>*</span> -->
+                <span style="color:red;" v-if='+scope.row[getPorpsNumber(item.props)+"toolingShare"]'>*</span>
               </template>
               <template v-else>
                 <span>{{scope.row[item.props]}}</span>
