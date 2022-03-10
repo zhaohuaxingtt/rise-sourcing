@@ -32,6 +32,6 @@ export const timePlanableTitle = [
     {props:'cartypeProSop',name:'车型项目SOP',key: 'LK_CHEXINGXIANGMUSOP'},
     {props:'productiveLife',name:'车型生产年限',key: 'LK_CHEXINGSHENGCHANNIANXIAN'},
     {props:'svwRequeseFirstTestMode',name:'SVW要求首次试模',key: 'LK_SVWYAOQIUSHOUCISHIMO',titleTips:true},
-    {props:'svwRequestEm',name:'SVW要求EM（周）',key: 'LK_SVWYAOQIUEMZHOU',titleTips:true},
-    {props:'svwRequestOts',name:'SVW要求OTS(周)',key: 'LK_SVWYAOQIUOTSZHOU',titleTips:true}
+    {props:'svwRequestEm',name:'SVW要求EM（周）',key: 'LK_SVWYAOQIUEMZHOU',titleTips:true, width: 150},
+    {props:'svwRequestOts',name:'SVW要求OTS(周)',key: 'LK_SVWYAOQIUOTSZHOU',titleTips:true, width: 160}
 ]

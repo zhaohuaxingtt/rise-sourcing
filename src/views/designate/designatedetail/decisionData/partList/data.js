@@ -9,6 +9,6 @@ export const tableTitle = [
   { props: 'sopDate', name: 'SOP', key: 'SOP' },
   { props: 'ebrCalculatedValue', name: 'EBR%', key: 'EBR%' },
   { props: 'ebrConfirmValue', name: 'EBR% (input)', key: 'EBR% (input)' },
-  { props: 'lifeTime', name: 'Volume (lifetime)', key: 'Volume (lifetime)',width:120 },
+  { props: 'lifeTime', name: 'Volume (lifetime)', key: 'Volume (lifetime)',width: 150 },
   { props: 'paVolume', name: 'Volume (p.a.)', key: 'Volume (p.a.)' },
 ]

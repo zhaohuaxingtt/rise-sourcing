@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2022-02-11 11:21:35
+ * @LastEditTime: 2022-03-09 11:40:10
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -14,7 +14,7 @@ export const tableTitle = [{
 		name: 'FSNF/GSNF/SPNR',
 		key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
 		tooltip: true,
-		width:120,
+		width:130,
 		isAekoShow:true,
 	},
 	{
@@ -39,7 +39,7 @@ export const tableTitle = [{
 		name: '零件名（中）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
 		tooltip: true,
-		width:100,
+		width:120,
 		isAekoShow:true,
 	},
 	{
@@ -47,7 +47,7 @@ export const tableTitle = [{
 		name: '零件名（德）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 		tooltip: true,
-		width:100,
+		width:120,
 		isAekoShow:true,
 	},
 	{
@@ -55,7 +55,7 @@ export const tableTitle = [{
 		name: 'MTZ',
 		key: 'partsprocure.mtz',
 		tooltip: true,
-		width:100,
+		width:60,
 		isAekoShow:true,
 	},
 	// {
@@ -69,7 +69,7 @@ export const tableTitle = [{
 		name: 'LINIE',
 		key: 'partsprocure.PARTSPROCURELINIE',
 		tooltip: true,
-		width:60,
+		width: 70,
 		isAekoShow:false,
 	},
 	{
@@ -92,7 +92,7 @@ export const tableTitle = [{
 		name: '采购工厂',
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
 		tooltip: true,
-		width:80,
+		width:90,
 		isAekoShow:true,
 	},
 	{
@@ -100,7 +100,7 @@ export const tableTitle = [{
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 		tooltip: true,
-		width:110,
+		width:120,
 		isAekoShow:true,
 	},
 	{
@@ -132,7 +132,7 @@ export const tableTitle = [{
 		name: '询价采购员',
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
 		tooltip: true,
-		width:90,
+		width:120,
 		isAekoShow:false,
 	},
 ]

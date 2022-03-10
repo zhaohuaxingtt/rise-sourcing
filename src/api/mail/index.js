@@ -75,6 +75,17 @@ export function getUnreadTotal(params) {
   })
 }
 
+//获取弹窗实时消息
+export const getPopupSocket = () =>
+    process.env.VUE_APP_SOCKET + 'popup/' +
+    JSON.parse(sessionStorage.getItem('userInfo')).accountId
+
+export const getgetPopupSocketMessage = onMessage => {
+    return getSocket(getPopupSocket, message => {
+        onMessage(message)
+    })
+}
+
 export const getHomeSocket = () => process.env.VUE_APP_SOCKET + store.state.permission?.userInfo?.accountId
 
 /* 实时获取消息 */
