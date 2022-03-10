@@ -1887,7 +1887,7 @@
     'SupplierNo.': '供应商编码\nSupplier No.',
     'Supplier No.': '/designate/decisiondata/singlesourcing',
     Reason: '/designate/decisiondata/singlesourcing',
-    Causedby: '原因部⻔\nCaused by',
+    Causedby: '原因部门\nCaused by',
     'Caused by': '/designate/decisiondata/singlesourcing',
     RSDANWEIHU: 'RS单维护',
     LINGJIANCAIGOUXIANGMUBIANHAO: '零件采购项目编号',
