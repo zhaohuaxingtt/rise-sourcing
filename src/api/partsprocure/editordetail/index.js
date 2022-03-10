@@ -265,10 +265,16 @@ export function factoryTranslate(params){
 }
 
 //检查当前零件采购项目总成件是否满足定点申请要求
-export function nomiAutoPartsAssemblyCheck({partNum,factoryId,carTypeProjectZh}){
+export function nomiAutoPartsAssemblyCheck(
+	// {partNum,factoryId,carTypeProjectZh}
+	data
+	){
   return sourcing({
-    url: `/partsAssembly/nomiAutoPartsAssemblyCheck/${partNum}/${factoryId}/${carTypeProjectZh}`,
-    method: "GET"
+    // url: `/partsAssembly/nomiAutoPartsAssemblyCheck/${partNum}/${factoryId}/${carTypeProjectZh}`,
+    // method: "GET"
+    url: '/partsAssembly/nomiAutoPartsAssemblyCheck',
+	method: "POST",
+	data,
   })
 }
 
