@@ -95,32 +95,6 @@ export function translateDataForService(data){
 export function getOptionField(value, valueField, options, otherField = "name") {
 	if (!Array.isArray(options)) return value
 
-	if (Array.isArray(value)) {
-		const map = new Map()
-
-		value.forEach((v, i) => map.set(v, i)) // 数据为key, 序号为value
-		const result = []
-
-		options.every(item => {
-			if (map.size) {
-				if (map.has(item[valueField])) {
-					result[map.get(item[valueField])] = item[valueField]
-					map.delete(item[valueField])
-				}
-			}
-			
-			return false
-		})
-
-		if (map.size) {
-			map.forEach((value, key) => {
-				result[value] = key
-			})
-		}
-
-		return result.join(",")
-	}
-
 	if (typeof value === "string") {
 		const currentOption = options.find(item => item[valueField] === value)
 		if (!currentOption) return value
