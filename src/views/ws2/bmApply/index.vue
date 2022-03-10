@@ -387,28 +387,29 @@ export default {
     },
 
     jumpDetails(scope){
-      const thisScope = this.thisScope;
-      if(thisScope.rsNum == 'AEKO RS单') {
-        return
-      }
-      const roleList = this.$store.state.permission.userInfo.roleList;
-      const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.code));
-      console.log('roleListroleListroleList', roleList, isFlag);
-      const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + thisScope.rsNum + '?flag=' + !isFlag;
-      window.open(url);
-      // const query = {
-      //   ...scope.row,
-      //   partNum: scope.row.partsNum,
-      //   // purchasingRequirementId: '279830436628008960',
+      // const thisScope = this.thisScope;
+      // if(thisScope.rsNum == 'AEKO RS单') {
+      //   return
       // }
-      // console.log('跳转的参数：', query);
-      // this.$router.push({
-      //   path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
-      //   query: {
-      //     item: JSON.stringify(query),
-      //     projectId: scope.row.projectId
-      //   },
-      // });
+      // const roleList = this.$store.state.permission.userInfo.roleList;
+      // const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.code));
+      // console.log('roleListroleListroleList', roleList, isFlag);
+      // const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + thisScope.rsNum + '?flag=' + !isFlag;
+      // window.open(url);
+
+      const query = {
+        ...scope.row,
+        partNum: scope.row.partsNum,
+        // purchasingRequirementId: '279830436628008960',
+      }
+      console.log('跳转的参数：', query);
+      this.$router.push({
+        path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
+        query: {
+          item: JSON.stringify(query),
+          projectId: scope.row.projectId
+        },
+      });
     },
 
 
