@@ -126,7 +126,7 @@ export default {
     getKmFileHistory () {
       this.loading = true
       dataMaintain({
-        currPage: this.page.currPage,
+        pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       })
         .then(res => {
@@ -134,6 +134,9 @@ export default {
             this.tableListData = Array.isArray(res.data) ? res.data : []
             this.page.totalCount = res.total || 0
             this.multipleSelection = []
+            this.page.currPage = res.pageNum
+            this.page.pageSize = res.pageSize
+            this.page.totalCount = res.total
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }

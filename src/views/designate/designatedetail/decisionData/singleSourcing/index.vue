@@ -6,7 +6,8 @@
 <template>
     <iCard title="生产采购单⼀供应商说明 Single Sourcing for Production Purchasing" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING|决策资料-SingleSourcing">
         <template slot="header-control">
-             <iButton @click="gotoSupplier" v-if="!fix" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_GOTOSUPPLIERMAINTENANCE|跳转供应商维护">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
+            <!-- 流转中、被冻结的申请单不可编辑 -->
+             <iButton @click="gotoSupplier" v-if="!fix && applicationStatus!=='ONFLOW' && applicationStatus!=='FREEZE'" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_GOTOSUPPLIERMAINTENANCE|跳转供应商维护">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
         </template>
         <div class="decision-data-singleSourcing-content">
             <div class="margin-top30 margin-bottom30">
@@ -117,6 +118,10 @@ export default {
     computed:{
         isPreview(){
             return this.$store.getters.isPreview;
+        },
+        // 定点状态
+        applicationStatus(){
+        return this.$store.getters.applicationStatus
         }
     },
     methods:{
