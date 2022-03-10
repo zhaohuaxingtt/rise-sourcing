@@ -182,7 +182,7 @@
 						</iFormItem>
 						
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
-							<iSelect v-model="detailData.carTypeProjectNum" filterable v-if="!disabled" @change="handleChangeByCarTypeProject">
+							<iSelect key="carTypeProjectNum" ref="carTypeProjectNum" v-model="detailData.carTypeProjectNum" filterable v-if="!disabled" @change="handleChangeByCarTypeProject">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
@@ -191,7 +191,7 @@
 							<iText v-else>{{ getName(detailData.carTypeProjectNum, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPE|车型" :label="language('LK_CHEXING','车型') + ':'" name="test" v-if="isCarType">
-							<iSelect ref="carTypeModelSelect" v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled ">
+							<iSelect key="carTypeModel" ref="carTypeModelSelect" :filterable="true" v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled" @visible-change="handleVisibleChangeByCarTypeModel">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item) in fromGroup.CAR_TYPE" :key="item.id">
@@ -756,6 +756,14 @@
 					this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 					this.partProjectType = this.infoItem.partProjectType;					 
 					this.infoItem.partProjectType == '1000003'||this.infoItem.partProjectType=='50002001'? this.isCarType = true : this.isCarType = false
+
+					if (this.isCarType) {
+						this.$nextTick(() => {
+							const dom = this.$refs.carTypeModelSelect.$el.querySelector(".el-select__input")
+							dom.style.display = "none"
+						})
+					}
+
 					//-------------修改零件采购项目逻辑endding
 					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {
 						this.disabled = getNominateDisabled({
@@ -1059,12 +1067,13 @@
 			onPartProjectTypeChange(data) {
 				this.clearCarTypeProject()
 				this.$set(this.detailData, "carTypeModel", [])
-				// 手动加一下cf控制员cfControllerName缺失问题
-				this.checkCfController();
-
 				this.$nextTick(() => {
 					if (this.$refs.carTypeModelSelect) this.$refs.carTypeModelSelect.$el.querySelector("input").value = ""
+					if (this.$refs.carTypeProjectNum) this.$refs.carTypeProjectNum.$el.querySelector("input").value = ""
 				})
+
+				// 手动加一下cf控制员cfControllerName缺失问题
+				this.checkCfController();
 
 				this.detailData.isDb = data === partProjTypes.DBYICHIXINGCAIGOU
 				data == '50002001'|| data == '1000003' ? this.isCarType = true : this.isCarType = false
@@ -1127,6 +1136,20 @@
 				if(detailData['cfController'] && !detailData['cfControllerName']){
 					const currentCfController = Array.isArray(this.fromGroup.CF_CONTROL) && this.fromGroup.CF_CONTROL.find(item => item.id == detailData['cfController']) || {}
 					detailData['cfControllerName'] = currentCfController.name;
+				}
+			},
+			handleVisibleChangeByCarTypeModel(status) {
+				const inputDom = this.$refs.carTypeModelSelect.$el.querySelector(".el-select__input")
+				const showDom = this.$refs.carTypeModelSelect.$el.querySelector(".el-input__inner")
+				if (status) {
+					this.$refs.carTypeModelSelect.focus()
+					inputDom.style.display = "block"
+					inputDom.focus()
+				} else {
+					this.$refs.carTypeModelSelect.blur()
+					inputDom.style.display = "none"
+					inputDom.blur()
+					showDom.style.height = "auto"
 				}
 			}
 		}
