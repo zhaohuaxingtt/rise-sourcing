@@ -197,7 +197,7 @@
 									v-for="(item) in fromGroup.CAR_TYPE" :key="item.id">
 								</el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.carTypeModel, "id", fromGroup.CAR_TYPE) }}</iText>
+							<iText v-else>{{ detailData.cartypes.map(item => item.value).join(",") }}</iText>
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
@@ -604,7 +604,7 @@
 
 					if (data.cfControllerId) {
 						inputDom.value = this.detailData.cfControllerName || ""
-						const current = data.linieOptions.find(option => option.id === data.cfControllerId)
+						const current = data.cfControllerOptions.find(option => option.id === data.cfControllerId)
 						if (current) inputDom.value = current.name
 					} else {
 						inputDom.value = ""
