@@ -152,6 +152,7 @@ export default {
     handleExport () {
       exportTemplate().then(res => {
         window.open(res.data)
+        
       })
     },
     openDate () {
