@@ -106,23 +106,11 @@ export default {
       if(scope.rsNum == 'AEKO RS单') {
         return
       }
-      const first = scope.rsNum.slice(0,1);
-      if(~~first === 5){
-        let routeData = this.$router.resolve({
-          path: '/tooling/investmentReport/rsDetails',
-          query: {
-            rsNum: scope.rsNum,
-            pageType: 0,
-          },
-        })
-        window.open(routeData.href, '_blank')
-      }else{
-        const roleList = this.$store.state.permission.userInfo.roleList;
-        const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.code));
-        console.log('roleListroleListroleList', roleList, isFlag);
-        const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum + '?flag=' + !isFlag;
-        window.open(url);
-      }
+      const roleList = this.$store.state.permission.userInfo.roleList;
+      const isFlag = roleList.some(item => ['CWMJKZY','CWMJKZGZ','CWMJKZKZ'].includes(item.code));
+      console.log('roleListroleListroleList', roleList, isFlag);
+      const url = process.env.VUE_APP_TOOLING  + '/baCommodityApply' + '/exportRsFull/' + scope.rsNum + '?flag=' + !isFlag;
+      window.open(url);
     },
 
     //  确认申请
