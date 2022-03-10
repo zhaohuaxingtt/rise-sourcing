@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-11-08 14:11:06
- * @LastEditTime: 2021-11-22 20:08:45
- * @LastEditors:  
+ * @LastEditTime: 2022-03-09 11:50:34
+ * @LastEditors: YoHo
  */
 export const infos = [
   { props: 'categoryCode', label: '材料组编号', key: 'LK_CAILIAOZUBIANHAO' },
@@ -14,10 +14,10 @@ export const infos = [
 ]
 
 export const tableTitle = [
-  { props: 'stuffCode', name: '材料组工艺编号', key: 'LK_CAILIAOZUGONGYIBIANHAO', tooltip: true,width:110},
+  { props: 'stuffCode', name: '材料组工艺编号', key: 'LK_CAILIAOZUGONGYIBIANHAO', tooltip: true,width:130},
   { props: 'materialGroupName', name: '材料组名称（中）', key: 'LK_CAILIAOZUMINGCHENGZHONG', tooltip: true },
   { props: 'materialStuffGroupName', name: '材料工艺组名称（中）', key: 'LK_CAILIAOGONGYIZUMINGCHENGZHONG', tooltip: true },
   { props: 'materialStuffGroupNameDe', name: '材料工艺组名称（德）', key: 'LK_CAILIAOGONGYIZUMINGCHENGDE', tooltip: true },
   { props: 'deptName', name: 'Linie部门', key: 'LK_LINIEBUMEN', tooltip: true },
-  { props: 'historyUseRate', name: '历史适用概率', key: 'LK_LISHISHIYONGGAILÜ', tooltip: true, width:100}
+  { props: 'historyUseRate', name: '历史适用概率', key: 'LK_LISHISHIYONGGAILÜ', tooltip: true, width:120}
 ]

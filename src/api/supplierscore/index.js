@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-28 11:18:30
- * @LastEditTime: 2021-07-22 19:17:23
+ * @LastEditTime: 2022-03-09 17:07:07
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\supplierscore\index.js
@@ -96,18 +96,20 @@ export function backRfqBdlRatings(params) {
 }
 
 // 提交评分
-export function submitRfqBdlRatings(params) {
+export function submitRfqBdlRatings(data) {
   return requst({
-    url: `/rfq-bdl-ratings/${ params.rfqId }/submit`,
-    method: "PATCH"
+    url: '/rfq-bdl-ratings/submit',
+    method: "PATCH",
+    data,
   })
 }
 
 // 审核RFQ下所有评分任务
-export function approveRfqBdlRatings(params) {
+export function approveRfqBdlRatings(data) {
   return requst({
-    url: `/rfq-bdl-ratings/${ params.rfqId }/approve`,
-    method: "PATCH"
+    url: '/rfq-bdl-ratings/approve',
+    method: "PATCH",
+    data,
   })
 }
 
