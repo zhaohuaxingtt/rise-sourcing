@@ -39,7 +39,7 @@ export const allTableHead = [
     props: 'tmCartypeProName',
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
-    width: 150,
+    width: 250,
     tooltip: false
   },
   {
@@ -53,34 +53,35 @@ export const allTableHead = [
     props: 'productionFactoryName',
     name: '采购工厂',
     key: 'LK_CAIGOUGONGCHANG',
-    width: 120,
+    width: 80,
     tooltip: false
   },
   {
     props: 'designatedSupplierName',
     name: '定点供应商',
     key: 'LK_FIXEDPOINTSUPPLIER',
-    width: 250,
+    width: 300,
     tooltip: false
   },
   {
     props: 'bmAmount',
     name: 'BM单金额',
     key: 'LK_BMDANJINE',
+    width: 90,
     tooltip: false
   },
   {
     props: 'bmStatusName',
     name: 'BM单状态',
     key: 'LK_BMZHUANGTAI',
-    width: 150,
+    width: 90,
     tooltip: false
   },
   {
     props: 'deptName',
     name: '科室',
     key: 'LK_KESHI',
-    width: 100,
+    width: 90,
     tooltip: false
   },
   {

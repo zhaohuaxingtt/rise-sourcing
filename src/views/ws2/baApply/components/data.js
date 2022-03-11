@@ -163,6 +163,7 @@ export const indexTableHead = [{
   props: 'carTypeProjectName',
   name: '车型项目',
   key: 'LK_CHEXINGXIANGMU',
+  width: 65,
   tooltip: false
 },{
   props: 'totalAmount',

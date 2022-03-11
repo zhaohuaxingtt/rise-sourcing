@@ -23,6 +23,7 @@ export const budgetApprovalData = [
         props: 'rfqId',
         name: 'RFQ号',
         key: 'MOULDADD.LK_RFQBIANHAO',
+        width: 65,
         tooltip: false
     },
     {
