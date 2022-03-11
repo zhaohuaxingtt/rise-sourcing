@@ -18,7 +18,7 @@
                     :value="item.value">
                   </el-option>  
                 </iSelect> 
-                <iDatePicker  style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iDatePicker class="datePicker" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                 <iInput :placeholder="language('partsprocure.CHOOSE','请选择')" v-else v-model="searchParams[item.props]" @input="item.inputType ? handleInput($event, item, searchParams) : ''"></iInput> 
             </el-form-item>
         </el-form>
@@ -454,6 +454,9 @@ export default {
         }
     }
     .loiList{
+        .datePicker {
+            width: 100% !important;
+        }
         ::v-deep .el-date-editor .el-range__close-icon{
             display: block;
             width: 10px;

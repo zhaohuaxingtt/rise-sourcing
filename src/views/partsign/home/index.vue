@@ -159,7 +159,7 @@
                 <iSelect
                   clearable
                   v-model="form.showSelf"
-                  :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"
+                  :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','显示自己')"
                 >
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option :value="true" :label="language('YES','是')"></el-option>
