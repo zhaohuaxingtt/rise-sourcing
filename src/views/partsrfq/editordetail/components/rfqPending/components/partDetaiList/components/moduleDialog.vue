@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-23 15:16:47
  * @LastEditors: YoHo
- * @LastEditTime: 2022-02-18 15:49:10
+ * @LastEditTime: 2022-03-11 16:52:28
  * @Description: 申请模具目标价
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\targetPriceDetail\components\basic.vue
 -->
@@ -183,7 +183,7 @@ export default {
      */    
     handleSubmit() {
       if (this.applyType === '1' && this.tableData.some(item => !item.expectedTargetPrice || item.expectedTargetPrice === '')) {
-        iMessage.warn(this.language('XINSHENGQINGMUBIAOJIADELINGJIANQIWANGMUBIAOJIABUNENGWEIKONG', '新申请目标价的零件期望目标价不能为空'))
+        iMessage.warn(this.language('XINSHENGQINGMUBIAOJIA_QIWANGMUBIAOJIABUNENGWEIKONG', '新申请目标价，期望目标价不能为空'))
         return
       }
       this.loading = true
