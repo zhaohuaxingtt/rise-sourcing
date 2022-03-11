@@ -18,7 +18,7 @@ export const letterListSearch =[
     {props:'supplierName',label:'供应商名称',type:'input',labelKey:'LK_GONGYINGSHANGMINGCHENG',permissionKey: 'LK_LETTER_LIST_SUPPLIERNAME'},
     {props:'supplierSapNum',label:'供应商SAP号',type:'input',labelKey:'LK_GONGYINGSHANGSAPHAO',permissionKey: 'LK_LETTER_LIST_SUPPLIERSAPNAME'},
     {props:'nominateDate',label:'定点时间起⽌',type:'datePicker',labelKey:'LK_DINGDIANSHIJIANQIZHI_1',permissionKey: 'LK_LETTER_LIST_NOMINATEDATE'},
-    {props:'showSelf',label:'是否显⽰⾃⼰',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI_1',selectOption:'showSelf',permissionKey: 'LK_LETTER_LIST_SHOWSELF'},
+    {props:'showSelf',label:'显示自己',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI_1',selectOption:'showSelf',permissionKey: 'LK_LETTER_LIST_SHOWSELF'},
 ]
 
 // loi搜索条件
@@ -35,7 +35,7 @@ export const loiListSearch = [
   {props:'supplierName',label:'供应商名称',type:'input',labelKey:'LK_GONGYINGSHANGMINGCHENG',permissionKey: 'LK_LOI_LIST_SUPPLIERNAME'},
   {props:'sapNum',label:'供应商SAP号',type:'input',labelKey:'LK_GONGYINGSHANGSAPHAO',permissionKey: 'LK_LOI_LIST_SAPNUM'},
   {props:'nominateDate',label:'LOI⽣成时间',type:'datePicker',labelKey:'LK_LOISHENGCHENGSHIJIAN',permissionKey: 'LK_LOI_LIST_NOMINATEDATE'},
-  {props:'showSelf',label:'是否显⽰⾃⼰',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI_1',selectOption:'isShowMe',permissionKey: 'LK_LOI_LIST_SHOWSELF'},
+  {props:'showSelf',label:'显示自己',type:'select',labelKey:'LK_SHIFOUXIANSHIZIJI_1',selectOption:'isShowMe',permissionKey: 'LK_LOI_LIST_SHOWSELF'},
 ]
 
 // 定点信列表表头

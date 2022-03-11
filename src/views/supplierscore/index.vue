@@ -139,7 +139,7 @@
             ></el-option>
           </iSelect>
         </el-form-item>
-        <el-form-item :label="language('LK_SHIFOUXIANSHIZIJI_1', '是否显⽰⾃⼰')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_SHOWSELF|是否显示自己">
+        <el-form-item :label="language('LK_SHIFOUXIANSHIZIJI_1', '显示自己')" v-permission.auto="SUPPLIERSCORE_HOME_SEARCH_SELECT_SHOWSELF|是否显示自己">
           <iSelect
             v-model="form.showSelf"
             :placeholder="language('partsprocure.CHOOSE','请选择')"

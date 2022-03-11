@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-12-28 10:16:16
+ * @LastEditTime: 2022-03-11 11:59:08
  * @LastEditors: Please set LastEditors
  * @Description: 人工成本维护
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\costMaintenance\index.vue
@@ -150,8 +150,8 @@ export default {
     },
     // 导出
     handleExport () {
-      exportTemplate().then(res => {
-        window.open(res.data)
+      exportTemplate('1497100847758282753').then(res => {
+        // window.open(res.data)
       })
     },
     openDate () {
