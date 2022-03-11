@@ -70,6 +70,37 @@
         <template #sapCode="scope">
           <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
+
+        <template #aprice="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdAPrice | toThousands }}</p>
+            <p>{{ scope.row.aprice | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
+          <span v-else>{{ scope.row.aprice | toThousands }}</span>
+        </template>
+
+        <template #bprice="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdBPrice | toThousands }}</p>
+            <p>{{ scope.row.bprice | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
+          <span v-else>{{ scope.row.bprice | toThousands }}</span>
+        </template>
+
+        <template #investFee="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
+            <p>{{ scope.row.investFee | toThousands }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">
+            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
+          </span>
+          <span v-else>
+            <p>{{ scope.row.investFee | toThousands }}</p>
+          </span>
+        </template>
       </tableList>
     </iCard>
     <iCard :title="language('BEIZHU','备注')"
@@ -146,6 +177,7 @@ import { getFile, downloadUdFile, deleteFiles } from '@/api/file'
 import { pageMixins } from '@/utils/pageMixins'
 import { transverseDownloadPDF } from "@/utils/pdf"
 import rsPdf from "./rsPdf"
+import { toThousands } from "@/utils"
 
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf },
@@ -155,6 +187,9 @@ export default {
     // projectType: {type:String}
   },
   mixins: [pageMixins],
+  filters: {
+    toThousands
+  },
   data () {
     return {
       // 零件项目类型
