@@ -16,6 +16,7 @@ export const allBAATableHead = [
     props: 'carTypeName',
     name: '车型项目',
     key: 'LK_CHEXINGXIANGMU',
+    width: 250,
     tooltip: false
   },
   {
@@ -28,54 +29,63 @@ export const allBAATableHead = [
     props: 'sixBa',
     name: 'BA单号',
     key: 'LK_BAODDNUMBERS',
+    width: 100,
     tooltip: false
   },
   {
     props: 'currentAmount',
     name: '当前金额',
     key: 'LK_CURRENTAMOUNT',
+    width: 125,
     tooltip: false
   },
   {
     props: 'approveAmount',
     name: '申请金额',
     key: 'LK_APPLYAMOUNT',
+    width: 125,
     tooltip: false
   },
   {
     props: 'afterApproveAmount',
     name: '申请后金额',
     key: 'LK_APPLYAMOUNTTHEN',
+    width: 125,
     tooltip: false
   },
   {
     props: 'applyUserName',
     name: '申请人',
     key: 'LK_SHENQINGREN',
+    width: 125,
     tooltip: false
   },
   {
     props: 'applyDate',
     name: '申请日期',
     key: 'LK_SHENQINGRIQI',
+    width: 100,
     tooltip: false
   },
   {
     props: 'baAccountType',
     name: 'BA账户类型',
     key: 'LK_BAACCOUNTTYPE',
+    width: 145,
     tooltip: false
   },
   {
     props: 'baStatusName',
     name: 'BA单状态',
     key: 'LK_BADANSTATUS',
+    width: 110,
     tooltip: false
   },
   {
     props: 'detailed',
     name: '',
     key: '',
+    width: 60,
     tooltip: false
   },
 ]

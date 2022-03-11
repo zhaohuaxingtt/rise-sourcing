@@ -28,12 +28,14 @@ export const summaryData = [
         props: 'sop',
         name: 'SOP时间',
         key: 'SOP时间',
+        width: 100,
         tooltip: false
     },
     {
         props: 'cartypeProType',
         name: '车型项目类型',
         key: '车型项目类型',
+        width: 140,
         tooltip: false
     },
     {
@@ -47,6 +49,7 @@ export const summaryData = [
         props: 'categoryNameZh',
         name: '材料组',
         key: '材料组',
+        width: 140,
         tooltip: false
     },
     {
