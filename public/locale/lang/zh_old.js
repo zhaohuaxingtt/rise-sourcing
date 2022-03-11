@@ -985,7 +985,7 @@
         'LK_DINGDIANXINZHUANGTAI':'定点信状态',//  定点信状态
         'LK_DINGDIANXINDANHAO':'定点申请单号', // 定点申请单号
         'LK_DINGDIANSHIJIANQIZHI':'定点时间起⽌', //  定点时间起⽌
-        'LK_SHIFOUXIANSHIZIJI':'是否显⽰⾃⼰', //  是否显⽰⾃⼰
+        'LK_SHIFOUXIANSHIZIJI':'显示自己', //  是否显⽰⾃⼰
         'LK_GONGYINGSHANGFANKUI':'供应商反馈', // 供应商反馈
         'LK_SHIFOUQIANSHUXIEYI':'是否签署协议', // 是否签署协议
         'LK_DINGDIANRIQI':'定点⽇期', //定点⽇期
