@@ -101,7 +101,7 @@
               <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')" v-permission.auto="PARTSRFQ_SHOWSELF|显示自己">
                 <iSelect
                   v-model="form.showSelf"
-                  :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"
+                  :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','显示自己')"
                 >
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option :value="true" :label="language('YES','是')"></el-option>

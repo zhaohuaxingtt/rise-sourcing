@@ -1,2 +1,3 @@
 import menus from './menus'
-export default { ...menus }
+import rfq from "./rfq";
+export default { ...menus, ...rfq }

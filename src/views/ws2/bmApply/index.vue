@@ -403,13 +403,17 @@ export default {
         // purchasingRequirementId: '279830436628008960',
       }
       console.log('跳转的参数：', query);
-      this.$router.push({
-        path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
-        query: {
-          item: JSON.stringify(query),
-          projectId: scope.row.projectId
-        },
-      });
+      if (this.$store.state.permission.whiteBtnList['PARTSPROCURE_EDITORDETAIL_INDEXPAGE']) {
+        this.$router.push({
+          path: "/sourceinquirypoint/sourcing/partsprocure/editordetail",
+          query: {
+            item: JSON.stringify(query),
+            projectId: scope.row.projectId
+          },
+        });
+      } else {
+        return iMessage.error('对不起，您没有当前零件采购项目查看权限');
+      }
     },
 
 
