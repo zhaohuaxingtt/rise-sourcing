@@ -317,7 +317,7 @@ export default {
           if (item.id) {
             return true
           } else {
-            if (!item.approveDeptNum && !item.approveParentDeptNum) {
+            if ((!item.approveDeptNum && !item.approveParentDeptNum) || item.isDelete) {
               return false
             } 
             return true
