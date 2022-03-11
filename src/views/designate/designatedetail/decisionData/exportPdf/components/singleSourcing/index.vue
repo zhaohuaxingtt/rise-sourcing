@@ -1,5 +1,5 @@
 <template>
-  <iCard class="singleSourcing" title="生产采购单⼀供应商说明 Single Sourcing for Production Purchasing">
+  <iCard class="singleSourcing" title="生产采购单一供应商说明 Single Sourcing for Production Purchasing">
     <div class="content">
       <iFormGroup class="info" inline row="1">
         <iFormItem label="项⽬名称 Project:">

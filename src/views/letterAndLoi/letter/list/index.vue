@@ -18,7 +18,7 @@
                     :value="item.value">
                   </el-option>  
                 </iSelect> 
-                <iDatePicker style="width:185px" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iDatePicker class="datePicker" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
                 <iInput :maxlength="item.maxlength" :placeholder="language('LK_QINGSHURU','请输入')" v-else v-model="searchParams[item.props]" @input="item.inputType ? handleInput($event, item, searchParams) : ''"></iInput> 
             </el-form-item>
         </el-form>
@@ -494,6 +494,9 @@ export default {
 
 <style lang="scss" scoped>
     .letterList{
+        .datePicker {
+            width: 100% !important;
+        }
         .aotoTableHeight{
             ::v-deep .el-table__body-wrapper {
             min-height: 410px !important;  
