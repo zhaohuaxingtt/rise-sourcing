@@ -28,7 +28,7 @@
       </div>
       <div class="content" v-loading="tableLoading">
         <div class="title">
-          <div>{{ $t('车型包名称') }}</div>
+          <div class="firstStyle">{{ $t('车型包名称') }}</div>
           <div>{{ $t('起始时间') }}</div>
           <div>{{ $t('最近更新时间') }}</div>
           <div>{{ $t('更新人') }}</div>
@@ -38,8 +38,8 @@
           </div>
         </div>
         <div class="table" v-for="(item, index) in tableListData" :key="index">
-          <div>
-            <div class="carTypeName" @click="toBagList(item.id)">
+          <div class="firstStyle">
+            <div class="carTypeName firstBody" @click="toBagList(item.id)">
               <icon symbol name="iconchexingbao" class="carTypeIcon"></icon>
               <span>{{ item.packageNameZh }}</span>
             </div>
@@ -191,6 +191,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.firstStyle{
+  min-width: 40%;
+}
+.firstBody{
+  display: flex;
+  align-items: center;
+}
 .header {
   font-size: 16px;
   display: flex;
@@ -238,7 +245,7 @@ export default {
         }
         span{
           display: inline-block;
-          max-width: 150px;
+          // max-width: 150px;
           min-width: 150px;
           overflow: hidden;
           text-overflow: ellipsis;
