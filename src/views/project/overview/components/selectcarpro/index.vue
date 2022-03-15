@@ -159,13 +159,13 @@ export default {
      * @return {*}
      */    
     getCarProjectOptions() {
-      getCarTypePro().then(res => {
+      getSelectCarType().then(res => {
         if (res?.result) {
           this.carProjectOptions = res.data.map(item => {
             return {
               ...item,
               value: item.id,
-              label: item.cartypeProName
+              label: item.cartypeProjectZh
             }
           })
         } else {
