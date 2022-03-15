@@ -172,7 +172,7 @@ module.exports = {
       },
       '/sourcingApi': {
         //   供应商
-        target: 'http://10.122.17.38:8025/sourcing/',
+        target: 'http://10.122.17.38:8025',
         // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/sourcing/',
         changeOrigin: true,
         pathRewrite: {
