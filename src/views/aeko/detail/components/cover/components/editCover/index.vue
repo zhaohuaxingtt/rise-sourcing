@@ -32,6 +32,7 @@
           :label-width="item.labelWidth || '10rem'"
         >
           <template v-if="item.editable && isEdit">
+            <el-tooltip class="item" effect="dark" :disabled="!item.tooltip && basicInfo.getFsName" :content="basicInfo.getFsName" placement="top">
             <template v-if="item.type === 'input'">
               <!-- 新⾸批送样周期(周数)处理正整数 -->
               <iInput  v-if="item.props == 'sendCycle'" :disabled="disabled"  @input="handleNumber($event,basicInfo,'sendCycle')" v-model="basicInfo[item.props]"  />
@@ -45,7 +46,9 @@
               :filter-method="(val)=>{dataFilter(val,item.selectOption)}"
               @visible-change="selectVisibleChange($event, item.selectOption)"
               :disabled="selectDisabled(item.props)" 
-              
+              :multiple="item.multiple"
+              collapse-tags
+              @change="handleMultipleChange($event, item.props,item.multiple)"
             >
               <el-option
                 :value="item.value"
@@ -54,6 +57,7 @@
                 :key="item.value"
               ></el-option>
             </iSelect>
+            </el-tooltip>
           </template>
           <iText v-else>{{basicInfo[item.props]}}</iText>
         </iFormItem>
@@ -185,7 +189,9 @@ export default {
       return{
         isEdit:true,
         basicTitle:previewBaicFrom,
-        basicInfo:{},
+        basicInfo:{
+          fsName:[],
+        },
         selectOptions:{
           isReference:[
             {label:'是', value:1},
@@ -245,7 +251,7 @@ export default {
             this.basicInfo = {
               ...data,
               coverCostsWithCarType:costData,
-              fsName:fsId,
+              fsName:[fsId+''],
               getFsName:fsName,
             };
 
@@ -500,6 +506,14 @@ export default {
         this.getDetail();
         resetCover(data);
       },
+      handleMultipleChange(val,props,multiple){
+        console.log(val,props,'handleMultipleChange')
+        if(props == 'fsName' && multiple){
+          const list = this.selectOptionsCopy['fsList'] || [];
+          const filterList = list.filter((item)=>val.includes(item.value));
+          this.basicInfo['getFsName'] = filterList.map((item)=>item.label).join(',');
+        }
+      }
     }
 }
 </script>
