@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2022-02-28 12:05:50
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-15 17:47:53
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
 -->
@@ -37,8 +37,8 @@
           />
         </el-form-item>
         <el-form-item :label="language('LK_CAIGOUGONGCHANG', '采购工厂')" v-permission.auto="AEKO_QUONDAMPARTLEDGER_SELECT_FACTORYCODE|采购工厂">
+            <!-- v-if="!factoryDisabled" -->
           <iSelect
-            v-if="!factoryDisabled"
             v-model="form.factoryCode"
             :placeholder="language('QINGXUANZECAIGOUGONGCHANG', '请选择采购工厂')"
           >
@@ -53,7 +53,7 @@
               :key="item.key"
             ></el-option>
           </iSelect>
-          <iInput v-else readonly :value="factoryName"></iInput>
+          <!-- <iInput v-else readonly :value="factoryName"></iInput> -->
         </el-form-item>
       </el-form>
     </iSearch>
@@ -141,6 +141,7 @@ export default {
       requirementAekoId: "",
       oldPartNumPreset: "",
       initPartNum: "",
+      factoryCode: "", // 初始工厂
       procureFactoryOptiopns: [],
       form: cloneDeep(ledgerQueryForm),
       loading: false,
@@ -197,11 +198,12 @@ export default {
           if (res.data.factoryCode) {
             this.form.factoryCode = res.data.factoryCode
             this.factoryName = res.data.factoryName
-            if(!this.isAea){
-              this.factoryDisabled = true
-            }
+            this.factoryCode = res.data.factoryCode
+            // if(!this.isAea){
+            //   this.factoryDisabled = true
+            // }
           } else {
-            this.factoryDisabled = false
+            // this.factoryDisabled = false
             this.form.factoryCode = ""
             this.factoryName = ""
           }
@@ -238,7 +240,7 @@ export default {
           if (res.data[0].isView) {
             this.getAekoOriginPartInfo(flag)
           } else {
-            iMessage.error(res.data[0].describe)
+            iMessage.warn(res.data[0].describe)
             this.loading = false
           }
         } else {
@@ -336,7 +338,8 @@ export default {
     },
     reset() {
       this.page.currPage = 1
-      this.form = cloneDeep({ ledgerQueryForm, factoryCode: this.factoryDisabled ? this.form.factoryCode : "",partNum: this.initPartNum ? this.initPartNum : undefined})
+      this.form = cloneDeep({ ledgerQueryForm, factoryCode:  this.factoryCode,partNum: this.initPartNum ? this.initPartNum : undefined})
+      // this.form = cloneDeep({ ledgerQueryForm, factoryCode: this.factoryDisabled ? this.form.factoryCode : "",partNum: this.initPartNum ? this.initPartNum : undefined})
       
       this.objectAekoPartId = this.$route.query.objectAekoPartId
       // this.getAekoOriginPartInfo()

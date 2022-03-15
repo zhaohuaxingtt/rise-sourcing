@@ -273,6 +273,15 @@ export default {
           'linieDeptNumList':[],
           'carTypeCodeList':[],
           'buyerName':[],
+          typeList: [
+            {
+              desc: '未分派',
+              code: '0'
+            },{
+              desc: '已分派',
+              code: '1'
+            },
+          ],
         },
         selectOptionsCopy:{
           'brand':[],
@@ -281,6 +290,17 @@ export default {
           'linieDeptNumList':[],
           'carTypeCodeList':[],
           'buyerName':[],
+          typeList: [
+            {
+              label: '未分派',
+              key: 'WEIFENPEI',
+              value: '0'
+            },{
+              label: '已分派',
+              key: 'YIFENPEI',
+              value: '1'
+            },
+          ],
         },
         tableListData:[],
         tableTitle:tableTitle,
