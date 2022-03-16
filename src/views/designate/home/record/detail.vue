@@ -39,6 +39,10 @@
         :handleResetSetting="handleResetSetting"
         >
 
+        <template #supplierId="scope">
+          <span>{{ scope.row.svwNum || scope.row.tempNum }}</span>
+        </template>
+
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
         </template>
