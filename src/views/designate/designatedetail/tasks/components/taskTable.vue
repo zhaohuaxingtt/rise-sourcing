@@ -175,8 +175,8 @@ export default {
       batchEditVisibal: false,
       editColumn: {
         props: 'edit',
-        name: 'HIDE/UNHIDE',
-        key: 'HIDE/UNHIDE',
+        name: 'Hide/Unhide',
+        key: 'Hide/Unhide',
         tooltip: false
       },
       page: {

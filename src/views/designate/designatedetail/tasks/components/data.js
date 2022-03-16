@@ -29,7 +29,7 @@ export const tasksTitle = [
   {
     props: 'isFinishFlag',
     name: 'Status',
-    key: 'STATUS',
+    key: 'STATUS_EN',
     tooltip: false
   },
   // {
