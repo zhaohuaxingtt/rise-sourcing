@@ -252,6 +252,10 @@ export default {
     padding-bottom: $bottom;
   }
 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   .upload-trigger {
     margin-left: 10px;
   }
@@ -275,9 +279,9 @@ export default {
     width: 1745px!important;
     position: absolute;
     margin: 0!important;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
     overflow-x: hidden;
 
     .body {
