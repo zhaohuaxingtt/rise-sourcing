@@ -26,7 +26,7 @@
       <el-divider class="divider"></el-divider>
       <tableList :tableData="tableData" :tableTitle="supplierSubTitle" @handleSelectionChange="handleSelectionChange">
         <template #factory="scope">
-          <iSelect :ref="`factorySelect_${ scope.$index }`" class="input-center" v-model="scope.row.companyAddressCode" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @change="selectChange($event, scope.row)" @visible-change="getSupplierPlantBySupplierId(scope.row.id)">
+          <iSelect :ref="`factorySelect_${ scope.$index }`" :filterable="false" class="input-center" v-model="scope.row.companyAddressCode" clearable popper-class="supplierProduceNamesDropdown" :loading="supplierProduceNamesLoading" @change="selectChange($event, scope.row)" @visible-change="getSupplierPlantBySupplierId($event, { ...scope.row, $index: scope.$index })">
             <el-option
               v-for="item in supplierProduceNames"
               :key="item.id"
@@ -154,8 +154,22 @@ export default {
     },
       
     // 获取供应商生产地
-    getSupplierPlantBySupplierId(supplierId) {
+    getSupplierPlantBySupplierId(status, row) {
+      if (!status) {
+        if (row.companyAddressCode) {
+          const factory = this.supplierProduceNames.find(item => item.id === row.companyAddressCode)
+          if (factory) {
+            this.$set(row, "factoryName", factory.factoryName || "")
+            this.$refs[`factorySelect_${ row.$index }`].$el.querySelector("input").value = factory.factoryName || ""
+          }
+        }
+
+        return
+      }
+
+      const supplierId = row.id
       if (!supplierId) return
+
       this.supplierProduceNames = []
 
       if (this.getSupplierProducePlaceSource) this.getSupplierProducePlaceSource.cancel()
@@ -176,9 +190,14 @@ export default {
       .finally(() => this.supplierProduceNamesLoading = false)
     },
     selectChange(companyAddressCode, row) {
-      const factory = this.supplierProduceNames.find(item => item.id === companyAddressCode)
-      this.$set(row, "companyAddress", factory.companyAddress)
-      this.$set(row, "factoryName", factory.factoryName)
+      if (companyAddressCode) {
+        const factory = this.supplierProduceNames.find(item => item.id === companyAddressCode)
+        this.$set(row, "companyAddress", factory.companyAddress)
+        this.$set(row, "factoryName", factory.factoryName)
+      } else {
+        this.$set(row, "companyAddress", "")
+        this.$set(row, "factoryName", "")
+      }
     },
     sendTaskForRating() {
       if (!this.selectTableData.length) return iMessage.warn(this.language('NINHAIWEIXUANZEGONGS','您当前还未选择供应商！'))
