@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
- * @LastEditors: Hao,Jiang
- * @LastEditTime: 2021-09-10 16:19:58
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-17 15:23:51
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
@@ -19,6 +19,7 @@
           <iButton
             :loading="batchUploading"
             @click="batchDownload"
+             v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_DOWNLOAD_BUTTON|排程版本查询-下载-按钮"
           >
             {{ language('LK_XIAZAI', '下载') }}
           </iButton>

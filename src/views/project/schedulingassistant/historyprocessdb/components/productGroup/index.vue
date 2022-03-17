@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 10:32:10
+ * @LastEditTime: 2022-03-17 17:34:46
  * @Description: 产品组
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -17,11 +17,11 @@
         <span class="font18 font-weight">{{language('JINGYANCHANGZHI', '经验常值')}}</span>
         <div class="floatright">
           <!--------------------拟合进度按钮----------------------------------->
-          <iButton @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
+          <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_NIHEJINDU_BUTTON|历史进度数据库-拟合进度-按钮" @click="showProgress" class="withBorder">{{language('NIHEJINDU','拟合进度')}}</iButton>
           <!--------------------配置显示字段按钮----------------------------------->
-          <iButton @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
+          <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_PEIZHIXIANSHIZIDUAN_BUTTON|历史进度数据库-配置显示字段-按钮" @click="changeShowItem(true)" >{{language('PEIZHIXIANSHIZIDUAN','配置显示字段')}}</iButton>
           <!--------------------导出按钮----------------------------------->
-          <iButton @click="handleExport" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
+          <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_DAOCHU_BUTTON|历史进度数据库-导出-按钮" @click="handleExport" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
       <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular">
