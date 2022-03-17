@@ -169,6 +169,7 @@ export default {
           partHistoryProgressVO: {
             ...this.selectRowPart[0],
             partNum: this.$route.query.partNum,
+            prjTmTeileclubProjId: this.$route.query.cartypeProId,
             type: 2 // 历史
           }
         }
