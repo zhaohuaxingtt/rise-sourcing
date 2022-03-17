@@ -179,6 +179,7 @@ export default {
           partHistoryProgressVO: {
             ...this.partTableData[0],
             partNum: this.$route.query.partNum,
+            prjTmTeileclubProjId: this.$route.query.cartypeProId,
             fsdocCscWeekly: selectFit.fsdocCscWeekly,
             cscBfWeekly: selectFit.cscBfWeekly,
             bf1stWeekly: selectFit.bf1stWeekly,
