@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-06 13:55:51
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-17 12:16:21
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\components\projectHeader.vue
 -->
@@ -13,10 +13,11 @@
     <div style="display:flex;align-items:center" class="right-control">
       <iNavMvp v-if="subNavList" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
       <div class="control">
-        <logButton class="margin-left20" @click="toLogPage" />
+        <iLoger ref="log" :config="{ bizId_obj_ae: bizId}" isPage  :isUser="true" class="margin-left20" />
+        <!-- <logButton class="margin-left20" @click="toLogPage" /> -->
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
       </div>
-      <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
+      <!-- <iLog :show.sync="showDialog" :bizId="bizId"></iLog> -->
     </div>
   </div>
 </template>
