@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-19 15:55:34
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-17 15:49:24
  * @Description: 延误原因汇总
 -->
 
@@ -32,17 +32,17 @@
       <div class="floatright" slot="header-control">
         <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <!--------------------发送按钮----------------------------------->
-        <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
-        <iButton v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_DELAYSUMMARY_ZAICIFASONG_BUTTON|延误原因汇总再次发送按钮" v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_DELAYSUMMARY_DAOCHU_BUTTON|延误原因汇总导出按钮" v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
         <template v-if="isFS">
           <!--------------------转派按钮----------------------------------->
-          <transferBtn class="margin-right10" tansferType="3" :tansferData="selectTableData" @getTableList="getTableList" ></transferBtn>
+          <transferBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_TRANSFER_BUTTON|延误原因确认转派按钮" class="margin-right10" tansferType="3" :tansferData="selectTableData" @getTableList="getTableList" ></transferBtn>
           <!--------------------退回按钮----------------------------------->
-          <backBtn class="margin-right10" v-if="withAllBtn" backType="3" :backData="selectTableData" @getTableList="getTableList" ></backBtn>
+          <backBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_BACK_BUTTON|延误原因确认退回按钮" class="margin-right10" v-if="withAllBtn" backType="3" :backData="selectTableData" @getTableList="getTableList" ></backBtn>
           <!--------------------保存按钮----------------------------------->
-          <saveBtn v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
+          <saveBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_SAVE_BUTTON|延误原因确认保存按钮" v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
           <!--------------------确认并发送按钮----------------------------------->
-          <confirmBtn v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
+          <confirmBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_CONFIRM_BUTTON|延误原因确认确认并发送按钮" v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
         </template>
       </div>
       <!-- 表格 -->
