@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 14:15:58
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-17 10:32:10
  * @Description: 产品组
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -463,6 +463,7 @@ export default {
     min-height: 120px;
     max-height: 120px;
     overflow-x: hidden;
+    overflow-y: scroll;
   }
   &::before {
     height: 0;
