@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-02-11 16:55:14
+ * @LastEditTime: 2022-03-17 17:16:58
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -97,6 +97,7 @@
                 credentials
                 isPage
                 isUser
+                hasBizId
                 class="margin-left10"
                 optionDicKey="LOG_OPERATION_TYPES"
                 optionDicKey2="RFQ详情页" />
