@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: YoHo
- * @LastEditTime: 2022-02-10 14:30:42
+ * @LastEditTime: 2022-03-18 22:57:19
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -21,13 +21,14 @@
               <el-form-item v-for="(item, index) in searchList" :key="index" :label="language(item.key,item.label)" v-permission.dynamic.auto="item.permission">
                 <iSelect clearable v-if="item.type === 'select'" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
                   <el-option v-if="item.value == 'linieApportionStatus'" value="" :label="language('ALL','全部')"></el-option>
-                  <el-option
-                    v-for="item in selectOptions[item.selectOption] || []"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </iSelect> 
+                  <template v-for="item1 in selectOptions[item.selectOption] || []">
+                    <el-option
+                      :key="item1.key || item1.value"
+                      :label="item1.label"
+                      :value="item1.value">
+                    </el-option>
+                  </template>
+                </iSelect>
                 <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
                 <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
                 <iInput v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
@@ -177,7 +178,7 @@ export default {
       dictkey().then((res) => {
         if (res.data) {
           this.fromGroup = res.data;
-          this.selectOptions.cartypeProjectOptions = res.data.CAR_TYPE_PRO.map(item => {
+          this.selectOptions.cartypeProjectOptions = res.data.CAR_TYPE_PRO.filter((item)=>item.code).map(item => {
             return {
               ...item,
               value: item.code,
@@ -188,6 +189,7 @@ export default {
         }
       });
     },
+    
     // 获取车型字典
     getCartypeDict() {
       getCartypeDict()
@@ -197,7 +199,7 @@ export default {
             Array.isArray(res.data) ?
             res.data.map(item => ({
               ...item,
-              key: item.code,
+              key: item.id,
               label: item.name,
               value: item.value
             })) :
