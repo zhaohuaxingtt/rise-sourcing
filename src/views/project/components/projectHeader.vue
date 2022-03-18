@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-17 12:16:21
+ * @LastEditTime: 2022-03-17 18:03:38
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\components\projectHeader.vue
 -->
@@ -27,13 +27,15 @@ import { iNavMvp, icon } from "rise"
 import { TAB } from "./data"
 import logButton from "@/components/logButton"
 import iLog from '@/views/project/log'
+import iLoger from 'rise/web/components/iLoger'
 
 export default {
   components: {
     iNavMvp,
     logButton,
     icon,
-    iLog
+    iLog,
+    iLoger
   },
   data() {
     return {
