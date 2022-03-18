@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-18 22:09:13
+ * @LastEditTime: 2022-03-18 22:57:19
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -189,6 +189,7 @@ export default {
         }
       });
     },
+    
     // 获取车型字典
     getCartypeDict() {
       getCartypeDict()
