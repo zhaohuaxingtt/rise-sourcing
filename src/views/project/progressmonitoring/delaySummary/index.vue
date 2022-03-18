@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 15:49:24
+ * @LastEditTime: 2022-03-18 10:41:57
  * @Description: 延误原因汇总
 -->
 
@@ -30,7 +30,6 @@
     <iCard :ref="'comFirmCard'" class="margin-top20" :title="language('YANWUYUANYINQUEREN', '延误原因确认')" :collapse="collapse" @handleCollapse="handleCollapse">
       <!-- <template slot="header-control"> -->
       <div class="floatright" slot="header-control">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <!--------------------发送按钮----------------------------------->
         <iButton v-permission.auto="PROJECTMGT_DELAYSUMMARY_ZAICIFASONG_BUTTON|延误原因汇总再次发送按钮" v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
         <iButton v-permission.auto="PROJECTMGT_DELAYSUMMARY_DAOCHU_BUTTON|延误原因汇总导出按钮" v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
@@ -43,6 +42,8 @@
           <saveBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_SAVE_BUTTON|延误原因确认保存按钮" v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
           <!--------------------确认并发送按钮----------------------------------->
           <confirmBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_CONFIRM_BUTTON|延误原因确认确认并发送按钮" v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
+          
+          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         </template>
       </div>
       <!-- 表格 -->
