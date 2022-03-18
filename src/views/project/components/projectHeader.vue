@@ -13,7 +13,7 @@
     <div style="display:flex;align-items:center" class="right-control">
       <iNavMvp v-if="subNavList" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
       <div class="control">
-        <iLoger ref="log" :config="{ bizId_obj_ae: bizId}" isPage  :isUser="true" class="margin-right10" />
+        <iLoger ref="log" :config="{ bizId_obj_ae: bizId}" isPage  :isUser="true" class="margin-left20 margin-right10" />
         <!-- <logButton class="margin-left20" @click="toLogPage" /> -->
         <!-- <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon> -->
       </div>
