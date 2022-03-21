@@ -43,7 +43,7 @@
 <script>
 import {iSelect,iInput} from 'rise'
 import {_getMathNumber} from '@/utils'
-import { getSubDeptListByParam, getDeptLeader } from '@/api/designate/decisiondata/approval'
+import { getSubDeptListByParam, getDeptLeader, findCfDeptNumList, findCfUserInfo } from '@/api/designate/decisiondata/approval'
 export default{
   components:{iSelect,iInput},
   props:{
@@ -62,6 +62,12 @@ export default{
     doubleHeader:Boolean,
     selectedItems:{type:Array},
     editCompare: {type: Boolean, default: true}
+  },
+  computed: {
+    // eslint-disable-next-line no-undef
+    ...Vuex.mapState({
+      nominationType: state => state.nomination.nominationType
+    })
   },
   inject:['vm'],
   data() {
@@ -104,7 +110,62 @@ export default{
     getOptions(optionType) {
       return this.options[optionType]
     },
+    // 获取cf科室
+    findCfDeptNumList(row) {
+      findCfDeptNumList()
+      .then(res => {
+        if (res.code == 200 && Array.isArray(res.data)) {
+          this.$set(row, 'deptSubOptions', res.data.map(item => {
+            return {
+              ...item,
+              label: item.deptNum,
+              value: item.id
+            }
+          }))
+        } else {
+          this.$set(row, 'deptSubOptions', [])
+        }
+      })
+    },
+    // 获取CF部门审批人
+    findCfUserInfo(cfDeptNum, row) {
+      findCfUserInfo({
+        cfDeptNum,
+        nomiType: this.nominationType
+      })
+      .then(res => {
+        if (res.code == 200 && Array.isArray(res.data)) {
+          this.$set(row, 'deptManager', res.data.map(item => item.id).join(","))
+          this.$set(row, 'deptManagerName', res.data.map(item => item.nameZh).join(","))
+        } else {
+          this.$set(row, 'deptManager', "")
+          this.$set(row, 'deptManagerName', "")
+        }
+      })
+    },
     changeValue(val, row, item) {
+      this.$set(row, 'deptManager', "")
+      this.$set(row, 'deptManagerName', "")
+
+      if (item.props === "approveParentDeptNum") {
+        const cfDept = row.deptOptions.find(item => item.value === val)
+
+        if (cfDept && cfDept.label === "CF") {
+          this.findCfDeptNumList(row)
+          return
+        }
+      }
+      
+      if (item.props === "approveDeptNum") {
+        const cfDept = row.deptOptions.find(item => item.value === row.approveParentDeptNum)
+
+        if (cfDept && cfDept.label === "CF") {
+          const cfSubDept = row.deptSubOptions.find(item => item.value === val)
+          if (cfSubDept) this.findCfUserInfo(cfSubDept.deptNum, row)
+          return
+        }
+      }
+
       console.log('val',val,'row',row,'item',item);
       this.$set(row, item.props, val)
       if (item.props === 'approveParentDeptNum') {
