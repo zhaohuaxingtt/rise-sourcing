@@ -137,7 +137,7 @@ export default {
       await this.getDataList(params)
     },
     download(row) {
-      window.open(row.filePath,'_blank')
+      window.open(`${ row.filePath }&isDown=true`,'_blank')
     }
   }
 }
