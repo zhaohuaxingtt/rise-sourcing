@@ -218,15 +218,15 @@ export default {
   },
   methods: {
     sure() {
-      let form = { ...this.formRecord, nominateStartTime: this.formRecord.nominateTime[0], nominateEndTime: this.formRecord.nominateTime[1] }
+      let form = { ...this.formRecord, nominateStartTime: Array.isArray(this.formRecord.nominateTime) ? this.formRecord.nominateTime[0] : undefined, nominateEndTime: Array.isArray(this.formRecord.nominateTime) ? this.formRecord.nominateTime[1] : undefined }
       delete form.nominateTime
       this.$emit('search',form)
     },
     reset() {
       this.formRecord = {
-        showSelf: true
+        ..._.cloneDeep(form)
       }
-      this.$emit('search',{})    
+      this.$emit('search', this.formRecord)    
     },
     getSelectGroup() {
       let types = [
