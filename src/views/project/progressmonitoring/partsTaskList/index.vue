@@ -50,6 +50,9 @@
                  :handleSaveSetting="handleSaveSetting"
                  :handleResetSetting="handleResetSetting"
       >
+        <template #partNum="scope">
+          <span style="white-space:pre;">{{scope.row.partNum}}</span>
+        </template>
         <template #partSort="scope">
           <iSelect v-model="scope.row['partSort']" @change="val => handleSelectChange(val, scope.row)">
             <el-option
