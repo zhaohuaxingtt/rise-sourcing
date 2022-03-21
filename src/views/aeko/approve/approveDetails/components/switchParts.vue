@@ -1,7 +1,7 @@
 <!--
  * @Author: YoHo
  * @Date: 2021-10-09 17:17:13
- * @LastEditTime: 2022-02-25 13:50:00
+ * @LastEditTime: 2022-03-21 10:52:09
  * @LastEditors: Please set LastEditors
  * @Description: 
 -->
@@ -27,9 +27,6 @@
           ></el-option>
         </iSelect>
       </div>
-      <!-- <span class="floatright">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
-      </span> -->
     </template>
     <tableList
       v-loading="loading"

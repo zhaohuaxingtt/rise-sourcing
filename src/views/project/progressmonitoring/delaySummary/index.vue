@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-19 15:55:34
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 10:45:47
  * @Description: 延误原因汇总
 -->
 
@@ -30,7 +30,6 @@
     <iCard :ref="'comFirmCard'" class="margin-top20" :title="language('YANWUYUANYINQUEREN', '延误原因确认')" :collapse="collapse" @handleCollapse="handleCollapse">
       <!-- <template slot="header-control"> -->
       <div class="floatright" slot="header-control">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <!--------------------发送按钮----------------------------------->
         <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('ZAICIFASONG','再次发送')}}</iButton>
         <iButton v-if="!isFS" @click="handleExport" :loading="exportLoading">{{language('DAOCHU','导出')}}</iButton>
@@ -44,6 +43,7 @@
           <!--------------------确认并发送按钮----------------------------------->
           <confirmBtn v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
         </template>
+        <button-table-setting @click="edittableHeader" />
       </div>
       <!-- 表格 -->
       <tableList indexKey

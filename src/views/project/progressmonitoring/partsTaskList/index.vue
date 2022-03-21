@@ -30,12 +30,12 @@
         <span class="font18 font-weight">{{language('LINGJIANRENWUQINGDANGENGXIN', '零件任务清单更新')}}</span>
         <div class="floatright">
           <!--------------------处理按钮----------------------------------->
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <iButton  @click="handleBatchUpdate" >{{language('PILIANGXIUGAIZHUANGTAI','批量修改状态')}}</iButton>
           <iButton  @click="updatePartTask" >{{language('BAOCUN','保存')}}</iButton>
           <iButton  @click="handleExport('1')" >{{language('DAOCHUDEIEPQUERENQINGDAN','导出待EP确认清单')}}</iButton>
           <iButton  @click="handleExport('2')" >{{language('DAOCHUDEIMQQUERENQINGDAN','导出待MQ确认清单')}}</iButton>
           <iButton  @click="handleExportAll" :loading="downloadLoading" >{{language('DAOCHUQUANBU','导出全部')}}</iButton>
+          <button-table-setting @click="edittableHeader" />
         </div>
       </div>
       <tableList indexKey
