@@ -53,11 +53,11 @@
                         <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
                       </el-tooltip>
                   </div>
-                </div>       
+                </div>
                 <div class="rsTop-right-item-value" v-else >
                   <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
-                  <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;">
-                  </span>
+                  <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
+                  <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
                 </div>
             </template>
           </div>

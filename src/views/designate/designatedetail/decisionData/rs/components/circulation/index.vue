@@ -57,6 +57,41 @@
                  :tableData="tableData"
                  class="rsTable"
                  :maxHeight="600">
+        <template #oldAPrice="scope">
+          <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
+        </template>
+        <template #cfTargetAPrice="scope">
+          <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
+        </template>
+        <template #cfTargetBPrice="scope">
+          <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
+        </template>
+        <template #rw="scope">
+          <span>{{ scope.row.rw | toThousands(true) }}</span>
+        </template>
+        <template #aprice="scope">
+          <span>{{ scope.row.aprice | toThousands(true) }}</span>
+        </template>
+        <template #bprice="scope">
+          <span>{{ scope.row.bprice | toThousands(true) }}</span>
+        </template>
+        <template #packPrice="scope">
+          <span>{{ scope.row.packPrice | toThousands(true) }}</span>
+        </template>
+        <template #transportPrice="scope">
+          <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
+        </template>
+        <template #operatePrice="scope">
+          <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
+        </template>
+        <template #investFee="scope">
+          <span>{{ scope.row.investFee | toThousands(true) }}</span>
+        </template>
+        <template #turnover="scope">
+          <span>{{ scope.row.turnover | toThousands(true) }}</span>
+        </template>
+
+
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
