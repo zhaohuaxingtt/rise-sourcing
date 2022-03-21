@@ -92,6 +92,10 @@ export default{
           this.ratingList = translateRating(res.data.partInfoList,res.data.bdlRateInfoList)
           this.exampelData = [...this.exampelData,...subtotal(this.title,this.exampelData,res.data.bdlPriceTotalInfoList)]
           this.oldExampelData = JSON.parse(JSON.stringify(this.exampelData))
+
+          this.$nextTick(()=>{
+            this.$refs.tableList.setfixElement()
+          })
         }
 
         if (res.data) {
