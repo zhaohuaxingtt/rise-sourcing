@@ -6,14 +6,14 @@
  * @Description: 决策资料 - 附件
 -->
 <template>
-  <iCard class="margin-bottom25">
+  <iCard class="attachment margin-bottom25">
     <div class="margin-bottom25 clearFloat">
       <span class="font18 font-weight">
         {{ language("Attachment","Attachment") }}</span
       >
       <div class="floatright">
         <!-- 下载 -->
-        <iButton @click="downloadFile" class="margin-right10" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_DOWNLOAD|Attachment-下载">
+        <iButton @click="downloadFile" class="downloadBtn" v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_DOWNLOAD|Attachment-下载">
           {{ language("strategicdoc_XiaZai",'下载') }}
         </iButton>
         <!-- 删除 -->
@@ -46,7 +46,7 @@
     </div>
     <tablelist
       index
-      :selection="!$store.getters.isPreview"
+      :selection="true"
       :tableData="dataList"
       :tableTitle="uploadtableTitle"
       :tableLoading="tableLoading"
@@ -54,6 +54,9 @@
       @handleSelectionChange="handleSelectionChange"
       v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_TABLE|Attachment-表格"
     >
+    <template #fileName="scope">
+      <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+    </template>
     <template #uploadDate="scope">
       {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
     </template>
@@ -132,9 +135,17 @@ export default {
         fileType: '102',
       }
       await this.getDataList(params)
+    },
+    download(row) {
+      window.open(row.filePath,'_blank')
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+.attachment {
+  .downloadBtn {
+    margin-right: 10px;
+  }
+}
 </style>
