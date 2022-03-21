@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:55:00
+ * @LastEditTime: 2022-03-21 15:29:45
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -24,7 +24,7 @@
           <iButton v-if="!nominationDisabled && !rsDisabled" @click="deleteRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_DELETERFQ|删除RFQ">{{language('SHANCHU','删除')}}</iButton>
         
           
-          <button-table-setting @click="edittableHeader('rfqTable')" />
+          <button-table-setting class="margin-top10" @click="edittableHeader('rfqTable')" />
         </div>
       </div>
       <tableList
@@ -89,7 +89,7 @@
             @click="handleClickByCancelSelected">
             {{ language("QUXIAOSHENQING", "取消申请") }}
           </iButton>
-          <button-table-setting @click="edittableHeader('rfqTable')" />
+          <button-table-setting @click="edittableHeader('partTable')" />
         </div>
       </div>
       <tableList
