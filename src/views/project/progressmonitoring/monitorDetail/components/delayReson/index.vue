@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 15:22:05
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 10:42:58
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -18,8 +18,8 @@
       <div class="chosseProGroup"> 
         <span class="chosseProGroup-title">{{language('FASONGYANWUYUANYINQUEREN','发送延误原因确认')}}</span>
         <span>
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton>
+          <button-table-setting @click="edittableHeader" />
         </span>
       </div> 
     </template> 

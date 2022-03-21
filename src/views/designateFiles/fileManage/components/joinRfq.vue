@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-07 11:40:05
+ * @LastEditTime: 2022-03-21 10:58:55
  * @Description: 加入已有rfq
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
@@ -65,11 +65,11 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language('RFQZONGHEGUANLI','RFQ综合管理') }}</span>
         <div class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!--加入该键-->
           <iButton @click="joinRfq" :loading="activateButtonLoading">
             {{language('JIARU','加入')}}
           </iButton>
+          <button-table-setting @click="edittableHeader" />
         </div>
       </div>
       <tablelist
