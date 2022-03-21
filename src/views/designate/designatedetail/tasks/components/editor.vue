@@ -115,7 +115,7 @@ export default {
     },
     getFetchData() {
       getBackgroundAndObjectiveInfo({
-        nominateId: this.$store.getters.nomiAppId || '',
+        nominateId: this.$store.getters.nomiAppId || this.$route.query.desinateId || '',
       }).then(res => {
         if (res.code === '200') {
           if (res.data) {
@@ -141,7 +141,7 @@ export default {
       addBackgroundAndObjectiveInfo(data).then(res => {
         if (res.code === '200') {
           iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-          this.getFetchData()()
+          this.getFetchData()
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
