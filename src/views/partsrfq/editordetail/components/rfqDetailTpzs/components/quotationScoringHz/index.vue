@@ -371,7 +371,7 @@ export default{
      */
     negoAnalysisSummaryLayoutSave(){
       let hostId = this.$route.query.id || this.$route.query.desinateId
-      negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout, hostId).then(async res=>{
+      negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout, hostId, this.templateSummary).then(async res=>{
         if(res.code == 200){
           this.init()
         }
