@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
- * @LastEditors: YoHo
- * @LastEditTime: 2022-01-26 15:57:46
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 10:53:06
  * @Description: 
 -->
 <template>
@@ -22,7 +22,7 @@
           >
             {{ language('LK_FENPAI', '分派') }}
           </iButton>
-          <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <button-table-setting @click="edittableHeader" />
         </span>
       </div>
       <tableList

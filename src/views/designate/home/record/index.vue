@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2022-01-24 17:13:01
+ * @LastEditTime: 2022-03-21 10:57:30
  * @LastEditors: Please set LastEditors
 -->
 <template>
@@ -16,8 +16,8 @@
     <!-- 表格区 -->
     <iCard class="cardMargin">
       <div class="btnright margin-bottom20">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
+        <button-table-setting @click="edittableHeader" />
       </div>
       <tablelist
       lang

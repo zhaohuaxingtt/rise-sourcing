@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 10:41:57
+ * @LastEditTime: 2022-03-21 11:08:17
  * @Description: 延误原因汇总
 -->
 
@@ -45,6 +45,7 @@
           
           <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         </template>
+        <button-table-setting @click="edittableHeader" />
       </div>
       <!-- 表格 -->
       <tableList indexKey
