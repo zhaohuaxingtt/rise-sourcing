@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-10-11 10:31:41
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-13 14:48:02
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 10:18:36
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\partsTaskList\data.js
  */
@@ -21,7 +21,7 @@ export const tableTitle = [
   {props:'partNameEn',name:'零件名称-DE', key: "LINGJIANMINGCHENG-DE", tooltip: true},
   {props:'risePartCode',name:'异常代码', key: "YICHANGDAIMA", tooltip: true},
   {props:'risePartDesc',name:'异常原因', key: "YICHANGYUANYING", tooltip: true},
-  {props:'partSort',name:'零件分类', key: "LINGJIANFENLEI", tooltip: true,editable:true,type:"select",selectOption: 'partTaskPartSort'},
+  {props:'partSort',name:'零件分类', key: "LINGJIANFENLEI", tooltip: true,editable:true,type:"select",selectOption: 'partTaskPartSort',width:200},
   {props:'statusDesc',name:'处理状态', key: "CHULIZHUANGTAI", tooltip: true},
   {props:'buyerName',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true},
   {props:'linieName',name:'专业采购员', key: "ZHUANYECAIGOUYUAN", tooltip: true},
