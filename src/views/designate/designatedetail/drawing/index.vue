@@ -23,7 +23,7 @@
       <el-row gutter="20" v-if="dataList && dataList.length">
         <el-col class="margin-bottom25" span="12" v-for="(item, index) in dataList" :key="index">
           <div class="drawing-content">
-            <img png gif jpg bmp jpeg
+            <img
               v-if="['.jpg', '.jpeg', '.png', '.bmp', '.webp'].some(type => String(item.fileName).toLowerCase().endsWith(type))"
               class="img-preview"
               :src="item.filePath" />
