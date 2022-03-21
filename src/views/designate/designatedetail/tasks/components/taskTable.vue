@@ -74,7 +74,7 @@
         <!-- 任务结果 -->
         <template #taskResult="scope">
           <div v-if="editControl">
-            <iInput v-model="scope.row.taskResult" />
+            <iInput maxlength="1000" v-model="scope.row.taskResult" />
           </div>
           <span v-else>{{scope.row.taskResult}}</span>
         </template>
