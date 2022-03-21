@@ -108,7 +108,7 @@ export default {
      await  downloadUdFile(val.fileId)
     },
     download(row) {
-      window.open(row.fileUrl,'_blank')
+      window.open(`${ row.fileUrl }&isDown=true`,'_blank')
     }
   }
 }
