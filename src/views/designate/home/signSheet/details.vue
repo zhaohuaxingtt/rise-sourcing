@@ -1,7 +1,7 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2022-03-21 10:58:04
+ * @LastEditTime: 2022-03-21 15:37:51
  * @LastEditors: Please set LastEditors
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
@@ -52,8 +52,8 @@
                       v-permission.auto="SOURCING_NOMINATION_SIGNSHEET_DETAILSREMOVE|签字单详情移除">
               {{ language("YICHU",'移除') }}
             </iButton>
-            <button-table-setting @click="edittableHeader" />
-          </template>  
+          </template> 
+          <button-table-setting @click="edittableHeader" /> 
         </div>   
       </div>
       <!-- 表格 -->
