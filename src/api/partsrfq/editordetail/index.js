@@ -281,14 +281,14 @@ export function getSupplierPlantBySupplierId(supplierId, options) {
 }
 
 //报价分析-保存场景布局
-export function negoAnalysisSummaryLayoutSave(layout,layoutType, hostId){
+export function negoAnalysisSummaryLayoutSave(layout,layoutType, hostId, scenarioType){
     return nego({
         url: `/nego-assistant/nego-analysis-summary-layout`,
         method: 'POST',
         data:{
             layout:layout,
             layoutType:layoutType,
-            scenarioType:1,
+            scenarioType,
             hostId: hostId
         }
     })
