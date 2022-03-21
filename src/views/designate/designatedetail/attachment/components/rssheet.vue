@@ -51,13 +51,16 @@
     </div>
     <tablelist
       index
-      :selection="!$store.getters.isPreview"
+      :selection="true"
       :tableData="dataList"
       :tableTitle="uploadtableTitle"
       :tableLoading="tableLoading"
       @handleSelectionChange="handleSelectionChange"
       v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSheet_TABLE|RSSheet-表格"
     >
+    <template #fileName="scope">
+      <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+    </template>
     <template #uploadDate="scope">
       {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
     </template>
@@ -136,6 +139,9 @@ export default {
         fileType: '103',
       }
       this.getDataList(params)
+    },
+    download(row) {
+      window.open(row.filePath,'_blank')
     }
   }
 }
