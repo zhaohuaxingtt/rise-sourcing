@@ -101,7 +101,7 @@ export const gsDetailTitleBlue = [
 export const nomalTableTitle = [
   {props:'fsnrGsnrNum',enName: 'FS-NO.', key: "",minWidth:54},
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "",minWidth:74},
-  {props:'output',name:'年产量', enName: 'Demand', enName1:'(K)',key: "",minWidth:74},
+  {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)',key: "",minWidth:74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "",minWidth:64},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "",minWidth:76},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "",minWidth:74},
@@ -168,7 +168,7 @@ export const accessoryTableTitle = [
 export const gsTableTitle = [
   {props:'fsnrGsnrNum',enName: 'GS-NO.', key: "",minWidth:60},
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74},
-  {props:'output',name:'年产量', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74},
+  {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)', key: "", minWidth: 74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 68},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 70},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 70},
@@ -195,7 +195,7 @@ export const gsTableTitle = [
 export const dbTableTitle = [
   {props:'fsnrGsnrNum',enName: 'FS-NO.', key: "", minWidth: 60},
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74},
-  {props:'output',name:'年产量', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74},
+  {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)', key: "", minWidth: 74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 68},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 70},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 70},
