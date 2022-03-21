@@ -65,7 +65,7 @@ import search from './components/search.vue'
 // import tablelist from "@/views/designate/supplier/components/tableList"
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
-import {tableTitle} from './data'
+import {tableTitle, form} from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import {getNomiApplicationPageList, exportNomiRecordExcel} from '@/api/designate/nomination/record'
 export default {
@@ -85,7 +85,7 @@ export default {
       tableTitle:tableTitle,
       tableListData:[],
       tableLoading: false,
-      searchForm:{},
+      searchForm: _.cloneDeep(form),
       selectTableData:[]
     }
   },
