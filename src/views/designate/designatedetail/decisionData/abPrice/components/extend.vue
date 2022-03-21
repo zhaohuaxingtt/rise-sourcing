@@ -18,7 +18,7 @@ export default{
     return {
       showRound:false,
       quoteShow:false,
-      templateSummary:1, //请求模板类型
+      templateSummary:2, //请求模板类型
       abPrice:true
     }
   },
