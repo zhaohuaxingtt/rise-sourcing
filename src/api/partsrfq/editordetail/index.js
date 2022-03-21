@@ -257,9 +257,9 @@ export function negoAnalysisSummaryRound(rfqId){
 }
 
 //报价分析-获取场景布局
-export function negoAnalysisSummaryLayout(layoutType,scenarioType){
+export function negoAnalysisSummaryLayout(layoutType,scenarioType, hostId){
     return nego({
-        url: `/nego-assistant/nego-analysis-summary-layout/${scenarioType}/${layoutType}`,
+        url: `/nego-assistant/nego-analysis-summary-layout/${hostId}/${scenarioType}/${layoutType}`,
         method: 'GET'
     })
 }
@@ -281,14 +281,15 @@ export function getSupplierPlantBySupplierId(supplierId, options) {
 }
 
 //报价分析-保存场景布局
-export function negoAnalysisSummaryLayoutSave(layout,layoutType){
+export function negoAnalysisSummaryLayoutSave(layout,layoutType, hostId){
     return nego({
         url: `/nego-assistant/nego-analysis-summary-layout`,
         method: 'POST',
         data:{
             layout:layout,
             layoutType:layoutType,
-            scenarioType:1
+            scenarioType:1,
+            hostId: hostId
         }
     })
 }

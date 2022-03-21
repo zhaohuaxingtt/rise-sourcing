@@ -345,7 +345,8 @@ export default{
      */
     negoAnalysisSummaryLayout(type){
       this.backChooseLists = backChooseList(this.layout);
-      return negoAnalysisSummaryLayout(type,this.templateSummary).then(res=>{
+      let hostId = this.$route.query.id || this.$route.query.desinateId
+      return negoAnalysisSummaryLayout(type,this.templateSummary, hostId).then(res=>{
         if(res.data && res.data.layout){  
           this.backChoose = JSON.parse(res.data.layout) // 
         }else{
@@ -369,7 +370,8 @@ export default{
      * @return {*}
      */
     negoAnalysisSummaryLayoutSave(){
-      negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout).then(async res=>{
+      let hostId = this.$route.query.id || this.$route.query.desinateId
+      negoAnalysisSummaryLayoutSave(JSON.stringify(this.backChoose),this.layout, hostId).then(async res=>{
         if(res.code == 200){
           this.init()
         }
