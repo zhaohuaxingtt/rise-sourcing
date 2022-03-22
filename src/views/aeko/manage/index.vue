@@ -548,10 +548,12 @@ export default {
       },
       // 清空bizId,便于触发顶部日志按钮
       closeLog(){
-        setLogMenu('AEKO管理-列表')
+        // setLogMenu('AEKO管理-列表')
+        setLogMenu('')
         this.bizId = ''
         this.hasId = true
-        this.module = 'AEKO管理'
+        this.module = ''
+        // this.module = 'AEKO管理'
       },
       // 查看描述
       checkDescribe(row){
