@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 15:08:27
+ * @LastEditTime: 2022-03-22 14:58:42
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -406,6 +406,10 @@ export default {
         let { year, month, day } = res.data[res.data.length - 1]
         if(+day <10){
           day = '0'+day
+        }
+        
+        if(+month < 10){
+          month = '0'+month
         }
         return year + '-' + month + '-' + day
       }
