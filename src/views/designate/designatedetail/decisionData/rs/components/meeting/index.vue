@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors:  
- * @LastEditTime: 2021-12-03 10:25:12
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-22 23:16:54
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -176,13 +176,13 @@
         <div class="meetingRemark" v-if="isApproval">
           <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
             <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
-            <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
+            <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
           </div>
         </div>
         <div class="meetingRemark" v-else>
           <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
             <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
-            <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
+            <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
           </div>
         </div>
       </div>
