@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 15:00:55
+ * @LastEditTime: 2022-03-22 14:58:36
  * @Description: 周期视图
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -387,6 +387,9 @@ export default {
         let { year, month, day } = res.data[res.data.length - 1]
         if(+day <10){
           day = '0'+day
+        }
+        if(+month < 10){
+          month = '0'+month
         }
         return year + '-' + month + '-' + day
       }

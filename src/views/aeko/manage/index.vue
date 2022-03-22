@@ -13,7 +13,7 @@
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
         <!-- <log-button @click="openLog" class="margin-left25"/> -->
-        <iLoger ref="log" @close="closeLog" :config="{module_obj_ae: module, menuName_obj_ae:$store.getters.getLogMenu, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
+        <iLoger ref="log" @close="closeLog" :config="{module_obj_ae: module, menuName_obj_ae:$store.getters.getLogMenu, bizId_obj_ae: bizId, queryParams:[]}" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
