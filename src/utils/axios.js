@@ -1,8 +1,8 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-19 14:29:09
- * @LastEditTime: 2022-02-22 16:09:08
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 16:26:27
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\utils\axios.js
  */
@@ -15,7 +15,7 @@ let loading = null
 
 let requestNum = 0
 
-export default function httpRequest(baseUrl = '', timeOut = 65000) {
+export default function httpRequest(baseUrl = '', timeOut = 600000) {
 	// eslint-disable-next-line no-undef
 	const instance = axios.create({
 		baseURL: baseUrl,
