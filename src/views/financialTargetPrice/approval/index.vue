@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-22 09:12:02
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-28 17:15:44
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-22 22:46:40
  * @Description: 财务目标价-目标价审批
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\approval\index.vue
 -->
@@ -109,7 +109,7 @@ export default {
         linieName: '',
         buyerId: '',
         cfPriceType: '',
-        showSelf: true
+        // showSelf: true
       },
       isEdit: false,
       tableLoading: false,
@@ -173,7 +173,7 @@ export default {
         linieName: '',
         buyerId: '',
         cfPriceType: '',
-         showSelf: true
+        //  showSelf: true
       }
       this.sure()
     },
