@@ -14,7 +14,7 @@
     </div>
     <tablelist
       index
-      :selection="!$store.getters.isPreview"
+      :selection="true"
       :tableTitle ="mtzuploadtableTitle"
       :tableData ="mtzTableData"
       :tableLoading ="tbaleLoading"
@@ -23,6 +23,9 @@
       @openPage="openPage"
       v-permission.auto="SOURCING_NOMINATION_ATTATCH_MTZATTACHMENT_TABLE|MTZAttachment-表格"
     >
+    <template #fileName="scope">
+      <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+    </template>
     <template #uploadDate="scope">
       {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
     </template>  
@@ -104,6 +107,9 @@ export default {
     async openPage(val) {
      await  downloadUdFile(val.fileId)
     },
+    download(row) {
+      window.open(`${ row.fileUrl }&isDown=true`,'_blank')
+    }
   }
 }
 </script>

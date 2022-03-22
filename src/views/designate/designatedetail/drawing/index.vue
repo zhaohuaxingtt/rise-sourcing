@@ -24,7 +24,7 @@
         <el-col class="margin-bottom25" span="12" v-for="(item, index) in dataList" :key="index">
           <div class="drawing-content">
             <img
-              v-if="String(item.fileName).endsWith('.jpg') || String(item.fileName).endsWith('.jpeg') || String(item.fileName).endsWith('.png')"
+              v-if="['.jpg', '.jpeg', '.png', '.bmp', '.webp'].some(type => String(item.fileName).toLowerCase().endsWith(type))"
               class="img-preview"
               :src="item.filePath" />
             <span v-else><i class="el-icon-document"></i>{{item.fileName}}</span>
