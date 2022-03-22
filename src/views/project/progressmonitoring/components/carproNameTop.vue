@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:18:12
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-17 11:42:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 11:42:58
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\components\carproNameTop.vue
 -->
@@ -17,7 +17,7 @@
       <iButton @click="handleBack">{{language('FANHUI', '返回')}}</iButton>
       <!-- <logButton class="margin-left20" @click="toLogPage" /> -->
       <iLoger ref="log" :config="{ bizId_obj_ae: bizId}" isPage :isUser="true" class="margin-left20" />
-      <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
+      <!-- <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon> -->
       <!-- <iLog :show.sync="showDialog" :bizId="bizId"></iLog> -->
     </div>
   </div>
