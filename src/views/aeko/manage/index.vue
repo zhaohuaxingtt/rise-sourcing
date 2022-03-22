@@ -301,7 +301,7 @@ export default {
         showDialog: false,
         bizId: '',
         hasId: true,  // 列表日志按钮查看所有
-        module:'AEKO管理'
+        module:''
       }
     },
     computed: {
@@ -333,7 +333,7 @@ export default {
       this.sure();
       this.getSearchList();
 
-      setLogMenu('AEKO管理-列表')
+      setLogMenu('')
       const roleList = this.roleList;
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
       this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员

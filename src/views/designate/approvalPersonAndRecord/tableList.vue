@@ -79,12 +79,13 @@ export default{
     getDeptLeader(deptId, grade, row) {
       getDeptLeader({
         deptNum: deptId,
-        grade
+        grade,
+        nominateType: this.nominationType
       }).then(res => {
         // this.$set(row, 'deptManagerName')
-        if (res.code == 200 && res.data && Array.isArray(res.data.userDTOList)) {
-          this.$set(row, 'deptManager', res.data.userDTOList.map(item => item.id).join(","))
-          this.$set(row, 'deptManagerName', res.data.userDTOList.map(item => item.nameZh).join(","))
+        if (res.code == 200 && Array.isArray(res.data)) {
+          this.$set(row, 'deptManager', res.data.map(item => item.id).join(","))
+          this.$set(row, 'deptManagerName', res.data.map(item => item.nameZh).join(","))
         } else {
           this.$set(row, 'deptManager', "")
           this.$set(row, 'deptManagerName', "")
