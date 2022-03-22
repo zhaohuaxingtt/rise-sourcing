@@ -74,7 +74,7 @@
         <!-- 任务结果 -->
         <template #taskResult="scope">
           <div v-if="editControl">
-            <iInput v-model="scope.row.taskResult" />
+            <iInput maxlength="1000" v-model="scope.row.taskResult" />
           </div>
           <span v-else>{{scope.row.taskResult}}</span>
         </template>
@@ -278,10 +278,10 @@ export default {
     getFetchData() {
       this.tableLoading = true
       getNominateTaskList({
-        nominateId: this.$store.getters.nomiAppId,
+        nominateId: this.$store.getters.nomiAppId || this.$route.query.desinateId,
         current: this.page.currPage,
         size: this.page.pageSize,
-        isPreview: this.$store.getters.isPreview
+        isPreview: this.$route.query.isPreview == '1' || this.$store.getters.isPreview || false
       }).then(res => {
         if (res.code === '200') {
           this.data = res.data || []
