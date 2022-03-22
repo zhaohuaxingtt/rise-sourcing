@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:54:07
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-27 11:30:51
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 15:43:50
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\data.js
  */
@@ -18,6 +18,6 @@ export const tableTitle = [
   {props:'planDate',name:'原计划时间', key: "YUANJIHUASHIJIAN", tooltip: true}, 
   {props:'delayWeek',name:'已延误周数', key: "YIYANWUZHOUSHU", tooltip: true}, 
   {props:'backReason',name:'退回原因', key: "TUIHUIYUANYIN", tooltip: true}, 
-  {props:'fsId',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, editable: true, type: 'select'}, 
-  {props:'confirmDateDeadline',name:'回复截止日期', key: "HUIFUJIEZHIRIQI", tooltip: true, editable: true, type: 'date', minWidth: 150}, 
+  {props:'fsId',name:'询价采购员', key: "XUNJIACAIGOUYUAN", tooltip: true, editable: true, type: 'select',minWidth: 120}, 
+  {props:'confirmDateDeadline',name:'回复截止日期', key: "HUIFUJIEZHIRIQI", tooltip: true, editable: true, type: 'date', minWidth: 120}, 
 ]

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:42:58
+ * @LastEditTime: 2022-03-22 15:41:16
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -35,13 +35,26 @@
                  :handleSaveSetting="handleSaveSetting"
                  :handleResetSetting="handleResetSetting"
       >
+      <template #fsId="scope">
+          <iSelect v-model="scope.row['fsId']" @change="val => handleSelectChange(val, scope.row)">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="(item, index) in scope.row.selectOption"
+              :key="index"
+            ></el-option>
+          </iSelect>
+      </template>
+      <template #confirmDateDeadline="scope">
+          <iDatePicker value-format="yyyy-MM-dd" v-model="scope.row['confirmDateDeadline']" />
+      </template>
       </tableList> 
     </div> 
   </iDialog> 
 </template> 
 
 <script> 
-import { iDialog, iButton, iMessage } from 'rise' 
+import { iDialog, iButton, iMessage,iSelect,iDatePicker } from 'rise' 
 import { tableTitle } from './data'
 import tableList from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
@@ -50,7 +63,7 @@ import { getFsUserListPart, getAllFS } from '@/api/project'
 import moment from 'moment'
 export default {
   mixins: [tableSortMixins],
-  components: { iDialog, iButton, tableList }, 
+  components: { iDialog, iButton, tableList,iSelect,iDatePicker }, 
   props: { 
     dialogVisible: { type: Boolean, default: false }, 
     cartypeProId: {type:String}, 
