@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:43:02
+ * @LastEditTime: 2022-03-22 17:16:59
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -210,15 +210,15 @@ export default {
           width: 0;
         }
         &::-webkit-scrollbar-thumb{
-          border-radius: 2px;
-          height: 50px;
+          // border-radius: 2px;
+          // height: 50px;
           // background: #efefef;
-          background: #fff;
+          // background: #fff;
         }
         &::-webkit-scrollbar-track{
           // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-          border-radius: 2px;
-          background: #fff;
+          // border-radius: 2px;
+          // background: #fff;
         }
       }
     }
