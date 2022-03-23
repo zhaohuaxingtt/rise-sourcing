@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 15:09:15
+ * @LastEditTime: 2022-03-23 16:33:42
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -917,6 +917,7 @@ export default {
           font-size: 18px;
           margin-left: 10px;
           cursor: pointer;
+          white-space:pre;
         }
       }
       &-targetList { 
