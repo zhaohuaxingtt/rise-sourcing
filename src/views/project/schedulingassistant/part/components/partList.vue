@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 16:33:42
+ * @LastEditTime: 2022-03-23 18:14:55
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -69,7 +69,7 @@
               :content="language('TIAOZHUANLISHIJINDUSHUJUKU','跳转历史进度数据库')"
               placement="top-start"
               trigger="hover">
-              <icon slot="reference" @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon> 
+              <icon slot="reference" @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px;outline:none"></icon> 
             </el-popover>
              
           </div> 
