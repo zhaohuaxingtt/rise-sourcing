@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 09:51:23
- * @LastEditTime: 2022-01-26 19:56:59
+ * @LastEditTime: 2022-03-23 18:54:10
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsrfq\piAnalyse\piDetail\components\data.js
@@ -54,15 +54,18 @@ export const tableTitle = [
         name: '详情',
         key: 'PI.XIANGQING',
         props: 'systemMatch1',
-      },{
+        width: 260,
+      },
+      {
         name: '区域',
         key: 'PLGLZS.QUYU',
         props: 'systemMatch2',
-      },{
+      },
+      {
         name: '数据来源',
         key: 'PLGLZS.SHUJULAIYUAN',
         props: 'systemMatch3',
-      }
+      },
     ],
   },
 ]
