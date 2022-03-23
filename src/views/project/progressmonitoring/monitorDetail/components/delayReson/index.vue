@@ -25,6 +25,7 @@
     </template> 
     <div class="tableWrapper" > 
       <tableList indexKey
+                 index
                  ref="tableList"
                  :lang="true"
                  :tableTitle="tableTitle"
