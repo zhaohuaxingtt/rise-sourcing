@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 15:41:16
+ * @LastEditTime: 2022-03-23 15:15:54
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -28,6 +28,7 @@
                  index
                  ref="tableList"
                  :lang="true"
+                 :height="600"
                  :tableTitle="tableTitle"
                  :tableData="tableList"
                  :tableLoading="tableLoading"
