@@ -15,8 +15,8 @@
     width="50%"
   >
     <template>
-      <MeetingProcess ref="MeetingProcess" v-if="nominationType === 'MEETING'" :nomiAppId="nomiAppId" :processInstanceId="processInstanceId" />
-      <ProcessVertical ref="ProcessVertical" v-else :instanceId="processInstanceId" class="padding-bottom30" />
+      <!-- <MeetingProcess ref="MeetingProcess" v-if="nominationType === 'MEETING'" :nomiAppId="nomiAppId" :processInstanceId="processInstanceId" /> -->
+      <ProcessVertical ref="ProcessVertical" :instanceId="processInstanceId" class="padding-bottom30" />
     </template>
   </iDialog>
 </template>
