@@ -9,7 +9,7 @@
           </span>
         <span class="floatright">
           <iButton v-if="show && isMtz" @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </span>
       </div>
       
@@ -56,6 +56,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import filters from "@/utils/filters";
 import {searchApproved} from "@/api/aeko/detail";
 import { formatTableData, recommendationList } from "../data.js";
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 export default {
   name: "RecommendationTablePendingApprovalComponents",
@@ -66,6 +67,7 @@ export default {
     iPagination,
     iButton,
     icon,
+    buttonTableSetting
   },
   props: {
     auditContents: { type: Object, require: true, default: () => [] },

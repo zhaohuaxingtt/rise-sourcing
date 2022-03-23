@@ -16,7 +16,7 @@
       <div class="clearFloat">
         <span class="font18 font-weight">{{ language( 'DINGDIANSHENQINGZONGHEGUANLI', '定点申请综合管理' ) }}</span>
         <div class="designateEditControl floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           <!-- 新建定点申请 -->
           <iButton
             @click="createNomination"
@@ -251,7 +251,7 @@ import {
 } from "rise";
 
 import  dialogTableTips  from '@/views/partsrfq/components/dialogTableTips';
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ filters, pageMixins, roleMixins,tableSortMixins ],
   data() {
@@ -288,6 +288,7 @@ export default {
     rfqDialog,
     icon,
     dialogTableTips,
+    buttonTableSetting
   },
   mounted() {
     this.getFetchData()

@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-24 15:19:33
- * @LastEditTime: 2022-01-05 10:53:40
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-03-23 15:57:01
+ * @LastEditors: YoHo
  * @Description: 风险预警配置
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\riskAndAlarmConfig\index.vue
 -->
@@ -12,7 +12,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language("FENGXIANYUJINGPEIZHI",'风险预警配置')}}</span>
         <div class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           <iButton :loading="submitting" @click="save">
             {{ language("LK_BAOCUNBINGYINGYONG",'保存并应用') }}
           </iButton>
@@ -66,10 +66,10 @@ import {
   getDelayGradeConfig,
   saveDelayGradeConfig
 } from '@/api/project/process'
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ tableSortMixins ],
-  components: { iPage, iCard, iButton, icon, iInput, tableList },
+  components: { iPage, iCard, iButton, icon, iInput, tableList,buttonTableSetting },
   data() {
     return {
       form: {},

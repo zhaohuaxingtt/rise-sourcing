@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-25 12:49:07
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 15:53:17
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -12,7 +12,7 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{language('DINGDIANXINXI','定点信息')}}</span>
       <div class="floatright">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         <!--------------------纸质RS单----------------------------------->
         <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_PAPERRSSHEET|定点信息-纸质RS单" @click="changersPaperDialogVisible(true)">{{language('ZHIZHIRSDAN','纸质RS单')}}</iButton>
         <!--------------------电子RS单----------------------------------->
@@ -63,9 +63,10 @@ import rsPaperDialog from './components/rsPaper'
 import selDialog from './components/sel'
 import rsEEditionDialog from './components/rsEEdition'
 import { findNominateInfo } from "@/api/partsprocure/editordetail"
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { tableList, iCard, iButton, rsPaperDialog, selDialog, rsEEditionDialog },
+  components: { tableList, iCard, iButton, rsPaperDialog, selDialog, rsEEditionDialog, buttonTableSetting },
   data() {
     return {
       tableTitle: tableTitle,

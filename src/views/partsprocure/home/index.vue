@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2022-01-24 15:56:43
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 15:54:17
+ * @LastEditors: YoHo
  * @Description: 零件采购项目建立首页。
  * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
 -->
@@ -216,7 +216,7 @@
                 {{ language("partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT",'零件采购项目管理') }}</span
               >
               <div class="floatright">
-                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 <!-- 手工采购项目创建 -->
                 <iButton @click="openCreateParts" v-permission.auto="PARTSPROCURE_CREATEMANUALPROCUREMENTITEM|手工采购项目创建">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton :loading='zpLoading' @click="openDiologChangeItems" v-permission.auto="PARTSPROCURE_TRANSFER|转派">{{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }} </iButton>
@@ -298,6 +298,7 @@ import {selectDictByKeyss,procureFactorySelectVo} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 import {setPretreatmentParams} from '@/utils/tool'
 import { getCarTypeSop } from "@/api/partsprocure/editordetail";
+import buttonTableSetting from '@/components/buttonTableSetting'
 // eslint-disable-next-line no-undef
 const { mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -317,7 +318,8 @@ export default {
     cancelProject,
     startProject,
     iMultiLineInput,
-    headerNav
+    headerNav,
+    buttonTableSetting
   },
   data() {
     return {

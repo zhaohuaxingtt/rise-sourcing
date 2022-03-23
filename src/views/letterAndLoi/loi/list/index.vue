@@ -28,7 +28,7 @@
         <div class="margin-bottom20 clearFloat">
          <span class="font18 font-weight">{{language('LK_LOI_YUDINGDIANTONGZHISHULOI','预定点通知书(LOI)')}}</span>
             <div class="floatright">
-                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 <iButton v-permission.auto="LK_LOI_LIST_QUERENBINGTIJIAO|LOI-确认并提交"  :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_LINIEQUEREN|LOI-LINIE确认" :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_LINIETUIHUI|LOI-LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
@@ -128,6 +128,7 @@ import {
 import { getDictByCode } from '@/api/dictionary'
 import { numberProcessor } from '@/utils' 
 import {setPretreatmentParams} from '@/utils/tool'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
     name:'loiList',
      mixins: [pageMixins,tableSortMixins],
@@ -142,7 +143,8 @@ export default {
         iCard,
         closeLoiDialog,
         remarkDialog,
-        icon
+        icon,
+        buttonTableSetting
     },
     data(){
         return{
