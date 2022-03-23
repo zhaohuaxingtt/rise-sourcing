@@ -28,7 +28,6 @@
         <div class="margin-bottom20 clearFloat">
          <span class="font18 font-weight">{{language('LK_LOI_YUDINGDIANTONGZHISHULOI','预定点通知书(LOI)')}}</span>
             <div class="floatright">
-                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 <iButton v-permission.auto="LK_LOI_LIST_QUERENBINGTIJIAO|LOI-确认并提交"  :loading="btnLoading.submit" @click="submit">{{language('LK_QUERENBINGTIJIAO','确认并提交')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_LINIEQUEREN|LOI-LINIE确认" :loading="btnLoading.lineSure" @click="lineSure">{{language('LK_LINIEQUEREN','LINIE确认')}}</iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_LINIETUIHUI|LOI-LINIE退回" :loading="btnLoading.lineBack" @click="lineBack">{{language('LK_LINIETUIHUI','LINIE退回')}}</iButton>
@@ -36,6 +35,7 @@
                 <iButton v-permission.auto="LK_LOI_LIST_GUANBI|LOI-关闭"  @click="closeLoi">{{language('LK_GUANBI','关闭')}} </iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_JIHUO|LOI-激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_EDITREMARK|LOI-编辑备注" @click="editRemark">{{language('LK_BIANJIBEIZHU','编辑备注')}} </iButton>
+                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
             </div> 
         </div>
         <!-- </template> -->

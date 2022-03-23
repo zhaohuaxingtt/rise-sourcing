@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 15:30:04
+ * @LastEditTime: 2022-03-23 16:29:54
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -40,7 +40,6 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANZONGHECHAXUN','配件综合查询')}}</span>
                 <div class="floatright">
-                  <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_MANAGFMENT_SENDBUYPER|配件-配件管理-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------分配Linie按钮----------------------------------->
@@ -57,6 +56,7 @@
                   <iButton @click="downloadAll" :loading="downloadAllLoading" v-permission.auto="APREPART_MANAGFMENT_DWONLOAD|配件-配件管理-下载报表">{{language('XIAZAIBAOBIAO','下载报表')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_MANAGFMENT_EXPORT|配件-配件管理-导出">{{language('DAOCHU','导出')}}</iButton>
+                  <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 </div>
             </div>
             <tableList

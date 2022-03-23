@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-17 13:44:35
- * @LastEditTime: 2022-03-23 15:57:07
+ * @LastEditTime: 2022-03-23 16:37:08
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\configscoredept\index.vue
@@ -46,10 +46,10 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
         <iButton @click="add">{{language("TIANJIA", "添加")}}</iButton>
         <iButton @click="deleteItem" :loading="btnLoading.deleteItem">{{ language('SHANCHU', '删除') }}</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <div class="body">
         <tableList

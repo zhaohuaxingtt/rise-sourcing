@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 15:57:04
+ * @LastEditTime: 2022-03-23 16:37:03
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
@@ -14,7 +14,6 @@
     <iCard class="margin-top20" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_SCHEDULEVERSION_TABLE|排程版本表格">
       <div class="margin-bottom20 clearFloat">
         <div class="floatright">
-          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           <!-- 批量下载排程版本 -->
           <iButton
             :loading="batchUploading"
@@ -22,6 +21,7 @@
           >
             {{ language('LK_XIAZAI', '下载') }}
           </iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tableList indexKey

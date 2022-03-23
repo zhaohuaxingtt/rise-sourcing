@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 19:56:57
- * @LastEditTime: 2022-03-23 15:48:14
+ * @LastEditTime: 2022-03-23 16:34:19
  * @LastEditors: YoHo
 -->
 <template>
@@ -21,8 +21,8 @@
     </iCard>
     <iCard class="margin-top20">
       <div class="btnRight">
-        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         <iButton @click='gotoRs' v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_TORS|RS单">RS单</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tablelist
         lang

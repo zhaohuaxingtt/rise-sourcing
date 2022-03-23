@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2022-03-23 15:48:44
+ * @LastEditTime: 2022-03-23 16:34:25
  * @LastEditors: YoHo
 -->
 <template>
@@ -16,8 +16,8 @@
     <!-- 表格区 -->
     <iCard class="cardMargin">
       <div class="btnright margin-bottom20">
-        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         <iButton @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tablelist
       lang

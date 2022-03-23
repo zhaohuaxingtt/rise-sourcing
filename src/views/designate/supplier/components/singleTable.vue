@@ -5,7 +5,7 @@
           {{ language("LK_DANYIGONGYINGSHANG",'单一供应商') }}</span
         >
         <div class="floatright">
-          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+          
           <template  v-if="singleEditControl">
             <!-- 批量编辑 -->
             <iButton @click="handleBatchEdit" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_BATCHEDIT|批量编辑">
@@ -45,6 +45,7 @@
               {{ language("nominationSupplier_Export",'导出') }}
             </iButton>
           </template>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tablelist

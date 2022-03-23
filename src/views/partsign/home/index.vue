@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2022-03-23 15:52:34
+ * @LastEditTime: 2022-03-23 16:36:07
  * @LastEditors: YoHo
  * @Description: 零件签收列表界面.
  * @FilePath: \front-sourcing\src\views\partsign\home\index.vue
@@ -178,7 +178,6 @@
                 language("LK_XINJIANXINXIDANQIANSHOU",'新件信息单签收')
               }}</span>
               <div class="floatright">
-                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 <iButton @click="save" v-permission.auto="PARTSIGN_SIGNBUTTON|签收">{{
                   language("partsignLanguage.QianShou",'签收')
                 }}</iButton>
@@ -192,6 +191,7 @@
                   v-permission.auto="PARTSIGN_TRANSFERBUTTON|转派"
                   >{{ language("partsignLanguage.ZhuanPai",'转派') }}</iButton
                 >
+                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
               </div>
             </div>
             <tablelist

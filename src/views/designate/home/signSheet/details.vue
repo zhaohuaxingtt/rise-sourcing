@@ -1,8 +1,8 @@
 <!--
  * @Author: Haojiang
  * @Date: 2021-06-24 17:53:08
- * @LastEditTime: 2022-01-25 14:14:26
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 16:35:01
+ * @LastEditors: YoHo
  * @Description: m签字单新增、详情
  * @FilePath: /front-web/src/views/designate/home/signSheet/newSignSheet.vue
 -->
@@ -44,7 +44,7 @@
       <div class="margin-bottom20 clearFloat">
        <span class="font18 font-weight">{{language('XIANGQINGLIEBIAO', '详情列表')}}</span>
         <div class="floatright">
-          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+          
           <template  v-if="mode === 'add'">
             <iButton @click="chooseSignsheet()">
               {{ language("XUANZE", '选择') }}
@@ -54,6 +54,7 @@
               {{ language("YICHU",'移除') }}
             </iButton>
           </template>  
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>   
       </div>
       <!-- 表格 -->

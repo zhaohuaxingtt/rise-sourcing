@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 15:56:54
+ * @LastEditTime: 2022-03-23 16:36:46
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -12,10 +12,10 @@
         <div class="cardview-header">
           <div class="font18 font-weight">{{titleKey ? language(tableTitle.titleKey, tableTitle.titleName) : tableTitle.titleName}}</div>
           <div class="control">
-            <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
             <iButton @click="exportfile">
               {{ language('LK_DAOCHU', '导出') }}
             </iButton>
+            <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           </div>
         </div>
         <div class="cardview-body padding-top30">

@@ -1,6 +1,6 @@
 <template>
   <span class="button-table-setting" @click="handleClick">
-    <icon name="iconSetting" symbol />
+    <icon name="iconSetting" class="font24" symbol />
   </span>
 </template>
 

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-27 17:45:44
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 15:53:17
+ * @LastEditTime: 2022-03-23 16:36:16
  * @Description: 零件采购项目-定点信息
  * @FilePath: \front-web\src\views\partsprocure\editordetail\components\designateInfo\index.vue
 -->
@@ -12,13 +12,13 @@
     <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{language('DINGDIANXINXI','定点信息')}}</span>
       <div class="floatright">
-        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         <!--------------------纸质RS单----------------------------------->
         <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_PAPERRSSHEET|定点信息-纸质RS单" @click="changersPaperDialogVisible(true)">{{language('ZHIZHIRSDAN','纸质RS单')}}</iButton>
         <!--------------------电子RS单----------------------------------->
         <iButton  v-permission.auto="PARTSPROCURE_DESIGNATEINFO_ELECTRONICRSSHEET|定点信息-电子RS单" @click="changersEeditionDialogVisible(true)">{{language('DIANZIRSDAN','电子RS单')}}</iButton>
         <!--------------------SEL分摊单----------------------------------->
         <iButton v-permission.auto="PARTSPROCURE_DESIGNATEINFO_SELALLOCATIONSHEET|定点信息-SEL分摊单" @click="changeselDialogVisible(true)">{{language('SELFENTANDAN ','SEL分摊单')}}</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         
       </div>
     </div>

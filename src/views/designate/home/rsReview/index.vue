@@ -16,7 +16,7 @@
       <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language( 'SHANGHUIRSDANFUHE', '上会RS单复核' ) }}</span>
         <div class="floatright">
-          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
+          
           <!-- 发起复核 -->
           <iButton
             @click="initRsReview"
@@ -80,7 +80,7 @@
           >
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
-
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           
         </div>
       </div>
