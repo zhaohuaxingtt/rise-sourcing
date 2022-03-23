@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-08-02 11:09:43
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 14:19:45
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 11:17:15
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progressconfirm\components\productgroup\data.js
  */
@@ -16,7 +16,7 @@ export const searchList = [
 ]
 
 export const tableTitle = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120},
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true, minWidth: 120},
   {props:'productGroupZh',name:'产品组中文名称', key: "CHANPINZUZHONGWENMINGCHENG", tooltip: true, minWidth: 150},
   {props:'productGroupDe',name:'产品组德文名称', key: "CHANPINZUDEWENMINGCHENG", tooltip: true, minWidth: 150},

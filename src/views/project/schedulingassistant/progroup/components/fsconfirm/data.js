@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 16:01:20
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 15:02:58
+ * @LastEditTime: 2022-03-23 11:17:22
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\progroup\components\fsconfirm\data.js
  */
 
 export const tableTitle = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true,minWidth: 200},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true,minWidth: 200},
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true},
   {props:'productGroupZh',name:'产品组中文名称', key: "CHANPINZUZHONGWENMINGCHENG", tooltip: true},
   {props:'productGroupDe',name:'产品组德文名称', key: "CHANPINZUDEWENMINGCHENG", tooltip: true},

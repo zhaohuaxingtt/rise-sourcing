@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-10-11 10:31:41
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 14:10:45
+ * @LastEditTime: 2022-03-23 11:16:49
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\partsTaskList\data.js
  */
@@ -15,7 +15,7 @@ export const searchList = [
 ]
 
 export const tableTitle = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true},
   {props:'partNum',name:'TIPS零件号', key: "TIPSLINGJIANHAO", tooltip: true},
   {props:'partNameCn',name:'零件名称-CN', key: "LINGJIANMINGCHENG-CN", tooltip: true},
   {props:'partNameEn',name:'零件名称-DE', key: "LINGJIANMINGCHENG-DE", tooltip: true},

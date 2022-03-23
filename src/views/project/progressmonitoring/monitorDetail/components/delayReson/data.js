@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:54:07
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 15:43:50
+ * @LastEditTime: 2022-03-23 11:16:39
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\data.js
  */
 
 export const tableTitle = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true,minWidth: 200},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true,minWidth: 200},
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true}, 
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true}, 
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true}, 
