@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 11:49:44
+ * @LastEditTime: 2022-03-23 16:12:19
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -135,6 +135,8 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
+        startDate: '',
+        endDate:'',
         sendDate: []
         // showSelf: true
       },
@@ -424,6 +426,8 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
+        startDate: '',
+        endDate:'',
         sendDate: []
         // showSelf: true
       }
@@ -492,10 +496,8 @@ export default {
       this.page.currPage = 1
       // 若有定点起止时间将其拆分成两个字段
       const {sendDate=[]} = this.searchParams;
-      if(sendDate.length){
-        this.searchParams.startDate = sendDate[0]
-        this.searchParams.endDate = sendDate[1]
-      }
+      this.searchParams.startDate = sendDate[0] || ''
+      this.searchParams.endDate = sendDate[1] || ''
       // this.searchParams.sendDate = this.searchParams.sendDate ? moment(this.searchParams.sendDate).format('YYYY-MM-DDT00:00:00'): null
       this.getTableList()
     },
@@ -507,8 +509,10 @@ export default {
      */    
     getTableList() {
       this.tableLoading = true
+      let searchParams = JSON.parse(JSON.stringify(this.searchParams))
+      delete searchParams.sendDate
       const params = {
-        ...this.searchParams,
+        ...searchParams,
         current: this.page.currPage,
         size: this.page.pageSize
       }
