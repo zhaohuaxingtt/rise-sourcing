@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 14:43:45
+ * @LastEditTime: 2022-03-23 14:56:21
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -366,7 +366,8 @@ export default {
         cfTargetPrice: '',
         nomiType: '',
         idState: '',
-        showSelf: true
+        showSelf: true,
+        signDate:[]
       }
       this.sure()
     },
