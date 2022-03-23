@@ -38,6 +38,12 @@
                <span v-if="isPreview=='1' || nominationDisabled || rsDisabled">{{ percent(scope.row.ebrConfirmValue || 0) }}</span>
                <iInput v-else v-model="scope.row.ebrConfirmValue" @input="handleInputLimit($event, scope.row)" @focus="handleFocus(scope.row.ebrConfirmValue, scope.row)" @blur="handleBlur(scope.row.ebrConfirmValue, scope.row)"/>
             </template>
+						<template #lifeTime="scope">
+							<span>{{ scope.row.lifeTime | toThousands(true) }}</span>
+						</template>
+						<template #paVolume="scope">
+							<span>{{ scope.row.paVolume | toThousands(true) }}</span>
+						</template>
           </tablelist>
           <!-- <el-table
            :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
@@ -94,7 +100,7 @@ import {
    getPartList,
    partUpdate,
  } from '@/api/designate/designatedetail/decisionData/partlist'
-import { numberProcessor } from "@/utils"
+import { numberProcessor, toThousands } from "@/utils"
 import { tableTitle } from "./data"
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
@@ -108,6 +114,9 @@ export default {
         iInput,
         tablelist,
     },
+		filters: {
+			toThousands
+		},
     created(){
        this.getListData();
     },
