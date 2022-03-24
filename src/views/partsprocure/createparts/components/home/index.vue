@@ -106,7 +106,7 @@ import { selectDictByKeys } from "@/api/dictionary"
 import { cloneDeep } from "lodash"
 import { serialize } from "@/utils"
 import {BKMROLETAGID} from '@/config'
-import { navList } from "../data"
+import { navList, noOnlineText } from "../data"
 
 export default {
   components: { 
@@ -135,7 +135,17 @@ export default {
       tableListData: [],
       multipleSelection: [],
       createPartsLoading: false,
-      navList
+      navList: _.cloneDeep(navList)
+    }
+  },
+  created() {
+    this.getDict()
+    this.getParts()
+    this.$set(this.navList[this.navList.length - 1], 'slot', noOnlineText(this.$i18n.locale))
+  },
+  watch: {
+    ['$i18n.locale'](lang) {
+      this.$set(this.navList[this.navList.length - 1], 'slot', noOnlineText(lang))
     }
   },
   computed: {
@@ -154,10 +164,6 @@ export default {
       const isBKM = roleList.find(o => o.code === BKMID) && roleList.length === 1
       return isBKM
     },
-  },
-  created() {
-    this.getDict()
-    this.getParts()
   },
   methods: {
     getDict() {
