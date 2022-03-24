@@ -558,14 +558,20 @@ export default {
             this.exchangeRates = sourceData
               .filter(item => !item.isCurrentVersion)
               .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
-              .map(item => {
-                const result = { version: item.exchangeRateVos[0].version }
-                
-                result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
-                result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
 
-                return result
-              })
+            this.exchangeRates = this.exchangeRates.map(item => {
+              const result = { version: item.exchangeRateVos[0].version }
+              
+              result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
+
+              if (this.exchangeRates.length > 1) {
+                result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
+              } else {
+                result.fsNumsStr = ""
+              }
+
+              return result
+            })
           } else {
             
           }
