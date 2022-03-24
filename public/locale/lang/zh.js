@@ -6356,6 +6356,7 @@
 		YIFENPAI: '已分派',
 		FENPAIZHUANGTAI: '分派状态',
 		变更说明: '变更说明',
+		JIANGJIAJIHUAGENGXINSHIBAI: '降价计划更新失败',
 	}
 	i18n.setLocaleMessage('zh', oldLanguage)
 })
