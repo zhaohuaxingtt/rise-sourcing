@@ -4,17 +4,18 @@
  * @Description: 决策资料-SingleSourcing
 -->
 <template>
-    <iCard title="生产采购单⼀供应商说明 Single Sourcing for Production Purchasing" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING|决策资料-SingleSourcing">
+    <iCard title="生产采购单一供应商说明 Single Sourcing for Production Purchasing" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING|决策资料-SingleSourcing">
         <template slot="header-control">
-             <iButton @click="gotoSupplier" v-if="!fix" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_GOTOSUPPLIERMAINTENANCE|跳转供应商维护">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
+            <!-- 流转中、被冻结的申请单不可编辑 -->
+             <iButton @click="gotoSupplier" v-if="!fix && applicationStatus!=='ONFLOW' && applicationStatus!=='FREEZE'" v-permission.auto="SOURCING_NOMINATION_ATTATCH_SINGLESOURCING_GOTOSUPPLIERMAINTENANCE|跳转供应商维护">{{language('TIAOZHUANGONGYINGSHANGWEIHU','跳转供应商维护')}}</iButton>
         </template>
         <div class="decision-data-singleSourcing-content">
             <div class="margin-top30 margin-bottom30">
-                <iFormGroup inline row="2">
-                    <iFormItem label-width="130px"  label="项⽬名称 Project:">
+                <iFormGroup class="fromGroup" inline row="2">
+                    <iFormItem label="项⽬名称 Project:">
                         <iText tooltip style="width:250px">{{projectName}}</iText>
                     </iFormItem>
-                        <iFormItem label-width="180px"  label="定点申请单号 Project No.:">
+                        <iFormItem label="定点申请单号 Project No.:">
                         <iText style="width:250px">{{nominateId}}</iText>
                     </iFormItem>
                 </iFormGroup>
@@ -117,6 +118,10 @@ export default {
     computed:{
         isPreview(){
             return this.$store.getters.isPreview;
+        },
+        // 定点状态
+        applicationStatus(){
+        return this.$store.getters.applicationStatus
         }
     },
     methods:{
@@ -175,6 +180,18 @@ export default {
     .singleSourcing-table{
         ::v-deep .el-table .cell{
             white-space:pre-line;
+        }
+    }
+
+    .fromGroup {
+        ::v-deep .el-form-item__label {
+            width: auto;
+        }
+
+        ::v-deep .el-form-item__content {
+            .itext {
+                height: 100%;
+            }
         }
     }
 }

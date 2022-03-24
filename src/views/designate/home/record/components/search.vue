@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 14:17:55
- * @LastEditTime: 2021-12-01 14:56:31
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-03-11 14:40:12
+ * @LastEditors: YoHo
 -->
 <template>
   <div class="search">
@@ -157,8 +157,16 @@
         <el-form-item :label="language('DINGDIANSHIJIAN','定点时间')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_NOMIDATE|定点时间">
           <iDatePicker 
           v-model='formRecord.nominateTime'
+           type="daterange"
            value-format="yyyy-MM-dd">
            </iDatePicker>
+           
+        <!-- <iDatePicker
+          v-model='form.checkDate'
+          type="daterange"
+          value-format="yyyy-MM-dd HH:mm:ss">
+        </iDatePicker> -->
+      <!-- </el-form-item> -->
         </el-form-item>
         <!-- 显示自己 -->
         <el-form-item :label="language('nominationLanguage_XianShiZiJi','显示自己')" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_SHOWSELF|显示自己">
@@ -210,14 +218,15 @@ export default {
   },
   methods: {
     sure() {
-      let form = { ...this.formRecord }
+      let form = { ...this.formRecord, nominateStartTime: Array.isArray(this.formRecord.nominateTime) ? this.formRecord.nominateTime[0] : undefined, nominateEndTime: Array.isArray(this.formRecord.nominateTime) ? this.formRecord.nominateTime[1] : undefined }
+      delete form.nominateTime
       this.$emit('search',form)
     },
     reset() {
       this.formRecord = {
-        showSelf: true
+        ..._.cloneDeep(form)
       }
-      this.$emit('search',{})    
+      this.$emit('search', this.formRecord)    
     },
     getSelectGroup() {
       let types = [

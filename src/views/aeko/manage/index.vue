@@ -13,7 +13,7 @@
         <iNavMvp :list="navList" lang  :lev="2" routerPage right></iNavMvp>
         <switchPost />
         <!-- <log-button @click="openLog" class="margin-left25"/> -->
-        <iLoger ref="log" @close="closeLog" :config="{module_obj_ae: module, menuName_obj_ae:$store.getters.getLogMenu, bizId_obj_ae: bizId, queryParams:[]}" :credentials="true" isPage :isUser="true" class="margin-left25" />
+        <iLoger ref="log" @close="closeLog" :config="{module_obj_ae: module, menuName_obj_ae:$store.getters.getLogMenu, bizId_obj_ae: bizId, queryParams:[]}" isPage :isUser="true" class="margin-left25" />
         <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong"
               class="log-icon margin-left20 cursor myLogIcon"></icon>
       </div>
@@ -104,7 +104,7 @@
             <iButton :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <button-table-setting @click="edittableHeader" />
           <!-- 暂时添加的按钮 -->
           <!-- <template v-if="isAekoManager">
             <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
@@ -301,7 +301,7 @@ export default {
         showDialog: false,
         bizId: '',
         hasId: true,  // 列表日志按钮查看所有
-        module:'AEKO管理'
+        module:''
       }
     },
     computed: {
@@ -333,7 +333,7 @@ export default {
       this.sure();
       this.getSearchList();
 
-      setLogMenu('AEKO管理-列表')
+      setLogMenu('')
       const roleList = this.roleList;
       this.isAekoManager = roleList.includes('AEKOGLY'); // AKEO管理员
       this.isCommodityCoordinator = roleList.includes('AEKOXTY'); // Aeko科室协调员
@@ -548,10 +548,12 @@ export default {
       },
       // 清空bizId,便于触发顶部日志按钮
       closeLog(){
-        setLogMenu('AEKO管理-列表')
+        // setLogMenu('AEKO管理-列表')
+        setLogMenu('')
         this.bizId = ''
         this.hasId = true
-        this.module = 'AEKO管理'
+        this.module = ''
+        // this.module = 'AEKO管理'
       },
       // 查看描述
       checkDescribe(row){

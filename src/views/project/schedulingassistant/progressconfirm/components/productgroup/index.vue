@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-02 10:54:35
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-30 18:17:40
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-17 16:09:16
  * @Description: 产品组
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\components\productgroup\index.vue
 -->
@@ -33,16 +33,16 @@
         <span class="font18 font-weight">{{language('CHANPINZUJINDUQUERENHUIZONG', '产品组进度确认汇总')}}</span>
         <div class="floatright">
           <!--------------------发送按钮----------------------------------->
-          <iButton v-if="!isFS && withSend" @click="handleSend" >{{language('FASONG','发送')}}</iButton>
+          <iButton v-if="!isFS && withSend" @click="handleSend" v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_SEND_BUTTON|进度确认汇总-发送-按钮">{{language('FASONG','发送')}}</iButton>
           <template v-if="isFS">
             <!--------------------转派按钮----------------------------------->
-            <transferBtn class="margin-right10" tansferType="1" :tansferData="selectRows" @getTableList="getTableList" ></transferBtn>
+            <transferBtn v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_TRANSFER_BUTTON|进度确认转派按钮" class="margin-right10" tansferType="1" :tansferData="selectRows" @getTableList="getTableList" ></transferBtn>
             <!--------------------退回按钮----------------------------------->
-            <backBtn class="margin-right10" v-if="withAllBtn" backType="1" :backData="selectRows" @getTableList="getTableList" ></backBtn>
+            <backBtn v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_BACK_BUTTON|进度确认退回按钮" class="margin-right10" v-if="withAllBtn" backType="1" :backData="selectRows" @getTableList="getTableList" ></backBtn>
             <!--------------------保存按钮----------------------------------->
-            <saveBtn v-if="withAllBtn" saveType="1" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
+            <saveBtn v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_SAVE_BUTTON|进度确认保存按钮" v-if="withAllBtn" saveType="1" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
             <!--------------------确认并发送按钮----------------------------------->
-            <confirmBtn v-if="withAllBtn" confirmType="1" :confirmData="selectRows" @getTableList="getTableList" ></confirmBtn>
+            <confirmBtn v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_SENDCONFIRM_BUTTON|进度确认确认并发送按钮" v-if="withAllBtn" confirmType="1" :confirmData="selectRows" @getTableList="getTableList" ></confirmBtn>
           </template>
         </div>
       </div>

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors:  
- * @LastEditTime: 2021-12-03 10:25:12
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-22 23:16:54
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -53,11 +53,11 @@
                         <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
                       </el-tooltip>
                   </div>
-                </div>       
+                </div>
                 <div class="rsTop-right-item-value" v-else >
                   <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
-                  <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;">
-                  </span>
+                  <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
+                  <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
                 </div>
             </template>
           </div>
@@ -176,13 +176,13 @@
         <div class="meetingRemark" v-if="isApproval">
           <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
             <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
-            <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
+            <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
           </div>
         </div>
         <div class="meetingRemark" v-else>
           <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
             <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
-            <iInput class="margin-top10" type="textarea" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
+            <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
           </div>
         </div>
       </div>
@@ -558,14 +558,20 @@ export default {
             this.exchangeRates = sourceData
               .filter(item => !item.isCurrentVersion)
               .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
-              .map(item => {
-                const result = { version: item.exchangeRateVos[0].version }
-                
-                result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
-                result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
 
-                return result
-              })
+            this.exchangeRates = this.exchangeRates.map(item => {
+              const result = { version: item.exchangeRateVos[0].version }
+              
+              result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
+
+              if (this.exchangeRates.length > 1) {
+                result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
+              } else {
+                result.fsNumsStr = ""
+              }
+
+              return result
+            })
           } else {
             
           }

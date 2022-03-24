@@ -34,7 +34,7 @@
     </iSearch>
     <div class="tableBox padding-bottom40">
       <div class="tableBox-btn">
-        <iButton @click="handleSave" v-permission="CATEGORY_ASSISTANT_SOP_XZXSCXXM_BAOCUN">{{language('BAOCUN', '保存')}}</iButton>
+        <iButton @click="handleSave" >{{language('BAOCUN', '保存')}}</iButton>
       </div>
       <tableList ref="table" :tableTitle="tableTitle" :tableData="tableData" :tableLoading="tableLoading" @handleSelectionChange="handleSelectionChange"></tableList>
     </div>
@@ -159,13 +159,13 @@ export default {
      * @return {*}
      */    
     getCarProjectOptions() {
-      getCarTypePro().then(res => {
+      getSelectCarType().then(res => {
         if (res?.result) {
           this.carProjectOptions = res.data.map(item => {
             return {
               ...item,
               value: item.id,
-              label: item.cartypeProName
+              label: item.cartypeProjectZh
             }
           })
         } else {

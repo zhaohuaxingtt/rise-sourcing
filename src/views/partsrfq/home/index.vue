@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2022-02-25 18:34:13
- * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-21 11:00:38
+ * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
 -->
@@ -101,7 +101,7 @@
               <el-form-item :label="language('LK_XIANSHIZIJI','显示自己')" v-permission.auto="PARTSRFQ_SHOWSELF|显示自己">
                 <iSelect
                   v-model="form.showSelf"
-                  :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','是否显示自己')"
+                  :placeholder="language('LK_QINGXUANZHEMEICHEYONGLIANGZHUANGTAI','显示自己')"
                 >
                   <el-option value="" :label="language('all','全部') | capitalizeFilter"></el-option>
                   <el-option :value="true" :label="language('YES','是')"></el-option>
@@ -117,7 +117,6 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{ language('LK_RFQZONGHEGUANLI','RFQ综合管理') }}</span>
               <div class="floatright">
-                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission.auto="PARTSRFQ_ACTIVATERFQ|激活RFQ">
                   {{ language('LK_JIHUORFQS','激活RFQ') }}
@@ -153,6 +152,7 @@
                   {{ language('LK_CHUANGJIANDINGDIANSHENQINGS','创建定点申请') }}
                 </iButton>
                 <iButton @click="exportTable" v-permission.auto="PARTSRFQ_EXPORT|导出">{{ language('LK_DAOCHUS','导出') }}</iButton>
+                <button-table-setting @click="edittableHeader" />
               </div>
             </div>
             <tablelist

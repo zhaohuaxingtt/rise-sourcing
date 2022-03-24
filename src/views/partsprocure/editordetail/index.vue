@@ -182,7 +182,7 @@
 						</iFormItem>
 						
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPEZH|车型项目" :label="language('LK_CHEXINGXIANGMU','车型项目') + ':'" name="test " slot="" v-if="!isCarType" >
-							<iSelect v-model="detailData.carTypeProjectNum" filterable v-if="!disabled" @change="handleChangeByCarTypeProject">
+							<iSelect key="carTypeProjectNum" ref="carTypeProjectNum" v-model="detailData.carTypeProjectNum" filterable v-if="!disabled" @change="handleChangeByCarTypeProject">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.CAR_TYPE_PRO" :key="index">
@@ -191,17 +191,17 @@
 							<iText v-else>{{ getName(detailData.carTypeProjectNum, "code", fromGroup.CAR_TYPE_PRO) }}</iText>
 						</iFormItem>
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_CARTYPE|车型" :label="language('LK_CHEXING','车型') + ':'" name="test" v-if="isCarType">
-							<iSelect ref="carTypeModelSelect" v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled ">
+							<iSelect key="carTypeModel" ref="carTypeModelSelect" :filterable="true" v-model="detailData.carTypeModel" @change="updateCar" multiple collapse-tags v-if="!disabled" @visible-change="handleVisibleChangeByCarTypeModel">
 								<!-- :disabled='carTypeCanselect()'  -->
 								<el-option :value="item.id" :label="item.name"
 									v-for="(item) in fromGroup.CAR_TYPE" :key="item.id">
 								</el-option>
 							</iSelect>
-							<iText v-else>{{ getName(detailData.carTypeModel, "id", fromGroup.CAR_TYPE) }}</iText>
+							<iText v-else>{{ detailData.cartypes.map(item => item.name).join(",") }}</iText>
 						</iFormItem>
 											<!--如果选择后的采购工厂不在主数据中该车型项目对应的采购工厂范围内？，则提示”您所选的采购工厂与主数据中该车型项目对应的采购工厂不一致，请确认是否修改“；选择”确认“保持修改后的值，选择”取消“恢复到修改前的值。”保存“后生效。--->
 						<iFormItem v-permission.auto="PARTSPROCURE_EDITORDETAIL_PURCHASINGFACTORY|采购工厂" :label="language('LK_CAIGOUGONGCHANG','采购工厂') + ':'" name="test">
-							<iSelect ref="procureFactorySelect" v-model="detailData.procureFactory" :disabled='procureFactoryCanselect() || detailData.partProjectSource == 5' @change="handleChangeByProcureFactory" v-if="!disabled">
+							<iSelect ref="procureFactorySelect" v-model="detailData.procureFactory" :disabled='(procureFactoryCanselect() || detailData.partProjectSource == 5) && isBlankProcureFactory' @change="handleChangeByProcureFactory" v-if="!disabled">
 								<el-option :value="item.code" :label="item.name"
 									v-for="(item, index) in fromGroup.PURCHASE_FACTORY" :key="index">
 								</el-option>
@@ -553,6 +553,10 @@
 			// 组合CF控制员框的数据(id + options) 用于监控
 			cfControllerPack() {
 				return { cfControllerId: this.detailData.cfController || "", cfControllerOptions: this.fromGroup.CF_CONTROL || [] }
+			},
+			// 判断后端是否有保存采购工厂
+			isBlankProcureFactory() {
+				return !!this.sourceProcureFactory
 			}
 		},
 		watch:{
@@ -604,7 +608,7 @@
 
 					if (data.cfControllerId) {
 						inputDom.value = this.detailData.cfControllerName || ""
-						const current = data.linieOptions.find(option => option.id === data.cfControllerId)
+						const current = data.cfControllerOptions.find(option => option.id === data.cfControllerId)
 						if (current) inputDom.value = current.name
 					} else {
 						inputDom.value = ""
@@ -642,6 +646,7 @@
 				isCarType:false,
 				bakCarTypeSopTime: '',
 				sourcePartProjectType: '', // 后端返回的partProjectType
+				sourceProcureFactory: ''
 			};
 		},
 		created() {
@@ -745,6 +750,7 @@
 				getProjectDetail(this.$route.query.projectId).then((res) => {
 					this.detailLoading = false
 					this.detailData = res.data || {};
+					this.sourceProcureFactory = res.data.procureFactory
 					this.sourceDetailData = Object.freeze(_.cloneDeep(this.detailData)) // 用于数据还原操作，调用获取详情接口才更新
 					this.sourcePartProjectType = res.data.partProjectType
 					this.bakCarTypeSopTime = this.detailData && this.detailData.sopDate
@@ -756,6 +762,14 @@
 					this.fsnrGsnrNum = this.infoItem.fsnrGsnrNum;
 					this.partProjectType = this.infoItem.partProjectType;					 
 					this.infoItem.partProjectType == '1000003'||this.infoItem.partProjectType=='50002001'? this.isCarType = true : this.isCarType = false
+
+					if (this.isCarType) {
+						this.$nextTick(() => {
+							const dom = this.$refs.carTypeModelSelect.$el.querySelector(".el-select__input")
+							dom.style.display = "none"
+						})
+					}
+
 					//-------------修改零件采购项目逻辑endding
 					if (res.data.applicationStatus || res.data.nominateProcessType || res.data.isPriceConsistent) {
 						this.disabled = getNominateDisabled({
@@ -1059,12 +1073,13 @@
 			onPartProjectTypeChange(data) {
 				this.clearCarTypeProject()
 				this.$set(this.detailData, "carTypeModel", [])
-				// 手动加一下cf控制员cfControllerName缺失问题
-				this.checkCfController();
-
 				this.$nextTick(() => {
 					if (this.$refs.carTypeModelSelect) this.$refs.carTypeModelSelect.$el.querySelector("input").value = ""
+					if (this.$refs.carTypeProjectNum) this.$refs.carTypeProjectNum.$el.querySelector("input").value = ""
 				})
+
+				// 手动加一下cf控制员cfControllerName缺失问题
+				this.checkCfController();
 
 				this.detailData.isDb = data === partProjTypes.DBYICHIXINGCAIGOU
 				data == '50002001'|| data == '1000003' ? this.isCarType = true : this.isCarType = false
@@ -1127,6 +1142,20 @@
 				if(detailData['cfController'] && !detailData['cfControllerName']){
 					const currentCfController = Array.isArray(this.fromGroup.CF_CONTROL) && this.fromGroup.CF_CONTROL.find(item => item.id == detailData['cfController']) || {}
 					detailData['cfControllerName'] = currentCfController.name;
+				}
+			},
+			handleVisibleChangeByCarTypeModel(status) {
+				const inputDom = this.$refs.carTypeModelSelect.$el.querySelector(".el-select__input")
+				const showDom = this.$refs.carTypeModelSelect.$el.querySelector(".el-input__inner")
+				if (status) {
+					this.$refs.carTypeModelSelect.focus()
+					inputDom.style.display = "block"
+					inputDom.focus()
+				} else {
+					this.$refs.carTypeModelSelect.blur()
+					inputDom.style.display = "none"
+					inputDom.blur()
+					showDom.style.height = "auto"
 				}
 			}
 		}

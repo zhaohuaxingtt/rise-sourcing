@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-05-27 12:33:07
- * @LastEditTime: 2021-12-28 10:16:16
+ * @LastEditTime: 2022-03-11 11:59:08
  * @LastEditors: Please set LastEditors
  * @Description: 人工成本维护
  * @FilePath: \front-sourcing\src\views\costanalysismanage\components\datamaintenance\components\costMaintenance\index.vue
@@ -126,7 +126,7 @@ export default {
     getKmFileHistory () {
       this.loading = true
       dataMaintain({
-        currPage: this.page.currPage,
+        pageNo: this.page.currPage,
         pageSize: this.page.pageSize
       })
         .then(res => {
@@ -134,6 +134,9 @@ export default {
             this.tableListData = Array.isArray(res.data) ? res.data : []
             this.page.totalCount = res.total || 0
             this.multipleSelection = []
+            this.page.currPage = res.pageNum
+            this.page.pageSize = res.pageSize
+            this.page.totalCount = res.total
           } else {
             iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
           }
@@ -147,8 +150,8 @@ export default {
     },
     // 导出
     handleExport () {
-      exportTemplate().then(res => {
-        window.open(res.data)
+      exportTemplate('1497100847758282753').then(res => {
+        // window.open(res.data)
       })
     },
     openDate () {

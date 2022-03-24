@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 11:06:03
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 16:45:30
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -246,9 +246,9 @@ export default {
      * @return {*}
      */    
     openChangeLight(pro) {
-      if (this.partStatus == 7) {
-        return
-      }
+      // if (this.partStatus == 7) {
+      //   return
+      // }
       this.selectParts = pro
       this.changeLightDialogVisible(true)
     },
