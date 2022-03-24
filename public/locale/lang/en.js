@@ -6353,6 +6353,7 @@
 		AEKO_RMB_CHE: '(RMB/车)',
 		STATUS_EN: 'Status',
 		Meeting: 'Meeting',
+		JIANGJIAJIHUAGENGXINSHIBAI: 'Price Reduction Plan update failed',
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
