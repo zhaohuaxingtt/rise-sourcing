@@ -527,6 +527,7 @@ export default {
     getTableList () {
       if (this.$route.query.id) {
         this.confirmTableLoading = true;
+        this.parmarsHasRfq['rfqId'] = this.$route.query.id;
         this.parmarsHasRfq['size'] = this.pageSize || 10;
         this.parmarsHasRfq['current'] = this.currPage || 1;
         this.parmarsHasRfq['status'] = 'NOT_IN_RFQ';
