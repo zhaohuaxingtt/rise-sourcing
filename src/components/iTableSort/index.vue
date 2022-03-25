@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-03-01 11:19:32
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-25 10:25:55
+ * @LastEditors: YoHo
  * @Description: table组件
 -->
 <template>
@@ -88,6 +88,8 @@
         :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))"
         :prop="items.props"
         :class-name="items.tree ? 'tree' : ''"
+        :sortable="items.sortable||false"
+        :sort-method="items.sortMethod"
         :fixed="items.fixed">
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
@@ -407,6 +409,7 @@ export default{
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        display: inline-flex;
       }
       .label-require{
         color: #f56c6c;

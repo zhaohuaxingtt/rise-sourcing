@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2022-03-09 11:40:10
+ * @LastEditTime: 2022-03-25 10:26:03
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -14,8 +14,9 @@ export const tableTitle = [{
 		name: 'FSNF/GSNF/SPNR',
 		key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
 		tooltip: true,
-		width:130,
+		width:160,
 		isAekoShow:true,
+		sortable: true
 	},
 	{
 		props: 'partNum',
@@ -24,6 +25,7 @@ export const tableTitle = [{
 		tooltip: true,
 		width:130,
 		isAekoShow:true,
+		sortable: true
 	},
 	{
 		props: 'sourcingNumber',
