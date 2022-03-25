@@ -527,12 +527,14 @@ export default {
     getTableList () {
       if (this.$route.query.id) {
         this.confirmTableLoading = true;
-        this.parmarsHasRfq['rfqId'] = this.$route.query.id;
+        this.parmarsHasRfq['rfqId'] = this.$route.query.id || '';
         this.parmarsHasRfq['size'] = this.pageSize || 10;
         this.parmarsHasRfq['current'] = this.currPage || 1;
-        this.parmarsHasRfq['status'] = 'NOT_IN_RFQ';
-        this.parmarsHasRfq['linieId'] = this.linieUserId;
-        this.parmarsHasRfq['buyerId'] = this.baseInfo.buyerId;
+        this.parmarsHasRfq['status'] = '';
+        this.parmarsHasRfq["isRfqPartList"] = true;
+        this.parmarsHasRfq["positionCtrl"] = false;
+        // this.parmarsHasRfq['linieId'] = this.linieUserId;
+        // this.parmarsHasRfq['buyerId'] = this.baseInfo.buyerId;
         getTabelData(this.parmarsHasRfq)
           .then((res) => {
             this.$store.dispatch(
