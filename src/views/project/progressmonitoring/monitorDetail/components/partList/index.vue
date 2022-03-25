@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 16:45:30
+ * @LastEditTime: 2022-03-25 11:52:53
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -63,7 +63,7 @@
                   <icon v-else-if="pro[item.delayWeeks] < 5 " symbol name="iconjindu_yiwancheng_hong" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] > 4" symbol name="iconjindu_yiwancheng_hei" class="step-icon  click-icon"></icon>
                 </template>
-                <template v-else-if="item.partPeriod == 4 ? [4,3].includes(Number(pro.partStatusTemp)) : Number(pro.partStatusTemp) == item.partPeriod" slot="reference">
+                <template v-else-if="item.partPeriod == 4 ? [4,3].includes(Number(pro.partStatusTemp)) : ([7,8].includes(item.partPeriod)&&Number(pro.partStatusTemp) == 6 || Number(pro.partStatusTemp) == item.partPeriod)" slot="reference">
                   <icon v-if="item.key === 'SHIFANG' || pro[item.delayWeeks] < 1  " symbol name="iconjindu_jinhangzhong_lv" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] < 3 " symbol name="iconjindu_jinhangzhong_huang" class="step-icon  click-icon"></icon>
                   <icon v-else-if="pro[item.delayWeeks] < 5 " symbol name="iconjindu_jinhangzhong_hong" class="step-icon  click-icon"></icon>
@@ -178,8 +178,8 @@ export default {
       const currentKw = moment().format('YYYY-[KW]WW')
       return this.list ? this.list.map(item => {
         const partStatus = Number(item.partStatus)
-        const emDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'emTimeKw' : 'planEmTimeKw'], partStatus == 6 ? currentKw : item.emTimeKw) : 0
-        const otsDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 ? 'otsTimeKw' : 'planOtsTimeKw'], partStatus == 6 ? currentKw : item.otsTimeKw) : 0
+        const emDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 || partStatus == 7 ? 'emTimeKw' : 'planEmTimeKw'], partStatus == 6 || partStatus == 7 ? currentKw : item.emTimeKw) : 0
+        const otsDelayWeeks = partStatus > 5 ? this.getDelayWeeks(item[partStatus == 6 || partStatus == 8 ? 'otsTimeKw' : 'planOtsTimeKw'], partStatus == 6 || partStatus == 8 ? currentKw : item.otsTimeKw) : 0
         return {
           ...item,
           releaseDelayWeeks: partStatus > 0 ? this.getDelayWeeks(partStatus == 1 ? item.releaseTimeKw : item.planReleaseTimeKw, partStatus == 1 ? currentKw : item.releaseTimeKw) : 0,
