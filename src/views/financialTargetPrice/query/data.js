@@ -1,35 +1,35 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
- * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-05 14:50:30
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-25 15:32:34
  * @Description: 
  * @FilePath: \front-sourcing\src\views\financialTargetPrice\query\data.js
  */
 
 
 export const tableTitle = [
-  {props:'fsnrGsnrNum',name:'FS/GS/SP No.', key: "FSGSSPNO", tooltip: true, width: 120},
-  {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120},
-  {props:'partNameZh',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true, width: 120},
-  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
-  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
-  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
+  {props:'fsnrGsnrNum',name:'FS/GS/SP No.', key: "FSGSSPNO", tooltip: true, width: 145, sortable: true},
+  {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120, sortable: true},
+  {props:'partNameZh',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true, width: 120, sortable: true},
+  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 110, sortable: true},
+  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120, sortable: true},
+  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120, sortable: true},
   // {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100},
-  {props:'priceAnaName',name:'CF', key: "CF", tooltip: true, width: 120},
-  {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true},
-  {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true},
-  {props:'rwPrice',name:'RW价', key: "RWJIA", tooltip: true},
-  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 100},
-  {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 120},
-  {props:'applyDateEnd',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
-  {props:'responseDate',name:'返回日期', key: "LK_FANHUIRIQI", tooltip: true, width: 120},
-  {props:'expTargetpri',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true},
-  {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120},
-  {props:'xiugai',name:'修改记录', key: "XIUGAIJILU", tooltip: true, width: 120},
-  {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true, width: 120},
-  {props:'setKz',name:'SET属性', key: "SETSHUXING", tooltip: true, width: 120},
-  {props:'isAssignDesc',name:'指派状态', key: "ZHIPAIZHUANGTAI", tooltip: true},
+  {props:'priceAnaName',name:'CF', key: "CF", tooltip: true, width: 120, sortable: true},
+  {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, sortable: true},
+  {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, sortable: true},
+  {props:'rwPrice',name:'RW价', key: "RWJIA", tooltip: true, width: 90, sortable: true},
+  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 110, sortable: true},
+  {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 170, sortable: true},
+  {props:'applyDateEnd',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120, sortable: true},
+  {props:'responseDate',name:'返回日期', key: "LK_FANHUIRIQI", tooltip: true, width: 120, sortable: true},
+  {props:'expTargetpri',name:'期望目标价', key: "QIWANGMUBIAOJIA", tooltip: true, width: 120, sortable: true},
+  {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 120, sortable: true},
+  {props:'xiugai',name:'修改记录', key: "XIUGAIJILU", tooltip: true, width: 120, sortable: true},
+  {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true, width: 120, sortable: true},
+  {props:'setKz',name:'SET属性', key: "SETSHUXING", tooltip: true, width: 120, sortable: true},
+  {props:'isAssignDesc',name:'指派状态', key: "ZHIPAIZHUANGTAI", tooltip: true, width: 105, sortable: true},
 ]
 
 export const tableMockData = [
