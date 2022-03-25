@@ -33,7 +33,7 @@
           </iSelect> 
         </div>            
       </div>
-      <div class="btnSearch" v-if='!disabel'>
+      <div class="btnSearch" v-if='!disabel && !isRoutePreview && !isApproval'>
         <iButton @click="quote" v-if='quoteShow && !disabled && !rfqDisabled' :loading="quoteInquiryPriceLoading" v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_QUOTEINQUIRYPRICE|报价分析汇总-零件-引用报价按钮">引用报价</iButton>
         <iButton @click="group"  v-if='layout == "1" && !abPrice && !disabled && !rfqDisabled' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_GROUPBTN|报价分析汇总-零件-组合按钮">组合</iButton>
         <iButton @click="removeGroup"  v-if='layout == "1" && !abPrice && !disabled && !rfqDisabled' v-permission.auto="RFQ_DETAIL_TIPS_BAOJIAFENXIHUIZONGLINGJIAN_REMOVEBTN|报价分析汇总-零件-取消组合按钮">取消组合</iButton>
@@ -144,11 +144,11 @@ export default{
      */
     '$route':function(){
      try {
-      if(this.$route.query.isPreview == 1){
-        this.disabel = true
-      }else{
-        this.disabel = false
-      }
+        if(this.$route.query.isPreview == 1){
+          this.disabel = true
+        } else {
+          this.disabel = false
+        }
       } catch (error) {
         this.disabel = false
     }
@@ -164,6 +164,12 @@ export default{
       if(this.DataRoundsType == this.roundsType.zxjjys) return 1
       if(this.DataRoundsType == this.roundsType.zxkb) return 2
       return 0
+    },
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
     }
   },
   created(){
