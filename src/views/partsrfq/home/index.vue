@@ -40,7 +40,10 @@
               <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')"
                 >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
-              </el-form-item>         
+              </el-form-item>
+              <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')">
+                <iInput :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.linieName"></iInput>
+              </el-form-item>  
               <el-form-item  :label="language('LK_SAP','供应商SAP号')"
                  >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>
