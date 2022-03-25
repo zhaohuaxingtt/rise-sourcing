@@ -71,7 +71,7 @@
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
         <template v-slot:header-control>
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <button-table-setting @click="edittableHeader" />
         </template>
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_STANCELIST_TABLE|AEKO表态TABLE">

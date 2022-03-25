@@ -1,4 +1,4 @@
-;(function (global, factory) {
+(function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined'
 		? (module.exports = factory(require('i18n')))
 		: typeof define === 'function' && define.amd
@@ -3526,10 +3526,10 @@
 		FASONGSHIJIAN: 'FASONGSHIJIAN',
 		AEKO_QINGXUANZEXUYAOCAOZUODEYUANLINGJIANXIANGMU:
 			'请选择需要操作的原零件项目',
-		BAOCUNSHIJIAN: 'BAOCUNSHIJIAN',
-		CAOZUOZHEDONGZUO: 'CAOZUOZHEDONGZUO',
-		PAICHENGWEIDU: 'PAICHENGWEIDU',
-		BANBENMINGCHENG: 'BANBENMINGCHENG',
+		BAOCUNSHIJIAN: '保存时间',
+		CAOZUOZHEDONGZUO: '操作者动作',
+		PAICHENGWEIDU: '排程维度',
+		BANBENMINGCHENG: '版本名称',
 		LK_TUICHUBIANJI: '退出编辑',
 		LK_AEKO_GUANLIYUANBEIZHU: 'aeko管理员备注',
 		home: '项目进度监控',
@@ -6099,7 +6099,7 @@
 		定点类型: '定点类型',
 		XUANZHONGDELINGJIANZHONGBUNENGHANYOUWEICANYUDELINGJIAN:
 			'选中的零件中不能含有未参与的零件',
-		LK_DIFENGXIAN: '低风险',
+		LK_DIFENGXIAN: '中风险',
 		LK_WUZHENGCHANG: '无风险',
 		LK_GAOFENGXIAN: '高风险',
 		BIDDING_SKGYSBKXJ: '受控供应商不可询价！',

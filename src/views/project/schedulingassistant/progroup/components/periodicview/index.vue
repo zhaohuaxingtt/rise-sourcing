@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
- * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-07 14:23:46
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 14:58:36
  * @Description: 周期视图
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -15,10 +15,10 @@
         <span class="periodicView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span>
       </div>
       <div v-if="!isSop">
-        <iButton @click="$emit('changeNodeView')">{{language('QIEHUANJIEDIANSHITU', '切换节点视图')}}</iButton>
-        <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
-        <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
-        <iButton @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUFASONGPVPKQINGDAN', '导出发送PV/PK清单')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_QIEHUANJIEDIANSHITU_BUTTON|产品组排程-切换节点视图-按钮" @click="$emit('changeNodeView')">{{language('QIEHUANJIEDIANSHITU', '切换节点视图')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_SAVE_BUTTON|产品组排程-保存-按钮" @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_SENDFS_BUTTON|产品组排程-发送FS确认-按钮" @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton>
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PRODUCTGROUPSCHEDULING_DAOCHUFASONGPV_BUTTON|产品组排程-导出发送PV/PK清单-按钮" @click="handleDownloadPvPk" :loading="downloadLoading">{{language('DAOCHUFASONGPVPKQINGDAN', '导出发送PV/PK清单')}}</iButton>
       </div>
     </div>
     <div class="periodicView-content">
@@ -387,6 +387,9 @@ export default {
         let { year, month, day } = res.data[res.data.length - 1]
         if(+day <10){
           day = '0'+day
+        }
+        if(+month < 10){
+          month = '0'+month
         }
         return year + '-' + month + '-' + day
       }

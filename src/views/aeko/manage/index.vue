@@ -104,7 +104,7 @@
             <iButton :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <button-table-setting @click="edittableHeader" />
           <!-- 暂时添加的按钮 -->
           <!-- <template v-if="isAekoManager">
             <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
