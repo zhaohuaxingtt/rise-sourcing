@@ -11,7 +11,7 @@
   <div class="meeting" :class="isPreview && 'isPreview'">
     <iCard class="rsCard">
       <template #header>
-        <div class="btnWrapper">
+        <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
           <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
         <div class="title">
@@ -359,6 +359,9 @@ export default {
     },
     getRemarkAll() {
       return this.remarkItem.map(item => item.value).join('\n')
+    },
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
     },
     isApproval() {
       return this.$route.query.isApproval === "true"

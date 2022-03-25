@@ -14,7 +14,7 @@
         <div class="title">
           <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
         </div>
-        <div class="btnWrapper">
+        <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
           <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
@@ -49,7 +49,7 @@
         </div>
         <div v-if="!(projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN)"
              class="btnWrapper">
-          <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+          <iButton v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
       <tableList :selection="false"
@@ -279,6 +279,12 @@ export default {
         return accessoryTableTitle
       }
       return nomalTableTitle
+    },
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
     }
   },
   methods: {
