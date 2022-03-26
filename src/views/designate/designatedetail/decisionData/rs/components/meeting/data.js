@@ -125,7 +125,7 @@ export const nomalTableTitle = [
 // 配件
 export const sparePartTableTitle = [
   {props:'fsnrGsnrNum',enName: 'SP-NO.', key: "", minWidth: 54},
-  {props:'output',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 74},
+  {props:'output',name:'年产能', enName: 'Capa.(K)', key: "", minWidth: 74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 64},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 76},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 74},
@@ -146,7 +146,7 @@ export const sparePartTableTitle = [
 // 附件
 export const accessoryTableTitle = [
   {props:'fsnrGsnrNum',enName: 'SP-NO.', key: "", minWidth: 54},
-  {props:'output',name:'年产量', enName: 'Demand(K)', key: "", minWidth: 74},
+  {props:'output',name:'年产能', enName: 'Capa.(K)', key: "", minWidth: 74},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 64},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 76},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "", minWidth: 74},
