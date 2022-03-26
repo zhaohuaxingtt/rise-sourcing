@@ -702,5 +702,15 @@ export default {
   .cancel {
     color: rgb(95, 104, 121);
   }
+  .pdf-item{
+    ::v-deep .card{
+      .cardHeader{
+        padding-left: 0
+      }
+      .cardBody{
+        padding-left: 0
+      }
+    }
+  }
 }
 </style>
