@@ -155,7 +155,7 @@ export const accessoryTableTitle = [
 
 // 配件列表
 export const sparePartTableTitle = [
-  {props:'supplier',name:'SP编号', key: "", minWidth: 100},
+  {props:'fsnrGsnrNum',name:'SP编号', key: "", minWidth: 100},
   {props:'assemblyPartNum',name:'批量零件号', key: "", minWidth: 120},
   {props:'partNum',name:'配件零件号', key: "", minWidth: 100},
   {props:'partName',name:'配件零件名称', key: "", minWidth: 120},
@@ -196,6 +196,33 @@ export const sparePartTableTitle = [
 //   {props:'beginYearReduce',name:'Start Time of LTC', key: "", minWidth: 120},
 //   {props:'g',name:'Remark', key: "", minWidth: 80},
 // ]
+
+export const gsTableTitle = [
+  { props: 'fsnrGsnrNum', name: 'GS号', key: "", minWidth: 100 },
+  { props: 'partNo', name: '零件号', key: '', minWidth: 95 },
+  { props: 'status', name: '供货状态', key: '', minWidth: 95 },
+  { props: 'partName', name: '零件名称', key: '', minWidth: 95 },
+  { props: 'unit', name: '零件单位', key: '', minWidth: 95 },
+  { props: 'carLine', name: '车型', key: '', minWidth: 70 },
+  { props: 'sapCode', name: '厂商号', key: '', minWidth: 70 },
+  { props: 'supplierName', name: '供应商名称', key: '', minWidth: 120 },
+  { props: 'prodLocation', name: '产地', key: '', minWidth: 120 },
+  { props: 'presentPrice', name: '现供B价', key: '', minWidth: 120 },
+  { props: 'rw', name: '欧价', key: '', minWidth: 54 },
+  { props: 'aprice', name: 'A价', key: '', minWidth: 60 },
+  { props: 'bprice', name: 'B价', key: '', minWidth: 60 },
+  { props: 'packPrice', name: '包装费', key: '', minWidth: 70 },
+  { props: 'transportPrice', name: '运输费', key: '', minWidth: 70 },
+  { props: 'operatePrice', name: '操作费', key: '', minWidth: 70 },
+  { props: 'investFee', name: '投资费(不含税)', key: '', minWidth: 128 },
+  { props: 'addFee', name: '认可费', key: '', minWidth: 85 },
+  { props: 'share', name: '定点份额(%)', key: '', minWidth: 110 },
+  { props: 'ltc', name:'年降', key: '', minWidth: 100 },
+  { props: 'beginYearReduce', name: '年降开始时间', key: '', minWidth: 120 },
+  { props: 'savingFee', name: '节约值(Mio.)', key: '', minWidth: 114 },
+  { props: 'turnover', name: '采购金额', key: '', minWidth: 110 },
+  { props: 'remarks', name: '备注', key: '', minWidth: 120 },
+]
 
 export const meetingRemark = [
   {label: '询价采购员上会备注', value: 'ww'},
