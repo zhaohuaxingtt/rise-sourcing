@@ -136,10 +136,17 @@ export default {
         return accessoryTableTitle
       }
       return nomalTableTitle
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
     }
   },
   created() {
-    this.getTopList()
+    if (this.isApproval) {
+      this.reviewListRs()
+    } else {
+      this.getTopList()
+    }
     this.getRemark()
   },
   methods: {
