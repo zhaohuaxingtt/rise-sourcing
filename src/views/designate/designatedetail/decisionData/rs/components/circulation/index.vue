@@ -14,7 +14,10 @@
         <div class="title">
           <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
         </div>
-        <div class="btnWrapper">
+        <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
+          <iButton v-if="!isRoutePreview && !isApproval && !editStatus" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
           <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
@@ -49,14 +52,20 @@
         </div>
         <div v-if="!(projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN)"
              class="btnWrapper">
-          <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+          <iButton v-if="!isRoutePreview && !isApproval && !editStatus" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
+          <iButton v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
-      <tableList :selection="false"
-                 :tableTitle="tableTitle"
-                 :tableData="tableData"
-                 class="rsTable"
-                 :maxHeight="600">
+      <tableList
+        :tableLoading="tableLoading"
+        :selection="false"
+        :tableTitle="tableTitle"
+        :tableData="tableData"
+        class="rsTable"
+        :maxHeight="600"
+        :tableRowClassName="tableRowClassName">
         <template #oldAPrice="scope">
           <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
         </template>
@@ -136,14 +145,19 @@
             <p>{{ scope.row.investFee | toThousands }}</p>
           </span>
         </template>
+
+        <template #remarks="scope">
+          <div>
+            <iInput v-if="editStatus" v-model="scope.row.remarks"></iInput>
+            <span v-else>{{ scope.row.remarks }}</span>
+          </div>
+        </template>
       </tableList>
     </iCard>
     <iCard :title="language('BEIZHU','备注')"
            :class="!isPreview && 'margin-top20'">
-      <template slot="header-control"
-                v-if="!isPreview">
-        <iButton v-if="!isEdit"
-                 @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
+      <template slot="header-control" v-if="!isPreview">
+        <iButton v-if="!isRoutePreview && !isApproval && !isEdit" @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
         <template v-else>
           <iButton @click="handleDeleteRemark">{{language('SHANCHU','删除')}}</iButton>
           <iButton @click="handleAddRemark">{{language('TIANJIA','添加')}}</iButton>
@@ -204,7 +218,7 @@
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
 import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
 import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
@@ -248,7 +262,10 @@ export default {
       isEdit: false,
       saveLoading: false,
       projectType: '',
-      basicData: {}
+      basicData: {},
+      editStatus: false,
+      saveLoading: false,
+      tableLoading: false
     }
   },
   computed: {
@@ -277,8 +294,17 @@ export default {
         return sparePartTableTitle
       } else if (this.projectType === partProjTypes.FUJIAN) {
         return accessoryTableTitle
-      }
+      } 
+      // else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
+
+      // }
       return nomalTableTitle
+    },
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
     }
   },
   methods: {
@@ -395,7 +421,12 @@ export default {
      * @return {*}
      */
     init () {
-      this.getTopList()
+      this.reviewListRs()
+      // if (this.isApproval) {
+      //   this.reviewListRs()
+      // } else {
+      //   this.getTopList()
+      // }
       this.getRemark()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
@@ -406,6 +437,8 @@ export default {
      * @return {*}
      */
     getTopList () {
+      this.tableLoading = true
+
       getList(this.nominateId).then(res => {
         if (res?.result) {
           this.basicData = res.data
@@ -419,6 +452,22 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
+      .finally(() => this.tableLoading = false)
+    },
+    reviewListRs() {
+      this.tableLoading = true
+
+      reviewListRs(this.nominateId)
+      .then(res => {
+        if (res.code == 200) {
+          this.basicData = res.data
+          this.tableData = res.data.lines
+          this.projectType = res.data.partProjectType || ''
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => this.tableLoading = false)
     },
     /**
      * @Description: 获取备注
@@ -457,6 +506,42 @@ export default {
         exportPdf: true,
         waterMark: true
       })
+    },
+
+    tableRowClassName({ row, rowIndex }) {
+      if (row.isSuggestion) {
+        return "suggestionRow"
+      }
+    },
+
+    handleEdit() {
+      this.editStatus = true
+    },
+
+    // 保存行备注
+    handleSave() {
+      this.saveLoading = true
+
+      updateRsMemo(
+        this.tableData.map(item => ({
+          id: item.nomiMemoId,
+          nominateId: this.nominateId,
+          partProjId: item.partProjId,
+          remarks: item.remarks || "",
+          rfqId: item.rfqId,
+          supplierId: item.supplierId
+        }))
+      )
+      .then(res => {
+        const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+        } else {
+          iMessage.error(message)
+        }
+      })
+      .finally(() => this.saveLoading = false)
     }
   }
 }
@@ -488,5 +573,9 @@ export default {
   width: 0;
   height: 0;
   overflow: hidden;
+}
+
+.suggestionRow {
+  border: 10px solid red
 }
 </style>

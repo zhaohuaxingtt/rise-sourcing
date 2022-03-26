@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-26 22:42:02
+ * @LastEditTime: 2022-03-26 22:47:22
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -35,7 +35,7 @@
     </div>
     <iCard class="rsCard">
       <template #header>
-        <div class="btnWrapper">
+        <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
           <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
         <div class="title">
@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" maxHeight="600" >
+      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" maxHeight="600" >
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -285,7 +285,8 @@ export default {
       isAuth: false,
       pdfData: {},
       firstCount: 0,
-      count: 0
+      count: 0,
+      tableLoading: false
     }
   },
   filters: {
@@ -367,6 +368,9 @@ export default {
     },
     getRemarkAll() {
       return this.remarkItem.map(item => item.value).join('\n')
+    },
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
     },
     isApproval() {
       return this.$route.query.isApproval === "true"
@@ -489,7 +493,7 @@ export default {
      */    
     init() {
       // 带路由参数type=auth,表示从外部嵌入走预览模式，走reviewListRs，ab 有权限
-      if (this.isAuth) {
+      if (this.isAuth || this.isApproval) {
         this.reviewListRs()
       } else {
         this.getTopList()
@@ -506,6 +510,8 @@ export default {
      * @return {*}
      */    
     getTopList() {
+      this.tableLoading = true
+
       getList(this.nominateId).then(res => {
         if (res?.result) {
           let temdata = res.data || {}
@@ -546,6 +552,7 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
+      .finally(() => this.tableLoading = false)
     },
     /**
      * @Description: 获取备注
@@ -613,6 +620,8 @@ export default {
 
     // 权限获取数据
     reviewListRs() {
+      this.tableLoading = true
+
       reviewListRs(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
@@ -642,13 +651,13 @@ export default {
               if(val.partNameDe)
             // val.partName = `${val.partName}/${val.partNameDe}`
             val.partName = val.partNameDe
-            // 预览模式,ab价取rsPriceVo
-            if (val.rsPriceVo && val.rsPriceVo.aprice) {
-              val.aprice = val.rsPriceVo && val.rsPriceVo.aprice
-            }
-            if (val.rsPriceVo && val.rsPriceVo.bprice) {
-              val.bprice = val.rsPriceVo && val.rsPriceVo.bprice
-            }
+            // // 预览模式,ab价取rsPriceVo
+            // if (val.rsPriceVo && val.rsPriceVo.aprice) {
+            //   val.aprice = val.rsPriceVo && val.rsPriceVo.aprice
+            // }
+            // if (val.rsPriceVo && val.rsPriceVo.bprice) {
+            //   val.bprice = val.rsPriceVo && val.rsPriceVo.bprice
+            // }
           })
           this.tableData = data
           this.projectType = res.data.partProjectType || ""
@@ -661,6 +670,7 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
+      .finally(() => this.tableLoading = false)
     },
 
     isSplit(nodes, index, pageHeight) {
