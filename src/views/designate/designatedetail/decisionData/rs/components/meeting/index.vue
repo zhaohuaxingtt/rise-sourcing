@@ -63,7 +63,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" maxHeight="600" >
+      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" maxHeight="600" >
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -277,7 +277,8 @@ export default {
       suppliers: '',
       exchangeRates: [],
       isAuth: false,
-      pdfData: {}
+      pdfData: {},
+      tableLoading: false
     }
   },
   filters: {
@@ -466,7 +467,7 @@ export default {
      */    
     init() {
       // 带路由参数type=auth,表示从外部嵌入走预览模式，走reviewListRs，ab 有权限
-      if (this.isAuth) {
+      if (this.isAuth || this.isApproval) {
         this.reviewListRs()
       } else {
         this.getTopList()
@@ -483,6 +484,8 @@ export default {
      * @return {*}
      */    
     getTopList() {
+      this.tableLoading = true
+
       getList(this.nominateId).then(res => {
         if (res?.result) {
           let temdata = res.data || {}
@@ -523,6 +526,7 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
+      .finally(() => this.tableLoading = false)
     },
     /**
      * @Description: 获取备注
@@ -590,6 +594,8 @@ export default {
 
     // 权限获取数据
     reviewListRs() {
+      this.tableLoading = true
+
       reviewListRs(this.$route.query.desinateId)
       .then(res => {
         if (res.code == 200) {
@@ -619,13 +625,13 @@ export default {
               if(val.partNameDe)
             // val.partName = `${val.partName}/${val.partNameDe}`
             val.partName = val.partNameDe
-            // 预览模式,ab价取rsPriceVo
-            if (val.rsPriceVo && val.rsPriceVo.aprice) {
-              val.aprice = val.rsPriceVo && val.rsPriceVo.aprice
-            }
-            if (val.rsPriceVo && val.rsPriceVo.bprice) {
-              val.bprice = val.rsPriceVo && val.rsPriceVo.bprice
-            }
+            // // 预览模式,ab价取rsPriceVo
+            // if (val.rsPriceVo && val.rsPriceVo.aprice) {
+            //   val.aprice = val.rsPriceVo && val.rsPriceVo.aprice
+            // }
+            // if (val.rsPriceVo && val.rsPriceVo.bprice) {
+            //   val.bprice = val.rsPriceVo && val.rsPriceVo.bprice
+            // }
           })
           this.tableData = data
           this.projectType = res.data.partProjectType || ""
@@ -638,6 +644,7 @@ export default {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
       })
+      .finally(() => this.tableLoading = false)
     },
 
     // 导出pdf
