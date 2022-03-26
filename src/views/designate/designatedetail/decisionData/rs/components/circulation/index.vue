@@ -216,7 +216,7 @@
 
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
-import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle } from './data'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
@@ -294,10 +294,10 @@ export default {
         return sparePartTableTitle
       } else if (this.projectType === partProjTypes.FUJIAN) {
         return accessoryTableTitle
-      } 
-      // else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
+        return gsTableTitle
+      }
 
-      // }
       return nomalTableTitle
     },
     isRoutePreview() {
@@ -355,7 +355,8 @@ export default {
         })
     },
     // 单独处理下年降或年降计划
-    resetLtcData (row = [], type) {
+    resetLtcData (row, type) {
+      if (!row) return ""
       // 年降开始时间
       if (type == 'beginYearReduce') {
         // 取第一个非0的年份
@@ -421,12 +422,11 @@ export default {
      * @return {*}
      */
     init () {
-      this.reviewListRs()
-      // if (this.isApproval) {
-      //   this.reviewListRs()
-      // } else {
-      //   this.getTopList()
-      // }
+      if (this.isApproval) {
+        this.reviewListRs()
+      } else {
+        this.getTopList()
+      }
       this.getRemark()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
@@ -464,6 +464,9 @@ export default {
           this.tableData = res.data.lines
           this.projectType = res.data.partProjectType || ''
         } else {
+          this.basicData = {}
+          this.tableData = []
+          this.projectType = ''
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
       })
