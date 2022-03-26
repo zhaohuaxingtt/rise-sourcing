@@ -2,13 +2,37 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-22 23:16:54
+ * @LastEditTime: 2022-03-26 22:42:02
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
 
 <template>
   <div class="meeting" :class="isPreview && 'isPreview'">
+    <div class="rsPdfWrapper">
+      <rsPdf
+        ref="rsPdf"
+        :cardTitle="cardTitle"
+        :cardTitleEn="cardTitleEn"
+        :isSingle="isSingle"
+        :leftTitle="leftTitle"
+        :rightTitle="rightTitle"
+        :basicData="basicData"
+        :tableTitle="tableTitle"
+        :tableData="tableData"
+        :firstCount="firstCount"
+        :count="count"
+        :remarkItem="remarkItem"
+        :projectType="projectType"
+        :exchangeRageCurrency="exchangeRageCurrency"
+        :exchangeRates="exchangeRates"
+        :showSignatureForm="showSignatureForm"
+        :isAuth="isAuth"
+        :checkList="checkList"
+        :processApplyDate="processApplyDate"
+        :prototypeList="PrototypeList"
+        :prototypeTitleList="prototypeTitleList" />
+    </div>
     <iCard class="rsCard">
       <template #header>
         <div class="btnWrapper">
@@ -24,7 +48,7 @@
           </div>
         </div>
       </template>
-      <div class="rsTop">
+      <div class="rsTop position-compute">
         <div class="rsTop-left">
           <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
             <div class="rsTop-left-item-title">
@@ -152,21 +176,23 @@
         </template> -->
       </tableList>
       <!-- v-if="isPreview" -->
-      <div class="beizhu">
-        备注 Remarks:
-        <div class="beizhu-value">
-          <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+      <div class="position-compute">
+        <div class="beizhu">
+          备注 Remarks:
+          <div class="beizhu-value">
+            <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+          </div>
         </div>
-      </div>
-      <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
-        汇率：Exchange rate: 
-        <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
-          1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
-        </span>
-      </div>
-      <div v-else>
-        <div class="margin-top10">
-          <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+        <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+          汇率：Exchange rate: 
+          <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+            1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
+          </span>
+        </div>
+        <div v-else>
+          <div class="margin-top10">
+            <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+          </div>
         </div>
       </div>
     </iCard>
@@ -187,51 +213,31 @@
         </div>
       </div>
     </iCard>
-    <iCard v-if="!showSignatureForm && !isAuth" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
-      <div class="checkList">
-        <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
-          <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
-          <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
-          <div v-else class="" >-</div>
-          <div class="checkList-item-info">
-            <span>Dept.:</span>
-            <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
-          </div>
-          <div class="checkList-item-info">
-            <span>Date:</span>
-            <span>{{item.approveDate}}</span>
+    <div class="position-compute">
+      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+        <div class="checkList">
+          <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+            <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
+            <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
+            <div v-else class="" >-</div>
+            <div class="checkList-item-info">
+              <span>Dept.:</span>
+              <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+            </div>
+            <div class="checkList-item-info">
+              <span>Date:</span>
+              <span>{{item.approveDate}}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </iCard>
-    <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
-      <el-table :data='PrototypeList'>
-        <template v-for="(items,index) in prototypeTitleList">
-          <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
-        </template>
-      </el-table>
-    </iCard>
-    <div class="rsPdfWrapper">
-      <rsPdf
-        ref="rsPdf"
-        :cardTitle="cardTitle"
-        :cardTitleEn="cardTitleEn"
-        :isSingle="isSingle"
-        :leftTitle="leftTitle"
-        :rightTitle="rightTitle"
-        :basicData="basicData"
-        :tableTitle="tableTitle"
-        :tableData="tableData"
-        :remarkItem="remarkItem"
-        :projectType="projectType"
-        :exchangeRageCurrency="exchangeRageCurrency"
-        :exchangeRates="exchangeRates"
-        :showSignatureForm="showSignatureForm"
-        :isAuth="isAuth"
-        :checkList="checkList"
-        :processApplyDate="processApplyDate"
-        :prototypeList="PrototypeList"
-        :prototypeTitleList="prototypeTitleList" />
+      </iCard>
+      <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
+        <el-table :data='PrototypeList'>
+          <template v-for="(items,index) in prototypeTitleList">
+            <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+          </template>
+        </el-table>
+      </iCard>
     </div>
   </div>
 </template>
@@ -277,7 +283,9 @@ export default {
       suppliers: '',
       exchangeRates: [],
       isAuth: false,
-      pdfData: {}
+      pdfData: {},
+      firstCount: 0,
+      count: 0
     }
   },
   filters: {
@@ -367,6 +375,24 @@ export default {
   created(){
     this.isAuth = this.$route.query.type === "auth"
     // this.getPrototypeList()
+  },
+  mounted(){
+    // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
+    let trHeight = 156  // 表格内容 行高
+    let tableHeader = 60 // 表头高度, position-compute 未计算到的
+    let pageHeight = 1360 // 横版A4一页对应的高度
+    let padding = 60 // 内边距高度, position-compute 未计算到的
+    let headerHeight = 106 // 顶部标题高度, position-compute 未计算到的
+    let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
+    let el = document.getElementsByClassName('position-compute')  // 页面所有固定元素的高度
+    let height = headerHeight + padding + tableHeader // 第一页所有固定元素高度总和
+    for (let i = 0; i < el.length; i++) {
+      height += el[i].offsetHeight;
+    }
+    let firstCount = parseInt((pageHeight - height) / trHeight) // 第一页数据条数
+    let count = parseInt((pageHeight - height + topHeight) / trHeight ) // 之后页面,每页数据条数
+    this.firstCount = firstCount
+    this.count = count
   },
   methods: {
     getIsSingle() {
@@ -637,14 +663,68 @@ export default {
       })
     },
 
-    // 导出pdf
-    handleExportPdf() {
+    isSplit(nodes, index, pageHeight) {
+      // 计算当前这块d是否跨越了a4大小，以此分割
+      if (
+        nodes[index].offsetTop + nodes[index].offsetHeight < pageHeight &&
+        nodes[index + 1] &&
+        nodes[index + 1].offsetTop + nodes[index + 1].offsetHeight > pageHeight
+      ) {
+        return true;
+      }
+      return false;
+    },
+    
+    createEl() {
+      let vm = this;
+      const A4_WIDTH = 841.89;
+      const A4_HEIGHT = 595.28;
+      this. initTop = 0
+      vm.$nextTick(() => {
+        // dom的id。
+        let target = this.$refs.rsPdf.$el;
+        let pageHeight = (target.clientWidth / A4_WIDTH) * A4_HEIGHT; // a4每页对应页面的高度
+        console.log(pageHeight);
+        // 获取分割dom，此处为class类名为item的dom
+        let lableListID = document.getElementsByClassName("pdf-item");
+        // 进行分割操作，当dom内容已超出a4的高度，则将该dom前插入一个空dom，把他挤下去，分割
+        for (let i = 0; i < lableListID.length; i++) {
+          let multiple = Math.ceil(
+            (lableListID[i].offsetTop + lableListID[i].offsetHeight) /
+              pageHeight
+          );  // 页码
+          if (this.isSplit(lableListID, i, multiple * pageHeight)) {  // 下一个item节点是否跨域了a4页面
+            let divParent = lableListID[i].parentNode; // 获取该div的父节点
+            let newNode = document.createElement("div");
+            newNode.className = "emptyDiv";
+            newNode.style.background = "transparent";
+            // 当前页高度减去div下边框距顶部高度，等于到底部的距离
+            let _H = multiple * pageHeight - (lableListID[i].offsetTop + lableListID[i].offsetHeight);
+            newNode.style.height = _H + "px";
+            newNode.style.width = "100%";
+            let next = lableListID[i].nextSibling; // 获取div的下一个兄弟节点
+            // 判断兄弟节点是否存在
+            if (next) {
+              // 存在则将新节点插入到div的下一个兄弟节点之前，即div之后
+              divParent.insertBefore(newNode, next);
+            } else {
+              // 不存在则直接添加到最后,appendChild默认添加到divParent的最后
+              divParent.appendChild(newNode);
+            }
+          }
+        }
       transverseDownloadPDF({
         dom: this.$refs.rsPdf.$el,
         pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
         exportPdf: true,
         waterMark: true
       })
+      });
+    },
+    // 导出pdf
+    handleExportPdf() {
+      this.createEl()
+      console.log('0-0');
     }
   }
 }
@@ -866,5 +946,7 @@ export default {
   width: 0;
   height: 0;
   overflow: hidden;
+  position: absolute;
+  top: 0;
 }
 </style>
