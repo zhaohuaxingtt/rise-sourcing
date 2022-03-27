@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-27 18:41:41
+ * @LastEditTime: 2022-03-27 17:42:58
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
-  <div :class="isPreview && 'isPreview'" v-loading="loading">
+  <div class="circulation" :class="isPreview && 'isPreview'">
     <div class="rsPdfWrapper">
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
@@ -22,9 +22,10 @@
         :projectType="projectType"
         :isApproval="isApproval"
         :exchangeRageCurrency="exchangeRageCurrency"
-        :checkList="checkList"/>
+        :checkList="checkList"
+        :exchangeRate="exchangeRate" />
     </div>
-    <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
+    <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
         <div class="title">
           <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
@@ -59,7 +60,7 @@
           </iFormItem>
         </div>
       </iFormGroup>
-    </iCard>
+    </iCard> -->
     <iCard :class="!isPreview && 'margin-top20'">
       <template #header>
         <div class="title">
@@ -73,6 +74,15 @@
           <iButton v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
+      <div class="infos">
+        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+          <div class="info">
+            <span class="label">{{ info.name }}：</span>
+            <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
+            <div v-else>{{ exchangeRate }}</div>
+          </div>
+        </div>
+      </div>
       <tableList
         :tableLoading="tableLoading"
         :selection="false"
@@ -221,9 +231,9 @@
 
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
-import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle } from './data'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
 import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
@@ -250,7 +260,6 @@ export default {
   },
   data () {
     return {
-      loading: false,
       // 零件项目类型
       partProjTypes,
       fileTableTitle,
@@ -279,6 +288,8 @@ export default {
       firstCount: 0,
       count: 0,
       fileList:[],
+      infos,
+      exchangeRate: ""
     }
   },
   computed: {
@@ -339,6 +350,8 @@ export default {
       let count = parseInt((pageHeight - height + headerHeight) / trHeight ) // 之后页面,每页数据条数
       this.firstCount = firstCount
       this.count = count
+    console.log(this.firstCount);
+    console.log(this.count);
     },
     downloadFile () {
       if (this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN', "您当前还未选择列表文件，请选择后重试！"))
@@ -460,6 +473,7 @@ export default {
         this.getTopList()
       }
       this.getRemark()
+      this.searchRsPageExchangeRate()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
     /**
@@ -542,12 +556,12 @@ export default {
       })
     },
     handleOpenPage (row) {
+      console.log(row);
       downloadUdFile(row.uploadId)
     },
 
     // 导出pdf
     handleExportPdf() {
-      this.loading = true
       this.createEl()
       // transverseDownloadPDF({
       //   dom: this.$refs.rsPdf.$el,
@@ -671,7 +685,8 @@ export default {
       var canvasFragment = document.createElement("canvas");
       canvasFragment.width = eleW; // 将画布宽&&高放大两倍
       canvasFragment.height = eleH;
-      this.width = eleW
+      this.width = canvasFragment.width;
+      this.height = canvasFragment.height;
       var context = canvasFragment.getContext("2d");
       context.scale(2, 2);
       html2canvas(el, {
@@ -686,6 +701,7 @@ export default {
         //一页pdf显示html页面生成的canvas高度;
         var pageHeight = (contentWidth / 841.89) * 595.28; //
         this.pageHeight = pageHeight;
+        console.log(this.pageHeight);
         //未生成pdf的html页面高度
         var leftHeight = contentHeight; //
         var ctx = canvas.getContext("2d");
@@ -696,6 +712,7 @@ export default {
         var ctxs = copyCanvas.getContext("2d");
         // 保存每一页的画布, 然后清空canvas
         if (leftHeight < pageHeight) {
+          //   console.log(pageData);
           var imgData = ctx.getImageData(0, 0, contentWidth, pageHeight); // 截取主画布
           ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
           // 截图画布转为file
@@ -749,7 +766,6 @@ export default {
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight*1.2})  // 1.2 预留 页脚位置
-      this.loading = false
     },
 
     // 上传图片
@@ -767,7 +783,37 @@ export default {
         });
       })
     },
-  },
+
+    // 获取汇率
+    searchRsPageExchangeRate() {
+      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+      searchRsPageExchangeRate(id)
+      .then(res => {
+        if (res.code == 200) {
+          let sourceData = Array.isArray(res.data) ? res.data : []
+
+          sourceData = sourceData
+            .filter(item => !item.isCurrentVersion)
+            .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+
+          const current = sourceData[0] ? sourceData[0] : {}
+
+          if (Array.isArray(current.exchangeRateVos)) {
+            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('') || "1RMB=1RMB"
+          } else {
+            this.exchangeRate = "1RMB=1RMB"
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+
+    // 汇率显示处理
+    exchangeRateProcess(row) {
+      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
+    },
+  }
 }
 </script>
 
@@ -806,5 +852,25 @@ export default {
 
 .suggestionRow {
   border: 10px solid red
+}
+
+.circulation {
+  .infos {
+    display: flex;
+    margin-bottom: 20px;
+
+    .infoWrapper {
+      flex: 1;
+    
+      .info {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        .label {
+          font-weight: 800;
+        }
+      }
+    }
+  }
 }
 </style>

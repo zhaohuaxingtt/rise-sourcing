@@ -41,6 +41,15 @@ export const nomalDetailTitleBlue = [
   {props: 'pvsTbt', name: 'PVS时间', enName: 'PVS TBT'}
 ]
 
+export const infos = [
+  { props: 'partProjectTypeDesc', name: '零件类型' },
+  { props: 'buyer', name: '询价采购员' },
+  { props: 'linieName', name: '专业采购员' },
+  { props: 'currency', name: '货币单位' },
+  { props: 'exchange', name: '汇率' },
+  { props: 'nominateAppId', name: '申请单号' },
+  { props: 'nominateAppTime', name: '申请时间' }
+]
 
 // 生产
 export const nomalTableTitle = [
