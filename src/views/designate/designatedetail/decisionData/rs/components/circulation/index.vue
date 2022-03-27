@@ -565,9 +565,9 @@ export default {
           const current = sourceData[0] ? sourceData[0] : {}
 
           if (Array.isArray(current.exchangeRateVos)) {
-            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('')
+            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('') || "1RMB=1RMB"
           } else {
-            this.exchangeRate = ""
+            this.exchangeRate = "1RMB=1RMB"
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
