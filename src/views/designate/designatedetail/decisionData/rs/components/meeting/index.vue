@@ -140,29 +140,78 @@
           <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
           <span v-else>{{ scope.row.bprice | toThousands }}</span>
         </template>
+
         <template #investFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
+            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
-      
         </template>
+
         <template #devFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdDevFee | toThousands }}</p>
-            <p>{{ scope.row.devFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.devFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
             <p>{{ scope.row.skdDevFee | toThousands }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.devFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.devFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
         </template>
         <template #addFee="scope">

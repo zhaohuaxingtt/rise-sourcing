@@ -150,14 +150,38 @@
 
         <template #investFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-            <p>{{ scope.row.investFee | toThousands(true) }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
             <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.investFee | toThousands(true) }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
         </template>
 
