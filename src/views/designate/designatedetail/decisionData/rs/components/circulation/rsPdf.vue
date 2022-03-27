@@ -50,100 +50,107 @@
         </div>
       </template>
       <div class="infos">
-        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
-          <div class="info">
-            <span class="label">{{ info.name }}：</span>
-            <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
-            <div v-else>{{ exchangeRate }}</div>
+          <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+            <div class="info">
+              <span class="label">{{ info.name }}：</span>
+              <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
+              <div v-else>{{ exchangeRate }}</div>
+            </div>
           </div>
         </div>
-      </div>
-      <tableList
-        :selection="false"
-        :tableTitle="tableTitle"
-        :tableData="tableData"
-        class="rsTable"
-      >
-        <template #oldAPrice="scope">
-          <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
-        </template>
-        <template #cfTargetAPrice="scope">
-          <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
-        </template>
-        <template #cfTargetBPrice="scope">
-          <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
-        </template>
-        <template #rw="scope">
-          <span>{{ scope.row.rw | toThousands(true) }}</span>
-        </template>
-        <template #packPrice="scope">
-          <span>{{ scope.row.packPrice | toThousands(true) }}</span>
-        </template>
-        <template #transportPrice="scope">
-          <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
-        </template>
-        <template #operatePrice="scope">
-          <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
-        </template>
-        <template #turnover="scope">
-          <span>{{ scope.row.turnover | toThousands(true) }}</span>
-        </template>
+      <template v-if="count==firstCount">
+        <div class="pdf-item">
+          <tableList
+            :selection="false"
+            :tableTitle="tableTitle"
+            :tableData="tableData"
+            class="rsTable"
+          >
+            <!-- 年降 -->
+            <template #ltc="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+            </template>
 
+            <!-- 年降开始时间 -->
+            <template #beginYearReduce="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+            </template>
 
-        <!-- 年降 -->
-        <template #ltc="scope">
-          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-        </template>
+            <template #sapCode="scope">
+              <span>{{
+                scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
+              }}</span>
+            </template>
+          </tableList>
+          <iCard class="rsCard" :title="language('BEIZHU', '备注')">
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+              <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
+            </div>
+          </iCard>
+        </div>
+      </template>
+      <template v-else>
+        <div class="pdf-item">
+          <tableList
+            :selection="false"
+            :tableTitle="tableTitle"
+            :tableData="tableData.slice(0,firstCount)"
+            class="rsTable margin-top20"
+          >
+            <!-- 年降 -->
+            <template #ltc="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+            </template>
 
-        <!-- 年降开始时间 -->
-        <template #beginYearReduce="scope">
-          <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-        </template>
+            <!-- 年降开始时间 -->
+            <template #beginYearReduce="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+            </template>
 
-        <template #svwCode="scope">
-          <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-        </template>
+            <template #sapCode="scope">
+              <span>{{
+                scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
+              }}</span>
+            </template>
+          </tableList>
+          <iCard class="rsCard" :title="language('BEIZHU', '备注')">
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+              <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
+            </div>
+          </iCard>
+        </div>
+        <template v-for="index in parseInt((tableData.length+count-firstCount)/count)">
+          <div :key="index" class="pdf-item">
+            <tableList
+              :selection="false"
+              :tableTitle="tableTitle"
+              :tableData="tableData.slice(count*(index-1)+firstCount,count*index+firstCount )"
+              class="rsTable margin-top20"
+            >
+              <!-- 年降 -->
+              <template #ltc="scope">
+                <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+              </template>
 
-        <template #aprice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
-            <p>{{ scope.row.aprice | toThousands(true) }}</p>
+              <!-- 年降开始时间 -->
+              <template #beginYearReduce="scope">
+                <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+              </template>
+
+              <template #sapCode="scope">
+                <span>{{
+                  scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
+                }}</span>
+              </template>
+            </tableList>
+            <iCard class="rsCard" :title="language('BEIZHU', '备注')">
+              <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+                <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
+              </div>
+            </iCard>
           </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
-          <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
         </template>
-
-        <template #bprice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
-            <p>{{ scope.row.bprice | toThousands(true) }}</p>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
-          <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
-        </template>
-
-        <template #investFee="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-            <p>{{ scope.row.investFee | toThousands(true) }}</p>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-          </span>
-          <span v-else>
-            <p>{{ scope.row.investFee | toThousands(true) }}</p>
-          </span>
-        </template>
-
-        <template #remarks="scope">
-          <span>{{ scope.row.remarks }}</span>
-        </template>
-      </tableList>
-    </iCard>
-    <iCard class="rsCard" :title="language('BEIZHU', '备注')">
-      <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-        <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
-      </div>
+      </template>
     </iCard>
   </div>
 </template>
@@ -161,26 +168,38 @@ export default {
   props:{
     nominateId:{
       type:String,
-    }
+    },
+  cardTitle: { type: String },
+  basicData: { type: Object, default: () => ({}) },
+  titleData: { type: Array, default: () => [] },
+  tableTitle: { type: Array, default: () => [] },
+  tableData: { type: Array, default: () => [] },
+  firstCount: { type: Number, default: 0 },
+  count: { type: Number, default: 0 },
+  remarkItem: { type: Array, default: () => [] },
+  projectType: { type: String },
+  isApproval: { type: Boolean },
+  exchangeRageCurrency: { type: Array, default: () => [] },
+  checkList: { type: Array, default: () => [] },
+  exchangeRate: { type: String, default: "" }
   },
   data() {
     return {
       partProjTypes,
-      titleData: [
-        { label: "零件关系", value: "配件", props: "partProjectType" },
-        { label: "询价采购员", value: "胡伟", props: "buyer" },
-        { label: "货币单位", value: "RMB", props: "currency" },
-        { label: "申请单号", value: "", props: "nominateAppId" },
-        { label: "申请日期", value: "2020-01-01", props: "nominateAppTime" },
-        { label: "LINIE采购员", value: "胡伟", props: "linieName" },
-        { label: "Exchange rate", value: "", props: "cfExchangeRate" },
-      ],
+      // titleData: [
+      //   { label: "零件关系", value: "配件", props: "partProjectType" },
+      //   { label: "询价采购员", value: "胡伟", props: "buyer" },
+      //   { label: "货币单位", value: "RMB", props: "currency" },
+      //   { label: "申请单号", value: "", props: "nominateAppId" },
+      //   { label: "申请日期", value: "2020-01-01", props: "nominateAppTime" },
+      //   { label: "LINIE采购员", value: "胡伟", props: "linieName" },
+      //   { label: "Exchange rate", value: "", props: "cfExchangeRate" },
+      // ],
       basicData: {},
       tableData: [],
       projectType: partProjTypes.PEIJIAN,
       remarkItem: [],
       infos,
-      exchangeRate: ""
     };
   },
   computed: {
@@ -191,34 +210,41 @@ export default {
         this.projectType === this.partProjTypes.FUJIAN
       );
     },
-    cardTitle() {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return '配件采购 Nomination Recommendation - Spare Part Purchasing'
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return '附件采购 Nomination Recommendation – Accessory Purchasing'
-      }
-      return '生产采购 Nomination Recommendation - Production Purchasing'
-    },
-    tableTitle() {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return sparePartTableTitle
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return accessoryTableTitle
-      }
-      return nomalTableTitle
-    },
-    isApproval() {
-      return this.$route.query.isApproval === "true"
-    }
+    // cardTitle() {
+    //   if (this.projectType === partProjTypes.PEIJIAN) {
+    //     return '配件采购 Nomination Recommendation - Spare Part Purchasing'
+    //   } else if (this.projectType === partProjTypes.FUJIAN) {
+    //     return '附件采购 Nomination Recommendation – Accessory Purchasing'
+    //   }
+    //   return '生产采购 Nomination Recommendation - Production Purchasing'
+    // },
+    // tableTitle() {
+    //   if (this.projectType === partProjTypes.PEIJIAN) {
+    //     return sparePartTableTitle
+    //   } else if (this.projectType === partProjTypes.FUJIAN) {
+    //     return accessoryTableTitle
+    //   }
+    //   return nomalTableTitle
+    // },
+    // isApproval() {
+    //   return this.$route.query.isApproval === "true"
+    // }
   },
   created() {
-    if (this.isApproval) {
-      this.reviewListRs()
-    } else {
-      this.getTopList()
+    console.log(this.tableData);
+    console.log(this.firstCount);
+    console.log(this.count);
+    // if (this.isApproval) {
+    //   this.reviewListRs()
+    // } else {
+    //   this.getTopList()
+    // }
+    // this.getRemark()
+  },
+  watch:{
+    firstCount(v){
+      console.log(v);
     }
-    this.getRemark()
-    this.searchRsPageExchangeRate()
   },
   methods: {
     // 单独处理下年降或年降计划
@@ -245,87 +271,45 @@ export default {
         return strList.length ? strList.join("/") : "-";
       }
     },
-    /**
-     * @Description: 获取表格初始数据
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getTopList() {
-      getList(this.nominateId).then(res => {
-        if (res.code == 200) {
-          this.basicData = res.data
-          this.tableData = res.data.lines
-          this.projectType = res.data.partProjectType || ''
-        } else {
-          this.basicData = {}
-          this.tableData = []
-          this.projectType = ''
-        }
-      })
-    },
-    reviewListRs() {
-      reviewListRs(this.nominateId)
-      .then(res => {
-        if (res.code == 200) {
-          this.basicData = res.data
-          this.tableData = res.data.lines
-          this.projectType = res.data.partProjectType || ''
-        } else {
-          this.basicData = {}
-          this.tableData = []
-          this.projectType = ''
-        }
-      })
-      .finally(() => this.tableLoading = false)
-    },
-    getRemark() {
-      getRemark(this.nominateId).then(res => {
-        if (res.code == 200) {
-          this.remarkItem = res.data.map(item => {
-            return {value: item, checked: false}
-          })
-        }
-      })
-    },
-    // 获取汇率
-    searchRsPageExchangeRate() {
-      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
-      searchRsPageExchangeRate(id)
-      .then(res => {
-        if (res.code == 200) {
-          let sourceData = Array.isArray(res.data) ? res.data : []
-
-          sourceData = sourceData
-            .filter(item => !item.isCurrentVersion)
-            .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
-
-          const current = sourceData[0] ? sourceData[0] : {}
-
-          if (Array.isArray(current.exchangeRateVos)) {
-            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('')
-          } else {
-            this.exchangeRate = ""
-          }
-        } else {
-          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-        }
-      })
-    },
-
-    // 汇率显示处理
-    exchangeRateProcess(row) {
-      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
-    },
+    // /**
+    //  * @Description: 获取表格初始数据
+    //  * @Author: Luoshuang
+    //  * @param {*}
+    //  * @return {*}
+    //  */    
+    // getTopList() {
+    //   getList(this.nominateId).then(res => {
+    //     if (res.code == 200) {
+    //       this.basicData = res.data
+    //       this.tableData = res.data.lines
+    //       this.projectType = res.data.partProjectType || ''
+    //     } else {
+    //       this.basicData = {}
+    //       this.tableData = []
+    //       this.projectType = ''
+    //     }
+    //   })
+    // },
+    // getRemark() {
+    //   getRemark(this.nominateId).then(res => {
+    //     if (res.code == 200) {
+    //       this.remarkItem = res.data.map(item => {
+    //         return {value: item, checked: false}
+    //       })
+    //     }
+    //   })
+    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .rsPdf {
-  width: 1920px; /*no*/
+  width: 3840px; /*no*/
+  background: #FFFFFF;
 
   .rsCard {
+    box-shadow: none;
     & + .rsCard {
       margin-top: 20px; /*no*/
     }
