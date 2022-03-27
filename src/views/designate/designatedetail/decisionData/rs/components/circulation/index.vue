@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-27 17:34:09
+ * @LastEditTime: 2022-03-27 17:42:58
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -224,9 +224,6 @@
                   :layout="page.layout"
                   :total="page.totalCount" />
     </iCard>
-    <div class="rsPdfWrapper">
-      <rsPdf ref="rsPdf" :nominateId="nominateId"/>
-    </div>
     <canvas id="myCanvas"></canvas>
   </div>
 </template>
@@ -350,6 +347,8 @@ export default {
       let count = parseInt((pageHeight - height + headerHeight) / trHeight ) // 之后页面,每页数据条数
       this.firstCount = firstCount
       this.count = count
+    console.log(this.firstCount);
+    console.log(this.count);
     },
     downloadFile () {
       if (this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN', "您当前还未选择列表文件，请选择后重试！"))
@@ -495,7 +494,8 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
-      .finally(() => {this.tableLoading = false
+      .finally(() => {
+        this.tableLoading = false
         this.$nextTick(()=>{
           setTimeout(()=>{
             this.getHeight()
@@ -516,7 +516,13 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
         }
       })
-      .finally(() => this.tableLoading = false)
+      .finally(() => {this.tableLoading = false
+      
+        this.$nextTick(()=>{
+          setTimeout(()=>{
+            this.getHeight()
+          },1000)
+        })})
     },
     /**
      * @Description: 获取备注
@@ -775,6 +781,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#myCanvas{
+  display: none;
+}
 .exchangeRageCurrency + .exchangeRageCurrency {
   margin-left: 20px;
 }

@@ -216,12 +216,20 @@ export default {
     // }
   },
   created() {
+    console.log(this.tableData);
+    console.log(this.firstCount);
+    console.log(this.count);
     // if (this.isApproval) {
     //   this.reviewListRs()
     // } else {
     //   this.getTopList()
     // }
     // this.getRemark()
+  },
+  watch:{
+    firstCount(v){
+      console.log(v);
+    }
   },
   methods: {
     // 单独处理下年降或年降计划
