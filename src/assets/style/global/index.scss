@@ -605,3 +605,17 @@ a{
     top: -4px;
   }
 }
+
+.suggestionRow {
+  position: relative;
+
+  &::after {
+    content: "";
+    width: 8px;
+    height: 100%;
+    background: #80a269;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}

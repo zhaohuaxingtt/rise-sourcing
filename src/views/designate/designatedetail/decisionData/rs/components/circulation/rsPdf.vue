@@ -49,33 +49,99 @@
           <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
         </div>
       </template>
-      <tableList
-        :selection="false"
-        :tableTitle="tableTitle"
-        :tableData="tableData"
-        class="rsTable"
-      >
-        <!-- 年降 -->
-        <template #ltc="scope">
-          <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
-        </template>
+      <template v-if="count==firstCount">
+        <div class="pdf-item">
+          <tableList
+            :selection="false"
+            :tableTitle="tableTitle"
+            :tableData="tableData"
+            class="rsTable"
+          >
+            <!-- 年降 -->
+            <template #ltc="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+            </template>
 
-        <!-- 年降开始时间 -->
-        <template #beginYearReduce="scope">
-          <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
-        </template>
+            <!-- 年降开始时间 -->
+            <template #beginYearReduce="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+            </template>
 
-        <template #sapCode="scope">
-          <span>{{
-            scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
-          }}</span>
+            <template #sapCode="scope">
+              <span>{{
+                scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
+              }}</span>
+            </template>
+          </tableList>
+          <iCard class="rsCard" :title="language('BEIZHU', '备注')">
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+              <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
+            </div>
+          </iCard>
+        </div>
+      </template>
+      <template v-else>
+        <div class="pdf-item">
+          <tableList
+            :selection="false"
+            :tableTitle="tableTitle"
+            :tableData="tableData.slice(0,firstCount)"
+            class="rsTable margin-top20"
+          >
+            <!-- 年降 -->
+            <template #ltc="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+            </template>
+
+            <!-- 年降开始时间 -->
+            <template #beginYearReduce="scope">
+              <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+            </template>
+
+            <template #sapCode="scope">
+              <span>{{
+                scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
+              }}</span>
+            </template>
+          </tableList>
+          <iCard class="rsCard" :title="language('BEIZHU', '备注')">
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+              <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
+            </div>
+          </iCard>
+        </div>
+        <template v-for="index in parseInt((tableData.length+count-firstCount)/count)">
+          <div :key="index" class="pdf-item">
+            <tableList
+              :selection="false"
+              :tableTitle="tableTitle"
+              :tableData="tableData.slice(count*(index-1)+firstCount,count*index+firstCount )"
+              class="rsTable margin-top20"
+            >
+              <!-- 年降 -->
+              <template #ltc="scope">
+                <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+              </template>
+
+              <!-- 年降开始时间 -->
+              <template #beginYearReduce="scope">
+                <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+              </template>
+
+              <template #sapCode="scope">
+                <span>{{
+                  scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
+                }}</span>
+              </template>
+            </tableList>
+            <iCard class="rsCard" :title="language('BEIZHU', '备注')">
+              <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+                <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
+              </div>
+            </iCard>
+          </div>
         </template>
-      </tableList>
-    </iCard>
-    <iCard class="rsCard" :title="language('BEIZHU', '备注')">
-      <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-        <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
-      </div>
+      </template>
     </iCard>
   </div>
 </template>
@@ -84,7 +150,7 @@
 import { iCard, iFormGroup, iFormItem, iText } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes, fileType } from "@/config"
-import { getList, getRemark } from "@/api/designate/decisiondata/rs"
+import { getList, getRemark, reviewListRs } from "@/api/designate/decisiondata/rs"
 import { checkList, fileTableTitle } from "./data"
 import { nomalTableTitle, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
 
@@ -93,24 +159,32 @@ export default {
   props:{
     nominateId:{
       type:String,
-    }
+    },
+  cardTitle: { type: String },
+  basicData: { type: Object, default: () => ({}) },
+  titleData: { type: Array, default: () => [] },
+  tableTitle: { type: Array, default: () => [] },
+  tableData: { type: Array, default: () => [] },
+  firstCount: { type: Number, default: 0 },
+  count: { type: Number, default: 0 },
+  remarkItem: { type: Array, default: () => [] },
+  projectType: { type: String },
+  isApproval: { type: Boolean },
+  exchangeRageCurrency: { type: Array, default: () => [] },
+  checkList: { type: Array, default: () => [] },
   },
   data() {
     return {
       partProjTypes,
-      titleData: [
-        { label: "零件关系", value: "配件", props: "partProjectType" },
-        { label: "询价采购员", value: "胡伟", props: "buyer" },
-        { label: "货币单位", value: "RMB", props: "currency" },
-        { label: "申请单号", value: "", props: "nominateAppId" },
-        { label: "申请日期", value: "2020-01-01", props: "nominateAppTime" },
-        { label: "LINIE采购员", value: "胡伟", props: "linieName" },
-        { label: "Exchange rate", value: "", props: "cfExchangeRate" },
-      ],
-      basicData: {},
-      tableData: [],
-      projectType: partProjTypes.PEIJIAN,
-      remarkItem: []
+      // titleData: [
+      //   { label: "零件关系", value: "配件", props: "partProjectType" },
+      //   { label: "询价采购员", value: "胡伟", props: "buyer" },
+      //   { label: "货币单位", value: "RMB", props: "currency" },
+      //   { label: "申请单号", value: "", props: "nominateAppId" },
+      //   { label: "申请日期", value: "2020-01-01", props: "nominateAppTime" },
+      //   { label: "LINIE采购员", value: "胡伟", props: "linieName" },
+      //   { label: "Exchange rate", value: "", props: "cfExchangeRate" },
+      // ],
     };
   },
   computed: {
@@ -121,30 +195,43 @@ export default {
         this.projectType === this.partProjTypes.FUJIAN
       );
     },
-    cardTitle() {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return '配件采购 Nomination Recommendation - Spare Part Purchasing'
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return '附件采购 Nomination Recommendation – Accessory Purchasing'
-      }
-      return '生产采购 Nomination Recommendation - Production Purchasing'
-    },
-    tableTitle() {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return sparePartTableTitle
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return accessoryTableTitle
-      }
-      return nomalTableTitle
-    }
+    // cardTitle() {
+    //   if (this.projectType === partProjTypes.PEIJIAN) {
+    //     return '配件采购 Nomination Recommendation - Spare Part Purchasing'
+    //   } else if (this.projectType === partProjTypes.FUJIAN) {
+    //     return '附件采购 Nomination Recommendation – Accessory Purchasing'
+    //   }
+    //   return '生产采购 Nomination Recommendation - Production Purchasing'
+    // },
+    // tableTitle() {
+    //   if (this.projectType === partProjTypes.PEIJIAN) {
+    //     return sparePartTableTitle
+    //   } else if (this.projectType === partProjTypes.FUJIAN) {
+    //     return accessoryTableTitle
+    //   }
+    //   return nomalTableTitle
+    // },
+    // isApproval() {
+    //   return this.$route.query.isApproval === "true"
+    // }
   },
   created() {
-    this.getTopList()
-    this.getRemark()
+    // if (this.isApproval) {
+    //   this.reviewListRs()
+    // } else {
+    //   this.getTopList()
+    // }
+    // this.getRemark()
+  },
+  watch:{
+    firstCount(v){
+      console.log(v);
+    }
   },
   methods: {
     // 单独处理下年降或年降计划
-    resetLtcData(row = [], type) {
+    resetLtcData(row, type) {
+      if (!row) return ""
       // 年降开始时间
       if (type == "beginYearReduce") {
         // 取第一个非0的年份
@@ -166,43 +253,46 @@ export default {
         return strList.length ? strList.join("/") : "-";
       }
     },
-    /**
-     * @Description: 获取表格初始数据
-     * @Author: Luoshuang
-     * @param {*}
-     * @return {*}
-     */    
-    getTopList() {
-      getList(this.nominateId).then(res => {
-        if (res.code == 200) {
-          this.basicData = res.data
-          this.tableData = res.data.lines
-          this.projectType = res.data.partProjectType || ''
-        } else {
-          this.basicData = {}
-          this.tableData = []
-          this.projectType = ''
-        }
-      })
-    },
-    getRemark() {
-      getRemark(this.nominateId).then(res => {
-        if (res.code == 200) {
-          this.remarkItem = res.data.map(item => {
-            return {value: item, checked: false}
-          })
-        }
-      })
-    },
+    // /**
+    //  * @Description: 获取表格初始数据
+    //  * @Author: Luoshuang
+    //  * @param {*}
+    //  * @return {*}
+    //  */    
+    // getTopList() {
+    //   getList(this.nominateId).then(res => {
+    //     if (res.code == 200) {
+    //       this.basicData = res.data
+    //       this.tableData = res.data.lines
+    //       this.projectType = res.data.partProjectType || ''
+    //     } else {
+    //       this.basicData = {}
+    //       this.tableData = []
+    //       this.projectType = ''
+    //     }
+    //   })
+    // },
+    // getRemark() {
+    //   getRemark(this.nominateId).then(res => {
+    //     if (res.code == 200) {
+    //       this.remarkItem = res.data.map(item => {
+    //         return {value: item, checked: false}
+    //       })
+    //     }
+    //   })
+    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .rsPdf {
-  width: 1920px; /*no*/
+  width: fit-content;
+  // width: 2740px; /*no*/
+  background: #FFFFFF;
 
   .rsCard {
+    box-shadow: none;
     & + .rsCard {
       margin-top: 20px; /*no*/
     }

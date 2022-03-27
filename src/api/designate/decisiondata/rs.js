@@ -175,3 +175,12 @@ export function getApproveSignMtzDetail(params) {
     params
   })
 }
+
+// 更新流转RS单行备注
+export function updateRsMemo(data) {
+  return requst({
+    url: `/rs/updateRsMemo`,
+    method: 'POST',
+    data
+  })
+}
