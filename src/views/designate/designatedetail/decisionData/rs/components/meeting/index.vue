@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-26 22:59:32
+ * @LastEditTime: 2022-03-27 17:34:22
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" maxHeight="600" >
+      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" >
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -239,6 +239,7 @@
         </el-table>
       </iCard>
     </div>
+    <canvas id="myCanvas"></canvas>
   </div>
 </template>
 
@@ -248,10 +249,13 @@ import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitl
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, searchRsPageExchangeRate, reviewListRs } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
-import { findFrontPageSeat } from '@/api/designate'
+import { findFrontPageSeat, decisionDownloadPdfLogo } from '@/api/designate'
 import { toThousands } from "@/utils"
 import { transverseDownloadPDF } from "@/utils/pdf"
 import rsPdf from "./rsPdf"
+import {
+    uploadUdFile
+} from '@/api/file/upload'
 
 export default {
   props: {
@@ -286,6 +290,7 @@ export default {
       pdfData: {},
       firstCount: 0,
       count: 0,
+      fileList:[],
       tableLoading: false
     }
   },
@@ -381,24 +386,27 @@ export default {
     // this.getPrototypeList()
   },
   mounted(){
-    // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
-    let trHeight = 156  // 表格内容 行高
-    let tableHeader = 60 // 表头高度, position-compute 未计算到的
-    let pageHeight = 1360 // 横版A4一页对应的高度
-    let padding = 60 // 内边距高度, position-compute 未计算到的
-    let headerHeight = 106 // 顶部标题高度, position-compute 未计算到的
-    let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
-    let el = document.getElementsByClassName('position-compute')  // 页面所有固定元素的高度
-    let height = headerHeight + padding + tableHeader // 第一页所有固定元素高度总和
-    for (let i = 0; i < el.length; i++) {
-      height += el[i].offsetHeight;
-    }
-    let firstCount = parseInt((pageHeight - height) / trHeight) // 第一页数据条数
-    let count = parseInt((pageHeight - height + topHeight) / trHeight ) // 之后页面,每页数据条数
-    this.firstCount = firstCount
-    this.count = count
   },
   methods: {
+    getHeight(){
+      let tableHeight = document.getElementsByClassName('mainTable')[0].clientHeight
+      let trHeight = (tableHeight - 56) / this.tableData.length
+      // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
+      let tableHeader = 60 // 表头高度, position-compute 未计算到的
+      let pageHeight = 1360 // 横版A4一页对应的高度
+      let padding = 60 // 内边距高度, position-compute 未计算到的
+      let headerHeight = 106 // 顶部标题高度, position-compute 未计算到的
+      let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
+      let el = document.getElementsByClassName('position-compute')  // 页面所有固定元素的高度
+      let height = headerHeight + padding + tableHeader // 第一页所有固定元素高度总和
+      for (let i = 0; i < el.length; i++) {
+        height += el[i].offsetHeight;
+      }
+      let firstCount = parseInt((pageHeight - height) / trHeight) // 第一页数据条数
+      let count = parseInt((pageHeight - height + topHeight) / trHeight ) // 之后页面,每页数据条数
+      this.firstCount = firstCount
+      this.count = count
+    },
     getIsSingle() {
       findFrontPageSeat({nominateId:this.nominateId}).then(res => {
         if (res.result) {
@@ -552,7 +560,14 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
-      .finally(() => this.tableLoading = false)
+      .finally(() => {
+        this.tableLoading = false
+        this.$nextTick(()=>{
+          setTimeout(()=>{
+            this.getHeight()
+          },1000)
+        })
+      })
     },
     /**
      * @Description: 获取备注
@@ -673,6 +688,7 @@ export default {
       .finally(() => this.tableLoading = false)
     },
 
+    // 是否跨页面, 需要分割
     isSplit(nodes, index, pageHeight) {
       // 计算当前这块d是否跨越了a4大小，以此分割
       if (
@@ -684,7 +700,7 @@ export default {
       }
       return false;
     },
-    
+    // 创建空白元素,撑开跨页面空间
     createEl() {
       let vm = this;
       const A4_WIDTH = 841.89;
@@ -694,7 +710,6 @@ export default {
         // dom的id。
         let target = this.$refs.rsPdf.$el;
         let pageHeight = (target.clientWidth / A4_WIDTH) * A4_HEIGHT; // a4每页对应页面的高度
-        console.log(pageHeight);
         // 获取分割dom，此处为class类名为item的dom
         let lableListID = document.getElementsByClassName("pdf-item");
         // 进行分割操作，当dom内容已超出a4的高度，则将该dom前插入一个空dom，把他挤下去，分割
@@ -723,7 +738,7 @@ export default {
             }
           }
         }
-      transverseDownloadPDF({
+      this.getPdfImage({
         dom: this.$refs.rsPdf.$el,
         pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
         exportPdf: true,
@@ -734,12 +749,131 @@ export default {
     // 导出pdf
     handleExportPdf() {
       this.createEl()
-    }
+    },
+    // 截取页面,存入pdf
+    // 截取页面,转图片, 上传服务器
+    getPdfImage({
+      //html横向导出pdf
+      idEle: ele,
+      dom,
+      pdfName: pdfName,
+      callback: callback,
+      exportPdf: exportPdf,
+    }) {
+      let el = "";
+      if (ele) el = document.getElementById(ele);
+      //通过getElementById获取要导出的内容
+      else el = dom;
+      let eleW = el.offsetWidth; // 获得该容器的宽
+      let eleH = el.offsetHeight; // 获得该容器的高
+      var canvasFragment = document.createElement("canvas");
+      canvasFragment.width = eleW; // 将画布宽&&高放大两倍
+      canvasFragment.height = eleH;
+      this.width = canvasFragment.width;
+      this.height = canvasFragment.height;
+      var context = canvasFragment.getContext("2d");
+      context.scale(2, 2);
+      html2canvas(el, {
+        dpi: 96, //分辨率
+        scale: 1, //设置缩放
+        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+        bgcolor: "#ffffff", //应该这样写
+        logging: false, //打印日志用的 可以不加默认为false
+      }).then((canvas) => {
+        var contentWidth = canvas.width; //
+        var contentHeight = canvas.height; //
+        //一页pdf显示html页面生成的canvas高度;
+        var pageHeight = (contentWidth / 841.89) * 595.28; //
+        this.pageHeight = pageHeight;
+        //未生成pdf的html页面高度
+        var leftHeight = contentHeight; //
+        var ctx = canvas.getContext("2d");
+
+        var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
+        copyCanvas.width = contentWidth;
+        copyCanvas.height = pageHeight;
+        var ctxs = copyCanvas.getContext("2d");
+        // 保存每一页的画布, 然后清空canvas
+        if (leftHeight < pageHeight) {
+          //   console.log(pageData);
+          var imgData = ctx.getImageData(0, 0, contentWidth, pageHeight); // 截取主画布
+          ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
+          // 截图画布转为file
+          copyCanvas.toBlob((blob) => {
+            //以时间戳作为文件名 实时区分不同文件
+            let filename = `${new Date().getTime()}.png`;
+            //转换canvas图片数据格式为formData
+            let pdfFile = new File([blob], filename, { type: "image/png" });
+            this.fileList.push({ file: pdfFile });
+          });
+        } else {
+          // 分页
+          var num = 1;
+          while (leftHeight > 0) {
+            ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
+            var imgData = ctx.getImageData(
+              0,
+              (num - 1) * pageHeight,
+              contentWidth,
+              pageHeight
+            ); // 截取主画布当前页
+            ctxs.putImageData(imgData, 0, 0); // 插入截图画布
+            // 截图画布转为file
+            copyCanvas.toBlob((blob) => {
+              //以时间戳作为文件名 实时区分不同文件
+              let filename = `${new Date().getTime()}.png`;
+              let pdfFile = new File([blob], filename, { type: "image/png" });
+              this.fileList.push({ file: pdfFile });
+            });
+            leftHeight -= pageHeight;
+            // //避免添加空白页
+            if (leftHeight > 0) {
+              num++;
+            }
+          }
+        }
+        // if (callback) {
+        //   callback(pdf, pdfName)
+        // }
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.uploadUdFile();
+          }, 1000);
+        });
+      });
+    },
+
+    // 下载 pdf 文件
+    async DownloadPdf(){
+      let arr = this.fileList.filter(item=>!item.imageUrl)
+      if(arr.length) return
+      const list = this.fileList.map((item)=>item.imageUrl);
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight*1.2})  // 1.2 预留 页脚位置
+    },
+
+    // 上传图片
+    async uploadUdFile(){
+      this.fileList.map((item)=>{
+        uploadUdFile({
+        multifile: item.file
+        }).then(res=>{
+          if(res.code == 200){
+            item['imageUrl'] = res.data[0].path
+            this.DownloadPdf();
+          }else{
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        });
+      })
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
+#myCanvas{
+  display: none;
+}
 .meeting {
   height: 100vh;
   overflow-y: auto;

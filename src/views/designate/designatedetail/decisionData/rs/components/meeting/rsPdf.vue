@@ -91,7 +91,7 @@
       </div>
       <template v-if="count == firstCount">
         <div class="pdf-item">
-          <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable margin-top20 pdf-item" >
+          <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable margin-top20" >
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
             </template>
