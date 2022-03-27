@@ -84,7 +84,7 @@
 import { iCard, iFormGroup, iFormItem, iText } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes, fileType } from "@/config"
-import { getList, getRemark } from "@/api/designate/decisiondata/rs"
+import { getList, getRemark, reviewListRs } from "@/api/designate/decisiondata/rs"
 import { checkList, fileTableTitle } from "./data"
 import { nomalTableTitle, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
 
@@ -151,7 +151,8 @@ export default {
   },
   methods: {
     // 单独处理下年降或年降计划
-    resetLtcData(row = [], type) {
+    resetLtcData(row, type) {
+      if (!row) return ""
       // 年降开始时间
       if (type == "beginYearReduce") {
         // 取第一个非0的年份
@@ -191,6 +192,21 @@ export default {
           this.projectType = ''
         }
       })
+    },
+    reviewListRs() {
+      reviewListRs(this.nominateId)
+      .then(res => {
+        if (res.code == 200) {
+          this.basicData = res.data
+          this.tableData = res.data.lines
+          this.projectType = res.data.partProjectType || ''
+        } else {
+          this.basicData = {}
+          this.tableData = []
+          this.projectType = ''
+        }
+      })
+      .finally(() => this.tableLoading = false)
     },
     getRemark() {
       getRemark(this.nominateId).then(res => {

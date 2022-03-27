@@ -147,9 +147,9 @@
         <template #savingFee="scope">
           <span>{{ scope.row.savingFee | toThousands }}</span>
         </template>
-        <!-- <template #tto="scope">
-          <span>{{ scope.row.tto | toThousands }}</span>
-        </template> -->
+        <template #turnover="scope">
+          <span>{{ scope.row.turnover | toThousands }}</span>
+        </template>
       </tableList>
       <!-- v-if="isPreview" -->
       <div class="beizhu">

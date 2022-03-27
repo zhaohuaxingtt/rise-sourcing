@@ -246,7 +246,9 @@ export const prototypeTitleList = [
 ]
 
 // 单独处理下年降或年降计划
-export const resetLtcData = function(row=[], type) {
+export const resetLtcData = function(row, type) {
+  if (!row) return ''
+
   // 年降开始时间
   if(type == 'beginYearReduce'){
     // 取第一个非0的年份
