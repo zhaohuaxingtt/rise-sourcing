@@ -135,6 +135,7 @@ export const sparePartTableTitle = [
   {props:'share',name:'份额', enName: 'Share(%)', key: "", minWidth: 60},
   {props:'cfTargetBPrice',name:'财务目标价', enName: 'CF Target Price', key: "", minWidth: 105},
   {props:'status',name:'状态', enName: 'Status', key: "", minWidth: 50},
+  {props:'aprice',name:'A价', enName: 'A Price', key: "", minWidth: 80},
   {props:'bprice',name:'B价', enName: 'B Price', key: "", minWidth: 80},
   {props:'ltc',name:'年降', enName: 'LTC', key: "", width: 60},
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
