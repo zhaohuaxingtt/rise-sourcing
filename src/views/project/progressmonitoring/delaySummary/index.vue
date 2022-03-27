@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 11:08:17
+ * @LastEditTime: 2022-03-25 17:57:41
  * @Description: 延误原因汇总
 -->
 
@@ -42,8 +42,6 @@
           <saveBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_SAVE_BUTTON|延误原因确认保存按钮" v-if="withAllBtn" saveType="3" :saveData="tableData" @getTableList="getTableList" ></saveBtn>
           <!--------------------确认并发送按钮----------------------------------->
           <confirmBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_CONFIRM_BUTTON|延误原因确认确认并发送按钮" v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
-          
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         </template>
         <button-table-setting @click="edittableHeader" />
       </div>

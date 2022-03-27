@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:58:45
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-25 10:29:55
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -12,7 +12,9 @@
     <!-- <el-tabs v-model="tab" class="tab"> -->
       <!-- <el-tab-pane lazy :label="language('LK_XUNYUANZHIHANG','寻源')" name="source"> -->
 
-        <headerNav />
+          <headerNav>
+            <iLoger ref="log" :config="{module_obj_ae: '附件需求',  queryParams:[]}" :credentials="true" isPage :isUser="true" class="font-24 margin-left25" />
+          </headerNav>
 
 
           <!-- <div class="margin-bottom33">
@@ -147,13 +149,13 @@ import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
 import headerNav from '@/components/headerNav'
 import moment from 'moment'
-
+import iLoger from 'rise/web/components/iLoger'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav},
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav, iLoger},
   data() {
     return {
       // 零件项目类型

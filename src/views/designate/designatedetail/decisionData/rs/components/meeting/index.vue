@@ -106,8 +106,8 @@
           <span v-else>{{ scope.row.status }}</span>
         </template>
 
-        <template #supplierSapCode="scope">
-          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        <template #svwCode="scope">
+          <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
         <!-- <template #demand="scope">
           <span>{{ scope.row.demand | kFilter }}</span>
@@ -171,9 +171,9 @@
         <template #savingFee="scope">
           <span>{{ scope.row.savingFee | toThousands }}</span>
         </template>
-        <!-- <template #tto="scope">
-          <span>{{ scope.row.tto | toThousands }}</span>
-        </template> -->
+        <template #turnover="scope">
+          <span>{{ scope.row.turnover | toThousands }}</span>
+        </template>
       </tableList>
       <!-- v-if="isPreview" -->
       <div class="position-compute">
