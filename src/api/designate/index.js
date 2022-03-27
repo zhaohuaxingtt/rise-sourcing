@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-05-28 17:30:52
- * @LastEditTime: 2022-02-22 17:17:28
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-26 13:41:35
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\api\designate\index.js
  */
@@ -235,6 +235,15 @@ export function getNomiPosition(params) {
 export function decisionDownloadPdf(data) {
   return fileRequst({
       url: '/decision/downloadPdf',
+      method: "POST",
+      data
+  })
+}
+
+// 下载导出RS的pdf
+export function decisionDownloadPdfLogo(data) {
+  return fileRequst({
+      url: '/decision/downloadPdfLogo',
       method: "POST",
       data
   })
