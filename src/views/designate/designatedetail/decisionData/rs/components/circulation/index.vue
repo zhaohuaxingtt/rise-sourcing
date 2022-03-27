@@ -78,12 +78,6 @@
         <template #rw="scope">
           <span>{{ scope.row.rw | toThousands(true) }}</span>
         </template>
-        <template #aprice="scope">
-          <span>{{ scope.row.aprice | toThousands(true) }}</span>
-        </template>
-        <template #bprice="scope">
-          <span>{{ scope.row.bprice | toThousands(true) }}</span>
-        </template>
         <template #packPrice="scope">
           <span>{{ scope.row.packPrice | toThousands(true) }}</span>
         </template>
@@ -93,13 +87,21 @@
         <template #operatePrice="scope">
           <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
         </template>
-        <template #investFee="scope">
-          <span>{{ scope.row.investFee | toThousands(true) }}</span>
-        </template>
         <template #turnover="scope">
           <span>{{ scope.row.turnover | toThousands(true) }}</span>
         </template>
-
+        <template #originalPrice="scope">
+          <span>{{ scope.row.originalPrice | toThousands(true) }}</span>
+        </template>
+        <template #marketRetailPrice="scope">
+          <span>{{ scope.row.marketRetailPrice | toThousands(true) }}</span>
+        </template>
+        <template #presentPrice="scope">
+          <span>{{ scope.row.presentPrice | toThousands(true) }}</span>
+        </template>
+        <template #addFee="scope">
+          <span>{{ scope.row.presentPrice | toThousands(true) }}</span>
+        </template>
 
         <!-- 年降 -->
         <template #ltc="scope">
@@ -117,32 +119,32 @@
 
         <template #aprice="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdAPrice | toThousands }}</p>
-            <p>{{ scope.row.aprice | toThousands }}</p>
+            <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
+            <p>{{ scope.row.aprice | toThousands(true) }}</p>
           </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.aprice | toThousands }}</span>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
+          <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
         </template>
 
         <template #bprice="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdBPrice | toThousands }}</p>
-            <p>{{ scope.row.bprice | toThousands }}</p>
+            <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
+            <p>{{ scope.row.bprice | toThousands(true) }}</p>
           </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.bprice | toThousands }}</span>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
+          <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
         </template>
 
         <template #investFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+            <p>{{ scope.row.investFee | toThousands(true) }}</p>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
+            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <p>{{ scope.row.investFee | toThousands(true) }}</p>
           </span>
         </template>
 
