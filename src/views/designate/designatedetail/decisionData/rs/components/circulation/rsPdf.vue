@@ -1,6 +1,6 @@
 <template>
   <div class="rsPdf">
-    <iCard class="rsCard" v-if="isPF">
+    <!-- <iCard class="rsCard" v-if="isPF">
       <template #header>
         <div class="title">
           <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
@@ -42,13 +42,22 @@
           </iFormItem>
         </div>
       </iFormGroup>
-    </iCard>
+    </iCard> -->
     <iCard class="rsCard">
       <template #header>
         <div class="title">
           <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
         </div>
       </template>
+      <div class="infos">
+          <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+            <div class="info">
+              <span class="label">{{ info.name }}：</span>
+              <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
+              <div v-else>{{ exchangeRate }}</div>
+            </div>
+          </div>
+        </div>
       <template v-if="count==firstCount">
         <div class="pdf-item">
           <tableList
@@ -150,8 +159,8 @@
 import { iCard, iFormGroup, iFormItem, iText } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes, fileType } from "@/config"
-import { getList, getRemark, reviewListRs } from "@/api/designate/decisiondata/rs"
-import { checkList, fileTableTitle } from "./data"
+import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
+import { checkList, fileTableTitle, infos } from "./data"
 import { nomalTableTitle, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
 
 export default {
@@ -172,6 +181,7 @@ export default {
   isApproval: { type: Boolean },
   exchangeRageCurrency: { type: Array, default: () => [] },
   checkList: { type: Array, default: () => [] },
+  exchangeRate: { type: String, default: "" }
   },
   data() {
     return {
@@ -185,6 +195,11 @@ export default {
       //   { label: "LINIE采购员", value: "胡伟", props: "linieName" },
       //   { label: "Exchange rate", value: "", props: "cfExchangeRate" },
       // ],
+      basicData: {},
+      tableData: [],
+      projectType: partProjTypes.PEIJIAN,
+      remarkItem: [],
+      infos,
     };
   },
   computed: {
@@ -333,6 +348,24 @@ export default {
     box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
     border-radius: 5px; /*no*/
     padding: 5px 10px; /*no*/
+  }
+
+  .infos {
+    display: flex;
+    margin-bottom: 20px;
+
+    .infoWrapper {
+      flex: 1;
+    
+      .info {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        .label {
+          font-weight: 800;
+        }
+      }
+    }
   }
 }
 </style>
