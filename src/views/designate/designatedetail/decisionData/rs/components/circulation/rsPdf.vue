@@ -1,6 +1,6 @@
 <template>
   <div class="rsPdf">
-    <iCard class="rsCard" v-if="isPF">
+    <!-- <iCard class="rsCard" v-if="isPF">
       <template #header>
         <div class="title">
           <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
@@ -42,33 +42,101 @@
           </iFormItem>
         </div>
       </iFormGroup>
-    </iCard>
+    </iCard> -->
     <iCard class="rsCard">
       <template #header>
         <div class="title">
           <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
         </div>
       </template>
+      <div class="infos">
+        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+          <div class="info">
+            <span class="label">{{ info.name }}：</span>
+            <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
+            <div v-else>{{ exchangeRate }}</div>
+          </div>
+        </div>
+      </div>
       <tableList
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable"
       >
+        <template #oldAPrice="scope">
+          <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
+        </template>
+        <template #cfTargetAPrice="scope">
+          <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
+        </template>
+        <template #cfTargetBPrice="scope">
+          <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
+        </template>
+        <template #rw="scope">
+          <span>{{ scope.row.rw | toThousands(true) }}</span>
+        </template>
+        <template #packPrice="scope">
+          <span>{{ scope.row.packPrice | toThousands(true) }}</span>
+        </template>
+        <template #transportPrice="scope">
+          <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
+        </template>
+        <template #operatePrice="scope">
+          <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
+        </template>
+        <template #turnover="scope">
+          <span>{{ scope.row.turnover | toThousands(true) }}</span>
+        </template>
+
+
         <!-- 年降 -->
         <template #ltc="scope">
-          <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
         </template>
 
         <!-- 年降开始时间 -->
         <template #beginYearReduce="scope">
-          <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+          <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
 
-        <template #sapCode="scope">
-          <span>{{
-            scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
-          }}</span>
+        <template #svwCode="scope">
+          <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+        </template>
+
+        <template #aprice="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
+            <p>{{ scope.row.aprice | toThousands(true) }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
+          <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
+        </template>
+
+        <template #bprice="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
+            <p>{{ scope.row.bprice | toThousands(true) }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
+          <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
+        </template>
+
+        <template #investFee="scope">
+          <div v-if="scope.row.status === 'SKDLC'">
+            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+            <p>{{ scope.row.investFee | toThousands(true) }}</p>
+          </div>
+          <span v-else-if="scope.row.status === 'SKD'">
+            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+          </span>
+          <span v-else>
+            <p>{{ scope.row.investFee | toThousands(true) }}</p>
+          </span>
+        </template>
+
+        <template #remarks="scope">
+          <span>{{ scope.row.remarks }}</span>
         </template>
       </tableList>
     </iCard>
@@ -84,8 +152,8 @@
 import { iCard, iFormGroup, iFormItem, iText } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes, fileType } from "@/config"
-import { getList, getRemark, reviewListRs } from "@/api/designate/decisiondata/rs"
-import { checkList, fileTableTitle } from "./data"
+import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
+import { checkList, fileTableTitle, infos } from "./data"
 import { nomalTableTitle, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
 
 export default {
@@ -110,7 +178,9 @@ export default {
       basicData: {},
       tableData: [],
       projectType: partProjTypes.PEIJIAN,
-      remarkItem: []
+      remarkItem: [],
+      infos,
+      exchangeRate: ""
     };
   },
   computed: {
@@ -148,6 +218,7 @@ export default {
       this.getTopList()
     }
     this.getRemark()
+    this.searchRsPageExchangeRate()
   },
   methods: {
     // 单独处理下年降或年降计划
@@ -217,6 +288,35 @@ export default {
         }
       })
     },
+    // 获取汇率
+    searchRsPageExchangeRate() {
+      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+      searchRsPageExchangeRate(id)
+      .then(res => {
+        if (res.code == 200) {
+          let sourceData = Array.isArray(res.data) ? res.data : []
+
+          sourceData = sourceData
+            .filter(item => !item.isCurrentVersion)
+            .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+
+          const current = sourceData[0] ? sourceData[0] : {}
+
+          if (Array.isArray(current.exchangeRateVos)) {
+            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('')
+          } else {
+            this.exchangeRate = ""
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+
+    // 汇率显示处理
+    exchangeRateProcess(row) {
+      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
+    },
   },
 };
 </script>
@@ -264,6 +364,24 @@ export default {
     box-shadow: 0 0 1px rgb(0 38 98 / 15%); /*no*/
     border-radius: 5px; /*no*/
     padding: 5px 10px; /*no*/
+  }
+
+  .infos {
+    display: flex;
+    margin-bottom: 20px;
+
+    .infoWrapper {
+      flex: 1;
+    
+      .info {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        .label {
+          font-weight: 800;
+        }
+      }
+    }
   }
 }
 </style>

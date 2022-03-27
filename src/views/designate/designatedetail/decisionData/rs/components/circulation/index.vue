@@ -8,8 +8,8 @@
 -->
 
 <template>
-  <div :class="isPreview && 'isPreview'">
-    <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
+  <div class="circulation" :class="isPreview && 'isPreview'">
+    <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
         <div class="title">
           <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
@@ -44,7 +44,7 @@
           </iFormItem>
         </div>
       </iFormGroup>
-    </iCard>
+    </iCard> -->
     <iCard :class="!isPreview && 'margin-top20'">
       <template #header>
         <div class="title">
@@ -58,6 +58,15 @@
           <iButton v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
+      <div class="infos">
+        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+          <div class="info">
+            <span class="label">{{ info.name }}：</span>
+            <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
+            <div v-else>{{ exchangeRate }}</div>
+          </div>
+        </div>
+      </div>
       <tableList
         :tableLoading="tableLoading"
         :selection="false"
@@ -207,9 +216,9 @@
 
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
-import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle } from './data'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
 import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
@@ -256,7 +265,9 @@ export default {
       basicData: {},
       editStatus: false,
       saveLoading: false,
-      tableLoading: false
+      tableLoading: false,
+      infos,
+      exchangeRate: ""
     }
   },
   computed: {
@@ -419,6 +430,7 @@ export default {
         this.getTopList()
       }
       this.getRemark()
+      this.searchRsPageExchangeRate()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
     /**
@@ -536,7 +548,37 @@ export default {
         }
       })
       .finally(() => this.saveLoading = false)
-    }
+    },
+
+    // 获取汇率
+    searchRsPageExchangeRate() {
+      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+      searchRsPageExchangeRate(id)
+      .then(res => {
+        if (res.code == 200) {
+          let sourceData = Array.isArray(res.data) ? res.data : []
+
+          sourceData = sourceData
+            .filter(item => !item.isCurrentVersion)
+            .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+
+          const current = sourceData[0] ? sourceData[0] : {}
+
+          if (Array.isArray(current.exchangeRateVos)) {
+            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('')
+          } else {
+            this.exchangeRate = ""
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+
+    // 汇率显示处理
+    exchangeRateProcess(row) {
+      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
+    },
   }
 }
 </script>
@@ -571,5 +613,25 @@ export default {
 
 .suggestionRow {
   border: 10px solid red
+}
+
+.circulation {
+  .infos {
+    display: flex;
+    margin-bottom: 20px;
+
+    .infoWrapper {
+      flex: 1;
+    
+      .info {
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        .label {
+          font-weight: 800;
+        }
+      }
+    }
+  }
 }
 </style>
