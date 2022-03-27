@@ -9,7 +9,7 @@
           </span>
         <span class="floatright">
           <iButton v-if="show && isMtz" @click="toMtzUrl">{{ language('LK_CHAKANMTZBIANGENG',"查看MTZ变更") }}</iButton>
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <button-table-setting @click="edittableHeader" />
         </span>
       </div>
       

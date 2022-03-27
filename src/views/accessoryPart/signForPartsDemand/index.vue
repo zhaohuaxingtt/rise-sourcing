@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-18 22:57:19
+ * @LastEditTime: 2022-03-23 19:29:12
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -29,7 +29,7 @@
                     </el-option>
                   </template>
                 </iSelect>
-                <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
+                <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" type="daterange" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
                 <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
                 <iInput v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
@@ -42,7 +42,6 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANXUQIUQIANSHOU','配件需求签收')}}</span>
                 <div class="floatright">
-                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!--------------------签收按钮----------------------------------->
                   <iButton @click="signAccessory" :loading="signLoading" v-permission.auto="APREPART_SIGN_SIGN|配件-配件签收-签收">{{language('QIANSHOU','签收')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
@@ -53,6 +52,7 @@
                   <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDLINIE|配件-配件签收-分配Linie" >{{language('FENPEILINIE','分配Linie')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
+                  <button-table-setting @click="edittableHeader" />
                 </div>
             </div>
             <tableList
@@ -135,7 +135,9 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
-        sendDate: null
+        startDate: '',
+        endDate:'',
+        sendDate: []
         // showSelf: true
       },
       inquiryDialogVisible: false,
@@ -424,7 +426,9 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
-        sendDate: null
+        startDate: '',
+        endDate:'',
+        sendDate: []
         // showSelf: true
       }
 
@@ -490,7 +494,11 @@ export default {
     },
     sure() {
       this.page.currPage = 1
-      this.searchParams.sendDate = this.searchParams.sendDate ? moment(this.searchParams.sendDate).format('YYYY-MM-DDT00:00:00'): null
+      // 若有定点起止时间将其拆分成两个字段
+      const {sendDate=[]} = this.searchParams;
+      this.searchParams.startDate = sendDate[0] || ''
+      this.searchParams.endDate = sendDate[1] || ''
+      // this.searchParams.sendDate = this.searchParams.sendDate ? moment(this.searchParams.sendDate).format('YYYY-MM-DDT00:00:00'): null
       this.getTableList()
     },
     /**
@@ -501,8 +509,10 @@ export default {
      */    
     getTableList() {
       this.tableLoading = true
+      let searchParams = JSON.parse(JSON.stringify(this.searchParams))
+      delete searchParams.sendDate
       const params = {
-        ...this.searchParams,
+        ...searchParams,
         current: this.page.currPage,
         size: this.page.pageSize
       }

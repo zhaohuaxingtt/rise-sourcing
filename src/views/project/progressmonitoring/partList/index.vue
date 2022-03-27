@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 10:09:35
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 17:16:59
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -12,10 +12,10 @@
         <div class="cardview-header">
           <div class="font18 font-weight">{{titleKey ? language(tableTitle.titleKey, tableTitle.titleName) : tableTitle.titleName}}</div>
           <div class="control">
-            <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
             <iButton @click="exportfile">
               {{ language('LK_DAOCHU', '导出') }}
             </iButton>
+            <button-table-setting @click="edittableHeader" />
           </div>
         </div>
         <div class="cardview-body padding-top30">
@@ -210,15 +210,15 @@ export default {
           width: 0;
         }
         &::-webkit-scrollbar-thumb{
-          border-radius: 2px;
-          height: 50px;
+          // border-radius: 2px;
+          // height: 50px;
           // background: #efefef;
-          background: #fff;
+          // background: #fff;
         }
         &::-webkit-scrollbar-track{
           // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-          border-radius: 2px;
-          background: #fff;
+          // border-radius: 2px;
+          // background: #fff;
         }
       }
     }
