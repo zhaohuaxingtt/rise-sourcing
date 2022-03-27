@@ -90,18 +90,7 @@
         <template #turnover="scope">
           <span>{{ scope.row.turnover | toThousands(true) }}</span>
         </template>
-        <template #originalPrice="scope">
-          <span>{{ scope.row.originalPrice | toThousands(true) }}</span>
-        </template>
-        <template #marketRetailPrice="scope">
-          <span>{{ scope.row.marketRetailPrice | toThousands(true) }}</span>
-        </template>
-        <template #presentPrice="scope">
-          <span>{{ scope.row.presentPrice | toThousands(true) }}</span>
-        </template>
-        <template #addFee="scope">
-          <span>{{ scope.row.presentPrice | toThousands(true) }}</span>
-        </template>
+
 
         <!-- 年降 -->
         <template #ltc="scope">
@@ -113,8 +102,8 @@
           <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
 
-        <template #sapCode="scope">
-          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        <template #svwCode="scope">
+          <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
 
         <template #aprice="scope">

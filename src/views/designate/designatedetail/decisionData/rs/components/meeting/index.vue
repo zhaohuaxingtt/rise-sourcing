@@ -82,8 +82,8 @@
           <span v-else>{{ scope.row.status }}</span>
         </template>
 
-        <template #supplierSapCode="scope">
-          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        <template #svwCode="scope">
+          <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
         <!-- <template #demand="scope">
           <span>{{ scope.row.demand | kFilter }}</span>
