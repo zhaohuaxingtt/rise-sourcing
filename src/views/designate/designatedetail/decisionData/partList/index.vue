@@ -15,7 +15,7 @@
                      <iButton @click="goToRfq" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TOPARTLIST|跳转至零件清单添加">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
                      <iButton :loading="saveLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
                      </template>
-                  <button-table-setting @click="edittableHeader" />
+                  <button-table-setting v-if="!isRoutePreview && !isApproval" @click="edittableHeader" />
               </div>
           </h1>
           <!-- table区域 -->
@@ -136,6 +136,12 @@ export default {
       }),
       isPreview(){
          return this.$store.getters.isPreview;
+      },
+      isRoutePreview() {
+         return this.$route.query.isPreview == 1
+      },
+      isApproval() {
+         return this.$route.query.isApproval === "true"
       }
     },
     methods:{

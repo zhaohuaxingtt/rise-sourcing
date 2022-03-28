@@ -60,7 +60,7 @@ import {iCard,iButton,iPagination,iPage,iNavMvp} from 'rise'
 import {tableFileTitle} from './components/data'
 import { pageMixins } from "@/utils/pageMixins";
 import {factoryTranslate} from '@/api/partsprocure/editordetail'
-import { navList } from "../data"
+import { navList, noOnlineText } from "../data"
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 export default {
@@ -71,13 +71,21 @@ export default {
   mixins:[pageMixins,tableSortMixins],
   data(){
     return {
-      navList,
+      navList: _.cloneDeep(navList),
       tableData:[],
       tableFileTitle:tableFileTitle,
       tablaLoading:false
     }
   },
-  created(){this.factoryTranslate()},
+  created() {
+    this.factoryTranslate()
+    this.$set(this.navList[this.navList.length - 1], 'slot', noOnlineText(this.$i18n.locale))
+  },
+  watch: {
+    ['$i18n.locale'](lang) {
+      this.$set(this.navList[this.navList.length - 1], 'slot', noOnlineText(lang))
+    }
+  },
   methods:{
     factoryTranslate(){
       this.tablaLoading = true
