@@ -633,7 +633,7 @@ export default {
     },
     // 汇率显示处理
     exchangeRateProcess(row) {
-      return `1${ row.currencyCode }=${ row.exchangeRate }${ row.originCurrencyCode }`
+      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
     },
 
     // 权限获取数据
@@ -957,7 +957,7 @@ export default {
       font-size: 12px;
       display: flex;
       height: 17px;
-      margin-bottom: 24px;
+      margin-bottom: 12px;
       &:last-of-type {
         margin-bottom: 26px;
       }
@@ -993,18 +993,18 @@ export default {
       &-title {
         background-color: rgba(22, 96, 241, 0.06);
         border-right: 1px solid rgba(197, 204, 214, 0.42);
-        padding: 10px 24px;
+        padding: 6px 24px;
         width: 60%;
         font-weight: bold;
-        line-height: 29px;
+        // line-height: 29px;
         display: flex;
         flex-direction: column;
         justify-content: center;
       }
       &-value {
         width: 40%;
-        padding: 10px 24px;
-        line-height: 29px;
+        padding: 6px 24px;
+        // line-height: 29px;
         background-color: #fff;
         display: flex;
         flex-direction: column;

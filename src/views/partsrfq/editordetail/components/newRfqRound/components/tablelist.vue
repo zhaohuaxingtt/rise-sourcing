@@ -104,7 +104,7 @@ export default {
       if(row.isDisabled == true){
         return false;
       }else{
-      if(this.rfqSelectedProjectParts && (this.rfqSelectedProjectParts[0].partProjectType == partProjTypes.GSLINGJIAN || this.rfqSelectedProjectParts[0].partProjectType ==partProjTypes.ZHANGJIALINGJIAN)){
+      if(this.rfqInfo && (this.rfqInfo.partProjectType[0] == partProjTypes.GSLINGJIAN || this.rfqInfo.partProjectType[0] ==partProjTypes.ZHANGJIALINGJIAN)){
         return true
       }else{
       if(row.isNego) { //谈判轮
