@@ -92,3 +92,18 @@ export function getApprovalRecordMeeting(nomiAppId, processInstanceId) {
   })
 }
 
+// cf科室列表
+export function findCfDeptNumList() {
+  return requst({
+    url: `/nominate/nomi-approval-process/findCfDeptNumList`,
+    method: 'GET'
+  })
+}
+
+// 获取CF部门审批人
+export function findCfUserInfo(params) {
+  return requst({
+    url: `/nominate/nomi-approval-process/findCfUserInfo/${ params.cfDeptNum }/${ params.nomiType }`,
+    method: 'GET'
+  })
+}

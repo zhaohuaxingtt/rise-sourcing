@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-25 10:09:50
- * @LastEditTime: 2022-02-11 16:55:14
+ * @LastEditTime: 2022-03-17 17:16:58
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: /front-sourcing/src/views/partsrfq/editordetail/index.vue
@@ -97,6 +97,7 @@
                 credentials
                 isPage
                 isUser
+                hasBizId
                 class="margin-left10"
                 optionDicKey="LOG_OPERATION_TYPES"
                 optionDicKey2="RFQ详情页" />
@@ -526,11 +527,14 @@ export default {
     getTableList () {
       if (this.$route.query.id) {
         this.confirmTableLoading = true;
+        this.parmarsHasRfq['rfqId'] = this.$route.query.id || '';
         this.parmarsHasRfq['size'] = this.pageSize || 10;
         this.parmarsHasRfq['current'] = this.currPage || 1;
-        this.parmarsHasRfq['status'] = 'NOT_IN_RFQ';
-        this.parmarsHasRfq['linieId'] = this.linieUserId;
-        this.parmarsHasRfq['buyerId'] = this.baseInfo.buyerId;
+        this.parmarsHasRfq['status'] = '';
+        this.parmarsHasRfq["isRfqPartList"] = true;
+        this.parmarsHasRfq["positionCtrl"] = false;
+        // this.parmarsHasRfq['linieId'] = this.linieUserId;
+        // this.parmarsHasRfq['buyerId'] = this.baseInfo.buyerId;
         getTabelData(this.parmarsHasRfq)
           .then((res) => {
             this.$store.dispatch(

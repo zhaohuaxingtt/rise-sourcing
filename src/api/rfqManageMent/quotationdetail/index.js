@@ -603,3 +603,11 @@ export function searchQuotationExchange(params) {
     method: 'GET'
   })
 }
+
+// 更新降价计划
+export function updatePriceReducePlan(data) {
+  return requst({
+    url: `/part/update-price-reduce-plan/${ data.quotationId }`,
+    method: 'POST'
+  })
+}

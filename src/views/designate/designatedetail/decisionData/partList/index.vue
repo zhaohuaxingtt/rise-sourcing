@@ -10,12 +10,12 @@
           <h1 class="flex-between-center margin-bottom20 font18">
               <span>Part List</span>
               <div>
-                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!-- <template v-if="isPreview!='1' && !nominationDisabled && !rsDisabled"> -->
                      <template v-if="isPreview!='1'">
                      <iButton @click="goToRfq" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TOPARTLIST|跳转至零件清单添加">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
                      <iButton :loading="saveLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
                      </template>
+                  <button-table-setting v-if="!isRoutePreview && !isApproval" @click="edittableHeader" />
               </div>
           </h1>
           <!-- table区域 -->
@@ -38,6 +38,12 @@
                <span v-if="isPreview=='1' || nominationDisabled || rsDisabled">{{ percent(scope.row.ebrConfirmValue || 0) }}</span>
                <iInput v-else v-model="scope.row.ebrConfirmValue" @input="handleInputLimit($event, scope.row)" @focus="handleFocus(scope.row.ebrConfirmValue, scope.row)" @blur="handleBlur(scope.row.ebrConfirmValue, scope.row)"/>
             </template>
+						<template #lifeTime="scope">
+							<span>{{ scope.row.lifeTime | toThousands(true) }}</span>
+						</template>
+						<template #paVolume="scope">
+							<span>{{ scope.row.paVolume | toThousands(true) }}</span>
+						</template>
           </tablelist>
           <!-- <el-table
            :empty-text="language('LK_ZANWUSHUJU','暂无数据')"
@@ -94,7 +100,7 @@ import {
    getPartList,
    partUpdate,
  } from '@/api/designate/designatedetail/decisionData/partlist'
-import { numberProcessor } from "@/utils"
+import { numberProcessor, toThousands } from "@/utils"
 import { tableTitle } from "./data"
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
@@ -108,6 +114,9 @@ export default {
         iInput,
         tablelist,
     },
+		filters: {
+			toThousands
+		},
     created(){
        this.getListData();
     },
@@ -127,6 +136,12 @@ export default {
       }),
       isPreview(){
          return this.$store.getters.isPreview;
+      },
+      isRoutePreview() {
+         return this.$route.query.isPreview == 1
+      },
+      isApproval() {
+         return this.$route.query.isApproval === "true"
       }
     },
     methods:{

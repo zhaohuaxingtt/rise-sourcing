@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2022-02-25 18:34:13
+ * @LastEditTime: 2022-03-25 15:57:18
  * @LastEditors: YoHo
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
@@ -40,7 +40,10 @@
               <el-form-item  :label="language('LK_XUNJIACAIGOUYUAN','询价采购员名称')"
                 >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.buyerName"></iInput>
-              </el-form-item>         
+              </el-form-item>
+              <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')">
+                <iInput :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.linieName"></iInput>
+              </el-form-item>  
               <el-form-item  :label="language('LK_SAP','供应商SAP号')"
                  >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>

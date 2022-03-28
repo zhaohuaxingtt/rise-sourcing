@@ -27,7 +27,7 @@
               {{ language("LK_FANHUI",'返回') }}
             </iButton>
           </span>
-          
+          <iLoger ref="log" :config="{ bizId_obj_ae: 'id',queryParams:['bizId_obj_ae']}" isPage  :isUser="true" class="margin-left20" />
         </div>
         <headerNav />
       </div>
@@ -55,6 +55,7 @@ import { clickMessage } from "@/views/partsign/home/components/data"
 import partDesignateOrders from "@/views/designate/home/signSheet/details"
 import MTZDesignateOrders from "@/views/designate/home/signSheet/mtzDetails"
 import { saveSignSheet, submitSignSheet } from '@/api/designate/nomination/signsheet'
+import iLoger from 'rise/web/components/iLoger'
 
 
 // eslint-disable-next-line no-undef
@@ -87,7 +88,8 @@ export default {
     iPage,
     iMessage,
     partDesignateOrders,
-    MTZDesignateOrders
+    MTZDesignateOrders,
+    iLoger
   },
   created() {
     const heaederSubMenuItem = this.heaederSubMenu.find(o => o.path === this.$route.path)

@@ -13,7 +13,7 @@
       >
       <div class="floatright">
         <!-- 下载 -->
-        <iButton @click="downloadFile" class="btn margin-right10"
+        <iButton v-if="!isRoutePreview && !isApproval" @click="downloadFile" class="btn margin-right10"
         v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSheet_DOWNLOAD|RSSheet-下载"
         >
           {{ language("strategicdoc_XiaZai",'下载') }}
@@ -51,13 +51,16 @@
     </div>
     <tablelist
       index
-      :selection="!$store.getters.isPreview"
+      :selection="true"
       :tableData="dataList"
       :tableTitle="uploadtableTitle"
       :tableLoading="tableLoading"
       @handleSelectionChange="handleSelectionChange"
       v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSheet_TABLE|RSSheet-表格"
     >
+    <template #fileName="scope">
+      <span class="link-underline" @click="download(scope.row)">{{ scope.row.fileName }}</span>
+    </template>
     <template #uploadDate="scope">
       {{scope.row.uploadDate | dateFilter('YYYY-MM-DD')}}
     </template>
@@ -123,6 +126,12 @@ export default {
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
     }),
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
+    }
   },
   mounted() {
     this.getFetchDataList()
@@ -136,6 +145,9 @@ export default {
         fileType: '103',
       }
       this.getDataList(params)
+    },
+    download(row) {
+      window.open(`${ row.filePath }&isDown=true`,'_blank')
     }
   }
 }
