@@ -146,6 +146,9 @@
             <template #savingFee="scope">
               <span>{{ scope.row.savingFee | toThousands }}</span>
             </template>
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
+            </template>
           </tableList>
           <div class="beizhu">
             备注 Remarks:
@@ -247,6 +250,9 @@
             <template #savingFee="scope">
               <span>{{ scope.row.savingFee | toThousands }}</span>
             </template>
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
+            </template>
           </tableList>
           <div class="beizhu">
             备注 Remarks:
@@ -346,6 +352,9 @@
               </template>
               <template #savingFee="scope">
                 <span>{{ scope.row.savingFee | toThousands }}</span>
+              </template>
+              <template #share="scope">
+                <span>{{ +scope.row.share || 0 }}</span>
               </template>
             </tableList>
             <div class="beizhu">
@@ -576,18 +585,18 @@ export default {
         &-title {
           background-color: rgba(22, 96, 241, 0.06);
           border-right: 1px solid rgba(197, 204, 214, 0.42);
-          padding: 10px 24px; /*no*/
+          padding: 6px 24px; /*no*/
           width: 60%;
           font-weight: bold;
-          line-height: 29px; /*no*/
+          // line-height: 29px; /*no*/
           display: flex;
           flex-direction: column;
           justify-content: center;
         }
         &-value {
           width: 40%;
-          padding: 10px 24px; /*no*/
-          line-height: 29px; /*no*/
+          padding: 6px 24px; /*no*/
+          // line-height: 29px; /*no*/
           background-color: #fff;
           display: flex;
           flex-direction: column;

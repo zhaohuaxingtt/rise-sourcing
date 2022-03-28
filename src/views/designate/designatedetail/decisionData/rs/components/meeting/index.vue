@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" >
+      <tableList v-update max-height="700" :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" border>
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -140,29 +140,78 @@
           <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
           <span v-else>{{ scope.row.bprice | toThousands }}</span>
         </template>
+
         <template #investFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
+            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
-      
         </template>
+
         <template #devFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdDevFee | toThousands }}</p>
-            <p>{{ scope.row.devFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.devFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
             <p>{{ scope.row.skdDevFee | toThousands }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.devFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.devFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
         </template>
         <template #addFee="scope">
@@ -173,6 +222,10 @@
         </template>
         <template #turnover="scope">
           <span>{{ scope.row.turnover | toThousands }}</span>
+        </template>
+
+        <template #share="scope">
+          <span>{{ +scope.row.share || 0 }}</span>
         </template>
       </tableList>
       <!-- v-if="isPreview" -->
@@ -633,7 +686,7 @@ export default {
     },
     // 汇率显示处理
     exchangeRateProcess(row) {
-      return `1${ row.currencyCode }=${ row.exchangeRate }${ row.originCurrencyCode }`
+      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
     },
 
     // 权限获取数据
@@ -957,7 +1010,7 @@ export default {
       font-size: 12px;
       display: flex;
       height: 17px;
-      margin-bottom: 24px;
+      margin-bottom: 12px;
       &:last-of-type {
         margin-bottom: 26px;
       }
@@ -993,18 +1046,18 @@ export default {
       &-title {
         background-color: rgba(22, 96, 241, 0.06);
         border-right: 1px solid rgba(197, 204, 214, 0.42);
-        padding: 10px 24px;
+        padding: 6px 24px;
         width: 60%;
         font-weight: bold;
-        line-height: 29px;
+        // line-height: 29px;
         display: flex;
         flex-direction: column;
         justify-content: center;
       }
       &-value {
         width: 40%;
-        padding: 10px 24px;
-        line-height: 29px;
+        padding: 6px 24px;
+        // line-height: 29px;
         background-color: #fff;
         display: flex;
         flex-direction: column;

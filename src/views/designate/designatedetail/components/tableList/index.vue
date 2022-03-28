@@ -5,7 +5,7 @@
  * @LastEditTime: 2022-01-06 14:24:08
 -->
 <template>
-  <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :height="height" :max-height="maxHeight" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :cell-class-name="cellClassName" :row-class-name="tableRowClassName">
+  <el-table class="table" ref="multipleTable" fit tooltip-effect='light' :border="border" :height="height" :max-height="maxHeight" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" :cell-class-name="cellClassName" :row-class-name="tableRowClassName">
     <el-table-column v-if="selection" type='selection' width="34" align='center' :selectable="selectable"></el-table-column>
     <el-table-column v-if='indexKey' :class-name="indexKey ? 'tableIndex': ''" type='index' width='36' align='center' label='#' :fixed="isFixedIndex">
       <template slot-scope="scope">
@@ -169,7 +169,8 @@ export default{
     tableRowClassName: {
       type: String || Function,
       default: ""
-    }
+    },
+    border: { type: Boolean }
   },
   inject:['vm'],
   watch: {

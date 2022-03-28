@@ -2,13 +2,13 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-28 13:57:51
+ * @LastEditTime: 2022-03-28 14:05:52
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
-  <div :class="isPreview && 'isPreview'" v-loading="loading">
+  <div class="circulation" :class="isPreview && 'isPreview'">
     <div class="rsPdfWrapper">
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
@@ -22,9 +22,10 @@
         :projectType="projectType"
         :isApproval="isApproval"
         :exchangeRageCurrency="exchangeRageCurrency"
-        :checkList="checkList"/>
+        :checkList="checkList"
+        :exchangeRate="exchangeRate" />
     </div>
-    <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
+    <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
         <div class="title">
           <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
@@ -59,7 +60,7 @@
           </iFormItem>
         </div>
       </iFormGroup>
-    </iCard>
+    </iCard> -->
     <iCard :class="!isPreview && 'margin-top20'">
       <template #header>
         <div class="title">
@@ -67,19 +68,31 @@
         </div>
         <div v-if="!(projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN)"
              class="btnWrapper">
-          <iButton v-if="!isRoutePreview && !isApproval && !editStatus" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
+          <iButton v-if="!isRoutePreview && !isApproval && !editStatus && !isPreview" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
           <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
           <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
           <iButton v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
+      <div class="infos">
+        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+          <div class="info">
+            <span class="label">{{ info.name }}：</span>
+            <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
+            <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+            <div v-else>{{ basicData[info.props] }}</div>
+          </div>
+        </div>
+      </div>
       <tableList
+        max-height="700"
         :tableLoading="tableLoading"
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable mainTable"
-        :tableRowClassName="tableRowClassName">
+        :tableRowClassName="tableRowClassName"
+        border>
         <template #oldAPrice="scope">
           <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
         </template>
@@ -140,14 +153,38 @@
 
         <template #investFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-            <p>{{ scope.row.investFee | toThousands(true) }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
             <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.investFee | toThousands(true) }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
         </template>
 
@@ -157,9 +194,21 @@
             <span v-else>{{ scope.row.remarks }}</span>
           </div>
         </template>
+
+        <template #share="scope">
+          <span>{{ +scope.row.share || 0 }}</span>
+        </template>
       </tableList>
+      <div class="position-compute">
+        <div class="beizhu">
+          备注 Remarks:
+          <div class="beizhu-value">
+            <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+          </div>
+        </div>
+      </div>
     </iCard>
-    <div class="position-compute">
+    <div class="position-compute" v-if="!isRoutePreview && !isApproval">
       <iCard :title="language('BEIZHU','备注')"
             :class="!isPreview && 'margin-top20'">
         <template slot="header-control" v-if="!isPreview">
@@ -221,9 +270,9 @@
 
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
-import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle } from './data'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
 import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
@@ -236,6 +285,7 @@ import { decisionDownloadPdfLogo } from '@/api/designate'
 import {
     uploadUdFile
 } from '@/api/file/upload'
+import filters from "@/utils/filters"
 
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf },
@@ -244,13 +294,12 @@ export default {
     nominateId: { type: String },
     // projectType: {type:String}
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   filters: {
     toThousands
   },
   data () {
     return {
-      loading: false,
       // 零件项目类型
       partProjTypes,
       fileTableTitle,
@@ -279,6 +328,8 @@ export default {
       firstCount: 0,
       count: 0,
       fileList:[],
+      infos,
+      exchangeRate: ""
     }
   },
   computed: {
@@ -342,6 +393,8 @@ export default {
       let count = parseInt((pageHeight - height + headerHeight) / trHeight ) // 之后页面,每页数据条数
       this.firstCount = firstCount
       this.count = count
+    console.log(this.firstCount);
+    console.log(this.count);
     },
     downloadFile () {
       if (this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN', "您当前还未选择列表文件，请选择后重试！"))
@@ -463,6 +516,7 @@ export default {
         this.getTopList()
       }
       this.getRemark()
+      this.searchRsPageExchangeRate()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
     /**
@@ -476,8 +530,8 @@ export default {
 
       getList(this.nominateId).then(res => {
         if (res?.result) {
-          this.basicData = res.data
-          this.tableData = res.data.lines
+          this.basicData = res.data || {}
+          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
           this.projectType = res.data.partProjectType || ''
           // this.projectType = partProjTypes.PEIJIAN
         } else {
@@ -545,12 +599,12 @@ export default {
       })
     },
     handleOpenPage (row) {
+      console.log(row);
       downloadUdFile(row.uploadId)
     },
 
     // 导出pdf
     handleExportPdf() {
-      this.loading = true
       this.createEl()
       // transverseDownloadPDF({
       //   dom: this.$refs.rsPdf.$el,
@@ -564,10 +618,6 @@ export default {
       if (row.isSuggestion) {
         return "suggestionRow"
       }
-    },
-
-    handleEdit() {
-      this.editStatus = true
     },
 
     // 保存行备注
@@ -697,6 +747,7 @@ export default {
         var ctxs = copyCanvas.getContext("2d");
         // 保存每一页的画布, 然后清空canvas
         if (leftHeight < pageHeight) {
+          //   console.log(pageData);
           var imgData = ctx.getImageData(0, 0, contentWidth, pageHeight); // 截取主画布
           ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
           // 截图画布转为file
@@ -750,7 +801,6 @@ export default {
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight*1.2})  // 1.2 预留 页脚位置
-      this.loading = false
     },
 
     // 上传图片
@@ -768,7 +818,37 @@ export default {
         });
       })
     },
-  },
+
+    // 获取汇率
+    searchRsPageExchangeRate() {
+      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+      searchRsPageExchangeRate(id)
+      .then(res => {
+        if (res.code == 200) {
+          let sourceData = Array.isArray(res.data) ? res.data : []
+
+          sourceData = sourceData
+            .filter(item => !item.isCurrentVersion)
+            .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+
+          const current = sourceData[0] ? sourceData[0] : {}
+
+          if (Array.isArray(current.exchangeRateVos)) {
+            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('<br/>') || "1RMB=1RMB"
+          } else {
+            this.exchangeRate = "1RMB=1RMB"
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+
+    // 汇率显示处理
+    exchangeRateProcess(row) {
+      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
+    },
+  }
 }
 </script>
 
@@ -807,5 +887,52 @@ export default {
 
 .suggestionRow {
   border: 10px solid red
+}
+
+.circulation {
+  .infos {
+    display: flex;
+    margin-bottom: 20px;
+
+    .infoWrapper {
+      flex: 1;
+    
+      .info {
+        font-size: 13px;
+        display: flex;
+        .label {
+          font-weight: 800;
+        }
+      }
+    }
+  }
+
+  .rsTable {
+    ::v-deep .el-table__header th {
+      .cell {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+    }
+
+    ::v-deep .el-table__row td {
+      .cell {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+    }
+  }
+
+  .beizhu {
+    background-color: rgba(22, 96, 241, 0.03);
+    // height: 40px;
+    padding: 12px 14px;
+    font-weight: bold;
+    display: flex;
+    &-value {
+      font-weight: 400;
+      margin-left: 20px;
+    }
+  }
 }
 </style>
