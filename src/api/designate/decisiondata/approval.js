@@ -107,3 +107,12 @@ export function findCfUserInfo(params) {
     method: 'GET'
   })
 }
+
+// 根据BusinessId查询所有流程全景
+export function queryPanoramaLists(data) {
+  return requstApproval({
+    url: '/history/getPanoramasByBusinessId',
+    method: 'POST',
+    data
+  })
+}

@@ -6354,6 +6354,8 @@
 		STATUS_EN: 'Status',
 		Meeting: 'Meeting',
 		JIANGJIAJIHUAGENGXINSHIBAI: 'Price Reduction Plan update failed',
+		FENTANJINE: 'Apportioned amount',
+		WEIFENTANJINE: 'Unassessed amount'
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
