@@ -50,14 +50,15 @@
         </div>
       </template>
       <div class="infos">
-          <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
-            <div class="info">
-              <span class="label">{{ info.name }}：</span>
-              <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
-              <div v-else>{{ exchangeRate }}</div>
-            </div>
+        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+          <div class="info">
+            <span class="label">{{ info.name }}：</span>
+            <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
+            <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+            <div v-else>{{ basicData[info.props] }}</div>
           </div>
         </div>
+      </div>
       <template v-if="count==firstCount">
         <div class="pdf-item">
           <tableList
@@ -80,6 +81,10 @@
               <span>{{
                 scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
               }}</span>
+            </template>
+
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
             </template>
           </tableList>
           <iCard class="rsCard" :title="language('BEIZHU', '备注')">
@@ -112,6 +117,10 @@
                 scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
               }}</span>
             </template>
+
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
+            </template>
           </tableList>
           <iCard class="rsCard" :title="language('BEIZHU', '备注')">
             <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
@@ -141,6 +150,10 @@
                 <span>{{
                   scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
                 }}</span>
+              </template>
+
+              <template #share="scope">
+                <span>{{ +scope.row.share || 0 }}</span>
               </template>
             </tableList>
             <iCard class="rsCard" :title="language('BEIZHU', '备注')">
@@ -360,7 +373,6 @@ export default {
       .info {
         font-size: 13px;
         display: flex;
-        align-items: center;
         .label {
           font-weight: 800;
         }
