@@ -68,7 +68,7 @@ export const nomalTableTitle = [
   { props: 'cfTargetAPrice', name: '财务目标A价', key: '', minWidth: 115 },
   { props: 'cfTargetBPrice', name: '财务目标B价', key: '', minWidth: 115 },
   { props: 'rw', name: '欧价', key: '', minWidth: 54 },
-  { props: 'partProjectTypeDesc', name: '状态', key: '', minWidth: 70 },
+  { props: 'status', name: '状态', key: '', minWidth: 70 },
   { props: 'aprice', name: 'A价', key: '', minWidth: 60 },
   { props: 'bprice', name: 'B价', key: '', minWidth: 60 },
   { props: 'packPrice', name: '包装费', key: '', minWidth: 70 },
