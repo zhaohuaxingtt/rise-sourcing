@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" >
+      <tableList v-update max-height="700" :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" border>
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -222,6 +222,10 @@
         </template>
         <template #turnover="scope">
           <span>{{ scope.row.turnover | toThousands }}</span>
+        </template>
+
+        <template #share="scope">
+          <span>{{ +scope.row.share || 0 }}</span>
         </template>
       </tableList>
       <!-- v-if="isPreview" -->
