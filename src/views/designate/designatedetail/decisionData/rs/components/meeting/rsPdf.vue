@@ -184,13 +184,6 @@
               </div>
             </div>
           </iCard>
-          <iCard title="Prototype Cost List" class="margin-top20 rsCard" v-if='!showSignatureForm && prototypeList.length > 5'>
-            <el-table :data='PrototypeList'>
-              <template v-for="(items,index) in prototypeTitleList">
-                <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
-              </template>
-            </el-table>
-          </iCard>
         </div>
       </template>
       <template v-else>
@@ -288,13 +281,6 @@
               </div>
             </div>
           </iCard>
-          <iCard title="Prototype Cost List" class="margin-top20 rsCard" v-if='!showSignatureForm && prototypeList.length > 5'>
-            <el-table :data='PrototypeList'>
-              <template v-for="(items,index) in prototypeTitleList">
-                <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
-              </template>
-            </el-table>
-          </iCard>
         </div>
         <template v-for="index in parseInt((tableData.length+count-firstCount)/count)">
           <div :key="index" class="pdf-item">
@@ -391,16 +377,16 @@
                 </div>
               </div>
             </iCard>
-            <iCard title="Prototype Cost List" class="margin-top20 rsCard" v-if='!showSignatureForm && prototypeList.length > 5'>
-              <el-table :data='PrototypeList'>
-                <template v-for="(items,index) in prototypeTitleList">
-                  <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
-                </template>
-              </el-table>
-            </iCard>
           </div>
         </template>
       </template>
+      <iCard title="Prototype Cost List" class="margin-top20 rsCard" v-if='!showSignatureForm && prototypeList.length > 5'>
+        <el-table :data='prototypeList'>
+          <template v-for="(items,index) in prototypeTitleList">
+            <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+          </template>
+        </el-table>
+      </iCard>
       <!-- <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
         <template #ltc="scope">
           <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
