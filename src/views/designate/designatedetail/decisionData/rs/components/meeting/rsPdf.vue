@@ -146,6 +146,9 @@
             <template #savingFee="scope">
               <span>{{ scope.row.savingFee | toThousands }}</span>
             </template>
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
+            </template>
           </tableList>
           <div class="beizhu">
             备注 Remarks:
@@ -247,6 +250,9 @@
             <template #savingFee="scope">
               <span>{{ scope.row.savingFee | toThousands }}</span>
             </template>
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
+            </template>
           </tableList>
           <div class="beizhu">
             备注 Remarks:
@@ -346,6 +352,9 @@
               </template>
               <template #savingFee="scope">
                 <span>{{ scope.row.savingFee | toThousands }}</span>
+              </template>
+              <template #share="scope">
+                <span>{{ +scope.row.share || 0 }}</span>
               </template>
             </tableList>
             <div class="beizhu">
