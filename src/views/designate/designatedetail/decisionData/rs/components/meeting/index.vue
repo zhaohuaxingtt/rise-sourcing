@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-28 13:57:42
+ * @LastEditTime: 2022-03-28 23:50:22
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update max-height="700" :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" border>
+      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" border>
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -284,6 +284,7 @@
           </div>
         </div>
       </iCard>
+    </div>
       <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
         <el-table :data='PrototypeList'>
           <template v-for="(items,index) in prototypeTitleList">
@@ -291,7 +292,6 @@
           </template>
         </el-table>
       </iCard>
-    </div>
     <canvas id="myCanvas"></canvas>
   </div>
 </template>
