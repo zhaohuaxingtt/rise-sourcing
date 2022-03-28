@@ -50,14 +50,15 @@
         </div>
       </template>
       <div class="infos">
-          <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
-            <div class="info">
-              <span class="label">{{ info.name }}：</span>
-              <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
-              <div v-else>{{ exchangeRate }}</div>
-            </div>
+        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+          <div class="info">
+            <span class="label">{{ info.name }}：</span>
+            <span v-if="info.props === 'exchange'">{{ exchangeRate }}</span>
+            <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+            <div v-else>{{ basicData[info.props] }}</div>
           </div>
         </div>
+      </div>
       <template v-if="count==firstCount">
         <div class="pdf-item">
           <tableList
