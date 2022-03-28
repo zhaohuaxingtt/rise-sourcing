@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-27 18:41:41
+ * @LastEditTime: 2022-03-28 13:57:51
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -322,6 +322,9 @@ export default {
   },
   methods: {
     getHeight(){
+      let dom = this.$refs.rsPdf.$el
+      this.width = dom.offsetWidth
+      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
       let tableHeight = document.getElementsByClassName('mainTable')[0].clientHeight
       let trHeight = (tableHeight - 56) / this.tableData.length
       // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
@@ -671,7 +674,6 @@ export default {
       var canvasFragment = document.createElement("canvas");
       canvasFragment.width = eleW; // 将画布宽&&高放大两倍
       canvasFragment.height = eleH;
-      this.width = eleW
       var context = canvasFragment.getContext("2d");
       context.scale(2, 2);
       html2canvas(el, {
@@ -685,7 +687,6 @@ export default {
         var contentHeight = canvas.height; //
         //一页pdf显示html页面生成的canvas高度;
         var pageHeight = (contentWidth / 841.89) * 595.28; //
-        this.pageHeight = pageHeight;
         //未生成pdf的html页面高度
         var leftHeight = contentHeight; //
         var ctx = canvas.getContext("2d");

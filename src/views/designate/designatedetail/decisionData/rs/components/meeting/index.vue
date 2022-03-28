@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-27 18:40:14
+ * @LastEditTime: 2022-03-28 13:57:42
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -390,11 +390,13 @@ export default {
   },
   methods: {
     getHeight(){
+      let dom = this.$refs.rsPdf.$el
+      this.width = dom.offsetWidth
+      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
       let tableHeight = document.getElementsByClassName('mainTable')[0].clientHeight
       let trHeight = (tableHeight - 56) / this.tableData.length
       // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
       let tableHeader = 60 // 表头高度, position-compute 未计算到的
-      let pageHeight = 1360 // 横版A4一页对应的高度
       let padding = 60 // 内边距高度, position-compute 未计算到的
       let headerHeight = 106 // 顶部标题高度, position-compute 未计算到的
       let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
@@ -403,8 +405,8 @@ export default {
       for (let i = 0; i < el.length; i++) {
         height += el[i].offsetHeight;
       }
-      let firstCount = parseInt((pageHeight - height) / trHeight) // 第一页数据条数
-      let count = parseInt((pageHeight - height + topHeight) / trHeight ) // 之后页面,每页数据条数
+      let firstCount = parseInt((this.pageHeight - height) / trHeight) // 第一页数据条数
+      let count = parseInt((this.pageHeight - height + topHeight) / trHeight ) // 之后页面,每页数据条数
       this.firstCount = firstCount
       this.count = count
     },
@@ -771,7 +773,6 @@ export default {
       var canvasFragment = document.createElement("canvas");
       canvasFragment.width = eleW; // 将画布宽&&高放大两倍
       canvasFragment.height = eleH;
-      this.width = canvasFragment.width;
       this.height = canvasFragment.height;
       var context = canvasFragment.getContext("2d");
       context.scale(2, 2);
@@ -786,7 +787,6 @@ export default {
         var contentHeight = canvas.height; //
         //一页pdf显示html页面生成的canvas高度;
         var pageHeight = (contentWidth / 841.89) * 595.28; //
-        this.pageHeight = pageHeight;
         //未生成pdf的html页面高度
         var leftHeight = contentHeight; //
         var ctx = canvas.getContext("2d");
