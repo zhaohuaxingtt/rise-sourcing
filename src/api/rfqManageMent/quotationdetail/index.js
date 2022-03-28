@@ -448,7 +448,7 @@ export function getSkdCostSummary(params) {
 // 保存SKD报价成本汇总
 export function saveSkdCostSummary(data) {
   return requst({
-    url: `/part/saveSkdCostSummary`,
+    url: `/part/saveSkdCostSummary?supplierId=${ supplierId() }`,
     method: 'POST',
     data
   })

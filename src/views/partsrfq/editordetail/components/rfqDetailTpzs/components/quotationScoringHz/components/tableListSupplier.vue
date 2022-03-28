@@ -8,7 +8,7 @@
 -->
 <template>
   <el-table class="table" :data="tabelData"  :show-header='false' border :span-method='spanMethod' :cell-style='cellStyleName' :stripe='false'>
-    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center" :width='tabelTitle.length >= 18?(headerWidth?headerWidth[index]*2*4+"px":""):""'>
+    <af-table-column v-for="(i,index) in tabelTitle" :fit='true' :props='i' :key='index' :fixed='fixedFn(index)' align="center" :width='tabelTitle.length >= 18 ? (headerWidth?headerWidth[index]*2*4+"px":""): fixWidth(index)'>
       <template slot-scope="scope">
         <span class="link" @click="openPage(scope.row[i].style.hyperlink)" v-if='scope.row[i].data == "View" && !scope.row[i].isHeader'>View</span>
         <template v-else-if='scope.row[i] && scope.row[i].data && scope.row[i].data.match(/\n/)'>
@@ -116,6 +116,19 @@ export default{
         'backgroundColor':'white'
       } 
       }
+    },
+    fixWidth(index) {
+      switch(index) {
+        case 0:
+          return "160px"
+        case 1:
+        case 2:
+        case 3:
+          return "64px"
+        default:
+          return ''
+      }
+      return ""
     }
   }
 }
