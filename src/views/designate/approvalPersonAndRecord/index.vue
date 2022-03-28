@@ -57,7 +57,8 @@
         v-permission.auto="SOURCING_NOMINATION_APPROVAL_TABLE|表格"
       ></tableList>
     </iCard>
-    <approvalFlowDialog :dialogVisible="flowDialogVisible" @changeVisible="changeflowDialogVisible" :processInstanceId="processInstanceId" :nominationType="nominationType" :nomiAppId="$route.query.desinateId" />
+    <!-- <approvalFlowDialog :dialogVisible="flowDialogVisible" @changeVisible="changeflowDialogVisible" :processInstanceId="processInstanceId" :nominationType="nominationType" :nomiAppId="$route.query.desinateId" /> -->
+    <viewFlowDialog :visible="flowDialogVisible" :detail="{ processInstanceId, businessId: nominationData.id }" :nominationType="nominationType" :nomiAppId="$route.query.desinateId" />
   </iPage>
 </template>
 
@@ -66,11 +67,14 @@ import { iPage, iCard, iButton, icon, iMessage } from 'rise'
 import tableList from './tableList'
 import { tableTitle } from './data'
 import { cloneDeep, omit } from 'lodash'
-import approvalFlowDialog from './approvalFlow'
+// import approvalFlowDialog from './approvalFlow'
+import viewFlowDialog from './components/viewFlowDialog'
 import { getApprovalNode, approvalSync, updateApprovalNode, getDept, getSubDeptListByParam, getDeptListByParam } from '@/api/designate/decisiondata/approval'
 import { roleMixins } from "@/utils/roleMixins";
 export default {
-  components: { iPage, iCard, tableList, iButton, approvalFlowDialog, icon },
+  components: { iPage, iCard, tableList, iButton, icon, viewFlowDialog,
+    // approvalFlowDialog
+  },
   mixins: [roleMixins],
   data() {
     return {
@@ -93,7 +97,8 @@ export default {
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
       applicationStatus: state => state.nomination.applicationStatus,
-      nominationType: state => state.nomination.nominationType
+      nominationType: state => state.nomination.nominationType,
+      nominationData: state => state.nomination.nominationData
     }),
     tableTitle() {
       return tableTitle.map(item => {
