@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-25 13:57:11
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 16:12:19
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 10:49:57
  * @Description: 配件签收
  * @FilePath: \front-sourcing\src\views\accessoryPart\signForPartsDemand\index.vue
 -->
@@ -42,7 +42,6 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANXUQIUQIANSHOU','配件需求签收')}}</span>
                 <div class="floatright">
-                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!--------------------签收按钮----------------------------------->
                   <iButton @click="signAccessory" :loading="signLoading" v-permission.auto="APREPART_SIGN_SIGN|配件-配件签收-签收">{{language('QIANSHOU','签收')}}</iButton>
                   <!--------------------退回EPS按钮----------------------------------->
@@ -53,6 +52,7 @@
                   <iButton @click="openInquiryDialog" v-permission.auto="APREPART_SIGN_SENDLINIE|配件-配件签收-分配Linie" >{{language('FENPEILINIE','分配Linie')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_SIGN_EXPORT|配件-配件签收-导出">{{language('DAOCHU','导出')}}</iButton>
+                  <button-table-setting @click="edittableHeader" />
                 </div>
             </div>
             <tableList

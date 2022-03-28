@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
- * @LastEditors: YoHo
- * @LastEditTime: 2022-01-26 16:55:07
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 10:53:22
  * @Description: 
 -->
 <template>
@@ -12,7 +12,7 @@
     <!-- 表格 -->
     <iCard class="aeko-mtz-table">
       <template v-slot:header-control>
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        <button-table-setting @click="edittableHeader" />
       </template>
       <tableList
         height="400"

@@ -26,7 +26,7 @@
                 </iSearch>
             <iCard class="margin-top20">
                 <div class="floatright margin-bottom20">
-                    <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+                    <button-table-setting @click="edittableHeader" />
                 </div>
                 <!-- 表格区域 -->
                 <tableList

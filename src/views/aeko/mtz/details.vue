@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
- * @LastEditors: YoHo
- * @LastEditTime: 2022-01-26 16:57:27
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 10:53:26
  * @Description: 
 -->
 <template>
@@ -35,7 +35,7 @@
         >
           {{ language('BAOCUN', '保存') }}
         </iButton>
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        <button-table-setting @click="edittableHeader" />
       </div>
       <tableList
         height="400"

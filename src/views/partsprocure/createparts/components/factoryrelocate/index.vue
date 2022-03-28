@@ -1,7 +1,7 @@
 <!--
  * @Author: YUSZHOU
  * @Date: 2021-05-24 17:17:01
- * @LastEditTime: 2022-01-26 15:00:06
+ * @LastEditTime: 2022-03-21 10:59:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\createparts\components\factoryrelocate\index.vue
@@ -19,9 +19,9 @@
     </div>
     <iCard class="margin-top40">
       <div class="textalineright margin-bottom20">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton v-permission.auto="FACTORYRELOCATE_DOWNLOAD|工厂迁移-下载模板">{{language('DUNLOADTEMPATE','下载模板')}}</iButton>
         <iButton v-permission.auto="FACTORYRELOCATE_UPLOAD|工厂迁移-上传文件">{{language('UPLOADFILE','上传文件')}}</iButton>
+        <button-table-setting @click="edittableHeader" />
       </div> 
       <!-- <el-table v-loading='tablaLoading' :data='tableData' v-permission.auto="FACTORYRELOCATE_TABLE|工厂迁移-表格">
         <template v-for="(items,index) in tableFileTitle">
