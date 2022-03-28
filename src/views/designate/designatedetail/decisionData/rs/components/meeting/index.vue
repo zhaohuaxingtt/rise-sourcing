@@ -223,6 +223,10 @@
         <template #turnover="scope">
           <span>{{ scope.row.turnover | toThousands }}</span>
         </template>
+
+        <template #share="scope">
+          <span>{{ +scope.row.share || 0 }}</span>
+        </template>
       </tableList>
       <!-- v-if="isPreview" -->
       <div class="position-compute">
