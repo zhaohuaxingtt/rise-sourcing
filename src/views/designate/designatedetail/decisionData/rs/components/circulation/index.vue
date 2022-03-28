@@ -78,8 +78,9 @@
         <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
           <div class="info">
             <span class="label">{{ info.name }}：</span>
-            <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
-            <div v-else>{{ exchangeRate }}</div>
+            <span v-if="info.props === 'exchange'">{{ exchangeRate }}</span>
+            <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+            <div v-else>{{ basicData[info.props] }}</div>
           </div>
         </div>
       </div>
@@ -271,6 +272,7 @@ import { decisionDownloadPdfLogo } from '@/api/designate'
 import {
     uploadUdFile
 } from '@/api/file/upload'
+import filters from "@/utils/filters"
 
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf },
@@ -279,7 +281,7 @@ export default {
     nominateId: { type: String },
     // projectType: {type:String}
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   filters: {
     toThousands
   },
