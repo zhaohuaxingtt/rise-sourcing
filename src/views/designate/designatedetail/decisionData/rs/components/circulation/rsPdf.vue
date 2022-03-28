@@ -50,14 +50,15 @@
         </div>
       </template>
       <div class="infos">
-          <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
-            <div class="info">
-              <span class="label">{{ info.name }}：</span>
-              <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
-              <div v-else>{{ exchangeRate }}</div>
-            </div>
+        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+          <div class="info">
+            <span class="label">{{ info.name }}：</span>
+            <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
+            <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+            <div v-else>{{ basicData[info.props] }}</div>
           </div>
         </div>
+      </div>
       <template v-if="count==firstCount">
         <div class="pdf-item">
           <tableList
@@ -80,6 +81,10 @@
               <span>{{
                 scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
               }}</span>
+            </template>
+
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
             </template>
           </tableList>
           <iCard class="rsCard" :title="language('BEIZHU', '备注')">
@@ -112,6 +117,10 @@
                 scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
               }}</span>
             </template>
+
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
+            </template>
           </tableList>
           <iCard class="rsCard" :title="language('BEIZHU', '备注')">
             <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
@@ -141,6 +150,10 @@
                 <span>{{
                   scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
                 }}</span>
+              </template>
+
+              <template #share="scope">
+                <span>{{ +scope.row.share || 0 }}</span>
               </template>
             </tableList>
             <iCard class="rsCard" :title="language('BEIZHU', '备注')">
@@ -210,41 +223,6 @@ export default {
         this.projectType === this.partProjTypes.FUJIAN
       );
     },
-    // cardTitle() {
-    //   if (this.projectType === partProjTypes.PEIJIAN) {
-    //     return '配件采购 Nomination Recommendation - Spare Part Purchasing'
-    //   } else if (this.projectType === partProjTypes.FUJIAN) {
-    //     return '附件采购 Nomination Recommendation – Accessory Purchasing'
-    //   }
-    //   return '生产采购 Nomination Recommendation - Production Purchasing'
-    // },
-    // tableTitle() {
-    //   if (this.projectType === partProjTypes.PEIJIAN) {
-    //     return sparePartTableTitle
-    //   } else if (this.projectType === partProjTypes.FUJIAN) {
-    //     return accessoryTableTitle
-    //   }
-    //   return nomalTableTitle
-    // },
-    // isApproval() {
-    //   return this.$route.query.isApproval === "true"
-    // }
-  },
-  created() {
-    console.log(this.tableData);
-    console.log(this.firstCount);
-    console.log(this.count);
-    // if (this.isApproval) {
-    //   this.reviewListRs()
-    // } else {
-    //   this.getTopList()
-    // }
-    // this.getRemark()
-  },
-  watch:{
-    firstCount(v){
-      console.log(v);
-    }
   },
   methods: {
     // 单独处理下年降或年降计划
@@ -305,7 +283,7 @@ export default {
 
 <style lang="scss" scoped>
 .rsPdf {
-  width: 3840px; /*no*/
+  width: fit-content;
   background: #FFFFFF;
 
   .rsCard {
@@ -360,10 +338,19 @@ export default {
       .info {
         font-size: 13px;
         display: flex;
-        align-items: center;
         .label {
           font-weight: 800;
         }
+      }
+    }
+  }
+  .pdf-item{
+    ::v-deep .card{
+      .cardHeader{
+        padding-left: 0
+      }
+      .cardBody{
+        padding-left: 0
       }
     }
   }

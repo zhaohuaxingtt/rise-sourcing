@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-27 18:40:14
+ * @LastEditTime: 2022-03-28 23:50:22
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -87,7 +87,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" >
+      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" border>
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -140,29 +140,78 @@
           <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
           <span v-else>{{ scope.row.bprice | toThousands }}</span>
         </template>
+
         <template #investFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
+            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
-      
         </template>
+
         <template #devFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdDevFee | toThousands }}</p>
-            <p>{{ scope.row.devFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.devFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
             <p>{{ scope.row.skdDevFee | toThousands }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.devFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.devFeeIsShared">
+              <div>
+                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
         </template>
         <template #addFee="scope">
@@ -173,6 +222,10 @@
         </template>
         <template #turnover="scope">
           <span>{{ scope.row.turnover | toThousands }}</span>
+        </template>
+
+        <template #share="scope">
+          <span>{{ +scope.row.share || 0 }}</span>
         </template>
       </tableList>
       <!-- v-if="isPreview" -->
@@ -231,6 +284,7 @@
           </div>
         </div>
       </iCard>
+    </div>
       <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
         <el-table :data='PrototypeList'>
           <template v-for="(items,index) in prototypeTitleList">
@@ -238,7 +292,6 @@
           </template>
         </el-table>
       </iCard>
-    </div>
     <canvas id="myCanvas"></canvas>
   </div>
 </template>
@@ -390,11 +443,13 @@ export default {
   },
   methods: {
     getHeight(){
+      let dom = this.$refs.rsPdf.$el
+      this.width = dom.offsetWidth
+      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
       let tableHeight = document.getElementsByClassName('mainTable')[0].clientHeight
       let trHeight = (tableHeight - 56) / this.tableData.length
       // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
       let tableHeader = 60 // 表头高度, position-compute 未计算到的
-      let pageHeight = 1360 // 横版A4一页对应的高度
       let padding = 60 // 内边距高度, position-compute 未计算到的
       let headerHeight = 106 // 顶部标题高度, position-compute 未计算到的
       let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
@@ -403,8 +458,8 @@ export default {
       for (let i = 0; i < el.length; i++) {
         height += el[i].offsetHeight;
       }
-      let firstCount = parseInt((pageHeight - height) / trHeight) // 第一页数据条数
-      let count = parseInt((pageHeight - height + topHeight) / trHeight ) // 之后页面,每页数据条数
+      let firstCount = parseInt((this.pageHeight - height) / trHeight) // 第一页数据条数
+      let count = parseInt((this.pageHeight - height + topHeight) / trHeight ) // 之后页面,每页数据条数
       this.firstCount = firstCount
       this.count = count
     },
@@ -771,7 +826,6 @@ export default {
       var canvasFragment = document.createElement("canvas");
       canvasFragment.width = eleW; // 将画布宽&&高放大两倍
       canvasFragment.height = eleH;
-      this.width = canvasFragment.width;
       this.height = canvasFragment.height;
       var context = canvasFragment.getContext("2d");
       context.scale(2, 2);
@@ -786,7 +840,6 @@ export default {
         var contentHeight = canvas.height; //
         //一页pdf显示html页面生成的canvas高度;
         var pageHeight = (contentWidth / 841.89) * 595.28; //
-        this.pageHeight = pageHeight;
         //未生成pdf的html页面高度
         var leftHeight = contentHeight; //
         var ctx = canvas.getContext("2d");

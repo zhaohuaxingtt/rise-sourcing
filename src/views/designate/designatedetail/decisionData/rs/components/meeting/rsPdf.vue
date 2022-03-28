@@ -146,6 +146,9 @@
             <template #savingFee="scope">
               <span>{{ scope.row.savingFee | toThousands }}</span>
             </template>
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
+            </template>
           </tableList>
           <div class="beizhu">
             备注 Remarks:
@@ -180,13 +183,6 @@
                 </div>
               </div>
             </div>
-          </iCard>
-          <iCard title="Prototype Cost List" class="margin-top20 rsCard" v-if='!showSignatureForm && prototypeList.length > 5'>
-            <el-table :data='PrototypeList'>
-              <template v-for="(items,index) in prototypeTitleList">
-                <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
-              </template>
-            </el-table>
           </iCard>
         </div>
       </template>
@@ -247,6 +243,9 @@
             <template #savingFee="scope">
               <span>{{ scope.row.savingFee | toThousands }}</span>
             </template>
+            <template #share="scope">
+              <span>{{ +scope.row.share || 0 }}</span>
+            </template>
           </tableList>
           <div class="beizhu">
             备注 Remarks:
@@ -281,13 +280,6 @@
                 </div>
               </div>
             </div>
-          </iCard>
-          <iCard title="Prototype Cost List" class="margin-top20 rsCard" v-if='!showSignatureForm && prototypeList.length > 5'>
-            <el-table :data='PrototypeList'>
-              <template v-for="(items,index) in prototypeTitleList">
-                <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
-              </template>
-            </el-table>
           </iCard>
         </div>
         <template v-for="index in parseInt((tableData.length+count-firstCount)/count)">
@@ -347,6 +339,9 @@
               <template #savingFee="scope">
                 <span>{{ scope.row.savingFee | toThousands }}</span>
               </template>
+              <template #share="scope">
+                <span>{{ +scope.row.share || 0 }}</span>
+              </template>
             </tableList>
             <div class="beizhu">
               备注 Remarks:
@@ -382,16 +377,16 @@
                 </div>
               </div>
             </iCard>
-            <iCard title="Prototype Cost List" class="margin-top20 rsCard" v-if='!showSignatureForm && prototypeList.length > 5'>
-              <el-table :data='PrototypeList'>
-                <template v-for="(items,index) in prototypeTitleList">
-                  <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
-                </template>
-              </el-table>
-            </iCard>
           </div>
         </template>
       </template>
+      <iCard title="Prototype Cost List" class="margin-top20 rsCard" v-if='!showSignatureForm && prototypeList.length > 5'>
+        <el-table :data='prototypeList'>
+          <template v-for="(items,index) in prototypeTitleList">
+            <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+          </template>
+        </el-table>
+      </iCard>
       <!-- <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
         <template #ltc="scope">
           <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
@@ -507,7 +502,7 @@ export default {
 
 <style lang="scss" scoped>
 .rsPdf {
-  width: 1920px; /*no*/
+  width: fit-content;
   overflow-y: auto;
   
   .rsCard {
