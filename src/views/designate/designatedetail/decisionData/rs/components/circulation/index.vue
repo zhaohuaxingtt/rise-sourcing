@@ -89,7 +89,8 @@
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable mainTable"
-        :tableRowClassName="tableRowClassName">
+        :tableRowClassName="tableRowClassName"
+        border>
         <template #oldAPrice="scope">
           <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
         </template>
@@ -511,7 +512,7 @@ export default {
 
       getList(this.nominateId).then(res => {
         if (res?.result) {
-          this.basicData = res.data
+          this.basicData = res.data || {}
           this.tableData = res.data.lines
           this.projectType = res.data.partProjectType || ''
           // this.projectType = partProjTypes.PEIJIAN
@@ -599,10 +600,6 @@ export default {
       if (row.isSuggestion) {
         return "suggestionRow"
       }
-    },
-
-    handleEdit() {
-      this.editStatus = true
     },
 
     // 保存行备注
