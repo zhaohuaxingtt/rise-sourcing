@@ -6355,7 +6355,9 @@
 		Meeting: 'Meeting',
 		JIANGJIAJIHUAGENGXINSHIBAI: 'Price Reduction Plan update failed',
 		FENTANJINE: 'Apportioned amount',
-		WEIFENTANJINE: 'Unassessed amount'
+		WEIFENTANJINE: 'Unassessed amount',
+		BUNENGBAOHANPINGFENWEIWANCHENGDESHUJU: 'Cannot include scoring incomplete data',
+		PINGFENRENWURECALLTIPS: 'The scoring task will be recall to the status of pending scoring, whether to confirm the recall'
 	}
 	i18n.setLocaleMessage('en', oldLanguage)
 })
