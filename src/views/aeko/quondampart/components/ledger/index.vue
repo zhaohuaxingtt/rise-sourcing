@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-27 10:51:49
- * @LastEditTime: 2022-03-15 17:47:53
+ * @LastEditTime: 2022-03-28 15:45:15
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\quondampart\components\ledger\index.vue
@@ -176,7 +176,7 @@ export default {
     this.requirementAekoId = this.$route.query.requirementAekoId
     this.originPartNum = this.$route.query.originPartNum  // 选择的原零件号
     this.oldPartNumPreset = this.$route.query.oldPartNumPreset  // 预设的原零件号
-    await this.getAekoOriginFactory()
+    // await this.getAekoOriginFactory()
     // 如果选择了原零件,查询原零件
     if(this.originPartNum && this.originPartNum != this.partNum){
       this.form.partNum = this.originPartNum
@@ -237,12 +237,15 @@ export default {
       judgeRight(data)
       .then(res => {
         if (res.code == 200) {
-          if (res.data[0].isView) {
-            this.getAekoOriginPartInfo(flag)
-          } else {
-            iMessage.warn(res.data[0].describe)
-            this.loading = false
+          if (!res.data[0].isView) {
+            this.$message({
+              type: 'warning',
+              showClose: true,
+              message: this.language('NOPERMISSIONS','您没有当前原零件材料组权限，请及时申请，以免影响后续操作。'),
+              duration: 12000
+            })
           }
+            this.getAekoOriginPartInfo(flag)
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
         }
