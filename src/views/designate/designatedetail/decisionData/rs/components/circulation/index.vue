@@ -66,8 +66,7 @@
         <div class="title">
           <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
         </div>
-        <div v-if="!(projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN)"
-             class="btnWrapper">
+        <div class="btnWrapper">
           <iButton v-if="!isRoutePreview && !isApproval && !editStatus && !isPreview" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
           <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
           <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
@@ -534,10 +533,10 @@ export default {
           } else {
             if (this.basicData.currencyRateMap) {
               this.exchangeRate = Object.keys(this.basicData.currencyRateMap).map(key => {
-                return `1.00${ this.basicData.currencyMap && this.basicData.currencyMap[key] ? this.basicData.currencyMap[key].code : key }=${ this.basicData.currencyRateMap[key] }${ this.basicData.currencyMap.RMB ? this.basicData.currencyMap.RMB.code : 'RMB' }`
-              }).join("<br/>") || "1.00RMB=1.00RMB"
+                return `1${ this.basicData.currencyMap && this.basicData.currencyMap[key] ? this.basicData.currencyMap[key].code : key }=${ this.basicData.currencyRateMap[key] }${ this.basicData.currencyMap.RMB ? this.basicData.currencyMap.RMB.code : 'RMB' }`
+              }).join("<br/>") || "1RMB=1.00RMB"
             } else {
-              this.exchangeRate = "1.00RMB=1.00RMB"
+              this.exchangeRate = "1RMB=1.00RMB"
             }
           }
           // this.projectType = partProjTypes.PEIJIAN
@@ -572,10 +571,10 @@ export default {
           } else {
             if (this.basicData.currencyRateMap) {
               this.exchangeRate = Object.keys(this.basicData.currencyRateMap).map(key => {
-                return `1.00${ this.basicData.currencyMap && this.basicData.currencyMap[key] ? this.basicData.currencyMap[key].code : key }=${ this.basicData.currencyRateMap[key] }${ this.basicData.currencyMap.RMB ? this.basicData.currencyMap.RMB.code : 'RMB' }`
-              }).join("<br/>") || "1.00RMB=1.00RMB"
+                return `1${ this.basicData.currencyMap && this.basicData.currencyMap[key] ? this.basicData.currencyMap[key].code : key }=${ this.basicData.currencyRateMap[key] }${ this.basicData.currencyMap.RMB ? this.basicData.currencyMap.RMB.code : 'RMB' }`
+              }).join("<br/>") || "1RMB=1.00RMB"
             } else {
-              this.exchangeRate = "1.00RMB=1.00RMB"
+              this.exchangeRate = "1RMB=1.00RMB"
             }
           }
         } else {
@@ -857,9 +856,9 @@ export default {
           const current = sourceData[0] ? sourceData[0] : {}
 
           if (Array.isArray(current.exchangeRateVos)) {
-            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('<br/>') || "1.00RMB=1.00RMB"
+            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('<br/>') || "1RMB=1.00RMB"
           } else {
-            this.exchangeRate = "1.00RMB=1.00RMB"
+            this.exchangeRate = "1RMB=1.00RMB"
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)

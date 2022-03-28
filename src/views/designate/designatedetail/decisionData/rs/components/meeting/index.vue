@@ -239,7 +239,7 @@
         <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
           汇率：Exchange rate: 
           <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
-            1.00{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
+            1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
           </span>
         </div>
         <div v-else>
