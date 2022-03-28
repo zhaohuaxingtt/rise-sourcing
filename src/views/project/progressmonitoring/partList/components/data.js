@@ -1,14 +1,14 @@
 /*
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:51:18
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-30 21:52:34
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-22 17:02:06
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件 列表表头
  */
 
 // 未进TIP表的已释放零件
 export const TIPStableTitle = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 200},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 200},
   {props:'zp',name:'ZP',key:'ZP',tooltip: true, minWidth: 80},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120},
   {props:'partNameZh',name:'零件名称(中)', key: "LINGJIANMINGCHEN_ZH", tooltip: true, minWidth: 170},
@@ -24,7 +24,7 @@ export const TIPStableTitle = [
 
 // CKD/HT零件表头
 export const CKDHTtableTitle = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 200},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 200},
   {props:'zp',name:'ZP',key:'ZP',tooltip: true, minWidth: 80},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120},
   {props:'partNameZh',name:'零件名称(中)', key: "LINGJIANMINGCHEN_ZH", tooltip: true, minWidth: 170},
@@ -38,7 +38,7 @@ export const CKDHTtableTitle = [
 ]
 
 export const OTSEMtableTitle = [
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 200},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 200},
   {props:'zp',name:'ZP',key:'ZP',tooltip: true, minWidth: 80},
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120},
   {props:'partNameZh',name:'零件名称(中)', key: "LINGJIANMINGCHEN_ZH", tooltip: true, minWidth: 170},

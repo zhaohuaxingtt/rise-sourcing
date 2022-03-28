@@ -85,7 +85,7 @@
           </el-tooltip>
 				</i-button>
         <i-button @click="transfer" v-if="transferButtonDisplay"  v-permission.auto="AEKO_PENDING_APPROVAL_TRANSFER|待审批页面按钮_转派"> {{ language('LK_ZHUANPAI', '转派') }}</i-button>
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        <button-table-setting @click="edittableHeader" />
       </div>
       <!--表格展示区-->
       <tableList

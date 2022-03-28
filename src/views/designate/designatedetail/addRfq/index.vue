@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-02 22:59:55
+ * @LastEditTime: 2022-03-21 10:53:54
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -54,11 +54,11 @@
     <iCard>
       <div class="margin-bottom20 clearFloat">
           <div class="floatright">
-            <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
             <!--------------------返回按钮----------------------------------->
             <iButton @click="goBack">{{language('FANHUI','返回')}}</iButton>
             <!--------------------选择按钮----------------------------------->
             <iButton @click="handleSelect">{{language('XUANZE','选择')}}</iButton>
+            <button-table-setting @click="edittableHeader" />
           </div>
       </div>
         <!------------------------------------------------------------------------>

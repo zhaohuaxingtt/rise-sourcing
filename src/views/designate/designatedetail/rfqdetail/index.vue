@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-02 15:47:51
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 15:44:32
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -14,7 +14,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('RFQQINGDAN','RFQ清单')}}</span>
         <div class="floatright">
-          <iButton @click="()=>{ edittableHeader('rfqTable') }">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <!-- <iButton @click="()=>{ edittableHeader('rfqTable') }">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton> -->
           <iInput :placeholder="language('QINGSHURULINGJIANHAORFQLINIE','请输入零件号/RFQ编号/RFQ名称/LINIE')" v-model="searchParam" class="margin-right20 margin-left20 input" @blur="searchRfqTableList" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_SEARCHPARAM|RFQ零件清单搜索" >
             <icon symble slot="suffix" name="iconshaixuankuangsousuo" />
           </iInput>
@@ -24,6 +24,7 @@
           <iButton v-if="!nominationDisabled && !rsDisabled" @click="deleteRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_DELETERFQ|删除RFQ">{{language('SHANCHU','删除')}}</iButton>
         
           
+          <button-table-setting class="margin-top10" @click="edittableHeader('rfqTable')" />
         </div>
       </div>
       <tableList
@@ -66,7 +67,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
-          <iButton @click="()=>{ edittableHeader('partTable') }">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <!-- <iButton @click="()=>{ edittableHeader('partTable') }">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton> -->
           <iButton 
             v-if="!isDisabled && createMtzDisabled"
             v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请"
@@ -88,6 +89,7 @@
             @click="handleClickByCancelSelected">
             {{ language("QUXIAOSHENQING", "取消申请") }}
           </iButton>
+          <button-table-setting class="margin-top10" @click="edittableHeader('partTable')" />
         </div>
       </div>
       <tableList
