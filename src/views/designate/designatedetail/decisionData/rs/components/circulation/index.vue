@@ -85,6 +85,7 @@
         </div>
       </div>
       <tableList
+        max-height="700"
         :tableLoading="tableLoading"
         :selection="false"
         :tableTitle="tableTitle"
@@ -515,7 +516,7 @@ export default {
       getList(this.nominateId).then(res => {
         if (res?.result) {
           this.basicData = res.data || {}
-          this.tableData = res.data.lines
+          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
           this.projectType = res.data.partProjectType || ''
           // this.projectType = partProjTypes.PEIJIAN
         } else {
