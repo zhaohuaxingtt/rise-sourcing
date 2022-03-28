@@ -223,41 +223,6 @@ export default {
         this.projectType === this.partProjTypes.FUJIAN
       );
     },
-    // cardTitle() {
-    //   if (this.projectType === partProjTypes.PEIJIAN) {
-    //     return '配件采购 Nomination Recommendation - Spare Part Purchasing'
-    //   } else if (this.projectType === partProjTypes.FUJIAN) {
-    //     return '附件采购 Nomination Recommendation – Accessory Purchasing'
-    //   }
-    //   return '生产采购 Nomination Recommendation - Production Purchasing'
-    // },
-    // tableTitle() {
-    //   if (this.projectType === partProjTypes.PEIJIAN) {
-    //     return sparePartTableTitle
-    //   } else if (this.projectType === partProjTypes.FUJIAN) {
-    //     return accessoryTableTitle
-    //   }
-    //   return nomalTableTitle
-    // },
-    // isApproval() {
-    //   return this.$route.query.isApproval === "true"
-    // }
-  },
-  created() {
-    console.log(this.tableData);
-    console.log(this.firstCount);
-    console.log(this.count);
-    // if (this.isApproval) {
-    //   this.reviewListRs()
-    // } else {
-    //   this.getTopList()
-    // }
-    // this.getRemark()
-  },
-  watch:{
-    firstCount(v){
-      console.log(v);
-    }
   },
   methods: {
     // 单独处理下年降或年降计划
@@ -318,7 +283,7 @@ export default {
 
 <style lang="scss" scoped>
 .rsPdf {
-  width: 3840px; /*no*/
+  width: fit-content;
   background: #FFFFFF;
 
   .rsCard {
@@ -376,6 +341,16 @@ export default {
         .label {
           font-weight: 800;
         }
+      }
+    }
+  }
+  .pdf-item{
+    ::v-deep .card{
+      .cardHeader{
+        padding-left: 0
+      }
+      .cardBody{
+        padding-left: 0
       }
     }
   }
