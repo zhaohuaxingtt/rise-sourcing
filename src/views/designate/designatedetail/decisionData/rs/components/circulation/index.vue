@@ -92,6 +92,10 @@
         class="rsTable mainTable"
         :tableRowClassName="tableRowClassName"
         border>
+        <!-- <template #fsnrGsnrNum="scope">
+          <p>{{ scope.row.fsnrGsnrNum }}</p>
+          <p>{{ '(SH)' }}</p>
+        </template> -->
         <template #oldAPrice="scope">
           <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
         </template>
