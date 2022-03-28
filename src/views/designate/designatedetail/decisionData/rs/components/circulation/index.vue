@@ -66,9 +66,8 @@
         <div class="title">
           <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
         </div>
-        <div v-if="!(projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN)"
-             class="btnWrapper">
-          <iButton v-if="!isRoutePreview && !isApproval && !editStatus" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
+        <div class="btnWrapper">
+          <iButton v-if="!isRoutePreview && !isApproval && !editStatus && !isPreview" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
           <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
           <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
           <iButton v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
@@ -78,18 +77,21 @@
         <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
           <div class="info">
             <span class="label">{{ info.name }}：</span>
-            <span v-if="info.props !== 'exchange'">{{ basicData[info.props] }}</span>
-            <div v-else>{{ exchangeRate }}</div>
+            <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
+            <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+            <div v-else>{{ basicData[info.props] }}</div>
           </div>
         </div>
       </div>
       <tableList
+        max-height="700"
         :tableLoading="tableLoading"
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableData"
         class="rsTable mainTable"
-        :tableRowClassName="tableRowClassName">
+        :tableRowClassName="tableRowClassName"
+        border>
         <template #oldAPrice="scope">
           <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
         </template>
@@ -150,14 +152,38 @@
 
         <template #investFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-            <p>{{ scope.row.investFee | toThousands(true) }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
             <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.investFee | toThousands(true) }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
         </template>
 
@@ -167,9 +193,21 @@
             <span v-else>{{ scope.row.remarks }}</span>
           </div>
         </template>
+
+        <template #share="scope">
+          <span>{{ +scope.row.share || 0 }}</span>
+        </template>
       </tableList>
+      <div class="position-compute">
+        <div class="beizhu">
+          备注 Remarks:
+          <div class="beizhu-value">
+            <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+          </div>
+        </div>
+      </div>
     </iCard>
-    <div class="position-compute">
+    <div class="position-compute" v-if="!isRoutePreview && !isApproval">
       <iCard :title="language('BEIZHU','备注')"
             :class="!isPreview && 'margin-top20'">
         <template slot="header-control" v-if="!isPreview">
@@ -246,6 +284,7 @@ import { decisionDownloadPdfLogo } from '@/api/designate'
 import {
     uploadUdFile
 } from '@/api/file/upload'
+import filters from "@/utils/filters"
 
 export default {
   components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf },
@@ -254,7 +293,7 @@ export default {
     nominateId: { type: String },
     // projectType: {type:String}
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   filters: {
     toThousands
   },
@@ -473,7 +512,6 @@ export default {
         this.getTopList()
       }
       this.getRemark()
-      this.searchRsPageExchangeRate()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
     /**
@@ -487,9 +525,20 @@ export default {
 
       getList(this.nominateId).then(res => {
         if (res?.result) {
-          this.basicData = res.data
-          this.tableData = res.data.lines
+          this.basicData = res.data || {}
+          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
           this.projectType = res.data.partProjectType || ''
+          if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
+            this.searchRsPageExchangeRate()
+          } else {
+            if (this.basicData.currencyRateMap) {
+              this.exchangeRate = Object.keys(this.basicData.currencyRateMap).map(key => {
+                return `1${ this.basicData.currencyMap && this.basicData.currencyMap[key] ? this.basicData.currencyMap[key].code : key }=${ this.basicData.currencyRateMap[key] }${ this.basicData.currencyMap.RMB ? this.basicData.currencyMap.RMB.code : 'RMB' }`
+              }).join("<br/>") || "1RMB=1.00RMB"
+            } else {
+              this.exchangeRate = "1RMB=1.00RMB"
+            }
+          }
           // this.projectType = partProjTypes.PEIJIAN
         } else {
           this.basicData = {}
@@ -514,8 +563,20 @@ export default {
       .then(res => {
         if (res.code == 200) {
           this.basicData = res.data
-          this.tableData = res.data.lines
+          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
           this.projectType = res.data.partProjectType || ''
+
+          if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
+            this.searchRsPageExchangeRate()
+          } else {
+            if (this.basicData.currencyRateMap) {
+              this.exchangeRate = Object.keys(this.basicData.currencyRateMap).map(key => {
+                return `1${ this.basicData.currencyMap && this.basicData.currencyMap[key] ? this.basicData.currencyMap[key].code : key }=${ this.basicData.currencyRateMap[key] }${ this.basicData.currencyMap.RMB ? this.basicData.currencyMap.RMB.code : 'RMB' }`
+              }).join("<br/>") || "1RMB=1.00RMB"
+            } else {
+              this.exchangeRate = "1RMB=1.00RMB"
+            }
+          }
         } else {
           this.basicData = {}
           this.tableData = []
@@ -575,10 +636,6 @@ export default {
       if (row.isSuggestion) {
         return "suggestionRow"
       }
-    },
-
-    handleEdit() {
-      this.editStatus = true
     },
 
     // 保存行备注
@@ -799,9 +856,9 @@ export default {
           const current = sourceData[0] ? sourceData[0] : {}
 
           if (Array.isArray(current.exchangeRateVos)) {
-            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('') || "1RMB=1RMB"
+            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('<br/>') || "1RMB=1.00RMB"
           } else {
-            this.exchangeRate = "1RMB=1RMB"
+            this.exchangeRate = "1RMB=1.00RMB"
           }
         } else {
           iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -865,11 +922,38 @@ export default {
       .info {
         font-size: 13px;
         display: flex;
-        align-items: center;
         .label {
           font-weight: 800;
         }
       }
+    }
+  }
+
+  .rsTable {
+    ::v-deep .el-table__header th {
+      .cell {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+    }
+
+    ::v-deep .el-table__row td {
+      .cell {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+    }
+  }
+
+  .beizhu {
+    background-color: rgba(22, 96, 241, 0.03);
+    // height: 40px;
+    padding: 12px 14px;
+    font-weight: bold;
+    display: flex;
+    &-value {
+      font-weight: 400;
+      margin-left: 20px;
     }
   }
 }
