@@ -8,6 +8,7 @@
 <template>
   <div class="specialAnalysisTool"
        v-loading.body="loading">
+
     <enterSpecificAnalysisToolsDialog :keyword="keyword"
                                       @getDataList="getDataList"
                                       v-model="viewModelDialog" />
