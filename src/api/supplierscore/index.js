@@ -181,3 +181,12 @@ export function getPartsForRfq(params) {
     method: "GET",
   })
 }
+
+// 撤回评分
+export function recallRate(data) {
+  return requst({
+    url: '/rfq-bdl-ratings/recallRate',
+    method: "PATCH",
+    data,
+  })
+}
