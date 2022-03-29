@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-29 22:09:39
+ * @LastEditTime: 2022-03-29 22:12:49
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -583,7 +583,6 @@ export default {
     getPrototypeList(){
       getPrototypeList(this.nominateId).then(res=>{
           this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
-          this.PrototypeList = [...this.PrototypeList,...this.PrototypeList,...this.PrototypeList,]
           // 获取上会备注
           if(res.data && res.code==200){
             this.remarkItem = meetingRemark.map(item => {
