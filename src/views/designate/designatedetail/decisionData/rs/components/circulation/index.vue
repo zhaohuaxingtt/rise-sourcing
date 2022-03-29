@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-28 16:17:01
+ * @LastEditTime: 2022-03-29 22:29:19
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -16,6 +16,7 @@
         :titleData="titleData"
         :tableTitle="tableTitle"
         :tableData="tableData"
+        :tableList="tableList"
         :firstCount="firstCount"
         :count="count"
         :remarkItem="remarkItem"
@@ -23,6 +24,8 @@
         :isApproval="isApproval"
         :exchangeRageCurrency="exchangeRageCurrency"
         :checkList="checkList"
+        :tableHeight="tableHeight"
+        :otherTableHeight="otherTableHeight"
         :exchangeRate="exchangeRate" />
     </div>
     <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
@@ -61,7 +64,7 @@
         </div>
       </iFormGroup>
     </iCard> -->
-    <iCard :class="!isPreview && 'margin-top20'">
+    <iCard class="pageCard" :class="!isPreview && 'margin-top20'">
       <template #header>
         <div class="title">
           <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
@@ -73,7 +76,7 @@
           <iButton v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
-      <div class="infos">
+      <div class="infos position-compute">
         <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
           <div class="info">
             <span class="label">{{ info.name }}：</span>
@@ -122,7 +125,6 @@
         <template #turnover="scope">
           <span>{{ scope.row.turnover | toThousands(true) }}</span>
         </template>
-
 
         <!-- 年降 -->
         <template #ltc="scope">
@@ -204,16 +206,16 @@
           <span>{{ +scope.row.share || 0 }}</span>
         </template>
       </tableList>
-      <div class="position-compute">
+      <div class="position-compute out-compute">
         <div class="beizhu">
           备注 Remarks:
           <div class="beizhu-value">
             <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
           </div>
         </div>
-      </div>
+        </div>
     </iCard>
-    <div class="position-compute" v-if="!isRoutePreview && !isApproval">
+    <div v-if="!isRoutePreview && !isApproval">
       <iCard :title="language('BEIZHU','备注')"
             :class="!isPreview && 'margin-top20'">
         <template slot="header-control" v-if="!isPreview">
@@ -276,6 +278,7 @@
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
 import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos } from './data'
+import { resetLtcData } from '../meeting/data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
@@ -332,6 +335,8 @@ export default {
       tableLoading: false,
       firstCount: 0,
       count: 0,
+      tableHeight:0,
+      otherTableHeight:0,
       fileList:[],
       infos,
       exchangeRate: ""
@@ -378,25 +383,54 @@ export default {
   },
   methods: {
     getHeight(){
+      setTimeout(()=>{
       let dom = this.$refs.rsPdf.$el
-      this.width = dom.offsetWidth
+      this.width = dom.offsetWidth  // 打印区域宽度
       this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-      let tableHeight = document.getElementsByClassName('mainTable')[0].clientHeight
-      let trHeight = (tableHeight - 56) / this.tableData.length
-      // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
-      let tableHeader = 60 // 表头高度, position-compute 未计算到的
-      let padding = 60 // 内边距高度, position-compute 未计算到的
-      let headerHeight = 106 // 顶部标题高度, position-compute 未计算到的
-      // let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
-      let el = document.getElementsByClassName('position-compute')  // 页面所有固定元素的高度
-      let height = headerHeight + padding + tableHeader // 第一页所有固定元素高度总和
-      for (let i = 0; i < el.length; i++) {
-        height += el[i].offsetHeight;
-      }
-      let firstCount = parseInt((this.pageHeight - height) / trHeight) // 第一页数据条数
-      let count = parseInt((this.pageHeight - height + headerHeight) / trHeight ) // 之后页面,每页数据条数
-      this.firstCount = firstCount
-      this.count = count
+      console.log(this.width);
+      console.log(this.pageHeight);
+      let tableHeader = 50  // 表头高度
+      let headerHeight = 84 // 顶部标题高度, 第一页独有
+      let pageLogo = 86     // logo 区域高度
+      let computeHeight = document.getElementsByClassName('position-compute')[0].offsetHeight  // 页面所有固定元素的高度： infos
+      let outEl = document.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+      // 第一页
+      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - 1  // 表格区域高度, 用div支撑空间
+      // 第二页
+      this.otherTableHeight = this.pageHeight - computeHeight - pageLogo - 21   // 表格区域高度, 用div支撑空间, 减20间距, 1px 偏差
+      let rowList = document.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+      console.log(rowList);
+      console.log(this.tableHeight);
+      console.log(rowList);
+
+      let arr = []
+      let heightSum = 0
+      let tableList = []
+      rowList.forEach((item,i)=>{
+        heightSum+=item.offsetHeight
+        if(tableList.length==0){
+          if(heightSum<this.tableHeight - tableHeader - outEl){
+            arr.push(this.tableData[i])
+          }else{
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.tableData[i]]
+          }
+        }else{
+          if(heightSum<this.otherTableHeight - tableHeader - outEl){
+            arr.push(this.tableData[i])
+          }else{
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.tableData[i]]
+          }
+        }
+        console.log(heightSum);
+      })
+      tableList.push(JSON.parse(JSON.stringify(arr)))
+      this.tableList = tableList
+        console.log(tableList);
+      },1000)
     },
     downloadFile () {
       if (this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN', "您当前还未选择列表文件，请选择后重试！"))
@@ -445,28 +479,29 @@ export default {
         })
     },
     // 单独处理下年降或年降计划
-    resetLtcData (row, type) {
-      if (!row) return ""
-      // 年降开始时间
-      if (type == 'beginYearReduce') {
-        // 取第一个非0的年份
-        const list = row.filter((item) => item.ltcRate != '0.00');
-        return list.length ? list[0].ltcDate : '-'
-      } else { // 年降
-        // 从非0开始至非0截至的数据 不包含0
-        let strList = [];
-        let strFlag = false;
-        for (let i = 0; i < row.length; i++) {
-          if (row[i].ltcRate != '0.00') {
-            strFlag = true;
-            strList.push(row[i].ltcRate);
-          } else if (strFlag && row[i].ltcRate == '0.00') {
-            break
-          }
-        }
-        return strList.length ? strList.join('/') : '-'
-      }
-    },
+    // resetLtcData (row, type) {
+    //   if (!row) return ""
+    //   // 年降开始时间
+    //   if (type == 'beginYearReduce') {
+    //     // 取第一个非0的年份
+    //     const list = row.filter((item) => item.ltcRate != '0.00');
+    //     return list.length ? list[0].ltcDate : '-'
+    //   } else { // 年降
+    //     // 从非0开始至非0截至的数据 不包含0
+    //     let strList = [];
+    //     let strFlag = false;
+    //     for (let i = 0; i < row.length; i++) {
+    //       if (row[i].ltcRate != '0.00') {
+    //         strFlag = true;
+    //         strList.push(row[i].ltcRate);
+    //       } else if (strFlag && row[i].ltcRate == '0.00') {
+    //         break
+    //       }
+    //     }
+    //     return strList.length ? strList.join('/') : '-'
+    //   }
+    // },
+    resetLtcData,
     handleEdit () {
       this.isEdit = true
     },
@@ -629,7 +664,14 @@ export default {
 
     // 导出pdf
     handleExportPdf() {
-      this.createEl()
+      
+      this.getPdfImage({
+        dom: this.$refs.rsPdf.$el,
+        pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+        exportPdf: true,
+        waterMark: true
+      })
+      // this.createEl()
       // transverseDownloadPDF({
       //   dom: this.$refs.rsPdf.$el,
       //   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
@@ -640,8 +682,9 @@ export default {
 
     tableRowClassName({ row, rowIndex }) {
       if (row.isSuggestion) {
-        return "suggestionRow"
+        return "suggestionRow table-row"
       }
+      return "table-row"
     },
 
     // 保存行备注
@@ -814,7 +857,7 @@ export default {
         this.$nextTick(() => {
           setTimeout(() => {
             this.uploadUdFile();
-          }, 1000);
+          }, 500);
         });
       });
     },
@@ -824,7 +867,7 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight*1.2})  // 1.2 预留 页脚位置
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
     },
 
     // 上传图片
@@ -835,6 +878,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
+            console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -900,12 +944,17 @@ export default {
     box-shadow: none;
   }
 }
+.pageCard{
+  ::v-deep .cardHeader{
+    padding: 30px 40px 10px;
+  }
+}
 
 .rsPdfWrapper {
-  width: 0;
+  width: 100%;
   height: 0;
   overflow: hidden;
-  position: absolute;
+  position: relative;
   top: 0;
 }
 
@@ -914,9 +963,10 @@ export default {
 }
 
 .circulation {
+  overflow: hidden;
   .infos {
     display: flex;
-    margin-bottom: 20px;
+    padding: 0 0 20px;
 
     .infoWrapper {
       flex: 1;
