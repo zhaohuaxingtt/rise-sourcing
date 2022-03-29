@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-29 22:09:59
+ * @LastEditTime: 2022-03-29 22:29:19
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -867,7 +867,7 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
     },
 
     // 上传图片

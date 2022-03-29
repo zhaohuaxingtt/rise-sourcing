@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-29 22:14:12
+ * @LastEditTime: 2022-03-29 22:28:58
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -517,6 +517,7 @@ export default {
         let tableHeader = 41  // 表头高度
         let headerHeight = 84  // 表头高度
         let pageLogo = 86     // logo 区域高度
+        if(!document.getElementsByClassName('prototypeList')) return
         let rowList = document.getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
 
         this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 21
@@ -1002,7 +1003,7 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
       this.loading = false
     },
 
