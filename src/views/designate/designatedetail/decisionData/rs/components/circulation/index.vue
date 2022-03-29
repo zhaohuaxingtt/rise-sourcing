@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-28 16:17:01
+ * @LastEditTime: 2022-03-29 17:46:21
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -16,6 +16,7 @@
         :titleData="titleData"
         :tableTitle="tableTitle"
         :tableData="tableData"
+        :tableList="tableList"
         :firstCount="firstCount"
         :count="count"
         :remarkItem="remarkItem"
@@ -23,6 +24,8 @@
         :isApproval="isApproval"
         :exchangeRageCurrency="exchangeRageCurrency"
         :checkList="checkList"
+        :tableHeight="tableHeight"
+        :otherTableHeight="otherTableHeight"
         :exchangeRate="exchangeRate" />
     </div>
     <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
@@ -73,7 +76,7 @@
           <iButton v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
-      <div class="infos">
+      <div class="infos position-compute">
         <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
           <div class="info">
             <span class="label">{{ info.name }}：</span>
@@ -207,7 +210,7 @@
         </div>
       </div>
     </iCard>
-    <div class="position-compute" v-if="!isRoutePreview && !isApproval">
+    <div v-if="!isRoutePreview && !isApproval">
       <iCard :title="language('BEIZHU','备注')"
             :class="!isPreview && 'margin-top20'">
         <template slot="header-control" v-if="!isPreview">
@@ -326,6 +329,7 @@ export default {
       tableLoading: false,
       firstCount: 0,
       count: 0,
+      tableHeight:0,
       fileList:[],
       infos,
       exchangeRate: ""
@@ -372,25 +376,52 @@ export default {
   },
   methods: {
     getHeight(){
+      setTimeout(()=>{
       let dom = this.$refs.rsPdf.$el
       this.width = dom.offsetWidth
       this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-      let tableHeight = document.getElementsByClassName('mainTable')[0].clientHeight
-      let trHeight = (tableHeight - 56) / this.tableData.length
+      let tableHeader = 50 // 表头高度, position-compute 未计算到的
       // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
-      let tableHeader = 60 // 表头高度, position-compute 未计算到的
-      let padding = 60 // 内边距高度, position-compute 未计算到的
-      let headerHeight = 106 // 顶部标题高度, position-compute 未计算到的
-      // let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
-      let el = document.getElementsByClassName('position-compute')  // 页面所有固定元素的高度
-      let height = headerHeight + padding + tableHeader // 第一页所有固定元素高度总和
+      let headerHeight = 84 // 顶部标题高度, position-compute 未计算到的， 第一页独有
+      let pageLogo = 86 // logo 区域高度
+      let el = document.getElementsByClassName('position-compute')  // 页面所有固定元素的高度： infos 和 备注
+      let height = headerHeight + tableHeader // 第一页所有固定元素高度总和
+      let computeHeight = 0
       for (let i = 0; i < el.length; i++) {
-        height += el[i].offsetHeight;
+        computeHeight += el[i].offsetHeight;
       }
-      let firstCount = parseInt((this.pageHeight - height) / trHeight) // 第一页数据条数
-      let count = parseInt((this.pageHeight - height + headerHeight) / trHeight ) // 之后页面,每页数据条数
-      this.firstCount = firstCount
-      this.count = count
+      // 第一页
+      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo  // 表格区域高度, 用div支撑空间
+      // 第二页
+      this.otherTableHeight = this.pageHeight - computeHeight - pageLogo  // 表格区域高度, 用div支撑空间
+      let rowList = document.getElementsByClassName('el-table__body-wrapper is-scrolling-left')[0].getElementsByClassName('table-row')
+      let arr = []
+      let heightSum = 0
+      let tableList = []
+      rowList.forEach((item,i)=>{
+        heightSum+=item.offsetHeight
+        if(tableList.length==0){
+          if(heightSum<this.tableHeight){
+            arr.push(this.tableData[i])
+          }else{
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.tableData[i]]
+          }
+        }else{
+          if(heightSum<this.otherTableHeight){
+            arr.push(this.tableData[i])
+          }else{
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.tableData[i]]
+          }
+        }
+      })
+      tableList.push(JSON.parse(JSON.stringify(arr)))
+      this.tableList = tableList
+        console.log(tableList);
+      },1000)
     },
     downloadFile () {
       if (this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN', "您当前还未选择列表文件，请选择后重试！"))
@@ -527,6 +558,7 @@ export default {
         if (res?.result) {
           this.basicData = res.data || {}
           this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
+          this.tableData = [...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,]
           this.projectType = res.data.partProjectType || ''
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
             this.searchRsPageExchangeRate()
@@ -564,6 +596,7 @@ export default {
         if (res.code == 200) {
           this.basicData = res.data
           this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
+          this.tableData = [...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,]
           this.projectType = res.data.partProjectType || ''
 
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
@@ -623,7 +656,14 @@ export default {
 
     // 导出pdf
     handleExportPdf() {
-      this.createEl()
+      
+      this.getPdfImage({
+        dom: this.$refs.rsPdf.$el,
+        pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+        exportPdf: true,
+        waterMark: true
+      })
+      // this.createEl()
       // transverseDownloadPDF({
       //   dom: this.$refs.rsPdf.$el,
       //   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
@@ -634,8 +674,9 @@ export default {
 
     tableRowClassName({ row, rowIndex }) {
       if (row.isSuggestion) {
-        return "suggestionRow"
+        return "suggestionRow table-row"
       }
+      return "table-row"
     },
 
     // 保存行备注
@@ -829,6 +870,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
+            console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -896,11 +938,11 @@ export default {
 }
 
 .rsPdfWrapper {
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
+  // width: 0;
+  // height: 0;
+  // overflow: hidden;
+  // position: absolute;
+  // top: 0;
 }
 
 .suggestionRow {

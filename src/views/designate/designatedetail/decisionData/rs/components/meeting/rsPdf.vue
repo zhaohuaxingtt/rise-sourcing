@@ -12,7 +12,7 @@
           </div>
         </div>
       </template>
-      <div class="rsTop">
+      <div class="rsTop pdf-item">
         <div class="rsTop-left">
           <div
             class="rsTop-left-item"
@@ -91,7 +91,7 @@
       </div>
       <template v-if="count == firstCount">
         <div class="pdf-item">
-          <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable margin-top20" >
+          <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable margin-top20" border>
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
             </template>
@@ -188,7 +188,7 @@
       </template>
       <template v-else>
         <div class="pdf-item">
-          <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData.slice(0,firstCount)" class="rsTable margin-top20" >
+          <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData.slice(0,firstCount)" class="rsTable margin-top20" border>
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
             </template>
@@ -284,7 +284,7 @@
         </div>
         <template v-for="index in parseInt((tableData.length+count-firstCount)/count)">
           <div :key="index" class="pdf-item">
-            <tableList  :selection="false" :tableTitle="tableTitle" :tableData="tableData.slice(count*(index-1)+firstCount,count*index+firstCount )" class="rsTable margin-top20" >
+            <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData.slice(count*(index-1)+firstCount,count*index+firstCount )" class="rsTable margin-top20" border>
               <template #ltc="scope">
                 <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
               </template>

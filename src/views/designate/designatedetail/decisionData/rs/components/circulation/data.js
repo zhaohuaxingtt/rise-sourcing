@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-27 19:25:42
+ * @LastEditTime: 2022-03-29 14:50:50
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\circulation\data.js
  */
@@ -81,6 +81,38 @@ export const nomalTableTitle = [
   { props: 'demand', name: '年需求(K)', key: '', minWidth: 90 },
   { props: 'output', name: '年产能(K)', key: '', minWidth: 90 },
   { props: 'turnover', name: '采购金额', key: '', minWidth: 115 },
+  { props: 'remarks', name: '备注', key: '', minWidth: 120 },
+]
+// 生产
+export const nomalTableTitleSub = [
+  { props: 'fsnrGsnrNum', name: 'FS号', key: '', minWidth: 95, fixed: true },
+  { props: 'partNo', name: '零件号', key: '', minWidth: 76, fixed: true },
+  { props: 'partNum', name: '原零件号', key: '', minWidth: 70 }, // 12/24 业务说取partNum
+  { props: 'oldAPrice', name: '原A价', key: '', minWidth: 49 },
+  { props: 'partName', name: '零件名称', key: '', minWidth: 67 },
+  { props: 'unit', name: '零件', subItem:['单位'], key: '', minWidth: 33 },
+  { props: 'tpDep', name: 'E-line', key: '', minWidth: 48 },
+  { props: 'zp', name: 'ZP属性', key: '', minWidth: 49 },
+  { props: 'project', name: '项目名称', key: '', minWidth: 61 },
+  { props: 'svwCode', name: '厂商号', key: '', minWidth: 33 },
+  { props: 'supplierName', name: '供应商名称', key: '', minWidth: 72 },
+  { props: 'prodLocation', name: '产地', key: '', minWidth: 57 },
+  { props: 'cfTargetAPrice', name: '财务目标A价', key: '', minWidth: 57 },
+  { props: 'cfTargetBPrice', name: '财务目标B价', key: '', minWidth: 57 },
+  // { props: 'rw', name: '欧价', key: '', minWidth: 54 },
+  { props: 'status', name: '状态', key: '', minWidth: 38 },
+  { props: 'aprice', name: 'A价', key: '', minWidth: 57 },
+  { props: 'bprice', name: 'B价', key: '', minWidth: 57 },
+  { props: 'packPrice', name: '包装费', key: '', minWidth: 47 },
+  { props: 'transportPrice', name: '运输费', key: '', minWidth: 47 },
+  { props: 'operatePrice', name: '操作费', key: '', minWidth: 47 },
+  { props: 'investFee', name: '投资费', subItem:['(不含税)'], key: '', minWidth: 56 },
+  { props: 'share', name: '份额(%)', key: '', minWidth: 53 },
+  { props: 'ltc', name:'年降', key: '', minWidth: 48 },
+  { props: 'beginYearReduce', name: '年降开', subItem:['始时间'], key: '', minWidth: 62 },
+  { props: 'demand', name: '年需求(K)', key: '', minWidth: 50 },
+  { props: 'output', name: '年产能(K)', key: '', minWidth: 50 },
+  { props: 'turnover', name: '采购金额', key: '', minWidth: 86 },
   { props: 'remarks', name: '备注', key: '', minWidth: 120 },
 ]
 // export const nomalTableTitle = [
