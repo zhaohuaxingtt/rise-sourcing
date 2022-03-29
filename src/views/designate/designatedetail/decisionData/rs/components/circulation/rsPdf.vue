@@ -77,6 +77,7 @@
                 <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
               </div>
             </template>
+
             <!-- 年降 -->
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
@@ -97,12 +98,21 @@
               <span>{{ +scope.row.share || 0 }}</span>
             </template>
           </tableList>
-          <iCard class="rsCard" :title="language('BEIZHU', '备注')">
-            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-              <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
+          <div class="beizhu">
+            备注 Remarks:
+            <div class="beizhu-value">
+              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
             </div>
-          </iCard>
-        </div>
+          </div>
+          </div>
+          <div class="page-logo">
+            <img src="../../../../../../../assets/images/logo.png" alt="">
+            <div>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+              <p>{{'page '+(index+1)+' of '+tableList.length}}</p>
+            </div>
+          </div>
         </div>
       </template>
     </iCard>
