@@ -44,6 +44,7 @@
         </div>
         <div>
           <div class="control">
+            <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
             <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
           </div>
         </div>
@@ -941,6 +942,16 @@ export default {
         width: 100%;
         text-align: right;
         margin-bottom: 20px;
+      }
+    }
+
+    .control {
+      display: flex !important;
+      align-items: center !important;
+
+      .nomiId {
+        font-size: 16px;
+        font-weight: 600;
       }
     }
   }
