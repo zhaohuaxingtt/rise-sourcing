@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-28 23:50:22
+ * @LastEditTime: 2022-03-29 22:09:39
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -31,6 +31,11 @@
         :checkList="checkList"
         :processApplyDate="processApplyDate"
         :prototypeList="PrototypeList"
+        :tableList="tableList"
+        :tableHeight="tableHeight"
+        :otherTableHeight="otherTableHeight"
+        :prototypeListPageHeight="prototypeListPageHeight"
+        :prototypeTableList="prototypeTableList"
         :prototypeTitleList="prototypeTitleList" />
     </div>
     <iCard class="rsCard">
@@ -49,7 +54,7 @@
           </div>
         </div>
       </template>
-      <div class="rsTop position-compute">
+      <div class="rsTop page-top">
         <div class="rsTop-left">
           <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
             <div class="rsTop-left-item-title">
@@ -88,7 +93,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" border>
+      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" tableRowClassName="table-row" border>
         <template #fsnrGsnrNum="scope">
           <div>
             <p>{{ scope.row.fsnrGsnrNum }}</p>
@@ -237,7 +242,7 @@
         </template>
       </tableList>
       <!-- v-if="isPreview" -->
-      <div class="position-compute">
+      <div class="out-compute">
         <div class="beizhu">
           备注 Remarks:
           <div class="beizhu-value">
@@ -274,8 +279,7 @@
         </div>
       </div>
     </iCard>
-    <div class="position-compute">
-      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
         <div class="checkList">
           <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
             <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
@@ -292,9 +296,8 @@
           </div>
         </div>
       </iCard>
-    </div>
       <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
-        <el-table :data='PrototypeList'>
+        <el-table :data='PrototypeList' class="prototypeList" row-class-name="table-row">
           <template v-for="(items,index) in prototypeTitleList">
             <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
           </template>
@@ -353,7 +356,12 @@ export default {
       firstCount: 0,
       count: 0,
       fileList:[],
-      tableLoading: false
+      tableLoading: false,
+      otherTableHeight:0,
+      prototypeListPageHeight:0,
+      tableHeight:0,
+      tableList:[],
+      prototypeTableList:[],
     }
   },
   filters: {
@@ -451,25 +459,96 @@ export default {
   },
   methods: {
     getHeight(){
+      setTimeout(()=>{
       let dom = this.$refs.rsPdf.$el
       this.width = dom.offsetWidth
       this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-      let tableHeight = document.getElementsByClassName('mainTable')[0].clientHeight
-      let trHeight = (tableHeight - 56) / this.tableData.length
-      // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
-      let tableHeader = 60 // 表头高度, position-compute 未计算到的
-      let padding = 60 // 内边距高度, position-compute 未计算到的
-      let headerHeight = 106 // 顶部标题高度, position-compute 未计算到的
-      let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
-      let el = document.getElementsByClassName('position-compute')  // 页面所有固定元素的高度
-      let height = headerHeight + padding + tableHeader // 第一页所有固定元素高度总和
+      let tableHeader = 57  // 表头高度
+      let padding = 0 // 内边距高度
+      let headerHeight = 106 // 顶部标题高度, 第一页独有的
+      let pageLogo = 86     // logo 区域高度
+      let pageTop = document.getElementsByClassName('page-top')[0].offsetHeight  //248 // 顶部内容高度, 第一页独有的 page-top
+      // let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
+      let el = document.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
+      let outEl = document.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
       for (let i = 0; i < el.length; i++) {
         height += el[i].offsetHeight;
       }
-      let firstCount = parseInt((this.pageHeight - height) / trHeight) // 第一页数据条数
-      let count = parseInt((this.pageHeight - height + topHeight) / trHeight ) // 之后页面,每页数据条数
-      this.firstCount = firstCount
-      this.count = count
+      // 第一页
+      this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - 1
+      // 第二页
+      this.otherTableHeight = this.pageHeight - pageLogo - 21
+
+      let rowList = document.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+      let arr = []
+      let heightSum = 0
+      let tableList = []
+      rowList.forEach((item,i)=>{
+        heightSum+=item.offsetHeight
+        if(tableList.length==0){
+          if(heightSum<this.tableHeight - tableHeader - outEl - el){
+            arr.push(this.tableData[i])
+          }else{
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.tableData[i]]
+          }
+        }else{
+          if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
+            arr.push(this.tableData[i])
+          }else{
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.tableData[i]]
+          }
+        }
+      })
+        
+      tableList.push(JSON.parse(JSON.stringify(arr)))
+      this.tableList = tableList
+         },1000)
+    },
+    getPrototypeListHeight(){
+      setTimeout(() => {
+        let dom = this.$refs.rsPdf.$el
+        this.width = dom.offsetWidth
+        this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
+        console.log(this.pageHeight);
+        let tableHeader = 41  // 表头高度
+        let headerHeight = 84  // 表头高度
+        let pageLogo = 86     // logo 区域高度
+        let rowList = document.getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+
+        this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 21
+        let arr = []
+      let heightSum = 0
+      let PrototypeList = []
+      rowList.forEach((item,i)=>{
+        heightSum+=item.offsetHeight
+        if(PrototypeList.length==0){
+          if(heightSum<this.prototypeListPageHeight - tableHeader){
+            arr.push(this.PrototypeList[i])
+          }else{
+            PrototypeList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.PrototypeList[i]]
+          }
+        }else{
+          if(heightSum<this.prototypeListPageHeight - tableHeader){
+            arr.push(this.PrototypeList[i])
+          }else{
+            PrototypeList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.PrototypeList[i]]
+          }
+        }
+      })
+        
+      PrototypeList.push(JSON.parse(JSON.stringify(arr)))
+      this.prototypeTableList = PrototypeList
+        console.log(PrototypeList);
+        console.log(heightSum);
+      }, 1000);
     },
     getIsSingle() {
       findFrontPageSeat({nominateId:this.nominateId}).then(res => {
@@ -504,6 +583,7 @@ export default {
     getPrototypeList(){
       getPrototypeList(this.nominateId).then(res=>{
           this.PrototypeList = res.data.list || res.data.getQuotationSampleVOList || []
+          this.PrototypeList = [...this.PrototypeList,...this.PrototypeList,...this.PrototypeList,]
           // 获取上会备注
           if(res.data && res.code==200){
             this.remarkItem = meetingRemark.map(item => {
@@ -513,6 +593,12 @@ export default {
           }
       }).catch(err=>{
         console.warn(err)
+      }).finally(()=>{
+        this.$nextTick(()=>{
+          setTimeout(()=>{
+            this.getPrototypeListHeight()
+          },1000)
+        })
       })
     },
     /**
@@ -813,7 +899,13 @@ export default {
     // 导出pdf
     handleExportPdf() {
       this.loading = true
-      this.createEl()
+      this.getPdfImage({
+        dom: this.$refs.rsPdf.$el,
+        pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+        exportPdf: true,
+        waterMark: true
+      })
+      // this.createEl()
     },
     // 截取页面,存入pdf
     // 截取页面,转图片, 上传服务器
@@ -911,7 +1003,7 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight*1.2})  // 1.2 预留 页脚位置
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
       this.loading = false
     },
 
@@ -923,6 +1015,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
+            console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -1147,7 +1240,7 @@ export default {
   }
 }
 .checkDate {
-  ::v-deep .cardHeader .title {
+  ::v-deep .card .cardHeader .title {
     // font-size: 16px;
     font-weight: 400;
     color: rgba(75, 75, 76, 1);
@@ -1160,10 +1253,10 @@ export default {
 }
 
 .rsPdfWrapper { // 放在顶部, 便于计算高度
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  position: absolute;
+  // width: 100%;
+  // height: 0;
+  // overflow: hidden;
+  position: relative;
   top: 0;
 }
 </style>

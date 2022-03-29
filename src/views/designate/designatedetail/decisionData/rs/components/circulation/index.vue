@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-29 17:46:21
+ * @LastEditTime: 2022-03-29 22:09:59
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -64,7 +64,7 @@
         </div>
       </iFormGroup>
     </iCard> -->
-    <iCard :class="!isPreview && 'margin-top20'">
+    <iCard class="pageCard" :class="!isPreview && 'margin-top20'">
       <template #header>
         <div class="title">
           <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
@@ -206,14 +206,14 @@
           <span>{{ +scope.row.share || 0 }}</span>
         </template>
       </tableList>
-      <div class="position-compute">
+      <div class="position-compute out-compute">
         <div class="beizhu">
           备注 Remarks:
           <div class="beizhu-value">
             <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
           </div>
         </div>
-      </div>
+        </div>
     </iCard>
     <div v-if="!isRoutePreview && !isApproval">
       <iCard :title="language('BEIZHU','备注')"
@@ -336,6 +336,7 @@ export default {
       firstCount: 0,
       count: 0,
       tableHeight:0,
+      otherTableHeight:0,
       fileList:[],
       infos,
       exchangeRate: ""
@@ -384,30 +385,31 @@ export default {
     getHeight(){
       setTimeout(()=>{
       let dom = this.$refs.rsPdf.$el
-      this.width = dom.offsetWidth
+      this.width = dom.offsetWidth  // 打印区域宽度
       this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-      let tableHeader = 50 // 表头高度, position-compute 未计算到的
-      // position-compute 顶部内容, 备注, 审批等 导出pdf页面固有的元素标签
-      let headerHeight = 84 // 顶部标题高度, position-compute 未计算到的， 第一页独有
-      let pageLogo = 86 // logo 区域高度
-      let el = document.getElementsByClassName('position-compute')  // 页面所有固定元素的高度： infos 和 备注
-      let height = headerHeight + tableHeader // 第一页所有固定元素高度总和
-      let computeHeight = 0
-      for (let i = 0; i < el.length; i++) {
-        computeHeight += el[i].offsetHeight;
-      }
+      console.log(this.width);
+      console.log(this.pageHeight);
+      let tableHeader = 50  // 表头高度
+      let headerHeight = 84 // 顶部标题高度, 第一页独有
+      let pageLogo = 86     // logo 区域高度
+      let computeHeight = document.getElementsByClassName('position-compute')[0].offsetHeight  // 页面所有固定元素的高度： infos
+      let outEl = document.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
       // 第一页
-      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo  // 表格区域高度, 用div支撑空间
+      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - 1  // 表格区域高度, 用div支撑空间
       // 第二页
-      this.otherTableHeight = this.pageHeight - computeHeight - pageLogo  // 表格区域高度, 用div支撑空间
-      let rowList = document.getElementsByClassName('el-table__body-wrapper is-scrolling-left')[0].getElementsByClassName('table-row')
+      this.otherTableHeight = this.pageHeight - computeHeight - pageLogo - 21   // 表格区域高度, 用div支撑空间, 减20间距, 1px 偏差
+      let rowList = document.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+      console.log(rowList);
+      console.log(this.tableHeight);
+      console.log(rowList);
+
       let arr = []
       let heightSum = 0
       let tableList = []
       rowList.forEach((item,i)=>{
         heightSum+=item.offsetHeight
         if(tableList.length==0){
-          if(heightSum<this.tableHeight){
+          if(heightSum<this.tableHeight - tableHeader - outEl){
             arr.push(this.tableData[i])
           }else{
             tableList.push(JSON.parse(JSON.stringify(arr)))
@@ -415,7 +417,7 @@ export default {
             arr = [this.tableData[i]]
           }
         }else{
-          if(heightSum<this.otherTableHeight){
+          if(heightSum<this.otherTableHeight - tableHeader - outEl){
             arr.push(this.tableData[i])
           }else{
             tableList.push(JSON.parse(JSON.stringify(arr)))
@@ -423,6 +425,7 @@ export default {
             arr = [this.tableData[i]]
           }
         }
+        console.log(heightSum);
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
@@ -565,7 +568,6 @@ export default {
         if (res?.result) {
           this.basicData = res.data || {}
           this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
-          this.tableData = [...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,]
           this.projectType = res.data.partProjectType || ''
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
             this.searchRsPageExchangeRate()
@@ -603,7 +605,6 @@ export default {
         if (res.code == 200) {
           this.basicData = res.data
           this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
-          this.tableData = [...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,...this.tableData,]
           this.projectType = res.data.partProjectType || ''
 
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
@@ -856,7 +857,7 @@ export default {
         this.$nextTick(() => {
           setTimeout(() => {
             this.uploadUdFile();
-          }, 1000);
+          }, 500);
         });
       });
     },
@@ -866,7 +867,7 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight*1.2})  // 1.2 预留 页脚位置
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:true, needSplit:true, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
     },
 
     // 上传图片
@@ -943,13 +944,18 @@ export default {
     box-shadow: none;
   }
 }
+.pageCard{
+  ::v-deep .cardHeader{
+    padding: 30px 40px 10px;
+  }
+}
 
 .rsPdfWrapper {
-  // width: 0;
-  // height: 0;
-  // overflow: hidden;
-  // position: absolute;
-  // top: 0;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  position: relative;
+  top: 0;
 }
 
 .suggestionRow {
@@ -957,9 +963,10 @@ export default {
 }
 
 .circulation {
+  overflow: hidden;
   .infos {
     display: flex;
-    margin-bottom: 20px;
+    padding: 0 0 20px;
 
     .infoWrapper {
       flex: 1;

@@ -50,7 +50,7 @@
         </div>
       </template>
       <template v-for="(tableData,index) in tableList">
-        <div class="pdf-item margin-20" :key="index">
+        <div class="pdf-item" :key="index">
           <div class="infos">
             <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
               <div class="info">
@@ -68,6 +68,7 @@
             :tableTitle="tableTitle"
             :tableData="tableData"
             class="rsTable"
+            :tableRowClassName="tableRowClassName"
             border
           >
             <template #fsnrGsnrNum="scope">
@@ -97,111 +98,23 @@
               <span>{{ +scope.row.share || 0 }}</span>
             </template>
           </tableList>
-          </div>
-            <div class="beizhu">
-              备注 Remarks:
-              <div class="beizhu-value">
-                <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
-              </div>
+          <div class="beizhu">
+            备注 Remarks:
+            <div class="beizhu-value">
+              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
             </div>
+          </div>
+          </div>
           <div class="page-logo">
             <img src="../../../../../../../assets/images/logo.png" alt="">
             <div>
-              <p>严琴</p>
-              <p>2022-03-29</p>
-              <p>page 1 of 12</p>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+              <p>{{'page '+(index+1)+' of '+tableList.length}}</p>
             </div>
           </div>
         </div>
       </template>
-      <!-- <template v-else>
-        <div class="pdf-item">
-          <div :style="{'height':tableHeight + 'px'}">
-          <tableList
-          border
-            :max-height="tableHeight"
-            :selection="false"
-            :tableTitle="tableTitle"
-            :tableData="tableData.slice(0,firstCount)"
-            class="rsTable margin-top20"
-          >
-            <template #fsnrGsnrNum="scope">
-              <div>
-                <p>{{ scope.row.fsnrGsnrNum }}</p>
-                <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-              </div>
-            </template>
-
-            <template #ltc="scope">
-              <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
-            </template>
-
-            <template #beginYearReduce="scope">
-              <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
-            </template>
-
-            <template #sapCode="scope">
-              <span>{{
-                scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
-              }}</span>
-            </template>
-
-            <template #share="scope">
-              <span>{{ +scope.row.share || 0 }}</span>
-            </template>
-          </tableList>
-          </div>
-            <div class="beizhu">
-              备注 Remarks:
-              <div class="beizhu-value">
-                <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
-              </div>
-            </div>
-        </div>
-        <template v-for="index in parseInt((tableData.length+count-firstCount)/count)">
-          <div :key="index" class="pdf-item" :style="{'height':tableHeight + 'px'}">
-            <tableList
-            border
-            :max-height="tableHeight"
-              :selection="false"
-              :tableTitle="tableTitle"
-              :tableData="tableData.slice(count*(index-1)+firstCount,count*index+firstCount )"
-              class="rsTable margin-top20"
-            >
-              <template #fsnrGsnrNum="scope">
-                <div>
-                  <p>{{ scope.row.fsnrGsnrNum }}</p>
-                  <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-                </div>
-              </template>
-
-              <template #ltc="scope">
-                <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
-              </template>
-
-              <template #beginYearReduce="scope">
-                <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
-              </template>
-
-              <template #sapCode="scope">
-                <span>{{
-                  scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
-                }}</span>
-              </template>
-
-              <template #share="scope">
-                <span>{{ +scope.row.share || 0 }}</span>
-              </template>
-            </tableList>
-            <div class="beizhu">
-              备注 Remarks:
-              <div class="beizhu-value">
-                <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
-              </div>
-            </div>
-          </div>
-        </template>
-      </template> -->
     </iCard>
   </div>
 </template>
@@ -213,8 +126,10 @@ import { partProjTypes, fileType } from "@/config"
 import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
 import { checkList, fileTableTitle, infos } from "./data"
 import { nomalTableTitleSub, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
+import filters from "@/utils/filters"
 
 export default {
+  mixins:[filters],
   components: { iCard, iFormGroup, iFormItem, iText, tableList },
   props:{
     nominateId:{
@@ -240,7 +155,6 @@ export default {
   data() {
     return {
       partProjTypes,
-      height:0,
       // titleData: [
       //   { label: "零件关系", value: "配件", props: "partProjectType" },
       //   { label: "询价采购员", value: "胡伟", props: "buyer" },
@@ -257,12 +171,10 @@ export default {
       infos,
     };
   },
-  watch:{
-    tableHeight(v){
-      this.height = v
-    }
-  },
   computed: {
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
     tableTitle () {
       if (this.projectType === partProjTypes.PEIJIAN) {
         return sparePartTableTitle
@@ -283,10 +195,10 @@ export default {
     },
   },
   methods: {
-    getFS(item){
-      let arr = item.split('(')
-      if(arr[1]) arr[1] = '('+arr[1]
-      return arr
+    tableRowClassName({ row }) {
+      if (row.isSuggestion) {
+        return "suggestionRow"
+      }
     },
     // 单独处理下年降或年降计划
     resetLtcData(row, type) {
@@ -346,13 +258,22 @@ export default {
 
 <style lang="scss" scoped>
 .rsPdf {
-  width: 100%;
+  min-width: 100%;
+  width: fit-content;
   background: #FFFFFF;
 
   .rsCard {
     box-shadow: none;
     & + .rsCard {
       margin-top: 20px; /*no*/
+    }
+    ::v-deep .cardBody{
+      padding-bottom: 0px;
+    }
+  }
+  .pdf-item {
+    & + .pdf-item {
+      margin-top: 20px;
     }
   }
 
@@ -403,7 +324,7 @@ export default {
 
   .infos {
     display: flex;
-    margin-bottom: 20px;
+    padding: 0 0 20px;
 
     .infoWrapper {
       flex: 1;
