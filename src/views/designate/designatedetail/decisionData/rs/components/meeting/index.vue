@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-29 22:12:49
+ * @LastEditTime: 2022-03-29 22:14:12
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -1252,9 +1252,9 @@ export default {
 }
 
 .rsPdfWrapper { // 放在顶部, 便于计算高度
-  // width: 100%;
-  // height: 0;
-  // overflow: hidden;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
   position: relative;
   top: 0;
 }
