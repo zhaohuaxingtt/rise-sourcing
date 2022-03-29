@@ -99,7 +99,7 @@ export const gsDetailTitleBlue = [
 
 
 export const nomalTableTitle = [
-  {props:'fsnrGsnrNum',enName: 'FS-NO.', key: "",minWidth:54, fixed: true},
+  {props:'fsnrGsnrNum',enName: 'FS-NO.', key: "",minWidth:84, fixed: true},
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "",minWidth:74, fixed: true},
   {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)',key: "",minWidth:74, fixed: true},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "",minWidth:64, fixed: true},
@@ -124,7 +124,7 @@ export const nomalTableTitle = [
 
 // 配件
 export const sparePartTableTitle = [
-  {props:'fsnrGsnrNum',enName: 'SP-NO.', key: "", minWidth: 54, fixed: true},
+  {props:'fsnrGsnrNum',enName: 'SP-NO.', key: "", minWidth: 84, fixed: true},
   {props:'output',name:'年产能', enName: 'Capa.(K)', key: "", minWidth: 74, fixed: true},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 64, fixed: true},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 76},
@@ -146,7 +146,7 @@ export const sparePartTableTitle = [
 
 // 附件
 export const accessoryTableTitle = [
-  {props:'fsnrGsnrNum',enName: 'SP-NO.', key: "", minWidth: 54, fixed: true},
+  {props:'fsnrGsnrNum',enName: 'SP-NO.', key: "", minWidth: 84, fixed: true},
   {props:'output',name:'年产能', enName: 'Capa.(K)', key: "", minWidth: 74, fixed: true},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 64, fixed: true},
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "", minWidth: 76},
@@ -167,7 +167,7 @@ export const accessoryTableTitle = [
 
 // GS零件
 export const gsTableTitle = [
-  {props:'fsnrGsnrNum',enName: 'GS-NO.', key: "",minWidth:60, fixed: true},
+  {props:'fsnrGsnrNum',enName: 'GS-NO.', key: "",minWidth:84, fixed: true},
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74, fixed: true},
   {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)', key: "", minWidth: 74, fixed: true},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 68, fixed: true},
@@ -194,7 +194,7 @@ export const gsTableTitle = [
 
 // DB零件
 export const dbTableTitle = [
-  {props:'fsnrGsnrNum',enName: 'FS-NO.', key: "", minWidth: 60, fixed: true},
+  {props:'fsnrGsnrNum',enName: 'FS-NO.', key: "", minWidth: 84, fixed: true},
   {props:'demand',name:'年需求', enName: 'Demand', enName1:'(K)', key: "", minWidth: 74, fixed: true},
   {props:'output',name:'年产能', enName: 'Capa.', enName1:'(K)', key: "", minWidth: 74, fixed: true},
   {props:'partNo',name:'零件号', enName: 'Part No.', key: "", minWidth: 68, fixed: true},
