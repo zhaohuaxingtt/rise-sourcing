@@ -49,23 +49,27 @@
           <p>{{ `流转定点推荐 - ${cardTitle}` }}</p>
         </div>
       </template>
-      <div class="infos">
-        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
-          <div class="info">
-            <span class="label">{{ info.name }}：</span>
-            <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
-            <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
-            <div v-else>{{ basicData[info.props] }}</div>
+      <template v-for="(tableData,index) in tableList">
+        <div class="pdf-item" :key="index">
+          <div class="infos">
+            <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+              <div class="info">
+                <span class="label">{{ info.name }}：</span>
+                <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
+                <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+                <div v-else>{{ basicData[info.props] }}</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <template v-if="count==firstCount">
-        <div class="pdf-item">
+          <!-- 第一页比其它页面多一个头部 -->
+          <div :style="{'height':(index==0?tableHeight:otherTableHeight) + 'px'}">
           <tableList
             :selection="false"
             :tableTitle="tableTitle"
             :tableData="tableData"
             class="rsTable"
+            :tableRowClassName="tableRowClassName"
+            border
           >
             <template #fsnrGsnrNum="scope">
               <div>
@@ -94,96 +98,22 @@
               <span>{{ +scope.row.share || 0 }}</span>
             </template>
           </tableList>
-          <iCard class="rsCard" :title="language('BEIZHU', '备注')">
-            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-              <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
+          <div class="beizhu">
+            备注 Remarks:
+            <div class="beizhu-value">
+              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
             </div>
-          </iCard>
-        </div>
-      </template>
-      <template v-else>
-        <div class="pdf-item">
-          <tableList
-            :selection="false"
-            :tableTitle="tableTitle"
-            :tableData="tableData.slice(0,firstCount)"
-            class="rsTable margin-top20"
-          >
-            <template #fsnrGsnrNum="scope">
-              <div>
-                <p>{{ scope.row.fsnrGsnrNum }}</p>
-                <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-              </div>
-            </template>
-
-            <!-- 年降 -->
-            <template #ltc="scope">
-              <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
-            </template>
-
-            <!-- 年降开始时间 -->
-            <template #beginYearReduce="scope">
-              <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
-            </template>
-
-            <template #sapCode="scope">
-              <span>{{
-                scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
-              }}</span>
-            </template>
-
-            <template #share="scope">
-              <span>{{ +scope.row.share || 0 }}</span>
-            </template>
-          </tableList>
-          <iCard class="rsCard" :title="language('BEIZHU', '备注')">
-            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-              <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
-            </div>
-          </iCard>
-        </div>
-        <template v-for="index in parseInt((tableData.length+count-firstCount)/count)">
-          <div :key="index" class="pdf-item">
-            <tableList
-              :selection="false"
-              :tableTitle="tableTitle"
-              :tableData="tableData.slice(count*(index-1)+firstCount,count*index+firstCount )"
-              class="rsTable margin-top20"
-            >
-              <template #fsnrGsnrNum="scope">
-                <div>
-                  <p>{{ scope.row.fsnrGsnrNum }}</p>
-                  <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-                </div>
-              </template>
-
-              <!-- 年降 -->
-              <template #ltc="scope">
-                <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
-              </template>
-
-              <!-- 年降开始时间 -->
-              <template #beginYearReduce="scope">
-                <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
-              </template>
-
-              <template #sapCode="scope">
-                <span>{{
-                  scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
-                }}</span>
-              </template>
-
-              <template #share="scope">
-                <span>{{ +scope.row.share || 0 }}</span>
-              </template>
-            </tableList>
-            <iCard class="rsCard" :title="language('BEIZHU', '备注')">
-              <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
-                <div class="margin-top10" type="textarea" :rows="3" resize="none">{{ item.value }}</div>
-              </div>
-            </iCard>
           </div>
-        </template>
+          </div>
+          <div class="page-logo">
+            <img src="../../../../../../../assets/images/logo.png" alt="">
+            <div>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+              <p>{{'page '+(index+1)+' of '+tableList.length}}</p>
+            </div>
+          </div>
+        </div>
       </template>
     </iCard>
   </div>
@@ -195,9 +125,11 @@ import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes, fileType } from "@/config"
 import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
 import { checkList, fileTableTitle, infos } from "./data"
-import { nomalTableTitle, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
+import { nomalTableTitleSub, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
+import filters from "@/utils/filters"
 
 export default {
+  mixins:[filters],
   components: { iCard, iFormGroup, iFormItem, iText, tableList },
   props:{
     nominateId:{
@@ -206,7 +138,7 @@ export default {
   cardTitle: { type: String },
   basicData: { type: Object, default: () => ({}) },
   titleData: { type: Array, default: () => [] },
-  tableTitle: { type: Array, default: () => [] },
+  // tableTitle: { type: Array, default: () => [] },
   tableData: { type: Array, default: () => [] },
   firstCount: { type: Number, default: 0 },
   count: { type: Number, default: 0 },
@@ -215,7 +147,10 @@ export default {
   isApproval: { type: Boolean },
   exchangeRageCurrency: { type: Array, default: () => [] },
   checkList: { type: Array, default: () => [] },
-  exchangeRate: { type: String, default: "" }
+  exchangeRate: { type: String, default: "" },
+  tableHeight: { type: Number, default: 0 },
+  otherTableHeight: { type: Number, default: 0 },
+  tableList: { type: Array, default: () => [] },
   },
   data() {
     return {
@@ -229,14 +164,28 @@ export default {
       //   { label: "LINIE采购员", value: "胡伟", props: "linieName" },
       //   { label: "Exchange rate", value: "", props: "cfExchangeRate" },
       // ],
-      basicData: {},
-      tableData: [],
-      projectType: partProjTypes.PEIJIAN,
-      remarkItem: [],
+      // basicData: {},
+      // tableData: [],
+      // projectType: partProjTypes.PEIJIAN,
+      // remarkItem: [],
       infos,
     };
   },
   computed: {
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+    tableTitle () {
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return sparePartTableTitle
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return accessoryTableTitle
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
+        return gsTableTitle
+      }
+
+      return nomalTableTitleSub
+    },
     isPF() {
       // 是否配附件
       return (
@@ -246,6 +195,11 @@ export default {
     },
   },
   methods: {
+    tableRowClassName({ row }) {
+      if (row.isSuggestion) {
+        return "suggestionRow"
+      }
+    },
     // 单独处理下年降或年降计划
     resetLtcData(row, type) {
       if (!row) return ""
@@ -304,6 +258,7 @@ export default {
 
 <style lang="scss" scoped>
 .rsPdf {
+  min-width: 100%;
   width: fit-content;
   background: #FFFFFF;
 
@@ -311,6 +266,14 @@ export default {
     box-shadow: none;
     & + .rsCard {
       margin-top: 20px; /*no*/
+    }
+    ::v-deep .cardBody{
+      padding-bottom: 0px;
+    }
+  }
+  .pdf-item {
+    & + .pdf-item {
+      margin-top: 20px;
     }
   }
 
@@ -338,6 +301,16 @@ export default {
         }
       }
     }
+    ::v-deep tr {
+      border-left: 1px solid #EBEEF5;
+      border-bottom: 1px solid #EBEEF5;
+      td {
+        & > .cell{
+          padding-right: 1px; /*no*/
+          padding-left: 1px; /*no*/
+        }
+      }
+    }
   }
 
   .meetingRemark-item {
@@ -351,7 +324,7 @@ export default {
 
   .infos {
     display: flex;
-    margin-bottom: 20px;
+    padding: 0 0 20px;
 
     .infoWrapper {
       flex: 1;
@@ -374,6 +347,24 @@ export default {
         padding-left: 0
       }
     }
+  }
+  
+  .beizhu {
+    background-color: rgba(22, 96, 241, 0.03);
+    // height: 40px;
+    padding: 12px 14px;
+    font-weight: bold;
+    display: flex;
+    &-value {
+      font-weight: 400;
+      margin-left: 20px;
+    }
+  }
+  .page-logo{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    align-items: center;
   }
 }
 </style>
