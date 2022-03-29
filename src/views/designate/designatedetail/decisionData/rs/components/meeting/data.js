@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 18:33:23
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-29 19:50:54
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
