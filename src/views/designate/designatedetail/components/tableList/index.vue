@@ -210,7 +210,11 @@ export default{
         this.$emit('tableValueChange', val, row, item)
         console.log(val, row, item)
       } else {
-        row[item.isChange] = row[item.props+'Temp'] != (val === null ? '' : val)
+        if (math.hasNumericValue(row[item.props+'Temp'])) {
+          row[item.isChange] = !math.equal(row[item.props+'Temp'], val)
+        } else {
+          row[item.isChange] = row[item.props+'Temp'] != (val === null ? '' : val)
+        }
       }
     },
     getValue(row, item) {
