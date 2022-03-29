@@ -70,12 +70,13 @@
             class="rsTable"
             border
           >
-            <!-- FS号 -->
             <template #fsnrGsnrNum="scope">
-              <template v-for="(fs,i) in getFS(scope.row.fsnrGsnrNum)">
-                <p :key="i">{{fs}}</p>
-              </template>
+              <div>
+                <p>{{ scope.row.fsnrGsnrNum }}</p>
+                <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+              </div>
             </template>
+
             <!-- 年降 -->
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
@@ -125,10 +126,12 @@
             class="rsTable margin-top20"
           >
             <template #fsnrGsnrNum="scope">
-              <template v-for="(fs,i) in getFS(scope.row.fsnrGsnrNum)">
-                <p :key="i">{{fs}}</p>
-              </template>
+              <div>
+                <p>{{ scope.row.fsnrGsnrNum }}</p>
+                <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+              </div>
             </template>
+
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
             </template>
@@ -165,6 +168,13 @@
               :tableData="tableData.slice(count*(index-1)+firstCount,count*index+firstCount )"
               class="rsTable margin-top20"
             >
+              <template #fsnrGsnrNum="scope">
+                <div>
+                  <p>{{ scope.row.fsnrGsnrNum }}</p>
+                  <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+                </div>
+              </template>
+
               <template #ltc="scope">
                 <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
               </template>
