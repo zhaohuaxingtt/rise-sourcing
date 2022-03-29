@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-07 21:54:12
+ * @LastEditTime: 2022-03-21 10:49:31
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -28,6 +28,7 @@
                     :value="item.value">
                   </el-option>  
                 </iSelect>
+                <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" type="daterange" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
                  <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
                 <iInput v-else v-model="searchParams[item.value]" @input="item.inputType ? handleInput($event, item, searchParams) : ''" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
@@ -40,7 +41,6 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('PEIJIANZONGHECHAXUN','配件综合查询')}}</span>
                 <div class="floatright">
-                  <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                   <!--------------------分配询价采购员按钮----------------------------------->
                   <iButton @click="openBuyerDialog" v-permission.auto="APREPART_MANAGFMENT_SENDBUYPER|配件-配件管理-分配询价采购员">{{language('FENPEIXUNJIACAIGOUYUAN','分配询价采购员')}}</iButton>
                   <!--------------------分配Linie按钮----------------------------------->
@@ -57,6 +57,7 @@
                   <iButton @click="downloadAll" :loading="downloadAllLoading" v-permission.auto="APREPART_MANAGFMENT_DWONLOAD|配件-配件管理-下载报表">{{language('XIAZAIBAOBIAO','下载报表')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_MANAGFMENT_EXPORT|配件-配件管理-导出">{{language('DAOCHU','导出')}}</iButton>
+                  <button-table-setting @click="edittableHeader" />
                 </div>
             </div>
             <tableList
@@ -107,7 +108,7 @@
 </template>
 
 <script>
-import { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMessage, iNavMvp, iMultiLineInput } from 'rise'
+import { iPage, iSearch, iSelect, iInput, iCard, iButton, iDatePicker, iPagination, iMessage, iNavMvp, iMultiLineInput } from 'rise'
 import { pageMixins } from "@/utils/pageMixins"
 import headerNav from '@/components/headerNav'
 // import tableList from '@/views/designate/designatedetail/components/tableList'
@@ -135,7 +136,7 @@ const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMultiLineInput, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog, headerNav },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iDatePicker, iPagination, iMultiLineInput, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog, headerNav },
   data() {
     return {
       // 零件项目类型
@@ -153,7 +154,8 @@ export default {
         cfTargetPrice: '',
         nomiType: '',
         idState: '',
-        showSelf: true
+        showSelf: true,
+        signDate:[]
       },
       inquiryDialogVisible: false,
       buyerDialogVisible: false,
@@ -364,12 +366,19 @@ export default {
         cfTargetPrice: '',
         nomiType: '',
         idState: '',
-        showSelf: true
+        showSelf: true,
+        signDate:[]
       }
       this.sure()
     },
     sure() {
       this.page.currPage = 1
+      // 若有定点起止时间将其拆分成两个字段
+      const {signDate=[]} = this.searchParams;
+      if(signDate.length){
+        this.searchParams.startDate = signDate[0]
+        this.searchParams.endDate = signDate[1]
+      }
       this.getTableList()
     },
     /**

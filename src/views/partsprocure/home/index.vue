@@ -1,7 +1,7 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2022-01-24 15:56:43
+ * @LastEditTime: 2022-03-21 11:00:18
  * @LastEditors: Please set LastEditors
  * @Description: 零件采购项目建立首页。
  * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
@@ -216,7 +216,6 @@
                 {{ language("partsprocure.PARTSPROCURENEWPROCUREMENTPROJECT",'零件采购项目管理') }}</span
               >
               <div class="floatright">
-                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
                 <!-- 手工采购项目创建 -->
                 <iButton @click="openCreateParts" v-permission.auto="PARTSPROCURE_CREATEMANUALPROCUREMENTITEM|手工采购项目创建">{{ language("SHOUGONGCAIGOUXIANGMUCHUANGJIAN", "手工采购项目创建") }}</iButton>
                 <iButton :loading='zpLoading' @click="openDiologChangeItems" v-permission.auto="PARTSPROCURE_TRANSFER|转派">{{ language("partsprocure.PARTSPROCURETRANSFER",'转派') }} </iButton>
@@ -224,6 +223,7 @@
                 <cancelProject :backItems='selectTableData'  @refresh="getTableListFn" v-permission.auto="PARTSPROCURE_CANCELPROCUREMENTITEMS|取消零件采购项目号"></cancelProject>
                 <iButton @click="openBatchmiantain" v-permission.auto="PARTSPROCURE_BATCHMAINTENANCE|批量维护">{{ language("partsprocure.PARTSPROCUREBATCHMAINTENANCE",'批量维护') }}</iButton>
                 <startProject :startItems='selectTableData' v-permission.auto="PARTSPROCURE_STARTINQUIRY|启动询价"></startProject>
+                <button-table-setting @click="edittableHeader" />
               </div>
             </div>
             <tablelist

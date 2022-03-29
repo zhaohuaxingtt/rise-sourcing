@@ -46,10 +46,10 @@
     </iSearch>
     <iCard class="margin-top20">
       <template v-slot:header-control>
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton @click="edit">{{ language("BIANJI", "编辑") }}</iButton>
         <iButton @click="add">{{language("TIANJIA", "添加")}}</iButton>
         <iButton @click="deleteItem" :loading="btnLoading.deleteItem">{{ language('SHANCHU', '删除') }}</iButton>
+        <button-table-setting @click="edittableHeader" />
       </template>
       <div class="body">
         <tableList

@@ -1,8 +1,8 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-08-24 15:19:33
- * @LastEditTime: 2022-01-05 10:53:40
- * @LastEditors: Luoshuang
+ * @LastEditTime: 2022-03-21 10:43:10
+ * @LastEditors: Please set LastEditors
  * @Description: 风险预警配置
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\riskAndAlarmConfig\index.vue
 -->
@@ -12,10 +12,10 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{ language("FENGXIANYUJINGPEIZHI",'风险预警配置')}}</span>
         <div class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <iButton :loading="submitting" @click="save">
             {{ language("LK_BAOCUNBINGYINGYONG",'保存并应用') }}
           </iButton>
+          <button-table-setting @click="edittableHeader" />
         </div>
       </div>
       <div class="table">

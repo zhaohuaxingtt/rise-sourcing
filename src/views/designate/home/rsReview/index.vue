@@ -16,7 +16,6 @@
       <div class="margin-bottom20 clearFloat">
       <span class="font18 font-weight">{{ language( 'SHANGHUIRSDANFUHE', '上会RS单复核' ) }}</span>
         <div class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
           <!-- 发起复核 -->
           <iButton
             @click="initRsReview"
@@ -81,7 +80,7 @@
             {{ language("QUXIAOMTZBANGDING", "取消MTZ绑定") }}
           </iButton>
 
-          
+          <button-table-setting @click="edittableHeader" />
         </div>
       </div>
       <tablelist

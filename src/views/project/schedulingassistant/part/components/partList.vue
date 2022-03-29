@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
- * @LastEditors: Luoshuang
- * @LastEditTime: 2022-01-10 10:24:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 18:11:36
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -15,11 +15,12 @@
         <span class="partListView-title-span-unit">{{language('DANWEIZHOU','单位：周')}}</span> 
       </div> 
       <div v-if="!isSop && parts.length > 0"> 
-        <logicSettingBtn ref="logicSettingBtn" class="margin-right10" logicType="2" :carProject="cartypeProId" @handleUse="updatePartGroupConfig" :logicList="partLogicList" /> 
-        <iButton @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton> 
-        <iButton :loading="versionLoading" @click="handleSecheduleVersion">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton> 
-        <iButton @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton> 
-        <el-popover 
+        <logicSettingBtn v-permission.auto='PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_SUANFAPEIZHI_BUTTON|零件排程-算法配置-按钮' ref="logicSettingBtn" class="margin-right10" logicType="2" :carProject="cartypeProId" @handleUse="updatePartGroupConfig" :logicList="partLogicList" /> 
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_SAVE_BUTTON|零件排程-保存-按钮" @click="handleSave" :loading="saveloading">{{language('BAOCUN', '保存')}}</iButton> 
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_SHENGCHENGPAICHENGBANBEN_BUTTON|零件排程-生成排程版本-按钮" :loading="versionLoading" @click="handleSecheduleVersion">{{language('SHENGCHENGPAICHENGBANBEN', '生成排程版本')}}</iButton> 
+        <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_FASONGFSQUEREN_BUTTON|零件排程-发送FS确认-按钮" @click="handleSendFs">{{language('FASONGFSQUEREN', '发送FS确认')}}</iButton> 
+        <el-popover
+          v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_PARTSCHEDULING_DAOCHUPAICHENGQINGDAN_BUTTON|零件排程-导出排程清单-按钮"
           class="margin-left10"
           placement="bottom" 
           width="156" 
@@ -68,7 +69,7 @@
               :content="language('TIAOZHUANLISHIJINDUSHUJUKU','跳转历史进度数据库')"
               placement="top-start"
               trigger="hover">
-              <icon slot="reference" @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px"></icon> 
+              <icon slot="reference" @click.native="gotoDBhistory(pro)" symbol name="iconpaichengzhushou_lishizhi" class="margin-left8 cursor" style="width:20px;outline:none"></icon> 
             </el-popover>
              
           </div> 
@@ -405,6 +406,10 @@ export default {
         let { year, month, day } = res.data[res.data.length - 1]
         if(+day <10){
           day = '0'+day
+        }
+        
+        if(+month < 10){
+          month = '0'+month
         }
         return year + '-' + month + '-' + day
       }
@@ -912,6 +917,7 @@ export default {
           font-size: 18px;
           margin-left: 10px;
           cursor: pointer;
+          white-space:pre;
         }
       }
       &-targetList { 
