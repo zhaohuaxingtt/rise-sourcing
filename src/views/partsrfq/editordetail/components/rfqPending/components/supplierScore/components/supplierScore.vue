@@ -219,7 +219,9 @@ export default {
           const obj = {}
           parmars.forEach(item=>{
             // vmitems[item+(vmindex?vmindex:'')] = vmitems[item]
-            obj[item+(vmindex?vmindex:'')] = items.rateEntity[vmindex] ? items.rateEntity[vmindex][item] : items.rateEntity[vmindex]
+            obj[item+(vmindex?vmindex:'')] = items.rateEntity ? 
+              (items.rateEntity[vmindex] ? items.rateEntity[vmindex][item] : items.rateEntity[vmindex]) : 
+              ""
           })
           items = Object.assign(items,obj)
         })
