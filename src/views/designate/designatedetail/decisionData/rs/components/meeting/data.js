@@ -270,6 +270,7 @@ export const resetLtcData = function(row, type) {
   //    }
   //  }
   //  return strList.length ? strList.join('/') : '-'
+    console.log("row", row)
     const ltcRateStrArr = row.map(item => item.ltcRateStr)
 
     let i = 0
