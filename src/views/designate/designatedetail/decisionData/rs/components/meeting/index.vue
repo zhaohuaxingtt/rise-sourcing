@@ -88,6 +88,13 @@
         </div>
       </div>
       <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" border>
+        <template #fsnrGsnrNum="scope">
+          <div>
+            <p>{{ scope.row.fsnrGsnrNum }}</p>
+            <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+          </div>
+        </template>
+        
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
