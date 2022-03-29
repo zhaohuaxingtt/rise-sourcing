@@ -8,6 +8,7 @@
         </div>
         <div>
           <div class="control">
+            <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
             <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
           </div>
         </div>
@@ -92,6 +93,13 @@
       <template v-if="count == firstCount">
         <div class="pdf-item">
           <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable margin-top20" >
+            <template #fsnrGsnrNum="scope">
+              <div>
+                <p>{{ scope.row.fsnrGsnrNum }}</p>
+                <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+              </div>
+            </template>
+
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
             </template>
@@ -189,6 +197,13 @@
       <template v-else>
         <div class="pdf-item">
           <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData.slice(0,firstCount)" class="rsTable margin-top20" >
+            <template #fsnrGsnrNum="scope">
+              <div>
+                <p>{{ scope.row.fsnrGsnrNum }}</p>
+                <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+              </div>
+            </template>
+            
             <template #ltc="scope">
               <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
             </template>
@@ -285,6 +300,13 @@
         <template v-for="index in parseInt((tableData.length+count-firstCount)/count)">
           <div :key="index" class="pdf-item">
             <tableList  :selection="false" :tableTitle="tableTitle" :tableData="tableData.slice(count*(index-1)+firstCount,count*index+firstCount )" class="rsTable margin-top20" >
+              <template #fsnrGsnrNum="scope">
+                <div>
+                  <p>{{ scope.row.fsnrGsnrNum }}</p>
+                  <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+                </div>
+              </template>
+              
               <template #ltc="scope">
                 <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
               </template>
@@ -510,6 +532,16 @@ export default {
 
     ::v-deep .title {
       font-size: 18px !important; /*no*/
+    }
+    
+    .control {
+      display: flex !important;
+      align-items: center !important;
+
+      .nomiId {
+        font-size: 16px;
+        font-weight: 600;
+      }
     }
   }
 

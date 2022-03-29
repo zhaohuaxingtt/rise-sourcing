@@ -92,10 +92,12 @@
         class="rsTable mainTable"
         :tableRowClassName="tableRowClassName"
         border>
-        <!-- <template #fsnrGsnrNum="scope">
-          <p>{{ scope.row.fsnrGsnrNum }}</p>
-          <p>{{ '(SH)' }}</p>
-        </template> -->
+        <template #fsnrGsnrNum="scope">
+          <div>
+            <p>{{ scope.row.fsnrGsnrNum }}</p>
+            <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+          </div>
+        </template>
         <template #oldAPrice="scope">
           <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
         </template>
@@ -120,7 +122,6 @@
         <template #turnover="scope">
           <span>{{ scope.row.turnover | toThousands(true) }}</span>
         </template>
-
 
         <!-- 年降 -->
         <template #ltc="scope">
@@ -274,6 +275,7 @@
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
 import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos } from './data'
+import { resetLtcData } from '../meeting/data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
@@ -443,28 +445,29 @@ export default {
         })
     },
     // 单独处理下年降或年降计划
-    resetLtcData (row, type) {
-      if (!row) return ""
-      // 年降开始时间
-      if (type == 'beginYearReduce') {
-        // 取第一个非0的年份
-        const list = row.filter((item) => item.ltcRate != '0.00');
-        return list.length ? list[0].ltcDate : '-'
-      } else { // 年降
-        // 从非0开始至非0截至的数据 不包含0
-        let strList = [];
-        let strFlag = false;
-        for (let i = 0; i < row.length; i++) {
-          if (row[i].ltcRate != '0.00') {
-            strFlag = true;
-            strList.push(row[i].ltcRate);
-          } else if (strFlag && row[i].ltcRate == '0.00') {
-            break
-          }
-        }
-        return strList.length ? strList.join('/') : '-'
-      }
-    },
+    // resetLtcData (row, type) {
+    //   if (!row) return ""
+    //   // 年降开始时间
+    //   if (type == 'beginYearReduce') {
+    //     // 取第一个非0的年份
+    //     const list = row.filter((item) => item.ltcRate != '0.00');
+    //     return list.length ? list[0].ltcDate : '-'
+    //   } else { // 年降
+    //     // 从非0开始至非0截至的数据 不包含0
+    //     let strList = [];
+    //     let strFlag = false;
+    //     for (let i = 0; i < row.length; i++) {
+    //       if (row[i].ltcRate != '0.00') {
+    //         strFlag = true;
+    //         strList.push(row[i].ltcRate);
+    //       } else if (strFlag && row[i].ltcRate == '0.00') {
+    //         break
+    //       }
+    //     }
+    //     return strList.length ? strList.join('/') : '-'
+    //   }
+    // },
+    resetLtcData,
     handleEdit () {
       this.isEdit = true
     },

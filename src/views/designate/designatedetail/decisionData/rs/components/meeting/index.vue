@@ -44,6 +44,7 @@
         </div>
         <div>
           <div class="control">
+            <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
             <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
           </div>
         </div>
@@ -88,6 +89,13 @@
         </div>
       </div>
       <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" border>
+        <template #fsnrGsnrNum="scope">
+          <div>
+            <p>{{ scope.row.fsnrGsnrNum }}</p>
+            <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+          </div>
+        </template>
+        
         <!-- 年降 -->
         <template #ltc="scope">
           <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
@@ -941,6 +949,16 @@ export default {
         width: 100%;
         text-align: right;
         margin-bottom: 20px;
+      }
+    }
+
+    .control {
+      display: flex !important;
+      align-items: center !important;
+
+      .nomiId {
+        font-size: 16px;
+        font-weight: 600;
       }
     }
   }
