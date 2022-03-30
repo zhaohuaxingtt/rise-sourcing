@@ -666,7 +666,7 @@ import rsPdf from "./rsPdf"
 import { toThousands } from "@/utils"
 import { decisionDownloadPdfLogo } from '@/api/designate'
 
-import { nomalTableTitleSub } from "./pdfData"
+import { nomalTableTitleSub, gsTableTitleSub } from "./pdfData"
 import {
     uploadUdFile
 } from '@/api/file/upload'
@@ -760,7 +760,7 @@ export default {
       } else if (this.projectType === partProjTypes.FUJIAN) {
         return accessoryTableTitle
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
-        return gsTableTitle
+        return gsTableTitleSub
       }
       return nomalTableTitleSub
     },
@@ -770,7 +770,7 @@ export default {
       } else if (this.projectType === partProjTypes.FUJIAN) {
         return 2022
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
-        return 2273
+        return 1720
       }
       return 1728
     },
