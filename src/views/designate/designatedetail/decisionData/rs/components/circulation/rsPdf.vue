@@ -189,9 +189,6 @@
 import { iCard, iFormGroup, iFormItem, iText, icon } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes, fileType } from "@/config"
-import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
-import { checkList, fileTableTitle, infos } from "./data"
-import { nomalTableTitleSub, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
 import { resetLtcData } from '../meeting/data'
 import filters from "@/utils/filters"
 import { toThousands } from "@/utils"
@@ -204,8 +201,9 @@ export default {
     },
   cardTitle: { type: String },
   basicData: { type: Object, default: () => ({}) },
+  infos: { type: Array, default: () => [] },
   titleData: { type: Array, default: () => [] },
-  // tableTitle: { type: Array, default: () => [] },
+  tableTitle: { type: Array, default: () => [] },
   tableData: { type: Array, default: () => [] },
   firstCount: { type: Number, default: 0 },
   count: { type: Number, default: 0 },
@@ -239,24 +237,24 @@ export default {
       // tableData: [],
       // projectType: partProjTypes.PEIJIAN,
       // remarkItem: [],
-      infos,
+      // infos,
     };
   },
   computed: {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
-    tableTitle () {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return sparePartTableTitle
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return accessoryTableTitle
-      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
-        return gsTableTitle
-      }
+    // tableTitle () {
+    //   if (this.projectType === partProjTypes.PEIJIAN) {
+    //     return sparePartTableTitle
+    //   } else if (this.projectType === partProjTypes.FUJIAN) {
+    //     return accessoryTableTitle
+    //   } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
+    //     return gsTableTitle
+    //   }
 
-      return nomalTableTitleSub
-    },
+    //   return nomalTableTitleSub
+    // },
     isPF() {
       // 是否配附件
       return (
