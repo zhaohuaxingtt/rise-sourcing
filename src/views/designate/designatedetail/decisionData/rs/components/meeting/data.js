@@ -1,8 +1,8 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:50:41
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-08-24 18:33:23
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-29 19:50:54
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\data.js
  */
@@ -106,16 +106,16 @@ export const nomalTableTitle = [
   {props:'partName',name:'零件名称', enName: 'Part Name', key: "",minWidth:76},
   {props:'logNorm',name:'物流标准', enName: 'Log Norm', key: "",minWidth:74},
   {props:'svwCode',name:'厂商', enName: 'Code', key: "",minWidth:48},
-  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "",minWidth:62},
+  {props:'supplierName',name:'供应商', enName: 'Supplier', key: "",minWidth:125},
   {props:'prodLocation',name:'产地', enName: 'Prod.Location', key: "",minWidth:88},
   {props:'share',name:'份额', enName: 'Share', enName1:'(%)', key: "",minWidth:60},
   // {props:'rw',name:'欧价', enName: 'RW', key: "",minWidth:60},
-  {props:'cfTargetAPrice',name:'财务目标A价', enName: 'F-T(A)', key: "",minWidth:84},
-  {props:'cfTargetBPrice',name:'财务目标B价', enName: 'F-T(B)', key: "",minWidth:84},
+  {props:'cfTargetAPrice',name:'财务目标A价', enName: 'F-T(A)', key: "",minWidth:80},
+  {props:'cfTargetBPrice',name:'财务目标B价', enName: 'F-T(B)', key: "",minWidth:80},
   {props:'status',name:'状态', enName: 'Status', key: "",minWidth:50},
   {props:'aprice',name:'A价', enName: 'A Price', key: "",minWidth: 80},
   {props:'bprice',name:'B价', enName: 'B Price', key: "",minWidth: 80},
-  {props:'ltc',name:'年降', enName: 'LTC', key: "", minWidth: 100},
+  {props:'ltc',name:'年降', enName: 'LTC', key: "", minWidth: 50},
   {props:'beginYearReduce',name:'年降开始时间', enName: 'LTC Start Time', key: "", minWidth: 96},
   {props:'investFee',name:'投资费', enName: 'Invest', key: "", minWidth: 70},
   {props:'devFee',name:'开发费', enName: 'Develop Cost', key: "", minWidth: 90},
@@ -270,7 +270,6 @@ export const resetLtcData = function(row, type) {
   //    }
   //  }
   //  return strList.length ? strList.join('/') : '-'
-    console.log("row", row)
     const ltcRateStrArr = row.map(item => item.ltcRateStr)
 
     let i = 0
