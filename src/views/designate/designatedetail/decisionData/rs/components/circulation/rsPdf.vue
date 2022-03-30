@@ -1,48 +1,5 @@
 <template>
   <div class="rsPdf">
-    <!-- <iCard class="rsCard" v-if="isPF">
-      <template #header>
-        <div class="title">
-          <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
-        </div>
-      </template>
-      <iFormGroup row="4" class="csc">
-        <div class="col">
-          <iFormItem
-            v-for="(item, index) in titleData"
-            :key="'titleData' + index"
-            :label="item.label + ':'"
-          >
-            <iText v-if="item.props === 'currency'">{{
-              basicData.currencyMap && basicData.currencyMap[basicData.currency]
-                ? basicData.currencyMap[basicData.currency].name
-                : basicData.currency
-            }}</iText>
-            <iText v-else-if="item.props === 'exchangeRate'">
-              <span
-                class="exchangeRageCurrency"
-                v-for="item in exchangeRageCurrency"
-                :key="item"
-                >1{{
-                  basicData.currencyMap && basicData.currencyMap[item]
-                    ? basicData.currencyMap[item].name
-                    : item
-                }}={{ basicData.currencyRateMap[item]
-                }}{{
-                  basicData.currencyMap.RMB
-                    ? basicData.currencyMap.RMB.name
-                    : "RMB"
-                }}</span
-              >
-            </iText>
-            <iText v-else-if="item.props === 'partProjectType'">{{
-              basicData[item.props] === partProjTypes.PEIJIAN ? "配件" : "附件"
-            }}</iText>
-            <iText v-else>{{ basicData[item.props] }}</iText>
-          </iFormItem>
-        </div>
-      </iFormGroup>
-    </iCard> -->
     <iCard class="rsCard">
       <template #header>
         <div class="title">
@@ -63,47 +20,47 @@
           </div>
           <!-- 第一页比其它页面多一个头部 -->
           <div :style="{'height':(index==0?tableHeight:otherTableHeight) + 'px'}">
-          <tableList
-            :selection="false"
-            :tableTitle="tableTitle"
-            :tableData="tableData"
-            class="rsTable"
-            :tableRowClassName="tableRowClassName"
-            border
-          >
-            <template #fsnrGsnrNum="scope">
-              <div>
-                <p>{{ scope.row.fsnrGsnrNum }}</p>
-                <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+            <tableList
+              :selection="false"
+              :tableTitle="tableTitle"
+              :tableData="tableData"
+              class="rsTable"
+              :tableRowClassName="tableRowClassName"
+              border
+            >
+              <template #fsnrGsnrNum="scope">
+                <div>
+                  <p>{{ scope.row.fsnrGsnrNum }}</p>
+                  <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+                </div>
+              </template>
+
+              <!-- 年降 -->
+              <template #ltc="scope">
+                <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+              </template>
+
+              <!-- 年降开始时间 -->
+              <template #beginYearReduce="scope">
+                <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+              </template>
+
+              <template #sapCode="scope">
+                <span>{{
+                  scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
+                }}</span>
+              </template>
+
+              <template #share="scope">
+                <span>{{ +scope.row.share || 0 }}</span>
+              </template>
+            </tableList>
+            <div class="beizhu">
+              备注 Remarks:
+              <div class="beizhu-value">
+                <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
               </div>
-            </template>
-
-            <!-- 年降 -->
-            <template #ltc="scope">
-              <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
-            </template>
-
-            <!-- 年降开始时间 -->
-            <template #beginYearReduce="scope">
-              <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
-            </template>
-
-            <template #sapCode="scope">
-              <span>{{
-                scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
-              }}</span>
-            </template>
-
-            <template #share="scope">
-              <span>{{ +scope.row.share || 0 }}</span>
-            </template>
-          </tableList>
-          <div class="beizhu">
-            备注 Remarks:
-            <div class="beizhu-value">
-              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
             </div>
-          </div>
           </div>
           <div class="page-logo">
             <img src="../../../../../../../assets/images/logo.png" alt="">
@@ -258,8 +215,7 @@ export default {
 
 <style lang="scss" scoped>
 .rsPdf {
-  min-width: 100%;
-  width: fit-content;
+  width: 100%;
   background: #FFFFFF;
 
   .rsCard {
@@ -267,8 +223,12 @@ export default {
     & + .rsCard {
       margin-top: 20px; /*no*/
     }
+    
+    ::v-deep .cardHeader{
+      padding: 30px 0px;
+    }
     ::v-deep .cardBody{
-      padding-bottom: 0px;
+      padding: 0px;
     }
   }
   .pdf-item {
@@ -363,8 +323,9 @@ export default {
   .page-logo{
     display: flex;
     justify-content: space-between;
-    padding: 20px 0;
+    padding: 20px 10px;
     align-items: center;
+    border-top: 1px solid #666;
   }
 }
 </style>
