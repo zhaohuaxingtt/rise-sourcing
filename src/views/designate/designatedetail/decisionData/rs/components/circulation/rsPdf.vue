@@ -13,7 +13,7 @@
                 <div class="info">
                   <span class="label">{{ info.name }}：</span>
                   <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
-                  <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+                  <!-- <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span> -->
                   <div v-else>{{ basicData[info.props] }}</div>
                 </div>
               </div>
@@ -138,6 +138,10 @@
                 <template #share="scope">
                   <span>{{ +scope.row.share || 0 }}</span>
                 </template>
+
+                <template #savingFee="scope">
+                  <span>{{ scope.row.savingFee | toThousands(true) }}</span>
+                </template>
               </tableList>
               <div>
                 <div style="margin-left:20px">
@@ -151,7 +155,7 @@
                 </div>
 
               </div>
-              <iCard class="checkDate rsCard"  :title="'Application Date：'+processApplyDate">
+              <iCard class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
                 <div class="checkList">
                   <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
                     <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
@@ -190,7 +194,7 @@ import { iCard, iFormGroup, iFormItem, iText, icon } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes, fileType } from "@/config"
 import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
-import { checkList, fileTableTitle, infos } from "./data"
+import { checkList, fileTableTitle, infos, dateFilter } from "./data"
 import { nomalTableTitleSub, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
 import { resetLtcData } from '../meeting/data'
 import filters from "@/utils/filters"
@@ -204,8 +208,9 @@ export default {
     },
   cardTitle: { type: String },
   basicData: { type: Object, default: () => ({}) },
+  infos: { type: Array, default: () => [] },
   titleData: { type: Array, default: () => [] },
-  // tableTitle: { type: Array, default: () => [] },
+  tableTitle: { type: Array, default: () => [] },
   tableData: { type: Array, default: () => [] },
   firstCount: { type: Number, default: 0 },
   count: { type: Number, default: 0 },
@@ -239,24 +244,24 @@ export default {
       // tableData: [],
       // projectType: partProjTypes.PEIJIAN,
       // remarkItem: [],
-      infos,
+      // infos,
     };
   },
   computed: {
     userName(){
       return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
     },
-    tableTitle () {
-      if (this.projectType === partProjTypes.PEIJIAN) {
-        return sparePartTableTitle
-      } else if (this.projectType === partProjTypes.FUJIAN) {
-        return accessoryTableTitle
-      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
-        return gsTableTitle
-      }
+    // tableTitle () {
+    //   if (this.projectType === partProjTypes.PEIJIAN) {
+    //     return sparePartTableTitle
+    //   } else if (this.projectType === partProjTypes.FUJIAN) {
+    //     return accessoryTableTitle
+    //   } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
+    //     return gsTableTitle
+    //   }
 
-      return nomalTableTitleSub
-    },
+    //   return nomalTableTitleSub
+    // },
     isPF() {
       // 是否配附件
       return (
@@ -266,6 +271,7 @@ export default {
     },
   },
   methods: {
+    dateFilter,
     resetLtcData,
     tableRowClassName({ row }) {
       if (row.isSuggestion) {
@@ -426,6 +432,16 @@ export default {
       // font-size: 16px;
       font-weight: 400;
       color: rgba(75, 75, 76, 1);
+    }
+  }
+
+  .Application {
+    ::v-deep .cardHeader {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      .title .title_content {
+        font-size: 13px !important;
+      }
     }
   }
 
