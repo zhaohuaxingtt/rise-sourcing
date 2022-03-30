@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 00:55:13
+ * @LastEditTime: 2022-03-31 03:34:23
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -797,21 +797,22 @@ export default {
         this.width = dom.offsetWidth
         this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
         let tableHeader = 41  // 表头高度
-        let headerHeight2 = 84  // 表头高度
+        let headerHeight = 84  // 表头高度
         let pageLogo = 52     // logo 区域高度
-        let headerHeight = 106 // 顶部标题高度
-        let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
+        // let headerHeight = 106 // 顶部标题高度
+        // let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
         if(!document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0]) return
         let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
 
-        this.prototypeListPageHeight = this.pageHeight - pageTop - headerHeight - pageLogo - 0.5
+        // this.prototypeListPageHeight = this.pageHeight - pageTop - headerHeight - pageLogo - 0.5
+        this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 0.5
         let arr = []
         let heightSum = 0
         let PrototypeList = []
         rowList.forEach((item,i)=>{
           heightSum+=item.offsetHeight
           // if(PrototypeList.length==0){
-            if(heightSum<=this.prototypeListPageHeight - tableHeader - headerHeight2){
+            if(heightSum<=this.prototypeListPageHeight - tableHeader){
               arr.push(this.PrototypeList[i])
             }else{
               PrototypeList.push(JSON.parse(JSON.stringify(arr)))
