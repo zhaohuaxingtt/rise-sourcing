@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-30 11:52:03
+ * @LastEditTime: 2022-03-30 13:01:47
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -1121,8 +1121,8 @@ export default {
 
 .rsPdfWrapper {
   width: 100%;
-  // height: 0;
-  // overflow: hidden;
+  height: 0;
+  overflow: hidden;
   position: relative;
   top: 0;
 }
