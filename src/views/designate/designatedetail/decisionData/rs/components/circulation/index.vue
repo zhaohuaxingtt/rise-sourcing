@@ -193,7 +193,7 @@
           </div>
         </iCard>
       </div>
-      <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+      <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
         <div class="checkList">
           <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
             <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
@@ -205,7 +205,7 @@
             </div>
             <div class="checkList-item-info">
               <span>Date:</span>
-              <span>{{item.approveDate}}</span>
+              <span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
             </div>
           </div>
         </div>
@@ -614,7 +614,7 @@
           </div>
           <div class="checkList-item-info">
             <span>Date:</span>
-            <span>{{item.approveDate}}</span>
+            <span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
           </div>
         </div>
       </div>
