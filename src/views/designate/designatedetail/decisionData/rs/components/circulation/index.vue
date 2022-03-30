@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 00:30:55
+ * @LastEditTime: 2022-03-31 00:52:08
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -360,6 +360,7 @@
       </iCard> -->
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
+        :infos="infos"
         :basicData="basicData"
         :titleData="titleData"
         :tableTitle="tableTitleSub"
@@ -782,7 +783,6 @@ export default {
       let dom = this.$refs.rsPdf.$el
       this.width = dom.offsetWidth  // 打印区域宽度
       this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-      console.log(this.pageHeight);
       let tableHeader = 49  // 表头高度
       let headerHeight = 84 // 顶部标题高度
       let pageLogo = 52     // logo 区域高度
@@ -1282,7 +1282,7 @@ export default {
   }
 }
 
-.rsPdfWrapper {
+.rsPdfWrapper, .demo {
   width: 100%;
   height: 0;
   overflow: hidden;

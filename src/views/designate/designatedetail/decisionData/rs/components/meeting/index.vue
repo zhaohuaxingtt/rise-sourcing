@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 00:29:16
+ * @LastEditTime: 2022-03-31 00:55:13
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -761,8 +761,6 @@ export default {
         // 第二页
         // this.otherTableHeight = this.pageHeight - pageLogo - 21
         let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
-        console.log(rowList);
-
         let arr = []
         let heightSum = 0
         let tableList = []
@@ -789,7 +787,6 @@ export default {
           
         tableList.push(JSON.parse(JSON.stringify(arr)))
         this.tableList = tableList
-        console.log(tableList);
       },1000)
     },
     getPrototypeListHeight(){
@@ -1129,7 +1126,7 @@ export default {
       setTimeout(async () => {
         let elList = document.getElementsByClassName('pageCard')
         if(!elList.length){
-          iMessage.warn('无数据')
+          iMessage.warn('请稍等')
           this.loading = false
           return
         }
@@ -1245,7 +1242,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
-            console.log(item.index,'=>',res.data[0].objectUrl);
+            console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
