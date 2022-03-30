@@ -232,7 +232,7 @@
                   </div>
                   <div class="checkList-item-info">
                     <span>Date:</span>
-                    <span>{{item.approveDate}}</span>
+                    <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
                   </div>
                 </div>
               </div>
@@ -583,9 +583,10 @@ export default {
     display: flex;
     overflow: auto;
     &-item {
+      flex: 1;
       flex-shrink: 0;
       width: 224px; /*no*/
-      height: 178px; /*no*/
+      height: 125px; /*no*/
       border-radius: 15px; /*no*/
       background-color: rgba(205, 212, 226, 0.12);
       margin-right: 19px; /*no*/
@@ -593,7 +594,7 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 30px 22px; /*no*/
+      padding: 10px 15px; /*no*/
       font-size: 16px; /*no*/
       color: rgba(65, 67, 74, 1);
       &-info {
@@ -605,6 +606,9 @@ export default {
           font-weight: bold;
         }
       }
+    }
+    &-item:last-child{
+      margin-right: 0;
     }
   }
 

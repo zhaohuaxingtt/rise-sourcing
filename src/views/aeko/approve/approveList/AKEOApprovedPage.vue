@@ -89,7 +89,7 @@
     <i-card v-permission.auto="AEKO_APPROVED_PAGE_DATA_DISPLAY_AREA|AEKO已审批数据展示区">
       <span class="font18 font-weight">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
       <div class="floatright">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        <button-table-setting @click="edittableHeader" />
       </div>
       <!--表格展示区-->
       <tableList

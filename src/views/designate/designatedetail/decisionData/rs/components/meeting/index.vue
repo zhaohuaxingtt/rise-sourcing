@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-30 11:39:01
+ * @LastEditTime: 2022-03-30 11:53:56
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -11,154 +11,154 @@
   <div class="meeting" :class="isPreview && 'isPreview'" v-loading="loading">
     <div class="rsPdfWrapper">
       <iCard class="rsPdfCard">
-      <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" tableRowClassName="table-row" border>
-        <template #fsnrGsnrNum="scope">
-          <div>
-            <p>{{ scope.row.fsnrGsnrNum }}</p>
-            <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
-          </div>
-        </template>
-        
-        <!-- 年降 -->
-        <template #ltc="scope">
-          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
-        </template>
+        <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" tableRowClassName="table-row" border>
+          <template #fsnrGsnrNum="scope">
+            <div>
+              <p>{{ scope.row.fsnrGsnrNum }}</p>
+              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+            </div>
+          </template>
+          
+          <!-- 年降 -->
+          <template #ltc="scope">
+            <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
+          </template>
 
-        <!-- 年降开始时间 -->
-        <template #beginYearReduce="scope">
-          <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
-        </template>
-        
-        <template #status="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>SKD</p>
-            <p>LC</p>
-          </div>
-          <span v-else>{{ scope.row.status }}</span>
-        </template>
+          <!-- 年降开始时间 -->
+          <template #beginYearReduce="scope">
+            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
+          </template>
+          
+          <template #status="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>SKD</p>
+              <p>LC</p>
+            </div>
+            <span v-else>{{ scope.row.status }}</span>
+          </template>
 
-        <template #svwCode="scope">
-          <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
-        </template>
-        <!-- <template #demand="scope">
-          <span>{{ scope.row.demand | kFilter }}</span>
-        </template>
-        <template #output="scope">
-          <span>{{ scope.row.output | kFilter }}</span>
-        </template> -->
-        <template #presentPrice="scope">
-          <span>{{ scope.row.presentPrice | toThousands }}</span>
-        </template>
-        <template #cfTargetAPrice="scope">
-          <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
-        </template>
-        <template #cfTargetBPrice="scope">
-          <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
-        </template>
-        <template #aprice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdAPrice | toThousands }}</p>
-            <p>{{ scope.row.aprice | toThousands }}</p>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.aprice | toThousands }}</span>
-        </template>
-        <template #bprice="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdBPrice | toThousands }}</p>
-            <p>{{ scope.row.bprice | toThousands }}</p>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.bprice | toThousands }}</span>
-        </template>
+          <template #svwCode="scope">
+            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+          </template>
+          <!-- <template #demand="scope">
+            <span>{{ scope.row.demand | kFilter }}</span>
+          </template>
+          <template #output="scope">
+            <span>{{ scope.row.output | kFilter }}</span>
+          </template> -->
+          <template #presentPrice="scope">
+            <span>{{ scope.row.presentPrice | toThousands }}</span>
+          </template>
+          <template #cfTargetAPrice="scope">
+            <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+          </template>
+          <template #cfTargetBPrice="scope">
+            <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+          </template>
+          <template #aprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdAPrice | toThousands }}</p>
+              <p>{{ scope.row.aprice | toThousands }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
+            <span v-else>{{ scope.row.aprice | toThousands }}</span>
+          </template>
+          <template #bprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdBPrice | toThousands }}</p>
+              <p>{{ scope.row.bprice | toThousands }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
+            <span v-else>{{ scope.row.bprice | toThousands }}</span>
+          </template>
 
-        <template #investFee="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <el-popover
-              placement="top-start"
-              width="200"
-              trigger="hover"
-              :disabled="!scope.row.investFeeIsShared">
-              <div>
-                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-              </div>
-              <div slot="reference">
-                <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
-              </div>
-            </el-popover>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
-          </span>
-          <span v-else>
-            <el-popover
-              placement="top-start"
-              width="200"
-              trigger="hover"
-              :disabled="!scope.row.investFeeIsShared">
-              <div>
-                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
-                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
-              </div>
-              <div slot="reference">
-                <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
-              </div>
-            </el-popover>
-          </span>
-        </template>
+          <template #investFee="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared">
+                <div>
+                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+                </div>
+              </el-popover>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">
+              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+            </span>
+            <span v-else>
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared">
+                <div>
+                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                </div>
+              </el-popover>
+            </span>
+          </template>
 
-        <template #devFee="scope">
-          <div v-if="scope.row.status === 'SKDLC'">
-            <el-popover
-              placement="top-start"
-              width="200"
-              trigger="hover"
-              :disabled="!scope.row.devFeeIsShared">
-              <div>
-                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
-                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
-              </div>
-              <div slot="reference">
-                <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
-                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
-              </div>
-            </el-popover>
-          </div>
-          <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdDevFee | toThousands }}</p>
-          </span>
-          <span v-else>
-            <el-popover
-              placement="top-start"
-              width="200"
-              trigger="hover"
-              :disabled="!scope.row.devFeeIsShared">
-              <div>
-                <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
-                <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
-              </div>
-              <div slot="reference">
-                <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
-              </div>
-            </el-popover>
-          </span>
-        </template>
-        <template #addFee="scope">
-          <span>{{ scope.row.addFee | toThousands }}</span>
-        </template>
-        <template #savingFee="scope">
-          <span>{{ scope.row.savingFee | toThousands }}</span>
-        </template>
-        <template #turnover="scope">
-          <span>{{ scope.row.turnover | toThousands }}</span>
-        </template>
+          <template #devFee="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.devFeeIsShared">
+                <div>
+                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
+                </div>
+              </el-popover>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">
+              <p>{{ scope.row.skdDevFee | toThousands }}</p>
+            </span>
+            <span v-else>
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.devFeeIsShared">
+                <div>
+                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
+                </div>
+              </el-popover>
+            </span>
+          </template>
+          <template #addFee="scope">
+            <span>{{ scope.row.addFee | toThousands }}</span>
+          </template>
+          <template #savingFee="scope">
+            <span>{{ scope.row.savingFee | toThousands }}</span>
+          </template>
+          <template #turnover="scope">
+            <span>{{ scope.row.turnover | toThousands }}</span>
+          </template>
 
-        <template #share="scope">
-          <span>{{ +scope.row.share || 0 }}</span>
-        </template>
-      </tableList>
+          <template #share="scope">
+            <span>{{ +scope.row.share || 0 }}</span>
+          </template>
+        </tableList>
       </iCard>
       <rsPdf
         ref="rsPdf"
@@ -1053,6 +1053,7 @@ export default {
     },
     // 导出pdf
     handleExportPdf() {
+      this.fileList = []
       this.loading = true
       this.getPdfImage({
         dom: this.$refs.rsPdf.$el,

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 19:56:57
- * @LastEditTime: 2022-01-25 14:27:06
+ * @LastEditTime: 2022-03-21 10:57:20
  * @LastEditors: Please set LastEditors
 -->
 <template>
@@ -21,8 +21,8 @@
     </iCard>
     <iCard class="margin-top20">
       <div class="btnRight">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
         <iButton @click='gotoRs' v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORDDETAILS_TORS|RS单">RS单</iButton>
+        <button-table-setting @click="edittableHeader" />
       </div>
       <tablelist
         lang
