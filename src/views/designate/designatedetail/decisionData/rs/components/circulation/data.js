@@ -48,7 +48,7 @@ export const infos = [
   { props: 'currency', name: '货币单位' },
   { props: 'exchange', name: '汇率' },
   { props: 'nominateAppId', name: '申请单号' },
-  { props: 'nominateAppTime', name: '申请时间' }
+  // { props: 'nominateAppTime', name: '申请时间' }
 ]
 
 // 生产
@@ -280,3 +280,7 @@ export const checkList = [
   {department: 'TPN', date: '2020-01-01', status: '1'},
   {department: 'CS', date: '2020-01-01', status: '1'}
 ]
+
+export const dateFilter = (val, format = "YYYY-MM-DD HH:mm:ss", sourceFormat) => {
+  return typeof val === 'string' ||  typeof val === 'number' ? (val ? window.moment(val, sourceFormat).format(format) : '') : val
+}
