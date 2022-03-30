@@ -2,16 +2,70 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-30 18:04:11
+ * @LastEditTime: 2022-03-31 00:55:13
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
 
 <template>
   <div class="meeting" :class="isPreview && 'isPreview'">
-    <div class="rsPdfWrapper">
-      <iCard class="rsPdfCard">
-        <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" tableRowClassName="table-row" border>
+    <div class="demo" :style="{'width': pageWidth + 80 + 'px'}">
+      <iCard class="rsCard">
+        <template #header>
+          <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
+            <iButton @click="handleExportPdf" :loading="loading">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+          </div>
+          <div class="title">
+            <p>CSC定点推荐 - {{ cardTitle }}</p>
+            <p>{{ cardTitleEn }}</p>
+          </div>
+          <div>
+            <div class="control">
+              <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
+              <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+            </div>
+          </div>
+        </template>
+        <div class="rsTop page-top">
+          <div class="rsTop-left">
+            <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
+              <div class="rsTop-left-item-title">
+                <p>{{ item.name }}</p><p>{{ item.enName }}</p>
+              </div>
+              <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
+            </div>
+          </div>
+          <div class="rsTop-right">
+            <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
+              <template v-if="Array.isArray(item)">
+                <div class="rsTop-right-item-title">
+                  <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
+                </div>
+                <div class="rsTop-right-item-value">
+                  <div v-for="(subItem, subIndex) in item" :key="subIndex">
+                    {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+                </div>
+              </template>
+              <template v-else>
+                <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
+                  <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
+                    <div v-for="(item,index) in basicData[item.props]" :key="index">
+                        <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
+                          <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
+                          <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
+                        </el-tooltip>
+                    </div>
+                  </div>
+                  <div class="rsTop-right-item-value" v-else >
+                    <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
+                    <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
+                    <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
+                  </div>
+              </template>
+            </div>
+          </div>
+        </div>
+        <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" tableRowClassName="table-row" border>
           <template #fsnrGsnrNum="scope">
             <div>
               <p>{{ scope.row.fsnrGsnrNum }}</p>
@@ -159,7 +213,73 @@
             <span>{{ +scope.row.share || 0 }}</span>
           </template>
         </tableList>
+        <!-- v-if="isPreview" -->
+        <div class="out-compute">
+          <div style="margin-left:20px">
+            <span style="color: red">*</span><span>代表投资费已分摊</span>
+          </div>
+          <div class="beizhu">
+            备注 Remarks:
+            <div class="beizhu-value">
+              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+            </div>
+          </div>
+          <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+            汇率：Exchange rate: 
+            <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+              1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
+            </span>
+          </div>
+          <div v-else>
+            <div class="margin-top10">
+              <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+            </div>
+          </div>
+        </div>
       </iCard>
+      <iCard v-if="!isPreview && !showSignatureForm && !isAuth" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
+        <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE|保存">{{language('BAOCUN','保存')}}</iButton>
+        <div>
+          <div class="meetingRemark" v-if="isApproval">
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+              <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+              <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
+            </div>
+          </div>
+          <div class="meetingRemark" v-else>
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
+              <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+              <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
+            </div>
+          </div>
+        </div>
+      </iCard>
+      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+        <div class="checkList">
+          <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+            <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
+            <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
+            <div v-else class="" >-</div>
+            <div class="checkList-item-info">
+              <span>Dept.:</span>
+              <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+            </div>
+            <div class="checkList-item-info">
+              <span>Date:</span>
+              <span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
+            </div>
+          </div>
+        </div>
+      </iCard>
+      <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
+        <el-table :data='PrototypeList' class="prototypeList" row-class-name="table-row">
+          <template v-for="(items,index) in prototypeTitleList">
+            <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+          </template>
+        </el-table>
+      </iCard>
+    </div>
+    <div class="rsPdfWrapper" :style="{'width':pageWidth + 'px'}">
       <rsPdf
         ref="rsPdf"
         :cardTitle="cardTitle"
@@ -431,7 +551,7 @@
         </div>
       </div>
     </iCard>
-    <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+    <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
           <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
@@ -443,7 +563,7 @@
           </div>
           <div class="checkList-item-info">
             <span>Date:</span>
-            <span>{{item.approveDate}}</span>
+            <span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
           </div>
         </div>
       </div>
@@ -472,6 +592,7 @@ import rsPdf from "./rsPdf"
 import {
     uploadUdFile
 } from '@/api/file/upload'
+import { dateFilter } from "../circulation/data"
 
 export default {
   props: {
@@ -577,6 +698,18 @@ export default {
       }
       return nomalTableTitle
     },
+    pageWidth(){
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return 1441
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return 1351
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) { //GS零件
+        return 1892
+      } else if (this.projectType === partProjTypes.DBLINGJIAN || this.projectType === partProjTypes.DBYICHIXINGCAIGOU) { //DB零件,DB一次性采购
+        return 1768
+      }
+      return 1544
+    },
     cardTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
         return '配件采购'
@@ -610,19 +743,18 @@ export default {
   mounted(){
   },
   methods: {
+    dateFilter,
     getHeight(){
       setTimeout(()=>{
         let dom = this.$refs.rsPdf.$el
         this.width = dom.offsetWidth
         this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
         let tableHeader = 57  // 表头高度
-        console.log(this.width);
-        console.log(this.pageHeight);
         let headerHeight = 106 // 顶部标题高度
         let pageLogo = 52     // logo 区域高度
-        let pageTop = document.getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
-        let el = document.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
-        let outEl = document.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+        let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
+        let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
+        let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
         for (let i = 0; i < el.length; i++) {
           height += el[i].offsetHeight;
         }
@@ -630,7 +762,7 @@ export default {
         this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - 0.5
         // 第二页
         // this.otherTableHeight = this.pageHeight - pageLogo - 21
-        let rowList = document.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+        let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
         let arr = []
         let heightSum = 0
         let tableList = []
@@ -665,19 +797,21 @@ export default {
         this.width = dom.offsetWidth
         this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
         let tableHeader = 41  // 表头高度
-        let headerHeight = 84  // 表头高度
+        let headerHeight2 = 84  // 表头高度
         let pageLogo = 52     // logo 区域高度
-        if(!document.getElementsByClassName('prototypeList')[0]) return
-        let rowList = document.getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+        let headerHeight = 106 // 顶部标题高度
+        let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
+        if(!document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0]) return
+        let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
 
-        this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 0.5
+        this.prototypeListPageHeight = this.pageHeight - pageTop - headerHeight - pageLogo - 0.5
         let arr = []
         let heightSum = 0
         let PrototypeList = []
         rowList.forEach((item,i)=>{
           heightSum+=item.offsetHeight
           // if(PrototypeList.length==0){
-            if(heightSum<this.prototypeListPageHeight - tableHeader){
+            if(heightSum<=this.prototypeListPageHeight - tableHeader - headerHeight2){
               arr.push(this.PrototypeList[i])
             }else{
               PrototypeList.push(JSON.parse(JSON.stringify(arr)))
@@ -994,16 +1128,14 @@ export default {
       setTimeout(async () => {
         let elList = document.getElementsByClassName('pageCard')
         if(!elList.length){
-          iMessage.warn('无数据')
+          iMessage.warn('请稍等')
+          this.loading = false
           return
         }
         for (let i = 0; i < elList.length; i++) {
           const el = elList[i];
           await this.getPdfImage({
             dom: el,
-            pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
-            exportPdf: true,
-            waterMark: true,
             index: i
           })
         }
@@ -1022,71 +1154,65 @@ export default {
     // 截取页面,转图片, 上传服务器
     async getPdfImage({
       //html横向导出pdf
-      idEle: ele,
       dom,
-      pdfName: pdfName,
-      callback: callback,
-      exportPdf: exportPdf,
       index
     }) {
-      let el = "";
-      if (ele) el = document.getElementById(ele);
-      //通过getElementById获取要导出的内容
-      else el = dom;
-      await html2canvas(el, {
+      await html2canvas(dom, {
         dpi: 96, //分辨率
         scale: 1, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: "#ffffff", //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
       }).then(async (canvas) => {
-        var contentWidth = canvas.width; //
-        var contentHeight = canvas.height; //
+        // var contentWidth = canvas.width; //
+        // var contentHeight = canvas.height; //
         //一页pdf显示html页面生成的canvas高度;
-        var pageHeight = (contentWidth / 841.89) * 595.28; //
+        // var pageHeight = (contentWidth / 841.89) * 595.28; //
         //未生成pdf的html页面高度
-        var leftHeight = contentHeight; //
-        var ctx = canvas.getContext("2d");
+        // var leftHeight = contentHeight; //
+        // var ctx = canvas.getContext("2d");
 
-        var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
-        copyCanvas.width = contentWidth;
-        copyCanvas.height = pageHeight;
-        var ctxs = copyCanvas.getContext("2d");
-        ctxs.fillStyle = '#FFF'
-        // 保存每一页的画布, 然后清空canvas
-        if (leftHeight <= pageHeight) {
-          ctxs.fillRect(0,0,contentWidth,pageHeight)
-          //   console.log(pageData);
-          var imgData = ctx.getImageData(0, 0, contentWidth, leftHeight); // 截取主画布
-          ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
-          // 截图画布转为file
-          await this.getPdfFile(copyCanvas,index)
-        } else {
-          // 分页
-          var num = 1;
-          while (leftHeight > 0) {
-            ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
-            ctxs.fillRect(0,0,contentWidth,pageHeight)
-            if(leftHeight <= pageHeight){
-              var imgData = ctx.getImageData(0, (num - 1) * pageHeight, contentWidth, leftHeight); // 截取主画布
-            }else{
-              var imgData = ctx.getImageData(
-                0,
-                (num - 1) * pageHeight,
-                contentWidth,
-                pageHeight
-              ); // 截取主画布当前页
-            }
-            ctxs.putImageData(imgData, 0, 0); // 插入截图画布
-            // 截图画布转为file
-            await this.getPdfFile(copyCanvas,index)
-            leftHeight -= pageHeight;
-            // //避免添加空白页
-            if (leftHeight > 0) {
-              num++;
-            }
-          }
-        }
+        // var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
+        // copyCanvas.width = contentWidth;
+        // copyCanvas.height = pageHeight;
+        // var ctxs = copyCanvas.getContext("2d");
+          await this.getPdfFile(canvas)
+
+        // ctxs.fillStyle = '#FFF'
+        // // 保存每一页的画布, 然后清空canvas
+        // if (leftHeight <= pageHeight) {
+        //   ctxs.fillRect(0,0,contentWidth,pageHeight)
+        //   //   console.log(pageData);
+        //   var imgData = ctx.getImageData(0, 0, contentWidth, leftHeight); // 截取主画布
+        //   ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
+        //   // 截图画布转为file
+        //   await this.getPdfFile(copyCanvas,index)
+        // } else {
+        //   // 分页
+        //   var num = 1;
+        //   while (leftHeight > 0) {
+        //     ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
+        //     ctxs.fillRect(0,0,contentWidth,pageHeight)
+        //     if(leftHeight <= pageHeight){
+        //       var imgData = ctx.getImageData(0, (num - 1) * pageHeight, contentWidth, leftHeight); // 截取主画布
+        //     }else{
+        //       var imgData = ctx.getImageData(
+        //         0,
+        //         (num - 1) * pageHeight,
+        //         contentWidth,
+        //         pageHeight
+        //       ); // 截取主画布当前页
+        //     }
+        //     ctxs.putImageData(imgData, 0, 0); // 插入截图画布
+        //     // 截图画布转为file
+        //     await this.getPdfFile(copyCanvas,index)
+        //     leftHeight -= pageHeight;
+        //     // //避免添加空白页
+        //     if (leftHeight > 0) {
+        //       num++;
+        //     }
+          // }
+        // }
       });
     },
 
@@ -1118,7 +1244,7 @@ export default {
         }).then(res=>{
           if(res.code == 200){
             item['imageUrl'] = res.data[0].path
-            console.log(item.index,'=>',res.data[0].objectUrl);
+            console.log(res.data[0].objectUrl);
             this.DownloadPdf();
           }else{
             this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
@@ -1209,6 +1335,12 @@ export default {
       p + p {
         margin-top: 8px;
       }
+    }
+  }
+
+  ::v-deep tr {
+    &:nth-child(even) {
+        background-color: #f7f7ff;
     }
   }
 
@@ -1362,14 +1494,24 @@ export default {
     font-weight: 400;
     color: rgba(75, 75, 76, 1);
   }
-} 
+}
+
+.Application {
+    ::v-deep .cardHeader {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      .title .title_content {
+        font-size: 14px !important;
+      }
+    }
+  }
 .isPreview {
   .card {
     box-shadow: none;
   }
 }
 
-.rsPdfWrapper { // 放在顶部, 便于计算高度
+.rsPdfWrapper, .demo { // 放在顶部, 便于计算高度
   width: 100%;
   height: 0;
   overflow: hidden;
