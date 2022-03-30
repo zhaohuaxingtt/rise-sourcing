@@ -84,3 +84,30 @@ export const sparePartTableTitle = [
   {props:'beginYearReduce',name:'Start Time of LTC', key: "", minWidth: 120},
   {props:'g',name:'Remark', key: "", minWidth: 80},
 ]
+
+export const gsTableTitleSub = [
+  { props: 'fsnrGsnrNum', name: 'GS号', key: "", minWidth: 90, fixed: true },
+  { props: 'partNo', name: '零件号', key: '', minWidth: 95, fixed: true },
+  { props: 'status', name: '供货状态', key: '', minWidth: 90 },
+  { props: 'partName', name: '零件名称', key: '', minWidth: 110 },
+  { props: 'unit', name: '零件', subItem:['单位'], key: '', minWidth: 33 },
+  { props: 'carLine', name: '车型', key: '', minWidth: 60 },
+  { props: 'svwCode', name: '厂商', subItem:['号'], key: '', minWidth: 33 },
+  { props: 'supplierName', name: '供应商名称', key: '', minWidth: 80 },
+  { props: 'prodLocation', name: '产地', key: '', minWidth: 57 },
+  { props: 'presentPrice', name: '现供B价', key: '', minWidth: 90 },
+  // { props: 'rw', name: '欧价', key: '', minWidth: 54 },
+  { props: 'aprice', name: 'A价', key: '', minWidth: 57 },
+  { props: 'bprice', name: 'B价', key: '', minWidth: 57 },
+  { props: 'packPrice', name: '包装费', key: '', minWidth: 47 },
+  { props: 'transportPrice', name: '运输费', key: '', minWidth: 47 },
+  { props: 'operatePrice', name: '操作费', key: '', minWidth: 47 },
+  { props: 'investFee', name: '投资费', subItem:['(不含税)'], key: '', minWidth: 56 },
+  { props: 'addFee', name: '认可费', key: '', minWidth: 85 },
+  { props: 'share', name: '份额(%)', key: '', minWidth: 90 },
+  { props: 'ltc', name:'年降', key: '', minWidth: 48 },
+  { props: 'beginYearReduce', name: '年降开', subItem:['始时间'], key: '', minWidth: 62 },
+  { props: 'savingFee', name: '节约值(Mio.)', key: '', minWidth: 100 },
+  { props: 'turnover', name: '采购金额', key: '', minWidth: 86 },
+  { props: 'remarks', name: '备注', key: '', minWidth: 200 }
+]
