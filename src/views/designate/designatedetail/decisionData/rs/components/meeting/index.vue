@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-29 22:48:37
+ * @LastEditTime: 2022-03-30 11:53:56
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -10,6 +10,156 @@
 <template>
   <div class="meeting" :class="isPreview && 'isPreview'" v-loading="loading">
     <div class="rsPdfWrapper">
+      <iCard class="rsPdfCard">
+        <tableList v-update :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" tableRowClassName="table-row" border>
+          <template #fsnrGsnrNum="scope">
+            <div>
+              <p>{{ scope.row.fsnrGsnrNum }}</p>
+              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+            </div>
+          </template>
+          
+          <!-- 年降 -->
+          <template #ltc="scope">
+            <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
+          </template>
+
+          <!-- 年降开始时间 -->
+          <template #beginYearReduce="scope">
+            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
+          </template>
+          
+          <template #status="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>SKD</p>
+              <p>LC</p>
+            </div>
+            <span v-else>{{ scope.row.status }}</span>
+          </template>
+
+          <template #svwCode="scope">
+            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+          </template>
+          <!-- <template #demand="scope">
+            <span>{{ scope.row.demand | kFilter }}</span>
+          </template>
+          <template #output="scope">
+            <span>{{ scope.row.output | kFilter }}</span>
+          </template> -->
+          <template #presentPrice="scope">
+            <span>{{ scope.row.presentPrice | toThousands }}</span>
+          </template>
+          <template #cfTargetAPrice="scope">
+            <span>{{ scope.row.cfTargetAPrice | toThousands }}</span>
+          </template>
+          <template #cfTargetBPrice="scope">
+            <span>{{ scope.row.cfTargetBPrice | toThousands }}</span>
+          </template>
+          <template #aprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdAPrice | toThousands }}</p>
+              <p>{{ scope.row.aprice | toThousands }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
+            <span v-else>{{ scope.row.aprice | toThousands }}</span>
+          </template>
+          <template #bprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdBPrice | toThousands }}</p>
+              <p>{{ scope.row.bprice | toThousands }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
+            <span v-else>{{ scope.row.bprice | toThousands }}</span>
+          </template>
+
+          <template #investFee="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared">
+                <div>
+                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+                </div>
+              </el-popover>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">
+              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+            </span>
+            <span v-else>
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared">
+                <div>
+                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                </div>
+              </el-popover>
+            </span>
+          </template>
+
+          <template #devFee="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.devFeeIsShared">
+                <div>
+                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <p>{{ scope.row.skdDevFee | toThousands(true) }}</p>
+                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span></p>
+                </div>
+              </el-popover>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">
+              <p>{{ scope.row.skdDevFee | toThousands }}</p>
+            </span>
+            <span v-else>
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.devFeeIsShared">
+                <div>
+                  <div>{{ language("FENTANJINE", "分摊金额") }}：{{ scope.row.developApportionPrice || "0.00" }}</div>
+                  <div>{{ language("WEIFENTANJINE", "未分摊金额") }}：{{ scope.row.unShareDevPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <span v-if="scope.row.devFeeIsShared" style="color: red">*</span> <span>{{ scope.row.devFee | toThousands(true) }}</span>
+                </div>
+              </el-popover>
+            </span>
+          </template>
+          <template #addFee="scope">
+            <span>{{ scope.row.addFee | toThousands }}</span>
+          </template>
+          <template #savingFee="scope">
+            <span>{{ scope.row.savingFee | toThousands }}</span>
+          </template>
+          <template #turnover="scope">
+            <span>{{ scope.row.turnover | toThousands }}</span>
+          </template>
+
+          <template #share="scope">
+            <span>{{ +scope.row.share || 0 }}</span>
+          </template>
+        </tableList>
+      </iCard>
       <rsPdf
         ref="rsPdf"
         :cardTitle="cardTitle"
@@ -93,7 +243,7 @@
           </div>
         </div>
       </div>
-      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable mainTable" tableRowClassName="table-row" border>
+      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" border>
         <template #fsnrGsnrNum="scope">
           <div>
             <p>{{ scope.row.fsnrGsnrNum }}</p>
@@ -464,9 +614,11 @@ export default {
       this.width = dom.offsetWidth
       this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
       let tableHeader = 57  // 表头高度
+      console.log(this.width);
+      console.log(this.pageHeight);
       let padding = 0 // 内边距高度
       let headerHeight = 106 // 顶部标题高度, 第一页独有的
-      let pageLogo = 86     // logo 区域高度
+      let pageLogo = 87     // logo 区域高度
       let pageTop = document.getElementsByClassName('page-top')[0].offsetHeight  //248 // 顶部内容高度, 第一页独有的 page-top
       // let topHeight = document.getElementsByClassName('position-compute')[0].offsetHeight + headerHeight  // 顶部内容加标题高度, 第一页独有的内容
       let el = document.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
@@ -478,7 +630,8 @@ export default {
       this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - 1
       // 第二页
       this.otherTableHeight = this.pageHeight - pageLogo - 21
-
+      console.log('tableHeight=>',this.tableHeight);
+      console.log('otherTableHeight=>',this.otherTableHeight);
       let rowList = document.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
       let arr = []
       let heightSum = 0
@@ -502,10 +655,12 @@ export default {
             arr = [this.tableData[i]]
           }
         }
+        console.log(heightSum);
       })
         
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
+      console.log(tableList);
          },1000)
     },
     getPrototypeListHeight(){
@@ -516,7 +671,7 @@ export default {
         console.log(this.pageHeight);
         let tableHeader = 41  // 表头高度
         let headerHeight = 84  // 表头高度
-        let pageLogo = 86     // logo 区域高度
+        let pageLogo = 87     // logo 区域高度
         if(!document.getElementsByClassName('prototypeList')[0]) return
         let rowList = document.getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
 
@@ -898,6 +1053,7 @@ export default {
     },
     // 导出pdf
     handleExportPdf() {
+      this.fileList = []
       this.loading = true
       this.getPdfImage({
         dom: this.$refs.rsPdf.$el,
@@ -909,7 +1065,7 @@ export default {
     },
     // 截取页面,存入pdf
     // 截取页面,转图片, 上传服务器
-    getPdfImage({
+    async getPdfImage({
       //html横向导出pdf
       idEle: ele,
       dom,
@@ -935,7 +1091,7 @@ export default {
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: "#ffffff", //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
-      }).then((canvas) => {
+      }).then(async (canvas) => {
         var contentWidth = canvas.width; //
         var contentHeight = canvas.height; //
         //一页pdf显示html页面生成的canvas高度;
@@ -949,7 +1105,7 @@ export default {
         copyCanvas.height = pageHeight;
         var ctxs = copyCanvas.getContext("2d");
         // 保存每一页的画布, 然后清空canvas
-        if (leftHeight < pageHeight) {
+        if (leftHeight <= pageHeight) {
           //   console.log(pageData);
           var imgData = ctx.getImageData(0, 0, contentWidth, pageHeight); // 截取主画布
           ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
@@ -974,12 +1130,13 @@ export default {
             ); // 截取主画布当前页
             ctxs.putImageData(imgData, 0, 0); // 插入截图画布
             // 截图画布转为file
-            copyCanvas.toBlob((blob) => {
-              //以时间戳作为文件名 实时区分不同文件
-              let filename = `${new Date().getTime()}.png`;
-              let pdfFile = new File([blob], filename, { type: "image/png" });
-              this.fileList.push({ file: pdfFile });
-            });
+            await this.getPdfFile(copyCanvas)
+            // copyCanvas.toBlob((blob) => {
+            //   //以时间戳作为文件名 实时区分不同文件
+            //   let filename = `${new Date().getTime()}.png`;
+            //   let pdfFile = new File([blob], filename, { type: "image/png" });
+            //   this.fileList.push({ file: pdfFile });
+            // });
             leftHeight -= pageHeight;
             // //避免添加空白页
             if (leftHeight > 0) {
@@ -998,6 +1155,17 @@ export default {
       });
     },
 
+    async getPdfFile(copyCanvas){
+      return new Promise((r,j)=>{
+        copyCanvas.toBlob((blob) => {
+          //以时间戳作为文件名 实时区分不同文件
+          let filename = `${new Date().getTime()}.png`;
+          let pdfFile = new File([blob], filename, { type: "image/png" });
+          this.fileList.push({ file: pdfFile });
+          r(true)
+        });
+      })
+    },
     // 下载 pdf 文件
     async DownloadPdf(){
       let arr = this.fileList.filter(item=>!item.imageUrl)
@@ -1044,6 +1212,7 @@ export default {
         margin-bottom: 20px;
       }
     }
+  
 
     .control {
       display: flex !important;
@@ -1053,6 +1222,18 @@ export default {
         font-size: 16px;
         font-weight: 600;
       }
+    }
+  }
+  .rsPdfCard{
+    box-shadow: none;
+    & + .rsCard {
+      margin-top: 20px; /*no*/
+    }
+    ::v-deep .cardHeader{
+      padding: 30px 0px;
+    }
+    ::v-deep .cardBody{
+      padding: 0px;
     }
   }
 }

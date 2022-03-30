@@ -1,7 +1,7 @@
 <!--
  * @Author: haojiang
  * @Date: 2021-02-24 09:42:07
- * @LastEditTime: 2022-03-01 11:19:32
+ * @LastEditTime: 2022-03-22 17:14:19
  * @LastEditors: Please set LastEditors
  * @Description: table组件
 -->
@@ -38,7 +38,7 @@
 
     <template v-for="(items,index) in header">
       <!----------------------需要高亮的列并且带有打开详情事件------------------------>
-      <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))">
+      <el-table-column :fixed="items.fixed" :key="`${items.props}_${index}`" align='center' :width="items.width" :min-width="items.minWidth ? items.minWidth.toString():''" :show-overflow-tooltip='items.tooltip' v-if='items.props == activeItems' :prop="items.props" :label="showTitleName ? items.name : (lang ? (items.key ? language(items.key, items.name) : items.name) : (items.key ? $t(items.key) : items.name))">
         <!-- slot header -->
         <template slot="header" slot-scope="scope">
           <div class="slotHeader" :class="{headerRequiredLeft: items._headerRequiredLeft, headerRequiredRight:items._headerRequiredRight }">
@@ -85,7 +85,7 @@
         :width="items.width"
         :min-width="items.minWidth ? items.minWidth.toString():''"
         :show-overflow-tooltip='items.tooltip'
-        :label="showTitleName ? items.name : (lang ? language(items.key, items.name) : (items.key ? $t(items.key) : items.name))"
+        :label="showTitleName ? items.name : (lang ? (items.key ? language(items.key, items.name) : items.name) : (items.key ? $t(items.key) : items.name))"
         :prop="items.props"
         :class-name="items.tree ? 'tree' : ''"
         :fixed="items.fixed">

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:26:47
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-09-07 17:13:04
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-18 10:51:16
  * @Description: 进度确认汇总
  * @FilePath: \front-web\src\views\project\schedulingassistant\progressconfirm\index.vue
 -->
@@ -48,10 +48,10 @@ export default {
       return !this.$route.path.includes('proconfirm') ? 'PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_PAGE|项目管理-排程助手-排程确认页面' : 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY_PAGE|项目管理-排程助手-进度确认汇总页面'
     },
     productGroupPermissionKey() {
-      return !this.$route.path.includes('proconfirm') ? 'PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_PRODUCTGROUP|项目管理-排程助手-排程确认-产品组' : 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY_PRODUCTGROUP|项目管理-排程助手-进度确认-产品组'
+      return !this.$route.path.includes('proconfirm') ? 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY_PRODUCTGROUP|项目管理-排程助手-进度确认-产品组' : 'PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_PRODUCTGROUP|项目管理-排程助手-排程确认-产品组'
     },
     partPermissionKey() {
-      return !this.$route.path.includes('proconfirm') ? 'PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_PART|项目管理-排程助手-排程确认-零件' : 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY_PART|项目管理-排程助手-进度确认-零件'
+      return !this.$route.path.includes('proconfirm') ? 'PROJECTMGT_SCHEDULINGASSISTANT_PROGRESSCONFIRMSUMMARY_PART|项目管理-排程助手-进度确认-零件' : 'PROJECTMGT_SCHEDULINGASSISTANT_PROCONFIRM_PART|项目管理-排程助手-排程确认-零件'
     }
   }
 }

@@ -2,14 +2,135 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-29 22:29:19
+ * @LastEditTime: 2022-03-30 11:52:03
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
-  <div class="circulation" :class="isPreview && 'isPreview'">
+  <div class="circulation" :class="isPreview && 'isPreview'" v-loading="loading">
     <div class="rsPdfWrapper">
+      <iCard class="rsCard">
+        <tableList
+          :tableLoading="tableLoading"
+          :selection="false"
+          :tableTitle="tableTitleSub"
+          :tableData="tableData"
+          class="rsTable mainTable"
+          :tableRowClassName="tableRowClassName"
+          border>
+          <template #fsnrGsnrNum="scope">
+            <div>
+              <p>{{ scope.row.fsnrGsnrNum }}</p>
+              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+            </div>
+          </template>
+          <template #oldAPrice="scope">
+            <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
+          </template>
+          <template #cfTargetAPrice="scope">
+            <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
+          </template>
+          <template #cfTargetBPrice="scope">
+            <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
+          </template>
+          <template #rw="scope">
+            <span>{{ scope.row.rw | toThousands(true) }}</span>
+          </template>
+          <template #packPrice="scope">
+            <span>{{ scope.row.packPrice | toThousands(true) }}</span>
+          </template>
+          <template #transportPrice="scope">
+            <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
+          </template>
+          <template #operatePrice="scope">
+            <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
+          </template>
+          <template #turnover="scope">
+            <span>{{ scope.row.turnover | toThousands(true) }}</span>
+          </template>
+
+          <!-- 年降 -->
+          <template #ltc="scope">
+            <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
+          </template>
+
+          <!-- 年降开始时间 -->
+          <template #beginYearReduce="scope">
+            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
+          </template>
+
+          <template #svwCode="scope">
+            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+          </template>
+
+          <template #aprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
+              <p>{{ scope.row.aprice | toThousands(true) }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
+            <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
+          </template>
+
+          <template #bprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
+              <p>{{ scope.row.bprice | toThousands(true) }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
+            <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
+          </template>
+
+          <template #investFee="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared">
+                <div>
+                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+                </div>
+              </el-popover>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">
+              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+            </span>
+            <span v-else>
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared">
+                <div>
+                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                </div>
+              </el-popover>
+            </span>
+          </template>
+
+          <template #remarks="scope">
+            <div>
+              <iInput v-if="editStatus" v-model="scope.row.remarks"></iInput>
+              <span v-else>{{ scope.row.remarks }}</span>
+            </div>
+          </template>
+
+          <template #share="scope">
+            <span>{{ +scope.row.share || 0 }}</span>
+          </template>
+        </tableList>
+      </iCard>
       <rsPdf ref="rsPdf" :nominateId="nominateId"
         :cardTitle="cardTitle"
         :basicData="basicData"
@@ -26,7 +147,9 @@
         :checkList="checkList"
         :tableHeight="tableHeight"
         :otherTableHeight="otherTableHeight"
-        :exchangeRate="exchangeRate" />
+        :exchangeRate="exchangeRate"
+        :processApplyDate="processApplyDate"
+        />
     </div>
     <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
@@ -92,7 +215,7 @@
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableData"
-        class="rsTable mainTable"
+        class="rsTable"
         :tableRowClassName="tableRowClassName"
         border>
         <template #fsnrGsnrNum="scope">
@@ -244,6 +367,23 @@
         </div>
       </iCard>
     </div>
+    <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+      <div class="checkList">
+        <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+          <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
+          <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
+          <div v-else class="" >-</div>
+          <div class="checkList-item-info">
+            <span>Dept.:</span>
+            <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+          </div>
+          <div class="checkList-item-info">
+            <span>Date:</span>
+            <span>{{item.approveDate}}</span>
+          </div>
+        </div>
+      </div>
+    </iCard>
     <iCard :title="language('JINGLINGJIANAOCARD','上传仅零件号变更单')"
           class="margin-top20"
           v-if="$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI">
@@ -276,11 +416,11 @@
 </template>
 
 <script>
-import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
+import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination, icon } from 'rise'
 import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos } from './data'
 import { resetLtcData } from '../meeting/data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate, getDepartApproval } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
 import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
@@ -290,13 +430,15 @@ import { transverseDownloadPDF } from "@/utils/pdf"
 import rsPdf from "./rsPdf"
 import { toThousands } from "@/utils"
 import { decisionDownloadPdfLogo } from '@/api/designate'
+
+import { nomalTableTitleSub } from "./pdfData"
 import {
     uploadUdFile
 } from '@/api/file/upload'
 import filters from "@/utils/filters"
 
 export default {
-  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf },
+  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf, icon },
   props: {
     isPreview: { type: Boolean, default: false },
     nominateId: { type: String },
@@ -308,6 +450,8 @@ export default {
   },
   data () {
     return {
+      tableList:[],
+      loading: false,
       // 零件项目类型
       partProjTypes,
       fileTableTitle,
@@ -325,7 +469,7 @@ export default {
       // tableTitle: cloneDeep(nomalTableTitle),
       tableData: [],
       remarkItem: [{ value: '', checked: false }, { value: '', checked: false }, { value: '', checked: false }],
-      checkList: checkList,
+      checkList: [],
       isEdit: false,
       saveLoading: false,
       projectType: '',
@@ -339,7 +483,8 @@ export default {
       otherTableHeight:0,
       fileList:[],
       infos,
-      exchangeRate: ""
+      exchangeRate: "",
+      processApplyDate: ""
     }
   },
   computed: {
@@ -374,6 +519,16 @@ export default {
 
       return nomalTableTitle
     },
+    tableTitleSub () {
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return sparePartTableTitle
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return accessoryTableTitle
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
+        return gsTableTitle
+      }
+      return nomalTableTitleSub
+    },
     isRoutePreview() {
       return this.$route.query.isPreview == 1
     },
@@ -387,29 +542,25 @@ export default {
       let dom = this.$refs.rsPdf.$el
       this.width = dom.offsetWidth  // 打印区域宽度
       this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-      console.log(this.width);
       console.log(this.pageHeight);
       let tableHeader = 50  // 表头高度
       let headerHeight = 84 // 顶部标题高度, 第一页独有
-      let pageLogo = 86     // logo 区域高度
+      let pageLogo = 87     // logo 区域高度
       let computeHeight = document.getElementsByClassName('position-compute')[0].offsetHeight  // 页面所有固定元素的高度： infos
+      let el = document.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
       let outEl = document.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
       // 第一页
       this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - 1  // 表格区域高度, 用div支撑空间
       // 第二页
       this.otherTableHeight = this.pageHeight - computeHeight - pageLogo - 21   // 表格区域高度, 用div支撑空间, 减20间距, 1px 偏差
       let rowList = document.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
-      console.log(rowList);
-      console.log(this.tableHeight);
-      console.log(rowList);
-
       let arr = []
       let heightSum = 0
       let tableList = []
       rowList.forEach((item,i)=>{
         heightSum+=item.offsetHeight
         if(tableList.length==0){
-          if(heightSum<this.tableHeight - tableHeader - outEl){
+          if(heightSum<this.tableHeight - tableHeader - outEl - el){
             arr.push(this.tableData[i])
           }else{
             tableList.push(JSON.parse(JSON.stringify(arr)))
@@ -417,7 +568,7 @@ export default {
             arr = [this.tableData[i]]
           }
         }else{
-          if(heightSum<this.otherTableHeight - tableHeader - outEl){
+          if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
             arr.push(this.tableData[i])
           }else{
             tableList.push(JSON.parse(JSON.stringify(arr)))
@@ -425,11 +576,10 @@ export default {
             arr = [this.tableData[i]]
           }
         }
-        console.log(heightSum);
       })
       tableList.push(JSON.parse(JSON.stringify(arr)))
       this.tableList = tableList
-        console.log(tableList);
+      // if(tableList.length==1) this.tableHeight -= 2
       },1000)
     },
     downloadFile () {
@@ -553,6 +703,7 @@ export default {
         this.getTopList()
       }
       this.getRemark()
+      this.getDepartApproval()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
     /**
@@ -658,13 +809,13 @@ export default {
       })
     },
     handleOpenPage (row) {
-      console.log(row);
       downloadUdFile(row.uploadId)
     },
 
     // 导出pdf
     handleExportPdf() {
-      
+      this.fileList = []
+      this.loading = true
       this.getPdfImage({
         dom: this.$refs.rsPdf.$el,
         pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
@@ -730,7 +881,6 @@ export default {
       let vm = this;
       const A4_WIDTH = 841.89;
       const A4_HEIGHT = 595.28;
-      this. initTop = 0
       vm.$nextTick(() => {
         // dom的id。
         let target = this.$refs.rsPdf.$el;
@@ -799,7 +949,7 @@ export default {
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: "#ffffff", //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
-      }).then((canvas) => {
+      }).then(async (canvas) => {
         var contentWidth = canvas.width; //
         var contentHeight = canvas.height; //
         //一页pdf显示html页面生成的canvas高度;
@@ -813,8 +963,7 @@ export default {
         copyCanvas.height = pageHeight;
         var ctxs = copyCanvas.getContext("2d");
         // 保存每一页的画布, 然后清空canvas
-        if (leftHeight < pageHeight) {
-          //   console.log(pageData);
+        if (leftHeight <= pageHeight) {
           var imgData = ctx.getImageData(0, 0, contentWidth, pageHeight); // 截取主画布
           ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
           // 截图画布转为file
@@ -838,12 +987,7 @@ export default {
             ); // 截取主画布当前页
             ctxs.putImageData(imgData, 0, 0); // 插入截图画布
             // 截图画布转为file
-            copyCanvas.toBlob((blob) => {
-              //以时间戳作为文件名 实时区分不同文件
-              let filename = `${new Date().getTime()}.png`;
-              let pdfFile = new File([blob], filename, { type: "image/png" });
-              this.fileList.push({ file: pdfFile });
-            });
+            await this.getPdfFile(copyCanvas)
             leftHeight -= pageHeight;
             // //避免添加空白页
             if (leftHeight > 0) {
@@ -861,13 +1005,24 @@ export default {
         });
       });
     },
-
+    async getPdfFile(copyCanvas){
+      return new Promise((r,j)=>{
+        copyCanvas.toBlob((blob) => {
+          //以时间戳作为文件名 实时区分不同文件
+          let filename = `${new Date().getTime()}.png`;
+          let pdfFile = new File([blob], filename, { type: "image/png" });
+          this.fileList.push({ file: pdfFile });
+          r(true)
+        });
+      })
+    },
     // 下载 pdf 文件
     async DownloadPdf(){
-      let arr = this.fileList.filter(item=>!item.imageUrl)
-      if(arr.length) return
+      let arr = this.fileList.filter(item=>item.imageUrl)
+      if(arr.length!=this.fileList.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
       await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
+      this.loading = false
     },
 
     // 上传图片
@@ -916,6 +1071,20 @@ export default {
     exchangeRateProcess(row) {
       return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
     },
+
+    /**
+     * @Description: 获取部门审批记录
+     */    
+    getDepartApproval() {
+      getDepartApproval(this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId).then(res => {
+        if (res.code == 200) {
+          this.checkList = Array.isArray(res.data.nomiApprovalProcessNodeVOList) ? res.data.nomiApprovalProcessNodeVOList : []
+          this.processApplyDate = res.data.processApplyDate || ''
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
   }
 }
 </script>
@@ -952,8 +1121,8 @@ export default {
 
 .rsPdfWrapper {
   width: 100%;
-  height: 0;
-  overflow: hidden;
+  // height: 0;
+  // overflow: hidden;
   position: relative;
   top: 0;
 }
@@ -980,7 +1149,6 @@ export default {
       }
     }
   }
-
   .rsTable {
     ::v-deep .el-table__header th {
       .cell {
@@ -996,7 +1164,48 @@ export default {
       }
     }
   }
-
+  
+  .rsCard {
+    box-shadow: none;
+    & + .rsCard {
+      margin-top: 20px; /*no*/
+    }
+    ::v-deep .cardHeader{
+      padding: 30px 0px;
+    }
+    ::v-deep .cardBody{
+      padding: 0px;
+    }
+  }
+  .mainTable{
+    
+    font-size: 8px; /*no*/
+    &::before {
+      height: 0;
+    }
+    ::v-deep .el-table__header th {
+      padding-top: 8px; /*no*/
+      padding-bottom: 8px; /*no*/
+      & > .cell {
+        padding-left: 3px; /*no*/
+        padding-right: 3px; /*no*/
+        line-height: 14px; /*no*/
+        p {
+          min-height: 16px; /*no*/
+        }
+      }
+    }
+    ::v-deep .el-table__row {
+      border-left: 1px solid #EBEEF5;
+      border-bottom: 1px solid #EBEEF5;
+       td {
+        & > .cell{
+          padding-right: 1px; /*no*/
+          padding-left: 1px; /*no*/
+        }
+      }
+    }
+  }
   .beizhu {
     background-color: rgba(22, 96, 241, 0.03);
     // height: 40px;
@@ -1006,6 +1215,43 @@ export default {
     &-value {
       font-weight: 400;
       margin-left: 20px;
+    }
+  }
+  
+  .checkDate {
+    ::v-deep .card .cardHeader .title {
+      // font-size: 16px;
+      font-weight: 400;
+      color: rgba(75, 75, 76, 1);
+    }
+  }
+
+  .checkList {
+    display: flex;
+    overflow: auto;
+    &-item {
+      flex-shrink: 0;
+      width: 224px;
+      height: 178px;
+      border-radius: 15px;
+      background-color: rgba(205, 212, 226, 0.12);
+      margin-right: 19px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px 22px;
+      font-size: 16px;
+      color: rgba(65, 67, 74, 1);
+      &-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-depart {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
     }
   }
 }

@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:08:30
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-12-06 13:55:51
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-18 13:51:18
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\components\projectHeader.vue
 -->
@@ -13,10 +13,11 @@
     <div style="display:flex;align-items:center" class="right-control">
       <iNavMvp v-if="subNavList" :lev="2" :list="subNavList" :lang="true" routerPage class="nav-sub" />
       <div class="control">
-        <logButton class="margin-left20" @click="toLogPage" />
-        <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon>
+        <iLoger ref="log" :config="{ bizId_obj_ae: bizId}" isPage  :isUser="true" class="margin-left20 margin-right10" />
+        <!-- <logButton class="margin-left20" @click="toLogPage" /> -->
+        <!-- <icon @click.native="gotoDBhistory" symbol name="icondatabaseweixuanzhong" class="log-icon margin-left10 cursor"></icon> -->
       </div>
-      <iLog :show.sync="showDialog" :bizId="bizId"></iLog>
+      <!-- <iLog :show.sync="showDialog" :bizId="bizId"></iLog> -->
     </div>
   </div>
 </template>
@@ -26,13 +27,15 @@ import { iNavMvp, icon } from "rise"
 import { TAB } from "./data"
 import logButton from "@/components/logButton"
 import iLog from '@/views/project/log'
+import iLoger from 'rise/web/components/iLoger'
 
 export default {
   components: {
     iNavMvp,
     logButton,
     icon,
-    iLog
+    iLog,
+    iLoger
   },
   data() {
     return {

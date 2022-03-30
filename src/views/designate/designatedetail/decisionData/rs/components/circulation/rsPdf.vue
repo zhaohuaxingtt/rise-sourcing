@@ -1,48 +1,5 @@
 <template>
   <div class="rsPdf">
-    <!-- <iCard class="rsCard" v-if="isPF">
-      <template #header>
-        <div class="title">
-          <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
-        </div>
-      </template>
-      <iFormGroup row="4" class="csc">
-        <div class="col">
-          <iFormItem
-            v-for="(item, index) in titleData"
-            :key="'titleData' + index"
-            :label="item.label + ':'"
-          >
-            <iText v-if="item.props === 'currency'">{{
-              basicData.currencyMap && basicData.currencyMap[basicData.currency]
-                ? basicData.currencyMap[basicData.currency].name
-                : basicData.currency
-            }}</iText>
-            <iText v-else-if="item.props === 'exchangeRate'">
-              <span
-                class="exchangeRageCurrency"
-                v-for="item in exchangeRageCurrency"
-                :key="item"
-                >1{{
-                  basicData.currencyMap && basicData.currencyMap[item]
-                    ? basicData.currencyMap[item].name
-                    : item
-                }}={{ basicData.currencyRateMap[item]
-                }}{{
-                  basicData.currencyMap.RMB
-                    ? basicData.currencyMap.RMB.name
-                    : "RMB"
-                }}</span
-              >
-            </iText>
-            <iText v-else-if="item.props === 'partProjectType'">{{
-              basicData[item.props] === partProjTypes.PEIJIAN ? "配件" : "附件"
-            }}</iText>
-            <iText v-else>{{ basicData[item.props] }}</iText>
-          </iFormItem>
-        </div>
-      </iFormGroup>
-    </iCard> -->
     <iCard class="rsCard">
       <template #header>
         <div class="title">
@@ -63,47 +20,64 @@
           </div>
           <!-- 第一页比其它页面多一个头部 -->
           <div :style="{'height':(index==0?tableHeight:otherTableHeight) + 'px'}">
-          <tableList
-            :selection="false"
-            :tableTitle="tableTitle"
-            :tableData="tableData"
-            class="rsTable"
-            :tableRowClassName="tableRowClassName"
-            border
-          >
-            <template #fsnrGsnrNum="scope">
-              <div>
-                <p>{{ scope.row.fsnrGsnrNum }}</p>
-                <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+            <tableList
+              :selection="false"
+              :tableTitle="tableTitle"
+              :tableData="tableData"
+              class="rsTable"
+              :tableRowClassName="tableRowClassName"
+              border
+            >
+              <template #fsnrGsnrNum="scope">
+                <div>
+                  <p>{{ scope.row.fsnrGsnrNum }}</p>
+                  <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+                </div>
+              </template>
+
+              <!-- 年降 -->
+              <template #ltc="scope">
+                <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
+              </template>
+
+              <!-- 年降开始时间 -->
+              <template #beginYearReduce="scope">
+                <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
+              </template>
+
+              <template #sapCode="scope">
+                <span>{{
+                  scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
+                }}</span>
+              </template>
+
+              <template #share="scope">
+                <span>{{ +scope.row.share || 0 }}</span>
+              </template>
+            </tableList>
+            <div class="beizhu">
+              备注 Remarks:
+              <div class="beizhu-value">
+                <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
               </div>
-            </template>
-
-            <!-- 年降 -->
-            <template #ltc="scope">
-              <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
-            </template>
-
-            <!-- 年降开始时间 -->
-            <template #beginYearReduce="scope">
-              <span>{{ resetLtcData(scope.row.ltcs, "beginYearReduce") }}</span>
-            </template>
-
-            <template #sapCode="scope">
-              <span>{{
-                scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode
-              }}</span>
-            </template>
-
-            <template #share="scope">
-              <span>{{ +scope.row.share || 0 }}</span>
-            </template>
-          </tableList>
-          <div class="beizhu">
-            备注 Remarks:
-            <div class="beizhu-value">
-              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
             </div>
-          </div>
+            <iCard class="checkDate rsCard"  :title="'Application Date：'+processApplyDate">
+              <div class="checkList">
+                <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                  <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                  <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                  <div v-else class="" >-</div>
+                  <div class="checkList-item-info">
+                    <span>Dept.:</span>
+                    <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                  </div>
+                  <div class="checkList-item-info">
+                    <span>Date:</span>
+                    <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                  </div>
+                </div>
+              </div>
+            </iCard>
           </div>
           <div class="page-logo">
             <img src="../../../../../../../assets/images/logo.png" alt="">
@@ -120,7 +94,7 @@
 </template>
 
 <script>
-import { iCard, iFormGroup, iFormItem, iText } from "rise"
+import { iCard, iFormGroup, iFormItem, iText, icon } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes, fileType } from "@/config"
 import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
@@ -130,7 +104,7 @@ import filters from "@/utils/filters"
 
 export default {
   mixins:[filters],
-  components: { iCard, iFormGroup, iFormItem, iText, tableList },
+  components: { iCard, iFormGroup, iFormItem, iText, tableList, icon },
   props:{
     nominateId:{
       type:String,
@@ -151,6 +125,7 @@ export default {
   tableHeight: { type: Number, default: 0 },
   otherTableHeight: { type: Number, default: 0 },
   tableList: { type: Array, default: () => [] },
+  processApplyDate: { type: String, default: '' },
   },
   data() {
     return {
@@ -258,8 +233,7 @@ export default {
 
 <style lang="scss" scoped>
 .rsPdf {
-  min-width: 100%;
-  width: fit-content;
+  width: 100%;
   background: #FFFFFF;
 
   .rsCard {
@@ -267,8 +241,12 @@ export default {
     & + .rsCard {
       margin-top: 20px; /*no*/
     }
+    
+    ::v-deep .cardHeader{
+      padding: 30px 0px;
+    }
     ::v-deep .cardBody{
-      padding-bottom: 0px;
+      padding: 0px;
     }
   }
   .pdf-item {
@@ -363,8 +341,58 @@ export default {
   .page-logo{
     display: flex;
     justify-content: space-between;
-    padding: 20px 0;
+    padding: 20px 10px;
     align-items: center;
+    border-top: 1px solid #666;
+  }
+
+  .checkDate {
+    ::v-deep .card .cardHeader .title {
+      // font-size: 16px;
+      font-weight: 400;
+      color: rgba(75, 75, 76, 1);
+    }
+  }
+
+  .checkList {
+    display: flex;
+    overflow: auto;
+    &-item {
+      flex: 1;
+      flex-shrink: 0;
+      width: 224px;
+      height: 125px;
+      border-radius: 15px;
+      background-color: rgba(205, 212, 226, 0.12);
+      margin-right: 19px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+      font-size: 16px;
+      color: rgba(65, 67, 74, 1);
+      &-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-depart {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+    }
+    &-item:last-child{
+      margin-right: 0;
+    }
+  }
+
+  .complete {
+    color: rgb(104, 193, 131);
+  }
+
+  .cancel {
+    color: rgb(95, 104, 121);
   }
 }
 </style>
