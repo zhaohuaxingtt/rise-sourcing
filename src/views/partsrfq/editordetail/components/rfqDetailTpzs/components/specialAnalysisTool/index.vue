@@ -7,7 +7,7 @@
 -->
 <template>
   <div class="specialAnalysisTool"
-       v-loading.body="loading">
+       v-loading.fullscreen="loading">
 
     <enterSpecificAnalysisToolsDialog :keyword="keyword"
                                       @getDataList="getDataList"
@@ -48,7 +48,7 @@ export default {
       viewModelDialog: false,
       cardData: [],
       keyword: '',
-      loading: true,
+      loading: false,
     };
   },
   created () {
@@ -135,6 +135,7 @@ export default {
         materialGroup: categoryName,
         spareParts: this.$store.state.rfq.spareParts,
       };
+      this.loading = true
       totalOverview(pms)
         .then((res) => {
           if (res.result) {
@@ -187,11 +188,8 @@ export default {
                   break;
               }
             });
-
-
-            console.log(this.cardData)
+            this.loading = false
           }
-          this.loading = false
         })
         .catch((error) => {
           this.loading = false
