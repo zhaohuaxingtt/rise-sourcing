@@ -225,7 +225,7 @@
                 <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
               </div>
             </div>
-            <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard" :title="'Application Date：'+processApplyDate">
+            <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
               <div class="checkList">
                 <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
                   <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
@@ -353,6 +353,7 @@ import { partProjTypes } from "@/config"
 import { resetLtcData } from "./data"
 import { toThousands } from "@/utils"
 import filters from "@/utils/filters"
+import { dateFilter } from "../circulation/data"
 
 export default {
   mixins:[filters],
@@ -406,6 +407,7 @@ export default {
     },
   },
   methods: {
+    dateFilter,
     resetLtcData
   }
 }
@@ -593,6 +595,16 @@ export default {
     ::v-deep .card .cardHeader .title {
       font-weight: 400;
       color: rgba(75, 75, 76, 1);
+    }
+  }
+
+  .Application {
+    ::v-deep .cardHeader {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      .title .title_content {
+        font-size: 13px !important;
+      }
     }
   }
 
