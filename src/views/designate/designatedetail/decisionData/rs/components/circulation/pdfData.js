@@ -1,8 +1,15 @@
+/*
+ * @Author: YoHo
+ * @Date: 2022-03-29 22:37:36
+ * @LastEditTime: 2022-03-30 10:45:25
+ * @LastEditors: YoHo
+ * @Description: 
+ */
 // 生产
 export const nomalTableTitleSub = [
   { props: 'fsnrGsnrNum', name: 'FS号', key: '', minWidth: 95, fixed: true },
   { props: 'partNo', name: '零件号', key: '', minWidth: 76, fixed: true },
-  { props: 'partNum', name: '原零件号', key: '', minWidth: 70 }, // 12/24 业务说取partNum
+  { props: 'partNum', name: '原零件号', key: '', minWidth: 76 }, // 12/24 业务说取partNum
   { props: 'oldAPrice', name: '原A价', key: '', minWidth: 49 },
   { props: 'partName', name: '零件名称', key: '', minWidth: 67 },
   { props: 'unit', name: '零件', subItem:['单位'], key: '', minWidth: 33 },
@@ -10,9 +17,9 @@ export const nomalTableTitleSub = [
   { props: 'zp', name: 'ZP属性', key: '', minWidth: 49 },
   { props: 'project', name: '项目名称', key: '', minWidth: 61 },
   { props: 'svwCode', name: '厂商', subItem:['号'], key: '', minWidth: 33 },
-  { props: 'supplierName', name: '供应商名称', key: '', minWidth: 72 },
+  { props: 'supplierName', name: '供应商名称', key: '', minWidth: 80 },
   { props: 'prodLocation', name: '产地', key: '', minWidth: 57 },
-  { props: 'cfTargetAPrice', name: '财务目', subItem:['标A价号'], key: '', minWidth: 57 },
+  { props: 'cfTargetAPrice', name: '财务目', subItem:['标A价'], key: '', minWidth: 57 },
   { props: 'cfTargetBPrice', name: '财务目', subItem:['标B价'], key: '', minWidth: 57 },
   // { props: 'rw', name: '欧价', key: '', minWidth: 54 },
   { props: 'status', name: '状态', key: '', minWidth: 38 },
