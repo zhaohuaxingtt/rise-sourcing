@@ -1,7 +1,7 @@
 /*
  * @Author: YoHo
  * @Date: 2022-03-29 22:37:36
- * @LastEditTime: 2022-03-30 10:45:25
+ * @LastEditTime: 2022-03-31 00:25:23
  * @LastEditors: YoHo
  * @Description: 
  */
@@ -35,7 +35,7 @@ export const nomalTableTitleSub = [
   { props: 'demand', name: '年需', subItem:['求(K)'], key: '', minWidth: 46 },
   { props: 'output', name: '年产', subItem:['能(K)'], key: '', minWidth: 46 },
   { props: 'turnover', name: '采购金额', key: '', minWidth: 86 },
-  { props: 'remarks', name: '备注', key: '', minWidth: 120 },
+  { props: 'remarks', name: '备注', key: '', minWidth: 200 },
 ]
 
 // 附件列表
