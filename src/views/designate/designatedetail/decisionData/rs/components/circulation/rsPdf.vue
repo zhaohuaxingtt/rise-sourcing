@@ -105,6 +105,23 @@
             </div>
           </div>
           </div>
+          <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+            <div class="checkList">
+              <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                <div v-else class="" >-</div>
+                <div class="checkList-item-info">
+                  <span>Dept.:</span>
+                  <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                </div>
+                <div class="checkList-item-info">
+                  <span>Date:</span>
+                  <span>{{item.approveDate}}</span>
+                </div>
+              </div>
+            </div>
+          </iCard>
           <div class="page-logo">
             <img src="../../../../../../../assets/images/logo.png" alt="">
             <div>
@@ -120,7 +137,7 @@
 </template>
 
 <script>
-import { iCard, iFormGroup, iFormItem, iText } from "rise"
+import { iCard, iFormGroup, iFormItem, iText, icon } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes, fileType } from "@/config"
 import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
@@ -130,7 +147,7 @@ import filters from "@/utils/filters"
 
 export default {
   mixins:[filters],
-  components: { iCard, iFormGroup, iFormItem, iText, tableList },
+  components: { iCard, iFormGroup, iFormItem, iText, tableList, icon },
   props:{
     nominateId:{
       type:String,
@@ -151,6 +168,7 @@ export default {
   tableHeight: { type: Number, default: 0 },
   otherTableHeight: { type: Number, default: 0 },
   tableList: { type: Array, default: () => [] },
+  processApplyDate: { type: String, default: '' },
   },
   data() {
     return {
@@ -365,6 +383,51 @@ export default {
     justify-content: space-between;
     padding: 20px 0;
     align-items: center;
+  }
+
+  .checkDate {
+    ::v-deep .card .cardHeader .title {
+      // font-size: 16px;
+      font-weight: 400;
+      color: rgba(75, 75, 76, 1);
+    }
+  }
+
+  .checkList {
+    display: flex;
+    overflow: auto;
+    &-item {
+      flex-shrink: 0;
+      width: 224px;
+      height: 178px;
+      border-radius: 15px;
+      background-color: rgba(205, 212, 226, 0.12);
+      margin-right: 19px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px 22px;
+      font-size: 16px;
+      color: rgba(65, 67, 74, 1);
+      &-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-depart {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .complete {
+    color: rgb(104, 193, 131);
+  }
+
+  .cancel {
+    color: rgb(95, 104, 121);
   }
 }
 </style>

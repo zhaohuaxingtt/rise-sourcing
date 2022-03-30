@@ -26,7 +26,9 @@
         :checkList="checkList"
         :tableHeight="tableHeight"
         :otherTableHeight="otherTableHeight"
-        :exchangeRate="exchangeRate" />
+        :exchangeRate="exchangeRate"
+        :processApplyDate="processApplyDate"
+        />
     </div>
     <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
@@ -244,6 +246,23 @@
         </div>
       </iCard>
     </div>
+    <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+      <div class="checkList">
+        <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+          <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
+          <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
+          <div v-else class="" >-</div>
+          <div class="checkList-item-info">
+            <span>Dept.:</span>
+            <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+          </div>
+          <div class="checkList-item-info">
+            <span>Date:</span>
+            <span>{{item.approveDate}}</span>
+          </div>
+        </div>
+      </div>
+    </iCard>
     <iCard :title="language('JINGLINGJIANAOCARD','上传仅零件号变更单')"
           class="margin-top20"
           v-if="$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI">
@@ -276,11 +295,11 @@
 </template>
 
 <script>
-import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
+import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination, icon } from 'rise'
 import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos } from './data'
 import { resetLtcData } from '../meeting/data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate, getDepartApproval } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
 import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
@@ -296,7 +315,7 @@ import {
 import filters from "@/utils/filters"
 
 export default {
-  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf },
+  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf, icon },
   props: {
     isPreview: { type: Boolean, default: false },
     nominateId: { type: String },
@@ -325,7 +344,7 @@ export default {
       // tableTitle: cloneDeep(nomalTableTitle),
       tableData: [],
       remarkItem: [{ value: '', checked: false }, { value: '', checked: false }, { value: '', checked: false }],
-      checkList: checkList,
+      checkList: [],
       isEdit: false,
       saveLoading: false,
       projectType: '',
@@ -339,7 +358,8 @@ export default {
       otherTableHeight:0,
       fileList:[],
       infos,
-      exchangeRate: ""
+      exchangeRate: "",
+      processApplyDate: ""
     }
   },
   computed: {
@@ -553,6 +573,7 @@ export default {
         this.getTopList()
       }
       this.getRemark()
+      this.getDepartApproval()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
     /**
@@ -916,6 +937,20 @@ export default {
     exchangeRateProcess(row) {
       return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
     },
+
+    /**
+     * @Description: 获取部门审批记录
+     */    
+    getDepartApproval() {
+      getDepartApproval(this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId).then(res => {
+        if (res.code == 200) {
+          this.checkList = Array.isArray(res.data.nomiApprovalProcessNodeVOList) ? res.data.nomiApprovalProcessNodeVOList : []
+          this.processApplyDate = res.data.processApplyDate || ''
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
   }
 }
 </script>
@@ -1006,6 +1041,43 @@ export default {
     &-value {
       font-weight: 400;
       margin-left: 20px;
+    }
+  }
+  
+  .checkDate {
+    ::v-deep .card .cardHeader .title {
+      // font-size: 16px;
+      font-weight: 400;
+      color: rgba(75, 75, 76, 1);
+    }
+  }
+
+  .checkList {
+    display: flex;
+    overflow: auto;
+    &-item {
+      flex-shrink: 0;
+      width: 224px;
+      height: 178px;
+      border-radius: 15px;
+      background-color: rgba(205, 212, 226, 0.12);
+      margin-right: 19px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px 22px;
+      font-size: 16px;
+      color: rgba(65, 67, 74, 1);
+      &-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-depart {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
     }
   }
 }
