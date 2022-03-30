@@ -551,7 +551,7 @@
         </div>
       </div>
     </iCard>
-    <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+    <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
           <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
@@ -592,6 +592,7 @@ import rsPdf from "./rsPdf"
 import {
     uploadUdFile
 } from '@/api/file/upload'
+import { dateFilter } from "../circulation/data"
 
 export default {
   props: {
@@ -742,6 +743,7 @@ export default {
   mounted(){
   },
   methods: {
+    dateFilter,
     getHeight(){
       setTimeout(()=>{
         let dom = this.$refs.rsPdf.$el
@@ -1336,6 +1338,12 @@ export default {
     }
   }
 
+  ::v-deep tr {
+    &:nth-child(even) {
+        background-color: #f7f7ff;
+    }
+  }
+
   ::v-deep .el-table__row td {
     .cell {
       padding-left: 3px;
@@ -1486,7 +1494,17 @@ export default {
     font-weight: 400;
     color: rgba(75, 75, 76, 1);
   }
-} 
+}
+
+.Application {
+    ::v-deep .cardHeader {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      .title .title_content {
+        font-size: 14px !important;
+      }
+    }
+  }
 .isPreview {
   .card {
     box-shadow: none;

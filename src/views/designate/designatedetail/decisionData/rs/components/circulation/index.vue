@@ -353,6 +353,10 @@
             </div>
           </template>
 
+          <template #savingFee="scope">
+            <span>{{ scope.row.savingFee | toThousands(true) }}</span>
+          </template>
+
           <template #share="scope">
             <span>{{ +scope.row.share || 0 }}</span>
           </template>
@@ -432,7 +436,7 @@
           <div class="info">
             <span class="label">{{ info.name }}：</span>
             <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
-            <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+            <!-- <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span> -->
             <div v-else>{{ basicData[info.props] }}</div>
           </div>
         </div>
@@ -598,7 +602,7 @@
         </div>
       </iCard>
     </div>
-    <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+    <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
       <div class="checkList">
         <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
           <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
@@ -648,7 +652,7 @@
 
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination, icon } from 'rise'
-import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos } from './data'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos, dateFilter } from './data'
 import { resetLtcData } from '../meeting/data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate, getDepartApproval } from '@/api/designate/decisiondata/rs'
@@ -778,6 +782,7 @@ export default {
     }
   },
   methods: {
+    dateFilter,
     getHeight(){
       setTimeout(()=>{
       let dom = this.$refs.rsPdf.$el
@@ -1326,6 +1331,12 @@ export default {
         padding-right: 6px;
       }
     }
+
+    ::v-deep tr {
+      &:nth-child(even) {
+        background-color: #f7f7ff;
+      }
+    }
   }
   
   .rsCard {
@@ -1388,6 +1399,16 @@ export default {
       color: rgba(75, 75, 76, 1);
     }
   }
+
+  .Application {
+    ::v-deep .cardHeader {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      .title .title_content {
+        font-size: 14px !important;
+      }
+    }
+  } 
 
   .checkList {
     display: flex;
