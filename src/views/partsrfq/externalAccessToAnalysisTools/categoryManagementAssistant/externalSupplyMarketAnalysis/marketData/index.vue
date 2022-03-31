@@ -7,7 +7,8 @@
            v-if="!isExporting">
         <iButton @click="handleSearch">{{ language('LK_QUEREN', '确认') }}</iButton>
         <iButton @click="handleSave"
-                 :loading="saveButtonLoading" v-permission="CATEGORY_ASSISTANT_WBGYSCFX_SHICHANGSHUJU_SAVE">{{ language('LK_BAOCUN', '保存') }}</iButton>
+                 :loading="saveButtonLoading"
+                 v-permission="CATEGORY_ASSISTANT_WBGYSCFX_SHICHANGSHUJU_SAVE">{{ language('LK_BAOCUN', '保存') }}</iButton>
         <iButton @click="handleBack">{{ language('LK_FANHUI', '返回') }}</iButton>
       </div>
     </div>
@@ -307,10 +308,14 @@ export default {
     setDataTypeDefault ({ resultList, formProps }) {
       if (this.current === LABOUR) {
         if (Array.isArray(resultList) && resultList.length > 0) {
-          this.$refs.theSearch.form[formProps] = resultList.map(item => {
-            return { name: item.dataType };
-          });
+          this.$set(this.$refs.theSearch.form, formProps, resultList.map(item => {
+            return { name: item.dataType.split('_')[0] }
+          }))
+          this.$set(this.$refs.theSearch.form, 'areaList', resultList.map(item => {
+            return { name: item.dataType.split('_')[1] }
+          }))
         }
+
       } else {
         if (Array.isArray(resultList) && resultList.length > 0) {
           this.$refs.theSearch.form[formProps] = resultList.map(item => {

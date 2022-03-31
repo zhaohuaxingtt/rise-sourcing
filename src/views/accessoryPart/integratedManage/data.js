@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:58
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 14:54:41
+ * @LastEditTime: 2022-03-29 09:37:06
  * @Description: 
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\data.js
  */
@@ -58,7 +58,7 @@ export const searchList = [
   // {value: 'nomiType', label: '定点状态', type: 'select', key: 'DINGDIANZHUANGTAI', selectOption: 'nominateStateOption'},
   {value: 'rfqId', label: 'rfq编号', type: 'input', key: 'RFQBIANHAO', permission: 'APREPART_MANAGFMENT_RFQBIANHAO|配件-配件管理-RFQ编号', inputType: "int"},
   {value: 'idState', label: 'ID状态', type: 'select', key: 'IDZHUANGTAI', selectOption: 'accessoryIdStateOption', permission: 'APREPART_MANAGFMENT_IDSTATS|配件-配件管理-ID状态'},
-  {value: 'signDate', label: '签收时间', type: 'date', key: 'QIANSHOUSHIJIAN', permission: 'APREPART_MANAGFMENT_LINIESTATUS|配件-配件管理-LINIE分配状态'},  // 不配置权限的话,不会显示
+  {value: 'signDate', label: '签收时间', type: 'date', key: 'QIANSHOUSHIJIAN', permission: 'APREPART_MANAGFMENT_QIANSHOUSHIJIAN|配件-配件管理-签收时间'},  // 不配置权限的话,不会显示
   {value: 'showSelf', label: '是否自己', type: 'select', key: 'SHIFOUZIJI', selectOption: 'trueOrFalseOption',permission: 'APREPART_MANAGEMENT_ISME|附件-附件管理-是否自己'},
   {value: 'linieApportionStatus', label: 'LINIE分配状态', type: 'select', selectOption: 'linieStatusOption' ,key: 'LINIEFENPEIZHUANGTAI',permission: 'APREPART_MANAGFMENT_LINIESTATUS|配件-配件管理-LINIE分配状态'},
 ]
