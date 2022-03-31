@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-24 09:17:57
- * @LastEditTime: 2022-03-21 10:59:38
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 16:36:07
+ * @LastEditors: YoHo
  * @Description: 零件签收列表界面.
  * @FilePath: \front-sourcing\src\views\partsign\home\index.vue
 -->
@@ -191,7 +191,7 @@
                   v-permission.auto="PARTSIGN_TRANSFERBUTTON|转派"
                   >{{ language("partsignLanguage.ZhuanPai",'转派') }}</iButton
                 >
-                <button-table-setting @click="edittableHeader" />
+                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
               </div>
             </div>
             <tablelist
@@ -270,6 +270,7 @@ import store from '@/store'
 import { TP_INFO_STATUS } from "./components/data"
 import {setPretreatmentParams} from '@/utils/tool'
 import headerNav from '@/components/headerNav'
+import buttonTableSetting from '@/components/buttonTableSetting'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -287,6 +288,7 @@ export default {
     iInput,
     iSelect,
     headerNav,
+    buttonTableSetting
   },
   mixins: [pageMixins, filters,tableSortMixins],
   data() {

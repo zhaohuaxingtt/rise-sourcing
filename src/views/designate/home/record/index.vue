@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: tyra liu
  * @Date: 2021-10-21 13:54:25
- * @LastEditTime: 2022-03-21 10:57:30
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 16:34:25
+ * @LastEditors: YoHo
 -->
 <template>
   <iPage class="designatehome" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_PAGE|定点记录页面">
@@ -17,7 +17,7 @@
     <iCard class="cardMargin">
       <div class="btnright margin-bottom20">
         <iButton @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
-        <button-table-setting @click="edittableHeader" />
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tablelist
       lang
@@ -68,6 +68,7 @@ import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {tableTitle, form} from './data'
 import { pageMixins } from '@/utils/pageMixins'
 import {getNomiApplicationPageList, exportNomiRecordExcel} from '@/api/designate/nomination/record'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ pageMixins,tableSortMixins ],
   components: {
@@ -78,7 +79,8 @@ export default {
     tablelist,
     iPagination,
     icon,
-    iButton
+    iButton,
+    buttonTableSetting
     },
   data() {
     return{

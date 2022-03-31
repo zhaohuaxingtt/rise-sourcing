@@ -36,7 +36,7 @@
             <iButton v-permission.auto="LK_LETTER_LIST_GUANBI|定点信-关闭" @click="closeLetter">{{language('LK_GUANBI','关闭')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_JIHUO|定点信-激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
             <iButton v-permission.auto="LK_LETTER_LIST_DAOCHU|定点信-导出" @click="downloadFiles">{{language('LK_DAOCHU','导出')}} </iButton>
-            <button-table-setting @click="edittableHeader" />
+            <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
         </div>
         <!-- 表单区域 -->
@@ -141,6 +141,7 @@ import {
 import { getDictByCode } from '@/api/dictionary'
 import { numberProcessor } from '@/utils' 
 import {setPretreatmentParams} from '@/utils/tool'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
     name:'letterList',
     mixins: [pageMixins,tableSortMixins],
@@ -155,7 +156,8 @@ export default {
         turnSendDialog,
         closeLetterDialog,
         iCard,
-        icon
+        icon,
+        buttonTableSetting
     },
     data(){
         return{

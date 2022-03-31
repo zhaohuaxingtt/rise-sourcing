@@ -71,7 +71,7 @@
       </iSearch>
       <iCard class="contain margin-top20" :title="language('LK_AEKOBIAOTAI','AEKO表态')">
         <template v-slot:header-control>
-          <button-table-setting @click="edittableHeader" />
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </template>
       <!-- 表单区域 -->
       <div v-permission.auto="AEKO_STANCELIST_TABLE|AEKO表态TABLE">
@@ -184,6 +184,7 @@ import {
 import aekoSelect from '../components/aekoSelect'
 import { roleMixins } from "@/utils/roleMixins";
 import { setLogMenu } from "@/utils";
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
     name:'aekoStanceList',
     mixins: [pageMixins,roleMixins,tableSortMixins],
@@ -205,7 +206,8 @@ export default {
       switchPost,
       iMultiLineInput,
       iButton,
-      iLoger
+      iLoger,
+      buttonTableSetting
     },
     data(){
       return{

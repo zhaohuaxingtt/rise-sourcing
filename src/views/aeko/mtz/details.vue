@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:53:26
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 15:37:41
  * @Description: 
 -->
 <template>
@@ -35,7 +35,7 @@
         >
           {{ language('BAOCUN', '保存') }}
         </iButton>
-        <button-table-setting @click="edittableHeader" />
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tableList
         height="400"
@@ -124,6 +124,7 @@ import {
   saveAekoMtz,
   removeAekoMtz
 } from '@/api/aeko/mtz'
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 export default {
   mixins: [pageMixins, tableSortMixins],
@@ -133,7 +134,8 @@ export default {
     iInput,
     iDatePicker,
     iPagination,
-    tableList
+    tableList,
+    buttonTableSetting
   },
   inject: ['vm'],
   computed: {

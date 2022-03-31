@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-07-27 14:30:02
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 11:08:28
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 16:37:03
  * @Description: 排程版本查询
  * @FilePath: \front-web\src\views\project\schedulingassistant\scheduleVersion\index.vue
 -->
@@ -22,7 +22,7 @@
           >
             {{ language('LK_XIAZAI', '下载') }}
           </iButton>
-            <button-table-setting @click="edittableHeader" />
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tableList indexKey
@@ -66,10 +66,10 @@ import {
 } from '@/api/project/scheduleVersion'
 // 导入rise附件下载方法
 import {downloadFile} from 'rise/web/components/iFile/lib'
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ filters, pageMixins, tableSortMixins ],
-  components: { iCard, iPagination, iButton, search, tableList },
+  components: { iCard, iPagination, iButton, search, tableList,buttonTableSetting },
   data() {
     return {
       tableTitle,
