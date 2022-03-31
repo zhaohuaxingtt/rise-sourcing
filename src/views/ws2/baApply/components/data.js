@@ -163,21 +163,23 @@ export const indexTableHead = [{
   props: 'carTypeProjectName',
   name: '车型项目',
   key: 'LK_CHEXINGXIANGMU',
-  width: 65,
   tooltip: false
 },{
   props: 'totalAmount',
   name: '总预算金额',
   key: 'LK_BUDGETAMOUNTTOTAL',
+  width: 150,
   tooltip: false
 },{
   props: 'totalApplyAmount',
   name: '总申请投资金额',
   key: 'LK_APPLYINVESTAMOUNTTOTAL',
+  width: 150,
   tooltip: false
 },{
   props: 'totalPointAmount',
   name: '总定点投资金额',
   key: 'LK_FIXEDINVESTTOTAL',
+  width: 150,
   tooltip: false
 }]
