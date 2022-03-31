@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2022-03-09 10:59:58
+ * @LastEditTime: 2022-03-23 16:43:00
  * @LastEditors: YoHo
  * @Description: 定点表格信息
  *
@@ -55,13 +55,14 @@ export const tableTitle = [{
 	name: '冻结日期',
 	key: 'nominationLanguage_DongJieRiQi',
 	tooltip: true,
-  width:100
+  width:120
 },
 {
   props: 'partProjTypeDesc',
   name: '项目类型',
   key: 'nominationLanguage_XingMuLeiXing',
-  tooltip: true
+  tooltip: true,
+  width:120
 },
 {
   props: 'meetingName',
