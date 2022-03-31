@@ -42,7 +42,7 @@ export const loiListSearch = [
 export const letterListTitle=[
   { props: "nominateAppId", name: "定点申请单号", key: "LK_DINGDIANXINDANHAO", tooltip: true},
   { props: "letterNum", name: "定点信编号", key: "LK_DINGDIANXINBIANHAO", tooltip: true,width:120},
-  { props: "parts", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true,width:90 },
+  { props: "parts", name: "RFQ编号", key: "costanalysismanage.RfqBianHao", tooltip: true,width:100 },
   // { props: "supplierNum", name: "供应商号", key: "nominationSupplier.GongYingShangHao", tooltip: true },
   { props: "sapCode", name: "供应商号", key: "GONGYINGSHANGHAO", tooltip: true },
   { props: "svwCode", name: "SVW号", key: "LK_SVWHAO", tooltip: true,width:80},
