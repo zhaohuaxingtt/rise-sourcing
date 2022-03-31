@@ -11,11 +11,11 @@
               <span>Part List</span>
               <div>
                   <!-- <template v-if="isPreview!='1' && !nominationDisabled && !rsDisabled"> -->
-                     <template v-if="isPreview!='1'">
-                     <iButton @click="goToRfq" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TOPARTLIST|跳转至零件清单添加">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
-                     <iButton :loading="saveLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
-                     </template>
-                  <button-table-setting v-if="!isRoutePreview && !isApproval" @click="edittableHeader" />
+                  <template v-if="isPreview!='1'">
+                  <iButton @click="goToRfq" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_TOPARTLIST|跳转至零件清单添加">{{language('LK_PARTLIST_TIAOZHUANZHILINGJIANQINGDANTIAOJIAN','跳转至零件清单添加')}}</iButton>
+                  <iButton :loading="saveLoading" @click="save" v-permission.auto="SOURCING_NOMINATION_ATTATCH_PARTLIST_SAVE|保存">{{language('LK_BAOCUN','保存')}}</iButton>
+                  </template>
+                  <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
               </div>
           </h1>
           <!-- table区域 -->
@@ -104,7 +104,7 @@ import { numberProcessor, toThousands } from "@/utils"
 import { tableTitle } from "./data"
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins:[pageMixins,tableSortMixins],
      components:{
@@ -113,6 +113,7 @@ export default {
         iPagination,
         iInput,
         tablelist,
+        buttonTableSetting
     },
 		filters: {
 			toThousands

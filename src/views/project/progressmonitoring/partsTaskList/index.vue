@@ -35,7 +35,7 @@
           <iButton  @click="handleExport('1')" >{{language('DAOCHUDEIEPQUERENQINGDAN','导出待EP确认清单')}}</iButton>
           <iButton  @click="handleExport('2')" >{{language('DAOCHUDEIMQQUERENQINGDAN','导出待MQ确认清单')}}</iButton>
           <iButton  @click="handleExportAll" :loading="downloadLoading" >{{language('DAOCHUQUANBU','导出全部')}}</iButton>
-          <button-table-setting @click="edittableHeader" />
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tableList indexKey
@@ -104,9 +104,10 @@ import { getDictByCode } from '@/api/dictionary'
 
 import tableList from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iSearch, iSelect, iInput, iButton, iCard, iPagination,iDialog, tableList,iPage },
+  components: { iSearch, iSelect, iInput, iButton, iCard, iPagination,iDialog, tableList,iPage, buttonTableSetting },
   data() {
     return {
       searchList,

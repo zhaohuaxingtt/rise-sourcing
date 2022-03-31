@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-03-21 10:52:19
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 15:36:11
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
 -->
@@ -203,7 +203,7 @@
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
           </iButton>
-          <button-table-setting @click="edittableHeader" />
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <div class="body">
         <!-- 列隐藏显示 -->
@@ -373,13 +373,14 @@ import {floatFixNum} from "../../../approve/approveDetails/data.js"
 
 import { setLogMenu } from "@/utils";
 import qs from 'qs'
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
-  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload, iMultiLineInput },
+  components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload, 
+  buttonTableSetting, iMultiLineInput },
   mixins: [ pageMixins, combine, tableSortMixins ],
   props: {
     aekoInfo: {

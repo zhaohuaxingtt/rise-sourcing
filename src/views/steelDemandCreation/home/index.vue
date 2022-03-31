@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-06-29 17:02:51
- * @LastEditTime: 2022-03-21 11:00:59
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 16:37:18
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\steelDemandCreation\home\index.vue
 -->
@@ -37,7 +37,7 @@
           <el-upload :before-upload='()=>{uploadLoadingAll=true}' :on-success="(r)=>Message(r,1,'uploadLoadingAll')" :on-error="(r)=>Message(r || r.message,2,'uploadLoadingAll')" class="uploadfile margin-left10" :headers="{'token':getToken()}" :action="`${baseUrl}/steelDemand/uploadExcelSteelBatch`" :show-file-list='false'><iButton :loading='uploadLoadingAll' v-permission.auto="SOURCING_STEELDEMANCREATION_UPLOADFILEBATCH|上传文件批量">{{language('SHANGCHUANWENJJIANPILIANG','上传文件（批量）')}}</iButton></el-upload>
           <iButton class="margin-left10" @click="print(1)" :loading='printLoadingOne' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTONCE|打印定点流转单一次性">{{language('DAYINGDINGDANLIUZHUANDAN','打印定点流转单(一次性)')}}</iButton>
           <iButton @click="print(2)" :loading='printLoadingAll' v-permission.auto="SOURCING_STEELDEMANCREATION_PRINTBATCH|打印定点流转单批量">{{language('DAYINGDINGDANLIUZDPILIANG','打印定点流转单（批量）')}}</iButton>
-          <button-table-setting @click="edittableHeader" />
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tablePart
@@ -88,11 +88,12 @@ import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import { selectDictByKeys } from "@/api/dictionary"
 import {getBuyers} from '@/api/letterAndLoi/letter'
 import {user} from '@/config'
+import buttonTableSetting from '@/components/buttonTableSetting'
 import {getToken} from '@/utils'
 // eslint-disable-next-line no-undef
 export default{
   mixins:[pageMixins,tableSortMixins],
-  components:{iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,tablePart,icon, headerNav},
+  components:{iPage,iSearch,iCard,iSelect,iInput,iButton,iPagination,tablePart,icon, headerNav,buttonTableSetting},
     created(){
       this.initSelectOptions()
       this.steeldemandcreation()

@@ -35,7 +35,7 @@
                 <iButton v-permission.auto="LK_LOI_LIST_GUANBI|LOI-关闭"  @click="closeLoi">{{language('LK_GUANBI','关闭')}} </iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_JIHUO|LOI-激活" :loading="btnLoading.activate" @click="activate">{{language('LK_LETTER_JIHUO','激活')}} </iButton>
                 <iButton v-permission.auto="LK_LOI_LIST_EDITREMARK|LOI-编辑备注" @click="editRemark">{{language('LK_BIANJIBEIZHU','编辑备注')}} </iButton>
-                <button-table-setting @click="edittableHeader" />
+                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
             </div> 
         </div>
         <!-- </template> -->
@@ -128,6 +128,7 @@ import {
 import { getDictByCode } from '@/api/dictionary'
 import { numberProcessor } from '@/utils' 
 import {setPretreatmentParams} from '@/utils/tool'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
     name:'loiList',
      mixins: [pageMixins,tableSortMixins],
@@ -142,7 +143,8 @@ export default {
         iCard,
         closeLoiDialog,
         remarkDialog,
-        icon
+        icon,
+        buttonTableSetting
     },
     data(){
         return{
