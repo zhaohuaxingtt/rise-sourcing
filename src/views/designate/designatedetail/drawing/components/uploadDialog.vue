@@ -4,7 +4,7 @@
       <div class="font18 font-weight">{{language('strategicdoc_ShangChuan','上传弹窗')}}</div>
       <div class="control">
         <iButton @click="downloadFile">{{ language('LK_XIAZAI','下载') }}</iButton>
-        <iButton @click="deleteFile">{{ language('LK_SHANCHU','删除') }}</iButton>
+        <iButton @click="deleteFileItem">{{ language('LK_SHANCHU','删除') }}</iButton>
         <upload
           class="upload-trigger"
           :hideTip="true"
@@ -100,6 +100,9 @@ export default {
         fileType: '101',
       }
       this.getDataList(params)
+    },
+    deleteFileItem(){
+      this.deleteFile([],this.getFetchData);
     }
   }
 }

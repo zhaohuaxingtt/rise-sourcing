@@ -8,7 +8,7 @@
     <div :class="isPreview=='1' ? 'decision-header preview-header' : 'decision-header'">
         <div v-if="isPreview=='1'" class="previewHeader">
             <p class="preview-title margin-top20 margin-bottom20">CSC Nomination Recommendation</p>
-            <iButton class="export-btn" :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
+            <iButton class="export-btn" v-if="!isRoutePreview && !isApproval"  :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
         </div>
         <div  class="tab-list">
             <iTabsList v-if="isPreview=='1'"  v-model='defaultTab' @tab-click="handleClick">
@@ -135,6 +135,12 @@ export default {
         isTemp() {
             return this.$route.query.route === 'temp'
         },
+        isRoutePreview() {
+            return this.$route.query.isPreview == 1
+        },
+        isApproval() {
+            return this.$route.query.isApproval === "true"
+        }
     },
     methods:{
         init() {
