@@ -9,7 +9,7 @@
     <iSearch @sure="sure" @reset="reset">
         <el-form>
             <el-form-item v-for="(item,index) in letterListSearch" :key="'letterListSearch_'+index" :label="language(item.labelKey,item.label)" v-permission.dynamic.auto="`${item.permissionKey}|LOI-${item.label}`">
-                <iSelect v-update v-if="item.type === 'select'" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
+                <iSelect clearable v-update v-if="item.type === 'select'" v-model="searchParams[item.props]" :placeholder="language('partsprocure.CHOOSE','请选择')">
                   <el-option v-if="item.props!='show'" value="" :label="language('all','全部')"></el-option>
                   <el-option
                     v-for="item in selectOptions[item.selectOption] || []"
@@ -18,8 +18,8 @@
                     :value="item.value">
                   </el-option>  
                 </iSelect> 
-                <iDatePicker class="datePicker" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
-                <iInput :placeholder="language('partsprocure.CHOOSE','请选择')" v-else v-model="searchParams[item.props]" @input="item.inputType ? handleInput($event, item, searchParams) : ''"></iInput> 
+                <iDatePicker clearable class="datePicker" :placeholder="language('partsprocure.CHOOSE','请选择')" v-else-if="item.type === 'datePicker'" type="daterange"  value-format="yyyy-MM-dd" v-model="searchParams[item.props]"></iDatePicker>
+                <iInput clearable :placeholder="language('partsprocure.CHOOSE','请选择')" v-else v-model="searchParams[item.props]" @input="item.inputType ? handleInput($event, item, searchParams) : ''"></iInput> 
             </el-form-item>
         </el-form>
     </iSearch>

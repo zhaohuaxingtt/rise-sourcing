@@ -18,12 +18,12 @@
            <div class="item">
           <iFormItem :label="language('BIDDING_RFQ/XIANGMUBIANHAO', 'RFQ/项目编号')" prop="rfqCode">
             <iLabel :label="language('BIDDING_RFQ/XIANGMUBIANHAO', 'RFQ/项目编号')" slot="label"></iLabel>
-            <iInput :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqCode"></iInput>
+            <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqCode"></iInput>
           </iFormItem>
 
           <iFormItem :label="language('BIDDING_RFQ/XIANGMUMINGCHENG', 'RFQ/项目名称')" prop="rfqName">
             <iLabel :label="language('BIDDING_RFQ/XIANGMUMINGCHENG', 'RFQ/项目名称')" slot="label"></iLabel>
-            <iInput :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqName"></iInput>
+            <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.rfqName"></iInput>
           </iFormItem>
 
           <iFormItem :label="language('BIDDING_XIANGMULEIXING', '项目类型')" prop="projectType">
@@ -68,6 +68,7 @@
           <iFormItem :label="language('BIDDING_BENLUNRFQGUANBISHIJIAN', '本轮RFQ关闭时间')" prop="rfqEndTime">
             <iLabel :label="language('BIDDING_BENLUNRFQGUANBISHIJIAN', '本轮RFQ关闭时间')" slot="label"></iLabel>
             <iDatePicker
+              clearable
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
               type="datetime"
@@ -79,6 +80,7 @@
           <iFormItem :label="language('BIDDING_KAISHISHIJIAN', '开始时间')" prop="openTenderTime">
             <iLabel :label="language('BIDDING_KAISHISHIJIAN', '开始时间')" slot="label"></iLabel>
             <iDatePicker
+              clearable
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
               type="datetime"
@@ -90,6 +92,7 @@
           <iFormItem :label="language('BIDDING_JIESHUSHIJIAN', '结束时间')" prop="biddingBeginTime">
             <iLabel :label="language('BIDDING_JIESHUSHIJIAN', '结束时间')" slot="label"></iLabel>
             <iDatePicker
+              clearable
               format="yyyy-MM-dd"
               value-format="yyyy-MM-dd"
               type="datetime"
@@ -114,12 +117,12 @@
 
           <iFormItem :label="language('BIDDING_CHUANGJIANREN', '创建人')" prop="createName">
             <iLabel :label="language('BIDDING_CHUANGJIANREN', '创建人')" slot="label"></iLabel>
-            <iInput :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.createName"></iInput>
+            <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.createName"></iInput>
           </iFormItem>
 
           <iFormItem :label="language('BIDDING_LINGJIANHAO', '零件号')" prop="partNumber">
             <iLabel :label="language('BIDDING_LINGJIANHAO', '零件号')" slot="label"></iLabel>
-            <iInput :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.partNumber"></iInput>
+            <iInput clearable :placeholder="language('BIDDING_QINGSHURU', '请输入')" v-model="ruleForm.partNumber"></iInput>
           </iFormItem>
           </div>
           <div class="item-button">
