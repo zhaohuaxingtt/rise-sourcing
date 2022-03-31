@@ -156,6 +156,7 @@
                   {{ language('LK_CHUANGJIANDINGDIANSHENQINGS','创建定点申请') }}
                 </iButton>
                 <iButton @click="exportTable" v-permission.auto="PARTSRFQ_EXPORT|导出">{{ language('LK_DAOCHUS','导出') }}</iButton>
+                <button-table-setting @click="edittableHeader" />
               </div>
             </div>
             <tablelist

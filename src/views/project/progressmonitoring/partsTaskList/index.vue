@@ -50,6 +50,19 @@
                  :handleSaveSetting="handleSaveSetting"
                  :handleResetSetting="handleResetSetting"
       >
+        <template #partNum="scope">
+          <span style="white-space:pre;">{{scope.row.partNum}}</span>
+        </template>
+        <template #partSort="scope">
+          <iSelect v-model="scope.row['partSort']" @change="val => handleSelectChange(val, scope.row)">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="(item, index) in  selectOptions['partTaskPartSort']"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </template>
 
       </tableList>
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"

@@ -2,11 +2,13 @@
  * @version: 1.0
  * @Author: zbin
  * @Date: 2021-06-17 13:46:18
- * @LastEditors: YoHo
+ * @LastEditors: Please set LastEditors
  * @Descripttion: 专项分析工具
 -->
 <template>
-  <div class="specialAnalysisTool" v-loading="loading">
+  <div class="specialAnalysisTool"
+       v-loading.fullscreen="loading">
+
     <enterSpecificAnalysisToolsDialog :keyword="keyword"
                                       @getDataList="getDataList"
                                       v-model="viewModelDialog" />
@@ -46,15 +48,15 @@ export default {
       viewModelDialog: false,
       cardData: [],
       keyword: '',
-      loading:true,
+      loading: false,
     };
   },
   created () {
     this.getDataList('', '', '', '', '');
     console.log(this.whiteBtnList);
   },
-  computed:{
-    whiteBtnList() {
+  computed: {
+    whiteBtnList () {
       return this.$store.state.permission.whiteBtnList
     }
   },
@@ -133,6 +135,7 @@ export default {
         materialGroup: categoryName,
         spareParts: this.$store.state.rfq.spareParts,
       };
+      this.loading = true
       totalOverview(pms)
         .then((res) => {
           if (res.result) {
@@ -154,44 +157,41 @@ export default {
               }
               switch (item.title) {
                 case 'BoB(Best of Best)':
-                  item.permission="WORKBENCH_RFQ_TPZS_CARD_BOB";
+                  item.permission = "WORKBENCH_RFQ_TPZS_CARD_BOB";
                   item.imgUrl = BoB;
                   break;
                 case 'Volume Pricing':
-                  item.permission="WORKBENCH_RFQ_TPZS_CARD_VP";
+                  item.permission = "WORKBENCH_RFQ_TPZS_CARD_VP";
                   item.imgUrl = VP;
                   break;
                 case 'Pricing Index':
-                  item.permission="WORKBENCH_RFQ_TPZS_CARD_PI";
+                  item.permission = "WORKBENCH_RFQ_TPZS_CARD_PI";
                   item.imgUrl = PI;
                   break;
                 case 'MEK':
-                  item.permission="WORKBENCH_RFQ_TPZS_CARD_MEK";
+                  item.permission = "WORKBENCH_RFQ_TPZS_CARD_MEK";
                   item.imgUrl = MEK;
                   break;
                 case 'TIA':
-                  item.permission="WORKBENCH_RFQ_TPZS_CARD_TIA";
+                  item.permission = "WORKBENCH_RFQ_TPZS_CARD_TIA";
                   item.imgUrl = TIA;
                   break;
                 case 'PCA':
-                  item.permission="WORKBENCH_RFQ_TPZS_CARD_PCA";
+                  item.permission = "WORKBENCH_RFQ_TPZS_CARD_PCA";
                   item.imgUrl = PCA;
                   break;
                 case 'Bid-Link':
-                  item.permission="WORKBENCH_RFQ_TPZS_CARD_BL";
+                  item.permission = "WORKBENCH_RFQ_TPZS_CARD_BL";
                   item.imgUrl = BL;
                   break;
                 default:
                   break;
               }
             });
-
-
-            console.log(this.cardData)
+            this.loading = false
           }
-          this.loading = false
         })
-        .catch((error) => { 
+        .catch((error) => {
           this.loading = false
         });
     },
@@ -203,7 +203,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.specialAnalysisTool{
+.specialAnalysisTool {
   height: calc(100% - 67px);
 }
 ::v-deep .el-col-12 {

@@ -12,6 +12,8 @@
       <div key="1" v-if="!editStatus">
         <!-- 转派--该评分任务的协调人 -->
         <iButton v-if="rfqInfo.coordinatorId == userInfo.id" @click="forwardDialogVisible = true" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_TRANSFER|转派">{{ language("LK_ZHUANPAI", "转派") }}</iButton>
+        <!-- 撤回 -->
+        <iButton v-if="rfqInfo.hasShowRecall" :loading="recallLoading" @click="handleRecall">{{ language("CHEHUI", "撤回") }}</iButton>
         <!-- 退回至采购员 编辑 提交---该评分任务的评分人 -->
         <iButton v-if="rfqInfo.hasShowBack" :loading="backLoading" @click="handleBack" v-permission.auto="SUPPLIERSCORE_RFQDETAIL_SUPPLIERSCORE_SCORE_BUTTON_BACK|退回至采购员">{{ language("TUIHUIZHICAIGOUYUAN", "退回至采购员") }}</iButton>
         <!-- 编辑/提交  状态为待评分/待提交 该评分任务的评分 -->
@@ -145,7 +147,7 @@ import remarkDialog from "@/views/supplierscore/components/remarkDialog"
 import { pageMixins } from "@/utils/pageMixins"
 import { scoreTableTitle as tableTitle, deptScoreTableTitle } from "../data"
 import { cloneDeep, isEqual } from "lodash"
-import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo } from "@/api/supplierscore"
+import { getRfqBdlRatingsByCurrentDept, forward, backRfqBdlRatings, submitRfqBdlRatings, approveRfqBdlRatings, rejectRfqBdlRatings, updateRfqBdlRatings, updateRfqBdlRatingMemo, recallRate } from "@/api/supplierscore"
 import { afterSaleLeaderIds } from "@/views/supplierscore/components/data"
 import { numberProcessor } from "@/utils"
 import { selectDictByKeys } from "@/api/dictionary"
@@ -219,6 +221,7 @@ export default {
       mqGrage:[],
       epGrade:[],
       affixGrade:[],
+      recallLoading: false
     }
   },
   methods: {
@@ -561,6 +564,27 @@ export default {
     selectInit(){
       if(this.editStatus) return false
       else return true
+    },
+    // 撤回评分
+    handleRecall() {
+      if (!this.multipleSelection.length) return iMessage.warn(this.language('createparts.QingXuanZeZhiShaoYiTiaoShuJu','请选择至少一条数据'))
+      if (this.multipleSelection.some(item => item.rateStatus !== "评分完成")) return iMessage.warn(this.language('BUNENGBAOHANPINGFENWEIWANCHENGDESHUJU', '不能包含评分未完成的数据'))
+
+      this.$confirm(this.language('PINGFENRENWURECALLTIPS', '评分任务将撤回至待评分状态，是否确认撤回')).then(() => {
+        this.recallLoading = true
+        recallRate(this.multipleSelection.map(item => item.id))
+        .then(res => {
+          const message = this.$i18n.locale === "zh" ? res.desZh : res.desEn
+
+          if (res.code == 200) {
+            iMessage.success(message)
+            this.getRfqBdlRatingsByCurrentDept()
+          } else {
+            iMessage.error(message)
+          }
+        })
+        .finally(() => this.recallLoading = false)
+      })
     }
   }
 }

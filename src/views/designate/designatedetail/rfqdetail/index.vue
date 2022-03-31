@@ -24,6 +24,7 @@
           <iButton v-if="!nominationDisabled && !rsDisabled" @click="deleteRfq" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_DELETERFQ|删除RFQ">{{language('SHANCHU','删除')}}</iButton>
         
           
+          <button-table-setting class="margin-top10" @click="edittableHeader('rfqTable')" />
         </div>
       </div>
       <tableList
@@ -88,6 +89,7 @@
             @click="handleClickByCancelSelected">
             {{ language("QUXIAOSHENQING", "取消申请") }}
           </iButton>
+          <button-table-setting class="margin-top10" @click="edittableHeader('partTable')" />
         </div>
       </div>
       <tableList

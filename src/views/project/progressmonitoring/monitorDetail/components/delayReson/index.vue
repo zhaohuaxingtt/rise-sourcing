@@ -20,13 +20,16 @@
         <span>
           <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton>
+          <button-table-setting @click="edittableHeader" />
         </span>
       </div> 
     </template> 
     <div class="tableWrapper" > 
       <tableList indexKey
+                 index
                  ref="tableList"
                  :lang="true"
+                 :height="600"
                  :tableTitle="tableTitle"
                  :tableData="tableList"
                  :tableLoading="tableLoading"
@@ -35,13 +38,26 @@
                  :handleSaveSetting="handleSaveSetting"
                  :handleResetSetting="handleResetSetting"
       >
+      <template #fsId="scope">
+          <iSelect v-model="scope.row['fsId']" @change="val => handleSelectChange(val, scope.row)">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="(item, index) in scope.row.selectOption"
+              :key="index"
+            ></el-option>
+          </iSelect>
+      </template>
+      <template #confirmDateDeadline="scope">
+          <iDatePicker value-format="yyyy-MM-dd" v-model="scope.row['confirmDateDeadline']" />
+      </template>
       </tableList> 
     </div> 
   </iDialog> 
 </template> 
 
 <script> 
-import { iDialog, iButton, iMessage } from 'rise' 
+import { iDialog, iButton, iMessage,iSelect,iDatePicker } from 'rise' 
 import { tableTitle } from './data'
 import tableList from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
