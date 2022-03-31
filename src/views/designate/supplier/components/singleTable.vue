@@ -5,7 +5,7 @@
           {{ language("LK_DANYIGONGYINGSHANG",'单一供应商') }}</span
         >
         <div class="floatright">
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          
           <template  v-if="singleEditControl">
             <!-- 批量编辑 -->
             <iButton @click="handleBatchEdit" v-permission.auto="SOURCING_NOMINATION_SUPPLIER_SINGLE_BATCHEDIT|批量编辑">
@@ -45,6 +45,7 @@
               {{ language("nominationSupplier_Export",'导出') }}
             </iButton>
           </template>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tablelist
@@ -159,7 +160,7 @@ import { getDictByCode } from '@/api/dictionary'
 import { excelExport } from '@/utils/filedowLoad'
 import { pageMixins } from '@/utils/pageMixins'
 import filters from "@/utils/filters"
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ filters, pageMixins,tableSortMixins ],
   components: {
@@ -169,7 +170,8 @@ export default {
     // iPagination,
     tablelist,
     partDialog,
-    batchEditDialog
+    batchEditDialog,
+    buttonTableSetting
   },
   data() {
     return {

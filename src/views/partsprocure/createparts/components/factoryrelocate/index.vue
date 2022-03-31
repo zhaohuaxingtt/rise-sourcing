@@ -1,8 +1,8 @@
 <!--
  * @Author: YUSZHOU
  * @Date: 2021-05-24 17:17:01
- * @LastEditTime: 2022-01-26 15:00:06
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 15:52:55
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-sourcing\src\views\partsprocure\createparts\components\factoryrelocate\index.vue
 -->
@@ -19,7 +19,7 @@
     </div>
     <iCard class="margin-top40">
       <div class="textalineright margin-bottom20">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         <iButton v-permission.auto="FACTORYRELOCATE_DOWNLOAD|工厂迁移-下载模板">{{language('DUNLOADTEMPATE','下载模板')}}</iButton>
         <iButton v-permission.auto="FACTORYRELOCATE_UPLOAD|工厂迁移-上传文件">{{language('UPLOADFILE','上传文件')}}</iButton>
       </div> 
@@ -63,10 +63,12 @@ import {factoryTranslate} from '@/api/partsprocure/editordetail'
 import { navList, noOnlineText } from "../data"
 import tablelist from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   components:{
     iCard,iButton,iPagination,iPage,iNavMvp,
     tablelist,
+    buttonTableSetting
   },
   mixins:[pageMixins,tableSortMixins],
   data(){

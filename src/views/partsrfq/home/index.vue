@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2022-03-25 15:57:18
+ * @LastEditTime: 2022-03-25 17:15:28
  * @LastEditors: YoHo
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
@@ -120,7 +120,7 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{ language('LK_RFQZONGHEGUANLI','RFQ综合管理') }}</span>
               <div class="floatright">
-                <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 <!--激活RFQ：仅前期采购员有该按钮权限。已经关闭的RFQ，如果需要再次打开时，点击该键-->
                 <iButton @click="editRfq('02')" :loading="activateButtonLoading" v-permission.auto="PARTSRFQ_ACTIVATERFQ|激活RFQ">
                   {{ language('LK_JIHUORFQS','激活RFQ') }}
@@ -273,7 +273,7 @@ import { selectDictByRootKeys } from '@/api/dictionary'
 import {setPretreatmentParams} from '@/utils/tool'
 import assignInquiryBuyerDialog from './components/assignInquiryBuyer'
 import { getCarTypeSop } from "@/api/partsprocure/editordetail";
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -292,7 +292,8 @@ export default {
     scoringDeptDialog,
     nominateTypeDialog,
     assignInquiryBuyerDialog,
-    headerNav
+    headerNav,
+    buttonTableSetting
   },
   mixins: [pageMixins, filters, rfqCommonFunMixins,tableSortMixins],
   data() {
