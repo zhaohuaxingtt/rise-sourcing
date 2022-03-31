@@ -1,35 +1,41 @@
+/*
+ * @Author: YoHo
+ * @Date: 2022-03-29 22:37:36
+ * @LastEditTime: 2022-03-31 00:25:23
+ * @LastEditors: YoHo
+ * @Description: 
+ */
 // 生产
-export const nomalTableTitle = [
-  {props:'fsnrGsnrNum',name:'FS No.', key: "", minWidth: 50},
-  {props:'partNo',name:'Part No.', key: "", minWidth: 64},
-  {props:'partNum',name:'Old', enName:'Part No.',key: "", minWidth: 62}, // 12/24 业务说取partNum
-  // {props:'oldPartNum',name:'Old Part No.', key: "", minWidth: 95}, // oldPartNo => partNo
-  {props:'oldAPrice',name:'Old', enName:'A Price', key: "", minWidth: 58},
-  {props:'partName',name:'Part Name', key: "", minWidth: 76},
-  {props:'unit',name:'Unit', key: "", minWidth: 45},
-  {props:'tpDep',name:'TP Dep.',  key: "", minWidth: 60},
-  {props:'zp',name:'ZP',  key: "", minWidth: 30},
-  {props:'project',name:'Project',  key: "", minWidth: 60},
-  {props:'sapCode',name:'Supplier No.', key: "", minWidth: 86},
-  {props:'supplierName',name:'Supplier Name',  key: "", minWidth: 100},
-  {props:'prodLocation',name:'Location',  key: "", minWidth: 66},
-  {props:'cfTargetAPrice',name:'CF', enName:'A Price', key: "", minWidth: 50},
-  {props:'cfTargetBPrice',name:'CF', enName:'B Price', key: "", minWidth: 50},
-  {props:'rw',name:'RW', key: "", minWidth: 30},
-  {props:'partProjectTypeDesc',name:'Type', key: "", minWidth: 55},
-  {props:'aprice',name:'A Price', key: "", minWidth: 50},
-  {props:'bprice',name:'B Price', key: "", minWidth: 50},
-  {props:'packPrice',name:'Packing', key: "", minWidth: 60},
-  {props:'transportPrice',name:'Transportation', key: "", minWidth: 100},
-  {props:'operatePrice',name:'Operation', key: "", minWidth: 72},
-  {props:'investFee',name:'Invest',enName:'(no tax)',key: "", minWidth: 50},
-  {props:'share',name:'Share',enName:'(%)',key: "", minWidth: 48},
-  {props:'ltc',name:'LTC', key: "", minWidth: 34},
-  {props:'beginYearReduce',name:'LTC Date', key: "", minWidth: 66},
-  {props:'demand',name:'Annual Demand', enName:'(K)', key: "", minWidth: 100},
-  {props:'output',name:'Annual Capa.', enName:'(K)', key: "", minWidth: 90},
-  {props:'turnover',name:'Purchase Price', key: "", minWidth: 100},
-  {props:'g',name:'Notes', key: "", minWidth: 50},
+export const nomalTableTitleSub = [
+  { props: 'fsnrGsnrNum', name: 'FS号', key: '', minWidth: 95, fixed: true },
+  { props: 'partNo', name: '零件号', key: '', minWidth: 76, fixed: true },
+  { props: 'partNum', name: '原零件号', key: '', minWidth: 76 }, // 12/24 业务说取partNum
+  { props: 'oldAPrice', name: '原A价', key: '', minWidth: 49 },
+  { props: 'partName', name: '零件名称', key: '', minWidth: 67 },
+  { props: 'unit', name: '零件', subItem:['单位'], key: '', minWidth: 33 },
+  { props: 'tpDep', name: 'E-line', key: '', minWidth: 48 },
+  { props: 'zp', name: 'ZP属性', key: '', minWidth: 49 },
+  { props: 'project', name: '项目名称', key: '', minWidth: 61 },
+  { props: 'svwCode', name: '厂商', subItem:['号'], key: '', minWidth: 33 },
+  { props: 'supplierName', name: '供应商名称', key: '', minWidth: 80 },
+  { props: 'prodLocation', name: '产地', key: '', minWidth: 57 },
+  { props: 'cfTargetAPrice', name: '财务目', subItem:['标A价'], key: '', minWidth: 57 },
+  { props: 'cfTargetBPrice', name: '财务目', subItem:['标B价'], key: '', minWidth: 57 },
+  // { props: 'rw', name: '欧价', key: '', minWidth: 54 },
+  { props: 'status', name: '状态', key: '', minWidth: 38 },
+  { props: 'aprice', name: 'A价', key: '', minWidth: 57 },
+  { props: 'bprice', name: 'B价', key: '', minWidth: 57 },
+  { props: 'packPrice', name: '包装费', key: '', minWidth: 47 },
+  { props: 'transportPrice', name: '运输费', key: '', minWidth: 47 },
+  { props: 'operatePrice', name: '操作费', key: '', minWidth: 47 },
+  { props: 'investFee', name: '投资费', subItem:['(不含税)'], key: '', minWidth: 56 },
+  { props: 'share', name: '份额(%)', key: '', minWidth: 53 },
+  { props: 'ltc', name:'年降', key: '', minWidth: 48 },
+  { props: 'beginYearReduce', name: '年降开', subItem:['始时间'], key: '', minWidth: 62 },
+  { props: 'demand', name: '年需', subItem:['求(K)'], key: '', minWidth: 46 },
+  { props: 'output', name: '年产', subItem:['能(K)'], key: '', minWidth: 46 },
+  { props: 'turnover', name: '采购金额', key: '', minWidth: 86 },
+  { props: 'remarks', name: '备注', key: '', minWidth: 200 },
 ]
 
 // 附件列表
@@ -77,4 +83,31 @@ export const sparePartTableTitle = [
   {props:'ltc',name:'LTC', key: "", minWidth: 90},
   {props:'beginYearReduce',name:'Start Time of LTC', key: "", minWidth: 120},
   {props:'g',name:'Remark', key: "", minWidth: 80},
+]
+
+export const gsTableTitleSub = [
+  { props: 'fsnrGsnrNum', name: 'GS号', key: "", minWidth: 90, fixed: true },
+  { props: 'partNo', name: '零件号', key: '', minWidth: 95, fixed: true },
+  { props: 'status', name: '供货状态', key: '', minWidth: 90 },
+  { props: 'partName', name: '零件名称', key: '', minWidth: 110 },
+  { props: 'unit', name: '零件', subItem:['单位'], key: '', minWidth: 33 },
+  { props: 'carLine', name: '车型', key: '', minWidth: 60 },
+  { props: 'svwCode', name: '厂商', subItem:['号'], key: '', minWidth: 33 },
+  { props: 'supplierName', name: '供应商名称', key: '', minWidth: 80 },
+  { props: 'prodLocation', name: '产地', key: '', minWidth: 57 },
+  { props: 'presentPrice', name: '现供B价', key: '', minWidth: 90 },
+  // { props: 'rw', name: '欧价', key: '', minWidth: 54 },
+  { props: 'aprice', name: 'A价', key: '', minWidth: 57 },
+  { props: 'bprice', name: 'B价', key: '', minWidth: 57 },
+  { props: 'packPrice', name: '包装费', key: '', minWidth: 47 },
+  { props: 'transportPrice', name: '运输费', key: '', minWidth: 47 },
+  { props: 'operatePrice', name: '操作费', key: '', minWidth: 47 },
+  { props: 'investFee', name: '投资费', subItem:['(不含税)'], key: '', minWidth: 56 },
+  { props: 'addFee', name: '认可费', key: '', minWidth: 85 },
+  { props: 'share', name: '份额(%)', key: '', minWidth: 90 },
+  { props: 'ltc', name:'年降', key: '', minWidth: 48 },
+  { props: 'beginYearReduce', name: '年降开', subItem:['始时间'], key: '', minWidth: 62 },
+  { props: 'savingFee', name: '节约值(Mio.)', key: '', minWidth: 100 },
+  { props: 'turnover', name: '采购金额', key: '', minWidth: 86 },
+  { props: 'remarks', name: '备注', key: '', minWidth: 200 }
 ]

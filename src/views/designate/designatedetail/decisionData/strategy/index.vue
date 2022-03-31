@@ -15,7 +15,7 @@
         <iSelect v-model="categoryCode" @change="randomNumber++"> 
           <el-option v-for='(items,index) in catCodeList' :key='index' :value='items.categoryCode' :label="items.categoryCode+'-'+items.categoryName"></el-option> 
         </iSelect>
-        <iButton v-if="categoryCode" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="fileManageButton" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
+        <iButton v-if="categoryCode && !isRoutePreview && !isApproval" v-permission.auto="SOURCING_NOMINATION_ATTATCH_STRATEGY_FILEMANAGE|文件管理" class="fileManageButton" @click="fileDialogVisible = true">{{ language("WENJIANGUANLI", "文件管理") }}</iButton>
       </div>
     </div>
     <imageList class="padding-top20" v-if="images.length" :images="images" />
@@ -60,6 +60,12 @@ export default{
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
     }),
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
+    }
   },
   created() {
     this.nominateAppId = this.$route.query.desinateId

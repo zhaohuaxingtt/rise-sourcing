@@ -137,6 +137,12 @@ export default {
       }),
       isPreview(){
          return this.$store.getters.isPreview;
+      },
+      isRoutePreview() {
+         return this.$route.query.isPreview == 1
+      },
+      isApproval() {
+         return this.$route.query.isApproval === "true"
       }
     },
     methods:{

@@ -13,7 +13,7 @@
       >
       <div class="floatright">
         <!-- 下载 -->
-        <iButton @click="downloadFile" class="btn margin-right10"
+        <iButton v-if="!isRoutePreview && !isApproval" @click="downloadFile" class="btn margin-right10"
         v-permission.auto="SOURCING_NOMINATION_ATTATCH_ATTACHMENT_RSSheet_DOWNLOAD|RSSheet-下载"
         >
           {{ language("strategicdoc_XiaZai",'下载') }}
@@ -126,6 +126,12 @@ export default {
       nominationDisabled: state => state.nomination.nominationDisabled,
       rsDisabled: state => state.nomination.rsDisabled,
     }),
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
+    }
   },
   mounted() {
     this.getFetchDataList()

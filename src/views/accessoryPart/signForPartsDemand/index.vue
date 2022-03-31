@@ -29,7 +29,7 @@
                     </el-option>
                   </template>
                 </iSelect>
-                <iDatePicker v-else-if="item.type === 'date'" value-format="" type="date" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
+                <iDatePicker v-else-if="item.type === 'date'" value-format="yyyy-MM-dd" type="daterange" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')"></iDatePicker>
                 <iMultiLineInput v-else-if="item.type === 'multiLineInput'" v-model="searchParams[item.value]" :title="language(item.key, item.label)" />
                 <iInput v-else v-model="searchParams[item.value]" :placeholder="language('QINGSHURU', '请输入')"></iInput> 
               </el-form-item>
@@ -136,7 +136,9 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
-        sendDate: null
+        startDate: '',
+        endDate:'',
+        sendDate: []
         // showSelf: true
       },
       inquiryDialogVisible: false,
@@ -425,7 +427,9 @@ export default {
         state: '',
         csfUserDept: '',
         csfUserId: '',
-        sendDate: null
+        startDate: '',
+        endDate:'',
+        sendDate: []
         // showSelf: true
       }
 
@@ -491,7 +495,11 @@ export default {
     },
     sure() {
       this.page.currPage = 1
-      this.searchParams.sendDate = this.searchParams.sendDate ? moment(this.searchParams.sendDate).format('YYYY-MM-DDT00:00:00'): null
+      // 若有定点起止时间将其拆分成两个字段
+      const {sendDate=[]} = this.searchParams;
+      this.searchParams.startDate = sendDate[0] || ''
+      this.searchParams.endDate = sendDate[1] || ''
+      // this.searchParams.sendDate = this.searchParams.sendDate ? moment(this.searchParams.sendDate).format('YYYY-MM-DDT00:00:00'): null
       this.getTableList()
     },
     /**
@@ -502,8 +510,10 @@ export default {
      */    
     getTableList() {
       this.tableLoading = true
+      let searchParams = JSON.parse(JSON.stringify(this.searchParams))
+      delete searchParams.sendDate
       const params = {
-        ...this.searchParams,
+        ...searchParams,
         current: this.page.currPage,
         size: this.page.pageSize
       }
