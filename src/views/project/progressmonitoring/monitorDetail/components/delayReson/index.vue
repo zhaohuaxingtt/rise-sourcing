@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 15:56:51
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-31 16:54:09
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -18,9 +18,8 @@
       <div class="chosseProGroup"> 
         <span class="chosseProGroup-title">{{language('FASONGYANWUYUANYINQUEREN','发送延误原因确认')}}</span>
         <span>
-          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton>
-          <button-table-setting @click="edittableHeader" />
+          <button-table-setting @click="edittableHeader"/>
         </span>
       </div> 
     </template> 
@@ -67,7 +66,7 @@ import moment from 'moment'
 import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [tableSortMixins],
-  components: { iDialog, iButton, buttonTableSetting, tableList }, 
+  components: { iDialog, iButton, buttonTableSetting, tableList,iSelect,iDatePicker }, 
   props: { 
     dialogVisible: { type: Boolean, default: false }, 
     cartypeProId: {type:String}, 
