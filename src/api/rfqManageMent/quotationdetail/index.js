@@ -448,7 +448,7 @@ export function getSkdCostSummary(params) {
 // 保存SKD报价成本汇总
 export function saveSkdCostSummary(data) {
   return requst({
-    url: `/part/saveSkdCostSummary`,
+    url: `/part/saveSkdCostSummary?supplierId=${ supplierId() }`,
     method: 'POST',
     data
   })
@@ -601,5 +601,13 @@ export function searchQuotationExchange(params) {
   return requst({
     url: `/part/search-quotation-pro-exchange/${ params.quotationId }`,
     method: 'GET'
+  })
+}
+
+// 更新降价计划
+export function updatePriceReducePlan(data) {
+  return requst({
+    url: `/part/update-price-reduce-plan/${ data.quotationId }`,
+    method: 'POST'
   })
 }

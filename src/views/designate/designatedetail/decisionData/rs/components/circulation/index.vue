@@ -1,20 +1,165 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-01-10 19:59:37
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-30 13:01:47
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
 
 <template>
-  <div :class="isPreview && 'isPreview'">
-    <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
+  <div class="circulation" :class="isPreview && 'isPreview'" v-loading="loading">
+    <div class="rsPdfWrapper">
+      <iCard class="rsCard">
+        <tableList
+          :tableLoading="tableLoading"
+          :selection="false"
+          :tableTitle="tableTitleSub"
+          :tableData="tableData"
+          class="rsTable mainTable"
+          :tableRowClassName="tableRowClassName"
+          border>
+          <template #fsnrGsnrNum="scope">
+            <div>
+              <p>{{ scope.row.fsnrGsnrNum }}</p>
+              <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+            </div>
+          </template>
+          <template #oldAPrice="scope">
+            <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
+          </template>
+          <template #cfTargetAPrice="scope">
+            <span>{{ scope.row.cfTargetAPrice | toThousands(true) }}</span>
+          </template>
+          <template #cfTargetBPrice="scope">
+            <span>{{ scope.row.cfTargetBPrice | toThousands(true) }}</span>
+          </template>
+          <template #rw="scope">
+            <span>{{ scope.row.rw | toThousands(true) }}</span>
+          </template>
+          <template #packPrice="scope">
+            <span>{{ scope.row.packPrice | toThousands(true) }}</span>
+          </template>
+          <template #transportPrice="scope">
+            <span>{{ scope.row.transportPrice | toThousands(true) }}</span>
+          </template>
+          <template #operatePrice="scope">
+            <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
+          </template>
+          <template #turnover="scope">
+            <span>{{ scope.row.turnover | toThousands(true) }}</span>
+          </template>
+
+          <!-- 年降 -->
+          <template #ltc="scope">
+            <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
+          </template>
+
+          <!-- 年降开始时间 -->
+          <template #beginYearReduce="scope">
+            <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
+          </template>
+
+          <template #svwCode="scope">
+            <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
+          </template>
+
+          <template #aprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
+              <p>{{ scope.row.aprice | toThousands(true) }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
+            <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
+          </template>
+
+          <template #bprice="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
+              <p>{{ scope.row.bprice | toThousands(true) }}</p>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
+            <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
+          </template>
+
+          <template #investFee="scope">
+            <div v-if="scope.row.status === 'SKDLC'">
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared">
+                <div>
+                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                  <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+                </div>
+              </el-popover>
+            </div>
+            <span v-else-if="scope.row.status === 'SKD'">
+              <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+            </span>
+            <span v-else>
+              <el-popover
+                placement="top-start"
+                width="200"
+                trigger="hover"
+                :disabled="!scope.row.investFeeIsShared">
+                <div>
+                  <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                  <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+                </div>
+                <div slot="reference">
+                  <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+                </div>
+              </el-popover>
+            </span>
+          </template>
+
+          <template #remarks="scope">
+            <div>
+              <iInput v-if="editStatus" v-model="scope.row.remarks"></iInput>
+              <span v-else>{{ scope.row.remarks }}</span>
+            </div>
+          </template>
+
+          <template #share="scope">
+            <span>{{ +scope.row.share || 0 }}</span>
+          </template>
+        </tableList>
+      </iCard>
+      <rsPdf ref="rsPdf" :nominateId="nominateId"
+        :cardTitle="cardTitle"
+        :basicData="basicData"
+        :titleData="titleData"
+        :tableTitle="tableTitle"
+        :tableData="tableData"
+        :tableList="tableList"
+        :firstCount="firstCount"
+        :count="count"
+        :remarkItem="remarkItem"
+        :projectType="projectType"
+        :isApproval="isApproval"
+        :exchangeRageCurrency="exchangeRageCurrency"
+        :checkList="checkList"
+        :tableHeight="tableHeight"
+        :otherTableHeight="otherTableHeight"
+        :exchangeRate="exchangeRate"
+        :processApplyDate="processApplyDate"
+        />
+    </div>
+    <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
         <div class="title">
           <p>CSC推荐表/CSC Recommendation Sheet会外流转</p>
         </div>
-        <div class="btnWrapper">
+        <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
+          <iButton v-if="!isRoutePreview && !isApproval && !editStatus" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
           <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
@@ -41,22 +186,44 @@
           </iFormItem>
         </div>
       </iFormGroup>
-    </iCard>
-    <iCard :class="!isPreview && 'margin-top20'">
+    </iCard> -->
+    <iCard class="pageCard" :class="!isPreview && 'margin-top20'">
       <template #header>
         <div class="title">
           <p>{{ `流转定点推荐 - ${ cardTitle }` }}</p>
         </div>
-        <div v-if="!(projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN)"
-             class="btnWrapper">
-          <iButton @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+        <div class="btnWrapper">
+          <iButton v-if="!isRoutePreview && !isApproval && !editStatus && !isPreview" @click="editStatus = true">{{ language("BIANJI", "编辑") }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="handleSave">{{ language("BAOCUN", "保存") }}</iButton>
+          <iButton v-if="editStatus" :loading="saveLoading" @click="editStatus = false">{{ language("TUICHUBIANJI", "退出编辑") }}</iButton>
+          <iButton v-if="!isRoutePreview && !isApproval" @click="handleExportPdf">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
         </div>
       </template>
-      <tableList :selection="false"
-                 :tableTitle="tableTitle"
-                 :tableData="tableData"
-                 class="rsTable"
-                 :maxHeight="600">
+      <div class="infos position-compute">
+        <div class="infoWrapper" v-for="(info, $index) in infos" :key="$index">
+          <div class="info">
+            <span class="label">{{ info.name }}：</span>
+            <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
+            <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+            <div v-else>{{ basicData[info.props] }}</div>
+          </div>
+        </div>
+      </div>
+      <tableList
+        max-height="700"
+        :tableLoading="tableLoading"
+        :selection="false"
+        :tableTitle="tableTitle"
+        :tableData="tableData"
+        class="rsTable"
+        :tableRowClassName="tableRowClassName"
+        border>
+        <template #fsnrGsnrNum="scope">
+          <div>
+            <p>{{ scope.row.fsnrGsnrNum }}</p>
+            <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+          </div>
+        </template>
         <template #oldAPrice="scope">
           <span>{{ scope.row.oldAPrice | toThousands(true) }}</span>
         </template>
@@ -69,12 +236,6 @@
         <template #rw="scope">
           <span>{{ scope.row.rw | toThousands(true) }}</span>
         </template>
-        <template #aprice="scope">
-          <span>{{ scope.row.aprice | toThousands(true) }}</span>
-        </template>
-        <template #bprice="scope">
-          <span>{{ scope.row.bprice | toThousands(true) }}</span>
-        </template>
         <template #packPrice="scope">
           <span>{{ scope.row.packPrice | toThousands(true) }}</span>
         </template>
@@ -84,13 +245,9 @@
         <template #operatePrice="scope">
           <span>{{ scope.row.operatePrice | toThousands(true) }}</span>
         </template>
-        <template #investFee="scope">
-          <span>{{ scope.row.investFee | toThousands(true) }}</span>
-        </template>
         <template #turnover="scope">
           <span>{{ scope.row.turnover | toThousands(true) }}</span>
         </template>
-
 
         <!-- 年降 -->
         <template #ltc="scope">
@@ -102,74 +259,134 @@
           <span>{{resetLtcData(scope.row.ltcs,'beginYearReduce')}}</span>
         </template>
 
-        <template #sapCode="scope">
-          <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
+        <template #svwCode="scope">
+          <span>{{ scope.row.svwCode || scope.row.svwTempCode }}</span>
         </template>
 
         <template #aprice="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdAPrice | toThousands }}</p>
-            <p>{{ scope.row.aprice | toThousands }}</p>
+            <p>{{ scope.row.skdAPrice | toThousands(true) }}</p>
+            <p>{{ scope.row.aprice | toThousands(true) }}</p>
           </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.aprice | toThousands }}</span>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdAPrice | toThousands(true) }}</span>
+          <span v-else>{{ scope.row.aprice | toThousands(true) }}</span>
         </template>
 
         <template #bprice="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdBPrice | toThousands }}</p>
-            <p>{{ scope.row.bprice | toThousands }}</p>
+            <p>{{ scope.row.skdBPrice | toThousands(true) }}</p>
+            <p>{{ scope.row.bprice | toThousands(true) }}</p>
           </div>
-          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands }}</span>
-          <span v-else>{{ scope.row.bprice | toThousands }}</span>
+          <span v-else-if="scope.row.status === 'SKD'">{{ scope.row.skdBPrice | toThousands(true) }}</span>
+          <span v-else>{{ scope.row.bprice | toThousands(true) }}</span>
         </template>
 
         <template #investFee="scope">
           <div v-if="scope.row.status === 'SKDLC'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
+                <p><span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span></p>
+              </div>
+            </el-popover>
           </div>
           <span v-else-if="scope.row.status === 'SKD'">
-            <p>{{ scope.row.skdInvestFee | toThousands }}</p>
+            <p>{{ scope.row.skdInvestFee | toThousands(true) }}</p>
           </span>
           <span v-else>
-            <p>{{ scope.row.investFee | toThousands }}</p>
+            <el-popover
+              placement="top-start"
+              width="200"
+              trigger="hover"
+              :disabled="!scope.row.investFeeIsShared">
+              <div>
+                <div>分摊金额：{{ scope.row.moldApportionPrice || "0.00" }}</div>
+                <div>未分摊金额：{{ scope.row.unShareInvestPrice || "0.00" }}</div>
+              </div>
+              <div slot="reference">
+                <span v-if="scope.row.investFeeIsShared" style="color: red">*</span> <span>{{ scope.row.investFee | toThousands(true) }}</span>
+              </div>
+            </el-popover>
           </span>
         </template>
-      </tableList>
-    </iCard>
-    <iCard :title="language('BEIZHU','备注')"
-           :class="!isPreview && 'margin-top20'">
-      <template slot="header-control"
-                v-if="!isPreview">
-        <iButton v-if="!isEdit"
-                 @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
-        <template v-else>
-          <iButton @click="handleDeleteRemark">{{language('SHANCHU','删除')}}</iButton>
-          <iButton @click="handleAddRemark">{{language('TIANJIA','添加')}}</iButton>
-          <iButton @click="handleSaveRemarks"
-                   :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
-          <iButton @click="cancelEdit">{{language('QUXIAO','取消')}}</iButton>
+
+        <template #remarks="scope">
+          <div>
+            <iInput v-if="editStatus" v-model="scope.row.remarks"></iInput>
+            <span v-else>{{ scope.row.remarks }}</span>
+          </div>
         </template>
-      </template>
-      <div class="meetingRemark">
-        <div class="meetingRemark-item"
-             v-for="(item, index) in remarkItem"
-             :key="index">
-          <el-checkbox v-if="!isPreview"
-                       v-model="item.checked"></el-checkbox>
-          <iInput v-model="item.value"
-                  class="margin-top10"
-                  :class="!isPreview && 'margin-left20'"
-                  type="textarea"
-                  :rows="3"
-                  resize="none"></iInput>
+
+        <template #share="scope">
+          <span>{{ +scope.row.share || 0 }}</span>
+        </template>
+      </tableList>
+      <div class="position-compute out-compute">
+        <div class="beizhu">
+          备注 Remarks:
+          <div class="beizhu-value">
+            <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+          </div>
+        </div>
+        </div>
+    </iCard>
+    <div v-if="!isRoutePreview && !isApproval">
+      <iCard :title="language('BEIZHU','备注')"
+            :class="!isPreview && 'margin-top20'">
+        <template slot="header-control" v-if="!isPreview">
+          <iButton v-if="!isRoutePreview && !isApproval && !isEdit" @click="handleEdit">{{language('BIANJI','编辑')}}</iButton>
+          <template v-else>
+            <iButton @click="handleDeleteRemark">{{language('SHANCHU','删除')}}</iButton>
+            <iButton @click="handleAddRemark">{{language('TIANJIA','添加')}}</iButton>
+            <iButton @click="handleSaveRemarks"
+                    :loading="saveLoading">{{language('BAOCUN','保存')}}</iButton>
+            <iButton @click="cancelEdit">{{language('QUXIAO','取消')}}</iButton>
+          </template>
+        </template>
+        <div class="meetingRemark">
+          <div class="meetingRemark-item"
+              v-for="(item, index) in remarkItem"
+              :key="index">
+            <el-checkbox v-if="!isPreview"
+                        v-model="item.checked"></el-checkbox>
+            <iInput v-model="item.value"
+                    class="margin-top10"
+                    :class="!isPreview && 'margin-left20'"
+                    type="textarea"
+                    :rows="3"
+                    resize="none"></iInput>
+          </div>
+        </div>
+      </iCard>
+    </div>
+    <iCard class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="'Application Date：'+processApplyDate">
+      <div class="checkList">
+        <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+          <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
+          <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
+          <div v-else class="" >-</div>
+          <div class="checkList-item-info">
+            <span>Dept.:</span>
+            <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+          </div>
+          <div class="checkList-item-info">
+            <span>Date:</span>
+            <span>{{item.approveDate}}</span>
+          </div>
         </div>
       </div>
     </iCard>
     <iCard :title="language('JINGLINGJIANAOCARD','上传仅零件号变更单')"
-           class="margin-top20"
-           v-if="$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI">
+          class="margin-top20"
+          v-if="$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI">
       <div class="text-align-right margin-bottom20">
         <Upload hideTip
                 @on-success='upLoadsucess'
@@ -178,33 +395,32 @@
         <iButton @click='deleteFile'>删除</iButton>
       </div>
       <tableList :tableTitle="fileTableTitle"
-                 @handleSelectionChange="(r)=>fileTableSelect=r"
-                 :tableData="fileTableData"
-                 :activeItems='"fileName"'
-                 @openPage="handleOpenPage">
+                @handleSelectionChange="(r)=>fileTableSelect=r"
+                :tableData="fileTableData"
+                :activeItems='"fileName"'
+                @openPage="handleOpenPage">
       </tableList>
       <iPagination v-update
-                   class="margin-top30"
-                   @size-change="handleSizeChange($event, getFileList)"
-                   @current-change="handleCurrentChange($event, getFileList)"
-                   background
-                   :current-page="page.currPage"
-                   :page-sizes="page.pageSizes"
-                   :page-size="page.pageSize"
-                   :layout="page.layout"
-                   :total="page.totalCount" />
+                  class="margin-top30"
+                  @size-change="handleSizeChange($event, getFileList)"
+                  @current-change="handleCurrentChange($event, getFileList)"
+                  background
+                  :current-page="page.currPage"
+                  :page-sizes="page.pageSizes"
+                  :page-size="page.pageSize"
+                  :layout="page.layout"
+                  :total="page.totalCount" />
     </iCard>
-    <div class="rsPdfWrapper">
-      <rsPdf ref="rsPdf" :nominateId="nominateId"/>
-    </div>
+    <canvas id="myCanvas"></canvas>
   </div>
 </template>
 
 <script>
-import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination } from 'rise'
-import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle } from './data'
+import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination, icon } from 'rise'
+import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos } from './data'
+import { resetLtcData } from '../meeting/data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
-import { getList, getRemark, updateRemark } from '@/api/designate/decisiondata/rs'
+import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate, getDepartApproval } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
 import { partProjTypes, fileType } from '@/config'
 import Upload from '@/components/Upload'
@@ -213,20 +429,29 @@ import { pageMixins } from '@/utils/pageMixins'
 import { transverseDownloadPDF } from "@/utils/pdf"
 import rsPdf from "./rsPdf"
 import { toThousands } from "@/utils"
+import { decisionDownloadPdfLogo } from '@/api/designate'
+
+import { nomalTableTitleSub } from "./pdfData"
+import {
+    uploadUdFile
+} from '@/api/file/upload'
+import filters from "@/utils/filters"
 
 export default {
-  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf },
+  components: { iCard, tableList, iButton, iInput, iFormGroup, iFormItem, iText, Upload, iPagination, rsPdf, icon },
   props: {
     isPreview: { type: Boolean, default: false },
     nominateId: { type: String },
     // projectType: {type:String}
   },
-  mixins: [pageMixins],
+  mixins: [pageMixins, filters],
   filters: {
     toThousands
   },
   data () {
     return {
+      tableList:[],
+      loading: false,
       // 零件项目类型
       partProjTypes,
       fileTableTitle,
@@ -244,11 +469,22 @@ export default {
       // tableTitle: cloneDeep(nomalTableTitle),
       tableData: [],
       remarkItem: [{ value: '', checked: false }, { value: '', checked: false }, { value: '', checked: false }],
-      checkList: checkList,
+      checkList: [],
       isEdit: false,
       saveLoading: false,
       projectType: '',
-      basicData: {}
+      basicData: {},
+      editStatus: false,
+      saveLoading: false,
+      tableLoading: false,
+      firstCount: 0,
+      count: 0,
+      tableHeight:0,
+      otherTableHeight:0,
+      fileList:[],
+      infos,
+      exchangeRate: "",
+      processApplyDate: ""
     }
   },
   computed: {
@@ -277,11 +513,75 @@ export default {
         return sparePartTableTitle
       } else if (this.projectType === partProjTypes.FUJIAN) {
         return accessoryTableTitle
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
+        return gsTableTitle
       }
+
       return nomalTableTitle
+    },
+    tableTitleSub () {
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return sparePartTableTitle
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return accessoryTableTitle
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
+        return gsTableTitle
+      }
+      return nomalTableTitleSub
+    },
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
     }
   },
   methods: {
+    getHeight(){
+      setTimeout(()=>{
+      let dom = this.$refs.rsPdf.$el
+      this.width = dom.offsetWidth  // 打印区域宽度
+      this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
+      console.log(this.pageHeight);
+      let tableHeader = 50  // 表头高度
+      let headerHeight = 84 // 顶部标题高度, 第一页独有
+      let pageLogo = 87     // logo 区域高度
+      let computeHeight = document.getElementsByClassName('position-compute')[0].offsetHeight  // 页面所有固定元素的高度： infos
+      let el = document.getElementsByClassName('Application')[0].offsetHeight  // 审批备注
+      let outEl = document.getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+      // 第一页
+      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - 1  // 表格区域高度, 用div支撑空间
+      // 第二页
+      this.otherTableHeight = this.pageHeight - computeHeight - pageLogo - 21   // 表格区域高度, 用div支撑空间, 减20间距, 1px 偏差
+      let rowList = document.getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+      let arr = []
+      let heightSum = 0
+      let tableList = []
+      rowList.forEach((item,i)=>{
+        heightSum+=item.offsetHeight
+        if(tableList.length==0){
+          if(heightSum<this.tableHeight - tableHeader - outEl - el){
+            arr.push(this.tableData[i])
+          }else{
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.tableData[i]]
+          }
+        }else{
+          if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
+            arr.push(this.tableData[i])
+          }else{
+            tableList.push(JSON.parse(JSON.stringify(arr)))
+            heightSum=item.offsetHeight
+            arr = [this.tableData[i]]
+          }
+        }
+      })
+      tableList.push(JSON.parse(JSON.stringify(arr)))
+      this.tableList = tableList
+      // if(tableList.length==1) this.tableHeight -= 2
+      },1000)
+    },
     downloadFile () {
       if (this.fileTableSelect.length == 0) return iMessage.warn(this.language('NINGHAIWEIXUANZESHUJUWENJIAN', "您当前还未选择列表文件，请选择后重试！"))
       downloadUdFile(this.fileTableSelect.map(r => r.uploadId))
@@ -329,27 +629,29 @@ export default {
         })
     },
     // 单独处理下年降或年降计划
-    resetLtcData (row = [], type) {
-      // 年降开始时间
-      if (type == 'beginYearReduce') {
-        // 取第一个非0的年份
-        const list = row.filter((item) => item.ltcRate != '0.00');
-        return list.length ? list[0].ltcDate : '-'
-      } else { // 年降
-        // 从非0开始至非0截至的数据 不包含0
-        let strList = [];
-        let strFlag = false;
-        for (let i = 0; i < row.length; i++) {
-          if (row[i].ltcRate != '0.00') {
-            strFlag = true;
-            strList.push(row[i].ltcRate);
-          } else if (strFlag && row[i].ltcRate == '0.00') {
-            break
-          }
-        }
-        return strList.length ? strList.join('/') : '-'
-      }
-    },
+    // resetLtcData (row, type) {
+    //   if (!row) return ""
+    //   // 年降开始时间
+    //   if (type == 'beginYearReduce') {
+    //     // 取第一个非0的年份
+    //     const list = row.filter((item) => item.ltcRate != '0.00');
+    //     return list.length ? list[0].ltcDate : '-'
+    //   } else { // 年降
+    //     // 从非0开始至非0截至的数据 不包含0
+    //     let strList = [];
+    //     let strFlag = false;
+    //     for (let i = 0; i < row.length; i++) {
+    //       if (row[i].ltcRate != '0.00') {
+    //         strFlag = true;
+    //         strList.push(row[i].ltcRate);
+    //       } else if (strFlag && row[i].ltcRate == '0.00') {
+    //         break
+    //       }
+    //     }
+    //     return strList.length ? strList.join('/') : '-'
+    //   }
+    // },
+    resetLtcData,
     handleEdit () {
       this.isEdit = true
     },
@@ -395,8 +697,13 @@ export default {
      * @return {*}
      */
     init () {
-      this.getTopList()
+      if (this.isApproval) {
+        this.reviewListRs()
+      } else {
+        this.getTopList()
+      }
       this.getRemark()
+      this.getDepartApproval()
       this.$route.query.partProjType == partProjTypes.JINLINGJIANHAOGENGGAI && this.getFileList()
     },
     /**
@@ -406,11 +713,24 @@ export default {
      * @return {*}
      */
     getTopList () {
+      this.tableLoading = true
+
       getList(this.nominateId).then(res => {
         if (res?.result) {
-          this.basicData = res.data
-          this.tableData = res.data.lines
+          this.basicData = res.data || {}
+          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
           this.projectType = res.data.partProjectType || ''
+          if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
+            this.searchRsPageExchangeRate()
+          } else {
+            if (this.basicData.currencyRateMap) {
+              this.exchangeRate = Object.keys(this.basicData.currencyRateMap).map(key => {
+                return `1${ this.basicData.currencyMap && this.basicData.currencyMap[key] ? this.basicData.currencyMap[key].code : key }=${ this.basicData.currencyRateMap[key] }${ this.basicData.currencyMap.RMB ? this.basicData.currencyMap.RMB.code : 'RMB' }`
+              }).join("<br/>") || "1RMB=1.00RMB"
+            } else {
+              this.exchangeRate = "1RMB=1.00RMB"
+            }
+          }
           // this.projectType = partProjTypes.PEIJIAN
         } else {
           this.basicData = {}
@@ -419,6 +739,50 @@ export default {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
       })
+      .finally(() => {
+        this.tableLoading = false
+        this.$nextTick(()=>{
+          setTimeout(()=>{
+            this.getHeight()
+          },1000)
+        })
+      })
+    },
+    reviewListRs() {
+      this.tableLoading = true
+
+      reviewListRs(this.nominateId)
+      .then(res => {
+        if (res.code == 200) {
+          this.basicData = res.data
+          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
+          this.projectType = res.data.partProjectType || ''
+
+          if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
+            this.searchRsPageExchangeRate()
+          } else {
+            if (this.basicData.currencyRateMap) {
+              this.exchangeRate = Object.keys(this.basicData.currencyRateMap).map(key => {
+                return `1${ this.basicData.currencyMap && this.basicData.currencyMap[key] ? this.basicData.currencyMap[key].code : key }=${ this.basicData.currencyRateMap[key] }${ this.basicData.currencyMap.RMB ? this.basicData.currencyMap.RMB.code : 'RMB' }`
+              }).join("<br/>") || "1RMB=1.00RMB"
+            } else {
+              this.exchangeRate = "1RMB=1.00RMB"
+            }
+          }
+        } else {
+          this.basicData = {}
+          this.tableData = []
+          this.projectType = ''
+          iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => {this.tableLoading = false
+      
+        this.$nextTick(()=>{
+          setTimeout(()=>{
+            this.getHeight()
+          },1000)
+        })})
     },
     /**
      * @Description: 获取备注
@@ -445,24 +809,290 @@ export default {
       })
     },
     handleOpenPage (row) {
-      console.log(row);
       downloadUdFile(row.uploadId)
     },
 
     // 导出pdf
     handleExportPdf() {
-      transverseDownloadPDF({
+      this.fileList = []
+      this.loading = true
+      this.getPdfImage({
         dom: this.$refs.rsPdf.$el,
         pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
         exportPdf: true,
         waterMark: true
       })
-    }
+      // this.createEl()
+      // transverseDownloadPDF({
+      //   dom: this.$refs.rsPdf.$el,
+      //   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+      //   exportPdf: true,
+      //   waterMark: true
+      // })
+    },
+
+    tableRowClassName({ row, rowIndex }) {
+      if (row.isSuggestion) {
+        return "suggestionRow table-row"
+      }
+      return "table-row"
+    },
+
+    // 保存行备注
+    handleSave() {
+      this.saveLoading = true
+
+      updateRsMemo(
+        this.tableData.map(item => ({
+          id: item.nomiMemoId,
+          nominateId: this.nominateId,
+          partProjId: item.partProjId,
+          remarks: item.remarks || "",
+          rfqId: item.rfqId,
+          supplierId: item.supplierId
+        }))
+      )
+      .then(res => {
+        const message = this.$i18n.locale === 'zh' ? res.desZh : res.desEn
+
+        if (res.code == 200) {
+          iMessage.success(message)
+        } else {
+          iMessage.error(message)
+        }
+      })
+      .finally(() => this.saveLoading = false)
+    },
+  // 是否跨页面, 需要分割
+    isSplit(nodes, index, pageHeight) {
+      // 计算当前这块d是否跨越了a4大小，以此分割
+      if (
+        nodes[index].offsetTop + nodes[index].offsetHeight < pageHeight &&
+        nodes[index + 1] &&
+        nodes[index + 1].offsetTop + nodes[index + 1].offsetHeight > pageHeight
+      ) {
+        return true;
+      }
+      return false;
+    },
+    
+    // 创建空白元素,撑开跨页面空间
+    createEl() {
+      let vm = this;
+      const A4_WIDTH = 841.89;
+      const A4_HEIGHT = 595.28;
+      vm.$nextTick(() => {
+        // dom的id。
+        let target = this.$refs.rsPdf.$el;
+        let pageHeight = (target.clientWidth / A4_WIDTH) * A4_HEIGHT; // a4每页对应页面的高度
+        // 获取分割dom，此处为class类名为item的dom
+        let lableListID = document.getElementsByClassName("pdf-item");
+        // 进行分割操作，当dom内容已超出a4的高度，则将该dom前插入一个空dom，把他挤下去，分割
+        for (let i = 0; i < lableListID.length; i++) {
+          let multiple = Math.ceil(
+            (lableListID[i].offsetTop + lableListID[i].offsetHeight) /
+              pageHeight
+          );  // 页码
+          if (this.isSplit(lableListID, i, multiple * pageHeight)) {  // 下一个item节点是否跨域了a4页面
+            let divParent = lableListID[i].parentNode; // 获取该div的父节点
+            let newNode = document.createElement("div");
+            newNode.className = "emptyDiv";
+            newNode.style.background = "transparent";
+            // 当前页高度减去div下边框距顶部高度，等于到底部的距离
+            let _H = multiple * pageHeight - (lableListID[i].offsetTop + lableListID[i].offsetHeight);
+            newNode.style.height = _H + "px";
+            newNode.style.width = "100%";
+            let next = lableListID[i].nextSibling; // 获取div的下一个兄弟节点
+            // 判断兄弟节点是否存在
+            if (next) {
+              // 存在则将新节点插入到div的下一个兄弟节点之前，即div之后
+              divParent.insertBefore(newNode, next);
+            } else {
+              // 不存在则直接添加到最后,appendChild默认添加到divParent的最后
+              divParent.appendChild(newNode);
+            }
+          }
+        }
+      this.getPdfImage({
+        dom: this.$refs.rsPdf.$el,
+        pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+        exportPdf: true,
+        waterMark: true
+      })
+      });
+    },
+    
+    // 截取页面,存入pdf
+    // 截取页面,转图片, 上传服务器
+    getPdfImage({
+      //html横向导出pdf
+      idEle: ele,
+      dom,
+      pdfName: pdfName,
+      callback: callback,
+      exportPdf: exportPdf,
+    }) {
+      let el = "";
+      if (ele) el = document.getElementById(ele);
+      //通过getElementById获取要导出的内容
+      else el = dom;
+      let eleW = el.offsetWidth; // 获得该容器的宽
+      let eleH = el.offsetHeight; // 获得该容器的高
+      var canvasFragment = document.createElement("canvas");
+      canvasFragment.width = eleW; // 将画布宽&&高放大两倍
+      canvasFragment.height = eleH;
+      var context = canvasFragment.getContext("2d");
+      context.scale(2, 2);
+      html2canvas(el, {
+        dpi: 96, //分辨率
+        scale: 1, //设置缩放
+        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+        bgcolor: "#ffffff", //应该这样写
+        logging: false, //打印日志用的 可以不加默认为false
+      }).then(async (canvas) => {
+        var contentWidth = canvas.width; //
+        var contentHeight = canvas.height; //
+        //一页pdf显示html页面生成的canvas高度;
+        var pageHeight = (contentWidth / 841.89) * 595.28; //
+        //未生成pdf的html页面高度
+        var leftHeight = contentHeight; //
+        var ctx = canvas.getContext("2d");
+
+        var copyCanvas = document.getElementById("myCanvas"); // 创建截图画布
+        copyCanvas.width = contentWidth;
+        copyCanvas.height = pageHeight;
+        var ctxs = copyCanvas.getContext("2d");
+        // 保存每一页的画布, 然后清空canvas
+        if (leftHeight <= pageHeight) {
+          var imgData = ctx.getImageData(0, 0, contentWidth, pageHeight); // 截取主画布
+          ctxs.putImageData(imgData, 0, 0); // 插入到截图画布中
+          // 截图画布转为file
+          copyCanvas.toBlob((blob) => {
+            //以时间戳作为文件名 实时区分不同文件
+            let filename = `${new Date().getTime()}.png`;
+            //转换canvas图片数据格式为formData
+            let pdfFile = new File([blob], filename, { type: "image/png" });
+            this.fileList.push({ file: pdfFile });
+          });
+        } else {
+          // 分页
+          var num = 1;
+          while (leftHeight > 0) {
+            ctxs.clearRect(0, 0, contentWidth, pageHeight); //清空截图画布
+            var imgData = ctx.getImageData(
+              0,
+              (num - 1) * pageHeight,
+              contentWidth,
+              pageHeight
+            ); // 截取主画布当前页
+            ctxs.putImageData(imgData, 0, 0); // 插入截图画布
+            // 截图画布转为file
+            await this.getPdfFile(copyCanvas)
+            leftHeight -= pageHeight;
+            // //避免添加空白页
+            if (leftHeight > 0) {
+              num++;
+            }
+          }
+        }
+        // if (callback) {
+        //   callback(pdf, pdfName)
+        // }
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.uploadUdFile();
+          }, 500);
+        });
+      });
+    },
+    async getPdfFile(copyCanvas){
+      return new Promise((r,j)=>{
+        copyCanvas.toBlob((blob) => {
+          //以时间戳作为文件名 实时区分不同文件
+          let filename = `${new Date().getTime()}.png`;
+          let pdfFile = new File([blob], filename, { type: "image/png" });
+          this.fileList.push({ file: pdfFile });
+          r(true)
+        });
+      })
+    },
+    // 下载 pdf 文件
+    async DownloadPdf(){
+      let arr = this.fileList.filter(item=>item.imageUrl)
+      if(arr.length!=this.fileList.length) return
+      const list = this.fileList.map((item)=>item.imageUrl);
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: this.width, height: this.pageHeight})  // 1.2 预留 页脚位置
+      this.loading = false
+    },
+
+    // 上传图片
+    async uploadUdFile(){
+      this.fileList.map((item)=>{
+        uploadUdFile({
+        multifile: item.file
+        }).then(res=>{
+          if(res.code == 200){
+            item['imageUrl'] = res.data[0].path
+            console.log(res.data[0].objectUrl);
+            this.DownloadPdf();
+          }else{
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        });
+      })
+    },
+
+    // 获取汇率
+    searchRsPageExchangeRate() {
+      let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+      searchRsPageExchangeRate(id)
+      .then(res => {
+        if (res.code == 200) {
+          let sourceData = Array.isArray(res.data) ? res.data : []
+
+          sourceData = sourceData
+            .filter(item => !item.isCurrentVersion)
+            .filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
+
+          const current = sourceData[0] ? sourceData[0] : {}
+
+          if (Array.isArray(current.exchangeRateVos)) {
+            this.exchangeRate = current.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join('<br/>') || "1RMB=1.00RMB"
+          } else {
+            this.exchangeRate = "1RMB=1.00RMB"
+          }
+        } else {
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+    },
+
+    // 汇率显示处理
+    exchangeRateProcess(row) {
+      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
+    },
+
+    /**
+     * @Description: 获取部门审批记录
+     */    
+    getDepartApproval() {
+      getDepartApproval(this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId).then(res => {
+        if (res.code == 200) {
+          this.checkList = Array.isArray(res.data.nomiApprovalProcessNodeVOList) ? res.data.nomiApprovalProcessNodeVOList : []
+          this.processApplyDate = res.data.processApplyDate || ''
+        } else {
+          iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
+        }
+      })
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
+#myCanvas{
+  display: none;
+}
 .exchangeRageCurrency + .exchangeRageCurrency {
   margin-left: 20px;
 }
@@ -483,10 +1113,146 @@ export default {
     box-shadow: none;
   }
 }
+.pageCard{
+  ::v-deep .cardHeader{
+    padding: 30px 40px 10px;
+  }
+}
 
 .rsPdfWrapper {
-  width: 0;
+  width: 100%;
   height: 0;
   overflow: hidden;
+  position: relative;
+  top: 0;
+}
+
+.suggestionRow {
+  border: 10px solid red
+}
+
+.circulation {
+  overflow: hidden;
+  .infos {
+    display: flex;
+    padding: 0 0 20px;
+
+    .infoWrapper {
+      flex: 1;
+    
+      .info {
+        font-size: 13px;
+        display: flex;
+        .label {
+          font-weight: 800;
+        }
+      }
+    }
+  }
+  .rsTable {
+    ::v-deep .el-table__header th {
+      .cell {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+    }
+
+    ::v-deep .el-table__row td {
+      .cell {
+        padding-left: 6px;
+        padding-right: 6px;
+      }
+    }
+  }
+  
+  .rsCard {
+    box-shadow: none;
+    & + .rsCard {
+      margin-top: 20px; /*no*/
+    }
+    ::v-deep .cardHeader{
+      padding: 30px 0px;
+    }
+    ::v-deep .cardBody{
+      padding: 0px;
+    }
+  }
+  .mainTable{
+    
+    font-size: 8px; /*no*/
+    &::before {
+      height: 0;
+    }
+    ::v-deep .el-table__header th {
+      padding-top: 8px; /*no*/
+      padding-bottom: 8px; /*no*/
+      & > .cell {
+        padding-left: 3px; /*no*/
+        padding-right: 3px; /*no*/
+        line-height: 14px; /*no*/
+        p {
+          min-height: 16px; /*no*/
+        }
+      }
+    }
+    ::v-deep .el-table__row {
+      border-left: 1px solid #EBEEF5;
+      border-bottom: 1px solid #EBEEF5;
+       td {
+        & > .cell{
+          padding-right: 1px; /*no*/
+          padding-left: 1px; /*no*/
+        }
+      }
+    }
+  }
+  .beizhu {
+    background-color: rgba(22, 96, 241, 0.03);
+    // height: 40px;
+    padding: 12px 14px;
+    font-weight: bold;
+    display: flex;
+    &-value {
+      font-weight: 400;
+      margin-left: 20px;
+    }
+  }
+  
+  .checkDate {
+    ::v-deep .card .cardHeader .title {
+      // font-size: 16px;
+      font-weight: 400;
+      color: rgba(75, 75, 76, 1);
+    }
+  }
+
+  .checkList {
+    display: flex;
+    overflow: auto;
+    &-item {
+      flex-shrink: 0;
+      width: 224px;
+      height: 178px;
+      border-radius: 15px;
+      background-color: rgba(205, 212, 226, 0.12);
+      margin-right: 19px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 30px 22px;
+      font-size: 16px;
+      color: rgba(65, 67, 74, 1);
+      &-info {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-depart {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+    }
+  }
 }
 </style>

@@ -208,6 +208,9 @@
               :handleSaveSetting="handleSaveSetting"
               :handleResetSetting="handleResetSetting"
             >
+              <template #status="scope">
+                <p :class="{ incomplete: scope.row.status === '未完整' }">{{ scope.row.status }}</p>
+              </template>
             </tablelist>
             <!------------------------------------------------------------------------>
             <!--                  表格分页                                          --->
@@ -596,6 +599,9 @@ export default {
       }
     }
   }
-  
+
+  .incomplete {
+    color: #ff8b00;
+  }
 }
 </style>

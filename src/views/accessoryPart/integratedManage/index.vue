@@ -3,6 +3,8 @@
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: YoHo
  * @LastEditTime: 2022-03-23 19:29:07
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-21 10:49:31
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
