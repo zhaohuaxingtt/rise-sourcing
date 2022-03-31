@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:18:01
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 00:52:08
+ * @LastEditTime: 2022-03-31 13:41:05
  * @Description: 流转RS单
  * @FilePath: \front-sourcing\src\views\designate\designatedetail\decisionData\rs\components\circulation\index.vue
 -->
@@ -765,14 +765,15 @@ export default {
       return nomalTableTitleSub
     },
     pageWidth(){
+      // 多加2px 避免出现滚动条
       if (this.projectType === partProjTypes.PEIJIAN) {
         return 2052
       } else if (this.projectType === partProjTypes.FUJIAN) {
         return 2022
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) {
-        return 1720
+        return 1722
       }
-      return 1728
+      return 1730
     },
     isRoutePreview() {
       return this.$route.query.isPreview == 1
@@ -1126,7 +1127,7 @@ export default {
     }) {
       await html2canvas(dom, {
         dpi: 96, //分辨率
-        scale: 1, //设置缩放
+        scale: 2, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: "#ffffff", //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
@@ -1373,9 +1374,14 @@ export default {
       border-left: 1px solid #EBEEF5;
       border-bottom: 1px solid #EBEEF5;
        td {
+        border-top: 1px solid #ccc;
         & > .cell{
           padding-right: 1px; /*no*/
           padding-left: 1px; /*no*/
+          
+          &:first-child{
+          padding-left: 8px; /*no*/
+          }
         }
       }
     }
