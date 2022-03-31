@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 03:34:23
+ * @LastEditTime: 2022-03-31 13:48:24
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -699,16 +699,17 @@ export default {
       return nomalTableTitle
     },
     pageWidth(){
+      // 多加2px 避免出现滚动条
       if (this.projectType === partProjTypes.PEIJIAN) {
-        return 1441
+        return 1443
       } else if (this.projectType === partProjTypes.FUJIAN) {
-        return 1351
+        return 1353
       } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) { //GS零件
-        return 1892
+        return 1893
       } else if (this.projectType === partProjTypes.DBLINGJIAN || this.projectType === partProjTypes.DBYICHIXINGCAIGOU) { //DB零件,DB一次性采购
-        return 1768
+        return 1770
       }
-      return 1544
+      return 1545
     },
     cardTitle() {
       if (this.projectType === partProjTypes.PEIJIAN) {
@@ -1160,7 +1161,7 @@ export default {
     }) {
       await html2canvas(dom, {
         dpi: 96, //分辨率
-        scale: 1, //设置缩放
+        scale: 2, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
         bgcolor: "#ffffff", //应该这样写
         logging: false, //打印日志用的 可以不加默认为false
@@ -1353,6 +1354,20 @@ export default {
       span {
         // zoom: 0.88;
       }
+    }
+  }
+}
+.prototypeList{
+  ::v-deep tr {
+    &:nth-child(even) {
+        background-color: #f7f7ff;
+    }
+  }
+}
+.mainTable{
+  ::v-deep .el-table__row {
+      td {
+      border-top: 1px solid #ccc;
     }
   }
 }

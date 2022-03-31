@@ -14,7 +14,6 @@
       >
         {{ language("TIJIAO", "提交") }}
       </iButton>
-      <!-- <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton> -->
     </div>
     <tableList
         class="margin-top15"

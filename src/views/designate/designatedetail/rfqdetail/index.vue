@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-21 09:23:11
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-02 15:47:51
+ * @LastEditTime: 2022-03-23 15:44:11
  * @Description: RFQ & 零件清单界面
  * @FilePath: \front-web\src\views\designate\designatedetail\rfqdetail\index.vue
 -->
@@ -14,7 +14,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('RFQQINGDAN','RFQ清单')}}</span>
         <div class="floatright">
-          <iButton @click="()=>{ edittableHeader('rfqTable') }">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <buttonTableSetting @click="edittableHeader('rfqTable')"></buttonTableSetting>
           <iInput :placeholder="language('QINGSHURULINGJIANHAORFQLINIE','请输入零件号/RFQ编号/RFQ名称/LINIE')" v-model="searchParam" class="margin-right20 margin-left20 input" @blur="searchRfqTableList" v-permission.auto="SOURCING_NOMINATION_RFQDETAIL_SEARCHPARAM|RFQ零件清单搜索" >
             <icon symble slot="suffix" name="iconshaixuankuangsousuo" />
           </iInput>
@@ -66,7 +66,7 @@
       <div class="margin-bottom20 clearFloat">
         <span class="font18 font-weight">{{language('LK_LINGJIANQINGDAN','零件清单')}}</span>
         <div class="floatright">
-          <iButton @click="()=>{ edittableHeader('partTable') }">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <buttonTableSetting @click="edittableHeader('partTable')"></buttonTableSetting>
           <iButton 
             v-if="!isDisabled && createMtzDisabled"
             v-permission.auto="SOURCING_NOMINATION_SUGGESTION_CREATEMTZAPPLY|创建MTZ申请"
@@ -136,10 +136,10 @@ import { cloneDeep } from 'lodash'
 import { getKmFileHistory } from "@/api/costanalysismanage/costanalysis"
 import { attachmentTableTitle} from "@/views/partsrfq/home/components/data";
 import { downloadFile, downloadUdFile } from "@/api/file"
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins],
-  components:{ iCard, tableList, iButton, iInput, icon, iMessageBox },
+  components:{ iCard, tableList, buttonTableSetting, iButton, iInput, icon, iMessageBox },
   data() {
     return {
       rfqTableTitle: rfqListTitle,

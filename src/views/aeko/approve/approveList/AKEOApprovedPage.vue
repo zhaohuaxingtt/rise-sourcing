@@ -89,7 +89,7 @@
     <i-card v-permission.auto="AEKO_APPROVED_PAGE_DATA_DISPLAY_AREA|AEKO已审批数据展示区">
       <span class="font18 font-weight">{{ language('LK_AEKOSHENPI', 'AEKO审批') }}</span>
       <div class="floatright">
-        <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <!--表格展示区-->
       <tableList
@@ -221,6 +221,7 @@ import {getAekoDetail} from "@/api/aeko/detail";
 import * as dateUtils from "@/utils/date";
 import {numberToCurrencyNo, numberToCurrencyNo2} from '../../../../utils/cutOutNum'
 import { setLogCount, setLogMenu } from "@/utils";
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 export default {
   name: "AKEOApprovedPage",
@@ -234,7 +235,8 @@ export default {
     iPagination,
     icon,
     iSelect,
-    iMultiLineInput
+    iMultiLineInput,
+    buttonTableSetting
   },
   filters: {
     formatDate(value) {
