@@ -24,7 +24,7 @@
     "dayjs": "^1.10.7",
     "lodash": "^4.17.21",
     "rise": "^1.7.9",
-    "sortablejs": "^1.14.0"
+    "sortablejs": "^1.15.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
