@@ -276,7 +276,7 @@ export function getAllMouldFee(params) {
 // 获取rfq所有零件号和fs号
 export function getAllPartForMould(params) {
   return requst({
-    url: `/part/getAllPartForMould/${ params.rfqId }?supplierId=${supplierId()}`,
+    url: `/part/getAllPartForMould/${ params.rfqId }/${ params.supplierId }`,
     method: 'GET',
   })
 }
