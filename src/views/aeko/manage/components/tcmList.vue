@@ -37,7 +37,7 @@
       <!-- 操作按钮 -->
       <p class="text-align-right padding-top15 padding-bottom15">
           <iButton v-permission.auto="AEKO_TCMLIST_BUTTON_SHOUDONGDAORU|手动导入" :loading="btnLoading" @click="exportTCM">{{language('LK_AEKO_TCM_SHOUDONGDAORU','⼿动导⼊')}}</iButton>
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </p>
       <!-- 表单区域 -->
       <tableList
@@ -91,6 +91,8 @@ import {
     getAekoImportRecordPage,
     manualImportAekoFromTCM,
 } from '@/api/aeko/manage'
+import buttonTableSetting from '@/components/buttonTableSetting'
+
 export default {
     name:'tcmList',
     mixins: [pageMixins,tableSortMixins],
@@ -103,6 +105,7 @@ export default {
         iDatePicker,
         tableList,
         iPagination,
+        buttonTableSetting
     },
     data(){
         return{

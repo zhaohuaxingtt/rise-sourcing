@@ -537,9 +537,15 @@ export default {
     }
   }
   .rsTable {
+    &.el-table--group, &.el-table--border{
+      border-color: #ccc;
+    }
     font-size: 8px; /*no*/
-    &::before {
-      height: 0;
+    &::before, &::after {
+      background-color: #ccc;
+    }
+    ::v-deep .el-table__fixed::before, .el-table__fixed-right::before{
+      background-color: #ccc;
     }
     ::v-deep thead th {
       padding-top: 8px; /*no*/
@@ -549,17 +555,9 @@ export default {
         padding-right: 3px; /*no*/
         line-height: 14px; /*no*/
         font-size: 12px; /*no*/
-        span {
-          // zoom: 0.85;
-        }
-
-        // span span {
-        //   // font-size: 8px;
-        // }
         p {
           min-height: 16px; /*no*/
         }
-
         p + p {
           margin-top: 8px; /*no*/
         }
@@ -568,6 +566,7 @@ export default {
     
     ::v-deep tr {
       td {
+        border-top: 1px solid #ccc;
         & > .cell{
           padding-left: 3px; /*no*/
           padding-right: 3px; /*no*/

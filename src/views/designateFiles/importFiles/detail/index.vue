@@ -26,7 +26,7 @@
                 </iSearch>
             <iCard class="margin-top20">
                 <div class="floatright margin-bottom20">
-                    <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+                    <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 </div>
                 <!-- 表格区域 -->
                 <tableList
@@ -103,6 +103,7 @@ import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
 import {
     postAffixList
 } from '@/api/designateFiles/importFiles'
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 export default {
     name:'filesDetailList',
@@ -117,6 +118,7 @@ export default {
         iPagination,
         tableList,
         iButton,
+        buttonTableSetting
     },
     data(){
         return{
