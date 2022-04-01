@@ -172,17 +172,17 @@ module.exports = {
       },
       '/sourcingApi': {
         //   供应商
-        target: 'http://10.122.17.38:8025',
-        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/sourcing/',
+        // target: 'http://10.122.17.38:8025/sourcing/',
+        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/sourcing/',
         changeOrigin: true,
         pathRewrite: {
           '^/sourcingApi': '',
         },
       },
       '/usercenterApi': {
-        target: 'http://10.122.17.38:8015/usercenter',
-        // target:
-        //   'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
+        // target: 'http://10.122.17.38:8015/usercenter',
+        target:
+          'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
         changeOrigin: true,
         logLevel: 'info',
         pathRewrite: {
@@ -218,8 +218,8 @@ module.exports = {
         },
       },
       '/aonApi': {
-        target: 'http://10.122.17.38:8036/aon/',
-        // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
+        // target: 'http://10.122.17.38:8036/aon/',
+        target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/aon/',
         changeOrigin: true,
         pathRewrite: {
           '^/aonApi': '',

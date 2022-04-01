@@ -66,6 +66,7 @@
       <iInput
         type="textarea"
         rows="10" 
+        class="text-disabled"
         v-model="basicInfo.remark"
         :disabled="disabled"
         v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS|封面表态备注框_编辑"
@@ -537,6 +538,11 @@ export default {
       margin-right: 4px;
       display: inline-block;
     }
+  }
+  ::v-deep .el-textarea{
+      &.text-disabled.is-disabled .el-textarea__inner{
+          color: #505050;
+      }
   }
   .bottom-tips{
     color: #8C96A7;

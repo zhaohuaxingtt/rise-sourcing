@@ -1,14 +1,19 @@
+/*
+ * @Author: wentliao
+ * @Date: 2022-02-23 10:05:54
+ * @Description: 
+ */
 export const tableTitle = [
-  { props: 'fsNum', name: 'FS NO.', key: 'FSNo' },
-  { props: 'partNum', name: 'Part NO.', key: 'PARTNO' },
-  { props: 'partNameZh', name: 'Part Name', key: 'PartName' },
-  { props: 'mtz', name: 'MTZ', key: 'MTZ',width:60},
-  { props: 'materialGroup', name: 'Material Group', key: 'MaterialGroup' },
-  { props: 'procureFactory', name: 'Factory', key: 'Factory' },
-  { props: 'project', name: 'Project', key: 'PROJECT' },
-  { props: 'sopDate', name: 'SOP', key: 'SOP' },
-  { props: 'ebrCalculatedValue', name: 'EBR%', key: 'EBR%' },
-  { props: 'ebrConfirmValue', name: 'EBR% (input)', key: 'EBR% (input)' },
-  { props: 'lifeTime', name: 'Volume (lifetime)', key: 'Volume (lifetime)',width: 150 },
-  { props: 'paVolume', name: 'Volume (p.a.)', key: 'Volume (p.a.)' },
+  { props: 'fsNum', name: 'FS NO.' },
+  { props: 'partNum', name: 'Part NO.' },
+  { props: 'partNameZh', name: 'Part Name'},
+  { props: 'mtz', name: 'MTZ',width:60},
+  { props: 'materialGroup', name: 'Material Group' },
+  { props: 'procureFactory', name: 'Factory' },
+  { props: 'project', name: 'Project' },
+  { props: 'sopDate', name: 'SOP' },
+  { props: 'ebrCalculatedValue', name: 'EBR%' },
+  { props: 'ebrConfirmValue', name: 'EBR% (input)' },
+  { props: 'lifeTime', name: 'Volume (lifetime)',width: 150 },
+  { props: 'paVolume', name: 'Volume (p.a.)' },
 ]

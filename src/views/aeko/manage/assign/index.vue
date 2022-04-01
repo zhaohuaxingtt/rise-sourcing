@@ -2,7 +2,7 @@
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 15:32:13
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-15 14:11:14
+ * @LastEditTime: 2022-04-01 15:39:53
  * @Description: 
 -->
 <template>
@@ -22,7 +22,9 @@
           >
             {{ language('LK_FENPAI', '分派') }}
           </iButton> -->
-          <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <!-- <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          </iButton> -->
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </span>
       </div>
       <tableList
@@ -130,6 +132,8 @@ import {
   queryApprovalStatus
 } from '@/api/aeko/approve'
 
+import buttonTableSetting from '@/components/buttonTableSetting'
+
 export default {
   mixins: [pageMixins, tableSortMixins],
   components: {
@@ -141,7 +145,8 @@ export default {
     icon,
     search,
     tableList,
-    projectHeader
+    projectHeader,
+    buttonTableSetting
   },
   data() {
     return {

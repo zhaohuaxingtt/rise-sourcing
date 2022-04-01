@@ -1,14 +1,14 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-07-28 16:01:20
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-03 17:26:47
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 11:16:59
  * @Description: 
  * @FilePath: \front-web\src\views\project\schedulingassistant\part\components\fsconfirm\data.js
  */
 
 export const tableTitleNomi = [ 
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120}, 
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120}, 
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true, minWidth: 120}, 
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120}, 
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true, minWidth: 130}, 
@@ -24,7 +24,7 @@ export const tableTitleNomi = [
 ]
 
 export const tableTitleKickoff = [ 
-  {props:'cartypeProject',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120}, 
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, minWidth: 120}, 
   {props:'projectPurchaser',name:'项目采购员', key: "XIANGMUCAIGOUYUAN", tooltip: true, minWidth: 120}, 
   {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, minWidth: 120}, 
   {props:'partName',name:'零件中文名称', key: "LINGJIANZHONGWENMINGCHENG", tooltip: true, minWidth: 130}, 
