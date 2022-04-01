@@ -182,7 +182,8 @@ module.exports = {
       '/usercenterApi': {
         // target: 'http://10.122.17.38:8015/usercenter',
         target:
-          'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
+          // 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/usercenter/',
+          'http://rise-nginx-internal.apps.vmocp-test.csvw.com/usercenterApi/',
         changeOrigin: true,
         logLevel: 'info',
         pathRewrite: {
@@ -313,7 +314,8 @@ module.exports = {
         },
       },
       '/prApi': {
-        target: 'http://10.122.17.38:8023',
+        // target: 'http://10.122.17.38:8023',
+        target: 'http://rise-nginx-internal.apps.vmocp-test.csvw.com/partProcureApi/web',
         changeOrigin: true,
         pathRewrite: {
           '^/prApi': '',
