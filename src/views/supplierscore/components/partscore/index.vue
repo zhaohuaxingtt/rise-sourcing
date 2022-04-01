@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-24 10:38:09
- * @LastEditTime: 2022-01-24 12:24:21
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 10:02:40
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\supplierscore\components\partscore\index.vue
 -->
@@ -28,6 +28,7 @@
       <div class="body">
         <el-table
           height="100%"
+          ref="table"
           v-loading="loading"
           :data="tableListData"
           :empty-text="language('ZANWUSHUJU', '暂无数据')">
@@ -153,6 +154,14 @@ export default {
       mqGrage:[],
       epGrade:[],
       affixGrade:[],
+    }
+  },
+  watch:{
+    // 切换编辑状态后,重新计算表格布局
+    editStatus(){
+      this.$nextTick(()=>{
+        this.$refs.table.doLayout()
+      })
     }
   },
   computed: {
