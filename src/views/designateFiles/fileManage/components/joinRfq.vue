@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-06-05 14:14:49
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:58:55
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 16:37:38
  * @Description: 加入已有rfq
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\components\joinRfq.vue
 -->
@@ -69,7 +69,7 @@
           <iButton @click="joinRfq" :loading="activateButtonLoading">
             {{language('JIARU','加入')}}
           </iButton>
-          <button-table-setting @click="edittableHeader" />
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </div>
       </div>
       <tablelist
@@ -114,9 +114,10 @@ import {pageMixins} from "@/utils/pageMixins";
 import {tableTitle} from "@/views/partsrfq/home/components/data";
 import {getRfqList, findBySearches, getCartypeDict} from "@/api/partsrfq/home";
 import { getCarTypeSop } from "@/api/partsprocure/editordetail";
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iDialog, iButton, iInput, iPagination, tablelist, iSelect, iSearch },
+  components: { iDialog, iButton, buttonTableSetting, iInput, iPagination, tablelist, iSelect, iSearch },
   props: {
     dialogVisible: { type: Boolean, default: false },
     partType: {type:String}

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-23 18:14:55
+ * @LastEditTime: 2022-04-01 14:46:34
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -468,6 +468,7 @@ export default {
             // ...item, 
             cartypeProId: this.cartypeProId, 
             cartypeProject: this.carProjectName, 
+            cartypeProjectZh:item.cartypeProjectZh,
             partNum: item.partNum, 
             partName: item.partNameZh, 
             confirmDateDeadline: nextThreeWorkDay, 

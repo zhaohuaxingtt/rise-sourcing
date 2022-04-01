@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-31 03:34:23
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-01 14:52:54
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -1314,32 +1314,127 @@ export default {
 					//   }
 					// }
 				})
+			})
 
-				tableList.push(JSON.parse(JSON.stringify(arr)))
-				this.tableList = tableList
-			}, 1000)
-		},
-		getPrototypeListHeight() {
-			setTimeout(() => {
-				let dom = this.$refs.rsPdf.$el
-				this.width = dom.offsetWidth
-				this.pageHeight = (this.width / 841.89) * 595.28 // 横版A4一页对应的高度
-				let tableHeader = 41 // 表头高度
-				let headerHeight = 84 // 表头高度
-				let pageLogo = 52 // logo 区域高度
-				// let headerHeight = 106 // 顶部标题高度
-				// let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
-				if (
-					!document
-						.getElementsByClassName('demo')[0]
-						.getElementsByClassName('prototypeList')[0]
-				)
-					return
-				let rowList = document
-					.getElementsByClassName('demo')[0]
-					.getElementsByClassName('prototypeList')[0]
-					.getElementsByClassName('el-table__body-wrapper')[0]
-					.getElementsByClassName('table-row')
+    },
+    tableTitle() {
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return sparePartTableTitle
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return accessoryTableTitle
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) { //GS零件
+        return gsTableTitle
+      } else if (this.projectType === partProjTypes.DBLINGJIAN || this.projectType === partProjTypes.DBYICHIXINGCAIGOU) { //DB零件,DB一次性采购
+        return dbTableTitle
+      }
+      return nomalTableTitle
+    },
+    pageWidth(){
+      // 多加2px 避免出现滚动条
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return 1443
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return 1353
+      } else if (this.projectType === partProjTypes.GSLINGJIAN || this.projectType === partProjTypes.GSCOMMONSOURCING) { //GS零件
+        return 1893
+      } else if (this.projectType === partProjTypes.DBLINGJIAN || this.projectType === partProjTypes.DBYICHIXINGCAIGOU) { //DB零件,DB一次性采购
+        return 1770
+      }
+      return 1545
+    },
+    cardTitle() {
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return '配件采购'
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return '附件采购'
+      }
+      return '生产采购'
+    },
+    cardTitleEn() {
+      if (this.projectType === partProjTypes.PEIJIAN) {
+        return 'CSC Nomination Recommendation - Spare Part Purchasing'
+      } else if (this.projectType === partProjTypes.FUJIAN) {
+        return 'CSC Nomination Recommendation – Accessory Purchasing'
+      }
+      return 'CSC Nomination Recommendation - Production Purchasing'
+    },
+    getRemarkAll() {
+      return this.remarkItem.map(item => item.value).join('\n')
+    },
+    isRoutePreview() {
+      return this.$route.query.isPreview == 1
+    },
+    isApproval() {
+      return this.$route.query.isApproval === "true"
+    }
+  },
+  created(){
+    this.isAuth = this.$route.query.type === "auth"
+    // this.getPrototypeList()
+  },
+  mounted(){
+  },
+  methods: {
+    dateFilter,
+    getHeight(){
+      setTimeout(()=>{
+        let dom = this.$refs.rsPdf.$el
+        this.width = dom.offsetWidth
+        this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
+        let tableHeader = 57  // 表头高度
+        let headerHeight = 106 // 顶部标题高度
+        let pageLogo = 52     // logo 区域高度
+        let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
+        let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
+        let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
+        for (let i = 0; i < el.length; i++) {
+          height += el[i].offsetHeight;
+        }
+        // 第一页
+        this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - 0.5
+        // 第二页
+        // this.otherTableHeight = this.pageHeight - pageLogo - 21
+        let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
+        let arr = []
+        let heightSum = 0
+        let tableList = []
+        rowList.forEach((item,i)=>{
+          heightSum+=item.offsetHeight
+          // if(tableList.length==0){
+            if(heightSum<this.tableHeight - tableHeader - outEl - el){
+              arr.push(this.tableData[i])
+            }else{
+              tableList.push(JSON.parse(JSON.stringify(arr)))
+              heightSum=item.offsetHeight
+              arr = [this.tableData[i]]
+            }
+          // }else{
+          //   if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
+          //     arr.push(this.tableData[i])
+          //   }else{
+          //     tableList.push(JSON.parse(JSON.stringify(arr)))
+          //     heightSum=item.offsetHeight
+          //     arr = [this.tableData[i]]
+          //   }
+          // }
+        })
+          
+        tableList.push(JSON.parse(JSON.stringify(arr)))
+        this.tableList = tableList
+      },1000)
+    },
+    getPrototypeListHeight(){
+      setTimeout(() => {
+        let dom = this.$refs.rsPdf.$el
+        this.width = dom.offsetWidth
+        this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
+        let tableHeader = 41  // 表头高度
+        let headerHeight = 84  // 表头高度
+        let pageLogo = 52     // logo 区域高度
+        // let headerHeight = 106 // 顶部标题高度
+        // let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
+        if(!document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0]) return
+        let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
 
 				// this.prototypeListPageHeight = this.pageHeight - pageTop - headerHeight - pageLogo - 0.5
 				this.prototypeListPageHeight =
@@ -1624,54 +1719,67 @@ export default {
 		// 权限获取数据
 		reviewListRs() {
 			this.tableLoading = true
+		},
 
-			reviewListRs(this.$route.query.desinateId)
-				.then((res) => {
-					if (res.code == 200) {
-						let temdata = res.data || {}
-						temdata.suppliersNow = temdata.supplierVoList
-						if (temdata.partNameDe) {
-							temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
-						}
-						this.basicData = temdata
-						let data = res.data?.lines
-						data.forEach((val, index) => {
-							let suppliersNowCn = []
-							let suppliersNowEn = []
-							val.supplierVoList.forEach((val) => {
-								suppliersNowCn.push(val.shortNameZh)
-								suppliersNowEn.push(val.shortNameEn)
-							})
-							let supplierData = []
-							for (let i = 0; i < suppliersNowCn.length; i++) {
-								let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
-								supplierData.push(dataSuper)
-							}
-							supplierData = supplierData.length ? supplierData.join('\n') : '-'
-							val.suppliersNow = supplierData.replace(/\n/g, '<br/>')
-							if (val.supplierNameEn)
-								val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
-							if (val.partNameDe)
-								// val.partName = `${val.partName}/${val.partNameDe}`
-								val.partName = val.partNameDe
-							// // 预览模式,ab价取rsPriceVo
-							// if (val.rsPriceVo && val.rsPriceVo.aprice) {
-							//   val.aprice = val.rsPriceVo && val.rsPriceVo.aprice
-							// }
-							// if (val.rsPriceVo && val.rsPriceVo.bprice) {
-							//   val.bprice = val.rsPriceVo && val.rsPriceVo.bprice
-							// }
-						})
-						this.tableData = data
-						this.projectType = res.data.partProjectType || ''
+    // 导出pdf
+    async handleExportPdf() {
+      this.fileList = []
+      this.loading = true
+    
+      setTimeout(async () => {
+        let elList = document.getElementsByClassName('pageCard')
+        if(!elList.length){
+          iMessage.warn('请稍等')
+          this.loading = false
+          return
+        }
+        for (let i = 0; i < elList.length; i++) {
+          const el = elList[i];
+          await this.getPdfImage({
+            dom: el,
+            index: i
+          })
+        }
+        this.uploadUdFile();
+      }, 100)
+      // this.createEl()
+      
+      // this.getPdfImage({
+      //   dom: this.$refs.rsPdf.$el,
+      //   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+      //   exportPdf: true,
+      //   waterMark: true
+      // })
+    },
+    // 截取页面,存入pdf
+    // 截取页面,转图片, 上传服务器
+    async getPdfImage({
+      //html横向导出pdf
+      dom,
+      index
+    }) {
+      await html2canvas(dom, {
+        dpi: 96, //分辨率
+        scale: 2, //设置缩放
+        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+        bgcolor: "#ffffff", //应该这样写
+        logging: false, //打印日志用的 可以不加默认为false
+      }).then(async (canvas) => {
+        // var contentWidth = canvas.width; //
+        // var contentHeight = canvas.height; //
+        //一页pdf显示html页面生成的canvas高度;
+        // var pageHeight = (contentWidth / 841.89) * 595.28; //
+        //未生成pdf的html页面高度
+        // var leftHeight = contentHeight; //
+        // var ctx = canvas.getContext("2d");
 
 						this.searchRsPageExchangeRate()
-					} else {
+					// } else {
 						this.basicData = {}
 						this.tableData = []
 						this.projectType = ''
 						iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
-					}
+					// }
 				})
 				.finally(() => (this.tableLoading = false))
 		},
@@ -1917,6 +2025,20 @@ export default {
 			}
 		}
 	}
+}
+.prototypeList{
+  ::v-deep tr {
+    &:nth-child(even) {
+        background-color: #f7f7ff;
+    }
+  }
+}
+.mainTable{
+  ::v-deep .el-table__row {
+      td {
+      border-top: 1px solid #ccc;
+    }
+  }
 }
 .rsTop {
 	display: flex;

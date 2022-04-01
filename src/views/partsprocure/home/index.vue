@@ -1,8 +1,8 @@
 <!--
  * @Author: yuszhou
  * @Date: 2021-02-25 09:50:42
- * @LastEditTime: 2022-03-21 11:00:18
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-23 16:36:25
+ * @LastEditors: YoHo
  * @Description: 零件采购项目建立首页。
  * @FilePath: \front-sourcing\src\views\partsprocure\home\index.vue
 -->
@@ -223,7 +223,7 @@
                 <cancelProject :backItems='selectTableData'  @refresh="getTableListFn" v-permission.auto="PARTSPROCURE_CANCELPROCUREMENTITEMS|取消零件采购项目号"></cancelProject>
                 <iButton @click="openBatchmiantain" v-permission.auto="PARTSPROCURE_BATCHMAINTENANCE|批量维护">{{ language("partsprocure.PARTSPROCUREBATCHMAINTENANCE",'批量维护') }}</iButton>
                 <startProject :startItems='selectTableData' v-permission.auto="PARTSPROCURE_STARTINQUIRY|启动询价"></startProject>
-                <button-table-setting @click="edittableHeader" />
+                <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
               </div>
             </div>
             <tablelist
@@ -298,6 +298,7 @@ import {selectDictByKeyss,procureFactorySelectVo} from '@/api/dictionary'
 import {getCartypeDict} from "@/api/partsrfq/home";
 import {setPretreatmentParams} from '@/utils/tool'
 import { getCarTypeSop } from "@/api/partsprocure/editordetail";
+import buttonTableSetting from '@/components/buttonTableSetting'
 // eslint-disable-next-line no-undef
 const { mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
@@ -317,7 +318,8 @@ export default {
     cancelProject,
     startProject,
     iMultiLineInput,
-    headerNav
+    headerNav,
+    buttonTableSetting
   },
   data() {
     return {

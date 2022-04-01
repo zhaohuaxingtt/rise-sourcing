@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-25 17:57:41
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 16:36:38
  * @Description: 延误原因汇总
 -->
 
@@ -43,7 +43,7 @@
           <!--------------------确认并发送按钮----------------------------------->
           <confirmBtn v-permission.auto="PROJECTMGT_DELAYCONFIRM_CONFIRM_BUTTON|延误原因确认确认并发送按钮" v-if="withAllBtn" confirmType="3" :confirmData="selectTableData" @getTableList="getTableList" ></confirmBtn>
         </template>
-        <button-table-setting @click="edittableHeader" />
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <!-- 表格 -->
       <tableList indexKey
@@ -113,9 +113,10 @@ import { getDelayReasonSummary, exportDelayReasonConfirm } from '@/api/project/p
 import delayReasonDialog from '../monitorDetail/components/delayReson'
 import { selectDictByKeyss } from '@/api/dictionary'
 import selectKwDialog from '@/views/project/schedulingassistant/part/components/selectKw'
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { selectKwDialog, iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog },
+  components: { selectKwDialog, iSearch, iInput, iButton, iCard, iPagination, icon, fsSelect, productPurchaserSelect, carProjectSelect, iDicoptions, tableList, confirmBtn, saveBtn, backBtn, transferBtn, delayReasonDialog, buttonTableSetting },
   data() {
     return {
       tableTitle,

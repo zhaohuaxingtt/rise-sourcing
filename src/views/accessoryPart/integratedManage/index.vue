@@ -2,9 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-26 11:16:51
  * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 19:29:07
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:49:31
+ * @LastEditTime: 2022-03-23 16:29:54
  * @Description: 配件综合管理页面
  * @FilePath: \front-sourcing\src\views\accessoryPart\integratedManage\index.vue
 -->
@@ -59,7 +57,7 @@
                   <iButton @click="downloadAll" :loading="downloadAllLoading" v-permission.auto="APREPART_MANAGFMENT_DWONLOAD|配件-配件管理-下载报表">{{language('XIAZAIBAOBIAO','下载报表')}}</iButton>
                   <!--------------------导出按钮----------------------------------->
                   <iButton @click="donwloadList" :loading="downloadLoading" v-permission.auto="APREPART_MANAGFMENT_EXPORT|配件-配件管理-导出">{{language('DAOCHU','导出')}}</iButton>
-                  <button-table-setting @click="edittableHeader" />
+                  <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                 </div>
             </div>
             <tableList
@@ -132,13 +130,14 @@ import {
 import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
 import { numberProcessor } from '@/utils' 
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iDatePicker, iPagination, iMultiLineInput, tableList, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog, headerNav },
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, iMultiLineInput, tableList, buttonTableSetting, assignInquiryDepartmentDialog, assignInquiryBuyerDialog,backEpsDialog, backDialog, iNavMvp, joinRfqDialog, headerNav },
   data() {
     return {
       // 零件项目类型

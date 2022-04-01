@@ -1,11 +1,6 @@
-<!--
- * @Author: wentliao
- * @Date: 2022-03-21 10:34:32
- * @Description: 
--->
 <template>
   <span class="button-table-setting" @click="handleClick">
-    <icon class="font18" name="iconSetting" symbol />
+    <icon name="iconSetting" class="font24" symbol />
   </span>
 </template>
 

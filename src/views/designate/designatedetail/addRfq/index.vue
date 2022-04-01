@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-24 11:27:22
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:53:54
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 16:30:27
  * @Description: 
  * @FilePath: \front-web\src\views\designate\designatedetail\addRfq\index.vue
 -->
@@ -58,7 +58,7 @@
             <iButton @click="goBack">{{language('FANHUI','返回')}}</iButton>
             <!--------------------选择按钮----------------------------------->
             <iButton @click="handleSelect">{{language('XUANZE','选择')}}</iButton>
-            <button-table-setting @click="edittableHeader" />
+            <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           </div>
       </div>
         <!------------------------------------------------------------------------>
@@ -113,9 +113,11 @@ import { attachmentTableTitle} from "@/views/partsrfq/home/components/data";
 import { downloadFile, downloadUdFile } from "@/api/file"
 import { getCarTypeSop } from "@/api/partsprocure/editordetail"
 import { selectDictByRootKeys } from "@/api/dictionary"
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iCard, iPagination, iButton, tableList, iSearch, iSelect, iInput, icon },
+  components: { iPage, iCard, 
+  buttonTableSetting, iPagination, iButton, tableList, iSearch, iSelect, iInput, icon },
   data() {
     return {
       tableListData: [],
