@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-29 11:38:07
- * @LastEditTime: 2022-02-28 15:49:16
+ * @LastEditTime: 2022-04-01 16:20:21
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\dosageDialog\index.vue
@@ -23,8 +23,12 @@
           :loading="saveLoading"
           @click="handleSave"
           v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_BUTTON_SAVE|保存"
-          >{{ language("BAOCUN", "保存") }}</iButton
-        >
+          >{{ language("BAOCUN", "保存") }}</iButton>
+        <iButton
+          v-if="!disabled"
+          :loading="saveLoading"
+          @click="reset"
+          >{{ language("CHONGZHI", "重置") }}</iButton>
       </div>
     </template>
     <div class="body" v-loading="loading">
@@ -407,6 +411,11 @@ export default {
       if (value) {
         this.$set(row, props, math.bignumber(value).toFixed(2));
       }
+    },
+    // 重置
+    reset(){
+      this.getAekoCarProject();
+      this.getAekoCarDosage();
     },
     // 保存
     handleSave() {

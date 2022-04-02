@@ -67,6 +67,7 @@
       <iCard class="margin-top20">
         <!-- 按钮区域 -->
         <div v-if="!isLinie && queryFrom != 'check'" class="floatright margin-bottom20">
+                <iButton v-if="false" :disabled="btnDisabled" @click="changeModelProject"> 车型项目变更 </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAIKESHI|分派科室" @click="assign(null ,'commodity')">{{language('LK_AEKO_FENPAIKESHI','分派科室')}} </iButton>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_FENPAICAIGOUYUAN|分派采购员" @click="assign(null ,'linie')">{{language('FENPAICAIGOUYUAN','分派采购员')}} </iButton>
                 <!-- 非TCM导入 && 非已冻结、已通过、已撤回状态的AEKO -->
@@ -144,6 +145,7 @@
       <departBackDialog  v-if="departBackVisible" :dialogVisible="departBackVisible" @changeVisible="changeVisible" @getList="getList" :selectItems="selectItems" />
       <!-- 新增零件弹窗 -->
       <addPartsDialog v-if="addPartskVisible" :dialogVisible="addPartskVisible" :aekoInfo="aekoInfo" @getList="sure" @changeVisible="changeVisible"/>
+      <changeModelProjectDialog v-if="changeModelProjectVisible" :dialogVisible="changeModelProjectVisible" @changeVisible="changeVisible"/>
   </div>
 </template>
 
@@ -166,6 +168,7 @@ import { pageMixins } from "@/utils/pageMixins";
 import assignDialog from './components/assignDialog'
 import departBackDialog from './components/departBackDialog'
 import addPartsDialog from './components/addPartsDialog'
+import changeModelProjectDialog from './components/changeModelProjectDialog'
 import { getAekoContentPart } from "@/api/aeko/detail"
 import aekoSelect from '../../../components/aekoSelect'
 import iDicoptions from 'rise/web/components/iDicoptions' 
@@ -205,6 +208,7 @@ export default {
         departBackDialog,
         aekoSelect,
         addPartsDialog,
+        changeModelProjectDialog,
         iDicoptions,
         iMultiLineInput
     },
@@ -345,6 +349,7 @@ export default {
             isCommodityCoordinator: false,
             isLinie: false,
             addPartskVisible:false,
+            changeModelProjectVisible: false,
             queryFrom:null,
         }
     },
@@ -832,6 +837,10 @@ export default {
         }
       },
 
+    // 变更车型项目
+    changeModelProject(){
+        this.changeModelProjectVisible = true;
+    },
       // 新增零件
       addParts(){
         this.addPartskVisible = true;
