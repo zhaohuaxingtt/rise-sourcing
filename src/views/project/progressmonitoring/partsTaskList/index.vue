@@ -31,7 +31,7 @@
         <div class="floatright">
           <!--------------------处理按钮----------------------------------->
           <iButton  @click="handleBatchUpdate" >{{language('PILIANGXIUGAIZHUANGTAI','批量修改状态')}}</iButton>
-          <iButton  @click="updatePartTask" >{{language('BAOCUN','保存')}}</iButton>
+          <iButton  :loading="btnSaveLoading" @click="updatePartTask" >{{language('BAOCUN','保存')}}</iButton>
           <iButton  @click="handleExport('1')" >{{language('DAOCHUDEIEPQUERENQINGDAN','导出待EP确认清单')}}</iButton>
           <iButton  @click="handleExport('2')" >{{language('DAOCHUDEIMQQUERENQINGDAN','导出待MQ确认清单')}}</iButton>
           <iButton  @click="handleExportAll" :loading="downloadLoading" >{{language('DAOCHUQUANBU','导出全部')}}</iButton>
@@ -50,6 +50,19 @@
                  :handleSaveSetting="handleSaveSetting"
                  :handleResetSetting="handleResetSetting"
       >
+        <template #partNum="scope">
+          <span style="white-space:pre;">{{scope.row.partNum}}</span>
+        </template>
+        <template #partSort="scope">
+          <iSelect v-model="scope.row['partSort']" @change="val => handleSelectChange(val, scope.row)">
+            <el-option
+              :value="item.value"
+              :label="item.label"
+              v-for="(item, index) in  selectOptions['partTaskPartSort']"
+              :key="index"
+            ></el-option>
+          </iSelect>
+        </template>
 
       </tableList>
       <iPagination v-update @size-change="handleSizeChange($event, getTableList)" @current-change="handleCurrentChange($event, getTableList)" background :page-sizes="page.pageSizes"
@@ -120,7 +133,8 @@ export default {
       oldTableData:[],
       batchUpdataMap:new Map(),
       dialogPartSort:"",
-      downloadLoading: false
+      downloadLoading: false,
+      btnSaveLoading:false,
     }
   },
   computed: {
@@ -169,7 +183,12 @@ export default {
         partTaskDTOS.push({ id:item.id, partSort:item.partSort, })
       }
 
+      this.btnSaveLoading = true;
+      this.tableLoading = true;
+
       updatePartInfoList(partTaskDTOS).then(res => {
+        this.btnSaveLoading = false;
+        this.tableLoading = false;
         if (res?.result) {
           this.getTableList();
           if(isMessage == '2'){
@@ -179,6 +198,9 @@ export default {
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)
         }
+      }).catch((err)=>{
+        this.btnSaveLoading = false;
+        this.tableLoading = false;
       })
     },
     /**
