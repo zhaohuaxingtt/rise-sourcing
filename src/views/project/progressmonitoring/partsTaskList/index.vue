@@ -14,6 +14,7 @@
 
         <el-form-item v-for="item in searchList" :key="item.value" :label="language(item.key,item.name)" v-permission.dynamic.auto="item.permission" :class="item.type === 'input'? 'currentWidth' : ''">
           <iSelect v-if="item.type ==='select'" :filterable="item.filterable" v-model="searchParams[item.value]" :placeholder="language('QINGXUANZE', '请选择')">
+            <el-option value="" :label="language('all','全部')"></el-option>
             <el-option
               v-for="item in selectOptions[item.selectOption]"
               :key="item.value"
@@ -116,7 +117,9 @@ export default {
       dialogVisible:false,
       searchParams: {
         cartypeProId: this.$route.query.cartypeProId,
-        status: this.$route.query.status
+        status: this.$route.query.status || '',
+        partSort:'',
+        risePartDesc:'',
       },
       titleName:this.$route.query.carProjectName,
       selectOptions: {
@@ -300,7 +303,10 @@ export default {
     },
     handleReset() {
       this.searchParams = {
-        cartypeProId:this.$route.query.cartypeProId
+        cartypeProId:this.$route.query.cartypeProId,
+        status:'',
+        partSort:'',
+        risePartDesc:'',
       }
       this.handleSure()
     },
