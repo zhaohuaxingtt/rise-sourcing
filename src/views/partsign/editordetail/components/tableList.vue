@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-02-24 16:57:16
- * @LastEditTime: 2022-01-26 10:08:55
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-25 14:42:38
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\partsign\editordetail\components\tableList.vue
 -->
@@ -11,12 +11,12 @@
     <el-table-column v-if="selection || singleSelect" type="selection" align="center" width="55" :fixed="fixed" :selectable="selectable"></el-table-column>
     <el-table-column v-if="index" type="index" align="center" :label="indexLabel" :fixed="fixed"></el-table-column>
     <template v-for="(item, $index) in tableTitle">
-      <el-table-column :key="$index" align="center" v-if='$slots[item.props] && item.editable' :label="lang ? (showName ? item.name : language(item.key, item.name)) : (showName ? item.name : $t(item.key))" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed">
+      <el-table-column :key="$index" align="center" v-if='$slots[item.props] && item.editable' :label="lang ? (showName ? item.name : language(item.key, item.name)) : (showName ? item.name : $t(item.key))" :prop="item.props" tooltip :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :sortable="item.sortable||false" :sort-method="item.sortMethod">
         <template slot-scope="scope">
           <iInput v-if="item.type === 'input'" v-model="scope.row[item.props]" @click.native.stop></iInput>
         </template>
       </el-table-column>
-      <el-table-column :key="$index" align="center" v-else :label="lang ? (showName ? item.name : language(item.key, item.name)) : (showName ? item.name : $t(item.key))" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :render-header="item.renderHeader">
+      <el-table-column :key="$index" align="center" v-else :label="lang ? (showName ? item.name : language(item.key, item.name)) : (showName ? item.name : $t(item.key))" :prop="item.props" :show-overflow-tooltip="item.tooltip" :width="item.width" :min-width="item.minWidth ? item.minWidth.toString():''" :fixed="item.fixed" :render-header="item.renderHeader" :sortable="item.sortable||false" :sort-method="item.sortMethod">
         <template v-if="$scopedSlots[item.props] || $slots[item.props]" v-slot="scope">
           <slot :name="item.props" :row="scope.row" :$index="scope.$index"></slot>
         </template>
