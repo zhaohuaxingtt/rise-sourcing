@@ -1,7 +1,7 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-02-25 09:59:25
- * @LastEditTime: 2022-04-01 14:46:25
+ * @LastEditTime: 2022-04-02 16:05:57
  * @LastEditors: Please set LastEditors
  * @Description: RFQ模块首页
  * @FilePath: \front-sourcing-new\src\views\partsrfq\home\index.vue
@@ -43,7 +43,7 @@
               </el-form-item>
               <el-form-item :label="language('partsprocure.PARTSPROCURELINIE','LINIE')">
                 <iInput :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.linieName"></iInput>
-              </el-form-item>  
+              </el-form-item>
               <el-form-item  :label="language('LK_SAP','供应商SAP号')"
                  >
                 <iInput  :placeholder="language('partsprocure.PLEENTER','请输入')" v-model="form.supplierSap"></iInput>

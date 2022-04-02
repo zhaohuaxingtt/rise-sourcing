@@ -1,7 +1,7 @@
 /*
  * @Author: HaoJiang
  * @Date: 2021-05-20 14:29:09
- * @LastEditTime: 2022-03-09 11:14:41
+ * @LastEditTime: 2022-03-25 15:10:53
  * @LastEditors: YoHo
  * @Description: sel上会复核
  *
@@ -17,114 +17,130 @@ export const tableTitle = [{
   //export const tableTitle = permissionTitle("nominationLanguage_nominationLanguageLIST",[{
   props: 'id',
   name: '申请单号',
-  width: 100,
+  width: 105,
   key: 'nominationLanguage_ShenQingDanHao',
-  tooltip: true
+  tooltip: true,
+  sortable: true
 },
 {
   props: 'nominateName',
   name: '申请单名',
   width: 250,
   key: 'nominationLanguage_ShenQingDanMing',
-  tooltip: true
+  tooltip: true,
+  sortable: true
 },
 {
   props: 'carType',
   name: 'PROJECT',
   key: 'PROJECT',
   tooltip: true,
-  width:200
+  width:200,
+  sortable: true
 },
 {
 	props: 'applicationStatusDesc',
 	name: '状态',
 	key: 'LK_ZHUANGTAI',
 	tooltip:true,
-  width:120
+  width:120,
+  sortable: true
 },
 {
   props: 'partProjTypeDesc',
   name: '零件项目类型',
   key: 'LINGJIANXIANGMULEIXING',
   width: 150,
-  tooltip: true
+  tooltip: true,
+  sortable: true
 },
 {
   props: 'meetingName',
   name: '会议',
   key: 'nominationLanguage_HuiYi',
   tooltip: true,
-  width:180
+  width:180,
+  sortable: true
 },
 {
   props: 'nominateUserName',
   name: '询价采购员',
   width: 150,
   key: 'nominationLanguage_XunJiaCaiGouYuan',
-  tooltip: true
+  tooltip: true,
+  sortable: true
 },
 {
   props: 'linieName',
   name: 'LINIE',
   key: 'LINIE',
   tooltip: true,
-  width:120
+  width:120,
+  sortable: true
 },
 {
   props: 'rsStatusDesc',
   name: 'RS单状态',
   key: 'nominationLanguage_RSZhuangTai',
   tooltip: true,
-  width:100
+  width:110,
+  sortable: true
 },
 {
   props: 'rsFreezeDate',
   name: 'RS冻结日期',
-  width: 110,
+  width: 125,
   key: 'nominationLanguage_RSDongJieRiQi',
-  tooltip: true
+  tooltip: true,
+  sortable: true
 },
 {
   props: 'isPriceConsistent',
   name: '报价一致性校验状态',
-  width: 160,
+  width: 180,
   key: 'nominationLanguage_BaoJiaYiZhiXingZhuangTai',
-  tooltip: true
+  tooltip: true,
+  sortable: true
 },
 {
   props: 'selStatus',
   name: 'SEL单据确认状态',
-  width: 150,
+  width: 160,
   key: 'nominationLanguage_SELDanJuQUeRenZH',
-  tooltip: true
+  tooltip: true,
+  sortable: true
 },
 {
 	props: 'checkDueDate',
 	name: '复核截止日期',
-  width: 120,
+  width: 135,
 	key: 'nominationLanguage.FuHeJieZhiRiQi',
-	tooltip:true
+	tooltip:true,
+  sortable: true
 },
 {
 	props: 'signCode',
 	name: '签字单号',
 	key: 'nominationLanguage.QianZiDanHao',
 	tooltip:true,
-  width: 150
+  width: 150,
+  sortable: true
 },
 {
   props: 'signStatusDesc',
   name: '签字单状态',
   width: 150,
   key: 'nominationLanguage.QianZiDanZhuangTai',
-  tooltip: true
+  tooltip: true,
+  sortable: true
 },
 {
   props: 'freezeDate',
   name: '冻结日期',
   width: 110,
   key: 'nominationLanguage_DongJieRiQi',
-  tooltip: true
+  tooltip: true,
+  sortable: true
 },
 ]
 

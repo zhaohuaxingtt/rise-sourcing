@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-05 14:41:27
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-17 16:52:29
+ * @LastEditTime: 2022-04-02 15:34:46
  * @Description: 项目进度监控
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\home.vue
 -->
@@ -220,6 +220,10 @@ export default {
       }
       updateAutoData(params).then(res => {
         if (res.code === '200') {
+          // 当打开时提示一下
+          if(this.showTips){
+            iMessage.success('后台数据正在同步,请稍后查看')
+          }
           typeof cb === 'function' && (cb())
         } else {
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn)

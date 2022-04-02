@@ -2,33 +2,33 @@
  * @Author: Luoshuang
  * @Date: 2021-06-22 11:35:28
  * @LastEditors: YoHo
- * @LastEditTime: 2021-12-28 17:31:33
+ * @LastEditTime: 2022-03-25 15:22:18
  * @Description: 
  * @FilePath: \front-web\src\views\financialTargetPrice\maintenance\data.js
  */
 
 
 export const tableTitle = [
-  {props:'fsnrGsnrNum',name:'FS/GS/SP No.', key: "FSGSSPNO", tooltip: true, width: 120},
-  {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120},
-  {props:'partNameZh',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true, width: 120},
-  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
-  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, width: 120},
-  {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true},
-  {props:'caozuo',name:'操作', key: "LK_CAOZUO", tooltip: true},
-  {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100},
-  {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 100},
-  {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input', isNumber: true},
-  {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input', isNumber: true},
-  {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true},
-  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
-  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 100},
-  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
-  {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 100},
-  {props:'applyDateEnd',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120},
-  {props:'xiugai',name:'修改记录', key: "XIUGAIJILU", tooltip: true, width: 120},
-  {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true},
-  {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120},
+  {props:'fsnrGsnrNum',name:'FS/GS/SP No.', key: "FSGSSPNO", tooltip: true, width: 145, sortable: true},
+  {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120, sortable: true},
+  {props:'partNameZh',name:'零件名称', key: "LINGJIANMINGCHENG", tooltip: true, width: 110, sortable: true},
+  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 110, sortable: true},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, width: 120, sortable: true},
+  {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true, sortable: true},
+  {props:'caozuo',name:'操作', key: "LK_CAOZUO", tooltip: true, sortable: true},
+  {props:'modiferName',name:'修改人', key: "XIUGAIREN", tooltip: true, width: 100, sortable: true},
+  {props:'cfControllerZh',name:'CF', key: "CF", tooltip: true, width: 100, sortable: true},
+  {props:'lcAPrice',name:'LC_A', key: "LC_A", tooltip: true, editable: true, type: 'input', isNumber: true, sortable: true},
+  {props:'lcBPrice',name:'LC_B', key: "LC_B", tooltip: true, editable: true, type: 'input', isNumber: true, sortable: true},
+  {props:'approveStatusDesc',name:'审批状态', key: "SHENPIZHUANGTAI", tooltip: true, width: 110, sortable: true},
+  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120, sortable: true},
+  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 110, sortable: true},
+  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120, sortable: true},
+  {props:'applyDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, width: 120, sortable: true},
+  {props:'applyDateEnd',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, width: 120, sortable: true},
+  {props:'xiugai',name:'修改记录', key: "XIUGAIJILU", tooltip: true, width: 120, sortable: true},
+  {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true, width: 110, sortable: true},
+  {props:'memo',name:'备注', key: "BEIZHU", tooltip: true, width: 120, sortable: true},
 ]
 
 export const tableMockData = [

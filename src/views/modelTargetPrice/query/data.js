@@ -1,29 +1,29 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-08 17:50:04
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-25 15:39:23
  * @Description: 
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\query\data.js
  */
 
 
 export const tableTitle = [
-  {props:'fsNum',name:'零件采购项目号', key: "FSGSSPNO", tooltip: true, width: 130},
-  {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120},
-  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 120},
-  {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, width: 120},
-  {props:'partNameDe',name:'零件名(德)', key: "LINGJIANMINGCHENGDE", tooltip: true, width: 120},
-  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, width: 120},
-  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 100},
-  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120},
-  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120},
-  {props:'cfName',name:'CF', key: "CF", tooltip: true, width: 120},
-  {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true},
-  {props:'targetPrice',name:'目标价', key: "MUBIAOJIA", tooltip: true},
-  {props:'returnDate',name:'返回日期', key: "LK_FANHUIRIQI", tooltip: true, width: 120},
-  {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true, width: 120},
-  {props:'stateDesc',name:'状态', key: "ZHUANGTAI", tooltip: true},
+  {props:'fsNum',name:'零件采购项目号', key: "FSGSSPNO", tooltip: true, width: 145, sortable: true},
+  {props:'partNum',name:'零件号', key: "LINGJIANHAO", tooltip: true, width: 120, sortable: true},
+  {props:'procureFactoryName',name:'采购工厂', key: "CAIGOUGONGCHANG", tooltip: true, width: 120, sortable: true},
+  {props:'partNameZh',name:'零件名(中)', key: "LINGJIANMINGCHENGZHONG", tooltip: true, width: 135, sortable: true},
+  {props:'partNameDe',name:'零件名(德)', key: "LINGJIANMINGCHENGDE", tooltip: true, width: 120, sortable: true},
+  {props:'cartypeProjectZh',name:'车型项目', key: "CHEXINGXIANGMU", tooltip: true, width: 120, sortable: true},
+  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, width: 110, sortable: true},
+  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, width: 120, sortable: true},
+  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, width: 120, sortable: true},
+  {props:'cfName',name:'CF', key: "CF", tooltip: true, width: 120, sortable: true},
+  {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true, sortable: true},
+  {props:'targetPrice',name:'目标价', key: "MUBIAOJIA", tooltip: true, width: 90, sortable: true},
+  {props:'returnDate',name:'返回日期', key: "LK_FANHUIRIQI", tooltip: true, width: 120, sortable: true},
+  {props:'shenpi',name:'审批记录', key: "SHENPIJILU", tooltip: true, width: 120, sortable: true},
+  {props:'stateDesc',name:'状态', key: "ZHUANGTAI", tooltip: true, sortable: true},
 ]
 
 export const tableMockData = [
