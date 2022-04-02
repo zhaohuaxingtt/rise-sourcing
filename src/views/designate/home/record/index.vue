@@ -16,7 +16,7 @@
     <!-- 表格区 -->
     <iCard class="cardMargin">
       <div class="btnright margin-bottom20">
-        <iButton @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
+        <iButton :loading="downloading" @click="exportRecord" v-permission.auto="SOURCING_NOMINATION_NOMINATIONRECORD_EXPORT|定点记录导出">导出</iButton>
         <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </div>
       <tablelist
@@ -88,7 +88,8 @@ export default {
       tableListData:[],
       tableLoading: false,
       searchForm: _.cloneDeep(form),
-      selectTableData:[]
+      selectTableData:[],
+      downloading: false
     }
   },
   created() {
@@ -150,11 +151,12 @@ export default {
     handleSelectionChange(data){
       this.selectTableData = data
     },
-    exportRecord() {
+    async exportRecord() {
       let data = Object.assign({...this.$refs.search.formRecord},{size:this.page.pageSize},{current:this.page.currPage})
-      exportNomiRecordExcel(data).then(res=> {
-        
-      })
+
+      this.downloading = true
+      await exportNomiRecordExcel(data)
+      this.downloading = false
     }
   }
 }
