@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-23 09:45:19
- * @LastEditors: YoHo
- * @LastEditTime: 2022-03-23 16:36:38
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-02 16:00:00
  * @Description: 延误原因汇总
 -->
 
@@ -171,6 +171,7 @@ export default {
       const params = {
         ids: this.selectTableData.map(item => item.id),
         identityTag: this.isFS ? '2' : '1',
+        ...this.searchParams,
       }
       await exportDelayReasonConfirm(params)
       this.exportLoading = false
