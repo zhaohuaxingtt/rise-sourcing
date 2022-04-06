@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-02 17:37:35
+ * @LastEditTime: 2022-04-06 15:37:37
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -1077,6 +1077,7 @@ export default {
               font-size: 18px;
               .productItem-bottom-stepBetween-input {
                 width: 100px;
+                font-size: 16px;
                 margin-right: 5px;
                 &:last-child {
                   margin-left: 5px;
