@@ -1000,9 +1000,9 @@ export default {
       reviewListRs(this.nominateId)
       .then(res => {
         if (res.code == 200) {
-          this.basicData = res.data
-          this.tableData = Array.isArray(res.data.lines) ? res.data.lines : []
-          this.projectType = res.data.partProjectType || ''
+          this.basicData = res.data || {}
+          this.tableData = Array.isArray(this.basicData.lines) ? this.basicData.lines : []
+          this.projectType = this.basicData.partProjectType || ''
 
           if (this.projectType != partProjTypes.DBLINGJIAN && this.projectType != partProjTypes.DBYICHIXINGCAIGOU) {
             this.searchRsPageExchangeRate()
