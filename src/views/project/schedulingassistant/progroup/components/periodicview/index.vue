@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 15:13:45
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 14:58:36
+ * @LastEditTime: 2022-04-06 14:32:38
  * @Description: 周期视图
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\periodicview\index.vue
 -->
@@ -349,7 +349,7 @@ export default {
           },[]) : []
           return {
             ...item,
-            cartypeProject: this.carProjectName,
+            cartypeProject: item.cartypeProName,
             scheBfToFirstTryoutWeek: item.keyBfToFirstTryoutWeek,
             scheFirstTryEmWeek: item.keyFirstTryEmWeek,
             scheFirstTryOtsWeek: item.keyFirstTryOtsWeek,
