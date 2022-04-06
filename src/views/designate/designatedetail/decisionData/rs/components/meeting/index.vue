@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-01 14:52:54
+ * @LastEditTime: 2022-04-06 15:35:18
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -1593,7 +1593,6 @@ export default {
 		 */
 		getTopList() {
 			this.tableLoading = true
-
 			getList(this.nominateId)
 				.then((res) => {
 					if (res?.result) {
@@ -1715,11 +1714,63 @@ export default {
 		exchangeRateProcess(row) {
 			return `1${row.originCurrencyCode}=${row.exchangeRate}${row.currencyCode}`
 		},
-
 		// 权限获取数据
 		reviewListRs() {
 			this.tableLoading = true
-		},
+		
+      reviewListRs(this.$route.query.desinateId)
+      .then(res => {
+        if (res.code == 200) {
+          let temdata = res.data || {}
+          temdata.suppliersNow =temdata.supplierVoList
+          if(temdata.partNameDe){
+            temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
+          }
+          this.basicData = temdata
+          let data = Array.isArray(res.data.lines) ? res.data.lines : []
+          data.forEach((val,index) => {
+            let suppliersNowCn =[]
+            let suppliersNowEn =[]
+            const supplierVoList = Array.isArray(val.supplierVoList) ? val.supplierVoList : []
+
+            supplierVoList.forEach(val =>{
+              suppliersNowCn.push(val.shortNameZh)
+              suppliersNowEn.push(val.shortNameEn)
+            })
+            let supplierData=[]
+            for(let i = 0 ;i <suppliersNowCn.length;i++) {
+              let dataSuper = `${suppliersNowCn[i]}/${suppliersNowEn[i]}`
+              supplierData.push(dataSuper)
+            }
+            supplierData = supplierData.length ? supplierData.join('\n') : '-'
+            val.suppliersNow = supplierData.replace(/\n/g,"<br/>");
+            if(val.supplierNameEn)
+            val.supplierName = `${val.supplierName}/${val.supplierNameEn}`
+              if(val.partNameDe)
+            // val.partName = `${val.partName}/${val.partNameDe}`
+            val.partName = val.partNameDe
+            // // 预览模式,ab价取rsPriceVo
+            // if (val.rsPriceVo && val.rsPriceVo.aprice) {
+            //   val.aprice = val.rsPriceVo && val.rsPriceVo.aprice
+            // }
+            // if (val.rsPriceVo && val.rsPriceVo.bprice) {
+            //   val.bprice = val.rsPriceVo && val.rsPriceVo.bprice
+            // }
+          })
+          this.tableData = data
+          this.projectType = this.basicData.partProjectType || ""
+			this.searchRsPageExchangeRate()
+        } else {
+          this.basicData = {}
+          this.tableData = []
+          this.projectType = ""
+          iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+        }
+      })
+      .finally(() => this.tableLoading = false)
+
+	},
+		
 
     // 导出pdf
     async handleExportPdf() {
