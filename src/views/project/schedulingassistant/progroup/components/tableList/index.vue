@@ -2,14 +2,14 @@
  * @Author: Luoshuang
  * @Date: 2021-07-28 16:13:36
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 10:16:14
+ * @LastEditTime: 2022-04-06 10:22:59
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\progroup\components\tableList\index.vue
 -->
 
 <template>
   <el-table ref="multipleTable" fit tooltip-effect='light' :border="border" :height="height" :data='tableData' v-loading='tableLoading' @selection-change="handleSelectionChange" :empty-text="language('ZANWUSHUJU', '暂无数据')" @select="handleSelect"  @select-all="handleSelectAll" :cell-style="borderLeft" >
-    <el-table-column v-if="selection" type='selection' width="56" align='center' :fixed="selectionFixed"></el-table-column>
+    <el-table-column v-if="selection" type='selection' width="58" align='center' :fixed="selectionFixed"></el-table-column>
     <el-table-column v-if='indexKey' type='index' width='50' align='center' label='#'>
       <template slot-scope="scope">
         {{tableIndexString+(scope.$index+1)}}
