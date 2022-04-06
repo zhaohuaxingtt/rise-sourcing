@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 11:59:01
+ * @LastEditTime: 2022-04-06 10:16:40
  * @Description: 产品组
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -24,7 +24,7 @@
           <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_DAOCHU_BUTTON|历史进度数据库-导出-按钮" @click="handleExport" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular">
+      <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular" :selectionFixed="false">
       </tableList> 
     </template>
     <!---------------------------------------------------------------------->
