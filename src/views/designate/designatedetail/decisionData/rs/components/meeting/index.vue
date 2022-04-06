@@ -957,16 +957,19 @@ export default {
       getList(this.nominateId).then(res => {
         if (res?.result) {
           let temdata = res.data || {}
-          temdata.suppliersNow =temdata.supplierVoList
+          temdata.suppliersNow = temdata.supplierVoList
           if(temdata.partNameDe){
             temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
           }
           this.basicData = temdata
-          let data = res.data?.lines ?? []
+          let data = Array.isArray(res.data.lines) ? res.data.lines : []
           data.forEach((val,index) => {
             let suppliersNowCn =[]
             let suppliersNowEn =[]
-            val.supplierVoList.forEach(val =>{
+
+            const supplierVoList = Array.isArray(val.supplierVoList) ? val.supplierVoList : []
+
+            supplierVoList.forEach(val =>{
               suppliersNowCn.push(val.shortNameZh)
               suppliersNowEn.push(val.shortNameEn)
             })
@@ -984,7 +987,7 @@ export default {
             val.partName = val.partNameDe
           })
           this.tableData = data
-          this.projectType = res.data.partProjectType || ''
+          this.projectType = this.basicData.partProjectType || ''
 
           this.searchRsPageExchangeRate()
         } else {
@@ -1080,11 +1083,13 @@ export default {
             temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
           }
           this.basicData = temdata
-          let data = res.data?.lines
+          let data = Array.isArray(res.data.lines) ? res.data.lines : []
           data.forEach((val,index) => {
             let suppliersNowCn =[]
             let suppliersNowEn =[]
-            val.supplierVoList.forEach(val =>{
+            const supplierVoList = Array.isArray(val.supplierVoList) ? val.supplierVoList : []
+
+            supplierVoList.forEach(val =>{
               suppliersNowCn.push(val.shortNameZh)
               suppliersNowEn.push(val.shortNameEn)
             })
@@ -1109,7 +1114,7 @@ export default {
             // }
           })
           this.tableData = data
-          this.projectType = res.data.partProjectType || ""
+          this.projectType = this.basicData.partProjectType || ""
 
           this.searchRsPageExchangeRate()
         } else {
