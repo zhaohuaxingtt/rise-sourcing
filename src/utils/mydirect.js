@@ -17,6 +17,20 @@ Vue.directive('permission', {
     // const value = binding.value ? binding.value : binding.expression.trim()
 
     // 修改-----------------------------------
+    if (binding.modifiers.auto && binding.modifiers.array) {
+      let removeFlag = false
+      if (Array.isArray(binding.value)) {
+        removeFlag = binding.value.every(item => {
+          const splitValue = item.split('|')
+          const pagePermission = splitValue[0] ? splitValue[0].trim() : splitValue[0]
+          return !store.state.permission.whiteBtnList[pagePermission]
+        })
+      }
+
+      if (removeFlag && openProcess && el.parentNode) el.parentNode.removeChild(el)
+      return
+    }
+
     var value = ''
     if (binding.value == 0) {
       value = binding.expression.trim()
