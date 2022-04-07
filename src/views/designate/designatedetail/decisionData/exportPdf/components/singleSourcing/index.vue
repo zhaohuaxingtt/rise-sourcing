@@ -14,7 +14,10 @@
         :tableTitle="tableTitle"
         :tableData="tableListData">
         <template #singleReason="scope">
-          <span>{{ $i18n.locale === 'zh' ? scope.row.singleReason : scope.row.singleReasonEng }}</span>
+          <div>
+            <p>{{ scope.row.singleReason }}</p>
+            <p>{{ scope.row.singleReasonEng }}</p>
+          </div>
         </template>
       </tableList>
     </div>
