@@ -13,6 +13,9 @@
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableListData">
+        <template #singleReason="scope">
+          <span>{{ $i18n.locale === 'zh' ? scope.row.singleReason : scope.row.singleReasonEng }}</span>
+        </template>
       </tableList>
     </div>
   </iCard>
