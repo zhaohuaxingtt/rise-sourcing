@@ -221,7 +221,7 @@
           <div class="beizhu">
             备注 Remarks:
             <div class="beizhu-value">
-              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+              <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
             </div>
           </div>
           <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
@@ -518,7 +518,7 @@
         <div class="beizhu">
           备注 Remarks:
           <div class="beizhu-value">
-            <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+            <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
           </div>
         </div>
         <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
@@ -581,7 +581,7 @@
 
 <script>
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
-import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle, resetLtcData } from './data'
+import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle, resetLtcData, remarkProcess } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, searchRsPageExchangeRate, reviewListRs } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
@@ -744,6 +744,7 @@ export default {
   mounted(){
   },
   methods: {
+    remarkProcess,
     dateFilter,
     getHeight(){
       setTimeout(()=>{
