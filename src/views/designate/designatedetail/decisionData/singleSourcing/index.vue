@@ -52,6 +52,9 @@
                     <template #sapCode="scope">
                         <span>{{ scope.row.sapCode || scope.row.svwCode || scope.row.svwTempCode }}</span>
                     </template>
+                    <template #singleReason="scope">
+                        <span>{{ $i18n.locale === 'zh' ? scope.row.singleReason : scope.row.singleReasonEng }}</span>
+                    </template>
                 </tableList>
                 <iPagination
                     class="margin-bottom20"
