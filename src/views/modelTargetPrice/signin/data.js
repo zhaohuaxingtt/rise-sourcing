@@ -1,23 +1,23 @@
 /*
  * @Author: Luoshuang
  * @Date: 2021-06-22 17:03:48
- * @LastEditors: Luoshuang
- * @LastEditTime: 2021-11-08 16:46:10
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-25 15:33:23
  * @Description: 
  * @FilePath: \front-sourcing\src\views\modelTargetPrice\signin\data.js
  */
 
 
 export const tableTitle = [
-  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true},
-  {props:'rfqName',name:'RFQ名称', key: "RFQMINGCHENG", tooltip: true},
-  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true},
-  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true},
-  {props:'cfName',name:'CF', key: "CF", tooltip: true},
-  {props:'applicationDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true},
-  {props:'endDate',name:'截止日期', key: "JIEZHIRIQI", tooltip: true},
+  {props:'rfqId',name:'RFQ编号', key: "RFQBIANHAO", tooltip: true, sortable: true},
+  {props:'rfqName',name:'RFQ名称', key: "RFQMINGCHENG", tooltip: true, sortable: true},
+  {props:'buyerName',name:'CSF/CSS', key: "CSFCSS", tooltip: true, sortable: true},
+  {props:'linieName',name:'LINIE', key: "LINIE", tooltip: true, sortable: true},
+  {props:'cfName',name:'CF', key: "CF", tooltip: true, sortable: true},
+  {props:'applicationDate',name:'申请日期', key: "SHENQINGRIQI", tooltip: true, sortable: true},
+  {props:'endDate',name:'截止日期', key: "JIEZHIRIQI", tooltip: true, sortable: true},
   // {props:'approvalStatusDesc',name:'签收状态', key: "QIANSHOUZHUANGTAI", tooltip: true},
-  {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true}
+  {props:'tuzhi',name:'图纸', key: "TUZHI", tooltip: true, sortable: true}
 ]
 
 export const tableMockData = [

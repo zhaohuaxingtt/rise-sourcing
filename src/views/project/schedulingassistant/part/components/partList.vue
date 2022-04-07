@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-31 17:45:16
+ * @LastEditTime: 2022-04-06 15:16:20
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -82,9 +82,10 @@
               <!--------------------------节点发生时间-已发生的不可编辑------------------------------------> 
               <div v-if="index == nodeList.length - 1" class="margin-top20 doubleItem"> 
                 <iText v-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro[item.kw]}}</iText> 
+                <!-- 是BMG 并且状态不等于1 就可以修改 -->
                 <span v-else  :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw, index)" >{{pro[item.kw]}}</span>
-                (<iText v-if="pro.bmgFlag === '是' || pro[item.status2] == 1" :class="`productItem-bottom-stepBetween-input text cursor`">{{pro.bmgFlag === '否' ? '/' : pro[item.kw2]}}</iText>
-                <span v-else :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>)
+                (<span v-if="pro.bmgFlag === '是' && pro[item.status2] != 1" :class="`productItem-bottom-stepBetween-input input cursor` " @click="openChangeKw(pro, item.kw2, index)" >{{pro[item.kw2]}}</span>
+                <iText v-else  :class="`productItem-bottom-stepBetween-input text cursor`">{{pro.bmgFlag === '否' ? '/' : pro[item.kw2]}}</iText>)
               </div>   
               <iText v-else-if="pro[item.status] == 1" :class="`productItem-bottom-stepBetween-input text margin-top20 cursor`">{{pro[item.kw]}}</iText> 
               <!-- <el-cascader 
@@ -1076,6 +1077,7 @@ export default {
               font-size: 18px;
               .productItem-bottom-stepBetween-input {
                 width: 100px;
+                font-size: 16px;
                 margin-right: 5px;
                 &:last-child {
                   margin-left: 5px;
