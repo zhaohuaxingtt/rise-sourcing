@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-30 13:56:01
- * @LastEditTime: 2021-11-11 16:46:47
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-25 14:58:09
+ * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\steelDemandCreation\home\components\data.js
  */
@@ -146,19 +146,19 @@ export const form = {
 }
 
 export const tableTitle = [
-  { props: 'nominateId', name: '申请单号', key: 'SHENGQINGDANHAO', tooltip: true },
-  { props: 'nominateName', name: '申请单名', key: 'SHENGQINGDANMING', tooltip: true },
-  { props:  'cartypeProjectZh',name:'PROJECT',key:'GANGCAIPROJECT',tooltip:true},
-  { props: 'nominateProcessTypeDesc', name: '类型', key: 'LEIX', tooltip: true  },
-  { props: 'applicationStatusDesc', name: '状态', key: 'ZHUANGTAI', tooltip: true },
-  { props: 'partProjectTypeDesc', name: '项目类型', key: 'XIANGMULEIX', tooltip: true },
-  { props: 'meeting', name: '会议', key: 'HUIYI', tooltip: true },
-  { props: 'nominateUserName', name: '询价采购员', key: 'XUNGJIACAIGOUYUAN', tooltip: true  },
-  { props: 'linieName', name: 'LINIE', key: 'LINIE', tooltip: true },
-  { props: 'rsStatusDesc', name: 'RS单状态', key: 'RSDANZHUANGTAI', tooltip: true  },
-  { props: 'rsFreezeDate', name: 'RS冻结日期', key: 'RSDONGJIERIQI', tooltip: true, width:120 },
-  { props: 'isPriceConsistentDesc', name: '报价一致性检验状态', key: 'BAOJIAYIZHIXINGJIANYANZHANGTAI', tooltip: true , width:150 },
-  { props: 'printStatusDesc', name: '打印状态', key: 'DAYINGZHUANGTAI', tooltip: true  },
-  { props: 'freezeDate', name: '冻结日期', key: 'DONGJIERIQI', tooltip: true  },
-  { props: 'nominateDate', name: '定点日期', key: 'DINGDIANRIQI', tooltip: true  }
+  { props: 'nominateId', name: '申请单号', key: 'SHENGQINGDANHAO', tooltip: true, width: 105, sortable: true },
+  { props: 'nominateName', name: '申请单名', key: 'SHENGQINGDANMING', tooltip: true, width: 105, sortable: true },
+  { props:  'cartypeProjectZh',name:'PROJECT',key:'GANGCAIPROJECT',tooltip:true, width: 110, sortable: true},
+  { props: 'nominateProcessTypeDesc', name: '类型', key: 'LEIX', tooltip: true, sortable: true  },
+  { props: 'applicationStatusDesc', name: '状态', key: 'ZHUANGTAI', tooltip: true, sortable: true },
+  { props: 'partProjectTypeDesc', name: '项目类型', key: 'XIANGMULEIX', tooltip: true, width: 105, sortable: true },
+  { props: 'meeting', name: '会议', key: 'HUIYI', tooltip: true, sortable: true },
+  { props: 'nominateUserName', name: '询价采购员', key: 'XUNGJIACAIGOUYUAN', tooltip: true, width: 120, sortable: true  },
+  { props: 'linieName', name: 'LINIE', key: 'LINIE', tooltip: true, width: 85, sortable: true },
+  { props: 'rsStatusDesc', name: 'RS单状态', key: 'RSDANZHUANGTAI', tooltip: true, width: 110, sortable: true  },
+  { props: 'rsFreezeDate', name: 'RS冻结日期', key: 'RSDONGJIERIQI', tooltip: true, width:125, sortable: true },
+  { props: 'isPriceConsistentDesc', name: '报价一致性检验状态', key: 'BAOJIAYIZHIXINGJIANYANZHANGTAI', tooltip: true , width:180, sortable: true },
+  { props: 'printStatusDesc', name: '打印状态', key: 'DAYINGZHUANGTAI', tooltip: true, width: 105, sortable: true  },
+  { props: 'freezeDate', name: '冻结日期', key: 'DONGJIERIQI', tooltip: true, width: 105, sortable: true  },
+  { props: 'nominateDate', name: '定点日期', key: 'DINGDIANRIQI', tooltip: true, width: 105, sortable: true  }
 ]
