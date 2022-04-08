@@ -58,7 +58,7 @@
       ></tableList>
     </iCard>
     <!-- <approvalFlowDialog :dialogVisible="flowDialogVisible" @changeVisible="changeflowDialogVisible" :processInstanceId="processInstanceId" :nominationType="nominationType" :nomiAppId="$route.query.desinateId" /> -->
-    <viewFlowDialog :visible="flowDialogVisible" :detail="{ processInstanceId, businessId: nominationData.id }" :nominationType="nominationType" :nomiAppId="$route.query.desinateId" />
+    <viewFlowDialog :visible.sync="flowDialogVisible" :detail="{ processInstanceId, businessId: nominationData.id }" :nominationType="nominationType" :nomiAppId="$route.query.desinateId" />
   </iPage>
 </template>
 
@@ -349,7 +349,7 @@ export default {
      * @return {*}
      */    
     changeflowDialogVisible(visible) {
-      this.flowDialogVisible =  visible
+      this.flowDialogVisible = visible
     }
   }
 }
