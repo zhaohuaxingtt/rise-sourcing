@@ -63,3 +63,11 @@ export function exportExclusiveSuppliersList(data) {
       data
   })
 }
+
+// 供应商查询
+export function getPartSupplierList(params) {
+  return requst({
+    url: `/rs/suppliers/${ params.nominateAppId }/${ params.rfqId }/${ params.fsnrGsnrNum }`,
+    method: "GET"
+  })
+}
