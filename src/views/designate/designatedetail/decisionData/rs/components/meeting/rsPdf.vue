@@ -210,7 +210,7 @@
               <div class="beizhu">
                 备注 Remarks:
                 <div class="beizhu-value">
-                  <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+                  <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
                 </div>
               </div>
             </div>
@@ -350,7 +350,7 @@
 import { iCard, icon } from "rise"
 import tableList from "@/views/designate/designatedetail/components/tableList"
 import { partProjTypes } from "@/config"
-import { resetLtcData } from "./data"
+import { resetLtcData, remarkProcess } from "./data"
 import { toThousands } from "@/utils"
 import filters from "@/utils/filters"
 import { dateFilter } from "../circulation/data"
@@ -407,6 +407,7 @@ export default {
     },
   },
   methods: {
+    remarkProcess,
     dateFilter,
     resetLtcData
   }
