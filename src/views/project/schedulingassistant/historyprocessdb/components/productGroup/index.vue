@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-02 15:48:30
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-18 11:59:01
+ * @LastEditTime: 2022-04-06 14:47:25
  * @Description: 产品组
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\historyprocessdb\components\productGroup\index.vue
 -->
@@ -24,7 +24,7 @@
           <iButton v-permission.auto="PROJECTMGT_SCHEDULINGASSISTANT_HISTORYPROCESSDB_DAOCHU_BUTTON|历史进度数据库-导出-按钮" @click="handleExport" :loading="downloadLoading" >{{language('DAOCHU','导出')}}</iButton>
         </div>
       </div>
-      <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular">
+      <tableList class="regularTable" indexKey :tableTitle="regularTableTitle" :tableData="regularTableData" :tableLoading="regularTableLoading" @handleSelectionChange="handleSelectionChangeRegular" :selectionFixed="false">
       </tableList> 
     </template>
     <!---------------------------------------------------------------------->
@@ -67,6 +67,7 @@ import logicSettingDialog from '@/views/project/components/logicSettingBtn/compo
 import { selectDictByKeyss } from '@/api/dictionary'
 import showItemDialog from '../showItem'
 import { getExperience, getCondition, getFitting, downloadHistoryProgressFile } from '@/api/project'
+import { cloneDeep } from "lodash"
 export default {
   mixins: [pageMixins],
   components: { iCard, tableList, iPagination, iButton, logicSettingDialog, showItemDialog },
@@ -198,11 +199,17 @@ export default {
         iMessage.warn(this.language('QINGXUANZEXUYAODAOCHUDESHUJU', '请选择需要导出的数据'))
         return
       }
+
+      // 勾选项需要排下序
+      let selectRowRegular = cloneDeep(this.selectRowRegular);
+       selectRowRegular.sort((a,b)=>{
+        return (a.id - b.id)
+      })
       this.downloadLoading = true
       try {
         const params = {
           cartypeProId: '3',
-          experienceVOList: this.selectRowRegular,
+          experienceVOList: selectRowRegular,
           fields: this.partTableTitle.map(item => {
             return {
               gridFieldZh: item.name,
