@@ -483,6 +483,7 @@ export default {
             let state = true
             let dataInfo = ''
             let systemerror = false
+            let autoNomi = false
             try {
                 let res = {}
                 if (level === 1) res = await checkNomiMeetingSubmit1(data)
@@ -491,16 +492,26 @@ export default {
                 if (level === 4) res = await checkNomiMeetingSubmit4(data)
                 if (res && res.code === '200') {
                     state = true
-                    if (res.data && res.data.length) {
-                        res.data.forEach((item) => {
-                            if (this.$i18n.locale === "zh") {
-                                dataInfo+= `${item.zhMsg}<br>`
-                            } else {
-                                dataInfo+= `${item.engMsg}<br>`
-                            }
-                        })
+
+                    if (level === 2) {
+                        if (res.data) {
+                            autoNomi = res.data.autoNomi || false
+                            dataInfo = res.data.msg ? `${ this.$i18n.locale === 'zh' ? res.data.msg.zhMsg : res.data.msg.engMsg }` : ''
+                        } else {
+                            state = false
+                        }
                     } else {
-                        state = false
+                        if (res.data && res.data.length) {
+                            res.data.forEach((item) => {
+                                if (this.$i18n.locale === "zh") {
+                                    dataInfo+= `${item.zhMsg}<br>`
+                                } else {
+                                    dataInfo+= `${item.engMsg}<br>`
+                                }
+                            })
+                        } else {
+                            state = false
+                        }
                     }
                 } else {
                     state = true
@@ -514,7 +525,7 @@ export default {
                 !dataInfo && (dataInfo = this.language('NETWORKERROR', '网络错误，请稍后重试'))
                 // iMessage.error(this.$i18n.locale === "zh" ? e.desZh : e.desEn)
             }
-            return {state, dataInfo, systemerror}
+            return {state, dataInfo, systemerror, autoNomi}
         },
         // 提交
         // 提交逻辑需求有变化，所有类型的定点申请都要进行四轮校验，且第四轮为强制
@@ -556,44 +567,53 @@ export default {
                         }
                     }
                     // 进行第二轮校验
+                    // 备案/所有零件均为引用批量价格 弹窗提示确认自动定点，否则中断提交
+                    // 上会 弹窗提示确认正常提交，否则中断提交
+                    // 流转和无弹窗内容 不弹窗
                     res = await this.checkNomiMeetingSubmit(2)
                     console.log('第二轮校验',res)
                     if (res.state) {
-                        try {
-                            const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
-                                confirmButtonText: this.language('LK_JIXU','继续'),
-                                cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
-                                showCancelButton: true,
-                                showConfirmButton: res.systemerror ? false : true,
-                                type: res.systemerror? 'error' : 'warning',
-                                dangerouslyUseHTMLString:true
-
-                            })
-
-                            if (confirmNextInfo == 'confirm') {
-                                fittingNomi({
-                                    nominateId: this.$route.query.desinateId
-                                }).then(res => {
-                                    if (res.code == 200) {
-                                        iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                                        this.$emit("updateNomi")
-                                    } else {
-                                        iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
-                                    }
-
-                                    this.submitting = false
+                        if (res.dataInfo) {
+                            try {
+                                const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                                    confirmButtonText: this.language('LK_JIXU','继续'),
+                                    cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
+                                    showCancelButton: true,
+                                    showConfirmButton: res.systemerror ? false : true,
+                                    type: res.systemerror? 'error' : 'warning',
+                                    dangerouslyUseHTMLString: true
                                 })
 
+                                if (confirmNextInfo == 'confirm') {
+                                    if (res.autoNomi) {
+                                        fittingNomi({
+                                            nominateId: this.$route.query.desinateId
+                                        }).then(res => {
+                                            if (res.code == 200) {
+                                                iMessage.success(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                                this.$emit("updateNomi")
+                                            } else {
+                                                iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+                                            }
+
+                                            this.submitting = false
+                                        })
+
+                                        this.submitting = false
+                                        return
+                                    }
+                                } else {
+                                    this.submitting = false
+                                    return
+                                }
+                            } catch (e) {
+                                console.log(e)
                                 this.submitting = false
                                 return
                             }
-                        } catch (e) {
-                            console.log(e)
-                            this.submitting = false
-                            return
                         }
                     }
-                    // 进行第二轮校验
+                    // 进行第三轮校验
                     res = await this.checkNomiMeetingSubmit(3)
                     console.log('第三轮校验',res)
                     if (res.state) {
@@ -613,26 +633,26 @@ export default {
                             return
                         }
                     }
-                    res = await this.checkNomiMeetingSubmit(4)
-                    if (res.state) { 
-                        console.log('4',res.dataInfo);
-                        try{
-                              const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
-                                confirmButtonText: this.language('LK_JIXU','继续'),
-                                cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
-                                type:'warning',
-                                dangerouslyUseHTMLString:true
+                    // res = await this.checkNomiMeetingSubmit(4)
+                    // if (res.state) { 
+                    //     console.log('4',res.dataInfo);
+                    //     try{
+                    //           const confirmNextInfo = await this.$confirm(res.dataInfo,this.language('LK_NOTICE','提示'), {
+                    //             confirmButtonText: this.language('LK_JIXU','继续'),
+                    //             cancelButtonText: this.language('QUXIAO', res.systemerror ? this.language('SURE','确定') : this.language('QUXIAO','取消')),
+                    //             type:'warning',
+                    //             dangerouslyUseHTMLString:true
 
-                            })
-                            if (confirmNextInfo !== 'confirm') {
-                                this.submitting = false
-                                return
-                            }
-                        } catch (e) {
-                            this.submitting = false
-                            return
-                        }
-                    }
+                    //         })
+                    //         if (confirmNextInfo !== 'confirm') {
+                    //             this.submitting = false
+                    //             return
+                    //         }
+                    //     } catch (e) {
+                    //         this.submitting = false
+                    //         return
+                    //     }
+                    // }
 
                     if (nominationType === 'MEETING') {
                         // 打开上会确认弹窗

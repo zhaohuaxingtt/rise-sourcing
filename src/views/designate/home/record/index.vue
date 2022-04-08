@@ -153,6 +153,9 @@ export default {
     },
     async exportRecord() {
       let data = Object.assign({...this.$refs.search.formRecord},{size:this.page.pageSize},{current:this.page.currPage})
+      data.nominateStartTime = Array.isArray(data.nominateTime) ? data.nominateTime[0] : undefined
+      data.nominateEndTime = Array.isArray(data.nominateTime) ? data.nominateTime[1] : undefined
+      delete data.nominateTime
 
       this.downloading = true
       await exportNomiRecordExcel(data)
