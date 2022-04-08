@@ -100,18 +100,34 @@ export default{
         return ''
       }
     },
-	handleSelect(selection,row){
+	  handleSelect(selection,row) {
       const selectdBorder = row.selectedBorder
       this.$set(row,'selectedBorder',!selectdBorder)
     },
-    handleSelectAll(selection){  
+    isParentNode(node) {
+      return node && Array.isArray(node.children)
+    },
+    recursiveSelectChildNode(node, status) {
+      node.children.forEach(childNode => {
+        this.$nextTick(() => this.$refs.moviesTable.toggleRowSelection(childNode, status))
+        this.$set(childNode, "selectedBorder", status)
+
+        this.isParentNode(childNode) && this.recursiveSelectChildNode(childNode, status)
+      })
+    },
+    handleSelectAll(selection) {
+      this.$nextTick(() =>  this.tableData.forEach(row => {
+        this.isParentNode(row) && this.recursiveSelectChildNode(row, this.$refs.moviesTable.store._data.states.isAllSelected)
+        this.$set(row, "selectedBorder", this.$refs.moviesTable.store._data.states.isAllSelected)
+      }))
+
       const flag = selection.length
       for(let i= 0  ; i<flag;i++){
         this.$set(selection[i],'selectedBorder',!!flag)
       }
       !flag? this.tableData.forEach(i=>{i.selectedBorder=!i.selectedBorder}):''
     },
-    borderLeft({row, column, rowIndex, columnIndex}){
+    borderLeft({row, column, rowIndex, columnIndex}) {
       if(columnIndex === 0 && row.selectedBorder === true){
          return "border-left:2px solid #1660F1;"
       }
