@@ -221,7 +221,7 @@
           <div class="beizhu">
             备注 Remarks:
             <div class="beizhu-value">
-              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+              <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
             </div>
           </div>
           <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
@@ -518,7 +518,7 @@
         <div class="beizhu">
           备注 Remarks:
           <div class="beizhu-value">
-            <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+            <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
           </div>
         </div>
         <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
@@ -581,7 +581,7 @@
 
 <script>
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
-import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle, resetLtcData } from './data'
+import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle, resetLtcData, remarkProcess } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark,getPrototypeList, getDepartApproval, searchRsPageExchangeRate, reviewListRs } from '@/api/designate/decisiondata/rs'
 import {partProjTypes} from '@/config'
@@ -744,6 +744,7 @@ export default {
   mounted(){
   },
   methods: {
+    remarkProcess,
     dateFilter,
     getHeight(){
       setTimeout(()=>{
@@ -957,16 +958,19 @@ export default {
       getList(this.nominateId).then(res => {
         if (res?.result) {
           let temdata = res.data || {}
-          temdata.suppliersNow =temdata.supplierVoList
+          temdata.suppliersNow = temdata.supplierVoList
           if(temdata.partNameDe){
             temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
           }
           this.basicData = temdata
-          let data = res.data?.lines ?? []
+          let data = Array.isArray(res.data.lines) ? res.data.lines : []
           data.forEach((val,index) => {
             let suppliersNowCn =[]
             let suppliersNowEn =[]
-            val.supplierVoList.forEach(val =>{
+
+            const supplierVoList = Array.isArray(val.supplierVoList) ? val.supplierVoList : []
+
+            supplierVoList.forEach(val =>{
               suppliersNowCn.push(val.shortNameZh)
               suppliersNowEn.push(val.shortNameEn)
             })
@@ -984,7 +988,7 @@ export default {
             val.partName = val.partNameDe
           })
           this.tableData = data
-          this.projectType = res.data.partProjectType || ''
+          this.projectType = this.basicData.partProjectType || ''
 
           this.searchRsPageExchangeRate()
         } else {
@@ -1080,11 +1084,13 @@ export default {
             temdata.partName = `${temdata.partName}/${temdata.partNameDe}`
           }
           this.basicData = temdata
-          let data = res.data?.lines
+          let data = Array.isArray(res.data.lines) ? res.data.lines : []
           data.forEach((val,index) => {
             let suppliersNowCn =[]
             let suppliersNowEn =[]
-            val.supplierVoList.forEach(val =>{
+            const supplierVoList = Array.isArray(val.supplierVoList) ? val.supplierVoList : []
+
+            supplierVoList.forEach(val =>{
               suppliersNowCn.push(val.shortNameZh)
               suppliersNowEn.push(val.shortNameEn)
             })
@@ -1109,7 +1115,7 @@ export default {
             // }
           })
           this.tableData = data
-          this.projectType = res.data.partProjectType || ""
+          this.projectType = this.basicData.partProjectType || ""
 
           this.searchRsPageExchangeRate()
         } else {

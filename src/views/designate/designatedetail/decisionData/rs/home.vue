@@ -8,7 +8,7 @@
 -->
 <template>
   <div>
-    <rsCapacityExpan v-if="partProjType === partProjTypes.KUOCHANNENG" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_CAPACITYEXPAN|决策资料-RS扩产能" />
+    <rsCapacityExpan v-if="partProjType === partProjTypes.KUOCHANNENG" v-permission.auto.array="['SOURCING_NOMINATION_ATTATCH_RS_CAPACITYEXPAN|决策资料-RS扩产能', 'SOURCEINQUIRYPOINT_MENU_PARTSNOMINATION_SUBMENU_RECORD_RS_CAPACITYEXPAN|定点记录-RS扩产能']" />
     <RS v-else />
   </div>
 </template>

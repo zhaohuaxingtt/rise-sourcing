@@ -13,6 +13,12 @@
         :selection="false"
         :tableTitle="tableTitle"
         :tableData="tableListData">
+        <template #singleReason="scope">
+          <div>
+            <p>{{ scope.row.singleReason }}</p>
+            <p>{{ scope.row.singleReasonEng }}</p>
+          </div>
+        </template>
       </tableList>
     </div>
   </iCard>

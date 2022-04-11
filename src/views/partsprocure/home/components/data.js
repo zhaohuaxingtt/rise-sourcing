@@ -1,7 +1,7 @@
 /*
  * @Author: yuszhou
  * @Date: 2021-02-25 10:14:46
- * @LastEditTime: 2022-03-09 11:40:10
+ * @LastEditTime: 2022-03-25 11:12:25
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \rise\src\views\partsprocure\home\component\data.js
@@ -14,8 +14,9 @@ export const tableTitle = [{
 		name: 'FSNF/GSNF/SPNR',
 		key: 'partsprocure.PARTSPROCUREFSNFGSNFSPNR',
 		tooltip: true,
-		width:130,
+		width:160,
 		isAekoShow:true,
+		sortable: true
 	},
 	{
 		props: 'partNum',
@@ -24,6 +25,7 @@ export const tableTitle = [{
 		tooltip: true,
 		width:130,
 		isAekoShow:true,
+		sortable: true
 	},
 	{
 		props: 'sourcingNumber',
@@ -32,31 +34,35 @@ export const tableTitle = [{
 		tooltip: true,
 		isAekoShow:false,
 		isCommonSourcingShow:true,
-		width:160
+		width:185,
+		sortable: true
 	},
 	{
 		props: 'partNameZh',
 		name: '零件名（中）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEZH',
 		tooltip: true,
-		width:120,
+		width:135,
 		isAekoShow:true,
+		sortable: true
 	},
 	{
 		props: 'partNameDe',
 		name: '零件名（德）',
 		key: 'partsprocure.PARTSPROCUREPARTNAMEDE',
 		tooltip: true,
-		width:120,
+		width:135,
 		isAekoShow:true,
+		sortable: true,
 	},
 	{
 		props: 'mtz',
 		name: 'MTZ',
 		key: 'partsprocure.mtz',
 		tooltip: true,
-		width:60,
+		width:85,
 		isAekoShow:true,
+		sortable: true,
 	},
 	// {
 	// 	props: 'statusName',
@@ -69,16 +75,18 @@ export const tableTitle = [{
 		name: 'LINIE',
 		key: 'partsprocure.PARTSPROCURELINIE',
 		tooltip: true,
-		width: 70,
+		width: 95,
 		isAekoShow:false,
+		sortable: true,
 	},
 	{
 		props: 'cfControllerName',
 		name: 'CF',
 		key: 'partsprocure.CF',
 		tooltip: true,
-		width:70,
+		width:95,
 		isAekoShow:false,
+		sortable: true,
 	},
 	// {
 	// 	props: 'cfControllerZh',
@@ -92,48 +100,54 @@ export const tableTitle = [{
 		name: '采购工厂',
 		key: 'partsprocure.PARTSPROCUREPURCHASINGFACTORY',
 		tooltip: true,
-		width:90,
+		width:115,
 		isAekoShow:true,
+		sortable: true,
 	},
 	{
 		props: 'partProjectTypeDesc',
 		name: '零件项目类型',
 		key: 'partsprocure.PARTSPROCUREPARTITEMTYPE',
 		tooltip: true,
-		width:120,
+		width:145,
 		isAekoShow:true,
+		sortable: true,
 	},
 	{
 		props: 'carTypeCategory',
 		name: '车型大类',
 		key: 'partsprocure.PARTSPROCUREVEHICLECATEGORIES',
 		tooltip: true,
-		width:100,
+		width:115,
 		isAekoShow:true,
+		sortable: true,
 	},
 	{
 		props: 'carTypeProjectZh',
 		name: '车型项目',
 		key: 'partsprocure.PARTSPROCUREMODELPROJECT',
 		tooltip: true,
-		minWidth:120,
+		minWidth:140,
 		isAekoShow:true,
+		sortable: true,
 	},
 	{
 		props: 'statusDesc',
 		name: '零件状态',
 		key: 'partsprocure.PARTSPROCUREPARTSTATUS',
 		tooltip: true,
-		minWidth:75,
+		minWidth:105,
 		isAekoShow:true,
+		sortable: true,
 	},
 	{
 		props: 'buyerName',
 		name: '询价采购员',
 		key: 'partsprocure.PARTSPROCUREINQUIRYBUYER',
 		tooltip: true,
-		width:120,
+		minWidth:135,
 		isAekoShow:false,
+		sortable: true,
 	},
 ]
 

@@ -119,11 +119,13 @@ export default {
     supplierProducePlacesChange(value, row) {
       if (value) {
         const current = this.supplierProducePlaces.filter(item => item.value === value)[0]
-        this.$set(row, "companyAddressCode", value),
+        this.$set(row, "companyAddressCode", value)
         this.$set(row, "companyAddress", current.label)
+        this.$set(row, "isNoCodeData", false)
       } else {
-        this.$set(row, "companyAddressCode", ""),
+        this.$set(row, "companyAddressCode", "")
         this.$set(row, "companyAddress", "")
+        this.$set(row, "isNoCodeData", true)
       }
     },
     handleClickByLink(row, key) {

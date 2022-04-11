@@ -348,7 +348,6 @@ export default {
             data['deadLineEnd'] = deadLine[1];
         }
 
-        // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
         // 判断零件号查询至少大于等于3位或为空的情况下才允许查询
         if(partNum && partNum.trim().length < 3){
           this.loading = false;

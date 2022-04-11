@@ -427,9 +427,9 @@ export default {
         }
 
         // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
-        if(partNum && partNum.trim().length < 9){
+        if(partNum && partNum.trim().length < 3){
           this.loading = false;
-          return this.$message.warning(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+          return this.$message.warning(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI','查询零件号不足,请补充至3位或以上'));
         }
         await getManageList({...searchParams,...data}).then((res)=>{
           this.loading = false;
