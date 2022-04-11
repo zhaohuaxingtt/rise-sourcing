@@ -27,7 +27,7 @@
             <div class="info">
               <span class="label">{{ info.name }}：</span>
               <span v-if="info.props === 'exchange'" v-html="exchangeRate"></span>
-              <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span>
+              <!-- <span v-if="info.props === 'nominateAppTime'">{{ basicData[info.props] | dateFilter('YYYY-MM-DD') }}</span> -->
               <div v-else>{{ basicData[info.props] }}</div>
             </div>
           </div>
@@ -1239,7 +1239,7 @@ export default {
 
     // 汇率显示处理
     exchangeRateProcess(row) {
-      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
+      return `1${ row.originCurrencyCode }=${ row.foreignCurrency2Rmb }${ row.currencyCode }`
     },
 
     /**
