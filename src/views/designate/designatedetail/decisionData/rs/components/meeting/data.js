@@ -282,3 +282,9 @@ export const resetLtcData = function(row, type) {
     return ltcRateStrArr.length ? ltcRateStrArr.join('/') : '-'
   }
 }
+
+// 备注处理
+export const remarkProcess = function(remark) {
+  const remarkStr = remark || remark === 0 ? remark + '' : ''
+  return remarkStr.replace(/(\r|\n)/g, '<br/>')
+}

@@ -159,7 +159,7 @@
           <div class="beizhu">
             备注 Remarks:
             <div class="beizhu-value">
-              <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+              <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
             </div>
           </div>
           </div>
@@ -568,7 +568,7 @@
         <div class="beizhu">
           备注 Remarks:
           <div class="beizhu-value">
-            <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+            <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
           </div>
         </div>
         </div>
@@ -653,7 +653,7 @@
 <script>
 import { iCard, iButton, iInput, iFormGroup, iFormItem, iText, iMessage, iPagination, icon } from 'rise'
 import { nomalTableTitle, checkList, accessoryTableTitle, sparePartTableTitle, fileTableTitle, gsTableTitle, infos, dateFilter } from './data'
-import { resetLtcData } from '../meeting/data'
+import { resetLtcData, remarkProcess } from '../meeting/data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import { getList, getRemark, updateRemark, updateRsMemo, reviewListRs, searchRsPageExchangeRate, getDepartApproval } from '@/api/designate/decisiondata/rs'
 import { uploadFiles } from '@/api/costanalysismanage/costanalysis'
@@ -783,6 +783,7 @@ export default {
     }
   },
   methods: {
+    remarkProcess,
     dateFilter,
     getHeight(){
       setTimeout(()=>{

@@ -185,103 +185,66 @@
 								<span>{{ +scope.row.share || 0 }}</span>
 							</template>
 
-							<template #savingFee="scope">
-								<span>{{ scope.row.savingFee | toThousands(true) }}</span>
-							</template>
-						</tableList>
-						<div>
-							<div style="margin-left: 20px">
-								<span style="color: red">*</span><span>代表投资费已分摊</span>
-							</div>
-							<div class="beizhu">
-								备注 Remarks:
-								<div class="beizhu-value">
-									<p v-for="(item, index) in remarkItem" :key="index">
-										{{ item.value }}
-									</p>
-								</div>
-							</div>
-						</div>
-						<iCard
-							class="checkDate rsCard Application"
-							:title="`Application Date：${dateFilter(
-								processApplyDate,
-								'YYYY-MM-DD'
-							)}`"
-						>
-							<div class="checkList">
-								<div
-									class="checkList-item"
-									v-for="(item, index) in checkList"
-									:key="index"
-								>
-									<icon
-										v-if="item.approveStatus === true"
-										name="iconrs-wancheng"
-										class="complete"
-									></icon>
-									<icon
-										v-else-if="item.approveStatus === false"
-										name="iconrs-quxiao"
-										class="cancel"
-									></icon>
-									<div v-else class="">-</div>
-									<div class="checkList-item-info">
-										<span>Dept.:</span>
-										<span class="checkList-item-info-depart">{{
-											item.approveDeptNumName
-										}}</span>
-									</div>
-									<div class="checkList-item-info">
-										<span>Date:</span>
-										<span>{{
-											item.approveDate | dateFilter('YYYY-MM-DD')
-										}}</span>
-									</div>
-								</div>
-							</div>
-						</iCard>
-					</div>
-					<div class="page-logo">
-						<img
-							src="../../../../../../../assets/images/logo.png"
-							alt=""
-							:height="46 * 0.6 + 'px'"
-							:width="126 * 0.6 + 'px'"
-						/>
-						<div>
-							<p>{{ 'page ' + (index + 1) + ' of ' + tableList.length }}</p>
-						</div>
-						<div>
-							<p>{{ userName }}</p>
-							<p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD') }}</p>
-						</div>
-					</div>
-				</div>
-			</iCard>
-		</template>
-	</div>
+                <template #savingFee="scope">
+                  <span>{{ scope.row.savingFee | toThousands(true) }}</span>
+                </template>
+              </tableList>
+              <div>
+                <div style="margin-left:20px">
+                  <span style="color: red">*</span><span>代表投资费已分摊</span>
+                </div>
+                <div class="beizhu">
+                  备注 Remarks:
+                  <div class="beizhu-value">
+                    <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+                  </div>
+                </div>
+
+              </div>
+              <iCard class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+                <div class="checkList">
+                  <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                    <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                    <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                    <div v-else class="" >-</div>
+                    <div class="checkList-item-info">
+                      <span>Dept.:</span>
+                      <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                    </div>
+                    <div class="checkList-item-info">
+                      <span>Date:</span>
+                      <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                    </div>
+                  </div>
+                </div>
+              </iCard>
+            </div>
+            <div class="page-logo">
+              <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+              <div>
+                <p>{{'page '+(index+1)+' of '+tableList.length}}</p>
+              </div>
+              <div>
+                <p>{{ userName }}</p>
+                <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+              </div>
+            </div>
+          </div>
+      </iCard>
+    </template>
+  </div>
 </template>
 
 <script>
-import { iCard, iFormGroup, iFormItem, iText, icon } from 'rise'
-import tableList from '@/views/designate/designatedetail/components/tableList'
-import { partProjTypes, fileType } from '@/config'
-import {
-	getList,
-	getRemark,
-	reviewListRs,
-	searchRsPageExchangeRate,
-} from '@/api/designate/decisiondata/rs'
-import { checkList, fileTableTitle, infos, dateFilter } from './data'
-import {
-	nomalTableTitleSub,
-	accessoryTableTitle,
-	sparePartTableTitle,
-} from './pdfData'
-import { resetLtcData } from '../meeting/data'
-import filters from '@/utils/filters'
-import { toThousands } from '@/utils'
+import { iCard, iFormGroup, iFormItem, iText, icon } from "rise"
+import tableList from "@/views/designate/designatedetail/components/tableList"
+import { partProjTypes, fileType } from "@/config"
+import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
+import { checkList, fileTableTitle, infos, dateFilter } from "./data"
+import { nomalTableTitleSub, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
+import { resetLtcData, remarkProcess } from '../meeting/data'
+import filters from "@/utils/filters"
+import { toThousands } from "@/utils"
 export default {
 	mixins: [filters],
 	components: { iCard, iFormGroup, iFormItem, iText, tableList, icon },
@@ -345,54 +308,55 @@ export default {
 		//     return gsTableTitle
 		//   }
 
-		//   return nomalTableTitleSub
-		// },
-		isPF() {
-			// 是否配附件
-			return (
-				this.projectType === this.partProjTypes.PEIJIAN ||
-				this.projectType === this.partProjTypes.FUJIAN
-			)
-		},
-	},
-	methods: {
-		dateFilter,
-		resetLtcData,
-		tableRowClassName({ row }) {
-			if (row.isSuggestion) {
-				return 'suggestionRow'
-			}
-		},
-		// /**
-		//  * @Description: 获取表格初始数据
-		//  * @Author: Luoshuang
-		//  * @param {*}
-		//  * @return {*}
-		//  */
-		// getTopList() {
-		//   getList(this.nominateId).then(res => {
-		//     if (res.code == 200) {
-		//       this.basicData = res.data
-		//       this.tableData = res.data.lines
-		//       this.projectType = res.data.partProjectType || ''
-		//     } else {
-		//       this.basicData = {}
-		//       this.tableData = []
-		//       this.projectType = ''
-		//     }
-		//   })
-		// },
-		// getRemark() {
-		//   getRemark(this.nominateId).then(res => {
-		//     if (res.code == 200) {
-		//       this.remarkItem = res.data.map(item => {
-		//         return {value: item, checked: false}
-		//       })
-		//     }
-		//   })
-		// },
-	},
-}
+    //   return nomalTableTitleSub
+    // },
+    isPF() {
+      // 是否配附件
+      return (
+        this.projectType === this.partProjTypes.PEIJIAN ||
+        this.projectType === this.partProjTypes.FUJIAN
+      );
+    },
+  },
+  methods: {
+    remarkProcess,
+    dateFilter,
+    resetLtcData,
+    tableRowClassName({ row }) {
+      if (row.isSuggestion) {
+        return "suggestionRow"
+      }
+    },
+    // /**
+    //  * @Description: 获取表格初始数据
+    //  * @Author: Luoshuang
+    //  * @param {*}
+    //  * @return {*}
+    //  */    
+    // getTopList() {
+    //   getList(this.nominateId).then(res => {
+    //     if (res.code == 200) {
+    //       this.basicData = res.data
+    //       this.tableData = res.data.lines
+    //       this.projectType = res.data.partProjectType || ''
+    //     } else {
+    //       this.basicData = {}
+    //       this.tableData = []
+    //       this.projectType = ''
+    //     }
+    //   })
+    // },
+    // getRemark() {
+    //   getRemark(this.nominateId).then(res => {
+    //     if (res.code == 200) {
+    //       this.remarkItem = res.data.map(item => {
+    //         return {value: item, checked: false}
+    //       })
+    //     }
+    //   })
+    // },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

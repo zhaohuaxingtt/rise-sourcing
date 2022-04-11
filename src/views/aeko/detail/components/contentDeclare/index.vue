@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-26 16:46:44
- * @LastEditTime: 2022-03-23 15:36:11
+ * @LastEditTime: 2022-04-07 14:31:37
  * @LastEditors: YoHo
  * @Description: In User Settings Edit
  * @FilePath: \front-web\src\views\aeko\detail\components\contentDeclare\index.vue
@@ -585,8 +585,8 @@ export default {
 
 
       // 零件号需要单独处理下  根据逗号和空格拆成List
-      const {partNum=''} = form;
-      let newPartNum = partNum=='' ? [] : partNum.split(/[ ,，]+/);
+      // const {partNum=''} = form;
+      // let newPartNum = partNum=='' ? [] : partNum.split(/[ ,，]+/);
 
       const {query} = this.$route;
       const {from=''} = query;
@@ -594,7 +594,7 @@ export default {
       if(!auditType){
         getAekoLiniePartInfo({
           ...form,
-          partNum:newPartNum,
+          // partNum:newPartNum,
           requirementAekoId: this.aekoInfo.requirementAekoId,
           cartypeProjectCode: Array.isArray(this.form.cartypeProjectCode) ? (this.form.cartypeProjectCode.length === 1 && this.form.cartypeProjectCode[0] === "" ? null : this.form.cartypeProjectCode) : null,
           investCarTypePros: Array.isArray(this.form.investCarTypePros) ? (this.form.investCarTypePros.length === 1 && this.form.investCarTypePros[0] === "" ? null : this.form.investCarTypePros) : null,
@@ -658,9 +658,9 @@ export default {
         }).catch(() => this.loading = false)
       },
     sure() {
-      // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
-      if(this.form.partNum && this.form.partNum.trim().length < 9){
-        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+      // 判断零件号查询至少大于等于3位或为空的情况下才允许查询
+      if(this.form.partNum && this.form.partNum.trim().length < 3){
+        return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI','查询零件号不足,请补充至3位或以上'));
       }
 
       this.page.currPage = 1

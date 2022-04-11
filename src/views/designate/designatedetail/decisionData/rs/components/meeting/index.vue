@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 15:35:18
+ * @LastEditTime: 2022-04-11 13:33:52
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -347,348 +347,171 @@
 						<span>{{ scope.row.turnover | toThousands }}</span>
 					</template>
 
-					<template #share="scope">
-						<span>{{ +scope.row.share || 0 }}</span>
-					</template>
-				</tableList>
-				<!-- v-if="isPreview" -->
-				<div class="out-compute">
-					<div style="margin-left: 20px">
-						<span style="color: red">*</span><span>代表投资费已分摊</span>
-					</div>
-					<div class="beizhu">
-						备注 Remarks:
-						<div class="beizhu-value">
-							<p v-for="(item, index) in remarkItem" :key="index">
-								{{ item.value }}
-							</p>
-						</div>
-					</div>
-					<div
-						v-if="
-							projectType === partProjTypes.DBLINGJIAN ||
-							projectType === partProjTypes.DBYICHIXINGCAIGOU
-						"
-						style="text-align: right"
-					>
-						汇率：Exchange rate:
-						<span
-							class="exchangeRageCurrency"
-							v-for="item in exchangeRageCurrency"
-							:key="item"
-						>
-							1{{
-								basicData.currencyMap && basicData.currencyMap[item]
-									? basicData.currencyMap[item].code
-									: item
-							}}={{ basicData.currencyRateMap[item]
-							}}{{
-								basicData.currencyMap.RMB
-									? basicData.currencyMap.RMB.code
-									: 'RMB'
-							}}
-						</span>
-					</div>
-					<div v-else>
-						<div class="margin-top10">
-							<p v-for="(exchangeRate, index) in exchangeRates" :key="index">
-								Exchange rate{{
-									exchangeRate.fsNumsStr ? ` ${index + 1}` : ''
-								}}: {{ exchangeRate.str
-								}}{{
-									exchangeRate.fsNumsStr ? `（${exchangeRate.fsNumsStr}）` : ''
-								}}
-							</p>
-						</div>
-					</div>
-				</div>
-			</iCard>
-			<iCard
-				v-if="!isPreview && !showSignatureForm && !isAuth"
-				:title="language('SHANGHUIBEIZHU', '上会备注')"
-				class="margin-top20"
-			>
-				<iButton
-					slot="header-control"
-					@click="handleSaveRemarks"
-					:loading="saveLoading"
-					v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE | 保存"
-					>{{ language('BAOCUN', '保存') }}</iButton
-				>
-				<div>
-					<div class="meetingRemark" v-if="isApproval">
-						<div
-							class="meetingRemark-item"
-							v-for="(item, index) in remarkItem"
-							:key="index"
-						>
-							<span class="meetingRemark-item-title">{{
-								language(item.key, item.label)
-							}}</span>
-							<iInput
-								class="margin-top10"
-								type="textarea"
-								maxlength="3500"
-								:rows="10"
-								resize="none"
-								v-model="remarks[item.type]"
-								disabled
-							></iInput>
-						</div>
-					</div>
-					<div class="meetingRemark" v-else>
-						<div
-							class="meetingRemark-item"
-							v-for="(item, index) in remarkItem"
-							:key="index"
-							v-permission.dynamic.auto="item.permissionKey"
-						>
-							<span class="meetingRemark-item-title">{{
-								language(item.key, item.label)
-							}}</span>
-							<iInput
-								class="margin-top10"
-								type="textarea"
-								maxlength="3500"
-								:rows="10"
-								resize="none"
-								v-model="remarks[item.type]"
-								@input="(val) => handleInput(val, item.type)"
-							></iInput>
-						</div>
-					</div>
-				</div>
-			</iCard>
-			<iCard
-				v-if="!showSignatureForm && !isAuth"
-				class="checkDate Application"
-				:class="!isPreview && 'margin-top20'"
-				:title="`Application Date：${dateFilter(
-					processApplyDate,
-					'YYYY-MM-DD'
-				)}`"
-			>
-				<div class="checkList">
-					<div
-						class="checkList-item"
-						v-for="(item, index) in checkList"
-						:key="index"
-					>
-						<icon
-							v-if="item.approveStatus === true"
-							symbol
-							name="iconrs-wancheng"
-						></icon>
-						<icon
-							v-else-if="item.approveStatus === false"
-							symbol
-							name="iconrs-quxiao"
-						></icon>
-						<div v-else class="">-</div>
-						<div class="checkList-item-info">
-							<span>Dept.:</span>
-							<span class="checkList-item-info-depart">{{
-								item.approveDeptNumName
-							}}</span>
-						</div>
-						<div class="checkList-item-info">
-							<span>Date:</span>
-							<span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
-						</div>
-					</div>
-				</div>
-			</iCard>
-			<iCard
-				title="Prototype Cost List"
-				class="margin-top20"
-				v-if="!showSignatureForm && PrototypeList.length > 5"
-			>
-				<el-table
-					:data="PrototypeList"
-					class="prototypeList"
-					row-class-name="table-row"
-				>
-					<template v-for="(items, index) in prototypeTitleList">
-						<el-table-column
-							:key="index"
-							:prop="items.props"
-							align="center"
-							:label="language(items.i18nKey, items.i18nName)"
-						></el-table-column>
-					</template>
-				</el-table>
-			</iCard>
-		</div>
-		<div class="rsPdfWrapper" :style="{ width: pageWidth + 'px' }">
-			<rsPdf
-				ref="rsPdf"
-				:cardTitle="cardTitle"
-				:cardTitleEn="cardTitleEn"
-				:isSingle="isSingle"
-				:leftTitle="leftTitle"
-				:rightTitle="rightTitle"
-				:basicData="basicData"
-				:tableTitle="tableTitle"
-				:tableData="tableData"
-				:firstCount="firstCount"
-				:count="count"
-				:remarkItem="remarkItem"
-				:projectType="projectType"
-				:exchangeRageCurrency="exchangeRageCurrency"
-				:exchangeRates="exchangeRates"
-				:showSignatureForm="showSignatureForm"
-				:isAuth="isAuth"
-				:checkList="checkList"
-				:processApplyDate="processApplyDate"
-				:prototypeList="PrototypeList"
-				:tableList="tableList"
-				:tableHeight="tableHeight"
-				:prototypeListPageHeight="prototypeListPageHeight"
-				:prototypeTableList="prototypeTableList"
-				:prototypeTitleList="prototypeTitleList"
-			/>
-		</div>
-		<iCard class="rsCard">
-			<template #header>
-				<div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
-					<iButton @click="handleExportPdf" :loading="loading">{{
-						language('DAOCHURSDAN', '导出RS单')
-					}}</iButton>
-				</div>
-				<div class="title">
-					<p>CSC定点推荐 - {{ cardTitle }}</p>
-					<p>{{ cardTitleEn }}</p>
-				</div>
-				<div>
-					<div class="control">
-						<div class="nomiId" :class="isSingle ? 'margin-right20' : ''">
-							定点申请单号：{{
-								$route.query.desinateId ? $route.query.desinateId : nominateId
-							}}
-						</div>
-						<div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
-					</div>
-				</div>
-			</template>
-			<div class="rsTop page-top">
-				<div class="rsTop-left">
-					<div
-						class="rsTop-left-item"
-						v-for="(item, index) in leftTitle"
-						:key="index"
-					>
-						<div class="rsTop-left-item-title">
-							<p>{{ item.name }}</p>
-							<p>{{ item.enName }}</p>
-						</div>
-						<div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
-					</div>
-				</div>
-				<div class="rsTop-right">
-					<div
-						v-for="(item, index) in rightTitle"
-						:key="index"
-						class="rsTop-right-item"
-					>
-						<template v-if="Array.isArray(item)">
-							<div class="rsTop-right-item-title">
-								<div v-for="(subItem, subIndex) in item" :key="subIndex">
-									{{ subItem.name }} {{ subItem.enName }}
-									<br v-if="subIndex < item.length - 1" />
-								</div>
-							</div>
-							<div class="rsTop-right-item-value">
-								<div v-for="(subItem, subIndex) in item" :key="subIndex">
-									{{
-										subItem.props === 'currency'
-											? basicData.currencyMap &&
-											  basicData.currencyMap[basicData.currency]
-												? basicData.currencyMap[basicData.currency].code
-												: basicData.currency
-											: basicData[subItem.props]
-									}}<br v-if="subIndex < item.length - 1" />
-								</div>
-							</div>
-						</template>
-						<template v-else>
-							<div class="rsTop-right-item-title">
-								{{ item.name }}<br />{{ item.enName }}
-							</div>
-							<div
-								class="rsTop-right-item-value"
-								v-if="item.props == 'suppliersNow'"
-							>
-								<div
-									v-for="(item, index) in basicData[item.props]"
-									:key="index"
-								>
-									<el-tooltip
-										:content="`${item.shortNameZh}/${item.shortNameEn}`"
-										placement="top"
-										effect="light"
-									>
-										<div
-											style="
-												overflow: hidden;
-												text-overflow: ellipsis;
-												width: 100%;
-											"
-										>
-											<span style="white-space: nowrap"
-												>{{ item.shortNameZh }}/</span
-											>
-											<span style="white-space: nowrap">{{
-												item.shortNameEn
-											}}</span
-											><br />
-										</div>
-									</el-tooltip>
-								</div>
-							</div>
-							<div class="rsTop-right-item-value" v-else>
-								<span
-									v-if="item.props == 'mtz' || item.props == 'isApportion'"
-									style="word-wrap: break-word"
-									>{{ basicData[item.props] | booleanFilter }}</span
-								>
-								<span
-									v-else-if="
-										item.props == 'plannedInvest' || item.props == 'setPrice'
-									"
-									style="word-wrap: break-word"
-									>{{ basicData[item.props] | toThousands(true) }}</span
-								>
-								<span
-									v-else
-									v-html="basicData[item.props]"
-									style="word-wrap: break-word"
-								></span>
-							</div>
-						</template>
-					</div>
-				</div>
-			</div>
-			<tableList
-				v-update
-				:selection="false"
-				:tableLoading="tableLoading"
-				:tableTitle="tableTitle"
-				:tableData="tableData"
-				class="rsTable"
-				border
-			>
-				<template #fsnrGsnrNum="scope">
-					<div>
-						<p>{{ scope.row.fsnrGsnrNum }}</p>
-						<p>
-							{{
-								scope.row.purchasingFactoryShortName
-									? `(${scope.row.purchasingFactoryShortName})`
-									: ''
-							}}
-						</p>
-					</div>
-				</template>
+          <template #share="scope">
+            <span>{{ +scope.row.share || 0 }}</span>
+          </template>
+        </tableList>
+        <!-- v-if="isPreview" -->
+        <div class="out-compute">
+          <div style="margin-left:20px">
+            <span style="color: red">*</span><span>代表投资费已分摊</span>
+          </div>
+          <div class="beizhu">
+            备注 Remarks:
+            <div class="beizhu-value">
+              <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+            </div>
+          </div>
+          <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+            汇率：Exchange rate: 
+            <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+              1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
+            </span>
+          </div>
+          <div v-else>
+            <div class="margin-top10">
+              <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+            </div>
+          </div>
+        </div>
+      </iCard>
+      <iCard v-if="!isPreview && !showSignatureForm && !isAuth" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
+        <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE|保存">{{language('BAOCUN','保存')}}</iButton>
+        <div>
+          <div class="meetingRemark" v-if="isApproval">
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+              <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+              <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
+            </div>
+          </div>
+          <div class="meetingRemark" v-else>
+            <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
+              <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+              <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
+            </div>
+          </div>
+        </div>
+      </iCard>
+      <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+        <div class="checkList">
+          <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+            <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
+            <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
+            <div v-else class="" >-</div>
+            <div class="checkList-item-info">
+              <span>Dept.:</span>
+              <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+            </div>
+            <div class="checkList-item-info">
+              <span>Date:</span>
+              <span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
+            </div>
+          </div>
+        </div>
+      </iCard>
+      <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
+        <el-table :data='PrototypeList' class="prototypeList" row-class-name="table-row">
+          <template v-for="(items,index) in prototypeTitleList">
+            <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+          </template>
+        </el-table>
+      </iCard>
+    </div>
+    <div class="rsPdfWrapper" :style="{'width':pageWidth + 'px'}">
+      <rsPdf
+        ref="rsPdf"
+        :cardTitle="cardTitle"
+        :cardTitleEn="cardTitleEn"
+        :isSingle="isSingle"
+        :leftTitle="leftTitle"
+        :rightTitle="rightTitle"
+        :basicData="basicData"
+        :tableTitle="tableTitle"
+        :tableData="tableData"
+        :firstCount="firstCount"
+        :count="count"
+        :remarkItem="remarkItem"
+        :projectType="projectType"
+        :exchangeRageCurrency="exchangeRageCurrency"
+        :exchangeRates="exchangeRates"
+        :showSignatureForm="showSignatureForm"
+        :isAuth="isAuth"
+        :checkList="checkList"
+        :processApplyDate="processApplyDate"
+        :prototypeList="PrototypeList"
+        :tableList="tableList"
+        :tableHeight="tableHeight"
+        :prototypeListPageHeight="prototypeListPageHeight"
+        :prototypeTableList="prototypeTableList"
+        :prototypeTitleList="prototypeTitleList" />
+    </div>
+    <iCard class="rsCard">
+      <template #header>
+        <div v-if="!isRoutePreview && !isApproval" class="btnWrapper">
+          <iButton @click="handleExportPdf" :loading="loading">{{ language("DAOCHURSDAN", "导出RS单") }}</iButton>
+        </div>
+        <div class="title">
+          <p>CSC定点推荐 - {{ cardTitle }}</p>
+          <p>{{ cardTitleEn }}</p>
+        </div>
+        <div>
+          <div class="control">
+            <div class="nomiId" :class="isSingle ? 'margin-right20' : ''">定点申请单号：{{ $route.query.desinateId ? $route.query.desinateId : nominateId }}</div>
+            <div class="singleSourcing" v-if="isSingle">Single Sourcing</div>
+          </div>
+        </div>
+      </template>
+      <div class="rsTop page-top">
+        <div class="rsTop-left">
+          <div class="rsTop-left-item" v-for="(item, index) in leftTitle" :key="index">
+            <div class="rsTop-left-item-title">
+              <p>{{ item.name }}</p><p>{{ item.enName }}</p>
+            </div>
+            <div class="rsTop-left-item-value">{{ basicData[item.props] }}</div>
+          </div>
+        </div>
+        <div class="rsTop-right">
+          <div v-for="(item, index) in rightTitle" :key="index"  class="rsTop-right-item">
+            <template v-if="Array.isArray(item)">
+              <div class="rsTop-right-item-title">
+                 <div v-for="(subItem, subIndex) in item" :key="subIndex"> {{subItem.name}} {{subItem.enName}} <br v-if="subIndex < item.length - 1" /></div>
+              </div>
+              <div class="rsTop-right-item-value">
+                <div v-for="(subItem, subIndex) in item" :key="subIndex">
+                  {{subItem.props === 'currency' ? (basicData.currencyMap && basicData.currencyMap[basicData.currency] ? basicData.currencyMap[basicData.currency].code : basicData.currency) : basicData[subItem.props]}}<br v-if="subIndex < item.length - 1" /></div>
+              </div>
+            </template>
+            <template v-else>
+              <div  class="rsTop-right-item-title">{{item.name}}<br>{{item.enName}}</div>
+                <div class="rsTop-right-item-value" v-if="item.props == 'suppliersNow'" >
+                  <div v-for="(item,index) in basicData[item.props]" :key="index">
+                      <el-tooltip :content="`${item.shortNameZh}/${item.shortNameEn}`" placement="top" effect="light">
+                        <div  style="overflow: hidden;text-overflow: ellipsis;width:100%"><span style="white-space: nowrap">{{item.shortNameZh}}/</span>
+                        <span style="white-space: nowrap">{{item.shortNameEn}}</span><br/></div>
+                      </el-tooltip>
+                  </div>
+                </div>
+                <div class="rsTop-right-item-value" v-else >
+                  <span v-if="item.props == 'mtz' || item.props == 'isApportion'" style="word-wrap: break-word;">{{ basicData[item.props] | booleanFilter }}</span>
+                  <span v-else-if="item.props == 'plannedInvest' || item.props == 'setPrice'" style="word-wrap: break-word;">{{ basicData[item.props] | toThousands(true) }}</span>
+                  <span v-else v-html="basicData[item.props]" style="word-wrap: break-word;"></span>
+                </div>
+            </template>
+          </div>
+        </div>
+      </div>
+      <tableList v-update :selection="false" :tableLoading="tableLoading" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" border>
+        <template #fsnrGsnrNum="scope">
+          <div>
+            <p>{{ scope.row.fsnrGsnrNum }}</p>
+            <p>{{ scope.row.purchasingFactoryShortName ? `(${ scope.row.purchasingFactoryShortName })` : '' }}</p>
+          </div>
+        </template>
+        
+        <!-- 年降 -->
+        <template #ltc="scope">
+          <span>{{resetLtcData(scope.row.ltcs,'ltc')}}</span>
+        </template>
 
 				<!-- 年降 -->
 				<template #ltc="scope">
@@ -882,193 +705,82 @@
 					<span>{{ scope.row.turnover | toThousands }}</span>
 				</template>
 
-				<template #share="scope">
-					<span>{{ +scope.row.share || 0 }}</span>
-				</template>
-			</tableList>
-			<!-- v-if="isPreview" -->
-			<div class="out-compute">
-				<div style="margin-left: 20px">
-					<span style="color: red">*</span><span>代表投资费已分摊</span>
-				</div>
-				<div class="beizhu">
-					备注 Remarks:
-					<div class="beizhu-value">
-						<p v-for="(item, index) in remarkItem" :key="index">
-							{{ item.value }}
-						</p>
-					</div>
-				</div>
-				<div
-					v-if="
-						projectType === partProjTypes.DBLINGJIAN ||
-						projectType === partProjTypes.DBYICHIXINGCAIGOU
-					"
-					style="text-align: right"
-				>
-					汇率：Exchange rate:
-					<span
-						class="exchangeRageCurrency"
-						v-for="item in exchangeRageCurrency"
-						:key="item"
-					>
-						1{{
-							basicData.currencyMap && basicData.currencyMap[item]
-								? basicData.currencyMap[item].code
-								: item
-						}}={{ basicData.currencyRateMap[item]
-						}}{{
-							basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'
-						}}
-					</span>
-				</div>
-				<div v-else>
-					<div class="margin-top10">
-						<p v-for="(exchangeRate, index) in exchangeRates" :key="index">
-							Exchange rate{{ exchangeRate.fsNumsStr ? ` ${index + 1}` : '' }}:
-							{{ exchangeRate.str
-							}}{{
-								exchangeRate.fsNumsStr ? `（${exchangeRate.fsNumsStr}）` : ''
-							}}
-						</p>
-					</div>
-				</div>
-			</div>
-		</iCard>
-		<iCard
-			v-if="!isPreview && !showSignatureForm && !isAuth"
-			:title="language('SHANGHUIBEIZHU', '上会备注')"
-			class="margin-top20"
-		>
-			<iButton
-				slot="header-control"
-				@click="handleSaveRemarks"
-				:loading="saveLoading"
-				v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE | 保存"
-				>{{ language('BAOCUN', '保存') }}</iButton
-			>
-			<div>
-				<div class="meetingRemark" v-if="isApproval">
-					<div
-						class="meetingRemark-item"
-						v-for="(item, index) in remarkItem"
-						:key="index"
-					>
-						<span class="meetingRemark-item-title">{{
-							language(item.key, item.label)
-						}}</span>
-						<iInput
-							class="margin-top10"
-							type="textarea"
-							maxlength="3500"
-							:rows="10"
-							resize="none"
-							v-model="remarks[item.type]"
-							disabled
-						></iInput>
-					</div>
-				</div>
-				<div class="meetingRemark" v-else>
-					<div
-						class="meetingRemark-item"
-						v-for="(item, index) in remarkItem"
-						:key="index"
-						v-permission.dynamic.auto="item.permissionKey"
-					>
-						<span class="meetingRemark-item-title">{{
-							language(item.key, item.label)
-						}}</span>
-						<iInput
-							class="margin-top10"
-							type="textarea"
-							maxlength="3500"
-							:rows="10"
-							resize="none"
-							v-model="remarks[item.type]"
-							@input="(val) => handleInput(val, item.type)"
-						></iInput>
-					</div>
-				</div>
-			</div>
-		</iCard>
-		<iCard
-			v-if="!showSignatureForm && !isAuth"
-			class="checkDate Application"
-			:class="!isPreview && 'margin-top20'"
-			:title="`Application Date：${dateFilter(processApplyDate, 'YYYY-MM-DD')}`"
-		>
-			<div class="checkList">
-				<div
-					class="checkList-item"
-					v-for="(item, index) in checkList"
-					:key="index"
-				>
-					<icon
-						v-if="item.approveStatus === true"
-						symbol
-						name="iconrs-wancheng"
-					></icon>
-					<icon
-						v-else-if="item.approveStatus === false"
-						symbol
-						name="iconrs-quxiao"
-					></icon>
-					<div v-else class="">-</div>
-					<div class="checkList-item-info">
-						<span>Dept.:</span>
-						<span class="checkList-item-info-depart">{{
-							item.approveDeptNumName
-						}}</span>
-					</div>
-					<div class="checkList-item-info">
-						<span>Date:</span>
-						<span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
-					</div>
-				</div>
-			</div>
-		</iCard>
-		<iCard
-			title="Prototype Cost List"
-			class="margin-top20"
-			v-if="!showSignatureForm && PrototypeList.length > 5"
-		>
-			<el-table
-				:data="PrototypeList"
-				class="prototypeList"
-				row-class-name="table-row"
-			>
-				<template v-for="(items, index) in prototypeTitleList">
-					<el-table-column
-						:key="index"
-						:prop="items.props"
-						align="center"
-						:label="language(items.i18nKey, items.i18nName)"
-					></el-table-column>
-				</template>
-			</el-table>
-		</iCard>
-		<canvas id="myCanvas"></canvas>
-	</div>
+        <template #share="scope">
+          <span>{{ +scope.row.share || 0 }}</span>
+        </template>
+      </tableList>
+      <!-- v-if="isPreview" -->
+      <div class="out-compute">
+        <div style="margin-left:20px">
+          <span style="color: red">*</span><span>代表投资费已分摊</span>
+        </div>
+        <div class="beizhu">
+          备注 Remarks:
+          <div class="beizhu-value">
+            <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+          </div>
+        </div>
+        <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+          汇率：Exchange rate: 
+          <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+            1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
+          </span>
+        </div>
+        <div v-else>
+          <div class="margin-top10">
+            <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+          </div>
+        </div>
+      </div>
+    </iCard>
+    <iCard v-if="!isPreview && !showSignatureForm && !isAuth" :title="language('SHANGHUIBEIZHU','上会备注')" class="margin-top20">
+      <iButton slot="header-control" @click="handleSaveRemarks" :loading="saveLoading" v-permission.auto="SOURCING_NOMINATION_ATTATCH_RS_SAVE|保存">{{language('BAOCUN','保存')}}</iButton>
+      <div>
+        <div class="meetingRemark" v-if="isApproval">
+          <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index">
+            <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+            <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" disabled></iInput>
+          </div>
+        </div>
+        <div class="meetingRemark" v-else>
+          <div class="meetingRemark-item" v-for="(item, index) in remarkItem" :key="index" v-permission.dynamic.auto="item.permissionKey">
+            <span class="meetingRemark-item-title">{{language(item.key,item.label)}}</span>
+            <iInput class="margin-top10" type="textarea" maxlength="3500" :rows="10" resize="none" v-model="remarks[item.type]" @input="val => handleInput(val, item.type)"></iInput>
+          </div>
+        </div>
+      </div>
+    </iCard>
+    <iCard v-if="!showSignatureForm && !isAuth" class="checkDate Application" :class="!isPreview && 'margin-top20'" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+      <div class="checkList">
+        <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+          <icon v-if="item.approveStatus === true" symbol name="iconrs-wancheng"></icon>
+          <icon v-else-if="item.approveStatus === false" symbol name="iconrs-quxiao"></icon>
+          <div v-else class="" >-</div>
+          <div class="checkList-item-info">
+            <span>Dept.:</span>
+            <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+          </div>
+          <div class="checkList-item-info">
+            <span>Date:</span>
+            <span>{{ dateFilter(item.approveDate, 'YYYY-MM-DD') }}</span>
+          </div>
+        </div>
+      </div>
+    </iCard>
+    <iCard title="Prototype Cost List" class="margin-top20" v-if='!showSignatureForm && PrototypeList.length > 5'>
+      <el-table :data='PrototypeList' class="prototypeList" row-class-name="table-row">
+        <template v-for="(items,index) in prototypeTitleList">
+          <el-table-column :key="index" :prop="items.props" align="center" :label="language(items.i18nKey,items.i18nName)"></el-table-column>
+        </template>
+      </el-table>
+    </iCard>
+    <canvas id="myCanvas"></canvas>
+  </div>
 </template>
 
 <script>
 import { iCard, iButton, iInput, icon, iMessage } from 'rise'
-import {
-	nomalDetailTitle,
-	nomalDetailTitleGS,
-	nomalDetailTitlePF,
-	nomalDetailTitleBlue,
-	nomalTableTitle,
-	meetingRemark,
-	checkList,
-	gsDetailTitleBlue,
-	gsTableTitle,
-	sparePartTableTitle,
-	accessoryTableTitle,
-	prototypeTitleList,
-	dbTableTitle,
-	resetLtcData,
-} from './data'
+import { nomalDetailTitle,nomalDetailTitleGS,nomalDetailTitlePF, nomalDetailTitleBlue, nomalTableTitle, meetingRemark, checkList, gsDetailTitleBlue, gsTableTitle,sparePartTableTitle,accessoryTableTitle,prototypeTitleList,dbTableTitle, resetLtcData, remarkProcess } from './data'
 import tableList from '@/views/designate/designatedetail/components/tableList'
 import {
 	getList,
@@ -1375,6 +1087,7 @@ export default {
   mounted(){
   },
   methods: {
+    remarkProcess,
     dateFilter,
     getHeight(){
       setTimeout(()=>{

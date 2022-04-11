@@ -617,6 +617,10 @@ export default {
                 this.versionData = item; 
               }
             });
+
+            if(this.versionData === ''){
+              this.versionData = this.versionList[0];
+            }
           }
           this.getMonthList();
         }

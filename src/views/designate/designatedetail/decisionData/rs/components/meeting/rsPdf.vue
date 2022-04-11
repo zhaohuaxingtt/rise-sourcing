@@ -344,127 +344,62 @@
 								<span>{{ scope.row.turnover | toThousands }}</span>
 							</template>
 
-							<template #share="scope">
-								<span>{{ +scope.row.share || 0 }}</span>
-							</template>
-						</tableList>
-						<div>
-							<div style="margin-left: 20px">
-								<span style="color: red">*</span><span>代表投资费已分摊</span>
-							</div>
-							<div class="beizhu">
-								备注 Remarks:
-								<div class="beizhu-value">
-									<p v-for="(item, index) in remarkItem" :key="index">
-										{{ item.value }}
-									</p>
-								</div>
-							</div>
-						</div>
-						<div
-							v-if="
-								projectType === partProjTypes.DBLINGJIAN ||
-								projectType === partProjTypes.DBYICHIXINGCAIGOU
-							"
-							style="text-align: right"
-						>
-							汇率：Exchange rate:
-							<span
-								class="exchangeRageCurrency"
-								v-for="item in exchangeRageCurrency"
-								:key="item"
-							>
-								1{{
-									basicData.currencyMap && basicData.currencyMap[item]
-										? basicData.currencyMap[item].code
-										: item
-								}}={{ basicData.currencyRateMap[item]
-								}}{{
-									basicData.currencyMap.RMB
-										? basicData.currencyMap.RMB.code
-										: 'RMB'
-								}}
-							</span>
-						</div>
-						<div v-else>
-							<div class="margin-top10">
-								<p v-for="(exchangeRate, index) in exchangeRates" :key="index">
-									Exchange rate{{
-										exchangeRate.fsNumsStr ? ` ${index + 1}` : ''
-									}}: {{ exchangeRate.str
-									}}{{
-										exchangeRate.fsNumsStr
-											? `（${exchangeRate.fsNumsStr}）`
-											: ''
-									}}
-								</p>
-							</div>
-						</div>
-						<iCard
-							v-if="!showSignatureForm && !isAuth"
-							class="checkDate rsCard Application"
-							:title="`Application Date：${dateFilter(
-								processApplyDate,
-								'YYYY-MM-DD'
-							)}`"
-						>
-							<div class="checkList">
-								<div
-									class="checkList-item"
-									v-for="(item, index) in checkList"
-									:key="index"
-								>
-									<icon
-										v-if="item.approveStatus === true"
-										name="iconrs-wancheng"
-										class="complete"
-									></icon>
-									<icon
-										v-else-if="item.approveStatus === false"
-										name="iconrs-quxiao"
-										class="cancel"
-									></icon>
-									<div v-else class="">-</div>
-									<div class="checkList-item-info">
-										<span>Dept.:</span>
-										<span class="checkList-item-info-depart">{{
-											item.approveDeptNumName
-										}}</span>
-									</div>
-									<div class="checkList-item-info">
-										<span>Date:</span>
-										<span>{{
-											item.approveDate | dateFilter('YYYY-MM-DD')
-										}}</span>
-									</div>
-								</div>
-							</div>
-						</iCard>
-					</div>
-					<div class="page-logo">
-						<img
-							src="../../../../../../../assets/images/logo.png"
-							alt=""
-							:height="46 * 0.6 + 'px'"
-							:width="126 * 0.6 + 'px'"
-						/>
-						<div>
-							<p>
-								{{
-									'page ' +
-									(index + 1) +
-									' of ' +
-									(prototypeTableList.length + tableList.length)
-								}}
-							</p>
-						</div>
-						<div>
-							<p>{{ userName }}</p>
-							<p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD') }}</p>
-						</div>
-					</div>
-				</div>
-				<!-- <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
+              <template #share="scope">
+                <span>{{ +scope.row.share || 0 }}</span>
+              </template>
+            </tableList>
+            <div>
+              <div style="margin-left:20px">
+                <span style="color: red">*</span><span>代表投资费已分摊</span>
+              </div>
+              <div class="beizhu">
+                备注 Remarks:
+                <div class="beizhu-value">
+                  <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
+                </div>
+              </div>
+            </div>
+            <div v-if="projectType === partProjTypes.DBLINGJIAN || projectType === partProjTypes.DBYICHIXINGCAIGOU" style="text-align:right;">
+              汇率：Exchange rate: 
+              <span class="exchangeRageCurrency" v-for="item in exchangeRageCurrency" :key="item">
+                1{{basicData.currencyMap && basicData.currencyMap[item] ? basicData.currencyMap[item].code : item}}={{basicData.currencyRateMap[item]}}{{basicData.currencyMap.RMB ? basicData.currencyMap.RMB.code : 'RMB'}}
+              </span>
+            </div>
+            <div v-else>
+              <div class="margin-top10">
+                <p v-for="(exchangeRate, index) in exchangeRates" :key="index">Exchange rate{{ exchangeRate.fsNumsStr ? ` ${ index + 1 }` : '' }}: {{ exchangeRate.str }}{{ exchangeRate.fsNumsStr ? `（${ exchangeRate.fsNumsStr }）` : '' }}</p>
+              </div>
+            </div>
+            <iCard v-if="!showSignatureForm && !isAuth" class="checkDate rsCard Application" :title="`Application Date：${ dateFilter(processApplyDate, 'YYYY-MM-DD') }`">
+              <div class="checkList">
+                <div class="checkList-item" v-for="(item, index) in checkList" :key="index">
+                  <icon v-if="item.approveStatus === true" name="iconrs-wancheng" class="complete"></icon>
+                  <icon v-else-if="item.approveStatus === false" name="iconrs-quxiao" class="cancel"></icon>
+                  <div v-else class="" >-</div>
+                  <div class="checkList-item-info">
+                    <span>Dept.:</span>
+                    <span class="checkList-item-info-depart">{{item.approveDeptNumName}}</span>
+                  </div>
+                  <div class="checkList-item-info">
+                    <span>Date:</span>
+                    <span>{{item.approveDate|dateFilter('YYYY-MM-DD')}}</span>
+                  </div>
+                </div>
+              </div>
+            </iCard>
+          </div>
+          <div class="page-logo">
+            <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+            <div>
+              <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
+            </div>
+            <div>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+            </div>
+          </div>
+        </div>
+      <!-- <tableList :selection="false" :tableTitle="tableTitle" :tableData="tableData" class="rsTable" >
         <template #ltc="scope">
           <span>{{ resetLtcData(scope.row.ltcs, "ltc") }}</span>
         </template>
@@ -579,13 +514,13 @@
 </template>
 
 <script>
-import { iCard, icon } from 'rise'
-import tableList from '@/views/designate/designatedetail/components/tableList'
-import { partProjTypes } from '@/config'
-import { resetLtcData } from './data'
-import { toThousands } from '@/utils'
-import filters from '@/utils/filters'
-import { dateFilter } from '../circulation/data'
+import { iCard, icon } from "rise"
+import tableList from "@/views/designate/designatedetail/components/tableList"
+import { partProjTypes } from "@/config"
+import { resetLtcData, remarkProcess } from "./data"
+import { toThousands } from "@/utils"
+import filters from "@/utils/filters"
+import { dateFilter } from "../circulation/data"
 
 export default {
 	mixins: [filters],
@@ -625,25 +560,24 @@ export default {
 				false: 'N',
 			}
 
-			return obj[val] || val
-		},
-	},
-	data() {
-		return {
-			partProjTypes,
-		}
-	},
-	computed: {
-		userName() {
-			return this.$i18n.locale === 'zh'
-				? this.$store.state.permission.userInfo.nameZh
-				: this.$store.state.permission.userInfo.nameEn
-		},
-	},
-	methods: {
-		dateFilter,
-		resetLtcData,
-	},
+      return obj[val] || val
+    },
+  },
+  data() {
+    return {
+      partProjTypes
+    }
+  },
+  computed:{
+    userName(){
+      return this.$i18n.locale === 'zh' ? this.$store.state.permission.userInfo.nameZh : this.$store.state.permission.userInfo.nameEn
+    },
+  },
+  methods: {
+    remarkProcess,
+    dateFilter,
+    resetLtcData
+  }
 }
 </script>
 
