@@ -244,13 +244,6 @@
           :handleSaveSetting="handleSaveSetting"
           :handleResetSetting="handleResetSetting"
         >
-          <template #groupName="scope">
-            <div class="aeko-combine-input" v-if="scope.row.groupCode">
-              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
-              </iInput>
-              <span v-else>{{scope.row.groupName}}</span>
-            </div>
-          </template>
           <template #supplierNameZh="scope">
             <span>{{showSupplierNameZh(scope.row.supplierSapCode,scope.row.supplierNameZh)}}</span>
           </template>
@@ -319,6 +312,13 @@
           <!-- 合并原承运方式和新承运方式 -->
           <template #tranWayDesc="scope">
             <span>{{getRranWayDesc(scope.row)}}</span>
+          </template>
+          <template #groupName="scope">
+            <div class="aeko-combine-input" v-if="scope.row.groupCode">
+              <iInput type="textarea" v-if="!disabled" :placeholder="language('LK_QINGSHURU', '请输入')" @blur="updateGroupName(scope.row)" v-model="scope.row.groupName">
+              </iInput>
+              <span v-else>{{scope.row.groupName}}</span>
+            </div>
           </template>
         </tableList>
         <iPagination 
