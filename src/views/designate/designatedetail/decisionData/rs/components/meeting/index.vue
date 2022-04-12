@@ -1068,7 +1068,7 @@ export default {
     },
     // 汇率显示处理
     exchangeRateProcess(row) {
-      return `1${ row.originCurrencyCode }=${ row.exchangeRate }${ row.currencyCode }`
+      return `1${ row.originCurrencyCode }=${ row.foreignCurrency2Rmb }${ row.currencyCode }`
     },
 
     // 权限获取数据
