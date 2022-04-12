@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-06 15:16:20
+ * @LastEditTime: 2022-04-11 17:17:28
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -249,6 +249,7 @@ export default {
     },
     handleChangeKw(val) {
       const { pro, item, index } = this.selectKwPro
+      console.log(val, pro, item, index);
       this.handleChange(val, pro, item, index)
     },
     openChangeKw(pro, item, index) {
@@ -437,7 +438,7 @@ export default {
         this.loading = true 
         // 筛选出待定点和待kickoff的数据 
         const selectRows = this.partsTemp.filter(item => { 
-          const targetList = [item.pvsTarget, item.vffTarget] 
+          const targetList = [item.zerosTarget, item.vffTarget] 
           return !targetList.every(item => item == 1) && (item.fsConfirmStatus	== 1 || item.fsConfirmStatus == 3) && (item.partPeriod == 2 || item.partPeriod == 3) 
         }) 
         if (selectRows.length < 1) { 
@@ -649,6 +650,8 @@ export default {
      */    
     handleChange(val, item, props, index) { 
       this.$set(item, props, val) 
+      // 为了保存接口只传修改的数据 加一个字段来判断是否编辑过
+      this.$set(item,'edit', true) 
       // const index = this.nodeList.findIndex(item => item.kw === props || item.kw2 === props) 
       if (this.nodeList[index - 1]) {  
         this.$set(item, props === 'otsTimeKw' ? this.nodeList[index - 1].keyPoint2 : this.nodeList[index - 1].keyPoint, this.getWeekBetween(item[this.nodeList[index - 1].kw], val)) 
@@ -669,11 +672,16 @@ export default {
      */    
     async handleSave(refresh = true) { 
       console.log('1')
-      this.saveloading = true 
-      const res = await updatePartSchedule(this.partsTemp.map(item => { 
+      // this.saveloading = true 
+      const filterData = this.partsTemp.map(item => { 
         const findItem = this.parts.find(pItem => pItem.partNum === item.partNum) 
         return findItem ? findItem : item 
-      }))
+      })
+      const sendData = filterData.filter((item)=>item.edit) || [];
+
+      if(!sendData.length) return;   // 未编辑过不调接口
+      
+      const res = await updatePartSchedule(sendData)
       if (res?.result) { 
         refresh && iMessage.success(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
         await this.getPartList(this.cartypeProId) 
