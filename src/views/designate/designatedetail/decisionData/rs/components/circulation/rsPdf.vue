@@ -150,7 +150,7 @@
                 <div class="beizhu">
                   备注 Remarks:
                   <div class="beizhu-value">
-                    <p v-for="(item,index) in remarkItem" :key="index">{{item.value}}</p>
+                    <p v-for="(item,index) in remarkItem" :key="index" v-html="remarkProcess(item.value)"></p>
                   </div>
                 </div>
 
@@ -196,7 +196,7 @@ import { partProjTypes, fileType } from "@/config"
 import { getList, getRemark, reviewListRs, searchRsPageExchangeRate } from "@/api/designate/decisiondata/rs"
 import { checkList, fileTableTitle, infos, dateFilter } from "./data"
 import { nomalTableTitleSub, accessoryTableTitle, sparePartTableTitle } from "./pdfData"
-import { resetLtcData } from '../meeting/data'
+import { resetLtcData, remarkProcess } from '../meeting/data'
 import filters from "@/utils/filters"
 import { toThousands } from "@/utils"
 export default {
@@ -271,6 +271,7 @@ export default {
     },
   },
   methods: {
+    remarkProcess,
     dateFilter,
     resetLtcData,
     tableRowClassName({ row }) {
