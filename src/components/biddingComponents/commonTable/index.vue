@@ -1,8 +1,8 @@
 <!--
  * @Author: moxuan
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2022-02-28 16:48:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-04-02 12:55:32
+ * @LastEditors: YoHo
  * @Description: 通用表格
 -->
 <template>
@@ -14,13 +14,13 @@
               v-loading='tableLoading'
               @selection-change="handleSelectionChange"
               :row-class-name="handleTableRow">
-      <el-table-column v-if="selection" type='selection' width="40" align='center'></el-table-column>
+      <el-table-column v-if="selection" type='selection' width="45" align='center'></el-table-column>
       <el-table-column v-if='index' type='index' width='50' align='center' label='#'></el-table-column>
       <template v-for="(items,index) in tableTitle">
         <!-- 点击事件-->
         <el-table-column :key="index" align='center' :width="items.width" :show-overflow-tooltip='items.tooltip'
                          v-if='items.props === openPageProps' :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name" :fixed="items.fixed">
+                         :label="items.key ? $t(items.key) : items.name" :fixed="items.fixed" :sortable="items.sortable||false" :sort-method="items.sortMethod">
           <template slot-scope="scope">
             <el-form-item>
             <span class="openLinkText cursor"
@@ -33,7 +33,7 @@
         <!--输入框-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                          v-else-if='inputProps.includes(items.props)' :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="items.key ? $t(items.key) : items.name" :sortable="items.sortable||false" :sort-method="items.sortMethod">
           <template #header>
             {{ items.key ? $t(items.key) : items.name }}
             <span class="required" v-if="items.required">*</span>
@@ -55,7 +55,7 @@
         <!--普通下拉框-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                          v-else-if='selectProps.includes(items.props)' :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="items.key ? $t(items.key) : items.name" :sortable="items.sortable||false" :sort-method="items.sortMethod">
           <template #header>
             {{ items.key ? $t(items.key) : items.name }}
             <span class="required" v-if="items.required">*</span>
@@ -72,7 +72,7 @@
         <!--文件大小-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center'
                          v-else-if='items.props === fileSizeProps' :prop="items.props"
-                         :label="items.key ? $t(items.key) : items.name">
+                         :label="items.key ? $t(items.key) : items.name" :sortable="items.sortable||false" :sort-method="items.sortMethod">
           <template slot-scope="scope">
             <el-form-item>
               {{ scope.row[items.props] ? scope.row[items.props] / 1024 / 1024 : 0 }}
@@ -82,7 +82,7 @@
         <!--纯展示-->
         <el-table-column :width="items.width" :show-overflow-tooltip='items.tooltip' :key="index" align='center' v-else
                          :label="items.key ? $t(items.key) : items.name"
-                         :prop="items.props" :fixed="items.fixed">
+                         :prop="items.props" :fixed="items.fixed" :sortable="items.sortable||false" :sort-method="items.sortMethod">
           <!--自定义嵌入-->
           <template #header>
             {{ items.key ? $t(items.key) : items.name }}

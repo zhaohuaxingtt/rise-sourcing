@@ -104,7 +104,7 @@
             <iButton :loading="btnLoading.uploadFiles" @click="importFiles">{{language('LK_DAORUFUJIAN','导⼊附件')}} </iButton>
           </span>
           <iButton v-permission.auto="AEKO_MANAGELIST_BUTTON_DAOCHU|导出" @click="exportAeko">{{language('LK_AEKODAOCHU','导出')}} </iButton>
-          <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           <!-- 暂时添加的按钮 -->
           <!-- <template v-if="isAekoManager">
             <iButton :loading="btnLoading.tcm" @click="getTCM">TCM AEKO同步</iButton>
@@ -195,6 +195,7 @@ import { TAB,filterRole,getLeftTab } from '../data';
 // import tableList from "@/views/partsign/editordetail/components/tableList"
 import tableList from "@/components/iTableSort"
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins"
+import buttonTableSetting from '@/components/buttonTableSetting'
 import revokeDialog from './components/revokeDialog'
 import filesListDialog from './components/filesListDialog'
 import Upload from '@/components/Upload'
@@ -250,7 +251,8 @@ export default {
       iLoger,
       logButton,
       switchPost,
-      iMultiLineInput
+      iMultiLineInput,
+      buttonTableSetting,
     },
     data(){
       return{
@@ -405,9 +407,9 @@ export default {
         }
 
         // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
-        if(partNum && partNum.trim().length < 9){
+        if(partNum && partNum.trim().length < 3){
           this.loading = false;
-          return this.$message.warning(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+          return this.$message.warning(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI','查询零件号不足,请补充至3位或以上'));
         }
         await getManageList({...searchParams,...data}).then((res)=>{
           this.loading = false;

@@ -38,12 +38,12 @@ export const aekoCSFsearchList = [
 // aeko/CSF表头
 export const aekoCSFtableTitle = [
   { props: "partNum", name: "零件号", key: "LK_LINGJIANHAO", tooltip: true },
-  { props: "partNameZh", name: "零件名", key: "LK_LINGJIANMING", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_PARTNAME|零件名', tooltip: true },
-  { props: "originPartNum", name: "原零件号", key: "YUANLINGJIANHAO", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_ORIGINPARTNAME|原零件号', tooltip: true },
+  { props: "partNameZh", name: "零件名", key: "LK_LINGJIANMING", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_PARTNAME|零件名', tooltip: true, width: 150 },
+  { props: "originPartNum", name: "原零件号", key: "YUANLINGJIANHAO", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_ORIGINPARTNAME|原零件号', tooltip: true, width: 200 },
   { props: "newMsgSheet", name: "新件信息单", key: "LK_XINJIANXINXIDAN", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_NEWSIGNSHEET|新建信息单', tooltip: true },
-  { props: "changeTypeDesc", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_CHANGETYPE|变更类型', tooltip: true },
-  { props: "prNumber", name: "PR", key: "LK_AEKOPR", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_PRNUMBER|PR', tooltip: true },
-  { props: "cartypeZh", name: "涉及⻋型项⽬", key: "LK_AEKOSHEJICHEXINGXIANGMU", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_CARTYPE|涉及⻋型项⽬', tooltip: true,width:130 },
-  { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_LINIEDEPTNAME|科室', tooltip: true },
+  { props: "changeTypeDesc", name: "变更类型", key: "LK_AEKOBIANGENGLEIXING", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_CHANGETYPE|变更类型', tooltip: true, width: 80 },
+  { props: "prNumber", name: "PR", key: "LK_AEKOPR", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_PRNUMBER|PR', tooltip: true, width: 180 },
+  { props: "cartypeZh", name: "涉及⻋型项⽬", key: "LK_AEKOSHEJICHEXINGXIANGMU", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_CARTYPE|涉及⻋型项⽬', tooltip: true,width:200 },
+  { props: "linieDeptName", name: "科室", key: "LK_AEKOKESHI", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_LINIEDEPTNAME|科室', tooltip: true, width: 100 },
   { props: "buyerName", name: "采购员", key: "CAIGOUYUAN", permissionKey: 'AEKO_PARTLIST_CSFAEKOPARTLIST_BUYERNAME|采购员', tooltip: true },
 ]

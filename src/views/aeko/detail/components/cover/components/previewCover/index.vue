@@ -61,7 +61,6 @@
                     <!-- aeko状态为已撤销的时候禁用解冻按钮 -->
                     <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_BUTTON_JIEDONG|解冻" @click="unfreeze">{{language('LK_JIEDONG','解冻')}}</iButton>
                 </template>
-                <!-- <iButton @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton> -->
             </p>
             <tableList
                 index

@@ -75,7 +75,6 @@
                     <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_SHANCHULINGJIAN|删除零件" :loading="btnLoading.deleteParts" @click="deleteParts">{{language('LK_AEKO_SHANCHULINGJIAN','删除零件')}} </iButton>
                 </template>
                 <iButton :disabled="btnDisabled" v-permission.auto="AEKO_DETAIL_TAB_LINGJIANQINGDAN_BUTTON_KESHITUIHUI|科室退回" @click="back">{{language('LK_AEKO_KESHITUIHUI','科室退回')}} </iButton>
-            <!-- <iButton class="margin-left10" @click="edittableHeader">{{ language('LK_SHEZHIBIAOTOU','设置头部')}}</iButton> -->
         </div>
         <!-- 表单区域 -->
             <tableList
@@ -352,9 +351,9 @@ export default {
     methods:{
         sure() {
             // 判断零件号查询至少大于等于9位或为空的情况下才允许查询
-            if(this.searchParams.partNum && this.searchParams.partNum.trim().length < 9){
+            if(this.searchParams.partNum && this.searchParams.partNum.trim().length < 3){
                 this.loading = false;
-                return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU9WEI','查询零件号不足,请补充至9位或以上'));
+                return iMessage.warn(this.language('LK_AEKO_LINGJIANHAOZHISHAOSHURU3WEI','查询零件号不足,请补充至3位或以上'));
             }
 
             this.page.currPage = 1
