@@ -28,14 +28,14 @@ export const summaryData = [
         props: 'sop',
         name: 'SOP时间',
         key: 'SOP时间',
-        width: 100,
+        width: 110,
         tooltip: false
     },
     {
         props: 'cartypeProType',
         name: '车型项目类型',
         key: '车型项目类型',
-        width: 140,
+        width: 160,
         tooltip: false
     },
     {
@@ -49,7 +49,7 @@ export const summaryData = [
         props: 'categoryNameZh',
         name: '材料组',
         key: '材料组',
-        width: 140,
+        width: 170,
         tooltip: false
     },
     {
@@ -62,18 +62,21 @@ export const summaryData = [
         props: 'nomiAmount',
         name: '定点金额',
         key: '定点金额',
+        width: 160,
         tooltip: false
     },
     {
         props: 'bmAmount',
         name: 'BM单金额',
         key: 'BM单金额',
+        width: 160,
         tooltip: false
     },
     {
         props: 'entryAmount',
         name: '入账金额',
         key: '入账金额',
+        width: 160,
         tooltip: false
     },
 ]
@@ -110,42 +113,49 @@ export const partNoData = [
         props: 'partNum',
         name: '零件号',
         key: '零件号',
+        width: 150,
         tooltip: false
     },
     {
         props: 'partSixNum',
         name: '六位号',
         key: '六位号',
+        width: 90,
         tooltip: false
     },
     {
         props: 'partNameZh',
         name: '零件名称',
         key: '零件名称',
+        width: 150,
         tooltip: false
     },
     {
         props: 'nomiType',
         name: '定点类型',
         key: '定点类型',
+        width: 140,
         tooltip: false
     },
     {
         props: 'nomiAmount',
         name: '定点金额',
         key: '定点金额',
+        width: 160,
         tooltip: false
     },
     {
         props: 'bmAmount',
         name: 'BM单金额',
         key: 'BM单金额',
+        width: 160,
         tooltip: false
     },
     {
         props: 'entryAmount',
         name: '入账金额',
         key: '入账金额',
+        width: 160,
         tooltip: false
     },
 ]

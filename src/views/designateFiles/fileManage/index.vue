@@ -1,8 +1,8 @@
 <!--
  * @Author: Luoshuang
  * @Date: 2021-05-26 16:20:16
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:58:45
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 15:50:17
  * @Description: 附件综合管理
  * @FilePath: \front-sourcing\src\views\designateFiles\fileManage\index.vue
 -->
@@ -62,6 +62,7 @@
             <div class="margin-bottom20 clearFloat">
               <span class="font18 font-weight">{{language('FUJIANZONGHECHAXUN','附件综合查询')}}</span>
                 <div class="floatright">
+                  <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
                   <!--------------------分配LINIE/CSS----------------------------------->
                   <iButton @click="handleSendLinie" v-permission.auto="ACCESSORY_MANAGEMENT_SENDLINIE|附件-附件管理-分配LINIE/CSS">{{language('FENPEILINIECSS','分配LINIE/CSS')}}</iButton>
                   <!--------------------退回按钮----------------------------------->
@@ -147,13 +148,13 @@ import { clickMessage } from "@/views/partsign/home/components/data"
 import {partProjTypes} from '@/config'
 import headerNav from '@/components/headerNav'
 import moment from 'moment'
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 // eslint-disable-next-line no-undef
 const { mapState, mapActions } = Vuex.createNamespacedHelpers("sourcing")
 
 export default {
   mixins: [pageMixins,tableSortMixins],
-  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav},
+  components: { iPage, iSearch, iSelect, iInput, iCard, iButton, buttonTableSetting, iPagination, tableList, linieDialog, backDialog, iNavMvp, joinRfqDialog, iDatePicker , headerNav},
   data() {
     return {
       // 零件项目类型

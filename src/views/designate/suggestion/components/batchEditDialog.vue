@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     onSupplierNameChange(data) {
-      const tar = this.supplierList.find(o => o.supplierName = data) || {}
+      const tar = this.supplierList.find(o => o.supplierName === data) || {}
       this.form.supplierId = tar.supplierId || ''
     },
     submit() {

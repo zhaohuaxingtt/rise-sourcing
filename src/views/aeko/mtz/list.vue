@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-10-29 10:26:18
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-21 10:53:22
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 15:38:09
  * @Description: 
 -->
 <template>
@@ -12,7 +12,7 @@
     <!-- 表格 -->
     <iCard class="aeko-mtz-table">
       <template v-slot:header-control>
-        <button-table-setting @click="edittableHeader" />
+        <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
       </template>
       <tableList
         height="400"
@@ -59,6 +59,7 @@ import {
   aekoMtzDosage,
   getMaterial
 } from '@/api/aeko/mtz'
+import buttonTableSetting from '@/components/buttonTableSetting'
 
 export default {
   mixins: [pageMixins, tableSortMixins],
@@ -67,7 +68,8 @@ export default {
     iPagination,
     tableList,
     iButton,
-    search
+    search,
+    buttonTableSetting
   },
   data() {
     return {

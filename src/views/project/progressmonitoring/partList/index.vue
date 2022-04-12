@@ -1,8 +1,8 @@
 <!--
  * @Autor: Hao,Jiang
  * @Date: 2021-09-16 14:50:50
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-22 17:16:59
+ * @LastEditors: YoHo
+ * @LastEditTime: 2022-03-23 16:36:46
  * @Description: 项目进度监控 - 未进TIPS表和CKD/HT零件
 -->
 <template>
@@ -15,7 +15,7 @@
             <iButton @click="exportfile">
               {{ language('LK_DAOCHU', '导出') }}
             </iButton>
-            <button-table-setting @click="edittableHeader" />
+            <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           </div>
         </div>
         <div class="cardview-body padding-top30">
@@ -71,14 +71,15 @@ import filters from "@/utils/filters"
 import {pageProProgressMonitorData,proProgressMonitorFile} from '@/api/project/process'
 import tableList from "@/components/iTableSort";
 import { tableSortMixins } from "@/components/iTableSort/tableSortMixins";
-
+import buttonTableSetting from '@/components/buttonTableSetting'
 export default {
   mixins: [ filters, pageMixins,tableSortMixins ],
   components: {
     tableList,
     iCard,
     iButton,
-    iPagination
+    iPagination,
+    buttonTableSetting
   },
   data() {
     return {

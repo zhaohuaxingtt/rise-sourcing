@@ -1,8 +1,8 @@
 <!--
  * @Author: yourname
  * @Date: 2021-04-13 17:30:36
- * @LastEditTime: 2022-01-26 19:30:13
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-03-31 22:30:31
+ * @LastEditors: YoHo
  * @Description: 通用表格
 -->
 <template>
@@ -201,7 +201,7 @@
                               :content="getMatchTextLabel({props: FIRSTSELECT, row: scope.row })">
                     <div class="systemMatchText"
                         slot="reference">
-                      <span>{{ getMatchTextLabel({props: FIRSTSELECT, row: scope.row}) }}</span>
+                      <span>{{ scope.row[getMatchProps({props: FIRSTSELECT, row: scope.row})] }}</span>
                     </div>
                   </el-popover>
                 </template>
@@ -214,7 +214,7 @@
                               :content="getMatchTextLabel({props: THIRDSELECT, row: scope.row })">
                     <div class="systemMatchText"
                         slot="reference">
-                        <span>{{ getMatchTextLabel({props: THIRDSELECT, row: scope.row}) }}</span>
+                        <span>{{ scope.row[getMatchProps({props: THIRDSELECT, row: scope.row})] }}</span>
                     </div>
                   </el-popover>
                   <el-popover v-else
@@ -224,7 +224,7 @@
                               :content="getMatchTextLabel({props: SECONDSELECT, row: scope.row })">
                     <div class="systemMatchText"
                         slot="reference">
-                        <span>{{ getMatchTextLabel({props: SECONDSELECT, row: scope.row}) }}</span>
+                        <span>{{ scope.row[getMatchProps({props: SECONDSELECT, row: scope.row})] }}</span>
                     </div>
                   </el-popover>
                 </template>
@@ -236,7 +236,7 @@
                                   trigger="hover"
                                   :content="language('PI.SHUJULAIYUAN', '数据来源') + '：' + scope.row.partSource ? scope.row.partSource : ''">
                         <span slot="reference">
-                          {{ language('PI.SHUJULAIYUAN', '数据来源') }}: {{ scope.row.partSource ? scope.row.partSource : '' }}
+                          {{ scope.row.partSource ? scope.row.partSource : '' }}
                         </span>
                       </el-popover>
                     </template>
