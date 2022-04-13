@@ -45,10 +45,10 @@
               </span>
             </template>
             <template #tto="scope">
-              <span>{{ scope.row.tto | toThousands }}</span>
+              <span>{{ scope.row.tto | toFixed | toThousands }}</span>
             </template>
             <template #share="scope">
-              <span>{{ scope.row.share + `${ scope.row.share ? '%' : '' }` }}</span>
+              <span>{{ (scope.row.share && +scope.row.share) + `${ scope.row.share ? '%' : '' }` }}</span>
             </template>
           </tablelist>
         </div>
@@ -89,7 +89,14 @@ export default {
     tablelist
   },
   filters: {
-    toThousands
+    toThousands,
+    toFixed(value, precision = 2) {
+      if (value && math.hasNumericValue(value)) {
+        return math.bignumber(value).toFixed(precision)
+      }
+
+      return ""
+    },
   },
   data() {
     return {
