@@ -117,6 +117,7 @@ export default {
       if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN','请选择一条需要确认的版本'))
       const data = this.multipleSelection[0]
       
+      this.confirmLoading = true
       putPerCarDosage({
         updateConfirmScenes: {
           carTypeConfigId: data.carTypeConfigId,
@@ -128,15 +129,13 @@ export default {
         .then(res => {
           if(res.code == 200){
             iMessage.success(this.language('LK_CAOZUOCHENGGONG','操作成功'))
-            this.confirmLoading = false
             this.$emit('updateVersion')
             this.multipleSelection = []
           }else{
              iMessage.error(res.desZh)
-             this.confirmLoading = false
           }
         })
-        .catch(() => this.confirmLoading = false)
+        .finally(() => this.confirmLoading = false)
     },
     reject() {
       if (this.multipleSelection.length !== 1) return iMessage.warn(this.language('LK_QINGXUANZHEYITIAOXUYAOQUEREDEBANBEN','请选择一条需要确认的版本'))
