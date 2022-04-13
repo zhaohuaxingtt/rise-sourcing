@@ -53,7 +53,6 @@ export default {
   },
   created () {
     this.getDataList('', '', '', '', '');
-    console.log(this.whiteBtnList);
   },
   computed: {
     whiteBtnList () {
