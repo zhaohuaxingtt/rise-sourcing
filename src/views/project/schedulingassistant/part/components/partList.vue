@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-08-25 16:49:24
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-11 17:20:31
+ * @LastEditTime: 2022-04-13 17:00:23
  * @Description: 零件排程列表
  * @FilePath: \front-sourcing\src\views\project\schedulingassistant\part\components\partList.vue
 -->
@@ -451,20 +451,31 @@ export default {
         const nextThreeWorkDay = await this.getNextThreeWorkDay() 
         const tableListNomi = []  
         const tableListKickoff = [] 
+        const {buyerUserMap={},userInfoVOList=[]} = fsOptions;
         selectRows.forEach((item) => { 
-          const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
-          const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
-          const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
-            if (item.userId) { 
-              return [...accu, { 
-                ...item, 
-                value: item.userId, 
-                label: item.userName 
-              }] 
-            } else { 
-              return accu 
-            } 
-          },[]) : []  
+          // const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+          // const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+          // const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
+          //   if (item.userId) { 
+          //     return [...accu, { 
+          //       ...item, 
+          //       value: item.userId, 
+          //       label: item.userName 
+          //     }] 
+          //   } else { 
+          //     return accu 
+          //   } 
+          // },[]) : [] 
+          let fs = '';
+          const fsId = buyerUserMap[item.partNum] ? buyerUserMap[item.partNum]+'' : '';
+          userInfoVOList.map((userItem)=>{
+            userItem.value = userItem.userId;
+            userItem.label = userItem.userName;
+            if(fsId && userItem.userId == fsId){
+              fs = userItem.userName
+            }
+          })
+ 
           const targetList = [item.pvsTarget, item.vffTarget] 
           const tableItem = {  
             // ...item, 
@@ -476,7 +487,8 @@ export default {
             confirmDateDeadline: nextThreeWorkDay, 
             projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
             projectPurchaserId: this.$store.state.permission.userInfo.id, 
-            selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+            // selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+            selectOption:userInfoVOList || [],
             fs, 
             fsId, 
             delayWeek: item.expectImpactWeek, 
