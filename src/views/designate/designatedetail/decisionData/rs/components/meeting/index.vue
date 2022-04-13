@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-05-28 15:17:25
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-04-11 13:33:52
+ * @LastEditTime: 2022-04-13 11:28:03
  * @Description: 上会/备案RS单
  * @FilePath: \front-web\src\views\designate\designatedetail\decisionData\rs\components\meeting\index.vue
 -->
@@ -1383,49 +1383,42 @@ export default {
 
 		// 获取汇率
 		searchRsPageExchangeRate() {
-			let id = this.$route.query.desinateId
-				? this.$route.query.desinateId
-				: this.nominateId
-			searchRsPageExchangeRate(id).then((res) => {
-				if (res.code == 200) {
-					if (this.basicData.currency) {
-						const sourceData = Array.isArray(res.data) ? res.data : []
+		let id = this.$route.query.desinateId ? this.$route.query.desinateId : this.nominateId
+		searchRsPageExchangeRate(id)
+		.then(res => {
+			if (res.code == 200) {
+			if (this.basicData.currency) {
+				const sourceData = Array.isArray(res.data) ? res.data : []
 
-						this.exchangeRates = sourceData
-							.filter((item) => !item.isCurrentVersion)
-							.filter(
-								(item) =>
-									Array.isArray(item.exchangeRateVos) &&
-									item.exchangeRateVos.length
-							)
+				this.exchangeRates = sourceData
+				.filter(item => !item.isCurrentVersion)
+				.filter(item => Array.isArray(item.exchangeRateVos) && item.exchangeRateVos.length)
 
-						this.exchangeRates = this.exchangeRates.map((item) => {
-							const result = { version: item.exchangeRateVos[0].version }
+				this.exchangeRates = this.exchangeRates.map(item => {
+				const result = { version: item.exchangeRateVos[0].version }
+				
+				result.str = item.exchangeRateVos.map(item => this.exchangeRateProcess(item)).join(",")
 
-							result.str = item.exchangeRateVos
-								.map((item) => this.exchangeRateProcess(item))
-								.join(',')
-
-							if (this.exchangeRates.length > 1) {
-								result.fsNumsStr = Array.isArray(item.fsNums)
-									? item.fsNums.join('、')
-									: ''
-							} else {
-								result.fsNumsStr = ''
-							}
-
-							return result
-						})
-					} else {
-					}
+				if (this.exchangeRates.length > 1) {
+					result.fsNumsStr = Array.isArray(item.fsNums) ? item.fsNums.join("、") : ''
 				} else {
-					iMessage.error(this.$i18n.locale === 'zh' ? res.desZh : res.desEn)
+					result.fsNumsStr = ""
 				}
-			})
+
+				return result
+				})
+			} else {
+				
+			}
+			} else {
+			iMessage.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+			}
+		})
 		},
+
 		// 汇率显示处理
 		exchangeRateProcess(row) {
-			return `1${row.originCurrencyCode}=${row.exchangeRate}${row.currencyCode}`
+		return `1${ row.originCurrencyCode }=${ row.foreignCurrency2Rmb }${ row.currencyCode }`
 		},
 		// 权限获取数据
 		reviewListRs() {
