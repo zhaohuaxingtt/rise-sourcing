@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-15 14:51:03
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-25 11:52:53
+ * @LastEditTime: 2022-04-13 10:52:34
  * @Description: 
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\partList\index.vue
 -->
@@ -118,14 +118,14 @@
     </div> 
     <fsConfirm ref="fsConfirmPart" :dialogVisible="dialogVisibleFS" @handleConfirm="handleSendFsConfirm" :tableListNomi="tableListNomi" :tableListKickoff="tableListKickoff" :cartypeProId="cartypeProId" @changeVisible="changeFsConfirmVisible" /> 
     <changeLightDialog ref="changeLight" :dialogVisible="dialogVisibleLight" @changeVisible="changeLightDialogVisible" @handleActionPlan="handleActionPlan" :actionPlan="selectParts.actionPlan" :delayLevelPro="selectParts.delayLevelPro" />
-    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPart" :carProjectName="carProjectName" />
+    <delayReasonDialog ref="delayReason" :dialogVisible="dialogVisibleDelayReason" @changeVisible="changeDelayReasonDialogVisible" :partStatus="partStatus" :cartypeProId="cartypeProId" :partNums="selectPart" :carProjectName="carProjectName" :delayReasonConfirmList="delayReasonConfirmList"/>
   </div> 
 </template>
 
 <script>
 import { iButton, icon, iText, iMessage } from 'rise'
 import { getProductGroupNodeInfoList, downloadNodeView, partProgressConfirm, getFsUserListPart, getAllFS } from '@/api/project'
-import { actionPlan, getProgressConfirmList, downloadProjectMonitorFile } from '@/api/project/process'
+import { actionPlan, getProgressConfirmList, downloadProjectMonitorFile,getDelayReasonConfirmList } from '@/api/project/process'
 import { svgList, nodeList } from './data'
 import moment from 'moment'
 import fsConfirm from '@/views/project/schedulingassistant/part/components/fsconfirm'
@@ -160,6 +160,7 @@ export default {
       dialogVisibleLight: false,
       selectParts: {},
       dialogVisibleDelayReason: false,
+      delayReasonConfirmList:[],
       moment
     }
   },
@@ -233,11 +234,28 @@ export default {
         this.$refs.changeLight.changeSaveLoading(false)
       })
     },
-    openDelayReasonDialog() {
-      this.changeDelayReasonDialogVisible(true)
+    async openDelayReasonDialog() {
+      const params = {
+        partStatus: this.partStatus,
+        projectId: this.cartypeProId,
+        selectList: this.selectPart.map(item => {return {partNum: item.partNum, tempCode: item.tempCode}})
+      }
+      await getDelayReasonConfirmList(params).then((res)=>{
+        if (res?.result) {
+          const tableList = res.data || []
+          if (tableList.length < 1) iMessage.warn(this.language('MEIYOUFUHETIAOJIANDELINGJIAN','没有符合发送条件的零件')) 
+          else {
+            this.changeDelayReasonDialogVisible(true);
+            this.delayReasonConfirmList = tableList;
+          }
+        }
+      })
+        
+      // this.changeDelayReasonDialogVisible(true)
     },
     changeDelayReasonDialogVisible(visible) {
       this.dialogVisibleDelayReason = visible
+      if(!visible) this.delayReasonConfirmList = [];
     },
     /**
      * @Description: 打开进度灯弹窗

@@ -2,7 +2,7 @@
  * @Author: Luoshuang
  * @Date: 2021-09-24 13:44:50
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-03-31 16:54:09
+ * @LastEditTime: 2022-04-13 11:09:15
  * @Description: 延误原因确认弹窗
  * @FilePath: \front-sourcing\src\views\project\progressmonitoring\monitorDetail\components\delayReson\index.vue
 -->
@@ -74,7 +74,8 @@ export default {
     partStatus: {type:String},
     partNums: {type:Array, default:() => []},
     carProjectName: {type:String},
-    delayList: {type:Array, default:() => []}
+    delayList: {type:Array, default:() => []},
+    delayReasonConfirmList: {type:Array, default:() => []},
   }, 
   data() { 
     return { 
@@ -200,6 +201,11 @@ export default {
       this.tableLoading = false
     },
     async getDelayReasonConfirmList() {
+      if(this.delayReasonConfirmList.length){
+        this.tableList = this.delayReasonConfirmList;
+        this.getConfirmListOptions(this.delayReasonConfirmList)
+        return;
+      }
       try {
         const params = {
           partStatus: this.partStatus,
@@ -215,40 +221,7 @@ export default {
             this.tableList = []
             throw(false)
           }
-          const fsOptions = await this.getFsUserList(tableList) 
-          this.tableList = tableList.map(item => {
-            const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
-            const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
-            const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
-              if (item.userId) { 
-                return [...accu, { 
-                  ...item, 
-                  value: item.userId, 
-                  label: item.userName 
-                }] 
-              } else { 
-                return accu 
-              } 
-            },[]) : []  
-            return {  
-              ...item, 
-              cartypeProId: this.cartypeProId, 
-              cartypeProject: this.carProjectName, 
-              projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
-              projectPurchaserId: this.$store.state.permission.userInfo.id, 
-              selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
-              fs, 
-              fsId,
-              planDate: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : this.partStatus == '6' ? this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.otsTimeKw : item.emTimeKw : this.partStatus == '7' ? item.emTimeKw : this.partStatus == '8' ? item.otsTimeKw :'',
-              partPeriod: item.partStatus,
-              partPeriodDesc: item.partStatusDesc,
-              delayWeek: item.delayWeeks,
-              confirmDateDeadline: moment(item.replyEndDate).format('YYYY-MM-DD'),
-              partName: item.partNameZh,
-              isBmg: item.bmgFlag,
-              linie: item.linieName
-            } 
-          });
+          this.getConfirmListOptions(tableList)
         } else {
           this.tableList = []
           iMessage.error(this.$i18n.locale === 'zh' ? res?.desZh : res?.desEn) 
@@ -260,6 +233,48 @@ export default {
         this.tableLoading = false
       }
       
+    },
+    async getConfirmListOptions(tableList){
+      try{
+        const fsOptions = await this.getFsUserList(tableList) 
+        this.tableList = tableList.map(item => {
+          const fs = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userName || '' 
+          const fsId = fsOptions && fsOptions[item.partNum] && fsOptions[item.partNum][0].userId || '' 
+          const options = fsOptions ? fsOptions[item.partNum]?.reduce((accu, item) => { 
+              if (item.userId) { 
+                return [...accu, { 
+                  ...item, 
+                  value: item.userId, 
+                  label: item.userName 
+                }] 
+              } else { 
+                return accu 
+              } 
+            },[]) : []  
+            return {  
+            ...item, 
+            cartypeProId: this.cartypeProId, 
+            cartypeProject: this.carProjectName, 
+            projectPurchaser: this.$store.state.permission.userInfo.nameZh, 
+            projectPurchaserId: this.$store.state.permission.userInfo.id, 
+            selectOption: options && options.length > 0 ? options : this.selectOptions.fsOptions, 
+            fs, 
+            fsId,
+            planDate: this.partStatus == '3' ? item.kickoffTimeKw : this.partStatus == '2' ? item.nomiTimeKw : this.partStatus == '5' ? item.firstTryoutTimeKw : this.partStatus == '6' ? this.isLarger(item.emTimeKw, item.otsTimeKw) ? item.otsTimeKw : item.emTimeKw : this.partStatus == '7' ? item.emTimeKw : this.partStatus == '8' ? item.otsTimeKw :'',
+            partPeriod: item.partStatus,
+            partPeriodDesc: item.partStatusDesc,
+            delayWeek: item.delayWeeks,
+            confirmDateDeadline: moment(item.replyEndDate).format('YYYY-MM-DD'),
+            partName: item.partNameZh,
+            isBmg: item.bmgFlag,
+            linie: item.linieName
+          } 
+        });
+      }catch (e) {
+        console.log(e)
+        this.tableList = []
+        this.tableLoading = false
+      }
     },
     handleSelectChange(val, row) { 
       this.$set(row, 'fs', row.selectOption.find(item => item.value === val).label) 
