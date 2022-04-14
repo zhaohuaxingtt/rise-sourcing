@@ -83,7 +83,7 @@
         :data="
           Array.isArray(dosage.aekoProjectCarDosageList)
             ? dosage.aekoProjectCarDosageList
-            : []
+            : [{}]
         "
       >
         <template v-for="item in tableTitle">
@@ -167,7 +167,7 @@
 </template>
 
 <script>
-import { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, iMessage } from "rise"
+import { iDialog, iButton, iFormGroup, iFormItem, iSelect, iText, iInput, iMessage, iMessageBox } from "rise"
 import tableList from "@/views/partsign/editordetail/components/tableList"
 import { dosageDialogForm as form, dosageDialogTableTitle as tableTitle } from "../data"
 import { numberProcessor } from "@/utils"
@@ -414,8 +414,15 @@ export default {
     },
     // 重置
     reset(){
-      this.getAekoCarProject();
-      this.getAekoCarDosage();
+      iMessageBox(
+        this.language('CHONGZHIQINGQUEREN','重置后，当前页面所有信息将被恢复至默认状态，请确认！'), // 暂时处理
+        this.language('CHONGZHITISHI','重置提示'),{
+          showCancelButton:false
+        }
+      ).then(()=>{
+        this.getAekoCarProject();
+        this.getAekoCarDosage();
+      })
     },
     // 保存
     handleSave() {

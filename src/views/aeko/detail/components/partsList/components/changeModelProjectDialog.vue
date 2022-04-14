@@ -7,15 +7,14 @@
 -->
 <template>
   <iDialog
-    title="车型项目变更"
     :visible.sync="dialogVisible"
     @close="clearDialog"
   >
     <template #title>
-      <p class="title">车型项目变更</p>
+      <p class="title">{{isAeA?'车型变更':'车型项目变更'}}</p>
       <div class="control">
         <iButton @click="save">{{ language("QUEREN", "确认") }}</iButton>
-        <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton>
+        <!-- <iButton @click="reset">{{ language("CHONGZHI", "重置") }}</iButton> -->
       </div>
     </template>
     <div>
@@ -27,13 +26,13 @@
           width="100"
         ></el-table-column>
         <el-table-column
-          label="现有车型项目"
+          :label="isAeA?'现有车型':'现有车型项目'"
           prop="col1"
           align="center"
         ></el-table-column>
         <el-table-column label="PID" prop="col2" align="center">
-          <template slot-scope="scope" slot="header">
-            变更车型项目 <span class="required">*</span>
+          <template slot="header">
+            {{isAeA?'变更车型':'变更车型项目'}} <span class="required">*</span>
           </template>
           <template slot-scope="scope">
             <iSelect
@@ -64,6 +63,7 @@ import tableList from "@/components/iTableSort";
 export default {
   props: {
     dialogVisible: { type: Boolean, default: false },
+    isAeA: { type: Boolean, default: false },
   },
   components: {
     iDialog,
@@ -87,18 +87,17 @@ export default {
       let arr = this.tableData.filter((item) => !item.col2.trim());
       if (arr.length) return iMessage.error("请维护必填项");
     },
-    reset() {
-      this.getList();
-      this.tableData.forEach((item) => {
-        item.col2 = item.col1;
-      });
-    },
+    // reset() {
+    //   this.getList();
+    //   this.tableData.forEach((item) => {
+    //     item.col2 = item.col1;
+    //   });
+    // },
     getList() {
       this.tableData = [
         {
-          PID: "123",
+          PID: "PID-TEST",
           col1: "123",
-          col2: "123",
         },
       ];
     },
@@ -124,6 +123,11 @@ export default {
 <style lang="scss" scoped>
 ::v-deep .el-dialog__header {
   position: relative;
+  .title{
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 25px;
+  }
 }
 .control {
   position: absolute;

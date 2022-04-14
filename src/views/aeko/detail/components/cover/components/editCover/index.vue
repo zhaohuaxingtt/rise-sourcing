@@ -24,12 +24,13 @@
       <iButton v-if="isTobeStated" @click="resetCover">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
-      <iFormGroup row='4' class="basic-form">
+      <iFormGroup :model="basicInfo" ref="ruleForm" :rules="rules" row='4' class="basic-form" :validate-on-rule-change="false">
         <iFormItem 
           v-for="(item, index) in basicTitle" :key="index" 
           :required="item.required" :label="language(item.labelKey, item.label)+':'" 
           v-permission.dynamic.auto="item.editPermissionKey" 
           :label-width="item.labelWidth || '10rem'"
+          :prop="item.props"
         >
           <template v-if="item.editable && isEdit">
             <el-tooltip class="item" effect="dark" :disabled="!item.tooltip && basicInfo.getFsName" :content="basicInfo.getFsName" placement="top">
@@ -61,17 +62,20 @@
           </template>
           <iText v-else>{{basicInfo[item.props]}}</iText>
         </iFormItem>
+        <iFormItem prop="remark" class="remark-width">
+          <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
+          <iInput
+            type="textarea"
+            rows="10"
+            class="text-disabled"
+            v-model="basicInfo.remark"
+            :disabled="disabled"
+            v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS|封面表态备注框_编辑"
+          />
+        </iFormItem>
       </iFormGroup>
-      <p class="margin-bottom10 remark-label">{{language('LK_BEIZHU','备注')}}:</p>
-      <iInput
-        type="textarea"
-        rows="10" 
-        class="text-disabled"
-        v-model="basicInfo.remark"
-        :disabled="disabled"
-        v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_INPUT_TIPS|封面表态备注框_编辑"
-      />
       <div class="margin-top50" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE|封面表态费用表单_编辑">
+        <el-form class="basic-form" :model="{ tableData }" :rules="rules" ref="tableForm" :show-message="false">
         <!-- 表格区域 -->
         <tableList
           index
@@ -83,36 +87,41 @@
         >
         <!-- 增加材料成本(RMB/⻋) -->
         <template #materialIncrease="scope">
-          <div class="table-materialIncrease" style="width:120px">
-            <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled"  :inputValue="scope.row['materialIncrease']" style="width:100px" />
-            <iInput v-else :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
-            <!-- <span class="icon-tips" v-if="scope.row.isShowTips">
-              <el-tooltip v-if="scope.row['expressionList'].length > 1" placement="top" effect="light" >
-                <div slot="content">
-                  <p class="font-weight margin-bottom5" style="text-align:center">{{scope.row['expressionList'][0] || ''}}</p>
-                  <p class="font16" style="color:#747F9D;text-align:center">{{scope.row['expressionList'][1] || ''}}</p>
-                </div>
-                <i class="el-icon-warning-outline font18 tipsIcon"></i>
-              </el-tooltip>
+          <el-form-item :prop="'tableData.'+scope.index + '.materialIncrease'" :rules="rules.materialIncrease">
+            <div class="table-materialIncrease" style="width:120px">
+              <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled"  :inputValue="scope.row['materialIncrease']" style="width:100px" />
+              <iInput v-else :disabled="disabled" v-model="scope.row['materialIncrease']" @input="handleNumber($event,scope.row,'materialIncrease')" style="width:100px"/>
+              <!-- <span class="icon-tips" v-if="scope.row.isShowTips">
+                <el-tooltip v-if="scope.row['expressionList'].length > 1" placement="top" effect="light" >
+                  <div slot="content">
+                    <p class="font-weight margin-bottom5" style="text-align:center">{{scope.row['expressionList'][0] || ''}}</p>
+                    <p class="font16" style="color:#747F9D;text-align:center">{{scope.row['expressionList'][1] || ''}}</p>
+                  </div>
+                  <i class="el-icon-warning-outline font18 tipsIcon"></i>
+                </el-tooltip>
 
 
-               <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i>
-            </span> -->
-          </div>
-            
+                <i v-else class="el-icon-warning-outline font18 tipsIcon grey"></i>
+              </span> -->
+            </div>
+          </el-form-item>
         </template>
         <!-- 增加投资费⽤(不含税) -->
         <template #investmentIncrease="scope">
-          <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled" :inputValue="scope.row['investmentIncrease']" style="width:100px"/>
-          <iInput v-else :disabled="disabled" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
-          
+          <el-form-item :prop="'tableData.'+scope.index + '.investmentIncrease'" :rules="rules.investmentIncrease">
+            <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled" :inputValue="scope.row['investmentIncrease']" style="width:100px"/>
+            <iInput v-else :disabled="disabled" v-model="scope.row['investmentIncrease']" @input="handleNumber($event,scope.row,'investmentIncrease')" style="width:100px" />
+          </el-form-item>
         </template>
         <!-- 其他费⽤(不含税) -->
         <template #otherCost="scope">
+          <el-form-item :prop="'tableData.'+scope.index + '.otherCost'" :rules="rules.otherCost">
           <thousandsFilterInput class="thousandsFilterInput" v-if="disabled" :filterDisabled="disabled" :inputValue="scope.row['otherCost']" style="width:100px"/>
           <iInput v-else :disabled="disabled" v-model="scope.row['otherCost']" @input="handleNumber($event,scope.row,'otherCost')" style="width:100px"/>
+          </el-form-item>
         </template>
         </tableList>
+        </el-form>
         <p class="bottom-tips margin-top20">Top-Aeko / Top-MP：|ΔGesamt Materialkosten| ≥35 RMB oder Invest≥10,000,000 RMB; Top-AeA: ΔGesamt Materialkosten ≥35 RMB oder Invest≥10,000,000 RMB</p>
       </div>
       
@@ -130,7 +139,7 @@ import {
   iText,
   iMessage,
 } from 'rise';
-import { previewBaicFrom,coverTableTitleCost } from '../../data'
+import { previewBaicFrom,coverTableTitleCost, fromRules } from '../../data'
 import tableList from "../tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import {numberProcessor} from '@/utils';
@@ -183,7 +192,9 @@ export default {
         const { basicInfo={} } = this;
         return basicInfo.coverStatus == 'TOBE_STATED' || basicInfo.coverStatus == '';
       },
-
+      // rules(){
+      //   return fromRules(this)
+      // }
       
     },
     data(){
@@ -215,7 +226,16 @@ export default {
         tableTitle:coverTableTitleCost,
         tableLoading:false,
         btnLoading:false,
-
+        rules:fromRules(this)
+      }
+    },
+    watch:{
+      '$i18n.locale'(val){
+        this.rules = fromRules(this)
+        this.$nextTick(() => {
+          this.$refs['ruleForm'].validate()
+          this.$refs['tableForm'].validate()
+        })
       }
     },
     created(){
@@ -262,6 +282,11 @@ export default {
           }
         }).catch((err)=>{
           this.tableLoading = false;
+        }).finally(()=>{
+          this.$nextTick(()=>{
+            this.$refs["ruleForm"].clearValidate()
+            this.$refs['tableForm'].clearValidate()
+          })
         })
       },
       // 获取前期采购员下拉列表
@@ -392,38 +417,44 @@ export default {
       validateData(data){
         const { basicTitle } = this;
         let isValidate = true;
-        for(let i=0;i<basicTitle.length;i++){
-          const basic = basicTitle[i];
-          if(basic['required']){
-              if((!data[basic['props']] && basic['type']=='input') || (data[basic['props']]==='' && basic['type']=='select')){
-                const tips = this.language(basicTitle[i]['labelKey'],basicTitle[i]['label'])+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
-                this.$message.warning(tips);
-                isValidate = false;
-                break;
-              }
-          }
-        }
+        this.$refs['tableForm'].validate((res)=>{
+          isValidate = res
+        })
+        this.$refs['ruleForm'].validate((res)=>{
+          isValidate = res
+        })
+        // for(let i=0;i<basicTitle.length;i++){
+        //   const basic = basicTitle[i];
+        //   if(basic['required']){
+        //       if((!data[basic['props']] && basic['type']=='input') || (data[basic['props']]==='' && basic['type']=='select')){
+        //         const tips = this.language(basicTitle[i]['labelKey'],basicTitle[i]['label'])+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+        //         this.$message.warning(tips);
+        //         isValidate = false;
+        //         break;
+        //       }
+        //   }
+        // }
         
           // 备注
-          if(isValidate && !data.remark){
-            const tips = this.language('LK_BEIZHU','备注')+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
-            this.$message.warning(tips);
-            isValidate = false;
-          }
+          // if(isValidate && !data.remark){
+          //   const tips = this.language('LK_BEIZHU','备注')+this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+          //   this.$message.warning(tips);
+          //   isValidate = false;
+          // }
 
           // 表格内输入框
-          if(isValidate){
-            const {coverCostsWithCarType} = data;
-            for(let i=0;i<coverCostsWithCarType.length;i++){
-              const cost = coverCostsWithCarType[i] || {};
-              if(!cost['investmentIncrease'] || !cost['materialIncrease'] ||!cost['otherCost']){
-                const tips = this.language('LK_AEKO_BIAODANNEIFEIYONG','表单内费用') + this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
-                this.$message.warning(tips);
-                isValidate = false;
-                break;
-              }
-            }
-          }
+          // if(isValidate){
+          //   const {coverCostsWithCarType} = data;
+          //   for(let i=0;i<coverCostsWithCarType.length;i++){
+          //     const cost = coverCostsWithCarType[i] || {};
+          //     if(!cost['investmentIncrease'] || !cost['materialIncrease'] ||!cost['otherCost']){
+          //       const tips = this.language('LK_AEKO_BIAODANNEIFEIYONG','表单内费用') + this.language('LK_AEKO_BUNENGWEIKONG','不能为空');
+          //       this.$message.warning(tips);
+          //       isValidate = false;
+          //       break;
+          //     }
+          //   }
+          // }
           return isValidate;
       },
 
@@ -489,7 +520,6 @@ export default {
       
       // 未保存的情况下 是否相关 字段禁用
       selectDisabled(type){
-        console.log(type);
         const { disabled,basicInfo } = this;
         return disabled || (type == 'isReference' && !basicInfo.aekoCoverId)
       },
@@ -508,7 +538,6 @@ export default {
         resetCover(data);
       },
       handleMultipleChange(val,props,multiple){
-        console.log(val,props,'handleMultipleChange')
         if(props == 'fsName' && multiple){
           const list = this.selectOptionsCopy['fsList'] || [];
           const filterList = list.filter((item)=>val.includes(item.value));
@@ -523,21 +552,41 @@ export default {
 .aeko-editCover{
   padding-top: 20px;
   .basic-form{
-      ::v-deep.el-form-item__content {
+    ::v-deep .el-form-item{
+      &.is-error{
+        .el-input{
+          .el-input__inner{
+            border-color: #EF3737;
+          }
+        }
+        .el-textarea{
+          .el-textarea__inner{
+            border-color: #EF3737;
+          }
+        }
+      }
+      .el-form-item__content {
           margin-left: 0!important;
       }
+
+    }
+
   }
   .remark-label{
     font-size: 16px;
     font-family: PingFang SC;
     font-weight: 400;
     color: #4B4B4C;
+    text-align: left;
     &::before{
       content: "*";
       color: #f56c6c;
       margin-right: 4px;
       display: inline-block;
     }
+  }
+  .remark-width{
+    width: 100%;
   }
   ::v-deep .el-textarea{
       &.text-disabled.is-disabled .el-textarea__inner{

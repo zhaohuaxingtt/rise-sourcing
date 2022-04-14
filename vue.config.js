@@ -226,7 +226,7 @@ module.exports = {
       },
       '/partsProcureApi': {
         // target: 'http://10.122.17.38:8018',
-        target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/procurementrequirement/',
+        target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/',
         changeOrigin: true,
         pathRewrite: {
           '^/partsProcureApi': '',
@@ -284,6 +284,7 @@ module.exports = {
       },
       '/biddingApi': {
         target: 'http://10.122.17.38:8056/bidding',
+        target: 'http://rise-nginx-internal.apps.vmocp-dev.csvw.com/biddingApi',
         changeOrigin: true,
         pathRewrite: {
           '^/biddingApi': '',

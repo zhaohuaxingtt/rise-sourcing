@@ -31,12 +31,11 @@
         </el-form-item>
         <el-form-item :label="showCarTypeLabel" v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_SELECT_CARTYPEPROJECTCODE|车型项目">
           <iSelect
+            clearable
             multiple
             collapse-tags
             filterable
             reserve-keyword
-            size="mini"
-            class="multipleSelect"
             v-model="form.cartypeProjectCode"
             :placeholder="language('partsprocure.CHOOSE','请选择')"
             :filter-method="$event => selectFilter($event, 'cartypeProjectCode')"
@@ -63,8 +62,6 @@
             filterable
             clearable
             reserve-keyword
-            size="mini"
-            class="multipleSelect"
             v-model="form.status"
             :placeholder="language('QINGXUANZENEIRONGZHUANGTAI', '请选择内容状态')"
             :filter-method="$event => selectFilter($event, 'status')"
@@ -199,6 +196,16 @@
             effect="light" 
             popper-class="custom-card-tooltip"
             :content="`${language('LK_AEKO_TIPS_ZHIZHENDUINEIRONGCHEHUI_CAOZUO','审批前，可对已提交的单据进行撤回。此处只针对内容撤回，如需撤回封面表态，请在封面表态中操作【撤回】')}`"
+            placement="top">
+            <i class="el-icon-warning-outline tipsIcon"></i>
+          </el-tooltip>
+          </iButton>
+          <iButton @click="transfer">
+            {{ language("ZHUANPAI", "转派") }}
+          <el-tooltip 
+            effect="light" 
+            popper-class="custom-card-tooltip"
+            :content="`${language('TONGYILINGJIANGUANLIANDEDUOGEYUANLINGJIANHANGJIANGBEIYITONGZHUANPAI','同一零件关联的多个原零件行将被一同转派')}`"
             placement="top">
             <i class="el-icon-warning-outline tipsIcon"></i>
           </el-tooltip>
@@ -339,6 +346,8 @@
     <investCarTypeProDialog v-if="investCarTypeProVisible" :multipleSelection="multipleSelection" :dialogVisible="investCarTypeProVisible" @changeVisible="changeVisible" @refresh="init"/>
     <!-- 价格轴 -->
     <priceAxisDialog v-if="priceAxisVisible" :dialogVisible="priceAxisVisible" :priceAxisRow="priceAxisRow" @changeVisible="changeVisible"/>
+    <!-- 转派 -->
+    <assignDialog v-if="transferVisible" :dialogVisible="transferVisible" @changeVisible="changeVisible" @getList="init" :selectItems="multipleSelection"/>
   </div>
 </template>
 
@@ -374,13 +383,13 @@ import {floatFixNum} from "../../../approve/approveDetails/data.js"
 import { setLogMenu } from "@/utils";
 import qs from 'qs'
 import buttonTableSetting from '@/components/buttonTableSetting'
-
+import assignDialog from './components/assignDialog'
 // const printTableTitle = tableTitle.filter(item => item.props !== "dosage" && item.props !== "quotation" && item.props !== "priceAxis")
 
 
 export default {
   components: { iSearch, iInput, iSelect, iCard, iButton, icon, iPagination, tableList, dosageDialog,investCarTypeProDialog,priceAxisDialog,Upload, 
-  buttonTableSetting, iMultiLineInput },
+  buttonTableSetting, iMultiLineInput, assignDialog },
   mixins: [ pageMixins, combine, tableSortMixins ],
   props: {
     aekoInfo: {
@@ -437,6 +446,7 @@ export default {
       dosageDialogVisible: false,
       investCarTypeProVisible: false,
       priceAxisVisible: false,
+      transferVisible: false,
       priceAxisRow:{},
       submitLoading: false,
       debouncer: null,
@@ -445,6 +455,7 @@ export default {
       // showLineList:hidenTableTitle,
       addTableTitle:[],
       importItemExcel:importItemExcel,
+      singleAssign:[]
     };
   },
   created() {
@@ -489,6 +500,14 @@ export default {
   },
   methods: {
     floatFixNum,
+    // 转派
+    transfer(){
+      console.log(this.multipleSelection);
+      if (!this.multipleSelection.length) return iMessage.warn(this.language("QINGXUANZEXUYAOZHUANPAIDELINGJIAN", "请选择需要转派的零件"))
+      let msg = this.multipleSelection.some(item=> !['TOBE_STATED','QUOTING','QUOTED','REJECT'].includes(item.status))
+      if(msg) return  iMessage.warn(this.language("QINGXUANZENEIRONGZHUANGTAIWEIDBYHUOJUJUEDELINGJIANJINXINGTIJIAO", "请选择内容状态为待表态、报价中、已报价或拒绝的零件进行提交"))
+      this.transferVisible = true
+    },
     searchCartypeProject() {
       const {query} = this.$route;
       const { requirementAekoId ='',} = query;

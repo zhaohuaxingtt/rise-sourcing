@@ -15,6 +15,29 @@ export const previewBaicFrom = [
     {label:'封⾯状态',labelKey:'LK_AEKOFENGMIANZHUANGTAI',props:'coverStatusDesc',permissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI|封⾯状态',editPermissionKey:'AEKO_DETAIL_TAB_FENGMIAN_TEXT_FENGMIANZHUANGTAI_LINIE|封⾯状态—LINIE'},
 ]
 
+const isEmpty = (val) => val == false && 0 !== val && '0' !== val || val == null;
+const validator = (rule, value, callback)=>{
+    if(isEmpty(value)){
+        callback(new Error(rule.message))
+    }else{
+        callback()
+    }
+}
+
+export const fromRules = (vm)=>({
+    isTop:[{ validator, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+    isReference:[{ validator, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+    partName:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    mainSupplier:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    sendCycle:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    isEffectpro:[{ validator, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+    fsName:[{ validator, message: vm.language('BIDDING_BIXUAN','必选'), trigger: "change" }],
+    remark:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    materialIncrease:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    investmentIncrease:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+    otherCost:[{ validator, message: vm.language('BIDDING_BITIAN','必填'), trigger: ["blur","change"] }],
+})
+
 export const coverTableTitleCost=[
     { props: "cartypeNameZh", name: "⻋型项⽬/⻋型", key: "LK_AEKOSHEJICHEXINGXIANGMUCHEXING", tooltip: true },
     { props: "materialIncrease", name: "增加材料成本(RMB/⻋)", key: "LK_AEKO_ZENGJIACAILIAOCHENGBEN", tooltip: true,
