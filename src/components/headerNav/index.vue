@@ -52,15 +52,10 @@ export default {
 		iTabsList,
 	},
 	created() {
-		console.log(this.type, 'type')
-		console.log(this.$route.path)
 		this.group =
 			this[`${this.type}ThirdMenu`].filter((i) => i.url == this.$route.path)[0]
 				?.group ?? ''
-		console.log(this.group, 'group')
 		this.updateNavList
-		console.log('navListLeft', this.navListLeft)
-		console.log('whiteBtnList', this.whiteBtnList)
 		this.judgeMenuPermission()
 	},
 	computed: {
@@ -94,7 +89,6 @@ export default {
 	},
 	methods: {
 		change(pramas) {
-			console.log(pramas, this.type)
 			this.group = pramas.group
 		},
 		// 判断当前url菜单有没有权限
@@ -120,11 +114,18 @@ export default {
 				const permissionKey = mentItemOfRightNav.permissionKey
 				// 没有菜单权限
 				if (!this.whiteBtnList[permissionKey]) {
-					const hasPermissionMenu = this.getHasPermissionMenu(this.navListLeft)
+					const hasPermissionMenu = this.getHasPermissionMenu(this.heaederSubMenu)
 					if (hasPermissionMenu) {
 						return this.$router.push({
 							path: hasPermissionMenu.url,
 						})
+					} else {
+						const otherPermissionMenu = this.getHasPermissionMenu(this.navListLeft)
+						if (otherPermissionMenu) {
+							return this.$router.push({
+								path: otherPermissionMenu.url,
+							})
+						}
 					}
 				}
 			}

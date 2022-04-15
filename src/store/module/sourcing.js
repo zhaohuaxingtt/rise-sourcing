@@ -639,7 +639,6 @@ const actions = {
     })
   },
   updatePendingRequestNum({commit},requestNum=0){
-    console.log(requestNum,'requestNum');
     commit('SET_PENDINGREQUESTNUM', requestNum)
   }
 }
