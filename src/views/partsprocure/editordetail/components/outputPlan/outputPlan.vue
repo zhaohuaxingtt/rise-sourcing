@@ -50,6 +50,7 @@ import { getOutputPlan, updateOutputPlan, bkmOutputForecast } from '@/api/partsp
 import { outputPlanTableTitle as tableTitle } from './data'
 import { cloneDeep } from 'lodash'
 import { partProjTypes } from '@/config'
+import { numberProcessor } from '@/utils'
 
 export default {
   components: { iCard, iButton, iSelect, iInput },
@@ -177,7 +178,9 @@ export default {
       this.getData()
     },
     handleInput(val, key) {
-      this.tableListData[0][key] = (val + '').replace(/\D/g, '').replace(/([0]*)(0|[1-9]+[0-9]+)/, "$2")
+      // this.tableListData[0][key] = (val + '').replace(/\D/g, '').replace(/([0]*)(0|[1-9]+[0-9]+)/, "$2")
+      this.$set(this.tableListData[0], key, math.round(numberProcessor(val, 6)))
+
       if (Array.isArray(this.tableListData[0].outputPlanList)) {
         this.tableListData[0].totalOutput = this.tableListData[0].outputPlanList.reduce((acc, cur) => {
           if (key == cur.year) cur.output = this.tableListData[0][key]
