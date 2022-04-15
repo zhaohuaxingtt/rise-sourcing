@@ -24,7 +24,7 @@
       <iButton v-if="isTobeStated" @click="resetCover">{{language('LK_ZHONGZHI','重置')}}</iButton>
     </template>
       <!-- 可编辑头 -->
-      <iFormGroup :model="basicInfo" ref="ruleForm" :rules="rules" row='4' class="basic-form" :validate-on-rule-change="false">
+      <iFormGroup :key="basicInfo.isReference" :model="basicInfo" ref="ruleForm" :rules="rules" row='4' class="basic-form" :validate-on-rule-change="false">
         <iFormItem 
           v-for="(item, index) in basicTitle" :key="index" 
           :required="item.required" :label="language(item.labelKey, item.label)+':'" 
@@ -75,7 +75,7 @@
         </iFormItem>
       </iFormGroup>
       <div class="margin-top50" v-permission.auto="AEKO_DETAIL_TAB_FENGMIAN_TABLE_LINIE_LINE|封面表态费用表单_编辑">
-        <el-form class="basic-form" :model="{ tableData }" :rules="rules" ref="tableForm" :show-message="false">
+        <el-form class="basic-form" :key="basicInfo.isReference" :model="{ tableData }" :rules="rules" ref="tableForm" :show-message="false">
         <!-- 表格区域 -->
         <tableList
           index
@@ -139,7 +139,7 @@ import {
   iText,
   iMessage,
 } from 'rise';
-import { previewBaicFrom,coverTableTitleCost, fromRules } from '../../data'
+import { previewBaicFrom,coverTableTitleCost, fromRules, BaicFrom } from '../../data'
 import tableList from "../tableList"
 import { pageMixins } from "@/utils/pageMixins";
 import {numberProcessor} from '@/utils';
@@ -192,10 +192,6 @@ export default {
         const { basicInfo={} } = this;
         return basicInfo.coverStatus == 'TOBE_STATED' || basicInfo.coverStatus == '';
       },
-      // rules(){
-      //   return fromRules(this)
-      // }
-      
     },
     data(){
       return{
@@ -203,6 +199,7 @@ export default {
         basicTitle:previewBaicFrom,
         basicInfo:{
           fsName:[],
+          isReference:''
         },
         selectOptions:{
           isReference:[
@@ -226,17 +223,28 @@ export default {
         tableTitle:coverTableTitleCost,
         tableLoading:false,
         btnLoading:false,
-        rules:fromRules(this)
+        rules:null
       }
     },
     watch:{
       '$i18n.locale'(val){
-        this.rules = fromRules(this)
+        this.rules = fromRules(this,this.basicInfo.isReference)
         this.$nextTick(() => {
           this.$refs['ruleForm'].validate()
           this.$refs['tableForm'].validate()
         })
-      }
+      },
+      'basicInfo.isReference':{
+        deep:true,
+        immediate: true,
+        handler(val){
+          this.basicTitle = BaicFrom(val?true:false)
+          this.rules = fromRules(this,val?true:false)
+          this.tableTitle.forEach(item=>{
+            item.require = val?true:false
+          })
+        }
+      },
     },
     created(){
       this.getDetail();
@@ -418,10 +426,10 @@ export default {
         const { basicTitle } = this;
         let isValidate = true;
         this.$refs['tableForm'].validate((res)=>{
-          isValidate = res
+          isValidate = isValidate && res
         })
         this.$refs['ruleForm'].validate((res)=>{
-          isValidate = res
+          isValidate = isValidate && res
         })
         // for(let i=0;i<basicTitle.length;i++){
         //   const basic = basicTitle[i];
