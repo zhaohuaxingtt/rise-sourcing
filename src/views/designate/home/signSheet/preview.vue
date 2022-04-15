@@ -242,23 +242,23 @@ export default {
         min-height: 90%;
         &::-webkit-scrollbar{
           /*width: 0;宽度为0隐藏*/
-          width: 0;
+          // width: 0;
 
         }
         &::-webkit-scrollbar{
           /*width: 0;宽度为0隐藏*/
-          width: 0;
+          // width: 0;
         }
         &::-webkit-scrollbar-thumb{
-          border-radius: 2px;
-          height: 50px;
+          // border-radius: 2px;
+          // height: 50px;
           // background: #efefef;
-          background: #fff;
+          // background: #fff;
         }
         &::-webkit-scrollbar-track{
           // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-          border-radius: 2px;
-          background: #fff;
+          // border-radius: 2px;
+          // background: #fff;
         }
       }
     }
