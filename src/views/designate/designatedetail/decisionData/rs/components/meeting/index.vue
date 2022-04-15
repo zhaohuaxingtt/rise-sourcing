@@ -1270,7 +1270,7 @@ export default {
 }
 .meeting {
   height: 100vh;
-  overflow-y: auto;
+  // overflow-y: auto;
   .rsCard {
     ::v-deep .cardHeader {
       flex-wrap: wrap;
