@@ -76,11 +76,7 @@
         v-permission.auto="AEKO_AEKODETAIL_CONTENTDECLARE_DOSAGEDIALOG_TABLE|装车率_表格"
         class="table margin-top30"
         height="480"
-        :data="
-          Array.isArray(dosage.aekoProjectCarDosageList)
-            ? dosage.aekoProjectCarDosageList
-            : []
-        "
+        :data="tableData"
       >
         <template v-for="item in tableTitle">
           <el-table-column
@@ -143,7 +139,7 @@
             <template slot-scope="scope">
               <!-- 装车率加个% -->
               <template v-if="item.props == 'assemblyRate'"
-                >{{ calculatePercentage(scope.row)}}%</template
+                >{{ scope.row.assemblyRate&&calculatePercentage(scope.row)+'%'}}</template
               >
               <template v-else>{{ scope.row[item.props] }}</template>
             </template>
@@ -227,6 +223,9 @@ export default {
         this.$emit("update:visible", value);
       },
     },
+    tableData(){
+      return Array.isArray(this.dosage.aekoProjectCarDosageList)&&this.dosage.aekoProjectCarDosageList.length ? this.dosage.aekoProjectCarDosageList: [{}]
+    },
     summary() {
       let result = {};
       let sumlist = ["originPerCarDosage", "perCarDosage"];
@@ -237,11 +236,11 @@ export default {
           result[i.props] = "";
         }
       });
-      this.dosage?.aekoProjectCarDosageList?.forEach((i) => {
+      this.tableData.forEach((i) => {
         i &&
           Object.keys(i).forEach((key) => {
             if (sumlist.includes(key)) {
-              result[key] += i[key] * i.assemblyRate;
+              result[key] += i[key] * i.assemblyRate || 0;
             }
           });
       });
@@ -276,6 +275,7 @@ export default {
     },
     // 提交时校验一下沿⽤原零件份额:usePortion
     validateData() {
+      this.dosage.aekoProjectCarDosageList = JSON.parse(JSON.stringify(this.tableData))
       let isValidate = true;
       // 沿⽤原零件份额
       if (!this.dosage["usePortion"]) {

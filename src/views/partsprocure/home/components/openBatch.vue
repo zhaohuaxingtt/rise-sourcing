@@ -16,9 +16,10 @@
         :data="tableListData"
         >
           <template v-for="(item, $index) in tableTitle">
-            <el-table-column v-if="$index == 0"  :key="$index" align="center" :label="item.name">
+            <el-table-column v-if="$index == 0" :key="$index" align="center" :label="item.name" width="100">
               <template slot-scope="scope">
-                  <iInput v-model="scope.row[item.props]"   @input="isStartYear($event,item.props)" maxlength="4" size="4"></iInput>
+                <iDatePicker v-model="scope.row[item.props]" type="year" class="yearPicker" valueFormat="yyyy"></iDatePicker>
+                  <!-- <iInput v-model="scope.row[item.props]" @input="isStartYear($event,item.props)" maxlength="4" size="4"></iInput> -->
               </template>
             </el-table-column>
             <el-table-column v-else :key="$index" align="center" :prop="item.props" :label="item.name">
@@ -34,12 +35,14 @@
 </template>
 
 <script>
-import {iDialog, iButton, iInput, iMessage} from 'rise'
+import {iDialog, iButton, iInput, iMessage, iDatePicker} from 'rise'
 import {getPlanyear} from './data'
 import {batchMaintainOutPutPlan} from '@/api/partsprocure/editordetail'
 import { cloneDeep } from 'lodash'
+import { numberProcessor } from '@/utils'
+
 export default {
-  components:{iDialog, iButton, iInput},
+  components:{iDialog, iButton, iInput, iDatePicker},
   props: {
     dialogVisible: {
       type:Boolean
@@ -84,18 +87,12 @@ export default {
           yearOutputDTOsdata.push(maps)
         })
       })
+
       if(this.tableListData[0].startyear == '') {
         return iMessage.warn(
           this.language(
             "LK_NINSHANGWEISHURUKAISHINIANFEN",
             '抱歉，您尚未输入开始年份'
-          )
-        )
-      } else if(this.tableListData[0].startyear.length != 4) {
-        return iMessage.warn(
-          this.language(
-            "LK_SHURUDEKAISHINIANFENGESHIYOUWU",
-            '抱歉，输入的开始年份格式有误'
           )
         )
       } else{
@@ -118,11 +115,11 @@ export default {
       }
 
     },
-    isStartYear(val,key) {
-      this.tableListData[0][key] = (val + '').replace(/\D/g, '')
-    },
+    // isStartYear(val,key) {
+    //   this.tableListData[0][key] = (val + '').replace(/\D/g, '')
+    // },
     handleInput(val,key) {
-      this.tableListData[0][key] = (val + '').replace(/[^\d.]/g, '').replace(/^\./g,'').replace(/\.{2,}/g,'.'). replace(".", "$#$").replace(/\./g, "").replace("$#$", ".").replace(/^(\-)*(\d+)\.(\d\d\d\d\d\d).*$/, "$1$2.$3")
+      this.$set(this.tableListData[0], key, math.round(numberProcessor(val, 6)))
     }
   }
 }
@@ -131,6 +128,17 @@ export default {
   .iDialogHeight {
     ::v-deep .el-dialog{
       height: 600px;
+    }
+
+    .yearPicker {
+      ::v-deep .el-input__prefix,
+      ::v-deep .el-input__suffix {
+        i {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
     }
   }
   .main_body{
