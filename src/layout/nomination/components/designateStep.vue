@@ -47,7 +47,7 @@
         </div>
         <!-- 步骤栏 -->
         <div class="step-list flex-between-center-center margin-top30 margin-bottom30" v-permission.auto="NOMINATION_MOUDULES_STEPSTABLE|定点管理步骤栏">
-            <div class="step-list-item flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
+            <div class="step-list-item-wrapper flex-center-center" v-for="(item,index) in applyStep" :key="'applyStep'+index">
                 <!-- 下一步的图标或者是决策资料的图标支持灰色可点击 -->
                 <div :class="(item.id === 5 || phaseType + 1 >=item.id) ? 'click-item step-list-item' : 'step-list-item' " @click="toAnyNomiStep(item)">
                     <p class="step-icon-box">
@@ -70,11 +70,11 @@
                 </div>
                 <p v-if="index+1 !== applyStep.length" class="margin-bottom30" >
                     <!-- 正在进行中 -->
-                    <span v-if="phaseType == item.id" v-html="svgList['icondingdianguanlizhou-zhengzaijinhang']"></span>
+                    <span v-if="phaseType == item.id" v-html="svgList['icondingdianguanlizhou-zhengzaijinhang']" class="stepLine"></span>
                     <!-- 已完成 -->
-                    <span v-else-if="phaseType > item.id" v-html="svgList['iconliuchengjiedianyiwancheng1']"></span>
+                    <span v-else-if="phaseType > item.id" v-html="svgList['iconliuchengjiedianyiwancheng1']" class="stepLine"></span>
                      <!-- 未完成 -->
-                     <span v-else v-html="svgList['icondingdianguanlizhou-weiwancheng']"></span>
+                     <span v-else v-html="svgList['icondingdianguanlizhou-weiwancheng']" class="stepLine"></span>
 
 
                     <!-- 正在进行中 -->
@@ -814,10 +814,16 @@ export default {
     }
     .step-list{
         padding: 0 70px;
-        .step-list-item{
+        .step-list-item-wrapper{
+            width: 100%;
             position: relative;
-            flex-grow: 1;
+            // flex-grow: 1;
             text-align: center;
+
+            &:last-of-type {
+                width: auto !important;
+            }
+
             .step-list-item{
                 width: 80px;
                 display: flex;
