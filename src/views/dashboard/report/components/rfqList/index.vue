@@ -15,9 +15,9 @@
           <span class="margin-right20">{{language('RENWUJINDU','任务进度')}}:
             <icon symbol style="font-size:14px;position:relative;top:2px;" :color='"#eff9fd"' :name="iconList_all_times['a'+(item.wholeTaskProgress||6)].icon"></icon>
             </span>
-          <!-- <span>{{language('ZHENGCHEJINDUFENGXIAN','整车进度风险')}}: 
+          <span>{{language('ZHENGCHEJINDUFENGXIAN','整车进度风险')}}: 
             <icon symbol style="font-size:20px;position:relative;top:2px;" :name="iconList_car['a'+(item.wholeProgressRisk||1)].icon"></icon>
-          </span> -->
+          </span>
         </div>
       </div>
       <div class="rfq-body">
