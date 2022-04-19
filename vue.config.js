@@ -172,7 +172,7 @@ module.exports = {
       },
       '/sourcingApi': {
         //   供应商
-        target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com/',
+        target: 'http://rise-gateway-runtime.apps.vmocp-dev.csvw.com//sourcing/web',
         // target: 'http://rise-gateway-runtime.apps.vmocp-uat.csvw.com/sourcing/',
         changeOrigin: true,
         pathRewrite: {
