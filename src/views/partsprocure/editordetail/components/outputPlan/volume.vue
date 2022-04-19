@@ -118,7 +118,7 @@ export default {
   },
   created() {
     this.getData();
-    if(this.params.partProjectSource == 2) {
+    if(this.params.partProjectSource == 1 || this.params.partProjectSource == 2) {
       this.ispartProjectSource = true
     } else {
       this.ispartProjectSource = false

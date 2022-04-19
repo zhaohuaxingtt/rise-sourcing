@@ -681,8 +681,8 @@
 				if(this.detailData.procureFactory == '') return  iMessage.warn(this.language('NINDANGQIANWEIXUANZE','您当前还未选择采购工厂，请选择后重试！'))
 				this.selectOldParts.show = true
 			},
-			filterProjectList(a,b){
-				return filterProjectList(a,b)
+			filterProjectList(a, b) {
+				return filterProjectList(a, b, this.detailData.partProjectSource == 1) // 新建信息单过来的数据强制释放
 			},
    /**
     * @description: 是否是commonsourcing的change选择框。 
