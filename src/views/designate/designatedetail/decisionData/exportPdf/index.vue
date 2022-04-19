@@ -112,7 +112,7 @@
 
 <script>
 import { iButton, iTabsList } from "rise"
-import {nominateAppSDetail,decisionDownloadPdf} from "@/api/designate"
+import {nominateAppSDetail,decisionDownloadPdf, decisionDownloadPdfLogo} from "@/api/designate"
 import rsTitle from "./components/rsTitle"
 import partList from "./components/partList"
 import tasks from "./components/tasks"
@@ -194,6 +194,8 @@ export default {
       })
     },
     exportPdf() {
+      this.handleExportPdf()
+      return
       // this.exportLoading = true
       // transverseDownloadPDF({
       //   dom: this.$refs.contentPage,
@@ -316,6 +318,100 @@ export default {
         
        }
     },
+
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    // ================================================================================================
+    
+    // 导出pdf
+    async handleExportPdf() {
+      this.fileList = []
+      this.loading = true
+    
+      setTimeout(async () => {
+        let elList = document.getElementsByClassName('pageCard')
+        if(!elList.length){
+          iMessage.warn('请稍等')
+          this.loading = false
+          return
+        }
+        for (let i = 0; i < elList.length; i++) {
+          const el = elList[i];
+          await this.getPdfImage({
+            dom: el,
+            index: i
+          })
+        }
+        this.uploadUdFile();
+      }, 100)
+      // this.createEl()
+      
+      // this.getPdfImage({
+      //   dom: this.$refs.rsPdf.$el,
+      //   pdfName: `定点申请_${ this.$route.query.desinateId }_RS单`,
+      //   exportPdf: true,
+      //   waterMark: true
+      // })
+    },
+    // 截取页面,存入pdf
+    // 截取页面,转图片, 上传服务器
+    async getPdfImage({
+      //html横向导出pdf
+      dom,
+      index
+    }) {
+      await html2canvas(dom, {
+        dpi: 96, //分辨率
+        scale: 2, //设置缩放
+        useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
+        bgcolor: "#ffffff", //应该这样写
+        logging: false, //打印日志用的 可以不加默认为false
+      }).then(async (canvas) => {
+          this.width = canvas.width; //
+          await this.getPdfFile(canvas,canvas.width)
+      });
+    },
+
+    async getPdfFile(copyCanvas,num){
+      return new Promise((r,j)=>{
+        copyCanvas.toBlob((blob) => {
+          //以时间戳作为文件名 实时区分不同文件
+          let filename = `${new Date().getTime()}.png`;
+          let pdfFile = new File([blob], filename, { type: "image/png" });
+          this.fileList.push({ file: pdfFile, index: num });
+          r(num)
+        });
+      })
+    },
+    // 下载 pdf 文件
+    async DownloadPdf(){
+      let arr = this.fileList.filter(item=>!item.imageUrl)
+      if(arr.length) return
+      const list = this.fileList.map((item)=>item.imageUrl);
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89, height: 595.28})
+      this.loading = false
+    },
+
+    // 上传图片
+    async uploadUdFile(){
+      this.fileList.map((item)=>{
+        uploadUdFile({
+        multifile: item.file
+        }).then(res=>{
+          if(res.code == 200){
+            item['imageUrl'] = res.data[0].path
+            console.log(res.data[0].objectUrl);
+            this.DownloadPdf();
+          }else{
+            this.$message.error(this.$i18n.locale === "zh" ? res.desZh : res.desEn)
+          }
+        });
+      })
+    },
   }
 }
 </script>
@@ -410,7 +506,7 @@ export default {
         }
         ::v-deep.rsPdf{
           width:100%;
-          max-width: 1920px;
+          // max-width: 1920px;
         }
       }
     }

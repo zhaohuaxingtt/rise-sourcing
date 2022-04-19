@@ -20,10 +20,6 @@
       :checkList="checkList"
       :processApplyDate="processApplyDate"
       :prototypeList="PrototypeList"
-      :tableList="tableList"
-      :tableHeight="tableHeight"
-      :prototypeListPageHeight="prototypeListPageHeight"
-      :prototypeTableList="prototypeTableList"
       :prototypeTitleList="prototypeTitleList"/>
   </div>
 </template>
@@ -63,11 +59,7 @@ export default {
       checkList,
       processApplyDate: "",
       PrototypeList: [],
-      prototypeTitleList,
-      prototypeListPageHeight:0,
-      tableHeight:0,
-      tableList:[],
-      prototypeTableList:[],
+      prototypeTitleList
     }
   },
   computed: {
@@ -143,96 +135,6 @@ export default {
     this.getPrototypeList()
   },
   methods: {
-    getHeight(){
-      setTimeout(()=>{
-        let dom = this.$refs.rsPdf.$el
-        this.width = dom.offsetWidth
-        this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-        let tableHeader = 57  // 表头高度
-        let headerHeight = 106 // 顶部标题高度
-        let pageLogo = 52     // logo 区域高度
-        let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
-        let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
-        let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
-        for (let i = 0; i < el.length; i++) {
-          height += el[i].offsetHeight;
-        }
-        // 第一页
-        this.tableHeight = this.pageHeight - headerHeight - pageTop - pageLogo - 0.5
-        // 第二页
-        // this.otherTableHeight = this.pageHeight - pageLogo - 21
-        let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
-        let arr = []
-        let heightSum = 0
-        let tableList = []
-        rowList.forEach((item,i)=>{
-          heightSum+=item.offsetHeight
-          // if(tableList.length==0){
-            if(heightSum<this.tableHeight - tableHeader - outEl - el){
-              arr.push(this.tableData[i])
-            }else{
-              tableList.push(JSON.parse(JSON.stringify(arr)))
-              heightSum=item.offsetHeight
-              arr = [this.tableData[i]]
-            }
-          // }else{
-          //   if(heightSum<this.otherTableHeight - tableHeader - outEl - el){
-          //     arr.push(this.tableData[i])
-          //   }else{
-          //     tableList.push(JSON.parse(JSON.stringify(arr)))
-          //     heightSum=item.offsetHeight
-          //     arr = [this.tableData[i]]
-          //   }
-          // }
-        })
-          
-        tableList.push(JSON.parse(JSON.stringify(arr)))
-        this.tableList = tableList
-      },1000)
-    },
-    getPrototypeListHeight(){
-      setTimeout(() => {
-        let dom = this.$refs.rsPdf.$el
-        this.width = dom.offsetWidth
-        this.pageHeight = (this.width / 841.89) * 595.28; // 横版A4一页对应的高度
-        let tableHeader = 41  // 表头高度
-        let headerHeight = 84  // 表头高度
-        let pageLogo = 52     // logo 区域高度
-        // let headerHeight = 106 // 顶部标题高度
-        // let pageTop = document.getElementsByClassName('demo')[0].getElementsByClassName('page-top')[0].offsetHeight  // 顶部内容高度
-        if(!document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0]) return
-        let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('prototypeList')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
-
-        // this.prototypeListPageHeight = this.pageHeight - pageTop - headerHeight - pageLogo - 0.5
-        this.prototypeListPageHeight = this.pageHeight - headerHeight - pageLogo - 0.5
-        let arr = []
-        let heightSum = 0
-        let PrototypeList = []
-        rowList.forEach((item,i)=>{
-          heightSum+=item.offsetHeight
-          // if(PrototypeList.length==0){
-            if(heightSum<=this.prototypeListPageHeight - tableHeader){
-              arr.push(this.PrototypeList[i])
-            }else{
-              PrototypeList.push(JSON.parse(JSON.stringify(arr)))
-              heightSum=item.offsetHeight
-              arr = [this.PrototypeList[i]]
-            }
-          // }else{
-          //   if(heightSum<this.prototypeListPageHeight - tableHeader){
-          //     arr.push(this.PrototypeList[i])
-          //   }else{
-          //     PrototypeList.push(JSON.parse(JSON.stringify(arr)))
-          //     heightSum=item.offsetHeight
-          //     arr = [this.PrototypeList[i]]
-          //   }
-          // }
-        })
-          
-        PrototypeList.push(JSON.parse(JSON.stringify(arr)))
-        this.prototypeTableList = PrototypeList
-      }, 1000);
-    },
     findFrontPageSeat: function () {
       findFrontPageSeat({
         nominateId: this.$route.query.desinateId
