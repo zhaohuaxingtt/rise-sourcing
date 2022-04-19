@@ -290,8 +290,6 @@
         :basicData="basicData"
         :tableTitle="tableTitle"
         :tableData="tableData"
-        :firstCount="firstCount"
-        :count="count"
         :remarkItem="remarkItem"
         :projectType="projectType"
         :exchangeRageCurrency="exchangeRageCurrency"

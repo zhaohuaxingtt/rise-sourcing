@@ -18,8 +18,8 @@
       <div class="chosseProGroup"> 
         <span class="chosseProGroup-title">{{language('FASONGYANWUYUANYINQUEREN','发送延误原因确认')}}</span>
         <span>
-          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
           <iButton @click="handleConfirm" :loading="saveLoading">{{language('FASONG','发送')}}</iButton>
+          <buttonTableSetting @click="edittableHeader"></buttonTableSetting>
         </span>
       </div> 
     </template> 

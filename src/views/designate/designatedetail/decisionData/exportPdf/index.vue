@@ -1,20 +1,28 @@
 <template> <!-- 导出RS单决策资料 -->
-  <div class="exportPdf">
+  <div class="exportPdf" :style="{'width': pageWidth + 80 + 'px'}">
     <div class="btnControl">
       <iButton :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
     </div>
     <div class="main" ref="contentPage">
-      <div class="title">
+      <!-- <div class="title">
         <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
         <span class="mtz" v-if="this.nomiData.mtzApplyId">
           <span class="crossbar">-</span>
           <span class="num">MTZ{{ this.nomiData.mtzApplyId }}</span>
         </span>
         <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
-      </div>
+      </div> -->
       <div class="content" id="allMoudles">
         <!-- title -->
         <div id="html2canvasTitle">
+          <div class="title">
+            <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
+            <span class="mtz" v-if="this.nomiData.mtzApplyId">
+              <span class="crossbar">-</span>
+              <span class="num">MTZ{{ this.nomiData.mtzApplyId }}</span>
+            </span>
+            <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
+          </div>
           <headerTab value="/designate/decisiondata/title"/>
           <rsTitle class="module"/>
          </div>
@@ -34,6 +42,14 @@
                { "key": "Attachment", "name": "Attachment", "path": "/designate/decisiondata/attachment" } ] -->
         <!-- PartList -->
         <div id="html2canvasPartList">
+          <div class="title">
+            <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
+            <span class="mtz" v-if="this.nomiData.mtzApplyId">
+              <span class="crossbar">-</span>
+              <span class="num">MTZ{{ this.nomiData.mtzApplyId }}</span>
+            </span>
+            <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
+          </div>
           <headerTab value="/designate/decisiondata/partlist"/>
           <partList class="module"/>
         </div>
@@ -108,7 +124,7 @@ import timeline from "./components/timeline"
 import awardingScenario from '../../awardingscenario'
 import abPrice from '../abPrice'
 import bdl from "../bdl"
-import rs from "../rs"
+import rs from "../rs/home"
 import { transverseDownloadPDF } from "@/utils/pdf"
 
 import { decisionType } from '@/layout/nomination/components/data'
@@ -328,7 +344,8 @@ export default {
   }
 
   .main {
-    width: 1920px; /*no*/
+    // width: 1920px; /*no*/
+    width: 100%;
     padding: 30px 0; /*no*/
     margin: 0 auto;
     box-sizing: content-box;
@@ -341,7 +358,7 @@ export default {
       white-space: nowrap;
       height: 30px; /*no*/
       line-height: 30px; /*no*/
-      padding: 0 20px;
+      // padding: 0 20px;
 
       .mtz {
         .num {
@@ -369,7 +386,7 @@ export default {
 
       ::v-deep .card {
         box-shadow: none;
-        border: 1px solid #999;
+        // border: 1px solid #999;
       }
 
       .module {
