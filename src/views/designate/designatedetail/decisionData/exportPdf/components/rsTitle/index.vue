@@ -1,26 +1,29 @@
 <template>
   <div class="content" ref="reTitle">
-    <iCard class="rsTitle pageCard rsPdfCard" title="Title">
-      <iFormGroup row="1" :style="{'height': cntentHeight + 'px'}">
-        <div class="col">
-          <template v-for="(item, index) in items">
-            <iFormItem v-if="!item.hidden" :key="index" :label="`${ item.label }:`">
-              <iText>{{ data[item.key] }}</iText>
-            </iFormItem>
-          </template>
+    <div class="pageCard-main rsPdfCard">
+      <slot></slot>
+      <iCard class="rsTitle pageCard rsPdfCard" title="Title">
+        <iFormGroup row="1" :style="{'height': cntentHeight + 'px'}">
+          <div class="col">
+            <template v-for="(item, index) in items">
+              <iFormItem v-if="!item.hidden" :key="index" :label="`${ item.label }:`">
+                <iText>{{ data[item.key] }}</iText>
+              </iFormItem>
+            </template>
+          </div>
+        </iFormGroup>
+        <div class="page-logo">
+          <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+          <div>
+            <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
+          </div>
+          <div>
+            <p>{{ userName }}</p>
+            <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+          </div>
         </div>
-      </iFormGroup>
-      <div class="page-logo">
-        <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
-        <div>
-          <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
-        </div>
-        <div>
-          <p>{{ userName }}</p>
-          <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
-        </div>
-      </div>
-    </iCard>
+      </iCard>
+    </div>
   </div>
 </template>
 

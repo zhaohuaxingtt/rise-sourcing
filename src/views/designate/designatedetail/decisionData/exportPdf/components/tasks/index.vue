@@ -1,5 +1,6 @@
 <template>
-  <div class="tasks">
+  <div class="tasks pageCard-main rsPdfCard">
+    <slot></slot>
     <iCard title="Background & Objective" class="bo">
       <div class="content">
         <div v-html="content"></div>

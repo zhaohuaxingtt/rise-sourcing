@@ -1,6 +1,8 @@
 <template>
   <div class="rsPdf">
     <template v-for="(tableData,index) in tableList">
+      <div :key="index" class="pageCard-main">
+      <slot name="tabTitle"></slot>
       <iCard :key="index" class="rsCard pageCard">
         <template #header>
           <div class="title">
@@ -185,6 +187,7 @@
             </div>
           </div>
       </iCard>
+  </div>
     </template>
   </div>
 </template>

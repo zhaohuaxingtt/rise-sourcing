@@ -8,6 +8,8 @@
 -->
 
 <template>
+<div class="pageCard rsPdfCard">
+  <slot></slot>
   <div class="decision-bdl" v-permission.auto="SOURCING_NOMINATION_ATTATCH_BDL|决策资料-bdl">
     <div class="margin-top20" style="text-align:right;" v-if="!isExportPdf && isPreview!='1'">
       <!-- 流转中、被冻结的申请单不可编辑 -->
@@ -48,6 +50,7 @@
     </iCard>
     <partsRatingDialog :dialogVisible="dialogVisible" @changeVisible="changeDialogVisible" :rfqId="rfqId" :supplierId="supplierId" />
   </div>
+</div>
 </template>
 
 <script>

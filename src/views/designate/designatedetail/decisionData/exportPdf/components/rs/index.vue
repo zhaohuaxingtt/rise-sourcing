@@ -1,4 +1,6 @@
 <template>
+<div class="pageCard-main rsPdfCard">
+  <slot></slot>
   <div class="rs">
     <cRsPdf v-if="isCirculation" />
     <mRsPdf
@@ -22,6 +24,7 @@
       :prototypeList="PrototypeList"
       :prototypeTitleList="prototypeTitleList"/>
   </div>
+</div>
 </template>
 
 <script>

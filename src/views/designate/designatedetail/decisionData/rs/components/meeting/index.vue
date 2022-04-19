@@ -303,7 +303,11 @@
         :tableHeight="tableHeight"
         :prototypeListPageHeight="prototypeListPageHeight"
         :prototypeTableList="prototypeTableList"
-        :prototypeTitleList="prototypeTitleList" />
+        :prototypeTitleList="prototypeTitleList" >
+        <template #tabTitle>
+          <slot name="tab-title"></slot>
+        </template>
+        </rsPdf>
     </div>
     <iCard class="rsCard">
       <template #header>

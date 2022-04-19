@@ -1,5 +1,6 @@
 <template>
-  <div class="bdl">
+  <div class="bdl pageCard-main rsPdfCard">
+    <slot></slot>
     <iCard class="bdlCard" v-for="(rfq, $index) in rfqList" :key="$index"
            :title="`RFQ NO.${ rfq.id },RFQ Name:${ rfq.rfq_name }`">
       <div v-if="dataGroup[rfq.id]">

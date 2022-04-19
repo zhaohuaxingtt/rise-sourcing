@@ -4,6 +4,8 @@
  * @Description: 
 -->
 <template>
+<div class="pageCard-main rsPdfCard">
+  <slot></slot>
   <iCard class="drawing" title="Drawing">
     <div class="content">
       <div v-if="files.length">
@@ -20,6 +22,7 @@
       </div>
     </div>
   </iCard>
+</div>
 </template>
 
 <script>

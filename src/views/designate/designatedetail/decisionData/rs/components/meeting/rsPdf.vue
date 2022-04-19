@@ -1,7 +1,9 @@
 <template>
   <div class="rsPdf">
     <template v-for="(tableData,index) in tableList">
-      <iCard :key="index" class="rsCard pageCard">
+      <div :key="index" class="pageCard-main">
+      <slot name="tabTitle"></slot>
+      <iCard :key="index" class="rsCard pageCard pageCard-main">
         <template #header>
           <div class="title">
             <p>CSC定点推荐 - {{ cardTitle }}</p>
@@ -320,9 +322,12 @@
           </div>
         </div> -->
       </iCard>
+      </div>
     </template>
     <template v-for="(tableData,key) in prototypeTableList">
-      <iCard :key="key" title="Prototype Cost List" class="rsCard pageCard" v-if='!showSignatureForm && prototypeList.length > 5'>
+      <div :key="key" class="pageCard-main">
+      <slot name="tabTitle"></slot>
+      <iCard title="Prototype Cost List" class="rsCard pageCard pageCard-main" v-if='!showSignatureForm && prototypeList.length > 5'>
         <div :style="{'height': prototypeListPageHeight + 'px'}">
           <el-table :data='tableData' class="prototypeTable">
             <template v-for="(items,index) in prototypeTitleList">
@@ -341,6 +346,7 @@
           </div>
         </div>
       </iCard>
+      </div>
     </template>
   </div>
 </template>

@@ -1,4 +1,6 @@
 <template>
+<div class="pageCard-main rsPdfCard">
+  <slot></slot>
   <iCard class="singleSourcing" title="生产采购单一供应商说明 Single Sourcing for Production Purchasing">
     <div class="content">
       <iFormGroup class="info" inline row="1">
@@ -22,6 +24,7 @@
       </tableList>
     </div>
   </iCard>
+</div>
 </template>
 
 <script>

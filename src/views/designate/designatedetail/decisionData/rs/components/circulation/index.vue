@@ -381,7 +381,11 @@
         :otherTableHeight="otherTableHeight"
         :exchangeRate="exchangeRate"
         :processApplyDate="processApplyDate"
-        />
+        >
+        <template #tabTitle>
+          <slot name="tabTitle"></slot>
+        </template>
+        </rsPdf>
     </div>
     <!-- <iCard v-if="projectType === partProjTypes.PEIJIAN || projectType === partProjTypes.FUJIAN">
       <template #header>
@@ -780,7 +784,13 @@ export default {
     },
     isApproval() {
       return this.$route.query.isApproval === "true"
+    },
+    hasTitle(){
+      return this.$slots.tabTitle && 116 || 0
     }
+  },
+  mounted(){
+    console.log(this.hasTitle)
   },
   methods: {
     remarkProcess,
@@ -797,9 +807,7 @@ export default {
       let el = document.getElementsByClassName('demo')[0].getElementsByClassName('Application')[0].offsetHeight  // 审批备注
       let outEl = document.getElementsByClassName('demo')[0].getElementsByClassName('out-compute')[0].offsetHeight  // 备注
       // 第一页
-      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo  // 表格区域高度, 用div支撑空间
-      // 第二页
-      // this.otherTableHeight = this.pageHeight - computeHeight - pageLogo - 21   // 表格区域高度, 用div支撑空间, 减20间距, 1px 偏差
+      this.tableHeight = this.pageHeight - computeHeight - headerHeight - pageLogo - this.hasTitle  // 表格区域高度, 用div支撑空间
       let rowList = document.getElementsByClassName('demo')[0].getElementsByClassName('mainTable')[0].getElementsByClassName('el-table__body-wrapper')[0].getElementsByClassName('table-row')
       let arr = []
       let heightSum = 0

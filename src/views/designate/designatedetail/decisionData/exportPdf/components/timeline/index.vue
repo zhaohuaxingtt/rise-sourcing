@@ -1,5 +1,6 @@
 <template>
-  <div class="timeline">
+  <div class="timeline pageCard-main rsPdfCard">
+    <slot></slot>
     <iCard class="timelineCard" v-for="(data, $index) in dataGroup" :key="$index" :title="data.materialGroupName">
       <div class="content">
         <div>

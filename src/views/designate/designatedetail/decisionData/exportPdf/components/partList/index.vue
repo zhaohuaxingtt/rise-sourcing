@@ -5,34 +5,39 @@
 -->
 <template>
   <div ref="partList">
-    <iCard class="partList pageCard rsPdfCard" title="Part List">
-      <tableList
-          :style="{'height': cntentHeight + 'px'}"
-          showName
-          :selection="false"
-          :tableTitle="tableTitle"
-          :tableData="tableListData">
-        <template #mtz="scope">
-          <span>{{ mtzFormat(scope.row.mtz) }}</span>
-        </template>
-        <template #ebrCalculatedValue="scope">
-          <span>{{ percent(scope.row.ebrCalculatedValue) }}</span>
-        </template>
-        <template #ebrConfirmValue="scope">
-          <span>{{ percent(scope.row.ebrConfirmValue) }}</span>
-        </template>
-      </tableList>
-      <div class="page-logo">
-        <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
-        <div>
-          <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
-        </div>
-        <div>
-          <p>{{ userName }}</p>
-          <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
-        </div>
+    <template>
+      <div class="pageCard-main rsPdfCard">
+        <slot></slot>
+        <iCard class="partList pageCard rsPdfCard" title="Part List">
+          <tableList
+              :style="{'height': cntentHeight + 'px'}"
+              showName
+              :selection="false"
+              :tableTitle="tableTitle"
+              :tableData="tableListData">
+            <template #mtz="scope">
+              <span>{{ mtzFormat(scope.row.mtz) }}</span>
+            </template>
+            <template #ebrCalculatedValue="scope">
+              <span>{{ percent(scope.row.ebrCalculatedValue) }}</span>
+            </template>
+            <template #ebrConfirmValue="scope">
+              <span>{{ percent(scope.row.ebrConfirmValue) }}</span>
+            </template>
+          </tableList>
+          <div class="page-logo">
+            <img src="../../../../../../../assets/images/logo.png" alt="" :height="46*0.6+'px'" :width="126*0.6+'px'">
+            <div>
+              <p>{{'page '+(index+1)+' of '+ (prototypeTableList.length+tableList.length)}}</p>
+            </div>
+            <div>
+              <p>{{ userName }}</p>
+              <p>{{ new Date().getTime() | dateFilter('YYYY-MM-DD')}}</p>
+            </div>
+          </div>
+        </iCard>
       </div>
-    </iCard>
+    </template>
   </div>
 </template>
 

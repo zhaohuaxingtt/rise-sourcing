@@ -4,27 +4,20 @@
       <iButton :loading="exportLoading" @click="exportPdf">{{ language("DAOCHUPDF", "导出PDF") }}</iButton>
     </div>
     <div class="main" ref="contentPage">
-      <!-- <div class="title">
+      <div class="title">
         <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
         <span class="mtz" v-if="this.nomiData.mtzApplyId">
           <span class="crossbar">-</span>
           <span class="num">MTZ{{ this.nomiData.mtzApplyId }}</span>
         </span>
         <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
-      </div> -->
+      </div>
       <div class="content" id="allMoudles">
         <!-- title -->
         <div id="html2canvasTitle">
-          <div class="title">
-            <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
-            <span class="mtz" v-if="this.nomiData.mtzApplyId">
-              <span class="crossbar">-</span>
-              <span class="num">MTZ{{ this.nomiData.mtzApplyId }}</span>
-            </span>
-            <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
-          </div>
-          <headerTab value="/designate/decisiondata/title"/>
-          <rsTitle class="module"/>
+          <rsTitle class="module">
+            <headerTab value="/designate/decisiondata/title"/>
+          </rsTitle>
          </div>
         <!-- [ { "key": "Title", "name": "Title", "path": "/designate/decisiondata/title" }, 
         { "key": "PartList", "name": "Part List", "path": "/designate/decisiondata/partlist" },
@@ -42,65 +35,68 @@
                { "key": "Attachment", "name": "Attachment", "path": "/designate/decisiondata/attachment" } ] -->
         <!-- PartList -->
         <div id="html2canvasPartList">
-          <div class="title">
-            <span>{{ language("DINGDIANGUANLI", "定点管理") }}: {{ nominateAppId }}</span>
-            <span class="mtz" v-if="this.nomiData.mtzApplyId">
-              <span class="crossbar">-</span>
-              <span class="num">MTZ{{ this.nomiData.mtzApplyId }}</span>
-            </span>
-            <span class="nomiType">{{ language("DINGDIANSHENQINGLEIXING", "定点申请类型") }}：{{ this.nomiData.nominateProcessTypeDesc }}</span>
-          </div>
-          <headerTab value="/designate/decisiondata/partlist"/>
-          <partList class="module"/>
+          <partList class="module">
+            <headerTab value="/designate/decisiondata/partlist"/>
+          </partList>
         </div>
 
         <!-- Tasks -->
         <div id="html2canvasTasks">
-          <headerTab value="/designate/decisiondata/tasks"/>
-          <tasks class="module"/>
+          <tasks class="module">
+            <headerTab value="/designate/decisiondata/tasks"/>
+          </tasks>
         </div>
 
         <!-- drawing -->
         <div id="html2canvasDrawing">
-          <headerTab value="/designate/decisiondata/drawing"/>
-          <drawing class="module"/>
+          <drawing class="module">
+            <headerTab value="/designate/decisiondata/drawing"/>
+          </drawing>
         </div>
 
         <!-- bdl -->
         <div id="html2canvasBDl">
-          <headerTab value="/designate/decisiondata/bdl"/>
-          <bdl isExportPdf class="module"/>
+          <bdl isExportPdf class="module">
+            <headerTab value="/designate/decisiondata/bdl"/>
+          </bdl>
         </div>
 
         <!-- singleSourcing -->
         <div id="html2canvasSingleSourcing">
-          <headerTab value="/designate/decisiondata/singlesourcing"/>
-          <singleSourcing class="module"/>
+          <singleSourcing class="module">
+            <headerTab value="/designate/decisiondata/singlesourcing"/>
+          </singleSourcing>
         </div>
 
         <!-- abprice -->
         <div id="html2canvasAbprice">
-          <headerTab value="/designate/decisiondata/abprice"/>
-          <abPrice class="module"/>
+          <abPrice class="module">
+            <headerTab value="/designate/decisiondata/abprice"/>
+          </abPrice>
         </div>
 
         <!-- timeline -->
         <div id="html2canvasTimeline">
-          <headerTab value="/designate/decisiondata/timeline"/>
-          <timeline class="module"/>
+          <timeline class="module">
+            <headerTab value="/designate/decisiondata/timeline"/>
+          </timeline>
         </div>
         <!-- awardingScenario -->
         <div id="html2canvasAwardingScenario">
-          <div  class="tab-list">
-            <headerTab value="/designate/decisiondata/awardingscenario"/>
-          </div>
-          <awardingScenario class="module" />
+          <awardingScenario class="module">
+            <div class="tab-list">
+              <headerTab value="/designate/decisiondata/awardingscenario"/>
+            </div>
+          </awardingScenario>
         </div>
         
 
         <div id="html2canvasRs">
-            <headerTab value="/designate/decisiondata/rs"/>
-          <rs class="module" :nomiData="nomiData"/>
+          <rs class="module" :nomiData="nomiData">
+            <template #tabTitle>
+              <headerTab value="/designate/decisiondata/rs"/>
+            </template>
+          </rs>
         </div>
       </div>
     </div>
@@ -333,7 +329,7 @@ export default {
       this.loading = true
     
       setTimeout(async () => {
-        let elList = document.getElementsByClassName('pageCard')
+        let elList = document.getElementsByClassName('pageCard-main')
         if(!elList.length){
           iMessage.warn('请稍等')
           this.loading = false
@@ -365,6 +361,7 @@ export default {
       index
     }) {
       await html2canvas(dom, {
+        allowTaint:true,
         dpi: 96, //分辨率
         scale: 2, //设置缩放
         useCORS: true, //允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。,
@@ -392,7 +389,7 @@ export default {
       let arr = this.fileList.filter(item=>!item.imageUrl)
       if(arr.length) return
       const list = this.fileList.map((item)=>item.imageUrl);
-      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89, height: 595.28})
+      await decisionDownloadPdfLogo({filePaths:list, needLogo:false, needSplit:false, width: 841.89*2, height: 595.28*2})
       this.loading = false
     },
 
@@ -535,5 +532,8 @@ export default {
       }
     }
   }
+}
+::v-deep .pageCard-main{
+  border: rgba(0,38,98,.15) 1px solid;
 }
 </style>
